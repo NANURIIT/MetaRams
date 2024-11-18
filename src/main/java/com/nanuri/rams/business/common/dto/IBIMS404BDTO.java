@@ -16,7 +16,7 @@ import java.util.Date;
 public class IBIMS404BDTO {
     private String         prdtCd;                                 // 상품코드
     private long       	   excSn;                                  // 실행일련번호
-    private long           rgstSn;                                 // 등록일련번호
+    private int            rgstSn;                                 // 등록일련번호
     private String         aplyStrtDt;                             // 적용시작일자
     private String         aplyEndDt;                              // 적용종료일자
     private String         stdrIntrtKndCd;                         // 기준금리종류코드

@@ -15,14 +15,15 @@ public class IBIMS452BDTO {
     
     private String dealNo;	                // 딜번호	IBIMS452B	varchar(12)
     private BigDecimal excSeq;	            // 실행순번	IBIMS452B	decimal(16,0)
-    private BigDecimal trSeq;	            // 거래순번	IBIMS452B	decimal(16,0)
-    private BigDecimal erlmSeq;	        // 등록순번	IBIMS452B	decimal(16,0)
+    private int trSeq;	            // 거래순번	IBIMS452B	decimal(16,0)
+    private int erlmSeq;	        // 등록순번	IBIMS452B	decimal(16,0)
     private String chrrDvsnCd;	        // 담당자구분코드	IBIMS452B	varchar(2)
     private String rqstStfno;	            // 신청직원번호	IBIMS452B	varchar(6)
     private String reltStfno;	            // 승인자	IBIMS452B	varchar(6)
     private String consDecdDvsnCd;	    // 품의결재구분코드	IBIMS452B	varchar(2)
     private String consDecdStatCd;	    // 결재상태코드	IBIMS452B	varchar(2)
-    private String gbckRsonText;	        // 반려사유내용	IBIMS452B	varchar(500)
+    //private String gbckRsonText;	        // 반려사유내용	IBIMS452B	varchar(500)(메타 변경 전)
+    private String rjctRsnCntn;	        // 반려사유내용	IBIMS452B	varchar(500)
     private Date hndDetlDtm;	            // 조작상세일시	IBIMS452B	datetime
     private String hndEmpno;	            // 조작사원번호	IBIMS452B	varchar(7)
     private String hndTmnlNo;	            // 조작단말기번호	IBIMS452B	varchar(8)
