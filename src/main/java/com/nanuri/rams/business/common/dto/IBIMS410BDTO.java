@@ -29,12 +29,18 @@ public class IBIMS410BDTO {
     private BigDecimal    pucrIntAmt          ; //환출이자금액
     private BigDecimal    trFeeAmt            ; //거래수수료금액
     private BigDecimal    costAmt             ; //비용금액
-    private String        trCrcyCd            ; //거래통화코드
-    private BigDecimal    wcrcTrslRt          ; //원화환산율
-    private BigDecimal    wcrcTrslTrPrca      ; //원화환산거래원금
-    private BigDecimal    wcrcTrslTrIntAmt    ; //원화환산거래이자금액
-    private BigDecimal    wcrcTrslTrFeeAmt    ; //원화환산거래수수료금액
-    private BigDecimal    wcrcTrslCostAmt     ; //원화환산비용금액
+    //private String        trCrcyCd            ; //거래통화코드
+    private String        trCrryCd            ; //거래통화코드
+    // private BigDecimal    wcrcTrslRt          ; //원화환산율
+    // private BigDecimal    wcrcTrslTrPrca      ; //원화환산거래원금
+    // private BigDecimal    wcrcTrslTrIntAmt    ; //원화환산거래이자금액
+    // private BigDecimal    wcrcTrslTrFeeAmt    ; //원화환산거래수수료금액
+    // private BigDecimal    wcrcTrslCostAmt     ; //원화환산비용금액
+    private BigDecimal    krwTrslRt           ; //원화환산율
+    private BigDecimal    krwTrslTrPrca       ; //원화환산거래원금
+    private BigDecimal    krwTrslTrIntAmt     ; //원화환산거래이자금액
+    private BigDecimal    krwTrslTrFeeAmt     ; //원화환산거래수수료금액
+    private BigDecimal    krwTrslCostAmt      ; //원화환산비용금액
     private String        actgAfrsCd          ; //회계업무코드
     private String        actgUnitAfrsCd      ; //회계단위업무코드
     private String        actgTrCd            ; //회계거래코드
