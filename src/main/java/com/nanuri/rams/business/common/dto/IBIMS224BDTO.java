@@ -12,12 +12,13 @@ import lombok.Setter;
 딜승인LOC발행기본 Table.IBIMS224B DTO
 */
 public class IBIMS224BDTO {
+    
     private String         issMngmNo;                              // 발급관리번호
     private String         issSttsCd;                              // 발급상태코드
     private String         dealNo;                                 // 딜번호
-    private String         sq;                                     // 일련번호
+    private BigDecimal     sn;                                     // 일련번호
     private String         empno;                                  // 사원번호
-    private String         decdDptDcd;                             // 부서명
+    private String         dprtCd;                                 // 부서코드
     private String         fndNm;                                  // 펀드명
     private String         prdtCd;                                 // 상품코드
     private String         ibPrdtClsfCd;                           // ib상품분류코드
@@ -50,4 +51,5 @@ public class IBIMS224BDTO {
     private String         hndTmnlNo;                              // 조작단말기번호
     private String         hndTrId;                                // 조작거래id
     private String         guid;                                   // guid
+
 }

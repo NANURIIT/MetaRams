@@ -12,12 +12,14 @@ import lombok.Setter;
 */
 public class IBIMS504BDTO {
     private String         dealNo;               // 딜번호
-    private String         sq;               	 // 일련번호
+    //private String         sq;               	 // 일련번호(메타 변경 전)
+    private String         sn;               	 // 일련번호
     private String         undwHglmWyDcd;        // 인수상한방식구분코드
     private String         hnvrBusiDcd;          // 인수사업구분코드
     private String         lmtTrYn;              // 한도거래여부
     private String         brwrSpcYn;            // 차주SPC여부
-    private String         busiCtns;             // 사업내용
+    //private String         busiCtns;             // 사업내용(메타 변경 전)
+    private String         busiCnts;             // 사업내용
     private String         undwMrtgCtns;         // 인수담보내용
     private String         spnsrCtns;            // 후원자내용
     private String         delYn;                // 삭제여부

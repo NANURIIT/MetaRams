@@ -1,6 +1,7 @@
 package com.nanuri.rams.business.common.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +35,7 @@ public class IBIMS203BDTO {
 	private BigDecimal dcRt;			// 할인율
 	private String eprzCrdlTxtnTpDcd;	// 기업여신과세유형구분코드
 	private BigDecimal pymtFee;			// 지급수수료
-	private String hndDetlDtm;			// 조작상세일시
+	private Date hndDetlDtm;			// 조작상세일시
 	private String hndEmpno;			// 조작사원번호
 	private String hndTmnlNo;			// 조작단말기번호
 	private String hndTrId;				// 조작거래id

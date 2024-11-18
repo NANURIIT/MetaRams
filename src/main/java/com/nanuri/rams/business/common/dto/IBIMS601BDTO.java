@@ -11,7 +11,8 @@ import lombok.Setter;
  분양수지관리 Table.IBIMS601B DTO
 */
 public class IBIMS601BDTO {
-    private String         dealNo;                                          	// DEAL번호
+
+    private String         dealNo;                                          	// 딜번호
     private String         slStDt;                                           	// 분양시작일
     private String         slEdDt;                                           	// 분양종료일
     private String         slPrd;                                            	// 분양기간
@@ -22,7 +23,7 @@ public class IBIMS601BDTO {
     private String         unitNum;                                             // 세대수
     private String         loanBondTakYn;                                       // 대출채권양수여부
     private String         prfbIslfEvl;                                         // 사업장자체평가
-    private String         ipreYn;                                          	// ipre여부
+    private String         ipreYn;                                          	// IPRE여부
     private String         clcIntlGrd;                                          // 계산내부등급
     private String         dcsnIntlGrd;                                         // 확장내부등급
     private String         mgtnRt;                                             	// 이주율
@@ -36,4 +37,5 @@ public class IBIMS601BDTO {
     private String         hndTmnlNo;                                       	// 조작단말기번호
     private String         hndTrId;                                         	// 조작거래id
     private String         guid;                                            	// guid
+
 }

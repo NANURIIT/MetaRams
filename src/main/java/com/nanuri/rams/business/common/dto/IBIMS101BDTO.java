@@ -30,7 +30,7 @@ public class IBIMS101BDTO {
     /* 2023-12-04 추가된 컬럼 */
     private String         corptnTypCd;       // 협업유형코드
     private String         bookCd;            // 북코드
-    private String         invstGdsDtlsDvdCd; // 투자상품상세분류
+    private String         invPrdtDtlDvdCd;   // 투자상품상세분류코드
     private String         bnkBd;             // 은행부점
     private String         invstCty;          // 투자도시
     private String         bzsacalCd;         // 기업규모코드

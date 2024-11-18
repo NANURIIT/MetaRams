@@ -23,14 +23,14 @@ public class IBIMS103BDTO {
     private String     raDealDcd;                     // RADEAL구분코드
     private String     riskRcgNo;                     // 리스크승인번호
     private String     inspctDprtDcd;                 // 심사부서구분코드
-    private String     invstGdsLdvdCd;                // 투자상품대분류코드
-    private String     invstGdsMdvdCd;                // 투자상품중분류코드
-    private String     invstGdsSdvdCd;                // 투자상품소분류코드
-    private String     invstGdsDtlsDvdCd;             // 투자상품상세분류코드
+    private String     invPrdtLclsCd;                 // 투자상품대분류코드
+    private String     invPrdtMdclCd;                 // 투자상품중분류코드
+    private String     invPrdtSclsCd;                 // 투자상품소분류코드
+    private String     invPrdtDtlsDvdCd;              // 투자상품상세분류코드
     private String     mainInvstTrgtNm;               // 주요투자대상명
     private String     ptfdCrncyCd;                   // 부의통화코드
     private BigDecimal ptfdAmt;                       // 부의금액
-    private String     invstNtnCd;                    // 투자국가코드
+    private String     invNtnCd;                      // 투자국가코드
     private BigDecimal aplcExchR;                     // 적용환율
     private BigDecimal krwTrslPtfdAmt;                // 원화환산부의금액
     private String     indTypDvdCd;                   // 업종분류코드(고위험산업)
@@ -45,8 +45,8 @@ public class IBIMS103BDTO {
     private String     dlDprtNm2;                     // 거래부점명2
     private String     dlDprtNm3;                     // 거래부점명3
     private String     hdqtCd;                        // 본부코드
-    private String     dprtCd;                        // 부점코드
-    private String     chrgPEno;                      // 담당자사번
+    private String     bdcd;                          // 부서코드
+    private String     chrrEmpno;                     // 담당자사번
     private String     ownPEno;                       // 심사역사번
     private String     esgYn;                         // ESG여부
     private String     esgMngDmnCd;                   // ESG관리영역코드
@@ -57,7 +57,7 @@ public class IBIMS103BDTO {
     private String     bsnsDprtEsgGrdCmmt;            // 사업부서ESG등급의견
     private String     inspctDprtEsgGrdDcd;           // 심사부서ESG등급구분코드
     private String     inspctDprtEsgGrdCmmt;          // 심사부서ESG등급의견
-    private int        invstPrdMmC;                   // 투자기간개월수
+    private int        invPrdMnum;                    // 투자기간개월수
     private String     wrtExptDt;                     // 기표예정일자
     private String     mtrtExptDt;                    // 만기예정일자
     private BigDecimal tlErnAmt;                      // 전체수익
@@ -67,9 +67,9 @@ public class IBIMS103BDTO {
     private String     ensrYn;                        // 보증여부
     private String     rspsbCmplDcd;                  // 책임준공구분코드
     private String     entpNm;                        // 업체명
-    private String     optrRgstNo;                    // 사업자등록번호
+    private String     bzno;              		      // 사업자등록번호
     private String     corpNo;                        // 법인번호
-    private String     coprtnTypCd;                   // 협업유형코드
+    private String     corptnTypCd;                   // 협업유형코드
     private String     busiDptOpnn;                   // 사업부서의견
     private String     jdgmDptOpnn;                   // 심사부서의견
     private String     bscAstsInptExptF;              // 기초자산입력예정여부
