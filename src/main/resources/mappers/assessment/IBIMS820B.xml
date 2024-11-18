@@ -6,7 +6,7 @@
     <select id="getPrepaidIntrList" resultType="com.nanuri.rams.business.common.vo.TB08060SVO" parameterType="com.nanuri.rams.business.common.vo.TB08060SVO">
         SELECT A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                 ,A.PRDT_NM                  AS PRDT_NM                   /* 상품명             */
-                ,A.MNGM_BDCD                AS BDCD                      /* 부점코드            */
+                ,A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
                 ,A.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드         */ 
                 ,F.EXC_SN                   AS EXC_SN                    /* 실행일련번호         */
                 ,F.TR_SN                    AS TR_SN                     /* 거래일련번호 : 거래순번 */
@@ -53,7 +53,7 @@
     <select id="getPrepaidFeeList" resultType="com.nanuri.rams.business.common.vo.TB08060SVO" parameterType="com.nanuri.rams.business.common.vo.TB08060SVO">
         SELECT A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                 ,A.PRDT_NM                  AS PRDT_NM                   /* 상품명             */
-                ,A.MNGM_BDCD                AS BDCD                      /* 부점코드            */
+                ,A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
                 ,A.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드         */ 
                 ,F.EXC_SN                   AS EXC_SN                    /* 실행일련번호         */
                 ,F.TR_SN                    AS TR_SN                     /* 거래일련번호 : 거래순번 */
@@ -132,7 +132,7 @@
     <select id="getImprmtList" resultType="com.nanuri.rams.business.common.vo.TB08060SVO" parameterType="com.nanuri.rams.business.common.vo.TB08060SVO">
         SELECT A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                 ,A.PRDT_NM                  AS PRDT_NM                   /* 상품명             */
-                ,A.MNGM_BDCD                AS BDCD                      /* 부점코드            */
+                ,A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
                 ,A.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드         */
                 , (
                     SELECT FND_NM
@@ -198,7 +198,7 @@
                          WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                            AND X.PRDT_CD = A.PRDT_CD
                       ) + ROWNUM)                AS RGST_SN                   /* 등록일련번호         */
-                    , A.MNGM_BDCD                AS BDCD                      /* 부점코드            */
+                    , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
                     , ''                         AS ACCT_SYNS_CD              /* 회계적용코드         */
                     , ''                         AS STTM_NO                   /* 전표번호            */
                     , ''                         AS CNCL_STTM_NO              /* 취소전표번호         */
@@ -254,7 +254,7 @@
                          WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                            AND X.PRDT_CD = Y.PRDT_CD
                       ) + ROWNUM)              AS RGST_SN                   /* 등록일련번호         */
-                    , Y.BDCD                     AS BDCD                      /* 부점코드            */
+                    , Y.BDCD                     AS BDCD                      /* 부서코드            */
                     , ''                         AS ACCT_SYNS_CD              /* 회계적용코드         */
                     , ''                         AS STTM_NO                   /* 전표번호            */
                     , ''                         AS CNCL_STTM_NO              /* 취소전표번호         */
@@ -285,7 +285,7 @@
                     , 'N'                        AS DCSN_YN                   /* 확정여부             */
                FROM (
                       SELECT   A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
-                             , A.MNGM_BDCD                AS BDCD                      /* 부점코드            */
+                             , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
                              , B.EXC_SN                   AS EXC_SN                    /* 실행일련번호           */
                              , C.TR_SN                    AS TR_SN                     /* 거래일련번호           */
                              , D.INT_CALC_SEQ             AS SN                        /* 이자계산순번 */
@@ -357,7 +357,7 @@
                         WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                           AND X.PRDT_CD = Y.PRDT_CD
                      ) + ROWNUM)              AS RGST_SN                   /* 등록일련번호         */
-                   , Y.BDCD                     AS BDCD                      /* 부점코드            */
+                   , Y.BDCD                     AS BDCD                      /* 부서코드            */
                    , ''                         AS ACCT_SYNS_CD              /* 회계적용코드         */
                    , ''                         AS STTM_NO                   /* 전표번호            */
                    , ''                         AS CNCL_STTM_NO              /* 취소전표번호         */
@@ -388,7 +388,7 @@
                    , 'N'                        AS DCSN_YN                   /* 확정여부             */
              FROM (
                          SELECT   A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
-                                , A.MNGM_BDCD                AS BDCD                      /* 부점코드            */
+                                , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
                                 , B.EXC_SN                   AS EXC_SN                    /* 실행일련번호           */
                                 , C.TR_SN                    AS TR_SN                     /* 거래일련번호           */
                                 , D.FEE_SN                   AS SN                        /* 수수료일련번호 */
@@ -455,7 +455,7 @@
                          WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                            AND X.PRDT_CD = A.PRDT_CD
                      ) + ROWNUM)               AS RGST_SN                   /* 등록일련번호         */
-                    , A.MNGM_BDCD                AS BDCD                      /* 부점코드            */
+                    , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
                     , ''                         AS ACCT_SYNS_CD              /* 회계적용코드         */
                     , ''                         AS STTM_NO                   /* 전표번호            */
                     , ''                         AS CNCL_STTM_NO              /* 취소전표번호         */

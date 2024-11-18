@@ -6,11 +6,11 @@
     <select id="getEnoPList" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS116BVO">
         SELECT A.DEAL_NO                                 /* 딜번호 */
              , A.SN                                      /* 일련번호 */
-             , A.DPRT_CD                                 /* 부점코드 */
+             , A.BDCD                                 /* 부서코드 */
              , (
                  SELECT MAX(DPRT_NM)
                    FROM IBIMS003B
-                  WHERE DPRT_CD = A.DPRT_CD
+                  WHERE BDCD = A.BDCD
                ) AS DPRT_NM
              , A.BSNSS_MNG_P_ENO                         /* 영업관리자사번 */
              , (
@@ -38,7 +38,7 @@
                (
                   DEAL_NO                                 /* 딜번호 */
                 , SN                                      /* 일련번호 */
-                , DPRT_CD                                 /* 부점코드 */
+                , BDCD                                 /* 부서코드 */
                 , BSNSS_MNG_P_ENO                         /* 영업관리자사번 */
                 , CNTRT                                   /* 공헌도 */
                 , RGST_DT                                 /* 등록일자 */
@@ -51,7 +51,7 @@
                (
                  #{item.dealNo}                           /* 딜번호 */
                , #{item.sn}                               /* 일련번호 */
-               , #{item.dprtCd}                           /* 부점코드 */
+               , #{item.dbcd}                           /* 부서코드 */
                , #{item.bsnssMngPEno}                     /* 영업관리자사번 */
                , #{item.cntrt}                            /* 공헌도 */
                , #{item.rgstDt}                           /* 등록일자 */

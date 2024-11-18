@@ -14,7 +14,7 @@
 				 WHERE 1=1 
 				   AND EMPNO = T1.HND_EMPNO) AS hndEmpno	/* 처리자 */
 			 , T1.MENU_ID				/* 메뉴ID */
-			 , T1.SQ					/* 일련번호 */
+			 , T1.SN					/* 일련번호 */
 		  FROM IBIMS007B T1	/* 메뉴별권한코드 */
 	 LEFT JOIN IBIMS006B T2 /* 권한코드기본 */
 	        ON T1.ATH_CD = T2.ATH_CD
@@ -61,7 +61,7 @@
 		MERGE INTO IBIMS007B T
       USING (
              SELECT #{athCd}  AS ATH_CD
-				  , #{sq}  AS SQ
+				  , #{sn}  AS SN
 				  , #{menuId}  AS MENU_ID
 				  , #{mdfyRghtCcd}  AS MDFY_RGHT_CCD
 				  , #{hndDetlDtm}  AS HND_DETL_DTM
@@ -84,7 +84,7 @@
 				 , T.GUID = S.GUID
       WHEN NOT MATCHED THEN
         INSERT ( ATH_CD
-			   , SQ
+			   , SN
 			   , MENU_ID
 			   , MDFY_RGHT_CCD
 			   , HND_DETL_DTM
@@ -94,7 +94,7 @@
 			   , GUID
                )
         VALUES ( S.ATH_CD
-			   , S.SQ
+			   , S.SN
 			   , S.MENU_ID
 			   , S.MDFY_RGHT_CCD
 			   , SYSDATE
@@ -106,7 +106,7 @@
 	</update>
 
 	<select id="ibims007bCreateSq" resultType="int">
-		SELECT NVL(MAX(SQ), 0) + 1
+		SELECT NVL(MAX(SN), 0) + 1
 		  FROM IBIMS007B
 	</select>
 
@@ -115,7 +115,7 @@
 	<!-- 권한별 메뉴 조회 -->
 	<select id="selectAvailableMenu" resultType="com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO" parameterType='java.util.Map'>
 		SELECT T1.ATH_CD					/* 권한코드 */
-			 , T1.SQ						/* 일련번호 */
+			 , T1.SN						/* 일련번호 */
 			 , T1.MENU_ID					/* 메뉴ID */
 			 , T1.MDFY_RGHT_CCD				/* 수정권한구분코드 (1: 조회, 2: 수정가능) */
 			 , T1.HND_DETL_DTM
@@ -135,7 +135,7 @@
 	<insert id='insertUseMenu' parameterType='com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO'>
 		INSERT INTO IBIMS007B (
 				  ATH_CD				<!-- 권한코드 -->
-				, SQ					<!-- 일련번호 -->
+				, SN					<!-- 일련번호 -->
 				, MENU_ID				<!-- 메뉴ID -->
 				, MDFY_RGHT_CCD			<!-- 수정권한구분코드(1: 조회, 2: 수정가능) -->
 				, HND_DETL_DTM			<!-- 처리일시 -->
@@ -155,11 +155,11 @@
 	<delete id='deleteUseMenu' parameterType='com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO'>
 		DELETE
 		  FROM IBIMS007B
-		 WHERE SQ			= #{sq}		<!-- 일련번호 -->	
+		 WHERE SN			= #{sn}		<!-- 일련번호 -->
 		   AND ATH_CD		= #{athCd}	<!-- 권한코드 -->
 	</delete>
 
-	<!-- SQ 값 구하기 -->
+	<!-- SN 값 구하기 -->
 	<select id="nextVal" resultType="int">
 		SELECT NEXTVAL(IBIMS007B_SQ)
 	</select>
@@ -174,7 +174,7 @@
 	<insert id="insertAuthCodeMenu" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
 		INSERT INTO IBIMS007B (
 			ATH_CD,						<!-- 권한코드 -->
-			SQ,							<!-- 일련번호 -->
+			SN,							<!-- 일련번호 -->
 			MENU_ID,					<!-- 메뉴ID -->
 			MDFY_RGHT_CCD,				<!-- 수정권한구분코드(1: 조회, 2: 수정가능) -->
 			HND_DETL_DTM,				<!-- 처리일시 -->
@@ -197,7 +197,7 @@
 		WHERE 1=1
 		  AND ATH_CD = #{athCd}
 		  AND MENU_ID = #{menuId}
-		  AND SQ = #{sq}
+		  AND SN = #{sn}
 	</update>
 
 	<delete id="deleteAuthCodeMenu" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
@@ -214,6 +214,6 @@
 				 ) AS isExist
 		  FROM IBIMS007B
 		 WHERE ATH_CD 	= #{athCd}			<!-- 권한코드 -->
-		   AND SQ 		= #{sq}				<!-- 일련번호 -->
+		   AND SN 		= #{sn}				<!-- 일련번호 -->
 	</select>
 </mapper>

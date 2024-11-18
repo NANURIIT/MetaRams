@@ -11,16 +11,16 @@
                 SELECT T3.DEAL_NO                   AS DEAL_NO                      /* 딜번호                  */
                     ,T3.TR_SEQ                    AS TR_SEQ                       /* 거래순번                */
                     ,T3.ETPR_CRDT_GRNT_TR_KIND_CD AS ETPR_CRDT_GRNT_TR_KIND_CD    /* 거래종류코드            */
-                    ,(CASE WHEN T3.ACTG_AFRS_CD IN ('G1','G6') THEN '1'  /* 1-증액 */
-                            WHEN T3.ACTG_AFRS_CD IN ('G2','G5') THEN '2'  /* 2-감액 */
+                    ,(CASE WHEN T3.ACCT_JOB_CD IN ('G1','G6') THEN '1'  /* 1-증액 */
+                            WHEN T3.ACCT_JOB_CD IN ('G2','G5') THEN '2'  /* 2-감액 */
                             ELSE '0' 
                         END)                        AS ICDC_DVSN                    /* 증감구분                */     
-                    ,T3.WCRC_TRSL_TR_PRCA         AS WCRC_TRSL_TR_PRCA            /* 원화환산거래원금        */
-                    ,T3.WCRC_TRSL_TR_INT_AMT      AS WCRC_TRSL_TR_INT_AMT         /* 원화환산거래이자금액    */
-                    ,T3.WCRC_TRSL_TR_FEE_AMT      AS WCRC_TRSL_TR_FEE_AMT         /* 원화환산거래수수료금액  */
-                    ,T3.WCRC_TRSL_COST_AMT        AS WCRC_TRSL_COST_AMT           /* 원화환산비용금액        */
-                    ,T3.ACTG_AFRS_CD              AS ACTG_AFRS_CD                 /* 회계업무코드            */
-                    ,T3.ACTG_UNIT_AFRS_CD         AS ACTG_UNIT_AFRS_CD            /* 회계단위업무코드        */
+                    ,T3.KRW_TRSL_TR_PRCA         AS KRW_TRSL_TR_PRCA            /* 원화환산거래원금        */
+                    ,T3.KRW_TRSL_TR_INT_AMT      AS KRW_TRSL_TR_INT_AMT         /* 원화환산거래이자금액    */
+                    ,T3.KRW_TRSL_TR_FEE_AMT      AS KRW_TRSL_TR_FEE_AMT         /* 원화환산거래수수료금액  */
+                    ,T3.KRW_TRSL_COST_AMT        AS KRW_TRSL_COST_AMT           /* 원화환산비용금액        */
+                    ,T3.ACCT_JOB_CD              AS ACCT_JOB_CD                 /* 회계업무코드            */
+                    ,T3.ACCT_UN_JOB_CD         AS ACCT_UN_JOB_CD            /* 회계단위업무코드        */
                     ,0                            AS TR_PRCA                      /* 회계원금             */   
                     ,0                            AS TR_INT_AMT                   /* 회계이자             */
                     ,0                            AS TR_FEE_AMT                   /* 회계수수료           */
@@ -35,7 +35,7 @@
                 AND T1.CRDT_GRNT_MCLS_CD NOT IN ('12','22','31') /* 신용공여중분류코드(난외계정) */
                 AND T3.TR_STAT_CD          = '01'
                 AND T3.TR_DT               = #TR_DT#             /* 거래일자 */
-                AND T3.ACTG_AFRS_CD IN ('G1','G2','G5','G6') 
+                AND T3.ACCT_JOB_CD IN ('G1','G2','G5','G6')
                 AND (
                             ( T3.DEAL_NO > #CTX_DEAL_NO# ) OR
                             ( T3.DEAL_NO = #CTX_DEAL_NO# AND T3.TR_SEQ > #CTX_TR_SEQ# )

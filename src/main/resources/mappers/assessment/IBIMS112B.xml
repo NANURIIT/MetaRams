@@ -60,17 +60,17 @@
                   WHERE CMNS_CD_GRP = 'L007'
                     AND CD_VL_ID = A.MTR_DCD
                ) AS MTR_DCD_NM
-             , B.DPRT_CD                                /* 부점코드 */
+             , B.BDCD                                /* 부서코드 */
              , (
                  SELECT MAX(DPRT_NM)
                    FROM IBIMS003B
-                  WHERE DPRT_CD = B.DPRT_CD
+                  WHERE BDCD = B.BDCD
                ) AS DPRT_NM
-             , B.CHRG_P_ENO                             /* 담당자사번 */
+             , B.CHRR_EMPNO                             /* 담당자사원번호 */
              , (
                  SELECT EMP_NM
                    FROM IBIMS003B
-                  WHERE EMPNO = B.CHRG_P_ENO
+                  WHERE EMPNO = B.CHRR_EMPNO
                ) AS CHRG_P_ENM
              , B.OWN_P_ENO                              /* 심사역사번 */
               , (
@@ -126,13 +126,13 @@
                 SELECT CD_VL_NM
                   FROM IBIMS002B
                  WHERE CMNS_CD_GRP = 'D010'
-                   AND CD_VL_ID = B.DPRT_CD
-               ) ||' ('|| B.DPRT_CD || ')' AS DPRT_NM
+                   AND CD_VL_ID = B.BDCD
+               ) ||' ('|| B.BDCD || ')' AS DPRT_NM
              , (
                 SELECT EMP_NM
                   FROM IBIMS003B
-                 WHERE EMPNO = B.CHRG_P_ENO
-               )|| ' ('|| B.CHRG_P_ENO || ')' AS CHRG_P_ENM
+                 WHERE EMPNO = B.CHRR_EMPNO
+               )|| ' ('|| B.CHRR_EMPNO || ')' AS CHRG_P_ENM
              , (
                 SELECT EMP_NM
                   FROM IBIMS003B
@@ -189,7 +189,7 @@
                              AND CD_VL_ID = B.MTR_PRG_STTS_DCD
                           )
                      END AS MTR_PRG_STTS_DCD_NM
-             , NVL(A.APVL_AMT, '') AS APVL_AMT                                      /* 승인금액 */
+             , NVL(A.EPRZ_CRDL_APVL_AMT, '') AS EPRZ_CRDL_APVL_AMT                                      /* 승인금액 */
              , NVL(A.SDN_CNDT_F, '') AS SDN_CNDT_F                                  /* 셀다운조건여부 */
              , NVL(A.SDN_CNDT_CTNS, '') AS SDN_CNDT_CTNS                            /* 셀다운조건의견 */
              , NVL(A.ETC_CNDT_F, '') AS ETC_CNDT_F                                  /* 기타조건여부 */
@@ -242,7 +242,7 @@
              , ETC_CNDT_F       = #{etcCndtF}
              , ETC_CNDT_CTNS    = #{etcCndtCtns}
              , MTR_PRG_STTS_DCD = #{mtrPrgSttsDcd}
-             , APVL_AMT         = #{apvlAmt}
+             , EPRZ_CRDL_APVL_AMT         = #{eprzCrdlApvlAmt}
              , APVL_DT          = TO_CHAR(SYSDATE, 'YYYYMMDD')
          WHERE CNSB_DCD = #{cnsbDcd}
            AND CNSB_SQ  = #{cnsbSq}
@@ -252,7 +252,7 @@
     
     <select id="getAppvCndt" parameterType="com.nanuri.rams.business.common.dto.IBIMS112BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS112BVO">
         SELECT IBIMS112B.CNSB_DCD                                          /* 협의체구분코드 */
-             , IBIMS112B.CNSB_SQ                                           /* 협의체순번(회차) */
+             , IBIMS112B.CNSB_SQ                                           /* 협의체순번 */
              , IBIMS112B.RSLTN_YR                                          /* 결의년도 */
              , IBIMS112B.SN                                                /* 일련번호(순서정보) */
              , IBIMS112B.DEAL_NO                                           /* 딜번호 */
@@ -264,7 +264,7 @@
              , IBIMS112B.ETC_CNDT_F                                        /* 기타조건여부 */
              , IBIMS112B.ETC_CNDT_CTNS                                     /* 기타조건의견 */
              , IBIMS112B.MTR_PRG_STTS_DCD                                  /* 안건진행상태구분코드 */
-             , IBIMS112B.APVL_AMT                                          /* 승인금액 */
+             , IBIMS112B.EPRZ_CRDL_APVL_AMT                                          /* 승인금액 */
              , IBIMS112B.APVL_DT                                           /* 승인일자 */
              , IBIMS112B.DEL_YN                                            /* 삭제여부 */
              , IBIMS112B.HND_DETL_DTM                                      /* 조작상세일시 */
@@ -272,7 +272,7 @@
              , IBIMS112B.HND_TMNL_NO                                       /* 조작단말기번호 */
              , IBIMS112B.HND_TR_ID                                         /* 조작거래ID */
              , IBIMS112B.GUID                                              /* GUID */
-             , IBIMS103B.CHRG_P_ENO		AS CHRG_P_ENO
+             , IBIMS103B.CHRR_EMPNO		AS CHRR_EMPNO
              , A.EMP_NM					AS CHRG_P_ENM
              , IBIMS103B.OWN_P_ENO		AS OWN_P_ENO
              , B.EMP_NM					AS OWN_P_ENM
@@ -288,7 +288,7 @@
            AND IBIMS112B.MTR_DCD								= IBIMS103B.MTR_DCD
            AND IBIMS112B.JDGM_DCD								= IBIMS103B.JDGM_DCD
            AND IBIMS103B.LAST_YN								= '1'
-           AND A.EMPNO											    = IBIMS103B.CHRG_P_ENO
+           AND A.EMPNO											    = IBIMS103B.CHRR_EMPNO
            AND B.EMPNO											    = IBIMS103B.OWN_P_ENO
     </select>
 

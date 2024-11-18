@@ -33,12 +33,12 @@
              , A.TR_INT_AMT                     /* 거래이자 */
              , A.TR_FEE_AMT                     /* 거래수수료 */
              , A.DEAL_TR_AMT                    /* 거래비용 */
-             , A.ACTG_AFRS_CD                   /* 회계업무코드 */ 
-             , A.ACTG_UNIT_AFRS_CD              /* 회계단위업무코드 */
+             , A.ACCT_JOB_CD                   /* 회계업무코드 */
+             , A.ACCT_UN_JOB_CD              /* 회계단위업무코드 */
              , (
                 CASE
-                WHEN A.ACTG_AFRS_CD IN ('G1','G6') THEN '1'  /* 1-증액 */
-                WHEN A.ACTG_AFRS_CD IN ('G2','G5') THEN '2'  /* 2-감액 */
+                WHEN A.ACCT_JOB_CD IN ('G1','G6') THEN '1'  /* 1-증액 */
+                WHEN A.ACCT_JOB_CD IN ('G2','G5') THEN '2'  /* 2-감액 */
                 ELSE '0'
                 END
                 ) ICDC_DCD                  /* 증감구분코드 */

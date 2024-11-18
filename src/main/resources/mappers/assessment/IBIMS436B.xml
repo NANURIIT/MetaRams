@@ -15,7 +15,7 @@
           WHEN '2' THEN	'기한이익상실' 
            END AS OVDU_STTS_NM                /* 연체상태명 */
              , A.CRDL_BLCE_AMT             /* 여신잔액금액 */
-             , A.OVDU_PRCA_AMT             /* 연체원금액 */
+             , A.OVDU_PRNA_AMT             /* 연체원금액 */
              , A.OVDU_INTR_AMT             /* 연체이자금액 */
              , A.FRS_PRNA_OVDU_OCRNC_DT    /* 최초원금연체발생일 */
              , A.FRS_INTR_OVDU_OCRNC_DT    /* 최초이자연체발생일 */
@@ -23,7 +23,7 @@
              , A.INT_OVDU_ACML_DNUM        /* 이자연체누적일수 */
              , A.LAST_INTR_RDMP_DT         /* 최종이자상환일 */
              , A.OVDU_RLSE_DT              /* 연체해제일 */
-             , C.DPRT_CD                   /* 거래조직번호 */
+             , C.BDCD                   /* 거래조직번호 */
              , C.DPRT_NM                   /* 조직명 */
           FROM IBIMS436B A                
           , IBIMS101B B  
@@ -44,8 +44,8 @@
         <if test="endDt != ''">
            AND (A.FRS_PRNA_OVDU_OCRNC_DT <![CDATA[<=]]> #{endDt})
         </if>
-        <if test="dprtCd != ''">
-           AND C.DPRT_CD = #{dprtCd}
+        <if test="dbcd != ''">
+           AND C.BDCD = #{dbcd}
         </if>
         <if test="ovduRlseYn == 1">
            AND A.OVDU_STTS_CD <![CDATA[>=]]> 1

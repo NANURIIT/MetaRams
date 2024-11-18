@@ -18,8 +18,8 @@
 		   AND s209b.DEAL_NO		= s201b.DEAL_NO
 		   AND s209b.PRDT_CD		= s201b.PRDT_CD
 		   AND s201b.DEAL_NO		= #{dealNo}
-		   AND s201b.NMCP_MTR_DCD	= #{mtrDcd}
-		   AND s201b.LST_C_CASE_DCD	= #{jdgmDcd}
+		   AND s201b.MTR_DCD	= #{mtrDcd}
+		   AND s201b.JDGM_DCD	= #{jdgmDcd}
 		   AND s201b.LAST_YN		= '1'
 	</select>
 	
@@ -45,8 +45,8 @@
                	    FROM IBIMS201B s201b
                	   WHERE 1=1 
                	     AND s201b.DEAL_NO			= #{dealNo}
-				     AND s201b.NMCP_MTR_DCD		= #{mtrDcd}
-				     AND s201b.LST_C_CASE_DCD	= #{jdgmDcd}
+				     AND s201b.MTR_DCD		= #{mtrDcd}
+				     AND s201b.JDGM_DCD	= #{jdgmDcd}
 				     AND s201b.LAST_YN			= '1'
                  )
                , #{rgstDt}                                          <!-- 등록일자 -->
@@ -68,8 +68,8 @@
 												               	     FROM IBIMS201B s201b
 												               	    WHERE 1=1 
 												               	      AND s201b.DEAL_NO			= #{dealNo}
-																      AND s201b.NMCP_MTR_DCD	= #{mtrDcd}
-																      AND s201b.LST_C_CASE_DCD	= #{jdgmDcd}
+																      AND s201b.MTR_DCD	= #{mtrDcd}
+																      AND s201b.JDGM_DCD	= #{jdgmDcd}
 																      AND s201b.LAST_YN			= '1'
 												                  ) <!-- 상품코드 -->
             , RGST_DT                                           = #{rgstDt}                                          <!-- 등록일자 -->
@@ -83,8 +83,8 @@
 												               	     FROM IBIMS201B s201b
 												               	    WHERE 1=1 
 												               	      AND s201b.DEAL_NO			= #{dealNo}
-																      AND s201b.NMCP_MTR_DCD	= #{mtrDcd}
-																      AND s201b.LST_C_CASE_DCD	= #{jdgmDcd}
+																      AND s201b.MTR_DCD	= #{mtrDcd}
+																      AND s201b.JDGM_DCD	= #{jdgmDcd}
 																      AND s201b.LAST_YN			= '1'
 												                  ) <!-- 상품코드 -->
     </update>

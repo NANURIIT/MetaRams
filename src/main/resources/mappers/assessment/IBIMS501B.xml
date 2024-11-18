@@ -4,8 +4,8 @@
 
 	<select id="getBusiBssInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS501BVO">
 	 SELECT A.DEAL_NO															              /*  딜번호 */
-			  , B.SQ								                      			    /*  일련번호 */
-			  , D.CRNO AS CORP_RGST_NO                              /*  법인등록번호 */
+			  , B.SN								                      			    /*  일련번호 */
+			  , D.CRNO AS CRNO                              /*  법인등록번호 */
 			  , A.PRDT_NM AS  BUSI_NM                               /*  사업명 */
 			  , A.DMS_CRDT_GRD_DCD AS CRDT_GRD_CD                   /*  국내신용등급구분코드 */
 			  , B.FND_NM                                            /*  펀드명 */
@@ -34,7 +34,7 @@
 			  , B.MAIN_BOND_MTNC_CNTS                               /*  주요채권보전내용 */
 			  , B.THCO_MDTN_YN                                      /*  당사주선여부 */
 			  , B.THCO_MDTN_AMT                                     /*  당사주선금액 */
-			  , B.THCO_PTCP_AMT                                     /*  당사참여금액 */
+			  , B.THCO_PTCI_AMT                                     /*  당사참여금액 */
 			  , B.APLY_INTRT_CNTS                                   /*  적용금리내용 */
 			  , B.GOAL_ERN_RT                                       /*  목표수익율 */
 			  , B.FEE_RT                                            /*  수수료율 */
@@ -93,8 +93,8 @@
 	    AND D.CRP_SHP_DCD BETWEEN '03' AND '09'
 	   LEFT OUTER JOIN IBIMS501B B
 	     ON B.DEAL_NO = A.DEAL_NO
-		 	AND B.SQ  = (
-		  	            SELECT MAX(V.SQ)
+		 	AND B.SN  = (
+		  	            SELECT MAX(V.SN)
 		  	              FROM IBIMS501B V
 		  	             WHERE V.DEAL_NO = #{dealNo}
 		  	          )    		     
@@ -108,8 +108,8 @@
 		INSERT INTO IBIMS501B 
           (
            DEAL_NO                                 	/* 딜번호 */
-         , SQ                                      	/* 일련번호 */
-         , CORP_RGST_NO                            	/* 법인등록번호 */
+         , SN                                      	/* 일련번호 */
+         , CRNO                            	/* 법인등록번호 */
          , BUSI_NM                                 	/* 사업명 */
          , FND_NM                                  	/* 펀드명 */
          , INV_FNN_MNGM_BUSI_DCD                   	/* 투자금융관리사업구분코드 */
@@ -137,7 +137,7 @@
          , MAIN_BOND_MTNC_CNTS                     	/* 주요채권보전내용 */
          , THCO_MDTN_YN                            	/* 당사주선여부 */
          , THCO_MDTN_AMT                           	/* 당사주선금액 */
-         , THCO_PTCP_AMT                           	/* 당사참여금액 */
+         , THCO_PTCI_AMT                           	/* 당사참여금액 */
          , APLY_INTRT_CNTS                         	/* 적용금리내용 */
          , GOAL_ERN_RT                             	/* 목표수익율 */
          , FEE_RT                                  	/* 수수료율 */
@@ -183,15 +183,15 @@
    VALUES (
           #{dealNo}                                   /* 딜번호 */
         , (
-           SELECT CASE WHEN A.SQ = 0 THEN '0000000001'
+           SELECT CASE WHEN A.SN = 0 THEN '0000000001'
                        ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
              FROM (
-               		 SELECT COUNT(SQ) AS SQ
-                        , MAX(SQ)   AS INCREMENT_SQ
+               		 SELECT COUNT(SN) AS SN
+                        , MAX(SN)   AS INCREMENT_SQ
                      FROM IBIMS502B
                   ) A  
        		)                                         	/* 일련번호 */
-        , #{corpRgstNo}                               /* 법인등록번호 */
+        , #{crno}                               /* 법인등록번호 */
         , #{busiNm}                                   /* 사업명 */
         , #{fndNm}                                    /* 펀드명 */
         , #{invFnnMngmBusiDcd}                        /* 투자금융관리사업구분코드 */
@@ -219,7 +219,7 @@
         , #{mainBondMtncCnts}                         /* 주요채권보전내용 */
         , #{thcoMdtnYn}                               /* 당사주선여부 */
         , #{thcoMdtnAmt}                              /* 당사주선금액 */
-        , #{thcoPtcpAmt}                              /* 당사참여금액 */
+        , #{thcoPtciAmt}                              /* 당사참여금액 */
         , #{aplyIntrtCnts}                            /* 적용금리내용 */
         , #{goalErnRt}                                /* 목표수익율 */
         , #{feeRt}                                    /* 수수료율 */

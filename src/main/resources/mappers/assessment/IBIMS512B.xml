@@ -4,12 +4,12 @@
 
 	<!-- 편입자산정보 조회 -->
 	<select id="getAdmsAsstInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS512BVO">
-        SELECT IB_INV_TP_CD
+        SELECT INV_FNN_INV_TY_DCD
              , (
                 SELECT CD_VL_NM
                   FROM IBIMS002B
                  WHERE CMNS_CD_GRP = 'I038'
-                   AND CD_VL_ID    = IB_INV_TP_CD
+                   AND CD_VL_ID    = INV_FNN_INV_TY_DCD
               ) AS IB_INV_TP_NM
             , ADMS_ASST_ACBK_ACQ_AMT
             , ADMS_ASST_GRNT_ERN_RT
@@ -26,7 +26,7 @@
                 , SN                                      /* 일련번호 */
                 , ADMS_ASST_ITM_NM                        /* 편입자산종목명 */
                 , ADMS_ASST_GRNT_ERN_RT                   /* 편입자산보장수익율 */
-                , IB_INV_TP_CD                            /* 투자금융투자유형코드 */
+                , INV_FNN_INV_TY_DCD                            /* 투자금융투자유형코드 */
                 , ADMS_ASST_ACBK_ACQ_AMT                  /* 편입자산장부취득금액 */
                 , DEL_YN                                  /* 삭제여부 */
                 , HND_DETL_DTM                            /* 조작상세일시 */
@@ -42,7 +42,7 @@
               , #{index}+1                               /* 일련번호 */
               , #{item.admsAsstItmNm}                    /* 편입자산종목명 */
               , #{item.admsAsstGrntErnRt}                /* 편입자산보장수익율 */
-              , #{item.ibInvTpCd}                        /* 투자금융투자유형코드 */
+              , #{item.invFnnInvTyDcd}                        /* 투자금융투자유형코드 */
               , #{item.admsAsstAcbkAcqAmt}               /* 편입자산장부취득금액 */
               , '0'                                      /* 삭제여부 */
               , SYSDATE                           		   /* 조작상세일시 */

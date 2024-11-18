@@ -15,9 +15,9 @@
         , TOT_INTRT
         , FRS_MNGM_BDCD
         , MNGM_BDCD
-        , EPRZ_CRDL_PRDT_CLSF_CD
-        , EPRZ_CRDL_PRDT_MDCL_CD
-        , EPRZ_CRDL_PRDT_LCLS_CD
+        , PRDT_CLSF_CD
+        , PRDT_MDCL_CD
+        , PRDT_LCLS_CD
         , ACTS_CD
         , EPRZ_CRDL_ACCT_JOB_CD
         , EPRZ_CRDL_ACCT_UN_JOB_CD
@@ -102,9 +102,9 @@
         , #{totIntrt}
         , #{frsMngmBdcd}
         , #{mngmBdcd}
-        , #{eprzCrdlPrdtClsfCd}
-        , #{eprzCrdlPrdtMdclCd}
-        , #{eprzCrdlPrdtLclsCd}
+        , #{prdtClsfCd}
+        , #{prdtMdclCd}
+        , #{prdtLclsCd}
         , #{actsCd}
         , #{eprzCrdlAcctJobCd}
         , #{eprzCrdlAcctUnJobCd}

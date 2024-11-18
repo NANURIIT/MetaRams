@@ -8,14 +8,14 @@
     <!--입금순번 구하기-->
     <select id="getNxtRctmSeq" parameterType="String" resultType="Integer">
         SELECT 
-            NVL(MAX(RCTM_SEQ)+1, 1)
+            NVL(MAX(RGST_SEQ)+1, 1)
         FROM 
             IBIMS430B
         WHERE 
             RCTM_DT = #{rctmDt}
     </select>
 
-    <!--등록순번 구하기-->
+    <!--입금순번 구하기-->
     <select id="getNxtRgstSeq" parameterType="String" resultType="Integer">
         SELECT 
             COALESCE(MAX(RGST_SEQ)+1, 1)
@@ -31,8 +31,8 @@
             (
                 DEAL_NO 					    /*딜번호*/
                 , RCTM_DT					    /*입금일자*/
-                , RCTM_SEQ                      /*입금순번*/
-                , RGST_SEQ					    /*등록순번*/
+                , RGST_SEQ                      /*입금순번*/
+                , RGST_SEQ					    /*입금순번*/
                 , MNGM_BDCD					    /*관리부점코드*/
                 , FNDS_DVSN_CD				    /*자금구분코드*/
                 , DEAL_RCTM_AMT				    /*딜입금금액*/
@@ -51,7 +51,7 @@
             (
                 #{item.dealNo}
                 , #{item.rctmDt}
-                , #{item.rctmSeq}
+                , #{item.rgstSeq}
                 , #{item.rgstSeq}
                 , #{item.mngmBdcd}
                 , #{item.fndsDvsnCd}
@@ -74,7 +74,7 @@
         SELECT 
             A.DEAL_NO ,						/*딜번호*/
             A.RCTM_DT ,						/*은행입금일자*/
-            A.RGST_SEQ ,					/*등록순번*/
+            A.RGST_SEQ ,					/*입금순번*/
             A.MNGM_BDCD ,					/*관리부서*/
             A.FNDS_DVSN_CD ,				/*자금구분코드*/
             A.DEAL_RCTM_AMT ,				/*딜입금금액*/
@@ -137,8 +137,8 @@
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
         AND DEAL_NO = #{dealNo}
         </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-        AND MNGM_BDCD = #{dprtCd}
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
+        AND MNGM_BDCD = #{dbcd}
         </if>
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
         AND RCTM_DT = #{rctmDt}

@@ -8,7 +8,7 @@
 		     , TR_OTHR_SN                   <!-- 거래상대방일련번호 -->
              , TR_OTHR_DSCM_NO              <!-- 거래상대방식별번호 -->
              , (
-                 SELECT BZEP_NAME
+                 SELECT ENTP_NM
                    FROM IBIMS010B
                   WHERE ARDY_BZEP_NO = TR_OTHR_DSCM_NO
                ) AS TR_OTHR_NM              <!-- 거래상대방명 -->

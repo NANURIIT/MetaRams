@@ -106,7 +106,7 @@
              , 0 AS DEAL_MRDP_PRCA  /* 딜중도상환원금 */                      
              , 0 AS MRDP_FEE_AMT    /* 중도상환수수료금액 */                   
              , 0 AS RCVB_INTR_AMT   /* 미수이자금액 */       
-             , '0' AS MRDP_YN 	    /* 중도상환여부 */
+             , '0' AS EARLY_REPAY_YN 	    /* 중도상환여부 */
              , NVL(D.MDWY_RDMP_FEE_RTO, 0) AS MDWY_RDMP_FEE_RTO  /* 중도상환수수료비율 */
 		  FROM IBIMS401B B       /* 여신기본 */
              , IBIMS402B C  /* 실행기본 */
@@ -587,8 +587,8 @@
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
                   AND D1.DEAL_NO  = #{dealNo}
                 </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-                  AND D1.MNGM_BDCD = #{dprtCd}
+                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
+                  AND D1.MNGM_BDCD = #{dbcd}
                 </if>
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
                   AND P.PRAR_DT &gt;= #{fromDt} 
@@ -612,8 +612,8 @@
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
                   AND D2.DEAL_NO  = #{dealNo}
                 </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-                  AND D2.MNGM_BDCD = #{dprtCd}
+                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
+                  AND D2.MNGM_BDCD = #{dbcd}
                 </if>
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
                   AND F.PRAR_DT &gt;= #{fromDt} 

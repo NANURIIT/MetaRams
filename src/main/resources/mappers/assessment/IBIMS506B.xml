@@ -4,7 +4,7 @@
 
 	<select id="getPefInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS506BVO">
        SELECT DEAL_NO                                 /* 딜번호 */
-            , SQ			           				              /* 일련번호 */
+            , SN			           				              /* 일련번호 */
             , INVST_STGY_CTNS                         /* 투자전략내용 */
             , CTRC_PCLR_CTNS                          /* 약정특이내용 */
             , BUSI_PRG_PCLR_CTNS                      /* 사업진행특이내용 */
@@ -25,8 +25,8 @@
          FROM IBIMS506B
         WHERE 1=1
           AND DEAL_NO     = #{dealNo}
-          AND SQ					= (
-		 							           SELECT MAX(SQ)
+          AND SN					= (
+		 							           SELECT MAX(SN)
 		 							             FROM IBIMS506B
 		 							            WHERE DEAL_NO = #{dealNo}
 		 							          )                                        
@@ -36,7 +36,7 @@
 		INSERT INTO IBIMS506B 
                (
                   DEAL_NO                                 /* 딜번호 */
-                , SQ                                      /* 일련번호 */
+                , SN                                      /* 일련번호 */
                 , INVST_STGY_CTNS                         /* 투자전략내용 */
                 , CTRC_PCLR_CTNS                          /* 약정특이내용 */
                 , BUSI_PRG_PCLR_CTNS                      /* 사업진행특이내용 */
@@ -53,11 +53,11 @@
         VALUES (
                  #{dealNo}                                   /* 딜번호 */
              , (
-                SELECT CASE WHEN A.SQ = 0 THEN '0000000001'
+                SELECT CASE WHEN A.SN = 0 THEN '0000000001'
                             ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
                   FROM (
-                   		  SELECT COUNT(SQ)  AS SQ
-                             , MAX(SQ)    AS INCREMENT_SQ
+                   		  SELECT COUNT(SN)  AS SN
+                             , MAX(SN)    AS INCREMENT_SQ
                           FROM IBIMS502B
                        ) A
        			     )                                           /* 일련번호 */
@@ -78,8 +78,8 @@
 	
 	<update id="updatePefInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS506BDTO">
 	   UPDATE IBIMS506B
-        SET SQ                                      = (
-											                              	 SELECT A.SQ
+        SET SN                                      = (
+											                              	 SELECT A.SN
 											                              	   FROM IBIMS506B A
 											                              	  WHERE A.DEAL_NO = #{dealNo}
 											                              	)                                     	  /* 일련번호 */

@@ -14,7 +14,7 @@
                 , CNSB_PLC_NM                             /* 협의체장소명 */
                 , JDGM_RSLT_DCD                           /* 심사결과구분코드 */
                 , JDGM_RSLT_RGST_DT                       /* 심사결과등록일자 */
-                , JDGM_RSLT_CTNS                          /* 심사결과내용 */
+                , JDGM_RSLT_CNTS                          /* 심사결과내용 */
                 , RSLT_RGST_EMPNO                         /* 결과등록사원번호 */
                 , CNCL_YN                                 /* 취소여부 */
                 , HND_DETL_DTM                            /* 조작상세일시 */
@@ -32,7 +32,7 @@
                , #{cnsbPlcNm}                              /* 협의체장소명 */
                , '303'                                     /* 심사결과구분코드 */
                , TO_CHAR(SYSDATE, 'YYYYMMDD')              /* 심사결과등록일자 */
-               , #{jdgmRsltCtns}                           /* 심사결과내용 */
+               , #{jdgmRsltCnts}                           /* 심사결과내용 */
                , #{rsltRgstEmpno}                          /* 결과등록사원번호 */
                , 'N'                                       /* 취소여부 */
                , SYSDATE                                   /* 조작상세일시 */
@@ -74,7 +74,7 @@
              , CNSB_PLC_NM                             /* 협의체장소명 */
              , JDGM_RSLT_DCD                           /* 심사결과구분코드 */
              , JDGM_RSLT_RGST_DT                       /* 심사결과등록일자 */
-             , JDGM_RSLT_CTNS                          /* 심사결과내용 */
+             , JDGM_RSLT_CNTS                          /* 심사결과내용 */
              , RSLT_RGST_EMPNO                         /* 결과등록사원번호 */
              , CNCL_YN                                 /* 취소여부 */
              , HND_DETL_DTM                            /* 조작상세일시 */
@@ -150,7 +150,7 @@
       		  ,CD1.CD_VL_NM AS CNSB_NM
       	    ,A.JDGM_RSLT_DCD
       	    ,A.JDGM_RSLT_RGST_DT
-      	    ,A.JDGM_RSLT_CTNS
+      	    ,A.JDGM_RSLT_CNTS
             ,B002B.CD_VL_NM AS JDGM_RSLT_DCD_NM 
         FROM IBIMS111B A 
   INNER JOIN (

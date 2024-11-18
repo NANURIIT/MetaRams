@@ -13,7 +13,7 @@
           , RELT_STFNO
           , CONS_DECD_DVSN_CD
           , CONS_DECD_STAT_CD
-          , GBCK_RSON_TEXT
+          , RJCT_RSN_CNTN
           , HND_DETL_DTM
           , HND_EMPNO
           , HND_TMNL_NO
@@ -32,7 +32,7 @@
           , #{reltStfno}
           , #{consDecdDvsnCd}
           , #{consDecdStatCd}
-          , #{gbckRsonText}
+          , #{rjctRsnCntn}
           , SYSDATE
           , #{hndEmpno}
           , #{hndTmnlNo}
@@ -48,7 +48,7 @@
              , RELT_STFNO = #{reltStfno}
              , CONS_DECD_DVSN_CD = #{consDecdDvsnCd}
              , CONS_DECD_STAT_CD = #{consDecdStatCd}
-             , GBCK_RSON_TEXT = #{gbckRsonText}
+             , RJCT_RSN_CNTN = #{rjctRsnCntn}
              , HND_DETL_DTM = SYSDATE
              , HND_EMPNO = #{hndEmpno}
              , HND_TMNL_NO = #{hndTmnlNo}

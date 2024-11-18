@@ -9,7 +9,7 @@
                   MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
                 , DRC_MRTG_YN                                       <!-- 직접담보여부 -->
                 , OVSS_MRTG_YN                                      <!-- 국외담보여부 -->
-                , APRS_MTH_CD                                       <!-- 감정방법코드(감정구분코드) -->
+                , APRS_MTH_CD                                       <!-- 감정방법코드 -->
                 , APRS_EVL_ISTT_CD                                  <!-- 감정평가기관코드 -->
                 , CREV_ISTT_NM                                      <!-- 시가평가기관명 -->
                 , CREV_STDR_CD                                      <!-- 시가평가기준코드 -->
@@ -33,7 +33,7 @@
                  #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
                , #{drcMrtgYn}                                       <!-- 직접담보여부 -->
                , #{ovssMrtgYn}                                      <!-- 국외담보여부 -->
-               , #{aprsMthCd}                                       <!-- 감정방법코드(감정구분코드) -->
+               , #{aprsMthCd}                                       <!-- 감정방법코드 -->
                , #{aprsEvlIsttCd}                                   <!-- 감정평가기관코드 -->
                , #{crevIsttNm}                                      <!-- 시가평가기관명 -->
                , #{crevStdrCd}                                      <!-- 시가평가기준코드 -->

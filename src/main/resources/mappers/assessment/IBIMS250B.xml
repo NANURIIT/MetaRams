@@ -9,7 +9,7 @@
     ,       s250b.JOB_EXCU_MBDY
     ,       s250b.REAL_MNGM_BDCD
     ,       s250b.REAL_MNGM_EMPNO
-    ,       s250b.FOND_DT
+    ,       s250b.EST_DT
     ,       s250b.KEEP_EXPR_DT
     ,       s250b.INV_EXPR_DT
     ,       s250b.FINC_CTRC_AMT
@@ -68,7 +68,7 @@
                , JOB_EXCU_MBDY = #{jobExcuMbdy}       <!-- 업무집행주체명 -->
                , REAL_MNGM_BDCD = #{realMngmBdcd}      <!-- 실제관리부점코드 -->
                , REAL_MNGM_EMPNO = #{realMngmEmpno}     <!-- 실제관리사원번호 -->
-               , FOND_DT = #{fondDt}             <!-- 설립일자 -->
+               , EST_DT = #{estDt}             <!-- 설립일자 -->
                , KEEP_EXPR_DT = #{keepExprDt}        <!-- 존속만료일자 -->
                , INV_EXPR_DT = #{invExprDt}         <!-- 투자만료일자 -->
                , FINC_CTRC_AMT = #{fincCtrcAmt}       <!-- 출자약정금액 -->
@@ -116,7 +116,7 @@
              , JOB_EXCU_MBDY       <!-- 업무집행주체명 -->
              , REAL_MNGM_BDCD      <!-- 실제관리부점코드 -->
              , REAL_MNGM_EMPNO     <!-- 실제관리사원번호 -->
-             , FOND_DT             <!-- 설립일자 -->
+             , EST_DT             <!-- 설립일자 -->
              , KEEP_EXPR_DT        <!-- 존속만료일자 -->
              , INV_EXPR_DT         <!-- 투자만료일자 -->
              , FINC_CTRC_AMT       <!-- 출자약정금액 -->
@@ -165,7 +165,7 @@
             , #{jobExcuMbdy}
             , #{realMngmBdcd}
             , #{realMngmEmpno}
-            , #{fondDt}
+            , #{estDt}
             , #{keepExprDt}
             , #{invExprDt}
             , #{fincCtrcAmt}

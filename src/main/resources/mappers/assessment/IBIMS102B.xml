@@ -17,7 +17,7 @@ INSERT INTO IBIMS102B
 		, MET_PRPS						/*  미팅목적 */
 		, MET_CNTNT						/*  미팅내용 */
 		, CHRG_DPRT_CD					/*  담당부점코드 */
-		, CHRG_P_ENO					/*  담당자사번 */
+		, CHRR_EMPNO					/*  담당자사원번호 */
 		, CSTM_NM						/*  고객명 */
 		, CSTM_PH_NO					/*  고객전화번호 */
 		, LAST_YN						/*  최종여부 */
@@ -33,7 +33,7 @@ VALUES (
 		, #{metPrps}				
 		, #{metCntnt}					
 		, #{chrgDprtCd}				
-		, #{chrgPEno}					
+		, #{chrrEmpno}
 		, #{cstmNm}					
 		, #{cstmPhNo}
 		, '1' 
@@ -45,9 +45,9 @@ VALUES (
 	<select id="getHistoryInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
 		
 		SELECT B.ARDY_BZEP_NO 				AS ENTP_CD      /* 업체코드 */
-			 , B.CRNO		  				AS CORP_RGST_NO	/* 법인등록번호 */
-			 , B.RNBN               		AS BSNS_RGST_NO /* 사업자등록번호 */
-			 , NVL(B.BZEP_NAME , '-')	    AS ENTP_HNGL_NM	/* 업체명 */
+			 , B.CRNO		  				AS CRNO	/* 법인등록번호 */
+			 , B.RNBN               		AS BZNO /* 사업자등록번호 */
+			 , NVL(B.ENTP_NM , '-')	    AS ENTP_HNGL_NM	/* 업체명 */
 			 , A.MET_DT				  		AS MET_DT		/* 미팅일자 */
 			 , NVL(A.MET_TM, '-')  		    AS MET_TM		/* 미팅시간 */
 			 , A.MET_TITL			  		AS MET_TITL		/* 미팅제목 */
@@ -75,9 +75,9 @@ VALUES (
 	
 	<select id="rmHistoryInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
 		SELECT A.RM_SQ 				AS RM_SQ			/*  RM일련번호 */
-	   		 , B.CRNO 		        AS CORP_RGST_NO		/*  법인등록번호 */
-			 , B.RNBN               AS BSNS_RGST_NO     /*  사업자등록번호 */
-	   		 , B.BZEP_NAME 		    AS ENTP_HNGL_NM		/*  업체명 */
+	   		 , B.CRNO 		        AS CRNO		/*  법인등록번호 */
+			 , B.RNBN               AS BZNO     /*  사업자등록번호 */
+	   		 , B.ENTP_NM 		    AS ENTP_HNGL_NM		/*  업체명 */
 	   		 , A.MET_DT				AS MET_DT			/*  미팅일자 */
 	   		 , NVL(A.MET_TM, '')    AS MET_TM			/*  미팅시간 */
 	   		 , A.MET_TITL 			AS MET_TITL			/*  미팅제목 */
@@ -112,7 +112,7 @@ VALUES (
 			 , MET_PRPS             = #{metPrps}		/*  미팅목적 */
 			 , MET_CNTNT            = #{metCntnt}		/*  미팅내용 */
 			 , CHRG_DPRT_CD         = #{chrgDprtCd}		/*  담당부점코드 */
-			 , CHRG_P_ENO           = #{chrgPEno}		/*  담당자사번 */
+			 , CHRR_EMPNO           = #{chrrEmpno}		/*  담당자사원번호 */
 			 , CSTM_NM              = #{cstmNm}			/*  고객명 */
 			 , CSTM_PH_NO           = #{cstmPhNo}		/*  고객전화번호 */
 			 , LAST_YN				= '1'			    /*  최종여부 */ 

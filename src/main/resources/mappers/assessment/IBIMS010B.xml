@@ -6,7 +6,7 @@
 		<!-- 기업체 정보 조회 IBIMS010BMapper.selectArdyBzepInfo  -->
 	<select id="selectArdyBzepInfo" resultType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO" parameterType='com.nanuri.rams.business.common.vo.IBIMS010BVO$SchCondVO'>
 		SELECT  A.ARDY_BZEP_NO
-		      , A.BZEP_NAME
+		      , A.ENTP_NM
 		      , A.RNBN
 		      , A.CRNO
 		      , A.CSNO
@@ -25,17 +25,17 @@
 		      , A.ENG_BZPL_ADDR
 		      , A.OPBS_DT
 		      , A.STD_IDST_SCLS_CD
-		      , A.BUCO_NAME
+		      , A.BZCN_NM
 		      , A.CLSE_DVSN_CD
 		      , A.CLSE_DT
-		      , A.ERLM_DT
+		      , A.RGST_DT
 		      , A.RDM_TR_OPPN_NO
 		      , A.SMET_YN
 		      , A.ETPR_SHAP_DVSN_CD
 		      , A.LEI_CD
 		      , A.CTM_BIC_NAME
 		      , A.SWIFT_BANK_DSCM_CD
-		      , A.ETPR_SCLE_DVSN_CD
+		      , A.EPRZ_SCL_DCD
 		      , A.RVNU_AMT
 		      , A.TOT_ASST_AMT
 		      , A.FNAF_HLTY_SRNM_RT
@@ -59,7 +59,7 @@
 		<!-- 기업체 정보 조회 IBIMS010BMapper.selectArdyBzepInfoList  -->
 	<select id="selectArdyBzepInfoList" resultType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepListVO" parameterType='com.nanuri.rams.business.common.vo.IBIMS010BVO$SchCondVO'>
 		SELECT  A.ARDY_BZEP_NO
-		      , A.BZEP_NAME
+		      , A.ENTP_NM
 		      , A.RNBN
 		      , A.CRNO
 		      , A.CSNO
@@ -87,7 +87,7 @@
 				 WHERE 1=1				    
 				   AND Y.CD_VL_ID    = A.STD_IDST_SCLS_CD
 		         ) AS STD_IDST_SCLS_NM  /* 표준산업소분류 */		      
-		      , A.BUCO_NAME
+		      , A.BZCN_NM
 		      , A.CLSE_DVSN_CD
 		      , (
 		      	SELECT Y.CD_VL_NM
@@ -99,14 +99,14 @@
 				   AND Y.CD_VL_ID    = A.CLSE_DVSN_CD
 		         ) AS CLSE_DVSN_NM  /* 폐업구분 */		      
 		      , A.CLSE_DT
-		      , A.ERLM_DT
+		      , A.RGST_DT
 		      , A.RDM_TR_OPPN_NO
 		      , A.SMET_YN
 		      , A.ETPR_SHAP_DVSN_CD
 		      , A.LEI_CD
 		      , A.CTM_BIC_NAME
 		      , A.SWIFT_BANK_DSCM_CD
-		      , A.ETPR_SCLE_DVSN_CD
+		      , A.EPRZ_SCL_DCD
 		      , A.RVNU_AMT
 		      , A.TOT_ASST_AMT
 		      , A.FNAF_HLTY_SRNM_RT
@@ -131,10 +131,10 @@
 		  	<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crno)">
 			AND A.CRNO LIKE '%'|| #{crno}|| '%'                /* 법인등록번호 */
 		    </if>
-		  	<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bzepName)">
-			AND (  A.BZEP_NAME     LIKE '%'|| #{bzepName}|| '%'
-				OR A.KOR_BZPL_NAME LIKE '%'|| #{bzepName}|| '%'
-				OR UPPER(A.ENG_BZPL_NAME) LIKE '%'|| UPPER(#{bzepName})|| '%')		
+		  	<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpNm)">
+			AND (  A.ENTP_NM     LIKE '%'|| #{entpNm}|| '%'
+				OR A.KOR_BZPL_NAME LIKE '%'|| #{entpNm}|| '%'
+				OR UPPER(A.ENG_BZPL_NAME) LIKE '%'|| UPPER(#{entpNm})|| '%')
 		    </if>
 		    AND A.USE_YN = CASE WHEN NVL(#{useYn}, 'A') = 'A' THEN A.USE_YN ELSE #{useYn} END		    
 	</select>
@@ -149,7 +149,7 @@
 		
 		INSERT INTO IBIMS010B (
 		            ARDY_BZEP_NO
-		          , BZEP_NAME
+		          , ENTP_NM
 		          , RNBN
 		          , CRNO
 		          , CSNO
@@ -168,17 +168,17 @@
 		          , ENG_BZPL_ADDR
 		          , OPBS_DT
 		          , STD_IDST_SCLS_CD
-		          , BUCO_NAME
+		          , BZCN_NM
 		          , CLSE_DVSN_CD
 		          , CLSE_DT
-		          , ERLM_DT
+		          , RGST_DT
 		          , RDM_TR_OPPN_NO
 		          , SMET_YN
 		          , ETPR_SHAP_DVSN_CD
 		          , LEI_CD
 		          , CTM_BIC_NAME
 		          , SWIFT_BANK_DSCM_CD
-		          , ETPR_SCLE_DVSN_CD
+		          , EPRZ_SCL_DCD
 		          , RVNU_AMT
 		          , TOT_ASST_AMT
 		          , FNAF_HLTY_SRNM_RT
@@ -194,7 +194,7 @@
 			      , OPRT_HNF_NUM
 		) VALUES(
 				   #{ardyBzepNo}     	/* 기업체번호 */
-				  ,#{bzepName}       	/* 업체명 */
+				  ,#{entpNm}       	/* 업체명 */
 				  ,#{rnbn}           	/* 주민사업자등록번호 */
 				  ,#{crno}           	/* 법인등록번호 */
 				  ,#{csno}           	/* 고객번호 */
@@ -213,17 +213,17 @@
 				  ,#{engBzplAddr}    	/* 영문사업장주소 */
 				  ,#{opbsDt}         	/* 개업일자 */
 				  ,#{stdIdstSclsCd}  	/* 표준산업소분류코드 */
-				  ,#{bucoName}       	/* 업태명 */
+				  ,#{bzcnNm}       	/* 업태명 */
 				  ,#{clseDvsnCd}     	/* 폐업구분코드 */
 				  ,#{clseDt}         	/* 폐업일자 */
-				  ,#{erlmDt}         	/* 등록일자 */
+				  ,#{rgstDt}         	/* 등록일자 */
 				  ,#{rdmTrOppnNo}    	/* RDM거래상대방번호 */
 				  ,#{smetYn}         	/* 중소기업여부 */
 				  ,#{etprShapDvsnCd} 	/* 기업형태구분코드 */
 				  ,#{leiCd}          	/* LEI코드 */
 				  ,#{ctmBicName}     	/* CTM은행인식코드명 */
 				  ,#{swiftBankDscmCd}	/* SWIFT은행식별코드 */
-				  ,#{etprScleDvsnCd} 	/* 기업규모구분코드 */
+				  ,#{eprzSclDcd} 	/* 기업규모구분코드 */
 				  ,#{rvnuAmt}        	/* 매출금액 */
 				  ,#{totAsstAmt}     	/* 총자산금액 */
 				  ,#{fnafHltySrnmRt} 	/* 재무건전성비율 */
@@ -245,7 +245,7 @@
 	<update id="updateArdyBzepInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO">		
 		UPDATE IBIMS010B 
 		   SET
-               BZEP_NAME			= #{bzepName}       						/* 업체명 */
+               ENTP_NM			= #{entpNm}       						/* 업체명 */
              , RNBN					= #{rnbn}           						/* 주민사업자등록번호 */
              , CRNO					= #{crno}           						/* 법인등록번호 */
              , CSNO					= #{csno}           						/* 고객번호 */
@@ -264,17 +264,17 @@
              , ENG_BZPL_ADDR		= #{engBzplAddr}    						/* 영문사업장주소 */
              , OPBS_DT				= #{opbsDt}         						/* 개업일자 */
              , STD_IDST_SCLS_CD		= #{stdIdstSclsCd}  						/* 표준산업소분류코드 */
-             , BUCO_NAME			= #{bucoName}       						/* 업태명 */
+             , BZCN_NM			= #{bzcnNm}       						/* 업태명 */
              , CLSE_DVSN_CD			= #{clseDvsnCd}     						/* 폐업구분코드 */
              , CLSE_DT				= #{clseDt}         						/* 폐업일자 */
-             , ERLM_DT				= TO_CHAR(SYSDATE, 'YYYYMMDD')  			/* 등록일자 */
+             , RGST_DT				= TO_CHAR(SYSDATE, 'YYYYMMDD')  			/* 등록일자 */
              , RDM_TR_OPPN_NO		= #{rdmTrOppnNo}    						/* RDM거래상대방번호 */
              , SMET_YN				= #{smetYn}         						/* 중소기업여부 */
              , ETPR_SHAP_DVSN_CD	= #{etprShapDvsnCd} 						/* 기업형태구분코드 */
              , LEI_CD				= #{leiCd}          						/* LEI코드 */
              , CTM_BIC_NAME			= #{ctmBicName}     						/* CTM은행인식코드명 */
              , SWIFT_BANK_DSCM_CD	= #{swiftBankDscmCd}						/* SWIFT은행식별코드 */
-             , ETPR_SCLE_DVSN_CD	= #{etprScleDvsnCd} 						/* 기업규모구분코드 */
+             , EPRZ_SCL_DCD	= #{eprzSclDcd} 						/* 기업규모구분코드 */
              , RVNU_AMT				= #{rvnuAmt}        						/* 매출금액 */
              , TOT_ASST_AMT			= #{totAsstAmt}     						/* 총자산금액 */
              , FNAF_HLTY_SRNM_RT	= #{fnafHltySrnmRt} 						/* 재무건전성비율 */

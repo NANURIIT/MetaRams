@@ -4,7 +4,7 @@
 
 	<select id="getRealEstateInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS502BVO">
 		SELECT DEAL_NO                                 /* 딜번호 */
-         , SQ								                       /* 일련번호 */
+         , SN								                       /* 일련번호 */
          , GUAS_MRTG_YN                            /* 보증서담보여부 */
          , EFCE_MBDY_DCD                           /* 시행주체구분코드 */
          , BUSI_LCSI_CPLT_YN                       /* 사업인허가완료여부 */
@@ -25,7 +25,7 @@
          , EPRZ_SCL_DCD                            /* 기업규모구분코드 */
          , FCLT_SCL_WIDH_CTNS                      /* 시설규모너비내용 */
          , RESI_ECO_CTNS                           /* 주거환경내용 */
-         , CRDT_RIFC_DVC_DCD                       /* 신용보강장치구분코드 */
+         , CRDT_RIFC_DCD                       /* 신용보강장치구분코드 */
          , CRDT_RIFC_DVC_NM                        /* 신용보강장치명 */
          , BOND_TRNS_YN                            /* 채권이관여부 */
          , MNGM_CND_FLFL_YN                        /* 관리조건이행여부 */
@@ -41,8 +41,8 @@
       FROM IBIMS502B
      WHERE 1=1
        AND DEAL_NO    = #{dealNo}
-       AND SQ					= (
-						             SELECT MAX(SQ)
+       AND SN					= (
+						             SELECT MAX(SN)
 						               FROM IBIMS502B
 						              WHERE DEAL_NO = #{dealNo}
 						            )                                
@@ -52,7 +52,7 @@
 		INSERT INTO IBIMS502B 
                (
                   DEAL_NO                                 /* 딜번호 */
-                , SQ                                      /* 일련번호 */
+                , SN                                      /* 일련번호 */
                 , GUAS_MRTG_YN                            /* 보증서담보여부 */
                 , EFCE_MBDY_DCD                           /* 시행주체구분코드 */
                 , BUSI_LCSI_CPLT_YN                       /* 사업인허가완료여부 */
@@ -73,7 +73,7 @@
                 , EPRZ_SCL_DCD                            /* 기업규모구분코드 */
                 , FCLT_SCL_WIDH_CTNS                      /* 시설규모너비내용 */
                 , RESI_ECO_CTNS                           /* 주거환경내용 */
-                , CRDT_RIFC_DVC_DCD                       /* 신용보강장치구분코드 */
+                , CRDT_RIFC_DCD                       /* 신용보강장치구분코드 */
                 , CRDT_RIFC_DVC_NM                        /* 신용보강장치명 */
                 , BOND_TRNS_YN                            /* 채권이관여부 */
                 , MNGM_CND_FLFL_YN                        /* 관리조건이행여부 */
@@ -90,11 +90,11 @@
         VALUES (
                 #{dealNo}                                   		      /* 딜번호 */
               , (
-                 SELECT CASE WHEN A.SQ = 0 THEN '0000000001'
+                 SELECT CASE WHEN A.SN = 0 THEN '0000000001'
                              ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
                    FROM (
-                    		 SELECT COUNT(SQ) AS SQ
-                              , MAX(SQ)   AS INCREMENT_SQ
+                    		 SELECT COUNT(SN) AS SN
+                              , MAX(SN)   AS INCREMENT_SQ
                            FROM IBIMS502B
                         ) A
        			    )                                       	  		      /* 일련번호 */
@@ -118,7 +118,7 @@
                , #{rlesInfo.eprzSclDcd}                               /* 기업규모구분코드 */
                , #{rlesInfo.fcltSclWidhCtns}                          /* 시설규모너비내용 */
                , #{rlesInfo.resiEcoCtns}                              /* 주거환경내용 */
-               , #{rlesInfo.crdtRifcDvcDcd}                           /* 신용보강장치구분코드 */
+               , #{rlesInfo.crdtRifcDcd}                           /* 신용보강장치구분코드 */
                , #{rlesInfo.crdtRifcDvcNm}                            /* 신용보강장치명 */
                , #{rlesInfo.bondTrnsYn}                               /* 채권이관여부 */
                , #{rlesInfo.mngmCndFlflYn}                            /* 관리조건이행여부 */

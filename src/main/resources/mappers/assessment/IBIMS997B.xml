@@ -293,7 +293,7 @@
          AND JOB_ID = (
                         SELECT JOB_ID
                           FROM IBIMS996B
-                         WHERE PRE_JOB_ID = #{jobId}
+                         WHERE JOB_ID = #{jobId}
                            AND ROWNUM = 1
                       )
     </update>
@@ -305,7 +305,7 @@
               , END_TIME           = #{endTime}             /* 종료시간 */
               , JOB_STATUS         = #{jobStatus}           /* 작업상태 */
               , PRE_JOB_COUNT         = (
-                                       SELECT COUNT(PRE_JOB_ID)
+                                       SELECT COUNT(JOB_ID)
                                          FROM IBIMS996B
                                         WHERE JOB_ID = #{jobId}
                                      )                      /* PRE_JOB_COUNT 건수 */

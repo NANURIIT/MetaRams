@@ -17,10 +17,10 @@
              	   FROM IBIMS003B
              	  WHERE EMPNO = A.RGST_EMPNO
                ) AS RGST_EMPNM                         	 <!-- 등록사원명 -->
-             , A.DLT_YN                                  <!-- 삭제여부 -->
-             , A.DLT_DT                                  <!-- 삭제일자 -->
+             , A.DEL_YN                                  <!-- 삭제여부 -->
+             , A.DEL_DT                                  <!-- 삭제일자 -->
              , A.DLT_TM                                  <!-- 삭제시간 -->
-             , A.DLT_EMPNO                               <!-- 삭제사원번호 -->
+             , A.DEL_EMPNO                               <!-- 삭제사원번호 -->
              , A.HND_DETL_DTM                            <!-- 조작상세일시 -->
              , A.HND_EMPNO                               <!-- 조작사원번호 -->
              , (
@@ -33,7 +33,7 @@
              , A.GUID                                    <!-- GUID -->
 		  FROM IBIMS006B A
          WHERE 1=1
-           AND DLT_YN = '0'  
+           AND DEL_YN = '0'
 	</select>
 
 	<select id="selectAuthCode" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS006BDTO">
@@ -48,7 +48,7 @@
              , dlt_p_eno										<!-- 삭제자사번 -->
              <include refid="CommonMapper.selectCommonDto" />
           FROM RAA94B A
-         WHERE A.DLT_F != 'Y'
+         WHERE A.DEL_YN != 'Y'
         <if test="rghtCdNm != null and rghtCdNm != ''">
            AND rght_cd_nm LIKE '%'|| #{rghtCdNm}||'%'	<!-- 권한코드명 -->
             OR rght_cd    LIKE '%'|| #{rghtCdNm}||'%'
@@ -60,9 +60,9 @@
 		SELECT A.EMPNO							/* 사원번호 */
 			   , A.PWD							  /* 비밀번호 */
 		     , A.EMP_NM							/* 직원명 */
-		     , A.DPRT_CD						/* 부서코드 */
+		     , A.BDCD						/* 부서코드 */
 		     , A.DPRT_NM						/* 부서명 */
-		     , A.BDCD							/* 소속부점코드 */
+		     , A.BDCD							/* 부서코드 */
 		     , A.BD_NM							/* 소속부점코드명 */
 		     , A.ATH_CD							/* 권한코드 */
 		     , A.OPST_DCD						/* 직책 */
@@ -75,10 +75,10 @@
 	<select id="findEmpList" parameterType="com.nanuri.rams.business.common.dto.IBIMS003BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS003BDTO">
 		SELECT EMPNO									<!-- 사원번호 -->
 		     , EMP_NM									<!-- 직원명 -->
-		     , DPRT_CD									<!-- 부서코드 -->
+		     , BDCD									<!-- 부서코드 -->
 		     , DPRT_NM									<!-- 부서명 -->
-		     , BDCD									<!-- 소속부점코드 -->
-		     , BD_NM									<!-- 소속부점명 -->
+		     , BDCD									<!-- 부서코드 -->
+		     , BD_NM									<!-- 부점명 -->
 		  FROM IBIMS003B
 		 WHERE 1=1
 		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
@@ -87,8 +87,8 @@
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empNm)">
            AND EMP_NM LIKE '%'|| #{empNm}|| '%'
          </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-           AND DPRT_CD LIKE '%'|| #{dprtCd}|| '%'
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
+           AND BDCD LIKE '%'|| #{dbcd}|| '%'
          </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtNm)">
            AND DPRT_NM LIKE '%'|| #{dprtNm}|| '%'
@@ -114,7 +114,7 @@
             , RGST_RSN					<!-- 등록사유 -->
             , RGST_EMPNO				<!-- 등록사원번호 -->
             , RGST_DT					<!-- 등록일자 -->
-            , DPRT_CD					<!-- 부서코드 -->
+            , BDCD					<!-- 부서코드 -->
             , DPRT_NM					<!-- 부서명 -->
             , DEL_YN					<!-- 삭제여부 -->
             , HND_EMPNO					<!-- 조작사원번호 -->
@@ -131,10 +131,10 @@
             , #{rgstRsn}
             , #{rgstEmpno}
             , #{rgstDt}
-            , #{dprtCd}
+            , #{dbcd}
             , (SELECT MAX(A.DPRT_NM)
                  FROM IBIMS003B A
-                WHERE A.DPRT_CD = #{dprtCd})
+                WHERE A.BDCD = #{dbcd})
             , #{delYn}
             , #{hndEmpno}
             , DEFAULT
@@ -162,7 +162,7 @@
         	   , NVL((SELECT ATH_CD_NM
         		           FROM IBIMS006B
         		          WHERE ATH_CD = A.ATH_CD), '')		AS ATH_CD_NM				<!-- 권한코드명 -->
-        	   , NVL(DPRT_CD, '')						AS DPRT_CD					<!-- 부서코드 -->
+        	   , NVL(BDCD, '')						AS BDCD					<!-- 부서코드 -->
                , NVL(OSDT_DCD, '')                       AS OSDT_DCD					<!-- 직책구분코드 -->
         	   , NVL(RGST_RSN, '')						AS RGST_RSN					<!-- 등록사유 -->
         	   , NVL(APLY_STRT_DT, '')					AS APLY_STRT_DT				<!-- 적용시작일자 -->

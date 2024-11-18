@@ -6,7 +6,7 @@
     <!-- <select id="selectIBIMS701B" resultType="com.nanuri.rams.business.common.vo.IBIMS701BVO">
         SELECT
                A.RGST_DT                                       AS stdrYm                               /* 기준년월 */                          
-            ,  C.DPRT_CD                                       AS dprtCd                               /* 부점코드 */ 
+            ,  C.BDCD                                       AS dbcd                               /* 부서코드 */
             ,  B.RGST_SN                                       AS rgstSn                               /* 등록일련번호  */ 
             ,  B.BSS_ASST_MNGM_NO                              AS bssAsstMngmNo                        /* 기초자산관리번호 */ 
             ,  B.RPTS_IEM_MNGM_NO                              AS rptsIemMngmNo                        /* 보고서항목관리번호 */ 
@@ -137,9 +137,9 @@
             ,  B.GUID                                          AS guid                                  /* GUID */
         FROM IBIMS201B A
         LEFT JOIN IBIMS701B B
-            ON A.MNGM_BDCD = B.DPRT_CD
+            ON A.MNGM_BDCD = B.BDCD
         LEFT JOIN IBIMS003B C
-            ON A.MNGM_BDCD = C.DPRT_CD
+            ON A.MNGM_BDCD = C.BDCD
         WHERE A.MNGM_BDCD LIKE #{dptCd}
             AND A.RGST_DT LIKE #{stdrYm};
 	</select> -->
@@ -147,7 +147,7 @@
     <select id="selectIBIMS701B" resultType="com.nanuri.rams.business.common.vo.IBIMS701BVO">
        SELECT
                snd701b.STDR_YM                                       AS stdrYm                               /* 기준년월 */                          
-            ,  snd701b.DPRT_CD                                       AS dprtCd                               /* 부점코드 */ 
+            ,  snd701b.BDCD                                       AS dbcd                               /* 부서코드 */
             ,  snd701b.RGST_SN                                       AS rgstSn                               /* 등록일련번호  */ 
             ,  snd701b.BSS_ASST_MNGM_NO                              AS bssAsstMngmNo                        /* 기초자산관리번호 */ 
             ,  snd701b.RPTS_IEM_MNGM_NO                              AS rptsIemMngmNo                        /* 보고서항목관리번호 */ 
@@ -277,7 +277,7 @@
             ,  snd701b.HND_TR_ID                                     AS hndTrId                              /* 조작거래ID */
             ,  snd701b.GUID                                          AS guid                                 /* GUID */
          FROM IBIMS701B snd701b
-        WHERE snd701b.DPRT_CD LIKE #{dptCd}
+        WHERE snd701b.BDCD LIKE #{dptCd}
           AND snd701b.STDR_YM LIKE CASE 
                                    WHEN
                              NOT EXISTS(
@@ -289,22 +289,22 @@
                                     END
         UNION
         SELECT 
-              /* , T.EPRZ_CRDL_PRDT_LCLS_CD                                     AS rptsCtrtTpCd                          계약유형1 (유동성/신용공여형) = 기업여신상품대분류코드  */ 
+              /* , T.PRDT_LCLS_CD                                     AS rptsCtrtTpCd                          계약유형1 (유동성/신용공여형) = 기업여신상품대분류코드  */
               /* , NVL(s002b_1.CD_VL_NM , '')                                AS PRDT_LCLS_CD_NM                       기업여신상품대분류코드명 */
-              /* , T.EPRZ_CRDL_PRDT_MDCL_CD                                     AS rptsCtrtTpDetlCd                      계약유형2 (매입약정 등) = 기업여신상품중분류코드  */ 
+              /* , T.PRDT_MDCL_CD                                     AS rptsCtrtTpDetlCd                      계약유형2 (매입약정 등) = 기업여신상품중분류코드  */
               /* , NVL(s002b_2.CD_VL_NM , '')                                AS PRDT_MDCL_CD_NM	                     기업여신상품중분류코드명 */
 	          /* , T.PF_LOAN_YN                                                 AS PF_LOAN_YN                            PF대출여부*/
 
 
                 NULL                                                            AS stdrYm                               /* 기준년월 */
-              , NULL                                                            AS dprtCd                               /* 부점코드 */ 
+              , NULL                                                            AS dbcd                               /* 부서코드 */
               , NULL                                                            AS rgstSn                               /* 등록일련번호  */ 
               , NULL                                                            AS bssAsstMngmNo                        /* 기초자산관리번호 */ 
               , NULL                                                            AS rptsIemMngmNo                        /* 보고서항목관리번호 */ 
               , NVL(             
                     (SELECT MAX(B1.ENTP_HNGL_NM)                
                        FROM IBIMS114B B1                
-                      WHERE B1.BSNS_RGST_NO = A.TR_OTHR_DSCM_NO), '')           AS cmpNm 	                            /* 회사명 */
+                      WHERE B1.BZNO = A.TR_OTHR_DSCM_NO), '')           AS cmpNm 	                            /* 회사명 */
               , NULL                                                            AS fssCmpCd                             /* 금융감독원회사코드 */ 
               , NULL                                                            AS wrtnStdrDt                           /* 작성기준일자 */
               , A.PRDT_NM                                                       AS prdtNm                               /* 계약명칭 */
@@ -313,7 +313,7 @@
               , NULL                                                            AS rptsCtrtTpCd                         /* 보고서계약유형코드 */ 
               , NULL                                                            AS rptsCtrtTpDetlCd                     /* 보고서계약유형상세코드 */ 
               , T.EPRZ_CRDL_CTRC_AMT                                            AS frsCtrcAmt                           /* 최초 약정금액 */
-              , CASE WHEN T.EPRZ_CRDL_PRDT_LCLS_CD = '90' THEN T.DEAL_EXC_BLCE                                          /* 상품대분류(90:대출)-->SUM(대출잔액) */         
+              , CASE WHEN T.PRDT_LCLS_CD = '90' THEN T.DEAL_EXC_BLCE                                          /* 상품대분류(90:대출)-->SUM(대출잔액) */
 	                                                      ELSE T.EPRZ_CRDL_CTRC_AMT                                     /* 상품대분류(90:대출) 그외 -->기업여신약정금액 */      
 	                                                       END                  AS eprzCrdlNowCtrcBlce                  /* 약정잔액*/
               , NULL                                                            AS detGrteFee                           /* 채무보증수수료 */ 
@@ -438,8 +438,8 @@
                      , T1.CTRC_EXP_DT
                      , T1.EPRZ_CRDL_CTRC_AMT                                                              /* 기업여신약정금액*/
 			         , T1.PF_LOAN_YN                                                                      /* PF대출여부*/
-			         , T1.EPRZ_CRDL_PRDT_LCLS_CD                                                          /* 기업여신상품대분류코드 */
-			         , T1.EPRZ_CRDL_PRDT_MDCL_CD                                                          /* 기업여신상품중분류코드 */
+			         , T1.PRDT_LCLS_CD                                                          /* 기업여신상품대분류코드 */
+			         , T1.PRDT_MDCL_CD                                                          /* 기업여신상품중분류코드 */
 			         , SUM(T2.DEAL_EXC_BLCE)                                    AS DEAL_EXC_BLCE         /* 약정잔액 */
                   FROM IBIMS401B T1  /* 딜약정기본 */
        LEFT OUTER JOIN IBIMS402B T2  /* 딜실행기본 */
@@ -453,22 +453,22 @@
                      , T1.CTRC_EXP_DT
                      , T1.EPRZ_CRDL_CTRC_AMT                          /* 기업여신약정금액*/
 		             , T1.PF_LOAN_YN                                  /* PF대출여부*/
-		             , T1.EPRZ_CRDL_PRDT_LCLS_CD                      /* 기업여신상품대분류코드 */
-		             , T1.EPRZ_CRDL_PRDT_MDCL_CD                      /* 기업여신상품중분류코드 */
+		             , T1.PRDT_LCLS_CD                      /* 기업여신상품대분류코드 */
+		             , T1.PRDT_MDCL_CD                      /* 기업여신상품중분류코드 */
                ) T
 	LEFT JOIN IBIMS002B s002b_1
-	       ON T.EPRZ_CRDL_PRDT_LCLS_CD	= s002b_1.CD_VL_ID
+	       ON T.PRDT_LCLS_CD	= s002b_1.CD_VL_ID
 	      AND s002b_1.CMNS_CD_GRP	    = 'E022'
 	LEFT JOIN IBIMS002B s002b_2
-		   ON T.EPRZ_CRDL_PRDT_MDCL_CD	= s002b_2.CD_VL_ID
+		   ON T.PRDT_MDCL_CD	= s002b_2.CD_VL_ID
 		  AND s002b_2.CMNS_CD_GRP	    = 'E023'
         WHERE A.LAST_YN = '1' 
           AND A.PRDT_CD = T.PRDT_CD
           AND A.FRS_MNGM_BDCD LIKE #{dptCd}
           AND NOT EXISTS (
-                  SELECT s701b_2.DPRT_CD
+                  SELECT s701b_2.BDCD
                     FROM IBIMS701B s701b_2
-                   WHERE s701b_2.DPRT_CD = A.FRS_MNGM_BDCD
+                   WHERE s701b_2.BDCD = A.FRS_MNGM_BDCD
                 );
     </select>
 
@@ -481,7 +481,7 @@
     <insert id="insertIBIMS701B">
         INSERT INTO IBIMS701B(
                     STDR_YM
-                ,   DPRT_CD
+                ,   BDCD
                 ,   RGST_SN
                 ,   BSS_ASST_MNGM_NO
                 ,   RPTS_IEM_MNGM_NO
@@ -614,7 +614,7 @@
         VALUES
         <foreach collection="list" item="item" separator=",">
                 (   #{item.stdrYm}
-                ,   #{item.dprtCd}
+                ,   #{item.dbcd}
                 ,   (
                         NVL(
                                 (SELECT MAX(A.RGST_SN) FROM IBIMS701B A) + 1

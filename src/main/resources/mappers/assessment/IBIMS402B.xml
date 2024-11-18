@@ -53,7 +53,7 @@
 			 WHERE 1=1 
 	         AND i402b.DEAL_NO = #{dealNo}
 			 AND i401b.PRDT_CD = i402b.PRDT_CD 
-			 AND i401b.EPRZ_CRDL_PRDT_LCLS_CD IN ('90', '91')
+			 AND i401b.PRDT_LCLS_CD IN ('90', '91')
 			 ) A
 		 WHERE 1=1
 		 AND ROWNUM =1
@@ -74,7 +74,7 @@
 		  WHERE i402b.DEAL_NO = #{dealNo}
 		    AND i402b.EXC_SN = 1
 		    AND i402b.PRDT_CD = i401b.PRDT_CD 
-		    AND i401b.EPRZ_CRDL_PRDT_LCLS_CD IN ('10', '11', '16', '30')   
+		    AND i401b.PRDT_LCLS_CD IN ('10', '11', '16', '30')
 		    AND   i201b.PRDT_CD = i401b.PRDT_CD 
 		    AND i201b.LAST_YN = '1'
     </select>
@@ -687,7 +687,7 @@
         , A.RCVB_INTR_AMT                             as rcvbIntrAmt
         , A.KRW_TRSL_EXC_BLCE                         as dealExcBlce
         , A.EXC_DT                                    as excDt
-        , A.EXP_DT                                    as mtrtDt
+        , A.EXP_DT                                    as expDt
         , A.PRNA_OVDU_DT                              as prnaOvduDt
         , A.INTR_OVDU_DT                              as intrOvduDt
         , B.EPRZ_CRDL_INTR_BNAO_DCD                   as intrBnaoDcd
@@ -709,19 +709,19 @@
                               WHERE PRDT_CD = A.PRDT_CD)
                 END  as mdwyRdmpFeeRto 
         ,CASE 
-                WHEN EXISTS (SELECT MRDP_YN 
+                WHEN EXISTS (SELECT EARLY_REPAY_YN
                               FROM IBIMS410B 
                               WHERE PRDT_CD = A.PRDT_CD 
                               AND EXC_SN = A.EXC_SN 
-                              AND MRDP_YN = '1') 
+                              AND EARLY_REPAY_YN = '1')
                 THEN 1 
                 ELSE 0 
-                END  as mrdpYn
+                END  as earlyRepayYn
         ,(SELECT SUM(DEAL_MRDP_PRCA) 
             FROM IBIMS410B 
             where PRDT_CD = A.PRDT_CD 
             AND EXC_SN = A.EXC_SN 
-            AND MRDP_YN = '1')	AS dealMrdpPrca
+            AND EARLY_REPAY_YN = '1')	AS dealMrdpPrca
       FROM IBIMS402B A
       	 , IBIMS401B B 
       WHERE 1=1

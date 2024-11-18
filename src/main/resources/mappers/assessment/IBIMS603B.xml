@@ -6,7 +6,7 @@
     <select id="selectIBIMS603B" resultType="com.nanuri.rams.business.common.dto.IBIMS603BDTO" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
         SELECT DEAL_NO                                           /* 딜번호 */
              , INSPCT_DT                                         /* 심사날짜 */
-             , INSPCT_RMRK                                       /* 심사비고 */
+             , CHECK_RSLT                                       /* 심사비고 */
              , RMRK                                              /* 비고 */
              , HND_DETL_DTM                                      /* 조작상세일시 */
              , HND_EMPNO                                         /* 조작사원번호 */
@@ -25,7 +25,7 @@
                (
                   DEAL_NO                                           /* 딜번호 */
                 , INSPCT_DT                                         /* 심사날짜 */
-                , INSPCT_RMRK                                       /* 심사비고 */
+                , CHECK_RSLT                                       /* 심사비고 */
                 , RMRK                                              /* 비고 */
                 , HND_DETL_DTM                                      /* 조작상세일시 */
                 , HND_EMPNO                                         /* 조작사원번호 */
@@ -38,7 +38,7 @@
         	   (
                  #{item.dealNo}                                          /* 딜번호 */
                , #{item.inspctDt}                                        /* 심사날짜 */
-               , #{item.inspctRmrk}                                      /* 심사비고 */
+               , #{item.checkRslt}                                      /* 심사비고 */
                , #{item.rmrk}                                            /* 비고 */
                , SYSDATE                                                 /* 조작상세일시 */
                , #{item.hndEmpno}                                        /* 조작사원번호 */

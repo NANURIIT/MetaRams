@@ -97,7 +97,7 @@
 		           AND CD_VL_ID = A.CNSB_DCD
 		       ) AS CNSB_DCD_NM
 		     , A.RSLTN_YR                                                 /* 결의년도 */
-		     , A.CNSB_SQ                                                  /* 협의체순번(회차) */
+		     , A.CNSB_SQ                                                  /* 협의체순번 */
 		     , A.SN                                                       /* 일련번호 */
 		     , A.DEAL_NO                                                  /* 딜번호 */
 		     , A.MTR_DCD                                                  /* 안건구분코드 */
@@ -113,7 +113,7 @@
 		           AND CD_VL_ID = B.PTFD_CRNCY_CD
 		       ) AS PTFD_CRNCY_CD_NM
 			   , B.PTFD_AMT                                                 /* 부의금액 */
-			   , NVL(C.APVL_AMT, '') AS APVL_AMT                            /* 승인금액 */
+			   , NVL(C.EPRZ_CRDL_APVL_AMT, '') AS EPRZ_CRDL_APVL_AMT                            /* 승인금액 */
 			   , B.MTR_PRG_STTS_DCD                                         /* 안건진행상태구분코드 */
 		     , (
 		        SELECT CD_VL_NM
@@ -153,7 +153,7 @@
 		   AND D.JDGM_RSLT_DCD <![CDATA[>]]> '303'
 		 ORDER BY A.CNSB_DCD                                                 /* 협의체구분코드 */     
 		        , A.RSLTN_YR                                                 /* 결의년도 */
-		        , A.CNSB_SQ                                                  /* 협의체순번(회차) */
+		        , A.CNSB_SQ                                                  /* 협의체순번 */
 		        , A.SN                                                       /* 일련번호 */
        
     </select>

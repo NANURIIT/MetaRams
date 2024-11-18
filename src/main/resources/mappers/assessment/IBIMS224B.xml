@@ -14,12 +14,12 @@
              	   FROM IBIMS003B
              	  WHERE EMPNO = A.EMPNO
                ) AS EMP_NM								 <!-- 담당자명 -->
-             , A.DECD_DPT_DCD                            <!-- 부서코드 -->
+             , A.DPRT_CD                            <!-- 부서코드 -->
 			 , (
 				 SELECT CD_VL_NM
 				   FROM IBIMS002B
 				  WHERE CMNS_CD_GRP = 'D010'
-				    AND CD_VL_ID = A.DECD_DPT_DCD
+				    AND CD_VL_ID = A.DPRT_CD
 			   ) AS DECD_DPT_NM						  	 <!-- 부서명 -->
              , A.FND_NM                                  <!-- 펀드명 -->
              , A.PRDT_CD                                 <!-- 상품코드 -->
@@ -65,8 +65,8 @@
            AND B.LAST_YN = '1'          
          WHERE 1=1
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
-           AND A.SQ = (
-           			   SELECT MAX(SQ)
+           AND A.SN = (
+           			   SELECT MAX(SN)
            			     FROM IBIMS224B
            			    WHERE DEAL_NO LIKE '%' || #{dealNo} || '%'
                       )
@@ -76,8 +76,8 @@
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
            AND B.DEAL_NM LIKE '%' || #{dealNm} || '%' 
          </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdDptDcd)">
-           AND A.DECD_DPT_DCD = #{decdDptDcd} 
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           AND A.DPRT_CD = #{dprtCd}
          </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(issLtrDcd)">
            AND A.ISS_LTR_DCD = #{issLtrDcd} 
@@ -87,7 +87,7 @@
 	
 	<!-- LOI/LOC 발급 조회 -->
 	<select id="getLoi" resultType="com.nanuri.rams.business.common.vo.TB04050SVO" parameterType="com.nanuri.rams.business.common.vo.TB04050SVO">
-    select A.SQ ,
+    select A.SN ,
             A.DEAL_NO ,
             A.ISS_MNGM_NO ,
             A.ISS_CRRY_CD ,
@@ -98,9 +98,9 @@
             A.ISS_AMT ,
             A.ISS_CTNS ,
             A.IVTG_RQST_CTNS ,
-            A.DECD_DPT_DCD as decdDptDcd,
+            A.DPRT_CD as dprtCd,
             A.EMPNO ,
-            A.DECD_DPT_DCD ,
+            A.DPRT_CD ,
             B.EMP_NM  ,
             B.DPRT_NM       as decdDptNm,
             A.ISS_STTS_CD ,
@@ -108,10 +108,10 @@
       from IBIMS224B A
       left join IBIMS003B B 
           on B.EMPNO = A.EMPNO  
-          and B.DPRT_CD  = A.DECD_DPT_DCD 
+          and B.BDCD  = A.DPRT_CD
       where A.DEAL_NO = #{dealNo}
-      AND A.SQ  = (
-                  SELECT MAX(SQ)
+      AND A.SN  = (
+                  SELECT MAX(SN)
                     FROM IBIMS224B
                     WHERE DEAL_NO = #{dealNo}
                 )
@@ -124,9 +124,9 @@
                   ISS_MNGM_NO                             															<!-- 발급관리번호 -->
                 , ISS_STTS_CD                             															<!-- 발급상태코드 -->
                 , DEAL_NO                                 															<!-- 딜번호 -->
-                , SQ                                      															<!-- 일련번호 -->
+                , SN                                      															<!-- 일련번호 -->
                 , EMPNO                                   															<!-- 사원번호 -->
-                , DECD_DPT_DCD                            															<!-- 부서명 -->
+                , DPRT_CD                            															<!-- 부서명 -->
                 , FND_NM                                  															<!-- 펀드명 -->
                 , PRDT_CD                                 															<!-- 상품코드 -->
                 , IB_PRDT_CLSF_CD                         															<!-- ib상품분류코드 -->
@@ -161,12 +161,12 @@
                 , GUID                                    															<!-- guid -->
                )
         VALUES (
-                (DECODE(#{issLtrDcd}, 1, 'LOI', 2, 'LOC', 'LOI') || #{decdDptDcd} || TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss'))             <!-- 발급관리번호 -->
+                (DECODE(#{issLtrDcd}, 1, 'LOI', 2, 'LOC', 'LOI') || #{dprtCd} || TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss'))             <!-- 발급관리번호 -->
                , #{issSttsCd}                              															<!-- 발급상태코드 -->
                , #{dealNo}                                 															<!-- 딜번호 -->
-				       , #{sq}                               														        <!-- 일련번호 -->
+				       , #{sn}                               														        <!-- 일련번호 -->
                , #{empno}                                  															<!-- 사원번호 -->
-               , #{decdDptDcd}                             															<!-- 부서명 -->
+               , #{dprtCd}                             															<!-- 부서명 -->
                , #{fndNm}                                  															<!-- 펀드명 -->
                , #{prdtCd}                                 															<!-- 상품코드 -->
                , #{ibPrdtClsfCd}                           															<!-- ib상품분류코드 -->
@@ -203,7 +203,7 @@
 	</insert>
 
   <select id='getMaxSQ' resultType="String" parameterType="com.nanuri.rams.business.common.vo.TB04050SVO">
-      SELECT NVL(MAX(SQ), 0) + 1
+      SELECT NVL(MAX(SN), 0) + 1
       FROM IBIMS224B
       WHERE DEAL_NO = #{dealNo}
   </select>

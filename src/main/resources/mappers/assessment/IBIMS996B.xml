@@ -4,7 +4,7 @@
 
   <!-- 배치JOB 선행JOB관리 조회  -->
 	<select id="selectIBIMS996B" parameterType="com.nanuri.rams.business.common.vo.IBIMS996BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS996BVO">
-    SELECT PRE_JOB_ID                              /* 선행 JOB ID */
+    SELECT JOB_ID                              /* 선행 JOB ID */
          , PRE_JOB_NAME                            /* 선행 JOB NAME */
          , JOB_ID                                  /* JOB ID */
          , JOB_NAME                                /* JOB NAME */
@@ -26,14 +26,14 @@
       SELECT JOB_ID                                  /* JOB ID */
         FROM IBIMS996B
        WHERE 1=1
-		     AND PRE_JOB_ID = #{jobId}
+		     AND JOB_ID = #{jobId}
   	</select>
 
     <!-- 배치JOB 선행JOB관리 입력  -->
     <insert id="insertIBIMS996B" parameterType="com.nanuri.rams.business.common.dto.IBIMS996BDTO">
         INSERT INTO IBIMS996B
               (
-                  PRE_JOB_ID                       /* 선행 JOB ID */
+                  JOB_ID                       /* 선행 JOB ID */
                 , PRE_JOB_NAME                     /* 선행 JOB NAME */
                 , JOB_ID                           /* JOB ID */
                 , JOB_NAME                         /* JOB NAME */
@@ -47,7 +47,7 @@
                 , GUID                             /* GUID */
               )
           SELECT
-                  #{preJobId}                      /* 선행 JOB ID */
+                  #{jobId}                      /* 선행 JOB ID */
                 , #{preJobName}                    /* 선행 JOB NAME */
                 , #{jobId}                         /* JOB ID */
                 , #{jobName}                       /* JOB NAME */
@@ -64,7 +64,7 @@
     <!-- 배치JOB 선행JOB관리 수정  -->
     <update id="updateIBIMS996B" parameterType="com.nanuri.rams.business.common.dto.IBIMS996BDTO">
        UPDATE IBIMS996B
-          SET PRE_JOB_ID      = #{preJobId}                      /* 선행 JOB ID */
+          SET JOB_ID      = #{jobId}                      /* 선행 JOB ID */
             , PRE_JOB_NAME    = #{preJobName}                    /* 선행 JOB NAME */
             , JOB_ID          = #{jobId}                         /* JOB ID */
             , JOB_NAME        = #{jobName}                       /* JOB NAME */
@@ -84,6 +84,6 @@
     <delete id="deleteIBIMS996B" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO">
         DELETE
           FROM IBIMS996B
-         WHERE PRE_JOB_ID = #{preJobId}
+         WHERE JOB_ID = #{jobId}
     </delete>
 </mapper>

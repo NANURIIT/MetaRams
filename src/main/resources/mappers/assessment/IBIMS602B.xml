@@ -6,7 +6,7 @@
     <select id="selectIBIMS602B" resultType="com.nanuri.rams.business.common.dto.IBIMS602BDTO" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
         SELECT DEAL_NO                                           /* Deal번호 */
              , INSPCT_YM                                      	 /* 심사년월 */
-             , INSPCT_RMRK                                       /* 심사비고 */
+             , CHECK_RSLT                                       /* 심사비고 */
              , HND_DETL_DTM                                      /* 조작상세일시 */
              , HND_EMPNO                                         /* 조작사원번호 */
              , HND_TMNL_NO                                       /* 조작단말기번호 */
@@ -29,7 +29,7 @@
                (
                   DEAL_NO                                           						/* 딜번호 */
                 , INSPCT_YM                                      							  /* 심사년월 */
-                , INSPCT_RMRK                                       						/* 심사비고 */
+                , CHECK_RSLT                                       						/* 심사비고 */
                 , HND_EMPNO                                         						/* 조작사원번호 */
                 , HND_TMNL_NO                                       						/* 조작단말기번호 */
                 , HND_TR_ID                                         						/* 조작거래id */
@@ -38,7 +38,7 @@
         VALUES (
                  #{dealNo}                                          						/* 딜번호 */
                , NVL(#{inspctYm}, (SELECT TO_CHAR(SYSDATE, 'YYYYMM') FROM DUAL))/* 심사년월 */
-               , #{inspctRmrk}                                      						/* 심사비고 */
+               , #{checkRslt}                                      						/* 심사비고 */
                , #{hndEmpno}                                        						/* 조작사원번호 */
                , #{hndTmnlNo}                                       						/* 조작단말기번호 */
                , #{hndTrId}                                         						/* 조작거래id */
@@ -50,7 +50,7 @@
     <update id="updateIBIMS602B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
        UPDATE IBIMS602B
           SET INSPCT_YM                                         = NVL(#{inspctYm}, (SELECT TO_CHAR(SYSDATE, 'YYYYMM') FROM DUAL))   /* 심사년월 */                                
-            , INSPCT_RMRK                                       = #{inspctRmrk}                                      						    /* 심사비고 */
+            , CHECK_RSLT                                       = #{checkRslt}                                      						    /* 심사비고 */
             , HND_EMPNO                                         = #{hndEmpno}                                        						    /* 조작사원번호 */
             , HND_TMNL_NO                                       = #{hndTmnlNo}                                       						    /* 조작단말기번호 */
             , HND_TR_ID                                         = #{hndTrId}                                         						    /* 조작거래id */

@@ -33,7 +33,7 @@
              , MRTG_CCLC_DT                                      <!-- 담보해지일자 -->
              , TR_OTHR_DSCM_NO                                   <!-- 거래상대방식별번호 -->
              , TR_OTHR_NM                                        <!-- 거래상대방명 -->
-             , TR_EMPNO                                          <!-- 거래부점코드 -->
+             , TR_EMPNO                                          <!-- 거래부서코드 -->
              , MRTG_EVL_STDR_CD                                  <!-- 담보평가기준코드 -->
              , (
                  SELECT CD_VL_NM
@@ -97,7 +97,7 @@
                 , MRTG_CCLC_DT                                      <!-- 담보해지일자 -->
                 , TR_OTHR_DSCM_NO                                   <!-- 거래상대방식별번호 -->
                 , TR_OTHR_NM                                        <!-- 거래상대방명 -->
-                , TR_EMPNO                                          <!-- 거래부점코드 -->
+                , TR_EMPNO                                          <!-- 거래부서코드 -->
                 , MRTG_EVL_STDR_CD                                  <!-- 담보평가기준코드 -->
                 , PRFD_RANK_YN                                      <!-- 우선순위여부 -->
                 , HDWT_EVL_YN                                       <!-- 수기평가여부 -->
@@ -136,7 +136,7 @@
                , #{mrtgCclcDt}                                      <!-- 담보해지일자 -->
                , #{trOthrDscmNo}                                    <!-- 거래상대방식별번호 -->
                , #{trOthrNm}                                        <!-- 거래상대방명 -->
-               , #{trEmpno}                                         <!-- 거래부점코드 -->
+               , #{trEmpno}                                         <!-- 거래부서코드 -->
                , #{mrtgEvlStdrCd}                                   <!-- 담보평가기준코드 -->
                , #{prfdRankYn}                                      <!-- 우선순위여부 -->
                , #{hdwtEvlYn}                                       <!-- 수기평가여부 -->
@@ -198,7 +198,7 @@
 			   MRTG_CCLC_DT,                           <!-- 담보해지일자 -->
 			   TR_OTHR_DSCM_NO,                        <!-- 거래상대방식별번호 -->
 			   TR_OTHR_NM,                             <!-- 거래상대방명 -->
-			   TR_EMPNO,                               <!-- 거래부점코드 -->
+			   TR_EMPNO,                               <!-- 거래부서코드 -->
 			   MRTG_EVL_STDR_CD,                       <!-- 담보평가기준코드 -->
 			   PRFD_RANK_YN,                           <!-- 우선순위여부 -->
 			   HDWT_EVL_YN,                            <!-- 수기평가여부 -->
@@ -311,7 +311,7 @@
             , MRTG_CCLC_DT                                      = #{mrtgCclcDt}                                      <!-- 담보해지일자 -->
             , TR_OTHR_DSCM_NO                                   = #{trOthrDscmNo}                                    <!-- 거래상대방식별번호 -->
             , TR_OTHR_NM                                        = #{trOthrNm}                                        <!-- 거래상대방명 -->
-            , TR_EMPNO                                          = #{trEmpno}                                         <!-- 거래부점코드 -->
+            , TR_EMPNO                                          = #{trEmpno}                                         <!-- 거래부서코드 -->
             , MRTG_EVL_STDR_CD                                  = #{mrtgEvlStdrCd}                                   <!-- 담보평가기준코드 -->
             , PRFD_RANK_YN                                      = #{prfdRankYn}                                      <!-- 우선순위여부 -->
             , HDWT_EVL_YN                                       = #{hdwtEvlYn}                                       <!-- 수기평가여부 -->

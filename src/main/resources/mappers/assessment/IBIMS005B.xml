@@ -66,7 +66,7 @@
           , DEL_YN
           , DEL_DT
           , DEL_TM
-          , DELT_EMPNO
+          , DEL_EMPNO
           , HND_DETL_DTM
           , HND_EMPNO
           , HND_TMNL_NO
@@ -92,7 +92,7 @@
           , #{item.delYn}
           , #{item.delDt}
           , #{item.delTm}
-          , #{item.deltEmpno}
+          , #{item.delEmpno}
           , SYSDATE
           , #{item.hndEmpno}
           , #{item.hndTmnlNo}
@@ -245,7 +245,7 @@
     <update id="deleteMainMenuInfo" parameterType="java.util.List">
 		UPDATE IBIMS005B
 		   SET DEL_YN = 'Y'													<!-- 삭제여부 -->
-		   	 , DELT_EMPNO = #{deltEmpno}									<!-- 삭제자사번 -->
+		   	 , DEL_EMPNO = #{delEmpno}									<!-- 삭제자사번 -->
 		   	 , DEL_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')						<!-- 삭제일자 -->
 		   	 , DEL_TM = TO_CHAR(SYSDATE, 'HH24MISS')						<!-- 삭제시간 -->
 		 WHERE MENU_ID IN

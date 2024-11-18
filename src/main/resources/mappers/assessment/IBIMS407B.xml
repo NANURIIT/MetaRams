@@ -43,7 +43,7 @@
              , D.FNLT_NM                        /* 결제외부기관명 */
              , (SELECT MAX(DPRT_NM)
                   FROM IBIMS003B
-                 WHERE DPRT_CD = A.TR_DPT_CD) AS DPRT_NM   
+                 WHERE BDCD = A.TR_DPT_CD) AS DPRT_NM
                                                 /* 거래부서명 */
              , E.STDR_EXRT                      /* 기준환율 */
           FROM IBIMS407B A

@@ -4,7 +4,7 @@
 
     <select id="IBIMS421BSelect" parameterType="string" resultType="com.nanuri.rams.business.common.dto.IBIMS421BDTO">
         SELECT FEE_KND_CD        /* 수수료종류코드 */
-             , ACT_CD            /* 계정과목코드 */
+             , ACTS_CD            /* 계정과목코드 */
              , RGST_STTS_CD      /* 등록상태코드 */
              , FEE_NAME          /* 수수료명 */
              , FEE_RCOG_DCD      /* 수수료인식구분코드 */
@@ -30,7 +30,7 @@
         INSERT INTO IBIMS421B 
             (
                 FEE_KND_CD
-              , ACT_CD
+              , ACTS_CD
               , RGST_STTS_CD
               , FEE_NAME
               , FEE_RCOG_DCD
@@ -51,7 +51,7 @@
         VALUES
             (
                 #{feeKndCd}
-              , #{actCd}
+              , #{actsCd}
               , '1'
               , #{feeNm}
               , #{feeRcogDcd}
@@ -90,14 +90,14 @@
              , GUID = #{guid}
          WHERE 1=1
            AND FEE_KND_CD = #{feeKndCd}
-           AND ACT_CD = #{actCd}
+           AND ACTS_CD = #{actsCd}
     </update>
 
     <delete id="IBIMS421BDelete" parameterType="com.nanuri.rams.business.common.dto.IBIMS421BDTO" >
         DELETE FROM IBIMS421B
          WHERE 1=1
            AND FEE_KND_CD = #{feeKndCd}
-           AND ACT_CD = #{actCd}
+           AND ACTS_CD = #{actsCd}
     </delete>
 
 </mapper>

@@ -49,9 +49,9 @@
 		     , A.TR_AMT					/* 거래금액 */				
 		     , A.BCNC_NM 				/* 거래처명 */				
 		     , A.RKFR_DT				/* 기산일자 */				
-		     , A.WCRC_TRSL_TR_FEE_AMT	/* 원화환산거래수수료금액 */	
+		     , A.KRW_TRSL_TR_FEE_AMT	/* 원화환산거래수수료금액 */
 		     , A.PRUF_ISU_DT			/* 증빙발행일자 */		
-		     , A.APLC_EXCH_R            /* 적용환율 */		
+		     , A.APLY_EXRT            /* 적용환율 */
 		     , A.DECD_STTS_DCD         	/* 결재상태구분코드 */		
 		     , A.PRCS_EMPNO            	/* 처리사원번호 */			
 		     , A.PRCS_TM           		/* 처리시각 */			     
@@ -107,9 +107,9 @@
 	     , TR_AMT					/* 거래금액 */				
 	     , BCNC_NM 					/* 거래처명 */				
 	     , RKFR_DT					/* 기산일자 */				
-	     , WCRC_TRSL_TR_FEE_AMT		/* 원화환산거래수수료금액 */	
+	     , KRW_TRSL_TR_FEE_AMT		/* 원화환산거래수수료금액 */
 	     , PRUF_ISU_DT				/* 증빙발행일자 */		
-	     , APLC_EXCH_R              /* 적용환율 */			
+	     , APLY_EXRT              /* 적용환율 */
 		 , DECD_STTS_DCD           	/* 결재상태구분코드 */	
 		 , PRCS_EMPNO            	/* 처리사원번호 */			
 		 , PRCS_TM           		/* 처리시각 */			     
@@ -158,9 +158,9 @@
 		, #{trAmt}				/* 거래금액 */
 		, #{bcncNm}				/* 거래처명 */
 		, #{rkfrDt}				/* 기산일자 */
-		, #{wcrcTrslTrFeeAmt}	/* 원화환산거래수수료금액 */
+		, #{krwTrslTrFeeAmt}	/* 원화환산거래수수료금액 */
 		, #{prufIsuDt}			/* 증빙발행일자 */
-		, #{aplcExchR}          /* 적용환율 */
+		, #{aplyExrt}          /* 적용환율 */
 		, #{decdSttsDcd}        /* 결재상태구분코드 */
 		, #{prcsEmpno}     		/* 처리사원번호 */
 		, #{prcsTm}        		/* 처리시간 */
@@ -216,7 +216,7 @@
 		   , B.RKFR_DT					/* 기산일자 */
 		   , B.FNDS_DVSN_CD				/* 자금구분코드 */
 		   , B.PRUF_ISU_DT				/* 증빙발행일자 */
-		   , B.APLC_EXCH_R              /* 적용환율 */		
+		   , B.APLY_EXRT              /* 적용환율 */
 		   , B.DECD_STTS_DCD           	/* 결재상태구분코드 */			
 		   , B.PRCS_EMPNO            	/* 처리사원번호 */			
 		   , B.PRCS_TM           		/* 처리시각 */		
@@ -301,9 +301,9 @@
 			 , TR_AMT							/* 거래금액 */
 			 , BCNC_NM							/* 거래처명 */
 			 , RKFR_DT							/* 기산일자 */
-			 , WCRC_TRSL_TR_FEE_AMT				/* 원화환산거래수수료금액 */
+			 , KRW_TRSL_TR_FEE_AMT				/* 원화환산거래수수료금액 */
 			 , PRUF_ISU_DT						/* 증빙발행일자 */
-			 , APLC_EXCH_R						/* 적용환율 */
+			 , APLY_EXRT						/* 적용환율 */
 			 , DECD_STTS_DCD					/* 결재상태구분코드 */
 			 , PRCS_EMPNO						/* 처리사원번호 */
 			 , PRCS_TM							/* 처리시각 */
@@ -357,9 +357,9 @@
     		 , A.TR_AMT
     		 , A.BCNC_NM
     		 , A.RKFR_DT
-    		 , A.WCRC_TRSL_TR_FEE_AMT
+    		 , A.KRW_TRSL_TR_FEE_AMT
     		 , A.PRUF_ISU_DT
-    		 , A.APLC_EXCH_R
+    		 , A.APLY_EXRT
     		 , A.DECD_STTS_DCD
     		 , A.PRCS_EMPNO
     		 , A.PRCS_TM
@@ -370,9 +370,9 @@
     		 , A.HND_TR_ID
     		 , A.GUID
 			 , B.ETPR_CRDT_GRNT_TR_KIND_CD
-			 , B.ACTG_AFRS_CD
-			 , B.WCRC_TRSL_RT
-			 , B.WCRC_TRSL_TR_FEE_AMT
+			 , B.ACCT_JOB_CD
+			 , B.KRW_TRSL_RT
+			 , B.KRW_TRSL_TR_FEE_AMT
 			 , B.TR_STAT_CD
     		 , D.DEAL_NO
     		 , D.DEAL_NM
@@ -380,7 +380,7 @@
 			 , C.PRAR_DT
 			 , C.FEE_STDR_AMT
     		 , F.ARDY_BZEP_NO
-    		 , F.BZEP_NAME
+    		 , F.ENTP_NM
     		 , G.CTRC_DT
     		 , G.CTRC_EXP_DT
     		 , G.EPRZ_CRDL_CTRC_AMT
@@ -406,7 +406,7 @@
 		   AND D.TR_OTHR_DSCM_NO 		= F.ARDY_BZEP_NO(+)
 		   AND A.PRDT_CD 				= G.PRDT_CD(+)	
 		   AND A.EPRZ_CRDL_FEE_KND_CD 	= H.FEE_KND_CD(+)
-		   AND A.ACTS_CD 				= H.ACT_CD(+)	
+		   AND A.ACTS_CD 				= H.ACTS_CD(+)
 		<if test="actsCd != ''">
 		   AND A.ACTS_CD = #{actsCd} 
 		</if>

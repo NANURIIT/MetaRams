@@ -17,7 +17,7 @@
               , A.HND_TMNL_NO      AS  hndTmnlNo     /* 조작단말기번호 */
               , A.HND_TR_ID        AS  hndTrId       /* 조작거래ID */
               , A.GUID             AS  guid          /* GUID */
-              , B.DPRT_CD          AS  dprtCd        /* 부서코드 */
+              , B.BDCD          AS  dbcd        /* 부서코드 */
           FROM IBIMS704B A
           LEFT JOIN IBIMS003B B
             ON A.HND_EMPNO = B.EMPNO

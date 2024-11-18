@@ -36,8 +36,8 @@
              , A.HND_TMNL_NO                                       <!-- 조작단말기번호 -->
              , A.HND_TR_ID                                         <!-- 조작거래id -->
              , A.GUID                                              <!-- guid -->
-             , A.MDWY_RDMP_YN                                      <!-- 중도상환여부 -->
-             , A.INTR_CNGE_FRQC_MNUM                               <!-- 금리변동주기개월수 -->
+             , A.EARLY_REPAY_YN                                      <!-- 중도상환여부 -->
+             , A.INTRT_CNGE_FRQC_MNUM                               <!-- 금리변동주기개월수 -->
              , B.CTRC_EXP_DT                                       <!-- 약정만기일자 -->
           FROM IBIMS202B A
              , IBIMS401B B
@@ -82,8 +82,8 @@
                 , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
                 , HND_TR_ID                                         <!-- 조작거래id -->
                 , GUID                                              <!-- guid -->
-                , MDWY_RDMP_YN                                      <!-- 중도상환여부 -->
-                , INTR_CNGE_FRQC_MNUM                               <!-- 금리변동주기개월수 -->
+                , EARLY_REPAY_YN                                      <!-- 중도상환여부 -->
+                , INTRT_CNGE_FRQC_MNUM                               <!-- 금리변동주기개월수 -->
                )
         VALUES (
                  #{prdtCd}                                          <!-- 상품코드 -->
@@ -118,8 +118,8 @@
                , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
                , #{hndTrId}                                         <!-- 조작거래id -->
                , #{guid}                                            <!-- guid -->
-               , #{mdwyRdmpYn}                                      <!-- 중도상환여부 -->
-               , #{intrCngeFrqcMnum}                                <!-- 금리변동주기개월수 -->
+               , #{earlyRepayYn}                                      <!-- 중도상환여부 -->
+               , #{intrtCngeFrqcMnum}                                <!-- 금리변동주기개월수 -->
                )
     </insert>
 	
@@ -158,8 +158,8 @@
             , HND_TMNL_NO                                       = #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
             , HND_TR_ID                                         = #{hndTrId}                                         <!-- 조작거래id -->
             , GUID                                              = #{guid}                                            <!-- guid -->
-            , MDWY_RDMP_YN                                      = #{mdwyRdmpYn}                                      <!-- 중도상환여부 -->
-            , INTR_CNGE_FRQC_MNUM                               = #{intrCngeFrqcMnum}                               <!-- 금리변동주기개월수 -->
+            , EARLY_REPAY_YN                                      = #{earlyRepayYn}                                      <!-- 중도상환여부 -->
+            , INTRT_CNGE_FRQC_MNUM                               = #{intrtCngeFrqcMnum}                               <!-- 금리변동주기개월수 -->
          WHERE 1=1
           AND PRDT_CD                                           = #{prdtCd}                                          <!-- 상품코드 -->
     </update>

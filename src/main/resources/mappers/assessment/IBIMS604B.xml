@@ -4,9 +4,9 @@
 
 	<select id="checkDealSearch" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$SearchVO" resultType="com.nanuri.rams.business.common.vo.IBIMS604BVO$DealInfo">
 		SELECT A.STDR_DT							AS STDR_DT									/* 기준일자 */
-         , A.ENTP_NM							AS ENTP_NM									/* 기업명 */
+         , A.ENTP_NM							AS ENTP_NM									/* 업체명 */
          , A.RPRST_P_HNGL_NM			AS RPRST_P_HNGL_NM					/* 대표자한글명 */
-         , A.CORP_RGST_NO					AS CORP_RGST_NO							/* 법인등록번호 */
+         , A.CRNO					AS CRNO							/* 법인등록번호 */
          , (
         	 	CASE WHEN A.GRD_DWN_CNT1		= 0 THEN '' ELSE 'G-CRS등급 하락 '	END	||		/* 등급하락건수1 */
         	 	CASE WHEN A.GRD_DWN_CNT2		= 0 THEN '' ELSE '신평사등급 하락 '	END	||		/* 등급하락건수2 */
@@ -15,8 +15,8 @@
         	 	CASE WHEN A.FNCL_INFO_CNT2	= 0 THEN '' ELSE '감사의견 한정'		END	||		/* 재무정보건수2 */
         	 	CASE WHEN A.CLS_QTT_CNT			= 0 THEN '' ELSE '휴폐업'						END				/* 휴폐업건수 */
            )											AS CRDT_ACDNT_OCRNC_DTLS		/* 신용사건발생일상세 */
-         , A.DEAL_NO							AS DEAL_NO									/* IBDEAL번호 */
-         , A.JDGM_DCD							AS JDGM_DCD									/* 리스크심사구분코드 */
+         , A.DEAL_NO							AS DEAL_NO									/* 딜번호 */
+         , A.JDGM_DCD							AS JDGM_DCD									/* 심사구분코드 */
          , A.MTR_DCD							AS MTR_DCD									/* 부수안건구분코드 */
          , B.MTR_NM								AS MTR_NM										/* IBDEAL명 */
          , B.INSPCT_DPRT_DCD			AS INSPCT_DPRT_DCD					/* 심사부서 */
@@ -28,7 +28,7 @@
          , A.IVTG_RSLT_CTNS       AS IVTG_RSLT_CTNS						/* 검토결과내용 */
   		FROM IBIMS604B A	/* 일별신용사건현황*/
 			 LEFT JOIN (
-						SELECT B.DEAL_NO								/* IBDEAL번호 */
+						SELECT B.DEAL_NO								/* 딜번호 */
 							   , B.JDGM_DCD								/* 심사구분코드 */
 							   , B.MTR_DCD								/* 안건구분코드 */
 							   , B.MTR_NM									/* 안건명 */
@@ -43,7 +43,7 @@
 					   				  FROM IBIMS003B C
 					   			   WHERE 1=1
 					   			     <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
-									     AND C.EMPNO = #{empno}	/*담당자사번*/
+									     AND C.EMPNO = #{empno}	/*담당자사원번호*/
 								       </if>
 								   ) C
 						 		ON B.OWN_P_ENO = C.EMPNO
@@ -59,7 +59,7 @@
 					     AND B.LAST_YN 							= '1'
 					     AND B.MTR_PRG_STTS_DCD 		IN ('309', '308', '501')
 					     <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
-							AND (B.OWN_P_ENO = #{empno} OR #{empno} IS NULL)					/*담당자사번*/
+							AND (B.OWN_P_ENO = #{empno} OR #{empno} IS NULL)					/*담당자사원번호*/
 						  </if>
 							<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtDcd)">
 							AND B.INSPCT_DPRT_DCD 			= #{inspctDprtDcd}	/*심사부서구분코드*/

@@ -45,14 +45,14 @@
  	<insert id="insertEtcCndt" parameterType="map">
 		INSERT INTO IBIMS118B
 			(
-			  DEAL_NO                          /* IBDEAL번호 */
-			, JDGM_DCD                  	   /* 리스크심사구분코드 */
+			  DEAL_NO                          /* 딜번호 */
+			, JDGM_DCD                  	   /* 심사구분코드 */
 			, MTR_DCD                   	   /* 부수안건구분코드 */
 			, ITEM_SQ                          /* 항목일련번호 */
 			, RMRK                             /* 비고 */
 			, END_DT_END_DT                    /* 기한종료일자 */
 			, HNDL_DY_TM                       /* 처리일시 */
-			, HNDL_DPRT_CD                     /* 처리부점코드 */
+			, HNDL_DPRT_CD                     /* 처리부서코드 */
 			, HNDL_P_ENO                       /* 처리자사번 */
 			, OBLG_CNTNT                       /* 의무내용 */
 			, PFRM_DT                          /* 이행일자 */
@@ -60,8 +60,8 @@
 			)
 		VALUES
 		    (
-			  #{dealNo		   }               /* IBDEAL번호 */
-			, #{jdgmDcd		   }               /* 리스크심사구분코드 */
+			  #{dealNo		   }               /* 딜번호 */
+			, #{jdgmDcd		   }               /* 심사구분코드 */
 			, #{mtrDcd		   }               /* 부수안건구분코드 */
             , (SELECT NVL(MAX(A.ITEM_SQ), 0) + 1
                  FROM IBIMS118B A
@@ -72,7 +72,7 @@
 			, NULL                             /* 비고 */
 			, NULL                    		   /* 기한종료일자 */
 			, SYSDATE                      	   /* 처리일시 */
-			, #{hndlDprtCd}                    /* 처리부점코드 */
+			, #{hndlDprtCd}                    /* 처리부서코드 */
 			, #{hndlPEno}                      /* 처리자사번 */
 			, NULL                     		   /* 의무내용 */
 			, NULL                        	   /* 이행일자 */
@@ -83,8 +83,8 @@
 	<delete id="deleteEtcCndt" parameterType="map">
 		DELETE
 		  FROM IBIMS118B
-		 WHERE DEAL_NO      = #{dealNo      }		/* IBDEAL번호 */
-		   AND JDGM_DCD     = #{jdgmDcd     }	    /* 리스크심사구분코드 */
+		 WHERE DEAL_NO      = #{dealNo      }		/* 딜번호 */
+		   AND JDGM_DCD     = #{jdgmDcd     }	    /* 심사구분코드 */
 		   AND MTR_DCD      = #{mtrDcd      }	    /* 부수안건구분코드 */
 	</delete>
 	

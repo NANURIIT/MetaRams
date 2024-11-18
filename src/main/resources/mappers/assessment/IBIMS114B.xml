@@ -7,8 +7,8 @@
 		SELECT ENTP_CD							/* 업체코드 */
 		     , ENTP_HNGL_NM						/* 업체한글명 */
 		     , RPRS_NM							/* 대표자명 */
-		     , CORP_RGST_NO						/* 법인등록번호 */
-			 , BSNS_RGST_NO						/* 사업자등록번호 */
+		     , CRNO						/* 법인등록번호 */
+			 , BZNO						/* 사업자등록번호 */
 		  FROM IBIMS114B
 		 WHERE 1=1
 		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpCd)">
@@ -20,11 +20,11 @@
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rprsNm)">
            AND RPRS_NM LIKE '%'|| #{rprsNm}|| '%'
          </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(corpRgstNo)">
-           AND CORP_RGST_NO LIKE '%'|| #{corpRgstNo} || '%'
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crno)">
+           AND CRNO LIKE '%'|| #{crno} || '%'
          </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bsnsRgstNo)">
-           AND BSNS_RGST_NO LIKE '%'|| #{bsnsRgstNo} || '%'
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(BZNO)">
+           AND BZNO LIKE '%'|| #{BZNO} || '%'
          </if>
 	</select>
 
@@ -38,20 +38,20 @@
     	       ( 
     	         ENTP_CD										/* 업체코드 */
     	       , ENTP_HNGL_NM									/* 업체한글명 */
-    	       , BSNS_RGST_NO									/* 사업자등록번호 */
-    	       , CORP_RGST_NO									/* 법인등록번호 */
-    	       , TEL_NO											/* 전화번호 */
+    	       , BZNO									/* 사업자등록번호 */
+    	       , CRNO									/* 법인등록번호 */
+    	       , TLNO											/* 전화번호 */
     	       , RGST_DT										/* 등록일자 */
     	       , HNDL_DY_TM										/* 처리일시 */
-    	       , HNDL_DPRT_CD									/* 처리부점코드 */
+    	       , HNDL_DPRT_CD									/* 처리부서코드 */
     	       , HNDL_P_ENO										/* 처리자사번 */
-    	       , DLT_F											/* 삭제여부 */
+    	       , DEL_YN											/* 삭제여부 */
     	       )
     	VALUES (
     			 #{entpCd}	
     		   , #{entpHnglNm}								
-    		   , NVL(#{bsnsRgstNo}, '')
-    		   , NVL(#{corpRgstNo}, '')									
+    		   , NVL(#{BZNO}, '')
+    		   , NVL(#{crno}, '')
 		 	   , #{cstmPhNo}							
 		 	   , TO_CHAR(SYSDATE, 'YYYYMMDD')		
 		 	   , SYSDATE	
@@ -64,23 +64,23 @@
 	<update id="updateCorpInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
 		UPDATE IBIMS114B    	        
     	   SET ENTP_HNGL_NM = #{entpHnglNm}							/* 업체한글명 */ 
-    	      , BSNS_RGST_NO = NVL(#{bsnsRgstNo}, '')		/* 사업자등록번호 */
-    	      , CORP_RGST_NO = NVL(#{corpRgstNo}, '')			/* 법인등록번호 */
-    	      , TEL_NO		  = #{cstmPhNo}						/* 전화번호 */    	       
+    	      , BZNO = NVL(#{BZNO}, '')		/* 사업자등록번호 */
+    	      , CRNO = NVL(#{crno}, '')			/* 법인등록번호 */
+    	      , TLNO		  = #{tlno}						/* 전화번호 */
     	      , HNDL_DY_TM	  = SYSDATE	 						/* 처리일시 */
-    	      , HNDL_DPRT_CD = #{hndlDprtCd}					/* 처리부점코드 */
+    	      , HNDL_DPRT_CD = #{hndlDprtCd}					/* 처리부서코드 */
     	      , HNDL_P_ENO	  = #{fstInptPEno}  				/* 처리자사번 */
           WHERE ENTP_CD       = #{entpCd}
 	</update>
 	
 	
 	<select id="getEntpInfoByNm" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
-		SELECT A.BZEP_NAME                             						    AS ENTP_HNGL_NM			/* 업체명 */ 
-		     , NVL (A.CRNO , '') 										        AS CORP_RGST_NO  		/* 법인등록번호 */ 
-		     , NVL (A.RNBN , '') 										        AS BSNS_RGST_NO  		/* 사업자등록번호 */ 
+		SELECT A.ENTP_NM                             						    AS ENTP_HNGL_NM			/* 업체명 */
+		     , NVL (A.CRNO , '') 										        AS CRNO  		/* 법인등록번호 */
+		     , NVL (A.RNBN , '') 										        AS BZNO  		/* 사업자등록번호 */
 		     , NVL (MAX(C.DPRT_NM), '')           							    AS CHRG_DPRT_NM  		/* 담당부서 */ 
 		     , NVL (MAX(C.EMP_NM), '')                						    AS CHRG_P_NM   			/* 담당자명 */ 
-		     , COUNT(DISTINCT B.CHRG_P_ENO)   									AS ENO_CNT  			/* 담당자건수 */ 
+		     , COUNT(DISTINCT B.CHRR_EMPNO)   									AS ENO_CNT  			/* 담당자건수 */
 		     , NVL (MAX(B.CSTM_NM), '')                  					    AS CSTM_NM  			/* 고객명 */ 
 		     , COUNT(DISTINCT B.CSTM_NM)      									AS CUST_CNT 			/* 고객건수 */ 
 		     , COUNT(DISTINCT RM_SQ)          									AS RM_COUNT      		/* RM활동건수 */ 
@@ -89,13 +89,13 @@
 		       LEFT OUTER JOIN IBIMS102B B
 		                    ON UPPER(B.ENTP_CD) = UPPER(A.ARDY_BZEP_NO)
 		       LEFT OUTER JOIN IBIMS003B C  
-		                    ON C.EMPNO  = B.CHRG_P_ENO               
+		                    ON C.EMPNO  = B.CHRR_EMPNO
 		 WHERE 1 = 1
 		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpCd)">
            AND A.ARDY_BZEP_NO = #{entpCd}
 		 </if>
-		   AND UPPER(A.BZEP_NAME) LIKE '%'|| UPPER(#{entpHnglNm}) || '%'
-		 GROUP BY A.BZEP_NAME , A.CRNO,A.RNBN, A.ARDY_BZEP_NO	
+		   AND UPPER(A.ENTP_NM) LIKE '%'|| UPPER(#{entpHnglNm}) || '%'
+		 GROUP BY A.ENTP_NM , A.CRNO,A.RNBN, A.ARDY_BZEP_NO
 		 ORDER BY A.ARDY_BZEP_NO 
 	</select>
 		

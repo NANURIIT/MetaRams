@@ -5,14 +5,14 @@
 	<insert id="insertSndCndt" parameterType="map">
 			INSERT INTO IBIMS117B
 				(
-				  DEAL_NO                                /* IBDEAL번호 */
-				, JDGM_DCD                               /* 리스크심사구분코드 */
+				  DEAL_NO                                /* 딜번호 */
+				, JDGM_DCD                               /* 심사구분코드 */
 				, MTR_DCD                                /* 부수안건구분코드 */
 				, ITEM_SQ                                /* 항목일련번호 */
 				, APLC_AMT                               /* 적용금액 */
 				, END_DT_END_DT                          /* 기한종료일자 */
 				, HNDL_DY_TM                             /* 처리일시 */
-				, HNDL_DPRT_CD                           /* 처리부점코드 */
+				, HNDL_DPRT_CD                           /* 처리부서코드 */
 				, HNDL_P_ENO                             /* 처리자사번 */
 				, MTRT_HLD_AMT                           /* 만기보유금액 */
 				, PFRM_DT                                /* 이행일자 */
@@ -20,8 +20,8 @@
 				)
 			VALUES
 			    (
-				  #{dealNo         }                     /* IBDEAL번호 */
-				, #{jdgmDcd        }                     /* 리스크심사구분코드 */
+				  #{dealNo         }                     /* 딜번호 */
+				, #{jdgmDcd        }                     /* 심사구분코드 */
 				, #{mtrDcd         }                     /* 부수안건구분코드 */
                 , (SELECT NVL(MAX(A.ITEM_SQ), 0) + 1
                      FROM IBIMS117B A
@@ -29,10 +29,10 @@
                       AND A.JDGM_DCD       = #{jdgmDcd}
                       AND A.MTR_DCD        = #{mtrDcd}
                   )					                     /* 항목일련번호 */
-				, #{apvlAmt        }                     /* 적용금액 */
+				, #{eprzCrdlApvlAmt        }                     /* 적용금액 */
 				, NULL                     				       /* 기한종료일자 */
 				, SYSDATE                     			     /* 처리일시 */
-				, #{hndlDprtCd     }                     /* 처리부점코드 */
+				, #{hndlDprtCd     }                     /* 처리부서코드 */
 				, #{hndlPEno       }                     /* 처리자사번 */
 				, NULL                     				       /* 만기보유금액 */
 				, NULL                     				       /* 이행일자 */
@@ -43,8 +43,8 @@
 	<delete id="deleteSndCndt" parameterType="map">
 		DELETE
 		  FROM IBIMS117B
-		 WHERE DEAL_NO      = #{dealNo      }		     /* IBDEAL번호 */
-		   AND JDGM_DCD     = #{jdgmDcd     }	       /* 리스크심사구분코드 */
+		 WHERE DEAL_NO      = #{dealNo      }		     /* 딜번호 */
+		   AND JDGM_DCD     = #{jdgmDcd     }	       /* 심사구분코드 */
 		   AND MTR_DCD      = #{mtrDcd      }	       /* 부수안건구분코드 */
 	</delete>
 
@@ -53,7 +53,7 @@
     DELETE
       FROM RAA09B
       WHERE IB_DEAL_NO 		      = #{ibDealNo}         * Deal번호 */
-        AND RISK_INSPCT_CCD     = #{riskInspctCcd}   /* 리스크심사구분코드 */
+        AND RISK_INSPCT_CCD     = #{riskInspctCcd}   /* 심사구분코드 */
         AND LST_C_CASE_CCD      = #{lstCCaseCcd}     /* 부수안건구분코드 */
         AND ITEM_SQ             = #{itemSq}          /* 항목일련번호 */
   </delete>

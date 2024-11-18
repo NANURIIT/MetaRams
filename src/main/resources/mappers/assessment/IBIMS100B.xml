@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS100BMapper">
 
-    <!-- 오늘의할일추가를 위한 (SQ)조회 -->
+    <!-- 오늘의할일추가를 위한 (SN)조회 -->
     <select id="getSeqNo" resultType="int"> 
         SELECT NVL(MAX(SN)+1,1)
           FROM IBIMS100B
@@ -21,12 +21,12 @@
 	         SELECT A.EMPNO                             									                /* 담당자 */ 
 	              , A.WORK_DCD                         	 									                /* 작업구분코드 */
 	              , CASE WHEN A.EMPNO      =  #{empno} THEN 1 ELSE 0 END AS CNT1		      /* 결재대기건수 */
-	              , CASE WHEN A.RQST_EMPNO != #{empno} THEN 1 ELSE 0 END AS CNT2 		      /* 결재진행건수 */
+	              , CASE WHEN A.RGST_EMPNO != #{empno} THEN 1 ELSE 0 END AS CNT2 		      /* 결재진행건수 */
 	              , 0    AS CNT3 
 	           FROM IBIMS100B A
 	          WHERE 1=1
 	            AND A.WORK_DCD   = '01' 													                        /* 결재 */
-	            AND (A.RQST_EMPNO    = #{empno} OR A.EMPNO = #{empno})
+	            AND (A.RGST_EMPNO    = #{empno} OR A.EMPNO = #{empno})
 	            AND A.PRCS_DT IS NULL
 	          UNION ALL
 	         SELECT A.EMPNO                             									                /* 담당자 */
@@ -58,7 +58,7 @@
                ) AS WORK_DCD_NM
              , A.STDR_DT                             /* 기준일자 */
              , A.RQST_TM                             /* 등록시각 */
-             , A.RQST_EMPNO                          /* 등록사원번호 */
+             , A.RGST_EMPNO                          /* 등록사원번호 */
              , (
                 SELECT EMP_NM
                   FROM IBIMS003B
@@ -114,7 +114,7 @@
                ) AS WORK_DCD_NM
             , D.STDR_DT                            
             , D.RQST_TM                            
-            , D.RQST_EMPNO
+            , D.RGST_EMPNO
              , (
                 SELECT EMP_NM
                   FROM IBIMS003B
@@ -160,7 +160,7 @@
                 , SN                                      /* 일련번호 */
                 , WORK_DCD                                /* 작업구분코드 */
                 , WORK_CTNS                               /* 작업내용 */
-                , RQST_EMPNO                              /* 등록사원번호 */
+                , RGST_EMPNO                              /* 등록사원번호 */
                 , RQST_DT                                 /* 요청일자 */
                 , RQST_TM                                 /* 등록시각 */
                 , MENU_ID                                 /* 메뉴ID */
@@ -169,7 +169,7 @@
                 , PRCS_EMPNO                              /* 처리사원번호 */
                 , SPV_YN                                  /* 대결여부 */
                 , ENTP_NM                                 /* 업체명 */
-                , RMRK                                    /* 비고(메뉴별조회KEY) */
+                , RMRK                                    /* 비고 */
                 , DEL_YN                                  /* 삭제여부 */
                 , HND_DETL_DTM                            /* 조작상세일시 */
                 , HND_EMPNO                               /* 조작사원번호 */
@@ -185,7 +185,7 @@
                </if>
                , #{workDcd}                               /* 작업구분코드 */
                , #{workCtns}                              /* 작업내용 */
-               , #{rqstEmpno}                             /* 등록사원번호 */
+               , #{rgstEmpno}                             /* 등록사원번호 */
                , TO_CHAR(SYSDATE, 'YYYYMMDD')             /* 요청일자 */
                , TO_CHAR(SYSDATE, 'HH24MISS')             /* 등록시각 */
                , #{menuId}                                /* 메뉴ID */
@@ -194,7 +194,7 @@
                , #{prcsEmpno}                             /* 처리사원번호 */
                , '0'                                      /* 대결여부 */
                , #{entpNm}                                /* 업체명 */
-               , #{rmrk}                                  /* 비고(메뉴별조회KEY) */
+               , #{rmrk}                                  /* 비고 */
                , '0'                                      /* 삭제여부 */
                , SYSDATE                           		    /* 조작상세일시 */
                , #{hndEmpno}                              /* 조작사원번호 */
@@ -234,7 +234,7 @@
           AND SN                                      = #{sn}      								              /* 일련번호 */
           </if>
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rmrk)">
-          AND RMRK            				     	  LIKE '%'|| #{rmrk} || '%'                         /* 비고(메뉴별조회KEY) */    
+          AND RMRK            				     	  LIKE '%'|| #{rmrk} || '%'                         /* 비고 */
           </if> 
 	</update> 
 

@@ -23,7 +23,7 @@
              , A.NTS_APVL_NO
              , A.ELC_PRUF_YN
              , A.VHCL_RGST_CD
-             , A.NS_FNS_CD
+             , A.NS_FND_CD
              , A.PRDT_CD
              , A.PROJ_ID
              , A.CRRY_CD
@@ -68,7 +68,7 @@
               , NTS_APVL_NO
               , ELC_PRUF_YN
               , VHCL_RGST_CD
-              , NS_FNS_CD
+              , NS_FND_CD
               , PRDT_CD
               , PROJ_ID
               , CRRY_CD
@@ -101,7 +101,7 @@
               , #{ntsApvlNo}
               , #{elcPrufYn}
               , #{vhclRgstCd}
-              , #{nsFnsCd}
+              , #{nsFndCd}
               , #{prdtCd}
               , #{projId}
               , #{crryCd}
@@ -136,7 +136,7 @@
            , NTS_APVL_NO = #{ntsApvlNo}
            , ELC_PRUF_YN = #{elcPrufYn}
            , VHCL_RGST_CD = #{vhclRgstCd}
-           , NS_FNS_CD = #{nsFnsCd}
+           , NS_FND_CD = #{nsFndCd}
            , PRDT_CD = #{prdtCd}
            , PROJ_ID = #{projId}
            , CRRY_CD = #{crryCd}

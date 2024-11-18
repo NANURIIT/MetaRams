@@ -46,7 +46,7 @@
              , CASE WHEN A.OPN_PRC_VAL_AMT - A.MTRT_HLD_AMT <![CDATA[<=]]> 0 THEN 0
                     ELSE NVL(A.OPN_PRC_VAL_AMT - A.MTRT_HLD_AMT, 0)
                 END AS NRPY_RA	                                                                     /* 미해소잔액 */
-             , A.DPRT_CD		                                                                         /* 부서코드 */
+             , A.BDCD		                                                                         /* 부서코드 */
              , A.DPRT_NM		                                                                         /* 부서이름 */
              , A.EMP_NM			                                                                         /* 담당자이름 */
              , (SELECT CD_VL_NM
@@ -83,10 +83,10 @@
                       , NVL(B.CRNCY_BK_AMT, 0)  AS OPN_PRC_VAL_AMT
                       , A.PFRM_DT
                       , A.RPR_PRGRS_ST_CD
-                      , A.DPRT_CD
-                      , (SELECT DPRT_NM FROM RAA98A WHERE DPRT_CD = A.DPRT_CD) AS DPRT_NM
-                      , A.CHRG_P_ENO
-                      , (SELECT EMP_NM FROM RAA92B WHERE ENO = A.CHRG_P_ENO) AS EMP_NM
+                      , A.BDCD
+                      , (SELECT DPRT_NM FROM RAA98A WHERE BDCD = A.BDCD) AS DPRT_NM
+                      , A.CHRR_EMPNO
+                      , (SELECT EMP_NM FROM RAA92B WHERE ENO = A.CHRR_EMPNO) AS EMP_NM
                       , A.INSPCT_DPRT_CCD
                       , A.OWN_P_ENO
                       , (SELECT EMP_NM FROM RAA92B WHERE ENO = A.OWN_P_ENO) AS OWN_EMP_NM
@@ -120,8 +120,8 @@
                         , NULL AS RCG_DT
                         , NULL AS CNFR_DT1
                         , NULL AS CNFR_DT2
-                        , A.DPRT_CD
-                        , A.CHRG_P_ENO
+                        , A.BDCD
+                        , A.CHRR_EMPNO
                         , A.INSPCT_DPRT_CCD
                         , A.OWN_P_ENO
                         , A.INVST_CRNCY_CD
@@ -174,8 +174,8 @@
                         , TO_CHAR(A.APRV_DY_TM2, 'YYYYMMDD') AS RCG_DT
                         , TO_CHAR(A.APRV_DY_TM3, 'YYYYMMDD') AS CNFR_DT1
                         , TO_CHAR(A.APRV_DY_TM4, 'YYYYMMDD') AS CNFR_DT2
-                        , B.DPRT_CD
-                        , B.CHRG_P_ENO
+                        , B.BDCD
+                        , B.CHRR_EMPNO
                         , B.INSPCT_DPRT_CCD
                         , B.OWN_P_ENO
                         , B.INVST_CRNCY_CD
@@ -214,14 +214,14 @@
                ) B
                ON A.RISK_RCG_NO = B.RISK_RCG_NO
         ) A
-        WHERE (CASE WHEN #{dprtCd}        = '' THEN NULL ELSE FALSE END IS NULL OR A.DPRT_CD          = UPPER(#{dprtCd}))
-          AND (CASE WHEN #{chrgPEno}      = '' THEN NULL ELSE FALSE END IS NULL OR A.CHRG_P_ENO       = UPPER(#{chrgPEno}))
+        WHERE (CASE WHEN #{dbcd}        = '' THEN NULL ELSE FALSE END IS NULL OR A.BDCD          = UPPER(#{dbcd}))
+          AND (CASE WHEN #{chrrEmpno}      = '' THEN NULL ELSE FALSE END IS NULL OR A.CHRR_EMPNO       = UPPER(#{chrrEmpno}))
           AND (CASE WHEN #{inspctDprtCcd} = '' THEN NULL ELSE FALSE END IS NULL OR A.INSPCT_DPRT_CCD  = UPPER(#{inspctDprtCcd}))
           AND (CASE WHEN #{ownPEno}       = '' THEN NULL ELSE FALSE END IS NULL OR A.OWN_P_ENO        = UPPER(#{ownPEno}))
           AND (CASE WHEN #{rprPrgrsStCd}  = '' THEN NULL ELSE FALSE END IS NULL OR A.RPR_PRGRS_ST_CD  = UPPER(#{rprPrgrsStCd}))
           AND (CASE WHEN #{ibDealNm}      = '' THEN NULL ELSE FALSE END IS NULL OR UPPER(A.IB_DEAL_NM) LIKE '%' || UPPER(#{ibDealNm}) || '%')
           AND #{PFRM_PLAN_YN} = 'N' OR (#{PFRM_PLAN_YN} = 'Y' AND A.PFRM_PLAN_YN = #{PFRM_PLAN_YN})
-     ORDER BY A.DPRT_CD
+     ORDER BY A.BDCD
             , A.IB_DEAL_NO
             , A.RISK_INSPCT_CCD
             , A.LST_C_CASE_CCD
@@ -233,7 +233,7 @@
         SELECT RPR_PRGRS_ST_CD
           FROM IBIMS605B
          WHERE DEAL_NO 			  = #{dealNo}           /* Deal번호 */
-           AND JDGM_DCD  		  = #{jdgmDcd}    	    /* 리스크심사구분코드 */
+           AND JDGM_DCD  		  = #{jdgmDcd}    	    /* 심사구분코드 */
            AND MTR_DCD   		  = #{mtrDcd}      	    /* 부수안건구분코드 */
            AND ITEM_SQ        = #{itemSq}           /* 항목일련번호 */
            AND OBLG_PFRM_CCD 	= #{oblgPfrmCcd}      /* 의무이행구분코드 */
@@ -333,7 +333,7 @@
              , HND_TR_ID         = #{hndTrId}                
              , GUID              = #{guid}                   
          WHERE DEAL_NO 			 = #{dealNo}        /* Deal번호 */
-           AND JDGM_DCD  		 = #{jdgmDcd}    		/* 리스크심사구분코드 */
+           AND JDGM_DCD  		 = #{jdgmDcd}    		/* 심사구분코드 */
            AND MTR_DCD   		 = #{mtrDcd}     		/* 부수안건구분코드 */
            AND ITEM_SQ       = #{itemSq}        /* 항목일련번호 */
            AND OBLG_PFRM_CCD = #{oblgPfrmCcd}   /* 의무이행구분코드 */
@@ -357,7 +357,7 @@
              , HND_TR_ID           = #{hndTrId}              
              , GUID                = #{guid}                   
         WHERE DEAL_NO 		   	   = #{dealNo}        /* Deal번호 */
-          AND JDGM_DCD      	   = #{jdgmDcd}     	/* 리스크심사구분코드 */
+          AND JDGM_DCD      	   = #{jdgmDcd}     	/* 심사구분코드 */
           AND MTR_DCD       	   = #{mtrDcd}       	/* 부수안건구분코드 */
           AND ITEM_SQ            = #{itemSq}        /* 항목일련번호 */
           AND OBLG_PFRM_CCD      = #{oblgPfrmCcd}   /* 의무이행구분코드 */
@@ -375,7 +375,7 @@
              , HND_TR_ID        = #{hndTrId}              
              , GUID             = #{guid}    
          WHERE DEAL_NO 			  = #{dealNo}         /* Deal번호 */
-           AND JDGM_DCD  		  = #{jdgmDcd}    	  /* 리스크심사구분코드 */
+           AND JDGM_DCD  		  = #{jdgmDcd}    	  /* 심사구분코드 */
            AND MTR_DCD   		  = #{mtrDcd}      	  /* 부수안건구분코드 */
            AND ITEM_SQ        = #{itemSq}         /* 항목일련번호 */
            AND OBLG_PFRM_CCD 	= #{oblgPfrmCcd}    /* 의무이행구분코드 */
@@ -397,7 +397,7 @@
              , HND_TR_ID           = #{hndTrId}              
              , GUID                = #{guid}  
          WHERE DEAL_NO 		   	   = #{dealNo}         /* Deal번호 */
-           AND RISK_INSPCT_CCD   = #{jdgmDcd}    	   /* 리스크심사구분코드 */
+           AND RISK_INSPCT_CCD   = #{jdgmDcd}    	   /* 심사구분코드 */
            AND LST_C_CASE_CCD    = #{mtrDcd}     	   /* 부수안건구분코드 */
            AND ITEM_SQ           = #{itemSq}         /* 항목일련번호 */
            AND OBLG_PFRM_CCD 	   = #{oblgPfrmCcd}    /* 의무이행구분코드 */
@@ -415,7 +415,7 @@
              , HND_TR_ID           = #{hndTrId}              
              , GUID                = #{guid}  
          WHERE DEAL_NO 		   	   = #{dealNo}         /* Deal번호 */
-           AND RISK_INSPCT_CCD   = #{jdgmDcd}    	   /* 리스크심사구분코드 */
+           AND RISK_INSPCT_CCD   = #{jdgmDcd}    	   /* 심사구분코드 */
            AND LST_C_CASE_CCD    = #{mtrDcd}     	   /* 부수안건구분코드 */
            AND ITEM_SQ           = #{itemSq}         /* 항목일련번호 */
            AND OBLG_PFRM_CCD 	   = #{oblgPfrmCcd}    /* 의무이행구분코드 */
@@ -433,7 +433,7 @@
              , HND_TR_ID           	  = #{hndTrId}              
              , GUID                	  = #{guid}  
          WHERE DEAL_NO 		   	    = #{dealNo}       /* Deal번호 */
-           AND RISK_INSPCT_CCD    = #{jdgmDcd}    	/* 리스크심사구분코드 */
+           AND RISK_INSPCT_CCD    = #{jdgmDcd}    	/* 심사구분코드 */
            AND LST_C_CASE_CCD     = #{mtrDcd}     	/* 부수안건구분코드 */
            AND ITEM_SQ            = #{itemSq}       /* 항목일련번호 */
            AND OBLG_PFRM_CCD 	    = #{oblgPfrmCcd}  /* 의무이행구분코드 */

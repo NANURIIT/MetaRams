@@ -23,15 +23,15 @@
              , SN                                           /*  일련번호  */
              , (SELECT DPRT_NM
                   FROM RAA98A
-                WHERE DPRT_CD = MNGM_BDCD) AS DPRT_NM
+                WHERE BDCD = MNGM_BDCD) AS DPRT_NM
              , (SELECT EMP_NM
                   FROM IBIMS003B
                  WHERE ENO = CHRR_EMPNO) AS EMP_NM
              , NVL((SELECT ENTP_HNGL_NM
                   FROM RAB97B
-                 WHERE BSNS_RGST_NO = PTXT_TR_OTHR_DSCM_NO
-                   AND BSNS_RGST_NO IS NOT NULL
-                   AND BSNS_RGST_NO != ''
+                 WHERE BZNO = PTXT_TR_OTHR_DSCM_NO
+                   AND BZNO IS NOT NULL
+                   AND BZNO != ''
                 ), '') AS ENTP_HNGL_NM
              , '' AS INSPCT_PRGRS_ST_CD_NM
              , '' AS INSPCT_PRGRS_ST_CD
@@ -100,8 +100,8 @@
                 , INTR_ERN_AMT         /*  이자수익금액  */
                 , CRNCY_CD             /*  통화코드  */
                 , CRNCY_AMT            /*  통화금액  */
-                , EXP_DT               /*  기표일자  */
-                , MTRT_DT              /*  만기일자  */
+                , BALT_DT              /*  기표일자  */
+                , EXP_DT               /*  만기일자 */
                 , RGST_DT              /*  등록일자  */
                 , DECD_DT              /*  결재일자  */
                 , DECD_SN              /*  결재일련번호  */
@@ -111,7 +111,7 @@
                 , DCFC_EMP_NO          /*  결재자사원번호  */
                 , CORPTN_TYP_CD
                 , BOOK_CD
-                , INVST_GDS_DTLS_DVD_CD
+                , INV_PRDT_DTLS_DVD_CD
                 , BNK_BD
                 , INVST_CTY
                 , BZSACAL_CD
@@ -184,8 +184,8 @@
                , #{intrErnAmt}         /*  이자수익금액  */
                , #{crncyCd}            /*  통화코드  */
                , #{crncyAmt}           /*  통화금액  */
-               , #{expDt}              /*  기표일자  */
-               , #{mtrtDt}             /*  만기일자  */
+               , #{baltDt}             /*  기표일자  */
+               , #{expDt}              /*  만기일자  */
                , #{rgstDt}             /*  등록일자  */
                , #{decdDt}             /*  결재일자  */
                , #{decdSn}             /*  결재일련번호  */
@@ -195,7 +195,7 @@
                , #{dcfcEmpNo}          /*  결재자사원번호  */
                , #{corptnTypCd}
                , #{bookCd}
-               , #{invstGdsDtlsDvdCd}
+               , #{invPrdtDtlsDvdCd}
                , #{bnkBd}
                , #{invstCty}
                , #{bzsacalCd}
@@ -241,7 +241,7 @@
             , INV_WY_CD           			/*  투자방식코드  */
             , PTXT_TR_OTHR_DSCM_NO			/*  거래상대방식별번호  */
             , NVL((
-              SELECT MAX(BZEP_NAME)
+              SELECT MAX(ENTP_NM)
                 FROM IBIMS010B
                 WHERE ARDY_BZEP_NO = PTXT_TR_OTHR_DSCM_NO
               ), '') AS PTXT_TR_OTHR_DSCM_NM
@@ -283,16 +283,16 @@
             , INTR_ERN_AMT        			/*  이자수익금액  */
             , CRNCY_CD            			/*  통화코드  */
             , CRNCY_AMT           			/*  통화금액  */
-            , MTRT_DT             			/*  기표일자  */
+            , BALT_DT             			/*  기표일자  */
             , EXP_DT              			/*  만기일자  */
             , RGST_DT             			/*  등록일자  */
             , DECD_DT             			/*  결재일자  */
             , DECD_SN             			/*  결재일련번호  */
             , MNGM_BDCD           			/*  관리부점코드  */
             , (
-                SELECT MAX(DPRT_CD)
+                SELECT MAX(BDCD)
                   FROM IBIMS003B
-                WHERE DPRT_CD = MNGM_BDCD
+                WHERE BDCD = MNGM_BDCD
               ) AS DPRT_NM
             , CHRR_EMPNO          			/*  담당자사원번호  */
             , (
@@ -305,7 +305,7 @@
             , DCFC_EMP_NO         			   /*  결재자사원번호  */
             , CORPTN_TYP_CD                /*  협업유형코드  */
             , BOOK_CD                      /*  북코드  */
-            , INVST_GDS_DTLS_DVD_CD        /*  투자상품상세분류코드  */
+            , INV_PRDT_DTLS_DVD_CD        /*  투자상품상세분류코드  */
             , BNK_BD                       /*  은행부점  */
             , INVST_CTY                    /*  투자도시  */
             , BZSACAL_CD                   /*  기업규모코드  */
@@ -315,7 +315,7 @@
             , LST_MKT                      /*  상장시장  */
             , CSUC_CMP_DSCM_NO             /*  시공사식별번호  */
             , NVL((
-              SELECT MAX(BZEP_NAME)
+              SELECT MAX(ENTP_NM)
                 FROM IBIMS010B
                 WHERE ARDY_BZEP_NO = CSUC_CMP_DSCM_NO
               ), '') AS CSUC_CMP_DSCM_NM
@@ -346,11 +346,11 @@
              , s101b.SN						        /*  일련번호  */
              , s101b.DEAL_NM						  /*  딜명  */
              , s101b.RGST_DT						  /*  등록일자  */
-             , s101b.CHRR_EMPNO						/*  담당자사번  */
+             , s101b.CHRR_EMPNO						/*  담당자사원번호  */
              , s003b.EMP_NM							  /*  담당자명  */
-             , s003b.DPRT_CD						  /*  부서코드  */
+             , s003b.BDCD						  /*  부서코드  */
              , s003b.DPRT_NM						  /*  부서코드명  */
-             , s010b.BZEP_NAME   					/*  업체한글명  */
+             , s010b.ENTP_NM   					/*  업체한글명  */
           FROM IBIMS101B s101b
           LEFT JOIN IBIMS003B s003b
                ON s101b.CHRR_EMPNO				= s003b.EMPNO
@@ -399,7 +399,7 @@
              , B.DEAL_NM                                               /*  딜명  */
              , NVL(B.ORTN_FND_CD, '') AS ORTN_FND_CD                   /*  운용펀드코드  */
              , B.MNGM_BDCD                                             /*  관리부점코드  */
-             , (SELECT MAX(DPRT_NM) FROM IBIMS003B WHERE DPRT_CD = B.MNGM_BDCD) AS MNGM_BDCD_NM
+             , (SELECT MAX(DPRT_NM) FROM IBIMS003B WHERE BDCD = B.MNGM_BDCD) AS MNGM_BDCD_NM
              , B.CHRR_EMPNO                                            /*  담당자사원번호  */
              , (SELECT MAX(EMP_NM) FROM IBIMS003B WHERE EMPNO = B.CHRR_EMPNO) AS CHRR_EMPNM
              , NVL(
@@ -479,13 +479,13 @@
                   WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '6' THEN '실행'
                   ELSE 'NOT'
              END                        AS MTR_PRG_STTS_NM                  
-            ,C.APVL_AMT                                     
+            ,C.EPRZ_CRDL_APVL_AMT
             ,C.EPRZ_CRDL_APVL_AMT                           
             ,C.LOAN_AMT                                     
     	      ,C.DEAL_EXC_BLCE                                
     	      ,C.EPRZ_CRDL_INTR_BNAO_DCD                      
     	      ,C.TR_OTHR_DSCM_NO                              
-            ,C.BZEP_NAME        
+            ,C.ENTP_NM
             ,C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD          /* 상환회차 */                 
             /*,C.PRG_STTS_CD || '-' || CD4.CD_VL_NM   AS PRG_STTS_CD      
             ,C.IB_PRDT_CLSF_CD || '-' || CD5.CD_VL_NM  AS IB_PRDT_CLSF_CD   
@@ -523,10 +523,10 @@
              ,A.PRDT_CD
              ,A.PRDT_NM
              ,A.PRDT_LCLS_CD
-             ,A.APVL_AMT
+             ,A.EPRZ_CRDL_APVL_AMT
              ,A.SN
              ,A.TR_OTHR_DSCM_NO
-             ,C.BZEP_NAME
+             ,C.ENTP_NM
              ,A.IB_PRDT_CLSF_CD
              ,A.RQS_KND_CD
              ,A.PRG_STTS_CD

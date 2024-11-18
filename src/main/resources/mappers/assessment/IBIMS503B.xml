@@ -4,7 +4,7 @@
 	
 	<select id="getInfraInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS503BVO">
 		SELECT DEAL_NO                                 /* 딜번호 */
-         , SQ				         			                 /* 일련번호 */
+         , SN				         			                 /* 일련번호 */
          , INV_FNN_BUSI_WY_DCD                     /* 투자금융사업방식구분코드 */
          , BUSI_SCL_CNTN                           /* 사업규모내용 */
          , BUSI_LCSI_DT                            /* 사업인허가일자 */
@@ -36,8 +36,8 @@
       FROM IBIMS503B
      WHERE 1=1
        AND DEAL_NO    = #{dealNo}
-       AND SQ					= (
-						             SELECT MAX(SQ)
+       AND SN					= (
+						             SELECT MAX(SN)
 						               FROM IBIMS503B
 						              WHERE DEAL_NO = #{dealNo}
 						            )                                        
@@ -47,7 +47,7 @@
 		INSERT INTO IBIMS503B 
                (
                   DEAL_NO                                 	 /* 딜번호 */
-                , SQ                                      	 /* 일련번호 */
+                , SN                                      	 /* 일련번호 */
                 , INV_FNN_BUSI_WY_DCD                     	 /* 투자금융사업방식구분코드 */
                 , BUSI_SCL_CNTN                           	 /* 사업규모내용 */
                 , BUSI_LCSI_DT                            	 /* 사업인허가일자 */
@@ -80,11 +80,11 @@
         VALUES (
                  #{dealNo}                                   		       /* 딜번호 */
                , (
-                 SELECT CASE WHEN A.SQ = 0 THEN '0000000001'
+                 SELECT CASE WHEN A.SN = 0 THEN '0000000001'
                              ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
                    FROM (
-                    		  SELECT COUNT(SQ)  AS SQ
-                               , MAX(SQ)    AS INCREMENT_SQ
+                    		  SELECT COUNT(SN)  AS SN
+                               , MAX(SN)    AS INCREMENT_SQ
                              FROM IBIMS502B
                         ) A
        			     )                                       	  		       /* 일련번호 */

@@ -4,7 +4,7 @@
 
 	<select id="getInvstInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS505BVO">
 	 SELECT DEAL_NO                                 /* 딜번호 */
-         , SQ				              		         /* 일련번호 */
+         , SN				              		         /* 일련번호 */
          , INV_FNN_TRGT_ASST_DCD                   /* 투자금융대상자산구분코드 */
          , BRWR_NTN_NM                             /* 차주국가명 */
          , TOT_BUSI_CT                             /* 총사업비용 */
@@ -38,8 +38,8 @@
       FROM IBIMS505B
      WHERE 1=1
        AND DEAL_NO    = #{dealNo}
-       AND SQ			 = (
-							    SELECT MAX(SQ)
+       AND SN			 = (
+							    SELECT MAX(SN)
 							      FROM IBIMS505B
 							     WHERE DEAL_NO = #{dealNo}
 		 						)       
@@ -49,7 +49,7 @@
 		INSERT INTO IBIMS505B 
                (
                   DEAL_NO                                 /* 딜번호 */
-                , SQ                                      /* 일련번호 */
+                , SN                                      /* 일련번호 */
                 , INV_FNN_TRGT_ASST_DCD                   /* 투자금융대상자산구분코드 */
                 , BRWR_NTN_NM                             /* 차주국가명 */
                 , TOT_BUSI_CT                             /* 총사업비용 */
@@ -84,11 +84,11 @@
         VALUES (
                 #{dealNo}                                    /* 딜번호 */
              , (
-                SELECT CASE WHEN A.SQ = 0 THEN '0000000001'
+                SELECT CASE WHEN A.SN = 0 THEN '0000000001'
                             ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
                   FROM (
-                   		  SELECT COUNT(SQ)  AS SQ
-                               , MAX(SQ)    AS INCREMENT_SQ
+                   		  SELECT COUNT(SN)  AS SN
+                               , MAX(SN)    AS INCREMENT_SQ
                             FROM IBIMS502B
                        ) A
        			)                                             /* 일련번호 */
@@ -127,8 +127,8 @@
 	
 	<update id="updateInvstInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS505BDTO">
        UPDATE IBIMS505B
-          SET SQ                                      = (
-													                 	 SELECT A.SQ
+          SET SN                                      = (
+													                 	 SELECT A.SN
 													                 	   FROM IBIMS505B A
 													                 	  WHERE A.DEAL_NO = #{dealNo}
 													                 	)                                     	  /* 일련번호 */
