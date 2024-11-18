@@ -31,7 +31,7 @@
                  WHERE CMNS_CD_GRP = 'R006'                     
                    AND CD_VL_ID = A.RSLTN_RSLT_CD) AS RSLTN_RSLT_CD                                 /* 결의결과 */
              , A.RSLT_CNTNT		                                                                      /* 승인조건 */
-             , A.INVST_CRNCY_CD	                                                                    /* 승인금액통화코드 */
+             , A.INVST_CRRY_CD	                                                                    /* 승인금액통화코드 */
              , A.RCG_AMT		                                                                        /* 승인금액 */
              , A.APLC_AMT		                                                                        /* 셀다운 대상금액 */
              , A.END_DT_END_DT	                                                                    /* 셀다운 기한 */
@@ -75,7 +75,7 @@
                       , A.RSLTN_DT
                       , A.RSLT_CNTNT
                       , A.RSLTN_RSLT_CD
-                      , A.INVST_CRNCY_CD
+                      , A.INVST_CRRY_CD
                       , A.RCG_AMT
                       , A.END_DT_END_DT
                       , A.APLC_AMT
@@ -124,7 +124,7 @@
                         , A.CHRR_EMPNO
                         , A.INSPCT_DPRT_CCD
                         , A.OWN_P_ENO
-                        , A.INVST_CRNCY_CD
+                        , A.INVST_CRRY_CD
                         , A.RISK_RCG_NO
                         , B.INSPCT_CNFRNC_CCD
                         , B.RSLTN_DT
@@ -178,7 +178,7 @@
                         , B.CHRR_EMPNO
                         , B.INSPCT_DPRT_CCD
                         , B.OWN_P_ENO
-                        , B.INVST_CRNCY_CD
+                        , B.INVST_CRRY_CD
                         , B.RISK_RCG_NO
                         , C.INSPCT_CNFRNC_CCD
                         , C.RSLTN_DT

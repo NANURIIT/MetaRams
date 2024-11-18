@@ -116,7 +116,7 @@
              , A.PUCR_INT_AMT              /* 환출이자금액 */
              , A.TR_FEE_AMT                /* 거래수수료금액 */
              , A.COST_AMT                  /* 비용금액 */
-             , A.TR_CRCY_CD                /* 거래통화코드 */
+             , A.TR_CRRY_CD                /* 거래통화코드 */
              , A.KRW_TRSL_RT              /* 원화환산율 */
              , A.KRW_TRSL_TR_PRCA         /* 원화환산거래원금 */
              , A.KRW_TRSL_TR_INT_AMT      /* 원화환산거래이자금액 */
@@ -235,7 +235,7 @@
             , A.PUCR_INT_AMT              /* 환출이자금액 */
             , A.TR_FEE_AMT                /* 거래수수료금액 */
             , A.COST_AMT                  /* 비용금액 */
-            , A.TR_CRCY_CD                /* 거래통화코드 */
+            , A.TR_CRRY_CD                /* 거래통화코드 */
             , A.KRW_TRSL_RT              /* 원화환산율 */
             , A.KRW_TRSL_TR_PRCA         /* 원화환산거래원금 */
             , A.KRW_TRSL_TR_INT_AMT      /* 원화환산거래이자금액 */
@@ -385,7 +385,7 @@
 			, PUCR_INT_AMT				/* 환출이자금액          */
 			, TR_FEE_AMT				/* 거래수수료금액        */
 			, COST_AMT					/* 비용금액             */
-			, TR_CRCY_CD				/* 거래통화코드          */
+			, TR_CRRY_CD				/* 거래통화코드          */
 			, KRW_TRSL_RT				/* 원화환산율           */
 			, KRW_TRSL_TR_PRCA			/* 원화환산거래원금      */
 			, KRW_TRSL_TR_INT_AMT		/* 원화환산거래이자금액   */
@@ -484,7 +484,7 @@
                   ,PUCR_INT_AMT              /* 환출이자금액 */
                   ,TR_FEE_AMT                /* 거래수수료금액 */
                   ,COST_AMT                  /* 비용금액 */
-                  ,TR_CRCY_CD                /* 거래통화코드 */
+                  ,TR_CRRY_CD                /* 거래통화코드 */
                   ,KRW_TRSL_RT              /* 원화환산율 */
                   ,KRW_TRSL_TR_PRCA         /* 원화환산거래원금 */
                   ,KRW_TRSL_TR_INT_AMT      /* 원화환산거래이자금액 */
@@ -571,7 +571,7 @@
                   ,#{pucrIntAmt}    /* 환출이자금액 */
                   ,#{trFeeAmt}    /* 거래수수료금액 */
                   ,#{costAmt}    /* 비용금액 */
-                  ,#{trCrcyCd}    /* 거래통화코드 */
+                  ,#{trCrryCd}    /* 거래통화코드 */
                   ,#{krwTrslRt}    /* 원화환산율 */
                   ,#{krwTrslTrPrca}    /* 원화환산거래원금 */
                   ,#{krwTrslTrIntAmt}    /* 원화환산거래이자금액 */
@@ -668,7 +668,7 @@
               ,PUCR_INT_AMT              = #{pucrIntAmt}          /* 환출이자금액 */
               ,TR_FEE_AMT                = #{trFeeAmt}            /* 거래수수료금액 */
               ,COST_AMT                  = #{costAmt}             /* 비용금액 */
-              ,TR_CRCY_CD                = #{trCrcyCd}            /* 거래통화코드 */
+              ,TR_CRRY_CD                = #{trCrryCd}            /* 거래통화코드 */
               ,KRW_TRSL_RT              = #{krwTrslRt}          /* 원화환산율 */
               ,KRW_TRSL_TR_PRCA         = #{krwTrslTrPrca}      /* 원화환산거래원금 */
               ,KRW_TRSL_TR_INT_AMT      = #{krwTrslTrIntAmt}    /* 원화환산거래이자금액 */
@@ -760,10 +760,10 @@
            , ''           AS  GoodGame          /* 입출금구분 (정체모름) */
            , T1.DEAL_TR_AMT                     /* 거래금액  410B */
            , T1.FNDS_DVSN_CD                    /* 자금구분  410B */
-           , T1.TR_CRCY_CD                      /* 통화코드  410B */
+           , T1.TR_CRRY_CD                      /* 통화코드  410B */
            , T1.DEAL_TR_PRCA                    /* 거래원금  410B */
            , T1.FEE_TOT_AMT                     /* 수수료  410B */
-           , T1.TR_CRCY_CD                      /* 통화구분  410B */
+           , T1.TR_CRRY_CD                      /* 통화구분  410B */
            , T1.FNDS_DVSN_CD                    /* 자금구분  410B */
            , T1.RCTM_ISTT_CD                    /* 금융기관  410B */
            , T7.RQST_STFNO                      /* 담당자 452B */
@@ -788,7 +788,7 @@
               SELECT MAX(STDR_EXRT)
                 FROM IBIMS994B
                WHERE 1=1
-                 AND CRNCY_CD = T1.TR_CRCY_CD
+                 AND CRRY_CD = T1.TR_CRRY_CD
              )           AS  STDR_EXRT          /* 환율 */
            , T6.BNK_BD                          /* 은행부실점명 */
            , T1.RCTM_BANO                       /* 계좌번호  410B */
@@ -839,11 +839,11 @@
          <if test="trObjtBsnNo != ''">
          AND T1.TR_OBJT_BSN_NO = #{trObjtBsnNo} /* 거래처번호 */
          </if>
-         <if test="trCrcyCd != ''">
-         AND T1.TR_CRCY_CD = #{trCrcyCd} /* 통화구분 */
+         <if test="trCrryCd != ''">
+         AND T1.TR_CRRY_CD = #{trCrryCd} /* 통화구분 */
          </if>
          <!-- <if test=" != ''">
-         AND T1.TR_CRCY_CD = #{trCrcyCd} /* 업무구분 */
+         AND T1.TR_CRRY_CD = #{trCrryCd} /* 업무구분 */
          </if> -->
     </select>
 </mapper>

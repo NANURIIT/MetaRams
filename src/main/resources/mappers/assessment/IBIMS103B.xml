@@ -683,7 +683,7 @@
              , s003b_2.EMP_NM AS CHRG_P_NM
              , s003b_2.BDCD AS CHRG_P_DPRT_CD
              , s003b_2.DPRT_NM AS CHRG_P_DPRT_NM
-             , s101b.CRNCY_CD                                        /* 통화코드 */
+             , s101b.CRRY_CD                                        /* 통화코드 */
              , s114b.DMS_CRDT_GRD_DCD                                /* 국내신용등급구분코드 */
              , s002b_4.CD_VL_NM AS DMS_CRDT_GRD_DCD_NM
              , s101b.DEAL_NM                                         /* 딜명 */
@@ -748,7 +748,7 @@
            AND s003b_1.BDCD = #{dbcd}
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crncyCd)">
-           AND s101b.CRNCY_CD = #{crncyCd}
+           AND s101b.CRRY_CD = #{crncyCd}
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND s101b.DEAL_NO LIKE '%'|| #{dealNo} || '%'

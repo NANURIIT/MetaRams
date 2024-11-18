@@ -29,7 +29,7 @@
 			  , B.INV_FNN_OPRT_TY_DCD                               /*  투자금융운영형태구분코드 */
 			  , B.INV_FNN_ASST_CLSF_CD                              /*  투자금융자산분류코드 */
 			  , B.IVTG_SHDN_RSN_CNTS                                /*  검토중단사유내용 */
-			  , B.CRNCY_CD                                          /*  통화코드 */
+			  , B.CRRY_CD                                          /*  통화코드 */
 			  , B.TOT_PRCR_AMT                                      /*  총조달금액 */
 			  , B.MAIN_BOND_MTNC_CNTS                               /*  주요채권보전내용 */
 			  , B.THCO_MDTN_YN                                      /*  당사주선여부 */
@@ -132,7 +132,7 @@
          , INV_FNN_OPRT_TY_DCD                     	/* 투자금융운영형태구분코드 */
          , INV_FNN_ASST_CLSF_CD                    	/* 투자금융자산분류코드 */
          , IVTG_SHDN_RSN_CNTS                      	/* 검토중단사유내용 */
-         , CRNCY_CD                                	/* 통화코드 */
+         , CRRY_CD                                	/* 통화코드 */
          , TOT_PRCR_AMT                            	/* 총조달금액 */
          , MAIN_BOND_MTNC_CNTS                     	/* 주요채권보전내용 */
          , THCO_MDTN_YN                            	/* 당사주선여부 */

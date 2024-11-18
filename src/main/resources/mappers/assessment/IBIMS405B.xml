@@ -76,10 +76,10 @@
              , D.FNLT_NM
              , CASE WHEN E.STDR_EXRT IS NULL THEN ( SELECT STDR_EXRT
                                                       FROM IBIMS994B
-                                                     WHERE CRNCY_CD = B.TR_CRRY_CD
+                                                     WHERE CRRY_CD = B.TR_CRRY_CD
                                                        AND STDR_DT = ( SELECT MAX(STDR_DT) AS STDR_DT
                                                                          FROM IBIMS994B
-                                                                        WHERE CRNCY_CD = B.TR_CRRY_CD )
+                                                                        WHERE CRRY_CD = B.TR_CRRY_CD )
                                                    )
                     ELSE E.STDR_EXRT
                END AS STDR_EXRT
@@ -103,7 +103,7 @@
             AND A.PRDT_CD 			= B.PRDT_CD(+) 
             AND B.LAST_YN(+)		= '1'
             AND A.NS_FND_CD 		= C.FND_CD(+)
-            AND B.TR_CRRY_CD 		= E.CRNCY_CD(+) 
+            AND B.TR_CRRY_CD 		= E.CRRY_CD(+)
             AND A.TR_DT 			= E.STDR_DT(+)
             AND A.STL_XTNL_ISTT_CD 	= D.FNLT_CD(+)
             AND A.PRDT_CD 			= F.PRDT_CD(+) 
