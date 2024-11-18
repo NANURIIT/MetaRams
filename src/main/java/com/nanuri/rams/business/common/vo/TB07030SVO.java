@@ -35,7 +35,7 @@ public class TB07030SVO  {
 	private BigDecimal crdtGrntRcvbIntAmt; 	/* 신용공여미수이자금액 */
 	
 	//[상환정보]
-	private String crncyCd;                 /* 통화코드 */
+	private String crryCd;                 /* 통화코드 */
 	private BigDecimal dealCashAmt; 		/* 딜현금금액 */
 	private BigDecimal dealAltnAmt; 		/* 딜대체금액 */
 	private String rctmLgdNm; 				/* 입금원장명 */
