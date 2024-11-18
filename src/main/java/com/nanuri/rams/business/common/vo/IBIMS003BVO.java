@@ -14,6 +14,7 @@ import java.util.List;
  사원기본 Table.IBIMS003B VO
  */
 public class IBIMS003BVO extends IBIMS003BDTO {
+	
 	private String usrDcdNm;
 	private String athCdNm;
 	private String delEmpNm;

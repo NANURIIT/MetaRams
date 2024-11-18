@@ -67,19 +67,19 @@ public class EmpDetailsVO implements UserDetails {
     public static EmpDetailsVO of (IBIMS003BDTO emp, String authority) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(authority));
-        return new EmpDetailsVO(emp.getEmpno(), emp.getEmpNm(), emp.getPwd(), emp.getAthCd(), emp.getDprtCd(), emp.getDprtNm(), emp.getBdCd(), emp.getBdNm()
+        return new EmpDetailsVO(emp.getEmpno(), emp.getEmpNm(), emp.getPwd(), emp.getAthCd(), emp.getDprtCd(), emp.getDprtNm(), emp.getBdcd(), emp.getBdNm()
 				, emp.getOpstDcd(), emp.getIsLocked(), authorities);
     }
 
     public static EmpDetailsVO of (IBIMS003BDTO emp, GrantedAuthority authority) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(authority);
-        return new EmpDetailsVO(emp.getEmpno(), emp.getEmpNm(), emp.getPwd(), emp.getAthCd(), emp.getDprtCd(), emp.getDprtNm(), emp.getBdCd(), emp.getBdNm()
+        return new EmpDetailsVO(emp.getEmpno(), emp.getEmpNm(), emp.getPwd(), emp.getAthCd(), emp.getDprtCd(), emp.getDprtNm(), emp.getBdcd(), emp.getBdNm()
 				, emp.getOpstDcd(), emp.getIsLocked(), authorities);
     }
 	
 	public static EmpDetailsVO of (IBIMS003BDTO emp, List<GrantedAuthority> authorities) {
-		return new EmpDetailsVO(emp.getEmpno(), emp.getEmpNm(), emp.getPwd(), emp.getAthCd(), emp.getDprtCd(), emp.getDprtNm(), emp.getBdCd(), emp.getBdNm()
+		return new EmpDetailsVO(emp.getEmpno(), emp.getEmpNm(), emp.getPwd(), emp.getAthCd(), emp.getDprtCd(), emp.getDprtNm(), emp.getBdcd(), emp.getBdNm()
 				, emp.getOpstDcd(), emp.getIsLocked(), authorities);
 	}
 	

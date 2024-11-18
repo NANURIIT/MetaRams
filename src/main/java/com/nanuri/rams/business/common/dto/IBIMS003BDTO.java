@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -12,10 +13,11 @@ import java.math.BigDecimal;
  사원기본 Table.IBIMS003B DTO
 */
 public class IBIMS003BDTO {
+
     private String         empno;                                  // 사원번호
     private String         empNm;                                  // 사원명
-    private AthCd          athCd;                                  // 권한코드
-    private String         usrDcd;                                 // 사용자구분코드
+    private String         usrDcd;                                  // 사용자구분코드
+    private AthCd          athCd;                                 // 권한코드
     private String         engEmpNm;                               // 영문사원명
     private String         cpin;                                   // 고객식별번호
     private String         brdt;                                   // 생년월일
@@ -35,8 +37,8 @@ public class IBIMS003BDTO {
     private BigDecimal     odsPwdErrNbtm;                          // ODS비밀번호오류횟수
     private String         dprtCd;                                 // 부서코드
     private String         dprtNm;                                 // 부서명
-    private String         bdCd;                                   // 소속부점코드
-    private String         bdNm;                                   // 소속부점명
+    private String         bdcd;                                   // 부점코드
+    private String         bdNm;                                   // 부점명
     private String         opstDcd;                                // 직위구분코드
     private String         clspDcd;                                // 직급구분코드
     private String         jbgpDcd;                                // 직군구분코드
@@ -55,7 +57,7 @@ public class IBIMS003BDTO {
     private String         cnnPmssYn;                              // 접속허용여부
     private String         delYn;                                  // 삭제여부
     private String         delEmpno;                               // 삭제사원번호
-    private String         hndDetlDtm;                             // 조작상세일시
+    private Date         hndDetlDtm;                             // 조작상세일시
     private String         hndEmpno;                               // 조작사원번호
     private String         hndTmnlNo;                              // 조작단말기번호
     private String         hndTrId;                                // 조작거래ID
