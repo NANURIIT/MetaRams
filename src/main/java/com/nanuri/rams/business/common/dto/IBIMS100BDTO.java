@@ -18,7 +18,7 @@ public class IBIMS100BDTO {
     private int            sn;                                     // 일련번호
     private String         workDcd;                                // 작업구분코드
     private String         workCtns;                               // 작업내용
-    private String         rqstEmpno;                              // 등록사원번호
+    private String         rgstEmpno;                              // 등록사원번호
     private String         rqstDt;                                 // 요청일자
     private String         rqstTm;                                 // 등록시각
     private String         menuId;                                 // 메뉴ID

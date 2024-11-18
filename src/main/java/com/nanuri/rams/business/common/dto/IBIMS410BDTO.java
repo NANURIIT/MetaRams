@@ -29,21 +29,31 @@ public class IBIMS410BDTO {
     private BigDecimal    pucrIntAmt          ; //환출이자금액
     private BigDecimal    trFeeAmt            ; //거래수수료금액
     private BigDecimal    costAmt             ; //비용금액
-    private String        trCrcyCd            ; //거래통화코드
-    private BigDecimal    wcrcTrslRt          ; //원화환산율
-    private BigDecimal    wcrcTrslTrPrca      ; //원화환산거래원금
-    private BigDecimal    wcrcTrslTrIntAmt    ; //원화환산거래이자금액
-    private BigDecimal    wcrcTrslTrFeeAmt    ; //원화환산거래수수료금액
-    private BigDecimal    wcrcTrslCostAmt     ; //원화환산비용금액
-    private String        actgAfrsCd          ; //회계업무코드
-    private String        actgUnitAfrsCd      ; //회계단위업무코드
-    private String        actgTrCd            ; //회계거래코드
+    //private String        trCrcyCd            ; //거래통화코드
+    private String        trCrryCd            ; //거래통화코드
+    // private BigDecimal    wcrcTrslRt          ; //원화환산율
+    // private BigDecimal    wcrcTrslTrPrca      ; //원화환산거래원금
+    // private BigDecimal    wcrcTrslTrIntAmt    ; //원화환산거래이자금액
+    // private BigDecimal    wcrcTrslTrFeeAmt    ; //원화환산거래수수료금액
+    // private BigDecimal    wcrcTrslCostAmt     ; //원화환산비용금액
+    private BigDecimal    krwTrslRt           ; //원화환산율
+    private BigDecimal    krwTrslTrPrca       ; //원화환산거래원금
+    private BigDecimal    krwTrslTrIntAmt     ; //원화환산거래이자금액
+    private BigDecimal    krwTrslTrFeeAmt     ; //원화환산거래수수료금액
+    private BigDecimal    krwTrslCostAmt      ; //원화환산비용금액
+    //private String        actgAfrsCd          ; //회계업무코드
+    // private String        actgUnitAfrsCd      ; //회계단위업무코드
+    // private String        actgTrCd            ; //회계거래코드
+    private String        acctJobCd           ; //회계업무코드
+    private String        acctUnJobCd         ; //회계단위업무코드
+    private String        acctTrCd            ; //회계거래코드
     private int           actgErlmSeq         ; //회계등록순번
     private String        rkfrDt              ; //기산일자
     private String        fndsDvsnCd          ; //자금구분코드
     private String        rctmIsttCd          ; //입금기관코드
     private String        rctmBano            ; //입금은행계좌번호
-    private String        dpowName            ; //예금주명
+    // private String        dpowName            ; //예금주명
+    private String        achdNm              ; //예금주명
     private String        hdwrPrcsYn          ; //수기처리여부
     private BigDecimal    acptPtclSmtlAmt     ; //수납내역합계금액
     private BigDecimal    dealAltnAmt         ; //딜대체금액
@@ -62,7 +72,8 @@ public class IBIMS410BDTO {
     private String        rvseCnclRsonText    ; //정정취소사유내용
     private int           rvseCnclTrSeq       ; //정정취소거래순번
     private BigDecimal    trAfLoanRmnd        ; //거래이후대출잔액
-    private int           rdptTmod            ; //상환회차
+    // private int           rdptTmod            ; //상환회차
+    private int           rdmpTmrd            ; //상환회차
     private BigDecimal    dealPxdfPrca        ; //딜대지급원금
     private BigDecimal    pxdfIntAmt          ; //대지급이자금액
     private BigDecimal    pxdfEtcAmt          ; //대지급기타금액
@@ -85,7 +96,8 @@ public class IBIMS410BDTO {
     private BigDecimal    dfrmFeeClmObjtAmt   ; //지급수수료청구대상금액
     private BigDecimal    mrdpFeeAmt          ; //중도상환수수료금액
     private String        chckIssuIsttName    ; //수표발행기관명
-    private String        mrdpYn              ; //중도상환여부
+    // private String        mrdpYn              ; //중도상환여부
+    private String        earlyRepayYn        ; //중도상환여부
     private String        rctmDt              ; //입금일자
     private String        trObjtBsnNo         ; //거래대상기업체번호
     private BigDecimal    noprErngEtcAmt      ; //영업외수익기타금액

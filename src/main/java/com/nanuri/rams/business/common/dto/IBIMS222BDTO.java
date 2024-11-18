@@ -12,6 +12,7 @@ import lombok.Setter;
  IB승인기초자산기본 - 대출채권/채무보증 정보(TB06010S) - 기초자산 Table.IBIMS222B DTO
 */
 public class IBIMS222BDTO {
+
     private String         bssAsstMngmNo;                                   // 기초자산관리번호
     private String         bssAsstNm;                                       // 기초자산명
     private String         invJdgmDealNo;                                   // 투자심사딜번호
@@ -67,4 +68,5 @@ public class IBIMS222BDTO {
     private String         hndTmnlNo;                                       // 조작단말기번호
     private String         hndTrId;                                         // 조작거래id
     private String         guid;                                            // guid
+
 }

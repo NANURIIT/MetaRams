@@ -21,10 +21,10 @@ public class IBIMS102BDTO {
     private String metPrps;                // 미팅목적
     private String metCntnt;               // 미팅내용
     private String chrgDprtCd;             // 담당부점코드
-    private String chrgPEno;               // 담당자사번
+    private String chrrEmpno;               // 담당자사원번호
     private String cstmNm;                 // 고객명
     private String cstmPhNo;               // 고객전화번호
-    private int fileAttSq;                 // 첨부파일일련번호
+    private int atchFleSn;                 // 첨부파일일련번호
     private String lastYn;                 // 최종여부
     private Date hndDetlDtm;               // 조작상세일시
     private String hndEmpno;               // 조작사원번호

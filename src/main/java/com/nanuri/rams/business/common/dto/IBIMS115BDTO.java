@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -16,7 +17,7 @@ public class IBIMS115BDTO {
     private String         cnsbDcd;                                // 협의체구분코드
     private String         cnsbSq;                                 // 협의체순번
     private String         rsltnYr;                                // 결의년도
-    private int            sn;                                     // 일련번호
+    private BigDecimal     sn;                                     // 일련번호
     private String         dealNo;                                 // 딜번호
     private String         mtrDcd;                                 // 안건구분코드
     private String         jdgmDcd;                                // 심사구분코드

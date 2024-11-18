@@ -14,9 +14,10 @@ import java.util.Date;
  딜기본 - 공동영업관리자 정보 Table.IBIMS116B DTO
 */
 public class IBIMS116BDTO {
+
     private String         dealNo;                                 // 딜번호
-    private String         sn;                                     // 일련번호
-    private String         dprtCd;                                 // 부점코드
+    private BigDecimal     sn;                                     // 일련번호
+    private String         bdcd;                                   // 부점코드
     private String         bsnssMngPEno;                           // 영업관리자사번
     private BigDecimal     cntrt;                                  // 공헌도
     private String         rgstDt;                                 // 등록일자
@@ -26,4 +27,5 @@ public class IBIMS116BDTO {
     private String         hndTmnlNo;                              // 조작단말기번호
     private String         hndTrId;                                // 조작거래id
     private String         guid;                                   // guid
+
 }

@@ -20,7 +20,8 @@ public class IBIMS105BDTO {
     private String     bssAsstIsuCrno;                // 기초자산발행법인등록번호
     private String     crpNm;                         // 법인명
     private String     invstCrryCd;                   // 투자통화코드
-    private BigDecimal crryAmt;                       // 통화금액
+    //private BigDecimal crryAmt;                       // 통화금액
+    private BigDecimal crncyAmt;                      // 통화금액
     private BigDecimal aplcExchR;                     // 적용환율
     private BigDecimal crevAmt;                       // 시가평가금액
     private String     rnmCnfmNo;                     // 실명확인번호

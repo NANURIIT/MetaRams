@@ -12,6 +12,7 @@ import java.util.Date;
  기업여신 - 약정 및 해지정보 Table.IBIMS301B DTO
 */
 public class IBIMS301BDTO {
+
     private String         prdtCd;                                 // 상품코드
     private String         ctrcCclcDcd;                            // 약정해지구분코드
     private String         ctrcDt;                                 // 약정일자
@@ -31,4 +32,5 @@ public class IBIMS301BDTO {
     private String         hndTmnlNo;                              // 조작단말기번호
     private String         hndTrId;                                // 조작거래id
     private String         guid;                                   // guid
+
 }

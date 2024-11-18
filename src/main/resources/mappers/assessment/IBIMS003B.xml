@@ -62,7 +62,7 @@
 		     , A.EMP_NM							/* 직원명 */
 		     , A.BDCD						/* 부서코드 */
 		     , A.DPRT_NM						/* 부서명 */
-		     , A.BDCD							/* 부서코드 */
+		     , A.BDCD							  /* 소속부점코드 */
 		     , A.BD_NM							/* 소속부점코드명 */
 		     , A.ATH_CD							/* 권한코드 */
 		     , A.OPST_DCD						/* 직책 */
@@ -75,30 +75,30 @@
 	<select id="findEmpList" parameterType="com.nanuri.rams.business.common.dto.IBIMS003BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS003BDTO">
 		SELECT EMPNO									<!-- 사원번호 -->
 		     , EMP_NM									<!-- 직원명 -->
-		     , BDCD									<!-- 부서코드 -->
-		     , DPRT_NM									<!-- 부서명 -->
-		     , BDCD									<!-- 부서코드 -->
-		     , BD_NM									<!-- 부점명 -->
+		     , DPRT_CD								<!-- 부서코드 -->
+		     , DPRT_NM								<!-- 부서명 -->
+		     , BDCD									  <!-- 소속부점코드 -->
+		     , BD_NM									<!-- 소속부점명 -->
 		  FROM IBIMS003B
 		 WHERE 1=1
-		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
-           AND EMPNO LIKE '%'|| #{empno}|| '%'
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empNm)">
-           AND EMP_NM LIKE '%'|| #{empNm}|| '%'
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
-           AND BDCD LIKE '%'|| #{dbcd}|| '%'
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtNm)">
-           AND DPRT_NM LIKE '%'|| #{dprtNm}|| '%'
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bdCd)">
-           AND BDCD LIKE '%'|| #{bdCd}|| '%'
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bdNm)">
-           AND BD_NM LIKE '%'|| #{bdNm}|| '%'
-         </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
+       AND EMPNO LIKE '%'|| #{empno}|| '%'
+       </if>
+       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empNm)">
+       AND EMP_NM LIKE '%'|| #{empNm}|| '%'
+       </if>
+       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+       AND DPRT_CD LIKE '%'|| #{dprtCd}|| '%'
+       </if>
+       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtNm)">
+       AND DPRT_NM LIKE '%'|| #{dprtNm}|| '%'
+       </if>
+       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bdCd)">
+       AND BDCD LIKE '%'|| #{bdCd}|| '%'
+       </if>
+       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bdNm)">
+       AND BD_NM LIKE '%'|| #{bdNm}|| '%'
+       </if>
 	</select>
 	
 	

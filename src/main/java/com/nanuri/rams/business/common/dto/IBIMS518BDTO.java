@@ -12,9 +12,10 @@ import lombok.Setter;
  투자기업정보내역 Table.IBIMS518B DTO
 */
 public class IBIMS518BDTO {
+
     private String         dealNo;                                   // 딜번호
     private String         stdrYm;                                   // 기준년월
-    private int            sn;                                       // 일련번호
+    private BigDecimal     sn;                                       // 일련번호
     private String         fndNm;                                    // 펀드명
     private String         crno;                                     // 법인등록번호
     private String         trOthrNm;                                 // 거래상대방명
@@ -34,4 +35,5 @@ public class IBIMS518BDTO {
     private String         hndTmnlNo;                                // 조작단말기번호
     private String         hndTrId;                                  // 조작거래id
     private String         guid;                                     // guid
+
 }

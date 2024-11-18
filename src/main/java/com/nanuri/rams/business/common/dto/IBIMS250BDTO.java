@@ -19,7 +19,7 @@ public class IBIMS250BDTO {
     private String         jobExcuMbdy;                     // 업무집행주체명
     private String         realMngmBdcd;                    // 실제관리부점코드
     private String         realMngmEmpno;                   // 실제관리사원번호
-    private String         fondDt;                          // 설립일자
+    private String         estDt;                           // 설립일자
     private String         keepExprDt;                      // 존속만료일자
     private String         invExprDt;                       // 투자만료일자
     private BigDecimal     fincCtrcAmt;                     // 출자약정금액
