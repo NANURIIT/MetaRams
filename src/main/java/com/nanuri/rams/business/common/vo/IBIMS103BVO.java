@@ -31,12 +31,12 @@ public class IBIMS103BVO extends IBIMS103BDTO {
 	String crncyCd;
 	String dmsCrdtGrdDcd;
 	String dmsCrdtGrdDcdNm;
-	String invstNtnCdNm;
+	String invNtnCdNm;
 	String ptfdCrncyCdNm;
-	String invstGdsLdvdCdNm;                // 투자상품대분류코드
-    String invstGdsMdvdCdNm;                // 투자상품중분류코드
-    String invstGdsSdvdCdNm;                // 투자상품소분류코드
-    String invstGdsDtlsDvdCdNm;             // 투자상품상세분류코드
+	String invPrdtLclsCdNm;                // 투자상품대분류코드
+    String invPrdtMdclCdNm;                // 투자상품중분류코드
+    String invPrdtSclsCdNm;                // 투자상품소분류코드
+    String invPrdtDtlsDvdCdNm;             // 투자상품상세분류코드
     
     /* --------------------------------------- */
     

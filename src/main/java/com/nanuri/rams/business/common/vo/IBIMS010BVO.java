@@ -18,13 +18,13 @@ public class IBIMS010BVO {
 	@ToString
 	public static class SchCondVO {
 		private String ardyBzepNo; /* 기업체번호 */
-		private String bzepName; /* 업체명 */
+		private String entpNm; /* 업체명 */
 		private String rnbn; /* 주민사업자등록번호 */
 		private String crno; /* 법인등록번호 */
 		private String csno; /* 고객번호 */
 		private String useYn; /* 사용여부 */
 		private String clseDt; /* 폐업일자 */
-		private String erlmDt; /* 등록일자 */
+		private String rgstDt; /* 등록일자 */
 		private String stdIdstSclsCd; /* 표준산업소분류코드 */
 		private String clseDvsnCd; /* 폐업구분코드 */			
 	}
@@ -48,13 +48,13 @@ public class IBIMS010BVO {
 		private List<ArdyBzepVO> ardyBzepListVO;	/* 기업체번호 존재유무 우선, D:삭제*/
 
 		private String ardyBzepNo; /* 기업체번호 */
-		private String bzepName; /* 업체명 */
+		private String entpNm; /* 업체명 */
 		private String rnbn; /* 주민사업자등록번호 */
 		private String crno; /* 법인등록번호 */
 		private String csno; /* 고객번호 */
 		private String useYn; /* 사용여부 */
 		private String clseDt; /* 폐업일자 */
-		private String erlmDt; /* 등록일자 */
+		private String rgstDt; /* 등록일자 */
 		private String stdIdstSclsCd; /* 표준산업소분류코드 */
 		private String clseDvsnCd; /* 폐업구분코드 */
 	}
