@@ -249,7 +249,7 @@ public class CommonServiceImpl implements CommonService {
 	public int makeToDoList(IBIMS100BDTO paramData){
 		// 파라미터 셋팅
 		paramData.setEmpno(facade.getDetails().getEno());
-		paramData.setRqstEmpno(facade.getDetails().getEno());
+		paramData.setRgstEmpno(facade.getDetails().getEno());
 		paramData.setPrcsEmpno(facade.getDetails().getEno());
 		paramData.setHndEmpno(facade.getDetails().getEno());
 
