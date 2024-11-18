@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -14,9 +15,10 @@ import java.util.List;
  위원회회의내역 Table.IBIMS111B DTO
 */
 public class IBIMS111BDTO {
+
     private String         cnsbDcd;                                // 협의체구분코드
     private String         rsltnYr;                                // 결의년도
-    private int            sn;                                     // 일련번호
+    private BigDecimal     sn;                                     // 일련번호
     private String         cnsbOpnDt;                              // 협의체개최일자
     private String         cnsbOpnTm;                              // 협의체개최시각
     private String         cnsbPlcNm;                              // 협의체장소명
@@ -35,4 +37,5 @@ public class IBIMS111BDTO {
     private List<IBIMS112BDTO> dealList;                           // IBIMS112BDTO
     /* 협의체 위원정보 */
     private List<IBIMS115BDTO> enoList;                            // IBIMS115BDTO
+
 }

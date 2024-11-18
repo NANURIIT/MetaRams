@@ -13,7 +13,7 @@ import lombok.Setter;
 */
 public class IBIMS010BDTO {
 	private String ardyBzepNo; /* 기업체번호 */
-	private String bzepName; /* 업체명 */
+	private String entpNm; /* 업체명 */
 	private String rnbn; /* 주민사업자등록번호 */
 	private String crno; /* 법인등록번호 */
 	private String csno; /* 고객번호 */
@@ -32,17 +32,17 @@ public class IBIMS010BDTO {
 	private String engBzplAddr; /* 영문사업장주소 */
 	private String opbsDt; /* 개업일자 */
 	private String stdIdstSclsCd; /* 표준산업소분류코드 */
-	private String bucoName; /* 업태명 */
+	private String bzcnNm; /* 업태명 */
 	private String clseDvsnCd; /* 폐업구분코드 */
 	private String clseDt; /* 폐업일자 */
-	private String erlmDt; /* 등록일자 */
+	private String rgstDt; /* 등록일자 */
 	private String rdmTrOppnNo; /* RDM거래상대방번호 */
 	private String smetYn; /* 중소기업여부 */
 	private String etprShapDvsnCd; /* 기업형태구분코드 */
 	private String leiCd; /* LEI코드 */
 	private String ctmBicName; /* CTM은행인식코드명 */
 	private String swiftBankDscmCd; /* SWIFT은행식별코드 */
-	private String etprScleDvsnCd; /* 기업규모구분코드 */
+	private String eprzSclDcd; /* 기업규모구분코드 */
 	private BigDecimal rvnuAmt; /* 매출금액 */
 	private BigDecimal totAsstAmt; /* 총자산금액 */
 	private BigDecimal fnafHltySrnmRt; /* 재무건전성비율 */
