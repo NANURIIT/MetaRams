@@ -15,8 +15,8 @@ public class TB04050SVO {
 	
 	/* IBIMS501B */
     private String         dealNo;               				   // 딜번호
-    private String         sq;                   				   // 일련번호
-    private String         corpRgstNo;           				   // 법인등록번호
+    private String         sn;                   				   // 일련번호
+    private String         crno;       		    				   // 법인등록번호
     private String         busiNm;               				   // 사업명
     private String         fndNm;                				   // 펀드명
     private String         invFnnMngmBusiDcd;    				   // 투자금융관리사업구분코드
@@ -39,12 +39,12 @@ public class TB04050SVO {
     private String         invFnnOprtTyDcd;      				   // 투자금융운영형태구분코드
     private String         invFnnAsstClsfCd;     				   // 투자금융자산분류코드
     private String         ivtgShdnRsnCnts;      				   // 검토중단사유내용
-    private String         crncyCd;              				   // 통화코드
+    private String         crryCd;              				   // 통화코드
     private BigDecimal     totPrcrAmt;           				   // 총조달금액
     private String         mainBondMtncCnts;     				   // 주요채권보전내용
     private String         thcoMdtnYn;           				   // 당사주선여부
     private BigDecimal     thcoMdtnAmt;          				   // 당사주선금액
-    private BigDecimal     thcoPtcpAmt;          				   // 당사참여금액
+    private BigDecimal     thcoPtciAmt;          				   // 당사참여금액
     private String         aplyIntrtCnts;        				   // 적용금리내용
     private BigDecimal     goalErnRt;            				   // 목표수익율
     private BigDecimal     feeRt;                				   // 수수료율
@@ -93,7 +93,7 @@ public class TB04050SVO {
     private String         issMngmNo;                              // 발급관리번호
     private String         issSttsCd;                              // 발급상태코드
     private String         empno;                                  // 사원번호
-    private String         decdDptDcd;                             // 부서명
+    private String         dprtCd;                                 // 부서명
     private String         prdtCd;                                 // 상품코드
     private String         ibPrdtClsfCd;                           // ib상품분류코드
     private String         issBdcd;                                // 발급부점코드
