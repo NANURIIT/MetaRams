@@ -52,9 +52,11 @@ public class IBIMS420BDTO {
 	private BigDecimal trAmt; 				/* 거래금액 */
 	private String bcncNm ; 				/* 거래처명 */
 	private String rkfrDt; 					/* 기산일자 */
-	private BigDecimal wcrcTrslTrFeeAmt; 	/* 원화환산거래수수료금액 */
+	// private BigDecimal wcrcTrslTrFeeAmt; 	/* 원화환산거래수수료금액 */
+	private BigDecimal krwTrslTrFeeAmt; 	/* 원화환산거래수수료금액 */
 	private String prufIsuDt; 				/* 증빙발행일자 */
-	private BigDecimal aplcExchR;       	/* 적용환율 */
+	// private BigDecimal aplcExchR;       	/* 적용환율 */
+	private BigDecimal aplyExrt;       		/* 적용환율 */
 	private String decdSttsDcd;				/* 결재상태구분코드 */
 	private String prcsEmpno;               /* 처리사원번호 */
 	private String prcsTm;                  /* 처리시간 */
