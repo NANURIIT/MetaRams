@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{/js/business/ac/AC01210S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 권한별메뉴관리 -->
+    <div class="wrapper wrapper-content animated fadeIn">
+    	<div class="row">
+    		<!-- 조회영역 -->
+    		<div class="col-lg-12">
+    			<div class="ibox ">
+   					<div class="ibox-title">
+	   					<div class="form-group row form-inline">
+	   						<div class="col-sm-3 input-group">
+	                         	<label class="control-label px-2">권한코드/권한명</label>
+	                        	<input type="text" class="form-control" id="authCodeSearchInput" onkeyup="if(window.event.keyCode==13){searchButtonClick()}">
+	                        </div>
+	                        <div class="col-sm-1">
+								<button class="btn btn-primary" type="button" id="authCodeSearchButton" onclick="searchButtonClick();"><i class="fa fa-search"></i>&nbsp;조회</button>
+	                       	</div>
+	   					</div>
+	   				</div>
+	   				<!-- 조회결과 -->
+	   				<div class="ibox-content" style="min-height: 850px">
+	   					<div class="col-sm-12">
+	    					<div class="ibox ">
+			   					<div class="ibox-title">
+			   						<h5>그룹코드</h5>
+			   						<div class="ibox-tools">		                   		
+			                       		<button class="btn btn-default btn-xs" type="button" onclick="addAuthCodeRow();"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+			                       		<button class="btn btn-default btn-xs" type="button" onclick="clickDeleteButton();"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+			                       		<button class="btn btn-success btn-xs" type="button" onclick="clickAuthSaveButton();"><i class="fa fa-save"></i>&nbsp;저장</button>
+			                       	</div>
+			   					</div>
+			    				<div class="ibox-content">
+			    					<div class="tableFixHead">
+					    				<table class="table table-bordered">
+					    					<colgroup>
+							                    <col style="width: 5%;">
+							                    <col style="width: 5%;">
+							                    <col style="width:15%;">
+							                    <col style="width:25%;">
+							                    <col style="width: 5%;">
+							                    <col style="width: 5%;">
+							                    <col style="width: 5%;">
+							                    <col style="width: 5%;">
+							                    <col style="width: 5%;">
+							                    <col style="width: 5%;">
+							                    <col style="width: 5%;">
+							                </colgroup>
+							                <thead>
+							                    <tr>
+							                        <th>삭제</th>
+							                        <th>권한코드</th>
+							                        <th>권한명</th>
+							                        <th>권한설명</th>
+							                        <th>메뉴관리</th>
+							                        <th>등록일자</th>
+							                        <th>등록자</th>
+							                        <th>적용여부</th>
+							                        <th>처리일자</th>
+							                        <th>처리시간</th>
+							                        <th>처리자</th>
+							                    </tr>
+							                </thead>
+											<tbody id="authCodeTable">
+											</tbody>
+										</table>
+									</div>
+				    			</div>
+			   				</div><!-- ibox -->
+			   				<div class="ibox ">
+			   					<div class="ibox-title">
+			   						<h5>상세코드</h5>
+			   						<div class="ibox-tools">		                       		
+			                       		<button class="btn btn-success btn-xs" type="button" onclick="clickSaveMenuButton();"><i class="fa fa-save"></i>&nbsp;저장</button>
+			                       	</div>
+			   					</div>
+			    				<div class="ibox-content">
+			    					<div class="tableFixHead">
+					    				<table class="table table-bordered">
+					    					<colgroup>
+							                    <col style="width: 5%;">
+							                    <col style="width: 12%;">
+							                    <col style="width: 35%;">
+							                    <col style="width: 12%;">
+							                    <col style="width: 5%;">
+							                    <col style="width: 7%;">
+							                    <col style="width: 7%;">
+							                    <col style="width: 7%;">
+							                    <col style="width: 5%;">
+							                    <col style="width: 5%;">
+							                </colgroup>
+							                <thead>
+							                    <tr>
+							                        <th>순번</th>
+							                        <th>메뉴ID</th>
+							                        <th>메뉴명</th>
+							                        <th>권한코드</th>
+							                        <th>메뉴레벨</th>
+							                        <th>사용가능여부</th>
+							                        <th>수정가능여부</th>
+							                        <th>처리일자</th>
+							                        <th>처리시간</th>
+							                        <th>처리자</th>
+							                    </tr>
+							                </thead>
+											<tbody id="authCodeMenuTable">
+											</tbody>
+										</table>
+									</div>
+				    			</div>
+			   				</div><!-- ibox -->
+	    				</div>
+	   				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</th:block>
+
+</html>

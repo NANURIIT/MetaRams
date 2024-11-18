@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAC05BMapper">
+
+	<select id="getSellDownInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.RAC05BVO">
+		SELECT SQ
+			 , SELL_DOWN_DT
+			 , SELL_DOWN_AMT
+			 , SELL_DOWN_RA
+		FROM RAC05B
+		WHERE IB_DEAL_NO = #{dealMngNo}
+	</select>
+
+	<insert id="saveSellDown" parameterType="com.nanuri.rams.business.common.dto.TB03020DTO">
+		INSERT INTO RAC05B
+		(
+		IB_DEAL_NO                           <!-- DEAL관리번호	    -->
+		, SQ                                    <!-- 일련번호         -->
+		, SELL_DOWN_DT                          <!-- 셀다운일자        -->
+		, SELL_DOWN_AMT                         <!-- DEAL명          -->
+		, SELL_DOWN_RA                          <!-- BOOK코드         -->
+		, RGST_DT                               <!-- 등록일자    			-->
+		, DLT_F                                 <!-- 삭제여부   -->
+		, FST_HNDL_P_ENO						<!-- 최초등록자사번   -->
+		, LST_HNDL_P_ENO						<!-- 최종변경자사번   -->
+		)
+		VALUES
+		<foreach collection="sellDownInfo" item="item" separator=",">
+			(
+			#{dealMngNo}
+			, #{item.sq}
+			, #{item.sellDownDt}
+			, #{item.sellDownAmt}
+			, #{item.sellDownRa}
+			, DATE_FORMAT(CURRENT_DATE(),'%Y%m%d')
+			, 0
+			, #{fstHndlPEno}
+			, #{lstHndlPEno}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteSellDown" parameterType="string">
+		DELETE
+		FROM RAC05B
+		WHERE IB_DEAL_NO = #{selectedDeal}
+	</delete>
+
+</mapper>

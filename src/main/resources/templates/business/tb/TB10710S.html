@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB10710S.js}"></script>
+	<script th:src="@{js/business/tb/TB04011P.js}"></script>
+	<script th:src="@{js/business/tb/TB03061P.js}"></script>
+	<!-- <script th:src="@{js/business/tb/TB03022P.js}"></script> -->
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<!-- <th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 기일관리 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content i-filter">
+						<div class="form-group row form-inline">
+							<div class="col-sm-10 form-group mb-1">
+								<!-- 예정일자 -->
+								<label class="col-sm-1 control-label">
+									예정일자
+								</label>
+								<div class="col-sm-3 input-group">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="selectDate_1" name="" value="" >
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<span class="input-group-addon border-none"> ~ </span>
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="selectDate_2" name="" value="" >
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
+								<!-- 관리부서 -->
+								<label class="col-sm-1 control-label">
+									관리부서
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB10710S_dprtCd">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="" readonly="">
+									</div>
+								</div>
+								<!-- 계정과목코드 -->
+								<label class="col-sm-1 control-label">
+									계정과목코드
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB10710S_actsCd">
+											<option value="">전체</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-10 form-group">
+								<!-- 업무종류코드  -->
+								<label class="col-sm-1 control-label">
+									업무종류코드
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB10710S_dudtMngmDtldJobKndCd">
+											<option value="">전체</option>
+										</select>
+									</div>
+								</div>
+								<!-- 딜번호 -->
+								<label class="col-sm-1 control-label">
+									deal번호
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB10710S_ibDealNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB04011P('TB10710S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB10710S_ibDealNm" readonly="">
+									</div>
+								</div>
+								<!-- 기업체 -->
+								<label class="col-sm-1 control-label">
+									기업체
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB10710S_ardyBzepNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03061P('TB10710S')"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB10710S_bzepName" readonly="">
+									</div>
+								</div>
+							</div>
+							<!-- 버튼영역 -->
+							<div class="col-sm-1-5 text-right">
+								<button class="btn btn-primary" onclick="TB10710Sjs.select()">
+									<i class="fa fa-search"></i>&nbsp;조회</button>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content" style="min-height: 800px">
+						<!-- 기일관리 -->
+						<div class="ibox">
+							<div id="TB10710S_colModel1"></div>
+							<!-- <table class="table result table-bordered footable">
+								<colgroup>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+								</colgroup>
+								<thead>
+									<tr> 
+										<th>순번</th>
+										<th>예정일자</th>
+										<th>deal번호</th>
+										<th>기업체</th>
+										<th>상품명</th>
+										<th>통화</th>
+										<th>원금</th>
+										<th>정상이자</th>
+										<th>연체이자</th>
+										<th>미수이자</th>
+										<th>납부예정금액</th>
+										<th>수수료총금액</th>
+										<th>운용펀드</th>
+										<th>관리부서</th>
+										<th>계정과목</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr class="text-center">
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td class="text-right"></td>
+										<td class="text-right"></td>
+										<td class="text-right"></td>
+										<td class="text-right"></td>
+										<td class="text-right"></td>
+										<td class="text-right"></td>
+										<td></td>
+										<td></td>
+										<td class="text-right"></td>
+									</tr>
+								</tbody>
+							</table> -->
+							<div class="ibox-content">
+								<div class="row">
+									<div class="col-lg-5">
+										<div class="ibox">
+											<div class="tabs-container mb-2">
+												<div class="tab-content" >
+													<div role="tabpanel" id="tab-1-1" class="tab-pane active">
+														<div class="panel-body" style="height: 300px;">
+															<div class="row">
+																<div class="col-sm-12">
+																	<div class="ibox mb-0">
+																		<div class="ibox-title">
+																			<div class="row">
+																				<h5 class="col-sm-4 pl-3">▶&nbsp;파라미터</h5>
+																				<!-- <div class="col-sm-5 input-group justify-content-end pd0">
+																					<label class="col-sm-3 col-form-label text-right">관심그룹</label>
+																					<div class="col-sm-6 input-group">
+																						<select class="form-control" id="">
+																							<option value="01"></option>
+																						</select>
+																					</div>
+																				</div>
+																				<div class="ibox-tools">
+																					<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-refresh"></i></button>
+																					<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-download"></i></button>		                   		
+																					<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-upload"></i></button>
+																					<button class="btn btn-success btn-xs" id="" onclick=""><i class="fa fa-save"></i>&nbsp;관심종목등록</button>
+																				</div> -->
+																			</div>
+																		</div>
+																		<div class="ibox-content">
+																			<div id="TB10710S_colModel2"></div>
+																			<!-- <table class="table result table-bordered footable">
+																				<colgroup>
+																					<col>
+																					<col>
+																					<col>
+																					<col>
+																					<col>
+																					<col>
+																					<col>
+																				</colgroup>
+																				<thead>
+																					<tr> 
+																						<th>종목코드</th>
+																						<th>종목명</th>
+																						<th>현재가</th>
+																						<th>전일대비</th>
+																						<th>등락률(%)</th>
+																						<th>매도호가</th>
+																						<th>매수호가</th>
+																					</tr>
+																				</thead>
+																				<tbody id="">
+																					<tr class="text-center">
+																						<td></td>
+																						<td></td>
+																						<td class="text-right"></td>
+																						<td></td>
+																						<td></td>
+																						<td class="text-right"></td>
+																						<td class="text-right"></td>
+																					</tr>
+																				</tbody>
+																			</table> -->
+																		</div>
+																	</div>
+																</div>	
+															</div>
+														</div>	
+													</div>	
+													<div role="tabpanel" id="tab-1-2" class="tab-pane">
+														<div class="panel-body" style="height: 300px;">
+															<div class="col-sm-12">
+															</div>	
+														</div>	
+													</div>		
+												</div>
+											</div>
+										</div>	
+									</div>
+									<div class="col-lg-7 pl-0">
+										<div class="ibox">
+											<div class="tabs-container  mb-2">
+												<div class="tab-content">
+													<div role="tabpanel" id="tab-2-1" class="tab-pane active">
+														<div class="panel-body" style="height: 300px;">
+															<div class="row">
+																<div class="col-sm-12">
+																	<div class="ibox mb-0">
+																		<div class="ibox-title">
+																			<div class="row">
+																				<h5 class="col-sm-5 pl-3">▶&nbsp;통보</h5>
+																			</div>
+																		</div>
+																		<div class="ibox-content">
+																			<div id="TB10710S_colModel3"></div>
+																			<!-- <table class="table result table-bordered footable">
+																				<colgroup>
+																					<col>
+																					<col>
+																					<col>
+																					<col>
+																					<col>
+																				</colgroup>
+																				<thead>
+																					<tr> 
+																						<th>대비</th>
+																						<th style="color: blue;">매도잔량</th>
+																						<th>04:50:50</th>
+																						<th style="color: red;">매수잔량</th>
+																						<th>대비</th>
+																					</tr>
+																				</thead>
+																				<tbody id="">
+																					<tr class="text-center">
+																						<td></td>
+																						<td></td>
+																						<td></td>
+																						<td></td>
+																						<td></td>
+																					</tr>
+																				</tbody>
+																			</table>
+																			<div class="ibox form-inline mt-2">
+																				<div class="col-sm-12 text-right pd0">
+																					<div class="input-group">
+																						<select class="form-control" id="">
+																						<option value=""></option><option value=""></option></select>
+																						<input type="text" class="form-control" id="" style="width: 68px;">
+																						<input type="text" class="form-control ml-1" id="" style="width: 68px;">
+																						<input type="checkbox" class="ml-2">표시
+																					</div>
+																				</div>
+																			</div> -->
+																		</div>
+																	</div>
+																</div>	
+															</div>
+														</div>	
+													</div>	
+													<div role="tabpanel" id="tab-2-2" class="tab-pane">
+														<div class="panel-body" style="height: 300px;">
+															<div class="col-sm-12">
+															</div>	
+														</div>	
+													</div>		
+												</div>
+											</div>
+										</div>	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

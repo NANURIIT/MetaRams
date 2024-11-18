@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA35BMapper">
+
+    <!--    정기보고관리(심사부서용) 저장    -->
+
+    <!--  35B테이블 레코드 조회    -->
+    <select id="selectOneRaa35b">
+        SELECT COUNT(*)
+          FROM RAA35B
+         WHERE IB_DEAL_NO       = #{IB_DEAL_NO}
+           AND RISK_INSPCT_CCD  = #{RISK_INSPCT_CCD}
+           AND LST_C_CASE_CCD   = #{LST_C_CASE_CCD}
+    </select>
+
+    <update id="updateRaa35b">
+        UPDATE RAA35B
+           SET FXT_RPR_MNG_CNTNT    = #{FXT_RPR_MNG_CNTNT}
+             , HNDL_DY_TM           = SYSDATE()
+             , HNDL_DPRT_CD         = #{HNDL_DPRT_CD}
+             , HNDL_P_ENO 		    = #{HNDL_P_ENO}
+         WHERE IB_DEAL_NO           = #{IB_DEAL_NO}
+           AND RISK_INSPCT_CCD      = #{RISK_INSPCT_CCD}
+           AND LST_C_CASE_CCD       = #{LST_C_CASE_CCD}
+    </update>
+
+    <insert id="insertRaa35b">
+        INSERT INTO RAA35B
+             (
+               IB_DEAL_NO
+             , RISK_INSPCT_CCD
+             , LST_C_CASE_CCD
+             , FXT_RPR_MNG_CNTNT
+             , HNDL_DY_TM
+             , HNDL_DPRT_CD
+             , HNDL_P_ENO
+             )
+        VALUES
+             (
+               #{IB_DEAL_NO}
+             , #{RISK_INSPCT_CCD}
+             , #{LST_C_CASE_CCD}
+             , #{FXT_RPR_MNG_CNTNT}
+             , SYSDATE()
+             , #{HNDL_DPRT_CD}
+             , #{HNDL_P_ENO}
+             )
+    </insert>
+
+    <!--    정기보고관리(심사부서용) 저장 END   -->
+    
+</mapper>

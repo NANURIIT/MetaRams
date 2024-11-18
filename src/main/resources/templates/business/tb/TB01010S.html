@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB01010S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 대시보드_심사영역 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회 st -->
+					<div class="ibox-content i-filter">
+						<div class="row form-group form-inline text-right">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1 control-label">구분</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" id="TB01010S_inspctDprtCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">조회시점</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" id="TB01010S_refQuarter">
+										<option value="1">현재 분기</option>
+										<option value="2">전분기 기준</option>
+										<option value="3">전전분기 기준</option>
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">기준일자</label>
+								<div class="col-sm-2 input-group month">
+									<input type="text" class="form-control" id="TB01010S_datepicker" maxlength="10" value="">
+									<span class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</span>
+								</div>
+								<div class="col-sm-1">
+									<button class="btn btn-primary" onclick="getDashboardInfo();">
+										<i class="fa fa-search"></i>&nbsp;TEST</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 조회 ed -->
+
+				<!-- 결과 st -->
+				<div class="ibox">
+					<div class="ibox-content">
+						
+						<!-- 협의체 부의 현황_공통 -->
+						<div class="ibox mb-5">
+							<div class="ibox-title">
+								<div class="col-sm-3 text-left">
+									
+								<h5>협의체 부의 현황_공통</h5>
+								<input type="checkbox" class="mr-2 ml-2" id="thisWeek" onclick="selectWeekData(this);">금주 현황
+									
+								</div>
+							</div>
+							<div class="ibox-content ">
+								<div class="tableFixHead2">
+									<div class="col-sm-12 text-right mb-1">
+										[총 <span id="table1Count"></span>건]
+									</div>
+									<!--<table class="table result table-bordered text-center">
+										<thead class="text-center">
+											<tr>
+												<th>안건명</th>
+												<th>부의부서</th>
+												<th>부의금액</th>
+												<th>협의체</th>
+												<th>승인번호</th>
+												<th>부의일정</th>
+												<th>담당자</th>
+											</tr>
+										</thead>
+										<tbody id="TB01010S_table1">
+										</tbody>
+									</table>-->
+									<!-- 협의체 부의현황 -->
+									<div id="gridCnfStts"></div>
+								</div>
+							</div>
+						</div>
+						<!-- 협의체 결과 현황_공통 -->
+						<div class="ibox mb-5">
+							<div class="ibox-title">
+								<div class="col-sm-3 text-left">
+									<h5>협의체 결과 현황_공통</h5>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<div class="tableFixHead2">
+									<div class="col-sm-12 text-right mb-1 ">
+										[건]
+									</div>
+									<div id="gridCnfRslt"></div>
+									<!--<table class="table result table-bordered text-right">
+										<thead class="text-center">
+											<tr>
+												<th rowspan="2" colspan="2">구분</th>
+												<th colspan="2">부의안건</th>
+												<th colspan="2">자체 드랍/철회</th>
+												<th colspan="2">가결(조건부 포함)</th>
+												<th colspan="2">부결</th>
+												<th colspan="2">보류</th>
+												<th colspan="2">약정완료</th>
+												<th colspan="2">결의중</th>
+											</tr>
+											<tr>
+												<th>전분기</th>
+												<th>조회시점</th>
+												<th>전분기</th>
+												<th>조회시점</th>
+												<th>전분기</th>
+												<th>조회시점</th>
+												<th>전분기</th>
+												<th>조회시점</th>
+												<th>전분기</th>
+												<th>조회시점</th>
+												<th>전분기</th>
+												<th>조회시점</th>
+												<th>전분기</th>
+												<th>조회시점</th>
+											</tr>
+										</thead>
+										<tbody id="TB01010S_table2">
+										</tbody>
+									</table>-->
+								</div>
+							</div>
+						</div>
+
+						<!-- 투자자산 현황 -->
+						<div class="ibox mb-5">
+							<div class="ibox-title">
+								<div class="col-sm-3 text-left">
+									<h5>투자자산 현황</h5>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<div class="tableFixHead2">
+									<div class="col-sm-12 mb-1 d-flex justify-content-between">
+										<b>< 기표예정 ></b>
+										<span>(금액단위 : 억원)</span>			
+									</div>
+									<table class="table result table-bordered text-right">
+										<thead class="text-center">
+											<tr>
+												<th rowspan="2">구분</th>
+												<th colspan="5">지분증권</th>
+												<th rowspan="2">집투증권</th>
+												<th rowspan="2">대출채권</th>
+												<th colspan="4">우발채권</th>
+												<th rowspan="2">합계</th>
+											</tr>
+											<tr>
+												<th>PEF</th>
+												<th>Pre-IPO</th>
+												<th>SPAC</th>
+												<th>주식</th>
+												<th>소계</th>
+												<th>확약보증</th>
+												<th>매입약정</th>
+												<th>HUG</th>
+												<th>소계</th>
+											</tr>
+										</thead>
+										<tbody id="TB01010S_List3">
+										</tbody>
+									</table>
+								</div>
+								<div class="tableFixHead2">
+									<div class="col-sm-12 mb-1 d-flex justify-content-between">
+										<b>< 기표후 ></b>
+										<span>(금액단위 : 억원)</span>			
+									</div>
+									<table class="table result table-bordered text-right">
+										<thead class="text-center">
+											<tr>
+												<th rowspan="2">구분</th>
+												<th colspan="5">지분증권</th>
+												<th rowspan="2">집투증권</th>
+												<th rowspan="2">대출채권</th>
+												<th colspan="4">우발채권</th>
+												<th rowspan="2">합계</th>
+											</tr>
+											<tr>
+												<th>PEF</th>
+												<th>Pre-IPO</th>
+												<th>SPAC</th>
+												<th>주식</th>
+												<th>소계</th>
+												<th>확약보증</th>
+												<th>매입약정</th>
+												<th>HUG</th>
+												<th>소계</th>
+											</tr>
+										</thead>
+										<tbody id="TB01010S_List4">
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+						<!-- 투자 규모 및 추이 막대 그래프-->
+						 <!-- 20240614 임이사님 요건으로 삭제
+						<div class="ibox mb-5">
+							<div class="ibox-title">
+								<div class="col-sm-3 text-left">
+									<h5>투자 규모 및 추이</h5>&nbsp;&nbsp;&nbsp;*현월 기준 1년치 데이터 조회
+								</div>
+							</div>
+							<div class="ibox-content ">
+								<div id="invstMntStackDiv">
+									<canvas id="stackChart1" height="500" style="width: 100%;"></canvas>
+								  </div>
+							</div>
+						</div>
+
+						<!--원형 그래프 모음 
+						<div class="row">
+							<!-- 투자 유형 
+							<div class="ibox col-sm-12">
+								<div class="ibox-title">
+									<div class="text-left">
+										<b>투자 유형</b>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<!-- 투자유형 그래프 
+									<div class="d-flex justify-content-around">
+										<div class="col-sm-2"><canvas id="invstMntDoughnut1" width="200"></canvas></div>
+										<div class="col-sm-2"><canvas id="invstMntDoughnut2" width="200"></canvas></div>
+										<div class="col-sm-2"><canvas id="invstMntDoughnut3" width="200"></canvas></div>
+										<div class="col-sm-2"><canvas id="invstMntDoughnut4" width="200"></canvas></div>
+										<div class="col-sm-2"><canvas id="invstMntDoughnut5" width="200"></canvas></div>
+										<div class="col-sm-2"><canvas id="invstMntDoughnut6" width="200"></canvas></div>
+									</div>
+								</div>
+							</div>
+							<!-- 투자상품 
+							<div class="ibox col-sm-12">
+								<div class="ibox-title">
+									<div class="text-left">
+										<b>투자 상품 </b>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<!-- 투자상품 그래프 -->
+									<div id="test_donutchart2"></div>
+								</div>
+							</div>
+							<!-- 투자권역 
+							<div class="ibox col-sm-12">
+								<div class="ibox-title">
+									<div class="text-left">
+										<b>투자 권역</b>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<!-- 투자 권역 그래프 
+									<div id="test_donutchart3"></div>
+								</div>
+							</div>
+						</div>
+						
+					<!-- 결과 ed -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</th:block>
+
+</html>

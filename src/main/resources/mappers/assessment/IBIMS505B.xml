@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS505BMapper">
+
+	<select id="getInvstInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS505BVO">
+	 SELECT DEAL_NO                                 /* 딜번호 */
+         , SQ				              		         /* 일련번호 */
+         , INV_FNN_TRGT_ASST_DCD                   /* 투자금융대상자산구분코드 */
+         , BRWR_NTN_NM                             /* 차주국가명 */
+         , TOT_BUSI_CT                             /* 총사업비용 */
+         , NTN_NM                                  /* 국가명 */
+         , GUAS_DVSN_CTNS                          /* 보증서구분내용 */
+         , PROR_RTO                                /* 선순위비율 */
+         , BKBN_RTO                                /* 후순위비율 */
+         , CERK_RTO                                /* 중간순위비율 */
+         , LES_STRT_DT                             /* 리스시작일자 */
+         , LES_END_DT                              /* 리스종료일자 */
+         , MNUM                                    /* 개월수 */
+         , LOAN_STRT_DT                            /* 대출시작일자 */
+         , LOAN_END_DT                             /* 대출종료일자 */
+         , LOAN_MNUM                               /* 대출기간개월수 */
+         , DVC_TY_CNTS                             /* 기종내용 */
+         , PRDC_CMP_CNTS                           /* 제작회사내용 */
+         , MNF_YR                                  /* 제조년도 */
+         , INV_FNN_LES_KND_DCD                     /* 투자금융리스종류규분코드 */
+         , LES_MGCO_NM                             /* 리스운용사명 */
+         , LES_USER_CNTS                           /* 리스이용자내용 */
+         , BRWR_SPC_YN                             /* 차주SPC여부 */
+         , BOND_TRNS_YN                            /* 채권이관여부 */
+         , MNGM_CND_FLFL_YN                        /* 관리조건이행여부 */
+         , FNNR_CTRC_MTTR_TRGT_YN                  /* 재무약정사항대상여부 */
+         , DEL_YN                                  /* 삭제여부 */
+         , HND_DETL_DTM                            /* 조작상세일시 */
+         , HND_EMPNO                               /* 조작사원번호 */
+         , HND_TMNL_NO                             /* 조작단말기번호 */
+         , HND_TR_ID                               /* 조작거래id */
+         , GUID                                    /* guid */
+      FROM IBIMS505B
+     WHERE 1=1
+       AND DEAL_NO    = #{dealNo}
+       AND SQ			 = (
+							    SELECT MAX(SQ)
+							      FROM IBIMS505B
+							     WHERE DEAL_NO = #{dealNo}
+		 						)       
+	</select>
+	
+	<insert id="saveInvstInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO">
+		INSERT INTO IBIMS505B 
+               (
+                  DEAL_NO                                 /* 딜번호 */
+                , SQ                                      /* 일련번호 */
+                , INV_FNN_TRGT_ASST_DCD                   /* 투자금융대상자산구분코드 */
+                , BRWR_NTN_NM                             /* 차주국가명 */
+                , TOT_BUSI_CT                             /* 총사업비용 */
+                , NTN_NM                                  /* 국가명 */
+                , GUAS_DVSN_CTNS                          /* 보증서구분내용 */
+                , PROR_RTO                                /* 선순위비율 */
+                , BKBN_RTO                                /* 후순위비율 */
+                , CERK_RTO                                /* 중간순위비율 */
+                , LES_STRT_DT                             /* 리스시작일자 */
+                , LES_END_DT                              /* 리스종료일자 */
+                , MNUM                                    /* 개월수 */
+                , LOAN_STRT_DT                            /* 대출시작일자 */
+                , LOAN_END_DT                             /* 대출종료일자 */
+                , LOAN_MNUM                               /* 대출기간개월수 */
+                , DVC_TY_CNTS                             /* 기종내용 */
+                , PRDC_CMP_CNTS                           /* 제작회사내용 */
+                , MNF_YR                                  /* 제조년도 */
+                , INV_FNN_LES_KND_DCD                     /* 투자금융리스종류규분코드 */
+                , LES_MGCO_NM                             /* 리스운용사명 */
+                , LES_USER_CNTS                           /* 리스이용자내용 */
+                , BRWR_SPC_YN                             /* 차주SPC여부 */
+                , BOND_TRNS_YN                            /* 채권이관여부 */
+                , MNGM_CND_FLFL_YN                        /* 관리조건이행여부 */
+                , FNNR_CTRC_MTTR_TRGT_YN                  /* 재무약정사항대상여부 */
+                , DEL_YN                                  /* 삭제여부 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래id */
+                , GUID                                    /* guid */
+               )
+        VALUES (
+                #{dealNo}                                    /* 딜번호 */
+             , (
+                SELECT CASE WHEN A.SQ = 0 THEN '0000000001'
+                            ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
+                  FROM (
+                   		  SELECT COUNT(SQ)  AS SQ
+                               , MAX(SQ)    AS INCREMENT_SQ
+                            FROM IBIMS502B
+                       ) A
+       			)                                             /* 일련번호 */
+               , #{invstInfo.invFnnTrgtAsstDcd}              /* 투자금융대상자산구분코드 */
+               , #{invstInfo.brwrNtnNm}                      /* 차주국가명 */
+               , #{invstInfo.totBusiCt}                      /* 총사업비용 */
+               , #{invstInfo.ntnNm}                          /* 국가명 */
+               , #{invstInfo.guasDvsnCtns}                   /* 보증서구분내용 */
+               , #{invstInfo.prorRto}                        /* 선순위비율 */
+               , #{invstInfo.bkbnRto}                        /* 후순위비율 */
+               , #{invstInfo.cerkRto}                        /* 중간순위비율 */
+               , #{invstInfo.lesStrtDt}                      /* 리스시작일자 */
+               , #{invstInfo.lesEndDt}                       /* 리스종료일자 */
+               , #{invstInfo.mnum}                           /* 개월수 */
+               , #{invstInfo.loanStrtDt}                     /* 대출시작일자 */
+               , #{invstInfo.loanEndDt}                      /* 대출종료일자 */
+               , #{invstInfo.loanMnum}                       /* 대출기간개월수 */
+               , #{invstInfo.dvcTyCnts}                      /* 기종내용 */
+               , #{invstInfo.prdcCmpCnts}                    /* 제작회사내용 */
+               , #{invstInfo.mnfYr}                          /* 제조년도 */
+               , #{invstInfo.invFnnLesKndDcd}                /* 투자금융리스종류규분코드 */
+               , #{invstInfo.lesMgcoNm}                      /* 리스운용사명 */
+               , #{invstInfo.lesUserCnts}                    /* 리스이용자내용 */
+               , #{invstInfo.brwrSpcYn}                      /* 차주SPC여부 */
+               , #{invstInfo.bondTrnsYn}                     /* 채권이관여부 */
+               , #{invstInfo.mngmCndFlflYn}                  /* 관리조건이행여부 */
+               , #{invstInfo.fnnrCtrcMttrTrgtYn}             /* 재무약정사항대상여부 */
+               , #{invstInfo.delYn}                          /* 삭제여부 */
+               , SYSDATE                                	    /* 조작상세일시 */
+               , #{invstInfo.hndEmpno}                       /* 조작사원번호 */
+               , #{invstInfo.hndTmnlNo}                      /* 조작단말기번호 */
+               , #{invstInfo.hndTrId}                        /* 조작거래id */
+               , #{invstInfo.guid}                           /* guid */
+               )
+	</insert>
+	
+	<update id="updateInvstInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS505BDTO">
+       UPDATE IBIMS505B
+          SET SQ                                      = (
+													                 	 SELECT A.SQ
+													                 	   FROM IBIMS505B A
+													                 	  WHERE A.DEAL_NO = #{dealNo}
+													                 	)                                     	  /* 일련번호 */
+            , INV_FNN_TRGT_ASST_DCD                   = #{invFnnTrgtAsstDcd}                      /* 투자금융대상자산구분코드 */
+            , BRWR_NTN_NM                             = #{brwrNtnNm}                              /* 차주국가명 */
+            , TOT_BUSI_CT                             = #{totBusiCt}                              /* 총사업비용 */
+            , NTN_NM                                  = #{ntnNm}                                  /* 국가명 */
+            , GUAS_DVSN_CTNS                          = #{guasDvsnCtns}                           /* 보증서구분내용 */
+            , PROR_RTO                                = #{prorRto}                                /* 선순위비율 */
+            , BKBN_RTO                                = #{bkbnRto}                                /* 후순위비율 */
+            , CERK_RTO                                = #{cerkRto}                                /* 중간순위비율 */
+            , LES_STRT_DT                             = #{lesStrtDt}                              /* 리스시작일자 */
+            , LES_END_DT                              = #{lesEndDt}                               /* 리스종료일자 */
+            , MNUM                                    = #{mnum}                                   /* 개월수 */
+            , LOAN_STRT_DT                            = #{loanStrtDt}                             /* 대출시작일자 */
+            , LOAN_END_DT                             = #{loanEndDt}                              /* 대출종료일자 */
+            , LOAN_MNUM                               = #{loanMnum}                               /* 대출기간개월수 */
+            , DVC_TY_CNTS                             = #{dvcTyCnts}                              /* 기종내용 */
+            , PRDC_CMP_CNTS                           = #{prdcCmpCnts}                            /* 제작회사내용 */
+            , MNF_YR                                  = #{mnfYr}                                  /* 제조년도 */
+            , INV_FNN_LES_KND_DCD                     = #{invFnnLesKndDcd}                        /* 투자금융리스종류규분코드 */
+            , LES_MGCO_NM                             = #{lesMgcoNm}                              /* 리스운용사명 */
+            , LES_USER_CNTS                           = #{lesUserCnts}                            /* 리스이용자내용 */
+            , BRWR_SPC_YN                             = #{brwrSpcYn}                              /* 차주SPC여부 */
+            , BOND_TRNS_YN                            = #{bondTrnsYn}                             /* 채권이관여부 */
+            , MNGM_CND_FLFL_YN                        = #{mngmCndFlflYn}                          /* 관리조건이행여부 */
+            , FNNR_CTRC_MTTR_TRGT_YN                  = #{fnnrCtrcMttrTrgtYn}                     /* 재무약정사항대상여부 */
+            , DEL_YN                                  = #{delYn}                                  /* 삭제여부 */
+            , HND_DETL_DTM                            = SYSDATE                             	    /* 조작상세일시 */
+            , HND_EMPNO                               = #{hndEmpno}                               /* 조작사원번호 */
+            , HND_TMNL_NO                             = #{hndTmnlNo}                              /* 조작단말기번호 */
+            , HND_TR_ID                               = #{hndTrId}                                /* 조작거래id */
+            , GUID                                    = #{guid}                                   /* guid */
+        WHERE 1=1
+          AND DEAL_NO                                 = #{dealNo}                                 /* 딜번호 */
+    </update>
+	
+</mapper>

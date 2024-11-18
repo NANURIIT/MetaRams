@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/ds/DS01021P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/ds/DS01021P :: DS01021P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<div class="ibox-title">
+						<div class="row form-group form-inline">
+							<label class="col-sm-1 control-label">계좌번호</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+									<input type="text" class="form-control" id="selectedMngDealNo" value="325-061-0495769-09">
+								</div>
+							</div>
+							<label class="col-sm-1 control-label">종목코드</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+									<input type="text" class="form-control" id="" />
+								</div>
+							</div>
+							<label class="col-sm-1 control-label">발행일자</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+									<input type="text" class="form-control" id="" />
+								</div>
+							</div>
+							<div class="col-sm-3">
+							</div>
+						</div>
+					</div>
+					<div class="ibox-content" style="min-height: 800px">
+						<div class="col-sm-12">
+							<div class="ibox">
+								<div class="ibox-title">
+									<div>
+										<h5>▶ 검색결과</h5>
+									</div>
+								</div>
+								<span class="text-danger">※ 발행일자를 기준으로 1년이 경과된 종목만 환매 가능합니다.</span>
+								<div class="ibox-content" style="min-height: 700px">
+									<table class="table table-bordered table-hover">
+										<!-- 
+										<colgroup>
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 20%;">
+											<col style="width: 20%;">
+											<col style="width: 20%;">
+										</colgroup>
+										 -->
+										<thead>
+											<tr class="text-center">
+												<th>종목코드</th>
+												<th>종목명</th>
+												<th>발행일자</th>
+												<th>만기일자</th>
+												<th>액면금액</th>
+												<th>상환금액</th>
+												<th>잔여액면금액</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">111111111111</td>
+												<td class="text-center">개인03420-3606</td>
+												<td class="text-center">2026-06-20</td>
+												<td class="text-center">2036-06-20</td>
+												<td class="text-right">10,000,000</td>
+												<td class="text-right">0</td>
+												<td class="text-right">10,000,000</td>
+											</tr>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">222222222222</td>
+												<td class="text-center">개인03120-4708</td>
+												<td class="text-center">2027-08-19</td>
+												<td class="text-center">2047-08-19</td>
+												<td class="text-right">500,000</td>
+												<td class="text-right">100,000</td>
+												<td class="text-right">400,000</td>
+											</tr>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">333333333333</td>
+												<td class="text-center">개인03110-3707</td>
+												<td class="text-center">2027-07-18</td>
+												<td class="text-center">2037-07-18</td>
+												<td class="text-right">1,000,000</td>
+												<td class="text-right">0</td>
+												<td class="text-right">1,000,000</td>
+											</tr>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">444444444444</td>
+												<td class="text-center">개인03510-5411</td>
+												<td class="text-center">2034-11-20</td>
+												<td class="text-center">2054-11-20</td>
+												<td class="text-right">2,000,000</td>
+												<td class="text-right">500,000</td>
+												<td class="text-right">1,500,000</td>
+											</tr>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">555555555555</td>
+												<td class="text-center">개인03620-4501</td>
+												<td class="text-center">2025-01-19</td>
+												<td class="text-center">2045-01-19</td>
+												<td class="text-right">5,000,000</td>
+												<td class="text-right">1,000,000</td>
+												<td class="text-right">4,000,000</td>
+											</tr>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">666666666666</td>
+												<td class="text-center">개인03720-3802</td>
+												<td class="text-center">2028-02-17</td>
+												<td class="text-center">2038-02-17</td>
+												<td class="text-right">10,000,000</td>
+												<td class="text-right">0</td>
+												<td class="text-right">10,000,000</td>
+											</tr>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">777777777777</td>
+												<td class="text-center">개인03810-3604</td>
+												<td class="text-center">2026-04-20</td>
+												<td class="text-center">2036-04-20</td>
+												<td class="text-right">10,000,000</td>
+												<td class="text-right">0</td>
+												<td class="text-right">10,000,000</td>
+											</tr>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">888888888888</td>
+												<td class="text-center">개인03440-3911</td>
+												<td class="text-center">2029-11-20</td>
+												<td class="text-center">2039-11-20</td>
+												<td class="text-right">6,000,000</td>
+												<td class="text-right">0</td>
+												<td class="text-right">6,000,000</td>
+											</tr>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">999999999999</td>
+												<td class="text-center">개인03130-4003</td>
+												<td class="text-center">2030-03-19</td>
+												<td class="text-center">2040-03-19</td>
+												<td class="text-right">10,000,000</td>
+												<td class="text-right">0</td>
+												<td class="text-right">10,000,000</td>
+											</tr>
+											<tr ondblclick="callDS01021P();">
+												<td class="text-center">000000000000</td>
+												<td class="text-center">개인03780-4210</td>
+												<td class="text-center">2032-10-20</td>
+												<td class="text-center">2042-10-20</td>
+												<td class="text-right">2,500,000</td>
+												<td class="text-right">2,000,000</td>
+												<td class="text-right">500,000</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</th:block>
+
+</html>

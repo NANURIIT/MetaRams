@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB03030S.js}"></script>
+	<script th:src="@{js/business/tb/TB03031P.js}"></script>
+	<script th:src="@{js/business/tb/TB03023P.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+	<script th:src="@{js/business/tb/TB03061P.js}"></script>
+	<!-- <script th:src="@{js/business/popup/AS03210P.js}"></script> -->
+	<!-- <script th:src="@{js/business/popup/AC01120P.js}"></script> -->
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB03031P :: TB03031P"></th:block>
+	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<!-- <th:block th:replace="business/popup/AS03210P :: AS03210P"></th:block> -->
+	<!-- <th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- DPR 조회  -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content i-filter">
+						<div class="row form-group form-inline text-right">
+							<div class="col-sm-12 input-group">
+								<!-- 업체명 -->
+								<label class="col-sm-1 control-label">
+									업체명
+								</label>
+								<div class="col-sm-2">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB03030S_entpRnm" disabled="true">
+										<input type="hidden" class="form-control" id="TB03030S_corpRgstNo">
+										<input type="hidden" class="form-control" id="TB03030S_bsrnRgstNo">
+										<input type="hidden" class="form-control" id="TB03030S_entpCd">
+										<input type="hidden" class="form-control" id="TB03030S_entpNm">
+										<span class="input-group-append">
+											<button type="button" id="" class="btn btn-default" onclick="callTB03061P('TB03030S');">
+												<i class="fa fa-search"></i>
+											</button>
+										</span>
+									</div>
+								</div>
+								<div class="col text-left">
+								<button class="btn btn-primary" onclick="TB03030Sjs.getEntpInfo();">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+								<button class="btn btn-default" type="button" onclick="TB03030Sjs.rmReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content h-default">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ RM대상</h5>
+							</div>
+							<div class="ibox-content mb-2">
+								<div class = "tableFixHeader4">
+									<div id="gridRmEntpInfo"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 text-right">
+									<button class="btn btn-success" type="button" style="margin-right:5px;" onclick="callTB03031P('TB03030S');"><i class="fa fa-check"></i>&nbsp;RM활동신규</button>
+								</div>
+							</div>
+						</div>
+						<div class="ibox">
+							<!-- 첨부파일 -->
+							<div class="ibox">
+								<div class="ibox-title">
+									<h5>▶ RM활동이력</h5>
+								</div>
+								<div class="ibox-content">
+									<div class = "tableFixHeader4">
+										<div id="gridRmInfo"></div>		
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 첨부파일 start -->
+							<div class="col-lg-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 관련자료</h5>
+										<div class="ibox-tools">
+											<div th:fragment="file" id="file-upload">
+												<form id="upload-file-form">
+												    <input type="hidden" id="fileKey1" name="fileKey1">
+													<input type="hidden" id="fileKey2" name="fileKey2" value="*">
+													<input type="hidden" class="form-control" id="key1">
+													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
+													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles"><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+													<div style="display: none">
+														<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+									<div class="ibox-content">
+										<table class="table table-bordered">
+											<colgroup>
+												<col style="width: 5%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 50%;">
+												<col style="width: 30%;">
+											</colgroup>
+											<thead>
+												<tr>
+													<th></th>
+													<th>Main Key</th>
+													<th>Sub Key</th>
+													<th>일련번호</th>
+													<th>파일명</th>
+													<th>등록일자</th>
+												</tr>
+											</thead>
+											<tbody id="UPLOAD_FileList">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- 첨부파일 end -->
+					</div>
+				</div><!-- ibox -->
+			</div>
+		</div><!-- row -->
+	</div>
+
+</th:block>
+
+</html>

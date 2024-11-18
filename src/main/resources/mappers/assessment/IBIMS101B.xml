@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS101BMapper">
+
+    <select id="selectSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="string">
+        SELECT LPAD(SUBSTR(MAX(DEAL_NO), 6, 6) + 1, 6, '0')
+          FROM IBIMS101B
+         WHERE CHAR_LENGTH(DEAL_NO) = 11
+    </select>
+
+    <select id="selectDealNoFormat" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="string">
+        SELECT TO_NUMBER(CASE WHEN MAX(SN) IS NULL THEN 1
+                    WHEN MAX(SN) IS NOT NULL THEN MAX(SN) + 1
+                    ELSE MAX(SN) + 1
+            	     END ) AS SN
+          FROM IBIMS101B
+         WHERE DEAL_NO = #{dealNo}
+    </select>
+
+	<select id="getBscDealInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+        SELECT DEAL_NO                                      /*  딜번호  */
+             , DEAL_NM                                      /*  딜명  */
+             , SN                                           /*  일련번호  */
+             , (SELECT DPRT_NM
+                  FROM RAA98A
+                WHERE DPRT_CD = MNGM_BDCD) AS DPRT_NM
+             , (SELECT EMP_NM
+                  FROM IBIMS003B
+                 WHERE ENO = CHRR_EMPNO) AS EMP_NM
+             , NVL((SELECT ENTP_HNGL_NM
+                  FROM RAB97B
+                 WHERE BSNS_RGST_NO = PTXT_TR_OTHR_DSCM_NO
+                   AND BSNS_RGST_NO IS NOT NULL
+                   AND BSNS_RGST_NO != ''
+                ), '') AS ENTP_HNGL_NM
+             , '' AS INSPCT_PRGRS_ST_CD_NM
+             , '' AS INSPCT_PRGRS_ST_CD
+          FROM IBIMS101B
+         WHERE 1=1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+                 AND DEAL_NO LIKE '%'|| #{dealNo}||'%'
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
+                AND DEAL_NM LIKE '%'|| #{dealNm} || '%'
+           </if>
+                AND LAST_YN = '1'
+    </select>
+
+    <!-- 딜기본정보등록 -->     
+    <insert id="saveDeal" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO">
+        INSERT INTO IBIMS101B
+               (
+                  DEAL_NO              /*  딜번호  */
+                , SN                   /*  일련번호  */
+                , STDR_YEAR            /*  기준년도  */
+                , LAST_YN              /*  최종여부  */
+                , DEAL_NM              /*  딜명  */
+                , PRDT_IFLW_PATH_DCD   /*  상품유입경로구분코드  */
+                , INV_DEAL_CNTN        /*  딜내용  */
+                , INV_TRGT_DCD         /*  투자대상구분코드  */
+                , INV_TP_DCD           /*  투자유형구분코드  */
+                , INV_SHP_CD           /*  투자형태코드  */
+                , INV_WY_CD            /*  투자방식코드  */
+                , PTXT_TR_OTHR_DSCM_NO /*  거래상대방식별번호  */
+                , LST_YN               /*  상장여부  */
+                , DMS_CRDT_GRD_DCD     /*  국내신용등급구분코드  */
+                , CRDT_INQ_DT          /*  신용조회일자  */
+                , BUSI_DCD             /*  사업구분코드  */
+                , BUSI_DETL_DCD        /*  사업상세구분코드  */
+                , INV_PRDT_CLSF_CD     /*  투자상품분류코드  */
+                , INV_PRDT_MDCL_CD     /*  투자상품중분류코드  */
+                , INV_PRDT_LCLS_CD     /*  투자상품대분류코드  */
+                , IB_PRDT_CLSF_CD      /*  ib상품분류코드  */
+                , ACTS_CD              /*  계정과목코드  */
+                , ORTN_FND_CD          /*  운용펀드코드  */
+                , PPLC_FND_YN          /*  사모펀드여부  */
+                , UNTP_FND_YN          /*  단위형펀드여부  */
+                , DSK_CD               /*  데스크코드  */
+                , NTN_CD               /*  국가코드  */
+                , HOLD_PRPS_DCD        /*  보유목적구분코드  */
+                , OFFR_SRVC_DCD        /*  제공서비스구분코드  */
+                , THCO_RL_DCD          /*  당사역할구분코드  */
+                , INV_PRD_MNUM         /*  투자기간개월수  */
+                , SOC_YN               /*  soc여부  */
+                , SOC_DCD              /*  soc구분코드  */
+                , SPPI_SFC_YN          /*  sppi충족여부  */
+                , MRTG_STUP_YN         /*  담보설정여부  */
+                , ALTN_INV_YN          /*  대체투자여부  */
+                , RLES_FNN_YN          /*  부동산금융여부  */
+                , RLES_FNN_DETL_DCD    /*  부동산금융상세구분코드  */
+                , PROJ_FNN_YN          /*  프로젝트금융여부  */
+                , CRDT_RIFC_APLY_YN    /*  신용보강적용여부  */
+                , INV_AMT_DCSN_YN      /*  투자금액확정여부  */
+                , ALL_INV_AMT          /*  총투자금액  */
+                , THCO_PTCI_AMT_DCSN_YN/*  당사참여금액확정여부  */
+                , THCO_PTCI_AMT        /*  당사참여금액  */
+                , ALL_ERN_AMT          /*  전체수익금액  */
+                , THE_YEAR_ERN_AMT     /*  당해수익금액  */
+                , BALT_ERN_AMT         /*  기표수익금액  */
+                , INTR_ERN_AMT         /*  이자수익금액  */
+                , CRNCY_CD             /*  통화코드  */
+                , CRNCY_AMT            /*  통화금액  */
+                , EXP_DT               /*  기표일자  */
+                , MTRT_DT              /*  만기일자  */
+                , RGST_DT              /*  등록일자  */
+                , DECD_DT              /*  결재일자  */
+                , DECD_SN              /*  결재일련번호  */
+                , MNGM_BDCD            /*  관리부점코드  */
+                , CHRR_EMPNO           /*  담당자사원번호  */
+                , DCFC_BDCD            /*  결재자부점코드  */
+                , DCFC_EMP_NO          /*  결재자사원번호  */
+                , CORPTN_TYP_CD
+                , BOOK_CD
+                , INVST_GDS_DTLS_DVD_CD
+                , BNK_BD
+                , INVST_CTY
+                , BZSACAL_CD
+                , IND_TYP_DVD_CD
+                , IRLS
+                , CRDT_GRD_CD
+                , LST_MKT
+                , CSUC_CMP_DSCM_NO
+                , CRDT_EHCMNT_CCD
+                , LTV
+                , OVRS_CORP_COPRTN_CD
+                , ETC_CNTN
+                , DEL_YN               /*  삭제여부  */
+                , HND_DETL_DTM         /*  조작상세일시  */
+                , HND_EMPNO            /*  조작사원번호  */
+                , HND_TMNL_NO          /*  조작단말기번호  */
+                , HND_TR_ID            /*  조작거래id  */
+                , GUID                 /*  guid  */
+                , WF_ID
+                , WF_STATE
+               )
+        VALUES (
+                 #{dealNo}             /*  딜번호  */
+               , #{sn}                 /*  일련번호  */
+               , TO_CHAR(SYSDATE, 'YYYY')/*  기준년도  */
+               , '1'                   /*  최종여부  */
+               , #{dealNm}             /*  딜명  */
+               , #{prdtIflwPathDcd}    /*  상품유입경로구분코드  */
+               , #{invDealCntn}        /*  딜내용  */
+               , #{invTrgtDcd}         /*  투자대상구분코드  */
+               , #{invTpDcd}           /*  투자유형구분코드  */
+               , #{invShpCd}           /*  투자형태코드  */
+               , #{invWyCd}            /*  투자방식코드  */
+               , #{ptxtTrOthrDscmNo}   /*  거래상대방식별번호  */
+               , #{lstYn}              /*  상장여부  */
+               , #{dmsCrdtGrdDcd}      /*  국내신용등급구분코드  */
+               , #{crdtInqDt}          /*  신용조회일자  */
+               , #{busiDcd}            /*  사업구분코드  */
+               , #{busiDetlDcd}        /*  사업상세구분코드  */
+               , #{invPrdtClsfCd}      /*  투자상품분류코드  */
+               , #{invPrdtMdclCd}      /*  투자상품중분류코드  */
+               , #{invPrdtLclsCd}      /*  투자상품대분류코드  */
+               , #{ibPrdtClsfCd}       /*  ib상품분류코드  */
+               , #{actsCd}             /*  계정과목코드  */
+               , #{ortnFndCd}          /*  운용펀드코드  */
+               , #{pplcFndYn}          /*  사모펀드여부  */
+               , #{untpFndYn}          /*  단위형펀드여부  */
+               , #{dskCd}              /*  데스크코드  */
+               , #{ntnCd}              /*  국가코드  */
+               , #{holdPrpsDcd}        /*  보유목적구분코드  */
+               , #{offrSrvcDcd}        /*  제공서비스구분코드  */
+               , #{thcoRlDcd}          /*  당사역할구분코드  */
+               , #{invPrdMnum}         /*  투자기간개월수  */
+               , #{socYn}              /*  soc여부  */
+               , #{socDcd}             /*  soc구분코드  */
+               , #{sppiSfcYn}          /*  sppi충족여부  */
+               , #{mrtgStupYn}         /*  담보설정여부  */
+               , #{altnInvYn}          /*  대체투자여부  */
+               , #{rlesFnnYn}          /*  부동산금융여부  */
+               , #{rlesFnnDetlDcd}     /*  부동산금융상세구분코드  */
+               , #{projFnnYn}          /*  프로젝트금융여부  */
+               , #{crdtRifcAplyYn}     /*  신용보강적용여부  */
+               , #{invAmtDcsnYn}       /*  투자금액확정여부  */
+               , #{allInvAmt}          /*  총투자금액  */
+               , #{thcoPtciAmtDcsnYn}  /*  당사참여금액확정여부  */
+               , #{thcoPtciAmt}        /*  당사참여금액  */
+               , #{allErnAmt}          /*  전체수익금액  */
+               , #{theYearErnAmt}      /*  당해수익금액  */
+               , #{baltErnAmt}         /*  기표수익금액  */
+               , #{intrErnAmt}         /*  이자수익금액  */
+               , #{crncyCd}            /*  통화코드  */
+               , #{crncyAmt}           /*  통화금액  */
+               , #{expDt}              /*  기표일자  */
+               , #{mtrtDt}             /*  만기일자  */
+               , #{rgstDt}             /*  등록일자  */
+               , #{decdDt}             /*  결재일자  */
+               , #{decdSn}             /*  결재일련번호  */
+               , #{mngmBdcd}           /*  관리부점코드  */
+               , #{chrrEmpno}          /*  담당자사원번호  */
+               , #{dcfcBdcd}           /*  결재자부점코드  */
+               , #{dcfcEmpNo}          /*  결재자사원번호  */
+               , #{corptnTypCd}
+               , #{bookCd}
+               , #{invstGdsDtlsDvdCd}
+               , #{bnkBd}
+               , #{invstCty}
+               , #{bzsacalCd}
+               , #{indTypDvdCd}
+               , #{irls}
+               , #{crdtGrdCd}
+               , #{lstMkt}
+               , #{csucCmpDscmNo}
+               , #{crdtEhcmntCcd}
+               , #{ltv}
+               , #{ovrsCorpCoprtnCd}
+               , #{etcCntn}
+               , 'N'                   /*  삭제여부  */
+               , SYSDATE               /*  조작상세일시  */
+               , #{hndEmpno}           /*  조작사원번호  */
+               , ''                    /*  조작단말기번호  */
+               , ''                    /*  조작거래id  */
+               , ''                    /*  guid  */
+               , #{wfId}
+               , #{wfState}
+               )
+    </insert>
+    
+    <update id="updateLastYn" parameterType="string">
+        UPDATE IBIMS101B
+           SET LAST_YN = '0'
+         WHERE DEAL_NO = #{param}
+           AND LAST_YN = '1'
+    </update>
+
+    <!-- 딜기본정보조회 -->    
+    <select id="getBscDealDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+ 		   SELECT DEAL_NO             			/*  딜번호  */
+            , SN                  			/*  일련번호  */
+            , STDR_YEAR           			/*  기준년도  */
+            , LAST_YN             			/*  최종여부  */
+            , DEAL_NM             			/*  딜명  */
+            , PRDT_IFLW_PATH_DCD  			/*  상품유입경로구분코드  */
+            , INV_DEAL_CNTN       			/*  딜내용  */
+            , INV_TRGT_DCD        			/*  투자대상구분코드  */
+            , INV_TP_DCD          			/*  투자유형구분코드  */
+            , INV_SHP_CD          			/*  투자형태코드  */
+            , INV_WY_CD           			/*  투자방식코드  */
+            , PTXT_TR_OTHR_DSCM_NO			/*  거래상대방식별번호  */
+            , NVL((
+              SELECT MAX(BZEP_NAME)
+                FROM IBIMS010B
+                WHERE ARDY_BZEP_NO = PTXT_TR_OTHR_DSCM_NO
+              ), '') AS PTXT_TR_OTHR_DSCM_NM
+            , LST_YN              			/*  상장여부  */
+            , DMS_CRDT_GRD_DCD    			/*  국내신용등급구분코드  */
+            , CRDT_INQ_DT         			/*  신용조회일자  */
+            , BUSI_DCD            			/*  사업구분코드  */
+            , BUSI_DETL_DCD       			/*  사업상세구분코드  */
+            , INV_PRDT_CLSF_CD    			/*  투자상품분류코드  */
+            , INV_PRDT_MDCL_CD    			/*  투자상품중분류코드  */
+            , INV_PRDT_LCLS_CD    			/*  투자상품대분류코드  */
+            , IB_PRDT_CLSF_CD     			/*  ib상품분류코드  */
+            , ACTS_CD             			/*  계정과목코드  */
+            , ORTN_FND_CD         			/*  운용펀드코드  */
+            , PPLC_FND_YN         			/*  사모펀드여부  */
+            , UNTP_FND_YN         			/*  단위형펀드여부  */
+            , DSK_CD              			/*  데스크코드  */
+            , NTN_CD              			/*  국가코드  */
+            , HOLD_PRPS_DCD       			/*  보유목적구분코드  */
+            , OFFR_SRVC_DCD       			/*  제공서비스구분코드  */
+            , THCO_RL_DCD         			/*  당사역할구분코드  */
+            , INV_PRD_MNUM        			/*  투자기간개월수  */
+            , SOC_YN              			/*  soc여부  */
+            , SOC_DCD             			/*  soc구분코드  */
+            , SPPI_SFC_YN         			/*  sppi충족여부  */
+            , MRTG_STUP_YN        			/*  담보설정여부  */
+            , ALTN_INV_YN         			/*  대체투자여부  */
+            , RLES_FNN_YN         			/*  부동산금융여부  */
+            , RLES_FNN_DETL_DCD   			/*  부동산금융상세구분코드  */
+            , PROJ_FNN_YN         			/*  프로젝트금융여부  */
+            , CRDT_RIFC_APLY_YN   			/*  신용보강적용여부  */
+            , INV_AMT_DCSN_YN     			/*  투자금액확정여부  */
+            , ALL_INV_AMT         			/*  총투자금액  */
+            , THCO_PTCI_AMT_DCSN_YN 		/*  당사참여금액확정여부  */
+            , THCO_PTCI_AMT       			/*  당사참여금액  */
+            , ALL_ERN_AMT         			/*  전체수익금액  */
+            , THE_YEAR_ERN_AMT    			/*  당해수익금액  */
+            , BALT_ERN_AMT        			/*  기표수익금액  */
+            , INTR_ERN_AMT        			/*  이자수익금액  */
+            , CRNCY_CD            			/*  통화코드  */
+            , CRNCY_AMT           			/*  통화금액  */
+            , MTRT_DT             			/*  기표일자  */
+            , EXP_DT              			/*  만기일자  */
+            , RGST_DT             			/*  등록일자  */
+            , DECD_DT             			/*  결재일자  */
+            , DECD_SN             			/*  결재일련번호  */
+            , MNGM_BDCD           			/*  관리부점코드  */
+            , (
+                SELECT MAX(DPRT_CD)
+                  FROM IBIMS003B
+                WHERE DPRT_CD = MNGM_BDCD
+              ) AS DPRT_NM
+            , CHRR_EMPNO          			/*  담당자사원번호  */
+            , (
+                SELECT EMP_NM
+                  FROM IBIMS003B
+                WHERE EMPNO = CHRR_EMPNO
+              )
+              AS EMP_NM
+            , DCFC_BDCD           			   /*  결재자부점코드  */
+            , DCFC_EMP_NO         			   /*  결재자사원번호  */
+            , CORPTN_TYP_CD                /*  협업유형코드  */
+            , BOOK_CD                      /*  북코드  */
+            , INVST_GDS_DTLS_DVD_CD        /*  투자상품상세분류코드  */
+            , BNK_BD                       /*  은행부점  */
+            , INVST_CTY                    /*  투자도시  */
+            , BZSACAL_CD                   /*  기업규모코드  */
+            , IND_TYP_DVD_CD               /*  업종분류코드  */
+            , IRLS                         /*  계열  */
+            , CRDT_GRD_CD                  /*  신용등급코드  */
+            , LST_MKT                      /*  상장시장  */
+            , CSUC_CMP_DSCM_NO             /*  시공사식별번호  */
+            , NVL((
+              SELECT MAX(BZEP_NAME)
+                FROM IBIMS010B
+                WHERE ARDY_BZEP_NO = CSUC_CMP_DSCM_NO
+              ), '') AS CSUC_CMP_DSCM_NM
+            , CRDT_EHCMNT_CCD              /*  신용보감구분코드  */
+            , LTV                          /*  LTV  */
+            , OVRS_CORP_COPRTN_CD          /*  해외법인협업  */
+            , ETC_CNTN                     /*  기타의견  */
+            , DEL_YN              			   /*  삭제여부  */
+            , HND_DETL_DTM        			   /*  조작상세일시  */
+            , HND_EMPNO           			   /*  조작사원번호  */
+            , HND_TMNL_NO         			   /*  조작단말기번호  */
+            , HND_TR_ID           			   /*  조작거래id  */
+            , GUID                			   /*  guid  */
+        FROM IBIMS101B
+        WHERE 1 = 1
+          AND DEAL_NO             = #{dealNo}
+      <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sn)">
+          AND SN                  = #{sn}
+      </if>
+      <if test="sn == ''">
+          AND LAST_YN = '1'
+      </if>
+    </select>
+    
+    <!-- 딜목록조회팝업 조회 -->    
+    <select id="selectLstTB03021P" parameterType="com.nanuri.rams.business.common.vo.IBIMS101BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+        SELECT s101b.DEAL_NO						  /*  딜번호  */
+             , s101b.SN						        /*  일련번호  */
+             , s101b.DEAL_NM						  /*  딜명  */
+             , s101b.RGST_DT						  /*  등록일자  */
+             , s101b.CHRR_EMPNO						/*  담당자사번  */
+             , s003b.EMP_NM							  /*  담당자명  */
+             , s003b.DPRT_CD						  /*  부서코드  */
+             , s003b.DPRT_NM						  /*  부서코드명  */
+             , s010b.BZEP_NAME   					/*  업체한글명  */
+          FROM IBIMS101B s101b
+          LEFT JOIN IBIMS003B s003b
+               ON s101b.CHRR_EMPNO				= s003b.EMPNO
+          LEFT JOIN IBIMS010B s010b
+               ON s101b.PTXT_TR_OTHR_DSCM_NO	= s010b.ARDY_BZEP_NO
+         WHERE 1 = 1
+           AND s101b.LAST_YN				= '1'
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+           AND s101b.DEAL_NO             LIKE '%'|| #{dealNo} || '%'
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
+           AND s101b.DEAL_NM             LIKE '%'|| #{dealNm} || '%'
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDt)">
+           AND s101b.RGST_DT             <![CDATA[>=]]> #{rgstDt}
+        </if>
+         ORDER BY s101b.RGST_DT DESC
+    </select>
+    
+    <!-- 딜일련번호 조회  -->  
+    <select id="selectLstDealSn" parameterType="com.nanuri.rams.business.common.vo.IBIMS101BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+		SELECT A.DEAL_NO
+		     , A.SN
+		     , A.LAST_YN
+		  FROM IBIMS101B A
+		 WHERE 1=1
+		   AND A.DEAL_NO =  #{dealNo}
+		   AND A.DEL_YN  = 'N'
+		 ORDER BY A.LAST_YN DESC, TO_NUMBER(A.SN) DESC
+    </select>
+    
+  <!-- 딜정보조회 -->  
+	<select id="ibSpecSearch" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+        SELECT B.DEAL_NO                                               /*  딜번호  */
+             , B.BUSI_DCD                                              /*  사업구분코드  */
+             , B.RGST_DT                                               /*  등록일자  */
+             , NVL(
+               (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'I020'
+                   AND CD_VL_ID = B.BUSI_DCD
+               )
+               , '') AS BUSI_DCD_NM
+             , NVL(B.BUSI_DETL_DCD, '') AS BUSI_DETL_DCD               /*  사업상세구분코드  */
+             , B.DEAL_NM                                               /*  딜명  */
+             , NVL(B.ORTN_FND_CD, '') AS ORTN_FND_CD                   /*  운용펀드코드  */
+             , B.MNGM_BDCD                                             /*  관리부점코드  */
+             , (SELECT MAX(DPRT_NM) FROM IBIMS003B WHERE DPRT_CD = B.MNGM_BDCD) AS MNGM_BDCD_NM
+             , B.CHRR_EMPNO                                            /*  담당자사원번호  */
+             , (SELECT MAX(EMP_NM) FROM IBIMS003B WHERE EMPNO = B.CHRR_EMPNO) AS CHRR_EMPNM
+             , NVL(
+               (
+                SELECT MAX(MTR_PRG_STTS_DCD)
+                  FROM IBIMS103B A
+                 WHERE A.DEAL_NO = B.DEAL_NO
+               )
+                 , '101') AS MTR_PRG_STTS_DCD /*  테이블 컬럼 미존재로 임시 하드코딩 */
+             , NVL(
+               (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B A
+                 WHERE CMNS_CD_GRP = 'I011'
+                   AND A.CD_VL_ID = (
+                                     SELECT MAX(MTR_PRG_STTS_DCD)
+                                       FROM IBIMS103B A
+                                      WHERE A.DEAL_NO = B.DEAL_NO
+                                    )
+               )
+                 , '딜정보저장') AS MTR_PRG_STTS_DCD_NM                     /*  테이블 컬럼 미존재로 임시 하드코딩 */
+          FROM IBIMS101B B
+         WHERE LAST_YN = '1'
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+           AND DEAL_NO LIKE '%'|| #{dealNo} || '%'
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
+           AND DEAL_NM LIKE '%'|| #{dealNm} || '%'
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(start)">
+           AND B.RGST_DT             <![CDATA[>=]]> #{start}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(end)">
+           AND B.RGST_DT             <![CDATA[<=]]> #{end}
+        </if>
+        ORDER BY B.RGST_DT DESC
+    </select>
+
+
+     <!-- 워크플로우조회 -->   
+    <select id="getWorkflowInfoList" parameterType="com.nanuri.rams.business.common.vo.IBIMS101BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+      SELECT A.DEAL_NO                                     
+            ,A.SN        AS DEAL_SN                                   
+            ,A.DEAL_NM                                      
+            /*,B.MTR_DCD || '-' ||CD2.CD_VL_NM    AS MTR_NM     */
+            ,B.MTR_DCD AS MTR_DCD
+            ,CD2.CD_VL_NM    AS MTR_NM         
+            ,B.MTR_NM                                       
+            /*,B.JDGM_DCD ||'-' ||CD3.CD_VL_NM   AS JDGM_NM      */ 
+            ,CD3.CD_VL_NM   AS JDGM_NM       
+            ,B.SN         AS JDGM_SN                                 
+            /*,B.MTR_PRG_STTS_DCD || '-' || CD1.CD_VL_NM  AS MTR_PRG_STTS_NM */
+            /*,CD1.CD_VL_NM AS MTR_PRG_STTS_NM      */
+            ,C.EPRZ_CRDL_CTRC_AMT AS CTRC_AMT
+            ,C.PRDT_CD                                      
+            ,C.PRDT_NM      
+            /*,C.PRDT_LCLS_CD ||'-' || CD7.CD_VL_NM   AS INV_PRDT_LCLS_CD     */
+            ,CD7.CD_VL_NM   AS INV_PRDT_LCLS_CD     
+            ,CASE WHEN C.PRDT_LCLS_CD IN('10','11','16') THEN '주식/채권'
+                  WHEN C.PRDT_LCLS_CD IN('90','91')      THEN '기업여신'
+                  WHEN C.PRDT_LCLS_CD IN('30')           THEN '집합투자'
+                  ELSE 'NOT'
+             END                                            
+            ,CASE WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '1' THEN '1'
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '2' THEN '2'    /* 심사 */
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '3' THEN '3'    /* 협의체 */
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '4' THEN '4'
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '5' THEN '5'
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '6' THEN '6'
+                  ELSE 'NOT'
+             END                        AS MTR_PRG_STTS_DCD 
+             ,CASE WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '1' THEN 'Deal 등록'
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '2' THEN 'Deal 등록'    /* 심사 */
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '3' THEN 'Deal 등록'    /* 협의체 */
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '4' THEN '종목정보등록'
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '5' THEN '약정'
+                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '6' THEN '실행'
+                  ELSE 'NOT'
+             END                        AS MTR_PRG_STTS_NM                  
+            ,C.APVL_AMT                                     
+            ,C.EPRZ_CRDL_APVL_AMT                           
+            ,C.LOAN_AMT                                     
+    	      ,C.DEAL_EXC_BLCE                                
+    	      ,C.EPRZ_CRDL_INTR_BNAO_DCD                      
+    	      ,C.TR_OTHR_DSCM_NO                              
+            ,C.BZEP_NAME        
+            ,C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD          /* 상환회차 */                 
+            /*,C.PRG_STTS_CD || '-' || CD4.CD_VL_NM   AS PRG_STTS_CD      
+            ,C.IB_PRDT_CLSF_CD || '-' || CD5.CD_VL_NM  AS IB_PRDT_CLSF_CD   
+            ,C.RQS_KND_CD || '-' || CD6.CD_VL_NM     AS  RQS_KND_CD   */
+            ,CD4.CD_VL_NM   AS PRG_STTS_CD      
+            ,CD5.CD_VL_NM  AS IB_PRDT_CLSF_CD   
+            ,CD6.CD_VL_NM    AS  RQS_KND_CD   
+        FROM (select DEAL_NO
+            ,SN
+            ,DEAL_NM
+         from IBIMS101B where LAST_YN = '1' and NVL(DEL_YN,'N') = 'N'/* 딜 */ ) A
+   LEFT JOIN (
+    	SELECT A.DEAL_NO
+    	      ,A.MTR_DCD
+    	      ,A.JDGM_DCD
+    	      ,A.SN
+    	      ,A.MTR_PRG_STTS_DCD
+    	      ,A.MTR_NM
+    	  FROM (
+    	SELECT DEAL_NO
+    		    ,MTR_DCD
+    		    ,JDGM_DCD
+    		    ,SN
+    		    ,MTR_PRG_STTS_DCD
+    		    ,MTR_NM
+    		    ,ROW_NUMBER() OVER(PARTITION BY DEAL_NO,MTR_DCD ORDER BY SN DESC) AS NO
+    		FROM   IBIMS103B
+    	 WHERE  LAST_YN = '1' /* 딜심사 */
+    	) A
+    	WHERE A.NO = 1
+      ) B
+         ON  A.DEAL_NO = B.DEAL_NO
+    LEFT JOIN (
+       SELECT A.DEAL_NO
+             ,A.PRDT_CD
+             ,A.PRDT_NM
+             ,A.PRDT_LCLS_CD
+             ,A.APVL_AMT
+             ,A.SN
+             ,A.TR_OTHR_DSCM_NO
+             ,C.BZEP_NAME
+             ,A.IB_PRDT_CLSF_CD
+             ,A.RQS_KND_CD
+             ,A.PRG_STTS_CD
+             ,B.EPRZ_CRDL_APVL_AMT
+             ,B.EPRZ_CRDL_CTRC_AMT                                                     /*  기업여신약정금액 */
+    	       ,B.EPRZ_CRDL_INTR_BNAO_DCD                                                /*  기업여신이자선후취구분코드 */
+             ,(SELECT C1.TOT_RDMP_TMRD  FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1' AND ROWNUM = 1) AS TOT_RDMP_TMRD      /*  총상환회차 */
+             ,(SELECT MAX(C1.LAST_RDMP_TMRD)  FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1') AS LAST_RDMP_TMRD              /*  최종상환회차 */
+    	       ,(SELECT SUM(C1.DEAL_EXC_AMT)  FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1' ) AS LOAN_AMT                     /*  대출금액 */
+    	       ,(SELECT SUM(C1.DEAL_EXC_BLCE) FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1' ) AS DEAL_EXC_BLCE                /*  대출잔액 */
+                  from IBIMS201B A
+                  LEFT JOIN IBIMS401B B
+                  ON A.PRDT_CD = B.PRDT_CD
+                  LEFT JOIN IBIMS010B C
+                  ON A.TR_OTHR_DSCM_NO = C.ARDY_BZEP_NO
+                  WHERE A.LAST_YN = '1'/* 딜승인기본 */
+                  AND   B.CTRC_CCLC_DCD = '1'
+    ) C    
+    ON  A.DEAL_NO = C.DEAL_NO
+    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I001') CD1
+    ON  B.MTR_PRG_STTS_DCD = CD1.CD_VL_ID
+    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'L007') CD2
+    ON  B.MTR_DCD = CD2.CD_VL_ID
+    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'R014') CD3
+    ON  B.JDGM_DCD = CD3.CD_VL_ID
+    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I011') CD4
+    ON  C.PRG_STTS_CD = CD4.CD_VL_ID
+    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I002') CD5
+    ON  C.IB_PRDT_CLSF_CD = CD5.CD_VL_ID
+    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'R023') CD6
+    ON  C.RQS_KND_CD = CD6.CD_VL_ID
+    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'P005') CD7
+    ON  C.PRDT_LCLS_CD = CD7.CD_VL_ID
+    WHERE 1=1
+     <if test="dealNo != ''">
+    AND A.DEAL_NO = #{dealNo}
+    </if>
+     <if test="prdtCd != ''">
+    AND C.PRDT_CD = #{prdtCd}
+    </if>
+    AND A.DEAL_NO IS NOT NULL
+    AND C.PRDT_CD IS NOT NULL
+    </select>
+
+   
+
+    
+</mapper>

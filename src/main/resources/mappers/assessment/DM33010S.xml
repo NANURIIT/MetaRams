@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.DM33010Mapper">
+
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆ 변경된 MAPPER 로 사용불가 (songwonhee) ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+
+	<!-- 매핑리스트 조회 -->
+	<select id="selMappingList" parameterType="map" resultType="map">
+		SELECT R.*
+		  FROM (
+				 SELECT A.INVST_ASTS_DVD_CD     <!-- 투자자산분류코드 -->
+				      , (SELECT CD_VL_NM
+				           FROM RAA91B
+				          WHERE CMNS_CD_GRP = 'I024'
+				            AND CD_VL_ID = A.INVST_ASTS_DVD_CD
+				        ) AS INVST_ASTS_DVD_NM  <!-- 투자자산분류명 -->
+				      , A.ASTS_DPRT_CD			<!-- 자산관리부점코드 -->
+					  , A.ASTS_DPRT_NM          <!-- 자산관리부점명 -->
+					  , A.ASTS_DSTG_CHRS_NO     <!-- 자산식별고유번호 -->
+					  , A.CMBS_BKNO             <!-- 자본시장표준IT시스템북번호 -->
+					  , A.INVST_ASTS_NM         <!-- 투자자산명 -->
+					  , A.CMBS_BKNO_NM          <!-- 자본시장표준IT시스템북명 -->
+					  , A.RISK_RCG_NO           <!-- 리스크승인번호 -->
+					  , IFNULL(A.IB_DEAL_NO, '')
+					    AS IB_DEAL_NO           <!-- IBDEAL번호 -->
+					  , IFNULL(A.RISK_INSPCT_CCD, '')
+				        AS RISK_INSPCT_CCD      <!-- 리스크심사구분코드 -->
+					  , IFNULL((SELECT CD_VL_NM
+					  	   FROM RAA91B
+					  	  WHERE CMNS_CD_GRP = 'R013'
+					 	    AND CD_VL_ID = A.RISK_INSPCT_CCD
+					    ), '')
+					    AS RISK_INSPCT_CCD_NM 	<!-- 리스크심사구분명 -->
+					  , IFNULL(A.LST_C_CASE_CCD, '')
+		                AS LST_C_CASE_CCD       <!-- 부수안건구분코드 -->
+				      , IFNULL((SELECT CD_VL_NM
+					  	   FROM RAA91B
+					  	  WHERE CMNS_CD_GRP = 'L001'
+					 	    AND CD_VL_ID = A.LST_C_CASE_CCD
+					    ), '')
+				        AS LST_C_CASE_CCD_NM  	<!-- 리스크심사구분명 -->
+				      , IFNULL(A.ORG_IB_DEAL_NO, '')
+					    AS ORG_IB_DEAL_NO       <!-- IBDEAL번호 -->
+					  , IFNULL(A.ORG_RISK_INSPCT_CCD, '')
+				        AS ORG_RISK_INSPCT_CCD  <!-- 리스크심사구분코드 -->
+					  , IFNULL((SELECT CD_VL_NM
+					  	   FROM RAA91B
+					  	  WHERE CMNS_CD_GRP = 'R013'
+					 	    AND CD_VL_ID = A.ORG_RISK_INSPCT_CCD
+					    ), '')
+					    AS ORG_RISK_INSPCT_CCD_NM<!-- 리스크심사구분명 -->
+					  , IFNULL(A.ORG_LST_C_CASE_CCD, '')
+		                AS ORG_LST_C_CASE_CCD   <!-- 부수안건구분코드 -->
+				      , IFNULL((SELECT CD_VL_NM
+					  	   FROM RAA91B
+					  	  WHERE CMNS_CD_GRP = 'L001'
+					 	    AND CD_VL_ID = A.ORG_LST_C_CASE_CCD
+					    ), '')
+				        AS ORG_LST_C_CASE_CCD_NM<!-- 리스크심사구분명 -->
+				      , IFNULL(A.CASE_DPRT_CD, '')
+				        AS CASE_DPRT_CD			<!-- 안건관리부점코드 -->
+					  , IFNULL(A.CASE_DPRT_NM, '')
+				        AS CASE_DPRT_NM         <!-- 안건관리부점명 -->
+					  , IFNULL(A.IB_DEAL_SNM_NM, '')
+				        AS IB_DEAL_SNM_NM  		<!-- IBDEAL약어명 -->
+					  , IFNULL(A.RGST_DT, '')
+				        AS RGST_DT				<!-- 등록일자 -->
+					  , IFNULL(A.HNDJB_MNG_F, '')
+				        AS HNDJB_MNG_F			<!-- 수작업관리여부 -->
+					  , IFNULL(A.XCL_F, '')
+				        AS XCL_F				<!-- 제외여부 -->
+					  , IFNULL(A.BK_AMT, '')
+				        AS BK_AMT				<!-- 장부금액 -->
+					  , IFNULL(A.OPN_PRC_VAL_AMT, '')
+				        AS OPN_PRC_VAL_AMT		<!-- 시가평가금액 -->
+				 FROM (
+						  SELECT A.INVST_ASTS_DVD_CD                                                            <!-- 투자자산분류코드 -->
+						       , A.MNG_DPRT_CD AS ASTS_DPRT_CD													<!-- 자산관리부점코드 -->
+							   , (SELECT DPRT_NM FROM RAA98A WHERE DPRT_CD = A.MNG_DPRT_CD) AS ASTS_DPRT_NM     <!-- 자산관리부점명 -->
+							   , A.ASTS_DSTG_CHRS_NO                                                            <!-- 자산식별고유번호 -->
+							   , A.CMBS_BKNO                                                                    <!-- 자본시장표준IT시스템북번호 -->
+							   , A.INVST_ASTS_NM                                                                <!-- 투자자산명 -->
+							   , A.CMBS_BKNO_NM                                                                 <!-- 자본시장표준IT시스템북명 -->
+							   , A.RISK_RCG_NO                                                                  <!-- 리스크승인번호 -->
+							   , B.IB_DEAL_NO                                                                   <!-- IBDEAL번호 -->
+							   , B.RISK_INSPCT_CCD                                                              <!-- 리스크심사구분코드 -->
+							   , B.LST_C_CASE_CCD                                                               <!-- 부수안건구분코드 -->
+							   , A.IB_DEAL_NO AS ORG_IB_DEAL_NO                                                 <!-- 40BIBDEAL번호 -->
+							   , A.RISK_INSPCT_CCD AS ORG_RISK_INSPCT_CCD                                       <!-- 40B리스크심사구분코드 -->
+							   , A.LST_C_CASE_CCD AS ORG_LST_C_CASE_CCD                                         <!-- 40B부수안건구분코드 -->
+						       , B.DPRT_CD AS CASE_DPRT_CD														<!-- 안건관리부점코드 -->
+							   , (SELECT DPRT_NM FROM RAA98A WHERE DPRT_CD = B.DPRT_CD) AS CASE_DPRT_NM         <!-- 안건관리부점명 -->
+							   , B.IB_DEAL_SNM_NM                                                               <!-- IBDEAL약어명 -->
+							   , A.RGST_DT                                                                      <!-- 등록일자 -->
+							   , A.HNDJB_MNG_F                                                                  <!-- 수작업관리여부 -->
+							   , A.XCL_F                                                                        <!-- 제외여부 -->
+							   , C.BK_AMT                                                                       <!-- 장부금액 -->
+							   , C.OPN_PRC_VAL_AMT                                                              <!-- 시가평가금액 -->
+						    FROM RAA40B A
+				            LEFT OUTER JOIN RAA02B B
+							    	     ON A.RISK_RCG_NO = B.RISK_RCG_NO
+							 , (SELECT A.ASTS_DSTG_CHRS_NO
+									 , A.CMBS_BKNO
+							         , A.RISK_RCG_NO
+									 , SUM(A.BK_AMT) AS BK_AMT
+									 , SUM(A.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+								FROM RAA49B A
+								   , RAA40B B
+								WHERE A.STD_DT = (SELECT MAX(A.STD_DT) FROM RAA49B)
+								  AND A.ASTS_DSTG_CHRS_NO = B.ASTS_DSTG_CHRS_NO
+								  AND A.CMBS_BKNO = B.CMBS_BKNO
+								GROUP BY ASTS_DSTG_CHRS_NO, CMBS_BKNO
+						  ) C
+						 WHERE A.ASTS_DSTG_CHRS_NO = C.ASTS_DSTG_CHRS_NO
+						   AND A.CMBS_BKNO = C.CMBS_BKNO
+		                   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(invstAstsDvdCd)">
+						   AND A.INVST_ASTS_DVD_CD = #{invstAstsDvdCd}
+						   </if>
+		                   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(astsDprtCd)">
+						   AND A.MNG_DPRT_CD = #{astsDprtCd}
+						   </if>
+						   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(caseDprtCd)">
+						   AND B.DPRT_CD = #{caseDprtCd}
+				 		   </if>
+						   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(invstAstsNm)">
+						   AND A.INVST_ASTS_NM LIKE CONCAT('%' , #{invstAstsNm} , '%')
+						   </if>
+		                   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ibDealNm)">
+		                   AND B.IB_DEAL_SNM_NM LIKE CONCAT('%' , #{ibDealNm} , '%')
+		                   </if>
+<!--					   AND A.XCL_F = #{confirm} -->
+						   <if test='mappYn == "Y"'>
+						   AND (A.RISK_RCG_NO IS NOT NULL AND B.IB_DEAL_NO IS NOT NULL)
+						   </if>
+		                   <if test='mappYn == "N"'>
+		                   AND (A.RISK_RCG_NO IS NULL OR B.IB_DEAL_NO IS NULL)
+		                   </if>
+					  ) A
+			 ) R
+ ORDER BY INVST_ASTS_DVD_CD
+		, ASTS_DSTG_CHRS_NO
+		, CMBS_BKNO
+	</select>
+
+		<!-- 매핑정보 저장 -->
+	<update id="saveMappingInfo" parameterType="map">
+		<foreach collection="inputArr" item="item">
+			UPDATE RAA40B
+			   SET RISK_RCG_NO     = #{item.riskRcgNo}
+				 , RGST_DT         = #{item.rgstDt}
+				 , HNDJB_MNG_F     = #{item.hndjbMngF}
+				 , XCL_F           = #{item.xclF}
+			 WHERE IB_DEAL_NO      = #{item.ibDealNo}
+			   AND RISK_INSPCT_CCD = #{item.riskInscptCcd}
+			   AND LST_C_CASE_CCD  = #{item.lstCCaseCcd};
+		</foreach>
+	</update>
+
+</mapper>

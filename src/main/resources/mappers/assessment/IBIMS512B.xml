@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS512BMapper">
+
+	<!-- 편입자산정보 조회 -->
+	<select id="getAdmsAsstInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS512BVO">
+        SELECT IB_INV_TP_CD
+             , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'I038'
+                   AND CD_VL_ID    = IB_INV_TP_CD
+              ) AS IB_INV_TP_NM
+            , ADMS_ASST_ACBK_ACQ_AMT
+            , ADMS_ASST_GRNT_ERN_RT
+            , ADMS_ASST_ITM_NM
+         FROM IBIMS512B
+        WHERE DEAL_NO = #{dealNo}
+	</select>
+	
+<!-- 편입자산정보 저장 -->
+	<insert id="saveAdmsAsstInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS512BVO">
+		INSERT INTO IBIMS512B
+               (
+                  DEAL_NO                                 /* 딜번호 */
+                , SN                                      /* 일련번호 */
+                , ADMS_ASST_ITM_NM                        /* 편입자산종목명 */
+                , ADMS_ASST_GRNT_ERN_RT                   /* 편입자산보장수익율 */
+                , IB_INV_TP_CD                            /* 투자금융투자유형코드 */
+                , ADMS_ASST_ACBK_ACQ_AMT                  /* 편입자산장부취득금액 */
+                , DEL_YN                                  /* 삭제여부 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래id */
+                , GUID                                    /* guid */
+              )
+        VALUES 
+		<foreach collection="list" item="item" index="index" separator=",">
+			        (
+			          #{item.dealNo}                           /* 딜번호 */
+              , #{index}+1                               /* 일련번호 */
+              , #{item.admsAsstItmNm}                    /* 편입자산종목명 */
+              , #{item.admsAsstGrntErnRt}                /* 편입자산보장수익율 */
+              , #{item.ibInvTpCd}                        /* 투자금융투자유형코드 */
+              , #{item.admsAsstAcbkAcqAmt}               /* 편입자산장부취득금액 */
+              , '0'                                      /* 삭제여부 */
+              , SYSDATE                           		   /* 조작상세일시 */
+              , #{item.hndEmpno}                         /* 조작사원번호 */
+              , #{item.hndTmnlNo}                        /* 조작단말기번호 */
+              , #{item.hndTrId}                          /* 조작거래id */
+              , #{item.guid}                             /* guid */
+              )
+		</foreach>  
+	</insert>
+
+    <!-- 편입자산정보 삭제 -->
+    <delete id="delAdmsAsstInfo" parameterType="string">
+        DELETE
+         FROM IBIMS512B
+        WHERE DEAL_NO = #{dealNo}
+    </delete>
+
+</mapper>

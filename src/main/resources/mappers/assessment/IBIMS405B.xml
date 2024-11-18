@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS405BMapper">
+    <!-- 기타투자정보조회  -->
+    <select id="getBuyList" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS405BVO">
+         SELECT A.PRDT_CD                                                               <!-- 상품코드 -->
+			       , A.TR_SN                                                                 <!-- 거래일련번호 -->
+             , A.EXC_SN                                                                <!-- 실행일련번호 -->
+             , A.ETPR_CRDT_GRNT_TR_KIND_CD                                             <!-- 거래종류코드 -->
+             , A.NS_FND_CD AS FND_CD                                                   <!-- 고유자산펀드코드 -->
+             , A.SYNS_CD                                                               <!-- 적용코드 -->
+             , A.HOLD_PRPS_DCD                                                         <!-- 보유목적구분코드 -->
+             , NVL((
+             	SELECT CD_VL_NM
+             	  FROM IBIMS002B
+             	 WHERE CMNS_CD_GRP = 'H002'
+             	   AND CD_VL_ID = A.HOLD_PRPS_DCD
+               ), '') AS HOLD_PRPS_DCD_NM
+             , A.IPP_DCD                                                               <!-- 입출구분코드 -->
+             , NVL(B.ORTN_FND_CD, '') AS ORTN_FND_CD                                <!-- 운용펀드코드 -->
+             , NVL(B.PRDT_NM, '') AS PRDT_NM                                        <!-- 상품명 -->
+			       , NVL(B.TR_CRRY_CD, '') AS TR_CRRY_CD                                  <!-- 거래통화코드 -->
+             , A.TR_QNT                                                                <!-- 거래수량 -->
+             , A.TR_UNPR                                                               <!-- 거래단가 -->
+             , A.TR_AMT                                                                <!-- 거래금액 -->
+             , A.TRTX                                                                  <!-- 거래세 -->
+             , A.FEE                                                                   <!-- 수수료 -->
+             , A.EXCAL_AMT                                                             <!-- 정산금액 -->
+             , A.TR_DT                                                                 <!-- 거래일자 -->
+             , A.STL_DT                                                                <!-- 결제일자 -->
+             , A.OPNT_NS_FND_CD                                                        <!-- 상대고유자산펀드코드 -->
+             , A.OPNT_TR_SN                                                            <!-- 상대거래일련번호 -->
+             , A.XTNL_ISTT_CD                                                          <!-- 외부기관코드 -->
+             , A.SCTY_ACNO                                                             <!-- 증권계좌번호 -->
+             , A.FNDS_ISTR_SN                                                          <!-- 자금지시일련번호 -->
+             , NVL(A.RQS_EMPNO, '') AS RQS_EMPNO                                    <!-- 신청사원번호 -->
+             , NVL((
+                SELECT EMP_NM
+                  FROM IBIMS003B
+                 WHERE EMPNO = A.RQS_EMPNO
+               ), '') AS RQS_EMP_NM
+             , A.APVL_YN                                                               <!-- 승인여부 -->
+             , A.CNCL_YN                                                               <!-- 취소여부 -->
+             , A.RFN_DT                                                                <!-- 환불일자 -->
+             , A.ALCT_QNT                                                              <!-- 배정수량 -->
+             , A.RFN_AMT                                                               <!-- 환불금액 -->
+             , A.RFN_GOLD_KRW_FNDS_ISTR_SN                                             <!-- 환불금원화자금지시일련번호 -->
+             , A.STTM_NO                                                               <!-- 전표번호 -->
+             , A.RFN_STTM_NO                                                           <!-- 환불전표번호 -->
+             , A.RFN_CNCL_YN                                                           <!-- 환불취소여부 -->
+             , A.STL_ACNO                                                              <!-- 결제계좌번호 -->
+             , A.STL_XTNL_ISTT_CD                                                      <!-- 결제외부기관코드 -->
+             , A.LST_DT                                                                <!-- 상장일자 -->
+             , A.BNTP_SPAC_YN                                                          <!-- 채권형spac여부 -->
+             , NVL(A.TR_DPT_CD, '') AS TR_DPT_CD                                    <!-- 거래부서코드 -->
+             , NVL((
+                SELECT MAX(DPRT_NM)
+                  FROM IBIMS003B
+                 WHERE DPRT_CD = A.TR_DPT_CD
+               ), '') AS TR_DPT_NM
+             , NVL(A.TRDE_EXRT, '') AS TRDE_EXRT                                    <!-- 매매환율 -->
+             , NVL(A.TRSL_AMT, '') AS TRSL_AMT                                      <!-- 환산금액 -->
+             , NVL(A.PRFD_CORP_INTX, '') AS PRFD_CORP_INTX                          <!-- 선급법인세 -->
+             , NVL(A.WHOL_ISSU_SHQT, '') AS WHOL_ISSU_SHQT                          <!-- 전체발행좌수 -->
+             , NVL((NVL(F.BUY_SHQT,0) - NVL(F.SLL_SHQT,0)),0) AS HLDG_SHQT    <!-- 보유좌수 -->
+             , ROUND(((NVL((NVL(F.BUY_SHQT,0) - NVL(F.SLL_SHQT,0)),0) / NVL(A.WHOL_ISSU_SHQT,0)) * 100),8) AS QOTA_RT <!-- 지분율 -->
+             , NVL(A.EVL_PFLS_AMT, '') AS EVL_PFLS_AMT                              <!-- 평가손익금액 -->
+             , NVL(A.TRAD_PFLS_AMT, '') AS TRAD_PFLS_AMT                            <!-- 매매손익금액 -->
+             , A.HND_DETL_DTM                                                          <!-- 조작상세일시 -->
+             , A.HND_EMPNO                                                             <!-- 조작사원번호 -->
+             , A.HND_TMNL_NO                                                           <!-- 조작단말기번호 -->
+             , A.HND_TR_ID                                                             <!-- 조작거래ID -->
+             , A.GUID                                                                  <!-- GUID -->
+             , C.FND_NM
+             , A.STL_XTNL_ISTT_CD AS FNLT_CD
+             , D.FNLT_NM
+             , CASE WHEN E.STDR_EXRT IS NULL THEN ( SELECT STDR_EXRT
+                                                      FROM IBIMS994B
+                                                     WHERE CRNCY_CD = B.TR_CRRY_CD
+                                                       AND STDR_DT = ( SELECT MAX(STDR_DT) AS STDR_DT
+                                                                         FROM IBIMS994B
+                                                                        WHERE CRNCY_CD = B.TR_CRRY_CD )
+                                                   )
+                    ELSE E.STDR_EXRT
+               END AS STDR_EXRT
+             , NVL(G.EPRZ_CRDL_CTRC_AMT, 0) AS EPRZ_CRDL_CTRC_AMT      <!-- 기업여신약정금액 -->
+             , NVL(CASE WHEN F.KRW_TRSL_EXC_AMT IS NULL THEN G.EPRZ_CRDL_CTRC_AMT
+                           ELSE G.EPRZ_CRDL_CTRC_AMT - F.KRW_TRSL_EXC_AMT
+                      END, 0) AS KRW_TRSL_EXC_BLCE                        <!--  매수가능금액-->
+             , NVL(F.KRW_TRSL_EXC_AMT, 0) AS KRW_TRSL_EXC_AMT          <!-- 원화환산실행금액 -->
+             , ROUND(NVL(F.AVR_UNPR,0),2) AS AVR_UNPR                  <!-- 평균단가 -->
+             , NVL(A.EVL_PFLS_AMT, 0) AS EVL_PFLS_AMT <!-- 평가손익금액 -->
+             , NVL(A.TRAD_PFLS_AMT,0) AS TRAD_PFLS_AMT  <!-- 매매손익금액  -->
+             , B.TR_CRRY_CD                            <!-- 통화코드 -->
+          FROM IBIMS405B A
+             , IBIMS201B B 
+             , IBIMS993B C  
+             , IBIMS994B E 
+             , IBIMS992B D  
+             , IBIMS402B F  
+             , IBIMS401B G 
+         WHERE 1=1
+            AND A.PRDT_CD 			= B.PRDT_CD(+) 
+            AND B.LAST_YN(+)		= '1'
+            AND A.NS_FND_CD 		= C.FND_CD(+)
+            AND B.TR_CRRY_CD 		= E.CRNCY_CD(+) 
+            AND A.TR_DT 			= E.STDR_DT(+)
+            AND A.STL_XTNL_ISTT_CD 	= D.FNLT_CD(+)
+            AND A.PRDT_CD 			= F.PRDT_CD(+) 
+            AND F.EXC_SN(+)			= 1
+            AND A.PRDT_CD 			= G.PRDT_CD(+) 
+            AND G.CTRC_CCLC_DCD(+)	= '1'
+           <if test="trDt != ''">
+            AND A.TR_DT                                  = #{trDt}
+           </if>
+           <if test="prdtCd != ''">
+           AND A.PRDT_CD                                 = #{prdtCd}
+           </if>
+           <if test="etprCrdtGrntTrKindCd == '81'">
+           AND A.ETPR_CRDT_GRNT_TR_KIND_CD               = #{etprCrdtGrntTrKindCd}
+           </if>
+           <if test="etprCrdtGrntTrKindCd == '82'">
+           AND  (A.ETPR_CRDT_GRNT_TR_KIND_CD               = '83' OR A.ETPR_CRDT_GRNT_TR_KIND_CD  = #{etprCrdtGrntTrKindCd})
+           </if>
+           <if test="etprCrdtGrntTrKindCd == '83'">
+           AND  (A.ETPR_CRDT_GRNT_TR_KIND_CD               = '82' OR A.ETPR_CRDT_GRNT_TR_KIND_CD  = #{etprCrdtGrntTrKindCd})
+           </if>
+        ORDER BY TR_DT ASC, PRDT_CD, TR_SN DESC
+    </select>
+
+     <!-- 기타투자정보등록 -->
+    <insert id="saveBuyInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO">
+      <selectKey keyProperty="hldgShqt" resultType="decimal" order="BEFORE">
+          SELECT NVL(CASE WHEN #{etprCrdtGrntTrKindCd} = '81' THEN (NVL(B.BUY_SHQT,0) - NVL(B.SLL_SHQT,0)) + NVL(#{trQnt},0)
+                      WHEN #{etprCrdtGrntTrKindCd} = '82' THEN (NVL(B.BUY_SHQT,0) - NVL(B.SLL_SHQT,0)) - NVL(#{trQnt},0)
+                      ELSE 0
+                END,0) AS HLDG_SHQT
+             FROM IBIMS401B A
+                , IBIMS402B B 
+           WHERE 1=1
+             AND A.PRDT_CD = B.PRDT_CD(+) 
+             AND B.EXC_SN(+) = 1
+             AND A.PRDT_CD  = #{prdtCd}
+             AND A.CTRC_CCLC_DCD = '1'
+      </selectKey>
+
+        INSERT INTO IBIMS405B
+               (
+                  PRDT_CD                                 <!-- 상품코드 -->
+                , TR_SN                                   <!-- 거래일련번호 -->
+                , EXC_SN                                  <!-- 실행일련번호 -->
+                , ETPR_CRDT_GRNT_TR_KIND_CD               <!-- 거래종류코드 -->
+                , NS_FND_CD                               <!-- 고유자산펀드코드 -->
+                , SYNS_CD                                 <!-- 적용코드 -->
+                , HOLD_PRPS_DCD                           <!-- 보유목적구분코드 -->
+                , IPP_DCD                                 <!-- 입출구분코드 -->
+                , TR_QNT                                  <!-- 거래수량 -->
+                , TR_UNPR                                 <!-- 거래단가 -->
+                , TR_AMT                                  <!-- 거래금액 -->
+                , TRTX                                    <!-- 거래세 -->
+                , FEE                                     <!-- 수수료 -->
+                , EXCAL_AMT                               <!-- 정산금액 -->
+                , TR_DT                                   <!-- 거래일자 -->
+                , STL_DT                                  <!-- 결제일자 -->
+                , OPNT_NS_FND_CD                          <!-- 상대고유자산펀드코드 -->
+                , OPNT_TR_SN                              <!-- 상대거래일련번호 -->
+                , XTNL_ISTT_CD                            <!-- 외부기관코드 -->
+                , SCTY_ACNO                               <!-- 증권계좌번호 -->
+                , FNDS_ISTR_SN                            <!-- 자금지시일련번호 -->
+                , RQS_EMPNO                               <!-- 신청사원번호 -->
+                , APVL_YN                                 <!-- 승인여부 -->
+                , CNCL_YN                                 <!-- 취소여부 -->
+                , RFN_DT                                  <!-- 환불일자 -->
+                , ALCT_QNT                                <!-- 배정수량 -->
+                , RFN_AMT                                 <!-- 환불금액 -->
+                , RFN_GOLD_KRW_FNDS_ISTR_SN               <!-- 환불금원화자금지시일련번호 -->
+                , STTM_NO                                 <!-- 전표번호 -->
+                , RFN_STTM_NO                             <!-- 환불전표번호 -->
+                , RFN_CNCL_YN                             <!-- 환불취소여부 -->
+                , STL_ACNO                                <!-- 결제계좌번호 -->
+                , STL_XTNL_ISTT_CD                        <!-- 결제외부기관코드 -->
+                , LST_DT                                  <!-- 상장일자 -->
+                , BNTP_SPAC_YN                            <!-- 채권형spac여부 -->
+                , TR_DPT_CD                               <!-- 거래부서코드 -->
+                , TRDE_EXRT                               <!-- 매매환율 -->
+                , TRSL_AMT                                <!-- 환산금액 -->
+                , PRFD_CORP_INTX                          <!-- 선급법인세 -->
+                , WHOL_ISSU_SHQT                          <!-- 전체발행좌수 -->
+                , HLDG_SHQT                               <!-- 보유좌수 -->
+                , QOTA_RT                                 <!-- 지분율 -->
+                , EVL_PFLS_AMT                            <!-- 평가손익금액 -->
+                , TRAD_PFLS_AMT                           <!-- 매매손익금액 -->
+                , HND_DETL_DTM                            <!-- 조작상세일시 -->
+                , HND_EMPNO                               <!-- 조작사원번호 -->
+                , HND_TMNL_NO                             <!-- 조작단말기번호 -->
+                , HND_TR_ID                               <!-- 조작거래ID -->
+                , GUID                                    <!-- GUID -->
+               )
+        VALUES (
+                 #{prdtCd}                                 <!-- 상품코드 -->
+               <!--, (
+                  SELECT CASE WHEN A.CNT = '' THEN '0000000001'
+                             ELSE  A.NEXT_VAL
+                              END
+                   FROM (
+                         SELECT COUNT(TR_SN) AS CNT
+                              , LPAD(TO_NUMBER(MAX(TR_SN)) +1, 10, '0') AS NEXT_VAL
+                           FROM IBIMS405B WHERE PRDT_CD = #{prdtCd}
+                         ) A
+                  )                                         거래일련번호 -->
+               , #{trSn}                                   <!-- 거래일련번호 -->
+               , #{excSn}                                  <!-- 실행일련번호 -->
+               , #{etprCrdtGrntTrKindCd}                   <!-- 거래종류코드 -->
+               , #{nsFndCd}                                <!-- 고유자산펀드코드 -->
+               , #{synsCd}                                 <!-- 적용코드 -->
+               , #{holdPrpsDcd}                            <!-- 보유목적구분코드 -->
+               , #{ippDcd}                                 <!-- 입출구분코드 -->
+               , #{trQnt}                                  <!-- 거래수량 -->
+               , #{trUnpr}                                 <!-- 거래단가 -->
+               , #{trAmt}                                  <!-- 거래금액 -->
+               , #{trtx}                                   <!-- 거래세 -->
+               , #{fee}                                    <!-- 수수료 -->
+               , #{excalAmt}                               <!-- 정산금액 -->
+               , #{trDt}                                   <!-- 거래일자 -->
+               , #{stlDt}                                  <!-- 결제일자 -->
+               , #{opntNsFndCd}                            <!-- 상대고유자산펀드코드 -->
+               , #{opntTrSn}                               <!-- 상대거래일련번호 -->
+               , #{xtnlIsttCd}                             <!-- 외부기관코드 -->
+               , #{sctyAcno}                               <!-- 증권계좌번호 -->
+               , #{fndsIstrSn}                             <!-- 자금지시일련번호 -->
+               , #{rqsEmpno}                               <!-- 신청사원번호 -->
+               , #{apvlYn}                                 <!-- 승인여부 -->
+               , #{cnclYn}                                 <!-- 취소여부 -->
+               , #{rfnDt}                                  <!-- 환불일자 -->
+               , #{alctQnt}                                <!-- 배정수량 -->
+               , #{rfnAmt}                                 <!-- 환불금액 -->
+               , #{rfnGoldKrwFndsIstrSn}                   <!-- 환불금원화자금지시일련번호 -->
+               , #{sttmNo}                                 <!-- 전표번호 -->
+               , #{rfnSttmNo}                              <!-- 환불전표번호 -->
+               , #{rfnCnclYn}                              <!-- 환불취소여부 -->
+               , #{stlAcno}                                <!-- 결제계좌번호 -->
+               , #{stlXtnlIsttCd}                          <!-- 결제외부기관코드 -->
+               , #{lstDt}                                  <!-- 상장일자 -->
+               , #{bntpSpacYn}                             <!-- 채권형spac여부 -->
+               , #{trDptCd}                                <!-- 거래부서코드 -->
+               , #{trdeExrt}                               <!-- 매매환율 -->
+               , #{trslAmt}                                <!-- 환산금액 -->
+               , #{prfdCorpIntx}                           <!-- 선급법인세 -->
+               , NVL(#{wholIssuShqt},10000000000)       <!-- 전체발행좌수 -->
+               , NVL(#{hldgShqt},0)                     <!-- 보유좌수 -->
+               , #{qotaRt}                                 <!-- 지분율 -->
+               , #{evlPflsAmt}                             <!-- 평가손익금액 -->
+               , #{tradPflsAmt}                            <!-- 매매손익금액 -->
+               , SYSDATE                                     <!-- 조작상세일시 -->
+               , #{hndEmpno}                               <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                              <!-- 조작단말기번호 -->
+               , #{hndTrId}                                <!-- 조작거래ID -->
+               , #{guid}                                   <!-- GUID -->
+               )
+    </insert>
+
+     <!-- 기타투자정보등록 -->
+    <insert id="saveDvdnInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO">
+
+        INSERT INTO IBIMS405B
+               (
+                  PRDT_CD                                 <!-- 상품코드 -->
+                , TR_SN                                   <!-- 거래일련번호 -->
+                , EXC_SN                                  <!-- 실행일련번호 -->
+                , ETPR_CRDT_GRNT_TR_KIND_CD               <!-- 거래종류코드 -->
+                , NS_FND_CD                               <!-- 고유자산펀드코드 -->
+                , SYNS_CD                                 <!-- 적용코드 -->
+                , HOLD_PRPS_DCD                           <!-- 보유목적구분코드 -->
+                , IPP_DCD                                 <!-- 입출구분코드 -->
+                , TR_AMT                                  <!-- 거래금액 -->
+                , DEAL_DVDN_AMT                           <!-- 딜배당금액 -->
+                , TR_DT                                   <!-- 거래일자 -->
+                , STL_DT                                  <!-- 결제일자 -->
+                , OPNT_NS_FND_CD                          <!-- 상대고유자산펀드코드 -->
+                , OPNT_TR_SN                              <!-- 상대거래일련번호 -->
+                , XTNL_ISTT_CD                            <!-- 외부기관코드 -->
+                , SCTY_ACNO                               <!-- 증권계좌번호 -->
+                , FNDS_ISTR_SN                            <!-- 자금지시일련번호 -->
+                , RQS_EMPNO                               <!-- 신청사원번호 -->
+                , APVL_YN                                 <!-- 승인여부 -->
+                , CNCL_YN                                 <!-- 취소여부 -->
+                , RFN_DT                                  <!-- 환불일자 -->
+                , RFN_AMT                                 <!-- 환불금액 -->
+                , RFN_GOLD_KRW_FNDS_ISTR_SN               <!-- 환불금원화자금지시일련번호 -->
+                , STTM_NO                                 <!-- 전표번호 -->
+                , RFN_STTM_NO                             <!-- 환불전표번호 -->
+                , RFN_CNCL_YN                             <!-- 환불취소여부 -->
+                , STL_ACNO                                <!-- 결제계좌번호 -->
+                , STL_XTNL_ISTT_CD                        <!-- 결제외부기관코드 -->
+                , LST_DT                                  <!-- 상장일자 -->
+                , BNTP_SPAC_YN                            <!-- 채권형spac여부 -->
+                , TR_DPT_CD                               <!-- 거래부서코드 -->
+                , HND_DETL_DTM                            <!-- 조작상세일시 -->
+                , HND_EMPNO                               <!-- 조작사원번호 -->
+                , HND_TMNL_NO                             <!-- 조작단말기번호 -->
+                , HND_TR_ID                               <!-- 조작거래ID -->
+                , GUID                                    <!-- GUID -->
+               )
+        VALUES (
+                 #{prdtCd}                                 <!-- 상품코드 -->
+               , #{trSn}                                   <!-- 거래일련번호 -->
+               , #{excSn}                                  <!-- 실행일련번호 -->
+               , #{etprCrdtGrntTrKindCd}                   <!-- 거래종류코드 -->
+               , #{nsFndCd}                                <!-- 고유자산펀드코드 -->
+               , #{synsCd}                                 <!-- 적용코드 -->
+               , #{holdPrpsDcd}                            <!-- 보유목적구분코드 -->
+               , #{ippDcd}                                 <!-- 입출구분코드 -->
+               , #{trAmt}                                  <!-- 거래금액 -->
+               , #{trAmt}                                  <!-- 딜배당금액 -->
+               , #{trDt}                                   <!-- 거래일자 -->
+               , #{stlDt}                                  <!-- 결제일자 -->
+               , #{opntNsFndCd}                            <!-- 상대고유자산펀드코드 -->
+               , #{opntTrSn}                               <!-- 상대거래일련번호 -->
+               , #{xtnlIsttCd}                             <!-- 외부기관코드 -->
+               , #{sctyAcno}                               <!-- 증권계좌번호 -->
+               , #{fndsIstrSn}                             <!-- 자금지시일련번호 -->
+               , #{rqsEmpno}                               <!-- 신청사원번호 -->
+               , #{apvlYn}                                 <!-- 승인여부 -->
+               , #{cnclYn}                                 <!-- 취소여부 -->
+               , #{rfnDt}                                  <!-- 환불일자 -->
+               , #{rfnAmt}                                 <!-- 환불금액 -->
+               , #{rfnGoldKrwFndsIstrSn}                   <!-- 환불금원화자금지시일련번호 -->
+               , #{sttmNo}                                 <!-- 전표번호 -->
+               , #{rfnSttmNo}                              <!-- 환불전표번호 -->
+               , #{rfnCnclYn}                              <!-- 환불취소여부 -->
+               , #{stlAcno}                                <!-- 결제계좌번호 -->
+               , #{stlXtnlIsttCd}                          <!-- 결제외부기관코드 -->
+               , #{lstDt}                                  <!-- 상장일자 -->
+               , #{bntpSpacYn}                             <!-- 채권형spac여부 -->
+               , #{trDptCd}                                <!-- 거래부서코드 -->
+               , SYSDATE                                     <!-- 조작상세일시 -->
+               , #{hndEmpno}                               <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                              <!-- 조작단말기번호 -->
+               , #{hndTrId}                                <!-- 조작거래ID -->
+               , #{guid}                                   <!-- GUID -->
+               )
+    </insert>
+
+    <delete id="cancelBuyInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO">
+        DELETE
+          FROM IBIMS405B
+         WHERE PRDT_CD = #{prdtCd}              <!-- 상품코드 -->
+           AND TR_SN  = #{trSn}                <!-- 거래일련번호 -->
+           AND EXC_SN = #{excSn}               <!-- 실행일련번호 -->
+    </delete>
+
+
+    <select id="getTrSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO" resultType="int">
+        SELECT CASE WHEN X.CNT = '' THEN '0000000001'
+                    ELSE X.NEXT_VAL
+                END AS TR_SN
+          FROM (
+                  SELECT SUM(CNT) AS CNT
+          		 	        ,MAX(NEXT_VAL) AS NEXT_VAL
+          			   FROM (
+                           SELECT COUNT(A.TR_SN) AS CNT
+                                 ,LPAD(TO_NUMBER(MAX(A.TR_SN)) +1, 10, '0') AS NEXT_VAL
+                             FROM IBIMS405B A
+                            WHERE A.PRDT_CD = #{prdtCd}
+                        UNION ALL
+                           SELECT COUNT(A.TR_SN) AS CNT
+                                 ,LPAD(TO_NUMBER(MAX(A.TR_SN)) +1, 10, '0') AS NEXT_VAL
+                             FROM IBIMS410B A
+                            WHERE A.PRDT_CD = #{prdtCd}
+                       ) B
+               ) X
+    </select>
+        
+</mapper>

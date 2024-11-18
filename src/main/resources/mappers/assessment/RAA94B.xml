@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA94BMapper">
+	
+	<!-- 권한구분 목록 조회 -->
+	<select id="selectRghtCd" resultType="com.nanuri.rams.business.common.dto.RAA94BDTO">
+		SELECT RGHT_CD											<!-- 권한코드 -->
+		     , RGHT_CD_NM										<!-- 권한코드명 -->
+		     , RGHT_CD_EXPL										<!-- 권한코드설명 -->
+		     , RGHT_CCD											<!-- 권한구분코드 -->
+		     , APLC_F											<!-- 적용여부 -->
+		     , DLT_F											<!-- 삭제여부 -->
+		     , DLT_DT											<!-- 삭제일자 -->
+		     , DLT_TM											<!-- 삭제시간 -->
+		     , DLT_P_ENO										<!-- 삭제자사번 -->
+		     <include refid="CommonMapper.selectCommonDto" />
+	  	  FROM RAA94B A
+	  	 WHERE A.DLT_F != 'Y'
+	</select>
+
+	<select id="selectAuthCode" parameterType="String" resultType="com.nanuri.rams.business.common.dto.RAA94BDTO">
+        SELECT rght_cd											<!-- 권한코드 -->
+             , rght_cd_nm										<!-- 권한코드명 -->
+             , rght_cd_expl										<!-- 권한코드설명 -->
+             , rght_ccd											<!-- 권한구분코드 -->
+             , aplc_f											<!-- 적용여부 -->
+             , dlt_f											<!-- 삭제여부 -->
+             , dlt_dt											<!-- 삭제일자 -->
+             , dlt_tm											<!-- 삭제시간 -->
+             , dlt_p_eno										<!-- 삭제자사번 -->
+             <include refid="CommonMapper.selectCommonDto" />
+          FROM RAA94B A
+         WHERE A.DLT_F != 'Y'
+        <if test="rghtCdNm != null and rghtCdNm != ''">
+           AND rght_cd_nm LIKE CONCAT('%', #{rghtCdNm}, '%')	<!-- 권한코드명 -->
+            OR rght_cd LIKE CONCAT('%', #{rghtCdNm}, '%')
+        </if>
+    </select>
+    
+    <select id="getAuthCode" parameterType="String" resultType="com.nanuri.rams.business.common.dto.RAA94BDTO">
+        SELECT rght_cd											<!-- 권한코드 -->
+             , rght_cd_nm										<!-- 권한코드명 -->
+             , rght_cd_expl										<!-- 권한코드설명 -->
+             , rght_ccd											<!-- 권한구분코드 -->
+             , aplc_f											<!-- 적용여부 -->
+             , dlt_f											<!-- 삭제여부 -->
+             , dlt_dt											<!-- 삭제일자 -->
+             , dlt_tm											<!-- 삭제시간 -->
+             , dlt_p_eno										<!-- 삭제자사번 -->
+             <include refid="CommonMapper.selectCommonDto" />
+          FROM RAA94B A
+         WHERE 1=1
+           AND rght_cd = #{rghtCd}								<!-- 권한코드 -->
+    </select>
+
+    <insert id="insertAuthCode" parameterType="com.nanuri.rams.business.common.dto.RAA94BDTO">
+        INSERT INTO RAA94B
+               (
+                  RGHT_CD										<!-- 권한코드 -->
+                , RGHT_CD_NM									<!-- 권한코드명 -->
+                , RGHT_CD_EXPL									<!-- 권한코드설명 -->
+                , RGHT_CCD										<!-- 권한구분코드 -->
+                , APLC_F										<!-- 적용여부 -->
+                , RGST_DT										<!-- 등록일자 -->
+                , RGST_TM										<!-- 등록시간 -->
+                , RGST_P_ENO									<!-- 등록자사번 -->
+                , DLT_F											<!-- 삭제여부 -->
+                , DLT_DT										<!-- 삭제일자 -->
+                , DLT_TM 										<!-- 삭제시간 -->
+                , DLT_P_ENO 									<!-- 삭제자사번 -->
+                , HNDL_DY_TM 									<!-- 처리일시 -->
+                , HNDL_DPRT_CD 									<!-- 처리부점코드 -->
+                , HNDL_P_ENO 									<!-- 처리자사번 -->
+               ) 
+        VALUES (
+                  #{rghtCd}
+                , #{rghtCdNm} 
+                , #{rghtCdExpl}
+                , NVL(#{rghtCcd}, 1)
+                , #{aplcF}
+                , DATE_FORMAT(now(), '%Y%m%d')
+                , DATE_FORMAT(now(), '%H%i%s')
+                , #{rgstPEno}
+                , 'N'
+                , NVL(#{dltDt}, '')
+                , NVL(#{dltTm}, '')
+                , NVL(#{dltPEno}, '')
+                , now()
+                , #{hndlDprtCd}
+                , #{hndlPEno}
+               )
+    </insert>
+
+    <update id="updateAuthCode" parameterType="com.nanuri.rams.business.common.dto.RAA94BDTO">
+        UPDATE RAA94B
+        <set>
+            <if test="rghtCd != null and rghtCd !=''">
+                rght_cd = #{rghtCd},
+            </if>
+            <if test="rghtCdNm != null and rghtCdNm !=''">
+                rght_cd_nm = #{rghtCdNm},
+            </if>
+            <if test="rghtCdExpl != null and rghtCdExpl !=''">
+                rght_cd_expl = #{rghtCdExpl},
+            </if>
+            <if test="aplcF != null and aplcF !=''">
+                aplc_f = #{aplcF},
+            </if>
+               hndl_p_eno = #{hndlPEno},
+               hndl_dy_tm = now()
+        </set>
+         WHERE 1=1
+           AND rght_cd = #{oldRghtCd}
+    </update>
+
+    <update id="deleteAuthCode" parameterType="java.util.List">
+        UPDATE RAA94B
+           SET APLC_F = 'N'								<!-- 적용여부 -->
+              ,hndl_p_eno = #{hndlPEno}					<!-- 처리자사번 -->
+              ,hndl_dy_tm = now()						<!-- 처리일시 -->
+              ,dlt_f = 'Y'								<!-- 삭제여부 -->
+              ,dlt_dt = DATE_FORMAT(now(), '%Y%m%d')	<!-- 삭제일자 -->
+              ,dlt_tm = DATE_FORMAT(now(), '%H%i%s')	<!-- 삭제시간 -->
+              ,dlt_p_eno = #{dltPEno}					<!-- 삭제자사번 -->
+         WHERE 1=1
+           AND rght_cd IN					<!-- 권한코드 -->
+        <foreach collection="rghtCd" item="rghtCd" index="index" open="(" separator="," close=")">
+               #{rghtCd}
+        </foreach>
+    </update>
+    
+    
+    <!-- 권한에 따른 사용가능 메뉴 조회 -->
+	<select id="getMenuList" resultType="map" parameterType="java.util.Map">
+		SELECT R95.MENU_ID AS MENU_ID
+		  FROM RAA95B R95
+		  LEFT JOIN RAA93B R93
+		    ON R95.MENU_ID = R93.MENU_ID 
+		 WHERE 1=1
+		   AND R95.RGHT_CD = #{rghtCd}
+		   AND R93.HG_RNK_MENU_ID IS NOT NULL
+	</select>
+	
+	<!-- 권한에 따른 사용가능 메뉴 조회 -->
+	<select id="getMenuListM" resultType="map" parameterType="java.util.Map">
+		SELECT DISTINCT(SUBSTRING(R93.HG_RNK_MENU_ID, 1, 4)) AS HG_RNK_MENU_ID
+		  FROM RAA95B R95
+		  LEFT JOIN RAA93B R93
+		    ON R95.MENU_ID = R93.MENU_ID 
+		 WHERE 1=1
+		   AND R95.RGHT_CD = #{rghtCd}
+		   AND R93.HG_RNK_MENU_ID IS NOT NULL
+	</select>
+
+</mapper>

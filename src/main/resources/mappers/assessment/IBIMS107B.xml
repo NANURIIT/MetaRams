@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS107BMapper">
+	
+	  <!-- 딜심사내부등급내역조회 -->
+    <select id="getInsGrdInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS107BDTO" 
+    						   resultType="com.nanuri.rams.business.common.vo.IBIMS107BVO">
+        SELECT s107b.DEAL_NO                                    /* 딜번호 */
+             , s107b.MTR_DCD                                    /* 안건구분코드 */
+             , s107b.JDGM_DCD                                   /* 심사구분코드 */
+             , s107b.SN                                         /* 일련번호 */
+             , s107b.INS_GRD_TRGT_YN                            /* 내부등급대상여부 */
+             , s107b.SPCLT_FNC_TRGT_YN                          /* 특수금융대상여부(SL) */
+             , s107b.SPCLT_FNC_MNG_NO                           /* 특수금융관리번호(SL) */
+             , s107b.OUTS_CRDT_GRD_DCD                          /* 외부신용등급구분코드(SL내부등급) */
+             , s002b.CD_VL_NM			AS OUTS_CRDT_GRD_DCD_NM	      /* 외부신용등급구분코드명(SL내부등급) */
+             , s107b.BRWR_CRNO                                  /* 차주법인등록번호 */
+             , s107b.INS_CRDT_GRD_DCD                           /* 내부신용등급구분코드 */
+             , s003b.CD_VL_NM			AS INS_CRDT_GRD_DCD_NM	      /* 내부신용등급구분코드명 */
+             , s107b.RNM_CNFM_NO                                /* 실명확인번호 */
+             , s114b.ENTP_HNGL_NM		AS ENTP_HNGL_NM			        /* 업체한글명 */
+             , s107b.HND_DETL_DTM                               /* 조작상세일시 */
+             , s107b.HND_EMPNO                                  /* 조작사원번호 */
+             , s107b.HND_TMNL_NO                                /* 조작단말기번호 */
+             , s107b.HND_TR_ID                                  /* 조작거래id */
+             , s107b.GUID                                       /* guid */
+          FROM IBIMS107B s107b
+          LEFT JOIN IBIMS002B s002b
+            ON s002b.CMNS_CD_GRP								= 'O006'			  /* 외부신용등급구분코드(SL내부등급) */
+           AND s107b.OUTS_CRDT_GRD_DCD					= s002b.CD_VL_ID
+          LEFT JOIN IBIMS002B s003b
+            ON s003b.CMNS_CD_GRP								= 'I012'			  /* 내부신용등급구분코드 */
+           AND s107b.INS_CRDT_GRD_DCD						= s003b.CD_VL_ID
+          LEFT JOIN IBIMS114B s114b
+            ON s107b.RNM_CNFM_NO								= s114b.BSNS_RGST_NO
+           AND s114b.BSNS_RGST_NO != ''
+           AND s107b.BRWR_CRNO = s114b.BSNS_RGST_NO
+           AND s114b.DLT_F = 'N'
+         WHERE 1=1
+           AND s107b.DEAL_NO                    = #{dealNo}
+           AND s107b.MTR_DCD                    = #{mtrDcd}
+           AND s107b.JDGM_DCD                   = #{jdgmDcd}
+         ORDER BY SN
+    </select>
+    
+    <!-- 딜심사내부등급내역삭제 -->
+    <delete id="deleteInsGrdInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS107BDTO">
+        DELETE 
+          FROM IBIMS107B
+         WHERE 1=1
+           AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
+           AND MTR_DCD                                           = #{mtrDcd}                                          /* 안건구분코드 */
+           AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+            <if test="sn != null and sn > 0">
+           AND SN                                                = #{sn}                                              /* 일련번호 */
+           </if>  
+    </delete>
+    
+    <!-- 딜심사내부등급내역등록  -->
+    <insert id="registInsGrdInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS107BDTO">
+        INSERT INTO IBIMS107B 
+               (
+                  DEAL_NO                                           /* 딜번호 */
+                , MTR_DCD                                           /* 안건구분코드 */
+                , JDGM_DCD                                          /* 심사구분코드 */
+                , SN                                                /* 일련번호 */
+                , INS_GRD_TRGT_YN                                   /* 내부등급대상여부 */
+                , SPCLT_FNC_TRGT_YN                                 /* 특수금융대상여부(SL) */
+                , SPCLT_FNC_MNG_NO                                  /* 특수금융관리번호(SL) */
+                , OUTS_CRDT_GRD_DCD                                 /* 외부신용등급구분코드(SL내부등급) */
+                , BRWR_CRNO                                         /* 차주법인등록번호 */
+                , INS_CRDT_GRD_DCD                                  /* 내부신용등급구분코드 */
+                , RNM_CNFM_NO                                       /* 실명확인번호 */
+                , HND_DETL_DTM                                      /* 조작상세일시 */
+                , HND_EMPNO                                         /* 조작사원번호 */
+                , HND_TMNL_NO                                       /* 조작단말기번호 */
+                , HND_TR_ID                                         /* 조작거래id */
+                , GUID                                              /* guid */
+               )
+        VALUES (
+                 #{dealNo}                                          /* 딜번호 */
+               , #{mtrDcd}                                          /* 안건구분코드 */
+               , #{jdgmDcd}                                         /* 심사구분코드 */
+               , (SELECT NVL(MAX(A.SN),0) + 1 FROM IBIMS107B A)     /* 일련번호 */
+               , #{insGrdTrgtYn}                                    /* 내부등급대상여부 */
+               , #{spcltFncTrgtYn}                                  /* 특수금융대상여부(SL) */
+               , #{spcltFncMngNo}                                   /* 특수금융관리번호(SL) */
+               , #{outsCrdtGrdDcd}                                  /* 외부신용등급구분코드(SL내부등급) */
+               , #{brwrCrno}                                        /* 차주법인등록번호 */
+               , #{insCrdtGrdDcd}                                   /* 내부신용등급구분코드 */
+               , #{rnmCnfmNo}                                       /* 실명확인번호 */
+               , SYSDATE                                            /* 조작상세일시 */
+               , #{hndEmpno}                                        /* 조작사원번호 */
+               , #{hndTmnlNo}                                       /* 조작단말기번호 */
+               , #{hndTrId}                                         /* 조작거래id */
+               , #{guid}                                            /* guid */
+               )
+    </insert>
+    
+    <!-- 딜심사내부등급내역변경  -->
+    <update id="updateInsGrdInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS107BDTO">
+       UPDATE IBIMS107B
+          SET INS_GRD_TRGT_YN                                   = #{insGrdTrgtYn}                                    /* 내부등급대상여부 */
+            , SPCLT_FNC_TRGT_YN                                 = #{spcltFncTrgtYn}                                  /* 특수금융대상여부(SL) */
+            , SPCLT_FNC_MNG_NO                                  = #{spcltFncMngNo}                                   /* 특수금융관리번호(SL) */
+            , OUTS_CRDT_GRD_DCD                                 = #{outsCrdtGrdDcd}                                  /* 외부신용등급구분코드(SL내부등급) */
+            , BRWR_CRNO                                         = #{brwrCrno}                                        /* 차주법인등록번호 */
+            , INS_CRDT_GRD_DCD                                  = #{insCrdtGrdDcd}                                   /* 내부신용등급구분코드 */
+            , RNM_CNFM_NO                                       = #{rnmCnfmNo}                                       /* 실명확인번호 */
+            , HND_DETL_DTM                                      = SYSDATE                                            /* 조작상세일시 */
+            , HND_EMPNO                                         = #{hndEmpno}                                        /* 조작사원번호 */
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       /* 조작단말기번호 */
+            , HND_TR_ID                                         = #{hndTrId}                                         /* 조작거래id */
+            , GUID                                              = #{guid}                                            /* guid */
+         WHERE 1=1
+          AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
+          AND MTR_DCD                                           = #{mtrDcd}                                          /* 안건구분코드 */
+          AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+          AND SN                                                = #{sn}                                              /* 일련번호 */
+    </update>
+
+</mapper>

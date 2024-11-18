@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{/js/business/ds/DS01030S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- ibox -->
+				<div class="ibox">
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-content" style="border:0px;">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">고객명</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">주민등록번호</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right">
+										</div>
+										<div class="col-sm-4 text-right">
+											<button class="btn btn-primary" type="button" onclick="getDetailInfo();"><i class="fa fa-search"></i>&nbsp;조회</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ibox">
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;기타정보</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">혈액형</label>
+										<div class="col-sm-2 input-group form-inline">
+											<select class="form-control">
+												<option></option>
+											</select>
+											<select class="form-control mg-lr5">
+												<option></option>
+											</select>
+											형
+										</div>
+										<label class="col-sm-1 control-label">흡연여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">종교</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 control-label">결혼여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group text-right">
+										<label class="col-sm-1 col-form-label">취미관심사항</label>
+										<div class="col-sm-5 input-group">
+											<select class="form-control">
+												<option></option>
+											</select>
+											<select class="form-control mg-l5">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label">사망여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label">맞벌이여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- row3 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">고향</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">출생지</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">최종학력</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">출신학교</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								<!-- row4 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">국적</label>
+										<div class="col-sm-2 input-group form-inline">
+											<select class="form-control">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">여권번호</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">고객명(한문)</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;직업정보</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">직장명</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">부서</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">직위</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">직무</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">근무지역</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">고용형태</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option></option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;운전정보</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">차량소유여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">운전여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;장애/보훈정보</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">장애인여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">장애명</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">장애등급/급호</label>
+										<div class="col-sm-2 input-group form-inline">
+											<select class="form-control">
+												<option></option>
+											</select>
+											<select class="form-control mg-lr5">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">등급유효기간</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">국가유공자여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">보훈번호</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">기초생활수급자</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- row3 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">독립유공자여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">고엽제환자여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right ls-15">민주5.18부상자여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;예
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;아니오
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;재무정보</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">주택형태</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">주거형태</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">주택소유구분</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option></option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">주택규모</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control">
+											<select class="form-control mg-l5">
+												<option></option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">재산동산</label>
+										<div class="col-sm-2 input-group input-h">
+											<input type="text" class="form-control text-right"> 백만원
+										</div>
+										<label class="col-sm-1 col-form-label text-right">재산부동산</label>
+										<div class="col-sm-2 input-group input-h">
+											<input type="text" class="form-control text-right"> 백만원
+										</div>
+										<label class="col-sm-1 col-form-label text-right">연간소득액</label>
+										<div class="col-sm-2 input-group input-h">
+											<input type="text" class="form-control text-right"> 만원
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<!-- end of ibox -->
+				
+			</div>
+		</div><!-- div row -->
+	</div>
+</th:block>
+
+</html>

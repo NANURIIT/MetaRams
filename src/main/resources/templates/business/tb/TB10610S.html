@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB10610S.js}"></script>
+
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<!-- 모달 추가시 ex) <th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 배치 스케줄러 모니터링 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					
+					<!-- 조회조건영역 -->
+					
+					<div class="ibox-content text-right i-filter">
+						<div class="form-group form-inline row">
+							<div class="form-group col-sm-12">
+								<label class="col-sm-1 col-form-label">기준일자</label>
+								<div class="col-sm-1-5 input-group date">
+									<input type="text" class="form-control" id="TB10610S_curDate" value="" placeholder="YYYY-MM-DD"> 
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</div>
+								<label class="col-sm-1 col-form-label">배치 JOB ID</label>
+								<div class="col-sm-1-5 input-group">
+									<input type="text" class="form-control" id="TB10610S_jobId" value="">
+								</div>
+								<label class="col-sm-1 col-form-label">배치명</label>
+								<div class="col-sm-1-5 input-group">
+									<input type="text" class="form-control" id="TB10610S_jobName" value="">
+								</div>
+								<label class="col-sm-1 col-form-label">작업상태</label>
+								<div class="col-sm-1-5 input-group">
+									<select class="form-control" id="TB10610S_jobSts">
+										<option value="">전체</option>
+									</select>
+								</div>
+								<!-- 버튼영역 -->
+								<div class="col-sm-2 text-right">
+									<button class="btn btn-primary" type="button" onclick="TB10610Sjs.inqBatch();"><i class="fa fa-search"></i>&nbsp;조회</button>
+									<button class="btn btn-default" onclick="TB10610Sjs.reset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+								</div>
+							</div>
+						</div>
+					</div>
+						
+					<div class="ibox-content text-right" style="min-height: 830px">
+						<!-- 조회내역영역 -->
+						<div class="pd0 mb-3" style="min-height:300px; max-height: 720px">
+							<div id="grd_batSchM"></div>
+							<!-- <table class="table result table-bordered footable" data-page-size="20" data-paging="true" data-sort="false">
+								<colgroup>
+									<col style="">
+									<col style="">
+									<col style="">
+									<col style="">
+									<col style="">
+									<col style="">
+									<col style="">
+									<col style="">
+									<col style="">
+								</colgroup>
+								<thead>
+									<tr>
+										<th rowspan="2">수행일자</th>
+										<th rowspan="2">순번</th>
+										<th colspan="2">수행시간</th>
+										<th rowspan="2">배치JOB ID</th>
+										<th rowspan="2">배치명</th>
+										<th rowspan="2">Argument</th>
+										<th rowspan="2">작업상태</th>
+										<th rowspan="2">실행횟수</th>
+										<th rowspan="2">confirm</th>
+									</tr>
+									<tr>
+										<th>시작시간</th>
+										<th>종료시간</th>
+									</tr>
+								</thead>
+								<tbody id="">
+								</tbody>
+								<tfoot>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</tfoot>
+							</table> -->
+						</div>
+						<hr class="mb-3">
+						<!-- 배치실행 내역 상태 수정/실행 영역 -->
+						<div class="form-group form-inline row mb-0">
+							<div class="form-group row col-sm-9 pr-5" style="border-right: 1px solid #ccc;">
+								<label class="col-sm-1-5 col-form-label mb-1">기준일자</label>
+								<div class="col-sm-2 input-group mb-1 date">
+									<input type="text" class="form-control" id="TB10610S_exc_curDate" value="" placeholder="YYYY-MM-DD" disabled> 
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</div>
+								<label class="col-sm-1-5 col-form-label mb-1">배치 JOB ID</label>
+								<div class="col-sm-2 input-group mb-1">
+									<input type="text" class="form-control" id="TB10610S_exc_jobId" readonly>
+								</div>
+								<label class="col-sm-1-5 col-form-label mb-1">배치명</label>
+								<div class="col-sm-2 input-group mb-1">
+									<input type="text" class="form-control" id="TB10610S_exc_jobName" readonly>
+								</div>		
+								<div class="col-sm-1-5 input-group"></div>
+							</div>	
+							<div class="form-group row col-sm-9 pr-5" style="border-right: 1px solid #ccc;">	
+								<label class="col-sm-1-5 col-form-label">ARGUMENT</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" id="TB10610S_exc_argument">
+								</div>
+								<label class="col-sm-1-5 col-form-label">작업상태</label>
+								<div class="col-sm-5 input-group input-h">
+									<span class="input-group pd0">
+										<input type="radio" value="4" id="" name="TB10610S_exc_jobSts">
+										<label class="col-sm-5 text-nowrap font-weight-normal">[4] Waitting</label>
+									</span>
+									<span class="input-group">
+										<input type="radio" value="5" id="" name="TB10610S_exc_jobSts">
+										<label class="col-sm-5 text-nowrap font-weight-normal">[5] Forced-OK</label>
+									</span>
+									<span class="input-group">
+										<input type="radio" value="6" id="" name="TB10610S_exc_jobSts">
+										<label class="col-sm-5 text-nowrap font-weight-normal">[6] Kill</label>
+									</span>
+									<span class="input-group">
+										<input type="radio" value="7" id="" name="TB10610S_exc_jobSts">
+										<label class="col-sm-5 text-nowrap font-weight-normal">[7] Rerun</label>
+									</span>
+								</div>
+								<div class="col-sm-2 text-right">
+									<button class="btn btn-default" type="button" onclick="TB10610Sjs.resetBatch();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+									<button class="btn btn-success" type="button" id="btnExc" onclick="TB10610Sjs.excBatch();"><i class="fa fa-check"></i>&nbsp;실행</button>
+								</div>		
+							</div>		
+							<div class="form-group row col-sm-2" style="">
+								<label class="col-sm-6 col-form-label text-nowrap">CONFIRM 상태</label>
+								<button class="btn btn-success" type="button" id="btnConfirm" onclick="TB10610Sjs.updateConfirm();"><i class="fa fa-check"></i>&nbsp;<span id="btnConfTxt">확인</span></button>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

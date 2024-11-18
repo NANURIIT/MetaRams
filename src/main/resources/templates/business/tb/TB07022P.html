@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB07022P">
+	<!-- modal -->
+	<div id="modal-TB07022P" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">운용펀드조회</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB07022P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="prefix" id="TB07022P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							 <div class="ibox">
+				    			<div class="ibox-content text-right">
+				    				<!-- row1 -->
+				    				<div class="form-group row mb-2">
+				    					<label class="col-sm-2 col-form-label"><span class="req"></span>펀드코드</label>
+		                            	<div class="col-sm-3">
+		                            		<input type="text" class="form-control" id="TB07022P_fndCd">
+		                            	</div>
+				    					<label class="col-sm-2 col-form-label"><span class="req"></span>펀드명</label>
+				                        <div class="col-sm-3">
+				                        	<input type="text" class="form-control" id="TB07022P_fndNm">
+				                        </div>
+				    					<div class="col-sm-2 text-right">
+				    						<button type="button" class="btn btn-primary" onclick="getFndList();">
+												<i class="fa fa-search"></i>&nbsp;조회
+											</button>
+				    					</div>
+									</div>
+				    				<!-- row2 -->
+				    				<div class="form-group row">
+				    					<div class="col-sm-12">
+				    						<div id="grdFnd"></div>	    								
+				    					</div>
+				    				</div>
+				    			</div>
+				    		</div><!-- ibox -->
+						</div>
+					</div>
+				</div> 
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS224BMapper">
+	
+	<!-- LOI/LOC 발급내역 조회 -->
+	<select id="getLoiIssDtls" parameterType="com.nanuri.rams.business.common.vo.IBIMS224BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS224BVO">
+		SELECT A.ISS_MNGM_NO                             <!-- 발급관리번호 -->
+             , A.ISS_STTS_CD                             <!-- 발급상태코드 -->
+             , A.DEAL_NO                                 <!-- 딜번호 -->
+             , B.DEAL_NM                            	 <!-- 딜명 -->
+             , A.EMPNO                                   <!-- 사원번호 -->
+             , (
+             	 SELECT EMP_NM
+             	   FROM IBIMS003B
+             	  WHERE EMPNO = A.EMPNO
+               ) AS EMP_NM								 <!-- 담당자명 -->
+             , A.DECD_DPT_DCD                            <!-- 부서코드 -->
+			 , (
+				 SELECT CD_VL_NM
+				   FROM IBIMS002B
+				  WHERE CMNS_CD_GRP = 'D010'
+				    AND CD_VL_ID = A.DECD_DPT_DCD
+			   ) AS DECD_DPT_NM						  	 <!-- 부서명 -->
+             , A.FND_NM                                  <!-- 펀드명 -->
+             , A.PRDT_CD                                 <!-- 상품코드 -->
+             , A.IB_PRDT_CLSF_CD                         <!-- ib상품분류코드 -->
+             , A.ISS_BDCD                                <!-- 발급부점코드 -->
+             , A.ISS_CRRY_CD                             <!-- 발급통화코드 -->
+             , A.LOI_LOC_YN                              <!-- LOI/LOC여부 -->
+             , A.STDR_EXRT                               <!-- 기준환율 -->
+             , A.ISS_LTR_DCD                             <!-- 발급서류구분코드 -->
+             , (
+				 SELECT CD_VL_NM
+				   FROM IBIMS002B
+				  WHERE CMNS_CD_GRP = 'I043'
+				    AND CD_VL_ID = A.ISS_LTR_DCD
+               ) AS ISS_LTR_NM                           <!-- 발급서류구분코드명 -->
+             , A.ISS_TR_OTHR_DSCM_NO                     <!-- 발급거래상대방식별번호 -->
+             , A.ISS_DT                                  <!-- 발급일자 -->
+             , A.TR_OTHR_NM                              <!-- 거래상대방명 -->
+             , A.VALT_DT                                 <!-- 유효일자 -->
+             , A.RCLM_DT                                 <!-- 회수일자 -->
+             , A.ISS_AMT                                 <!-- 발급금액 -->
+             , A.ISS_CTNS                                <!-- 발급내용 -->
+             , A.ISS_PCLR_CTNS                           <!-- 발급특이내용 -->
+             , A.IVTG_RQST_CTNS                          <!-- 발급요청내용 -->
+             , A.RCLM_RSN_CTNS                           <!-- 회수사유내용 -->
+             , A.RCLM_RSN_DCD                            <!-- 회수사유구분코드 -->
+             , A.RCLM_AMT                                <!-- 회수금액 -->
+             , A.RCLM_SMM_AMT                            <!-- 회수합계금액 -->
+             , A.IVTG_CNFM_YN                            <!-- 검토확인여부 -->
+             , A.SMIT_ORGI                               <!-- 제출처 -->
+             , A.HANF_DCM_NO                             <!-- 하나포털문서번호 -->
+             , A.PRG_STTS_CD                             <!-- 진행상태코드 -->
+             , A.SQ1_APVL_YN                             <!-- 1차승인여부 -->
+             , A.SQ2_APVL_YN                             <!-- 2차승인여부 -->
+             , A.HND_DETL_DTM                            <!-- 조작상세일시 -->
+             , A.HND_EMPNO                               <!-- 조작사원번호 -->
+             , A.HND_TMNL_NO                             <!-- 조작단말기번호 -->
+             , A.HND_TR_ID                               <!-- 조작거래id -->
+             , A.GUID                                    <!-- guid -->
+          FROM IBIMS224B A
+     LEFT JOIN IBIMS101B B
+            ON A.DEAL_NO = B.DEAL_NO
+           AND B.LAST_YN = '1'          
+         WHERE 1=1
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+           AND A.SQ = (
+           			   SELECT MAX(SQ)
+           			     FROM IBIMS224B
+           			    WHERE DEAL_NO LIKE '%' || #{dealNo} || '%'
+                      )
+        
+           AND A.DEAL_NO LIKE '%' || #{dealNo} || '%' 
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
+           AND B.DEAL_NM LIKE '%' || #{dealNm} || '%' 
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdDptDcd)">
+           AND A.DECD_DPT_DCD = #{decdDptDcd} 
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(issLtrDcd)">
+           AND A.ISS_LTR_DCD = #{issLtrDcd} 
+         </if>
+           AND A.ISS_DT BETWEEN #{strtDt} AND #{endDt} 
+	</select>
+	
+	<!-- LOI/LOC 발급 조회 -->
+	<select id="getLoi" resultType="com.nanuri.rams.business.common.vo.TB04050SVO" parameterType="com.nanuri.rams.business.common.vo.TB04050SVO">
+    select A.SQ ,
+            A.DEAL_NO ,
+            A.ISS_MNGM_NO ,
+            A.ISS_CRRY_CD ,
+            A.LOI_LOC_YN ,
+            A.ISS_DT ,
+            A.VALT_DT ,
+            A.RCLM_DT ,
+            A.ISS_AMT ,
+            A.ISS_CTNS ,
+            A.IVTG_RQST_CTNS ,
+            A.DECD_DPT_DCD as decdDptDcd,
+            A.EMPNO ,
+            A.DECD_DPT_DCD ,
+            B.EMP_NM  ,
+            B.DPRT_NM       as decdDptNm,
+            A.ISS_STTS_CD ,
+            A.SMIT_ORGI 
+      from IBIMS224B A
+      left join IBIMS003B B 
+          on B.EMPNO = A.EMPNO  
+          and B.DPRT_CD  = A.DECD_DPT_DCD 
+      where A.DEAL_NO = #{dealNo}
+      AND A.SQ  = (
+                  SELECT MAX(SQ)
+                    FROM IBIMS224B
+                    WHERE DEAL_NO = #{dealNo}
+                )
+	</select>
+	
+	<!-- LOI/LOC 발급 저장 -->
+	<insert id="registLoi" parameterType="com.nanuri.rams.business.common.vo.IBIMS224BVO">
+		  INSERT INTO IBIMS224B 
+               (
+                  ISS_MNGM_NO                             															<!-- 발급관리번호 -->
+                , ISS_STTS_CD                             															<!-- 발급상태코드 -->
+                , DEAL_NO                                 															<!-- 딜번호 -->
+                , SQ                                      															<!-- 일련번호 -->
+                , EMPNO                                   															<!-- 사원번호 -->
+                , DECD_DPT_DCD                            															<!-- 부서명 -->
+                , FND_NM                                  															<!-- 펀드명 -->
+                , PRDT_CD                                 															<!-- 상품코드 -->
+                , IB_PRDT_CLSF_CD                         															<!-- ib상품분류코드 -->
+                , ISS_BDCD                                															<!-- 발급부점코드 -->
+                , ISS_CRRY_CD                             															<!-- 발급통화코드 -->
+                , LOI_LOC_YN                              															<!-- LOI/LOC여부 -->
+                , STDR_EXRT                               															<!-- 기준환율 -->
+                , ISS_LTR_DCD                             															<!-- 발급서류구분코드 -->
+                , ISS_TR_OTHR_DSCM_NO                     															<!-- 발급거래상대방식별번호 -->
+                , ISS_DT                                  															<!-- 발급일자 -->
+                , TR_OTHR_NM                              															<!-- 거래상대방명 -->
+                , VALT_DT                                 															<!-- 유효일자 -->
+                , RCLM_DT                                 															<!-- 회수일자 -->
+                , ISS_AMT                                 															<!-- 발급금액 -->
+                , ISS_CTNS                                															<!-- 발급내용 -->
+                , ISS_PCLR_CTNS                           															<!-- 발급특이내용 -->
+                , IVTG_RQST_CTNS                          															<!-- 발급요청내용 -->
+                , RCLM_RSN_CTNS                           															<!-- 회수사유내용 -->
+                , RCLM_RSN_DCD                            															<!-- 회수사유구분코드 -->
+                , RCLM_AMT                                															<!-- 회수금액 -->
+                , RCLM_SMM_AMT                            															<!-- 회수합계금액 -->
+                , IVTG_CNFM_YN                            															<!-- 검토확인여부 -->
+                , SMIT_ORGI                               															<!-- 제출처 -->
+                , HANF_DCM_NO                             															<!-- 하나포털문서번호 -->
+                , PRG_STTS_CD                             															<!-- 진행상태코드 -->
+                , SQ1_APVL_YN                             															<!-- 1차승인여부 -->
+                , SQ2_APVL_YN                             															<!-- 2차승인여부 -->
+                , HND_DETL_DTM                            															<!-- 조작상세일시 -->
+                , HND_EMPNO                               															<!-- 조작사원번호 -->
+                , HND_TMNL_NO                             															<!-- 조작단말기번호 -->
+                , HND_TR_ID                               															<!-- 조작거래id -->
+                , GUID                                    															<!-- guid -->
+               )
+        VALUES (
+                (DECODE(#{issLtrDcd}, 1, 'LOI', 2, 'LOC', 'LOI') || #{decdDptDcd} || TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss'))             <!-- 발급관리번호 -->
+               , #{issSttsCd}                              															<!-- 발급상태코드 -->
+               , #{dealNo}                                 															<!-- 딜번호 -->
+				       , #{sq}                               														        <!-- 일련번호 -->
+               , #{empno}                                  															<!-- 사원번호 -->
+               , #{decdDptDcd}                             															<!-- 부서명 -->
+               , #{fndNm}                                  															<!-- 펀드명 -->
+               , #{prdtCd}                                 															<!-- 상품코드 -->
+               , #{ibPrdtClsfCd}                           															<!-- ib상품분류코드 -->
+               , #{issBdcd}                                															<!-- 발급부점코드 -->
+               , #{issCrryCd}                              															<!-- 발급통화코드 -->
+               , #{loiLocYn}                               															<!-- LOI/LOC여부 -->
+               , #{stdrExrt}                               															<!-- 기준환율 -->
+               , #{issLtrDcd}                              															<!-- 발급서류구분코드 -->
+               , #{issTrOthrDscmNo}                        															<!-- 발급거래상대방식별번호 -->
+               , #{issDt}                                  															<!-- 발급일자 -->
+               , #{trOthrNm}                               															<!-- 거래상대방명 -->
+               , #{valtDt}                                 															<!-- 유효일자 -->
+               , #{rclmDt}                                 															<!-- 회수일자 -->
+               , #{issAmt}                                 															<!-- 발급금액 -->
+               , #{issCtns}                                															<!-- 발급내용 -->
+               , #{issPclrCtns}                            															<!-- 발급특이내용 -->
+               , #{ivtgRqstCtns}                           															<!-- 발급요청내용 -->
+               , #{rclmRsnCtns}                            															<!-- 회수사유내용 -->
+               , #{rclmRsnDcd}                             															<!-- 회수사유구분코드 -->
+               , #{rclmAmt}                                															<!-- 회수금액 -->
+               , #{rclmSmmAmt}                             															<!-- 회수합계금액 -->
+               , #{ivtgCnfmYn}                             															<!-- 검토확인여부 -->
+               , #{smitOrgi}                               															<!-- 제출처 -->
+               , #{hanfDcmNo}                              															<!-- 하나포털문서번호 -->
+               , #{prgSttsCd}                              															<!-- 진행상태코드 -->
+               , #{sq1ApvlYn}                              															<!-- 1차승인여부 -->
+               , #{sq2ApvlYn}                              															<!-- 2차승인여부 -->
+               , DEFAULT                             	   															  <!-- 조작상세일시 -->
+               , #{hndEmpno}                               															<!-- 조작사원번호 -->
+               , #{hndTmnlNo}                              															<!-- 조작단말기번호 -->
+               , #{hndTrId}                                															<!-- 조작거래id -->
+               , #{guid}                                   															<!-- guid -->
+               )
+	</insert>
+
+  <select id='getMaxSQ' resultType="String" parameterType="com.nanuri.rams.business.common.vo.TB04050SVO">
+      SELECT NVL(MAX(SQ), 0) + 1
+      FROM IBIMS224B
+      WHERE DEAL_NO = #{dealNo}
+  </select>
+	
+</mapper>

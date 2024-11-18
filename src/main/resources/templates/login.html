@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="/images/nanuriit.png"
+	type="image/x-icon">
+<title>Investment Bank Integrated Management System</title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/animate.css" rel="stylesheet">
+<link href="css/plugins/nanuri/style.css" rel="stylesheet">
+<link href="css/custom.css" rel="stylesheet">
+</head> 
+
+<body class="login-bg">
+	<div class="loginscreen animated fadeInDown">
+	
+		<div class="login-wrap">
+			<div class="login-img-wrap">
+				<div class="login-img">
+					<img src="images/login_ibims.jpg" alt="로그인메인이미지">
+				</div>
+			</div>
+			<div class="login-info-wrap">
+				<div class="login-info-container">
+					<div class="login-title">
+						<h1>LOGIN</h1>
+					</div>
+					<div class="login-subtitle">
+						<p>아이디와 비밀번호를 입력해주세요.</p>
+					</div>
+					<form role="form" action="/login" method="post">
+						<div class="login-input-wrap">
+							<div class="login-input-com login-input-id">
+								<label for="eno">아이디</label>
+								<input type="text" id="eno" name="eno" class="form-control" placeholder="사번" required>
+							</div>
+							<div class="login-input-com login-input-pw">
+								<label for="pwd">비밀번호</label>
+								<input type="password" id="pwd" name="pwd" class="form-control" placeholder="비밀번호" required>
+							</div>
+						</div>
+						<div class="login-button">
+							<button type="submit">로그인</button>
+						</div>
+					</form>
+					<!-- <div class="login-list">
+						<a href="#" title="사용자등록요청">사용자등록요청</a>
+						<a href="#" title="아이디찾기">아이디찾기</a>
+						<a href="#" title="비밀번호찾기">비밀번호찾기</a>
+					</div> -->
+					<div class="error-box-meta" id="errMsg">
+						<p class="alert alert-danger">
+							<span id="error-msg"></span>
+						</p>
+					</div>
+				</div>
+				<div class="login-footer">
+					<div class="login-footer-img">
+						<img src="images/login_logo.png" alt="로그인푸터로고">
+					</div>
+					<div class="login-footer-info">
+						07208 서울특별시 영등포구 선유로49길23, 514호 (양평동4가, 아이에스비즈타워2차) 대표번호 : 02-6959-0319<br>
+						&copy;Copyright 2024 (주)나누리아이티 All Rights Reserved
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+	<!-- Mainly scripts -->
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/plugins/popper/popper.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+		$(function() {
+			/*[# th:if="${param.error}"]*/
+			setErrorMsg();
+			/*[/]*/
+		});
+		/*[# th:if="${param.error}"]*/
+		function setErrorMsg() {
+			let params = window.location.search;
+			let param = new URLSearchParams(params);
+			let msg = param.get('message');
+
+			document.getElementById("errMsg").style.visibility = "visible";
+			document.getElementById("error-msg").innerHTML = msg;
+		}
+		/*[/]*/
+	</script>
+
+</body>
+
+</html>

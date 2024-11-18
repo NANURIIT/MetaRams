@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB03020S.js}"></script>
+	<!-- <script th:src="@{js/business/popup/AS03210P.js}"></script> -->
+	<!-- <script th:src="@{js/business/popup/AC01120P.js}"></script> -->
+	<script th:src="@{js/business/popup/AC01140P.js}"></script>
+	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+	<script th:src="@{js/business/tb/TB03023P.js}"></script>
+	<script th:src="@{js/business/tb/TB06019P.js}"></script>
+	<script th:src="@{js/business/tb/TB03061P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<!-- <th:block th:replace="business/popup/AS03210P :: AS03210P"></th:block> -->
+	<!-- <th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block> -->
+	<th:block th:replace="business/popup/AC01140P :: AC01140P"></th:block>
+	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
+	<th:block th:replace="business/tb/TB06019P :: TB06019P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- 조회조건 -->
+				<!-- ibox -->
+				<div class="ibox ">
+					<!--  i-filter -->
+					<div class="ibox-content i-filter">
+						<div class="ibox mb-0">
+							<!-- row1 -->
+							<div class="form-group form-inline row mb-0">
+								<div class="col-sm-12 input-group text-right">
+									<label class="col-sm-1 control-label">Deal번호</label>
+									<div class="col-sm-2">
+										<div class="input-group">
+											<input type="text" class="form-control" id="selectedMngDealNo"
+												oninput="mngDealNoInput(this);">
+											<input type="hidden" class="form-control" id="selectedDealSq">
+											<input type="hidden" class="form-control" id="key1">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"
+													onclick="callTB03021P('TB03020S');"><i
+														class="fa fa-search"></i></button>
+											</span>
+										</div>
+									</div>
+									<!-- 임시로 막아둠 -->
+									<label class="col-sm-1 control-label" style="display: none;">일련번호</label>
+									<div class="col-sm-2" style="display: none;">
+										<div class="input-group">
+											<select class="form-control" id="TB03020S_sq" disabled="true">
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-9 text-left">
+										<button class="btn btn-primary" onclick="TB03020Sjs.getBscDealDetail();">
+											<i class="fa fa-search"></i>&nbsp;조회</button>
+										<button class="btn btn-default" type="button"
+											onclick="TB03020Sjs.resetSrchCondition();">
+											<i class="fa fa-undo"></i>&nbsp;초기화
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 조회내용 -->
+					<div class="ibox-content">
+						<!-- Deal 기본정보 -->
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 기본정보</h5>
+									</div>
+									<div class="ibox-content">
+										<!-- row1 -->
+										<div class="form-group form-inline row">
+											<div class="col-sm-12 input-group text-right">
+												<label class="col-sm-1 control-label"><span
+														class="req"></span>Deal명</label>
+												<div class="col-sm-5">
+													<div class="input-group">
+														<input type="text" class="form-control" id="TB03020S_dealNm">
+													</div>
+												</div>
+												<!-- <label class="col-sm-1 col-form-label text-right"><span class="req"></span>협업유형</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_C008">
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1 control-label"><span class="req"></span>BOOK</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<select class="form-control" id="TB03020S_B008">
+															<option value="">선택</option>
+														</select>
+													</div>
+												</div> -->
+											</div>
+										</div>
+										<!-- row2 -->
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 col-form-label text-right"><span
+														class="req"></span>투자상품<br>대분류</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_invstGdsLdvdCd">
+														<option value="">선택</option>
+													</select>
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default"
+															onclick="callAC01140P('TB03020S');"><i
+																class="fa fa-search"></i></button>
+													</span>
+												</div>
+												<label class="col-sm-1 col-form-label text-right"><span
+														class="req"></span>투자상품<br>중분류</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_invstGdsMdvdCd">
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1 col-form-label text-right"><span
+														class="req"></span>투자상품<br>소분류</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_invstGdsSdvdCd">
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1 col-form-label text-right"><span
+														class="req"></span>상품상세</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_I028">
+														<option value="">선택</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<!-- row3 -->
+										<div class="form-group form-inline row">
+											<div class="col-sm-12 input-group text-right">
+												<label class="col-sm-1 control-label"><span
+														class="req"></span>Deal내용</label>
+												<div class="col-sm-11">
+													<div class="input-group">
+														<textarea rows="2" class="form-control"
+															id="TB03020S_dealCntnt"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- row4 -->
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group text-right">
+												<label class="col-sm-1 control-label">은행지점</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<input type="text" class="form-control" id="TB03020S_bnkBd">
+													</div>
+												</div>
+												<label class="col-sm-1 control-label">투자국가</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<select class="form-control" id="TB03020S_C006">
+															<option value="">선택</option>
+														</select>
+													</div>
+												</div>
+												<label class="col-sm-1 col-form-label text-right">투자도시</label>
+												<div class="col-sm-2 input-group">
+													<input type="text" class="form-control" id="TB03020S_invstCty">
+												</div>
+												<!--
+												<label class="col-sm-1 control-label mb-1">진행현황</label>
+												<div class="col-sm-2 mb-1">
+													<div class="input-group">
+														<select class="form-control" id="TB03020S_I011" disabled>
+															<option value=""></option>
+														</select>
+													</div>
+												</div>
+												-->
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--업체정보 -->
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶&nbsp;업체정보</h5>
+										<button type="button" class=" btn btn-default btn-xs invst ml-1" id="invstClose"
+											onclick="TB03020Sjs.tabCtrl('#invst');"><i class="fa fa-arrow-up"
+												id="invstIcon"></i></button>
+										<span class="pl-2">
+											<button class="btn btn-success btn-xs"
+												onclick="callTB06019P('TB06010S');">기업체 등록</button>
+										</span>
+									</div>
+									<div class="ibox-content" id="invstInfo">
+										<!-- row2 -->
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 col-form-label text-right"><span
+														class="req"></span>법인등록번호</label>
+												<div class="col-sm-5 input-group">
+													<input type="hidden" id="TB03020S_corpNo">
+													<input type="text" class="form-control" id="TB03020S_corpRgstNo"
+														oninput="this.value = this.value.length > 10 ? checkBrnAcno(this.value.replace(/[^-0-9]/g,'')) : this.value.replace(/[^-0-9]/g,'');"
+														placeholder="법인번호 13자리" maxlength="13">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default"
+															onclick="callTB03061P('TB03020S')"><i
+																class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" id="TB03020S_entpRnm"
+														style="width:210px;" readonly>
+												</div>
+												<label class="col-sm-1 col-form-label text-right">기업규모</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_B019">
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1 col-form-label text-right">업종</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_I006">
+														<option value="">선택</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<!-- row3 -->
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 col-form-label text-right">계열</label>
+												<div class="col-sm-2 input-group">
+													<input type="text" class="form-control" id="TB03020S_irls">
+												</div>
+												<label class="col-sm-1 col-form-label text-right">신용등급</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_C012">
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1 col-form-label text-right">상장시장</label>
+												<div class="col-sm-2 input-group">
+													<input type="text" class="form-control" id="TB03020S_lstMkt">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- 수익정보 -->
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 수익정보</h5>
+										<button type="button" class=" btn btn-default btn-xs ern ml-1" id="ernClose"
+											onclick="TB03020Sjs.tabCtrl('#ern');"><i class="fa fa-arrow-up"
+												id="ernIcon"></i></button>
+
+									</div>
+									<div class="ibox-content" id="ernInfo">
+										<div class="form-group form-inline row">
+											<div class="col-sm-12 input-group text-right">
+												<label class="col-sm-1 col-form-label text-right">Deal규모</label>
+												<div class="col-sm-2 input-group input-h">
+													<div class="col-sm-4 text-left input-group">
+														<input type="radio" value="Y" name="TB03020S_dealSclF"
+															id="TB03020S_dealSclY">&nbsp;확정
+													</div>
+													<div class="col-sm-4 text-left input-group">
+														<input type="radio" value="N" name="TB03020S_dealSclF"
+															id="TB03020S_dealSclN">&nbsp;미정
+													</div>
+												</div>
+												<label class="col-sm-1 control-label"><span
+														class="req"></span>Deal규모</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<input type="text" class="form-control text-right"
+															id="TB03020S_dealScl"
+															oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															onchange="inputNumberFormat2(this);">&nbsp;백만원
+													</div>
+												</div>
+												<label class="col-sm-1 col-form-label text-right">참여규모</label>
+												<div class="col-sm-2 input-group input-h">
+													<div class="col-sm-4 text-left input-group">
+														<input type="radio" value="Y" name="TB03020S_ptctSclF"
+															id="TB03020S_ptctSclY">&nbsp;확정
+													</div>
+													<div class="col-sm-4 text-left input-group">
+														<input type="radio" value="N" name="TB03020S_ptctSclF"
+															id="TB03020S_ptctSclN">&nbsp;미정
+													</div>
+												</div>
+												<label class="col-sm-1 control-label ">참여규모</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<input type="text" class="form-control text-right"
+															id="TB03020S_ptctScl"
+															oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															onchange="inputNumberFormat2(this);">&nbsp;백만원
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<!-- row1 -->
+										<div class="form-group form-inline row">
+											<div class="col-sm-12 input-group text-right">
+												<label class="col-sm-1 control-label ">전체수익</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<input type="text" class="form-control text-right"
+															id="TB03020S_allErn"
+															oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															onchange="inputNumberFormat2(this);">&nbsp;백만원
+													</div>
+												</div>
+												<label class="col-sm-1 control-label">당해수익</label>
+												<div class="col-sm-2 ">
+													<div class="input-group">
+														<input type="text" class="form-control text-right"
+															id="TB03020S_thyrErn"
+															oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															onchange="inputNumberFormat2(this);">&nbsp;백만원
+													</div>
+												</div>
+												<label class="col-sm-1 control-label">기표수익</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<input type="text" class="form-control text-right"
+															id="TB03020S_wrtErn"
+															oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															onchange="inputNumberFormat2(this);">&nbsp;백만원
+													</div>
+												</div>
+												<label class="col-sm-1 control-label">On-going</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<input type="text" class="form-control text-right"
+															id="TB03020S_intrErn"
+															oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															onchange="inputNumberFormat2(this);">&nbsp;백만원
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<!-- row3 -->
+										<div class="form-group form-inline row">
+											<div class="col-sm-12 input-group text-right">
+												<label class="col-sm-1 control-label">기표일자</label>
+												<div class="col-sm-2">
+													<div class="input-group date">
+														<input type="text" class="form-control" id="wrtDt"
+															placeholder="yyyy-mm-dd"
+															oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+															maxlength="10"><span class="input-group-addon"><i
+																class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+												<label class="col-sm-1 control-label">만기일자</label>
+												<div class="col-sm-2">
+													<div class="input-group date">
+														<input type="text" class="form-control" id="mtrtDt"
+															placeholder="yyyy-mm-dd"
+															oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+															maxlength="10"><span class="input-group-addon"><i
+																class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+												<label class="col-sm-1 control-label">통화코드</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<select class="form-control" id="TB03020S_I027">
+															<option value="">선택</option>
+														</select>
+													</div>
+												</div>
+												<label class="col-sm-1 control-label">통화금액</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<input type="text" class="form-control text-right"
+															id="invstCrncyAmt"
+															oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															onchange="inputNumberFormat2(this);">&nbsp;백만원
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Deal 기타정보 -->
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 기타정보</h5>
+									</div>
+									<div class="ibox-content">
+										<!-- row1 -->
+										<div class="form-group form-inline row">
+											<div class="col-sm-12 input-group text-right">
+												<label class="col-sm-1 control-label">시공사 법인번호</label>
+												<div class="col-sm-5 input-group">
+													<input type="hidden" id="TB03020S_c_corpNo">
+													<input type="text" class="form-control" id="TB03020S_c_corpRgstNo"
+														oninput="this.value = this.value.length > 10 ? checkBrnAcno(this.value.replace(/[^-0-9]/g,'')) : this.value.replace(/[^-0-9]/g,'');"
+														placeholder="법인번호 13자리" maxlength="13">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default"
+															onclick="callTB03061P('TB03020S_c')"><i
+																class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" id="TB03020S_c_entpRnm"
+														style="width:210px;" readonly>
+												</div>
+												<label class="col-sm-1 control-label">신용보강여부</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_C010">
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1 control-label">LTV</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<input type="text" class="form-control text-right"
+															id="TB03020S_ltv"
+															oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">&nbsp;%
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- row2 -->
+										<div class="form-group form-inline row">
+											<div class="col-sm-12 input-group text-right">
+												<label class="col-sm-1 control-label">현지법인협업</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control" id="TB03020S_ovrsCorpCoprtnCd">
+														<option value="">선택</option>
+														<option value="1">Y</option>
+														<option value="2">N</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="form-group form-inline row">
+											<div class="col-sm-12 input-group text-right">
+												<label class="col-sm-1 control-label">비고</label>
+												<div class="col-sm-11">
+													<div class="input-group">
+														<textarea rows="2" class="form-control"
+															id="TB03020S_etcCntn"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+
+							<!-- 공동영업관리자/협업부서 -->
+							<div class="col-sm-6">
+								<div class="ibox">
+									<div class="ibox-title">
+										<div>
+											<h5>▶ 공동영업관리자/협업부서</h5>
+											<div class="ibox-tools">
+												<button class="btn btn-success btn-xs" type="button"
+													onclick="callTB03022P('TB03020S');">공동영업관리자등록</button>
+												<button class="btn btn-default btn-xs " type="button"
+													id="mngPListDelRow" onclick="TB03020Sjs.mngPListDelRow();">-
+													행삭제</button>
+											</div>
+										</div>
+									</div>
+									<div class="ibox-content">
+										<div id="gridEnoPList"></div>
+									</div>
+								</div>
+							</div>
+							<!-- 직원정보 -->
+							<div class="col-sm-6">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 직원정보 </h5>
+									</div>
+									<div class="ibox-content" style="height: 84px">
+										<!-- row1 -->
+										<div class="form-group form-inline row">
+											<label class="col-sm-2 control-label">담당직원</label>
+											<div class="col-sm-4">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB03020S_chrg_empNm"
+														disabled>
+													<input type="hidden" class="form-control" id="TB03020S_chrg_eno"
+														disabled>
+													<input type="hidden" class="form-control" id="TB03020S_athCd"
+														disabled>
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default"
+															onclick="callTB03022P('TB03020S_chrg')"><i
+																class="fa fa-search"></i></button>
+													</span>
+												</div>
+											</div>
+											<label class="col-sm-2 col-form-label text-right">본부/부서</label>
+											<div class="col-sm-4 input-group">
+												<input type="text" class="form-control" id="TB03020S_chrg_dprtNm"
+													readonly>
+												<input type="hidden" class="form-control" id="TB03020S_chrg_dprtCd"
+													readonly>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-12 text-right">
+									<button class="btn btn-info" type="button" id="saveDeal"
+										onclick="TB03020Sjs.saveDeal();" style="margin-left:2px; margin-right:2px;"><i
+											class="fa fa-save"></i>&nbsp;등록</button>
+									<button class="btn btn-success" type="button" id="confirmDeal" onclick="TB03020Sjs.cnfmDeal('N');" style="margin-left:2px; margin-right:2px;"><i class="fa fa-check"></i>&nbsp;결재승인</button> 
+									<button class="btn btn-warning" type="button" id="rejectDeal" onclick="TB03020Sjs.cnfmDeal('Y');" style="margin-left:2px; margin-right:2px;"><i class="fa fa-warning"></i>&nbsp;반송</button> 
+								</div>
+							</div>
+
+							<!-- 첨부파일 start -->
+							<div class="col-lg-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 관련자료</h5>
+										<div class="ibox-tools">
+											<div th:fragment="file" id="file-upload">
+												<form id="upload-file-form">
+													<input type="hidden" id="fileKey1" name="fileKey1">
+													<input type="hidden" id="fileKey2" name="fileKey2" value="*">
+													<input type="hidden" class="form-control" id="key1">
+													<button class="btn btn-default btn-xs" type="button"
+														id="UPLOAD_AddFile"><i
+															class="fa fa-upload"></i>&nbsp;파일추가</button>
+													<button class="btn btn-default btn-xs" type="button"
+														id="UPLOAD_DelFiles"><i
+															class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+													<div style="display: none">
+														<input type="file" class="custom-file-input"
+															id="deal-upload-input" name="uploadfile" accept="*">
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+									<div class="ibox-content">
+										<table class="table table-bordered">
+											<colgroup>
+												<col style="width: 5%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 50%;">
+												<col style="width: 30%;">
+											</colgroup>
+											<thead>
+												<tr>
+													<th></th>
+													<th>Main Key</th>
+													<th>Sub Key</th>
+													<th>일련번호</th>
+													<th>파일명</th>
+													<th>등록일자</th>
+												</tr>
+											</thead>
+											<tbody id="UPLOAD_FileList">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- 첨부파일 end -->
+						</div>
+					</div>
+					<!-- end of ibox -->
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

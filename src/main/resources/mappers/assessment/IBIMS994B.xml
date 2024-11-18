@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS994BMapper">
+	
+	<select id="getExchR" parameterType="String" resultType="com.nanuri.rams.business.common.vo.TB07030SVO">
+        SELECT STDR_DT 			/* 펀드코드 */
+             , CRNCY_CD 		/* 펀드명 */
+             , STDR_EXRT 		/* 펀드구분 */
+             , TO_DATE(RGST_DT, 'YYYYMMDD') AS RGST_DT 			/* 등록일자 */
+		  FROM IBIMS994B	          
+		 WHERE 1=1
+           AND CRNCY_CD = #{crncyCd}  
+           AND STDR_DT  = (
+               SELECT MAX(STDR_DT) AS STDR_DT
+                 FROM IBIMS994B	          
+				WHERE 1=1
+		          AND CRNCY_CD = #{crncyCd}  
+           )
+	</select>
+</mapper>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB06012P">
+	<!-- modal -->
+	<div id="modal-TB06012P" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">승인조건</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB06012P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body modal-height-ex">
+					<input type="hidden" name="prefix" id="TB06012P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="ibox">
+								<div class="ibox-content border-none">
+									<div class="ibox">
+									 	<div class="ibox-title">
+											<h5>▶&nbsp;투자심사승인정보</h5>
+										</div>
+						    			<div class="ibox-content text-right">
+						    				<!-- row1 -->
+						    				<div class="form-group form-inline row mb-1">
+						    					<label class="col-sm-1 col-form-label text-right">Deal번호</label>
+												<div class="col-sm-3">
+													<div class="input-group">
+														<input type="text" class="form-control" id="TB06012P_ibDealNo" readonly>
+														<input type="hidden" id="TB06012P_prdtCd" value="">
+														<!-- <input type="hidden" id="TB06012P_lstCCaseCcd">
+														<input type="hidden" id="TB06012P_riskInspctCcd"> -->
+														<!--<span class="input-group-append">
+															<button type="button" class="btn btn-default" onclick="callTB04011P('TB06012P');"><i class="fa fa-search"></i></button>
+														</span>-->
+														<input type="text" class="form-control" style="width:60px;" id="TB06012P_ibDealNm" readonly>
+													</div>
+												</div>
+				                            	<label class="col-sm-1 col-form-label">담당자(PM)</label>
+												<div class="col-sm-3 input-group form-inline ">
+													<input type="text" class="form-control" id="TB06012P_chrgPEnm" readonly>
+													&nbsp;
+													<input type="text" class="form-control" id="TB06012P_chrgPEno" readonly>
+												</div>
+												<label class="col-sm-1 col-form-label">심사역</label>
+												<div class="col-sm-3 input-group form-inline ">
+													<input type="text" class="form-control" id="TB06012P_ownPEnm" readonly>
+													&nbsp;
+													<input type="text" class="form-control" id="TB06012P_ownPEno" readonly>
+												</div>
+											</div>
+						    				<!-- row2 -->
+						    				<div class="form-group form-inline row mb-1">
+						    					<label class="col-sm-1 col-form-label">승인일자</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06012P_apvlDt" maxlength="10" readonly>
+												</div>
+						    					<label class="col-sm-1 col-form-label text-right">승인<br class="br-mo">심사기구</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB06012P_I008" disabled>
+														<option></option>
+													</select>
+												</div>
+												<label class="col-sm-1 col-form-label">위원회번호</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control text-right" id="TB06012P_cnsbSq" readonly>
+												</div>
+												
+											</div>
+											<!-- row3 -->
+						    				<div class="form-group form-inline row mb-1">
+						    					<label class="col-sm-1 col-form-label">승인금액</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control text-right" id="TB06012P_apvlAmt" readonly>
+												</div>
+						    					<label class="col-sm-1 col-form-label text-right">승인조건</label>
+												<div class="col-sm-7 input-group">
+													<textarea class="form-control" rows="2" cols="" id="TB06012P_sdnCndtCtns" readonly></textarea>
+												</div>
+											</div>
+											<hr>
+											<!-- row4 -->
+						    				<div class="form-group form-inline row mb-1">
+						    					<label class="col-sm-1 col-form-label">승인조건<br class="br-mo">일련번호</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control text-right" id="TB06012P_sn" readonly>
+												</div>
+						    					<div class="col-sm-8 text-right">
+						    						<button class="btn btn-info" onclick="connectIBIMS209B();">승인조건 연결</button>
+													<button class="btn btn-primary" onclick="selectIBIMS208B();"><i class="fa fa-search"></i>&nbsp;조회</button>
+													<button class="btn btn-default" onclick="clearTB06012P();"><i class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
+												</div>
+											</div>
+											<hr>
+											<!-- row5 -->
+											<div id="gridAppvCndtList"></div>
+											<hr>
+						    			</div>
+						    		</div>
+						    		<!-- ibox -->
+						    		<div class="ibox">
+										<div class="ibox-title">
+											<h5>▶&nbsp;승인조건관리</h5>
+										</div>
+										<div class="ibox-content">
+											<!-- row1 -->
+											<div class="row form-group form-inline text-right mb-1">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 control-label">등록자</label>
+													<div class="col-sm-7 input-group form-inline ">
+														<input type="text" class="form-control" id="TB06012P_rgstEmpNo" readonly>
+														&nbsp;
+														<input type="text" class="form-control" id="TB06012P_rgstEmpNm" style="width:150px;" readonly>
+													</div>
+													<label class="col-sm-1 col-form-label">등록일자</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control" id="TB06012P_rgstDt" readonly>
+													</div>
+												</div>
+											</div>
+											<!-- row2 -->
+											<div class="row form-group form-inline text-right mb-2">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 control-label">변경자</label>
+													<div class="col-sm-7 input-group form-inline ">
+														<input type="text" class="form-control" id="TB06012P_chngEmpNo" readonly>
+														&nbsp;
+														<input type="text" class="form-control" id="TB06012P_chngEmpNm" style="width:150px;" readonly>
+													</div>
+													<label class="col-sm-1 col-form-label">변경일자</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control" id="TB06012P_chngDt" readonly>
+													</div>
+												</div>
+											</div>
+											<!-- row3 -->
+											<div class="ibox">
+												<div class="ibox-title">
+													<h5>▶&nbsp;셀다운조건</h5>
+												</div>
+												<div class="ibox-content">
+													<!-- row1 -->
+													<div class="row form-group form-inline text-right mb-1">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label text-right">셀다운<br class="br-mo">일자기준</label>
+															<div class="col-sm-7 input-group">
+																<select class="form-control" id="TB06012P_D007">
+																</select>
+																<input type="text" class="form-control col-sm-3 mg-l5" id="TB06012P_sdwnTlmtMnum" style="text-align: right;">											
+																<span class="input-unit">개월</span>
+															</div>
+															<label class="col-sm-1 col-form-label">셀다운<br class="br-mo">목표일자</label>
+															<div class="col-sm-3 input-group date">
+																<input type="text" class="form-control" id="TB06012P_sdwnTlmtDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
+																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+															</div>
+														</div>
+													</div>
+													<!-- row2 -->
+													<div class="row form-group form-inline text-right mb-1">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label text-right">셀다운<br class="br-mo">금액기준</label>
+															<div class="col-sm-7 input-group">
+																<select class="form-control" id="TB06012P_D008">
+																</select>
+																<input type="text" class="form-control col-sm-3 mg-l5" id="TB06012P_sdwnRto" style="text-align: right;">									
+																<span class="input-unit">%</span>
+															</div>
+															<label class="col-sm-1 col-form-label">셀다운<br class="br-mo">목표금액</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_sdwnTlmtAmt" maxlength="18" onkeyup="inputNumberFormat(this);" style="text-align: right;">
+															</div>
+														</div>
+													</div>
+													<!-- row3 -->
+													<div class="row form-group form-inline text-right mb-1">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label text-right">통화코드</label>
+															<div class="col-sm-5 input-group pr-18">
+																<select class="form-control" id="TB06012P_I027">
+																	<option></option>
+																</select>
+															</div>
+															<label class="col-sm-3 col-form-label">적용환율</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_aplyExrt" onkeyup="inputNumberFormat(this);" maxlength="19" style="text-align: right;">
+															</div>
+														</div>
+													</div>
+													<!-- row4 -->
+													<div class="row form-group form-inline text-right mb-1">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label">셀다운<br class="br-mo">완료일자</label>
+															<div class="col-sm-5 input-group date pr-18">
+																<input type="text" class="form-control" id="TB06012P_sdwnCpltDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+															</div>
+														</div>
+													</div>
+													<!-- row5 -->
+													<div class="row form-group form-inline text-right">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label">셀다운내용</label>
+															<div class="col-sm-11 input-group">
+																<textarea class="form-control" rows="2" cols="" id="TB06012P_sdwnCtns" maxlength="2000"></textarea>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- row4 -->
+											<div class="ibox">
+												<div class="ibox-title">
+													<h5>▶&nbsp;기타조건</h5>
+												</div>
+												<div class="ibox-content">
+													<!-- row1 -->
+													<div class="row form-group form-inline text-right">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label">기타<br class="br-mo">승인조건</label>
+															<div class="col-sm-11 input-group">
+																<textarea class="form-control" rows="2" cols="" id="TB06012P_etcApvlCndCtns"></textarea>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- row5 -->
+											<div class="ibox">
+												<div class="ibox-title">
+													<h5>▶&nbsp;원화환산기준</h5>
+												</div>
+												<div class="ibox-content">
+													<!-- row1 -->
+													<div class="row form-group form-inline text-right">
+														<div class="col-sm-12 form-group">
+															<div class="col-sm-12 text-right">(단위: 원)</div>
+														</div>
+													</div>
+													<!-- row2 -->
+													<div class="row form-group form-inline text-right">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label">약정금액</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_ctrcAmt" onkeyup="inputNumberFormat(this);" maxlength="18">
+															</div>
+															<label class="col-sm-1 col-form-label">실행금액</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_excAmt" onkeyup="inputNumberFormat(this);" maxlength="18">
+															</div>
+															<label class="col-sm-1 col-form-label">셀다운<br class="br-mo">예정금액</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_sdwnPrarAmt" onkeyup="inputNumberFormat(this);" maxlength="18">
+															</div>
+														</div>
+													</div>
+													<!-- row3 -->
+													<div class="row form-group form-inline text-right">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label">셀다운금액</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_sdwnAmt" onkeyup="inputNumberFormat(this);" maxlength="18">
+															</div>
+															<label class="col-sm-1 col-form-label">당사<br class="br-mo">보유금액</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_thcoHoldAmt" onkeyup="inputNumberFormat(this);" maxlength="18">
+															</div>
+															<label class="col-sm-1 col-form-label">미매각잔액</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_ndispBlce" onkeyup="inputNumberFormat(this);" maxlength="18">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- row6 -->
+											<div class="ibox">
+												<div class="ibox-title">
+													<h5>▶&nbsp;부동산PF일때 입력필수</h5>
+												</div>
+												<div class="ibox-content">
+													<!-- row1 -->
+													<div class="row form-group form-inline text-right">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label">Exit 분양율(%)</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_exitSlltRt" onkeyup="inputNumberFormat(this);" maxlength="3">
+															</div>
+															<label class="col-sm-1 col-form-label ls-6">현재 분양율(%)</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_nowSlltRt" onkeyup="inputNumberFormat(this);" maxlength="3">
+															</div>
+														</div>
+													</div>
+													<!-- row2 -->
+													<div class="row form-group form-inline text-right">
+														<div class="col-sm-12 form-group">
+															<label class="col-sm-1 col-form-label ls-6">계획 공정율(%)</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_plnFairRt" onkeyup="inputNumberFormat(this);" maxlength="3">
+															</div>
+															<label class="col-sm-1 col-form-label ls-6">현재 공정율(%)</label>
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control text-right" id="TB06012P_nowFairRt" onkeyup="inputNumberFormat(this);" maxlength="3">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- row7 -->
+											<div class="ibox">
+												<div class="ibox-title">
+													<h5>▶&nbsp;활동내용</h5>
+												</div>
+												<div class="ibox-content">
+													<!-- row1 -->
+													<div class="row form-group form-inline text-right">
+														<div class="col-sm-12 form-group">
+															<div class="col-sm-12 input-group">
+																<textarea class="form-control" rows="2" cols="" id="TB06012P_apvlCndActCtns" maxlength="500"></textarea>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="ibox form-inline">
+										<!-- 버튼영역 -->
+										<div class="col-sm-12 text-right pd0"> 
+											<button class="btn btn-success" onclick="regIBIMS208B();" id="TB06012P_toggleBtn1"><i class="fa fa-save"></i>&nbsp;저장</button>
+				                            <button class="btn btn-danger" onclick="deleteIBIMS208B();" id="TB06012P_toggleBtn2"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> 
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

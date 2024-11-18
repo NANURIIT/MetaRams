@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB08090S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 심사배정안건조회 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content text-right i-filter">
+						<form method="get">
+							<div class="form-group form-inline row mb-0">
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>기준일자
+								</label>
+								<div class="col-sm-4 input-group date">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB08090_stdrDt" name="FromDate" value="" placeholder="yyyy-mm-dd" maxlength="10" oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
+								<div class="col-sm-6 text-right">
+									<button class="btn btn-primary" type="button" onclick="TB08090Sjs.getAsstSnnGrdList();">
+										<i class="fa fa-search"></i>&nbsp;조회
+									</button>
+								</div>
+								<div class="col-sm-7"></div>
+							</div>
+						</form>
+					</div>
+					
+					<!-- 조회결과 -->
+					<div class="ibox">
+						<div class="ibox-content" style="min-height: 900px">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="ibox">
+										<div class="ibox-title">
+											<div>
+												<h5>▶ 건전성 및 충당금 산출</h5>
+											</div>
+										</div>
+										<div class="ibox-content mb-1" style="min-height: 800px">
+											<div class="mb-2">
+												<div id="TB08090S_gridList"></div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 form-inline"></div>
+												<div class="col-sm-6 text-right mt-1 mb-1">
+													<button id="TB08090S_exDownLoad" class="btn btn-success" onclick="">
+														<i class="fa fa-download"></i>&nbsp;엑셀다운로드
+													</button>
+													<button id="TB08090S_exUpLoad" class="btn btn-success" onclick="">
+														<i class="fa fa-upload"></i>&nbsp;엑셀업로드
+													</button>
+													<button id="" class="btn btn-success" onclick="TB08090Sjs.asstSnnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+													<button id="" class="btn btn-success" onclick="">
+														<i class="fa fa-check"></i>&nbsp;회계 반영
+													</button>
+													<button id="" class="btn btn-success" onclick="">
+														<i class="fa fa-eraser"></i>&nbsp;회계 취소
+													</button>
+												</div>
+												<div style="display: none;">
+													<input type="file" class="custom-file-input" id="upload-file-input-TB08090S" name="uploadfile" accept="*">
+												</div>
+											</div>
+										</div>
+									</div>	
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

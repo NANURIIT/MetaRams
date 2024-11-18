@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA32BMapper">
+
+    <insert id="insertRaa32bJudge">
+        INSERT INTO RAA32B
+        (
+          STD_YR_MM
+        , FXT_RPR_CCD
+        , IB_DEAL_NO
+        , RISK_INSPCT_CCD
+        , LST_C_CASE_CCD
+        , SNTNC_CNTNT1
+        , SNTNC_CNTNT2
+        , SNTNC_CNTNT3
+        , SNTNC_CNTNT4
+        , RPRT_CNTNT
+        , HNDL_DY_TM
+        , HNDL_DPRT_CD
+        , HNDL_P_ENO
+        )
+        VALUES
+        (
+          #{stdYrMm}
+        , #{fxtRprCcd}
+        , #{ibDealNo}
+        , #{riskInspctCcd}
+        , #{lstCCaseCcd}
+        , #{sntncCntnt1}
+        , #{sntncCntnt2}
+        , #{sntncCntnt3}
+        , #{sntncCntnt4}
+        , #{rprtCntnt}
+        , SYSDATE()
+        , #{hndlDprtCd}
+        , #{hndlPEno}
+        )
+    </insert>
+
+   <!--    정기보고관리 사분할내용 저장    -->
+
+    <!--  32B테이블 레코드 조회    -->
+    <select id="selectOneRaa32b">
+        SELECT COUNT(*)
+          FROM RAA32B
+         WHERE STD_YR_MM        = #{stdYrMm}
+           AND FXT_RPR_CCD      = #{fxtRprCcd}
+           AND IB_DEAL_NO       = #{ibDealNo}
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+    </select>
+
+    <update id="updateRaa32b">
+        UPDATE RAA32B
+           SET RPR_PRGRS_ST_CD  = '10'
+             , SNTNC_CNTNT1     = #{sntncCntnt1}
+             , SNTNC_CNTNT2     = #{sntncCntnt2}
+             , SNTNC_CNTNT3     = #{sntncCntnt3}
+             , SNTNC_CNTNT4     = #{sntncCntnt4}
+             , RPRT_CNTNT       = #{rprtCntnt}
+             , HNDL_DY_TM       = SYSDATE()
+             , HNDL_DPRT_CD     = #{hndlDprtCd}
+             , HNDL_P_ENO       = #{hndlPEno}
+         WHERE STD_YR_MM        = #{stdYrMm}
+           AND FXT_RPR_CCD      = #{fxtRprCcd}
+           AND IB_DEAL_NO       = #{ibDealNo}
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+    </update>
+
+    <insert id="insertRaa32b">
+        INSERT INTO RAA32B
+        (
+          STD_YR_MM
+        , FXT_RPR_CCD
+        , IB_DEAL_NO
+        , RISK_INSPCT_CCD
+        , LST_C_CASE_CCD
+        , RPR_PRGRS_ST_CD
+        , SNTNC_CNTNT1
+        , SNTNC_CNTNT2
+        , SNTNC_CNTNT3
+        , SNTNC_CNTNT4
+        , RPRT_CNTNT
+        , HNDL_DY_TM
+        , HNDL_DPRT_CD
+        , HNDL_P_ENO
+        )
+        VALUES
+        (
+          #{stdYrMm}
+        , #{fxtRprCcd}
+        , #{ibDealNo}
+        , #{riskInspctCcd}
+        , #{lstCCaseCcd}
+        , '10'
+        , #{sntncCntnt1}
+        , #{sntncCntnt2}
+        , #{sntncCntnt3}
+        , #{sntncCntnt4}
+        , #{rprtCntnt}
+        , SYSDATE()
+        , #{hndlDprtCd}
+        , #{hndlPEno}
+        )
+    </insert>
+    <!--    정기보고관리 사분할내용 저장 END   -->
+    
+    <!--    정기보고관리 사분할내용 저장(심사역)    -->
+    <update id="updateRaa32bJudge">
+        UPDATE RAA32B
+           SET SNTNC_CNTNT1     = #{sntncCntnt1}
+             , SNTNC_CNTNT2     = #{sntncCntnt2}
+             , SNTNC_CNTNT3     = #{sntncCntnt3}
+             , SNTNC_CNTNT4     = #{sntncCntnt4}
+             , RPRT_CNTNT       = #{rprtCntnt}
+             , HNDL_DY_TM       = SYSDATE()
+             , HNDL_DPRT_CD     = #{hndlDprtCd}
+             , HNDL_P_ENO       = #{hndlPEno}
+         WHERE STD_YR_MM        = #{stdYrMm}
+           AND FXT_RPR_CCD      = #{fxtRprCcd}
+           AND IB_DEAL_NO       = #{ibDealNo}
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+    </update>
+    <!--    정기보고관리 사분할내용 저장(심사역) END   -->   
+
+    <!--    정기보고 이슈내용 저장    -->
+    <update id="saveIssueRsn">
+        UPDATE RAA32B
+           SET ISSUE_RSN		= #{issueRsn}
+             , HNDL_DY_TM 		= SYSDATE()
+             , HNDL_DPRT_CD 	= #{hndlDprtCd}
+             , HNDL_P_ENO 		= #{hndlPEno}
+        WHERE STD_YR_MM 		= #{stdYrMm}          /* 기준년월 */
+          AND FXT_RPR_CCD 		= #{fxtRprCcd}        /* 정기보고구분코드 */
+          AND IB_DEAL_NO 		= #{ibDealNo}         /* Deal번호 */
+          AND RISK_INSPCT_CCD   = #{riskInspctCcd}    /* 리스크심사구분코드 */
+          AND LST_C_CASE_CCD    = #{lstCCaseCcd}     /* 부수안건구분코드 */
+    </update>
+
+    <!--    정기보고 결재진행상태코드 조회    -->
+    <select id="getRprPrgrsStCd">
+        SELECT RPR_PRGRS_ST_CD
+          FROM RAA32B
+         WHERE STD_YR_MM 		= #{stdYrMm}          /* 기준년월 */
+           AND FXT_RPR_CCD 		= #{fxtRprCcd}        /* 정기보고구분코드 */
+           AND IB_DEAL_NO 		= #{ibDealNo}         /* Deal번호 */
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}    /* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}     /* 부수안건구분코드 */
+    </select>
+
+    <!--    정기보고관리 승인요청    -->
+    <update id="updateRcgRqs">
+        UPDATE RAA32B
+           SET RPR_PRGRS_ST_CD  = '20'
+             , APRV_DY_TM1      = SYSDATE()             /* 결재일시1 */
+             , APRV_P_ENO1      = #{hndlPEno}         /* 결재자사번1 */
+             , HNDL_DY_TM       = SYSDATE()
+             , HNDL_DPRT_CD     = #{hndlDprtCd}
+             , HNDL_P_ENO 		= #{hndlPEno}
+         WHERE STD_YR_MM 		= #{stdYrMm}          /* 기준년월 */
+           AND FXT_RPR_CCD 		= #{fxtRprCcd}        /* 정기보고구분코드 */
+           AND IB_DEAL_NO 		= #{ibDealNo}         /* Deal번호 */
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}    /* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}     /* 부수안건구분코드 */
+    </update>
+
+    <!--    정기보고관리 승인    -->
+    <update id="updateRcg">
+        UPDATE RAA32B
+           SET RPR_PRGRS_ST_CD     = '30'
+             , APRV_DY_TM2         = SYSDATE()          /* 결재일시2 */
+             , APRV_P_ENO2         = #{hndlPEno}      /* 결재자사번2 */
+             , HNDL_DY_TM          = SYSDATE()
+             , HNDL_DPRT_CD        = #{hndlDprtCd}
+             , HNDL_P_ENO 		   = #{hndlPEno}
+         WHERE STD_YR_MM 		   = #{stdYrMm}          /* 기준년월 */
+           AND FXT_RPR_CCD 		   = #{fxtRprCcd}        /* 정기보고구분코드 */
+           AND IB_DEAL_NO 		   = #{ibDealNo}         /* Deal번호 */
+           AND RISK_INSPCT_CCD     = #{riskInspctCcd}    /* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD      = #{lstCCaseCcd}     /* 부수안건구분코드 */
+    </update>
+
+    <!--    정기보고관리 승인(대체투자관리부 부서장) -> 대체투자관리부 부서장은 바로 진행상태완료처리   -->
+    <update id="updateAnivstMngDprtRcg">
+        UPDATE RAA32B
+           SET RPR_PRGRS_ST_CD     = '50'
+             , APRV_DY_TM2         = SYSDATE()
+             , APRV_P_ENO2         = #{hndlPEno}
+             , APRV_DY_TM3         = SYSDATE()
+             , APRV_P_ENO3         = #{hndlPEno}
+             , APRV_DY_TM4         = SYSDATE()
+             , APRV_P_ENO4         = #{hndlPEno}
+             , HNDL_DY_TM          = SYSDATE()
+             , HNDL_DPRT_CD        = #{hndlDprtCd}
+             , HNDL_P_ENO 		    = #{hndlPEno}
+         WHERE STD_YR_MM 		   = #{stdYrMm}          /* 기준년월 */
+           AND FXT_RPR_CCD 		   = #{fxtRprCcd}        /* 정기보고구분코드 */
+           AND IB_DEAL_NO 		   = #{ibDealNo}         /* Deal번호 */
+           AND RISK_INSPCT_CCD     = #{riskInspctCcd}    /* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD      = #{lstCCaseCcd}     /* 부수안건구분코드 */
+    </update>
+
+    <!--    정기보고관리 반송   -->
+    <update id="updateRcgRtvl">
+        UPDATE RAA32B
+           SET RPR_PRGRS_ST_CD     = '11'
+             , APRV_DY_TM1         = NULL
+             , APRV_P_ENO1         = NULL
+             , APRV_DY_TM2         = NULL
+             , APRV_P_ENO2         = NULL
+             , APRV_DY_TM3         = NULL
+             , APRV_P_ENO3         = NULL
+             , APRV_DY_TM4         = NULL
+             , APRV_P_ENO4         = NULL
+             , HNDL_DY_TM          = SYSDATE()
+             , HNDL_DPRT_CD        = #{hndlDprtCd}
+             , HNDL_P_ENO 		    = #{hndlPEno}
+         WHERE STD_YR_MM 		= #{stdYrMm}              /* 기준년월 */
+           AND FXT_RPR_CCD 		= #{fxtRprCcd}            /* 정기보고구분코드 */
+           AND IB_DEAL_NO 		= #{ibDealNo}             /* Deal번호 */
+           AND RISK_INSPCT_CCD   = #{riskInspctCcd}       /* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD    = #{lstCCaseCcd}        /* 부수안건구분코드 */
+    </update>
+
+    <!--    정기보고관리 심사역확인   -->
+    <update id="updateExmntFnsh">
+        UPDATE RAA32B
+        SET RPR_PRGRS_ST_CD     = '40'
+          , APRV_DY_TM3         = SYSDATE()                 /* 결재일시3 */
+          , APRV_P_ENO3         = #{hndlPEno}             /* 결재자사번3 */
+          , HNDL_DY_TM          = SYSDATE()
+          , HNDL_DPRT_CD        = #{hndlDprtCd}
+          , HNDL_P_ENO 		   = #{hndlPEno}
+        WHERE STD_YR_MM 		   = #{stdYrMm}           /* 기준년월 */
+          AND FXT_RPR_CCD 		   = #{fxtRprCcd}         /* 정기보고구분코드 */
+          AND IB_DEAL_NO 		   = #{ibDealNo}          /* Deal번호 */
+          AND RISK_INSPCT_CCD     = #{riskInspctCcd}      /* 리스크심사구분코드 */
+          AND LST_C_CASE_CCD      = #{lstCCaseCcd}       /* 부수안건구분코드 */
+    </update>
+
+    <!--    정기보고관리 심사부서장 확인   -->
+    <update id="updateDprtMngrFnsh">
+        UPDATE RAA32B
+           SET RPR_PRGRS_ST_CD     = '50'
+             , APRV_DY_TM4         = SYSDATE()              /* 결재일시4 */
+             , APRV_P_ENO4         = #{hndlPEno}          /* 결재자사번4 */
+             , HNDL_DY_TM          = SYSDATE()
+             , HNDL_DPRT_CD        = #{hndlDprtCd}
+             , HNDL_P_ENO 		   = #{hndlPEno}
+         WHERE STD_YR_MM 		   = #{stdYrMm}           /* 기준년월 */
+           AND FXT_RPR_CCD 		   = #{fxtRprCcd}         /* 정기보고구분코드 */
+           AND IB_DEAL_NO 		   = #{ibDealNo}          /* Deal번호 */
+           AND RISK_INSPCT_CCD     = #{riskInspctCcd}     /* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD      = #{lstCCaseCcd}      /* 부수안건구분코드 */
+    </update>
+    
+ </mapper>

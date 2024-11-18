@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS208BMapper"> 
+	
+	<!-- IB승인조건내역 - 대출채권/채무보증 정보(TB06010S) - 셀다운승인조건조회  -->
+    <select id="select208B" parameterType="com.nanuri.rams.business.common.vo.IBIMS208BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS208BVO">
+        SELECT IBIMS208B.DEAL_NO                                           <!-- 딜번호 -->
+             , IBIMS208B.SN                                                <!-- 일련번호 -->
+             , IBIMS208B.SDWN_DT_DCD                                       <!-- 샐다운일자구분코드 -->
+             , IBIMS208B.SDWN_TLMT_MNUM                                    <!-- 샐다운기한개월수 -->
+             , IBIMS208B.SDWN_TLMT_DT                                      <!-- 샐다운기한(목표)일자 -->
+             , IBIMS208B.SDWN_STDR_AMT_DCD                                 <!-- 샐다운기준금액구분코드 -->
+             , IBIMS208B.SDWN_RTO                                          <!-- 샐다운비율 -->
+             , IBIMS208B.SDWN_TLMT_AMT                                     <!-- 샐다운목표금액 -->
+             , IBIMS208B.CRRY_CD                                           <!-- 통화코드 -->
+             , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'I027'
+                    AND CD_VL_ID = IBIMS208B.CRRY_CD
+               ) AS CRRY_CD_NM                                             <!-- 통화코드명 -->
+             , IBIMS208B.APLY_EXRT                                         <!-- 적용환율 -->
+             , IBIMS208B.SDWN_CPLT_DT                                      <!-- 샐다운완료일자 -->
+             , IBIMS208B.CTRC_AMT                                          <!-- 약정금액 -->
+             , IBIMS208B.EXC_AMT                                           <!-- 실행금액 -->
+             , IBIMS208B.SDWN_PRAR_AMT                                     <!-- 샐다운예정금액 -->
+             , IBIMS208B.SDWN_AMT                                          <!-- 샐다운금액 -->
+             , IBIMS208B.THCO_HOLD_AMT                                     <!-- 당사보유금액 -->
+             , IBIMS208B.NDISP_BLCE                                        <!-- 미매각금액 -->
+             , IBIMS208B.EXIT_SLLT_RT                                      <!-- exit분양율 -->
+             , IBIMS208B.NOW_SLLT_RT                                       <!-- 현재분양율 -->
+             , IBIMS208B.PLN_FAIR_RT                                       <!-- 계획공정율 -->
+             , IBIMS208B.NOW_FAIR_RT                                       <!-- 현재공정율 -->
+             , IBIMS208B.RGST_EMPNO                                        <!-- 등록사원번호 -->
+             , A.EMP_NM		AS RGST_EMPNM
+             , IBIMS208B.RGST_DT                                           <!-- 등록일자 -->
+             , IBIMS208B.CHNG_EMPNO                                        <!-- 변경사원번호 -->
+             , B.EMP_NM		AS CHNG_EMPNM
+             , IBIMS208B.CHNG_DT                                           <!-- 변경일자 -->
+             , IBIMS208B.SDWN_CTNS                                         <!-- 샐다운내용 -->
+             , IBIMS208B.ETC_APVL_CND_CTNS                                 <!-- 기타승인조건내용 -->
+             , IBIMS208B.APVL_CND_ACT_CTNS                                 <!-- 승인조건활동내용 -->
+             , IBIMS208B.HND_DETL_DTM                                      <!-- 조작상세일시 -->
+             , IBIMS208B.HND_EMPNO                                         <!-- 조작사원번호 -->
+             , IBIMS208B.HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+             , IBIMS208B.HND_TR_ID                                         <!-- 조작거래id -->
+             , IBIMS208B.GUID                                              <!-- guid -->
+             , I209B.PRDT_CD                                               /* 상품번호 */
+          FROM IBIMS208B 
+          INNER JOIN IBIMS003B A
+             ON IBIMS208B.RGST_EMPNO = A.EMPNO
+          INNER JOIN IBIMS003B B 
+             ON IBIMS208B.CHNG_EMPNO = B.EMPNO
+          LEFT JOIN 
+               (
+                SELECT X.DEAL_NO
+                     , X.PRDT_CD
+                  FROM IBIMS209B X
+                 WHERE X.PRDT_CD = #{prdtCd}
+                   AND ROWNUM = 1
+               ) AS I209B
+            ON I209B.DEAL_NO = IBIMS208B.DEAL_NO
+         WHERE 1=1
+           AND IBIMS208B.DEAL_NO = #{dealNo}
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sn)">
+		   AND IBIMS208B.SN	  	 = #{sn}
+		   </if>
+         ORDER BY I209B.PRDT_CD DESC
+    </select>
+	
+	<!-- IB승인조건내역 - 대출채권/채무보증 정보(TB06010S) - 셀다운승인조건등록  -->
+    <insert id="insert208B" parameterType="com.nanuri.rams.business.common.dto.IBIMS208BDTO">
+        INSERT INTO IBIMS208B 
+               (
+                  DEAL_NO                                           <!-- 딜번호 -->
+                , SN                                                <!-- 일련번호 -->
+                , SDWN_DT_DCD                                       <!-- 샐다운일자구분코드 -->
+                , SDWN_TLMT_MNUM                                    <!-- 샐다운기한개월수 -->
+                , SDWN_TLMT_DT                                      <!-- 샐다운기한(목표)일자 -->
+                , SDWN_STDR_AMT_DCD                                 <!-- 샐다운기준금액구분코드 -->
+                , SDWN_RTO                                          <!-- 샐다운비율 -->
+                , SDWN_TLMT_AMT                                     <!-- 샐다운목표금액 -->
+                , CRRY_CD                                           <!-- 통화코드 -->
+                , APLY_EXRT                                         <!-- 적용환율 -->
+                , SDWN_CPLT_DT                                      <!-- 샐다운완료일자 -->
+                , CTRC_AMT                                          <!-- 약정금액 -->
+                , EXC_AMT                                           <!-- 실행금액 -->
+                , SDWN_PRAR_AMT                                     <!-- 샐다운예정금액 -->
+                , SDWN_AMT                                          <!-- 샐다운금액 -->
+                , THCO_HOLD_AMT                                     <!-- 당사보유금액 -->
+                , NDISP_BLCE                                        <!-- 미매각금액 -->
+                , EXIT_SLLT_RT                                      <!-- exit분양율 -->
+                , NOW_SLLT_RT                                       <!-- 현재분양율 -->
+                , PLN_FAIR_RT                                       <!-- 계획공정율 -->
+                , NOW_FAIR_RT                                       <!-- 현재공정율 -->
+                , RGST_EMPNO                                        <!-- 등록사원번호 -->
+                , RGST_DT                                           <!-- 등록일자 -->
+                , CHNG_EMPNO                                        <!-- 변경사원번호 -->
+                , CHNG_DT                                           <!-- 변경일자 -->
+                , SDWN_CTNS                                         <!-- 샐다운내용 -->
+                , ETC_APVL_CND_CTNS                                 <!-- 기타승인조건내용 -->
+                , APVL_CND_ACT_CTNS                                 <!-- 승인조건활동내용 -->
+                , HND_DETL_DTM                                      <!-- 조작상세일시 -->  
+                , HND_EMPNO                                         <!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+                , HND_TR_ID                                         <!-- 조작거래id -->
+                , GUID                                              <!-- guid -->
+               )
+        VALUES (
+                 #{dealNo}                                          <!-- 딜번호 -->
+               , (SELECT NVL(MAX(A.SN), 0) + 1 FROM IBIMS208B A)    <!-- 일련번호 -->
+               , #{sdwnDtDcd}                                       <!-- 샐다운일자구분코드 -->
+               , #{sdwnTlmtMnum}                                    <!-- 샐다운기한개월수 -->
+               , #{sdwnTlmtDt}                                      <!-- 샐다운기한(목표)일자 -->
+               , #{sdwnStdrAmtDcd}                                  <!-- 샐다운기준금액구분코드 -->
+               , #{sdwnRto}                                         <!-- 샐다운비율 -->
+               , #{sdwnTlmtAmt}                                     <!-- 샐다운목표금액 -->
+               , #{crryCd}                                          <!-- 통화코드 -->
+               , #{aplyExrt}                                        <!-- 적용환율 -->
+               , #{sdwnCpltDt}                                      <!-- 샐다운완료일자 -->
+               , #{ctrcAmt}                                         <!-- 약정금액 -->
+               , #{excAmt}                                          <!-- 실행금액 -->
+               , #{sdwnPrarAmt}                                     <!-- 샐다운예정금액 -->
+               , #{sdwnAmt}                                         <!-- 샐다운금액 -->
+               , #{thcoHoldAmt}                                     <!-- 당사보유금액 -->
+               , #{ndispBlce}                                       <!-- 미매각금액 -->
+               , #{exitSlltRt}                                      <!-- exit분양율 -->
+               , #{nowSlltRt}                                       <!-- 현재분양율 -->
+               , #{plnFairRt}                                       <!-- 계획공정율 -->
+               , #{nowFairRt}                                       <!-- 현재공정율 -->
+               , #{rgstEmpno}                                       <!-- 등록사원번호 -->
+               , #{rgstDt}                                          <!-- 등록일자 -->
+               , #{chngEmpno}                                       <!-- 변경사원번호 -->
+               , #{chngDt}                                          <!-- 변경일자 -->
+               , #{sdwnCtns}                                        <!-- 샐다운내용 -->
+               , #{etcApvlCndCtns}                                  <!-- 기타승인조건내용 -->
+               , #{apvlCndActCtns}                                  <!-- 승인조건활동내용 -->
+               , SYSDATE                                            <!-- 조작상세일시 --> 
+               , #{hndEmpno}                                        <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+               , #{hndTrId}                                         <!-- 조작거래id -->
+               , #{guid}                                            <!-- guid -->
+               )
+    </insert>
+    
+    <!-- IB승인조건내역 - 대출채권/채무보증 정보(TB06010S) - 셀다운승인조건변경  -->
+    <update id="update208B" parameterType="com.nanuri.rams.business.common.dto.IBIMS208BDTO">
+       UPDATE IBIMS208B
+          SET 
+			  GUID                                              = #{guid}                                            <!-- guid -->          
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnDtDcd)">
+		    , SDWN_DT_DCD                                       = #{sdwnDtDcd}                                       <!-- 샐다운일자구분코드 -->
+		      </if>
+		      <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnTlmtMnum)">
+            , SDWN_TLMT_MNUM                                    = #{sdwnTlmtMnum}                                    <!-- 샐다운기한개월수 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnTlmtDt)">
+            , SDWN_TLMT_DT                                      = #{sdwnTlmtDt}                                      <!-- 샐다운기한(목표)일자 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnStdrAmtDcd)">
+            , SDWN_STDR_AMT_DCD                                 = #{sdwnStdrAmtDcd}                                  <!-- 샐다운기준금액구분코드 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnRto)">
+            , SDWN_RTO                                          = #{sdwnRto}                                         <!-- 샐다운비율 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnTlmtAmt)">
+            , SDWN_TLMT_AMT                                     = #{sdwnTlmtAmt}                                     <!-- 샐다운목표금액 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crryCd)">
+            , CRRY_CD                                           = #{crryCd}                                          <!-- 통화코드 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(aplyExrt)">
+            , APLY_EXRT                                         = #{aplyExrt}                                        <!-- 적용환율 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnCpltDt)">
+            , SDWN_CPLT_DT                                      = #{sdwnCpltDt}                                      <!-- 샐다운완료일자 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ctrcAmt)">
+            , CTRC_AMT                                          = #{ctrcAmt}                                         <!-- 약정금액 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(excAmt)">
+            , EXC_AMT                                           = #{excAmt}                                          <!-- 실행금액 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnPrarAmt)">
+            , SDWN_PRAR_AMT                                     = #{sdwnPrarAmt}                                     <!-- 샐다운예정금액 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnAmt)">
+            , SDWN_AMT                                          = #{sdwnAmt}                                         <!-- 샐다운금액 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(thcoHoldAmt)">
+            , THCO_HOLD_AMT                                     = #{thcoHoldAmt}                                     <!-- 당사보유금액 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ndispBlce)">
+            , NDISP_BLCE                                        = #{ndispBlce}                                       <!-- 미매각금액 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(exitSlltRt)">
+            , EXIT_SLLT_RT                                      = #{exitSlltRt}                                      <!-- exit분양율 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(nowSlltRt)">
+            , NOW_SLLT_RT                                       = #{nowSlltRt}                                       <!-- 현재분양율 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(plnFairRt)">
+            , PLN_FAIR_RT                                       = #{plnFairRt}                                       <!-- 계획공정율 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(nowFairRt)">
+            , NOW_FAIR_RT                                       = #{nowFairRt}                                       <!-- 현재공정율 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstEmpno)">
+            , RGST_EMPNO                                        = #{rgstEmpno}                                       <!-- 등록사원번호 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDt)">
+            , RGST_DT                                           = #{rgstDt}                                          <!-- 등록일자 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chngEmpno)">
+            , CHNG_EMPNO                                        = #{chngEmpno}                                       <!-- 변경사원번호 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chngDt)">
+            , CHNG_DT                                           = #{chngDt}                                          <!-- 변경일자 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sdwnCtns)">
+            , SDWN_CTNS                                         = #{sdwnCtns}                                        <!-- 샐다운내용 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(etcApvlCndCtns)">
+            , ETC_APVL_CND_CTNS                                 = #{etcApvlCndCtns}                                  <!-- 기타승인조건내용 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(apvlCndActCtns)">
+            , APVL_CND_ACT_CTNS                                 = #{apvlCndActCtns}                                  <!-- 승인조건활동내용 -->
+              </if>
+            , HND_DETL_DTM                                      = DEFAULT	                                         <!-- 조작상세일시 -->
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(hndEmpno)">
+            , HND_EMPNO                                         = #{hndEmpno}                                        <!-- 조작사원번호 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(hndTmnlNo)">
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+              </if>
+              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(hndTrId)">
+            , HND_TR_ID                                         = #{hndTrId}                                         <!-- 조작거래id -->
+              </if>
+        WHERE 1=1
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+          AND DEAL_NO                                           = #{dealNo}                                          <!-- 딜번호 -->
+          </if>
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sn)">
+          AND SN                                                = #{sn}                                              <!-- 일련번호 -->
+          </if>
+    </update>
+	
+	<select id="getIBIMS208BDTOInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS209BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS208BDTO">
+		SELECT s208b.SDWN_DT_DCD          <!-- 샐다운일자구분코드 -->
+		     , s208b.SDWN_TLMT_MNUM       <!-- 샐다운기한개월수 -->
+		     , s208b.SDWN_TLMT_DT         <!-- 샐다운기한(목표)일자 -->
+		     , s208b.SDWN_STDR_AMT_DCD    <!-- 샐다운기준금액구분코드 -->
+		     , s208b.SDWN_RTO             <!-- 샐다운비율 -->
+		     , s208b.SDWN_TLMT_AMT        <!-- 샐다운목표금액 -->
+		     , s208b.SN                   <!-- 일련번호 -->
+		  FROM IBIMS208B s208b
+		     , IBIMS209B s209b 
+		 WHERE 1=1
+		   AND s209b.DEAL_NO		= s208b.DEAL_NO 
+		   AND s209b.APVL_CND_SN	= s208b.SN 
+		   AND s209b.PRDT_CD		= #{prdtCd}
+	</select>
+  <delete id="deleteAppvCndtList" parameterType="com.nanuri.rams.business.common.dto.IBIMS208BDTO">
+  DELETE 
+    FROM IBIMS208B 
+   WHERE DEAL_NO = #{dealNo}
+     AND SN = #{sn}
+  </delete>
+  
+	
+</mapper>

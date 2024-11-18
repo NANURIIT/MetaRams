@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB07130S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<!-- <th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 회계대사 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content i-filter">
+						<div class="form-group row form-inline">
+							<!-- 기준일자 -->
+							<label class="col-sm-1 control-label">
+								기준일자
+							</label>
+							<div class="col-sm-2 input-group">
+								<span class="input-group date">
+									<input type="text" class="form-control" value="" id="TB07130S_stdrDt" placeholder="YYYY-MM-DD">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</span>
+							</div>
+							<!-- 계정구분 -->
+							<label class="col-sm-1 control-label">
+								계정과목
+							</label>
+							<div class="col-sm-2 input-group">
+								<select class="form-control" id="TB07130S_actsCd">
+									<option value="">전체</option>
+								</select>
+							</div>
+							<!-- 부서코드 -->
+							<label class="col-sm-1 control-label">
+								부서코드
+							</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+									<select class="form-control" id="TB07130S_mngmBdcd">
+										<option value="">전체</option>
+									</select>
+									<input type="text" class="form-control" id="TB07130S_mngmBdcdNm" readonly="">
+								</div>
+							</div>
+							<!-- 버튼영역 -->
+							<div class="col-sm-1-5 text-right">
+								<button class="btn btn-primary" onclick="TB07130Sjs.selectIBIMS451B();">
+									<i class="fa fa-search"></i>&nbsp;조회</button>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content" style="min-height: 800px">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 회계대사내역</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- 회계대사내역 -->
+								<div id="grd_acctDtls"></div>
+								<!-- <table class="table result table-bordered footable">
+									<colgroup>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+									</colgroup>
+									<thead>
+										<tr> 
+											<th>순번</th>
+											<th>부서코드</th>
+											<th>부서명</th>
+											<th>계정과목코드</th>
+											<th>계정과목코드명</th>
+											<th>당일원장금액</th>
+											<th>당일계정금액</th>
+											<th>당일차액</th>
+											<th>원장잔액</th>
+										</tr>
+									</thead>
+									<tbody id="">
+										<tr class="text-center">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td class="text-right"></td>
+											<td class="text-right"></td>
+											<td class="text-right"></td>
+											<td class="text-right"></td>
+										</tr>
+									</tbody>
+								</table> -->
+							</div>
+						</div>
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 당일거래내역</h5>
+							</div>
+							<div class="ibox-content">
+							<!-- 일별연체내역 -->
+							<div id="grd_thdtTrDtls"></div>
+								<!-- <table class="table result table-bordered footable" data-page-size="20" data-paging="true" data-sort="false">
+									<colgroup>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+									</colgroup>
+									<thead>
+										<tr> 
+											<th>순번</th>
+											<th>deal번호</th>
+											<th>거래순번</th>
+											<th>거래종류코드</th>
+											<th>증감구분</th>
+											<th>거래원금</th>
+											<th>거래이자</th>
+											<th>거래수수료</th>
+											<th>거래비용</th>
+											<th>회계업무코드</th>
+											<th>회계단위업무코드</th>
+										</tr>
+									</thead>
+									<tbody id="">
+										<tr class="text-center">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td class="text-right"></td>
+											<td class="text-right"></td>
+											<td class="text-right"></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table> -->
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

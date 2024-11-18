@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/popup/AC01120P.js}"></script>
+	<script th:src="@{js/business/mo/MO44010S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+
+	<th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 일별 신용사건 현황 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-title mb-2">
+						<div class="form-group form-inline row">
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label">기준일자</label>
+								<div class="col-sm-2 input-group" >
+									<span class="input-group date">
+										<input type="text" class="form-control" id="MO44010S_stdDt" name="start" value="">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span>
+									</span>
+								</div>
+								<label class="col-sm-1 control-label">심사부서</label>
+								<div class="col-sm-2 input-group text-right">
+									<select class="form-control" id="MO44010S_inspctDprtCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">심사역</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" id="MO44010S_eno" name="" readonly>
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callAC01120P('MO44010S')">
+											<i class="fa fa-search"></i>
+										</button>
+									</span>
+									<input type="text" class="form-control border-left-none" id="MO44010S_empNm" name="" readonly>
+								</div>
+								<label class="col-sm-2 control-label">
+									<input type="checkbox" id="MO44010S_checked">확인완료 건 포함
+								</label>
+								<div class="col-sm-1 text-right">
+									<button class="btn btn-primary" onclick="checkDealSearch();">
+									<i class="fa fa-search"></i>&nbsp;조회</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content mb-2">
+						<div class="text-right">(단위: 건)</div>
+						<div class="tableFixHeader2">
+							<table class="table result table-bordered">
+								<thead>
+									<tr>
+										<th rowspan="2">기준일자</th>
+										<th rowspan="2">기업명</th>
+										<th rowspan="2">대표자</th>
+										<th rowspan="2">법인등록번호</th>
+										<th rowspan="2">신용사건발생사유</th>
+										<th rowspan="2">Deal번호</th>
+										<th rowspan="2">안건명</th>
+										<th rowspan="2">심사부서</th>
+										<th rowspan="2">담당심사역</th>
+										<th colspan="2">확인일</th>
+									</tr>
+									<tr>
+										<th>심사역</th>
+										<th>심사부서장</th>
+									</tr>
+								</thead>
+								<tbody id="MO44010S_DealList">
+									<tr>
+										<td>2023-03-15</td>
+										<td>월송홀딩스</td>
+										<td>안종건</td>
+										<td>110111-0722979</td>
+										<td>완전자본잠식</td>
+										<td>DPJTP2109047</td>
+										<td>신촌지역 마포 도시정비형 재개발구역 4-15지구 PF사모펀드</td>
+										<td>대체투자심사부</td>
+										<td>약타면</td>
+										<td>2022-12-13</td>
+										<td>2022-12-28</td>
+									</tr>
+									<tr>
+										<td>2023-03-15</td>
+										<td>더센터시티제이차</td>
+										<td>박래영</td>
+										<td>110111-3532523</td>
+										<td>완전자본잠식</td>
+										<td>DRETP2104018</td>
+										<td>세운재정비촉진지구 3-6,7구역 생활형 숙박시설 개발사업</td>
+										<td>대체투자심사부</td>
+										<td>남서차</td>
+										<td>2022-12-13</td>
+										<td>2022-12-28</td>
+									</tr>
+									<tr>
+										<td>2023-03-15</td>
+										<td>나주혁신산단</td>
+										<td>김종순</td>
+										<td>110111-5139161</td>
+										<td>완전자본잠식</td>
+										<td>EAL120130801</td>
+										<td>나주 혁신산업단지 개발사업 SPC 출자</td>
+										<td>대체투자심사부</td>
+										<td>목단금</td>
+										<td>2022-12-13</td>
+										<td>2022-12-28</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- 상세보기 -->
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>◎ 입력사항</h5>
+							</div>
+							<div class="ibox-content text-right">
+								<div class="form-group form-inline row">
+									<input type="hidden" id="MO44010S_selectedStdDt">
+									<input type="hidden" id="MO44010S_riskInspctCcd">
+									<input type="hidden" id="MO44010S_lstCCaseCcd">
+									<input type="hidden" id="MO44010S_inspctDprtCcd">
+									<input type="hidden" id="MO44010S_ownPEno">
+									<div class="col-sm-3 input-group">
+										<label class="control-label px-2">Deal번호</label>
+										<input type="text" class="form-control" id="MO44010S_selectedIbDealNo" disabled/>
+									</div>
+									<div class="col-sm-7 input-group">
+										<label class="control-label px-2">안건명</label>
+										<input type="text" class="form-control" id="MO44010S_selectedIbDealNm" disabled/>
+									</div>
+									<div class="col-sm-2 input-group">
+										<label class="control-label px-2">조치심사역</label>
+										<input type="text" class="form-control" id="MO44010S_selectedEmpNm" disabled/>
+									</div>
+									<div class="col-sm-12 input-group py-1">
+										<label class="control-label px-2">조치사항</label>
+										<textarea class="form-control" id="MO44010S_exmntRsltCntnt" rows="10"></textarea>
+									</div>
+								</div>
+							</div>
+							<br>
+							<div class="col-sm-13 text-right">
+								<button class="btn btn-success btn-outline" type="button" id="assesmentRequest" onclick="saveDealExmnt();"><i class="fa fa-check"></i>&nbsp;입력</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- ibox -->
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

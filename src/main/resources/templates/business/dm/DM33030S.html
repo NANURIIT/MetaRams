@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/dm/DM33030S.js}"></script>
+	<script th:src="@{js/business/popup/AC01110P.js}"></script>
+	<script th:src="@{js/business/popup/AC01120P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/popup/AC01110P :: AC01110P"></th:block>
+	<th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 안건정보 조회 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2 text-right">
+						<div class="form-group form-inline row">
+							<div class="col-sm-12 form-group mb-1">
+							<!-- 1 -->
+								<label class="col-sm-1 control-label">기준년월</label>
+								<!-- <div class="col-sm-2 input-group date"> -->
+								<div class="col-sm-2 input-group month">
+									<input type="text" class="form-control" name="start" value="" id="datepicker">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</div>
+								<label class="col-sm-1 control-label">안건명</label>
+								<div class="col-sm-3 input-group">
+									<input type="text" class="form-control" id="ibDealNm" name="">
+								</div>
+								<label class="col-sm-1 control-label">자산명</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" id="DM33030S_bscAstsCntnt" name="">
+								</div>
+								<div class="col-sm text-right">
+									<button class="btn btn-primary" onclick=""><i class="fa fa-search"></i>&nbsp;조회</button>
+								</div> 
+							</div>
+							<!-- 2 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label">심사부서구분</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" name="" id="DM33030S_inspctDprtCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">주요투자대상</label>
+								<div class="col-sm-3 input-group">
+									<input type="text" class="form-control" id="DM33030S_invstTrgt" name="">
+								</div>
+								<label class="col-sm-1 control-label">부서</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="width: 20px;" id="DM33030S_dprt_dprtCd" name="acdnt_dprtCd">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callAC01110P('DM33030S_dprt')"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 80px;" id="DM33030S_dprt_dprtNm" name="acdnt_dprtNm" readonly>
+								</div>
+								<div class="col-sm text-right">
+									<button class="btn btn-default btn-sm" type="button" onclick="btnReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+								</div>
+							</div>
+							<!-- 3 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label">투자구분1</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control m-b" name="" id="DM33030S_invstGdsLdvdCd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">투자구분2</label>
+								<div class="col-sm-1 input-group">
+									<select class="form-control m-b" name="" id="DM33030S_invstGdsMdvdCd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">투자구분3</label>
+								<div class="col-sm-1 input-group">
+									<select class="form-control m-b" name="" id="DM33030S_invstGdsSdvdCd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">담당자</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="width: 20px;" id="DM33030S_emp_eno" name="">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callAC01120P('DM33030S_emp')"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 80px;" id="DM33030S_emp_empNm" name="" readonly>
+								</div>
+							</div>
+							<!-- 4 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label">금융상품분류</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control m-b" name="" id="DM33030S_fncGdsDvdCd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">투자국가</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_cntyCd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">통화</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_invstCrncyCd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">심사역</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="width: 20px;" id="DM33030S_ownP_eno" name="">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callAC01120P('DM33030S_ownP')"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 80px;" id="DM33030S_ownP_empNm" name="" readonly>
+								</div>
+							</div>
+							<!-- 5 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label mb-1">업무구분</label>
+								<div class="col-sm-2 input-group mb-1">
+									<select class="form-control" id="DM33030S_checkItemCd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">투자물건</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_invstThingCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">투자물건상세</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_invstThingDtlsCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">보증</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="width: 20px;" id="" name="">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 80px;" id="" name="" readonly>
+								</div>
+							</div>
+							<!-- 6 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label mb-1">담보종류</label>
+								<div class="col-sm-2 input-group mb-1">
+									<select class="form-control" id="DM33030S_mrtgKndCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">담보상세</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_mrtgDtlsCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">사업지역</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_bsnsAreaCd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">(보증)기초자산</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="width: 20px;" id="" name="">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 80px;" id="" name="" readonly>
+								</div>
+							</div>
+							<!-- 7 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label mb-1">WM주요전략</label>
+								<div class="col-sm-2 input-group mb-1">
+									<select class="form-control" id="DM33030S_wmKeyStrategy">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">편입자산</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_acqAsts">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">WM기초자산</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_undAsts">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">거래상대방</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="width: 20px;" id="" name="">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 80px;" id="" name="" readonly>
+								</div>
+							</div>
+							<!-- 8 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label mb-1">사업단계</label>
+								<div class="col-sm-2 input-group mb-1">
+									<select class="form-control" id="DM33030S_bsnsSttsCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">사후관리단계</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_fwpMngCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label mb-1">심사진행</label>
+								<div class="col-sm-1 input-group mb-1">
+									<select class="form-control" id="DM33030S_inspctPrgrsStCd">
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content">
+						<div class="text-right mb-2">
+							(단위: 백만원)&nbsp;
+							<button class="btn btn-warning">
+								<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+							</button>
+						</div>
+						<div class="tableFixHeader">
+							<table class="table result table-bordered" style="width: 180%">
+								<thead>
+									<tr>
+										<th class="fixed-side">Deal번호</th>
+										<th>신규/재부의</th>
+										<th>부수안건</th>
+										<th>안건명</th>
+										<th>Tranche</th>
+										<th>부서</th>
+										<th>담당직원</th>
+										<th>심사부서</th>
+										<th>심사역</th>
+										<th>심사진행상태</th>
+										<th>종료일자</th>
+										<th>통화코드</th>
+										<th>부의금액</th>
+										<th>승인금액</th>
+										<th>결의합의체</th>
+										<th>결의년도</th>
+										<th>회차</th>
+										<th>순번</th>
+										<th>셀다운</th>
+										<th>기타의무</th>
+										<th>투자구분1</th>
+										<th>투자구분2</th>
+										<th>투자구분3</th>
+										<th>금융상품분류</th>
+										<th>투자국가</th>
+										<th>업무구분</th>
+										<th>사업지역</th>
+										<th>주요투자물건</th>
+										<th>투자물건상세</th>
+										<th>사업단계</th>
+										<th>주요투자대상</th>
+										<th>WM주요전략</th>
+										<th>편입자산</th>
+										<th>WM기초자산</th>
+										<th>건전성</th>
+										<th>대손총합금</th>
+										<th>사후관리단계</th>
+										<th>연체발생일자</th>
+										<th>투자잔액(승인통과)</th>
+										<th>투자잔액()</th>
+										<th>총조달금액</th>
+										<th>최초약정정보</th>
+										<th>최초약정금액</th>
+										<th>약정일</th>
+										<th>상품1</th>
+										<th>상품2</th>
+										<th>상품3</th>
+										<th>기초자산</th>
+										<th>거래상대방</th>
+										<th>보증</th>
+										<th>담보유형</th>
+										<th>기표일자</th>
+										<th>만기일자</th>
+										<th>종목명</th>
+										<th>잔액</th>
+										<th>자산건전성</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>D</td>
+										<td>신규</td>
+										<td>안건7</td>
+										<td>J&J 블라인드 펀드 LP 출자</td>
+										<td>금융투자심사부</td>
+										<td>압둘라</td>
+										<td>예쑤님</td>
+										<td>KRW</td>
+										<td>650,000,000</td>
+										<td>700,000,000</td>
+										<td>리스크심사무협의회</td>
+										<td>2009-12-01</td>
+										<td>1</td>
+										<td>21</td>
+										<td>N</td>
+										<td>N</td>
+										<td>집합투자기구 출자(PEF/조합)</td>
+										<td>블라인드펀드 LP출자</td>
+										<td>PEF 등</td>
+										<!-- 상품3까지 -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						&nbsp;
+						<div class="col-sm text-right">
+							<button class="btn btn-default btn-xs" type="button">다음</button>
+						</div>
+					</div>
+				</div><!-- ibox -->
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 부동산금융 관리 -->
+    <div class="wrapper wrapper-content animated fadeIn">
+    	<div class="row">
+    		<div class="col-lg-12">
+    			<div class="ibox ">
+    				<!-- 조회조건영역 -->
+	    			<div class="ibox-title">
+    					<div class="form-group form-inline row">
+    						<div class="col-sm-2 input-group">
+                            	<label class="col-sm-4 control-label">기준년월</label>
+                            	<span class="col-sm-8 input-group date">
+                                   	<input type="text" class="form-control" name="start" value="" ><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                               	</span>
+                            </div>
+                            <div class="col-sm-3 input-group text-right">
+                            	<label class="col-sm-3 control-label">부서</label>
+	                            <div class="col-sm-9">
+	                            	<div class="input-group">
+	                            		<input type="text" class="form-control" style="width:20px;" id="acdnt_dprtCd" name="acdnt_dprtCd">
+	                            		<span class="input-group-append">
+	                                        <button type="button" class="btn btn-default" onclick="callAC01120P('acdnt')"><i class="fa fa-search"></i></button>
+	                                    </span>
+	                            		<input type="text" class="form-control" style="width:80px;" id="acdnt_dprtNm" name="acdnt_dprtNm" readonly>
+	                            	</div>
+	                            </div>
+                            </div>
+                            <div class="col-sm-2 input-group text-right">
+	                            <label class="control-label px-2">진행상태</label>
+	                           	<select class="form-control m-b" name="account">
+	                                   <option>전체</option>
+	                                   <option>미작성</option>
+	                                   <option>작성중</option>
+	                                   <option>승인취소</option>
+	                                   <option>승인요청</option>
+	                                   <option>승인</option>
+	                                   <option>검토완료</option>
+	                            </select>
+                            </div>
+	                        <div class="col-sm-1 text-right">		                       		
+	                       		<button class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;조회</button>
+	                       	</div>
+	                       	<!-- <div class="col-sm-4 text-right px-3">		                       		
+	                       		<button class="btn btn-info btn-outline" id="" onclick="" disabled><i class="fa fa-square-o"></i>&nbsp;승인요청</button>
+	                       		<button class="btn btn-success btn-outline" id="" onclick="" disabled><i class="fa fa-check-square-o"></i>&nbsp;승인</button>
+								<button class="btn btn-danger btn-outline" id="" onclick="" disabled><i class="fa fa-undo"></i>&nbsp;회수</button>
+								<button class="btn btn-success btn-outline" id="" onclick="" disabled><i class="fa fa-check"></i>&nbsp;검토완료</button>
+	                       	</div> -->
+                       	</div>
+	    			</div>
+	    			<!-- 조회결과 -->
+	    			<div class="ibox-content">
+	    				<div class="col-sm-12 text-right mb-1">		                       		
+                       		(단위: 백만원)&nbsp;&nbsp;<button class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i>&nbsp;Excel</button>
+                       	</div>
+	    				<div class="tableFixHeader" style="height: 70vh;">
+		    				<table class="table table-bordered" style="width: 100%">
+		    					<thead class="text-center">
+		    						<tr>
+		    							<th colspan="11">안건정보</th>
+		    						</tr>
+		    						<tr>
+		    							<th>Deal번호</th>
+		    							<th>신규/재부의</th>
+		    							<th>부수안건</th>
+		    							<th>안건명</th>
+		    							<th>자산(계약명)</th>
+		    							<th>금융상품분류</th>
+		    							<th>GSRS(내부등급)</th>
+		    							<th>부서명</th>
+		    							<th>담당자</th>
+		    							<th>삼사부서</th>
+		    							<th>심사역</th>
+		    						</tr>
+		    					</thead>
+		    					<tbody>
+		    						<tr>
+		    							<td class="text-center">EAT122110003</td>
+		    							<td class="text-center">신규</td>
+		    							<td class="text-center">안건1</td>
+		    							<td>Greyster 11호</td>
+		    							<td>KB해외투자일반사모부동산투자신탁제22호</td>
+		    							<td>우발채무(확약보증)</td>
+		    							<td class="text-center"> - </td>
+		    							<td>투자운용부</td>
+		    							<td class="text-center">손용돌</td>
+		    							<td class="text-center">대체투자심사부</td>
+		    							<td class="text-center">너김용</td>
+		    						</tr>
+		    					</tbody>
+		    				</table>
+						</div>
+						<div class="col-sm-12 text-right py-2">		                       		
+                       		<button class="btn btn-default btn-xs"><i class="fa fa-download"></i>&nbsp;양식다운로드</button>
+                       		<button class="btn btn-default btn-xs"><i class="fa fa-upload"></i>&nbsp;Excel업로드</button>
+                       	</div>
+	    			</div>
+    			</div><!-- ibox -->
+    		</div>
+    	</div><!-- row -->
+    </div>
+</th:block>
+
+</html>

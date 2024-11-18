@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS346BMapper">
+	
+	<select id="selectCntIBIMS346B" parameterType="string" resultType="int">
+	  SELECT COUNT(*) AS CNT          /* 수수료일련번호 */
+		FROM IBIMS346B				  /* 딜승인수수료스케쥴기본 */
+	   WHERE PRDT_CD = #{prdtCd}	  /* 종목코드 */
+	</select>
+	
+	<select id="selectIBIMS346BInfo" parameterType="string" resultType="com.nanuri.rams.business.common.dto.IBIMS346BDTO">
+	  SELECT 
+		     A.PRDT_CD				/* 상품코드 */
+		   , A.RGST_SN				/* 등록일련번호 */
+		   , A.APLY_STRT_DT			/* 적용시작일자 */
+		   , A.APLY_END_DT			/* 적용종료일자 */
+		   , A.STDR_INTRT_KND_CD	/* 기준금리종류코드 */
+		   , A.FXN_INTRT			/* 고정금리 */
+		   , A.ADD_INTRT			/* 가산금리 */
+		   , A.INTRT_CNGE_FRQC_CD	/* 금리변동주기코드 */
+		   , A.INTRT_CNGE_FRQC_MNUM	/* 금리변동주기개월수 */
+		   , A.APLY_DNUM_DCD		/* 적용일수구분코드 */
+		   , A.STDR_INTRT_APLY_DNUM	/* 기준금리적용일수 */
+		   , A.HND_DETL_DTM			/* 조작상세일시 */
+		   , A.HND_EMPNO			/* 조작사원번호 */
+		   , A.HND_TMNL_NO			/* 조작단말기번호 */
+		   , A.HND_TR_ID			/* 조작거래id */
+		   , A.GUID					/* guid */	  
+		FROM IBIMS346B A			  /* 딜승인수수료스케쥴기본 */
+	   WHERE A.PRDT_CD = #{prdtCd}	  /* 종목코드 */
+	     AND A.RGST_SN = (SELECT MAX(RGST_SN) FROM IBIMS346B V WHERE V.PRDT_CD = A.PRDT_CD)
+	</select>
+	
+	<select id="selectIBIMS346BListInfo" parameterType="string" resultType="com.nanuri.rams.business.common.dto.IBIMS346BDTO">
+	  SELECT 
+		     A.PRDT_CD				/* 상품코드 */
+		   , A.RGST_SN				/* 등록일련번호 */
+		   , A.APLY_STRT_DT			/* 적용시작일자 */
+		   , A.APLY_END_DT			/* 적용종료일자 */
+		   , A.STDR_INTRT_KND_CD	/* 기준금리종류코드 */
+		   , A.FXN_INTRT			/* 고정금리 */
+		   , A.ADD_INTRT			/* 가산금리 */
+		   , A.INTRT_CNGE_FRQC_CD	/* 금리변동주기코드 */
+		   , A.INTRT_CNGE_FRQC_MNUM	/* 금리변동주기개월수 */
+		   , A.APLY_DNUM_DCD		/* 적용일수구분코드 */
+		   , A.STDR_INTRT_APLY_DNUM	/* 기준금리적용일수 */
+		   , A.HND_DETL_DTM			/* 조작상세일시 */
+		   , A.HND_EMPNO			/* 조작사원번호 */
+		   , A.HND_TMNL_NO			/* 조작단말기번호 */
+		   , A.HND_TR_ID			/* 조작거래id */
+		   , A.GUID					/* guid */	  
+		FROM IBIMS346B A			  /* 딜승인수수료스케쥴기본 */
+	   WHERE A.PRDT_CD = #{prdtCd}	  /* 종목코드 */
+	   ORDER BY A.RGST_SN
+	</select>
+	
+		
+    <delete id="deleteIBIMS346B" parameterType="string">
+        DELETE
+          FROM IBIMS346B              /* 딜승인수수료스케쥴기본 */
+	   WHERE PRDT_CD = #{prdtCd}	  /* 종목코드 */
+    </delete>	
+		
+    <update id="updateIBIMS346B" parameterType="com.nanuri.rams.business.common.dto.IBIMS346BDTO">
+		UPDATE IBIMS346B	/* 딜승인금리기본 */
+		   SET APLY_STRT_DT = #{aplyStrtDt} /* 적용시작일자 */
+		     , APLY_END_DT = #{aplyEndDt} /* 적용종료일자 */
+		     , STDR_INTRT_KND_CD = #{stdrIntrtKndCd} /* 기준금리종류코드 */
+		     , FXN_INTRT = #{fxnIntrt} /* 고정금리 */
+		     , ADD_INTRT = #{addIntrt} /* 가산금리 */
+		     , INTRT_CNGE_FRQC_CD = #{intrtCngeFrqcCd} /* 금리변동주기코드 */
+		     , INTRT_CNGE_FRQC_MNUM = #{intrtCngeFrqcMnum} /* 금리변동주기개월수 */
+		     , APLY_DNUM_DCD = #{aplyDnumDcd} /* 적용일수구분코드 */
+		     , STDR_INTRT_APLY_DNUM = #{stdrIntrtAplyDnum} /* 기준금리적용일수 */
+		     , HND_DETL_DTM = SYSDATE /* 조작상세일시 */
+		 WHERE PRDT_CD = #{prdtCd} /* 상품코드 */
+		   AND RGST_SN = #{rgstSn} /* 등록일련번호 */	 
+    </update>
+    		
+	<insert id="insertIBIMS346B" parameterType="com.nanuri.rams.business.common.dto.IBIMS346BDTO">
+	INSERT INTO IBIMS346B       /* 딜승인금리기본 */
+		 (
+		   PRDT_CD				/* 상품코드 */
+		 , RGST_SN				/* 등록일련번호 */
+		 , APLY_STRT_DT			/* 적용시작일자 */
+		 , APLY_END_DT			/* 적용종료일자 */
+		 , STDR_INTRT_KND_CD	/* 기준금리종류코드 */
+		 , FXN_INTRT			/* 고정금리 */
+		 , ADD_INTRT			/* 가산금리 */
+		 , INTRT_CNGE_FRQC_CD	/* 금리변동주기코드 */
+		 , INTRT_CNGE_FRQC_MNUM	/* 금리변동주기개월수 */
+		 , APLY_DNUM_DCD		/* 적용일수구분코드 */
+		 , STDR_INTRT_APLY_DNUM	/* 기준금리적용일수 */
+		 , HND_DETL_DTM			/* 조작상세일시 */
+		 , HND_EMPNO			/* 조작사원번호 */
+		 , HND_TMNL_NO			/* 조작단말기번호 */
+		 , HND_TR_ID			/* 조작거래id */
+		 , GUID					/* guid */
+	     )
+	VALUES 
+	    (
+		  #{prdtCd}					/* 상품코드 */
+		, (
+		  SELECT NVL(MAX(A.RGST_SN),0)+1 AS RGST_SN	 /* 등록일련번호 */
+		    FROM IBIMS346B A 	/* 딜승인금리기본 */
+		   WHERE 1 = 1
+  		     AND A.PRDT_CD =  #{prdtCd}
+		  )                         /* 등록일련번호 */		  
+		, #{aplyStrtDt}				/* 적용시작일자 */
+		, #{aplyEndDt}				/* 적용종료일자 */
+		, #{stdrIntrtKndCd}			/* 기준금리종류코드 */
+		, #{fxnIntrt}				/* 고정금리 */
+		, #{addIntrt}				/* 가산금리 */
+		, #{intrtCngeFrqcCd}		/* 금리변동주기코드 */
+		, #{intrtCngeFrqcMnum}		/* 금리변동주기개월수 */
+		, #{aplyDnumDcd}			/* 적용일수구분코드 */
+		, #{stdrIntrtAplyDnum}		/* 기준금리적용일수 */
+		, SYSDATE    				/* 조작상세일시 */
+		, #{hndEmpno}				/* 조작사원번호 */
+		, #{hndTmnlNo}				/* 조작단말기번호 */
+		, #{hndTrId}				/* 조작거래id */
+		, #{guid}					/* guid */
+	)
+	</insert>
+
+	<!--조건변경 - 금리정보변경 -->
+	<insert id="insertIntrtInfoList" parameterType="java.util.List">
+    INSERT INTO IBIMS346B       	/* 딜승인금리기본 */
+    (
+        PRDT_CD						/* 상품코드 */
+        , RGST_SN					/* 등록일련번호 */
+        , APLY_STRT_DT				/* 적용시작일자 */
+        , APLY_END_DT				/* 적용종료일자 */
+        , STDR_INTRT_KND_CD			/* 기준금리종류코드 */
+        , FXN_INTRT					/* 고정금리 */
+        , ADD_INTRT					/* 가산금리 */
+        , INTRT_CNGE_FRQC_CD		/* 금리변동주기코드 */
+        , INTRT_CNGE_FRQC_MNUM		/* 금리변동주기개월수 */
+        , APLY_DNUM_DCD				/* 적용일수구분코드 */
+        , STDR_INTRT_APLY_DNUM		/* 기준금리적용일수 */
+        , HND_DETL_DTM				/* 조작상세일시 */
+        , HND_EMPNO					/* 조작사원번호 */
+        , HND_TMNL_NO				/* 조작단말기번호 */
+        , HND_TR_ID					/* 조작거래id */
+        , GUID						/* guid */
+    )
+    VALUES 
+    <foreach collection="list" item="item" separator=",">
+	(
+		#{item.prdtCd}				/* 상품코드 */
+		, (
+			SELECT NVL(MAX(A.RGST_SN),0)+1 AS RGST_SN	 /* 등록일련번호 */
+			FROM IBIMS346B A 	/* 딜승인금리기본 */
+			WHERE A.PRDT_CD =  #{item.prdtCd}
+		)                         		/* 등록일련번호 */		  
+		, #{item.aplyStrtDt}				/* 적용시작일자 */
+		, #{item.aplyEndDt}				/* 적용종료일자 */
+		, #{item.stdrIntrtKndCd}			/* 기준금리종류코드 */
+		, #{item.fxnIntrt}				/* 고정금리 */
+		, #{item.addIntrt}				/* 가산금리 */
+		, #{item.intrtCngeFrqcCd}		/* 금리변동주기코드 */
+		, #{item.intrtCngeFrqcMnum}		/* 금리변동주기개월수 */
+		, #{item.aplyDnumDcd}			/* 적용일수구분코드 */
+		, #{item.stdrIntrtAplyDnum}		/* 기준금리적용일수 */
+		, SYSDATE    					/* 조작상세일시 */
+		, #{item.hndEmpno}				/* 조작사원번호 */
+		, #{item.hndTmnlNo}				/* 조작단말기번호 */
+		, #{item.hndTrId}				/* 조작거래id */
+		, #{item.guid}					/* guid */
+	)
+    </foreach>
+</insert>
+	
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS510BMapper">
+	
+	<!-- 조건변경이력 조회 -->
+	<select id="getCchInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS510BVO">
+        SELECT DEAL_NO                                 /* 딜번호 */
+             , SN                                      /* 일련번호 */
+             , APVL_DT                                 /* 승인일자 */
+             , CROT_DT                                 /* 시행일자 */
+             , CND_CHNG_MAIN_CNTS                      /* 조건변경주요내용 */
+             , PRCSR_EMPNO                             /* 처리자사원번호 */
+             , (
+             	 SELECT EMP_NM
+             	   FROM IBIMS003B
+             	  WHERE EMPNO = PRCSR_EMPNO 
+               ) AS PRCSR_EMPNM                        /* 처리자사원명 */
+             , PRCSR_TEL_NO							               /* 처리자개인번호 */
+             , RGST_DT                                 /* 등록일자 */
+             , CND_CHNG_DCM_NO_CNTS                    /* 조건변경문서번호내용 */
+             , DEL_YN                                  /* 삭제여부 */
+             , HND_DETL_DTM                            /* 조작상세일시 */
+             , HND_EMPNO                               /* 조작사원번호 */
+             , HND_TMNL_NO                             /* 조작단말기번호 */
+             , HND_TR_ID                               /* 조작거래id */
+             , GUID                                    /* guid */
+          FROM IBIMS510B       
+         WHERE 1=1
+           AND DEAL_NO = #{dealNo}                                 
+	</select>
+	
+	<!-- 조건변경이력 저장 -->
+	<insert id="saveCchInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS510BVO">
+		INSERT INTO IBIMS510B 
+               (
+                DEAL_NO                                 /* 딜번호 */
+              , SN                                      /* 일련번호 */
+              , APVL_DT                                 /* 승인일자 */
+              , CROT_DT                                 /* 시행일자 */
+              , CND_CHNG_MAIN_CNTS                      /* 조건변경주요내용 */
+              , PRCSR_EMPNO                             /* 처리자사원번호 */
+              , PRCSR_TEL_NO							              /* 처리자개인번호 */
+              , RGST_DT                                 /* 등록일자 */
+              , CND_CHNG_DCM_NO_CNTS                    /* 조건변경문서번호내용 */
+              , DEL_YN                                  /* 삭제여부 */
+              , HND_DETL_DTM                            /* 조작상세일시 */
+              , HND_EMPNO                               /* 조작사원번호 */
+              , HND_TMNL_NO                             /* 조작단말기번호 */
+              , HND_TR_ID                               /* 조작거래id */
+              , GUID                                    /* guid */
+               )
+        VALUES 
+        <foreach collection="list" item="item" index="index" separator=",">
+        	   (
+              #{item.dealNo}                           /* 딜번호 */
+            , #{index}+1                               /* 일련번호 */
+            , #{item.apvlDt}                           /* 승인일자 */
+            , #{item.crotDt}                           /* 시행일자 */
+            , #{item.cndChngMainCnts}                  /* 조건변경주요내용 */
+            , #{item.prcsrEmpno}                       /* 처리자사원번호 */
+            , #{item.prcsrTelNo}                       /* 처리자개인번호 */
+            , #{item.rgstDt}                           /* 등록일자 */
+            , #{item.cndChngDcmNoCnts}                 /* 조건변경문서번호내용 */
+            , #{item.delYn}                            /* 삭제여부 */
+            , SYSDATE                             		 /* 조작상세일시 */
+            , #{item.hndEmpno}                         /* 조작사원번호 */
+            , #{item.hndTmnlNo}                        /* 조작단말기번호 */
+            , #{item.hndTrId}                          /* 조작거래id */
+            , #{item.guid}                             /* guid */
+               )
+        </foreach>
+	</insert>
+	
+	<!-- 조건변경이력 삭제 -->
+	<delete id="delCchInfo" parameterType="string">
+		DELETE 
+		  FROM IBIMS510B
+		 WHERE DEAL_NO = #{dealNo} 
+	</delete>
+	
+</mapper>

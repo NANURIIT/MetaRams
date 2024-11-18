@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS607BMapper">
+	
+	<!-- 재산조사 조회 -->
+	<select id="getEsttDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS607BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS607BVO">
+		SELECT A.DEAL_NO												AS DEAL_NO									/* IBDEAL명*/
+ 	 		   , A.JDGM_DCD 	 										AS JDGM_DCD 								/* 리스크심사구분코드*/
+ 			   , A.MTR_DCD 						  					AS MTR_DCD 									/* 부수안건구분코드*/
+ 			   , A.SQ								  						AS SQ 											/* 일련번호*/
+ 	 		   , A.ESTT_EXMNTN_TRGT_CCD						AS ESTT_EXMNTN_TRGT_CCD 		/* 재산조사대상구분코드*/
+ 	 		   , B.CD_VL_NM						  					AS ESTT_EXMNTN_TRGT_CCD_NM	/* 재산조사대상구분코드명*/
+ 	 		   , A.ESTT_KND_CCD										AS ESTT_KND_CCD 						/* 재산종류구분코드*/
+ 	 		   , C.CD_VL_NM					   						AS ESTT_KND_CCD_NM					/* 재산종류구분코드명*/
+ 			   , A.ESTT_EXMNTN_CNTNT							AS ESTT_EXMNTN_CNTNT 				/* 재산조사내용*/
+ 	 		   , A.REAL_PRFT_F										AS REAL_PRFT_F							/* 실제이익여부*/
+ 	 		   , A.RGST_DT	 											AS RGST_DT									/* 등록일자*/
+ 	 		   , A.FST_RGST_P_ENO					  			AS FST_RGST_P_ENO 					/* 최초등록자사번*/
+ 			   , D.EMP_NM	         				  			AS FST_RGST_P_ENO_NM				/* 최초등록자이름*/
+      FROM IBIMS607B A	/* 부실자산재산조사정보*/
+ LEFT JOIN IBIMS002B B	/* 공통코드정보*/
+				ON B.CMNS_CD_GRP   	 				  = 'P010'			/* 공통코드그룹*/
+   		 AND A.ESTT_EXMNTN_TRGT_CCD		  = B.CD_VL_ID	/* 재산조사대상구분코드명*/
+ LEFT JOIN IBIMS002B C	/* 공통코드정보*/
+				ON C.CMNS_CD_GRP   					  = 'E029'						
+  	   AND A.ESTT_KND_CCD   				  = C.CD_VL_ID	/* 재산종류구분코드명*/
+ LEFT JOIN IBIMS003B D	/* 사원목록*/ 
+			 	ON A.FST_RGST_P_ENO  				  = D.EMPNO 		/* 최초등록자이름*/
+ 		 WHERE A.DEAL_NO 					  	  	= #{dealNo	}	/* IBDEAL명*/
+  	   AND A.JDGM_DCD  					  	  = #{jdgmDcd	}	/* 리스크심사구분코드*/
+   	   AND A.MTR_DCD   					  	  = #{mtrDcd	}	/* 부수안건구분코드*/
+		 ORDER BY SQ DESC
+	</select>
+
+	<!-- 재산조사 등록 -->
+	<insert id="registEsttInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS607BDTO">
+		INSERT INTO IBIMS607B						/* 부실자산재산조사정보 	*/
+		   	   (
+		      	  DEAL_NO								/* IBDEAL번호 		*/
+			    	, JDGM_DCD							/* 리스크심사구분코드 	*/
+			    	, MTR_DCD								/* 부수안건구분코드 	*/
+		      	, SQ										/* 일련번호 			*/
+		      	, ESTT_EXMNTN_TRGT_CCD	/* 재산조사대상구분코드 	*/
+		      	, ESTT_KND_CCD					/* 재산종류구분코드 	*/
+		      	, ESTT_EXMNTN_CNTNT			/* 재산조사내용 		*/
+		      	, REAL_PRFT_F						/* 실제이익여부 		*/
+		      	, RGST_DT								/* 등록일자			*/
+						, RGST_TM								/* 등록시간 			*/
+		      	, FST_RGST_P_ENO				/* 최초등록자사번 		*/
+			    	, HNDL_DPRT_CD					/* 처리부점코드 		*/
+		   	  	, HNDL_P_ENO						/* 처리자사번 		*/
+		       )
+		VALUES (
+					   #{dealNo				}									/* IBDEAL번호 		*/
+					 , #{jdgmDcd				}								/* 리스크심사구분코드 	*/
+					 , #{mtrDcd				}									/* 부수안건구분코드 	*/
+					 , #{sq					}										/* 일련번호 			*/
+					 , #{esttExmntnTrgtCcd	}						/* 재산조사대상구분코드 	*/
+					 , #{esttKndCcd			}								/* 재산종류구분코드 	*/
+					 , #{esttExmntnCntnt		}						/* 재산조사내용	 	*/
+					 , #{realPrftF}											/* 실제이익여부 		*/
+					 , TO_CHAR(SYSDATE, 'YYYYMMDD')     /* 등록일자 */
+			  	 , TO_CHAR(SYSDATE, 'HH24MISS')			/* 등록시간 */
+					 , #{hndlPEno		 	}									/* 최초등록자사번 		*/
+					 , #{hndlDprtCd      	} 						/* 처리부점코드 		*/
+					 , #{hndlPEno		 	} 								/* 처리자사번 		*/
+			  	 )
+	</insert>
+	
+	<!-- 재산조사 수정 -->
+	<update id="updateEsttInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS607BDTO">
+		UPDATE IBIMS607B										/* 부실자산재산조사정보  */
+		   SET ESTT_EXMNTN_TRGT_CCD		= #{esttExmntnTrgtCcd}	/* 재산조사대상구분코드  */
+			   , ESTT_KND_CCD						= #{esttKndCcd}					/* 재산종류구분코드		*/
+			   , ESTT_EXMNTN_CNTNT			= #{esttExmntnCntnt}		/* 재산조사내용 		*/
+			   , REAL_PRFT_F						= #{realPrftF}					/* 실제이익여부	    */
+			   , HNDL_DPRT_CD						= #{hndlDprtCd}					/* 처리부점코드 		*/
+			   , HNDL_P_ENO				= #{hndlPEno}			/* 처리자사번 		*/
+		 WHERE DEAL_NO 					= #{dealNo	}			/* IBDEAL번호 		*/
+		   AND JDGM_DCD					= #{jdgmDcd	}			/* 리스크심사구분코드	*/
+		   AND MTR_DCD					= #{mtrDcd  }			/* 부수안건구분코드 	*/
+		   AND SQ 							= #{sq		}				/* 일련번호 			*/
+	</update>
+	
+	<!-- 재산조사 삭제 -->
+	<delete id="deleteEsttInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS607BDTO">
+		DELETE FROM IBIMS607B									/* 부실자산재산조사정보 */
+		 WHERE DEAL_NO		= #{dealNo	}				/* IBDEAL번호 */
+		   AND JDGM_DCD		= #{jdgmDcd }				/* 리스크심사구분코드 */
+		   AND MTR_DCD		= #{mtrDcd  }				/* 부수안건구분코드 */
+		   AND SQ					= #{sq		}					/* 일련번호 */
+	</delete>
+	
+	<!-- 재산조사 일련번호 조회 -->
+	<select id="getEsttSq" parameterType="com.nanuri.rams.business.common.dto.IBIMS607BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS607BDTO">
+		SELECT MAX(SQ)+1 AS SQ								/* 일련번호 */
+  	  FROM IBIMS607B											/* 부실자산사후관리이력정보 */
+ 		 WHERE DEAL_NO		= #{dealNo	}				/* IBDEAL번호 */
+   	   AND JDGM_DCD		= #{jdgmDcd	}				/* 리스크심사구분코드 */
+   	   AND MTR_DCD		= #{mtrDcd	}				/* 부수안건구분코드 */
+	</select>
+	
+</mapper>

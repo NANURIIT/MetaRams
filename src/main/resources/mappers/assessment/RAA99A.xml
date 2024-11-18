@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA99AMapper">
+	
+	<!-- 로그인 -->
+	<select id="findByEno" parameterType="String" resultType="com.nanuri.rams.business.common.dto.RAA99ADTO">
+		SELECT A.ENO							<!-- 사원번호 -->
+			 , A.PWD							<!-- 비밀번호 -->
+		     , A.EMP_NM							<!-- 직원명 -->
+		     , A.DPRT_CD						<!-- 부점코드 -->
+		     , A.DPRT_NM						<!-- 부점명 -->
+		     , A.HDQT_CD						<!-- 본부코드 -->
+		     , A.HDQT_NM						<!-- 본부명 -->
+		     , B.RGHT_CD						<!-- 권한코드 -->
+		     , A.PSTN							<!-- 직책 -->
+		  FROM RAA99A A	
+		 INNER JOIN RAA92B B
+		    ON A.ENO = B.ENO
+		 WHERE A.ENO = #{eno}						
+		   
+	</select>
+	
+	<!-- 직원검색 -->
+	<select id="findEmpList" parameterType="com.nanuri.rams.business.common.dto.RAA99ADTO" resultType="java.util.HashMap">
+		SELECT ENO										<!-- 사원번호 -->
+		     , EMP_NM									<!-- 직원명 -->
+		     , IFNULL(DPRT_CD, '')	AS DPRT_CD			<!-- 부점코드 -->
+		     , IFNULL(DPRT_NM, '')	AS DPRT_NM			<!-- 부점명 -->
+		     , IFNULL(HDQT_CD, '')	AS HDQT_CD			<!-- 본부코드 -->
+		     , IFNULL(HDQT_NM, '')	AS HDQT_NM			<!-- 본부명 -->
+		  FROM RAA99A
+		 WHERE 1=1
+		 <if test="eno != ''">
+		   AND ENO LIKE CONCAT('%', #{eno}, '%')
+		 </if>
+		 <if test="empNm != ''">
+		   AND EMP_NM LIKE CONCAT('%', #{empNm}, '%')
+		 </if>
+		 <if test="dprtCd != ''">
+		   AND DPRT_CD LIKE CONCAT('%', #{dprtCd}, '%')
+		 </if>
+		 <if test="dprtNm != ''">
+		   AND DPRT_NM LIKE CONCAT('%', #{dprtNm}, '%')
+		 </if>
+	</select>
+	
+	
+	<insert id="insertLoginUser" parameterType="com.nanuri.rams.business.common.dto.RAA99ADTO">
+        INSERT INTO RAA99A (
+            ENO,		/* 사원번호 */
+            PWD,		/* 비밀번호 */
+            EMP_NM,		/* 직원명 */
+            PSTN,		/* 직책 */
+            DPRT_CD,	/* 부점코드 */
+            DPRT_NM,	/* 부점명 */
+            HDQT_CD,	/* 본부코드 */
+            HDQT_NM,	/* 본부명 */
+			RGST_DT,	/* 등록일자 */
+			USR_C		/* 사용자구분 */
+        ) VALUES (
+            #{eno},
+            #{pwd},
+            #{empNm},
+            "IT10",
+            "MG1",
+            "관리부",
+            "NA1",
+            "나누리",
+			#{rgstDt},
+			#{usrC}
+        )
+    </insert>
+    
+    <!-- 중복체크 -->
+	<select id="checkUserEno" parameterType="String" resultType="int">
+		SELECT COUNT(A.ENO) AS CNT
+		  FROM RAA99A A
+		 WHERE 1 = 1 
+		   AND A.ENO = #{eno}
+	</select>
+
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS108BMapper">
+
+	  <!-- 딜심사담보내역조회 -->
+    <select id="getMrtgInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS108BDTO" 
+    						 resultType="com.nanuri.rams.business.common.vo.IBIMS108BVO">
+        SELECT s108b.DEAL_NO                                    		/* 딜번호 */
+             , s108b.MTR_DCD                                    		/* 안건구분코드 */
+             , s108b.JDGM_DCD                                   		/* 심사구분코드 */
+             , s108b.SN                                         		/* 일련번호 */
+             , s108b.MRTG_KND_DCD                               		/* 담보종류구분코드 */
+             , s002b.CD_VL_NM				AS MRTG_KND_DCD_NM			        /* 담보종류구분코드명 */ 
+             , s108b.MRTG_RSN_CNTS                              		/* 담보사유내용 */
+             , s108b.MRTG_EVL_AMT                               		/* 담보평가금액 */
+             , s108b.RGT_RNK_DCD                                		/* 권리순위구분코드 */
+             , s004b.CD_VL_NM				AS RGT_RNK_DCD_NM			          /* 권리순위구분코드명 */
+             , s108b.MRTG_DTLS_DCD                             			/* 담보상세구분코드 */
+             , s003b.CD_VL_NM				AS MRTG_DTLS_DCD_NM			        /* 담보상세구분코드명 */
+             , s108b.MRTG_ACQST_STM_DCD                         		/* 담보취득방식구분코드 */
+             , s005b.CD_VL_NM				AS MRTG_ACQST_STM_DCD_NM	      /* 담보취득방식구분코드명 */
+             , s108b.MRTG_ACQST_DTLS_DCD                        		/* 담보취득상세구분코드 */
+             , s006b.CD_VL_NM				AS MRTG_ACQST_DTLS_DCD_NM	      /* 담보취득상세구분코드명 */
+             , s108b.INVST_CRNCY_CD                             		/* 투자통화코드 */
+             , s007b.CD_VL_NM				AS INVST_CRNCY_CD_NM	        	/* 투자통화코드명 */
+             , s108b.CRNCY_AMT                                  		/* 통화금액 */
+             , s108b.APLC_EXCH_R                                		/* 적용환율 */
+             , s108b.HND_DETL_DTM                               		/* 조작상세일시 */
+             , s108b.HND_EMPNO                                  		/* 조작사원번호 */
+             , s108b.HND_TMNL_NO                                		/* 조작단말기번호 */
+             , s108b.HND_TR_ID                                  		/* 조작거래id */
+             , s108b.GUID                                       		/* guid */
+          FROM IBIMS108B s108b
+          LEFT JOIN IBIMS002B s002b
+            ON s002b.CMNS_CD_GRP								= 'M007'			      /* 담보종류구분코드 */
+           AND s108b.MRTG_KND_DCD								= s002b.CD_VL_ID
+          LEFT JOIN IBIMS002B s003b
+            ON s003b.CMNS_CD_GRP								= 'M005'			      /* 담보상세구분코드 */
+           AND s108b.MRTG_DTLS_DCD							= s003b.CD_VL_ID
+          LEFT JOIN IBIMS002B s004b
+            ON s004b.CMNS_CD_GRP								= 'M005'			      /* 권리순위구분코드 */
+           AND s108b.MRTG_DTLS_DCD							= s004b.CD_VL_ID
+          LEFT JOIN IBIMS002B s005b
+            ON s005b.CMNS_CD_GRP								= 'M003'			      /* 담보취득방식구분코드 */
+           AND s108b.MRTG_ACQST_STM_DCD					= s005b.CD_VL_ID
+          LEFT JOIN IBIMS002B s006b
+            ON s006b.CMNS_CD_GRP								= 'M002'			      /* 담보취득상세구분코드 */
+           AND s108b.MRTG_ACQST_DTLS_DCD				= s006b.CD_VL_ID
+          LEFT JOIN IBIMS002B s007b
+            ON s007b.CMNS_CD_GRP								= 'I027'			      /* 투자통화코드 */
+           AND s108b.INVST_CRNCY_CD							= s007b.CD_VL_ID
+         WHERE 1=1
+           AND s108b.DEAL_NO                    = #{dealNo}
+           AND s108b.MTR_DCD                    = #{mtrDcd}
+           AND s108b.JDGM_DCD                   = #{jdgmDcd}
+         ORDER BY SN
+    </select>
+    
+    <!-- 딜심사담보내역삭제 -->
+    <delete id="deleteMrtgInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS108BDTO">
+        DELETE 
+          FROM IBIMS108B
+         WHERE 1=1
+           AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
+           AND MTR_DCD                                           = #{mtrDcd}                                          /* 안건구분코드 */
+           AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+           <if test="sn != null and sn > 0">
+           AND SN                                                = #{sn}                                              /* 일련번호 */
+           </if>  
+    </delete>
+
+	  <!-- 딜심사담보내역변경  -->
+    <update id="updateMrtgInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS108BDTO">
+       UPDATE IBIMS108B
+          SET MRTG_KND_DCD                                      = #{mrtgKndDcd}                                      /* 담보종류구분코드 */
+            , MRTG_RSN_CNTS                                     = #{mrtgRsnCnts}                                     /* 담보사유내용 */
+            , MRTG_EVL_AMT                                      = #{mrtgEvlAmt}                                      /* 담보평가금액 */
+            , RGT_RNK_DCD                                       = #{rgtRnkDcd}                                       /* 권리순위구분코드 */
+            , MRTG_DTLS_DCD                                     = #{mrtgDtlsDcd}                                     /* 담보상세구분코드 */
+            , MRTG_ACQST_STM_DCD                                = #{mrtgAcqstStmDcd}                                 /* 담보취득방식구분코드 */
+            , MRTG_ACQST_DTLS_DCD                               = #{mrtgAcqstDtlsDcd}                                /* 담보취득상세구분코드 */
+            , INVST_CRNCY_CD                                    = #{invstCrncyCd}                                    /* 투자통화코드 */
+            , CRNCY_AMT                                         = #{crncyAmt}                                        /* 통화금액 */
+            , APLC_EXCH_R                                       = #{aplcExchR}                                       /* 적용환율 */
+            , HND_DETL_DTM                                      = SYSDATE                                            /* 조작상세일시 */
+            , HND_EMPNO                                         = #{hndEmpno}                                        /* 조작사원번호 */
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       /* 조작단말기번호 */
+            , HND_TR_ID                                         = #{hndTrId}                                         /* 조작거래id */
+            , GUID                                              = #{guid}                                            /* guid */
+         WHERE 1=1
+          AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
+          AND MTR_DCD                                           = #{mtrDcd}                                          /* 안건구분코드 */
+          AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+          AND SN                                                = #{sn}                                              /* 일련번호 */
+    </update>
+    
+    <!-- 딜심사담보내역등록 -->
+    <insert id="registMrtgInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS108BDTO">
+        INSERT INTO IBIMS108B 
+               (
+                  DEAL_NO                                           /* 딜번호 */
+                , MTR_DCD                                           /* 안건구분코드 */
+                , JDGM_DCD                                          /* 심사구분코드 */
+                , SN                                                /* 일련번호 */
+                , MRTG_KND_DCD                                      /* 담보종류구분코드 */
+                , MRTG_RSN_CNTS                                     /* 담보사유내용 */
+                , MRTG_EVL_AMT                                      /* 담보평가금액 */
+                , RGT_RNK_DCD                                       /* 권리순위구분코드 */
+                , MRTG_DTLS_DCD                                     /* 담보상세구분코드 */
+                , MRTG_ACQST_STM_DCD                                /* 담보취득방식구분코드 */
+                , MRTG_ACQST_DTLS_DCD                               /* 담보취득상세구분코드 */
+                , INVST_CRNCY_CD                                    /* 투자통화코드 */
+                , CRNCY_AMT                                         /* 통화금액 */
+                , APLC_EXCH_R                                       /* 적용환율 */
+                , HND_DETL_DTM                                      /* 조작상세일시 */
+                , HND_EMPNO                                         /* 조작사원번호 */
+                , HND_TMNL_NO                                       /* 조작단말기번호 */
+                , HND_TR_ID                                         /* 조작거래id */
+                , GUID                                              /* guid */
+               )
+        VALUES (
+                 #{dealNo}                                          /* 딜번호 */
+               , #{mtrDcd}                                          /* 안건구분코드 */
+               , #{jdgmDcd}                                         /* 심사구분코드 */
+               , (SELECT NVL(MAX(A.SN),0) + 1 FROM IBIMS108B A)     /* 일련번호 */
+               , #{mrtgKndDcd}                                      /* 담보종류구분코드 */
+               , #{mrtgRsnCnts}                                     /* 담보사유내용 */
+               , #{mrtgEvlAmt}                                      /* 담보평가금액 */
+               , #{rgtRnkDcd}                                       /* 권리순위구분코드 */
+               , #{mrtgDtlsDcd}                                     /* 담보상세구분코드 */
+               , #{mrtgAcqstStmDcd}                                 /* 담보취득방식구분코드 */
+               , #{mrtgAcqstDtlsDcd}                                /* 담보취득상세구분코드 */
+               , #{invstCrncyCd}                                    /* 투자통화코드 */
+               , #{crncyAmt}                                        /* 통화금액 */
+               , #{aplcExchR}                                       /* 적용환율 */
+               , SYSDATE                                            /* 조작상세일시 */
+               , #{hndEmpno}                                        /* 조작사원번호 */
+               , #{hndTmnlNo}                                       /* 조작단말기번호 */
+               , #{hndTrId}                                         /* 조작거래id */
+               , #{guid}                                            /* guid */
+               )
+    </insert>
+
+</mapper>

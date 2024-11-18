@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/newFile.js}"></script>
+	<script th:src="@{js/business/tb/TB03020S.js}"></script>
+	<!-- <script th:src="@{js/business/popup/AS03210P.js}"></script> -->
+	<!-- <script th:src="@{js/business/popup/AC01120P.js}"></script> -->
+	<script th:src="@{js/business/popup/AC01140P.js}"></script>
+	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+	<script th:src="@{js/business/tb/TB03023P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<!-- <th:block th:replace="business/popup/AS03210P :: AS03210P"></th:block> -->
+	<!-- <th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block> -->
+	<th:block th:replace="business/popup/AC01140P :: AC01140P"></th:block>
+	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+
+				<!-- 필터 디자인 -->
+				
+                <!-- ibox -->
+				<div class="ibox ">
+					<div class="ibox-content">
+						<div class="ibox mb-0">
+							<!-- row1 -->
+							<div class="form-group form-inline row mb-0">
+								<div class="col-sm-12 input-group text-right">
+									<label class="col-sm-1 control-label">타이틀</label>
+									<div class="col-sm-2">
+										<div class="input-group">
+											<input type="text" class="form-control" id="selectedMngDealNo"  placeholder="">
+											<input type="hidden" class="form-control" id="selectedDealSq" disabled>
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick="callTB03021P('TB03020S');"><i class="fa fa-search"></i></button>
+											</span>
+										</div>
+									</div>
+									<label class="col-sm-1 control-label">일련번호</label>
+									<div class="col-sm-2">
+										<div class="input-group">
+											<select class="form-control" id="" disabled="true">
+											</select>
+										</div>
+									</div>
+
+									<!-- 상단 버튼 스타일 -->
+									<div class="col-sm-6 text-right">
+										<button class="btn btn-primary" onclick="getBscDealDetail();">
+											<i class="fa fa-search"></i>&nbsp;조회</button>
+										<button class="btn btn-default" type="button" onclick="resetSrchCondition();">
+											<i class="fa fa-undo"></i>&nbsp;초기화
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of ibox -->
+
+				<!-- 조회내용 -->
+				<!-- ibox -->
+				<div class="ibox ">
+					<div class="ibox-content">
+
+						<div class="row">
+						
+                            <!-- 항목 1개 일 때 -->
+                            <div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 타이틀</h5>
+									</div>
+									<div class="ibox-content">
+										
+									</div>
+								</div>
+							</div>
+
+						</div>
+						
+                        <div class="row">
+
+							<div class="col-lg-3">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 타이틀</h5>
+									</div>
+									<div class="ibox-content">
+									</div>
+								</div>
+							</div>
+
+                            <div class="col-lg-9">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 타이틀</h5>
+									</div>
+									<div class="ibox-content">
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+                        <div class="row">
+                            
+							<div class="col-lg-6">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 타이틀</h5>
+									</div>
+									<div class="ibox-content">
+									</div>
+								</div>
+							</div>
+
+                            <div class="col-lg-6">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 타이틀</h5>
+									</div>
+									<div class="ibox-content">
+									</div>
+								</div>
+							</div>
+
+						</div>
+                        
+
+
+                        <div class="row">
+						
+                            <div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 타이틀</h5>
+									</div>
+									<div class="ibox-content">
+										<!-- row1 -->
+                                        <div class="form-group form-inline row mb-1">
+                                            <div class="col-sm-12 input-group text-right">
+                                                <label class="col-sm-1 control-label">Deal번호</label>
+                                                <div class="col-sm-2">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="">
+                                                        <input type="hidden" class="form-control" id="" disabled>
+                                                        <span class="input-group-append">
+                                                            <button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <label class="col-sm-1 control-label">일련번호</label>
+                                                <div class="col-sm-2">
+                                                	<div class="input-group date">
+														<input type="text" class="form-control" id="" placeholder="yyyy-mm-dd" oninput=""><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+                                                </div>    
+                                                <label class="col-sm-1 control-label">일련번호</label>
+                                                <div class="col-sm-2">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                </div>
+                                                <label class="col-sm-1 control-label">일련번호</label>
+                                                <div class="col-sm-2">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control text-right" id="" onchange="">&nbsp;단위영역
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>   
+                                        
+                                        <div class="form-group form-inline row mb-1"> 
+                                            <div class="col-sm-12 input-group text-right">
+                                                <label class="col-sm-1 control-label">타이틀</label>
+                                                <div class="col-sm-2">
+                                                    <div class="input-group">
+                                                        <select class="form-control" id=""></select>
+                                                    </div>
+												</div>
+
+                                                <label class="col-sm-1 control-label">타이틀</label>
+                                                <div class="col-sm-2">
+                                                    <div class="input-group">
+                                                        <select class="form-control" id="" disabled="true"></select>
+                                                    </div>
+												</div>
+
+
+                                                <label class="col-sm-1 control-label">타이틀</label>
+                                                <div class="col-sm-5 input-group">
+													<input type="hidden" id="">
+													<input type="text" class="form-control" id="">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" id="" style="width:210px;" readonly="">
+												</div>
+                                            </div>
+                                        </div>   
+										<!-- row2 마지막 row에서 해당 div class mb-1 제거-->
+                                        <div class="form-group form-inline row "> 
+                                            <div class="col-sm-12 input-group text-right">
+                                                <label class="col-sm-1 control-label">타이틀</label>
+                                                <div class="col-sm-5 input-group input-h">
+                                                    <select class="form-control col-sm-4" id=""></select>
+                                                    <input type="text" class="form-control" id="" oninput="" onchange="">
+                                                </div>
+
+                                                <label class="col-sm-1 control-label">Deal번호</label>
+                                                <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="" disabled>
+                                                        <input type="hidden" class="form-control" id="" disabled="">
+                                                        <span class="input-group-append">
+                                                            <button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>  
+                                        <div class="form-group form-inline row "> 
+                                            <div class="col-sm-12 input-group text-right">
+                                                <label class="col-sm-1 control-label">타이틀</label>
+                                                <div class="col-sm-2 input-group input-h">
+													<div class="col-sm-3 input-group">
+														<input type="radio" value="Y" id="" name="" checked="">
+														<label class="col-sm-5">Y</label>
+													</div>
+													<div class="col-sm-3 input-group">
+														<input type="radio" value="N" id="" name="">
+														<label class="col-sm-5">N</label>
+													</div>
+												</div>
+                                                <label class="col-sm-1 control-label">타이틀</label>
+                                                <div class="col-sm-2 input-group input-h">
+													<div class="col-sm-3 input-group">
+														<input type="radio" value="Y" id="" name="" checked="">
+														<label class="col-sm-5">Y</label>
+													</div>
+													<div class="col-sm-3 input-group">
+														<input type="radio" value="N" id="" name="">
+														<label class="col-sm-5">N</label>
+													</div>
+												</div>
+                                            </div>
+                                        </div>  
+
+                                    </div>
+								</div>
+							</div>
+
+						</div>
+						
+						<div class="row">
+						
+                            <div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 타이틀</h5>
+										<div class="ibox-tools">		                       		
+											<button class="btn btn-success btn-xs" onclick="" disabled=""><i class="fa fa-check"></i>&nbsp;확정</button>
+											<button class="btn btn-danger btn-xs" onclick="" disabled=""><i class="fa fa-undo"></i>&nbsp;확정취소</button>
+											<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-plus"></i>&nbsp;행추가</button>
+											<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+											<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-search-plus"></i>&nbsp;안건추가</button>
+											<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-search-minus"></i>&nbsp;삭제</button>											
+											<button class="btn btn-success btn-xs" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;저장</button>
+											<button class="btn btn-info btn-xs" onclick=""><i class="fa fa-comment"></i>&nbsp;확정쪽지</button>
+											<button class="btn btn-warning btn-xs" onclick=""><i class="fa fa-comment-o"></i>&nbsp;취소쪽지</button>
+											<button class="btn btn-info btn-xs" type="button" onclick=""><i class="fa fa-user"></i>&nbsp;사용자추가</button>
+											<button class="btn btn-warning btn-xs" onclick=""><i class="fa fa-file-excel-o"></i>&nbsp;Excel</button>
+											<button class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i>&nbsp;인쇄</button>
+											<div class="btn-group ml-3" role="group" aria-label="">
+												<button class="btn btn-default btn-xs toggleBtn1" onclick="" id="toggleBtn1">표준코드 존재</button>
+												<button class="btn btn-info btn-xs toggleBtn2" onclick="" id="toggleBtn2">표준코드 미존재</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- end of ibox -->
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS509BMapper">
+	
+	<!-- 채권보전주요약정 조회 -->
+	<select id="getBondProtInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS509BVO">
+		SELECT DEAL_NO                                 /* 딜번호 */
+         , SN                                      /* 일련번호 */
+         , BOND_PROT_CCD                           /* 채권보전구분 */
+         , (
+         	  SELECT CD_VL_NM
+         	    FROM IBIMS002B
+         	   WHERE CMNS_CD_GRP = 'B007'
+         	   	 AND CD_VL_ID = BOND_PROT_CCD 
+           ) AS BOND_PROT_NM					             /* 채권보전구분명 */
+         , MAIN_CTRC_MTTR_CNTS                     /* 주요약정사항내용 */
+         , FNNR_CTRC_MTTR_TRGT_YN                  /* 재무약정사항대상여부 */
+         , CTRC_DT                                 /* 약정일자 */
+         , DEL_YN                                  /* 삭제여부 */
+         , HND_DETL_DTM                            /* 조작상세일시 */
+         , HND_EMPNO                               /* 조작사원번호 */
+         , HND_TMNL_NO                             /* 조작단말기번호 */
+         , HND_TR_ID                               /* 조작거래id */
+         , GUID                                    /* guid */
+      FROM IBIMS509B
+     WHERE 1=1
+       AND DEAL_NO = #{dealNo}                                 
+	</select>
+	
+	
+	<!-- 채권보전주요약정 저장 -->
+	<insert id="saveBondProtInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS509BVO">
+		  INSERT INTO IBIMS509B 
+               (
+                  DEAL_NO                                 /* 딜번호 */
+                , SN                                      /* 일련번호 */
+                , BOND_PROT_CCD                           /* 채권보전구분코드 */
+                , MAIN_CTRC_MTTR_CNTS                     /* 주요약정사항내용 */
+                , FNNR_CTRC_MTTR_TRGT_YN                  /* 재무약정사항대상여부 */
+                , CTRC_DT                                 /* 약정일자 */
+                , DEL_YN                                  /* 삭제여부 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래id */
+                , GUID                                    /* guid */
+               )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+        	   (
+                 #{item.dealNo}                                 /* 딜번호 */
+               , #{index}+1                                     /* 일련번호 */
+               , #{item.bondProtCcd}                            /* 채권보전구분코드 */
+               , #{item.mainCtrcMttrCnts}                       /* 주요약정사항내용 */
+               , #{item.fnnrCtrcMttrTrgtYn}                     /* 재무약정사항대상여부 */
+               , #{item.ctrcDt}                                 /* 약정일자 */
+               , #{item.delYn}                                  /* 삭제여부 */
+               , SYSDATE                             		   		  /* 조작상세일시 */
+               , #{item.hndEmpno}                               /* 조작사원번호 */
+               , #{item.hndTmnlNo}                              /* 조작단말기번호 */
+               , #{item.hndTrId}                                /* 조작거래id */
+               , #{item.guid}                                   /* guid */
+               )
+        </foreach> 
+	</insert>
+	
+	
+	<!-- 채권보전주요약정 삭제 -->
+	<delete id="delBondProtInfo" parameterType="string">
+		DELETE
+		  FROM IBIMS509B
+		 WHERE DEAL_NO = #{dealNo}
+	</delete>
+	
+	
+</mapper>

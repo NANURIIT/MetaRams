@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS992BMapper">
+	
+	<select id="getFnltList" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS992BDTO">
+    SELECT FNLT_CD 			<!-- 금융기관코드 -->
+         , FNLT_NM 			<!-- 금융기관명 -->
+		  FROM IBIMS992B	          
+		 WHERE 1=1
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fnltCd)">
+       AND FNLT_CD LIKE '%' || #{fnltCd} || '%'
+       </if>
+       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fnltNm)">
+       AND FNLT_NM LIKE '%' || #{fnltNm} || '%'
+       </if>
+    </select>
+	
+</mapper>

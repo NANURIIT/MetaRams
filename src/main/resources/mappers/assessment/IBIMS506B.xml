@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS506BMapper">
+
+	<select id="getPefInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS506BVO">
+       SELECT DEAL_NO                                 /* 딜번호 */
+            , SQ			           				              /* 일련번호 */
+            , INVST_STGY_CTNS                         /* 투자전략내용 */
+            , CTRC_PCLR_CTNS                          /* 약정특이내용 */
+            , BUSI_PRG_PCLR_CTNS                      /* 사업진행특이내용 */
+            , BOND_TRNS_YN                            /* 채권이관여부 */
+            , MNGM_CND_FLFL_YN                        /* 관리조건이행여부 */
+            , CHRG_EMPNO                        	    /* 담당자 */
+            , (
+             	 SELECT EMP_NM
+             	   FROM IBIMS003B
+             	  WHERE EMPNO = CHRG_EMPNO 
+               ) AS CHRG_EMPNM                        /* 담당자명 */
+            , DEL_YN                                  /* 삭제여부 */
+            , HND_DETL_DTM                            /* 조작상세일시 */
+            , HND_EMPNO                               /* 조작사원번호 */
+            , HND_TMNL_NO                             /* 조작단말기번호 */
+            , HND_TR_ID                               /* 조작거래id */
+            , GUID                                    /* guid */
+         FROM IBIMS506B
+        WHERE 1=1
+          AND DEAL_NO     = #{dealNo}
+          AND SQ					= (
+		 							           SELECT MAX(SQ)
+		 							             FROM IBIMS506B
+		 							            WHERE DEAL_NO = #{dealNo}
+		 							          )                                        
+	</select>
+	
+	<insert id="savePefInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO">
+		INSERT INTO IBIMS506B 
+               (
+                  DEAL_NO                                 /* 딜번호 */
+                , SQ                                      /* 일련번호 */
+                , INVST_STGY_CTNS                         /* 투자전략내용 */
+                , CTRC_PCLR_CTNS                          /* 약정특이내용 */
+                , BUSI_PRG_PCLR_CTNS                      /* 사업진행특이내용 */
+                , BOND_TRNS_YN                            /* 채권이관여부 */
+                , MNGM_CND_FLFL_YN                        /* 관리조건이행여부 */
+                , CHRG_EMPNO                        	    /* 담당자 */
+                , DEL_YN                                  /* 삭제여부 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래id */
+                , GUID                                    /* guid */
+               )
+        VALUES (
+                 #{dealNo}                                   /* 딜번호 */
+             , (
+                SELECT CASE WHEN A.SQ = 0 THEN '0000000001'
+                            ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
+                  FROM (
+                   		  SELECT COUNT(SQ)  AS SQ
+                             , MAX(SQ)    AS INCREMENT_SQ
+                          FROM IBIMS502B
+                       ) A
+       			     )                                           /* 일련번호 */
+               , #{pefInfo.invstStgyCtns}                    /* 투자전략내용 */
+               , #{pefInfo.ctrcPclrCtns}                     /* 약정특이내용 */
+               , #{pefInfo.busiPrgPclrCtns}                  /* 사업진행특이내용 */
+               , #{pefInfo.bondTrnsYn}                       /* 채권이관여부 */
+               , #{pefInfo.mngmCndFlflYn}                    /* 관리조건이행여부 */
+               , #{pefInfo.chrgEmpno}                    	   /* 담당자 */
+               , #{pefInfo.delYn}                            /* 삭제여부 */
+               , SYSDATE                                	   /* 조작상세일시 */
+               , #{pefInfo.hndEmpno}                         /* 조작사원번호 */
+               , #{pefInfo.hndTmnlNo}                        /* 조작단말기번호 */
+               , #{pefInfo.hndTrId}                          /* 조작거래id */
+               , #{pefInfo.guid}                             /* guid */
+               )
+	</insert>
+	
+	<update id="updatePefInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS506BDTO">
+	   UPDATE IBIMS506B
+        SET SQ                                      = (
+											                              	 SELECT A.SQ
+											                              	   FROM IBIMS506B A
+											                              	  WHERE A.DEAL_NO = #{dealNo}
+											                              	)                                     	  /* 일련번호 */
+          , INVST_STGY_CTNS                         = #{invstStgyCtns}                          /* 투자전략내용 */
+          , CTRC_PCLR_CTNS                          = #{ctrcPclrCtns}                           /* 약정특이내용 */
+          , BUSI_PRG_PCLR_CTNS                      = #{busiPrgPclrCtns}                        /* 사업진행특이내용 */
+          , BOND_TRNS_YN                            = #{bondTrnsYn}                             /* 채권이관여부 */
+          , MNGM_CND_FLFL_YN                        = #{mngmCndFlflYn}                          /* 관리조건이행여부 */
+          , CHRG_EMPNO                        	    = #{chrgEmpno}                         	    /* 담당자 */
+      WHERE 1=1
+        AND DEAL_NO                                 = #{dealNo}                                 /* 딜번호 */
+	</update>
+	
+</mapper>

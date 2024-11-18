@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAB98BMapper">
+	
+	<select id="getBitrKind" resultType="com.nanuri.rams.business.common.dto.RAB98BDTO">
+		SELECT STD_DT
+		     , BITR_KIND_CD
+		     , STD_MM_CNT
+		     , STD_DD_CNT
+		     , BITR_NM
+		     , BITR
+		  FROM RAB98B
+		 WHERE 1=1
+		   AND STD_DT = (
+		                 SELECT MAX(STD_DT)
+						   FROM RAB98B
+						  WHERE 1=1
+		                )
+	</select>
+
+</mapper>

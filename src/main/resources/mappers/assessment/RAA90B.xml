@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA90BMapper">
+
+    <!--  select박스에 담을 공통코드 호출  -->
+    <select id="getCommonCodeName" resultType="com.nanuri.rams.business.common.vo.RAA90BVO$CommonCodeInfoVO">
+        SELECT DISTINCT (CMNS_CD_NM)
+			  , CMNS_CD_GRP
+			  , CMNS_CD_GRP_EXPL
+  		  FROM IBIMS001B
+	  ORDER BY CMNS_CD_GRP ASC    
+    </select>
+
+    <!--  그룹코드 호출  -->
+	<select id="getGroupCodeInfoList" resultType="com.nanuri.rams.business.common.dto.RAA90BDTO" parameterType="String">
+        SELECT cmns_cd_grp									<!-- 공통코드그룹 -->
+             , nvl(cmns_cd_nm, '-')	AS cmns_cd_nm			<!-- 공통코드명 -->
+             , nvl(cmns_cd_clsf, '-') AS cmns_cd_clsf		<!-- 공통코드구분 -->
+             , cd_lngth										<!-- 코드길이 -->
+             , nvl(cmns_cd_grp_expl, '-') AS cmns_cd_grp_expl <!-- 공통코드그룹설명 -->
+             , use_f										<!-- 사용여부 -->
+ 		<include refid="CommonMapper.selectCommonDto" />
+          FROM RAA90B A
+         WHERE 1=1
+           AND dlt_f = 'N'					<!-- 삭제여부 -->
+		<if test="cmns_cd_grp != null and cmns_cd_grp !=''">
+           AND cmns_cd_grp = #{cmnsCdGrp}
+		</if>
+	</select>
+
+    <select id="getGroupCodeInfo" parameterType="String" resultType="com.nanuri.rams.business.common.dto.RAA90BDTO">
+        SELECT cmns_cd_grp					<!-- 공통코드그룹 -->
+             , cmns_cd_nm					<!-- 공통코드명 -->
+             , cmns_cd_clsf					<!-- 공통코드구분 -->
+             , cd_lngth						<!-- 코드길이 -->
+             , cmns_cd_grp_expl				<!-- 공통코드그룹설명 -->
+             , use_f						<!-- 사용여부 -->
+        <include refid="CommonMapper.selectCommonDto" />
+          FROM RAA90B A
+         WHERE cmns_cd_grp = #{cmnsCdGrp}
+           -- AND dlt_f = 'N'					<!-- 삭제여부 -->
+    </select>
+ 
+    <update id="deleteGroupCodeInfo" parameterType="java.util.List">
+        UPDATE RAA90B
+           SET DLT_F = 'Y'					<!-- 삭제여부 -->
+              ,hndl_p_eno = #{hndlPEno}		<!-- 처리자사번 -->
+              ,hndl_dy_tm = now()  			<!-- 처리일시 -->
+         WHERE cmns_cd_grp IN
+        <foreach collection="cmnsCdGrp" item="cmnsCdGrp" index="index" open="(" separator="," close=")">
+            #{cmnsCdGrp}
+        </foreach>
+    </update>
+
+    <select id="selectTotalCount" resultType="int">
+        SELECT
+            count(*)
+        FROM RAA90B
+    </select>
+
+    <update id="registGroupCodeInfo" parameterType="com.nanuri.rams.business.common.vo.RAA90BVO$GroupCodeInfoSaveRequestVO">
+        UPDATE RAA90B
+        <set>
+            <if test="cmnsCdGrp != null and cmnsCdGrp !=''">
+                cmns_cd_grp = #{cmnsCdGrp},
+            </if>
+            <if test="cmnsCdNm != null and cmnsCdNm !=''">
+                cmns_cd_nm = #{cmnsCdNm},
+            </if>
+            <if test="cdLngth != null and cdLngth !=''">
+                cd_lngth = #{cdLngth},
+            </if>
+            <if test="useF != null and useF !=''">
+                use_f = #{useF},
+            </if>
+
+            <if test="cmnsCdGrpExpl != null and cmnsCdGrpExpl !=''">
+                cmns_cd_grp_expl = #{cmnsCdGrpExpl},
+            </if>
+            hndl_dy_tm = now(),				<!-- 등록시간 -->
+            hndl_p_eno = #{hndlPEno}		<!-- 등록자사번 -->
+        </set>
+        WHERE cmns_cd_grp = #{oldCmnsCdGrp}	<!-- 공통코드그룹 -->
+    </update>
+
+    <insert id="insertGroupCodeInfo" parameterType="com.nanuri.rams.business.common.vo.RAA90BVO$GroupCodeInfoSaveRequestVO">
+        INSERT INTO RAA90B (
+            CMNS_CD_GRP,		<!-- 공통코드그룹 -->
+            CMNS_CD_NM,			<!-- 공통코드명 -->
+			CMNS_CD_CLSF,		<!-- 공통코드구분 -->
+            CD_LNGTH,			<!-- 코드길이 -->	
+			CMNS_CD_GRP_EXPL,	<!-- 공통코드그룹설명 -->
+            USE_F,				<!-- 사용여부 -->
+            DLT_F,				<!-- 삭제여부 -->
+            RGST_DT,			<!-- 등록일자 -->
+            RGST_TM,			<!-- 등록시간 -->
+            RGST_P_ENO,			<!-- 등록자사번 -->
+			HNDL_DY_TM,			<!-- 처리일시 -->
+			HNDL_DPRT_CD,		<!-- 처리부점코드 -->
+			HNDL_P_ENO			<!-- 처리자사번 -->
+        ) VALUES (
+            #{cmnsCdGrp},
+            #{cmnsCdNm},
+			#{cmnsCdClsf},
+            #{cdLngth},
+			#{cmnsCdGrpExpl},
+            #{useF},
+			'N',
+            DATE_FORMAT(now(), '%Y%m%d'),
+            DATE_FORMAT(now(), '%H%i%s'),
+            #{rgstPEno},
+			now(),
+			#{hndlDprtCd},
+			#{hndlPEno}
+        )
+    </insert>
+
+</mapper>

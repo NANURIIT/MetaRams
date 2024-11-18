@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS402BMapper">
+
+    <select id="getNxtRdmpDt" parameterType="com.nanuri.rams.business.common.vo.IBIMS402BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
+		SELECT MAX(V.LAST_PRNA_RDMP_DT) AS LAST_PRNA_RDMP_DT /* 최종원금상환일자 */
+             , MAX(V.LAST_INTR_CLC_DT) AS LAST_INTR_CLC_DT  /* 최종이자계산일자 */
+             , MAX(V.NXT_RDMP_PRAR_DT) AS NXT_RDMP_PRAR_DT  /* 다음상환예정일자 */
+             , MAX(V.NXT_INTR_PYM_DT) AS NXT_INTR_PYM_DT  /* 다음이자납입일자 */
+		  FROM (
+			 SELECT MAX(CASE WHEN A.SCX_DCD = '02' THEN PRCS_DT ELSE '' END) AS LAST_PRNA_RDMP_DT /* 최종원금상환일자 */
+	              , MAX(CASE WHEN A.SCX_DCD = '04' THEN PRCS_DT ELSE '' END) AS LAST_INTR_CLC_DT  /* 최종이자계산일자 */
+	              , '' AS NXT_RDMP_PRAR_DT /* 다음상환예정일자 */
+	              , '' AS NXT_INTR_PYM_DT /* 다음이자납입일자 */
+			   FROM IBIMS403B A  /* 여신스케쥴기본 */
+			  WHERE 1=1
+			    AND A.PRDT_CD = #{prdtCd}
+			    AND A.EXC_SN    = #{excSn}
+			    AND A.SCX_DCD IN ('02', '04') /* 02원금상환스케쥴 04이자상환스케쥴 */
+			    AND NVL(PRCS_CPLT_YN, '0') = '1'
+			  UNION ALL
+			 SELECT NULL AS LAST_PRNA_RDMP_DT /* 최종원금상환일자 */
+	              , NULL AS LAST_INTR_CLC_DT  /* 최종이자계산일자 */
+	              , MIN(CASE WHEN A.SCX_DCD = '02' THEN PRAR_DT ELSE NULL END) AS NXT_RDMP_PRAR_DT /* 다음상환예정일자 */
+	              , MIN(CASE WHEN A.SCX_DCD = '04' THEN PRAR_DT ELSE NULL END) AS NXT_INTR_PYM_DT /* 다음이자납입일자 */
+			   FROM IBIMS403B A /* 여신스케쥴기본 */
+			  WHERE 1=1
+			    AND A.PRDT_CD = #{prdtCd}
+			    AND A.EXC_SN    = #{excSn}
+			    AND A.SCX_DCD IN ('02', '04') /* 02원금상환스케쥴 04이자상환스케쥴 */
+			    AND NVL(PRCS_CPLT_YN, '0') = '0'
+            )   V
+	</select>
+
+
+    <select id="getloanInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
+   	  SELECT
+			 A.BRKG_ACNO
+		   , A.ACTS_CD            
+           , A.ACTS_NM            
+           , A.LDG_STTS_CD	
+           , A.EPRZ_CRDL_CTRC_AMT	
+           , A.DEAL_EXC_AMT
+        FROM
+        	(SELECT i402b.BRKG_ACNO  
+                 , i401b.ACTS_CD            
+	             , '' AS ACTS_NM            
+	             , i402b.LDG_STTS_CD	
+	             , i401b.EPRZ_CRDL_CTRC_AMT	
+	             , SUM(i402b.DEAL_EXC_AMT) OVER() AS DEAL_EXC_AMT
+	         FROM IBIMS402B  i402b       
+			 	, IBIMS401B i401b    
+			 WHERE 1=1 
+	         AND i402b.DEAL_NO = #{dealNo}
+			 AND i401b.PRDT_CD = i402b.PRDT_CD 
+			 AND i401b.EPRZ_CRDL_PRDT_LCLS_CD IN ('90', '91')
+			 ) A
+		 WHERE 1=1
+		 AND ROWNUM =1
+    </select>
+    
+    <select id="getFundInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
+		SELECT i401b.PRDT_CD           /* 종목코드 */
+              , i201b.PRDT_NM           /* 종목명 */
+              , i201b.PRDT_CLSF_CD      /* 유가증권분류 */
+              , i201b.ORTN_FND_CD       /* 펀드유형상세 */
+              , i401b.EPRZ_CRDL_LDG_STTS_CD	/* 원장상태코드 */
+              , NVL(i402b.BUY_SHQT,0) - NVL(i402b.SLL_SHQT,0) AS BUY_SHQT /* 액면(주수) 확인필요 */
+              , NVL(i402b.ACBK_AMT,0) AS ACBK_AMT /* 장부금액 */
+              , NVL(i402b.AVR_UNPR,0) AS AVR_UNPR /* 취득액(평단가) 확인필요 */
+		   FROM IBIMS402B i402b      /* 실행기본 */
+		      , IBIMS401B i401b /* 약정기본 */
+        	  , IBIMS201B i201b 
+		  WHERE i402b.DEAL_NO = #{dealNo}
+		    AND i402b.EXC_SN = 1
+		    AND i402b.PRDT_CD = i401b.PRDT_CD 
+		    AND i401b.EPRZ_CRDL_PRDT_LCLS_CD IN ('10', '11', '16', '30')   
+		    AND   i201b.PRDT_CD = i401b.PRDT_CD 
+		    AND i201b.LAST_YN = '1'
+    </select>
+    
+    
+	<select id="selectOneIBIMS402B" parameterType="com.nanuri.rams.business.common.vo.IBIMS402BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
+      SELECT PRDT_CD                                 /*  상품코드  */
+		   , EXC_SN                                  /*  실행일련번호  */
+		   , LDG_STTS_CD                             /*  원장상태코드  */
+		   , CRRY_CD                                 /*  통화코드  */
+		   , EXC_DT                                  /*  실행일자  */
+		   , EXP_DT                                  /*  만기일자  */
+		   , DEAL_EXC_AMT                            /*  대출금액  */
+		   , DEAL_EXC_BLCE                           /*  대출잔액  */
+		   , KRW_TRSL_RT                             /*  원화환산율  */
+		   , KRW_TRSL_EXC_AMT                        /*  원화환산실행금액  */
+		   , KRW_TRSL_EXC_BLCE                       /*  원화환산실행잔액  */
+		   , PRNA_DFR_PRD_MNUM                       /*  원금거치기간개월수  */
+		   , DFR_EXP_MNUM                            /*  거치만기개월수  */
+		   , LAST_PRNA_RDMP_DT                       /*  최종원금상환일자  */
+		   , LAST_INTR_CLC_DT                        /*  최종이자계산일자  */
+		   , NXT_RDMP_PRAR_DT                        /*  다음상환예정일자  */
+		   , NXT_INTR_PYM_DT                         /*  다음이자납입일자  */
+		   , INTR_RDMP_FRQC_MNUM                     /*  이자상환주기개월수  */
+		   , INTR_PYM_DT_CD                          /*  이자납입일자코드  */
+		   , PRNA_RDMP_FRQC_MNUM                     /*  원금상환주기개월수  */
+		   , PRNA_OVDU_DT                            /*  원금연체일자  */
+		   , INTR_OVDU_DT                            /*  이자연체일자  */
+		   , TOT_RDMP_TMRD                           /*  총상환회차  */
+		   , LAST_RDMP_TMRD                          /*  최종상환회차  */
+		   , DEAL_ISTM_BLCE                          /*  할부잔액  */
+		   , DEAL_EQL_RDMP_AMT                       /*  균등상환금액  */
+		   , ISTM_DTM_RDMP_AMT                       /*  할부일시상환금액  */
+		   , RCVB_INTR_AMT                           /*  미수이자금액  */
+		   , GRTE_DCD                                /*  보증구분코드  */
+		   , PYMT_GRTE_RFR_NO                        /*  지급보증참조번호  */
+		   , GRTE_ISTT_CD                            /*  보증기관코드  */
+		   , GRTE_ISTT_NM                            /*  보증기관명  */
+	       , BUY_SHQT                                /*  매수좌수   */
+	       , SLL_SHQT                                /*  매도좌수 */
+	       , AVR_UNPR                                /*  평균단가 */
+	       , BRKG_ACNO                               /*  위탁계좌번호 */
+	       , RCTM_ISTT_CD                            /*  입금기관코드 */
+	       , ACHD_NM                                 /*  예금주명 */
+		   , PYMT_GRTE_SCCT_CTNS                     /*  지급보증특약내용  */
+		   , ACBK_AMT                                /*  장부금액  */
+	       , DEAL_NO                                 /*  딜번호 */
+	       , MTR_DCD                                 /*  안건구분코드 */
+	       , JDGM_DCD                                /*  심사구분코드 */
+		   , HND_DETL_DTM                            /*  조작상세일시  */
+		   , HND_EMPNO                               /*  조작사원번호  */
+		   , HND_TMNL_NO                             /*  조작단말기번호  */
+		   , HND_TR_ID                               /*  조작거래id  */
+		   , GUID                                    /*  guid  */
+	    FROM IBIMS402B                               /* 딜실행기본 */
+	   WHERE 1=1
+	     AND PRDT_CD = #{prdtCd}  /*  상품코드  */
+	     AND EXC_SN  = #{excSn}   /*  실행일련번호  */
+  	</select>
+       
+    <select id="updateChgSttsCd402B" parameterType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
+        UPDATE IBIMS402B
+           SET LDG_STTS_CD  = #{ldgSttsCd}  /* 원장상태코드 */
+             , HND_DETL_DTM = SYSDATE  /* 조작상세일시 */
+         WHERE 1=1
+           AND PRDT_CD = #{prdtCd}
+           AND EXC_SN  = #{excSn}
+    </select>
+               
+    
+    <select id="getExcSn" parameterType="string" resultType="long">
+		SELECT
+		       NVL(MAX(A.EXC_SN),0)+1 AS EXC_SN	/* 실행일련번호 채번 */
+		  FROM IBIMS402B A 	/* 딜실행기본 */
+		 WHERE 1 = 1
+		   AND A.PRDT_CD =  #{prdtCd} /*  'A000000001' */
+    </select>
+
+     <!--INSERT / UPDATE 여부 검증 -->
+     <select id="chkExcInfo" parameterType="string" resultType="string">
+          SELECT PRDT_CD
+            FROM IBIMS402B
+           WHERE PRDT_CD = #{prdtCd}
+        GROUP BY PRDT_CD
+     </select>
+
+    <!-- 여신실행기본조회  -->
+    <select id="getEprzCrdlExcInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
+        SELECT A.PRDT_CD                                 /* 상품코드  */
+             , A.EXC_SN                                  /* 실행일련번호  */
+             , A.LDG_STTS_CD                             /* 원장상태코드  */
+             , A.CRRY_CD                                 /* 통화코드  */
+             , A.EXC_DT                                  /* 실행일자  */
+             , A.EXP_DT                                  /* 만기일자  */
+             , A.DEAL_EXC_AMT                            /* 대출금액  */
+             , A.DEAL_EXC_BLCE                           /* 대출잔액  */
+             , A.KRW_TRSL_RT                             /* 원화환산율  */
+             , A.KRW_TRSL_EXC_AMT                        /* 원화환산실행금액  */
+             , A.KRW_TRSL_EXC_BLCE                       /* 원화환산실행잔액  */
+             , A.PRNA_DFR_PRD_MNUM                       /* 원금거치기간개월수  */
+			 , A.DFR_EXP_MNUM                            /* 거치만기개월수  */
+             , A.LAST_PRNA_RDMP_DT                       /* 최종원금상환일자  */
+             , A.LAST_INTR_CLC_DT                        /* 최종이자계산일자  */
+             , A.NXT_RDMP_PRAR_DT                        /* 다음상환예정일자  */
+             , A.NXT_INTR_PYM_DT                         /* 다음이자납입일자  */
+             , A.INTR_RDMP_FRQC_MNUM                     /* 이자상환주기개월수  */
+             , A.INTR_PYM_DT_CD                          /* 이자납입일자코드  */
+             , A.PRNA_RDMP_FRQC_MNUM                     /* 원금상환주기개월수  */
+             , A.PRNA_OVDU_DT                            /* 원금연체일자  */
+             , A.INTR_OVDU_DT                            /* 이자연체일자  */
+             , A.TOT_RDMP_TMRD                           /* 총상환회차  */
+             , A.LAST_RDMP_TMRD                          /* 최종상환회차  */
+             , A.DEAL_ISTM_BLCE                          /* 할부잔액  */
+             , A.DEAL_EQL_RDMP_AMT                       /* 균등상환금액  */
+             , A.ISTM_DTM_RDMP_AMT                       /* 할부일시상환금액  */
+             , A.RCVB_INTR_AMT                           /* 미수이자금액  */
+             , A.GRTE_DCD                                /* 보증구분코드  */
+             , A.PYMT_GRTE_RFR_NO                        /* 지급보증참조번호  */
+             , A.GRTE_ISTT_CD                            /* 보증기관코드  */
+             , A.GRTE_ISTT_NM                            /* 보증기관명  */
+             , BUY_SHQT                                  /* 매수좌수   */
+             , SLL_SHQT                                  /* 매도좌수 */
+             , AVR_UNPR                                  /* 평균단가 */
+             , BRKG_ACNO                                 /* 위탁계좌번호 */
+             , RCTM_ISTT_CD                              /* 입금기관코드 */
+             , ACHD_NM                                   /* 예금주명 */
+             , A.PYMT_GRTE_SCCT_CTNS                     /* 지급보증특약내용  */
+             , A.ACBK_AMT                                /* 장부금액  */
+             , DEAL_NO                                   /* 딜번호 */
+             , MTR_DCD                                   /* 안건구분코드 */
+             , JDGM_DCD                                  /* 심사구분코드 */
+             , A.HND_DETL_DTM                            /* 조작상세일시  */
+             , A.HND_EMPNO                               /* 조작사원번호  */
+             , A.HND_TMNL_NO                             /* 조작단말기번호  */
+             , A.HND_TR_ID                               /* 조작거래id  */
+             , A.GUID                                    /* guid  */
+             , A.RCTM_ISTT_CD                            /* 입금기관코드  */
+             , (
+                SELECT FNLT_NM
+                  FROM IBIMS992B
+                 WHERE FNLT_CD = A.RCTM_ISTT_CD
+               ) AS RCTM_ISTT_NM             		  /* 입금기관명  */
+             , A.ACHD_NM		                      /* 예금주명  */
+             , A.BRKG_ACNO                            /* 위탁계좌번호  */
+             , B.STDR_INTRT	 		  				  /* 기준금리 */
+             , B.ADD_INTRT			   				  /* 가산금리 */
+             , B.TOT_INTRT   						  /* 총금리 */
+          FROM IBIMS402B A 		/* 딜실행기본 */
+             , IBIMS401B B		/* 여신기본정보 */
+          WHERE 1=1
+           AND A.PRDT_CD  = #{prdtCd}
+           AND A.EXC_SN   = (
+                             SELECT MAX(EXC_SN)
+                               FROM IBIMS402B /* 딜실행기본 */
+                              WHERE PRDT_CD = #{prdtCd}
+                            )
+          AND B.PRDT_CD = A.PRDT_CD
+    </select>
+
+    <!-- 여신실행기본등록  -->
+    <insert id="saveExcInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS402BDTO">
+    	<selectKey keyProperty="excSn" resultType="int" order="BEFORE">
+    		SELECT
+			       NVL(MAX(A.EXC_SN),0)+1 AS EXC_SN	/* 실행일련번호 채번 */
+			  FROM IBIMS402B A 	/* 딜실행기본 */
+			 WHERE 1 = 1
+			   AND A.PRDT_CD =  #{prdtCd}
+    	</selectKey>
+
+        INSERT INTO IBIMS402B
+               (
+                  PRDT_CD                                 /* 상품코드 */
+                , EXC_SN                                  /* 실행일련번호 */
+                , LDG_STTS_CD                             /* 원장상태코드 */
+                , CRRY_CD                                 /* 통화코드 */
+                , EXC_DT                                  /* 실행일자 */
+                , EXP_DT                                  /* 만기일자 */
+                , DEAL_EXC_AMT                            /* 대출금액 */
+                , DEAL_EXC_BLCE                           /* 대출잔액 */
+                , KRW_TRSL_RT                             /* 원화환산율 */
+                , KRW_TRSL_EXC_AMT                        /* 원화환산실행금액 */
+                , KRW_TRSL_EXC_BLCE                       /* 원화환산실행잔액 */
+                , PRNA_DFR_PRD_MNUM                       /* 원금거치기간개월수 */
+                , DFR_EXP_MNUM                            /* 거치만기개월수 */
+                , LAST_PRNA_RDMP_DT                       /* 최종원금상환일자 */
+                , LAST_INTR_CLC_DT                        /* 최종이자계산일자 */
+                , NXT_RDMP_PRAR_DT                        /* 다음상환예정일자 */
+                , NXT_INTR_PYM_DT                         /* 다음이자납입일자 */
+                , INTR_RDMP_FRQC_MNUM                     /* 이자상환주기개월수 */
+                , INTR_PYM_DT_CD                          /* 이자납입일자코드 */
+                , PRNA_RDMP_FRQC_MNUM                     /* 원금상환주기개월수 */
+                , PRNA_OVDU_DT                            /* 원금연체일자 */
+                , INTR_OVDU_DT                            /* 이자연체일자 */
+                , TOT_RDMP_TMRD                           /* 총상환회차 */
+                , LAST_RDMP_TMRD                          /* 최종상환회차 */
+                , DEAL_ISTM_BLCE                          /* 할부잔액 */
+                , DEAL_EQL_RDMP_AMT                       /* 균등상환금액 */
+                , ISTM_DTM_RDMP_AMT                       /* 할부일시상환금액 */
+                , RCVB_INTR_AMT                           /* 미수이자금액 */
+                , GRTE_DCD                                /* 보증구분코드 */
+                , PYMT_GRTE_RFR_NO                        /* 지급보증참조번호 */
+                , GRTE_ISTT_CD                            /* 보증기관코드 */
+                , GRTE_ISTT_NM                            /* 보증기관명 */
+                , BUY_SHQT                                /* 매수좌수 */
+                , SLL_SHQT                                /* 매도좌수 */
+                , AVR_UNPR                                /* 평균단가 */
+                , BRKG_ACNO                               /* 위탁계좌번호 */
+                , RCTM_ISTT_CD                            /* 입금기관코드 */
+                , ACHD_NM                                 /* 예금주명 */
+                , PYMT_GRTE_SCCT_CTNS                     /* 지급보증특약내용 */
+                , ACBK_AMT                                /* 장부금액 */
+                , DEAL_NO                                 /* 딜번호 */
+                , MTR_DCD                                 /* 안건구분코드 */
+                , JDGM_DCD                                /* 심사구분코드 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래id */
+                , GUID                                    /* guid */
+               )
+        SELECT
+                 #{prdtCd}                                 /* 상품코드 */
+               , #{excSn}                                  /* 실행일련번호 */
+               , #{ldgSttsCd}                              /* 원장상태코드 */
+               , #{crryCd}                                 /* 통화코드 */
+               , #{excDt}                                  /* 실행일자 */
+               , #{expDt}                                  /* 만기일자 */
+               , #{dealExcAmt}                             /* 대출금액 */
+               , #{dealExcBlce}                            /* 대출잔액 */
+               , #{krwTrslRt}                              /* 원화환산율 */
+               , #{krwTrslExcAmt}                          /* 원화환산실행금액 */
+               , #{krwTrslExcBlce}                         /* 원화환산실행잔액 */
+               , #{prnaDfrPrdMnum}                         /* 원금거치기간개월수 */
+               , #{dfrExpMnum}                             /* 거치만기개월수 */
+               , #{lastPrnaRdmpDt}                         /* 최종원금상환일자 */
+               , #{lastIntrClcDt}                          /* 최종이자계산일자 */
+               , #{nxtRdmpPrarDt}                          /* 다음상환예정일자 */
+               , #{nxtIntrPymDt}                           /* 다음이자납입일자 */
+               , #{intrRdmpFrqcMnum}                       /* 이자상환주기개월수 */
+               , #{intrPymDtCd}                            /* 이자납입일자코드 */
+               , #{prnaRdmpFrqcMnum}                       /* 원금상환주기개월수 */
+               , #{prnaOvduDt}                             /* 원금연체일자 */
+               , #{intrOvduDt}                             /* 이자연체일자 */
+               , #{totRdmpTmrd}                            /* 총상환회차 */
+               , #{lastRdmpTmrd}                           /* 최종상환회차 */
+               , #{dealIstmBlce}                           /* 할부잔액 */
+               , #{dealEqlRdmpAmt}                         /* 균등상환금액 */
+               , #{istmDtmRdmpAmt}                         /* 할부일시상환금액 */
+               , #{rcvbIntrAmt}                            /* 미수이자금액 */
+               , #{grteDcd}                                /* 보증구분코드 */
+               , #{pymtGrteRfrNo}                          /* 지급보증참조번호 */
+               , #{grteIsttCd}                             /* 보증기관코드 */
+               , #{grteIsttNm}                             /* 보증기관명 */
+               , #{buyShqt}                                /* 매수좌수 */
+               , #{sllShqt}                                /* 매도좌수 */
+               , #{avrUnpr}                                /* 평균단가 */
+               , #{brkgAcno}                               /* 위탁계좌번호 */
+               , #{rctmIsttCd}                             /* 입금기관코드 */
+               , #{achdNm}                                 /* 예금주명 */
+               , #{pymtGrteScctCtns}                       /* 지급보증특약내용 */
+               , #{acbkAmt}                                /* 장부금액 */
+               , #{dealNo}                                 /* 딜번호 */
+               , #{mtrDcd}                                 /* 안건구분코드 */
+               , #{jdgmDcd}                                /* 심사구분코드 */
+               , SYSDATE                              /* 조작상세일시 */
+               , #{hndEmpno}                               /* 조작사원번호 */
+               , #{hndTmnlNo}                              /* 조작단말기번호 */
+               , #{hndTrId}                                /* 조작거래id */
+               , #{guid}                                   /* guid */
+    </insert>
+
+    <!-- 여신실행기본변경  -->
+    <update id="uptExcInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS402BDTO">
+       UPDATE IBIMS402B
+          SET PRDT_CD                                 = #{prdtCd}                                 /* 상품코드 */
+            , EXC_SN                                  = #{excSn}                                  /* 실행일련번호 */
+            , LDG_STTS_CD                             = #{ldgSttsCd}                              /* 원장상태코드 */
+            , CRRY_CD                                 = #{crryCd}                                 /* 통화코드 */
+            , EXC_DT                                  = #{excDt}                                  /* 실행일자 */
+            , EXP_DT                                  = #{expDt}                                  /* 만기일자 */
+            , DEAL_EXC_AMT                            = #{dealExcAmt}                             /* 대출금액 */
+            , DEAL_EXC_BLCE                           = #{dealExcBlce}                            /* 대출잔액 */
+            , KRW_TRSL_RT                             = #{krwTrslRt}                              /* 원화환산율 */
+            , KRW_TRSL_EXC_AMT                        = #{krwTrslExcAmt}                          /* 원화환산실행금액 */
+            , KRW_TRSL_EXC_BLCE                       = #{krwTrslExcBlce}                         /* 원화환산실행잔액 */
+            , PRNA_DFR_PRD_MNUM                       = #{prnaDfrPrdMnum}                         /* 원금거치기간개월수 */
+            , DFR_EXP_MNUM                            = #{dfrExpMnum}                             /* 거치만기개월수 */
+            , LAST_PRNA_RDMP_DT                       = #{lastPrnaRdmpDt}                         /* 최종원금상환일자 */
+            , LAST_INTR_CLC_DT                        = #{lastIntrClcDt}                          /* 최종이자계산일자 */
+            , NXT_RDMP_PRAR_DT                        = #{nxtRdmpPrarDt}                          /* 다음상환예정일자 */
+            , NXT_INTR_PYM_DT                         = #{nxtIntrPymDt}                           /* 다음이자납입일자 */
+            , INTR_RDMP_FRQC_MNUM                     = #{intrRdmpFrqcMnum}                       /* 이자상환주기개월수 */
+            , INTR_PYM_DT_CD                          = #{intrPymDtCd}                            /* 이자납입일자코드 */
+            , PRNA_RDMP_FRQC_MNUM                     = #{prnaRdmpFrqcMnum}                       /* 원금상환주기개월수 */
+            , PRNA_OVDU_DT                            = #{prnaOvduDt}                             /* 원금연체일자 */
+            , INTR_OVDU_DT                            = #{intrOvduDt}                             /* 이자연체일자 */
+            , TOT_RDMP_TMRD                           = #{totRdmpTmrd}                            /* 총상환회차 */
+            , LAST_RDMP_TMRD                          = #{lastRdmpTmrd}                           /* 최종상환회차 */
+            , DEAL_ISTM_BLCE                          = #{dealIstmBlce}                           /* 할부잔액 */
+            , DEAL_EQL_RDMP_AMT                       = #{dealEqlRdmpAmt}                         /* 균등상환금액 */
+            , ISTM_DTM_RDMP_AMT                       = #{istmDtmRdmpAmt}                         /* 할부일시상환금액 */
+            , RCVB_INTR_AMT                           = #{rcvbIntrAmt}                            /* 미수이자금액 */
+            , GRTE_DCD                                = #{grteDcd}                                /* 보증구분코드 */
+            , PYMT_GRTE_RFR_NO                        = #{pymtGrteRfrNo}                          /* 지급보증참조번호 */
+            , GRTE_ISTT_CD                            = #{grteIsttCd}                             /* 보증기관코드 */
+            , GRTE_ISTT_NM                            = #{grteIsttNm}                             /* 보증기관명 */
+            , BUY_SHQT                                = #{buyShqt}                                /* 매수좌수  */
+            , SLL_SHQT                                = #{sllShqt}                                /* 매도좌수  */
+            , AVR_UNPR                                = #{avrUnpr}                                /* 평균단가  */
+            , BRKG_ACNO                               = #{brkgAcno}                               /* 위탁계좌번호 */
+            , RCTM_ISTT_CD                            = #{rctmIsttCd}                             /* 입금기관코드 */
+            , ACHD_NM                                 = #{achdNm}                                 /* 예금주명 */
+            , PYMT_GRTE_SCCT_CTNS                     = #{pymtGrteScctCtns}                       /* 지급보증특약내용 */
+            , ACBK_AMT                                = #{acbkAmt}                                /* 장부금액 */
+            , DEAL_NO                                 = #{dealNo}                                 /* 딜번호 */
+            , MTR_DCD                                 = #{mtrDcd}                                 /* 안건구분코드 */
+            , JDGM_DCD                                = #{jdgmDcd}                                /* 심사구분코드 */
+            , HND_DETL_DTM                            = SYSDATE                                     /* 조작상세일시 */
+            , HND_EMPNO                               = #{hndEmpno}                               /* 조작사원번호 */
+            , HND_TMNL_NO                             = #{hndTmnlNo}                              /* 조작단말기번호 */
+            , HND_TR_ID                               = #{hndTrId}                                /* 조작거래id */
+            , GUID                                    = #{guid}                                   /* guid */
+         WHERE 1=1
+          AND PRDT_CD                                 = #{prdtCd}                                 /* 상품코드 */
+          AND EXC_SN                                  = #{excSn}                                  /* 실행일련번호 */
+    </update>
+
+    <update id="uptExcIBIMS402B" parameterType="com.nanuri.rams.business.common.dto.IBIMS402BDTO">
+       UPDATE IBIMS402B
+          SET PRDT_CD                                 = #{prdtCd}                                 /* 상품코드 */
+            , EXC_SN                                  = #{excSn}                                  /* 실행일련번호 */
+            , LDG_STTS_CD                             = #{ldgSttsCd}                              /* 원장상태코드 */
+            , CRRY_CD                                 = #{crryCd}                                 /* 통화코드 */
+            , EXC_DT                                  = #{excDt}                                  /* 실행일자 */
+            , EXP_DT                                  = #{expDt}                                  /* 만기일자 */
+            , DEAL_EXC_AMT                            = #{dealExcAmt}                             /* 대출금액 */
+            , DEAL_EXC_BLCE                           = #{dealExcBlce}                            /* 대출잔액 */
+            , KRW_TRSL_RT                             = #{krwTrslRt}                              /* 원화환산율 */
+            , KRW_TRSL_EXC_AMT                        = #{krwTrslExcAmt}                          /* 원화환산실행금액 */
+            , KRW_TRSL_EXC_BLCE                       = #{krwTrslExcBlce}                         /* 원화환산실행잔액 */
+            , PRNA_DFR_PRD_MNUM                       = #{prnaDfrPrdMnum}                         /* 원금거치기간개월수 */
+            , DFR_EXP_MNUM                            = #{dfrExpMnum}                             /* 거치만기개월수 */
+            , LAST_PRNA_RDMP_DT                       = #{lastPrnaRdmpDt}                         /* 최종원금상환일자 */
+            , LAST_INTR_CLC_DT                        = #{lastIntrClcDt}                          /* 최종이자계산일자 */
+            , NXT_RDMP_PRAR_DT                        = #{nxtRdmpPrarDt}                          /* 다음상환예정일자 */
+            , NXT_INTR_PYM_DT                         = #{nxtIntrPymDt}                           /* 다음이자납입일자 */
+            , INTR_RDMP_FRQC_MNUM                     = #{intrRdmpFrqcMnum}                       /* 이자상환주기개월수 */
+            , INTR_PYM_DT_CD                          = #{intrPymDtCd}                            /* 이자납입일자코드 */
+            , PRNA_RDMP_FRQC_MNUM                     = #{prnaRdmpFrqcMnum}                       /* 원금상환주기개월수 */
+            , PRNA_OVDU_DT                            = #{prnaOvduDt}                             /* 원금연체일자 */
+            , INTR_OVDU_DT                            = #{intrOvduDt}                             /* 이자연체일자 */
+            , TOT_RDMP_TMRD                           = #{totRdmpTmrd}                            /* 총상환회차 */
+            , LAST_RDMP_TMRD                          = #{lastRdmpTmrd}                           /* 최종상환회차 */
+            , DEAL_ISTM_BLCE                          = #{dealIstmBlce}                           /* 할부잔액 */
+            , DEAL_EQL_RDMP_AMT                       = #{dealEqlRdmpAmt}                         /* 균등상환금액 */
+            , ISTM_DTM_RDMP_AMT                       = #{istmDtmRdmpAmt}                         /* 할부일시상환금액 */
+            , RCVB_INTR_AMT                           = #{rcvbIntrAmt}                            /* 미수이자금액 */
+            , GRTE_DCD                                = #{grteDcd}                                /* 보증구분코드 */
+            , PYMT_GRTE_RFR_NO                        = #{pymtGrteRfrNo}                          /* 지급보증참조번호 */
+            , GRTE_ISTT_CD                            = #{grteIsttCd}                             /* 보증기관코드 */
+            , GRTE_ISTT_NM                            = #{grteIsttNm}                             /* 보증기관명 */
+            , BUY_SHQT                                = #{buyShqt}                                /* 매수좌수  */
+            , SLL_SHQT                                = #{sllShqt}                                /* 매도좌수  */
+            , AVR_UNPR                                = #{avrUnpr}                                /* 평균단가  */
+            , BRKG_ACNO                               = #{brkgAcno}                               /* 위탁계좌번호 */
+            , RCTM_ISTT_CD                            = #{rctmIsttCd}                             /* 입금기관코드 */
+            , ACHD_NM                                 = #{achdNm}                                 /* 예금주명 */
+            , PYMT_GRTE_SCCT_CTNS                     = #{pymtGrteScctCtns}                       /* 지급보증특약내용 */
+            , ACBK_AMT                                = #{acbkAmt}                                /* 장부금액 */
+            , DEAL_NO                                 = #{dealNo}                                 /* 딜번호 */
+            , MTR_DCD                                 = #{mtrDcd}                                 /* 안건구분코드 */
+            , JDGM_DCD                                = #{jdgmDcd}                                /* 심사구분코드 */
+            , HND_DETL_DTM                            = SYSDATE                                     /* 조작상세일시 */
+            , HND_EMPNO                               = #{hndEmpno}                               /* 조작사원번호 */
+            , HND_TMNL_NO                             = #{hndTmnlNo}                              /* 조작단말기번호 */
+            , HND_TR_ID                               = #{hndTrId}                                /* 조작거래id */
+            , GUID                                    = #{guid}                                   /* guid */
+         WHERE 1=1
+          AND PRDT_CD                                 = #{prdtCd}                                 /* 상품코드 */
+          AND EXC_SN                                  = #{excSn}                                  /* 실행일련번호 */
+    </update>
+
+  
+    <!-- 대출계약 상세내역 조회  -->
+    <select id="getRdmpDetail" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
+        SELECT PRDT_CD                                            /* 상품코드 */
+             , EXC_SN                                             /* 실행일련번호 */
+             , LDG_STTS_CD                                        /* 원장상태코드 */
+             , CRRY_CD                                            /* 통화코드 */
+             , EXC_DT                                             /* 실행일자 */
+             , EXP_DT                                             /* 만기일자 */
+             , DEAL_EXC_AMT                                       /* 딜실행금액 */
+             , KRW_TRSL_RT                                        /* 원화환산율 */
+             , KRW_TRSL_EXC_AMT                                   /* 원화환산실행금액 */
+             , KRW_TRSL_EXC_BLCE                                  /* 원화환산실행잔액 */
+             , PRNA_DFR_PRD_MNUM                                  /* 원금거치기간개월수 */
+             , DFR_EXP_MNUM                                       /* 거치만기개월수 */
+             , LAST_PRNA_RDMP_DT                                  /* 최종원금상환일자 */
+             , LAST_INTR_CLC_DT                                   /* 최종이자계산일자 */
+             , NXT_RDMP_PRAR_DT                                   /* 다음상환예정일자 */
+             , NXT_INTR_PYM_DT                                    /* 다음이자납입일자 */
+             , INTR_RDMP_FRQC_MNUM                                /* 이자상환주기개월수 */
+             , INTR_PYM_DT_CD                                     /* 이자납입일자코드 */
+             , PRNA_RDMP_FRQC_MNUM                                /* 원금상환주기개월수 */
+             , PRNA_OVDU_DT                                       /* 원금연체일자 */
+             , INTR_OVDU_DT                                       /* 이자연체일자 */
+             , TOT_RDMP_TMRD                                      /* 총상환회차 */
+             , LAST_RDMP_TMRD                                     /* 최종상환회차 */
+             , DEAL_ISTM_BLCE                                     /* 딜할부잔액 */
+             , DEAL_EQL_RDMP_AMT                                  /* 딜균등상환금액 */
+             , ISTM_DTM_RDMP_AMT                                  /* 할부일시상환금액 */
+             , RCVB_INTR_AMT                                      /* 미수이자금액 */
+             , GRTE_DCD                                           /* 보증구분코드 */
+             , PYMT_GRTE_RFR_NO                                   /* 지급보증참조번호 */
+             , GRTE_ISTT_CD                                       /* 보증기관코드 */
+             , GRTE_ISTT_NM                                       /* 보증기관명 */
+             , BUY_SHQT                                           /* 매수좌수 */
+             , SLL_SHQT                                           /* 매도좌수 */
+             , AVR_UNPR                                           /* 평균단가 */
+             , BRKG_ACNO                                          /* 위탁계좌번호 */
+             , RCTM_ISTT_CD                                       /* 입금기관코드 */
+             , ACHD_NM                                            /* 예금주명 */
+             , PYMT_GRTE_SCCT_CTNS                                /* 지급보증특약내용 */
+             , ACBK_AMT                                           /* 장부금액 */
+             , DEAL_NO                                            /* 딜번호 */
+             , MTR_DCD                                            /* 안건구분코드 */
+             , JDGM_DCD                                           /* 심사구분코드 */
+             , HND_DETL_DTM                                       /* 조작상세일시 */
+             , HND_EMPNO                                          /* 조작사원번호 */
+             , HND_TMNL_NO                                        /* 조작단말기번호 */
+             , HND_TR_ID                                          /* 조작거래ID */
+             , GUID                                               /* GUID */
+          FROM IBIMS402B
+         WHERE 1=1
+           AND PRDT_CD = #{prdtCd}
+    </select>
+
+<!-- 여신실행기본등록  -->
+    <insert id="saveExcInfoNoKey" parameterType="com.nanuri.rams.business.common.dto.IBIMS402BDTO">
+        INSERT INTO IBIMS402B
+               (
+                  PRDT_CD                                 /* 상품코드 */
+                , EXC_SN                                  /* 실행일련번호 */
+                , LDG_STTS_CD                             /* 원장상태코드 */
+                , CRRY_CD                                 /* 통화코드 */
+                , EXC_DT                                  /* 실행일자 */
+                , EXP_DT                                  /* 만기일자 */
+                , DEAL_EXC_AMT                            /* 대출금액 */
+                , DEAL_EXC_BLCE                           /* 대출잔액 */
+                , KRW_TRSL_RT                             /* 원화환산율 */
+                , KRW_TRSL_EXC_AMT                        /* 원화환산실행금액 */
+                , KRW_TRSL_EXC_BLCE                       /* 원화환산실행잔액 */
+                , PRNA_DFR_PRD_MNUM                       /* 원금거치기간개월수 */
+                , DFR_EXP_MNUM                            /* 거치만기개월수 */
+                , LAST_PRNA_RDMP_DT                       /* 최종원금상환일자 */
+                , LAST_INTR_CLC_DT                        /* 최종이자계산일자 */
+                , NXT_RDMP_PRAR_DT                        /* 다음상환예정일자 */
+                , NXT_INTR_PYM_DT                         /* 다음이자납입일자 */
+                , INTR_RDMP_FRQC_MNUM                     /* 이자상환주기개월수 */
+                , INTR_PYM_DT_CD                          /* 이자납입일자코드 */
+                , PRNA_RDMP_FRQC_MNUM                     /* 원금상환주기개월수 */
+                , PRNA_OVDU_DT                            /* 원금연체일자 */
+                , INTR_OVDU_DT                            /* 이자연체일자 */
+                , TOT_RDMP_TMRD                           /* 총상환회차 */
+                , LAST_RDMP_TMRD                          /* 최종상환회차 */
+                , DEAL_ISTM_BLCE                          /* 할부잔액 */
+                , DEAL_EQL_RDMP_AMT                       /* 균등상환금액 */
+                , ISTM_DTM_RDMP_AMT                       /* 할부일시상환금액 */
+                , RCVB_INTR_AMT                           /* 미수이자금액 */
+                , GRTE_DCD                                /* 보증구분코드 */
+                , PYMT_GRTE_RFR_NO                        /* 지급보증참조번호 */
+                , GRTE_ISTT_CD                            /* 보증기관코드 */
+                , GRTE_ISTT_NM                            /* 보증기관명 */
+                , BUY_SHQT                                /* 매수좌수 */
+                , SLL_SHQT                                /* 매도좌수 */
+                , AVR_UNPR                                /* 평균단가 */
+                , BRKG_ACNO                               /* 위탁계좌번호 */
+                , RCTM_ISTT_CD                            /* 입금기관코드 */
+                , ACHD_NM                                 /* 예금주명 */
+                , PYMT_GRTE_SCCT_CTNS                     /* 지급보증특약내용 */
+                , ACBK_AMT                                /* 장부금액 */
+                , DEAL_NO                                 /* 딜번호 */
+                , MTR_DCD                                 /* 안건구분코드 */
+                , JDGM_DCD                                /* 심사구분코드 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래id */
+                , GUID                                    /* guid */
+               )
+        VALUES (
+                 #{prdtCd}                                 /* 상품코드 */
+               , #{excSn}                                  /* 실행일련번호 */
+               , #{ldgSttsCd}                              /* 원장상태코드 */
+               , #{crryCd}                                 /* 통화코드 */
+               , #{excDt}                                  /* 실행일자 */
+               , #{expDt}                                  /* 만기일자 */
+               , #{dealExcAmt}                             /* 대출금액 */
+               , #{dealExcBlce}                            /* 대출잔액 */
+               , #{krwTrslRt}                              /* 원화환산율 */
+               , #{krwTrslExcAmt}                          /* 원화환산실행금액 */
+               , #{krwTrslExcBlce}                         /* 원화환산실행잔액 */
+               , #{prnaDfrPrdMnum}                         /* 원금거치기간개월수 */
+               , #{dfrExpMnum}                             /* 거치만기개월수 */
+               , #{lastPrnaRdmpDt}                         /* 최종원금상환일자 */
+               , #{lastIntrClcDt}                          /* 최종이자계산일자 */
+               , #{nxtRdmpPrarDt}                          /* 다음상환예정일자 */
+               , #{nxtIntrPymDt}                           /* 다음이자납입일자 */
+               , #{intrRdmpFrqcMnum}                       /* 이자상환주기개월수 */
+               , #{intrPymDtCd}                            /* 이자납입일자코드 */
+               , #{prnaRdmpFrqcMnum}                       /* 원금상환주기개월수 */
+               , #{prnaOvduDt}                             /* 원금연체일자 */
+               , #{intrOvduDt}                             /* 이자연체일자 */
+               , #{totRdmpTmrd}                            /* 총상환회차 */
+               , #{lastRdmpTmrd}                           /* 최종상환회차 */
+               , #{dealIstmBlce}                           /* 할부잔액 */
+               , #{dealEqlRdmpAmt}                         /* 균등상환금액 */
+               , #{istmDtmRdmpAmt}                         /* 할부일시상환금액 */
+               , #{rcvbIntrAmt}                            /* 미수이자금액 */
+               , #{grteDcd}                                /* 보증구분코드 */
+               , #{pymtGrteRfrNo}                          /* 지급보증참조번호 */
+               , #{grteIsttCd}                             /* 보증기관코드 */
+               , #{grteIsttNm}                             /* 보증기관명 */
+               , #{buyShqt}                                /* 매수좌수 */
+               , #{sllShqt}                                /* 매도좌수 */
+               , #{avrUnpr}                                /* 평균단가 */
+               , #{brkgAcno}                               /* 위탁계좌번호 */
+               , #{rctmIsttCd}                             /* 입금기관코드 */
+               , #{achdNm}                                 /* 예금주명 */
+               , #{pymtGrteScctCtns}                       /* 지급보증특약내용 */
+               , #{acbkAmt}                                /* 장부금액 */
+               , #{dealNo}                                 /* 딜번호 */
+               , #{mtrDcd}                                 /* 안건구분코드 */
+               , #{jdgmDcd}                                /* 심사구분코드 */
+               , SYSDATE                              /* 조작상세일시 */
+               , #{hndEmpno}                               /* 조작사원번호 */
+               , #{hndTmnlNo}                              /* 조작단말기번호 */
+               , #{hndTrId}                                /* 조작거래id */
+               , #{guid}                                   /* guid */
+               )
+    </insert>
+
+    <!-- 여신실행기본수정매매용  -->
+    <update id="uptExcInfoTr" parameterType="com.nanuri.rams.business.common.dto.IBIMS402BDTO">
+       UPDATE IBIMS402B
+          SET  PRDT_CD             = #{prdtCd}                                                  /* 상품코드 */
+              ,EXC_SN              = #{excSn}                                                   /* 실행일련번호 */
+              ,LDG_STTS_CD         = #{ldgSttsCd}                                               /* 원장상태코드 */
+              ,CRRY_CD             = #{crryCd}                                                  /* 통화코드 */
+              ,EXC_DT              = #{excDt}                                                   /* 실행일자 */
+              ,EXP_DT              = #{expDt}                                                   /* 만기일자 */
+              ,DEAL_EXC_AMT        = NVL(DEAL_EXC_AMT,0) + NVL(#{dealExcAmt},0)           /* 딜실행금액 */
+              ,DEAL_EXC_BLCE       = NVL(DEAL_EXC_BLCE,0) + NVL(#{dealExcBlce},0)         /* 딜실행잔액 */
+              ,KRW_TRSL_RT         = #{krwTrslRt}                                               /* 원화환산율 */
+              ,KRW_TRSL_EXC_AMT    = NVL(KRW_TRSL_EXC_AMT,0) + NVL(#{krwTrslExcAmt},0)    /* 원화환산실행금액 */
+              ,KRW_TRSL_EXC_BLCE   = NVL(KRW_TRSL_EXC_BLCE,0) + NVL(#{krwTrslExcBlce},0)  /* 원화환산실행잔액 */
+              ,PRNA_DFR_PRD_MNUM   = #{prnaDfrPrdMnum}                                          /* 원금거치기간개월수 */
+              ,DFR_EXP_MNUM        = #{dfrExpMnum}                                              /* 거치만기개월수 */
+              ,LAST_PRNA_RDMP_DT   = #{lastPrnaRdmpDt}                                          /* 최종원금상환일자 */
+              ,LAST_INTR_CLC_DT    = #{lastIntrClcDt}                                           /* 최종이자계산일자 */
+              ,NXT_RDMP_PRAR_DT    = #{nxtRdmpPrarDt}                                           /* 다음상환예정일자 */
+              ,NXT_INTR_PYM_DT     = #{nxtIntrPymDt}                                            /* 다음이자납입일자 */
+              ,INTR_RDMP_FRQC_MNUM = #{intrRdmpFrqcMnum}                                        /* 이자상환주기개월수 */
+              ,INTR_PYM_DT_CD      = #{intrPymDtCd}                                             /* 이자납입일자코드 */
+              ,PRNA_RDMP_FRQC_MNUM = #{prnaRdmpFrqcMnum}                                        /* 원금상환주기개월수 */
+              ,PRNA_OVDU_DT        = #{prnaOvduDt}                                              /* 원금연체일자 */
+              ,INTR_OVDU_DT        = #{intrOvduDt}                                              /* 이자연체일자 */
+              ,TOT_RDMP_TMRD       = #{totRdmpTmrd}                                             /* 총상환회차 */
+              ,LAST_RDMP_TMRD      = #{lastRdmpTmrd}                                            /* 최종상환회차 */
+              ,DEAL_ISTM_BLCE      = NVL(DEAL_ISTM_BLCE,0) + NVL(#{dealIstmBlce},0)       /* 딜할부잔액 */
+              ,DEAL_EQL_RDMP_AMT   = NVL(DEAL_EQL_RDMP_AMT,0) + NVL(#{dealEqlRdmpAmt},0)  /* 딜균등상환금액 */
+              ,ISTM_DTM_RDMP_AMT   = NVL(ISTM_DTM_RDMP_AMT,0) + NVL(#{istmDtmRdmpAmt},0)  /* 할부일시상환금액 */
+              ,RCVB_INTR_AMT       = NVL(RCVB_INTR_AMT,0) +NVL(#{rcvbIntrAmt},0)          /* 미수이자금액 */
+              ,GRTE_DCD            = #{grteDcd}                                                 /* 보증구분코드 */
+              ,PYMT_GRTE_RFR_NO    = #{pymtGrteRfrNo}                                           /* 지급보증참조번호 */
+              ,GRTE_ISTT_CD        = #{grteIsttCd}                                              /* 보증기관코드 */
+              ,GRTE_ISTT_NM        = #{grteIsttNm}                                              /* 보증기관명 */
+              ,BUY_SHQT            = NVL(BUY_SHQT,0) + NVL(#{buyShqt},0)                  /* 매수좌수 */
+              ,SLL_SHQT            = NVL(SLL_SHQT,0) + NVL(#{sllShqt},0)                  /* 매도좌수 */
+              ,AVR_UNPR            = (NVL(KRW_TRSL_EXC_AMT,0) + NVL(#{krwTrslExcAmt},0)) / ((NVL(BUY_SHQT,0) + NVL(#{buyShqt},0)) + (NVL(SLL_SHQT,0) + NVL(#{sllShqt},0)))   /* 평균단가 */
+              ,BRKG_ACNO           = #{brkgAcno}                                                /* 위탁계좌번호 */
+              ,RCTM_ISTT_CD        = #{rctmIsttCd}                                              /* 입금기관코드 */
+              ,ACHD_NM             = #{achdNm}                                                  /* 예금주명 */
+              ,PYMT_GRTE_SCCT_CTNS = #{pymtGrteScctCtns}                                        /* 지급보증특약내용 */
+              ,ACBK_AMT            = NVL(ACBK_AMT,0) + NVL(#{acbkAmt},0)                  /* 장부금액 */
+              ,DEAL_NO             = #{dealNo}                                                  /* 딜번호 */
+              ,MTR_DCD             = #{mtrDcd}                                                  /* 안건구분코드 */
+              ,JDGM_DCD            = #{jdgmDcd}                                                 /* 심사구분코드 */
+              ,HND_DETL_DTM        = SYSDATE                                               /* ENT조작상세일시 */
+              ,HND_EMPNO           = #{hndEmpno}                                                /* 조작사원번호 */
+              ,HND_TMNL_NO         = #{hndTmnlNo}                                               /* 조작단말기번호 */
+              ,HND_TR_ID           = #{hndTrId}                                                 /* 조작거래id */
+              ,GUID                = #{guid}                                                    /* guid */
+        WHERE 1=1
+          AND PRDT_CD              = #{prdtCd}                                                  /* 상품코드 */
+          AND EXC_SN               = #{excSn}                                                   /* 실행일련번호 */
+    </update>
+
+    <!-- 이자계산시뮬레이션 팝업 딜실행정보 조회 -->
+    <select id="getDetailInfo" parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.vo.TB06015SVO">
+           SELECT
+          B.INTR_RDMP_FRQC_MNUM                       as intrRdmpFrqcMnum
+        , B.PRNA_RDMP_FRQC_MNUM                       as prnaRdmpFrqcMnum
+        , A.PRNA_DFR_PRD_MNUM                         as dfrExpDt
+        , A.LAST_PRNA_RDMP_DT                         as lastPrnaRdmpDt
+        , A.LAST_INTR_CLC_DT                          as lastIntrClcDt
+        , A.NXT_INTR_PYM_DT                           as nxtIntrPymDt
+        , A.INTR_PYM_DT_CD                            as intrPymDtCd
+        , A.DEAL_EQL_RDMP_AMT                         as eqlRdmpAmt
+        , A.RCVB_INTR_AMT                             as rcvbIntrAmt
+        , A.KRW_TRSL_EXC_BLCE                         as dealExcBlce
+        , A.EXC_DT                                    as excDt
+        , A.EXP_DT                                    as mtrtDt
+        , A.PRNA_OVDU_DT                              as prnaOvduDt
+        , A.INTR_OVDU_DT                              as intrOvduDt
+        , B.EPRZ_CRDL_INTR_BNAO_DCD                   as intrBnaoDcd
+        , B.EPRZ_CRDL_TFD_LY_APLY_DCD                 as tfdLyAplyDcd
+        , B.EPRZ_CRDL_INTR_SNNO_PRCS_DCD              as intrSnnoPrcsDcd
+        , B.EPRZ_CRDL_INTR_CLC_END_DE_DCD             as intrClcEndDeDcd
+        , B.EPRZ_CRDL_PAI_RDMP_DCD                    as paiRdmpDcd
+        , B.EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD            as intrDnumClcMthCd
+        , B.EPRZ_CRDL_OVDU_INTR_RT_DCD                as ovduIntrRtDcd
+        , B.EPRZ_CRDL_HLDY_PRCS_DCD                   as hldyPrcsDcd
+        , B.TLMT_PRF_LOSE_DT                          as tlmtPrfLoseDt
+        , B.OVDU_INTR_RT                              as ovduIntrRt
+        ,CASE 
+                  WHEN EXISTS (SELECT MDWY_RDMP_FEE_RTO 
+                              FROM IBIMS204B 
+                              WHERE PRDT_CD = A.PRDT_CD )  
+                THEN (SELECT MAX(MDWY_RDMP_FEE_RTO)
+                              FROM IBIMS204B
+                              WHERE PRDT_CD = A.PRDT_CD)
+                END  as mdwyRdmpFeeRto 
+        ,CASE 
+                WHEN EXISTS (SELECT MRDP_YN 
+                              FROM IBIMS410B 
+                              WHERE PRDT_CD = A.PRDT_CD 
+                              AND EXC_SN = A.EXC_SN 
+                              AND MRDP_YN = '1') 
+                THEN 1 
+                ELSE 0 
+                END  as mrdpYn
+        ,(SELECT SUM(DEAL_MRDP_PRCA) 
+            FROM IBIMS410B 
+            where PRDT_CD = A.PRDT_CD 
+            AND EXC_SN = A.EXC_SN 
+            AND MRDP_YN = '1')	AS dealMrdpPrca
+      FROM IBIMS402B A
+      	 , IBIMS401B B 
+      WHERE 1=1
+      AND  B.PRDT_CD = A.PRDT_CD
+      AND A.PRDT_CD = #{prdtCd}
+      AND A.EXC_SN = #{excSn}
+    </select>
+
+    <!-- TB06015P 실행순번 selectBox 세팅 -->
+    <select id="getExcSnTB06015P" parameterType = "String" resultType = "String">
+      SELECT DISTINCT ib2.EXC_SN
+      FROM IBIMS402B ib2
+          , IBIMS404B ib4
+      WHERE 1=1
+      AND ib2.PRDT_CD = ib4.PRDT_CD 
+      AND ib2.EXC_SN = ib4.EXC_SN
+      AND ib2.PRDT_CD = #{paramData}
+    </select>
+
+    <!-- 실행일련번호 조회 -->
+    <select id="srchExcSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO" resultType="java.util.HashMap">
+       SELECT EXC_SN               /* 신청일련번호 */
+         FROM IBIMS402B            /* 약정기본 */
+        WHERE PRDT_CD = #{prdtCd}  /* 종목코드 */
+    </select>
+</mapper>

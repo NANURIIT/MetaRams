@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS222BMapper">
+	
+    <!-- IB승인기초자산기본 - 대출채권/채무보증 정보(TB06010S) - 기초자산등록  -->
+    <insert id="rgstAsstIBIMS222B" parameterType="com.nanuri.rams.business.common.vo.IBIMS222BVO">
+        INSERT INTO IBIMS222B 
+               (
+                  BSS_ASST_MNGM_NO                                  							<!-- 기초자산관리번호 -->
+                , BSS_ASST_NM                                       							<!-- 기초자산명 -->
+                , INV_JDGM_DEAL_NO                                  							<!-- 투자심사딜번호 -->
+                , TR_OTHR_DSCM_NO                                   							<!-- 거래상대방식별번호 -->
+                , TR_OTHR_NM                                        							<!-- 거래상대방명 -->
+                , CRNO                                              							<!-- 법인등록번호 -->
+                , EPRZ_SCL_DCD                                      							<!-- 기업규모구분코드 -->
+                , STS_STN_IDST_CLSF_CD                              							<!-- 통계청표준산업분류코드 -->
+                , CRDT_GRD_DCD                                      							<!-- 신용등급구분코드 -->
+                , INV_NTN_CD                                        							<!-- 투자국가코드 -->
+                , BSS_ASST_INV_SHP_DCD                              							<!-- 기초자산투자형태구분코드 -->
+                , BSS_ASST_TP_CD                                    							<!-- 기초자산유형코드 -->
+                , BSS_ASST_DETL_TP_DCD                              							<!-- 기초자산상세유형구분코드 -->
+                , RGST_DT                                           							<!-- 등록일자 -->
+                , RGST_EMPNO                                        							<!-- 등록사원번호 -->
+                , RLES_TP_DCD                                       							<!-- 부동산유형구분코드 -->
+                , INV_LCTP_DCD                                      							<!-- 투자소재지구분코드 -->
+                , LCTP_ADDR                                         							<!-- 소재지주소 -->
+                , LTV_OUTPUT_MTH_DCD                                							<!-- ltv산출방법구분코드 -->
+                , LTV_RTO                                           							<!-- ltv비율 -->
+                , PF_EFCE_SHP_DCD                                   							<!-- pf시행형태구분코드 -->
+                , UNSLD_MNGM_AREA_YN                                							<!-- 미분양관리지역여부 -->
+                , QLFC_IPRE_YN                                      							<!-- 적격ipre여부 -->
+                , QLFC_HVCRE_YN                                     							<!-- 적격hvcre여부 -->
+                , LQDZ_SCTY_NM                                      							<!-- 유동화증권명 -->
+                , MO_NS_FND_CD                                      							<!-- 모고유자산펀드코드 -->
+                , FOFS_YN                                           							<!-- 재간접펀드여부 -->
+                , BDFND_YN                                          							<!-- 블라인드펀드여부 -->
+                , REITS_YN                                          							<!-- 리츠여부 -->
+                , MO_FND_YN                                         							<!-- 모펀드여부 -->
+                , NUS_LMT_YN                                        							<!-- 미사용한도여부 -->
+                , CPTL_MKT_LAW_APLY_TRGT_YN                         							<!-- 자본시장법적용대상여부 -->
+                , PEF_YN                                            							<!-- pef여부 -->
+                , BSS_ASST_ISU_CRNO                                 							<!-- 기초자산발행법인등록번호 -->
+                , PBFF_PPLC_DCD                                     							<!-- 공모사모구분코드 -->
+                , DMS_OVRS_FND_DCD                                  							<!-- 국내해외펀드구분코드 -->
+                , KOFIA_FND_CD                                      							<!-- 금융투자협회펀드코드 -->
+                , KSD_FND_CD                                        							<!-- 한국예탁결제원펀드코드 -->
+                , LEI                                               							<!-- 글로벌법인식별번호 -->
+                , FND_MNGM_BD_NO                                    							<!-- 펀드관리부점번호 -->
+                , FND_RWA_CLC_MTH_DCD                               							<!-- 펀드rwa계산방법구분코드 -->
+                , RLTN_CMP_ACBK_AMT                                 							<!-- 관계회사장부금액 -->
+                , KRW_TRSL_RLTN_CMP_ACBK_AMT                        							<!-- 원화환산관계회사장부금액 -->
+                , LVRG_RTO                                          							<!-- 레버리지비율 -->
+                , FND_ACCT_PRD_MNUM                                 							<!-- 펀드회계기간개월수 -->
+                , RLTH_TP_DCD                                       							<!-- 실물유형구분코드 -->
+                , RLTH_NM                                           							<!-- 실물명 -->
+                , ERN_RT                                            							<!-- 수익율 -->
+                , ERN_PRD_MNUM                                      							<!-- 수익기간개월수 -->
+                , DEL_YN                                            							<!-- 삭제여부 -->
+                , HND_DETL_DTM
+                , HND_EMPNO                                         							<!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       							<!-- 조작단말기번호 -->
+                , HND_TR_ID                                         							<!-- 조작거래id -->
+                , GUID                                              							<!-- guid -->
+               )
+        VALUES (
+                  (SELECT LPAD(MAX(A.BSS_ASST_MNGM_NO)+1,16,'0') FROM IBIMS222B A)              <!-- 기초자산관리번호 -->
+               , #{bssAsstNm}                                       							<!-- 기초자산명 -->
+               , #{invJdgmDealNo}                                   							<!-- 투자심사딜번호 -->
+               , #{trOthrDscmNo}                                    							<!-- 거래상대방식별번호 -->
+               , #{trOthrNm}                                        							<!-- 거래상대방명 -->
+               , #{crno}                                            							<!-- 법인등록번호 -->
+               , #{eprzSclDcd}                                      							<!-- 기업규모구분코드 -->
+               , #{stsStnIdstClsfCd}                                							<!-- 통계청표준산업분류코드 -->
+               , #{crdtGrdDcd}                                      							<!-- 신용등급구분코드 -->
+               , #{invNtnCd}                                        							<!-- 투자국가코드 -->
+               , #{bssAsstInvShpDcd}                                							<!-- 기초자산투자형태구분코드 -->
+               , #{bssAsstTpCd}                                     							<!-- 기초자산유형코드 -->
+               , #{bssAsstDetlTpDcd}                                							<!-- 기초자산상세유형구분코드 -->
+               , #{rgstDt}                                          							<!-- 등록일자 -->
+               , #{rgstEmpno}                                       							<!-- 등록사원번호 -->
+               , #{rlesTpDcd}                                       							<!-- 부동산유형구분코드 -->
+               , #{invLctpDcd}                                      							<!-- 투자소재지구분코드 -->
+               , #{lctpAddr}                                        							<!-- 소재지주소 -->
+               , #{ltvOutputMthDcd}                                 							<!-- ltv산출방법구분코드 -->
+               , #{ltvRto}                                          							<!-- ltv비율 -->
+               , #{pfEfceShpDcd}                                    							<!-- pf시행형태구분코드 -->
+               , #{unsldMngmAreaYn}                                 							<!-- 미분양관리지역여부 -->
+               , #{qlfcIpreYn}                                      							<!-- 적격ipre여부 -->
+               , #{qlfcHvcreYn}                                     							<!-- 적격hvcre여부 -->
+               , #{lqdzSctyNm}                                      							<!-- 유동화증권명 -->
+               , #{moNsFndCd}                                       							<!-- 모고유자산펀드코드 -->
+               , #{fofsYn}                                          							<!-- 재간접펀드여부 -->
+               , #{bdfndYn}                                         							<!-- 블라인드펀드여부 -->
+               , #{reitsYn}                                         							<!-- 리츠여부 -->
+               , #{moFndYn}                                         							<!-- 모펀드여부 -->
+               , #{nusLmtYn}                                        							<!-- 미사용한도여부 -->
+               , #{cptlMktLawAplyTrgtYn}                            							<!-- 자본시장법적용대상여부 -->
+               , #{pefYn}                                           							<!-- pef여부 -->
+               , #{bssAsstIsuCrno}                                  							<!-- 기초자산발행법인등록번호 -->
+               , #{pbffPplcDcd}                                     							<!-- 공모사모구분코드 -->
+               , #{dmsOvrsFndDcd}                                   							<!-- 국내해외펀드구분코드 -->
+               , #{kofiaFndCd}                                      							<!-- 금융투자협회펀드코드 -->
+               , #{ksdFndCd}                                        							<!-- 한국예탁결제원펀드코드 -->
+               , #{lei}                                             							<!-- 글로벌법인식별번호 -->
+               , #{fndMngmBdNo}                                     							<!-- 펀드관리부점번호 -->
+               , #{fndRwaClcMthDcd}                                 							<!-- 펀드rwa계산방법구분코드 -->
+               , #{rltnCmpAcbkAmt}                                  							<!-- 관계회사장부금액 -->
+               , #{krwTrslRltnCmpAcbkAmt}                           							<!-- 원화환산관계회사장부금액 -->
+               , #{lvrgRto}                                         							<!-- 레버리지비율 -->
+               , #{fndAcctPrdMnum}                                  							<!-- 펀드회계기간개월수 -->
+               , #{rlthTpDcd}                                       							<!-- 실물유형구분코드 -->
+               , #{rlthNm}                                          							<!-- 실물명 -->
+               , #{ernRt}                                           							<!-- 수익율 -->
+               , #{ernPrdMnum}                                      							<!-- 수익기간개월수 -->
+               , 'N'                                                							<!-- 삭제여부 -->
+               , SYSDATE
+               , #{hndEmpno}                                        							<!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       							<!-- 조작단말기번호 -->
+               , #{hndTrId}                                         							<!-- 조작거래id -->
+               , #{guid}                                            							<!-- guid -->
+               )
+    </insert>
+    
+    <!-- IB승인기초자산기본 - 대출채권/채무보증 정보(TB06010S) - 기초자산변경  -->
+    <update id="mdfAsstIBIMS222B" parameterType="com.nanuri.rams.business.common.dto.IBIMS222BDTO">
+       UPDATE IBIMS222B
+          SET BSS_ASST_NM                                       = #{bssAsstNm}                                       <!-- 기초자산명 -->
+            , INV_JDGM_DEAL_NO                                  = #{invJdgmDealNo}                                   <!-- 투자심사딜번호 -->
+            , TR_OTHR_DSCM_NO                                   = #{trOthrDscmNo}                                    <!-- 거래상대방식별번호 -->
+            , TR_OTHR_NM                                        = #{trOthrNm}                                        <!-- 거래상대방명 -->
+            , CRNO                                              = #{crno}                                            <!-- 법인등록번호 -->
+            , EPRZ_SCL_DCD                                      = #{eprzSclDcd}                                      <!-- 기업규모구분코드 -->
+            , STS_STN_IDST_CLSF_CD                              = #{stsStnIdstClsfCd}                                <!-- 통계청표준산업분류코드 -->
+            , CRDT_GRD_DCD                                      = #{crdtGrdDcd}                                      <!-- 신용등급구분코드 -->
+            , INV_NTN_CD                                        = #{invNtnCd}                                        <!-- 투자국가코드 -->
+            , BSS_ASST_INV_SHP_DCD                              = #{bssAsstInvShpDcd}                                <!-- 기초자산투자형태구분코드 -->
+            , BSS_ASST_TP_CD                                    = #{bssAsstTpCd}                                     <!-- 기초자산유형코드 -->
+            , BSS_ASST_DETL_TP_DCD                              = #{bssAsstDetlTpDcd}                                <!-- 기초자산상세유형구분코드 -->
+            , RGST_DT                                           = #{rgstDt}                                          <!-- 등록일자 -->
+            , RGST_EMPNO                                        = #{rgstEmpno}                                       <!-- 등록사원번호 -->
+            , RLES_TP_DCD                                       = #{rlesTpDcd}                                       <!-- 부동산유형구분코드 -->
+            , INV_LCTP_DCD                                      = #{invLctpDcd}                                      <!-- 투자소재지구분코드 -->
+            , LCTP_ADDR                                         = #{lctpAddr}                                        <!-- 소재지주소 -->
+            , LTV_OUTPUT_MTH_DCD                                = #{ltvOutputMthDcd}                                 <!-- ltv산출방법구분코드 -->
+            , LTV_RTO                                           = #{ltvRto}                                          <!-- ltv비율 -->
+            , PF_EFCE_SHP_DCD                                   = #{pfEfceShpDcd}                                    <!-- pf시행형태구분코드 -->
+            , UNSLD_MNGM_AREA_YN                                = #{unsldMngmAreaYn}                                 <!-- 미분양관리지역여부 -->
+            , QLFC_IPRE_YN                                      = #{qlfcIpreYn}                                      <!-- 적격ipre여부 -->
+            , QLFC_HVCRE_YN                                     = #{qlfcHvcreYn}                                     <!-- 적격hvcre여부 -->
+            , LQDZ_SCTY_NM                                      = #{lqdzSctyNm}                                      <!-- 유동화증권명 -->
+            , MO_NS_FND_CD                                      = #{moNsFndCd}                                       <!-- 모고유자산펀드코드 -->
+            , FOFS_YN                                           = #{fofsYn}                                          <!-- 재간접펀드여부 -->
+            , BDFND_YN                                          = #{bdfndYn}                                         <!-- 블라인드펀드여부 -->
+            , REITS_YN                                          = #{reitsYn}                                         <!-- 리츠여부 -->
+            , MO_FND_YN                                         = #{moFndYn}                                         <!-- 모펀드여부 -->
+            , NUS_LMT_YN                                        = #{nusLmtYn}                                        <!-- 미사용한도여부 -->
+            , CPTL_MKT_LAW_APLY_TRGT_YN                         = #{cptlMktLawAplyTrgtYn}                            <!-- 자본시장법적용대상여부 -->
+            , PEF_YN                                            = #{pefYn}                                           <!-- pef여부 -->
+            , BSS_ASST_ISU_CRNO                                 = #{bssAsstIsuCrno}                                  <!-- 기초자산발행법인등록번호 -->
+            , PBFF_PPLC_DCD                                     = #{pbffPplcDcd}                                     <!-- 공모사모구분코드 -->
+            , DMS_OVRS_FND_DCD                                  = #{dmsOvrsFndDcd}                                   <!-- 국내해외펀드구분코드 -->
+            , KOFIA_FND_CD                                      = #{kofiaFndCd}                                      <!-- 금융투자협회펀드코드 -->
+            , KSD_FND_CD                                        = #{ksdFndCd}                                        <!-- 한국예탁결제원펀드코드 -->
+            , LEI                                               = #{lei}                                             <!-- 글로벌법인식별번호 -->
+            , FND_MNGM_BD_NO                                    = #{fndMngmBdNo}                                     <!-- 펀드관리부점번호 -->
+            , FND_RWA_CLC_MTH_DCD                               = #{fndRwaClcMthDcd}                                 <!-- 펀드rwa계산방법구분코드 -->
+            , RLTN_CMP_ACBK_AMT                                 = #{rltnCmpAcbkAmt}                                  <!-- 관계회사장부금액 -->
+            , KRW_TRSL_RLTN_CMP_ACBK_AMT                        = #{krwTrslRltnCmpAcbkAmt}                           <!-- 원화환산관계회사장부금액 -->
+            , LVRG_RTO                                          = #{lvrgRto}                                         <!-- 레버리지비율 -->
+            , FND_ACCT_PRD_MNUM                                 = #{fndAcctPrdMnum}                                  <!-- 펀드회계기간개월수 -->
+            , RLTH_TP_DCD                                       = #{rlthTpDcd}                                       <!-- 실물유형구분코드 -->
+            , RLTH_NM                                           = #{rlthNm}                                          <!-- 실물명 -->
+            , ERN_RT                                            = #{ernRt}                                           <!-- 수익율 -->
+            , ERN_PRD_MNUM                                      = #{ernPrdMnum}                                      <!-- 수익기간개월수 -->
+            , DEL_YN                                            = #{delYn}                                           <!-- 삭제여부 -->
+            , HND_DETL_DTM                                      = SYSDATE
+            , HND_EMPNO                                         = #{hndEmpno}                                        <!-- 조작사원번호 -->
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+            , HND_TR_ID                                         = #{hndTrId}                                         <!-- 조작거래id -->
+            , GUID                                              = #{guid}                                            <!-- guid -->
+        WHERE 1=1
+          AND BSS_ASST_MNGM_NO                                  = #{bssAsstMngmNo}                                   <!-- 기초자산관리번호 -->
+    </update>
+	
+</mapper>

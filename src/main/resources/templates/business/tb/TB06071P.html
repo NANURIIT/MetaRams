@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<!-- <script th:src="@{js/business/tb/TB03030S.js}"></script> -->
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+
+</th:block>
+
+<th:block th:fragment="GD10181P">
+	<!-- modal -->
+	<div id="modal-GD10181P" class="modal hide" role="dialog" style="">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">목록코드조회</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick=""><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="" id="" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox mb-0">
+								<!-- 조회조건영역 -->
+				    			<div class="ibox-content i-filter text-right">
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">검색조건</label>
+										<div class="col-sm-4">
+											<div class="input-group">
+												<select class="form-control" id="">
+													<option value="">선택</option>
+												</select>
+											</div>
+										</div>
+										
+										<div class="col-sm-6 text-right">
+											<button type="button" class="btn btn-primary mr-2" onclick="" ><i class="fa fa-search"></i>&nbsp;조회</button>
+										</div>
+									</div>
+				    			</div>
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+				    				<table class="table result table-bordered footable" style="height: 350px">
+										<colgroup>
+											<col>
+											<col>
+										</colgroup>
+										<thead>
+											<tr> 
+												<th>회계단위업무코드</th>
+												<th>회계단위업무명</th>
+											</tr>
+										</thead>
+										<tbody id="">
+											<tr class="text-center">
+												<td></td>
+												<td></td>
+											</tr>
+										</tbody>
+									</table>
+				    			</div>
+							</div><!-- ibox -->
+						</div>
+					</div>
+				</div>
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:fragment="headFragment">
+    <th:block layout:fragment="title"><title>Investment Bank Integrated Management System</title></th:block>
+
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <link rel="shortcut icon" th:href="@{/images/nanuriit.png}" type="image/x-icon">
+    
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{font-awesome/css/font-awesome.css}">
+    
+    <link rel="stylesheet" th:href="@{css/plugins/sweetalert/sweetalert.css}">
+    <link rel="stylesheet" th:href="@{css/plugins/sweetalert/sweetalert2.min.css}">
+    <link rel="stylesheet" th:href="@{css/plugins/daterangepicker/daterangepicker.css}"/>
+    <link rel="stylesheet" th:href="@{css/plugins/datepicker/datepicker3.css}"/>
+    <link rel="stylesheet" th:href="@{css/plugins/clockpicker/clockpicker.css}"/>
+    <link rel="stylesheet" th:href="@{css/plugins/footable/footable.core.css}"/>
+    
+    <th:block layout:fragment="css"></th:block>
+    
+    <!-- 2024-06-19 -->
+    <link rel="stylesheet" th:href="@{css/plugins/jquery-ui-1.13.2/jquery-ui.min.css}">
+    <link rel="stylesheet" th:href="@{css/plugins/jquery-ui-1.13.2/jquery-ui.structure.min.css}">
+    <link rel="stylesheet" th:href="@{css/plugins/jquery-ui-1.13.2/jquery-ui.theme.min.css}">
+    <link rel="stylesheet" th:href="@{css/plugins/paramquery-pro/pqgrid.min.css}">
+    <link rel="stylesheet" th:href="@{css/plugins/paramquery-pro/pqgrid.ui.min.css}">
+    <link rel="stylesheet" th:href="@{css/plugins/paramquery-pro/pq-icons/pq.css}">
+    <!-- TODO: pqGrid theme 적용테스트해보고 이쁘면 추가하기 -->
+    <!-- ParamQuery Grid custom theme e.g., office, bootstrap, rosy, chocolate, etc (optional) -->
+    <link rel="stylesheet" th:href="@{css/plugins/paramquery-pro/themes/steelblue/pqgrid.css}">
+
+    <!-- Last compiled css -->
+    <link rel="stylesheet" th:href="@{css/animate.css}">
+    <link rel="stylesheet" th:href="@{css/plugins/nanuri/style.css}"/>
+    <link rel="stylesheet" th:href="@{css/custom.css}"/>
+
+</head>
+</html>

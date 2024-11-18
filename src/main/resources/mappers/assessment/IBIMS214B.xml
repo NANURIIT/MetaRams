@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS214BMapper">
+	
+	<!-- 딜승인부동산담보내역 - 대출채권/채무보증 정보(TB06010S) - 담보/보증내역등록  -->
+    <insert id="insertIBIMS214B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        INSERT INTO IBIMS214B 
+               (
+                  MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
+                , DRC_MRTG_YN                                       <!-- 직접담보여부 -->
+                , OVSS_MRTG_YN                                      <!-- 국외담보여부 -->
+                , APRS_MTH_CD                                       <!-- 감정방법코드(감정구분코드) -->
+                , APRS_EVL_ISTT_CD                                  <!-- 감정평가기관코드 -->
+                , CREV_ISTT_NM                                      <!-- 시가평가기관명 -->
+                , CREV_STDR_CD                                      <!-- 시가평가기준코드 -->
+                , APRS_PRPS_CD                                      <!-- 감정목적코드 -->
+                , APRS_DT                                           <!-- 감정일자 -->
+                , LCTP_ADDR                                         <!-- 소재지주소 -->
+                , RLES_SQMS_CTNS                                    <!-- 부동산면적내용 -->
+                , APRS_CRRY_CD                                      <!-- 감정통화코드 -->
+                , APRS_PRC                                          <!-- 감정가격 -->
+                , KRW_TRSL_APRS_PRC                                 <!-- 원화환산감정가격 -->
+                , MRTG_RCG_RTO                                      <!-- 담보인정비율 -->
+                , MRTG_RTO                                          <!-- 담보비율 -->
+                , MRTG_PRC                                          <!-- 담보가격 -->
+                , HND_DETL_DTM
+                , HND_EMPNO                                         <!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+                , HND_TR_ID                                         <!-- 조작거래id -->
+                , GUID                                              <!-- guid -->
+               )
+        VALUES (
+                 #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+               , #{drcMrtgYn}                                       <!-- 직접담보여부 -->
+               , #{ovssMrtgYn}                                      <!-- 국외담보여부 -->
+               , #{aprsMthCd}                                       <!-- 감정방법코드(감정구분코드) -->
+               , #{aprsEvlIsttCd}                                   <!-- 감정평가기관코드 -->
+               , #{crevIsttNm}                                      <!-- 시가평가기관명 -->
+               , #{crevStdrCd}                                      <!-- 시가평가기준코드 -->
+               , #{aprsPrpsCd}                                      <!-- 감정목적코드 -->
+               , #{aprsDt}                                          <!-- 감정일자 -->
+               , #{lctpAddr}                                        <!-- 소재지주소 -->
+               , #{rlesSqmsCtns}                                    <!-- 부동산면적내용 -->
+               , #{aprsCrryCd}                                      <!-- 감정통화코드 -->
+               , #{aprsPrc}                                         <!-- 감정가격 -->
+               , #{krwTrslAprsPrc}                                  <!-- 원화환산감정가격 -->
+               , #{mrtgRcgRto}                                      <!-- 담보인정비율 -->
+               , #{mrtgRto}                                         <!-- 담보비율 -->
+               , #{mrtgPrc}                                         <!-- 담보가격 -->
+               , SYSDATE
+               , #{hndEmpno}                                        <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+               , #{hndTrId}                                         <!-- 조작거래id -->
+               , #{guid}                                            <!-- guid -->
+               )
+    </insert>
+    
+    <delete id="deleteIBIMS214B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        DELETE 
+          FROM IBIMS214B
+         WHERE 1=1
+           AND MRTG_MNGM_NO                                      = #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+    </delete>
+
+</mapper>

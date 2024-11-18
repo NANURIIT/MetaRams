@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!-- 공통헤드 -->
+<th:block th:replace="layout/fragments/ramsHead :: headFragment"></th:block>
+
+
+<!-- <body> -->
+<!-- 스크롤바 -->
+
+<body style="overflow: auto;">
+
+	<div id="wrapper">
+
+		<!-- leftFragment -->
+		<th:block th:replace="layout/fragments/ramsLeft :: leftFragment"></th:block>
+
+		<div id="page-wrapper" class="gray-bg">
+			<!-- topFragment -->
+			<th:block th:replace="layout/fragments/ramsTop :: topFragment"></th:block>
+
+			<!-- 탭 추가 될 예정 s -->
+			<div class="top-tabs-container" id="tabs">
+				<ul class="nav top-nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item main-tab active" role="presentation" th:data-tabId="${#httpServletRequest.requestURI}">
+						<button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target=""
+							type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"
+							onclick="moveTab('TB02010S')">오늘의 할일
+						</button>
+					</li>
+				</ul>
+			</div>
+			
+			<!-- <div class="main-con" data-menuId="TB02010S"> -->
+			<!-- </div> -->
+			<!-- 상단 타이틀 -->
+			<div class="row wrapper white-bg page-heading" id="title-top">
+				<div class="col-lg-10" th:data-titleId="${#httpServletRequest.requestURI}">
+					<h2 class="" th:text="|[${title.urlVrbCntn}] ${title.title}|"></h2>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<span th:text="${title.hgTitle}"></span>
+						</li>
+						<li class="breadcrumb-item">
+							<strong th:text="${title.title}"></strong>
+						</li>
+					</ol>
+				</div>
+			</div>
+
+			<!-- customContent -->
+			 <div th:data-menuId="${#httpServletRequest.requestURI}">
+				 <th:block layout:fragment="customContent"></th:block>
+			 </div>
+			<!-- <th:block layout:fragment="customContent" style="margin-bottom: 39.8px;"></th:block> -->
+			<!-- 마진이 필요없는 것 같음 -->
+			<!-- </div>  탭 추가 될 예정 e -->
+			<!-- footerFragment -->
+			<th:block th:replace="layout/fragments/ramsFooter :: footerFragment"></th:block>
+		</div>
+	</div>
+
+	<!-- modal popup -->
+	<th:block layout:fragment="modalpopup"></th:block>
+
+	<!-- Mainly scripts -->
+	<script th:src="@{js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{js/plugins/popper/popper.min.js}"></script>
+	<script th:src="@{js/bootstrap.js}"></script>
+	<script th:src="@{js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+
+	<!-- Last compiled javascript -->
+	<script th:src="@{js/ramsLayout.js}"></script>
+	<script th:src="@{js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+	<script th:src="@{js/plugins/pace/pace.min.js}"></script>
+	<!-- 20240628 추가 -->
+	<script th:src="@{js/plugins/jqueryMask/jquery.mask.js}"></script>
+	<script th:src="@{js/plugins/jqueryMask/jquery.mask.min.js}"></script>
+	<script th:src="@{js/plugins/sweetalert/sweetalert.min.js}"></script>
+	<script th:src="@{js/plugins/sweetalert/sweetalert2.all.min.js}"></script>
+	<script th:src="@{js/plugins/datepicker/bootstrap-datepicker.js}"></script>
+	<script th:src="@{js/plugins/clockpicker/clockpicker.js}"></script>
+	<script th:src="@{js/plugins/footable/footable.all.js}"></script>
+
+	<script th:src="@{js/chart.js}"></script>
+
+	<!--<script th:src="@{js/plugins/monthPicker/jquery.mtz.monthpicker.js}"></script>-->
+
+	<script th:src="@{js/plugins/datepicker/bootstrap-datepicker.ko.js}"></script>
+
+	<!-- <script th:src="@{js/plugins/inspinia/inspinia.js}"></script> -->
+
+	<!-- ExcelExport -->
+	<script th:src="@{js/plugins/excelexport/xlsx.full.min.js}"></script>
+	<script th:src="@{js/plugins/excelexport/FileSaver.min.js}"></script>
+
+	<!-- Last compiled javascript -->
+	<!-- 2024-06-19 -->
+	<script th:src="@{css/plugins/jquery-ui-1.13.2/custum/jquery-ui.js}"></script>
+	<!-- 순서중요함! Include jsZip file (v2.5.0) before pqgrid js file to support xlsx and zip export (optional) -->
+	<script th:src="@{css/plugins/paramquery-pro/jsZip-2.5.0/jszip.min.js}"></script>
+	<script th:src="@{css/plugins/paramquery-pro/pqgrid.min.js}"></script>
+
+	<th:block layout:fragment="script"></th:block>
+
+</body>
+
+</html>

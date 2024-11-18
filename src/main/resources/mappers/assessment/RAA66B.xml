@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA66BMapper">
+	<!-- 안건연결 목록 조회 -->
+    <select id="getCnctList" parameterType="com.nanuri.rams.business.common.dto.RAA66BDTO" resultType="com.nanuri.rams.business.common.vo.RAA66BVO">
+    	SELECT A.IB_DEAL_NO								<!-- IBDEAL 번호 -->
+    	     , A.RISK_INSPCT_CCD						<!-- 리스크심사구분코드 -->
+    	     , A.LST_C_CASE_CCD							<!-- 부수안건구분코드 -->
+    	     , A.SQ										<!-- 일련번호 -->
+    	     , A.CNCT_IB_DEAL_NO						<!-- 연계IBDEAL번호 -->
+    	     , (SELECT IB_DEAL_NM
+    	          FROM RAA02B
+    	         WHERE IB_DEAL_NO      = A.CNCT_IB_DEAL_NO
+    	           AND RISK_INSPCT_CCD = A.CNCT_RISK_INSPCT_CCD
+    	           AND LST_C_CASE_CCD  = A.CNCT_LST_C_CASE_CCD) AS CNCT_IB_DEAL_NM
+    	     , A.CNCT_RISK_INSPCT_CCD					<!-- 연계리스크심사구분코드 -->
+    	     , A.CNCT_LST_C_CASE_CCD					<!-- 연계부수안건구분코드 -->
+    	     , A.ETC_CNTNT								<!-- 기타내용 -->
+    	     , CONCAT(SUBSTR(A.RGST_DT, 1, 4)
+    		 , '-', SUBSTR(A.RGST_DT, 5, 2)
+    		 , '-', SUBSTR(A.RGST_DT, 7, 2)) AS RGST_DT <!-- 등록일자 -->
+    		 , A.RGST_TM								<!-- 등록시간 -->
+    	     , A.FST_RGST_P_ENO							<!-- 최초등록자사번 -->
+			 , (SELECT EMP_NM
+			      FROM RAA92B
+			     WHERE ENO = A.FST_RGST_P_ENO
+			    ) AS FST_RGST_P_NM						<!-- 최초등록자명 -->
+    	     , A.HNDL_DY_TM								<!-- 처리일시 -->
+    	     , A.HNDL_DPRT_CD							<!-- 처리부점코드 -->
+    	     , A.HNDL_P_ENO								<!-- 처리자사번 -->
+    	  FROM RAA66B A									<!-- 부실자산파일첨부정보 -->
+    	 WHERE IB_DEAL_NO = #{ibDealNo}					<!-- IBDEAL 번호 -->
+    	   AND RISK_INSPCT_CCD = #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+    	   AND LST_C_CASE_CCD = #{lstCCaseCcd}			<!-- 부수안건구분코드 -->
+    </select>
+
+	<!-- 안건정보 저장 -->
+	<insert id="registCnctInfo" parameterType="com.nanuri.rams.business.common.dto.RAA66BDTO">
+		INSERT INTO RAA66B
+			  (
+			    IB_DEAL_NO
+			  , RISK_INSPCT_CCD
+			  , LST_C_CASE_CCD
+			  , SQ
+			  , CNCT_IB_DEAL_NO
+			  , CNCT_RISK_INSPCT_CCD
+			  , CNCT_LST_C_CASE_CCD
+			  , ETC_CNTNT
+			  , RGST_DT
+			  ,	RGST_TM
+			  , FST_RGST_P_ENO
+			  , HNDL_DY_TM
+			  , HNDL_DPRT_CD
+			  , HNDL_P_ENO
+			  )
+		VALUES
+		     (
+			   #{ibDealNo}
+			 , #{riskInspctCcd}
+			 , #{lstCCaseCcd}
+			 , (SELECT IFNULL(MAX(A.SQ)+1, 1)
+			      FROM RAA66B A)
+			 , #{cnctIbDealNo}
+			 , #{cnctRiskInspctCcd}
+			 , #{cnctLstCCaseCcd}
+			 , #{etcCntnt}
+			 , DATE_FORMAT(CURDATE(), '%Y%m%d')
+			 , DATE_FORMAT(CURRENT_TIMESTAMP(), '%H%i%s')
+			 , #{hndlPEno}
+			 , DATE_FORMAT(CURDATE(), '%Y-%m-%d')
+			 , #{hndlDprtCd}
+			 , #{hndlPEno}
+			 )
+	</insert>
+
+	<!-- 안건정보 수정 -->
+	<update id="updateCnctInfo" parameterType="com.nanuri.rams.business.common.dto.RAA66BDTO">
+		UPDATE RAA66B
+		  SET  CNCT_IB_DEAL_NO       = #{cnctIbDealNo}
+			 , CNCT_RISK_INSPCT_CCD  = #{cnctRiskInspctCcd}
+			 , CNCT_LST_C_CASE_CCD   = #{cnctLstCCaseCcd}
+			 , ETC_CNTNT             = #{etcCntnt}
+			 , HNDL_DY_TM            = DATE_FORMAT(CURDATE(), '%Y-%m-%d')
+			 , HNDL_DPRT_CD          = #{hndlDprtCd}
+			 , HNDL_P_ENO            = #{hndlPEno}
+		 WHERE IB_DEAL_NO            = #{ibDealNo}
+		   AND RISK_INSPCT_CCD		 = #{riskInspctCcd}
+		   AND LST_C_CASE_CCD		 = #{lstCCaseCcd}
+		   AND SQ                    = #{sq}
+	</update>
+
+	<delete id="deleteCnctInfo" parameterType="String">
+		DELETE
+		  FROM RAA66B
+		 WHERE SQ = #{sq}
+	</delete>
+</mapper>

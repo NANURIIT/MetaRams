@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA04BMapper">
+	
+	<!-- 관계사정보 취득 -->
+    <select id="getRelatedCompanyInfo" parameterType="com.nanuri.rams.business.common.vo.RAA04BVO" resultType="com.nanuri.rams.business.common.vo.RAA04BVO">
+    	SELECT raa04b.IB_DEAL_NO			   AS	IB_DEAL_NO					<!-- IBDEAL번호 -->
+    		 , raa04b.RISK_INSPCT_CCD		   AS	RISK_INSPCT_CCD				<!-- 리스크심사구분코드 -->
+    		 , raa04b.LST_C_CASE_CCD		   AS	LST_C_CASE_CCD				<!-- 부수안건구분코드 -->
+    		 , raa04b.ITEM_SQ				   AS	ITEM_SQ						<!-- 항목일련번호 -->
+    		 , raa04b.CNC_CMPNY_CLSF_CD		   AS	CNC_CMPNY_CLSF_CD			<!-- 연결회사구분코드 -->
+    		 , raa04b.ISNG_OGN_CORP_NO		   AS	ISNG_OGN_CORP_NO			<!-- 발행기관법인번호 -->
+    		 , IFNULL(raa04b.RNMCNO, '')  	   AS	RNMCNO						<!-- 실명확인번호 -->
+    		 , IFNULL(raa04b.MX_STKHD_NM, '')  AS 	MX_STKHD_NM					<!-- 최대주주명 -->
+    		 , IFNULL((SELECT ENTP_HNGL_NM
+    		 			FROM RAB97B
+    		 		   WHERE CORP_RGST_NO = raa04b.ISNG_OGN_CORP_NO), '')	AS 	ENTP_HNGL_NM	<!-- 한글법인명 -->	
+    		 , raa04b.HNDL_DY_TM			   AS	HNDL_DY_TM					<!-- 처리일시 -->
+    		 , raa04b.HNDL_DPRT_CD			   AS	HNDL_DPRT_CD				<!-- 처리부점코드 -->
+    		 , raa04b.HNDL_P_ENO			   AS	HNDL_P_ENO					<!-- 처리자번 -->
+    		 , raa91b.CD_VL_ID													<!-- 법인형태코드 -->
+    		 , raa91b.CD_VL_NM													<!-- 법인형태코드명 -->
+    	  FROM RAA04B raa04b
+    	  	 , RAA91B raa91b
+    	 WHERE 1=1
+    	   AND raa04b.IB_DEAL_NO				 = #{ibDealNo}			<!-- IBDEAL번호 -->
+    	   AND raa04b.RISK_INSPCT_CCD 			 = #{riskInspctCcd}
+    	   AND raa04b.LST_C_CASE_CCD 			 = #{lstCCaseCcd}
+    	   AND raa04b.CNC_CMPNY_CLSF_CD = raa91b.CD_VL_ID		<!-- 연결회사구분코드 -->
+    	   AND raa91b.USE_F = 'Y'						<!-- 사용여부 -->
+   		   AND raa91b.CMNS_CD_GRP = 'C002' 			<!-- 공통코드그룹 -->
+    	 ORDER BY raa04b.ITEM_SQ
+    </select>
+    
+    <!-- 관계사정보 추가  -->
+    <insert id="registCncCmpnyInfo" parameterType="com.nanuri.rams.business.common.dto.RAA04BDTO">
+     	INSERT INTO RAA04B
+     		   (
+     		    IB_DEAL_NO						<!-- IBDEAL번호 -->
+     		    , RISK_INSPCT_CCD				<!-- 리스크심사구분코드 -->
+     		    , LST_C_CASE_CCD				<!-- 부수안건구분코드 -->
+     		    , ITEM_SQ						<!-- 항목일련번호 -->
+     		    , CNC_CMPNY_CLSF_CD				<!-- 연결회사구분코드 -->
+     		    , ISNG_OGN_CORP_NO				<!-- 발행기관법인번호 -->
+     		    , RNMCNO						<!-- 실명확인번호 -->
+     		    , MX_STKHD_NM					<!-- 최대주주명 -->
+     		    , HNDL_DY_TM					<!-- 처리일시 -->
+     		    , HNDL_DPRT_CD					<!-- 처리부점코드 -->
+     		    , HNDL_P_ENO					<!-- 처리자번 -->
+     		   ) 
+     	VALUES (
+     			#{ibDealNo}						<!-- IBDEAL번호 -->
+     			, #{riskInspctCcd    }			<!-- 리스크심사구분코드 -->
+     			, #{lstCCaseCcd      }			<!-- 부수안건구분코드 -->
+     			, NEXT VALUE FOR RAA04B_SQ		<!-- 항목일련번호 -->
+     			, #{cncCmpnyClsfCd} 			<!-- 연결회사구분코드 -->
+     			, #{isngOgnCorpNo }				<!-- 발행기관법인번호 -->
+     			, #{rnmcno}						<!-- 실명확인번호 -->
+     			, #{mxStkhdNm}					<!-- 최대주주명 -->
+     			, CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+     			, #{hndlDprtCd       }			<!-- 처리부점코드 -->
+     			, #{hndlPEno         }			<!-- 처리자번 -->
+     		   )
+    </insert>
+    
+    <!-- 관계사정보 갱신 -->
+    <update id="updateCncCmpnyInfo" parameterType="com.nanuri.rams.business.common.dto.RAA04BDTO">
+    	UPDATE RAA04B
+    	   SET CNC_CMPNY_CLSF_CD		= #{cncCmpnyClsfCd	 }				<!-- 연결회사구분토드 -->
+    	     , ISNG_OGN_CORP_NO			= #{isngOgnCorpNo	 }				<!-- 발행기관법인번호 -->
+    	     , MX_STKHD_NM				= #{mxStkhdNm		 }				<!-- 최대주주명 -->
+    	     <!-- , RNMCNO					= #{rnmcno			 } --> 		<!-- 실명확인번호 -->
+		 WHERE 1=1
+		   AND IB_DEAL_NO				= #{ibDealNo         }				<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+		   AND ITEM_SQ					= #{itemSq           }				<!-- 항목일련번호 -->
+    </update>
+    
+    <!-- 관계사정보 삭제 -->
+    <delete id="deleteCncCmpnyInfo" parameterType="com.nanuri.rams.business.common.vo.RAA04BVO">
+    	DELETE FROM RAA04B 
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}				<!-- IBDEAL번호 -->
+    	   AND ITEM_SQ = #{itemSq}					<!-- 항목일련번호 -->
+    	   AND IB_DEAL_NO				= #{ibDealNo         }				<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+    </delete>
+    
+    <!--    정기보고 펀드명 저장    -->
+    <update id="saveFndNm">
+        UPDATE RAA04B
+           SET HNGL_FND_NM		= #{fndNm}
+             , HNDL_DY_TM 		= SYSDATE()
+             , HNDL_DPRT_CD 	= #{hndlDprtCd}
+             , HNDL_P_ENO 		= #{hndlPEno}
+         WHERE IB_DEAL_NO 		= #{ibDealNo}
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+           AND CNC_CMPNY_CLSF_CD = '16'
+           AND ISNG_OGN_CORP_NO = #{astsWrkngCorpNo}
+    </update>
+    
+</mapper>

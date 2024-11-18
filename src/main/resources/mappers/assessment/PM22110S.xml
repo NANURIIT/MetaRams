@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.PM22110Mapper">
+
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆ 변경된 MAPPER 로 사용불가 (songwonhee) ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    
+	<select id="getAfterMngSttnList" parameterType="com.nanuri.rams.business.common.vo.PM22110SVO" resultType="com.nanuri.rams.business.common.vo.PM22110SVO">
+		SELECT A.IB_DEAL_NO					AS IB_DEAL_NO					<!-- IBDEAL번호 -->
+			 , A.IB_DEAL_NM					AS IB_DEAL_NM					<!-- IBDEAL명 -->
+			 , A.RISK_INSPCT_CCD			AS RISK_INSPCT_CCD				<!-- 리스크심사구분코드 -->
+			 , A.LST_C_CASE_CCD				AS LST_C_CASE_CCD				<!-- 부수안건구분코드 -->
+			 , A.RA_DEAL_CCD				AS RA_DEAL_CCD					<!-- RADEAL구분코드 -->
+			 , A.RISK_RCG_NO				AS RISK_RCG_NO					<!-- 리스크승인번호 -->
+			 , A.DPRT_CD					AS DPRT_CD						<!-- 부점코드 -->
+			 , C.DPRT_NM					AS DPRT_NM						<!-- 부점명 -->
+			 , A.CHRG_P_ENO					AS CHRG_P_ENO					<!-- 담당자사번 -->
+			 , D.EMP_NM						AS CHRG_P_ENO_NM				<!-- 직원명 -->
+			 , A.FNC_GDS_DVD_CD				AS FNC_GDS_DVD_CD				<!-- 금융상품분류코드 -->
+			 , IFNULL(E.CD_VL_NM, '')		AS FNC_GDS_DVD_CD_NM			<!-- 금융상품분류코드명 -->
+			 , A.INSPCT_DPRT_CCD			AS INSPCT_DPRT_CCD				<!-- 심사부서구분코드 -->
+			 , E.CD_VL_NM 					AS INSPCT_DPRT_CCD_NM			<!-- 심사부서구분코드명 -->
+			 , A.OWN_P_ENO					AS OWN_P_ENO					<!-- 소유자사번(심사역) -->
+			 , F.EMP_NM						AS OWN_P_ENO_NM					<!-- 소유자명(심사역이름) -->
+			 , A.RSLTN_CNFRNC_CCD			AS RSLTN_CNFRNC_CCD				<!-- 결의협의회구분코드 -->
+			 , G.CD_VL_NM					AS RSLTN_CNFRNC_CCD_NM			<!-- 결의협의회구분코드명 -->
+			 , IFNULL(H.INVST_ASTS_NM, '')	AS INVST_ASTS_NM				<!-- 투자자산명 -->
+			 , H.ASTS_QTY_DVD_CD			AS ASTS_QTY_DVD_CD				<!-- 자산건정성분류코드 -->
+			 , IFNULL(J.CD_VL_NM, '')		AS ASTS_QTY_DVD_CD_NM			<!-- 자산건정성분류코드명 -->
+			 , I.RISK_INSPCT_MNG_STTS_CD	AS RISK_INSPCT_MNG_STTS_CD		<!-- 리스크심사관리단계코드 -->
+			 , IFNULL(K.CD_VL_NM, '')		AS RISK_INSPCT_MNG_STTS_CD_NM	<!-- 리스크심사관리단계코드명 -->
+			 , IFNULL(MONTH(H.CTRT_STRT_DT)
+			    , '')     	AS CTRT_STRT_DT									<!-- 계약시작일(편입(투자)월) -->
+			 , IFNULL(H.KRW_RA, '')			AS KRW_RA						<!-- 원화잔액 -->
+			 , IFNULL(B.CASE_MNTR_CNTNT, '') AS CASE_MNTR_CNTNT				<!-- 안건모니터링내용 -->
+			 , IFNULL(B.CASE_MNTR_DTLS_CNTNT, '') AS CASE_MNTR_DTLS_CNTNT	<!-- 안건모니터링상세내용 -->
+			 , IFNULL(B.MAIN_STTN, '') AS MAIN_STTN							<!-- 주요현황 -->
+			 , IFNULL(B.ASTS_OUTLN, '') AS ASTS_OUTLN						<!-- 자산개요 -->
+			 , IFNULL(B.WRKNG_STTN, '') AS WRKNG_STTN						<!-- 운용현황 -->
+			 , IFNULL(B.PRGRS_LPS1, '') AS PRGRS_LPS1						<!-- 진행경과1 -->
+			 , IFNULL(B.PRGRS_LPS2, '') AS PRGRS_LPS2						<!-- 진행경과2 -->
+			 , IFNULL(B.PRGRS_LPS3, '') AS PRGRS_LPS3						<!-- 진행경과3 -->
+		  FROM RAA02B A														<!-- 심사안건평가관리 -->
+		  LEFT OUTER JOIN RAA65B B											<!-- 안건별모니터링관리정보 -->
+			ON A.IB_DEAL_NO 				= B.IB_DEAL_NO					<!-- IBDEAL번호 -->
+		   AND A.RISK_INSPCT_CCD 			= B.RISK_INSPCT_CCD				<!-- 리스크심사구분코드 -->
+		   AND A.LST_C_CASE_CCD 			= B.LST_C_CASE_CCD				<!-- 부수안건구분코드 -->
+		  LEFT JOIN RAA98A C												<!-- 본부점목록 -->
+		    ON A.DPRT_CD 					= C.DPRT_CD						<!-- 부점코드 -->
+		  LEFT JOIN RAA92B D												<!-- 사원목록 -->
+		    ON A.CHRG_P_ENO 				= D.ENO							<!-- 담당자사번 -->
+		  LEFT JOIN RAA91B E												<!-- 공통코드정보 -->
+		    ON A.INSPCT_DPRT_CCD			= E.CD_VL_ID					<!-- 금융상품분류코드 -->
+		   AND E.CMNS_CD_GRP				= 'I003'						<!-- 공통코드그룹 -->
+		  LEFT JOIN RAA99A F												<!-- 사원목록 -->
+		    ON A.OWN_P_ENO 					= F.ENO							<!-- 소유자사번 -->
+		  LEFT JOIN RAA91B G												<!-- 공통코드정보 -->
+		    ON A.RSLTN_CNFRNC_CCD	 		= G.CD_VL_ID					<!-- 결의협의회구분코드 -->
+		   AND G.CMNS_CD_GRP				= 'R007'						<!-- 공통코드그룹 -->
+		  LEFT JOIN (
+					  SELECT RISK_RCG_NO 			AS RISK_RCG_NO			<!-- 리스크승인번호 -->
+						   , SUM(KRW_RA)			AS KRW_RA				<!-- 원화잔액 -->
+						   , MAX(ASTS_QTY_DVD_CD) 	AS ASTS_QTY_DVD_CD		<!-- 자산건전성분류코드 -->
+						   , MAX(CTRT_STRT_DT) 		AS CTRT_STRT_DT			<!-- 계약시작일자 -->
+						   , INVST_ASTS_NM			AS INVST_ASTS_NM		<!-- 투자자산명 -->
+					    FROM RAA49B											<!-- 일별리스크심사통합포지션정보 -->
+					   WHERE STD_DT = ( 									<!-- 기준일자 -->
+						   			   SELECT MAX(STD_DT)					<!-- MAX(기준일자) -->
+									     FROM RAA49B						<!-- 일별리스크심사통합포지션정보 -->
+									  )
+					   GROUP 
+						  BY RISK_RCG_NO									<!-- 리스크승인번호  -->
+					) H
+		    ON A.RISK_RCG_NO				= H.RISK_RCG_NO					<!-- 리스크승인번호 -->
+		  LEFT JOIN RAA50B I												<!-- 일별리스크심사관리단계정보 -->
+		    ON I.STD_DT  					= (								<!-- 기준일자 -->
+												SELECT MAX(STD_DT)
+												FROM RAA50B
+											  )
+		   AND A.IB_DEAL_NO					= I.IB_DEAL_NO					<!-- IBDEAL번호 -->
+		   AND A.RISK_INSPCT_CCD			= I.RISK_INSPCT_CCD				<!-- 리스크심사구분코드 -->
+		   AND A.LST_C_CASE_CCD				= I.LST_C_CASE_CCD				<!-- 부수안건구분코드 -->
+		  LEFT JOIN RAA91B J												<!-- 공통코드정보 -->
+		    ON H.ASTS_QTY_DVD_CD 			= J.CD_VL_ID					<!-- 자산건전성분류코드 -->
+		   AND J.CMNS_CD_GRP				= 'A002'						<!-- 공통코드그룹 -->
+		  LEFT JOIN RAA91B K												<!-- 공통코드정보 -->
+		    ON I.RISK_INSPCT_MNG_STTS_CD	= K.CD_VL_ID					<!-- 리스크심사관리단계코드 -->
+		   AND K.CMNS_CD_GRP				= 'R012'						<!-- 공통코드그룹 -->
+		
+		 WHERE A.IB_DEAL_NO					= #{ibDealNo}					<!-- IBDEAL번호 -->
+		   AND A.RA_DEAL_CCD 				= #{raDealCcd}					<!-- RADEAL구분코드 -->
+		<!-- Datamart 미구현으로 인한 관리단계분류 부여 불가.. 임시로 주석처리
+		   AND C.DPRT_CD					= #{dprtCd}						 부점코드
+		   AND I.RISK_INSPCT_MNG_STTS_CD	= #{riskInspctMngSttsCd}		 리스크심사관리단계코드
+		   <if test="ibDealNm != ''">
+		   AND A.IB_DEAL_NM					= #{ibDealNm}					 IBDEAL명
+		   </if>
+		   <if test="invstAstsNm != ''">
+		    AND H.INVST_ASTS_NM				= #{invstAstsNm}				 투자자산명
+		   </if>
+		     -->
+		   AND A.INSPCT_PRGRS_ST_CD			= '500'          				<!-- 500 == 약정완료 -->
+	</select>
+
+</mapper>

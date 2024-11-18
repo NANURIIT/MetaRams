@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+	<!-- <script th:src="@{js/file.js}"></script> -->
+	<script th:src="@{js/business/ab/AB01011S.js}"></script>
+	<script th:src="@{js/business/popup/AC01120P.js}"></script>
+	<script th:src="@{js/business/popup/AB01011P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block>
+	<th:block th:replace="business/popup/AB01011P :: entp_modal"></th:block><!-- 업체 조회 모달 -->
+	<th:block th:replace="business/popup/AB01011P :: AB01011P1"></th:block><!-- 지정조회자등록 모달 -->
+	<th:block th:replace="business/popup/AB01011P :: AB01011P2"></th:block><!-- 지정조회부서등록 모달 -->
+	<th:block th:replace="business/popup/AB01011P :: AB01011P3"></th:block><!-- 관연CALL등록 모달 -->
+	
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- CALL Report등록  -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<div class="ibox-content">
+						<!-- 버튼 -->
+						<div class="text-right mb-2">
+							<button id="scrtArtcF" class="btn btn-warning" onclick="ckuckSeceretYn()">
+								<i class="fa fa-unlock"></i>&nbsp;비밀글 설정
+							</button>
+							<button id="" class="btn btn-primary" onclick="">
+								<i class="fa fa-search"></i>&nbsp;불러오기
+							</button>
+							<button id="" class="btn btn-default" onclick="resetCallReport()">
+								<i class="fa fa-undo"></i>&nbsp;초기화
+							</button>
+							<button id="" class="btn btn-info" onclick="">
+								<i class="fa fa-save"></i>&nbsp;임시저장
+							</button>
+							<button id="" class="btn btn-success" onclick="clickSaveCallReport()">
+								<i class="fa fa-check"></i>&nbsp;신규 등록
+							</button>
+						</div>
+
+						<div class="row">
+							<!-- 담당자&업체정보 -->
+							<div class="col-sm-6">
+								<!-- 담당자정보 -->
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>담당자정보</h5>
+									</div>
+									<div class="ibox-content text-right">
+										<div class="input-group row">
+											<label class="col-sm-2 col-form-label">담당자</label>
+											<div class="input-group col-sm-4">
+												<input type="text" class="form-control" id="asmt_empNm" disabled="disabled">
+												<span class="input-group-append">
+													<button type="button" id="" class="btn btn-default " onclick="callAC01120P('asmt')">
+														<i class="fa fa-search"></i>
+													</button>
+												</span>
+											</div>
+											<label class="col-sm-2 col-form-label">소속부서</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="asmt_dprtNm" disabled="disabled">
+											</div>
+											<input type="hidden" id="asmt_eno" >
+											<input type="hidden" id="asmt_dprtCd" >
+										</div>
+									</div>
+								</div>
+								<!-- 업체 정보 -->
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>업체정보</h5>
+									</div>
+									<div class="ibox-content text-right">
+										<div class="row">
+											<label class="col-sm-2 col-form-label mb-2"><span class="req"></span>업체명</label>
+											<div class="col-sm-10">
+												<div class="input-group">
+													<input type="text" class="form-control" id="entpNm" > 
+													<span class="input-group-append">
+														<button type="button" id="" class="btn btn-default " onclick="getEntpInfo()">
+															<i class="fa fa-search"></i>
+														</button>
+														<button type="button" id="" class="btn btn-default" onclick="clearEntInfo()">
+															<i class="fa fa-eraser"></i>
+														</button>
+														<button type="button" id="" class="btn btn-default" onclick="" >
+															<i class="fa fa-info"></i>
+														</button>
+													</span>
+												</div>
+											</div>
+											<label class="col-sm-2 col-form-label">법인번호</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="corpNo" disabled="disabled">
+											</div>
+											<label class="col-sm-2 col-form-label">기업규모</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="corpSclCd" disabled="disabled">
+											</div>
+											<label class="col-sm-2 col-form-label">업종</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="indTypDvdCd" disabled="disabled">
+											</div>
+											<label class="col-sm-2 col-form-label">계열</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="aflCmpNm" disabled="disabled">
+											</div>
+											<label class="col-sm-2 col-form-label">신용등급</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="cedtGrdCd" disabled="disabled">
+											</div>
+											<label class="col-sm-2 col-form-label">상장시장</label>
+											<div class="col-sm-4 pb-3">
+												<input type="text" class="form-control" id="mktLstdCd" disabled="disabled">
+											</div>
+											<input type="hidden" id="entpCd">
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 지정 조회자/부서-->
+							<div class="ibox col-sm-6">
+								<div class="ibox-title">
+									<h5>지정 조회자/부서</h5>
+									<div class="ibox-tools">
+										<button id="clearDsgnUsr" class="btn btn-default btn-xs" onclick="clearDsgnUsrTable()">초기화</button>
+										<button id="clearDsgnDprt" class="btn btn-default btn-xs" onclick="clearDsgnDprtTable()" style="display: none;">초기화</button>
+										<button id="dsgnUsrBtn" class="btn btn-success btn-xs" onclick="callAB01011P1('asmt')">지정 조회자 등록</button>
+										<button id="dsgnDprtBtn" class="btn btn-success btn-xs" onclick="callAB01011P2('asmt')" style="display: none;">지정 조회 부서 등록</button>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<!-- tab -->
+									<div class="tabs-container mb-1">
+										<ul class="nav nav-tabs" role="tablist" id="ramsTab">
+											<li><a class="nav-link active" data-toggle="tab" id="DsgnTab1" href="#tab1_1">지정 조회자</a></li>
+											<li><a class="nav-link" data-toggle="tab" id="DsgnTab2" href="#tab1_2">지정 조회 부서</a></li>
+										</ul>
+										<div class="tab-content">
+											<!-- 지정 조회자 -->
+											<div role="tabpanel" class="tab-pane active" id="tab1_1">
+												<div class="panel-body">
+													<div class="tableFixHeader2" style="height: 20vh;">
+														<table class="table result table-bordered">
+															<thead class="text-center">
+																<tr>
+																	<th>순번</th>
+																	<th>부서명</th>
+																	<th>사용자</th>
+																	<th>삭제</th>
+																</tr>
+															</thead>
+															<tbody id="dsgnUserInfo">
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+
+											<!-- 지정 조회 부서 -->
+											<div role="tabpanel" class="tab-pane" id="tab1_2">
+												<div class="panel-body">
+													<div class="tableFixHeader2" style="height: 20vh;">
+														<table class="table result table-bordered">
+															<colgroup>
+																<col style="width: 20%;">
+																<col style="width: 60%;">
+																<col style="width: 20%;">
+															</colgroup>
+															<thead class="text-center">
+																<tr>
+																	<th>순번</th>
+																	<th>부서명</th>
+																	<th>삭제</th>
+																</tr>
+															</thead>
+															<tbody id="dsgnDprtInfo">
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<!-- CallReport 정보 -->
+							<div class="ibox col-sm-12">
+								<div class="ibox-title">
+									<h5 class="mr-3">CallReport 정보</h5>
+									<label for="" class=" col-form-label"> 
+										<input type="checkbox" name="repCcd" value="계열" id="AB01011S_repCcd1" onclick="clickCheck(this)">계열사협업
+									</label>
+									 <label for="" class=" col-form-label"> 
+									 	<input type="checkbox" name="repCcd" value="WM" id="AB01011S_repCcd2" onclick="clickCheck(this)">WM협업
+									</label>
+								</div>
+								<div class="ibox-content text-right">
+									<div class="row">
+										<!-- 보고서 번호 -->
+										<label class="col-sm-1 col-form-label">보고서 번호</label>
+										<div class="col-sm-2">
+											<input type="text" class="form-control" id="AB01011S_repNo_txt" disabled="disabled">
+											<input type="hidden" class="form-control" id="AB01011S_repNo">
+										</div>
+										<div class="col-sm-2"></div>
+										<!-- 상품정보 -->
+										<label class="col-sm-1 col-form-label"><span class="req"></span>상품정보</label>
+										<div class="col-sm-6 input-group">
+											<select class="form-control" id="AB01011S_invstGdsLdvdCd"></select> 
+											<select class="form-control" id="AB01011S_invstGdsMdvdCd"></select>
+										</div>
+									</div>
+									<div class="row">
+										<!-- 미팅제목 -->
+										<label class="col-sm-1 col-form-label"><span class="req"></span>미팅제목</label>
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="AB01011S_metTitNm">
+										</div>
+										<!-- 미팅일자 -->
+										<label class="col-sm-1 col-form-label"><span class="req"></span>미팅일자</label>
+										<div class="col-sm-2 input-group date"> 
+											<input type="text" class="form-control" id="AB01011S_metDt" name="" value="" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<span class="input-group-addon">
+											<i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+									
+									<div class="row">
+										<!-- 미팅목적 -->
+										<label class="col-sm-1 col-form-label"><span class="req"></span>미팅목적</label>
+										<div class="col-sm-11">
+											<textarea class="form-control" id="AB01011S_metPrpsNm"></textarea>
+										</div>
+										<label class="col-sm-1 col-form-label"><span class="req"></span>미팅내용</label>
+										<div class="col-sm-11">
+											<textarea class="form-control h-200" id="AB01011S_metCntnt"
+												placeholder="※ 영업관련 핵심내용 위주로 압축하여 작성&#10;&#10;※ 상장기업의 미공개 정보와 관련된 사항은 각별히 주의하여 기입&#10;□ 주요내용&#10;-&#10;-&#10;-&#10;"></textarea>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12 ibox">
+					    					<div class=" ibox-title text-left " style="background-color: #ffffff">
+					    						<h5>파일첨부</h5>
+						    					<div class="ibox-tools">
+						    						<div th:fragment="file" id="file-upload">
+														<form id="upload-file-form">
+															<input type="hidden" id="fileRepNo" name="fileRepNo">
+															<button class=" btn btn-default btn-xs" type="button" id="AB01011S_addFile">
+																<i class="fa fa-upload"></i>&nbsp;파일추가
+															</button>
+															<button class="btn btn-default btn-xs" type="button" id="AB01011S_delFiles">
+																<i class="fa fa-eraser"></i>&nbsp;파일삭제
+															</button>
+															<div style="display:hidden;">
+																<input type="file" class="custom-file-input" id="upload-file-input" name="uploadfile" accept="*">
+															</div>
+												      	</form>
+													</div>
+						                       	</div>
+					    					</div>
+					    					
+						    				<div class="ibox-content">
+						    					<table class="table table-bordered">
+						    						<colgroup>
+										                    <col style="width: 5%;">
+										                    <col style="width: 75%;">
+										                    <col style="width: 20%;">
+										            </colgroup>
+													<thead class="text-center">
+														<tr>
+															<th></th>
+															<th>파일명</th>
+															<th>등록일자</th>
+														</tr>
+													</thead>
+													<tbody id="AB01011S_fileList">
+													</tbody>
+												</table>
+												<div class="text-right">
+													* 첨부가능한 파일 형식 : 각종문서(MS-Office,HWP,PDF,Image,Text파일 등)<br>
+													(※ Zip파일 첨부 불가)
+												</div>
+						    				</div>
+						    			</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<!-- 고객정보 -->
+							<div class="ibox col-sm-6">
+								<div class="ibox-title">
+									<h5>고객정보</h5>
+								</div>
+								<div class="ibox-content text-right">
+									<div class="row">
+										<!-- 고객명 -->
+										<label class="col-sm-2 col-form-label"><span class="req"></span>고객명</label>
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="AB01011S_custNm">
+										</div>
+										<!-- 담당부서 -->
+										<label class="col-sm-2 col-form-label">담당부서</label>
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="AB01011S_custChrgDeptNm">
+										</div>
+										<!-- 직급 -->
+										<label class="col-sm-2 col-form-label">직급</label>
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="AB01011S_custPstnNm">
+										</div>
+										<!-- 주요경력 -->
+										<label class="col-sm-2 col-form-label">주요경력</label>
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="AB01011S_custMainCrrCntnt">
+										</div>
+										<!-- 참고사항 -->
+										<label class="col-sm-2 col-form-label">참고사항</label>
+										<div class="col-sm-10">
+											<div class="input-group">
+												<textarea class="form-control h-200" id="AB01011S_custRefCntnt"
+													placeholder="(학력/취미/가족관계 등 relationship point)"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 관련보고서 -->
+							<div class="ibox col-sm-6 ">
+								<div class="ibox-title">
+									<h5>관련 보고서</h5>
+									<div class="ibox-tools">
+										<button id="clearRelCall" class="btn btn-default btn-xs" onclick="clearRelCallTable()">초기화</button>
+										<button id="clearRelDpr" class="btn btn-default btn-xs" onclick="clearRelDprTable()" style="display: none;">초기화</button>
+										<button id="relCALLBtn" class="btn btn-success btn-xs" onclick="callAB01011P3('asmt')">관련 CALL 등록</button>
+										<button id="relDPRBtn" class="btn btn-success btn-xs"   style="display: none;" onclick=" ">관련 DPR 등록</button>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<!-- tab -->
+									<div class="tabs-container mb-0">
+										<ul class="nav nav-tabs" role="tablist" id="ramsTab">
+											<li><a class="nav-link active" data-toggle="tab" id="CALLTab" href="#tab2_1">CALL(0)</a></li>
+											<li><a class="nav-link" data-toggle="tab" id="DPRTab" href="#tab2_2">DPR(0)</a></li>
+										</ul>
+										<div class="tab-content">
+											<div role="tabpanel" class="tab-pane active" id="tab2_1">
+												<div class="panel-body">
+													<div class="tableFixHeader2" style="height: 20vh;">
+														<table class="table result table-bordered">
+															<thead class="text-center">
+																<tr>
+																	<th>순번</th>
+																	<th>미팅일자</th>
+																	<th>부서명</th>
+																	<th>담당자</th>
+																	<th>미팅제목</th>
+																	<th>업체명</th>
+																	<th>삭제</th>
+																</tr>
+															</thead>
+															<tbody id=relCallInfo>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+
+											<div role="tabpanel" class="tab-pane" id="tab2_2">
+												<div class="panel-body">
+													<div class="tableFixHeader2" style="height: 20vh;">
+														<table class="table result table-bordered">
+															<thead class="text-center">
+																<tr>
+																	<th>순번</th>
+																	<th></th>
+																	<th></th>	
+																</tr>
+															</thead>
+															<tbody id="relDprInfo">
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

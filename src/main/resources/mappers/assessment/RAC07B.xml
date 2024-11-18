@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAC07BMapper">
+
+    <!-- 오늘의할일추가를 위한 (SQ)조회  -->
+	<select id="getSeqNo" resultType="int"> 
+	    SELECT IFNULL(MAX(SQ)+1,1)
+	      FROM RAC07B
+	     WHERE ENO    = #{eno}
+	       AND REQ_DT = DATE_FORMAT(NOW(), '%Y%m%d')
+	</select>
+
+    <!-- 오늘의할일 summery조회 -->
+    <select id="getSummaryInfo" resultType="com.nanuri.rams.business.common.vo.RAC07BVO$selectVO" parameterType="com.nanuri.rams.business.common.vo.RAC07BVO$selectVO"> 
+	    SELECT ENO
+	         , SUM(CNT1)  APPV_WAIT_CNT
+	         , SUM(CNT2)  APPV_PRGRS_CNT
+	         , SUM(CNT3)  MET_CNT
+	      FROM 
+	         (
+	         SELECT A.ENO                               <!-- 담당자 --> 
+	              , A.REQ_CCD                         	<!-- 작업구분코드 -->
+	              , SUM(CASE WHEN A.ENO      = #{eno} THEN 1 ELSE 0 END) AS CNT1
+	                                                    <!-- 결재대기건수 -->
+	              , SUM(CASE WHEN A.REG_ENO != #{eno} THEN 1 ELSE 0 END) AS CNT2 
+	                                                    <!-- 결재진행건수 -->  
+	              , 0    AS CNT3 
+	           FROM RAC07B A
+	          WHERE 1=1
+	            AND A.REQ_CCD   = '01'  <!-- 결재 --> 
+	            AND A.REG_ENO    = #{eno} OR A.ENO = #{eno}
+	            AND A.HNDL_DT IS NULL
+	          UNION ALL
+	         SELECT A.ENO                               <!-- 담당자 --> 
+	              , A.REQ_CCD                           <!-- 작업구분코드 -->
+	              , 0    AS CNT1                        <!-- 결재대기건수 -->
+	              , 0    AS CNT2                        <!-- 결재요청건수 -->  
+	              , SUM(CASE WHEN A.ENO = #{eno} THEN 1 ELSE 0 END)  AS CNT3
+	                                                    <!-- 협의회회의건수 -->
+	           FROM RAC07B A
+	 	      WHERE 1=1
+	            AND A.REQ_CCD   = '02'  				<!-- 회의 -->
+	            AND A.ENO        = #{eno}              
+	            AND A.HNDL_DT IS NULL    
+	         )
+	     GROUP BY ENO     
+    </select>
+    
+    <!-- 오늘의할일조회 -->
+    <select id="selectRAC07BInfo" resultType="com.nanuri.rams.business.common.vo.RAC07BVO$selectVO" parameterType="com.nanuri.rams.business.common.vo.RAC07BVO$selectVO"> 
+        SELECT A.ENO                                                
+             , A.REQ_DT                            
+             , A.SQ                                
+             , A.REQ_CCD 
+             , (
+                SELECT CD_VL_NM
+                  FROM RAA91B
+                 WHERE CMNS_CD_GRP = 'R020'
+                   AND CD_VL_ID = A.REQ_CCD
+               ) AS REQ_CCD_NM
+             , A.REG_DT                            
+             , A.REG_TM                            
+             , A.REG_ENO
+             , (
+                SELECT EMP_NM
+                  FROM RAA99A
+                 WHERE ENO = A.ENO
+               ) AS REG_ENO_NM                           
+             , (
+                SELECT DPRT_NM
+                  FROM RAA99A
+                 WHERE ENO = A.ENO
+               ) AS DPRT_NM                           
+             , A.REQ_DTLS                          
+             , A.MENU_ID                           
+             , IFNULL(A.HNDL_DT, '') AS HNDL_DT                     
+             , A.HNDL_TM                                   
+             , A.HNDL_ENO                                          
+             , A.SPV_YN                                    
+             , A.ENTP_NM                                    
+             , A.RMRK  
+             , A.DLT_F                             
+             , A.DLT_DT
+             , B.IB_DEAL_NO
+             , IFNULL(C.IB_DEAL_NM, '') AS IB_DEAL_NM
+          FROM RAC02B B 
+    LEFT JOIN RAC07B A
+           ON B.IB_DEAL_NO = SUBSTRING_INDEX( SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
+    LEFT JOIN RAA02B C 
+           ON B.IB_DEAL_NO =C.IB_DEAL_NO 
+        WHERE 1=1
+          AND C.IB_DEAL_NO = SUBSTRING_INDEX( SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
+          AND CASE WHEN SUBSTRING_INDEX( SUBSTRING_INDEX(A.RMRK,',',2),'=',-1) != C.IB_DEAL_NO 
+                   THEN C.RISK_INSPCT_CCD = SUBSTRING_INDEX( SUBSTRING_INDEX(A.RMRK,',',2),'=',-1)
+                   ELSE 1=1 END
+          AND CASE WHEN SUBSTRING_INDEX( SUBSTRING_INDEX(A.RMRK,',',3),'=',-1) != C.IB_DEAL_NO 
+                   THEN C.LST_C_CASE_CCD = SUBSTRING_INDEX( SUBSTRING_INDEX(A.RMRK,',',3),'=',-1)
+                   ELSE 1=1 END         
+          AND A.ENO      = #{eno}
+          AND A.REQ_DT   = DATE_FORMAT(NOW(),'%Y%m%d')
+    UNION ALL
+       SELECT D.ENO                                                
+            , D.REQ_DT                            
+            , D.SQ                                
+            , D.REQ_CCD 
+            , (
+               SELECT CD_VL_NM
+                 FROM RAA91B
+                WHERE CMNS_CD_GRP = 'R020'
+                  AND CD_VL_ID = D.REQ_CCD
+              ) AS REQ_CCD_NM
+            , D.REG_DT                            
+            , D.REG_TM                            
+            , D.REG_ENO
+            , (
+                SELECT EMP_NM
+                  FROM RAA99A
+                 WHERE ENO = D.ENO
+               ) AS REG_ENO_NM
+            , (
+                SELECT DPRT_NM
+                  FROM RAA99A
+                 WHERE ENO = D.ENO
+               ) AS DPRT_NM                                    
+            , D.REQ_DTLS                          
+            , D.MENU_ID                           
+            , IFNULL(D.HNDL_DT, '')  AS HNDL_DT                                
+            , D.HNDL_TM                                   
+            , D.HNDL_ENO                                          
+            , D.SPV_YN                                    
+            , D.ENTP_NM                                    
+            , D.RMRK  
+            , D.DLT_F                             
+            , D.DLT_DT
+            , ''			AS IB_DEAL_NO
+            , ''			AS IB_DEAL_NM
+         FROM RAC07B D
+    LEFT JOIN RAC02B E 
+           ON E.IB_DEAL_NO = SUBSTRING_INDEX( SUBSTRING_INDEX(D.RMRK,',',1),'=',-1)        
+        WHERE (SELECT IB_DEAL_NO FROM RAA02B WHERE IB_DEAL_NO = SUBSTRING_INDEX( SUBSTRING_INDEX(D.RMRK,',',1),'=',-1)) IS NULL
+          AND D.ENO      = #{eno}
+          AND D.REQ_DT   = DATE_FORMAT(NOW(),'%Y%m%d')
+     ORDER BY REQ_DT
+            , SQ
+	</select> 
+	
+    <!-- 오늘의할일등록 -->	
+	<insert id="insertRAC07BInfo" parameterType="com.nanuri.rams.business.common.dto.RAC07BDTO"> 
+		INSERT INTO RAC07B
+		       (     
+                 ENO                               <!-- 담당자 -->
+               , REQ_DT                            <!-- 요청일자 -->
+               , SQ                                <!-- 일련번호 -->
+               , REQ_CCD                           <!-- 작업구분코드 -->
+               , REG_DT                            <!-- 등록일자 -->
+               , REG_TM                            <!-- 등록시간 -->
+               , REG_ENO                           <!-- 등록사번 -->
+			   , REQ_DTLS                          <!-- 작업설명 -->
+			   , MENU_ID                           <!-- 메뉴ID -->
+			   , HNDL_DT                           <!-- 처리일자 -->   
+			   , HNDL_TM                           <!-- 처리시간 -->        
+			   , HNDL_ENO                          <!-- 처리사번 -->         
+			   , SPV_YN                            <!-- 대결여부 -->        
+		  	   , ENTP_NM                           <!-- 업체명 -->         
+		  	   , RMRK                              <!-- 비고(메뉴별조회KEY) -->            
+			   , DLT_F                             <!-- 삭제여부 -->
+			   , DLT_DT                            <!-- 삭제일자 -->
+			   , FST_HNDL_P_ENO                    <!-- 최초등록자사번 -->
+			   , FST_HNDL_DY_TM                    <!-- 최초등록일시 -->      
+			   , LST_HNDL_P_ENO                    <!-- 최종변경자사번 -->
+			   , LST_HNDL_DY_TM                    <!-- 최종변경일시 --> 
+               )
+          VALUES 
+		       ( 
+                 #{eno}                            <!-- 담당자 -->
+               , DATE_FORMAT(NOW(),'%Y%m%d')       <!-- 요청일자 -->
+               <if test='sq == ""'>                <!-- 일련번호 -->  
+               , (SELECT IFNULL(MAX(A.SQ)+1,1) FROM RAC07B A WHERE ENO = #{eno} AND REQ_DT = DATE_FORMAT(NOW(),'%Y%m%d'))
+               </if>
+			   , #{reqCcd}                         <!-- 작업구분코드 -->
+			   , DATE_FORMAT(NOW(), '%Y%m%d')      <!-- 등록일자 -->
+			   , DATE_FORMAT(NOW(), '%H%i%s')      <!-- 등록시간 -->
+			   , #{regEno}                         <!-- 등록사번 -->
+			   , #{reqDtls}                        <!-- 작업설명 -->
+			   , #{menuId}                         <!-- 메뉴ID -->
+			   , NULL	                           <!-- 처리일자 -->
+			   , NULL	                           <!-- 처리시간 -->
+			   , NULL	                           <!-- 처리사번 -->
+			   , '0'	                           <!-- 대결여부 -->
+			   , #{entpNm}                         <!-- 업체명 -->  
+			   , #{rmrk}                           <!-- 비고(메뉴별조회KEY) -->  
+			   , '0'	                           <!-- 삭제여부 -->
+			   , NULL	                           <!-- 삭제일자 -->
+			   , #{fstHndlPEno}                    <!-- 최초등록자사번 -->
+			   , CURRENT_TIMESTAMP()               <!-- 최초등록일시 -->
+			   , #{lstHndlPEno}                    <!-- 최종변경자사번 -->
+			   , CURRENT_TIMESTAMP()               <!-- 최종변경일시 -->
+               )
+    </insert>
+    
+    <!-- 오늘의할일변경(결재)  -->
+    <update id="updateRAC07BInfO" parameterType="com.nanuri.rams.business.common.dto.RAC07BDTO"> 
+		UPDATE RAC07B 
+		   SET HNDL_DT         = DATE_FORMAT(NOW(), '%Y%m%d') <!-- 처리일자 -->
+			 , HNDL_TM         = DATE_FORMAT(NOW(), '%H%i%s') <!-- 처리시간 -->
+			 , HNDL_ENO        = #{eno}                       <!-- 처리사번 -->
+			<!-- , SPV_YN          = #{spvYn}            		   대결여부 -->
+			 , LST_HNDL_P_ENO  = #{eno}     	              <!-- 최종변경자사번 -->
+			 , LST_HNDL_DY_TM  = CURRENT_TIMESTAMP()          <!-- 최초등록일시 -->
+       WHERE 1 = 1
+         AND ENO               = #{eno}                       <!-- 담당자 -->
+         AND REQ_DT            = DATE_FORMAT(NOW(), '%Y%m%d') <!-- 요청일자 -->
+		 AND RMRK LIKE CONCAT('%', #{rmrk}, '%')              <!-- 비고 -->
+	</update>
+
+    <!-- 오늘의할일변경(결재요청취소)  -->
+	<update id="deleteRAC07BInfo" parameterType="com.nanuri.rams.business.common.dto.RAC07BDTO"> 
+	   UPDATE RAC07B
+	      SET DLT_F           = '1'                              <!-- 삭제여부 -->
+	        , DLT_DT          = DATE_FORMAT(now(), '%Y-%m-%d')   <!-- 삭제일자 --> 
+	        , LST_HNDL_P_ENO  = #{lstHndlPEno}                   <!-- 최종변경자사번 -->
+	        , LST_HNDL_DY_TM  = CURRENT_TIMESTAMP()              <!-- 최종변경일시 --> 
+	    WHERE 1=1
+	      AND ENO             = #{eno}                           <!-- 사번 -->
+	      AND REQ_DT          = #{reqDt}                         <!-- 요청일자 -->
+	      AND SQ              = #{sq}                            <!-- 일련번호 -->
+	</update> 
+
+</mapper>

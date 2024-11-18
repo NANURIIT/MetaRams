@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS503BMapper">
+	
+	<select id="getInfraInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS503BVO">
+		SELECT DEAL_NO                                 /* 딜번호 */
+         , SQ				         			                 /* 일련번호 */
+         , INV_FNN_BUSI_WY_DCD                     /* 투자금융사업방식구분코드 */
+         , BUSI_SCL_CNTN                           /* 사업규모내용 */
+         , BUSI_LCSI_DT                            /* 사업인허가일자 */
+         , CNFN_DT                                 /* 준공일자 */
+         , MNGT_CMP_NM                             /* 주관회사명 */
+         , CNR_STRT_DT                             /* 공사시작일자 */
+         , CNR_END_DT                              /* 공사종료일자 */
+         , BRWR_SPC_YN                             /* 차주SPC여부 */
+         , OPRT_STRT_DT                            /* 운영시작일자 */
+         , OPRT_END_DT                             /* 운영종료일자 */
+         , APVL_YN                                 /* 승인여부 */
+         , BZPL_ADDR                               /* 사업장주소 */
+         , LMT_YN                                  /* 한도여부 */
+         , INVST_AMT                               /* 투자금액 */
+         , BUSI_RVO_DCD                            /* 사업수주구분코드 */
+         , USE_STRT_DT                             /* 사용시작일자 */
+         , SLF_CPTA                                /* 자기자본금 */
+         , PROR_LOAN_AMT                           /* 선순위대출금액 */
+         , BKBN_LOAN_AMT                           /* 후순위대출금액 */
+         , BOND_TRNS_YN                            /* 채권이관여부 */
+         , MNGM_CND_FLFL_YN                        /* 관리조건이행여부 */
+         , FNNR_CTRC_MTTR_TRGT_YN                  /* 재무약정사항대상여부 */
+         , DEL_YN                                  /* 삭제여부 */
+         , HND_DETL_DTM                            /* 조작상세일시 */
+         , HND_EMPNO                               /* 조작사원번호 */
+         , HND_TMNL_NO                             /* 조작단말기번호 */
+         , HND_TR_ID                               /* 조작거래id */
+         , GUID                                    /* guid */
+      FROM IBIMS503B
+     WHERE 1=1
+       AND DEAL_NO    = #{dealNo}
+       AND SQ					= (
+						             SELECT MAX(SQ)
+						               FROM IBIMS503B
+						              WHERE DEAL_NO = #{dealNo}
+						            )                                        
+	</select>
+
+	<insert id="saveInfInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO">
+		INSERT INTO IBIMS503B 
+               (
+                  DEAL_NO                                 	 /* 딜번호 */
+                , SQ                                      	 /* 일련번호 */
+                , INV_FNN_BUSI_WY_DCD                     	 /* 투자금융사업방식구분코드 */
+                , BUSI_SCL_CNTN                           	 /* 사업규모내용 */
+                , BUSI_LCSI_DT                            	 /* 사업인허가일자 */
+                , CNFN_DT                                 	 /* 준공일자 */
+                , MNGT_CMP_NM                             	 /* 주관회사명 */
+                , CNR_STRT_DT                             	 /* 공사시작일자 */
+                , CNR_END_DT                              	 /* 공사종료일자 */
+                , BRWR_SPC_YN                             	 /* 차주SPC여부 */
+                , OPRT_STRT_DT                            	 /* 운영시작일자 */
+                , OPRT_END_DT                             	 /* 운영종료일자 */
+                , APVL_YN                                 	 /* 승인여부 */
+                , BZPL_ADDR                               	 /* 사업장주소 */
+                , LMT_YN                                  	 /* 한도여부 */
+                , INVST_AMT                               	 /* 투자금액 */
+                , BUSI_RVO_DCD                            	 /* 사업수주구분코드 */
+                , USE_STRT_DT                             	 /* 사용시작일자 */
+                , SLF_CPTA                                	 /* 자기자본금 */
+                , PROR_LOAN_AMT                           	 /* 선순위대출금액 */
+                , BKBN_LOAN_AMT                           	 /* 후순위대출금액 */
+                , BOND_TRNS_YN                            	 /* 채권이관여부 */
+                , MNGM_CND_FLFL_YN                        	 /* 관리조건이행여부 */
+                , FNNR_CTRC_MTTR_TRGT_YN                  	 /* 재무약정사항대상여부 */
+                , DEL_YN                                  	 /* 삭제여부 */
+                , HND_DETL_DTM                            	 /* 조작상세일시 */
+                , HND_EMPNO                               	 /* 조작사원번호 */
+                , HND_TMNL_NO                             	 /* 조작단말기번호 */
+                , HND_TR_ID                               	 /* 조작거래id */
+                , GUID                                    	 /* guid */
+               )
+        VALUES (
+                 #{dealNo}                                   		       /* 딜번호 */
+               , (
+                 SELECT CASE WHEN A.SQ = 0 THEN '0000000001'
+                             ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
+                   FROM (
+                    		  SELECT COUNT(SQ)  AS SQ
+                               , MAX(SQ)    AS INCREMENT_SQ
+                             FROM IBIMS502B
+                        ) A
+       			     )                                       	  		       /* 일련번호 */
+               , #{infraInfo.invFnnBusiWyDcd}                          /* 투자금융사업방식구분코드 */
+               , #{infraInfo.busiSclCntn}                              /* 사업규모내용 */
+               , #{infraInfo.busiLcsiDt}                               /* 사업인허가일자 */
+               , #{infraInfo.cnfnDt}                                   /* 준공일자 */
+               , #{infraInfo.mngtCmpNm}                                /* 주관회사명 */
+               , #{infraInfo.cnrStrtDt}                                /* 공사시작일자 */
+               , #{infraInfo.cnrEndDt}                                 /* 공사종료일자 */
+               , #{infraInfo.brwrSpcYn}                                /* 차주SPC여부 */
+               , #{infraInfo.oprtStrtDt}                               /* 운영시작일자 */
+               , #{infraInfo.oprtEndDt}                                /* 운영종료일자 */
+               , #{infraInfo.apvlYn}                                   /* 승인여부 */
+               , #{infraInfo.bzplAddr}                                 /* 사업장주소 */
+               , #{infraInfo.lmtYn}                                    /* 한도여부 */
+               , #{infraInfo.invstAmt}                                 /* 투자금액 */
+               , #{infraInfo.busiRvoDcd}                               /* 사업수주구분코드 */
+               , #{infraInfo.useStrtDt}                                /* 사용시작일자 */
+               , #{infraInfo.slfCpta}                                  /* 자기자본금 */
+               , #{infraInfo.prorLoanAmt}                              /* 선순위대출금액 */
+               , #{infraInfo.bkbnLoanAmt}                              /* 후순위대출금액 */
+               , #{infraInfo.bondTrnsYn}                               /* 채권이관여부 */
+               , #{infraInfo.mngmCndFlflYn}                            /* 관리조건이행여부 */
+               , #{infraInfo.fnnrCtrcMttrTrgtYn}                       /* 재무약정사항대상여부 */
+               , #{infraInfo.delYn}                                    /* 삭제여부 */
+               , SYSDATE                              				         /* 조작상세일시 */
+               , #{infraInfo.hndEmpno}                                 /* 조작사원번호 */
+               , #{infraInfo.hndTmnlNo}                                /* 조작단말기번호 */
+               , #{infraInfo.hndTrId}                                  /* 조작거래id */
+               , #{infraInfo.guid}                                     /* guid */
+               )
+	</insert>
+</mapper>

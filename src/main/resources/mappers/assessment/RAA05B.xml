@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA05BMapper">
+	<!-- 내부등급정보 취득 -->
+	<select id="getInsGrdInfo" parameterType="com.nanuri.rams.business.common.vo.RAA05BVO" resultType="com.nanuri.rams.business.common.vo.RAA05BVO">
+	   	SELECT RAA05B.IB_DEAL_NO														<!-- IBDEAL번호 -->
+	   		 , RAA05B.RISK_INSPCT_CCD													<!-- 리스크심사구분코드 -->
+	   		 , RAA05B.LST_C_CASE_CCD													<!-- 부수안건구분코드 -->
+	   		 , RAA05B.ITEM_SQ															<!-- 항목일련번호 -->
+	   		 , RAA05B.INS_GRD_TRGT_F													<!-- 내부등급대상여부 -->
+	   		 , RAA05B.SPCLT_FNC_TRGT_F													<!-- 특수금융대상여부-->
+	   		 , IFNULL(RAA05B.SPCLT_FNC_MNG_NO, '')		AS SPCLT_FNC_MNG_NO				<!-- 특수금융관리번호 -->
+	   		 , IFNULL(RAA05B.OUTS_CRDT_GRD_CCD, '')		AS OUTS_CRDT_GRD_CCD			<!-- 외부신용등급구분코드 -->
+	   		 , IFNULL(RAA05B.BRRWR_CORP_NO, '')			AS BRRWR_CORP_NO				<!-- 차주법인번호 -->
+	   		 , IFNULL(RAA05B.INS_CRDT_GRD_CCD, '')		AS INS_CRDT_GRD_CCD				<!-- 내부신용등급구분코드 -->
+	   		 , IFNULL((SELECT ENTP_HNGL_NM
+    		 			FROM RAB97B
+    		 		   WHERE 1=1
+    		 		     AND CORP_RGST_NO = RAA05B.BRRWR_CORP_NO
+    		 		     AND RAA05B.IB_DEAL_NO = #{ibDealNo}
+    		 		     AND RAA05B.RISK_INSPCT_CCD = #{riskInspctCcd}
+    		 		     AND RAA05B.LST_C_CASE_CCD = #{lstCCaseCcd}
+    		 		   ORDER BY RAA05B.ITEM_SQ DESC
+    		 		   LIMIT 1
+    		 		   ), '')	AS 	ENTP_HNGL_NM	<!-- 한글법인명 -->	
+	   		 , IFNULL(RAA05B.RNMCNO, '')				AS RNMCNO						<!-- 실명확인번호 -->
+	   		 , RAA05B.HNDL_DY_TM														<!-- 처리일시 -->
+	   		 , RAA05B.HNDL_DPRT_CD														<!-- 처리부점코드 -->
+	   		 , RAA05B.HNDL_PLENO														<!-- 처리자번 -->
+	   		 , IFNULL(tb2.CD_VL_NM, '')					AS OUTS_CRDT_GRD_CCD_NM			<!-- 리스크심사구분코드 -->
+	   		 , IFNULL(tb3.CD_VL_NM, '')					AS INS_CRDT_GRD_CCD_NM
+    	  FROM RAA05B
+    	  LEFT JOIN RAA91B tb2
+    	    ON RAA05B.OUTS_CRDT_GRD_CCD = tb2.CD_VL_ID
+    	   AND tb2.CMNS_CD_GRP = 'O002'							<!-- 외부신용등급구분코드(SL내부등급) -->
+    	  LEFT JOIN RAA91B tb3
+    	    ON RAA05B.INS_CRDT_GRD_CCD = tb3.CD_VL_ID
+    	   AND tb3.CMNS_CD_GRP = 'I002'							<!-- 내부등급대상여부 -->
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}
+    	   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+    	 ORDER BY ITEM_SQ
+   	</select>
+   	
+	<!-- 내부등급정보 추가  -->
+	<insert id="registInsGrdInfo" parameterType="com.nanuri.rams.business.common.dto.RAA05BDTO">
+     	INSERT INTO RAA05B
+     		   (
+     		   IB_DEAL_NO						<!-- IBDEAL번호 -->
+     		   , RISK_INSPCT_CCD				<!-- 리스크심사구분코드 -->
+     		   , LST_C_CASE_CCD					<!-- 부수안건구분코드 -->
+     		   , ITEM_SQ						<!-- 항목일련번호 -->
+     		   , INS_GRD_TRGT_F					<!-- 내부등급대상여부 -->
+     		   , SPCLT_FNC_TRGT_F				<!-- 특수금융대상여부-->
+     		   , SPCLT_FNC_MNG_NO				<!-- 특수금융관리번호 -->
+     		   , OUTS_CRDT_GRD_CCD				<!-- 외부신용등급구분코드 -->
+     		   , BRRWR_CORP_NO					<!-- 차주법인번호 -->
+     		   , INS_CRDT_GRD_CCD				<!-- 내부신용등급구분코드 -->
+     		   , RNMCNO							<!-- 실명확인번호 -->
+     		   , HNDL_DY_TM						<!-- 처리일시 -->
+     		   , HNDL_DPRT_CD					<!-- 처리부점코드 -->
+     		   , HNDL_PLENO						<!-- 처리자번 -->
+     		   )
+    	VALUES (
+    			#{ibDealNo}						<!-- IBDEAL번호 -->
+     			, #{riskInspctCcd    }			<!-- 리스크심사구분코드 -->
+     			, #{lstCCaseCcd      }			<!-- 부수안건구분코드 -->
+     			, NEXT VALUE FOR RAA05B_SQ		<!-- 항목일련번호 -->
+     			, #{insGrdTrgtF      }			<!-- 내부등급대상여부 -->
+				, #{spcltFncTrgtF}    			<!-- 특수금융대상여부-->
+				, #{spcltFncMngNo	 } 			<!-- 특수금융관리번호 -->
+				, #{outsCrdtGrdCcd   } 			<!-- 외부신용등급구분코드 -->
+				, #{brrwrCorpNo      }			<!-- 차주법인번호 -->
+				, #{insCrdtGrdCcd    }  		<!-- 내부신용등급구분코드 -->
+				, #{rnmcno           } 			<!-- 실명확인번호 -->
+				, CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+     			, #{hndlDprtCd       }			<!-- 처리부점코드 -->
+     			, #{hndlPEno         }			<!-- 처리자번 -->
+    		   )
+    </insert>
+	
+	<!-- 내부등급정보 갱신 -->
+	<update id="updateInsGrdInfo" parameterType="com.nanuri.rams.business.common.dto.RAA05BDTO">
+    	UPDATE RAA05B
+    	   SET INS_GRD_TRGT_F 			= #{insGrdTrgtF}		<!-- 내부등급대상여부 -->
+    	   	 , SPCLT_FNC_TRGT_F			= #{spcltFncTrgtF}		<!-- 특수금융대상여부(SL) -->
+    	     , SPCLT_FNC_MNG_NO		    = #{spcltFncMngNo}		<!-- 특수금융관리번호(SL) -->
+    	     , OUTS_CRDT_GRD_CCD		= #{outsCrdtGrdCcd}		<!-- 외부신용등급구분코드(SL내부등급) -->
+    	     , BRRWR_CORP_NO			= #{brrwrCorpNo}		<!-- 차주법인번호 -->
+    	     , INS_CRDT_GRD_CCD			= #{insCrdtGrdCcd} 		<!-- 내부신용등급구분코드 -->
+    	     , HNDL_DY_TM				= CURRENT_TIMESTAMP()
+    	     , HNDL_DPRT_CD				= #{hndlDprtCd}			<!-- 처리부점코드 -->
+     		 , HNDL_PLENO				= #{hndlPEno}			<!-- 처리자번 -->
+		 WHERE 1=1
+		   AND IB_DEAL_NO				= #{ibDealNo         }	<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD		    = #{riskInspctCcd	 }	<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }	<!-- LST_C_CASE_CCD -->
+		   AND ITEM_SQ					= #{itemSq           }	<!-- 항목일련번호 -->
+    </update>
+    
+	<!-- 내부등급정보 삭제 -->
+	<delete id="deleteInsGrdInfo" parameterType="com.nanuri.rams.business.common.vo.RAA05BVO">
+    	DELETE FROM RAA05B 
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}	<!-- IBDEAL번호 -->
+    	   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+    	   AND ITEM_SQ = #{itemSq}		<!-- 항목일련번호 -->
+    </delete>
+</mapper>

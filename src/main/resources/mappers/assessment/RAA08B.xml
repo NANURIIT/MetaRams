@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA08BMapper">
+
+	<!-- 책임준공정보 취득 -->
+	<select id="getCmplInfo" resultType="com.nanuri.rams.business.common.vo.RAA08BVO">
+		SELECT IB_DEAL_NO								AS IB_DEAL_NO				<!-- IBDEAL번호 -->
+			 , RISK_INSPCT_CCD							AS RISK_INSPCT_CCD			<!-- 리스크심사구분코드 -->
+			 , LST_C_CASE_CCD							AS LST_C_CASE_CCD			<!-- 부수안건구분코드 -->
+			 , ITEM_SQ									AS ITEM_SQ					<!-- 항목일련번호 -->
+			 , RSPSB_CMPL_OGN_CCD						AS RSPSB_CMPL_OGN_CCD		<!-- 책임준공기관구분코드 -->
+			 , tb3.CD_VL_NM 							AS RSPSB_CMPL_OGN_CCD_NM	<!-- 책임준공기관구분명 -->
+			 , SCRTS_CMPNY_CORP_NO						AS SCRTS_CMPNY_CORP_NO		<!-- 증권사법인번호 -->
+			 , DBT_NPFRM_OBLG_CCD						AS DBT_NPFRM_OBLG_CCD		<!-- 채무불이행의무구분코드 -->
+			 , IFNULL(RAA08B.DMG_RPRTN_MX_EXTNT, '')  	AS DMG_RPRTN_MX_EXTNT		<!-- 손해배상최대범위 -->
+			 , IFNULL(RAA08B.RNMCNO, '')  				AS RNMCNO					<!-- 실명확인번호 -->
+			 , DATE_FORMAT(CMPL_EXPT_DT, '%Y-%m-%d')	AS CMPL_EXPT_DT				<!-- 준공예정일자 -->
+			 , RAA08B.HNDL_DY_TM						AS HNDL_DY_TM				<!-- 처리일시 -->
+			 , RAA08B.HNDL_DPRT_CD						AS HNDL_DPRT_CD				<!-- 처리부점코드 -->
+			 , RAA08B.HNDL_P_ENO						AS HNDL_P_ENO				<!-- 처리자사번 -->
+			 , tb2.CD_VL_NM								AS DBT_NPFRM_OBLG_CCD_NM	<!-- 채무불이행의무구분코드명 -->
+			 , IFNULL((SELECT ENTP_HNGL_NM
+    		 			 FROM RAB97B
+    		 		    WHERE CORP_RGST_NO = RAA08B.SCRTS_CMPNY_CORP_NO), '')	AS 	ENTP_HNGL_NM	<!-- 한글법인명 -->
+		  FROM RAA08B
+		  LEFT JOIN RAA91B tb2
+    	    ON RAA08B.DBT_NPFRM_OBLG_CCD 				= tb2.CD_VL_ID
+    	   AND tb2.CMNS_CD_GRP = 'D001'												<!-- 채무불이행의무구분코드 -->
+    	  LEFT JOIN RAA91B tb3
+    	  	ON RAA08B.RSPSB_CMPL_OGN_CCD 				= tb3.CD_VL_ID
+    	   AND tb3.CMNS_CD_GRP = 'R019'												<!-- 책임준공기관구분코드 -->
+		 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}
+    	   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }						<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }						<!-- 부수안건구분코드 -->
+    	 ORDER BY ITEM_SQ DESC
+   	</select>
+   	
+   	<!-- 책임준공정보 생성 -->
+   	<insert id="registCmplInfo" parameterType="com.nanuri.rams.business.common.dto.RAA08BDTO">
+   		INSERT INTO RAA08B
+   		       (
+   		        IB_DEAL_NO					<!-- IBDEAL번호 -->
+				, RISK_INSPCT_CCD			<!-- 리스크심사구분코드 -->
+				, LST_C_CASE_CCD			<!-- 부수안건구분코드 -->
+				, ITEM_SQ					<!-- 항목일련번호 -->
+				, RSPSB_CMPL_OGN_CCD		<!-- 책임준공기관구분코드 -->
+				, SCRTS_CMPNY_CORP_NO		<!-- 증권사법인번호 -->
+				, DBT_NPFRM_OBLG_CCD		<!-- 채무불이행의무구분코드 -->
+				, DMG_RPRTN_MX_EXTNT		<!-- 손해배상최대범위 -->
+				, RNMCNO					<!-- 실명확인번호 -->
+				, CMPL_EXPT_DT				<!-- 준공예정일자 -->
+				, HNDL_DY_TM				<!-- 처리일시 -->
+				, HNDL_DPRT_CD				<!-- 처리부점코드 -->
+				, HNDL_P_ENO				<!-- 처리자사번 -->
+   		       )
+   		VALUES (
+   				#{ibDealNo        }			<!-- IBDEAL번호 -->
+				, #{riskInspctCcd   }		<!-- 리스크심사구분코드 -->
+				, #{lstCCaseCcd     }		<!-- 부수안건구분코드 -->
+				, (
+				  SELECT NVL(MAX(raa08b.ITEM_SQ), 0) + 1 AS ITEM_SQ
+				    FROM RAA08B raa08b
+				  )							<!-- 항목일련번호 -->
+				, #{rspsbCmplOgnCcd}		<!-- 책임준공기관구분코드 -->
+				, #{scrtsCmpnyCorpNo}		<!-- 증권사법인번호 -->
+				, #{dbtNpfrmOblgCcd }		<!-- 채무불이행의무구분코드 -->
+				, #{dmgRprtnMxExtnt }		<!-- 손해배상최대범위 -->
+				, #{rnmcno        }			<!-- 실명확인번호 -->
+				, #{cmplExptDt      }		<!-- 준공예정일자 -->
+				, CURRENT_TIMESTAMP()		<!-- 처리일시 -->
+				, #{hndlDprtCd    }			<!-- 처리부점코드 -->
+				, #{hndlPEno      }			<!-- 처리자사번 -->
+   			   )
+   	</insert>
+   	
+   	<!-- 책임준공정보 갱신 -->
+   	<update id="updateCmplInfo" parameterType="com.nanuri.rams.business.common.dto.RAA08BDTO">
+   		UPDATE RAA08B
+   		   SET SCRTS_CMPNY_CORP_NO   = #{scrtsCmpnyCorpNo}		<!-- 증권사법인번호 -->
+   		  	 , RSPSB_CMPL_OGN_CCD	 = #{rspsbCmplOgnCcd }		<!-- 책임준공기관구분코드 -->
+			 , DBT_NPFRM_OBLG_CCD    = #{dbtNpfrmOblgCcd }		<!-- 채무불이행의무구분코드 -->
+			 , DMG_RPRTN_MX_EXTNT    = #{dmgRprtnMxExtnt }		<!-- 손해배상최대범위 -->
+			 , RNMCNO                = #{rnmcno          }		<!-- 실명확인번호 -->
+			 , CMPL_EXPT_DT          = #{cmplExptDt      }		<!-- 준공예정일자 -->
+			 , HNDL_DY_TM            = CURRENT_TIMESTAMP()		<!-- 처리일시 -->
+			 , HNDL_DPRT_CD          = #{hndlDprtCd      }		<!-- 처리부점코드 -->
+			 , HNDL_P_ENO            = #{hndlPEno        }		<!-- 처리자사번 -->
+		 WHERE 1=1
+		   AND IB_DEAL_NO = #{ibDealNo}
+		   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+		   AND ITEM_SQ = #{itemSq} 
+   	</update>
+   	
+   	<!-- 책임준공정보 삭제 -->
+   	<delete id="deleteCmplInfo" parameterType="com.nanuri.rams.business.common.vo.RAA08BVO">
+   		DELETE FROM RAA08B 
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}	<!-- IBDEAL번호 -->
+    	   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+    	   AND ITEM_SQ = #{itemSq}		<!-- 항목일련번호 -->
+   	</delete>
+   	
+   	
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS002BMapper">
+
+	<!-- 셀렉트박스 코드, 밸류 취득 -->
+	<select id="getSelectBox2" resultType="java.util.HashMap">
+		SELECT s002b.CMNS_CD_GRP 		AS cmnsGrpCd	          <!-- 공통코드그룹 -->         
+		     , s001b.CMNS_CD_GRP_EXPL 	AS cmnsGrpCdNm	          <!-- 공통코드그룹설명 -->         
+		     , s001b.CMNS_CD_NM 		AS cmnsGrpCdNmEng         <!-- 공통코드명 -->         
+		     , s001b.CD_LNGTH 			AS cdLength               <!-- 코드길이 -->         
+		     , s002b.CD_VL_ID 			AS cdValue                <!-- 코드값ID -->         
+		     , s002b.CD_VL_NM 			AS cdName                 <!-- 코드값명 -->         
+		  FROM IBIMS002B s002b 
+		  LEFT JOIN IBIMS001B s001b
+		    ON s001b.CMNS_CD_GRP = s002b.CMNS_CD_GRP
+		 WHERE 1=1
+		   AND s002b.USE_YN = '1'                                 <!-- 사용여부 -->
+		   AND s002b.DEL_YN = '0'                                 <!-- 삭제여부 -->
+		   AND s001b.USE_YN = '1'                                 
+		   AND s001b.DEL_YN = '0'                                 
+		<if test="cmnsCdGrp != null">
+		   AND s001b.CMNS_CD_GRP = #{cmnsCdGrp}
+		</if>
+		 ORDER BY s001b.CMNS_CD_GRP, s002b.CD_VL_ID 
+	</select>
+	
+	<!-- 공통코드 -->
+	<select id="getSelectBoxList" parameterType="java.util.List" resultType="java.util.HashMap">
+		SELECT s002b.CMNS_CD_GRP 		AS "cmnsGrpCd"                  /* 공통코드그룹 */
+		     , s001b.CMNS_CD_GRP_EXPL 	AS "cmnsGrpCdNm"            /* 공통코드그룹설명 */
+		     , s001b.CMNS_CD_NM 		AS "cmnsGrpCdNmEng"             /* 공통코드명 */
+		     , s001b.CD_LNGTH 			AS "cdLength"                   /* 코드길이 */
+		     , s002b.CD_VL_ID 			AS "cdValue"                    /* 코드값ID */
+		     , s002b.CD_VL_NM 			AS "cdName"                     /* 코드값명 */
+         , s002b.CD_VL_ID                                       /* 코드값ID */
+		     , s002b.CD_VL_NM                                       /* 코드값명 */
+		  FROM IBIMS002B s002b 
+		  LEFT JOIN IBIMS001B s001b
+		    ON s001b.CMNS_CD_GRP = s002b.CMNS_CD_GRP
+		 WHERE 1=1
+		   AND s002b.USE_YN = '1'                                  <!-- 사용여부 -->
+		   AND s002b.DEL_YN = '0'                                  <!-- 삭제여부 -->
+		   AND s001b.USE_YN = '1'                                  
+		   AND s001b.DEL_YN = '0'                                  
+		   AND s001b.CMNS_CD_GRP IN                                
+			<foreach collection="list" item="listParam" index="index" open="(" separator="," close=")">
+	               #{listParam}
+	        </foreach>
+		 ORDER BY s001b.CMNS_CD_GRP, s002b.CD_SQ, s002b.CD_VL_ID 
+	</select>
+
+	<!--  상세코드 호출  -->
+    <select id="getCodeInfoList" resultType="com.nanuri.rams.business.common.vo.IBIMS002BVO" parameterType="String">
+        SELECT A.CMNS_CD_GRP							<!-- 공통코드그룹 -->
+             , A.CD_VL_ID								<!-- 코드값ID -->
+             , A.CD_VL_NM								<!-- 코드값명 -->
+             , NVL(A.RSLT_CD_VL, '-')	AS RSLT_CD_VL	<!-- 변환후코드ID -->                          
+             , A.RGST_DT								<!-- 등록일자 -->
+             , A.RGST_EMPNO								<!-- 등록사원번호 -->
+             , (
+             	 SELECT EMP_NM
+             	   FROM IBIMS003B
+             	  WHERE EMPNO = A.RGST_EMPNO
+               ) AS RGST_EMPNM							<!-- 등록사원명 -->  
+             , A.CD_SQ									<!-- 코드일련번호 -->
+             , A.USE_YN									<!-- 사용여부 -->
+             , A.DEL_YN									<!-- 삭제여부 -->
+             , A.HND_DETL_DTM							<!-- 조작상세일시 -->
+             , A.HND_EMPNO								<!-- 조작사원번호 -->
+             , (
+             	 SELECT EMP_NM
+             	   FROM IBIMS003B
+             	  WHERE EMPNO = A.HND_EMPNO
+               ) AS HND_EMPNM							<!-- 조작사원명 -->  
+             , A.HND_TMNL_NO							<!-- 조작단말기번호 -->
+             , A.HND_TR_ID								<!-- 조작거래ID -->
+             , A.GUID									<!-- GUID -->
+		  FROM IBIMS002B A
+         WHERE 1=1
+           AND CMNS_CD_GRP                             = #{cmnsCdGrp}
+           AND DEL_YN                             	   = '0'
+		 ORDER BY CD_SQ ASC
+    </select>
+    
+    <update id="registCodeInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS001BVO">
+       UPDATE IBIMS002B
+          SET 
+			<if test="cdVlId != null and cdVlId !=''">
+			  CD_VL_ID                                = #{cdVlId},             <!-- 코드값ID --> 
+			</if>
+			<if test="cdVlNm != null and cdVlNm !=''">
+              CD_VL_NM                                = #{cdVlNm},             <!-- 코드값명 -->  
+			</if>
+			<if test="rsltCdVl != null and rsltCdVl !=''">			
+              RSLT_CD_VL                              = #{rsltCdVl},           <!-- 변환후코드ID -->
+			</if>
+			<if test="useYn != null and useYn !=''">
+              USE_YN                                  = #{useYn},              <!-- 사용여부 -->  
+			</if>			
+			<if test="cdSq != null and cdSq !=''">
+              CD_SQ                                  = #{cdSq},                <!-- 코드일련번호 -->  
+			</if>			
+              HND_DETL_DTM                            = DEFAULT,          	   <!-- 조작상세일시 -->                  
+              HND_EMPNO                               = #{hndEmpno}            <!-- 조작사원번호 -->                  
+         WHERE 1=1                                                                               
+          AND CMNS_CD_GRP                             = #{cmnsCdGrp}           <!-- 공통코드그룹 -->                   
+          AND CD_VL_ID                                = #{oldCdVlId} 		   <!-- 코드값ID -->
+    </update>
+
+    <insert id="insertCodeInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS001BVO">
+        INSERT INTO IBIMS002B 
+               (
+                  CMNS_CD_GRP                             <!-- 공통코드그룹 -->
+                , CD_VL_ID                                <!-- 코드값ID -->
+                , CD_VL_NM                                <!-- 코드값명 -->
+                , RSLT_CD_VL                              <!-- 변환후코드ID -->
+                , RGST_DT                                 <!-- 등록일자 -->
+                , RGST_EMPNO                              <!-- 등록사원번호 -->
+                , CD_SQ                                   <!-- 코드일련번호 -->
+                , USE_YN                                  <!-- 사용여부 -->
+                , DEL_YN                                  <!-- 삭제여부 -->
+                , HND_DETL_DTM                            <!-- 조작상세일시 -->
+                , HND_EMPNO                               <!-- 조작사원번호 -->
+                , HND_TMNL_NO                             <!-- 조작단말기번호 -->
+                , HND_TR_ID                               <!-- 조작거래ID -->
+                , GUID                                    <!-- GUID -->
+               )                                          
+        VALUES (                                          
+                 #{cmnsCdGrp}                            <!-- 공통코드그룹 -->
+               , #{cdVlId}                               <!-- 코드값ID -->
+               , #{cdVlNm}                               <!-- 코드값명 -->
+               , #{rsltCdVl}                             <!-- 변환후코드ID -->
+               , TO_CHAR(SYSDATE, 'YYYYMMDD')            <!-- 등록일자 -->
+               , #{rgstEmpno}                            <!-- 등록사원번호 -->
+               , (  SELECT CASE WHEN #{cdSq} = 0 THEN MAX(NVL(A.CD_SQ, 0)+1)					  
+								ELSE #{cdSq}
+								 END AS CD_SQ
+					  FROM IBIMS002B A
+					 WHERE 1=1
+					   AND A.CMNS_CD_GRP = #{cmnsCdGrp} )<!-- 코드일련번호 -->
+               , #{useYn}                                <!-- 사용여부 -->
+               , DEFAULT                                 <!-- 삭제여부 -->
+               , DEFAULT                            	 <!-- 조작상세일시 -->
+               , #{hndEmpno}                             <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                            <!-- 조작단말기번호 -->
+               , #{hndTrId}                              <!-- 조작거래ID -->
+               , #{guid}                                 <!-- GUID -->
+               )
+    </insert>
+
+    <select id="getMaxSeq" parameterType="String" resultType="Integer">
+        SELECT MAX(CD_SQ)					<!-- 코드일련번호 -->
+          FROM IBIMS002B
+         WHERE CMNS_CD_GRP = #{cmnsCdGrp}	<!-- 그룹코드ID -->
+    </select>
+
+    <select id="getCodeInfo" resultType="com.nanuri.rams.business.common.vo.IBIMS002BVO">
+        SELECT CD_VL_ID                                <!-- 코드값ID -->
+             , CD_VL_NM                                <!-- 코드값명 -->
+             , RSLT_CD_VL                              <!-- 변환후코드ID -->
+             , RGST_DT                                 <!-- 등록일자 -->
+             , RGST_EMPNO                              <!-- 등록사원번호 -->
+             , CD_SQ                                   <!-- 코드일련번호 -->
+             , USE_YN                                  <!-- 사용여부 -->
+             , DEL_YN                                  <!-- 삭제여부 -->
+             , HND_DETL_DTM                            <!-- 조작상세일시 -->
+             , HND_EMPNO                               <!-- 조작사원번호 -->
+		  FROM IBIMS002B
+         WHERE 1=1
+           AND CMNS_CD_GRP                             = #{cmnsCdGrp}                              
+           AND CD_VL_ID                                = #{cdVlId}
+		   AND DEL_YN								   = '0'
+    </select>
+
+    <update id="deleteCodeInfo">
+        UPDATE IBIMS002B
+           SET DEL_YN                             	   = '1'                              		  <!-- 삭제여부 -->
+             , HND_DETL_DTM                            = DEFAULT                             	  <!-- 조작상세일시 -->
+             , HND_EMPNO                               = #{hndEmpno}                              <!-- 조작사원번호 -->
+          WHERE 1=1
+           AND CMNS_CD_GRP                             = #{cmnsCdGrp}                             <!-- 공통코드그룹 -->
+           AND CD_VL_ID IN
+        <foreach collection="cdVlIds" item="cdVlId" index="index" open="(" separator="," close=")">
+            #{cdVlId}
+        </foreach>
+    </update>
+
+</mapper>

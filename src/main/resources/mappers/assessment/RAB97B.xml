@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAB97BMapper">
+
+	<!-- 직원검색 -->
+	<select id="findEntList" parameterType="map" resultType="map">
+		SELECT ENTP_CD  						AS entpCd
+		     , ENTP_HNGL_NM  					AS entpHnglNm
+		     , IFNULL(RPRS_NM, '')				AS rprsNm
+		     , IFNULL(CORP_RGST_NO, '')			AS corpRgstNo
+		     , IFNULL(ENTP_CD, '') 				AS ENTP_CD
+		     , IFNULL(ENTP_HNGL_NM, '') 		AS ENTP_HNGL_NM
+		     , IFNULL(RPRS_NM, '') 				AS RPRS_NM
+		     , IFNULL(CORP_RGST_NO, '') 		AS CORP_RGST_NO
+			 , IFNULL(BSNS_RGST_NO, '') 		AS bsnsRgstNo
+		  FROM RAB97B
+		 WHERE 1=1
+		 <if test="entpCd != ''">
+		   AND ENTP_CD LIKE CONCAT('%', #{entpCd}, '%')
+		 </if>
+		 <if test="entpHnglNm != ''">
+		   AND ENTP_HNGL_NM LIKE CONCAT('%', #{entpHnglNm}, '%')
+		  </if>
+		  <if test="rprsNm != ''">
+		   AND RPRS_NM LIKE CONCAT('%', #{rprsNm}, '%')
+		  </if>
+		  <if test="corpRgstNo != ''">
+		   AND CORP_RGST_NO LIKE CONCAT('%', #{corpRgstNo}, '%')
+		  </if>
+	</select>
+	
+	
+	
+	<insert id="registCorpInfo" parameterType="com.nanuri.rams.business.common.dto.TB03030DTO">
+		INSERT INTO RAB97B
+    	       ( 
+    	         ENTP_CD										<!-- 업체코드 -->
+    	       , ENTP_HNGL_NM									<!-- 업체한글명 -->
+    	       <!--, ENTP_ENG_NM  -->							<!-- 업체영문명 -->
+    	       <!-- , STK_IS_NM -->								<!-- 주식종목명 -->
+    	       <!-- , STK_IS_CD -->								<!-- 주식종목코드 -->
+    	       <!-- , RPRS_NM -->								<!-- 대표자명 -->
+    	       <!-- , CORP_CCD -->								<!-- 법인구분코드 -->
+    	       , CORP_RGST_NO									<!-- 법인등록번호 -->
+    	       <!-- , BSNS_RGST_NO -->							<!-- 사업자등록번호 -->
+    	       <!-- , ADRS -->									<!-- 주소 -->
+    	       <!-- , WEB -->									<!-- 홈페이지주소 -->
+    	       , TEL_NO											<!-- 전화번호 -->
+    	       <!-- , FAX_NO -->								<!-- 팩스번호 -->
+    	       <!-- , IND_TYP_CD -->							<!-- 업종코드 -->
+    	       <!-- , EST_DT -->								<!-- 설립일자 -->
+    	       <!-- , CLS_ACN_MM -->							<!-- 결산월 -->
+    	       , RGST_DT										<!-- 등록일자 -->
+    	       , HNDL_DY_TM										<!-- 처리일시 -->
+    	       , HNDL_DPRT_CD									<!-- 처리부점코드 -->
+    	       , HNDL_P_ENO										<!-- 처리자사번 -->
+    	       , DLT_F											<!-- 삭제여부 -->
+    	       )
+    	VALUES (
+    			 LPAD((SELECT MAX(A.ENTP_CD)+1
+  						 FROM RAB97B A
+    			  	 ),8,'0')	
+    		   , #{corpNm}								
+    		   , IFNULL(#{corpNo}, '')									
+		 	   , #{cstmPhNo}							
+		 	   , DATE_FORMAT(CURRENT_DATE(), '%Y%m%d')		
+		 	   , NOW()	
+		 	   , #{hndlDprtCd}		
+		 	   , #{fstInptPEno}		
+		 	   , 'N'		
+    	       )
+	</insert>
+	
+	
+	<select id="getEntpInfoByNm" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
+		SELECT A.ENTP_HNGL_NM                             						AS CORP_NM				/*업체명*/
+		     , IFNULL (NVL(A.CORP_RGST_NO, B.CORP_NO), '') 						AS CORP_NO  			/*법인등록번호*/
+		     , IFNULL (MAX(C.DPRT_NM), '')           							AS CHRG_DPRT_NM  		/*담당부서*/
+		     , IFNULL (MAX(C.EMP_NM), '')                						AS CHRG_P_NM   			/*담당자명*/
+		     , COUNT(DISTINCT B.CHRG_P_ENO)   									AS ENO_CNT  			/*담당자건수*/
+		     , IFNULL (MAX(B.CSTM_NM), '')                  						AS CSTM_NM  			/*고객명*/  
+		     , COUNT(DISTINCT B.CSTM_NM)      									AS CUST_CNT 			/*고객건수*/
+		     , COUNT(DISTINCT RM_SQ)          									AS RM_COUNT      		/*RM활동건수*/ 
+		     , (SELECT COUNT(*) FROM RAC04B IA WHERE IA.SCRN_MENU_ID = 'S3030')	AS FILE_CNT 			/*첨부파일건수*/
+		     , A.ENTP_CD															AS ENTP_CD				/*업체코드*/
+		  FROM RAB97B A 
+		       LEFT OUTER JOIN IBIMS102B B
+		                    ON UPPER(B.ENTP_NM) = UPPER(A.ENTP_HNGL_NM)
+		       LEFT OUTER JOIN RAA99A C  
+		                    ON C.ENO  = B.CHRG_P_ENO                
+		 WHERE UPPER(A.ENTP_HNGL_NM) LIKE CONCAT('%', UPPER(#{corpNm}) , '%') 
+		 GROUP BY ENTP_HNGL_NM
+		 ORDER BY ENTP_CD
+	</select>
+	
+	
+	<select id="selCorpNm" parameterType="string" resultType="map">
+		SELECT ENTP_HNGL_NM 													AS CORP_NM
+		  FROM RAB97B
+		 WHERE 1=1
+		   AND ENTP_HNGL_NM = #{entpHnglNm}
+	</select>
+	
+		
+	<delete id="deleteCorpInfo" parameterType="string">
+		DELETE 
+		  FROM RAB97B
+		 WHERE ENTP_CD = #{entpCd}
+	</delete>
+	
+
+</mapper>

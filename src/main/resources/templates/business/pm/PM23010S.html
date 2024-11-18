@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+  <script th:src="@{js/tabs.js}"></script>
+  <script th:src="@{js/common.js}"></script>
+  <!-- <script th:src="@{js/business/as/AS03210S.js}"></script>
+    <script th:src="@{js/business/popup/AS02020P.js}"></script>
+    <script th:src="@{js/business/popup/AC01120P.js}"></script> -->
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+  <!-- <th:block th:replace="business/popup/AS02020P :: AS02020P"></th:block>
+    <th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+  <!-- 부동산 PF사업정보 등록 -->
+  <div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- 조회조건영역 -->
+        <div class="ibox-content mb-2">
+          <!-- 기본항목 st-->
+          <div class="ibox">
+            <div class="ibox-title">
+              <h4>기본항목</h4>
+            </div>
+            <div class="ibox-content text-right">
+              <div class="form-group row">
+                <label class="col-sm-1 col-form-label">사업 관리번호</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="" disabled>
+                </div>
+                <label class="col-sm-1 col-form-label">법인등록번호</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="" disabled>
+                </div>
+                <label class="col-sm-1 col-form-label">업체명</label>
+                <div class="col-sm-2 text-left">
+                  <input type="text" class="form-control" id="" disabled>
+                </div>
+                <div class="col-sm-1">
+                  <button class="btn btn-primary">
+                    <i class="fa fa-search"></i>&nbsp;조회
+                  </button>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-1 col-form-label">사업명</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="" disabled>
+                </div>
+                <label class="col-sm-1 col-form-label">신용평가모형</label>
+                <div class="col-sm-3">
+                  <select class="form-control" id="" disabled></select>
+                </div>
+                <label class="col-sm-1 col-form-label">신용등급</label>
+                <div class="col-sm-2 text-left">
+                  <select class="form-control" id="" disabled></select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-1 col-form-label">사업 대출잔액</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="" disabled>
+                </div>
+                <label class="col-sm-1 col-form-label">평가유효기일</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="" disabled>
+                </div>
+                <label class="col-sm-1 col-form-label">최종수정일자</label>
+                <div class="col-sm-2 text-left">
+                  <input type="text" class="form-control" id="" disabled>
+                </div>
+              </div>
+            </div>
+          </div><!-- 기본항목 ed -->
+
+          <!-- 사업기본정보 st -->
+          <div class="ibox">
+            <div class="ibox-title">
+              <h4>사업 기본정보</h4>
+            </div>
+            <div class="ibox-content text-right">
+              <div class="input-group row">
+                <label class="col-sm-1 col-form-label">사업구분</label>
+                <div class="col-sm-3">
+                  <select class="col-sm-12 form-control">
+                    <option></option>
+                  </select>
+                </div>
+                <label class="col-sm-1 col-form-label">사업구분 상세</label>
+                <div class="col-sm-3">
+                  <select class="col-sm-12 form-control">
+                    <option></option>
+                  </select>
+                </div>
+                <label class="col-sm-1 col-form-label">진행상태</label>
+                <div class="col-sm-3">
+                  <select class="col-sm-12 form-control">
+                    <option></option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-group row">
+                <label class="col-sm-1 col-form-label">총조달금액</label>
+                <div class="col-sm-3 form-inline">
+                  <select class="col-sm-3 form-control">
+                    <option></option>
+                  </select>
+                  <input type="text" class="col-sm-9 form-control border-left-none ">
+                </div>
+                <label class="col-sm-1 col-form-label">주요채권보전</label>
+                <div class="col-sm-3">
+                  <input type="text" class="col-sm-12 form-control">
+                </div>
+                <label class="col-sm-1 col-form-label">검토중단 사유</label>
+                <div class="col-sm-3">
+                  <input type="text" class="col-sm-12 form-control">
+                </div>
+
+              </div>
+
+              <div class="input-group row">
+                <label class="col-sm-1 col-form-label">당사주선구분</label>
+                <div class="col-sm-3">
+                  <select class="col-sm-12 form-control">
+                    <option></option>
+                  </select>
+                </div>
+                <label class="col-sm-1 col-form-label">당사주선금액</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control">
+                </div>
+                <label class="col-sm-1 col-form-label">당사참여금액</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+
+              <div class="input-group row">
+                <label class="col-sm-1 col-form-label">금리구분코드</label>
+                <div class="col-sm-3 form-inline">
+                  <select class="col-sm-3 form-control">
+                    <option></option>
+                  </select>
+                  <input type="text" class="col-sm-9 form-control border-left-none ">
+                </div>
+                <label class="col-sm-1 col-form-label">기준금리</label>
+                <div class="col-sm-3 form-inline">
+                  <select class="col-sm-3 form-control">
+                    <option></option>
+                  </select>
+                  <input type="text" class="col-sm-9 form-control border-left-none">
+                </div>
+
+                <label class="col-sm-1 col-form-label">가산금리(%)</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+
+              <div class="input-group row">
+                <label class="col-sm-1 col-form-label">담당자</label>
+                <div class="col-sm-3">
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="change_eno" name="change_eno">
+                    <span class="input-group-append">
+                      <button type="button" class="btn btn-default" onclick="callAC01120P('change')">
+                        <i class="fa fa-search"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+
+                <label class="col-sm-1 col-form-label">업무팀</label>
+                <div class="col-sm-3">
+                  <select class="col-sm-12 form-control">
+                    <option></option>
+                  </select>
+                </div>
+                <label class="col-sm-1 col-form-label">목표수익률(%)</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+
+              <div class="input-group row">
+                <label class="col-sm-1 col-form-label">사업내용</label>
+                <div class="col-sm-7">
+                  <textarea class="form-control"></textarea>
+                </div>
+                <label class="col-sm-1 col-form-label">담당RM</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control">
+                  <div class="offset-sm-3 form-group">
+                    <button class="btn btn-default btn-md" type="button">
+                      <i class="fa fa-plus-square"></i>RM등록
+                    </button>
+                  </div>
+                </div>
+                &nbsp;
+              </div>
+
+            </div>
+          </div><!-- 사업기본정보 ed -->
+
+          <!-- 사업기본정보 st -->
+          <div class="ibox">
+            <div class="ibox-title">
+              <h4>사업 상세정보</h4>
+            </div>
+            <div class="ibox-content">
+              <!-- tab -->
+              <div class="tabs-container">
+                <ul class="nav nav-tabs" role="tablist" id="ramsTab">
+                  <li><a class="nav-link" data-toggle="tab" href="#tab-1">사업정보</a></li>
+                  <li><a class="nav-link" data-toggle="tab" href="#tab-2">사업참가자정보</a></li>
+                  <li><a class="nav-link" data-toggle="tab" href="#tab-3">사업주요전망</a></li>
+                  <li><a class="nav-link" data-toggle="tab" href="#tab-4">채권보전주요약정</a></li>
+                  <li><a class="nav-link" data-toggle="tab" href="#tab-5">조건변경이력</a></li>
+                  <li><a class="nav-link" data-toggle="tab" href="#tab-6">대주단/수익자정보</a></li>
+                </ul>
+                <div class="tab-content">
+                  <!-- 사업정보 -->
+                  <div role="tabpanel" id="tab-1" class="tab-pane active">
+                    <div class="panel-body">
+                      <div class="col-sm-12">
+                        <div class="form-group form-inline row text-right">
+                          <!-- 1row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">보증서담보여부</label>
+                            <div class="col-sm-3 input-group">
+                              <select class="form-control"></select>
+                            </div>
+                            <label class="col-sm-1 col-form-label">시행주체구분</label>
+                            <div class="col-sm-3 input-group">
+                              <select class="form-control"></select>
+                            </div>
+                            <div class="col-sm-4"></div>
+                          </div>
+                          <!-- 2row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">사업인/허가완료</label>
+                            <div class="col-sm-3 text-center">
+                              <div class="input-group">
+                                <input class="col-sm-5 input-group-append" type="radio">여
+                                <input class="col-sm-5 input-group-append" type="radio">부
+                              </div>
+                            </div>
+                            <label class="col-sm-1 col-form-label">토지매입완료여부</label>
+                            <div class="col-sm-3 text-center">
+                              <div class="input-group">
+                                <input class="col-sm-5 input-group-append" type="radio">여
+                                <input class="col-sm-5 input-group-append" type="radio">부
+                              </div>
+                            </div>
+                            <label class="col-sm-1 col-form-label">자금관리대상여부</label>
+                            <div class="col-sm-3 text-center">
+                              <div class="input-group">
+                                <input class="col-sm-5 input-group-append" type="radio">여
+                                <input class="col-sm-5 input-group-append" type="radio">부
+                              </div>
+                            </div>
+                          </div>
+                          <!-- 3row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">착공(예정)년월</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">준공(예정)년월</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">분양(예정)년월</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                              <span class="input-group-append">
+                                <button class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                              </span>
+                            </div>
+                          </div>
+                          <!-- 4row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">사업장위치</label>
+                            <div class="col-sm-7 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">사업지역</label>
+                            <div class="col-sm-3 input-group">
+                              <select class="form-control"></select>
+                            </div>
+                          </div>
+                          <!-- 5row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">사업부지면적(m²)</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">사업부지(평)</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">용적률(%)</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <!-- 6row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">연면적(m²)</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">연면적(평)</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">건폐율(%)</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <!-- 7row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">기업규모구분</label>
+                            <div class="col-sm-3 input-group">
+                              <select class="form-control"></select>
+                            </div>
+                            <label class="col-sm-1 col-form-label">시설규모</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">주거환경</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <!-- 8row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">신용보강</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">신용보강금액</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-1 col-form-label">신용보강내용</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <!-- 9row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">상업운전일</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control">
+                              <span class="input-group-append">
+                                <button class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                              </span>
+                            </div>
+                            <label class="col-sm-1 col-form-label">사용승인여부</label>
+                            <div class="col-sm-3 input-group">
+                              <select class="form-control"></select>
+                            </div>
+                            <label class="col-sm-1 col-form-label">차주 SPC 여부</label>
+                            <div class="col-sm-3 input-group">
+                              <select class="form-control"></select>
+                            </div>
+                          </div>
+                          <!-- 10row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">담당자</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control" disabled>
+                              <span class="input-group-append">
+                                <button class="btn btn-default"><i class="fa fa-search"></i></button>
+                              </span>
+                            </div>
+                            <label class="col-sm-1 col-form-label">관리사무소</label>
+                            <div class="col-sm-3 input-group">
+                              <input type="text" class="form-control" disabled>
+                              <span class="input-group-append">
+                                <button class="btn btn-default"><i class="fa fa-search"></i></button>
+                              </span>
+                            </div>
+                            <div class="col-sm-4"></div>
+                          </div>
+                          <!-- 11row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">관리조건이행</label>
+                            <div class="col-sm-3 input-group">
+                              <select class="form-control" disabled></select>
+                            </div>
+                            <div class="col-sm-6 input-group">
+                              <select class="form-control"></select>
+                            </div>
+                            <div class="col-sm-1">
+                              <button class="btn btn-default"><i class="fa fa-arrow-right m-1"></i>|
+                                관리조건</button>
+                            </div>
+                            <div class="col-sm-1"></div>
+                          </div>
+                          <!-- 12row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">채권이관여부</label>
+                            <div class="col-sm-3 input-group">
+                              <select class="form-control"></select>
+                            </div>
+                            <label class="col-sm-1 col-form-label">주요(재무)약정사항</label>
+                            <div class="col-sm-5 input-group">
+                              <input type="text" class="form-control">
+                            </div>
+                            <div class="col-sm-2 text-left">
+                              <button class="btn btn-default"><i class="fa fa-arrow-right m-1"></i>|
+                                주요(재무)약정사항</button>
+                            </div>
+                          </div>
+                          <!-- 13row -->
+                          <div class="form-group col-sm-12 mb-1">
+                            <label class="col-sm-1 col-form-label">업체담당연락처</label>
+                            <div class="col-sm-5 input-group">
+                              <select class="form-control"></select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> <!-- 사업정보 END -->
+                </div>
+              </div>
+            </div> <!-- 투자자산 식별번호 등록 정보 END -->
+          </div>
+        </div> <!-- 사업 상세정보 ed -->
+
+      <!-- 조회결과 -->
+      <div class="ibox">
+        <div class="ibox-title">
+          <label class="col-form-label">투자자산 식별번호 등록 정보</label>
+          <div class="ibox-tools">
+            <button class="btn btn-default">
+              <i class="fa fa-arrow-right m-1"></i>| 투자자산연결
+            </button>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <div class="tableFixHeader2">
+            <table class="table result table-bordered">
+              <colgroup> <!-- TODO: 그리드의 컬럼사이즈 항목별로 확인 -->
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+                <col style="width: 0;">
+              </colgroup>
+              <thead class="text-center">
+                <tr>
+                  <td>연결구분코드명</td>
+                  <td>투자식별번호</td>
+                  <td>승인일자</td>
+                  <td>승인금액</td>
+                  <td>약정일자</td>
+                  <td>약정금액</td>
+                  <td>총약정금액</td>
+                  <td>기업여신상담번호</td>
+                  <td>승인문서번호</td>
+                  <td>인출기한일자</td>
+                  <td>종목명</td>
+                  <td>운용사관리번호</td>
+                  <td>투자종류코드</td>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 버튼영역 -->
+    <div class="col-sm-6 mt-1">
+      <label class="col-sm-2 pt-2">파일첨부</label>
+      <span class="col-sm-2"><button class="btn btn-default"><i class="fa fa-upload m-1"></i>첨부파일</button></span>
+    </div>
+    <div class="col-sm-6 mt-1 text-right">
+      <span class="col-sm-1"><button class="btn btn-default"><i class="fa fa-check-square m-1"></i>검토중단</button></span>
+      <span class="col-sm-1"><button class="btn btn-default"><i class="fa fa-check-square m-1"></i>상환완료</button></span>
+    </div>
+      
+  </div> <!-- row END -->
+  <div class="my-2"></div>
+  <div class="text-right">
+    <button class="btn btn-success mb-2 py-1"><i class="fa fa-check-square m-1"></i>
+      등록</button>
+  </div>
+ </div>
+</th:block>
+
+</html>

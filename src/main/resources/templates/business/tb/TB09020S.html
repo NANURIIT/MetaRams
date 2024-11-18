@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/popup/AC01110P.js}"></script>	<!-- 부서검색 -->
+	<!-- <script th:src="@{js/business/popup/AC01120P.js}"></script> -->	
+	<script th:src="@{js/business/tb/TB03022P.js}"></script> <!-- 직원검색 -->
+	<script th:src="@{js/business/tb/TB09020S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/popup/AC01110P :: AC01110P"></th:block>
+	<!-- <th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block> --> 
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 승인조건 사전관리 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- 조회조건st -->
+				<div class="ibox-content mb-2">
+					<div class="hidden">
+						<div class="hidden" id="MO44020S_pstn"></div>
+					</div>
+					<div class="form-group form-inline row">
+						<div class="col-sm-12 form-group mb-1">
+							<label class="col-sm-1 control-label">의무이행구분</label>
+							<div class="col-sm-2 input-group">
+								<select class="form-control" name="oblgPfrmCcd" id="TB09020S_O004">
+									<option>전체</option>
+								</select>
+							</div>
+							<label class="col-sm-1 control-label">부서</label>
+							<div class="col-sm-2 input-group text-right">
+								<input type="text" class="form-control" id="MO44020S_dprtCd" name="MO44020S_dprtCd" readonly>
+								<span class="input-group-append">
+									<button type="button" class="btn btn-default" onclick="callAC01110P('MO44020S')">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+								<input type="text" class="form-control border-left-none" id="MO44020S_dprtNm" name="MO44020S_dprtNm" readonly>
+							</div>
+							<label class="col-sm-1 control-label">담당자</label>
+							<div class="col-sm-2 input-group text-right">
+								<input type="text" class="form-control" id="MO44020S_empno" name="MO44020S_eno" readonly>
+								<span class="input-group-append">
+									<button type="button" class="btn btn-default" onclick="callTB03022P('MO44020S')">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+								<input type="text" class="form-control" id="MO44020S_empNm" name="MO44020S_empNm" readonly>
+							</div>
+							<div class="col-sm-2 input-group">
+								<input type="checkbox" id="MO44020S_dltY" value="Y" checked>
+								<label class="control-label">이행계획 보고대상<i class="fa fa-question-circle"></i></label>
+							</div>
+							<div class="col-sm-1 text-right">
+								<button class="btn btn-primary" type="button" onclick="getPacmList()">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+							</div>
+						</div>
+						<div class="col-sm-12 form-group mb-1">
+							<label class="col-sm-1 control-label">진행상태</label>
+							<div class="col-sm-2 input-group text-right">
+								<select class="form-control" name="reprtPrgrsStCd" id="TB09020S_R022">
+									<option>전체</option>
+								</select>
+							</div>
+							<label class="col-sm-1 control-label">심사부서</label>
+							<div class="col-sm-2 input-group">
+								<select class="form-control" name="inspctDprtCcd" id="TB09020S_I010">
+									<option>전체</option>
+								</select>
+							</div>
+							<label class="col-sm-1 control-label">심사역</label>
+							<div class="col-sm-2 input-group">
+								<input type="text" class="form-control" id="MO44020S_judge_empno" name="MO44020S_judge" readonly>
+								<span class="input-group-append">
+									<button type="button" class="btn btn-default" onclick="callTB03022P('MO44020S_judge')">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+								<input type="text" class="form-control border-left-none" id="MO44020S_judge_empNm" name="MO44020S_judgeNm" readonly>
+							</div>
+						</div>
+						<div class="col-sm-12 form-group">
+							<label class="col-sm-1 control-label">안건명</label>
+							<div class="col-sm-5 input-group">
+								<input type="text" class="form-control" id="ibDealNm" name="ibDealNm">
+							</div>
+							<div class="col-sm-6 text-right">
+								<input type="hidden" id="selectedIbDealNo"/>
+								<input type="hidden" id="selectedRiskInspctCcd"/>
+								<input type="hidden" id="selectedLstCCaseCcd"/>
+								<input type="hidden" id="selectedItemSq"/>
+								<input type="hidden" id="selectedOblgPfrmCcd"/>
+								<!-- 사업부 부서원 - 승인요청 -->
+								<button th:if = "${#strings.toString(userAuth.rghtCd) == 'AG11'}" type="button" class="btn btn-primary" id="reqAssess" onclick="updateRprStatus('20')">승인요청</button>
+								<!-- 사업부 부서장, 심사부 심사역, 심사부 부서장 - 반송 -->
+								<button th:if = "${#strings.toString(userAuth.rghtCd) == 'AG18'} OR
+												 ${#strings.toString(userAuth.rghtCd) == 'AG21'} OR
+												 ${#strings.toString(userAuth.rghtCd) == 'AG28'}" type="button" class="btn btn-danger" id="return" onclick="updateRprStatus('11')">반송</button>
+								<!-- 사업부 부서장 - 승인 -->
+								<button th:if = "${#strings.toString(userAuth.rghtCd) == 'AG18'}" type="button" class="btn btn-success" id="nConfirm" onclick="updateRprStatus('30')">승인</button>
+								<!-- 심사부 심사역 - 심사역 확인 -->
+								<button th:if = "${#strings.toString(userAuth.rghtCd) == 'AG21'}" type="button" class="btn btn-success" id="jConfirm" onclick="updateRprStatus('40')">심사역확인</button>
+								<!-- 심사부 부서장 - 부서장 확인 -->
+								<button th:if = "${#strings.toString(userAuth.rghtCd) == 'AG28'}" type="button" class="btn btn-success" id="hConfirm" onclick="updateRprStatus('50')">부서장확인</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- 조회조건ed -->
+
+				<!-- 조회결과 -->
+				<div class="ibox-content mb-2">
+					<!-- 버튼영역 -->
+					<div class="col-sm-12 text-right mb-1">
+						<button class="btn btn-default btn-xs" type="button" onclick="addACPMRow();">
+							<i class="fa fa-plus"></i>&nbsp;행추가
+						</button>
+						<button class="btn btn-default btn-xs" type="button" onclick="delACPMRow('pacmList');">
+							<i class="fa fa-minus"></i>&nbsp;행삭제
+						</button>
+						<button class="btn btn-success btn-xs" type="button" onclick="">
+							<i class="fa fa-save"></i>&nbsp;저장
+						</button>
+						<button class="btn btn-warning btn-xs">
+							<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+						</button>
+					</div>
+					<div class="tableFixHeader2 scroll">
+						<table class="table result table-bordered" style="width: 2200px;">
+							<thead>
+								<tr>
+									<th><input type="checkbox" id="check_all"></th>
+									<th>진행상태</th>
+									<th>Deal번호</th>
+									<th>신규/재부의</th>
+									<th>부수안건</th>
+									<th>안건명</th>
+									<th>일련번호</th>
+									<th>통화</th>
+									<th>약정금액</th>
+									<th>Sell-down 대상금액</th>
+									<th>Sell-down 기한</th>
+									<th>만기보유 가능금액</th>
+									<th>잔고</th>
+									<th>이행여부</th>
+									<th>부서</th>
+									<th>담당자</th>
+									<th>심사부서</th>
+									<th>심사역</th>
+									<th>승인요청일</th>
+									<th>승인일</th>
+									<th>심사역확인일</th>
+									<th>부서장확인일</th>
+									<th style="display:none">결의협의체</th>
+									<th style="display:none">결의일</th>
+									<th style="display:none">결의결과</th>
+									<th style="display:none">승인조건</th>
+									<th style="display:none">참여현황</th>
+									<th style="display:none">진행경과</th>
+									<th style="display:none">BaseCase</th>
+									<th style="display:none">StressCase</th>
+									<th style="display:none">기타특이사항</th>
+								</tr>
+							</thead>
+							<tbody id="pacmList">
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="ibox-content">
+					<!-- 상세보기 -->
+					<div class="text-right mb-3">
+						<!-- 1 Line -->
+						<div class="form-group row">
+							<label class="col-sm-1 col-form-label">Deal번호</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="ibDealNo" readonly>
+							</div>
+							<label class="col-sm-1 col-form-label">신규/재부의</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="riskInspctCcd" readonly>
+								<input type="hidden" id="hiddenRiskInspctCcd">
+							</div>
+							<label class="col-sm-1 col-form-label">부수안건</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="lstCCaseCcd" readonly>
+								<input type="hidden" id="hiddenLstCCaseCcd">
+							</div>
+							<label class="col-sm-1 col-form-label">일련번호</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="itemSq" readonly>
+							</div>
+						</div>
+						<!-- 2 Line -->
+						<div class="form-group row">
+							<label class="col-sm-1 col-form-label">안건명</label>
+							<div class="col-sm-11">
+								<input type="text" class="form-control" id="detailIbDealNm" readonly>
+							</div>
+						</div>
+						<!-- 3 Line -->
+						<div class="form-group row">
+							<label class="col-sm-1 col-form-label">결의협의체</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="inspctCnfrncCcd" readonly>
+							</div>
+							<label class="col-sm-1 col-form-label">결의일</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="rsltnDt" readonly>
+							</div>
+							<label class="col-sm-1 col-form-label">결과</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="rsltnRsltCd" readonly>
+							</div>
+						</div>
+						<!-- 4 Line -->
+						<div class="form-group row">
+							<label class="col-sm-1 col-form-label">승인조건</label>
+							<div class="col-sm-11">
+								<input type="text" class="form-control" id="rsltCntnt" readonly>
+							</div>
+						</div></div>
+					<!-- 항후계획 -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h4>◎ 이행계획</h4>
+						</div>
+						<div class="ibox-content">
+							<table class="table table-bordered">
+								<colgroup>
+									<col style="width: 3%;">
+									<col style="width: 7%;">
+									<col style="width: 85%;">
+								</colgroup>
+								<tr>
+									<th class="table-light" colspan="2">참여현황</th>
+									<td>
+										<textarea th:if = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 		   ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="mainPrgrsSttnCntnt" placeholder="작성예시) 최초 사모사채인수확약 방식으로 ooo억원 참여,&#13;&#10; 		 o개월 내 oo억원, o개월 내 oo억원, o개월 내 잔여 oo억원 Sell-Down 승인 조건임."></textarea>
+										<textarea th:unless = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+											  				   ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="mainPrgrsSttnCntnt" placeholder="작성예시) 최초 사모사채인수확약 방식으로 ooo억원 참여,&#13;&#10; 		 o개월 내 oo억원, o개월 내 oo억원, o개월 내 잔여 oo억원 Sell-Down 승인 조건임." readonly></textarea>
+									</td>
+								</tr>
+								<tr>
+									<th class="table-light" colspan="2">진행경과</th>
+									<td>
+										<textarea th:if = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 		   ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="bsnsSttnAndPrspctSmry" placeholder="작성예시) oooo년 o월 oo일: □□캐피탈 oo억원 Sell-Down&#13;&#10;	 	 oooo년 o월 oo일: △△저축은행 oo억원 Sell-down"></textarea>
+										<textarea th:unless = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 		       ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="bsnsSttnAndPrspctSmry" placeholder="작성예시) oooo년 o월 oo일: □□캐피탈 oo억원 Sell-Down&#13;&#10;	 	 oooo년 o월 oo일: △△저축은행 oo억원 Sell-down" readonly></textarea>
+									</td>
+								</tr>
+								<tr>
+									<th class="table-light" rowspan="2">예정<br>사항
+									</th>
+									<th class="table-light">Base Case</th>
+									<td>
+										<textarea th:if = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 		   ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="prcsPlanCntnt1"></textarea>
+										<textarea th:unless = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 		   	   ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="prcsPlanCntnt1" readonly></textarea>
+									</td>
+								</tr>
+								<tr>
+									<th class="table-light">Stress Case</th>
+									<td>
+										<textarea th:if = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 		   ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="prcsPlanCntnt2"></textarea>
+										<textarea th:unless= "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 		   	  ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="prcsPlanCntnt2" readonly></textarea>
+									</td>
+								</tr>
+								<tr>
+									<th class="table-light" colspan="2">기타 특이사항</th>
+									<td>
+										<textarea th:if = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 		   ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="rprRsnCntnt"></textarea>
+										<textarea th:unless = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 		   	   ${#strings.toString(userAuth.rghtCd) == 'AG21'}" class="form-control" style="height: 50px;" id="rprRsnCntnt" readonly></textarea>
+									</td>
+								</tr>
+							</table>
+							<div class="col-sm-12 text-right">
+								<button th:if = "${#strings.toString(userAuth.rghtCd) == 'AG11'} OR
+												 ${#strings.toString(userAuth.rghtCd) == 'AG21'}"
+										class="btn btn-success" type="button" onclick="save()"><i class="fa fa-save"></i>&nbsp;저장</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- ibox -->
+			</div>
+		</div>
+		<!-- row -->
+	</div>
+</th:block>
+
+</html>

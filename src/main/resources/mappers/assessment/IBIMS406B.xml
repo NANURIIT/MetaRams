@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS406BMapper">
+    <select id="getExcSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS406BDTO" resultType="int">
+		SELECT 
+		       NVL(MAX(A.INT_CALC_SEQ),0)+1 AS INT_CALC_SEQ	/* 이자계산순번 채번 */
+		  FROM IBIMS406B A 	/* 딜실행기본 */
+		 WHERE 1 = 1
+		   AND A.PRDT_CD = #{prdtCd}
+		   AND A.TR_SN   = #{trSn}
+		   AND A.EXC_SN  = #{excSn}
+    </select>
+     <!-- 이자계산내역 등록 -->
+    <insert id="insertIBIMS0406B" parameterType="com.nanuri.rams.business.common.dto.IBIMS406BDTO">
+		INSERT INTO IBIMS406B    /* 여신이자계산내역 */
+		(
+		  PRDT_CD                /* 상품번호 */
+		, TR_SN                  /* 거래일련번호 */
+		, EXC_SN                 /* 실행일련번호 */
+		, INT_CALC_SEQ           /* 이자계산순번 */
+		, RKFR_DT                /* 기산일자 */
+		, INTR_CALC_STRT_DT      /* 이자계산시작일자 */
+		, INTR_CALC_END_DT       /* 이자계산종료일자 */
+		, PAI_TYP_CD             /* 원리금유형코드 */
+		, TRGT_DNUM              /* 대상일수 */
+		, RDMP_TMRD              /* 상환회차 */
+		, APLY_INTR              /* 적용금리 */
+		, DEAL_TRGT_AMT          /* 딜대상금액 */
+		, DEAL_ISTM_PRNA         /* 딜할부원금 */
+		, NRML_INT_AMT           /* 정상이자금액 */
+		, CRDT_GRNT_OVDU_INT_AMT /* 신용공여연체이자금액 */
+		, MRDP_FEE_AMT           /* 중도상환수수료금액 */
+		, CRDT_GRNT_RCVB_INT_AMT /* 신용공여미수이자금액 */
+		, HND_DETL_DTM           
+		, HND_EMPNO              
+		, HND_TMNL_NO            
+		, HND_TR_ID              
+		, GUID                   
+		)
+		VALUES
+		(
+		  #{prdtCd}              /* 상품번호 */
+		, #{trSn}                /* 거래일련번호 */
+		, #{excSn}               /* 실행일련번호 */
+		, (
+			SELECT 
+			       NVL(MAX(A.INT_CALC_SEQ),0)+1 AS INT_CALC_SEQ	/* 이자계산순번 채번 */
+			  FROM IBIMS406B A 	/* 딜실행기본 */
+			 WHERE 1 = 1
+			   AND A.PRDT_CD = #{prdtCd}
+			   AND A.TR_SN   = #{trSn}
+			   AND A.EXC_SN  = #{excSn}
+		)          /* 이자계산순번 */
+		, #{rkfrDt}              /* 기산일자 */
+		, #{intrCalcStrtDt}      /* 이자계산시작일자 */
+		, #{intrCalcEndDt}       /* 이자계산종료일자 */
+		, #{paiTypCd}            /* 원리금유형코드 */
+		, #{trgtDnum}            /* 대상일수 */
+		, #{rdmpTmrd}            /* 상환회차 */
+		, #{aplyIntr}            /* 적용금리 */
+		, #{dealTrgtAmt}         /* 딜대상금액 */
+		, #{dealIstmPrna}        /* 딜할부원금 */
+		, #{nrmlIntAmt}          /* 정상이자금액 */
+		, #{crdtGrntOvduIntAmt}  /* 신용공여연체이자금액 */
+		, #{mrdpFeeAmt}          /* 중도상환수수료금액 */
+		, #{crdtGrntRcvbIntAmt}  /* 신용공여미수이자금액 */
+		, #{hndDetlDtm}          
+		, #{hndEmpno}            
+		, #{hndTmnlNo}           
+		, #{hndTrId}             
+		, #{guid}                
+		)
+    </insert>
+
+	<!-- 여신이자계산내역 조회 -->
+	<select id="selectIntrTrDtls" parameterType="com.nanuri.rams.business.common.dto.IBIMS406BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS406BVO">
+		SELECT PRDT_CD 				    /* 딜번호 */
+			 , TR_SN 				    /* 거래일련번호 */
+			 , EXC_SN 				    /* 실행일련번호 */
+			 , INT_CALC_SEQ 		    /* 이자계산순번 */
+			 , RKFR_DT 				    /* 기산일자 */
+			 , INTR_CALC_STRT_DT 	    /* 이자계산시작일자 */
+			 , INTR_CALC_END_DT 	    /* 이자계산종료일자 */
+			 , PAI_TYP_CD 			    /* 원리금유형코드 */
+			 , TRGT_DNUM 			    /* 대상일수 */
+			 , RDMP_TMRD 			    /* 상환회차 */
+			 , APLY_INTR 			    /* 적용금리 */
+			 , DEAL_TRGT_AMT 		    /* 딜대상금액 */
+			 , DEAL_ISTM_PRNA 		    /* 딜할부원금 */
+			 , NRML_INT_AMT 		    /* 정상이자금액 */
+			 , CRDT_GRNT_OVDU_INT_AMT 	/* 신용공여연체이자금액 */
+			 , MRDP_FEE_AMT 			/* 중도상환수수료금액 */
+			 , CRDT_GRNT_RCVB_INT_AMT 	/* 신용공여미수이자금액 */
+			 , HND_DETL_DTM 			/* 조작상세일시 */
+			 , HND_EMPNO 				/* 조작사원번호 */
+			 , HND_TMNL_NO 				/* 조작단말기번호 */
+			 , HND_TR_ID 				/* 조작거래ID */
+			 , GUID 					/* GUID */
+		  FROM IBIMS406B				/* 여신이자계산내역 */
+		 WHERE PRDT_CD = #{prdtCd}		/* 종목번호 */
+		   AND EXC_SN = #{excSn}		/* 실행일련번호 */
+		   AND TR_SN = #{trSn}		 	/* 거래일련번호 */
+	</select>
+
+</mapper>

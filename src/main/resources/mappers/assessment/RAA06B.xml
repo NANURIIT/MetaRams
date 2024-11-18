@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA06BMapper">
+	<!-- 담보정보 취득 -->
+	<select id="getMrtgInfo" parameterType="com.nanuri.rams.business.common.vo.RAA06BVO" resultType="com.nanuri.rams.business.common.vo.RAA06BVO">
+	   	SELECT IB_DEAL_NO												<!-- IBDEAL번호 -->
+	   		 , RISK_INSPCT_CCD											<!-- 리스크심사구분코드 -->
+	   		 , LST_C_CASE_CCD											<!-- 부수안건구분코드 -->
+	   		 , ITEM_SQ													<!-- 항목일련번호 -->
+	   		 , MRTG_KND_CCD												<!-- 담보종류구분코드 -->
+	   		 , MRTG_RSN_CNTNT											<!-- 담보사유내용 -->
+	   		 , MRTG_VAL_AMT												<!-- 담보평가금액 -->
+	   		 , RGT_RNK_CCD												<!-- 권리순위구분코드 -->
+	   		 , MRTG_DTLS_CCD											<!-- 담보상세구분코드 -->
+	   		 , MRTG_ACQST_STM_CCD										<!-- 담보취득방식구분코드 -->
+	   		 , MRTG_ACQST_DTLS_CCD										<!-- 담보취득상세구분코드 -->
+	   		 , INVST_CRNCY_CD											<!-- 투자통화코드 -->
+	   		 , CRNCY_AMT												<!-- 통화금액 -->
+	   		 , APLC_EXCH_R												<!-- 적용환율 -->
+	   		 , RAA06B.HNDL_DY_TM										<!-- 처리일시 -->
+	   		 , RAA06B.HNDL_DPRT_CD										<!-- 처리부점코드 -->
+	   		 , RAA06B.HNDL_P_ENO										<!-- 처리자번 -->
+	   		 , tb2.CD_VL_NM					AS MRTG_KND_CCD_NM			<!-- 담보종류구분코드명 -->
+	   		 , tb3.CD_VL_NM					AS MRTG_DTLS_CCD_NM			<!-- 담보상세구분코드명 -->
+	   		 , tb4.CD_VL_NM					AS RGT_RNK_CCD_NM			<!-- 권리순위구분코드명 -->
+	   		 , tb5.CD_VL_NM					AS MRTG_ACQST_STM_CCD_NM	<!-- 담보취득방식구분코드명 -->
+	   		 , tb6.CD_VL_NM					AS MRTG_ACQST_DTLS_CCD_NM	<!-- 담보취득상세구분코드명 -->
+    	  FROM RAA06B 
+    	  LEFT JOIN RAA91B tb2
+    	    ON RAA06B.MRTG_KND_CCD = tb2.CD_VL_ID
+    	   AND tb2.CMNS_CD_GRP = 'M002'							<!-- 담보종류구분코드 -->
+    	  LEFT JOIN RAA91B tb3
+    	    ON RAA06B.MRTG_DTLS_CCD = tb3.CD_VL_ID
+    	   AND tb3.CMNS_CD_GRP = 'M001'							<!-- 담보상세구분코드 -->
+    	  LEFT JOIN RAA91B tb4
+    	    ON RAA06B.RGT_RNK_CCD = tb4.CD_VL_ID
+    	   AND tb4.CMNS_CD_GRP = 'R008'							<!-- 권리순위구분코드 -->
+    	  LEFT JOIN RAA91B tb5
+    	  	ON RAA06B.MRTG_ACQST_STM_CCD = tb5.CD_VL_ID
+    	   AND tb5.CMNS_CD_GRP = 'M003'							<!-- 담보취득방식구분코드 -->
+    	  LEFT JOIN RAA91B tb6
+    	    ON RAA06B.MRTG_ACQST_DTLS_CCD = tb6.CD_VL_ID
+    	   AND tb6.CMNS_CD_GRP = 'M004'							<!-- 담보취득상세구분코드 -->
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}
+    	   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+    	 ORDER BY ITEM_SQ
+   	</select>
+   	
+   	<!-- 내부등급정보 생성  -->
+	<insert id="registMrtgInfo" parameterType="com.nanuri.rams.business.common.dto.RAA06BDTO">
+     	INSERT INTO RAA06B
+     		   (
+     		   IB_DEAL_NO						<!-- IBDEAL번호 -->
+     		   , RISK_INSPCT_CCD				<!-- 리스크심사구분코드 -->
+     		   , LST_C_CASE_CCD					<!-- 부수안건구분코드 -->
+     		   , ITEM_SQ						<!-- 항목일련번호 -->
+     		   , MRTG_KND_CCD					<!-- 담보종류구분코드 -->
+	   		   , MRTG_RSN_CNTNT					<!-- 담보사유내용-->
+	   		   , MRTG_VAL_AMT					<!-- 담보평가금액 -->
+	   		   , RGT_RNK_CCD					<!-- 권리순위구분코드 -->
+	   		   , MRTG_DTLS_CCD					<!-- 담보상세구분코드 -->
+	   		   , MRTG_ACQST_STM_CCD				<!-- 담보취득방식구분코드-->
+	   		   , MRTG_ACQST_DTLS_CCD			<!-- 담보취득상세구분코드-->
+	   		   , INVST_CRNCY_CD					<!-- 투자통화코드-->
+	   		   , CRNCY_AMT						<!-- 통화금액-->
+	   		   , APLC_EXCH_R					<!-- 적용환율-->	
+	   		   , HNDL_DY_TM						<!-- 처리일시 -->
+	   		   , HNDL_DPRT_CD					<!-- 처리부점코드 -->
+	   		   , HNDL_P_ENO						<!-- 처리자번 -->
+     		   )
+    	VALUES (
+    			#{ibDealNo}						<!-- IBDEAL번호 -->
+     			, #{riskInspctCcd}				<!-- 리스크심사구분코드 -->
+     			, #{lstCCaseCcd}				<!-- 부수안건구분코드 -->
+     			, NEXT VALUE FOR RAA06B_SQ		<!-- 항목일련번호 -->
+     			, #{mrtgKndCcd}					<!-- 담보종류구분코드 -->
+				, #{mrtgRsnCntnt}    			<!-- 담보사유내용-->
+				, #{mrtgValAmt} 				<!-- 담보평가금액 -->
+				, #{rgtRnkCcd}	 				<!-- 권리순위구분코드 -->
+				, #{mrtgDtlsCcd}				<!-- 담보상세구분코드 -->
+				, #{mrtgAcqstStmCcd}	  		<!-- 담보취득방식구분코드-->
+				, #{mrtgAcqstDtlsCcd}	 		<!-- 담보취득상세구분코드-->
+				, #{invstCrncyCd}				<!-- 투자통화코드-->
+				, #{crncyAmt}					<!-- 통화금액-->
+				, #{aplcExchR}					<!-- 적용환율-->	
+				, CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+     			, #{hndlDprtCd}					<!-- 처리부점코드 -->
+     			, #{hndlPEno}					<!-- 처리자번 -->
+    		   )
+    </insert>
+    
+    <!-- 내부등급정보 갱신  -->
+    <update id="updateMrtgInfo" parameterType="com.nanuri.rams.business.common.dto.RAA06BDTO">
+    	UPDATE RAA06B
+    	   SET MRTG_KND_CCD			= #{	mrtgKndCcd			}	<!-- 담보종류구분코드 -->
+			 , MRTG_RSN_CNTNT		= #{	mrtgRsnCntnt		}	<!-- 담보사유내용 -->
+			 , MRTG_VAL_AMT			= #{	mrtgValAmt			}	<!-- 담보평가금액 -->
+			 , RGT_RNK_CCD			= #{	rgtRnkCcd			}	<!-- 권리순위구분코드 -->
+			 , MRTG_DTLS_CCD		= #{	mrtgDtlsCcd			}	<!-- 담보상세구분코드 -->
+			 , MRTG_ACQST_STM_CCD	= #{	mrtgAcqstStmCcd		}	<!-- 담보취득방식구분코드 -->
+			 , MRTG_ACQST_DTLS_CCD	= #{	mrtgAcqstDtlsCcd	}	<!-- 담보취득상세구분코드 -->
+			 , INVST_CRNCY_CD		= #{	invstCrncyCd		}	<!-- 투자통화코드 -->
+			 , CRNCY_AMT			= #{	crncyAmt			}	<!-- 통화금액 -->
+			 , APLC_EXCH_R			= #{	aplcExchR			}	<!-- 적용환율 -->
+			 , HNDL_DY_TM			= CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+			 , HNDL_DPRT_CD			= #{	hndlDprtCd			}	<!-- 처리부점코드 -->
+			 , HNDL_P_ENO			= #{	hndlPEno			}	<!-- 처리자사번 -->
+		 WHERE 1=1
+		   AND IB_DEAL_NO = #{ibDealNo}
+		   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+		   AND ITEM_SQ = #{itemSq}
+    </update>
+    
+    <!-- 내부등급정보 제거  -->
+    <delete id="deleteMrtgInfo">
+    	DELETE FROM RAA06B 
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}	<!-- IBDEAL번호 -->
+    	   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+    	   AND ITEM_SQ = #{itemSq}		<!-- 항목일련번호 -->
+    </delete>
+    
+</mapper>

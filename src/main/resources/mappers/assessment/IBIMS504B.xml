@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS504BMapper">
+	
+	<select id="getMaInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS504BVO">
+		SELECT DEAL_NO                                 /* 딜번호 */
+         , SQ						     		                   /* 일련번호 */
+         , UNDW_HGLM_WY_DCD                        /* 인수상한방식구분코드 */
+         , HNVR_BUSI_DCD                           /* 인수사업구분코드 */
+         , LMT_TR_YN                               /* 한도거래여부 */
+         , BRWR_SPC_YN                             /* 차주SPC여부 */
+         , BUSI_CTNS                               /* 사업내용 */
+         , UNDW_MRTG_CTNS                          /* 인수담보내용 */
+         , SPNSR_CTNS                              /* 후원자내용 */
+         , DEL_YN                                  /* 삭제여부 */
+         , HND_DETL_DTM                            /* 조작상세일시 */
+         , HND_EMPNO                               /* 조작사원번호 */
+         , HND_TMNL_NO                             /* 조작단말기번호 */
+         , HND_TR_ID                               /* 조작거래id */
+         , GUID                                    /* guid */
+      FROM IBIMS504B
+     WHERE 1=1
+       AND DEAL_NO    = #{dealNo} 
+       AND SQ					= (
+						             SELECT MAX(SQ)
+						               FROM IBIMS504B
+						              WHERE DEAL_NO = #{dealNo}
+						            )                                      
+	</select>
+	
+	<insert id="saveMaInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO">
+        INSERT INTO IBIMS504B 
+             (
+                DEAL_NO                                 /* 딜번호 */
+              , SQ                                      /* 일련번호 */
+              , UNDW_HGLM_WY_DCD                        /* 인수상한방식구분코드 */
+              , HNVR_BUSI_DCD                           /* 인수사업구분코드 */
+              , LMT_TR_YN                               /* 한도거래여부 */
+              , BRWR_SPC_YN                             /* 차주SPC여부 */
+              , BUSI_CTNS                               /* 사업내용 */
+              , UNDW_MRTG_CTNS                          /* 인수담보내용 */
+              , SPNSR_CTNS                              /* 후원자내용 */
+              , DEL_YN                                  /* 삭제여부 */
+              , HND_DETL_DTM                            /* 조작상세일시 */
+              , HND_EMPNO                               /* 조작사원번호 */
+              , HND_TMNL_NO                             /* 조작단말기번호 */
+              , HND_TR_ID                               /* 조작거래id */
+              , GUID                                    /* guid */
+             )
+      VALUES (
+               #{dealNo}                                /* 딜번호 */
+             , (
+                SELECT CASE WHEN A.SQ = 0 THEN '0000000001'
+                       ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
+                  FROM (
+                   		  SELECT COUNT(SQ)  AS SQ
+                             , MAX(SQ)    AS INCREMENT_SQ
+                          FROM IBIMS502B
+                       ) A
+       			    )                                     /* 일련번호 */
+              , #{maInfo.undwHglmWyDcd}              	/* 인수상한방식구분코드 */
+              , #{maInfo.hnvrBusiDcd}                	/* 인수사업구분코드 */
+              , #{maInfo.lmtTrYn}                    	/* 한도거래여부 */
+              , #{maInfo.brwrSpcYn}                  	/* 차주SPC여부 */
+              , #{maInfo.busiCtns}                   	/* 사업내용 */
+              , #{maInfo.undwMrtgCtns}               	/* 인수담보내용 */
+              , #{maInfo.spnsrCtns}                  	/* 후원자내용 */
+              , #{maInfo.delYn}                      	/* 삭제여부 */
+              , SYSDATE             					  	    /* 조작상세일시 */
+              , #{maInfo.hndEmpno}                   	/* 조작사원번호 */
+              , #{maInfo.hndTmnlNo}                  	/* 조작단말기번호 */
+              , #{maInfo.hndTrId}                    	/* 조작거래id */
+              , #{maInfo.guid}                       	/* guid */
+             )
+	</insert>
+
+</mapper>

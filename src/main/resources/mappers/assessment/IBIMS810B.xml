@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS810BMapper">
+	<select id="selectIBIMS810B" parameterType="com.nanuri.rams.business.common.dto.IBIMS810BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS810BDTO">
+		SELECT   #{stdrDt} 										AS stdrDt
+				, PRDT_CD
+				, EXC_SN
+				, LDG_STTS_CD
+				, CRRY_CD
+				, EXC_DT
+				, EXP_DT
+				, DEAL_EXC_AMT
+				, DEAL_EXC_BLCE
+				, KRW_TRSL_RT
+				, KRW_TRSL_EXC_AMT
+				, KRW_TRSL_EXC_BLCE
+				, PRNA_DFR_PRD_MNUM
+				, LAST_PRNA_RDMP_DT
+				, LAST_INTR_CLC_DT
+				, NXT_RDMP_PRAR_DT
+				, NXT_INTR_PYM_DT
+				, INTR_RDMP_FRQC_MNUM
+				, INTR_PYM_DT_CD
+				, PRNA_RDMP_FRQC_MNUM
+				, PRNA_OVDU_DT
+				, INTR_OVDU_DT
+				, TOT_RDMP_TMRD
+				, LAST_RDMP_TMRD
+				, DEAL_ISTM_BLCE
+				, DEAL_EQL_RDMP_AMT
+				, ISTM_DTM_RDMP_AMT
+				, RCVB_INTR_AMT
+				, GRTE_DCD
+				, PYMT_GRTE_RFR_NO
+				, GRTE_ISTT_CD
+				, GRTE_ISTT_NM
+				, BUY_SHQT
+				, SLL_SHQT
+				, AVR_UNPR
+				, BRKG_ACNO
+				, RCTM_ISTT_CD
+				, ACHD_NM
+				, PYMT_GRTE_SCCT_CTNS
+				, ACBK_AMT
+				, DEAL_NO
+				, MTR_DCD
+				, JDGM_DCD
+				, DFR_EXP_MNUM
+				, NVL(#{nrmlIntr}, 0)         				AS NRML_INTR
+				, NVL(#{intrAmtOvduIntr}, 0)  				AS INTR_AMT_OVDU_INTR
+				, NVL(#{aplyIrt}, 0)          				AS APLY_IRT
+				, NVL(#{ovduPrna}, 0)         				AS OVDU_PRNA
+				, NVL(#{eprzCrdlAcbkAmt}, 0)  				AS EPRZ_CRDL_ACBK_AMT
+				, NVL(#{avrBlce}, 0)          				AS AVR_BLCE
+				, NVL(#{hdwtEvlAmt}, 0)       				AS HDWT_EVL_AMT
+				, NVL(#{qotaRt}, 0)           				AS QOTA_RT
+				, NVL(#{setlShqt}, 0)         				AS SETL_SHQT
+				, NVL(#{dcsnYn}, 'n')           				AS DCSN_YN
+				, HND_DETL_DTM
+				, HND_EMPNO
+				, HND_TMNL_NO
+				, HND_TR_ID
+				, GUID
+		FROM IBIMS402B
+	</select>
+ 	
+	<insert id="insertIBIMS810B" parameterType="com.nanuri.rams.business.common.vo.IBIMS810BVO">
+		INSERT INTO IBIMS810B ( /* 딜일별잔액 */
+				  	  STDR_DT
+					, PRDT_CD
+					, EXC_SN
+					, LDG_STTS_CD
+					, CRRY_CD
+					, EXC_DT
+					, EXP_DT
+					, DEAL_EXC_AMT
+					, DEAL_EXC_BLCE
+					, KRW_TRSL_RT
+					, KRW_TRSL_EXC_AMT
+					, KRW_TRSL_EXC_BLCE
+					, PRNA_DFR_PRD_MNUM
+					, LAST_PRNA_RDMP_DT
+					, LAST_INTR_CLC_DT
+					, NXT_RDMP_PRAR_DT
+					, NXT_INTR_PYM_DT
+					, INTR_RDMP_FRQC_MNUM
+					, INTR_PYM_DT_CD
+					, PRNA_RDMP_FRQC_MNUM
+					, PRNA_OVDU_DT
+					, INTR_OVDU_DT
+					, TOT_RDMP_TMRD
+					, LAST_RDMP_TMRD
+					, DEAL_ISTM_BLCE
+					, DEAL_EQL_RDMP_AMT
+					, ISTM_DTM_RDMP_AMT
+					, RCVB_INTR_AMT
+					, GRTE_DCD
+					, PYMT_GRTE_RFR_NO
+					, GRTE_ISTT_CD
+					, GRTE_ISTT_NM
+					, BUY_SHQT
+					, SLL_SHQT
+					, AVR_UNPR
+					, BRKG_ACNO
+					, RCTM_ISTT_CD
+					, ACHD_NM
+					, PYMT_GRTE_SCCT_CTNS
+					, ACBK_AMT
+					, DEAL_NO
+					, MTR_DCD
+					, JDGM_DCD
+					, DFR_EXP_MNUM
+					, NRML_INTR
+					, INTR_AMT_OVDU_INTR
+					, APLY_IRT
+					, OVDU_PRNA
+					, EPRZ_CRDL_ACBK_AMT
+					, AVR_BLCE
+					, HDWT_EVL_AMT
+					, QOTA_RT
+					, SETL_SHQT
+					, DCSN_YN
+					, HND_DETL_DTM
+					, HND_EMPNO
+					, HND_TMNL_NO
+					, HND_TR_ID
+					, GUID
+		) VALUES
+		<foreach collection="ibims810bdtoList" item="item" separator=",">
+			(
+				  #{item.stdrDt}
+				, #{item.prdtCd}
+				, #{item.excSn}
+				, #{item.ldgSttsCd}
+				, #{item.crryCd}
+				, #{item.excDt}
+				, #{item.expDt}
+				, #{item.dealExcAmt}
+				, #{item.dealExcBlce}
+				, #{item.krwTrslRt}
+				, #{item.krwTrslExcAmt}
+				, #{item.krwTrslExcBlce}
+				, #{item.prnaDfrPrdMnum}
+				, #{item.lastPrnaRdmpDt}
+				, #{item.lastIntrClcDt}
+				, #{item.nxtRdmpPrarDt}
+				, #{item.nxtIntrPymDt}
+				, #{item.intrRdmpFrqcMnum}
+				, #{item.intrPymDtCd}
+				, #{item.prnaRdmpFrqcMnum}
+				, #{item.prnaOvduDt}
+				, #{item.intrOvduDt}
+				, #{item.totRdmpTmrd}
+				, #{item.lastRdmpTmrd}
+				, #{item.dealIstmBlce}
+				, #{item.dealEqlRdmpAmt}
+				, #{item.istmDtmRdmpAmt}
+				, #{item.rcvbIntrAmt}
+				, #{item.grteDcd}
+				, #{item.pymtGrteRfrNo}
+				, #{item.grteIsttCd}
+				, #{item.grteIsttNm}
+				, #{item.buyShqt}
+				, #{item.sllShqt}
+				, #{item.avrUnpr}
+				, #{item.brkgAcno}
+				, #{item.rctmIsttCd}
+				, #{item.achdNm}
+				, #{item.pymtGrteScctCtns}
+				, #{item.acbkAmt}
+				, #{item.dealNo}
+				, #{item.mtrDcd}
+				, #{item.jdgmDcd}
+				, #{item.dfrExpMnum}
+				, #{item.nrmlIntr}
+				, #{item.intrAmtOvduIntr}
+				, #{item.aplyIrt}
+				, #{item.ovduPrna}
+				, #{item.eprzCrdlAcbkAmt}
+				, #{item.avrBlce}
+				, #{item.hdwtEvlAmt}
+				, #{item.qotaRt}
+				, #{item.setlShqt}
+				, #{item.dcsnYn}
+				, #{item.hndDetlDtm}
+				, #{item.hndEmpno}
+				, #{item.hndTmnlNo}
+				, #{item.hndTrId}
+				, #{item.guid}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteIBIMS810B" parameterType="String">
+		DELETE FROM IBIMS810B /* 딜일별잔액 */
+		 WHERE 1=1
+		   AND STDR_DT = #{stdrDt}
+	</delete>
+
+	<update id="updateIBIMS810B" parameterType="com.nanuri.rams.business.common.dto.IBIMS810BDTO">
+		UPDATE IBIMS810B /* 딜일별잔액 */
+		   SET NRML_INTR = #{nrmlIntr} /* 정상이자 */
+             , INTR_AMT_OVDU_INTR = #{intrAmtOvduIntr}	/* 이자금액연체이자 */
+		 WHERE 1=1
+		   AND STDR_DT = #{stdrDt}
+      	   AND PRDT_CD = #{prdtCd}
+      	   AND EXC_SN = #{excSn}
+	</update>
+</mapper>

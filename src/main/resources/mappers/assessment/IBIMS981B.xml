@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS981BMapper">
+
+    <select id="selectIBIMS981B" parameterType="com.nanuri.rams.business.common.vo.IBIMS981BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS981BVO">
+        SELECT ROWNUM
+             , A.DUDT_MNGM_NO               /* 기일관리번호 */
+             , A.ERLM_SEQ                   /* 등록순번 */
+             , A.DEAL_NO                    /* 딜번호 */
+             , A.PRDT_CD                    /* 상품코드 */
+             , A.DUDT_DPCH_TP_DCD           /* 기일통보유형코드 */
+             , A.CHRR_STFNO                 /* 담당자직원번호 */
+             , A.SUB_CHRR_STFNO             /* 부담당자직원번호 */
+             , A.MNGM_ORGNO                 /* 관리조직번호 */
+             , A.ERLM_DT                    /* 등록일자 */
+             , A.ACTN_PRAR_DT               /* 조치예정일자 */
+             , A.ACTN_DT                    /* 조치일자 */
+             , A.USE_YN                     /* 사용여부 */
+             , A.DPCH_YN                    /* 통보여부 */
+             , A.DEL_YN                     /* 삭제여부 */
+             , A.HND_DETL_DTM               /* 조작상세일시 */
+             , A.HND_EMPNO                  /* 조작사원번호 */
+             , A.HND_TMNL_NO                /* 조작단말기번호 */
+             , A.HND_TR_ID                  /* 조작거래ID */
+             , A.GUID                       /* GUID */
+             , B.DUDT_MNGM_DTLD_JOB_KND_CD  /* 업무종류코드 */
+             , C.ACTS_CD                    /* 계정과목코드 */
+             , C.DEAL_NM                    /* 딜명 */
+             , D.BZEP_NAME                  /* 기업체 */
+          FROM IBIMS981B A
+     LEFT JOIN IBIMS980B B
+            ON A.DUDT_MNGM_NO = B.DUDT_MNGM_NO
+     LEFT JOIN IBIMS201B C
+            ON A.PRDT_CD = C.PRDT_CD
+     LEFT JOIN IBIMS010B D
+            ON C.TR_OTHR_DSCM_NO = D.ARDY_BZEP_NO
+         WHERE 1=1
+           AND C.LAST_YN = 1
+           <if test="prevDate != ''">
+           AND A.ACTN_PRAR_DT &gt; #{prevDate}
+           </if>
+           <if test="nextDate != ''">
+           AND A.ACTN_PRAR_DT &lt; #{nextDate}
+           </if>
+           AND A.MNGM_ORGNO LIKE #{mngmOrgno}
+           AND B.DUDT_MNGM_DTLD_JOB_KND_CD LIKE #{dudtMngmDtldJobKndCd}
+           AND C.DEAL_NO LIKE #{dealNo}
+           AND C.ACTS_CD LIKE #{actsCd}
+           AND C.TR_OTHR_DSCM_NO LIKE #{ardyBzepNo}
+    </select>
+
+    <insert id="batchInsertIBIMS981B">
+        INSERT INTO IBIMS981B
+            (
+                SELECT T.DUDT_MNGM_NO                                                       AS DUDT_MNGM_NO          /* 기일관리번호 */
+                     , NVL((SELECT MAX(ERLM_SEQ) FROM IBIMS981B) + ROWNUM, ROWNUM)   AS ERLM_SEQ              /* 등록순번 */
+                     , C.DEAL_NO                                                            AS DEAL_NO               /* 딜번호 */
+                     , T.PRDT_CD                                                            AS PRDT_CD               /* 상품코드 */
+                     , D.DUDT_DPCH_TP_DCD								 AS DUDT_DPCH_TP_DCD	     /* 통보 */
+                     , D.CHRR_STFNO                                                         AS CHRR_STFNO            /* 담당자직원번호 */
+                     , D.SUB_CHRR_STFNO                                                     AS SUB_CHRR_STFNO        /* 부담당자직원번호 */
+                     , D.MNGM_ORGNO                                                         AS MNGM_ORGNO            /* 관리조직번호 */
+                     , T.BZ_DD                                                              AS ERLM_DT               /* 등록일자 */
+                     , T.PRAR_DT                                                            AS ACTN_PRAR_DT          /* 조치예정일자 */
+                     , T.PRCS_DT                                                            AS ACTN_DT               /* 조치일자 */
+                     , 'N'                                                                  AS USE_YN                /* 사용여부 */
+                     , 'N'                                                                  AS DPCH_YN               /* 통보여부 */
+                     , 'N'                                                                  AS DEL_YN                /* 삭제여부 */
+                     , SYSDATE                                                              AS HND_DETL_DTM          /* 조작상세일시 */
+                     , ''                                                                   AS HND_EMPNO             /* 조작사원번호 */
+                     , ''                                                                   AS HND_TMNL_NO           /* 조작단말기번호 */
+                     , ''                                                                   AS HND_TR_ID             /* 조작거래ID */
+                     , ''                                                                   AS GUID                  /* GUID */
+                  FROM (
+                  	SELECT A.PRDT_CD
+                  	     , A.PRAR_DT
+                  	     , A.PRCS_DT
+                  	     , A.PRCS_CPLT_YN
+                  	     , CASE 
+                            WHEN PRAR_DT &lt; B.BZ_DD AND PRCS_CPLT_YN != 1 THEN '0501' 
+                            WHEN PRAR_DT = B.DD1AF_BZ_DD AND PRCS_CPLT_YN != 1 THEN '0502'
+                            WHEN PRAR_DT = B.DD3AF_BZ_DD AND PRCS_CPLT_YN != 1 THEN '0503'
+                            WHEN PRAR_DT &lt; B.BZ_DD AND PRCS_CPLT_YN = 1 THEN '0504'
+                            ELSE ''
+                             END AS DUDT_MNGM_NO 
+                          , B.BZ_DD
+                 	  FROM IBIMS403B A, IBIMS999B B
+                 	 WHERE 1=1
+                  ) T
+             LEFT JOIN IBIMS201B C
+                    ON T.PRDT_CD = C.PRDT_CD
+             LEFT JOIN IBIMS980B D
+                    ON T.DUDT_MNGM_NO = D.DUDT_MNGM_NO       
+                 WHERE 1=1
+                   AND T.DUDT_MNGM_NO != ''
+            )
+    </insert>
+
+    <delete id="batchDeleteIBIMS981B">
+        DELETE FROM IBIMS981B
+         WHERE 1=1
+           AND ERLM_DT = (
+                            SELECT BZ_DD
+                              FROM IBIMS999B
+                         )
+    </delete>
+
+</mapper>

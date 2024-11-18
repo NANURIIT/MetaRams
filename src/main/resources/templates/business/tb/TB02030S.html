@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB02030S.js}"></script>
+	
+
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+
+				<!-- 필터 디자인 -->
+				
+                <!-- ibox -->
+				<div class="ibox ">
+					<div class="ibox-content">
+						<div class="ibox mb-0">
+							<!-- row1 -->
+							<div class="form-group form-inline row mb-0">
+								<div class="col-sm-12 input-group text-right">
+									<label class="col-sm-1 control-label">맵명</label>
+									<div class="col-sm-2">
+										<div class="input-group">
+											<input type="text" class="form-control" id="wfMapNmSearchInput">
+										</div>
+									</div>
+									<div class="col-sm-9 text-right">
+										<button class="btn btn-primary" onclick="TB02030Sjs.searchButtonClick();">
+											<i class="fa fa-search"></i>&nbsp;조회</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of ibox -->
+
+				<!-- 조회내용 -->
+				<!-- ibox -->
+				<div class="ibox ">
+					<div class="ibox-content">
+
+						<div class="row">
+						
+                            <div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 맵 관리</h5>
+										<div class="ibox-tools">		                       		
+											<button class="btn btn-default btn-xs" type="button" onclick="TB02030Sjs.addWfMapRow();"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+											<button class="btn btn-default btn-xs" type="button" onclick="TB02030Sjs.deleteWfMapRow();"><i class="fa fa-minus"></i>&nbsp;행삭제</button>											
+											<button class="btn btn-success btn-xs" type="button" onclick="TB02030Sjs.clickSaveWfMapButton();"><i class="fa fa-save"></i>&nbsp;저장</button>
+										</div>
+									</div>
+									<div class="ibox-content">
+										<div id="gridWfMapList"></div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						
+						<div class="row">
+						
+                            <div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 스텝 관리</h5>
+										<div class="ibox-tools">		                       		
+											<button class="btn btn-default btn-xs" type="button" onclick="TB02030Sjs.addWfStepRow();"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+											<button class="btn btn-default btn-xs" type="button" onclick="TB02030Sjs.deleteWfStepRow();"><i class="fa fa-minus"></i>&nbsp;행삭제</button>											
+											<button class="btn btn-success btn-xs" type="button" onclick="TB02030Sjs.clickSaveWfStepButton();"><i class="fa fa-save"></i>&nbsp;저장</button>
+										</div>
+									</div>
+									<div class="ibox-content">
+										<div id="gridWfStepList"></div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- end of ibox -->
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

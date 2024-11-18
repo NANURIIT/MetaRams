@@ -1,0 +1,1325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.DS01010Mapper">
+	
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆ 변경된 MAPPER 로 사용불가 (songwonhee) ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+
+	<select id="getTable1" parameterType="com.nanuri.rams.business.common.vo.DS01010SVO$inqueryParameters" resultType="map">
+		SELECT A.IB_DEAL_NO
+		     , A.IB_DEAL_NM
+		     , A.DPRT_CD
+		     , C.DPRT_NM
+		     , A.PTCP_AMT
+		     , (
+		     	SELECT D.CD_VL_NM
+		     	  FROM (
+		     	 		SELECT rb2.CD_VL_ID 									/* 코드값ID */
+					         , rb2.CD_VL_NM 									/* 코드값명 */
+						  FROM RAA90B rb1 
+						     , RAA91B rb2
+						 WHERE rb1.CMNS_CD_GRP = rb2.CMNS_CD_GRP 				/* 공통코드그룹 */
+				  		   AND rb1.CMNS_CD_NM = 'RISK_INSPCT_RSLTN_CCD'			/* 리스크심사결의구분코드 */
+		               ) D
+		         WHERE D.CD_VL_ID = A.RISK_INSPCT_RSLTN_CCD
+		       )    AS RISK_INSPCT_RSLTN_CCD_NM
+		     , A.RISK_INSPCT_RSLTN_CCD
+		     , NVL(A.RISK_RCG_NO, '-') 				AS RISK_RCG_NO
+		     , A.APLC_EXPT_DT
+		     , A.CHRG_P_ENO
+		     , B.EMP_NM								AS CHRG_P_NM
+		     , A.WRT_DT
+		  FROM (
+				SELECT A.IB_DEAL_NO										/* IBDEALNO */
+				     , MAX(A.IB_DEAL_NM)			AS IB_DEAL_NM 		/* IBDEAL명 */
+				     , A.DPRT_CD										/* 부점코드 */
+				     , A.CHRG_P_ENO										/* 담당자사번 */
+				     , SUM(A.PTCP_AMT)				AS PTCP_AMT 		/* 참여금액 */
+				     , A.RISK_INSPCT_RSLTN_CCD							/* 리스크심사결의구분코드 */
+				     , MAX(A.APLC_EXPT_DT)			AS APLC_EXPT_DT 	/* 적용예정일자 */
+				     , A.INSPCT_DPRT_CCD								/* 심사부서구분코드 */
+				     , A.RISK_RCG_NO									/* 리스크승인번호 */
+				     , MAX(A.WRT_DT)				AS WRT_DT			/* 기표일자 */
+				  FROM RAA02B A
+				 WHERE 1=1
+				   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+				   AND A.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+				   </if>
+				   AND A.APLC_EXPT_DT BETWEEN #{mmStartDt} AND #{mmEndDt}
+				   AND A.RISK_INSPCT_RSLTN_CCD IN ('1', '2', '3', '4', '5', '7', '8')
+				 GROUP BY A.IB_DEAL_NO
+				 	    , A.DPRT_CD
+				 	    , A.INSPCT_DPRT_CCD
+				 	    , A.RISK_INSPCT_RSLTN_CCD
+				 	    , A.RISK_RCG_NO
+				 	    , A.CHRG_P_ENO
+		       ) A
+		     , RAA99A B
+		     , RAA98A C
+		 WHERE 1=1
+		   AND B.ENO = A.CHRG_P_ENO
+		   AND C.DPRT_CD = A.DPRT_CD
+		   AND A.APLC_EXPT_DT BETWEEN IFNULL(#{weekStrtDt}, A.APLC_EXPT_DT) AND IFNULL(#{weekEndDt}, A.APLC_EXPT_DT)
+		 ORDER BY A.APLC_EXPT_DT, A.RISK_INSPCT_RSLTN_CCD, A.RISK_RCG_NO
+	</select>
+	
+	<select id="getTable2" parameterType="com.nanuri.rams.business.common.vo.DS01010SVO$inqueryParameters" resultType="map">
+		SELECT A.CD_VL_ID
+		     , A.CD_VL_NM
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('920', '921', '922', '350', '370', '360', '380', '500', '340', '330', '310', '300')	AND Z = 'pQ'	THEN 1 ELSE 0 END)	AS AGD_BFR		/* 부의안건_전분기 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('920', '921', '922', '350', '370', '360', '380', '500', '340', '330', '310', '300')	AND Z = 'cQ'	THEN 1 ELSE 0 END)	AS AGD_AFR		/* 부의안건_조회시점 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('920', '921', '922')																	AND Z = 'pQ'	THEN 1 ELSE 0 END)	AS DROP_BFR		/* 자체드랍_전분기 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('920', '921', '922')																	AND Z = 'cQ'	THEN 1 ELSE 0 END)	AS DROP_AFR		/* 자체드랍_조회시점 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('350', '370')																			AND Z = 'pQ'	THEN 1 ELSE 0 END)	AS APRVE_BFR	/* 가결(조건부포함)_전분기 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('350', '370')																			AND Z = 'cQ'	THEN 1 ELSE 0 END)	AS APRVE_AFR	/* 가결(조건부포함)_조회시점 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('360')																				AND Z = 'pQ'	THEN 1 ELSE 0 END)	AS RJCT_BFR		/* 부결_전분기 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('360')																				AND Z = 'cQ'	THEN 1 ELSE 0 END)	AS RJCT_AFR		/* 부결_조회시점 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('380')																				AND Z = 'pQ'	THEN 1 ELSE 0 END)	AS HOLD_BFR		/* 보류_전분기 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('380')																				AND Z = 'cQ'	THEN 1 ELSE 0 END)	AS HOLD_AFR		/* 보류_조회시점 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('500')																				AND Z = 'pQ'	THEN 1 ELSE 0 END)	AS FNSH_BFR		/* 약정완료_전분기 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('500')																				AND Z = 'cQ'	THEN 1 ELSE 0 END)	AS FNSH_AFR		/* 약정완료_조회시점 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('300', '310', '330', '340')															AND Z = 'pQ'	THEN 1 ELSE 0 END)	AS WAIT_BFR		/* 결의중_전분기 */
+		     , SUM(CASE WHEN B.INSPCT_PRGRS_ST_CD IN ('300', '310', '330', '340')															AND Z = 'cQ'	THEN 1 ELSE 0 END)	AS WAIT_AFR		/* 결의중_조회시점 */
+		  FROM (
+				SELECT R02.RISK_INSPCT_RSLTN_CCD
+				     , R02.INSPCT_PRGRS_ST_CD
+				     , R02.RSLTN_CNFRNC_CCD 
+				     , R02.APLC_EXPT_DT 
+				     , CASE WHEN R02.APLC_EXPT_DT BETWEEN #{bfStartDt} AND #{bfEndDt} THEN 'pQ'
+				            ELSE 'cQ'
+				        END Z
+				  FROM (
+				        SELECT A.RISK_INSPCT_RSLTN_CCD 
+						     , A.INSPCT_PRGRS_ST_CD 
+						     , A.RSLTN_CNFRNC_CCD 
+						     , A.APLC_EXPT_DT 
+						  FROM RAA02B A 
+						 WHERE 1=1
+						   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+						   AND A.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+						   </if>
+						   AND A.RISK_INSPCT_RSLTN_CCD IN ('1', '2', '3', '4', '5', '7', '8')
+				       ) R02
+				 WHERE 1=1
+				   AND R02.APLC_EXPT_DT BETWEEN #{mmStartDt} AND #{mmEndDt}        
+		       ) B
+		  LEFT JOIN (
+		             SELECT A.CD_VL_ID
+		                  , A.CD_VL_NM
+		                  , A.CD_SQ
+		               FROM RAA91B A
+		              WHERE 1=1
+		                AND A.CMNS_CD_GRP = 'I006'
+		              ORDER BY A.CD_SQ
+		            ) A
+		    ON A.CD_VL_ID = B.RISK_INSPCT_RSLTN_CCD
+		 WHERE 1=1
+		 GROUP BY A.CD_VL_ID, A.CD_VL_NM, A.CD_SQ
+		 ORDER BY A.CD_SQ
+	</select>
+	
+	<select id="getTable3" parameterType="com.nanuri.rams.business.common.vo.DS01010SVO$inqueryParameters" resultType="map">
+		SELECT '승인건수' AS colNm
+			 , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '01' THEN 1 ELSE 0 END), 0) AS qtaPef
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '02' THEN 1 ELSE 0 END), 0) AS qtaPreIpo
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '03' THEN 1 ELSE 0 END), 0) AS qtaSpac
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '04' THEN 1 ELSE 0 END), 0) AS qtaStock
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN('01', '02', '03', '04') THEN 1 ELSE 0 END), 0) AS qtaSbtl
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN 1 ELSE 0 END), 0) AS invstSecur
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN 1 ELSE 0 END), 0) AS lnBnd
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN 1 ELSE 0 END), 0) AS accdtCmnt
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN 1 ELSE 0 END), 0) AS accdtByng
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN 1 ELSE 0 END), 0) AS accdtHug
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN 1 ELSE 0 END), 0) AS accdtSbtl
+		     , IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IS NOT NULL THEN 1 ELSE 0 END), 0) AS total
+		  FROM (
+		        SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+		             , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+		             , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+		             , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+		             , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+		             , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+		             , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+		             , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+		             , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+		             , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+		             , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+		             , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+		             , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+		             , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+		             , R22.RCG_AMT                   AS RCG_AMT                                /* 승인금액 */
+		          FROM RAA02B R02
+		             , RAA22B R22
+		         WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R02.IB_DEAL_NO = R22.IB_DEAL_NO
+		           AND R02.RISK_INSPCT_CCD = R22.RISK_INSPCT_CCD
+		           AND R02.LST_C_CASE_CCD = R22.LST_C_CASE_CCD
+		           AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		         UNION ALL
+		        SELECT R82.IB_DEAL_NO
+		             , R82.RISK_INSPCT_CCD
+		             , R82.LST_C_CASE_CCD
+		             , R82.RA_DEAL_CCD
+		             , R82.RISK_RCG_NO
+		             , R82.IB_DEAL_NM
+		             , R82.PTCP_AMT
+		             , R82.RISK_INSPCT_RSLTN_CCD
+		             , R82.APLC_EXPT_DT
+		             , R82.INSPCT_PRGRS_ST_CD
+		             , R82.WRT_DT
+		             , R82.END_DT
+		             , R82.FNC_GDS_DVD_CD
+		             , R82.INSPCT_DPRT_CCD
+		             , R22.RCG_AMT
+		          FROM RAA82B R82
+		             , RAA22B R22
+		         WHERE #{stdYrMm} != DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R82.STD_YR_MM = #{stdYrMm}
+		           AND R82.IB_DEAL_NO = R22.IB_DEAL_NO
+		           AND R82.RISK_INSPCT_CCD = R22.RISK_INSPCT_CCD
+		           AND R82.LST_C_CASE_CCD = R22.LST_C_CASE_CCD
+		           AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		       ) R02
+		   LEFT JOIN (
+		            SELECT R91.CMNS_CD_GRP
+		                 , R91.CD_VL_ID
+		                 , R91.CD_VL_NM
+		                 , R91.CD_SQ
+		              FROM RAA91B R91
+		             WHERE 1=1
+		               AND R91.CMNS_CD_GRP = 'F001'
+		             ORDER BY R91.CD_SQ
+		            ) R91
+		    ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+		 WHERE 1=1
+		   AND R02.INSPCT_PRGRS_ST_CD IN ('350', '370')
+		   AND R02.RA_DEAL_CCD IN ('1', '2')
+		   AND R02.FNC_GDS_DVD_CD IN ('01', '02', '03', '04', '05', '06', '07', '08', '09')
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+		   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+		   </if>
+		   AND R02.END_DT IS NULL
+		 UNION ALL
+		 SELECT '승인금액' AS colNm
+		 	  , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '01' THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPef
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '02' THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPreIpo
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '03' THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSpac
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '04' THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaStock
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN('01', '02', '03', '04') THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSbtl
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS invstSecur
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS lnBnd
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtCmnt
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtByng
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtHug
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtSbtl
+		      , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IS NOT NULL THEN R02.RCG_AMT ELSE 0 END) / 100000000, 0), 2) AS total
+		  FROM (
+		        SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+		             , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+		             , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+		             , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+		             , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+		             , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+		             , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+		             , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+		             , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+		             , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+		             , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+		             , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+		             , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+		             , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+		             , R22.RCG_AMT                   AS RCG_AMT                                /* 승인금액 */
+		          FROM RAA02B R02
+		             , RAA22B R22
+		         WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R02.IB_DEAL_NO = R22.IB_DEAL_NO
+		           AND R02.RISK_INSPCT_CCD = R22.RISK_INSPCT_CCD
+		           AND R02.LST_C_CASE_CCD = R22.LST_C_CASE_CCD
+		           AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		         UNION ALL
+		        SELECT R82.IB_DEAL_NO
+		             , R82.RISK_INSPCT_CCD
+		             , R82.LST_C_CASE_CCD
+		             , R82.RA_DEAL_CCD
+		             , R82.RISK_RCG_NO
+		             , R82.IB_DEAL_NM
+		             , R82.PTCP_AMT
+		             , R82.RISK_INSPCT_RSLTN_CCD
+		             , R82.APLC_EXPT_DT
+		             , R82.INSPCT_PRGRS_ST_CD
+		             , R82.WRT_DT
+		             , R82.END_DT
+		             , R82.FNC_GDS_DVD_CD
+		             , R82.INSPCT_DPRT_CCD
+		             , R22.RCG_AMT
+		          FROM RAA82B R82
+		             , RAA22B R22
+		         WHERE #{stdYrMm} != DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R82.STD_YR_MM = #{stdYrMm}
+		           AND R82.IB_DEAL_NO = R22.IB_DEAL_NO
+		           AND R82.RISK_INSPCT_CCD = R22.RISK_INSPCT_CCD
+		           AND R82.LST_C_CASE_CCD = R22.LST_C_CASE_CCD
+		           AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		       ) R02
+		   LEFT JOIN (
+		            SELECT R91.CMNS_CD_GRP
+		                 , R91.CD_VL_ID
+		                 , R91.CD_VL_NM
+		                 , R91.CD_SQ
+		              FROM RAA91B R91
+		             WHERE 1=1
+		               AND R91.CMNS_CD_GRP = 'F001'
+		             ORDER BY R91.CD_SQ
+		            ) R91
+		    ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+		 WHERE 1=1
+		   AND R02.INSPCT_PRGRS_ST_CD IN ('350', '370')
+		   AND R02.RA_DEAL_CCD IN ('1', '2')
+		   AND R02.FNC_GDS_DVD_CD IN ('01', '02', '03', '04', '05', '06', '07', '08', '09')
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+		   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+		   </if>
+		   AND R02.END_DT IS NULL
+		 UNION ALL
+		 SELECT '비율' AS colNm
+		 	  , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '01' THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS qtaPef
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '02' THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS qtaPreIpo
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '03' THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS qtaSpac
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '04' THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS qtaStock
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN('01', '02', '03', '04') THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS qtaSbtl
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS invstSecur
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS lnBnd
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS accdtCmnt
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS accdtByng
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS accdtHug
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS accdtSbtl
+		      , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IS NOT NULL THEN R02.RCG_AMT ELSE 0 END) / SUM(R02.RCG_AMT) * 100, 0)), '%') AS total
+		  FROM (
+		        SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+		             , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+		             , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+		             , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+		             , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+		             , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+		             , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+		             , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+		             , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+		             , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+		             , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+		             , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+		             , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+		             , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+		             , R22.RCG_AMT                   AS RCG_AMT                                /* 승인금액 */
+		          FROM RAA02B R02
+		             , RAA22B R22
+		         WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R02.IB_DEAL_NO = R22.IB_DEAL_NO
+		           AND R02.RISK_INSPCT_CCD = R22.RISK_INSPCT_CCD
+		           AND R02.LST_C_CASE_CCD = R22.LST_C_CASE_CCD
+		           AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		         UNION ALL
+		        SELECT R82.IB_DEAL_NO
+		             , R82.RISK_INSPCT_CCD
+		             , R82.LST_C_CASE_CCD
+		             , R82.RA_DEAL_CCD
+		             , R82.RISK_RCG_NO
+		             , R82.IB_DEAL_NM
+		             , R82.PTCP_AMT
+		             , R82.RISK_INSPCT_RSLTN_CCD
+		             , R82.APLC_EXPT_DT
+		             , R82.INSPCT_PRGRS_ST_CD
+		             , R82.WRT_DT
+		             , R82.END_DT
+		             , R82.FNC_GDS_DVD_CD
+		             , R82.INSPCT_DPRT_CCD
+		             , R22.RCG_AMT
+		          FROM RAA82B R82
+		             , RAA22B R22
+		         WHERE #{stdYrMm} != DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R82.STD_YR_MM = #{stdYrMm}
+		           AND R82.IB_DEAL_NO = R22.IB_DEAL_NO
+		           AND R82.RISK_INSPCT_CCD = R22.RISK_INSPCT_CCD
+		           AND R82.LST_C_CASE_CCD = R22.LST_C_CASE_CCD
+		           AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		       ) R02
+		   LEFT JOIN (
+		            SELECT R91.CMNS_CD_GRP
+		                 , R91.CD_VL_ID
+		                 , R91.CD_VL_NM
+		                 , R91.CD_SQ
+		              FROM RAA91B R91
+		             WHERE 1=1
+		               AND R91.CMNS_CD_GRP = 'F001'
+		             ORDER BY R91.CD_SQ
+		            ) R91
+		    ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+		 WHERE 1=1
+		   AND R02.INSPCT_PRGRS_ST_CD IN ('350', '370')
+		   AND R02.RA_DEAL_CCD IN ('1', '2')
+		   AND R02.FNC_GDS_DVD_CD IN ('01', '02', '03', '04', '05', '06', '07', '08', '09')
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+		   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+		   </if>
+		   AND R02.END_DT IS NULL
+	</select>
+	<select id="getTable4" parameterType="com.nanuri.rams.business.common.vo.DS01010SVO$inqueryParameters" resultType="map">
+		SELECT '투자건수' AS colNm
+			 , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '01' THEN 1 ELSE 0 END), 0)) AS qtaPef
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '02' THEN 1 ELSE 0 END), 0)) AS qtaPreIpo
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '03' THEN 1 ELSE 0 END), 0)) AS qtaSpac
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '04' THEN 1 ELSE 0 END), 0)) AS qtaStock
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN('01', '02', '03', '04') THEN 1 ELSE 0 END), 0)) AS qtaSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN 1 ELSE 0 END), 0)) AS invstSecur
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN 1 ELSE 0 END), 0)) AS lnBnd
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN 1 ELSE 0 END), 0)) AS accdtCmnt
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN 1 ELSE 0 END), 0)) AS accdtByng
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN 1 ELSE 0 END), 0)) AS accdtHug
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN 1 ELSE 0 END), 0)) AS accdtSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IS NOT NULL THEN 1 ELSE 0 END), 0)) AS total
+		  FROM (
+		        SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+		             , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+		             , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+		             , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+		             , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+		             , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+		             , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+		             , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+		             , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+		             , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+		             , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+		             , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+		             , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+		             , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+		          FROM RAA02B R02
+		             , (
+		             	  SELECT R49.STD_DT
+		             	  	   , R49.CMBS_BKNO
+		             	  	   , R49.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R49.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R49.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R49.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R49.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', 0, R49.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', R49.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA49B R49
+		             	   WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R49.STD_DT = (SELECT MAX(STD_DT) FROM RAA49B)
+		             	   GROUP BY R49.STD_DT
+		             	   		  , R49.ASTS_DSTG_CHRS_NO
+		             	   		  , R49.CMBS_BKNO
+		               ) R49
+ 		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R49.STD_DT = R50.STD_DT
+		           AND IFNULL(R02.RISK_RCG_NO, '999') = R49.RISK_RCG_NO
+		           AND R02.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R02.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R02.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		         UNION ALL
+		        SELECT R82.IB_DEAL_NO
+		             , R82.RISK_INSPCT_CCD
+		             , R82.LST_C_CASE_CCD
+		             , R82.RA_DEAL_CCD
+		             , R82.RISK_RCG_NO
+		             , R82.IB_DEAL_NM
+		             , R82.PTCP_AMT
+		             , R82.RISK_INSPCT_RSLTN_CCD
+		             , R82.APLC_EXPT_DT
+		             , R82.INSPCT_PRGRS_ST_CD
+		             , R82.WRT_DT
+		             , R82.END_DT
+		             , R82.FNC_GDS_DVD_CD
+		             , R82.INSPCT_DPRT_CCD
+		          FROM RAA82B R82
+		             , (
+		             	  SELECT R59.STD_YR_MM
+		             	  	   , R59.CMBS_BKNO
+		             	  	   , R59.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R59.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R59.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R59.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R59.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', 0, R59.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', R59.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA59B R59
+		             	   WHERE #{stdYrMm} <![CDATA[ <> ]]> DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R59.STD_YR_MM = #{stdYrMm}
+		             	   GROUP BY R59.STD_YR_MM
+		             	   		  , R59.ASTS_DSTG_CHRS_NO
+		             	   		  , R59.CMBS_BKNO
+		               ) R59
+		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} != DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND LAST_DAY(DATE_FORMAT(R82.STD_YR_MM , '%y-%m-%d')) = R50.STD_DT
+		           AND IFNULL(R82.RISK_RCG_NO, '999') = R59.RISK_RCG_NO
+		           AND R82.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R82.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R82.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		       ) R02
+		   LEFT JOIN (
+		            SELECT R91.CMNS_CD_GRP
+		                 , R91.CD_VL_ID
+		                 , R91.CD_VL_NM
+		                 , R91.CD_SQ
+		              FROM RAA91B R91
+		             WHERE 1=1
+		               AND R91.CMNS_CD_GRP = 'F001'
+		             ORDER BY R91.CD_SQ
+		            ) R91
+		    ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+		 WHERE 1=1
+		   AND R02.INSPCT_PRGRS_ST_CD IN ('500')
+		   AND R02.RA_DEAL_CCD IN ('1', '2')
+		   AND R02.FNC_GDS_DVD_CD IN ('01', '02', '03', '04', '05', '06', '07', '08', '09')
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+		   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+		   </if>
+		   AND R02.END_DT IS NULL
+		 UNION ALL 
+		SELECT '투자금액' AS colNm
+			 , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '01' THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPef
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '02' THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPreIpo
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '03' THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSpac
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '04' THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaStock
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN('01', '02', '03', '04') THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS invstSecur
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS lnBnd
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtCmnt
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtByng
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtHug
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IS NOT NULL THEN R02.BK_AMT ELSE 0 END) / 100000000, 0), 2) AS total
+		  FROM (
+		        SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+		             , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+		             , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+		             , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+		             , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+		             , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+		             , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+		             , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+		             , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+		             , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+		             , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+		             , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+		             , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+		             , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+		             , R49.BK_AMT					 AS BK_AMT
+		          FROM RAA02B R02
+		             , (
+		             	  SELECT R49.STD_DT
+		             	  	   , R49.CMBS_BKNO
+		             	  	   , R49.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R49.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R49.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R49.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R49.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', 0, R49.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', R49.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA49B R49
+		             	   WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R49.STD_DT = (SELECT MAX(STD_DT) FROM RAA49B)
+		             	   GROUP BY R49.STD_DT
+		             	   		  , R49.ASTS_DSTG_CHRS_NO
+		             	   		  , R49.CMBS_BKNO
+		               ) R49
+ 		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R49.STD_DT = R50.STD_DT
+		           AND IFNULL(R02.RISK_RCG_NO, '999') = R49.RISK_RCG_NO
+		           AND R02.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R02.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R02.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		         UNION ALL
+		        SELECT R82.IB_DEAL_NO
+		             , R82.RISK_INSPCT_CCD
+		             , R82.LST_C_CASE_CCD
+		             , R82.RA_DEAL_CCD
+		             , R82.RISK_RCG_NO
+		             , R82.IB_DEAL_NM
+		             , R82.PTCP_AMT
+		             , R82.RISK_INSPCT_RSLTN_CCD
+		             , R82.APLC_EXPT_DT
+		             , R82.INSPCT_PRGRS_ST_CD
+		             , R82.WRT_DT
+		             , R82.END_DT
+		             , R82.FNC_GDS_DVD_CD
+		             , R82.INSPCT_DPRT_CCD
+		             , R59.BK_AMT					 AS BK_AMT
+		          FROM RAA82B R82
+		             , (
+		             	  SELECT R59.STD_YR_MM
+		             	  	   , R59.CMBS_BKNO
+		             	  	   , R59.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R59.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R59.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R59.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R59.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', 0, R59.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', R59.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA59B R59
+		             	   WHERE #{stdYrMm} <![CDATA[ <> ]]> DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R59.STD_YR_MM = #{stdYrMm}
+		             	   GROUP BY R59.STD_YR_MM
+		             	   		  , R59.ASTS_DSTG_CHRS_NO
+		             	   		  , R59.CMBS_BKNO
+		               ) R59
+		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} != DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND LAST_DAY(DATE_FORMAT(R82.STD_YR_MM , '%y-%m-%d')) = R50.STD_DT
+		           AND IFNULL(R82.RISK_RCG_NO, '999') = R59.RISK_RCG_NO
+		           AND R82.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R82.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R82.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		       ) R02
+		   LEFT JOIN (
+		            SELECT R91.CMNS_CD_GRP
+		                 , R91.CD_VL_ID
+		                 , R91.CD_VL_NM
+		                 , R91.CD_SQ
+		              FROM RAA91B R91
+		             WHERE 1=1
+		               AND R91.CMNS_CD_GRP = 'F001'
+		             ORDER BY R91.CD_SQ
+		            ) R91
+		    ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+		 WHERE 1=1
+		   AND R02.INSPCT_PRGRS_ST_CD IN ('500')
+		   AND R02.RA_DEAL_CCD IN ('1', '2')
+		   AND R02.RISK_RCG_NO IS NOT NULL
+		   AND R02.FNC_GDS_DVD_CD IN ('01', '02', '03', '04', '05', '06', '07', '08', '09')
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+		   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+		   </if>
+		   AND R02.END_DT IS NULL
+		 UNION ALL 
+		SELECT '인출' AS colNm
+			 , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '01' THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPef
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '02' THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPreIpo
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '03' THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSpac
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '04' THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaStock
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN('01', '02', '03', '04') THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS invstSecur
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS lnBnd
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtCmnt
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtByng
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtHug
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IS NOT NULL THEN R02.DO_AMT ELSE 0 END) / 100000000, 0), 2) AS total
+		  FROM (
+		        SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+		             , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+		             , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+		             , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+		             , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+		             , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+		             , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+		             , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+		             , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+		             , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+		             , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+		             , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+		             , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+		             , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+		             , R49.DO_AMT					 AS DO_AMT
+		             , R49.N_DO_AMT					 AS N_DO_AMT	
+		          FROM RAA02B R02
+		             , (
+		             	  SELECT R49.STD_DT
+		             	  	   , R49.CMBS_BKNO
+		             	  	   , R49.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R49.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R49.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R49.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R49.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', 0, R49.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', R49.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA49B R49
+		             	   WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R49.STD_DT = (SELECT MAX(STD_DT) FROM RAA49B)
+		             	   GROUP BY R49.STD_DT
+		             	   		  , R49.ASTS_DSTG_CHRS_NO
+		             	   		  , R49.CMBS_BKNO
+		               ) R49
+ 		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R49.STD_DT = R50.STD_DT
+		           AND IFNULL(R02.RISK_RCG_NO, '999') = R49.RISK_RCG_NO
+		           AND R02.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R02.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R02.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		         UNION ALL
+		        SELECT R82.IB_DEAL_NO
+		             , R82.RISK_INSPCT_CCD
+		             , R82.LST_C_CASE_CCD
+		             , R82.RA_DEAL_CCD
+		             , R82.RISK_RCG_NO
+		             , R82.IB_DEAL_NM
+		             , R82.PTCP_AMT
+		             , R82.RISK_INSPCT_RSLTN_CCD
+		             , R82.APLC_EXPT_DT
+		             , R82.INSPCT_PRGRS_ST_CD
+		             , R82.WRT_DT
+		             , R82.END_DT
+		             , R82.FNC_GDS_DVD_CD
+		             , R82.INSPCT_DPRT_CCD
+		             , R59.DO_AMT					 AS DO_AMT
+		             , R59.N_DO_AMT					 AS N_DO_AMT	
+		          FROM RAA82B R82
+		             , (
+		             	  SELECT R59.STD_YR_MM
+		             	  	   , R59.CMBS_BKNO
+		             	  	   , R59.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R59.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R59.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R59.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R59.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', 0, R59.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', R59.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA59B R59
+		             	   WHERE #{stdYrMm} <![CDATA[ <> ]]> DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R59.STD_YR_MM = #{stdYrMm}
+		             	   GROUP BY R59.STD_YR_MM
+		             	   		  , R59.ASTS_DSTG_CHRS_NO
+		             	   		  , R59.CMBS_BKNO
+		               ) R59
+		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} != DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND LAST_DAY(DATE_FORMAT(R82.STD_YR_MM , '%y-%m-%d')) = R50.STD_DT
+		           AND IFNULL(R82.RISK_RCG_NO, '999') = R59.RISK_RCG_NO
+		           AND R82.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R82.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R82.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		       ) R02
+		   LEFT JOIN (
+		            SELECT R91.CMNS_CD_GRP
+		                 , R91.CD_VL_ID
+		                 , R91.CD_VL_NM
+		                 , R91.CD_SQ
+		              FROM RAA91B R91
+		             WHERE 1=1
+		               AND R91.CMNS_CD_GRP = 'F001'
+		             ORDER BY R91.CD_SQ
+		            ) R91
+		    ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+		 WHERE 1=1
+		   AND R02.INSPCT_PRGRS_ST_CD IN ('500')
+		   AND R02.RA_DEAL_CCD IN ('1', '2')
+		   AND R02.RISK_RCG_NO IS NOT NULL
+		   AND R02.FNC_GDS_DVD_CD IN ('01', '02', '03', '04', '05', '06', '07', '08', '09')
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+		   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+		   </if>
+		   AND R02.END_DT IS NULL
+		 UNION ALL 
+		SELECT '미인출' AS colNm
+			 , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '01' THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPef
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '02' THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPreIpo
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '03' THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSpac
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '04' THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaStock
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN('01', '02', '03', '04') THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS invstSecur
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS lnBnd
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtCmnt
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtByng
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtHug
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IS NOT NULL THEN R02.N_DO_AMT ELSE 0 END) / 100000000, 0), 2) AS total
+		  FROM (
+		        SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+		             , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+		             , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+		             , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+		             , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+		             , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+		             , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+		             , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+		             , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+		             , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+		             , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+		             , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+		             , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+		             , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+		             , R49.DO_AMT					 AS DO_AMT
+		             , R49.N_DO_AMT					 AS N_DO_AMT	
+		          FROM RAA02B R02
+		             , (
+		             	  SELECT R49.STD_DT
+		             	  	   , R49.CMBS_BKNO
+		             	  	   , R49.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R49.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R49.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R49.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R49.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', 0, R49.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', R49.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA49B R49
+		             	   WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R49.STD_DT = (SELECT MAX(STD_DT) FROM RAA49B)
+		             	   GROUP BY R49.STD_DT
+		             	   		  , R49.ASTS_DSTG_CHRS_NO
+		             	   		  , R49.CMBS_BKNO
+		               ) R49
+ 		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R49.STD_DT = R50.STD_DT
+		           AND IFNULL(R02.RISK_RCG_NO, '999') = R49.RISK_RCG_NO
+		           AND R02.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R02.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R02.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		         UNION ALL
+		        SELECT R82.IB_DEAL_NO
+		             , R82.RISK_INSPCT_CCD
+		             , R82.LST_C_CASE_CCD
+		             , R82.RA_DEAL_CCD
+		             , R82.RISK_RCG_NO
+		             , R82.IB_DEAL_NM
+		             , R82.PTCP_AMT
+		             , R82.RISK_INSPCT_RSLTN_CCD
+		             , R82.APLC_EXPT_DT
+		             , R82.INSPCT_PRGRS_ST_CD
+		             , R82.WRT_DT
+		             , R82.END_DT
+		             , R82.FNC_GDS_DVD_CD
+		             , R82.INSPCT_DPRT_CCD
+		             , R59.DO_AMT					 AS DO_AMT
+		             , R59.N_DO_AMT					 AS N_DO_AMT	
+		          FROM RAA82B R82
+		             , (
+		             	  SELECT R59.STD_YR_MM
+		             	  	   , R59.CMBS_BKNO
+		             	  	   , R59.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R59.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R59.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R59.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R59.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', 0, R59.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', R59.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA59B R59
+		             	   WHERE #{stdYrMm} <![CDATA[ <> ]]> DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R59.STD_YR_MM = #{stdYrMm}
+		             	   GROUP BY R59.STD_YR_MM
+		             	   		  , R59.ASTS_DSTG_CHRS_NO
+		             	   		  , R59.CMBS_BKNO
+		               ) R59
+		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} != DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND LAST_DAY(DATE_FORMAT(R82.STD_YR_MM , '%y-%m-%d')) = R50.STD_DT
+		           AND IFNULL(R82.RISK_RCG_NO, '999') = R59.RISK_RCG_NO
+		           AND R82.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R82.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R82.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		       ) R02
+		   LEFT JOIN (
+		            SELECT R91.CMNS_CD_GRP
+		                 , R91.CD_VL_ID
+		                 , R91.CD_VL_NM
+		                 , R91.CD_SQ
+		              FROM RAA91B R91
+		             WHERE 1=1
+		               AND R91.CMNS_CD_GRP = 'F001'
+		             ORDER BY R91.CD_SQ
+		            ) R91
+		    ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+		 WHERE 1=1
+		   AND R02.INSPCT_PRGRS_ST_CD IN ('500')
+		   AND R02.RA_DEAL_CCD IN ('1', '2')
+		   AND R02.RISK_RCG_NO IS NOT NULL
+		   AND R02.FNC_GDS_DVD_CD IN ('01', '02', '03', '04', '05', '06', '07', '08', '09')
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+		   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+		   </if>
+		   AND R02.END_DT IS NULL
+		 UNION ALL 
+		SELECT '대손충당금' AS colNm
+			 , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '01' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPef
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '02' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaPreIpo
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '03' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSpac
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '04' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaStock
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN('01', '02', '03', '04') THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS qtaSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS invstSecur
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS lnBnd
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtCmnt
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtByng
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtHug
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS accdtSbtl
+		     , ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IS NOT NULL THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / 100000000, 0), 2) AS total
+		  FROM (
+		        SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+		             , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+		             , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+		             , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+		             , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+		             , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+		             , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+		             , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+		             , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+		             , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+		             , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+		             , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+		             , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+		             , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+		             , R49.DO_AMT					 AS DO_AMT
+		             , R49.N_DO_AMT					 AS N_DO_AMT	
+		             , R49.LN_RA_BDDT_ALW_AMT		 AS LN_RA_BDDT_ALW_AMT
+		          FROM RAA02B R02
+		             , (
+		             	  SELECT R49.STD_DT
+		             	  	   , R49.CMBS_BKNO
+		             	  	   , R49.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R49.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R49.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R49.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R49.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', 0, R49.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', R49.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA49B R49
+		             	   WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R49.STD_DT = (SELECT MAX(STD_DT) FROM RAA49B)
+		             	   GROUP BY R49.STD_DT
+		             	   		  , R49.ASTS_DSTG_CHRS_NO
+		             	   		  , R49.CMBS_BKNO
+		               ) R49
+ 		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R49.STD_DT = R50.STD_DT
+		           AND IFNULL(R02.RISK_RCG_NO, '999') = R49.RISK_RCG_NO
+		           AND R02.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R02.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R02.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		         UNION ALL
+		        SELECT R82.IB_DEAL_NO
+		             , R82.RISK_INSPCT_CCD
+		             , R82.LST_C_CASE_CCD
+		             , R82.RA_DEAL_CCD
+		             , R82.RISK_RCG_NO
+		             , R82.IB_DEAL_NM
+		             , R82.PTCP_AMT
+		             , R82.RISK_INSPCT_RSLTN_CCD
+		             , R82.APLC_EXPT_DT
+		             , R82.INSPCT_PRGRS_ST_CD
+		             , R82.WRT_DT
+		             , R82.END_DT
+		             , R82.FNC_GDS_DVD_CD
+		             , R82.INSPCT_DPRT_CCD
+		             , R59.DO_AMT					 AS DO_AMT
+		             , R59.N_DO_AMT					 AS N_DO_AMT	
+		             , R59.LN_RA_BDDT_ALW_AMT		 AS LN_RA_BDDT_ALW_AMT
+		          FROM RAA82B R82
+		             , (
+		             	  SELECT R59.STD_YR_MM
+		             	  	   , R59.CMBS_BKNO
+		             	  	   , R59.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R59.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R59.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R59.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R59.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', 0, R59.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', R59.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA59B R59
+		             	   WHERE #{stdYrMm} <![CDATA[ <> ]]> DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R59.STD_YR_MM = #{stdYrMm}
+		             	   GROUP BY R59.STD_YR_MM
+		             	   		  , R59.ASTS_DSTG_CHRS_NO
+		             	   		  , R59.CMBS_BKNO
+		               ) R59
+		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} != DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND LAST_DAY(DATE_FORMAT(R82.STD_YR_MM , '%y-%m-%d')) = R50.STD_DT
+		           AND IFNULL(R82.RISK_RCG_NO, '999') = R59.RISK_RCG_NO
+		           AND R82.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R82.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R82.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		       ) R02
+		   LEFT JOIN (
+		            SELECT R91.CMNS_CD_GRP
+		                 , R91.CD_VL_ID
+		                 , R91.CD_VL_NM
+		                 , R91.CD_SQ
+		              FROM RAA91B R91
+		             WHERE 1=1
+		               AND R91.CMNS_CD_GRP = 'F001'
+		             ORDER BY R91.CD_SQ
+		            ) R91
+		    ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+		 WHERE 1=1
+		   AND R02.INSPCT_PRGRS_ST_CD IN ('500')
+		   AND R02.RA_DEAL_CCD IN ('1', '2')
+		   AND R02.RISK_RCG_NO IS NOT NULL
+		   AND R02.FNC_GDS_DVD_CD IN ('01', '02', '03', '04', '05', '06', '07', '08', '09')
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+		   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+		   </if>
+		   AND R02.END_DT IS NULL
+    	 UNION ALL
+		SELECT '비율' AS colNm
+			 , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '01' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS qtaPef
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '02' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS qtaPreIpo
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '03' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS qtaSpac
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '04' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS qtaStock
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN('01', '02', '03', '04') THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS qtaSbtl
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS invstSecur
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS lnBnd
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS accdtCmnt
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS accdtByng
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS accdtHug
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0)), '%') AS accdtSbtl
+		     , CONCAT(ROUND(IFNULL(SUM(CASE WHEN R02.FNC_GDS_DVD_CD IS NOT NULL THEN R02.LN_RA_BDDT_ALW_AMT ELSE 0 END) / SUM(R02.LN_RA_BDDT_ALW_AMT) * 100, 0), '%')) AS total
+		  FROM (
+		        SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+		             , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+		             , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+		             , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+		             , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+		             , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+		             , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+		             , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+		             , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+		             , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+		             , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+		             , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+		             , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+		             , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+		             , R49.DO_AMT					 AS DO_AMT
+		             , R49.N_DO_AMT					 AS N_DO_AMT	
+		             , R49.LN_RA_BDDT_ALW_AMT		 AS LN_RA_BDDT_ALW_AMT
+		          FROM RAA02B R02
+		             , (
+		             	  SELECT R49.STD_DT
+		             	  	   , R49.CMBS_BKNO
+		             	  	   , R49.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R49.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R49.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R49.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R49.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', 0, R49.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R49.INVST_ASTS_DVD_CD = '02', R49.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA49B R49
+		             	   WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R49.STD_DT = (SELECT MAX(STD_DT) FROM RAA49B)
+		             	   GROUP BY R49.STD_DT
+		             	   		  , R49.ASTS_DSTG_CHRS_NO
+		             	   		  , R49.CMBS_BKNO
+		               ) R49
+ 		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND R49.STD_DT = R50.STD_DT
+		           AND IFNULL(R02.RISK_RCG_NO, '999') = R49.RISK_RCG_NO
+		           AND R02.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R02.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R02.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		         UNION ALL
+		        SELECT R82.IB_DEAL_NO
+		             , R82.RISK_INSPCT_CCD
+		             , R82.LST_C_CASE_CCD
+		             , R82.RA_DEAL_CCD
+		             , R82.RISK_RCG_NO
+		             , R82.IB_DEAL_NM
+		             , R82.PTCP_AMT
+		             , R82.RISK_INSPCT_RSLTN_CCD
+		             , R82.APLC_EXPT_DT
+		             , R82.INSPCT_PRGRS_ST_CD
+		             , R82.WRT_DT
+		             , R82.END_DT
+		             , R82.FNC_GDS_DVD_CD
+		             , R82.INSPCT_DPRT_CCD
+		             , R59.DO_AMT					 AS DO_AMT
+		             , R59.N_DO_AMT					 AS N_DO_AMT	
+		             , R59.LN_RA_BDDT_ALW_AMT		 AS LN_RA_BDDT_ALW_AMT
+		          FROM RAA82B R82
+		             , (
+		             	  SELECT R59.STD_YR_MM
+		             	  	   , R59.CMBS_BKNO
+		             	  	   , R59.ASTS_DSTG_CHRS_NO
+		             	  	   , SUM(R59.BK_AMT) AS BK_AMT
+		             	  	   , SUM(R59.OPN_PRC_VAL_AMT) AS OPN_PRC_VAL_AMT
+		             	  	   , SUM(R59.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+		             	  	   , MAX(R59.RISK_RCG_NO) AS RISK_RCG_NO
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', 0, R59.BK_AMT)) AS DO_AMT
+		             	  	   , SUM(IF(R59.INVST_ASTS_DVD_CD = '02', R59.BK_AMT, 0)) AS N_DO_AMT
+		             	    FROM RAA59B R59
+		             	   WHERE #{stdYrMm} <![CDATA[ <> ]]> DATE_FORMAT(CURDATE(), '%Y%m')
+		             	     AND R59.STD_YR_MM = #{stdYrMm}
+		             	   GROUP BY R59.STD_YR_MM
+		             	   		  , R59.ASTS_DSTG_CHRS_NO
+		             	   		  , R59.CMBS_BKNO
+		               ) R59
+		             , (
+ 		             	  SELECT STD_DT
+ 		             	  	   , IB_DEAL_NO
+ 		             	  	   , RISK_INSPCT_CCD
+ 		             	  	   , LST_C_CASE_CCD
+ 		             	    FROM RAA50B 
+ 		             	   WHERE RPRT_XCL_F <![CDATA[ <> ]]> 'Y'
+ 		               ) R50
+		         WHERE #{stdYrMm} != DATE_FORMAT(CURDATE(), '%Y%m')
+		           AND LAST_DAY(DATE_FORMAT(R82.STD_YR_MM , '%y-%m-%d')) = R50.STD_DT
+		           AND IFNULL(R82.RISK_RCG_NO, '999') = R59.RISK_RCG_NO
+		           AND R82.IB_DEAL_NO = R50.IB_DEAL_NO 
+		           AND R82.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+		           AND R82.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+		           AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		       ) R02
+		   LEFT JOIN (
+		            SELECT R91.CMNS_CD_GRP
+		                 , R91.CD_VL_ID
+		                 , R91.CD_VL_NM
+		                 , R91.CD_SQ
+		              FROM RAA91B R91
+		             WHERE 1=1
+		               AND R91.CMNS_CD_GRP = 'F001'
+		             ORDER BY R91.CD_SQ
+		            ) R91
+		    ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+		 WHERE 1=1
+		   AND R02.INSPCT_PRGRS_ST_CD IN ('500')
+		   AND R02.RA_DEAL_CCD IN ('1', '2')
+		   AND R02.RISK_RCG_NO IS NOT NULL
+		   AND R02.FNC_GDS_DVD_CD IN ('01', '02', '03', '04', '05', '06', '07', '08', '09')
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+		   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+		   </if>
+		   AND R02.END_DT IS NULL
+	</select>
+<select id="getTable5" parameterType="com.nanuri.rams.business.common.vo.DS01010SVO$inqueryParameters" resultType="map">
+WITH TMP AS (
+	WITH RECURSIVE TMP_PARAM AS (
+	    SELECT DATE_ADD(DATE_FORMAT(CONCAT(#{stdYrMm}, '01'), '%Y-%m-%d'), INTERVAL -11 MONTH) AS A
+	     UNION ALL
+	    SELECT DATE_ADD(DATE_FORMAT(A , '%Y-%m-%d'), INTERVAL +1 MONTH)
+	      FROM TMP_PARAM
+	     WHERE A  <![CDATA[<]]>  DATE_FORMAT(CONCAT(#{stdYrMm}, '01'), '%Y-%m-%d')
+	)
+	SELECT CONCAT(SUBSTR(DATE_FORMAT(TMP_PARAM.A, '%Y.%m'), 3, LENGTH(TMP_PARAM.A)), '월') AS A
+		 , DATE_FORMAT(TMP_PARAM.A, '%Y%m') AS YMD
+	  FROM TMP_PARAM
+)
+SELECT A.A
+	 , SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '06' THEN R02.BK_AMT ELSE 0 END) / 100000000 AS lnBnd
+	 , SUM(CASE WHEN R02.FNC_GDS_DVD_CD IN ('01','02','03','04') THEN R02.BK_AMT ELSE 0 END) / 100000000 AS qtaSbtl
+	 , SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '05' THEN R02.BK_AMT ELSE 0 END) / 100000000 AS invstSecur
+	 , SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '07' THEN R02.BK_AMT ELSE 0 END) / 100000000 AS accdtCmnt
+	 , SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '08' THEN R02.BK_AMT ELSE 0 END) / 100000000 AS accdtByng
+	 , SUM(CASE WHEN R02.FNC_GDS_DVD_CD = '09' THEN R02.BK_AMT ELSE 0 END) / 100000000 AS accdtHug
+  FROM TMP A
+  LEFT OUTER JOIN (
+		  SELECT R02.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+			   , R02.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+			   , R02.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+			   , R02.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+			   , R02.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+			   , R02.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+			   , R02.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+			   , R02.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+			   , R02.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+			   , R02.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+			   , R02.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+			   , R02.END_DT                    AS END_DT                                 /* 종료일자 */
+			   , R02.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+			   , R02.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+			   , R49.LN_RA_BDDT_ALW_AMT		   AS LN_RA_BDDT_ALW_AMT
+			   , SUBSTR(R49.STD_DT, 1, 6)	   AS YMD
+			   , R49.BK_AMT					   AS BK_AMT
+     	    FROM RAA02B R02
+     	       , (
+     	       	    SELECT R49.STD_DT 
+     	       	    	 , R49.CMBS_BKNO				AS CMBS_BKNO
+     	       	    	 , R49.ASTS_DSTG_CHRS_NO 		AS ASTS_DSTG_CHRS_NO
+     	       	    	 , SUM(R49.BK_AMT) 				AS BK_AMT
+     	       	    	 , SUM(R49.LN_RA_BDDT_ALW_AMT) 	AS LN_RA_BDDT_ALW_AMT
+     	       	    	 , MAX(R49.RISK_RCG_NO) 		AS RISK_RCG_NO
+     	       	      FROM RAA49B R49
+     	       	     WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+     	       	       AND R49.STD_DT = (SELECT MAX(STD_DT) FROM RAA49B)
+     	       	     GROUP BY R49.STD_DT
+     	       	      		, R49.ASTS_DSTG_CHRS_NO 
+     	       	      		, R49.CMBS_BKNO 
+     	         ) R49
+     	       , (
+     	       		SELECT R50.STD_DT		AS STD_DT
+     	       			 , R50.IB_DEAL_NO 	AS IB_DEAL_NO
+     	       			 , R50.RISK_INSPCT_CCD AS RISK_INSPCT_CCD
+     	       			 , R50.LST_C_CASE_CCD AS LST_C_CASE_CCD
+     	       		  FROM RAA50B R50
+     	       		 WHERE R50.RPRT_XCL_F <![CDATA[<>]]> 'Y'
+     	         ) R50
+    	   WHERE #{stdYrMm} = DATE_FORMAT(CURDATE(), '%Y%m')
+    	     AND R49.STD_DT = R50.STD_DT
+    	     AND R02.IB_DEAL_NO = R50.IB_DEAL_NO
+    	     AND R02.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+    	     AND R02.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+    	     AND NVL(R02.RISK_RCG_NO, '999') = R49.RISK_RCG_NO
+    	     AND R02.INSPCT_PRGRS_ST_CD = '500'
+		     AND R02.RA_DEAL_CCD IN ('1', '2')
+		     AND R02.FNC_GDS_DVD_CD IN ('01','02','03','04','05','06','07','08','09')
+		     AND R02.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		     AND R02.RISK_RCG_NO IS NOT NULL
+			 AND R02.END_DT IS NULL
+			 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+			   AND R02.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+  			</if>
+    	   UNION ALL
+    	  SELECT R82.IB_DEAL_NO                AS IB_DEAL_NO                             /* DEAL번호 */
+			   , R82.RISK_INSPCT_CCD           AS RISK_INSPCT_CCD                        /* 리스크심사구분코드 */
+			   , R82.LST_C_CASE_CCD            AS LST_C_CASE_CCD                         /* 부수안건코드 */
+			   , R82.RA_DEAL_CCD               AS RA_DEAL_CCD                            /* RADEAL 구분코드 */
+			   , R82.RISK_RCG_NO               AS RISK_RCG_NO                            /* 리스크승인번호 */
+			   , R82.IB_DEAL_NM                AS IB_DEAL_NM                             /* DEAL명 */
+			   , R82.PTCP_AMT                  AS PTCP_AMT                               /* 참여금액 */
+			   , R82.RISK_INSPCT_RSLTN_CCD     AS RISK_INSPCT_RSLTN_CCD                  /* 리스크심사결의구분코드 */
+			   , R82.APLC_EXPT_DT              AS APLC_EXPT_DT                           /* 적용예정일자 */
+			   , R82.INSPCT_PRGRS_ST_CD        AS INSPCT_PRGRS_ST_CD                     /* 심사진행상태코드 */
+			   , R82.WRT_DT                    AS WRT_DT                                 /* 기표일자 */
+			   , R82.END_DT                    AS END_DT                                 /* 종료일자 */
+			   , R82.FNC_GDS_DVD_CD            AS FNC_GDS_DVD_CD                         /* 금융상품분류코드 */
+			   , R82.INSPCT_DPRT_CCD           AS INSPCT_DPRT_CCD                        /* 심사부서구분코드 */
+			   , R59.LN_RA_BDDT_ALW_AMT		   AS LN_RA_BDDT_ALW_AMT
+			   , R59.STD_YR_MM				   AS YMD
+			   , R59.BK_AMT					   AS BK_AMT
+     	    FROM RAA82B R82
+     	       , (
+     	       	    SELECT R59.STD_YR_MM
+     	       	    	 , R59.CMBS_BKNO				AS CMBS_BKNO
+     	       	    	 , R59.ASTS_DSTG_CHRS_NO 		AS ASTS_DSTG_CHRS_NO
+     	       	    	 , SUM(R59.BK_AMT) 				AS BK_AMT
+     	       	    	 , SUM(R59.LN_RA_BDDT_ALW_AMT) 	AS LN_RA_BDDT_ALW_AMT
+     	       	    	 , MAX(R59.RISK_RCG_NO) 		AS RISK_RCG_NO
+     	       	      FROM RAA59B R59
+     	       	     WHERE 1 = 1
+     	       	     GROUP BY R59.STD_YR_MM
+     	       	      		, R59.ASTS_DSTG_CHRS_NO 
+     	       	      		, R59.CMBS_BKNO 
+     	         ) R59
+     	       , (
+     	       		SELECT R50.STD_DT		AS STD_DT
+     	       			 , R50.IB_DEAL_NO 	AS IB_DEAL_NO
+     	       			 , R50.RISK_INSPCT_CCD AS RISK_INSPCT_CCD
+     	       			 , R50.LST_C_CASE_CCD AS LST_C_CASE_CCD
+     	       		  FROM RAA50B R50
+     	       		 WHERE R50.RPRT_XCL_F <![CDATA[<>]]> 'Y'
+     	         ) R50
+     	       , TMP A
+    	   WHERE R82.STD_YR_MM = A.YMD
+    	     AND R82.STD_YR_MM = R59.STD_YR_MM
+    	     AND R82.IB_DEAL_NO = R50.IB_DEAL_NO
+    	     AND R82.RISK_INSPCT_CCD = R50.RISK_INSPCT_CCD
+    	     AND R82.LST_C_CASE_CCD = R50.LST_C_CASE_CCD
+    	     AND LAST_DAY(DATE_FORMAT(R82.STD_YR_MM , '%y-%m-%d')) = R50.STD_DT
+    	     AND NVL(R82.RISK_RCG_NO, '999') = R59.RISK_RCG_NO
+    	     AND R82.INSPCT_PRGRS_ST_CD = '500'
+		     AND R82.RA_DEAL_CCD IN ('1', '2')
+		     AND R82.FNC_GDS_DVD_CD IN ('01','02','03','04','05','06','07','08','09')
+		     AND R82.INVST_GDS_LDVD_CD NOT IN ('10', '20')
+		     AND R82.RISK_RCG_NO IS NOT NULL
+  			<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+   				AND R82.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+  			</if>
+       ) R02
+   ON A.YMD = SUBSTR(R02.YMD, 1, 6) 
+ LEFT JOIN (
+	            SELECT R91.CMNS_CD_GRP
+	                 , R91.CD_VL_ID
+	                 , R91.CD_VL_NM
+	                 , R91.CD_SQ
+	              FROM RAA91B R91
+	             WHERE 1=1
+	               AND R91.CMNS_CD_GRP = 'F001'
+                 ORDER BY R91.CD_SQ
+            ) R91
+  ON R91.CD_VL_ID = R02.FNC_GDS_DVD_CD
+WHERE 1 = 1
+  AND R02.END_DT IS NULL
+GROUP BY A.A
+ORDER BY A.A DESC
+	</select>
+</mapper>

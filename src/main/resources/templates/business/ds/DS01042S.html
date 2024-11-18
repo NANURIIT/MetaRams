@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{/js/business/ds/DS01030S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- ibox -->
+				<div class="ibox">
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;조회정보</h5>
+							</div>
+							<div class="ibox-content mb-1">
+								<!-- row1 -->
+								<div class="row form-group form-inline mb-3">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">거래일자</label>
+										<div class="col-sm-2 input-group">
+											<div class="col-sm-12 input-group date px-0">
+												<input type="text" class="form-control" id="TB03040S_fromDate" name="FromDate" value="">
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label">운용펀드</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB07010S_담당자정사번">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;" id="TB07010S_담당자정이름" readonly>
+										</div>
+										<label class="col-sm-1 col-form-label">비밀번호</label>
+										<div class="col-sm-1 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">거래구분</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option>매도</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="form-group form-inline mb-1">
+									<!-- 버튼영역 -->
+									<div class="col-sm-12 text-right pd-lr5">
+										<button class="btn btn-primary" type="button" onclick="getDetailInfo();"><i class="fa fa-search"></i>&nbsp;조회</button>
+										<button class="btn btn-success" type="button" onclick="getDetailInfo();"><i class="fa fa-save"></i>&nbsp;처리</button>
+										<button class="btn btn-default" type="button" onclick="getDetailInfo();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ibox">
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;거래정보입력</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">거래구분</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">거래번호</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">종목코드</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB07010S_담당자정사번">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;" id="TB07010S_담당자정이름" readonly>
+										</div>
+										<label class="col-sm-1 col-form-label">국내해외구분</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">통화코드</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								<!-- row3 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">환율</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">거래좌수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">거래단가</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								<!-- row4 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">원화거래금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">외화거래금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-4 color-bule flex-jc-i">* 거래금액 - 성과보수, 환매수수료 등 차감 전 금액</label>
+									</div>
+								</div>
+								<!-- row6 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">원화성과보수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">외화성과보수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">원화환매수수료</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								<!-- row7 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">외화환매수수료</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">원화선취수수료</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">외화선취수수료</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								<!-- row9 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">원화후취수수료</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">외화후취수수료</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">판매사명</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick="callTB03023P('TB04010S')"><i class="fa fa-search"></i></button>
+											</span>
+										</div>
+									</div>
+								</div>
+								<!-- row10 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">파일등록여부</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">파일등록일시</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">파일명</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;당사투자정보</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">타부서투자여부</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">총보유잔고</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+										<label class="col-sm-1 col-form-label">잔존좌수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">당일지분율</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">&nbsp;%
+										</div>
+										<label class="col-sm-1 col-form-label">예상지분율</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control">&nbsp;%
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						
+						
+						<div class="tabs-container">
+							<ul class="nav nav-tabs" role="tablist" id="ramsTab">
+								<li><a class="nav-link" data-toggle="tab" href="#tab-1">신청내역</a></li>
+								<li><a class="nav-link" data-toggle="tab" href="#tab-2">거래내역</a></li>
+								<li><a class="nav-link" data-toggle="tab" href="#tab-3">잔고내역</a></li>
+							</ul>
+							<div class="tab-content">
+								<div role="tabpanel" id="tab-1" class="tab-pane active">
+									<div class="panel-body">
+										<div class="col-sm-12">
+											<div class="tableFixHeader4">
+												<table class="table result table-bordered">
+													<colgroup>
+														<!-- TODO: 그리드의 컬럼사이즈 항목별로 확인 -->
+														<col>
+														<col>
+														<col>
+														<col>
+														<col>
+														<col>
+														<col>
+														<col>
+														<col>
+														<col>
+														<col>
+													</colgroup>
+													<thead>
+														<tr>
+															<th>신청일자</th>
+															<th>거래구분</th>
+															<th>운용펀드</th>
+															<th>통화코드</th>
+															<th>기준환율</th>
+															<th>원화신청금액</th>
+															<th>파일여부</th>
+															<th>파일명</th>
+															<th>처리상태</th>
+															<th rowspan="2">결제일자</th>
+														</tr>
+														<tr>
+															<th>신청번호</th>
+															<th>종목코드</th>
+															<th colspan="3">종목명</th>
+															<th>외화신청금액</th>
+															<th colspan="2">비고</th>
+															<th>판매사명</th>
+														</tr>
+													</thead>
+													<tbody id="TB04040_getIssDtls">
+														<tr>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td rowspan="2"></td>
+														</tr>
+														<tr>
+															<td></td>
+															<td></td>
+															<td colspan="3"></td>
+															<td></td>
+															<td colspan="2"></td>
+															<td></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div role="tabpanel" id="tab-2" class="tab-pane">
+									<div class="panel-body">
+										<div class="col-sm-12">
+											
+										</div>
+									</div>
+								</div>
+								
+								<div role="tabpanel" id="tab-3" class="tab-pane">
+									<div class="panel-body">
+										<div class="col-sm-12">
+											<div class="tableFixHeader4">
+												<table class="table result table-bordered">
+													<colgroup>
+														<!-- TODO: 그리드의 컬럼사이즈 항목별로 확인 -->
+														<col>
+														<col>
+														<col>
+													</colgroup>
+													<thead>
+														<tr>
+															<th>종목코드</th>
+															<th>종목명</th>
+															<th>통화코드</th>
+															<th>전일잔고</th>
+															<th>금일잔고</th>
+															<th>장부단가</th>
+															<th>평가단가</th>
+															<th>원화장부금액</th>
+															<th>외화장부금액</th>
+															<th>원화평가금액</th>
+															<th>외화평가금액</th>
+														</tr>
+													</thead>
+													<tbody id="TB04040_getIssDtls">
+														<tr>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of ibox -->
+				
+			</div>
+		</div><!-- div row -->
+	</div>
+</th:block>
+
+</html>

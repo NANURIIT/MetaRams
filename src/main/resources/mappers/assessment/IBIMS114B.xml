@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS114BMapper">
+
+	<select id="findEntList" parameterType="com.nanuri.rams.business.common.dto.IBIMS114BDTO"
+	              			 resultType="com.nanuri.rams.business.common.dto.IBIMS114BDTO">
+		SELECT ENTP_CD							/* 업체코드 */
+		     , ENTP_HNGL_NM						/* 업체한글명 */
+		     , RPRS_NM							/* 대표자명 */
+		     , CORP_RGST_NO						/* 법인등록번호 */
+			 , BSNS_RGST_NO						/* 사업자등록번호 */
+		  FROM IBIMS114B
+		 WHERE 1=1
+		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpCd)">
+           AND ENTP_CD LIKE '%'|| #{entpCd}|| '%'
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpHnglNm)">
+           AND ENTP_HNGL_NM LIKE '%'|| #{entpHnglNm}|| '%'
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rprsNm)">
+           AND RPRS_NM LIKE '%'|| #{rprsNm}|| '%'
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(corpRgstNo)">
+           AND CORP_RGST_NO LIKE '%'|| #{corpRgstNo} || '%'
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bsnsRgstNo)">
+           AND BSNS_RGST_NO LIKE '%'|| #{bsnsRgstNo} || '%'
+         </if>
+	</select>
+
+	<insert id="registCorpInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
+		<selectKey keyProperty="entpCd" resultType="String" order="BEFORE">
+		SELECT LPAD(NVL(MAX(TO_NUMBER(A.ENTP_CD)), 0) + 1, 8, '0')
+  		  FROM IBIMS114B A
+		</selectKey>
+
+		INSERT INTO IBIMS114B
+    	       ( 
+    	         ENTP_CD										/* 업체코드 */
+    	       , ENTP_HNGL_NM									/* 업체한글명 */
+    	       , BSNS_RGST_NO									/* 사업자등록번호 */
+    	       , CORP_RGST_NO									/* 법인등록번호 */
+    	       , TEL_NO											/* 전화번호 */
+    	       , RGST_DT										/* 등록일자 */
+    	       , HNDL_DY_TM										/* 처리일시 */
+    	       , HNDL_DPRT_CD									/* 처리부점코드 */
+    	       , HNDL_P_ENO										/* 처리자사번 */
+    	       , DLT_F											/* 삭제여부 */
+    	       )
+    	VALUES (
+    			 #{entpCd}	
+    		   , #{entpHnglNm}								
+    		   , NVL(#{bsnsRgstNo}, '')
+    		   , NVL(#{corpRgstNo}, '')									
+		 	   , #{cstmPhNo}							
+		 	   , TO_CHAR(SYSDATE, 'YYYYMMDD')		
+		 	   , SYSDATE	
+		 	   , #{hndlDprtCd}		
+		 	   , #{fstInptPEno}		
+		 	   , 'N'		
+    	       )
+	</insert>
+	
+	<update id="updateCorpInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
+		UPDATE IBIMS114B    	        
+    	   SET ENTP_HNGL_NM = #{entpHnglNm}							/* 업체한글명 */ 
+    	      , BSNS_RGST_NO = NVL(#{bsnsRgstNo}, '')		/* 사업자등록번호 */
+    	      , CORP_RGST_NO = NVL(#{corpRgstNo}, '')			/* 법인등록번호 */
+    	      , TEL_NO		  = #{cstmPhNo}						/* 전화번호 */    	       
+    	      , HNDL_DY_TM	  = SYSDATE	 						/* 처리일시 */
+    	      , HNDL_DPRT_CD = #{hndlDprtCd}					/* 처리부점코드 */
+    	      , HNDL_P_ENO	  = #{fstInptPEno}  				/* 처리자사번 */
+          WHERE ENTP_CD       = #{entpCd}
+	</update>
+	
+	
+	<select id="getEntpInfoByNm" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
+		SELECT A.BZEP_NAME                             						    AS ENTP_HNGL_NM			/* 업체명 */ 
+		     , NVL (A.CRNO , '') 										        AS CORP_RGST_NO  		/* 법인등록번호 */ 
+		     , NVL (A.RNBN , '') 										        AS BSNS_RGST_NO  		/* 사업자등록번호 */ 
+		     , NVL (MAX(C.DPRT_NM), '')           							    AS CHRG_DPRT_NM  		/* 담당부서 */ 
+		     , NVL (MAX(C.EMP_NM), '')                						    AS CHRG_P_NM   			/* 담당자명 */ 
+		     , COUNT(DISTINCT B.CHRG_P_ENO)   									AS ENO_CNT  			/* 담당자건수 */ 
+		     , NVL (MAX(B.CSTM_NM), '')                  					    AS CSTM_NM  			/* 고객명 */ 
+		     , COUNT(DISTINCT B.CSTM_NM)      									AS CUST_CNT 			/* 고객건수 */ 
+		     , COUNT(DISTINCT RM_SQ)          									AS RM_COUNT      		/* RM활동건수 */ 
+		     , A.ARDY_BZEP_NO													AS ENTP_CD				/* 업체코드 */ 
+		  FROM IBIMS010B A 
+		       LEFT OUTER JOIN IBIMS102B B
+		                    ON UPPER(B.ENTP_CD) = UPPER(A.ARDY_BZEP_NO)
+		       LEFT OUTER JOIN IBIMS003B C  
+		                    ON C.EMPNO  = B.CHRG_P_ENO               
+		 WHERE 1 = 1
+		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpCd)">
+           AND A.ARDY_BZEP_NO = #{entpCd}
+		 </if>
+		   AND UPPER(A.BZEP_NAME) LIKE '%'|| UPPER(#{entpHnglNm}) || '%'
+		 GROUP BY A.BZEP_NAME , A.CRNO,A.RNBN, A.ARDY_BZEP_NO	
+		 ORDER BY A.ARDY_BZEP_NO 
+	</select>
+		
+	<select id="selCorpNm" parameterType="string" resultType="map">
+		SELECT ENTP_HNGL_NM 													AS CORP_NM
+		  FROM IBIMS114B
+		 WHERE 1=1
+		   AND ENTP_HNGL_NM = #{entpHnglNm}
+	</select>
+		
+</mapper>

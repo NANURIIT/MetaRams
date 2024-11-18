@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS995BMapper">
+
+  <!-- 배치JOB MASTER 조회  -->
+	<select id="selectIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS995BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS995BVO">
+    SELECT JOB_ID                                  /* JOB ID */
+         , JOB_NAME                                /* JOB NAME */
+         , JOB_TYPE                                /* JOB TYPE */
+         , OBJECT_NAME                             /* SOURCE FULL NAME */
+         , ARGUMENT                                /* ARGUMENT */
+         , NVL(CONFIRM_YN,'N') AS CONFIRM_YN    /* CONFIRM_YN */
+         , DESCRIPTION                             /* 작업 설명 */
+         , REGISTER_DAY                            /* 최초 등록일 */
+         , NVL(LAST_UPDATE_DAY,REGISTER_DAY) AS LAST_UPDATE_DAY /* 최종 수정일 */
+         , HND_DETL_DTM                            /* 조작상세일시 */
+         , HND_EMPNO                               /* 조작사원번호 */
+         , HND_TMNL_NO                             /* 조작단말기번호 */
+         , HND_TR_ID                               /* 조작거래ID */
+         , GUID                                    /* GUID */
+         , CASE WHEN JOB_TYPE = '1' THEN 'Dummy' 
+                WHEN JOB_TYPE = '2' THEN 'Command' 
+                ELSE ''
+            END AS JOB_TYPE_NAME                   /* JOB TYPE NAME*/
+      FROM IBIMS995B
+     WHERE 1=1
+		   AND JOB_ID LIKE '%' || #{jobId} || '%'
+		   AND JOB_NAME LIKE '%' || #{jobName} || '%'
+  	</select>    
+
+    <!-- 배치JOB MASTER 입력  -->
+    <insert id="insertIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS995BDTO">
+        INSERT INTO IBIMS995B
+              (
+                  JOB_ID                           /* JOB ID */
+                , JOB_NAME                         /* JOB NAME */
+                , JOB_TYPE                         /* JOB TYPE */
+                , OBJECT_NAME                      /* SOURCE FULL NAME */
+                , ARGUMENT                         /* ARGUMENT */
+                , CONFIRM_YN                       /* CONFIRM_YN */
+                , DESCRIPTION                      /* 작업 설명 */
+                , REGISTER_DAY                     /* 최초 등록일 */
+                , LAST_UPDATE_DAY                  /* 최종 수정일 */
+                , HND_DETL_DTM                     /* 조작상세일시 */
+                , HND_EMPNO                        /* 조작사원번호 */
+                , HND_TMNL_NO                      /* 조작단말기번호 */
+                , HND_TR_ID                        /* 조작거래ID */
+                , GUID                             /* GUID */
+              )
+          SELECT
+                  #{jobId}                         /* JOB ID */
+                , #{jobName}                       /* JOB NAME */
+                , #{jobType}                       /* JOB TYPE */
+                , #{objectName}                    /* SOURCE FULL NAME */
+                , #{argument}                      /* ARGUMENT */
+                , #{confirmYn}                     /* CONFIRM_YN */
+                , #{description}                   /* 작업 설명 */
+                , #{registerDay}                   /* 최초 등록일 */
+                , #{lastUpdateDay}                 /* 최종 수정일 */
+                , SYSDATE                            /* 조작상세일시 */
+                , #{hndEmpno}                      /* 조작사원번호 */
+                , #{hndTmnlNo}                     /* 조작단말기번호 */
+                , #{hndTrId}                       /* 조작거래ID */
+                , #{guid}                          /* GUID */
+    </insert>
+
+    <!-- 배치JOB MASTER 수정  -->
+    <update id="updateIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS995BDTO">
+       UPDATE IBIMS995B
+          SET JOB_ID          = #{jobId}                         /* JOB ID */
+            , JOB_NAME        = #{jobName}                       /* JOB NAME */
+            , JOB_TYPE        = #{jobType}                       /* JOB TYPE */
+            , OBJECT_NAME     = #{objectName}                    /* SOURCE FULL NAME */
+            , ARGUMENT        = #{argument}                      /* ARGUMENT */
+            , CONFIRM_YN      = #{confirmYn}                     /* CONFIRM_YN */
+            , DESCRIPTION     = #{description}                   /* 작업 설명 */
+            , REGISTER_DAY    = (
+                                 SELECT REGISTER_DAY 
+                                   FROM IBIMS995B 
+                                  WHERE JOB_ID = #{jobId}
+                                )                                /* 최초 등록일 */
+            , LAST_UPDATE_DAY = #{lastUpdateDay}                 /* 최종 수정일 */
+            , HND_DETL_DTM    = SYSDATE                            /* 조작상세일시 */
+            , HND_EMPNO       = #{hndEmpno}                      /* 조작사원번호 */
+            , HND_TMNL_NO     = #{hndTmnlNo}                     /* 조작단말기번호 */
+            , HND_TR_ID       = #{hndTrId}                       /* 조작거래ID */
+            , GUID            = #{guid}                          /* GUID */
+         WHERE 1=1
+          AND JOB_ID          = #{jobId}
+    </update>
+
+    <!-- 배치JOB MASTER 삭제  -->
+    <delete id="deleteIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO">
+        DELETE
+          FROM IBIMS995B
+         WHERE JOB_ID = #{jobId}
+    </delete>
+</mapper>

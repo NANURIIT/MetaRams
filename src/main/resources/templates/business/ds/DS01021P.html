@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="DS01021P">
+	<!-- modal -->
+	<div id="modal-DS01021P" class="modal fade" role="dialog" aria-labelledby="lb-DS01021P" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">개인 국채 환매신청</h4>
+					<div class="col-sm-1 text-right">
+						<button type="button" class="btn btn-default" onclick="modalClose_DS01021P();"><i class="fa fa-times"></i></button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="DS01021P_prefix" id="DS01021P_prefix" value="" />
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox ">
+								<!-- 조회조건영역 -->
+								<div class="ibox-title text-right">
+									<div class="form-group row">
+										<label class="col-sm-1 col-form-label"><span class="req"></span>계좌번호</label>
+										<div class="col-sm-2">
+											<input type="text" class="form-control" id="DS01021P_ibDealNo" value="325-061-0495769-09">
+										</div>
+										<label class="col-sm-1 col-form-label">계좌명</label>
+										<div class="col-sm-2">
+											<input type="text" class="form-control" id="DS01021P_ibDealNm" value="나국채">
+										</div>
+										<div class="col-sm-3"></div>
+										<div class="col-sm-3 text-right pr-3">
+											<button class="btn btn-success btn-outline" onclick="validateDt();"><i class="fa fa-search"></i>&nbsp;신청</button>
+										</div>
+									</div>
+								</div>
+								<!-- 조회결과 -->
+								<div class="ibox-content">
+									<div class="tableFixHead">
+										<table class="table table-bordered text-center">
+											<!-- 
+				    						<colgroup>
+												<col style="width: 10%;">
+												<col style="width: 15%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 5%;">
+												<col style="width: 10%;">
+											</colgroup>
+											 -->
+											<thead>
+												<tr>
+													<th>종목코드</th>
+													<th>종목명</th>
+													<th>발행일자</th>
+													<th>만기일자</th>
+													<th>액맨금액</th>
+													<th>상환금액</th>
+													<th>잔여액면금액</th>
+													<th>환매신청금액</th>
+													<th>신청여부</th>
+													<th>신청상황</th>
+												</tr>
+											</thead>
+											<tbody id="DS01021P_dealInfoList">
+												<tr>
+													<td class="text-center">111111111111</td>
+													<td class="text-center">개인03420-3606</td>
+													<td class="text-center">2026-06-20</td>
+													<td class="text-center">2036-06-20</td>
+													<td class="text-right">10,000,000</td>
+													<td class="text-right">0</td>
+													<td class="text-right">10,000,000</td>
+													<td class="text-right"></td>
+													<td class="text-center">Y</td>
+													<td class="text-left text-success">신청완료</td>
+												</tr>
+												<tr>
+													<td class="text-center">555555555555</td>
+													<td class="text-center">개인03620-4501</td>
+													<td class="text-center">2025-01-19</td>
+													<td class="text-center">2045-01-19</td>
+													<td class="text-right">5,000,000</td>
+													<td class="text-right">1,000,000</td>
+													<td class="text-right">4,000,000</td>
+													<td class="text-right"></td>
+													<td class="text-center">N</td>
+													<td class="text-left text-danger">한도 초과로 신청 실패</td>
+												</tr>
+												<tr>
+													<td class="text-center">777777777777</td>
+													<td class="text-center">개인03810-3604</td>
+													<td class="text-center">2026-04-20</td>
+													<td class="text-center">2036-04-20</td>
+													<td class="text-right">10,000,000</td>
+													<td class="text-right">0</td>
+													<td class="text-right">10,000,000</td>
+													<td class="text-right"></td>
+													<td class="text-center">Y</td>
+													<td class="text-left text-success">신청완료</td>
+												</tr>
+												<tr>
+													<td class="text-center">999999999999</td>
+													<td class="text-center">개인03130-4003</td>
+													<td class="text-center">2030-03-19</td>
+													<td class="text-center">2040-03-19</td>
+													<td class="text-right">10,000,000</td>
+													<td class="text-right">0</td>
+													<td class="text-right">10,000,000</td>
+													<td class="text-right"></td>
+													<td class="text-center"></td>
+													<td class="text-left"></td>
+												</tr>
+												<tr>
+													<td class="text-center">000000000000</td>
+													<td class="text-center">개인03780-4210</td>
+													<td class="text-center">2032-10-20</td>
+													<td class="text-center">2042-10-20</td>
+													<td class="text-right">2,500,000</td>
+													<td class="text-right">2,000,000</td>
+													<td class="text-right">500,000</td>
+													<td class="text-right"></td>
+													<td class="text-center">N</td>
+													<td class="text-left text-danger">한도 초과로 신청 실패</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- ibox -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

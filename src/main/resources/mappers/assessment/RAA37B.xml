@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA37BMapper">
+
+    <!--  37B테이블 레코드 조회    -->
+    <select id="selectOneRaa37b">
+        SELECT COUNT(*)
+          FROM RAA37B
+         WHERE STD_YR_MM        = #{stdYrMm}
+           AND IB_DEAL_NO       = #{ibDealNo}
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+    </select>
+
+    <update id="updateRaa37b">
+        UPDATE RAA37B
+           SET INVST_AGR_CCD    = #{invstAgrCcd}              /* 투자약정구분코드(투자Tranche) */
+             , CRNCY_SPLY_AMT   = IFNULL(#{crncySplyAmt}, 0)  /* 통화조달금액(총조달금액) */
+             , LTV_RT           = IFNULL(#{ltvRt}, 0)          /* LTV 비율 */
+             , CNSTRCTN_INFO_CNTNT = #{cnstrctnInfoCntnt}     /* 건축정보내용(건축규모) */
+             , LND_AR_UAR       = IFNULL(#{lndArUar}, 0)      /* 대지면적평 */
+             , CNSTRCTN_AR_UAR  = IFNULL(#{cnstrctnArUar}, 0) /* 건축면적평 */
+             , TL_AR_UAR        = IFNULL(#{tlArUar}, 0)       /* 총면적평(연면적평) */
+             , BLDNG_CVR_RT     = IFNULL(#{bldngCvrRt}, 0)    /* 건물커버비용(건폐율) */
+             , FLR_AR_R         = IFNULL(#{flrArR}, 0)        /* 총면적율(용적률) */
+             , SALE_AMT         = IFNULL(#{saleAmt}, 0)        /* 매출액(사업규모) */
+             , BSNS_PRFT_RT     = IFNULL(#{bsnsPrftRt}, 0)    /* 사업이익비율(사업이익률) */
+             , CNSTRCTN_STRT_DT = #{CNSTRCTN_STRT_DT}           /* 건축시작일자(착공일) */
+             , CNSTRCTN_EXCTN_ADVMT_RT  = IFNULL(#{cnstrctnExctnAdvmtRt}, 0) /* 건축실행진척비율(실행공정률) */
+             , CNSTRCTN_PLAN_ADVMT_RT   = IFNULL(#{cnstrctnPlanAdvmtRt}, 0)  /* 건축계획진척비율(계획공정률) */
+             , DSTBT_STRT_DT            = #{dstbtStrtDt}      /* 분배시작일자(분양개시일) */
+             , DSTBT_ADVMT_RT           = IFNULL(#{dstbtAdvmtRt}, 0)  /* 분배진척비율(분양률) */
+             , DSTBT_ADVMT_END_DT_RT    = IFNULL(#{dstbtAdvmtEndDtRt}, 0)   /* 분배진척기한비율(EXIT 분양률) */
+             , MV_IN_EXPT_DT    = #{mvInExptDt}              /* 입주예정일자 */
+             , EPT_BLDNG_RT     = IFNULL(#{eptBldngRt}, 0)    /* 공건물비율(공실률) */
+             , ACQST_FEE        = IFNULL(#{acqstFee}, 0)       /* 취득수수료 */
+             , SPRVSN_FEE       = IFNULL(#{sprvsnFee}, 0)      /* 주관수수료 */
+             , QSTN_FEE         = IFNULL(#{qstnFee}, 0)        /* 자문수수료 */
+             , ETC_FEE          = IFNULL(#{etcFee}, 0)         /* 기타수수료 */
+             , LN_FXD_CHG_CCD   = #{lnFxdChgCcd}             /* 대출고정변동구분코드 */
+             , LN_STD_ITRST_KND_CD  = #{lnStdItrstKndCd}    /* 대출기준금리종류코드 */
+             , ADDT_ITRST_R     = IFNULL(#{addtItrstR}, 0)    /* 가산금리율 */
+             , FXD_ITRST_R      = IFNULL(#{fxdItrstR}, 0)     /* 고정금리율 */
+             , INSV_RSN_CNTNT   = #{insvRsnCntnt}             /* 부실사유 */
+             , HNDL_DY_TM       = SYSDATE()
+             , HNDL_DPRT_CD     = #{hndlDprtCd}
+             , HNDL_P_ENO       = #{hndlPEno}
+         WHERE STD_YR_MM        = #{stdYrMm}
+           AND IB_DEAL_NO       = #{ibDealNo}
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+    </update>
+
+    <insert id="insertRaa37b">
+        INSERT INTO RAA37B
+        (
+          STD_YR_MM
+        , IB_DEAL_NO
+        , RISK_INSPCT_CCD
+        , LST_C_CASE_CCD
+        , INVST_AGR_CCD
+        , CRNCY_SPLY_AMT
+        , LTV_RT
+        , CNSTRCTN_INFO_CNTNT
+        , LND_AR_UAR
+        , CNSTRCTN_AR_UAR
+        , TL_AR_UAR
+        , BLDNG_CVR_RT
+        , FLR_AR_R
+        , SALE_AMT
+        , BSNS_PRFT_RT
+        , CNSTRCTN_STRT_DT
+        , CNSTRCTN_EXCTN_ADVMT_RT
+        , CNSTRCTN_PLAN_ADVMT_RT
+        , DSTBT_STRT_DT
+        , DSTBT_ADVMT_RT
+        , DSTBT_ADVMT_END_DT_RT
+        , MV_IN_EXPT_DT
+        , EPT_BLDNG_RT
+        , ACQST_FEE
+        , SPRVSN_FEE
+        , QSTN_FEE
+        , ETC_FEE
+        , LN_FXD_CHG_CCD
+        , LN_STD_ITRST_KND_CD
+        , ADDT_ITRST_R
+        , FXD_ITRST_R
+        , INSV_RSN_CNTNT
+        , HNDL_DY_TM
+        , HNDL_DPRT_CD
+        , HNDL_P_ENO
+        )
+        VALUES
+        (
+          #{stdYrMm}
+        , #{ibDealNo}
+        , #{riskInspctCcd}
+        , #{lstCCaseCcd}
+        , #{invstAgrCcd}
+        , IFNULL(#{crncySplyAmt}, 0)
+        , IFNULL(#{ltvRt}, 0)
+        , #{cnstrctnInfoCntnt}
+        , IFNULL(#{lndArUar}, 0)
+        , IFNULL(#{cnstrctnArUar}, 0)
+        , IFNULL(#{tlArUar}, 0)
+        , IFNULL(#{bldngCvrRt}, 0)
+        , IFNULL(#{flrArR}, 0)
+        , IFNULL(#{saleAmt}, 0)
+        , IFNULL(#{bsnsPrftRt}, 0)
+        , #{cnstrctnStrtDt}
+        , IFNULL(#{cnstrctnExctnAdvmtRt}, 0)
+        , IFNULL(#{cnstrctnPlanAdvmtRt}, 0)
+        , #{dstbtStrtDt}
+        , IFNULL(#{dstbtAdvmtRt}, 0)
+        , IFNULL(#{dstbtAdvmtEndDtRt}, 0)
+        , #{mvInExptDt}
+        , IFNULL(#{eptBldngRt}, 0)
+        , IFNULL(#{acqstFee}, 0)
+        , IFNULL(#{sprvsnFee}, 0)
+        , IFNULL(#{qstnFee}, 0)
+        , IFNULL(#{etcFee}, 0)
+        , #{lnFxdChgCcd}
+        , #{lnStdItrstKndCd}
+        , IFNULL(#{addtItrstR}, 0)
+        , IFNULL(#{fxdItrstR}, 0)
+        , #{insvRsnCntnt}
+        , SYSDATE()
+        , #{hndlDprtCd}
+        , #{hndlPEno}
+        )
+    </insert>
+    <!--    정기보고관리 상세항목 저장 END   -->
+
+
+</mapper>

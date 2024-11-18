@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS104BMapper">
+
+	<!-- 딜심사관련문서내역조회 -->
+  <select id="getDocInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS104BDTO" 
+    						resultType="com.nanuri.rams.business.common.dto.IBIMS104BDTO">
+        SELECT DEAL_NO                                           /* 딜번호 */
+             , MTR_DCD                                           /* 안건구분코드 */
+             , JDGM_DCD                                          /* 심사구분코드 */
+             , SN                                                /* 일련번호 */
+             , DCM_DCD                                           /* 문서구분코드 */
+             , DCM_NO                                            /* 문서번호 */
+             , LAST_DCM_YN                                       /* 최종문서여부 */
+             , RM                                                /* 비고(URLLINK) */
+             , HND_DETL_DTM                                      /* 조작상세일시 */
+             , HND_EMPNO                                         /* 조작사원번호 */
+             , HND_TMNL_NO                                       /* 조작단말기번호 */
+             , HND_TR_ID                                         /* 조작거래id */
+             , GUID                                              /* guid */
+          FROM IBIMS104B
+         WHERE 1=1
+           AND DEAL_NO                                           = #{dealNo}                                          
+           AND MTR_DCD                                           = #{mtrDcd}                                          
+           AND JDGM_DCD                                          = #{jdgmDcd}                                         
+ </select>
+
+	<!-- 딜심사관련문서내역삭제 -->
+	<delete id="deleteDocInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS104BDTO">
+        DELETE 
+          FROM IBIMS104B
+         WHERE 1=1
+           AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
+           AND MTR_DCD                                           = #{mtrDcd}                                          /* 안건구분코드 */
+           AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+           <if test="sn != null and sn > 0">
+           AND SN                                                = #{sn}                                              /* 일련번호 */
+           </if>                               
+    </delete>
+    
+    <!-- 딜심사관련문서내역등록  -->
+    <insert id="registDocInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS104BDTO">
+        INSERT INTO IBIMS104B 
+               (
+                  DEAL_NO                                           /* 딜번호 */
+                , MTR_DCD                                           /* 안건구분코드 */
+                , JDGM_DCD                                          /* 심사구분코드 */
+                , SN                                                /* 일련번호 */
+                , DCM_DCD                                           /* 문서구분코드 */
+                , DCM_NO                                            /* 문서번호 */
+                , LAST_DCM_YN                                       /* 최종문서여부 */
+                , RM                                                /* 비고(URLLINK) */
+                , HND_DETL_DTM                                      /* 조작상세일시 */
+                , HND_EMPNO                                         /* 조작사원번호 */
+                , HND_TMNL_NO                                       /* 조작단말기번호 */
+                , HND_TR_ID                                         /* 조작거래id */
+                , GUID                                              /* guid */
+               )
+        VALUES (
+                 #{dealNo}                                          /* 딜번호 */
+               , #{mtrDcd}                                          /* 안건구분코드 */
+               , #{jdgmDcd}                                         /* 심사구분코드 */
+               , (SELECT NVL(MAX(A.SN),0) + 1 FROM IBIMS104B A)     /* 일련번호 */
+               , #{dcmDcd}                                          /* 문서구분코드 */
+               , #{dcmNo}                                           /* 문서번호 */
+               , #{lastDcmYn}                                       /* 최종문서여부 */
+               , #{rm}                                              /* 비고(URLLINK) */
+               , SYSDATE	                                         /* 조작상세일시 */
+               , #{hndEmpno}                                        /* 조작사원번호 */
+               , #{hndTmnlNo}                                       /* 조작단말기번호 */
+               , #{hndTrId}                                         /* 조작거래id */
+               , #{guid}                                            /* guid */
+               )
+    </insert>
+    
+	  <!-- 딜심사관련문서내역변경 -->
+    <update id="updateDocInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS104BDTO">
+		UPDATE IBIMS104B
+           SET DCM_DCD                                          = #{dcmDcd}                                          /* 문서구분코드 */
+             , DCM_NO                                           = #{dcmNo}                                           /* 문서번호 */
+             , LAST_DCM_YN                                      = #{lastDcmYn}                                       /* 최종문서여부 */
+             , RM                                               = #{rm}                                              /* 비고(URLLINK) */
+             , HND_EMPNO                                        = #{hndEmpno}                                        /* 조작사원번호 */
+             , HND_TMNL_NO                                      = #{hndTmnlNo}                                       /* 조작단말기번호 */
+             , HND_TR_ID                                        = #{hndTrId}                                         /* 조작거래id */
+             , GUID                                             = #{guid}                                            /* guid */
+         WHERE 1=1
+           AND DEAL_NO                                          = #{dealNo}                                          /* 딜번호 */
+           AND MTR_DCD                                          = #{mtrDcd}                                          /* 안건구분코드 */
+           AND JDGM_DCD                                         = #{jdgmDcd}                                         /* 심사구분코드 */
+           AND SN                                               = #{sn}                                              /* 일련번호 */
+    </update>
+    
+    <!-- 딜심사관련문서 최종문서여부변경 -->
+    <update id="updateLastDcmYn" parameterType="com.nanuri.rams.business.common.dto.IBIMS104BDTO">
+		UPDATE IBIMS104B
+    	   SET LAST_DCM_YN                                      = 'N'                                                /* 최종문서여부 */
+    	     , HND_EMPNO                                        = #{hndEmpno}                                        /* 조작사원번호 */
+    	 WHERE 1=1
+    	   AND DEAL_NO                                          = #{dealNo}                                          /* 딜번호 */
+         AND MTR_DCD                                          = #{mtrDcd}                                          /* 안건구분코드 */
+        AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+    </update>
+
+
+</mapper>

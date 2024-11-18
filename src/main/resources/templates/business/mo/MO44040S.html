@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/mo/MO44040S.js}"></script>
+	<script th:src="@{js/business/popup/AC01120P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/popup/AC01110P :: AC01110P"></th:block>
+	<th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 승인조건 미이행 관리 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2">
+						<div class="form-group form-inline row">
+							<!-- 1 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label">기준년월</label>
+								<div class="col-sm-2 input-group month">
+									<input type="text" class="form-control" name="" value="" id="MO44040S_stdYrMm">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</div>
+								<label class="col-sm-1 control-label">부서</label>
+								<div class="col-sm-2 input-group">
+									<!-- 
+									TODO: 권한 담당자일 경우 부서 fixed 
+									<input th:if="${userAuth.rghtCd.toString.equals('AG11')}" th:value="${userAuth.dprtCd}" type="text" class="form-control" style="width: 20px;" id="MO44040S_dprtCd" name="acdnt_dprtCd" readonly>
+									<input th:unless="${userAuth.rghtCd.toString.equals('AG11')}" type="text" class="form-control" style="width: 20px;" id="MO44040S_dprtCd" name="acdnt_dprtCd">
+									 -->
+									<input type="text" class="form-control" style="width: 20px;" id="MO44040S_dprtCd" name="MO44040S_dprtCd">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callAC01120P('MO44040S')"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 80px;" id="MO44040S_dprtNm" name="MO44040S_dprtNm" readonly>
+								</div>
+								<label class="col-sm-1 control-label">담당자</label>
+								<div class="col-sm-2 input-group">
+									<!-- 
+									TODO: 권한 담당자일 경우 담당자 fixed 
+									<input th:if="${userAuth.rghtCd.toString.equals('AG11')}" th:value="${userAuth.dprtCd}" type="text" class="form-control" style="width: 20px;" id="MO44040S_eno" name="MO44040S_eno" readonly>
+									<input th:unless="${userAuth.rghtCd.toString.equals('AG11')}" type="text" class="form-control" style="width: 20px;" id="MO44040S_eno" name="MO44040S_eno">
+									 -->
+									<input type="text" class="form-control" style="width: 20px;" id="MO44040S_eno" name="MO44040S_eno">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callAC01120P('MO44040S')"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 80px;" id="MO44040S_empNm" name="MO44040S_empNm" readonly>
+								</div>
+								<label class="col-sm-1 control-label">진행상태</label>
+								<div class="col-sm-1 input-group text-right">
+									<select class="form-control m-b" name="account" id="MO44040S_reprtPrgrsStCd">
+									</select>
+								</div>
+								<div class="col-sm-1 text-right">
+									<button class="btn btn-primary" onclick="getInfo();"><i class="fa fa-search"></i>&nbsp;조회</button>
+								</div>
+							</div>
+							<!-- 2 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label">의무이행구분</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control m-b" name="account" id="MO44040S_oblgPfrmCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">심사부서</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" name="account" id="MO44040S_inspctDprtCcd">
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">심사역</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="width: 20px;" id="MO44040S_own_eno" name="MO44040S_eno">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callAC01120P('MO44040S_own')"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 80px;" id="MO44040S_own_empNm" name="" readonly>
+								</div>
+							</div>
+							<!-- 3 -->
+							<div class="col-sm-12 form-group mb-1">
+								<label class="col-sm-1 control-label">안건명</label>
+								<div class="col-sm-5 input-group">
+									<input type="text" class="form-control" id="MO44040S_ibDealNm" name="">
+								</div>
+								<div class="col-sm-3 showhide_endF">
+								</div>
+								<label class="col-sm-1 control-label hideshow_endF" style="display: none;">종결여부</label>
+								<div class="col-sm-2 input-group hideshow_endF" style="display: none;">
+									<select class="form-control" id="MO44040S_endF" name="">
+										<option value="Y">Y</option>
+										<option value="N">N</option>
+									</select>
+								</div>
+								<div class="col-sm-3 text-right">
+									<button type="button" class="btn btn-primary" id="reqAssess" onclick="updateRaa31b('20')">승인요청</button>
+									<button type="button" class="btn btn-danger" id="return" onclick="updateRaa31b('11')">반송</button>
+									<button type="button" class="btn btn-success" id="nConfirm" onclick="updateRaa31b('30')">승인</button>
+									<button type="button" class="btn btn-success" id="hConfirm" onclick="updateRaa31b('40')">부서장확인</button>
+									<button type="button" class="btn btn-success" id="jConfirm" onclick="updateRaa31b('50')">심사역확인</button>
+									<!-- 
+										TODO: 권한별 버튼 조회변경,
+										안건 선택시 display 활성화한다.
+										<input th:value="${userAuth.rghtCd}"/>
+									
+									// 사업부 담당자
+									<button th:if="${userAuth.rghtCd.toString.equals('AG11')}" type="button" class="btn btn-primary" id="reqAssess">승인요청</button>
+									
+									// 사업부 부서장, 심사부 심사역, 심사부 부서장
+									<button th:if="${userAuth.rghtCd.toString.equals('AG12')}" type="button" class="btn btn-danger" id="return">반송</button>
+									
+									// 사업부 부서장
+									<button th:if="${userAuth.rghtCd.toString.equals('AG13')}" type="button" class="btn btn-success" id="nConfirm">승인</button>
+									
+									// 심사부 심사역
+									<button th:if="${userAuth.rghtCd.toString.equals('AG14')}" type="button" class="btn btn-success" id="hConfirm">부서장확인</button>
+									
+									// 심사부 부서장
+									<button th:if="${userAuth.rghtCd.toString.equals('AG15')}" type="button" class="btn btn-success" id="jConfirm">심사역확인</button>
+									-->
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 조회결과 -->
+					<div class="ibox-content mb-2">
+						<div class="col-sm-12 text-right mb-2">
+							<button class="btn btn-warning btn-xs" onclick="functionExportExcel();">
+								<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+							</button>
+						</div>
+						<div class="tableFixHeader2 scroll">
+							<table class="table result table-bordered" style="width: 2400px;" id="excelExportTable">
+								<thead>
+									<tr>
+										<th><input type="checkbox"></th>
+										<th>진행상태</th>
+										<th>Deal번호</th>
+										<th>신규/재부의</th>
+										<th>부수안건</th>
+										<th>안건명</th>
+										<th>일련번호</th>
+										<th>통화</th>
+										<th>승인금액</th>
+										<th>Sell-down대상금액</th>
+										<th>Sell-down기한</th>
+										<th>만기보유금액</th>
+										<th>잔고</th>
+										<th>이행여부</th>
+										<th>이행일</th>
+										<th>미해소잔액</th>
+										<th>부서</th>
+										<th>담당자</th>
+										<th>심사부서</th>
+										<th>심사역</th>
+										<th>승인요청일</th>
+										<th>승인일</th>
+										<th>심사역확인일</th>
+										<th>부서장확인일</th>
+									</tr>
+								</thead>
+								<tbody id="MO44040S_getInfo">
+									<tr>
+										<td><input type="checkbox" name="" id=""></td>
+										<td></td>
+										<td>DSTFP2202013</td>
+										<td>신규</td>
+										<td>안건1</td>
+										<td>속초시 금호동 공동주택 신축사업 PF 대출 참여의 건</td>
+										<td>1</td>
+										<td>KRW</td>
+										<td>118,000,000,000</td>
+										<td>118,000,000,000</td>
+										<td>2022-06-30</td>
+										<td>0</td>
+										<td>68,000,000,000</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="" id=""></td>
+										<td></td>
+										<td>DSTFL2203017</td>
+										<td>신규</td>
+										<td>안건1</td>
+										<td>삼성중공업 미인도 드릴십 매입 선순위 담보대출 LOC</td>
+										<td>1</td>
+										<td>KRW</td>
+										<td>330,000,000,000</td>
+										<td>330,000,000,000</td>
+										<td>2022-09-13</td>
+										<td>0</td>
+										<td>122,226,375,059</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="" id=""></td>
+										<td></td>
+										<td>DSTFP2111044</td>
+										<td>신규</td>
+										<td>안건1</td>
+										<td>김포한강시네폴리스 일반산업단지 조성사업 후순위 대출</td>
+										<td>1</td>
+										<td>KRW</td>
+										<td>120,000,000,000</td>
+										<td>33,000,000,000</td>
+										<td>2022-04-28</td>
+										<td>87,000,000,000</td>
+										<td>7,000,000,000</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- 상세보기 -->
+					<div class="ibox-content mb-2">
+					<div class="text-right mb-3">
+						<!-- 1 Line -->
+						<div class="col-sm-9 input-group row">	
+							<div style="display: none;">
+								<input type="hidden" id="MO44040S_oblgPfrmCcd_selected" value="01">
+							</div>
+							<label class="col-sm-1 col-form-label">Deal번호</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="MO44040S_ibDealNo_selected" value="" readonly>
+							</div>
+							<label class="col-sm-1 col-form-label">신규/재부의</label>
+							<div class="col-sm-2">
+								<select class="form-control" id="MO44040S_riskInspctCcd_selected" readonly>
+									<option value=""></option>
+								</select>
+							</div>
+							<label class="col-sm-1 col-form-label">부수안건</label>
+							<div class="col-sm-2">
+								<select class="form-control" id="MO44040S_lstCCaseCcd_selected" readonly>
+									<option value=""></option>
+								</select>
+							</div>
+							<label class="col-sm-1 col-form-label">일련번호</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="MO44040S_itemSq_selected" value="" readonly>
+							</div>
+						</div>
+						<!-- 2 Line -->
+						<div class="col-sm-9 input-group row">
+							<label class="col-sm-1 col-form-label">안건명</label>
+							<div class="col-sm-11">
+								<input type="text" class="form-control" id="MO44040S_ibDealNm_selected" value="" readonly>
+							</div>
+						</div>
+						<!-- 3 Line -->
+						<div class="col-sm-9 input-group row">
+							<label class="col-sm-1 col-form-label">결의협의체</label>
+							<div class="col-sm-2">
+								<select class="form-control" id="MO44040S_inspctCnfrncCcd_selected" readonly></select>
+							</div>
+							<label class="col-sm-1 col-form-label">결의일</label>
+							<div class="col-sm-2 input-group mb-1">
+								<input type="text" class="form-control" value="" id="MO44040S_rsltnDt_selected" readonly>
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+							</div>
+							<label class="col-sm-1 col-form-label">결과</label>
+							<div class="col-sm-5">
+								<select class="form-control" id="MO44040S_rsltnRsltCd_selected" readonly>
+									<option value="">조건부가결</option>
+								</select>
+							</div>
+						</div>
+						<!-- 4 Line -->
+						<div class="col-sm-9 input-group row">
+							<label class="col-sm-1 col-form-label">승인조건</label>
+							<div class="col-sm-11">
+								<input type="text" class="form-control" id="MO44040S_rsltCntnt_selected" readonly>
+							</div>
+						</div>
+					</div>
+
+						<!-- 사업개요 및 정보 -->
+						<div class="ibox showhide_inspctDprtCcd">
+							<div class="ibox-title">
+								<h4>◎ 사업개요 및 정보</h4>
+							</div>
+							<div class="ibox-content">
+								<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 10%;">
+										<col style="width: 40%;">
+										<col style="width: 10%;">
+										<col style="width: 40%;">
+									</colgroup>
+									<tr>
+										<th class="table-light">사업개요</th>
+										<td colspan="3">
+											<div class="col-sm-12">
+												<textarea class="form-control" style="height: 130px;" id="MO44040S_bsnsOutlnHngl" placeholder="작성예시) oo시 oo구 oo동 공동주택 개발사업 PF&#13;&#10;- 아파트 00세대, 근생시설 00평(B0~00F)&#13;&#10;- 총 000억원 중 당사 선순위 000억원 참여예정&#13;&#10;- 시공사 oooo 책임준공(미이행시 채무인수) 및 신탁사 oooo의 책임준공확약(미이행시 손해배상)&#13;&#10;- LTV 00.00%, Exit분양률 00.00%" readonly></textarea>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="table-light">시행사/시공사</th>
+										<td colspan="3">
+											<div class="col-sm-12">
+												<input type="text" class="form-control" id="MO44040S_cnstCmpnyNm" placeholder="작성예시) (주)oo 개발 / (주) oo 건설" readonly>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="table-light">최근사업 진행현황</th>
+										<td colspan="3">
+											<div class="col-sm-12">
+												<textarea class="form-control" style="height: 70px;" id="MO44040S_mainPrgrsSttnCntnt" placeholder="작성예시) - 00.00.00 작공 및 분양개시(청약경쟁률 00:1)&#13;&#10;- 00.00.00 기준 분양률 00.00%, 공정률 00.00%(계획 00.00%)&#13;&#10;- 코로나19 확진자 발생으로 공사 지연" readonly></textarea>
+											</div>
+										</td>	
+									</tr>
+								</table>
+							</div>
+						</div>						
+						<!-- 이행정보 -->
+						<!-- 
+							TODO: 권한 심사역일경우 이행정보 보여줌
+							<div th:if="${param1} == 1 or ${#strings.equals(param2, 'A')}"></div> 
+						-->
+						<!-- <div th:if="${userAuth.rghtCd.toString.equals('AG11')}" class="ibox hideshow" style="display: none;"> -->
+						<div class="ibox hideshow_oblgPfrmCcd" style="display: none;">
+							<div class="ibox-title">
+								<h4>◎ 이행정보</h4>
+							</div>
+							<div class="ibox-content">
+								<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 10%;">
+										<col style="width: 40%;">
+										<col style="width: 10%;">
+										<col style="width: 40%;">
+									</colgroup>
+									<tr>
+										<th class="table-light">종결여부</th>
+										<td>
+											<div class="col-sm-4">
+												<select class="form-control" id="MO44040S_endF_selected">
+													<option value=""></option>
+												</select>
+											</div>
+										</td>
+										<th class="table-light">이행일자</th>
+										<td>
+											<div class="col-sm-4 input-group date">
+												<input type="text" class="form-control" name="" value="" id="MO44040S_pfrmDt_selected">
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="table-light">이행사유</th>
+										<td colspan="3">
+											<div class="col-sm-12">
+												<textarea class="form-control" style="height: 70px;" id="MO44040S_pfrmCntnt_selected" placeholder=""></textarea>
+											</div>
+										</td>	
+									</tr>
+								</table>
+							</div>
+							<!-- 
+								TODO: 권한 심사역일경우 저장버튼 보여줌
+								<div th:if="${param1} == 1 or ${#strings.equals(param2, 'A')}"></div> 
+							-->
+							<!-- <div th:if="${userAuth.rghtCd.toString.equals('AG11')}" class="col-sm-12 text-right"> -->
+							<!-- <div th:unless="${userAuth.rghtCd.toString.equals('AG11')}" class="col-sm-12 text-right" style="display: none;"> -->
+							<div class="col-sm-12 text-right" style="margin-top: 10px;">
+								<button class="btn btn-success" type="button" onclick="savePFRM();"><i class="fa fa-save"></i>&nbsp;저장</button>
+								<!-- <button class="btn btn-success" type="button" onclick="btnSave();"><i class="fa fa-save"></i>&nbsp;저장</button> -->
+							</div>
+						</div>
+						<!-- 항후계획 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h4>◎ 향후계획</h4>
+							</div>
+							<div class="ibox-content">
+								<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 3%;">
+										<col style="width: 7%;">
+										<col style="width: 90%;">
+									</colgroup>
+									<tr class="showhide_oblgPfrmCcd">
+										<th class="table-light" colspan="2">셀다운목표일</th>
+										<td>
+											<div class="col-sm-2 input-group date">
+												<input type="text" class="form-control" name="" value="" id="MO44040S_achvDt">
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="table-light" colspan="2">미이행사유</th>
+										<td>
+											<div class="col-sm-12">
+												<textarea class="form-control" style="height: 50px;" id="MO44040S_nPfrmRsnCntnt"></textarea>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="table-light" colspan="2">향후 계획</th>
+										<td>
+											<div class="col-sm-12">
+												<textarea class="form-control" style="height: 50px;"id="MO44040S_pfrmPlanCntnt"></textarea>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="table-light" rowspan="2">대응<br>방안</th>
+										<th class="table-light">Base Case</th>
+										<td>
+											<div class="col-sm-12">
+												<textarea class="form-control" style="height: 50px;"id="MO44040S_prcsPlanCntnt1"></textarea>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="table-light">Stress Case</th>
+										<td>
+											<div class="col-sm-12">
+												<textarea class="form-control" style="height: 50px;"id="MO44040S_prcsPlanCntnt2"></textarea>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="table-light" colspan="2">기타 특이사항</th>
+										<td>
+											<div class="col-sm-12">
+												<textarea class="form-control" style="height: 50px;"id="MO44040S_valSpclCntnt"></textarea>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<!-- 
+							TODO: 권한 심사역, 담당자일경우 저장버튼 보여줌
+							<div th:if="${param1} == 1 or ${#strings.equals(param2, 'A')}"></div> 
+						-->
+						<!-- <div th:if="${userAuth.rghtCd.toString.equals('AG11')}" class="col-sm-12 text-right"> -->
+						<!-- <div th:unless="${userAuth.rghtCd.toString.equals('AG11')}" class="col-sm-12 text-right" style="display: none;"> -->
+						<div class="col-sm-12 text-right">
+							<button class="btn btn-success" type="button" onclick="savePlans();"><i class="fa fa-save"></i>&nbsp;저장</button>
+							<!-- <button class="btn btn-success" type="button" onclick="btnSave();"><i class="fa fa-save"></i>&nbsp;저장</button> -->
+						</div>
+					</div>
+				</div>
+				<!-- ibox -->
+			</div>
+		</div>
+		<!-- row -->
+	</div>
+</th:block>
+
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA98AMapper">
+	
+	<!-- 부서검색 -->
+	<select id="findDprtList" parameterType="com.nanuri.rams.business.common.dto.RAA98ADTO" resultType="java.util.HashMap">
+		SELECT IFNULL(DPRT_CD, '')	AS DPRT_CD		<!-- 부점코드 -->
+		     , IFNULL(DPRT_NM, '')	AS DPRT_NM		<!-- 부점명 -->
+		     , IFNULL(HDQT_CD, '')	AS HDQT_CD		<!-- 본부코드 -->
+		     , IFNULL(HDQT_NM, '')	AS HDQT_NM		<!-- 본부명 -->
+		  FROM RAA98A
+		 WHERE 1=1
+		 <if test="dprtCd != '' and dprtCd != null">
+		   AND DPRT_CD LIKE CONCAT('%', #{dprtCd}, '%')
+		 </if>
+		 <if test="dprtNm != '' and dprtNm != null">
+		   AND DPRT_NM LIKE CONCAT('%', #{dprtNm}, '%')
+		 </if>
+	</select>
+
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.DM33020Mapper">
+
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆ 변경된 MAPPER 로 사용불가 (songwonhee) ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+
+	<!-- 관리단계목록 조회 -->
+	<select id="getMngList" parameterType="map" resultType="map">
+		SELECT A.STD_DT
+			 , CASE WHEN B.RA_DEAL_CCD = '2' THEN '1'
+											 ELSE B.RA_DEAL_CCD
+											  END
+			   AS RA_DEAL_CCD
+			 , A.IB_DEAL_NO
+			 , A.RISK_INSPCT_CCD
+		     , (
+		     	SELECT CD_VL_NM
+		     	  FROM RAA91B
+		     	 WHERE CMNS_CD_GRP = 'R013'
+		     	   AND CD_VL_ID = A.RISK_INSPCT_CCD
+		     	) AS RISK_INSPCT_CCD_NM
+			 , A.LST_C_CASE_CCD
+		     , (
+		     	SELECT CD_VL_NM
+		     	  FROM RAA91B
+		     	 WHERE CMNS_CD_GRP = 'L001'
+		     	   AND CD_VL_ID = A.LST_C_CASE_CCD
+		     	) AS LST_C_CASE_CCD_NM
+			 , B.IB_DEAL_SNM_NM
+			 , (
+				SELECT DPRT_NM
+				  FROM RAA98A
+				 WHERE DPRT_CD = B.DPRT_CD
+			   ) AS DPRT_NM
+			 , (
+				SELECT EMP_NM
+				  FROM RAA99A
+				 WHERE ENO = B.CHRG_P_ENO
+			   ) AS CHRG_P_NM
+			 , B.INSPCT_DPRT_CCD
+		     , (
+		     	SELECT CD_VL_NM
+		     	  FROM RAA91B
+		     	 WHERE CMNS_CD_GRP = 'I003'
+		     	   AND CD_VL_ID = B.INSPCT_DPRT_CCD
+		     	) AS INSPCT_DPRT_CCD_NM
+			 , (
+				SELECT EMP_NM
+				  FROM RAA99A
+				 WHERE ENO = B.OWN_P_ENO
+			   ) AS OWN_P_NM
+			 , C.INVST_ASTS_DVD_CD
+			 , C.ASTS_DSTG_CHRS_NO
+			 , C.INVST_ASTS_NM
+			 , C.CMBS_BKNO_NM
+			 , C.BK_AMT
+			 , C.OPN_PRC_VAL_AMT
+			 , CASE WHEN C.INVST_ASTS_DVD_CD = '01' THEN A.ASTS_QTY_DVD_CD
+						 ELSE '0'
+						 END
+			   AS ASTS_QTY_DVD_CD
+			 , A.RISK_INSPCT_MNG_STTS_CD
+			 , (
+				SELECT CD_VL_NM
+				  FROM RAA91B
+				 WHERE CMNS_CD_GRP = 'R012'
+				   AND CD_VL_ID = A.RISK_INSPCT_MNG_STTS_CD
+			   ) AS RISK_INSPCT_MNG_STTS_NM
+			 , A.RPRT_XCL_F
+			 , A.RPRT_XCL_RNS_CNTNT
+			 , C.STND_IS_CD
+			 , C.HNGL_IS_NM
+			 , C.BK_AMT
+		  FROM RAA50B A
+			 , RAA02B B
+		 LEFT OUTER JOIN RAA49B C
+					  ON C.STD_DT LIKE CONCAT(#{stdDt}, '%')
+					 AND C.RISK_RCG_NO = B.RISK_RCG_NO
+		 WHERE A.STD_DT LIKE CONCAT(#{stdDt}, '%')
+		   AND A.IB_DEAL_NO 	 = B.IB_DEAL_NO
+		   AND A.RISK_INSPCT_CCD = B.RISK_INSPCT_CCD
+		   AND A.LST_C_CASE_CCD  = B.LST_C_CASE_CCD
+		   AND (#{raDealCcd} = '' OR (#{raDealCcd} = '1' AND B.RA_DEAL_CCD IN ('1', '2')) OR (#{raDealCcd} <![CDATA[<>]]> '1' AND B.RA_DEAL_CCD = #{raDealCcd}))
+		   AND (#{inspctDprtCcd} = '' OR B.INSPCT_DPRT_CCD = #{inspctDprtCcd})
+		   AND (#{dprtCd} = '' OR B.DPRT_CD = #{dprtCd})
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ibDealSnmNm)">
+	       AND B.IB_DEAL_SNM_NM LIKE CONCAT('%', #{ibDealSnmNm}, '%')
+		   </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(invstAstsNm)">
+		   AND C.HNGL_IS_NM LIKE CONCAT('%', #{invstAstsNm}, '%')
+		   </if>
+		 ORDER BY A.IB_DEAL_NO, A.RISK_INSPCT_CCD, A.LST_C_CASE_CCD, C.INVST_ASTS_DVD_CD, C.ASTS_DSTG_CHRS_NO, C.CMBS_BKNO
+	</select>
+
+</mapper>

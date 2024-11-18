@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<!-- <script th:src="@{js/business/tb/TB03022P.js}"></script> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 출자금거래등록 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+			
+				<div class="ibox">
+					<div class="ibox-content i-filter">
+						<!-- row1 -->
+						<div class="row form-group form-inline text-right">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1 col-form-label text-right">거래일자</label>
+								<div class="col-sm-2 input-group date">
+									<input type="text" class="form-control" id="" value="" placeholder="yyyy-mm-dd" readonly="">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">운용펀드</label>
+								<div class="col-sm-2-5 input-group">
+									<input type="text" class="form-control" id="">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width:40px;" id="" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">종목코드</label>
+								<div class="col-sm-2-5 input-group">
+									<input type="text" class="form-control" id="">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width:40px;" id="" readonly>
+								</div>
+								<div class="col-sm-2 text-right">
+									<button class="btn btn-primary" type="button" id="" onclick=""><i class="fa fa-search"></i>&nbsp;조회</button>
+									<button id="" class="btn btn-default" onclick=""><i class="fa fa-undo"></i>&nbsp;초기화</button>
+								</div>
+							</div>
+						</div>	
+						<!-- row2 -->
+						
+					</div>
+				</div>
+				
+				<div class="ibox">
+					<div class="ibox-content" style="min-height: 800px">
+						<div class="row">
+							<div class="row form-group form-inline text-right">
+								<div class="col-sm-12 form-group">
+									<label class="col-sm-1">처리구분</label>
+									<div class="col-sm-3 input-group">
+										<div class="btn-group pd0">
+											<button class="btn btn-s toggleBtn1 btn-info" onclick="">종목정보등록</button>
+											<button class="btn btn-s toggleBtn2 btn-default" onclick="">종목정보수정</button>
+											<button class="btn btn-s toggleBtn3 btn-default" onclick="">거래등록</button>
+											<button class="btn btn-s toggleBtn4 btn-default" onclick="">거래취소</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="ibox col-sm-8">
+								<div class="ibox-title">
+									<h5>▶&nbsp;종목정보</h5>
+								</div>
+								<div class="ibox-content">
+									<!-- row1 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">명칭</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control" style="" id="">
+										</div>
+										<label class="col-sm-2 col-form-label text-right">통화코드</label>
+										<div class="col-sm-4 text-left input-group">
+											<button class="btn btn-default mr-1" type="button" onclick="">KRW</button>
+											<button class="btn btn-default mr-1" type="button" onclick=""><i class="fa fa-search"></i></button>
+											<input type="text" class="form-control" id="" readonly>
+										</div>
+									</div>
+									<!-- row2 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">문서번호</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control" style="" id="">
+										</div>
+										<label class="col-sm-2 col-form-label text-right">출자약정금액</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control text-right" style="" id="">
+										</div>
+									</div>
+									<!-- row3 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">운용펀드</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control" id="">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:40px;" id="" readonly="">
+										</div>
+										<label class="col-sm-2 col-form-label text-right">출자이행금액</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control text-right" style="" id="">
+										</div>
+									</div>
+									<!-- row4 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">보유목적</label>
+										<div class="col-sm-4 input-group">
+											<select class="form-control" id="">
+												<option value=""></option>
+											</select>
+										</div>
+										<label class="col-sm-2 col-form-label text-right">당사출자약정금액</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control text-right" style="" id="">
+										</div>
+									</div>
+									<!-- row5 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">책임사원구분</label>
+										<div class="col-sm-4 input-group">
+											<select class="form-control" id="">
+												<option value=""></option>
+											</select>
+										</div>
+										<label class="col-sm-2 col-form-label text-right">당사출자금액(이행)</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row6 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">업무집행사원</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control text-right" style="" id="">
+										</div>
+										<label class="col-sm-2 col-form-label text-right">현재출자금액</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row7 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">실제관리부점</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control" id="">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:40px;" id="" readonly="">
+										</div>
+										<label class="col-sm-2 col-form-label text-right">관리보수잔액</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row8 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">실제관리사원</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control" id="">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:40px;" id="" readonly="">
+										</div>
+										<label class="col-sm-2 col-form-label text-right">출자지분율</label>
+										<div class="col-sm-1-5 input-group">
+											<input type="text" class="form-control text-right" style="" id=""> %
+										</div>
+										
+										<label class="col-sm-1 col-form-label text-right text-nowrap">기본수익율</label>
+										<div class="col-sm-1-5 input-group">
+											<input type="text" class="form-control text-right" style="" id=""> %
+										</div>
+									</div>
+									<!-- row9 -->
+									<div class="row form-group text-right mb-1 input-h">
+										<label class="col-sm-2 col-form-label text-right">금감원보고대상</label>
+										<div class="col-sm-1 input-group">
+											<input type="checkbox" class="" id="">
+										</div>
+										<label class="col-sm-2 col-form-label text-right">계열회사</label>
+										<div class="col-sm-1 input-group">
+											<input type="checkbox" class="" id="">
+										</div>
+										<label class="col-sm-2 col-form-label text-right">종속회사</label>
+										<div class="col-sm-1 input-group">
+											<input type="checkbox" class="" id="">
+										</div>
+									</div>
+									<!-- row10 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">설립일자</label>
+										<div class="col-sm-4 input-group date">
+											<input type="text" class="form-control" id="" value="" placeholder="yyyy-mm-dd" readonly="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<label class="col-sm-2 col-form-label text-right">출자성격구분</label>
+										<div class="col-sm-4 input-group">
+											<select class="form-control" id="">
+												<option value=""></option>
+											</select>
+										</div>
+									</div>
+									<!-- row11 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">존속만료일자</label>
+										<div class="col-sm-4 input-group date">
+											<input type="text" class="form-control" id="" value="" placeholder="yyyy-mm-dd" readonly="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<label class="col-sm-2 col-form-label text-right">출자증서번호</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control text-right" style="" id="">
+										</div>
+									</div>
+									<!-- row12 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">투자만료일자</label>
+										<div class="col-sm-4 input-group date">
+											<input type="text" class="form-control" id="" value="" placeholder="yyyy-mm-dd" readonly="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<label class="col-sm-2 col-form-label text-right">관리보수율</label>
+										<div class="col-sm-1-5 input-group">
+											<input type="text" class="form-control text-right" style="" id=""> %
+										</div>
+									</div>
+									<!-- row13 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right"></label>
+										<div class="col-sm-4 input-group"></div>
+										<label class="col-sm-2 col-form-label text-right">기준환율</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="ibox col-sm-4">
+								<div class="ibox-title">
+									<h5>▶&nbsp;종목정보</h5>
+								</div>
+								<div class="ibox-content">
+									<!-- row1 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">거래번호</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row2 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">거래구분</label>
+										<div class="col-sm-8 input-group">
+											<select class="form-control" id="" readonly>
+												<option value=""></option>
+											</select>
+										</div>
+									</div>
+									<!-- row3 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">출자변동금액</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row4 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">관리보수/수익</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row5 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">매도금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+										<label class="col-sm-2 col-form-label text-right">거래세</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row6 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">매매환율</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row7 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">출자변동환산금액</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row8 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">환산관리보수/수익</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row9 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">환산매도금액</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+									<!-- row10 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">비고</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control text-right" style="" id="" readonly>
+										</div>
+									</div>
+
+									<div class="hr"></div>
+
+									<!-- row2 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">잔금/지준(텍스트 확인요함)</label>
+										<div class="col-sm-8 input-group">
+											<select class="form-control" id="" readonly>
+												<option value=""></option>
+											</select>
+										</div>
+									</div>
+									<!-- row3 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">결제은행</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control" id="" readonly>
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:40px;" id="" readonly="">
+										</div>
+									</div>
+									<!-- row4 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">은행지점</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control" id="" readonly>
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:40px;" id="" readonly="">
+										</div>
+									</div>
+									<!-- row5 -->
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-4 col-form-label text-right">은행계좌번호</label>
+										<div class="col-sm-8 input-group">
+											<input type="text" class="form-control" style="" id="" readonly>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="ibox form-inline">
+							<!-- 버튼영역 -->
+							<div class="col-sm-12 text-right pd0">
+								<button class="btn btn-success mg-l5" type="button" onclick=""><i class="fa fa-check"></i>&nbsp;실행</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

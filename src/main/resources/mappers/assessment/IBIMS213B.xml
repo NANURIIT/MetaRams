@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS213BMapper">
+  <!-- 선순위정보조회 -->
+    <select id="prfdRankInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS213BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS213BDTO">
+      SELECT A.MRTG_MNGM_NO AS MRTG_MNGM_NO
+           , A.STDR_SN AS STDR_SN
+           , A.PRFD_RANK_KND_CD AS PRFD_RANK_KND_CD
+           , A.PRFD_RANK_BCNC_NM AS PRFD_RANK_BCNC_NM
+           , A.PRFD_RANK AS PRFD_RANK
+           , A.PRFD_RANK_CRRY_CD AS PRFD_RANK_CRRY_CD
+           , A.PRFD_RANK_AMT AS PRFD_RANK_AMT
+           , A.KRW_TRSL_PRFD_RANK_AMT AS KRW_TRSL_PRFD_RANK_AMT
+        FROM IBIMS213B A 
+       INNER JOIN IBIMS211B B
+          ON A.MRTG_MNGM_NO = B.MRTG_MNGM_NO
+         AND B.DEL_YN = 'N'
+       WHERE 1 = 1
+         AND A.MRTG_MNGM_NO = #{mrtgMngmNo}
+       ORDER BY A.STDR_SN, A.PRFD_RANK_KND_CD
+    </select>
+
+	<!-- IB승인담보연결내역 - 대출채권/채무보증 정보(TB06010S) - 담보/보증내역등록  -->
+    <insert id="insertIBIMS213B" parameterType="com.nanuri.rams.business.common.dto.IBIMS213BDTO">
+    
+    INSERT INTO IBIMS213B 
+    (
+        MRTG_MNGM_NO
+      , STDR_SN
+      , PRFD_RANK_KND_CD
+      , PRFD_RANK_BCNC_NM
+      , PRFD_RANK
+      , PRFD_RANK_CRRY_CD
+      , PRFD_RANK_AMT
+      , KRW_TRSL_PRFD_RANK_AMT
+      , HND_DETL_DTM
+      , HND_EMPNO
+      , HND_TMNL_NO
+      , HND_TR_ID
+      , GUID
+    ) VALUES 
+      <foreach collection="list" item="item" index="index" separator=",">
+    (
+        #{item.mrtgMngmNo}
+      , #{index}+1
+      , #{item.prfdRankKndCd}
+      , #{item.prfdRankBcncNm}
+      , #{item.prfdRank}
+      , #{item.prfdRankCrryCd}
+      , #{item.prfdRankAmt}
+      , #{item.krwTrslPrfdRankAmt}
+      , SYSDATE
+      , #{item.hndEmpno}                                        <!-- 조작사원번호 -->
+      , 'TB06013P'                                       <!-- 조작단말기번호 -->
+      , 'registPrfd'                                         <!-- 조작거래id -->
+      , '1'                                            <!-- guid -->
+    )
+      </foreach>
+    </insert>
+
+    <delete id="delete213B" parameterType="com.nanuri.rams.business.common.dto.IBIMS213BDTO">
+      DELETE 
+        FROM IBIMS213B 
+       WHERE MRTG_MNGM_NO = #{mrtgMngmNo}
+    </delete>
+
+</mapper>

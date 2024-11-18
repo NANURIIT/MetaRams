@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB03023P">
+	<!-- modal -->
+	<div id="modal-TB03023P" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">업체정보검색</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB03023P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="TB03023P_prefix" id="TB03023P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							 <div class="ibox mb-0">
+				    			<!-- 조회조건영역 -->
+				    			<div class="ibox-content i-filter text-right">
+				    				<form method="get">
+				    					<div class="form-group row">
+				                        	<label class="col-sm-2 col-form-label">업체한글명</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB03023P_entpHnglNm" name="TB03023P_entpHnglNm"></div>
+				    						<label class="col-sm-2 col-form-label">업체코드</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB03023P_entpCd" name="TB03023P_entpCd"></div>
+				                        	<div class="col-sm-2"></div>
+				                        </div>
+				                        <div class="form-group row">
+				                        	<label class="col-sm-2 col-form-label">대표자명</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB03023P_rprsNm"></div>
+				                        	<label class="col-sm-2 col-form-label">사업자등록번호</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB03023P_bsnsRgstNo"></div>
+				                        	<div class="col-sm-2"></div>
+				                        </div>
+				                        <div class="form-group row">
+				                        	<div class="col-sm-5"></div>
+				                        	<label class="col-sm-2 col-form-label">법인등록번호</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB03023P_corpRgstNo"></div>
+				                        	<div class="col-sm-2 text-right">
+				                        		<button type="button" class="btn btn-primary" onclick="getEntList();"><i class="fa fa-search"></i>&nbsp;조회</button>
+				                        	</div>
+				                        </div>
+				    				</form>
+				    			</div>
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+					    			<div id="gridEntpList"></div>
+				    			</div>
+				    		</div><!-- ibox -->
+						</div>
+					</div>
+				</div> 
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

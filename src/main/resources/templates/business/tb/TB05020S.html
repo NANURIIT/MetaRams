@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/file.js}"></script>
+	<script th:src="@{js/business/tb/TB05020S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 협의체 의견등록 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12 ibox">
+				<div class="ibox-content" style="min-height: 900px">
+					<!-- 안건목록 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 안건목록</h5>
+								<div class="ibox-tools flex-box ibox-tools-ex">
+									<input type="hidden" id="TB05020S_cnsbDcd">
+									<input type="hidden" id="TB05020S_rsltnYr">
+									<input type="hidden" id="TB05020S_cnsbSq">
+									<input type="hidden" id="TB05020S_sn">
+									<input type="hidden" id="TB05020S_dealNo">
+									<input type="hidden" id="TB05020S_jdgmDcd">
+									<input type="hidden" id="TB05020S_mtrDcd">
+									<input type="hidden" id="fileIbDealNo">
+									<input type="hidden" id="fileRiskInspctCcd">
+									<input type="hidden" id="fileLstCCaseCcd">
+									<input type="checkbox" id="TB05020S_chkF">
+									<label class="control-label px-2 ">전체(종료건포함)</label>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<div class="tableFixHeader2">
+									<table class="table result table-bordered">
+										<colgroup>
+											<col style="width: 10%;">
+											<col style="width: 11%;">
+											<col style="width: 20%;">
+											<col style="width: 8%;">
+											<col style="width: 5%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 6%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>결의협의체</th>
+												<th>안건번호</th>
+												<th>안건명</th>
+												<th>결의일자</th>
+												<th>통화</th>
+												<th>참여금액</th>
+												<th>승인금액</th>
+												<th>의결</th>
+												<th>결과</th>
+												<th>회의록확인</th>
+											</tr>
+										</thead>
+										<tbody id="TB05020S_dealList">
+										</tbody>
+									</table>
+								</div>
+							</div>
+					</div>
+					<!-- 관련보고서 & 회의록 -->
+					<div class="row pr-1 pl-1">
+						<!-- 관련 보고서 -->
+						<div class="col-sm-8">
+							<div class="ibox">
+								<div class="ibox-title">
+									<h5>▶ 관련보고서</h5>
+								</div>
+								<div class="ibox-content">
+									<table class="table result table-bordered">
+										<colgroup>
+											<col style="width: 85%;">
+											<col style="width: 15%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>보고서명</th>
+												<th>등록일자</th>
+											</tr>
+										</thead>
+										<tbody id="TB05020S_fileList">
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- 회의록 -->
+						<div class="col-sm-4">
+							<div class="ibox">
+								<div class="ibox-title">
+									<h5>▶ 회의록</h5>
+								</div>
+								<div class="ibox-content text-right">
+									<div class="form-group row">
+										<label class="col-sm-2 control-label mb-1">회의록</label>
+										<input type="text" class="col-sm-7 form-control upload-name  mb-1" readonly>
+										<div class="col-sm-3 text-left"><a id="filePath"><button class="btn btn-info  mb-1"><i
+														class="fa fa-file-text-o"></i>&nbsp;열기</button></a></div>
+										<label class="col-sm-2 control-label  mb-1">확인자명</label>
+										<input type="text" class="col-sm-7 form-control  mb-1" id="TB05020S_cnfrPNm" readonly>&nbsp;
+										<input type="text" class="col-sm-2 form-control  mb-1" id="TB05020S_cnfrPEno" readonly>
+										<label class="col-sm-2 control-label  mb-1">확인일시</label>
+										<input type="text" class="col-sm-6 form-control  mb-1" id="TB05020S_cnfrDyTm" readonly>
+										<div class="col-sm-4 text-left  mb-1"><button class="btn btn-success" onclick="confirmFile();"><i
+													class="fa fa-check-square"></i>&nbsp;회의록 확인</button></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 의견등록</h5>
+							</div>
+							<div class="ibox-content text-right">
+								<div class="row">
+									<div class="col-sm-1">
+										심의의견
+									</div>
+									<div class="col-sm-11">
+										<textarea class="form-control" style="height:85px;" id="TB05020S_opnnCtns"></textarea>
+									</div>
+									<div class="col-sm-12 text-right py-2">
+										<button class="btn btn-success" type="button" onclick="updateAprvOppsDcd('1')"><i
+												class="fa fa-check"></i>&nbsp;가결</button>
+										<button class="btn btn-info" type="button" onclick="updateAprvOppsDcd('2')"><i
+												class="fa fa-check-square-o"></i>&nbsp;조건부가결</button>
+										<button class="btn btn-default" type="button" onclick="updateAprvOppsDcd('3')"><i
+												class="fa fa-exclamation"></i>&nbsp;보류</button>
+										<button class="btn btn-warning" type="button" onclick="updateAprvOppsDcd('4')"><i
+												class="fa fa-times"></i>&nbsp;부결</button>
+										<button class="btn btn-danger" type="button" onclick="updateAprvOppsDcd('')"><i
+												class="fa fa-undo"></i>&nbsp;취소</button>
+									</div>
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

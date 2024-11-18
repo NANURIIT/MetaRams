@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBWORK04Mapper">
+
+	<!-- 셀렉트박스 코드, 밸류 취득 -->
+	<select id="getSelectBox2" resultType="java.util.HashMap">
+		SELECT 그룹코드			AS cmnsGrpCd
+		     , 통합구분명		AS cmnsGrpCdNm
+		     , 통합코드영문명	AS cmnsGrpCdNmEng
+		     , 길이				AS cdLength
+		     , 유효값			AS cdValue
+		     , 유효값명			AS cdName
+		  FROM IBWORK04
+		 WHERE 1=1 
+		<if test="cmnsCdGrp != null">
+		   AND 그룹코드 = #{cmnsCdGrp}
+		</if>
+		 ORDER BY 유효값
+	</select>
+	
+	<!-- 공통코드 -->
+	<select id="getSelectBoxList" parameterType="java.util.List" resultType="java.util.HashMap">
+		SELECT 그룹코드			AS cmnsGrpCd
+		     , 통합구분명		AS cmnsGrpCdNm
+		     , 통합코드영문명	AS cmnsGrpCdNmEng
+		     , 길이				AS cdLength
+		     , 유효값			AS cdValue
+		     , 유효값명			AS cdName
+		  FROM IBWORK04
+		 WHERE 1=1
+		   AND 그룹코드 IN
+			<foreach collection="list" item="listParam" index="index" open="(" separator="," close=")">
+	               #{listParam}
+	        </foreach>
+		 ORDER BY 그룹코드, 유효값
+	</select>
+
+</mapper>

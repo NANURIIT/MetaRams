@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS100BMapper">
+
+    <!-- 오늘의할일추가를 위한 (SQ)조회 -->
+    <select id="getSeqNo" resultType="int"> 
+        SELECT NVL(MAX(SN)+1,1)
+          FROM IBIMS100B
+        WHERE EMPNO    = #{empno}
+          AND RQST_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+    </select>
+
+    <!-- 오늘의할일 summery조회 -->
+    <select id="getSummaryInfo" resultType="com.nanuri.rams.business.common.vo.IBIMS100BVO$selectVO" parameterType="com.nanuri.rams.business.common.vo.IBIMS100BVO$selectVO"> 
+	    SELECT EMPNO
+	         , SUM(CNT1)  APPV_WAIT_CNT
+	         , SUM(CNT2)  APPV_PRGRS_CNT
+	         , SUM(CNT3)  MET_CNT
+	      FROM 
+	         (
+	         SELECT A.EMPNO                             									                /* 담당자 */ 
+	              , A.WORK_DCD                         	 									                /* 작업구분코드 */
+	              , CASE WHEN A.EMPNO      =  #{empno} THEN 1 ELSE 0 END AS CNT1		      /* 결재대기건수 */
+	              , CASE WHEN A.RQST_EMPNO != #{empno} THEN 1 ELSE 0 END AS CNT2 		      /* 결재진행건수 */
+	              , 0    AS CNT3 
+	           FROM IBIMS100B A
+	          WHERE 1=1
+	            AND A.WORK_DCD   = '01' 													                        /* 결재 */
+	            AND (A.RQST_EMPNO    = #{empno} OR A.EMPNO = #{empno})
+	            AND A.PRCS_DT IS NULL
+	          UNION ALL
+	         SELECT A.EMPNO                             									                /* 담당자 */
+	              , A.WORK_DCD                          									                /* 작업구분코드 */
+	              , 0    AS CNT1                      										                /* 결재대기건수 */
+	              , 0    AS CNT2                       										                /* 결재요청건수 */
+	              , CASE WHEN A.EMPNO = #{empno} THEN 1 ELSE 0 END  AS CNT3			          /* 협의회회의건수 */
+	           FROM IBIMS100B A
+	 	      WHERE 1=1
+	            AND A.WORK_DCD   = '02'  													                        /* 회의 */
+	            AND A.EMPNO        = #{empno}              
+	            AND A.PRCS_DT IS NULL    
+	         )
+	     GROUP BY EMPNO    
+    </select>
+    
+    <!-- 오늘의할일조회 -->
+    <!-- 오늘날짜 추가 2024.06.20 -->
+    <select id="selectIBIMS100BInfo" resultType="com.nanuri.rams.business.common.vo.IBIMS100BVO$selectVO" parameterType="com.nanuri.rams.business.common.vo.IBIMS100BVO$selectVO"> 
+        SELECT A.EMPNO                               /* 사원번호 */
+             , A.RQST_DT                             /* 요청일자 */
+             , A.SN                                  /* 일련번호 */
+             , A.WORK_DCD                            /* 작업구분코드 */
+	         , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'R008'
+                   AND CD_VL_ID = A.WORK_DCD
+               ) AS WORK_DCD_NM
+             , A.STDR_DT                             /* 기준일자 */
+             , A.RQST_TM                             /* 등록시각 */
+             , A.RQST_EMPNO                          /* 등록사원번호 */
+             , (
+                SELECT EMP_NM
+                  FROM IBIMS003B
+                 WHERE EMPNO = A.EMPNO
+               ) AS REG_ENO_NM
+             , (
+                SELECT DPRT_NM
+                  FROM IBIMS003B
+                 WHERE EMPNO = A.EMPNO
+               ) AS DPRT_NM
+             , A.WORK_CTNS                           /* 작업내용 */
+             , A.MENU_ID                             /* 메뉴ID */
+             , NVL(A.PRCS_DT, '') AS PRCS_DT         /* 처리일자 */
+             , A.PRCS_TM                             /* 처리시각 */
+             , A.PRCS_EMPNO                          /* 처리사원번호 */
+             , A.SPV_YN                              /* 대결여부 */
+             , A.ENTP_NM                             /* 업체명 */
+             , A.RMRK                                /* 비고 */
+             , A.DEL_YN                              /* 삭제여부 */
+             , B.DEAL_NO                             /* 딜번호 */
+             , NVL(C.MTR_NM, '') AS MTR_NM           /* 안건명 */
+          FROM IBIMS101B B 
+    LEFT JOIN IBIMS100B A
+           ON B.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
+    LEFT JOIN IBIMS103B C 
+           ON B.DEAL_NO = C.DEAL_NO
+          AND C.LAST_YN = '1'
+        WHERE 1=1
+          AND B.LAST_YN = '1'
+          AND C.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
+          AND 'Y' = CASE WHEN FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',2),'=',-1) != C.DEAL_NO AND C.JDGM_DCD = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',2),'=',-1) 
+                          THEN 'Y'
+                  ELSE 'Y' 
+              END
+          AND 'Y' = CASE WHEN FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',3),'=',-1) != C.DEAL_NO AND C.MTR_DCD = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',3),'=',-1) 
+                          THEN 'Y'
+                  ELSE 'Y' 
+              END           
+          AND A.EMPNO     = #{empno}
+          AND A.DEL_YN = '0'
+          AND A.PRCS_DT IS NULL
+		  AND A.RQST_DT <![CDATA[  <= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD')
+    UNION ALL
+       SELECT D.EMPNO                                                
+            , D.RQST_DT                            
+            , D.SN                                
+            , D.WORK_DCD 
+	         , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'R008'
+                   AND CD_VL_ID = D.WORK_DCD
+               ) AS WORK_DCD_NM
+            , D.STDR_DT                            
+            , D.RQST_TM                            
+            , D.RQST_EMPNO
+             , (
+                SELECT EMP_NM
+                  FROM IBIMS003B
+                 WHERE EMPNO = D.EMPNO
+               ) AS REG_ENO_NM     
+             , (
+                SELECT DPRT_NM
+                  FROM IBIMS003B
+                 WHERE EMPNO = D.EMPNO
+               ) AS DPRT_NM                                     
+            , D.WORK_CTNS                          
+            , D.MENU_ID                           
+            , NVL(D.PRCS_DT, '')  AS PRCS_DT                                
+            , D.PRCS_TM                                   
+            , D.PRCS_EMPNO                                          
+            , D.SPV_YN                                    
+            , D.ENTP_NM                                    
+            , D.RMRK  
+            , D.DEL_YN                             
+            , NVL(E.DEAL_NO, '')			AS DEAL_NO
+            , NVL(F.MTR_NM, '')			AS MTR_NM
+         FROM IBIMS100B D
+    LEFT JOIN IBIMS101B E 
+           ON E.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(D.RMRK,',',1),'=',-1)        
+    LEFT JOIN IBIMS103B F
+   		   ON E.DEAL_NO = F.DEAL_NO
+  		  AND F.LAST_YN = '1'
+        WHERE (SELECT MAX(DEAL_NO) FROM IBIMS103B WHERE DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(D.RMRK,',',1),'=',-1) AND LAST_YN = '1') IS NULL
+          AND D.EMPNO      = #{empno}
+          AND D.DEL_YN = '0'
+          AND D.PRCS_DT IS NULL
+		      AND D.RQST_DT <![CDATA[  <= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD')
+     ORDER BY RQST_DT DESC
+            , SN
+	</select> 
+	
+  <!-- 오늘의할일등록 -->	
+	<insert id="insertIBIMS100BInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS100BDTO"> 
+		INSERT INTO IBIMS100B 
+               (
+                  EMPNO                                   /* 사원번호 */
+                , STDR_DT                                 /* 기준일자 */
+                , SN                                      /* 일련번호 */
+                , WORK_DCD                                /* 작업구분코드 */
+                , WORK_CTNS                               /* 작업내용 */
+                , RQST_EMPNO                              /* 등록사원번호 */
+                , RQST_DT                                 /* 요청일자 */
+                , RQST_TM                                 /* 등록시각 */
+                , MENU_ID                                 /* 메뉴ID */
+                , PRCS_DT                                 /* 처리일자 */
+                , PRCS_TM                                 /* 처리시각 */
+                , PRCS_EMPNO                              /* 처리사원번호 */
+                , SPV_YN                                  /* 대결여부 */
+                , ENTP_NM                                 /* 업체명 */
+                , RMRK                                    /* 비고(메뉴별조회KEY) */
+                , DEL_YN                                  /* 삭제여부 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래ID */
+                , GUID                                    /* GUID */
+               )                                          
+        VALUES (                                          
+                 #{empno}                                 /* 사원번호 */
+               , TO_CHAR(SYSDATE, 'YYYYMMDD')             /* 기준일자 */
+               <if test='sn == ""'>		        		        /* 일련번호 */
+               , (SELECT NVL(MAX(A.SN)+1,1) FROM IBIMS100B A WHERE EMPNO = #{empno} AND STDR_DT = TO_CHAR(SYSDATE, 'YYYYMMDD'))
+               </if>
+               , #{workDcd}                               /* 작업구분코드 */
+               , #{workCtns}                              /* 작업내용 */
+               , #{rqstEmpno}                             /* 등록사원번호 */
+               , TO_CHAR(SYSDATE, 'YYYYMMDD')             /* 요청일자 */
+               , TO_CHAR(SYSDATE, 'HH24MISS')             /* 등록시각 */
+               , #{menuId}                                /* 메뉴ID */
+               , #{prcsDt}                                /* 처리일자 */
+               , #{prcsTm}                                /* 처리시각 */
+               , #{prcsEmpno}                             /* 처리사원번호 */
+               , '0'                                      /* 대결여부 */
+               , #{entpNm}                                /* 업체명 */
+               , #{rmrk}                                  /* 비고(메뉴별조회KEY) */
+               , '0'                                      /* 삭제여부 */
+               , SYSDATE                           		    /* 조작상세일시 */
+               , #{hndEmpno}                              /* 조작사원번호 */
+               , ''                             		      /* 조작단말기번호 */
+               , ''                               		    /* 조작거래ID */
+               , ''                                  	    /* GUID */
+               )
+    </insert>
+    
+    <!-- 오늘의할일변경(결재) -->
+    <update id="updateIBIMS100BInfO" parameterType="com.nanuri.rams.business.common.dto.IBIMS100BDTO"> 
+       UPDATE IBIMS100B
+          SET PRCS_DT                                 = TO_CHAR(SYSDATE, 'YYYYMMDD')            /* 처리일자 */
+            , PRCS_TM                                 = TO_CHAR(SYSDATE, 'hh24miss')            /* 처리시각 */
+            , PRCS_EMPNO                              = #{prcsEmpno}                            /* 처리사원번호 */
+            , HND_DETL_DTM                            = SYSDATE                                 /* 조작상세일시 */
+            , HND_EMPNO                               = #{hndEmpno}                             /* 조작사원번호 */
+         WHERE 1=1                                                                            
+          AND EMPNO                                   = #{empno}                                /* 사원번호 */
+          AND STDR_DT                                 = #{stdrDt}                               /* 기준일자 */          
+          AND SN                                      = #{sn}									                  /* 일련번호 */                                                
+	</update>
+
+  <!-- 오늘의할일변경(결재요청취소) -->
+	<update id="deleteIBIMS100BInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS100BDTO"> 
+       UPDATE IBIMS100B
+          SET DEL_YN                                  = '1'                                  	  /* 삭제여부 */
+            , HND_DETL_DTM                            = SYSDATE                                 /* 조작상세일시 */
+            , HND_EMPNO                               = #{hndEmpno}                             /* 조작사원번호 */
+        WHERE 1=1                                                                                 
+          AND EMPNO                                   = #{empno}                                /* 사원번호 */
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(stdrDt)">
+          AND STDR_DT                                 = #{stdrDt}      							            /* 기준일자 */
+          </if>
+          AND MENU_ID								                  = #{menuId}
+          <if test='sn != "0"'>                           
+          AND SN                                      = #{sn}      								              /* 일련번호 */
+          </if>
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rmrk)">
+          AND RMRK            				     	  LIKE '%'|| #{rmrk} || '%'                         /* 비고(메뉴별조회KEY) */    
+          </if> 
+	</update> 
+
+</mapper>

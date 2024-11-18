@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS996BMapper">
+
+  <!-- 배치JOB 선행JOB관리 조회  -->
+	<select id="selectIBIMS996B" parameterType="com.nanuri.rams.business.common.vo.IBIMS996BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS996BVO">
+    SELECT PRE_JOB_ID                              /* 선행 JOB ID */
+         , PRE_JOB_NAME                            /* 선행 JOB NAME */
+         , JOB_ID                                  /* JOB ID */
+         , JOB_NAME                                /* JOB NAME */
+         , DESCRIPTION                             /* 작업 설명 */
+         , REGISTER_DAY                            /* 최초 등록일 */
+         , LAST_UPDATE_DAY                         /* 최종 수정일 */
+         , HND_DETL_DTM                            /* 조작상세일시 */
+         , HND_EMPNO                               /* 조작사원번호 */
+         , HND_TMNL_NO                             /* 조작단말기번호 */
+         , HND_TR_ID                               /* 조작거래ID */
+         , GUID                                    /* GUID */
+     FROM IBIMS996B
+    WHERE 1=1
+		  AND JOB_ID LIKE #{jobId} || '%'
+		  AND JOB_NAME LIKE #{jobName} || '%'
+  	</select>
+
+    <select id="getPreJobId" parameterType="string" resultType="string">
+      SELECT JOB_ID                                  /* JOB ID */
+        FROM IBIMS996B
+       WHERE 1=1
+		     AND PRE_JOB_ID = #{jobId}
+  	</select>
+
+    <!-- 배치JOB 선행JOB관리 입력  -->
+    <insert id="insertIBIMS996B" parameterType="com.nanuri.rams.business.common.dto.IBIMS996BDTO">
+        INSERT INTO IBIMS996B
+              (
+                  PRE_JOB_ID                       /* 선행 JOB ID */
+                , PRE_JOB_NAME                     /* 선행 JOB NAME */
+                , JOB_ID                           /* JOB ID */
+                , JOB_NAME                         /* JOB NAME */
+                , DESCRIPTION                      /* 작업 설명 */
+                , REGISTER_DAY                     /* 최초 등록일 */
+                , LAST_UPDATE_DAY                  /* 최종 수정일 */
+                , HND_DETL_DTM                     /* 조작상세일시 */
+                , HND_EMPNO                        /* 조작사원번호 */
+                , HND_TMNL_NO                      /* 조작단말기번호 */
+                , HND_TR_ID                        /* 조작거래ID */
+                , GUID                             /* GUID */
+              )
+          SELECT
+                  #{preJobId}                      /* 선행 JOB ID */
+                , #{preJobName}                    /* 선행 JOB NAME */
+                , #{jobId}                         /* JOB ID */
+                , #{jobName}                       /* JOB NAME */
+                , #{description}                   /* 작업 설명 */
+                , #{registerDay}                   /* 최초 등록일 */
+                , #{lastUpdateDay}                 /* 최종 수정일 */
+                , SYSDATE                            /* 조작상세일시 */
+                , #{hndEmpno}                      /* 조작사원번호 */
+                , #{hndTmnlNo}                     /* 조작단말기번호 */
+                , #{hndTrId}                       /* 조작거래ID */
+                , #{guid}                          /* GUID */
+    </insert>
+
+    <!-- 배치JOB 선행JOB관리 수정  -->
+    <update id="updateIBIMS996B" parameterType="com.nanuri.rams.business.common.dto.IBIMS996BDTO">
+       UPDATE IBIMS996B
+          SET PRE_JOB_ID      = #{preJobId}                      /* 선행 JOB ID */
+            , PRE_JOB_NAME    = #{preJobName}                    /* 선행 JOB NAME */
+            , JOB_ID          = #{jobId}                         /* JOB ID */
+            , JOB_NAME        = #{jobName}                       /* JOB NAME */
+            , DESCRIPTION     = #{description}                   /* 작업 설명 */
+            , REGISTER_DAY    = #{registerDay}                   /* 최초 등록일 */
+            , LAST_UPDATE_DAY = #{lastUpdateDay}                 /* 최종 수정일 */
+            , HND_DETL_DTM    = SYSDATE                            /* 조작상세일시 */
+            , HND_EMPNO       = #{hndEmpno}                      /* 조작사원번호 */
+            , HND_TMNL_NO     = #{hndTmnlNo}                     /* 조작단말기번호 */
+            , HND_TR_ID       = #{hndTrId}                       /* 조작거래ID */
+            , GUID            = #{guid}                          /* GUID */
+         WHERE 1=1
+          AND JOB_ID          = #{jobId}
+    </update>
+
+    <!-- 배치JOB 선행JOB관리 삭제  -->
+    <delete id="deleteIBIMS996B" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO">
+        DELETE
+          FROM IBIMS996B
+         WHERE PRE_JOB_ID = #{preJobId}
+    </delete>
+</mapper>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB08050S.js}"></script>
+	<script th:src="@{js/newFile.js}"></script>
+	<script th:src="@{js/business/tb/TB06011P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+</th:block>
+
+<!-- 수수료수납처리 -->
+ 
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- 조회조건 -->
+				<!-- ibox -->
+				<div class="ibox ">
+					<div class="ibox-content">
+						<!-- row1 -->
+						<div class="form-group form-inline row">
+							<div class="col-sm-12 input-group text-right">
+								<label class="col-sm-1 control-label">종목코드</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB08050S_prdtCd">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB08050S');">
+												<i class="fa fa-search"></i>
+											</button>
+										</span> 
+										<input type="text" class="form-control" id="TB08050S_prdtNm" style="width: 210px;" readonly>
+									</div>
+								</div>
+								<div class="col-sm-7 text-right">
+									<button class="btn btn-primary" type="button" onclick="TB08050Sjs.srch();">
+										<i class="fa fa-search"></i>조회</button>
+									<!-- <button class="btn btn-default" type="button" disabled>다음</button> -->
+									<button class="btn btn-default" type="button" onclick="resetAll('TB08050S', ['grd_feeDtls']); TB08050Sjs.reBdin(); TB08050Sjs.resetMore();">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of ibox -->
+				<!-- 조회내용 -->
+				<!-- ibox -->
+				<div class="ibox ">
+					<div class="ibox-content">
+						<!-- Deal 기본정보 -->
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<div>
+											<h5>▶ 수수료내역</h5>
+											<!-- <div class="ibox-tools">
+												<th:block layout:fragment="file">
+													<div th:replace="layout/fragments/common :: file"></div>
+												</th:block>
+											</div> -->
+										</div>
+									</div>
+									<div class="ibox-content">
+										<div id="grd_feeDtls"></div>
+										<!-- <table class="table table-bordered table-hover">
+											<colgroup>
+												<col style="width: 10%;">
+												<col style="width: 40%;">
+												<col style="width: 20%;">
+												<col style="width: 20%;">
+												<col style="width: 10%;">
+											</colgroup>
+											<thead class="text-center">
+												<tr>
+													<th rowspan="2">순번</th>
+													<th rowspan="2">거래일자</th>
+													<th rowspan="2">처리일자</th>
+													<th rowspan="2">결재상태</th>
+													<th rowspan="2">수수료종류</th>
+													<th rowspan="2">계정과목코드</th>
+													<th rowspan="2">계정과목명</th>
+													<th rowspan="2">수수료인식구분</th>
+													<th rowspan="2">과세유형구분</th>
+													<th colspan="2">수수료</th>
+												</tr>
+												<tr>
+													<th>대상금액</th>
+													<th>율(%)</th>
+												</tr>
+											</thead>
+										</table> -->
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 수수료정보</h5>
+										<span>&nbsp;※ 수수료수납은 '수납완료여부'가 'N'이고 업무확인여부(경영, 출납, 세무)가 모두 체크된건만 수납 가능합니다.</span>
+									</div>
+									<div class="ibox-content">
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">수수료순번</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control" type="text" id="TB08050S_feeSn" disabled>
+												</div>
+												<label class="col-sm-1">수취일자</label>
+												<div class="col-sm-3 input-group">
+													<div class="col-sm-12 input-group date px-0">
+														<input type="text" class="form-control" id="TB08050S_feeRcivDt" name="FromDate" value="" placeholder="YYYY-MM-DD">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+												<label class="col-sm-1">수수료종류코드</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB08050S_F004">
+														<option value="">선택</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">수수료대상금액</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control text-right" type="text" id="TB08050S_eprzCrdlFeeStdrAmt" placeholder="0" oninput="inputNumberFormat(this); TB08050Sjs.calulator('fee'); ">
+												</div>
+												<label class="col-sm-1">수수료율(%)</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control text-right" type="text" id="TB08050S_feeRt" placeholder="0" oninput="TB08050Sjs.calulator('fee'); ">
+												</div>
+												<label class="col-sm-1">수수료금액</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control text-right" type="text" id="TB08050S_feeAmt" placeholder="0" oninput="inputNumberFormat(this); ">
+												</div>
+											</div>
+										</div>
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">수수료대상내용</label>
+												<div class="col-sm-11 input-group">
+													<textarea class="form-control" rows="3"	id="TB08050S_feeTrgtCtns"></textarea>
+												</div>
+											</div>
+										</div>
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">계정과목코드</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control" type="text"	id="TB80050S_actsCd">
+												</div>
+												<label class="col-sm-1">계정과목명</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control" type="text" id="">
+												</div>
+												<label class="col-sm-1">수수료과세여부</label>
+												<div class="col-sm-3 input-group input-h">
+													<div class="col-sm-2 input-group">
+														<input type="radio" value="1" id="" name="TB08050S_feeTxtnYn">
+														<label class="col-sm-5">Y</label>
+													</div>
+													<div class="col-sm-2 input-group">
+														<input type="radio" value="0" id="" name="TB08050S_feeTxtnYn" checked>
+														<label class="col-sm-5">N</label>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">수수료인식구분</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB08050S_F006">
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1">인식시작일자</label>
+												<div class="col-sm-3 input-group">
+													<div class="col-sm-12 input-group date px-0">
+														<input type="text" class="form-control" id="TB08050S_fnnrRcogStrtDt" name="FromDate" value="" placeholder="YYYY-MM-DD">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+												<label class="col-sm-1">인식종료일</label>
+												<div class="col-sm-3 input-group">
+													<div class="col-sm-12 input-group date px-0">
+														<input type="text" class="form-control" id="TB08050S_fnnrRcogEndDt" name="FromDate" value="" placeholder="YYYY-MM-DD">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">자금구분코드</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB08050S_F008">
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1">합계금액</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control text-right" type="text" id="TB08050S_tempTot" placeholder="0" oninput="inputNumberFormat(this); ">
+												</div>
+												<label class="col-sm-1">회계일자</label>
+												<div class="col-sm-3 input-group">
+													<div class="col-sm-12 input-group date px-0">
+														<input type="text" class="form-control" id="TB08050S_rkfrDt" name="FromDate" value="" placeholder="YYYY-MM-DD">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">거래처명</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control" type="text" id="BCNC_NM">
+												</div>
+												<label class="col-sm-1">통화코드</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB08050S_I027" >
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1">적용환율</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control text-right" type="text" id="TB08050S_aplcExchR" oninput="TB08050Sjs.calulator('crry')">
+												</div>
+											</div>
+										</div>
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">과세유형구분코드</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB08050S_E027">
+														<option value="">선택</option>
+													</select>
+												</div>
+												<label class="col-sm-1">수수료수납금액</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control text-right" type="text" id="TB08050S_feeRcivAmt" placeholder="0" oninput="inputNumberFormat(this); ">
+												</div>
+												<label class="col-sm-1">원화환산수수료</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control text-right" type="text" id="TB08050S_wcrcTrslTrFeeAmt" placeholder="0" oninput="inputNumberFormat(this); ">
+												</div>
+											</div>
+										</div>
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">증빙발행일자</label>
+												<div class="col-sm-3 input-group">
+													<div class="col-sm-12 input-group date px-0">
+														<input type="text" class="form-control" id="TB08050S_prufIsuDt" name="FromDate" value="" placeholder="YYYY-MM-DD">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+												<label class="col-sm-1">세액</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control mr-1 text-right" type="text" id="TB08050S_splmTxa" placeholder="0" oninput="inputNumberFormat(this); ">
+													<button class="btn btn-default" onclick="">&nbsp;발행양식</button>
+												</div>
+												<label class="col-sm-1">입금일자</label>
+												<div class="col-sm-3 input-group">
+													<div class="col-sm-12 input-group date px-0">
+														<input type="text" class="form-control" id="TB08050S_rctmDt" name="FromDate" value="" placeholder="YYYY-MM-DD">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- <div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">부서합의여부</label>
+												<div class="col-sm-3 input-group input-h">
+													<div class="col-sm-2 input-group">
+														<input type="radio" value="1" id="" name="" >
+														<label class="col-sm-5">Y</label>
+													</div>
+													<div class="col-sm-2 input-group">
+														<input type="radio" value="0" id="" name="" checked>
+														<label class="col-sm-5">N</label>
+													</div>
+												</div>
+												
+												<div class="col-sm-4"></div>
+											</div>
+										</div> -->
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">처리자</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control" type="text" id="TB08050S_prcsEmpno" disabled>&nbsp;
+													<input type="text" class="form-control" id="TB08050S_prcsEmpnm"  disabled="">
+												</div>
+												<label class="col-sm-1">처리시간</label>
+												<div class="col-sm-3 input-group">
+													<input class="form-control" type="text" id="TB08050S_prcsTm" disabled>
+												</div>
+												<!-- <label class="col-sm-1">결재상태</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB08050S_D006" disabled>
+														<option value=""></option>
+													</select>
+												</div> -->
+												<label class="col-sm-1">수납완료여부</label>
+												<div class="col-sm-3 input-group input-h">
+													<div class="col-sm-2 input-group">
+														<input type="radio" value="1" id="" name="TB08050S_prcsCpltYn">
+														<label class="col-sm-5">Y</label>
+													</div>
+													<div class="col-sm-2 input-group">
+														<input type="radio" value="0" id="" name="TB08050S_prcsCpltYn" checked>
+														<label class="col-sm-5">N</label>
+													</div>
+												</div> 
+											</div>
+										</div>
+										<!-- <div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1">반려사유</label>
+												<div class="col-sm-11 input-group">
+													<textarea class="form-control" rows="3" id="TB08050S_rvseCnclRsonText"></textarea>
+												</div>
+											</div>
+										</div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 text-right">
+								<button class="btn btn-success" id="btnSave" onclick="TB08050Sjs.save();"><i class="fa fa-check"></i>&nbsp;등록</button>
+								<!--		<button class="btn btn-success" type="button" id="approveDeal" onclick="reqApproveDeal();" style="margin-left:2px; margin-right:2px;"><i class="fa fa-check"></i>&nbsp;결재요청</button> -->
+								<!--		<button class="btn btn-success" type="button" id="confirmDeal" onclick="cnfmDeal();" style="margin-left:2px; margin-right:2px;"><i class="fa fa-check"></i>&nbsp;결재승인</button> -->
+								<!--		<button class="btn btn-warning" type="button" id="rejectDeal" onclick="rejtDeal();" style="margin-left:2px; margin-right:2px;"><i class="fa fa-warning"></i>&nbsp;반송</button> -->
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of ibox -->
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

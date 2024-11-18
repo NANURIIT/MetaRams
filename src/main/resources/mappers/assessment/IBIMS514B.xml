@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS514BMapper">
+
+	<!-- 사업주요일정 조회 -->
+	<select id="getBsnsForecast" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS514BVO">
+		SELECT DEAL_NO                                 /* 딜번호 */
+         , SN                                      /* 일련번호 */
+         , MAIN_SCX_CTNS                           /* 주요일정내용 */
+         , PRAR_DT                                 /* 예정일자 */
+         , FLFL_YN                                 /* 이행여부 */
+         , FLFL_DT                                 /* 이행일자 */
+         , DEL_YN                                  /* 삭제여부 */
+         , HND_DETL_DTM                            /* 조작상세일시 */
+         , HND_EMPNO                               /* 조작사원번호 */
+         , HND_TMNL_NO                             /* 조작단말기번호 */
+         , HND_TR_ID                               /* 조작거래id */
+         , GUID                                    /* guid */
+      FROM IBIMS514B             
+     WHERE 1=1
+       AND DEAL_NO                                 = #{dealNo}                                   
+	</select>
+	
+	<!-- 사업주요일정 저장 -->
+	<insert id="saveBsnsForecast" parameterType="com.nanuri.rams.business.common.vo.IBIMS514BVO">
+		  INSERT INTO IBIMS514B 
+               (
+                  DEAL_NO                                 /* 딜번호 */
+                , SN                                      /* 일련번호 */
+                , MAIN_SCX_CTNS                           /* 주요일정내용 */
+                , PRAR_DT                                 /* 예정일자 */
+                , FLFL_YN                                 /* 이행여부 */
+                , FLFL_DT                                 /* 이행일자 */
+                , DEL_YN                                  /* 삭제여부 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래id */
+                , GUID                                    /* guid */
+               )
+        VALUES 
+        <foreach collection="list" item="item" index="index" separator=",">
+        	   (
+                 #{item.dealNo}                                   /* 딜번호 */
+               , #{index}+1                                       /* 일련번호 */
+               , #{item.mainScxCtns}                              /* 주요일정내용 */
+               , #{item.prarDt}                                   /* 예정일자 */
+               , #{item.flflYn}                                   /* 이행여부 */
+               , #{item.flflDt}                                   /* 이행일자 */
+               , #{item.delYn}                                    /* 삭제여부 */
+               , SYSDATE                             				      /* 조작상세일시 */
+               , #{item.hndEmpno}                                 /* 조작사원번호 */
+               , #{item.hndTmnlNo}                                /* 조작단말기번호 */
+               , #{item.hndTrId}                                  /* 조작거래id */
+               , #{item.guid}                                     /* guid */
+               )
+        </foreach>
+	</insert>
+	
+	<!-- 사업주요일정 삭제 -->
+	<delete id="delBsnsForecast" parameterType="string">
+		DELETE 
+		  FROM IBIMS514B
+		 WHERE DEAL_NO = #{dealNo} 
+	</delete>
+
+</mapper>

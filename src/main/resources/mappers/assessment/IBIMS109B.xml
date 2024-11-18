@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS109BMapper">
+	
+	  <!-- 딜심사보증내역조회  -->
+    <select id="getEnsrInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS109BDTO" 
+    						 resultType="com.nanuri.rams.business.common.vo.IBIMS109BVO">
+        SELECT s109b.DEAL_NO                                        /* 딜번호 */
+             , s109b.MTR_DCD                                        /* 안건구분코드 */
+             , s109b.JDGM_DCD                                       /* 심사구분코드 */
+             , s109b.SN                                             /* 일련번호 */
+             , s109b.CRDT_RIFC_GRTE_DCD                             /* 신용보강보증구분코드 */
+             , s002b.CD_VL_NM			AS CRDT_RIFC_GRTE_DCD_NM	        /* 신용보강보증구분코드명 */
+             , s109b.GRTE_ISTT_CRNO                                 /* 보증기관법인등록번호 */
+             , s109b.GRTE_AMT                                       /* 보증금액 */
+             , s109b.GRTE_ISTT_NM                                   /* 보증기관명 */
+             , s109b.GRTE_CTNS                                      /* 보증내용 */
+             , s109b.RNM_CNFM_NO                                    /* 실명확인번호 */
+             , s109b.HND_DETL_DTM                                   /* 조작상세일시 */
+             , s109b.HND_EMPNO                                      /* 조작사원번호 */
+             , s109b.HND_TMNL_NO                                    /* 조작단말기번호 */
+             , s109b.HND_TR_ID                                      /* 조작거래id */
+             , s109b.GUID                                           /* guid */
+          FROM IBIMS109B s109b
+          LEFT JOIN IBIMS002B s002b
+            ON s002b.CMNS_CD_GRP									    = 'C011'			/* 신용보강보증구분코드 */
+           AND s109b.CRDT_RIFC_GRTE_DCD								= s002b.CD_VL_ID
+         WHERE 1=1
+           AND DEAL_NO                                           	= #{dealNo}                                          
+           AND MTR_DCD                                          	= #{mtrDcd}                                          
+           AND JDGM_DCD                                          	= #{jdgmDcd}
+         ORDER BY SN
+    </select>
+    
+    <!-- 딜심사보증내역삭제 -->
+    <delete id="deleteEnsrInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS109BDTO">
+        DELETE 
+          FROM IBIMS109B
+         WHERE 1=1
+           AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
+           AND MTR_DCD                                           = #{mtrDcd}                                          /* 안건구분코드 */
+           AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+           <if test="sn != null and sn > 0">
+           AND SN                                                = #{sn}                                              /* 일련번호 */
+           </if>  
+    </delete>
+    
+    <!-- 딜심사보증내역변경  -->
+    <update id="updateEnsrInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS109BDTO">
+       UPDATE IBIMS109B
+          SET CRDT_RIFC_GRTE_DCD                                = #{crdtRifcGrteDcd}                                 /* 신용보강보증구분코드 */
+            , GRTE_ISTT_CRNO                                    = #{grteIsttCrno}                                    /* 보증기관법인등록번호 */
+            , GRTE_AMT                                          = #{grteAmt}                                         /* 보증금액 */
+            , GRTE_ISTT_NM                                      = #{grteIsttNm}                                      /* 보증기관명 */
+            , GRTE_CTNS                                         = #{grteCtns}                                        /* 보증내용 */
+            , RNM_CNFM_NO                                       = #{rnmCnfmNo}                                       /* 실명확인번호 */
+            , HND_DETL_DTM                                      = SYSDATE		                                         /* 조작상세일시 */
+            , HND_EMPNO                                         = #{hndEmpno}                                        /* 조작사원번호 */
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       /* 조작단말기번호 */
+            , HND_TR_ID                                         = #{hndTrId}                                         /* 조작거래id */
+            , GUID                                              = #{guid}                                            /* guid */
+         WHERE 1=1
+          AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
+          AND MTR_DCD                                           = #{mtrDcd}                                          /* 안건구분코드 */
+          AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+          AND SN                                                = #{sn}                                              /* 일련번호 */
+    </update>
+    
+    <!-- 딜심사보증내역등록 -->
+    <insert id="registEnsrInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS109BDTO">
+        INSERT INTO IBIMS109B 
+               (
+                  DEAL_NO                                           /* 딜번호 */
+                , MTR_DCD                                           /* 안건구분코드 */
+                , JDGM_DCD                                          /* 심사구분코드 */
+                , SN                                                /* 일련번호 */
+                , CRDT_RIFC_GRTE_DCD                                /* 신용보강보증구분코드 */
+                , GRTE_ISTT_CRNO                                    /* 보증기관법인등록번호 */
+                , GRTE_AMT                                          /* 보증금액 */
+                , GRTE_ISTT_NM                                      /* 보증기관명 */
+                , GRTE_CTNS                                         /* 보증내용 */
+                , RNM_CNFM_NO                                       /* 실명확인번호 */
+                , HND_DETL_DTM                                      /* 조작상세일시 */
+                , HND_EMPNO                                         /* 조작사원번호 */
+                , HND_TMNL_NO                                       /* 조작단말기번호 */
+                , HND_TR_ID                                         /* 조작거래id */
+                , GUID                                              /* guid */
+               )
+        VALUES (
+                 #{dealNo}                                          /* 딜번호 */
+               , #{mtrDcd}                                          /* 안건구분코드 */
+               , #{jdgmDcd}                                         /* 심사구분코드 */
+               , (SELECT NVL(MAX(A.SN),0) + 1 FROM IBIMS109B A)     /* 일련번호 */
+               , #{crdtRifcGrteDcd}                                 /* 신용보강보증구분코드 */
+               , #{grteIsttCrno}                                    /* 보증기관법인등록번호 */
+               , #{grteAmt}                                         /* 보증금액 */
+               , #{grteIsttNm}                                      /* 보증기관명 */
+               , #{grteCtns}                                        /* 보증내용 */
+               , #{rnmCnfmNo}                                       /* 실명확인번호 */
+               , SYSDATE                                            /* 조작상세일시 */
+               , #{hndEmpno}                                        /* 조작사원번호 */
+               , #{hndTmnlNo}                                       /* 조작단말기번호 */
+               , #{hndTrId}                                         /* 조작거래id */
+               , #{guid}                                            /* guid */
+               )
+    </insert>
+
+
+</mapper>

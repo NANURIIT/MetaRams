@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="AS03010P">
+	<!-- modal -->
+	<div id="modal-AS03010P" class="modal fade" role="dialog" aria-labelledby="lb-as03010p" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">◎ 업무구분 별 전결기준</h4>
+					<div class="col-sm-1 text-right">
+						<button type="button" class="btn btn-default" onclick="modalClose_AS03010P();">
+							<i class="fa fa-times"></i>
+						</button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="AS03010S_prefix" id="AS03010S_prefix" value="" />
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox ">
+								<!-- PI/IB 영업활동영역 -->
+								<div class="ibox-title text-left">
+									▶ PI/IB 영업활동
+								</div>
+								<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 5%;">
+										<col style="width: 20%;">
+										<col style="width: 20%;">
+										<col style="width: 20%;">
+										<col style="width: 20%;">
+										<col style="width: 20%;">
+									</colgroup>
+									<thead class="text-center">
+										<tr>
+											<td>조직</td>
+											<td>업무구분</td>
+											<td>심사역협의회</td>
+											<td>리스크심사실무협의회<br/>(투자심의회)</td>
+											<td>리스크심사협의회</td>
+											<td>리스크관리위원회</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="7">PI/IB</td>
+											<td>PI투자 일반</td>
+											<td rowspan="4">50억원 이하</td>
+											<td rowspan="4">500억원 이하</td>
+											<td rowspan="4">5,000억원 이하</td>
+											<td rowspan="4">5,000억원 초과</td>
+										</tr>
+										<tr>
+											<td>브릿지론</td>
+										</tr>
+										<tr>
+											<td>기업신용공여</td>
+										</tr>
+										<tr>
+											<td>채무보증</td>
+										</tr>
+										<tr>
+											<td>매입보장약정</td>
+											<td>100억원 이하</td>
+											<td rowspan="2">1,000억원 이하</td>
+											<td rowspan="2">1조원 이하</td>
+											<td rowspan="2">1조원 초과</td>
+										</tr>
+										<tr>
+											<td>LOC(입찰용)</td>
+											<td>-</td>
+										</tr>
+										<tr>
+											<td>지분증권인수*<br/>(기업공개, 유상증자)</td>
+											<td>-</td>
+											<td>1,000억원 이하</td>
+											<td>1,000억원 초과<br/>2조원 이하</td>
+											<td>2조원 초과</td>
+										</tr>
+									</tbody>
+
+								</table>
+								<!-- 글 내용 -->
+								<div>
+									전결금액은, 명목(계약)금액 기준</br>
+									명목금액 산정시 아래에 해당하는 금액은 제외</br>
+									- 대한민국 정부, 신용등급 AAA인 지방자치단체, 신용등급 AAA인 공공기관이 보증하는 금액</br>
+									(단, 보증의 정의 및 보증으로 인한 전결 제외시 업무방법은 투자심사본부장이 판단하여 처리한다)</br>
+									- 예금담보대출인 경우 담보로 설정된 예금금액</br> 
+									* 지분증권 인수업무 리스크심사 강화방안 시행 안내(기업금융심사부-2023-0015, 2023.01.27)</br>
+								</div>
+							</div>
+							<!-- 채무증권인수영역 -->
+							<div class="ibox">
+								<div class="ibox-title text-left">
+									▶ 채무증권인수
+								</div>
+								<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 10%;">
+										<col style="width: 10%;">
+										<col style="width: 10%;">
+										<col style="width: 10%;">
+									</colgroup>
+									<thead class="text-center">
+										<tr>
+											<td colspan="2">구분</td>
+											<td>인수실무협의회<br/>(인수심의회)
+											</td>
+											<td>리스크심사실무협의회<br/>(투자심의회)
+											</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="2">채권</td>
+											<td>일반업종</td>
+											<td>BBB+</td>
+											<td>BBB</td>
+										</tr>
+										<tr>
+											<td>고위험산업</td>
+											<td>A- ~ A</td>
+											<td>BBB ~ BBB+</td>
+										</tr>
+										<tr>
+											<td rowspan="2">CP</td>
+											<td>일반업종</td>
+											<td>A3+</td>
+											<td>A3</td>
+										</tr>
+										<tr>
+											<td>고위험산업</td>
+											<td>A2- ~ A2</td>
+											<td>A3 ~ A3+</td>
+										</tr>
+										<tr>
+											<td colspan="2">후순위채 등</td>
+											<td>A- ~ AA-</td>
+											<td>-</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+
+</html>

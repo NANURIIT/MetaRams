@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{/js/business/ds/DS01030S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+			
+				<div class="ibox-content mb-2" style="min-height: 900px">
+					
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>▶&nbsp;접촉이력상세정보</h5>
+						</div>
+						<div class="ibox-content">
+							<div class="tableFixHeader">
+								<table class="table result table-bordered table-hover">
+									<colgroup>
+										<!-- TODO: 그리드의 컬럼사이즈 항목별로 확인 -->
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+									</colgroup>
+									<thead>
+										<tr>
+											<th>대상고객</th>
+											<th>주민번호</th>
+											<th>등급</th>
+											<th>연락처</th>
+											<th>취급자</th>
+										</tr>
+									</thead>
+									<tbody id="TB04040_getIssDtls">
+										<tr>
+											<td>김철수</td>
+											<td>720321-1******</td>
+											<td>VIP</td>
+											<td>010-1234-5678</td>
+											<td>홍길동</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<br>
+							<div class="tableFixHeader2">
+								<table class="table result table-bordered table-hover">
+									<colgroup>
+										<!-- TODO: 그리드의 컬럼사이즈 항목별로 확인 -->
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+									</colgroup>
+									<thead>
+										<tr>
+											<th>활동종류</th>
+											<th>활동명</th>
+											<th>접촉채널</th>
+											<th>접촉직원</th>
+											<th>접촉일</th>
+											<th>접촉상태</th>
+										</tr>
+									</thead>
+									<tbody id="TB04040_getIssDtls">
+										<tr>
+											<td>영업기회</td>
+											<td>연금보험가입관련방문예약</td>
+											<td>방문</td>
+											<td>홍길동</td>
+											<td>2010/12/06</td>
+											<td>계획</td>
+										</tr>
+										<tr>
+											<td>캠페인</td>
+											<td>신상품안내</td>
+											<td>SMS</td>
+											<td>홍길동</td>
+											<td>2010/12/01</td>
+											<td>계획</td>
+										</tr>
+										<tr>
+											<td>콜센터활동</td>
+											<td>서비스안내</td>
+											<td>Outbound</td>
+											<td>홍길동</td>
+											<td>2010/10/02</td>
+											<td>완료</td>
+										</tr>
+										<tr>
+											<td>이벤트</td>
+											<td>고객생일축하</td>
+											<td>SMS</td>
+											<td>홍길동</td>
+											<td>2010/08/03</td>
+											<td>완료</td>
+										</tr>
+										<tr>
+											<td>콜센터활동</td>
+											<td>계약문의전화수신</td>
+											<td>방문</td>
+											<td>홍길동</td>
+											<td>2010/07/20</td>
+											<td>완료</td>
+										</tr>
+										<tr>
+											<td>일반활동</td>
+											<td>연금보험추천상품</td>
+											<td>전화</td>
+											<td>홍길동</td>
+											<td>2010/06/06</td>
+											<td>완료</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</th:block>
+
+</html>

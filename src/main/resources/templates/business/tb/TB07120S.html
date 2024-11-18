@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB07120S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<!-- <th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 자금품의 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content i-filter">
+						<div class="form-group row form-inline">
+							<div class="col-sm-10 form-group mb-1">
+								<!-- 부서코드 -->
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>부서코드
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB07120S_dprtCd">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB07120S_dprtNm" readonly="">
+									</div>
+								</div>
+								<!-- 거래기간 -->
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>거래기간
+								</label>
+								<div class="col-sm-3 input-group">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB07120S_selectDate1" name="" value="">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<span class="input-group-addon border-none"> ~ </span>
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB07120S_selectDate2" name="" value="">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
+								<!-- 입출금구분 -->
+								<label class="col-sm-1 control-label">
+									입출금구분
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB07120S_">
+											<option value="">전체</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-10 form-group mb-1">
+								<!-- 종목코드 -->
+								<label class="col-sm-1 control-label">
+									종목코드
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB07120S_prdtCd">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB07120S_prdtNm" readonly="">
+									</div>
+								</div>
+								<!-- 결재상태 -->
+								<label class="col-sm-1 control-label">
+									결재상태
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB07120S_consDecdStatCd">
+											<option value="">전체</option>
+										</select>
+									</div>
+								</div>
+								<!-- 통화구분 -->
+								<label class="col-sm-1 control-label">
+									통화구분
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB07120S_trCrcyCd">
+											<option value="">전체</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-10 form-group">
+								<!-- 거래처 -->
+								<label class="col-sm-1 control-label">
+									거래처
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB07120S_ardyBzepNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB07120S_bzepName" readonly="">
+									</div>
+								</div>
+								<!-- 업무구분 -->
+								<label class="col-sm-1 control-label">
+									업무구분
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB07120S_">
+											<option value="">전체</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<!-- 버튼영역 -->
+							<div class="col-sm-1-5 text-right">
+								<button class="btn btn-primary" onclick="TB07120Sjs.get07120sList();">
+									<i class="fa fa-search"></i>&nbsp;조회</button>
+								<button class="btn btn-default" type="button" onclick="">
+									<i class="fa fa-undo"></i>&nbsp;초기화
+								</button>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content" style="min-height: 800px">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 거래내역</h5>
+							</div>
+							<div class="ibox-content">
+								<div class="ibox">
+									<div id="TB07120S_grid1"></div>
+								</div>
+							</div>
+						</div>
+						
+
+						<!-- 부속서류목록 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 부속서류목록</h5>
+							</div>
+							<div class="ibox-content">
+								<div id="TB07120S_grid2"></div>
+							</div>
+						</div>
+
+						<!-- 자금품의 정보 -->
+						<div class="ibox" id="ibims452b">
+							<div class="ibox-title">
+								<h5>▶ 자금품의 정보</h5>
+							</div>
+							<div class="ibox-content">
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">종목코드</label>
+										<div class="col-sm-3">
+											<div class="input-group">
+												<input type="text" class="form-control" id="TB07120S_prdtCd">
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" id="TB07120S_prdtNm" readonly="" style="width: 100px">
+											</div>
+										</div>
+										<label class="col-sm-1">거래처</label>
+										<div class="col-sm-3">
+											<div class="input-group">
+												<input type="text" class="form-control" id="TB07120S_trObjtBsnNo">
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" id="TB07120S_bzepName" readonly="">
+											</div>
+										</div>
+										<label class="col-sm-1">투자금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07120S_invAmt">
+										</div>
+									</div>
+								</div>
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">거래일자</label>
+										<div class="col-sm-3">
+											<span class="input-group date">
+												<input type="text" class="form-control" value="" id="TB07120S_trDt">
+											</span>
+										</div>
+										<label class="col-sm-1">계약금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07120S_eprzCrdlCtrtAmt">
+										</div>
+										<label class="col-sm-1">자금처리금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07120S_dealTrAmt">
+										</div>
+									</div>
+								</div>
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">거래원금</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07120S_dealTrPrca">
+										</div>
+										<label class="col-sm-1">이자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07120S_nrmlIntAmt">
+										</div>
+										<label class="col-sm-1">원화환산금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07120S_wcrcTrslTrPrca">
+										</div>
+									</div>
+								</div>
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">수수료</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07120S_feeTotAmt">
+										</div>
+										<label class="col-sm-1">부가세</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07120S_vat">
+										</div>
+										<label class="col-sm-1">예금주명</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07120S_dpowName">
+										</div>
+									</div>
+								</div>
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">통화구분</label>
+										<div class="col-sm-3">
+											<div class="input-group">
+												<input type="text" class="form-control" id="TB07120S_trCrcyCd">
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" id="TB07120S_" readonly="" style="width: 100px">
+											</div>
+										</div>
+										<label class="col-sm-1">환율</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07120S_stdrExrt">
+										</div>
+										<label class="col-sm-1">해외송금여부</label>
+										<div class="col-sm-3 input-group input-h">
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="Y" name="radioGroup-1" id="TB07120S_">&nbsp;Y
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="radioGroup-1" id="TB07120S_">&nbsp;N
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">자금구분</label>
+										<div class="col-sm-3">
+											<div class="input-group">
+												<select class="form-control" id="TB07120S_fndsDvsnCd">
+												</select>
+											</div>
+										</div>
+										<label class="col-sm-1">은행부실점명</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07120S_bnkBd">
+										</div>
+									</div>
+								</div>
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">금융기관</label>
+										<div class="col-sm-3">
+											<div class="input-group">
+												<input type="text" class="form-control" id="TB07120S_bnkBd"></input>
+											</div>
+										</div>
+										<label class="col-sm-1">계좌번호</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07120S_rctmBano">
+										</div>
+									</div>
+								</div>
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">담당자</label>
+										<div class="col-sm-3">
+											<div class="input-group">
+												<input type="text" class="form-control" id="TB07120S_rqstStfno">
+												<span class="input-group-append">
+													<button type="button" id="TB07120S_rqstBtn" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" id="TB07120S_rqstStfnm" readonly="" style="width: 100px">
+											</div>
+										</div>
+										<label class="col-sm-1">거래시간</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07120S_trDtm">
+										</div>
+									</div>
+								</div>
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">승인자</label>
+										<div class="col-sm-3">
+											<div class="input-group">
+												<input type="text" class="form-control" id="TB07120S_reltStfno">
+												<span class="input-group-append">
+													<button type="button" id="TB07120S_reltBtn" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" id="TB07120S_reltStfnm" readonly="" style="width: 100px">
+											</div>
+										</div>
+										<label class="col-sm-1">처리시간</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07120S_hndlDtm">
+										</div>
+									</div>
+								</div>
+								<div class="row form-group form-inline text-right mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">반려사유</label>
+										<div class="col-sm-11 input-group">
+											<textarea class="form-control" rows="3" id="TB07120S_gbckRsonText"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group form-inline row mb-0">
+							<div class="form-group col-sm-12 justify-content-end">
+								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>결재단계구분</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" id="TB07120S_consDecdDvsnCd" disabled="">
+									</select>
+								</div>
+								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>결재상태</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" id="TB07120S_consDecdStatCd" disabled="">
+									</select>
+								</div>
+								<span class="vr"> │ </span>
+								<div class="col-sm-3 text-right">
+									<button class="btn btn-info" id="TB07120S_apvlRqst" onclick="TB07120Sjs.updateFndsCnstDecd('1')" ><i class="fa fa-square-o"></i>&nbsp;승인요청</button>
+									<button class="btn btn-success" id="TB07120S_apvl" onclick="TB07120Sjs.updateFndsCnstDecd('2')" ><i class="fa fa-check-square-o"></i>&nbsp;승인</button>
+									<button class="btn btn-danger" id="TB07120S_gbck" onclick="TB07120Sjs.updateFndsCnstDecd('3')" ><i class="fa fa-ban"></i>&nbsp;반려</button>
+									<button class="btn btn-default" id="TB07120S_apvlCncl" onclick="TB07120Sjs.updateFndsCnstDecd('4')" ><i class="fa fa-undo"></i>&nbsp;승인취소</button>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

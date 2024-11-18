@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA65BMapper">
+
+	<insert id="mergeMntrCntnt" parameterType="com.nanuri.rams.business.common.dto.RAA65BDTO">
+	  INSERT
+		INTO RAA65B
+		(
+		  IB_DEAL_NO                                    <!-- IBDEAL번호 -->
+		, RISK_INSPCT_CCD                               <!-- 리스크심사구분코드 -->
+		, LST_C_CASE_CCD                                <!-- 부수안건구분코드 -->
+		, CASE_MNTR_CNTNT                               <!-- 안건모니터링내용 -->
+		, RGST_DT                                       <!-- 등록일자 -->
+		, RGST_TM                                       <!-- 등록시간 -->
+		, FST_RGST_P_ENO                                <!-- 최초등록자사번 -->
+		, HNDL_DY_TM                                    <!-- 처리일시 -->
+		, HNDL_DPRT_CD                                  <!-- 처리부점코드 -->
+		, HNDL_P_ENO                                    <!-- 처리자사번 -->
+		, CASE_MNTR_DTLS_CNTNT                          <!-- 안건모니터링상세내용 -->
+		, MAIN_STTN                                     <!-- 주요현황 -->
+		, ASTS_OUTLN                                    <!-- 자산개요 -->
+		, WRKNG_STTN                                    <!-- 운용현황 -->
+		, PRGRS_LPS1                                    <!-- 진행경과1 -->
+		, PRGRS_LPS2                                    <!-- 진행경과2 -->
+		, PRGRS_LPS3                                    <!-- 진행경과3 -->
+		)
+	VALUES
+		(
+		  #{ibDealNo}                                   <!-- IBDEAL번호 -->
+		, #{riskInspctCcd}                              <!-- 리스크심사구분코드 -->
+		, #{lstCCaseCcd}                                <!-- 부수안건구분코드 -->
+		, #{caseMntrCntnt}                              <!-- 안건모니터링내용 -->
+		, DATE_FORMAT(CURDATE(), '%Y%d%m')              <!-- 등록일자 -->
+		, TIME_FORMAT(CURTIME(), '%H%i%s')              <!-- 등록시간 -->
+		, #{fstRgstPEno}                                <!-- 최초등록자사번 -->
+		, CURRENT_TIMESTAMP()                           <!-- 처리일시 -->
+		, #{hndlDprtCd}                                 <!-- 처리부점코드 -->
+		, #{hndlPEno}                                   <!-- 처리자사번 -->
+		, #{caseMntrDtlsCntnt}                          <!-- 안건모니터링상세내용 -->
+		, #{mainSttn}                                   <!-- 주요현황 -->
+		, #{astsOutln}                                  <!-- 자산개요 -->
+		, #{wrkngSttn}                                  <!-- 운용현황 -->
+		, #{prgrsLps1}                                  <!-- 진행경과1 -->
+		, #{prgrsLps2}                                  <!-- 진행경과2 -->
+		, #{prgrsLps3}                                  <!-- 진행경과3 -->
+		)
+	   ON DUPLICATE KEY UPDATE
+		  CASE_MNTR_CNTNT      = #{caseMntrCntnt}       <!-- 안건모니터링내용 -->
+		, HNDL_DY_TM           = CURRENT_TIMESTAMP()    <!-- 처리일시 -->
+		, HNDL_DPRT_CD         = #{hndlDprtCd}          <!-- 처리부점코드 -->
+		, HNDL_P_ENO           = #{hndlPEno}            <!-- 처리자사번 -->
+		, CASE_MNTR_DTLS_CNTNT = #{caseMntrDtlsCntnt}   <!-- 안건모니터링상세내용 -->
+		, MAIN_STTN            = #{mainSttn}            <!-- 주요현황 -->
+		, ASTS_OUTLN           = #{astsOutln}           <!-- 자산개요 -->
+		, WRKNG_STTN           = #{wrkngSttn}           <!-- 운용현황 -->
+		, PRGRS_LPS1           = #{prgrsLps1}           <!-- 진행경과1 -->
+		, PRGRS_LPS2           = #{prgrsLps2}           <!-- 진행경과2 -->
+		, PRGRS_LPS3           = #{prgrsLps3}           <!-- 진행경과3 -->
+	</insert>
+	
+</mapper>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{/js/business/ds/DS01030S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+			
+				<div class="ibox">
+					<div class="ibox-content" style="min-height: 800px;">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;VOC 현황조회</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">구분</label>
+										<div class="col-sm-3 input-group form-inline">
+											<select class="form-control">
+												<option>미완료</option>
+											</select>
+											<select class="form-control mg-l5">
+												<option>전체</option>
+											</select>
+										</div>
+										<label class="col-sm-1 control-label">접수일자</label>
+										<div class="col-sm-3 input-group">
+											<div class="col-sm-5 input-group date px-0">
+												<input type="text" class="form-control" id="TB03040S_fromDate" name="FromDate" value="">
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>
+											<span class="input-group-addon border-none"> ~ </span>
+											<div class="col-sm-5 input-group date px-0">
+												<input type="text" class="form-control" id="TB03040S_toDate" name="ToDate" value="">
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">접수처</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control">
+												<option>전체</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group text-right">
+										<label class="col-sm-1 col-form-label">성명</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="">
+										</div>
+										<label class="col-sm-1 col-form-label">주민번호</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="">
+										</div>
+										<label class="col-sm-1 col-form-label">보험종목</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control">
+												<option>전체</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- row3 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">처리부서</label>
+										<div class="col-sm-3 input-group form-inline mb3">
+											<input type="text" class="form-control" style="width:120px;" id="" onkeyup="inputNumberFormat(this);">
+											&nbsp;
+											<input type="text" class="form-control" id="">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">접수번호</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">담당자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="">
+										</div>
+									</div>
+								</div>
+								<!-- row4 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 control-label">접수유형</label>
+										<div class="col-sm-7 input-group">
+											<select class="form-control" id="TB07010S_paiRdmpDcd">
+												<option>전체</option>
+											</select>
+											<select class="form-control mg-lr5" id="TB07010S_paiRdmpDcd">
+												<option>전체</option>
+											</select>
+											<select class="form-control" id="TB07010S_paiRdmpDcd">
+												<option>전체</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- row5 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 control-label">관리항목</label>
+										<div class="col-sm-7 input-group">
+											<select class="form-control" id="TB07010S_paiRdmpDcd">
+												<option>전체</option>
+											</select>
+											<select class="form-control mg-lr5" id="TB07010S_paiRdmpDcd">
+												<option></option>
+											</select>
+											<select class="form-control" id="TB07010S_paiRdmpDcd">
+												<option></option>
+											</select>
+										</div>
+										<div class="col-sm-1 input-group">
+											<select class="form-control" id="TB07010S_paiRdmpDcd">
+												<option></option>
+											</select>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							
+						</div>
+						<div class="form-group row mb-1 text-right">
+							<div class="col-sm-12 pr-3">
+								<button class="btn btn-success mg-l5" type="button">조회</button>
+								<button class="btn btn-success mg-l5" type="button">신규등록</button>
+							</div>
+						</div>
+						
+						<div class="ibox">
+							<div class="tableFixHeader2">
+								<table class="table result table-bordered table-hover">
+									<colgroup>
+										<!-- TODO: 그리드의 컬럼사이즈 항목별로 확인 -->
+										<col style="width: 50px;">
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+									</colgroup>
+									<thead>
+										<tr>
+											<th>순번</th>
+											<th>접수번호</th>
+											<th>접수일시</th>
+											<th>신청인</th>
+											<th>제목</th>
+											<th>진행사항</th>
+											<th>2H터치</th>
+											<th>배정일시</th>
+										</tr>
+									</thead>
+									<tbody id="TB04040_getIssDtls">
+										<tr>
+											<td>1</td>
+											<td>201003500</td>
+											<td>2010/05/12 04:55</td>
+											<td>양해진</td>
+											<td>[상담]보험료납부</td>
+											<td>담당자배정중</td>
+											<td>N</td>
+											<td>2010/05/12 04:56</td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>201003499</td>
+											<td>2010/05/11 23:22</td>
+											<td>이호성</td>
+											<td>[상담]핸드폰으로 연락바랍니다.</td>
+											<td>담당자배정중</td>
+											<td>미터치</td>
+											<td>2010/05/11 23:22</td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>201003498</td>
+											<td>2010/05/11 23:05</td>
+											<td>문선영</td>
+											<td>배상피해자라 민원도 아닌가요</td>
+											<td>담당자배정중</td>
+											<td>N</td>
+											<td>2010/05/11 23:06</td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>201003497</td>
+											<td>2010/05/11 22:32</td>
+											<td>최선민</td>
+											<td>보험증권으로 인한 언쟁</td>
+											<td>처리담당자진행</td>
+											<td></td>
+											<td>2010/05/11 22:35</td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td>201003496</td>
+											<td>2010/05/11 22:01</td>
+											<td>정병원</td>
+											<td>납부방법을 바꾸어야 합니다</td>
+											<td>담당자배정중</td>
+											<td>N</td>
+											<td>2010/05/11 22:01</td>
+										</tr>
+										<tr>
+											<td>6</td>
+											<td>201003495</td>
+											<td>2010/05/11 21:22</td>
+											<td>강재민</td>
+											<td>보험료 지급</td>
+											<td>처리담당자진행</td>
+											<td>미터치</td>
+											<td>2010/05/11 21:22</td>
+										</tr>
+										<tr>
+											<td>7</td>
+											<td>201003494</td>
+											<td>2010/05/11 21:05</td>
+											<td>정혜민</td>
+											<td>[칭찬]모두 너무 친절하시네요</td>
+											<td>처리담당자진행</td>
+											<td>Y</td>
+											<td>2010/05/11 21:06</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						
+						<div class="ibox form-inline">
+							<!-- 버튼영역 -->
+							<div class="col-sm-12 text-right pd0">
+								<button class="btn btn-primary mg-l5" type="button">이전화면</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

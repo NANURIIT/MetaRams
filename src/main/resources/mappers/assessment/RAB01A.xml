@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAB01AMapper">
+
+
+	<!-- 업체정보 조회 -->
+	<select id="getEntpList" parameterType="String" resultType="java.util.HashMap">
+		SELECT ENTP_CD								<!-- 업체코드 -->
+			 , CORP_NO								<!-- 법인번호 -->
+			 , ENTP_NM								<!-- 업체명 -->
+			 , CORP_SCL_CD							<!-- 기업규모코드 -->
+			 , IND_TYP_DVD_CD						<!-- 업종뷴류코드 -->
+			 , AFL_CMP_NM							<!-- 계열명 -->
+			 , CRDT_GRD_CD							<!-- 신용등급코드 -->
+			 , MKT_LSTD_CD							<!-- 상장시장코드 -->
+		  FROM  RAB01A								<!-- 업체정보 -->  
+		 WHERE 1=1
+		   AND ENTP_NM LIKE CONCAT('%',#{entpNm},'%') 
+	</select>
+
+</mapper>

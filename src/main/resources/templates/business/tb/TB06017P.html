@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB06017P">
+	<!-- modal -->
+	<div id="modal-TB06017P" class="modal fade" role="dialog" aria-labelledby="lb-TB06017P" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">담보 내역 조회</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB06017P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" id="TB06017P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox mb-0">
+								<!-- 조회조건영역 -->
+				    			<div class="ibox-content i-filter text-right">
+			    					<div class="form-group row">
+			    						<label class="col-sm-1 col-form-label">담보번호</label>
+			                            <div class="col-sm-3"><input type="text" class="form-control" id="TB06017P_mrtgMngmNo"></div>
+			                        	<label class="col-sm-1 col-form-label">담보명</label>
+			                            <div class="col-sm-3 pr-3"><input type="text" class="form-control" id="TB06017P_mrtgNm"></div>
+			                        	<div class="col-sm-4 text-right">
+			                        		<button type="button" class="btn btn-primary mr-2" onclick="getMrtgInfo();" ><i class="fa fa-search"></i>&nbsp;조회</button>
+			                        	</div>
+			                        </div>
+				    			</div>
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+									<div id="TB06017P_mrtgInfoList" style="margin:auto;">
+									</div>
+									<!-- <table class="table table-bordered table-hover">
+										<colgroup>
+										</colgroup>
+										<thead>
+											<tr>
+												<th>담보번호</th>
+												<th>담보명</th>
+												<th>담보종류</th>
+												<th>담보대분류</th>
+												<th>담보중분류</th>
+												<th>담보평가기준</th>
+												<th>담보금액</th>
+												<th>등록일자</th>
+												<th>해지일자</th>
+											</tr>
+										</thead>
+										<tbody id="TB06017P_mrtgInfoList">
+										</tbody>	
+									</table> -->
+				    			</div>
+							</div><!-- ibox -->
+						</div>
+					</div>
+				</div>
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

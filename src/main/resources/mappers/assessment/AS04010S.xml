@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.AS04010Mapper">
+
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆ 변경된 MAPPER 로 사용불가 (songwonhee) ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+
+	<select id="getDealIfno"
+		parameterType="com.nanuri.rams.business.common.vo.RAA02BVO$AS04010SVO"
+		resultType="com.nanuri.rams.business.common.vo.RAA02BVO$AS04010SVO">
+
+	   SELECT A.IB_DEAL_NO																									<!-- iBDEAL번호 -->			
+			<!-- , NVL(A.IB_DEAL_SNM_NM, A.IB_DEAL_NM)  AS IB_DEAL_NM 일시 주석 -->
+			, A.IB_DEAL_NM																									<!-- IBDEAL명 -->
+			, A.RISK_INSPCT_CCD																								<!-- 리스크심사구분코드 -->
+			, A.LST_C_CASE_CCD																								<!-- 부수안건구분코드 -->
+			, D.RA_DOC_NO                     AS RQS_DOC_NO																	<!-- RA문서번호 -->
+			, D.RA_RMRK                       AS LINK_URL																	<!-- RA비고(URLLINK) -->
+			, A.INSPCT_PRGRS_ST_CD																							<!-- 심사진행상태코드 -->
+			, A.INVST_CRNCY_CD																								<!-- 투자통화코드 -->
+			, A.CRNCY_AMT																									<!-- 통화금액 -->
+			, A.PTCP_AMT																									<!-- 참여금액 -->
+			, A.RISK_INSPCT_RSLTN_CCD																						<!-- 리스크심사결의구분코드 -->
+			, A.RSLTN_CNFRNC_CCD																							<!-- 결의협의회구분코드 -->
+			, A.FST_CNFRNC_F																								<!-- 최초협의여부 -->
+			, A.RPR_STRT_DT																									<!-- 보고시작일자 -->
+			, A.OFCL_DOC_ACPT_DT																							<!-- 공문접수일자 -->
+			, A.APLC_EXPT_DT																								<!-- 적용예정일자 -->
+			, C.INSPCT_CNFRNC_CNCL_RSN_CD																					<!-- 심사협의취소사유코드 -->
+			, C.CNCL_RSN_CNTNT																								<!-- 취소사유내용 -->
+			, CONCAT(SUBSTR(B.RSLTN_DT, 1, 4), '-', SUBSTR(B.RSLTN_DT, 5, 2), '-', SUBSTR(B.RSLTN_DT, 7, 2))   AS RSLTN_DT  <!-- 결의일자 -->
+			, B.INSPCT_CNFRNC_CCD																							<!-- 심사협의구분코드 -->
+			, B.INSPCT_CNFRNC_SQC_SQ																						<!-- 심사협의회차일련번호 -->
+			, B.RNK_NO																										<!-- 조회순위 -->
+			, B.RSLTN_RSLT_CD																								<!-- 결의결과코드 -->
+			, B.RCG_AMT																										<!-- 승인금액 -->
+			, B.SDN_CNDT_F																									<!-- 셀다운조건여부 -->
+			, B.ETC_CNDT_F																									<!-- 기타조건여부 -->
+			, CASE WHEN B.INSPCT_CNFRNC_CCD IS NULL 
+					THEN 'N'
+					ELSE 'Y'
+				END                           AS RGST_F
+			, B.RSLT_CNTNT																									<!-- 결과내용 -->
+	     FROM RAA02B A 
+		 left outer join RAA22B B
+			ON A.IB_DEAL_NO       = B.IB_DEAL_NO																			
+			AND A.RISK_INSPCT_CCD  = B.RISK_INSPCT_CCD																		
+			AND A.LST_C_CASE_CCD   = B.LST_C_CASE_CCD																		
+			AND A.RISK_INSPCT_RSLTN_CCD = B.INSPCT_CNFRNC_CCD
+		left join RAA21B C
+			ON  C.INSPCT_CNFRNC_CCD      = B.INSPCT_CNFRNC_CCD
+			AND C.STD_YR               = B.STD_YR
+			AND C.INSPCT_CNFRNC_SQC_SQ   = B.INSPCT_CNFRNC_SQC_SQ
+		left join RAA18B D
+			ON  D.IB_DEAL_NO            = A.IB_DEAL_NO
+			AND D.RISK_INSPCT_CCD      = A.RISK_INSPCT_CCD
+			AND D.LST_C_CASE_CCD         = A.LST_C_CASE_CCD
+			AND D.RA_FNL_DOC_F         = 'Y'
+		  WHERE A.IB_DEAL_NO            = #{ibDealNo}
+			AND A.RISK_INSPCT_CCD       = NVL(#{riskInspctCcd}, A.RISK_INSPCT_CCD)
+		    AND A.LST_C_CASE_CCD        = NVL(#{lstCCaseCcd}, A.LST_C_CASE_CCD)
+			AND A.LST_C_CASE_CCD         != '99'
+			AND A.INSPCT_DPRT_CCD      = NVL(#{inspctDprtCcd}, A.INSPCT_DPRT_CCD)
+			AND A.INSPCT_PRGRS_ST_CD      <![CDATA[>=]]> '200'
+			AND A.RA_RSLTN_CCD         = '1'
+			AND ((#{dprtCd} IS NULL) OR (A.DPRT_CD = #{dprtCd}))
+		ORDER BY A.IB_DEAL_NO, A.RISK_INSPCT_CCD, A.LST_C_CASE_CCD
+
+	</select>
+	
+	<update id="saveDealInfo" parameterType="com.nanuri.rams.business.common.vo.RAA02BVO$AS04010SVO">
+		UPDATE RAA02B						
+		   SET INSPCT_PRGRS_ST_CD			= #{	inspctPrgrsStCd		}			<!-- 심사진행상태코드 -->
+		     , RISK_INSPCT_RSLTN_CCD		= #{	riskInspctRsltnCcd	}			<!-- 리스크심사결의구분코드 -->
+		     , RSLTN_CNFRNC_CCD				= #{	rsltnCnfrncCcd		}			<!-- 결의협의회구분코드 -->
+		     , FST_CNFRNC_F					= #{	fstCnfrncF			}			<!-- 최초협의여부 -->
+		     , RPR_STRT_DT					= #{	rprStrtDt			}			<!-- 보고시작일자 -->
+		     , OFCL_DOC_ACPT_DT				= #{	ofclDocAcptDt		}			<!-- 공문접수일자 -->
+		     , APLC_EXPT_DT					= #{	aplcExptDt			}			<!-- 적용예정일자 -->
+		     , HNDL_DY_TM					= CURRENT_TIMESTAMP()					<!-- 처리일시 -->
+		     , HNDL_DPRT_CD					= #{	hndlDprtCd			}			<!-- 처리부점코드 -->
+		     , HNDL_P_ENO					= #{	hndlPEno			}			<!-- 처리자사번 -->
+		 WHERE 1=1
+		   AND IB_DEAL_NO					= #{ibDealNo}							<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD				= #{riskInspctCcd}						<!-- 신규/재부의구분코드 -->
+		   AND LST_C_CASE_CCD				= #{lstCCaseCcd}						<!-- 부수안건구분코드 -->
+	</update>
+
+</mapper>

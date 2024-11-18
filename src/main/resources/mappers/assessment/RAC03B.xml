@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAC03BMapper">
+
+<insert id="registRmInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" useGeneratedKeys="true">
+<selectKey keyProperty="rmSq" resultType="int" order="BEFORE">
+	SELECT IFNULL(MAX(RM_SQ),0)+1  		<!-- RM일련번호 -->
+	  FROM IBIMS102B					<!-- RM 정보 -->
+</selectKey>
+INSERT INTO IBIMS102B
+	   ( 
+		  RM_SQ							<!-- RM일련번호 -->
+		, ENTP_CD						<!-- 업체코드 -->
+		, MET_TITL						<!-- 미팅제목 -->
+		, MET_DT						<!-- 미팅일자 -->
+		, MET_TM						<!-- 미팅시간 -->
+		, MET_PRPS						<!-- 미팅목적 -->
+		, MET_CNTNT						<!-- 미팅내용 -->
+		, CHRG_DPRT_CD					<!-- 담당부점코드 -->
+		, CHRG_P_ENO					<!-- 담당자사번 -->
+		, CSTM_NM						<!-- 고객명 -->
+		, CSTM_PH_NO					<!-- 고객전화번호 -->
+		, LAST_YN						<!-- 최종여부 -->
+		, HND_DETL_DTM					<!-- 조작상세일시 -->
+		, HND_EMPNO						<!-- 조작사원번호 -->
+	   )
+VALUES (
+		  #{rmSq}				
+		, #{entpCd}
+		, #{metTitl}			
+		, #{metDt}				
+		, #{metTm}				
+		, #{metPrps}				
+		, #{metCntnt}					
+		, #{chrgDprtCd}				
+		, #{chrgPEno}					
+		, #{cstmNm}					
+		, #{cstmPhNo}
+		, #{lastYn}	
+		, DEFAULT
+		, #{hndEmpno}
+	   )
+	</insert>
+	
+	<select id="getHistoryInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
+		SELECT B.ENTP_CD 					AS ENTP_CD      <!-- 업체코드 -->
+			 , B.CORP_RGST_NO		  		AS CORP_RGST_NO	<!-- 법인등록번호 -->
+			 , B.BSNS_RGST_NO               AS BSNS_RGST_NO <!-- 사업자등록번호 -->
+			 , IFNULL(B.ENTP_HNGL_NM, '-')	AS ENTP_HNGL_NM	<!-- 업체명 -->
+			 , A.MET_DT				  		AS MET_DT		<!-- 미팅일자 -->
+			 , IFNULL(A.MET_TM, '-')  		AS MET_TM		<!-- 미팅시간 -->
+			 , A.MET_TITL			  		AS MET_TITL		<!-- 미팅제목 -->
+			 , IFNULL(A.CSTM_NM, '-')		AS CSTM_NM		<!-- 고객명 -->
+			 , IFNULL(A.CSTM_PH_NO, '-')	AS CSTM_PH_NO	<!-- 고객전화번호 -->
+			 , IFNULL(A.MET_CNTNT, '-')		AS MET_CNTNT	<!-- 미팅내용 -->
+			 , A.RM_SQ						AS RM_SQ		<!-- RM일련번호 -->
+		  FROM IBIMS114B B
+		 RIGHT OUTER JOIN IBIMS102B A
+		    ON B.ENTP_CD = A.ENTP_CD 
+		 WHERE 1=1
+		 	<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpCd)">
+		   		AND B.ENTP_CD = #{entpCd}
+		   </if>
+		 ORDER BY A.MET_DT, A.MET_TM DESC
+	</select>
+	
+	<select id="rmHistoryInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
+		SELECT A.RM_SQ 				AS RM_SQ			<!-- RM일련번호 -->
+	   		 , B.CORP_RGST_NO 		AS CORP_RGST_NO		<!-- 법인등록번호 -->
+			 , B.BSNS_RGST_NO       AS BSNS_RGST_NO     <!-- 사업자등록번호 -->
+	   		 , B.ENTP_HNGL_NM 		AS ENTP_HNGL_NM		<!-- 업체명 -->
+	   		 , A.MET_DT				AS MET_DT			<!-- 미팅일자 -->
+	   		 , IFNULL(A.MET_TM, '') AS MET_TM			<!-- 미팅시간 -->
+	   		 , A.MET_TITL 			AS MET_TITL			<!-- 미팅제목 -->
+	   		 , A.MET_PRPS 			AS MET_PRPS			<!-- 미팅목적 -->
+	   		 , A.CSTM_NM 			AS CSTM_NM			<!-- 고객명 -->
+	   		 , A.CSTM_PH_NO			AS CSTM_PH_NO		<!-- 고객전화번호 -->
+	   		 , A.MET_CNTNT 			AS MET_CNTNT		<!-- 미팅내용 -->
+	   		 , B.ENTP_CD 			AS ENTP_CD 			<!-- 업체코드 -->
+		FROM IBIMS102B A
+	    LEFT OUTER JOIN IBIMS114B B
+          ON A.ENTP_CD = B.ENTP_CD
+	   WHERE 1=1
+	   	 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpCd)">
+		 	AND B.ENTP_CD = #{entpCd}
+		 </if>
+		 AND A.LAST_YN = '1'
+		 AND A.RM_SQ = #{rmSq}
+	   ORDER BY A.MET_DT, A.MET_TM DESC
+	</select>
+	
+	<delete id="deleteHistory" parameterType="string">
+		DELETE 
+		  FROM IBIMS102B
+		 WHERE RM_SQ = #{rmSq}
+	</delete>
+	
+	<update id="updateHistory" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">		
+		UPDATE IBIMS102B
+		   SET MET_TITL             = #{metTitl}		<!-- 미팅제목 -->
+			 , MET_DT               = #{metDt}			<!-- 미팅일자 -->
+			 , MET_TM               = #{metTm}			<!-- 미팅시간 -->
+			 , MET_PRPS             = #{metPrps}		<!-- 미팅목적 -->
+			 , MET_CNTNT            = #{metCntnt}		<!-- 미팅내용 -->
+			 , CHRG_DPRT_CD         = #{chrgDprtCd}		<!-- 담당부점코드 -->
+			 , CHRG_P_ENO           = #{chrgPEno}		<!-- 담당자사번 -->
+			 , CSTM_NM              = #{cstmNm}			<!-- 고객명 -->
+			 , CSTM_PH_NO           = #{cstmPhNo}		<!-- 고객전화번호 -->
+			 , LAST_YN				= '0'			<!-- 최종여부 --> 
+    	     , HND_EMPNO			= #{hndEmpno}		<!-- 조작사원번호 -->
+		 WHERE ENTP_CD = #{entpCd}
+		   AND RM_SQ = #{rmSq}
+	</update>
+
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS301BMapper">
+
+        <!-- 기업여신 - 약정 및 해지정보조회  -->
+        <select id="selectIBIMS301B" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS301BDTO">
+		   SELECT 
+				  A.PRDT_CD			/* 상품코드        */
+				, A.CTRC_CCLC_DCD	/* 약정해지구분코드 */
+				, A.CTRC_DT			/* 약정일자        */
+				, A.CTRC_EXP_DT		/* 약정만기일자     */
+				, A.CTRC_AMT		/* 약정금액        */
+				, A.STDR_INTRT		/* 기준금리        */
+				, A.ADD_INTRT		/* 가산금리        */
+				, A.TOT_INTRT		/* 총금리          */
+				, A.CHRR_EMPNO		/* 담당자사원번호 */
+				, A.CCLC_RSN_CD		/* 해지사유코드     */
+				, A.CCLC_DT			/* 해지일자        */
+				, A.CCLC_RSN_CTNS	/* 해자사유내용     */
+				, A.RGST_DT			/* 등록일자        */
+				, A.DEL_YN			/* 삭제여부        */
+				, A.HND_DETL_DTM	/* 조작상세일시     */
+				, A.HND_EMPNO		/* 조작사원번호     */
+				, A.HND_TMNL_NO		/* 조작단말기번호   */
+				, A.HND_TR_ID		/* 조작거래id      */
+				, A.GUID			/* guid           */
+			 FROM IBIMS301B A /* 기업여신-약정 및 해지정보 */
+			WHERE A.PRDT_CD = #{prdtCd}
+        </select>
+        
+    <!-- 기업여신 - 약정 및 해지정보등록  -->
+    <insert id="saveCtrcCclcInfo" parameterType="com.nanuri.rams.business.common.dto.TB06040SDTO">
+        INSERT INTO IBIMS301B
+               (
+                  PRDT_CD                                 <!-- 상품코드 -->
+                , CTRC_CCLC_DCD                           <!-- 약정해지구분코드 -->
+                , CTRC_DT                                 <!-- 약정일자 -->
+                , CTRC_EXP_DT                             <!-- 약정만기일자 -->
+                , CTRC_AMT                                <!-- 약정금액 -->
+                , STDR_INTRT                              <!-- 기준금리 -->
+                , ADD_INTRT                               <!-- 가산금리 -->
+                , TOT_INTRT                               <!-- 총금리 -->
+                , CHRR_EMPNO                              <!-- 담당자사원번호 -->
+                , CCLC_RSN_CD                             <!-- 해지사유코드 -->
+                , CCLC_DT                                 <!-- 해지일자 -->
+                , CCLC_RSN_CTNS                           <!-- 해자사유내용 -->
+                , RGST_DT                                 <!-- 등록일자 -->
+                , DEL_YN                                  <!-- 삭제여부 -->
+                , HND_DETL_DTM                            <!-- 조작상세일시 -->
+                , HND_EMPNO                               <!-- 조작사원번호 -->
+                , HND_TMNL_NO                             <!-- 조작단말기번호 -->
+                , HND_TR_ID                               <!-- 조작거래id -->
+                , GUID                                    <!-- guid -->
+               )
+        VALUES (
+                 #{prdtCd}                                 <!-- 상품코드 -->
+               , #{ctrcCclcDcd}                            <!-- 약정해지구분코드 -->
+               , #{ctrcDt}                                 <!-- 약정일자 -->
+               , #{ctrcExpDt}                              <!-- 약정만기일자 -->
+               , #{ctrcAmt}                                <!-- 약정금액 -->
+               , #{stdrIntrt}                              <!-- 기준금리 -->
+               , #{addIntrt}                               <!-- 가산금리 -->
+               , #{totIntrt}                               <!-- 총금리 -->
+               , #{chrrEmpno}                              <!-- 담당자사원번호 -->
+               , #{cclcRsnCd}                              <!-- 해지사유코드 -->
+               , #{cclcDt}                                 <!-- 해지일자 -->
+               , #{cclcRsnCtns}                            <!-- 해자사유내용 -->
+               , TO_CHAR(SYSDATE, 'YYYYMMDD')               <!-- 등록일자 -->
+               , DEFAULT                                   <!-- 삭제여부 -->
+               , SYSDATE                                   <!-- 조작상세일시 -->
+               , #{hndEmpno}                               <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                              <!-- 조작단말기번호 -->
+               , #{hndTrId}                                <!-- 조작거래id -->
+               , #{guid}                                   <!-- guid -->
+               )
+    </insert>
+    <update id="updateCtrcCclcInfo" parameterType="com.nanuri.rams.business.common.dto.TB06040SDTO">
+		UPDATE IBIMS301B
+		   SET CTRC_CCLC_DCD = #{ctrcCclcDcd} <!-- 약정해지구분코드 -->
+		     , CCLC_RSN_CD   = #{cclcRsnCd}   <!-- 해지사유코드 --> 
+		     , CCLC_DT       = #{cclcDt}      <!-- 해지일자 -->
+		     , CCLC_RSN_CTNS = #{cclcRsnCtns} <!-- 해자사유내용 -->
+		     , HND_DETL_DTM  = SYSDATE        <!-- 조작상세일시 -->
+		 WHERE PRDT_CD = #{prdtCd}            <!-- 상품코드 -->
+    </update>
+
+</mapper>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA11BMapper">
+
+	<!-- 변경이력 생성 -->
+	<insert id="insertOwnPEnoH" parameterType="com.nanuri.rams.business.common.dto.RAA11BDTO" >
+		<selectKey keyProperty="itemSq" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(ITEM_SQ),0) + 1				<!-- 항목일련번호 + 1 -->
+			  FROM RAA11B
+			 WHERE IB_DEAL_NO = #{ibDealNo}				<!-- IBDEAL번호 -->
+			   AND RISK_INSPCT_CCD = #{riskInspctCcd}	<!-- 리스크심사구분코드 -->
+			   AND LST_C_CASE_CCD = #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+		</selectKey>
+		INSERT INTO RAA11B
+		       ( 
+		         IB_DEAL_NO								<!-- IBDEAL번호 -->
+		       , RISK_INSPCT_CCD						<!-- 리스크심사구분코드 -->
+		       , LST_C_CASE_CCD							<!-- 부수안건구분코드 -->
+		       , ITEM_SQ								<!-- 항목일련번호 -->
+		       , CNDCT_RGST_ENO							<!-- 조치등록사번 -->
+		       , UPT_RSN_CNTNT							<!-- 변경사유내용 -->
+		       , UPT_DT									<!-- 변경일자 -->
+		       , HNDL_DY_TM								<!-- 처리일시 -->
+			   , HNDL_DPRT_CD							<!-- 처리부점코드 -->
+			   , HNDL_P_ENO								<!-- 처리자사번 -->
+		       )
+		VALUES ( 
+		         #{ibDealNo}							<!-- IBDEAL번호 -->
+		       , #{riskInspctCcd}						<!-- 리스크심사구분코드 -->
+		       , #{lstCCaseCcd}							<!-- 부수안건구분코드 -->
+		       , #{itemSq}								<!-- 항목일련번호 -->
+		       , TRIM(#{cndctRgstEno})					<!-- 조치등록사번 -->
+		       , #{uptRsnCntnt}							<!-- 변경사유내용 -->
+		       , DATE_FORMAT(CURDATE(), '%Y%m%d')		<!-- 변경일자 -->
+		       , CURRENT_TIMESTAMP()					<!-- 처리일시 -->
+		       , #{hndlDprtCd}							<!-- 처리부점코드 -->
+		       , #{hndlPEno}							<!-- 처리자사번 -->
+		       )
+	</insert>
+	
+	<!-- 관리직원 -->
+	<!-- 조회 -->
+	<select id="getEnoList" parameterType="com.nanuri.rams.business.common.vo.RAA11BVO" resultType="com.nanuri.rams.business.common.vo.RAA11BVO">
+		SELECT A.IB_DEAL_NO							AS	IB_DEAL_NO			<!-- IBDEAL번호 -->
+		 	 , A.RISK_INSPCT_CCD					AS	RISK_INSPCT_CCD		<!-- 리스크심사구분코드 -->
+		 	 , A.LST_C_CASE_CCD						AS	LST_C_CASE_CCD		<!-- 부수안건구분코드 -->
+		 	 , A.ITEM_SQ							AS	ITEM_SQ				<!-- 항목일련번호 -->
+		 	 , A.CNDCT_RGST_ENO						AS	CNDCT_RGST_ENO		<!-- 조치등록사번 -->
+		 	 , B.EMP_NM								AS  CNDCT_RGST_ENO_NM	<!-- 직원명 -->
+		 	 , DATE_FORMAT(A.UPT_DT, '%Y-%m-%d')	AS	UPT_DT				<!-- 변경일자 -->
+		 	 , A.UPT_RSN_CNTNT						AS	UPT_RSN_CNTNT		<!-- 변경사유내용 -->
+		 	 , A.HNDL_DY_TM							AS	HNDL_DY_TM			<!-- 처리일시 -->
+			 , A.HNDL_DPRT_CD						AS	HNDL_DPRT_CD		<!-- 처리부점코드 -->
+			 , A.HNDL_P_ENO							AS	HNDL_P_ENO			<!-- 처리자사번 -->
+		  FROM RAA11B A														<!-- 관리직원정보 -->
+		  LEFT JOIN RAA99A B												<!-- 사원목록 -->
+		    ON A.CNDCT_RGST_ENO 					= B.ENO					<!-- 사원번호 -->
+		 WHERE A.IB_DEAL_NO 						= #{ibDealNo}			<!-- IBDEAL번호 -->
+		   AND A.RISK_INSPCT_CCD 					= #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+		   AND A.LST_C_CASE_CCD 					= #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+		 ORDER BY ITEM_SQ DESC
+	</select>
+	
+	<select id="checkEno" parameterType="com.nanuri.rams.business.common.vo.RAA11BVO" resultType="int">
+		SELECT COUNT(CNDCT_RGST_ENO)		AS CNDCT_RGST_ENO				<!-- 조치등록사번 -->
+		  FROM RAA11B
+		 WHERE IB_DEAL_NO 		= #{ibDealNo}								<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD	= #{riskInspctCcd}							<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD	= #{lstCCaseCcd}							<!-- 부수안건구분코드 -->
+		   AND CNDCT_RGST_ENO 	= #{cndctRgstEno}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="registEnoInfo" parameterType="com.nanuri.rams.business.common.vo.RAA11BVO">
+		<selectKey keyProperty="itemSq" resultType="int" order="BEFORE">
+	   		SELECT IFNULL(MAX(ITEM_SQ)+ 1, 1) 	AS ITEM_SQ			<!-- 항목일련번호+1 -->
+	   		  FROM RAA11B 											<!-- 의무이행계획정보 -->
+	   		 WHERE IB_DEAL_NO					= #{ibDealNo}		<!-- IBDEAL번호 -->
+	   		   AND RISK_INSPCT_CCD 				= #{riskInspctCcd}	<!-- 리스크심사구분코드 -->
+	   		   AND LST_C_CASE_CCD 				= #{lstCCaseCcd}	<!-- 부수안건구분코드 -->
+	    </selectKey>	
+		INSERT INTO RAA11B									<!-- 관련직원정보 -->
+			   (
+			     IB_DEAL_NO									<!-- IBDEAL번호 -->
+    	        , RISK_INSPCT_CCD							<!-- 리스크심사구분코드 -->
+    	        , LST_C_CASE_CCD							<!-- 부수안건구분코드 -->
+    	        , ITEM_SQ									<!-- 항목일련번호 -->
+    	        , CNDCT_RGST_ENO							<!-- 조치등록사번 -->
+    	        , UPT_DT									<!-- 변경일자 -->
+    	        , UPT_RSN_CNTNT								<!-- 변경사유내용 -->
+    	        , HNDL_DY_TM								<!-- 처리일시 -->
+    	        , HNDL_DPRT_CD								<!-- 처리부점코드 -->
+    	        , HNDL_P_ENO								<!-- 처리자사번 -->
+			   )
+		VALUES (
+				#{ibDealNo}									<!-- IBDEAL번호 -->
+				, #{riskInspctCcd}							<!-- 리스크심사구분코드 -->
+				, #{lstCCaseCcd}							<!-- 부수안건구분코드 -->
+				, #{itemSq}									<!-- 항목일련번호 -->
+				, #{cndctRgstEno}							<!-- 조치등록사번 -->
+    	        , DATE_FORMAT(NOW(), '%Y%m%d')				<!-- 변경일자 -->
+    	        , #{uptRsnCntnt}							<!-- 변경사유내용 -->
+				, CURRENT_TIMESTAMP()						<!-- 처리일시 -->
+    			, #{hndlDprtCd}								<!-- 처리부점코드 -->
+    			, #{hndlPEno}								<!-- 처리자사번 -->
+			   )
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateEnoInfo" parameterType="com.nanuri.rams.business.common.vo.RAA11BVO">
+		UPDATE RAA11B															<!-- 관련직원정보 -->
+		   SET CNDCT_RGST_ENO		=	#{cndctRgstEno}							<!-- 조치등록사번 -->
+		     , UPT_DT				=	#{uptDt}				<!-- 변경일자 -->
+		     , UPT_RSN_CNTNT		=	#{uptRsnCntnt}			<!-- 변경사유내용 -->
+		 WHERE IB_DEAL_NO 			=   #{ibDealNo}				<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD		=	#{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD		=	#{lstCCaseCcd}			<!-- 부수안건구분코드 -->
+		   AND ITEM_SQ				=	#{itemSq}				<!-- 항목일련번호 -->
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteEnoInfo" parameterType="com.nanuri.rams.business.common.vo.RAA11BVO">
+		DELETE FROM RAA11B										<!-- 관련직원정보 -->
+		 WHERE IB_DEAL_NO 			=   #{ibDealNo}				<!-- IBDEAL번호 -->
+		   AND ITEM_SQ				=	#{itemSq}				<!-- 항목일련번호 -->
+	</delete>
+</mapper>

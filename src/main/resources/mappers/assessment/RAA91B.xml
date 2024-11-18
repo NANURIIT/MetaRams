@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA91BMapper">
+
+	<!-- 셀렉트박스 코드, 밸류 취득 -->
+	<select id="getSelectBox" resultType="java.util.HashMap">
+		SELECT CMNS_CD_GRP					<!-- 그룹코드ID -->
+		     , CD_VL_ID						<!-- 코드값ID -->
+		     , CD_VL_NM						<!-- 코드값명 -->
+		  FROM RAA91B
+		 WHERE 1=1
+		   AND USE_F = 'Y'					<!-- 사용여부 -->
+		   AND DLT_F = 'N'					<!-- 삭제여부 -->
+		<if test="cmnsCdGrp != null">
+		   AND CMNS_CD_GRP = #{cmnsCdGrp}	<!-- 공통코드그룹 -->
+		</if>
+		 ORDER BY CMNS_CD_GRP, CD_SQ
+	</select>
+	
+	<!--  상세코드 호출  -->
+    <select id="getCodeInfoList" resultType="com.nanuri.rams.business.common.dto.RAA91BDTO" parameterType="String">
+        SELECT cd_vl_id												<!-- 코드값ID -->
+             , cd_vl_nm												<!-- 코드값명 -->
+             , nvl(rslt_cd_vl, '-') AS rslt_cd_vl					<!-- 변환후코드ID -->
+             , cd_sq												<!-- 코드일련번호 -->
+             , use_f												<!-- 사용여부 -->
+        <include refid="CommonMapper.selectCommonDto" />
+          FROM RAA91B A
+         WHERE cmns_cd_grp = #{cmnsCdGrp}							<!-- 그룹코드ID -->
+           AND dlt_f = 'N'											<!-- 삭제여부 -->
+      ORDER BY cd_sq ASC 
+    </select>
+    
+    <update id="registCodeInfo" parameterType="com.nanuri.rams.business.common.vo.RAA90BVO$CodeInfoSaveRequestVO">
+        UPDATE RAA91B
+        <set>
+            <if test="cdVlId != null and cdVlId !=''">
+                cd_vl_id = #{cdVlId},
+            </if>
+            <if test="cdVlNm != null and cdVlNm !=''">
+                cd_vl_nm = #{cdVlNm},
+            </if>
+            <if test="useF != null and useF !=''">
+                use_f = #{useF},
+            </if>
+            <if test="rsltCdVl != null and rsltCdVl !=''">
+                rslt_cd_vl = #{rsltCdVl},
+            </if>
+            hndl_dy_tm = now(),				<!-- 처리일시 -->
+            hndl_p_eno = #{hndlPEno}		<!-- 처리자사번 -->
+        </set>
+        WHERE cmns_cd_grp = #{cmnsCdGrp}	<!-- 공통코드그룹 -->
+          AND cd_vl_id = #{oldCdVlId}		<!-- 코드값ID -->
+    </update>
+
+    <insert id="insertCodeInfo" parameterType="com.nanuri.rams.business.common.vo.RAA90BVO$CodeInfoSaveRequestVO">
+        INSERT INTO RAA91B (
+            cmns_cd_grp,					<!-- 그룹코드ID -->
+            cd_vl_id,						<!-- 코드값ID -->
+            cd_vl_nm,						<!-- 코드값명 -->
+			rslt_cd_vl,						<!-- 변환후코드 -->
+			cd_sq,							<!-- 코드일련번호 -->
+            use_f,							<!-- 사용여부 -->
+			dlt_f,							<!-- 삭제여부 -->
+            rgst_dt,						<!-- 등록일자 -->
+			rgst_tm,						<!-- 등록시간 -->
+            rgst_p_eno,						<!-- 등록자사번 -->
+			hndl_dy_tm,						<!-- 처리일시 -->
+			hndl_dprt_cd,					<!-- 처리자부점코드 -->
+			hndl_p_eno						<!-- 처리자사번 -->
+        ) VALUES (
+            #{cmnsCdGrp},
+            #{cdVlId},
+            #{cdVlNm},
+			#{rsltCdVl},
+			#{cdSq},
+            #{useF},
+            'N',
+            DATE_FORMAT(now(), '%Y%m%d'),
+			DATE_FORMAT(now(), '%H%i%s'),
+            #{rgstPEno},
+			now(),
+			#{hndlDprtCd},
+			#{hndlPEno}
+        )
+    </insert>
+
+    <select id="getMaxSeq" parameterType="String" resultType="Integer">
+        SELECT MAX(cd_sq)					<!-- 코드일련번호 -->
+          FROM RAA91B
+         WHERE cmns_cd_grp = #{cmnsCdGrp}	<!-- 그룹코드ID -->
+    </select>
+
+    <select id="getCodeInfo" resultType="com.nanuri.rams.business.common.dto.RAA91BDTO">
+        SELECT cd_vl_id						<!-- 코드값ID -->
+             , cd_vl_nm						<!-- 코드값명 -->
+             , rslt_cd_vl					<!-- 변환후코드ID -->
+             , cd_sq						<!-- 코드일련번호 -->
+             , use_f						<!-- 사용여부 -->
+        <include refid="CommonMapper.selectCommonDto" />
+          FROM RAA91B A
+         WHERE cmns_cd_grp = #{cmnsCdGrp}	<!-- 그룹코드ID -->
+           AND cd_vl_id = #{cdVlId}			<!-- 코드값ID -->
+           AND dlt_f = 'N'					<!-- 삭제여부 -->
+    </select>
+
+    <update id="deleteCodeInfo">
+        UPDATE RAA91B
+           SET DLT_F = 'Y'					<!-- 삭제여부 -->
+              ,hndl_p_eno = #{hndlPEno}		<!-- 처리자사번 -->
+              ,hndl_dy_tm = now()			<!-- 처리일시 -->
+         WHERE cmns_cd_grp = #{cmnsCdGrp}	<!-- 공통코드그룹 -->
+           AND cd_vl_id IN
+        <foreach collection="cdVlIds" item="cdVlId" index="index" open="(" separator="," close=")">
+            #{cdVlId}
+        </foreach>
+    </update>
+
+</mapper>

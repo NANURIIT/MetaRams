@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				
+				<div class="ibox">
+					<div class="ibox-content i-filter">
+						<div class="row form-group form-inline text-right">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1 col-form-label">계좌번호</label>
+								<div class="col-sm-2">
+									<input type="text" class="form-control" id="" value="325-061-9869098-01">
+								</div>
+								<label class="col-sm-1 col-form-label">종목코드</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input type="text" class="form-control" id="" value="개인03810-3402"> 
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" style="width: 210px;" id="" value="개인투자용 국채 10년물" readonly>
+									</div>
+								</div>
+								<div class="col-sm-4 text-right pr-3">
+									<button id="" class="btn btn-success" onclick="">저장</button>
+									<button id="" class="btn btn-success" onclick="">철회</button>
+									<button id="" class="btn btn-success" onclick="">초기화</button>
+									<button class="btn btn-success" onclick="">조회</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ibox">
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 청약신청정보</h5>
+								<div class="ibox-tools"></div>
+							</div>
+							<div class="ibox-content">
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">청약기간</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" style="width: 30px;" id="" value="2024-02-16" readonly>
+											<span>&nbsp;&nbsp;~&nbsp;&nbsp;</span>
+											<input type="text" class="form-control" style="width: 30px;" id="" value="2024-02-18" readonly>
+										</div>
+									</div>
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1"></label>
+										<div class="col-sm-6 input-group text-danger">
+										* 청약신청 가능시간 09:00~15:30 청약마감하며 기간내에만 신청/변경/철회 가능
+										</div>
+									</div>
+									<div class="col-sm-12 form-group mt-1">
+										<label class="col-sm-1 col-form-label text-right">발행년월</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" readonly>
+										</div>
+										<label class="col-sm-4 col-form-label text-right">표면금리</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="3.5" readonly><span>%</span>
+										</div>
+									</div>
+									<div class="col-sm-12 form-group mt-1">
+										<label class="col-sm-1 col-form-label text-right">발행일자</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="2024-02-20" readonly>
+										</div>
+										<label class="col-sm-4 col-form-label text-right">가산금리</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="0" readonly><span>%</span>
+										</div>
+									</div>
+									<div class="col-sm-12 form-group mt-1">
+										<label class="col-sm-1 col-form-label text-right">만기일자</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="2034-02-19" readonly>
+										</div>
+									</div>
+									<div class="col-sm-12 form-group mt-1">
+										<label class="col-sm-1 col-form-label text-right">신청금액</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="100,000,000">
+										</div>
+										<label class="col-sm-4 col-form-label text-right">국채 총발행금액</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="0" readonly><span>원</span>
+										</div>
+									</div>
+									<div class="col-sm-12 form-group mt-1">
+										<label class="col-sm-1 col-form-label text-right">증액/감액부분</label>
+										<div class="col-sm-2 form-group">
+											<select class="col-sm-12 form-control">
+											</select>
+										</div>
+										<div class="col-sm-4">
+											<button id="" class="btn btn-success" onclick="">이자계산</button>
+										</div>
+										<div class="col-sm-2">
+										</div>
+										<div class="col-sm-3">
+										</div>
+									</div>
+									<div class="col-sm-12 form-group mt-1">
+										<label class="col-sm-7 col-form-label text-right">세전이자금액</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="41,834,482" readonly><span>원</span>
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+									<div class="col-sm-12 form-group mt-1">
+										<label class="col-sm-1 col-form-label text-right">연결계좌번호</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control" id="" value="100-0110-000001" readonly>
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width: 210px;" id="" value="350,000,000" readonly>
+										</div>
+										<label class="col-sm-2 col-form-label text-right">세후이자금액</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="35,391,972" readonly><span>원</span>
+										</div>
+									</div>
+									<div class="col-sm-12 form-group mt-1">
+										<label class="col-sm-1 col-form-label text-right">판매담당자</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="홍길동" readonly>
+										</div>
+										<label class="col-sm-4"></label>
+										<div class="col-sm-5 input-group text-danger">* 이자소득세율
+											14%, 소득세 + 지방세는 15.4%</div>
+									</div>
+									<div class="col-sm-12 form-group mt-1">
+										<label class="col-sm-1 col-form-label text-right">신규사무소</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="" value="평촌남지점" readonly>
+										</div>
+									</div>
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1"></label>
+										<div class="col-sm-6 input-group text-danger">
+										* 개인한도는 최소금액 10만원부터이며 연간최대한도는 1억원 ( 10만원 단위 )</div>
+									</div>
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1"></label>
+										<div class="col-sm-6 input-group text-danger">
+										, 당행 청약한도에 따라 청약 낙첨되거나 신청금액 일부만 배정될 수 있습니다.</div>
+									</div>
+									<div class="col-sm-12 mt-1">
+										<table class="table table-bordered text-center">
+											<thead>
+												<tr>
+													<th>처리구분</th>
+													<th>일련번호</th>
+													<th>처리일시</th>
+													<th>신청금액</th>
+													<th>연결계좌번호</th>
+													<th>판매담당자</th>
+													<th>신규사무소</th>
+												</tr>
+											</thead>
+											<tbody id="">
+												<tr>
+													<td>청약신청</td>
+													<td>1</td>
+													<td>2024-02-16 13:45:09</td>
+													<td class="text-right">50,000,000</td>
+													<td>100-0110-000001</td>
+													<td>최옥자</td>
+													<td>평촌남지점</td>
+												</tr>
+												<tr>
+													<td>청약변경</td>
+													<td>2</td>
+													<td>2024-02-17 09:15:12</td>
+													<td class="text-right">100,000,000</td>
+													<td>100-0110-000001</td>
+													<td>최옥자</td>
+													<td>평촌남지점</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+</html>

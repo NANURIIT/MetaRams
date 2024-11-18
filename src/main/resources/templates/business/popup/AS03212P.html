@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="AS03212P">
+	<!-- modal -->
+	<div id="modal-AS03212P" class="modal fade" role="dialog" aria-labelledby="lb-as03212p" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">ESG 리스크심사 팝업</h4>
+					<div class="col-sm-1 text-right">
+						<button type="button" class="btn btn-default" onclick="modalClose_AS03212P();">
+							<i class="fa fa-times"></i>
+						</button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<!-- 검토대상 -->
+							<div class="ibox-title text-left">
+								◎ 검토대상
+							</div>
+							<div class = "d-flex flex-row justify-content-around">
+								<div class="ibox">
+									<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 90%;">
+										<col style="width: 10%;">
+									</colgroup>
+										<thead class="text-center">
+											<tr>
+												<td colspan="2">관리영역</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>배제영역</td>
+												<td><input type="checkbox" value="" id=""></td>
+											</tr>
+											<tr>
+												<td>기후변화 유의영역</td>
+												<td><input type="checkbox" value="" id=""></td>
+											</tr>
+											<tr>
+												<td>기후변화 관심영역</td>
+												<td><input type="checkbox" value="" id=""></td>
+											</tr>
+											<tr>
+												<td>녹색산업 지원영역</td>
+												<td><input type="checkbox" value="" id=""></td>
+											</tr>
+											<tr>
+												<td>해당무</td>
+												<td><input type="checkbox" value="" id=""></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="ibox">
+									<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 90%;">
+										<col style="width: 10%;">
+									</colgroup>
+										<thead class="text-center">
+											<tr>
+												<td colspan="2">투자금액</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>(KRW)원화 500억원 초과</td>
+												<td><input type="checkbox" value="" id=""></td>
+											</tr>
+											<tr>
+												<td>해당무</td>
+												<td><input type="checkbox" value="" id=""></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="ibox">
+									<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 90%;">
+										<col style="width: 10%;">
+									</colgroup>
+										<thead class="text-center">
+											<tr>
+												<td colspan="2">투자대상</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>대규모 프로젝트 파이낸싱</td>
+												<td><input type="checkbox" value="" id=""></td>
+											</tr>
+											<tr>
+												<td>해당무</td>
+												<td><input type="checkbox" value="" id=""></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="ibox">
+									<table class="table table-bordered">
+										<thead class="text-center">
+											<tr>
+												<td>ESG 리스크심사 대상</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<select class="form-control">
+														<option>대상</option>
+														<option selected>비대상</option>
+													</select>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- 평가등급 -->
+							<div class="ibox">
+								<div class="ibox-title text-left">
+									◎ 평가등급
+								</div>
+								<div class="d-flex flex-row justify-content-around">
+									<div class="ibox" style="width: 20%;">
+										<table class="table table-bordered">
+											<thead class="text-center">
+												<tr>
+													<td>거래 담당부서</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<select class="form-control">
+															<option value="">선택</option>
+														</select>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="ibox" style="width: 75%;">
+										<table class="table table-bordered">
+											<thead class="text-center">
+												<tr>
+													<td colspan="2">
+														기타 특이사항
+													</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<textarea class="form-control" rows="2" cols="" placeholder="평가등급 산출 기준 등"></textarea>	
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="ibox">
+								<div class="d-flex flex-row justify-content-around">
+									<div class="ibox" style="width: 20%;">
+										<table class="table table-bordered">
+											<thead class="text-center">
+												<tr>
+													<td>심사부서(확정등급)</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<select class="form-control">
+															<option value="">선택</option>
+														</select>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="ibox" style="width: 75%;">
+										<table class="table table-bordered">
+											<thead class="text-center">
+												<tr>
+													<td colspan="2">기타 특이사항</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<textarea class="form-control" rows="2" cols="" placeholder="평가등급 적정성 검토 내용 및 모니터링 필요성 등"></textarea>	
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="text-right">
+								<button class="btn btn-success" type="button">저장</button>
+								<button class="btn btn-success" type="button">취소</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+
+</html>

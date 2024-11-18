@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS703BMapper">
+
+	<!-- 금융감독원보고서내역 CPC3 보고서양식 조회 -->
+    <select id="selectIBIMS703B" resultType="com.nanuri.rams.business.common.vo.IBIMS703BVO">
+      SELECT
+               snd703b.STDR_YM                                     AS      stdrYm                                             /* 기준년월 */
+           ,   snd703b.DPRT_CD                                     AS      dprtCd                                             /* 부점코드 */
+           ,   snd703b.RGST_SN                                     AS      rgstSn                                             /* 등록일련번호 */
+           ,   snd703b.RPTS_IEM_MNGM_NO                            AS      rptsIemMngmNo                                      /* 보고서항목관리번호 */
+           ,   snd703b.CMP_NM                                      AS      cmpNm                                              /* 회사명 */
+           ,   snd703b.FSS_CMP_CD                                  AS      fssCmpCd                                           /* 금융감독원회사코드 */
+           ,   snd703b.WRTN_STDR_DT                                AS      wrtnStdrDt                                         /* 작성기준일자 */
+           ,   snd703b.ETC_RPTS_INV_SHP_CD                         AS      etcRptsInvShpCd                                    /* 기타보고서투자형태코드 */
+           ,   snd703b.ETC_RPTS_INV_DETL_CD                        AS      etcRptsInvDetlCd                                   /* 기타보고서투자상세코드 */
+           ,   snd703b.PF_THCS_DCD                                 AS      pfThcsDcd                                          /* PF해당구분코드 */
+           ,   snd703b.SOC_THCS_DCD                                AS      socThcsDcd                                         /* SOC해당구분코드 */
+           ,   snd703b.INV_DT                                      AS      invDt                                              /* 투자일자 */
+           ,   snd703b.CTRT_END_DT                                 AS      ctrtEndDt                                          /* 계약종료일자 */
+           ,   snd703b.RLES_TP_DCD                                 AS      rlesTpDcd                                          /* 부동산유형구분코드 */
+           ,   snd703b.PF_SLLT_TP_DCD                              AS      pfSlltTpDcd                                        /* PF분양유형구분코드 */
+           ,   snd703b.PF_ERN_TP_DCD                               AS      pfErnTpDcd                                         /* PF수익유형구분코드 */
+           ,   snd703b.BSS_ASST_LCTP_DCD                           AS      bssAsstLctpDcd                                     /* 기초자산소재지구분코드 */
+           ,   snd703b.NTN_NM                                      AS      ntnNm                                              /* 국가명 */
+           ,   snd703b.OVRS_LCT_CTY_NM                             AS      ovrsLctCtyNm                                       /* 해외소재도시명 */
+           ,   snd703b.RLES_LCTP_ZPCD                              AS      rlesLctpZpcd                                       /* 부동산소재지우편번호 */
+           ,   snd703b.FND_NM                                      AS      fndNm                                              /* 펀드명 */
+           ,   snd703b.KOFIA_FND_CD                                AS      kofiaFndCd                                         /* 금융투자협회펀드코드 */
+           ,   snd703b.ASST_MGCO_NM                                AS      asstMgcoNm                                         /* 자산운용사명 */
+           ,   snd703b.FOFS_THCS_DCD                               AS      fofsThcsDcd                                        /* 재간접펀드해당구분코드 */
+           ,   snd703b.BDFND_THCS_DCD                              AS      bdfndThcsDcd                                       /* 블라인드펀드해당구분코드 */
+           ,   snd703b.FND_INV_AMT                                 AS      fndInvAmt                                          /* 펀드투자금액 */
+           ,   snd703b.FND_TOT_EVL_AMT                             AS      fndTotEvlAmt                                       /* 펀드총평가금액 */
+           ,   snd703b.FND_ETC_RPTS_PBFF_PPLC_DCD                  AS      fndEtcRptsPbffPplcDcd                              /* 펀드기타보고서공모사모구분코드 */
+           ,   snd703b.FND_ETC_RPTS_CRRY_CD                        AS      fndEtcRptsCrryCd                                   /* 펀드기타보고서통화코드 */
+           ,   snd703b.REITS_NM                                    AS      reitsNm                                            /* 리츠명 */
+           ,   snd703b.REITS_AMT                                   AS      reitsAmt                                           /* 리츠금액 */
+           ,   snd703b.REITS_EVL_AMT                               AS      reitsEvlAmt                                        /* 리츠평가금액 */
+           ,   snd703b.REITS_ETC_RPTS_PBFF_PPLC_DCD                AS      reitsEtcRptsPbffPplcDcd                            /* 리츠기타보고서공모사모구분코드 */
+           ,   snd703b.REITS_ETC_RPTS_CRRY_CD                      AS      reitsEtcRptsCrryCd                                 /* 리츠기타보고서통화코드 */
+           ,   snd703b.LQDZ_SCTY_NM                                AS      lqdzSctyNm                                         /* 유동화증권명 */
+           ,   snd703b.LQDZ_SCTY_KND_CD                            AS      lqdzSctyKndCd                                      /* 유동화증권종류코드 */
+           ,   snd703b.LQDZ_SCTY_ISU_ISTT_NM                       AS      lqdzSctyIsuIsttNm                                  /* 유동화증권발행기관명 */
+           ,   snd703b.LQDZ_SCTY_CRNO                              AS      lqdzSctyCrno                                       /* 유동화증권법인등록번호 */
+           ,   snd703b.ISU_DT                                      AS      isuDt                                              /* 발행일자 */
+           ,   snd703b.PAR_AMT                                     AS      parAmt                                             /* 액면금액 */
+           ,   snd703b.LQDZ_SCTY_ISU_INTRT                         AS      lqdzSctyIsuIntrt                                   /* 유동화증권발행금리 */
+           ,   snd703b.CRDT_RIFC_CMP_NM                            AS      crdtRifcCmpNm                                      /* 신용보강회사명 */
+           ,   snd703b.CRDT_RIFC_CMP_CRNO                          AS      crdtRifcCmpCrno                                    /* 신용보강회사법인등록번호 */
+           ,   snd703b.RPTS_CTRT_TP_CD                             AS      rptsCtrtTpCd                                       /* 보고서계약유형코드 */
+           ,   snd703b.SQ1_ETC_RPTS_CRDT_GRD_CD                    AS      sq1EtcRptsCrdtGrdCd                                /* 1차기타보고서신용등급코드 */
+           ,   snd703b.SQ2_ETC_RPTS_CRDT_GRD_CD                    AS      sq2EtcRptsCrdtGrdCd                                /* 2차기타보고서신용등급코드 */
+           ,   snd703b.ETC_CTRT_NM                                 AS      etcCtrtNm                                          /* 기타계약명 */
+           ,   snd703b.TR_OTHR_NM                                  AS      trOthrNm                                           /* 거래상대방명 */
+           ,   snd703b.INV_PRNA                                    AS      invPrna                                            /* 투자원금 */
+           ,   snd703b.ETC_EVL_AMT                                 AS      etcEvlAmt                                          /* 기타평가금액 */
+           ,   snd703b.NCR_RSK_VL                                  AS      ncrRskVl                                           /* NCR위험값 */
+           ,   snd703b.NCR_RSK_AMT                                 AS      ncrRskAmt                                          /* NCR위험금액 */
+           ,   snd703b.JOB_CHRR_NM                                 AS      jobChrrNm                                          /* 업무담당자명 */
+           ,   snd703b.DPT_NM                                      AS      dptNm                                              /* 부서명 */
+           ,   snd703b.CPLC_CTNS                                   AS      cplcCtns                                           /* 연락처내용 */
+           ,   snd703b.HND_DETL_DTM                                AS      hndDetlDtm                                         /* 조작상세일시 */
+           ,   snd703b.HND_EMPNO                                   AS      hndEmpno                                           /* 조작사원번호 */
+           ,   snd703b.HND_TMNL_NO                                 AS      hndTmnlNo                                          /* 조작단말기번호 */
+           ,   snd703b.HND_TR_ID                                   AS      hndTrId                                            /* 조작거래ID */
+           ,   snd703b.GUID                                        AS      guid                                               /* GUID */
+        FROM IBIMS703B snd703b
+       WHERE snd703b.DPRT_CD LIKE #{dptCd}
+         AND snd703b.STDR_YM LIKE CASE 
+                                  WHEN
+                            NOT EXISTS(
+                                SELECT s703b_1.STDR_YM
+                                  FROM IBIMS703B s703b_1
+                                 WHERE s703b_1.STDR_YM = #{stdrYm}
+                               )  THEN #{stdrYm}
+                                  ELSE #{prvStdrYm}
+                                   END
+       UNION
+        SELECT 
+              /* , T.EPRZ_CRDL_PRDT_LCLS_CD                                        AS rptsCtrtTpCd          계약유형1 (유동성/신용공여형) = 기업여신상품대분류코드  */ 
+              /* , NVL(s002b_1.CD_VL_NM , '')                                   AS PRDT_LCLS_CD_NM       기업여신상품대분류코드명 */
+              /* , T.EPRZ_CRDL_PRDT_MDCL_CD                                        AS rptsCtrtTpDetlCd      계약유형2 (매입약정 등) = 기업여신상품중분류코드  */ 
+              /* , NVL(s002b_2.CD_VL_NM , '')                                   AS PRDT_MDCL_CD_NM	     기업여신상품중분류코드명 */
+              /* , T.EPRZ_CRDL_CTRC_AMT                                            AS frsCtrcAmt            최초 약정금액 */
+              /* , CASE WHEN T.EPRZ_CRDL_PRDT_LCLS_CD = '90' THEN T.DEAL_EXC_BLCE                           상품대분류(90:대출)-->SUM(대출잔액) */         
+	          /*                                             ELSE T.EPRZ_CRDL_CTRC_AMT                      상품대분류(90:대출) 그외 -->기업여신약정금액 */      
+	          /*                                              END                  AS eprzCrdlNowCtrcBlce   약정잔액*/
+	          /* , T.PF_LOAN_YN                                                    AS PF_LOAN_YN            PF대출여부*/
+              /* , A.PRDT_NM                                                       AS prdtNm                       계약명칭 */
+              /* , T.CTRC_DT                                                       AS ctrtDt                       계약일 */ 
+              /* , T.CTRC_EXP_DT                                                   AS expDt                        만기일자 */ 
+             
+                NULL                                                            AS stdrYm                      /* 기준년월 */
+              , NULL                                                            AS dprtCd                      /* 부점코드 */
+              , NULL                                                            AS rgstSn                      /* 등록일련번호 */
+              , NULL                                                            AS rptsIemMngmNo               /* 보고서항목관리번호 */
+              , NVL(
+                    (SELECT MAX(B1.ENTP_HNGL_NM)
+                       FROM IBIMS114B B1
+                      WHERE B1.BSNS_RGST_NO = A.TR_OTHR_DSCM_NO), '')           AS cmpNm 	                   /* 회사명 */
+              , NULL                                                            AS fssCmpCd                    /* 금융감독원회사코드 */
+              , NULL                                                            AS wrtnStdrDt                  /* 작성기준일자 */
+              , NULL                                                            AS etcRptsInvShpCd             /* 기타보고서투자형태코드 */
+              , NULL                                                            AS etcRptsInvDetlCd            /* 기타보고서투자상세코드 */
+              , NULL                                                            AS pfThcsDcd                   /* PF해당구분코드 */
+              , NULL                                                            AS socThcsDcd                  /* SOC해당구분코드 */
+              , NULL                                                            AS invDt                       /* 투자일자 */
+              , NULL                                                            AS ctrtEndDt                   /* 계약종료일자 */
+              , NULL                                                            AS rlesTpDcd                   /* 부동산유형구분코드 */
+              , NULL                                                            AS pfSlltTpDcd                 /* PF분양유형구분코드 */
+              , NULL                                                            AS pfErnTpDcd                  /* PF수익유형구분코드 */
+              , NULL                                                            AS bssAsstLctpDcd              /* 기초자산소재지구분코드 */
+              , NULL                                                            AS ntnNm                       /* 국가명 */
+              , NULL                                                            AS ovrsLctCtyNm                /* 해외소재도시명 */
+              , NULL                                                            AS rlesLctpZpcd                /* 부동산소재지우편번호 */
+              , NULL                                                            AS fndNm                       /* 펀드명 */
+              , NULL                                                            AS kofiaFndCd                  /* 금융투자협회펀드코드 */
+              , NULL                                                            AS asstMgcoNm                  /* 자산운용사명 */
+              , NULL                                                            AS fofsThcsDcd                 /* 재간접펀드해당구분코드 */
+              , NULL                                                            AS bdfndThcsDcd                /* 블라인드펀드해당구분코드 */
+              , NULL                                                            AS fndInvAmt                   /* 펀드투자금액 */
+              , NULL                                                            AS fndTotEvlAmt                /* 펀드총평가금액 */
+              , NULL                                                            AS fndEtcRptsPbffPplcDcd       /* 펀드기타보고서공모사모구분코드 */
+              , NULL                                                            AS fndEtcRptsCrryCd            /* 펀드기타보고서통화코드 */
+              , NULL                                                            AS reitsNm                     /* 리츠명 */
+              , NULL                                                            AS reitsAmt                    /* 리츠금액 */
+              , NULL                                                            AS reitsEvlAmt                 /* 리츠평가금액 */
+              , NULL                                                            AS reitsEtcRptsPbffPplcDcd     /* 리츠기타보고서공모사모구분코드 */
+              , NULL                                                            AS reitsEtcRptsCrryCd          /* 리츠기타보고서통화코드 */
+              , NULL                                                            AS lqdzSctyNm                  /* 유동화증권명 */
+              , NULL                                                            AS lqdzSctyKndCd               /* 유동화증권종류코드 */
+              , NULL                                                            AS lqdzSctyIsuIsttNm           /* 유동화증권발행기관명 */
+              , NULL                                                            AS lqdzSctyCrno                /* 유동화증권법인등록번호 */
+              , NULL                                                            AS isuDt                       /* 발행일자 */
+              , NULL                                                            AS parAmt                      /* 액면금액 */
+              , NULL                                                            AS lqdzSctyIsuIntrt            /* 유동화증권발행금리 */
+              , NULL                                                            AS crdtRifcCmpNm               /* 신용보강회사명 */
+              , NULL                                                            AS crdtRifcCmpCrno             /* 신용보강회사법인등록번호 */
+              , NULL                                                            AS rptsCtrtTpCd                /* 보고서계약유형코드 */
+              , NULL                                                            AS sq1EtcRptsCrdtGrdCd         /* 1차기타보고서신용등급코드 */
+              , NULL                                                            AS sq2EtcRptsCrdtGrdCd         /* 2차기타보고서신용등급코드 */
+              , NULL                                                            AS etcCtrtNm                   /* 기타계약명 */
+              , NULL                                                            AS trOthrNm                    /* 거래상대방명 */
+              , NULL                                                            AS invPrna                     /* 투자원금 */
+              , NULL                                                            AS etcEvlAmt                   /* 기타평가금액 */
+              , NULL                                                            AS ncrRskVl                    /* NCR위험값 */
+              , NULL                                                            AS ncrRskAmt                   /* NCR위험금액 */
+              , NULL                                                            AS jobChrrNm                   /* 업무담당자명 */
+              , NULL                                                            AS dptNm                       /* 부서명 */
+              , NULL                                                            AS cplcCtns                    /* 연락처내용 */
+              , NULL                                                            AS hndDetlDtm                  /* 조작상세일시 */
+              , NULL                                                            AS hndEmpno                    /* 조작사원번호 */
+              , NULL                                                            AS hndTmnlNo                   /* 조작단말기번호 */
+              , NULL                                                            AS hndTrId                     /* 조작거래ID */
+              , NULL                                                            AS guid                        /* GUID */
+         FROM IBIMS201B A                                                                               /* 딜승인기본 */
+             , (
+                SELECT T1.PRDT_CD
+                     , T1.CTRC_DT
+                     , T1.CTRC_EXP_DT
+                     , T1.EPRZ_CRDL_CTRC_AMT                                                              /* 기업여신약정금액*/
+			         , T1.PF_LOAN_YN                                                                      /* PF대출여부*/
+			         , T1.EPRZ_CRDL_PRDT_LCLS_CD                                                          /* 기업여신상품대분류코드 */
+			         , T1.EPRZ_CRDL_PRDT_MDCL_CD                                                          /* 기업여신상품중분류코드 */
+			         , SUM(T2.DEAL_EXC_BLCE)                                    AS DEAL_EXC_BLCE         /* 약정잔액 */
+                  FROM IBIMS401B T1  /* 딜약정기본 */
+       LEFT OUTER JOIN IBIMS402B T2  /* 딜실행기본 */
+                    ON T1.PRDT_CD = T2.PRDT_CD
+                   AND T2.LDG_STTS_CD = '1'
+                 WHERE 1=1     
+                   AND T1.EPRZ_CRDL_LDG_STTS_CD = '1'
+	             GROUP 
+                    BY T1.PRDT_CD
+                     , T1.CTRC_DT
+                     , T1.CTRC_EXP_DT
+                     , T1.EPRZ_CRDL_CTRC_AMT                          /* 기업여신약정금액*/
+		             , T1.PF_LOAN_YN                                  /* PF대출여부*/
+		             , T1.EPRZ_CRDL_PRDT_LCLS_CD                      /* 기업여신상품대분류코드 */
+		             , T1.EPRZ_CRDL_PRDT_MDCL_CD                      /* 기업여신상품중분류코드 */
+               ) T
+	LEFT JOIN IBIMS002B s002b_1
+	       ON T.EPRZ_CRDL_PRDT_LCLS_CD	= s002b_1.CD_VL_ID
+	      AND s002b_1.CMNS_CD_GRP	    = 'E022'
+	LEFT JOIN IBIMS002B s002b_2
+		   ON T.EPRZ_CRDL_PRDT_MDCL_CD	= s002b_2.CD_VL_ID
+		  AND s002b_2.CMNS_CD_GRP	    = 'E023'
+        WHERE A.LAST_YN = '1' 
+          AND A.PRDT_CD = T.PRDT_CD
+          AND A.FRS_MNGM_BDCD LIKE #{dptCd}
+          AND NOT EXISTS (
+                  SELECT s703b_2.DPRT_CD
+                    FROM IBIMS703B s703b_2
+                   WHERE s703b_2.DPRT_CD = A.FRS_MNGM_BDCD
+                  )
+	</select>
+
+    <insert id="insertIBIMS703B">
+        INSERT INTO IBIMS703B(
+                    STDR_YM
+                ,   DPRT_CD
+                ,   RGST_SN
+                ,   BSS_ASST_MNGM_NO
+                ,   RPTS_IEM_MNGM_NO
+                ,   CMP_NM
+                ,   FSS_CMP_CD
+                ,   WRTN_STDR_DT
+                ,   PRDT_NM
+                ,   CTRT_DT
+                ,   EXP_DT
+                ,   RPTS_CTRT_TP_CD
+                ,   RPTS_CTRT_TP_DETL_CD
+                ,   FRS_CTRC_AMT
+                ,   EPRZ_CRDL_NOW_CTRC_BLCE
+                ,   DET_GRTE_FEE
+                ,   DET_GRTE_FLFL_DCD
+                ,   PF_THCS_DCD
+                ,   PF_TP_DCD
+                ,   PF_SLLT_TP_DCD
+                ,   PF_ERN_TP_DCD
+                ,   PF_BSS_ASST_LCLS_CD
+                ,   PF_BSS_ASST_SCLS_CD
+                ,   RLES_TP_DCD
+                ,   BSS_ASST_LCTP_DCD
+                ,   RLES_LCTP_ZPCD
+                ,   LCTP_ADDR
+                ,   PF_OVRS_LCT_NTN_CD
+                ,   OVRS_LCT_CTY_NM
+                ,   UNSLD_THCS_DCD
+                ,   WRTE_MBDY_NM
+                ,   WRTE_MBDY_CRNO
+                ,   LQDZ_SCTY_GRTE_THCS_DCD
+                ,   LQDZ_SCTY_NM
+                ,   LQDZ_SCTY_KND_CD
+                ,   LQDZ_SCTY_ISU_DT
+                ,   LQDZ_SCTY_PAR_AMT
+                ,   LQDZ_SCTY_ISU_INTRT
+                ,   FRS_INV_POT_LTV_RTO
+                ,   WRTN_STDR_DE_LTV_RTO
+                ,   LTV_OUTPUT_MTH_DCD
+                ,   APRS_PRC
+                ,   TOT_SLLT_AMT
+                ,   JDGM_TEAM_PRSM_AMT
+                ,   PYBK_RANK_DCD
+                ,   RLES_RENT_GRTE_AMT
+                ,   PRFD_RANK_AMT
+                ,   SODR_AMT
+                ,   BKBN_AMT
+                ,   OTCM_CRDT_RIFC_THCS_DCD
+                ,   OTCM_CRDT_RIFC_MN_DCD
+                ,   SQ1_CRDT_RIFC_CMP_NM
+                ,   SQ1_CRDT_RIFC_CMP_CRNO
+                ,   SQ1_CRDT_RIFC_CMP_CRDT_GRD_CD
+                ,   SQ2_CRDT_RIFC_CMP_NM
+                ,   SQ2_CRDT_RIFC_CMP_CRNO
+                ,   SQ2_CRDT_RIFC_CMP_CRDT_GRD_CD
+                ,   EFCE_CMP_NM
+                ,   EFCE_CMP_CRNO
+                ,   PF_EFCE_SHP_DCD
+                ,   PF_BUSI_APVL_STEP_CD
+                ,   PF_CSST_STEP_CD
+                ,   PF_SLLT_STEP_CD
+                ,   PF_CNFN_STEP_CD
+                ,   TOT_BUSI_AMT
+                ,   RVNU_AMT
+                ,   SLF_CPTA
+                ,   UN_SQMS_SLLT_AMT
+                ,   MDWY_GOLD_RDMP_RTO
+                ,   ALL_SQMS
+                ,   ESTM_EMRM_RT
+                ,   UN_SQMS_ESTM_RENT_ERN_AMT
+                ,   UN_SQMS_ESTM_RENT_CT
+                ,   ESTM_PUR_BSN_ERN_AMT
+                ,   PF_STLN_TOT_LOAN_AMT
+                ,   PF_STLN_PTCI_ISTT_NUM
+                ,   PF_STLN_LOAN_EXP_DT
+                ,   SQ1_STLN_ISTT_NM
+                ,   SQ1_STLN_ISTT_CRNO
+                ,   SQ1_STLN_LOAN_AMT
+                ,   SQ2_STLN_ISTT_NM
+                ,   SQ2_STLN_ISTT_CRNO
+                ,   SQ2_STLN_LOAN_AMT
+                ,   SQ3_STLN_ISTT_NM
+                ,   SQ3_STLN_ISTT_CRNO
+                ,   SQ3_STLN_LOAN_AMT
+                ,   SQ4_STLN_ISTT_NM
+                ,   SQ4_STLN_ISTT_CRNO
+                ,   SQ4_STLN_LOAN_AMT
+                ,   SQ5_STLN_ISTT_NM
+                ,   SQ5_STLN_ISTT_CRNO
+                ,   SQ5_STLN_LOAN_AMT
+                ,   BUSI_APVL_RQS_DT
+                ,   LAND_PCHS_RT
+                ,   RSPL_CNFN_CFRM_THCS_DCD
+                ,   RSPL_CNFN_CFRM_ISTT_NM
+                ,   RSPL_CNFN_CFRM_ISTT_CRNO
+                ,   RSPL_CNFN_EPRZ_CRDT_GRD_CD
+                ,   CSUC_CMP_NM
+                ,   CSUC_CMP_CRNO
+                ,   CSUC_CMP_EPRZ_CRDT_GRD_CD
+                ,   CSST_DT
+                ,   CNFN_DT
+                ,   PLN_FAIR_RT
+                ,   EXC_FAIR_RT
+                ,   SLLT_RT
+                ,   SLLT_OPNG_DT
+                ,   MOIN_RT
+                ,   EXIT_SLLT_RT
+                ,   DVR_SQMS
+                ,   DVR_SQMS_UN_AMT
+                ,   RENT_PSBL_TOT_SQMS
+                ,   EMRM_RT
+                ,   UN_SQMS_RENT_ERN_AMT
+                ,   UN_SQMS_RENT_CT
+                ,   SQ1_YRLY_PUR_BSN_ERN_AMT
+                ,   SQ2_YRLY_PUR_BSN_ERN_AMT
+                ,   RLES_TOT_LOAN_INTR
+                ,   RLES_TOT_LOAN_PAI_AMT
+                ,   CPTL_RSTR_RT
+                ,   NCR_RSK_VL
+                ,   NCR_RSK_AMT
+                ,   JOB_CHRR_NM
+                ,   DPT_NM
+                ,   CPLC_CTNS
+                ,   HND_DETL_DTM
+                ,   HND_EMPNO
+                ,   HND_TMNL_NO
+                ,   HND_TR_ID
+                ,   GUID
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+                (   #{item.stdrYm}
+                ,   #{item.dprtCd}
+                ,   (
+                        NVL(
+                                (SELECT MAX(A.RGST_SN) FROM IBIMS703B A) + 1
+                              , 0
+                              )
+                    )
+                ,   #{item.bssAsstMngmNo}
+                ,   #{item.rptsIemMngmNo}
+                ,   #{item.cmpNm}
+                ,   #{item.fssCmpCd}
+                ,   #{item.wrtnStdrDt}
+                ,   #{item.prdtNm}
+                ,   #{item.ctrtDt}
+                ,   #{item.expDt}
+                ,   #{item.rptsCtrtTpCd}
+                ,   #{item.rptsCtrtTpDetlCd}
+                ,   #{item.frsCtrcAmt}
+                ,   #{item.eprzCrdlNowCtrcBlce}
+                ,   #{item.detGrteFee}
+                ,   #{item.detGrteFlflDcd}
+                ,   #{item.pfThcsDcd}
+                ,   #{item.pfTpDcd}
+                ,   #{item.pfSlltTpDcd}
+                ,   #{item.pfErnTpDcd}
+                ,   #{item.pfBssAsstLclsCd}
+                ,   #{item.pfBssAsstSclsCd}
+                ,   #{item.rlesTpDcd}
+                ,   #{item.bssAsstLctpDcd}
+                ,   #{item.rlesLctpZpcd}
+                ,   #{item.lctpAddr}
+                ,   #{item.pfOvrsLctNtnCd}
+                ,   #{item.ovrsLctCtyNm}
+                ,   #{item.unsldThcsDcd}
+                ,   #{item.wrteMbdyNm}
+                ,   #{item.wrteMbdyCrno}
+                ,   #{item.lqdzSctyGrteThcsDcd}
+                ,   #{item.lqdzSctyNm}
+                ,   #{item.lqdzSctyKndCd}
+                ,   #{item.lqdzSctyIsuDt}
+                ,   #{item.lqdzSctyParAmt}
+                ,   #{item.lqdzSctyIsuIntrt}
+                ,   #{item.frsInvPotLtvRto}
+                ,   #{item.wrtnStdrDeLtvRto}
+                ,   #{item.ltvOutputMthDcd}
+                ,   #{item.aprsPrc}
+                ,   #{item.totSlltAmt}
+                ,   #{item.jdgmTeamPrsmAmt}
+                ,   #{item.pybkRankDcd}
+                ,   #{item.rlesRentGrteAmt}
+                ,   #{item.prfdRankAmt}
+                ,   #{item.sodrAmt}
+                ,   #{item.bkbnAmt}
+                ,   #{item.otcmCrdtRifcThcsDcd}
+                ,   #{item.otcmCrdtRifcMnDcd}
+                ,   #{item.sq1CrdtRifcCmpNm}
+                ,   #{item.sq1CrdtRifcCmpCrno}
+                ,   #{item.sq1CrdtRifcCmpCrdtGrdCd}
+                ,   #{item.sq2CrdtRifcCmpNm}
+                ,   #{item.sq2CrdtRifcCmpCrno}
+                ,   #{item.sq2CrdtRifcCmpCrdtGrdCd}
+                ,   #{item.efceCmpNm}
+                ,   #{item.efceCmpCrno}
+                ,   #{item.pfEfceShpDcd}
+                ,   #{item.pfBusiApvlStepCd}
+                ,   #{item.pfCsstStepCd}
+                ,   #{item.pfSlltStepCd}
+                ,   #{item.pfCnfnStepCd}
+                ,   #{item.totBusiAmt}
+                ,   #{item.rvnuAmt}
+                ,   #{item.slfCpta}
+                ,   #{item.unSqmsSlltAmt}
+                ,   #{item.mdwyGoldRdmpRto}
+                ,   #{item.allSqms}
+                ,   #{item.estmEmrmRt}
+                ,   #{item.unSqmsEstmRentErnAmt}
+                ,   #{item.unSqmsEstmRentCt}
+                ,   #{item.estmPurBsnErnAmt}
+                ,   #{item.pfStlnTotLoanAmt}
+                ,   #{item.pfStlnPtciIsttNum}
+                ,   #{item.pfStlnLoanExpDt}
+                ,   #{item.sq1StlnIsttNm}
+                ,   #{item.sq1StlnIsttCrno}
+                ,   #{item.sq1StlnLoanAmt}
+                ,   #{item.sq2StlnIsttNm}
+                ,   #{item.sq2StlnIsttCrno}
+                ,   #{item.sq2StlnLoanAmt}
+                ,   #{item.sq3StlnIsttNm}
+                ,   #{item.sq3StlnIsttCrno}
+                ,   #{item.sq3StlnLoanAmt}
+                ,   #{item.sq4StlnIsttNm}
+                ,   #{item.sq4StlnIsttCrno}
+                ,   #{item.sq4StlnLoanAmt}
+                ,   #{item.sq5StlnIsttNm}
+                ,   #{item.sq5StlnIsttCrno}
+                ,   #{item.sq5StlnLoanAmt}
+                ,   #{item.busiApvlRqsDt}
+                ,   #{item.landPchsRt}
+                ,   #{item.rsplCnfnCfrmThcsDcd}
+                ,   #{item.rsplCnfnCfrmIsttNm}
+                ,   #{item.rsplCnfnCfrmIsttCrno}
+                ,   #{item.rsplCnfnEprzCrdtGrdCd}
+                ,   #{item.csucCmpNm}
+                ,   #{item.csucCmpCrno}
+                ,   #{item.csucCmpEprzCrdtGrdCd}
+                ,   #{item.csstDt}
+                ,   #{item.cnfnDt}
+                ,   #{item.plnFairRt}
+                ,   #{item.excFairRt}
+                ,   #{item.slltRt}
+                ,   #{item.slltOpngDt}
+                ,   #{item.moinRt}
+                ,   #{item.exitSlltRt}
+                ,   #{item.dvrSqms}
+                ,   #{item.dvrSqmsUnAmt}
+                ,   #{item.rentPsblTotSqms}
+                ,   #{item.emrmRt}
+                ,   #{item.unSqmsRentErnAmt}
+                ,   #{item.unSqmsRentCt}
+                ,   #{item.sq1YrlyPurBsnErnAmt}
+                ,   #{item.sq2YrlyPurBsnErnAmt}
+                ,   #{item.rlesTotLoanIntr}
+                ,   #{item.rlesTotLoanPaiAmt}
+                ,   #{item.cptlRstrRt}
+                ,   #{item.ncrRskVl}
+                ,   #{item.ncrRskAmt}
+                ,   #{item.jobChrrNm}
+                ,   #{item.dptNm}
+                ,   #{item.cplcCtns}
+                ,   SYSDATE
+                ,   #{item.hndEmpno}
+                ,   #{item.hndTmnlNo}
+                ,   #{item.hndTrId}
+                ,   #{item.guid}
+                )
+        </foreach>
+    </insert>
+    
+</mapper>

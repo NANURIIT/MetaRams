@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{/js/business/ds/DS01030S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- ibox -->
+				<div class="ibox">
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-content" style="border:0px;">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 text-right">
+										<button class="btn btn-primary" type="button" onclick="getDetailInfo();"><i class="fa fa-check"></i>&nbsp;고객등록/수정</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ibox">
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;고객기본정보</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">고객명</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="홍길동" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">주민등록번호</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="720321-1******" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">재무정보</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="유" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">정보보호</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">실제생년월일</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="1972년 1월 14일" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">결혼구분</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="기혼" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">결혼기념일</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="1998년 4월 19일" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">직장명</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="**건설" disabled>
+										</div>
+									</div>
+								</div>
+								<!-- row3 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">직위</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="과장" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">자동차 유무</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">취미</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="독서" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">소득</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="350만원" disabled>
+										</div>
+									</div>
+								</div>
+								<!-- row4 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">주택평수</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="35평" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">맞벌이여부</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" value="무" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">소개자</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control">
+												<option>친척</option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label">주거형태</label>
+										<div class="col-sm-2 input-group">
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;자가
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;타가
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;전세
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- row5 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">주거형태</label>
+										<div class="col-sm-2 input-group">
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;자가
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;타가
+											</div>
+											<div class="col-sm-4 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;전세
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label">고객상태</label>
+										<div class="col-sm-3 input-group">
+											<div class="col-sm-2 text-left input-group">
+												<input type="radio" value="Y" name="TB06010S_socYn">&nbsp;계약
+											</div>
+											<div class="col-sm-2 text-left input-group">
+												<input type="radio" value="N" name="TB06010S_socYn">&nbsp;가망
+											</div>
+											<div class="col-sm-4 input-group">
+												<button type="button" class="btn btn-default mg-l5">상세조회</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;고객분석정보</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">고객유형</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control">
+												<option>핵심고객</option>
+											</select>
+											<button type="button" class="btn btn-default mg-l5">유형평가</button>
+											<button type="button" class="btn btn-default mg-l5">상세정보</button>
+										</div>
+										<label class="col-sm-1 col-form-label">고객등급</label>
+										<div class="col-sm-1 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">고객 잠재성</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">Life Stage</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;계약기본정보</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">계약 총건수</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">모집채널이탈</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">보장건수</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">최근구매</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label">누적현금가치</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">차기공제말기</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">청구건수</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+										<label class="col-sm-1 col-form-label">해약건수</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" disabled>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline mb-1">
+									<div class="col-sm-12">
+										<div class="ibox-content border-none">
+											<div class="tabs-container">
+												<ul class="nav nav-tabs" role="tablist" id="ramsTab">
+													<li><a class="nav-link" data-toggle="tab" href="#tab-1">접촉정보</a></li>
+													<li><a class="nav-link" data-toggle="tab" href="#tab-2">보장정보</a></li>
+													<li><a class="nav-link" data-toggle="tab" href="#tab-3">계약 별 상태</a></li>
+													<li><a class="nav-link" data-toggle="tab" href="#tab-4">세대정보</a></li>
+													<li><a class="nav-link" data-toggle="tab" href="#tab-5">타사계약정보</a></li>
+												</ul>
+												<div class="tab-content">
+												
+													<div role="tabpanel" id="tab-1" class="tab-pane active">
+														<div class="panel-body">
+															<div class="col-sm-12">
+																<div class="tableFixHeader4">
+																	<table class="table result table-bordered table-hover">
+																		<colgroup>
+																			<!-- TODO: 그리드의 컬럼사이즈 항목별로 확인 -->
+																			<col>
+																			<col>
+																			<col>
+																		</colgroup>
+																		<thead>
+																			<tr>
+																				<th>접촉일자</th>
+																				<th>접촉채널</th>
+																				<th>접촉내용</th>
+																			</tr>
+																		</thead>
+																		<tbody id="TB04040_getIssDtls">
+																			<tr>
+																				<td>2009.01.30</td>
+																				<td>콜센터</td>
+																				<td>
+																					상품관련문의
+																					<button class="btn btn-success btn-xs" type="button" onclick="cchInfoBtnSave();">
+																						상세조회
+																					</button>
+																				</td>
+																			</tr>
+																			<tr>
+																				<td>2009.08.31</td>
+																				<td>홈페이지</td>
+																				<td>
+																					보상관련문의
+																					<button class="btn btn-success btn-xs" type="button" onclick="cchInfoBtnSave();">
+																						상세조회
+																					</button>
+																				</td>
+																			</tr>
+																			<tr>
+																				<td>2010.02.22</td>
+																				<td>내방</td>
+																				<td>
+																					사고처리
+																					<button class="btn btn-success btn-xs" type="button" onclick="cchInfoBtnSave();">
+																						상세조회
+																					</button>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+													<div role="tabpanel" id="tab-2" class="tab-pane">
+														<div class="panel-body">
+															<div class="col-sm-12">
+																
+															</div>
+														</div>
+													</div>
+													
+													<div role="tabpanel" id="tab-3" class="tab-pane">
+														<div class="panel-body">
+															<div class="col-sm-12">
+																
+															</div>
+														</div>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							
+							
+							
+						</div>
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;고객서비스정보</h5>
+							</div>
+							
+							<div class="ibox-content">
+								<div class="row">
+									<!-- 1 -->
+									<div class="col-lg-4">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶&nbsp;결혼기념일</h5>
+												<div class="ibox-tools">
+													<button class="btn btn-success btn-xs" type="button" onclick="cchInfoBtnSave();">
+														상세조회
+													</button>
+												</div>
+											</div>
+											<div class="ibox-content text-right">
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<label class="col-sm-3 col-form-label">일자</label>
+														<div class="col-sm-9 input-group">
+															<input type="text" class="form-control" value="2010.6.18" disabled>
+														</div>
+													</div>
+												</div>
+												
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<label class="col-sm-3 col-form-label">접촉수단</label>
+														<div class="col-sm-9 input-group">
+															<select class="form-control">
+																<option>SMS</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<label class="col-sm-3 col-form-label">방문</label>
+														<div class="col-sm-9 input-group">
+															최종방문일로부터
+															<select class="form-control mg-l5">
+																<option>1개월</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+									
+									<!-- 2 -->
+									<div class="col-lg-4">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶&nbsp;생일</h5>
+												<div class="ibox-tools">
+													<button class="btn btn-success btn-xs" type="button" onclick="cchInfoBtnSave();">
+														상세조회
+													</button>
+												</div>
+											</div>
+											<div class="ibox-content text-right">
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<label class="col-sm-3 col-form-label">일자</label>
+														<div class="col-sm-9 input-group">
+															<input type="text" class="form-control" value="2010.6.18" disabled>
+														</div>
+													</div>
+												</div>
+												
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<label class="col-sm-3 col-form-label">접촉수단</label>
+														<div class="col-sm-9 input-group">
+															<select class="form-control">
+																<option>SMS</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<label class="col-sm-3 col-form-label">방문</label>
+														<div class="col-sm-9 input-group">
+															최종방문일로부터
+															<select class="form-control mg-l5">
+																<option>1개월</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+									
+									<!-- 3 -->
+									<div class="col-lg-4">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶&nbsp;배우자 생일</h5>
+												<div class="ibox-tools">
+													<button class="btn btn-success btn-xs" type="button" onclick="cchInfoBtnSave();">
+														상세조회
+													</button>
+												</div>
+											</div>
+											<div class="ibox-content text-right">
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<label class="col-sm-3 col-form-label">일자</label>
+														<div class="col-sm-9 input-group">
+															<input type="text" class="form-control" value="2010.6.18" disabled>
+														</div>
+													</div>
+												</div>
+												
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<label class="col-sm-3 col-form-label">접촉수단</label>
+														<div class="col-sm-9 input-group">
+															<select class="form-control">
+																<option>SMS</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<label class="col-sm-3 col-form-label">방문</label>
+														<div class="col-sm-9 input-group">
+															최종방문일로부터
+															<select class="form-control mg-l5">
+																<option>1개월</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+									
+								</div>
+								
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<!-- end of ibox -->
+				
+			</div>
+		</div><!-- div row -->
+	</div>
+</th:block>
+
+</html>

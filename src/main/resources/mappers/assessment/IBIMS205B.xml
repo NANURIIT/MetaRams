@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS205BMapper">
+
+	<select id="selectIBIMS205B" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS205BVO">
+		SELECT s205b.BSS_ASST_MNGM_NO						<!-- 기초자산관리번호 -->
+			 , s002b.CD_VL_NM	AS BSS_ASST_KND_CD_NM 		<!-- 기초자산종류코드명 -->
+			 , s205b.PRDT_CD								<!-- 상품코드 -->
+			 , s205b.BSS_ASST_KND_CD						<!-- 기초자산종류코드 -->
+			 , s205b.BSC_ASTS_CNTS							<!-- 기초자산내용 -->
+			 , s205b.RNM_CNFM_NO							<!-- 실명확인번호 -->
+			 , s205b.BSS_ASST_ISU_CRNO						<!-- 기초자산발행법인등록번호 -->
+			 , s205b.CRP_NM									<!-- 법인명 -->
+			 , s205b.INVST_CRRY_CD							<!-- 투자통화코드투자통화코드 -->
+			 , s205b.CRRY_AMT								<!-- 통화금액 -->
+			 , s205b.APLC_EXCH_R							<!-- 적용환율 -->
+			 , s003b.CD_VL_NM			AS INVST_CRRY_CD_NM <!-- 투자통화코드명 -->
+			 , s205b.CREV_AMT								<!-- 시가평가금액 -->
+			 , s205b.HND_DETL_DTM							<!-- 조작상세일시 -->
+			 , s205b.HND_EMPNO								<!-- 조작사원번호 -->
+			 , s205b.HND_TMNL_NO							<!-- 조작단말기번호 -->
+			 , s205b.HND_TR_ID								<!-- 조작거래id -->
+			 , s205b.GUID									<!-- guid -->
+		  FROM IBIMS205B s205b
+		  LEFT JOIN IBIMS002B s002b
+            ON s002b.CMNS_CD_GRP								= 'B010'			<!-- 기초자산종류코드 -->
+           AND s205b.BSS_ASST_KND_CD							= s002b.CD_VL_ID
+          LEFT JOIN IBIMS002B s003b
+            ON s003b.CMNS_CD_GRP								= 'I027'			<!-- 투자통화코드 -->
+           AND s205b.INVST_CRRY_CD								= s003b.CD_VL_ID
+		 WHERE PRDT_CD = #{prdtCd}
+	</select>
+	
+	<select id="getBssAsstMngmNo" parameterType="String" resultType="String">
+            SELECT LPAD(NVL(MAX(BSS_ASST_MNGM_NO), 0) + 1, 16, '0') AS BSS_ASST_MNGM_NO 
+              FROM IBIMS205B
+     </select>
+	
+	<insert id="insertIBIMS205B" parameterType="com.nanuri.rams.business.common.dto.IBIMS205BDTO">
+		INSERT INTO IBIMS205B 
+               (							
+                  BSS_ASST_MNGM_NO             <!-- 기초자산관리번호 -->
+                , PRDT_CD                      <!-- 상품코드 -->
+                , BSS_ASST_KND_CD              <!-- 기초자산종류코드 -->
+                , BSC_ASTS_CNTS                <!-- 기초자산내용 -->
+                , RNM_CNFM_NO                  <!-- 실명확인번호 -->
+                , BSS_ASST_ISU_CRNO            <!-- 기초자산발행법인등록번호 -->
+                , CRP_NM                       <!-- 법인명 -->
+                , INVST_CRRY_CD                <!-- 투자통화코드투자통화코드 -->
+                , CRRY_AMT                     <!-- 통화금액 -->
+                , APLC_EXCH_R                  <!-- 적용환율 -->
+                , CREV_AMT                     <!-- 시가평가금액 -->
+                , HND_DETL_DTM                 <!-- 조작상세일시 -->
+                , HND_EMPNO                    <!-- 조작사원번호 -->
+                , HND_TMNL_NO                  <!-- 조작단말기번호 -->
+                , HND_TR_ID                    <!-- 조작거래id -->
+                , GUID                         <!-- guid -->
+               )
+        VALUES (
+                 (
+                  SELECT LPAD(NVL(MAX(A.BSS_ASST_MNGM_NO), 0) + 1, 16, '0') 
+                    FROM IBIMS205B A
+                 )                     
+               , #{prdtCd}                     
+               , #{bssAsstKndCd}                    
+               , #{bscAstsCnts}              
+               , #{rnmCnfmNo}                      
+               , #{bssAsstIsuCrno}                  
+               , #{crpNm}                 
+               , #{invstCrryCd}                  
+               , #{crryAmt}                  
+               , #{aplcExchR}              
+               , #{crevAmt}             
+               , SYSDATE                       
+               , #{hndEmpno}                   
+               , #{hndTmnlNo}                  
+               , #{hndTrId}                    
+               , #{guid}                       
+               )
+    </insert>
+    
+    <update id="updateIBIMS205B" parameterType="com.nanuri.rams.business.common.dto.IBIMS205BDTO">
+    	UPDATE IBIMS205B
+    	  SET BSS_ASST_KND_CD   = #{bssAsstKndCd}
+    	    , INVST_CRRY_CD     = #{invstCrryCd}
+    	    , BSC_ASTS_CNTS     = #{bscAstsCnts}
+    	    , CRRY_AMT          = #{crryAmt}
+    	    , BSS_ASST_ISU_CRNO = #{bssAsstIsuCrno}
+    	    , APLC_EXCH_R       = #{aplcExchR}
+    	    , CRP_NM            = #{crpNm}
+    	    , CREV_AMT          = #{crevAmt}
+    	    , HND_DETL_DTM      = SYSDATE
+    	    , HND_EMPNO         = #{hndEmpno}
+        WHERE PRDT_CD           = #{prdtCd}
+          AND BSS_ASST_MNGM_NO  = #{bssAsstMngmNo}
+    </update>
+	
+    <delete id="deleteIBIMS205B" parameterType="string">
+        DELETE 
+          FROM IBIMS205B
+         WHERE 1=1                               
+           AND PRDT_CD                                           = #{prdtCd}                               
+    </delete>
+    
+    <delete id="deleteOneIBIMS205B" parameterType="com.nanuri.rams.business.common.dto.IBIMS205BDTO">
+        DELETE 
+          FROM IBIMS205B
+         WHERE 1=1                               
+           AND PRDT_CD                                           = #{prdtCd}
+           AND BSS_ASST_MNGM_NO                                  = #{bssAsstMngmNo}                     
+    </delete>
+    
+</mapper>

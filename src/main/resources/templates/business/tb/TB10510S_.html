@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<!-- 모달 추가시 ex) <th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 배치 스케줄러 관리 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+						
+						<div class="ibox-content text-right i-filter">
+							<div class="form-group form-inline row">
+								<div class="form-group col-sm-12">
+									<label class="col-sm-1 col-form-label">기준일자</label>
+									<div class="col-sm-2 input-group date">
+										<input type="text" class="form-control" id="" value="" placeholder="yyyy-mm-dd">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<!-- 버튼영역 -->
+									<div class="col-sm-9 text-right">
+										<button class="btn btn-default" onclick=""><i class="fa fa-undo"></i>&nbsp;초기화</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ibox-content" style="min-height: 830px">
+							<!-- 조회내역영역 -->
+							<div class="pd0 mb-3" style="min-height: 300px; max-height: 730px">
+								<table class="table result table-bordered footable" data-page-size="20" data-paging="true" data-sort="false">
+									<colgroup>
+										<col style="width: 10%;">
+										<col style="width: 5%;">
+										<col style="width: 10%;">
+										<col style="width: 70%;">
+									</colgroup>
+									<thead>
+										<tr> 
+											<th>업무구분</th>
+											<th><input type="checkbox"></th>
+											<th>배치JOB ID</th>
+											<th>배치명</th>
+										</tr>
+									</thead>
+									<tbody id="">
+										<tr class="text-center">
+											<td>사후관리</td>
+											<td><input type="checkbox"></td>
+											<td>JOB_01</td>
+											<td class="text-left">월말결산</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+							<!-- 버튼영역 -->
+							<div class="col-sm-12 text-right pd0">
+								<button class="btn btn-success" type="button" onclick=""><i class="fa fa-check"></i>&nbsp;선택항목 실행</button>
+							</div>
+						</div>	
+					</div>
+
+				</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

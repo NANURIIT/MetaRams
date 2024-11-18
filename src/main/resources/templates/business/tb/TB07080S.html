@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB06011P.js}"></script>
+	<script th:src="@{js/business/tb/TB07080S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 원장정정 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- 조회조건 st-->
+				<div class="ibox">
+					<div class="ibox-content i-filter">
+						<div class="form-group form-inline row">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1 col-form-label">종목코드</label>
+								<div class="col-sm-5 input-group">
+									<input type="text" class="form-control" id="TB07080S_prdtCd" >
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callTB06011P('TB07080S');"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" id="TB07080S_prdtNm" style="width: 180px;" readonly="">
+								</div>
+								<label class="col-sm-1 col-form-label">실행순번</label>
+								<div class="col-sm-2  input-group">
+									<select class="form-control" id="TB07080S_excSn">
+										<option value="">선택(필수)</option>
+									</select>
+								</div>
+								<div class="col-sm-3 text-right pl-0">
+									<button class="btn btn-primary" type="button" onclick="TB07080Sjs.selectTB07080S();">
+										<i class="fa fa-search"></i>&nbsp;조회</button>
+									<button id="TB07080S_" class="btn btn-default" onclick="TB07080Sjs.TB07080S_inputReset();">
+										<i class="fa fa-undo"></i>&nbsp;초기화</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 조회조건 ed -->
+				
+				<div class="ibox-content" style="min-height: 840px">	
+					<!-- 취소대상내역 -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>▶&nbsp;실행원장정보</h5>
+						</div>
+						<div class="ibox-content">
+							<!-- row1 -->
+							 <div class="row p-2" id="allDataBox">
+								<div class="col-sm-6 pl-4" id="disabledView" style="border-right: 1px solid #ccc;">
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원장상태</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07080S_ldgSttsCd_d" disabled>
+												<option value="">선택</option>
+											</select>
+										</div>
+										<label class="col-sm-3 col-form-label text-right">다음상황예정일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_nxtRdmpPrarDt_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">통화코드</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_crryCd_d" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">다음이자납입일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_nxtIntrPymDt_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">실행일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_excDt_d" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">이자상환주기개월수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control  text-right" id="TB07080S_intrRdmpFrqcMnum_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">만기일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_expDt_d" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">이자납입일자코드</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07080S_intrPymDtCd_d" disabled>
+												<option value="">선택</option>
+											</select>
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">대출금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dealExcAmt_d" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">원금상환주기개월수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_prnaRdmpFrqcMnum_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">대출잔액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dealExcBlce_d" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">원금연체일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_prnaOvduDt_d" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원화환산율</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_krwTrslRt_d" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">이자연차일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_intrOvduDt_d" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원화환산실행금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_krwTrslExcAmt_d" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">총상환회차</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_totRdmpTmrd_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원화환산실행잔액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_krwTrslExcBlce_d" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">최종상환회차</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_lastRdmpTmrd_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">기업여신장부금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_acbkAmt_d" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">할부잔액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dealIstmBlce_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원금거치개월수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_prnaDfrPrdMnum_d" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">균등상환금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dealEqlRdmpAmt_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">거치만기일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dfrExpMnum_d" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">일시상황금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control  text-right" id="TB07080S_istmDtmRdmpAmt_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">최종원금상환일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_lastPrnaRdmpDt_d" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">미수이자금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control  text-right" id="TB07080S_rcvbIntrAmt_d" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-0">
+										<label class="col-sm-2 col-form-label text-right">최종이자계산일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_lastIntrClcDt_d" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+										</div>
+									</div>
+								</div>
+								
+
+								<!-- update row -->
+								<div class="col-sm-6 pl-4">
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원장상태</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07080S_ldgSttsCd">
+												<option value="">선택</option>
+											</select>
+										</div>
+										<label class="col-sm-3 col-form-label text-right">다음상황예정일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB07080S_nxtRdmpPrarDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">통화코드</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07080S_crryCd" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">다음이자납입일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB07080S_nxtIntrPymDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">실행일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB07080S_excDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<label class="col-sm-3 col-form-label text-right">이자상환주기개월수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control  text-right" id="TB07080S_intrRdmpFrqcMnum" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">만기일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB07080S_expDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<label class="col-sm-3 col-form-label text-right">이자납입일자코드</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07080S_intrPymDtCd">
+												<option value="">선택</option>
+											</select>
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">대출금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dealExcAmt" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">원금상환주기개월수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_prnaRdmpFrqcMnum" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">대출잔액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dealExcBlce" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">원금연체일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB07080S_prnaOvduDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원화환산율</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_krwTrslRt" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">이자연차일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB07080S_intrOvduDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원화환산실행금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_krwTrslExcAmt" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">총상환회차</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_totRdmpTmrd" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원화환산실행잔액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_krwTrslExcBlce" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">최종상환회차</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_lastRdmpTmrd" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">기업여신장부금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_acbkAmt" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">할부잔액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dealIstmBlce" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">원금거치개월수</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_prnaDfrPrdMnum" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">균등상환금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dealEqlRdmpAmt" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">거치만기일자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07080S_dfrExpMnum" name="" value="">
+										</div>
+										<label class="col-sm-3 col-form-label text-right">일시상황금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control  text-right" id="TB07080S_istmDtmRdmpAmt" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-1">
+										<label class="col-sm-2 col-form-label text-right">최종원금상환일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB07080S_lastPrnaRdmpDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<label class="col-sm-3 col-form-label text-right">미수이자금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control  text-right" id="TB07080S_rcvbIntrAmt" name="" value="">
+										</div>
+									</div>
+									<div class="row form-group text-right mb-0">
+										<label class="col-sm-2 col-form-label text-right">최종이자계산일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB07080S_lastIntrClcDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"  value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>▶ 실행금리정보</h5>
+							<div class="ibox-tools">		                   		
+								<button class="btn btn-default btn-xs" type="button" onclick="TB07080Sjs.TB07080S_addNewRow();"><i class="fa fa-plus"></i></button>
+								<button class="btn btn-default btn-xs" type="button" onclick="TB07080Sjs.TB07080S_deleteRow();"><i class="fa fa-minus"></i></button>
+							</div>
+						</div>
+						<div class="ibox-content">
+							<div class="pq-theme">
+								<div class="pq-red" id="TB07080S_colModel"></div>
+								<!-- <table class="table result table-bordered table-hover">
+									<colgroup>
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+									</colgroup>
+									<thead>
+										<tr>
+											<th>시작일자</th>
+											<th>종료일자</th>
+											<th>기준금리종류</th>
+											<th>고정금리</th>
+											<th>가산금리</th>
+											<th>변동주기유형</th>
+											<th>금리변동주기수</th>
+											<th>적용일수구분</th>
+											<th>금리적용일수</th>
+										</tr>
+									</thead>
+									<tbody id="TB07080S_deleteR">
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td class="text-right"></td>
+											<td class="text-right"></td>
+											<td></td>
+											<td class="text-right"></td>
+											<td></td>
+											<td class="text-right"></td>
+										</tr>
+									</tbody>
+								</table> -->
+							</div>
+						</div>
+					</div>
+					<!-- 취소대상내역 end -->
+					
+					<div class="ibox form-inline">
+						<!-- 버튼영역 -->
+						<div class="col-sm-12 text-right pd0">
+							<button class="btn btn-success" type="button" onclick="TB07080Sjs.updateTB07080S();"><i class="fa fa-save"></i>&nbsp;저장</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 실행상환취소 ed -->
+</th:block>
+http://localhost:18090/TB07040S
+</html>

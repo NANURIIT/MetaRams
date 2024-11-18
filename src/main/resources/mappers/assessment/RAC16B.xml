@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAC16BMapper">
+
+	<select id="selectRepayInterestInfo" parameterType="com.nanuri.rams.business.common.dto.RAC16BDTO" resultType="com.nanuri.rams.business.common.dto.RAC16BDTO">
+		SELECT *
+		  FROM RAC16B
+		 WHERE 1=1
+		   AND IB_DEAL_NO		= #{ibDealNo}
+		   AND RISK_INSPCT_CCD	= #{riskInspctCcd}
+		   AND LST_C_CASE_CCD	= #{lstCCaseCcd}
+		   AND PRDT_CD			= #{prdtCd}
+	</select>
+	
+	<insert id="insertRepayInterestInfo" parameterType="com.nanuri.rams.business.common.dto.RAC16BDTO">
+		INSERT INTO RAC16B
+			   (
+			    IB_DEAL_NO                                  <!-- IB관리번호                           -->
+		        , RISK_INSPCT_CCD                           <!-- 리스크심사구분코드, TODO: 일련번호   -->
+		        , LST_C_CASE_CCD                            <!-- 부수안건구분코드, TODO: 일련번호     -->
+		        , SQ                                        <!-- 일련번호                             -->
+		        , PRDT_CD                                   <!-- 상품코드                             -->
+		        , PRDT_NM                                   <!-- 상품명                               -->
+		        , EPRZ_CRDL_RQS_KND_CD                      <!-- 기업여신신청종류코드                 -->
+		        , EPRZ_CRDL_PRG_STTS_CD                     <!-- 기업여신진행상태코드                 -->
+		        , RQS_SN                                    <!-- 신청일련번호                         -->
+		        , PTXT_TR_OTHR_DSCM_NO                      <!-- 명목거래상대방식별번호               -->
+		        , FRS_MNGM_BDCD                             <!-- 최초관리부점코드                     -->
+		        , MNGM_BDCD                                 <!-- 관리부점코드                         -->
+		        , EPRZ_CRDL_PRDT_CLSF_CD                    <!-- 기업여신상품분류코드                 -->
+		        , EPRZ_CRDL_PRDT_MDCL_CD                    <!-- 기업여신상품중분류코드               -->
+		        , EPRZ_CRDL_PRDT_LCLS_CD                    <!-- 기업여신상품대분류코드               -->
+		        , ACTS_CD                                   <!-- 계정과목코드                         -->
+		        , EPRZ_CRDL_ACCT_JOB_CD                     <!-- 기업여신회계업무코드                 -->
+		        , EPRZ_CRDL_ACCT_UN_JOB_CD                  <!-- 기업여신회계단위업무코드             -->
+		        , EPRZ_CRDL_ACCT_TR_CD                      <!-- 기업여신회계거래코드                 -->
+		        , EPRZ_CRDL_APVL_AMT                        <!-- 기업여신승인금액                     -->
+		        , CRRY_CD                                   <!-- 통화코드                             -->
+		        , APVL_DT                                   <!-- 승인일자                             -->
+		        , EXP_DT                                    <!-- 만기일자                             -->
+		        , EPRZ_CRDL_INDV_LMT_DCD                    <!-- 기업여신개별한도구분코드             -->
+		        , EPRZ_CRDL_INTR_RCVN_MTH_CD                <!-- 기업여신이자수취방법코드             -->
+		        , EPRZ_CRDL_INTR_BNAO_DCD                   <!-- 기업여신이자선후취구분코드           -->
+		        , EPRZ_CRDL_TFD_LY_APLY_DCD                 <!-- 기업여신초일말일적용구분코드         -->
+		        , EPRZ_CRDL_INTR_SNNO_PRCS_DCD              <!-- 기업여신이자단수처리구분코드         -->
+		        , EPRZ_CRDL_PAI_RDMP_DCD                    <!-- 기업여신원리금상환구분코드           -->
+		        , PRNA_RDMP_FRQC_MNUM                       <!-- 원금상환주기개월수                   -->
+		        , INTR_RDMP_FRQC_MNUM                       <!-- 이자상환주기개월수                   -->
+		        , PRNA_DFR_PRD_MNUM                         <!-- 원금거치기간개월수                   -->
+		        , EPRZ_CRDL_ORTN_FND_CD                     <!-- 기업여신운용펀드코드                 -->
+		        , EPRZ_CRDL_CTRT_NO                         <!-- 기업여신계약번호                     -->
+		        , PF_LOAN_YN                                <!-- PF대출여부                           -->
+		        , UNDW_FNN_YN                               <!-- 인수금융여부                         -->
+		        , INV_IDTRT_SMIT_YN                         <!-- 투자확약서제출여부                   -->
+		        , TRG_YN                                    <!-- 트리거여부                           -->
+		        , TRG_CND_CTNS                              <!-- 트리거조건내용                       -->
+		        , INV_IDTRT_SMIT_DT                         <!-- 투자확약서제출일자                   -->
+		        , CHRR_EMPNO                                <!-- 담당자사원번호                       -->
+		        , SUB_CHRR_EMPNO                            <!-- 서브담당자사원번호                   -->
+		        , EPRZ_CRDL_DCRB_ATH_DCD                    <!-- 기업여신전결권한구분코드             -->
+		        , ED_DT                                     <!-- 종결일자                             -->
+		        , EPRZ_CRDL_CTRT_END_RSN_CD                 <!-- 기업여신계약종료사유코드             -->
+		        , EPRZ_CRDL_CTRT_END_RSN_CTNS               <!-- 기업여신계약종료사유내용             -->
+		        , TRCH_APLY_YN                              <!-- 트렌치적용여부                       -->
+		        , BDBT_RSVS_RCKN_STDR_LCLS_CD               <!-- 대손준비금산정기준대분류코드         -->
+		        , BDBT_RSVS_RCKN_STDR_MDCL_CD               <!-- 대손준비금산정기준중분류코드         -->
+		        , BDBT_RSVS_RCKN_STDR_SCLS_CD               <!-- 대손준비금산정기준소분류코드         -->
+		        , BDBT_RSVS_RCKN_STDR_RTO                   <!-- 대손준비금산정기준비율               -->
+		        , EPRZ_CRDL_CTRT_AMT                        <!-- 기업여신계약금액                     -->
+		        , EPRZ_CRDL_INV_AMT                         <!-- 기업여신투자금액                     -->
+		        , THCO_PTCI_AMT                             <!-- 당사참여금액                         -->
+		        , PRDT_TOT_AMT                              <!-- 상품총금액                           -->
+		        , EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD            <!-- 기업여신이자일수계산방법코드         -->
+		        , EPRZ_CRDL_HLDY_PRCS_DCD                   <!-- 기업여신휴일처리구분코드             -->
+		        , EPRZ_CRDL_STDR_INTRT_KND_CD               <!-- 기업여신기준금리종류코드             -->
+		        , FXN_INTRT                                 <!-- 고정금리                             -->
+		        , ADD_INTRT                                 <!-- 가산금리                             -->
+		        , INTRT_CNGE_FRQC_MNUM                      <!-- 금리변동주기개월수                   -->
+		        , HDWT_EVL_AMT                              <!-- 수기평가금액                         -->
+		        , EPRZ_CRDL_WEEK_MRTG_KND_CD                <!-- 기업여신주담보종류코드               -->
+		        , OVDU_INTR_RT                              <!-- 연체이자율                           -->
+		        , EPRZ_CRDL_OVDU_INTR_RT_DCD                <!-- 기업여신연체이자율구분코드           -->
+		        , TOT_RDMP_TMRD                             <!-- 총상환회차                           -->
+		        , EPRZ_CRDL_EQL_RDMP_AMT                    <!-- 기업여신균등상환금액                 -->
+		        , ISTM_DTM_RDMP_AMT                         <!-- 할부일시상환금액                     -->
+		        , RCVB_INTR_APLY_IRT                        <!-- 미수이자적용이율                     -->
+		        , EPRZ_CRDL_INTR_ERN_AMT                    <!-- 기업여신이자수익금액                 -->
+		        , FNDS_PRCR_CT_AMT                          <!-- 자금조달비용금액                     -->
+		        , EPRZ_CRDL_INTR_CLC_END_DE_DCD             <!-- 기업여신이자계산종료일구분코드       -->
+		        , INTR_HDWT_CLC_YN                          <!-- 이자수기계산여부                     -->
+		        , EPRZ_CRDL_GRD_CD                          <!-- 기업여신등급코드                     -->
+		        , EPRZ_CRDL_DSHN_RT_GRD_CD                  <!-- 기업여신부도율등급코드               -->
+		        , SPPI_SFC_YN                               <!-- SPPI충족여부                         -->
+		        , EPRZ_CRDL_ORTN_PRDT_CLSF_CD               <!-- 기업여신운용상품분류코드             -->
+		        , EPRZ_CRDL_INTRT_EXP_DCD                   <!-- 기업여신금리만기구분코드             -->
+		        , INTRT_REST_FRQC_MNUM                      <!-- 금리재설정주기개월수                 -->
+		        , INV_JDGM_COMT_NO                          <!-- 투자심사위원회번호                   -->
+		        , FILE_ATT_SQ                               <!-- 파일첨부일련번호                     -->
+		        , FST_HNDL_P_ENO                            <!-- 최초등록자사번                       -->
+		        , LST_HNDL_P_ENO                            <!-- 최종변경자사번                       -->
+		        , EARLY_REPAY_YN                            <!-- 중도상환여부                         -->
+		       )
+		VALUES (
+				#{ibDealNo                  }               <!-- IB관리번호                           -->
+		        , #{riskInspctCcd           }               <!-- 리스크심사구분코드, TODO: 일련번호   -->
+		        , #{lstCCaseCcd             }               <!-- 부수안건구분코드, TODO: 일련번호     -->
+		        , #{sq                      }               <!-- 일련번호                             -->
+		        , #{prdtCd                  }               <!-- 상품코드                             -->
+		        , #{prdtNm                  }               <!-- 상품명                               -->
+		        , #{eprzCrdlRqsKndCd        }               <!-- 기업여신신청종류코드                 -->
+		        , #{eprzCrdlPrgSttsCd       }               <!-- 기업여신진행상태코드                 -->
+		        , #{rqsSn                   }               <!-- 신청일련번호                         -->
+		        , #{ptxtTrOthrDscmNo        }               <!-- 명목거래상대방식별번호               -->
+		        , #{frsMngmBdcd             }               <!-- 최초관리부점코드                     -->
+		        , #{mngmBdcd                }               <!-- 관리부점코드                         -->
+		        , #{eprzCrdlPrdtClsfCd      }               <!-- 기업여신상품분류코드                 -->
+		        , #{eprzCrdlPrdtMdclCd      }               <!-- 기업여신상품중분류코드               -->
+		        , #{eprzCrdlPrdtLclsCd      }               <!-- 기업여신상품대분류코드               -->
+		        , #{actsCd                  }               <!-- 계정과목코드                         -->
+		        , #{eprzCrdlAcctJobCd       }               <!-- 기업여신회계업무코드                 -->
+		        , #{eprzCrdlAcctUnJobCd     }               <!-- 기업여신회계단위업무코드             -->
+		        , #{eprzCrdlAcctTrCd        }               <!-- 기업여신회계거래코드                 -->
+		        , #{eprzCrdlApvlAmt         }               <!-- 기업여신승인금액                     -->
+		        , #{crryCd                  }               <!-- 통화코드                             -->
+		        , #{apvlDt                  }               <!-- 승인일자                             -->
+		        , #{expDt                   }               <!-- 만기일자                             -->
+		        , #{eprzCrdlIndvLmtDcd      }               <!-- 기업여신개별한도구분코드             -->
+		        , #{eprzCrdlIntrRcvnMthCd   }               <!-- 기업여신이자수취방법코드             -->
+		        , #{eprzCrdlIntrBnaoDcd     }               <!-- 기업여신이자선후취구분코드           -->
+		        , #{eprzCrdlTfdLyAplyDcd    }               <!-- 기업여신초일말일적용구분코드         -->
+		        , #{eprzCrdlIntrSnnoPrcsDcd }               <!-- 기업여신이자단수처리구분코드         -->
+		        , #{eprzCrdlPaiRdmpDcd      }               <!-- 기업여신원리금상환구분코드           -->
+		        , #{prnaRdmpFrqcMnum        }               <!-- 원금상환주기개월수                   -->
+		        , #{intrRdmpFrqcMnum        }               <!-- 이자상환주기개월수                   -->
+		        , #{prnaDfrPrdMnum          }               <!-- 원금거치기간개월수                   -->
+		        , #{eprzCrdlOrtnFndCd       }               <!-- 기업여신운용펀드코드                 -->
+		        , #{eprzCrdlCtrtNo          }               <!-- 기업여신계약번호                     -->
+		        , #{pfLoanYn                }               <!-- PF대출여부                           -->
+		        , #{undwFnnYn               }               <!-- 인수금융여부                         -->
+		        , #{invIdtrtSmitYn          }               <!-- 투자확약서제출여부                   -->
+		        , #{trgYn                   }               <!-- 트리거여부                           -->
+		        , #{trgCndCtns              }               <!-- 트리거조건내용                       -->
+		        , #{invIdtrtSmitDt          }               <!-- 투자확약서제출일자                   -->
+		        , #{chrrEmpno               }               <!-- 담당자사원번호                       -->
+		        , #{subChrrEmpno            }               <!-- 서브담당자사원번호                   -->
+		        , #{eprzCrdlDcrbAthDcd      }               <!-- 기업여신전결권한구분코드             -->
+		        , #{edDt                    }               <!-- 종결일자                             -->
+		        , #{eprzCrdlCtrtEndRsnCd    }               <!-- 기업여신계약종료사유코드             -->
+		        , #{eprzCrdlCtrtEndRsnCtns  }               <!-- 기업여신계약종료사유내용             -->
+		        , #{trchAplyYn              }               <!-- 트렌치적용여부                       -->
+		        , #{bdbtRsvsRcknStdrLclsCd  }               <!-- 대손준비금산정기준대분류코드         -->
+		        , #{bdbtRsvsRcknStdrMdclCd  }               <!-- 대손준비금산정기준중분류코드         -->
+		        , #{bdbtRsvsRcknStdrSclsCd  }               <!-- 대손준비금산정기준소분류코드         -->
+		        , #{bdbtRsvsRcknStdrRto     }               <!-- 대손준비금산정기준비율               -->
+		        , #{eprzCrdlCtrtAmt         }               <!-- 기업여신계약금액                     -->
+		        , #{eprzCrdlInvAmt          }               <!-- 기업여신투자금액                     -->
+		        , #{thcoPtciAmt             }               <!-- 당사참여금액                         -->
+		        , #{prdtTotAmt              }               <!-- 상품총금액                           -->
+		        , #{eprzCrdlIntrDnumClcMthCd}               <!-- 기업여신이자일수계산방법코드         -->
+		        , #{eprzCrdlHldyPrcsDcd     }               <!-- 기업여신휴일처리구분코드             -->
+		        , #{eprzCrdlStdrIntrtKndCd  }               <!-- 기업여신기준금리종류코드             -->
+		        , #{fxnIntrt                }               <!-- 고정금리                             -->
+		        , #{addIntrt                }               <!-- 가산금리                             -->
+		        , #{intrtCngeFrqcMnum       }               <!-- 금리변동주기개월수                   -->
+		        , #{hdwtEvlAmt              }               <!-- 수기평가금액                         -->
+		        , #{eprzCrdlWeekMrtgKndCd   }               <!-- 기업여신주담보종류코드               -->
+		        , #{ovduIntrRt              }               <!-- 연체이자율                           -->
+		        , #{eprzCrdlOvduIntrRtDcd   }               <!-- 기업여신연체이자율구분코드           -->
+		        , #{totRdmpTmrd             }               <!-- 총상환회차                           -->
+		        , #{eprzCrdlEqlRdmpAmt      }               <!-- 기업여신균등상환금액                 -->
+		        , #{istmDtmRdmpAmt          }               <!-- 할부일시상환금액                     -->
+		        , #{rcvbIntrAplyIrt         }               <!-- 미수이자적용이율                     -->
+		        , #{eprzCrdlIntrErnAmt      }               <!-- 기업여신이자수익금액                 -->
+		        , #{fndsPrcrCtAmt           }               <!-- 자금조달비용금액                     -->
+		        , #{eprzCrdlIntrClcEndDeDcd }               <!-- 기업여신이자계산종료일구분코드       -->
+		        , #{intrHdwtClcYn           }               <!-- 이자수기계산여부                     -->
+		        , #{eprzCrdlGrdCd           }               <!-- 기업여신등급코드                     -->
+		        , #{eprzCrdlDshnRtGrdCd     }               <!-- 기업여신부도율등급코드               -->
+		        , #{sppiSfcYn               }               <!-- SPPI충족여부                         -->
+		        , #{eprzCrdlOrtnPrdtClsfCd  }               <!-- 기업여신운용상품분류코드             -->
+		        , #{eprzCrdlIntrtExpDcd     }               <!-- 기업여신금리만기구분코드             -->
+		        , #{intrtRestFrqcMnum       }               <!-- 금리재설정주기개월수                 -->
+		        , #{invJdgmComtNo           }               <!-- 투자심사위원회번호                   -->
+		        , #{fileAttSq               }               <!-- 파일첨부일련번호                     -->
+		        , #{fstHndlPEno             }               <!-- 최초등록자사번                       -->
+		        , #{lstHndlPEno             }               <!-- 최종변경자사번                       -->
+		        , 'N'                                       <!-- 중도상환여부                         -->
+		       )
+	</insert>
+	
+	<update id="updateRepayInterestInfo" parameterType="com.nanuri.rams.business.common.dto.RAC16BDTO">
+		UPDATE RAC16B
+		   SET    SQ                            	= #{sq                      }               <!-- 일련번호                             -->
+				, PRDT_CD                       	= #{prdtCd                  }               <!-- 상품코드                             -->
+				, PRDT_NM                       	= #{prdtNm                  }               <!-- 상품명                               -->
+				, EPRZ_CRDL_RQS_KND_CD          	= #{eprzCrdlRqsKndCd        }               <!-- 기업여신신청종류코드                 -->
+				, EPRZ_CRDL_PRG_STTS_CD         	= #{eprzCrdlPrgSttsCd       }               <!-- 기업여신진행상태코드                 -->
+				, RQS_SN                        	= #{rqsSn                   }               <!-- 신청일련번호                         -->
+				, PTXT_TR_OTHR_DSCM_NO          	= #{ptxtTrOthrDscmNo        }               <!-- 명목거래상대방식별번호               -->
+				, FRS_MNGM_BDCD                 	= #{frsMngmBdcd             }               <!-- 최초관리부점코드                     -->
+				, MNGM_BDCD                     	= #{mngmBdcd                }               <!-- 관리부점코드                         -->
+				, EPRZ_CRDL_PRDT_CLSF_CD        	= #{eprzCrdlPrdtClsfCd      }               <!-- 기업여신상품분류코드                 -->
+				, EPRZ_CRDL_PRDT_MDCL_CD        	= #{eprzCrdlPrdtMdclCd      }               <!-- 기업여신상품중분류코드               -->
+				, EPRZ_CRDL_PRDT_LCLS_CD        	= #{eprzCrdlPrdtLclsCd      }               <!-- 기업여신상품대분류코드               -->
+				, ACTS_CD                       	= #{actsCd                  }               <!-- 계정과목코드                         -->
+				, EPRZ_CRDL_ACCT_JOB_CD         	= #{eprzCrdlAcctJobCd       }               <!-- 기업여신회계업무코드                 -->
+				, EPRZ_CRDL_ACCT_UN_JOB_CD      	= #{eprzCrdlAcctUnJobCd     }               <!-- 기업여신회계단위업무코드             -->
+				, EPRZ_CRDL_ACCT_TR_CD          	= #{eprzCrdlAcctTrCd        }               <!-- 기업여신회계거래코드                 -->
+				, EPRZ_CRDL_APVL_AMT            	= #{eprzCrdlApvlAmt         }               <!-- 기업여신승인금액                     -->
+				, CRRY_CD                       	= #{crryCd                  }               <!-- 통화코드                             -->
+				, APVL_DT                       	= #{apvlDt                  }               <!-- 승인일자                             -->
+				, EXP_DT                        	= #{expDt                   }               <!-- 만기일자                             -->
+				, EPRZ_CRDL_INDV_LMT_DCD        	= #{eprzCrdlIndvLmtDcd      }               <!-- 기업여신개별한도구분코드             -->
+				, EPRZ_CRDL_INTR_RCVN_MTH_CD    	= #{eprzCrdlIntrRcvnMthCd   }               <!-- 기업여신이자수취방법코드             -->
+				, EPRZ_CRDL_INTR_BNAO_DCD       	= #{eprzCrdlIntrBnaoDcd     }               <!-- 기업여신이자선후취구분코드           -->
+				, EPRZ_CRDL_TFD_LY_APLY_DCD     	= #{eprzCrdlTfdLyAplyDcd    }               <!-- 기업여신초일말일적용구분코드         -->
+				, EPRZ_CRDL_INTR_SNNO_PRCS_DCD  	= #{eprzCrdlIntrSnnoPrcsDcd }               <!-- 기업여신이자단수처리구분코드         -->
+				, EPRZ_CRDL_PAI_RDMP_DCD        	= #{eprzCrdlPaiRdmpDcd      }               <!-- 기업여신원리금상환구분코드           -->
+				, PRNA_RDMP_FRQC_MNUM           	= #{prnaRdmpFrqcMnum        }               <!-- 원금상환주기개월수                   -->
+				, INTR_RDMP_FRQC_MNUM           	= #{intrRdmpFrqcMnum        }               <!-- 이자상환주기개월수                   -->
+				, PRNA_DFR_PRD_MNUM             	= #{prnaDfrPrdMnum          }               <!-- 원금거치기간개월수                   -->
+				, EPRZ_CRDL_ORTN_FND_CD         	= #{eprzCrdlOrtnFndCd       }               <!-- 기업여신운용펀드코드                 -->
+				, EPRZ_CRDL_CTRT_NO             	= #{eprzCrdlCtrtNo          }               <!-- 기업여신계약번호                     -->
+				, PF_LOAN_YN                    	= #{pfLoanYn                }               <!-- PF대출여부                           -->
+				, UNDW_FNN_YN                   	= #{undwFnnYn               }               <!-- 인수금융여부                         -->
+				, INV_IDTRT_SMIT_YN             	= #{invIdtrtSmitYn          }               <!-- 투자확약서제출여부                   -->
+				, TRG_YN                        	= #{trgYn                   }               <!-- 트리거여부                           -->
+				, TRG_CND_CTNS                  	= #{trgCndCtns              }               <!-- 트리거조건내용                       -->
+				, INV_IDTRT_SMIT_DT             	= #{invIdtrtSmitDt          }               <!-- 투자확약서제출일자                   -->
+				, CHRR_EMPNO                    	= #{chrrEmpno               }               <!-- 담당자사원번호                       -->
+				, SUB_CHRR_EMPNO                	= #{subChrrEmpno            }               <!-- 서브담당자사원번호                   -->
+				, EPRZ_CRDL_DCRB_ATH_DCD        	= #{eprzCrdlDcrbAthDcd      }               <!-- 기업여신전결권한구분코드             -->
+				, ED_DT                         	= #{edDt                    }               <!-- 종결일자                             -->
+				, EPRZ_CRDL_CTRT_END_RSN_CD     	= #{eprzCrdlCtrtEndRsnCd    }               <!-- 기업여신계약종료사유코드             -->
+				, EPRZ_CRDL_CTRT_END_RSN_CTNS   	= #{eprzCrdlCtrtEndRsnCtns  }               <!-- 기업여신계약종료사유내용             -->
+				, TRCH_APLY_YN                  	= #{trchAplyYn              }               <!-- 트렌치적용여부                       -->
+				, BDBT_RSVS_RCKN_STDR_LCLS_CD   	= #{bdbtRsvsRcknStdrLclsCd  }               <!-- 대손준비금산정기준대분류코드         -->
+				, BDBT_RSVS_RCKN_STDR_MDCL_CD   	= #{bdbtRsvsRcknStdrMdclCd  }               <!-- 대손준비금산정기준중분류코드         -->
+				, BDBT_RSVS_RCKN_STDR_SCLS_CD   	= #{bdbtRsvsRcknStdrSclsCd  }               <!-- 대손준비금산정기준소분류코드         -->
+				, BDBT_RSVS_RCKN_STDR_RTO       	= #{bdbtRsvsRcknStdrRto     }               <!-- 대손준비금산정기준비율               -->
+				, EPRZ_CRDL_CTRT_AMT            	= #{eprzCrdlCtrtAmt         }               <!-- 기업여신계약금액                     -->
+				, EPRZ_CRDL_INV_AMT             	= #{eprzCrdlInvAmt          }               <!-- 기업여신투자금액                     -->
+				, THCO_PTCI_AMT                 	= #{thcoPtciAmt             }               <!-- 당사참여금액                         -->
+				, PRDT_TOT_AMT                  	= #{prdtTotAmt              }               <!-- 상품총금액                           -->
+				, EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD	= #{eprzCrdlIntrDnumClcMthCd}               <!-- 기업여신이자일수계산방법코드         -->
+				, EPRZ_CRDL_HLDY_PRCS_DCD       	= #{eprzCrdlHldyPrcsDcd     }               <!-- 기업여신휴일처리구분코드             -->
+				, EPRZ_CRDL_STDR_INTRT_KND_CD   	= #{eprzCrdlStdrIntrtKndCd  }               <!-- 기업여신기준금리종류코드             -->
+				, FXN_INTRT                     	= #{fxnIntrt                }               <!-- 고정금리                             -->
+				, ADD_INTRT                     	= #{addIntrt                }               <!-- 가산금리                             -->
+				, INTRT_CNGE_FRQC_MNUM          	= #{intrtCngeFrqcMnum       }               <!-- 금리변동주기개월수                   -->
+				, HDWT_EVL_AMT                  	= #{hdwtEvlAmt              }               <!-- 수기평가금액                         -->
+				, EPRZ_CRDL_WEEK_MRTG_KND_CD    	= #{eprzCrdlWeekMrtgKndCd   }               <!-- 기업여신주담보종류코드               -->
+				, OVDU_INTR_RT                  	= #{ovduIntrRt              }               <!-- 연체이자율                           -->
+				, EPRZ_CRDL_OVDU_INTR_RT_DCD    	= #{eprzCrdlOvduIntrRtDcd   }               <!-- 기업여신연체이자율구분코드           -->
+				, TOT_RDMP_TMRD                 	= #{totRdmpTmrd             }               <!-- 총상환회차                           -->
+				, EPRZ_CRDL_EQL_RDMP_AMT        	= #{eprzCrdlEqlRdmpAmt      }               <!-- 기업여신균등상환금액                 -->
+				, ISTM_DTM_RDMP_AMT             	= #{istmDtmRdmpAmt          }               <!-- 할부일시상환금액                     -->
+				, RCVB_INTR_APLY_IRT            	= #{rcvbIntrAplyIrt         }               <!-- 미수이자적용이율                     -->
+				, EPRZ_CRDL_INTR_ERN_AMT        	= #{eprzCrdlIntrErnAmt      }               <!-- 기업여신이자수익금액                 -->
+				, FNDS_PRCR_CT_AMT              	= #{fndsPrcrCtAmt           }               <!-- 자금조달비용금액                     -->
+				, EPRZ_CRDL_INTR_CLC_END_DE_DCD 	= #{eprzCrdlIntrClcEndDeDcd }               <!-- 기업여신이자계산종료일구분코드       -->
+				, INTR_HDWT_CLC_YN              	= #{intrHdwtClcYn           }               <!-- 이자수기계산여부                     -->
+				, EPRZ_CRDL_GRD_CD              	= #{eprzCrdlGrdCd           }               <!-- 기업여신등급코드                     -->
+				, EPRZ_CRDL_DSHN_RT_GRD_CD      	= #{eprzCrdlDshnRtGrdCd     }               <!-- 기업여신부도율등급코드               -->
+				, SPPI_SFC_YN                   	= #{sppiSfcYn               }               <!-- SPPI충족여부                         -->
+				, EPRZ_CRDL_ORTN_PRDT_CLSF_CD   	= #{eprzCrdlOrtnPrdtClsfCd  }               <!-- 기업여신운용상품분류코드             -->
+				, EPRZ_CRDL_INTRT_EXP_DCD       	= #{eprzCrdlIntrtExpDcd     }               <!-- 기업여신금리만기구분코드             -->
+				, INTRT_REST_FRQC_MNUM          	= #{intrtRestFrqcMnum       }               <!-- 금리재설정주기개월수                 -->
+				, INV_JDGM_COMT_NO              	= #{invJdgmComtNo           }               <!-- 투자심사위원회번호                   -->
+				, FILE_ATT_SQ                   	= #{fileAttSq               }               <!-- 파일첨부일련번호                     -->
+				, LST_HNDL_P_ENO                	= #{lstHndlPEno             }               <!-- 최종변경자사번                       -->
+				, EARLY_REPAY_YN                	= #{earlyRepayYn            }               <!-- 중도상환여부                         -->
+		 WHERE 1=1
+		   AND IB_DEAL_NO		= #{ibDealNo}
+		   AND RISK_INSPCT_CCD	= #{riskInspctCcd}
+		   AND LST_C_CASE_CCD	= #{lstCCaseCcd}
+		   AND PRDT_CD			= #{prdtCd}
+	</update>
+	
+
+</mapper>

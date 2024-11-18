@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS216BMapper">
+	
+	<!-- 딜승인보증담보내역 - 대출채권/채무보증 정보(TB06010S) - 담보/보증내역등록  -->
+    <insert id="insertIBIMS216B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        INSERT INTO IBIMS216B 
+               (
+                  MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
+                , GRTE_CTRC_DCD                                     <!-- 보증약정구분코드 -->
+                , GRNR_CPIN                                         <!-- 보증인고객식별번호 -->
+                , GRUP_ITGR_CRDT_GRD_DCD                            <!-- 그룹통합신용등급구분코드 -->
+                , CRDT_INQ_DT                                       <!-- 신용조회일자 -->
+                , DBTR_CPIN                                         <!-- 채무자고객식별번호 -->
+                , GRTE_DBTR_RLTN_DCD                                <!-- 보증채무자관계구분코드 -->
+                , GRTE_AMT                                          <!-- 보증금액 -->
+                , GRTE_PRNA                                         <!-- 보증원금 -->
+                , GRTE_CRRY_CD                                      <!-- 보증통화코드 -->
+                , STLA_ORZN_BLNG_DCD                                <!-- 결산기구분코드 -->
+                , GRTE_STLA_DE                                      <!-- 보증결산일 -->
+                , GRTE_STLA_DE_ETC_DCD                              <!-- 보증결산일기타구분코드 -->
+                , MRTG_GRTE_CTNS                                    <!-- 담보보증내용 -->
+                , HND_DETL_DTM
+                , HND_EMPNO                                         <!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+                , HND_TR_ID                                         <!-- 조작거래id -->
+                , GUID                                              <!-- guid -->
+               )
+        VALUES (
+                 #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+               , #{grteCtrcDcd}                                     <!-- 보증약정구분코드 -->
+               , #{grnrCpin}                                        <!-- 보증인고객식별번호 -->
+               , #{grupItgrCrdtGrdDcd}                              <!-- 그룹통합신용등급구분코드 -->
+               , #{crdtInqDt}                                       <!-- 신용조회일자 -->
+               , #{dbtrCpin}                                        <!-- 채무자고객식별번호 -->
+               , #{grteDbtrRltnDcd}                                 <!-- 보증채무자관계구분코드 -->
+               , #{grteAmt}                                         <!-- 보증금액 -->
+               , #{grtePrna}                                        <!-- 보증원금 -->
+               , #{grteCrryCd}                                      <!-- 보증통화코드 -->
+               , #{stlaOrznBlngDcd}                                 <!-- 결산기구분코드 -->
+               , #{grteStlaDe}                                      <!-- 보증결산일 -->
+               , #{grteStlaDeEtcDcd}                                <!-- 보증결산일기타구분코드 -->
+               , #{mrtgGrteCtns}                                    <!-- 담보보증내용 -->
+               , SYSDATE
+               , #{hndEmpno}                                        <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+               , #{hndTrId}                                         <!-- 조작거래id -->
+               , #{guid}                                            <!-- guid -->
+               )
+    </insert>
+
+</mapper>

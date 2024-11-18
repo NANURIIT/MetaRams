@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/file.js}"></script>
+	<script th:src="@{js/business/tb/TB09040S.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 정기보고 관리 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- 조회조건영역 -->
+				<div class="ibox ">
+				<!-- 조회조건st -->
+				<div class="ibox-content mb-2">
+					<div class="hidden">
+						<div class="hidden" id="TB09040S_pstn"></div>
+					</div>
+					<div class="form-group form-inline row">
+						<div class="col-sm-12 form-group">
+							<label class="col-sm-1 control-label">기준년월</label>
+								<span class="col-sm-2 input-group month">
+									<input type="text" class="form-control" name="start" id="TB09040S_stdYrMm"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</span>
+							<label class="col-sm-1 control-label">부서</label>
+							<div class="col-sm-2 input-group text-right">
+								<input type="text" class="form-control" id="TB09040S_dprtCd" name="">
+								<span class="input-group-append">
+									<button type="button" class="btn btn-default" onclick="callTB03022P('TB09040S')">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+								<input type="text" class="form-control border-left-none" id="TB09040S_dprtNm" name="TB09040S_dprtNm" readonly>
+							</div>
+							<label class="col-sm-1 control-label">담당자</label>
+							<div class="col-sm-2 input-group text-right">
+								<input type="text" class="form-control" id="TB09040S_chrg_empNo" name="">
+								<span class="input-group-append">
+									<button type="button" class="btn btn-default" onclick="callTB03022P('TB09040S_chrg')">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+								<input type="text" class="form-control" id="TB09040S_chrg_empNm" name="TB09040S_empNm" readonly>
+							</div>
+							<div class="col-sm-2 input-group text-right">
+								<label class="col-sm-5 control-label px-2">진행상태</label>
+								<select class="col-sm-7 form-control m-b" name="account" id="TB09040S_I011">
+									<option value="">전체</option>
+								</select>
+							</div>
+							<div class="col-sm-1 text-right">
+								<button class="btn btn-primary" onclick="getDealInfo();">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+							</div>
+						</div>
+						<div class="col-sm-12 form-group">
+							<label class="col-sm-1 control-label">정기보고구분</label>
+							<div class="col-sm-2 input-group text-right">
+								<select class="form-control m-b" name="account" id="TB09040S_R011">
+									<option value="">전체</option>
+								</select>
+							</div>
+							<label class="col-sm-1 control-label">심사부서</label>
+							<div class="col-sm-2 input-group">
+								<select class="form-control m-b" name="account" id="TB09040S_I010">
+									<option value="">전체</option>
+								</select>
+							</div>
+							<label class="col-sm-1 control-label">심사역</label>
+							<div class="col-sm-2 input-group">
+								<input type="text" class="form-control" id="TB09040S_own_empNo" name="">
+								<span class="input-group-append"> 
+									<button type="button" class="btn btn-default" onclick="callTB03022P('TB09040S_own')">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+								<input type="text" class="form-control border-left-none" id="TB09040S_own_empNm" name="" readonly>
+							</div>
+							<div class="col-sm-2 input-group text-right py-1">
+								<label class="col-sm-5 control-label">관리단계분류</label>
+								<select class="col-sm-7 form-control m-b" name="account" id="TB09040S_R015">
+									<option value="">전체</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-12 form-group">
+							<label class="col-sm-1 control-label">금융상태분류</label>
+							<div class="col-sm-2 input-group text-right">
+								<select class="form-control m-b" name="account" id="TB09040S_F007">
+									<option value="">전체</option>
+								</select>
+							</div>
+							<label class="col-sm-1 control-label">안건명</label>
+							<div class="col-sm-2 input-group">
+								<input type="text" class="form-control" id="dealNm" name="">
+							</div>
+							<label class="col-sm-1 control-label">자산명</label>
+							<div class="col-sm-2 input-group">
+								<input type="text" class="form-control" id="" name="">
+							</div>
+						</div>
+					</div>
+				</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content">
+						<div class="col-sm-12 text-right mb-1">
+							<button class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i>&nbsp;인쇄</button>
+						</div>
+						<div class="tableFixHeader2 scroll">
+							<table class="table result table-bordered" style="width: 2000px;">
+								<thead>
+									<tr>
+										<th rowspan="2"><input type="checkbox"></th>
+										<th rowspan="2">진행상태</th>
+										<th rowspan="2">금융상품분류</th>
+										<th rowspan="2">순번</th>
+										<th rowspan="2">Deal번호</th>
+										<th rowspan="2">신규/재부의</th>
+										<th rowspan="2">부수안건</th>
+										<th rowspan="2">안건명</th>
+										<th colspan="2">안건관리부서</th>
+										<th colspan="2">심사부서</th>
+									</tr>
+									<tr>
+										<th>승인요청</th>
+										<th>부서장승인</th>
+										<th>심사역확인</th>
+										<th>심사부서장확인</th>
+										<!-- <th>부서</th>
+										<th>상품1</th>
+										<th>상품2</th>
+										<th>상품3</th>
+										<th>대체투자여부</th>
+										<th>전결협의체</th>
+										<th>자산(상품)명</th>
+										<th>심사부서</th>
+										<th>심사역</th>
+										<th>작성자</th>
+										<th>진행상태</th>
+										<th>승인요청일</th>
+										<th>검토완료일</th>
+										<th>리스크승인번호</th>
+										<th>IB승인번호</th>
+										<th>종목명</th>
+										<th>관리단계분류</th>
+										<th>건전성분류</th>
+										<th>계약시작일자</th>
+										<th>계약만기일자</th>
+										<th>잔액</th> -->
+									</tr>
+								</thead>
+								<tbody id="TB09040S_dealList">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div><!-- ibox -->
+			</div>
+			<!-- 상세보기 -->
+			<div class="col-lg-12">
+				<div class="ibox-content">
+
+					<!-- 안건정보 -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>◎ 안건정보</h5>
+						</div>
+						<div class="ibox-content">
+							<div class="col-sm-12 text-right mb-1 ">
+								(단위: 백만)
+							</div>
+							<table class="table table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th colspan="5">안건명</th>
+										<th colspan="2">금융상품분류</th>
+										<th>협의체</th>
+										<th>GCRS(내부등급)</th>
+										<th>부서명</th>
+										<th>담당자</th>
+										<th>심사부서</th>
+										<th colspan="2">심사역</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td colspan="5" class="text-center">
+											포스파워 무보증회사채 인수확약 LOC 제고의 건
+										</td>
+										<td colspan="2" class="text-center">우발채무(확약보증)</td>
+										<td class="text-center">리스크심사실무협의회</td>
+										<td> - </td>
+										<td class="text-center">영업부</td>
+										<td class="text-center">김철수</td>
+										<td class="text-center">기업금융심사부</td>
+										<td class="text-center" colspan="2">인호말</td>
+									</tr>
+								</tbody>
+								<thead class="text-center">
+									<tr>
+										<th>승인일</th>
+										<th>Tranche</th>
+										<th>총조달금액</th>
+										<th>승인통화</th>
+										<th>승인금액</th>
+										<th>투자잔액(승인통화)</th>
+										<th>투자잔액(원화)</th>
+										<th>승인조건</th>
+										<th>건전성</th>
+										<th>대손충당금</th>
+										<th>사후관리단계</th>
+										<th>연체발생일자</th>
+										<th>종료일</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td> </td>
+										<td class="text-center">단일Tr</td>
+										<td> </td>
+										<td class="text-center">KRW</td>
+										<td class="text-right">3,500</td>
+										<td class="text-right">20,000</td>
+										<td class="text-right">3,400</td>
+										<td class="text-center"> </td>
+										<td class="text-center">정상</td>
+										<td class="text-right">0</td>
+										<td class="text-center">정상</td>
+										<td class="text-center"></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- 자산정보 -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>◎ 자산정보</h5>&nbsp;&nbsp;&nbsp;※ 유동화증권 잔액은 참고용으로만 활용하세요.
+						</div>
+						<div class="ibox-content">
+							<div class="col-sm-12 text-right mb-1 ">
+								(단위: 백만원)
+							</div>
+							<table class="table table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th>투자자산분류</th>
+										<th>투자자산명</th>
+										<th>계약/종목번호</th>
+										<th>계정명</th>
+										<th>관리부서</th>
+										<th>약정일</th>
+										<th>취급일</th>
+										<th>만기일</th>
+										<th>장부금액</th>
+										<th>평가금액</th>
+										<th>대손충당금</th>
+										<th>목표수익률(%)</th>
+										<th>수익률(%)</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td class="text-center">부외부채</td>
+										<td class="text-center">포스파워 회사채 인수확인서(섬척 석탈화력발전 건설)</td>
+										<td class="text-center">C20180801001</td>
+										<td></td>
+										<td class="text-center">기업금융부</td>
+										<td></td>
+										<td class="text-center">2018-05-09</td>
+										<td class="text-center">2018-05-09</td>
+										<td></td>
+										<td class="text-right">20.000</td>
+										<td class="text-right">20.000</td>
+										<td></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- 대출(약정)정보 -->
+					<!-- <div class="ibox">
+						<div class="ibox-title">
+							<h5>대출(약정)정보</h5>
+						</div>
+						<div class="ibox-content">
+							<div class="col-sm-12 text-right mb-1 ">
+								(단위: 백만원)
+							</div>
+							<table class="table table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th rowspan="2">총조달금액</th>
+										<th colspan="2">최초 약정정보</th>
+										<th rowspan="2">약정잔액</th>
+										<th rowspan="2">인출잔랙</th>
+										<th rowspan="2">미인출잔액</th>
+										<th rowspan="2">평가금액</th>
+										<th rowspan="2">약정일</th>
+										<th rowspan="2">취급일</th>
+										<th rowspan="2">만기일</th>
+									</tr>
+
+									<tr>
+										<td>약정금액</td>
+										<td>LTV</td>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td class="text-right">0</td>
+										<td class="text-right">20,000</td>
+										<td class="text-right">0</td>
+										<td class="text-right">20,000</td>
+										<td class="text-right">0</td>
+										<td class="text-right">20,000</td>
+										<td class="text-right">20,000</td>
+										<td class="text-center">2018-05-09</td>
+										<td class="text-center">2018-05-09</td>
+										<td class="text-center">2024-12-31</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div> -->
+					<!-- 담보/보증 정보 -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>◎ 담보/보증 정보</h5>
+						</div>
+						<div class="ibox-content">
+							<table class="table table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th colspan="5">담보정보</th>
+										<th colspan="4">보증정보</th>
+									</tr>
+									<tr>
+										<th>담보유혈</th>
+										<th>담보상세</th>
+										<th>담보취득방식</th>
+										<th>담보취득상세</th>
+										<th>귄리순위</th>
+										<th>법인명</th>
+										<th>법인등록번호</th>
+										<th>신용보강구분</th>
+										<th>보증내용</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- 거래 상대방1 -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>◎ 거래 상대방1</h5>
+						</div>
+						<div class="ibox-content">
+							<table class="table table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th colspan="6">차주</th>
+										<th colspan="2">유동화회사</th>
+									</tr>
+									<tr>
+										<th>법인명</th>
+										<th>법인등록번호</th>
+										<th>외부등급</th>
+										<th>GCRS</th>
+										<th>차주구분</th>
+										<th>펀드명</th>
+										<th>법인명</th>
+										<th>법인등록번호</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td></td>
+										<td class="text-center"></td>
+										<td></td>
+										<td></td>
+										<td class="text-center"></td>
+										<td></td>
+										<td class="text-center">-</td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- 거래 상대방2 -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>◎ 거래 상대방2</h5>
+						</div>
+						<div class="ibox-content">
+							<table class="table table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th colspan="4">OpCo</th>
+										<th colspan="2">GP</th>
+										<th colspan="2">Sponsor</th>
+									</tr>
+									<tr>
+										<th>법인명</th>
+										<th>법인등록번호</th>
+										<th>외부등급</th>
+										<th>GCRS</th>
+										<th>법인명</th>
+										<th>법인등록번호</th>
+										<th>법인명</th>
+										<th>법인등록번호</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td></td>
+										<td class="text-center">-</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td class="text-center">-</td>
+										<td></td>
+										<td class="text-center">-</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- 부동산 사업정보 -->
+					<!-- <div class="ibox">
+						<div class="ibox-title">
+							<h5>◎ 부동산 사업정보</h5>
+						</div>
+							<div class="col-sm-12 text-right mb-1">
+								(단위: 백만원)
+							</div>
+						<div class="ibox-content">
+							<table class="table table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th rowspan="2">사업지역</th>
+										<th rowspan="2">사업단계</th>
+										<th rowspan="2">주요투자물건</th>
+										<th rowspan="2">투자물건상세</th>
+										<th rowspan="2">건축규모</th>
+										<th colspan="5">면적(평)</th>
+										<th rowspan="2">사업규모<p>(총매출액)</th>
+										<th rowspan="2">사업이익률(%)</th>
+									</tr>
+									<tr>
+										<th>대지면적</th>
+										<th>건축면적</th>
+										<th>연면적</th>
+										<th>건폐율(%)</th>
+										<th>용적률(%)</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td></td>
+										<td class="text-center"></td>
+										<td></td>
+										<td></td>
+										<td class="text-center"></td>
+										<td></td>
+										<td class="text-center"></td>
+										<td></td>
+										<td class="text-center"></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					사업진행정보
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>◎ 사업진행정보</h5>
+						</div>
+						<div class="ibox-content">
+							<table class="table table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th colspan="7">공사진행</th>
+										<th colspan="5">분양진행</th>
+									</tr>
+									<tr>
+										<th>착공일</th>
+										<th>실행공정률(%)</th>
+										<th>계획공정률(%)</th>
+										<th>시공사책준기한</th>
+										<th>시공사미이행시</th>
+										<th>신탁사책준기한</th>
+										<th>신탁사미이행시</th>
+										<th>분양게시일</th>
+										<th>분양률(%)</th>
+										<th>Exit분양률(%)</th>
+										<th>입주예정일</th>
+										<th>공실률(%)</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div> -->
+					<!-- 수익정보 -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>◎ 수익정보</h5>
+						</div>
+							<div class="col-sm-12 text-right mb-1">
+								(단위: 백만원)
+							</div>
+						<div class="ibox-content">
+							<table class="table table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th colspan="4">금리정보(※우발채무인 경우, 기초자산(대출)의 금리정보를 기입)</th>
+										<th colspan="4">수수료 정보(※금액은 백만원단위로 기입)</th>
+									</tr>
+									<tr>
+										<th>고정변동구분</th>
+										<th>기준금리종류</th>
+										<th>가산금리(%)</th>
+										<th>적용금리(%)</th>
+										<th>취급수수료</th>
+										<th>주관수수료</th>
+										<th>금융자문수수료</th>
+										<th>기타</th>
+									</tr>
+								</thead>
+								<tbody id="">
+									<tr>
+										<td></td>
+										<td></td>
+										<td class="text-right">0</td>
+										<td class="text-right">0</td>
+										<td class="text-right">0</td>
+										<td class="text-right">0</td>
+										<td class="text-right">0</td>
+										<td class="text-right">0</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<div>
+										<h4>◎ 개요&nbsp;&nbsp;<small>(특수문자 '@', '^', '[', ']'는 입력할 수 없습니다. &nbsp;9줄 이내로 작성)</small></h4>
+									</div>
+								</div>
+								<div class="panel-body">
+									<textarea class="form-control" style="height:120px;" id="" placeholder="○ PEF명: 케이비소부장1호사모투자합자회사 (GP) ○ 펀드규모: 235억원 ○ 운용사 (GP): GP출자금 34억원 ○ 투자자 (LP): KB증권, SBI저축은행, 제이앤컴퍼니, 키움캐피탈, 무림캐피탈, JB 우리캐피탈, 웰컴저축은행, 기업은행, 신한캐피탈, IBK캐피탈, 박종달(개인) ○ 존속기간: 2020.10.28~2025.10.27 ○ 관리보수: 출자약정금총액의 연 1.5%= 연 352,500,000원"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4>◎ 투자현황&nbsp;&nbsp;<small>(특수문자 '@', '^', '[', ']'는 입력할 수 없습니다. &nbsp;9줄 이내로 작성)</small></h4>
+								</div>
+								<div class="panel-body">
+									<textarea class="form-control" style="height:120px;" id="" placeholder="○ 대상회사 : (주)박원 ○ 투자유형 : RCPS ○ 투자금액 : 225억원 ○ 투자 금리 : 연 2.0% (배당가능 이익을 전제로 발행가액 기준)"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4>◎ 진행현황&nbsp;&nbsp;<small>(특수문자 '@', '^', '[', ']'는 입력할 수 없습니다. &nbsp;9줄 이내로 작성)</small></h4>
+								</div>
+								<div class="panel-body">
+									<textarea class="form-control" style="height:120px;" id="" placeholder="○ 진행현황 - 2021.04.23. (주)박원으로 부터 수시 배당금 450,700,500원 수취 - 2021.04.30. PEF 투자자에게 수익금 235,000,000원 분배 - 2022.03.31. (주)박원으로 부터 수시 배당금 450,700,500원 수취 ○ 회수율: 0% ○ 연내 Exit Target으로 제 3자매각, IPO 동시 검토 중 - KB ECM본부 IPO 대표 주관계약 체결 - KPMG 매각자문사로 선정 후 Teaser 준비 및 2022년 지정감사 이슈 점검 진행 중 - NDA체결 인수 후보자 대상 IM배포 (7월 말 target 예비입찰 LOI 회신 예정)"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4>◎ 투자자산 관리방안&nbsp;&nbsp;<small>(특수문자 '@', '^', '[', ']'는 입력할 수 없습니다. &nbsp;9줄 이내로 작성)</small></h4>
+								</div>
+								<div class="panel-body">
+									<textarea class="form-control" style="height:120px;" id="" placeholder="○ CFO 선정: 당사가 지정한 CFO 선임 완료 (21년 1월부터 근무 중) ○ PEF에서 지명한 사외이사 및 감사 등재 ○ PEF 투자계약에 따라 당사 종속회사 및 관계기업인 중국법인, 베트남법인 지분 인수 완료"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4>◎ 기타사항&nbsp;&nbsp;<small>※ 기타사항 영역은 보고서로 출력되지 않습니다</small></h4>
+								</div>
+								<div class="panel-body">
+									<textarea class="form-control" style="height:120px;" id=""></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="ibox">
+								<table class="table table-bordered">
+									<thead class="text-center">
+										<colgroup>
+											<col style="width: 5%;">
+											<col style="width: 60%;">
+											<col style="width: 25%;">
+											<col style="width: 10%;">
+										</colgroup>
+										<tr>
+											<th></th>
+											<th>자료명</th>
+											<th>등록일자</th>
+											<th>구분</th>
+										</tr>
+									</thead>
+									<tbody id="MO44030_fileList">
+										<tr>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- <div class="col-lg-6">
+							<div class="ibox">
+								<div class="ibox-title">
+									<h5>&nbsp;</h5>
+									<div class="ibox-tools">
+										<th:block layout:fragment="file">
+											<div th:replace="layout/fragments/common :: file"></div>
+										</th:block>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<table class="table table-bordered">
+										<thead>
+											<colgroup>
+												<col style="width: 5%;">
+												<col style="width: 65%;">
+												<col style="width: 30%;">
+											</colgroup>
+											<tr>
+												<th></th>
+												<th>파일명</th>
+												<th>등록일자</th>
+											</tr>
+										</thead>
+										<tbody id="MO44030_fileList">
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div> -->
+						<!-- <div class="col-lg-6 text-right">
+							<button class="btn btn-success"><i class="fa fa-save"></i>&nbsp;저장</button>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

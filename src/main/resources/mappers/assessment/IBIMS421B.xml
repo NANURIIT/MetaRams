@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS421BMapper">
+
+    <select id="IBIMS421BSelect" parameterType="string" resultType="com.nanuri.rams.business.common.dto.IBIMS421BDTO">
+        SELECT FEE_KND_CD        /* 수수료종류코드 */
+             , ACT_CD            /* 계정과목코드 */
+             , RGST_STTS_CD      /* 등록상태코드 */
+             , FEE_NAME          /* 수수료명 */
+             , FEE_RCOG_DCD      /* 수수료인식구분코드 */
+             , FEE_RCKN_DCD      /* 수수료산정구분코드 */
+             , FEE_RT            /* 수수료율 */
+             , FEE_LWST_AMT      /* 수수료최저금액 */
+             , FEE_HGST_AMT      /* 수수료최고금액 */
+             , ACT_NAME          /* 계정과목명 */
+             , ACCT_JOB_CD       /* 회계업무코드 */
+             , ACCT_UN_JOB_CD    /* 회계단위업무코드 */
+             , ACCT_TR_CD        /* 회계거래코드 */
+             , HND_DETL_DTM      /* 조작상세일시 */
+             , HND_EMPNO         /* 조작사원번호 */
+             , HND_TMNL_NO       /* 조작단말기번호 */
+             , HND_TR_ID         /* 조작거래ID */
+             , GUID              /* GUID */
+          FROM IBIMS421B
+         WHERE 1=1
+           AND FEE_NAME LIKE #{feeNm}
+    </select>
+
+    <insert id="IBIMS421BInsert" parameterType="com.nanuri.rams.business.common.dto.IBIMS421BDTO" >
+        INSERT INTO IBIMS421B 
+            (
+                FEE_KND_CD
+              , ACT_CD
+              , RGST_STTS_CD
+              , FEE_NAME
+              , FEE_RCOG_DCD
+              , FEE_RCKN_DCD
+              , FEE_RT
+              , FEE_LWST_AMT
+              , FEE_HGST_AMT
+              , ACT_NAME
+              , ACCT_JOB_CD
+              , ACCT_UN_JOB_CD
+              , ACCT_TR_CD
+              , HND_DETL_DTM
+              , HND_EMPNO
+              , HND_TMNL_NO
+              , HND_TR_ID
+              , GUID
+            )
+        VALUES
+            (
+                #{feeKndCd}
+              , #{actCd}
+              , '1'
+              , #{feeNm}
+              , #{feeRcogDcd}
+              , #{feeRcknDcd}
+              , #{feeRt}
+              , #{feeLwstAmt}
+              , #{feeHgstAmt}
+              , #{actName}
+              , #{acctJobCd}
+              , #{acctUnJobCd}
+              , #{acctTrCd}
+              , SYSDATE
+              , #{hndEmpno}
+              , #{hndTmnlNo}
+              , #{hndTrId}
+              , #{guid}
+            )
+    </insert>
+
+    <update id="IBIMS421BUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS421BDTO" >
+        UPDATE IBIMS421B
+           SET FEE_NAME = #{feeNm}
+             , FEE_RCOG_DCD = #{feeRcogDcd}
+             , FEE_RCKN_DCD = #{feeRcknDcd}
+             , FEE_RT = #{feeRt}
+             , FEE_LWST_AMT = #{feeLwstAmt}
+             , FEE_HGST_AMT = #{feeHgstAmt}
+             , ACT_NAME = #{actName}
+             , ACCT_JOB_CD = #{acctJobCd}
+             , ACCT_UN_JOB_CD = #{acctUnJobCd}
+             , ACCT_TR_CD = #{acctTrCd}
+             , HND_DETL_DTM = SYSDATE
+             , HND_EMPNO = #{hndEmpno}
+             , HND_TMNL_NO = #{hndTmnlNo}
+             , HND_TR_ID = #{hndTrId}
+             , GUID = #{guid}
+         WHERE 1=1
+           AND FEE_KND_CD = #{feeKndCd}
+           AND ACT_CD = #{actCd}
+    </update>
+
+    <delete id="IBIMS421BDelete" parameterType="com.nanuri.rams.business.common.dto.IBIMS421BDTO" >
+        DELETE FROM IBIMS421B
+         WHERE 1=1
+           AND FEE_KND_CD = #{feeKndCd}
+           AND ACT_CD = #{actCd}
+    </delete>
+
+</mapper>

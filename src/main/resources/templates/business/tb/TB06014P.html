@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB06014P">
+	<!-- modal -->
+	<div id="modal-TB06014P" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">기초자산</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB06014P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body modal-height-ex">
+					<input type="hidden" name="prefix" id="TB06014P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="ibox">
+								<div class="ibox-content border-none">
+									<div class="ibox">
+									 	<div class="ibox-title">
+											<h5>▶&nbsp;투자심사정보</h5>
+										</div>
+						    			<div class="ibox-content text-right">
+						    				<!-- row1 -->
+						    				<div class="form-group row mb-1">
+						    					<label class="col-sm-1 col-form-label text-right">종목코드</label>
+												<div class="col-sm-4">
+													<div class="input-group">
+														<input type="text" class="form-control" id="TB06014P_prdtCd">
+														<span class="input-group-append">
+															<button type="button" class="btn btn-default" onclick="callTB06011P('TB06014P');"><i class="fa fa-search"></i></button>
+														</span>
+														<input type="text" class="form-control" id="TB06014P_prdtNm" style="width:100px;" readonly>
+													</div>
+												</div>
+												<!-- 
+				                            	<label class="col-sm-1 col-form-label">승인일자</label>
+												<div class="col-sm-3 input-group date">
+													<input type="text" class="form-control" id="TB06010S_rsltnDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												</div>
+												 -->
+												<div class="col-sm-4">
+												</div>
+												<div class="col-sm-3 text-right">
+													<button class="btn btn-primary" type="button" onclick="getBssAsstList();"><i class="fa fa-search"></i>&nbsp;조회</button>
+													<button id="" class="btn btn-default" onclick="btnReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
+												</div>
+											</div>
+						    				<!-- row2 -->
+						    				<!-- 
+						    				<div class="form-group form-inline row">
+						    					<label class="col-sm-1 col-form-label text-right">투자승인<br class="br-mo">기구</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB06010S_inspctCnfrncCcd">
+													</select>
+												</div>
+												<label class="col-sm-1 col-form-label">위원회번호</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control text-right" id="TB06010S_inspctCnfrncSqcSq">
+												</div>
+												<label class="col-sm-1 col-form-label">승인금액</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control text-right" id="TB06010S_inspctCnfrncSqcSq">
+												</div>
+											</div>
+											 -->
+						    			</div>
+						    		</div><!-- ibox -->
+						    		<div class="ibox">
+									 	<div class="ibox-title">
+											<h5>▶&nbsp;기초자산내역</h5>
+										</div>
+						    			<div class="ibox-content text-right">
+						    				<div class="tableFixHead">
+												<table class="table result table-bordered">
+													<colgroup>
+														<col style="width: 15%;">
+														<col>
+														<col>
+														<col>
+														<col>
+													</colgroup>
+													<thead>
+														<tr>
+															<th>기초자산관리번호</th>
+															<th>기초자산유형</th>
+															<th>기초자산명</th>
+															<th>실질거래상대방명</th>
+															<th>산업(업종)</th>
+														</tr>
+													</thead>
+													<tbody id="TB06014P_bssAsstList">
+													</tbody>
+												</table>
+											</div>
+											<hr>
+											<div class="form-group row">
+												<label class="col-sm-1 col-form-label text-right">처리구분</label>
+												<div class="col-sm-3 input-group">
+													<div class="btn-group col-sm-12 pd0" role="group" aria-label="">
+					                                    <button class="btn btn-s toggleBtn1 btn-info" id="TB06014P_toggleBtn1" onclick="">등록</button>
+					                                    <button class="btn btn-s toggleBtn2 btn-default" id="TB06014P_toggleBtn2" onclick="">수정</button>
+					                                    <button class="btn btn-s toggleBtn3 btn-default" id="TB06014P_toggleBtn3" onclick="">삭제</button>
+					                                </div>
+												</div>
+											</div>
+						    			</div>
+						    		</div><!-- ibox -->
+						    		
+						    		<div class="ibox">
+										<div class="ibox-title">
+											<h5>▶&nbsp;기본정보</h5>
+										</div>
+										<div class="ibox-content">
+											<!-- row1 -->
+											<div class="row form-group form-inline text-right mb-1">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 control-label">기초자산<br class="br-mo">번호</label>
+													<div class="col-sm-7 input-group form-inline mb3">
+														<input type="text" class="form-control" id="TB06014P_bssAsstMngmNo" readonly="">
+														&nbsp;
+														<input type="text" class="form-control" style="width:140px;" id="TB06014P_bssAsstMngmNm" onkeyup="">
+													</div>
+												</div>
+											</div>
+											<!-- row2 -->
+											<div class="row form-group form-inline text-right mb-1">
+												<div class="col-sm-12 form-group text-right">
+													<label class="col-sm-1 col-form-label">실질거래<br class="br-mo">상대방</label>
+													<div class="col-sm-7 input-group">
+														<input type="text" class="form-control" id="TB06014P_bsnsRgstNo">
+														<span class="input-group-append">
+															<button type="button" class="btn btn-default" onclick="callTB03023P('TB06014P')"><i class="fa fa-search"></i></button>
+														</span>
+														<input type="text" class="form-control" style="width:100px;" id="TB06014P_entpRnm" readonly>
+													</div>
+													<label class="col-sm-1 col-form-label">법인번호</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06014P_corpRgstNo" readonly>
+													</div>
+												</div>
+											</div>
+											<!-- row3 -->
+											<div class="row form-group form-inline text-right mb-3">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">기업규모</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06014P_B019">
+															<option value="">선택</option>
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">산업(업종)</label>
+													<div class="col-sm-3">
+														<div class="input-group">
+															<select class="form-control" id="TB06014P_I006">
+																<option value="">없음</option>
+															</select>
+														</div>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">신용등급</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06014P_O006">
+															<option value="">선택</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<!-- row4 -->
+											<div class="row form-group form-inline text-right mb-1">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">처리구분</label>
+													<div class="col-sm-7 input-group">
+														<div class="btn-group col-sm-12 pd0" role="group" aria-label="">
+							                            	<input type="hidden" id="TB06014P_B018">
+							                            	<input type="hidden" id="TB06014P_delYn">
+													    	<button class="btn btn-s toggleBtn1 btn-info" id="TB06014P_toggleBtn4" onclick="">부동산(개발형, PF)</button>
+													        <button class="btn btn-s toggleBtn2 btn-default" id="TB06014P_toggleBtn5" onclick="">부동산(운영형, Non-PF)</button>
+													        <button class="btn btn-s toggleBtn3 btn-default" id="TB06014P_toggleBtn6" onclick="">실물자산(항공기, 선박)</button>
+													        <button class="btn btn-s toggleBtn4 btn-default" id="TB06014P_toggleBtn7" onclick="">SOC(인프라)</button>
+													    </div>
+													</div>
+												</div>
+											</div>
+											<!-- row5 -->
+											<div class="row form-group form-inline text-right mb-1">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">사업유형<br class="br-mo">구분코드</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06014P_I020">
+															<option value="">선택</option>
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">상세유형<br class="br-mo">구분코드</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06014P_I021">
+															<option value="">선택</option>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="ibox form-inline">
+										<!-- 버튼영역 -->
+										<div class="col-sm-12 text-right pd0">
+											<button class="btn btn-success mg-l5" type="button" onclick="btnSave();"><i class="fa fa-save"></i>&nbsp;실행</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> 
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

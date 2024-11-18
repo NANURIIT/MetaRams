@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS250BMapper">
+
+	<!-- 출자정보조회  -->
+<update id="getFincDtls" parameterType="com.nanuri.rams.business.common.dto.IBIMS250BDTO">
+    SELECT  s250b.PRDT_CD
+    ,       s250b.DCM_NO
+    ,       s250b.JOB_EXCU_MBDY
+    ,       s250b.REAL_MNGM_BDCD
+    ,       s250b.REAL_MNGM_EMPNO
+    ,       s250b.FOND_DT
+    ,       s250b.KEEP_EXPR_DT
+    ,       s250b.INV_EXPR_DT
+    ,       s250b.FINC_CTRC_AMT
+    ,       s250b.FINC_FLFL_AMT
+    ,       s250b.THCO_FINC_CTRC_AMT
+    ,       s250b.THCO_FINC_AMT
+    ,       s250b.NOW_FINC_BLCE
+    ,       s250b.MNGM_PAY_BLCE
+    ,       s250b.ERN_DSTR_AMT
+    ,       s250b.FINC_QOTA_RT
+    ,       s250b.STDR_ERN_RT
+    ,       s250b.MNGM_PAY_RT
+    ,       s250b.FINC_CHR_DCD
+    ,       s250b.FINC_EDYC_NO
+    ,       s250b.RPT_TRGT_YN
+    ,       s250b.AFL_TRGT_YN
+    ,       s250b.DPND_CMP_YN
+    ,       s250b.DEMG_YN
+    ,       s250b.DEMG_LSSD_CML_AMT
+    ,       s250b.DEMG_BF_FINC_BLCE
+    ,       s250b.STLA_STTM_NO
+    ,       s250b.ACQ_AMT
+    ,       s250b.CRRY_CD
+    ,       s250b.STDR_EXRT
+    ,       s250b.FRCR_FINC_BLCE
+    ,       s250b.FRCR_MNGM_PAY_BLCE
+    ,       s250b.CURD_DSTR_AMT
+    ,       s250b.FRCR_FRS_ACQ_AMT
+    ,       s250b.FRCR_FINC_CTRC_AMT
+    ,       s250b.FRCR_FINC_FLFL_AMT
+    ,       s250b.FRCR_THCO_FINC_CTRC_AMT
+    ,       s250b.FRCR_THCO_FINC_AMT
+    ,       s250b.FRS_TR_DT
+    ,       s250b.PRFM_PAY_BLCE
+    ,       s250b.PRCR_PRFM_PAY_BLCE
+    ,       s250b.HND_DETL_DTM
+    ,       s250b.HND_EMPNO
+    ,       s250b.HND_TMNL_NO
+    ,       s250b.HND_TR_ID
+    ,       s250b.GUID
+    FROM    IBIMS250B@DL_DBPKCCSH_USCS_SEL t
+    WHERE 1=1
+              AND s250b.PRDT_CD                                           = #{prdtCd}
+              AND s250b.SN                                           = #{sn}
+</update>
+
+<!-- 출자정보등록  -->
+<update id="registFinc" parameterType="com.nanuri.rams.business.common.dto.IBIMS250BDTO">
+    MERGE
+     INTO IBIMS250B T1
+    USING DUAL
+       ON T1.PRDT_CD = #{prdtCd}
+     WHEN MATCHED THEN
+          UPDATE
+             SET DCM_NO = #{dcmNo}              <!-- 문서번호 -->
+               , JOB_EXCU_MBDY = #{jobExcuMbdy}       <!-- 업무집행주체명 -->
+               , REAL_MNGM_BDCD = #{realMngmBdcd}      <!-- 실제관리부점코드 -->
+               , REAL_MNGM_EMPNO = #{realMngmEmpno}     <!-- 실제관리사원번호 -->
+               , FOND_DT = #{fondDt}             <!-- 설립일자 -->
+               , KEEP_EXPR_DT = #{keepExprDt}        <!-- 존속만료일자 -->
+               , INV_EXPR_DT = #{invExprDt}         <!-- 투자만료일자 -->
+               , FINC_CTRC_AMT = #{fincCtrcAmt}       <!-- 출자약정금액 -->
+               , FINC_FLFL_AMT = #{fincFlflAmt}       <!-- 출자이행금액 -->
+               , THCO_FINC_CTRC_AMT = #{thcoFincCtrcAmt}  <!-- 당사출자약정금액 -->
+               , THCO_FINC_AMT = #{thcoFincAmt}       <!-- 당사출자금액 -->
+               , NOW_FINC_BLCE = #{nowFincBlce}       <!-- 현재출자잔액 -->
+               , MNGM_PAY_BLCE = #{mngmPayBlce}       <!-- 관리보수잔액 -->
+               , ERN_DSTR_AMT = #{ernDstrAmt}        <!-- 수익분배금액 -->
+               , FINC_QOTA_RT = #{fincQotaRt}        <!-- 출자지분율 -->
+               , STDR_ERN_RT = #{stdrErnRt}         <!-- 기준수익율 -->
+               , MNGM_PAY_RT = #{mngmPayRt}         <!-- 관리보수율 -->
+               , FINC_CHR_DCD = #{fincChrDcd}        <!-- 출자성격구분 -->
+               , FINC_EDYC_NO = #{fincEdycNo}        <!-- 출자증서번호 -->
+               , RPT_TRGT_YN = #{rptTrgtYn}         <!-- 보고대상여부 -->
+               , AFL_TRGT_YN = #{aflTrgtYn}         <!-- 계열사대상여부 -->
+               , DPND_CMP_YN = #{dpndCmpYn}         <!-- 종속회사여부 -->
+               , DEMG_YN = #{demgYn}             <!-- 손상여부 -->
+               , DEMG_LSSD_CML_AMT = #{demgLssdCmlAmt}   <!-- 손상차손누계금액 -->
+               , DEMG_BF_FINC_BLCE = #{demgBfFincBlce}   <!-- 손상이전출자금잔액 -->
+               , STLA_STTM_NO = #{stlaSttmNo}        <!-- 결산전표번호 -->
+               , ACQ_AMT = #{acqAmt}             <!-- 취득금액 -->
+               , CRRY_CD = #{crryCd}             <!-- 통화코드 -->
+               , STDR_EXRT = #{stdrExrt}           <!-- 기준환율 -->
+               , FRCR_FINC_BLCE = #{frcrFincBlce}      <!-- 외화출자금잔액 -->
+               , FRCR_MNGM_PAY_BLCE = #{frcrMngmPayBlce}  <!-- 외화관리보수잔액 -->
+               , CURD_DSTR_AMT = #{curdDstrAmt}       <!-- 표시통화분배금액 -->
+               , FRCR_FRS_ACQ_AMT = #{frcrFrsAcqAmt}    <!-- 외화최초취득금액 -->
+               , FRCR_FINC_CTRC_AMT = #{frcrFincCtrcAmt}  <!-- 외화출자약정금액 -->
+               , FRCR_FINC_FLFL_AMT = #{frcrFincFlflAmt}  <!-- 외화출자이행금액 -->
+               , FRCR_THCO_FINC_CTRC_AMT = #{frcrThcoFincCtrcAmt} <!-- 외화당사출자약정금액 -->
+               , FRCR_THCO_FINC_AMT = #{frcrThcoFincAmt}  <!-- 외화당사출자금액 -->
+               , FRS_TR_DT = #{frsTrDt}           <!-- 최초거래일자 -->
+               , PRFM_PAY_BLCE = #{prfmPayBlce}       <!-- 성과보수잔액 -->
+               , PRCR_PRFM_PAY_BLCE = #{prcrPrfmPayBlce}  <!-- 외화성과보수잔액 -->
+               , HND_DETL_DTM = SYSDATE        <!-- 조작상세일시 -->
+               , HND_EMPNO = #{hndEmpno}           <!-- 조작사원번호 -->
+               , HND_TMNL_NO = #{hndTmnlNo}         <!-- 조작단말기번호 -->
+               , HND_TR_ID = #{hndTrId}           <!-- 조작거래id -->
+               , GUID = #{guid}                <!-- guid -->
+     WHEN NOT MATCHED THEN
+          INSERT 
+            (  PRDT_CD          <!-- 상품코드 -->
+             , DCM_NO              <!-- 문서번호 -->
+             , JOB_EXCU_MBDY       <!-- 업무집행주체명 -->
+             , REAL_MNGM_BDCD      <!-- 실제관리부점코드 -->
+             , REAL_MNGM_EMPNO     <!-- 실제관리사원번호 -->
+             , FOND_DT             <!-- 설립일자 -->
+             , KEEP_EXPR_DT        <!-- 존속만료일자 -->
+             , INV_EXPR_DT         <!-- 투자만료일자 -->
+             , FINC_CTRC_AMT       <!-- 출자약정금액 -->
+             , FINC_FLFL_AMT       <!-- 출자이행금액 -->
+             , THCO_FINC_CTRC_AMT  <!-- 당사출자약정금액 -->
+             , THCO_FINC_AMT       <!-- 당사출자금액 -->
+             , NOW_FINC_BLCE       <!-- 현재출자잔액 -->
+             , MNGM_PAY_BLCE       <!-- 관리보수잔액 -->
+             , ERN_DSTR_AMT        <!-- 수익분배금액 -->
+             , FINC_QOTA_RT        <!-- 출자지분율 -->
+             , STDR_ERN_RT         <!-- 기준수익율 -->
+             , MNGM_PAY_RT         <!-- 관리보수율 -->
+             , FINC_CHR_DCD        <!-- 출자성격구분 -->
+             , FINC_EDYC_NO        <!-- 출자증서번호 -->
+             , RPT_TRGT_YN         <!-- 보고대상여부 -->
+             , AFL_TRGT_YN         <!-- 계열사대상여부 -->
+             , DPND_CMP_YN         <!-- 종속회사여부 -->
+             , DEMG_YN             <!-- 손상여부 -->
+             , DEMG_LSSD_CML_AMT   <!-- 손상차손누계금액 -->
+             , DEMG_BF_FINC_BLCE   <!-- 손상이전출자금잔액 -->
+             , STLA_STTM_NO        <!-- 결산전표번호 -->
+             , ACQ_AMT             <!-- 취득금액 -->
+             , CRRY_CD             <!-- 통화코드 -->
+             , STDR_EXRT           <!-- 기준환율 -->
+             , FRCR_FINC_BLCE      <!-- 외화출자금잔액 -->
+             , FRCR_MNGM_PAY_BLCE  <!-- 외화관리보수잔액 -->
+             , CURD_DSTR_AMT       <!-- 표시통화분배금액 -->
+             , FRCR_FRS_ACQ_AMT    <!-- 외화최초취득금액 -->
+             , FRCR_FINC_CTRC_AMT  <!-- 외화출자약정금액 -->
+             , FRCR_FINC_FLFL_AMT  <!-- 외화출자이행금액 -->
+             , FRCR_THCO_FINC_CTRC_AMT <!-- 외화당사출자약정금액 -->
+             , FRCR_THCO_FINC_AMT  <!-- 외화당사출자금액 -->
+             , FRS_TR_DT           <!-- 최초거래일자 -->
+             , PRFM_PAY_BLCE       <!-- 성과보수잔액 -->
+             , PRCR_PRFM_PAY_BLCE  <!-- 외화성과보수잔액 -->
+             , HND_DETL_DTM        <!-- 조작상세일시 -->
+             , HND_EMPNO           <!-- 조작사원번호 -->
+             , HND_TMNL_NO         <!-- 조작단말기번호 -->
+             , HND_TR_ID           <!-- 조작거래id -->
+             , GUID                <!-- guid -->
+            )
+             VALUES 
+             (
+              #{prdtCd}
+            , #{dcmNo}
+            , #{jobExcuMbdy}
+            , #{realMngmBdcd}
+            , #{realMngmEmpno}
+            , #{fondDt}
+            , #{keepExprDt}
+            , #{invExprDt}
+            , #{fincCtrcAmt}
+            , #{fincFlflAmt}
+            , #{thcoFincCtrcAmt}
+            , #{thcoFincAmt}
+            , #{nowFincBlce}
+            , #{mngmPayBlce}
+            , #{ernDstrAmt}
+            , #{fincQotaRt}
+            , #{stdrErnRt}
+            , #{mngmPayRt}
+            , #{fincChrDcd}
+            , #{fincEdycNo}
+            , #{rptTrgtYn}
+            , #{aflTrgtYn}
+            , #{dpndCmpYn}
+            , #{demgYn}
+            , #{demgLssdCmlAmt}
+            , #{demgBfFincBlce}
+            , #{stlaSttmNo}
+            , #{acqAmt}
+            , #{crryCd}
+            , #{stdrExrt}
+            , #{frcrFincBlce}
+            , #{frcrMngmPayBlce}
+            , #{curdDstrAmt}
+            , #{frcrFrsAcqAmt}
+            , #{frcrFincCtrcAmt}
+            , #{frcrFincFlflAmt}
+            , #{frcrThcoFincCtrcAmt}
+            , #{frcrThcoFincAmt}
+            , #{frsTrDt}
+            , #{prfmPayBlce}
+            , #{prcrPrfmPayBlce}
+            , SYSDATE
+            , #{hndEmpno}
+            , #{hndTmnlNo}
+            , #{hndTrId}
+            , #{guid}
+             )
+</update>
+
+
+        <delete id="deleteFinc" parameterType="com.nanuri.rams.business.common.dto.IBIMS250BDTO">
+            DELETE
+              FROM IBIMS250B
+             WHERE PRDT_CD = #{prdtCd}
+        </delete>
+
+</mapper>

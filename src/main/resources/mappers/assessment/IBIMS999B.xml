@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS999BMapper">
+
+    <select id="bzDdVl" parameterType="string" resultType="string">
+      SELECT STDR_DT
+        FROM IBIMS991B
+       WHERE 1=1
+         AND HOLIDAY = 0
+         AND STDR_DT = #{stdrDt};
+    </select>
+
+    <select id="selectDD1AF" resultType="string">
+      SELECT DD1AF_BZ_DD
+        FROM IBIMS999B;
+    </select>
+
+    <select id="getBzDd" resultType="string">
+      SELECT BZ_DD
+			  FROM IBIMS999B
+    </select>
+
+    <insert id="insert" parameterType="string">
+        INSERT INTO IBIMS999B
+             SELECT A.BZ_DD         AS BZ_DD
+                  , A.DD1AG_BZ_DD   AS DD1AG_BZ_DD
+                  , A.DD2AG_BZ_DD   AS DD2AG_BZ_DD
+                  , A.DD3AG_BZ_DD   AS DD3AG_BZ_DD
+                  , A.DD1AF_BZ_DD   AS DD1AF_BZ_DD
+                  , A.DD2AF_BZ_DD   AS DD2AF_BZ_DD
+                  , A.DD3AF_BZ_DD   AS DD3AF_BZ_DD
+               FROM (SELECT STDR_DT AS BZ_DD
+                          , LEAD(STDR_DT, 1) OVER (ORDER BY STDR_DT DESC) AS DD1AG_BZ_DD
+                          , LEAD(STDR_DT, 2) OVER (ORDER BY STDR_DT DESC) AS DD2AG_BZ_DD
+                          , LEAD(STDR_DT, 3) OVER (ORDER BY STDR_DT DESC) AS DD3AG_BZ_DD
+                          , LAG(STDR_DT, 1) OVER (ORDER BY STDR_DT DESC) AS DD1AF_BZ_DD
+                          , LAG(STDR_DT, 2) OVER (ORDER BY STDR_DT DESC) AS DD2AF_BZ_DD
+                          , LAG(STDR_DT, 3) OVER (ORDER BY STDR_DT DESC) AS DD3AF_BZ_DD
+                       FROM IBIMS991B 
+                      WHERE 1=1
+                        AND HOLIDAY = '0'
+                        AND BSS_DT BETWEEN ADD_MONTHS(TO_DATE(#{bzDd}, 'YYYYMMDD'), -1 ) 
+                                       AND ADD_MONTHS(TO_DATE(#{bzDd}, 'YYYYMMDD'),  1 )
+                    ) A
+              WHERE 1=1
+                AND A.BZ_DD = #{bzDd};
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM IBIMS999B /* 딜일별잔액 */
+		          WHERE 1=1
+    </delete>
+
+    <select id="getFormattedBzDd" resultType="string">
+      SELECT TO_CHAR(TO_DATE(BZ_DD), 'YYYY-MM-DD') 
+      FROM IBIMS999B
+    </select>
+
+</mapper>

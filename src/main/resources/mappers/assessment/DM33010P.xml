@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.DM33010pMapper">
+
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆ 변경된 MAPPER 로 사용불가 (songwonhee) ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+
+	<!-- 리스크승인번호 조회 -->
+	<select id="getRiskRcgNoList" parameterType="map" resultType="map">
+		SELECT A.RISK_RCG_NO
+		     , A.IB_DEAL_NO
+		     , A.RISK_INSPCT_CCD
+		     , (SELECT CD_VL_NM
+		          FROM RAA91B
+		         WHERE CMNS_CD_GRP = 'R013'
+		           AND CD_VL_ID = A.RISK_INSPCT_CCD
+		       ) AS  RISK_INSPCT_CCD_NM
+		     , A.LST_C_CASE_CCD
+		     , (SELECT CD_VL_NM
+		          FROM RAA91B
+		         WHERE CMNS_CD_GRP = 'L001'
+		           AND CD_VL_ID = A.LST_C_CASE_CCD
+			   ) AS LST_C_CASE_CCD_NM
+			 , A.IB_DEAL_SNM_NM
+			 , A.CRNCY_AMT
+			 , A.FNC_GDS_DVD_CD
+			 , A.DPRT_CD
+		     , (SELECT DPRT_NM
+		          FROM RAA98A
+		         WHERE DPRT_CD = A.DPRT_CD
+			   ) AS DPRT_NM
+			 , FST_RGST_DT
+		  FROM RAA02B A
+		 WHERE 1 = 1
+		   AND A.RISK_RCG_NO != ''
+	</select>
+</mapper>

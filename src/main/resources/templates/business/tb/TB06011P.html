@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB06011P">
+	<!-- modal -->
+	<div id="modal-TB06011P" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">종목코드조회</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB06011P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="prefix" id="TB06011P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							 <div class="ibox">
+								
+								<!-- row1 -->
+				    			<div class="ibox-content i-filter text-right">
+				    				<div class="form-group row">
+				    					<label class="col-sm-2 col-form-label"><span class="req"></span>종목코드</label>
+		                            	<div class="col-sm-3">
+		                            		<input type="text" class="form-control" id="TB06011P_prdtCd">
+		                            	</div>
+				    					<label class="col-sm-2 col-form-label"><span class="req"></span>종목명</label>
+				                        <div class="col-sm-3">
+				                        	<input type="text" class="form-control" id="TB06011P_prdtNm">
+				                        </div>
+				    					<div class="col-sm-2 text-right">
+				    						<button type="button" class="btn btn-primary" onclick="getPrdtCdList();">
+												<i class="fa fa-search"></i>&nbsp;조회
+											</button>
+				    					</div>
+									</div>
+								</div>	
+				    			<!-- row2 -->
+				    			<div class="ibox-content text-right">
+				    				<div id="TB06011P_prdtCdList" style="margin:auto;">
+									</div>
+									<!-- <div class="form-group row">
+										<div class="col-sm-12">
+											<div class="tableFixHead pd0">
+												<table class="table table-bordered table-hover text-center">
+													<colgroup>
+														<col style="width:20%">
+														<col style="width:40%">
+														<col style="width:20%">
+														<col style="width:20%">
+													</colgroup>
+													<thead>
+														<tr>
+															<th>종목코드</th>
+															<th>종목명</th>
+															<th>통화코드</th>
+															<th>기준환율</th>
+														</tr>
+													</thead>
+													<tbody id="TB06011P_prdtCdList">
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div> -->
+								</div>	
+				    		</div><!-- ibox -->
+						</div>
+					</div>
+				</div> 
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB07140S.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+	<script th:src="@{js/business/tb/TB07021P.js}"></script>
+	<script th:src="@{js/business/tb/TB06011P.js}"></script>
+	<script th:src="@{js/business/tb/TB07022P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<th:block th:replace="business/tb/TB07021P :: TB07021P"></th:block>
+	<th:block th:replace="business/tb/TB07022P :: TB07022P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 출자금거래등록 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+
+				<div class="ibox">
+					<div class="ibox-content i-filter">
+						<!-- row1 -->
+						<div class="row form-group form-inline text-right">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1 col-form-label text-right">거래일자</label>
+								<div class="col-sm-2 input-group date">
+									<input type="text" class="form-control" id="TB07140S_" value="" placeholder="YYYY-MM-DD"
+										readonly="">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">운용펀드</label>
+								<div class="col-sm-2-5 input-group">
+									<input type="text" class="form-control" id="TB07140S_srchFndCd">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callTB07022P('TB07140S');"><i
+												class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width:40px;" id="TB07140S_srchFndNm" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">종목코드</label>
+								<div class="col-sm-2-5 input-group">
+									<input type="text" class="form-control" id="TB07140S_srchPrdtCd">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callTB06011P('TB07140S');"><i
+												class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width:40px;" id="TB07140S_srchPrdtNm" readonly>
+								</div>
+								<div class="col-sm-2 text-right">
+									<button class="btn btn-primary" type="button" id="" onclick="TB07140Sjs.getFincList();"><i
+											class="fa fa-search"></i>&nbsp;조회</button>
+									<button id="TB07140S_" class="btn btn-default" onclick="TB07140Sjs.removeAll();"><i
+											class="fa fa-undo"></i>&nbsp;초기화</button>
+								</div>
+							</div>
+						</div>
+						<!-- row2 -->
+
+					</div>
+				</div>
+
+				<div class="ibox">
+					<div class="ibox-content" style="min-height: 800px">
+						<div class="ibox">
+							<div class="ibox-content" style="border:0px;">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">처리구분</label>
+										<div class="col-sm-3 input-group">
+											<div class="btn-group col-sm-6 pd0" role="group" aria-label="">
+												<button class="btn btn-s toggleBtn1 btn-info" onclick="TB07140Sjs.insertBtn();">등록</button>
+												<button class="btn btn-s toggleBtn2 btn-default" onclick="TB07140Sjs.cancelBtn();">취소</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">거래번호</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_trSn" value=""
+												readonly="">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">출자변동금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_fincCngeAmt" oninput="" readonly>
+										</div>
+										<label class="col-sm-1">환산출자변동금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_trslFincCngeAmt" readonly="">
+										</div>
+									</div>
+								</div>
+								<!-- row3 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">거래구분</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07140S_etprCrdtGrntTrKindCd" readonly>
+												<option value="84">출자</option>
+											</select>
+										</div>
+										<label class="col-sm-1">보수/수익</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_payErnAmt" readonly>
+										</div>
+										<label class="col-sm-1 text-nowrap">환산보수/수익</label>
+										<div class="col-sm-3 text-left input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_trslPayErnAmt" onclick="" readonly>
+										</div>
+									</div>
+								</div>
+								<!-- row4 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">출자처리구분</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07140S_fincPrcsDcd">
+											</select>
+										</div>
+										<label class="col-sm-1">결제금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_stlAmt" readonly>
+										</div>
+										<label class="col-sm-1">환산결제금액</label>
+										<div class="col-sm-3 text-left input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_trslStlAmt" value=""
+												readonly="">
+										</div>
+									</div>
+								</div>
+								<!-- row5 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">거래부서</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB07140S_dprtCd">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" id="" onclick="callTB03022P('TB07140S');"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;" id="TB07140S_dprtNm"
+												readonly>
+										</div>
+										<label class="col-sm-1">소득세</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_intx" readonly>
+										</div>
+										<label class="col-sm-1">거래세</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_trtx" readonly>
+										</div>
+									</div>
+								</div>
+								<!-- row6 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">운용펀드</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB07140S_fndCd">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" id="" onclick="callTB07022P('TB07140S');"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;" id="TB07140S_fndNm"
+												readonly="">
+											<!-- <button type="button" class="btn btn-default mg-l5">잔고선택</button> -->
+										</div>
+										<label class="col-sm-1">지방세</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_lotx" readonly>
+										</div>
+										<label class="col-sm-1">전금/지준</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07140S_bfRsvPayDcd">
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- row7 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">종목코드</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB07140S_prdtCd">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" id="TB07140S_" onclick="callTB06011P('TB07140S')"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;" id="TB07140S_prdtNm"
+												readonly="">
+										</div>
+										<label class="col-sm-1">매매환율</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_trdeExrt" oninput="">
+										</div>
+										<label class="col-sm-1">결제은행</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;"
+												id="TB07140S_fnltCd">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" id="TB07140S_btnFnltCd"
+													onclick="callTB07021P('TB07140S')"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;"
+												id="TB07140S_fnltNm" readonly>
+										</div>
+									</div>
+								</div>
+
+								<!-- row8 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">보유목적</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07140S_holdPrpsDcd">
+											</select>
+										</div>
+										<label class="col-sm-1">통화코드</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07140S_trCrryCd" disabled>
+											</select>
+										</div>
+										<label class="col-sm-1">결제계좌</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07140S_stlAcno">
+										</div>
+									</div>
+								</div>
+
+								<!-- row9 -->
+								<div class="row form-group form-inline text-right mb-3 mb-3">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">비고</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07140S_fincPayCntn">
+										</div>
+										<label class="col-sm-1">기준환율</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07140S_stdrExrt" oninput="" readonly>
+										</div>
+										<label class="col-sm-1">담당자</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;"
+												id="TB07140S_empNo">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" id="TB07140S_btnEmpNo"
+													onclick="callTB03022P('TB07140S')"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;"
+												id="TB07140S_empNm" readonly>
+										</div>
+									</div>
+								</div>
+
+								<div class="tableFixHeader2">
+									<table class="table result table-bordered footable">
+										<div id="TB07140S_colModel"></div>
+										<!-- <colgroup>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+										</colgroup>
+										<thead>
+											<tr> 
+												<th>거래일자</th>
+												<th>거래번호</th>
+												<th>거래구분</th>
+												<th>운용펀드</th>
+												<th>종목코드</th>
+												<th>보유목적</th>
+												<th>통화</th>
+												<th>출자변동금액</th>
+												<th>보수/수익</th>
+												<th>결제금액</th>
+												<th>매매환율</th>
+												<th>출자변동환산금액</th>
+												<th>환산보수/수익</th>
+												<th>환산결제금액</th>
+											</tr>
+										</thead>
+										<tbody id="TB07140S_">
+											<tr class="text-center">
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+										</tbody> -->
+									</table>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 text-right">
+										<button class="btn btn-info" onclick="TB07140Sjs.pqExportExcel();"><i
+												class="fa fa-save"></i>&nbsp;엑셀저장</button>
+										<button class="btn btn-success" onclick="TB07140Sjs.excFinc();"><i
+												class="fa fa-check"></i>&nbsp;실행</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

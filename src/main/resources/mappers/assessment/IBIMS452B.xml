@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS452BMapper">
+      
+    <insert id="insertFndsCnstDecd" parameterType="com.nanuri.rams.business.common.vo.IBIMS452BVO">
+        INSERT INTO IBIMS452B (
+            DEAL_NO
+          , EXC_SEQ
+          , TR_SEQ
+          , ERLM_SEQ
+          , CHRR_DVSN_CD
+          , RQST_STFNO
+          , RELT_STFNO
+          , CONS_DECD_DVSN_CD
+          , CONS_DECD_STAT_CD
+          , GBCK_RSON_TEXT
+          , HND_DETL_DTM
+          , HND_EMPNO
+          , HND_TMNL_NO
+          , HND_TR_ID
+          , GUID
+        )
+        VALUES (
+            #{dealNo}
+          , #{excSeq}
+          , #{trSeq}
+          , (
+            SELECT NVL(MAX(ERLM_SEQ), '0') + 1 FROM IBIMS452B
+          )
+          , #{chrrDvsnCd}
+          , #{rqstStfno}
+          , #{reltStfno}
+          , #{consDecdDvsnCd}
+          , #{consDecdStatCd}
+          , #{gbckRsonText}
+          , SYSDATE
+          , #{hndEmpno}
+          , #{hndTmnlNo}
+          , #{hndTrId}
+          , #{guid}
+        )
+    </insert>
+
+    <update id="updateFndsCnstDecd" parameterType="com.nanuri.rams.business.common.vo.IBIMS452BVO">
+        UPDATE IBIMS452B
+           SET CHRR_DVSN_CD = #{chrrDvsnCd}
+             , RQST_STFNO = #{rqstStfno}
+             , RELT_STFNO = #{reltStfno}
+             , CONS_DECD_DVSN_CD = #{consDecdDvsnCd}
+             , CONS_DECD_STAT_CD = #{consDecdStatCd}
+             , GBCK_RSON_TEXT = #{gbckRsonText}
+             , HND_DETL_DTM = SYSDATE
+             , HND_EMPNO = #{hndEmpno}
+             , HND_TMNL_NO = #{hndTmnlNo}
+             , HND_TR_ID = #{hndTrId}
+             , GUID = #{guid}
+         WHERE 1=1
+           AND DEAL_NO = #{dealNo}
+           AND EXC_SEQ = #{excSeq}
+           AND TR_SEQ = #{trSeq}
+           AND ERLM_SEQ = #{erlmSeq}
+    </update>
+
+</mapper>

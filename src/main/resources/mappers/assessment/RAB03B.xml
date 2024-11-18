@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAB03BMapper">
+
+	<!-- 리포트지정부서정보 저장 -->
+	<insert id="insertRepDsgnDeptNoInfo"  parameterType="java.util.List">
+		INSERT INTO RAB03B							<!-- 리포트지정사용자정보 -->
+			 (
+			   REP_DSGN_DEPT_NO						<!-- 리포트지정사용자번호 -->
+			 , REP_NO								<!-- 리포트번호 -->
+			 , RGST_DT								<!-- 등록일자 -->
+			 , HNDL_DY_TM							<!-- 처리일시 -->
+			 , HNDL_DPRT_CD							<!-- 처리부점코드 -->
+			 , HNDL_P_ENO							<!-- 처리자사번 -->
+			 , DLT_F								<!-- 삭제여부 -->
+			 )
+		VALUES
+		 <foreach collection="list" item="item" separator=",">
+			 (
+			   #{item.repDsgnDeptNo}				<!-- 리포트지정사용자번호 -->
+			 , #{item.repNo} 						<!-- 리포트번호 -->
+			 , #{item.rgstDt}						<!-- 등록일자 -->
+			 , CURRENT_TIMESTAMP()					<!-- 처리일시 -->
+			 , #{item.hndlDprtCd}					<!-- 처리부점코드 -->
+			 , #{item.hndlPEno}						<!-- 처리자사번 -->
+			 , #{item.dltF}							<!-- 삭제여부 -->
+			 )
+		</foreach>
+	</insert>
+
+</mapper>

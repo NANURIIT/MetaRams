@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/as/AS04310S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 회의자료 RAW데이터 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2">
+						<div class="form-group form-inline row">
+							<div class="col-sm-12 text-right mb-1">
+								<button class="btn btn-primary" onclick="searchDeals();">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+							</div>
+							<!-- 결의 협의체 -->
+							<label class="col-sm-1 control-label">
+								<span class="req"></span>결의협의체
+							</label>
+							<div class="col-sm-2 input-group">
+								<select class="form-control" name="account" id="AS04310S_inspctCnfrncCcd">
+								</select>
+							</div>
+							<!-- 결의년도 -->
+							<label class="col-sm-1 control-label">
+								<span class="req"></span>결의년도
+							</label>
+							<div class="col-sm-2 input-group">
+								<input type="text" class="touchspin" value="2023" data-bts-min="2010" data-bts-max="2100"
+									id="AS04310S_stdYr">
+							</div>
+							<!-- 회차 -->
+							<label class="col-sm-1 control-label">회차</label>
+							<div class="col-sm-1 input-group">
+								<input type="text" class="form-control" id="AS04310S_inspctCnfrncSqcSq">
+							</div>
+							<!-- 결의일 -->
+							<label class="col-sm-1 control-label">결의일</label>
+							<div class="col-sm-3 input-group date input-daterange">
+								<input type="text" class="form-control" name="start" value="" id="AS04310S_rsltnDt_start" placeholder="시작일">
+								<!-- <span class="input-group-addon"><i class="fa fa-calendar"></i></span> -->
+								<div class="input-group-addon border-none"> ~ </div>
+								<input type="text" class="form-control" name="end" value="" id="AS04310S_rsltnDt_end" placeholder="종료일">
+								<!-- <span class="input-group-addon"><i class="fa fa-calendar"></i></span> -->
+							</div>							
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content">
+						<div class="col-sm-12 text-right py-1">
+							<button class="btn btn-warning btn-xs" onclick="functionExportExcel();"><i
+									class="fa fa-file-excel-o"></i>&nbsp;Excel</button>
+						</div>
+						<div class="tableFixHeader">
+							<table class="table result table-bordered" id="excelExportTable">
+								<thead>
+									<tr>
+										<th>결의협의체</th>
+										<th>회차</th>
+										<th>결의일</th>
+										<th>발의순번</th>
+										<th>본부</th>
+										<th>부서</th>
+										<th>구분</th>
+										<th>신규/재부의</th>
+										<th>안건명</th>
+										<th>전결항목</th>
+										<th>부의금액</th>
+										<th>승인금액</th>
+										<th>통화</th>
+										<th>투자기간(개월)</th>
+										<th>부의조건</th>
+									</tr>
+								</thead>
+								<tbody id="AS04310S_dealList">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div><!-- ibox -->
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS432BMapper">
+
+    <select id="selectRlthPruf" parameterType="com.nanuri.rams.business.common.vo.IBIMS432BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS432BVO">
+  		SELECT A.WRTN_DT
+             , A.RSLN_BDCD
+             , A.CNST_NO
+             , A.STTM_DETL_SN
+             , A.DBIT_CRIT_DCD
+             , A.RPTS_ACTS_CD
+             , A.ACTS_CD
+             , A.KRW_AMT
+             , A.FRCR_AMT
+             , A.BDG_EXCU_BDCD
+             , A.BDG_ACTS_CD
+             , A.RVRS_BDCD
+             , A.RSLN_SYNS_CTNS
+             , A.FNDS_ISTR_JOB_CLSF_CD
+             , A.ACCT_BCNC_CD
+             , A.PRUF_KND_DCD
+             , A.PRUF_DT
+             , A.NTS_APVL_NO
+             , A.ELC_PRUF_YN
+             , A.VHCL_RGST_CD
+             , A.NS_FNS_CD
+             , A.PRDT_CD
+             , A.PROJ_ID
+             , A.CRRY_CD
+             , A.EXRT
+             , A.HND_DETL_DTM
+             , A.HND_EMPNO
+             , A.HND_TMNL_NO
+             , A.HND_TR_ID
+             , A.GUID
+          FROM IBIMS432B A
+     		 , IBIMS431B B
+         WHERE 1=1
+           AND A.CNST_NO 	= B.CNST_NO(+)
+           AND A.RSLN_BDCD 	= B.RSLN_BDCD(+)
+           AND A.WRTN_DT 	= B.WRTN_DT(+)
+           AND A.WRTN_DT 	= #{wrtnDt}
+           AND A.RSLN_BDCD 	= #{rslnBdcd}
+           AND A.ACTS_CD 	= #{actsCd}
+           AND B.BCNC_NM 	= #{bcncNm}
+    </select>
+
+    <insert id="insertIBIMS432B" parameterType="com.nanuri.rams.business.common.vo.IBIMS432BVO">
+        INSERT INTO IBIMS432B
+            (
+                WRTN_DT
+              , RSLN_BDCD
+              , CNST_NO
+              , STTM_DETL_SN
+              , DBIT_CRIT_DCD
+              , RPTS_ACTS_CD
+              , ACTS_CD
+              , KRW_AMT
+              , FRCR_AMT
+              , BDG_EXCU_BDCD
+              , BDG_ACTS_CD
+              , RVRS_BDCD
+              , RSLN_SYNS_CTNS
+              , FNDS_ISTR_JOB_CLSF_CD
+              , ACCT_BCNC_CD
+              , PRUF_KND_DCD
+              , PRUF_DT
+              , NTS_APVL_NO
+              , ELC_PRUF_YN
+              , VHCL_RGST_CD
+              , NS_FNS_CD
+              , PRDT_CD
+              , PROJ_ID
+              , CRRY_CD
+              , EXRT
+              , HND_DETL_DTM
+              , HND_EMPNO
+              , HND_TMNL_NO
+              , HND_TR_ID
+              , GUID
+            )
+        VALUES
+            (
+                #{wrtnDt}
+              , #{rslnBdcd}
+              , #{cnstNo}
+              , #{sttmDetlSn}
+              , #{dbitCritDcd}
+              , #{rptsActsCd}
+              , #{actsCd}
+              , #{krwAmt}
+              , #{frcrAmt}
+              , #{bdgExcuBdcd}
+              , #{bdgActsCd}
+              , #{rvrsBdcd}
+              , #{rslnSynsCtns}
+              , #{fndsIstrJobClsfCd}
+              , #{acctBcncCd}
+              , #{prufKndDcd}
+              , #{prufDt}
+              , #{ntsApvlNo}
+              , #{elcPrufYn}
+              , #{vhclRgstCd}
+              , #{nsFnsCd}
+              , #{prdtCd}
+              , #{projId}
+              , #{crryCd}
+              , #{exrt}
+              , SYSDATE
+              , #{hndEmpno}
+              , #{hndTmnlNo}
+              , #{hndTrId}
+              , #{guid}
+            )
+    </insert>
+
+    <update  id="updateIBIMS432B" parameterType="com.nanuri.rams.business.common.vo.IBIMS432BVO">
+      UPDATE IBIMS432B
+         SET WRTN_DT = #{wrtnDt}
+           , RSLN_BDCD = #{rslnBdcd}
+           , CNST_NO = #{cnstNo}
+           , STTM_DETL_SN = #{sttmDetlSn}
+           , DBIT_CRIT_DCD = #{dbitCritDcd}
+           , RPTS_ACTS_CD = #{rptsActsCd}
+           , ACTS_CD = #{actsCd}
+           , KRW_AMT = #{krwAmt}
+           , FRCR_AMT = #{frcrAmt}
+           , BDG_EXCU_BDCD = #{bdgExcuBdcd}
+           , BDG_ACTS_CD = #{bdgActsCd}
+           , RVRS_BDCD = #{rvrsBdcd}
+           , RSLN_SYNS_CTNS = #{rslnSynsCtns}
+           , FNDS_ISTR_JOB_CLSF_CD = #{fndsIstrJobClsfCd}
+           , ACCT_BCNC_CD = #{acctBcncCd}
+           , PRUF_KND_DCD = #{prufKndDcd}
+           , PRUF_DT = #{prufDt}
+           , NTS_APVL_NO = #{ntsApvlNo}
+           , ELC_PRUF_YN = #{elcPrufYn}
+           , VHCL_RGST_CD = #{vhclRgstCd}
+           , NS_FNS_CD = #{nsFnsCd}
+           , PRDT_CD = #{prdtCd}
+           , PROJ_ID = #{projId}
+           , CRRY_CD = #{crryCd}
+           , EXRT = #{exrt}
+           , HND_DETL_DTM = SYSDATE
+           , HND_EMPNO = #{hndEmpno}
+           , HND_TMNL_NO = #{hndTmnlNo}
+           , HND_TR_ID = #{hndTrId}
+           , GUID = #{guid}
+       WHERE 1=1
+         AND WRTN_DT = #{wrtnDt}
+         AND RSLN_BDCD = #{rslnBdcd}
+         AND CNST_NO = #{cnstNo}
+         AND STTM_DETL_SN = #{sttmDetlSn}
+    </update>
+
+    <delete  id="deleteIBIMS432B" parameterType="com.nanuri.rams.business.common.vo.IBIMS432BVO">
+      DELETE
+        FROM IBIMS432B
+       WHERE 1=1
+         AND WRTN_DT = #{wrtnDt}
+         AND RSLN_BDCD = #{rslnBdcd}
+         AND CNST_NO = #{cnstNo}
+         AND STTM_DETL_SN = #{sttmDetlSn}
+    </delete>
+
+</mapper>

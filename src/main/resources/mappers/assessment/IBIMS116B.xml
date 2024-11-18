@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS116BMapper">
+
+    <!-- 딜기본 - 공동영업관리자 정보조회 -->
+    <select id="getEnoPList" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS116BVO">
+        SELECT A.DEAL_NO                                 /* 딜번호 */
+             , A.SN                                      /* 일련번호 */
+             , A.DPRT_CD                                 /* 부점코드 */
+             , (
+                 SELECT MAX(DPRT_NM)
+                   FROM IBIMS003B
+                  WHERE DPRT_CD = A.DPRT_CD
+               ) AS DPRT_NM
+             , A.BSNSS_MNG_P_ENO                         /* 영업관리자사번 */
+             , (
+                 SELECT EMP_NM
+                   FROM IBIMS003B
+                  WHERE EMPNO = A.BSNSS_MNG_P_ENO
+               ) AS EMP_NM
+             , A.CNTRT                                   /* 공헌도 */
+             , A.RGST_DT                                 /* 등록일자 */
+             , A.DEL_YN                                  /* 삭제여부 */
+             , A.HND_DETL_DTM                            /* 조작상세일시 */
+             , A.HND_EMPNO                               /* 조작사원번호 */
+             , A.HND_TMNL_NO                             /* 조작단말기번호 */
+             , A.HND_TR_ID                               /* 조작거래id */
+             , A.GUID                                    /* guid */
+          FROM IBIMS116B A
+         WHERE 1=1
+           AND DEAL_NO                                 = #{dealNo}
+    </select>
+
+
+    <!-- 딜기본 - 공동영업관리자 정보 등록 -->
+    <insert id="registMngP" parameterType="com.nanuri.rams.business.common.vo.IBIMS116BVO">
+        INSERT INTO IBIMS116B
+               (
+                  DEAL_NO                                 /* 딜번호 */
+                , SN                                      /* 일련번호 */
+                , DPRT_CD                                 /* 부점코드 */
+                , BSNSS_MNG_P_ENO                         /* 영업관리자사번 */
+                , CNTRT                                   /* 공헌도 */
+                , RGST_DT                                 /* 등록일자 */
+                , DEL_YN                                  /* 삭제여부 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+               )
+        VALUES
+               <foreach collection="list" item="item" separator=",">
+               (
+                 #{item.dealNo}                           /* 딜번호 */
+               , #{item.sn}                               /* 일련번호 */
+               , #{item.dprtCd}                           /* 부점코드 */
+               , #{item.bsnssMngPEno}                     /* 영업관리자사번 */
+               , #{item.cntrt}                            /* 공헌도 */
+               , #{item.rgstDt}                           /* 등록일자 */
+               , 'N'                                      /* 삭제여부 */
+               , SYSDATE                            	    /* 조작상세일시 */
+               , #{item.hndEmpno}                         /* 조작사원번호 */
+               )
+               </foreach>
+    </insert>
+    
+    <!-- 딜기본 - 공동영업관리자 정보 삭제 -->
+    <delete id="deleteMngP" parameterType="string">
+        DELETE
+          FROM IBIMS116B
+         WHERE DEAL_NO = #{dealNo}
+    </delete>
+
+
+</mapper>

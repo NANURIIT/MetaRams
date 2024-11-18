@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS407BMapper">
+
+    <select id="getFincList" parameterType="com.nanuri.rams.business.common.dto.IBIMS407BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS407BVO">
+ 		SELECT A.PRDT_CD                        /* 상품코드 */
+             , A.TR_SN                          /* 거래일련번호 */
+             , A.EXC_SN                         /* 실행일련번호 */
+             , A.TR_DT                          /* 거래일자 */
+             , A.ETPR_CRDT_GRNT_TR_KIND_CD      /* 거래종류코드 */
+             , A.NS_FND_CD                      /* 고유자산펀드코드 */
+             , A.SYNS_CD                        /* 적용코드 */
+             , A.HOLD_PRPS_DCD                  /* 보유목적구분코드 */
+             , A.FINC_PRCS_DCD                  /* 출자처리구분코드 */
+             , A.TR_DPT_CD                      /* 거래부서코드 */
+             , A.FINC_CNGE_AMT                  /* 출자변동금액 */
+             , A.PAY_ERN_AMT                    /* 보수수익금액 */
+             , A.STL_AMT                        /* 결제금액 */
+             , A.TRDE_EXRT                      /* 매매환율 */
+             , A.TRSL_FINC_CNGE_AMT             /* 환산출자변동금액 */
+             , A.TRSL_PAY_ERN_AMT               /* 환산보수수익금액 */
+             , A.TRSL_STL_AMT                   /* 환산결제금액 */
+             , A.TRTX                           /* 거래세 */
+             , A.INTX                           /* 소득세 */
+             , A.LOTX                           /* 지방세 */
+             , A.BF_RSV_PAY_DCD                 /* 전금지준구분코드 */
+             , A.STL_XTNL_ISTT_CD               /* 결제외부기관코드 */
+             , A.STL_ACNO                       /* 결제계좌번호 */
+             , A.FINC_PAY_CNTN                  /* 출자보수내용 */
+             , A.RE_FINC_POSS_YN                /* 재출자가능여부 */
+             , A.HND_DETL_DTM                   /* 조작상세일시 */
+             , (SELECT MAX(EMP_NM)
+                  FROM IBIMS003B
+                 WHERE EMPNO = A.HND_EMPNO) AS EMP_NM
+                                                /* 사원명 */
+             , A.HND_EMPNO                      /* 조작사원번호 */
+             , A.HND_TMNL_NO                    /* 조작단말기번호 */
+             , A.HND_TR_ID                      /* 조작거래ID */
+             , A.GUID                           /* GUID */
+             , B.PRDT_NM                        /* 종목명 */
+             , B.TR_CRRY_CD                     /* 통화코드 */
+             , C.FND_NM                         /* 펀드명 */
+             , D.FNLT_NM                        /* 결제외부기관명 */
+             , (SELECT MAX(DPRT_NM)
+                  FROM IBIMS003B
+                 WHERE DPRT_CD = A.TR_DPT_CD) AS DPRT_NM   
+                                                /* 거래부서명 */
+             , E.STDR_EXRT                      /* 기준환율 */
+          FROM IBIMS407B A
+     		 , IBIMS201B B  
+             , IBIMS993B C 
+     		 , IBIMS994B E 
+             , IBIMS992B D 
+         WHERE 1=1
+           AND A.PRDT_CD 			= B.PRDT_CD(+) 
+           AND B.LAST_YN(+) 		= '1'
+           AND A.NS_FND_CD 		  	= C.FND_CD(+)
+           AND B.TR_CRRY_CD 	  	= E.CRNCY_CD(+) 
+           AND A.TR_DT 			  	= E.STDR_DT(+)
+           AND A.STL_XTNL_ISTT_CD 	= D.FNLT_CD(+)
+           AND A.NS_FND_CD = #{nsFndCd}
+           AND A.PRDT_CD = #{prdtCd}
+           AND A.TR_DT LIKE NVL(NULLIF(#{trDt}, ''), '%')
+         ORDER BY A.TR_DT ASC, A.PRDT_CD, A.TR_SN DESC
+    </select>
+
+    <insert id="insertFinc" parameterType="com.nanuri.rams.business.common.dto.IBIMS407BDTO">
+        INSERT INTO IBIMS407B
+            (
+                PRDT_CD
+              , TR_SN
+              , EXC_SN
+              , TR_DT
+              , ETPR_CRDT_GRNT_TR_KIND_CD
+              , NS_FND_CD
+              , SYNS_CD
+              , HOLD_PRPS_DCD
+              , FINC_PRCS_DCD
+              , TR_DPT_CD
+              , FINC_CNGE_AMT
+              , PAY_ERN_AMT
+              , STL_AMT
+              , TRDE_EXRT
+              , TRSL_FINC_CNGE_AMT
+              , TRSL_PAY_ERN_AMT
+              , TRSL_STL_AMT
+              , TRTX
+              , INTX
+              , LOTX
+              , BF_RSV_PAY_DCD
+              , STL_XTNL_ISTT_CD
+              , STL_ACNO
+              , FINC_PAY_CNTN
+              , RE_FINC_POSS_YN
+              , HND_DETL_DTM
+              , HND_EMPNO
+              , HND_TMNL_NO
+              , HND_TR_ID
+              , GUID
+            )
+        VALUES
+            (
+                #{prdtCd}
+              , #{trSn}
+              , #{excSn}
+              , #{trDt}
+              , #{etprCrdtGrntTrKindCd}
+              , #{nsFndCd}
+              , #{synsCd}
+              , #{holdPrpsDcd}
+              , #{fincPrcsDcd}
+              , #{trDptCd}
+              , #{fincCngeAmt}
+              , #{payErnAmt}
+              , #{stlAmt}
+              , #{trdeExrt}
+              , #{trslFincCngeAmt}
+              , #{trslPayErnAmt}
+              , #{trslStlAmt}
+              , #{trtx}
+              , #{intx}
+              , #{lotx}
+              , #{bfRsvPayDcd}
+              , #{stlXtnlIsttCd}
+              , #{stlAcno}
+              , #{fincPayCntn}
+              , #{reFincPossYn}
+              , #{hndDetlDtm}
+              , #{hndEmpno}
+              , #{hndTmnlNo}
+              , #{hndTrId}
+              , #{guid}
+            );
+    </insert>
+
+    <update id="updateFinc" parameterType="com.nanuri.rams.business.common.dto.IBIMS407BDTO">
+        UPDATE IBIMS407B
+           SET PRDT_CD = #{prdtCd}
+             , TR_SN = #{trSn} 
+             , EXC_SN = #{excSn} 
+             , TR_DT = #{trDt} 
+             , ETPR_CRDT_GRNT_TR_KIND_CD = #{etprCrdtGrntTrKindCd} 
+             , NS_FND_CD = #{nsFndCd} 
+             , SYNS_CD = #{synsCd} 
+             , HOLD_PRPS_DCD = #{holdPrpsDcd} 
+             , FINC_PRCS_DCD = #{fincPrcsDcd} 
+             , TR_DPT_CD = #{trDptCd} 
+             , FINC_CNGE_AMT = #{fincCngeAmt} 
+             , PAY_ERN_AMT = #{payErnAmt} 
+             , STL_AMT = #{stlAmt} 
+             , TRDE_EXRT = #{trdeExrt} 
+             , TRSL_FINC_CNGE_AMT = #{trslFincCngeAmt} 
+             , TRSL_PAY_ERN_AMT = #{trslPayErnAmt} 
+             , TRSL_STL_AMT = #{trslStlAmt} 
+             , TRTX = #{trtx} 
+             , INTX = #{intx} 
+             , LOTX = #{lotx} 
+             , BF_RSV_PAY_DCD = #{bfRsvPayDcd} 
+             , STL_XTNL_ISTT_CD = #{stlXtnlIsttCd} 
+             , STL_ACNO = #{stlAcno} 
+             , FINC_PAY_CNTN = #{fincPayCntn} 
+             , RE_FINC_POSS_YN = #{reFincPossYn} 
+             , HND_DETL_DTM = #{hndDetlDtm} 
+             , HND_EMPNO = #{hndEmpno} 
+             , HND_TMNL_NO = #{hndTmnlNo} 
+             , HND_TR_ID = #{hndTrId} 
+             , GUID = #{guid}
+         WHERE 1=1
+           AND PRDT_CD = #{prdtCd}
+           AND TR_SN = #{trSn} 
+           AND EXC_SN = #{excSn}
+    </update>
+
+    <delete id="deleteFinc" parameterType="com.nanuri.rams.business.common.dto.IBIMS407BDTO">
+        DELETE FROM IBIMS407B
+         WHERE 1=1
+           AND PRDT_CD = #{prdtCd}
+           AND TR_SN = #{trSn}
+           AND EXC_SN = #{excSn}
+    </delete>
+
+      
+</mapper>

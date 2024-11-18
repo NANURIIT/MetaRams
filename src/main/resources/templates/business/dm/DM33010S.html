@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/popup/AC01110P.js}"></script>
+	<script th:src="@{js/business/dm/DM33010S.js}"></script>
+	<script th:src="@{js/business/popup/DM33010P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/popup/AC01110P :: AC01110P"></th:block>
+	<th:block th:replace="business/popup/DM33010P :: DM33010P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 투자자산매핑관리 -->
+    <div class="wrapper wrapper-content animated fadeIn">
+    	<div class="row">
+    		<div class="col-lg-12">
+    			<div class="ibox ">
+    				<!-- 조회조건영역 -->
+	    			<div class="ibox-title">
+    					<div class="form-group form-inline row">
+							<!-- 검색조건 첫번째 row -->
+							<div class="col-sm-12 text-right">
+								<button class="btn btn-primary" onclick="getMappingList();"><i class="fa fa-search"></i>&nbsp;조회</button>
+							</div>
+							<!-- 검색조건 두번째 row -->
+    						<div class="col-sm-3 input-group text-right">
+	    						<label class="col-sm-4 control-label">투자자산분류</label>
+	                            <div class="col-sm-8">
+	                            	<div class="input-group">
+										<select class="col-sm-12 form-control" id="DM33010S_invstAstsDvdCd">
+											<option value="">전체</option>
+											<option value="01">대출</option>
+											<option value="02">부의부채</option>
+											<option value="03">수익증권</option>
+											<option value="04">채권</option>
+											<option value="05">주식</option>
+											<option value="06">WM(비시장성펀드)</option>
+											<option value="07">현지법인</option>
+										</select>
+	                            	</div>
+	                            </div>
+                            </div>
+    						<div class="col-sm-3 input-group text-right">
+                            	<label class="col-sm-3 control-label">자산관리부점</label>
+	                            <div class="col-sm-9">
+	                            	<div class="input-group">
+	                            		<input type="text" class="form-control" style="width:20px;" id="DM33010S_dprtCd" name="DM33010S_dprtCd">
+	                            		<span class="input-group-append">
+	                                        <button type="button" class="btn btn-default" onclick="callAC01110P('DM33010S')"><i class="fa fa-search"></i></button>
+	                                    </span>
+	                            		<input type="text" class="form-control" style="width:80px;" id="DM33010S_dprtNm" name="DM33010S_dprtNm" readonly>
+	                            	</div>
+	                            </div>
+                            </div>
+							<div class="col-sm-4 input-group text-right">
+								<label class="col-sm-3 control-label">투자자산명</label>
+								<div class="col-sm-9">
+									<div class="input-group">
+										<input type="text" class="form-control" id="DM33010S_invstAstsNm" name="DM33010S_invstAstsNm">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1 input-group text-right">
+								<label class="col-sm-9 control-label">매핑제외 건</label>
+								<div class="col-sm-3">
+									<input type="checkbox" class="form-control" id="DM33010S_mappYn" name="DM33010S_mappYn">
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+							<!-- 검색조건 세번째 row -->
+							<div class="col-sm-3 input-group text-right">
+								<label class="col-sm-4 control-label">매핑여부</label>
+								<div class="col-sm-8">
+									<div class="input-group">
+										<select class="col-sm-12 form-control">
+											<option value="">전체</option>
+											<option value="1">매핑</option>
+											<option value="2">미매핑</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-3 input-group text-right">
+								<label class="col-sm-3 control-label">안건관리부점</label>
+								<div class="col-sm-9">
+									<div class="input-group">
+										<input type="text" class="form-control" style="width:20px;" id="DM33010S_case_dprtCd" name="DM33010S_case_dprtCd">
+										<span class="input-group-append">
+	                                        <button type="button" class="btn btn-default" onclick="callAC01110P('DM33010S_case')"><i class="fa fa-search"></i></button>
+	                                    </span>
+										<input type="text" class="form-control" style="width:80px;" id="DM33010S_case_dprtNm" name="DM33010S_case_dprtNm" readonly>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-4 input-group text-right">
+								<label class="col-sm-3 control-label">안건명</label>
+								<div class="col-sm-9">
+									<div class="input-group">
+										<input type="text" class="form-control" id="DM33010S_ibDealNm" name="DM33010S_ibDealNm">
+									</div>
+									<input type="hidden" id="selectedRow" value="-1"/>
+								</div>
+							</div>
+							<div class="col-sm-2 input-group text-right">
+							</div>
+							<!-- 검색조건 네번째 row -->
+							<div class="col-sm-12 text-right">
+								<button class="btn btn-success" onclick="saveMappingInfo();"><i class="fa fa-save"></i>&nbsp;저장</button>
+							</div>
+                       	</div>
+	    			</div>
+	    			<!-- 조회결과 -->
+	    			<div class="ibox-content">
+	    				<div class="tableFixHeader">
+		    				<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>투자자산분류</th>
+										<th>투자자산명</th>
+										<th>Deal번호</th>
+										<th>신규/재부의</th>
+										<th>안건순번</th>
+										<th>안건관리부점</th>
+										<th>안건명</th>
+										<th>등록일자</th>
+										<th>수작업여부</th>
+										<th>제외여부</th>
+										<th>장부금액</th>
+										<th>시가평가금액</th>
+										<th>매핑</th>
+									</tr>
+								</thead>
+								<tbody id="DM33010S_mappingList">
+								</tbody>
+							</table>
+						</div>
+	    			</div>
+    			</div><!-- ibox -->
+    		</div>
+    	</div><!-- row -->
+    </div>
+</th:block>
+
+</html>

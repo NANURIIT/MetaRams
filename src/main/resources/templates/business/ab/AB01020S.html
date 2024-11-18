@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/settingDateInterval.js}"></script><!--  -->
+
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- DPR 조회  -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2">
+						<!-- 버튼 영역 -->
+						<div class="text-right mb-1">
+							<button class="btn btn-default" id="" onclick="">
+								<i class="fa fa-undo"></i>&nbsp;초기화
+							</button>
+							<button class="btn btn-warning btn">
+								<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+							</button>
+							<button class="btn btn-info" id="" onclick="">
+								<i class="fa fa-print"></i>&nbsp;출력</button>
+							<button class="btn btn-primary">
+								<i class="fa fa-search"></i>&nbsp;조회</button>
+						</div>
+						<div class="form-group form-inline row">
+							<!-- 등록일자 -->
+							<div class="col-sm-1 input-group control-label mb-1">
+								<select class="form-control"> 
+									<option>등록일자</option>
+								</select>
+							</div>
+							<div class="col-sm-3 input-group mb-1">
+								<div class="col-sm-5 input-group date px-0">
+									<input type="text" class="form-control" id="fromDate" name="FromDate" value="" placeholder="시작일" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</div>
+								<span class="input-group-addon" style="border:0;"> ~ </span>
+								<div class="col-sm-5 input-group date px-0">
+									<input type="text" class="form-control" id="toDate" name="ToDate" value="" placeholder="종료일" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</div>	
+							</div>
+							<div class="col-sm-2 input-group dateInterval mb-1">
+								<button class="btn btn-default oneWeekApart mr-1">1주일</button>
+								<button class="btn btn-default oneMonthApart mr-1">1개월</button>
+								<button class="btn btn-default oneYearApart mr-1">1년</button>
+								<button class="btn btn-default twoYearApart">2년</button>
+							</div>
+							<!-- Deal 번호 -->
+							<label class="col-sm-1 control-label mb-1">
+								Deal 번호
+							</label>
+							<div class="col-sm-2 input-group mb-1">
+								<input type="text" class="form-control">
+							</div>
+							<!-- 소속본부 -->
+							<label class="col-sm-1 control-label mb-1">
+								소속본부
+							</label>
+							<div class="col-sm-2 input-group mb-1">
+								<select class="form-control">
+									<option>IB본부</option>
+								</select>
+							</div>
+							<!-- 소속부서 -->
+							<label class="col-sm-1 control-label mb-1">
+								소속부서
+							</label>
+							<div class="col-sm-2 input-group mb-1">
+								<input type="text" class="form-control" id="">
+								<span class="input-group-append">
+									<button type="button" id="" class="btn btn-default" onclick="">
+										<i class="fa fa-search"></i>
+									</button>
+									<button type="button" id="" class="btn btn-default" onclick="">
+										<i class="fa fa-eraser"></i>
+									</button>
+								</span>
+							</div>
+							<!-- (공동영업)관리자 -->
+							<label class="col-sm-1 control-label mb-1">
+								(공동영업) 관리자
+							</label>
+							<div class="col-sm-2 input-group mb-1">
+								<input type="text" class="form-control" id="">
+								<span class="input-group-append">
+									<button type="button" id="" class="btn btn-default" onclick="">
+										<i class="fa fa-search"></i>
+									</button>
+									<button type="button" id="" class="btn btn-default" onclick="">
+										<i class="fa fa-eraser"></i>
+									</button>
+								</span>
+							</div>
+							<!-- 업체명 -->
+							<label class="col-sm-1 control-label mb-1">
+								업체명
+							</label>
+							<div class="col-sm-2 input-group mb-1">
+								<input type="text" class="form-control" id="">
+								<span class="input-group-append">
+									<button type="button" id="" class="btn btn-default" onclick="">
+										<i class="fa fa-search"></i>
+									</button>
+									<button type="button" id="" class="btn btn-default" onclick="">
+										<i class="fa fa-eraser"></i>
+									</button>
+								</span>
+							</div>
+							<!--DPR진행현황  -->
+							<label class="col-sm-1 control-label mb-1">DPR진행현황</label>
+							<div class="col-sm-2 input-group mb-1">
+								<select class="form-control">
+									<option>-전체-</option>
+								</select>
+							</div>
+							<!-- 협업유형 -->
+							<label class="col-sm-1 control-label mb-1">협업유형</label>
+							<div class="col-sm-2 input-group mb-1">
+								<select class="form-control">
+									<option>-전체-</option>
+								</select>
+							</div>
+							<!-- BOOK -->
+							<label class="col-sm-1 control-label mb-1">
+								BOOK
+							</label>
+							<div class="col-sm-2 input-group mb-1">
+								<select class="form-control">
+									<option>-전체-</option>
+								</select>
+							</div>
+							<!-- 댓글/비밀글 여부 -->
+							<label class="col-sm-1 control-label mb-1">
+								댓글/비밀글 여부
+							</label>
+							<div class="col-sm-2 input-group mb-1 mb-1">
+								<label for="" class="control-label mr-3">
+									<input type="checkbox">댓글여부
+								</label>
+								<label for="secret" class="control-label">
+									<input type="checkbox" name="secret">비밀글여부
+								</label>
+							</div>
+							<!-- 상품1 -->
+							<label class="col-sm-1 control-label mb-1">상품1</label>
+							<div class="col-sm-2 input-group mt-1 mb-1">
+								<select class="form-control">
+									<option>-전체-</option>
+								</select>
+							</div>
+							<!-- 상품2 -->
+							<label class="col-sm-1 control-label mb-1">상품2</label>
+							<div class="col-sm-2 input-group mt-1 mb-1">
+								<select class="form-control">
+									<option>-전체-</option>
+								</select>
+							</div>
+							<!-- 상품3 -->
+							<label class="col-sm-1 control-label mb-1">상품3</label>
+							<div class="col-sm-2 input-group mt-1 mb-1">
+								<select class="form-control">
+									<option>-전체-</option>
+								</select>
+							</div>
+							<!-- 상품상세 -->
+							<label class="col-sm-1 control-label mb-1">상품상세</label>
+							<div class="col-sm-2 input-group mt-1 mb-1">
+								<select class="form-control">
+									<option>-없음-</option>
+								</select>
+							</div>
+							<!-- Deal명 -->
+							<label class="col-sm-1 mb-1"></label>
+							<div class="col-sm-2 input-group mt-1 mb-1">
+								<select class="form-control">
+									<option>Deal명</option>
+								</select>
+							</div>
+							<!-- 본부/부서장 미조회 여부 -->
+							<div class="col-sm-4 input-group">
+								<label class="control-label " >본부/부서장 미조회 여부</label>
+								<label for="" class="control-label mx-3">
+									<input type="checkbox">댓글여부
+								</label>
+								<label for="secret" class="control-label">
+									<input type="checkbox" name="secret">비밀글여부
+								</label>
+							</div>
+							<div class="col-sm-8"></div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content h-default">
+						<div class="tableFixHeader2">
+							<div class="col-sm-12 text-right mb-1 ">
+								(단위:백만원)
+							</div>
+							<table class="table result table-bordered">
+								<colgroup>
+									<col style="width: 3%;">
+									<col style="width: 7%;">
+									<col style="width: 11%;">
+									<col style="width: 7%;">
+									<col style="width: 16%;">
+									<col style="width: 7%;">
+									<col style="width: 10%;">
+									<col style="width: 4%;">
+									<col style="width: 4%;">
+									<col style="width: 4%;">
+									<col style="width: 10%;">
+									<col style="width: 5%;">
+									<col style="width: 7%;">
+								</colgroup>
+								<thead class="text-center">
+									<tr>
+										<td>순번</td>
+										<td>등록일자</td>
+										<td>부서명</td>
+										<td>담당자</td>
+										<td>Deal명</td>
+										<td>업체명</td>
+										<td>Deal규모(참여규모)</td>
+										<td>댓글갯수</td>
+										<td>답글갯수</td>
+										<td>조회수</td>
+										<td>공동영업관리자</td>
+										<td>상품1</td>
+										<td>진행상황</td>
+									</tr>
+								</thead>
+							</table>
+						</div>
+
+					</div>
+				</div><!-- ibox -->
+			</div>
+		</div><!-- row -->
+	</div>
+
+</th:block>
+
+</html>

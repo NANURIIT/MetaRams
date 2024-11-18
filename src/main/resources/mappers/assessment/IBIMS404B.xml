@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS404BMapper">
+
+    <update id="updateIBIMS404B" parameterType="com.nanuri.rams.business.common.dto.IBIMS404BDTO">
+		UPDATE IBIMS404B		/* 여신실행금리기본 */	
+		   SET APLY_STRT_DT = #{aplyStrtDt} /* 적용시작일자 */
+		     , APLY_END_DT = #{aplyEndDt} /* 적용종료일자 */
+		     , STDR_INTRT_KND_CD = #{stdrIntrtKndCd} /* 기준금리종류코드 */
+		     , FXN_INTRT = #{fxnIntrt} /* 고정금리 */
+		     , ADD_INTRT = #{addIntrt} /* 가산금리 */
+		     , INTRT_CNGE_FRQC_CD = #{intrtCngeFrqcCd} /* 금리변동주기코드 */
+		     , INTRT_CNGE_FRQC_MNUM = #{intrtCngeFrqcMnum} /* 금리변동주기개월수 */
+		     , APLY_DNUM_DCD = #{aplyDnumDcd} /* 적용일수구분코드 */
+		     , STDR_INTRT_APLY_DNUM = #{stdrIntrtAplyDnum} /* 기준금리적용일수 */
+		     , HND_DETL_DTM = #{hndDetlDtm} /* 조작상세일시 */
+		     , HND_EMPNO = #{hndEmpno} /* 조작사원번호 */
+		     , HND_TMNL_NO = #{hndTmnlNo} /* 조작단말기번호 */
+		     , HND_TR_ID = #{hndTrId} /* 조작거래id */
+		     , GUID = #{guid} /* guid */
+		 WHERE PRDT_CD = #{prdtCd} /* 상품코드 */
+		   AND EXC_SN = #{excSn} /* 실행일련번호 */
+		   AND RGST_SN = #{rgstSn} /* 등록일련번호 */
+    </update>
+    
+    <insert id="insertIBIMS404B" parameterType="com.nanuri.rams.business.common.dto.IBIMS404BDTO">
+		INSERT INTO IBIMS404B		/* 여신실행금리기본 */
+		    ( 
+			  PRDT_CD				/* 상품코드 */
+		    , EXC_SN				/* 실행일련번호 */
+		    , RGST_SN				/* 등록일련번호 */
+		    , APLY_STRT_DT			/* 적용시작일자 */
+		    , APLY_END_DT			/* 적용종료일자 */
+		    , STDR_INTRT_KND_CD		/* 기준금리종류코드 */
+		    , FXN_INTRT				/* 고정금리 */
+		    , ADD_INTRT				/* 가산금리 */
+		    , INTRT_CNGE_FRQC_CD	/* 금리변동주기코드 */
+		    , INTRT_CNGE_FRQC_MNUM	/* 금리변동주기개월수 */
+		    , APLY_DNUM_DCD			/* 적용일수구분코드 */
+		    , STDR_INTRT_APLY_DNUM	/* 기준금리적용일수 */
+		    , HND_DETL_DTM			/* 조작상세일시 */
+		    , HND_EMPNO				/* 조작사원번호 */
+		    , HND_TMNL_NO			/* 조작단말기번호 */
+		    , HND_TR_ID				/* 조작거래id */
+		    , GUID					/* guid */
+		    )
+		    VALUES
+		    (
+			  #{prdtCd}  	       /* 상품코드 */
+			, #{excSn} 		       /* 실행일련번호 */
+			, (
+			  SELECT NVL(MAX(A.RGST_SN),0)+1 AS RGST_SN	 /* 등록일련번호 */
+			    FROM IBIMS404B A	/* 여신실행금리기본 */
+			   WHERE 1 = 1
+	  		     AND A.PRDT_CD = #{prdtCd}
+	  		     AND A.EXC_SN  = #{excSn}
+			  )                    /* 등록일련번호 */
+			, #{aplyStrtDt}        /* 적용시작일자 */
+			, #{aplyEndDt}         /* 적용종료일자 */
+			, #{stdrIntrtKndCd}    /* 기준금리종류코드 */
+			, #{fxnIntrt}          /* 고정금리 */
+			, #{addIntrt}          /* 가산금리 */
+			, #{intrtCngeFrqcCd}   /* 금리변동주기코드 */
+			, #{intrtCngeFrqcMnum} /* 금리변동주기개월수 */
+			, #{aplyDnumDcd}   	   /* 적용일수구분코드 */
+			, #{stdrIntrtAplyDnum} /* 기준금리적용일수 */
+			, #{hndDetlDtm}        /* 조작상세일시 */
+			, #{hndEmpno}          /* 조작사원번호 */
+			, #{hndTmnlNo}         /* 조작단말기번호 */
+			, #{hndTrId}           /* 조작거래id */
+			, #{guid}              /* guid */
+			)
+    </insert>
+    
+    <insert id="insertCopyIBIMS344B" parameterType="com.nanuri.rams.business.common.dto.IBIMS404BDTO">
+		INSERT INTO IBIMS404B		/* 여신실행금리기본 */
+		    ( 
+			  PRDT_CD				/* 상품코드 */
+		    , EXC_SN				/* 실행일련번호 */
+		    , RGST_SN				/* 등록일련번호 */
+		    , APLY_STRT_DT			/* 적용시작일자 */
+		    , APLY_END_DT			/* 적용종료일자 */
+		    , STDR_INTRT_KND_CD		/* 기준금리종류코드 */
+		    , FXN_INTRT				/* 고정금리 */
+		    , ADD_INTRT				/* 가산금리 */
+		    , INTRT_CNGE_FRQC_CD	/* 금리변동주기코드 */
+		    , INTRT_CNGE_FRQC_MNUM	/* 금리변동주기개월수 */
+		    , APLY_DNUM_DCD			/* 적용일수구분코드 */
+		    , STDR_INTRT_APLY_DNUM	/* 기준금리적용일수 */
+		    , HND_DETL_DTM			/* 조작상세일시 */
+		    , HND_EMPNO				/* 조작사원번호 */
+		    , HND_TMNL_NO			/* 조작단말기번호 */
+		    , HND_TR_ID				/* 조작거래id */
+		    , GUID					/* guid */
+		    )
+		 SELECT 
+		      PRDT_CD				/* 상품코드 */
+		    , #{excSn} AS EXC_SN	/* 실행일련번호 */
+			, (
+			  SELECT NVL(MAX(RGST_SN),0)+1 AS RGST_SN	 /* 등록일련번호 */
+			    FROM IBIMS404B 	/* 여신실행금리기본 */
+			   WHERE 1 = 1
+	  		     AND PRDT_CD = #{prdtCd}
+	  		     AND EXC_SN  = #{excSn}
+			  )                    /* 등록일련번호 */
+		    , APLY_STRT_DT			/* 적용시작일자 */
+		    , APLY_END_DT			/* 적용종료일자 */
+		    , STDR_INTRT_KND_CD		/* 기준금리종류코드 */
+		    , FXN_INTRT				/* 고정금리 */
+		    , NVL(#{addIntrt}, ADD_INTRT) AS ADD_INTRT /* 가산금리 */
+		    , INTRT_CNGE_FRQC_CD	/* 금리변동주기코드 */
+		    , INTRT_CNGE_FRQC_MNUM	/* 금리변동주기개월수 */
+		    , APLY_DNUM_DCD			/* 적용일수구분코드 */
+		    , STDR_INTRT_APLY_DNUM	/* 기준금리적용일수 */
+		    , HND_DETL_DTM			/* 조작상세일시 */
+		    , HND_EMPNO				/* 조작사원번호 */
+		    , HND_TMNL_NO			/* 조작단말기번호 */
+		    , HND_TR_ID				/* 조작거래id */
+		    , GUID					/* guid */
+		 FROM IBIMS346B             /* 딜승인금리기본 */
+		WHERE 1=1
+		  AND PRDT_CD = #{prdtCd}   /* A000000001 */
+    </insert>
+    
+    <select id="selectIBIMS404B" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS404BVO">
+		SELECT 
+			   PRDT_CD				/* 상품코드 */
+			 , EXC_SN				/* 실행일련번호 */
+			 , RGST_SN				/* 등록일련번호 */
+			 , APLY_STRT_DT			/* 적용시작일자 */
+			 , APLY_END_DT			/* 적용종료일자 */
+			 , STDR_INTRT_KND_CD	/* 기준금리종류코드 */
+			 , FXN_INTRT			/* 고정금리 */
+			 , ADD_INTRT			/* 가산금리 */
+			 , INTRT_CNGE_FRQC_CD	/* 금리변동주기코드 */
+			 , INTRT_CNGE_FRQC_MNUM	/* 금리변동주기개월수 */
+			 , APLY_DNUM_DCD		/* 적용일수구분코드 */
+			 , STDR_INTRT_APLY_DNUM	/* 기준금리적용일수 */
+			 , HND_DETL_DTM			/* 조작상세일시 */
+			 , HND_EMPNO			/* 조작사원번호 */
+			 , HND_TMNL_NO			/* 조작단말기번호 */
+			 , HND_TR_ID			/* 조작거래id */
+			 , GUID					/* guid */    
+		  FROM IBIMS404B            /* 여신실행금리기본 */
+		 WHERE 1=1
+		   AND PRDT_CD = #{prdtCd} 	
+		   AND (PRDT_CD, EXC_SN, RGST_SN) 
+		    IN (
+		        SELECT V.PRDT_CD, V.EXC_SN, MAX(V.RGST_SN) AS RGST_SN
+		          FROM IBIMS404B V  /* 여신실행금리기본 */
+				 WHERE 1=1
+				   AND V.PRDT_CD = #{prdtCd} 	
+				 GROUP BY V.PRDT_CD, V.EXC_SN 
+		       )
+		 ORDER BY PRDT_CD, 	EXC_SN 
+    </select>
+    
+    <select id="getBaseRateList" parameterType="com.nanuri.rams.business.common.vo.IBIMS404BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS404BVO">
+       SELECT  
+              APLY_STRT_DT
+            , APLY_END_DT
+            , STDR_INTRT_KND_CD
+            , FXN_INTRT
+            , ADD_INTRT
+            , FXN_INTRT+ADD_INTRT AS APLY_INTRT
+		 FROM IBIMS404B A
+		WHERE 1=1
+		  AND PRDT_CD = #{prdtCd}
+		  AND EXC_SN  = #{excSn}
+		  AND ( 
+		        A.APLY_STRT_DT BETWEEN #{aplyStrtDt} AND  #{aplyEndDt}
+		     OR A.APLY_END_DT  BETWEEN #{aplyStrtDt} AND  #{aplyEndDt}
+             OR ( A.APLY_STRT_DT &lt;=  #{aplyStrtDt} AND  A.APLY_END_DT  &gt;= #{aplyEndDt}))		  
+    </select>
+    
+    <!-- <select id="getBsnDt" parameterType="com.nanuri.rams.business.common.vo.IBIMS404BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS404BVO">
+		SELECT STDR_DT 
+			 ,
+			( 
+			    SELECT MAX(V.STDR_DT) AS MX_DT
+			       FROM IBIMS991B V
+				WHERE 1=1
+				AND TRIM(V.STDR_DT) &lt; A.STDR_DT
+				AND V.HOLIDAY = 0
+				AND V.STDR_DT BETWEEN TO_DATE(ADD_MONTHS(TO_CHAR(A.STDR_DT,'YYYYMMDD'), -1),'YYYYMMDD') AND  A.STDR_DT
+			   ) AS BF_DT
+			,
+			( 
+			    SELECT MIN(V.STDR_DT) AS MX_DT
+			       FROM IBIMS991B V 
+				WHERE 1=1
+				AND TRIM(V.STDR_DT) &gt; A.STDR_DT
+				AND V.HOLIDAY = 0
+				AND V.STDR_DT BETWEEN A.STDR_DT AND TO_DATE(ADD_MONTHS(TO_CHAR(A.STDR_DT,'YYYYMMDD'), 1),'YYYYMMDD')
+			   ) AS AF_DT
+			 , DAYOFWEEKS 
+			 , HOLIDAY 
+			 , CONTENT
+		  FROM IBIMS991B A 
+		 WHERE 1=1
+		   AND STDR_DT = #{stdrDt}
+    </select>        -->
+        
+    <select id="getBaseRate" parameterType="com.nanuri.rams.business.common.vo.IBIMS404BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS404BVO">
+       SELECT  
+              APLY_STRT_DT
+            , APLY_END_DT
+            , STDR_INTRT_KND_CD
+            , FXN_INTRT
+            , ADD_INTRT
+		 FROM IBIMS404B A
+		WHERE 1=1
+		  AND PRDT_CD = #{prdtCd} 
+		  AND #{aplyStrtDt} BETWEEN A.APLY_STRT_DT AND A.APLY_END_DT
+    </select>       
+     
+    <select id="getBaseRateCnt" parameterType="com.nanuri.rams.business.common.vo.IBIMS404BVO" resultType="java.lang.Integer">
+       SELECT  
+              COUNT(*) AS aplyCnt
+		 FROM IBIMS404B A
+		WHERE 1=1
+		  AND PRDT_CD = #{prdtCd} 
+		  AND ( 
+		        A.APLY_STRT_DT BETWEEN #{aplyStrtDt} AND  #{aplyEndDt}
+		     OR A.APLY_END_DT  BETWEEN #{aplyStrtDt} AND  #{aplyEndDt}
+             OR ( A.APLY_STRT_DT &lt;=  #{aplyStrtDt} AND  A.APLY_END_DT  &gt;= #{aplyEndDt}))	
+    </select>
+    
+    <select id="getMonthDiff" parameterType="com.nanuri.rams.business.common.vo.IBIMS404BVO" resultType="java.lang.Integer">
+	    SELECT MONTHS_BETWEEN(SUBSTR(#{aplyEndDt}, 1,6)||'01', SUBSTR(#{aplyStrtDt}, 1,6)||'01') FROM DUAL
+    </select>   
+
+	<!-- TB06015P 금리정보 조회 --> 
+	<select id="getIntrRateInfoList" parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.vo.IBIMS404BVO">
+	SELECT
+		  A.APLY_STRT_DT							  as aplyStrtDt						/* 적용시작일자 */
+		, A.APLY_END_DT                               as aplyEndDt						/* 적용종료일자 */
+        , A.STDR_INTRT_KND_CD                         as stdrIntrtKndCd					/* 기준금리종류코드 */
+        , A.FXN_INTRT                                 as fxnIntrt						/* 기준금리 */
+        , A.ADD_INTRT                                 as ADD_INTRT						/* 가산금리 */
+        , A.INTRT_CNGE_FRQC_CD                        as intrtCngeFrqcCd				/* 적용일수구분코드 */
+        , A.INTRT_CNGE_FRQC_MNUM                      as intrtCngeFrqcMnum				/* 기준금리적용일수 */
+        , A.APLY_DNUM_DCD                             as aplyDnumDcd					/* 금리변동주기코드 */
+        , A.STDR_INTRT_APLY_DNUM                      as stdrIntrtAplyDnum				/* 금리변동주기개월 */
+        , A.FXN_INTRT+A.ADD_INTRT                     as aplyIntrt						/* 총 금리 */
+        <!-- , ib2a.CD_VL_NM                               as stdrIntrtKndCdNm				/* 코드값명(기준금리종류코드) */
+        , ib2b.CD_VL_NM                               as aplyDnumDcdNm					/* 코드값명(금리변동주기코드) */
+        , ib2c.CD_VL_NM                               as intrtCngeFrqcCdNm				/* 코드값명(적용일수구분코드) */ -->
+	FROM IBIMS404B A
+	<!-- left outer JOIN IBIMS002B ib2a ON A.STDR_INTRT_KND_CD = ib2a.CD_VL_ID AND ib2a.CMNS_CD_GRP = (SELECT CMNS_CD_GRP FROM IBIMS001B WHERE CMNS_CD_NM = 'STDR_INTRT_KND_CD')
+    left outer JOIN IBIMS002B ib2b ON A.APLY_DNUM_DCD = ib2b.CD_VL_ID AND ib2b.CMNS_CD_GRP = (SELECT CMNS_CD_GRP FROM IBIMS001B WHERE CMNS_CD_NM = 'APLY_DNUM_DCD')
+    left outer JOIN IBIMS002B ib2c ON A.INTRT_CNGE_FRQC_CD = ib2c.CD_VL_ID AND ib2c.CMNS_CD_GRP = (SELECT CMNS_CD_GRP FROM IBIMS001B WHERE CMNS_CD_NM = 'INTRT_CNGE_FRQC_CD') -->
+	WHERE A.PRDT_CD = #{prdtCd}
+    AND A.EXC_SN = #{excSn}
+	</select>
+
+	<update id="updateListIBIMS404B">
+		<foreach collection="intrtList" item="item" separator=";">
+			UPDATE IBIMS404B													/* 여신실행금리기본 */	
+			   SET   APLY_STRT_DT = #{item.aplyStrtDt} 							/* 적용시작일자 */
+				   , APLY_END_DT = #{item.aplyEndDt} 							/* 적용종료일자 */
+				   , STDR_INTRT_KND_CD = #{item.stdrIntrtKndCd} 				/* 기준금리종류코드 */
+				   , FXN_INTRT = #{item.fxnIntrt} 								/* 고정금리 */
+				   , ADD_INTRT = #{item.addIntrt} 								/* 가산금리 */
+				   , INTRT_CNGE_FRQC_CD = #{item.intrtCngeFrqcCd} 				/* 금리변동주기코드 */
+				   , INTRT_CNGE_FRQC_MNUM = #{item.intrtCngeFrqcMnum} 			/* 금리변동주기개월수 */
+				   , APLY_DNUM_DCD = #{item.aplyDnumDcd} 						/* 적용일수구분코드 */
+				   , STDR_INTRT_APLY_DNUM = #{item.stdrIntrtAplyDnum} 			/* 기준금리적용일수 */
+				   , HND_DETL_DTM = SYSDATE 										/* 조작상세일시 */
+				   , HND_EMPNO = NVL(#{item.hndEmpno}, '') 					/* 조작사원번호 */
+				   , HND_TMNL_NO = NVL(#{item.hndTmnlNo}, '') 				/* 조작단말기번호 */
+				   , HND_TR_ID = NVL(#{item.hndTrId}, '') 					/* 조작거래id */
+				   , GUID = NVL(#{item.guid}, '') 							/* guid */
+			WHERE PRDT_CD = #{prdtCd} 											/* 상품코드 */
+			  AND EXC_SN = #{excSn} 											/* 실행일련번호 */
+			  AND RGST_SN = #{item.rgstSn} 										/* 등록일련번호 */
+		</foreach>
+    </update>
+
+	 <insert id="insertListIBIMS404B">
+		<foreach collection="intrtList" item="item" separator=";">
+		INSERT INTO IBIMS404B		/* 여신실행금리기본 */
+		    ( 
+			  PRDT_CD				/* 상품코드 */
+		    , EXC_SN				/* 실행일련번호 */
+		    , RGST_SN				/* 등록일련번호 */
+		    , APLY_STRT_DT			/* 적용시작일자 */
+		    , APLY_END_DT			/* 적용종료일자 */
+		    , STDR_INTRT_KND_CD		/* 기준금리종류코드 */
+		    , FXN_INTRT				/* 고정금리 */
+		    , ADD_INTRT				/* 가산금리 */
+		    , INTRT_CNGE_FRQC_CD	/* 금리변동주기코드 */
+		    , INTRT_CNGE_FRQC_MNUM	/* 금리변동주기개월수 */
+		    , APLY_DNUM_DCD			/* 적용일수구분코드 */
+		    , STDR_INTRT_APLY_DNUM	/* 기준금리적용일수 */
+		    , HND_DETL_DTM			/* 조작상세일시 */
+		    , HND_EMPNO				/* 조작사원번호 */
+		    , HND_TMNL_NO			/* 조작단말기번호 */
+		    , HND_TR_ID				/* 조작거래id */
+		    , GUID					/* guid */
+		    )
+		    VALUES
+		    (
+			  #{prdtCd}  	       							/* 상품코드 */
+			, #{excSn} 		       							/* 실행일련번호 */
+			, (
+			  SELECT NVL(MAX(A.RGST_SN),0)+1 AS RGST_SN	 /* 등록일련번호 */
+			    FROM IBIMS404B A							/* 여신실행금리기본 */
+			   WHERE 1 = 1
+	  		     AND A.PRDT_CD = #{prdtCd}
+	  		     AND A.EXC_SN  = #{excSn}
+			  )                   							 /* 등록일련번호 */
+			, #{item.aplyStrtDt}        					/* 적용시작일자 */
+			, #{item.aplyEndDt}         					/* 적용종료일자 */
+			, #{item.stdrIntrtKndCd}    					/* 기준금리종류코드 */
+			, #{item.fxnIntrt}          					/* 고정금리 */
+			, #{item.addIntrt}          					/* 가산금리 */
+			, #{item.intrtCngeFrqcCd}   					/* 금리변동주기코드 */
+			, #{item.intrtCngeFrqcMnum} 					/* 금리변동주기개월수 */
+			, #{item.aplyDnumDcd}   						   /* 적용일수구분코드 */
+			, #{item.stdrIntrtAplyDnum} 					/* 기준금리적용일수 */
+			, SYSDATE        									/* 조작상세일시 */
+			, #{item.hndEmpno}          					/* 조작사원번호 */
+			, #{item.hndTmnlNo}         					/* 조작단말기번호 */
+			, #{item.hndTrId}           					/* 조작거래id */
+			, #{item.guid}              					/* guid */
+			)
+		</foreach>
+    </insert>
+
+	<select id="getIntrRateInfos" parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.vo.IBIMS404BVO">
+	SELECT
+		  A.RGST_SN									  AS rgstSn							/* 일련번호 */
+		, A.APLY_STRT_DT							  as aplyStrtDt						/* 적용시작일자 */
+		, A.APLY_END_DT                               as aplyEndDt						/* 적용종료일자 */
+        , A.STDR_INTRT_KND_CD                         as stdrIntrtKndCd					/* 기준금리종류코드 */
+        , A.FXN_INTRT                                 as fxnIntrt						/* 기준금리 */
+        , A.ADD_INTRT                                 as ADD_INTRT						/* 가산금리 */
+        , A.INTRT_CNGE_FRQC_CD                        as intrtCngeFrqcCd				/* 적용일수구분코드 */
+        , A.INTRT_CNGE_FRQC_MNUM                      as intrtCngeFrqcMnum				/* 기준금리적용일수 */
+        , A.APLY_DNUM_DCD                             as aplyDnumDcd					/* 금리변동주기코드 */
+        , A.STDR_INTRT_APLY_DNUM                      as stdrIntrtAplyDnum				/* 금리변동주기개월 */
+        , A.FXN_INTRT+A.ADD_INTRT                     as aplyIntrt						/* 총 금리 */
+        <!-- , ib2a.CD_VL_NM                               as stdrIntrtKndCdNm				/* 코드값명(기준금리종류코드) */
+        , ib2b.CD_VL_NM                               as aplyDnumDcdNm					/* 코드값명(금리변동주기코드) */
+        , ib2c.CD_VL_NM                               as intrtCngeFrqcCdNm				/* 코드값명(적용일수구분코드) */ -->
+	FROM IBIMS404B A
+	<!-- left outer JOIN IBIMS002B ib2a ON A.STDR_INTRT_KND_CD = ib2a.CD_VL_ID AND ib2a.CMNS_CD_GRP = (SELECT CMNS_CD_GRP FROM IBIMS001B WHERE CMNS_CD_NM = 'STDR_INTRT_KND_CD')
+    left outer JOIN IBIMS002B ib2b ON A.APLY_DNUM_DCD = ib2b.CD_VL_ID AND ib2b.CMNS_CD_GRP = (SELECT CMNS_CD_GRP FROM IBIMS001B WHERE CMNS_CD_NM = 'APLY_DNUM_DCD')
+    left outer JOIN IBIMS002B ib2c ON A.INTRT_CNGE_FRQC_CD = ib2c.CD_VL_ID AND ib2c.CMNS_CD_GRP = (SELECT CMNS_CD_GRP FROM IBIMS001B WHERE CMNS_CD_NM = 'INTRT_CNGE_FRQC_CD') -->
+	WHERE A.PRDT_CD = #{prdtCd}
+    AND A.EXC_SN = #{excSn}
+	</select>
+
+	<delete id="deleteIBIMS404B" parameterType="com.nanuri.rams.business.common.vo.TB06015SVO">
+		DELETE FROM IBIMS404B 
+		 WHERE PRDT_CD = #{prdtCd}
+           AND EXC_SN = #{excSn}
+           AND RGST_SN = #{rgstSn}
+	</delete>
+
+
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAB01BMapper">
+
+	<!-- 보고서번호 조회 -->
+	<select id="getRepNo"  resultType="java.util.HashMap">
+		SELECT  IFNULL(SUBSTR(MAX(REP_NO),7,5),0)+1	AS MAX_REP_NO	
+		     ,  MAX(REP_NO) AS REP_NO 
+	      FROM RAB01B
+	     WHERE REP_NO LIKE CONCAT(DATE_FORMAT(CURDATE(),'%Y%m'), '%')  	
+	</select>
+	
+	<!-- CallReport 정보 --> 
+	<insert id="registCallReportInfo" parameterType="com.nanuri.rams.business.common.vo.AB01011SVO$CallReportInfo">
+		INSERT INTO RAB01B 							<!-- 리포트정보 -->
+		     (
+			   REP_NO								<!-- 리포트번호 -->
+			 , REL_DOC_CCD							<!-- 관련문서구분코드 -->
+			 , REP_CCD								<!-- 리포트구분코드 -->
+			 , ENTP_CD								<!-- 업체코드 -->
+			 , MET_TIT_NM							<!-- 미팅제목명 -->
+			 , MET_DT								<!-- 미팅일자 -->
+			 , INVST_GDS_LDVD_CD					<!-- 투자상품대분류코드 -->
+			 , INVST_GDS_MDVD_CD					<!-- 투자상품중분류코드 -->
+			 , MET_PRPS_NM							<!-- 미틸목적명 -->
+			 , MET_CNTNT							<!-- 미팅내용 -->
+			 , CUST_NM								<!-- 고객명 -->
+			 , CUST_CHRG_DEPT_NM					<!-- 고객담당부서명 -->
+			 , CUST_PSTN_NM							<!-- 고객직급명 -->
+			 , CUST_MAIN_CRR_CNTNT					<!-- 고객주요경력내용 -->
+			 , CUST_REF_CNTNT						<!-- 고객참고사항내용-->
+			 , SCRT_ARTC_F							<!-- 비밀글여부 -->
+			 , CHRG_P_ENO							<!-- 담당사원번호 -->
+			 , CHRG_DPRT_CD							<!-- 담당부점코드 -->
+			 , IB_DEAL_NO							<!-- iBDEAL번호 -->
+			 , RGST_DT								<!-- 들록일자 -->
+			 , HNDL_DY_TM							<!-- 처리일시 -->
+			 , HNDL_DPRT_CD							<!-- 처리부점코드 -->
+			 , HNDL_P_ENO							<!-- 처리자사번 -->
+			 , DLT_F								<!-- 삭제여부 -->
+		     )
+	    VALUES 
+	         (
+			   #{repNo            	}				<!-- 리포트번호 -->
+			 , #{relDocCcd			}				<!-- 관련문서구분코드 -->
+			 , #{repCcd				}				<!-- 리포트구분코드 -->
+			 , #{entpCd				}				<!-- 업체코드 -->
+			 , #{metTitNm			}				<!-- 미팅제목명 -->
+			 , #{metDt				}				<!-- 미팅일자 -->
+			 , #{invstGdsLdvdCd		}				<!-- 투자상품대분류코드 -->
+			 , #{invstGdsMdvdCd		}				<!-- 투자상품중분류코드  -->
+			 , #{metPrpsNm			}				<!-- 미틸목적명 -->
+			 , #{metCntnt			}				<!-- 미팅내용 -->
+			 , #{custNm				}				<!-- 고객명 -->
+			 , #{custChrgDeptNm		}				<!-- 고객담당부서명 -->
+			 , #{custPstnNm			}				<!-- 고객직급명 -->
+			 , #{custMainCrrCntnt	}				<!-- 고객주요경력내용 -->
+			 , #{custRefCntnt		}				<!-- 고객참고사항내용 -->
+			 , #{scrtArtcF			}				<!-- 비밀글여부 -->
+			 , #{chrgPEno			}				<!-- 담당사원번호 -->
+			 , #{chrgDprtCd			}				<!-- 담당부점코드 -->
+			 , #{ibDealNo			}				<!-- iBDEAL번호 -->
+			 , #{rgstDt				}				<!-- 들록일자 -->	
+			 , CURRENT_TIMESTAMP()					<!-- 처리일시 -->
+			 , #{hndlDprtCd			}				<!-- 처리부점코드 -->
+			 , #{hndlPEno			}				<!-- 처리자사번 -->
+			 , #{dltF				}				<!-- 삭제여부 -->
+		     )
+	</insert>
+
+</mapper>

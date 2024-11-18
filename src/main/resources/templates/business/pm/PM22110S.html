@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/popup/AS02020P.js}"></script>
+	<script th:src="@{js/business/popup/AC01110P.js}"></script>
+	<script th:src="@{js/business/pm/PM22110S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/popup/AS02020P :: AS02020P"></th:block>
+	<th:block th:replace="business/popup/AC01110P :: AC01110P"></th:block>
+</th:block>
+
+
+<th:block layout:fragment="customContent">
+	<!-- 안건별모니터링관리황 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 히든영역 -->
+					<div class="hiddenInfo">
+						<!-- IBDEAL번호 -->
+						<input type="hidden" id="selectedIbDealNo" />
+						<!-- 리스크심사구분코드 -->
+						<input type="hidden" id="selectedRiskInspctCcd" />
+						<!-- 부수안건구분코드 -->
+						<input type="hidden" id="selectedLstCCaseCcd" />
+						<!-- 진행상태코드 -->
+						<input type="hidden" id="PM22110S_inspctPrgrsStCd" />
+					</div>
+					<!-- 조회조건영역 -->
+					<div class="ibox-title">
+						<!-- 1 Line -->
+						<div class="col-sm-12 input-group row text-right">
+							<label class="col-sm-1 col-form-label">보고구분</label>
+							<div class="col-sm-2">
+								<select class="form-control" id="PM22110S_raDealCcd">
+								</select>
+							</div>
+
+							<label class="col-sm-1 col-form-label">관리단계분류</label>
+							<div class="col-sm-1">
+								<select class="form-control" id="PM22110S_riskInspctMngSttsCd">
+									<!-- <option>전체</option>
+										<option>정상</option>
+										<option>사전</option>
+										<option>중점</option>
+										<option>적극</option> -->
+								</select>
+							</div>
+
+							<label class="col-form-label">&emsp;부서</label>
+							<div class="col-sm-2 mb-1">
+								<div class="input-group">
+									<input type="text" class="form-control" style="width:20px;" id="PM22110S_dprtCd"
+										name="PM22110S_dprtCd">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callAC01110P('PM22110S')"><i
+												class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width:80px;" id="PM22110S_dprtNm"
+										name="PM22110S_dprtNm" readonly>
+								</div>
+							</div>
+							<!-- 보류 -->
+							<!-- <div class=""> 
+								<label class="col-form-label">전체</label>
+								<input class="align-middle" type="checkbox" id="PM22110S_dltY">
+							</div> -->
+							
+							<label class="col-sm-1 col-form-label"><span class="req"></span>Deal번호</label>
+							<div class="col-sm-2 input-group">
+								<input type="text" class="form-control" id="PM22110S_ibDealNo" readonly>
+								<span class="input-group-append">
+									<button type="button" id="open_modal_AS02020P" class="btn btn-default"
+										onclick="callAS02020P('PM22110S');"><i class="fa fa-search"></i></button>
+								</span>
+							</div>
+
+							<div class="col-sm-1">
+								<button class="btn btn-primary" onclick="getAfterMngSttnList();">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+							</div>
+						</div>
+						<!-- 2 Line -->
+						<div class="col-sm-12 input-group row text-right">
+							<label class="col-sm-1 col-form-label">안건명</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="PM22110S_ibDealNm">
+							</div>
+
+							<label class="col-form-label">자산명</label>
+							<div class="col-sm-3">
+								<input type="text" class="form-control" id="PM22110S_astsNm">
+							</div>
+						</div>
+					</div><!-- /ibox-title -->
+					<!-- 조회결과 -->
+					<div class="ibox-content">
+						<div class="tableFixHeader2">
+							<table class="table result table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>안건번호</th>
+										<th>안건명</th>
+										<th>관리부점</th>
+										<th>담당자</th>
+										<th>금융상품분류</th>
+										<th>심사부서구분</th>
+										<th>심사역</th>
+										<th>협의체</th>
+										<th>자산(상품)명</th>
+										<th>건전성분류</th>
+										<th>관리단계분류</th>
+										<th>편입(투자)월</th>
+										<th>잔액</th>
+									</tr>
+								</thead>
+								<tbody id="PM22110S_afterMngSttnList">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div><!-- /ibox -->
+			</div>
+			<!-- 상세보기 -->
+			<div class="col-lg-12">
+				<div class="white-bg dashboard-header" style="overflow-y:auto;height: 360px">
+					<div class="form-group form-inline row" id="PM22110S_mntrCntntGroup">
+   						<div class="col-sm-12 input-group mb-1">
+    						<label class="control-label px-2" style="text-align: center">안건<br>모니터링<br>사항</label>
+                            <textarea class="form-control" style="height:120px;" id="PM22110S_mntrCntnt" maxlength="2000"></textarea>
+    					</div>
+						<div class="col-sm-12 input-group mb-1">
+							<label class="control-label px-2" style="text-align: center">안건<br>모니터링<br>상세내용</label>
+							<textarea class="form-control" style="height:120px;" id="PM22110S_mntrDtlsCntnt" maxlength="2000"></textarea>
+						</div>
+						<div class="col-sm-12 input-group mb-1">
+							<label class="control-label px-2" style="text-align: center">주요현황</label>
+							<textarea class="form-control" style="height:120px;" id="PM22110S_mainSttn" maxlength="2000"></textarea>
+						</div>
+						<div class="col-sm-12 input-group mb-1">
+							<label class="control-label px-2" style="text-align: center">자산개요</label>
+							<textarea class="form-control" style="height:120px;" id="PM22110S_astsOutl" maxlength="2000"></textarea>
+						</div>
+						<div class="col-sm-12 input-group mb-1">
+							<label class="control-label px-2" style="text-align: center">운용현황</label>
+							<textarea class="form-control" style="height:120px;" id="PM22110S_wrkngSttn" maxlength="2000"></textarea>
+						</div>
+						<div class="col-sm-12 input-group mb-2">
+							<label class="control-label px-1" style="text-align: center">진행경과1</label>
+							<textarea class="form-control" style="height:120px;" id="PM22110S_prgrsLps1" maxlength="2000"></textarea>
+						</div>
+						<div class="col-sm-12 input-group mb-2">
+							<label class="control-label px-1" style="text-align: center">진행경과2</label>
+							<textarea class="form-control" style="height:120px;" id="PM22110S_prgrsLps2" maxlength="2000"></textarea>
+						</div>
+						<div class="col-sm-12 input-group mb-2">
+							<label class="control-label px-1" style="text-align: center">진행경과3</label>
+							<textarea class="form-control" style="height:120px;" id="PM22110S_prgrsLps3" maxlength="2000"></textarea>
+						</div>
+    					<div class="col-sm-12 text-right">
+    						<button class="btn btn-success" onclick="mntrCntntSave();"><i class="fa fa-save"></i>&nbsp;저장</button>
+    					</div>
+   					</div>
+				</div>
+			</div>
+		</div><!-- /row -->
+	</div>
+</th:block>
+
+</html>

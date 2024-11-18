@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS204BMapper">
+
+    <select id="selectIBIMS204B" resultType="com.nanuri.rams.business.common.dto.IBIMS204BDTO">
+        SELECT 
+                A.PRDT_CD                     /* 상품코드 */      
+              , A.FEE_SN                      /* 수수료일련번호 */      
+              , A.APLY_MNUM                   /* 적용개월수 */      
+              , A.MDWY_RDMP_FEE_RTO           /* 중도상환수수료비율 */              
+              , A.HND_DETL_DTM                /* 조작상세일시 */          
+              , A.HND_EMPNO                   /* 조작사원번호 */      
+              , A.HND_TMNL_NO                 /* 조작단말기번호 */          
+              , A.HND_TR_ID                   /* 조작거래id */      
+              , A.GUID                        /* guid */  
+              , 'u'                  AS  queryType
+          FROM IBIMS204B A
+         WHERE A.PRDT_CD = #{prdtCd}
+         ORDER BY A.APLY_MNUM ASC;
+    </select>
+
+    <insert id="insertIBIMS204B">
+        <foreach collection="mdwyRdmpFeeRtoList" item="item" separator=";">
+            <if test="item.aplyMnum != null">
+                INSERT INTO IBIMS204B (
+                    PRDT_CD,
+                    FEE_SN,
+                    APLY_MNUM,
+                    MDWY_RDMP_FEE_RTO,
+                    HND_DETL_DTM,
+                    HND_EMPNO,
+                    HND_TMNL_NO,
+                    HND_TR_ID,
+                    GUID
+                ) 
+                SELECT
+                    #{prdtCd},
+                    NVL((SELECT MAX(A.FEE_SN) FROM IBIMS204B A) + 1, 1),
+                    #{item.aplyMnum},
+                    #{item.mdwyRdmpFeeRto},
+                    SYSDATE,
+                    #{hndEmpno},
+                    #{hndTmnlNo},
+                    #{hndTrId},
+                    #{guid}
+                FROM dualZ
+                WHERE NOT EXISTS (
+                    SELECT 1
+                    FROM IBIMS204B B
+                    WHERE 1=1
+                      AND B.PRDT_CD = #{prdtCd}
+                      AND B.APLY_MNUM = #{item.aplyMnum}
+                )
+            </if>
+        </foreach>
+    </insert>
+
+    <update id="updateIBIMS204B">
+        <foreach collection="mdwyRdmpFeeRtoList" item="item" separator=";">
+            UPDATE IBIMS204B
+               SET  MDWY_RDMP_FEE_RTO = #{item.mdwyRdmpFeeRto}
+                  , HND_DETL_DTM = SYSDATE
+                  , HND_EMPNO = #{hndEmpno}
+                  , HND_TMNL_NO = #{hndTmnlNo}
+                  , HND_TR_ID = #{hndTrId}
+                  , GUID = #{guid}
+             WHERE FEE_SN = #{feeSn}
+        </foreach>
+    </update>
+
+    <delete id="deleteIBIMS204B">
+        DELETE FROM IBIMS204B
+         WHERE 1=1
+           AND PRDT_CD = #{prdtCd}
+           AND FEE_SN = #{feeSn}
+    </delete>
+
+    <select id="getMdwyRdmpFeeRto" parameterType="com.nanuri.rams.com.dto.CalculationDTO" resultType="BigDecimal">
+        SELECT 
+        CASE
+            WHEN EXISTS (
+                SELECT 1
+                FROM IBIMS204B ib
+                WHERE APLY_MNUM = (
+                    SELECT MIN(APLY_MNUM)
+                    FROM IBIMS204B
+                    WHERE APLY_MNUM &gt;= MONTHS_BETWEEN(TO_DATE(#{stdrDt}, 'YYYYMMDD'), TO_DATE(#{endDt}, 'YYYYMMDD'))
+                    AND PRDT_CD = #{prdtCd}
+                )
+            )
+            THEN (
+                SELECT MDWY_RDMP_FEE_RTO
+                FROM IBIMS204B ib
+                WHERE APLY_MNUM = (
+                    SELECT MIN(APLY_MNUM)
+                    FROM IBIMS204B
+                    WHERE APLY_MNUM &gt;= MONTHS_BETWEEN(TO_DATE(#{stdrDt}, 'YYYYMMDD'), TO_DATE(#{endDt}, 'YYYYMMDD'))
+                    AND PRDT_CD = #{prdtCd}
+                )
+                AND PRDT_CD = #{prdtCd}
+            )
+            ELSE (
+                SELECT DISTINCT MAX(MDWY_RDMP_FEE_RTO) 
+                FROM IBIMS204B
+            )
+        END AS MDWY_RDMP_FEE_RTO
+    FROM DUAL;
+    </select>
+
+</mapper>

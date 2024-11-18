@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS608BMapper">
+
+	<!-- 법적절차 조회 -->
+	<select id="getLglDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS608BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS608BVO">
+		SELECT A.DEAL_NO	  											AS IB_DEAL_NO						/* IBDEAL명 */
+		 	 	 , A.JDGM_DCD 	 											AS RISK_INSPCT_CCD 			/* 리스크심사구분코드*/
+		 	 	 , A.MTR_DCD 													AS LST_C_CASE_CCD 			/* 부수안건구분코드*/
+		 	 	 , A.SQ																AS SQ 									/* 일련번호*/
+		 	 	 , A.LGL_PRCR_CCD											AS LGL_PRCR_CCD 				/* 법적절차구분코드*/
+		 	 	 , B.CD_VL_NM													AS LGL_PRCR_CCD_NM			/* 법적절차구분코드명 */
+		 	 	 , A.LGL_PRCR_KND_CCD									AS LGL_PRCR_KND_CCD 		/* 법적절차종류구분코드*/
+		 	 	 , C.CD_VL_NM													AS LGL_PRCR_KND_CCD_NM	/* 법적절차종류구분코드명 */
+		 	 	 , A.LGL_PRCR_CNTNT										AS LGL_PRCR_CNTNT 			/* 법적절차내용*/
+		 	 	 , A.CRTRM_INFO												AS CRTRM_INFO						/* 법원정보*/ 
+			 	 , A.ACDNT_NO													AS ACDNT_NO							/* 사건번호*/
+			 	 , A.RGST_DT 												 	AS RGST_DT							/* 등록일자*/
+		 	 	 , A.FST_RGST_P_ENO										AS FST_RGST_P_ENO 			/* 최초등록자사번*/
+		 	 	 , D.EMP_NM	         									AS FST_RGST_P_ENO_NM		/* 최초등록자이름 */
+		  FROM IBIMS608B A									 				/* 부실자산재산조사정보*/
+ LEFT JOIN IBIMS002B B													/* 공통코드정보*/
+  			ON B.CMNS_CD_GRP   	 			= 'P010'						/* 공통코드그룹*/
+		   AND A.LGL_PRCR_CCD		 			= B.CD_VL_ID 				/* 법적절차구분코드*/
+ LEFT JOIN IBIMS002B C													/* 공통코드정보*/
+  			ON C.CMNS_CD_GRP   				= 'L002'						/* 공통코드그룹 */
+		   AND A.LGL_PRCR_KND_CCD   	= C.CD_VL_ID				/* 법적절차종류구분코드 */
+ LEFT JOIN IBIMS003B D													/* 사원목록*/
+  		 	ON A.FST_RGST_P_ENO   		= D.EMPNO 					/* 최초등록자이름*/
+		 WHERE A.DEAL_NO							= #{dealNo}					/* IBDEAL명 */
+		   AND A.JDGM_DCD  						= #{jdgmDcd}				/* 리스크심사구분코드*/
+		   AND A.MTR_DCD   						= #{mtrDcd}					/* 부수안건구분코드*/
+	</select>
+
+	<!-- 법적절차 등록 -->
+	<insert id="registLglInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS608BDTO">
+		INSERT INTO IBIMS608B										/* 부실자산법적절차정보 */
+			   (
+					  DEAL_NO							            	/* IBDEAL번호 */
+					, JDGM_DCD					               	/* 리스크심사구분코드 */
+					, MTR_DCD					               		/* 부수안건구분코드 */
+			    , SQ								                /* 일련번호 */           
+			    , LGL_PRCR_CCD						          /* 법적절차구분코드 */       
+			    , LGL_PRCR_KND_CCD					        /* 법적절차종류구분코드 */     
+			    , LGL_PRCR_CNTNT					 					/* 법적절차내용 */         
+			    , CRTRM_INFO						            /* 법원정보 */           
+					, ACDNT_NO							            /* 사건번호 */           
+					, RGST_DT							              /* 등록일자 */           
+					, RGST_TM							              /* 등록시간 */           
+			    , FST_RGST_P_ENO					          /* 최초등록자사번 */        
+					, HNDL_DY_TM						            /* 처리일시 */           
+					, HNDL_DPRT_CD						          /* 처리부점코드 */         
+					, HNDL_P_ENO						            /* 처리자사번 */          
+  				)
+	 VALUES (
+					  #{dealNo}							            /* IBDEAL번호 */
+					, #{jdgmDcd}					              /* 리스크심사구분코드 */
+					, #{mtrDcd}					                /* 부수안건구분코드 */
+					, #{sq}								              /* 일련번호 */         
+					, #{lglPrcrCcd}						          /* 법적절차구분코드 */     
+					, #{lglPrcrKndCcd}					        /* 법적절차종류구분코드 */ 
+					, #{lglPrcrCntnt}					          /* 법적절차내용 */      
+					, #{crtrmInfo}						          /* 법원정보 */         
+					, #{acdntNo}						            /* 사건번호 */         
+					, TO_CHAR(SYSDATE, 'YYYYMMDD')      /* 등록일자 */
+		  		, TO_CHAR(SYSDATE, 'HH24MISS')			/* 등록시간 */      
+					, #{hndlPEno}				                /* 최초등록자사번 */      
+					, SYSDATE			                			/* 처리일시 */         
+					, #{hndlDprtCd} 				            /* 처리부점코드 */       
+					, #{hndlPEno} 				              /* 처리자사번 */        
+			   	)
+	</insert>
+		
+	<!-- 법적절차 수정 -->
+	<update id="updateLglInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS608BDTO">
+		UPDATE IBIMS608B											/* 부실자산재산조사정보 */
+		   SET LGL_PRCR_CCD					= #{lglPrcrCcd}			    /* 법적절차구분코드 */       
+			 	 , LGL_PRCR_KND_CCD			= #{lglPrcrKndCcd}		  /* 법적절차종류구분코드 */     
+			 	 , LGL_PRCR_CNTNT				= #{lglPrcrCntnt}		    /* 법적절차내용 */         
+			 	 , CRTRM_INFO						= #{crtrmInfo}			    /* 법원정보 */           
+			 	 , ACDNT_NO							= #{acdntNo}			    	/* 사건번호 */           
+			 	 , HNDL_DY_TM						= SYSDATE	    					/* 처리일시 */           
+			 	 , HNDL_DPRT_CD					= #{hndlDprtCd}			    /* 처리부점코드 */         
+			 	 , HNDL_P_ENO						= #{hndlPEno}			    	/* 처리자사번 */          
+		 WHERE DEAL_NO 				    = #{dealNo}		    				/* IBDEAL번호 */
+		   AND JDGM_DCD			      = #{jdgmDcd}		    			/* 리스크심사구분코드 */
+		   AND MTR_DCD			      = #{mtrDcd}		    				/* 부수안건구분코드 */
+		   AND SQ 								= #{sq}		    						/* 일련번호 */
+	</update>
+	
+	<!-- 법적절차 삭제 -->
+	<delete id="deleteLglInfo"  parameterType="com.nanuri.rams.business.common.dto.IBIMS608BDTO">
+		DELETE 
+			FROM IBIMS608B										/* 부실자산재산조사정보 */
+		 WHERE DEAL_NO			= #{dealNo}			    	/* IBDEAL번호 */
+		   AND JDGM_DCD     = #{jdgmDcd}			    /* 리스크심사구분코드 */
+		   AND MTR_DCD	    = #{mtrDcd}			    	/* 부수안건구분코드 */
+		   AND SQ						= #{sq}								/* 일련번호 */
+	</delete>
+	
+	<!-- 법적절차 일련번호 조회 -->
+	<select id="getLglSq" parameterType="com.nanuri.rams.business.common.dto.IBIMS608BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS608BVO">
+		SELECT MAX(SQ)+1 AS SQ									/* 일련번호 */
+  	  FROM IBIMS608B										/* 부실자산사후관리이력정보 */
+ 		 WHERE DEAL_NO 		= #{dealNo}							/* IBDEAL번호 */
+   	   AND JDGM_DCD 	= #{jdgmDcd}						/* 리스크심사구분코드 */
+   	   AND MTR_DCD 	  = #{mtrDcd}							/* 부수안건구분코드 */
+	</select>
+</mapper>

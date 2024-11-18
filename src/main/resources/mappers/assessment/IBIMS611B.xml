@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS611BMapper">
+	
+	<!-- 분양수지관리조회  -->
+    <select id="selectIBIMS611B" resultType="com.nanuri.rams.business.common.vo.IBIMS611BVO" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+   		SELECT DEAL_NO				/* Deal번호 */
+			 		 , STDR_YM				/* 기준년월 */
+			 		 , BUSI_PRG_STEP	/* 사업진행단계 */
+			 		 , ESTM_PRGS_RT		/* 예상진척률 */
+			 		 , PFMC_PRGS_RT		/* 실적진척률 */
+			 		 , HND_DETL_DTM		/* 조작상세일시 */
+			 		 , HND_EMPNO			/* 조작사원번호 */
+			 		 , HND_TMNL_NO		/* 조작단말기번호 */
+			 		 , HND_TR_ID			/* 조작거래id */
+			 		 , GUID						/* guid */
+        FROM IBIMS611B	/* 월별공사및분양형황 */
+       WHERE 1=1
+         AND DEAL_NO  = #{dealNo}	                                       
+    </select>
+        
+	<!-- 분양수지관리등록  -->
+    <insert id="insertIBIMS611B" parameterType="com.nanuri.rams.business.common.vo.IBIMS611BVO">
+		INSERT IBIMS611B    /* 월별공사및분양형황 */
+				 (
+				   DEAL_NO				/* Deal번호 */
+				 , STDR_YM				/* 기준년월 */
+				 , BUSI_PRG_STEP	/* 사업진행단계 */
+				 , ESTM_PRGS_RT		/* 예상진척률 */
+				 , PFMC_PRGS_RT		/* 실적진척률 */
+				 , HND_DETL_DTM		/* 조작상세일시 */
+				 , HND_EMPNO			/* 조작사원번호 */
+				 , HND_TMNL_NO		/* 조작단말기번호 */
+				 , HND_TR_ID			/* 조작거래id */
+				 , GUID						/* guid */
+				 )
+				 VALUES
+    		     <foreach collection="list" item="item" separator=";">		
+				 (                   
+				   #{item.dealNo}         /* Deal번호 */ 
+				 , #{item.stdrYm}         /* 기준년월 */ 
+				 , #{item.busiPrgStep}    /* 사업진행단계 */     
+				 , #{item.estmPrgsRt}     /* 예상진척률 */    
+				 , #{item.pfmcPrgsRt}     /* 실적진척률 */    
+				 , SYSDATE								/* 조작상세일시 */
+				 , #{item.hndEmpno}       /* 조작사원번호 */  
+				 , #{item.hndTmnlNo}      /* 조작단말기번호 */   
+				 , #{item.hndTrId}        /* 조작거래id */ 
+				 , #{item.guid}           /* guid */ 
+				 )
+		</foreach>
+    </insert>
+	
+	<!-- 분양수지관리변경 -->
+    <update id="updateIBIMS611B" parameterType="com.nanuri.rams.business.common.vo.IBIMS611BVO">
+        <foreach collection="list" item="item" separator=";"> 
+        UPDATE IBIMS611B      /* 월별공사및분양형황 */
+           SET BUSI_PRG_STEP = #{item.busiPrgStep}  /* 사업진행단계 */
+		 	 			 , ESTM_PRGS_RT  = #{item.estmPrgsRt}		/* 예상진척률 */
+		 	 			 , PFMC_PRGS_RT  = #{item.pfmcPrgsRt}		/* 실적진척률 */
+		 	 			 , HND_DETL_DTM	 = SYSDATE							/* 조작상세일시 */
+		 	 			 , HND_EMPNO		 = #{item.hndEmpno}			/* 조작사원번호 */
+		 	 			 , HND_TMNL_NO   = #{item.hndTmnlNo}		/* 조작단말기번호 */
+		 	 			 , HND_TR_ID		 = #{item.hndTrId}			/* 조작거래id */
+			 			 , GUID			 		 = #{item.guid}					/* guid */
+         WHERE 1=1
+           AND DEAL_NO     	 = #{item.dealNo} /* Deal번호 */
+           AND STDR_YM		 	 = #{item.stdrYm}	/* 기준년월 */
+       </foreach>
+    </update>
+    
+	<delete id="deleteIBIMS611B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+        DELETE 
+          FROM IBIMS611B  /* 월별공사및분양형황 */
+         WHERE 1=1
+           AND DEAL_NO = #{dealNo}  
+    </delete>
+</mapper>

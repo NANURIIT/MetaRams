@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="DM33010P">
+	<!-- modal -->
+	<div id="modal-DM33010P" class="modal fade" role="dialog" aria-labelledby="lb-DM33010P" aria-hidden="true" style="z-index: 1060;">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">리스크승인번호 검색</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_DM33010P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="prefix" id="prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							 <div class="ibox ">
+				    			<!-- 조회조건영역 -->
+				    			<div class="ibox-title text-right">
+				    				<form method="get">
+				    					<div class="form-group row">
+				                        	<label class="col-sm-2 col-form-label">Deal번호</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="DM33010P_ibDealNo"></div>
+				                        	
+				                        	<label class="col-sm-2 col-form-label">리스크승인번호</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="DM33010P_riskRcgNo"></div>
+
+											<div class="col-sm-2 text-left">
+												<button type="button" class="btn btn-primary" onclick="getRiskRcgNoList();"><i class="fa fa-search"></i>&nbsp;조회</button>
+											</div>
+
+											<label class="col-sm-2 col-form-label">안건명</label>
+											<div class="col-sm-6"><input type="text" class="form-control" id="DM33010P_ibDealSnmNm"></div>
+				                        
+
+				                        </div>
+				    				</form>
+				    			</div>
+				    			
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+				    				<div class="tableFixHead">
+					    				<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th>리스크승인번호</th>
+													<th>Deal번호</th>
+													<th>신규/재부의</th>
+													<th>안건순번</th>
+													<th>안건명(약어)</th>
+													<th>부의금액</th>
+													<th>금융상품분류</th>
+													<th>담당부서</th>
+												</tr>
+											</thead>
+											<tbody id="DM33010P_tbodyRiskRcgNoList">
+											</tbody>
+										</table>
+									</div>
+				    			</div>
+				    		</div><!-- ibox -->
+						</div>
+					</div>
+				</div> 
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

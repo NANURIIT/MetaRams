@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS220BMapper">
+	
+	<!-- 이해관계자 조회  -->
+	<select id="getIBIMS220BDTOInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS220BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS220BVO">
+		SELECT PRDT_CD						<!-- 상품코드 -->
+		     , TR_OTHR_SN                   <!-- 거래상대방일련번호 -->
+             , TR_OTHR_DSCM_NO              <!-- 거래상대방식별번호 -->
+             , (
+                 SELECT BZEP_NAME
+                   FROM IBIMS010B
+                  WHERE ARDY_BZEP_NO = TR_OTHR_DSCM_NO
+               ) AS TR_OTHR_NM              <!-- 거래상대방명 -->
+             , ITR_RELR_CHR_CD              <!-- 이해관계자성격코드 -->
+             , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'I041'
+                    AND CD_VL_ID = ITR_RELR_CHR_CD
+               ) AS ITR_RELR_CHR_NM         <!-- 이해관계자성격코드명 -->
+             , ITR_RELR_SHP_CD              <!-- 이해관계자형태코드 -->
+             , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'I042'
+                    AND CD_VL_ID = ITR_RELR_SHP_CD
+               ) AS ITR_RELR_SHP_NM         <!-- 이해관계자형태코드명 -->
+             , HND_DETL_DTM                 <!-- 조작상세일시 -->
+             , HND_EMPNO                    <!-- 조작사원번호 -->
+             , HND_TMNL_NO                  <!-- 조작단말기번호 -->
+             , HND_TR_ID                    <!-- 조작거래id -->
+             , GUID                         <!-- guid -->             
+          FROM IBIMS220B
+         WHERE 1=1
+       	   AND PRDT_CD	= #{prdtCd}
+	</select>
+	
+	<!-- 이해관계자 등록  -->
+	<insert id="saveIBIMS220BDTOInfo" parameterType="java.util.List">
+		  INSERT INTO IBIMS220B 
+               (
+                  PRDT_CD                      												<!-- 상품코드 -->
+                , TR_OTHR_SN                   												<!-- 거래상대방일련번호 -->
+                , TR_OTHR_DSCM_NO              												<!-- 거래상대방식별번호 -->
+                , ITR_RELR_CHR_CD              												<!-- 이해관계자성격코드 -->
+                , ITR_RELR_SHP_CD              												<!-- 이해관계자형태코드 -->
+                , HND_DETL_DTM                 												<!-- 조작상세일시 -->
+                , HND_EMPNO                    												<!-- 조작사원번호 -->
+                , HND_TMNL_NO                  												<!-- 조작단말기번호 -->
+                , HND_TR_ID                    												<!-- 조작거래id -->
+                , GUID                         												<!-- guid -->     
+               )
+        VALUES 
+        <foreach collection="list" item="item" index="index" separator=",">
+        	   (
+                 #{item.prdtCd}                     										<!-- 상품코드 -->
+               , #{index}+1                     											<!-- 거래상대방일련번호 -->
+               , #{item.trOthrDscmNo}               										<!-- 거래상대방식별번호 -->
+               , #{item.itrRelrChrCd}               										<!-- 이해관계자성격코드 -->
+               , #{item.itrRelrShpCd}               										<!-- 이해관계자형태코드 -->
+               , SYSDATE                       												<!-- 조작상세일시 -->
+               , #{item.hndEmpno}                   										<!-- 조작사원번호 -->
+               , #{item.hndTmnlNo}                  										<!-- 조작단말기번호 -->
+               , #{item.hndTrId}                    										<!-- 조작거래id -->
+               , #{item.guid}                       										<!-- guid -->
+               )
+        </foreach>
+	</insert>
+	
+	
+	<delete id="delIBIMS220BDTOInfo" parameterType="String">
+		DELETE 
+		  FROM IBIMS220B
+		 WHERE 1=1 
+		   AND PRDT_CD = #{prdtCd} 
+	</delete> 
+	
+</mapper>

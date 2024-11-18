@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAB04BMapper">
+
+	<!-- 첨부파일 -->
+	<!-- CAllReport 파일정보 생성 -->
+	<insert id="insertFileInfo" parameterType="com.nanuri.rams.business.common.dto.RAB04BDTO" useGeneratedKeys="true">
+	    	<selectKey keyProperty="repFileAttSq" resultType="int" order="BEFORE">
+	    		SELECT IFNULL(MAX(REP_FILE_ATT_SQ),0)+1  <!-- 첨부파일 일련번호 -->
+	    		  FROM RAB04B							 <!-- 리포트파일첨부정보 -->
+	    		 WHERE REP_NO = #{repNo}		 		 <!-- 리포트번호 -->
+	    	</selectKey>
+	    	INSERT INTO RAB04B
+	    	       ( 
+	    	        REP_FILE_ATT_SQ					<!-- 리포트파일첨부일련번호 -->
+	    	        , REP_NO						<!-- 리포트번호 -->
+	    	        , SV_FILE_PATH_NM				<!-- 서버파일경로명 -->
+	    	        , SV_FILE_NM					<!-- 서버파일명 -->
+	    	        , SV_FILE_EXPNSN_NM				<!-- 서버파일확장명 -->
+	    	        , SV_FILE_SZ					<!-- 서버파일크기 -->
+	    	        , SCRN_MENU_ID					<!-- 화면메뉴ID -->
+	    	        , FILE_CNTNT					<!-- 파일내용 -->
+	    	        , ORG_FILE_NM					<!-- 원본파일멍 -->
+	    	        , RGST_DT						<!-- 들록일자 -->
+	    	        , HNDL_DY_TM					<!-- 처리일시 -->
+	    	        , HNDL_DPRT_CD					<!-- 처리부점코드 -->
+	    	        , HNDL_P_ENO					<!-- 처리자사번 -->
+	    	        , DLT_F							<!-- 삭제여부 -->
+	    	       )
+	    	VALUES (
+	    			#{repFileAttSq}					<!-- 리포트파일첨부일련번호 -->
+	    			, #{repNo}						<!-- 리포트번호 -->
+	    			, #{svFilePathNm}				<!-- 서버파일경로명 -->
+	    			, #{svFileNm}					<!-- 서버파일명 -->
+	    			, #{svFileExpnsnNm}				<!-- 서버파일확장자명 -->
+	    			, #{svFileSz}					<!-- 서버파일크기 -->
+	    			, #{scrnMenuId}					<!-- 화면메뉴ID -->
+	    			, #{fileCntnt}					<!-- 파일내용 -->
+	    			, #{orgFileNm}					<!-- 원본파일멍 -->
+			 		, #{rgstDt}						<!-- 등록일자 -->
+			 		, CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+			 		, #{hndlDprtCd}					<!-- 처리부점코드 -->
+			 		, #{hndlPEno}					<!-- 처리자사번 -->
+			 		, 'N'							<!-- 삭제여부 -->
+	    	       )
+	</insert>
+	
+	<select id="selectFileInfo" parameterType="com.nanuri.rams.business.common.vo.RAB04BVO" resultType="com.nanuri.rams.business.common.dto.RAB04BDTO">
+		SELECT REP_FILE_ATT_SQ						<!-- 리포트파일첨부일련번호 -->
+		     , REP_NO								<!-- 리포트번호 -->
+		     , SV_FILE_PATH_NM						<!-- 서버파일경로명 -->
+		     , SV_FILE_NM							<!-- 서버파일명 -->
+		     , ORG_FILE_NM							<!-- 원본파일명 -->
+		     , RGST_DT								<!-- 등록일자 -->
+		  FROM RAB04B								<!-- 리포트파일첨부정보 -->
+		 WHERE REP_NO = #{repNo}					<!-- 리포트번호 -->
+		   AND DLT_F = 'N'
+		   <if test="arrRepFileAttSq != null and arrRepFileAttSq !='' and arrRepFileAttSq.size() != 0"> 
+		   AND REP_FILE_ATT_SQ IN
+		   		<foreach collection="arrRepFileAttSq" item="repFileAttSq" index="index" open="(" separator="," close=")">
+	           	${repFileAttSq}
+	       		</foreach>
+		   </if>
+		 ORDER BY REP_FILE_ATT_SQ
+	</select>
+	
+	<update id="updateFileInfo" parameterType="com.nanuri.rams.business.common.dto.RAB04BDTO" >
+		UPDATE RAB04B									<!-- 부실자산파일첨부정보 -->
+		   SET DLT_F = 'Y'
+			 , HNDL_DY_TM = CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+			 , HNDL_DPRT_CD	= #{hndlDprtCd}				<!-- 처리부점코드 -->
+			 , HNDL_P_ENO = #{hndlPEno}					<!-- 처리자사번 -->
+		 WHERE REP_NO = #{repNo}						<!-- 리포트번호 -->
+		   AND REP_FILE_ATT_SQ = #{repFileAttSq}		<!-- 리포트파일첨부일련번호 -->
+	</update>
+
+</mapper>

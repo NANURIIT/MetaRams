@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS515BMapper">
+
+	<!-- 사업주요일정 조회 -->
+	<select id="selectAsstOrtnLst" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS515BVO">
+		SELECT DEAL_NO			/* 딜번호 */
+			 	 , SN						/* 일련번호 */
+			 	 , MGCO_MNGM_NO	/* 운용사관리번호 */
+			 	 , DEL_YN				/* 삭제여부 */
+			 	 , HND_DETL_DTM	/* 조작상세일시 */
+			 	 , HND_EMPNO		/* 조작사원번호 */
+			 	 , HND_TMNL_NO	/* 조작단말기번호 */
+			 	 , HND_TR_ID		/* 조작거래id */
+			 	 , GUID					/* guid */
+		  FROM IBIMS515B	/* 투자사후운용사관리내역 */
+		 WHERE DEAL_NO = #{dealNo}	                                   
+	</select>
+	
+	<!-- 사업주요일정 저장 -->
+	<insert id="saveAsstOrtnInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS515BVO">
+			INSERT INTO IBIMS515B	/* 투자사후운용사관리내역 */
+									(
+									  DEAL_NO				/* 딜번호 */
+									, SN						/* 일련번호 */
+									, MGCO_MNGM_NO	/* 운용사관리번호 */
+									, DEL_YN				/* 삭제여부 */
+									, HND_DETL_DTM	/* 조작상세일시 */
+									, HND_EMPNO			/* 조작사원번호 */
+									, HND_TMNL_NO		/* 조작단말기번호 */
+									, HND_TR_ID			/* 조작거래id */
+									, GUID					/* guid */
+									)
+					VALUES
+      					  <foreach collection="list" item="item" index="index" separator=",">
+      						(
+									  #{item.dealNo}			/* 딜번호         */ 
+									, #{item.sn}					/* 일련번호       */
+									, #{item.mgcoMngmNo}	/* 운용사관리번호  */
+									, #{item.delYn}				/* 삭제여부       */
+									, #{item.hndDetlDtm}	/* 조작상세일시    */
+									, #{item.hndEmpno}		/* 조작사원번호    */
+									, #{item.hndTmnlNo}		/* 조작단말기번호  */
+									, #{item.hndTrId}			/* 조작거래id     */
+									, #{item.guid}				/* guid          */
+      					  )
+        </foreach>
+	</insert>
+	
+	<!-- 사업주요일정 삭제 -->
+	<delete id="delAsstOrtnInfo" parameterType="string">
+		DELETE 
+		  FROM IBIMS515B
+		 WHERE DEAL_NO = #{dealNo} 
+	</delete>
+
+</mapper>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA18BMapper">
+
+	<!-- 관련문서정보 취득 -->
+    <select id="getDocInfo" parameterType="com.nanuri.rams.business.common.vo.RAA18BVO$DocInfo" resultType="com.nanuri.rams.business.common.vo.RAA18BVO$DocInfo">
+    	SELECT RA_DOC_NO				 AS	RA_DOC_NO		<!-- RA문서번호 -->
+    	     , IFNULL(RA_FNL_DOC_F, '')  AS RA_FNL_DOC_F	<!-- RA최종문서여부 -->
+    	     , ITEM_SQ					 AS ITEM_SQ			<!-- 항목일련번호 -->
+    	     , IFNULL(RA_RMRK, '')		 AS RA_RMRK			<!-- RA비고(URLLINK) -->
+    	  FROM RAA18B 
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO 				 = #{ibDealNo}		<!-- IBDEAL번호 -->
+    	   AND RISK_INSPCT_CCD 			 = #{riskInspctCcd}
+    	   AND LST_C_CASE_CCD 			 = #{lstCCaseCcd}
+    	 ORDER BY ITEM_SQ									<!-- 항목일련번호 -->
+    </select>
+    
+    <!-- 관련문서정보 제거 -->
+    <delete id="deleteDocInfo" parameterType="com.nanuri.rams.business.common.vo.RAA18BVO$DocInfo">
+    	DELETE FROM RAA18B 
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}						<!-- IBDEAL번호 -->
+    	   AND RISK_INSPCT_CCD 			 = #{riskInspctCcd}
+    	   AND LST_C_CASE_CCD 			 = #{lstCCaseCcd}
+    	   AND RA_DOC_NO = #{raDocNo}						<!-- RA문서번호 -->
+    	   AND ITEM_SQ = #{itemSq}							<!-- 항목일련번호 -->
+    </delete>
+    
+    <!-- 관련문서정보 생성 -->
+    <insert id="registDocInfo" parameterType="com.nanuri.rams.business.common.dto.RAA18BDTO">
+    	<if test='raFnlDocF.equals("Y")'>
+    	UPDATE RAA18B
+    	   SET RA_FNL_DOC_F = "N"							<!-- RA문서번호 -->
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo};					<!-- IBDEAL번호 -->
+    	</if>
+    	INSERT INTO RAA18B
+    	       ( 
+    	        IB_DEAL_NO									<!-- IBDEAL번호 -->
+    	        , RISK_INSPCT_CCD							<!-- 리스크심사구분코드 -->
+    	        , LST_C_CASE_CCD							<!-- 부수안건구분코드 -->
+    	        , RA_DOC_CCD								<!-- RA문서구분코드 -->
+    	        , ITEM_SQ									<!-- 항목일련번호 -->
+    	        , RA_DOC_NO									<!-- RA문서번호 -->
+    	        , RA_RMRK									<!-- RA비고 -->
+    	        , RA_FNL_DOC_F								<!-- RA최종문서여부 -->
+    	        , HNDL_DY_TM								<!-- 처리일시 -->
+    	        , HNDL_DPRT_CD								<!-- 처리부점코드 -->
+    	        , HNDL_P_ENO								<!-- 처리자사번 -->
+    	       )
+    	VALUES (
+    			#{ibDealNo}									<!-- IBDEAL번호 -->
+    			, #{riskInspctCcd}							<!-- 리스크심사구분코드 -->
+    			, #{lstCCaseCcd}							<!-- 부수안건구분코드 -->
+    			, #{raDocCcd}								<!-- RA문서구분코드 -->
+    			, NEXT VALUE FOR RAA18B_SQ					<!-- 항목일련번호 -->
+    			, #{raDocNo}								<!-- RA문서번호 -->
+    			, #{raRmrk}									<!-- RA비고 -->
+    			, #{raFnlDocF}								<!-- RA최종문서여부 -->
+    			, CURRENT_TIMESTAMP()						<!-- 처리일시 -->
+    			, #{hndlDprtCd}								<!-- 처리부점코드 -->
+    			, #{hndlPEno}								<!-- 처리자사번 -->
+    	       )
+    </insert>
+    
+    <!-- 관련문서정보 갱신 -->
+	<update id="updateDocInfo" parameterType="com.nanuri.rams.business.common.dto.RAA18BDTO" >
+		<if test='raFnlDocF.equals("Y")'>
+    	UPDATE RAA18B
+    	   SET RA_FNL_DOC_F = "N"
+    	 WHERE IB_DEAL_NO = #{ibDealNo};
+    	</if>
+		UPDATE RAA18B
+		   SET RA_DOC_CCD				= #{raDocCcd}			<!-- RA문서구분코드 약정 -->
+		     , RA_DOC_NO				= #{raDocNo}			<!-- RA문서번호 -->
+		     , RA_RMRK					= #{raRmrk}				<!-- RA비고(URLLINK) -->
+			 , RA_FNL_DOC_F				= #{raFnlDocF}	
+			 , HNDL_DY_TM				= CURRENT_TIMESTAMP()	<!-- 처리일시 -->
+			 , HNDL_DPRT_CD				= #{hndlDprtCd}			<!-- 처리부점코드 -->
+			 , HNDL_P_ENO				= #{hndlPEno}			<!-- 처리자사번 -->
+		 WHERE 1=1
+		   AND IB_DEAL_NO = #{ibDealNo}
+		   AND ITEM_SQ = #{itemSq}
+	</update>
+	
+	<!-- 안건별 요청문서 조회 -->
+    <select id="selectRqsDocInfo" parameterType="com.nanuri.rams.business.common.vo.RAA18BVO$DocInfo" resultType="com.nanuri.rams.business.common.vo.RAA18BVO$DocInfo">
+    	SELECT IB_DEAL_NO							<!-- IBDEAL 번호 -->
+    	      ,RISK_INSPCT_CCD						<!-- 리스크심사구분코드 -->
+    	      ,LST_C_CASE_CCD						<!-- 부수안건구분코드 -->
+    	      ,RA_DOC_CCD							<!-- RA문서구분코드 -->
+    	      ,RA_DOC_NO AS RQS_DOC_NO				<!-- 요청문서번호 -->
+    	      ,RA_RMRK AS LINK_URL					<!-- 링크URL -->
+    	  FROM RAA18B								<!-- 관련문서정보 -->
+    	 WHERE IB_DEAL_NO = #{ibDealNo}				<!-- IBDEAL 번호 -->
+    	   AND RISK_INSPCT_CCD = #{riskInspctCcd} 	<!-- 리스크심사구분코드 -->
+    	   AND LST_C_CASE_CCD = #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+    	   <!-- AND RA_FIL_DOC_F = 'Y' -->
+    	 ORDER BY RA_DOC_CCD
+    </select>
+    
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <!-- TAB1 약정/기표/철회 --> 
+    <!-- 데이터 유무 체크 -->
+    <select id="raDocCcdCheck" parameterType="com.nanuri.rams.business.common.dto.RAA18BDTO" resultType="int">
+    	 SELECT COUNT(*)            AS CNT
+    	   FROM RAA18B
+    	  WHERE IB_DEAL_NO 			= #{ibDealNo}					<!-- IBDEAL번호 -->
+            AND RISK_INSPCT_CCD		= #{riskInspctCcd}				<!-- 리스크심사구분코드 -->
+            AND LST_C_CASE_CCD		= #{lstCCaseCcd}				<!-- 부수안건구분코드 -->
+    	    AND RA_DOC_CCD 			= #{raDocCcd}					<!-- RA문서구분코드 -->
+    </select>
+    
+    <!-- 약정정보 관련문서 수정 -->
+    <update id="updateCaseDocInfo" parameterType="com.nanuri.rams.business.common.dto.RAA18BDTO" >
+		UPDATE RAA18B												<!-- 관련문서정보 -->
+		   SET RA_DOC_NO				= #{raDocNo}				<!-- RA문서번호 -->
+			 , HNDL_DY_TM				= CURRENT_TIMESTAMP()		<!-- 처리일시 -->
+			 , HNDL_DPRT_CD				= #{hndlDprtCd}				<!-- 처리부점코드 -->
+			 , HNDL_P_ENO				= #{hndlPEno}				<!-- 처리자사번 -->
+		 WHERE 1=1
+		   AND IB_DEAL_NO 				= #{ibDealNo}				<!-- IBDEAL번호 -->
+		   AND RA_DOC_CCD				= #{raDocCcd}				<!-- RA문서구분코드 -->
+	</update>
+	
+	<!-- 약정정보 관련문서 등록 -->
+	<insert id="registCaseDocInfo" parameterType="com.nanuri.rams.business.common.dto.RAA18BDTO">
+		<selectKey keyProperty="itemSq" resultType="int" order="BEFORE">
+	   		SELECT IFNULL(MAX(ITEM_SQ)+ 1, 1) 	AS ITEM_SQ				<!-- 항목일련번호+1 -->
+	   		  FROM RAA18B 												<!-- 의무이행계획정보 -->
+	   		 WHERE IB_DEAL_NO					= #{ibDealNo}			<!-- IBDEAL번호 -->
+	   		   AND RISK_INSPCT_CCD 				= #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+	   		   AND LST_C_CASE_CCD 				= #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+	    </selectKey>
+		INSERT INTO RAA18B
+			   ( 
+    	        IB_DEAL_NO									<!-- IBDEAL번호 -->
+    	        , RISK_INSPCT_CCD							<!-- 리스크심사구분코드 -->
+    	        , LST_C_CASE_CCD							<!-- 부수안건구분코드 -->
+    	        , RA_DOC_CCD								<!-- RA문서구분코드 -->
+    	        , ITEM_SQ									<!-- 항목일련번호 -->
+    	        , RA_DOC_NO									<!-- RA문서번호 -->
+    	        , HNDL_DY_TM								<!-- 처리일시 -->
+    	        , HNDL_DPRT_CD								<!-- 처리부점코드 -->
+    	        , HNDL_P_ENO								<!-- 처리자사번 -->
+    	       )
+    	VALUES (
+    			#{ibDealNo}									<!-- IBDEAL번호 -->
+    			, #{riskInspctCcd}							<!-- 리스크심사구분코드 -->
+    			, #{lstCCaseCcd}							<!-- 부수안건구분코드 -->
+    			, #{raDocCcd}								<!-- RA문서구분코드 -->
+    			, #{itemSq}									<!-- 항목일련번호 -->
+    			, #{raDocNo}								<!-- RA문서번호 -->
+    			, CURRENT_TIMESTAMP()						<!-- 처리일시 -->
+    			, #{hndlDprtCd}								<!-- 처리부점코드 -->
+    			, #{hndlPEno}								<!-- 처리자사번 -->
+    	       )
+	</insert>
+	
+	<!-- 약정정보 관련문서 삭제 -->
+	<delete id="deleteCaseDocInfo" parameterType="com.nanuri.rams.business.common.dto.RAA18BDTO">
+		DELETE FROM RAA18B 								<!-- 관련문서정보 -->
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO 	= #{ibDealNo}				<!-- IBDEAL번호 -->
+    	   AND RA_DOC_CCD	= #{caseRaDocCcd}			<!-- RA문서구분코드 -->
+	</delete>
+
+	<!-- 약정 >  약정완료 업데이트 -->
+	<update id="updateInspctPrgrsStCd" parameterType="com.nanuri.rams.business.common.vo.AS05010SVO">
+		UPDATE RAA02B
+		   SET INSPCT_PRGRS_ST_CD = '500'	            <!-- 심사진행상태코드 == '약정완료'-->
+		 WHERE IB_DEAL_NO         = #{ibDealNo}			<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD    = #{riskInspctCcd}	<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD	  = #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+	</update>
+	
+    <!-- TAB2 EXIT -->
+    <select id="exitInfoCheck" parameterType="com.nanuri.rams.business.common.dto.RAA18BDTO" resultType="int">
+    	 SELECT COUNT(*)            AS CNT
+    	   FROM RAA18B
+    	  WHERE IB_DEAL_NO 			= #{ibDealNo}			<!-- IBDEAL번호 -->
+            AND RISK_INSPCT_CCD		= #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+            AND LST_C_CASE_CCD		= #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+    	    AND RA_DOC_CCD 			= '2'
+    </select>
+    
+    <!-- EXIT 관련문서 등록 -->
+    <insert id="registExitDocInfo" parameterType="com.nanuri.rams.business.common.vo.AS05010SVO">
+	    <selectKey keyProperty="itemSq" resultType="int" order="BEFORE">
+	   		SELECT IFNULL(MAX(ITEM_SQ)+ 1, 1) 	AS ITEM_SQ			<!-- 항목일련번호+1 -->
+	   		  FROM RAA18B 											<!-- 의무이행계획정보 -->
+	   		 WHERE IB_DEAL_NO					= #{ibDealNo}		<!-- IBDEAL번호 -->
+	   		   AND RISK_INSPCT_CCD 				= #{riskInspctCcd}	<!-- 리스크심사구분코드 -->
+	   		   AND LST_C_CASE_CCD 				= #{lstCCaseCcd}	<!-- 부수안건구분코드 -->
+	    </selectKey>
+    	INSERT INTO RAA18B
+			   ( 
+    	        IB_DEAL_NO									<!-- IBDEAL번호 -->
+    	        , RISK_INSPCT_CCD							<!-- 리스크심사구분코드 -->
+    	        , LST_C_CASE_CCD							<!-- 부수안건구분코드 -->
+    	        , RA_DOC_CCD								<!-- RA문서구분코드 -->
+    	        , ITEM_SQ									<!-- 항목일련번호 -->
+    	        , RA_DOC_NO									<!-- RA문서번호 -->
+    	        , HNDL_DY_TM								<!-- 처리일시 -->
+    	        , HNDL_DPRT_CD								<!-- 처리부점코드 -->
+    	        , HNDL_P_ENO								<!-- 처리자사번 -->
+    	       )
+    	VALUES (
+    			#{ibDealNo}									<!-- IBDEAL번호 -->
+    			, #{riskInspctCcd}							<!-- 리스크심사구분코드 -->
+    			, #{lstCCaseCcd}							<!-- 부수안건구분코드 -->
+    			, #{raDocCcd}								<!-- EXIT RA문서구분코드 -->
+    			, #{itemSq}									<!-- 항목일련번호 -->
+    			, #{raDocNo}								<!-- EXIT RA문서번호 -->
+    			, CURRENT_TIMESTAMP()						<!-- 처리일시 -->
+    			, #{hndlDprtCd}								<!-- 처리부점코드 -->
+    			, #{hndlPEno}								<!-- 처리자사번 -->
+    	       )
+    </insert>
+    
+    <!-- EXIT 관련문서 수정 -->
+    <update id="updateExitDocInfo" parameterType="com.nanuri.rams.business.common.dto.RAA18BDTO" >
+		UPDATE RAA18B												<!-- 관련문서정보 -->
+		   SET RA_DOC_NO				= #{raDocNo}				<!-- RA문서번호 -->
+			 , HNDL_DY_TM				= CURRENT_TIMESTAMP()		<!-- 처리일시 -->
+			 , HNDL_DPRT_CD				= #{hndlDprtCd}				<!-- 처리부점코드 -->
+			 , HNDL_P_ENO				= #{hndlPEno}				<!-- 처리자사번 -->
+		 WHERE 1=1
+		   AND IB_DEAL_NO 				= #{ibDealNo}				<!-- IBDEAL번호 -->
+		   AND RA_DOC_CCD				= #{raDocCcd}				<!-- RA문서구분코드 -->
+	</update>
+	
+	<!-- EXIT 관련문서 삭제  -->
+	<delete id="deleteExitDocInfo" parameterType="com.nanuri.rams.business.common.dto.RAA18BDTO">
+		DELETE FROM RAA18B								<!-- 관련문서정보 -->
+		 WHERE IB_DEAL_NO	 = #{ibDealNo}				<!-- IBDEAL번호 -->
+		   AND RA_DOC_CCD	 = #{raDocCcd}				<!-- RA문서구분코드 -->
+	</delete>
+</mapper>

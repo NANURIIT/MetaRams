@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS401BMapper">
+
+    <select id="selectRvseTrInq" parameterType="com.nanuri.rams.business.common.vo.TB07070SVO" resultType="com.nanuri.rams.business.common.vo.IBIMS410BVO">
+ 	SELECT IB201B.PRDT_CD          /* 종목코드 */
+           , IB201B.PRDT_NM          /* 종목명 */
+           , IB410B.TR_DT                     /* 거래일자 */
+           , IB410B.TR_SN            /* 거래순번 */
+           , IB410B.EXC_SN           /* 실행일련번호 */
+           , IB201B.PRDT_CLSF_CD	   /* 대출종류 */
+           , IB410B.ETPR_CRDT_GRNT_TR_KIND_CD /* 거래종류 */
+           , IB410B.TR_STAT_CD 	   /* 거래상태 */
+           , IB401B.CRRY_CD          /* 통화코드 */
+           , IB410B.DEAL_TR_AMT	   /* 거래금액 */
+           , IB410B.DEAL_TR_PRCA     /* 거래원금 */
+           , IB410B.TR_INT_AMT	   /* 거래이자 */
+           , IB410B.TR_FEE_AMT 	   /* 거래수수료 */
+           , IB201B.MNGM_BDCD 	   /* 부서코드 */
+           , IB410B.RVSE_CNCL_RSON_TEXT /* 정정취소사유내용 */
+           , (
+               SELECT MAX(IB003B.DPRT_NM)
+                 FROM IBIMS003B IB003B
+                WHERE IB003B.DPRT_CD = IB201B.MNGM_BDCD
+             ) AS DPRT_NM            /* 부서명 */     
+           , IB201B.CHRR_EMPNO	   /* 담당자 */
+           , (
+               SELECT IB003B.EMP_NM
+                 FROM IBIMS003B IB003B
+                WHERE IB003B.EMPNO = IB201B.CHRR_EMPNO
+             ) AS CHRR_ENM           /* 담당자명 */
+        FROM IBIMS401B IB401B
+           , IBIMS201B IB201B
+           , IBIMS402B IB402B
+           , IBIMS410B IB410B 
+       WHERE 1 = 1
+         AND IB401B.PRDT_CD = IB201B.PRDT_CD
+         AND IB401B.PRDT_CD = IB402B.PRDT_CD
+         AND IB401B.PRDT_CD = IB410B.PRDT_CD
+         AND IB402B.EXC_SN = IB410B.EXC_SN
+         AND IB201B.LAST_YN  = 1
+         AND IB410B.TR_DT           = #{trDt}   /* 거래일자 */
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
+         AND IB401B.PRDT_CD = #{prdtCd}
+        </if>       
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(etprCrdtGrntTrKindCd)">
+         AND IB410B.ETPR_CRDT_GRNT_TR_KIND_CD  = #{etprCrdtGrntTrKindCd}  /* 거래종류 */
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trStatCd)">
+         AND IB410B.TR_STAT_CD = #{trStatCd}   /* 거래상태 */ 
+        </if>       
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
+         AND IB410B.TR_STFNO	    = #{chrrEmpno}   /* 거래직원번호 */
+        </if>       
+       ORDER BY IB201B.PRDT_CD        
+           , IB410B.EXC_SN         
+           , IB410B.TR_SN  DESC  
+    </select>
+    
+    <!-- 여신기본정보 검증  -->
+    <select id="chkIBIMS401BInfo" parameterType="string" resultType="string">
+        SELECT A.PRDT_CD                                                                /*상품코드*/
+          FROM IBIMS401B A
+         WHERE PRDT_CD = #{prdtCd}
+    </select>
+
+    <select id="getIBIMS401BBaseInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS401BVO">
+ 			SELECT A.PRDT_CD                                                                /*  상품코드 */
+             , NVL(A.PTXT_TR_OTHR_DSCM_NO, '') AS PTXT_TR_OTHR_DSCM_NO               /*  거래상대방식별번호 */
+             , NVL((
+                          SELECT MAX(ENTP_HNGL_NM)
+                          FROM IBIMS114B
+                          WHERE BSNS_RGST_NO = A.PTXT_TR_OTHR_DSCM_NO
+                      ), '') AS PTXT_TR_OTHR_DSCM_NM
+             , A.EPRZ_CRDL_PRDT_CLSF_CD                                                 /*  기업여신상품분류코드 */
+             , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'E021'
+                   AND CD_VL_ID = A.EPRZ_CRDL_PRDT_CLSF_CD
+               ) AS EPRZ_CRDL_PRDT_CLSF_NM
+             , A.EPRZ_CRDL_APVL_AMT                                                     /*  기업여신승인금액 */
+             , A.EPRZ_CRDL_CTRC_AMT                                                     /*  기업여신약정금액 */
+             , A.CRRY_CD                                                                /*  통화코드 */
+             , A.ACTS_CD                                                                /*  계정과목코드 */
+             , A.EPRZ_CRDL_INDV_LMT_DCD                                                 /*  기업여신개별한도구분코드 */
+             , A.EPRZ_CRDL_LDG_STTS_CD                                                  /*  기업여신원장상태코드 */
+             , A.RQS_SN                                                                 /*  신청일련번호 */
+             , A.FRS_MNGM_BDCD                                                          /*  최초관리부점코드 */
+             , A.MNGM_BDCD                                                              /*  관리부점코드 */
+             , A.EPRZ_CRDL_PRDT_MDCL_CD                                                 /*  기업여신상품중분류코드 */
+             , A.EPRZ_CRDL_PRDT_LCLS_CD                                                 /*  기업여신상품대분류코드 */
+             , A.EPRZ_CRDL_ACCT_JOB_CD                                                  /*  기업여신회계업무코드 */
+             , A.EPRZ_CRDL_ACCT_UN_JOB_CD                                               /*  기업여신회계단위업무코드 */
+             , A.EPRZ_CRDL_ACCT_TR_CD                                                   /*  기업여신회계거래코드 */
+             , A.EPRZ_CRDL_LOAN_PRD_DCD                                                 /*  기업여신대출기간구분코드 */
+             , A.DEBT_CRTF_ISS_DT                                                       /*  부채증명서발급일자 */
+             , A.PRPMT_AMT                                                              /*  가지급금액 */
+             , A.EPRZ_CRDL_INTR_RCVN_MTH_CD                                             /*  기업여신이자수취방법코드 */
+             , A.EPRZ_CRDL_INTR_BNAO_DCD                                                /*  기업여신이자선후취구분코드 */
+             , A.EPRZ_CRDL_TFD_LY_APLY_DCD                                              /*  기업여신초일말일적용구분코드 */
+             , A.EPRZ_CRDL_INTR_SNNO_PRCS_DCD                                           /*  기업여신이자단수처리구분코드 */
+             , A.EPRZ_CRDL_PAI_RDMP_DCD                                                 /*  기업여신원리금상환구분코드 */
+             , A.PRNA_RDMP_FRQC_MNUM                                                    /*  원금상환주기개월수 */
+             , A.INTR_RDMP_FRQC_MNUM                                                    /*  이자상환주기개월수 */
+             , A.PRNA_DFR_PRD_MNUM                                                      /*  원금거치기간개월수 */
+             , A.TLMT_PRF_LOSE_FRQC_NUM                                                 /*  기한이익상실주기수 */
+             , A.TLMT_PRF_LOSE_DT                                                       /*  기한이익상실일자 */
+             , A.TLMT_PRF_RSRR_DT                                                       /*  기한이익부활일자 */
+             , A.EPRZ_CRDL_ORTN_FND_CD                                                  /*  기업여신운용펀드코드 */
+             , A.EPRZ_CRDL_CTRT_NO                                                      /*  기업여신계약번호 */
+             , A.PF_LOAN_YN                                                             /*  pf대출여부 */
+             , A.UNDW_FNN_YN                                                            /*  인수금융여부 */
+             , A.INV_IDTRT_SMIT_YN                                                      /*  투자확약서제출여부 */
+             , A.TRG_YN                                                                 /*  트리거여부 */
+             , A.TRG_CND_CTNS                                                           /*  트리거조건내용 */
+             , A.INV_IDTRT_SMIT_DT                                                      /*  투자확약서제출일자 */
+             , A.CHRR_EMPNO                                                             /*  담당자사원번호 */
+             , A.SUB_CHRR_EMPNO                                                         /*  서브담당자사원번호 */
+             , A.ED_DT                                                                  /*  종결일자 */
+             , A.EPRZ_CRDL_CTRT_END_RSN_CD                                              /*  기업여신계약종료사유코드 */
+             , A.EPRZ_CRDL_CTRT_END_RSN_CTNS                                            /*  기업여신계약종료사유내용 */
+             , A.TRCH_APLY_YN                                                           /*  트렌치적용여부 */
+             , A.BDBT_RSVS_RCKN_STDR_LCLS_CD                                            /*  대손준비금산정기준대분류코드 */
+             , A.BDBT_RSVS_RCKN_STDR_MDCL_CD                                            /*  대손준비금산정기준중분류코드 */
+             , A.BDBT_RSVS_RCKN_STDR_SCLS_CD                                            /*  대손준비금산정기준소분류코드 */
+             , A.BDBT_RSVS_RCKN_STDR_RTO                                                /*  대손준비금산정기준비율 */
+             , A.EPRZ_CRDL_CTRT_AMT                                                     /*  기업여신계약금액 */
+             , A.THCO_PTCI_AMT                                                          /*  당사참여금액 */
+             , A.EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD                                         /*  기업여신이자일수계산방법코드 */
+             , A.EPRZ_CRDL_HLDY_PRCS_DCD                                                /*  기업여신휴일처리구분코드 */
+             , A.CCLC_DT                                                                /*  해지일자 */
+             , A.EPRZ_CRDL_CCLC_RSN_CD                                                  /*  기업여신해지사유코드 */
+             , A.CCLC_RSN_CTNS                                                          /*  해지사유내용 */
+             , A.EPRZ_CRDL_WEEK_MRTG_KND_CD                                             /*  기업여신주담보종류코드 */
+             , A.OVDU_INTR_RT                                                           /*  연체이자율 */
+             , A.EPRZ_CRDL_OVDU_INTR_RT_DCD                                             /*  기업여신연체이자율구분코드 */
+             , A.TRRC_DT                                                                /*  이수관일자 */
+             , A.EPRZ_CRDL_INTR_CLC_END_DE_DCD                                          /*  기업여신이자계산종료일구분코드 */
+             , A.INTR_HDWT_CLC_YN                                                       /*  이자수기계산여부 */
+             , A.INV_JDGM_COMT_NO                                                       /*  투자심사위원회번호 */
+             , A.BDBT_ALWC_RCKN_LMT_STDR_DCD                                            /*  대손충당금산정한도기준구분코드 */
+             , A.HND_DETL_DTM                                                           /*  조작상세일시 */
+             , A.HND_EMPNO                                                              /*  조작사원번호 */
+             , A.HND_TMNL_NO                                                            /*  조작단말기번호 */
+             , A.HND_TR_ID                                                              /*  조작거래ID */
+             , A.GUID                                                                   /*  GUID */
+             , A.EPRZ_CRDL_APVL_DT                                                      /*  기업여신승인일자 */
+             , A.CTRC_DT                                                                /*  약정일자 */
+             , A.CTRC_EXP_DT                                                            /*  약정만기일자 */
+             , A.STDR_INTRT_KND_CD                                                      /*  기준금리종류코드 */
+             , A.EPRZ_CRDL_APVL_AMT                                                     /*  기업여신승인금액 */
+             , A.EPRZ_CRDL_CTRC_AMT                                                     /*  기업여신약정금액 */
+             , A.EPRZ_CRDL_INTR_BNAO_DCD                                                /*  기업여신이자선후취구분코드 */
+             , A.INTR_RDMP_FRQC_MNUM                                                    /*  이자상환주기개월수 */
+             , A.EPRZ_CRDL_PAI_RDMP_DCD                                                 /*  기업여신원리금상환구분코드 */
+             , A.CTRC_CCLC_DCD	                                                        /*  약정해지구분코드 */
+             , CASE WHEN A.STDR_INTRT = '0E-7'
+                    THEN '0.0000000'
+                    ELSE TO_CHAR(A.STDR_INTRT) 
+                    END 											AS STDR_INTRT       /*  기준금리 */
+             , CASE WHEN A.ADD_INTRT = '0E-7'
+             		THEN  '0.0000000'
+             		ELSE TO_CHAR(A.ADD_INTRT)
+             		END 											AS ADD_INTRT          /*  가산금리 */
+             , CASE WHEN A.TOT_INTRT = '0E-7'
+             		THEN '0.0000000'
+             		ELSE TO_CHAR(A.TOT_INTRT)
+             		END 											AS TOT_INTRT          /*  총금리 */
+             , (SELECT SUM(B.DEAL_EXC_AMT)  FROM IBIMS402B B WHERE B.PRDT_CD = #{prdtCd} ) AS LOAN_AMT      /*  대출금액 */
+             , (SELECT SUM(B.DEAL_EXC_BLCE) FROM IBIMS402B B WHERE B.PRDT_CD = #{prdtCd} ) AS DEAL_EXC_BLCE /*  대출잔액 */
+          FROM IBIMS401B A
+         WHERE A.PRDT_CD = #{prdtCd}
+    </select>
+    
+    
+    <select id="getCndChngLdgInf" parameterType="com.nanuri.rams.business.common.vo.TB07150SVO" resultType="com.nanuri.rams.business.common.vo.IBIMS401BVO">
+		SELECT 
+             A.PRDT_CD						    /* 상품코드 */
+            , A.SN							    /* 일련번호 */
+            , A.LAST_YN						    /* 최종여부 */
+            , A.PRDT_NM						    /* 상품명 */
+            , A.PRDT_DSC						    /* 상품설명 */
+            , A.RQS_KND_CD					    /* 기업여신신청종류코드 */
+            , A.PRG_STTS_CD					    /* 진행상태코드 */
+            , A.CNNC_PRDT_CD					    /* 연결상품코드 */
+            , A.DEAL_NO						    /* 딜번호 */
+            , A.DEAL_NM						    /* 딜명 */
+            , A.MTR_NO						    /* 안건번호 */
+            , A.NMCP_MTR_DCD					    /* 부수안건구분코드 */
+            , A.NMCP_MTR_SN					    /* 부수안건일련번호 */
+            , A.LST_C_CASE_DCD				    /* 리스크심사구분코드 */
+            , A.MTR_NM						    /* 안건명 */
+            , B.PTXT_TR_OTHR_DSCM_NO				    /* 거래상대방식별번호 */
+            , NVL((
+            	SELECT MAX(BZEP_NAME)
+            	  FROM IBIMS010B 
+            	 WHERE ARDY_BZEP_NO = B.PTXT_TR_OTHR_DSCM_NO
+              ), '') AS PTXT_TR_OTHR_DSCM_NM    /* 거래상대방명 */
+            , A.FRS_MNGM_BDCD					    /* 최초관리부점코드 */
+            , A.MNGM_BDCD						    /* 관리부점코드 */
+            , A.CHRR_EMPNO					    /* 담당자사원번호 */
+            , B.EPRZ_CRDL_LDG_STTS_CD				/* 기업여신원장상태코드 */
+            , B.RQS_SN							/* 신청일련번호 */
+            , B.STDR_INTRT						/* 기준금리 */
+            , B.ADD_INTRT							/* 가산금리 */
+            , B.TOT_INTRT							/* 총금리 */
+            , B.EPRZ_CRDL_PRDT_CLSF_CD			/* 기업여신상품분류코드 */
+            , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'E021'
+                   AND CD_VL_ID = B.EPRZ_CRDL_PRDT_CLSF_CD
+              ) AS EPRZ_CRDL_PRDT_CLSF_NM
+            , B.EPRZ_CRDL_PRDT_MDCL_CD			/* 기업여신상품중분류코드 */
+            , B.EPRZ_CRDL_PRDT_LCLS_CD			/* 기업여신상품대분류코드 */
+            , B.ACTS_CD							/* 계정과목코드 */
+            , B.EPRZ_CRDL_ACCT_JOB_CD				/* 기업여신회계업무코드 */
+            , B.EPRZ_CRDL_ACCT_UN_JOB_CD			/* 기업여신회계단위업무코드 */
+            , B.EPRZ_CRDL_ACCT_TR_CD				/* 기업여신회계거래코드 */
+            , B.EPRZ_CRDL_APVL_DT					/* 기업여신승인일자 */
+            , B.EPRZ_CRDL_APVL_AMT				/* 기업여신승인금액 */
+            , B.CRRY_CD							/* 통화코드 */
+            , B.CTRC_DT							/* 약정일자 */
+            , B.CTRC_EXP_DT						/* 약정만기일자 */
+            , B.STDR_INTRT_KND_CD					/* 기준금리종류코드 */
+            , B.EPRZ_CRDL_CTRC_AMT				/* 기업여신약정금액 */
+            , B.EPRZ_CRDL_INDV_LMT_DCD			/* 기업여신개별한도구분코드 */
+            , B.EPRZ_CRDL_INTR_RCVN_MTH_CD		/* 기업여신이자수취방법코드 */
+            , B.EPRZ_CRDL_INTR_BNAO_DCD			/* 기업여신이자선후취구분코드 */
+            , B.EPRZ_CRDL_TFD_LY_APLY_DCD			/* 기업여신초일말일적용구분코드 */
+            , B.EPRZ_CRDL_INTR_SNNO_PRCS_DCD		/* 기업여신이자단수처리구분코드 */
+            , B.EPRZ_CRDL_PAI_RDMP_DCD			/* 기업여신원리금상환구분코드 */
+            , B.PRNA_RDMP_FRQC_MNUM				/* 원금상환주기개월수 */
+            , B.INTR_RDMP_FRQC_MNUM				/* 이자상환주기개월수 */
+            , B.PRNA_DFR_PRD_MNUM					/* 원금거치기간개월수 */
+            , B.EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD	/* 기업여신이자일수계산방법코드 */
+            , B.EPRZ_CRDL_HLDY_PRCS_DCD			/* 기업여신휴일처리구분코드 */
+            , B.OVDU_INTR_RT						/* 연체이자율 */
+            , B.EPRZ_CRDL_OVDU_INTR_RT_DCD		/* 기업여신연체이자율구분코드 */
+            , B.TRRC_DT							/* 이수관일자 */
+            , B.EPRZ_CRDL_INTR_CLC_END_DE_DCD		/* 기업여신이자계산종료일구분코드 */
+            , B.CCLC_DT							/* 해지일자 */
+            , B.EPRZ_CRDL_CCLC_RSN_CD				/* 기업여신해지사유코드 */
+            , B.CCLC_RSN_CTNS						/* 해지사유내용 */
+            , B.CTRC_CCLC_DCD						/* 약정해지구분코드 */
+            , B.CCLC_RSN_CD						/* 해지사유코드 */
+            , TO_CHAR(SYSDATE, 'YYYYMMDD') AS PRCS_DT	/* 처리일자 */
+		  FROM IBIMS401B B
+		     , IBIMS201B A
+	     WHERE 1=1     
+		   AND A.PRDT_CD = B.PRDT_CD
+		   AND A.LAST_YN = '1'
+		   AND B.PRDT_CD = #{prdtCd}  /* 종목코드 */        
+    </select>
+    
+    <!-- 여신기본조회(401B)  -->
+    <select id="getIBIMS401BInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS401BVO">
+            SELECT A.PRDT_CD                                                                /*  상품코드 */
+             , NVL(A.PTXT_TR_OTHR_DSCM_NO, '') AS PTXT_TR_OTHR_DSCM_NO               /*  거래상대방식별번호 */
+             , NVL((
+                        SELECT MAX(BZEP_NAME)
+                          FROM IBIMS010B 
+                         WHERE ARDY_BZEP_NO = A.PTXT_TR_OTHR_DSCM_NO
+                      ), '') AS PTXT_TR_OTHR_DSCM_NM
+             , A.EPRZ_CRDL_PRDT_CLSF_CD                                                 /*  기업여신상품분류코드 */
+             , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'E021'
+                   AND CD_VL_ID = A.EPRZ_CRDL_PRDT_CLSF_CD
+               ) AS EPRZ_CRDL_PRDT_CLSF_NM
+             , A.EPRZ_CRDL_APVL_AMT                                                     /*  기업여신승인금액 */
+             , A.EPRZ_CRDL_CTRC_AMT                                                     /*  기업여신약정금액 */
+             , A.CRRY_CD                                                                /*  통화코드 */
+             , A.ACTS_CD                                                                /*  계정과목코드 */
+             , A.EPRZ_CRDL_INDV_LMT_DCD                                                 /*  기업여신개별한도구분코드 */
+             , A.EPRZ_CRDL_LDG_STTS_CD                                                  /*  기업여신원장상태코드 */
+             , A.RQS_SN                                                                 /*  신청일련번호 */
+             , A.FRS_MNGM_BDCD                                                          /*  최초관리부점코드 */
+             , A.MNGM_BDCD                                                              /*  관리부점코드 */
+             , A.EPRZ_CRDL_PRDT_MDCL_CD                                                 /*  기업여신상품중분류코드 */
+             , A.EPRZ_CRDL_PRDT_LCLS_CD                                                 /*  기업여신상품대분류코드 */
+             , A.EPRZ_CRDL_ACCT_JOB_CD                                                  /*  기업여신회계업무코드 */
+             , A.EPRZ_CRDL_ACCT_UN_JOB_CD                                               /*  기업여신회계단위업무코드 */
+             , A.EPRZ_CRDL_ACCT_TR_CD                                                   /*  기업여신회계거래코드 */
+             , A.EPRZ_CRDL_LOAN_PRD_DCD                                                 /*  기업여신대출기간구분코드 */
+             , A.DEBT_CRTF_ISS_DT                                                       /*  부채증명서발급일자 */
+             , A.PRPMT_AMT                                                              /*  가지급금액 */
+             , A.EPRZ_CRDL_INTR_RCVN_MTH_CD                                             /*  기업여신이자수취방법코드 */
+             , A.EPRZ_CRDL_INTR_BNAO_DCD                                                /*  기업여신이자선후취구분코드 */
+             , A.EPRZ_CRDL_TFD_LY_APLY_DCD                                              /*  기업여신초일말일적용구분코드 */
+             , A.EPRZ_CRDL_INTR_SNNO_PRCS_DCD                                           /*  기업여신이자단수처리구분코드 */
+             , A.EPRZ_CRDL_PAI_RDMP_DCD                                                 /*  기업여신원리금상환구분코드 */
+             , A.PRNA_RDMP_FRQC_MNUM                                                    /*  원금상환주기개월수 */
+             , A.INTR_RDMP_FRQC_MNUM                                                    /*  이자상환주기개월수 */
+             , A.PRNA_DFR_PRD_MNUM                                                      /*  원금거치기간개월수 */
+             , A.TLMT_PRF_LOSE_FRQC_NUM                                                 /*  기한이익상실주기수 */
+             , A.TLMT_PRF_LOSE_DT                                                       /*  기한이익상실일자 */
+             , A.TLMT_PRF_RSRR_DT                                                       /*  기한이익부활일자 */
+             , A.EPRZ_CRDL_ORTN_FND_CD                                                  /*  기업여신운용펀드코드 */
+             , A.EPRZ_CRDL_CTRT_NO                                                      /*  기업여신계약번호 */
+             , A.PF_LOAN_YN                                                             /*  pf대출여부 */
+             , A.UNDW_FNN_YN                                                            /*  인수금융여부 */
+             , A.INV_IDTRT_SMIT_YN                                                      /*  투자확약서제출여부 */
+             , A.TRG_YN                                                                 /*  트리거여부 */
+             , A.TRG_CND_CTNS                                                           /*  트리거조건내용 */
+             , A.INV_IDTRT_SMIT_DT                                                      /*  투자확약서제출일자 */
+             , A.CHRR_EMPNO                                                             /*  담당자사원번호 */
+             , A.SUB_CHRR_EMPNO                                                         /*  서브담당자사원번호 */
+             , A.ED_DT                                                                  /*  종결일자 */
+             , A.EPRZ_CRDL_CTRT_END_RSN_CD                                              /*  기업여신계약종료사유코드 */
+             , A.EPRZ_CRDL_CTRT_END_RSN_CTNS                                            /*  기업여신계약종료사유내용 */
+             , A.TRCH_APLY_YN                                                           /*  트렌치적용여부 */
+             , A.BDBT_RSVS_RCKN_STDR_LCLS_CD                                            /*  대손준비금산정기준대분류코드 */
+             , A.BDBT_RSVS_RCKN_STDR_MDCL_CD                                            /*  대손준비금산정기준중분류코드 */
+             , A.BDBT_RSVS_RCKN_STDR_SCLS_CD                                            /*  대손준비금산정기준소분류코드 */
+             , A.BDBT_RSVS_RCKN_STDR_RTO                                                /*  대손준비금산정기준비율 */
+             , A.EPRZ_CRDL_CTRT_AMT                                                     /*  기업여신계약금액 */
+             , A.THCO_PTCI_AMT                                                          /*  당사참여금액 */
+             , A.EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD                                         /*  기업여신이자일수계산방법코드 */
+             , A.EPRZ_CRDL_HLDY_PRCS_DCD                                                /*  기업여신휴일처리구분코드 */
+             , A.CCLC_DT                                                                /*  해지일자 */
+             , A.EPRZ_CRDL_CCLC_RSN_CD                                                  /*  기업여신해지사유코드 */
+             , A.CCLC_RSN_CTNS                                                          /*  해지사유내용 */
+             , A.EPRZ_CRDL_WEEK_MRTG_KND_CD                                             /*  기업여신주담보종류코드 */
+             , A.OVDU_INTR_RT                                                           /*  연체이자율 */
+             , A.EPRZ_CRDL_OVDU_INTR_RT_DCD                                             /*  기업여신연체이자율구분코드 */
+             , A.TRRC_DT                                                                /*  이수관일자 */
+             , A.EPRZ_CRDL_INTR_CLC_END_DE_DCD                                          /*  기업여신이자계산종료일구분코드 */
+             , A.INTR_HDWT_CLC_YN                                                       /*  이자수기계산여부 */
+             , A.INV_JDGM_COMT_NO                                                       /*  투자심사위원회번호 */
+             , A.BDBT_ALWC_RCKN_LMT_STDR_DCD                                            /*  대손충당금산정한도기준구분코드 */
+             , A.HND_DETL_DTM                                                           /*  조작상세일시 */
+             , A.HND_EMPNO                                                              /*  조작사원번호 */
+             , A.HND_TMNL_NO                                                            /*  조작단말기번호 */
+             , A.HND_TR_ID                                                              /*  조작거래ID */
+             , A.GUID                                                                   /*  GUID */
+             , A.EPRZ_CRDL_APVL_DT                                                      /*  기업여신승인일자 */
+             , A.CTRC_DT                                                                /*  약정일자 */
+             , A.CTRC_EXP_DT                                                            /*  약정만기일자 */
+             , A.STDR_INTRT_KND_CD                                                      /*  기준금리종류코드 */
+             , A.EPRZ_CRDL_APVL_AMT                                                     /*  기업여신승인금액 */
+             , A.EPRZ_CRDL_CTRC_AMT                                                     /*  기업여신약정금액 */
+             , A.EPRZ_CRDL_INTR_BNAO_DCD                                                /*  기업여신이자선후취구분코드 */
+             , A.INTR_RDMP_FRQC_MNUM                                                    /*  이자상환주기개월수 */
+             , A.EPRZ_CRDL_PAI_RDMP_DCD                                                 /*  기업여신원리금상환구분코드 */
+             , CASE WHEN A.STDR_INTRT = '0E-7'
+                    THEN '0.0000000'
+                    ELSE TO_CHAR(A.STDR_INTRT)
+                    END 										  AS STDR_INTRT       /*  기준금리 */
+             , CASE WHEN A.ADD_INTRT = '0E-7'
+                    THEN '0.0000000'
+                    ELSE TO_CHAR(A.ADD_INTRT)
+                    END 										  AS ADD_INTRT          /*  가산금리 */
+             , CASE WHEN A.TOT_INTRT = '0E-7'
+             	    THEN '0.0000000'
+             	    ELSE TO_CHAR(A.TOT_INTRT)
+             	    END 										  AS TOT_INTRT          /*  총금리 */
+             , (SELECT SUM(B.DEAL_EXC_AMT)  FROM IBIMS402B B WHERE B.PRDT_CD = #{prdtCd} AND B.LDG_STTS_CD = '1' ) AS LOAN_AMT      /*  대출금액 */
+             , (SELECT SUM(B.DEAL_EXC_BLCE) FROM IBIMS402B B WHERE B.PRDT_CD = #{prdtCd} AND B.LDG_STTS_CD = '1' ) AS DEAL_EXC_BLCE /*  대출잔액 */
+             , (SELECT RQS_KND_CD FROM IBIMS201B C WHERE C.PRDT_CD = #{prdtCd} AND C.LAST_YN = '1') AS RQS_KND_CD /* 기업여신신청종류코드 */
+          FROM IBIMS401B A
+         WHERE A.PRDT_CD = #{prdtCd}
+           AND A.CTRC_CCLC_DCD = '1'
+    </select>
+
+    <!-- 여신기본조회(201B JOIN)  -->
+    <select id="srchCrdlLdg" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS401BVO">
+       SELECT A.PRDT_CD                                                                /* 상품코드 */
+			       , NVL(A.TR_OTHR_DSCM_NO, '') AS PTXT_TR_OTHR_DSCM_NO                    /* 거래상대방식별번호 */ 
+			       , (
+                SELECT MAX(ENTP_HNGL_NM)
+                  FROM IBIMS114B
+                 WHERE BSNS_RGST_NO = A.TR_OTHR_DSCM_NO
+               ) AS PTXT_TR_OTHR_DSCM_NM
+			       , A.PRDT_CLSF_CD AS EPRZ_CRDL_PRDT_CLSF_CD                                 /* 기업여신상품분류코드 */
+             , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'E021'
+                   AND CD_VL_ID = A.PRDT_CLSF_CD
+               ) AS EPRZ_CRDL_PRDT_CLSF_NM
+             , A.PRDT_LCLS_CD AS EPRZ_CRDL_PRDT_LCLS_CD                                 /* 기업여신승인금액 */
+             , A.PRDT_MDCL_CD AS EPRZ_CRDL_PRDT_MDCL_CD                                 /* 기업여신약정금액 */
+			       , A.CTRT_AMT AS EPRZ_CRDL_APVL_AMT                                               /* 통화코드 */
+			       , A.INV_AMT AS EPRZ_CRDL_CTRC_AMT                                                /* 계정과목코드 */
+			       , A.TR_CRRY_CD AS CRRY_CD                                                        /* 기업여신개별한도구분코드 */
+			       , A.ACTS_CD AS ACTS_CD                                                           /* 기업여신원장상태코드 */
+			       , A.INDV_LMT_DCD AS EPRZ_CRDL_INDV_LMT_DCD                                       /* 신청일련번호 */
+             , B.EPRZ_CRDL_LDG_STTS_CD                                                  /* 최초관리부점코드 */
+             , B.RQS_SN                                                                 /* 관리부점코드 */
+             , B.FRS_MNGM_BDCD                                                          /* 기업여신상품중분류코드 */
+             , B.MNGM_BDCD                                                              /* 기업여신상품대분류코드 */
+             , B.EPRZ_CRDL_PRDT_MDCL_CD                                                 /* 기업여신회계업무코드 */
+             , B.EPRZ_CRDL_PRDT_LCLS_CD                                                 /* 기업여신회계단위업무코드 */
+             , B.EPRZ_CRDL_ACCT_JOB_CD                                                  /* 기업여신회계거래코드 */
+             , B.EPRZ_CRDL_ACCT_UN_JOB_CD                                               /* 기업여신대출기간구분코드 */
+             , B.EPRZ_CRDL_ACCT_TR_CD                                                   /* 부채증명서발급일자 */
+             , B.EPRZ_CRDL_LOAN_PRD_DCD                                                 /* 가지급금액 */
+             , B.DEBT_CRTF_ISS_DT                                                       /* 기업여신이자수취방법코드 */
+             , B.PRPMT_AMT                                                              /* 기업여신이자선후취구분코드 */
+             , B.EPRZ_CRDL_INTR_RCVN_MTH_CD                                             /* 기업여신초일말일적용구분코드 */
+             , B.EPRZ_CRDL_INTR_BNAO_DCD                                                /* 기업여신이자단수처리구분코드 */
+             , NVL(B.EPRZ_CRDL_TFD_LY_APLY_DCD, A.PAI_RDMP_DCD) AS EPRZ_CRDL_TFD_LY_APLY_DCD  /* 기업여신원리금상환구분코드 */
+             , B.EPRZ_CRDL_INTR_SNNO_PRCS_DCD                                           /* 원금상환주기개월수 */
+             , B.EPRZ_CRDL_PAI_RDMP_DCD                                                 /* 이자상환주기개월수 */
+             , B.PRNA_DFR_PRD_MNUM                                                      /* 원금거치기간개월수 */
+             , B.TLMT_PRF_LOSE_FRQC_NUM                                                 /* 기한이익상실주기수 */
+             , B.TLMT_PRF_LOSE_DT                                                       /* 기한이익상실일자 */
+             , B.TLMT_PRF_RSRR_DT                                                       /* 기한이익부활일자 */
+             , B.EPRZ_CRDL_ORTN_FND_CD                                                  /* 기업여신운용펀드코드 */
+             , B.EPRZ_CRDL_CTRT_NO                                                      /* 기업여신계약번호 */
+             , B.PF_LOAN_YN                                                             /* pf대출여부 */
+             , B.UNDW_FNN_YN                                                            /* 인수금융여부 */
+             , B.INV_IDTRT_SMIT_YN                                                      /* 투자확약서제출여부 */
+             , B.TRG_YN                                                                 /* 트리거여부 */
+             , B.TRG_CND_CTNS                                                           /* 트리거조건내용 */
+             , B.INV_IDTRT_SMIT_DT                                                      /* 투자확약서제출일자 */
+             , B.CHRR_EMPNO                                                             /* 담당자사원번호 */
+             , B.SUB_CHRR_EMPNO                                                         /* 서브담당자사원번호 */
+             , B.ED_DT                                                                  /* 종결일자 */
+             , B.EPRZ_CRDL_CTRT_END_RSN_CD                                              /* 기업여신계약종료사유코드 */
+             , B.EPRZ_CRDL_CTRT_END_RSN_CTNS                                            /* 기업여신계약종료사유내용 */
+             , B.TRCH_APLY_YN                                                           /* 트렌치적용여부 */
+             , B.BDBT_RSVS_RCKN_STDR_LCLS_CD                                            /* 대손준비금산정기준대분류코드 */
+             , B.BDBT_RSVS_RCKN_STDR_MDCL_CD                                            /* 대손준비금산정기준중분류코드 */
+             , B.BDBT_RSVS_RCKN_STDR_SCLS_CD                                            /* 대손준비금산정기준소분류코드 */
+             , B.BDBT_RSVS_RCKN_STDR_RTO                                                /* 대손준비금산정기준비율 */
+             , B.EPRZ_CRDL_CTRT_AMT                                                     /* 기업여신계약금액 */
+             , B.THCO_PTCI_AMT                                                          /* 당사참여금액 */
+             , B.EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD                                         /* 기업여신이자일수계산방법코드 */
+             , B.EPRZ_CRDL_HLDY_PRCS_DCD                                                /* 기업여신휴일처리구분코드 */
+             , B.CCLC_DT                                                                /* 해지일자 */
+             , B.EPRZ_CRDL_CCLC_RSN_CD                                                  /* 기업여신해지사유코드 */
+             , B.CCLC_RSN_CTNS                                                          /* 해지사유내용 */
+             , B.EPRZ_CRDL_WEEK_MRTG_KND_CD                                             /* 기업여신주담보종류코드 */
+             , B.OVDU_INTR_RT                                                           /* 연체이자율 */
+             , B.EPRZ_CRDL_OVDU_INTR_RT_DCD                                             /* 기업여신연체이자율구분코드 */
+             , B.TRRC_DT                                                                /* 이수관일자 */
+             , B.EPRZ_CRDL_INTR_CLC_END_DE_DCD                                          /* 기업여신이자계산종료일구분코드 */
+             , B.INTR_HDWT_CLC_YN                                                       /* 이자수기계산여부 */
+             , B.INV_JDGM_COMT_NO                                                       /* 투자심사위원회번호 */
+             , B.BDBT_ALWC_RCKN_LMT_STDR_DCD                                            /* 대손충당금산정한도기준구분코드 */
+             , B.HND_DETL_DTM                                                           /* 조작상세일시 */
+             , B.HND_EMPNO                                                              /* 조작사원번호 */
+             , B.HND_TMNL_NO                                                            /* 조작단말기번호 */
+             , B.HND_TR_ID                                                              /* 조작거래ID */
+             , B.GUID                                                                   /* GUID */
+             , C.APVL_DT                                                                /* 기업여신승인일자 */
+             , D.CTRC_DT                                                                /* 약정일자 */
+             , D.CTRC_EXP_DT                                                            /* 약정만기일자 */
+             , C.APVL_AMT AS EPRZ_CRDL_APVL_AMT                                         /* 기업여신승인금액 */
+             , D.CTRC_AMT AS EPRZ_CRDL_CTRC_AMT                                         /* 기업여신약정금액 */
+             , E.INTR_BNAO_DCD AS EPRZ_CRDL_INTR_BNAO_DCD                               /* 기업여신이자선후취구분코드 */
+             , E.INTR_RDMP_FRQC_MNUM                                                    /* 이자상환주기개월수 */
+             , E.PAI_RDMP_DCD AS EPRZ_CRDL_PAI_RDMP_DCD                                 /* 기업여신원리금상환구분코드 */
+             , E.PRNA_RDMP_FRQC_MNUM                                                    /* 원금상환주기개월수 */
+             , D.STDR_INTRT                                                             /* 기준금리 */
+             , D.ADD_INTRT                                                              /* 가산금리 */
+             , D.TOT_INTRT                                                              /* 총금리 */
+          FROM IBIMS201B A
+          	 , IBIMS401B B	
+          	 , IBIMS112B C
+          	 , IBIMS301B D
+          	 , IBIMS202B E
+         WHERE 1=1
+           AND A.PRDT_CD 		= B.PRDT_CD(+)
+           AND A.DEAL_NO 		= C.DEAL_NO(+)
+           AND A.NMCP_MTR_DCD 	= C.MTR_DCD(+)
+           AND A.LST_C_CASE_DCD = C.JDGM_DCD(+)
+           AND A.PRDT_CD 		= D.PRDT_CD(+)
+           AND A.PRDT_CD 		= E.PRDT_CD(+)
+           AND A.PRDT_CD 		= #{prdtCd}  /* 종목코드 */   
+           AND A.LAST_YN 		= '1'
+    </select>
+
+    <insert id="saveIBIMS401BInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO">
+        INSERT INTO IBIMS401B
+        (
+          PRDT_CD
+        , EPRZ_CRDL_LDG_STTS_CD
+        , RQS_SN
+        , PTXT_TR_OTHR_DSCM_NO
+        , STDR_INTRT
+        , ADD_INTRT
+        , TOT_INTRT
+        , FRS_MNGM_BDCD
+        , MNGM_BDCD
+        , EPRZ_CRDL_PRDT_CLSF_CD
+        , EPRZ_CRDL_PRDT_MDCL_CD
+        , EPRZ_CRDL_PRDT_LCLS_CD
+        , ACTS_CD
+        , EPRZ_CRDL_ACCT_JOB_CD
+        , EPRZ_CRDL_ACCT_UN_JOB_CD
+        , EPRZ_CRDL_ACCT_TR_CD
+        , EPRZ_CRDL_APVL_DT
+        , EPRZ_CRDL_APVL_AMT
+        , CRRY_CD
+        , EPRZ_CRDL_LOAN_PRD_DCD
+        , CTRC_DT
+        , CTRC_EXP_DT
+        , STDR_INTRT_KND_CD
+        , EPRZ_CRDL_CTRC_AMT
+        , DEBT_CRTF_ISS_DT
+        , PRPMT_AMT
+        , EPRZ_CRDL_INDV_LMT_DCD
+        , EPRZ_CRDL_INTR_RCVN_MTH_CD
+        , EPRZ_CRDL_INTR_BNAO_DCD
+        , EPRZ_CRDL_TFD_LY_APLY_DCD
+        , EPRZ_CRDL_INTR_SNNO_PRCS_DCD
+        , EPRZ_CRDL_PAI_RDMP_DCD
+        , PRNA_RDMP_FRQC_MNUM
+        , INTR_RDMP_FRQC_MNUM
+        , PRNA_DFR_PRD_MNUM
+        , TLMT_PRF_LOSE_FRQC_NUM
+        , TLMT_PRF_LOSE_DT
+        , TLMT_PRF_RSRR_DT
+        , EPRZ_CRDL_ORTN_FND_CD
+        , EPRZ_CRDL_CTRT_NO
+        , PF_LOAN_YN
+        , UNDW_FNN_YN
+        , INV_IDTRT_SMIT_YN
+        , TRG_YN
+        , TRG_CND_CTNS
+        , INV_IDTRT_SMIT_DT
+        , CHRR_EMPNO
+        , SUB_CHRR_EMPNO
+        , ED_DT
+        , EPRZ_CRDL_CTRT_END_RSN_CD
+        , EPRZ_CRDL_CTRT_END_RSN_CTNS
+        , TRCH_APLY_YN
+        , BDBT_RSVS_RCKN_STDR_LCLS_CD
+        , BDBT_RSVS_RCKN_STDR_MDCL_CD
+        , BDBT_RSVS_RCKN_STDR_SCLS_CD
+        , BDBT_RSVS_RCKN_STDR_RTO
+        , EPRZ_CRDL_CTRT_AMT
+        , THCO_PTCI_AMT
+        , EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD
+        , EPRZ_CRDL_HLDY_PRCS_DCD
+        , CCLC_DT
+        , EPRZ_CRDL_CCLC_RSN_CD
+        , CCLC_RSN_CTNS
+        , EPRZ_CRDL_WEEK_MRTG_KND_CD
+        , OVDU_INTR_RT
+        , EPRZ_CRDL_OVDU_INTR_RT_DCD
+        , TRRC_DT
+        , EPRZ_CRDL_INTR_CLC_END_DE_DCD
+        , INTR_HDWT_CLC_YN
+        , INV_JDGM_COMT_NO
+        , BDBT_ALWC_RCKN_LMT_STDR_DCD
+        , CTRC_CCLC_DCD
+        , HND_DETL_DTM
+        , HND_EMPNO
+        , HND_TMNL_NO
+        , HND_TR_ID
+        , GUID
+        )
+        VALUES
+        (
+          #{prdtCd}
+        , '1'
+        , #{rqsSn}
+        , #{ptxtTrOthrDscmNo}
+        , #{stdrIntrt}
+        , #{addIntrt}
+        , #{totIntrt}
+        , #{frsMngmBdcd}
+        , #{mngmBdcd}
+        , #{eprzCrdlPrdtClsfCd}
+        , #{eprzCrdlPrdtMdclCd}
+        , #{eprzCrdlPrdtLclsCd}
+        , #{actsCd}
+        , #{eprzCrdlAcctJobCd}
+        , #{eprzCrdlAcctUnJobCd}
+        , #{eprzCrdlAcctTrCd}
+        , #{eprzCrdlApvlDt}
+        , #{eprzCrdlApvlAmt}
+        , #{crryCd}
+        , #{eprzCrdlLoanPrdDcd}
+        , #{ctrcDt}
+        , #{ctrcExpDt}
+        , #{stdrIntrtKndCd}
+        , #{eprzCrdlCtrcAmt}
+        , #{debtCrtfIssDt}
+        , #{prpmtAmt}
+        , #{eprzCrdlIndvLmtDcd}
+        , #{eprzCrdlIntrRcvnMthCd}
+        , #{eprzCrdlIntrBnaoDcd}
+        , #{eprzCrdlTfdLyAplyDcd}
+        , #{eprzCrdlIntrSnnoPrcsDcd}
+        , #{eprzCrdlPaiRdmpDcd}
+        , #{prnaRdmpFrqcMnum}
+        , #{intrRdmpFrqcMnum}
+        , #{prnaDfrPrdMnum}
+        , #{tlmtPrfLoseFrqcNum}
+        , #{tlmtPrfLoseDt}
+        , #{tlmtPrfRsrrDt}
+        , #{eprzCrdlOrtnFndCd}
+        , #{eprzCrdlCtrtNo}
+        , #{pfLoanYn}
+        , #{undwFnnYn}
+        , #{invIdtrtSmitYn}
+        , #{trgYn}
+        , #{trgCndCtns}
+        , #{invIdtrtSmitDt}
+        , #{chrrEmpno}
+        , #{subChrrEmpno}
+        , #{edDt}
+        , #{eprzCrdlCtrtEndRsnCd}
+        , #{eprzCrdlCtrtEndRsnCtns}
+        , #{trchAplyYn}
+        , #{bdbtRsvsRcknStdrLclsCd}
+        , #{bdbtRsvsRcknStdrMdclCd}
+        , #{bdbtRsvsRcknStdrSclsCd}
+        , #{bdbtRsvsRcknStdrRto}
+        , #{eprzCrdlCtrtAmt}
+        , #{thcoPtciAmt}
+        , #{eprzCrdlIntrDnumClcMthCd}
+        , #{eprzCrdlHldyPrcsDcd}
+        , #{cclcDt}
+        , #{eprzCrdlCclcRsnCd}
+        , #{cclcRsnCtns}
+        , #{eprzCrdlWeekMrtgKndCd}
+        , #{ovduIntrRt}
+        , #{eprzCrdlOvduIntrRtDcd}
+        , #{trrcDt}
+        , #{eprzCrdlIntrClcEndDeDcd}
+        , #{intrHdwtClcYn}
+        , #{invJdgmComtNo}
+        , #{bdbtAlwcRcknLmtStdrDcd}
+        , #{ctrcCclcDcd}
+        , SYSDATE
+        , #{hndEmpno}
+        , #{hndTmnlNo}
+        , #{hndTrId}
+        , #{guid}
+        )
+    </insert>
+    <!-- 여신원장조회 -->
+    <select id="selectCrdlLdg" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS401BVO">
+       SELECT 
+              A.PTXT_TR_OTHR_DSCM_NO                                             /* 거래상대방식별번호 */
+            , NVL((
+                      SELECT MAX(BZEP_NAME)
+                        FROM IBIMS010B
+                       WHERE ARDY_BZEP_NO = A.PTXT_TR_OTHR_DSCM_NO
+                      ), '') AS PTXT_TR_OTHR_DSCM_NM							               /* 거래상대방명 */
+            , A.EPRZ_CRDL_LDG_STTS_CD                                            /* 기업여신원장상태코드 */
+            , A.EPRZ_CRDL_PRDT_LCLS_CD                                           /* 기업여신상품대분류코드 */
+            , A.EPRZ_CRDL_PRDT_MDCL_CD                                           /* 기업여신상품중분류코드 */
+            , A.EPRZ_CRDL_PRDT_CLSF_CD                                           /* 기업여신상품소분류코드 */
+            , A.EPRZ_CRDL_CTRC_AMT                                               /* 기업여신약정금액 */
+            , A.CRRY_CD                                                          /* 통화코드 */
+            , A.EPRZ_CRDL_INDV_LMT_DCD                                           /* 기업여신개별한도구분코드 */
+            , A.CTRC_DT                                                          /* 약정일자 */
+            , A.CTRC_EXP_DT                                                      /* 약정만기일자 */
+            , A.EPRZ_CRDL_PAI_RDMP_DCD                                           /* 기업여신원리금상환구분코드 */
+            , A.PRNA_RDMP_FRQC_MNUM                                              /* 원금상환주기개월수 */
+            , A.INTR_HDWT_CLC_YN                                                 /* 이자수기계산여부 */
+            , A.EPRZ_CRDL_TFD_LY_APLY_DCD										                     /* 기업여신초일말일적용구분코드 */
+            , A.STDR_INTRT_KND_CD                                                /* 기준금리종류코드 */
+            , CASE WHEN A.STDR_INTRT = '0E-7' THEN '0.0000000' ELSE TO_CHAR(A.STDR_INTRT) END AS STDR_INTRT /* 기준금리 */
+            , CASE WHEN A.ADD_INTRT = '0E-7' THEN '0.0000000' ELSE TO_CHAR(A.ADD_INTRT) END AS ADD_INTRT      /* 가산금리 */
+            , CASE WHEN A.TOT_INTRT = '0E-7' THEN '0.0000000'ELSE TO_CHAR(A.TOT_INTRT) END AS TOT_INTRT    /* 총금리 */
+            , A.EPRZ_CRDL_OVDU_INTR_RT_DCD                                       /* 기업여신연체이자율구분코드 */
+            , A.OVDU_INTR_RT                                                     /* 연체이자율 */
+            , A.EPRZ_CRDL_INTR_BNAO_DCD                                          /* 기업여신이자선후취구분코드 */
+            , A.INTR_RDMP_FRQC_MNUM                                              /* 이자상환주기개월수 */
+            , A.EPRZ_CRDL_INTR_RCVN_MTH_CD                                       /* 기업여신이자수취방법코드 */
+            , A.EPRZ_CRDL_HLDY_PRCS_DCD                                          /* 기업여신휴일처리구분코드 */
+            , A.EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD                                   /* 기업여신이자일수계산방법코드 */
+            , A.EPRZ_CRDL_INTR_SNNO_PRCS_DCD                                     /* 기업여신이자단수처리구분코드 */
+            , A.CCLC_DT                                                          /* 해지일자 */
+            , A.MNGM_BDCD                                                        /* 관리부점코드 */
+            , (
+               SELECT MAX(DPRT_NM)
+                 FROM IBIMS003B
+                WHERE DPRT_CD = A.MNGM_BDCD
+              ) AS MNGM_BDCD_NM                                                  /* 관리부점명 */
+            , A.CHRR_EMPNO                                                       /* 담당자사원번호 */
+            , (
+               SELECT EMP_NM
+                 FROM IBIMS003B
+                WHERE EMPNO = A.CHRR_EMPNO
+              ) AS CHRR_EMPNM											                               /* 담당자명 */
+            , A.CCLC_RSN_CTNS                                                    /* 해지사유내용 */
+            , A.EPRZ_CRDL_ORTN_FND_CD                                            /* 기업여신운용펀드코드 */
+			      , NVL(( 
+                      SELECT MAX(FND_NM)
+			 			            FROM IBIMS993B 
+			 		             WHERE FND_CD = A.EPRZ_CRDL_ORTN_FND_CD
+			 		           ), '') AS EPRZ_CRDL_ORTN_FND_NM	                 		        /* 펀드명 */
+            , A.EPRZ_CRDL_APVL_AMT							                        	        /* 기업여신승인금액 */
+            , B.PRG_STTS_CD										                                    /* 진행상태코드 */
+            , (
+                SELECT SUM(DEAL_EXC_BLCE) 
+                  FROM IBIMS402B 
+                 WHERE PRDT_CD = #{prdtCd} 
+              ) AS DEAL_EXC_BLCE                                                  /*  대출잔액 */
+            , (
+            	  SELECT SUM(DEAL_TR_PRCA)
+            	    FROM IBIMS410B
+            	   WHERE PRDT_CD = #{prdtCd}
+              ) AS DEAL_TR_PRCA													                          /* 딜거래원금 */
+            , (
+                SELECT SUM(DEAL_EXC_AMT)
+                  FROM IBIMS402B
+                 WHERE PRDT_CD = #{prdtCd}
+                   AND LDG_STTS_CD = '1'
+              ) AS DEAL_EXC_AMT													                          /* 실행금액 */ 
+         FROM  IBIMS401B A  
+    	     , IBIMS201B B
+  		WHERE A.PRDT_CD = #{prdtCd}    	     
+          AND A.PRDT_CD = B.PRDT_CD(+)
+          AND B.LAST_YN(+) = '1'
+    </select>
+    
+    <update id="updateIBIMS401B" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO">
+		UPDATE IBIMS401B	/* 약정기본 */
+		   SET EPRZ_CRDL_LDG_STTS_CD = #{eprzCrdlLdgSttsCd} /* 기업여신원장상태코드 */
+			 , RQS_SN = #{rqsSn} /* 신청일련번호 */
+			 , PTXT_TR_OTHR_DSCM_NO = #{ptxtTrOthrDscmNo} /* 거래상대방식별번호 */
+			 , STDR_INTRT = #{stdrIntrt} /* 기준금리 */
+			 , ADD_INTRT = #{addIntrt} /* 가산금리 */
+			 , TOT_INTRT = #{totIntrt} /* 총금리 */
+			 , FRS_MNGM_BDCD = #{frsMngmBdcd} /* 최초관리부점코드 */
+			 , MNGM_BDCD = #{mngmBdcd} /* 관리부점코드 */
+			 , EPRZ_CRDL_PRDT_CLSF_CD = #{eprzCrdlPrdtClsfCd} /* 기업여신상품분류코드 */
+			 , EPRZ_CRDL_PRDT_MDCL_CD = #{eprzCrdlPrdtMdclCd} /* 기업여신상품중분류코드 */
+			 , EPRZ_CRDL_PRDT_LCLS_CD = #{eprzCrdlPrdtLclsCd} /* 기업여신상품대분류코드 */
+			 , ACTS_CD = #{actsCd} /* 계정과목코드 */
+			 , EPRZ_CRDL_ACCT_JOB_CD = #{eprzCrdlAcctJobCd} /* 기업여신회계업무코드 */
+			 , EPRZ_CRDL_ACCT_UN_JOB_CD = #{eprzCrdlAcctUnJobCd} /* 기업여신회계단위업무코드 */
+			 , EPRZ_CRDL_ACCT_TR_CD = #{eprzCrdlAcctTrCd} /* 기업여신회계거래코드 */
+			 , EPRZ_CRDL_APVL_DT = #{eprzCrdlApvlDt} /* 기업여신승인일자 */
+			 , EPRZ_CRDL_APVL_AMT = #{eprzCrdlApvlAmt} /* 기업여신승인금액 */
+			 , CRRY_CD = #{crryCd} /* 통화코드 */
+			 , EPRZ_CRDL_LOAN_PRD_DCD = #{eprzCrdlLoanPrdDcd} /* 기업여신대출기간구분코드 */
+			 , CTRC_DT = #{ctrcDt} /* 약정일자 */
+			 , CTRC_EXP_DT = #{ctrcExpDt} /* 약정만기일자 */
+			 , STDR_INTRT_KND_CD = #{stdrIntrtKndCd} /* 기준금리종류코드 */
+			 , EPRZ_CRDL_CTRC_AMT = #{eprzCrdlCtrcAmt} /* 기업여신약정금액 */
+			 , DEBT_CRTF_ISS_DT = #{debtCrtfIssDt} /* 부채증명서발급일자 */
+			 , PRPMT_AMT = #{prpmtAmt} /* 가지급금액 */
+			 , EPRZ_CRDL_INDV_LMT_DCD = #{eprzCrdlIndvLmtDcd} /* 기업여신개별한도구분코드 */
+			 , EPRZ_CRDL_INTR_RCVN_MTH_CD = #{eprzCrdlIntrRcvnMthCd} /* 기업여신이자수취방법코드 */
+			 , EPRZ_CRDL_INTR_BNAO_DCD = #{eprzCrdlIntrBnaoDcd} /* 기업여신이자선후취구분코드 */
+			 , EPRZ_CRDL_TFD_LY_APLY_DCD = #{eprzCrdlTfdLyAplyDcd} /* 기업여신초일말일적용구분코드 */
+			 , EPRZ_CRDL_INTR_SNNO_PRCS_DCD = #{eprzCrdlIntrSnnoPrcsDcd} /* 기업여신이자단수처리구분코드 */
+			 , EPRZ_CRDL_PAI_RDMP_DCD = #{eprzCrdlPaiRdmpDcd} /* 기업여신원리금상환구분코드 */
+			 , PRNA_RDMP_FRQC_MNUM = #{prnaRdmpFrqcMnum} /* 원금상환주기개월수 */
+			 , INTR_RDMP_FRQC_MNUM = #{intrRdmpFrqcMnum} /* 이자상환주기개월수 */
+			 , PRNA_DFR_PRD_MNUM = #{prnaDfrPrdMnum} /* 원금거치기간개월수 */
+			 , TLMT_PRF_LOSE_FRQC_NUM = #{tlmtPrfLoseFrqcNum} /* 기한이익상실주기수 */
+			 , TLMT_PRF_LOSE_DT = #{tlmtPrfLoseDt} /* 기한이익상실일자 */
+			 , TLMT_PRF_RSRR_DT = #{tlmtPrfRsrrDt} /* 기한이익부활일자 */
+			 , EPRZ_CRDL_ORTN_FND_CD = #{eprzCrdlOrtnFndCd} /* 기업여신운용펀드코드 */
+			 , EPRZ_CRDL_CTRT_NO = #{eprzCrdlCtrtNo} /* 기업여신계약번호 */
+			 , PF_LOAN_YN = #{pfLoanYn} /* pf대출여부 */
+			 , UNDW_FNN_YN = #{undwFnnYn} /* 인수금융여부 */
+			 , INV_IDTRT_SMIT_YN = #{invIdtrtSmitYn} /* 투자확약서제출여부 */
+			 , TRG_YN = #{trgYn} /* 트리거여부 */
+			 , TRG_CND_CTNS = #{trgCndCtns} /* 트리거조건내용 */
+			 , INV_IDTRT_SMIT_DT = #{invIdtrtSmitDt} /* 투자확약서제출일자 */
+			 , CHRR_EMPNO = #{chrrEmpno} /* 담당자사원번호 */
+			 , SUB_CHRR_EMPNO = #{subChrrEmpno} /* 서브담당자사원번호 */
+			 , ED_DT = #{edDt} /* 종결일자 */
+			 , EPRZ_CRDL_CTRT_END_RSN_CD = #{eprzCrdlCtrtEndRsnCd} /* 기업여신계약종료사유코드 */
+			 , EPRZ_CRDL_CTRT_END_RSN_CTNS = #{eprzCrdlCtrtEndRsnCtns} /* 기업여신계약종료사유내용 */
+			 , TRCH_APLY_YN = #{trchAplyYn} /* 트렌치적용여부 */
+			 , BDBT_RSVS_RCKN_STDR_LCLS_CD = #{bdbtRsvsRcknStdrLclsCd} /* 대손준비금산정기준대분류코드 */
+			 , BDBT_RSVS_RCKN_STDR_MDCL_CD = #{bdbtRsvsRcknStdrMdclCd} /* 대손준비금산정기준중분류코드 */
+			 , BDBT_RSVS_RCKN_STDR_SCLS_CD = #{bdbtRsvsRcknStdrSclsCd} /* 대손준비금산정기준소분류코드 */
+			 , BDBT_RSVS_RCKN_STDR_RTO = #{bdbtRsvsRcknStdrRto} /* 대손준비금산정기준비율 */
+			 , EPRZ_CRDL_CTRT_AMT = #{eprzCrdlCtrtAmt} /* 기업여신계약금액 */
+			 , THCO_PTCI_AMT = #{thcoPtciAmt} /* 당사참여금액 */
+			 , EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD = #{eprzCrdlIntrDnumClcMthCd} /* 기업여신이자일수계산방법코드 */
+			 , EPRZ_CRDL_HLDY_PRCS_DCD = #{eprzCrdlHldyPrcsDcd} /* 기업여신휴일처리구분코드 */
+			 , CCLC_DT = #{cclcDt} /* 해지일자 */
+			 , EPRZ_CRDL_CCLC_RSN_CD = #{eprzCrdlCclcRsnCd} /* 기업여신해지사유코드 */
+			 , CCLC_RSN_CTNS = #{cclcRsnCtns} /* 해지사유내용 */
+			 , EPRZ_CRDL_WEEK_MRTG_KND_CD = #{eprzCrdlWeekMrtgKndCd} /* 기업여신주담보종류코드 */
+			 , OVDU_INTR_RT = #{ovduIntrRt} /* 연체이자율 */
+			 , EPRZ_CRDL_OVDU_INTR_RT_DCD = #{eprzCrdlOvduIntrRtDcd} /* 기업여신연체이자율구분코드 */
+			 , TRRC_DT = #{trrcDt} /* 이수관일자 */
+			 , EPRZ_CRDL_INTR_CLC_END_DE_DCD = #{eprzCrdlIntrClcEndDeDcd} /* 기업여신이자계산종료일구분코드 */
+			 , INTR_HDWT_CLC_YN = #{intrHdwtClcYn} /* 이자수기계산여부 */
+			 , INV_JDGM_COMT_NO = #{invJdgmComtNo} /* 투자심사위원회번호 */
+			 , BDBT_ALWC_RCKN_LMT_STDR_DCD = #{bdbtAlwcRcknLmtStdrDcd} /* 대손충당금산정한도기준구분코드 */
+			 , CTRC_CCLC_DCD = #{ctrcCclcDcd} /* 약정해지구분코드 */
+			 , HND_DETL_DTM = SYSDATE /* 조작상세일시 */
+		 WHERE PRDT_CD = #{prdtCd} /* 상품코드 */    
+    </update>
+    
+    <update id="updateCclcInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO">
+       UPDATE IBIMS401B
+          SET CCLC_DT                = #{cclcDt}    			/* 해지일자 */
+            , EPRZ_CRDL_CCLC_RSN_CD  = #{eprzCrdlCclcRsnCd}     /* 기업여신해지사유코드 */
+            , CCLC_RSN_CTNS          = #{cclcRsnCtns}     		/* 해지사유내용 */
+            , HND_DETL_DTM           = SYSDATE				/* 조작상세일시 */
+            , CTRC_CCLC_DCD          = #{ctrcCclcDcd} 			/* 약정해지구분코드 */
+			, CTRC_DT	             = #{ctrcDt}				/* 약정일자 */
+			, CTRC_EXP_DT	         = #{ctrcExpDt}				/* 약정만기일자 */
+			, EPRZ_CRDL_CTRC_AMT	 = #{eprzCrdlCtrcAmt}		/* 기업여신약정금액 */
+			, ADD_INTRT              = #{addIntrt}              /* 가산금리 */
+         WHERE 1=1
+          AND PRDT_CD                = #{prdtCd}    /* 상품코드 */
+    </update>
+
+    <!-- 기업여신약정금액  -->
+    <select id="getEprzCrdlCtrcAmt" parameterType="string" resultType="String">
+        SELECT (NVL(A.EPRZ_CRDL_CTRC_AMT,'0') - NVL(B.KRW_TRSL_EXC_AMT,0)) AS EPRZ_CRDL_CTRC_AMT /* 기업여신약정금액 - 원화환산실행금액 */
+          FROM IBIMS401B A
+             , IBIMS402B B 
+         WHERE 1=1
+         AND A.PRDT_CD = B.PRDT_CD(+) 
+         AND B.EXC_SN(+) = 1
+         AND A.PRDT_CD = #{prdtCd}
+         AND NVL(A.CTRC_CCLC_DCD,'0') = '1'	 /* 약정해지구분코드 1:약정,2:해지 */
+    </select>
+
+    <!--조건변경 -->
+    <update id="cndChng" parameterType="com.nanuri.rams.business.common.vo.IBIMS401BVO">
+      UPDATE IBIMS401B
+          <if test="rqsKndCd == '02'">      /*한도변경*/
+            SET EPRZ_CRDL_CTRC_AMT = #{eprzCrdlCtrcAmt}
+          </if>
+          <if test="rqsKndCd == '03'">      /*기한변경*/
+            SET CTRC_EXP_DT = #{ctrcExpDt}
+          </if>
+          <if test="rqsKndCd == '06'">      /*차주변경*/
+            SET PTXT_TR_OTHR_DSCM_NO = #{trOthrDscmNo}
+          </if>
+      WHERE PRDT_CD = #{prdtCd}
+    </update>
+
+</mapper>

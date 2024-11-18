@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB10510S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<!-- 모달 추가시 ex) <th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 배치 스케줄러 관리 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+						
+						<div class="ibox-content text-right i-filter">
+							<div class="form-group form-inline row">
+								<div class="form-group col-sm-12">
+									<label class="col-sm-1 col-form-label">배치 JOB ID</label>
+									<div class="col-sm-2 input-group">
+										<input type="text" class="form-control" id="TB10510S_jobId" value="">
+									</div>
+									<label class="col-sm-1 col-form-label">배치명</label>
+									<div class="col-sm-2 input-group">
+										<input type="text" class="form-control" id="TB10510S_jobName" value="">
+									</div>
+									<!-- 버튼영역 -->
+									<div class="col-sm-6 text-right">
+										<button class="btn btn-primary" type="button" onclick="TB10510Sjs.inqBatch();"><i class="fa fa-search"></i>&nbsp;조회</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ibox-content" style="min-height: 830px">
+							<!-- 조회내역영역 -->
+							<div class="pd0 mb-3" style="min-height: 300px; max-height: 720px">
+								<div id="TB10720S_grd_batSch"></div>
+								<!-- <table class="table result table-bordered footable" data-page-size="20" data-paging="true" data-sort="false">
+									<colgroup>
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+										<col style="">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><input type="checkbox" id=""></th>
+											<th>순번</th>
+											<th>배치JOB ID</th>
+											<th>type</th>
+											<th>배치명</th>
+											<th>Argument</th>
+											<th>confirm Y/N</th>
+											<th>등록일/수정일</th>
+											<th>작업설명</th>
+										</tr>
+									</thead>
+									<tbody id="">
+									</tbody>
+									<tfoot>
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tfoot>
+								</table> -->
+							</div>
+							<hr class="mb-3">
+							<!-- 조회내역 등록/수정 -->
+							<div class="form-group form-inline row mb-0">
+								<div class="form-group row col-sm-9 pr-5" style="border-right: 1px solid #ccc;">
+									<label class="col-sm-1-5 col-form-label  mb-1">배치 JOB ID</label>
+									<div class="col-sm-2 input-group  mb-1">
+										<input type="text" class="form-control" id="TB10510S_rgst_jobId">
+									</div>
+									<label class="col-sm-1-5 col-form-label mb-1">배치명</label>
+									<div class="col-sm-2 input-group mb-1">
+										<input type="text" class="form-control" id="TB10510S_rgst_jobName">
+									</div>
+									<label class="col-sm-1-5 col-form-label mb-1">배치 TYPE</label>
+									<div class="col-sm-2 input-group mb-1">
+										<select class="form-control" id="TB10510S_rgst_jobType">
+											<option value="">선택</option>
+										</select>
+									</div>
+									<div class="col-sm-1-5 input-group"></div>
+									<label class="col-sm-1-5 col-form-label">ARGUMENT</label>
+									<div class="col-sm-2 input-group">
+										<input type="text" class="form-control" id="TB10510S_rgst_arg">
+									</div>
+									<label class="col-sm-1-5 col-form-label text-nowrap">CONFIRM JOB Y/N</label>
+									<div class="col-sm-2 input-group">
+										<select class="form-control" id="TB10510S_rgst_cfm">
+											<option value="0" selected>해당없음</option>
+											<option value="1">Y</option>
+										</select>
+									</div>
+									<label class="col-sm-1-5 col-form-label">작업 설명</label>
+									<div class="col-sm-2 input-group">
+										<input type="text" class="form-control" id="TB10510S_rgst_dscrp">
+									</div>
+									<!-- 버튼영역 -->
+									<div class="col-sm-1-5 text-right pd-0">
+										<button class="btn btn-default" type="button" onclick="TB10510Sjs.delBatch();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+										<button class="btn btn-success" type="button" onclick="TB10510Sjs.rgstBatch();"><i class="fa fa-save"></i>&nbsp;입력</button>
+									</div>
+								</div>
+								<div class="form-group row col-sm-3" style="margin-top: 32px;">
+									<label class="col-sm-2-5 col-form-label">기준 일자</label>
+									<div class="col-sm-6 input-group date">
+										<input type="text" class="form-control" id="TB10510S_curDate" value="" placeholder="YYYY-MM-DD"> 
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<!-- 버튼영역 -->
+									<div class="text-right">
+										<button class="btn btn-success" type="button" id="btnExc" onclick="TB10510Sjs.excBatch();"><i class="fa fa-check"></i>&nbsp;실행</button>
+									</div>
+								</div>
+								
+							</div>
+							<hr class="mb-3 mt-3">
+							<div class="col-sm-12 reference_box pl-5">
+								※ JOB TYPE : [1] DUMMY : 비어있는 배치를 처리시 Dummy로, CONFIRM JOB과 유사한 형태, [2] COMMAND : 소스타입으로 일반적인 배치<br>
+								※ ARGUMENT : 배치실행시 프로그램에 전달될 ARGUMENT<br>
+								※ CONFIRM JOB Y/N : [0] 해당없음 : 일반적인 배치로 확인대기 필요 없음, [1] Y : CONFIRM JOB 배치로 수행전 확인처리가 필요
+							</div>	
+						</div>	
+					</div> 
+
+				</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

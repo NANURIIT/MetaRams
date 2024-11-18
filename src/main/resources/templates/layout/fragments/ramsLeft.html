@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- 좌측 네비 st -->
+<th:block th:fragment="leftFragment">
+    
+    <style>
+        #side-menu>li.active>ul>li>a {
+            white-space: nowrap;
+        }
+
+        .nav-second-level li a {
+            padding: 7px 10px 7px 10px;
+            padding-left: 35px;
+        }
+        
+    </style>
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element" style="text-align-last: center;">
+                        <img alt="image" src="images/risk-assessment-icon.png" />
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="block m-t font-bold">Investment Bank Integrated <br> Management System</span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+
+</html>

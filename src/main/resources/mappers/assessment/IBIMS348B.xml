@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS348BMapper">
+
+
+	<!-- 딜승인수수료스케쥴기본  -->
+	<select id="selectFeeScxInfoList" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+
+		SELECT PRDT_CD					/* 상품코드 */
+		     , FEE_SN 					/* 수수료일련번호     */
+		     , RGST_STTS_CD				/* 등록상태코드      */
+             , PRAR_DT                  /* 예정일자  */
+             , FEE_BNAP_DCD				/* 수수료선후급구분코드  */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F001'
+				   AND CD_VL_ID = FEE_BNAP_DCD	 
+			   ) AS FEE_BNAP_NM 		/* 수수료선후급구분명 */ 					 
+			 , FEE_KND_CD 				/* 수수료종류코드     */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'E008'
+				   AND CD_VL_ID = FEE_KND_CD	 
+			   ) AS FEE_KND_NM 			/* 수수료종류명 */ 				 
+			 , IFRS_FEE_RCOG_DCD 		/* IFRS수수료인식구분 */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F006'
+				   AND CD_VL_ID = IFRS_FEE_RCOG_DCD	 
+			   ) AS 	IFRS_FEE_RCOG_NM /* IFRS수수료인식구분명 */
+			 , FEE_RCOG_DCD 		     /* 수수료인식구분 */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F006'
+				   AND CD_VL_ID = FEE_RCOG_DCD	 
+			   ) AS 	FEE_RCOG_DCD_NM /* 수수료인식구분명 */
+			 , FEE_TXTN_YN	            /* 수수료과세여부 */			   
+			 , TXTN_TP_DCD 				/* 과세유형구분코드   */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'E027'
+				   AND CD_VL_ID = TXTN_TP_DCD	 
+			   ) AS TXTN_TP_NM 			/* 과세유형구분명 */	
+			 , BUSI_NMCP_CPL_TXTN_YN	/* 사업부수수료과세여부 */
+			 , FEE_STDR_AMT				/* 수수료기준금액 */
+			 , FEE_TRGT_CTNS         	/* 수수료대상내용 */			    
+			 , NVL(PRCS_CPLT_YN, '0') AS PRCS_CPLT_YN /* 처리완료여부 */
+			 , CRRY_CD					/* 통화코드 */			 
+			 , FEE_RT                   /* 수수료율      */
+			 , FEE_AMT                  /* 수수료금액    */
+			 , FEE_RCIV_DT              /* 수수료수납일자     */
+			 , FEE_RCIV_AMT             /* 수수료수납금액 */  		    
+             , TR_SN					/* 거래일련번호 */  
+             , FNNR_PRLN_RTO			/* 재무이연비율 */
+			 , PRLN_FEE					/* 이연수수료 */
+             , FNNR_RCOG_STRT_DT	    /* 재무인식시작일자 */
+             , FNNR_RCOG_END_DT			/* 재무인식종료일자 */
+             , FNNR_PRLN_PRD_DNUM		/* 재무이연기간일수 */
+             , MNGM_PRLN_RTO			/* 관리이연비율 */
+             , MNGM_RCOG_STRT_DT		/* 관리인식시작일자 */
+             , MNGM_RCOG_END_DT			/* 관리인식종료일자 */
+             , MNGM_PRLN_PRD_DNUM		/* 관리이연기간일수 */
+             , MNG_CNFM_YN				/* 경영확인여부 */
+             , INOG_CNFM_YN				/* 출납확인여부 */
+             , TAFF_CNFM_YN				/* 세무확인여부 */
+             , PYMT_FEE					/* 지급수수료 */
+             , RQS_RGST_YN				/* 신청등록여부 */			 
+			 , ACTS_CD 					/* 계정과목코드 */
+			 , '' AS ACTS_NM 			/* 계정과목명 */
+			 , EXC_SN					/* 실행일련번호 */
+			 , DC_RT					/* 할인율 */
+			 , RPSR_NM					/* 대표자명 */
+			 , RGST_BDCD				/* 등록부점코드 */
+			 , HND_DETL_DTM				/* 조작상세일시 */
+			 , HND_EMPNO				/* 조작사원번호 */
+			 , HND_TMNL_NO				/* 조작단말기번호 */
+			 , HND_TR_ID				/* 조작거래id */
+			 , GUID						/* guid	 */ 
+		  FROM IBIMS348B A 	/* 딜승인수수료스케쥴기본 */
+		 WHERE 1 = 1
+		   AND A.PRDT_CD  = #{prdtCd} /*  'A000000001' */
+		   AND NVL(A.PRCS_CPLT_YN, '0') = '0'
+		   <if test = "prarDt != null and prarDt == ''">
+		   AND A.PRAR_DT &lt;= #{prarDt}
+		   </if>
+		   AND A.RGST_STTS_CD &lt; '2'
+		 ORDER BY FEE_SN DESC
+		 
+	</select>
+	
+
+	<!-- 딜승인수수료스케쥴기본리스트  -->
+	<select id="selectListIBIMS348B" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+
+		SELECT PRDT_CD					/* 상품코드 */
+		     , FEE_SN 					/* 수수료일련번호     */
+		     , RGST_STTS_CD				/* 등록상태코드      */
+             , PRAR_DT                /* 예정일자  */
+             , FEE_BNAP_DCD				/* 수수료선후급구분코드  */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F001'
+				   AND CD_VL_ID = FEE_BNAP_DCD	 
+			   ) AS FEE_BNAP_NM 			/* 수수료선후급구분명 */ 					 
+			 , FEE_KND_CD 				/* 수수료종류코드     */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'E008'
+				   AND CD_VL_ID = FEE_KND_CD	 
+			   ) AS FEE_KND_NM 			/* 수수료종류명 */ 				 
+			 , IFRS_FEE_RCOG_DCD 		/* IFRS수수료인식구분 */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F006'
+				   AND CD_VL_ID = IFRS_FEE_RCOG_DCD	 
+			   ) AS 	IFRS_FEE_RCOG_NM /* IFRS수수료인식구분명 */
+			 , FEE_RCOG_DCD 		/* 수수료인식구분 */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F006'
+				   AND CD_VL_ID = FEE_RCOG_DCD	 
+			   ) AS 	FEE_RCOG_DCD_NM /* 수수료인식구분명 */
+			 , FEE_TXTN_YN	            /* 수수료과세여부 */			   
+			 , TXTN_TP_DCD 				/* 과세유형구분코드   */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'E027'
+				   AND CD_VL_ID = TXTN_TP_DCD	 
+			   ) AS TXTN_TP_NM 			/* 과세유형구분명 */	
+			 , BUSI_NMCP_CPL_TXTN_YN	/* 사업부수수료과세여부 */
+			 , FEE_STDR_AMT				/* 수수료기준금액 */
+			 , FEE_TRGT_CTNS         	/* 수수료대상내용 */			    
+			 , PRCS_CPLT_YN				/* 처리완료여부 */
+			 , CRRY_CD					/* 통화코드 */			 
+			 , FEE_RT                   /* 수수료율      */
+			 , FEE_AMT                  /* 수수료금액    */
+			 , FEE_RCIV_DT              /* 수수료수납일자     */
+			 , FEE_RCIV_AMT             /* 수수료수납금액 */  		    
+             , TR_SN					/* 거래일련번호 */  
+             , #{hgrkTrSn} AS HGRK_TR_SN    /* 상위거래일련번호 */
+             , FNNR_PRLN_RTO			/* 재무이연비율 */  
+             , FNNR_RCOG_STRT_DT	    /* 재무인식시작일자 */
+             , FNNR_RCOG_END_DT			/* 재무인식종료일자 */
+             , FNNR_PRLN_PRD_DNUM		/* 재무이연기간일수 */
+             , MNGM_PRLN_RTO			/* 관리이연비율 */
+             , MNGM_RCOG_STRT_DT		/* 관리인식시작일자 */
+             , MNGM_RCOG_END_DT			/* 관리인식종료일자 */
+             , MNGM_PRLN_PRD_DNUM		/* 관리이연기간일수 */
+             , MNG_CNFM_YN				/* 경영확인여부 */
+             , INOG_CNFM_YN				/* 출납확인여부 */
+             , TAFF_CNFM_YN				/* 세무확인여부 */
+             , PYMT_FEE					/* 지급수수료 */
+             , RQS_RGST_YN				/* 신청등록여부 */			 
+			 , ACTS_CD 					/* 계정과목코드 */
+			 , '' AS ACTS_NM 			/* 계정과목명 */
+			 , EXC_SN					/* 실행일련번호 */
+			 , DC_RT					/* 할인율 */
+			 , RPSR_NM					/* 대표자명 */
+			 , RGST_BDCD				/* 등록부점코드 */
+			 , HND_DETL_DTM				/* 조작상세일시 */
+			 , HND_EMPNO				/* 조작사원번호 */
+			 , HND_TMNL_NO				/* 조작단말기번호 */
+			 , HND_TR_ID				/* 조작거래id */
+			 , GUID						/* guid	 */ 
+		  FROM IBIMS348B A 	            /* 딜승인수수료스케쥴기본 */
+		 WHERE 1 = 1
+		   AND A.PRDT_CD = #{prdtCd} 
+	</select>
+		
+			
+	<!-- 딜승인수수료스케쥴기본  -->
+	<select id="selectOneFeeScxInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+
+		SELECT PRDT_CD					/* 상품코드 */
+		     , FEE_SN 					/* 수수료일련번호     */
+		     , RGST_STTS_CD				/* 등록상태코드      */
+             , PRAR_DT                /* 예정일자  */
+             , FEE_BNAP_DCD				/* 수수료선후급구분코드  */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F001'
+				   AND CD_VL_ID = FEE_BNAP_DCD	 
+			   ) AS FEE_BNAP_NM 			/* 수수료선후급구분명 */ 					 
+			 , FEE_KND_CD 				/* 수수료종류코드     */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'E008'
+				   AND CD_VL_ID = FEE_KND_CD	 
+			   ) AS FEE_KND_NM 			/* 수수료종류명 */ 				 
+			 , IFRS_FEE_RCOG_DCD 		/* IFRS수수료인식구분 */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F006'
+				   AND CD_VL_ID = IFRS_FEE_RCOG_DCD	 
+			   ) AS 	IFRS_FEE_RCOG_NM /* IFRS수수료인식구분명 */
+			 , FEE_RCOG_DCD 		/* 수수료인식구분 */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F006'
+				   AND CD_VL_ID = FEE_RCOG_DCD	 
+			   ) AS 	FEE_RCOG_DCD_NM /* 수수료인식구분명 */
+			 , FEE_TXTN_YN	            /* 수수료과세여부 */			   
+			 , TXTN_TP_DCD 				/* 과세유형구분코드   */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'E027'
+				   AND CD_VL_ID = TXTN_TP_DCD	 
+			   ) AS TXTN_TP_NM 			/* 과세유형구분명 */	
+			 , BUSI_NMCP_CPL_TXTN_YN	/* 사업부수수료과세여부 */
+			 , FEE_STDR_AMT				/* 수수료기준금액 */
+			 , FEE_TRGT_CTNS         	/* 수수료대상내용 */			    
+			 , PRCS_CPLT_YN				/* 처리완료여부 */
+			 , CRRY_CD					/* 통화코드 */			 
+			 , FEE_RT                   /* 수수료율      */
+			 , FEE_AMT                  /* 수수료금액    */
+			 , FEE_RCIV_DT            /* 수수료수납일자     */
+			 , FEE_RCIV_AMT             /* 수수료수납금액 */  		    
+             , TR_SN					/* 거래일련번호 */  
+             , FNNR_PRLN_RTO			/* 재무이연비율 */  
+             , FNNR_RCOG_STRT_DT	    /* 재무인식시작일자 */
+             , FNNR_RCOG_END_DT			/* 재무인식종료일자 */
+             , FNNR_PRLN_PRD_DNUM		/* 재무이연기간일수 */
+             , MNGM_PRLN_RTO			/* 관리이연비율 */
+             , MNGM_RCOG_STRT_DT		/* 관리인식시작일자 */
+             , MNGM_RCOG_END_DT			/* 관리인식종료일자 */
+             , MNGM_PRLN_PRD_DNUM		/* 관리이연기간일수 */
+             , MNG_CNFM_YN				/* 경영확인여부 */
+             , INOG_CNFM_YN				/* 출납확인여부 */
+             , TAFF_CNFM_YN				/* 세무확인여부 */
+             , PYMT_FEE					/* 지급수수료 */
+             , RQS_RGST_YN				/* 신청등록여부 */			 
+			 , ACTS_CD 					/* 계정과목코드 */
+			 , '' AS ACTS_NM 			/* 계정과목명 */
+			 , EXC_SN					/* 실행일련번호 */
+			 , DC_RT					/* 할인율 */
+			 , RPSR_NM					/* 대표자명 */
+			 , RGST_BDCD				/* 등록부점코드 */
+			 , HND_DETL_DTM				/* 조작상세일시 */
+			 , HND_EMPNO				/* 조작사원번호 */
+			 , HND_TMNL_NO				/* 조작단말기번호 */
+			 , HND_TR_ID				/* 조작거래id */
+			 , GUID						/* guid	 */ 
+		  FROM IBIMS348B A 	/* 딜승인수수료스케쥴기본 */
+		 WHERE 1 = 1
+		   AND A.PRDT_CD = #{prdtCd} /*  'A000000001' */
+		   AND A.FEE_SN  = #{feeSn}	     /* 수수료일련번호 */
+	</select>
+		
+			
+	<!-- 딜승인수수료스케쥴기본  -->
+	<select id="selectTrsnFeeSnInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+
+		SELECT PRDT_CD					/* 상품코드 */
+		     , FEE_SN 					/* 수수료일련번호     */
+		     , RGST_STTS_CD				/* 등록상태코드      */
+             , PRAR_DT                /* 예정일자  */
+             , FEE_BNAP_DCD				/* 수수료선후급구분코드  */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F001'
+				   AND CD_VL_ID = FEE_BNAP_DCD	 
+			   ) AS FEE_BNAP_NM 			/* 수수료선후급구분명 */ 					 
+			 , FEE_KND_CD 				/* 수수료종류코드     */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'E008'
+				   AND CD_VL_ID = FEE_KND_CD	 
+			   ) AS FEE_KND_NM 			/* 수수료종류명 */ 				 
+			 , IFRS_FEE_RCOG_DCD 		/* IFRS수수료인식구분 */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F006'
+				   AND CD_VL_ID = IFRS_FEE_RCOG_DCD	 
+			   ) AS 	IFRS_FEE_RCOG_NM /* IFRS수수료인식구분명 */
+			 , FEE_RCOG_DCD 		/* 수수료인식구분 */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'F006'
+				   AND CD_VL_ID = FEE_RCOG_DCD	 
+			   ) AS 	FEE_RCOG_DCD_NM /* 수수료인식구분명 */
+			 , FEE_TXTN_YN	            /* 수수료과세여부 */			   
+			 , TXTN_TP_DCD 				/* 과세유형구분코드   */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE CMNS_CD_GRP = 'E027'
+				   AND CD_VL_ID = TXTN_TP_DCD	 
+			   ) AS TXTN_TP_NM 			/* 과세유형구분명 */	
+			 , BUSI_NMCP_CPL_TXTN_YN	/* 사업부수수료과세여부 */
+			 , FEE_STDR_AMT				/* 수수료기준금액 */
+			 , FEE_TRGT_CTNS         	/* 수수료대상내용 */			    
+			 , PRCS_CPLT_YN				/* 처리완료여부 */
+			 , CRRY_CD					/* 통화코드 */			 
+			 , FEE_RT                   /* 수수료율      */
+			 , FEE_AMT                  /* 수수료금액    */
+			 , FEE_RCIV_DT            /* 수수료수납일자     */
+			 , FEE_RCIV_AMT             /* 수수료수납금액 */  		    
+             , TR_SN					/* 거래일련번호 */  
+             , FNNR_PRLN_RTO			/* 재무이연비율 */  
+             , FNNR_RCOG_STRT_DT	    /* 재무인식시작일자 */
+             , FNNR_RCOG_END_DT			/* 재무인식종료일자 */
+             , FNNR_PRLN_PRD_DNUM		/* 재무이연기간일수 */
+             , MNGM_PRLN_RTO			/* 관리이연비율 */
+             , MNGM_RCOG_STRT_DT		/* 관리인식시작일자 */
+             , MNGM_RCOG_END_DT			/* 관리인식종료일자 */
+             , MNGM_PRLN_PRD_DNUM		/* 관리이연기간일수 */
+             , MNG_CNFM_YN				/* 경영확인여부 */
+             , INOG_CNFM_YN				/* 출납확인여부 */
+             , TAFF_CNFM_YN				/* 세무확인여부 */
+             , PYMT_FEE					/* 지급수수료 */
+             , RQS_RGST_YN				/* 신청등록여부 */			 
+			 , ACTS_CD 					/* 계정과목코드 */
+			 , '' AS ACTS_NM 			/* 계정과목명 */
+			 , EXC_SN					/* 실행일련번호 */
+			 , DC_RT					/* 할인율 */
+			 , RPSR_NM					/* 대표자명 */
+			 , RGST_BDCD				/* 등록부점코드 */
+			 , HND_DETL_DTM				/* 조작상세일시 */
+			 , HND_EMPNO				/* 조작사원번호 */
+			 , HND_TMNL_NO				/* 조작단말기번호 */
+			 , HND_TR_ID				/* 조작거래id */
+			 , GUID						/* guid	 */ 
+		  FROM IBIMS348B A 	/* 딜승인수수료스케쥴기본 */
+		 WHERE 1 = 1
+		   AND A.PRDT_CD = #{prdtCd} 
+		   AND A.TR_SN   = #{trSn}	 /* 거래일련번호 */
+	</select>
+			
+    <update id="updateFeeScxInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+		UPDATE IBIMS348B	/* 딜승인수수료스케쥴기본 */
+		   SET FEE_RCIV_DT  	 = NVL(TRIM(#{feeRcivDt}), TO_CHAR(SYSDATE, 'YYYYMMDD')) /* 수수료수납일자 */
+		     , FEE_RCIV_AMT 	 = #{feeRcivAmt}   	  /* 수수료수납금액 */
+		     , TR_SN        	 = #{trSn}         	  /* 거래일련번호 */
+		     , PRCS_CPLT_YN 	 = #{prcsCpltYn}   	  /* 처리완료여부 */
+		     , HND_DETL_DTM 	 = SYSDATE         	  /* 조작상세일시 */
+			 , FNNR_RCOG_STRT_DT = NVL(#{fnnrRcogStrtDt}, FNNR_RCOG_STRT_DT)  /* 인식시작일자 */
+             , FNNR_RCOG_END_DT  = NVL(#{fnnrRcogEndDt}, FNNR_RCOG_END_DT)   /* 인식종료일자 */
+		 WHERE PRDT_CD = #{prdtCd}            /* 상품코드 */
+		   AND FEE_SN  = #{feeSn}	          /* 수수료일련번호 */
+    </update>
+    	
+    <update id="updateFeeScxInfo2" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+		UPDATE IBIMS348B	/* 딜승인수수료스케쥴기본 */
+		   SET FEE_RCIV_DT  	 = #{feeRcivDt}       /* 수수료수납일자 */
+		     , FEE_RCIV_AMT 	 = #{feeRcivAmt}   	  /* 수수료수납금액 */
+		     , TR_SN        	 = #{trSn}         	  /* 거래일련번호 */
+		     , PRCS_CPLT_YN 	 = #{prcsCpltYn}   	  /* 처리완료여부 */
+		     , HND_DETL_DTM 	 = SYSDATE         	  /* 조작상세일시 */
+			 , FNNR_RCOG_STRT_DT = NVL(#{fnnrRcogStrtDt}, FNNR_RCOG_STRT_DT)  /* 인식시작일자 */
+             , FNNR_RCOG_END_DT  = NVL(#{fnnrRcogEndDt}, FNNR_RCOG_END_DT)   /* 인식종료일자 */
+		 WHERE PRDT_CD = #{prdtCd}            /* 상품코드 */
+		   AND FEE_SN  = #{feeSn}	          /* 수수료일련번호 */
+    </update>
+        	
+	<!-- 수수료스케줄관리 저장 -->
+	<insert id="insertFeeSch" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+	   INSERT INTO IBIMS348B	            /* 딜승인수수료스케쥴기본 */
+			(
+			  PRDT_CD					/* 상품코드 */
+			, FEE_SN					/* 수수료일련번호 */
+			, RGST_STTS_CD				/* 등록상태코드 */
+			, PRAR_DT					/* 예정일자 */
+			, FEE_BNAP_DCD				/* 수수료선후급구분코드 */
+			, FEE_KND_CD				/* 수수료종류코드 */
+			, IFRS_FEE_RCOG_DCD			/* ifrs수수료인식구분코드 */
+			, FEE_RCOG_DCD				/* 수수료인식구분코드 */
+			, FEE_TXTN_YN				/* 수수료과세여부 */
+			, TXTN_TP_DCD				/* 과세유형구분코드 */
+			, BUSI_NMCP_CPL_TXTN_YN		/* 사업부수수료과세여부 */
+			, FEE_STDR_AMT				/* 수수료기준금액 */
+			, FEE_TRGT_CTNS				/* 수수료대상내용 */
+			, PRCS_CPLT_YN				/* 처리완료여부 */
+			, CRRY_CD					/* 통화코드 */
+			, FEE_RT					/* 수수료율 */
+			, FEE_AMT					/* 수수료금액 */
+			, FEE_RCIV_DT				/* 수수료수납일자 */
+			, FEE_RCIV_AMT				/* 수수료수납금액 */
+			, TR_SN						/* 거래일련번호 */
+			, FNNR_PRLN_RTO				/* 재무이연비율 */
+			, PRLN_FEE					/* 이연수수료 */
+			, FNNR_RCOG_STRT_DT			/* 재무인식시작일자 */
+			, FNNR_RCOG_END_DT			/* 재무인식종료일자 */
+			, FNNR_PRLN_PRD_DNUM		/* 재무이연기간일수 */
+			, MNGM_PRLN_RTO				/* 관리이연비율 */
+			, MNGM_RCOG_STRT_DT			/* 관리인식시작일자 */
+			, MNGM_RCOG_END_DT			/* 관리인식종료일자 */
+			, MNGM_PRLN_PRD_DNUM		/* 관리이연기간일수 */
+			, MNG_CNFM_YN				/* 경영확인여부 */
+			, INOG_CNFM_YN				/* 출납확인여부 */
+			, TAFF_CNFM_YN				/* 세무확인여부 */
+			, PYMT_FEE					/* 지급수수료 */
+			, RQS_RGST_YN				/* 신청등록여부 */
+			, ACTS_CD					/* 계정과목코드 */
+			, EXC_SN					/* 실행일련번호 */
+			, DC_RT						/* 할인율 */
+			, RPSR_NM					/* 대표자명 */
+			, RGST_BDCD					/* 등록부점코드 */
+			, HND_DETL_DTM				/* 조작상세일시 */
+			, HND_EMPNO					/* 조작사원번호 */
+			, HND_TMNL_NO				/* 조작단말기번호 */
+			, HND_TR_ID					/* 조작거래ID */
+			, GUID						/* GUID */
+			)
+	   VALUES
+			(
+			  #{prdtCd}				    /* 상품코드 */
+			, #{feeSn}				    /* 수수료일련번호 */
+			, #{rgstSttsCd}			    /* 등록상태코드 */
+			, #{prarDt}				    /* 예정일자 */
+			, #{feeBnapDcd}			    /* 수수료선후급구분코드 */
+			, #{feeKndCd}			    /* 수수료종류코드 */
+			, #{ifrsFeeRcogDcd}		    /* ifrs수수료인식구분코드 */
+			, #{feeRcogDcd}			    /* 수수료인식구분코드 */
+			, #{feeTxtnYn}			    /* 수수료과세여부 */
+			, #{txtnTpDcd}			    /* 과세유형구분코드 */
+			, #{busiNmcpCplTxtnYn}	    /* 사업부수수료과세여부 */
+			, #{feeStdrAmt}			    /* 수수료기준금액 */
+			, #{feeTrgtCtns}		    /* 수수료대상내용 */
+			, #{prcsCpltYn}			    /* 처리완료여부 */
+			, #{crryCd}				    /* 통화코드 */
+			, #{feeRt}				    /* 수수료율 */
+			, #{feeAmt}				    /* 수수료금액 */
+			, #{feeRcivDt}			    /* 수수료수납일자 */
+			, #{feeRcivAmt}			    /* 수수료수납금액 */
+			, #{trSn}				    /* 거래일련번호 */
+			, #{fnnrPrlnRto}		    /* 재무이연비율 */
+			, #{prlnFee}				/* 이연수수료 */
+			, #{fnnrRcogStrtDt}		    /* 재무인식시작일자 */
+			, #{fnnrRcogEndDt}		    /* 재무인식종료일자 */
+			, #{fnnrPrlnPrdDnum}	    /* 재무이연기간일수 */
+			, #{mngmPrlnRto}		    /* 관리이연비율 */
+			, #{mngmRcogStrtDt}		    /* 관리인식시작일자 */
+			, #{mngmRcogEndDt}		    /* 관리인식종료일자 */
+			, #{mngmPrlnPrdDnum}	    /* 관리이연기간일수 */
+			, #{mngCnfmYn}			    /* 경영확인여부 */
+			, #{inogCnfmYn}			    /* 출납확인여부 */
+			, #{taffCnfmYn}			    /* 세무확인여부 */
+			, #{pymtFee}			    /* 지급수수료 */
+			, #{rqsRgstYn}			    /* 신청등록여부 */
+			, #{actsCd}				    /* 계정과목코드 */
+			, #{excSn}				    /* 실행일련번호 */
+			, #{dcRt}				    /* 할인율 */
+			, #{rpsrNm}				    /* 대표자명 */
+			, #{rgstBdcd}			    /* 등록부점코드 */
+			, SYSDATE					    /* 조작상세일시 */
+			, #{hndEmpno}			    /* 조작사원번호 */
+			, #{hndTmnlNo}			    /* 조작단말기번호 */
+			, #{hndTrId}			    /* 조작거래ID */
+			, #{guid}				    /* GUID */
+			)
+	</insert>
+
+    	
+	<!-- 수수료스케줄관리 저장 -->
+	<insert id="insertIBIMS348Blist" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+	   INSERT INTO IBIMS348B	            /* 딜승인수수료스케쥴기본 */
+			(
+			  PRDT_CD					/* 상품코드 */
+			, FEE_SN					/* 수수료일련번호 */
+			, RGST_STTS_CD				/* 등록상태코드 */
+			, PRAR_DT					/* 예정일자 */
+			, FEE_BNAP_DCD				/* 수수료선후급구분코드 */
+			, FEE_KND_CD				/* 수수료종류코드 */
+			, IFRS_FEE_RCOG_DCD			/* ifrs수수료인식구분코드 */
+			, FEE_RCOG_DCD				/* 수수료인식구분코드 */
+			, FEE_TXTN_YN				/* 수수료과세여부 */
+			, TXTN_TP_DCD				/* 과세유형구분코드 */
+			, BUSI_NMCP_CPL_TXTN_YN		/* 사업부수수료과세여부 */
+			, FEE_STDR_AMT				/* 수수료기준금액 */
+			, FEE_TRGT_CTNS				/* 수수료대상내용 */
+			, PRCS_CPLT_YN				/* 처리완료여부 */
+			, CRRY_CD					/* 통화코드 */
+			, FEE_RT					/* 수수료율 */
+			, FEE_AMT					/* 수수료금액 */
+			, FEE_RCIV_DT				/* 수수료수납일자 */
+			, FEE_RCIV_AMT				/* 수수료수납금액 */
+			, TR_SN						/* 거래일련번호 */
+			, FNNR_PRLN_RTO				/* 재무이연비율 */
+			, FNNR_RCOG_STRT_DT			/* 재무인식시작일자 */
+			, FNNR_RCOG_END_DT			/* 재무인식종료일자 */
+			, FNNR_PRLN_PRD_DNUM		/* 재무이연기간일수 */
+			, MNGM_PRLN_RTO				/* 관리이연비율 */
+			, MNGM_RCOG_STRT_DT			/* 관리인식시작일자 */
+			, MNGM_RCOG_END_DT			/* 관리인식종료일자 */
+			, MNGM_PRLN_PRD_DNUM		/* 관리이연기간일수 */
+			, MNG_CNFM_YN				/* 경영확인여부 */
+			, INOG_CNFM_YN				/* 출납확인여부 */
+			, TAFF_CNFM_YN				/* 세무확인여부 */
+			, PYMT_FEE					/* 지급수수료 */
+			, RQS_RGST_YN				/* 신청등록여부 */
+			, ACTS_CD					/* 계정과목코드 */
+			, EXC_SN					/* 실행일련번호 */
+			, DC_RT						/* 할인율 */
+			, RPSR_NM					/* 대표자명 */
+			, RGST_BDCD					/* 등록부점코드 */
+			, HND_DETL_DTM				/* 조작상세일시 */
+			, HND_EMPNO					/* 조작사원번호 */
+			, HND_TMNL_NO				/* 조작단말기번호 */
+			, HND_TR_ID					/* 조작거래ID */
+			, GUID						/* GUID */
+			)
+	   VALUES
+        <foreach collection="list" item="item" separator=",">	   
+			(
+			  #{item.prdtCd}				    /* 상품코드 */
+			, #{item.feeSn}				    /* 수수료일련번호 */
+			, #{item.rgstSttsCd}			    /* 등록상태코드 */
+			, #{item.prarDt}				    /* 예정일자 */
+			, #{item.feeBnapDcd}			    /* 수수료선후급구분코드 */
+			, #{item.feeKndCd}			    /* 수수료종류코드 */
+			, #{item.ifrsFeeRcogDcd}		    /* ifrs수수료인식구분코드 */
+			, #{item.feeRcogDcd}			    /* 수수료인식구분코드 */
+			, #{item.feeTxtnYn}			    /* 수수료과세여부 */
+			, #{item.txtnTpDcd}			    /* 과세유형구분코드 */
+			, #{item.busiNmcpCplTxtnYn}	    /* 사업부수수료과세여부 */
+			, #{item.feeStdrAmt}			    /* 수수료기준금액 */
+			, #{item.feeTrgtCtns}		    /* 수수료대상내용 */
+			, #{item.prcsCpltYn}			    /* 처리완료여부 */
+			, #{item.crryCd}				    /* 통화코드 */
+			, #{item.feeRt}				    /* 수수료율 */
+			, #{item.feeAmt}				    /* 수수료금액 */
+			, #{item.feeRcivDt}			    /* 수수료수납일자 */
+			, #{item.feeRcivAmt}			    /* 수수료수납금액 */
+			, #{item.trSn}				    /* 거래일련번호 */
+			, #{item.fnnrPrlnRto}		    /* 재무이연비율 */
+			, #{item.fnnrRcogStrtDt}		    /* 재무인식시작일자 */
+			, #{item.fnnrRcogEndDt}		    /* 재무인식종료일자 */
+			, #{item.fnnrPrlnPrdDnum}	    /* 재무이연기간일수 */
+			, #{item.mngmPrlnRto}		    /* 관리이연비율 */
+			, #{item.mngmRcogStrtDt}		    /* 관리인식시작일자 */
+			, #{item.mngmRcogEndDt}		    /* 관리인식종료일자 */
+			, #{item.mngmPrlnPrdDnum}	    /* 관리이연기간일수 */
+			, #{item.mngCnfmYn}			    /* 경영확인여부 */
+			, #{item.inogCnfmYn}			    /* 출납확인여부 */
+			, #{item.taffCnfmYn}			    /* 세무확인여부 */
+			, #{item.pymtFee}			    /* 지급수수료 */
+			, #{item.rqsRgstYn}			    /* 신청등록여부 */
+			, #{item.actsCd}				    /* 계정과목코드 */
+			, #{item.excSn}				    /* 실행일련번호 */
+			, #{item.dcRt}				    /* 할인율 */
+			, #{item.rpsrNm}				    /* 대표자명 */
+			, #{item.rgstBdcd}			    /* 등록부점코드 */
+			, SYSDATE					    /* 조작상세일시 */
+			, #{item.hndEmpno}			    /* 조작사원번호 */
+			, #{item.hndTmnlNo}			    /* 조작단말기번호 */
+			, #{item.hndTrId}			    /* 조작거래ID */
+			, #{item.guid}				    /* GUID */
+			)
+		</foreach>
+	</insert>
+
+	<!-- 수수료스케줄관리 수정 -->
+	<update  id="updateFeeSch" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+	   UPDATE IBIMS348B											/* 딜승인수수료스케쥴기본 */
+	   	  SET RGST_STTS_CD 			= #{rgstSttsCd} 			/* 등록상태코드 */
+			, PRAR_DT 				= #{prarDt}					/* 예정일자 */
+			, FEE_BNAP_DCD 			= #{feeBnapDcd}				/* 수수료선후급구분코드 */
+			, FEE_KND_CD 			= #{feeKndCd}				/* 수수료종류코드 */
+			, FEE_RCOG_DCD 			= #{feeRcogDcd}				/* 수수료인식구분코드 */
+			, FEE_TXTN_YN 			= #{feeTxtnYn}				/* 수수료과세여부 */
+			, TXTN_TP_DCD 			= #{txtnTpDcd}				/* 과세유형구분코드 */
+			, FEE_STDR_AMT 			= #{feeStdrAmt}				/* 수수료기준금액 */
+			, FEE_TRGT_CTNS 		= #{feeTrgtCtns}			/* 수수료대상내용 */
+			, PRCS_CPLT_YN 			= #{prcsCpltYn}				/* 처리완료여부 */
+			, CRRY_CD 				= #{crryCd}					/* 통화코드 */
+			, FEE_RT 				= #{feeRt}					/* 수수료율 */
+			, FEE_AMT 				= #{feeAmt}					/* 수수료금액 */
+			, FEE_RCIV_DT 			= #{feeRcivDt}				/* 수수료수납일자 */
+			, FEE_RCIV_AMT 			= #{feeRcivAmt}				/* 수수료수납금액 */
+			, FNNR_PRLN_RTO 		= #{fnnrPrlnRto}			/* 재무이연비율 */
+			, PRLN_FEE				= #{prlnFee}				/* 이연수수료 */
+			, FNNR_RCOG_STRT_DT 	= #{fnnrRcogStrtDt}			/* 재무인식시작일자 */
+			, FNNR_RCOG_END_DT 		= #{fnnrRcogEndDt}			/* 재무인식종료일자 */
+			, FNNR_PRLN_PRD_DNUM 	= #{fnnrPrlnPrdDnum}		/* 재무이연기간일수 */
+			, ACTS_CD 				= #{actsCd}					/* 계정과목코드 */
+			, RPSR_NM 				= #{rpsrNm}					/* 대표자명 */
+			, RGST_BDCD 			= #{rgstBdcd}				/* 등록부점코드 */
+			, HND_DETL_DTM 			= SYSDATE						/* 조작상세일시 */
+			, HND_EMPNO 			= #{hndEmpno}				/* 조작사원번호 */
+			, HND_TMNL_NO 			= #{hndTmnlNo}				/* 조작단말기번호 */
+			, HND_TR_ID 			= #{hndTrId}				/* 조작거래ID */
+			, GUID 				    = #{guid}					/* GUID */
+		WHERE PRDT_CD               = #{prdtCd}					/* 종목코드 */
+		  AND FEE_SN				= #{feeSn}					/* 수수료일련번호 */
+	</update>
+
+	<!-- 수수료스케줄관리 삭제 -->
+	<update  id="deleteFeeSch" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+	   UPDATE IBIMS348B											/* 딜승인수수료스케쥴기본 */
+	   	  SET RGST_STTS_CD 			= #{rgstSttsCd} 			/* 등록상태코드 */
+			, HND_DETL_DTM 			= SYSDATE						/* 조작상세일시 */
+			, HND_EMPNO 			= #{hndEmpno}				/* 조작사원번호 */
+			, HND_TMNL_NO 			= #{hndTmnlNo}				/* 조작단말기번호 */
+			, HND_TR_ID 			= #{hndTrId}				/* 조작거래ID */
+			, GUID 				    = #{guid}					/* GUID */
+		WHERE PRDT_CD               = #{prdtCd}					/* 종목코드 */
+		  AND FEE_SN				= #{feeSn}					/* 수수료일련번호 */
+	</update>
+
+
+     <!-- 원리금 스케줄관리 삭제 -->
+     <delete  id="deleteIBIMS348B" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+          DELETE 
+            FROM IBIMS348B
+           WHERE PRDT_CD   = #{prdtCd}     /* 종목코드 */
+     </delete>
+     
+     
+	<!-- 수수료일련번호 채번 -->
+	<select id="getFeeSn" parameterType="string" resultType="int">
+	  SELECT NVL(MAX(FEE_SN), 0) + 1 AS feeSn /* 수수료일련번호 */
+		FROM IBIMS348B				  /* 딜승인수수료스케쥴기본 */
+	   WHERE PRDT_CD = #{prdtCd}	  /* 종목코드 */
+	</select>
+</mapper>

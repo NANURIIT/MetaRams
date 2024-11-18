@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS430BMapper">
+
+    <!--입금내역매핑 조회-->
+    
+    
+    <!--입금순번 구하기-->
+    <select id="getNxtRctmSeq" parameterType="String" resultType="Integer">
+        SELECT 
+            NVL(MAX(RCTM_SEQ)+1, 1)
+        FROM 
+            IBIMS430B
+        WHERE 
+            RCTM_DT = #{rctmDt}
+    </select>
+
+    <!--등록순번 구하기-->
+    <select id="getNxtRgstSeq" parameterType="String" resultType="Integer">
+        SELECT 
+            COALESCE(MAX(RGST_SEQ)+1, 1)
+        FROM 
+            IBIMS430B
+        WHERE 
+            TO_CHAR(RGST_DTM , 'YYYYMMDD') = TO_CHAR(#{rgstDtm}, 'YYYYMMDD')
+    </select>
+
+    <!--입금내역등록-->
+    <insert id="rctmDtlsRgst" parameterType="java.util.List">
+        INSERT INTO IBIMS430B 
+            (
+                DEAL_NO 					    /*딜번호*/
+                , RCTM_DT					    /*입금일자*/
+                , RCTM_SEQ                      /*입금순번*/
+                , RGST_SEQ					    /*등록순번*/
+                , MNGM_BDCD					    /*관리부점코드*/
+                , FNDS_DVSN_CD				    /*자금구분코드*/
+                , DEAL_RCTM_AMT				    /*딜입금금액*/
+                , PMNT_PRAR_AMT                 /*납부예정금액*/
+                , DEAL_EXCS_PYMT_AMT			/*딜초과납입금액*/
+                , RELT_ISTT_CD				    /*관련기관코드*/
+                , RELT_ISTT_NM				    /*관련기관명*/
+                , RELT_BANO					    /*관련은행계좌번호*/
+                , DPTR_NM					    /*입금자명*/
+                , RGST_EMPNO					/*등록사원번호*/
+                , RGST_BDCD					    /*등록부서*/
+                , RGST_DTM					    /*등록일시*/
+            )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.dealNo}
+                , #{item.rctmDt}
+                , #{item.rctmSeq}
+                , #{item.rgstSeq}
+                , #{item.mngmBdcd}
+                , #{item.fndsDvsnCd}
+                , #{item.dealRctmAmt}
+                , #{item.pmntPrarAmt}
+                , #{item.dealExcsPymtAmt}
+                , #{item.reltIsttCd}
+                , #{item.reltIsttNm}
+                , #{item.reltBano}
+                , #{item.dptrNm}
+                , #{item.rgstEmpno}
+                , #{item.rgstBdcd}
+                , #{item.rgstDtm}
+            )
+        </foreach>
+    </insert>
+
+    <!--입금내역조회-->
+    <select id="getRctmDtls" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
+        SELECT 
+            A.DEAL_NO ,						/*딜번호*/
+            A.RCTM_DT ,						/*은행입금일자*/
+            A.RGST_SEQ ,					/*등록순번*/
+            A.MNGM_BDCD ,					/*관리부서*/
+            A.FNDS_DVSN_CD ,				/*자금구분코드*/
+            A.DEAL_RCTM_AMT ,				/*딜입금금액*/
+            A.PMNT_PRAR_AMT ,               /*납부예정금액*/
+            A.DEAL_EXCS_PYMT_AMT ,			/*딜초과납입금액*/
+            A.RELT_ISTT_CD ,				/*관련기관코드*/
+            A.RELT_BANO ,					/*관련은행계좌번호*/
+            A.DPTR_NM,                      /*입금자*/
+            A.RGST_BDCD ,					/*등록부점코드*/
+            (
+                SELECT ib.EMP_NM
+                FROM IBIMS003B ib 
+                WHERE ib.EMPNO = A.RGST_EMPNO 
+            ) AS RGST_EMPNO	,				/*등록자*/
+            A.RGST_DTM 
+        FROM IBIMS430B A
+        WHERE 1=1
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+        AND DEAL_NO = #{dealNo}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
+        AND RCTM_DT = #{rctmDt}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDt)">
+        AND TO_CHAR(RGST_DTM , 'YYYYMMDD') = #{rgstDt}
+        </if>
+        <if test="rgstSeq != 0">
+        AND RGST_SEQ = #{rgstSeq}
+        </if>
+        ORDER BY RCTM_DT, RGST_SEQ
+    </select>
+
+    <!--입금내역 매핑-->
+    <update id="rctmDtlsMapping" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" separator="" close="">
+            UPDATE IBIMS430B
+            SET 
+                MNGM_BDCD = #{item.mngmBdcd},
+                RDPT_OBJT_DVSN_CD = #{item.rdptObjtDvsnCd},
+                EXCS_PYMT_PRCS_TEXT = #{item.excsPymtPrcsText}
+            WHERE
+                DEAL_NO = #{item.dealNo}
+            AND 
+                RCTM_DT = #{item.rctmDt}
+            AND
+                RGST_SEQ = #{item.rgstSeq}
+        </foreach>
+    </update>
+
+    <!--입금내역매핑 조회-->
+    <select id="dptrDtlsInq" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
+        SELECT	DEAL_NO 					/*딜번호*/
+            ,	EXCS_PYMT_PRCS_TEXT			/*초과납입처리내용*/
+            ,	RCTM_DT 					/*입금일자*/
+            ,	MNGM_BDCD 					/*관리부서*/
+            ,	RDPT_OBJT_DVSN_CD 			/*상환대상구분코드*/
+            ,	DEAL_RCTM_AMT 				/*딜입금금액*/
+        FROM IBIMS430B  
+        WHERE EXCS_PYMT_PRCS_TEXT IS NOT NULL
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+        AND DEAL_NO = #{dealNo}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+        AND MNGM_BDCD = #{dprtCd}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
+        AND RCTM_DT = #{rctmDt}
+        </if>
+    </select>
+
+    <!--TB07170S 입금내역조회-->
+    <select id="getDptrDtlsList" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
+ 		  SELECT  A.RCTM_DT 					/*입금일자*/
+                , B.DEAL_NO                 /*딜번호*/
+                , B.PRDT_CD					/*종목코드*/
+                , A.MNGM_BDCD 				/*관리부점코드*/
+                , A.FNDS_DVSN_CD 				/*자금구분코드*/
+                , A.RDPT_OBJT_DVSN_CD 		/*상환대상구분코드*/
+                , A.DEAL_RCTM_AMT 			/*딜입금금액*/
+                , A.RELT_ISTT_NM 				/*관련기관명 == 집금은행*/
+                , A.RELT_BANO 				/*관련은행계좌번호 == 집금모계좌번호*/
+                , A.LNKD_BANO 				/*연계은행계좌번호*/
+                , A.LNKD_ACNT_TR_NO 			/*연계계좌거래번호*/
+                , A.EXCS_PYMT_PRCS_DVSN_CD 	/*초과납입처리구분코드*/
+                , A.DEAL_EXCS_PYMT_AMT 		/*딜초과납입금액*/
+                , A.DPTR_NM 					/*입금자명*/
+                , B.PRCS_CPLT_YN
+                , B.PRAR_DT
+                , (
+                    SELECT EMP_NM 
+                    FROM IBIMS003B U
+                    WHERE U.EMPNO = A.RGST_EMPNO 
+                ) AS RGST_EMPNM				/*처리자*/
+                , A.RGST_BDCD 				/*처리부서*/
+            FROM IBIMS430B A            
+            ,(
+                SELECT  CASE  WHEN P.SCX_DCD = '02'
+                                THEN P.PRAR_PRNA
+                                ELSE P.RDMP_PRAR_INTR
+                                END                   AS 		PMNT_PRAR_AMT					/*납부예정금액*/
+                                , P.PRAR_DT 				                              /*상환예정일자*/
+                                , P.PRDT_CD
+                                , D1.DEAL_NO 				                              /*딜번호*/
+                                , D1.MNGM_BDCD 			                              /*관리부서*/
+                                , P.SCX_DCD 				                              /*상환구분*/
+                                , D1.TR_CRRY_CD 			                            /*통화코드*/
+                                , P.PRCS_CPLT_YN
+                            FROM IBIMS403B P				                              /*원리금상환스케줄*/
+                               , IBIMS201B D1 
+                            WHERE 1=1
+                            AND  D1.PRDT_CD = P.PRDT_CD
+                            AND D1.LAST_YN = '1'
+                            AND (P.PRCS_CPLT_YN != '1' OR P.PRCS_CPLT_YN IS NULL)
+                            UNION ALL
+                            SELECT   F.FEE_AMT				AS PMNT_PRAR_AMT	          /*납부예정금액*/
+                                , F.PRAR_DT                                       /*상환예정일자*/
+                                , F.PRDT_CD				
+                                , D2.DEAL_NO                                      /*딜번호*/
+                                , D2.MNGM_BDCD                                    /*관리부서*/
+                                , '03'					      AS SCX_DCD                  /*상환구분*/
+                                , D2.TR_CRRY_CD                                   /*통화코드*/
+                                , F.PRCS_CPLT_YN
+                            FROM  IBIMS348B F                                      /*수수료상환스케줄*/
+                            	, IBIMS201B D2                            
+                            WHERE 1=1 
+                            AND D2.PRDT_CD = F.PRDT_CD
+                            AND D2.LAST_YN = '1'
+                            AND (F.PRCS_CPLT_YN != '1' OR F.PRCS_CPLT_YN IS NULL)
+            ) AS B
+        WHERE 1=1
+        AND B.PRAR_DT = A.RCTM_DT 
+        AND B.SCX_DCD = A.RDPT_OBJT_DVSN_CD
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rdptObjtDvsnCd)">
+        AND A.RDPT_OBJT_DVSN_CD  = #{rdptObjtDvsnCd}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+        AND B.DEAL_NO = #{dealNo}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
+        AND A.RCTM_DT = #{rctmDt}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
+        AND A.MNGM_BDCD = #{mngmBdcd}
+        </if>
+    </select>
+
+</mapper>

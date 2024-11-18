@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS118BMapper">
+
+	<!-- select -->
+	<select id="selectRaa10b" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO$SearchParam" resultType="com.nanuri.rams.business.common.dto.RAA10BDTO">
+		SELECT IB_DEAL_NO
+			 , RISK_INSPCT_CCD
+			 , LST_C_CASE_CCD
+			 , ITEM_SQ
+			 , RMRK
+			 , END_DT_END_DT
+			 , HNDL_DY_TM
+			 , HNDL_DPRT_CD
+			 , HNDL_P_ENO
+			 , OBLG_CNTNT
+			 , PFRM_DT
+			 , END_F
+	      FROM RAA10B
+	     WHERE 1=1
+		   AND IB_DEAL_NO		= #{ibDealNo}
+		   AND RISK_INSPCT_CCD	= #{riskInspctCcd}
+		   AND LST_C_CASE_CCD	= #{lstCCaseCcd}
+		   AND ITEM_SQ			= #{itemSq}
+	</select>
+	
+	<!-- update -->
+	<update id="updateRaa10b" parameterType="com.nanuri.rams.business.common.dto.RAA10BDTO">
+		UPDATE RAA10B
+		   SET RMRK					= #{rmrk}
+			 , END_DT_END_DT		= #{endDtEndDt}
+			 , HNDL_DY_TM			= SYSDATE
+			 , HNDL_DPRT_CD			= #{hndlDprtCd}
+			 , HNDL_P_ENO			= #{hndlPEno}
+			 , OBLG_CNTNT			= #{oblgCntnt}
+			 , PFRM_DT				= #{pfrmDt}
+			 , END_F				= #{endF}
+		 WHERE 1=1
+		   AND IB_DEAL_NO           = #{ibDealNo          }
+		   AND RISK_INSPCT_CCD      = #{riskInspctCcd     }
+		   AND LST_C_CASE_CCD       = #{lstCCaseCcd       }
+		   AND ITEM_SQ              = #{itemSq            }
+	</update>
+   	
+ 	<insert id="insertEtcCndt" parameterType="map">
+		INSERT INTO IBIMS118B
+			(
+			  DEAL_NO                          /* IBDEAL번호 */
+			, JDGM_DCD                  	   /* 리스크심사구분코드 */
+			, MTR_DCD                   	   /* 부수안건구분코드 */
+			, ITEM_SQ                          /* 항목일련번호 */
+			, RMRK                             /* 비고 */
+			, END_DT_END_DT                    /* 기한종료일자 */
+			, HNDL_DY_TM                       /* 처리일시 */
+			, HNDL_DPRT_CD                     /* 처리부점코드 */
+			, HNDL_P_ENO                       /* 처리자사번 */
+			, OBLG_CNTNT                       /* 의무내용 */
+			, PFRM_DT                          /* 이행일자 */
+			, END_F                            /* 종료여부 */
+			)
+		VALUES
+		    (
+			  #{dealNo		   }               /* IBDEAL번호 */
+			, #{jdgmDcd		   }               /* 리스크심사구분코드 */
+			, #{mtrDcd		   }               /* 부수안건구분코드 */
+            , (SELECT NVL(MAX(A.ITEM_SQ), 0) + 1
+                 FROM IBIMS118B A
+                WHERE A.DEAL_NO        = #{dealNo}
+                  AND A.JDGM_DCD       = #{jdgmDcd}
+                  AND A.MTR_DCD        = #{mtrDcd}
+              )								   /* 항목일련번호 */
+			, NULL                             /* 비고 */
+			, NULL                    		   /* 기한종료일자 */
+			, SYSDATE                      	   /* 처리일시 */
+			, #{hndlDprtCd}                    /* 처리부점코드 */
+			, #{hndlPEno}                      /* 처리자사번 */
+			, NULL                     		   /* 의무내용 */
+			, NULL                        	   /* 이행일자 */
+			, 'N'                          	   /* 종료여부 */
+			)
+	</insert>
+
+	<delete id="deleteEtcCndt" parameterType="map">
+		DELETE
+		  FROM IBIMS118B
+		 WHERE DEAL_NO      = #{dealNo      }		/* IBDEAL번호 */
+		   AND JDGM_DCD     = #{jdgmDcd     }	    /* 리스크심사구분코드 */
+		   AND MTR_DCD      = #{mtrDcd      }	    /* 부수안건구분코드 */
+	</delete>
+	
+    <!--    승인조건 미이행 기타의무 이행일 저장    -->
+    <update id="saveEtcPfrmDt">
+        UPDATE RAA10B
+           SET PFRM_DT				= #{prfrmDt}
+             , END_F 				= 'Y'
+             , RMRK 				= #{pfrmCntnt}
+             , HNDL_DY_TM 			= SYSDATE
+             , HNDL_DPRT_CD 		= #{hndlDprtCd}
+             , HNDL_P_ENO 			= #{hndlPEno}
+         WHERE IB_DEAL_NO 			= #{ibDealNo}
+           AND RISK_INSPCT_CCD 		= #{riskInspctCcd}
+           AND LST_C_CASE_CCD 		= #{lstCCaseCcd}
+           AND ITEM_SQ 				= #{itemSq}
+    </update>
+
+    <!--    승인조건 미이행 기타의무 종결여부 저장    -->
+    <update id="upoateEtcEndF">
+        UPDATE RAA10B
+           SET END_F 				= #{endF}
+             , RMRK 				= CASE WHEN #{endF} = 'N' THEN NULL ELSE #{pfrmCntnt} END
+             , PFRM_DT 				= NULL
+             , HNDL_DY_TM 			= SYSDATE
+             , HNDL_DPRT_CD 		= #{hndlDprtCd}
+             , HNDL_P_ENO 			= #{hndlPEno}
+         WHERE IB_DEAL_NO 			= #{ibDealNo}
+           AND RISK_INSPCT_CCD 		= #{riskInspctCcd}
+           AND LST_C_CASE_CCD 		= #{lstCCaseCcd}
+           AND ITEM_SQ 				= #{itemSq}
+    </update>
+    
+</mapper>

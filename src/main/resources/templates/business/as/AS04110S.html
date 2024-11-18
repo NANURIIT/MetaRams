@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/file.js}"></script>
+	<script th:src="@{js/business/as/AS04110S.js}"></script>
+	<script th:src="@{js/business/popup/AC01120P.js}"></script>
+	<script th:src="@{js/business/popup/AS02020P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block>
+	<th:block th:replace="business/popup/AS02020P :: AS02020P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 협의체 준비 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2 text-right">
+						<div class="form-group form-inline row">
+							<!-- 버튼영역 -->
+							<div class="col-sm-12 text-right mb-2">
+								<button class="btn btn-success" id="saveButton" disabled onclick="tempSave();"><i
+										class="fa fa-save"></i>&nbsp;임시저장</button>
+								<button class="btn btn-info" id="confirmButton" disabled onclick="confirmCNFRNC();"><i
+										class="fa fa-check"></i>&nbsp;준비확정</button>
+								<button class="btn btn-danger" id="cancleButton" disabled onclick="confirmCancel();"><i
+										class="fa fa-undo"></i>&nbsp;준비취소</button>
+							</div>
+							<!-- 전결협의체 -->
+							<label class="col-sm-1 control-label">
+								<span class="req"></span>전결협의체
+							</label>
+							<div class="col-sm-2 input-group">
+								<select class="form-control" name="account" id="AS04110S_inspctCnfrncCcd">
+								</select>
+							</div>
+							<!-- 결의년도 -->
+							<label class="col-sm-1 control-label">
+								<span class="req"></span>결의년도
+							</label>
+							<div class="col-sm-1 input-group">
+								<input type="text" class="touchspin" value="2023" data-bts-min="2010" data-bts-max="2100"
+									id="AS04110S_stdYr" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							</div>
+							<!-- 회차 -->
+							<label class="col-sm-1 control-label">
+								<span class="req"></span>회차
+							</label>
+							<div class="col-sm-1 input-group">
+								<input type="text" class="form-control" id="AS04110S_inspctCnfrncSqcSq"
+									oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							</div>
+							<!-- 결의일 -->
+							<label class="col-sm-1 control-label">결의일</label>
+							<div class="col-sm-2 input-group">
+								<span class="input-group date">
+									<input type="text" class="form-control" value="" id="AS04110S_rsltnDt"
+										oninput="this.value = this.value.replace(/[^0-9-]/g, '');"><span class="input-group-addon"><i
+											class="fa fa-calendar"></i></span>
+								</span>
+							</div>
+							<div class="col-sm-2">
+								<button class="btn btn-primary" onclick="getCNFRNCInfo();">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+								<button class="btn btn-default" onclick="btnReset();"><i class="fa fa-undo">
+									</i>&nbsp;초기화
+								</button>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content h-default">
+						<!-- 기본정보 -->
+						<div class="ibox col-sm-12">
+							<div class="ibox-title">
+								<h5>기본정보</h5>
+							</div>
+							<div class="ibox-content">
+								<div class="form-group form-inline row mb-2">
+									<input type="hidden" id="AS04110S_stdYr2" />
+									<!-- 전결협의체 -->
+									<label class="col-sm-1 control-label">
+										<span class="req"></span>전결협의체
+									</label>
+									<div class="col-sm-1 input-group">
+										<select class="form-control" name="account" id="AS04110S_inspctCnfrncCcd2" disabled>
+										</select>
+									</div>
+									<!-- 회차 -->
+									<label class="col-sm-1 control-label">
+										<span class="req"></span>회차
+									</label>
+									<div class="col-sm-1 input-group">
+										<input type="text" class="form-control" id="AS04110S_inspctCnfrncSqcSq2"
+											oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+									</div>
+									<!-- 결의일 -->
+									<label class="col-sm-1 col-form-labe">결의일</label>
+									<div class="col-sm-2 input-group">
+										<span class="col-sm-9 input-group date">
+											<input type="text" class="form-control" id="AS04110S_rsltnDt2"
+												oninput="this.value = this.value.replace(/[^0-9-]/g, '');"><span class="input-group-addon"><i
+													class="fa fa-calendar"></i></span>
+										</span>
+									</div>
+									<!-- 시간 -->
+									<label class="col-sm-1 col-form-label">시간</label>
+									<div class="col-sm-1 input-group">
+										<input type="text" class="form-control" id="AS04110S_rsltnTm2"
+											oninput="this.value = this.value.replace(/[^0-9:]/g, '');">
+									</div>
+									<!-- 진행상태 -->
+									<label class="col-sm-1 col-form-label">진행상태</label>
+									<div class="col-sm-2 input-group">
+										<input type="text" class="form-control" id="AS04110S_inspctPrgrsStCd2" readonly>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 위원정보 & 관련보고서 -->
+						<div class="row pr-3 pl-3">
+							<!-- 위원정보 -->
+							<div class="ibox col-sm-6">
+								<div class="ibox-title">
+									<h5>위원정보</h5>
+									<div class="ibox-tools">
+										<button class="btn btn-default btn-xs" onclick="addMMBRRow();"><i
+												class="fa fa-plus"></i>&nbsp;행추가</button>
+										<button class="btn btn-default btn-xs" onclick="delTableRow('AS04110S_MMBRList');"><i
+												class="fa fa-minus"></i>&nbsp;행삭제</button>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<table class="table result table-bordered">
+										<colgroup>
+											<col style="width: 5%;">
+											<col style="width: 35%;">
+											<col style="width: 30%;">
+											<col style="width: 30%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th><input type="checkbox" id="MMBRChk"></th>
+												<th>위원구분</th>
+												<th>위원명</th>
+												<th>대리참석위원</th>
+											</tr>
+										</thead>
+										<tbody id="AS04110S_MMBRList">
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- 관련 보고서 -->
+							<div class="ibox col-sm-6">
+								<div class="ibox-title">
+									<h5>관련보고서</h5>
+								</div>
+								<div class="ibox-content">
+									<table class="table result table-bordered">
+										<colgroup>
+											<col style="width: 80%;">
+											<col style="width: 20%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>보고서명</th>
+												<th>등록일자</th>
+											</tr>
+										</thead>
+										<tbody id="AS04110_fileList">
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- 안건 -->
+						<div class="ibox col-sm-12">
+							<div class="ibox-title">
+								<h5>안건</h5>
+								<div class="ibox-tools">
+									<button class="btn btn-default btn-xs" onclick="callAS02020P('AS04110S');"><i
+											class="fa fa-search-plus"></i>&nbsp;안건추가</button>
+									<button class="btn btn-default btn-xs" onclick="delTableRow('AS04110S_CASEList');"><i
+											class="fa fa-search-minus"></i>&nbsp;안건삭제</button>
+									<button class="btn btn-info btn-xs"><i class="fa fa-comment"></i>&nbsp;확정쪽지</button>
+									<button class="btn btn-warning btn-xs"><i class="fa fa-comment-o"></i>&nbsp;취소쪽지</button>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<table class="table result table-bordered">
+									<colgroup>
+										<col style="width: 2%;">
+										<col style="width: 5%;">
+										<col style="width: 43%;">
+										<col style="width: 10%;">
+										<col style="width: 5%;">
+										<col style="width: 10%;">
+										<col style="width: 10%;">
+										<col style="width: 10%;">
+										<col style="width: 6%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><input type="checkbox" id="CASEChk"></th>
+											<th>순서정보</th>
+											<th>안건명</th>
+											<th>신규/재부의정보</th>
+											<th>안건순번</th>
+											<th>부서</th>
+											<th>직원</th>
+											<th>심사역</th>
+											<th>이동</th>
+										</tr>
+									</thead>
+									<tbody id="AS04110S_CASEList">
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div><!-- ibox -->
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

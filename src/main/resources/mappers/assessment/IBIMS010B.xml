@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS010BMapper">
+
+	<!-- 기업체 정보 조회 -->
+		<!-- 기업체 정보 조회 IBIMS010BMapper.selectArdyBzepInfo  -->
+	<select id="selectArdyBzepInfo" resultType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO" parameterType='com.nanuri.rams.business.common.vo.IBIMS010BVO$SchCondVO'>
+		SELECT  A.ARDY_BZEP_NO
+		      , A.BZEP_NAME
+		      , A.RNBN
+		      , A.CRNO
+		      , A.CSNO
+		      , A.NICEI_BZEP_CD
+		      , A.BZPL_DVSN_CD
+		      , A.KOR_BZPL_NAME
+		      , A.ENG_BZPL_NAME
+		      , A.ATNO
+		      , A.BTNO
+		      , A.STNO
+		      , A.FAX_ATNO
+		      , A.FAX_BTNO
+		      , A.FAX_STNO
+		      , A.ZPCD
+		      , A.KOR_BZPL_ADDR
+		      , A.ENG_BZPL_ADDR
+		      , A.OPBS_DT
+		      , A.STD_IDST_SCLS_CD
+		      , A.BUCO_NAME
+		      , A.CLSE_DVSN_CD
+		      , A.CLSE_DT
+		      , A.ERLM_DT
+		      , A.RDM_TR_OPPN_NO
+		      , A.SMET_YN
+		      , A.ETPR_SHAP_DVSN_CD
+		      , A.LEI_CD
+		      , A.CTM_BIC_NAME
+		      , A.SWIFT_BANK_DSCM_CD
+		      , A.ETPR_SCLE_DVSN_CD
+		      , A.RVNU_AMT
+		      , A.TOT_ASST_AMT
+		      , A.FNAF_HLTY_SRNM_RT
+		      , A.OVRS_SPC_YN
+		      , A.USE_YN
+		      , A.HND_DETL_DTM
+		      , A.HND_EMPNO
+		      , A.HND_TMNL_NO
+		      , A.HND_TR_ID
+		      , A.GUID
+		      , A.EST_DT
+		      , A.STFF_NUM
+		      , A.OPRT_HNF_NUM
+		   FROM IBIMS010B A      
+		  WHERE 1=1
+		    AND A.ARDY_BZEP_NO = #{ardyBzepNo}
+		    AND A.USE_YN = CASE WHEN NVL(#{useYn}, 'A') = 'A' THEN A.USE_YN ELSE #{useYn} END   		    		
+	</select>
+
+	<!-- 기업체리스트 조회  -->
+		<!-- 기업체 정보 조회 IBIMS010BMapper.selectArdyBzepInfoList  -->
+	<select id="selectArdyBzepInfoList" resultType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepListVO" parameterType='com.nanuri.rams.business.common.vo.IBIMS010BVO$SchCondVO'>
+		SELECT  A.ARDY_BZEP_NO
+		      , A.BZEP_NAME
+		      , A.RNBN
+		      , A.CRNO
+		      , A.CSNO
+		      , A.NICEI_BZEP_CD
+		      , A.BZPL_DVSN_CD
+		      , A.KOR_BZPL_NAME
+		      , A.ENG_BZPL_NAME
+		      , A.ATNO
+		      , A.BTNO
+		      , A.STNO
+		      , A.FAX_ATNO
+		      , A.FAX_BTNO
+		      , A.FAX_STNO
+		      , A.ZPCD
+		      , A.KOR_BZPL_ADDR
+		      , A.ENG_BZPL_ADDR
+		      , A.OPBS_DT
+		      , A.STD_IDST_SCLS_CD
+		      , (
+		      	SELECT Y.CD_VL_NM
+				  FROM IBIMS001B X				     
+				  LEFT JOIN IBIMS002B Y
+            	    ON X.CMNS_CD_NM  = 'STD_IDST_SCLS_CD'
+				   AND Y.CMNS_CD_GRP = X.CMNS_CD_GRP
+				 WHERE 1=1				    
+				   AND Y.CD_VL_ID    = A.STD_IDST_SCLS_CD
+		         ) AS STD_IDST_SCLS_NM  /* 표준산업소분류 */		      
+		      , A.BUCO_NAME
+		      , A.CLSE_DVSN_CD
+		      , (
+		      	SELECT Y.CD_VL_NM
+				  FROM IBIMS001B X
+				  LEFT JOIN IBIMS002B Y
+            	    ON X.CMNS_CD_NM  = 'CLSE_DVSN_CD'
+				   AND Y.CMNS_CD_GRP = X.CMNS_CD_GRP
+				 WHERE 1=1
+				   AND Y.CD_VL_ID    = A.CLSE_DVSN_CD
+		         ) AS CLSE_DVSN_NM  /* 폐업구분 */		      
+		      , A.CLSE_DT
+		      , A.ERLM_DT
+		      , A.RDM_TR_OPPN_NO
+		      , A.SMET_YN
+		      , A.ETPR_SHAP_DVSN_CD
+		      , A.LEI_CD
+		      , A.CTM_BIC_NAME
+		      , A.SWIFT_BANK_DSCM_CD
+		      , A.ETPR_SCLE_DVSN_CD
+		      , A.RVNU_AMT
+		      , A.TOT_ASST_AMT
+		      , A.FNAF_HLTY_SRNM_RT
+		      , A.OVRS_SPC_YN
+		      , A.USE_YN
+		      , A.HND_DETL_DTM
+		      , A.HND_EMPNO
+		      , A.HND_TMNL_NO
+		      , A.HND_TR_ID
+		      , A.GUID
+		      , A.EST_DT
+		      , A.STFF_NUM
+		      , A.OPRT_HNF_NUM
+		   FROM IBIMS010B A 
+		  WHERE 1=1  		  
+		  	<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
+			AND A.ARDY_BZEP_NO LIKE '%'|| #{ardyBzepNo} || '%'
+		    </if>
+		  	<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rnbn)">
+			AND A.RNBN LIKE '%'|| #{rnbn}|| '%'                /* 주민사업자등록번호*/
+		    </if>
+		  	<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crno)">
+			AND A.CRNO LIKE '%'|| #{crno}|| '%'                /* 법인등록번호 */
+		    </if>
+		  	<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bzepName)">
+			AND (  A.BZEP_NAME     LIKE '%'|| #{bzepName}|| '%'
+				OR A.KOR_BZPL_NAME LIKE '%'|| #{bzepName}|| '%'
+				OR UPPER(A.ENG_BZPL_NAME) LIKE '%'|| UPPER(#{bzepName})|| '%')		
+		    </if>
+		    AND A.USE_YN = CASE WHEN NVL(#{useYn}, 'A') = 'A' THEN A.USE_YN ELSE #{useYn} END		    
+	</select>
+
+	<!-- 기업체리스트 생성  -->
+	<insert id="insertArdyBzepInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO">
+		<!-- 기업체리스트 생성 IBIMS010BMapper.insertArdyBzepInfo  -->		
+		<selectKey keyProperty="ardyBzepNo" resultType="String" order="BEFORE">
+		SELECT LPAD(NVL(MAX(TO_NUMBER(A.ARDY_BZEP_NO)), 0) + 1, 13, '0')
+		  FROM IBIMS010B A
+		</selectKey>
+		
+		INSERT INTO IBIMS010B (
+		            ARDY_BZEP_NO
+		          , BZEP_NAME
+		          , RNBN
+		          , CRNO
+		          , CSNO
+		          , NICEI_BZEP_CD
+		          , BZPL_DVSN_CD
+		          , KOR_BZPL_NAME
+		          , ENG_BZPL_NAME
+		          , ATNO
+		          , BTNO
+		          , STNO
+		          , FAX_ATNO
+		          , FAX_BTNO
+		          , FAX_STNO
+		          , ZPCD
+		          , KOR_BZPL_ADDR
+		          , ENG_BZPL_ADDR
+		          , OPBS_DT
+		          , STD_IDST_SCLS_CD
+		          , BUCO_NAME
+		          , CLSE_DVSN_CD
+		          , CLSE_DT
+		          , ERLM_DT
+		          , RDM_TR_OPPN_NO
+		          , SMET_YN
+		          , ETPR_SHAP_DVSN_CD
+		          , LEI_CD
+		          , CTM_BIC_NAME
+		          , SWIFT_BANK_DSCM_CD
+		          , ETPR_SCLE_DVSN_CD
+		          , RVNU_AMT
+		          , TOT_ASST_AMT
+		          , FNAF_HLTY_SRNM_RT
+		          , OVRS_SPC_YN
+		          , USE_YN
+		          , HND_DETL_DTM
+		          , HND_EMPNO
+		          , HND_TMNL_NO
+		          , HND_TR_ID
+		          , GUID
+			      , EST_DT
+			      , STFF_NUM
+			      , OPRT_HNF_NUM
+		) VALUES(
+				   #{ardyBzepNo}     	/* 기업체번호 */
+				  ,#{bzepName}       	/* 업체명 */
+				  ,#{rnbn}           	/* 주민사업자등록번호 */
+				  ,#{crno}           	/* 법인등록번호 */
+				  ,#{csno}           	/* 고객번호 */
+				  ,#{niceiBzepCd}    	/* 나이스신용평가업체코드 */
+				  ,#{bzplDvsnCd}     	/* 사업장구분코드 */
+				  ,#{korBzplName}    	/* 한글사업장명 */
+				  ,#{engBzplName}    	/* 영문사업장명 */
+				  ,#{atno}           	/* 전화지역번호 */
+				  ,#{btno}           	/* 전화국번호 */
+				  ,#{stno}           	/* 전화일련번호 */
+				  ,#{faxAtno}        	/* 팩스전화지역번호 */
+				  ,#{faxBtno}        	/* 팩스전화국번호 */
+				  ,#{faxStno}        	/* 팩스전화일련번호 */
+				  ,#{zpcd}           	/* 우편번호 */
+				  ,#{korBzplAddr}    	/* 한글사업장주소 */
+				  ,#{engBzplAddr}    	/* 영문사업장주소 */
+				  ,#{opbsDt}         	/* 개업일자 */
+				  ,#{stdIdstSclsCd}  	/* 표준산업소분류코드 */
+				  ,#{bucoName}       	/* 업태명 */
+				  ,#{clseDvsnCd}     	/* 폐업구분코드 */
+				  ,#{clseDt}         	/* 폐업일자 */
+				  ,#{erlmDt}         	/* 등록일자 */
+				  ,#{rdmTrOppnNo}    	/* RDM거래상대방번호 */
+				  ,#{smetYn}         	/* 중소기업여부 */
+				  ,#{etprShapDvsnCd} 	/* 기업형태구분코드 */
+				  ,#{leiCd}          	/* LEI코드 */
+				  ,#{ctmBicName}     	/* CTM은행인식코드명 */
+				  ,#{swiftBankDscmCd}	/* SWIFT은행식별코드 */
+				  ,#{etprScleDvsnCd} 	/* 기업규모구분코드 */
+				  ,#{rvnuAmt}        	/* 매출금액 */
+				  ,#{totAsstAmt}     	/* 총자산금액 */
+				  ,#{fnafHltySrnmRt} 	/* 재무건전성비율 */
+				  ,#{ovrsSpcYn}      	/* 해외SPC여부 */
+				  ,'Y'               	/* 사용여부 */
+				  , SYSDATE      		/* 조작상세일시 */
+				  ,#{hndEmpno}        	/* 조작사원번호 */
+				  ,#{hndTmnlNo}       	/* 조작단말기번호 */
+				  ,#{hndTrId}         	/* 조작거래ID */
+				  ,#{guid}            	/* GUID */
+				  ,#{estDt}			  	/* 설립일자 */
+				  ,#{stffNum}		  	/* 직원수 */
+				  ,#{oprtHnfNum}	  	/* 운영인력수 */
+		)
+	</insert>
+	
+	<!-- 기업체리스트 수정 -->
+		<!-- 기업체리스트 수정 IBIMS010BMapper.updateArdyBzepInfo --> 
+	<update id="updateArdyBzepInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO">		
+		UPDATE IBIMS010B 
+		   SET
+               BZEP_NAME			= #{bzepName}       						/* 업체명 */
+             , RNBN					= #{rnbn}           						/* 주민사업자등록번호 */
+             , CRNO					= #{crno}           						/* 법인등록번호 */
+             , CSNO					= #{csno}           						/* 고객번호 */
+             , NICEI_BZEP_CD		= #{niceiBzepCd}    						/* 나이스신용평가업체코드 */
+             , BZPL_DVSN_CD			= #{bzplDvsnCd}     						/* 사업장구분코드 */
+             , KOR_BZPL_NAME		= #{korBzplName}    						/* 한글사업장명 */
+             , ENG_BZPL_NAME		= #{engBzplName}    						/* 영문사업장명 */
+             , ATNO					= #{atno}           						/* 전화지역번호 */
+             , BTNO					= #{btno}           						/* 전화국번호 */
+             , STNO					= #{stno}           						/* 전화일련번호 */
+             , FAX_ATNO				= #{faxAtno}        						/* 팩스전화지역번호 */
+             , FAX_BTNO				= #{faxBtno}        						/* 팩스전화국번호 */
+             , FAX_STNO				= #{faxStno}        						/* 팩스전화일련번호 */
+             , ZPCD					= #{zpcd}           						/* 우편번호 */
+             , KOR_BZPL_ADDR		= #{korBzplAddr}    						/* 한글사업장주소 */
+             , ENG_BZPL_ADDR		= #{engBzplAddr}    						/* 영문사업장주소 */
+             , OPBS_DT				= #{opbsDt}         						/* 개업일자 */
+             , STD_IDST_SCLS_CD		= #{stdIdstSclsCd}  						/* 표준산업소분류코드 */
+             , BUCO_NAME			= #{bucoName}       						/* 업태명 */
+             , CLSE_DVSN_CD			= #{clseDvsnCd}     						/* 폐업구분코드 */
+             , CLSE_DT				= #{clseDt}         						/* 폐업일자 */
+             , ERLM_DT				= TO_CHAR(SYSDATE, 'YYYYMMDD')  			/* 등록일자 */
+             , RDM_TR_OPPN_NO		= #{rdmTrOppnNo}    						/* RDM거래상대방번호 */
+             , SMET_YN				= #{smetYn}         						/* 중소기업여부 */
+             , ETPR_SHAP_DVSN_CD	= #{etprShapDvsnCd} 						/* 기업형태구분코드 */
+             , LEI_CD				= #{leiCd}          						/* LEI코드 */
+             , CTM_BIC_NAME			= #{ctmBicName}     						/* CTM은행인식코드명 */
+             , SWIFT_BANK_DSCM_CD	= #{swiftBankDscmCd}						/* SWIFT은행식별코드 */
+             , ETPR_SCLE_DVSN_CD	= #{etprScleDvsnCd} 						/* 기업규모구분코드 */
+             , RVNU_AMT				= #{rvnuAmt}        						/* 매출금액 */
+             , TOT_ASST_AMT			= #{totAsstAmt}     						/* 총자산금액 */
+             , FNAF_HLTY_SRNM_RT	= #{fnafHltySrnmRt} 						/* 재무건전성비율 */
+             , OVRS_SPC_YN			= #{ovrsSpcYn}      						/* 해외SPC여부 */
+             , USE_YN				= 'Y'               						/* 사용여부 */
+             , HND_DETL_DTM			= TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')  	/* 조작상세일시 */
+             , HND_EMPNO			= #{hndEmpno}       						/* 조작사원번호 */
+             , HND_TMNL_NO			= #{hndTmnlNo}      						/* 조작단말기번호 */
+             , HND_TR_ID			= #{hndTrId}        						/* 조작거래ID */
+             , GUID					= #{guid}           						/* GUID */
+		     , EST_DT               = #{estDt}		    						/* 설립일자 */
+		     , STFF_NUM             = #{stffNum}	    						/* 직원수 */
+		     , OPRT_HNF_NUM         = #{oprtHnfNum}	    						/* 운영인력수 */	             
+		  WHERE ARDY_BZEP_NO		= #{ardyBzepNo}     						/* 기업체번호 */		
+	</update>
+
+	<!-- 기업체 사용여부 미사용 수정  -->
+		<!-- 기업체리스트 수정 IBIMS010BMapper.updateArdyBzepInfo -->
+	<update id="updateArdyBzepUseYn" parameterType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO">		
+		UPDATE IBIMS010B 
+		   SET USE_YN				= 'N'                /* 사용여부 */
+             , HND_DETL_DTM			= TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')  /* 조작상세일시 */
+             , HND_EMPNO			= #{hndEmpno}        /* 조작사원번호 */
+             , HND_TMNL_NO			= #{hndTmnlNo}       /* 조작단말기번호 */
+             , HND_TR_ID			= #{hndTrId}         /* 조작거래ID */
+             , GUID					= #{guid}            /* GUID */
+         WHERE ARDY_BZEP_NO			= #{ardyBzepNo}      /* 기업체번호 */
+	</update>
+
+	<!-- 기업체 사용여부 코드값  -->
+		<!-- B022(사업장구분코드), E034(기업형태구분코드), E035(기업규모구분코드), SOO7(표준산업분류코드), U005(사용여부코드)  -->
+	<select id="selectCd" resultType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepCdVO" parameterType='com.nanuri.rams.business.common.vo.IBIMS010BVO$SchCondVO'>
+		SELECT CD_VL_NM
+			 , CD_VL_ID
+			 , CMNS_CD_GRP
+		  FROM IBIMS002B
+		 WHERE CMNS_CD_GRP IN ('B022', 'E034', 'E035', 'S007', 'U005')
+	</select>
+	<!-- ORDER BY CD_SQ ASC -->
+
+</mapper>

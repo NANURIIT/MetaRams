@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/popup/AC01110P.js}"></script>
+	<script th:src="@{js/business/dm/DM33020S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/popup/AC01110P :: AC01110P"></th:block>
+</th:block>
+
+ <th:block layout:fragment="customContent">
+	<!-- 안건별 관리단계 분류 관리 -->
+    <div class="wrapper wrapper-content animated fadeIn">
+    	<div class="row">
+    		<div class="col-lg-12">
+    			<div class="ibox ">
+    				<!-- 조회조건영역 -->
+	    			<div class="ibox-title">
+						<!-- 첫번째 로우 -->
+    					<div class="form-group form-inline row mb-2">
+    						<div class="col-sm-4 input-group">
+                            	<label id="AS33020S_DateType" class="col-sm-3 control-label text-right">기준년도</label>
+								<select id="AS33020S_selectDt" class="col-sm-3 form-control m-b" onchange="selectDtChanged(this);">
+									<option value="a">기준년도</option>
+									<option value="b">기준일자</option>
+								</select>
+                            	<span id="AS33020S_stdYrMm" class="col-sm-4 input-group month">
+                                   	<input id="AS33020S_stdYrMmDate" type="text" class="form-control" name="start" value="" >
+									<span class="input-group-addon">
+										<i class="fa fa-calendar">
+										</i>
+									</span>
+                               	</span>
+								<span id="AS33020S_stdYrMmDd" class="col-sm-4 input-group date" style="display: none">
+                                   	<input id="AS33020S_stdYrMmDdDate" type="text" class="form-control" name="start" value="" >
+									<span class="input-group-addon">
+										<i class="fa fa-calendar">
+										</i>
+									</span>
+                               	</span>
+                            </div>
+                            <div class="col-sm-2 input-group">
+	                            <label class="control-label px-2">구분</label>
+	                           	<select id="AS33020S_raDealCcd" class="form-control m-b" name="account">
+	                                   <option value="">전체</option>
+	                                   <option value="1">투자자산</option>
+									   <option value="2">판매상품</option>
+	                            </select>
+                            </div>
+                            <div class="col-sm-2 input-group">
+	                            <label class="control-label px-2">심사부서구분</label>
+	                           	<select id="AS33020S_inspctDprtCcd" class="form-control m-b" name="account">
+	                                   <option value="">전체</option>
+	                                   <option value="1">대체투자심사부</option>
+									   <option value="2">기업금융심사부</option>
+	                            </select>
+                            </div>
+                            <div class="col-sm-3 input-group text-right">
+                            	<label class="col-sm-3 control-label">담당부서</label>
+	                            <div class="col-sm-9">
+	                            	<div class="input-group">
+	                            		<input type="text" class="form-control" style="width:20px;" id="acdnt_dprtCd" name="acdnt_dprtCd">
+	                            		<span class="input-group-append">
+	                                        <button type="button" class="btn btn-default" onclick="callAC01110P('acdnt');"><i class="fa fa-search"></i></button>
+	                                    </span>
+	                            		<input type="text" class="form-control" style="width:80px;" id="acdnt_dprtNm" name="acdnt_dprtNm" readonly>
+	                            	</div>
+	                            </div>
+                            </div>
+							<div class="col-sm-1 text-right">		                       		
+	                       		<button class="btn btn-primary" onclick="getMngList();"><i class="fa fa-search"></i>&nbsp;조회</button>
+	                       	</div>
+                       	</div>
+						<div class="form-group form-inline row">
+							<div class="col-sm-4 input-group text-right">
+								<label class="col-sm-3 control-label">안건명</label>
+								<input type="text" id="AS33020S_ibDealSnmNm" class="col-sm-9 input-group form-control" name="start" value="" >
+							</div>
+							<div class="col-sm-4 input-group">
+								<label class="col-sm-3 control-label">자산명</label>
+								<span class="col-sm-9 input-group text-right">
+                                   	<input type="text" id="AS33020S_invstAstsNm" class="form-control" name="start" value="" >
+                               	</span>
+							</div>
+							<div class="col-sm-2 text-right">
+							</div>
+							<div class="col-sm-2 text-right">
+							</div>
+						</div>
+	    			</div>
+	    			<!-- 조회결과 -->
+	    			<div class="ibox-content">
+	    				<div class="tableFixHeader">
+		    				<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>기준일자</th>
+										<th>구분</th>
+										<th>Deal번호</th>
+										<th>안건명</th>
+										<th>신규/재부의</th>
+										<th>안건순번</th>
+										<th>담당부서</th>
+										<th>담당자</th>
+										<th>심사부서구분</th>
+										<th>심사역</th>
+										<th>표준종목코드</th>
+										<th>한글종목명</th>
+										<th>장부금액</th>
+										<th>건전성분류</th>
+										<th>관리단계분류</th>
+										<th>보고서제외여부</th>
+									</tr>
+								</thead>
+								<tbody id="DM33020S_mngList">
+									<tr>
+										<td>2022-01-01</td>
+										<td>2</td>
+										<td>DDDDDD000002</td>
+										<td>투자자산펀드 GP 출자 전환</td>
+										<td>신규</td>
+										<td>안건1</td>
+										<td>PE사업부</td>
+										<td>하정우</td>
+										<td>기업금융심사부</td>
+										<td>옹심사</td>
+										<td>L20201208003</td>
+										<td>한국조선해양 및 현대상호중공업 콜</td>
+										<td>7,000,000,000</td>
+										<td></td>
+										<td><select class="form-control m-b">
+												<option value="1">정상</option>
+			                                   	<option value="2">사전</option>
+			                                   	<option value="3">중점</option>
+			                                   	<option value="4">적극</option>
+		                            		</select></td>
+		                            	<td><select class="form-control m-b" name="account">
+			                                   	<option>Y</option>
+			                                   	<option>N</option>
+		                            		</select></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+	    			</div>
+    			</div><!-- ibox -->
+    		</div>
+    	</div><!-- row -->
+    </div>
+</th:block>
+
+</html>

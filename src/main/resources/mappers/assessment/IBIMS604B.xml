@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS604BMapper">
+
+	<select id="checkDealSearch" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$SearchVO" resultType="com.nanuri.rams.business.common.vo.IBIMS604BVO$DealInfo">
+		SELECT A.STDR_DT							AS STDR_DT									/* 기준일자 */
+         , A.ENTP_NM							AS ENTP_NM									/* 기업명 */
+         , A.RPRST_P_HNGL_NM			AS RPRST_P_HNGL_NM					/* 대표자한글명 */
+         , A.CORP_RGST_NO					AS CORP_RGST_NO							/* 법인등록번호 */
+         , (
+        	 	CASE WHEN A.GRD_DWN_CNT1		= 0 THEN '' ELSE 'G-CRS등급 하락 '	END	||		/* 등급하락건수1 */
+        	 	CASE WHEN A.GRD_DWN_CNT2		= 0 THEN '' ELSE '신평사등급 하락 '	END	||		/* 등급하락건수2 */
+        	 	CASE WHEN A.ARRS_INFO_CNT		= 0 THEN '' ELSE '연체정보 등록'		END	||		/* 연체정보건수 */
+        	 	CASE WHEN A.FNCL_INFO_CNT1	= 0 THEN '' ELSE '완전자본잠식'			END	||		/* 재무정보건수1 */
+        	 	CASE WHEN A.FNCL_INFO_CNT2	= 0 THEN '' ELSE '감사의견 한정'		END	||		/* 재무정보건수2 */
+        	 	CASE WHEN A.CLS_QTT_CNT			= 0 THEN '' ELSE '휴폐업'						END				/* 휴폐업건수 */
+           )											AS CRDT_ACDNT_OCRNC_DTLS		/* 신용사건발생일상세 */
+         , A.DEAL_NO							AS DEAL_NO									/* IBDEAL번호 */
+         , A.JDGM_DCD							AS JDGM_DCD									/* 리스크심사구분코드 */
+         , A.MTR_DCD							AS MTR_DCD									/* 부수안건구분코드 */
+         , B.MTR_NM								AS MTR_NM										/* IBDEAL명 */
+         , B.INSPCT_DPRT_DCD			AS INSPCT_DPRT_DCD					/* 심사부서 */
+         , B.INSPCT_DPRT_DCD_NM		AS INSPCT_DPRT_DCD_NM				/* 심사부서명 */
+         , B.OWN_P_ENO						AS OWN_P_ENO								/* 담당심사역 */
+         , B.EMP_NM								AS EMP_NM										/* 담당심사역명 */
+         , A.FST_CNFR_DT					AS FST_CNFR_DT							/* 최초확인일자 */  -- 확인일(심사역)
+         , A.ANS_ACPT_DT					AS ANS_ACPT_DT							/* 답변접수일자 */  -- 확인일(심사부서장)
+         , A.IVTG_RSLT_CTNS       AS IVTG_RSLT_CTNS						/* 검토결과내용 */
+  		FROM IBIMS604B A	/* 일별신용사건현황*/
+			 LEFT JOIN (
+						SELECT B.DEAL_NO								/* IBDEAL번호 */
+							   , B.JDGM_DCD								/* 심사구분코드 */
+							   , B.MTR_DCD								/* 안건구분코드 */
+							   , B.MTR_NM									/* 안건명 */
+							   , B.INSPCT_DPRT_DCD				/* 심사부서 */
+							   , D.INSPCT_DPRT_DCD_NM			/* 심사부서명 */
+							   , B.OWN_P_ENO							/* 담당심사역 */
+							   , C.EMP_NM									/* 담당심사역명 */
+					    FROM IBIMS103B B							/* 딜심사기본 */
+				 LEFT JOIN (
+					   			  SELECT EMPNO
+					   			       , EMP_NM
+					   				  FROM IBIMS003B C
+					   			   WHERE 1=1
+					   			     <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
+									     AND C.EMPNO = #{empno}	/*담당자사번*/
+								       </if>
+								   ) C
+						 		ON B.OWN_P_ENO = C.EMPNO
+				 LEFT JOIN (
+					   			  SELECT CD_VL_ID 						AS INSPCT_DPRT_DCD
+					   				  	 , CD_VL_NM 						AS INSPCT_DPRT_DCD_NM
+					   			    FROM IBIMS002B
+					   			   WHERE 1=1
+					   			     AND CMNS_CD_GRP = 'I010'
+					   			 ) D
+					   	 	ON B.INSPCT_DPRT_DCD = D.INSPCT_DPRT_DCD
+					   WHERE 1=1
+					     AND B.LAST_YN 							= '1'
+					     AND B.MTR_PRG_STTS_DCD 		IN ('309', '308', '501')
+					     <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
+							AND (B.OWN_P_ENO = #{empno} OR #{empno} IS NULL)					/*담당자사번*/
+						  </if>
+							<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtDcd)">
+							AND B.INSPCT_DPRT_DCD 			= #{inspctDprtDcd}	/*심사부서구분코드*/
+							</if>
+				) B
+		 ON A.DEAL_NO			= B.DEAL_NO
+		AND A.JDGM_DCD		= B.JDGM_DCD
+		AND A.MTR_DCD			= B.MTR_DCD
+  WHERE 1=1
+    <if test='checked.equals("N")'>
+    AND (A.ANS_ACPT_DT IS NULL) OR (A.FST_CNFR_DT IS NULL) 
+    </if>
+    <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(stdrDt)">
+    AND A.STDR_DT /* 기준일자 */ <![CDATA[>=]]> #{stdrDt}
+    </if>
+	ORDER 
+		 BY A.STDR_DT DESC
+		  , A.DEAL_NO DESC 
+		  , A.JDGM_DCD DESC
+		  , A.MTR_DCD DESC
+	</select>
+
+	<update id="saveDealExmnt" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$ExmntInfo">
+		UPDATE IBIMS604B
+       SET IVTG_RSLT_CTNS		= CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG21' THEN #{ivtgRsltCtns}
+										   						 WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG28' THEN #{ivtgRsltCtns}
+										   						 ELSE NULL END 		/* 조치사항 */
+         , FST_CNFR_DT			= CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG21' THEN TO_CHAR(SYSDATE, 'YYYYMMDD')
+										   						 ELSE NULL END 				/* 심사역확인일자 */
+			 	 , ANS_ACPT_DT			= CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG28' THEN TO_CHAR(SYSDATE, 'YYYYMMDD')
+										   						 ELSE NULL END 				/* 심사부서장확인일자 */
+         , HND_EMPNO        = #{hndEmpno}                                     
+         <if test="hndTmnlNo != null">
+   			 , HND_TMNL_NO = #{hndTmnlNo}
+				 </if>                                   
+         <if test="hndTrId != null">
+    		 , AND hndTrId = #{hndTrId}
+				 </if>
+         <if test = "guid != null">                               
+         , GUID             = #{guid}
+				 </if>   
+     WHERE 1=1
+       AND DEAL_NO				= #{dealNo}			/* Deal번호 */
+       AND STDR_DT				= #{stdrDt}			/* 기준일자 */
+       AND JDGM_DCD				= #{jdgmDcd}
+       AND MTR_DCD				= #{mtrDcd}
+	</update>
+	
+</mapper>

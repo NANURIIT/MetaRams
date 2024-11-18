@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS212BMapper">
+
+	<!-- IB승인담보연결내역 - 대출채권/채무보증 정보(TB06010S) - 담보/보증내역조회  -->
+    <select id="selectIBIMS212B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO" resultType="com.nanuri.rams.business.common.dto.IBIMS212BDTO">
+        SELECT MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
+             , PRDT_CD                                           <!-- 상품코드 -->
+             , RGST_DT                                           <!-- 등록일자 -->
+             , HND_DETL_DTM                                      <!-- 조작상세일시 -->
+             , HND_EMPNO                                         <!-- 조작사원번호 -->
+             , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+             , HND_TR_ID                                         <!-- 조작거래id -->
+             , GUID                                              <!-- guid -->
+          FROM IBIMS212B
+         WHERE 1=1
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mrtgMngmNo)">
+           AND MRTG_MNGM_NO                                      = #{mrtgMngmNo}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
+           AND PRDT_CD                                           = #{prdtCd}
+         </if>                                        
+                                                     
+    </select>
+
+	<!-- IB승인담보연결내역 - 대출채권/채무보증 정보(TB06010S) - 담보/보증내역등록  -->
+    <insert id="insertIBIMS212B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        INSERT INTO IBIMS212B 
+               (
+                  MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
+                , PRDT_CD                                           <!-- 상품코드 -->
+                , RGST_DT                                           <!-- 등록일자 -->
+                , HND_DETL_DTM                                      <!-- 조작상세일시 -->
+                , HND_EMPNO                                         <!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+                , HND_TR_ID                                         <!-- 조작거래id -->
+                , GUID                                              <!-- guid -->
+               )
+        VALUES (
+                 #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+               , #{prdtCd}                                          <!-- 상품코드 -->
+               , TO_CHAR(SYSDATE, 'YYYYMMDD')                       <!-- 등록일자 -->
+               , SYSDATE                                            <!-- 조작상세일시 -->
+               , #{hndEmpno}                                        <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+               , #{hndTrId}                                         <!-- 조작거래id -->
+               , #{guid}                                            <!-- guid -->
+               )
+    </insert>
+    
+    <!-- IB승인담보연결내역 - 대출채권/채무보증 정보(TB06010S) - 담보/보증내역변경  -->
+    <update id="updateIBIMS212B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+       UPDATE IBIMS212B
+          SET RGST_DT                                           = TO_CHAR(SYSDATE, 'YYYYMMDD')                       <!-- 등록일자 -->
+            , HND_EMPNO                                         = #{hndEmpno}                                        <!-- 조작사원번호 -->
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+            , HND_TR_ID                                         = #{hndTrId}                                         <!-- 조작거래id -->
+            , GUID                                              = #{guid}                                            <!-- guid -->
+        WHERE 1=1
+          AND PRDT_CD                                           = #{prdtCd}                                          <!-- 상품코드 -->
+          AND MRTG_MNGM_NO                                      = #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+    </update>
+    
+    <delete id="deleteIBIMS212B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        DELETE 
+          FROM IBIMS212B
+         WHERE 1=1
+           AND MRTG_MNGM_NO                                      = #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+           AND PRDT_CD                                           = #{prdtCd}                                          <!-- 상품코드 -->
+    </delete>
+    
+    <select id="getIBIMS212BDTOInfo" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO" resultType="com.nanuri.rams.business.common.vo.TB06013PVO">
+		SELECT PRDT_CD											 <!-- 상품코드 -->
+		     , IB211B.MRTG_MNGM_NO                               <!-- 담보관리번호 -->
+             , IB211B.INV_JDGM_DEAL_NO                           <!-- 투자심사딜번호 -->
+             , MRTG_NM                                           <!-- 담보명 -->
+             , MRTG_LCLS_CD										 <!-- 담보대분류코드 -->
+             , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'M008'
+                    AND CD_VL_ID = IB211B.MRTG_LCLS_CD
+               ) AS MRTG_LCLS_NM								 <!-- 담보대분류코드명 -->
+             , MRTG_MDCL_CD    									 <!-- 담보중분류코드 -->
+             , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'M009'
+                    AND CD_VL_ID = IB211B.MRTG_MDCL_CD
+               ) AS MRTG_MDCL_NM     						   	 <!-- 담보중분류코드명 -->
+             , MRTG_DTL_USGE_CTNS                              	 <!-- 담보세부용도내용 -->  
+             , MRTG_CRRY_CD                                    	 <!-- 담보통화코드 -->  
+             , MRTG_QNT                                        	 <!-- 담보수량 -->  
+             , MRTG_UNPR                                       	 <!-- 담보단가 -->  
+             , MRTG_AMT                                        	 <!-- 담보금액 -->  
+             , IB211B.MRTG_EVL_AMT                             	 <!-- 담보평가금액 -->         
+             , MRTG_RTO                                        	 <!-- 담보비율 -->  
+             , MRTG_EVL_DT                                     	 <!-- 담보평가일자 -->  
+             , IB211B.RGST_DT                                  	 <!-- 등록일자 -->  
+             , MRTG_STUP_DT                                    	 <!-- 담보설정일자 -->  
+             , MRTG_CCLC_DT                                    	 <!-- 담보해지일자 -->  
+             , TR_OTHR_DSCM_NO                                 	 <!-- 거래상대방식별번호 -->  
+             , TR_OTHR_NM                                      	 <!-- 거래상대방명 -->  
+             , TR_EMPNO                                        	 <!-- 거래부점코드 -->  
+             , MRTG_EVL_STDR_CD                                	 <!-- 담보평가기준코드 -->  
+             , PRFD_RANK_YN                                    	 <!-- 우선순위여부 -->  
+             , HDWT_EVL_YN                                     	 <!-- 수기평가여부 -->  
+             , MRTG_OFFR_RCVN_DCD                              	 <!-- 담보제공수취구분코드 -->  
+             , AVBL_MRTG_PRC                                   	 <!-- 가용담보가격 -->  
+             , MRTG_STUP_KND_CD                                	 <!-- 담보설정종류코드 -->  
+             , STUP_CRRY_CD                                    	 <!-- 설정통화코드 -->  
+             , STUP_TOP_AMT                                    	 <!-- 설정최고금액 -->  
+             , KRW_TRSL_STUP_TOP_AMT                           	 <!-- 원화환산설정최고금액 -->  
+             , CPRN_MRTG_RTO                                   	 <!-- 공동담보비율 -->  
+             , VALT_MRTG_PRC                                   	 <!-- 유효담보가격 -->  
+             , KRW_TRSL_VALT_MRTG_PRC                          	 <!-- 원화환산유효담보가격 -->  
+             , DEL_YN                                          	 <!-- 삭제여부 -->  
+             , IB211B.HND_DETL_DTM                             	 <!-- 조작상세일시 -->  
+             , IB211B.HND_EMPNO                                	 <!-- 조작사원번호 -->  
+             , IB211B.HND_TMNL_NO                              	 <!-- 조작단말기번호 -->  
+             , IB211B.HND_TR_ID                                	 <!-- 조작거래id -->  
+             , IB211B.GUID                                     	 <!-- guid -->  
+          FROM IBIMS212B IB212B
+          LEFT JOIN IBIMS211B IB211B
+            ON IB211B.MRTG_MNGM_NO = IB212B.MRTG_MNGM_NO
+         WHERE 1=1
+           AND PRDT_CD	= #{prdtCd}
+	</select>
+    
+    
+    
+    
+
+</mapper>

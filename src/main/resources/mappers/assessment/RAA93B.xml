@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA93BMapper">
+	
+	<!-- 메뉴별권한관리 메뉴명 조회 --> 
+	<select id="selectMenuList" resultType="com.nanuri.rams.business.common.vo.RAA93BVO$MenuListVO" parameterType='String'>
+		  SELECT CONCAT (
+	  			     A.MENU_NM 												<!-- 메뉴명 -->
+					, IF(B.MENU_NM != '', CONCAT(' > ', B.MENU_NM), '')
+				    , IF(C.MENU_NM != '', CONCAT(' > ', C.MENU_NM), '')
+				    )       AS MENU_NAME
+			   , A.MENU_ID	AS LV1_ID										<!-- 메뉴ID -->
+			   , B.MENU_ID	AS LV2_ID										<!-- 메뉴ID -->
+			   , C.MENU_ID	AS LV3_ID										<!-- 메뉴ID -->
+			FROM RAA93B A 
+	  INNER JOIN RAA93B B
+			  ON A.MENU_ID = B.HG_RNK_MENU_ID  
+			 AND A.MENU_LV = 1												<!-- 메뉴레벨 -->
+			 AND B.MENU_LV = 2
+	   LEFT JOIN RAA93B C
+			  ON B.MENU_ID = C.HG_RNK_MENU_ID
+			 AND C.MENU_LV = 3
+		   WHERE 1=1
+		<if test='menuNm != null and menuNm != ""'>
+			 AND (
+					 A.MENU_NM LIKE CONCAT('%', #{menuNm} ,'%')				<!-- 메뉴명 -->
+		    	  OR B.MENU_NM LIKE CONCAT('%', #{menuNm} ,'%')				<!-- 메뉴명 -->
+		       	  OR C.MENU_NM LIKE CONCAT('%', #{menuNm} ,'%')				<!-- 메뉴명 -->
+				 )
+		</if>
+	     ORDER BY A.SRT_NO ASC
+		 		, B.SRT_NO ASC
+				, C.SRT_NO ASC
+	</select>
+
+	<select id="selectAuthCodeMenu" parameterType="String" resultType="com.nanuri.rams.business.common.vo.RAA93BVO">
+ 		SELECT 93b.srt_no													<!-- 정렬번호 -->
+             , 93b.menu_id													<!-- 메뉴ID -->
+             , 93b.menu_nm													<!-- 메뉴명 -->
+             , IFNULL(93b.menu_lv, '')	AS menu_lv													<!-- 메뉴레벨 -->
+             , IFNULL(95b.mdfy_rght_ccd, '') AS mdfy_rght_ccd											<!-- 수정권한구분코드(1: 조회, 2: 수정가능) -->
+             , 95b.hndl_dy_tm												<!-- 처리일시 -->
+             , IFNULL((SELECT EMP_NM										<!-- 직원명 -->
+                       FROM RAA99A
+			          WHERE ENO = 95b.hndl_p_eno), '') AS hndl_p_eno		<!-- 처리자사번 -->
+          FROM RAA93B 93b
+     LEFT JOIN RAA95B 95b
+            ON 93b.menu_id = 95b.menu_id									<!-- 메뉴ID -->
+		   AND 95b.rght_cd = #{rghtCd}										<!-- 권한코드 -->
+         WHERE 93b.scrn_aplc_type_cd = 'S'									<!-- 화면적용형태코드 -->
+           AND 93b.dlt_f != 'Y'
+      ORDER BY srt_no
+    </select>
+    
+    <!-- 상위메뉴 조회 -->
+    <select id="selectMainMenuList" parameterType="String" resultType="com.nanuri.rams.business.common.vo.RAA93BVO$MainMenuVo">
+		SELECT MENU_ID
+			 , MENU_NM
+			 , SORT_NO
+			 , URL_VRB_CNTN
+			 , SHTN_NM
+			 , URL_CLSF_CD
+			 , DEL_YN
+			 , IFNULL(DATE_FORMAT(HND_DETL_DTM, '%Y-%m-%d %H:%i:%s'), '') AS HND_DETL_DTM
+			 , IFNULL((SELECT EMP_NM
+					   FROM IBIMS003B
+					   WHERE EMPNO = HND_EMPNO), '') AS HND_EMP_NM
+		FROM IBIMS005B
+		WHERE 1=1
+		  AND SCRN_APLY_SHP_CD = 'M'
+		  AND DEL_YN = '0'
+		  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(menuNm)">
+		  AND MENU_NM LIKE CONCAT('%', ${menuNm} , '%')
+		  </if>
+		ORDER BY SORT_NO
+    </select>
+    
+    <!-- 하위메뉴 조회 -->
+    <select id="selectSubMenuList" parameterType="String" resultType="com.nanuri.rams.business.common.vo.RAA93BVO$SubMenuVo">
+    	SELECT 
+    		   MENU_ID														<!-- 메뉴ID -->
+    		 , SRT_NO														<!-- 정렬번호 -->
+    		 , URL_PRMTR_CNTNT												<!-- URL매개변수내용 -->
+    		 , MENU_NM														<!-- 메뉴명 -->
+    		 , SHRT_NM														<!-- 단축명 -->
+    		 , URL_NM														<!-- URL명 -->
+    		 , URL_DVD_CD													<!-- URL분류코드 -->
+    		 , DLT_F														<!-- 삭제여부 -->
+    		 <include refid="CommonMapper.selectHndlDto" />
+ 		  FROM RAA93B A
+ 		 WHERE SCRN_APLC_TYPE_CD = 'S' 										<!-- 화면적용형태코드 -->	
+		   AND HG_RNK_MENU_ID = #{menuId}									<!-- 상위메뉴ID -->
+ 		   AND DLT_F = 'N'
+		 ORDER BY SRT_NO													<!-- 정렬번호 -->
+    </select>
+    
+	<update id="deleteMainMenuInfo" parameterType="java.util.List">
+		UPDATE RAA93B
+		   SET DLT_F = 'Y'													<!-- 삭제여부 -->
+		   	 , DLT_P_ENO = #{dltPEno}										<!-- 삭제자사번 -->
+		   	 , DLT_DT = DATE_FORMAT(now(), '%Y%m%d')						<!-- 삭제일자 -->
+		   	 , DLT_TM = DATE_FORMAT(now(), '%H%i%s')						<!-- 삭제시간 -->
+		WHERE MENU_ID IN
+		<foreach collection="arg0" item="menuId" index="index" open="(" separator="," close=")">
+			#{menuId}
+		</foreach>
+	</update>
+	
+	<update id="deleteSubMenuInfo" parameterType="java.util.List">
+		UPDATE RAA93B
+		   SET DLT_F = 'Y'													<!-- 삭제여부 -->
+		 WHERE MENU_ID IN
+		<foreach collection="list" item="menuId" index="index" open="(" separator="," close=")">
+			#{menuId}
+		</foreach>
+	</update>
+	
+	<select id="getMainMenuInfo" parameterType="String" resultType="com.nanuri.rams.business.common.dto.RAA93BDTO">
+        SELECT MENU_ID														<!-- 메뉴ID -->
+    		 , SRT_NO														<!-- 정렬번호 -->
+    		 , URL_PRMTR_CNTNT												<!-- URL매개변수내용 -->
+    		 , MENU_NM														<!-- 메뉴명 -->
+    		 , SHRT_NM														<!-- 단축명 -->
+    		 , URL_NM														<!-- URL명 -->
+    		 , URL_DVD_CD													<!-- URL분류코드 -->
+    		 , HNDL_DY_TM													<!-- 처리일시 -->
+    		 , HNDL_P_ENO													<!-- 처리자사번 -->
+          FROM RAA93B
+         WHERE MENU_ID = #{menuId}											<!-- 메뉴ID -->
+    </select>
+    
+    <select id="getTitle" parameterType="String" resultType="com.nanuri.rams.business.common.vo.RAA93BVO$TitleVo">
+        SELECT S.MENU_ID													<!-- 메뉴ID -->
+			 , S.MENU_NM													<!-- 메뉴명 -->
+			 , S.URL_PRMTR_CNTNT											<!-- URL매개변수내용 -->
+			 , S.SHRT_NM AS TITLE											<!-- 단축명 -->
+			 , M.SHRT_NM AS HG_TITLE										<!-- 단축명 -->
+			 , S.HG_RNK_MENU_ID 											<!-- 상위메뉴ID -->
+			 , S.URL_NM														<!-- URL명 -->
+		  FROM RAA93B S
+		  LEFT JOIN RAA93B M
+		    ON M.MENU_ID = S.HG_RNK_MENU_ID
+         WHERE S.MENU_ID = #{menuId}
+    </select>
+	
+	<insert id="insertMainMenuInfo" parameterType="com.nanuri.rams.business.common.dto.RAA93BDTO">
+        INSERT INTO RAA93B (
+		       MENU_ID														<!-- 메뉴ID -->
+			 , MENU_NM														<!-- 메뉴명 -->
+			 , SHRT_NM														<!-- 단축명 -->
+			 , SCRN_APLC_TYPE_CD 											<!-- 화면적용형태코드 -->	
+			 , SRT_NO														<!-- 정렬번호 -->
+			 , MENU_LV														<!-- 메뉴레벨 -->
+			 , URL_DVD_CD													<!-- URL분류코드 -->
+			 , URL_PRMTR_CNTNT												<!-- URL매개변수내용 -->
+			 , APLC_F														<!-- 적용여부 -->
+			 , APLC_DT														<!-- 적용일자 -->
+			 , DLT_F														<!-- 삭제여부 -->
+			 , HNDL_DY_TM													<!-- 처리일시 -->
+			 , HNDL_DPRT_CD													<!-- 처리부점코드 -->
+			 , HNDL_P_ENO													<!-- 처리자사번 -->
+		) VALUES (
+			   #{menuId}
+			 , #{menuNm}
+			 , #{shrtNm}
+			 , 'M'
+			 , #{srtNo}
+			 , 2  
+			 , #{urlDvdCd} 
+			 , SUBSTRING(MENU_ID, 3,5) 
+			 , 'Y'
+			 , DATE_FORMAT(now(), '%Y%m%d')
+			 , 'N'
+			 , now()
+			 , #{hndlDprtCd}
+			 , #{hndlPEno}   
+		)
+    </insert>
+	
+	<update id="updateMainMenuInfo" parameterType="com.nanuri.rams.business.common.vo.RAA93BVO$MainMenuVo">
+        UPDATE RAA93B
+        <set>
+            <if test="menuId != null and menuId !=''">
+                  MENU_ID = #{menuId}
+            </if>
+            <if test="srtNo != null and srtNo !=''">
+                , SRT_NO = #{srtNo}
+            </if>
+            <if test="urlPrmtrCntnt != null and urlPrmtrCntnt !=''">
+                , URL_PRMTR_CNTNT = #{urlPrmtrCntnt}
+            </if>
+            <if test="menuNm != null and menuNm !=''">
+                , MENU_NM = #{menuNm}
+            </if>
+            <if test="shrtNm != null and shrtNm !=''">
+                , SHRT_NM = #{shrtNm}
+            </if>
+            <if test="urlDvdCd != null and urlDvdCd !=''">
+                , URL_DVD_CD = #{urlDvdCd}
+            </if>
+            <if test="dltF != null and dltF !=''">
+                , DLT_F = #{dltF}
+            </if>
+            , HNDL_DY_TM = now()
+            , HNDL_P_ENO = #{hndlPEno}
+            , HNDL_DPRT_CD = #{hndlDprtCd}
+        </set>
+        WHERE MENU_ID = #{oldMenuId}
+    </update>
+    
+  	<update id="updateSubHgRnkMenuId" parameterType="com.nanuri.rams.business.common.vo.RAA93BVO$MainMenuVo">
+    	<if test="menuId != null and menuId !=''">
+        	UPDATE RAA93B
+        	   SET HG_RNK_MENU_ID = #{menuId}								<!-- 상위메뉴ID -->
+        	 WHERE HG_RNK_MENU_ID = #{oldMenuId}							<!-- 상위메뉴ID -->
+        </if>
+    </update>
+    
+    
+    <select id="getSubMenuInfo" parameterType="String" resultType="com.nanuri.rams.business.common.dto.RAA93BDTO">
+        SELECT MENU_ID														<!-- 메뉴ID -->
+    		 , SRT_NO														<!-- 정렬번호 -->
+    		 , URL_PRMTR_CNTNT												<!-- URL매개변수내용 -->
+    		 , MENU_NM														<!-- 메뉴명 -->
+    		 , SHRT_NM
+    		 , URL_NM
+    		 , URL_DVD_CD
+    		 <include refid="CommonMapper.selectHndlDto" />
+          FROM RAA93B A
+         WHERE MENU_ID = #{menuId}
+    </select>
+    
+    <insert id="insertSubMenuInfo" parameterType="com.nanuri.rams.business.common.dto.RAA93BDTO">
+        INSERT INTO RAA93B (
+               MENU_ID														<!-- 메뉴ID -->
+             , MENU_NM														<!-- 메뉴명 -->
+             , SHRT_NM														<!-- 단축명 -->
+             , HG_RNK_MENU_ID												<!-- 상위메뉴ID -->
+             , SCRN_APLC_TYPE_CD 											<!-- 화면적용형태코드 -->
+             , SRT_NO														<!-- 정렬번호 -->
+             , MENU_LV														<!-- 메뉴레벨 -->
+             , URL_DVD_CD													<!-- URL분류코드 -->
+             , URL_NM														<!-- URL명 -->
+             , URL_PRMTR_CNTNT												<!-- URL매개변수내용 -->
+	         , APLC_F														<!-- 적용여부 -->
+             , APLC_DT														<!-- 적용일자 -->
+             , DLT_F														<!-- 삭제여부 -->
+             , HNDL_DY_TM													<!-- 처리일시 -->
+             , HNDL_P_ENO													<!-- 처리자사번 -->
+        ) VALUES (
+			   #{menuId}
+			 , #{menuNm}
+			 , #{shrtNm} 
+			 , #{hgRnkMenuId} 
+			 , 'S'
+			 , #{srtNo} 
+			 , 2  
+			 , #{urlDvdCd}  
+			 , #{urlNm} 
+			 , SUBSTRING(MENU_ID,3,5) 
+ 			 , 'Y'
+			 , DATE_FORMAT(now(), '%Y%m%d')
+			 , 'N'  
+			 , now()
+			 , #{hndlPEno} 
+        )
+    </insert>
+	
+	<update id="updateSubMenuInfo" parameterType="com.nanuri.rams.business.common.vo.RAA93BVO$SubMenuVo">
+        UPDATE RAA93B
+        <set>
+            <if test="menuId != null and menuId !=''">
+                  MENU_ID = #{menuId}
+            </if>
+            <if test="srtNo != null and srtNo !=''">
+                , SRT_NO = #{srtNo}
+            </if>
+            <if test="urlPrmtrCntnt != null and urlPrmtrCntnt !=''">
+                , URL_PRMTR_CNTNT = #{urlPrmtrCntnt}
+            </if>
+            <if test="menuNm != null and menuNm !=''">
+                , MENU_NM = #{menuNm}
+            </if>
+            <if test="shrtNm != null and shrtNm !=''">
+                , SHRT_NM = #{shrtNm}
+            </if>
+            <if test="urlNm != null and urlNm !=''">
+                , URL_NM = #{urlNm}
+            </if>
+            <if test="urlDvdCd != null and urlDvdCd !=''">
+                , URL_DVD_CD = #{urlDvdCd}
+            </if>
+            <if test="dltF != null and dltF !=''">
+                , DLT_F = #{dltF}
+            </if>
+            , HNDL_DY_TM = now()
+            , HNDL_P_ENO = #{hndlPEno}
+        </set>
+        WHERE MENU_ID = #{oldSubMenuId}											<!-- 메뉴명 -->
+    </update>
+    
+    
+</mapper>

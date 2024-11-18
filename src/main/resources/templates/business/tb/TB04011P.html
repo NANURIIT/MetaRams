@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB04011P">
+	<!-- modal -->
+	<div id="modal-TB04011P" class="modal fade" role="dialog" aria-labelledby="lb-TB04011P" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">안건 내역 조회</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB04011P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="TB04011P_prefix" id="TB04011P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox ">
+								<!-- 조회조건영역 -->
+				    			<div class="ibox-content i-filter text-right">
+				    				<form method="get">
+				    					<div class="form-group row">
+				    						<label class="col-sm-1 col-form-label">Deal번호</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB04011P_ibDealNo"></div>
+				                        	<label class="col-sm-1 col-form-label">안건명</label>
+				                            <div class="col-sm-3 pr-3"><input type="text" class="form-control" id="TB04011P_ibDealNm"></div>
+				                        	<!-- <div class="col-sm-10" id="divSpan"></div> -->
+				                        	<div class="col-sm-4 text-right">
+				                        		<button type="button" class="btn btn-primary mr-2" onclick="getMtrInfo();" ><i class="fa fa-search"></i>&nbsp;조회</button>
+				                        	</div>
+				                        </div>
+				    				</form>
+				    			</div>
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+				    				<div id="gridMtrInfo"></div>
+				    			</div>
+							</div><!-- ibox -->
+						</div>
+					</div>
+				</div>
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

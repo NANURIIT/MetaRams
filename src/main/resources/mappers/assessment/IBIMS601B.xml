@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS601BMapper">
+	
+	<!-- 분양수지관리조회  -->
+    <select id="selectIBIMS601B" resultType="com.nanuri.rams.business.common.vo.IBIMS601BVO" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+   		  SELECT DEAL_NO                                           /* Deal번호 */
+             , SL_ST_DT                                          /* 분양시작일 */
+             , SL_ED_DT                                          /* 분양종료일 */
+             , SL_PRD                                            /* 분양기간 */
+             , CNST_ST_DT                                        /* 공사시작일 */
+             , CNST_ED_DT                                        /* 공사종료일 */
+             , CNST_PRD                                          /* 공사기간 */
+             , CRDT_RIFC_ISTT_CTNS                               /* 신용보강기관내용 */
+             , UNIT_NUM                                          /* 세대수 */
+             , LOAN_BOND_TAK_YN                                  /* 대출채권양수여부 */
+             , PRFB_ISLF_EVL                                     /* 사업장자체평가 */
+             , IPRE_YN                                           /* IPRE여부 */
+             , CLC_INTL_GRD                                      /* 계산내부등급 */
+             , DCSN_INTL_GRD                                     /* 확장내부등급 */
+             , MGTN_RT                                           /* 이주율 */
+             , ESTM_PRGS_RT                                      /* 예상진척률 */
+             , PFMC_PRGS_RT                                      /* 실적진척률 */
+             , BUSI_PRG_STEP                                     /* 사업진행단계 */
+             , CHECK_RSLT										                     /* 점검결과 */
+             , BSN_BD_SLLT_BALC_CHECK_OPNN						           /* 영업점분양수지점검의견 */
+             , HND_DETL_DTM                                      /* 조작상세일시 */
+             , HND_EMPNO                                         /* 조작사원번호 */
+             , HND_TMNL_NO                                       /* 조작단말기번호 */
+             , HND_TR_ID                                         /* 조작거래id */
+             , GUID                                              /* guid */
+          FROM IBIMS601B
+         WHERE 1=1
+           AND DEAL_NO                                           = #{dealNo}                                          
+    </select>
+	
+	<!-- 분양수지관리등록  -->
+    <insert id="insertIBIMS601B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+        INSERT INTO IBIMS601B 
+               (
+                  DEAL_NO                                           /* Deal번호 */
+                , SL_ST_DT                                          /* 분양시작일 */
+                , SL_ED_DT                                          /* 분양종료일 */
+                , SL_PRD                                            /* 분양기간 */
+                , CNST_ST_DT                                        /* 공사시작일 */
+                , CNST_ED_DT                                        /* 공사종료일 */
+                , CNST_PRD                                          /* 공사기간 */
+                , CRDT_RIFC_ISTT_CTNS                               /* 신용보강기관내용 */
+                , UNIT_NUM                                          /* 세대수 */
+                , LOAN_BOND_TAK_YN                                  /* 대출채권양수여부 */
+                , PRFB_ISLF_EVL                                     /* 사업장자체평가 */
+                , IPRE_YN                                           /* IPRE여부 */
+                , CLC_INTL_GRD                                      /* 계산내부등급 */
+                , DCSN_INTL_GRD                                     /* 확장내부등급 */
+                , MGTN_RT                                           /* 이주율 */
+                , ESTM_PRGS_RT                                      /* 예상진척률 */
+                , PFMC_PRGS_RT                                      /* 실적진척률 */
+                , BUSI_PRG_STEP                                     /* 사업진행단계 */
+                , CHECK_RSLT										                    /* 점검결과 */
+             	  , BSN_BD_SLLT_BALC_CHECK_OPNN						            /* 영업점분양수지점검의견 */
+                , HND_DETL_DTM                                      /* 조작상세일시 */
+                , HND_EMPNO                                         /* 조작사원번호 */
+                , HND_TMNL_NO                                       /* 조작단말기번호 */
+                , HND_TR_ID                                         /* 조작거래id */
+                , GUID                                              /* guid */
+               )
+        VALUES (
+                 #{dealNo}                                          /* Deal번호 */
+               , #{slStDt}                                          /* 분양시작일 */
+               , #{slEdDt}                                          /* 분양종료일 */
+               , #{slPrd}                                           /* 분양기간 */
+               , #{cnstStDt}                                        /* 공사시작일 */
+               , #{cnstEdDt}                                        /* 공사종료일 */
+               , #{cnstPrd}                                         /* 공사기간 */
+               , #{crdtRifcIsttCtns}                                /* 신용보강기관내용 */
+               , #{unitNum}                                         /* 세대수 */
+               , #{loanBondTakYn}                                   /* 대출채권양수여부 */
+               , #{prfbIslfEvl}                                     /* 사업장자체평가 */
+               , #{ipreYn}                                          /* IPRE여부 */
+               , #{clcIntlGrd}                                      /* 계산내부등급 */
+               , #{dcsnIntlGrd}                                     /* 확장내부등급 */
+               , #{mgtnRt}                                          /* 이주율 */
+               , #{estmPrgsRt}                                      /* 예상진척률 */
+               , #{pfmcPrgsRt}                                      /* 실적진척률 */
+               , #{busiPrgStep}                                     /* 사업진행단계 */
+               , #{checkRslt}										                    /* 점검결과 */
+               , #{bsnBdSlltBalcCheckOpnn}							            /* 영업점분양수지점검의견 */
+               , SYSDATE                                            /* 작업상세일시 */
+               , #{hndEmpno}                                        /* 조작사원번호 */
+               , #{hndTmnlNo}                                       /* 조작단말기번호 */
+               , #{hndTrId}                                         /* 조작거래id */
+               , #{guid}                                            /* guid */
+               )
+    </insert>
+	
+	<!-- 분양수지관리변경  -->
+    <update id="updateIBIMS601B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+       UPDATE IBIMS601B
+          SET DEAL_NO                                           = #{dealNo}                                          /* Deal번호 */
+            , SL_ST_DT                                          = #{slStDt}                                          /* 분양시작일 */
+            , SL_ED_DT                                          = #{slEdDt}                                          /* 분양종료일 */
+            , SL_PRD                                            = #{slPrd}                                           /* 분양기간 */
+            , CNST_ST_DT                                        = #{cnstStDt}                                        /* 공사시작일 */
+            , CNST_ED_DT                                        = #{cnstEdDt}                                        /* 공사종료일 */
+            , CNST_PRD                                          = #{cnstPrd}                                         /* 공사기간 */
+            , CRDT_RIFC_ISTT_CTNS                               = #{crdtRifcIsttCtns}                                /* 신용보강기관내용 */
+            , UNIT_NUM                                          = #{unitNum}                                         /* 세대수 */
+            , LOAN_BOND_TAK_YN                                  = #{loanBondTakYn}                                   /* 대출채권양수여부 */
+            , PRFB_ISLF_EVL                                     = #{prfbIslfEvl}                                     /* 사업장자체평가 */
+            , IPRE_YN                                           = #{ipreYn}                                          /* IPRE여부 */
+            , CLC_INTL_GRD                                      = #{clcIntlGrd}                                      /* 계산내부등급 */
+            , DCSN_INTL_GRD                                     = #{dcsnIntlGrd}                                     /* 확장내부등급 */
+            , MGTN_RT                                           = #{mgtnRt}                                          /* 이주율 */
+            , ESTM_PRGS_RT                                      = #{estmPrgsRt}                                      /* 예상진척률 */
+            , PFMC_PRGS_RT                                      = #{pfmcPrgsRt}                                      /* 실적진척률 */
+            , BUSI_PRG_STEP                                     = #{busiPrgStep}                                     /* 사업진행단계 */
+            , CHECK_RSLT										                    = #{checkRslt}							                  			 /* 점검결과 */
+            , BSN_BD_SLLT_BALC_CHECK_OPNN						            = #{bsnBdSlltBalcCheckOpnn}	                  			 /* 영업점분양수지점검의견 */
+            ,HND_DETL_DTM                                       = SYSDATE                                            /* 조작상세일시 */
+            , HND_EMPNO                                         = #{hndEmpno}                                        /* 조작사원번호 */
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       /* 조작단말기번호 */
+            , HND_TR_ID                                         = #{hndTrId}                                         /* 조작거래id */
+            , GUID                                              = #{guid}                                            /* guid */
+         WHERE 1=1
+          AND DEAL_NO                                           = #{dealNo}                                          /* Deal번호 */
+    </update>
+    
+	<delete id="deleteIBIMS601B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+        DELETE 
+          FROM IBIMS601B
+         WHERE 1=1
+           AND DEAL_NO                                           = #{dealNo}                                         
+    </delete>
+</mapper>

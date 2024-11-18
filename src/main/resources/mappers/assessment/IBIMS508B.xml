@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS508BMapper">
+	
+	<!-- 관련사업정보 조회 -->
+	<select id="getBusiInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS508BVO">
+		SELECT A.DEAL_NO                                 /* 딜번호 */
+         , A.SN                                      /* 일련번호 */
+         , A.RELT_DEAL_NO                            /* 사업관리번호 */
+		     , B.DEAL_NM                                 /* 사업명 */
+		     , B.ALL_INV_AMT                             /* 총조달금액 */
+		     , B.THCO_PTCI_AMT                           /* 당사참여금액 */
+      FROM IBIMS508B A
+      LEFT JOIN IBIMS101B B
+        ON A.RELT_DEAL_NO = B.DEAL_NO
+       AND B.LAST_YN = '1'
+     WHERE 1=1
+       AND A.DEAL_NO = #{dealNo}
+	</select>
+	
+	
+	<!-- 관련사업정보 저장 -->
+	<insert id="saveBusiInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS508BVO">
+		  INSERT INTO IBIMS508B
+               (
+                  DEAL_NO                                 /* 딜번호 */
+                , SN                                      /* 일련번호 */
+                , RELT_DEAL_NO                            /* 관련딜번호 */
+                , DEL_YN                                  /* 삭제여부 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래id */
+                , GUID                                    /* guid */
+               )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+        	   (
+                 #{item.dealNo}                                 /* 딜번호 */
+               , #{item.sn}                                     /* 일련번호 */
+               , #{item.reltDealNo}                             /* 관련딜번호 */
+               , '1'                                            /* 삭제여부 */
+               , SYSDATE                              		   		/* 조작상세일시 */
+               , #{item.hndEmpno}                               /* 조작사원번호 */
+               , #{item.hndTmnlNo}                              /* 조작단말기번호 */
+               , #{item.hndTrId}                                /* 조작거래id */
+               , #{item.guid}                                   /* guid */
+               )
+        </foreach> 
+	</insert>
+	
+	
+	
+	<!--관련사업정보 삭제-->
+	<delete id="delBusiInfo" parameterType="string">
+		DELETE
+		  FROM IBIMS508B
+		 WHERE DEAL_NO = #{dealNo}
+	</delete>
+	
+	
+</mapper>

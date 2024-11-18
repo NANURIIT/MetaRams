@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB08032P">
+	<!-- modal -->
+	<div id="modal-TB08032P" class="modal fade" role="dialog" aria-labelledby="lb-tb08032p" aria-hidden="true" style="z-index: 1060;">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">사무소검색</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB08032P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="prefix" id="prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							 <div class="ibox ">
+				    			<!-- 조회조건영역 -->
+				    			<div class="ibox-title text-right">
+				    				<form method="get">
+				    					<div class="form-group row">
+				                        	<label class="col-sm-2 col-form-label">관리사무소명</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB08032P_mgmtNm"></div>
+				                        	
+				                        	<label class="col-sm-2 col-form-label">관리사무소코드</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB08032P_mgmtCd"></div>
+				                        
+				                        	<div class="col-sm-2 text-left">
+				                        		<button type="button" class="btn btn-primary" onclick=""><i class="fa fa-search"></i>&nbsp;조회</button>
+				                        	</div>
+				                        </div>
+				    				</form>
+				    			</div>
+				    			
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+				    				<div class="tableFixHead">
+					    				<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th>사무소명</th>
+													<th>사무소코드</th>
+													<th>본부코드</th>
+													<th>본부명</th>
+												</tr>
+											</thead>
+											<tbody id="TB08032P_tbodyMgmtList">
+												<tr>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+				    			</div>
+				    		</div><!-- ibox -->
+						</div>
+					</div>
+				</div> 
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

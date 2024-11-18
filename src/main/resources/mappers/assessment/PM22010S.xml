@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.PM22010Mapper">
+
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆ 변경된 MAPPER 로 사용불가 (songwonhee) ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+
+	<!-- 부실자산 사후관리 조회 -->
+	<select id="getEamList" parameterType="com.nanuri.rams.business.common.vo.PM22010SVO" resultType="com.nanuri.rams.business.common.vo.PM22010SVO">
+SELECT A.*
+  FROM(
+		SELECT 'N'                   AS CNCT_OPTION				<!-- 연결안건여부 -->
+		     , A.IB_DEAL_NO          AS MO_IB_DEAL_NO			<!-- 기존IBDEAL번호 -->
+		     , A.RISK_INSPCT_CCD     AS MO_RISK_INSPCT_CCD		<!-- 기존리스크심사구분코드 -->
+		     , A.LST_C_CASE_CCD      AS MO_LST_C_CASE_CCD		<!-- 기존부수안건구분코드 -->
+		     , A.IB_DEAL_NO 	 	 AS IB_DEAL_NO				<!-- IBDEAL번호 -->
+	 		 , A.RISK_INSPCT_CCD 	 AS RISK_INSPCT_CCD   		<!-- 리스크심사구분코드 -->
+	 		 , B.CD_VL_NM		 	 AS RISK_INSPCT_CCD_NM		<!-- 리스크심사구분코드명 -->
+	 		 , A.LST_C_CASE_CCD  	 AS LST_C_CASE_CCD       	<!-- 부수안건구분코드 -->
+    		 , C.CD_VL_NM  		 	 AS LST_C_CASE_CCD_NM		<!-- 부수안건구분코드명 -->
+			 , A.DPRT_CD			 AS DPRT_CD					<!-- 부점코드 -->
+			 , (SELECT DPRT_NM
+			      FROM RAA98A D
+			     WHERE D.DPRT_CD = A.DPRT_CD) AS DPRT_CD_NM		<!-- 부점명 -->
+			 , A.CHRG_P_ENO                   AS CHRG_P_ENO		<!-- 담당자사번 -->
+			 , (SELECT EMP_NM
+			      FROM RAA99A E
+			     WHERE E.ENO = A.CHRG_P_ENO)  AS EMP_NM			<!-- 직원명 -->
+			 , A.INSPCT_PRGRS_ST_CD  AS INSPCT_PRGRS_ST_CD		<!-- 심사진행상태코드 -->
+			 , (SELECT CD_VL_NM
+			      FROM RAA91B F
+			     WHERE F.CMNS_CD_GRP = 'I004'
+			       AND F.CD_VL_ID = A.INSPCT_PRGRS_ST_CD)
+			       AS INSPCT_PRGRS_ST_CD_NM						<!-- 심사진행상태코드명 -->
+			 , A.IB_DEAL_NM										<!-- IBDEAL명 -->
+ 		  FROM RAA02B A
+		  LEFT JOIN RAA91B B
+  		    ON B.CMNS_CD_GRP	 	 = 'R013'
+  		   AND RISK_INSPCT_CCD	 	 = B.CD_VL_ID				<!-- 리스크심사구분코드 -->
+  		  LEFT JOIN RAA91B C
+   		    ON C.CMNS_CD_GRP 	 	 = 'L001'
+   		   AND LST_C_CASE_CCD 	 	 = C.CD_VL_ID				<!-- 부수안건구분코드 -->
+   		 WHERE IB_DEAL_NO 			 = #{ibDealNo}				<!-- IBDEAL번호 -->
+   		   AND A.INSPCT_PRGRS_ST_CD  = '500'					<!-- 심사진행상태코드 -->
+	UNION ALL
+		SELECT 'Y'                     AS CNCT_OPTION           <!-- 연결안건여부 -->
+			 , A.IB_DEAL_NO            AS MO_IB_DEAL_NO         <!-- 기존IBDEAL번호 -->
+			 , A.RISK_INSPCT_CCD       AS MO_RISK_INSPCT_CCD    <!-- 기존리스크심사구분코드 -->
+			 , A.LST_C_CASE_CCD        AS MO_LST_C_CASE_CCD     <!-- 기존부수안건구분코드 -->
+			 , G.CNCT_IB_DEAL_NO 	   AS IB_DEAL_NO			<!-- IBDEAL번호 -->
+			 , G.CNCT_RISK_INSPCT_CCD  AS RISK_INSPCT_CCD   	<!-- 리스크심사구분코드 -->
+			 , B.CD_VL_NM		 	   AS RISK_INSPCT_CCD_NM	<!-- 리스크심사구분코드명 -->
+			 , G.CNCT_LST_C_CASE_CCD   AS LST_C_CASE_CCD        <!-- 부수안건구분코드 -->
+			 , C.CD_VL_NM  		 	   AS LST_C_CASE_CCD_NM		<!-- 부수안건구분코드명 -->
+			 , A.DPRT_CD			   AS DPRT_CD				<!-- 부점코드 -->
+			 , (SELECT DPRT_NM
+			      FROM RAA98A D
+			     WHERE D.DPRT_CD = A.DPRT_CD) AS DPRT_CD_NM		<!-- 부점명 -->
+			 , A.CHRG_P_ENO                   AS CHRG_P_ENO     <!-- 담당자사번 -->
+			 , (SELECT EMP_NM
+			      FROM RAA99A E
+			     WHERE E.ENO = A.CHRG_P_ENO)  AS EMP_NM			<!-- 직원명 -->
+			 , (SELECT INSPCT_PRGRS_ST_CD
+			      FROM RAA02B
+			     WHERE IB_DEAL_NO       = G.CNCT_IB_DEAL_NO
+			        AND RISK_INSPCT_CCD = G.CNCT_RISK_INSPCT_CCD
+			        AND LST_C_CASE_CCD  = G.CNCT_LST_C_CASE_CCD
+			    ) AS INSPCT_PRGRS_ST_CD							<!-- 심사진행상태코드 -->
+			 , (SELECT CD_VL_NM
+			      FROM RAA91B F
+			     WHERE F.CMNS_CD_GRP = 'I004'
+			       AND F.CD_VL_ID 	 = (SELECT INSPCT_PRGRS_ST_CD
+			      						 FROM RAA02B
+			    					    WHERE IB_DEAL_NO      = G.CNCT_IB_DEAL_NO
+			                              AND RISK_INSPCT_CCD = G.CNCT_RISK_INSPCT_CCD
+			                              AND LST_C_CASE_CCD  = G.CNCT_LST_C_CASE_CCD
+			    )
+				) AS INSPCT_PRGRS_ST_CD_NM	                    <!-- 심사진행상태코드명 -->
+			 , ( SELECT IB_DEAL_NM
+			       FROM RAA02B
+			      WHERE IB_DEAL_NO      = G.CNCT_IB_DEAL_NO
+			        AND RISK_INSPCT_CCD = G.CNCT_RISK_INSPCT_CCD
+			        AND LST_C_CASE_CCD  = G.CNCT_LST_C_CASE_CCD
+			   ) AS IB_DEAL_NM                                  <!-- IBDEAL명 -->
+		 FROM RAA02B A											<!-- 심사안건평가관리 -->
+		    , RAA66B G
+	     LEFT JOIN RAA91B B
+		   ON B.CMNS_CD_GRP	   = 'R013'
+		  AND RISK_INSPCT_CCD  = B.CD_VL_ID				    	<!-- 리스크심사구분코드 -->
+		 LEFT JOIN RAA91B C
+		   ON C.CMNS_CD_GRP    = 'L001'
+		  AND LST_C_CASE_CCD   = C.CD_VL_ID						<!-- 부수안건구분코드 -->
+	   WHERE A.IB_DEAL_NO 	   = #{ibDealNo}					<!-- IBDEAL번호 -->
+	     AND A.IB_DEAL_NO 	   = G.IB_DEAL_NO
+	     AND A.RISK_INSPCT_CCD = G.RISK_INSPCT_CCD
+	     AND A.LST_C_CASE_CCD  = G.LST_C_CASE_CCD
+	) A
+	ORDER BY A.MO_IB_DEAL_NO, A.MO_RISK_INSPCT_CCD, A.MO_LST_C_CASE_CCD, A.CNCT_OPTION
+	</select>
+	
+</mapper>

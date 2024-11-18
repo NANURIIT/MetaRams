@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA22BMapper">
+
+	<!-- 심사안건접수 - 협의체회차정보 조회 -->
+	<select id="selectCnfrncInfo" resultType="com.nanuri.rams.business.common.dto.RAA22BDTO" parameterType="String">
+		SELECT INSPCT_CNFRNC_CCD					<!-- 심사협의구분코드 -->
+			 , STD_YR								<!-- 기준년도 -->
+			 , INSPCT_CNFRNC_SQC_SQ					<!-- 심사협의회차일련번호 -->
+			 , RNK_NO								<!-- 순위번호 -->
+			 , SQ									<!-- 일련번호 -->
+			 , RSLTN_DT								<!-- 결의일자 -->
+			 , RSLTN_RSLT_CD						<!-- 결의결과코드 -->
+			 , RCG_AMT								<!-- 승인금액 -->
+			 , SDN_CNDT_F							<!-- 셀다운조건여부 -->
+			 , ETC_CNDT_F							<!-- 기타조건여부 -->
+			 , RSLT_CNTNT							<!-- 결과내용 -->
+			 , IB_DEAL_NO							<!-- IBDEAL번호 -->
+			 , RISK_INSPCT_CCD						<!-- 리스크심사구분코드 -->
+			 , LST_C_CASE_CCD						<!-- 부수안건구분코드 -->
+			 , HNDL_DY_TM							<!-- 처리일시 -->
+			 , HNDL_DPRT_CD							<!-- 처리부점코드 -->
+			 , HNDL_P_ENO							<!-- 처리자사번 -->
+			 , APRV_ROS_DY_IM						<!-- 결재요청일시 -->
+			 , APRV_DY_TM							<!-- 결재일시 -->
+			 , APRV_P_ENO							<!-- 결재자사번 -->
+			 , APRV_ST_CD							<!-- 결재상태코드 -->
+			 , APRV_RJCT_RSN						<!-- 결재반려사유 -->
+		  FROM RAA22B
+		 WHERE 1=1
+		   AND INSPCT_CNFRNC_CCD = #{inspctCnfrncCcd}		<!-- 심사협의구분코드 -->
+		   AND STD_YR = SUBSTR(CURDATE(), 1, 4)				<!-- 기준년도 -->
+		   AND INSPCT_CNFRNC_SQC_SQ = 0						<!-- 심사협의회차일련번호 -->
+	</select>
+	
+    <!-- 심사안건접수 - 협의체안건상세 생성 -->
+    <insert id="insertRAA22BInfo" parameterType="com.nanuri.rams.business.common.dto.RAA22BDTO">
+    	INSERT INTO RAA22B
+    	       ( 
+    	        INSPCT_CNFRNC_CCD						<!-- 심사협의구분코드 -->
+				, STD_YR								<!-- 기준년도 -->
+				, INSPCT_CNFRNC_SQC_SQ					<!-- 심사협의회차일련번호 -->
+				, RNK_NO								<!-- 순위번호 -->
+				, SQ									<!-- 일련번호 -->
+				, RSLTN_DT								<!-- 결의일자 -->
+				, RSLTN_RSLT_CD							<!-- 결의결과코드 -->
+				, RCG_AMT								<!-- 승인금액 -->
+				, SDN_CNDT_F							<!-- 셀다운조건여부 -->
+				, ETC_CNDT_F							<!-- 기타조건여부 -->
+				, RSLT_CNTNT							<!-- 결과내용 -->
+				, IB_DEAL_NO							<!-- IBDEAL번호 -->
+				, RISK_INSPCT_CCD						<!-- 리스크심사구분코드 -->
+				, LST_C_CASE_CCD						<!-- 부수안건구분코드 -->
+				, HNDL_DY_TM							<!-- 처리일시 -->
+				, HNDL_DPRT_CD							<!-- 처리부점코드 -->
+				, HNDL_P_ENO							<!-- 처리자사번 -->
+				, APRV_ROS_DY_IM						<!-- 결재요청일시 -->
+				, APRV_DY_TM							<!-- 결재일시 -->
+				, APRV_P_ENO							<!-- 결재자사번 -->
+				, APRV_ST_CD							<!-- 결재상태코드 -->
+				, APRV_RJCT_RSN							<!-- 결재반려사유 -->
+    	       )
+    	VALUES (
+    			#{inspctCnfrncCcd}						<!-- 심사협의구분코드 -->
+				, #{stdYr}								<!-- 기준년도 -->
+				, #{inspctCnfrncSqcSq}					<!-- 심사협의회차일련번호 -->
+				, #{rnkNo}								<!-- 순위번호 -->
+				, (
+				   SELECT NVL(MAX(rb.SQ), 0) + 1 AS SQ	<!-- 일련번호 -->
+  					 FROM RAA22B rb
+  					WHERE 1=1
+  					  AND INSPCT_CNFRNC_CCD = #{inspctCnfrncCcd}
+  					  AND STD_YR = #{stdYr}
+				  ) 
+				, #{rsltnDt}							<!-- 결의일자 -->
+				, #{rsltnRsltCd}						<!-- 결의결과코드 -->
+				, #{rcgAmt}								<!-- 승인금액 -->
+				, #{sdnCndtF}							<!-- 셀다운조건여부 -->
+				, #{etcCndtF}							<!-- 기타조건여부 -->
+				, #{rsltCntnt}							<!-- 결과내용 -->
+				, #{ibDealNo}							<!-- IBDEAL번호 -->
+				, #{riskInspctCcd}						<!-- 리스크심사구분코드 -->
+				, #{lstCCaseCcd}						<!-- 부수안건구분코드 -->
+				, CURRENT_TIMESTAMP()					<!-- 처리일시 -->
+				, #{hndlDprtCd}							<!-- 처리부점코드 -->
+				, #{hndlPEno}							<!-- 처리자사번 -->
+				, #{aprvRosDyIm}						<!-- 결재요청일시 -->
+				, #{aprvDyTm}							<!-- 결재일시 -->
+				, #{aprvPEno}							<!-- 결재자사번 -->
+				, #{aprvStCd}							<!-- 결재상태코드 -->
+				, #{aprvRjctRsn}						<!-- 결재반려사유 -->
+    	       )
+    </insert>
+    
+    <select id="selectRAA22BInfo" parameterType="com.nanuri.rams.business.common.dto.RAA22BDTO">
+    	SELECT INSPCT_CNFRNC_CCD				<!-- 심사협의구분코드 -->
+			 , STD_YR							<!-- 기준년도 -->
+			 , INSPCT_CNFRNC_SQC_SQ				<!-- 심사협의회차일련번호 -->
+			 , RNK_NO							<!-- 순위번호 -->
+			 , SQ								<!-- 일련번호 -->
+			 , RSLTN_DT							<!-- 결의일자 -->
+			 , RSLTN_RSLT_CD					<!-- 결의결과코드 -->
+			 , RCG_AMT							<!-- 승인금액 -->
+			 , SDN_CNDT_F						<!-- 셀다운조건여부 -->
+			 , ETC_CNDT_F						<!-- 기타조건여부 -->
+			 , RSLT_CNTNT						<!-- 결과내용 -->
+			 , IB_DEAL_NO						<!-- IBDEAL번호 -->
+			 , RISK_INSPCT_CCD					<!-- 리스크심사구분코드 -->
+			 , LST_C_CASE_CCD					<!-- 부수안건구분코드 -->
+			 , HNDL_DY_TM						<!-- 처리일시 -->
+			 , HNDL_DPRT_CD						<!-- 처리부점코드 -->
+			 , HNDL_P_ENO						<!-- 처리자사번 -->
+			 , APRV_ROS_DY_IM					<!-- 결재요청일시 -->
+			 , APRV_DY_TM						<!-- 결재일시 -->
+			 , APRV_P_ENO						<!-- 결재자사번 -->
+			 , APRV_ST_CD						<!-- 결재상태코드 -->
+			 , APRV_RJCT_RSN					<!-- 결재반려사유 -->
+		  FROM RAA21B
+		 WHERE 1=1
+		   AND INSPCT_CNFRNC_CCD = #{inspctCnfrncCcd}
+		   AND STD_YR = #{stdYr}
+		   AND INSPCT_CNFRNC_SQC_SQ = #{inspctCnfrncSqcSq}
+    </select>
+    
+    <update id="updateRAA22BInfo" parameterType="com.nanuri.rams.business.common.dto.RAA22BDTO">
+    	UPDATE RAA22B
+    	   SET RNK_NO					= #{	rnkNo	}				<!-- 순위번호 -->
+			 , RSLTN_DT					= #{	rsltnDt	}				<!-- 결의일자 -->
+			 , RSLTN_RSLT_CD			= #{	rsltnRsltCd	}			<!-- 결의결과코드 -->
+			 , RCG_AMT					= #{	rcgAmt	}				<!-- 승인금액 -->
+			 , SDN_CNDT_F				= #{	sdnCndtF	}			<!-- 셀다운조건여부 -->
+			 , ETC_CNDT_F				= #{	etcCndtF	}			<!-- 기타조건여부 -->
+			 , RSLT_CNTNT				= #{	rsltCntnt	}			<!-- 결과내용 -->
+			 , HNDL_DY_TM				= CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+			 , HNDL_DPRT_CD				= #{	hndlDprtCd	}			<!-- 처리부점코드 -->
+			 , HNDL_P_ENO				= #{	hndlPEno	}			<!-- 처리자사번 -->
+			 , APRV_ROS_DY_IM			= #{	aprvRosDyIm	}			<!-- 결재요청일시 -->
+			 , APRV_DY_TM				= #{	aprvDyTm	}			<!-- 결재일시 -->
+			 , APRV_P_ENO				= #{	aprvPEno	}			<!-- 결재자사번 -->
+			 , APRV_ST_CD				= #{	aprvStCd	}			<!-- 결재상태코드 -->
+			 , APRV_RJCT_RSN			= #{	aprvRjctRsn	}			<!-- 결재반려사유 -->
+		 WHERE 1=1
+		   AND INSPCT_CNFRNC_CCD		= #{	inspctCnfrncCcd	}		<!-- 심사협의구분코드 -->
+		   AND STD_YR					= #{	stdYr	}				<!-- 기준년도 -->
+		   AND INSPCT_CNFRNC_SQC_SQ		= #{	inspctCnfrncSqcSq	}	<!-- 심사협의회차일련번호 -->
+		   AND IB_DEAL_NO				= #{	ibDealNo	}			<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD			= #{	riskInspctCcd	}		<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD			= #{	lstCCaseCcd	}			<!-- 부수안건구분코드 -->
+    </update>
+    
+    <delete id="deleteRAA22BInfo" parameterType="com.nanuri.rams.business.common.dto.RAA22BDTO">
+    	DELETE FROM RAA22B
+    	 WHERE 1=1
+    	   AND INSPCT_CNFRNC_CCD		= #{	inspctCnfrncCcd	}		<!-- 심사협의구분코드 -->
+		   AND STD_YR					= #{	stdYr	}				<!-- 기준년도 -->
+		   AND INSPCT_CNFRNC_SQC_SQ		= #{	inspctCnfrncSqcSq	}	<!-- 심사협의회차일련번호 -->
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ibDealNo)">
+		   AND IB_DEAL_NO				= #{	ibDealNo	}			<!-- IBDEAL번호 -->
+		   </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(riskInspctCcd)">
+		   AND RISK_INSPCT_CCD			= #{	riskInspctCcd	}		<!-- 리스크심사구분코드 -->
+		   </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(lstCCaseCcd)">
+		   AND LST_C_CASE_CCD			= #{	lstCCaseCcd	}			<!-- 부수안건구분코드 -->
+		   </if>
+    </delete>
+    
+    <select id="getMaxRnkNo" parameterType="com.nanuri.rams.business.common.dto.RAA23BDTO" resultType="int">
+    	SELECT CASE WHEN MAX(RNK_NO) IS NULL THEN 1
+    	            ELSE MAX(RNK_NO)
+    	            END AS RNK_NO
+    	  FROM RAA22B
+    	 WHERE 1=1
+    	   AND INSPCT_CNFRNC_CCD		= #{	inspctCnfrncCcd	}		<!-- 심사협의구분코드 -->
+		   AND STD_YR					= #{	stdYr	}				<!-- 기준년도 -->
+		   AND INSPCT_CNFRNC_SQC_SQ		= #{	inspctCnfrncSqcSq	}	<!-- 심사협의회차일련번호 -->
+    </select>
+
+	<select id="selectRnkNoInfo" parameterType="com.nanuri.rams.business.common.dto.RAA22BDTO" resultType="int">
+		SELECT RNK_NO
+		 FROM RAA22B
+		WHERE INSPCT_CNFRNC_CCD     = #{	inspctCnfrncCcd	  }
+		  AND STD_YR                = #{	stdYr	          }
+		  AND INSPCT_CNFRNC_SQC_SQ  = #{	inspctCnfrncSqcSq }
+		ORDER BY RNK_NO
+	</select>
+
+	<update id="updateRnkNoRAA22B" parameterType="map">
+	UPDATE RAA22B
+	   SET RNK_NO               = #{ afterRnkNo      }
+	 WHERE INSPCT_CNFRNC_CCD    = #{ inspctCnfrncCcd }
+	   AND STD_YR               = #{ stdYr           }
+	   AND INSPCT_CNFRNC_SQC_SQ = #{inspctCnfrncSqcSq}
+	   AND RNK_NO               = #{ beforeRnkNo     }
+	</update>
+	
+	<update id="updateIBDEALInfo" parameterType="com.nanuri.rams.business.common.vo.AS04210SVO$IBDEALInfo">
+		UPDATE RAA22B
+		   SET RSLTN_RSLT_CD		= #{rsltnRsltCd}				<!-- 결의결과코드 -->
+		     , RCG_AMT				= CAST(#{rcgAmt} AS INT)		<!-- 승인금액 -->
+		     , SDN_CNDT_F			= #{sdnCndtF}					<!-- 셀다운조건여부 -->
+		     , ETC_CNDT_F			= #{etcCndtF}					<!-- 기타조건여부 -->
+		     , RSLT_CNTNT			= #{rsltCntnt}					<!-- 결과내용 -->		
+		     , CNFRNC_NTM_CNDTL_CNTNT = #{cnfrncNtmCndtlCntnt}		<!-- 부의조건 -->
+		     , HNDL_DY_TM			= CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+		     , HNDL_DPRT_CD			= #{hndlDprtCd}					<!-- 처리주번코드 -->
+		     , HNDL_P_ENO			= #{hndlPEno}					<!-- 처리자사번 -->
+		 WHERE 1=1
+		   AND INSPCT_CNFRNC_CCD	= #{inspctCnfrncCcd}			<!-- 심사협의구분코드 -->
+		   AND STD_YR				= #{stdYr}						<!-- 기준년도 -->
+		   AND INSPCT_CNFRNC_SQC_SQ	= #{inspctCnfrncSqcSq}			<!-- 심사협의회차일련번호 -->
+		   AND RNK_NO				= #{rnkNo}						<!-- 순위번호 -->
+		   AND IB_DEAL_NO			= #{ibDealNo}					<!-- IBDEAL번호 -->
+	</update>
+    
+	<select id="as04310sSelectCaseInfo" parameterType="com.nanuri.rams.business.common.vo.AS04310SVO$SearchVO" resultType="com.nanuri.rams.business.common.vo.AS04310SVO$DealInfo">
+		SELECT B.INSPCT_CNFRNC_CCD													<!-- 심사협의구분코드 -->
+			 , G.INSPCT_CNFRNC_SQC_SQ 												<!-- 심사협의회차일련번호 -->
+			 , B.RSLTN_DT															<!-- 결의 일자 -->
+			 , B.RNK_NO																<!-- 조회순위 -->
+			 , A.HDQT_CD															<!-- 본부코드 -->
+			 , NVL(C.HDQT_NM, '') 					AS HDQT_NM						<!-- 본부명 -->
+			 , A.DPRT_CD															<!-- 부점코드 -->																					
+			 , NVL(D.DPRT_NM, '')					AS DPRT_NM						<!-- 부점명 -->
+			 , A.LST_C_CASE_CCD														<!-- 부수안건구분코드 -->
+			 , A.RISK_INSPCT_CCD													<!-- 리스크심사구분코드 -->
+			 , NVL(A.IB_DEAL_SNM_NM, A.IB_DEAL_NM)	AS IB_DEAL_NM					<!-- IBDEAL명 -->
+			 , A.CHECK_ITEM_CD                                                      <!-- 점검항목코드 -->
+			 , A.CRNCY_AMT                                                          <!-- 통화금액 -->
+			 , B.RCG_AMT															<!-- 승인금액 -->
+			 , A.INVST_CRNCY_CD														<!-- 투자통화코드 -->
+			 , A.INVST_PRD_MM_C														<!-- 투자기간개월수 -->
+			 , NVL(B.CNFRNC_NTM_CNDTL_CNTNT, '')	AS CNFRNC_NTM_CNDTL_CNTNT		<!-- 부의조건 -->
+			 , B.RSLTN_RSLT_CD														<!-- 결의결과코드 -->
+			 , B.RSLT_CNTNT															<!-- 결과내용 -->
+			 , B.SDN_CNDT_F															<!-- 셀다운조건여부 -->
+			 , B.ETC_CNDT_F															<!-- 기타조건여부 -->
+			 , A.INSPCT_DPRT_CCD													<!-- 심사부서구분코드 -->
+			 , A.OWN_P_ENO															<!-- 소유자사번 -->
+			 , F.EMP_NM		AS OWN_P_NM												<!-- 소유자명(심사역) -->
+			 , A.IB_DEAL_NO															<!-- iBDEAL번호 -->
+			 , G.MTNG_CCD
+			 , A.INSPCT_PRGRS_ST_CD													<!-- 심사진행상태코드 -->
+			 , A.RISK_RCG_NO														<!-- 리스크승인번호 -->
+			 , A.APLC_EXPT_DT														<!-- 적용예정일자 -->
+			 , A.RISK_INSPCT_RSLTN_CCD												<!-- 리스크심사결의구분코드 -->
+			 , A.PTCP_AMT															<!-- 참여금액 -->
+			 , A.CHRG_P_ENO															<!-- 담당사원번호 -->
+			 , E.EMP_NM		AS CHGR_P_NM											<!-- 담당자명 -->	
+		  FROM RAA22B B
+		     , RAA02B A
+		  LEFT JOIN RAA98A C
+		    ON C.HDQT_CD	= A.HDQT_CD
+		  LEFT JOIN RAA98A D
+		    ON D.DPRT_CD	= A.DPRT_CD
+		  LEFT JOIN RAA99A E
+		    ON E.ENO		= A.CHRG_P_ENO
+		  LEFT JOIN RAA99A F
+		    ON F.ENO		= A.OWN_P_ENO
+		     , RAA21B G
+		 WHERE 1=1
+		   AND B.IB_DEAL_NO				= A.IB_DEAL_NO
+		   AND B.RISK_INSPCT_CCD		= A.RISK_INSPCT_CCD
+		   AND B.LST_C_CASE_CCD			= A.LST_C_CASE_CCD
+		   AND B.INSPCT_CNFRNC_CCD		= G.INSPCT_CNFRNC_CCD
+		   AND B.STD_YR					= G.STD_YR
+		   AND B.INSPCT_CNFRNC_SQC_SQ	= G.INSPCT_CNFRNC_SQC_SQ
+		   AND B.RSLTN_DT				<![CDATA[>=]]> #{rsltnDtStart}
+		   AND B.RSLTN_DT				<![CDATA[<=]]> #{rsltnDtEnd}
+		   AND B.INSPCT_CNFRNC_CCD		= NVL(#{inspctCnfrncCcd}, B.INSPCT_CNFRNC_CCD)
+		   AND B.STD_YR					= NVL(#{stdYr}, B.STD_YR)
+		<if test="inspctCnfrncSqcSq != ''">
+			AND B.INSPCT_CNFRNC_SQC_SQ	= #{inspctCnfrncSqcSq}
+		</if>		   
+	</select> 
+	
+    <!--   승인조건 사전관리 승인금액 수정    -->
+    <update id="updateRcgAmt">
+        UPDATE RAA22B
+           SET RCG_AMT             = #{rcgAmt}
+             , HNDL_DY_TM          = SYSDATE()
+             , HNDL_DPRT_CD        = #{hndlDprtCd}
+             , HNDL_P_ENO 		   = #{hndlPEno}
+         WHERE IB_DEAL_NO 		   = #{ibDealNo}         /* Deal번호 */
+           AND RISK_INSPCT_CCD     = #{riskInspctCcd}    /* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD      = #{lstCCaseCcd}     /* 부수안건구분코드 */
+    </update>
+</mapper>

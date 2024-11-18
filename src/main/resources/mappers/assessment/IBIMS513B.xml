@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS513BMapper">
+
+	<!-- 대주단정보 조회 -->
+	<select id="getStlnInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS513BVO">
+		SELECT DEAL_NO                                 /* 딜번호 */
+         , IB_STLN_DCD                             /* 투자금융대주구분코드 */
+         , (
+         	  SELECT CD_VL_NM
+				      FROM IBIMS002B
+			       WHERE CMNS_CD_GRP = 'R021'
+			         AND CD_VL_ID = IB_STLN_DCD
+           ) AS IB_STLN_NM                         /* 투자금융대주구분코드명 */
+         , SN                                      /* 일련번호 */
+         , RM_OPNT_EPRZ_DCD                        /* RM상대기업구분코드 */
+         , ENTP_NM                                 /* 업체명 */
+         , CRDT_PROV_LMT_AMT                       /* 신용공여한도금액 */
+         , PRTC_RTO                                /* 참가비율 */
+         , DEL_YN                                  /* 삭제여부 */
+         , HND_DETL_DTM                            /* 조작상세일시 */
+         , HND_EMPNO                               /* 조작사원번호 */
+         , HND_TMNL_NO                             /* 조작단말기번호 */
+         , HND_TR_ID                               /* 조작거래id */
+         , GUID                                    /* guid */
+      FROM IBIMS513B 
+     WHERE 1=1
+       AND DEAL_NO                                 = #{dealNo}
+	     AND STLN_ERN_DCD                            = '1'
+		 ORDER 
+        BY SN
+	</select>
+
+  <!-- 수익자 조회 --> 
+	<select id="getErnInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS513BVO">
+		SELECT DEAL_NO                                 /* 딜번호 */
+         , IB_STLN_DCD                             /* 투자금융대주구분코드 */
+         , (
+         	  SELECT CD_VL_NM
+	  	        FROM IBIMS002B
+	           WHERE CMNS_CD_GRP = 'R021'
+	             AND CD_VL_ID    = IB_STLN_DCD
+           ) AS IB_STLN_NM                         /* 투자금융대주구분코드명 */
+         , SN                                      /* 일련번호 */
+         , RM_OPNT_EPRZ_DCD                        /* RM상대기업구분코드 */
+         , ENTP_NM                                 /* 업체명 */
+         , CRDT_PROV_LMT_AMT                       /* 신용공여한도금액 */
+         , PRTC_RTO                                /* 참가비율 */
+         , DEL_YN                                  /* 삭제여부 */
+         , HND_DETL_DTM                            /* 조작상세일시 */
+         , HND_EMPNO                               /* 조작사원번호 */
+         , HND_TMNL_NO                             /* 조작단말기번호 */
+         , HND_TR_ID                               /* 조작거래id */
+         , GUID                                    /* guid */
+      FROM IBIMS513B
+     WHERE 1=1
+       AND DEAL_NO                                 = #{dealNo}
+		   AND STLN_ERN_DCD                            = '2'
+	ORDER BY SN
+	</select>
+	
+	  <!-- 대주단정보 저장 -->
+	  <insert id="saveStlnInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS513BVO">
+	  	INSERT INTO IBIMS513B 
+          (
+             DEAL_NO                                 /* 딜번호 */
+           , IB_STLN_DCD                             /* 투자금융대주구분코드 */
+           , SN                                      /* 일련번호 */
+           , STLN_ERN_DCD                            /* 대주/수익자구분코드 */
+           , RM_OPNT_EPRZ_DCD                        /* RM상대기업구분코드 */
+           , ENTP_NM                                 /* 업체명 */
+           , CRDT_PROV_LMT_AMT                       /* 신용공여한도금액 */
+           , PRTC_RTO                                /* 참가비율 */
+           , DEL_YN                                  /* 삭제여부 */
+           , HND_DETL_DTM                            /* 조작상세일시 */
+           , HND_EMPNO                               /* 조작사원번호 */
+           , HND_TMNL_NO                             /* 조작단말기번호 */
+           , HND_TR_ID                               /* 조작거래id */
+           , GUID                                    /* guid */
+          )
+      VALUES 
+	  	<foreach collection="list" item="item" index="index" separator=",">
+	  		   (
+	  			   #{item.dealNo}                                 /* 딜번호 */
+           , #{item.ibStlnDcd}                              /* 투자금융대주구분코드 */
+           , #{index}+1                                     /* 일련번호 */
+           , '1'                                            /* 대주/수익자구분코드 */
+           , #{item.rmOpntEprzDcd}                          /* RM상대기업구분코드 */
+           , #{item.entpNm}                                 /* 업체명 */
+           , #{item.crdtProvLmtAmt}                         /* 신용공여한도금액 */
+           , #{item.prtcRto}                                /* 참가비율 */
+           , #{item.delYn}                                  /* 삭제여부 */
+           , SYSDATE                             				    /* 조작상세일시 */
+           , #{item.hndEmpno}                               /* 조작사원번호 */
+           , #{item.hndTmnlNo}                              /* 조작단말기번호 */
+           , #{item.hndTrId}                                /* 조작거래id */
+           , #{item.guid}                                   /* guid */
+           )
+	  	</foreach>  
+	  </insert>
+
+    <!-- 대주단정보 저장 -->
+	  <insert id="saveErnInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS513BVO">
+	  	INSERT INTO IBIMS513B
+             (
+                DEAL_NO                                 /* 딜번호 */
+              , IB_STLN_DCD                             /* 투자금융대주구분코드 */
+              , SN                                      /* 일련번호 */
+              , STLN_ERN_DCD                            /* 대주/수익자구분코드 */
+              , RM_OPNT_EPRZ_DCD                        /* RM상대기업구분코드 */
+              , ENTP_NM                                 /* 업체명 */
+              , CRDT_PROV_LMT_AMT                       /* 신용공여한도금액 */
+              , PRTC_RTO                                /* 참가비율 */
+              , DEL_YN                                  /* 삭제여부 */
+              , HND_DETL_DTM                            /* 조작상세일시 */
+              , HND_EMPNO                               /* 조작사원번호 */
+              , HND_TMNL_NO                             /* 조작단말기번호 */
+              , HND_TR_ID                               /* 조작거래id */
+              , GUID                                    /* guid */
+             )
+      VALUES
+	  	<foreach collection="list" item="item" index="index" separator=",">
+	  		   (
+	  	  		   #{item.dealNo}                                 /* 딜번호 */
+             , #{item.ibStlnDcd}                              /* 투자금융대주구분코드 */
+             , #{index}+1                                     /* 일련번호 */
+             , '2'                                            /* 대주/수익자구분코드 */
+             , #{item.rmOpntEprzDcd}                          /* RM상대기업구분코드 */
+             , #{item.entpNm}                                 /* 업체명 */
+             , #{item.crdtProvLmtAmt}                         /* 신용공여한도금액 */
+             , #{item.prtcRto}                                /* 참가비율 */
+             , #{item.delYn}                                  /* 삭제여부 */
+             , SYSDATE                             				    /* 조작상세일시 */
+             , #{item.hndEmpno}                               /* 조작사원번호 */
+             , #{item.hndTmnlNo}                              /* 조작단말기번호 */
+             , #{item.hndTrId}                                /* 조작거래id */
+             , #{item.guid}                                   /* guid */
+           )
+	  	</foreach>
+	  </insert>
+	
+	  <!-- 대주단정보 삭제 -->
+	  <delete id="delStlnInfo" parameterType="string">
+	  	DELETE
+	  	  FROM IBIMS513B
+	  	 WHERE DEAL_NO = #{dealNo}
+	  	   AND STLN_ERN_DCD = '1'
+	  </delete>
+
+    <!-- 수익자정보 삭제 -->
+    <delete id="delErnInfo" parameterType="string">
+        DELETE
+         FROM IBIMS513B
+        WHERE DEAL_NO = #{dealNo}
+          AND STLN_ERN_DCD = '2'
+    </delete>
+
+</mapper>

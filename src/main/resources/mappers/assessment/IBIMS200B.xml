@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS200BMapper">
+	<select id="getResultData" parameterType="com.nanuri.rams.business.common.vo.TB06070SVO" resultType="com.nanuri.rams.business.common.vo.TB06070SVO">
+			SELECT
+				  A.PRDT_CD 							/* 상품코드 */
+				, A.ASST_CLSF_CD 						/* 자산분류코드 */
+				, A.ASST_LCLS_CD 						/* 자산대분류코드 */
+				, A.PRDT_TYPE_CD 						/* 상품유형코드 */
+				, A.CRDT_GRNT_MCLS_CD 					/* 신용공여중분류코드 */
+				, A.CRDT_GRNT_TYPE_CD 					/* 신용공여유형코드 */
+				, A.SPPI_YN 							/* SPPI여부 */
+				, A.UTLZ_FUND_FNNC_PRDT_CLSF_CD 		/* 운용펀드금융상품분류코드 */
+				, A.LOAN_EXPD_CD 						/* 대출만기코드 */
+				, A.PRCT_LOAN_YN 						/* 프로젝트대출여부 */
+				, A.UDWT_FNNC_YN 						/* 인수금융여부 */
+				, A.RLES_RELT_YN 						/* 부동산관련여부 */
+				, A.CRDT_GRNT_ACTS_CD 					/* 신용공여계정과목코드 */
+				, A.PRDT_SALE_STAT_CD 					/* 상품판매상태코드 */
+				, A.PRDT_NAME 							/* 상품명 */
+				, A.SALE_STRT_DT 						/* 판매시작일자 */
+				, A.SALE_END_DT 						/* 판매종료일자 */
+				, A.INT_ANAP_DVSN_CD 					/* 이자선후급구분코드 */
+				, A.MRDP_FEE_YN 						/* 중도상환수수료여부 */
+				, A.FRCR_LOAN_YN 						/* 외화대출여부 */
+			FROM IBIMS200B A	/* 상품기본 */
+			WHERE 1=1
+			<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtName)">
+				AND A.PRDT_NAME LIKE '%' || #{prdtName} || '%'						/* 상풍명 */ 
+			</if>
+			<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crdtGrntActsCd)">
+				AND A.CRDT_GRNT_ACTS_CD = #{crdtGrntActsCd}							/* 계정과목 */
+			</if>
+			<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(utlzFundFnncPrdtClsfCd)">
+				AND A.UTLZ_FUND_FNNC_PRDT_CLSF_CD = #{utlzFundFnncPrdtClsfCd}		/* 금융상품분류 */
+			</if>
+			<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sppiYn)">
+				AND A.SPPI_YN = #{sppiYn}											/* SPPI 결과*/
+			</if>
+			<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(loanExpdCd)">
+				AND A.LOAN_EXPD_CD = #{loanExpdCd}									/* 대출만기 */
+			</if>
+			<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rlesReltYn)">
+				AND A.RLES_RELT_YN = #{rlesReltYn}									/* 부동산여부 */
+			</if>
+			<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(udwtFnncYn)">
+				AND A.UDWT_FNNC_YN = #{udwtFnncYn}									/* 인수금융 */
+			</if>
+	</select>
+	<select id="getDetailInfo" parameterType="com.nanuri.rams.business.common.vo.TB06070SVO" resultType="com.nanuri.rams.business.common.vo.TB06070SVO">
+			SELECT
+				  A.PRDT_CD	                            /* 상품코드 */
+				, A.ASST_CLSF_CD	                    /* 자산분류코드 */
+				, A.ASST_LCLS_CD	                    /* 자산대분류코드 */
+				, A.ASST_MCLS_CD	                    /* 자산중분류코드 */
+				, A.ASST_CLSF_DTL_CD	                /* 자산분류상세코드 */
+				, A.PRDT_TYPE_CD	                    /* 상품유형코드 */
+				, A.CRDT_GRNT_MCLS_CD	                /* 신용공여중분류코드 */
+				, A.CRDT_GRNT_TYPE_CD	                /* 신용공여유형코드 */
+				, A.UTLZ_FUND_CD	                    /* 운용펀드코드 */
+				, A.SPPI_YN	                            /* SPPI여부 */
+				, A.UTLZ_FUND_FNNC_PRDT_CLSF_CD	        /* 운용펀드금융상품분류코드 */
+				, A.LOAN_EXPD_CD	                    /* 대출만기코드 */
+				, A.FNNC_GRTE_CTRT_ASST_YN	            /* 금융보증계약자산여부 */
+				, A.PRCT_LOAN_YN	                    /* 프로젝트대출여부 */
+				, A.UDWT_FNNC_YN	                    /* 인수금융여부 */
+				, A.FRCR_LOAN_YN	                    /* 외화대출여부 */
+				, A.ECLS_LOAN_YN	                    /* 제외대출여부 */
+				, A.PCHS_LOAN_OBLG_YN	                /* 매입대출채권여부 */
+				, A.RLES_RELT_YN	                    /* 부동산관련여부 */
+				, A.PPLC_DBTR_YN	                    /* 사모사채여부 */
+				, A.ITPS_YN	                            /* 이해관계인여부 */
+				, A.NOPR_ATVT_DVSN_CD	                /* 영업외활동구분코드 */
+				, A.AFLT_DVSN_CD	                    /* 계열사구분코드 */
+				, A.IPMT_OBLG_YN	                    /* 손상채권여부 */
+				, A.FINC_CVSN_OBLG_YN	                /* 출자전환채권여부 */
+				, A.PXDF_YN                             /* 대지급여부 */
+				, A.CRDT_GRNT_ACTS_CD	                /* 신용공여계정과목코드 */
+				, A.PFLS_ACTS_CD	                    /* 손익계정과목코드 */
+				, A.RCVB_ASST_ACTS_CD	                /* 미수자산계정과목코드 */
+				, A.PRDT_SALE_STAT_CD	                /* 상품판매상태코드 */
+				, A.RQST_VRFC_OBJT_YN	                /* 신청검증대상여부 */
+				, A.PRDT_NAME	                        /* 상품명 */
+				, A.PRDT_ENG_NAME	                    /* 상품영문명 */
+				, A.PRDT_ABRV_NAME	                    /* 상품의 약어명(약칭) 을 관리함 */
+				, A.PRDT_ENG_ABRV_NAME		            /*   */
+				, A.FRST_ERLM_DT	                    /* 최초등록일자 */
+				, A.SALE_STRT_DT	                    /* 판매시작일자 */
+				, A.SALE_END_DT 	                    /* 판매종료일자 */
+				, A.BITR_KIND_CD	                    /* 기준금리종류코드 */
+				, A.LMT_BASS_CD	                        /* 한도기준코드 */
+				, A.APVL_UNIT_AMT	                    /* 승인단위금액	 */
+				, A.MIN_APVL_AMT	                    /* 최소승인금액	 */
+				, A.MAX_APVL_AMT	                    /* 최대승인금액	 */
+				, A.SHST_CRDL_TERM_MCNT	                /* 최단여신기간개월수 */
+				, A.LGST_CRDL_TERM_MCNT	                /* 최장여신기간개월수 */
+				, A.SHST_DFMT_TERM_MCNT	                /* 최단거치기간개월수 */
+				, A.LGST_DFMT_TERM_MCNT	                /* 최장거치기간개월수 */
+				, A.INT_ANAP_DVSN_CD	                /* 이자선후급구분코드 */
+				, A.NRML_INT_CALC_TYPE_CD	            /* 정상이자계산유형코드 */
+				, A.OVDU_INT_CALC_TYPE_CD	            /* 연체이자계산유형코드 */
+				, A.RCVB_INT_CALC_TYPE_CD	            /* 미수이자계산유형코드 */
+				, A.MRDP_FEE_YN	                        /* 중도상환수수료여부 */
+				, A.KCIS_OFFR_YN	                    /* 한국신용정보원제공여부 */
+				, A.EXEC_ACTG_AFRS_CD	                /* 실행회계업무코드 */
+				, A.RDPT_ACTG_AFRS_CD	                /* 상환회계업무코드 */
+				, A.EXEC_ACTG_UNIT_AFRS_CD              /* 실행회계단위업무코드 */
+				, A.EXEC_ACTG_TR_CD	                    /* 실행회계거래코드 */
+				, A.RDPT_ACTG_UNIT_AFRS_CD	            /* 상환회계단위업무코드 */
+				, A.RDPT_ACTG_TR_CD	                    /* 상환회계거래코드 */
+				, A.DFNT_YN	                            /* 확정여부 */
+				, A.DSUS_YN	                            /* 폐기여부 */
+				, A.PRDT_DSCR	                        /* 상품설명 */
+				, A.DEL_YN	                            /* 삭제여부 */
+				, A.HND_DETL_DTM	                    /* 조작상세 */
+				, A.HND_EMPNO	                        /* 조작사원번호 */
+				, A.HND_TMNL_NO	                        /* 조작단말기번호 */
+				, A.HND_TR_ID	                        /* 조작거래id */
+				, A.GUID	                            /* guid */
+			FROM IBIMS200B A	/* 상품기본 */
+			WHERE A.PRDT_CD = #{prdtCd}				/* 상품코드 */ 
+	</select>
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.TB06080SMapper">
+
+	<!-- 결재내역 조회 -->
+	<select id='inqTB06080S' parameterType="com.nanuri.rams.business.common.vo.TB06080SVO" resultType="com.nanuri.rams.business.common.vo.TB06080SVO$ApvlList">
+		SELECT DECD_SN			/* 결재일련번호		*/
+			 , APVL_RQST_SQ		/* 승인요청순번		*/
+			 , CHRR_ENO			/* 책임자사번		*/
+			 , CHRR_ENM			/* 책임자명		*/
+			 , APVL_RQST_P_ENO	/* 승인요청자사번	*/
+			 , APVL_RQST_P_ENM	/* 승인요청자명		*/
+			 , DECD_STEP_DCD	/* 결재단계구분코드	*/
+			 , DECD_STEP_NM		/* 결재단계명		*/
+			 , DECD_STTS_DCD	/* 결재상태구분코드	*/
+			 , DECD_STTS_NM		/* 결재상태명		*/
+			 , DEAL_NO			/* 딜번호			*/
+			 , DEAL_NM			/* 딜명			*/
+			 , DECD_JOB_DCD		/* 결재업무구분코드	*/
+			 , DECD_JOB_NM		/* 결재업무명		*/
+			 , SCRN_NO			/* 화면번호		*/
+			 , APVL_RQST_CNTN	/* 승인요청내용		*/
+			 , RQST_DTM			/* 신청일시		*/
+			 , RQST_CNCL_DTM	/* 신청취소일시		*/
+			 , DCFC_ENO			/* 담당자사번		*/
+			 , DCFC_ENM			/* 담당자명		*/
+			 , PRCS_RSLT_DCD	/* 처리결과구분코드	*/
+			 , PRCS_RSLT_NM		/* 처리결과명		*/
+			 , EXC_SQ			/* 실행순번		*/
+			 , RQST_SQ			/* 신청순번		*/
+			 , TR_SQ			/* 거래순번		*/
+			 , ERR_CNTN			/* 오류내번		*/
+			 , LAST_DECD_SQ		/* 최종결재순번		*/
+		FROM (
+			  SELECT A.DECD_SN
+			  	   , A.APVL_RQST_SQ
+			  	   , A.CHRR_ENO
+			  	   , (SELECT EMP_NM FROM IBIMS003B WHERE EMPNO = A.CHRR_ENO) AS CHRR_ENM
+			  	   , A.APVL_RQST_P_ENO
+			  	   , (SELECT EMP_NM FROM IBIMS003B WHERE EMPNO = A.APVL_RQST_P_ENO) AS APVL_RQST_P_ENM
+			  	   , A.DECD_STEP_DCD
+				   , (SELECT D.CD_VL_NM  FROM IBIMS001B A RIGHT JOIN IBIMS002B D ON A.CMNS_CD_GRP = D.CMNS_CD_GRP WHERE  A.CMNS_CD_GRP = 'D016' AND D.CD_VL_ID = A.DECD_STEP_DCD) AS DECD_STEP_NM
+			  	   , B.DECD_STTS_DCD
+				   , (SELECT D.CD_VL_NM  FROM IBIMS001B A RIGHT JOIN IBIMS002B D ON A.CMNS_CD_GRP = D.CMNS_CD_GRP WHERE  A.CMNS_CD_GRP = 'D006' AND D.CD_VL_ID = B.DECD_STTS_DCD) AS DECD_STTS_NM
+			  	   , A.DEAL_NO
+			  	   , C.DEAL_NM
+			  	   , A.DECD_JOB_DCD
+				   , (SELECT D.CD_VL_NM  FROM IBIMS001B A RIGHT JOIN IBIMS002B D ON A.CMNS_CD_GRP = D.CMNS_CD_GRP WHERE  A.CMNS_CD_GRP = 'D005' AND D.CD_VL_ID = A.DECD_JOB_DCD) AS DECD_JOB_NM
+			  	   , A.SCRN_NO
+			  	   , A.APVL_RQST_CNTN
+			  	   , TO_CHAR(A.RQST_DTM, 'YYYYMMDDHH24MISS') AS RQST_DTM
+			  	   , TO_CHAR(A.RQST_CNCL_DTM, 'YYYYMMDDHH24MISS') AS RQST_CNCL_DTM
+			  	   , B.DCFC_ENO
+			  	   , (SELECT EMP_NM FROM IBIMS003B WHERE EMPNO = B.DCFC_ENO) AS DCFC_ENM
+			  	   , A.PRCS_RSLT_DCD
+				   , (SELECT D.CD_VL_NM  FROM IBIMS001B A RIGHT JOIN IBIMS002B D ON A.CMNS_CD_GRP = D.CMNS_CD_GRP WHERE  A.CMNS_CD_GRP = 'P028' AND D.CD_VL_ID = A.PRCS_RSLT_DCD) AS PRCS_RSLT_NM
+			  	   , A.EXC_SQ
+			  	   , A.RQST_SQ
+			  	   , A.TR_SQ
+			  	   , A.ERR_CNTN
+			  	   , A.LAST_DECD_SQ
+				FROM IBIMS231B A															/* 딜승인결재기본		*/
+			  	   , IBIMS232B B															/* 딜승인결재담당자내역	*/
+			  	   , (SELECT DEAL_NO, DEAL_NM FROM IBIMS101B GROUP BY DEAL_NO, DEAL_NM) C	/* 딜기본정보			*/
+			   WHERE A.DECD_SN			= B.DECD_SN
+			     AND A.APVL_RQST_SQ		= B.APVL_RQST_SQ
+			     AND A.DEAL_NO			= C.DEAL_NO
+			   <if test='chrrEno != null and chrrEno !=""'>
+				 AND A.CHRR_ENO			= #{chrrEno}
+			   </if>
+			   <if test='apvlRqstPEno != null and apvlRqstPEno !=""'>
+				 AND A.APVL_RQST_P_ENO	= #{apvlRqstPEno}
+			   </if>
+			   <if test='decdStepDcd != ""'>
+				 AND A.DECD_STEP_DCD	= #{decdStepDcd}
+			   </if>
+			 ) T
+	</select>
+	
+	<select id='inqIBMS232B' parameterType="com.nanuri.rams.business.common.vo.TB06080SVO$ApvlList" resultType="com.nanuri.rams.business.common.vo.TB06080SVO$GbckList">
+		SELECT DECD_SN
+			 , APVL_RQST_SQ
+			 , DECD_SQ
+			 , DECD_STTS_DCD
+			 , DECD_STTS_NM
+			 , DCFC_ENO
+			 , DCFC_ENM
+			 , DECD_DTM
+			 , DCFC_ANNO_CNTN
+			 , RJCT_YN
+			 , RJCT_RSN_CNTN
+		 FROM (
+			   SELECT A.DECD_SN
+			   		, A.APVL_RQST_SQ
+			   		, A.DECD_SQ
+			   		, A.DECD_STTS_DCD
+			   		, (SELECT Z.CD_VL_NM FROM IBIMS001B A RIGHT JOIN IBIMS002B Z ON A.CMNS_CD_GRP = Z.CMNS_CD_GRP WHERE  A.CMNS_CD_GRP = 'D006' AND Z.CD_VL_ID = A.DECD_STTS_DCD) AS DECD_STTS_NM
+			   		, A.DCFC_ENO
+			   		, (SELECT EMP_NM FROM IBIMS003B WHERE EMPNO = A.DCFC_ENO) AS DCFC_ENM
+			   		, TO_CHAR(A.DECD_DTM, 'YYYYMMDDHH24MISS') AS DECD_DTM
+			   		, A.DCFC_ANNO_CNTN
+			   		, A.RJCT_YN
+			   		, A.RJCT_RSN_CNTN
+			     FROM IBIMS232B A
+			    WHERE A.DECD_SN = #{decdSn}
+			      AND A.APVL_RQST_SQ = #{apvlRqstSq}
+			 ) T
+	</select>
+</mapper>

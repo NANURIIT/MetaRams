@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+	<script th:src="@{js/business/tb/TB04011P.js}"></script>
+	<script th:src="@{js/business/tb/TB08010S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 부실자산 사후관리 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content">
+						<div class="hiddenInfo">
+							<!-- Deal번호 -->
+							<input type="hidden" id="hidden_dealNo" />
+							<!-- 리스크심사구분코드 -->
+							<input type="hidden" id="hidden_mtrDcd" />
+							<!-- 부수안건구분코드 -->
+							<input type="hidden" id="hidden_jdgmDcd" />
+							<!-- 관리이력 sq -->
+							<input type="hidden" id="hidden_tab1_sq" value="0" />
+							<!-- 조사대상 sq -->
+							<input type="hidden" id="hidden_tab2_sq" value="0" />
+							<!-- 법적절차 sq-->
+							<input type="hidden" id="hidden_tab3_sq" value="0" />
+							<!-- 시효관리 sq-->
+							<input type="hidden" id="hidden_tab4_sq" value="0" />
+							<!-- 안건연결 sq-->
+							<input type="hidden" id="hidden_tab5_sq" value="0" />
+						</div>
+						<div class="form-group form-inline row">
+							<div class="col-sm-12 input-group text-right">
+								<label class="col-sm-1 col-form-label">Deal번호</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB08010S_ibDealNo" readonly> 
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03021P('TB08010S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB08010S_ibDealNm" style="width:160px;" disabled>
+									</div>
+								</div>
+								<div class="col-sm-3 text-left">
+									<button class="btn btn-primary" type="button" onclick="TB08010Sjs.getEamList();"><i class="fa fa-search"></i>&nbsp;조회</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 조회결과 -->
+				<div class="ibox ">	
+					<div class="ibox-content">
+						<div id="TB08010S_ibDealList"></div>
+					</div>
+				</div>
+
+				<!-- tab -->
+				<div class="tabs-container">
+					<ul class="nav nav-tabs" role="tablist" id="TB08010S_ramsTab">
+						<li><a class="nav-link" data-toggle="tab" href="#TB08010S_tab-1" onclick="TB08010Sjs.setEamDetailInfo();">관리이력</a></li>
+						<li><a class="nav-link" data-toggle="tab" href="#TB08010S_tab-2" onclick="TB08010Sjs.setEsttDetailInfo();">재산조사</a></li>
+						<li><a class="nav-link" data-toggle="tab" href="#TB08010S_tab-3" onclick="TB08010Sjs.setLglDetailInfo();">법적절차</a></li>
+						<li><a class="nav-link" data-toggle="tab" href="#TB08010S_tab-4" onclick="TB08010Sjs.setEfctDetailInfo();">시효관리</a></li>
+						<!-- <li><a class="nav-link" data-toggle="tab" href="#tab-5" onclick="setCnctDetailInfo();">안건연결</a></li> -->
+					</ul>
+					<div class="tab-content">
+						<!-- 관리이력 -->
+						
+						<div role="tabpanel" id="TB08010S_tab-1" class="tab-pane active">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 사후관리이력</h5>
+											</div>
+											<div class="ibox-content">
+												<!-- <div class="col-sm-12 text-right mb-1">
+													<button class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i>&nbsp;Excel</button>
+												</div> -->
+												<div id="TB08010S_eamDetail"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 사후관리 상세정보</h5>
+											</div>
+											<div class="ibox-content text-right">
+												<div class="form-group row">
+													<label class="col-sm-1 col-form-label">구분</label>
+													<div class="col-sm-2">
+														<select class="form-control" id="TB08010S_F012">
+														</select>
+														<input type="hidden" class="form-control" id="key1">
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-sm-1 col-form-label">관리내용</label>
+													<div class="col-sm-11">
+														<textarea class="form-control" style="height: 80px;" id="TB08010S_evntAftrMngCntnt"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 첨부파일 start -->
+							<div class="col-lg-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 관련자료</h5>
+										<div class="ibox-tools">
+											<div th:fragment="file" id="file-upload">
+												<form id="upload-file-form">
+												    <input type="hidden" id="fileKey1" name="fileKey1">
+													<input type="hidden" id="fileKey2" name="fileKey2" value="*">
+													
+													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
+													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles"><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+													<div style="display: none">
+														<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+									<div class="ibox-content">
+										<table class="table table-bordered">
+											<colgroup>
+												<col style="width: 5%;">
+												<col style="width: 20%;">
+												<col style="width: 5%;">
+												<col style="width: 10%;">
+												<col style="width: 50%;">
+												<col style="width: 30%;">
+											</colgroup>
+											<thead>
+												<tr>
+													<th></th>
+													<th>키1</th>
+													<th>키2</th>
+													<th>일련번호</th>
+													<th>파일명</th>
+													<th>등록일자</th>
+												</tr>
+											</thead>
+											<tbody id="UPLOAD_FileList">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- 첨부파일 end -->
+									<div class="col-sm-12 text-right">
+										<button class="btn btn-default" onclick="TB08010Sjs.tab1BtnReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+										<button class="btn btn-danger" onclick="TB08010Sjs.tab1BtnDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+										<button class="btn btn-success" onclick="TB08010Sjs.tab1BtnSave();"><i class="fa fa-save"></i>&nbsp;저장</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 재산조사 -->
+						<div role="tabpanel" id="TB08010S_tab-2" class="tab-pane">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 조사결과</h5>
+											</div>
+											<div class="ibox-content">
+												<div id="Estt_List"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 재산조사</h5>
+											</div>
+											<div class="ibox-content text-right">
+												<div class="form-group row mb-1">
+													<label class="col-sm-1 col-form-label">조사대상</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB08010S_P010">
+															<!-- 임시 코드 -->
+															<!-- <option value="0" selected>주식발행사</option>
+															<option value="1">펀드발행사</option>
+															<option value="2">차주(일반기업)</option>
+															<option value="3">차주(SPC)</option> -->
+														</select>
+													</div>	
+													<label class="col-sm-1 col-form-label">재산종류</label>
+													<div class="col-sm-3 input-group">	
+														<select class="form-control" id="TB08010S_E029">
+															<!-- 임시 코드 -->
+															<!-- <option value="0" selected>부동산</option>
+															<option value="1">동산</option>
+															<option value="2">채권</option>
+															<option value="3">기타</option> -->
+														</select>
+													</div>	
+													<label class="col-sm-1 col-form-label">실익여부</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="Real_Prft_F">
+															<option value="Y" selected>Y</option>
+															<option value="N">N</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group row mb-2">
+													<label class="col-sm-1 col-form-label">관리내용</label>
+													<div class="col-sm-11 input-group">
+														<textarea class="form-control" style="height: 120px;" id="Estt_Exm_Cntnt"></textarea>
+													</div>
+												</div>
+												<div class="form-group row">	
+													<div class="col-sm-12 text-right mb-1">
+														<button class="btn btn-default" onclick="TB08010Sjs.tab2EsttReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+														<button class="btn btn-danger" onclick="TB08010Sjs.tab2EsttDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+														<button class="btn btn-success" onclick="TB08010Sjs.tab2EsttSave();"><i class="fa fa-save"></i>&nbsp;저장</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 법적절차 -->
+						<div role="tabpanel" id="TB08010S_tab-3" class="tab-pane">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 법적절차이력</h5>
+											</div>
+											<div class="ibox-content">
+												<div id="Lgl_List"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 법적절차 등록</h5>
+											</div>
+											<div class="ibox-content text-right">
+												<div class="form-group row mb-1">
+													<label class="col-sm-1 col-form-label">법적절차대상</label>
+													<div class="col-sm-2 input-group">	
+														<select class="form-control" id="TB08010S_E029_2">
+															<!-- 임시 코드 -->
+															<!-- <option value="0" selected>주식발행사</option>
+															<option value="1">펀드발행사</option>
+															<option value="2">차주(일반기업)</option>
+															<option value="3">차주(SPC)</option> -->
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label">법적절차종류</label>
+													<div class="col-sm-2 input-group">
+														<select class="form-control" id="TB08010S_L002">
+															<!-- 임시 코드 -->
+															<!--  <option value="0" selected>가압류</option>
+															<option value="1">지급명령</option>
+															<option value="2">소송</option>
+															<option value="3">기타</option> -->
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label">법원정보</label>
+													<div class="col-sm-2 input-group">	
+														<input type="text" class="form-control" id="Crtrm_Info">
+													</div>
+													<label class="col-sm-1 col-form-label">사건번호</label>
+													<div class="col-sm-2 input-group">
+														<input type="text" class="form-control" id="Acdnt_No">
+													</div>
+												</div>
+												<div class="form-group row  mb-2">	
+													<label class="col-sm-1 col-form-label">법적내용</label>
+													<div class="col-sm-11 input-group">	
+														<textarea class="form-control" style="height: 120px;" id="Lgl_Cnt"></textarea>
+													</div>
+												</div>	
+												<div class="form-group row">
+													<div class="col-sm-12 text-right mb-1">
+														<button class="btn btn-default" onclick="TB08010Sjs.tab3LglReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+														<button class="btn btn-danger" onclick="TB08010Sjs.tab3LglDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+														<button class="btn btn-success" onclick="TB08010Sjs.tab3LglSave();"><i class="fa fa-save"></i>&nbsp;저장</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 시효관리 -->
+						<div role="tabpanel" id="TB08010S_tab-4" class="tab-pane">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 시효관리</h5>
+											</div>
+											<div class="ibox-content">
+												<div id="Efct_List"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 시효정보</h5>
+											</div>
+											<div class="ibox-content text-right">
+												<!-- 1 Line -->
+												<div class="form-group row mb-1">
+													<label class="col-sm-1 col-form-label">시효기산일</label>
+													<span class="col-sm-2 input-group date"> 
+														<input type="text" class="form-control" name="start" value="" id="Efct_Dp_Strt" placeholder="yyyy-mm-dd"oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</span> 
+													<label class="col-sm-1 col-form-label">시효만료일</label>
+													<span  class="col-sm-2 input-group date">
+														<input type="text" class="form-control" name="end" value="" id="Efct_Dp_End" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</span>
+												</div>
+												<!-- 2 Line -->
+												<div class="form-group row mb-2">
+													<label class="col-sm-1 col-form-label">시효관리 내용</label>
+													<div class="col-sm-11">
+														<textarea class="form-control" style="height: 120px;" id="Efct_Cnt"></textarea>
+													</div>
+												</div>
+												<!-- 3 Line -->
+												<div class="form-group row">
+													<div class="col-sm-12 text-right mb-1">
+														<button class="btn btn-default" onclick="TB08010Sjs.tab4EfctReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+														<button class="btn btn-danger" onclick="TB08010Sjs.tab4EfctDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+														<button class="btn btn-success" onclick="TB08010Sjs.tab4EfctSave();"><i class="fa fa-save"></i>&nbsp;저장</button>
+													</div>
+												</div>
+											</div>
+											<!-- /ibox-content -->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 관리직원 -->
+						<!-- <div role="tabpanel" id="TB08010S_tab-5" class="tab-pane">
+							<div class="panel-body" id="tab5body">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 안건 연결 이력</h5>
+											</div>
+											<div class="ibox-content">
+												<div id="cnct_List"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 관련 안건 연결</h5>
+											</div>
+											<div class="ibox-content text-right">
+												<div class="form-group row mb-2">
+													<label class="col-sm-1 col-form-label">Deal 번호</label> 
+													<div class="col-sm-2 input-group">
+														<input type="text" class="form-control" id="TB08010S_cnct_ibDealNo" readonly>
+														<input type="hidden" class="form-control" id="TB08010S_cnct_riskInspctCcd">
+														<input type="hidden" class="form-control" id="TB08010S_cnct_lstCCaseCcd">
+														<span class="input-group-append">
+															<button type="button" id="open_modal_AS02020P_cnct" class="btn btn-default" onclick="callTB04011P('TB08010S_cnct');"><i class="fa fa-search"></i></button>
+														</span>
+													</div>
+													<label class="col-sm-1 col-form-label">내용</label>
+													<div class="col-sm-8 input-group">
+														<input type="text" id="TB08010S_cnct_etcCntnt" placeholder="" class="form-control">
+													</div>			
+												</div>
+												<div class="form-group row">
+													<div class="col-sm-12 text-right mb-1">
+														<button class="btn btn-default" id="tab5ResetBtn" onclick="tab5CnctReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+														<button class="btn btn-danger" id="tab5DeleteBtn" onclick="tab5CnctDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+														<button class="btn btn-success" id="tab5SaveBtn" onclick="tab5CnctSave();"><i class="fa fa-save"></i>&nbsp;저장</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div> -->
+						<!-- 신용사건발생 -->
+						<!-- <div role="tabpanel" id="TB08010S_tab-6" class="tab-pane">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-7 text-right">
+										<form method="get">
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">기준일자</label>
+												<div class="col-sm-3 input-group date">
+													<input type="text" class="form-control" value="">
+													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												</div>
+												<div class="col-sm-2 text-left">
+													<button class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;조회</button>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="col-lg-12">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th>NO</th>
+													<th>법인명</th>
+													<th>법인번호</th>
+													<th>구분</th>
+													<th>상세항목</th>
+													<th>체크기준</th>
+													<th>기준값</th>
+													<th>결과</th>
+													<th>내역</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>1</td>
+													<td>2</td>
+													<td>3</td>
+													<td>4</td>
+													<td>5</td>
+													<td>6</td>
+													<td>7</td>
+													<td>8</td>
+													<td>9</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- div row -->
+	</div>
+</th:block>
+
+</html>

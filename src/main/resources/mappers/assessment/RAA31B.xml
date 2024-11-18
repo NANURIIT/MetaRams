@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA31BMapper">
+
+	<!-- 20230824 -->
+	<!-- select -->
+	<select id="selectRaa31b" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO$SearchParam"  resultType="com.nanuri.rams.business.common.dto.RAA31BDTO">
+		SELECT OBLG_PFRM_CCD
+			 , IB_DEAL_NO
+			 , RISK_INSPCT_CCD
+			 , LST_C_CASE_CCD
+			 , ITEM_SQ
+			 , RPR_PRGRS_ST_CD
+			 , APLC_END_DT_DT
+			 , ACHV_DT
+			 , RPR_RSN_CNTNT
+			 , OBLG_AMT
+			 , RPY_DT
+			 , RPY_AMT
+			 , OBLG_CNTNT
+			 , PFRM_DT
+			 , PFRM_PLAN_CNTNT
+			 , PRCS_PLAN_CNTNT1
+			 , PRCS_PLAN_CNTNT2
+			 , VAL_SPCL_CNTNT
+			 , APRV_DY_TM1
+			 , APRV_P_ENO1
+			 , APRV_DY_TM2
+			 , APRV_P_ENO2
+			 , APRV_DY_TM3
+			 , APRV_P_ENO3
+			 , APRV_DY_TM4
+			 , APRV_P_ENO4
+			 , APRV_DY_TM5
+			 , APRV_P_ENO5
+			 , FNL_MOFY_DY_TM
+			 , FNL_MDEY_P_ENO
+			 , HNDL_DY_TM
+			 , HNDL_DPRT_CD
+			 , HNDL_P_ENO
+			 , WRAP_GDS_CD
+			 , WRAP_GDS_NM
+			 , RPY_F
+			 , STD_YR_MM
+			 , BSNS_OUTLN_HNGL
+			 , CNST_CMPNY_NM
+			 , MAIN_PRGRS_STTN_CNTNT
+			 , PFRM_CNTNT
+			 , N_PFRM_RSN_CNTNT
+		  FROM RAA31B
+		 WHERE 1=1
+		   AND OBLG_PFRM_CCD	= #{oblgPfrmCcd}
+		   AND IB_DEAL_NO		= #{ibDealNo}
+		   AND RISK_INSPCT_CCD	= #{riskInspctCcd}
+		   AND LST_C_CASE_CCD	= #{lstCCaseCcd}
+		   AND ITEM_SQ			= #{itemSq}
+	</select>
+	
+	<!-- insert -->
+	<insert id="insertRaa31b" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO$SearchParam">
+		INSERT INTO RAA31B
+		       (
+		          OBLG_PFRM_CCD
+		        , IB_DEAL_NO
+		        , RISK_INSPCT_CCD
+		        , LST_C_CASE_CCD
+		        , ITEM_SQ
+		       )
+		VALUES (
+		          #{oblgPfrmCcd}
+		        , #{ibDealNo}
+		        , #{riskInspctCcd}
+		        , #{lstCCaseCcd}
+		        , #{itemSq}
+		       )
+	</insert>
+	
+	<!-- update -->
+	<update id="updateRaa31b" parameterType="com.nanuri.rams.business.common.dto.RAA31BDTO">
+		UPDATE RAA31B
+		   SET RPR_PRGRS_ST_CD       = #{rprPrgrsStCd      }
+			 , APLC_END_DT_DT        = #{aplcEndDtDt       }
+			 , ACHV_DT               = #{achvDt            }
+			 , RPR_RSN_CNTNT         = #{rprRsnCntnt       }
+			 , OBLG_AMT              = #{oblgAmt           }
+			 , RPY_DT                = #{rpyDt             }
+			 , RPY_AMT               = #{rpyAmt            }
+			 , OBLG_CNTNT            = #{oblgCntnt         }
+			 , PFRM_DT               = #{pfrmDt            }
+			 , PFRM_PLAN_CNTNT       = #{pfrmPlanCntnt     }
+			 , PRCS_PLAN_CNTNT1      = #{prcsPlanCntnt1    }
+			 , PRCS_PLAN_CNTNT2      = #{prcsPlanCntnt2    }
+			 , VAL_SPCL_CNTNT        = #{valSpclCntnt      }
+			 , APRV_DY_TM1           = #{aprvDyTm1         }
+			 , APRV_P_ENO1           = #{aprvPEno1         }
+			 , APRV_DY_TM2           = #{aprvDyTm2         }
+			 , APRV_P_ENO2           = #{aprvPEno2         }
+			 , APRV_DY_TM3           = #{aprvDyTm3         }
+			 , APRV_P_ENO3           = #{aprvPEno3         }
+			 , APRV_DY_TM4           = #{aprvDyTm4         }
+			 , APRV_P_ENO4           = #{aprvPEno4         }
+			 , APRV_DY_TM5           = #{aprvDyTm5         }
+			 , APRV_P_ENO5           = #{aprvPEno5         }
+			 , FNL_MOFY_DY_TM        = #{fnlMofyDyTm       }
+			 , FNL_MDEY_P_ENO        = #{fnlMdeyPEno       }
+			 , HNDL_DY_TM            = CURRENT_TIMESTAMP()
+			 , HNDL_DPRT_CD          = #{hndlDprtCd        }
+			 , HNDL_P_ENO            = #{hndlPEno          }
+			 , WRAP_GDS_CD           = #{wrapGdsCd         }
+			 , WRAP_GDS_NM           = #{wrapGdsNm         }
+			 , RPY_F                 = #{rpyF              }
+			 , STD_YR_MM             = #{stdYrMm           }
+			 , BSNS_OUTLN_HNGL       = #{bsnsOutlnHngl     }
+			 , CNST_CMPNY_NM         = #{cnstCmpnyNm       }
+			 , MAIN_PRGRS_STTN_CNTNT = #{mainPrgrsSttnCntnt}
+			 , PFRM_CNTNT            = #{pfrmCntnt         }
+			 , N_PFRM_RSN_CNTNT      = #{nPfrmRsnCntnt     }
+		 WHERE 1=1
+		   AND OBLG_PFRM_CCD         = #{oblgPfrmCcd       }
+		   AND IB_DEAL_NO            = #{ibDealNo          }
+		   AND RISK_INSPCT_CCD       = #{riskInspctCcd     }
+		   AND LST_C_CASE_CCD        = #{lstCCaseCcd       }
+		   AND ITEM_SQ               = #{itemSq            }
+	</update>
+	
+	<!-- 셀다운의무 -->
+	<!-- 셀다운의무 조회 -->
+	<select id="getOpList" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO" resultType="com.nanuri.rams.business.common.vo.RAA31BVO">
+		SELECT IB_DEAL_NO									AS IB_DEAL_NO			<!-- IBDEAL번호 -->
+			 , RISK_INSPCT_CCD								AS RISK_INSPCT_CCD		<!-- 리스크심사구분코드 -->
+			 , LST_C_CASE_CCD								AS LST_C_CASE_CCD		<!-- 부수안건구분코드 -->
+			 , ITEM_SQ										AS ITEM_SQ				<!-- 항목일련번호 -->
+			 , FORMAT(OBLG_AMT, '#,###')					AS OBLG_AMT				<!-- 의무금액 -->
+			 , DATE_FORMAT(APLC_END_DT_DT, '%Y-%m-%d')		AS APLC_END_DT_DT		<!-- 적용기한일자 -->
+			 , DATE_FORMAT(RPY_DT, '%Y-%m-%d')				AS RPY_DT				<!-- 해소일자 -->
+			 , FORMAT(RPY_AMT, '#,###')						AS RPY_AMT				<!-- 해소금액 -->
+			 , FORMAT((OBLG_AMT - RPY_AMT), '#,###') 		AS UNPAY_AMT			<!-- 미해소금액 -->
+			 , HNDL_DY_TM									AS HNDL_DY_TM			<!-- 처리일시 -->
+   	         , HNDL_DPRT_CD									AS HNDL_DPRT_CD			<!-- 처리부점코드 -->
+   	         , HNDL_P_ENO									AS HNDL_P_ENO			<!-- 처리자사번 -->
+		  FROM RAA31B																<!-- 의무이행계획정보 -->
+		 WHERE IB_DEAL_NO 									= #{ibDealNo}			<!-- IBDEAL번호 -->
+    	   AND RISK_INSPCT_CCD 								= #{riskInspctCcd} 		<!-- 리스크심사구분코드 -->
+    	   AND LST_C_CASE_CCD								= #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+    	   AND OBLG_PFRM_CCD								= '1'					<!-- 의무이행계획정보 -->
+    	 ORDER BY ITEM_SQ DESC 
+	</select>
+	
+	<!-- 셀다운의무 등록 -->
+	<insert id="registOpInfo" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO">
+		<selectKey keyProperty="itemSq" resultType="int" order="BEFORE">
+	   		SELECT IFNULL(MAX(ITEM_SQ)+ 1, 1) 	 AS ITEM_SQ			<!-- 항목일련번호+1 -->
+	   		  FROM RAA31B 											<!-- 의무이행계획정보 -->
+	   		 WHERE IB_DEAL_NO					 = #{ibDealNo}		<!-- IBDEAL번호 -->
+	   		   AND RISK_INSPCT_CCD 				 = #{riskInspctCcd}	<!-- 리스크심사구분코드 -->
+	   		   AND LST_C_CASE_CCD 				 = #{lstCCaseCcd}	<!-- 부수안건구분코드 -->
+	    </selectKey>
+		INSERT INTO RAA31B											<!-- 의무이행계획정보 -->
+		 	   (
+		 	    IB_DEAL_NO											<!-- IBDEAL번호 -->
+    	        , RISK_INSPCT_CCD									<!-- 리스크심사구분코드 -->
+    	        , LST_C_CASE_CCD									<!-- 부수안건구분코드 -->
+    	        , OBLG_PFRM_CCD										<!-- 의무이행구분코드 -->
+    	        , ITEM_SQ											<!-- 항목일련번호 -->
+    	        , APLC_END_DT_DT									<!-- 적용기한일자 -->
+    	        , OBLG_AMT											<!-- 의무금액 -->
+    	        , RPY_DT											<!-- 해소일자 -->
+    	        , RPY_AMT											<!-- 해소금액 -->
+    	        , HNDL_DY_TM										<!-- 처리일시 -->
+    	        , HNDL_DPRT_CD										<!-- 처리부점코드 -->
+    	        , HNDL_P_ENO										<!-- 처리자사번 -->
+		 	   )
+		VALUES (
+				#{ibDealNo}											<!-- IBDEAL번호 -->
+				, #{riskInspctCcd}									<!-- 리스크심사구분코드 -->
+				, #{lstCCaseCcd}									<!-- 부수안건구분코드 -->
+				, '1'												<!-- 의무이행구분코드 -->
+				, #{itemSq}											<!-- 항목일련번호 -->
+				, #{aplcEndDtDt}									<!-- 적용기한일자 -->
+				, REPLACE(#{oblgAmt}, ',', '') * 1					<!-- 의무금액 -->
+				, #{rpyDt}											<!-- 해소일자 -->
+				, REPLACE(#{rpyAmt}, ',', '') * 1					<!-- 해소금액 -->
+				, CURRENT_TIMESTAMP()								<!-- 처리일시 -->
+    			, #{hndlDprtCd}										<!-- 처리부점코드 -->
+    			, #{hndlPEno}										<!-- 처리자사번 -->
+			   )
+	</insert>
+	
+	<!-- 셀다운의무 수정 -->
+	<update id="updateOpInfo" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO">
+		UPDATE RAA31B														<!-- 의무이행계획정보 -->
+		   SET APLC_END_DT_DT			= #{aplcEndDtDt}					<!-- 적용기한일자 -->
+			 , OBLG_AMT					= REPLACE(#{oblgAmt}, ',', '') * 1	<!-- 의무금액 -->
+			 , RPY_DT					= #{rpyDt}							<!-- 해소일자 -->
+			 , RPY_AMT					= REPLACE(#{rpyAmt}, ',', '') * 1	<!-- 해소금액 -->
+			 , HNDL_DY_TM				= CURRENT_TIMESTAMP()				<!-- 처리일시 -->
+    	     , HNDL_DPRT_CD				= #{hndlDprtCd}						<!-- 처리부점코드 -->
+    	     , HNDL_P_ENO				= #{hndlPEno}						<!-- 처리자사번 --> 
+		 WHERE IB_DEAL_NO 				= #{ibDealNo}						<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD 			= #{riskInspctCcd} 					<!-- 리스크심사구분코드 -->
+    	   AND LST_C_CASE_CCD			= #{lstCCaseCcd}					<!-- 부수안건구분코드 -->
+		   AND ITEM_SQ	  				= #{itemSq}							<!-- 항목일련번호 -->
+		   AND OBLG_PFRM_CCD 			= '1'								<!-- 의무이행구분코드 -->
+	</update>
+	
+	<!-- 셀다운의무 삭제 -->
+	<delete id="deleteOpInfo" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO">
+		DELETE FROM RAA31B
+		 WHERE IB_DEAL_NO 				= #{ibDealNo}				<!-- IBDEAL번호 -->
+		   AND ITEM_SQ	  				= #{itemSq}					<!-- 항목일련번호 -->
+		   AND OBLG_PFRM_CCD 			= '1'						<!-- 의무이행구분코드 -->
+	</delete>
+	
+	<!-- 기타의무 -->
+	<!-- 기타의무 조회 -->
+	<select id="getEtcList" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO" resultType="com.nanuri.rams.business.common.vo.RAA31BVO">
+		SELECT A.IB_DEAL_NO									AS IB_DEAL_NO			<!-- IBDEAL번호 -->
+			 , A.RISK_INSPCT_CCD							AS RISK_INSPCT_CCD		<!-- 리스크심사구분코드 -->
+			 , A.LST_C_CASE_CCD								AS LST_C_CASE_CCD		<!-- 부수안건구분코드 -->
+			 , A.ITEM_SQ									AS ITEM_SQ				<!-- 항목일련번호 -->
+			 , DATE_FORMAT(A.APLC_END_DT_DT, '%Y-%m-%d')	AS APLC_END_DT_DT		<!-- 적용기한일자 -->
+			 , DATE_FORMAT(A.RPY_DT, '%Y-%m-%d')			AS RPY_DT				<!-- 해소일자 -->
+			 , A.OBLG_CNTNT									AS OBLG_CNTNT			<!-- 의무내용 -->
+			 , A.RPY_F										AS RPY_F				<!-- 해소여부 -->
+			 , A.HNDL_DY_TM									AS HNDL_DY_TM			<!-- 처리일시 -->
+   	         , A.HNDL_DPRT_CD								AS HNDL_DPRT_CD			<!-- 처리부점코드 -->
+   	         , A.HNDL_P_ENO									AS HNDL_P_ENO			<!-- 처리자사번 -->
+		  FROM RAA31B A																<!-- 의무이행계획정보 -->
+		 WHERE A.IB_DEAL_NO 								= #{ibDealNo}			<!-- IBDEAL번호 -->
+    	   AND A.RISK_INSPCT_CCD 							= #{riskInspctCcd} 		<!-- 리스크심사구분코드 -->
+    	   AND A.LST_C_CASE_CCD								= #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+    	   AND A.OBLG_PFRM_CCD								= '2'					<!-- 의무이행계획정보 -->
+    	 ORDER BY ITEM_SQ DESC 
+	</select>
+	
+	<!-- 기타의무 등록 -->
+	<insert id="registEtcInfo" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO">
+		<selectKey keyProperty="itemSq" resultType="int" order="BEFORE">
+	   		SELECT IFNULL(MAX(ITEM_SQ)+ 1, 1) 	AS ITEM_SQ				<!-- 항목일련번호+1 -->
+	   		  FROM RAA31B 												<!-- 의무이행계획정보 -->
+	   		 WHERE IB_DEAL_NO					= #{ibDealNo}			<!-- IBDEAL번호 -->
+	   		   AND RISK_INSPCT_CCD 				= #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+	   		   AND LST_C_CASE_CCD 				= #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+	    </selectKey>
+		INSERT INTO RAA31B									<!-- 의무이행계획정보 -->
+		 	   (
+		 	    IB_DEAL_NO									<!-- IBDEAL번호 -->
+    	        , RISK_INSPCT_CCD							<!-- 리스크심사구분코드 -->
+    	        , LST_C_CASE_CCD							<!-- 부수안건구분코드 -->
+    	        , OBLG_PFRM_CCD								<!-- 의무이행구분코드 -->
+    	        , ITEM_SQ									<!-- 항목일련번호 -->
+    	        , APLC_END_DT_DT							<!-- 적용기한일자 -->
+    	        , RPY_DT									<!-- 해소일자 -->
+    	       	, OBLG_CNTNT								<!-- 의무내용 -->
+    	       	, OBLG_AMT									<!-- 의무금액 -->
+    	       	, RPY_AMT									<!-- 해소금액 -->
+    	       	, RPY_F										<!-- 해소여부 -->
+    	        , HNDL_DY_TM								<!-- 처리일시 -->
+    	        , HNDL_DPRT_CD								<!-- 처리부점코드 -->
+    	        , HNDL_P_ENO								<!-- 처리자사번 -->
+		 	   )
+		VALUES (
+				#{ibDealNo}									<!-- IBDEAL번호 -->
+				, #{riskInspctCcd}							<!-- 리스크심사구분코드 -->
+				, #{lstCCaseCcd}							<!-- 부수안건구분코드 -->
+				, '2'										<!-- 의무이행구분코드 -->
+				, #{itemSq}									<!-- 항목일련번호 -->
+				, #{aplcEndDtDt}							<!-- 적용기한일자 -->
+				, #{rpyDt}									<!-- 해소일자 -->
+				, #{oblgCntnt}								<!-- 의무내용 -->
+				, '0'										<!-- 의무금액 -->
+				, '0'										<!-- 해소금액 -->
+				, #{rpyF}
+				, CURRENT_TIMESTAMP()						<!-- 처리일시 -->
+    			, #{hndlDprtCd}								<!-- 처리부점코드 -->
+    			, #{hndlPEno}								<!-- 처리자사번 -->
+			   )
+	</insert>
+	
+	<!-- 기타의무 수정 -->
+	<update id="updateEtcInfo" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO">
+		UPDATE RAA31B												<!-- 의무이행계획정보 -->
+		   SET APLC_END_DT_DT			= #{aplcEndDtDt}			<!-- 적용기한일자 -->
+			 , RPY_DT					= #{rpyDt}					<!-- 해소일자 -->
+			 , OBLG_CNTNT				= #{oblgCntnt}				<!-- 의무내용 -->
+			 , RPY_F					= #{rpyF}
+			 , HNDL_DY_TM				= CURRENT_TIMESTAMP()		<!-- 처리일시 -->
+    	     , HNDL_DPRT_CD				= #{hndlDprtCd}				<!-- 처리부점코드 -->
+    	     , HNDL_P_ENO				= #{hndlPEno}				<!-- 처리자사번 --> 
+		 WHERE IB_DEAL_NO 				= #{ibDealNo}				<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD 			= #{riskInspctCcd} 			<!-- 리스크심사구분코드 -->
+    	   AND LST_C_CASE_CCD			= #{lstCCaseCcd}			<!-- 부수안건구분코드 -->
+		   AND ITEM_SQ	  				= #{itemSq}					<!-- 항목일련번호 -->
+		   AND OBLG_PFRM_CCD 			= '2'						<!-- 의무이행구분코드 -->
+	</update>
+	
+	<!-- 기타의무 삭제 -->
+	<delete id="deleteEtcInfo" parameterType="com.nanuri.rams.business.common.vo.RAA31BVO">
+		DELETE FROM RAA31B											<!-- 의무이행계획정보 -->
+		 WHERE IB_DEAL_NO 				= #{ibDealNo}				<!-- IBDEAL번호 -->
+		   AND ITEM_SQ	  				= #{itemSq}					<!-- 항목일련번호 -->
+		   AND OBLG_PFRM_CCD 			= '2'						<!-- 의무이행구분코드 -->
+	</delete>
+	
+	    <!--    승인조건 미이행 향후계획내용 저장    -->
+
+    <!--  31B테이블 레코드 조회    -->
+    <select id="selectOneRaa31b">
+        SELECT COUNT(*)
+          FROM RAA31B
+         WHERE STD_YR_MM        = #{stdYrMm}
+           AND OBLG_PFRM_CCD    = #{oblgPfrmCcd}
+           AND IB_DEAL_NO       = #{ibDealNo}
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+           AND ITEM_SQ          = #{itemSq}
+    </select>
+<!-- 
+    <update id="updateRaa31b">
+        UPDATE RAA31B
+           SET RPR_PRGRS_ST_CD          = '10'
+             , BSNS_OUTLN_HNGL          = #{bsnsOutlnHngl}
+             , CNST_CMPNY_NM            = #{cnstCmpnyNm}
+             , MAIN_PRGRS_STTN_CNTNT    = #{mainPrgrsSttnCntnt}
+             , ACHV_DT                  = #{achvDt}
+             , N_PFRM_RSN_CNTNT         = #{nPfrmRsnCntnt}
+             , PFRM_PLAN_CNTNT          = #{pfrmPlanCntnt}
+             , PRCS_PLAN_CNTNT1         = #{prcsPlanCntnt1}
+             , PRCS_PLAN_CNTNT2         = #{prcsPlanCntnt2}
+             , VAL_SPCL_CNTNT           = #{valSpclCntnt}
+             , APRV_DY_TM1              = NULL
+             , APRV_P_ENO1              = NULL
+             , APRV_DY_TM2              = NULL
+             , APRV_P_ENO2              = NULL
+             , APRV_DY_TM3              = NULL
+             , APRV_P_ENO3              = NULL
+             , APRV_DY_TM4              = NULL
+             , APRV_P_ENO4              = NULL
+             , HNDL_DY_TM               = SYSDATE()
+             , HNDL_DPRT_CD             = #{hndlDprtCd}
+             , HNDL_P_ENO 		        = #{hndlPEno}
+         WHERE STD_YR_MM                = #{stdYrMm}
+           AND OBLG_PFRM_CCD            = #{oblgPfrmCcd}
+           AND IB_DEAL_NO               = #{ibDealNo}
+           AND RISK_INSPCT_CCD          = #{riskInspctCcd}
+           AND LST_C_CASE_CCD           = #{lstCCaseCcd}
+           AND ITEM_SQ                  = #{itemSq}
+    </update> -->
+
+    <!-- <insert id="insertRaa31b">
+        INSERT INTO RAA31B
+             (
+               STD_YR_MM
+             , OBLG_PFRM_CCD
+             , IB_DEAL_NO
+             , RISK_INSPCT_CCD
+             , LST_C_CASE_CCD
+             , ITEM_SQ
+             , RPR_PRGRS_ST_CD
+             , BSNS_OUTLN_HNGL
+             , CNST_CMPNY_NM
+             , MAIN_PRGRS_STTN_CNTNT
+             , ACHV_DT
+             , N_PFRM_RSN_CNTNT
+             , PFRM_PLAN_CNTNT
+             , PRCS_PLAN_CNTNT1
+             , PRCS_PLAN_CNTNT2
+             , VAL_SPCL_CNTNT
+             , HNDL_DY_TM
+             , HNDL_DPRT_CD
+             , HNDL_P_ENO
+             )
+        VALUES
+             (
+               #{stdYrMm}
+             , #{oblgPfrmCcd}
+             , #{ibDealNo}
+             , #{riskInspctCcd}
+             , #{lstCCaseCcd}
+             , #{itemSq}
+             , '10'
+             , #{bsnsOutlnHngl}
+             , #{cnstCmpnyNm}
+             , #{mainPrgrsSttnCntnt}
+             , #{achvDt}
+             , #{nPfrmRsnCntnt}
+             , #{pfrmPlanCntnt}
+             , #{prcsPlanCntnt1}
+             , #{prcsPlanCntnt2}
+             , #{valSpclCntnt}
+             , SYSDATE()
+             , #{hndlDprtCd}
+             , #{hndlPEno}
+             )
+    </insert> -->
+    <!--    승인조건 미이행 향후계획내용 저장 END   -->
+
+
+    <!--    승인조건 미이행 향후계획내용 저장(심사역)    -->
+    <update id="updateRaa31bJudge">
+        UPDATE RAA31B
+           SET BSNS_OUTLN_HNGL            = #{bsnsOutlnHngl}
+             , CNST_CMPNY_NM              = #{cnstCmpnyNm}
+             , MAIN_PRGRS_STTN_CNTNT      = #{mainPrgrsSttnCntnt}
+             , ACHV_DT                    = #{achvDt}
+             , N_PFRM_RSN_CNTNT           = #{nPfrmRsnCntnt}
+             , PFRM_PLAN_CNTNT            = #{pfrmPlanCntnt}
+             , PRCS_PLAN_CNTNT1           = #{prcsPlanCntnt1}
+             , PRCS_PLAN_CNTNT2           = #{prcsPlanCntnt2}
+             , VAL_SPCL_CNTNT             = #{valSpclCntnt}
+             , HNDL_DY_TM                 = SYSDATE()
+             , HNDL_DPRT_CD               = #{hndlDprtCd}
+             , HNDL_P_ENO 		          = #{hndlPEno}
+         WHERE STD_YR_MM                  = #{stdYrMm}
+           AND OBLG_PFRM_CCD              = #{oblgPfrmCcd}
+           AND IB_DEAL_NO                 = #{ibDealNo}
+           AND RISK_INSPCT_CCD            = #{riskInspctCcd}
+           AND LST_C_CASE_CCD             = #{lstCCaseCcd}
+           AND ITEM_SQ                    = #{itemSq}
+    </update>
+
+    <insert id="insertRaa31bJudge">
+        INSERT INTO RAA31B
+             (
+               STD_YR_MM
+             , OBLG_PFRM_CCD
+             , IB_DEAL_NO
+             , RISK_INSPCT_CCD
+             , LST_C_CASE_CCD
+             , ITEM_SQ
+             , BSNS_OUTLN_HNGL
+             , CNST_CMPNY_NM
+             , MAIN_PRGRS_STTN_CNTNT
+             , ACHV_DT
+             , N_PFRM_RSN_CNTNT
+             , PFRM_PLAN_CNTNT
+             , PRCS_PLAN_CNTNT1
+             , PRCS_PLAN_CNTNT2
+             , VAL_SPCL_CNTNT
+             , HNDL_DY_TM
+             , HNDL_DPRT_CD
+             , HNDL_P_ENO
+             )
+        VALUES
+             (
+               #{stdYrMm}
+             , #{oblgPfrmCcd}
+             , #{ibDealNo}
+             , #{riskInspctCcd}
+             , #{lstCCaseCcd}
+             , #{itemSq}
+             , #{bsnsOutlnHngl}
+             , #{cnstCmpnyNm}
+             , #{mainPrgrsSttnCntnt}
+             , #{achvDt}
+             , #{nPfrmRsnCntnt}
+             , #{pfrmPlanCntnt}
+             , #{prcsPlanCntnt1}
+             , #{prcsPlanCntnt2}
+             , #{valSpclCntnt}
+             , SYSDATE()
+             , #{hndlDprtCd}
+             , #{hndlPEno}
+             )
+    </insert>
+    <!--    승인조건 미이행 향후계획내용 저장(심사역) END   -->
+	
+    <!--    승인조건 미이행 승인요청    -->
+    <update id="updateRcgRqs">
+        UPDATE RAA31B
+           SET RPR_PRGRS_ST_CD  = '20'
+             , APRV_DY_TM1      = SYSDATE()				/* 결재일시1 */
+             , APRV_P_ENO1      = #{hndlPEno}			/* 결재자사번1 */
+             , HNDL_DY_TM       = SYSDATE()
+             , HNDL_DPRT_CD     = #{hndlDprtCd}
+             , HNDL_P_ENO 		= #{hndlPEno}
+         WHERE STD_YR_MM 		= #{stdYrMm}			/* 기준년월 */
+           AND OBLG_PFRM_CCD 	= #{oblgPfrmCcd}		/* 의무이행구분코드 */
+           AND IB_DEAL_NO 		= #{ibDealNo}			/* Deal번호 */
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}		/* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}		/* 부수안건구분코드 */
+           AND ITEM_SQ          = #{itemSq}				/* 항목일련번호 */
+    </update>
+
+    <!--    승인조건 미이행 반송    -->
+    <update id="updateRcgRtvl">
+        UPDATE RAA31B
+           SET RPR_PRGRS_ST_CD      = '11'
+             , APRV_DY_TM1          = NULL
+             , APRV_P_ENO1          = NULL
+             , APRV_DY_TM2          = NULL
+             , APRV_P_ENO2          = NULL
+             , APRV_DY_TM3          = NULL
+             , APRV_P_ENO3          = NULL
+             , APRV_DY_TM4          = NULL
+             , APRV_P_ENO4          = NULL
+             , HNDL_DY_TM           = SYSDATE()
+             , HNDL_DPRT_CD         = #{hndlDprtCd}
+             , HNDL_P_ENO 		    = #{hndlPEno}
+         WHERE STD_YR_MM 		    = #{stdYrMm}			/* 기준년월 */
+           AND OBLG_PFRM_CCD 	    = #{oblgPfrmCcd}		/* 의무이행구분코드 */
+           AND IB_DEAL_NO 		    = #{ibDealNo}			/* Deal번호 */
+           AND RISK_INSPCT_CCD      = #{riskInspctCcd}		/* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD       = #{lstCCaseCcd}		/* 부수안건구분코드 */
+           AND ITEM_SQ              = #{itemSq}				/* 항목일련번호 */
+    </update>
+
+    <!--    승인조건 미이행 승인    -->
+    <update id="updateRcg">
+        UPDATE RAA31B
+           SET RPR_PRGRS_ST_CD      = '30'
+             , APRV_DY_TM2          = SYSDATE()				/* 결재일시2 */
+             , APRV_P_ENO2          = #{hndlPEno}			/* 결재자사번2 */
+             , HNDL_DY_TM           = SYSDATE()
+             , HNDL_DPRT_CD         = #{hndlDprtCd}
+             , HNDL_P_ENO 		    = #{hndlPEno}
+         WHERE STD_YR_MM 		    = #{stdYrMm}			/* 기준년월 */
+           AND OBLG_PFRM_CCD 	    = #{oblgPfrmCcd}		/* 의무이행구분코드 */
+           AND IB_DEAL_NO 		    = #{ibDealNo}			/* Deal번호 */
+           AND RISK_INSPCT_CCD      = #{riskInspctCcd}		/* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD       = #{lstCCaseCcd}		/* 부수안건구분코드 */
+           AND ITEM_SQ              = #{itemSq}				/* 항목일련번호 */
+    </update>
+
+    <!--    승인조건 미이행 승인(대체투자관리부 부서장) -> 대체투자관리부 부서장은 바로 진행상태완료처리    -->
+    <update id="updateAnivstMngDprtRcg">
+        UPDATE RAA31B
+           SET RPR_PRGRS_ST_CD      = '50'
+             , APRV_DY_TM2          = SYSDATE()
+             , APRV_P_ENO2          = #{hndlPEno}
+             , APRV_DY_TM3          = SYSDATE()
+             , APRV_P_ENO3          = #{hndlPEno}
+             , APRV_DY_TM4          = SYSDATE()
+             , APRV_P_ENO4          = #{hndlPEno}
+             , HNDL_DY_TM           = SYSDATE()
+             , HNDL_DPRT_CD         = #{hndlDprtCd}
+             , HNDL_P_ENO 		    = #{hndlPEno}
+         WHERE STD_YR_MM 		    = #{stdYrMm}			/* 기준년월 */
+           AND OBLG_PFRM_CCD 	    = #{oblgPfrmCcd}		/* 의무이행구분코드 */
+           AND IB_DEAL_NO 		    = #{ibDealNo}			/* Deal번호 */
+           AND RISK_INSPCT_CCD      = #{riskInspctCcd}		/* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD       = #{lstCCaseCcd}		/* 부수안건구분코드 */
+           AND ITEM_SQ              = #{itemSq}				/* 항목일련번호 */
+    </update>
+
+    <!--    승인조건 미이행 심사역확인    -->
+    <update id="updateExmntFnsh">
+        UPDATE RAA31B
+           SET RPR_PRGRS_ST_CD      = '40'
+             , APRV_DY_TM3          = SYSDATE()				/* 결재일시3 */
+             , APRV_P_ENO3          = #{hndlPEno}			/* 결재자사번3 */
+             , HNDL_DY_TM           = SYSDATE()
+             , HNDL_DPRT_CD         = #{hndlDprtCd}
+             , HNDL_P_ENO 		    = #{hndlPEno}
+         WHERE STD_YR_MM 		    = #{stdYrMm}			/* 기준년월 */
+           AND OBLG_PFRM_CCD 	    = #{oblgPfrmCcd}		/* 의무이행구분코드 */
+           AND IB_DEAL_NO 		    = #{ibDealNo}			/* Deal번호 */
+           AND RISK_INSPCT_CCD      = #{riskInspctCcd}		/* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD       = #{lstCCaseCcd}		/* 부수안건구분코드 */
+           AND ITEM_SQ              = #{itemSq}				/* 항목일련번호 */
+    </update>
+
+    <!--     승인조건 미이행 심사부서장 확인   -->
+    <update id="updateDprtMngrFnsh">
+        UPDATE RAA31B
+           SET RPR_PRGRS_ST_CD      = '50'
+             , APRV_DY_TM4          = SYSDATE()				/* 결재일시4 */
+             , APRV_P_ENO4          = #{hndlPEno}			/* 결재자사번4 */
+             , HNDL_DY_TM           = SYSDATE()
+             , HNDL_DPRT_CD         = #{hndlDprtCd}
+             , HNDL_P_ENO 		    = #{hndlPEno}
+         WHERE STD_YR_MM 		    = #{stdYrMm}			/* 기준년월 */
+           AND OBLG_PFRM_CCD 	    = #{oblgPfrmCcd}		/* 의무이행구분코드 */
+           AND IB_DEAL_NO 		    = #{ibDealNo}			/* Deal번호 */
+           AND RISK_INSPCT_CCD      = #{riskInspctCcd}		/* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD       = #{lstCCaseCcd}		/* 부수안건구분코드 */
+           AND ITEM_SQ              = #{itemSq}				/* 항목일련번호 */
+    </update>
+
+    <!--    승인조건 미이행 결재진행상태코드 조회    -->
+    <select id="getRprPrgrsStCd">
+        SELECT A.RPR_PRGRS_ST_CD
+          FROM RAA31B A
+         WHERE A.STD_YR_MM 			= #{stdYrMm}
+           AND A.OBLG_PFRM_CCD 		= #{oblgPfrmCcd}
+           AND A.IB_DEAL_NO 		= #{ibDealNo}
+           AND A.RISK_INSPCT_CCD 	= #{riskInspctCcd}
+           AND A.LST_C_CASE_CCD 	= #{lstCCaseCcd}
+           AND A.ITEM_SQ 			= #{itemSq}
+    </select>
+    
+    <!--    승인조건 미이행 셀다운조회    -->
+    <select id="getSellDownList" parameterType="com.nanuri.rams.business.common.vo.MO44040SVO$SearchParam"  resultType="com.nanuri.rams.business.common.vo.MO44040SVO$DealInfo">
+        SELECT A.IB_DEAL_NO				/* Deal번호 */
+             , A.RISK_INSPCT_CCD 		/* 신규/재부의 */
+             , A.LST_C_CASE_CCD 		/* 부수안건 */
+             , A.OBLG_PFRM_CCD			/* 이행구분 */
+             , A.IB_DEAL_NM 			/* 안건명 */
+             , A.FNC_GDS_DVD_CD			/* 금융상품분류코드 */
+             , A.ITEM_SQ				/* 일련번호 */
+             , A.INSPCT_CNFRNC_CCD		/* 결의협의체 */
+             , (
+                SELECT rb.CD_VL_NM 
+				  FROM RAA91B rb
+				 WHERE 1=1
+				   AND rb.CMNS_CD_GRP = 'R007'
+		  		   AND rb.CD_VL_ID  = A.INSPCT_CNFRNC_CCD
+               ) AS INSPCT_CNFRNC_CCD_NM/* 결의협의체명 */
+             , A.RSLTN_DT				/* 결의일 */
+             , A.RSLTN_RSLT_CD			/* 결의결과 */
+             , A.RSLT_CNTNT				/* 승인조건 */
+             , A.INVST_CRNCY_CD 		/* 승인금액통화코드 */
+             , A.RCG_AMT				/* 승인금액 */
+             , A.APLC_AMT				/* 셀다운 대상금액 */
+             , A.END_DT_END_DT			/* 셀다운기한 */
+             , A.MTRT_HLD_AMT			/* 만기보유금액 */
+             , A.OPN_PRC_VAL_AMT		/* 잔고 */
+             , CASE WHEN CASE WHEN A.OPN_PRC_VAL_AMT - A.MTRT_HLD_AMT <![CDATA[<=]]> 0 THEN 0
+                              ELSE IFNULL(A.OPN_PRC_VAL_AMT - A.MTRT_HLD_AMT, 0)
+                          END = 0 THEN '이행'
+                    ELSE '미이행'
+                END AS PFRM_CLSF_NM		/* 이행여부 */
+             , A.PFRM_DT				/* 이행일자 */
+             , CASE WHEN A.OPN_PRC_VAL_AMT - A.MTRT_HLD_AMT <![CDATA[<=]]> 0 THEN 0
+                    ELSE IFNULL(A.OPN_PRC_VAL_AMT - A.MTRT_HLD_AMT, 0)
+                END AS NPRY_RA			/* 미해소잔액 */
+             , A.RPR_PRGRS_ST_CD		/* 진행상태코드 */
+             , (
+                SELECT rb.CD_VL_NM 
+				  FROM RAA91B rb
+				 WHERE 1=1
+				   AND rb.CMNS_CD_GRP = 'R016'
+		  		   AND rb.CD_VL_ID  = A.RPR_PRGRS_ST_CD
+               ) AS RPR_PRGRS_ST_CD_NM	/* 진행상태코드명 */
+             , A.DPRT_CD				/* 담당부서코드 */
+             , A.DPRT_NM				/* 부서이름 */
+             , A.EMP_NM					/* 담당자이름 */
+             , A.INSPCT_DPRT_CCD		/* 심사부서코드 */
+             , A.OWN_EMP_NM				/* 담당심사역코드 */
+             , A.RCG_RQS_DT				/* 승인요청일 */
+             , A.RCG_DT					/* 승인일 */
+             , A.CNFR_DT1				/* 심사역확인일 */
+             , A.CNFR_DT2				/* 심사부서장확인일 */
+             , A.BSNS_OUTLN_HNGL		/* 사업개요 */
+             , A.CNST_CMPNY_NM			/* 시행사/시공사 */
+             , A.MAIN_PRGRS_STTN_CNTNT	/* 최근사업 진행현황 */
+             , A.ACHV_DT				/* 셀다운목표일 */
+             , A.N_PFRM_RSN_CNTNT 		/* 미이행사유 */
+             , A.PFRM_PLAN_CNTNT		/* 향후계획 */
+             , A.PRCS_PLAN_CNTNT1 		/* BaseCase */
+             , A.PRCS_PLAN_CNTNT2 		/* StressCase */
+             , A.VAL_SPCL_CNTNT 		/* 기타특이사항 */
+          FROM
+              (SELECT '01' AS OBLG_PFRM_CCD
+                    , A.IB_DEAL_NO
+                    , A.RISK_INSPCT_CCD
+                    , A.LST_C_CASE_CCD
+                    , A.IB_DEAL_NM
+                    , A.FNC_GDS_DVD_CD
+                    , A.ITEM_SQ
+                    , A.INSPCT_CNFRNC_CCD
+                    , A.RSLTN_DT
+                    , A.INVST_CRNCY_CD
+                    , A.RCG_AMT
+                    , A.RSLT_CNTNT
+                    , A.RSLTN_RSLT_CD
+                    , A.END_DT_END_DT
+                    , A.APLC_AMT
+                    , A.RCG_AMT - A.APLC_AMT AS MTRT_HLD_AMT
+                    , IFNULL(B.CRNCY_BK_AMT, 0) AS OPN_PRC_VAL_AMT
+                    , A.PFRM_DT
+                    , A.RPR_PRGRS_ST_CD
+                    , (SELECT RPR_PRGRS_ST_CD_NM FROM RAA31B WHERE IB_DEAL_NO = A.RPR_PRGRS_ST_CD) AS RPR_PRGRS_ST_CD_NM
+                    , A.DPRT_CD
+                    , (SELECT DPRT_NM FROM RAA98A WHERE DPRT_CD = A.DPRT_CD) AS DPRT_NM
+                    , A.CHRG_P_ENO
+                    , (SELECT EMP_NM FROM RAA92B WHERE ENO = A.CHRG_P_ENO) AS EMP_NM
+                    , A.INSPCT_DPRT_CCD
+                    , A.OWN_P_ENO
+                    , (SELECT EMP_NM FROM RAA92B WHERE ENO = A.OWN_P_ENO) AS OWN_EMP_NM
+                    , A.RCG_RQS_DT
+                    , A.RCG_DT
+                    , A.CNFR_DT1
+                    , A.CNFR_DT2
+                    , A.BSNS_OUTLN_HNGL
+                    , A.CNST_CMPNY_NM
+                    , A.MAIN_PRGRS_STTN_CNTNT
+                    , A.ACHV_DT
+                    , A.N_PFRM_RSN_CNTNT
+                    , A.PFRM_PLAN_CNTNT
+                    , A.PRCS_PLAN_CNTNT1
+                    , A.PRCS_PLAN_CNTNT2
+                    , A.VAL_SPCL_CNTNT
+                 FROM
+                     (SELECT #{stdYrMm}  AS STD_YR_MM
+                     , A.IB_DEAL_NO
+                     , A.RISK_INSPCT_CCD
+                     , A.LST_C_CASE_CCD
+                     , A.IB_DEAL_SNM_NM	AS IB_DEAL_NM
+                     , A.FNC_GDS_DVD_CD
+                     , C.ITEM_SQ
+                     , NULL AS RPR_PRGRS_ST_CD
+                     , NULL AS RPR_PRGRS_ST_CD_NM
+                     , (SELECT CASE WHEN ROW_NUMBER() OVER(ORDER BY rb.STD_YR_MM DESC) = 1 THEN rb.BSNS_OUTLN_HNGL
+                                    ELSE NULL
+                                END AS BSNS_OUTLN_HNGL
+                          FROM RAA31B rb
+                         WHERE rb.OBLG_PFRM_CCD 		= '01'
+                           AND rb.IB_DEAL_NO			= A.IB_DEAL_NO
+                           AND rb.RISK_INSPCT_CCD	    = A.RISK_INSPCT_CCD
+                           AND rb.LST_C_CASE_CCD		= A.LST_C_CASE_CCD
+                         LIMIT 1) AS BSNS_OUTLN_HNGL
+                     , (SELECT CASE WHEN ROW_NUMBER() OVER(ORDER BY rb.STD_YR_MM DESC) = 1 THEN rb.CNST_CMPNY_NM
+                                    ELSE NULL
+                                END AS CNST_CMPNY_NM
+                          FROM RAA31B rb
+                         WHERE rb.OBLG_PFRM_CCD 		= '01'
+                           AND rb.IB_DEAL_NO			= A.IB_DEAL_NO
+                           AND rb.RISK_INSPCT_CCD	    = A.RISK_INSPCT_CCD
+                           AND rb.LST_C_CASE_CCD		= A.LST_C_CASE_CCD
+                         LIMIT 1) AS CNST_CMPNY_NM
+                     , (SELECT CASE WHEN ROW_NUMBER() OVER(ORDER BY rb.MAIN_PRGRS_STTN_CNTNT DESC) = 1 THEN rb.MAIN_PRGRS_STTN_CNTNT
+                                    ELSE NULL
+                                END AS MAIN_PRGRS_STTN_CNTNT
+                          FROM RAA31B rb
+                         WHERE rb.OBLG_PFRM_CCD 		= '01'
+                           AND rb.IB_DEAL_NO			= A.IB_DEAL_NO
+                           AND rb.RISK_INSPCT_CCD	    = A.RISK_INSPCT_CCD
+                           AND rb.LST_C_CASE_CCD		= A.LST_C_CASE_CCD
+                         LIMIT 1) AS MAIN_PRGRS_STTN_CNTNT
+                     , NULL AS ACHV_DT
+                     , NULL AS N_PFRM_RSN_CNTNT
+                     , NULL AS PFRM_PLAN_CNTNT
+                     , NULL AS PRCS_PLAN_CNTNT1
+                     , NULL AS PRCS_PLAN_CNTNT2
+                     , NULL AS VAL_SPCL_CNTNT
+                     , NULL AS RCG_RQS_DT
+                     , NULL AS RCG_DT
+                     , NULL AS CNFR_DT1
+                     , NULL AS CNFR_DT2
+                     , A.DPRT_CD
+                     , A.CHRG_P_ENO
+                     , A.INSPCT_DPRT_CCD
+                     , A.OWN_P_ENO
+                     , A.INVST_CRNCY_CD
+                     , A.RISK_RCG_NO
+                     , B.INSPCT_CNFRNC_CCD
+                     , B.RSLTN_DT
+                     , B.RCG_AMT
+                     , CASE WHEN B.RSLTN_RSLT_CD = '2' THEN REPLACE(B.RSLT_CNTNT, CHR(10), ' ')
+                            WHEN B.RSLTN_RSLT_CD = '3' THEN REPLACE(B.CNFRNC_NTM_CNDTL_CNTNT , CHR(10), ' ')
+                            ELSE NULL
+                        END AS RSLT_CNTNT
+                     , B.RSLTN_RSLT_CD
+                     , C.END_DT_END_DT
+                     , IFNULL(C.APLC_AMT, 0) AS APLC_AMT
+                     , IFNULL(C.MTRT_HLD_AMT, 0) AS MTRT_HLD_AMT
+                     , C.PFRM_DT
+                  FROM RAA02B A
+                  LEFT JOIN RAA22B B
+                    ON A.IB_DEAL_NO = B.IB_DEAL_NO
+                   AND A.RISK_INSPCT_CCD = B.RISK_INSPCT_CCD
+                   AND A.LST_C_CASE_CCD = B.LST_C_CASE_CCD
+                  LEFT JOIN RAA09B C
+                    ON A.IB_DEAL_NO = C.IB_DEAL_NO
+                   AND A.RISK_INSPCT_CCD = C.RISK_INSPCT_CCD
+                   AND A.LST_C_CASE_CCD = C.LST_C_CASE_CCD
+                 WHERE A.INSPCT_PRGRS_ST_CD = '500'
+                   AND A.END_DT IS NULL
+                   AND B.SDN_CNDT_F = 'Y'
+                   AND C.END_DT_END_DT <![CDATA[<=]]> DATE_FORMAT( LAST_DAY(DATE_FORMAT( CONCAT(#{stdYrMm}, '01'), '%Y%m%d')), '%Y%m%d')
+                   AND #{stdYrMm} = DATE_FORMAT(ADD_MONTHS(SYSDATE(), -1) , '%Y%m%d')
+                   AND NOT EXISTS (SELECT 1
+                                     FROM RAA31B rb
+                                    WHERE rb.OBLG_PFRM_CCD = '01'
+                                      AND rb.IB_DEAL_NO = A.IB_DEAL_NO
+                                      AND rb.RISK_INSPCT_CCD = A.RISK_INSPCT_CCD
+                                      AND rb.LST_C_CASE_CCD = A.LST_C_CASE_CCD
+                                      AND rb.ITEM_SQ = C.ITEM_SQ
+                                      AND rb.STD_YR_MM = #{stdYrMm}) /* 작성이력이 없는 대상만 출력 */
+                 UNION ALL
+                SELECT A.STD_YR_MM
+                     , A.IB_DEAL_NO
+                     , A.RISK_INSPCT_CCD
+                     , A.LST_C_CASE_CCD
+                     , B.IB_DEAL_SNM_NM AS IB_DEAL_NM
+                     , B.FNC_GDS_DVD_CD
+                     , A.ITEM_SQ
+                     , A.RPR_PRGRS_ST_CD
+                     , (
+			             SELECT rb.CD_VL_NM 
+						   FROM RAA91B rb
+						  WHERE 1=1
+							AND rb.CMNS_CD_GRP = 'R016'
+					  		AND rb.CD_VL_ID  = A.RPR_PRGRS_ST_CD
+			            ) AS RPR_PRGRS_ST_CD_NM
+                     , A.BSNS_OUTLN_HNGL
+                     , A.CNST_CMPNY_NM
+                     , A.MAIN_PRGRS_STTN_CNTNT
+                     , A.ACHV_DT
+                     , A.N_PFRM_RSN_CNTNT
+                     , A.PFRM_PLAN_CNTNT
+                     , A.PRCS_PLAN_CNTNT1
+                     , A.PRCS_PLAN_CNTNT2
+                     , A.VAL_SPCL_CNTNT
+                     , DATE_FORMAT(A.APRV_DY_TM1,'%Y%m%d') AS RCG_RQS_DT
+                     , DATE_FORMAT(A.APRV_DY_TM2,'%Y%m%d') AS RCG_DT
+                     , DATE_FORMAT(A.APRV_DY_TM3,'%Y%m%d') AS CNFR_DT1
+                     , DATE_FORMAT(A.APRV_DY_TM4,'%Y%m%d') AS CNFR_DT2
+                     , B.DPRT_CD
+                     , B.CHRG_P_ENO
+                     , B.INSPCT_DPRT_CCD
+                     , B.OWN_P_ENO
+                     , B.INVST_CRNCY_CD
+                     , B.RISK_RCG_NO
+                     , C.INSPCT_CNFRNC_CCD
+                     , C.RSLTN_DT
+                     , C.RCG_AMT
+                     , CASE WHEN C.RSLTN_RSLT_CD = '2' THEN REPLACE(C.RSLT_CNTNT, CHR(10), ' ')
+                            WHEN C.RSLTN_RSLT_CD = '3' THEN REPLACE(C.CNFRNC_NTM_CNDTL_CNTNT , CHR(10), ' ')
+                            ELSE NULL
+                        END AS RSLT_CNTNT
+                     , C.RSLTN_RSLT_CD
+                     , D.END_DT_END_DT
+                     , D.APLC_AMT
+                     , D.MTRT_HLD_AMT
+                     , D.PFRM_DT
+                  FROM RAA31B A
+                  LEFT JOIN RAA02B B
+                    ON A.IB_DEAL_NO = B.IB_DEAL_NO
+                   AND A.RISK_INSPCT_CCD = B.RISK_INSPCT_CCD
+                   AND A.LST_C_CASE_CCD = B.LST_C_CASE_CCD
+                  LEFT JOIN RAA22B C
+                    ON A.IB_DEAL_NO = C.IB_DEAL_NO
+                   AND A.RISK_INSPCT_CCD = C.RISK_INSPCT_CCD
+                   AND A.LST_C_CASE_CCD = C.LST_C_CASE_CCD
+                  LEFT JOIN RAA09B D
+                    ON A.IB_DEAL_NO = D.IB_DEAL_NO
+                   AND A.RISK_INSPCT_CCD = D.RISK_INSPCT_CCD
+                   AND A.LST_C_CASE_CCD = D.LST_C_CASE_CCD
+                   AND A.ITEM_SQ = D.ITEM_SQ
+                     ) A LEFT OUTER JOIN
+               (SELECT rb.RISK_RCG_NO
+                     , SUM(rb.CRNCY_BK_AMT) AS CRNCY_BK_AMT
+                  FROM RAA59B rb
+                 WHERE rb.STD_YR_MM = #{stdYrMm}
+                 GROUP BY rb.RISK_RCG_NO
+                ) B
+                ON A.RISK_RCG_NO = B.RISK_RCG_NO
+            ) A
+        WHERE CASE WHEN A.OPN_PRC_VAL_AMT - A.MTRT_HLD_AMT <![CDATA[<=]]> 0 THEN 0
+                   ELSE IFNULL(A.OPN_PRC_VAL_AMT - A.MTRT_HLD_AMT, 0)
+               END != 0
+          AND (IF(#{chrgPEno}		= '', NULL, FALSE) IS NULL) OR A.CHRG_P_ENO			= UPPER(#{chrgPEno})						/* 담당자사번 */
+          AND (IF(#{inspctDprtCcd}	= '', NULL, FALSE) IS NULL) OR A.INSPCT_DPRT_CCD	= #{inspctDprtCcd}							/* 심사부서코드 */
+          AND (IF(#{ownPEno}		= '', NULL, FALSE) IS NULL) OR A.OWN_P_ENO			= UPPER(#{ownPEno}) 						/* 심사역사번 */
+          AND (IF(#{rprPrgrsStCd}	= '', NULL, FALSE) IS NULL) OR A.RPR_PRGRS_ST_CD	= #{rprPrgrsStCd}							/* 진행상태코드 */
+          AND (IF(#{ibDealNm}		= '', NULL, FALSE) IS NULL) OR UPPER(A.IB_DEAL_NM) LIKE CONCAT('%', UPPER(#{ibDealNm}), '%')	/* 안건명 */
+          AND (IF(#{dprtCd}			= '', NULL, FALSE) IS NULL) OR A.DPRT_CD			= UPPER(#{dprtCd})							/* 부점코드 */
+        ORDER BY A.DPRT_CD
+               , A.IB_DEAL_NO
+               , A.RISK_INSPCT_CCD
+               , A.LST_C_CASE_CCD
+               , A.ITEM_SQ
+    </select>
+
+    <!--    승인조건 미이행 기타의무조회    -->
+    <select id="getEtcListMO44040S" parameterType="com.nanuri.rams.business.common.vo.MO44040SVO$SearchParam"  resultType="com.nanuri.rams.business.common.vo.MO44040SVO$DealInfo">
+        SELECT A.STD_YR_MM						/* 기준년월 */
+             , A.IB_DEAL_NO						/* Deal번호 */
+             , A.RISK_INSPCT_CCD				/* 신규/재부의 */
+             , A.LST_C_CASE_CCD					/* 부수안건 */
+             , A.OBLG_PFRM_CCD					/* 이행구분 */
+             , A.IB_DEAL_NM						/* 안건명 */
+             , A.FNC_GDS_DVD_CD					/* 금융상품분류코드 */
+             , A.ITEM_SQ						/* 일련번호 */
+             , A.INSPCT_CNFRNC_CCD				/* 결의협의체 */
+             , A.RSLTN_DT						/* 결의일 */
+             , A.RSLTN_RSLT_CD					/* 결의결과코드 */
+             , A.RSLT_CNTNT						/* 승인조건 */
+             , CASE WHEN END_F = 'Y' THEN '이행'
+                    ELSE '미이행'
+                END AS PFRM_CLSF_NM				/* 이행여부 */
+             , A.PFRM_DT						/* 이행일 */
+             , IFNULL(A.END_F, 'N') AS END_F	/* 종결여부 */
+             , A.RPR_PRGRS_ST_CD				/* 진행상태코드 */
+             , (
+                 SELECT rb.CD_VL_NM 
+				   FROM RAA91B rb
+				  WHERE 1=1
+				    AND rb.CMNS_CD_GRP = 'R016'
+		  		    AND rb.CD_VL_ID  = A.RPR_PRGRS_ST_CD
+               ) AS RPR_PRGRS_ST_CD_NM			/* 진행상태코드명 */
+             , A.DPRT_NM						/* 부서이름 */
+             , A.EMP_NM							/* 담당자이름 */
+             , A.INSPCT_DPRT_CCD				/* 심사부서코드 */
+             , A.OWN_EMP_NM						/* 담당심사역 */
+             , A.RCG_RQS_DT						/* 승인요청일 */
+             , A.RCG_DT							/* 승인일 */
+             , A.CNFR_DT1						/* 심사역확인일 */
+             , A.CNFR_DT2						/* 심사부서장확인일 */
+             , A.BSNS_OUTLN_HNGL				/* 사업개요 */
+             , A.CNST_CMPNY_NM					/* 시행사/시공사 */
+             , A.MAIN_PRGRS_STTN_CNTNT			/* 최근사업 진행현황 */
+             , A.N_PFRM_RSN_CNTNT 				/* 미이행사유 */
+             , A.PFRM_PLAN_CNTNT				/* 향후계획 */
+             , A.PRCS_PLAN_CNTNT1 				/* BaseCase */
+             , A.PRCS_PLAN_CNTNT2 				/* StressCase */
+             , A.VAL_SPCL_CNTNT 				/* 기타특이사항 */
+          FROM
+              (SELECT '02' AS OBLG_PFRM_CCD
+                    , A.STD_YR_MM
+                    , A.IB_DEAL_NO
+                    , A.RISK_INSPCT_CCD
+                    , A.LST_C_CASE_CCD
+                    , A.IB_DEAL_NM
+                    , A.FNC_GDS_DVD_CD
+                    , A.ITEM_SQ
+                    , A.INSPCT_CNFRNC_CCD
+                    , A.RSLTN_DT
+                    , A.RSLTN_RSLT_CD
+                    , REPLACE(A.OBLG_CNTNT, CHR(10), ' ') AS RSLT_CNTNT
+                    , A.PFRM_DT
+                    , A.END_F
+                    , A.RPR_PRGRS_ST_CD
+                    , A.DPRT_CD
+                    , (SELECT DPRT_NM FROM RAA98A WHERE DPRT_CD = A.DPRT_CD) AS DPRT_NM
+                    , A.CHRG_P_ENO
+                    , (SELECT EMP_NM FROM RAA92B WHERE ENO = A.CHRG_P_ENO) AS EMP_NM
+                    , A.INSPCT_DPRT_CCD
+                    , A.OWN_P_ENO
+                    , (SELECT EMP_NM FROM RAA92B WHERE ENO = A.OWN_P_ENO) AS OWN_EMP_NM
+                    , A.RCG_RQS_DT
+                    , A.RCG_DT
+                    , A.CNFR_DT1
+                    , A.CNFR_DT2
+                    , A.BSNS_OUTLN_HNGL
+                    , A.CNST_CMPNY_NM
+                    , A.MAIN_PRGRS_STTN_CNTNT
+                    , A.N_PFRM_RSN_CNTNT
+                    , A.PFRM_PLAN_CNTNT
+                    , A.PRCS_PLAN_CNTNT1
+                    , A.PRCS_PLAN_CNTNT2
+                    , A.VAL_SPCL_CNTNT
+                 FROM
+                     (SELECT #{stdYrMm} AS STD_YR_MM
+                           , A.IB_DEAL_NO
+                           , A.RISK_INSPCT_CCD
+                           , A.LST_C_CASE_CCD
+                           , A.IB_DEAL_SNM_NM	AS IB_DEAL_NM
+                           , A.FNC_GDS_DVD_CD
+                           , C.ITEM_SQ
+                           , NULL AS RPR_PRGRS_ST_CD
+                           , (SELECT CASE WHEN ROW_NUMBER() OVER(ORDER BY rb.STD_YR_MM DESC) = 1 THEN rb.BSNS_OUTLN_HNGL
+                                          ELSE NULL
+                                      END AS BSNS_OUTLN_HNGL
+                                FROM RAA31B rb
+                               WHERE rb.OBLG_PFRM_CCD 		= '02'
+                                 AND rb.IB_DEAL_NO			= A.IB_DEAL_NO
+                                 AND rb.RISK_INSPCT_CCD	    = A.RISK_INSPCT_CCD
+                                 AND rb.LST_C_CASE_CCD		= A.LST_C_CASE_CCD
+                               LIMIT 1) AS BSNS_OUTLN_HNGL
+                           , (SELECT CASE WHEN ROW_NUMBER() OVER(ORDER BY rb.STD_YR_MM DESC) = 1 THEN rb.CNST_CMPNY_NM
+                                          ELSE NULL
+                                      END AS CNST_CMPNY_NM
+                                FROM RAA31B rb
+                               WHERE rb.OBLG_PFRM_CCD 		= '01'
+                                 AND rb.IB_DEAL_NO			= A.IB_DEAL_NO
+                                 AND rb.RISK_INSPCT_CCD	    = A.RISK_INSPCT_CCD
+                                 AND rb.LST_C_CASE_CCD		= A.LST_C_CASE_CCD
+                               LIMIT 1) AS CNST_CMPNY_NM
+                           , (SELECT CASE WHEN ROW_NUMBER() OVER(ORDER BY rb.MAIN_PRGRS_STTN_CNTNT DESC) = 1 THEN rb.MAIN_PRGRS_STTN_CNTNT
+                                          ELSE NULL
+                                      END AS MAIN_PRGRS_STTN_CNTNT
+                                FROM RAA31B rb
+                               WHERE rb.OBLG_PFRM_CCD 		= '01'
+                                 AND rb.IB_DEAL_NO			= A.IB_DEAL_NO
+                                 AND rb.RISK_INSPCT_CCD	    = A.RISK_INSPCT_CCD
+                                 AND rb.LST_C_CASE_CCD		= A.LST_C_CASE_CCD
+                               LIMIT 1) AS MAIN_PRGRS_STTN_CNTNT
+                           , NULL AS N_PFRM_RSN_CNTNT
+                           , NULL AS PFRM_PLAN_CNTNT
+                           , NULL AS PRCS_PLAN_CNTNT1
+                           , NULL AS PRCS_PLAN_CNTNT2
+                           , NULL AS VAL_SPCL_CNTNT
+                           , NULL AS RCG_RQS_DT
+                           , NULL AS RCG_DT
+                           , NULL AS CNFR_DT1
+                           , NULL AS CNFR_DT2
+                           , A.DPRT_CD
+                           , A.CHRG_P_ENO
+                           , A.INSPCT_DPRT_CCD
+                           , A.OWN_P_ENO
+                           , A.INVST_CRNCY_CD
+                           , B.INSPCT_CNFRNC_CCD
+                           , B.RSLTN_DT
+                           , B.RSLTN_RSLT_CD
+                           , B.RCG_AMT
+                           , C.OBLG_CNTNT
+                           , C.PFRM_DT
+                           , C.RMRK
+                           , IFNULL(C.END_F, 'N') AS END_F
+                        FROM RAA02B A
+                        LEFT JOIN RAA22B B
+                          ON A.IB_DEAL_NO = B.IB_DEAL_NO
+                         AND A.RISK_INSPCT_CCD = B.RISK_INSPCT_CCD
+                         AND A.LST_C_CASE_CCD = B.LST_C_CASE_CCD
+                        LEFT JOIN RAA10B C
+                          ON A.IB_DEAL_NO = C.IB_DEAL_NO
+                         AND A.RISK_INSPCT_CCD = C.RISK_INSPCT_CCD
+                         AND A.LST_C_CASE_CCD = C.LST_C_CASE_CCD
+                       WHERE A.INSPCT_PRGRS_ST_CD = '500'		/* 심사진행상태코드(약정완료) */
+                         AND A.END_DT IS NULL					/* EXIT가 아직 안된 안건들 */
+                         AND B.ETC_CNDT_F = 'Y'				    /* 기타조건여부 */
+                         AND #{stdYrMm} = DATE_FORMAT(ADD_MONTHS(SYSDATE(), -1), '%Y%m%d')
+                         AND NOT EXISTS (SELECT 1
+                                           FROM RAA31B rb
+                                          WHERE rb.OBLG_PFRM_CCD = '02'
+                                            AND rb.IB_DEAL_NO = A.IB_DEAL_NO
+                                            AND rb.RISK_INSPCT_CCD = A.RISK_INSPCT_CCD
+                                            AND rb.LST_C_CASE_CCD = A.LST_C_CASE_CCD
+                                            AND rb.ITEM_SQ = C.ITEM_SQ
+                                            AND rb.STD_YR_MM = #{stdYrMm})    /* 작성이력이 없는 대상만 출력 */
+                       UNION ALL
+                      SELECT A.STD_YR_MM
+                           , A.IB_DEAL_NO
+                           , A.RISK_INSPCT_CCD
+                           , A.LST_C_CASE_CCD
+                           , B.IB_DEAL_SNM_NM AS IB_DEAL_NM
+                           , B.FNC_GDS_DVD_CD
+                           , A.ITEM_SQ
+                           , A.RPR_PRGRS_ST_CD		
+                           , A.BSNS_OUTLN_HNGL
+                           , A.CNST_CMPNY_NM
+                           , A.MAIN_PRGRS_STTN_CNTNT
+                           , A.N_PFRM_RSN_CNTNT
+                           , A.PFRM_PLAN_CNTNT
+                           , A.PRCS_PLAN_CNTNT1
+                           , A.PRCS_PLAN_CNTNT2
+                           , A.VAL_SPCL_CNTNT
+                           , DATE_FORMAT(A.APRV_DY_TM1, '%Y%m%d') AS RCG_RQS_DT
+                           , DATE_FORMAT(A.APRV_DY_TM2, '%Y%m%d') AS RCG_DT
+                           , DATE_FORMAT(A.APRV_DY_TM3, '%Y%m%d') AS CNFR_DT1
+                           , DATE_FORMAT(A.APRV_DY_TM4, '%Y%m%d') AS CNFR_DT2
+                           , B.DPRT_CD
+                           , B.CHRG_P_ENO
+                           , B.INSPCT_DPRT_CCD
+                           , B.OWN_P_ENO
+                           , B.INVST_CRNCY_CD
+                           , C.INSPCT_CNFRNC_CCD
+                           , C.RSLTN_DT
+                           , C.RSLTN_RSLT_CD
+                           , C.RCG_AMT
+                           , D.OBLG_CNTNT
+                           , D.PFRM_DT
+                           , D.RMRK
+                           , IFNULL(D.END_F, 'N') AS END_F
+                        FROM RAA31B A
+                        LEFT JOIN RAA02B B
+                          ON A.IB_DEAL_NO = B.IB_DEAL_NO
+                         AND A.RISK_INSPCT_CCD = B.RISK_INSPCT_CCD
+                         AND A.LST_C_CASE_CCD = B.LST_C_CASE_CCD
+                        LEFT JOIN RAA22B C
+                          ON A.IB_DEAL_NO = C.IB_DEAL_NO
+                         AND A.RISK_INSPCT_CCD = C.RISK_INSPCT_CCD
+                         AND A.LST_C_CASE_CCD = C.LST_C_CASE_CCD
+                        LEFT JOIN RAA10B D
+                          ON A.IB_DEAL_NO = D.IB_DEAL_NO
+                         AND A.RISK_INSPCT_CCD = D.RISK_INSPCT_CCD
+                         AND A.LST_C_CASE_CCD = D.LST_C_CASE_CCD
+                         AND A.ITEM_SQ = D.ITEM_SQ
+                    ) A
+                ) A
+       WHERE 1=1
+         AND (IF(#{chrgPEno}		= '', NULL, FALSE) IS NULL) OR A.CHRG_P_ENO			= UPPER(#{chrgPEno})						/* 담당자사번 */
+         AND (IF(#{inspctDprtCcd}	= '', NULL, FALSE) IS NULL) OR A.INSPCT_DPRT_CCD	= #{inspctDprtCcd}							/* 심사부서코드 */
+         AND (IF(#{ownPEno}			= '', NULL, FALSE) IS NULL) OR A.OWN_P_ENO			= UPPER(#{ownPEno}) 						/* 심사역사번 */
+         AND (IF(#{rprPrgrsStCd}	= '', NULL, FALSE) IS NULL) OR A.RPR_PRGRS_ST_CD	= #{rprPrgrsStCd}							/* 진행상태코드 */
+         AND (IF(#{ibDealNm}		= '', NULL, FALSE) IS NULL) OR UPPER(A.IB_DEAL_NM) LIKE CONCAT('%', UPPER(#{ibDealNm}), '%')	/* 안건명 */
+         AND (IF(#{dprtCd}			= '', NULL, FALSE) IS NULL) OR A.DPRT_CD			= UPPER(#{dprtCd})							/* 부점코드 */
+         AND 1 = CASE WHEN (#{endF} = 'N' AND A.RPR_PRGRS_ST_CD != '50' AND A.END_F = 'Y')
+                        OR (#{endF} = 'N' AND (A.RPR_PRGRS_ST_CD IS NULL OR RPR_PRGRS_ST_CD != '50') AND A.END_F = 'N') THEN 1
+                      WHEN #{endF} = 'Y' THEN 1
+                      ELSE 0
+                  END
+       ORDER BY A.DPRT_CD
+              , A.IB_DEAL_NO
+              , A.RISK_INSPCT_CCD
+              , A.LST_C_CASE_CCD
+              , A.ITEM_SQ
+    </select> 
+    
+    
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS203BMapper">
+
+	<!-- 딜승인수수료설정기본  -->
+	<select id="selectFeeInfoList" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS203BVO">
+		SELECT
+		       A.PRDT_CD					/* 상품코드 */
+		     , A.FEE_SN					/* 수수료일련번호 */
+		     , DATE_FORMAT(A.FEE_RCVN_DT, '%Y-%m-%d') AS FEE_RCVN_DT				/* 수수료수취일자 */
+		     , A.EPRZ_CRDL_FEE_KND_CD		/* 기업여신수수료종류코드 */
+ 			 , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'E008'  
+                   AND CD_VL_ID = A.EPRZ_CRDL_FEE_KND_CD
+               ) AS EPRZ_CRDL_FEE_KND_NM	/* 기업여신수수료종류명 */	  		     
+		     , A.ACTS_CD					/* 계정과목코드 */
+		     , '' AS ACTS_NM					/* 계정과목명 */
+		     , A.IFRS_FEE_RCOG_DCD		/* ifrs수수료인식구분코드 */
+ 			 , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'F006'  /*  1 일시인식 2이연인식  */
+                   AND CD_VL_ID = A.IFRS_FEE_RCOG_DCD
+               ) AS IFRS_FEE_RCOG_NM	/* ifrs수수료인식구분명 */	     
+		     , A.EPRZ_CRDL_FEE_RCOG_DCD	/* 기업여신수수료인식구분코드 */
+ 			 , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'F006'  /*  1 일시인식 2이연인식  */
+                   AND CD_VL_ID = A.EPRZ_CRDL_FEE_RCOG_DCD
+               ) AS EPRZ_CRDL_FEE_RCOG_NM	/* 기업여신수수료인식구분명 */	  		     
+		     , A.FEE_TXTN_YN				/* 수수료과세여부 */
+		     , A.BUSI_NMCP_CPL_TXTN_YN	/* 사업부수수료과세여부 */
+		     , A.EPRZ_CRDL_FEE_STDR_AMT	/* 기업여신수수료기준금액 */
+		     , A.TR_OTHR_DSCM_NO			/* 거래상대방식별번호 */
+		     , A.FEE_TRGT_CTNS			/* 수수료대상내용 */
+		     , A.FEE_RT					/* 수수료율 */
+		     , A.FEE_AMT					/* 수수료금액 */
+		     , A.FNNR_PRLN_RTO			/* 재무이연비율 */
+		     , A.FNNR_RCOG_STRT_DT		/* 재무인식시작일자 */
+		     , A.FNNR_RCOG_END_DT			/* 재무인식종료일자 */
+		     , A.MNGM_PRLN_RTO			/* 관리이연비율 */
+		     , A.MNGM_RCOG_STRT_DT		/* 관리인식시작일자 */
+		     , A.MNGM_RCOG_END_DT			/* 관리인식종료일자 */
+		     , A.DC_RT					/* 할인율 */
+		     , A.EPRZ_CRDL_TXTN_TP_DCD	/* 기업여신과세유형구분코드 */
+ 			 , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'E027'  /*  1 일시인식 2이연인식  */
+                   AND CD_VL_ID = A.EPRZ_CRDL_TXTN_TP_DCD
+               ) AS EPRZ_CRDL_TXTN_TP_NM	/* 기업여신과세유형구분명 */			     
+		     , A.PYMT_FEE					/* 지급수수료 */
+		     , A.HND_DETL_DTM				/* 조작상세일시 */
+		     , A.HND_EMPNO				/* 조작사원번호 */
+		     , A.HND_TMNL_NO				/* 조작단말기번호 */
+		     , A.HND_TR_ID				/* 조작거래id */
+		     , A.GUID						/* guid */
+		  FROM IBIMS203B A  	        /* 딜승인수수료설정기본 */
+		 WHERE 1=1
+           AND A.PRDT_CD = #{prdtCd} /*  'A000000001' */
+           AND A.FEE_RCVN_DT /* 수수료수취일자 */
+              &lt;= (
+                     SELECT B.EXC_DT        /* 실행일자 */
+                       FROM IBIMS402B  B /* 딜실행기본 */
+                      WHERE B.PRDT_CD = #{prdtCd} 
+           				AND EXC_SN = (
+                                      SELECT MAX(C.EXC_SN)
+                                        FROM IBIMS402B C
+                                       WHERE C.PRDT_CD = #{prdtCd} 
+                                     )
+                    )
+         ORDER BY A.FEE_SN
+	</select>
+	
+	<!-- 딜승인수수료설정기본  -->
+	<select id="selectOneFeeInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS203BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS203BDTO">
+		SELECT 
+			   A.PRDT_CD				/* 상품코드 */
+			 , A.FEE_SN					/* 수수료일련번호 */
+			 , A.FEE_RCVN_DT			/* 수수료수취일자 */
+			 , A.EPRZ_CRDL_FEE_KND_CD	/* 기업여신수수료종류코드 */
+			 , A.ACTS_CD				/* 계정과목코드 */
+			 , A.IFRS_FEE_RCOG_DCD		/* ifrs수수료인식구분코드 */
+			 , A.EPRZ_CRDL_FEE_RCOG_DCD	/* 기업여신수수료인식구분코드 */
+			 , A.FEE_TXTN_YN			/* 수수료과세여부 */
+			 , A.BUSI_NMCP_CPL_TXTN_YN	/* 사업부수수료과세여부 */
+			 , A.EPRZ_CRDL_FEE_STDR_AMT	/* 기업여신수수료기준금액 */
+			 , A.TR_OTHR_DSCM_NO		/* 거래상대방식별번호 */
+			 , A.FEE_TRGT_CTNS			/* 수수료대상내용 */
+			 , A.FEE_RT					/* 수수료율 */
+			 , A.FEE_AMT				/* 수수료금액 */
+			 , A.FNNR_PRLN_RTO			/* 재무이연비율 */
+			 , A.FNNR_RCOG_STRT_DT		/* 재무인식시작일자 */
+			 , A.FNNR_RCOG_END_DT		/* 재무인식종료일자 */
+			 , A.MNGM_PRLN_RTO			/* 관리이연비율 */
+			 , A.MNGM_RCOG_STRT_DT		/* 관리인식시작일자 */
+			 , A.MNGM_RCOG_END_DT		/* 관리인식종료일자 */
+			 , A.DC_RT					/* 할인율 */
+			 , A.EPRZ_CRDL_TXTN_TP_DCD	/* 기업여신과세유형구분코드 */
+			 , A.PYMT_FEE				/* 지급수수료 */
+			 , A.HND_DETL_DTM			/* 조작상세일시 */
+			 , A.HND_EMPNO				/* 조작사원번호 */
+			 , A.HND_TMNL_NO			/* 조작단말기번호 */
+			 , A.HND_TR_ID				/* 조작거래id */
+			 , A.GUID					/* guid */
+		  FROM IBIMS203B A 	/* 딜승인수수료설정기본 */
+		 WHERE 1 = 1
+		   AND A.PRDT_CD = #{prdtCd} /* 'A000000001' */
+		   AND A.FEE_SN  = #{feeSn} 		
+	</select>
+		
+</mapper>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block th:fragment="DS01024S">
+	<!-- modal -->
+	<div id="modal-DS01024S" class="modal fade" role="dialog" aria-labelledby="lb-ds01021s" aria-hidden="true">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">대시보드_관리영역 상세검색</h4>
+					<div class="col-sm-1 text-right">
+						<button type="button" class="btn btn-default" onclick="modalClose_DS01024S()"><i
+								class="fa fa-times"></i></button>
+					</div>
+				</div>
+
+				<div class="modal-body">
+					<input type="hidden" name="prefix" id="prefix" value="" />
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="ibox">
+								<!-- 조회 st -->
+								<div class="ibox-title text-left">
+									<form method="get">
+										<div class="row form-group form-inline text-right">
+											<!-- 1 -->
+											<div class="col-sm-12 form-group mb-2">
+												<label class="col-sm-1 col-form-label">조회시점</label>
+												<div class="col-sm-2 input-group date">
+													<input type="text" class="form-control" name="FromDate" value=""
+														oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												</div>
+												<div class="col-sm-7"></div>
+												<!-- 조회 버튼 -->
+												<div class="col-sm-2 text-right">
+													<button class="btn btn-primary mr-2" type="button" onclick="">
+														<i class="fa fa-search"></i>&nbsp;조회
+													</button>
+												</div>
+											</div>
+											<!-- 2 -->
+											<div class="col-sm-12 mb-1 text-left">
+												<h5 class="ml-3">S&T 헤지자산 (DELTA 1)</h5>
+											</div>
+											<div class="col-sm-12 form-group mb-2">
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- 투자국가 -</option>
+														<option>독일</option>
+														<option>영국</option>
+														<option>이탈리아</option>
+														<option>캄보디아</option>
+														<option>대한민국</option>
+														<option>대만</option>
+														<option>미국</option>
+													</select>
+												</div>
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- 상품2 -</option>
+														<option>블라인드</option>
+														<option>프로젝트</option>
+														<option>TRS 등 장외파생상품 거래</option>
+													</select>
+												</div>
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- 상품3 -</option>
+														<option>기업금융투자(메자닌, 코벤 상장 등)</option>
+														<option>기업금융투자(국내외 비상장)</option>
+														<option>대체투자(부동산 자산 관련)</option>
+														<option>대체투자(비부동산 자산 관련)</option>
+													</select>
+												</div>
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- WN 주요전략 -</option>
+														<option>주식</option>
+														<option>멀티에셋</option>
+														<option>메자닌</option>
+														<option>부동산</option>
+														<option>펀드 재간접</option>
+														<option>기타</option>
+													</select>
+												</div>
+											</div>
+											<!-- 3 -->
+											<div class="col-sm-12 form-group mb-2">
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- 편입자산 -</option>
+														<option>주식</option>
+														<option>화사채</option>
+														<option>국내채권</option>
+														<option>해외채권</option>
+														<option>담보대출</option>
+														<option>Equity(임대형)</option>
+														<option>PE대출</option>
+														<option>토지브릿지</option>
+														<option>기타</option>
+													</select>
+												</div>
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- WN 기초자산 -</option>
+													</select>
+												</div>
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- WN 기초자산세부 -</option>
+														<option>오피스</option>
+														<option>숙박시설</option>
+														<option>기타 상업/업무시설</option>
+														<option>발전시설</option>
+														<option>항공기</option>
+														<option>기타 토지/기타</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<!-- 조회 ed -->
+
+								<!-- 결과 st -->
+								<div class="ibox-content">
+									<table class="table result table-bordered">
+										<thead class="text-center">
+											<tr>
+												<th>구분</th>
+												<th>상품구분</th>
+												<th>안건명</th>
+												<th>투자국가</th>
+												<th>상품구분 1</th>
+												<th>상품구분 2</th>
+												<th>주요전략</th>
+											</tr>
+										</thead>
+
+										<tbody>
+
+										</tbody>
+									</table>
+								</div>
+								<!-- 결과 ed -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</th:block>
+
+</html>

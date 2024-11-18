@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS007BMapper">
+
+	<!-- 2024-11-07 김건우 -->
+	<select id="selectAthCdListFromMenu" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS007BVO">
+		SELECT T1.ATH_CD				/* 권한코드 */
+		     , T2.ATH_CD_NM   			/* 권한명 */
+		     , T2.ATH_CD_EXPL			/* 권한코드설명 */
+			 , T1.MDFY_RGHT_CCD			/* 수정권한구분코드 1:조회 2:수정가능 데이터없을시 권한X 인듯 */
+			 , T1.HND_DETL_DTM			/* 처리시간 */
+			 , (SELECT EMP_NM
+			      FROM IBIMS003B
+				 WHERE 1=1 
+				   AND EMPNO = T1.HND_EMPNO) AS hndEmpno	/* 처리자 */
+			 , T1.MENU_ID				/* 메뉴ID */
+			 , T1.SQ					/* 일련번호 */
+		  FROM IBIMS007B T1	/* 메뉴별권한코드 */
+	 LEFT JOIN IBIMS006B T2 /* 권한코드기본 */
+	        ON T1.ATH_CD = T2.ATH_CD
+	     WHERE 1=1
+		   AND T1.MENU_ID = #{menuId}
+		 ORDER
+		    BY T1.ATH_CD
+	</select>
+
+	<update id="updateAth" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
+		UPDATE IBIMS007B
+		   SET MDFY_RGHT_CCD = #{mdfyRghtCcd}
+		     , HND_DETL_DTM = SYSDATE
+			 , HND_EMPNO = #{hndEmpno}
+			 , HND_TMNL_NO = #{hndTmnlNo}
+			 , HND_TR_ID = #{hndTrId}
+			 , GUID = #{guid}
+		 WHERE 1=1
+		   AND ATH_CD = #{athCd}
+		   AND MENU_ID = #{menuId}
+	</update>
+
+	<select id="chkAthCd" parameterType="com.nanuri.rams.business.common.vo.IBIMS007BVO" resultType="String">
+		SELECT CASE
+				WHEN COUNT(T1.MENU_ID) = 0 THEN 'NO'
+				ELSE 'YES'
+			     END
+		  FROM IBIMS007B T1
+	 LEFT JOIN IBIMS005B T2
+	        ON T1.MENU_ID = T2.MENU_ID
+		 WHERE 1=1
+		   AND T1.MENU_ID = #{menuId}
+		   AND T2.APLY_YN = 'Y'
+		   AND T2.DEL_YN = 'N'
+		   AND T1.ATH_CD = (
+							SELECT ATH_CD
+							  FROM IBIMS003B
+							 WHERE 1=1
+							   AND EMPNO = #{empno}
+						)
+	</select>
+
+	<update id="updateMdfyRghtCcd">
+		MERGE INTO IBIMS007B T
+      USING (
+             SELECT #{athCd}  AS ATH_CD
+				  , #{sq}  AS SQ
+				  , #{menuId}  AS MENU_ID
+				  , #{mdfyRghtCcd}  AS MDFY_RGHT_CCD
+				  , #{hndDetlDtm}  AS HND_DETL_DTM
+				  , #{hndEmpno}  AS HND_EMPNO
+				  , #{hndTmnlNo}  AS HND_TMNL_NO
+				  , #{hndTrId}  AS HND_TR_ID
+				  , #{guid}  AS GUID
+               FROM DUAL
+             ) S
+         ON (
+			T.ATH_CD = S.ATH_CD
+		AND T.MENU_ID = S.MENU_ID
+			)
+      WHEN MATCHED THEN
+        UPDATE SET T.MDFY_RGHT_CCD = S.MDFY_RGHT_CCD
+				 , T.HND_DETL_DTM = SYSDATE
+				 , T.HND_EMPNO = S.HND_EMPNO
+				 , T.HND_TMNL_NO = S.HND_TMNL_NO
+				 , T.HND_TR_ID = S.HND_TR_ID
+				 , T.GUID = S.GUID
+      WHEN NOT MATCHED THEN
+        INSERT ( ATH_CD
+			   , SQ
+			   , MENU_ID
+			   , MDFY_RGHT_CCD
+			   , HND_DETL_DTM
+			   , HND_EMPNO
+			   , HND_TMNL_NO
+			   , HND_TR_ID
+			   , GUID
+               )
+        VALUES ( S.ATH_CD
+			   , S.SQ
+			   , S.MENU_ID
+			   , S.MDFY_RGHT_CCD
+			   , SYSDATE
+			   , S.HND_EMPNO
+			   , S.HND_TMNL_NO
+			   , S.HND_TR_ID
+			   , S.GUID
+               )
+	</update>
+
+	<select id="ibims007bCreateSq" resultType="int">
+		SELECT NVL(MAX(SQ), 0) + 1
+		  FROM IBIMS007B
+	</select>
+
+	<!-- 2024-11-07 김건우 끝 -->
+
+	<!-- 권한별 메뉴 조회 -->
+	<select id="selectAvailableMenu" resultType="com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO" parameterType='java.util.Map'>
+		SELECT T1.ATH_CD					/* 권한코드 */
+			 , T1.SQ						/* 일련번호 */
+			 , T1.MENU_ID					/* 메뉴ID */
+			 , T1.MDFY_RGHT_CCD				/* 수정권한구분코드 (1: 조회, 2: 수정가능) */
+			 , T1.HND_DETL_DTM
+		     , T1.HND_EMPNO
+		  FROM IBIMS007B T1	/* 메뉴권한 */	
+     LEFT JOIN IBIMS005B T2	/* 메뉴기본 */
+	     	ON T1.MENU_ID = T2.MENU_ID 
+		 WHERE 1=1
+		   AND T2.APLY_YN = 'Y'
+		   AND T2.SCRN_APLY_SHP_CD = 'S'
+		   AND T1.ATH_CD = #{athCd}
+	  	 ORDER
+		  	BY T1.MENU_ID
+	</select>
+
+	
+	<insert id='insertUseMenu' parameterType='com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO'>
+		INSERT INTO IBIMS007B (
+				  ATH_CD				<!-- 권한코드 -->
+				, SQ					<!-- 일련번호 -->
+				, MENU_ID				<!-- 메뉴ID -->
+				, MDFY_RGHT_CCD			<!-- 수정권한구분코드(1: 조회, 2: 수정가능) -->
+				, HND_DETL_DTM			<!-- 처리일시 -->
+				, HND_EMPNO				<!-- 처리자사번 -->
+				)
+		VALUES (
+				  #{athCd}
+				, (SELECT(NEXTVAL(IBIMS007B_SQ)))
+				, #{menuId}
+				, #{mdfyRghtCcd}
+				, DEFAULT
+				, #{hndEmpno}
+				)
+	</insert>
+
+	<!-- RAA95B 조회 및 수정 가능 여부 삭제 -->
+	<delete id='deleteUseMenu' parameterType='com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO'>
+		DELETE
+		  FROM IBIMS007B
+		 WHERE SQ			= #{sq}		<!-- 일련번호 -->	
+		   AND ATH_CD		= #{athCd}	<!-- 권한코드 -->
+	</delete>
+
+	<!-- SQ 값 구하기 -->
+	<select id="nextVal" resultType="int">
+		SELECT NEXTVAL(IBIMS007B_SQ)
+	</select>
+
+	<select id="selectAuthCodeMenu" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
+		SELECT *
+		  FROM IBIMS007B
+		 WHERE ATH_CD = #{athCd}		/* 권한코드 */
+		   AND MENU_ID = #{menuId}		/* 메뉴ID */
+	</select>
+
+	<insert id="insertAuthCodeMenu" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
+		INSERT INTO IBIMS007B (
+			ATH_CD,						<!-- 권한코드 -->
+			SQ,							<!-- 일련번호 -->
+			MENU_ID,					<!-- 메뉴ID -->
+			MDFY_RGHT_CCD,				<!-- 수정권한구분코드(1: 조회, 2: 수정가능) -->
+			HND_DETL_DTM,				<!-- 처리일시 -->
+			HND_EMPNO					<!-- 처리자사번 -->
+		) VALUES (
+			#{athCd},
+			(SELECT NEXTVAL(IBIMS007B_SQ)),
+			#{menuId},
+			#{mdfyRghtCcd},
+			DEFAULT,
+			#{hndEmpno}
+		)
+	</insert>
+
+	<update id="updateAuthCodeMenu" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
+		UPDATE IBIMS007B
+		   SET MDFY_RGHT_CCD = #{mdfyRghtCcd}
+			 , HND_DETL_DTM = SYSDATE
+			 , HND_EMPNO = #{hndEmpno}
+		WHERE 1=1
+		  AND ATH_CD = #{athCd}
+		  AND MENU_ID = #{menuId}
+		  AND SQ = #{sq}
+	</update>
+
+	<delete id="deleteAuthCodeMenu" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
+		DELETE
+		  FROM IBIMS007B
+		 WHERE ATH_CD = #{athCd}			<!-- 권한코드 -->
+		   AND MENU_ID = #{menuId}			<!-- 메뉴ID -->
+	</delete>
+
+	<!-- 업데이트 시 SQ에 해당 권한코드 데이터가 있는지 유무 -->
+	<select id="isExist" parameterType="com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO" resultType="boolean">
+		SELECT IF(
+				  COUNT(*) = 0, 0, 1
+				 ) AS isExist
+		  FROM IBIMS007B
+		 WHERE ATH_CD 	= #{athCd}			<!-- 권한코드 -->
+		   AND SQ 		= #{sq}				<!-- 일련번호 -->
+	</select>
+</mapper>

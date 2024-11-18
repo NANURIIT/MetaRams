@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS518BMapper">
+
+	<!-- 투자기업정보 조회 -->
+	<select id="getInvstBzscalList" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS518BVO">
+        SELECT DEAL_NO                        /* 딜번호 */
+             , STDR_YM                        /* 기준년월 */
+             , SN                             /* 일련번호 */
+             , FND_NM                         /* 펀드명 */
+             , CRNO                           /* 법인등록번호 */
+             , TR_OTHR_NM                     /* 거래상대방명 */
+             , BZNO                           /* 사업자등록번호 */
+             , BZTP_NM                        /* 업종명 */
+             , NTN_NM                         /* 국가명 */
+             , FND_DCD                        /* 펀드구분코드 */
+             , SCTS_FND_TP_DCD                /* 유가증권펀드유형상세코드 */
+             , PCHS_DT                        /* 매입일자 */
+             , DEAL_AMT                       /* 취득가액 */
+             , BKPR                           /* 장부가액 */
+             , ASES_BAL                       /* 평가잔액 */
+             , INTL_ERN_RT                    /* 순내부수익율 */
+          FROM IBIMS518B
+         WHERE DEAL_NO = #{dealNo}
+	</select>
+	
+	<!-- 투자기업정보 저장 -->
+	<insert id="saveInvstEprzInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS518BVO">
+		INSERT INTO IBIMS518B
+               (
+                  DEAL_NO                     /* 딜번호 */
+                , STDR_YM                     /* 기준년월 */
+                , SN                          /* 일련번호 */
+                , FND_NM                      /* 펀드명 */
+                , CRNO                        /* 법인등록번호 */
+                , TR_OTHR_NM                  /* 거래상대방명 */
+                , BZNO                        /* 사업자등록번호 */
+                , BZTP_NM                     /* 업종명 */
+                , NTN_NM                      /* 국가명 */
+                , FND_DCD                     /* 펀드구분코드 */
+                , SCTS_FND_TP_DCD             /* 유가증권펀드유형상세코드 */
+                , PCHS_DT                     /* 매입일자 */
+                , DEAL_AMT                    /* 취득가액 */
+                , BKPR                        /* 장부가액 */
+                , ASES_BAL                    /* 평가잔액 */
+                , INTL_ERN_RT                 /* 순내부수익율 */
+                , DEL_YN                      /* 삭제여부 */
+                , HND_DETL_DTM                /* 조작상세일시 */
+                , HND_EMPNO                   /* 조작사원번호 */
+               )
+        VALUES 
+		<foreach collection="list" item="item" index="index" separator=",">
+			   (
+				 #{item.dealNo}               /* 딜번호 */
+               , #{item.stdrYm}               /* 기준년월 */
+               , #{item.sn}                   /* 일련번호 */
+               , #{item.fndNm}                /* 펀드명 */
+               , #{item.crno}                 /* 법인등록번호 */
+               , #{item.trOthrNm}             /* 거래상대방명 */
+               , #{item.bzno}                 /* 사업자등록번호 */
+               , #{item.bztpNm}               /* 업종명 */
+               , #{item.ntnNm}                /* 국가명 */
+               , #{item.fndDcd}               /* 펀드구분코드 */
+               , #{item.sctsFndTpDcd}         /* 유가증권펀드유형상세코드 */
+               , #{item.pchsDt}               /* 매입일자 */
+               , #{item.dealAmt}              /* 취득가액 */
+			   , #{item.bkpr}                 /* 장부가액 */
+			   , #{item.asesBal}              /* 평가잔액 */
+			   , #{item.intlErnRt}            /* 순내부수익율 */
+			   , '0'                          /* 삭제여부 */
+			   , SYSDATE                      /* 조작상세일시 */
+			   , #{item.hndEmpno}             /* 조작사원번호 */
+               )
+		</foreach>  
+	</insert>
+
+    <!-- 투자기업정보 삭제 -->
+    <delete id="delInvstEprzInfo" parameterType="string">
+        DELETE
+         FROM IBIMS518B
+        WHERE DEAL_NO = #{dealNo}
+    </delete>
+
+</mapper>

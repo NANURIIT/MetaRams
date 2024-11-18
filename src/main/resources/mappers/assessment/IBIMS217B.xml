@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS217BMapper">
+	
+	<!-- 딜승인보증서담보내역 - 대출채권/채무보증 정보(TB06010S) - 담보/보증내역등록  -->
+    <insert id="insertIBIMS217B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        INSERT INTO IBIMS217B 
+               (
+                  MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
+                , GRTE_ISTT_DCD                                     <!-- 보증기관구분코드 -->
+                , GRTE_ISTT_CD                                      <!-- 보증기관코드 -->
+                , GRTE_ISTT_NM                                      <!-- 보증기관명 -->
+                , LGRTE_NM                                          <!-- 보증서명 -->
+                , GRTE_CRRY_CD                                      <!-- 보증통화코드 -->
+                , GRTE_AMT                                          <!-- 보증금액 -->
+                , GRTE_EXPR_DT                                      <!-- 보증만료일자 -->
+                , MRTG_GRTE_CTNS                                    <!-- 담보보증내용 -->
+                , MRTG_RCG_RTO                                      <!-- 담보인정비율 -->
+                , MRTG_PRC                                          <!-- 담보가격 -->
+                , HND_DETL_DTM
+                , HND_EMPNO                                         <!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+                , HND_TR_ID                                         <!-- 조작거래id -->
+                , GUID                                              <!-- guid -->
+               )
+        VALUES (
+                 #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+               , #{grteIsttDcd}                                     <!-- 보증기관구분코드 -->
+               , #{grteIsttCd}                                      <!-- 보증기관코드 -->
+               , #{grteIsttNm}                                      <!-- 보증기관명 -->
+               , #{lgrteNm}                                         <!-- 보증서명 -->
+               , #{grteCrryCd}                                      <!-- 보증통화코드 -->
+               , #{grteAmt}                                         <!-- 보증금액 -->
+               , #{grteExprDt}                                      <!-- 보증만료일자 -->
+               , #{mrtgGrteCtns}                                    <!-- 담보보증내용 -->
+               , #{mrtgRcgRto}                                      <!-- 담보인정비율 -->
+               , #{mrtgPrc}                                         <!-- 담보가격 -->
+               , SYSDATE
+               , #{hndEmpno}                                        <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+               , #{hndTrId}                                         <!-- 조작거래id -->
+               , #{guid}                                            <!-- guid -->
+               )
+    </insert>
+    
+    <delete id="deleteIBIMS217B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        DELETE 
+          FROM IBIMS217B
+         WHERE 1=1
+           AND MRTG_MNGM_NO                                      = #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+    </delete>
+
+</mapper>

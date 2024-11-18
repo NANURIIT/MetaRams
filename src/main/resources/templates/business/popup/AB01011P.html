@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+ <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/ramsLayout}">
+
+<th:block th:fragment="AB01011P1">
+	<!-- modal -->
+	<div id="modal-AB01011P1" class="modal fade" role="dialog" aria-labelledby="lb-ab01011p" aria-hidden="true" style="z-index: 1060; ">
+		<div class="modal-dialog modal-center" role="document">
+			<div class="modal-content" style="width: 600px">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">지정 조회자 등록</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_AB01011P1()"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-12">						
+							<table class="table-bordered" >
+								<!-- <colgroup>
+									<col style="width: 17%;">
+									<col style="width: 33%;">
+									<col style="width: 17%;">
+									<col style="width: 33%;">
+								</colgroup> -->
+								<tr>
+									<th>부점명</th>
+									<td colspan="3">
+										<select class="col-sm-5 form-control" id="AB01011P_dprtCd1">
+										</select>
+									</td>
+									
+								</tr>
+								<tr>
+									<th>사용자</th>
+									<td >
+	                            		<select class=" form-control" id="AB01011P_repDsgnUsrNo1"></select>
+		                            </td>
+									<th>삭제여부</th>
+									<td>
+		                           		<input type="radio" name="dltF" id="AB01011P_dltF_N" value="N" >&nbsp;N&nbsp;
+		                           		<input type="radio" name="dltF" id="AB01011P_dltF_Y" value="Y" >&nbsp;Y
+		                            </td>
+								</tr>
+							</table>
+							<div style="display: none;" class="dltFText text-warning ml-2 mt-2">
+								<i class="fa fa-exclamation-circle" ></i>&nbsp;삭제 여부를 선택하세요.
+							</div>
+							<div class="col-sm-12 text-right py-2">
+								<button class="btn btn-success" type="button" id="AB01011P_saveButton" onclick="saveUserData()"><i class="fa fa-save"></i>&nbsp;저장</button>
+							</div>
+						</div>
+					</div><!-- row -->
+				</div>
+			</div>
+		</div>
+	</div>		
+</th:block>
+
+<th:block th:fragment="AB01011P2">
+	<!-- modal -->
+	<div id="modal-AB01011P2" class="modal fade" role="dialog" aria-labelledby="lb-ab01011p" aria-hidden="true" style="z-index: 1060; ">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content" style="width: 600px">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">지정 조회 부서 등록</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_AB01011P2()"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-12">						
+							<table class="table-bordered" >
+								<tr>
+									<th>부서명</th>
+									<td >
+										<select class="form-control" id="AB01011P_dprtCd2">
+										</select>
+									</td>
+									<th>삭제여부</th>
+									<td>
+		                           		<input type="radio" name="dltF" id="AB01011P_dltF2_N" value="N" >&nbsp;N&nbsp;
+		                           		<input type="radio" name="dltF" id="AB01011P_dltF2_Y" value="Y" >&nbsp;Y
+		                            </td>
+								</tr>
+							</table>
+							<div style="display: none;" class="dltFText text-warning ml-2 mt-2">
+								<i class="fa fa-exclamation-circle" ></i>&nbsp;삭제 여부를 선택하세요.
+							</div>
+							<div class="col-sm-12 text-right py-2">
+								<button class="btn btn-success" type="button" id="AB01011P_saveButton" onclick="saveDsgnDeptNo()"><i class="fa fa-save"></i>&nbsp;저장</button>
+							</div>
+						</div>
+					</div><!-- row -->
+				</div>
+			</div>
+		</div>
+	</div>		
+</th:block>
+
+<th:block th:fragment="AB01011P3">
+	<!-- modal -->
+	<div id="modal-AB01011P3" class="modal fade" role="dialog" aria-labelledby="lb-ab01011p" aria-hidden="true" style="z-index: 1060; ">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content" >
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">관련 CALL 등록</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_AB01011P3()"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				
+				<div class="modal-body ">
+					<div class="row">
+						<div class="col-sm-12">						
+							<table class="table-bordered" >
+								<colgroup>
+									<col style="width: 17%;">
+									<col style="width: 33%;">
+									<col style="width: 17%;">
+									<col style="width: 33%;">
+								</colgroup>
+								<tr>
+									<th>미팅일자</th>
+									<td colspan="3">
+										<span class="col-sm-4 input-group date px-0"> 
+											<input type="text" class="form-control" id="meetingDt" name="FromDate" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</span>
+		                            </td>
+								</tr>
+								<tr>
+								</tr>
+								<tr>
+									<th>부서명</th>
+									<td>
+										<select class="form-control" id="AB01011P_dprtCd3"></select>
+									</td>
+									<th>담당자</th>
+									<td>
+		                           		<select class="form-control" id="AB01011P_repDsgnUsrNo3"></select>
+		                            </td>
+								</tr>
+								<tr>
+									<th>미팅제목</th>
+									<td colspan="3">
+	                            		<input type="text" class=" form-control" id="AB01011P_metTitle">
+		                            </td>
+								</tr>
+								<tr>
+									<th>업체명</th>
+									<td>
+										<input type="text" class=" form-control" id="AB01011P_entpNm">
+									</td>
+									<th>삭제여부</th>
+									<td>
+		                           		<input type="radio" name="dltF" id="AB01011P_dltF3_N" value="N" >&nbsp;N&nbsp;
+		                           		<input type="radio" name="dltF" id="AB01011P_dltF3_Y" value="Y" >&nbsp;Y
+		                            </td>
+								</tr>
+							</table>
+							<div class="text-warning ml-2 mt-2" style="display: none;" id="msg">
+								<i class="fa fa-exclamation-circle" ></i>&nbsp;빈칸을 채워주세요.
+							</div>
+							<div class="col-sm-12 text-right py-2">
+								<button class="btn btn-success" type="button" id="AB01011P_saveButton" onclick="saveRelCall()"><i class="fa fa-save"></i>&nbsp;저장</button>
+							</div>
+						</div>
+					</div><!-- row -->
+				</div>
+			</div>
+		</div>
+	</div>		
+</th:block>
+
+
+<th:block th:fragment="entp_modal">
+	<!-- modal -->
+	<div id="modal-entp" class="modal fade" role="dialog" aria-labelledby="lb-ab01011p" aria-hidden="true" style="z-index: 1060; ">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content" >
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">업체정보 조회</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_entp()"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				
+				<div class="modal-body ">
+					<table class="table result table-bordered">
+						<thead class="text-center">
+							<tr>
+								<th>선택</th>
+								<th>업체명</th>
+								<th>법인번호</th>
+								<th>기업규모</th>
+								<th>업종</th>
+								<th>계열</th>
+								<th>신용등급</th>
+								<th>상장시장</th>
+							</tr>
+						</thead>
+						<tbody id="entpInfo">
+						</tbody>
+					</table>
+					<div class="text-warning ml-2" style="display: none;" id="radioState">
+						<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;업체를 선택하세요.
+					</div>
+					<div class="col-sm-12 text-right py-2">
+						<button class="btn btn-success" type="button" id="confirmButton" onclick="">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>		
+
+</th:block>
+
+</html>

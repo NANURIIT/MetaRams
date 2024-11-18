@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/file.js}"></script>
+	<script th:src="@{js/business/tb/TB06011P.js}"></script>
+	<script th:src="@{js/business/tb/TB06015P.js}"></script>	
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+</th:block>
+
+<th:block th:fragment="TB06015P">
+	<!-- modal -->
+	<div id="modal-TB06015P" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">이자계산시뮬레이션</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB06015P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body modal-height-ex">
+					<input type="hidden" name="prefix" id="TB06015P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="ibox">
+								<div class="ibox-content border-none">
+									<div class="ibox">
+						    			<div class="ibox-content text-right border-none pd0">
+						    				<!-- row1 -->
+						    				<div class="form-group row mb-2">
+						    					<label class="col-sm-1 col-form-label text-right">종목코드</label>
+												<div class="col-sm-4">
+													<div class="input-group">
+														<input type="text" class="form-control" id="TB06015P_prdtCd">
+														<span class="input-group-append">
+															<button type="button" class="btn btn-default" onclick="callTB06011P('TB06015P');"><i class="fa fa-search"></i></button>
+														</span>
+														<input type="text" class="form-control" style="width:100px;" id="TB06015P_prdtNm" readonly>
+													</div>
+												</div>
+				                            	<label class="col-sm-1 col-form-label">실행순번</label>
+												<div class="col-sm-3 input-group">
+														<!-- <input type="text" class="form-control text-right" id="TB06015P_seq" onkeyup="inputNumberFormat(this);"> -->
+														<select class="form-control" id="TB06015P_seq" disabled="true">
+														</select>
+												</div>
+												<div class="col-sm-3 text-right">
+													<button class="btn btn-primary" type="button" onclick="getDetailInfo();"><i class="fa fa-search"></i>&nbsp;조회</button>
+													<button id="" class="btn btn-default" onclick="reSet_TB06015P();"><i class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
+												</div>
+											</div>
+						    			</div>
+						    		</div><!-- ibox -->
+						    		<hr>
+
+						    		
+						    		<div class="ibox">
+										<div class="ibox-title">
+											<h5>▶&nbsp;기본정보</h5>
+										</div>
+										<div class="ibox-content">
+											<!-- row1 -->
+											<div class="row form-group form-inline text-right mb-2">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right ls-15">원금상환방법</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06015P_E020">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">신규일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB06015P_excDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<label class="col-sm-1 col-form-label">대출잔액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_dealExcBlce" onkeyup="inputNumberFormat(this);">
+													</div>
+												</div>
+											</div>
+											<!-- row2 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">이자선후취<br class="br-mo">구분</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06015P_E011">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">만기일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB06015P_expDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<label class="col-sm-1 col-form-label ls-15">균등상환금액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_eqlRdmpAmt" onkeyup="inputNumberFormat(this);">
+													</div>
+												</div>
+											</div>
+											<!-- row3 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">이자납입일<br class="br-mo">(DD)</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06015P_I017">
+														</select>
+													</div> 
+													<label class="col-sm-1 col-form-label text-right ls-15">이자상환주기</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_intrRdmpFrqcMnum" onkeyup="inputNumberFormat(this);">개월
+													</div>
+													<label class="col-sm-1 col-form-label ls-15">미수이자금액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_rcvbIntrAmt" onkeyup="inputNumberFormat(this);">
+													</div>
+												</div>
+											</div>
+											<!-- row4 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right ls-15">휴일처리구분</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06015P_H001">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right ls-15">원금상환주기</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_prnaRdmpFrqcMnum" onkeyup="inputNumberFormat(this);">개월
+													</div>
+													<label class="col-sm-1 col-form-label text-right ls-15">거치기간</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_dfrExpDt" value="" oninput="inputOnlyNumberFormat(this);" maxlength="2">개월
+														<!-- <span class="input-group-addon"><i class="fa fa-calendar"></i></span> -->
+													</div>
+												</div>
+											</div>
+											<!-- row5 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">이자일수<br class="br-mo">계산방법</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06015P_E013">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">최종원금<br class="br-mo">상환일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB06015P_lastPrnaRdmpDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<!-- <label class="col-sm-1 col-form-label">대출잔액</label>
+													<div class="col-sm-3 input-group"> -->
+														<input type="text" class="form-control text-right" id="TB06015P_dealExcAmt" style="display: none;" value="">
+													<!-- </div> -->
+												</div>
+											</div>
+											<!-- row6 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">초일말일<br class="br-mo">적용구분</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06015P_E024">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">이자단수법<br class="br-mo">구분</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06015P_I019">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">다음이자<br class="br-mo">납입일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB06015P_nxtIntrPymDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+											</div>
+											<!-- row7 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">이자계산<br class="br-mo">종료일구분</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06015P_I016">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">연체이자율<br class="br-mo">구분</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06015P_E019">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">최종이자<br class="br-mo">계산일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB06015P_lastIntrClcDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="ibox">
+										<div class="ibox-title">
+											<h5>▶&nbsp;원금/이자상환 계획 정보</h5>
+											<div class="ibox-tools">
+												<div style="display:none;">
+													<input type="file" class="custom-file-input" id="upload-file-input-TB06015P01" name="uploadfile" accept="*">
+													<input type="file" class="custom-file-input" id="upload-file-input-TB06015P02" name="uploadfile" accept="*">
+												</div>
+												<!-- <a href="file/Principal_Repayment_Plan.xlsx" download>
+													<button class="btn btn-info btn-xs"><i class="fa fa-download"></i>&nbsp;서식다운로드</button>
+												</a>
+												<button class="btn btn-success btn-xs" id="TB06015P_upload_btn"><i class="fa fa-upload"></i>&nbsp;업로드</button> -->
+											</div>
+										</div>
+										<div class="ibox-content text-right mg-0">
+											<div class="row">
+												<div class="col-lg-6">
+													<div id="rdmpPlanGrid">
+													</div>
+												</div>
+												<div class = "col-lg-6">
+													<div id="intrPlanGrid">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>	
+									<div class="ibox">
+										<div class="ibox-title">
+											<h5>▶&nbsp;연체정보</h5>
+										</div>
+										<div class="ibox-content">
+											<!-- row1 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">원금연체<br class="br-mo">시작일</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB06015P_prnaOvduDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<label class="col-sm-1 col-form-label text-right">이자연체<br class="br-mo">시작일</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB06015P_intrOvduDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+											</div>
+											<!-- row2 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">기한이익<br class="br-mo">상실일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB06015P_tlmtPrfLoseDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<label class="col-sm-1 col-form-label text-right ls-15">연체금리(%)</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control" id="TB06015P_ovduIntrRt" value="">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="ibox">
+										<div class="ibox-title">
+											<h5>▶&nbsp;중도상환정보</h5>
+										</div>
+										<div class="ibox-content">
+											<!-- row1 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right ls-15">중도상환여부</label>
+													<div class="col-sm-3 input-group input-h">
+														<div class="col-sm-3 input-group">
+															<input type="radio" value="Y" id="TB06015P_mrdpYnY" name="TB08031S_rlesWarrMrtgYN">
+															<label class="col-sm-5">Y</label>
+														</div>
+														<div class="col-sm-3 input-group">
+															<input type="radio" value="N" id="TB06015P_mrdpYnN" name="TB08031S_rlesWarrMrtgYN" checked="true">
+															<label class="col-sm-5">N</label>
+														</div>
+													</div>
+													<label class="col-sm-1 col-form-label text-right ls-15">중도상환<br class="br-mo">수수료율(%)</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_mdwyRdmpFeeRto" readonly>
+													</div>
+													<!-- <label class="col-sm-1 col-form-label text-right">이자수기<br class="br-mo">계산여부</label>
+													<div class="col-sm-3 input-group input-h">
+														<div class="col-sm-3 input-group">
+															<input type="radio" value="Y" id="TB08031S_rlesWarrMrtgY" name="TB08031S_rlesWarrMrtgYN">
+															<label class="col-sm-5">Y</label>
+														</div>
+														<div class="col-sm-3 input-group">
+															<input type="radio" value="N" id="TB08031S_rlesWarrMrtgN" name="TB08031S_rlesWarrMrtgYN" checked="true">
+															<label class="col-sm-5">N</label>
+														</div>
+													</div> -->
+													<label class="col-sm-1 col-form-label text-right ls-15">중도상환금액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_dealMrdpPrca" onkeyup="inputNumberFormat(this);">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>	
+									<div class="ibox">
+										<div class="ibox-title">
+										   <h5>▶&nbsp;금리정보</h5>
+										   <div class="ibox-tools">
+											   <button class="btn btn-default btn-xs" type="button" onclick="addRow_intrtInfoTable();"><i class="fa fa-plus"></i></button>
+											   <button class="btn btn-default btn-xs" type="button" onclick="dltRow_intrtInfoTable();"><i class="fa fa-minus"></i></button>
+										   </div>
+									   </div>
+									   <div class="ibox-content text-right">
+										   <div class="tableFixHead2">
+											   <div id="intrtInfoTable"></div>
+										   </div>
+									   </div>
+								   </div>			    		
+						    		<div class="ibox">
+										<!-- <div class="ibox-title">
+											<h5>▶&nbsp;원리금계산정보</h5>
+											<div class="ibox-tools">
+													
+													<button class="btn btn-primary btn-xs" type="button" onclick="getRateCalcSimulation();"><i class="fa fa-search"></i>&nbsp;이자계산</button>
+											</div>
+										</div> -->
+
+										<div class="ibox-title">
+											<div class="row">
+												<h5 class="col-sm-5 pl-3">▶&nbsp;원리금계산정보</h5>
+												<div class="col-sm-7 input-group justify-content-end pr-3">
+													<label class="col-sm-3 col-form-label text-right">기준일자 (예정일자)</label>
+													<div class="col-sm-6 input-group date">
+														<input type="text" class="form-control" id="TB06015P_stdrDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<button class="btn btn-primary btn-xs" style="height: inherit;" type="button" onclick="calcValidation();"><i class="fa fa-search"></i>&nbsp;이자계산</button>
+												</div>
+											</div>
+										</div>
+
+						    			<div class="ibox-content text-right">
+						    				<!-- row1 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right ls-15">상환대상원금</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_prarPrna">
+													</div>
+													<label class="col-sm-1 col-form-label text-right">최종이자<br class="br-mo">계산일</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_fnlIntrCalcDt">
+													</div>
+													<label class="col-sm-1 col-form-label text-right">다음이자<br class="br-mo">납입일</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_nxtIntrRpDt">
+													</div>
+												</div>
+											</div>
+											<!-- row2 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label text-right">다음원금<br class="br-mo">상환일</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_nxtPrnaRpDt">
+													</div>
+													<label class="col-sm-1 col-form-label text-right">정상이자</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_nrmlIntrAmt">
+													</div>
+													<label class="col-sm-1 col-form-label text-right ls-15">원금연체이자</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_ovduPrnaIntr">
+													</div>
+												</div>
+											</div>
+											<!-- row3 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<!-- <label class="col-sm-1 col-form-label text-right">분할금<br class="br-mo">연체이자</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_">
+													</div> -->
+													<label class="col-sm-1 col-form-label text-right ls-15">이자연체이자</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_ovduIntrIntr">
+													</div>
+													<!-- <label class="col-sm-1 col-form-label text-right">환출이자</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_">
+													</div> -->
+													<label class="col-sm-1 col-form-label text-right">중도상환<br class="br-mo">수수료</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_earlyRpFee">
+													</div>
+													<label class="col-sm-1 col-form-label text-right ls-15">중도상환원금</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_earlyRpPrna" onkeyup="inputNumberFormat(this);">
+													</div>
+												</div>
+											</div>
+											<!-- row4 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													
+													<label class="col-sm-1 col-form-label text-right ls-15">미수이자금액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_accrdIntr">
+													</div>
+													<label class="col-sm-1 col-form-label text-right">총수납대상<br class="br-mo">금액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06015P_totalAmt">
+													</div>
+												</div>
+											</div>
+											<!-- row5 -->
+											<!-- <div class="row form-group form-inline text-right mb-3">
+												<div class="col-sm-12 form-group">
+													
+												</div>
+											</div> -->
+						    			</div>
+										
+						    		</div>
+									<div class="ibox-content">
+										<div style="height: 235px;">
+											<div id="TB06015P_IntrCalc"></div>
+										</div>
+									</div>
+									
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> 
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

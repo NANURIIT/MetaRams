@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB06019P">
+   <!-- modal -->
+   <div id="modal-TB06019P" class="modal fade" role="dialog">
+      <div class="modal-dialog" style="max-width: 1280px;" role="document">
+         <div class="modal-content">
+            <div class="modal-header metis-modal-header">
+               <h4 class="modal-title">기업체정보 등록</h4>
+               <div class="col-sm-1 text-right">
+                  <button type="button" class="btn btn-default" onclick="modalClose_TB06019P();"><i class="fa fa-times"></i></button>
+               </div>
+            </div>
+            <div class="modal-body modal-height-ex"> 
+               <input type="hidden" name="prefix" id="TB06019P_prefix" value=""/>
+               <div class="row">
+                  <div class="col-sm-12 b-r">
+                     <div class="ibox mb-0">
+                        <div class="ibox-content i-filter">
+                           <!-- row1 -->
+                           <div class="form-group form-inline row mb-0">
+                              <div class="col-sm-12 input-group text-right">
+                                 <label class="col-sm-1 control-label">기업체번호</label>
+                                 <div class="col-sm-4 input-group">
+                                    <input type="text" class="form-control" id="TB06019P_ardyBzepNo" maxlength="13">
+                                    <span class="input-group-append">
+                                       <button type="button" class="btn btn-default"  onclick="callTB03061P('TB06019P');"><i class="fa fa-search"></i></button>
+                                    </span>
+                                    <input type="text" class="form-control" id="TB06019P_bzepName" style="width: 110px;" disabled>
+                                 </div>
+      
+                                 <!-- 상단 버튼 스타일 -->
+                                 <div class="col-sm-6 text-left">
+                                    <button class="btn btn-primary" onclick="getArdyBzepInfo()">
+                                       <i class="fa fa-search"></i>&nbsp;조회</button>
+                                    <button class="btn btn-default" type="button" onclick="reset_TB03061P();">
+                                       <i class="fa fa-undo"></i>&nbsp;초기화</button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                  <!-- end of ibox -->
+      
+                  <!-- 조회내용 -->
+                  <!-- ibox -->
+      
+                        <div class="ibox-content">
+                              <div class="ibox">
+                                 <div class="ibox-title">
+                                    <h5>▶ 기본정보</h5>
+                                 </div>
+                                 <div class="ibox-content">
+                                    <!-- row1 -->
+                                    <div class="form-group form-inline row">
+                                       <div class="col-sm-12 input-group text-right">
+                                          <label class="col-sm-1 control-label"><span class="req"></span>사업장 구분</label>
+                                          <div class="col-sm-3 input-group">
+                                             <select class="form-control" id="TB06019P_bzplDvsnCd">
+                                                <option value="">선택</option>
+                                             </select>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">기업체 번호</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_getArdyBzepNo" maxlength="13" disabled>
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 control-label">고객번호</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_csno" readonly>
+                                                <span class="input-group-append">
+                                                   <button type="button" class="btn btn-default"  onclick=""><i class="fa fa-search"></i></button>
+                                                </span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row2 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">업체명</label>
+                                          <div class="col-sm-7">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_bzepNm" maxlength="60">
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">영문사업장명</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_engBzplName">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row3 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">사업자등록번호</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_rnbn" oninput="this.value = checkBrnAcno(this.value.replace(/[^-0-9]/g,''));" placeholder="사업자등록번호 10자리" maxlength='10'>
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">법인등록번호</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_crno" oninput="this.value = this.value.length > 10 ? checkBrnAcno(this.value.replace(/[^-0-9]/g,'')) : this.value.replace(/[^-0-9]/g,'');" placeholder="법인번호 13자리" maxlength="13">
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">나이스신용평가<br>업체코드</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_niceiBzepCd" maxlength="6">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row4 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">우편번호</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_zpcd" maxlength="6">
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">전화번호</label>
+                                          <div class="col-sm-3 input-group">
+                                             <input class="form-control" type="text" id="TB06019P_btno" maxlength="4">
+                                             <span class="input-group-addon border-none">-</span>
+                                             <input class="form-control" type="text" id="TB06019P_atno" maxlength="4">
+                                             <span class="input-group-addon border-none">-</span>
+                                             <input class="form-control" type="text" id="TB06019P_stno" maxlength="4">
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">Fax번호</label>
+                                          <div class="col-sm-3 input-group">
+                                             <select class="form-control" id="TB06019P_faxBtno">
+                                                <option value="">선택</option>
+                                             </select>
+                                             <span class="input-group-addon border-none">-</span>
+                                             <input class="form-control" type="text" id="TB06019P_faxAtno" maxlength="4">
+                                             <span class="input-group-addon border-none">-</span>
+                                             <input class="form-control" type="text" id="TB06019P_faxStno" maxlength="4">
+                                          </div>
+                                       </div>	
+                                    </div>
+                                    <!-- row5 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">한글사업장주소</label>
+                                          <div class="col-sm-11">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_korBzplAddr" maxlength="200">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row6 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">영문사업장주소</label>
+                                          <div class="col-sm-11">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_engBzplAddr" maxlength="200">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+      
+      
+                              <div class="ibox">
+                                 <div class="ibox-title">
+                                    <h5>▶ 세부정보</h5>
+                                 </div>
+                                 <div class="ibox-content">
+                                    <!-- row1 -->
+                                    <div class="form-group form-inline row">
+                                       <div class="col-sm-12 input-group text-right">
+                                          <label class="col-sm-1 control-label"><span class="req"></span>중소기업여부</label>
+                                          <div class="col-sm-3 input-group input-h">
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="Y" name="smetYn" checked>&nbsp;Y
+                                             </div>
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="N" name="smetYn">&nbsp;N
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">표준산업소분류</label>
+                                          <div class="col-sm-3 input-group">
+                                             <select class="form-control" id="TB06019P_stdIdstSclsCd">
+                                             </select>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">설립일</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group date">
+                                                <input type="text" class="form-control" id="" placeholder="yyyy-mm-dd" oninput="" maxlength="10"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row2 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">기업형태구분</label>
+                                          <div class="col-sm-3 input-group">
+                                             <select class="form-control" id="TB06019P_etprShapDvsnCd">
+                                             </select>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">업태명</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_bucoName" maxlength="60">
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">임직원수</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="" maxlength="60">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row3 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">기업규모구분</label>
+                                          <div class="col-sm-3 input-group">
+                                             <select class="form-control" id="TB06019P_etprScleDvsnCd">
+                                             </select>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">CTM<br>은행인식코드명</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_ctmBicName" maxlength="60">
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">운용인력수</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="" maxlength="60">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row4 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">등록일자</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group date">
+                                                <input type="text" class="form-control" id="TB06019P_erlmDt" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">폐업구분</label>
+                                          <div class="col-sm-3  input-group input-h">
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="Y" name="clseDvsnCd" checked>&nbsp;Y
+                                             </div>
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="N" name="clseDvsnCd">&nbsp;N
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">폐업일자</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group date">
+                                                <input type="text" class="form-control" id="TB06019P_clseDt" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row5 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">RDM거래<br>상대방번호</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_rdmTrOppnNo" maxlength="20">
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">LEI 코드</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_leiCd" maxlength="20">
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">SWIFT<br>은행식별코드</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_swiftBankDscmCd" maxlength="11">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row6 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">매출금액</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_rvnuAmt" oninput="this.value = addComma(this.value.replace(/[^0-9]/g, ''));" maxlength="18">
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">총자산금액</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_totAsstAmt" oninput="this.value = addComma(this.value.replace(/[^0-9]/g, ''));" maxlength="18">
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">재무건전성비율</label>
+                                          <div class="col-sm-3">
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="TB06019P_fnafHltySrnmRt" maxlength="6">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- row7 -->
+                                    <div class="row form-group form-inline text-right">
+                                       <div class="col-sm-12 form-group">
+                                          <label class="col-sm-1 col-form-label text-right">해외SPC여부</label>
+                                          <div class="col-sm-3 input-group input-h">
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="Y" name="ovrsSpcYn" checked>&nbsp;Y
+                                             </div>
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="N" name="ovrsSpcYn">&nbsp;N
+                                             </div>
+                                          </div>
+                                          <label class="col-sm-1 col-form-label text-right">사용여부</label>
+                                          <div class="col-sm-3 input-group input-h">
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="Y" name="useYn" checked>&nbsp;Y
+                                             </div>
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="N" name="useYn">&nbsp;N
+                                             </div>
+                                          </div>												
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-12 text-right">
+                                          <button class="btn btn-default" onclick="reset_TB06019P();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+                                          <button class="btn btn-danger" onclick="deleteArdyBzepInfo()"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+                                          <button class="btn btn-success" onclick="saveArdyBzepInfo()"><i class="fa fa-save"></i>&nbsp;저장</button>
+                                       </div>
+                                    </div>
+                                 </div>
+                           </div>							
+                        </div>
+                        <!-- 조회결과 -->
+                           <!--<div id="TB06019P_ardyBzepList"></div>-->
+                     </div>
+               </div>
+            </div>
+         </div><!-- end of modal_content -->
+      </div>
+   </div>
+</div>
+</th:block>
+</html>

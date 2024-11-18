@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB06050S.js}"></script>
+	<script th:src="@{js/business/tb/TB03021P.js}"></script> 	<!-- 기업체 팝업 -->
+	<script th:src="@{js/business/tb/TB06011P.js}"></script> 	<!-- 기업체 팝업 -->
+	<!-- <script th:src="@{js/business/tb/TB03022P.js}"></script> -->
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+	<!-- <th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- SPPI테스트 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content i-filter">
+						<div class="form-group row form-inline">
+							<!-- deal번호 -->
+							<label class="col-sm-1 control-label">
+								펀드코드
+							</label>
+							<div class="col-sm-1-5 input-group">
+								<select class="form-control" id="TB06050S_nsFndCd">
+									<option value="">전체</option>
+								</select>
+							</div>
+							<!-- 상품구분 -->
+							<label class="col-sm-1 control-label">
+								상품구분
+							</label>
+							<div class="col-sm-1-5 input-group">
+								<select class="form-control" id="TB06050S_nsPrdtDcd">
+									<option value="">전체</option>
+								</select>
+							</div>
+							<!-- 종목코드 -->
+							<label class="col-sm-1 control-label">
+								종목코드
+							</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+									<input type="text" class="form-control" id="TB06050S_prdtCd">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callTB06011P('TB06050S')"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" id="TB06050S_prdtNm" readonly="">
+								</div>
+							</div>
+							<!-- SSPI충족여부 -->
+							<!-- <label class="col-sm-1 control-label">
+								<span class="req"></span>
+								SSPI충족여부
+							</label>
+							<div class="col-sm-1 input-group">
+								<input type="text" class="form-control" id="TB06050S_sppiSfcYn" readonly="">
+							</div> -->
+							<!-- 버튼영역 -->
+							<div class="col-sm-4 text-right">
+								<button class="btn btn-primary" onclick="TB06050Sjs.getSPPIData();">
+									<i class="fa fa-search"></i>&nbsp;조회</button>
+								<button class="btn btn-default" type="button" onclick="TB06050Sjs.reset();">
+									<i class="fa fa-undo"></i>&nbsp;초기화</button>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content" style="min-height: 800px">
+						<div class="ibox">
+							<div class="ibox-content">
+								<div class="form-group row form-inline" id="TB06050S_selectedData">
+									<!-- deal번호 -->
+									<label class="col-sm-1 control-label">
+										펀드코드
+									</label>
+									<div class="col-sm-1-5 input-group">
+										<input  class="form-control" type="text" id="TB06050S_nsFndCd-readonly" readonly>
+										</input>
+									</div>
+									<!-- 상품구분 -->
+									<label class="col-sm-1 control-label">
+										상품구분
+									</label>
+									<div class="col-sm-1-5 input-group">
+										<input class="form-control" type="text" id="TB06050S_nsPrdtDcd-readonly" readonly>
+										</input>
+									</div>
+									<!-- 종목코드 -->
+									<label class="col-sm-1 control-label">
+										종목코드
+									</label>
+									<div class="col-sm-3">
+										<div class="input-group">
+											<input type="text" class="form-control" id="TB06050S_prdtCd-readonly" readonly="">
+											<input type="text" class="form-control" id="TB06050S_prdtNm-readonly" readonly="">
+										</div>
+									</div>
+									<!-- SSPI충족여부 -->
+									<label class="col-sm-1 control-label">
+										<span class="req"></span>
+										SSPI충족여부
+									</label>
+									<div class="col-sm-2 input-group">
+										<div>
+											<input type="text" class="form-control" id="TB06050S_sppiSfcYn" readonly="">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="ibox">
+							<div class="ibox-title">
+								<h3>▶ SSPI검토</h3>
+							</div>
+							<div class="ibox-content">
+
+								<div class="form-group row form-inline m-1 mb-3">
+									<div class="col-sm-10 form-group">
+										<label class="col-sm-1 control-label">
+											사업모형
+										</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06050S_busiMdlDcd">
+												<option value="">전체</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="hr-sect" style="opacity: 1;">
+									<h4 class="bold">계약상현금흐름 특성검토 Checklist</h4>
+								</div>
+
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item">
+										<p>채무자/발행자에 의한 원리금 상환 취소 가능조건 존재 여부 검토 <span>(* 다음의 조건이 "Y"인 경우 SPPI 미충족)</span></p>
+										<ul class="list-group2 mt-2">
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-paiRdmpCnclCndXstcYn_1" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-paiRdmpCnclCndXstcYn_1" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">계약상 특정조건에서 채권자가 채무자에게 원리금에 대한 상환청구권이 제한되는 경우가 있는가?</span>
+											</li>
+										</ul>
+									</li>
+									<li class="list-group-item">
+										<p>이자율조건 검토_1 <span>(* 다음의 조건이 하나라도 "Y"인 경우 SPPI 미충족)</span></p>
+										<ul class="list-group2 pl-3">
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-intrRtCndIntgYn_1" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-intrRtCndIntgYn_1" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">역변동금리 조건인가?</span>
+											</li>
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-intrRtCndIntgYn_2" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-intrRtCndIntgYn_2" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">이자율 조건이 주가지수와 연동되어 있는 조건인가?</span>
+											</li>
+										</ul>
+									</li>
+									<li class="list-group-item">
+										<p>이자율조건 검토_2 <span>(* 다음의 조건이 하나라도 "Y"인 경우 SPPI 미충족)</span></p>
+										<ul class="list-group2">
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-intrRtCndIntgYn_3" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-intrRtCndIntgYn_3" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">변동이자율의 기초금리(예 : CD/Libor 등)가 이자지급주기와 다른 채권(Tenor-Mismatch)인가? (예 : 1년마다 변동금리 Reset - 기초금리 회사채 3년물?인 경우)</span>
+											</li>
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-intrRtCndIntgYn_4" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-intrRtCndIntgYn_4" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">정부나 감독당국에 의해 결정된 이자율을 적용하는가?</span>
+											</li>
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-intrRtCndIntgYn_5" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-intrRtCndIntgYn_5" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">구조화채권에 대한 투자인가? (이자율이 주가지수 이외의 옵션(캡/플로어/채권 index 둘)이나 그 밖의 다른 요소에 의해 변동되는 구조화 채권)</span>
+											</li>
+										</ul>
+									</li>
+									<li class="list-group-item">
+										<p>계약상 출자전환 가능 여부 <span>(* 다음의 조건이 하나라도 "Y"인 경우 SPPI 미충족)</span></p>
+										<ul class="list-group2">
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-fincCnvsPsblYn_1" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-fincCnvsPsblYn_1" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">감독당국의 결정 또는 법규에 따른 결정에 의한 출자전환을 제외한 다른 출자전환가능 조건 존재여부?</span>
+											</li>
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-fincCnvsPsblYn_2" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-fincCnvsPsblYn_2" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">전환사채 / 신주인수인권부사채 등 지분전환 / 취득 조건 존재여부?</span>
+											</li>
+										</ul>
+									</li>
+									<li class="list-group-item">
+										<p>만기연장 / 조기상환 조건 검토 <span>(* 다음의 조건이 하나라도 "N"인 경우 SPPI 미충족)</span></p>
+										<ul class="list-group2">
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-expXtnsCndIvtgYn_1" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-expXtnsCndIvtgYn_1" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">연장된 기간의 계약상 현금흐름에는 원리금 지급만 존재하고, 이 금액에는 계약의 연장에 대한 합리적인 추가보상이 포함되었는가?</span>
+											</li>
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-expXtnsCndIvtgYn_2" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-expXtnsCndIvtgYn_2" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">미납된 원리금에 대해 이자가 발생/누적되는가?</span>
+											</li>
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-elpdFdmpCndIvtgYn_3" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-elpdFdmpCndIvtgYn_3" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">중도상환금액은 미지급된 원리금을 실질적으로 나타내며, 계약의 조기 청산에 대한 합리적인 추가보상을 포함하고 있는가?</span>
+											</li>
+										</ul>
+									</li>
+									<li class="list-group-item">
+										<p>후순위채권인 경우의 검토 <span>(* 다음의 조건이 하나라도 "N"인 경우 SPPI 미충족)</span></p>
+										<ul class="list-group2">
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-sobnIvtgYn_1" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-sobnIvtgYn_1" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">채무자의 지급불이행이 계약 위반인가?</span>
+											</li>
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-sobnIvtgYn_2" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-sobnIvtgYn_2" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">채무자가 파산한 경우에도 미지급된 원리금에 대한 계약상 권리를 가지고 있는가?</span>
+											</li>
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-sobnIvtgYn_3" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-sobnIvtgYn_3" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">별도의 신용보강(제 3자 지급보증, 보증서, 담보 등)을 통한 채권보전이 존재하는가?</span>
+											</li>
+										</ul>
+									</li>
+									<li class="list-group-item">
+										<p>특정자산이나 현금흐름에 대한 투자(SPC투자)의 검토 <span>(* 다음의 조건이 "N"인 경우 SPPI 미충족)</span></p>
+										<ul class="list-group2">
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-spcInvIvtgYn_1" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-spcInvIvtgYn_1" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">해당 투자에 대한 아래의 신용보강을 통한 채권보전이 존재하는가?</span>
+												<div class="col-sm-1-5"> </div>
+												<ul class="col-sm-10 list-group3 m-2">
+													<li class="list-group-item">① 당사내규상 담부인정비율 이내의 충분한 담보설정</li>
+													<li class="list-group-item">② 투자등급(국제 투자동급 BBB-(S8P, Fitch 신용평가기관 기준) 또는 Baa3(Moody's 신용평가기관 기준) 및 국내신용평가기관의 신용등급 A- 이상)에 해당하는 제 3자의 지급보증/연대보증/자금보충 등  </li>
+													<li class="list-group-item">③ 해당 투자에 대해 타 금융기관 / 개인이 보유하는 충분한 후순위채권 또는 자본의 존재(전체 조달비용의 50% 이상)</li>
+													<li class="list-group-item">④ 최소 누전 DSCR(부채상환계수 Debl Service Coverage Ratio) 1, 2 이상 충족</li>
+													<li class="list-group-item">⑤ 그외 별도 계약조건 또는 위 조건들을 조합하여 채권보전이 충분하다고 판단되는 경우</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li class="list-group-item">
+										<p>계약 상 연계된 금융상품(Tranche 구조) 검토 <span>(* 다음의 조건이 하나라도 "N"인 경우 SPPI 미충족)</span></p>
+
+										<ul class="list-group2">
+											<li class="form-group row align-items-start">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-tnchStdIvtgYn_1" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-tnchStdIvtgYn_1" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">기초 금융상품 집합에 계약상 현금흐름 특성을 충족하는 금융상품을 하나 이상 포함하는가?<br>
+												(이러한 금융상품 집합에는 기초금융상품집합의 현금흐름 변동성을 감소시키거나 Tranche의 현금흐름을 기초금융상품의 현금흐름과 일치시키는 금융상품을 포함할 수 있다.)
+												</span>
+											</li>
+											<li class="form-group row">
+												<div class="col-sm-1-5 input-group">
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="Y" name="radioGroup-tnchStdIvtgYn_2" id="">&nbsp;&nbsp;Y
+													</div>
+													<div class="col-sm-5 text-left input-group bold">
+														<input type="radio" value="N" name="radioGroup-tnchStdIvtgYn_2" id="">&nbsp;&nbsp;N
+													</div>
+												</div>
+												<span class="col-sm-10 fw-bolder">Tranche에 내재된 신용위험이 기초 금융상품 집합의 신용위험보다 같거나 낮은가?
+												</span>
+											</li>
+								  		</ul>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="ibox form-inline">
+							<!-- 버튼영역 -->
+							<div class="col-sm-12 text-right pd0">
+								<button class="btn btn-success" type="button" onclick="TB06050Sjs.mergeSPPIData();"><i class="fa fa-check"></i>&nbsp;실행</button>
+								<button class="btn btn-danger" type="button" onclick=""><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

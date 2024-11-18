@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA09BMapper">
+
+	<insert id="insertSndCndt" parameterType="com.nanuri.rams.business.common.vo.AS04210SVO$IBDEALInfo">
+			INSERT INTO RAA09B
+				(
+				  IB_DEAL_NO                             <!-- IBDEAL번호 -->
+				, RISK_INSPCT_CCD                        <!-- 리스크심사구분코드 -->
+				, LST_C_CASE_CCD                         <!-- 부수안건구분코드 -->
+				, ITEM_SQ                                <!-- 항목일련번호 -->
+				, APLC_AMT                               <!-- 적용금액 -->
+				, END_DT_END_DT                          <!-- 기한종료일자 -->
+				, HNDL_DY_TM                             <!-- 처리일시 -->
+				, HNDL_DPRT_CD                           <!-- 처리부점코드 -->
+				, HNDL_P_ENO                             <!-- 처리자사번 -->
+				, MTRT_HLD_AMT                           <!-- 만기보유금액 -->
+				, PFRM_DT                                <!-- 이행일자 -->
+				, CRNCY_MTRT_HLD_AMT                     <!-- 통화만기보유금액 -->
+				)
+			VALUES
+			    (
+				  #{ibDealNo       }                     <!-- IBDEAL번호 -->
+				, #{riskInspctCcd  }                     <!-- 리스크심사구분코드 -->
+				, #{lstCCaseCcd    }                     <!-- 부수안건구분코드 -->
+				, #{rnkNo          }					 <!-- 항목일련번호 -->
+				, #{rcgAmt         }                     <!-- 적용금액 -->
+				, NULL                     				 <!-- 기한종료일자 -->
+				, NOW()                     			 <!-- 처리일시 -->
+				, #{hndlDprtCd     }                     <!-- 처리부점코드 -->
+				, #{hndlPEno       }                     <!-- 처리자사번 -->
+				, NULL                     				 <!-- 만기보유금액 -->
+				, NULL                     				 <!-- 이행일자 -->
+				, 0                     				 <!-- 통화만기보유금액 -->
+				)
+	</insert>
+
+	<delete id="deleteSndCndt" parameterType="com.nanuri.rams.business.common.vo.AS04210SVO$IBDEALInfo">
+		DELETE
+		  FROM RAA09B
+		 WHERE IB_DEAL_NO      = #{ibDealNo		}		<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD = #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD  = #{lstCCaseCcd	}		<!-- 부수안건구분코드 -->
+	</delete>
+
+   <!--   승인조건 사전관리 삭제    -->
+    <delete id="deleteSelldownImfo">
+        DELETE
+          FROM RAA09B
+         WHERE IB_DEAL_NO 		   = #{ibDealNo}         /* Deal번호 */
+           AND RISK_INSPCT_CCD     = #{riskInspctCcd}    /* 리스크심사구분코드 */
+           AND LST_C_CASE_CCD      = #{lstCCaseCcd}     /* 부수안건구분코드 */
+           AND ITEM_SQ             = #{itemSq}            /* 항목일련번호 */
+    </delete>
+
+    <!--   승인조건 사전관리 셀다운의무 저장    -->
+
+    <!--  09B테이블 레코드 조회    -->
+    <select id="selectOneRaa09b">
+        SELECT COUNT(*)
+          FROM RAA09B
+         WHERE IB_DEAL_NO       = #{ibDealNo}
+           AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+           AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+           AND ITEM_SQ          = #{itemSq}
+    </select>
+
+    <update id="updateRaa09b">
+        UPDATE RAA09B
+           SET APLC_AMT            = IFNULL(#{aplcAmt}, 0)
+             , END_DT_END_DT       = #{endDtEndDt}
+             , HNDL_DY_TM          = SYSDATE()
+             , HNDL_DPRT_CD        = #{hndlDprtCd}
+             , HNDL_P_ENO 		   = #{hndlPEno}
+         WHERE IB_DEAL_NO          = #{ibDealNo}
+           AND RISK_INSPCT_CCD     = #{riskInspctCcd}
+           AND LST_C_CASE_CCD      = #{lstCCaseCcd}
+           AND ITEM_SQ             = #{itemSq}
+    </update>
+
+    <insert id="insertRaa09b">
+        INSERT INTO RAA09B
+             (
+               IB_DEAL_NO
+             , RISK_INSPCT_CCD
+             , LST_C_CASE_CCD
+             , ITEM_SQ
+             , APLC_AMT
+             , END_DT_END_DT
+             , HNDL_DY_TM
+             , HNDL_DPRT_CD
+             , HNDL_P_ENO
+             )
+        VALUES
+             (
+               #{ibDealNo}
+             , #{riskInspctCcd}
+             , #{lstCCaseCcd}
+             , (SELECT IFNULL(MAX(ITEM_SQ), 0) + 1
+                  FROM RAA09B
+                 WHERE IB_DEAL_NO        = #{ibDealNo}
+                     , RISK_INSPCT_CCD   = #{riskInspctCcd}
+                     , LST_C_CASE_CCD    = #{lstCCaseCcd}
+               )
+             , IFNULL(#{aplcAmt}, 0)
+             , #{endDtEndDt}
+             , SYSDATE()
+             , HNDL_DPRT_CD
+             , HNDL_P_ENO
+             )
+    </insert>
+    <!--   승인조건 사전관리 셀다운의무 저장 END   -->
+
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS609BMapper">
+
+	<!-- 시효관리 조회 -->
+	<select id="getEfctDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS609BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS609BVO">
+		SELECT A.DEAL_NO	  														AS IB_DEAL_NO						/* IBDEAL명 */
+		 	 	 , A.JDGM_DCD 	 														AS RISK_INSPCT_CCD 			/* 리스크심사구분코드*/
+		 	 	 , A.MTR_DCD 																AS LST_C_CASE_CCD 			/* 부수안건구분코드*/
+		 	 	 , A.SQ																			AS SQ 									/* 일련번호*/
+		 	 	 /* , A.EFCT_OCRNC_DT								AS EFCT_OCRNC_DT 			효력발생일자 기존*/
+		 	 	 /* , DATE_FORMAT(A.EFCT_OCRNC_DT, '%Y-%m-%d')	AS EFCT_END_DT 				효력종료일자 DATE*/
+		 	 	 , SUBSTR(A.EFCT_OCRNC_DT, 1, 4) || '-' || 
+			 	   SUBSTR(A.EFCT_OCRNC_DT, 5, 2) || '-' || 
+				 	 SUBSTR(A.EFCT_OCRNC_DT, 7, 2) 						AS EFCT_OCRNC_DT 				/* 효력발생일자*/
+		 	 	 , SUBSTR(A.EFCT_END_DT, 1, 4) || '-' || 
+			 	   SUBSTR(A.EFCT_END_DT, 5, 2) || '-' || 
+				 	 SUBSTR(A.EFCT_END_DT, 7, 2) 							AS EFCT_END_DT 		  		/* 효력종료일자 */
+		 	 	 , A.EFCT_MNG_CNTNT													AS EFCT_MNG_CNTNT 			/* 효력관리내용*/
+		 	 	 /* , A.RGST_DT										AS RGST_DT					등록일자 */
+		 	 	 , SUBSTR(A.RGST_DT, 1, 4) || '-' || 
+			 	 	 SUBSTR(A.RGST_DT, 5, 2) || '-' || 
+				 	 SUBSTR(A.RGST_DT, 7, 2) 									AS RGST_DT		 				  /* 등록일자*/
+		 	 	 , A.FST_RGST_P_ENO													AS FST_RGST_P_ENO 			/* 최초등록자사번*/
+		 	 	 , B.EMP_NM	         												AS FST_RGST_P_ENO_NM		/* 최초등록자이름 */
+		  FROM IBIMS609B A	/* 부실자산재산조사정보*/
+ LEFT JOIN IBIMS003B B	/* 사원목록*/
+		 		ON A.FST_RGST_P_ENO  	= B.EMPNO 					/* 최초등록자이름*/
+		 WHERE A.DEAL_NO 					= #{dealNo}					/* IBDEAL명 */
+		   AND A.JDGM_DCD  				= #{jdgmDcd}				/* 리스크심사구분코드*/
+		   AND A.MTR_DCD   				= #{mtrDcd}					/* 부수안건구분코드*/
+		 ORDER 
+		 		BY SQ DESC
+	</select>
+	
+	<!-- 시효관리 등록 -->
+	<insert id="registEfctInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS609BDTO">
+		INSERT INTO IBIMS609B							/* 부실자산시효관리정보 */
+			   (
+				  DEAL_NO											/* IBDEAL번호 */
+				, JDGM_DCD										/* 리스크심사구분코드 */
+				, MTR_DCD											/* 부수안건구분코드 */
+			  , SQ													/* 일련번호 */
+			  , EFCT_OCRNC_DT								/* 효력발생일자 */
+			  , EFCT_END_DT									/* 효력종료일자 */
+			  , EFCT_MNG_CNTNT							/* 효력관리내용 */
+				, RGST_DT											/* 등록일자 */
+				, RGST_TM											/* 등록시간 */
+			  , FST_RGST_P_ENO							/* 최초등록자사번 */
+				, HNDL_DY_TM									/* 처리일시 */
+				, HNDL_DPRT_CD								/* 처리부점코드 */
+				, HNDL_P_ENO									/* 처리자사번 */
+			   )
+	VALUES (
+				  #{dealNo}											/* IBDEAL번호 */
+				, #{jdgmDcd}										/* 리스크심사구분코드 */
+				, #{mtrDcd}											/* 부수안건구분코드 */
+				, #{sq				 }								/* 일련번호 */
+				, #{efctOcrncDt		 }						/* 효력발생일자 */
+				, #{efctEndDt		 }							/* 효력종료일자 */
+				, #{efctMngCntnt	 }						/* 효력관리내용 */
+				, TO_CHAR(SYSDATE, 'YYYYMMDD')	/* 등록일자 */
+				, TO_CHAR(SYSDATE, 'HH24MISS')	/* 등록시간 */
+				, #{hndlPEno		 }							/* 최초등록자사번 */
+				, SYSDATE												/* 처리일시 */
+				, #{hndlDprtCd       } 					/* 처리부점코드 */
+				, #{hndlPEno		 } 							/* 처리자사번 */
+			   )
+	
+	</insert>
+	
+	<!-- 시효관리 수정 -->
+	<update id="updateEfctInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS609BDTO">
+		UPDATE IBIMS609B					/* 부실자산시효관리정보 */
+		   SET EFCT_OCRNC_DT			= #{efctOcrncDt		}		/* 효력발생일자 */
+			 	 , EFCT_END_DT				= #{efctEndDt			}		/* 효력종료일자 */
+			 	 , EFCT_MNG_CNTNT			= #{efctMngCntnt	}		/* 효력관리내용 */
+			 	 , HNDL_DY_TM					= SYSDATE							/* 처리일시 */
+			 	 , HNDL_DPRT_CD				= #{hndlDprtCd		}		/* 처리부점코드 */
+			 	 , HNDL_P_ENO					= #{hndlPEno			}		/* 처리자사번 */
+		 WHERE DEAL_NO 						= #{dealNo	 			}		/* IBDEAL번호 */
+		   AND JDGM_DCD						= #{jdgmDcd 			}		/* 리스크심사구분코드 */
+		   AND MTR_DCD						= #{mtrDcd      	}		/* 부수안건구분코드 */
+		   AND SQ 								= #{sq			 			}		/* 일련번호 */
+	</update>
+	
+	<!-- 시효관리 삭제 -->
+	<delete id="deleteEfctInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS609BDTO">
+		DELETE 
+			FROM IBIMS609B														/* 부실자산시효관리정보 */
+		 WHERE DEAL_NO 					= #{dealNo	 		}		/* IBDEAL번호 */
+		   AND JDGM_DCD					= #{jdgmDcd 		}		/* 리스크심사구분코드 */
+		   AND MTR_DCD					= #{mtrDcd     	}		/* 부수안건구분코드 */
+		   AND SQ								= #{sq					}		/* 일련번호 */
+		
+	</delete>
+	
+	<!-- 시효관리 일련번호 조회 -->
+	<select id="getEfctSq" parameterType="com.nanuri.rams.business.common.dto.IBIMS609BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS609BDTO">
+		SELECT MAX(SQ)+1 				AS SQ								/* 일련번호 */
+  	  FROM IBIMS609B														/* 부실자산시효관리이력정보 */
+ 		 WHERE DEAL_NO 					= #{dealNo	 		}		/* IBDEAL번호 */
+   	   AND JDGM_DCD					= #{jdgmDcd 		}		/* 리스크심사구분코드 */
+   	   AND MTR_DCD					= #{mtrDcd     	}		/* 부수안건구분코드 */
+	</select>
+
+</mapper>

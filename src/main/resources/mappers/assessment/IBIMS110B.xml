@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS110BMapper">
+	
+	  <!-- 딜심사책임준공내역조회 -->
+    <select id="getCmplInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS110BDTO" 
+    						 resultType="com.nanuri.rams.business.common.vo.IBIMS110BVO">
+        SELECT s110b.DEAL_NO                                           	/* 딜번호 */
+             , s110b.MTR_DCD                                           	/* 안건구분코드 */
+             , s110b.JDGM_DCD                                          	/* 심사구분코드 */
+             , s110b.SN                                                	/* 일련번호 */
+             , s110b.RSPSB_CMPL_OGN_DCD                                	/* 책임준공기관구분코드 */
+             , s002b.CD_VL_NM			AS RSPSB_CMPL_OGN_DCD_NM		          /* 책임준공기관구분코드명 */
+             , s110b.SCCO_CRNO                                         	/* 증권사법인등록번호 */
+             , s110b.RNM_CNFM_NO                                       	/* 실명확인번호 */
+             , s110b.DBT_NNF_DUTY_DCD                                  	/* 채무불이행의무구분코드 */
+             , s003b.CD_VL_NM			AS DBT_NNF_DUTY_DCD_NM			          /* 채무불이행의무구분코드명 */
+             , s110b.ISTT_NM                                           	/* 기관명 */
+             , s110b.DMG_RPRTN_MX_EXTNT                                	/* 손해배상최대범위 */
+             , s110b.CMPL_EXPT_DT                                      	/* 준공예정일자 */
+             , s110b.MTRT_HLD_AMT                                      	/* 만기보유금액 */
+             , s110b.HND_DETL_DTM                                      	/* 조작상세일시 */
+             , s110b.HND_EMPNO                                         	/* 조작사원번호 */
+             , s110b.HND_TMNL_NO                                       	/* 조작단말기번호 */
+             , s110b.HND_TR_ID                                         	/* 조작거래id */
+             , s110b.GUID                                              	/* guid */
+          FROM IBIMS110B s110b
+          LEFT JOIN IBIMS002B s002b
+            ON s002b.CMNS_CD_GRP										= 'R027'			      /* 책임준공기관구분코드 */
+           AND s110b.RSPSB_CMPL_OGN_DCD							= s002b.CD_VL_ID
+          LEFT JOIN IBIMS002B s003b
+            ON s003b.CMNS_CD_GRP										= 'D001'			      /* 채무불이행의무구분코드 */
+           AND s110b.DBT_NNF_DUTY_DCD								= s003b.CD_VL_ID
+         WHERE 1=1
+           AND DEAL_NO                              = #{dealNo}                                          
+           AND MTR_DCD                              = #{mtrDcd}                                          
+           AND JDGM_DCD                             = #{jdgmDcd}
+         ORDER BY SN
+    </select>
+    
+    <!-- 딜심사책임준공내역삭제 -->
+    <delete id="deleteCmplInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS110BDTO">
+        DELETE 
+          FROM IBIMS110B
+         WHERE 1=1
+           AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
+           AND MTR_DCD                                           = #{mtrDcd}                                          /* 안건구분코드 */
+           AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+           <if test="sn != null and sn > 0">
+           AND SN                                                = #{sn}                                              /* 일련번호 */
+           </if>  
+    </delete>
+    
+    <!-- 딜심사책임준공내역등록 -->
+    <insert id="registCmplInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS110BDTO">
+        INSERT INTO IBIMS110B 
+               (
+                  DEAL_NO                                           /* 딜번호 */
+                , MTR_DCD                                           /* 안건구분코드 */
+                , JDGM_DCD                                          /* 심사구분코드 */
+                , SN                                                /* 일련번호 */
+                , RSPSB_CMPL_OGN_DCD                                /* 책임준공기관구분코드 */
+                , SCCO_CRNO                                         /* 증권사법인등록번호 */
+                , RNM_CNFM_NO                                       /* 실명확인번호 */
+                , DBT_NNF_DUTY_DCD                                  /* 채무불이행의무구분코드 */
+                , ISTT_NM                                           /* 기관명 */
+                , DMG_RPRTN_MX_EXTNT                                /* 손해배상최대범위 */
+                , CMPL_EXPT_DT                                      /* 준공예정일자 */
+                , MTRT_HLD_AMT                                      /* 만기보유금액 */
+                , HND_DETL_DTM                                      /* 조작상세일시 */
+                , HND_EMPNO                                         /* 조작사원번호 */
+                , HND_TMNL_NO                                       /* 조작단말기번호 */
+                , HND_TR_ID                                         /* 조작거래id */
+                , GUID                                              /* guid */
+               )
+        VALUES (
+                 #{dealNo}                                          /* 딜번호 */
+               , #{mtrDcd}                                          /* 안건구분코드 */
+               , #{jdgmDcd}                                         /* 심사구분코드 */
+               , (SELECT NVL(MAX(A.SN),0) + 1 FROM IBIMS110B A)     /* 일련번호 */
+               , #{rspsbCmplOgnDcd}                                 /* 책임준공기관구분코드 */
+               , #{sccoCrno}                                        /* 증권사법인등록번호 */
+               , #{rnmCnfmNo}                                       /* 실명확인번호 */
+               , #{dbtNnfDutyDcd}                                   /* 채무불이행의무구분코드 */
+               , #{isttNm}                                          /* 기관명 */
+               , #{dmgRprtnMxExtnt}                                 /* 손해배상최대범위 */
+               , #{cmplExptDt}                                      /* 준공예정일자 */
+               , #{mtrtHldAmt}                                      /* 만기보유금액 */
+               , SYSDATE                                         		/* 조작상세일시 */
+               , #{hndEmpno}                                        /* 조작사원번호 */
+               , #{hndTmnlNo}                                       /* 조작단말기번호 */
+               , #{hndTrId}                                         /* 조작거래id */
+               , #{guid}                                            /* guid */
+               )
+    </insert>
+    
+    <!-- 딜심사책임준공내역변경 -->
+    <update id="updateCmplInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS110BDTO">
+       UPDATE IBIMS110B
+          SET RSPSB_CMPL_OGN_DCD                                = #{rspsbCmplOgnDcd}                                 /* 책임준공기관구분코드 */
+            , SCCO_CRNO                                         = #{sccoCrno}                                        /* 증권사법인등록번호 */
+            , RNM_CNFM_NO                                       = #{rnmCnfmNo}                                       /* 실명확인번호 */
+            , DBT_NNF_DUTY_DCD                                  = #{dbtNnfDutyDcd}                                   /* 채무불이행의무구분코드 */
+            , ISTT_NM                                           = #{isttNm}                                          /* 기관명 */
+            , DMG_RPRTN_MX_EXTNT                                = #{dmgRprtnMxExtnt}                                 /* 손해배상최대범위 */
+            , CMPL_EXPT_DT                                      = #{cmplExptDt}                                      /* 준공예정일자 */
+            , MTRT_HLD_AMT                                      = #{mtrtHldAmt}                                      /* 만기보유금액 */
+            , HND_DETL_DTM                                      = SYSDATE                                            /* 조작상세일시 */
+            , HND_EMPNO                                         = #{hndEmpno}                                        /* 조작사원번호 */
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       /* 조작단말기번호 */
+            , HND_TR_ID                                         = #{hndTrId}                                         /* 조작거래id */
+            , GUID                                              = #{guid}                                            /* guid */
+         WHERE 1=1
+          AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
+          AND MTR_DCD                                           = #{mtrDcd}                                          /* 안건구분코드 */
+          AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 심사구분코드 */
+          AND SN                                                = #{sn}                                              /* 일련번호 */
+    </update>
+    
+</mapper>

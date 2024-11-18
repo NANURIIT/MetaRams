@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- CEO보고서등록  -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2">
+						<!-- 담당자 정보 -->
+						<div class="form-group form-inline row">
+							<div class="col-sm-12 text-left mb-1">
+								<h4 class="col-sm-3">
+									< 담당자 정보>
+								</h4>
+							</div>
+							<!-- 소속본부 -->
+							<div class="input-group col-lg-3">
+								<label class="col-sm-4 col-form-label">소속본부</label>
+								<div class="col-lg-8 input-group mb-1">
+									<select class="form-control">
+										<option value="all">전체</option>
+									</select>
+								</div>
+							</div>
+							<!-- 담당자 -->
+							<div class="input-group col-lg-3">
+								<label class="col-sm-4 col-form-label">담당자</label>
+								<div class="col-lg-8 input-group">
+									<select class="form-control">
+										<option value="all">전체</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6"></div>
+						</div>
+						<!-- 보고서 정보 -->
+						<div class="row">
+							<div class="col-lg-12 text-left">
+								<h4 class="col-sm-3">보고서 정보</h4>
+							</div>
+							<!-- 왼쪽 레이아웃 -->
+							<div class="col-lg-6 input-group">
+								<!-- 보고서 대상 -->
+								<div class="col-sm-12 input-group mb-1">
+									<label class="col-sm-2 col-form-label">
+										<span class="req"></span>보고 대상
+									</label>
+									<span class="col-sm-10 text-left mt-2">
+										<label for="" class="control-label mr-3">
+											<input type="checkbox">CEO
+										</label>
+										<label for="" class="control-label mr-3">
+											<input type="checkbox">부문장&IB영업총괄
+										</label>
+										<label for="" class="control-label mr-3">
+											<input type="checkbox">총괄본부장
+										</label>
+										<label for="" class="control-label mr-3">
+											<input type="checkbox">본부장
+										</label>
+									</span>
+								</div>
+								<!-- 보고서 구분 -->
+								<div class="col-sm-12 input-group mb-1">
+									<label class="col-sm-2 col-form-label">
+										<span class="req"></span>보고 구분
+									</label>
+									<div class="col-lg-10 input-group">
+										<select class="form-control">
+											<option>전체</option>
+										</select>
+									</div>
+								</div>
+								<!-- 보고서 제목 -->
+								<div class="col-lg-12 input-group mb-1">
+									<label class="col-sm-2 col-form-label">
+										<span class="req"></span>보고 제목
+									</label>
+									<div class="col-lg-10 input-group">
+										<input type="text" class="form-control" id="">
+									</div>
+								</div>
+								<!-- 보고 내용 -->
+								<div class="col-lg-12 input-group mb-1">
+									<label class="col-sm-2 form-label">
+										<span class="req"></span>보고 내용
+									</label>
+									<div class="col-sm-10 input-group">
+										<textarea class="form-control"></textarea>
+									</div>
+								</div>
+							</div>
+
+							<!-- 오른쪽 레이아웃 -->
+							<div class="col-lg-6 input-group">
+								<!-- 파일첨부 -->
+								<div class="col-lg-12 input-group mb-1">
+									<label class="col-sm-2 col-form-label text-center">
+										파일 첨부&nbsp;
+										<button class="btn btn-primary btn-xs">
+											<i class="fa fa-search"></i>
+										</button>
+									</label>
+
+									<textarea class="form-control"></textarea>
+								</div>
+								<!-- 지정자 조회자 -->
+								<div class="col-lg-12 input-group mb-1 ">
+									<label class="col-sm-2 col-form-label text-center">
+										지정 조회자<br>
+										<button id="" class="btn btn-success btn-xs" onclick="">
+											지정 조회자 등록
+										</button>
+									</label>
+									<table class="col-sm-9 table table-bordered text-center mt-2 mr-2">
+										<thead class="text-center">
+											<tr>
+												<th>순번</th>
+												<th>부서명</th>
+												<th>사용자</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- 조회결과 -->
+					<div class="ibox-content">
+						<div class="tableFixHeader2 h-defulf">
+							<table class="table result table-bordered">
+								<colgroup>
+									<col style="width: 3%;">
+									<col style="width: 2%;">
+									<col style="width: 7%;">
+									<col style="width: 7%;">
+									<col style="width: 19%;">
+									<col style="width: 15%;">
+									<col style="width: 15%;">
+									<col style="width: 7%;">
+									<col style="width: 5%;">
+									<col style="width: 10%;">
+								</colgroup>
+								<thead class="text-center">
+									<tr>
+										<td>순번</td>
+										<td><input type="checkbox"></td>
+										<td>일자</td>
+										<td>보고 구분</td>
+										<td>보고 제목</td>
+										<td>보고 대상</td>
+										<td>부서명</td>
+										<td>작성자</td>
+										<td>의견 갯수</td>
+										<td>첨부파일</td>
+									</tr>
+								</thead>
+							</table>
+						</div>
+
+					</div>
+				</div><!-- ibox -->
+			</div>
+		</div><!-- row -->
+	</div>
+
+</th:block>
+
+</html>

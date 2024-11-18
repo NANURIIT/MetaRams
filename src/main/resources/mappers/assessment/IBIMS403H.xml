@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS403HMapper">
+    
+    <select id="selectIBIMS403H" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+           SELECT
+                  PRDT_CD                                 <!-- 상품코드 -->
+                , EXC_SN                                  <!-- 실행일련번호 -->
+                , HGRK_TR_SN                   			  <!-- 사거래일련번호 -->
+                , SCX_DCD                                 <!-- 일정구분코드 -->
+                , RDMP_TMRD                               <!-- 상환회차 -->
+                , PRAR_DT                                 <!-- 예정일자 -->
+                , PRAR_PRNA                               <!-- 예정원금 -->
+                , STRT_DT                                 <!-- 시작일자 -->
+                , END_DT                                  <!-- 종료일자 -->
+                , RDMP_PRAR_INTR                          <!-- 상환예정이자 -->
+                , PRCS_CPLT_YN                            <!-- 처리완료여부 -->
+                , PRCS_DT                                 <!-- 처리일자 -->
+                , PRCS_AMT                                <!-- 처리금액 -->
+                , PRCS_INTR_AMT                           <!-- 처리이자금액 -->
+                , APLY_IRT                                <!-- 적용이율 -->
+                , OVDU_INTR_RT                            <!-- 연체이자율 -->
+                , TRCH_DCD                                <!-- 트렌치구분코드 -->
+                , TR_SN                                   <!-- 거래일련번호 -->
+                , HND_DETL_DTM                            <!-- 조작상세일시 -->
+                , HND_EMPNO                               <!-- 조작사원번호 -->
+                , HND_TMNL_NO                             <!-- 조작단말기번호 -->
+                , HND_TR_ID                               <!-- 조작거래id -->
+                , GUID                                    <!-- guid -->
+             FROM IBIMS403H
+            WHERE PRDT_CD    = #{prdtCd}        /* 상품코드 */
+              AND EXC_SN     = #{excSn}         /* 실행일련번호 */
+              AND HGRK_TR_SN = (SELECT MAX(HGRK_TR_SN) FROM IBIMS403H WHERE PRDT_CD = #{prdtCd} AND EXC_SN = #{excSn} AND HGRK_TR_SN &lt; #{hgrkTrSn})	/* 상위거래일련번호 */
+    </select>
+        
+    <!-- 여신스케쥴기본등록  -->
+    <insert id="insertIBIMS403H" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+        INSERT INTO IBIMS403H
+               (
+                  PRDT_CD                                 <!-- 상품코드 -->
+                , EXC_SN                                  <!-- 실행일련번호 -->
+                , HGRK_TR_SN                              <!-- 상위거래일련번호 -->
+                , SCX_DCD                                 <!-- 일정구분코드 -->
+                , RDMP_TMRD                               <!-- 상환회차 -->
+                , PRAR_DT                                 <!-- 예정일자 -->
+                , PRAR_PRNA                               <!-- 예정원금 -->
+                , STRT_DT                                 <!-- 시작일자 -->
+                , END_DT                                  <!-- 종료일자 -->
+                , RDMP_PRAR_INTR                          <!-- 상환예정이자 -->
+                , PRCS_CPLT_YN                            <!-- 처리완료여부 -->
+                , PRCS_DT                                 <!-- 처리일자 -->
+                , PRCS_AMT                                <!-- 처리금액 -->
+                , PRCS_INTR_AMT                           <!-- 처리이자금액 -->
+                , APLY_IRT                                <!-- 적용이율 -->
+                , OVDU_INTR_RT                            <!-- 연체이자율 -->
+                , TRCH_DCD                                <!-- 트렌치구분코드 -->
+                , TR_SN                                   <!-- 거래일련번호 -->
+                , HND_DETL_DTM                            <!-- 조작상세일시 -->
+                , HND_EMPNO                               <!-- 조작사원번호 -->
+                , HND_TMNL_NO                             <!-- 조작단말기번호 -->
+                , HND_TR_ID                               <!-- 조작거래id -->
+                , GUID                                    <!-- guid -->
+               )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+               (
+                 #{item.prdtCd}                           <!-- 상품코드 -->
+               , #{item.excSn}                            <!-- 실행일련번호 -->
+               , #{item.hgrkTrSn}                         <!-- 상위거래일련번호 -->
+               , #{item.scxDcd}                           <!-- 일정구분코드 -->
+               , #{item.rdmpTmrd}                         <!-- 상환회차 -->
+               , #{item.prarDt}                           <!-- 예정일자 -->
+               , #{item.prarPrna}                         <!-- 예정원금 -->
+               , #{item.strtDt}                           <!-- 시작일자 -->
+               , #{item.endDt}                            <!-- 종료일자 -->
+               , #{item.rdmpPrarIntr}                     <!-- 상환예정이자 -->
+               , #{item.prcsCpltYn}                       <!-- 처리완료여부 -->
+               , #{item.prcsDt}                           <!-- 처리일자 -->
+               , #{item.prcsAmt}                          <!-- 처리금액 -->
+               , #{item.prcsIntrAmt}                      <!-- 처리이자금액 -->
+               , #{item.aplyIrt}                          <!-- 적용이율 -->
+               , #{item.ovduIntrRt}                       <!-- 연체이자율 -->
+               , #{item.trchDcd}                          <!-- 트렌치구분코드 -->
+               , #{item.trSn}                             <!-- 거래일련번호 -->
+               , SYSDATE                                    <!-- 조작상세일시 -->
+               , #{item.hndEmpno}                         <!-- 조작사원번호 -->
+               , #{item.hndTmnlNo}                        <!-- 조작단말기번호 -->
+               , #{item.hndTrId}                          <!-- 조작거래id -->
+               , #{item.guid}                             <!-- guid -->
+               )
+        </foreach>
+    </insert>
+
+     <!-- 여신스케쥴기본등록  -->
+     <insert id="insertCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+        INSERT INTO IBIMS403H
+               (
+                  PRDT_CD                                 <!-- 상품코드 -->
+                , EXC_SN                                  <!-- 실행일련번호 -->
+                , SCX_DCD                                 <!-- 일정구분코드 -->
+                , RDMP_TMRD                               <!-- 상환회차 -->
+                , PRAR_DT                                 <!-- 예정일자 -->
+                , PRAR_PRNA                               <!-- 예정원금 -->
+                , STRT_DT                                 <!-- 시작일자 -->
+                , END_DT                                  <!-- 종료일자 -->
+                , RDMP_PRAR_INTR                          <!-- 상환예정이자 -->
+                , PRCS_CPLT_YN                            <!-- 처리완료여부 -->
+                , PRCS_DT                                 <!-- 처리일자 -->
+                , PRCS_AMT                                <!-- 처리금액 -->
+                , PRCS_INTR_AMT                           <!-- 처리이자금액 -->
+                , APLY_IRT                                <!-- 적용이율 -->
+                , OVDU_INTR_RT                            <!-- 연체이자율 -->
+                , TRCH_DCD                                <!-- 트렌치구분코드 -->
+                , TR_SN                                   <!-- 거래일련번호 -->
+                , HND_DETL_DTM                            <!-- 조작상세일시 -->
+                , HND_EMPNO                               <!-- 조작사원번호 -->
+                , HND_TMNL_NO                             <!-- 조작단말기번호 -->
+                , HND_TR_ID                               <!-- 조작거래id -->
+                , GUID                                    <!-- guid -->
+               )
+        VALUES
+               (
+                 #{prdtCd}                           <!-- 상품코드 -->
+               , #{excSn}                            <!-- 실행일련번호 -->
+               , #{scxDcd}                           <!-- 일정구분코드 -->
+               , #{rdmpTmrd}                         <!-- 상환회차 -->
+               , #{prarDt}                           <!-- 예정일자 -->
+               , #{prarPrna}                         <!-- 예정원금 -->
+               , #{strtDt}                           <!-- 시작일자 -->
+               , #{endDt}                            <!-- 종료일자 -->
+               , #{rdmpPrarIntr}                     <!-- 상환예정이자 -->
+               , #{prcsCpltYn}                       <!-- 처리완료여부 -->
+               , #{prcsDt}                           <!-- 처리일자 -->
+               , #{prcsAmt}                          <!-- 처리금액 -->
+               , #{prcsIntrAmt}                      <!-- 처리이자금액 -->
+               , #{aplyIrt}                          <!-- 적용이율 -->
+               , #{ovduIntrRt}                       <!-- 연체이자율 -->
+               , #{trchDcd}                          <!-- 트렌치구분코드 -->
+               , #{trSn}                             <!-- 거래일련번호 -->
+               , SYSDATE                                    <!-- 조작상세일시 -->
+               , #{hndEmpno}                         <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                        <!-- 조작단말기번호 -->
+               , #{hndTrId}                          <!-- 조작거래id -->
+               , #{guid}                             <!-- guid -->
+               )
+     </insert>
+
+     <!-- 원리금 스케줄관리 업데이트 -->
+     <update  id="updateCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+          UPDATE IBIMS403H
+             SET PRAR_DT           = #{prarDt}              /* 예정일자 */  
+               , PRAR_PRNA         = #{prarPrna}            /* 예정원금 */
+               , STRT_DT           = #{strtDt}              /* 시작일자 */
+               , END_DT            = #{endDt}               /* 종료일자 */
+               , RDMP_PRAR_INTR    = #{rdmpPrarIntr}        /* 상환예정이자 */
+               , PRCS_CPLT_YN 	= #{prcsCpltYn} 		/* 처리완료여부 */
+               , PRCS_DT 	     = #{prcsDt} 			/* 처리일자 */
+               , PRCS_AMT 		= #{prcsAmt} 			/* 처리금액 */
+               , PRCS_INTR_AMT 	= #{prcsIntrAmt} 		/* 처리이자금액 */
+               , APLY_IRT 		= #{aplyIrt} 			/* 적용이율 */
+               , OVDU_INTR_RT 	= #{ovduIntrRt} 		/* 연체이자율 */
+               , TRCH_DCD 		= #{trchDcd} 			/* 트렌치구분코드 */
+               , HND_DETL_DTM 	= SYSDATE 		/* 조작상세일시 */
+           WHERE PRDT_CD           = #{prdtCd}  	          /* 상품코드 */
+             AND EXC_SN            = #{excSn}               /* 실행일련번호 */
+             AND SCX_DCD           = #{scxDcd} 	          /* 일정구분코드 */
+             AND RDMP_TMRD         = #{rdmpTmrd}            /* 상환회차 */
+             AND TR_SN 		       = #{trSn}	         /* 거래일련번호 */
+     </update>
+
+	   
+     <!-- 원리금 스케줄관리 삭제 -->
+     <delete  id="deleteIBIMS403H" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
+          DELETE 
+            FROM IBIMS403H
+           WHERE PRDT_CD    = #{prdtCd}    /* 종목코드 */
+		     AND EXC_SN     = #{excSn}	   /* 실행일련번호 */
+		     AND HGRK_TR_SN = #{hgrkTrSn}  /* 거래일련번호 */
+     </delete>
+     
+</mapper>

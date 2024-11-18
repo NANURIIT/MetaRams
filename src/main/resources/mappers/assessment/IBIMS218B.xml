@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS218BMapper">
+	
+	<!-- 딜승인기타담보내역 - 대출채권/채무보증 정보(TB06010S) - 담보/보증내역등록  -->
+    <insert id="insertIBIMS218B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        INSERT INTO IBIMS218B 
+               (
+                  MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
+                , ETC_MRTG_TP_CD                                    <!-- 기타담보유형코드 -->
+                , ETC_MRTG_KND_CD                                   <!-- 기타담보종류코드 -->
+                , MRTG_CD_CTNS                                      <!-- 담보코드내용 -->
+                , MRTG_CTNS                                         <!-- 담보내용 -->
+                , ETC_MRTG_GRD_CTNS                                 <!-- 기타담보등급내용 -->
+                , MRTG_QNT                                          <!-- 담보수량 -->
+                , MRTG_UNPR                                         <!-- 담보단가 -->
+                , MRTG_AMT                                          <!-- 담보금액 -->
+                , MRTG_RTO                                          <!-- 담보비율 -->
+                , AVBL_MRTG_PRC                                     <!-- 가용담보가격 -->
+                , ETC_MRTG_ACQ_MTH_CD                               <!-- 기타담보취득방법코드 -->
+                , HND_DETL_DTM
+                , HND_EMPNO                                         <!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+                , HND_TR_ID                                         <!-- 조작거래id -->
+                , GUID                                              <!-- guid -->
+               )
+        VALUES (
+                 #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+               , #{etcMrtgTpCd}                                     <!-- 기타담보유형코드 -->
+               , #{etcMrtgKndCd}                                    <!-- 기타담보종류코드 -->
+               , #{mrtgCdCtns}                                      <!-- 담보코드내용 -->
+               , #{mrtgCtns}                                        <!-- 담보내용 -->
+               , #{etcMrtgGrdCtns}                                  <!-- 기타담보등급내용 -->
+               , #{mrtgQnt}                                         <!-- 담보수량 -->
+               , #{mrtgUnpr}                                        <!-- 담보단가 -->
+               , #{mrtgAmt}                                         <!-- 담보금액 -->
+               , #{mrtgRto}                                         <!-- 담보비율 -->
+               , #{avblMrtgPrc}                                     <!-- 가용담보가격 -->
+               , #{etcMrtgAcqMthCd}                                 <!-- 기타담보취득방법코드 -->
+               , SYSDATE
+               , #{hndEmpno}                                        <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+               , #{hndTrId}                                         <!-- 조작거래id -->
+               , #{guid}                                            <!-- guid -->
+               )
+    </insert>
+    
+    <delete id="deleteIBIMS218B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        DELETE 
+          FROM IBIMS218B
+         WHERE 1=1
+           AND MRTG_MNGM_NO                                      = #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+    </delete>
+
+</mapper>

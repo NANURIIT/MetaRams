@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA20BMapper">
+	
+    <!-- 관련문서정보 생성 -->
+    <insert id="insertFileInfo" parameterType="com.nanuri.rams.business.common.dto.RAA20BDTO" useGeneratedKeys="true">
+    	<selectKey keyProperty="attFileSq" resultType="int" order="BEFORE">
+    		SELECT IFNULL(MAX(ATT_FILE_SQ),0)+1 
+    		  FROM RAA20B 
+    		 WHERE IB_DEAL_NO = #{ibDealNo}					<!-- IBDEAL번호 -->
+    		   AND RISK_INSPCT_CCD = #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+    		   AND LST_C_CASE_CCD = #{lstCCaseCcd}			<!-- 부수안건구분코드 -->
+    	</selectKey>
+    	INSERT INTO RAA20B
+    	       ( 
+    	        IB_DEAL_NO			<!-- IBDEAL번호 -->
+    	        , RISK_INSPCT_CCD	<!-- 리스크심사구분코드 -->
+    	        , LST_C_CASE_CCD	<!-- 부수안건구분코드 -->
+    	        , ATT_FILE_SQ		<!-- 첨부파일일련번호 -->
+    	        , SV_FILE_PATH_NM	<!-- 서버파일경로명 -->
+    	        , SV_FILE_NM		<!-- 서버파일명 -->
+    	        , SV_FILE_EXPNSN_NM	<!-- 서버파일확장자명 -->
+    	        , SV_FILE_SZ		<!-- 서퍼파일크기 -->
+    	        , SCRN_MENU_ID		<!-- 화면메뉴ID -->
+    	        , ORG_FILE_NM		<!-- 원본파일명 -->
+    	        , RGST_DT			<!-- 등록일자 -->
+    	        , DLT_F				<!-- 삭제여부 -->
+    	        , HNDL_DY_TM		<!-- 처리일시 -->
+    	        , HNDL_DPRT_CD		<!-- 처리부점코드 -->
+    	        , HNDL_P_ENO		<!-- 처리자사번 -->
+    	       )
+    	VALUES (
+    			#{ibDealNo}						<!-- IBDEAL번호 -->
+    			, #{riskInspctCcd}				<!-- 리스크심사구분코드 -->
+    			, #{lstCCaseCcd}				<!-- 부수안건구분코드 -->
+    			, #{attFileSq}					<!-- 첨부파일일련번호 -->
+    			, #{svFilePathNm}				<!-- 서버파일경로명 -->
+    			, #{svFileNm}					<!-- 서버파일명 -->
+    			, #{svFileExpnsnNm}				<!-- 서버파일확장자명 -->
+    			, #{svFileSz}					<!-- 서퍼파일크기 -->
+    			, #{scrnMenuId}					<!-- 화면메뉴ID -->
+    			, #{orgFileNm}					<!-- 원본파일명 -->
+    			, DATE_FORMAT(now(),'%Y%m%d')	<!-- 등록일자 -->
+    			, 'N'							<!-- 삭제여부 -->
+    			, CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+    			, #{hndlDprtCd}					<!-- 처리부점코드 -->
+    			, #{hndlPEno}					<!-- 처리자사번 -->
+    	       )
+    </insert>
+    
+    <!-- 첨부파일 삭제 -->
+	<update id="updateFileInfo" parameterType="com.nanuri.rams.business.common.dto.RAA20BDTO" >
+		UPDATE RAA20B
+		   SET DLT_F = 'Y'
+			 , HNDL_DY_TM = CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+			 , HNDL_DPRT_CD	= #{hndlDprtCd}				<!-- 처리부점코드 -->
+			 , HNDL_P_ENO = #{hndlPEno}					<!-- 처리자사번 -->
+		 WHERE IB_DEAL_NO = #{ibDealNo}					<!-- IBDEAL 번호 -->
+		   AND RISK_INSPCT_CCD = #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD = #{lstCCaseCcd}			<!-- 부수안건구분코드 -->
+		   AND ATT_FILE_SQ = #{attFileSq}				<!-- 첨부파일일련번호 -->
+	</update>
+	
+	<!-- 첨부파일 목록 조회 -->
+    <select id="selectFileList" parameterType="com.nanuri.rams.business.common.vo.RAA20BVO" resultType="com.nanuri.rams.business.common.dto.RAA20BDTO">
+    	SELECT IB_DEAL_NO		<!-- IBDEAL 번호 -->
+    	      ,RISK_INSPCT_CCD	<!-- 리스크심사구분코드 -->
+    	      ,LST_C_CASE_CCD	<!-- 부수안건구분코드 -->
+    	      ,ATT_FILE_SQ		<!-- 첨부파일일련번호 -->
+    	      ,SV_FILE_PATH_NM	<!-- 서버파일경로명 -->
+    	      ,SV_FILE_NM		<!-- 서버파일명 -->
+    	      ,ORG_FILE_NM		<!-- 원본파일명 -->
+    	      ,RGST_DT			<!-- 등록일자 -->
+    	  FROM RAA20B								
+    	 WHERE IB_DEAL_NO = #{ibDealNo}	
+    	   AND RISK_INSPCT_CCD = #{riskInspctCcd}
+    	   AND LST_C_CASE_CCD = #{lstCCaseCcd}
+    	   AND DLT_F = 'N'
+   		<if test="arrAttFileSq != null and arrAttFileSq !='' and arrAttFileSq.size() != 0"> 
+   		   AND ATT_FILE_SQ IN 
+    	   <foreach collection="arrAttFileSq" item="attFileSq" index="index" open="(" separator="," close=")">
+            	${attFileSq}
+        	</foreach>
+        </if>
+    	 ORDER BY ATT_FILE_SQ
+    </select>
+    
+</mapper>

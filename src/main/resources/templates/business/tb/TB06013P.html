@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB06013P">
+	<!-- modal -->
+	<div id="modal-TB06013P" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">담보/보증 등록</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB06013P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body modal-height-ex">
+					<input type="hidden" name="prefix" id="TB06013P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="ibox">
+								<div class="ibox-content border-none">
+									<div class="ibox">
+						    			<div class="ibox-content text-right border-none">
+						    				<!-- row1 -->
+						    				<div class="form-group form-inline row mb-2">
+						    					<label class="col-sm-1 col-form-label text-right">종목코드</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06013P_prdtCd">
+													<input type="hidden" id="TB06013P_connPrdtCd" value="">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="callTB06011P('TB06013P');"><i class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" style="width:100px;" id="TB06013P_prdtNm" readonly>
+												</div>
+				                            	<label class="col-sm-1 col-form-label text-right">담보번호</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06013P_mrtgMngmNo" maxlength="16" onchange="chngMrtgMngmNo(this)">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="callTB06017P('TB06013P');"><i class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" style="width:100px;" id="TB06013P_mrtgNm_forSeach" readonly>
+												</div>
+												<div class="col-sm-4 text-right">
+													<button class="btn btn-default" onclick="connectMrtgInfo();">담보/보증 연결</button>
+													<button class="btn btn-default" onclick="disConnectMrtgInfo();">담보/보증 해제</button>
+													<button class="btn btn-primary" type="button" onclick="getMrtgInfoDetails();"><i class="fa fa-search"></i>&nbsp;조회</button>
+													<button id="" class="btn btn-default" onclick="btnModalReset('modalReset');"><i class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
+												</div>
+											</div>
+											<hr>
+						    				<!-- row2 임이사님 지시로 가려놓음 2024-07-22
+						    				<div class="form-group row mb-2">
+												<label class="col-sm-1 col-form-label text-right">처리구분</label>
+												<div class="col-sm-3 input-group">
+													<div class="btn-group col-sm-12 pd0" role="group" aria-label="">
+					                                    <button class="btn btn-s toggleBtn1 btn-info" id="TB06013P_toggleBtn1" onclick="">등록</button>
+					                                    <button class="btn btn-s toggleBtn2 btn-default" id="TB06013P_toggleBtn2" onclick="">수정</button>
+					                                    <button class="btn btn-s toggleBtn3 btn-default" id="TB06013P_toggleBtn3" onclick="">해지</button>
+					                                </div>
+												</div>
+												<label class="col-sm-1 col-form-label">담보번호</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control text-right" id="TB06013P_mrtgMngmNo_002" readonly>
+												</div>
+												<label class="col-sm-1 col-form-label">DSC번호</label>
+												<div class="col-sm-2 input-group">
+													<input type="text" class="form-control text-right" id="TB06013P_ibDealNo_002" readonly>
+												</div>
+												<div class="col-sm-1 pd0 pd-r10">
+													<button class="btn btn-success" type="button" onclick="">파일첨부</button>
+												</div>
+											</div>
+											<hr>
+											 -->
+											<!-- row3 -->
+						    				<div class="form-group form-inline row">
+						    					<label class="col-sm-1 col-form-label">담보종류</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB06013P_E028">
+													</select>
+												</div>
+						    					<label class="col-sm-1 col-form-label">담보분류</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB06013P_M008" onchange="filterSelectBox(this, 'TB06013P_M009')">
+													</select>
+													<select class="form-control" id="TB06013P_M009">
+													</select>
+												</div>
+												<label class="col-sm-1 col-form-label">담보명</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06013P_mrtgNm">
+												</div>
+											</div>
+											<!-- row4 -->
+						    				<div class="form-group form-inline row">
+						    					<label class="col-sm-1 col-form-label">등록일자</label>
+												<div class="col-sm-3 input-group date">
+													<input type="text" class="form-control" id="TB06013P_rgstDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												</div>
+												<label class="col-sm-1 col-form-label">해지일자</label>
+												<div class="col-sm-3 input-group date">
+													<input type="text" class="form-control" id="TB06013P_mrtgCclcDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												</div>
+												<label class="col-sm-1 col-form-label text-right">담보거래<br class="br-mo">담당자</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06013P_empNo">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="callTB03022P('TB06013P');"><i class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" style="width:100px;" id="TB06013P_empNm" readonly>
+												</div>
+											</div>
+											<!-- row5 -->
+						    				<div class="form-group row">
+						    					<label class="col-sm-1 col-form-label">담보제공<br class="br-mo">거래상대방</label>
+												<div class="col-sm-7 input-group">
+													<input type="text" class="form-control" id="TB06013P_bsnsRgstNo">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="callTB03023P('TB06013P')"><i class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" style="width:100px;" id="TB06013P_entpRnm" readonly>
+												</div>
+											</div>
+											<!-- row6 -->
+											<div class="form-group row">
+						    					<label class="col-sm-1 col-form-label">담보평가<br class="br-mo">기준</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB06013P_M006">
+													</select>
+												</div>
+												<label class="col-sm-1 col-form-label">담보평가<br class="br-mo">금액</label>
+												<div class="col-sm-4 input-group">
+													<select class="form-control" id="TB06013P_I027">
+													</select>
+													<input type="text" class="form-control text-right mg-l5" id="TB06013P_mrtgEvlAmt" onkeyup="inputNumberFormat(this);">
+												</div>
+											</div>
+											<!-- row7 -->
+											<div class="form-group row">
+						    					<label class="col-sm-1 col-form-label">비고</label>
+												<div class="col-sm-11 input-group">
+													<input type="text" class="form-control" id="TB06013P_mrtgDtlUsgeCtns">
+												</div>
+											</div>
+											
+						    			</div>
+						    		</div><!-- ibox -->
+						    		
+						    		<div class="ibox" id="areaMrtgKndCd">
+										<div class="ibox-title">
+											<h5 id="sbName"></h5>
+											<span class="ml-3 mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9">소유구분</span>
+											<div class="btn-group mg-l5 mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9" role="group" aria-label="">
+			                                    <button class="btn btn-info btn-xs toggleBtn1 col-sm-12" onclick="" id="TB06013P_toggleBtn11">직접</button>
+			                                    <button class="btn btn-default btn-xs toggleBtn2 col-sm-12" onclick="" id="TB06013P_toggleBtn12">간접</button>
+			                                </div>
+										</div>
+										<div class="ibox-content">
+											<!-- row1 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group form-group-mb">
+													<label class="col-sm-1 col-form-label text-nowrap mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 py-0">감정구분 코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3">
+														<select class="form-control" id="TB06013P_A009">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-nowrap mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9 py-0">국내/국외 구분</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9">
+														<select class="form-control" id="TB06013P_D009">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 py-0">감정기관</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3">
+														<select class="form-control" id="TB06013P_A008">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-nowrap mrtgStupKndCd mrtgStupKndCd2 py-0">감정평가 기준</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2">
+														<select class="form-control" id="TB06013P_C013">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 py-0">면적</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2">
+														<input type="text" class="form-control" id="TB06013P_rlesSqmsCtns">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 py-0">감정목적</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2">
+														<select class="form-control" id="TB06013P_A010">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd9 py-0">감정일자</label>
+													<div class="col-sm-3 input-group date mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd9">
+														<input type="text" class="form-control" id="TB06013P_aprsDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 py-0">소재지</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2">
+														<input type="text" class="form-control" id="TB06013P_lctpAddr">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9 py-0">평가기관명</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9">
+														<input type="text" class="form-control" id="TB06013P_crevIsttNm">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd9 py-0">감정가격</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd9">
+														<input type="text" class="form-control text-right" id="TB06013P_aprsPrc" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9 py-0">감정통화</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9">
+														<select class="form-control" id="TB06013P_I027_2">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9 py-0">감정가격<br class="br-mo">(원화)</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd9">
+														<input type="text" class="form-control text-right" id="TB06013P_krwTrslAprsPrc" onkeyup="inputNumberFormat(this);"><!--<span class="mg-l5">(a)</span>-->
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd8 mrtgStupKndCd9 py-0">담보비율</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd8 mrtgStupKndCd9">
+														<input type="text" class="form-control text-right" id="TB06013P_mrtgRto" maxlength="3"><!--<span class="mg-l5">(b)</span>-->
+													</div>
+													<label class="col-sm-1 col-form-label text-nowrap mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd5 mrtgStupKndCd9 py-0">담보인정 비율</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd5 mrtgStupKndCd9">
+														<input type="text" class="form-control text-right" id="TB06013P_mrtgRcgRto" maxlength="3"><!--<span class="mg-l5">(c)</span>-->
+													</div>
+													<label class="col-sm-1 col-form-label text-nowrap mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd5 mrtgStupKndCd9 py-0">담보인정 가액<br class="br-mo">(원화)</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd5 mrtgStupKndCd9">
+														<input type="text" class="form-control text-right" id="TB06013P_mrtgPrc" onkeyup="inputNumberFormat(this);"><!--<span class="mg-l5">(a+b+c)</span>-->
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd3 mrtgStupKndCd8 mrtgStupKndCd9 py-0">담보내용</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd3 mrtgStupKndCd8 mrtgStupKndCd9">
+														<input type="text" class="form-control" id="TB06013P_mrtgCtns">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd3 py-0">동산담보종류코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd3">
+														<select class="form-control" id="TB06013P_M012">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd3 py-0">시가추정근거내용</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd3">
+														<input type="text" class="form-control" id="TB06013P_opprPrsmFdtnCtns">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd3 py-0">담보취득방법코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd3">
+														<select class="form-control" id="TB06013P_M004">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">보증약정구분코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<select class="form-control" id="TB06013P_G002">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">보증인고객<br>식별번호</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<input type="text" class="form-control" id="TB06013P_grnrCpin">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">그룹통합신용등급구분코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<select class="form-control" id="TB06013P_C012">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">신용조회일자</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<input type="text" class="form-control" id="TB06013P_crdtInqDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly>
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">채무자고객<br>식별번호</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<input type="text" class="form-control" id="TB06013P_dbtrCpin">
+													</div>
+													<label class="col-sm-1 col-form-label text-nowrap mrtgStupKndCd mrtgStupKndCd10 py-0">보증채무자관계<br>구분코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<select class="form-control" id="TB06013P_G003">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 mrtgStupKndCd10 py-0">보증금액</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5 mrtgStupKndCd10">
+														<input type="text" class="form-control text-right" id="TB06013P_grteAmt" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">보증원금</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<input type="text" class="form-control text-right" id="TB06013P_grtePrna" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 mrtgStupKndCd10 py-0">보증통화코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5 mrtgStupKndCd10">
+														<select class="form-control" id="TB06013P_I027_4">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label text-nowrap mrtgStupKndCd mrtgStupKndCd10 py-0">결산기구분코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<select class="form-control" id="TB06013P_S004">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">보증결산일</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<input type="text" class="form-control" id="TB06013P_grteStlaDe" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly>
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">보증결산일기타구분코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+														<select class="form-control" id="TB06013P_G007">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 mrtgStupKndCd10 py-0">담보보증내용</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5 mrtgStupKndCd10">
+														<input type="text" class="form-control" id="TB06013P_mrtgGrteCtns">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 py-0">보증기관구분코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5">
+														<select class="form-control" id="TB06013P_G006">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 py-0">보증기관코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5">
+														<select class="form-control" id="TB06013P_G005">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 py-0">보증기관명</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5">
+														<input type="text" class="form-control" id="TB06013P_grteIsttNm">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 py-0">보증서명</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5">
+														<input type="text" class="form-control" id="TB06013P_lgrteNm">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 py-0">보증만료일자</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5">
+														<input type="text" class="form-control" id="TB06013P_grteExprDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly>
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">기타담보유형코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd8">
+														<select class="form-control" id="TB06013P_E033">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">기타담보종류코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd8">
+														<select class="form-control" id="TB06013P_E032">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">담보코드내용</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd8">
+														<input type="text" class="form-control" id="TB06013P_mrtgCdCtns">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">기타담보등급내용</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd8">
+														<input type="text" class="form-control" id="TB06013P_etcMrtgGrdCtns">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 mrtgStupKndCd9 py-0">담보수량</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd8 mrtgStupKndCd9">
+														<input type="text" class="form-control" id="TB06013P_mrtgQnt">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">담보단가</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd8">
+														<input type="text" class="form-control text-right" id="TB06013P_mrtgUnpr" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">담보금액</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd8">
+														<input type="text" class="form-control text-right" id="TB06013P_mrtgAmt" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">가용담보가격</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd8">
+														<input type="text" class="form-control text-right" id="TB06013P_avblMrtgPrc_etc" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">기타담보취득방법코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd8">
+														<select class="form-control" id="TB06013P_E031">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd9 py-0">국외평가기관여부</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd9">
+														<div class="col-sm-6 input-group">
+															<input type="radio" value="1" name="TB06013P_ovssEvlIsttYn">&nbsp;Y
+														</div>
+														<div class="col-sm-6 input-group">
+															<input type="radio" value="0" name="TB06013P_ovssEvlIsttYn">&nbsp;N
+														</div>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd9 py-0">실물담보종류코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd9">
+														<select class="form-control" id="TB06013P_R019">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd9 py-0">감정기준코드</label>
+													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd9">
+														<select class="form-control" id="TB06013P_A011">
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="ibox">
+										<div class="ibox-title flex-box flex-jc-i">
+											 <h5>▶&nbsp;선순위 정보</h5>
+											<!--<span class="ml-3">선순위 유무</span>
+											
+											<div class="mg-l5 title-select-ex">
+			                                    <select class="form-control pd-lr5" id="TB06013P_prfdRankYn">
+			                                    	<option value="Y">유</option>
+			                                    	<option value="N">무</option>
+												</select>
+			                                </div> -->
+											<div class="ibox-tools">
+												<button class="btn btn-default btn-xs" type="button" onclick="addRow_TB06013P();"><i class="fa fa-plus"></i></button>
+												<button class="btn btn-default btn-xs" type="button" onclick="dltRow_TB06013P();"><i class="fa fa-minus"></i></button>
+											</div>
+										</div>
+										<div class="ibox-content">
+											<!-- row1 -->
+											<!-- <table class="table result table-bordered">
+												<colgroup>
+													<col style="width: 10%;">
+													<col style="width: 5%;">
+													<col>
+													<col>
+													<col>
+													<col>
+													<col>
+													<col>
+												</colgroup>
+												<thead>
+													<tr>
+														<th>처리구분</th>
+														<th>순번</th>
+														<th>선순위종류</th>
+														<th>우선순위</th>
+														<th>선순위권자</th>
+														<th>선순위통화</th>
+														<th>선순위금액</th>
+														<th>선순위원화환산액</th>
+													</tr>
+												</thead>
+												<tbody>
+												</tbody>
+											</table> -->
+											<div id="TB06013P_snrtInfoList"></div>
+										</div>
+									</div>
+									<div class="ibox">
+										<div class="ibox-title">
+											<h5>▶&nbsp;담보가 산정</h5>
+										</div>
+										<div class="ibox-content">
+											<!-- row1 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label">가용담보가<br class="br-mo">(원화)</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06013P_avblMrtgPrc" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label">설정통화</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06013P_I027_3">
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label">공동담보<br class="br-mo">비율</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06013P_cprnMrtgRto" maxlength="3">
+													</div>
+												</div>
+											</div>
+											<!-- row2 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label">설정최고액<br class="br-mo">(원화)</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06013P_krwTrslStupTopAmt" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label">설정최고액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06013P_stupTopAmt" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label">설정종류</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB06013P_M011">
+														</select>
+													</div>
+												</div>
+											</div>
+											<!-- row3 -->
+											<div class="row form-group form-inline text-right">
+												<div class="col-sm-12 form-group">
+													<label class="col-sm-1 col-form-label">유효담보가<br class="br-mo">(원화)</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06013P_krwTrslValtMrtgPrc" onkeyup="inputNumberFormat(this);">
+													</div>
+													<label class="col-sm-1 col-form-label">유효담보가</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB06013P_valtMrtgPrc" onkeyup="inputNumberFormat(this);">
+													</div>
+												</div>
+											</div>
+										
+										</div>
+									</div>
+									
+									
+									<div class="ibox form-inline">
+										<div class="col-sm-10 pd0 col-form-label">
+											<span>※ 가용담보가 = 담보인정가액 - 선순위금액합계.</span> <span class="mg-l5">※ 공통담보비율 = 당사/공동순위 대주.</span> <span class="mg-l5">※ 유효담보가 = min(가용담보가, 설정최고액) * 공동담보비율</span>
+										</div>
+										<!-- 버튼영역 -->
+										<div class="col-sm-2 text-right pd0">
+											<!--<button class="btn btn-success mg-l5" type="button" onclick="onClickExecute();"><i class="fa fa-save"></i>&nbsp;실행</button>-->
+											<button class="btn btn-success" onclick="onClickExecute();" id="TB06012P_toggleBtn1"><i class="fa fa-save"></i>&nbsp;저장</button>
+				                            <button class="btn btn-danger" onclick="remove();" id="TB06012P_toggleBtn2"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> 
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

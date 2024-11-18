@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+	<script th:src="@{js/business/tb/TB05030S.js}"></script>
+	<script th:src="@{js/business/tb/TB11111S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 협의체 현황 및 결과조회 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content i-filter">
+						<div class="form-group row form-inline">
+							<input type="hidden" class="form-control" id="key1">
+							<!-- 결의협의체 -->
+							<label class="col-sm-1 control-label">
+								<span class="req"></span>결의협의체
+							</label>
+							<div class="col-sm-2 input-group">
+								<select class="form-control" name="account" id="TB05030S_R016" onchange="TB05030Sjs.chngInspctPrgrsStCd(this)">
+								</select>
+							</div>
+							<!-- 결의년도 -->
+							<label class="col-sm-1 control-label">
+								<span class="req"></span>결의년도
+							</label>
+							<div class="col-sm-2 input-group">
+								<input type="number" class="touchspin" value="2023" data-bts-min="2010" data-bts-max="2100"
+									   id="TB05030S_stdYr" onchange="TB05030Sjs.fnStdYrChng(this);" oninput="numberCheckMaxLength(this)" style="padding: 6px 9px;"  maxlength="4"/>
+							</div>
+							<!-- 회차 -->
+							<label class="col-sm-1 control-label">
+								<span class="req"></span>회차
+							</label>
+							<div class="col-sm-3 input-group">
+								<select class="form-control" id="TB05030S_inspctCnfrncSqcSq" onchange="TB05030Sjs.chnginspctCnfrncSqcSq(this);"></select>
+							<!-- 전체(종료건포함) -->
+								<label class="control-label ml-2" for="TB05030S_chkF">
+									<input type="checkbox" id="TB05030S_chkF" value="Y"> 전체(종료건포함)
+								</label>
+							</div>
+							<!-- 버튼영역 -->
+							<div class="col-sm-2 text-right">
+								<button class="btn btn-primary" onclick="TB05030Sjs.searchCNFRNC();">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+								<button class="btn btn-warning" onclick="testAlert('쪽지를 발송하였습니다.')">
+									<i class="fa fa-comment"></i>&nbsp;쪽지발송
+								</button>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content" style="min-height: 800px">
+						<!-- 안건 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 안건</h5>
+							</div>
+							<div class="ibox-content">
+								<input type="hidden" id="TB05030S_inspctCnfrncCcd_selected">
+								<input type="hidden" id="TB05030S_stdYr_selected">
+								<input type="hidden" id="TB05030S_inspctCnfrncSqcSq_selected">
+								<input type="hidden" id="TB05030S_rnkNo_selected">
+								<input type="hidden" id="TB05030S_ibDealNo_selected">
+								<input type="hidden" id="TB05030S_riskInspctCcd_selected">
+								<input type="hidden" id="TB05030S_lstCCaseCcd_selected">
+								<div id="gridCaseInfo"></div>
+							</div>
+						</div>
+						<!-- 의결내용 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 의결내용</h5>
+								<div class="ibox-tools">
+									<!-- <button class="btn btn-success btn-xs" onclick="MMBRConfirm('confirm');" ><i
+											class="fa fa-check"></i>&nbsp;확정</button>
+									<button class="btn btn-danger btn-xs" onclick="MMBRConfirm('cancel');" ><i
+											class="fa fa-undo"></i>&nbsp;확정취소</button>> -->
+											<button class="btn btn-success btn-xs" id="saveMmbrConfirm" onclick="TB05030Sjs.MMBRConfirm('confirm');" disabled><i
+												class="fa fa-save"></i>&nbsp;저장</button>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<div id="gridMmbrInfo"></div>
+							</div>
+						</div>
+						<!-- 협의결과 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 협의결과</h5>
+							</div>
+							<div class="ibox-content">
+								<div id="gridIbDealInfo"></div>
+								<!-- 버튼영역 -->
+								<div class="col-sm-12 p-2 text-right">
+									<button class="btn btn-success btn-xs" id="btnConfirmDeal" onclick="TB05030Sjs.ibDealConfirm('confirm')" disabled><i
+											class="fa fa-check"></i>&nbsp;확정</button>
+									<button class="btn btn-danger btn-xs" id="btnCancelDeal" onclick="TB05030Sjs.ibDealConfirm('cancel')" disabled><i
+											class="fa fa-undo"></i>&nbsp;확정취소</button>
+								</div>
+								<div class="col-sm-12">
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group row text-right">
+												<!-- 결의결과 -->
+												<label class="col-sm-2 col-form-label">결의결과</label>
+												<div class="col-sm-4 input-group  mb-1">
+													<select class="form-control" id="TB05030S_R025">
+													</select>
+												</div>
+												<!-- 승인금액 -->
+												<label class="col-sm-2 col-form-label">승인금액</label>
+												<div class="col-sm-4 input-group form-inline mb-1">
+													<input type="text" class="form-control" id="TB05030S_invstCrncyCdNm" readonly>
+													&nbsp;
+													<input type="text" class="form-control" style="width:120px; text-align: right;" id="TB05030S_rcgAmt"
+														onkeyup="inputNumberFormat(this);">
+												</div>
+												<!-- 승인조건(셀다운)-->
+												<label class="col-sm-2 col-form-label">승인조건 (셀다운)</label>
+												<div class="col-sm-4 input-group">
+													<select class="form-control" id="TB05030S_sdnCndtF">
+														<option value=""></option>
+														<option value="Y">Y</option>
+														<option value="N">N</option>
+													</select>
+												</div>
+												<!-- 승인조건(기타) -->
+												<label class="col-sm-2 col-form-label">승인조건 (기타)</label>
+												<div class="col-sm-4 input-group">
+													<select class="form-control" id="TB05030S_etcCndtF">
+														<option value=""></option>
+														<option value="Y">Y</option>
+														<option value="N">N</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<!-- 부의조건 -->
+										<div class="col-sm-3 input-group">
+											<label class="col-form-label ml-4 mr-3">부의조건</label>
+											<textarea class="form-control h-100"
+												id="TB05030S_cnfrncNtmCndtlCntnt" style="max-height: 69px;"></textarea>
+										</div>
+										<!-- 결의의견 -->
+										<div class="col-sm-3 input-group">
+											<label class="col-form-label ml-4 mr-3">결의의견</label>
+											<textarea class="form-control h-100"  style="max-height: 66px;" id="TB05030S_rsltCntnt"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 첨부파일 start -->
+							<div class="col-lg-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 관련자료</h5>
+										<div class="ibox-tools">
+											<div th:fragment="file" id="file-upload">
+												<form id="upload-file-form">
+												    <input type="hidden" id="fileKey1" name="fileKey1">
+													<input type="hidden" id="fileKey2" name="fileKey2" value="*">
+													
+													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
+													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles"><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+													<div style="display: none">
+														<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+									<div class="ibox-content">
+										<table class="table table-bordered">
+											<colgroup>
+												<col style="width: 5%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 10%;">
+												<col style="width: 50%;">
+												<col style="width: 30%;">
+											</colgroup>
+											<thead>
+												<tr>
+													<th></th>
+													<th>Main Key</th>
+													<th>Sub Key</th>
+													<th>일련번호</th>
+													<th>파일명</th>
+													<th>등록일자</th>
+												</tr>
+											</thead>
+											<tbody id="UPLOAD_FileList">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- 첨부파일 end -->
+					</div>
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

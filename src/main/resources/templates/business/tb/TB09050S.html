@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB09050S.js}"></script>
+	<!-- <script th:src="@{js/business/tb/TB03022P.js}"></script> -->
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<!-- <th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 신용정보원보고 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content i-filter">
+						<div class="form-group row form-inline">
+							<!-- 기준일자 -->
+							<label class="col-sm-1 control-label">
+								기준일자
+							</label>
+							<div class="col-sm-2 input-group">
+								<span class="input-group date">
+									<input type="text" class="form-control" value="" id="">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</span>
+							</div>
+							<!-- 업무구분 -->
+							<label class="col-sm-1 control-label">
+								업무구분
+							</label>
+							<div class="col-sm-2 input-group">
+								<select class="form-control" id="">
+									<option value="">전체</option>
+									<option value=""></option>
+								</select>
+							</div>
+							<!-- 종목유형 -->
+							<label class="col-sm-1 control-label">
+								종목유형
+							</label>
+							<div class="col-sm-2 input-group">
+								<select class="form-control" id="">
+									<option value="">전체</option>
+									<option value=""></option>
+								</select>
+							</div>
+							<!-- 버튼영역 -->
+							<div class="col-sm-2 text-right">
+								<button class="btn btn-primary" onclick="">
+									<i class="fa fa-search"></i>&nbsp;조회</button>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 일별 신용공여 잔액 집중</h5>
+							</div>
+							<div class="ibox-content">
+							<!--  일별 신용공여 잔액 집중 -->
+							  <div id="TB09050S_colModel"></div>
+								<!-- <table class="table result table-bordered footable">
+									<colgroup>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+										<col>
+									</colgroup>
+									<thead>
+										<tr> 
+											<th>순번</th>
+											<th>업무구분코드</th>
+											<th>DATA구분</th>
+											<th>일련번호</th>
+											<th>집중기관코드</th>
+											<th>사업자등록번호</th>
+											<th>사업자등록구분</th>
+											<th>보고서구분</th>
+											<th>과목코드</th>
+											<th>금액(백만)</th>
+										</tr>
+									</thead>
+									<tbody id="">
+										<tr class="text-center">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td class="text-right"></td>
+										</tr>
+									</tbody>
+								</table> -->
+							</div>
+						</div>
+						<div class="ibox form-inline">
+							<!-- 버튼영역 -->
+							<div class="col-sm-12 text-right pd0">
+								<button class="btn btn-success" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;저장</button>
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

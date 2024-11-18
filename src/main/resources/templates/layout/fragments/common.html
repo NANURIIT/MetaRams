@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	
+	<div th:fragment="file" id="file-upload">
+		<form id="upload-file-form">
+			<input type="hidden" id="fileIbDealNo" name="fileIbDealNo"> 
+			<input type="hidden" id="fileRiskInspctCcd" name="fileRiskInspctCcd">
+			<input type="hidden" id="fileLstCCaseCcd" name="fileLstCCaseCcd">
+			<button class=" btn btn-default btn-xs" type="button" id="addFile"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
+			<button class="btn btn-default btn-xs" type="button" id="delFiles"><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+			<div style="display:hidden;">
+				<input type="file" class="custom-file-input" id="upload-file-input" name="uploadfile" accept="*">
+			</div>
+      	</form>
+	</div>
+	
+	<div th:fragment="single-file" id="single-file-upload">
+		<div class="col-sm-12">
+			<form id="upload-file-form">
+				<input type="hidden" id="fileIbDealNo" name="fileIbDealNo"> 
+				<input type="hidden" id="fileRiskInspctCcd" name="fileRiskInspctCcd">
+				<input type="hidden" id="fileLstCCaseCcd" name="fileLstCCaseCcd">
+				<input type="hidden" id="fileAttFileSq" name="fileAttFileSq">
+				<div class="filebox">
+					<input class="upload-name" value="파일선택" disabled="disabled">
+					<label class="btn" for="upload-file-single"><i class="fa fa-upload"></i>&nbsp;추가</label>
+					<input type="file" id="upload-file-single" class="upload-hidden" name="uploadfile" >
+					<a id="filePath"><button class="btn btn-info" type="button" id="openFile" disabled="disabled"><i class="fa fa-file-text-o"></i>&nbsp;열기</button></a>
+            		<button class="btn btn-danger" type="button" id="delFile" disabled="disabled"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+		    	</div>
+			</form>
+		</div>
+	</div>
+	
+</html>

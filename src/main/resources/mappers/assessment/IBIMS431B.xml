@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS431BMapper">
+
+    <select id="selectIBIMS431B" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS431BVO">
+        SELECT T1.WRTN_DT
+             , T1.RSLN_BDCD
+             , T1.CNST_NO
+             , T1.BALT_DT
+             , T1.STTM_NO
+             , T1.STTM_BDCD
+             , T1.CNCL_BALT_DT
+             , T1.CNCL_STTM_NO
+             , T1.CNST_STTM_DCD
+             , T1.PRUF_DT
+             , T1.CRRY_CD
+             , T1.EXRT
+             , T1.RGST_EMPNO
+             , T1.ACCT_BCNC_CD
+             , T1.BCNC_NM
+             , T1.ACCT_PYMT_MTH_CD
+             , T1.XTNL_ISTT_CD
+             , T1.BANO
+             , T1.BNK_ACHD_NM
+             , T1.PYMT_PRAR_DT
+             , T1.FNDS_ISTR_SN
+             , T1.PRUF_KND_DCD
+             , T1.PCHS_DDC_DCD
+             , T1.RSLN_AMT
+             , T1.SPLM_VALU_TXA
+             , T1.CNCL_YN
+             , T1.TR_ID
+             , T1.BNFT_YN
+             , T1.RELT_DCM_NO
+             , T1.RELT_FDTN_CTNS
+             , T1.ELC_PRUF_YN
+             , T1.ENTM_ACC_XSTC_YN
+             , T1.CNTR_ACC_XSTC_YN
+             , T1.JOB_DECD_CD
+             , T1.JOB_DECD_NO
+             , T1.CNCL_JOB_DECD_NO
+             , T1.EXCAL_YN
+             , T1.FNDS_LDG_DCD
+             , T1.FNDS_LDG_NO
+             , T1.RGST_SN
+             , T1.ACTS_CD
+             , T1.EDMS_DCM_ID
+             , T1.CDNO
+             , T1.APVL_NO
+             , T1.BDG_BUSI_CD
+             , T1.FRCR_RSLN_AMT
+             , T1.HND_DETL_DTM
+             , T1.HND_EMPNO
+             , T1.HND_TMNL_NO
+             , T1.HND_TR_ID
+             , T1.GUID
+          FROM IBIMS431B T1
+         WHERE 1=1
+           AND T1.CNST_STTM_DCD = #{cnstSttmDcd}
+           <if test="wrtnDt != ''">
+           AND T1.WRTN_DT = #{wrtnDt}
+           </if>
+           <if test="rslnBdcd != ''">
+           AND T1.RSLN_BDCD = #{rslnBdcd}
+           </if>
+           <if test="bcncNm != ''">
+           AND T1.BCNC_NM = #{bcncNm}
+           </if>
+           <if test="actsCd != ''">
+           AND T1.ACTS_CD = #{actsCd}
+           </if>
+    </select>
+
+    <insert id="insertIBIMS431B" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO">
+        INSERT INTO IBIMS431B (
+                WRTN_DT
+              , RSLN_BDCD
+              , CNST_NO
+              , BALT_DT
+              , STTM_NO
+              , STTM_BDCD
+              , CNCL_BALT_DT
+              , CNCL_STTM_NO
+              , CNST_STTM_DCD
+              , PRUF_DT
+              , CRRY_CD
+              , EXRT
+              , RGST_EMPNO
+              , ACCT_BCNC_CD
+              , BCNC_NM
+              , ACCT_PYMT_MTH_CD
+              , XTNL_ISTT_CD
+              , BANO
+              , BNK_ACHD_NM
+              , PYMT_PRAR_DT
+              , FNDS_ISTR_SN
+              , PRUF_KND_DCD
+              , PCHS_DDC_DCD
+              , RSLN_AMT
+              , SPLM_VALU_TXA
+              , CNCL_YN
+              , TR_ID
+              , BNFT_YN
+              , RELT_DCM_NO
+              , RELT_FDTN_CTNS
+              , ELC_PRUF_YN
+              , ENTM_ACC_XSTC_YN
+              , CNTR_ACC_XSTC_YN
+              , JOB_DECD_CD
+              , JOB_DECD_NO
+              , CNCL_JOB_DECD_NO
+              , EXCAL_YN
+              , FNDS_LDG_DCD
+              , FNDS_LDG_NO
+              , RGST_SN
+              , ACTS_CD
+              , EDMS_DCM_ID
+              , CDNO
+              , APVL_NO
+              , BDG_BUSI_CD
+              , FRCR_RSLN_AMT
+              , HND_DETL_DTM
+              , HND_EMPNO
+              , HND_TMNL_NO
+              , HND_TR_ID
+              , GUID
+            )
+        VALUES
+            (
+                #{wrtnDt}
+              , (
+                  SELECT NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1
+                    FROM (
+                      SELECT CNST_NO
+                        FROM IBIMS431B
+                       WHERE WRTN_DT LIKE #{wrtnYm}|| '%'
+                  ) AS temp
+                )
+              , (
+                  SELECT NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1
+                    FROM (
+                      SELECT CNST_NO
+                        FROM IBIMS431B
+                       WHERE WRTN_DT LIKE #{wrtnYm}||'%'
+                  ) AS temp
+                )
+              , #{baltDt}
+              , #{sttmNo}
+              , #{sttmBdcd}
+              , #{cnclBaltDt}
+              , #{cnclSttmNo}
+              , #{cnstSttmDcd}
+              , #{prufDt}
+              , #{crryCd}
+              , #{exrt}
+              , #{rgstEmpno}
+              , #{acctBcncCd}
+              , #{bcncNm}
+              , #{acctPymtMthCd}
+              , #{xtnlIsttCd}
+              , #{bano}
+              , #{bnkAchdNm}
+              , #{pymtPrarDt}
+              , #{fndsIstrSn}
+              , #{prufKndDcd}
+              , #{pchsDdcDcd}
+              , #{rslnAmt}
+              , #{splmValuTxa}
+              , #{cnclYn}
+              , #{trId}
+              , #{bnftYn}
+              , #{reltDcmNo}
+              , #{reltFdtnCtns}
+              , #{elcPrufYn}
+              , #{entmAccXstcYn}
+              , #{cntrAccXstcYn}
+              , #{jobDecdCd}
+              , #{jobDecdNo}
+              , #{cnclJobDecdNo}
+              , #{excalYn}
+              , #{fndsLdgDcd}
+              , #{fndsLdgNo}
+              , #{rgstSn}
+              , #{actsCd}
+              , #{edmsDcmId}
+              , #{cdno}
+              , #{apvlNo}
+              , #{bdgBusiCd}
+              , #{frcrRslnAmt}
+              , SYSDATE
+              , #{hndEmpno}
+              , #{hndTmnlNo}
+              , #{hndTrId}
+              , #{guid}
+            )
+    </insert>
+
+    <update id="updateIBIMS431B" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO">
+        UPDATE IBIMS431B
+           SET BALT_DT = #{baltDt}
+             , STTM_NO = #{sttmNo}
+             , STTM_BDCD = #{sttmBdcd}
+             , CNCL_BALT_DT = #{cnclBaltDt}
+             , CNCL_STTM_NO = #{cnclSttmNo}
+             , CNST_STTM_DCD = #{cnstSttmDcd}
+             , PRUF_DT = #{prufDt}
+             , CRRY_CD = #{crryCd}
+             , EXRT = #{exrt}
+             , RGST_EMPNO = #{rgstEmpno}
+             , ACCT_BCNC_CD = #{acctBcncCd}
+             , BCNC_NM = #{bcncNm}
+             , ACCT_PYMT_MTH_CD = #{acctPymtMthCd}
+             , XTNL_ISTT_CD = #{xtnlIsttCd}
+             , BANO = #{bano}
+             , BNK_ACHD_NM = #{bnkAchdNm}
+             , PYMT_PRAR_DT = #{pymtPrarDt}
+             , FNDS_ISTR_SN = #{fndsIstrSn}
+             , PRUF_KND_DCD = #{prufKndDcd}
+             , PCHS_DDC_DCD = #{pchsDdcDcd}
+             , RSLN_AMT = #{rslnAmt}
+             , SPLM_VALU_TXA = #{splmValuTxa}
+             , CNCL_YN = #{cnclYn}
+             , TR_ID = #{trId}
+             , BNFT_YN = #{bnftYn}
+             , RELT_DCM_NO = #{reltDcmNo}
+             , RELT_FDTN_CTNS = #{reltFdtnCtns}
+             , ELC_PRUF_YN = #{elcPrufYn}
+             , ENTM_ACC_XSTC_YN = #{entmAccXstcYn}
+             , CNTR_ACC_XSTC_YN = #{cntrAccXstcYn}
+             , JOB_DECD_CD = #{jobDecdCd}
+             , JOB_DECD_NO = #{jobDecdNo}
+             , CNCL_JOB_DECD_NO = #{cnclJobDecdNo}
+             , EXCAL_YN = #{excalYn}
+             , FNDS_LDG_DCD = #{fndsLdgDcd}
+             , FNDS_LDG_NO = #{fndsLdgNo}
+             , RGST_SN = #{rgstSn}
+             , ACTS_CD = #{actsCd}
+             , EDMS_DCM_ID = #{edmsDcmId}
+             , CDNO = #{cdno}
+             , APVL_NO = #{apvlNo}
+             , BDG_BUSI_CD = #{bdgBusiCd}
+             , FRCR_RSLN_AMT = #{frcrRslnAmt}
+             , HND_DETL_DTM = #{hndDetlDtm}
+             , HND_EMPNO = #{hndEmpno}
+             , HND_TMNL_NO = #{hndTmnlNo}
+             , HND_TR_ID = #{hndTrId}
+             , GUID = #{guid}
+         WHERE 1=1
+           AND WRTN_DT = #{wrtnDt}
+           AND RSLN_BDCD = #{rslnBdcd}
+           AND CNST_NO = #{cnstNo}
+    </update>
+
+    <update id="apvlRqst" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO">
+        UPDATE IBIMS431B
+           SET JOB_DECD_CD = #{jobDecdCd}
+             , JOB_DECD_NO = #{jobDecdNo}
+             , CNCL_JOB_DECD_NO = #{cnclJobDecdNo}
+             , HND_DETL_DTM = SYSDATE
+             , HND_EMPNO = #{hndEmpno}
+             , HND_TMNL_NO = #{hndTmnlNo}
+             , HND_TR_ID = #{hndTrId}
+             , GUID = #{guid}
+         WHERE 1=1
+           AND WRTN_DT = #{wrtnDt}
+           AND RSLN_BDCD = #{rslnBdcd}
+           AND CNST_NO = #{cnstNo}
+    </update>
+
+    <delete id="deleteIBIMS431B" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO">
+        DELETE
+          FROM IBIMS431B
+         WHERE 1=1
+           AND WRTN_DT = #{wrtnDt}
+           AND RSLN_BDCD = #{rslnBdcd}
+           AND CNST_NO = #{cnstNo}
+    </delete>
+
+</mapper>

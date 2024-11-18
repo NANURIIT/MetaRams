@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.MO44050Mapper">
+
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆           조회QUERY(유지)              ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆       참고용. 사용화면 없음 20230926   ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    
+    <!--    투자안건 원장정보 조회(투자자산)    -->
+    <select id="getInvestList">
+        SELECT A.IB_DEAL_NO			/* 딜번호 */
+             , A.RISK_INSPCT_CCD	/* 리스크심사구분코드 */
+             , A.LST_C_CASE_CCD		/* 부수안건구분코드 */
+             , A.IB_DEAL_SNM_NM AS IB_DEAL_NM	/* 안건명 */
+             , E.INVST_ASTS_NM		/* 자산(계약명) */
+             , E.GCRS_VAL_GRD_CD	/* GCRS등급 */
+             , A.FNC_GDS_DVD_CD		/* 금융상품분류 */
+             , A.DPRT_CD			/* 부서 */
+             , (SELECT rb.DPRT_NM FROM RAA99A rb WHERE rb.DPRT_CD = A.DPRT_CD) AS DPRT_NM	/* 부서명 */
+             , A.CHRG_P_ENO			/* 담당자사번 */
+             , (SELECT EMP_NM FROM RAA99A rb WHERE rb.ENO = A.CHRG_P_ENO)	AS EMP_NM	/* 담당자이름 */
+             , A.INSPCT_DPRT_CCD	/* 심사부서코드 */
+             , A.OWN_P_ENO			/* 심사역사번 */
+             , (SELECT EMP_NM FROM RAA99A rb WHERE rb.ENO = A.OWN_P_ENO)	AS EMP_NM	/* 담당심사역 이름 */
+             , A.RSLTN_CNFRNC_CCD	/* 협의체 */
+             , D.RSLTN_DT			/* 승인일 */
+             , C.INVST_AGR_CCD		/* 투자Tranche */
+             , A.INVST_CRNCY_CD		/* 통화코드 */
+             , FLOOR(D.RCG_AMT / 1000000) AS RCG_AMT	/* 승인금액 */
+             , FLOOR(CASE WHEN A.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN E.OFF_BLNC_CRNCY_BK_AMT
+                          ELSE E.CRNCY_BK_AMT
+                         END / 1000000) AS CRNCY_BK_AMT	/* 통화장부금액 */
+             , FLOOR(CASE WHEN A.FNC_GDS_DVD_CD IN ('07', '08', '09') THEN E.OFF_BLNC_BK_AMT
+                          ELSE E.BK_AMT
+                         END / 1000000) AS BK_AMT   	/* 장부금액 */
+             , CASE WHEN D.RSLTN_RSLT_CD = '2' THEN REPLACE(D.RSLT_CNTNT, CHAR(10), ' ')
+                    WHEN D.RSLTN_RSLT_CD = '3' THEN REPLACE(D.CNFRNC_NTM_CNDTL_CNTNT, CHAR(10), ' ')
+                    ELSE NULL
+                END AS RSLT_CNTNT	/* 승인내용 */
+             , B.ASTS_QTY_DVD_CD	/* 자산건전성분류코드 */
+             , FLOOR(E.LN_RA_BDDT_ALW_AMT / 1000000) AS LN_RA_BDDT_ALW_AMT
+             , B.RISK_INSPCT_MNG_STTS_CD	/* 리스크심사관리단계코드(사후관리단계) */
+             , E.ARRS_STRT_DT		/* 연체발생일자 */
+             , C.CRNCY_SPLY_AMT		/* 총조달금액 */
+             , FLOOR(E.FST_CTRT_AMT / 1000000) AS FST_CTRT_AMT	/* 최초약정금액 */
+             , C.LTV_RT				/* LTV비율 */
+             , FLOOR(E.DO_RA / 1000000) + FLOOR(E.N_DO_RA / 1000000) AS CTRT_AMT /* 약정잔액 */
+             , FLOOR(E.DO_RA / 1000000) AS CTRT_USE_AMT /* 인출잔액 */
+             , FLOOR(E.N_DO_RA / 1000000) AS N_DO_AMT /* 미인출잔액 */
+             , FLOOR(E.VAL_AMT / 1000000) AS VAL_AMT		/* 평가금액 */
+             , E.CTRT_CCLS_DT		/* 계약체결일자(약정일) */
+             , E.CTRT_STRT_DT		/* 계약시작일자(취급일) */
+             , E.CTRT_MTRT_DT		/* 계약만기일자(만기일) */
+             , F.MRTG_KND_CCD		/* 담보유형코드 */
+             , F.MRTG_DTLS_CCD		/* 담보상세구분코드 */
+             , F.MRTG_ACQST_STM_CCD	/* 담보취득방식구분코드 */
+             , F.MRTG_ACQST_DTLS_CCD /* 담보취득방식상세구분코드 */
+             , F.RGT_RNK_CCD		/* 관리순위구분코드 */
+             , G.ENTP_HNGL_NM		/* 보증법인명 */
+             , G.ENSR_OGN_CORP_NO	/* 보증법인번호 */
+             , G.CENHNC_ENSR_CCD    /* 신용보강구분 */
+             , G.ENSR_CNTNT			/* 보증내용 */
+             , H.BRRWR_CORP_NM		/* 차주법인명 */
+             , H.BRRWR_CORP_NO		/* 차주법인번호 */
+             , H.BRRWR_CLSF_CD		/* 차주구분 */
+             , H.MVBL_CORP_NM		/* 유동화회사 법인명 */
+             , H.MVBL_CORP_NO		/* 유동화회사 법인번호 */
+             , H.FND_NM				/* 펀드명 */
+             , H.CNST_CMPNY_CORP_NM	/* 시공사 */
+             , H.CNST_CMPNY_CORP_NO	/* 시공사 법인번호 */
+             , H.SBCTRT_RNK			/* 시공사 도급순위 */
+             , H.OPRTN_CMPNY_CORP_NM	/* 시행사 법인명 */
+             , H.OPRTN_CMPNY_CORP_NO	/* 시행사 법인번호 */
+             , H.TRUST_CORP_NM			/* 신탁사 법인명 */
+             , H.TRUST_CORP_NO	 		/* 신탁사 법인번호 */
+             , H.TRUST_TYPE_CCD			/* 신탁사 형태구분 */
+             , H.OPCO_CORP_NM			/* OpCo 법인명 */
+             , H.OPCO_CORP_NO			/* OpCo 법인번호 */
+             , H.GP_CORP_NM				/* GP 법인명 */
+             , H.GP_CORP_NO				/* GP 법인번호 */
+             , H.SPNSRD_CORP_NM			/* Sponsor 법인명 */
+             , H.SPNSRD_CORP_NO			/* Sponsor 법인번호 */
+             , A.RA_BSNS_ZONE_CD		/* RA사업지역코드 */
+             , A.BSNS_STTS_CCD			/* 사업단계구분코드 */
+             , A.INVST_THING_CCD		/* 투자물건구분코드 */
+             , A.INVST_THING_DTLS_CCD	/* 투자물건상세구분코드 */
+             , C.CNSTRCTN_INFO_CNTNT	/* 건축규모 */
+             , C.LND_AR_UAR				/* 대지면적평 */
+             , C.CNSTRCTN_AR_UAR		/* 건축면적평 */
+             , C.TL_AR_UAR				/* 연면적평 */
+             , C.BLDNG_CVR_RT			/* 건폐율 */
+             , C.FLR_AR_R				/* 용적률 */
+             , C.SALE_AMT				/* 사업규모(총매출액) */
+             , C.BSNS_PRFT_RT			/* 사업이익률 */
+             , C.CNSTRCTN_STRT_DT		/* 착공일 */
+             , C.CNSTRCTN_EXCTN_ADVMT_RT	/* 실행공정률 */
+             , C.CNSTRCTN_PLAN_ADVMT_RT		/* 계획공정률 */
+             , I.CMPL_EXPT_DT				/* 시공사책준기한 */
+             , I.DBT_NPFRM_OBLG_CCD			/* 시공사미이행시 */
+             , I.TRUST_CMPL_EXPT_DT			/* 신탁사책준기한 */
+             , I.TRUST_DBT_NPFRM_OBLG_CCD	/* 신탁사미이행시 */
+             , C.DSTBT_STRT_DT				/* 분양개시일 */
+             , C.DSTBT_ADVMT_RT				/* 분양률 */
+             , C.DSTBT_ADVMT_END_DT_RT		/* EXIT분양률 */
+             , C.MV_IN_EXPT_DT				/* 입주예정일 */
+             , C.EPT_BLDNG_RT				/* 공실률 */
+             , E.LN_FXD_CHG_CCD				/* 고정변동구분코드 */
+             , E.LN_STD_ITRST_KND_CD		/* 기준금리종류코드 */
+             , E.ADDT_ITRST_R				/* 가산금리율 */
+             , E.FXD_ITRST_R				/* 고정금리율 */
+             , C.ACQST_FEE					/* 취급수수료 */
+             , C.SPRVSN_FEE					/* 주관수수료 */
+             , C.QSTN_FEE					/* 금융자문수수료 */
+             , C.ETC_FEE					/* 기타 */
+          FROM
+              (SELECT A.*
+                 FROM RAA82B A
+                WHERE A.RA_DEAL_CCD IN ('1', '2')
+                  AND A.INSPCT_PRGRS_ST_CD = '500'		/* 심사진행상태코드(약정완료) */
+                  AND A.END_DT IS NULL					/* EXIT가 아직 안된 안건들 */
+                  AND A.STD_YR_MM = #{stdYrMm}
+                  AND (IF(#{inspctDprtCcd} = '', NULL, FALSE) IS NULL) OR A.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+                  AND (IF(#{dprtCd} = '', NULL, FALSE) IS NULL) OR A.DPRT_CD = UPPER(#{dprtCd})
+                  <!-- <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(INSPCT_DPRT_CCD)">
+                    AND A.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+                  </if>
+                  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(DPRT_CD)">
+                    AND A.DPRT_CD = UPPER(#{dprtCd})
+                  </if> -->
+              ) A LEFT JOIN
+              (SELECT *
+                 FROM RAA50B A
+                WHERE A.STD_DT = DATE_FORMAT( LAST_DAY(DATE_FORMAT( CONCAT(#{stdYrMm}, '01'), '%Y%m%d')), '%Y%m%d')
+              ) B
+             ON A.IB_DEAL_NO = B.IB_DEAL_NO
+            AND A.RISK_INSPCT_CCD = B.RISK_INSPCT_CCD
+            AND A.LST_C_CASE_CCD = B.LST_C_CASE_CCD
+           LEFT OUTER JOIN
+             (SELECT *
+               FROM RAA37B A
+              WHERE A.STD_YR_MM = #{STD_YR_MM}
+             ) C
+            ON A.IB_DEAL_NO = C.IB_DEAL_NO
+           AND A.RISK_INSPCT_CCD = C.RISK_INSPCT_CCD
+           AND A.LST_C_CASE_CCD = C.LST_C_CASE_CCD
+          LEFT OUTER JOIN RAA22B D
+            ON A.IB_DEAL_NO = D.IB_DEAL_NO
+           AND A.RISK_INSPCT_CCD = D.RISK_INSPCT_CCD
+           AND A.LST_C_CASE_CCD = D.LST_C_CASE_CCD
+          LEFT OUTER JOIN
+            (SELECT A.RISK_RCG_NO
+                  , A.INVST_ASTS_DVD_CD
+                  , A.INVST_ASTS_NM
+                  , CASE WHEN A.CNT02 > 0 THEN A.FST_CTRT_AMT
+                         ELSE A.CTRT_AMT
+                     END AS FST_CTRT_AMT
+                  , CASE WHEN A.CNT01 > 0 OR A.CNT02 > 0 THEN A.TLT_BK_AMT
+                         ELSE 0
+                     END AS DO_RA
+                  , CASE WHEN A.CNT01 > 0 OR A.CNT02 > 0 THEN A.OFF_BLNC_BK_AMT
+                         ELSE 0
+                     END AS N_DO_RA
+                  , CASE WHEN A.CNT02 > 0 AND (A.CNT01 = 0 AND A.CNT03 = 0 AND A.CNT04 = 0 AND A.CNT05 = 0) THEN A.OFF_BLNC_VAL_AMT
+                         ELSE A.TLT_VAL_AMT
+                     END AS VAL_AMT
+                  , A.BK_AMT
+                  , A.CRNCY_BK_AMT
+                  , A.OFF_BLNC_BK_AMT
+                  , A.TLT_BK_AMT
+                  , A.OFF_BLNC_CRNCY_BK_AMT
+                  , A.TLT_CRNCY_BK_AMT
+                  , A.LN_RA_BDDT_ALW_AMT
+                  , A.CTRT_CCLS_DT
+                  , A.CTRT_STRT_DT
+                  , A.CTRT_MTRT_DT
+                  , A.LN_FXD_CHG_CCD
+                  , A.LN_STD_ITRST_KND_CD
+                  , A.FXD_ITRST_R
+                  , A.ADDT_ITRST_R
+                  , A.GCRS_VAL_GRD_CD
+                  , A.ARRS_STRT_DT
+               FROM
+                   (SELECT A.RISK_RCG_NO
+                        , MIN(A.INVST_ASTS_DVD_CD) AS INVST_ASTS_DVD_CD
+                        , MAX(A.INVST_ASTS_NM) AS INVST_ASTS_NM
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD IN ('02') THEN (CASE WHEN A.CRNCY_CD = 'KRW' THEN A.CRNCY_FST_CTRT_AMT
+                                                                                  ELSE A.CRNCY_FST_CTRT_AMT*IFNULL(A.STD_EXCH_R, 1)
+                                                                              END)
+                                   ELSE 0
+                               END) AS FST_CTRT_AMT
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD IN ('01') THEN (CASE WHEN A.CRNCY_CD = 'KRW' THEN A.CRNCY_CTRT_AMT
+                                                                                  ELSE A.CRNCY_CTRT_AMT*IFNULL(A.STD_EXCH_R, 1)
+                                                                              END)
+                                   ELSE 0
+                               END) AS CTRT_AMT
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD IN ('02') THEN (CASE WHEN A.CRNCY_CD = 'KRW' THEN A.CRNCY_CTRT_USE_AMT
+                                                                                  ELSE A.CRNCY_CTRT_USE_AMT*IFNULL(A.STD_EXCH_R, 1)
+                                                                              END)
+                                   ELSE 0
+                               END) AS CTRT_USE_AMT
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '02' THEN 0
+                                   ELSE A.OPN_PRC_VAL_AMT
+                               END) AS TLT_VAL_AMT
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '02' THEN A.OPN_PRC_VAL_AMT
+                                   ELSE 0
+                               END) AS OFF_BLNC_VAL_AMT
+                        , SUM(A.BK_AMT) AS BK_AMT
+                        , SUM(A.CRNCY_BK_AMT) AS  CRNCY_BK_AMT
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '02' THEN A.BK_AMT
+                                   ELSE 0
+                                END) AS OFF_BLNC_BK_AMT
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '02' THEN 0
+                                    ELSE A.BK_AMT
+                                END) AS TLT_BK_AMT
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '02' THEN A.CRNCY_BK_AMT
+                                    ELSE 0
+                                END) AS OFF_BLNC_CRNCY_BK_AMT
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '02' THEN 0
+                                    ELSE A.CRNCY_BK_AMT
+                                END) AS TLT_CRNCY_BK_AMT
+                        , SUM(A.LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+                        , MAX(A.CTRT_CCLS_DT) AS CTRT_CCLS_DT
+                        , MAX(A.CTRT_STRT_DT) AS CTRT_STRT_DT
+                        , MAX(A.CTRT_MTRT_DT) AS CTRT_MTRT_DT
+                        , MAX(A.LN_FXD_CHG_CCD) AS LN_FXD_CHG_CCD
+                        , MAX(A.LN_STD_ITRST_KND_CD) AS LN_STD_ITRST_KND_CD
+                        , MAX(A.FXD_ITRST_R) AS FXD_ITRST_R
+                        , MAX(A.ADDT_ITRST_R) AS ADDT_ITRST_R
+                        , MAX(A.GCRS_VAL_GRD_CD) AS GCRS_VAL_GRD_CD
+                        , MAX(A.ARRS_STRT_DT) AS ARRS_STRT_DT
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '01' THEN 1
+                                   ELSE 0
+                               END) AS CNT01
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '02' THEN 1
+                                   ELSE 0
+                               END) AS CNT02
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '03' THEN 1
+                                   ELSE 0
+                               END) AS CNT03
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '04' THEN 1
+                                   ELSE 0
+                               END) AS CNT04
+                        , SUM(CASE WHEN A.INVST_ASTS_DVD_CD = '05' THEN 1
+                                   ELSE 0
+                               END) AS CNT05
+                     FROM
+                         (SELECT A.RISK_RCG_NO
+                              , A.INVST_ASTS_DVD_CD
+                              , A.INVST_ASTS_NM
+                              , A.CRNCY_CD
+                              , A.STD_EXCH_R
+                              , A.CRNCY_FST_CTRT_AMT
+                              , A.CRNCY_CTRT_AMT
+                              , A.CRNCY_CTRT_USE_AMT
+                              , A.CRNCY_VAL_AMT
+                              , A.CRNCY_BK_AMT
+                              , A.BK_AMT
+                              , A.OPN_PRC_VAL_AMT
+                              , A.ACQST_AMT
+                              , A.LN_RA_BDDT_ALW_AMT
+                              , A.CTRT_CCLS_DT
+                              , A.CTRT_STRT_DT
+                              , A.CTRT_MTRT_DT
+                              , A.LN_FXD_CHG_CCD
+                              , A.LN_STD_ITRST_KND_CD
+                              , A.FXD_ITRST_R
+                              , A.ADDT_ITRST_R
+                              , A.GCRS_VAL_GRD_CD
+                              , A.ARRS_STRT_DT
+                              , A.OFF_BLNC_ACT_SBJT_CD
+                           FROM RAA59B A
+                          WHERE STD_YR_MM = #{STD_YR_MM}
+                         ) A
+                          GROUP BY A.RISK_RCG_NO
+                    ) A
+            ) E
+           ON A.RISK_RCG_NO = E.RISK_RCG_NO
+         LEFT OUTER JOIN
+            (SELECT *
+              FROM RAA06B
+             WHERE ITEM_SQ = 1
+            ) F
+           ON A.IB_DEAL_NO = F.IB_DEAL_NO
+          AND A.RISK_INSPCT_CCD = F.RISK_INSPCT_CCD
+          AND A.LST_C_CASE_CCD = F.LST_C_CASE_CCD
+         LEFT OUTER JOIN
+           (SELECT A.IB_DEAL_NO
+                , A.RISK_INSPCT_CCD
+                , A.LST_C_CASE_CCD
+                , A.ENSR_OGN_CORP_NO
+                , A.ENSR_CNTNT
+                , A.CENHNC_ENSR_CCD
+                , B.ENTP_HNGL_NM
+             FROM RAA07B A
+             LEFT OUTER JOIN RAB97B B
+               ON A.ENSR_OGN_CORP_NO = B.CORP_RGST_NO
+              AND A.RNMCNO = B.BSNS_RGST_NO
+           ) G
+          ON A.IB_DEAL_NO = G.IB_DEAL_NO
+         AND A.RISK_INSPCT_CCD = G.RISK_INSPCT_CCD
+         AND A.LST_C_CASE_CCD = G.LST_C_CASE_CCD
+        LEFT OUTER JOIN
+          (SELECT A.IB_DEAL_NO
+                , A.RISK_INSPCT_CCD
+                , A.LST_C_CASE_CCD
+                , MAX(A.BRRWR_CORP_NM) AS BRRWR_CORP_NM
+                , MAX(A.BRRWR_CORP_NO) AS BRRWR_CORP_NO
+                , MAX(A.BRRWR_CLSF_CD) AS BRRWR_CLSF_CD
+                , MAX(A.MVBL_CORP_NM) AS MVBL_CORP_NM
+                , MAX(A.MVBL_CORP_NO) AS MVBL_CORP_NO
+                , MAX(A.FND_NM) AS FND_NM
+                , MAX(A.CNST_CMPNY_CORP_NM) AS CNST_CMPNY_CORP_NM
+                , MAX(A.CNST_CMPNY_CORP_NO) AS CNST_CMPNY_CORP_NO
+                , MAX(A.SBCTRT_RNK) AS SBCTRT_RNK
+                , MAX(A.OPRTN_CMPNY_CORP_NM) AS OPRTN_CMPNY_CORP_NM
+                , MAX(A.OPRTN_CMPNY_CORP_NO) AS OPRTN_CMPNY_CORP_NO
+                , MAX(A.TRUST_CORP_NM) AS TRUST_CORP_NM
+                , MAX(A.TRUST_CORP_NO) AS TRUST_CORP_NO
+                , MAX(A.TRUST_TYPE_CCD) AS TRUST_TYPE_CCD
+                , MAX(A.OPCO_CORP_NM) AS OPCO_CORP_NM
+                , MAX(A.OPCO_CORP_NO) AS OPCO_CORP_NO
+                , MAX(A.GP_CORP_NM) AS GP_CORP_NM
+                , MAX(A.GP_CORP_NO) AS GP_CORP_NO
+                , MAX(A.SPNSRD_CORP_NM) AS SPNSRD_CORP_NM
+                , MAX(A.SPNSRD_CORP_NO) AS SPNSRD_CORP_NO
+             FROM
+                 (SELECT A.IB_DEAL_NO
+                       , A.RISK_INSPCT_CCD
+                       , A.LST_C_CASE_CCD
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD IN ('01', '02', '03', '04', '05', '07', '08', '09', '16') THEN ENTP_HNGL_NM
+                              ELSE NULL
+                          END AS BRRWR_CORP_NM
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD IN ('01', '02', '03', '04', '05', '07', '08', '09', '16') THEN ISNG_OGN_CORP_NO
+                              ELSE NULL
+                          END AS BRRWR_CORP_NO
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD IN ('01', '02', '03', '04', '05', '07', '08', '09', '16') THEN CNC_CMPNY_CLSF_CD
+                              ELSE NULL
+                          END AS BRRWR_CLSF_CD
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '18' THEN ENTP_HNGL_NM
+                              ELSE NULL
+                          END AS MVBL_CORP_NM
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '18' THEN ISNG_OGN_CORP_NO
+                              ELSE NULL
+                          END AS MVBL_CORP_NO
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '16' THEN FND_NM
+                              ELSE NULL
+                          END AS FND_NM
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '10' THEN ENTP_HNGL_NM
+                              ELSE NULL
+                          END AS CNST_CMPNY_CORP_NM
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '10' THEN ISNG_OGN_CORP_NO
+                              ELSE NULL
+                          END AS CNST_CMPNY_CORP_NO
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '10' THEN SBCTRT_RNK
+                              ELSE NULL
+                          END AS SBCTRT_RNK
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '21' THEN ENTP_HNGL_NM
+                              ELSE NULL
+                          END AS OPRTN_CMPNY_CORP_NM
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '21' THEN ISNG_OGN_CORP_NO
+                              ELSE NULL
+                          END AS OPRTN_CMPNY_CORP_NO
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '17' THEN ENTP_HNGL_NM
+                              ELSE NULL
+                          END AS TRUST_CORP_NM
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '17' THEN ISNG_OGN_CORP_NO
+                              ELSE NULL
+                          END AS TRUST_CORP_NO
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '17' THEN TRUST_TYPE_CCD
+                              ELSE NULL
+                          END AS TRUST_TYPE_CCD
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '14' THEN ENTP_HNGL_NM
+                              ELSE NULL
+                          END AS OPCO_CORP_NM
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '14' THEN ISNG_OGN_CORP_NO
+                              ELSE NULL
+                          END AS OPCO_CORP_NO
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '11' THEN ENTP_HNGL_NM
+                              ELSE NULL
+                          END AS GP_CORP_NM
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '11' THEN ISNG_OGN_CORP_NO
+                              ELSE NULL
+                          END AS GP_CORP_NO
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '06' THEN ENTP_HNGL_NM
+                              ELSE NULL
+                          END AS SPNSRD_CORP_NM
+                       , CASE WHEN A.CNC_CMPNY_CLSF_CD = '06' THEN ISNG_OGN_CORP_NO
+                              ELSE NULL
+                          END AS SPNSRD_CORP_NO
+                    FROM
+                        (SELECT A.IB_DEAL_NO
+                              , A.RISK_INSPCT_CCD
+                               , A.LST_C_CASE_CCD
+                               , A.CNC_CMPNY_CLSF_CD
+                               , A.ISNG_OGN_CORP_NO
+                               , A.TRUST_TYPE_CCD
+                               , A.SBCTRT_RNK
+                               , A.FND_NM
+                               , B.ENTP_HNGL_NM
+                           FROM
+                              (SELECT A.IB_DEAL_NO
+                                    , A.RISK_INSPCT_CCD
+                                    , A.LST_C_CASE_CCD
+                                    , A.CNC_CMPNY_CLSF_CD
+                                    , A.ISNG_OGN_CORP_NO
+                                    , A.RNMCNO
+                                    , A.TRUST_TYPE_CCD
+                                    , A.SBCTRT_RNK
+                                    , A.FND_NM
+                                 FROM
+                                     (SELECT IB_DEAL_NO
+                                          , RISK_INSPCT_CCD
+                                          , LST_C_CASE_CCD
+                                          , CNC_CMPNY_CLSF_CD
+                                          , ISNG_OGN_CORP_NO
+                                          , RNMCNO
+                                          , TRUST_TYPE_CCD
+                                          , SBCTRT_RNK
+                                          , HNGL_FND_NM AS FND_NM
+                                          , ROW_NUMBER() OVER(PARTITION BY IB_DEAL_NO, RISK_INSPCT_CCD, LST_C_CASE_CCD ORDER BY ITEM_SQ DESC) AS ROW_NUM
+                                       FROM RAA04B
+                                      WHERE CNC_CMPNY_CLSF_CD IN ('01', '02', '03', '04', '05', '07', '08', '09')
+                                      UNION ALL
+                                     SELECT IB_DEAL_NO
+                                          , RISK_INSPCT_CCD
+                                          , LST_C_CASE_CCD
+                                          , CNC_CMPNY_CLSF_CD
+                                          , ISNG_OGN_CORP_NO
+                                          , RNMCNO
+                                          , TRUST_TYPE_CCD
+                                          , SBCTRT_RNK
+                                          , HNGL_FND_NM AS FND_NM
+                                          , ROW_NUMBER() OVER(PARTITION BY IB_DEAL_NO, RISK_INSPCT_CCD, LST_C_CASE_CCD ORDER BY ITEM_SQ DESC) AS ROW_NUM
+                                       FROM RAA04B
+                                      WHERE CNC_CMPNY_CLSF_CD IN ('06', '10', '11', '14', '16', '17', '18', '21')
+                                     ) A
+                                WHERE A.ROW_NUM = 1
+                        ) A
+                     LEFT OUTER JOIN RAB97B B
+                       ON A.ISNG_OGN_CORP_NO = B.CORP_RGST_NO
+                      AND A.RNMCNO = B.BSNS_RGST_NO
+                    ) A
+                ) A
+            GROUP BY A.IB_DEAL_NO
+                   , A.RISK_INSPCT_CCD
+                   , A.LST_C_CASE_CCD
+           ) H
+          ON A.IB_DEAL_NO = H.IB_DEAL_NO
+         AND A.RISK_INSPCT_CCD = H.RISK_INSPCT_CCD
+         AND A.LST_C_CASE_CCD = H.LST_C_CASE_CCD
+        LEFT OUTER JOIN
+     (SELECT A.IB_DEAL_NO
+           , A.RISK_INSPCT_CCD
+           , A.LST_C_CASE_CCD
+           , MAX(A.CMPL_EXPT_DT) AS CMPL_EXPT_DT
+           , MAX(A.DBT_NPFRM_OBLG_CCD) AS DBT_NPFRM_OBLG_CCD
+           , MAX(A.TRUST_CMPL_EXPT_DT) AS TRUST_CMPL_EXPT_DT
+           , MAX(A.TRUST_DBT_NPFRM_OBLG_CCD) AS TRUST_DBT_NPFRM_OBLG_CCD
+       FROM
+           (SELECT A.IB_DEAL_NO
+                 , A.RISK_INSPCT_CCD
+                 , A.LST_C_CASE_CCD
+                 , CASE WHEN A.RSPSB_CMPL_OGN_CCD = '1' THEN A.CMPL_EXPT_DT
+                        ELSE NULL
+                    END AS CMPL_EXPT_DT
+                 , CASE WHEN A.RSPSB_CMPL_OGN_CCD = '1' THEN A.DBT_NPFRM_OBLG_CCD
+                        ELSE NULL
+                    END AS DBT_NPFRM_OBLG_CCD
+                 , CASE WHEN A.RSPSB_CMPL_OGN_CCD = '2' THEN A.CMPL_EXPT_DT
+                        ELSE NULL
+                    END AS TRUST_CMPL_EXPT_DT
+                 , CASE WHEN A.RSPSB_CMPL_OGN_CCD = '2' THEN A.DBT_NPFRM_OBLG_CCD
+                        ELSE NULL
+                    END AS TRUST_DBT_NPFRM_OBLG_CCD
+              FROM
+                  (SELECT A.IB_DEAL_NO
+                        , A.RISK_INSPCT_CCD
+                        , A.LST_C_CASE_CCD
+                        , A.RSPSB_CMPL_OGN_CCD
+                        , A.CMPL_EXPT_DT
+                        , A.DBT_NPFRM_OBLG_CCD
+                        , ROW_NUMBER() OVER(PARTITION BY A.IB_DEAL_NO, A.RISK_INSPCT_CCD, A.LST_C_CASE_CCD, A.RSPSB_CMPL_OGN_CCD ORDER BY A.ITEM_SQ DESC) AS ROW_NUM
+                     FROM RAA08B A
+                  ) A
+             WHERE A.ROW_NUM = 1
+         ) A
+     GROUP BY A.IB_DEAL_NO
+            , A.RISK_INSPCT_CCD
+            , A.LST_C_CASE_CCD
+     ) I
+          ON A.IB_DEAL_NO = I.IB_DEAL_NO
+         AND A.RISK_INSPCT_CCD = I.RISK_INSPCT_CCD
+         AND A.LST_C_CASE_CCD = I.LST_C_CASE_CCD
+    </select>
+
+    <!--    투자안건 원장정보 조회(판매상품)    -->
+    <select id="getSaleList">
+        SELECT A.IB_DEAL_NO				/* 딜번호 */
+             , A.RISK_INSPCT_CCD		/* 리스크심사구분코드 */
+             , A.LST_C_CASE_CCD			/* 부수안건구분코드 */
+             , A.IB_DEAL_SNM_NM AS IB_DEAL_NM	/* 안건명 */
+             , D.INVST_ASTS_NM			/* 펀드명 */
+             , D.SEC_DVD_CD				/* 섹터분류 */
+             , A.INVST_GDS_MDVD_CD		/* 상품구분2 */
+             , A.INVST_GDS_SDVD_CD		/* 상품구분3 */
+             , A.CFMT_DBT				/* 준거채무 */
+             , A.CFMT_ENTP_NM			/* 준거기업 */
+             , A.WM_GDS_ETC				/* WM기타 */
+             , D.CTRT_STRT_DT			/* 계약시작일자(판매일) */
+             , D.CTRT_MTRT_DT			/* 계약만기일자(만기일) */
+             , D.VAL_AMT				/* 평가금액(잔고) */
+             , A.INVST_NTN_CD			/* 투자국가 */
+             , A.WM_MAIN_STG_CCD		/* 주요전략 */
+             , A.INCL_ASTS_DVD_CD		/* 편입자산 */
+             , A.WM_BSC_ASTS_CCD		/* 기초자산 */
+             , A.INVST_THING_DTLS_CCD	/* 투자물건상세구분코드 */
+             , A.RA_BSNS_ZONE_CD		/* RA사업지역코드 */
+             , A.BSNS_STTS_CCD			/* 사업단계구분코드 */
+             , A.MAIN_INVST_TRGT_NM		/* 주요투자대상 */
+             , B.RISK_INSPCT_MNG_STTS_CD	/* 리스크심사관리단계코드(사후관리단계) */
+             , C.INSV_RSN_CNTNT			/* 부실사유 */
+             , E.ENTP_HNGL_NM			/* 운용사명 */
+             , E.WRKNG_CO_HNGL_NM		/* 운용사명(수기) */
+             , E.RA_WRKNG_CO_VAL_GRD_CD	/* 평가등급 */
+             , E.TLT_WRKNG_ASTS_SCL_AMT	/* 운용자산규모 */
+             , A.RA_FND_RSK_GRD_CD		/* RA펀드위험등급코드 */
+          FROM
+              (SELECT A.*
+                 FROM RAA82B A
+                WHERE A.RA_DEAL_CCD = '3'
+                  AND A.INSPCT_PRGRS_ST_CD = '500'
+                  AND A.END_DT IS NULL
+                  AND A.STD_YR_MM = #{stdYrMm}
+                  AND (IF(#{inspctDprtCcd} = '', NULL, FALSE) IS NULL) OR A.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+                  AND (IF(#{dprtCd} = '', NULL, FALSE) IS NULL) OR A.DPRT_CD = UPPER(#{dprtCd})
+                  <!-- <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+                    AND A.INSPCT_DPRT_CCD = #{inspctDprtCcd}
+                  </if>
+                  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+                    AND A.DPRT_CD = UPPER(#{dprtCd})
+                  </if> -->
+              ) A LEFT JOIN
+              (SELECT *
+                 FROM RAA50B
+                WHERE STD_DT = DATE_FORMAT( LAST_DAY(DATE_FORMAT( CONCAT(#{stdYrMm}, '01'), '%Y%m%d')), '%Y%m%d')
+              ) B
+                ON A.IB_DEAL_NO = B.IB_DEAL_NO
+               AND A.RISK_INSPCT_CCD = B.RISK_INSPCT_CCD
+               AND A.LST_C_CASE_CCD = B.LST_C_CASE_CCD
+              LEFT OUTER JOIN
+              (SELECT *
+                 FROM RAA37B
+                WHERE STD_YR_MM = #{STD_YR_MM}
+              ) C
+                ON A.IB_DEAL_NO = C.IB_DEAL_NO
+               AND A.RISK_INSPCT_CCD = C.RISK_INSPCT_CCD
+               AND A.LST_C_CASE_CCD = C.LST_C_CASE_CCD
+              LEFT OUTER JOIN
+              (SELECT RISK_RCG_NO
+                    , MAX(INVST_ASTS_DVD_CD) AS INVST_ASTS_DVD_CD
+                    , MAX(INVST_ASTS_NM) AS INVST_ASTS_NM
+                    , SUM(OPN_PRC_VAL_AMT) AS VAL_AMT
+                    , MAX(LN_RA_BDDT_ALW_AMT) AS LN_RA_BDDT_ALW_AMT
+                    , MAX(CTRT_CCLS_DT) AS CTRT_CCLS_DT
+                    , MAX(CTRT_STRT_DT) AS CTRT_STRT_DT
+                    , MAX(CTRT_MTRT_DT) AS CTRT_MTRT_DT
+                    , MAX(LN_FXD_CHG_CCD) AS LN_FXD_CHG_CCD
+                    , MAX(LN_STD_ITRST_KND_CD) AS LN_STD_ITRST_KND_CD
+                    , MAX(FXD_ITRST_R) AS FXD_ITRST_R
+                    , MAX(ADDT_ITRST_R) AS ADDT_ITRST_R
+                    , MAX(SPCLT_FNC_MNG_NO) AS SPCLT_FNC_MNG_NO
+                    , MAX(SPC_NM) AS SPC_NM
+                    , MAX(GCRS_VAL_GRD_CD) AS GCRS_VAL_GRD_CD
+                    , MAX(ARRS_STRT_DT) AS ARRS_STRT_DT
+                    , MAX(BRRWR_CORP_RGST_NO) AS BRRWR_CORP_RGST_NO
+                    , MAX(BRRWR_NM) AS BRRWR_NM
+                    , MAX(BRRWR_GCRS_VAL_GRD_NM) AS BRRWR_GCRS_VAL_GRD_NM
+                    , MAX(SEC_DVD_CD) AS SEC_DVD_CD
+                 FROM RAA59B
+                WHERE STD_YR_MM = #{STD_YR_MM}
+                GROUP BY RISK_RCG_NO
+              ) D
+                ON A.RISK_RCG_NO = D.RISK_RCG_NO
+              LEFT OUTER JOIN
+              (SELECT A.IB_DEAL_NO
+                    , A.RISK_INSPCT_CCD
+                    , A.LST_C_CASE_CCD
+                    , A.WRKNG_CO_HNGL_NM
+                    , A.RA_WRKNG_CO_VAL_GRD_CD
+                    , A.TLT_WRKNG_ASTS_SCL_AMT
+                    , rb2.ENTP_HNGL_NM
+                 FROM RAA14B A
+                 LEFT OUTER JOIN RAB97B rb2
+                   ON A.RA_WRKNG_CO_NO = rb2.CORP_RGST_NO
+              ) E
+                ON A.IB_DEAL_NO = E.IB_DEAL_NO
+               AND A.RISK_INSPCT_CCD = E.RISK_INSPCT_CCD
+               AND A.LST_C_CASE_CCD = E.LST_C_CASE_CCD
+    </select>
+
+
+</mapper>

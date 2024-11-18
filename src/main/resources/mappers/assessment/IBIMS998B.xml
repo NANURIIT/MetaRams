@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS998BMapper">
+
+  <!-- 마감기본 영업일 기준 단건 조회  -->
+	<select id="selectTB10720S" parameterType="com.nanuri.rams.business.common.dto.IBIMS998BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS998BDTO">
+		SELECT STDR_DT         /* 기준일자 */
+		     , JOB_OPNG_DTIME  /* 업무개시일시 */
+		     , JOB_CLSG_DTIME  /* 업무마감일시 */
+		     , CLSG_DVSN_CD    /* 마감구분코드 */
+		     , OPNG_STFNO      /* 개시직원번호 */
+		     , OPNG_ORGNO      /* 개시조직번호 */
+		     , HDWR_OPNG_YN    /* 수기개시여부 */
+		     , CLSG_STFNO      /* 마감직원번호 */
+		     , CLSG_ORGNO      /* 마감조직번호 */
+		     , HDWR_CLSG_YN    /* 수기마감여부 */
+		     , HND_DETL_DTM    /* 조작상세일시 */
+		     , HND_EMPNO       /* 조작사원번호 */
+		     , HND_TMNL_NO     /* 조작단말기번호 */
+		     , HND_TR_ID       /* 조작거래ID */
+		     , GUID            /* GUID */
+		  FROM IBIMS998B
+		 WHERE STDR_DT = #{stdrDt}
+  	</select>
+
+
+    <!-- 마감관리 개시/마감 실행  -->
+    <update id="openTB10720S" parameterType="com.nanuri.rams.business.common.dto.IBIMS998BDTO">
+		MERGE INTO IBIMS998B AS T
+			 USING (
+			 	SELECT 
+			 		#{stdrDt} AS STDR_DT,
+			 		#{jobOpngDtime} AS JOB_OPNG_DTIME,
+			 		#{clsgDvsnCd} AS CLSG_DVSN_CD,
+			 		#{opngStfno} AS OPNG_STFNO,
+			 		#{opngOrgno} AS OPNG_ORGNO,
+			 		#{hdwrOpngYn} AS HDWR_OPNG_YN,
+			 		#{hndEmpno} AS HND_EMPNO,
+			 		#{hndTmnlNo} AS HND_TMNL_NO,
+			 		#{hndTrId} AS HND_TR_ID,
+			 		#{guid} AS GUID
+			 	FROM DUAL
+			 ) ST
+			    ON (T.STDR_DT = ST.STDR_DT)
+			  WHEN MATCHED THEN
+			 	UPDATE SET
+			 		T.JOB_OPNG_DTIME = #{jobOpngDtime},
+			 		T.CLSG_DVSN_CD = #{clsgDvsnCd},
+			 		T.OPNG_STFNO = #{opngStfno},
+			 		T.OPNG_ORGNO = #{opngOrgno},
+			 		T.HDWR_OPNG_YN = #{hdwrOpngYn},
+			 		T.HND_EMPNO = #{hndEmpno},
+			 		T.HND_TMNL_NO = #{hndTmnlNo},
+			 		T.HND_TR_ID = #{hndTrId},
+			 		T.GUID = #{guid}
+			  WHEN NOT MATCHED THEN
+			 	INSERT (
+			 		STDR_DT
+				  , JOB_OPNG_DTIME
+				  , CLSG_DVSN_CD
+				  , OPNG_STFNO
+				  , OPNG_ORGNO
+				  , HDWR_OPNG_YN
+				  , HND_EMPNO
+				  , HND_TMNL_NO
+				  , HND_TR_ID
+				  , GUID
+			 	) 
+			 	VALUES (
+			 		#{stdrDt}
+				  , #{jobOpngDtime}
+				  , #{clsgDvsnCd}
+				  , #{opngStfno}
+				  , #{opngOrgno}
+				  , #{hdwrOpngYn}
+				  , #{hndEmpno}
+				  , #{hndTmnlNo}
+				  , #{hndTrId}
+				  , #{guid}
+			 	);
+    </update>
+
+    <update id="closeTB10720S" parameterType="com.nanuri.rams.business.common.dto.IBIMS998BDTO">
+		MERGE INTO IBIMS998B AS T
+			USING (
+				SELECT 
+					#{stdrDt} AS STDR_DT,
+					#{jobClsgDtime} AS JOB_CLSG_DTIME,
+					#{clsgDvsnCd} AS CLSG_DVSN_CD,
+					#{clsgStfno} AS CLSG_STFNO,
+					#{clsgOrgno} AS CLSG_ORGNO,
+					#{hdwrClsgYn} AS HDWR_CLSG_YN,
+					#{hndEmpno} AS HND_EMPNO,
+					#{hndTmnlNo} AS HND_TMNL_NO,
+					#{hndTrId} AS HND_TR_ID,
+					#{guid} AS GUID
+				FROM DUAL
+			) ST
+			ON (T.STDR_DT = ST.STDR_DT)
+			WHEN MATCHED THEN
+				UPDATE SET
+					T.JOB_CLSG_DTIME = #{jobClsgDtime},  /* 업무마감일시 */
+					T.CLSG_DVSN_CD = #{clsgDvsnCd},     /* 마감구분코드 */
+					T.CLSG_STFNO = #{clsgStfno},        /* 마감직원번호 */
+					T.CLSG_ORGNO = #{clsgOrgno},        /* 마감조직번호 */
+					T.HDWR_CLSG_YN = #{hdwrClsgYn},     /* 수기마감여부 */
+					T.HND_EMPNO = #{hndEmpno},          /* 조작사원번호 */
+					T.HND_TMNL_NO = #{hndTmnlNo},       /* 조작단말기번호 */
+					T.HND_TR_ID = #{hndTrId},           /* 조작거래ID */
+					T.GUID = #{guid}                    /* GUID */
+			WHEN NOT MATCHED THEN
+				INSERT (
+					STDR_DT,                            /* 기준일자 */
+					JOB_CLSG_DTIME,                     /* 업무마감일시 */
+					CLSG_DVSN_CD,                       /* 마감구분코드 */
+					CLSG_STFNO,                         /* 마감직원번호 */
+					CLSG_ORGNO,                         /* 마감조직번호 */
+					HDWR_CLSG_YN,                       /* 수기마감여부 */
+					HND_EMPNO,                          /* 조작사원번호 */
+					HND_TMNL_NO,                        /* 조작단말기번호 */
+					HND_TR_ID,                          /* 조작거래ID */
+					GUID                                /* GUID */
+				) 
+				VALUES (
+					#{stdrDt},                           /* 기준일자 */
+					#{jobClsgDtime},                     /* 업무마감일시 */
+					#{clsgDvsnCd},                       /* 마감구분코드 */
+					#{clsgStfno},                        /* 마감직원번호 */
+					#{clsgOrgno},                        /* 마감조직번호 */
+					#{hdwrClsgYn},                       /* 수기마감여부 */
+					#{hndEmpno},                         /* 조작사원번호 */
+					#{hndTmnlNo},                        /* 조작단말기번호 */
+					#{hndTrId},                          /* 조작거래ID */
+					#{guid}                              /* GUID */
+				);
+    </update>
+
+</mapper>

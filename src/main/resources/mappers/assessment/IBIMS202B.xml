@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS202BMapper">
+
+	<!-- 딜승인현금흐름기본조회  -->
+	<select id="selectIBIMS202BDTOInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS202BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS202BDTO">
+		SELECT A.PRDT_CD                                           <!-- 상품코드 -->
+             , A.APLY_DT                                           <!-- 적용일자 -->
+             , A.AICT_STDR_INTRT_KND_CD                            <!-- 올인코스트기준금리종류코드 -->
+             , A.AICT_ADD_INTRT                                    <!-- 올인코스트가산금리 -->
+             , A.STDR_INTRT_KND_CD                                 <!-- 기준금리종류코드 -->
+             , A.ADD_INTRT                                         <!-- 가산금리 -->
+             , A.FXN_INTRT                                         <!-- 고정금리 -->
+             , A.INTR_BNAO_DCD                                     <!-- 이자선후취구분코드 -->
+             , A.TFD_LY_APLY_DCD                                   <!-- 초일말일적용구분코드 -->
+             , A.INTR_SNNO_PRCS_DCD                                <!-- 이자단수처리구분코드 -->
+             , A.INTR_DNUM_CLC_MTH_CD                              <!-- 이자일수계산방법코드 -->
+             , A.HLDY_PRCS_DCD                                     <!-- 휴일처리구분코드 -->
+             , A.FRS_INTR_RCVE_DT                                  <!-- 최초이자수령일자 -->
+             , A.PAI_RDMP_DCD                                      <!-- 원리금상환구분코드 -->
+             , A.PYM_DT_ACRD_YN                                    <!-- 납입일자일치여부 -->
+             , A.RGST_DT                                           <!-- 등록일자 -->
+             , A.PRNA_RDMP_FRQC_MNUM                               <!-- 원금상환주기개월수 -->
+             , A.PTTN_RDMP_NBTM                                    <!-- 분할상환횟수 -->
+             , A.EQL_RDMP_AMT                                      <!-- 균등상환금액 -->
+             , A.PRNA_DFR_PRD_MNUM                                 <!-- 원금거치기간개월수 -->
+             , A.OVDU_INTR_RT                                      <!-- 연체이자율 -->
+             , A.OVDU_INTR_RT_DCD                                  <!-- 연체이자율구분코드 -->
+             , A.ISTM_DTM_RDMP_AMT                                 <!-- 할부일시상환금액 -->
+             , A.RCVB_INTR_APLY_IRT                                <!-- 미수이자적용이율 -->
+             , A.INTR_CLC_END_DE_DCD                               <!-- 이자계산종료일구분코드 -->
+             , A.INTR_HDWT_CLC_YN                                  <!-- 이자수기계산여부 -->
+             , A.INTR_RDMP_FRQC_MNUM                               <!-- 이자상환주기개월수 -->
+             , A.HND_DETL_DTM                                      <!-- 조작상세일시 -->
+             , A.HND_EMPNO                                         <!-- 조작사원번호 -->
+             , A.HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+             , A.HND_TR_ID                                         <!-- 조작거래id -->
+             , A.GUID                                              <!-- guid -->
+             , A.MDWY_RDMP_YN                                      <!-- 중도상환여부 -->
+             , A.INTR_CNGE_FRQC_MNUM                               <!-- 금리변동주기개월수 -->
+             , B.CTRC_EXP_DT                                       <!-- 약정만기일자 -->
+          FROM IBIMS202B A
+             , IBIMS401B B
+         WHERE 1=1
+           AND A.PRDT_CD                                           = #{prdtCd}
+           AND B.PRDT_CD = A.PRDT_CD 
+	</select>
+	
+	<!-- 딜승인현금흐름기본등록  -->
+    <insert id="insertIBIMS202BDTOInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS202BDTO">
+        INSERT INTO IBIMS202B 
+               (
+                  PRDT_CD                                           <!-- 상품코드 -->
+                , APLY_DT                                           <!-- 적용일자 -->
+                , AICT_STDR_INTRT_KND_CD                            <!-- 올인코스트기준금리종류코드 -->
+                , AICT_ADD_INTRT                                    <!-- 올인코스트가산금리 -->
+                , STDR_INTRT_KND_CD                                 <!-- 기준금리종류코드 -->
+                , ADD_INTRT                                         <!-- 가산금리 -->
+                , FXN_INTRT                                         <!-- 고정금리 -->
+                , INTR_BNAO_DCD                                     <!-- 이자선후취구분코드 -->
+                , TFD_LY_APLY_DCD                                   <!-- 초일말일적용구분코드 -->
+                , INTR_SNNO_PRCS_DCD                                <!-- 이자단수처리구분코드 -->
+                , INTR_DNUM_CLC_MTH_CD                              <!-- 이자일수계산방법코드 -->
+                , HLDY_PRCS_DCD                                     <!-- 휴일처리구분코드 -->
+                , FRS_INTR_RCVE_DT                                  <!-- 최초이자수령일자 -->
+                , PAI_RDMP_DCD                                      <!-- 원리금상환구분코드 -->
+                , PYM_DT_ACRD_YN                                    <!-- 납입일자일치여부 -->
+                , RGST_DT                                           <!-- 등록일자 -->
+                , PRNA_RDMP_FRQC_MNUM                               <!-- 원금상환주기개월수 -->
+                , PTTN_RDMP_NBTM                                    <!-- 분할상환횟수 -->
+                , EQL_RDMP_AMT                                      <!-- 균등상환금액 -->
+                , PRNA_DFR_PRD_MNUM                                 <!-- 원금거치기간개월수 -->
+                , OVDU_INTR_RT                                      <!-- 연체이자율 -->
+                , OVDU_INTR_RT_DCD                                  <!-- 연체이자율구분코드 -->
+                , ISTM_DTM_RDMP_AMT                                 <!-- 할부일시상환금액 -->
+                , RCVB_INTR_APLY_IRT                                <!-- 미수이자적용이율 -->
+                , INTR_CLC_END_DE_DCD                               <!-- 이자계산종료일구분코드 -->
+                , INTR_HDWT_CLC_YN                                  <!-- 이자수기계산여부 -->
+                , INTR_RDMP_FRQC_MNUM                               <!-- 이자상환주기개월수 -->
+                , HND_DETL_DTM                                      <!-- 조작상세일시 -->
+                , HND_EMPNO                                         <!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+                , HND_TR_ID                                         <!-- 조작거래id -->
+                , GUID                                              <!-- guid -->
+                , MDWY_RDMP_YN                                      <!-- 중도상환여부 -->
+                , INTR_CNGE_FRQC_MNUM                               <!-- 금리변동주기개월수 -->
+               )
+        VALUES (
+                 #{prdtCd}                                          <!-- 상품코드 -->
+               , #{aplyDt}                                          <!-- 적용일자 -->
+               , #{aictStdrIntrtKndCd}                              <!-- 올인코스트기준금리종류코드 -->
+               , #{aictAddIntrt}                                    <!-- 올인코스트가산금리 -->
+               , #{stdrIntrtKndCd}                                  <!-- 기준금리종류코드 -->
+               , #{addIntrt}                                        <!-- 가산금리 -->
+               , #{fxnIntrt}                                        <!-- 고정금리 -->
+               , #{intrBnaoDcd}                                     <!-- 이자선후취구분코드 -->
+               , #{tfdLyAplyDcd}                                    <!-- 초일말일적용구분코드 -->
+               , #{intrSnnoPrcsDcd}                                 <!-- 이자단수처리구분코드 -->
+               , #{intrDnumClcMthCd}                                <!-- 이자일수계산방법코드 -->
+               , #{hldyPrcsDcd}                                     <!-- 휴일처리구분코드 -->
+               , #{frsIntrRcveDt}                                   <!-- 최초이자수령일자 -->
+               , #{paiRdmpDcd}                                      <!-- 원리금상환구분코드 -->
+               , #{pymDtAcrdYn}                                     <!-- 납입일자일치여부 -->
+               , #{rgstDt}                                          <!-- 등록일자 -->
+               , #{prnaRdmpFrqcMnum}                                <!-- 원금상환주기개월수 -->
+               , #{pttnRdmpNbtm}                                    <!-- 분할상환횟수 -->
+               , #{eqlRdmpAmt}                                      <!-- 균등상환금액 -->
+               , #{prnaDfrPrdMnum}                                  <!-- 원금거치기간개월수 -->
+               , #{ovduIntrRt}                                      <!-- 연체이자율 -->
+               , #{ovduIntrRtDcd}                                   <!-- 연체이자율구분코드 -->
+               , #{istmDtmRdmpAmt}                                  <!-- 할부일시상환금액 -->
+               , #{rcvbIntrAplyIrt}                                 <!-- 미수이자적용이율 -->
+               , #{intrClcEndDeDcd}                                 <!-- 이자계산종료일구분코드 -->
+               , #{intrHdwtClcYn}                                   <!-- 이자수기계산여부 -->
+               , #{intrRdmpFrqcMnum}                                <!-- 이자상환주기개월수 -->
+               , SYSDATE                                            <!-- 조작상세일시-->
+               , #{hndEmpno}                                        <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+               , #{hndTrId}                                         <!-- 조작거래id -->
+               , #{guid}                                            <!-- guid -->
+               , #{mdwyRdmpYn}                                      <!-- 중도상환여부 -->
+               , #{intrCngeFrqcMnum}                                <!-- 금리변동주기개월수 -->
+               )
+    </insert>
+	
+	<!-- 딜승인현금흐름기본변경  -->
+    <update id="updateIBIMS202BDTOInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS202BDTO">
+       UPDATE IBIMS202B
+          SET PRDT_CD                                           = #{prdtCd}                                          <!-- 상품코드 -->
+            , APLY_DT                                           = #{aplyDt}                                          <!-- 적용일자 -->
+            , AICT_STDR_INTRT_KND_CD                            = #{aictStdrIntrtKndCd}                              <!-- 올인코스트기준금리종류코드 -->
+            , AICT_ADD_INTRT                                    = #{aictAddIntrt}                                    <!-- 올인코스트가산금리 -->
+            , STDR_INTRT_KND_CD                                 = #{stdrIntrtKndCd}                                  <!-- 기준금리종류코드 -->
+            , ADD_INTRT                                         = #{addIntrt}                                        <!-- 가산금리 -->
+            , FXN_INTRT                                         = #{fxnIntrt}                                        <!-- 고정금리 -->
+            , INTR_BNAO_DCD                                     = #{intrBnaoDcd}                                     <!-- 이자선후취구분코드 -->
+            , TFD_LY_APLY_DCD                                   = #{tfdLyAplyDcd}                                    <!-- 초일말일적용구분코드 -->
+            , INTR_SNNO_PRCS_DCD                                = #{intrSnnoPrcsDcd}                                 <!-- 이자단수처리구분코드 -->
+            , INTR_DNUM_CLC_MTH_CD                              = #{intrDnumClcMthCd}                                <!-- 이자일수계산방법코드 -->
+            , HLDY_PRCS_DCD                                     = #{hldyPrcsDcd}                                     <!-- 휴일처리구분코드 -->
+            , FRS_INTR_RCVE_DT                                  = #{frsIntrRcveDt}                                   <!-- 최초이자수령일자 -->
+            , PAI_RDMP_DCD                                      = #{paiRdmpDcd}                                      <!-- 원리금상환구분코드 -->
+            , PYM_DT_ACRD_YN                                    = #{pymDtAcrdYn}                                     <!-- 납입일자일치여부 -->
+            , RGST_DT                                           = #{rgstDt}                                          <!-- 등록일자 -->
+            , PRNA_RDMP_FRQC_MNUM                               = #{prnaRdmpFrqcMnum}                                <!-- 원금상환주기개월수 -->
+            , PTTN_RDMP_NBTM                                    = #{pttnRdmpNbtm}                                    <!-- 분할상환횟수 -->
+            , EQL_RDMP_AMT                                      = #{eqlRdmpAmt}                                      <!-- 균등상환금액 -->
+            , PRNA_DFR_PRD_MNUM                                 = #{prnaDfrPrdMnum}                                  <!-- 원금거치기간개월수 -->
+            , OVDU_INTR_RT                                      = #{ovduIntrRt}                                      <!-- 연체이자율 -->
+            , OVDU_INTR_RT_DCD                                  = #{ovduIntrRtDcd}                                   <!-- 연체이자율구분코드 -->
+            , ISTM_DTM_RDMP_AMT                                 = #{istmDtmRdmpAmt}                                  <!-- 할부일시상환금액 -->
+            , RCVB_INTR_APLY_IRT                                = #{rcvbIntrAplyIrt}                                 <!-- 미수이자적용이율 -->
+            , INTR_CLC_END_DE_DCD                               = #{intrClcEndDeDcd}                                 <!-- 이자계산종료일구분코드 -->
+            , INTR_HDWT_CLC_YN                                  = #{intrHdwtClcYn}                                   <!-- 이자수기계산여부 -->
+            , INTR_RDMP_FRQC_MNUM                               = #{intrRdmpFrqcMnum}                                <!-- 이자상환주기개월수 -->
+            , HND_DETL_DTM                                      = SYSDATE                                            <!-- 조작상세일시-->
+            , HND_EMPNO                                         = #{hndEmpno}                                        <!-- 조작사원번호 -->
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+            , HND_TR_ID                                         = #{hndTrId}                                         <!-- 조작거래id -->
+            , GUID                                              = #{guid}                                            <!-- guid -->
+            , MDWY_RDMP_YN                                      = #{mdwyRdmpYn}                                      <!-- 중도상환여부 -->
+            , INTR_CNGE_FRQC_MNUM                               = #{intrCngeFrqcMnum}                               <!-- 금리변동주기개월수 -->
+         WHERE 1=1
+          AND PRDT_CD                                           = #{prdtCd}                                          <!-- 상품코드 -->
+    </update>
+
+</mapper>

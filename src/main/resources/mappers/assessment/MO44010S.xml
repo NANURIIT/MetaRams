@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.MO44010Mapper">
+
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆ 변경된 MAPPER 로 사용불가 (songwonhee) ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+
+	<select id="checkDealSearch" parameterType="com.nanuri.rams.business.common.vo.MO44010SVO$SearchVO" resultType="com.nanuri.rams.business.common.vo.MO44010SVO$DealInfo">
+		SELECT A.STD_DT						AS STD_DT									/* 기준일자 */
+             , A.ENTP_NM					AS ENTP_NM									/* 기업명 */
+             , A.RPRST_P_HNGL_NM			AS RPRST_P_HNGL_NM							/* 대표자한글명 */
+             , A.CORP_RGST_NO				AS CORP_RGST_NO								/* 법인등록번호 */
+             , (
+             	CASE WHEN A.GRD_DWN_CNT1	= 0 THEN '' ELSE 'G-CRS등급 하락 '	END	||	/* 등급하락건수1 */
+             	CASE WHEN A.GRD_DWN_CNT2	= 0 THEN '' ELSE '신평사등급 하락 '	END	||	/* 등급하락건수2 */
+             	CASE WHEN A.ARRS_INFO_CNT	= 0 THEN '' ELSE '연체정보 등록'	END	||	/* 연체정보건수 */
+             	CASE WHEN A.FNCL_INFO_CNT1	= 0 THEN '' ELSE '완전자본잠식'		END	||	/* 재무정보건수1 */
+             	CASE WHEN A.FNCL_INFO_CNT2	= 0 THEN '' ELSE '감사의견 한정'	END	||	/* 재무정보건수2 */
+             	CASE WHEN A.CLS_QTT_CNT		= 0 THEN '' ELSE '휴폐업'			END		/* 휴폐업건수 */
+               )							AS CRDT_ACDNT_OCRNC_DTLS					/* 신용사건발생일상세 */
+             , A.IB_DEAL_NO					AS IB_DEAL_NO								/* IBDEAL번호 */
+             , A.RISK_INSPCT_CCD			AS RISK_INSPCT_CCD							/* 리스크심사구분코드 */
+             , A.LST_C_CASE_CCD				AS LST_C_CASE_CCD							/* 부수안건구분코드 */
+             , B.IB_DEAL_NM					AS IB_DEAL_NM								/* IBDEAL명 */
+             , B.INSPCT_DPRT_CCD			AS INSPCT_DPRT_CCD							/* 심사부서 */
+             , B.INSPCT_DPRT_CCD_NM			AS INSPCT_DPRT_CCD_NM						/* 심사부서명 */
+             , B.OWN_P_ENO					AS OWN_P_ENO								/* 담당심사역 */
+             , B.EMP_NM						AS EMP_NM									/* 담당심사역명 */
+             , A.FST_CNFR_DT				AS FST_CNFR_DT								/* 최초확인일자 */  -- 확인일(심사역)
+             , A.ANS_ACPT_DT				AS ANS_ACPT_DT								/* 답변접수일자 */  -- 확인일(심사부서장)
+             , A.EXMNT_RSLT_CNTNT           AS EXMNT_RSLT_CNTNT							/* 검토결과내용 */
+          FROM RAA30B A																	/* 일별신용사건현황*/
+          LEFT JOIN (
+					 SELECT B.IB_DEAL_NO							/* IBDEAL번호 */
+						  , B.RISK_INSPCT_CCD						/* 리스크심사구분코드 */
+						  , B.LST_C_CASE_CCD						/* 부수안건구분코드 */
+						  , B.IB_DEAL_NM							/* IBDEAL명 */
+						  , B.INSPCT_DPRT_CCD						/* 심사부서 */
+						  , D.INSPCT_DPRT_CCD_NM					/* 심사부서명 */
+						  , B.OWN_P_ENO								/* 담당심사역 */
+						  , C.EMP_NM								/* 담당심사역명 */
+					   FROM RAA02B B								/* 심사안건평가관리 */
+					   LEFT JOIN (
+					   			  SELECT ENO
+					   			       , EMP_NM
+					   				FROM RAA99A C
+					   			   WHERE 1=1
+					   			     <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(eno)">
+									 AND C.ENO /*담당자사번*/ = #{eno}
+									 </if>
+								 ) C
+						 ON B.OWN_P_ENO = C.ENO
+					   LEFT JOIN (
+					   			  SELECT CD_VL_ID AS INSPCT_DPRT_CCD
+					   				   , CD_VL_NM AS INSPCT_DPRT_CCD_NM
+					   			    FROM RAA91B
+					   			   WHERE 1=1
+					   			     AND CMNS_CD_GRP = 'I003'
+					   			 ) D
+					   	 ON B.INSPCT_DPRT_CCD = D.INSPCT_DPRT_CCD
+					  WHERE 1=1
+					    AND B.INSPCT_PRGRS_ST_CD IN ('350', '370', '500')
+						<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(eno)">
+						AND B.OWN_P_ENO /*담당자사번*/ = #{eno}
+						</if>
+						<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDprtCcd)">
+						AND B.INSPCT_DPRT_CCD /*심사부서구분코드*/ = #{inspctDprtCcd}
+						</if>
+					) B
+			ON A.IB_DEAL_NO			= B.IB_DEAL_NO
+		   AND A.RISK_INSPCT_CCD	= B.RISK_INSPCT_CCD
+		   AND A.LST_C_CASE_CCD		= B.LST_C_CASE_CCD
+		 WHERE 1=1
+		   <if test='checked.equals("N")'>
+		   AND (A.ANS_ACPT_DT IS NULL) OR (A.FST_CNFR_DT IS NULL) 
+		   </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(stdDt)">
+		   AND A.STD_DT /* 기준일자 */ <![CDATA[>=]]> #{stdDt}
+		   </if>
+		 ORDER BY A.STD_DT DESC, A.IB_DEAL_NO DESC, A.RISK_INSPCT_CCD DESC, A.LST_C_CASE_CCD DESC
+	</select>
+
+	<update id="saveDealExmnt" parameterType="com.nanuri.rams.business.common.vo.MO44010SVO$ExmntInfo">
+        UPDATE RAA30B
+           SET EXMNT_RSLT_CNTNT		= CASE WHEN (SELECT RGHT_CD FROM RAA92B WHERE ENO = #{hndlPEno}) = 'AG20' THEN #{exmntRsltCntnt}
+										   WHEN (SELECT RGHT_CD FROM RAA92B WHERE ENO = #{hndlPEno}) = 'AG22' THEN #{exmntRsltCntnt}
+										   ELSE NULL
+										    END <!-- 조치사항 -->
+             , FST_CNFR_DT			= CASE WHEN (SELECT RGHT_CD FROM RAA92B WHERE ENO = #{hndlPEno}) = 'AG20' THEN DATE_FORMAT(CURDATE(), '%Y%m%d')
+										   ELSE NULL
+										    END <!-- 심사역확인일자 -->
+			 , ANS_ACPT_DT			= CASE WHEN (SELECT RGHT_CD FROM RAA92B WHERE ENO = #{hndlPEno}) = 'AG22' THEN DATE_FORMAT(CURDATE(), '%Y%m%d')
+										   ELSE NULL
+										    END <!-- 심사부서장확인일자 -->
+			 , HNDL_DY_TM			= CURRENT_TIMESTAMP()
+			 , HNDL_DPRT_CD			= #{hndlDprtCd}
+			 , HNDL_P_ENO			= #{hndlPEno}
+         WHERE 1=1
+           AND IB_DEAL_NO			= #{ibDealNo}			<!-- IBDeal번호 -->
+           AND STD_DT				= #{stdDt}				<!-- 기준일자 -->
+           AND RISK_INSPCT_CCD		= #{riskInspctCcd}
+           AND LST_C_CASE_CCD		= #{lstCCaseCcd}
+	</update>
+</mapper>

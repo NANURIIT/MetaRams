@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS800BMapper">
+
+    <select id="checkStdrDtInfo" parameterType = "String" resultType = "int">
+        SELECT COUNT(*)
+        FROM IBIMS800B 
+        WHERE STDR_DT = #{stdrDt}
+    </select>
+    
+    <!--자산건전성 및 충당금 산출 조회 (기준일자 데이터 없을 시)-->
+    <select id="getAsstSnnGrdListNoStdrDt" resultType="com.nanuri.rams.business.common.vo.IBIMS800BVO">
+        SELECT A.DEAL_NO                     AS DEAL_NO                   /* 딜번호 */
+                , A.DEAL_NM                     AS DEAL_NM                /* 딜명 */
+                , NVL(A.PRDT_CD, '')         AS PRDT_CD                /* 상품코드 */
+                , T.EXC_SN                      AS EXC_SN                 /* 실행일련번호 */
+                , NVL(A.PRDT_NM, '')         AS PRDT_NM                /* 상품명 */
+                , NVL((SELECT MAX(B.ENTP_HNGL_NM)
+                            FROM IBIMS114B B
+                            WHERE B.BSNS_RGST_NO = A.TR_OTHR_DSCM_NO), ''
+                            )                    AS ENTP_HNGL_NM         /* 업체한글명 */
+                , A.PRDT_LCLS_CD                                         /* 기업여신상품대분류코드 */
+                , NVL(s002b_1.CD_VL_NM , '') AS PRDT_LCLS_CD_NM       /* 기업여신상품대분류코드명 */
+                , A.PRDT_MDCL_CD                                         /* 기업여신상품중분류코드 */
+                , NVL(s002b_2.CD_VL_NM , '') AS PRDT_MDCL_CD_NM       /* 기업여신상품중분류코드명 */
+                , A.PRDT_CLSF_CD                                         /* 기업여신상품분류코드 */
+                , NVL(s002b_3.CD_VL_NM , '') AS PRDT_CLSF_CD_NM       /* 기업여신상품분류코드명 */
+                , A.HOLD_PRPS_DCD               AS HOLD_PRPS_DCD         /* 보유목적구분코드 */  
+                , A.IB_PRDT_CLSF_CD                                      /* IB상품분류코드 */
+                , NVL(s002b_4.CD_VL_NM, '')  AS IB_PRDT_CLSF_CD_NM    /* IB상품분류코드명 */
+                , NVL(A.APVL_AMT , '')       AS APVL_AMT              /* 종목승인금액 */
+                , NVL(A.ACTS_CD  , '')       AS ACTS_CD               /* 계정과목코드 */
+                , NVL(A.PRG_STTS_CD  , '')   AS PRG_STTS_CD           /* 진행상태코드 */
+                , (SELECT MAX(EMP_NM)
+                    FROM IBIMS003B s003b
+                    WHERE EMPNO = A.CHRR_EMPNO) AS CHRR_EMPNM            /* 담당자사원번호 */
+                , A.MNGM_BDCD                                            /* 부서번호 */
+                , (
+                    SELECT C.DPRT_NM
+                    FROM IBIMS003B C
+                    WHERE C.DPRT_CD = A.MNGM_BDCD
+                      AND ROWNUM = 1                      
+                    )                             AS DPRT_NM            /* 부서명   */
+                , NVL(T.DEAL_EXC_AMT,0)         AS DEAL_EXC_AMT         /* 투자금액  */
+                , NVL(T.DEAL_EXC_BLCE,0)        AS DEAL_EXC_BLCE        /* 투자잔액  */
+                , NVL(T.ACBK_AMT,0)             AS ACBK_AMT             /* 장부금액  */
+                , NVL(T.EXC_DT,0)               AS EXC_DT               /* 기표일자  */
+                , NVL(T.EXP_DT,0)               AS EXP_DT               /* 만기일자  */
+                , T.NXT_PYM_DT                  AS NXT_PYM_DT           /* 연체시작일자 */
+            FROM IBIMS201B A                    /* 딜승인기본 */
+            LEFT JOIN (
+                SELECT T2.PRDT_CD
+                        ,T2.EXC_SN             /* 실행일련번호 */
+                        ,T2.DEAL_EXC_AMT       /* 투자금액  */
+                        ,T2.DEAL_EXC_BLCE      /* 투자잔액  */
+                        ,T2.ACBK_AMT           /* 장부금액  */
+                        ,T2.EXC_DT             /* 실행일자 */
+                        ,T2.EXP_DT             /* 만기일자 */
+                        ,(CASE WHEN T2.NXT_RDMP_PRAR_DT  &lt; T2.NXT_INTR_PYM_DT THEN T2.NXT_RDMP_PRAR_DT
+                                ELSE T2.NXT_INTR_PYM_DT
+                            END) AS NXT_PYM_DT          /* 연체시작일자 */
+                    FROM IBIMS401B T1                   /* 딜약정기본 */
+                        ,IBIMS402B T2                   /* 딜실행기본 */
+                    WHERE T1.PRDT_CD = T2.PRDT_CD
+                    AND T1.EPRZ_CRDL_LDG_STTS_CD = '1'     
+                    AND T2.LDG_STTS_CD = '1'
+                ) T         
+                    ON A.PRDT_CD = T.PRDT_CD
+                LEFT JOIN IBIMS002B s002b_1
+                        ON A.PRDT_LCLS_CD = s002b_1.CD_VL_ID
+                        AND s002b_1.CMNS_CD_GRP = 'E022'
+                LEFT JOIN IBIMS002B s002b_2
+                        ON A.PRDT_MDCL_CD = s002b_2.CD_VL_ID
+                        AND s002b_2.CMNS_CD_GRP = 'E023'
+                LEFT JOIN IBIMS002B s002b_3
+                        ON A.PRDT_CLSF_CD = s002b_3.CD_VL_ID
+                        AND s002b_3.CMNS_CD_GRP = 'E021'
+                LEFT JOIN IBIMS002B s002b_4
+                        ON A.IB_PRDT_CLSF_CD = s002b_4.CD_VL_ID
+                        AND s002b_4.CMNS_CD_GRP = 'I002'
+            WHERE 1 = 1
+            AND A.LAST_YN = '1'
+            AND A.PRDT_CD = T.PRDT_CD 
+    </select>
+
+    <!--자산건전성 및 충당금 산출 조회 (기준일자 데이터 있을 시)-->
+    <select id="getAsstSnnGrdListStdrDt" parameterType = "String" resultType="com.nanuri.rams.business.common.vo.IBIMS800BVO">
+        SELECT
+                  B.DEAL_NO                  AS DEAL_NO             /*딜번호*/
+                , B.DEAL_NM                  AS DEAL_NM             /*딜명*/
+                , A.PRDT_CD                  AS PRDT_CD             /*상품코드*/
+                , B.PRDT_NM                  AS PRDT_NM             /*종목명*/
+                , A.EXC_SN					 AS EXC_SN   			/*실행일련번호*/
+                , A.EXC_DT					 AS EXC_DT   			/*실행일자*/
+                , A.EXP_DT					 AS EXP_DT		        /*만기일자*/
+                , A.KRW_TRSL_EXC_BLCE        AS DEAL_EXC_BLCE       /*원화환산실행잔액*/							
+                , A.ACBK_AMT                 AS ACBK_AMT            /*장부금액*/
+                , A.ASST_SNN_GRD_DCD         AS ASTS_QTY_DVD_CD     /*자산건전성등급구분코드*/
+                , A.SET_EVL_APRN_AMT                                /*집합평가충당금액*/
+                , A.INDV_EVL_APRN_AMT        AS EVL_APRN_AMT        /*개별평가충당금액*/
+                , A.RCVB_INTR_APRN_AMT                              /*미수이자충당금액*/
+                , (
+                    SELECT C.DPRT_NM
+                    FROM IBIMS003B C
+                    WHERE C.DPRT_CD = B.MNGM_BDCD
+                            LIMIT 1                     
+                    )                             AS DPRT_NM            /* 부서명   */
+        FROM IBIMS800B A
+        JOIN IBIMS201B B ON B.PRDT_CD = A.PRDT_CD 
+        AND B.LAST_YN = '1' 
+        WHERE STDR_DT = #{stdrDt}
+    </select>
+
+    <delete id="dltAsstSnnList" parameterType = "com.nanuri.rams.business.common.vo.TB08090SVO">
+        DELETE
+        FROM IBIMS800B
+        WHERE STDR_DT = #{stdrDt}              <!-- 기준일자 -->
+    </delete>
+
+    <!--자산건전성 및 충당금 산출 insert-->
+    <insert id="insertAsstSnnList"  parameterType="java.util.List">
+        INSERT INTO IBIMS800B                               /*대출금충당금산출기본*/
+                (
+                    STDR_DT						            /*기준일자*/
+                    , PRDT_CD                               /*상품코드*/								
+                    , EXC_SN								/*실행일련번호*/
+                    , EXC_DT								/*실행일자*/
+                    , EXP_DT							    /*만기일자*/
+                    , KRW_TRSL_EXC_BLCE                     /*원화환산실행잔액*/							
+                    , ACBK_AMT                              /*장부금액*/
+                    , EVL_AMT	                            /*평가금액*/
+                    , RCVB_INTR_AMT	                        /*미수이자금액*/
+                    , RMN_EXP_YNUM                          /*잔여만기년수*/
+                    , DSHN_RT                               /*부도율*/
+                    , DSHN_LSS_RT                           /*부도손실율*/
+                    , ASST_SNN_GRD_DCD                      /*자산건전성등급구분코드*/
+                    , SET_EVL_APRN_AMT                      /*집합평가충당금액*/
+                    , INDV_EVL_APRN_AMT                     /*개별평가충당금액*/
+                    , RCVB_INTR_APRN_AMT                    /*미수이자충당금액*/
+                    , HND_DETL_DTM                          /*조작상세일시*/
+                    , HND_EMPNO                             /*조작사원번호*/
+                    , HND_TMNL_NO                           /*조작단말기번호*/		
+                    , HND_TR_ID                             /*조작거래ID*/
+                    , GUID                                  /*GUID*/						   
+                )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+                (
+                    #{item.stdrDt}						    /*기준일자*/
+                    , #{item.prdtCd} 						/*상품코드*/	
+                    , #{item.excSn}							/*실행일련번호*/
+                    , #{item.excDt}							/*실행일자*/
+                    , #{item.expDt}                         /*만기일자*/
+                    , #{item.krwTrslExcBlce}                /*원화환산실행잔액*/	
+                    , #{item.acbkAmt}                       /*장부금액*/
+                    , #{item.acbkAmt}                       /*평가금액*/
+                    , 0                                     /*미수이자금액*/	<!--todo: 회계반영화면 작성완료시 값 넣어야함 -->
+                    , #{item.rmnExpYnum}                    /*잔여만기년수*/
+                    , 0                                     /*부도율*/          <!--todo: 회계반영화면 작성완료시 값 넣어야함 -->
+                    , 0                                     /*부도손실율*/      <!--todo: 회계반영화면 작성완료시 값 넣어야함 -->
+                    , #{item.asstSnnGrdDcd}                 /*자산건전성등급구분코드*/
+                    , #{item.indvEvlAprnAmt}                /*집합평가충당금액*/
+                    , #{item.indvEvlAprnAmt}                /*개별평가충당금액*/
+                    , 0                                     /*미수이자충당금액*/ <!--todo: 회계반영화면 작성완료시 값 넣어야함 -->
+                    , SYSDATE			                    /*조작상세일시*/
+                    , #{item.hndEmpNo}						/*조작사원번호*/
+                    , ''
+                    , ''
+                    , ''
+                )
+        </foreach>
+    </insert>
+</mapper>

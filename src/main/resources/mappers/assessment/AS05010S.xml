@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.AS05010Mapper">
+
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆ 변경된 MAPPER 로 사용불가 (songwonhee) ◆◆◆◆◆◆◆◆◆ -->
+    <!-- ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ -->
+		
+	<!-- 안건 진행정보관리 조회 -->
+	<select id="getDealList" parameterType="com.nanuri.rams.business.common.vo.AS05010SVO" resultType="com.nanuri.rams.business.common.vo.AS05010SVO">
+		SELECT A.IB_DEAL_NO 	 								AS IB_DEAL_NO				<!-- IBDEAL번호 -->
+			 , A.RISK_INSPCT_CCD 								AS RISK_INSPCT_CCD   		<!-- 리스크심사구분코드  -->
+			 , B.CD_VL_NM		 	   	 						AS RISK_INSPCT_CCD_NM		<!-- 리스크심사구분코드명 -->
+			 , A.LST_C_CASE_CCD  	 							AS LST_C_CASE_CCD       	<!-- 부수안건구분코드 -->
+			 , C.CD_VL_NM  		 	 							AS LST_C_CASE_CCD_NM		<!-- 부수안건구분코드명 -->
+			 , A.OWN_P_ENO		 								AS OWN_P_ENO				<!-- 소유자사번 -->
+			 , IFNULL(D.EMP_NM, '')								AS OWN_P_ENO_NM				<!-- 소유자명 NULL이면 빈칸 표시-->
+			 , A.IB_DEAL_NM			 							AS IB_DEAL_NM				<!-- IBDEAL명 -->
+			 , IFNULL(DATE_FORMAT(A.AGR_DT, '%Y-%m-%d'), '') 	AS AGR_DT					<!-- 약정일자 -->
+			 , FORMAT(A.AGR_AMT, '#,###')						AS AGR_AMT					<!-- 약정금액 -->
+			 , A.RQS_DOC_NO										AS RQS_DOC_NO				<!-- 요청문서번호 -->
+			 , IFNULL(E.RA_DOC_NO, '')							AS CASE_RA_DOC_NO			<!-- 약정 RA문서번호 -->
+			 , A.INSPCT_CNCL_HNDL_CCD 							AS INSPCT_CNCL_HNDL_CCD		<!-- 심사취소처리구분코드 -->
+			 , IFNULL(F.RA_DOC_NO, '')							AS EXIT_RA_DOC_NO			<!-- EXIT RA문서번호 -->
+			 , IFNULL(DATE_FORMAT(A.WRT_DT, '%Y-%m-%d'), '')	AS WRT_DT					<!-- 기표일자 -->
+			 , IFNULL(DATE_FORMAT(A.MTRT_DT, '%Y-%m-%d'), '')	AS MTRT_DT					<!-- 만기일자 -->
+			 , FORMAT(A.CSH_NTR_ASTS_WRT_AMT, '#,###')			AS CSH_NTR_ASTS_WRT_AMT		<!-- 현금성자산기표금액 -->
+			 , A.NHNDL_RSN_CNTNT								AS NHNDL_RSN_CNTNT			<!-- 미처리사유내용 -->
+			 , IFNULL(DATE_FORMAT(A.END_DT, '%Y-%m-%d'), '')	AS END_DT					<!-- 종료일자 -->	
+			 , A.OPTNL_END_CCD									AS OPTNL_END_CCD			<!-- 임의종료구분코드 -->
+			 , A.END_BSS_CNTNT									AS END_BSS_CNTNT			<!-- 종료기본내용 -->
+			 , A.INSPCT_PRGRS_ST_CD								AS INSPCT_PRGRS_ST_CD		<!-- 심사진행상태코드 -->
+		     , G.CD_VL_NM										AS INSPCT_PRGRS_ST_CD_NM	<!-- 심사진행상태코드명 -->
+		  FROM RAA02B A																		<!-- 심사안건평가관리  -->
+		  LEFT JOIN RAA91B B
+			ON B.CMNS_CD_GRP		 							= 'R013'					
+		   AND A.RISK_INSPCT_CCD	 							= B.CD_VL_ID				<!-- 리스크심사구분코드 -->
+		  LEFT JOIN RAA91B C		
+			ON C.CMNS_CD_GRP 									= 'L001'
+		   AND A.LST_C_CASE_CCD 	 							= C.CD_VL_ID				<!-- 부수안건구분코드 -->
+		  LEFT JOIN RAA99A D
+			ON A.OWN_P_ENO			 							= D.ENO						<!-- 소유자명 -->
+		  LEFT OUTER JOIN RAA18B E															<!-- 관련문서정보 -->
+			ON A.IB_DEAL_NO			 							= E.IB_DEAL_NO							
+		   AND A.RISK_INSPCT_CCD			    				= E.RISK_INSPCT_CCD				
+		   AND A.LST_C_CASE_CCD		 							= E.LST_C_CASE_CCD					
+		   AND E.RA_DOC_CCD			 							= '3'						<!-- RA문서구분코드 약정=='3' -->
+		  LEFT OUTER JOIN RAA18B F
+			ON A.IB_DEAL_NO			 							= F.IB_DEAL_NO				<!-- IBDEAL번호 -->
+		   AND A.RISK_INSPCT_CCD	 							= F.RISK_INSPCT_CCD			<!-- 리스크심사구분코드 -->
+		   AND A.LST_C_CASE_CCD		 							= F.LST_C_CASE_CCD			<!-- 부수안건구분코드 -->
+		   AND F.RA_DOC_CCD			 							= '2'						<!-- RA문서구분코드 EXIT=='2'-->
+		     , (
+		     	SELECT rb2.CD_VL_ID 
+				     , rb2.CD_VL_NM 
+				  from RAA90B rb1 , RAA91B rb2
+				 WHERE rb1.CMNS_CD_GRP = rb2.CMNS_CD_GRP 		<!-- 공통코드그룹 -->
+		  		   and rb1.CMNS_CD_NM = 'INSPCT_PRGRS_ST_CD'	<!-- 심사진행상태코드 -->
+		       ) G
+		 WHERE 1=1
+		   AND A.IB_DEAL_NO										= #{ibDealNo}				<!-- IBDEAL번호 -->
+		   AND A.INSPCT_PRGRS_ST_CD								= G.CD_VL_ID
+		   AND A.INSPCT_PRGRS_ST_CD IN('350', '360', '370', '380', '390', '500', '920', '921', '922')
+	</select>
+
+	<!-- TAB1 약정/기표/철회 -->
+	<!-- 약정/기표/철회 등록 -->
+	<insert id="registCaseInfo" parameterType="com.nanuri.rams.business.common.vo.AS05010SVO">
+		INSERT INTO RAA02B
+			   (	
+			   	IB_DEAL_NO										<!-- IBDEAL번호 -->
+				, RISK_INSPCT_CCD								<!-- 리스크심사구분코드 -->
+				, LST_C_CASE_CCD								<!-- 부수안건구분코드 -->
+				, AGR_DT										<!-- 약정일자 -->
+				, AGR_AMT										<!-- 약정금액 -->
+				, WRT_DT										<!-- 기표일자 -->	
+				, MTRT_DT										<!-- 만기일자 -->
+				, CSH_NTR_ASTS_WRT_AMT							<!-- 현금성자산기표금액 -->
+				, INSPCT_CNCL_HNDL_CCD							<!-- 심사취소처리구분코드 -->
+				, NHNDL_RSN_CNTNT								<!-- 미처리사유내용 -->
+			   )
+		VALUES (
+				#{ibDealNo}										<!-- IBDEAL번호 -->
+				, #{riskInspctCcd}								<!-- 리스크심사구분코드 -->
+				, #{lstCCaseCcd}								<!-- 부수안건구분코드 -->
+				, #{agrDt}										<!-- 약정일자 -->
+				, #{agrAmt}										<!-- 약정금액 -->
+				, #{wrtDt}										<!-- 기표일자 -->	
+				, #{mtrtDt}										<!-- 만기일자 -->
+				, #{cshNtrAstsWrtAmt}							<!-- 현금성자산기표금액 -->	
+				, #{inspctCnclHndlCcd}							<!-- 심사취소처리구분코드 -->
+				, #{nhndlRsnCntnt}								<!-- 미처리사유내용 -->
+			   )
+	</insert>
+	
+	<!-- 약정/기표/철회 수정  -->
+	<update id="updateCaseInfo" parameterType="com.nanuri.rams.business.common.vo.AS05010SVO">
+		UPDATE RAA02B																<!-- 심사안건평가관리 -->
+		   SET AGR_DT					= #{agrDt}									<!-- 약정일자 -->
+		   	 , AGR_AMT					= REPLACE(#{agrAmt}, ',', '') * 1			<!-- 약정금액 -->
+		   	 , RQS_DOC_NO				= (											<!-- 요청번호==RA문서번호 -->
+									   	 	SELECT RA_DOC_NO
+									   	 	  FROM RAA18B
+									   	 	 WHERE IB_DEAL_NO 		= #{ibDealNo}
+									   	 	   AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+									   	 	   AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+									   	 	   AND RA_DOC_CCD		= #{caseRaDocCcd}
+									   	 	   AND ITEM_SQ 			= #{itemSq}
+									   	  )
+		   	 , WRT_DT					= #{wrtDt}									<!-- 기표일자 -->
+		   	 , MTRT_DT					= #{mtrtDt}									<!-- 만기일자 -->
+		   	 , CSH_NTR_ASTS_WRT_AMT		= REPLACE(#{cshNtrAstsWrtAmt}, ',', '') * 1	<!-- 현금성자산기표금액 -->
+		   	 , INSPCT_CNCL_HNDL_CCD 	= #{inspctCnclHndlCcd}						<!-- 심사취소처리구분코드 -->
+		   	 , NHNDL_RSN_CNTNT			= #{nhndlRsnCntnt}							<!-- 미처리사유내용 -->
+		   	 , HNDL_DY_TM				= CURRENT_TIMESTAMP()						<!-- 처리일시 -->
+		   	 , HNDL_DPRT_CD				= #{hndlDprtCd}								<!-- 처리부점코드 -->
+		   	 , HNDL_P_ENO				= #{hndlPEno}								<!-- 처리자사번 -->
+		   	 
+		 WHERE IB_DEAL_NO	    		= #{ibDealNo}								<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD  		= #{riskInspctCcd}							<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD 			= #{lstCCaseCcd}							<!-- 부수안건구분코드 -->
+	</update>
+	
+	<!-- 약정/기표/철회 삭제 -->
+	<update id="deleteCaseInfo" parameterType="com.nanuri.rams.business.common.vo.AS05010SVO">
+		UPDATE RAA02B											<!-- 심사안건평가관리 -->
+		   SET AGR_DT					= " "					<!-- 약정일자 -->
+		   	 , AGR_AMT					= "0"					<!-- 약정금액 -->
+		   	 , RQS_DOC_NO				= " "					<!-- 요청문서번호 -->
+		   	 <!-- , WRT_DT					= " " -->			<!-- 기표일자 -->
+		   	 <!-- , MTRT_DT					= " " -->			<!-- 만기일자 -->
+		   	 , CSH_NTR_ASTS_WRT_AMT		= "0"					<!-- 현금성자산기표금액 -->
+		   	 , INSPCT_CNCL_HNDL_CCD 	= " "					<!-- 심사취소처리구분코드 -->
+		   	 , NHNDL_RSN_CNTNT			= " "					<!-- 미처리사유내용 -->
+		   	 , HNDL_DY_TM				= CURRENT_TIMESTAMP()	<!-- 처리일시 -->
+		   	 , HNDL_DPRT_CD				= #{hndlDprtCd}			<!-- 처리부점코드 -->
+		   	 , HNDL_P_ENO				= #{hndlPEno}			<!-- 처리자사번 -->
+		 WHERE IB_DEAL_NO	    		= #{ibDealNo}			<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD  		= #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD 			= #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+	</update>
+	
+	<!-- TAB2 EXIT -->
+	<!-- EXIT 수정 -->
+	<update id="updateExitInfo" parameterType="com.nanuri.rams.business.common.vo.AS05010SVO">
+		UPDATE RAA02B										<!-- 심사안건평가관리 -->
+		   SET END_DT				= #{endDt}				<!-- 종료일자 -->
+		   	 , OPTNL_END_CCD		= #{optnlEndCcd}		<!-- 임의종료구분코드 -->
+	   	 	 , RQS_DOC_NO	 		= #{exitRaDocNo}		<!-- 요청번호==RA문서번호 -->
+	   	 	 , HNDL_DY_TM			= CURRENT_TIMESTAMP()	<!-- 처리일시 -->
+		   	 , HNDL_DPRT_CD			= #{hndlDprtCd}			<!-- 처리부점코드 -->
+		   	 , HNDL_P_ENO			= #{hndlPEno}			<!-- 처리자사번 -->
+		WHERE IB_DEAL_NO	    	= #{ibDealNo}			<!-- IBDEAL번호 -->
+		  AND RISK_INSPCT_CCD  		= #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+		  AND LST_C_CASE_CCD 		= #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+	</update>
+	
+	<!-- EXIT 삭제 -->
+	<update id="deleteExitInfo" parameterType="com.nanuri.rams.business.common.vo.AS05010SVO">
+		UPDATE RAA02B										<!-- 심사안건평가관리 -->
+		   SET END_DT				= ""					<!-- 종료일자 -->
+		   	 , OPTNL_END_CCD		= ""					<!-- 임의종료구분코드 -->
+	   	 	 , RQS_DOC_NO	 		= (						<!-- 요청번호==RA문서번호 -->
+								   	 	SELECT RA_DOC_NO
+								   	 	  FROM RAA18B
+								   	 	 WHERE IB_DEAL_NO 		= #{ibDealNo}
+								   	 	   AND RISK_INSPCT_CCD  = #{riskInspctCcd}
+								   	 	   AND LST_C_CASE_CCD   = #{lstCCaseCcd}
+								   	 	   AND RA_DOC_CCD		= '2'
+								   	 	   AND ITEM_SQ			= #{itemSq}
+								   	  )
+		WHERE IB_DEAL_NO	    	= #{ibDealNo}			<!-- IBDEAL번호 -->
+		  AND RISK_INSPCT_CCD  		= #{riskInspctCcd}		<!-- 리스크심사구분코드 -->
+		  AND LST_C_CASE_CCD 		= #{lstCCaseCcd}		<!-- 부수안건구분코드 -->
+	
+	</update>
+	
+	
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA07BMapper">
+
+	<!-- 보증기관정보 취득 -->
+	<select id="getEnsrInfo" resultType="com.nanuri.rams.business.common.vo.RAA07BVO">
+	   	SELECT A.IB_DEAL_NO				AS	IB_DEAL_NO				<!-- IBDEAL번호 -->
+			 , A.RISK_INSPCT_CCD		AS	RISK_INSPCT_CCD			<!-- 리스크심사구분코드 -->
+			 , A.LST_C_CASE_CCD			AS	LST_C_CASE_CCD			<!-- 부수안건구분코드 -->
+			 , A.ITEM_SQ				AS	ITEM_SQ					<!-- 항목일련번호 -->
+			 , A.CRDT_EHCMNT_GRNT_CCD	AS	CRDT_EHCMNT_GRNT_CCD	<!-- 신용보강보증구분코드 -->
+			 , B.CD_VL_NM 				AS	CRDT_EHCMNT_GRNT_CCD_NM	<!-- 신용보강보증구분코드명 -->
+			 , A.ENSR_OGN_CORP_NO		AS	ENSR_OGN_CORP_NO		<!-- 보증기관법인번호 -->
+			 , A.ENSR_AMT				AS	ENSR_AMT				<!-- 보증금액 -->
+			 , A.ENSR_CNTNT				AS	ENSR_CNTNT				<!-- 보증내용 -->
+			 , IFNULL(A.RNMCNO, '')  	AS 	RNMCNO					<!-- 실명확인번호 -->
+			 , A.HNDL_DY_TM				AS	HNDL_DY_TM				<!-- 처리일시 -->
+			 , A.HNDL_DPRT_CD			AS	HNDL_DPRT_CD			<!-- 처리부점코드 -->
+			 , A.HNDL_P_ENO				AS	HNDL_P_ENO				<!-- 처리자사번 -->
+			 , IFNULL((SELECT ENTP_HNGL_NM
+    		 			FROM RAB97B
+    		 		   WHERE CORP_RGST_NO = A.ENSR_OGN_CORP_NO), '')	AS 	ENTP_HNGL_NM	<!-- 한글법인명 -->	
+    	  FROM RAA07B A												<!-- 보증정보 -->
+    	  LEFT JOIN RAA91B B										
+    	    ON A.CRDT_EHCMNT_GRNT_CCD 	= B.CD_VL_ID
+    	   AND B.CMNS_CD_GRP 			= 'C007'					<!-- 신용보강보증구분코드 -->
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}								<!-- IBDEAL번호 -->
+    	   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+    	 ORDER BY ITEM_SQ 
+   	</select>
+   	
+   	<!-- 보증기관정보 생성 -->
+   	<insert id="registEnsrInfo" parameterType="com.nanuri.rams.business.common.dto.RAA07BDTO">
+   		INSERT INTO RAA07B
+   			   (
+   			    IB_DEAL_NO						<!-- IBDEAL번호 -->
+				, RISK_INSPCT_CCD				<!-- 리스크심사구분코드 -->
+				, LST_C_CASE_CCD				<!-- 부수안건구분코드 -->
+				, ITEM_SQ						<!-- 항목일련번호 -->
+				, CRDT_EHCMNT_GRNT_CCD			<!-- 신용보강보증구분코드 -->
+				, ENSR_OGN_CORP_NO				<!-- 보증기관법인번호 -->
+				, ENSR_AMT						<!-- 보증금액 -->
+				, ENSR_CNTNT					<!-- 보증내용 -->
+				, RNMCNO						<!-- 실명확인번호 -->
+				, HNDL_DY_TM					<!-- 처리일시 -->
+				, HNDL_DPRT_CD					<!-- 처리부점코드 -->
+				, HNDL_P_ENO					<!-- 처리자사번 -->
+   			   )
+   		VALUES (
+   				#{ibDealNo      }				<!-- IBDEAL번호 -->
+				, #{riskInspctCcd }				<!-- 리스크심사구분코드 -->
+				, #{lstCCaseCcd   }				<!-- 부수안건구분코드 -->
+				, (
+				  SELECT NVL(MAX(raa07b.ITEM_SQ), 0) + 1 AS ITEM_SQ
+				    FROM RAA07B raa07b
+				  )								<!-- 항목일련번호 -->
+				, #{crdtEhcmntGrntCcd}			<!-- 신용보강보증구분코드 -->
+				, #{ensrOgnCorpNo 	 }			<!-- 보증기관법인번호 -->
+				, #{ensrAmt       	 }			<!-- 보증금액 -->
+				, #{ensrCntnt     	 }			<!-- 보증내용 -->
+				, #{rnmcno       	 }			<!-- 실명확인번호 -->
+				, CURRENT_TIMESTAMP()			<!-- 처리일시 -->
+				, #{hndlDprtCd    	 }			<!-- 처리부점코드 -->
+				, #{hndlPEno     	 }			<!-- 처리자사번 -->
+   		       )
+   	</insert>
+   	
+   	<!-- 보증기관정보 갱신 -->
+    <update id="updateEnsrInfo" parameterType="com.nanuri.rams.business.common.dto.RAA07BDTO">
+   		UPDATE RAA07B
+   		   SET ENSR_OGN_CORP_NO		= #{ensrOgnCorpNo     }		<!--	보증기관법인번호	    -->
+   		   	 , CRDT_EHCMNT_GRNT_CCD	= #{crdtEhcmntGrntCcd }		<!-- 	신용보강보증구분코드   -->
+			 , ENSR_AMT				= #{ensrAmt           }		<!--	보증금액			-->
+			 , ENSR_CNTNT			= #{ensrCntnt         }		<!--	보증내용			-->
+			 , RNMCNO				= #{rnmcno            }		<!--	실명확인번호		-->
+			 , HNDL_DY_TM			= CURRENT_TIMESTAMP()		<!--	처리일시			-->
+			 , HNDL_DPRT_CD			= #{hndlDprtCd        }		<!--	처리부점코드		-->
+			 , HNDL_P_ENO			= #{hndlPEno          }		<!--	처리자사번			-->
+		 WHERE 1=1
+		   AND IB_DEAL_NO = #{ibDealNo}
+		   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+		   AND ITEM_SQ = #{itemSq}
+   	</update>
+   	
+   	<!-- 보증기관정보 삭제 -->
+   	<delete id="deleteEnsrInfo" parameterType="com.nanuri.rams.business.common.vo.RAA07BVO">
+   		DELETE FROM RAA07B 
+    	 WHERE 1=1
+    	   AND IB_DEAL_NO = #{ibDealNo}	<!-- IBDEAL번호 -->
+    	   AND RISK_INSPCT_CCD			= #{riskInspctCcd    }				<!-- 리스크심사구분코드 -->			
+		   AND LST_C_CASE_CCD			= #{lstCCaseCcd      }				<!-- 부수안건구분코드 -->
+    	   AND ITEM_SQ = #{itemSq}		<!-- 항목일련번호 -->
+   	</delete>
+   	
+   	
+</mapper>

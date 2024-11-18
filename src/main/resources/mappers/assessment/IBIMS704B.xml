@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS704BMapper">
+
+	<!-- 보고서 조회 -->
+    <select id="selectIBIMS704B" parameterType="com.nanuri.rams.business.common.dto.IBIMS704BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS704BVO">
+        SELECT 
+                A.STDR_YM          AS  stdrYm        /* 기준년월 */
+              , A.FND_RPTS_TP_DCD  AS  fndRptsTpDcd  /* 펀드보고서유형구분코드 */
+              , A.RGST_DT          AS  rgstDt        /* 등록일자 */
+              , A.DCSN_DT          AS  dcsnDt        /* 확정일자 */
+              , A.DCSN_YN          AS  dcsnYn        /* 확정여부 */
+              , A.RGST_EMPNO       AS  rgstEmpno     /* 등록사원번호 */
+              , A.DCSN_RGST_EMPNO  AS  dcsnRgstEmpno /* 확정등록사원번호 */
+              , A.HND_DETL_DTM     AS  hndDetlDtm    /* 조작상세일시 */
+              , A.HND_EMPNO        AS  hndEmpno      /* 조작사원번호 */
+              , A.HND_TMNL_NO      AS  hndTmnlNo     /* 조작단말기번호 */
+              , A.HND_TR_ID        AS  hndTrId       /* 조작거래ID */
+              , A.GUID             AS  guid          /* GUID */
+              , B.DPRT_CD          AS  dprtCd        /* 부서코드 */
+          FROM IBIMS704B A
+          LEFT JOIN IBIMS003B B
+            ON A.HND_EMPNO = B.EMPNO
+         WHERE A.HND_EMPNO = B.EMPNO
+           AND A.STDR_YM LIKE #{stdrYm};
+	  </select>
+
+    <insert id="insertIBIMS704B" parameterType="com.nanuri.rams.business.common.dto.IBIMS704BDTO">
+      INSERT INTO IBIMS704B 
+             (
+                STDR_YM                    /* 기준년월 */    
+              , FND_RPTS_TP_DCD            /* 펀드보고서유형구분코드 */            
+              , RGST_DT                    /* 등록일자 */    
+              , DCSN_DT                    /* 확정일자 */    
+              , DCSN_YN                    /* 확정여부 */    
+              , RGST_EMPNO                 /* 등록사원번호 */      
+              , DCSN_RGST_EMPNO            /* 확정등록사원번호 */            
+              , HND_DETL_DTM               /* 조작상세일시 */        
+              , HND_EMPNO                  /* 조작사원번호 */      
+              , HND_TMNL_NO                /* 조작단말기번호 */        
+              , HND_TR_ID                  /* 조작거래ID */      
+              , GUID                       /* GUID */
+             )                        
+      VALUES
+             (
+                #{stdrYm}
+              , #{fndRptsTpDcd}
+              , #{rgstDt}
+              , #{dcsnDt}
+              , #{dcsnYn}
+              , #{rgstEmpno}
+              , #{dcsnRgstEmpno}
+              , SYSDATE
+              , #{hndEmpno}
+              , #{hndTmnlNo}
+              , #{hndTrId}
+              , #{guid}
+             );
+    </insert>
+
+    <!-- 보고서 확정 -->
+    <update id="updateIBIMS704B" parameterType="com.nanuri.rams.business.common.dto.IBIMS704BDTO">
+        UPDATE IBIMS704B
+           SET DCSN_DT = #{dcsnDt}
+             , DCSN_YN = #{dcsnYn}
+             , DCSN_RGST_EMPNO = #{dcsnRgstEmpno}
+             , HND_DETL_DTM = SYSDATE
+             , HND_EMPNO = #{hndEmpno}
+             , HND_TMNL_NO = #{hndTmnlNo}
+             , HND_TR_ID = #{hndTrId}
+             , GUID = #{guid}
+         WHERE 1=1
+           AND STDR_YM = #{stdrYm} 
+           AND FND_RPTS_TP_DCD = #{fndRptsTpDcd};
+    </update>
+    
+</mapper>

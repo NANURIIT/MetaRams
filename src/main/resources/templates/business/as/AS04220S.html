@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/file.js}"></script>
+	<script th:src="@{js/business/as/AS04220S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 협의체 의견등록 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12 ibox">
+				<div class="ibox-content">
+					<!-- 안건목록 -->
+					<div class="col-sm-12">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>안건목록</h5>
+								<div class="ibox-tools">
+									<input type="hidden" id="AS04220S_inspctCnfrncCcd">
+									<input type="hidden" id="AS04220S_stdYr">
+									<input type="hidden" id="AS04220S_inspctCnfrncSqcSq">
+									<input type="hidden" id="AS04220S_rnkNo">
+									<input type="hidden" id="AS04220S_ibDealNo">
+									<input type="hidden" id="AS04220S_riskInspctCcd">
+									<input type="hidden" id="AS04220S_lstCCaseCcd">
+									<input type="hidden" id="fileIbDealNo">
+									<input type="hidden" id="fileRiskInspctCcd">
+									<input type="hidden" id="fileLstCCaseCcd">
+									<input type="checkbox" id="AS04220S_chkF">
+									<label class="control-label px-2">전체(종료건포함)</label>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<div class="tableFixHead">
+									<table class="table result table-bordered">
+										<colgroup>
+											<col style="width: 13%;">
+											<col style="width: 5%;">
+											<col style="width: 28%;">
+											<col style="width: 8%;">
+											<col style="width: 5%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 5%;">
+											<col style="width: 6%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>결의협의체</th>
+												<th>안건번호</th>
+												<th>안건명</th>
+												<th>결의일자</th>
+												<th>통화</th>
+												<th>참여금액</th>
+												<th>승인금액</th>
+												<th>의결</th>
+												<th>결과</th>
+												<th>회의록확인</th>
+											</tr>
+										</thead>
+										<tbody id="AS04220S_dealList">
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 관련보고서 & 회의록 -->
+					<div class="row pr-3 pl-3">
+						<!-- 관련 보고서 -->
+						<div class="col-sm-8">
+							<div class="ibox">
+								<div class="ibox-title">
+									<h5>관련보고서</h5>
+								</div>
+								<div class="ibox-content">
+									<table class="table result table-bordered">
+										<colgroup>
+											<col style="width: 85%;">
+											<col style="width: 15%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>보고서명</th>
+												<th>등록일자</th>
+											</tr>
+										</thead>
+										<tbody id="AS04220_fileList">
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- 회의록 -->
+						<div class="col-sm-4">
+							<div class="ibox">
+								<div class="ibox-title">
+									<h5>회의록</h5>
+								</div>
+								<div class="ibox-content text-right">
+									<div class="form-group row">
+										<label class="col-sm-2 control-label">회의록</label>
+										<input type="text" class="col-sm-7 form-control upload-name" readonly>
+										<div class="col-sm-3 text-left"><a id="filePath"><button class="btn btn-info"><i
+														class="fa fa-file-text-o"></i>&nbsp;열기</button></a></div>
+										<label class="col-sm-2 control-label">확인자명</label>
+										<input type="text" class="col-sm-7 form-control" id="AS04220S_cnfrPNm" readonly>&nbsp;
+										<input type="text" class="col-sm-2 form-control" id="AS04220S_cnfrPEno" readonly>
+										<label class="col-sm-2 control-label">확인일시</label>
+										<input type="text" class="col-sm-6 form-control" id="AS04220S_cnfrDyTm" readonly>
+										<div class="col-sm-4 text-left"><button class="btn btn-success" onclick="confirmFile();"><i
+													class="fa fa-check-square"></i>&nbsp;회의록 확인</button></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>의견등록</h5>
+							</div>
+							<div class="ibox-content text-right">
+								<div class="row">
+									<div class="col-sm-1">
+										심의의견
+									</div>
+									<div class="col-sm-11">
+										<textarea class="form-control" style="height:85px;" id="AS04220S_rvwCmmtCntnt"></textarea>
+									</div>
+									<div class="col-sm-12 text-right py-2">
+										<button class="btn btn-w-m btn-success btn-lg" type="button" onclick="updateAprvOpstnCcd('1')"><i
+												class="fa fa-check"></i>&nbsp;가결</button>
+										<button class="btn btn-w-m btn-info btn-lg" type="button" onclick="updateAprvOpstnCcd('2')"><i
+												class="fa fa-check-square-o"></i>&nbsp;조건부가결</button>
+										<button class="btn btn-w-m btn-default btn-lg" type="button" onclick="updateAprvOpstnCcd('3')"><i
+												class="fa fa-exclamation"></i>&nbsp;보류</button>
+										<button class="btn btn-w-m btn-warning btn-lg" type="button" onclick="updateAprvOpstnCcd('4')"><i
+												class="fa fa-times"></i>&nbsp;부결</button>
+										<button class="btn btn-w-m btn-danger btn-lg" type="button" onclick="updateAprvOpstnCcd()"><i
+												class="fa fa-undo"></i>&nbsp;취소</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>

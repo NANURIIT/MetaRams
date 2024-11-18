@@ -1,0 +1,2501 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB08031S.js}"></script>
+	<script th:src="@{js/business/tb/TB08032P.js}"></script>
+	<!-- <script th:src="@{js/business/popup/AS02020P.js}"></script> -->
+	<script th:src="@{js/business/tb/TB03031P.js}"></script>
+	<script th:src="@{js/business/popup/AS03210P.js}"></script>
+	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+	<!-- <script th:src="@{js/business/popup/AC01120P.js}"></script> -->
+	<script th:src="@{js/business/tb/TB11111S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<!-- <th:block th:replace="business/popup/AS02020P :: AS02020P"></th:block> -->
+	<th:block th:replace="business/tb/TB08032P :: TB08032P"></th:block>
+	<th:block th:replace="business/tb/TB03031P :: TB03031P"></th:block>
+	<th:block th:replace="business/popup/AS03210P :: AS03210P"></th:block>
+	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<!-- <th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block> -->
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 부동산 PF사업정보 등록 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- 조회조건영역 -->
+				<div class="ibox-content mb-1">
+					<!-- 기본항목 st-->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>기본항목</h5>
+						</div>
+						<div class="ibox-content text-right">
+							<div class="form-group row">
+								<label class="col-sm-1 col-form-label">&nbsp;<span class="req"></span>Deal번호</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB08031S_ibDealNo" readonly>
+										<span class="input-group-append">
+											<button type="button" id="open_modal_AS02020P" class="btn btn-default" onclick="callTB03021P('TB08031S');"><i class="fa fa-search"></i></button>
+										</span>
+									</div>
+								</div>
+								<label class="col-sm-1 col-form-label">법인등록번호</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="TB08031S_corpNo" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label">업체명</label>
+								<div class="col-sm-2 text-left">
+									<input type="text" class="form-control" id="TB08031S_corpNm" readonly>
+								</div>
+								<div class="col-sm-1">
+									<button class="btn btn-primary" onclick="TB08031Sjs.srchBsnsInfo('ibDealNo');">
+										<i class="fa fa-search"></i>&nbsp;조회
+									</button>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-1 col-form-label">사업명</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="TB08031S_bsnsNm" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label">신용평가모형</label>
+								<div class="col-sm-3">
+									<select class="form-control" id="TB08031S_crdtAsmtModel" disabled>
+										<option>전체</option>
+									</select>
+								</div>
+								<label class="col-sm-1 col-form-label">신용등급</label>
+								<div class="col-sm-2 text-left">
+									<select class="form-control" id="TB08031S_C012" disabled></select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-1 col-form-label">사업 대출잔액</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="TB08031S_bsnsLoan" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label">평가유효기일</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="TB08031S_coValDt" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label">최종수정일자</label>
+								<div class="col-sm-2 text-left">
+									<input type="text" class="form-control" id="TB08031S_fnMdfyDt" readonly>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 기본항목 ed -->
+
+					<!-- 사업기본정보 st -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>▶&nbsp;사업 기본정보</h5>
+						</div>
+						<div class="ibox-content text-right">
+							<div class="form-group row mb-1">
+								<label class="col-sm-1 col-form-label"><span class="req"></span>사업구분</label>
+								<div class="col-sm-3">
+									<select class="col-sm-12 form-control" id="TB08031S_invbnkAmnBzCd">
+										<option></option>
+									</select>
+								</div>
+								<label class="col-sm-1 col-form-label">사업구분 상세</label>
+								<div class="col-sm-3">
+									<select class="col-sm-12 form-control" id="TB08031S_I021">
+										<option>전체</option>
+									</select>
+								</div>
+								<label class="col-sm-1 col-form-label">진행상태</label>
+								<div class="col-sm-3">
+									<select class="col-sm-12 form-control" id="TB08031S_I011">
+										<option></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row mb-1">
+								<label class="col-sm-1 col-form-label">총조달금액</label>
+								<div class="col-sm-3 input-group">
+									<select class="form-control col-sm-3" style="width:70px;" id="TB08031S_I027">
+										<option></option>
+									</select>
+									<input type="text" class="form-control text-right" style="width:30px;" id="TB08031S_prcrAmt">백만원
+								</div>
+								<label class="col-sm-1 col-form-label">주요채권보전</label>
+								<div class="col-sm-3">
+									<input type="text" class="col-sm-12 form-control" id="TB08031S_bondProt">
+								</div>
+								<label class="col-sm-1 col-form-label">검토중단 사유</label>
+								<div class="col-sm-3">
+									<input type="text" class="col-sm-12 form-control" id="TB08031S_rvwStRsn">
+								</div>
+							</div>
+							<div class="form-group row mb-1">
+								<label class="col-sm-1 col-form-label">당사주선구분</label>
+								<div class="col-sm-3">
+									<select class="col-sm-12 form-control" id="TB08031S_T002">
+										<option></option>
+									</select>
+								</div>
+								<label class="col-sm-1 col-form-label">당사주선금액</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="TB08031S_thcoRlAmt">
+								</div>
+								<label class="col-sm-1 col-form-label">당사참여금액</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="TB08031S_thcoPtnAmt">
+								</div>
+							</div>
+							<div class="form-group row mb-1">
+								<label class="col-sm-1 col-form-label">금리구분코드</label>
+								<div class="col-sm-3 form-inline">
+									<select class="col-sm-3 form-control" id="TB08031S_I033">
+										<option></option>
+									</select>
+									<input type="text" class="col-sm-9 form-control border-left-none" id="TB08031S_InvstRvnRtCcdInput">
+								</div>
+								<label class="col-sm-1 col-form-label">기준금리</label>
+								<div class="col-sm-3 form-inline">
+									<select class="col-sm-3 form-control" id="TB08031S_B006">
+										<option></option>
+									</select>
+									<input type="text" class="col-sm-9 form-control border-left-none" id="TB08031S_BitrKindCdInput">
+								</div>
+								<label class="col-sm-1 col-form-label">가산금리(%)</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="TB08031S_preRt">
+								</div>
+							</div>
+							<div class="form-group row mb-1">
+								<label class="col-sm-1 col-form-label">담당자</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB08031S_charge_empNm" name="">
+										<input type="hidden" class="form-control" id="TB08031S_charge_empNo" name="">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03022P('TB08031S_charge')">
+												<i class="fa fa-search"></i>
+											</button>
+										</span>
+									</div>
+								</div>
+								<label class="col-sm-1 col-form-label">업무팀</label>
+								<div class="col-sm-3">
+									<select class="col-sm-12 form-control" id="TB08031S_D010">
+										<option></option>
+									</select>
+								</div>
+								<label class="col-sm-1 col-form-label">목표수익률(%)</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="TB08031S_tgtRvn">
+								</div>
+							</div>
+							<div class="form-group row mb-1">
+								<label class="col-sm-1 col-form-label">사업내용</label>
+								<div class="col-sm-7">
+									<textarea class="form-control" id="bsnsCntnt"></textarea>
+								</div>
+								<label class="col-sm-1 col-form-label">담당RM</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="TB08031S_chargeRm">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 text-right">
+									<button class="btn btn-success" type="button" onclick="callTB03031P('TB08031S');" style="margin-left: 2px; margin-right: 2px;">
+										<i class="fa fa-check"></i>&nbsp;RM활동신규
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 사업기본정보 ed -->
+
+					<!-- 사업기본정보 st -->
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>▶&nbsp;사업 상세정보</h5>
+						</div>
+						<div class="ibox-content">
+							<!-- tab -->
+							<div class="tabs-container">
+								<ul class="nav nav-tabs" role="tablist" id="TB08031S_ramsTab">
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-1">사업정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-2">사업정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-3">사업정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-4">사업정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-5">사업정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-6" onclick="TB08031Sjs.setBsnsPartInfoGrid();">사업참가자정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-7">사업주요전망</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-8">채권보전주요약정</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-9">조건변경이력</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-10">대주단정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-11">수익자정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-12">관련사업정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-13">투자기업목록</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-14">자산운용사정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-15">편입자산정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-16">투자자산계좌(종목)정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-17">첨부파일정보</a></li>
+								</ul>
+								<div class="tab-content">
+									<!-- 사업정보 -->
+									<div role="tabpanel" id="TB08031S_tab-1" class="tab-pane active">
+										<div class="panel-body">
+											<div class="col-sm-12">
+												<div class="form-group form-inline row text-right">
+													<!-- 1row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">보증서담보여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesWarrMrtgY" name="TB08031S_rlesWarrMrtgYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesWarrMrtgN" name="TB08031S_rlesWarrMrtgYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label">시행주체구분</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_C014"></select>
+														</div>
+														<div class="col-sm-4"></div>
+													</div>
+													<!-- 2row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">사업인/허가완료</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesOwnPLcsiCpltY" name="TB08031S_rlesOwnPLcsiCpltYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesOwnPLcsiCpltN" name="TB08031S_rlesOwnPLcsiCpltYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label">토지매입완료여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesLandPchsCpltY" name="TB08031S_rlesLandPchsCpltYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesLandPchsCpltN" name="TB08031S_rlesLandPchsCpltYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label">자금관리대상여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesFndsMngmTrgtY" name="TB08031S_rlesFndsMngmTrgtYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesFndsMngmTrgtN" name="TB08031S_rlesFndsMngmTrgtYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+													</div>
+													<!-- 3row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">착공(예정)년월</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_csstPrarYm">
+														</div>
+														<label class="col-sm-1 col-form-label">준공(예정)년월</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_cnfnPrarYm">
+														</div>
+														<label class="col-sm-1 col-form-label">분양(예정)년월</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_slltPrarYm"> <span
+																class="input-group-append">
+																<button class="btn btn-default">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+													</div>
+													<!-- 4row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">사업장위치</label>
+														<div class="col-sm-7 input-group">
+															<input type="text" class="form-control" id="TB08031S_busiArea">
+														</div>
+														<label class="col-sm-1 col-form-label">사업지역</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_B011"></select>
+														</div>
+													</div>
+													<!-- 5row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">사업부지면적(m²)</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_busiSiteSqms">
+														</div>
+														<label class="col-sm-1 col-form-label">사업부지(평)</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_busiSiteAcre">
+														</div>
+														<label class="col-sm-1 col-form-label">용적률(%)</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_arRt">
+														</div>
+													</div>
+													<!-- 6row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">연면적(m²)</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_Sqms">
+														</div>
+														<label class="col-sm-1 col-form-label">연면적(평)</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_SqmsP">
+														</div>
+														<label class="col-sm-1 col-form-label">건폐율(%)</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_far">
+														</div>
+													</div>
+													<!-- 7row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">기업규모구분</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_B019"></select>
+														</div>
+														<label class="col-sm-1 col-form-label">시설규모</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_fcltScal">
+														</div>
+														<label class="col-sm-1 col-form-label">주거환경</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_resiEco">
+														</div>
+													</div>
+													<!-- 8row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">신용보강</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_C010"></select>
+														</div>
+														<label class="col-sm-1 col-form-label">신용보강금액</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_crdtEhcmntAmt">
+														</div>
+														<label class="col-sm-1 col-form-label">신용보강내용</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_crdtEhcmntCntnt">
+														</div>
+													</div>
+													<!-- 9row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">상업운전일</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="rles_datepicker1">
+															<span class="input-group-append">
+																<button class="btn btn-default">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+														<label class="col-sm-1 col-form-label">사용승인여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesUseAppY" name="rlesUseAppYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesUseAppN" name="rlesUseAppYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label">차주 SPC 여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesSpcY" name="rlesSpcYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesSpcN" name="rlesSpcYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+													</div>
+													<!-- 10row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">담당자</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_tab1_empNm" disabled>
+															<input type="hidden" class="form-control" id="TB08031S_tab1_empno" disabled>
+															<span class="input-group-append">
+																<button class="btn btn-default" onclick="callTB03022P('TB08031S_tab1')">
+																	<i class="fa fa-search"></i>
+																</button>
+															</span>
+														</div>
+														<label class="col-sm-1 col-form-label">관리사무소</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" disabled>
+															<span class="input-group-append">
+																<button class="btn btn-default" onclick="callTB08032P('TB08031S_tab1');">
+																	<i class="fa fa-search"></i>
+																</button>
+															</span>
+														</div>
+														<div class="col-sm-4"></div>
+													</div>
+													<!-- 11row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">관리조건이행</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_rlesCondComply" disabled></select>
+														</div>
+														<label class="col-sm-1 col-form-label"></label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesCondComplyY" name="rlesCondComplyYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesCondComplyN" name="rlesCondComplyYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<div class="col-sm-2 text-left">
+															<button class="btn btn-default btn-xs">
+																<i class="fa fa-arrow-right m-1"></i>| 관리조건
+															</button>
+														</div>
+														<div class="col-sm-1"></div>
+													</div>
+													<!-- 12row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">채권이관여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesBondTrnY" name="rlesBondTrnYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesBondTrnN" name="rlesBondTrnYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label ls-6">주요(재무)약정사항</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesCmmntMatY" name="rlesCmmntMatYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesCmmntMatN" name="rlesCmmntMatYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<div class="col-sm-2 text-left">
+															<button class="btn btn-default  btn-xs">
+																<i class="fa fa-arrow-right m-1"></i>| 주요(재무)약정사항
+															</button>
+														</div>
+													</div>
+													<!-- 13row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">업체담당연락처</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_rlesEmpPhNo">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 사업정보 END -->
+									
+									<!-- 2 -->
+									<div role="tabpanel" id="TB08031S_tab-2" class="tab-pane">
+										<div class="panel-body">
+											<div class="col-sm-12">
+												<div class="form-group form-inline row text-right">
+													<!-- 1row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">투자가이드라인</label>
+														<div class="col-sm-11 input-group">
+															<textarea class="form-control" id="TB08031S_invstGuidelines"></textarea>
+														</div>
+													</div>
+													<!-- 2row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">담당자</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" style="width:30px;" id="TB08031S_tab2_empNm">
+															<input type="hidden" class="form-control" style="width:30px;" id="TB08031S_tab2_empNo">
+															<span class="input-group-append">
+																<button type="button" class="btn btn-default" onclick="callTB03022P('TB08031S_tab2')"><i class="fa fa-search"></i></button>
+															</span>
+														</div>
+														<label class="col-sm-1 col-form-label">관리사무소</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" style="width:30px;">
+															<span class="input-group-append">
+																<button type="button" class="btn btn-default" onclick="callTB08032P('TB08031S_tab2');"><i class="fa fa-search"></i></button>
+															</span>
+														</div>
+													</div>
+													<!-- 3row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">관리조건이행</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_pefVcInvstMng" disabled></select>
+														</div>
+														<label class="col-sm-1 col-form-label"></label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_pefVcInvstMngY" name="pefVcInvstMngYN" >
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_pefVcInvstMngN" name="pefVcInvstMngYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<div class="col-sm-2 text-left">
+															<button class="btn btn-default">
+																<i class="fa fa-arrow-right m-1"></i>| 관리조건
+															</button>
+														</div>
+													</div>
+													<!-- 4row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">채권이관여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_pefVcBondTrnY" name="TB08031S_pefVcBondTrnYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_pefVcBondTrnN" name="TB08031S_pefVcBondTrnYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+													</div>
+													<!-- 5row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">업체담당연락처</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_pefVcEmpPhNo" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="11">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 2 END -->
+									
+									<!-- 3 -->
+									<div role="tabpanel" id="TB08031S_tab-3" class="tab-pane">
+										<div class="panel-body">
+											<div class="col-sm-12">
+												<div class="form-group form-inline row text-right">
+													<!-- 1row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">사업방식</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_B013"></select>
+														</div>
+														<label class="col-sm-1 col-form-label">사업규모</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_bsnsScal">
+													    </div>
+													</div>
+													<!-- 2row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">사업인허가년월</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_bsnsLicYm">
+													    </div>
+														<label class="col-sm-1 col-form-label">준공(예정)년월</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_cmplYm">
+													    </div>
+													    <label class="col-sm-1 col-form-label">주무관청</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_leadAgency">
+													    </div>
+													</div>
+													<!-- 3row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">건설시작년월</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_conStYm">
+													    </div>
+														<label class="col-sm-1 col-form-label">건설종료년월</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_conEndYm">
+													    </div>
+													    <label class="col-sm-1 col-form-label">건설기간</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control text-right" id="TB08031S_conDur">
+															<button type="button" class="btn btn-default mg-l5">계산</button>
+														</div>
+													</div>
+													<!-- 4row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">운영시작년월</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_opDurStYm">
+													    </div>
+														<label class="col-sm-1 col-form-label">운영종료년월</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_opDurEndYm">
+													    </div>
+													    <label class="col-sm-1 col-form-label">운영기간</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control text-right" id="TB08031S_opDur">
+															<button type="button" class="btn btn-default mg-l5">계산</button>
+														</div>
+													</div>
+													<!-- 5row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">사업장위치</label>
+														<div class="col-sm-7 input-group">
+													        <input type="text" class="form-control" id="TB08031S_bsnsLoc">
+													    </div>
+														<label class="col-sm-1 col-form-label">SE한도대상여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+						                                       	<input type="radio" value="Y" id="TB08031S_infraSeLmtY" name="infraSeLmtYN">
+						                                        <label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_infraSeLmtN" name="infraSeLmtYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+													</div>
+													<!-- 6row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">총투자비</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_invstAmt">
+													    </div>
+														<label class="col-sm-1 col-form-label">사업지역</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_invstBsnsLoc">
+													    </div>
+													    <label class="col-sm-1 col-form-label">사업수주구분</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_B012"></select>
+														</div>
+													</div>
+													<!-- 7row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">자기자본</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_equity">
+													    </div>
+														<label class="col-sm-1 col-form-label">선순위대출</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_priLoan">
+													    </div>
+													    <label class="col-sm-1 col-form-label">후순위대출</label>
+														<div class="col-sm-3 input-group">
+												       		<input type="text" class="form-control" id="TB08031S_subLoan">
+														</div>
+													</div>
+													<!-- 8row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">상업운전일</label>
+														<div class="col-sm-3 input-group date">
+															<input type="text" class="form-control" id="infra_datepicker1" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+															<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+														</div>
+														<label class="col-sm-1 col-form-label">사용승인여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_infraUseApvlY" name="infraUseApvlYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_infraUseApvlN" name="infraUseApvlYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+													    <label class="col-sm-1 col-form-label">차주 SPC 여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_infraSpcY" name="infraSpcYN" >
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_infraSpcN" name="infraSpcYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+													</div>
+													<!-- 9row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">담당자</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" style="width:30px;" id="TB08031S_tab3_empNm">
+															<input type="hidden" class="form-control" style="width:30px;" id="TB08031S_tab3_empno">
+															<span class="input-group-append">
+																<button type="button" class="btn btn-default"><i class="fa fa-search" onclick="callTB03022P('TB08031S_tab3')"></i></button>
+															</span>
+														</div>
+														<label class="col-sm-1 col-form-label">관리사무소</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" style="width:30px;" id="TB08031S_mgmtOfc">
+															<span class="input-group-append">
+																<button type="button" class="btn btn-default" onclick="callTB08032P('TB08031S_tab3');"><i class="fa fa-search"></i></button>
+															</span>
+														</div>
+													</div>
+													<!-- 10row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">관리조건이행</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_infraCondComply" disabled></select>
+														</div>
+														<label class="col-sm-1 col-form-label"></label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+						                                       	<input type="radio" value="Y" id="TB08031S_infraCondComplyY" name="condComplyYN">
+						                                        <label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_infraCondComplyN" name="condComplyYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<div class="col-sm-2 text-left">
+															<button class="btn btn-default">
+																<i class="fa fa-arrow-right m-1"></i>| 관리조건
+															</button>
+														</div>
+														<div class="col-sm-1"></div>
+													</div>
+													<!-- 11row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">채권이관여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_infraBondTraY" name="infraBondTraYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_infraBondTraN" name="infraBondTraYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label ls-6">주요(재무)약정사항</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_infraCmmntMatY" name="infraCmmntMatYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_infraCmmntMatN" name="infraCmmntMatYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<div class="col-sm-2 text-left">
+															<button class="btn btn-default">
+																<i class="fa fa-arrow-right m-1"></i>| 주요(재무)약정사항
+															</button>
+														</div>
+													</div>
+													<!-- 12row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">업체담당연락처</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_infraEmpPhNo">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 3 END -->
+									
+									<!-- 4 -->
+									<div role="tabpanel" id="TB08031S_tab-4" class="tab-pane">
+										<div class="panel-body">
+											<div class="col-sm-12">
+												<div class="form-group form-inline row text-right">
+													<!-- 1row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">상환방식</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_U002"></select>
+														</div>
+														<label class="col-sm-1 col-form-label">인수사업구분</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_U001"></select>
+														</div>
+													</div>
+													<!-- 2row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">RCF 포함 여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rcfInclY" name="rcfInclYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rcfInclN" name="rcfInclYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label">차주 SPC 여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_maEstateSpcY" name="maEstateSpcYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_maEstateSpcN" name="maEstateSpcYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+													    <label class="col-sm-1 col-form-label">스폰서</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_spon">
+													    </div>
+													</div>
+													<!-- 3row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">본부관리담당자</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" style="width:30px;" id="TB08031S_tab4_empNm">
+															<input type="hidden" class="form-control" style="width:30px;" id="TB08031S_tab4_empno">
+															<span class="input-group-append">
+																<button type="button" class="btn btn-default" onclick="callTB03022P('TB08031S_tab4')"><i class="fa fa-search"></i></button>
+															</span>
+														</div>
+														<label class="col-sm-1 col-form-label">관리사무소</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" style="width:30px;" id="TB08031S_">
+															<span class="input-group-append">
+																<button type="button" class="btn btn-default" onclick="callTB08032P('TB08031S_tab4');"><i class="fa fa-search"></i></button>
+															</span>
+														</div>
+														<label class="col-sm-1 col-form-label">영업점관리담당자</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" style="width:30px;" id="TB08031S_biz_empNm">
+															<input type="hidden" class="form-control" style="width:30px;" id="TB08031S_biz_empno">
+															<span class="input-group-append">
+																<button type="button" class="btn btn-default" onclick="callTB03022P('TB08031S_biz')"><i class="fa fa-search"></i></button>
+															</span>
+														</div>
+													</div>
+													<!-- 4row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">관리조건이행</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_maEstateCondComply" disabled></select>
+														</div>
+														<label class="col-sm-1 col-form-label"></label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_maEstateCondComplyY" name="maEstateCondComplyYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_maEstateCondComplyN" name="maEstateCondComplyYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<div class="col-sm-2 text-left">
+															<button class="btn btn-default">
+																<i class="fa fa-arrow-right m-1"></i>| 관리조건
+															</button>
+														</div>
+														<div class="col-sm-1"></div>
+													</div>
+													<!-- 5row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">채권이관여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_maEstateBondTrnY" name="maEstateBondTrnYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_maEstateBondTrnN" name="maEstateBondTrnYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label ls-6">주요(재무)약정사항</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_maEstateCmmntMatY" name="maEstateCmmntMatYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_maEstateCmmntMatN" name="maEstateCmmntMatYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<div class="col-sm-2 text-left">
+															<button class="btn btn-default">
+																<i class="fa fa-arrow-right m-1"></i>| 주요(재무)약정사항
+															</button>
+														</div>
+													</div>
+													<!-- 6row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">업체담당연락처</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_maEmpPhNo">
+														</div>
+													</div>
+													<!-- 7row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">담보</label>
+														<div class="col-sm-11 input-group">
+															<textarea class="form-control" id="TB08031S_mrtg"></textarea>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-12">
+												<div class="ibox">
+													<div class="ibox-title">
+														<h5>▶&nbsp;인수대상 기업정보</h5>
+														<div class="ibox-tools">
+															<button class="btn btn-default btn-xs" type="button"
+																onclick="functionExportExcel();">
+																<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+															</button>
+															<button class="btn btn-default btn-xs" type="button" onclick="addMenuRow('#TB08031S_udwrtPaiBzscalInfo');">
+																<i class="fa fa-plus"></i>&nbsp;행추가
+															</button>
+															<button class="btn btn-default btn-xs" type="button" onclick="">
+																<i class="fa fa-minus"></i>&nbsp;행삭제
+															</button>
+														</div>
+													</div>
+													<div class="ibox-content">
+														<table class="table table-bordered table-hover result" id="">
+															<colgroup>
+																<col>
+																<col>
+																<col>
+																<col>
+																<col>
+																<col>
+																<col>
+															</colgroup>
+															<thead>
+																<tr>
+																	<th class="table-check-pd0"><input type="checkbox" id="MMBRChk"></th>
+																	<th>NO</th>
+																	<th>사업자등록번호</th>
+																	<th>기업명</th>
+																	<th>총주식수</th>
+																	<th>주식상장여부</th>
+																	<th>경영권여부</th>
+																</tr>
+															</thead>
+															<tbody id="TB08031S_udwrtPaiBzscalInfo">
+																 <tr>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																</tr> 
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 4 END -->
+									
+									<!-- 5 -->
+									<div role="tabpanel" id="TB08031S_tab-5" class="tab-pane">
+										<div class="panel-body">
+											<div class="col-sm-12">
+												<div class="form-group form-inline row text-right">
+													<!-- 1row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">대상자산</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_T005"></select>
+															<input type="text" class="form-control" id="TB08031S_trgtAstsNm">
+														</div>
+														<label class="col-sm-1 col-form-label">차주국가명</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_brwrNtnNm">
+													    </div>
+													</div>
+													<!-- 2row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">총사업비</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_totBusiAmt">
+													    </div>
+														<label class="col-sm-1 col-form-label">소재국</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_hostCountry">
+													    </div>
+													    <label class="col-sm-1 col-form-label ls-6">보증여부/보증기관</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_ensrYn">
+													    </div>
+													</div>
+													<!-- 3row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">선순위비율(%)</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_prorRto">
+													    </div>
+														<label class="col-sm-1 col-form-label">중순위비율(%)</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_cerkRto">
+													    </div>
+													    <label class="col-sm-1 col-form-label">후순위/Equity비율(%)</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_bkbnRto">
+													    </div>
+													</div>
+													<!-- 4row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">리스시작년월</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_lseStrtYm">
+													    </div>
+														<label class="col-sm-1 col-form-label">리스종료년월</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_lseEdYm">
+													    </div>
+													    <label class="col-sm-1 col-form-label">리스기간</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control text-right" id="TB08031S_lsePrd">
+															<button type="button" class="btn btn-default mg-l5">계산</button>
+														</div>
+													</div>
+													<!-- 5row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">대출시작일자</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_loanStrtDt">
+													    </div>
+														<label class="col-sm-1 col-form-label">대출종료년월</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_loanEdYm">
+													    </div>
+													    <label class="col-sm-1 col-form-label">대출기간</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control text-right" id="TB08031S_loanPrd">
+															<button type="button" class="btn btn-default mg-l5">계산</button>
+														</div>
+													</div>
+													<!-- 6row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">기종/선종</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_amSt">
+													    </div>
+														<label class="col-sm-1 col-form-label">제작사</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_proEprz">
+													    </div>
+													    <label class="col-sm-1 col-form-label">제조년도</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_proYr">
+													    </div>
+													</div>
+													<!-- 7row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">리스종류</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_L006"></select>
+														</div>
+														<label class="col-sm-1 col-form-label">리스운용사</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_lseMgco">
+													    </div>
+													    <label class="col-sm-1 col-form-label">리스이용자</label>
+														<div class="col-sm-3 input-group">
+													        <input type="text" class="form-control" id="TB08031S_lseUser">
+													    </div>
+													</div>
+													<!-- 8row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">담당자</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" style="width:30px;" id="TB08031S_tab5_empNm">
+															<input type="hidden" class="form-control" style="width:30px;" id="TB08031S_tab5_empno">
+															<span class="input-group-append">
+																<button type="button" class="btn btn-default"><i class="fa fa-search" onclick="callTB03022P('TB08031S_tab5')"></i></button>
+															</span>
+														</div>
+														<label class="col-sm-1 col-form-label">차주 SPC 여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_realEstateSpcY" name="realEstateSpcYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_realEstateSpcN" name="realEstateSpcYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+													</div>
+													<!-- 9row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">관리조건이행</label>
+														<div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_realEstateCondComply" disabled></select>
+														</div>
+														<label class="col-sm-1 col-form-label"></label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_realEstateCondComplyY" name="realEstateCondComplyYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_realEstateCondComplyN" name="realEstateCondComplyYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<div class="col-sm-2 text-left">
+															<button class="btn btn-default">
+																<i class="fa fa-arrow-right m-1"></i>| 관리조건
+															</button>
+														</div>
+														<div class="col-sm-1"></div>
+													</div>
+													<!-- 10row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">채권이관여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_realEstateBondTrnY" name="realEstateBondTrnYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_realEstateBondTrnN" name="realEstateBondTrnYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label ls-6">주요(재무)약정사항</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_realEstateCmmntMatY" name="realEstateCmmntMatYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_realEstateCmmntMatN" name="realEstateCmmntMatYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<div class="col-sm-2 text-left">
+															<button class="btn btn-default">
+																<i class="fa fa-arrow-right m-1"></i>| 주요(재무)약정사항
+															</button>
+														</div>
+													</div>
+													<!-- 11row -->
+													<div class="form-group col-sm-12 mb-1">
+														<label class="col-sm-1 col-form-label">업체담당연락처</label>
+														<div class="col-sm-3 input-group">
+															<input type="text" class="form-control" id="TB08031S_realEstateEmpPhNo">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 5 END -->
+									
+									<!-- 사업참가자정보 -->
+									<div role="tabpanel" id="TB08031S_tab-6" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;사업참가자정보</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.addMenuRowBsnsPartInfo();">
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.delMenuRowBsnsPartInfo();">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<!-- <table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col style="width: 5%;">
+																	<col style="width: 15%;">
+																	<col style="width: 30%;">
+																	<col style="width: 15%;">
+																	<col style="width: 15%;">
+																	<col style="width: 15%;">
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>NO</th>
+																		<th>참가자관계</th>
+																		<th>업체명</th>
+																		<th>대표자명</th>
+																		<th>법인등록번호</th>
+																		<th>사업자등록번호</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_bsnsPartInfo">
+																</tbody>
+															</table> -->
+															<div id="TB08031S_bsnsPartInfo"></div>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;사업참가자상세</h5>
+														</div>
+														<div class="ibox-content text-right">
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">참가자관계</label>
+																<div class="col-sm-3">
+																	<select class="form-control" id="TB08031S_P001">
+																	</select>
+																</div>
+																<label class="col-sm-1 col-form-label">업체명</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_partCorpNm" oninput="">
+																</div>
+															</div>
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">법인등록번호</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_dtlsCorpNo" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="13" onkeyup="">
+																</div>
+																<label class="col-sm-1 col-form-label">사업자등록번호</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_bsnsRgstNo" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="10" onkeyup="">
+																</div>
+																<label class="col-sm-1 col-form-label">대표자명</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_rprstPNm">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+												<!-- <button class="btn btn-default" type="button" onclick="tab3BtnReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+												<button class="btn btn-danger"  type="button" onclick="tab3BtnDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button> -->
+													<button class="btn btn-success" type="button" onclick="TB08031Sjs.bsnsPartInfoBtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 사업참가자정보 END -->
+									
+									<!-- 사업주요전망 -->
+									<div role="tabpanel" id="TB08031S_tab-7" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;일정정보</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.addMenuRowBsnsForecast();">
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.delMenuRowBsnsForecast();">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col style="width: 8%;">
+																	<col style="width: 15%;">
+																	<col style="width: 15%;">
+																	<col style="width: 10%;">
+																	<col style="width: 47%;">
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>NO</th>
+																		<th>예정일자</th>
+																		<th>이행일자</th>
+																		<th>이행여부</th>
+																		<th>주요일정내용</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_bsnsForecast">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;일정상세</h5>
+														</div>
+														<div class="ibox-content">
+															<div class="col-sm-10 row">
+																<div class="col-sm-5 text-right">
+																	<div class="form-group row mb-1">
+																		<label class="col-sm-3 col-form-label">예정일자</label>
+																		<div class="col-sm-9 input-group date">
+																			<input type="text" class="form-control" id="TB08031S_exptDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
+																			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																		</div>
+																	</div>
+																	<div class="form-group row mb-1">
+																		<label class="col-sm-3 col-form-label">이행일자</label>
+																		<div class="col-sm-9 input-group date">
+																			<input type="text" class="form-control" id="TB08031S_pfrmDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
+																			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																		</div>
+																	</div>
+																	<div class="form-group row mb-1">
+																		<label class="col-sm-3 col-form-label">이행여부</label>
+
+																		<div class="col-sm-5 input-group input-h">
+																			<div class="col-sm-5 text-left input-group bold">
+																				<input type="radio" value="Y" id="TB08031S_pfrmY" name="pfrmYN" >&nbsp; Y
+																			</div>
+																			<div class="col-sm-5 text-left input-group bold">
+																				<input type="radio" value="N" id="TB08031S_pfrmN" name="pfrmYN">&nbsp; N
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-sm-6">
+																	<div class="form-group row text-right">
+																		<label class="col-sm-3 col-form-label">주요일정내용</label>
+																		<div class="col-sm-9">
+																			<textarea class="form-control" style="height: 115px; width: 611px;" id="TB08031S_mainCntnt"></textarea>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+													<!-- <button class="btn btn-default" type="button" onclick="tab3BtnReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+													<button class="btn btn-danger"  type="button" onclick="tab3BtnDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button> -->
+													<button class="btn btn-success" type="button" onclick="TB08031Sjs.bsnsForecastBtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 사업주요전망 END -->
+									
+									<!-- 채권보전주요약정 -->
+									<div role="tabpanel" id="TB08031S_tab-8" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;채권보전 기본정보</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.addMenuRowBondProtInfo();">
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.delMenuRowBondProtInfo();">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col style="width: 8%;">
+																	<col style="width: 18%;">
+																	<col style="width: 10%;">
+																	<col style="width: 59%;">
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>NO</th>
+																		<th>채권보전구분</th>
+																		<th>이행여부</th>
+																		<th>상세내용</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_bondProtInfo">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;채권보전 상세</h5>
+														</div>
+														<div class="ibox-content">
+															<div class="col-sm-10 row">
+																<div class="col-sm-5 text-right">
+																	<div class="form-group row mb-1">
+																		<label class="col-sm-3 col-form-label">채권보전구분</label>
+																		<div class="col-sm-9">
+																			<select class="form-control" id="TB08031S_B007">
+																			</select>
+																		</div>
+																	</div>
+																	<div class="form-group row">
+																		<label class="col-sm-3 col-form-label">이행여부</label>
+																		<div class="col-sm-5 input-group input-h">
+																			<div class="col-sm-5 text-left input-group bold">
+																				<input type="radio" value="Y" id="TB08031S_bondPfrmY" name="TB08031S_bondPfrmYN">&nbsp; Y
+																			</div>
+																			<div class="col-sm-5 text-left input-group bold">
+																				<input type="radio" value="N" id="TB08031S_bondPfrmN" name="TB08031S_bondPfrmYN">&nbsp; N
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-sm-6">
+																	<div class="form-group row text-right">
+																		<label class="col-sm-3 col-form-label">상세내용</label>
+																		<div class="col-sm-9">
+																			<textarea class="form-control"
+																				style="height: 76px; width: 611px;" id="TB08031S_dtlsCntnt"></textarea>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+													<!-- <button class="btn btn-default" type="button" onclick="tab3BtnReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+								<button class="btn btn-danger"  type="button" onclick="tab3BtnDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button> -->
+													<button class="btn btn-success" type="button" onclick="TB08031Sjs.bondProtInfoBtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 채권보전주요약정 END -->
+									
+									<!-- 조건병력이력 -->
+									<div role="tabpanel" id="TB08031S_tab-9" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;조건변경내역</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.addMenuRowCchInfo();">
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.delMenuRowCchInfo();">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col style="width: 8%;">
+																	<col style="width: 12%;">
+																	<col style="width: 15%;">
+																	<col style="width: 26%;">
+																	<col style="width: 13%;">
+																	<col style="width: 9%;">
+																	<col style="width: 12%;">
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>NO</th>
+																		<th>승인일자</th>
+																		<th>승인문서번호</th>
+																		<th>주요내용</th>
+																		<th>취급자</th>
+																		<th>취급자개인번호</th>
+																		<th>시행일자</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_cchInfo">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;조건변경내역 기본정보</h5>
+														</div>
+														<div class="ibox-content">
+															<div class="col-sm-12 row">
+																<div class="col-sm-12 text-right">
+																	<div class="form-group row">
+																		<label class="col-sm-1 col-form-label">주요내용</label>
+																		<div class="col-sm-7">
+																			<textarea class="form-control" style="height: 76px;" id="TB08031S_cndtMainCntnt"></textarea>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-sm-12 text-right">
+																	<div class="form-group row">
+																		<label class="col-sm-1 col-form-label">승인일자</label>
+																		<div class="col-sm-3 input-group date">
+																			<input type="text" class="form-control" id="TB08031S_rcgDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
+																			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																		</div>
+																		<label class="col-sm-1 col-form-label">시행일자</label>
+																		<div class="col-sm-3 input-group date">
+																			<input type="text" class="form-control" id="TB08031S_cmplDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
+																			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-sm-12 text-right">
+																	<div class="form-group row">
+																		<label class="col-sm-1 col-form-label">취급자개인번호</label>
+																		<div class="col-sm-3">
+																			<!-- <div class="input-group">
+																				<input type="text" class="form-control" id="TB08031S_handlerID" readonly>
+																				<span class="input-group-append">
+																					<button type="button" id="" class="btn btn-default" onclick="">
+																						<i class="fa fa-search"></i>
+																					</button>
+																				</span>
+																			</div> -->
+																			<input type="text" class="form-control" id="TB08031S_handlerID" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="11">
+																		</div>
+																		<label class="col-sm-1 col-form-label">취급자</label>
+																		<div class="col-sm-3">
+																			<div class="input-group">
+																				<!-- <input type="hidden" class="form-control" id="TB08031S_handlerNo"> -->
+																				<!-- <input type="text" class="form-control" id="TB08031S_handlerNm"> -->
+																				<input type="hidden" class="form-control" id="TB08031S_cch_empNo">
+																				<input type="text" class="form-control" id="TB08031S_cch_empNm">
+																				<span class="input-group-append">
+																					<button type="button" id="" class="btn btn-default" onclick="callTB03022P('TB08031S_cch');">
+																						<i class="fa fa-search"></i>
+																					</button>
+																				</span>
+																			</div>
+																		</div>
+																		<label class="col-sm-1 col-form-label">승인문서번호</label>
+																		<div class="col-sm-3">
+																			<input type="text" class="form-control text-right" id="TB08031S_rcgDocNo">
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+													<!-- <button class="btn btn-default" type="button" onclick="tab3BtnReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+													<button class="btn btn-danger"  type="button" onclick="tab3BtnDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button> -->
+													<button class="btn btn-success" type="button" onclick="TB08031Sjs.cchInfoBtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 조건병력이력 END -->
+									
+									<!-- 대주단정보 -->
+									<div role="tabpanel" id="TB08031S_tab-10" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;대주단 정보</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" type="button" onclick="functionExportExcel();">
+																	<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.addMenuRowStlnInfo();">
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.delMenuRowStlnInfo();">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col style="width: 8%;">
+																	<col style="width: 13%;">
+																	<col style="width: 34%;">
+																	<col style="width: 25%;">
+																	<col style="width: 15%;">
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>NO</th>
+																		<th>구분</th>
+																		<th>기관명</th>
+																		<th>약정금액</th>
+																		<th>참가비율(%)</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_stlnInfo">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;대주단 개요</h5>
+														</div>
+														<div class="ibox-content text-right">
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">구분</label>
+																<div class="col-sm-3">
+																	<select class="form-control" id="TB08031S_R021_1">
+																	</select>
+																</div>
+																<label class="col-sm-1 col-form-label">기관명</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control text-right" id="TB08031S_mCorpNm" oninput="">
+																</div>
+															</div>
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">약정금액</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_mAgrAmt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onkeyup="">
+																</div>
+																<label class="col-sm-1 col-form-label">참가비율(%)</label>
+																<div class="col-sm-3">
+																	<!-- <input type="text" class="form-control text-right" id="TB08031S_mPartRt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onchange="inputNumberFormat2(this);" > -->
+																	<input type="text" class="form-control text-right" id="TB08031S_mPartRt" pattern="\d+(\.\d{0,2})?">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+													<button class="btn btn-success" type="button" onclick="TB08031Sjs.stlnInfoBtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 대주단 END -->
+									
+									<!-- 수익자정보 -->
+									<div role="tabpanel" id="TB08031S_tab-11" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;수익자 정보</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" type="button"
+																	onclick="functionExportExcel();">
+																	<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.addMenuRowErnInfo();">
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.delMenuRowErnInfo();">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col style="width: 15%;">
+																	<col style="width: 36%;">
+																	<col style="width: 27%;">
+																	<col style="width: 17%;">
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>구분</th>
+																		<th>기관명</th>
+																		<th>약정금액</th>
+																		<th>참가비율(%)</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_ernInfo">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;수익자 개요</h5>
+														</div>
+														<div class="ibox-content text-right">
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">구분</label>
+																<div class="col-sm-3">
+																	<select class="form-control" id="TB08031S_R021_2">
+																	</select>
+																</div>
+																<label class="col-sm-1 col-form-label">기관명</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_ernCorpNm" oninput="">
+																</div>
+															</div>
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">약정금액</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control text-right" id="TB08031S_ernAgrAmt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onkeyup="">
+																</div>
+																<label class="col-sm-1 col-form-label">참가비율(%)</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control text-right" id="TB08031S_ernPartRt" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" onkeyup="">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+													<button class="btn btn-success" type="button"
+														onclick="TB08031Sjs.ernInfoBtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 수익자정보 END -->
+									
+									<!-- 관련사업정보 -->
+									<div role="tabpanel" id="TB08031S_tab-12" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;관련사업 정보</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" onclick="callTB03021P('TB08031S_relt');">
+																	<i class="fa fa-arrow-right m-1"></i>| 관련사업연결
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="functionExportExcel();">
+																	<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.delMenuRowReltDealInfo();">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>NO</th>
+																		<th>사업관리번호</th>
+																		<th>사업명</th>
+																		<th>총조달금액</th>
+																		<th>당사주선여부</th>
+																		<th>당사참여금액</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_busiInfo">
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+													<button class="btn btn-success" type="button" onclick="TB08031Sjs.reltBusiInfoBtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 관련사업정보 END -->
+									
+									<!-- 투자기업목록 -->
+									<div role="tabpanel" id="TB08031S_tab-13" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;투자기업 목록</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" type="button" onclick="functionExportExcel();">
+																	<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.addMenuRowInvstEprzInfo('#TB08031S_invstBzscalList');">
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.delMenuRowInvstEprzInfo();">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>NO</th>
+																		<th>기준년월</th>
+																		<th>펀드명</th>
+																		<th>법인등록번호</th>
+																		<th>거래상대방명</th>
+																		<th>사업자번호</th>
+																		<th>업종</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_invstBzscalList">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;기본정보</h5>
+														</div>
+														<div id="invstEprzInfo" class="ibox-content text-right">
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">펀드명</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_fndNm" oninput="">
+																</div>
+																<label class="col-sm-1 col-form-label">사업자등록번호</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_bsnmNo" oninput="">
+																</div>
+															</div>
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">거래상대방명</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_bcncNm" oninput="">
+																</div>
+																<label class="col-sm-1 col-form-label">법인등록번호</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_invstBzscalCorpNo" oninput="">
+																</div>
+															</div>
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">업종</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_indTypNm" oninput="">
+																</div>
+																<label class="col-sm-1 col-form-label">소속국가명</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_blgtCntyNm" oninput="">
+																</div>
+																<label class="col-sm-1 col-form-label">기준년월</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_bitrYm" oninput="">
+																</div>
+															</div>
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">펀드구분</label>
+																<div class="col-sm-3">
+																	<select class="col-sm-12 form-control" id="TB08031S_F009">
+																		<option></option>
+																	</select>
+																</div>
+																<label class="col-sm-1 col-form-label">펀드유형상세</label>
+																<div class="col-sm-3">
+																	<select class="col-sm-12 form-control" id="TB08031S_F010">
+																		<option></option>
+																	</select>
+																</div>
+																<label class="col-sm-1 col-form-label">취득일자</label>
+																<div class="col-sm-3 input-group date">
+																	<input type="text" class="form-control" id="invstBzscal_datepicker1" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																</div>
+															</div>
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">취득가액</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control text-right" id="TB08031S_acqstAmt" oninput="">
+																</div>
+																<label class="col-sm-1 col-form-label">장부가액</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control text-right" id="TB08031S_acbkAmt" oninput="">
+																</div>
+															</div>
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">평가금액</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control text-right" id="TB08031S_coAmt" oninput="">
+																</div>
+																<label class="col-sm-1 col-form-label">순내부수익률</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control text-right" id="TB08031S_insRvn" oninput="">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+													<button class="btn btn-success" type="button"
+														onclick="invstEprzInfoBtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 투자기업목록 END -->
+									
+									<!-- 자산운용사정보 -->
+									<div role="tabpanel" id="TB08031S_tab-14" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;자산운용사 정보</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs">
+																	<i class="fa fa-arrow-right m-1"></i>| 자산운용사연결
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="addMenuRow('#TB08031S_asstWrkngInfo');">
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>NO</th>
+																		<th>법인등록번호</th>
+																		<th>사업자번호</th>
+																		<th>운용사명</th>
+																		<th>대표자명</th>
+																		<th>설립일</th>
+																		<th>임직원수</th>
+																		<th>운용인력수</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_asstWrkngInfo">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+													<button class="btn btn-success" type="button" onclick="tab3BtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 자산운용사정보 END -->
+									
+									<!-- 편입자산정보 -->
+									<div role="tabpanel" id="TB08031S_tab-15" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;편입자산 정보</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" type="button" onclick="functionExportExcel();">
+																	<i class="fa fa-file-excel-o"></i>&nbsp;Excel
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.addMenuRowAdmsAsstInfo();">
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="TB08031Sjs.delMenuRowAdmsAsstInfo();">
+																	<i class="fa fa-minus"></i>&nbsp;행삭제
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>투자유형</th>
+																		<th>편입금액</th>
+																		<th>비중</th>
+																		<th>편입자산명</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_admsAsstInfo">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;편입자산 관리</h5>
+														</div>
+														<div class="ibox-content text-right">
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">투자유형</label>
+																<div class="col-sm-3">
+																	<select class="col-sm-12 form-control" id="TB08031S_I038">
+																	</select>
+																</div>
+																<label class="col-sm-1 col-form-label">비중</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control text-right" id="TB08031S_invstWeight" oninput="this.value = this.value.replace(/[^0-9.]/g, '');">
+																</div>
+															</div>
+															<div class="form-group row mb-1">
+																<label class="col-sm-1 col-form-label">편입금액</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control text-right" id="TB08031S_admsAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" onchange="inputNumberFormat2(this);">
+																</div>
+																<label class="col-sm-1 col-form-label">편입자산명</label>
+																<div class="col-sm-3">
+																	<input type="text" class="form-control" id="TB08031S_admsAsstNm" oninput="">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<!-- button -->
+												<div class="col-sm text-right mb-1">
+													<button class="btn btn-success" type="button" onclick="TB08031Sjs.admsAsstInfoBtnSave();">
+														<i class="fa fa-save"></i>&nbsp;저장
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 편입자산정보 END -->
+									
+									<!-- 투자자산계좌(종목)정보 -->
+									<div role="tabpanel" id="TB08031S_tab-16" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;대출계좌</h5>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>계좌번호</th>
+																		<th>대출계정</th>
+																		<!-- <th>대출사업</th>
+																		<th>용도</th> -->
+																		<th>계좌상태</th>
+																		<th>약정금액</th>
+																		<th>대출금액</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_loanBanoInfo">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;수익증권</h5>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>종목코드</th>
+																		<th>종목명(펀드명)</th>
+																		<th>유가증권분류</th>
+																		<th>펀드유형상세</th>
+																		<th>액면(주수)</th>
+																		<th>기말장부단가</th>
+																		<th>취득액</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_ernSctyInfo">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 투자자산계좌(종목)정보 END -->
+									
+									<!-- 첨부파일정보 -->
+									<div role="tabpanel" id="TB08031S_tab-17" class="tab-pane">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox">
+														<div class="ibox-title">
+															<h5>▶&nbsp;편입자산 정보</h5>
+															<div class="ibox-tools">
+																<button class="btn btn-default btn-xs" type="button" onclick="">
+																	첨부파일
+																</button>
+																<button class="btn btn-default btn-xs" type="button" onclick="">
+																	내려받기
+																</button>
+															</div>
+														</div>
+														<div class="ibox-content">
+															<table class="table table-bordered table-hover result" id="">
+																<colgroup>
+																	<col style="width: 5%;">
+																	<col>
+																	<col>
+																	<col>
+																	<col>
+																</colgroup>
+																<thead>
+																	<tr>
+																		<th>선택</th>
+																		<th>사업관리번호</th>
+																		<th>업무명</th>
+																		<th>파일종류</th>
+																		<th>등록일시</th>
+																		<th>담당자</th>
+																		<th>파일명</th>
+																		<th>파일크기(KB)</th>
+																	</tr>
+																</thead>
+																<tbody id="TB08031S_">
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 첨부파일정보 END -->
+									
+									
+								</div>
+							</div>
+						</div>
+						<!-- 투자자산 식별번호 등록 정보 END -->
+					</div>
+					<!-- 조회결과 -->
+					<!-- <div class="ibox">
+						<div class="ibox-title">
+							<h5>▶&nbsp;투자자산 식별번호 등록 정보</h5>
+							<div class="ibox-tools">
+								<button class="btn btn-default btn-xs">
+									<i class="fa fa-arrow-right m-1"></i>| 투자자산연결
+								</button>
+							</div>
+						</div>
+						<div class="ibox-content">
+							<div class="tableFixHeader2">
+								<table class="table result table-bordered">
+									<colgroup>
+										TODO: 그리드의 컬럼사이즈 항목별로 확인
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+										<col style="width: 0;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th>연결구분코드명</th>
+											<th>투자식별번호</th>
+											<th>승인일자</th>
+											<th>승인금액</th>
+											<th>약정일자</th>
+											<th>약정금액</th>
+											<th>총약정금액</th>
+											<th>기업여신상담번호</th>
+											<th>승인문서번호</th>
+											<th>인출기한일자</th>
+											<th>종목명</th>
+											<th>운용사관리번호</th>
+											<th>투자종류코드</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div> -->
+					<div class="ibox form-inline">
+						<!-- 버튼영역 -->
+						<div class="col-sm-6 text-left pd0">
+							<button class="btn btn-success mg-l5" type="button"><i class="fa fa-check"></i>&nbsp;첨부파일</button>
+						</div>
+						<div class="col-sm-6 text-right pd0">
+							<button class="btn btn-warning" type="button" onclick="testAlert('검토를 중단하였습니다.')"><i class="fa fa-minus-square"></i>&nbsp;검토중단</button>
+							<button class="btn btn-success mg-l5" type="button" onclick="testAlert('상환을 완료하였습니다.')"><i class="fa fa-check"></i>&nbsp;상환완료</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 사업 상세정보 ed -->
+
+		</div>
+		<!-- row END -->
+		<div class="text-right">
+			<button class="btn btn-warning mb-1 py-1" onclick="TB08031Sjs.saveTabInfo();">
+				<i class="fa fa-check-square m-1"></i> 등록
+			</button>
+		</div>
+	</div>
+</th:block>
+
+</html>

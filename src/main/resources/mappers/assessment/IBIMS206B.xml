@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS206BMapper">
+    
+    <select id="getSPPIData" parameterType="com.nanuri.rams.business.common.vo.IBIMS206BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS206BVO">
+        SELECT A.NS_FND_CD                              /* 고유자산펀드코드 */
+             , A.NS_PRDT_DCD                            /* 고유자산상품구분코드 */
+             , A.PRDT_CD                                /* 상품코드 */
+             , A.RGST_DT                                /* 등록일자 */
+             , A.RGST_SN                                /* 등록일련번호 */
+             , A.BUSI_MDL_DCD                           /* 사업모형구분코드 */
+             , A.PAI_RDMP_CNCL_CND_XSTC_YN              /* 원리금상환취소조건존재여부 */
+             , A.INTR_RT_CND_INTG_YN                    /* 이자율조건검토여부 */
+             , A.INTR_RT_CND_INTG_YN2                   /* 이자율조건검토여부2 */
+             , A.INTR_RT_CND_INTG_YN3                   /* 이자율조건검토여부3 */
+             , A.INTR_RT_CND_INTG_YN4                   /* 이자율조건검토여부4 */
+             , A.INTR_RT_CND_INTG_YN5                   /* 이자율조건검토여부5 */
+             , A.FINC_CNVS_PSBL_YN                      /* 출자전환가능여부 */
+             , A.FINC_CNVS_PSBL_YN2                     /* 출자전환가능여부2 */
+             , A.EXP_XTNS_CND_IVTG_YN                   /* 만기연장조건검토여부 */
+             , A.EXP_XTNS_CND_IVTG_YN2                  /* 만기연장조건검토여부2 */
+             , A.ELPD_FDMP_CND_IVTG_YN                  /* 조기상환조건검토여부 */
+             , A.SOBN_IVTG_YN                           /* 후순위채권검토여부 */
+             , A.SOBN_IVTG_YN2                          /* 후순위채권검토여부2 */
+             , A.SOBN_IVTG_YN3                          /* 후순위채권검토여부3 */
+             , A.SPC_INV_IVTG_YN                        /* SPC투자검토여부 */
+             , A.TNCH_STD_IVTG_YN                       /* TRANCHE구조검토여부 */
+             , A.TNCH_STD_IVTG_YN2                      /* TRANCHE구조검토여부2 */
+             , A.SPPI_SFC_YN                            /* SPPI충족여부 */
+             , A.APVL_YN                                /* 승인여부 */
+             , A.APVL_DT                                /* 승인일자 */
+             , A.GBCK_DT                                /* 반려일자 */
+             , A.CNCL_YN                                /* 취소여부 */
+             , A.HND_DETL_DTM                           /* 조작상세일시 */
+             , A.HND_EMPNO                              /* 조작사원번호 */
+             , A.HND_TMNL_NO                            /* 조작단말기번호 */
+             , A.HND_TR_ID                              /* 조작거래ID */
+             , A.GUID                                   /* GUID */
+          FROM IBIMS206B A
+         WHERE 1=1
+           AND A.PRDT_CD = #{prdtCd}
+           AND A.NS_FND_CD = #{nsFndCd}
+           AND A.NS_PRDT_DCD = #{nsPrdtDcd}
+           AND ROWNUM = 1
+    </select>
+
+    <insert id="insertSPPIData" parameterType="com.nanuri.rams.business.common.vo.IBIMS206BVO">
+        INSERT INTO IBIMS206B
+            (
+                RGST_DT
+              , NS_FND_CD
+              , NS_PRDT_DCD
+              , PRDT_CD
+              , RGST_SN
+              , BUSI_MDL_DCD
+              , PAI_RDMP_CNCL_CND_XSTC_YN
+              , INTR_RT_CND_INTG_YN
+              , INTR_RT_CND_INTG_YN2
+              , INTR_RT_CND_INTG_YN3
+              , INTR_RT_CND_INTG_YN4
+              , INTR_RT_CND_INTG_YN5
+              , FINC_CNVS_PSBL_YN
+              , FINC_CNVS_PSBL_YN2
+              , EXP_XTNS_CND_IVTG_YN
+              , EXP_XTNS_CND_IVTG_YN2
+              , ELPD_FDMP_CND_IVTG_YN
+              , SOBN_IVTG_YN
+              , SOBN_IVTG_YN2
+              , SOBN_IVTG_YN3
+              , SPC_INV_IVTG_YN
+              , TNCH_STD_IVTG_YN
+              , TNCH_STD_IVTG_YN2
+              , SPPI_SFC_YN
+              , APVL_YN
+              , APVL_DT
+              , GBCK_DT
+              , CNCL_YN
+              , HND_DETL_DTM
+              , HND_EMPNO
+              , HND_TMNL_NO
+              , HND_TR_ID
+              , GUID
+            )
+        VALUES
+            (
+                TO_CHAR(SYSDATE, 'YYYYMMDD')
+              , #{nsFndCd}
+              , #{nsPrdtDcd}
+              , #{prdtCd}
+              , '1'
+              , #{busiMdlDcd}
+              , #{paiRdmpCnclCndXstcYn}
+              , #{intrRtCndIntgYn}
+              , #{intrRtCndIntgYn2}
+              , #{intrRtCndIntgYn3}
+              , #{intrRtCndIntgYn4}
+              , #{intrRtCndIntgYn5}
+              , #{fincCnvsPsblYn}
+              , #{fincCnvsPsblYn2}
+              , #{expXtnsCndIvtgYn}
+              , #{expXtnsCndIvtgYn2}
+              , #{elpdFdmpCndIvtgYn}
+              , #{sobnIvtgYn}
+              , #{sobnIvtgYn2}
+              , #{sobnIvtgYn3}
+              , #{spcInvIvtgYn}
+              , #{tnchStdIvtgYn}
+              , #{tnchStdIvtgYn2}
+              , #{sppiSfcYn}
+              , #{apvlYn}
+              , #{apvlDt}
+              , #{gbckDt}
+              , #{cnclYn}
+              , SYSDATE
+              , #{hndEmpno}
+              , #{hndTmnlNo}
+              , #{hndTrId}
+              , #{guid}
+            )
+    </insert>
+
+    <update id="updateSPPIData" parameterType="com.nanuri.rams.business.common.vo.IBIMS206BVO">
+        UPDATE IBIMS206B
+           SET RGST_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+             , NS_FND_CD = #{nsFndCd}
+             , NS_PRDT_DCD = #{nsPrdtDcd}
+             , PRDT_CD = #{prdtCd}
+             , RGST_SN = ((
+                            SELECT MAX(RGST_SN)
+                              FROM IBIMS206B
+                             WHERE 1=1 
+                               AND A.PRDT_CD = #{prdtCd}
+                               AND A.NS_FND_CD = #{nsFndCd}
+                               AND A.NS_PRDT_DCD = #{nsPrdtDcd} 
+                          ) + 1)
+             , BUSI_MDL_DCD = #{busiMdlDcd}
+             , PAI_RDMP_CNCL_CND_XSTC_YN = #{paiRdmpCnclCndXstcYn}
+             , INTR_RT_CND_INTG_YN = #{intrRtCndIntgYn}
+             , INTR_RT_CND_INTG_YN2 = #{intrRtCndIntgYn2}
+             , INTR_RT_CND_INTG_YN3 = #{intrRtCndIntgYn3}
+             , INTR_RT_CND_INTG_YN4 = #{intrRtCndIntgYn4}
+             , INTR_RT_CND_INTG_YN5 = #{intrRtCndIntgYn5}
+             , FINC_CNVS_PSBL_YN = #{fincCnvsPsblYn}
+             , FINC_CNVS_PSBL_YN2 = #{fincCnvsPsblYn2}
+             , EXP_XTNS_CND_IVTG_YN = #{expXtnsCndIvtgYn}
+             , EXP_XTNS_CND_IVTG_YN2 = #{expXtnsCndIvtgYn2}
+             , ELPD_FDMP_CND_IVTG_YN = #{elpdFdmpCndIvtgYn}
+             , SOBN_IVTG_YN = #{sobnIvtgYn}
+             , SOBN_IVTG_YN2 = #{sobnIvtgYn2}
+             , SOBN_IVTG_YN3 = #{sobnIvtgYn3}
+             , SPC_INV_IVTG_YN = #{spcInvIvtgYn}
+             , TNCH_STD_IVTG_YN = #{tnchStdIvtgYn}
+             , TNCH_STD_IVTG_YN2 = #{tnchStdIvtgYn2}
+             , SPPI_SFC_YN = #{sppiSfcYn}
+             , APVL_YN = #{apvlYn}
+             , APVL_DT = #{apvlDt}
+             , GBCK_DT = #{gbckDt}
+             , CNCL_YN = #{cnclYn}
+             , HND_DETL_DTM = SYSDATE
+             , HND_EMPNO = #{hndEmpno}
+             , HND_TMNL_NO = #{hndTmnlNo}
+             , HND_TR_ID = #{hndTrId}
+             , GUID = #{guid}
+         WHERE 1=1
+           AND A.PRDT_CD = #{prdtCd}
+           AND A.NS_FND_CD = #{nsFndCd}
+           AND A.NS_PRDT_DCD = #{nsPrdtDcd}
+    </update>
+
+</mapper>

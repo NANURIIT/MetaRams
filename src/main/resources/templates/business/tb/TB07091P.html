@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB07091P">
+	<!-- modal -->
+	<div id="modal-TB07091P" class="modal fade" role="dialog" aria-labelledby="lb-TB07091P" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">입금내역조회</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB07091P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="" id="" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox mb-0">
+								<!-- 조회조건영역 -->
+				    			<div class="ibox-content i-filter text-right">
+				    				<form method="get">
+				    					<div class="form-group row">
+											<!-- 입금일자 -->
+											<label class="col-sm-1 col-form-label">
+												입금일자
+											</label>
+											<div class="col-sm-3 input-group">
+												<div class="col-sm-5 input-group date px-0">
+													<input type="text" class="form-control" id="" name="" value="" readonly>
+													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												</div>
+												<span class="input-group-addon border-none"> ~ </span>
+												<div class="col-sm-5 input-group date px-0">
+													<input type="text" class="form-control" id="" name="" value="" readonly>
+													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												</div>
+											</div>
+											<!-- 상환대상 -->
+											<label class="col-sm-1 col-form-label">
+												상환대상
+											</label>
+											<div class="col-sm-1-5 input-group">
+												<select class="form-control" id="">
+													<option value="">전체</option>
+													<option value=""></option>
+												</select>
+											</div>
+											<!-- 종목코드 -->
+											<label class="col-sm-1 col-form-label">
+												종목코드
+											</label>
+											<div class="col-sm-2-5">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07091P_prdtCd">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="callTB06011P('TB07091P');"><i class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" id="TB07091P_prdtNm" readonly="">
+												</div>
+											</div>
+											<!-- 버튼영역 -->
+											<div class="col-sm-2 text-right">
+												<button class="btn btn-primary" onclick="">
+													<i class="fa fa-search"></i>&nbsp;조회</button>
+												<button class="btn btn-default" onclick="">
+													<i class="fa fa-undo"></i>&nbsp;초기화</button>
+											</div>
+										</div>
+				    				</form>
+				    			</div>
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+									<div id="TB07091P_colModel"></div>
+				    				<!-- <div>
+										<table class="table result table-bordered footable">
+											<colgroup>
+												<col>
+												<col>
+												<col>
+												<col>
+												<col>
+												<col>
+												<col>
+												<col>
+												<col>
+												<col>
+												<col>
+												<col>
+											</colgroup>
+											<thead>
+												<tr> 
+													<th>입금일자</th>
+													<th>종목코드</th>
+													<th>관리부서</th>
+													<th>자금구분</th>
+													<th>상환대상</th>
+													<th>입금금액</th>
+													<th>집금은행</th>
+													<th>집금모계좌번호</th>
+													<th>연계계좌번호</th>
+													<th>연계계좌거래번호</th>
+													<th>초과납인처리구분</th>
+													<th>초과납인금액</th>
+												</tr>
+											</thead>
+											<tbody id="">
+												<tr class="text-center">
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td class="text-right"></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td class="text-right"></td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div> -->
+									
+									<div class="row mt-2">
+										<div class="col-sm-12 text-right">
+										<button class="btn btn-success" onclick=""><i class="fa fa-check"></i>&nbsp;실행</button>
+										</div>
+									</div>
+				    			</div>
+							</div><!-- ibox -->
+							
+						</div>
+					</div>
+				</div>
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

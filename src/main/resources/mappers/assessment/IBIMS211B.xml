@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS211BMapper">
+
+	<select id="getMrtgInfo" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO" resultType="com.nanuri.rams.business.common.vo.TB06013PVO">
+		SELECT MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
+             , INV_JDGM_DEAL_NO                                  <!-- 투자심사딜번호 -->
+             , MRTG_NM                                           <!-- 담보명 -->
+             , MRTG_LCLS_CD                                      <!-- 담보대분류코드 -->
+             , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'M008'
+                    AND CD_VL_ID = MRTG_LCLS_CD
+               ) AS MRTG_LCLS_NM         					 	 <!-- 담보대분류코드명 -->
+             , MRTG_MDCL_CD                                      <!-- 담보중분류코드 -->
+             , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'M009'
+                    AND CD_VL_ID = MRTG_MDCL_CD
+               ) AS MRTG_MDCL_NM         					 	 <!-- 담보중분류코드명 -->
+             , MRTG_DTL_USGE_CTNS                                <!-- 담보세부용도내용 -->
+             , MRTG_CRRY_CD                                      <!-- 담보통화코드 -->
+             , MRTG_QNT                                          <!-- 담보수량 -->
+             , MRTG_UNPR                                         <!-- 담보단가 -->
+             , MRTG_AMT                                          <!-- 담보금액 -->
+             , MRTG_EVL_AMT                                      <!-- 담보평가금액 -->
+             , MRTG_RTO                                          <!-- 담보비율 -->
+             , MRTG_EVL_DT                                       <!-- 담보평가일자 -->
+             , RGST_DT                                           <!-- 등록일자 -->
+             , MRTG_STUP_DT                                      <!-- 담보설정일자 -->
+             , MRTG_CCLC_DT                                      <!-- 담보해지일자 -->
+             , TR_OTHR_DSCM_NO                                   <!-- 거래상대방식별번호 -->
+             , TR_OTHR_NM                                        <!-- 거래상대방명 -->
+             , TR_EMPNO                                          <!-- 거래부점코드 -->
+             , MRTG_EVL_STDR_CD                                  <!-- 담보평가기준코드 -->
+             , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'M006'
+                    AND CD_VL_ID = MRTG_EVL_STDR_CD
+               ) AS MRTG_EVL_STDR_NM         					 <!-- 담보평가기준코드명 -->
+             , PRFD_RANK_YN                                      <!-- 우선순위여부 -->
+             , HDWT_EVL_YN                                       <!-- 수기평가여부 -->
+             , MRTG_OFFR_RCVN_DCD                                <!-- 담보제공수취구분코드 -->
+             , AVBL_MRTG_PRC                                     <!-- 가용담보가격 -->
+             , MRTG_STUP_KND_CD                                  <!-- 담보설정종류코드 -->
+             , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'M011'
+                    AND CD_VL_ID = MRTG_STUP_KND_CD
+               ) AS MRTG_STUP_KND_NM         					 <!-- 담보설정종류코드명 -->
+             , STUP_CRRY_CD                                      <!-- 설정통화코드 -->
+             , STUP_TOP_AMT                                      <!-- 설정최고금액 -->
+             , KRW_TRSL_STUP_TOP_AMT                             <!-- 원화환산설정최고금액 -->
+             , CPRN_MRTG_RTO                                     <!-- 공동담보비율 -->
+             , VALT_MRTG_PRC                                     <!-- 유효담보가격 -->
+             , KRW_TRSL_VALT_MRTG_PRC                            <!-- 원화환산유효담보가격 -->
+             , DEL_YN                                            <!-- 삭제여부 -->
+             , HND_DETL_DTM                                      <!-- 조작상세일시 -->
+             , HND_EMPNO                                         <!-- 조작사원번호 -->
+             , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+             , HND_TR_ID                                         <!-- 조작거래id -->
+             , GUID                                              <!-- guid -->
+          FROM IBIMS211B
+         WHERE 1=1
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mrtgMngmNo)">
+           AND MRTG_MNGM_NO		LIKE '%' || #{mrtgMngmNo} || '%'
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mrtgNm)">
+           AND MRTG_NM			LIKE '%' || #{mrtgNm} || '%'
+         </if>
+         AND DEL_YN = 'N'
+	</select>
+	
+	<!-- IB승인담보기본 - 대출채권/채무보증 정보(TB06010S) - 담보/보증정보등록  -->
+    <insert id="insertIBIMS211B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        INSERT INTO IBIMS211B 
+               (
+                  MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
+                , INV_JDGM_DEAL_NO                                  <!-- 투자심사딜번호 -->
+                , MRTG_NM                                           <!-- 담보명 -->
+                , MRTG_LCLS_CD                                      <!-- 담보대분류코드 -->
+                , MRTG_MDCL_CD                                      <!-- 담보중분류코드 -->
+                , MRTG_DTL_USGE_CTNS                                <!-- 담보세부용도내용 -->
+                , MRTG_CRRY_CD                                      <!-- 담보통화코드 -->
+                , MRTG_QNT                                          <!-- 담보수량 -->
+                , MRTG_UNPR                                         <!-- 담보단가 -->
+                , MRTG_AMT                                          <!-- 담보금액 -->
+                , MRTG_EVL_AMT                                      <!-- 담보평가금액 -->
+                , MRTG_RTO                                          <!-- 담보비율 -->
+                , MRTG_EVL_DT                                       <!-- 담보평가일자 -->
+                , RGST_DT                                           <!-- 등록일자 -->
+                , MRTG_STUP_DT                                      <!-- 담보설정일자 -->
+                , MRTG_CCLC_DT                                      <!-- 담보해지일자 -->
+                , TR_OTHR_DSCM_NO                                   <!-- 거래상대방식별번호 -->
+                , TR_OTHR_NM                                        <!-- 거래상대방명 -->
+                , TR_EMPNO                                          <!-- 거래부점코드 -->
+                , MRTG_EVL_STDR_CD                                  <!-- 담보평가기준코드 -->
+                , PRFD_RANK_YN                                      <!-- 우선순위여부 -->
+                , HDWT_EVL_YN                                       <!-- 수기평가여부 -->
+                , MRTG_OFFR_RCVN_DCD                                <!-- 담보제공수취구분코드 -->
+                , AVBL_MRTG_PRC                                     <!-- 가용담보가격 -->
+                , MRTG_STUP_KND_CD                                  <!-- 담보설정종류코드 -->
+                , STUP_CRRY_CD                                      <!-- 설정통화코드 -->
+                , STUP_TOP_AMT                                      <!-- 설정최고금액 -->
+                , KRW_TRSL_STUP_TOP_AMT                             <!-- 원화환산설정최고금액 -->
+                , CPRN_MRTG_RTO                                     <!-- 공동담보비율 -->
+                , VALT_MRTG_PRC                                     <!-- 유효담보가격 -->
+                , KRW_TRSL_VALT_MRTG_PRC                            <!-- 원화환산유효담보가격 -->
+                , DEL_YN                                            <!-- 삭제여부 -->
+                , HND_DETL_DTM                                      <!-- 조작상세일시 -->
+                , HND_EMPNO                                         <!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+                , HND_TR_ID                                         <!-- 조작거래id -->
+                , GUID                                              <!-- guid -->
+               )
+        VALUES (
+                 #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+               , #{invJdgmDealNo}                                   <!-- 투자심사딜번호 -->
+               , #{mrtgNm}                                          <!-- 담보명 -->
+               , #{mrtgLclsCd}                                      <!-- 담보대분류코드 -->
+               , #{mrtgMdclCd}                                      <!-- 담보중분류코드 -->
+               , #{mrtgDtlUsgeCtns}                                 <!-- 담보세부용도내용 -->
+               , #{mrtgCrryCd}                                      <!-- 담보통화코드 -->
+               , #{mrtgQnt}                                         <!-- 담보수량 -->
+               , #{mrtgUnpr}                                        <!-- 담보단가 -->
+               , #{mrtgAmt}                                         <!-- 담보금액 -->
+               , #{mrtgEvlAmt}                                      <!-- 담보평가금액 -->
+               , #{mrtgRto}                                         <!-- 담보비율 -->
+               , #{mrtgEvlDt}                                       <!-- 담보평가일자 -->
+               , #{rgstDt}                                          <!-- 등록일자 -->
+               , #{mrtgStupDt}                                      <!-- 담보설정일자 -->
+               , #{mrtgCclcDt}                                      <!-- 담보해지일자 -->
+               , #{trOthrDscmNo}                                    <!-- 거래상대방식별번호 -->
+               , #{trOthrNm}                                        <!-- 거래상대방명 -->
+               , #{trEmpno}                                         <!-- 거래부점코드 -->
+               , #{mrtgEvlStdrCd}                                   <!-- 담보평가기준코드 -->
+               , #{prfdRankYn}                                      <!-- 우선순위여부 -->
+               , #{hdwtEvlYn}                                       <!-- 수기평가여부 -->
+               , #{mrtgOffrRcvnDcd}                                 <!-- 담보제공수취구분코드 -->
+               , #{avblMrtgPrc}                                     <!-- 가용담보가격 -->
+               , #{mrtgStupKndCd}                                   <!-- 담보설정종류코드 -->
+               , #{stupCrryCd}                                      <!-- 설정통화코드 -->
+               , #{stupTopAmt}                                      <!-- 설정최고금액 -->
+               , #{krwTrslStupTopAmt}                               <!-- 원화환산설정최고금액 -->
+               , #{cprnMrtgRto}                                     <!-- 공동담보비율 -->
+               , #{valtMrtgPrc}                                     <!-- 유효담보가격 -->
+               , #{krwTrslValtMrtgPrc}                              <!-- 원화환산유효담보가격 -->
+               , #{delYn}                                           <!-- 삭제여부 -->
+               , SYSDATE                                            <!-- 조작상세일시 -->
+               , #{hndEmpno}                                        <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+               , #{hndTrId}                                         <!-- 조작거래id -->
+               , #{guid}                                            <!-- guid -->
+               )
+    </insert>
+    
+    <!-- 담보번호 채번 -->
+    <select id="makeMrtgMngmNo" resultType="String" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+    	SELECT (
+                TO_CHAR(SYSDATE, 'YYYY')
+                || LPAD(#{mrtgStupKndCd}, 2, '0')
+                || #{mrtgLclsCd}
+                || #{mrtgMdclCd}
+                || LPAD(
+                        (
+                          (SELECT COUNT(1)
+                             FROM IBIMS211B a 
+                            WHERE 1=1 
+                              AND SUBSTR(a.RGST_DT, 1, 4) = TO_CHAR(SYSDATE, 'YYYY')
+                          ) + 1
+                        ), 4, '0'
+                      )
+               ) AS MRTG_MNGM_NO 
+        FROM DUAL
+    </select>
+    
+    <!-- 담보정보상세 -->
+    <select id="mrtgInfoDetails" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO" resultType="com.nanuri.rams.business.common.vo.TB06013PVO">
+    	SELECT IB211B.MRTG_MNGM_NO,                    <!-- 담보관리번호 -->
+			   INV_JDGM_DEAL_NO,                       <!-- 투자심사딜번호 -->
+			   MRTG_NM,                                <!-- 담보명 -->
+			   MRTG_LCLS_CD,                           <!-- 담보대분류코드 -->
+			   MRTG_MDCL_CD,                           <!-- 담보중분류코드 -->
+			   MRTG_DTL_USGE_CTNS,                     <!-- 담보세부용도내용 -->
+			   MRTG_CRRY_CD,                           <!-- 담보통화코드 -->
+			   IB211B.MRTG_QNT,                        <!-- 담보수량 -->
+			   IB211B.MRTG_UNPR,                       <!-- 담보단가 -->
+			   IB211B.MRTG_AMT,                        <!-- 담보금액 -->
+			   MRTG_EVL_AMT,                           <!-- 담보평가금액 -->
+			   IB211B.MRTG_RTO,                        <!-- 담보비율 -->
+			   MRTG_EVL_DT,                            <!-- 담보평가일자 -->
+			   IB211B.RGST_DT,                         <!-- 등록일자 -->
+			   MRTG_STUP_DT,                           <!-- 담보설정일자 -->
+			   MRTG_CCLC_DT,                           <!-- 담보해지일자 -->
+			   TR_OTHR_DSCM_NO,                        <!-- 거래상대방식별번호 -->
+			   TR_OTHR_NM,                             <!-- 거래상대방명 -->
+			   TR_EMPNO,                               <!-- 거래부점코드 -->
+			   MRTG_EVL_STDR_CD,                       <!-- 담보평가기준코드 -->
+			   PRFD_RANK_YN,                           <!-- 우선순위여부 -->
+			   HDWT_EVL_YN,                            <!-- 수기평가여부 -->
+			   MRTG_OFFR_RCVN_DCD,                     <!-- 담보제공수취구분코드 -->
+			   IB211B.AVBL_MRTG_PRC,                   <!-- 가용담보가격 -->
+			   MRTG_STUP_KND_CD,                       <!-- 담보설정종류코드 -->
+			   STUP_CRRY_CD,                           <!-- 설정통화코드 -->
+			   STUP_TOP_AMT,                           <!-- 설정최고금액 -->
+			   KRW_TRSL_STUP_TOP_AMT,                  <!-- 원화환산설정최고금액 -->
+			   CPRN_MRTG_RTO,                          <!-- 공동담보비율 -->
+			   VALT_MRTG_PRC,                          <!-- 유효담보가격 -->
+			   KRW_TRSL_VALT_MRTG_PRC,                 <!-- 원화환산유효담보가격 -->
+			   DEL_YN,                                 <!-- 삭제여부 -->
+			   IB214B.DRC_MRTG_YN,                     <!-- 직접담보여부 -->
+			   OVSS_MRTG_YN,                           <!-- 국외담보여부 -->
+			   IB214B.APRS_MTH_CD,                     <!-- 감정방법코드 -->
+			   IB214B.APRS_EVL_ISTT_CD,                <!-- 감정평가기관코드 -->
+			   IB214B.CREV_ISTT_NM,                    <!-- 시가평가기관명 -->
+			   CREV_STDR_CD,                           <!-- 시가평가기준코드 -->
+			   APRS_PRPS_CD,                           <!-- 감정목적코드 -->
+			   IB214B.APRS_DT,                         <!-- 감정일자 -->
+			   LCTP_ADDR,                              <!-- 소재지주소 -->
+			   RLES_SQMS_CTNS,                         <!-- 부동산면적내용 -->
+			   IB214B.APRS_CRRY_CD,                    <!-- 감정통화코드 -->
+			   IB214B.APRS_PRC,                        <!-- 감정가격 -->
+			   IB214B.KRW_TRSL_APRS_PRC,               <!-- 원화환산감정가격 -->
+			   IB214B.MRTG_RCG_RTO,                    <!-- 담보인정비율 -->
+			   IB214B.MRTG_PRC,                        <!-- 담보가격 -->
+			   IB215B.MRTG_CTNS,                       <!-- 담보내용 -->
+			   MVPP_MRTG_KND_CD,                       <!-- 동산담보종류코드 -->
+			   OPPR_PRSM_FDTN_CTNS,                    <!-- 시가추정근거내용 -->
+			   MRTG_ACQ_MTH_CD,                        <!-- 담보취득방법코드 -->
+			   GRTE_CTRC_DCD,                          <!-- 보증약정구분코드 -->
+			   GRNR_CPIN,                              <!-- 보증인고객식별번호 -->
+			   GRUP_ITGR_CRDT_GRD_DCD,                 <!-- 그룹통합신용등급구분코드 -->
+			   CRDT_INQ_DT,                            <!-- 신용조회일자 -->
+			   DBTR_CPIN,                              <!-- 채무자고객식별번호 -->
+			   GRTE_DBTR_RLTN_DCD,                     <!-- 보증채무자관계구분코드 -->
+			   IB216B.GRTE_AMT,                        <!-- 보증금액 -->
+			   GRTE_PRNA,                              <!-- 보증원금 -->
+			   IB216B.GRTE_CRRY_CD,                    <!-- 보증통화코드 -->
+			   STLA_ORZN_BLNG_DCD,                     <!-- 결산기구분코드 -->
+			   GRTE_STLA_DE,                           <!-- 보증결산일 -->
+			   GRTE_STLA_DE_ETC_DCD,                   <!-- 보증결산일기타구분코드 -->
+			   IB216B.MRTG_GRTE_CTNS,                  <!-- 담보보증내용 -->
+			   GRTE_ISTT_DCD,                          <!-- 보증기관구분코드 -->
+			   GRTE_ISTT_CD,                           <!-- 보증기관코드 -->
+			   GRTE_ISTT_NM,                           <!-- 보증기관명 -->
+			   LGRTE_NM,                               <!-- 보증서명 -->
+			   GRTE_EXPR_DT,                           <!-- 보증만료일자 -->
+			   ETC_MRTG_TP_CD,                         <!-- 기타담보유형코드 -->
+			   ETC_MRTG_KND_CD,                        <!-- 기타담보종류코드 -->
+			   MRTG_CD_CTNS,                           <!-- 담보코드내용 -->
+			   ETC_MRTG_GRD_CTNS,                      <!-- 기타담보등급내용 -->
+			   ETC_MRTG_ACQ_MTH_CD,                    <!-- 기타담보취득방법코드 -->
+			   OVSS_EVL_ISTT_YN,                       <!-- 국외평가기관여부 -->
+			   RLTH_MRTG_KND_CD,                       <!-- 실물담보종류코드 -->
+			   APRS_STDR_CD,                           <!-- 감정기준코드 -->
+			   IB212B.PRDT_CD                          /* 상품코드 */
+		  FROM IBIMS211B AS IB211B
+		  LEFT JOIN IBIMS214B AS IB214B 
+		    ON IB211B.MRTG_MNGM_NO = IB214B.MRTG_MNGM_NO
+		  LEFT JOIN IBIMS215B AS IB215B 
+		    ON IB211B.MRTG_MNGM_NO = IB215B.MRTG_MNGM_NO
+		  LEFT JOIN IBIMS216B AS IB216B 
+		    ON IB211B.MRTG_MNGM_NO = IB216B.MRTG_MNGM_NO
+		  LEFT JOIN IBIMS217B AS IB217B 
+		    ON IB211B.MRTG_MNGM_NO = IB217B.MRTG_MNGM_NO
+		  LEFT JOIN IBIMS218B AS IB218B 
+		    ON IB211B.MRTG_MNGM_NO = IB218B.MRTG_MNGM_NO
+		  LEFT JOIN IBIMS219B AS IB219B 
+		    ON IB211B.MRTG_MNGM_NO = IB219B.MRTG_MNGM_NO
+		  LEFT JOIN 
+		       (
+		        SELECT V.MRTG_MNGM_NO
+		             , V.PRDT_CD
+		          FROM IBIMS212B V
+		         WHERE V.MRTG_MNGM_NO = #{mrtgMngmNo} 
+		         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
+		           AND V.PRDT_CD = #{prdtCd}
+		         </if>
+		           AND ROWNUM = 1
+		       ) AS IB212B 
+		    ON IB211B.MRTG_MNGM_NO = IB212B.MRTG_MNGM_NO
+		    
+		 WHERE 1=1
+		 <!--<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mrtgMngmNo)">-->
+       AND IB211B.MRTG_MNGM_NO = #{mrtgMngmNo}
+       AND IB211B.DEL_YN = 'N'
+         <!--</if>-->
+    </select>
+    
+    <!-- IB승인담보기본 - 대출채권/채무보증 정보(TB06010S) - 담보/보증정보변경  -->
+    <update id="updateIBIMS211B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+       UPDATE IBIMS211B
+          SET INV_JDGM_DEAL_NO                                  = #{invJdgmDealNo}                                   <!-- 투자심사딜번호 -->
+            , MRTG_NM                                           = #{mrtgNm}                                          <!-- 담보명 -->
+            , MRTG_LCLS_CD                                      = #{mrtgLclsCd}                                      <!-- 담보대분류코드 -->
+            , MRTG_MDCL_CD                                      = #{mrtgMdclCd}                                      <!-- 담보중분류코드 -->
+            , MRTG_DTL_USGE_CTNS                                = #{mrtgDtlUsgeCtns}                                 <!-- 담보세부용도내용 -->
+            , MRTG_CRRY_CD                                      = #{mrtgCrryCd}                                      <!-- 담보통화코드 -->
+            , MRTG_QNT                                          = #{mrtgQnt}                                         <!-- 담보수량 -->
+            , MRTG_UNPR                                         = #{mrtgUnpr}                                        <!-- 담보단가 -->
+            , MRTG_AMT                                          = #{mrtgAmt}                                         <!-- 담보금액 -->
+            , MRTG_EVL_AMT                                      = #{mrtgEvlAmt}                                      <!-- 담보평가금액 -->
+            , MRTG_RTO                                          = #{mrtgRto}                                         <!-- 담보비율 -->
+            , MRTG_EVL_DT                                       = #{mrtgEvlDt}                                       <!-- 담보평가일자 -->
+            , RGST_DT                                           = #{rgstDt}                                          <!-- 등록일자 -->
+            , MRTG_STUP_DT                                      = #{mrtgStupDt}                                      <!-- 담보설정일자 -->
+            , MRTG_CCLC_DT                                      = #{mrtgCclcDt}                                      <!-- 담보해지일자 -->
+            , TR_OTHR_DSCM_NO                                   = #{trOthrDscmNo}                                    <!-- 거래상대방식별번호 -->
+            , TR_OTHR_NM                                        = #{trOthrNm}                                        <!-- 거래상대방명 -->
+            , TR_EMPNO                                          = #{trEmpno}                                         <!-- 거래부점코드 -->
+            , MRTG_EVL_STDR_CD                                  = #{mrtgEvlStdrCd}                                   <!-- 담보평가기준코드 -->
+            , PRFD_RANK_YN                                      = #{prfdRankYn}                                      <!-- 우선순위여부 -->
+            , HDWT_EVL_YN                                       = #{hdwtEvlYn}                                       <!-- 수기평가여부 -->
+            , MRTG_OFFR_RCVN_DCD                                = #{mrtgOffrRcvnDcd}                                 <!-- 담보제공수취구분코드 -->
+            , AVBL_MRTG_PRC                                     = #{avblMrtgPrc}                                     <!-- 가용담보가격 -->
+            , MRTG_STUP_KND_CD                                  = #{mrtgStupKndCd}                                   <!-- 담보설정종류코드 -->
+            , STUP_CRRY_CD                                      = #{stupCrryCd}                                      <!-- 설정통화코드 -->
+            , STUP_TOP_AMT                                      = #{stupTopAmt}                                      <!-- 설정최고금액 -->
+            , KRW_TRSL_STUP_TOP_AMT                             = #{krwTrslStupTopAmt}                               <!-- 원화환산설정최고금액 -->
+            , CPRN_MRTG_RTO                                     = #{cprnMrtgRto}                                     <!-- 공동담보비율 -->
+            , VALT_MRTG_PRC                                     = #{valtMrtgPrc}                                     <!-- 유효담보가격 -->
+            , KRW_TRSL_VALT_MRTG_PRC                            = #{krwTrslValtMrtgPrc}                              <!-- 원화환산유효담보가격 -->
+            , DEL_YN                                            = #{delYn}                                           <!-- 삭제여부 -->
+            , HND_EMPNO                                         = #{hndEmpno}                                        <!-- 조작사원번호 -->
+            , HND_TMNL_NO                                       = #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+            , HND_TR_ID                                         = #{hndTrId}                                         <!-- 조작거래id -->
+            , GUID                                              = #{guid}                                            <!-- guid -->
+         WHERE 1=1
+          AND MRTG_MNGM_NO                                      = #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+    </update>
+
+</mapper>

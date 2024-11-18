@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS451BMapper">
+
+    <select id="selectIBIMS451B" parameterType="com.nanuri.rams.business.common.dto.IBIMS451BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS451BVO">
+        SELECT STDR_DT          /* 기준일자     */      
+             , ACTS_CD          /* 계정과목코드 */      
+             , MNGM_BDCD        /* 관리부서번호 */          
+             , LDGR_TR_AMT      /* 원장거래금액 */          
+             , ACCT_RFLT_AMT    /* 계정반영금액 */              
+             , THDT_DIFA_AMT    /* 당일차액금액 */              
+             , LDGR_RMND        /* 원장잔액     */          
+             , ACCT_RMND        /* 계정잔액     */          
+             , DIFA_AMT         /* 차액금액     */      
+             , ACRD_YN          /* 일치여부     */      
+             , HND_DETL_DTM     /* 조작상세일시 */          
+             , HND_EMPNO        /* 조작사원번호 */          
+             , HND_TMNL_NO      /* 조작단말기번호 */          
+             , HND_TR_ID        /* 조작거래ID */          
+             , GUID             /* GUID */  
+         FROM IBIMS451B
+        WHERE 1=1
+          AND STDR_DT = #{stdrDt}
+          AND ACTS_CD LIKE #{actsCd}
+          AND MNGM_BDCD LIKE #{mngmBdcd}
+    </select>
+
+    <select id="thdtTrDtlsGetData" parameterType="com.nanuri.rams.business.common.dto.IBIMS451BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS451BVO">
+       SELECT B.DEAL_NO                        /* 딜번호 */
+             , A.TR_SN                          /* 거래순번 */
+             , A.ETPR_CRDT_GRNT_TR_KIND_CD      /* 거래종류코드 */
+             , A.DEAL_TR_PRCA                   /* 거래원금 */
+             , A.TR_INT_AMT                     /* 거래이자 */
+             , A.TR_FEE_AMT                     /* 거래수수료 */
+             , A.DEAL_TR_AMT                    /* 거래비용 */
+             , A.ACTG_AFRS_CD                   /* 회계업무코드 */ 
+             , A.ACTG_UNIT_AFRS_CD              /* 회계단위업무코드 */
+             , (
+                CASE
+                WHEN A.ACTG_AFRS_CD IN ('G1','G6') THEN '1'  /* 1-증액 */
+                WHEN A.ACTG_AFRS_CD IN ('G2','G5') THEN '2'  /* 2-감액 */
+                ELSE '0'
+                END
+                ) ICDC_DCD                  /* 증감구분코드 */
+          FROM IBIMS410B A
+              ,IBIMS201B B
+         WHERE 1=1
+           AND A.PRDT_CD = B.PRDT_CD(+)
+           /* 딜거래내역 기본조건 */
+           AND A.TR_STAT_CD = '1'
+           /* 딜승인 기본조건 */
+           AND B.LAST_YN(+) = '1'
+           /* 조회조건 */
+           AND A.TR_DT = #{stdrDt}
+           AND A.ORGNO = #{mngmBdcd}
+           AND B.ACTS_CD = #{actsCd}
+    </select>
+      
+</mapper>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAC02BMapper">
+
+    <select id="selDealMngNo" resultType="int">
+        SELECT IFNULL(MAX(DEAL_SQ), 0)
+        FROM RAC02B
+    </select>
+
+    <select id="getBscDealInfo" parameterType="com.nanuri.rams.business.common.dto.TB03020DTO" resultType="com.nanuri.rams.business.common.vo.TB03020SVO">
+        SELECT IB_DEAL_NO
+             , DEAL_NM
+             , '' AS DSC_DT
+             , (
+                SELECT IFNULL(DPRT_NM, '')
+                  FROM RAA98A
+                 WHERE DPRT_CD = CHRG_DPRT_CD
+               ) AS DPRT_NM
+             , IFNULL((
+                SELECT EMP_NM
+                  FROM RAA99A
+                 WHERE ENO = CHRG_P_ENO
+               ), '') AS EMP_NM
+             , IFNULL((
+                SELECT MAX(ENTP_HNGL_NM)
+                  FROM RAB97B
+                 WHERE CORP_RGST_NO = CORP_NO
+               ), '') AS ENTP_HNGL_NM
+             , (
+                SELECT CD_VL_NM
+                  FROM RAA91B
+                 WHERE CMNS_CD_GRP = 'I004'
+                   AND CD_VL_ID = INSPCT_PRGRS_ST_CD
+               ) AS INSPCT_PRGRS_ST_CD_NM
+             , INSPCT_PRGRS_ST_CD
+          FROM RAC02B
+         WHERE 1=1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+           AND DEAL_NO LIKE CONCAT('%', #{dealNo}, '%')
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
+           AND DEAL_NM LIKE CONCAT('%', #{dealNm}, '%')
+           </if>
+    </select>
+
+    <select id="getBscDealDetail" parameterType="string" resultType="com.nanuri.rams.business.common.vo.TB03020SVO">
+        SELECT IB_DEAL_NO                           <!-- DEAL관리번호	    -->
+             , DEAL_SQ                               <!-- DEAL일련번호      -->
+             , INSPCT_PRGRS_ST_CD                    <!-- 진행상태코드        -->
+             , (
+                SELECT CD_VL_NM
+                  FROM RAA91B
+                 WHERE CMNS_CD_GRP = 'I004'
+                   AND CD_VL_ID = INSPCT_PRGRS_ST_CD
+               ) AS INSPCT_PRGRS_ST_CD_NM            <!-- 진행상태코드명       -->
+             , DEAL_NM                               <!-- DEAL명          -->
+             , BOOK_CD                               <!-- BOOK코드         -->
+             , INVST_GDS_LDVD_CD                     <!-- 투자상품대분류코드    -->
+             , INVST_GDS_MDVD_CD                     <!-- 투자상품중분류코드    -->
+             , INVST_GDS_SDVD_CD                     <!-- 투자상품소분류코드    -->
+             , INVST_GDS_DTLS_DVD_CD                 <!-- 투자상품상세분류코드   -->
+             , COPRTN_TYP_CD                         <!-- 협업유형코드        -->
+             , INVST_NTN_CD                          <!-- 투자국가코드        -->
+             , INVST_CITY_NM                         <!-- 투자도시명         -->
+             , DEAL_CNTNT                            <!-- DEAL내용         -->
+             , CNTC_CORP_NO                          <!-- 시공사법인등록번호    -->
+             , CRDT_MANL_F                           <!-- 신용보감여부        -->
+             , LTV                                   <!-- LTV            -->
+             , ABRD_LOCL_CORP_ASCT_CD                <!-- 해외현지법인협회코드   -->
+             , ETC_CNTNT                             <!-- 기타내용          -->
+             , CORP_NO                               <!-- 법인번호          -->
+             , (
+                SELECT MAX(ENTP_HNGL_NM)
+                  FROM RAB97B
+                 WHERE CORP_RGST_NO = CORP_NO
+               ) AS CORP_NM                          <!-- 법인명   		 -->
+             , OPTR_RGST_NO                          <!-- 사업자등록번호      -->
+             , IND_TYP                               <!-- 업종             -->
+             , LIN_TYP                               <!-- 계열             -->
+             , CRDT_GRD_CD                           <!-- 신용등급코드        -->
+             , ENTP_SCAL                             <!-- 기업규모          -->
+             , GO_PUBL_MKT_CD                        <!-- 주식상장시장코드     -->
+             , DEAL_SCAL                             <!-- DEAL규모         -->
+             , PTCT_SCAL                             <!-- 참여규모          -->
+             , TL_ERN_AMT                            <!-- 전체수익금액        -->
+             , PRNT_YR_ERN_AMT                       <!-- 당해수익금액        -->
+             , WRT_ERN_AMT                           <!-- 기표수익금액        -->
+             , ON_GOIN_AMT                           <!-- 이자수익금액        -->
+             , INVST_CRNCY_CD                        <!-- 투자통화코드        -->
+             , INVST_CRNCY_AMT                       <!-- 투자통화금액        -->
+             , DEAL_SCAL_UDFE_F                      <!-- DEAL규모미정여부    -->
+             , WRT_DT                                <!-- 기표일자          -->
+             , MTRT_DT                               <!-- 만기일자          -->
+             , PTCT_SCAL_UDFE_F                      <!-- 참여규모미정여부     -->
+             , CHRG_HDQT_CD                          <!-- 담당본부코드        -->
+             , (
+                SELECT MIN(HDQT_NM)
+                  FROM RAA99A
+                 WHERE HDQT_CD = CHRG_HDQT_CD
+               ) AS CHRG_HDQT_NM                     <!-- 담당본부명         -->
+             , CHRG_DPRT_CD                          <!-- 담당부점코드        -->
+             , (
+                SELECT DPRT_NM
+                  FROM RAA98A
+                 WHERE DPRT_CD = CHRG_DPRT_CD
+               ) AS CHRG_DPRT_NM                     <!-- 담당부점명         -->
+             , CHRG_P_ENO                            <!-- 담당자사번         -->
+             , (
+                SELECT EMP_NM
+                  FROM RAA99A
+                 WHERE ENO = CHRG_P_ENO
+               ) AS CHRG_P_NM                        <!-- 담당자명          -->
+             , PYNT_HDQT_CD                          <!-- 결재본부코드        -->
+             , (
+                SELECT MIN(HDQT_NM)
+                  FROM RAA99A
+                 WHERE HDQT_CD = PYNT_HDQT_CD
+               ) AS PYNT_HDQT_NM                     <!-- 결재본부명         -->
+             , PYNT_DPRT_CD                          <!-- 결재부점코드        -->
+             , (
+                SELECT DPRT_NM
+                  FROM RAA98A
+                 WHERE DPRT_CD = PYNT_DPRT_CD
+               ) AS PYNT_DPRT_NM                     <!-- 결재부점명         -->
+             , PYNT_P_ENO                            <!-- 결재자사번         -->
+             , (
+                SELECT EMP_NM
+                  FROM RAA99A
+                 WHERE ENO = PYNT_P_ENO
+               ) AS PYNT_P_NM                        <!-- 결재자사명          -->
+          FROM RAC02B
+         WHERE IB_DEAL_NO = #{ibDealNo}
+    </select>
+
+	<insert id="saveDeal" parameterType="com.nanuri.rams.business.common.dto.TB03020DTO">
+		INSERT INTO RAC02B
+    	       (
+				  IB_DEAL_NO                           <!-- DEAL관리번호	    -->
+                , DEAL_SQ                               <!-- DEAL일련번호      -->
+                , INSPCT_PRGRS_ST_CD                    <!-- 진행상태코드        -->
+                , DEAL_NM                               <!-- DEAL명          -->
+                , BOOK_CD                               <!-- BOOK코드         -->
+                , INVST_GDS_LDVD_CD                     <!-- 투자상품대분류코드    -->
+                , INVST_GDS_MDVD_CD                     <!-- 투자상품중분류코드    -->
+                , INVST_GDS_SDVD_CD                     <!-- 투자상품소분류코드    -->
+                , INVST_GDS_DTLS_DVD_CD                 <!-- 투자상품상세분류코드   -->
+                , COPRTN_TYP_CD                         <!-- 협업유형코드        -->
+                , INVST_NTN_CD                          <!-- 투자국가코드        -->
+                , INVST_CITY_NM                         <!-- 투자도시명         -->
+                , DEAL_CNTNT                            <!-- DEAL내용         -->
+                , CNTC_CORP_NO                          <!-- 시공사법인등록번호    -->
+                , CRDT_MANL_F                           <!-- 신용보감여부        -->
+                , LTV                                   <!-- LTV            -->
+                , ABRD_LOCL_CORP_ASCT_CD                <!-- 해외현지법인협회코드   -->
+                , ETC_CNTNT                             <!-- 기타내용          -->
+                , CORP_NO                               <!-- 법인번호          -->
+                , OPTR_RGST_NO                          <!-- 사업자등록번호      -->
+                , IND_TYP                               <!-- 업종             -->
+                , LIN_TYP                               <!-- 계열             -->
+                , CRDT_GRD_CD                           <!-- 신용등급코드        -->
+                , ENTP_SCAL                             <!-- 기업규모          -->
+                , GO_PUBL_MKT_CD                        <!-- 주식상장시장코드     -->
+                , DEAL_SCAL                             <!-- DEAL규모         -->
+                , PTCT_SCAL                             <!-- 참여규모          -->
+                , TL_ERN_AMT                            <!-- 전체수익금액        -->
+                , PRNT_YR_ERN_AMT                       <!-- 당해수익금액        -->
+                , WRT_ERN_AMT                           <!-- 기표수익금액        -->
+                , ON_GOIN_AMT                           <!-- 이자수익금액        -->
+                , INVST_CRNCY_CD                        <!-- 투자통화코드        -->
+                , INVST_CRNCY_AMT                       <!-- 투자통화금액        -->
+                , DEAL_SCAL_UDFE_F                      <!-- DEAL규모미정여부    -->
+                , WRT_DT                                <!-- 기표일자          -->
+                , MTRT_DT                               <!-- 만기일자          -->
+                , PTCT_SCAL_UDFE_F                      <!-- 참여규모미정여부     -->
+                , CHRG_HDQT_CD                          <!-- 담당본부코드        -->
+                , CHRG_DPRT_CD                          <!-- 담당부점코드        -->
+                , CHRG_P_ENO                            <!-- 담당자사번         -->
+                , PYNT_HDQT_CD                          <!-- 결재본부코드        -->
+                , PYNT_DPRT_CD                          <!-- 결재부점코드        -->
+                , PYNT_P_ENO                            <!-- 결재자사번         -->
+                , DLT_F                                 <!-- 삭제여부          -->
+                , FST_HNDL_P_ENO                        <!-- 최초입력자개인번호    -->
+                , LST_HNDL_P_ENO                         <!-- 최종변경자개인번호    -->
+				)
+		VALUES (
+				  #{ibDealNo}                          <!-- DEAL관리번호	    -->
+		        , (
+					SELECT IFNULL(MAX(A.DEAL_SQ), 0)+1
+					  FROM RAC02B A
+				  )			                            <!-- DEAL일련번호      -->
+                , '100'                                 <!-- 진행상태코드        -->
+                , #{dealNm}                             <!-- DEAL명          -->
+                , #{bookCd}                             <!-- BOOK코드         -->
+                , #{invstGdsLdvdCd}                     <!-- 투자상품대분류코드    -->
+                , #{invstGdsMdvdCd}                     <!-- 투자상품중분류코드    -->
+                , #{invstGdsSdvdCd}                     <!-- 투자상품소분류코드    -->
+                , #{invstGdsDtlsDvdCd}                  <!-- 투자상품상세분류코드   -->
+                , #{coprtnTypCd}                        <!-- 협업유형코드        -->
+                , #{invstNtnCd}                         <!-- 투자국가코드        -->
+                , #{invstCityNm}                        <!-- 투자도시명         -->
+                , #{dealCntnt}                          <!-- DEAL내용         -->
+                , #{cntcCorpNo}                         <!-- 시공사법인등록번호    -->
+                , #{crdtManlF}                          <!-- 신용보감여부        -->
+                , #{ltv}                                <!-- LTV            -->
+                , #{abrdLoclCorpAsctCd}                 <!-- 해외현지법인협회코드   -->
+                , #{etcCntnt}                           <!-- 기타내용          -->
+                , #{corpNo}                             <!-- 법인번호          -->
+                , #{optrRgstNo}                         <!-- 사업자등록번호      -->
+                , #{indTyp}                             <!-- 업종             -->
+                , #{linTyp}                             <!-- 계열             -->
+                , #{crdtGrdCd}                          <!-- 신용등급코드        -->
+                , #{entpScal}                           <!-- 기업규모          -->
+                , #{goPublMktCd}                        <!-- 주식상장시장코드     -->
+                , #{dealScal}                           <!-- DEAL규모         -->
+                , #{ptctScal}                           <!-- 참여규모          -->
+                , #{tlErnAmt}                           <!-- 전체수익금액        -->
+                , #{prntYrErnAmt}                       <!-- 당해수익금액        -->
+                , #{wrtErnAmt}                          <!-- 기표수익금액        -->
+                , #{onGoinAmt}                          <!-- 이자수익금액        -->
+                , #{invstCrncyCd}                       <!-- 투자통화코드        -->
+                , #{invstCrncyAmt}                      <!-- 투자통화금액        -->
+                , #{dealScalUdfeF}                      <!-- DEAL규모미정여부    -->
+                , #{wrtDt}                              <!-- 기표일자          -->
+                , #{mtrtDt}                             <!-- 만기일자          -->
+                , #{ptctScalUdfeF}                      <!-- 참여규모미정여부     -->
+                , #{chrgHdqtCd}                         <!-- 담당본부코드        -->
+                , #{chrgDprtCd}                         <!-- 담당부점코드        -->
+                , #{chrgPEno}                           <!-- 담당자사번         -->
+                , #{pyntHdqtCd}                         <!-- 결재본부코드        -->
+                , #{pyntDprtCd}                         <!-- 결재부점코드        -->
+                , #{pyntPEno}                           <!-- 결재자사번         -->
+                , 0                                     <!-- 삭제여부          -->
+                , #{fstHndlPEno}                        <!-- 최초등록자사번    -->
+                , #{lstHndlPEno}                        <!-- 최종변경자사번    -->
+				)
+	</insert>
+
+    <delete id="deleteDeal" parameterType="string">
+        DELETE
+        FROM RAC02B
+        WHERE IB_DEAL_NO = #{selectedDeal}
+    </delete>
+
+    <update id="reqApproveDeal" parameterType="string">
+        UPDATE RAC02B
+        SET INSPCT_PRGRS_ST_CD = '101'
+        WHERE IB_DEAL_NO = #{ibDealNo}
+    </update>
+
+    <update id="cnfmDeal" parameterType="string">
+        UPDATE RAC02B
+           SET INSPCT_PRGRS_ST_CD = '102'
+         WHERE IB_DEAL_NO = #{ibDealNo}
+    </update>
+
+    <update id="rejtDeal" parameterType="string">
+        UPDATE RAC02B
+           SET INSPCT_PRGRS_ST_CD = '103'
+         WHERE IB_DEAL_NO = #{ibDealNo}
+    </update>
+
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS511BMapper">
+	
+	<!-- 투자사업참가자내역조회  -->
+	<select id="getBsnsPartInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS511BVO"> 
+		SELECT DEAL_NO                                								/* 딜번호 */
+         , SN                                      								/* 일련번호 */
+         , PTCN_RELR_DCD                           								/* 참가자관계구분코드 */
+         , (SELECT CD_VL_NM
+         	  FROM RAA91B
+         	 WHERE CMNS_CD_GRP = 'P006'
+         	   AND CD_VL_ID = PTCN_RELR_DCD) AS PTCN_RELR_DCD_NM 		/* 참가자관계구분코드명 */
+         , ENTP_NM                                 								/* 업체명 */
+         , RPSR_NM                                								/* 대표자명 */
+         , CRNO                                 								  /* 법인등록번호 */
+         , BZNO                                   								/* 사업자등록번호 */
+         , DEL_YN                                  								/* 삭제여부 */
+         , HND_DETL_DTM                            								/* 조작상세일시 */
+         , HND_EMPNO                               								/* 조작사원번호 */
+         , HND_TMNL_NO                             								/* 조작단말기번호 */
+         , HND_TR_ID                               								/* 조작거래id */
+         , GUID                                    								/* guid */
+      FROM IBIMS511B
+     WHERE 1=1
+       AND DEAL_NO = #{dealNo}   
+	</select>
+	
+	<!-- 투자사업참가자내역저장 -->
+	<insert id="saveBsnsPartInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS511BVO">
+		INSERT INTO IBIMS511B 
+               (
+                  DEAL_NO                                 /* 딜번호 */
+                , SN                                      /* 일련번호 */
+                , PTCN_RELR_DCD                           /* 참가자관계구분코드 */
+                , ENTP_NM                                 /* 업체명 */
+                , RPSR_NM                                 /* 대표자명 */
+                , CRNO                                    /* 법인등록번호 */
+                , BZNO                                    /* 사업자등록번호 */
+                , DEL_YN                                  /* 삭제여부 */
+                , HND_DETL_DTM                            /* 조작상세일시 */
+                , HND_EMPNO                               /* 조작사원번호 */
+                , HND_TMNL_NO                             /* 조작단말기번호 */
+                , HND_TR_ID                               /* 조작거래id */
+                , GUID                                    /* guid */
+               )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+        	(
+             	#{item.dealNo}								              /* 딜번호 */
+            , #{index}+1                                  /* 일련번호 */
+            , #{item.ptcnRelrDcd}                         /* 참가자관계구분코드 */
+            , #{item.entpNm}                              /* 업체명 */
+            , #{item.rpsrNm}                              /* 대표자명 */
+            , #{item.crno}                                /* 법인등록번호 */
+            , #{item.bzno}                                /* 사업자등록번호 */
+            , #{item.delYn}                               /* 삭제여부 */
+            , SYSDATE                               		  /* 조작상세일시 */
+            , #{item.hndEmpno}                            /* 조작사원번호 */
+            , #{item.hndTmnlNo}                           /* 조작단말기번호 */
+            , #{item.hndTrId}                             /* 조작거래id */
+            , #{item.guid}                                /* guid */
+          )
+        </foreach>
+	</insert>
+	
+	<delete id="delBsnsPartInfo" parameterType="string">
+		DELETE 
+		  FROM IBIMS511B
+		 WHERE DEAL_NO = #{dealNo} 
+	</delete>
+	
+</mapper>

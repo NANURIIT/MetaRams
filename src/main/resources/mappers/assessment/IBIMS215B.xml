@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS215BMapper">
+	
+	<!-- 딜승인동산담보내역 - 대출채권/채무보증 정보(TB06010S) - 담보/보증내역등록  -->
+    <insert id="insertIBIMS215B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        INSERT INTO IBIMS215B 
+               (
+                  MRTG_MNGM_NO                                      <!-- 담보관리번호 -->
+                , MRTG_CTNS                                         <!-- 담보내용 -->
+                , MVPP_MRTG_KND_CD                                  <!-- 동산담보종류코드 -->
+                , APRS_MTH_CD                                       <!-- 감정방법코드 -->
+                , APRS_DT                                           <!-- 감정일자 -->
+                , APRS_EVL_ISTT_CD                                  <!-- 감정평가기관코드 -->
+                , OPPR_PRSM_FDTN_CTNS                               <!-- 시가추정근거내용 -->
+                , APRS_PRC                                          <!-- 감정가격 -->
+                , MRTG_ACQ_MTH_CD                                   <!-- 담보취득방법코드 -->
+                , MRTG_RTO                                          <!-- 담보비율 -->
+                , MRTG_PRC                                          <!-- 담보가격 -->
+                , HND_DETL_DTM
+                , HND_EMPNO                                         <!-- 조작사원번호 -->
+                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+                , HND_TR_ID                                         <!-- 조작거래id -->
+                , GUID                                              <!-- guid -->
+               )
+        VALUES (
+                 #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+               , #{mrtgCtns}                                        <!-- 담보내용 -->
+               , #{mvppMrtgKndCd}                                   <!-- 동산담보종류코드 -->
+               , #{aprsMthCd}                                       <!-- 감정방법코드 -->
+               , #{aprsDt}                                          <!-- 감정일자 -->
+               , #{aprsEvlIsttCd}                                   <!-- 감정평가기관코드 -->
+               , #{opprPrsmFdtnCtns}                                <!-- 시가추정근거내용 -->
+               , #{aprsPrc}                                         <!-- 감정가격 -->
+               , #{mrtgAcqMthCd}                                    <!-- 담보취득방법코드 -->
+               , #{mrtgRto}                                         <!-- 담보비율 -->
+               , #{mrtgPrc}                                         <!-- 담보가격 -->
+               , SYSDATE
+               , #{hndEmpno}                                        <!-- 조작사원번호 -->
+               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
+               , #{hndTrId}                                         <!-- 조작거래id -->
+               , #{guid}                                            <!-- guid -->
+               )
+    </insert>
+    
+    <delete id="deleteIBIMS215B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        DELETE 
+          FROM IBIMS215B
+         WHERE 1=1
+           AND MRTG_MNGM_NO                                      = #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+    </delete>
+
+</mapper>

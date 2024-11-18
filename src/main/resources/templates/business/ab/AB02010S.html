@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 기업여신 WORKFLOW  -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<div class="ibox-content">
+					
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;조회 조건</h5>
+							</div>
+							<div class="ibox-content">
+								
+								<div class="row form-group form-inline text-right mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">Deal 번호</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB07010S_cntrprtyCd">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;" id="TB07010S_cntrprtyNm" readonly>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">종목코드</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB07010S_cntrprtyCd">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;" id="TB07010S_cntrprtyNm" readonly>
+										</div>
+										<div class="col-sm-4 text-right">
+											<button class="btn btn-primary" type="button" onclick=""><i class="fa fa-search"></i>&nbsp;조회</button>
+											<button id="" class="btn btn-default" onclick=""><i class="fa fa-undo"></i>&nbsp;초기화</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;조회된 내용</h5>
+							</div>
+							<div class="ibox-content">
+								
+								<div class="row form-group form-inline text-right mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">승인일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="tab1_datepicker1" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">투자심사승인기구</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control">
+												<option>신규</option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">위원회번호</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="">
+										</div>
+									</div>
+								</div>
+								
+								<div class="row form-group form-inline text-right mb-2">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">승인금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">거래상대방</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">진행상태</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control">
+												<option>신규</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								
+								<div class="row form-group form-inline text-right mb-3">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 control-label">승인조건</label>
+										<div class="col-sm-11 input-group form-inline mb3">
+											<textarea class="form-control" rows="3"></textarea>
+										</div>
+									</div>
+								</div>
+								
+								<div class="tableFixHeader2">
+									<table class="table result table-bordered">
+										<colgroup>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+										</colgroup>
+										<thead>
+											<tr>
+												<th>종목코드</th>
+												<th>종목명</th>
+												<th>진행상태</th>
+												<th>거래상대방명</th>
+												<th>상품대분류</th>
+												<th>종목승인금액</th>
+												<th>잔액</th>
+												<th>연결종목코드</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+							</div>
+						</div>
+						
+
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;리스크 정보</h5>
+							</div>
+							<div class="ibox-content">
+							
+								<!-- row1 -->
+								<div class="form-group form-inline text-right">
+									<div class="col-sm-10 form-group align-stretch">
+										<div class="col-sm-2 input-group border-right">
+											<button class="col-sm-12 btn btn-default mb-1" onclick="">LOC 관리</button>
+											<button class="col-sm-12 btn btn-default mb-1" onclick="">LOC 목록</button>
+										</div>
+										<div class="col-sm-2 input-group border-right flex-box align-s">
+											<button class="col-sm-12 btn btn-default mb-1" onclick="">기초자산 관리</button>
+										</div>
+										<div class="col-sm-2 input-group border-right flex-box align-s">
+											<button class="col-sm-12 btn btn-default mb-1" onclick="">담보 관리</button>
+										</div>
+										<div class="col-sm-2 input-group border-right flex-box align-s">
+											<button class="col-sm-12 btn btn-default mb-1" onclick="">담보재평가 관리</button>
+										</div>
+										<div class="col-sm-2 input-group">
+											<button class="col-sm-12 btn btn-default mb-1" onclick="">승인조건 관리</button>
+											<button class="col-sm-12 btn btn-default mb-1" onclick="">승인조건 목록</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="tabs-container mb-2">
+					        <ul class="nav nav-tabs" role="tablist" id="ramsTab">
+					            <li><a class="nav-link" data-toggle="tab" href="#tab-1">기업여신</a></li>
+					            <li><a class="nav-link" data-toggle="tab" href="#tab-2">상품집합투자증권</a></li>
+					            <li><a class="nav-link" data-toggle="tab" href="#tab-3">주식(출자포함) / 채권</a></li>
+					        </ul>
+					        <div class="tab-content">
+					            <div role="tabpanel" class="tab-pane " id="tab-1">
+					                <div class="panel-body">
+					                    <div class="row">
+					                        <div class="col-lg-12">
+					                            <div class="ibox">
+					                                <div class="ibox-content border-none">
+					                                    <div class="row text-center flex-jc-i mg0 pd0">
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>거래상대방</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">등록요청</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">법인고객등록</button>
+																			<button class="col-sm-5 btn btn-default mb-1" onclick="">고객확인</button>
+																			<button class="col-sm-3 btn btn-default mb-1" onclick="">CDD</button>
+																			<button class="col-sm-3 btn btn-default mb-1" onclick="">EDD</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px">▶</div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>종목 정보등록</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">기업여신 정보등록<br>(종목코드 생성)</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px">▶</div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>약정</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-9 btn btn-default mb-1" onclick="">약정등록</button>
+																			<div class="col-sm-3 pd0">완료</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px">▶</div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>실행</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">실행</button>
+																		</div>
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">원리금 스케줄 수기등록</button>
+																		</div>
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">실행 취소</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														
+														<hr>
+														
+														<div class="row text-center flex-jc-i mg0 pd0">
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>상환</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">상환 처리</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">상환 취소</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">상환대상 내역조회</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>수수료/비용</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료스케줄 등록</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료수납 처리</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료수납 취소</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료비용 처리</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>품의결재</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">결재관리</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">자금품의결재</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>원장관리</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">원장조회</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">조건변경</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">거래내역 조회</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">부서이수관</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>기타조회</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">연체내역 조회</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+														</div>
+					                                </div>
+					                            </div>
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+					            
+					            <div role="tabpanel" class="tab-pane " id="tab-2">
+					                <div class="panel-body">
+					                    <div class="row">
+					                        <div class="col-lg-12">
+					                            <div class="ibox">
+					                                <div class="ibox-content border-none">
+					                                    <div class="row text-center flex-jc-i mg0 pd0">
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>거래상대방</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">등록요청</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">법인고객등록</button>
+																			<button class="col-sm-5 btn btn-default mb-1" onclick="">고객확인</button>
+																			<button class="col-sm-3 btn btn-default mb-1" onclick="">CDD</button>
+																			<button class="col-sm-3 btn btn-default mb-1" onclick="">EDD</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px">▶</div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>종목 정보등록</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">집합투자증권 정보등록<br>(종목코드 생성)</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">추가정보등록</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px">▶</div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>매수 및 매도</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">매입설정 및 환매입력</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														
+														<hr>
+														
+														<div class="row text-center flex-jc-i mg0 pd0">
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>평가등록</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">분류 및 평가등록</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">타사분 평가등록</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>수수료/비용</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료수납 처리</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료수납 취소</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료비용 처리</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>품의결재</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">결재관리</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">매입설정 및 환매승인</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>원장관리</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">기간 거래명세</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">잔고조회</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">부서이수관</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+														</div>
+					                                </div>
+					                            </div>
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+					            
+					            <div role="tabpanel" class="tab-pane " id="tab-3">
+					                <div class="panel-body">
+					                    <div class="row">
+					                        <div class="col-lg-12">
+					                            <div class="ibox">
+					                                <div class="ibox-content border-none">
+					                                    <div class="row text-center flex-jc-i mg0 pd0">
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>거래상대방</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">등록요청</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">법인고객등록</button>
+																			<button class="col-sm-5 btn btn-default mb-1" onclick="">고객확인</button>
+																			<button class="col-sm-3 btn btn-default mb-1" onclick="">CDD</button>
+																			<button class="col-sm-3 btn btn-default mb-1" onclick="">EDD</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px">▶</div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>종목 정보등록</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">주식 및 채권 정보등록<br>(종목코드 생성)</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">추가정보등록 - PEF</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">추가정보등록 - 채권</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px">▶</div>
+															
+															<div class="col-sm-3 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>매수 및 매도</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group pd0">
+																			<div class="col-sm-6 input-group flex-jc-sb">
+																				<button class="col-sm-12 btn btn-default mb-1" onclick="">비상장주식 거래</button>
+																			</div>
+																			<div class="col-sm-6 input-group">
+																				<button class="col-sm-12 btn btn-default mb-1" onclick="">입출고등록(상품주식)</button>
+																			</div>
+																		</div>
+																		<div class="col-sm-12 input-group pd0">
+																			<div class="col-sm-6 input-group flex-jc-sb">
+																				<button class="col-sm-12 btn btn-default mb-1" onclick="">출자금(PEF) 거래</button>
+																			</div>
+																			<div class="col-sm-6 input-group">
+																				<button class="col-sm-12 btn btn-default mb-1" onclick="">통합주문(상품주식)</button>
+																			</div>
+																		</div>
+																		<div class="col-sm-12 input-group pd0">
+																			<div class="col-sm-6 input-group flex-jc-sb">
+																				<button class="col-sm-12 btn btn-default mb-1" onclick="">채권 매매</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														
+														<hr>
+														
+														<div class="row text-center flex-jc-i mg0 pd0">
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>평가등록</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">출자금 손상등록</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>수수료/비용</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료수납 처리</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료수납 취소</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">수수료비용 처리</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>품의결재</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">결재관리</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>잔고조회</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">펀드별 보유주식현황</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">상품채권 펀드별 잔고</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="align-self-center w-20px"></div>
+															
+															<div class="col-sm-2 border pd0">
+																<div class="ibox">
+																	<div class="ibox-title border-none">
+																		<h5>원장관리</h5>
+																	</div>
+																	<div class="ibox-content border-none">
+																		<div class="col-sm-12 input-group flex-jc-sb">
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">출자금 등 거래내역</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">출자금 등 기간명세</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">주식관련채권 권리행사</button>
+																			<button class="col-sm-12 btn btn-default mb-1" onclick="">부서이수관</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+														</div>
+					                                </div>
+					                            </div>
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+					            
+					        </div>
+					    </div>
+						
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;보고서 및 현황관리</h5>
+							</div>
+							<div class="ibox-content">
+							
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-10 form-group">
+										<div class="col-sm-2 input-group">
+											<button class="col-sm-12 btn btn-default" onclick="">딜별 익스포져 및 손익 현황</button>
+										</div>
+										<div class="col-sm-3 input-group">
+											<button class="col-sm-12 btn btn-default" onclick="">IB자산 익스포져 현황(딜별/종목별)</button>
+										</div>
+										<div class="col-sm-2 input-group">
+											<button class="col-sm-12 btn btn-default" onclick="">IB그룹 익스포져 현황</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				
+					</div>
+				</div>
+
+				
+
+			</div>
+			<!-- 결과 ed -->
+		</div>
+	</div>
+
+</th:block>
+
+</html>

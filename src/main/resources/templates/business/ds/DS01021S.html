@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block th:fragment="DS01021S">
+	<!-- modal -->
+	<div id="modal-DS01021S" class="modal fade" role="dialog" aria-labelledby="lb-ds01021s" aria-hidden="true">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">대시보드_관리영역 상세검색</h4>
+					<div class="col-sm-1 text-right">
+						<button type="button" class="btn btn-default" onclick="modalClose_DS01021S()"><i
+								class="fa fa-times"></i></button>
+					</div>
+				</div>
+
+				<div class="modal-body">
+					<input type="hidden" name="prefix" id="prefix" value="" />
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="ibox">
+								<!-- 조회 st -->
+								<div class="ibox-title border-none">
+									<form method="get">
+										<div class="row form-group form-inline text-right">
+											<!-- 검색 버튼 -->
+											<div class="col-sm-12 text-right mb-2">
+												<button class="btn btn-primary mr-2" type="button" onclick="">
+													<i class="fa fa-search"></i>&nbsp;조회
+												</button>
+											</div>
+											<!-- 1 -->
+											<div class="col-sm-12 form-group mb-2">
+												<label class="col-sm-1 col-form-label">조회시점</label>
+												<div class="col-sm-2 input-group date">
+													<input type="text" class="form-control" name="FromDate" value=""
+														oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												</div>
+												<label class="col-sm-2 col-form-label">IB/PI 투자자산(대체투자)</label>
+												<div class="col-sm-2 input-group">
+													<select class="form-control">
+														<option>기준항목별 조회</option>
+														<option>투자국가</option>
+														<option>금융상품분류(상세)</option>
+														<option>사업지역</option>
+														<option>사업단계구분</option>
+														<option>투자물건</option>
+														<option>투자물건상세</option>
+													</select>
+												</div>
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- 투자국가 -</option>
+														<option>대한민국</option>
+														<option>오스트레일리아</option>
+														<option>독일</option>
+														<option>영국</option>
+														<option>아일랜드</option>
+														<option>일본</option>
+														<option>미국</option>
+														<option>베트남</option>
+													</select>
+												</div>
+												<div class="col-sm-2 input-group">
+													<select class="form-control">
+														<option>- 사업지역 -</option>
+														<option>해당無</option>
+														<option>서울</option>
+														<option>부산</option>
+														<option>대구</option>
+														<option>인천</option>
+														<option>광주</option>
+														<option>대전</option>
+														<option>울산</option>
+														<option>세종</option>
+														<option>경기</option>
+														<option>강원</option>
+														<option>충남</option>
+														<option>전북</option>
+														<option>전남</option>
+													</select>
+												</div>
+											</div>
+											<!-- 2 -->
+											<div class="col-sm-12 form-group mb-2">
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- 금융상품분류 -</option>
+														<option>자본증권(PEF)</option>
+														<option>자본증권(PreIPO)</option>
+														<option>자본증권(주식)</option>
+														<option>집합투자증권</option>
+														<option>대출채권</option>
+														<option>우발채무(확략보증)</option>
+														<option>우발채무(매입약정)</option>
+														<option>우발채무(HUG)</option>
+													</select>
+												</div>
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- 사업단계 -</option>
+														<option>토지 매입</option>
+														<option>착공</option>
+														<option>분양</option>
+														<option>준공</option>
+														<option>실물</option>
+													</select>
+												</div>
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- 투자물건 -</option>
+														<option>주거시설</option>
+														<option>상업/업무시설</option>
+														<option>산업시설</option>
+														<option>토지/기타</option>
+													</select>
+												</div>
+												<div class="col-sm-3 input-group">
+													<select class="form-control">
+														<option>- 투자물건상세 -</option>
+														<option>아파트(주상복합)</option>
+														<option>도시형생활주택</option>
+														<option>오피스텔</option>
+														<option>주거복합시설</option>
+														<option>기타 주거시설</option>
+														<option>오피스</option>
+														<option>상가(판매,근생)</option>
+														<option>지식산업센터</option>
+														<option>운동시설(골프장)</option>
+														<option>교육시설</option>
+														<option>숙박시설</option>
+														<option>상업복합시설</option>
+														<option>기타 상업/압무시설</option>
+														<option>원유가스시설</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<!-- 조회 ed -->
+
+								<!-- 조회결과 -->
+								<div class="ibox-content border-none">
+									<table class="table result table-bordered">
+										<thead class="text-center">
+											<tr>
+												<th rowspan="2" colspan="2">구분</th>
+												<th rowspan="2">투자국가</th>
+												<th colspan="2">정상</th>
+												<th colspan="2">사전</th>
+												<th colspan="2">증점</th>
+												<th colspan="2">적극</th>
+												<th colspan="2">합계</th>
+											</tr>
+											<tr>
+												<th>잔고(억원)</th>
+												<th>상품수</th>
+												<th>잔고(억원)</th>
+												<th>상품수</th>
+												<th>잔고(억원)</th>
+												<th>상품수</th>
+												<th>잔고(억원)</th>
+												<th>상품수</th>
+												<th>잔고(억원)</th>
+												<th>상품수</th>
+											</tr>
+										</thead>
+
+										<tbody>
+											<tr>
+												<td rowspan="3" class="text-center">S&T (투자운용부)</td>
+												<td class="text-center">고유</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td class="text-center">퇴직</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td class="text-center">WM</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td colspan="2" class="text-center">S&T (전략자산운용부)</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td colspan="2" class="text-center">경영관리부</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td colspan="2" class="text-center">대체투자관리부</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td colspan="2" class="text-center">IB</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td colspan="2" class="text-center">WN Inventory</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td colspan="2" class="text-center">합계</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</th:block>
+
+</html>

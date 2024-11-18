@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/ramsLayout}"
+>
+  <th:block layout:fragment="script">
+    <script th:src="@{js/common.js}"></script>
+    <script th:src="@{js/business/tb/TB02020S.js}"></script>
+    <script th:src="@{js/business/tb/TB03021P.js}"></script>
+  </th:block>
+
+  <th:block layout:fragment="modalpopup">
+    <th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+  </th:block>
+
+  <th:block layout:fragment="customContent">
+    <div class="wrapper wrapper-content animated fadeIn">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="ibox">
+            <!-- 조회영역 -->
+            <!-- <div class="ibox-content i-filter">
+              <div class="form-group form-inline row mb-0">
+                <div class="col-sm-6 input-group text-right">
+                  <label class="col-sm-2 control-label">Deal번호</label>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<input type="text" class="form-control" id="">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"	onclick="callTB03021P('TB03020S');">
+                          <i class="fa fa-search"></i></button>
+											</span>
+										</div>
+									</div>
+                </div>
+                <div class="col-sm-2 text-right">
+                  <button class="btn btn-primary" onclick="">
+                    <i class="fa fa-search"></i>&nbsp;조회</button>
+                  <button class="btn btn-default" type="button" onclick="">
+                    <i class="fa fa-undo"></i>&nbsp;초기화</button>
+                </div>
+              </div>
+            </div> -->
+            <!-- 조회결과 -->
+            <div class="ibox-content h-default">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="ibox">
+                    <div class="ibox-title">
+                      <h5>▶ 딜 정보</h5>
+                    </div>
+                    <div class="ibox-content mb-2">
+                      <div id="TB02020_gridWfDealInfo"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="ibox">
+                    <div class="ibox-title">
+                      <h5>▶ 맵 관리</h5>
+                    </div>
+                    <div class="ibox-content">
+                      <div id="TB02020_gridMapInfo"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="ibox">
+                    <div class="ibox-title">
+                      <h5>▶ 맵 이력</h5>
+                    </div>
+                    <div class="ibox-content">
+                      <div id="TB02020_gridMapRecInfo"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</html>

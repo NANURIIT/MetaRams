@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/toggleBtn.js}"></script>
+	<script th:src="@{js/business/tb/TB06020S.js}"></script>
+	<script th:src="@{js/business/tb/TB06017P.js}"></script>
+	<script th:src="@{js/business/tb/TB06019P.js}"></script>
+	<script th:src="@{js/business/tb/TB06013P.js}"></script>
+	<script th:src="@{js/business/tb/TB06012P.js}"></script>
+	<script th:src="@{js/business/tb/TB06011P.js}"></script>
+	<script th:src="@{js/business/tb/TB04011P.js}"></script>
+	<script th:src="@{js/business/tb/TB03023P.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+	<script th:src="@{js/business/tb/TB07022P.js}"></script>
+	<script th:src="@{js/business/tb/TB06018P.js}"></script>
+	<script th:src="@{js/business/tb/TB03061P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB06019P :: TB06019P"></th:block>
+	<th:block th:replace="business/tb/TB06013P :: TB06013P"></th:block>
+	<th:block th:replace="business/tb/TB06012P :: TB06012P"></th:block>
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
+	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<th:block th:replace="business/tb/TB06017P :: TB06017P"></th:block>
+	<th:block th:replace="business/tb/TB07022P :: TB07022P"></th:block>
+	<th:block th:replace="business/tb/TB06018P :: TB06018P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 집합투자증권 정보등록 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- ibox -->
+				<div class="ibox">
+					<div class="ibox-content">
+						<!-- row1 -->
+						<div class="row form-group form-inline text-right mb-1">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1 col-form-label text-right"><span
+										class="req"></span>Deal번호</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB06020S_ibDealNo">
+										<span class="input-group-append">
+											<button type="button" id="" class="btn btn-default"
+												onclick="callTB04011P('TB06020S');"><i
+													class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB06020S_ibDealNm" readonly>
+									</div>
+								</div>
+								<input type="hidden" class="form-control" id="TB06020S_lstCCaseCcd">
+								<input type="hidden" class="form-control" id="TB06020S_riskInspctCcd">
+								<label class="col-sm-1 col-form-label text-right">종목코드</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB06020S_prdtCd">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default"
+												onclick="callTB06011P('TB06020S');"><i
+													class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" style="width:210px;"
+											id="TB06020S_prdtNm" readonly>
+									</div>
+								</div>
+								<!-- <label class="col-sm-1 col-form-label text-right">부수안건구분</label>
+								<div class="col-sm-2">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB06020S_lstCCaseCcdNm" readonly>
+									</div>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">리스크심사구분</label>
+								<div class="col-sm-2">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB06020S_riskInspctCcdNm" readonly>
+									</div>
+								</div> -->
+								<div class="col-sm text-right">
+									<button class="btn btn-primary" type="button" onclick="TB06020Sjs.getDealList();"><i
+											class="fa fa-search"></i>&nbsp;조회</button>
+									<button class="btn btn-default" onclick="TB06020Sjs.resetSearchRequiment();"><i
+											class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
+								</div>
+							</div>
+						</div>
+						<!-- row2 -->
+						<div class="row form-group form-inline text-right">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1 col-form-label text-right">안건명</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB06020S_mtrNm" readonly>
+									</div>
+								</div>
+								<div class="col-sm-3">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ibox">
+					<div class="ibox-content">
+						<!-- row1 -->
+						<div class="row form-group form-inline text-right">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1">승인일자</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" id="TB06020S_apvlDt" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">승인심사기구</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" id="TB06020S_I008" disabled>
+										<option value=""></option>
+									</select>
+								</div>
+								<label class="col-sm-1 text-right">승인조건(셀다운)</label>
+								<div class="col-sm-2 input-group input-h">
+									<div class="col-sm-12 text-left input-group">
+										<!-- <input type="radio" value="Y" name="TB06020S_sdnCndtF" onclick="return false;">&nbsp;Y -->
+										<input type="text" class="form-control" id="TB06020S_sdnCndtDwn" readonly>
+									</div>
+									<!-- <div class="col-sm-6 text-left input-group">
+										<input type="radio" value="N" name="TB06020S_sdnCndtF" onclick="return false;">&nbsp;N
+									</div> -->
+								</div>
+								<div class="col-sm-3">
+								</div>
+							</div>
+						</div>
+						<!-- row2 -->
+						<div class="row form-group form-inline text-right mb-2">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1">위원회번호</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control text-right" id="TB06020S_invJdgmComtNo"
+										readonly>
+								</div>
+								<label class="col-sm-1">딜 승인금액</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control text-right" id="TB06020S_sumApvlAmt"
+										readonly>
+								</div>
+								<label class="col-sm-1 text-right">승인조건(기타)</label>
+								<div class="col-sm-2 input-group input-h">
+									<div class="col-sm-12 text-left input-group">
+										<!-- <input type="radio" value="Y" name="TB06020S_etcCndtF" onclick="return false;">&nbsp;Y -->
+										<input type="text" class="form-control" id="TB06020S_sdnCndtEtc" readonly>
+									</div>
+									<!-- <div class="col-sm-6 text-left input-group">
+										<input type="radio" value="N" name="TB06020S_etcCndtF" onclick="return false;">&nbsp;N
+									</div> -->
+								</div>
+								<div class="col-sm-3">
+								</div>
+							</div>
+						</div>
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;종목기본정보</h5>
+								<div class="btn-group ml-3" role="group" aria-label="">
+									<!-- <button class="btn btn-default btn-xs toggleBtn1" onclick="" id="toggleBtn1">당사</button>
+                                    <button class="btn btn-info btn-xs toggleBtn2" onclick="" id="toggleBtn2">타사</button> -->
+								</div>
+								<!-- <span class="color-bule">(판매사가 당사인 경우 법인금융상품2실에서 부여 받은 펀드코드(FN + 숫자 6자리)를 아래 종목코드에 입력)</span> -->
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>종목명</label>
+										<div class="col-sm-5 input-group">
+											<input type="text" class="form-control" id="TB06020S_res_prdtNm">
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>종목코드</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="TB06020S_res_prdtCd">
+										</div>
+										<label class="col-sm-1 col-form-label text-right">진행상태</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_I011" disabled>
+												<option></option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right">거래상대방</label>
+										<div class="col-sm-5 input-group">
+											<input type="hidden" id="TB06020S_corpRgstNo">
+											<!-- <input type="text" class="form-control" id="TB06020S_bsnsRgstNo"> -->
+											<input type="text" class="form-control" id="TB06020S_ardyBzepNo">
+											<span class="input-group-append">
+												<button type="button" id="" class="btn btn-default"
+													onclick="callTB03061P('TB06020S');"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<!-- <input type="text" class="form-control" id="TB06020S_entpRnm" style="width:180px;" readonly> -->
+											<input type="text" class="form-control" id="TB06020S_bzepName"
+												style="width:180px;" readonly>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">내부신용등급</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_I012">
+												<option value="">평가정보없음</option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">신용조회일</label>
+										<div class="col-sm-2">
+											<div class="input-group date">
+												<input type="text" class="form-control" placeholder="yyyy-mm-dd"
+													id="TB06020S_crdtInqDt"
+													oninput="this.value = this.value.replace(/[^0-9-]/g, '');"><span
+													class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;자산분류</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>대분류</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_E022" disabled>
+												<option value="">선택</option>
+											</select>
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"
+													onclick="callTB06018P('TB06020S');"><i
+														class="fa fa-search"></i></button>
+											</span>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>중분류</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_E023" disabled>
+												<option value="">선택</option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>소분류</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_P004" disabled>
+												<option value="">선택</option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>IB상품분류</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_I002">
+												<option value="">선택</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>대체투자</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06020S_altnInvYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" name="TB06020S_altnInvYn">&nbsp;N
+											</div>
+											<div class="col-sm-6">
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>펀드코드</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="TB06020S_fndCd"
+												style="width:30px;">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"
+													onclick="callTB07022P('TB06020S')"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" id="TB06020S_fndNm"
+												style="width:70px;" readonly>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>데스크코드</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_D012">
+												<option value="">선택</option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>투자국가</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_C006">
+												<option value="">선택</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<!-- row3 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>외환헷지여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06020S_frxcHdgeYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" name="TB06020S_frxcHdgeYn">&nbsp;N
+											</div>
+											<div class="col-sm-6">
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- row3
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										
+									</div>
+								</div> -->
+								<!-- row3  2024.07.27 임대표님 삭제요청
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>부동산금융</label>
+										<div class="col-sm-2 input-group  input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06020S_rlesFnnYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" name="TB06020S_rlesFnnYn">&nbsp;N
+											</div>
+											<select class="form-control" id="TB06020S_R017" disabled>
+												<option value="">선택</option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>SOC여부</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06020S_socYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" name="TB06020S_socYn">&nbsp;N
+											</div>
+											<select class="form-control" id="TB06020S_S002" disabled>
+												<option value="">선택</option>
+											</select>
+										</div>
+										<div class="col-sm-6 input-group">
+										</div>
+									</div>
+								</div>
+								-->
+							</div>
+						</div>
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;금융조건</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- row1 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목
+											승인금액</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="TB06020S_rcgAmt"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+												onchange="inputNumberFormat2(this);">
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>통화코드</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_I027">
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>단위형여부</label>
+										<div class="col-sm-2 input-group  input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06020S_untpFndYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" name="TB06020S_untpFndYn">&nbsp;N
+											</div>
+											<div class="col-sm-6">
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>사모펀드여부</label>
+										<div class="col-sm-2 input-group  input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06020S_pplcFndYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" name="TB06020S_pplcFndYn">&nbsp;N
+											</div>
+											<div class="col-sm-6">
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- row2 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>담당부서</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" style="width:30px;"
+												id="TB06020S_dprtCd">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"
+													onclick="callTB03022P('TB06020S')"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;"
+												id="TB06020S_dprtNm" readonly>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">설정일</label>
+										<div class="col-sm-2 input-group date">
+											<input type="text" class="form-control" id="TB06020S_stupDt" value=""
+												placeholder="yyyy-mm-dd"
+												oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">신탁종료일</label>
+										<div class="col-sm-2 input-group date">
+											<input type="text" class="form-control" id="TB06020S_trustEdDt" value=""
+												placeholder="yyyy-mm-dd"
+												oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">환매가능일</label>
+										<div class="col-sm-2 input-group date">
+											<input type="text" class="form-control" id="TB06020S_rpchPsblDt" value=""
+												placeholder="yyyy-mm-dd"
+												oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+								</div>
+								<!-- row3 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>담당자</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" style="width:30px;"
+												id="TB06020S_empNo">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default"
+													onclick="callTB03022P('TB06020S')"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;"
+												id="TB06020S_empNm" readonly>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>당사역할</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB06020S_T002">
+												<option value="">선택</option>
+											</select>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>단독투자</label>
+										<div class="col-sm-2 input-group  input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06020S_sglInvYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" name="TB06020S_sglInvYn">&nbsp;N
+											</div>
+											<div class="col-sm-6">
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>담보</label>
+										<div class="col-sm-2 input-group  input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06020S_mrtgStupYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" name="TB06020S_mrtgStupYn">&nbsp;N
+											</div>
+											<div class="col-sm-6">
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- row4 -->
+								<div class="row form-group form-inline text-right">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span
+												class="req"></span>셀다운대상</label>
+										<div class="col-sm-2 input-group  input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" name="TB06020S_sdnTrgtYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" name="TB06020S_sdnTrgtYn">&nbsp;N
+											</div>
+											<div class="col-sm-6">
+											</div>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>총 발행좌수</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" id="TB06020S_totIssuShqt"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+												onchange="inputNumberFormat2(this);">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ibox">
+							<div class="text-right">
+								<button class="btn btn-default" type="button" onclick="TB06020Sjs.managePrdtCd(0);"
+									style="margin-left:2px; margin-right:2px;" id="regPrdt" disabled>종목 등록</button>
+								<button class="btn btn-default" type="button" onclick="TB06020Sjs.managePrdtCd(1);"
+									style="margin-left:2px; margin-right:2px;" id="delPrdt" disabled>종목 삭제</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of ibox -->
+				<!-- tab -->
+
+
+				<div class="tabs-container mb-1">
+					<ul class="nav nav-tabs" role="tablist" id="TB06020S_ramsTab">
+						<li><a class="nav-link active" data-toggle="tab" href="#TB06020S_tab-1">셀다운 승인조건</a></li>
+						<li><a class="nav-link" data-toggle="tab" href="#TB06020S_tab-2" onclick="TB06020Sjs.setLstMrtg();">담보/보증 정보</a></li>
+						<li><a class="nav-link" data-toggle="tab" href="#TB06020S_tab-3" onclick="TB06020Sjs.setAtchFle();">첨부파일</a></li>
+					</ul>
+					<div class="tab-content">
+						<!-- 셀다운 승인조건 -->
+						<div role="tabpanel" class="tab-pane active" id="TB06020S_tab-1">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<input type="hidden" id="TB06020S_appvCndtSn">
+										<!-- row1 -->
+										<div class="text-left mb-2">
+											<button class="btn btn-default" id="registApvlCnd"
+												onclick="callTB06012P('TB06020S');" disabled="disabled">승인조건 등록</button>
+											<!-- <button class="col-sm-12 btn btn-default">승인조건 연결</button> -->
+										</div>
+										<!-- row1 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 col-form-label text-right">셀다운일자기준</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" style="width:70px;" id="TB06020S_D007"
+														disabled>
+														<option value=""></option>
+													</select>
+													<input type="text" class="form-control text-right"
+														style="width:30px;" id="TB06020S_sdwnTlmtMnum"
+														oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+														disabled>개월
+												</div>
+												<label class="col-sm-1 col-form-label text-right">셀다운목표일자</label>
+												<div class="col-sm-2">
+													<div class="input-group date">
+														<input type="text" class="form-control" id="TB06020S_sdwnTlmtDt"
+															value="" placeholder="yyyy-mm-dd"
+															oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+															disabled><span class="input-group-addon"><i
+																class="fa fa-calendar"></i></span>
+													</div>
+												</div>
+												<div class="col-sm-5 input-group">
+												</div>
+											</div>
+										</div>
+										<!-- row2 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 col-form-label text-right">셀다운금액기준</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" style="width:70px;" id="TB06020S_D008"
+														disabled>
+														<option value=""></option>
+													</select>
+													<input type="text" class="form-control text-right"
+														style="width:41px;" id="TB06020S_sdwnRto"
+														oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+														disabled>%
+												</div>
+												<label class="col-sm-1 col-form-label text-right">셀다운목표금액</label>
+												<div class="col-sm-2 input-group">
+													<input type="text" class="form-control text-right"
+														id="TB06020S_sdwnTlmtAmt"
+														oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+														onchange="inputNumberFormat2(this);" disabled>
+												</div>
+												<div class="col-sm-5 input-group">
+												</div>
+											</div>
+										</div>
+										<div class="text-right" style="padding-right:5px;">
+											<!-- <button class="btn btn-success" type="button" onclick="saveAppvCndt();"><i class="fa fa-save"></i>&nbsp;저장</button> -->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 담보정보 -->
+						<div role="tabpanel" class="tab-pane " id="TB06020S_tab-2">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="text-left mb-2">
+											<button class="btn btn-default" id="registMrtgCnnc"
+												onclick="callTB06013P('TB06020S');" disabled="disabled">담보/보증
+												등록/연결</button>
+											<input type="hidden" id="TB06020S_mrtgMngmNo_forPop" value="">
+											<input type="hidden" id="TB06020S_mrtgNm_forPop" value="">
+										</div>
+										<div id="TB06020S_lstMrtgInfo" style="margin:auto;">
+										</div>
+										<!-- <div class="ibox">
+											<div class="ibox-content" style="border:0px;">
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-2 form-group">
+														<button class="col-sm-12 btn btn-default" onclick="callTB06013P('TB06020S');">담보/보증 등록/연결</button>
+													</div>
+												</div>
+												<div class="row form-group form-inline text-right mb-1">
+													<div class="col-sm-12 form-group">
+														<table class="table table-bordered">
+															<colgroup>
+																<col>
+																<col>
+																<col>
+																<col>
+																<col>
+																<col>
+																<col>
+															</colgroup>
+															<thead class="text-center">
+																<tr>
+																	<th>담보번호</th>
+																	<th>담보대분류</th>
+																	<th>담보중분류</th>
+																	<th>담보명</th>
+																	<th>담보거래상대방명</th>
+																	<th>담보설정일</th>
+																	<th>담보평가액</th>
+																</tr>
+															</thead>
+															<tbody id="TB06020S_lstMrtgInfo">
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 첨부파일 -->
+						<div role="tabpanel" class="tab-pane " id="TB06020S_tab-3">
+							<div class="panel-body">
+								<div class="row">
+									<!-- 첨부파일 start -->
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶ 관련자료</h5>
+												<div class="ibox-tools">
+													<div th:fragment="file" id="file-upload">
+														<form id="upload-file-form">
+															<input type="hidden" id="fileKey1" name="fileKey1">
+															<input type="hidden" id="fileKey2" name="fileKey2"
+																value="*">
+															<input type="hidden" class="form-control" id="key1">
+															<button class="btn btn-default btn-xs" type="button"
+																id="UPLOAD_AddFile"><i
+																	class="fa fa-upload"></i>&nbsp;파일추가</button>
+															<button class="btn btn-default btn-xs" type="button"
+																id="UPLOAD_DelFiles"><i
+																	class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+															<div style="display: none">
+																<input type="file" class="custom-file-input"
+																	id="deal-upload-input" name="uploadfile" accept="*">
+															</div>
+														</form>
+													</div>
+												</div>
+											</div>
+											<div class="ibox-content">
+												<table class="table table-bordered">
+													<colgroup>
+														<col style="width: 5%;">
+														<col style="width: 20%;">
+														<col style="width: 5%;">
+														<col style="width: 10%;">
+														<col style="width: 50%;">
+														<col style="width: 30%;">
+													</colgroup>
+													<thead>
+														<tr>
+															<th></th>
+															<th>Main Key</th>
+															<th>Sub Key</th>
+															<th>일련번호</th>
+															<th>파일명</th>
+															<th>등록일자</th>
+														</tr>
+													</thead>
+													<tbody id="UPLOAD_FileList">
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									<!-- 첨부파일 end -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix mt-2">
+					<div class="float-left">
+						<button class="btn btn-warning" onclick="callTB06019P('TB06020S');">기업체 등록</button>
+						<!-- <button class="btn btn-warning" onclick="callTB06015P('TB06020S');">이자계산시뮬레이션</button> -->
+					</div>
+					<div class="float-right">
+						<!-- <button class="btn btn-warning" onclick="showAlert();">부의합의 요청</button> -->
+					</div>
+				</div>
+			</div>
+		</div><!-- div row -->
+	</div>
+</th:block>
+
+</html>

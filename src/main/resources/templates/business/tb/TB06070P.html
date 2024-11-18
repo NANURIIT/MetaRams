@@ -1,0 +1,112 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/file.js}"></script>
+	<script th:src="@{js/business/tb/TB06070P.js}"></script>
+</th:block>
+
+<th:block th:fragment="TB06070P">
+	<!-- modal -->
+	<div id="modal-TB06070P" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">상품정보검색</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB06070P()"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="prefix" id="TB06070P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox mb-0">
+								<!-- 조회조건영역 -->
+				    			<div class="ibox-content i-filter text-right">
+									<div class="form-group row form-inline">
+										<div class="col-sm-11 form-group mb-1">
+											<label class="col-sm-1 col-form-label">상품명</label>
+											<div class="col-sm-5 input-group"><input type="text" class="form-control" id="TB06070P_prdtNm"></div>
+											<label class="col-sm-1 col-form-label">계정과목</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB06070P_actCd">
+														<option value="">전체</option>
+													</select>
+												</div>
+											</div>
+											<label class="col-sm-1 col-form-label text-nowrap">금융상품분류</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB06070P_fncGdsDvdCd">
+														<option value="">전체</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-11 form-group mb-1">
+											<label class="col-sm-1 col-form-label">SPPI결과</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB06070P_sppiYn">
+														<option value="">전체</option>
+														<option value="Y">Y</option>
+														<option value="N">N</option>
+													</select>
+												</div>
+											</div>
+											<label class="col-sm-1 col-form-label">대출만기</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB06070P_loanExpdCd">
+														<option value="">전체</option>
+													</select>
+												</div>
+											</div>
+											<label class="col-sm-1 col-form-label">부동산여부</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB06070P_rlesReltYn">
+														<option value="">전체</option>
+														<option value="Y">Y</option>
+														<option value="N">N</option>
+													</select>
+												</div>
+											</div>
+											<label class="col-sm-1 col-form-label">인수금융</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB06070P_udwtFnncYn">
+														<option value="">전체</option>
+														<option value="Y">Y</option>
+														<option value="N">N</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-sm-1 text-right">
+											<button type="button" class="btn btn-primary mr-2" onclick="selectTB06070P()" ><i class="fa fa-search"></i>&nbsp;조회</button>
+										</div>
+									</div>
+				    			</div>
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+				    				<table class="table result table-bordered footable" style="height: 10px">
+				    					<div id="TB06070P_colModel"></div>
+									</table>
+				    			</div>
+							</div><!-- ibox -->
+						</div>
+					</div>
+				</div>
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

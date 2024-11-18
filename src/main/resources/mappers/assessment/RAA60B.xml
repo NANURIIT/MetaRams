@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.RAA60BMapper">
+
+	<!-- 관리이력 조회 -->
+	<select id="getEamDetail" parameterType="com.nanuri.rams.business.common.vo.RAA60BVO" resultType="com.nanuri.rams.business.common.vo.RAA60BVO">
+		SELECT A.IB_DEAL_NO							AS	IB_DEAL_NO				<!-- IBDEAL명 -->
+			 , A.RISK_INSPCT_CCD					AS	RISK_INSPCT_CCD			<!-- 리스크심사구분코드 -->
+			 , A.LST_C_CASE_CCD						AS	LST_C_CASE_CCD			<!-- 부수안건구분코드 -->
+			 , A.SQ									AS	SQ						<!-- 일련번호 -->
+			 , DATE_FORMAT(A.RGST_DT, '%Y-%m-%d')	AS	RGST_DT					<!-- 등록일자 -->
+			 , A.EVNT_AFTR_MNG_CCD					AS	EVNT_AFTR_MNG_CCD		<!-- 사후관리구분코드 -->
+			 , B.CD_VL_NM 							AS	EVNT_AFTR_MNG_CCD_NM	<!-- 사후관리구분코드명 -->
+			 , A.EVNT_AFTR_MNG_CNTNT				AS	EVNT_AFTR_MNG_CNTNT		<!-- 사후관리내용 -->
+			 , A.FST_RGST_P_ENO						AS 	FST_RGST_P_ENO			<!-- 최초등록자사번 -->
+			 , C.EMP_NM 							AS  FST_RGST_P_ENO_NM		<!-- 최초등록자이름 -->
+		  FROM RAA60B A 														<!-- 부실자산사후관리이력정보 -->
+		  LEFT JOIN RAA91B B
+			ON B.CMNS_CD_GRP 						= 'F002'
+		   AND A.EVNT_AFTR_MNG_CCD					= B.CD_VL_ID				<!-- 사후관리구분코드명 -->
+		  LEFT JOIN RAA99A C						
+		    ON A.FST_RGST_P_ENO 					= C.ENO						<!-- 사원 이름 -->
+		 WHERE A.IB_DEAL_NO							= #{ibDealNo		}		<!-- IBDEAL번호 -->
+		   AND A.RISK_INSPCT_CCD					= #{riskInspctCcd	}		<!-- 리스크심사구분코드 -->
+		   AND A.LST_C_CASE_CCD						= #{lstCCaseCcd		}		<!-- 부수안건구분코드 -->
+		 ORDER BY SQ DESC
+	</select>
+	
+	<!-- 관리이력 등록 -->
+	<insert id="registEamInfo" parameterType="com.nanuri.rams.business.common.dto.RAA60BDTO">
+		INSERT INTO RAA60B										<!-- 부실자산사후관리이력정보 -->
+			   (
+			   	IB_DEAL_NO										<!-- IBDEAL번호 -->
+				, RISK_INSPCT_CCD								<!-- 리스크심사구분코드 -->
+				, LST_C_CASE_CCD								<!-- 부수안건구분코드 -->
+				, SQ											<!-- 항목일련번호 -->
+				, EVNT_AFTR_MNG_CCD								<!-- 사후관리구분코드 -->
+				, EVNT_AFTR_MNG_CNTNT							<!-- 사후관리내용 -->
+				, RGST_DT										<!-- 등록일자 -->
+				, RGST_TM										<!-- 등록시간 -->
+				, FST_RGST_P_ENO								<!-- 최초등록자사번 -->
+				, HNDL_DY_TM									<!-- 처리일시 -->
+				, HNDL_DPRT_CD									<!-- 처리부점코드 -->
+				, HNDL_P_ENO									<!-- 처리자사번 -->
+			   )
+		VALUES (
+				#{ibDealNo         	 }							<!-- IBDEAL번호 -->
+				, #{riskInspctCcd    }							<!-- 리스크심사구분코드 -->
+				, #{lstCCaseCcd      }							<!-- 부수안건구분코드 -->
+				, #{sq			 	 }    						<!-- 항목일련번호 -->
+				, #{evntAftrMngCcd	 }							<!-- 사후관리구분코드 -->
+				, #{evntAftrMngCntnt }							<!-- 사후관리내용 -->
+				, DATE_FORMAT(NOW(), '%Y%m%d')					<!-- 등록일자 -->
+				, DATE_FORMAT(NOW(), '%H%i%s')					<!-- 등록시간 -->
+				, #{hndlPeno		 }							<!-- 최초등록자사번 -->
+				, CURRENT_TIMESTAMP()							<!-- 처리일시 -->
+				, #{hndlDprtCd       } 							<!-- 처리부점코드 -->
+				, #{hndlPeno		 } 							<!-- 처리자사번 -->
+			   )
+		
+	</insert>
+	
+	<!-- 관리이력 수정 -->
+	<update id="updateEamInfo" parameterType="com.nanuri.rams.business.common.dto.RAA60BDTO">
+		UPDATE RAA60B 											<!-- 부실자산사후관리이력정보 -->
+		   SET EVNT_AFTR_MNG_CCD 	= #{evntAftrMngCcd		}	<!-- 사후관리구분코드 -->
+		     , EVNT_AFTR_MNG_CNTNT  = #{evntAftrMngCntnt 	}	<!-- 사후관리내용 -->
+			 , HNDL_DY_TM 			= CURRENT_TIMESTAMP() 		<!-- 처리일시 -->
+			 , HNDL_DPRT_CD			= #{hndlDprtCd			}	<!-- 처리부점코드 -->
+			 , HNDL_P_ENO			= #{hndlPeno			}	<!-- 처리자사번 -->
+		 WHERE IB_DEAL_NO			= #{ibDealNo			}	<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD		= #{riskInspctCcd		}	<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD		= #{lstCCaseCcd			}	<!-- 부수안건구분코드	 -->
+		   AND SQ					= #{sq					}	<!-- 일련번호 -->
+	</update>
+	
+	<!-- 관리이력 삭제 -->
+	<delete id="deleteEamInfo" parameterType="com.nanuri.rams.business.common.vo.RAA60BVO">
+		DELETE FROM RAA60B										<!-- 부실자산사후관리이력정보 -->
+		 WHERE IB_DEAL_NO			= #{ibDealNo			}	<!-- IBDEAL번호 -->
+		   AND RISK_INSPCT_CCD		= #{riskInspctCcd		}	<!-- 리스크심사구분코드 -->
+		   AND LST_C_CASE_CCD		= #{lstCCaseCcd			}	<!-- 부수안건구분코드	 -->
+		   AND SQ					= #{sq					}	<!-- 일련번호 -->
+	</delete>
+	
+	<!-- 관리이력 일련번호 조회 -->
+	<select id="getEamSq" parameterType="com.nanuri.rams.business.common.vo.RAA60BVO" resultType="com.nanuri.rams.business.common.dto.RAA60BDTO">
+		
+		SELECT MAX(SQ)+1 		AS SQ							<!-- 일련번호 -->
+  		  FROM RAA60B											<!-- 부실자산사후관리이력정보 -->
+ 		 WHERE IB_DEAL_NO 		= #{ibDealNo	 }				<!-- IBDEAL번호 -->
+   		   AND RISK_INSPCT_CCD 	= #{riskInspctCcd}				<!-- 리스크심사구분코드 -->
+   		   AND LST_C_CASE_CCD 	= #{lstCCaseCcd	 }				<!-- 부수안건구분코드 -->
+	
+	</select>
+
+</mapper>

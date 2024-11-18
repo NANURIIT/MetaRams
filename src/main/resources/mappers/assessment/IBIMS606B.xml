@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS606BMapper">
+
+	<!-- 관리이력 조회 -->
+	<select id="getEamDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS606BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS606BVO">
+		SELECT A.DEAL_NO							          AS	DEAL_NO					      /* IBDEAL명 */
+			   , A.JDGM_DCD							          AS	JDGM_DCD				      /* 리스크심사구분코드 */
+			   , A.MTR_DCD							          AS	MTR_DCD					      /* 부수안건구분코드 */
+			   , A.SQ									            AS	SQ						        /* 일련번호 */
+			   , A.RGST_DT                       	AS	RGST_DT					      /* 등록일자 */
+			   , A.EVNT_AFTR_MNG_CCD					    AS	EVNT_AFTR_MNG_CCD		  /* 사후관리구분코드 */
+			   , B.CD_VL_NM 							        AS	EVNT_AFTR_MNG_CCD_NM	/* 사후관리구분코드명 */
+			   , A.EVNT_AFTR_MNG_CNTNT				    AS	EVNT_AFTR_MNG_CNTNT		/* 사후관리내용 */
+			   , A.FST_RGST_P_ENO						      AS 	FST_RGST_P_ENO			  /* 최초등록자사번 */
+			   , C.EMP_NM 							          AS  FST_RGST_P_ENO_NM		  /* 최초등록자이름 */
+		  FROM IBIMS606B A  /* 부실자산사후관리이력정보 */
+ LEFT JOIN IBIMS002B B
+			  ON B.CMNS_CD_GRP 						= 'F012'
+		   AND A.EVNT_AFTR_MNG_CCD			= B.CD_VL_ID				/* 사후관리구분코드명 */
+ LEFT JOIN IBIMS003B C						
+		    ON A.FST_RGST_P_ENO 				= C.EMPNO					  /* 사원 이름 */
+		 WHERE A.DEAL_NO							  = #{dealNo	}				/* IBDEAL번호 */
+		   AND A.JDGM_DCD							  = #{jdgmDcd	}				/* 리스크심사구분코드 */
+		   AND A.MTR_DCD							  = #{mtrDcd	}				/* 부수안건구분코드 */
+		 ORDER BY SQ DESC
+	</select>
+	
+	<!-- 관리이력 일련번호 조회 -->
+	<select id="getEamSq" parameterType="com.nanuri.rams.business.common.dto.IBIMS606BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS606BDTO">
+		SELECT MAX(SQ)+1 		AS SQ						/* 일련번호 */
+  	  FROM IBIMS606B	/* 부실자산사후관리이력정보 */
+ 		 WHERE DEAL_NO		= #{dealNo	}						/* IBDEAL번호 */
+   	   AND JDGM_DCD		= #{jdgmDcd	}						/* 리스크심사구분코드 */
+   	   AND MTR_DCD		= #{mtrDcd	}						/* 부수안건구분코드 */
+	</select>
+	
+	<!-- 부실자산사후관리이력정보등록  -->
+    <insert id="registEamInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS606BDTO">
+        INSERT INTO IBIMS606B 
+               (
+                  DEAL_NO                                           /* IBDEAL번호 */
+                , MTR_DCD                                           /* 부수안건구분코드 */
+                , JDGM_DCD                                          /* 리스크심사구분코드 */
+                , SQ                                                /* 일련번호 */
+                , EVNT_AFTR_MNG_CCD                                 /* 사후관리구분코드 */
+                , EVNT_AFTR_MNG_CNTNT                               /* 사후관리내용 */
+                , RGST_DT                                           /* 등록일자 */
+                , RGST_TM                                           /* 등록시간 */
+                , FST_RGST_P_ENO                                    /* 최초등록자사번 */
+                , HNDL_DY_TM                                        /* 처리일시 */
+                , HNDL_DPRT_CD                                      /* 처리부점코드 */
+                , HNDL_P_ENO                                        /* 처리자사번 */
+               )
+        VALUES (
+                 #{dealNo}                                          /* IBDEAL번호 */
+               , #{mtrDcd}                                          /* 부수안건구분코드 */
+               , #{jdgmDcd}                                         /* 리스크심사구분코드 */
+               , #{sq}                                              /* 일련번호 */
+               , #{evntAftrMngCcd}                                  /* 사후관리구분코드 */
+               , #{evntAftrMngCntnt}                                /* 사후관리내용 */
+               , TO_CHAR(SYSDATE, 'YYYYMMDD')           						/* 등록일자 */
+			         , TO_CHAR(SYSDATE, 'HH24MISS')						            /* 등록시간 */
+               , #{fstRgstPEno}                                     /* 최초등록자사번 */
+               , SYSDATE                                            /* 처리일시 */
+               , #{hndlDprtCd}                                      /* 처리부점코드 */
+               , #{hndlPEno}                                        /* 처리자사번 */
+               )
+    </insert>
+    
+    <!-- 부실자산사후관리이력정보변경 -->
+    <update id="updateEamInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS606BDTO">
+       UPDATE IBIMS606B
+          SET EVNT_AFTR_MNG_CCD                                 = #{evntAftrMngCcd}                                  /* 사후관리구분코드 */
+            , EVNT_AFTR_MNG_CNTNT                               = #{evntAftrMngCntnt}                                /* 사후관리내용 */
+            , RGST_DT                                           = #{rgstDt}                                          /* 등록일자 */
+            , RGST_TM                                           = #{rgstTm}                                          /* 등록시간 */
+            , HNDL_DPRT_CD                                      = #{hndlDprtCd}                                      /* 처리부점코드 */
+            , HNDL_P_ENO                                        = #{hndlPEno}                                        /* 처리자사번 */
+        WHERE 1=1
+          AND DEAL_NO                                           = #{dealNo}                                          /* IBDEAL번호 */
+          AND MTR_DCD                                           = #{mtrDcd}                                          /* 부수안건구분코드 */
+          AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 리스크심사구분코드 */
+          AND SQ                                                = #{sq}                                              /* 일련번호 */
+    </update>
+    
+    <delete id="deleteEamInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS606BDTO">
+        DELETE 
+          FROM IBIMS606B
+         WHERE 1=1
+           AND DEAL_NO                                           = #{dealNo}                                          /* IBDEAL번호 */
+           AND MTR_DCD                                           = #{mtrDcd}                                          /* 부수안건구분코드 */
+           AND JDGM_DCD                                          = #{jdgmDcd}                                         /* 리스크심사구분코드 */
+           AND SQ                                                = #{sq}                                              /* 일련번호 */
+    </delete>
+
+</mapper>
