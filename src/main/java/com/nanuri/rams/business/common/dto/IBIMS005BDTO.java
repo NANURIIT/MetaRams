@@ -26,11 +26,11 @@ public class IBIMS005BDTO {
     private String         delYn;                                  // 삭제여부
     private String         delDt;                                  // 삭제일자
     private String         delTm;                                  // 삭제시간
-    private String         deltEmpno;                              // 삭제사원번호
+    private String         delEmpno;                              // 삭제사원번호
     private String         hndDetlDtm;                             // 조작상세일시
     private String         hndEmpno;                               // 조작사원번호
     private String         hndTmnlNo;                              // 조작단말기번호
     private String         hndTrId;                                // 조작거래ID
     private String         guid;                                   // GUID
-    
+
 }
