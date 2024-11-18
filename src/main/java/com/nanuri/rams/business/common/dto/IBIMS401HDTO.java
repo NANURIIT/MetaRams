@@ -24,15 +24,9 @@ public class IBIMS401HDTO {
     private BigDecimal     totIntrt;                               // 총금리
     private String         frsMngmBdcd;                            // 최초관리부점코드
     private String         mngmBdcd;                               // 관리부점코드
-<<<<<<< HEAD
     private String         prdtClsfCd;        		               // 상품분류코드
     private String         prdtMdclCd;                             // 상품중분류코드
     private String         prdtLclsCd;                             // 상품대분류코드
-=======
-    private String         prdtClsfCd;                             // 상품분류코드
-    private String         prdtMdclCd;                             // 상품중분류코드
-    private String         prdtLclsCd		 ;                     // 상품대분류코드
->>>>>>> b8e36cd9b3f20e5a2a99295840bba35995597f9e
     private String         actsCd;                                 // 계정과목코드
     private String         eprzCrdlAcctJobCd;                      // 기업여신회계업무코드
     private String         eprzCrdlAcctUnJobCd;                    // 기업여신회계단위업무코드
