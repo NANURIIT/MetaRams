@@ -16,7 +16,7 @@
 				, HNDL_P_ENO                             /* 처리자사번 */
 				, MTRT_HLD_AMT                           /* 만기보유금액 */
 				, PFRM_DT                                /* 이행일자 */
-				, CRNCY_MTRT_HLD_AMT                     /* 통화만기보유금액 */
+				, CCRY_MTRT_HLD_AMT                     /* 통화만기보유금액 */
 				)
 			VALUES
 			    (

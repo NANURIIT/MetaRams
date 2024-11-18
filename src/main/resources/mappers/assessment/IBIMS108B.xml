@@ -22,7 +22,7 @@
              , s108b.MRTG_ACQST_DTLS_DCD                        		/* 담보취득상세구분코드 */
              , s006b.CD_VL_NM				AS MRTG_ACQST_DTLS_DCD_NM	      /* 담보취득상세구분코드명 */
              , s108b.INVST_CRRY_CD                             		/* 투자통화코드 */
-             , s007b.CD_VL_NM				AS INVST_CRNCY_CD_NM	        	/* 투자통화코드명 */
+             , s007b.CD_VL_NM				AS INVST_CCRY_CD_NM	        	/* 투자통화코드명 */
              , s108b.CRRY_AMT                                  		/* 통화금액 */
              , s108b.APLY_EXRT                                		/* 적용환율 */
              , s108b.HND_DETL_DTM                               		/* 조작상세일시 */

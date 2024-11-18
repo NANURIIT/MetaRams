@@ -80,7 +80,7 @@
                       , A.END_DT_END_DT
                       , A.APLC_AMT
                       , A.RCG_AMT - A.APLC_AMT AS MTRT_HLD_AMT
-                      , NVL(B.CRNCY_BK_AMT, 0)  AS OPN_PRC_VAL_AMT
+                      , NVL(B.CCRY_BK_AMT, 0)  AS OPN_PRC_VAL_AMT
                       , A.PFRM_DT
                       , A.RPR_PRGRS_ST_CD
                       , A.BDCD
@@ -99,7 +99,7 @@
                       , A.PRCS_PLAN_CNTNT1
                       , A.PRCS_PLAN_CNTNT2
                       , A.RPR_RSN_CNTNT
-                      , CASE WHEN NVL(B.CRNCY_BK_AMT, 0) - (A.RCG_AMT - A.APLC_AMT) > 0
+                      , CASE WHEN NVL(B.CCRY_BK_AMT, 0) - (A.RCG_AMT - A.APLC_AMT) > 0
                               AND A.END_DT_END_DT BETWEEN TRUNC(SYSDATE) AND ADD_MONTHS(TRUNC(SYSDATE), 2)
                               AND (A.RPR_PRGRS_ST_CD IS NULL OR A.RPR_PRGRS_ST_CD != '50') THEN 'Y'
                              ELSE 'N'
@@ -207,7 +207,7 @@
               ) A 
            LEFT OUTER JOIN
                (SELECT A.RISK_RCG_NO
-                     , SUM(A.CRNCY_BK_AMT) AS CRNCY_BK_AMT
+                     , SUM(A.CCRY_BK_AMT) AS CCRY_BK_AMT
                  FROM RAA49B A
                 WHERE STD_DT = (SELECT MAX(STD_DT) FROM RAA49B)
                 GROUP BY RISK_RCG_NO
