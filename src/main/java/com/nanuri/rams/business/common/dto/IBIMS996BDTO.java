@@ -12,8 +12,9 @@ import java.util.Date;
  배치JOB 선행JOB관리 Table.IBIMS996B DTO
 */
 public class IBIMS996BDTO {
-    private String         PreJobId;                               // 선행 JOB ID
-    private String         PreJobName;                             // 선행JOB NAME
+
+    private String         preJobId;                               // 선행 JOB ID
+    private String         preJobName;                             // 선행 JOB NAME
     private String         jobId;                                  // JOB ID
     private String         jobName;                                // JOB NAME
     private String         description;                            // 작업 설명
@@ -24,4 +25,5 @@ public class IBIMS996BDTO {
     private String         hndTmnlNo;                              // 조작단말기번호
     private String         hndTrId;                                // 조작거래ID
     private String         guid;                                   // GUID
+
 }
