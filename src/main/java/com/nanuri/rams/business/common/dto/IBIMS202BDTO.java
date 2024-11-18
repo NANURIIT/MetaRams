@@ -43,8 +43,10 @@ public class IBIMS202BDTO {
     private String         hndTmnlNo;                             // 조작단말기번호
     private String         hndTrId;                               // 조작거래id
     private String         guid;                                  // guid
-    private String         mdwyRdmpYn;                            // 중도상환여부
-    private Integer		   intrCngeFrqcMnum;                      // 금리변동주기개월수
+    //private String         mdwyRdmpYn;                            // 중도상환여부(메타 변경 전)
+    private String         earlyRepayYn;                            // 중도상환여부
+    //private Integer		   intrCngeFrqcMnum;                      // 금리변동주기개월수(메타 변경 전)
+    private Integer		   intrtCngeFrqcMnum;                      // 금리변동주기개월수
     private BigDecimal     fxnIntrt;                              // 고정금리
     private String         rqsKndCd;                              // 기업여신신청종류코드
     private String         ctrcExpDt;                              // 약정만기일자

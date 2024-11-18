@@ -9,16 +9,16 @@ import java.util.Date;
 @Getter
 @Setter
 public class IBIMS406BDTO {
-	private String prdtCd; /* 상품번호 */
+	private String prdtCd; /* 상품코드 */
 	private long trSn; /* 거래일련번호 */
-	private long excSn; /* 실행일련번호 */
+	private BigDecimal excSn; /* 실행일련번호 */
 	private long intCalcSeq; /* 이자계산순번 */
 	private String rkfrDt; /* 기산일자 */
 	private String intrCalcStrtDt; /* 이자계산시작일자 */
 	private String intrCalcEndDt; /* 이자계산종료일자 */
 	private String paiTypCd; /* 원리금유형코드 */
 	private long trgtDnum; /* 대상일수 */
-	private long rdmpTmrd; /* 상환회차 */
+	private String rdmpTmrd; /* 상환회차 */
 	private BigDecimal aplyIntr; /* 적용금리 */
 	private BigDecimal dealTrgtAmt; /* 딜대상금액 */
 	private BigDecimal dealIstmPrna; /* 딜할부원금 */

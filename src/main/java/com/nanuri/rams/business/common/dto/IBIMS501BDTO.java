@@ -26,8 +26,10 @@ import lombok.Setter;
 public class IBIMS501BDTO {
 	
     private String         dealNo;               // 딜번호
-    private String         sq;                   // 일련번호
-    private String         corpRgstNo;           // 법인등록번호
+    //private String         sq;                   // 일련번호(메타 변경 전)
+    private String         sn;                   // 일련번호
+    //private String         corpRgstNo;           // 법인등록번호(메타 변경 전)
+    private String         crno;           // 법인등록번호
     private String         busiNm;               // 사업명
     private String         fndNm;                // 펀드명
     private String         invFnnMngmBusiDcd;    // 투자금융관리사업구분코드
@@ -50,12 +52,14 @@ public class IBIMS501BDTO {
     private String         invFnnOprtTyDcd;      // 투자금융운영형태구분코드
     private String         invFnnAsstClsfCd;     // 투자금융자산분류코드
     private String         ivtgShdnRsnCnts;      // 검토중단사유내용
-    private String         crncyCd;              // 통화코드
+    //private String         crncyCd;              // 통화코드(메타 변경 전)
+    private String         crryCd;              // 통화코드
     private BigDecimal     totPrcrAmt;           // 총조달금액
     private String         mainBondMtncCnts;     // 주요채권보전내용
     private String         thcoMdtnYn;           // 당사주선여부
     private BigDecimal     thcoMdtnAmt;          // 당사주선금액
-    private BigDecimal     thcoPtcpAmt;          // 당사참여금액
+    //private BigDecimal     thcoPtcpAmt;          // 당사참여금액(메타 변경 전)
+    private BigDecimal     thcoPtciAmt;          // 당사참여금액
     private String         aplyIntrtCnts;        // 적용금리내용
     private BigDecimal     goalErnRt;            // 목표수익율
     private BigDecimal     feeRt;                // 수수료율

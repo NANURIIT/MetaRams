@@ -13,7 +13,8 @@ import lombok.Setter;
 */
 public class IBIMS502BDTO {
     private String         dealNo;               // 딜번호
-    private String         sq;               	 // 일련번호
+    //private String         sq;               	 // 일련번호(메타 변경 전)
+    private String         sn;               	 // 일련번호
     private String         guasMrtgYn;           // 보증서담보여부
     private String         efceMbdyDcd;          // 시행주체구분코드
     private String         busiLcsiCpltYn;       // 사업인허가완료여부
@@ -34,7 +35,8 @@ public class IBIMS502BDTO {
     private String         eprzSclDcd;           // 기업규모구분코드
     private String         fcltSclWidhCtns;      // 시설규모너비내용
     private String         resiEcoCtns;          // 주거환경내용
-    private String         crdtRifcDvcDcd;       // 신용보강장치구분코드
+    //private String         crdtRifcDvcDcd;       // 신용보강장치구분코드(메타 변경 전)
+    private String         crdtRifcDcd;       // 신용보강장치구분코드
     private String         crdtRifcDvcNm;        // 신용보강장치명
     private String         bondTrnsYn;           // 채권이관여부
     private String         mngmCndFlflYn;        // 관리조건이행여부

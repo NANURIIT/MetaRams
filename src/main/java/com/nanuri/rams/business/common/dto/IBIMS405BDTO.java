@@ -14,7 +14,7 @@ import java.util.Date;
 public class IBIMS405BDTO {
     private String         prdtCd;                                 // 상품코드
     private int            trSn;                                   // 거래일련번호
-    private int            excSn;                                  // 실행일련번호
+    private BigDecimal     excSn;                                  // 실행일련번호
     private String         etprCrdtGrntTrKindCd;                   // 거래종류코드
     private String         nsFndCd;                                // 고유자산펀드코드
     private String         synsCd;                                 // 적용코드
