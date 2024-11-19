@@ -82,7 +82,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 				if(ibims202bdto == null) {
 					ibims346bdto.setIntrtCngeFrqcMnum(0);
 				} else {
-					ibims346bdto.setIntrtCngeFrqcMnum((ibims202bdto.getIntrCngeFrqcMnum()==null)?0:ibims202bdto.getIntrCngeFrqcMnum());
+					ibims346bdto.setIntrtCngeFrqcMnum((ibims202bdto.getIntrtCngeFrqcMnum()==null)?0:ibims202bdto.getIntrtCngeFrqcMnum());
 				}
 				/* 적용일수구분코드를 등록하는 곳이 없어 일단 적용일수구분코드를 승인시점에 입력받기 때문에 '이자계산초일'로 적용함 >> 1_이자계산초일 2_이자계산말일 */
 				ibims346bdto.setAplyDnumDcd("1");
@@ -130,22 +130,22 @@ public class TB06040ServiceImpl implements TB06040Service {
 		setParam.setTotIntrt(disParam.getTotIntrt()); /* 총금리 */
 		setParam.setFrsMngmBdcd(getParam.getFrsMngmBdcd()); /* 최초관리부점코드 */
 		setParam.setMngmBdcd(getParam.getMngmBdcd()); 		/* 관리부점코드 */
-		setParam.setEprzCrdlPrdtClsfCd(getParam.getPrdtClsfCd()); /* 기업여신상품분류코드 */
-		setParam.setEprzCrdlPrdtMdclCd(getParam.getPrdtMdclCd()); /* 기업여신상품중분류코드 */
-		setParam.setEprzCrdlPrdtLclsCd(getParam.getPrdtLclsCd()); /* 기업여신상품대분류코드 */
+		setParam.setPrdtClsfCd(getParam.getPrdtClsfCd()); /* 기업여신상품분류코드 */
+		setParam.setPrdtMdclCd(getParam.getPrdtMdclCd()); /* 기업여신상품중분류코드 */
+		setParam.setPrdtLclsCd(getParam.getPrdtLclsCd()); /* 기업여신상품대분류코드 */
 		setParam.setActsCd(getParam.getActsCd()); /* 계정과목코드 */
 		setParam.setEprzCrdlAcctJobCd(getParam.getAcctJobCd()); /* 기업여신회계업무코드 */
 		setParam.setEprzCrdlAcctUnJobCd(getParam.getAcctUnJobCd()); /* 기업여신회계단위업무코드 */
 		setParam.setEprzCrdlAcctTrCd(getParam.getAcctTrCd()); /* 기업여신회계거래코드 */
 		setParam.setEprzCrdlApvlDt(getParam.getApvlDt()); /* 기업여신승인일자 */
-		setParam.setEprzCrdlApvlAmt(getParam.getApvlAmt()); /* 기업여신승인금액 */
+		setParam.setEprzCrdlApvlAmt(getParam.getEprzCrdlApvlAmt()); /* 기업여신승인금액 */
 		setParam.setCrryCd(getParam.getTrCrryCd()); /* 통화코드 */
 		setParam.setCtrcDt(disParam.getCtrcDt()); /* 약정일자 */
 		setParam.setCtrcExpDt(disParam.getCtrcExpDt()); /* 약정만기일자 */
 		setParam.setStdrIntrtKndCd(getParam.getStdrIntrtKndCd()); /* 기준금리종류코드 */
 		setParam.setEprzCrdlCtrcAmt(disParam.getEprzCrdlCtrcAmt()); /* 기업여신약정금액 */
-		setParam.setEprzCrdlIndvLmtDcd(getParam.getIndvLmtDcd()); /* 기업여신개별한도구분코드 */
-		setParam.setEprzCrdlIntrRcvnMthCd(getParam.getIntrRcvnMthCd()); /* 기업여신이자수취방법코드 */
+		setParam.setEprzCrdlIndvLmtDcd(getParam.getEprzCrdlIndvLmtDcd()); /* 기업여신개별한도구분코드 */
+		setParam.setEprzCrdlIntrRcvnMthCd(getParam.getEprzCrdlIntrRcvnMthCd()); /* 기업여신이자수취방법코드 */
 		setParam.setEprzCrdlIntrBnaoDcd(getParam.getIntrBnaoDcd()); /* 기업여신이자선후취구분코드 */
 		setParam.setEprzCrdlTfdLyAplyDcd(getParam.getTfdLyAplyDcd()); /* 기업여신초일말일적용구분코드 */
 		setParam.setEprzCrdlIntrSnnoPrcsDcd(getParam.getIntrSnnoPrcsDcd()); /* 기업여신이자단수처리구분코드 */
@@ -154,7 +154,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 		setParam.setIntrRdmpFrqcMnum(getParam.getIntrRdmpFrqcMnum()); /* 이자상환주기개월수 */
 		setParam.setPrnaDfrPrdMnum(getParam.getPrnaDfrPrdMnum()); /* 원금거치기간개월수 */
 		setParam.setEprzCrdlOrtnFndCd(getParam.getOrtnFndCd()); /* 기업여신운용펀드코드 */
-		setParam.setEprzCrdlCtrtNo(getParam.getCtrtNo()); /* 기업여신계약번호 */
+		setParam.setEprzCrdlCtrtNo(getParam.getEprzCrdlCtrtNo()); /* 기업여신계약번호 */
 		setParam.setPfLoanYn(getParam.getPfLoanYn()); /* pf대출여부 */
 		setParam.setUndwFnnYn(getParam.getUndwFnnYn()); /* 인수금융여부 */
 		setParam.setInvIdtrtSmitYn(getParam.getInvIdtrtSmitYn()); /* 투자확약서제출여부 */
@@ -164,14 +164,14 @@ public class TB06040ServiceImpl implements TB06040Service {
 		setParam.setChrrEmpno(getParam.getChrrEmpno()); /* 담당자사원번호 */
 		setParam.setSubChrrEmpno(getParam.getSubChrrEmpno()); /* 서브담당자사원번호 */
 		setParam.setEdDt(getParam.getEdDt()); /* 종결일자 */
-		setParam.setEprzCrdlCtrtEndRsnCd(getParam.getCtrtEndRsnCd()); /* 기업여신계약종료사유코드 */
-		setParam.setEprzCrdlCtrtEndRsnCtns(getParam.getCtrtEndRsnCtns()); /* 기업여신계약종료사유내용 */
+		setParam.setEprzCrdlCtrtEndRsnCd(getParam.getEprzCrdlCtrtEndRsnCd()); /* 기업여신계약종료사유코드 */
+		setParam.setEprzCrdlCtrtEndRsnCtns(getParam.getEprzCrdlCtrtEndRsnCtns()); /* 기업여신계약종료사유내용 */
 		setParam.setTrchAplyYn(getParam.getTrchAplyYn()); /* 트렌치적용여부 */
 		setParam.setBdbtRsvsRcknStdrLclsCd(getParam.getBdbtRsvsRcknStdrLclsCd()); /* 대손준비금산정기준대분류코드 */
 		setParam.setBdbtRsvsRcknStdrMdclCd(getParam.getBdbtRsvsRcknStdrMdclCd()); /* 대손준비금산정기준중분류코드 */
 		setParam.setBdbtRsvsRcknStdrSclsCd(getParam.getBdbtRsvsRcknStdrSclsCd()); /* 대손준비금산정기준소분류코드 */
 		setParam.setBdbtRsvsRcknStdrRto(getParam.getBdbtRsvsRcknStdrRto()); /* 대손준비금산정기준비율 */
-		setParam.setEprzCrdlCtrtAmt(getParam.getCtrtAmt()); /* 기업여신계약금액 */
+		setParam.setEprzCrdlCtrtAmt(getParam.getEprzCrdlCtrtAmt()); /* 기업여신계약금액 */
 		setParam.setThcoPtciAmt(getParam.getThcoPtciAmt()); /* 당사참여금액 */
 		setParam.setEprzCrdlIntrDnumClcMthCd(getParam.getIntrDnumClcMthCd()); /* 기업여신이자일수계산방법코드 */
 		setParam.setEprzCrdlHldyPrcsDcd(getParam.getHldyPrcsDcd()); /* 기업여신휴일처리구분코드 */
