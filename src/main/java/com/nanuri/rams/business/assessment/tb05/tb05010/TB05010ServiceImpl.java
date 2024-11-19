@@ -214,7 +214,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 				
 				ibims100BVO.setWorkDcd("03");                              			// 작업구분코드
 				ibims100BVO.setWorkCtns("(To-Do) 협의체 의견등록(승인조건)");       // 작업내용
-				ibims100BVO.setRqstEmpno(facade.getDetails().getEno());             // 등록사원번호
+				ibims100BVO.setRgstEmpno(facade.getDetails().getEno());             // 등록사원번호
 				ibims100BVO.setMenuId("/TB05020S");                               	// 메뉴ID 
 				ibims100BVO.setRmrk("dealNo=" + item.getDealNo());                  // 비고(메뉴별조회KEY)
 				ibims100BVO.setHndEmpno(facade.getDetails().getEno());              // 조작사원번호
