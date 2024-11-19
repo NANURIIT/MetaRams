@@ -1,6 +1,6 @@
 const TB08036Sjs = (function(){
 	$(document).ready(function() {
-
+		alert("11");
 	});
 	
 	function btnResetTB08036S() {
