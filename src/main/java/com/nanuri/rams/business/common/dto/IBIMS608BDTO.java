@@ -16,7 +16,7 @@ public class IBIMS608BDTO {
     private String dealNo;              //  딜번호
     private String jdgmDcd;             //  심사구분코드
     private String mtrDcd;              //  부수안건구분코드
-    private BigDecimal sn;              //  일련번호
+    private int    sn;                  //  일련번호
     private String lglPrcrCcd;          //  법적절차구분코드
     private String lglPrcrKndCcd;       //  법적절차종류구분코드
     private String lglPrcrCntnt;        //  법적절차내용
