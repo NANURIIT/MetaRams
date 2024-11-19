@@ -186,7 +186,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 			IBIMS420BDTO ibims420BDTO = set420b(ibims348BVO);
 			ibims348BVO.setTrSn(lFeeTrsn);
 			ibims420BDTO.setTrSn(lFeeTrsn);
-			ibims420BDTO.setAplcExchR(ibims402BDTO.getKrwTrslRt());		// 적용환율
+			ibims420BDTO.setAplyExrt(ibims402BDTO.getKrwTrslRt());		// 적용환율
 			rtnValue = ibims420BMapper.insertIBIMS420B(ibims420BDTO);	// 딜수수료수납내역생성
 			rtnValue = ibims348BMapper.updateFeeScxInfo(ibims348BVO);	// 딜승인수수료스케쥴기본 변경
 			List<IBIMS348BVO> out348bvoLst = ibims348BMapper.selectListIBIMS348B(ibims348BVO);
@@ -223,8 +223,8 @@ public class TB07010ServiceImpl implements TB07010Service {
 		ibims402BDTO.setPrnaRdmpFrqcMnum(((Objects.nonNull(ibims401bvo.getPrnaRdmpFrqcMnum()))?1:ibims401bvo.getPrnaRdmpFrqcMnum()));	// 원금상환주기개월수
 		ibims402BDTO.setIntrRdmpFrqcMnum(ibims401bvo.getIntrRdmpFrqcMnum());    // 이자상환주기개월수
 		ibims402BDTO.setDealNo(ibims201bvo.getDealNo());						// 딜번호
-		ibims402BDTO.setMtrDcd(ibims201bvo.getNmcpMtrDcd());					// 부수안건구분코드
-		ibims402BDTO.setJdgmDcd(ibims201bvo.getLstCCaseDcd());					// 리스크심사구분코드
+		ibims402BDTO.setMtrDcd(ibims201bvo.getMtrDcd());					    // 부수안건구분코드
+		ibims402BDTO.setJdgmDcd(ibims201bvo.getJdgmDcd());					// 리스크심사구분코드
 		ibims402BDTO.setHndEmpno(facade.getDetails().getEno());					// 조작사원번호
 		
 		IBIMS404BDTO in404bdto = new IBIMS404BDTO();
@@ -493,14 +493,14 @@ public class TB07010ServiceImpl implements TB07010Service {
 //		setParam.setPucrIntAmt(getParam.getPucrIntAmt()); /* 환출이자금액 */
 //		setParam.setTrFeeAmt(getParam.getTrFeeAmt()); /* 거래수수료금액 */
 //		setParam.setCostAmt(getParam.getCostAmt()); /* 비용금액 */
-		setParam.setTrCrcyCd(param401.getCrryCd()); /* 거래통화코드 */
-		setParam.setWcrcTrslRt(param402.getKrwTrslRt()); /* 원화환산율 == 적용환율 */
-		setParam.setWcrcTrslTrPrca(param402.getKrwTrslExcAmt()); /* 원화환산거래원금 */
+		setParam.setTrCrryCd(param401.getCrryCd()); /* 거래통화코드 */
+		setParam.setKrwTrslRt(param402.getKrwTrslRt()); /* 원화환산율 == 적용환율 */
+		setParam.setKrwTrslTrPrca(param402.getKrwTrslExcAmt()); /* 원화환산거래원금 */
 
-		setParam.setWcrcTrslTrIntAmt(param402.getKrwTrslIntAmt()); /* 원화환산거래이자금액 == 원화환산이자금액*/
+		setParam.setKrwTrslTrIntAmt(param402.getKrwTrslIntAmt()); /* 원화환산거래이자금액 == 원화환산이자금액*/
 //		setParam.setWcrcTrslTrFeeAmt(param348.getFeeRcivAmt()); /* 원화환산거래수수료금액 == 수수료수납금액 */
 //		setParam.setWcrcTrslCostAmt(getParam.getWcrcTrslCostAmt()); /* 원화환산비용금액 */
-		setParam.setActgAfrsCd("G1"); /* 회계업무코드 */
+		setParam.setAcctJobCd("G1"); /* 회계업무코드 */
 //		setParam.setActgUnitAfrsCd(getParam.getActgUnitAfrsCd()); /* 회계단위업무코드 */
 //		setParam.setActgTrCd(getParam.getActgTrCd()); /* 회계거래코드 */
 //		setParam.setActgErlmSeq(getParam.getActgErlmSeq()); /* 회계등록순번 */
@@ -508,7 +508,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 		setParam.setFndsDvsnCd(param402.getFndsDcd()); /* 자금구분코드 */
 		setParam.setRctmIsttCd(param402.getRctmIsttCd()); /* 입금기관코드 */
 		setParam.setRctmBano(param402.getBrkgAcno()); /* 입금은행계좌번호 */
-		setParam.setDpowName(param402.getAchdNm()); /* 예금주명 */
+		setParam.setAchdNm(param402.getAchdNm()); /* 예금주명 */
 //		setParam.setHdwrPrcsYn(getParam.getHdwrPrcsYn()); /* 수기처리여부 */
 //		setParam.setAcptPtclSmtlAmt(getParam.getAcptPtclSmtlAmt()); /* 수납내역합계금액 */
 //		setParam.setDealAltnAmt(getParam.getDealAltnAmt()); /* 딜대체금액 */
@@ -600,14 +600,14 @@ public class TB07010ServiceImpl implements TB07010Service {
 //		setParam.setPucrIntAmt(getParam.getPucrIntAmt()); /* 환출이자금액 */
 		setParam.setTrFeeAmt(param348.getFeeRcivAmt()); /* 거래수수료금액 */
 //		setParam.setCostAmt(getParam.getCostAmt()); /* 비용금액 */
-		setParam.setTrCrcyCd(param401.getCrryCd()); /* 거래통화코드 */
-		setParam.setWcrcTrslRt(param402.getKrwTrslRt()); /* 원화환산율 == 적용환율 */
+		setParam.setTrCrryCd(param401.getCrryCd()); /* 거래통화코드 */
+		setParam.setKrwTrslRt(param402.getKrwTrslRt()); /* 원화환산율 == 적용환율 */
 //		setParam.setWcrcTrslTrPrca(param402.getKrwTrslExcAmt()); /* 원화환산거래원금 == 최종지급금액 */
 
 //		setParam.setWcrcTrslTrIntAmt(param402.getKrwTrslIntAmt()); /* 원화환산거래이자금액 == 원화환산이자금액*/
-		setParam.setWcrcTrslTrFeeAmt(param348.getFeeRcivAmt().multiply(param402.getKrwTrslRt()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
+		setParam.setKrwTrslTrFeeAmt(param348.getFeeRcivAmt().multiply(param402.getKrwTrslRt()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
 //		setParam.setWcrcTrslCostAmt(getParam.getWcrcTrslCostAmt()); /* 원화환산비용금액 */
-		setParam.setActgAfrsCd("G3"); /* 회계업무코드 */
+		setParam.setAcctJobCd("G3"); /* 회계업무코드 */
 //		setParam.setActgUnitAfrsCd(getParam.getActgUnitAfrsCd()); /* 회계단위업무코드 */
 //		setParam.setActgTrCd(getParam.getActgTrCd()); /* 회계거래코드 */
 //		setParam.setActgErlmSeq(getParam.getActgErlmSeq()); /* 회계등록순번 */
@@ -615,7 +615,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 		setParam.setFndsDvsnCd(param402.getFndsDcd()); /* 자금구분코드 */
 		setParam.setRctmIsttCd(param402.getRctmIsttCd()); /* 입금기관코드 */
 		setParam.setRctmBano(param402.getBrkgAcno()); /* 입금은행계좌번호 */
-		setParam.setDpowName(param402.getAchdNm()); /* 예금주명 */
+		setParam.setAchdNm(param402.getAchdNm()); /* 예금주명 */
 //		setParam.setHdwrPrcsYn(getParam.getHdwrPrcsYn()); /* 수기처리여부 */
 //		setParam.setAcptPtclSmtlAmt(getParam.getAcptPtclSmtlAmt()); /* 수납내역합계금액 */
 //		setParam.setDealAltnAmt(getParam.getDealAltnAmt()); /* 딜대체금액 */
