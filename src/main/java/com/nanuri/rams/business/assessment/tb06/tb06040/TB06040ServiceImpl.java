@@ -1,7 +1,5 @@
 package com.nanuri.rams.business.assessment.tb06.tb06040;
 
-import java.math.BigDecimal;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
