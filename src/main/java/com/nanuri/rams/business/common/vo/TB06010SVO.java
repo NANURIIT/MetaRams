@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TB06010SVO extends IBIMS201BDTO {
+public class TB06010SVO {
 	private String dealNo;
 	private String mtrDcd;
 	private String jdgmDcd;
