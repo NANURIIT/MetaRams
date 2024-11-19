@@ -48,7 +48,7 @@ public class TB08036ServiceImpl implements TB08036Service {
 		
 		if(null != s602b) {
 			result.setInspctYm(s602b.getInspctYm());
-			result.setInspctRmrk(s602b.getInspctRmrk());
+			result.setInspctRmrk(s602b.getCheckRslt());
 		}
 		if(s603b.size() > 0) {
 			result.setLstInspctRmrk(s603b);
