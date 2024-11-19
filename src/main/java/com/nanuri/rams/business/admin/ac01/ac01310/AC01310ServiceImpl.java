@@ -92,7 +92,7 @@ public class AC01310ServiceImpl implements AC01310Service {
 
         for (selectUseMenuVO dto : dtoList) {
             dto.setHndEmpno(hndlPEno);
-            int sq = dto.getSq();
+            int sq = dto.getSn();
             int totalDepth = 3;		// 화면메뉴의 최대값
 			int rollNum = 1;		// sq value로 쓰인 NEXTVAL()의 값을 매칭시키기 위한 변수
 
@@ -100,7 +100,7 @@ public class AC01310ServiceImpl implements AC01310Service {
             if ((sq == 0) && (!dto.getMenuId().equals("rghtCdCancel")) && dto.getLv3Id().equals("")) {			// 중복된 데이터가 없는 경우
                 count += ibims007BMapper.insertUseMenu(dto);
                 dto.setMenuId(dto.getLv1Id());
-                dto.setSq(nextVal + 1);
+                dto.setSn(nextVal + 1);
                 dto.setMdfyRghtCcd("1");		// 상위메뉴의 경우 조회 권한만
                 count += ibims007BMapper.insertUseMenu(dto);
 				if(rollNum < totalDepth-1){
@@ -126,10 +126,10 @@ public class AC01310ServiceImpl implements AC01310Service {
                 count += ibims007BMapper.insertUseMenu(dto);
                 dto.setMdfyRghtCcd("1");		// 상위메뉴의 경우 조회 권한만
                 dto.setMenuId(dto.getLv2Id());
-                dto.setSq(nextVal + 1);
+                dto.setSn(nextVal + 1);
                 count += ibims007BMapper.insertUseMenu(dto);
                 dto.setMenuId(dto.getLv1Id());
-                dto.setSq(nextVal + 2);
+                dto.setSn(nextVal + 2);
                 count += ibims007BMapper.insertUseMenu(dto);
 				if(rollNum < totalDepth){
                     ibims007BMapper.nextVal();		// nextVal + 1을 채우기 위해

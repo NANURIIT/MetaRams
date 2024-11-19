@@ -442,16 +442,16 @@ public class TB07030ServiceImpl implements TB07030Service {
 //			ibims410bdto.setPucrIntAmt(ibims403Lst.get(i).getPucrIntAmt()); /* 환출이자금액 */
 			ibims410bdto.setTrFeeAmt(mrdpFeeAmtSum); /* 거래수수료금액 */
 //			ibims410bdto.setCostAmt(ibims403Lst.get(i).getCostAmt()); /* 비용금액 */
-			ibims410bdto.setTrCrcyCd(paramData.getCrncyCd()); /* 거래통화코드 */
-			ibims410bdto.setWcrcTrslRt(paramData.getAplcExchR()); /* 원화환산율 == 적용환율 */
-			ibims410bdto.setWcrcTrslTrPrca((paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()).subtract(paramData.getExmptSmmAmt())).multiply(paramData.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래원금  */
-			ibims410bdto.setWcrcTrslTrIntAmt((paramData.getNrmlIntAmt()==null?BigDecimal.ZERO:paramData.getNrmlIntAmt())
+			ibims410bdto.setTrCrryCd(paramData.getCrryCd()); /* 거래통화코드 */
+			ibims410bdto.setKrwTrslRt(paramData.getAplcExchR()); /* 원화환산율 == 적용환율 */
+			ibims410bdto.setKrwTrslTrPrca((paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()).subtract(paramData.getExmptSmmAmt())).multiply(paramData.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래원금  */
+			ibims410bdto.setKrwTrslTrIntAmt((paramData.getNrmlIntAmt()==null?BigDecimal.ZERO:paramData.getNrmlIntAmt())
 								             .add(paramData.getCrdtGrntOvduIntAmt()==null?BigDecimal.ZERO:paramData.getCrdtGrntOvduIntAmt())
 								             .multiply(paramData.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); 				/* 원화환산거래이자금액 == (정상이자+연체이자)*적용환율 */
 //			ibims410bdto.setWcrcTrslTrFeeAmt(mrdpFeeAmtSum.multiply(paramData.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); 	/* 원화환산거래수수료금액 == 수수료수납금액 */
 			
 //			ibims410bdto.setWcrcTrslCostAmt(ibims403Lst.get(i).getWcrcTrslCostAmt()); /* 원화환산비용금액 */
-			ibims410bdto.setActgAfrsCd("G2"); /* 회계업무코드 */
+			ibims410bdto.setAcctJobCd("G2"); /* 회계업무코드 */
 //			ibims410bdto.setActgUnitAfrsCd(ibims403Lst.get(i).getActgUnitAfrsCd()); /* 회계단위업무코드 */
 //			ibims410bdto.setActgTrCd(ibims403Lst.get(i).getActgTrCd()); /* 회계거래코드 */
 //			ibims410bdto.setActgErlmSeq(ibims403Lst.get(i).getActgErlmSeq()); /* 회계등록순번 */
@@ -490,7 +490,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 					ibims410bdto.setTrAfLoanRmnd(ibims410bdto.getTrAfLoanRmnd().subtract(ibims410bdto.getDealRdptObjtPrca())); 
 				}
 			}
-			ibims410bdto.setRdptTmod(iLastRdmpTmrd); /* 상환회차 */
+			ibims410bdto.setRdmpTmrd(iLastRdmpTmrd); /* 상환회차 */
 			
 //			ibims410bdto.setDealPxdfPrca(ibims403Lst.get(i).getDealPxdfPrca()); /* 딜대지급원금 */
 //			ibims410bdto.setPxdfIntAmt(ibims403Lst.get(i).getPxdfIntAmt()); /* 대지급이자금액 */
@@ -514,7 +514,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 //			ibims410bdto.setDfrmFeeClmObjtAmt(ibims403Lst.get(i).getDfrmFeeClmObjtAmt()); /* 지급수수료청구대상금액 */
 //			ibims410bdto.setMrdpFeeAmt(in403bdto.getMrdpFeeAmt()); /* 중도상환수수료금액 */
 //			ibims410bdto.setChckIssuIsttName(ibims403Lst.get(i).getChckIssuIsttName()); /* 수표발행기관명 */
-			ibims410bdto.setMrdpYn(in403bdto.getMrdpYn()); /* 중도상환여부 */
+			ibims410bdto.setEarlyRepayYn(in403bdto.getMrdpYn()); /* 중도상환여부 */
 			ibims410bdto.setRctmDt(paramData.getPrarDt()); /* 입금일자 == 기산일자(상환일자) */
 //			ibims410bdto.setTrObjtBsnNo(ibims403Lst.get(i).getTrObjtBsnNo()); /* 거래대상기업체번호 */
 //			ibims410bdto.setNoprErngEtcAmt(ibims403Lst.get(i).getNoprErngEtcAmt()); /* 영업외수익기타금액 */
@@ -530,7 +530,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 			EtprCrdtGrntAcctProcDTO inDTO = new EtprCrdtGrntAcctProcDTO();
 			inDTO.setPrdtCd(in403bdto.getPrdtCd());
 			inDTO.setExcSn(in403bdto.getExcSn());
-			inDTO.setTrCrcyCd(paramData.getCrncyCd());	  		/* 거래통화코드 */
+			inDTO.setTrCrcyCd(paramData.getCrryCd());	  		/* 거래통화코드 */
 			inDTO.setTrAmt(ibims410bdto.getDealTrPrca().add(ibims410bdto.getTrIntAmt()));
 			inDTO.setTrPrca(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()));	/* 거래원금 */  
 			inDTO.setTrIntAmt((paramData.getNrmlIntAmt()==null?BigDecimal.ZERO:paramData.getNrmlIntAmt())
@@ -550,7 +550,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 				ibims410bdto.setEtprCrdtGrntTrKindCd(in410bdto.getEtprCrdtGrntTrKindCd());
 				ibims410bdto.setTrFeeAmt((in403bdto.getMrdpFeeAmt()==null?BigDecimal.ZERO:in403bdto.getMrdpFeeAmt())); 		/* 거래수수료금액 */
 				ibims410bdto.setMrdpFeeAmt((in403bdto.getMrdpFeeAmt()==null?BigDecimal.ZERO:in403bdto.getMrdpFeeAmt())); 	/* 중도상환수수료금액 */
-				ibims410bdto.setWcrcTrslTrFeeAmt((in403bdto.getMrdpFeeAmt()==null?BigDecimal.ZERO:in403bdto.getMrdpFeeAmt()).multiply(paramData.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
+				ibims410bdto.setKrwTrslTrFeeAmt((in403bdto.getMrdpFeeAmt()==null?BigDecimal.ZERO:in403bdto.getMrdpFeeAmt()).multiply(paramData.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
 				ibims410bdto.setFeeTotAmt(mrdpFeeAmtSum); /* 수수료총금액 */			
 				ibims410bdto.setDealTrPrca(BigDecimal.ZERO);	/* 딜거래원금 == 거래원금합계 */
 				ibims410bdto.setTrIntAmt(BigDecimal.ZERO); 		/* 거래이자금액 == 정상이자+연체이자 */
@@ -560,9 +560,9 @@ public class TB07030ServiceImpl implements TB07030Service {
 				ibims410bdto.setNrmlIntAmt(BigDecimal.ZERO); /* 정상이자금액 */
 				ibims410bdto.setCrdtGrntOvduIntAmt(BigDecimal.ZERO); /* 신용공여연체이자금액 */
 				ibims410bdto.setCrdtGrntRcvbIntAmt(BigDecimal.ZERO); /* 신용공여미수이자금액 */
-				ibims410bdto.setWcrcTrslTrPrca(BigDecimal.ZERO); /* 원화환산거래원금  */
-				ibims410bdto.setWcrcTrslTrIntAmt(BigDecimal.ZERO); /* 원화환산거래이자금액 == (정상이자+연체이자)*적용환율 */
-				ibims410bdto.setActgAfrsCd("G3"); /* 회계업무코드 */
+				ibims410bdto.setKrwTrslTrPrca(BigDecimal.ZERO); /* 원화환산거래원금  */
+				ibims410bdto.setKrwTrslTrIntAmt(BigDecimal.ZERO); /* 원화환산거래이자금액 == (정상이자+연체이자)*적용환율 */
+				ibims410bdto.setAcctJobCd("G3"); /* 회계업무코드 */
 				ibims410bdto.setPucrIntAltnAmt(BigDecimal.ZERO); /* 환출이자대체금액 */
 				ibims410bdto.setPucrIntRctmAmt(BigDecimal.ZERO); /* 환출이자입금금액 */
 				ibims410bdto.setTrAfLoanRmnd(BigDecimal.ZERO);
@@ -571,7 +571,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 				EtprCrdtGrntAcctProcDTO inDTO1 = new EtprCrdtGrntAcctProcDTO();
 				inDTO1.setPrdtCd(in403bdto.getPrdtCd());
 				inDTO1.setExcSn(in403bdto.getExcSn());
-				inDTO1.setTrCrcyCd(paramData.getCrncyCd());	  		/* 거래통화코드 */
+				inDTO1.setTrCrcyCd(paramData.getCrryCd());	  		/* 거래통화코드 */
 				inDTO1.setTrAmt(BigDecimal.ZERO);
 				inDTO1.setTrPrca(BigDecimal.ZERO);	/* 거래원금 */  
 				inDTO1.setTrIntAmt(BigDecimal.ZERO); /* 거래이자금액 */
