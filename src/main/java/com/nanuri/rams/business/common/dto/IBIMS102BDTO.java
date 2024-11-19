@@ -38,4 +38,7 @@ public class IBIMS102BDTO {
 	private String enoCnt;				   //담당자건수
 	private String custCnt;				   //고객건수
 	private String fileCnt;				   //첨부파일건수
+    private String hndTmnlNo;
+    private String hndTrId;
+    private String guid;
 }

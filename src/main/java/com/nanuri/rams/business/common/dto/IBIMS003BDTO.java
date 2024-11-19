@@ -32,9 +32,9 @@ public class IBIMS003BDTO {
     private String         rgstDt;                                 // 등록일자
     private String         pwdChngDt;                              // 비밀번호변경일자
     private String         lginPwdChngDt;                          // 로그인비밀번호변경일자
-    private BigDecimal     pwdErrNbtm;                             // 비밀번호오류횟수
-    private BigDecimal     lginPwdErrNbtm;                         // 로그인비밀번호오류횟수
-    private BigDecimal     odsPwdErrNbtm;                          // ODS비밀번호오류횟수
+    private int            pwdErrNbtm;                             // 비밀번호오류횟수
+    private int            lginPwdErrNbtm;                         // 로그인비밀번호오류횟수
+    private int            odsPwdErrNbtm;                          // ODS비밀번호오류횟수
     private String         dprtCd;                                 // 부서코드
     private String         dprtNm;                                 // 부서명
     private String         bdcd;                                   // 부점코드
