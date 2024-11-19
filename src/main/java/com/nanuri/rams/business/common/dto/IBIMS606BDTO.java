@@ -14,8 +14,8 @@ public class IBIMS606BDTO {
     private String         dealNo;                                          // 딜번호
     private String         mtrDcd;                                          // 부수안건구분코드
     private String         jdgmDcd;                                         // 심사구분코드
-    //private int            sq;                                              // 일련번호(메타 변경 전)
-    private String         sn;               	                            // 일련번호
+    private int            sn;                                              // 일련번호(메타 변경 전)
+   // private String         sn;               	                            // 일련번호
     private String         evntAftrMngCcd;                                  // 사후관리구분코드
     private String         evntAftrMngCcdNm;                                  // 사후관리구분코드
     private String         evntAftrMngCntnt;                                // 사후관리내용
