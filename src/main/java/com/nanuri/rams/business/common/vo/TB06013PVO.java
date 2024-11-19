@@ -61,7 +61,7 @@ public class TB06013PVO {
     // IBIMS214B
     private String         drcMrtgYn;                                       // 직접담보여부
     private String         ovssMrtgYn;                                      // 국외담보여부
-    private String         aprsMthCd;                                       // 감정방법코드(감정구분코드)
+    private String         aprsMthCd;                                       // 감정방법코드
     private String         aprsEvlIsttCd;                                   // 감정평가기관코드
     private String         crevIsttNm;                                      // 시가평가기관명
     private String         crevStdrCd;                                      // 시가평가기준코드

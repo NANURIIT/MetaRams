@@ -30,7 +30,7 @@ public class IBIMS201BVO extends IBIMS201BDTO {
     
     private String dprtNm;   			// 부서명
     private String empNm2;   			// 담당자명
-	private String bzepName; 			// 거래상대방명
+	private String entpNm; 			    // 거래상대방명
 	private String prgSttsNm; 			// 진행상태명
 	private BigDecimal dealExcAmt; 		/* 투자금액 */
 	private BigDecimal dealExcBlce;		/* 투자잔액 */
