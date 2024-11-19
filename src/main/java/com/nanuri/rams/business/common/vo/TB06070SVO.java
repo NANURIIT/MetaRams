@@ -19,7 +19,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class TB06070SVO extends IBIMS200BDTO{
+public class TB06070SVO{
 
 //	private String PRDT_CD; 							// 상품코드
 //	private String ASST_CLSF_CD; 						// 자산분류코드
