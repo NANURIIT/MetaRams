@@ -24,6 +24,6 @@ public interface TB05030Service {
 
 	int updateIBDEALInfo(Map<String, Object> paramData);
 
-	int deleteRAA22BDeal(List<Map<String, Object>> inputList);
+	// int deleteRAA22BDeal(List<Map<String, Object>> inputList);
 
 }

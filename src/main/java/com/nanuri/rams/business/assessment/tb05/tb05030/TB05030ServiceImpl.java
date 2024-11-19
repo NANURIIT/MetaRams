@@ -27,9 +27,9 @@ import java.util.Map;
 public class TB05030ServiceImpl implements TB05030Service {
 
 	// AS-IS
-	private final RAA02BMapper raa02bMapper;
-	private final RAA22BMapper raa22bMapper;
-	private final RAA23BMapper raa23bMapper;
+	// private final RAA02BMapper raa02bMapper;
+	// private final RAA22BMapper raa22bMapper;
+	// private final RAA23BMapper raa23bMapper;
 
 	// TO-BE
 	private final IBIMS103BMapper ibims103BMapper;
@@ -152,91 +152,91 @@ public class TB05030ServiceImpl implements TB05030Service {
 	}
 
 	// 안건제외
-	@Override
-	public int deleteRAA22BDeal(List<Map<String, Object>> inputList) {
+	// @Override
+	// public int deleteRAA22BDeal(List<Map<String, Object>> inputList) {
 
-		RAA02BDTO raa02bDTO = new RAA02BDTO();
+	// 	RAA02BDTO raa02bDTO = new RAA02BDTO();
 
-		RAA22BDTO raa22bDTO = new RAA22BDTO();
+	// 	RAA22BDTO raa22bDTO = new RAA22BDTO();
 
-		RAA23BDTO raa23BDTO = new RAA23BDTO();
+	// 	RAA23BDTO raa23BDTO = new RAA23BDTO();
 
-		for (int i = 0; i < inputList.size(); i++) {
+	// 	for (int i = 0; i < inputList.size(); i++) {
 
-			Map<String, Object> inputArr = inputList.get(i);
-			/* #################################################### */
-			/* RAA02B 에서 해당 안건의 진행상태 UPDATE(310 : 협의체부의중) */
-			/* #################################################### */
+	// 		Map<String, Object> inputArr = inputList.get(i);
+	// 		/* #################################################### */
+	// 		/* RAA02B 에서 해당 안건의 진행상태 UPDATE(310 : 협의체부의중) */
+	// 		/* #################################################### */
 
-			// 파라미터 정보 셋팅
-			raa02bDTO.setIbDealNo(inputArr.get("ibDealNo").toString());
-			raa02bDTO.setRiskInspctCcd(inputArr.get("riskInspctCcd").toString());
-			raa02bDTO.setLstCCaseCcd(inputArr.get("lstCCaseCcd").toString());
-			raa02bDTO.setInspctPrgrsStCd("300");
+	// 		// 파라미터 정보 셋팅
+	// 		raa02bDTO.setIbDealNo(inputArr.get("ibDealNo").toString());
+	// 		raa02bDTO.setRiskInspctCcd(inputArr.get("riskInspctCcd").toString());
+	// 		raa02bDTO.setLstCCaseCcd(inputArr.get("lstCCaseCcd").toString());
+	// 		raa02bDTO.setInspctPrgrsStCd("300");
 
-			// Transaction
-			raa02bMapper.updateInspctPrgrsStCd(raa02bDTO);
+	// 		// Transaction
+	// 		raa02bMapper.updateInspctPrgrsStCd(raa02bDTO);
 
-			/* ############################## */
-			/* RAA22B 에서 해당 안건 삭제 DELETE */
-			/* ############################## */
+	// 		/* ############################## */
+	// 		/* RAA22B 에서 해당 안건 삭제 DELETE */
+	// 		/* ############################## */
 
-			// 파라미터 정보 셋팅
-			raa22bDTO.setInspctCnfrncCcd(inputArr.get("inspctCnfrncCcd").toString());
-			raa22bDTO.setStdYr(inputArr.get("stdYr").toString());
-			raa22bDTO.setInspctCnfrncSqcSq(Integer.parseInt(inputArr.get("inspctCnfrncSqcSq").toString()));
-			raa22bDTO.setIbDealNo(inputArr.get("ibDealNo").toString());
-			raa22bDTO.setRiskInspctCcd(inputArr.get("riskInspctCcd").toString());
-			raa22bDTO.setLstCCaseCcd(inputArr.get("lstCCaseCcd").toString());
+	// 		// 파라미터 정보 셋팅
+	// 		raa22bDTO.setInspctCnfrncCcd(inputArr.get("inspctCnfrncCcd").toString());
+	// 		raa22bDTO.setStdYr(inputArr.get("stdYr").toString());
+	// 		raa22bDTO.setInspctCnfrncSqcSq(Integer.parseInt(inputArr.get("inspctCnfrncSqcSq").toString()));
+	// 		raa22bDTO.setIbDealNo(inputArr.get("ibDealNo").toString());
+	// 		raa22bDTO.setRiskInspctCcd(inputArr.get("riskInspctCcd").toString());
+	// 		raa22bDTO.setLstCCaseCcd(inputArr.get("lstCCaseCcd").toString());
 
-			// Transaction
-			raa22bMapper.deleteRAA22BInfo(raa22bDTO);
+	// 		// Transaction
+	// 		raa22bMapper.deleteRAA22BInfo(raa22bDTO);
 
-			/* ####################################### */
-			/* RAA23B 에서 해당 안건의 위원정보 삭제 DELETE */
-			/* ####################################### */
+	// 		/* ####################################### */
+	// 		/* RAA23B 에서 해당 안건의 위원정보 삭제 DELETE */
+	// 		/* ####################################### */
 
-			// 파라미터 정보 셋팅
-			raa23BDTO.setInspctCnfrncCcd(inputArr.get("inspctCnfrncCcd").toString());
-			raa23BDTO.setStdYr(inputArr.get("stdYr").toString());
-			raa23BDTO.setInspctCnfrncSqcSq(Integer.parseInt(inputArr.get("inspctCnfrncSqcSq").toString()));
-			raa23BDTO.setRnkNo(Integer.parseInt(inputArr.get("rnkNo").toString()));
+	// 		// 파라미터 정보 셋팅
+	// 		raa23BDTO.setInspctCnfrncCcd(inputArr.get("inspctCnfrncCcd").toString());
+	// 		raa23BDTO.setStdYr(inputArr.get("stdYr").toString());
+	// 		raa23BDTO.setInspctCnfrncSqcSq(Integer.parseInt(inputArr.get("inspctCnfrncSqcSq").toString()));
+	// 		raa23BDTO.setRnkNo(Integer.parseInt(inputArr.get("rnkNo").toString()));
 
-			// Transaction
-			raa23bMapper.deleteRAA23BDealInfo(raa23BDTO);
+	// 		// Transaction
+	// 		raa23bMapper.deleteRAA23BDealInfo(raa23BDTO);
 
-		}
-		/* ############################################### */
-		/* RAA22B 에서 해당 회차에서 남은 안건들의 순위번호 재부여 */
-		/* ############################################### */
+	// 	}
+	// 	/* ############################################### */
+	// 	/* RAA22B 에서 해당 회차에서 남은 안건들의 순위번호 재부여 */
+	// 	/* ############################################### */
 
-		/* 회차 정보 조회 */
-		int[] rnkNoArr = raa22bMapper.selectRnkNoInfo(raa22bDTO);
+	// 	/* 회차 정보 조회 */
+	// 	int[] rnkNoArr = raa22bMapper.selectRnkNoInfo(raa22bDTO);
 
-		// 파라미터 셋팅
-		Map<String, Object> input = new HashMap<>();
+	// 	// 파라미터 셋팅
+	// 	Map<String, Object> input = new HashMap<>();
 
-		input.put("inspctCnfrncCcd", raa22bDTO.getInspctCnfrncCcd());
-		input.put("stdYr", raa22bDTO.getStdYr());
-		input.put("inspctCnfrncSqcSq", raa22bDTO.getInspctCnfrncSqcSq());
+	// 	input.put("inspctCnfrncCcd", raa22bDTO.getInspctCnfrncCcd());
+	// 	input.put("stdYr", raa22bDTO.getStdYr());
+	// 	input.put("inspctCnfrncSqcSq", raa22bDTO.getInspctCnfrncSqcSq());
 
-		for (int i = 0; i < rnkNoArr.length; i++) {
+	// 	for (int i = 0; i < rnkNoArr.length; i++) {
 
-			input.remove("beforeRnkNo");
-			input.remove("afterRnkNo");
+	// 		input.remove("beforeRnkNo");
+	// 		input.remove("afterRnkNo");
 
-			input.put("beforeRnkNo", rnkNoArr[i]);
-			input.put("afterRnkNo", (i + 1));
+	// 		input.put("beforeRnkNo", rnkNoArr[i]);
+	// 		input.put("afterRnkNo", (i + 1));
 
-			raa22bMapper.updateRnkNoRAA22B(input);
+	// 		raa22bMapper.updateRnkNoRAA22B(input);
 
-			raa23bMapper.updateRnkNoRAA23B(input);
-		}
+	// 		raa23bMapper.updateRnkNoRAA23B(input);
+	// 	}
 
-		// 파라미터 정보 셋팅
-		// raa22bMapper.selectRAA22BInfo();
+	// 	// 파라미터 정보 셋팅
+	// 	// raa22bMapper.selectRAA22BInfo();
 
-		return 0;
-	}
+	// 	return 0;
+	// }
 
 }

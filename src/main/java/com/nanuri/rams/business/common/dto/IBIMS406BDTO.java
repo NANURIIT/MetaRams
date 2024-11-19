@@ -11,7 +11,7 @@ import java.util.Date;
 public class IBIMS406BDTO {
 	private String prdtCd; /* 상품코드 */
 	private long trSn; /* 거래일련번호 */
-	private BigDecimal excSn; /* 실행일련번호 */
+	private long excSn; /* 실행일련번호 */
 	private long intCalcSeq; /* 이자계산순번 */
 	private String rkfrDt; /* 기산일자 */
 	private String intrCalcStrtDt; /* 이자계산시작일자 */

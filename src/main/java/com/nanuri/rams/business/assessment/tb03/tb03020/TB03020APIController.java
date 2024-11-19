@@ -61,10 +61,10 @@ public class TB03020APIController {
 	}
 
 	// 반송
-	@PostMapping(value = "/rejtDeal")
-	public int rejtDeal(@RequestParam String mngDealNo) {
-		return tb03020Service.rejtDeal(mngDealNo);
-	}
+	// @PostMapping(value = "/rejtDeal")
+	// public int rejtDeal(@RequestParam String mngDealNo) {
+	// 	return tb03020Service.rejtDeal(mngDealNo);
+	// }
 
 
 }

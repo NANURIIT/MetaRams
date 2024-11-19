@@ -53,7 +53,7 @@ public class TB05030Controller {
 
 
 	// 안건 - 안건제외 -> 안쓰는 기능
-	@PostMapping(value = "/deleteRAA22BDeal")
-	public int deleteRAA22BDeal(@RequestBody List<Map<String, Object>> inputList) { return tb05030Service.deleteRAA22BDeal(inputList); }
+	// @PostMapping(value = "/deleteRAA22BDeal")
+	// public int deleteRAA22BDeal(@RequestBody List<Map<String, Object>> inputList) { return tb05030Service.deleteRAA22BDeal(inputList); }
 
 }

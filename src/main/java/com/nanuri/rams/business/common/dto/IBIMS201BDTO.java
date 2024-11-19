@@ -14,7 +14,7 @@ import lombok.Setter;
 public class IBIMS201BDTO {
 
     private String prdtCd;                          //  상품코드
-    private BigDecimal sn;                          //  일련번호
+    private int    sn;                          //  일련번호
     private String lastYn;                          //  최종여부
     private String prdtNm;                          //  상품명
     private String prdtDsc;                         //  상품설명
@@ -127,7 +127,7 @@ public class IBIMS201BDTO {
     private String bdbtRsvsRcknStdrLclsCd;          //  대손준비금산정기준대분류코드
     private String bdbtRsvsRcknStdrMdclCd;          //  대손준비금산정기준중분류코드
     private String bdbtRsvsRcknStdrSclsCd;          //  대손준비금산정기준소분류코드
-    private String bdbtRsvsRcknStdrRto;             //  대손준비금산정기준비율
+    private BigDecimal bdbtRsvsRcknStdrRto;         //  대손준비금산정기준비율
     private BigDecimal thcoPtciAmt;                 //  당사참여금액
     private BigDecimal prdtTotAmt;                  //  상품총금액
     private String intrDnumClcMthCd;                //  이자일수계산방법코드

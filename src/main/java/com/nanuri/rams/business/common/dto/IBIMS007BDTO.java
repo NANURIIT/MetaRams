@@ -14,7 +14,7 @@ import lombok.Setter;
 public class IBIMS007BDTO {
 
     private String         athCd;                                  // 권한코드
-    private BigDecimal     sq;                                     // 일련번호
+    private int            sn;                                     // 일련번호
     private String         menuId;                                 // 메뉴ID
     private String         mdfyRghtCcd;                            // 수정권한구분코드(1: 조회, 2: 수정가능)
     private Date           hndDetlDtm;                             // 조작상세일시

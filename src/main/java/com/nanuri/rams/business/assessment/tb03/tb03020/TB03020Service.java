@@ -21,7 +21,7 @@ public interface TB03020Service {
 
 	public int cnfmDeal(IBIMS101BDTO dealInfo);
 
-	public int rejtDeal(String mngDealNo);
+	// public int rejtDeal(String mngDealNo);
 	
 	public String getDealNo();
 }

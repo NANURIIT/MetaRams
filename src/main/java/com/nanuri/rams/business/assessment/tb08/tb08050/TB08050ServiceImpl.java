@@ -78,7 +78,7 @@ public class TB08050ServiceImpl implements TB08050Service {
 		inDTO1.setExcSn(paramData.getExcSn());
 		inDTO1.setTrCrcyCd(paramData.getCrryCd());	  	/* 거래통화코드 */
 		inDTO1.setTrFeeAmt(paramData.getFeeRcivAmt());  /* 수수료수납금액 */
-		inDTO1.setWcrcTrslRt(paramData.getAplcExchR()); /* 원화환산율 */		
+		inDTO1.setWcrcTrslRt(paramData.getAplyExrt()); /* 원화환산율 */		
 		inDTO1.setActgAfrsCd("G3");						/* 회계업무코드 */
 		inDTO1.setRkfrDt(paramData.getFeeRcivDt()); 	/* 수납일자 */
 		inDTO1.setCanYn("0");
@@ -111,11 +111,11 @@ public class TB08050ServiceImpl implements TB08050Service {
 //		setParam.setPucrIntAmt(getParam.getPucrIntAmt()); /* 환출이자금액 */
 		setParam.setTrFeeAmt(param420.getFeeRcivAmt()); /* 거래수수료금액 */
 //		setParam.setCostAmt(getParam.getCostAmt()); /* 비용금액 */
-		setParam.setTrCrcyCd(param420.getCrryCd()); /* 거래통화코드 */
-		setParam.setWcrcTrslRt(param420.getAplcExchR()); /* 원화환산율 == 적용환율 */
+		setParam.setTrCrryCd(param420.getCrryCd()); /* 거래통화코드 */
+		setParam.setKrwTrslRt(param420.getAplyExrt()); /* 원화환산율 == 적용환율 */
 //		setParam.setWcrcTrslTrPrca(param402.getKrwTrslExcAmt()); /* 원화환산거래원금 == 최종지급금액 */
 //		setParam.setWcrcTrslTrIntAmt(param402.getKrwTrslIntAmt()); /* 원화환산거래이자금액 == 원화환산이자금액*/
-		setParam.setWcrcTrslTrFeeAmt(param420.getFeeRcivAmt().multiply(param420.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
+		setParam.setKrwTrslTrFeeAmt(param420.getFeeRcivAmt().multiply(param420.getAplyExrt()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
 //		setParam.setWcrcTrslCostAmt(getParam.getWcrcTrslCostAmt()); /* 원화환산비용금액 */
 //		setParam.setActgAfrsCd(getParam.getActgAfrsCd()); /* 회계업무코드 */
 //		setParam.setActgUnitAfrsCd(getParam.getActgUnitAfrsCd()); /* 회계단위업무코드 */
