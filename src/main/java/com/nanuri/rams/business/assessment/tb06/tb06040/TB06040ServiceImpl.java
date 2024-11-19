@@ -178,7 +178,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 		setParam.setCclcDt(disParam.getCclcDt()); 						/* 해지일자 */
 		setParam.setEprzCrdlCclcRsnCd(disParam.getEprzCrdlCclcRsnCd()); /* 기업여신해지사유코드 */
 		setParam.setCclcRsnCtns(disParam.getCclcRsnCtns()); 			/* 해지사유내용 */		
-		setParam.setEprzCrdlWeekMrtgKndCd(getParam.getWeekMrtgKndCd()); /* 기업여신주담보종류코드 */
+		setParam.setEprzCrdlWeekMrtgKndCd(getParam.getEprzCrdlWeekMrtgKndCd()); /* 기업여신주담보종류코드 */
 		setParam.setOvduIntrRt(getParam.getOvduIntrRt()); /* 연체이자율 */
 		setParam.setEprzCrdlOvduIntrRtDcd(getParam.getOvduIntrRtDcd()); /* 기업여신연체이자율구분코드 */
 		setParam.setEprzCrdlIntrClcEndDeDcd(getParam.getIntrClcEndDeDcd()); /* 기업여신이자계산종료일구분코드 */
