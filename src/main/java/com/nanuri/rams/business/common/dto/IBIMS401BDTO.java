@@ -17,7 +17,7 @@ public class IBIMS401BDTO {
     private String         prdtCd;                                 // 상품코드
     private long           rgstSn;                                 // 등록일련번호
     private String         eprzCrdlLdgSttsCd;                      // 기업여신원장상태코드
-    private long           rqsSn;                                  // 신청일련번호
+    private int            rqsSn;                                  // 신청일련번호
     private String         ptxtTrOthrDscmNo;                       // 명목거래상대방식별번호
     private BigDecimal     stdrIntrt;                              // 기준금리
     private BigDecimal     addIntrt;                               // 가산금리

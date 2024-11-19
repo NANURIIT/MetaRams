@@ -66,7 +66,7 @@ public class TB06019ServiceImpl implements TB06019Service {
 		saveVo.setGuid("");
 
 		saveDto.setEntpCd(saveVo.getArdyBzepNo());	// 업체코드
-		saveDto.setEntpHnglNm(saveVo.getBzepName()); // 업체한글명
+		saveDto.setEntpHnglNm(saveVo.getEntpNm()); // 업체한글명
 		saveDto.setCorpRgstNo(saveVo.getCrno());	// 법인등록번호
 		saveDto.setBsnsRgstNo(saveVo.getRnbn());	// 사업자등록번호
 
@@ -93,7 +93,7 @@ public class TB06019ServiceImpl implements TB06019Service {
 		// 화면에서 재조회 하기 위한 조회조건 정보 리턴
 		SchCondVO rtnSchCondVo = new SchCondVO();
 		rtnSchCondVo.setArdyBzepNo(saveVo.getArdyBzepNo());
-		rtnSchCondVo.setBzepName(saveVo.getBzepName());
+		rtnSchCondVo.setEntpNm(saveVo.getEntpNm());
 
 		return rtnSchCondVo;
 	}

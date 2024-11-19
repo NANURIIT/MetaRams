@@ -72,7 +72,7 @@ public class TB04050ServiceImpl implements TB04050Service {
 		String sq = ibims224BMapper.getMaxSQ(param);
 		
 		param.setHndEmpno(facade.getDetails().getEno());
-		param.setSq(sq);
+		param.setSn(sq);
 		param.setDealNm(param.getDealNm());				// Deal명
 		param.setFndNm(param.getFndNm());				// 펀드명
 		param.setIssLtrDcd(param.getIssLtrDcd());		// 발급서류구분코드

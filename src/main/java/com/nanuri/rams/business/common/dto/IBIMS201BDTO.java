@@ -14,7 +14,7 @@ import lombok.Setter;
 public class IBIMS201BDTO {
 
     private String prdtCd;                          //  상품코드
-    private BigDecimal sn;                          //  일련번호
+    private int    sn;                          //  일련번호
     private String lastYn;                          //  최종여부
     private String prdtNm;                          //  상품명
     private String prdtDsc;                         //  상품설명
@@ -64,10 +64,10 @@ public class IBIMS201BDTO {
     private String paiRdmpDcd;                      //  원리금상환구분코드
     private String ortnPrdtClsfCd;                  //  기업여신운용상품분류코드
     private String intrtExpDcd;                     //  기업여신금리만기구분코드
-    private BigDecimal intrtRestFrqcMnum;           //  금리재설정주기개월수
-    private BigDecimal prnaRdmpFrqcMnum;            //  원금상환주기개월수
-    private BigDecimal intrRdmpFrqcMnum;            //  이자상환주기개월수
-    private BigDecimal prnaDfrPrdMnum;              //  원금거치기간개월수
+    private int		   intrtRestFrqcMnum;           //  금리재설정주기개월수
+    private int		   prnaRdmpFrqcMnum;            //  원금상환주기개월수
+    private int		   intrRdmpFrqcMnum;            //  이자상환주기개월수
+    private int		   prnaDfrPrdMnum;              //  원금거치기간개월수
     private String eprzCrdlCtrtNo;                  //  기업여신계약번호
     private BigDecimal ctrcPrarDt;                  //  약정예정일자
     private String ctrcPrdMnum;                     //  약정기간개월수
@@ -127,7 +127,7 @@ public class IBIMS201BDTO {
     private String bdbtRsvsRcknStdrLclsCd;          //  대손준비금산정기준대분류코드
     private String bdbtRsvsRcknStdrMdclCd;          //  대손준비금산정기준중분류코드
     private String bdbtRsvsRcknStdrSclsCd;          //  대손준비금산정기준소분류코드
-    private String bdbtRsvsRcknStdrRto;             //  대손준비금산정기준비율
+    private BigDecimal bdbtRsvsRcknStdrRto;         //  대손준비금산정기준비율
     private BigDecimal thcoPtciAmt;                 //  당사참여금액
     private BigDecimal prdtTotAmt;                  //  상품총금액
     private String intrDnumClcMthCd;                //  이자일수계산방법코드
@@ -135,7 +135,7 @@ public class IBIMS201BDTO {
     private String stdrIntrtKndCd;                  //  기준금리종류코드
     private BigDecimal fxnIntrt;                    //  고정금리
     private BigDecimal addIntrt;                    //  가산금리
-    private BigDecimal intrtCngeFrqcMnum;           //  금리변동주기개월수
+    private int		   intrtCngeFrqcMnum;           //  금리변동주기개월수
     private BigDecimal hdwtEvlAmt;                  //  수기평가금액
     private String eprzCrdlWeekMrtgKndCd;           //  기업여신주담보종류코드
     private BigDecimal ovduIntrRt;                  //  연체이자율

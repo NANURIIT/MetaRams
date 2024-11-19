@@ -16,7 +16,7 @@ public class IBIMS609BDTO {
     private String dealNo;              //  딜번호
     private String jdgmDcd;             //  심사구분코드
     private String mtrDcd;              //  부수안건구분코드
-    private BigDecimal sn;              //  일련번호
+    private int		  sn;              //  일련번호
     private String efctOcrncDt;         //  효력발생일자
     private String efctEndDt;           //  효력종료일자
     private String efctMngCntnt;        //  효력관리내용

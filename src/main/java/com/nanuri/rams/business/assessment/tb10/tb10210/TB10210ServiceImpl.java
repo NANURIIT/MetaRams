@@ -131,7 +131,7 @@ public class TB10210ServiceImpl implements TB10210Service {
         for(int i = 0; i < param.size(); i++){
             if (param.get(i).getHndEmpno() == null || param.get(i).getHndEmpno().isEmpty()) {
                 int sq = ibims007BMapper.ibims007bCreateSq();
-                param.get(i).setSq(sq);
+                param.get(i).setSn(sq);
             } else {
 
             }

@@ -14,7 +14,7 @@ public class IBIMS110BDTO {
     private String     dealNo;                        // 딜번호
     private String     mtrDcd;                        // 안건구분코드
     private String     jdgmDcd;                       // 심사구분코드
-    private BigDecimal sn;                            // 일련번호
+    private int        sn;                            // 일련번호
     private String     rspsbCmplOgnDcd;               // 책임준공기관구분코드
     private String     sccoCrno;                      // 증권사법인등록번호
     private String     rnmCnfmNo;                     // 실명확인번호
