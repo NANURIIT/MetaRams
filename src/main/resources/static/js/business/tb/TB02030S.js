@@ -24,7 +24,7 @@ const TB02030Sjs = (() => {
         setGrid_TB20230S();
     });
 
-
+    //WF STEP 셀렉트박스 옵션 설정(권한 코드 정보)
     function getAthCodeInfo(){
         ajaxCall({
             url: URLS.MENU_AUTH,
@@ -43,12 +43,6 @@ const TB02030Sjs = (() => {
                 colWfStepList.forEach(col => {
                     if(col.dataIndx === "stepNm"){ //스텝명
                         col.editor.options = stepNmOptions;
-                        // onChange 이벤트 추가
-                        col.editor.change = function(evt, ui) {
-                            const selectedStep = ui.newValue;
-                            console.log("Selected Step: ", selectedStep);
-                            // 연관된 값을 변경하거나 다른 로직을 추가할 수 있습니다.
-                        };
                     }
 
                     if (col.dataIndx === "wfAuthId") { //권한id
@@ -56,12 +50,11 @@ const TB02030Sjs = (() => {
                     }
 
                 });
-
-                //setGrid_TB20230S();
             }
         });
     };
     
+    //TB2030S화면 그리드 설정
     function setGrid_TB20230S(){
         const obj_WfMap = {
             height: 220,
@@ -70,7 +63,6 @@ const TB02030Sjs = (() => {
             editable: false,
             showTitle: false,
             numberCell: { show: false },
-            //cellClick: onCheckboxClick,
             rowDblClick: (evt, ui) => {
                 if (ui.rowData) {
                     const wfMapId = ui.rowData.wfMapId;
@@ -82,28 +74,6 @@ const TB02030Sjs = (() => {
                 horizontal: false,
                 vertical: true  // 수직 스크롤은 필요에 따라 활성화
             },
-            // 셀 편집 시작 이벤트 (편집이 시작될 때)
-            cellBeginEdit: function(event, ui) {
-                const cell = {
-                    rowIndex: ui.rowIndx,  // 수정된 로우의 인덱스
-                    column: ui.colDataIndx,  // 수정된 컬럼
-                };
-                console.log('셀 편집 시작:', cell);
-            },
-            
-            // 셀 값이 변경된 후 이벤트 (실제 값이 변경된 후)
-            cellValueChanged: function(event, ui) {
-                const updatedCell = {
-                    rowIndex: ui.rowIndx,  // 수정된 로우의 인덱스
-                    column: ui.colDataIndx,  // 수정된 컬럼
-                    oldValue: ui.oldValue,  // 수정 전 값
-                    newValue: ui.newValue,  // 수정 후 값
-                };
-                
-                // 수정된 셀만 업데이트 배열에 추가
-                updatedCells.push(updatedCell);
-                console.log('수정된 셀:', updatedCell);
-            },
             autoResize: true ,// 열 너비 자동 조정
             strNoRows: '조회된 데이터가 없습니다.'
         };
@@ -114,13 +84,6 @@ const TB02030Sjs = (() => {
             editable: false,
             showTitle: false,
             numberCell: { show: false },
-            //cellClick: onCheckboxClick,
-            cellChanged: function(event, ui) {
-                if (ui.cellData) {
-                  console.log("변경된 값: " + ui.cellData);
-                  // 셀렉트박스가 있는 셀의 값을 처리하는 로직 추가
-                }
-            },
             strNoRows: '조회된 데이터가 없습니다.'
         };
     
@@ -228,11 +191,13 @@ const TB02030Sjs = (() => {
         }
     };
 
+    //조회버튼 클릭(WF MAP 조회)
     function searchButtonClick(){
         const wfMapNm = $("#wfMapNmSearchInput").val();
         getWfMapList(wfMapNm);
     };
 
+    //WF MAP 조회 AJAX
     function getWfMapList(wfMapNm){
         const _url = wfMapNm ? `${URLS.WF_MAP.GET}?wfMapNm=${wfMapNm}` : URLS.WF_MAP.GET;
      
@@ -267,7 +232,6 @@ const TB02030Sjs = (() => {
             jobTableKey: value.jobTableKey,
             regUserId: value.regUserId,
             regDttm: formatDate(value.regDttm),
-            // originalRegDttm: value.regDttm,      // 원본 날짜 값을 별도로 저장
             state: "U",
             originalWfMapId: value.wfMapId
         }));
@@ -281,6 +245,7 @@ const TB02030Sjs = (() => {
         gridInstance.refreshDataAndView();
     };
 
+    //WF MAP 행추가
     function addWfMapRow(){
         const newRow = {
             rowCheck: false,
@@ -296,23 +261,7 @@ const TB02030Sjs = (() => {
         $(GRID_MAP_ID).pqGrid("addRow", { rowData: newRow, checkEditable: false });
     };
 
-    function deleteWfMap(wfMapList){
-        ajaxCall({
-            url: URLS.WF_MAP.DELETE,
-            method: "DELETE",
-            data: wfMapList,
-            success: () => {
-                openPopup({
-                    title: "성공",
-                    type: "success",
-                    text: "WF맵 삭제가 완료되었습니다",
-                });
-
-                searchButtonClick();  // 기존의 조회 함수 호출하여 데이터 재로드
-            },
-        });
-    };
-
+    //WF MAP 수정 AJAX
     function updateWfMapData(wfMapList){
         return new Promise((resolve, reject) => {
             ajaxCall({
@@ -325,6 +274,7 @@ const TB02030Sjs = (() => {
         });
     };
 
+    //WF MAP 저장 AJAX
     function saveWfMapData(wfMapList){
         return new Promise((resolve, reject) => {
             ajaxCall({
@@ -497,26 +447,6 @@ const TB02030Sjs = (() => {
         $(GRID_STEP_ID).pqGrid("addRow", { rowData: newRow, checkEditable: false });
     }
 
-    // WF 스텝 삭제 AJAX
-    function deleteWfStep(data) {
-        ajaxCall({
-            url: URLS.WF_STEP.DELETE,
-            method: "DELETE",
-            data: data,
-            success: () => {
-                openPopup({
-                    title: "성공",
-                    type: "success",
-                    text: "WF스텝 삭제가 완료되었습니다",
-                })
-                //
-                getWfStepList(data[0].wfMapId);
-            }
-        });
-        $(GRID_STEP_ID).pqGrid("refreshDataAndView");
-    }
-
-
     // WF 스텝 저장 AJAX
     function saveWfStepData(data) {
         return new Promise(function(resolve, reject) {
@@ -524,18 +454,8 @@ const TB02030Sjs = (() => {
                 url: URLS.WF_STEP.INSERT,
                 method: "POST",
                 data: data,
-                success: function() {
-                    openPopup({
-                        title: "성공",
-                        type: "success",
-                        text: "WF스텝 저장이 완료되었습니다",
-                    });
-                    getWfStepList(data[0].wfMapId);
-                    resolve(true);  // 성공 시 Promise를 resolve
-                },
-                error: function(error) {
-                    reject(error);  // 오류 발생 시 Promise를 reject
-                }
+                success: () => resolve(true),  // 성공 시 resolve 호출
+                error: (response) => reject(new Error("오류 발생")),  // 실패 시 reject 호출만 처리
             });
         });
     }
@@ -547,15 +467,7 @@ const TB02030Sjs = (() => {
                 url: URLS.WF_STEP.UPDATE,
                 method: "PUT",
                 data: data,
-                success: () => {
-                    openPopup({
-                        title: "성공",
-                        type: "success",
-                        text: "WF스텝 저장이 완료되었습니다",
-                    })
-                    getWfStepList(data[0].wfMapId);
-                    resolve(true);
-                },
+                success: () => resolve(true),  // 성공 시 resolve 호출
                 error: function(error) {
                     reject(error);  
                 }
@@ -588,11 +500,11 @@ const TB02030Sjs = (() => {
         const getCheckedRows = (data) => data.filter(row => row.rowCheck);
         const classifyRows = (rows) => {
             rows.forEach(row => {
-                row.chgUserId = userEno;     //변경자 
-                if (row.state === "N") {
-                    row.regUserId = userEno;     //등록자
-                } else if (row.state === "U") {
-                    row.regUserId = "";          //등록자(수정일 경우 등록자 변경하면 안됨)
+                row.chgUserId = userEno;         //변경자 
+                if (row.state === "N") {         
+                    row.regUserId = userEno;     // 등록자
+                } else if (row.state === "U") {  
+                    row.regUserId = "";          // 등록자(수정일 경우 등록자 변경하면 안됨)
                 }
 
                 (row.state === "N" ? saveRows : updateRows).push(row);
@@ -600,11 +512,15 @@ const TB02030Sjs = (() => {
         };
     
         const checkedRows = getCheckedRows(allData);
+
+        // 체크박스가 선택되지 않았을 경우 메시지 표시 후 종료
         if (checkedRows.length === 0) {
             openPopup({ type: "info", text: "저장하려면 체크박스를 먼저 선택하세요." });
             return;
         }
         if (!validateFunc(checkedRows)) return;
+        
+        // 선택된 행을 저장과 수정으로 분류
         classifyRows(checkedRows);
     
         try {
@@ -612,6 +528,7 @@ const TB02030Sjs = (() => {
             const updateSuccess = updateRows.length ? await updateDataFunc(updateRows) : false;
     
             let resultMessage = "";
+            // 처리 결과 메시지 생성
             if (saveSuccess && updateSuccess) {
                 resultMessage = `${validationMessage} 저장 및 수정이 완료되었습니다.`;
             } else if (saveSuccess) {
@@ -626,7 +543,24 @@ const TB02030Sjs = (() => {
                     type: "success",
                     text: resultMessage,
                 });
-                searchButtonClick();
+
+                if(gridId === GRID_MAP_ID){
+                    searchButtonClick();
+                }else if(gridId === GRID_STEP_ID){
+                    //재조회를 위해 wfMapId세팅
+                    const wfMapId = saveRows.length > 0 
+                        ? saveRows[0].wfMapId 
+                        : updateRows.length > 0 
+                            ? updateRows[0].wfMapId 
+                            : null;
+                
+                    if (wfMapId) {
+                        getWfStepList(wfMapId);
+                    } else {
+                        console.error("wfMapId를 찾을 수 없습니다.");
+                    }
+                }
+                
             }
         } catch (error) {
             let errorMessage = "";
@@ -738,7 +672,43 @@ const TB02030Sjs = (() => {
             cancelButtonText: '취소'
         }).then((result) => result.isConfirmed && onConfirm());
     }
-    
+
+    //WF MAP 행삭제 AJAX
+    function deleteWfMap(wfMapList){
+        ajaxCall({
+            url: URLS.WF_MAP.DELETE,
+            method: "DELETE",
+            data: wfMapList,
+            success: () => {
+                openPopup({
+                    title: "성공",
+                    type: "success",
+                    text: "WF맵 삭제가 완료되었습니다",
+                });
+
+                searchButtonClick();  // 기존의 조회 함수 호출하여 데이터 재로드
+            },
+        });
+    };
+
+    // WF 스텝 삭제 AJAX
+    function deleteWfStep(data) {
+        ajaxCall({
+            url: URLS.WF_STEP.DELETE,
+            method: "DELETE",
+            data: data,
+            success: () => {
+                openPopup({
+                    title: "성공",
+                    type: "success",
+                    text: "WF스텝 삭제가 완료되었습니다",
+                })
+                getWfStepList(data[0].wfMapId);
+            }
+        });
+        $(GRID_STEP_ID).pqGrid("refreshDataAndView");
+    }
+
     // 버튼 함수에서 validate 함수 전달
     const clickSaveWfMapButton = () => saveOrUpdateWfData(GRID_MAP_ID, saveWfMapData, updateWfMapData, validateWfMapRows, "워크플로우 맵");
     const clickSaveWfStepButton = () => saveOrUpdateWfData(GRID_STEP_ID, saveWfStepData, updateWfStepData, validateWfStepRows, "WF스텝");
