@@ -57,7 +57,7 @@ public class TB04020ServiceImpl implements TB04020Service {
 		ibims100BVO.setEmpno(facade.getDetails().getEno());					// 사원번호 					
 		ibims100BVO.setWorkDcd("03");                              			// 작업구분코드
 		ibims100BVO.setWorkCtns("(To-Do) 접수관리 및 담당자 배정");         // 작업내용
-		ibims100BVO.setRqstEmpno(facade.getDetails().getEno());             // 등록사원번호
+		ibims100BVO.setRgstEmpno(facade.getDetails().getEno());             // 등록사원번호
 		ibims100BVO.setMenuId("/TB04020S");                               	// 메뉴ID 
 		ibims100BVO.setEntpNm(param.getEntpNm());                           // 업체명 
 		ibims100BVO.setRmrk("dealNo=" + param.getDealNo());                 // 비고(메뉴별조회KEY)
