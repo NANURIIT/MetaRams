@@ -38,11 +38,11 @@ import lombok.extern.slf4j.Slf4j;
 public class TB03020ServiceImpl implements TB03020Service {
 
 	/* Deal기본정보 */
-	private final RAC02BMapper rac02BMapper;
+	// private final RAC02BMapper rac02BMapper;
 	/* 심사안건일별상세 */
-	private final RAA01BMapper raa01BMapper;
+	// private final RAA01BMapper raa01BMapper;
 	/* 심사안건평가관리 */
-	private final RAA02BMapper raa02BMapper;
+	// private final RAA02BMapper raa02BMapper;
 	/* 오늘의할일 */
 	private final IBIMS100BMapper ibims100BMapper;
 	/* 딜 기본정보 */
@@ -158,16 +158,22 @@ public class TB03020ServiceImpl implements TB03020Service {
 	@Override
 	public int reqApproveDeal(IBIMS100BVO.selectVO toDoInfo){
 
+		// 임시
+		int result = 0;
+
 		// 파라미터 셋팅
 		toDoInfo.setSn(ibims100BMapper.getSeqNo(toDoInfo));
-		toDoInfo.setRqstEmpno(facade.getDetails().getEno());
+		toDoInfo.setRgstEmpno(facade.getDetails().getEno());
 		toDoInfo.setPrcsEmpno(facade.getDetails().getEno());
 		toDoInfo.setHndEmpno(facade.getDetails().getEno());
 		toDoInfo.setDelYn("0");
 		
 		// 트랜젝션 요청
 		ibims100BMapper.insertIBIMS100BInfo(toDoInfo);
-		return rac02BMapper.reqApproveDeal(toDoInfo.getRmrk().substring(9));
+		// rac02BMapper.reqApproveDeal(toDoInfo.getRmrk().substring(9));
+		
+		return result;
+
 	}
 
 	// 결재승인
@@ -278,10 +284,10 @@ public class TB03020ServiceImpl implements TB03020Service {
 	}
 
 	// 반송
-	@Override
-	public int rejtDeal(String mngDealNo){
-		return rac02BMapper.rejtDeal(mngDealNo);
-	}
+	// @Override
+	// public int rejtDeal(String mngDealNo){
+	// 	return rac02BMapper.rejtDeal(mngDealNo);
+	// }
 
 	// 딜등록 화면 진입시 딜번호 채번..
 	@Override

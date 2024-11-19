@@ -57,8 +57,8 @@ public class TB06030ServiceImpl implements TB06030Service {
 				if (result != 0) {
 					IBIMS103BDTO s103b = new IBIMS103BDTO();
 					s103b.setDealNo(param.getDealNo());
-					s103b.setMtrDcd(param.getNmcpMtrDcd());
-					s103b.setJdgmDcd(param.getLstCCaseDcd());
+					s103b.setMtrDcd(param.getMtrDcd());
+					s103b.setJdgmDcd(param.getJdgmDcd());
 					s103b.setHndEmpno(facade.getDetails().getEno());
 
 					s103b = ibims103bMapper.selectOne103B(s103b);

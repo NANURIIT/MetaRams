@@ -29,8 +29,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TB05040ServiceImpl implements TB05040Service {
 
-	private final RAA02BMapper raa02bMapper;
-	private final RAA91BMapper raa91bMapper;
+	// private final RAA02BMapper raa02bMapper;
+	// private final RAA91BMapper raa91bMapper;
 	private final IBIMS103BMapper ibims103BMapper;
 
 	private final AuthenticationFacade facade;
