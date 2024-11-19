@@ -80,9 +80,9 @@ public class TB07060ServiceImpl implements TB07060Service {
 			resObj.setFrsMngmBdcd(crdlLdg.getFrsMngmBdcd()); // 최초관리부점코드
 			resObj.setMngmBdcd(crdlLdg.getMngmBdcd()); // 관리부점코드
 			resObj.setMngmBdcdNm(crdlLdg.getMngmBdcdNm()); // 관리부점코드
-			resObj.setEprzCrdlPrdtClsfCd(crdlLdg.getEprzCrdlPrdtClsfCd()); // 기업여신상품분류코드
-			resObj.setEprzCrdlPrdtMdclCd(crdlLdg.getEprzCrdlPrdtMdclCd()); // 기업여신상품중분류코드
-			resObj.setEprzCrdlPrdtLclsCd(crdlLdg.getEprzCrdlPrdtLclsCd()); // 기업여신상품대분류코드
+			resObj.setPrdtClsfCd(crdlLdg.getPrdtClsfCd()); // 상품분류코드
+			resObj.setPrdtMdclCd(crdlLdg.getPrdtMdclCd()); // 상품중분류코드
+			resObj.setPrdtLclsCd(crdlLdg.getPrdtLclsCd()); // 상품대분류코드
 			resObj.setActsCd(crdlLdg.getActsCd()); // 계정과목코드
 			resObj.setEprzCrdlAcctJobCd(crdlLdg.getEprzCrdlAcctJobCd()); // 기업여신회계업무코드
 			resObj.setEprzCrdlAcctUnJobCd(crdlLdg.getEprzCrdlAcctUnJobCd()); // 기업여신회계단위업무코드

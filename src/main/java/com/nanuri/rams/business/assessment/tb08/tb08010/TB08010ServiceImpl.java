@@ -2,15 +2,36 @@ package com.nanuri.rams.business.assessment.tb08.tb08010;
 
 import java.util.List;
 
-import com.nanuri.rams.business.common.dto.*;
-import com.nanuri.rams.business.common.mapper.*;
-import com.nanuri.rams.business.common.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.common.dto.IBIMS103BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS606BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS607BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS608BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS609BDTO;
+import com.nanuri.rams.business.common.dto.RAA64BDTO;
+import com.nanuri.rams.business.common.dto.RAA66BDTO;
+import com.nanuri.rams.business.common.mapper.IBIMS103BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS606BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS607BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS608BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS609BMapper;
+import com.nanuri.rams.business.common.mapper.RAA02BMapper;
+import com.nanuri.rams.business.common.mapper.RAA61BMapper;
+import com.nanuri.rams.business.common.mapper.RAA62BMapper;
+import com.nanuri.rams.business.common.mapper.RAA63BMapper;
+import com.nanuri.rams.business.common.mapper.RAA64BMapper;
+import com.nanuri.rams.business.common.mapper.RAA66BMapper;
+import com.nanuri.rams.business.common.vo.IBIMS103BVO;
+import com.nanuri.rams.business.common.vo.IBIMS606BVO;
+import com.nanuri.rams.business.common.vo.IBIMS607BVO;
+import com.nanuri.rams.business.common.vo.IBIMS608BVO;
+import com.nanuri.rams.business.common.vo.IBIMS609BVO;
+import com.nanuri.rams.business.common.vo.RAA64BVO;
+import com.nanuri.rams.business.common.vo.RAA66BVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
-import com.nanuri.rams.com.utils.DateUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -62,7 +83,7 @@ public class TB08010ServiceImpl implements TB08010Service {
 	@Override
 	public int registEamInfo(IBIMS606BDTO eamInfo) {
 		
-		int sq = eamInfo.getSq();
+		int sq = eamInfo.getSn();
 		
 		eamInfo.setHndlPEno(facade.getDetails().getEno());
 		
@@ -71,12 +92,12 @@ public class TB08010ServiceImpl implements TB08010Service {
 		    
 		    if (raa60bDTOsq == null) {										// null일때 sq 1로 변경			
 		    	raa60bDTOsq = new IBIMS606BDTO();
-		    	raa60bDTOsq.setSq(Integer.valueOf(1));
+		    	raa60bDTOsq.setSn(Integer.valueOf(1));
 		    }
 		    
-		    int maxSq = raa60bDTOsq.getSq();
+		    int maxSq = raa60bDTOsq.getSn();
 		    
-		    eamInfo.setSq(maxSq);
+		    eamInfo.setSn(maxSq);
 		    eamInfo.setFstRgstPEno(facade.getDetails().getEno());
 		    
 		    return ibims606bMapper.registEamInfo(eamInfo);  					// 재산조사 등록
@@ -131,7 +152,7 @@ public class TB08010ServiceImpl implements TB08010Service {
 	@Override
 	public int registEsttInfo(IBIMS607BDTO esttInfo) {
 
-		int sq = esttInfo.getSq();
+		int sq = esttInfo.getSn();
 		
 		esttInfo.setHndlPEno(facade.getDetails().getEno());
 		
@@ -140,12 +161,12 @@ public class TB08010ServiceImpl implements TB08010Service {
 		    
 		    if (raa61bDTOsq == null) {										// null일때 sq 1로 변경			
 		        raa61bDTOsq = new IBIMS607BDTO();
-		        raa61bDTOsq.setSq(Integer.valueOf(1));
+		        raa61bDTOsq.setSn(Integer.valueOf(1));
 		    }
 		    
-		    int maxSq = raa61bDTOsq.getSq();
+		    int maxSq = raa61bDTOsq.getSn();
 		    
-		    esttInfo.setSq(maxSq);
+		    esttInfo.setSn(maxSq);
 		    esttInfo.setFstRgstPEno(facade.getDetails().getEno());
 		    
 		    return ibims607bMapper.registEsttInfo(esttInfo);  				// 재산조사 등록
@@ -174,7 +195,7 @@ public class TB08010ServiceImpl implements TB08010Service {
 	@Override
 	public int registLglInfo(IBIMS608BDTO lglInfo) {
 
-		int sq = lglInfo.getSq();
+		int sq = lglInfo.getSn();
 
 		lglInfo.setHndlPEno(facade.getDetails().getEno());
 
@@ -183,12 +204,12 @@ public class TB08010ServiceImpl implements TB08010Service {
 
 			if (raa62bDTOsq == null) {										// null일때 sq 1로 변경
 				raa62bDTOsq = new IBIMS608BDTO();
-				raa62bDTOsq.setSq(Integer.valueOf(1));
+				raa62bDTOsq.setSn(Integer.valueOf(1));
 			}
 
-			int maxSq = raa62bDTOsq.getSq();
+			int maxSq = raa62bDTOsq.getSn();
 
-			lglInfo.setSq(maxSq);
+			lglInfo.setSn(maxSq);
 			lglInfo.setFstRgstPEno(facade.getDetails().getEno());
 
 			return ibims608bMapper.registLglInfo(lglInfo);  				// 법적절차 등록
@@ -218,7 +239,7 @@ public class TB08010ServiceImpl implements TB08010Service {
 	@Override
 	public int registEfctInfo(IBIMS609BDTO efctInfo) {
 
-		int sq = efctInfo.getSq();
+		int sq = efctInfo.getSn();
 
 		efctInfo.setHndlPEno(facade.getDetails().getEno());
 
@@ -227,12 +248,12 @@ public class TB08010ServiceImpl implements TB08010Service {
 
 			if (raa62bDTOsq == null) {										// null일때 sq 1로 변경
 				raa62bDTOsq = new IBIMS609BDTO();
-				raa62bDTOsq.setSq(Integer.valueOf(1));
+				raa62bDTOsq.setSn(Integer.valueOf(1));
 			}
 
-			int maxSq = raa62bDTOsq.getSq();
+			int maxSq = raa62bDTOsq.getSn();
 
-			efctInfo.setSq(maxSq);
+			efctInfo.setSn(maxSq);
 			efctInfo.setFstRgstPEno(facade.getDetails().getEno());
 
 			return ibims609bMapper.registEfctInfo(efctInfo);  				// 법적절차 등록
