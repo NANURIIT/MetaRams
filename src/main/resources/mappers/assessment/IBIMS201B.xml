@@ -13,7 +13,7 @@
 			     , DEAL_NM = #{dealNm}  /* 딜명 */
 			     , MTR_NO = #{mtrNo}  /* 안건번호 */
 			     , MTR_DCD = #{mtrDcd}  /* 부수안건구분코드 */
-			     , NMCP_MTR_SN = #{nmcpMtrSn}  /* 부수안건일련번호 */
+			     , MTR_SN = #{mtrSn}  /* 부수안건일련번호 */
 			     , JDGM_DCD = #{jdgmDcd}  /* 심사구분코드 */
 			     , MTR_NM = #{mtrNm}  /* 안건명 */
 			     , LOCO_ISS_MNGM_NO = #{locoIssMngmNo}  /* loc발급관리번호 */
@@ -173,7 +173,7 @@
                   WHERE CMNS_CD_GRP = 'L007'
                     AND CD_VL_ID = IB201B.MTR_DCD
                ) AS NMCP_MTR_NM                                        <!-- 부수안건구분코드명 -->                          
-            , IB201B.NMCP_MTR_SN                                       <!-- 부수안건일련번호 -->
+            , IB201B.MTR_SN                                       <!-- 부수안건일련번호 -->
             , IB201B.JDGM_DCD                                    <!-- 심사구분코드 -->
             , (
                  SELECT CD_VL_NM
@@ -386,7 +386,7 @@
                   WHERE CMNS_CD_GRP = 'L007'
                     AND CD_VL_ID = IB201B.MTR_DCD
                ) AS NMCP_MTR_NM                                        /*  부수안건구분코드명  */                          
-            , IB201B.NMCP_MTR_SN                                       /*  부수안건일련번호  */
+            , IB201B.MTR_SN                                       /*  부수안건일련번호  */
             , IB201B.JDGM_DCD                                    /*  심사구분코드  */
             , (
                  SELECT CD_VL_NM
@@ -547,7 +547,7 @@
             , ( SELECT DPRT_NM FROM IBIMS003B WHERE BDCD =  IB201B.MNGM_BDCD AND ROWNUM = 1) AS DPRT_NM     /* 부서명  */
             , IB201B.CHRR_EMPNO                                        									/* 담당자번호 */																			    /*  담당자사원번호  */
             , ( SELECT EMP_NM  FROM IBIMS003B WHERE EMPNO =  IB201B.CHRR_EMPNO ) AS EMP_NM2             /* 담당자명  */
-		    , NVL(IB201B.EPRZ_CRDL_APVL_AMT, s112b.EPRZ_CRDL_APVL_AMT) AS EPRZ_CRDL_APVL_AMT 											/* 승인금액 */
+		    , NVL(IB201B.EPRZ_CRDL_APVL_AMT, s112b.APVL_AMT) AS EPRZ_CRDL_APVL_AMT 											/* 승인금액 */
 		    , (SELECT SUM(V.DEAL_EXC_AMT) FROM IBIMS402B V WHERE V.PRDT_CD = IB201B.PRDT_CD AND V.LDG_STTS_CD = '1') AS DEAL_EXC_AMT /* 투자금액 */
 		    , (SELECT SUM(X.DEAL_EXC_BLCE) FROM IBIMS402B X WHERE X.PRDT_CD = IB201B.PRDT_CD AND X.LDG_STTS_CD = '1') AS INV_BLCE /* 투자잔액 */
             FROM IBIMS201B IB201B
@@ -631,7 +631,7 @@
                , DEAL_NM                                           <!-- 딜명 -->
                , MTR_NO                                            <!-- 안건번호 -->
                , MTR_DCD                                      <!-- 부수안건구분코드 -->
-               , NMCP_MTR_SN                                       <!-- 부수안건일련번호 -->
+               , MTR_SN                                       <!-- 부수안건일련번호 -->
                , JDGM_DCD                                    <!-- 심사구분코드 -->
                , MTR_NM                                            <!-- 안건명 -->
                , LOCO_ISS_MNGM_NO                                  <!-- loc발급관리번호 -->
@@ -799,7 +799,7 @@
 			    , A.DEAL_NM								/* 딜명                       */
 			    , A.MTR_NO								/* 안건번호                    */
 			    , A.MTR_DCD						/* 부수안건구분코드             */
-			    , A.NMCP_MTR_SN							/* 부수안건일련번호             */
+			    , A.MTR_SN							/* 부수안건일련번호             */
 			    , A.JDGM_DCD						/* 심사구분코드            */
 			    , A.MTR_NM								/* 안건명                      */
 			    , A.LOCO_ISS_MNGM_NO					/* loc발급관리번호              */
@@ -958,7 +958,7 @@
             , DEAL_NM                                           <!-- 딜명 -->
             , MTR_NO                                            <!-- 안건번호 -->
             , MTR_DCD                                      <!-- 부수안건구분코드 -->
-            , NMCP_MTR_SN                                       <!-- 부수안건일련번호 -->
+            , MTR_SN                                       <!-- 부수안건일련번호 -->
             , JDGM_DCD                                    <!-- 심사구분코드 -->
             , MTR_NM                                            <!-- 안건명 -->
             , LOCO_ISS_MNGM_NO                                  <!-- loc발급관리번호 -->
@@ -1108,7 +1108,7 @@
             , #{dealNm}                                          <!-- 딜명 -->
             , #{mtrNo}                                           <!-- 안건번호 -->
             , #{mtrDcd}                                      <!-- 부수안건구분코드 -->
-            , #{nmcpMtrSn}                                       <!-- 부수안건일련번호 -->
+            , #{mtrSn}                                       <!-- 부수안건일련번호 -->
             , #{jdgmDcd}                                     <!-- 심사구분코드 -->
             , #{mtrNm}                                           <!-- 안건명 -->
             , #{locoIssMngmNo}                                   <!-- loc발급관리번호 -->

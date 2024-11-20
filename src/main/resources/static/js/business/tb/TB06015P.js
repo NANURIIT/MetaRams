@@ -179,7 +179,7 @@ var colModel_rateCalcSimul = [
 ]
 
 //그리드 최하단 페이지모델
-var pageModel = {
+var pageModel_TB06015P = {
 
 	type: "local",
 	rPP: 50, strRpp: "{0}",
