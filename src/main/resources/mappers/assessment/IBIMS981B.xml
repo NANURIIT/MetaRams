@@ -37,10 +37,10 @@
          WHERE 1=1
            AND C.LAST_YN = 1
            <if test="prevDate != ''">
-           AND A.ACTN_PRAR_DT > #{prevDate}
+           AND A.ACTN_PRAR_DT &gt; #{prevDate}
            </if>
            <if test="nextDate != ''">
-           AND A.ACTN_PRAR_DT < #{nextDate}
+           AND A.ACTN_PRAR_DT &lt; #{nextDate}
            </if>
            AND A.MNGM_ORGNO LIKE #{mngmOrgno}
            AND B.DUDT_MNGM_DTLD_JOB_KND_CD LIKE #{dudtMngmDtldJobKndCd}
