@@ -2,30 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS991BMapper">
     <select id="getBsnDt" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS991BVO">
+	<![CDATA[
 		SELECT STDR_DT 
-			 ,
-			( 
-			    SELECT MAX(V.STDR_DT) AS MX_DT
-			       FROM IBIMS991B V
+			,( 
+				SELECT MAX(V.STDR_DT) AS MX_DT
+					FROM IBIMS991B V
 				WHERE 1=1
-				AND V.STDR_DT &lt; A.STDR_DT
+				AND V.STDR_DT < A.STDR_DT
 				AND V.HOLIDAY = 0
-				AND V.STDR_DT BETWEEN TO_CHAR(ADD_MONTHS(TO_DATE(A.STDR_DT,'YYYYMMDD'), -1),'YYYYMMDD') AND  A.STDR_DT
-			   ) AS BF_DT
-			,
-			( 
-			    SELECT MIN(V.STDR_DT) AS MX_DT
-			       FROM IBIMS991B V 
+				AND V.STDR_DT BETWEEN TO_CHAR(ADD_MONTHS(TO_DATE(A.STDR_DT,'YYYYMMDD'), -1),'YYYYMMDD') AND A.STDR_DT
+			) AS BF_DT
+			,( 
+				SELECT MIN(V.STDR_DT) AS MX_DT
+					FROM IBIMS991B V
 				WHERE 1=1
-				AND V.STDR_DT &gt; A.STDR_DT
+				AND V.STDR_DT > A.STDR_DT
 				AND V.HOLIDAY = 0
 				AND V.STDR_DT BETWEEN A.STDR_DT AND TO_CHAR(ADD_MONTHS(TO_DATE(A.STDR_DT,'YYYYMMDD'), 1),'YYYYMMDD')
-			   ) AS AF_DT
-			 , DAYOFWEEKS 
-			 , HOLIDAY 
-			 , CONTENT
-		  FROM IBIMS991B A 
-		 WHERE 1=1
-		   AND STDR_DT = #{stdrDt}
+			) AS AF_DT
+			, DAYOFWEEKS 
+			, HOLIDAY 
+			, CONTENT
+		FROM IBIMS991B A 
+		WHERE 1=1
+		AND STDR_DT = #{stdrDt}
+	]]>
     </select>       
 </mapper>

@@ -3,18 +3,18 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS994BMapper">
 	
 	<select id="getExchR" parameterType="String" resultType="com.nanuri.rams.business.common.vo.TB07030SVO">
-        SELECT STDR_DT 			/* 펀드코드 */
-             , CRRY_CD 		/* 펀드명 */
-             , STDR_EXRT 		/* 펀드구분 */
-             , TO_DATE(RGST_DT, 'YYYYMMDD') AS RGST_DT 			/* 등록일자 */
+        SELECT STDR_DT 			                       /* 펀드코드 */
+             , CRRY_CD 		                            /* 펀드명 */
+             , STDR_EXRT 		                       /* 펀드구분 */
+             , TO_DATE(RGST_DT, 'YYYYMMDD') AS RGST_DT    /* 등록일자 */
 		  FROM IBIMS994B	          
 		 WHERE 1=1
-           AND CRRY_CD = #{crncyCd}
+           AND CRRY_CD = #{crryCd}
            AND STDR_DT  = (
                SELECT MAX(STDR_DT) AS STDR_DT
                  FROM IBIMS994B	          
 				WHERE 1=1
-		          AND CRRY_CD = #{crncyCd}
+		          AND CRRY_CD = #{crryCd}
            )
 	</select>
 </mapper>

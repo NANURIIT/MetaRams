@@ -26,4 +26,16 @@ public class IBIMS606BDTO {
     private Date           hndlDyTm;                                        // 처리일시
     private String         hndlDprtCd;                                      // 처리부서코드
     private String         hndlPEno;                                        // 처리자사번
+    private String         hndDetlDtm;                                      // 조작상세일시
+    private String         hndEmpno  ;                                      // 조작사원번호
+    private String         hndTmnlNo ;                                      // 조작단말기번호
+    private String         hndTrId   ;                                      // 조작거래id
+    private String         guid      ;                                      // guid
+    
+    
+    
+    
+    
+    
+    
 }

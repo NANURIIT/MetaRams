@@ -5,17 +5,17 @@
   <!-- 배치JOB 선행JOB관리 조회  -->
 	<select id="selectIBIMS996B" parameterType="com.nanuri.rams.business.common.vo.IBIMS996BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS996BVO">
     SELECT JOB_ID                              /* 선행 JOB ID */
-         , PRE_JOB_NAME                            /* 선행 JOB NAME */
-         , JOB_ID                                  /* JOB ID */
-         , JOB_NAME                                /* JOB NAME */
-         , DESCRIPTION                             /* 작업 설명 */
-         , REGISTER_DAY                            /* 최초 등록일 */
-         , LAST_UPDATE_DAY                         /* 최종 수정일 */
-         , HND_DETL_DTM                            /* 조작상세일시 */
-         , HND_EMPNO                               /* 조작사원번호 */
-         , HND_TMNL_NO                             /* 조작단말기번호 */
-         , HND_TR_ID                               /* 조작거래ID */
-         , GUID                                    /* GUID */
+         , PRE_JOB_NAME                        /* 선행 JOB NAME */
+         , JOB_ID                              /* JOB ID */
+         , JOB_NAME                            /* JOB NAME */
+         , DESCRIPTION                         /* 작업 설명 */
+         , REGISTER_DAY                        /* 최초 등록일 */
+         , LAST_UPDATE_DAY                     /* 최종 수정일 */
+         , HND_DETL_DTM                        /* 조작상세일시 */
+         , HND_EMPNO                           /* 조작사원번호 */
+         , HND_TMNL_NO                         /* 조작단말기번호 */
+         , HND_TR_ID                           /* 조작거래ID */
+         , GUID                                /* GUID */
      FROM IBIMS996B
     WHERE 1=1
 		  AND JOB_ID LIKE #{jobId} || '%'
@@ -33,7 +33,7 @@
     <insert id="insertIBIMS996B" parameterType="com.nanuri.rams.business.common.dto.IBIMS996BDTO">
         INSERT INTO IBIMS996B
               (
-                  JOB_ID                       /* 선행 JOB ID */
+                  JOB_ID                           /* 선행 JOB ID */
                 , PRE_JOB_NAME                     /* 선행 JOB NAME */
                 , JOB_ID                           /* JOB ID */
                 , JOB_NAME                         /* JOB NAME */
@@ -47,14 +47,14 @@
                 , GUID                             /* GUID */
               )
           SELECT
-                  #{jobId}                      /* 선행 JOB ID */
+                  #{jobId}                         /* 선행 JOB ID */
                 , #{preJobName}                    /* 선행 JOB NAME */
                 , #{jobId}                         /* JOB ID */
                 , #{jobName}                       /* JOB NAME */
                 , #{description}                   /* 작업 설명 */
                 , #{registerDay}                   /* 최초 등록일 */
                 , #{lastUpdateDay}                 /* 최종 수정일 */
-                , SYSDATE                            /* 조작상세일시 */
+                , SYSDATE                          /* 조작상세일시 */
                 , #{hndEmpno}                      /* 조작사원번호 */
                 , #{hndTmnlNo}                     /* 조작단말기번호 */
                 , #{hndTrId}                       /* 조작거래ID */
@@ -64,14 +64,14 @@
     <!-- 배치JOB 선행JOB관리 수정  -->
     <update id="updateIBIMS996B" parameterType="com.nanuri.rams.business.common.dto.IBIMS996BDTO">
        UPDATE IBIMS996B
-          SET JOB_ID      = #{jobId}                      /* 선행 JOB ID */
+          SET JOB_ID          = #{jobId}                         /* 선행 JOB ID */
             , PRE_JOB_NAME    = #{preJobName}                    /* 선행 JOB NAME */
             , JOB_ID          = #{jobId}                         /* JOB ID */
             , JOB_NAME        = #{jobName}                       /* JOB NAME */
             , DESCRIPTION     = #{description}                   /* 작업 설명 */
             , REGISTER_DAY    = #{registerDay}                   /* 최초 등록일 */
             , LAST_UPDATE_DAY = #{lastUpdateDay}                 /* 최종 수정일 */
-            , HND_DETL_DTM    = SYSDATE                            /* 조작상세일시 */
+            , HND_DETL_DTM    = SYSDATE                          /* 조작상세일시 */
             , HND_EMPNO       = #{hndEmpno}                      /* 조작사원번호 */
             , HND_TMNL_NO     = #{hndTmnlNo}                     /* 조작단말기번호 */
             , HND_TR_ID       = #{hndTrId}                       /* 조작거래ID */

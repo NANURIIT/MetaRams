@@ -3,8 +3,8 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS992BMapper">
 	
 	<select id="getFnltList" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS992BDTO">
-    SELECT FNLT_CD 			<!-- 금융기관코드 -->
-         , FNLT_NM 			<!-- 금융기관명 -->
+    SELECT FNLT_CD 			/* 금융기관코드 */
+         , FNLT_NM 			/* 금융기관명 */
 		  FROM IBIMS992B	          
 		 WHERE 1=1
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fnltCd)">
