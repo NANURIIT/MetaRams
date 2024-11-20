@@ -7,11 +7,11 @@
   <th:block layout:fragment="script">
     <script th:src="@{js/common.js}"></script>
     <script th:src="@{js/business/tb/TB02020S.js}"></script>
-    <script th:src="@{js/business/tb/TB03021P.js}"></script>
+    <script th:src="@{js/business/tb/TB02020P.js}"></script>
   </th:block>
 
   <th:block layout:fragment="modalpopup">
-    <th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+    <th:block th:replace="business/tb/TB02020P :: TB02020P"></th:block>
   </th:block>
 
   <th:block layout:fragment="customContent">
@@ -57,7 +57,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-7">
                   <div class="ibox">
                     <div class="ibox-title">
                       <h5>▶ 맵 관리</h5>
@@ -67,13 +67,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                   <div class="ibox">
                     <div class="ibox-title">
                       <h5>▶ 맵 이력</h5>
                     </div>
                     <div class="ibox-content">
-                      <div id="TB02020_gridMapRecInfo"></div>
+                      <div id="TB02020_gridMapHisInfo"></div>
                     </div>
                   </div>
                 </div>
