@@ -158,7 +158,7 @@ const TB07060Sjs = (function () {
       {
         title: "거래통화코드",
         dataType: "string",
-        dataIndx: "trCrcyCd",
+        dataIndx: "trCrryCd",
         halign: "center",
         align: "center",
         width: "10%",
@@ -167,7 +167,7 @@ const TB07060Sjs = (function () {
       {
         title: "원화환산율",
         dataType: "float",
-        dataIndx: "wcrcTrslRt",
+        dataIndx: "krwTrslRt",
         halign: "center",
         align: "right",
         width: "10%",
@@ -177,7 +177,7 @@ const TB07060Sjs = (function () {
       {
         title: "원화환산거래원금",
         dataType: "integer",
-        dataIndx: "wcrcTrslTrPrca",
+        dataIndx: "krwTrslTrPrca",
         halign: "center",
         align: "right",
         width: "10%",
@@ -187,7 +187,7 @@ const TB07060Sjs = (function () {
       {
         title: "원화환산거래이자금액",
         dataType: "integer",
-        dataIndx: "wcrcTrslTrIntAmt",
+        dataIndx: "krwTrslTrIntAmt",
         halign: "center",
         align: "right",
         width: "10%",
@@ -197,7 +197,7 @@ const TB07060Sjs = (function () {
       {
         title: "원화환산거래수수료금액",
         dataType: "integer",
-        dataIndx: "wcrcTrslTrFeeAmt",
+        dataIndx: "krwTrslTrFeeAmt",
         halign: "center",
         align: "right",
         width: "10%",
@@ -932,9 +932,9 @@ const TB07060Sjs = (function () {
             $("#TB07060S_I011").val(data.prgSttsCd); // 진행상태
             $("#TB07060S_L001_1").val(data.eprzCrdlLdgSttsCd); // 원장상태
             /* ROW2 */
-            $("#TB07060S_E022").val(data.eprzCrdlPrdtLclsCd); // 상품대분류
-            $("#TB07060S_E023").val(data.eprzCrdlPrdtMdclCd); // 상품중분류
-            $("#TB07060S_E021").val(data.eprzCrdlPrdtClsfCd); // 상품소분류
+            $("#TB07060S_E022").val(data.prdtLclsCd); // 상품대분류
+            $("#TB07060S_E023").val(data.prdtMdclCd); // 상품중분류
+            $("#TB07060S_E021").val(data.prdtClsfCd); // 상품소분류
             /* ROW3 */
             $("#TB07060S_ctrcAmt").val(commaNull(data.eprzCrdlCtrcAmt)); // 약정금액
             $("#TB07060S_dealExcBlce").val(commaNull(data.dealExcBlce)); // 대출/채무보증잔액

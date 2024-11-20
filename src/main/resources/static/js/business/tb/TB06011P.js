@@ -761,7 +761,7 @@ function setPrdtInfo(e) {
 	}
 
 	if (prefix === 'TB07070S') {
-		TB07070Sjs.srch()
+		// TB07070Sjs.srch()
 	}
 
 	if (prefix === 'TB07080S') {
