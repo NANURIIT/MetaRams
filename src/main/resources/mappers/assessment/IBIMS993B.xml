@@ -3,13 +3,13 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS993BMapper">
 	
 	<select id="getFndList" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS993BDTO">
-        SELECT FND_CD 			<!-- 펀드코드 -->
-             , FND_NM 			<!-- 펀드명 -->
-             , FND_DVSN_NM 		<!-- 펀드구분 -->
-             , TO_DATE(STUP_DT, 'YYYYMMDD') AS STUP_DT 			<!-- 설정일자 -->
-             , FND_TP_NM 		<!-- 펀드유형 -->
-             , PRDT_CLSF_CD 	<!-- 상품분류 -->
-             , STN_CD 			<!-- 협회표준코드 -->
+        SELECT FND_CD 			                            /* 펀드코드 */
+             , FND_NM 			                            /* 펀드명 */
+             , FND_DVSN_NM 		                          /* 펀드구분 */
+             , TO_DATE(STUP_DT, 'YYYYMMDD') AS STUP_DT 	/* 설정일자 */
+             , FND_TP_NM 		                            /* 펀드유형 */
+             , PRDT_CLSF_CD 	                          /* 상품분류 */
+             , STN_CD 			                            /* 협회표준코드 */
 		  FROM IBIMS993B	          
 		 WHERE 1=1
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fndCd)">
