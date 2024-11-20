@@ -11,7 +11,7 @@
 		     , A.APLY_YN										<!-- 적용여부 -->
 		     , A.DEL_YN											<!-- 삭제여부 -->
 		     , A.DEL_DT											<!-- 삭제일자 -->
-		     , A.DLT_TM											<!-- 삭제시간 -->
+		     , A.DEL_TM											<!-- 삭제시간 -->
 		     , A.DEL_EMPNO										<!-- 삭제자사번 -->
          , NVL(TO_CHAR(A.HND_DETL_DTM, 'YYYYMMDD'), '') AS HND_DT
          , NVL(TO_CHAR(A.HND_DETL_DTM, 'HH24MISS'), '') AS HND_TM
@@ -31,7 +31,7 @@
              , A.APLY_YN							        /* 적용여부 */
              , A.DEL_YN								        /* 삭제여부 */
              , A.DEL_DT								        /* 삭제일자 */
-             , A.DLT_TM								        /* 삭제시간 */
+             , A.DEL_TM								        /* 삭제시간 */
              , A.DEL_EMPNO						        /* 삭제자사번 */
              , A.RGST_DT
              , A.RGST_EMPNO
@@ -72,7 +72,7 @@
                     #{rgstEmpno} AS RGST_EMPNO,
                     #{delYn} AS DEL_YN,
                     #{delDt} AS DEL_DT,
-                    #{dltTm} AS DLT_TM,
+                    #{delTm} AS DEL_TM,
                     #{delEmpno} AS DEL_EMPNO,
                     #{hndDetlDtm} AS HND_DETL_DTM,
                     #{hndEmpno} AS HND_EMPNO,
@@ -104,7 +104,7 @@
                , RGST_EMPNO
                , DEL_YN
                , DEL_DT
-               , DLT_TM
+               , DEL_TM
                , DEL_EMPNO
                , HND_DETL_DTM
                , HND_EMPNO
@@ -140,7 +140,7 @@
              , APLY_YN											<!-- 적용여부 -->
              , DEL_YN											<!-- 삭제여부 -->
              , DEL_DT											<!-- 삭제일자 -->
-             , DLT_TM											<!-- 삭제시간 -->
+             , DEL_TM											<!-- 삭제시간 -->
              , DEL_EMPNO										<!-- 삭제자사번 -->
           FROM IBIMS006B A
          WHERE 1=1
@@ -160,7 +160,7 @@
                 , RGST_EMPNO									<!-- 등록자사번 -->
                 , DEL_YN										<!-- 삭제여부 -->
                 , DEL_DT										<!-- 삭제일자 -->
-                , DLT_TM 										<!-- 삭제시간 -->
+                , DEL_TM 										<!-- 삭제시간 -->
                 , DEL_EMPNO 									<!-- 삭제자사번 -->
                 , HND_DETL_DTM 									<!-- 처리일시 -->
                 , HND_EMPNO 									<!-- 처리자사번 -->
@@ -176,7 +176,7 @@
                 , #{rgstEmpno}
                 , 'N'
                 , NVL(#{delDt}, '')
-                , NVL(#{dltTm}, '')
+                , NVL(#{delTm}, '')
                 , NVL(#{delEmpno}, '')
                 , DEFAULT
                 , #{hndEmpno}
@@ -212,7 +212,7 @@
               ,HND_DETL_DTM = DEFAULT					<!-- 처리일시 -->
               ,DEL_YN = 'Y'								<!-- 삭제여부 -->
               ,DEL_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')	<!-- 삭제일자 -->
-              ,DLT_TM = TO_CHAR(SYSDATE, 'HH24MISS')	<!-- 삭제시간 -->
+              ,DEL_TM = TO_CHAR(SYSDATE, 'HH24MISS')	<!-- 삭제시간 -->
               ,DEL_EMPNO = #{delEmpno}					<!-- 삭제자사번 -->
          WHERE 1=1
            AND ATH_CD IN					<!-- 권한코드 -->
