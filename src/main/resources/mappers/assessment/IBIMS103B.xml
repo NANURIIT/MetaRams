@@ -26,15 +26,15 @@
                 , RA_DEAL_DCD                                       /* RADEAL구분코드 */
                 , RISK_RCG_NO                                       /* 리스크승인번호 */
                 , INSPCT_DPRT_DCD                                   /* 심사부서구분코드 */
-                , INV_PRDT_LCLS_CD                                 /* 투자상품대분류코드 */
-                , INV_PRDT_MDCL_CD                                 /* 투자상품중분류코드 */
-                , INV_PRDT_SCLS_CD                                 /* 투자상품소분류코드 */
-                , INV_PRDT_DTLS_DVD_CD                             /* 투자상품상세분류코드 */
+                , INV_PRDT_LCLS_CD                                 	/* 투자상품대분류코드 */
+                , INV_PRDT_MDCL_CD                                 	/* 투자상품중분류코드 */
+                , INV_PRDT_SCLS_CD                                 	/* 투자상품소분류코드 */
+                , INV_PRDT_DTLS_DVD_CD                             	/* 투자상품상세분류코드 */
                 , MAIN_INVST_TRGT_NM                                /* 주요투자대상명 */
-                , PTFD_CRRY_CD                                     /* 부의통화코드 */
+                , PTFD_CRRY_CD                                     	/* 부의통화코드 */
                 , PTFD_AMT                                          /* 부의금액 */
-                , INV_NTN_CD                                      /* 투자국가코드 */
-                , APLY_EXRT                                       /* 적용환율 */
+                , INV_NTN_CD                                      	/* 투자국가코드 */
+                , APLC_EXCH_R                                       /* 적용환율 */
                 , KRW_TRSL_PTFD_AMT                                 /* 원화환산부의금액 */
                 , IND_TYP_DVD_CD                                    /* 업종분류코드 */
                 , CHECK_ITEM_CD                                     /* 점검항목코드(업무구분) */
@@ -45,7 +45,7 @@
                 , DL_DPRT_CD2                                       /* 거래부점코드2 */
                 , DL_DPRT_CD3                                       /* 거래부정코드3 */
                 , HDQT_CD                                           /* 본부코드 */
-                , BDCD                                           /* 부서코드 */
+                , DPRT_CD                                           /* 부서코드 */
                 , CHRR_EMPNO                                        /* 담당자사원번호 */
                 , OWN_P_ENO                                         /* 심사역사번 */
                 , ESG_YN                                            /* ESG여부 */
@@ -57,7 +57,7 @@
                 , BSNS_DPRT_ESG_GRD_CMMT                            /* 사업부서ESG등급의견 */
                 , INSPCT_DPRT_ESG_GRD_DCD                           /* 심사부서ESG등급구분코드 */
                 , INSPCT_DPRT_ESG_GRD_CMMT                          /* 심사부서ESG등급의견 */
-                , INV_PRD_MNUM                                    /* 투자기간개월수 */
+                , INV_PRD_MNUM                                    	/* 투자기간개월수 */
                 , WRT_EXPT_DT                                       /* 기표예정일자 */
                 , MTRT_EXPT_DT                                      /* 만기예정일자 */
                 , TL_ERN_AMT                                        /* 전체수익 */
@@ -67,7 +67,7 @@
                 , ENSR_YN                                           /* 보증여부 */
                 , RSPSB_CMPL_DCD                                    /* 책임준공구분코드 */
                 , ENTP_NM                                           /* 업체명 */
-                , BZNO                                      /* 사업자등록번호 */
+                , BZNO                                      				/* 사업자등록번호 */
                 , CORP_NO                                           /* 법인번호 */
                 , CORPTN_TYP_CD                                     /* 협업유형코드 */
                 , BUSI_DPT_OPNN                                     /* 사업부서의견 */
@@ -99,15 +99,15 @@
                , #{raDealDcd}                                       /* RADEAL구분코드 */
                , #{riskRcgNo}                                       /* 리스크승인번호 */
                , #{inspctDprtDcd}                                   /* 심사부서구분코드 */
-               , #{invPrdtLclsCd}                                  /* 투자상품대분류코드 */
-               , #{invPrdtMdclCd}                                  /* 투자상품중분류코드 */
-               , #{invPrdtSclsCd}                                  /* 투자상품소분류코드 */
-               , #{invPrdtDtlsDvdCd}                               /* 투자상품상세분류코드 */
+               , #{invPrdtLclsCd}                                  	/* 투자상품대분류코드 */
+               , #{invPrdtMdclCd}                                  	/* 투자상품중분류코드 */
+               , #{invPrdtSclsCd}                                  	/* 투자상품소분류코드 */
+               , #{invPrdtDtlsDvdCd}                               	/* 투자상품상세분류코드 */
                , #{mainInvstTrgtNm}                                 /* 주요투자대상명 */
-               , #{ptfdCrryCd}                                     /* 부의통화코드 */
+               , #{ptfdCrryCd}                                     	/* 부의통화코드 */
                , #{ptfdAmt}                                         /* 부의금액 */
-               , #{invNtnCd}                                      /* 투자국가코드 */
-               , #{aplyExrt}                                       /* 적용환율 */
+               , #{invNtnCd}                                      	/* 투자국가코드 */
+               , #{aplcExchR}                                       	/* 적용환율 */
                , #{krwTrslPtfdAmt}                                  /* 원화환산부의금액 */
                , #{indTypDvdCd}                                     /* 업종분류코드 */
                , #{checkItemCd}                                     /* 점검항목코드(업무구분) */
@@ -118,8 +118,8 @@
                , #{dlDprtCd2}                                       /* 거래부점코드2 */
                , #{dlDprtCd3}                                       /* 거래부정코드3 */
                , #{hdqtCd}                                          /* 본부코드 */
-               , #{dbcd}                                          /* 부서코드 */
-               , #{chrrEmpno}                                        /* 담당자사원번호 */
+               , #{dprtCd}                                          	/* 부서코드 */
+               , #{chrrEmpno}                                       /* 담당자사원번호 */
                , #{ownPEno}                                         /* 심사역사번 */
                , #{esgYn}                                           /* ESG여부 */
                , #{esgMngDmnCd}                                     /* ESG관리영역코드 */
@@ -130,7 +130,7 @@
                , #{bsnsDprtEsgGrdCmmt}                              /* 사업부서ESG등급의견 */
                , #{inspctDprtEsgGrdDcd}                             /* 심사부서ESG등급구분코드 */
                , #{inspctDprtEsgGrdCmmt}                            /* 심사부서ESG등급의견 */
-               , #{invPrdMnum}                                     /* 투자기간개월수 */
+               , #{invPrdMnum}                                     	/* 투자기간개월수 */
                , #{wrtExptDt}                                       /* 기표예정일자 */
                , #{mtrtExptDt}                                      /* 만기예정일자 */
                , #{tlErnAmt}                                        /* 전체수익 */
@@ -140,7 +140,7 @@
                , #{ensrYn}                                          /* 보증여부 */
                , #{rspsbCmplDcd}                                    /* 책임준공구분코드 */
                , #{entpNm}                                          /* 업체명 */
-               , #{bzno}                                      /* 사업자등록번호 */
+               , #{bzno}                                      			/* 사업자등록번호 */
                , #{corpNo}                                          /* 법인번호 */
                , #{corptnTypCd}                                     /* 협업유형코드 */
                , #{busiDptOpnn}                                     /* 사업부서의견 */
@@ -204,7 +204,7 @@
              , A.PTFD_CRRY_CD                                     /* 부의통화코드 */
              , A.PTFD_AMT                                          /* 부의금액 */
              , A.INV_NTN_CD                                      /* 투자국가코드 */
-             , A.APLY_EXRT                                       /* 적용환율 */
+             , A.APLC_EXCH_R                                       /* 적용환율 */
              , A.KRW_TRSL_PTFD_AMT                                 /* 원화환산부의금액 */
              , A.IND_TYP_DVD_CD                                    /* 업종분류코드 */
              , A.CHECK_ITEM_CD                                     /* 점검항목코드(업무구분) */
@@ -239,12 +239,12 @@
 /*             	    AND TO_CHAR(L.CLSG_PRAR_DT, 'YYYYMMDD') <![CDATA[ < ]]> TO_CHAR(SYSDATE , 'YYYYMMDD') 데이터 문제로 인해 임시주석 */
                ) AS DL_DPRT_NM3
              , A.HDQT_CD                                           /* 본부코드 */
-             , A.BDCD                                           /* 부서코드 */
+             , A.DPRT_CD                                           /* 부서코드 */
              , (
                  SELECT MAX(DPRT_NM)
                    FROM IBIMS003B
-                  WHERE BDCD = A.BDCD
-               ) AS DPRT_NM					                       /* 부점명 */
+                  WHERE DPRT_CD = A.DPRT_CD
+               ) AS DPRT_NM					                       /* 부서명 */
              , A.CHRR_EMPNO                                        /* 담당자사원번호 */
              , (
                  SELECT EMP_NM
@@ -282,8 +282,8 @@
              , A.BUSI_DPT_OPNN                                     /* 사업부서의견 */
              , A.JDGM_DPT_OPNN                                     /* 심사부서의견 */
              , A.BSC_ASTS_INPT_EXPT_F							   /* 기초자산입력예정여부 */
-			 , A.INS_GRD_INPT_EXPT_F							   /* 내부등급입력예정여부 */
-			 , A.CNC_CMPNY_INPT_EXPT_F							   /* 연결회사입력예정여부 */
+			 			 , A.INS_GRD_INPT_EXPT_F							   /* 내부등급입력예정여부 */
+			 			, A.CNC_CMPNY_INPT_EXPT_F							   /* 연결회사입력예정여부 */
              , A.CNSB_MTG_NO                                       /* 협의체회의번호(협의체구분코드_결의년도_일련번호) */
              , A.HND_DETL_DTM                                      /* 조작상세일시 */
              , A.HND_EMPNO                                         /* 조작사원번호 */
@@ -330,7 +330,7 @@
              , PTFD_CRRY_CD                                     /* 부의통화코드 */
              , PTFD_AMT                                          /* 부의금액 */
              , INV_NTN_CD                                      /* 투자국가코드 */
-             , APLY_EXRT                                       /* 적용환율 */
+             , APLC_EXCH_R                                       /* 적용환율 */
              , KRW_TRSL_PTFD_AMT                                 /* 원화환산부의금액 */
              , IND_TYP_DVD_CD                                    /* 업종분류코드 */
              , CHECK_ITEM_CD                                     /* 점검항목코드(업무구분) */
@@ -418,10 +418,10 @@
             , INV_PRDT_SCLS_CD                                 = #{invPrdtSclsCd}                                  /* 투자상품소분류코드 */
             , INV_PRDT_DTLS_DVD_CD                             = #{invPrdtDtlsDvdCd}                               /* 투자상품상세분류코드 */
             , MAIN_INVST_TRGT_NM                                = #{mainInvstTrgtNm}                                 /* 주요투자대상명 */
-            , PTFD_CRRY_CD                                     = #{ptfdCrryCd}                                     /* 부의통화코드 */
+            , PTFD_CRRY_CD                                     	= #{ptfdCrryCd}                                     /* 부의통화코드 */
             , PTFD_AMT                                          = #{ptfdAmt}                                         /* 부의금액 */
-            , INV_NTN_CD                                      = #{invNtnCd}                                      /* 투자국가코드 */
-            , APLY_EXRT                                       = #{aplyExrt}                                       /* 적용환율 */
+            , INV_NTN_CD                                      	= #{invNtnCd}                                      /* 투자국가코드 */
+            , APLC_EXCH_R                                       = #{aplcExchR }                                       /* 적용환율 */
             , KRW_TRSL_PTFD_AMT                                 = #{krwTrslPtfdAmt}                                  /* 원화환산부의금액 */
             , IND_TYP_DVD_CD                                    = #{indTypDvdCd}                                     /* 업종분류코드 */
             , CHECK_ITEM_CD                                     = #{checkItemCd}                                     /* 점검항목코드(업무구분) */
@@ -432,7 +432,7 @@
             , DL_DPRT_CD2                                       = #{dlDprtCd2}                                       /* 거래부점코드2 */
             , DL_DPRT_CD3                                       = #{dlDprtCd3}                                       /* 거래부정코드3 */
             , HDQT_CD                                           = #{hdqtCd}                                          /* 본부코드 */
-            , BDCD                                           = #{dbcd}                                          /* 부서코드 */
+            , DPRT_CD                                          	= #{dprtCd}                                          /* 부서코드 */
             , CHRR_EMPNO                                        = #{chrrEmpno}                                        /* 담당자사원번호 */
             , OWN_P_ENO                                         = #{ownPEno}                                         /* 심사역사번 */
             , ESG_YN                                            = #{esgYn}                                           /* ESG여부 */
@@ -627,7 +627,7 @@
              , s103b.PTFD_AMT                                        /* 부의금액 */
              , s103b.INV_NTN_CD                                    /* 투자국가코드 */
              , s002b_5.CD_VL_NM AS INVST_NTN_CD_NM
-             , s103b.APLY_EXRT                                     /* 적용환율 */
+             , s103b.APLC_EXCH_R                                     /* 적용환율 */
              , s103b.KRW_TRSL_PTFD_AMT                               /* 원화환산부의금액 */
              , s103b.IND_TYP_DVD_CD                                  /* 업종분류코드 */
              , s103b.CHECK_ITEM_CD                                   /* 점검항목코드(업무구분) */
@@ -638,7 +638,7 @@
              , s103b.DL_DPRT_CD2                                     /* 거래부점코드2 */
              , s103b.DL_DPRT_CD3                                     /* 거래부점코드3 */
              , s103b.HDQT_CD                                         /* 본부코드 */
-             , s103b.BDCD                                         /* 부서코드 */
+             , s103b.DPRT_CD                                         /* 부서코드 */
              , s103b.CHRR_EMPNO                                      /* 담당자사원번호 */
              , s103b.OWN_P_ENO                                       /* 심사역사번 */
              , s103b.ESG_YN                                          /* ESG여부 */
@@ -1038,7 +1038,7 @@
              , PTFD_CRRY_CD                           /* 부의통화코드 */
              , PTFD_AMT                                /* 부의금액 */
              , INV_NTN_CD                            /* 투자국가코드 */
-             , APLY_EXRT                             /* 적용환율 */
+             , APLC_EXCH_R                             /* 적용환율 */
              , KRW_TRSL_PTFD_AMT                       /* 원화환산부의금액 */
              , IND_TYP_DVD_CD                          /* 업종분류코드 */
              , CHECK_ITEM_CD                           /* 점검항목코드(업무구분) */
@@ -1049,7 +1049,7 @@
              , DL_DPRT_CD2                             /* 거래부점코드2 */
              , DL_DPRT_CD3                             /* 거래부점코드3 */
              , HDQT_CD                                 /* 본부코드 */
-             , BDCD                                 /* 부서코드 */
+             , DPRT_CD                                 /* 부서코드 */
              , CHRR_EMPNO                              /* 담당자사원번호 */
              , OWN_P_ENO                               /* 심사역사번 */
              , ESG_YN                                  /* ESG여부 */
@@ -1098,7 +1098,7 @@
     <select id="selectCnfStts" parameterType="com.nanuri.rams.business.common.vo.IBIMS103BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS103BVO">
 		SELECT A.IB_DEAL_NO 	AS IB_DEAL_NO 	/* IB딜번호 */
 			, A.IB_DEAL_NM 	AS IB_DEAL_NM 	    /* IB딜명 */
-			, A.BDCD 		AS BDCD		/* 부서코드 */
+			, A.DPRT_CD 		AS BDCD		/* 부서코드 */
 			, S003B.DPRT_NM 	AS DPRT_NM 		/* 부서명 */
 			, A.PTCP_AMT 		AS PTCP_AMT 	/* 부의금액 */
 			, (
@@ -1122,7 +1122,7 @@
 		FROM (
 					SELECT S103B.DEAL_NO 					AS IB_DEAL_NO
 						, S101B.DEAL_NM 					AS IB_DEAL_NM
-						, S103B.BDCD
+						, S103B.DPRT_CD
 						, S103B.CHRR_EMPNO
 						, SUM(S103B.KRW_TRSL_PTFD_AMT)		AS PTCP_AMT
 						, S103B.RISK_INSPCT_RSLTN_CCD 
@@ -1141,7 +1141,7 @@
 					AND S103B.RISK_INSPCT_RSLTN_CCD IN ('1', '2', '3', '4', '5', '7', '8')
 					AND S103B.LAST_YN = '1'
 					AND S101B.LAST_YN = '1'
-					GROUP BY S103B.DEAL_NO, S101B.DEAL_NM ,S103B.BDCD , S103B.CHRR_EMPNO , RISK_INSPCT_RSLTN_CCD
+					GROUP BY S103B.DEAL_NO, S101B.DEAL_NM ,S103B.DPRT_CD , S103B.CHRR_EMPNO , RISK_INSPCT_RSLTN_CCD
 		                   , S103B.INSPCT_DPRT_DCD , S103B.RISK_RCG_NO , S103B.WRT_EXPT_DT 
 			) A
 			, IBIMS003B S003B /* 사원기본 */
