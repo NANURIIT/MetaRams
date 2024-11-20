@@ -22,7 +22,7 @@
     	        , SCRN_MENU_ID		<!-- 화면메뉴ID -->
     	        , ORG_FILE_NM		<!-- 원본파일명 -->
     	        , RGST_DT			<!-- 등록일자 -->
-    	        , DLT_F				<!-- 삭제여부 -->
+    	        , DEL_YN				<!-- 삭제여부 -->
     	        , HNDL_DY_TM		<!-- 처리일시 -->
     	        , HNDL_DPRT_CD		<!-- 처리부점코드 -->
     	        , HNDL_P_ENO		<!-- 처리자사번 -->
@@ -48,7 +48,7 @@
     <!-- 첨부파일 삭제 -->
 	<update id="updateFileInfo" parameterType="com.nanuri.rams.business.common.dto.FileUploadDTO" >
 		UPDATE IBIMS989B							   
-		   SET DLT_F = 'Y'
+		   SET DEL_YN = 'Y'
 			 , HNDL_DY_TM = SYSDATE			<!-- 처리일시 -->
 			 , HNDL_DPRT_CD	= #{hndlDprtCd}				<!-- 처리부점코드 -->
 			 , HNDL_P_ENO = #{hndlPEno}					<!-- 처리자사번 -->

@@ -24,7 +24,7 @@ public class CommonFileDTO extends CommonDTO {
     private String fileCntnt;       // 파일내용
     private String orgFileNm;       // 원본파일명
     private String realAttFileNm;   // 실제첨부파일명
-    private String dltF;            // 삭제여부
+    private String dltYn;            // 삭제여부
 
     private String stdYrMm;         // 기준년월
 }
