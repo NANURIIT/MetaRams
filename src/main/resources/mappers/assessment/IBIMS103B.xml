@@ -505,11 +505,11 @@
 				   FROM IBIMS003B
 				  WHERE EMPNO = s103b.OWN_P_ENO
 			   ) AS OWN_P_NM
-			 , s103b.BDCD AS BDCD
+			 , s103b.DPRT_CD AS DPRT_CD
 			 , (
 				 SELECT MAX(DPRT_NM)
 				   FROM IBIMS003B
-				  WHERE BDCD = s103b.BDCD
+				  WHERE DPRT_CD = s103b.DPRT_CD
 			   ) AS DPRT_NM
 			 , s103b.MTR_PRG_STTS_DCD AS MTR_PRG_STTS_DCD
 			 , s002b_3.CD_VL_NM AS MTR_PRG_STTS_DCD_NM
@@ -526,7 +526,7 @@
 			 , s201b.PRDT_CD AS PRDT_CD
 			 , s201b.PRDT_NM AS PRDT_NM
 			 , s112b.APVL_DT 									/* 승인일자 */
-			 , NVL(s201b.EPRZ_CRDL_APVL_AMT, s112b.EPRZ_CRDL_APVL_AMT) AS EPRZ_CRDL_APVL_AMT 	/* 승인금액 */
+			 , NVL(s201b.EPRZ_CRDL_APVL_AMT, s112b.APVL_AMT) AS EPRZ_CRDL_APVL_AMT 	/* 승인금액 */
 			 , s112b.CNSB_DCD                       			/* 승인심사기구 */
 			 , s112b.CNSB_SQ AS INV_JDGM_COMT_NO 				/* 위원회번호 */
 		     , s112b.SDN_CNDT_F                                 /* 셀다운조건여부 */
