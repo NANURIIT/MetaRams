@@ -50,7 +50,12 @@
 			    , FST_RGST_P_ENO					          /* 최초등록자사번 */        
 					, HNDL_DY_TM						            /* 처리일시 */           
 					, HNDL_DPRT_CD						          /* 처리부서코드 */
-					, HNDL_P_ENO						            /* 처리자사번 */          
+					, HNDL_P_ENO						            /* 처리자사번 */ 
+			   	  	, HND_EMPNO                                         /* 조작사원번호*/
+					, HND_TMNL_NO                                       /* 조작단말기번호*/
+	                , HND_DETL_DTM                                      /* 조작일시*/
+					, HND_TR_ID                                         /* 조작거래id*/
+					, GUID                                              /* guid*/         
   				)
 	 VALUES (
 					  #{dealNo}							            /* 딜번호 */
@@ -63,11 +68,16 @@
 					, #{crtrmInfo}						          /* 법원정보 */         
 					, #{acdntNo}						            /* 사건번호 */         
 					, TO_CHAR(SYSDATE, 'YYYYMMDD')      /* 등록일자 */
-		  		, TO_CHAR(SYSDATE, 'HH24MISS')			/* 등록시간 */      
+		  		    , TO_CHAR(SYSDATE, 'HH24MISS')			/* 등록시간 */      
 					, #{hndlPEno}				                /* 최초등록자사번 */      
 					, SYSDATE			                			/* 처리일시 */         
 					, #{hndlDprtCd} 				            /* 처리부서코드 */
-					, #{hndlPEno} 				              /* 처리자사번 */        
+					, #{hndlPEno} 				              /* 처리자사번 */   
+			    	, #{hndEmpno}                                        /* 조작사원번호*/
+				    , #{hndTmnlNo}                                       /* 조작단말기번호*/
+				    , SYSDATE                               		     /* 조작상세일시*/
+				    , #{hndTrId}                                         /* 조작거래id*/
+				    , #{guid}                                            /* guid*/     
 			   	)
 	</insert>
 		
@@ -81,7 +91,12 @@
 			 	 , ACDNT_NO							= #{acdntNo}			    	/* 사건번호 */           
 			 	 , HNDL_DY_TM						= SYSDATE	    					/* 처리일시 */           
 			 	 , HNDL_DPRT_CD					= #{hndlDprtCd}			    /* 처리부서코드 */
-			 	 , HNDL_P_ENO						= #{hndlPEno}			    	/* 처리자사번 */          
+			 	 , HNDL_P_ENO						= #{hndlPEno}			    	/* 처리자사번 */
+		       	 , HND_EMPNO                                         = #{hndEmpno}										/* 조작상세일시*/
+		    	 , HND_TMNL_NO                                       = #{hndTmnlNo}                                       /* 조작사원번호*/
+                 , HND_DETL_DTM                                      = SYSDATE	                                        /* 조작단말기번호*/
+			     , HND_TR_ID                                         = #{hndTrId}                                        /* 조작거래id*/
+			     , GUID                                              = #{guid}											/* guid*/			 	           
 		 WHERE DEAL_NO 				    = #{dealNo}		    				/* 딜번호 */
 		   AND JDGM_DCD			      = #{jdgmDcd}		    			/* 심사구분코드 */
 		   AND MTR_DCD			      = #{mtrDcd}		    				/* 부수안건구분코드 */
