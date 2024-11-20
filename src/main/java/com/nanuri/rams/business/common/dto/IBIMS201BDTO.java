@@ -25,7 +25,7 @@ public class IBIMS201BDTO {
     private String dealNm;                          //  딜명
     private String mtrNo;                           //  안건번호
     private String mtrDcd;                          //  부수안건구분코드
-    private BigDecimal mtrSn;                       //  부수안건일련번호
+    private int    mtrSn;                           //  부수안건일련번호
     private String jdgmDcd;                         //  심사구분코드
     private String mtrNm;                           //  안건명
     private String locoIssMngmNo;                   //  loc발급관리번호
@@ -69,7 +69,7 @@ public class IBIMS201BDTO {
     private int		   intrRdmpFrqcMnum;            //  이자상환주기개월수
     private int		   prnaDfrPrdMnum;              //  원금거치기간개월수
     private String eprzCrdlCtrtNo;                  //  기업여신계약번호
-    private BigDecimal ctrcPrarDt;                  //  약정예정일자
+    private String ctrcPrarDt;                      //  약정예정일자
     private String ctrcPrdMnum;                     //  약정기간개월수
     private String ctrcPrdDcd;                      //  약정기간구분코드
     private String sglLoanYn;                       //  단독대출여부
@@ -117,7 +117,7 @@ public class IBIMS201BDTO {
     private String etcDetSctyDcd;                   //  기타채무증권구분코드
     private String invJdgmComtNo;                   //  투자심사위원회번호
     private String dispDtDcd;                       //  매각일자구분코드
-    private BigDecimal dispTlmtMnum;                //  매각기한개월수
+    private int    dispTlmtMnum;                    //  매각기한개월수
     private String dispStdrAmtDcd;                  //  매각기준금액구분코드
     private BigDecimal dispRto;                     //  기업여신매각비율
     private String dispTlmtDt;                      //  매각기한일자
@@ -160,4 +160,5 @@ public class IBIMS201BDTO {
     private String hndTrId;                         //  조작거래id
     private String guid;                            //  guid
 
+    private String trDvsn;
 }
