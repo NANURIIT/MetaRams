@@ -176,7 +176,12 @@
             WHERE STDR_YM 			    = #{item.stdrYm}                     /* 기준년월 */ 
             AND PRDT_CD 		        = #{item.prdtCd}                     /* 상품코드 */ 
             AND RGST_SN 		        = #{item.rgstSn}                     /* 등록일련번호 */ 
-            AND EPRZ_CRDL_STLA_DCD 		= #{item.eprzCrdlStlaDcd}          /* 기업여신결산구분코드 */ 
+            AND EPRZ_CRDL_STLA_DCD 	= #{item.eprzCrdlStlaDcd}            /* 기업여신결산구분코드 */ 
+            AND HND_DETL_DTM        = SYSDATE                            /* 조작상세일시 */
+            AND HND_EMPNO = ''                                           /* 조작사원번호 */ 
+            AND HND_TMNL_NO = ''                                         /* 조작단말기번호 */
+            AND HND_TR_ID = ''                                           /* 조작거래ID */
+            AND GUID = ''                                                /* GUID */
         </foreach>
     </update>
     <!-- TB9020B	미수이자결산내역생성 -->
@@ -224,7 +229,9 @@
                     , ''                         AS EVL_DT                    /* 평가일자             */
                     , 'N'                        AS HDWT_INP_YN               /* 수기입력여부          */
                     , 'N'                        AS DCSN_YN                   /* 확정여부             */
-               FROM  IBIMS201B A			                                  /* 딜승인기본 */
+                    , SYSDATE                    AS HND_DETL_DTM              /* 조작상세일시 */
+                    , ''                         AS HND_EMPNO                 /* 조작사원번호 */                   
+               FROM  IBIMS201B A			                                        /* 딜승인기본 */
                    , IBIMS811B B                                              /* 딜월별잔액 */
               WHERE 1 = 1
                 AND A.LAST_YN = '1' 
@@ -283,6 +290,8 @@
                     , ''                         AS EVL_DT                    /* 평가일자             */
                     , 'N'                        AS HDWT_INP_YN               /* 수기입력여부          */
                     , 'N'                        AS DCSN_YN                   /* 확정여부             */
+                    , SYSDATE                    AS HND_DETL_DTM              /* 조작상세일시 */
+                    , ''                         AS HND_EMPNO                 /* 조작사원번호 */ 
                FROM (
                       SELECT   A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                              , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
@@ -386,6 +395,8 @@
                    , ''                         AS EVL_DT                    /* 평가일자             */
                    , 'N'                        AS HDWT_INP_YN               /* 수기입력여부          */
                    , 'N'                        AS DCSN_YN                   /* 확정여부             */
+                   , SYSDATE                    AS HND_DETL_DTM              /* 조작상세일시 */
+                   , ''                         AS HND_EMPNO                 /* 조작사원번호 */ 
              FROM (
                          SELECT   A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                                 , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */

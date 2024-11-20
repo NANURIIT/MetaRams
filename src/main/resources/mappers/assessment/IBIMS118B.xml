@@ -35,6 +35,11 @@
 			 , OBLG_CNTNT			= #{oblgCntnt}
 			 , PFRM_DT				= #{pfrmDt}
 			 , END_F				= #{endF}
+			 , HND_DETL_DTM = SYSDATE
+			 , HND_EMPNO = #{hndlPEno}
+			 , HND_TMNL_NO = #{hndTmnlNo}
+			 , HND_TR_ID = #{hndTrId}
+			 , GUID = #{guid}
 		 WHERE 1=1
 		   AND IB_DEAL_NO           = #{ibDealNo          }
 		   AND RISK_INSPCT_CCD      = #{riskInspctCcd     }
@@ -57,6 +62,11 @@
 			, OBLG_CNTNT                       /* 의무내용 */
 			, PFRM_DT                          /* 이행일자 */
 			, END_F                            /* 종료여부 */
+			, HND_DETL_DTM
+			, HND_EMPNO
+			, HND_TMNL_NO
+			, HND_TR_ID
+			, GUID
 			)
 		VALUES
 		    (
@@ -77,6 +87,11 @@
 			, NULL                     		   /* 의무내용 */
 			, NULL                        	   /* 이행일자 */
 			, 'N'                          	   /* 종료여부 */
+			, SYSDATE
+			, #{hndlPEno}
+			, #{hndTmnlNo}
+			, #{hndTrId}
+			, #{guid}
 			)
 	</insert>
 
@@ -87,35 +102,5 @@
 		   AND JDGM_DCD     = #{jdgmDcd     }	    /* 심사구분코드 */
 		   AND MTR_DCD      = #{mtrDcd      }	    /* 부수안건구분코드 */
 	</delete>
-	
-    <!--    승인조건 미이행 기타의무 이행일 저장    -->
-    <update id="saveEtcPfrmDt">
-        UPDATE RAA10B
-           SET PFRM_DT				= #{prfrmDt}
-             , END_F 				= 'Y'
-             , RMRK 				= #{pfrmCntnt}
-             , HNDL_DY_TM 			= SYSDATE
-             , HNDL_DPRT_CD 		= #{hndlDprtCd}
-             , HNDL_P_ENO 			= #{hndlPEno}
-         WHERE IB_DEAL_NO 			= #{ibDealNo}
-           AND RISK_INSPCT_CCD 		= #{riskInspctCcd}
-           AND LST_C_CASE_CCD 		= #{lstCCaseCcd}
-           AND ITEM_SQ 				= #{itemSq}
-    </update>
-
-    <!--    승인조건 미이행 기타의무 종결여부 저장    -->
-    <update id="upoateEtcEndF">
-        UPDATE RAA10B
-           SET END_F 				= #{endF}
-             , RMRK 				= CASE WHEN #{endF} = 'N' THEN NULL ELSE #{pfrmCntnt} END
-             , PFRM_DT 				= NULL
-             , HNDL_DY_TM 			= SYSDATE
-             , HNDL_DPRT_CD 		= #{hndlDprtCd}
-             , HNDL_P_ENO 			= #{hndlPEno}
-         WHERE IB_DEAL_NO 			= #{ibDealNo}
-           AND RISK_INSPCT_CCD 		= #{riskInspctCcd}
-           AND LST_C_CASE_CCD 		= #{lstCCaseCcd}
-           AND ITEM_SQ 				= #{itemSq}
-    </update>
     
 </mapper>
