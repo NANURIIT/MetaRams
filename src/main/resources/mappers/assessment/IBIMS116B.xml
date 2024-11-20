@@ -51,7 +51,7 @@
                (
                  #{item.dealNo}                           /* 딜번호 */
                , #{item.sn}                               /* 일련번호 */
-               , #{item.dbcd}                           /* 부서코드 */
+               , #{item.bdcd}                           /* 부서코드 */
                , #{item.bsnssMngPEno}                     /* 영업관리자사번 */
                , #{item.cntrt}                            /* 공헌도 */
                , #{item.rgstDt}                           /* 등록일자 */
