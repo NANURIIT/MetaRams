@@ -26,6 +26,10 @@ const TB10310Sjs = (function () {
 
     const mdfyRghtCcd = [
       {
+        cdValue: undefined
+        , cdName: "권한없음"
+      },
+      {
         cdValue: "1"
         , cdName: "조회"
       },
@@ -123,8 +127,12 @@ const TB10310Sjs = (function () {
           options: mdfyRghtCcd
         },
         render: function (ui) {
-          let fSel = mdfyRghtCcd.find(({ cdValue }) => cdValue == ui.cellData);
-          return fSel ? fSel.cdName : ui.cellData;
+          if(ui.cellData === "" && ui.cellData === null){
+            return "권한없음"
+          }else {
+            let fSel = mdfyRghtCcd.find(({ cdValue }) => cdValue == ui.cellData);
+            return fSel ? fSel.cdName : ui.cellData;
+          }
         }
       },
       {

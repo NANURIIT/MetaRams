@@ -5,15 +5,17 @@
 	<!-- 2024-11-06	김건우 -->
     <!-- 상위메뉴 조회 -->
     <select id="hgrkMenuInq" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS005BDTO">
-        SELECT A.MENU_ID																		/* 메뉴ID */
-             , A.MENU_NM                                                                        /* 메뉴명 */
-             , A.SORT_NO																		/* 정렬번호 */
-             , A.URL_VRB_CNTN																    /* URL변수내용 */
-             , A.URL_CLSF_CD																	/* URL분류코드 */
-             , A.URL_NM                                                                         /* URL명 */
-             , A.SHTN_NM																		/* 단축명 */
-             , A.APLY_YN																		/* 적용여부 */
-             , A.DEL_YN																		    /* 삭제여부 */
+        SELECT A.MENU_ID									/* 메뉴ID */
+             , A.MENU_NM                                    /* 메뉴명 */
+             , A.SORT_NO									/* 정렬번호 */
+             , A.MENU_LVL                                   /* 메뉴레벨 */
+             , A.HGRK_MENU_ID                               /* 상위메뉴ID */
+             , A.URL_VRB_CNTN								/* URL변수내용 */
+             , A.URL_CLSF_CD								/* URL분류코드 */
+             , A.URL_NM                                     /* URL명 */
+             , A.SHTN_NM									/* 단축명 */
+             , A.APLY_YN									/* 적용여부 */
+             , A.DEL_YN										/* 삭제여부 */
              , NVL(TO_CHAR(A.HND_DETL_DTM, 'YYYY-MM-DD HH24:MI:SS'), '') AS HND_DETL_DTM		/* 조작상세일시 */
              , NVL((SELECT EMP_NM
                       FROM IBIMS003B
@@ -21,8 +23,9 @@
           FROM IBIMS005B A
          WHERE 1=1
            AND A.SCRN_APLY_SHP_CD = 'M'
-           AND A.MENU_ID LIKE '%' || #{menuId} || '%'                                                  /* 메뉴명 */
-         ORDER BY A.MENU_ID
+           AND A.MENU_NM LIKE '%' || #{menuNm} || '%'                             /* 메뉴명 */
+           AND (MENU_LVL = 1 OR (MENU_LVL &gt; 1 AND HGRK_MENU_ID IS NOT NULL))
+         ORDER BY A.MENU_ID, A.HGRK_MENU_ID
     </select>
 
     <!-- 하위메뉴조회 -->
@@ -66,7 +69,7 @@
           , DEL_YN
           , DEL_DT
           , DEL_TM
-          , DEL_EMPNO
+          , DELT_EMPNO
           , HND_DETL_DTM
           , HND_EMPNO
           , HND_TMNL_NO
@@ -74,32 +77,30 @@
           , GUID
         )
         VALUES
-        <foreach collection="list" item="item" separator=",">
         (
-            #{item.menuId}
-          , #{item.menuNm}
-          , #{item.shtnNm}
-          , #{item.hgrkMenuId}
-          , SUBSTR(#{item.hgrkMenuId}, LENGTH(#{item.hgrkMenuId}), 1)
-          , #{item.sortNo}
-          , (SELECT (NVL(MAX(MENU_LVL), 0) + 1) FROM IBIMS005B WHERE MENU_ID = #{item.hgrkMenuId})
-          , #{item.urlClsfCd}
-          , #{item.urlNm}
-          , #{item.urlVrbCntn}
-          , #{item.usrAthDcd}
-          , #{item.aplyYn}
-          , #{item.aplyDt}
-          , #{item.delYn}
-          , #{item.delDt}
-          , #{item.delTm}
-          , #{item.delEmpno}
+            #{menuId}
+          , #{menuNm}
+          , #{shtnNm}
+          , #{hgrkMenuId}
+          , SUBSTR(#{menuId}, LENGTH(#{menuId}), 1)
+          , #{sortNo}
+          , #{menuLvl}
+          , #{urlClsfCd}
+          , #{urlNm}              /* 'M'은 urlNm이 안들어감 */
+          , #{urlVrbCntn}         /* 숫자를 제외한 문자 제거 */
+          , #{usrAthDcd}
+          , #{aplyYn}
+          , #{aplyDt}
+          , #{delYn}
+          , #{delDt}
+          , #{delTm}
+          , #{deltEmpno}
           , SYSDATE
-          , #{item.hndEmpno}
-          , #{item.hndTmnlNo}
-          , #{item.hndTrId}
-          , #{item.guid}
+          , #{hndEmpno}
+          , #{hndTmnlNo}
+          , #{hndTrId}
+          , #{guid}
         )
-        </foreach>
     </insert>
 
     <!-- 메뉴수정 -->
@@ -464,6 +465,15 @@
            AND T2.MENU_LVL IS NOT NULL
          ORDER
             BY T2.MENU_LVL, T2.SORT_NO, CASE WHEN T2.MENU_ID LIKE 'TB%' THEN 0 ELSE 1 END, T2.MENU_ID
+    </select>
+
+    <select id="devsList" resultType="com.nanuri.rams.business.common.dto.IBIMS005BDTO">
+      SELECT MENU_ID
+           , MENU_LVL
+        FROM IBIMS005B
+       WHERE 1=1
+         AND SCRN_APLY_SHP_CD = 'M'
+         AND (MENU_LVL = 1 OR (MENU_LVL &gt; 1 AND HGRK_MENU_ID IS NOT NULL))
     </select>
 
 </mapper>

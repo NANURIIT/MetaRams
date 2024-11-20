@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nanuri.rams.business.common.mapper.TB02020Mapper" >
+    
+    <!-- 워크플로우 딜정보 조회 -->
+    <select id="getWfDealInfo" parameterType="com.nanuri.rams.business.common.vo.TB02020SVO" resultType="com.nanuri.rams.business.common.vo.TB02020SVO">
+        SELECT 
+              A.WF_STEP_ID                                                      /* 워크플로우 스텝ID */
+            , B.STEP_NM                                                         /* 워크플로우 스텝명 */
+            , COUNT(CASE WHEN A.WF_MAP_ID = 'WF01' THEN 1 END) AS WF01_COUNT    /* 등록 카운트 */
+            , COUNT(CASE WHEN A.WF_MAP_ID = 'WF02' THEN 1 END) AS WF02_COUNT    /* 수정 카운트 */
+            , COUNT(CASE WHEN A.WF_MAP_ID = 'WF03' THEN 1 END) AS WF03_COUNT    /* 삭제 카운트 */
+          FROM 
+              WF A
+          LEFT JOIN 
+              WF_STEP B
+          ON 
+              A.WF_MAP_ID = B.WF_MAP_ID
+          AND 
+              A.WF_STEP_ID = B.STEP_ID
+          GROUP BY 
+              A.WF_STEP_ID
+            , B.STEP_NM  
+          ORDER BY 
+              A.WF_STEP_ID
+            , B.STEP_NM                
+        
+    </select>
+
+    <!-- 워크플로우 딜정보 조회 -->
+    <select id="getMapInfo" parameterType="com.nanuri.rams.business.common.vo.TB02020SVO" resultType="com.nanuri.rams.business.common.vo.TB02020SVO">
+        SELECT A.WF_ID          /* 딜명 */ 
+             , A.APRV_DTTM      /* 결재일자 */
+             , C.DPRT_NM        /* 부서 */
+        	 , B.WF_MAP_NM      /* 업무구분 */
+        	 , A.RTN_YN         /* 결재구분(반송여부) */
+        	 , A.MEMO_CNTS      /* 결재사유 */
+        	 , (SELECT SC.EMP_NM    /* 사원이름 */
+        	  	  FROM WF_STEP SA       /* 워크플로우 스탭 */
+        	  	  JOIN WF_HIS  SB       /* 워크플로우 이력 */
+        	  	    ON SA.WF_MAP_ID = SB.WF_MAP_ID      /* 맵아이디 */               
+        	  	   AND SA.STEP_ID = SB.WF_STEP_ID       /* 스탭아이디 */              
+        	  	   AND A.WF_ID = SB.WF_ID               /* 워크플로우아이디 */             
+        	  	  JOIN IBIMS003B SC     /* 사원기본 */
+        	  	    ON SB.APRV_EMP_NO = SC.EMPNO    /* 사번 */
+        	  	 WHERE A.WF_MAP_ID = SA.WF_MAP_ID   /* 맵아이디*/             
+        	  	   AND A.WF_STEP_ID = SA.NEXT_STEP_ID   /* 현재스탭과 다음스탭 비교 */
+               ) AS RRE_STEP    /* 이전결재자 */
+         FROM WF A      /* 워크플로우 */
+         LEFT JOIN WF_MAP B     /*워크플로우맵 */
+           ON A.WF_MAP_ID  = B.WF_MAP_ID
+         LEFT JOIN IBIMS003B C      /* 사원기본 */
+           ON C.EMPNO = A.APRV_EMP_NO       /* 사번 */
+        WHERE A.WF_STEP_ID = #{wfStepId}
+          AND A.WF_MAP_ID = #{wfMapId}
+        ORDER BY A.WF_STEP_ID                 
+        
+    </select>
+
+    <!-- 워크플로우 딜이력 조회 -->
+    <select id="getMapHisInfo" parameterType="com.nanuri.rams.business.common.vo.TB02020SVO" resultType="com.nanuri.rams.business.common.vo.TB02020SVO">
+         SELECT A.APRV_DTTM     /* 결재일자 */
+        	  , A.WF_STEP_ID    /* 결재단계 */
+        	  , A.RTN_YN        /* 결재구분 */
+        	  , B.EMP_NM        /* 결재자 */
+        	  , A.RTN_CNTS      /* 반송사유 */
+           FROM WF_HIS A        /* 워크플로우 이력*/
+           JOIN IBIMS003B B     /* 사원기본 */
+             ON A.APRV_EMP_NO  = B.EMPNO /* 사번 */
+          WHERE A.WF_ID = #{wfId}
+            AND A.WF_MAP_ID = #{wfMapId}
+          ORDER BY A.WF_STEP_ID  
+                    
+        
+    </select>
+
+    
+</mapper>

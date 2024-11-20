@@ -58,6 +58,16 @@ public class TB10410APIController {
 		return tb10410Service.updateMenu(param);
 	}
 
+	/**
+	 * 상위메뉴
+	 * @param param
+	 * @return
+	 */
+	@PostMapping(value = "/devsList")
+	public List<IBIMS005BDTO> devsList () {
+		return tb10410Service.devsList();
+	}
+
 	// // 그룹코드정보 리스트 가져오기
 	// @GetMapping(value = "/mainMenuList")
 	// public List<MainMenuVo> selectMainMenuList(@RequestParam String menuNm){ 

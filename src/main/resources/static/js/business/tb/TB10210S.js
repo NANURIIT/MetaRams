@@ -41,33 +41,6 @@ const TB10210Sjs = (function () {
    */
   let colModel_authCdTb = [
     {
-      title: "",
-      width: "3%",
-      editable: false,
-      render: function (ui) {
-        if (ui.cellData === "del") {
-          return (
-            `<button class='ui-button ui-corner-all ui-widget' name='detail_btn' onclick="TB10210Sjs.pqGridDeleteRow($('#authCodeTable'), '${ui.rowIndx}')">&nbsp;삭제</button>`
-          );
-        } else {
-          return;
-        }
-      },
-    },
-    {
-      title: "삭제여부",
-      dataIndx: "dltYn",
-      align: "center",
-      halign: "center",
-      type: "string",
-      editable: true,
-      width: "5%",
-      editor: {
-        type: "select",
-        options: Yn
-      },
-    },
-    {
       title: "권한코드",
       dataType: "string",
       dataIndx: "athCd",
@@ -136,6 +109,19 @@ const TB10210Sjs = (function () {
       halign: "center",
       width: "5%",
       filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "삭제여부",
+      dataIndx: "delYn",
+      align: "center",
+      halign: "center",
+      type: "string",
+      editable: true,
+      width: "5%",
+      editor: {
+        type: "select",
+        options: Yn
+      },
     },
     {
       title: "적용여부",
@@ -316,10 +302,20 @@ const TB10210Sjs = (function () {
   /**
    * pqDeleteRow
    */
-  function pqGridDeleteRow(colModelSelector, rowIndx) {
-    colModelSelector.pqGrid("deleteRow", {
-      rowIndx: rowIndx
-    });
+  function pqGridDeleteRow(colModelSelector) {
+
+    const rowIndx = colModelSelector.pqGrid('instance').pdata.length
+
+    if(colModelSelector.pqGrid('instance').pdata[rowIndx-1].authCdBtn === "new" || ( colModelSelector.pqGrid('instance').pdata[rowIndx-1].hndDetlDtm === "" && colModelSelector.pqGrid('instance').pdata[rowIndx-1].hndEmpno === "")){
+      colModelSelector.pqGrid("deleteRow", {
+        rowIndx: rowIndx - 1
+      });
+      return;
+    }
+    else{
+      return;
+    }
+
   }
 
 

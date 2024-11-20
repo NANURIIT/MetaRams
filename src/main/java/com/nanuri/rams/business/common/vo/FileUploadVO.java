@@ -15,5 +15,5 @@ import lombok.Setter;
  * */
 public class FileUploadVO extends FileUploadDTO {
 	// 첨부파일일련번호목록
-	private List<Integer> arrAttFileSq = new ArrayList<>();		
+	private List<Integer> arratchFleSn = new ArrayList<>();		
 }
