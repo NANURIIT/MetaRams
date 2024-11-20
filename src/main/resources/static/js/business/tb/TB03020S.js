@@ -121,8 +121,8 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_thyrErn').val(addComma(data.theYearErnAmt));
 					$('#TB03020S_wrtErn').val(addComma(data.baltErnAmt));
 					$('#TB03020S_intrErn').val(addComma(data.intrErnAmt));
-					$('#invstCrncyCd').val(data.crncyCd);
-					$('#invstCrncyAmt').val(addComma(data.crncyAmt));
+					$('#invstCrncyCd').val(data.crryCd);
+					$('#invstCrncyAmt').val(addComma(data.crryAmt));
 					$('#wrtDt').val(formatDate(data.expDt));
 					$('#mtrtDt').val(formatDate(data.mtrtDt));
 					
