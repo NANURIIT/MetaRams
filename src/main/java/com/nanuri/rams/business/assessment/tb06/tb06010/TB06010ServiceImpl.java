@@ -105,7 +105,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 		ibims201bvo.setFxnIntrt(param.getFxnIntrt());					// 고정금리
 		ibims201bvo.setAddIntrt(param.getAddIntrt());					// 가산금리
 		ibims201bvo.setPrnaRdmpFrqcMnum(param.getPrnaRdmpFrqcMnum());	// 상환주기
-		ibims201bvo.setIntrtCngeFrqcMnum((param.getIntrCngeFrqcMnum()==null)?0:param.getIntrCngeFrqcMnum());	//변동주기
+		ibims201bvo.setIntrtCngeFrqcMnum((param.getIntrtCngeFrqcMnum()==null)?0:param.getIntrtCngeFrqcMnum());	//변동주기
 		ibims201bvo.setOvduIntrRtDcd(param.getOvduIntrRtDcd());			//연체이자율구분
 		ibims201bvo.setOvduIntrRt(param.getOvduIntrRt());				//연체이자율
 		ibims201bvo.setPrnaDfrPrdMnum((param.getPrnaDfrPrdMnum()==null)?0:param.getPrnaDfrPrdMnum());		//거치기간
@@ -126,7 +126,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 		ibims201bvo.setApvlDt(LocalDate.now().toString().replace("-", ""));
 		ibims201bvo.setHndEmpno(param.getHndEmpno());
 		ibims201bvo.setRgstDt(param.getRgstDt());
-		ibims201bvo.setEarlyRepayYn(param.getMdwyRdmpYn());				//중도상환여부
+		ibims201bvo.setEarlyRepayYn(param.getEarlyRepayYn());				//중도상환여부
 		ibims201bvo.setRqsKndCd(param.getRqsKndCd());					//신청종류
 		
 		if (temp == null) {
@@ -207,7 +207,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 			param.setFxnIntrt(out202bdto.getFxnIntrt());					// 고정금리
 			param.setAddIntrt(out202bdto.getAddIntrt());					// 가산금리
 			param.setPrnaRdmpFrqcMnum(out202bdto.getPrnaRdmpFrqcMnum());	// 상환주기
-			param.setIntrtCngeFrqcMnum((out202bdto.getIntrCngeFrqcMnum()==null)?0:out202bdto.getIntrCngeFrqcMnum());	//변동주기
+			param.setIntrtCngeFrqcMnum((out202bdto.getIntrtCngeFrqcMnum()==null)?0:out202bdto.getIntrtCngeFrqcMnum());	//변동주기
 			param.setOvduIntrRtDcd(out202bdto.getOvduIntrRtDcd());			//연체이자율구분
 			param.setOvduIntrRt(out202bdto.getOvduIntrRt());				//연체이자율
 			param.setPrnaDfrPrdMnum((out202bdto.getPrnaDfrPrdMnum()==null)?0:param.getPrnaDfrPrdMnum());		//거치기간
@@ -221,7 +221,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 			param.setIntrClcEndDeDcd(out202bdto.getIntrClcEndDeDcd());		//이자계산종료일
 			param.setStdrIntrtKndCd(out202bdto.getStdrIntrtKndCd());		//기준금리종류코드
 			param.setPrgSttsCd(ibims201bvo.getPrgSttsCd());                 //진행상태코드
-			param.setEarlyRepayYn(out202bdto.getMdwyRdmpYn());				//중도상환여부
+			param.setEarlyRepayYn(out202bdto.getEarlyRepayYn());				//중도상환여부
 			param.setLastYn("1");                                           //최종여부
 //			param.setRqsKndCd("01");                                        //신청종류
 			result = ibims201bMapper.regPrdtCd(param);
@@ -230,8 +230,8 @@ public class TB06010ServiceImpl implements TB06010Service {
 
 		IBIMS103BDTO s103b = new IBIMS103BDTO();
 		s103b.setDealNo(param.getDealNo());
-		s103b.setMtrDcd(param.getNmcpMtrDcd());
-		s103b.setJdgmDcd(param.getLstCCaseDcd());
+		s103b.setMtrDcd(param.getMtrDcd());
+		s103b.setJdgmDcd(param.getJdgmDcd());
 		s103b.setHndEmpno(facade.getDetails().getEno());
 		
 		s103b = ibims103bMapper.selectOne103B(s103b);
@@ -369,7 +369,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 		param.setEmpno(facade.getDetails().getEno());			    // 사원번호 		
 		param.setWorkDcd("03");                              	    // 작업구분코드
 		param.setWorkCtns("(To-Do) 대출채권/채무보증 정보등록");    // 작업내용
-		param.setRqstEmpno(facade.getDetails().getEno());           // 등록사원번호
+		param.setRgstEmpno(facade.getDetails().getEno());           // 등록사원번호
 		param.setMenuId("/TB06010S");                               // 메뉴ID 
 		param.setEntpNm(param.getEntpNm());                         // 업체명 
 		param.setRmrk("TEST");               						// 비고(메뉴별조회KEY)

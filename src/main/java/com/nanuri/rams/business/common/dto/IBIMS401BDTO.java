@@ -47,10 +47,10 @@ public class IBIMS401BDTO {
     private String         eprzCrdlTfdLyAplyDcd;                   // 기업여신초일말일적용구분코드
     private String         eprzCrdlIntrSnnoPrcsDcd;                // 기업여신이자단수처리구분코드
     private String         eprzCrdlPaiRdmpDcd;                     // 기업여신원리금상환구분코드
-    private BigDecimal     prnaRdmpFrqcMnum;                       // 원금상환주기개월수
-    private BigDecimal     intrRdmpFrqcMnum;                       // 이자상환주기개월수
-    private BigDecimal     prnaDfrPrdMnum;                         // 원금거치기간개월수
-    private BigDecimal     tlmtPrfLoseFrqcNum;                     // 기한이익상실주기수
+    private int            prnaRdmpFrqcMnum;                       // 원금상환주기개월수
+    private int            intrRdmpFrqcMnum;                       // 이자상환주기개월수
+    private int            prnaDfrPrdMnum;                         // 원금거치기간개월수
+    private int            tlmtPrfLoseFrqcNum;                     // 기한이익상실주기수
     private String         tlmtPrfLoseDt;                          // 기한이익상실일자
     private String         tlmtPrfRsrrDt;                          // 기한이익부활일자
     private String         eprzCrdlOrtnFndCd;                      // 기업여신운용펀드코드
