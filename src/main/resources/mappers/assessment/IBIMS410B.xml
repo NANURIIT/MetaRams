@@ -18,7 +18,7 @@
 		SELECT 
 		       COUNT(*) AS CNT	 /* 건수 */
 		  FROM IBIMS410B A 	/* 딜거래내역 */
-		 WHERE 1 = 1
+		 WHERE 1 = 1 
 		   AND A.PRDT_CD =  #{prdtCd}   
 		   AND A.EXC_SN  =  #{excSn}
            AND TR_STAT_CD = '1'
