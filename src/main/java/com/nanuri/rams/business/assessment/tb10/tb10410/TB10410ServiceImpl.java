@@ -38,14 +38,28 @@ public class TB10410ServiceImpl implements TB10410Service {
 	@Override
 	public int insertMenu (List<IBIMS005BDTO> param){
 
-		List<IBIMS005BDTO> list = param;
+		int result = 0;
 
 		// 작성자 세팅
-		for(int i = 0; i < list.size(); i++){
-			list.get(i).setHndEmpno(facade.getDetails().getEno());
-		}
+		for(int i = 0; i < param.size(); i++){
 
-		return ibims005BMapper.insertMenu(list);
+			param.get(i).setHndEmpno(facade.getDetails().getEno());
+			if(param.get(i).getMenuId().endsWith("S")){
+				param.get(i).setUrlNm(param.get(i).getMenuId());
+			}
+			
+			String menuId = param.get(i).getMenuId();
+			if (menuId.length() > 3) {
+				String trimmedMenuId = menuId.substring(2, menuId.length() - 1);
+				param.get(i).setUrlVrbCntn(trimmedMenuId);
+			}
+
+			ibims005BMapper.insertMenu(param.get(i));
+
+			result = result + 1;
+		}
+		
+		return result;
 	};
 
 	@Override
@@ -62,6 +76,11 @@ public class TB10410ServiceImpl implements TB10410Service {
 		}
 
 		return result;
+	};
+
+	@Override
+	public List<IBIMS005BDTO> devsList(){
+		return ibims005BMapper.devsList();
 	};
 
 	//////////////////////////////////////////////////////////////

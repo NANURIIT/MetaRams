@@ -1,6 +1,8 @@
 const TB10410Sjs = (function () {
   $(document).ready(function () {
 
+    createHgrkSelectBox();
+
     pqGrid();
 
     hgrkMenuInq();
@@ -25,6 +27,40 @@ const TB10410Sjs = (function () {
   let prevParam;
   let prevRowIndx;
 
+  /**
+   * 셀렉트박스
+   */
+  let hgrkSelectBox = [
+    {
+      "value": ""
+      , "menuLvl": 1
+    }
+  ];
+
+  /**
+   * 상위메뉴 셀렉트박스
+   */
+  function createHgrkSelectBox() {
+    $.ajax({
+      method: "POST",
+      url: "/TB10410S/devsList",
+      contentType: "application/json; charset=UTF-8",
+      success: function (data) {
+        for (let i = 0; i < data.length; i++) {
+          hgrkSelectBox.push(
+            {
+              "value": data[i].menuId
+              , "menuLvl": data[i].menuLvl
+            }
+          )
+        }
+      },
+      error: function (response) {
+
+      },
+    })
+  }
+
 
   /**
    * colmodel 세팅
@@ -41,39 +77,45 @@ const TB10410Sjs = (function () {
      * 상위메뉴
      */
     const hgrkMenuColModel = [
-      {
-        title: "",
-        width: "3%",
-        editable: false,
-        render: function (ui) {
-          if (ui.cellData === "del") {
-            return (
-              `<button class='ui-button ui-corner-all ui-widget' name='detail_btn' onclick="TB10410Sjs.pqGridDeleteRow($('#TB10410S_hgrkMenuColModel'), '${ui.rowIndx}')">&nbsp;삭제</button>`
-            );
-          } else {
-            return;
-          }
-        },
-      },
-      {
-        title: "삭제여부",
-        dataIndx: "delYn",
-        align: "center",
-        halign: "center",
-        type: "string",
-        editable: true,
-        width: "5%",
-        editor: {
-          type: "select",
-          options: Yn
-        },
-      },
+      // {
+      //   title: "",
+      //   width: "3%",
+      //   editable: false,
+      //   render: function (ui) {
+      //     if (ui.cellData === "del") {
+      //       return (
+      //         `<button class='ui-button ui-corner-all ui-widget' name='detail_btn' onclick="TB10410Sjs.pqGridDeleteRow($('#TB10410S_hgrkMenuColModel'), '${ui.rowIndx}')">&nbsp;삭제</button>`
+      //       );
+      //     } else {
+      //       return;
+      //     }
+      //   },
+      // },
       {
         title: "메뉴ID",
+        halign: "center",
+        align: "left",
+        dataType: "string",
+        dataIndx: "menuId",
+        editable: false,
+        render: function (ui) {
+          if (ui.rowData.menuLvl > 1) {
+            let result = "";
+            for (let i = 1; i < ui.rowData.menuLvl; i++) {
+              result = result + "ㅤ"
+            }
+            return result + "└" + ui.cellData
+          }
+          return ui.cellData
+        }
+      },
+      {
+        title: "메뉴레벨",
         align: "center",
         halign: "center",
         dataType: "string",
-        dataIndx: "menuId",
+        dataIndx: "menuLvl",
+        width: "5%",
         editable: false,
       },
       {
@@ -86,11 +128,17 @@ const TB10410Sjs = (function () {
         width: "5%",
       },
       {
-        title: "화면번호",
+        title: "상위메뉴ID",
         align: "center",
         halign: "center",
         dataType: "string",
-        dataIndx: "urlVrbCntn",
+        dataIndx: "hgrkMenuId",
+        editor: {
+          type: "select",
+          valueIndx: "value",
+          labelIndx: "value",
+          options: hgrkSelectBox
+        },
       },
       {
         title: "메뉴명",
@@ -168,40 +216,12 @@ const TB10410Sjs = (function () {
         //   // console.log(hgrkMenuDbData);
         // },
       },
-    ]
-
-    /**
-     * 하위메뉴
-     */
-    const menuColModel = [
-      {
-        title: "상위메뉴ID",
-        dataIndx: "hgrkMenuId",
-        hidden: true,
-      },
-      {
-        title: "",
-        width: "3%",
-        editable: false,
-        render: function (ui) {
-          if (ui.cellData === "del") {
-            return (
-              `<button class='ui-button ui-corner-all ui-widget' name='detail_btn' onclick="TB10410Sjs.pqGridDeleteRow($('#TB10410S_menuColModel'), '${ui.rowIndx}')">&nbsp;삭제</button>`
-            );
-          } else {
-            return;
-          }
-        },
-      },
       {
         title: "삭제여부",
         dataIndx: "delYn",
         align: "center",
         halign: "center",
-        menuIcon: false,
         type: "string",
-        editor: false,
-        dataType: "string",
         editable: true,
         width: "5%",
         editor: {
@@ -209,12 +229,41 @@ const TB10410Sjs = (function () {
           options: Yn
         },
       },
+    ]
+
+    /**
+     * 하위메뉴
+     */
+    const menuColModel = [
+      // {
+      //   title: "",
+      //   width: "3%",
+      //   editable: false,
+      //   render: function (ui) {
+      //     if (ui.cellData === "del") {
+      //       return (
+      //         `<button class='ui-button ui-corner-all ui-widget' name='detail_btn' onclick="TB10410Sjs.pqGridDeleteRow($('#TB10410S_menuColModel'), '${ui.rowIndx}')">&nbsp;삭제</button>`
+      //       );
+      //     } else {
+      //       return;
+      //     }
+      //   },
+      // },
       {
         title: "메뉴ID",
         align: "center",
         halign: "center",
         dataType: "string",
         dataIndx: "menuId",
+        editable: false,
+      },
+      {
+        title: "메뉴레벨",
+        align: "center",
+        halign: "center",
+        dataType: "string",
+        dataIndx: "menuLvl",
+        width: "5%",
         editable: false,
       },
       {
@@ -227,11 +276,12 @@ const TB10410Sjs = (function () {
         width: "5%",
       },
       {
-        title: "화면번호",
+        title: "상위메뉴ID",
         align: "center",
         halign: "center",
         dataType: "string",
-        dataIndx: "urlVrbCntn"
+        dataIndx: "hgrkMenuId",
+        editable: false,
       },
       {
         title: "메뉴명",
@@ -295,6 +345,22 @@ const TB10410Sjs = (function () {
           options: Yn
         },
       },
+      {
+        title: "삭제여부",
+        dataIndx: "delYn",
+        align: "center",
+        halign: "center",
+        menuIcon: false,
+        type: "string",
+        editor: false,
+        dataType: "string",
+        editable: true,
+        width: "5%",
+        editor: {
+          type: "select",
+          options: Yn
+        },
+      },
     ]
 
     if (number === 1) {
@@ -332,6 +398,25 @@ const TB10410Sjs = (function () {
             ui.column.editable = true;
           } else if (ui.rowData.inqBtn != "new" && ui.column.dataIndx === "menuId") {
             ui.column.editable = false;
+          }
+        }
+        , cellSave: function (event, ui) {
+          if(ui.rowData.menuId === ui.rowData.hgrkMenuId){
+            Swal.fire({
+              icon: 'warning'
+              , title: '자기자신을 상위메뉴로 지정할 수 없습니다'
+            })
+            ui.rowData.hgrkMenuId = ui.oldVal;
+            $("#TB10410S_hgrkMenuColModel").pqGrid("refreshDataAndView");
+            return;
+          }
+          if (!ui.rowData.hgrkMenuId) {
+            ui.rowData.menuLvl = 1;
+            $("#TB10410S_hgrkMenuColModel").pqGrid("refreshDataAndView");
+          } else {
+            const selectedItem = hgrkSelectBox.find(item => item.value === ui.rowData.hgrkMenuId);
+            ui.rowData.menuLvl = selectedItem.menuLvl + 1;
+            $("#TB10410S_hgrkMenuColModel").pqGrid("refreshDataAndView");
           }
         }
       },
@@ -386,8 +471,11 @@ const TB10410Sjs = (function () {
       else if (title === "삭제여부" || title === "적용여부") {
         newRow[dataIndx] = "Y";
       }
-      else if (title === "상위메뉴ID"){
+      else if (title === "상위메뉴ID") {
         newRow[dataIndx] = prevParam;
+      }
+      else if (title === "메뉴레벨" && prevRowIndx) {
+        newRow[dataIndx] = $("#TB10410S_hgrkMenuColModel").pqGrid('instance').pdata[prevRowIndx].menuLvl + 1;
       }
       else {
         newRow[dataIndx] = "";
@@ -398,18 +486,25 @@ const TB10410Sjs = (function () {
       rowData: newRow,
       checkEditable: false,
     });
-
-    console.log(colModelSelector.pqGrid('instance').pdata);
-    
   }
 
   /**
    * pqgrid deleteRow
    */
-  function pqGridDeleteRow(colModelSelector, rowIndx) {
-    colModelSelector.pqGrid("deleteRow", {
-      rowIndx: rowIndx
-    });
+  function pqGridDeleteRow(colModelSelector) {
+
+    const rowIndx = colModelSelector.pqGrid('instance').pdata.length
+
+    if(colModelSelector.pqGrid('instance').pdata[rowIndx-1].inqBtn === "new" || ( colModelSelector.pqGrid('instance').pdata[rowIndx-1].hndDetlDtm === "" && colModelSelector.pqGrid('instance').pdata[rowIndx-1].hndEmpno === "")){
+      colModelSelector.pqGrid("deleteRow", {
+        rowIndx: rowIndx - 1
+      });
+      return;
+    }
+    else{
+      return;
+    }
+    
   }
 
 
@@ -477,7 +572,7 @@ const TB10410Sjs = (function () {
   function hgrkGroupMenuInq(param, rowIndx) {
 
     $('#TB10410S_hgrkMenuColModel').pqGrid('removeClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: prevRowIndx });
-    $('#TB10410S_hgrkMenuColModel').pqGrid('addClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: rowIndx});
+    $('#TB10410S_hgrkMenuColModel').pqGrid('addClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: rowIndx });
 
     // $('#TB10410S_hgrkMenuColModel').pqGrid('click', { rowIndx: rowIndx })
 
@@ -495,7 +590,7 @@ const TB10410Sjs = (function () {
 
         // 데이터 존재시 pqgrid적용
         if (data.length > 0) {
-          
+
           grid.setData(data);
           grid.getData();
 
@@ -538,25 +633,25 @@ const TB10410Sjs = (function () {
     }
 
     // 새로운 로우 모으기
-    for (let i = (hgrkMenuDbData.length - 1); i < (saveData.length - 1); i++) {
+    for (let i = hgrkMenuDbData.length; i < saveData.length; i++) {
       insertData.push(saveData[i]);
     }
 
     const updateResult = await updateMenu(updateData);
     const insertResult = await insertMenu(insertData);
 
-    while(true){
+    while (true) {
       // 귀찮아서 반복문으로 체크했음
-      if(updateResult === undefined || insertResult === undefined){
+      if (updateResult === undefined || insertResult === undefined) {
         wait(500);
         continue;
-      }else{
+      } else {
         console.log(updateResult);
         console.log(insertResult);
         successChk(updateResult, insertResult);
         // 저장 후 조회
         hgrkGroupMenuDbData = []
-        hgrkGroupMenuInq();
+        hgrkMenuInq();
         break;
       }
     }
@@ -582,19 +677,19 @@ const TB10410Sjs = (function () {
     }
 
     // 새로운 로우 모으기
-    for (let i = (hgrkGroupMenuDbData.length - 1); i < (saveData.length - 1); i++) {
+    for (let i = hgrkGroupMenuDbData.length; i < saveData.length; i++) {
       insertData.push(saveData[i]);
     }
 
     const updateResult = await updateMenu(updateData);
     const insertResult = await insertMenu(insertData);
 
-    while(true){
+    while (true) {
       // 귀찮아서 반복문으로 체크했음
-      if(updateResult === undefined || insertResult === undefined){
+      if (updateResult === undefined || insertResult === undefined) {
         wait(500);
         continue;
-      }else{
+      } else {
         console.log(updateResult);
         console.log(insertResult);
         successChk(updateResult, insertResult);
@@ -604,25 +699,25 @@ const TB10410Sjs = (function () {
         break;
       }
     }
-    
+
   }
 
-  function successChk (updateResult, insertResult) {
+  function successChk(updateResult, insertResult) {
     // 검사
-    if(updateResult > 0 && insertResult > 0){
+    if (updateResult > 0 && insertResult > 0) {
       Swal.fire({
         icon: 'success'
-        ,title: "저장 성공"
+        , title: "저장 성공"
       })
-    }else if (updateResult < 0 || insertResult < 0) {
+    } else if (updateResult < 0 || insertResult < 0) {
       Swal.fire({
         icon: 'error'
-        ,title: "실패임(아무나 수정좀)"
+        , title: "실패임(아무나 수정좀)"
       })
-    }else{
+    } else {
       Swal.fire({
         icon: 'error'
-        ,title: "실패"
+        , title: "실패"
       })
     }
   }
@@ -637,7 +732,7 @@ const TB10410Sjs = (function () {
 
     let result = 1;
 
-    if(insertData.length === 0){
+    if (insertData.length === 0) {
       return result;
     }
 
@@ -649,31 +744,27 @@ const TB10410Sjs = (function () {
           title: '메뉴ID를 입력해주세요!'
         });
       }
-      else if (!insertData[i].urlVrbCntn || insertData[i].urlVrbCntn.indexOf(" ") > 0) {
-        Swal.fire({
-            icon: 'warning',
-            title: '화면번호를 입력해주세요!'
-          });
-      }
       else if (!insertData[i].menuNm || insertData[i].menuNm.indexOf(" ") > 0) {
         Swal.fire({
-            icon: 'warning',
-            title: '메뉴명을 입력해주세요!'
-          });
+          icon: 'warning',
+          title: '메뉴명을 입력해주세요!'
+        });
       }
       else if (!insertData[i].shtnNm || insertData[i].shtnNm.indexOf(" ") > 0) {
         Swal.fire({
-            icon: 'warning',
-            title: '타이틀명을 입력해주세요!'
-          });
+          icon: 'warning',
+          title: '타이틀명을 입력해주세요!'
+        });
       }
       else if (!insertData[i].urlClsfCd || insertData[i].urlClsfCd.indexOf(" ") > 0) {
         Swal.fire({
-            icon: 'warning',
-            title: 'URL분류코드를 입력해주세요!'
-          });
+          icon: 'warning',
+          title: 'URL분류코드를 입력해주세요!'
+        });
       }
     }
+
+    console.log(insertData);
 
     $.ajax({
       method: "POST",
@@ -708,7 +799,7 @@ const TB10410Sjs = (function () {
 
     let result = 1;
 
-    if(updateData.length === 0){
+    if (updateData.length === 0) {
       return result;
     }
 

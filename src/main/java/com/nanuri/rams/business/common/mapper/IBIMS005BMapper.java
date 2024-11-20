@@ -31,7 +31,7 @@ public interface IBIMS005BMapper {
 	/**
 	 * 신규메뉴저장
 	 */
-	public int insertMenu (List<IBIMS005BDTO> param);
+	public int insertMenu (IBIMS005BDTO param);
 
 	/**
 	 * 메뉴업데이트
@@ -55,6 +55,13 @@ public interface IBIMS005BMapper {
 	 * 메뉴별권한관리 조회
 	 */
 	public List<IBIMS005BDTO> selectMenuListFromTB10310S(String param);
+
+	/**
+	 * 메뉴리스트
+	 * @param menuNm
+	 * @return
+	 */
+	public List<IBIMS005BDTO> devsList();
 
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
