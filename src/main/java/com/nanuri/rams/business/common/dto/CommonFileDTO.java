@@ -14,7 +14,7 @@ public class CommonFileDTO extends CommonDTO {
     private String ibDealNo;        // IBDEAL번호
     private String riskInspctCcd;   // 리스크심사구분코드
     private String lstCCaseCcd;     // 부수안건구분코드
-    private int    attFileSq;       // 첨부파일일련번호
+    private int    atchFleSn;       // 첨부파일일련번호
     private int    hstSq;           // 이력일련번호
     private String svFilePathNm;    // 서버파일경로명
     private String svFileNm;        // 서버파일명

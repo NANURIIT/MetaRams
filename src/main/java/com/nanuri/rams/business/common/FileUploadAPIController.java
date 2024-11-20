@@ -81,13 +81,13 @@ public class FileUploadAPIController {
 	public List<FileUploadDTO> removeFile(
 			  @RequestParam(value = "fileKey1", required=false) String fileKey1
 			, @RequestParam(value = "fileKey2", required=false) String fileKey2
-			,@RequestParam(value = "arrAttFileSq[]") List<Integer> arrAttFileSq
+			,@RequestParam(value = "arratchFleSn[]") List<Integer> arratchFleSn
 			) {
-		log.debug("File delete Start!!! ==> " + arrAttFileSq.size());
+		log.debug("File delete Start!!! ==> " + arratchFleSn.size());
 		FileUploadVO vo = new FileUploadVO();
 		vo.setFileKey1(fileKey1);
 		vo.setFileKey2(fileKey2);
-		vo.setArrAttFileSq(arrAttFileSq);
+		vo.setArratchFleSn(arratchFleSn);
 
 		
 		List<FileUploadDTO> delFiles = FileUploadervice.getListFileInfo(vo);
@@ -98,7 +98,7 @@ public class FileUploadAPIController {
 			FileUtil.deleteFile(dto.getSvFilePathNm(), dto.getSvFileNm());
 		}
 		
-		vo.setArrAttFileSq(null);
+		vo.setArratchFleSn(null);
 		List<FileUploadDTO> list = FileUploadervice.getListFileInfo(vo);
 		
 		return list;
