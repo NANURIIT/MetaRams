@@ -17,4 +17,9 @@ public class RAA20BVO extends RAA20BDTO {
 	
 	private List<Integer> arrAttFileSq = new ArrayList<>();		/* 첨부파일일련번호목록 */
 
+  public void setArratchFleSn(Object object) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setArratchFleSn'");
+  }
+
 }

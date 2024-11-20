@@ -177,14 +177,14 @@ public class CommonAPIController {
 	public List<RAA20BDTO> removeFile(@RequestParam(value = "fileIbDealNo") String ibDealNo
 			, @RequestParam(value = "fileRiskInspctCcd") String riskInspctCcd
 			, @RequestParam(value = "fileLstCCaseCcd") String lstCCaseCcd
-			, @RequestParam(value = "arratchFleSn[]") List<Integer> arratchFleSn
+			, @RequestParam(value = "arrAttFileSq[]") List<Integer> arrAttFileSq
 			) {
 		
 		RAA20BVO vo = new RAA20BVO();
 		vo.setIbDealNo(ibDealNo);
 		vo.setRiskInspctCcd(riskInspctCcd);
 		vo.setLstCCaseCcd(lstCCaseCcd);
-		vo.setArratchFleSn(arratchFleSn);
+		vo.setArrAttFileSq(arrAttFileSq);
 		
 		List<RAA20BDTO> delFiles = commonService.getListFileInfo(vo);
 		
@@ -194,7 +194,7 @@ public class CommonAPIController {
 			FileUtil.deleteFile(dto.getSvFilePathNm(), dto.getSvFileNm());
 		}
 		
-		vo.setArratchFleSn(null);
+		vo.setArrAttFileSq(null);
 		List<RAA20BDTO> list = commonService.getListFileInfo(vo);
 		
 		return list;
