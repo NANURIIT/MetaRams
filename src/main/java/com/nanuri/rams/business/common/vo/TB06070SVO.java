@@ -71,7 +71,7 @@ public class TB06070SVO{
 	private String prdtTypeCd;                  /* 상품유형코드 */
 	private String crdtGrntMclsCd;              /* 신용공여중분류코드 */
 	private String crdtGrntTypeCd;              /* 신용공여유형코드 */
-	private String utlzFundCd;                  /* 운용펀드코드 */
+	private String ortnFndCd;                  /* 운용펀드코드 */
 	private String sppiYn;                      /* SPPI여부 */
 	private String utlzFundFnncPrdtClsfCd;      /* 운용펀드금융상품분류코드 */
 	private String loanExpdCd;                  /* 대출만기코드 */

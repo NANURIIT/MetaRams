@@ -17,6 +17,11 @@
 				, MTRT_HLD_AMT                           /* 만기보유금액 */
 				, PFRM_DT                                /* 이행일자 */
 				, CRRY_MTRT_HLD_AMT                     /* 통화만기보유금액 */
+        , HND_DETL_DTM
+        , HND_EMPNO
+        , HND_TMNL_NO
+        , HND_TR_ID
+        , GUID
 				)
 			VALUES
 			    (
@@ -37,6 +42,11 @@
 				, NULL                     				       /* 만기보유금액 */
 				, NULL                     				       /* 이행일자 */
 				, 0                     				         /* 통화만기보유금액 */
+        , SYSDATE
+        , #{hndlPEno}
+        , #{hndTmnlNo}
+        , #{hndTrId}
+        , #{guid}
 				)
 	</insert>
 
@@ -47,73 +57,5 @@
 		   AND JDGM_DCD     = #{jdgmDcd     }	       /* 심사구분코드 */
 		   AND MTR_DCD      = #{mtrDcd      }	       /* 부수안건구분코드 */
 	</delete>
-
-  <!--  승인조건 사전관리 삭제 -->
-  <delete id="deleteSelldownImfo">
-    DELETE
-      FROM RAA09B
-      WHERE IB_DEAL_NO 		      = #{ibDealNo}         * Deal번호 */
-        AND RISK_INSPCT_CCD     = #{riskInspctCcd}   /* 심사구분코드 */
-        AND LST_C_CASE_CCD      = #{lstCCaseCcd}     /* 부수안건구분코드 */
-        AND ITEM_SQ             = #{itemSq}          /* 항목일련번호 */
-  </delete>
-
-  <!--  승인조건 사전관리 셀다운의무 저장   -->
-
-  <!-- 09B테이블 레코드 조회   -->
-  <select id="selectOneRaa09b">
-     SELECT COUNT(*)
-       FROM RAA09B
-      WHERE IB_DEAL_NO       = #{ibDealNo}
-        AND RISK_INSPCT_CCD  = #{riskInspctCcd}
-        AND LST_C_CASE_CCD   = #{lstCCaseCcd}
-        AND ITEM_SQ          = #{itemSq}
-  </select>
-
-  <update id="updateRaa09b">
-     UPDATE RAA09B
-        SET APLC_AMT            = NVL(#{aplcAmt}, 0)
-          , END_DT_END_DT       = #{endDtEndDt}
-          , HNDL_DY_TM          = SYSDATE
-          , HNDL_DPRT_CD        = #{hndlDprtCd}
-          , HNDL_P_ENO 		      = #{hndlPEno}
-      WHERE IB_DEAL_NO          = #{ibDealNo}
-        AND RISK_INSPCT_CCD     = #{riskInspctCcd}
-        AND LST_C_CASE_CCD      = #{lstCCaseCcd}
-        AND ITEM_SQ             = #{itemSq}
-  </update>
-
-  <insert id="insertRaa09b">
-      INSERT INTO RAA09B
-            (
-              IB_DEAL_NO
-            , RISK_INSPCT_CCD
-            , LST_C_CASE_CCD
-            , ITEM_SQ
-            , APLC_AMT
-            , END_DT_END_DT
-            , HNDL_DY_TM
-            , HNDL_DPRT_CD
-            , HNDL_P_ENO
-            )
-      VALUES
-            (
-              #{ibDealNo}
-            , #{riskInspctCcd}
-            , #{lstCCaseCcd}
-            , (SELECT NVL(MAX(ITEM_SQ), 0) + 1
-                FROM RAA09B
-                WHERE IB_DEAL_NO        = #{ibDealNo}
-                    , RISK_INSPCT_CCD   = #{riskInspctCcd}
-                    , LST_C_CASE_CCD    = #{lstCCaseCcd}
-              )
-            , NVL(#{aplcAmt}, 0)
-            , #{endDtEndDt}
-            , SYSDATE
-            , HNDL_DPRT_CD
-            , HNDL_P_ENO
-            )
-  </insert>
-  <!-- 승인조건 사전관리 셀다운의무 저장 END -->
 
 </mapper>
