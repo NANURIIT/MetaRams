@@ -104,14 +104,14 @@
 		     , A.JDGM_DCD                                                 /* 심사구분코드 */
 		     , B.MTR_NM                                                   /* 안건명 */
 			   , D.CNSB_OPN_DT                                              /* 협의체개최일자 */
-			   , B.PTFD_CCRY_CD                                            /* 부의통화코드 */
-		     , '('||B.PTFD_CCRY_CD ||') ' ||
+			   , B.PTFD_CRRY_CD                                            /* 부의통화코드 */
+		     , '('||B.PTFD_CRRY_CD ||') ' ||
 		       (
 		        SELECT CD_VL_NM
 		          FROM IBIMS002B
 		         WHERE CMNS_CD_GRP = 'I027'
-		           AND CD_VL_ID = B.PTFD_CCRY_CD
-		       ) AS PTFD_CCRY_CD_NM
+		           AND CD_VL_ID = B.PTFD_CRRY_CD
+		       ) AS PTFD_CRRY_CD_NM
 			   , B.PTFD_AMT                                                 /* 부의금액 */
 			   , NVL(C.EPRZ_CRDL_APVL_AMT, '') AS EPRZ_CRDL_APVL_AMT                            /* 승인금액 */
 			   , B.MTR_PRG_STTS_DCD                                         /* 안건진행상태구분코드 */
