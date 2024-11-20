@@ -56,7 +56,7 @@ function callTB03061P(prefix, e) {
  */
 function keyDownEnter_TB03061P() {
 
-	$("input[id=TB03061P_bzepName]").keydown(function (key) {
+	$("input[id=TB03061P_entpNm]").keydown(function (key) {
 		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
 			getArdyBzepInfoList();
 		}
@@ -93,7 +93,7 @@ function keyDownEnter_TB03061P() {
  */
 function reset_TB03061P() {
 	$('#TB03061P_prefix').val("");
-	$('#TB03061P_bzepName').val("");
+	$('#TB03061P_entpNm').val("");
 	$('#TB03061P_ardyBzepNo').val("");
 	$('#TB03061P_rnbn').val("");
 	$('#TB03061P_crno').val("");
@@ -121,7 +121,7 @@ $("#modal-TB03061P").on('hide.bs.modal', function(){
 function modalShowFunction_TB03061P() {
 	//모달 오픈 애니메이션 후 포커스 주도록 설정
 	$('#modal-TB03061P').on('shown.bs.modal', function(){
-		$('#modal-TB03061P input[id=TB03061P_bzepName').focus();	
+		$('#modal-TB03061P input[id=TB03061P_entpNm').focus();	
 	});
 }
 
@@ -138,7 +138,7 @@ function modalShowFunction_TB03061P() {
 function getArdyBzepInfoList() {
 
 	var inputParam = {
-		"bzepName" : $('#TB03061P_bzepName').val()			// 기업체명
+		"entpNm" : $('#TB03061P_entpNm').val()			// 기업체명
 		, "ardyBzepNo" : $('#TB03061P_ardyBzepNo').val()	// 기업체코드
 		, "rnbn" : $('#TB03061P_rnbn').val()				// 사업자등록번호
 		, "crno" : $('#TB03061P_crno').val()				// 법인등록번호
@@ -199,12 +199,12 @@ function getSlctBox_cd(){
 function setArdyBzepInfo(rowData) {
 
 	let ardyBzepNo = rowData.ardyBzepNo;
-	let bzepName = rowData.bzepName;
+	let entpNm = rowData.entpNm;
 	let crno = rowData.crno;
 	let rnbn = rowData.rnbn;
 	let stdIdstSclsCd = rowData.stdIdstSclsCd;
 	let useYn = rowData.useYn;
-	let erlmDt = rowData.erlmDt;
+	let rgstDt = rowData.rgstDt;
 	let clseDvsnCd = rowData.clseDvsnCd;
 	let clseDt = rowData.clseDt;
 	
@@ -212,24 +212,24 @@ function setArdyBzepInfo(rowData) {
 	
 	// 페이지 항목
 	let pageArdyBzepNo 		= '#' + $('#TB03061P_prefix').val() + '_ardyBzepNo';	// 업체번호
-	let pageBzepName 		= '#' + $('#TB03061P_prefix').val() + '_bzepName';		// 업체명
+	let pageentpNm 		= '#' + $('#TB03061P_prefix').val() + '_entpNm';		// 업체명
 	let pageCrno 			= '#' + $('#TB03061P_prefix').val() + '_crno';			// 법인등록번호
 	let pageRnbn 			= '#' + $('#TB03061P_prefix').val() + '_rnbn';			// 사업자등록번호
 	let pageStdIdstSclsCd 	= '#' + $('#TB03061P_prefix').val() + '_stdIdstSclsCd';	// 표준산업소분류
 	let pageuseYn 			= '#' + $('#TB03061P_prefix').val() + '_useYn';			// 사용여부
-	let pageErlmDt 			= '#' + $('#TB03061P_prefix').val() + '_erlmDt';		// 등록일자
+	let pagergstDt 			= '#' + $('#TB03061P_prefix').val() + '_rgstDt';		// 등록일자
 	let pageClseDvsnCd 		= '#' + $('#TB03061P_prefix').val() + '_clseDvsnCd';	// 폐업구분
 	let pageClseDt 			= '#' + $('#TB03061P_prefix').val() + '_clseDt';		// 폐업일자
 	
 
 	// 값 전달
 	$(pageArdyBzepNo).val(ardyBzepNo);
-	$(pageBzepName).val(bzepName);
+	$(pageentpNm).val(entpNm);
 	$(pageCrno).val(crno);
 	$(pageRnbn).val(rnbn);
 	$(pageStdIdstSclsCd).val(stdIdstSclsCd);
 	$(pageuseYn).val(useYn);
-	$(pageErlmDt).val(erlmDt);
+	$(pagergstDt).val(rgstDt);
 	$(pageClseDvsnCd).val(clseDvsnCd);
 	$(pageClseDt).val(clseDt);
 	
@@ -238,77 +238,77 @@ function setArdyBzepInfo(rowData) {
 	switch ( prefix ) {
 		case "grid_TB06010S" :
 			$("#TB06010S_itrRelrInfo").pqGrid("instance").pdata[rowInx].trOthrDscmNo = ardyBzepNo;
-			$("#TB06010S_itrRelrInfo").pqGrid("instance").pdata[rowInx].trOthrNm = bzepName;
+			$("#TB06010S_itrRelrInfo").pqGrid("instance").pdata[rowInx].trOthrNm = entpNm;
 			$("#TB06010S_itrRelrInfo").pqGrid("instance").refresh();
 			break; 
 		case "TB03020S" : 
 			$("#TB03020S_corpRgstNo").val(ardyBzepNo);
-			$("#TB03020S_entpRnm").val(bzepName);
+			$("#TB03020S_entpRnm").val(entpNm);
 			break; 
 		case "TB03030S" :
-			$("#TB03030S_entpRnm").val(bzepName);
+			$("#TB03030S_entpRnm").val(entpNm);
 			$("#TB03030S_entpCd").val(ardyBzepNo);
 			break; 
 		case "TB03031P" :
-			$("#TB03031P_rm_entpRnm").val(bzepName);
+			$("#TB03031P_rm_entpRnm").val(entpNm);
 			$("#TB03031P_rm_entpCd").val(ardyBzepNo);
 			$("#TB03031P_rm_corpRgstNo").val(checkBrnAcno(crno));
 			$("#TB03031P_rm_bsnsRgstNo").val(checkBrnAcno(rnbn));
 			break; 
 		case "TB03020S_c" :
 			$("#TB03020S_c_corpRgstNo").val(ardyBzepNo);
-			$("#TB03020S_c_entpRnm").val(bzepName);
+			$("#TB03020S_c_entpRnm").val(entpNm);
 			break; 
 		case "TB04010S" :
 			$("#TB04010S_entpCd").val(ardyBzepNo);
 			$("#TB04010S_corpRgstNo").val(crno);
 			$("#TB04010S_bsnsRgstNo").val(rnbn);
-			$("#TB04010S_entpRnm").val(bzepName);
+			$("#TB04010S_entpRnm").val(entpNm);
 			break; 
 		case "TB04010S_2" : // 법인탭
 			$("#TB04010S_bsc_entpCd").val(ardyBzepNo);
 			$("#TB04010S_bsc_corpRgstNo").val(checkBrnAcno(crno));
 			$("#TB04010S_bsc_bsnsRgstNo").val(checkBrnAcno(rnbn));
-			$("#TB04010S_bsc_entpRnm").val(bzepName);
+			$("#TB04010S_bsc_entpRnm").val(entpNm);
 			break; 
 		case "TB04010S_3" : // 거래상대방탭
 			$("#TB04010S_cnc_entpCd").val(ardyBzepNo);
 			$("#TB04010S_cnc_corpRgstNo").val(checkBrnAcno(crno));
 			$("#TB04010S_cnc_bsnsRgstNo").val(checkBrnAcno(rnbn));
-			$("#TB04010S_cnc_entpRnm").val(bzepName);
+			$("#TB04010S_cnc_entpRnm").val(entpNm);
 			break; 
 		case "TB04010S_4" : // 내부등급탭
 			$("#TB04010S_ins_entpCd").val(ardyBzepNo);
 			$("#TB04010S_ins_corpRgstNo").val(checkBrnAcno(crno));
 			$("#TB04010S_ins_bsnsRgstNo").val(rnbn);
-			$("#TB04010S_ins_rprsNm").val(bzepName);
+			$("#TB04010S_ins_rprsNm").val(entpNm);
 			break; 
 		case "TB04010S_5" : // 보증 기관명
 			$("#TB04010S_ensr_entpCd").val(ardyBzepNo);
 			$("#TB04010S_ensr_corpRgstNo").val(checkBrnAcno(crno));
 			$("#TB04010S_ensr_bsnsRgstNo").val(rnbn);
-			$("#TB04010S_ensr_entpRnm").val(bzepName);
+			$("#TB04010S_ensr_entpRnm").val(entpNm);
 			break;
 		case "TB04010S_6" : // 책임준공 기관명
 			$("#TB04010S_rspsb_entpCd").val(ardyBzepNo);
 			$("#TB04010S_rspsb_corpRgstNo").val(checkBrnAcno(crno));
 			$("#TB04010S_rspsb_bsnsRgstNo").val(rnbn);
-			$("#TB04010S_rspsb_entpRnm").val(bzepName);
+			$("#TB04010S_rspsb_entpRnm").val(entpNm);
 			break; 
 		case "TB06013P" : 
 			$("#TB06013P_bsnsRgstNo").val(ardyBzepNo);
-			$("#TB06013P_entpRnm").val(bzepName);
+			$("#TB06013P_entpRnm").val(entpNm);
 			break; 
 		case "TB06010S_bsc" : 
 			$("#TB06010S_bsc_entpCd").val(ardyBzepNo);
 			// 없음.. $("#TB06010S_bsc_rprsNm").val(ardyBzepNo);
 			$("#TB06010S_bsc_corpRgstNo").val(crno);
-			$("#TB06010S_bsc_entpRnm").val(bzepName);
+			$("#TB06010S_bsc_entpRnm").val(entpNm);
 			$("#TB06010S_bsc_bsnsRgstNo").val(rnbn);
 			break;
 		case "TB07150S" :
 			$('#TB07150S_trOthrDscmNo_chng').val(ardyBzepNo);		// 사업자등록번호
-			$('#TB07150S_trOthrDscmNm_chng').val(bzepName);			// 거래상대방(업체한글명)
+			$('#TB07150S_trOthrDscmNm_chng').val(entpNm);			// 거래상대방(업체한글명)
 
 			break;
 		default:
@@ -329,7 +329,7 @@ let colModalBzepList = [
 	{ 	
 		title    : "업체명", 
 		dataType : "string", 
-		dataIndx : "bzepName",
+		dataIndx : "entpNm",
 		halign   : "center",
 		align    : "left", 
 		filter   : { crules: [{ condition: 'range' }] }
@@ -380,7 +380,7 @@ let colModalBzepList = [
 	{ 	
 		title    : "등록일자", 
 		dataType : "date",
-		dataIndx : "erlmDt",
+		dataIndx : "rgstDt",
 		align    : "center" ,  
 		filter   : { crules: [{ condition: 'range' }] }, 
 		render   : function (ui) {
