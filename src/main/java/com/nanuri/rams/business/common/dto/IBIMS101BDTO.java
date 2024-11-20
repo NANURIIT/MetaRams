@@ -15,7 +15,7 @@ import java.util.List;
  딜기본정보 Table.IBIMS101B DTO
 */
 public class IBIMS101BDTO {
-
+    
     private String         dealNo;            // 딜번호
     private String         sn;                // 일련번호
     private String         stdrYear;          // 기준년도
@@ -30,7 +30,7 @@ public class IBIMS101BDTO {
     /* 2023-12-04 추가된 컬럼 */
     private String         corptnTypCd;       // 협업유형코드
     private String         bookCd;            // 북코드
-    private String         invPrdtDtlDvdCd;   // 투자상품상세분류코드
+    private String         invPrdtDtlsDvdCd;  // 투자상품상세분류코드
     private String         bnkBd;             // 은행부점
     private String         invstCty;          // 투자도시
     private String         bzsacalCd;         // 기업규모코드
@@ -103,10 +103,10 @@ public class IBIMS101BDTO {
     private BigDecimal     theYearErnAmt;     // 당해수익금액
     private BigDecimal     baltErnAmt;        // 기표수익금액
     private BigDecimal     intrErnAmt;        // 이자수익금액
-    private String         crncyCd;           // 통화코드
-    private BigDecimal     crncyAmt;          // 통화금액
-    private String         expDt;             // 기표일자
-    private String         mtrtDt;            // 만기일자
+    private String         crryCd;            // 통화코드
+    private BigDecimal     crryAmt;           // 통화금액
+    private String         baltDt;            // 기표일자
+    private String         expDt;             // 만기일자
 
     /* 직원정보 */
     private String         chrrEmpno;         // 담당자사원번호

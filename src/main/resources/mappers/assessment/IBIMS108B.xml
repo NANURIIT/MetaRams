@@ -21,9 +21,9 @@
              , s005b.CD_VL_NM				AS MRTG_ACQST_STM_DCD_NM	      /* 담보취득방식구분코드명 */
              , s108b.MRTG_ACQST_DTLS_DCD                        		/* 담보취득상세구분코드 */
              , s006b.CD_VL_NM				AS MRTG_ACQST_DTLS_DCD_NM	      /* 담보취득상세구분코드명 */
-             , s108b.INVST_CRNCY_CD                             		/* 투자통화코드 */
-             , s007b.CD_VL_NM				AS INVST_CRNCY_CD_NM	        	/* 투자통화코드명 */
-             , s108b.CRNCY_AMT                                  		/* 통화금액 */
+             , s108b.INVST_CRRY_CD                             		/* 투자통화코드 */
+             , s007b.CD_VL_NM				AS INVST_CCRY_CD_NM	        	/* 투자통화코드명 */
+             , s108b.CRRY_AMT                                  		/* 통화금액 */
              , s108b.APLY_EXRT                                		/* 적용환율 */
              , s108b.HND_DETL_DTM                               		/* 조작상세일시 */
              , s108b.HND_EMPNO                                  		/* 조작사원번호 */
@@ -48,7 +48,7 @@
            AND s108b.MRTG_ACQST_DTLS_DCD				= s006b.CD_VL_ID
           LEFT JOIN IBIMS002B s007b
             ON s007b.CMNS_CD_GRP								= 'I027'			      /* 투자통화코드 */
-           AND s108b.INVST_CRNCY_CD							= s007b.CD_VL_ID
+           AND s108b.INVST_CRRY_CD							= s007b.CD_VL_ID
          WHERE 1=1
            AND s108b.DEAL_NO                    = #{dealNo}
            AND s108b.MTR_DCD                    = #{mtrDcd}
@@ -79,8 +79,8 @@
             , MRTG_DTLS_DCD                                     = #{mrtgDtlsDcd}                                     /* 담보상세구분코드 */
             , MRTG_ACQST_STM_DCD                                = #{mrtgAcqstStmDcd}                                 /* 담보취득방식구분코드 */
             , MRTG_ACQST_DTLS_DCD                               = #{mrtgAcqstDtlsDcd}                                /* 담보취득상세구분코드 */
-            , INVST_CRNCY_CD                                    = #{invstCrncyCd}                                    /* 투자통화코드 */
-            , CRNCY_AMT                                         = #{crncyAmt}                                        /* 통화금액 */
+            , INVST_CRRY_CD                                    = #{invstCrryCd}                                    /* 투자통화코드 */
+            , CRRY_AMT                                         = #{crryAmt}                                        /* 통화금액 */
             , APLY_EXRT                                       = #{aplyExrt}                                       /* 적용환율 */
             , HND_DETL_DTM                                      = SYSDATE                                            /* 조작상세일시 */
             , HND_EMPNO                                         = #{hndEmpno}                                        /* 조작사원번호 */
@@ -109,8 +109,8 @@
                 , MRTG_DTLS_DCD                                     /* 담보상세구분코드 */
                 , MRTG_ACQST_STM_DCD                                /* 담보취득방식구분코드 */
                 , MRTG_ACQST_DTLS_DCD                               /* 담보취득상세구분코드 */
-                , INVST_CRNCY_CD                                    /* 투자통화코드 */
-                , CRNCY_AMT                                         /* 통화금액 */
+                , INVST_CRRY_CD                                    /* 투자통화코드 */
+                , CRRY_AMT                                         /* 통화금액 */
                 , APLY_EXRT                                       /* 적용환율 */
                 , HND_DETL_DTM                                      /* 조작상세일시 */
                 , HND_EMPNO                                         /* 조작사원번호 */
@@ -130,8 +130,8 @@
                , #{mrtgDtlsDcd}                                     /* 담보상세구분코드 */
                , #{mrtgAcqstStmDcd}                                 /* 담보취득방식구분코드 */
                , #{mrtgAcqstDtlsDcd}                                /* 담보취득상세구분코드 */
-               , #{invstCrncyCd}                                    /* 투자통화코드 */
-               , #{crncyAmt}                                        /* 통화금액 */
+               , #{invstCrryCd}                                    /* 투자통화코드 */
+               , #{crryAmt}                                        /* 통화금액 */
                , #{aplyExrt}                                       /* 적용환율 */
                , SYSDATE                                            /* 조작상세일시 */
                , #{hndEmpno}                                        /* 조작사원번호 */

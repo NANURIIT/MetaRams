@@ -98,8 +98,8 @@
                 , THE_YEAR_ERN_AMT     /*  당해수익금액  */
                 , BALT_ERN_AMT         /*  기표수익금액  */
                 , INTR_ERN_AMT         /*  이자수익금액  */
-                , CRNCY_CD             /*  통화코드  */
-                , CRNCY_AMT            /*  통화금액  */
+                , CRRY_CD             /*  통화코드  */
+                , CRRY_AMT            /*  통화금액  */
                 , BALT_DT              /*  기표일자  */
                 , EXP_DT               /*  만기일자 */
                 , RGST_DT              /*  등록일자  */
@@ -183,7 +183,7 @@
                , #{baltErnAmt}         /*  기표수익금액  */
                , #{intrErnAmt}         /*  이자수익금액  */
                , #{crncyCd}            /*  통화코드  */
-               , #{crncyAmt}           /*  통화금액  */
+               , #{crryAmt}           /*  통화금액  */
                , #{baltDt}             /*  기표일자  */
                , #{expDt}              /*  만기일자  */
                , #{rgstDt}             /*  등록일자  */
@@ -281,8 +281,8 @@
             , THE_YEAR_ERN_AMT    			/*  당해수익금액  */
             , BALT_ERN_AMT        			/*  기표수익금액  */
             , INTR_ERN_AMT        			/*  이자수익금액  */
-            , CRNCY_CD            			/*  통화코드  */
-            , CRNCY_AMT           			/*  통화금액  */
+            , CRRY_CD            			/*  통화코드  */
+            , CRRY_AMT           			/*  통화금액  */
             , BALT_DT             			/*  기표일자  */
             , EXP_DT              			/*  만기일자  */
             , RGST_DT             			/*  등록일자  */

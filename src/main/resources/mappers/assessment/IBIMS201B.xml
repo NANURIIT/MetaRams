@@ -326,13 +326,13 @@
             , ROUND(ROUND(NVL(IB402B.AVR_UNPR,0),2) * NVL(IB402B.SLL_SHQT,0),2) AS TRAD_PFLS_AMT  <!-- 매매손익금액  -->
             FROM IBIMS201B IB201B
             LEFT JOIN IBIMS994B IB994B
-              ON IB201B.TR_CRRY_CD = IB994B.CRNCY_CD
+              ON IB201B.TR_CRRY_CD = IB994B.CRRY_CD
             <!-- AND IB994B.STDR_DT = TO_CHAR(SYSDATE, 'YYYYmmDD') -->
              AND IB994B.STDR_DT =
                  (
                   SELECT MAX(V.STDR_DT)
                     FROM IBIMS994B V
-                   WHERE V.CRNCY_CD = IB994B.CRNCY_CD
+                   WHERE V.CRRY_CD = IB994B.CRRY_CD
                  )
             LEFT JOIN IBIMS402B IB402B                                 <!-- 기타투자매수매도관리 사용 -->
               ON IB201B.PRDT_CD = IB402B.PRDT_CD AND IB402B.EXC_SN = 1 AND IB201B.LAST_YN = '1'
@@ -552,13 +552,13 @@
 		    , (SELECT SUM(X.DEAL_EXC_BLCE) FROM IBIMS402B X WHERE X.PRDT_CD = IB201B.PRDT_CD AND X.LDG_STTS_CD = '1') AS INV_BLCE /* 투자잔액 */
             FROM IBIMS201B IB201B
             LEFT JOIN IBIMS994B IB994B
-              ON IB201B.TR_CRRY_CD = IB994B.CRNCY_CD
+              ON IB201B.TR_CRRY_CD = IB994B.CRRY_CD
             /*  AND IB994B.STDR_DT = TO_CHAR(SYSDATE, 'YYYYmmDD')  */
              AND IB994B.STDR_DT =
                  (
                   SELECT MAX(V.STDR_DT)
                     FROM IBIMS994B V
-                   WHERE V.CRNCY_CD = IB994B.CRNCY_CD
+                   WHERE V.CRRY_CD = IB994B.CRRY_CD
                  )
             LEFT JOIN IBIMS402B IB402B                                 /*  기타투자매수매도관리 사용  */
               ON IB201B.PRDT_CD = IB402B.PRDT_CD AND IB402B.EXC_SN = 1
