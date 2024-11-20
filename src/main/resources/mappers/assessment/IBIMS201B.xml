@@ -1302,7 +1302,7 @@
                  , A.IB_PRDT_CLSF_CD																 <!-- IB상품분류코드 -->
                  , NVL(s002b_4.CD_VL_NM, '') AS IB_PRDT_CLSF_CD_NM								 <!-- IB상품분류코드명 -->
                  , NVL(
-                          (SELECT sum(s12b.EPRZ_CRDL_APVL_AMT)				AS LST_DEAL_SUM_RCG_AMT			 <!-- 승인금액 -->
+                          (SELECT sum(s12b.APVL_AMT)				AS LST_DEAL_SUM_RCG_AMT			 <!-- 승인금액 -->
                              FROM IBIMS112B s12b													 <!-- 위원회안건내역(협의체안건정보) -->
                             WHERE 1=1
                               AND s12b.DEAL_NO = A.DEAL_NO)
@@ -1432,7 +1432,7 @@
                  , A.IB_PRDT_CLSF_CD																 /*  IB상품분류코드 */
                  , NVL(s002b_4.CD_VL_NM, '') AS IB_PRDT_CLSF_CD_NM								 /*  IB상품분류코드명 */
                  , NVL(
-                          (SELECT sum(s12b.EPRZ_CRDL_APVL_AMT)				AS LST_DEAL_SUM_RCG_AMT			 /*  승인금액 */
+                          (SELECT sum(s12b.APVL_AMT)				AS LST_DEAL_SUM_RCG_AMT			 /*  승인금액 */
                                   FROM IBIMS112B s12b													 /*  위원회안건내역(협의체안건정보) */
                                   WHERE 1=1
                                     AND s12b.DEAL_NO = A.DEAL_NO)
