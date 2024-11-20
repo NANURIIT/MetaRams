@@ -93,8 +93,8 @@
        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtNm)">
        AND DPRT_NM LIKE '%'|| #{dprtNm}|| '%'
        </if>
-       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bdCd)">
-       AND BDCD LIKE '%'|| #{bdCd}|| '%'
+       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bdcd)">
+       AND BDCD LIKE '%'|| #{bdcd}|| '%'
        </if>
        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bdNm)">
        AND BD_NM LIKE '%'|| #{bdNm}|| '%'
