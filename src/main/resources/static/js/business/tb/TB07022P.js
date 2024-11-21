@@ -56,7 +56,12 @@ var colModel_Fnd = [
 		align: "center", 
 		halign: "center", 
 		width: "", 
-		filter: { crules: [{ condition: 'range' }] } 
+		filter: { crules: [{ condition: 'range' }] } ,
+		render: function (ui) {
+			let cellData = ui.cellData;
+			let formattedData = cellData.split(" ")[0];
+			return formattedData;
+		  },
 	},			
 	{ 	
 		title: "펀드유형명", 
