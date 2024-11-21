@@ -264,7 +264,7 @@
              , IBIMS112B.ETC_CNDT_F                                        /* 기타조건여부 */
              , IBIMS112B.ETC_CNDT_CTNS                                     /* 기타조건의견 */
              , IBIMS112B.MTR_PRG_STTS_DCD                                  /* 안건진행상태구분코드 */
-             , IBIMS112B.EPRZ_CRDL_APVL_AMT                                          /* 승인금액 */
+             , IBIMS112B.APVL_AMT                                          /* 승인금액 */
              , IBIMS112B.APVL_DT                                           /* 승인일자 */
              , IBIMS112B.DEL_YN                                            /* 삭제여부 */
              , IBIMS112B.HND_DETL_DTM                                      /* 조작상세일시 */
