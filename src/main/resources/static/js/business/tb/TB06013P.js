@@ -494,9 +494,19 @@ function remove() {
     openPopup(option);
     return false;
   }
-
+  
   var paramData = getParamData();
-  //console.log(paramData);
+  
+  //추가(by hyTest)
+  if(isEmpty(paramData.mrtgMngmNo)){
+	var option = {}
+		option.title = "Error";
+		option.type = "error";
+		option.text = "삭제할 담보번호를 선택해주세요.";
+		openPopup(option);
+		return false;
+  }
+  
   $.ajax({
     type: "POST",
     url: "/TB06013P/removeMtrt",
@@ -639,7 +649,8 @@ function getPrfdRankInfo() {
 }
 
 function TB06013P_getMrtgInfoDetails() {
-
+	
+ console.log("TB06013P_getMrtgInfoDetails");
   var paramData = {
     mrtgMngmNo: $("#TB06013P_mrtgMngmNo").val(),
     invJdgmDealNo: $("#TB06010S_ibDealNo").val(),
@@ -656,6 +667,8 @@ function TB06013P_getMrtgInfoDetails() {
     success: function (data) {
       var infoDetails = data;
 
+	  console.log("infoDetails.prdtCd"+infoDetails.prdtCd);
+	  console.log("TB06013P_prdtCd"+$("#TB06013P_prdtCd").val());
       if (isNotEmpty(infoDetails.prdtCd)) {
         if ($("#TB06013P_prdtCd").val() == infoDetails.prdtCd) {
           $("#TB06013P_connPrdtCd").val(infoDetails.prdtCd);  // 연결정보
