@@ -8,14 +8,14 @@
 	<script th:src="@{js/common.js}"></script>
 	<script th:src="@{js/business/tb/TB04060S.js}"></script>
 	<script th:src="@{js/business/tb/TB06011P.js}"></script>
-	<script th:src="@{js/business/tb/TB03023P.js}"></script>
+	<script th:src="@{js/business/tb/TB03061P.js}"></script>
 	<script th:src="@{js/business/tb/TB03022P.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
-	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
 </th:block>
@@ -71,7 +71,7 @@
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" style="width: 30px;" id="TB04060S_bsnsRgstNo">
 									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick="callTB03023P('TB04060S')"><i class="fa fa-search"></i></button>
+										<button type="button" class="btn btn-default" onclick="callTB03061P('TB04060S')"><i class="fa fa-search"></i></button>
 									</span>
 									<input type="text" class="form-control" style="width: 70px;" id="TB04060S_entpRnm" readonly>
 								</div>

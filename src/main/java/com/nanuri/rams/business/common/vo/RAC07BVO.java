@@ -32,7 +32,8 @@ public class RAC07BVO {
 		private double 	   rcvblErnAmt;               // 미수수익금액
 		private String     entpCd;                    // 업체코드
 		private String     entpRnm;                   // 업체실명
-		private String     corpRgstNo;                // 법인등록번호
+		//private String     corpRgstNo;                // 법인등록번호
+		private String     crno;                // 법인등록번호
 		private String     crdtGrdCd;                 // 신용등급코드
 		private String     wrtDt;                     // 기표일자
 		private String     mtrtDt;                    // 만기일자

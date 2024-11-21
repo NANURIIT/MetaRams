@@ -22,7 +22,8 @@ public class MO44010SVO {
 		private String stdDt;
 		private String entpNm;
 		private String rprstPHnglNm;
-		private String corpRgstNo;
+		//private String corpRgstNo;
+		private String crno;
 		private String crdtAcdntOcrncDtls;
 		private String ibDealNo;
 		private String riskInspctCcd;

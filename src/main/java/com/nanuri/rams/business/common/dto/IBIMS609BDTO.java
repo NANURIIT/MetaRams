@@ -28,7 +28,8 @@ public class IBIMS609BDTO {
     private String hndlPEno;            //  처리자사번
     private String efctMngTrgtCcd;      //  효력관리대상구분코드
     private String dbtOngNm;            //  채무기관명
-    private String corpRgstNo;          //  법인등록번호
+    //private String corpRgstNo;          //  법인등록번호
+    private String crno;          //  법인등록번호
     private String spcltBndF;           //  특수채권여부
     private String efctMngBs;           //  효력관리근거
     private Date hndDetlDtm;            //  조작상세일시
