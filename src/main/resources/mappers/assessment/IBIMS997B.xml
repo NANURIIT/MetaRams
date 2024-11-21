@@ -59,7 +59,7 @@
     </select>
 
     <select id="getJobId" parameterType="string" resultType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
-      <![CDATA[
+      
       SELECT CUR_DATE
            , JOB_ID
            , JOB_NAME
@@ -86,10 +86,10 @@
                           SELECT BZ_DD
 			                      FROM IBIMS999B
                         ))
-         AND PRE_JOB_COUNT < 1
-         AND CONFIRM_JOB_COUNT < 1
+         AND PRE_JOB_COUNT <![CDATA[ < ]]> 1
+         AND CONFIRM_JOB_COUNT <![CDATA[ < ]]> 1
          AND ROWNUM = 1;
-    ]]>
+    
     </select>
 
     <select id="jobCount" parameterType="string" resultType="int">
@@ -292,11 +292,10 @@
                           SELECT BZ_DD
 			                      FROM IBIMS999B
                         ))
-         AND JOB_ID = (
+         AND JOB_ID IN (
                         SELECT JOB_ID
                           FROM IBIMS996B
-                         WHERE JOB_ID = #{jobId}
-                           AND ROWNUM = 1
+                         WHERE PRE_JOB_ID = #{jobId}
                       )
     </update>
 

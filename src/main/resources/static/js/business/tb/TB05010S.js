@@ -277,6 +277,7 @@ const TB05010Sjs = (function(){
   getSelectBoxList("TB05010S", "R016");
   // 초기화버튼 - 협의체 전결협의체, 회차별로 조회 후 신규 회차 추가 시 사용
   function btnReset() {
+    //▶기본정보의 진행상태가 ""이 아닐 때만 실행
     if ($("#TB05010S_inspctPrgrsStCd2").val() != "") {
       // 버튼 활성화/비활성화
       $("#saveButton").attr("disabled", false);
@@ -985,18 +986,18 @@ const TB05010Sjs = (function(){
       if (MMBRListCount != 0 && CASEListCount != 0) {
         businessFunction();
       } else {
-        if (MMBRListCount == "0") {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "위원정보가 없습니다.",
-            confirmButtonText: "확인",
-          });
-        } else if (CASEListCount == "0") {
+        if (CASEListCount == "0") {
           Swal.fire({
             icon: "error",
             title: "Error!",
             text: "안건정보가 없습니다.",
+            confirmButtonText: "확인",
+          });
+        } else if (MMBRListCount == "0") {
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "위원정보가 없습니다.",
             confirmButtonText: "확인",
           });
         }

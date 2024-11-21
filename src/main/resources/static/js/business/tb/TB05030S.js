@@ -479,7 +479,7 @@ const TB05030Sjs = (function(){
           // 		html += '<td class="text-center">' + value.sn + '</td>';
           // 		html += '<td style="display:none;">' + value.dealNo + '</td>';
           // 		html += '<td>' + value.mtrNm + '</td>';
-          // 		html += '<td>' + value.ptfdCrncyCdNm + '</td>';
+          // 		html += '<td>' + value.ptfdCrryCdNm + '</td>';
           // 		html += '<td class="text-right">' + addComma(value.ptfdAmt)	+ '</td>';
           // 		html += '<td class="text-center">' + formatDate(value.cnsbOpnDt) + '</td>';
           // 		html += '<td class="text-center">' + value.cnsbOpnTm + '</td>';
@@ -672,7 +672,7 @@ const TB05030Sjs = (function(){
         //     //  html += "<tr>";
         //     //  html += "<td>" + value.mtrNm + "</td>"; // 안건명
         //     //  html += "<td>" + value.jdgmDcdNm + "</td>"; // 신규/재부의
-        //     //  html += "<td>" + value.ptfdCrncyCdNm + "</td>"; // 통화코드명
+        //     //  html += "<td>" + value.ptfdCrryCdNm + "</td>"; // 통화코드명
         //     //  html += '<td class="text-right">' + addComma(value.ptfdAmt) + "</td>"; // 참여금액
         //     //  html += "<td>" + value.rsltnRsltCdNm + "</td>"; // 결의결과코드명
         //     //  html += '<td class="text-right">' + addComma(value.apvlAmt) + "</td>"; // 승인금액
@@ -685,8 +685,8 @@ const TB05030Sjs = (function(){
         //     //  html += "</tr>";
   
       $("#TB05030S_R025").val(data[0].rsltnRsltCd).attr("selected", true);
-      $("#TB05030S_invstCrncyCdNm").val(data[0].ptfdCrncyCdNm);
-      $("#TB05030S_rcgAmt").val(addComma(data[0].apvlAmt));
+      $("#TB05030S_invstCrncyCdNm").val(data[0].ptfdCrryCdNm);
+      $("#TB05030S_rcgAmt").val(data[0].apvlAmt ? addComma(data[0].apvlAmt) : "");
       $("#TB05030S_sdnCndtF").val(data[0].sdnCndtF).attr("selected", true);
       $("#TB05030S_etcCndtF").val(data[0].etcCndtF).attr("selected", true);
       $("#TB05030S_cnfrncNtmCndtlCntnt").val(data[0].sdnCndtCtns);
@@ -748,7 +748,7 @@ const TB05030Sjs = (function(){
             obj.cnsbSq = row.cnsbSq
             obj.sn = row.sn
             obj.atdcYn =row.atdcYn
-            obj.aprvOppsDcd = row.aprvOppsDcdNm
+            obj.aprvOppsDcd = row.aprvOppsDcd
             obj.opnnCtns = row.opnnCtns
             obj.opnnRgstDt = row.opnnRgstDt
             mmbrList.push(obj);
@@ -1046,7 +1046,7 @@ const TB05030Sjs = (function(){
     {
       title: "통화",
       dataType: "string",
-      dataIndx: "ptfdCrncyCdNm",
+      dataIndx: "ptfdCrryCdNm",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
@@ -1130,7 +1130,7 @@ const TB05030Sjs = (function(){
     {
       title: "통화",
       dataType: "string",
-      dataIndx: "ptfdCrncyCdNm",
+      dataIndx: "ptfdCrryCdNm",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
@@ -1144,7 +1144,7 @@ const TB05030Sjs = (function(){
       render   : function (ui) {
         let cellData = ui.cellData;
               if (cellData !== null && cellData !== undefined) {
-                  return addComma(cellData);
+                return addComma(cellData);
               }
               return cellData; 
       }
@@ -1165,8 +1165,8 @@ const TB05030Sjs = (function(){
       filter: { crules: [{ condition: "range" }] },
       render   : function (ui) {
         let cellData = ui.cellData;
-              if (cellData !== null && cellData !== undefined) {
-                  return addComma(cellData);
+              if (cellData !== null && cellData !== undefined) { 
+                return addComma(cellData);
               }
               return cellData; 
       }
