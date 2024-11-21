@@ -165,12 +165,40 @@
                 , B.PRAR_DT
                 , (
                     SELECT EMP_NM 
-                    FROM IBIMS003B U
-                    WHERE U.EMPNO = A.RGST_EMPNO 
+                      FROM IBIMS003B U
+                     WHERE U.EMPNO = A.RGST_EMPNO 
                 ) AS RGST_EMPNM				/*처리자*/
                 , A.RGST_BDCD 				/*처리부서*/
-            FROM IBIMS430B A            
-            ,(
+            FROM (
+                SELECT T1.RCTM_DT
+                     , T1.MNGM_BDCD
+                     , T1.FNDS_DVSN_CD
+                     , T1.RDPT_OBJT_DVSN_CD
+                     , T1.DEAL_RCTM_AMT
+                     , T1.RELT_ISTT_NM
+                     , T1.RELT_BANO
+                     , T1.LNKD_BANO
+                     , T1.LNKD_ACNT_TR_NO
+                     , T1.EXCS_PYMT_PRCS_DVSN_CD
+                     , T1.DEAL_EXCS_PYMT_AMT
+                     , T1.DPTR_NM
+                     , T1.RGST_EMPNO
+                     , T1.RGST_BDCD
+                     , T2.PRDT_CD
+                  FROM IBIMS430B T1
+             LEFT JOIN (
+                SELECT PRDT_CD
+                     , DEAL_NO
+                     , LAST_YN
+                  FROM IBIMS201B
+                 WHERE 1=1
+                   AND LAST_YN = '1'
+             ) T2
+                    ON T1.DEAL_NO = T2.DEAL_NO
+                   AND T2.LAST_YN = '1'
+            )  AS A        
+       LEFT JOIN
+            (
                 SELECT  CASE  WHEN P.SCX_DCD = '02'
                                 THEN P.PRAR_PRNA
                                 ELSE P.RDMP_PRAR_INTR
@@ -185,11 +213,11 @@
                             FROM IBIMS403B P				                              /*원리금상환스케줄*/
                                , IBIMS201B D1 
                             WHERE 1=1
-                            AND  D1.PRDT_CD = P.PRDT_CD
-                            AND D1.LAST_YN = '1'
-                            AND (P.PRCS_CPLT_YN != '1' OR P.PRCS_CPLT_YN IS NULL)
+                              AND D1.PRDT_CD = P.PRDT_CD
+                              AND D1.LAST_YN = '1'
+                              AND (P.PRCS_CPLT_YN != '1' OR P.PRCS_CPLT_YN IS NULL)
                             UNION ALL
-                            SELECT   F.FEE_AMT				AS PMNT_PRAR_AMT	          /*납부예정금액*/
+                           SELECT F.FEE_AMT				AS PMNT_PRAR_AMT	          /*납부예정금액*/
                                 , F.PRAR_DT                                       /*상환예정일자*/
                                 , F.PRDT_CD				
                                 , D2.DEAL_NO                                      /*딜번호*/
@@ -197,28 +225,29 @@
                                 , '03'					      AS SCX_DCD                  /*상환구분*/
                                 , D2.TR_CRRY_CD                                   /*통화코드*/
                                 , F.PRCS_CPLT_YN
-                            FROM  IBIMS348B F                                      /*수수료상환스케줄*/
+                             FROM IBIMS348B F                                      /*수수료상환스케줄*/
                             	, IBIMS201B D2                            
                             WHERE 1=1 
-                            AND D2.PRDT_CD = F.PRDT_CD
-                            AND D2.LAST_YN = '1'
-                            AND (F.PRCS_CPLT_YN != '1' OR F.PRCS_CPLT_YN IS NULL)
+                              AND D2.PRDT_CD = F.PRDT_CD
+                              AND D2.LAST_YN = '1'
+                              AND (F.PRCS_CPLT_YN != '1' OR F.PRCS_CPLT_YN IS NULL)
             ) AS B
+           ON A.RCTM_DT = B.PRAR_DT
+          AND A.PRDT_CD = B.PRDT_CD
         WHERE 1=1
-        AND B.PRAR_DT = A.RCTM_DT 
-        AND B.SCX_DCD = A.RDPT_OBJT_DVSN_CD
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rdptObjtDvsnCd)">
-        AND A.RDPT_OBJT_DVSN_CD  = #{rdptObjtDvsnCd}
-        </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
-        AND B.DEAL_NO = #{dealNo}
-        </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
-        AND A.RCTM_DT = #{rctmDt}
-        </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
-        AND A.MNGM_BDCD = #{mngmBdcd}
-        </if>
+          AND B.SCX_DCD = A.RDPT_OBJT_DVSN_CD
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rdptObjtDvsnCd)">
+          AND A.RDPT_OBJT_DVSN_CD  = #{rdptObjtDvsnCd}
+          </if>
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+          AND B.DEAL_NO = #{dealNo}
+          </if>
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
+          AND A.RCTM_DT = #{rctmDt}
+          </if>
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
+          AND A.MNGM_BDCD = #{mngmBdcd}
+          </if>
     </select>
 
 </mapper>
