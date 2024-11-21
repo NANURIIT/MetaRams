@@ -237,7 +237,7 @@
     <select id="getWfMapId" parameterType="com.nanuri.rams.com.dto.WorkFlowDTO" resultType="String">
         SELECT WF_MAP_ID
         FROM WF_MAP
-        WHERE JOB_TABLE = #{jobTable}
+        WHERE WF_MAP_NM = #{wfMapNm}
     </select>
 
     <!--WF 조회(오늘의 할 일)-->

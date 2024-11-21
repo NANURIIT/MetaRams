@@ -67,6 +67,8 @@ public class TB03020ServiceImpl implements TB03020Service {
 	public String saveDeal(IBIMS101BDTO dealInfo) {
 
 		dealInfo.setHndEmpno(facade.getDetails().getEno());
+
+		log.debug("HndEmpno::: " + facade.getDetails().getEno());
 		/* 딜번호 채번 */
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
@@ -76,6 +78,8 @@ public class TB03020ServiceImpl implements TB03020Service {
 		dealInfo.setRgstDt(curntYr.toString().replaceAll("-", ""));
 		if( dealInfo.getDealNo() == null ) {
 			String dprtCd = facade.getDetails().getDprtCd();
+
+			log.debug("dprtCd::: " + facade.getDetails().getDprtCd());
 			String time = now.format(formatter);
 
 			dealInfo.setDealNo(dprtCd + time);
@@ -304,7 +308,7 @@ public class TB03020ServiceImpl implements TB03020Service {
 	public int wfRgstIBIMS101B(IBIMS101BDTO dealInfo){
 
 		WorkFlowDTO workFlowDTO = new WorkFlowDTO();
-		workFlowDTO.setJobTable("IBIMS101B");
+		workFlowDTO.setWfMapNm("딜기본정보등록");
 
 		String wfMapId = workFlowMapper.getWfMapId(workFlowDTO);
 

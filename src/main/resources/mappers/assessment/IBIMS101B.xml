@@ -182,8 +182,8 @@
                , #{theYearErnAmt}      /*  당해수익금액  */
                , #{baltErnAmt}         /*  기표수익금액  */
                , #{intrErnAmt}         /*  이자수익금액  */
-               , #{crncyCd}            /*  통화코드  */
-               , #{crryAmt}           /*  통화금액  */
+               , #{crryCd}             /*  통화코드  */
+               , #{crryAmt}            /*  통화금액  */
                , #{baltDt}             /*  기표일자  */
                , #{expDt}              /*  만기일자  */
                , #{rgstDt}             /*  등록일자  */
