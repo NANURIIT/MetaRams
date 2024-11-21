@@ -19,9 +19,9 @@ public class IBIMS205BDTO {
 	private String bssAsstIsuCrno;				// 기초자산발행법인등록번호
 	private String crpNm;						// 법인명
 	private String invstCrryCd;					// 투자통화코드투자통화코드
-	//private String crryAmt;						// 통화금액(메타 변경 전)
-	private String crncyAmt;						// 통화금액
-	private BigDecimal aplcExchR;				// 적용환율
+	private String crryAmt;						// 통화금액
+	// private String crncyAmt;					// 통화금액(메타 변경 전)	
+	private BigDecimal aplyExrt;				// 적용환율
 	private BigDecimal crevAmt;					// 시가평가금액
 	private String hndDetlDtm;					// 조작상세일시
 	private String hndEmpno;					// 조작사원번호

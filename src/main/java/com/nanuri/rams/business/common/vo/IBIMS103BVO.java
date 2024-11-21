@@ -28,7 +28,7 @@ public class IBIMS103BVO extends IBIMS103BDTO {
 	String ownPDprtNm;
 	String chrgPDprtCd;
 	String chrgPDprtNm;
-	String crncyCd;
+	String crryCd;
 	String dmsCrdtGrdDcd;
 	String dmsCrdtGrdDcdNm;
 	String invNtnCdNm;

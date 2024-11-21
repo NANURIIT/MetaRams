@@ -105,7 +105,7 @@
             , CRP_NM                                            = #{crpNm}                                           /* 법인명 */
             , INVST_CRRY_CD                                     = #{invstCrryCd}                                     /* 투자통화코드 */
             , CRRY_AMT                                          = #{crryAmt}                                         /* 통화금액 */
-            , APLY_EXRT                                       = #{aplyExrt}                                       /* 적용환율 */
+            , APLY_EXRT                                       = #{aplyExrt}                                          /* 적용환율 */
             , CREV_AMT                                          = #{crevAmt}                                         /* 시가평가금액 */
             , RNM_CNFM_NO                                       = #{rnmCnfmNo}                                       /* 실명확인번호 */
             , HND_EMPNO                                         = #{hndEmpno}                                        /* 조작사원번호 */

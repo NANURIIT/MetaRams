@@ -12,7 +12,7 @@ public class TB04020SVO {
 	String rgstDtEnd;
 	String dprtCd;
 	String dprtNm;
-	String crncyCd;
+	String crryCd;
 	String dealNo;
 
 	@Getter
@@ -38,8 +38,8 @@ public class TB04020SVO {
 		private String gdsDvd3Nm;			// 상품3
 		private String gdsDvd4Nm;			// 상품4
 		private String invstNtnCd;			// 투자국가
-		private String invstCrncyCd;		// 투자통화
-		private BigDecimal crncyAmt;		// 통화금액
+		private String invstCrryCd;		// 투자통화
+		private BigDecimal crryAmt;			// 통화금액
 		private String riskInspctCcd;		// 신규/재부의 정보
 		private String riskInspctCcdNm;		// 신규/재부의 정보명
 		private String lstccaseCcd;			// 부수안건구분코드

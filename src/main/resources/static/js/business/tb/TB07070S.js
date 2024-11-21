@@ -250,6 +250,11 @@ const TB07070Sjs = (function () {
         width: "10%",
         format: "#,###",
         filter: { crules: [{ condition: "range" }] },
+        render: function(ui){
+          if(!ui.cellData){
+            return 0;
+          }
+        }
       },
       {
         title: "거래부서",
@@ -334,6 +339,7 @@ const TB07070Sjs = (function () {
         success: function (data) {
           console.log(data);
           if (data.length > 0) {
+
             excRdmpCncl.setData(data);
 
             excRdmpCncl.on("rowSelect", function (evt, ui) {

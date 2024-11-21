@@ -61,7 +61,7 @@
                , #{excSn}                                  /* 실행일련번호 */
                , (
 	               SELECT
-					      IFNULL(MAX(A.RGST_SN),0)+1 AS RGST_SN
+					      NVL(MAX(A.RGST_SN),0)+1 AS RGST_SN
 					 FROM IBIMS402H A 	/* 딜실행기본이력 */
 					WHERE 1 = 1
 					  AND A.PRDT_CD =  #{prdtCd}
@@ -108,12 +108,12 @@
                , #{mtrDcd}                                 /* 안건구분코드 */
                , #{jdgmDcd}                                /* 심사구분코드 */
                , #{dfrExpMnum}                             /* 거치만기개월수 */
-               , NOW()                                     /* 조작상세일시 */
+               , SYSDATE                                   /* 조작상세일시 */
                , #{hndEmpno}                               /* 조작사원번호 */
                , #{hndTmnlNo}                              /* 조작단말기번호 */
                , #{hndTrId}                                /* 조작거래id */
                , #{guid}                                   /* guid */
-
+           FROM DUAL
     </insert>
 
     <!-- 딜실행기본이력 상세내역 조회  -->
@@ -293,8 +293,8 @@
           DELETE 
             FROM IBIMS402H
            WHERE PRDT_CD = #{prdtCd}  /* 종목코드 */
-		     AND EXC_SN  = #{excSn}	  /* 실행일련번호 */
-		     AND RGST_SN = #{rgstSn}  /* 등록일련번호 */
+		         AND EXC_SN  = #{excSn}	  /* 실행일련번호 */
+		         AND RGST_SN = #{rgstSn}  /* 등록일련번호 */
      </delete>
             
     <select id="updateChgSttsCd402H" parameterType="com.nanuri.rams.business.common.vo.IBIMS402HVO">

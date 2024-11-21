@@ -24,7 +24,7 @@ public class IBIMS605BVO {
 	private String rsltnDt;								// 결의일
 	private String rsltnRsltCd;							// 결의결과
 	private String rsltCntnt;							// 승인조건
-	private String invstCrncyCd;						// 승인금액통화코드
+	private String invstCrryCd;						// 승인금액통화코드
 	private String rcgAmt;								// 승인금액
 	private String aplcAmt;								// 셀다운 대상금액
 	private String endDtEndDt;							// 셀다운 기한

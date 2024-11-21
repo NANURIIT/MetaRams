@@ -46,8 +46,8 @@ public class TB03020DTO {
 	private double prntYrErnAmt;          // 당해수익금액
 	private double wrtErnAmt;             // 기표수익금액
 	private double onGoinAmt;             // 이자수익금액
-	private String invstCrncyCd;          // 투자통화코드
-	private double invstCrncyAmt;         // 투자통화금액
+	private String invstCrryCd;          // 투자통화코드
+	private double invstCrryAmt;         // 투자통화금액
 	private String dealScalUdfeF;         // DEAL규모미정여부
 	private String wrtDt;                 // 기표일자
 	private String mtrtDt;                // 만기일자

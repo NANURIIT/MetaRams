@@ -23,8 +23,8 @@ public class IBIMS108BDTO {
     private String     mrtgAcqstDtlsDcd;              // 담보취득상세구분코드
     //private String     invstCrncyCd;                  // 투자통화코드
     private String     invstCrryCd;                   // 투자통화코드
-    private BigDecimal crncyAmt;                      // 통화금액
-    private BigDecimal aplcExchR;                     // 적용환율
+    private BigDecimal crryAmt;                      // 통화금액
+    private BigDecimal aplyExrt;                     // 적용환율
     private Date       hndDetlDtm;                    // 조작상세일시
     private String     hndEmpno;                      // 조작사원번호
     private String     hndTmnlNo;                     // 조작단말기번호
