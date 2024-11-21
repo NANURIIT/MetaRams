@@ -104,8 +104,13 @@ public class TB06013ServiceImpl implements TB06013Service {
 					prfdRankDto.setHndEmpno(facade.getDetails().getEno());
 					prfdRankList.add(prfdRankDto);
 				} 
+				
+				//추가(by hyTest)
+				//선순위정보 있을경우에만
+				if(prfdRankList.size()>0) {
 					ibims213bMapper.delete213B(prfdRankDto);
 					ibims213bMapper.insertIBIMS213B(prfdRankList);
+				}	
 			} catch (Exception e) {
 				log.debug("IBIMS213B regist error!!!", e.getMessage());
 			}
@@ -175,8 +180,12 @@ public class TB06013ServiceImpl implements TB06013Service {
 				prfdRankDto.setHndEmpno(facade.getDetails().getEno());
 				prfdRankList.add(prfdRankDto);
 			}
+			//추가(by hyTest)
+			//선순위정보 있을경우에만
+			if(prfdRankList.size()>0) {
 				ibims213bMapper.delete213B(prfdRankDto);
 				ibims213bMapper.insertIBIMS213B(prfdRankList);
+			}	
 		} catch (Exception e) {
 			log.debug("IBIMS213B modify error!!!", e.getMessage());
 		}
