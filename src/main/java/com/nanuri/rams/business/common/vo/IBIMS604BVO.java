@@ -24,7 +24,8 @@ public class IBIMS604BVO {
 		private String stdrDt;							// 기준일자
 		private String entpNm;							// 기업명
 		private String rprstPHnglNm;					// 대표자한글명
-		private String corpRgstNo;						// 법인등록번호
+		//private String corpRgstNo;						// 법인등록번호
+		private String crno;						// 법인등록번호
 		private String crdtAcdntOcrncDtls;
 		private String dealNo;							// DEAL번호
 		private String jdgmDcd;							// 심사구분코드
