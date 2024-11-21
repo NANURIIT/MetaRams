@@ -235,7 +235,7 @@ var colPrdtCdList = [
 	{
 		title: "승인금액",
 		dataType: "string",
-		dataIndx: "apvlAmt",
+		dataIndx: "eprzCrdlApvlAmt",
 		halign: "center",
 		align: "right",
 		filter: { crules: [{ condition: 'range' }] },
@@ -546,7 +546,7 @@ function setPrdtInfo(e) {
 	var trOthrDscmNm = td.eq(20).text();
 	var chrrDprtCd = td.eq(21).text();
 	var chrrEmpno = td.eq(22).text();
-	var apvlAmt = td.eq(23).text();
+	var eprzCrdlApvlAmt = td.eq(23).text();
 	var invAmt = td.eq(24).text();
 	var dealExcBlce = td.eq(25).text();
 	var dealNm = td.eq(26).text();
@@ -583,7 +583,7 @@ function setPrdtInfo(e) {
 	var pageTrOthrDscmNm = '#' + $('#TB06011P_prefix').val() + '_trOthrDscmNm';
 	var pageChrrDprtCd = '#' + $('#TB06011P_prefix').val() + '_chrrDprtCd';
 	var pageChrrEmpno = '#' + $('#TB06011P_prefix').val() + '_chrrEmpno';
-	var pageApvlAmt = '#' + $('#TB06011P_prefix').val() + '_apvlAmt';
+	var pageeprzCrdlApvlAmt = '#' + $('#TB06011P_prefix').val() + '_eprzCrdlApvlAmt';
 	var pageInvAmt = '#' + $('#TB06011P_prefix').val() + '_invAmt';
 	var pagedealExcBlce = '#' + $('#TB06011P_prefix').val() + '_dealExcBlce';
 	var pageDealNm = '#' + $('#TB06011P_prefix').val() + '_ibDealNm';
@@ -652,7 +652,7 @@ function setPrdtInfo(e) {
 	$(pageTrOthrDscmNm).val(e.trOthrDscmNm);
 	$(pageChrrDprtCd).val(e.chrrDprtCd);
 	$(pageChrrEmpno).val(e.chrrEmpno);
-	$(pageApvlAmt).val(e.apvlAmt);
+	$(pageeprzCrdlApvlAmt).val(e.eprzCrdlApvlAmt);
 	$(pageInvAmt).val(e.invAmt);
 	$(pagedealExcBlce).val(e.dealExcBlce);
 	if (prefix != "TB09080S") {
