@@ -28,6 +28,7 @@ const TB02020Sjs = (function () {
       },
       {
         height: 300,
+        width: "100%",
         maxHeight: 300,
         id: "TB02020_gridMapHisInfo",
         colModel: colMapHisInfo,
@@ -70,7 +71,7 @@ const TB02020Sjs = (function () {
     console.log("맵:", ui.column.value, "스탭:", ui.rowData["wfStepId"]);
 
     getMapInfo(wfMapId, wfStepId);
-    //getMapHisInfo();
+    getMapHisInfo(wfMapId);
 
     //$("#modal-TB02020P").modal("show");
   }
@@ -92,15 +93,14 @@ const TB02020Sjs = (function () {
         //TODO: 행 클릭 시 담당자 변경 팝업 띄우기
         pqGridMapInfo.option("rowDblClick", function (event, ui) {});
       },
-      error: function (xhr, status, error) {
-        console.error("Error fetching map info:", error);
-      },
     });
   }
 
   // 맵 이력 데이터 가져오기
-  function getMapHisInfo(params) {
-    var param = {};
+  function getMapHisInfo(wfMapId) {
+    var param = {
+      wfMapId: wfMapId, // 맵아이디
+    };
 
     $.ajax({
       type: "GET",
@@ -131,29 +131,30 @@ const TB02020Sjs = (function () {
       width: "45%",
     },
     {
-      title: "등록건수",
+      title: "결재건수",
       dataType: "string",
       dataIndx: "wf01Count",
       align: "center",
       width: "15%",
       value: "WF01",
     },
-    {
-      title: "수정건수",
-      dataType: "string",
-      dataIndx: "wf02Count",
-      align: "center",
-      width: "15%",
-      value: "WF02",
-    },
-    {
-      title: "삭제건수",
-      dataType: "string",
-      dataIndx: "wf03Count",
-      align: "center",
-      width: "15%",
-      value: "WF03",
-    },
+    // TODO : 추후 카운트할 컬럼 정하여 추가예정
+    // {
+    //   title: "건수",
+    //   dataType: "string",
+    //   dataIndx: "wf02Count",
+    //   align: "center",
+    //   width: "15%",
+    //   value: "WF02",
+    // },
+    // {
+    //   title: "건수",
+    //   dataType: "string",
+    //   dataIndx: "wf03Count",
+    //   align: "center",
+    //   width: "15%",
+    //   value: "WF03",
+    // },
   ];
 
   /* 맵 관리 그리드 */
@@ -229,7 +230,7 @@ const TB02020Sjs = (function () {
     {
       title: "결재일자",
       dataType: "date",
-      dataIndx: "",
+      dataIndx: "aprvDttm",
       align: "center",
       width: "20%",
       filter: { crules: [{ condition: "range" }] },
@@ -250,7 +251,7 @@ const TB02020Sjs = (function () {
     {
       title: "결재단계",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "stepNm",
       align: "center",
       width: "20%",
       filter: { crules: [{ condition: "range" }] },
@@ -258,15 +259,24 @@ const TB02020Sjs = (function () {
     {
       title: "결재구분",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "rtnYn",
       align: "center",
-      width: "20%",
+      width: "15%",
       filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        let cellData = ui.cellData;
+        let rtn = "결재완료";
+        if (cellData == "Y") {
+          rtn = "반송";
+          return rtn;
+        }
+        return rtn;
+      },
     },
     {
       title: "결재자",
       dataType: "string",
-      dataIndx: "rreStep",
+      dataIndx: "empNm",
       align: "center",
       width: "10%",
       filter: { crules: [{ condition: "range" }] },
@@ -274,9 +284,9 @@ const TB02020Sjs = (function () {
     {
       title: "반송사유",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "rtnCnts",
       align: "center",
-      width: "30%",
+      width: "35%",
       filter: { crules: [{ condition: "range" }] },
     },
   ];

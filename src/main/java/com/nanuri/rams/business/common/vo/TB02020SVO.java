@@ -30,7 +30,8 @@ public class TB02020SVO {
   private String memoCnts;      // 결재사유
   private String rreStep;       // 이전결재자
 
-
-
+  /* 워크플로우 맵 이력  */
+  private String empNm; //결재자이름
+  private String rtnCnts; //반송사유
 }
 

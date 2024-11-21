@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.nanuri.rams.business.common.dto.TB02020DTO;
 import com.nanuri.rams.business.common.vo.TB02020SVO;
 
 
@@ -17,14 +18,21 @@ public interface TB02020Mapper {
 	 * @param dealInfo
 	 * @return
 	 */
-  public List<TB02020SVO> getWfDealInfo(TB02020SVO dealInfo);
+  public List<TB02020DTO> getWfDealInfo(TB02020DTO dealInfo);
 
 	/**
 	 * 맵정보조회
 	 * @param mapInfo 
 	 * @return
 	 */
-  public List<TB02020SVO> getMapInfo(Map<String, String> mapInfo);
+  public List<TB02020DTO> getMapInfo(Map<String, String> mapInfo);
+
+	/**
+	 * 맵이력조회
+	 * @param mapHisInfo 
+	 * @return
+	 */
+  public List<TB02020DTO> getMapHisInfo(Map<String, String> mapHisInfo);
 	
 	
 
