@@ -211,7 +211,7 @@ var colPrdtCdList = [
 	{
 		title: "거래상대방명",
 		dataType: "string",
-		dataIndx: "bzepName",
+		dataIndx: "entpNm",
 		halign: "center",
 		align: "left",
 		filter: { crules: [{ condition: 'range' }] },
@@ -265,7 +265,7 @@ var colPrdtCdList = [
 	{
 		title: "투자잔액",
 		dataType: "string",
-		dataIndx: "invBlce",
+		dataIndx: "dealExcBlce",
 		halign: "center",
 		align: "right",
 		filter: { crules: [{ condition: 'range' }] },
@@ -548,7 +548,7 @@ function setPrdtInfo(e) {
 	var chrrEmpno = td.eq(22).text();
 	var apvlAmt = td.eq(23).text();
 	var invAmt = td.eq(24).text();
-	var invBlce = td.eq(25).text();
+	var dealExcBlce = td.eq(25).text();
 	var dealNm = td.eq(26).text();
 
 	var prefix = $("#TB06011P_prefix").val();		// id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
@@ -585,7 +585,7 @@ function setPrdtInfo(e) {
 	var pageChrrEmpno = '#' + $('#TB06011P_prefix').val() + '_chrrEmpno';
 	var pageApvlAmt = '#' + $('#TB06011P_prefix').val() + '_apvlAmt';
 	var pageInvAmt = '#' + $('#TB06011P_prefix').val() + '_invAmt';
-	var pageInvBlce = '#' + $('#TB06011P_prefix').val() + '_invBlce';
+	var pagedealExcBlce = '#' + $('#TB06011P_prefix').val() + '_dealExcBlce';
 	var pageDealNm = '#' + $('#TB06011P_prefix').val() + '_ibDealNm';
 
 
@@ -654,7 +654,7 @@ function setPrdtInfo(e) {
 	$(pageChrrEmpno).val(e.chrrEmpno);
 	$(pageApvlAmt).val(e.apvlAmt);
 	$(pageInvAmt).val(e.invAmt);
-	$(pageInvBlce).val(e.invBlce);
+	$(pagedealExcBlce).val(e.dealExcBlce);
 	if (prefix != "TB09080S") {
 		$(pageDealNm).val(e.dealNm);
 	}
