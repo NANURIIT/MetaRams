@@ -747,8 +747,8 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
            AND s003b_1.BDCD = #{dbcd}
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crncyCd)">
-           AND s101b.CRRY_CD = #{crncyCd}
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crryCd)">
+           AND s101b.CRRY_CD = #{crryCd}
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND s101b.DEAL_NO LIKE '%'|| #{dealNo} || '%'
