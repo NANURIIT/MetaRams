@@ -20,7 +20,8 @@
     </select>
 
     <insert id="insertIBIMS204B">
-        <foreach collection="mdwyRdmpFeeRtoList" item="item" separator=";">
+        BEGIN
+        <foreach collection="mdwyRdmpFeeRtoList" item="item" separator=";" close=";">
             <if test="item.aplyMnum != null">
                 INSERT INTO IBIMS204B (
                     PRDT_CD,
@@ -43,7 +44,7 @@
                     #{hndTmnlNo},
                     #{hndTrId},
                     #{guid}
-                FROM dualZ
+                FROM dual
                 WHERE NOT EXISTS (
                     SELECT 1
                     FROM IBIMS204B B
@@ -53,10 +54,12 @@
                 )
             </if>
         </foreach>
+        END ;
     </insert>
 
     <update id="updateIBIMS204B">
-        <foreach collection="mdwyRdmpFeeRtoList" item="item" separator=";">
+        BEGIN
+        <foreach collection="mdwyRdmpFeeRtoList" item="item" separator=";" close=";">
             UPDATE IBIMS204B
                SET  MDWY_RDMP_FEE_RTO = #{item.mdwyRdmpFeeRto}
                   , HND_DETL_DTM = SYSDATE
@@ -64,8 +67,9 @@
                   , HND_TMNL_NO = #{hndTmnlNo}
                   , HND_TR_ID = #{hndTrId}
                   , GUID = #{guid}
-             WHERE FEE_SN = #{feeSn}
+             WHERE FEE_SN = #{item.feeSn}
         </foreach>
+        END; 
     </update>
 
     <delete id="deleteIBIMS204B">
