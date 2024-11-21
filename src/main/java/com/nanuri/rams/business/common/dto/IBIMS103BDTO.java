@@ -28,7 +28,7 @@ public class IBIMS103BDTO {
     private String     invPrdtSclsCd;                 // 투자상품소분류코드
     private String     invPrdtDtlsDvdCd;              // 투자상품상세분류코드
     private String     mainInvstTrgtNm;               // 주요투자대상명
-    private String     ptfdCrncyCd;                   // 부의통화코드
+    private String     ptfdCrryCd;                   // 부의통화코드
     private BigDecimal ptfdAmt;                       // 부의금액
     private String     invNtnCd;                      // 투자국가코드
     private BigDecimal aplcExchR;                     // 적용환율
@@ -45,7 +45,8 @@ public class IBIMS103BDTO {
     private String     dlDprtNm2;                     // 거래부점명2
     private String     dlDprtNm3;                     // 거래부점명3
     private String     hdqtCd;                        // 본부코드
-    private String     bdcd;                          // 부서코드
+    private String     dbcd;                          // 부점코드
+    private String     dprtCd;                        // 부서코드  
     private String     chrrEmpno;                     // 담당자사번
     private String     ownPEno;                       // 심사역사번
     private String     esgYn;                         // ESG여부
