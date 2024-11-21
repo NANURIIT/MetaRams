@@ -76,8 +76,8 @@
 	
 	<select id="getEntpInfoByNm" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
 		SELECT A.ENTP_NM                             						    AS ENTP_HNGL_NM			/* 업체명 */
-		     , NVL (A.CRNO , '') 										        AS CRNO  		/* 법인등록번호 */
-		     , NVL (A.RNBN , '') 										        AS BZNO  		/* 사업자등록번호 */
+		     , NVL (A.CRNO , '') 										        AS CORP_RGST_NO  		/* 법인등록번호 */
+		     , NVL (A.RNBN , '') 										        AS BSNS_RGST_NO   		/* 사업자등록번호 */
 		     , NVL (MAX(C.DPRT_NM), '')           							    AS CHRG_DPRT_NM  		/* 담당부서 */ 
 		     , NVL (MAX(C.EMP_NM), '')                						    AS CHRG_P_NM   			/* 담당자명 */ 
 		     , COUNT(DISTINCT B.CHRR_EMPNO)   									AS ENO_CNT  			/* 담당자건수 */
