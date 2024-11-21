@@ -14,6 +14,7 @@ public class TB04020SVO {
 	String dprtNm;
 	String crryCd;
 	String dealNo;
+	String dbcd;
 
 	@Getter
 	@Setter
