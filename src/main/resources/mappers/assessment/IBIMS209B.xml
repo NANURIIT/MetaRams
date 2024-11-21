@@ -78,6 +78,7 @@
             , HND_TMNL_NO                                       = #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
             , HND_TR_ID                                         = #{hndTrId}                                         <!-- 조작거래id -->
             , GUID                                              = #{guid}                                            <!-- guid -->
+          WHERE 1=1
           AND PRDT_CD                                           = (
 												               	   SELECT s201b.PRDT_CD
 												               	     FROM IBIMS201B s201b
