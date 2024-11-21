@@ -19,8 +19,8 @@ public class TB05030SVO {
         private String jdgmDcdNm;
         private String mtrDcd;
         private String mtrNm;
-        private String ptfdCrncyCd;
-        private String ptfdCrncyCdNm;
+        private String ptfdCrryCd;
+        private String ptfdCrryCdNm;
         private BigDecimal ptfdAmt;
         private String mtrPrgSttsDcd;
         private String mtrPrgSttsDcdNm;
