@@ -543,13 +543,13 @@
 		                   AND CD_VL_ID = IB201B.PRG_STTS_CD
 		             	), '') AS PRG_STTS_NM															/* 진행상태코드명 */
             , IB010B.ENTP_NM                                                                          /* 거래상대방명 */
-            , IB201B.MNGM_BDCD                                                                          /* 부서코드  */
-            , ( SELECT DPRT_NM FROM IBIMS003B WHERE BDCD =  IB201B.MNGM_BDCD AND ROWNUM = 1) AS DPRT_NM     /* 부서명  */
+            , IB201B.MNGM_BDCD                                                                          /* 관리부점  */
+            , ( SELECT DPRT_NM FROM IBIMS003B WHERE BDCD =  IB201B.MNGM_BDCD AND ROWNUM = 1) AS DPRT_NM     /* 관리부점  */
             , IB201B.CHRR_EMPNO                                        									/* 담당자번호 */																			    /*  담당자사원번호  */
             , ( SELECT EMP_NM  FROM IBIMS003B WHERE EMPNO =  IB201B.CHRR_EMPNO ) AS EMP_NM2             /* 담당자명  */
 		    , NVL(IB201B.EPRZ_CRDL_APVL_AMT, s112b.APVL_AMT) AS EPRZ_CRDL_APVL_AMT 											/* 승인금액 */
 		    , (SELECT SUM(V.DEAL_EXC_AMT) FROM IBIMS402B V WHERE V.PRDT_CD = IB201B.PRDT_CD AND V.LDG_STTS_CD = '1') AS DEAL_EXC_AMT /* 투자금액 */
-		    , (SELECT SUM(X.DEAL_EXC_BLCE) FROM IBIMS402B X WHERE X.PRDT_CD = IB201B.PRDT_CD AND X.LDG_STTS_CD = '1') AS INV_BLCE /* 투자잔액 */
+		    , (SELECT SUM(X.DEAL_EXC_BLCE) FROM IBIMS402B X WHERE X.PRDT_CD = IB201B.PRDT_CD AND X.LDG_STTS_CD = '1') AS DEAL_EXC_BLCE /* 투자잔액 */
             FROM IBIMS201B IB201B
             LEFT JOIN IBIMS994B IB994B
               ON IB201B.TR_CRRY_CD = IB994B.CRRY_CD

@@ -60,11 +60,11 @@
                   WHERE CMNS_CD_GRP = 'L007'
                     AND CD_VL_ID = A.MTR_DCD
                ) AS MTR_DCD_NM
-             , B.BDCD                                /* 부서코드 */
+             , B.DPRT_CD                                /* 부서코드 */
              , (
                  SELECT MAX(DPRT_NM)
                    FROM IBIMS003B
-                  WHERE BDCD = B.BDCD
+                  WHERE DPRT_CD = B.DPRT_CD
                ) AS DPRT_NM
              , B.CHRR_EMPNO                             /* 담당자사원번호 */
              , (
@@ -126,8 +126,8 @@
                 SELECT CD_VL_NM
                   FROM IBIMS002B
                  WHERE CMNS_CD_GRP = 'D010'
-                   AND CD_VL_ID = B.BDCD
-               ) ||' ('|| B.BDCD || ')' AS DPRT_NM
+                   AND CD_VL_ID = B.DPRT_CD
+               ) ||' ('|| B.DPRT_CD || ')' AS DPRT_NM
              , (
                 SELECT EMP_NM
                   FROM IBIMS003B
@@ -189,7 +189,7 @@
                              AND CD_VL_ID = B.MTR_PRG_STTS_DCD
                           )
                      END AS MTR_PRG_STTS_DCD_NM
-             , NVL(A.EPRZ_CRDL_APVL_AMT, '') AS EPRZ_CRDL_APVL_AMT                                      /* 승인금액 */
+             , NVL(A.APVL_AMT, '') AS APVL_AMT                                      /* 승인금액 */
              , NVL(A.SDN_CNDT_F, '') AS SDN_CNDT_F                                  /* 셀다운조건여부 */
              , NVL(A.SDN_CNDT_CTNS, '') AS SDN_CNDT_CTNS                            /* 셀다운조건의견 */
              , NVL(A.ETC_CNDT_F, '') AS ETC_CNDT_F                                  /* 기타조건여부 */
@@ -242,7 +242,7 @@
              , ETC_CNDT_F       = #{etcCndtF}
              , ETC_CNDT_CTNS    = #{etcCndtCtns}
              , MTR_PRG_STTS_DCD = #{mtrPrgSttsDcd}
-             , EPRZ_CRDL_APVL_AMT         = #{eprzCrdlApvlAmt}
+             , APVL_AMT         = #{apvlAmt}
              , APVL_DT          = TO_CHAR(SYSDATE, 'YYYYMMDD')
          WHERE CNSB_DCD = #{cnsbDcd}
            AND CNSB_SQ  = #{cnsbSq}
