@@ -819,7 +819,7 @@
          AND T5.DEAL_NO = T7.DEAL_NO(+)
          AND T5.LAST_YN = '1'
          AND T5.LAST_YN = T6.LAST_YN(+)
-         AND T5.APVL_DT != ''
+         AND T5.APVL_DT != ' '
          <if test="orgno != ''">
          AND T1.ORGNO = #{orgno}
          </if>

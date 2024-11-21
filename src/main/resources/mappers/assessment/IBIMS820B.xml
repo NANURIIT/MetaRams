@@ -230,7 +230,10 @@
                     , 'N'                        AS HDWT_INP_YN               /* 수기입력여부          */
                     , 'N'                        AS DCSN_YN                   /* 확정여부             */
                     , SYSDATE                    AS HND_DETL_DTM              /* 조작상세일시 */
-                    , ''                         AS HND_EMPNO                 /* 조작사원번호 */                   
+                    , '9999D'                    AS HND_EMPNO                 /* 조작사원번호 */                   
+                    , ''                         AS HND_TMNL_NO
+                    , ''                         AS HND_TR_ID
+                    , ''                         AS GUID
                FROM  IBIMS201B A			                                        /* 딜승인기본 */
                    , IBIMS811B B                                              /* 딜월별잔액 */
               WHERE 1 = 1
@@ -291,7 +294,10 @@
                     , 'N'                        AS HDWT_INP_YN               /* 수기입력여부          */
                     , 'N'                        AS DCSN_YN                   /* 확정여부             */
                     , SYSDATE                    AS HND_DETL_DTM              /* 조작상세일시 */
-                    , ''                         AS HND_EMPNO                 /* 조작사원번호 */ 
+                    , '9999D'                    AS HND_EMPNO                 /* 조작사원번호 */
+                    , ''                         AS HND_TMNL_NO
+                    , ''                         AS HND_TR_ID
+                    , ''                         AS GUID
                FROM (
                       SELECT   A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                              , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
@@ -396,7 +402,10 @@
                    , 'N'                        AS HDWT_INP_YN               /* 수기입력여부          */
                    , 'N'                        AS DCSN_YN                   /* 확정여부             */
                    , SYSDATE                    AS HND_DETL_DTM              /* 조작상세일시 */
-                   , ''                         AS HND_EMPNO                 /* 조작사원번호 */ 
+                   , '9999D'                    AS HND_EMPNO                 /* 조작사원번호 */
+                   , ''                         AS HND_TMNL_NO
+                   , ''                         AS HND_TR_ID
+                   , ''                         AS GUID 
              FROM (
                          SELECT   A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                                 , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
@@ -492,6 +501,11 @@
                     , ''                         AS EVL_DT                    /* 평가일자             */
                     , 'N'                        AS HDWT_INP_YN               /* 수기입력여부          */
                     , 'N'                        AS DCSN_YN                   /* 확정여부             */
+                    , SYSDATE                    AS HND_DETL_DTM              /* 조작상세일시 */
+                    , '9999D'                    AS HND_EMPNO                 /* 조작사원번호 */
+                    , ''                         AS HND_TMNL_NO
+                    , ''                         AS HND_TR_ID
+                    , ''                         AS GUID
                FROM IBIMS201B A			                  /* 딜승인기본 */
                    ,IBIMS811B B                           /* 딜월별잔액 */
               WHERE 1 = 1

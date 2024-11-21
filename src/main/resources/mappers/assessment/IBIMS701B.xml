@@ -147,7 +147,7 @@
     <select id="selectIBIMS701B" resultType="com.nanuri.rams.business.common.vo.IBIMS701BVO">
        SELECT
                snd701b.STDR_YM                                       AS stdrYm                               /* 기준년월 */                          
-            ,  snd701b.BDCD                                       AS dbcd                               /* 부서코드 */
+            ,  snd701b.DPRT_CD                                       AS dprtCd                               /* 부서코드 */
             ,  snd701b.RGST_SN                                       AS rgstSn                               /* 등록일련번호  */ 
             ,  snd701b.BSS_ASST_MNGM_NO                              AS bssAsstMngmNo                        /* 기초자산관리번호 */ 
             ,  snd701b.RPTS_IEM_MNGM_NO                              AS rptsIemMngmNo                        /* 보고서항목관리번호 */ 
@@ -277,7 +277,7 @@
             ,  snd701b.HND_TR_ID                                     AS hndTrId                              /* 조작거래ID */
             ,  snd701b.GUID                                          AS guid                                 /* GUID */
          FROM IBIMS701B snd701b
-        WHERE snd701b.BDCD LIKE #{dptCd}
+        WHERE snd701b.DPRT_CD LIKE #{dptCd}
           AND snd701b.STDR_YM LIKE CASE 
                                    WHEN
                              NOT EXISTS(
@@ -297,7 +297,7 @@
 
 
                 NULL                                                            AS stdrYm                               /* 기준년월 */
-              , NULL                                                            AS dbcd                               /* 부서코드 */
+              , NULL                                                            AS dprtCd                               /* 부서코드 */
               , NULL                                                            AS rgstSn                               /* 등록일련번호  */ 
               , NULL                                                            AS bssAsstMngmNo                        /* 기초자산관리번호 */ 
               , NULL                                                            AS rptsIemMngmNo                        /* 보고서항목관리번호 */ 
@@ -466,9 +466,9 @@
           AND A.PRDT_CD = T.PRDT_CD
           AND A.FRS_MNGM_BDCD LIKE #{dptCd}
           AND NOT EXISTS (
-                  SELECT s701b_2.BDCD
+                  SELECT s701b_2.DPRT_CD
                     FROM IBIMS701B s701b_2
-                   WHERE s701b_2.BDCD = A.FRS_MNGM_BDCD
+                   WHERE s701b_2.DPRT_CD = A.FRS_MNGM_BDCD
                 );
     </select>
 
@@ -481,7 +481,7 @@
     <insert id="insertIBIMS701B">
         INSERT INTO IBIMS701B(
                     STDR_YM
-                ,   BDCD
+                ,   DPRT_CD
                 ,   RGST_SN
                 ,   BSS_ASST_MNGM_NO
                 ,   RPTS_IEM_MNGM_NO
@@ -614,7 +614,7 @@
         VALUES
         <foreach collection="list" item="item" separator=",">
                 (   #{item.stdrYm}
-                ,   #{item.dbcd}
+                ,   #{item.dprtCd}
                 ,   (
                         NVL(
                                 (SELECT MAX(A.RGST_SN) FROM IBIMS701B A) + 1
