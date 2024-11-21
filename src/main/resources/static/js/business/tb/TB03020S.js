@@ -76,7 +76,7 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_invstGdsLdvdCd').val(data.invPrdtLclsCd);
 					$('#TB03020S_invstGdsMdvdCd').val(data.invPrdtMdclCd);
 					$('#TB03020S_invstGdsSdvdCd').val(data.invPrdtClsfCd);
-					$('#TB03020S_I028').val(data.invstGdsDtlsDvdCd);
+					$('#TB03020S_I028').val(data.invPrdtDtlsDvdCd);
 					$('#TB03020S_dealCntnt').val(data.invDealCntn);
 					$('#TB03020S_bnkBd').val(data.bnkBd);
 					$('#TB03020S_C006').val(data.ntnCd);
@@ -578,7 +578,7 @@ const TB03020Sjs = (function(){
 			, "invPrdtLclsCd" : invPrdtLclsCd
 			, "invPrdtMdclCd" : invPrdtMdclCd
 			, "invPrdtClsfCd" : invPrdtClsfCd
-			, "invstGdsDtlsDvdCd" : invstGdsDtlsDvdCd
+			, "invPrdtDtlsDvdCd" : invstGdsDtlsDvdCd
 			, "invDealCntn" : invDealCntn
 			, "bnkBd" : bnkBd
 			, "ntnCd" : ntnCd
@@ -599,8 +599,8 @@ const TB03020Sjs = (function(){
 			, "theYearErnAmt" : (theYearErnAmt / 1)
 			, "baltErnAmt" : (baltErnAmt / 1)
 			, "intrErnAmt" : (intrErnAmt / 1)
-			, "crncyCd" : crncyCd
-			, "crncyAmt" : (crncyAmt / 1)
+			, "crryCd" : crncyCd
+			, "crryAmt" : (crncyAmt / 1)
 			, "mtrtDt" : mtrtDt
 			, "expDt" : expDt
 			/* 기타정보 */

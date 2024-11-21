@@ -60,7 +60,7 @@
 		SELECT A.EMPNO							/* 사원번호 */
 			   , A.PWD							  /* 비밀번호 */
 		     , A.EMP_NM							/* 직원명 */
-		     , A.BDCD						/* 부서코드 */
+		     , A.DPRT_CD						/* 부서코드 */
 		     , A.DPRT_NM						/* 부서명 */
 		     , A.BDCD							  /* 소속부점코드 */
 		     , A.BD_NM							/* 소속부점코드명 */
@@ -114,7 +114,7 @@
             , RGST_RSN					<!-- 등록사유 -->
             , RGST_EMPNO				<!-- 등록사원번호 -->
             , RGST_DT					<!-- 등록일자 -->
-            , BDCD					<!-- 부서코드 -->
+            , DPRT_CD					<!-- 부서코드 -->
             , DPRT_NM					<!-- 부서명 -->
             , DEL_YN					<!-- 삭제여부 -->
             , HND_EMPNO					<!-- 조작사원번호 -->
@@ -131,10 +131,10 @@
             , #{rgstRsn}
             , #{rgstEmpno}
             , #{rgstDt}
-            , #{dbcd}
+            , #{dprtCd}
             , (SELECT MAX(A.DPRT_NM)
                  FROM IBIMS003B A
-                WHERE A.BDCD = #{dbcd})
+                WHERE A.DPRT_CD = #{dprtCd})
             , #{delYn}
             , #{hndEmpno}
             , DEFAULT
