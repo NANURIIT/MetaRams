@@ -60,11 +60,11 @@
                   WHERE CMNS_CD_GRP = 'L007'
                     AND CD_VL_ID = A.MTR_DCD
                ) AS MTR_DCD_NM
-             , B.BDCD                                /* 부서코드 */
+             , B.DPRT_CD                                /* 부서코드 */
              , (
                  SELECT MAX(DPRT_NM)
                    FROM IBIMS003B
-                  WHERE BDCD = B.BDCD
+                  WHERE DPRT_CD = B.DPRT_CD
                ) AS DPRT_NM
              , B.CHRR_EMPNO                             /* 담당자사원번호 */
              , (
