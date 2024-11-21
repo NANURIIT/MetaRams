@@ -50,7 +50,7 @@ public class TB03030ServiceImpl implements TB03030Service {
 		ArdyBzepVO ardyBzepVo = new ArdyBzepVO();
 		ardyBzepVo.setEntpNm(registInfo.getEntpHnglNm());	// 업체명
 		ardyBzepVo.setRnbn(registInfo.getBsnsRgstNo());	// 사업자등록번호
-		ardyBzepVo.setCrno(registInfo.getCorpRgstNo()); // 법인등록번호
+		ardyBzepVo.setCrno(registInfo.getCrno()); // 법인등록번호
 		if (entpCd == "") {
 			ibims010bmapper.insertArdyBzepInfo(ardyBzepVo);
 		} else {
