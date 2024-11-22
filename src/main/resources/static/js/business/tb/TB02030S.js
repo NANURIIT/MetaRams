@@ -1,6 +1,7 @@
 const TB02030Sjs = (() => {
     let lastClickedRowId = null;
     let lastWfMapId;
+    let wfAuthIdOptions;
     const GRID_MAP_ID = "#gridWfMapList";
     const GRID_STEP_ID = "#gridWfStepList";
     const URLS = {
@@ -34,8 +35,9 @@ const TB02030Sjs = (() => {
                     value: item.athCdNm
                 }));
 
-                const wfAuthIdOptions = data.map(item => ({
-                    label: `${item.athCd} ${item.athCdNm}`,
+                wfAuthIdOptions = data.map(item => ({
+                    //label: `${item.athCd} ${item.athCdNm}`,
+                    label: item.athCdNm,
                     value: item.athCd
                 }));
 
@@ -84,7 +86,30 @@ const TB02030Sjs = (() => {
             editable: false,
             showTitle: false,
             numberCell: { show: false },
-            strNoRows: '조회된 데이터가 없습니다.'
+            strNoRows: '조회된 데이터가 없습니다.',
+            cellSave: function (event, ui) {
+                if (ui.dataIndx === "stepNm") {
+                    // stepNm 값이 변경되면 wfAuthId 옵션을 업데이트
+                    const grid = $(GRID_STEP_ID).pqGrid('instance');
+                    const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+
+                    // 선택한 stepNm 값에 맞는 wfAuthId 필터링
+                    const selectedStepNm = ui.newVal;
+                    
+                    // wfAuthIdOptions에서 해당 label을 가진 옵션의 인덱스를 찾음
+                    const selectedIndex = wfAuthIdOptions.findIndex(option => option.label === selectedStepNm);
+
+                    if (selectedIndex !== -1) {
+                        // 찾은 인덱스를 사용하여 wfAuthId 값을 설정
+                        rowData.wfAuthId = wfAuthIdOptions[selectedIndex].value;
+
+                        // UI에 반영
+                        grid.refreshRow({ rowIndx: ui.rowIndx });
+                    } else {
+                        console.log("해당 stepNm에 맞는 wfAuthId 옵션이 없습니다.");
+                    }
+                }
+            },
         };
     
         initializeGrid(GRID_MAP_ID, obj_WfMap);
@@ -368,7 +393,7 @@ const TB02030Sjs = (() => {
                 valueIndx: "value",
                 labelIndx: "label",
             },
-            editable : true,
+            editable : false,
                     
 		},
         { 	
@@ -400,10 +425,17 @@ const TB02030Sjs = (() => {
 
     // WF 스텝 관리 조회 AJAX
     function getWfStepList(wfMapId) {
-        // if (String(lastClickedRowId) === String(wfMapId)) {
-        //     console.log("같은 행이 이미 선택되었습니다. 서비스 호출을 생략합니다.");
-        //     return;
-        // }
+
+        //서비스 중복 호출 막음
+        if (String(lastClickedRowId) === String(wfMapId)) {
+            console.log("같은 행이 이미 선택되었습니다. 서비스 호출을 생략합니다.");
+            return;
+        }
+
+        //wfMapId가 ""이거나 4자리보다 클 때 동작하지 않음 
+        if(wfMapId === "" || wfMapId.length > 4){
+            return;
+        }
         lastClickedRowId = wfMapId;
         const url = wfMapId ? `${URLS.WF_STEP.GET}?wfMapId=${wfMapId}` : URLS.WF_STEP.GET;
 
@@ -431,6 +463,7 @@ const TB02030Sjs = (() => {
 
     // WF 스텝 행 추가
     function addWfStepRow() {
+        
         const newRow = {
             rowCheck: false,
             wfMapId: lastWfMapId || "",
@@ -555,6 +588,7 @@ const TB02030Sjs = (() => {
                             : null;
                 
                     if (wfMapId) {
+                        lastClickedRowId = null;
                         getWfStepList(wfMapId);
                     } else {
                         console.error("wfMapId를 찾을 수 없습니다.");
@@ -656,6 +690,7 @@ const TB02030Sjs = (() => {
                 if (gridId === GRID_MAP_ID) {
                     deleteServiceFunc(rowsToDelete.map(row => row.wfMapId));  // 삭제 함수로 wfMapId만 전달
                 } else if (gridId === GRID_STEP_ID) {
+                    lastClickedRowId = null;
                     deleteServiceFunc(rowsToDelete);  // 삭제 함수로 wfMapId와 stepId 모두 전달
                 }
             });
