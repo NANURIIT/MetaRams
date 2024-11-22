@@ -84,7 +84,8 @@ const TB05040Sjs = (function(){
 	function loadRsltnCnfrncCcd() {
 		$.ajax({
 			type: "GET",
-			url: "/getSelectBoxCode/R011",
+			// url: "/getSelectBoxCode/R011", 
+			url: "/getSelectBoxCode/R016", //RISK_INSPCT_RSLTN_CCD 리스크심사결의구분코드
 			dataType: "json",
 			success: function(data) {
 				var html = "";
@@ -105,7 +106,8 @@ const TB05040Sjs = (function(){
 	function loadRiskInspctRsltnCcd() {
 		$.ajax({
 			type: "GET",
-			url: "/getSelectBoxCode/I006",
+			// url: "/getSelectBoxCode/I006",
+			url: "/getSelectBoxCode/I008",
 			dataType: "json",
 			success: function(data) {
 				var html = "";
@@ -126,7 +128,8 @@ const TB05040Sjs = (function(){
 	function loadRsltnRsltCd() {
 		$.ajax({
 			type: "GET",
-			url: "/getSelectBoxCode/R006",
+			// url: "/getSelectBoxCode/R006", 
+			url: "/getSelectBoxCode/R025", // RSLTN_RSLT_CD 결의결과코드
 			dataType: "json",
 			success: function(data) {
 				var html = "";
@@ -262,7 +265,6 @@ const TB05040Sjs = (function(){
 				} else{
 					$('#TB05040S_rsltnCnfrncCcd option:eq(0)').prop("selected", true);								// 결의협의체
 				}
-
 				/**
 				 * 지주사전협의 조건
 				 */
@@ -284,7 +286,7 @@ const TB05040Sjs = (function(){
 				$('#TB05040S_rnkNo').val(dealInfo.sn);																// 순서정보
 				
 				$('#TB05040S_rsltnRsltCd').val(dealInfo.rsltnRsltCd).prop('selected', true);						// 결의결과
-				$('#TB05040S_invstCrncyCd').val(dealInfo.ptfdCrncyCdNm);											// 투자통화코드
+				$('#TB05040S_invstCrncyCd').val(dealInfo.ptfdCrryCdNm);											// 투자통화코드
 				if (!isEmpty(dealInfo.apvlAmt)) {
 					$('#TB05040S_rcgAmt').val(addComma(dealInfo.apvlAmt));												// 승인금액
 				} else {
@@ -580,7 +582,7 @@ const TB05040Sjs = (function(){
 		{
 		title: "통화",
 		dataType: "string",
-		dataIndx: "ptfdCrncyCdNm",
+		dataIndx: "ptfdCrryCdNm",
 		halign : "center",
 		align: "center",
 		filter: { crules: [{ condition: "range" }] },
