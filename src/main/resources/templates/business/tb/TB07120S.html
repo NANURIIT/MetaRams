@@ -13,7 +13,7 @@
 </th:block>
 
 <th:block layout:fragment="modalpopup">
-	<!-- <th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block> -->
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -34,7 +34,7 @@
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07120S_dprtCd">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB03022P('TB07120S');"><i class="fa fa-search"></i></button>
 										</span>
 										<input type="text" class="form-control" id="TB07120S_dprtNm" readonly="">
 									</div>

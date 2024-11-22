@@ -193,7 +193,7 @@ function setEmpNm(e) {
 	$(pageHdqtNm).val(hdqtNm);
 
 	// 그리드(위원정보) 데이터 가져오기
-	const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid("option").dataModel.data;
+	const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid("option", "dataModel.data");	// 20241122 오류나서 바꿨습니다
 
 	// 공동
 	switch ( prefix ) {
