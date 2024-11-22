@@ -97,7 +97,7 @@ const TB09060Sjs = function () {
     {
       title: "연체원금액",
       dataType: "integer",
-      dataIndx: "ovduPrcaAmt",
+      dataIndx: "ovduPrnaAmt",
       align: "right",
       halign: "center",
       width: "100",
