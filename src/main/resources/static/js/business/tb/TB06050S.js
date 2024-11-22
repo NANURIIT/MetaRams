@@ -60,7 +60,12 @@ const TB06050Sjs = (function() {
 
                 for(let i = 0; i < inputs.length; i++){
                     if(!$(inputs[i]).val()){
-                        alert("선택된 상품이 없습니다!(스위트 알럿으로 누군가 수정좀 부탁드립니다...<(_ _)>)");
+                       //alert("선택된 상품이 없습니다!(스위트 알럿으로 누군가 수정좀 부탁드립니다...<(_ _)>)");
+						swal.fire({
+						   icon: "warning",
+				           text: "조회된 내역이 없습니다.",
+				           confirmButtonText: "확인"
+						});
                         return;
                     }else{
                         continue;
