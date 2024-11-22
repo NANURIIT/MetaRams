@@ -1520,7 +1520,7 @@
                   SELECT CD_VL_NM
                     FROM IBIMS002B
                    WHERE CMNS_CD_GRP = 'P004'
-                     AND CD_VL_ID = PRDT_CLSF_CD
+                     AND CD_VL_ID = A.PRDT_CLSF_CD
                  ) AS PRDT_CLSF_CD_NM
                , A.ACTS_CD                                           /* 계정과목코드 */
                , A.APVL_DT                                           /* 승인일자 */

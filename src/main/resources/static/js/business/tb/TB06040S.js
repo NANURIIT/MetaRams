@@ -75,17 +75,17 @@ const TB06040Sjs = (function() {
                     $('#TB06040S_apvlDt').val(isEmpty(data.apvlDt)?'':formatDate(data.apvlDt));
                     $('#TB06040S_trCrryCd').val(data.trCrryCd);
                     $('#TB06040S_trCrryCdNm').val(data.trCrryCdNm);
-                    $('#TB06040S_thcoPtciAmt').val(isEmpty(data.apvlAmt)?'':addComma(data.apvlAmt));
+                    $('#TB06040S_thcoPtciAmt').val(isEmpty(data.eprzCrdlApvlAmt)?'':addComma(data.eprzCrdlApvlAmt));
                     $('#TB06040S_S003').val(data.stdrIntrtKndCd);
                     $('#TB06040S_intrtCngeFrqcMnum').val(data.intrtCngeFrqcMnum);
-                    $('#TB06040S_I005').val(data.indvLmtDcd);
+                    $('#TB06040S_I005').val(data.eprzCrdlIndvLmtDcd);
                     $('#TB06040S_E020').val(data.paiRdmpDcd);
                     $('#TB06040S_prnaRdmpFrqcMnum').val(data.prnaRdmpFrqcMnum);
                     $('#TB06040S_E011').val(data.intrBnaoDcd);
                     $('#TB06040S_intrRdmpFrqcMnum').val(data.intrRdmpFrqcMnum);
                     $('#TB06040S_selectedDealNo').val(data.dealNo);
-                    $('#TB06040S_selectedNmcpMtrDcd').val(data.nmcpMtrDcd);
-                    $('#TB06040S_selectedLstCCaseDcd').val(data.lstCCaseDcd);
+                    $('#TB06040S_selectedNmcpMtrDcd').val(data.mtrDcd);
+                    $('#TB06040S_selectedLstCCaseDcd').val(data.jdgmDcd);
 
                     /* 240617 약정정보 */
                     $('#TB06040S_ctrcDt').val(formatDate(data.ctrcDt));
@@ -168,8 +168,8 @@ const TB06040Sjs = (function() {
             /* 1 : 약정, 2 : 해지 */
             // var ctrcCclcDcd = $('.btn-info').text().substring(0, 2) === '약정' ? '1' : '2';
             let dealNo = $('#TB06040S_selectedDealNo').val();
-            let nmcpMtrDcd = $('#TB06040S_selectedNmcpMtrDcd').val();
-            let lstCCaseDcd = $('#TB06040S_selectedLstCCaseDcd').val();
+            let mtrDcd = $('#TB06040S_selectedNmcpMtrDcd').val();
+            let jdgmDcd = $('#TB06040S_selectedLstCCaseDcd').val();
             let stdrIntrtKndCd  = $('#TB06040S_S003').val();
             // ???????????????????????????????????????????????????????
 
@@ -194,8 +194,8 @@ const TB06040Sjs = (function() {
 
                 paramData = {
                     dealNo,
-                    nmcpMtrDcd,
-                    lstCCaseDcd,
+                    mtrDcd,
+                    jdgmDcd,
                     stdrIntrtKndCd,
                     ctrcCclcDcd,
                     prdtCd,
@@ -216,8 +216,8 @@ const TB06040Sjs = (function() {
 
                 paramData = {
                     dealNo,
-                    nmcpMtrDcd,
-                    lstCCaseDcd,
+                    mtrDcd,
+                    jdgmDcd,
                     stdrIntrtKndCd,
                     ctrcCclcDcd,
                     prdtCd,
@@ -404,7 +404,7 @@ const TB06040Sjs = (function() {
 
             // console.log("obj :::: ", obj);
             // delete obj.dealNo;
-            // delete obj.nmcpMtrDcd;
+            // delete obj.mtrDcd;
             // delete obj.stdrIntrtKndCd;
 
             // let chkVal = Object.values(obj).some(value => isEmpty(value));
