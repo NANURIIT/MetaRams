@@ -5,17 +5,17 @@
 	<!-- 2024-11-06	김건우 -->
     <!-- 상위메뉴 조회 -->
     <select id="hgrkMenuInq" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS005BDTO">
-        SELECT A.MENU_ID									/* 메뉴ID */
-             , A.MENU_NM                                    /* 메뉴명 */
-             , A.SORT_NO									/* 정렬번호 */
-             , A.MENU_LVL                                   /* 메뉴레벨 */
-             , A.HGRK_MENU_ID                               /* 상위메뉴ID */
-             , A.URL_VRB_CNTN								/* URL변수내용 */
-             , A.URL_CLSF_CD								/* URL분류코드 */
-             , A.URL_NM                                     /* URL명 */
-             , A.SHTN_NM									/* 단축명 */
-             , A.APLY_YN									/* 적용여부 */
-             , A.DEL_YN										/* 삭제여부 */
+        SELECT A.MENU_ID							/* 메뉴ID */
+             , A.MENU_NM              /* 메뉴명 */
+             , A.SORT_NO							/* 정렬번호 */
+             , A.MENU_LVL             /* 메뉴레벨 */
+             , A.HGRK_MENU_ID         /* 상위메뉴ID */
+             , A.URL_VRB_CNTN					/* URL변수내용 */
+             , A.URL_CLSF_CD					/* URL분류코드 */
+             , A.URL_NM               /* URL명 */
+             , A.SHTN_NM							/* 단축명 */
+             , A.APLY_YN							/* 적용여부 */
+             , A.DEL_YN								/* 삭제여부 */
              , NVL(TO_CHAR(A.HND_DETL_DTM, 'YYYY-MM-DD HH24:MI:SS'), '') AS HND_DETL_DTM		/* 조작상세일시 */
              , NVL((SELECT EMP_NM
                       FROM IBIMS003B
@@ -30,16 +30,16 @@
 
     <!-- 하위메뉴조회 -->
     <select id="hgrkGroupMenuInq" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS005BDTO">
-        SELECT A.MENU_ID																		/* 메뉴ID */
-             , A.MENU_NM                                                                        /* 메뉴명 */
-             , A.SORT_NO																		/* 정렬번호 */
-             , A.SHTN_NM																		/* 단축명 */
-             , A.URL_CLSF_CD																	/* URL분류코드 */
-             , A.URL_VRB_CNTN																	/* URL변수내용 */
-             , A.URL_NM                                                                         /* URL명 */
-             , A.APLY_YN																		/* 적용여부 */
-             , A.DEL_YN																		    /* 삭제여부 */
-             , A.HGRK_MENU_ID                                                                   /* 상위메뉴ID */
+        SELECT A.MENU_ID															/* 메뉴ID */
+             , A.MENU_NM                              /* 메뉴명 */
+             , A.SORT_NO															/* 정렬번호 */
+             , A.SHTN_NM															/* 단축명 */
+             , A.URL_CLSF_CD													/* URL분류코드 */
+             , A.URL_VRB_CNTN													/* URL변수내용 */
+             , A.URL_NM                               /* URL명 */
+             , A.APLY_YN															/* 적용여부 */
+             , A.DEL_YN																/* 삭제여부 */
+             , A.HGRK_MENU_ID                         /* 상위메뉴ID */
              , NVL(TO_CHAR(A.HND_DETL_DTM, 'YYYY-MM-DD HH24:MI:SS'), '') AS HND_DETL_DTM		/* 조작상세일시 */
              , NVL((SELECT EMP_NM
                       FROM IBIMS003B
@@ -53,28 +53,28 @@
     <!-- 신메뉴등록 -->
     <insert id="insertMenu" parameterType="java.util.List">
         INSERT INTO IBIMS005B (
-            MENU_ID
-          , MENU_NM
-          , SHTN_NM
-          , HGRK_MENU_ID
-          , SCRN_APLY_SHP_CD
-          , SORT_NO
-          , MENU_LVL
-          , URL_CLSF_CD
-          , URL_NM
-          , URL_VRB_CNTN
-          , USR_ATH_DCD
-          , APLY_YN
-          , APLY_DT
-          , DEL_YN
-          , DEL_DT
-          , DEL_TM
-          , DELT_EMPNO
-          , HND_DETL_DTM
-          , HND_EMPNO
-          , HND_TMNL_NO
-          , HND_TR_ID
-          , GUID
+            MENU_ID               /* 메뉴ID */
+          , MENU_NM               /* 메뉴명 */
+          , SHTN_NM               /* 단축명 */
+          , HGRK_MENU_ID          /* 상위메뉴ID */
+          , SCRN_APLY_SHP_CD      /* 화면적용형태코드 */
+          , SORT_NO               /* 정렬번호 */
+          , MENU_LVL              /* 메뉴레벨 */
+          , URL_CLSF_CD           /* URL분류코드 */
+          , URL_NM                /* URL명 */
+          , URL_VRB_CNTN          /* URL변수내용 */
+          , USR_ATH_DCD           /* 사용자권한구분코드 */
+          , APLY_YN               /* 적용여부 */
+          , APLY_DT               /* 적용일자 */
+          , DEL_YN                /* 삭제여부 */
+          , DEL_DT                /* 삭제일자 */
+          , DEL_TM                /* 삭제시간 */
+          , DELT_EMPNO            /* 삭제사원번호 */
+          , HND_DETL_DTM          /* 조작상세일시 */
+          , HND_EMPNO             /* 조작사원번호 */
+          , HND_TMNL_NO           /* 조작단말기번호 */
+          , HND_TR_ID             /* 조작거래ID */
+          , GUID                  /* GUID */
         )
         VALUES
         (
@@ -106,13 +106,13 @@
     <!-- 메뉴수정 -->
     <update id="updateMenu" parameterType="com.nanuri.rams.business.common.dto.IBIMS005BDTO">
         UPDATE IBIMS005B
-           SET MENU_NM = #{menuNm}
-             , SORT_NO = #{sortNo}
-             , URL_VRB_CNTN = #{urlVrbCntn}
-             , URL_CLSF_CD = #{urlClsfCd}
-             , URL_NM = #{urlNm}
-             , SHTN_NM = #{shtnNm}
-             , APLY_YN = #{aplyYn}
+           SET MENU_NM = #{menuNm}                  /* 메뉴명 */
+             , SORT_NO = #{sortNo}                  /* 정렬번호 */
+             , URL_VRB_CNTN = #{urlVrbCntn}         /* URL변수내용 */
+             , URL_CLSF_CD = #{urlClsfCd}           /* URL분류코드 */
+             , URL_NM = #{urlNm}                    /* URL명 */
+             , SHTN_NM = #{shtnNm}                  /* 단축명 */
+             , APLY_YN = #{aplyYn}                  /* 적용여부 */
              <if test="aplyYn != null and aplyYn !=''">
              /* , APLY_DT = TO_CHAR(SYSDATE, 'YYYYMMDD') */
              </if>

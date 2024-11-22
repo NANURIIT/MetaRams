@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS206BMapper">
     
+    <!-- SPPI 선택 조회 -->
     <select id="getSPPIData" parameterType="com.nanuri.rams.business.common.vo.IBIMS206BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS206BVO">
         SELECT A.NS_FND_CD                              /* 고유자산펀드코드 */
              , A.NS_PRDT_DCD                            /* 고유자산상품구분코드 */
@@ -44,42 +45,43 @@
            AND ROWNUM = 1
     </select>
 
+    <!-- SPPI테스트 신규 -->
     <insert id="insertSPPIData" parameterType="com.nanuri.rams.business.common.vo.IBIMS206BVO">
         INSERT INTO IBIMS206B
             (
-                RGST_DT
-              , NS_FND_CD
-              , NS_PRDT_DCD
-              , PRDT_CD
-              , RGST_SN
-              , BUSI_MDL_DCD
-              , PAI_RDMP_CNCL_CND_XSTC_YN
-              , INTR_RT_CND_INTG_YN
-              , INTR_RT_CND_INTG_YN2
-              , INTR_RT_CND_INTG_YN3
-              , INTR_RT_CND_INTG_YN4
-              , INTR_RT_CND_INTG_YN5
-              , FINC_CNVS_PSBL_YN
-              , FINC_CNVS_PSBL_YN2
-              , EXP_XTNS_CND_IVTG_YN
-              , EXP_XTNS_CND_IVTG_YN2
-              , ELPD_FDMP_CND_IVTG_YN
-              , SOBN_IVTG_YN
-              , SOBN_IVTG_YN2
-              , SOBN_IVTG_YN3
-              , SPC_INV_IVTG_YN
-              , TNCH_STD_IVTG_YN
-              , TNCH_STD_IVTG_YN2
-              , SPPI_SFC_YN
-              , APVL_YN
-              , APVL_DT
-              , GBCK_DT
-              , CNCL_YN
-              , HND_DETL_DTM
-              , HND_EMPNO
-              , HND_TMNL_NO
-              , HND_TR_ID
-              , GUID
+                RGST_DT                                  /* 고유자산펀드코드 */
+              , NS_FND_CD                                /* 고유자산상품구분코드 */
+              , NS_PRDT_DCD                              /* 상품코드 */
+              , PRDT_CD                                  /* 등록일자 */
+              , RGST_SN                                  /* 등록일련번호 */
+              , BUSI_MDL_DCD                             /* 사업모형구분코드 */
+              , PAI_RDMP_CNCL_CND_XSTC_YN                /* 원리금상환취소조건존재여부 */
+              , INTR_RT_CND_INTG_YN                      /* 이자율조건검토여부 */
+              , INTR_RT_CND_INTG_YN2                     /* 이자율조건검토여부2 */
+              , INTR_RT_CND_INTG_YN3                     /* 이자율조건검토여부3 */
+              , INTR_RT_CND_INTG_YN4                     /* 이자율조건검토여부4 */
+              , INTR_RT_CND_INTG_YN5                     /* 이자율조건검토여부5 */
+              , FINC_CNVS_PSBL_YN                        /* 출자전환가능여부 */
+              , FINC_CNVS_PSBL_YN2                       /* 출자전환가능여부2 */
+              , EXP_XTNS_CND_IVTG_YN                     /* 만기연장조건검토여부 */
+              , EXP_XTNS_CND_IVTG_YN2                    /* 만기연장조건검토여부2 */
+              , ELPD_FDMP_CND_IVTG_YN                    /* 조기상환조건검토여부 */
+              , SOBN_IVTG_YN                             /* 후순위채권검토여부 */
+              , SOBN_IVTG_YN2                            /* 후순위채권검토여부2 */
+              , SOBN_IVTG_YN3                            /* 후순위채권검토여부3 */
+              , SPC_INV_IVTG_YN                          /* SPC투자검토여부 */
+              , TNCH_STD_IVTG_YN                         /* TRANCHE구조검토여부 */
+              , TNCH_STD_IVTG_YN2                        /* TRANCHE구조검토여부2 */
+              , SPPI_SFC_YN                              /* SPPI충족여부 */
+              , APVL_YN                                  /* 승인여부 */
+              , APVL_DT                                  /* 승인일자 */
+              , GBCK_DT                                  /* 반려일자 */
+              , CNCL_YN                                  /* 취소여부 */
+              , HND_DETL_DTM                             /* 조작상세일시 */
+              , HND_EMPNO                                /* 조작사원번호 */
+              , HND_TMNL_NO                              /* 조작단말기번호 */
+              , HND_TR_ID                                /* 조작거래ID */
+              , GUID                                     /* GUID */
             )
         VALUES
             (
@@ -132,7 +134,7 @@
                                AND A.PRDT_CD = #{prdtCd}
                                AND A.NS_FND_CD = #{nsFndCd}
                                AND A.NS_PRDT_DCD = #{nsPrdtDcd} 
-                          ) + 1)
+                          ) + 1)                /* 누가 하실질 모르겠지만 채번 따로만들어서 해줘요... */
              , BUSI_MDL_DCD = #{busiMdlDcd}
              , PAI_RDMP_CNCL_CND_XSTC_YN = #{paiRdmpCnclCndXstcYn}
              , INTR_RT_CND_INTG_YN = #{intrRtCndIntgYn}
