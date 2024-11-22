@@ -6,8 +6,8 @@
     <select id="getSeqNo" resultType="int"> 
         SELECT NVL(MAX(SN)+1,1)
           FROM IBIMS100B
-        WHERE EMPNO    = #{empno}
-          AND RQST_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+         WHERE EMPNO    = #{empno}
+           AND RQST_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')
     </select>
 
     <!-- 오늘의할일 summery조회 -->
@@ -35,7 +35,7 @@
 	              , 0    AS CNT2                       										                /* 결재요청건수 */
 	              , CASE WHEN A.EMPNO = #{empno} THEN 1 ELSE 0 END  AS CNT3			          /* 협의회회의건수 */
 	           FROM IBIMS100B A
-	 	      WHERE 1=1
+	 	        WHERE 1=1
 	            AND A.WORK_DCD   = '02'  													                        /* 회의 */
 	            AND A.EMPNO        = #{empno}              
 	            AND A.PRCS_DT IS NULL    
@@ -81,74 +81,74 @@
              , B.DEAL_NO                             /* 딜번호 */
              , NVL(C.MTR_NM, '') AS MTR_NM           /* 안건명 */
           FROM IBIMS101B B 
-    LEFT JOIN IBIMS100B A
-           ON B.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
-    LEFT JOIN IBIMS103B C 
-           ON B.DEAL_NO = C.DEAL_NO
-          AND C.LAST_YN = '1'
-        WHERE 1=1
-          AND B.LAST_YN = '1'
-          AND C.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
-          AND 'Y' = CASE WHEN FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',2),'=',-1) != C.DEAL_NO AND C.JDGM_DCD = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',2),'=',-1) 
-                          THEN 'Y'
-                  ELSE 'Y' 
-              END
-          AND 'Y' = CASE WHEN FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',3),'=',-1) != C.DEAL_NO AND C.MTR_DCD = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',3),'=',-1) 
-                          THEN 'Y'
-                  ELSE 'Y' 
-              END           
-          AND A.EMPNO     = #{empno}
-          AND A.DEL_YN = '0'
-          AND A.PRCS_DT IS NULL
-		  AND A.RQST_DT <![CDATA[  <= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD')
-    UNION ALL
-       SELECT D.EMPNO                                                
-            , D.RQST_DT                            
-            , D.SN                                
-            , D.WORK_DCD 
-	         , (
-                SELECT CD_VL_NM
-                  FROM IBIMS002B
-                 WHERE CMNS_CD_GRP = 'R008'
-                   AND CD_VL_ID = D.WORK_DCD
-               ) AS WORK_DCD_NM
-            , D.STDR_DT                            
-            , D.RQST_TM                            
-            , D.RGST_EMPNO
+     LEFT JOIN IBIMS100B A
+            ON B.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
+     LEFT JOIN IBIMS103B C 
+            ON B.DEAL_NO = C.DEAL_NO
+           AND C.LAST_YN = '1'
+         WHERE 1=1
+           AND B.LAST_YN = '1'
+           AND C.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
+           AND 'Y' = CASE WHEN FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',2),'=',-1) != C.DEAL_NO AND C.JDGM_DCD = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',2),'=',-1) 
+                           THEN 'Y'
+                   ELSE 'Y' 
+               END
+           AND 'Y' = CASE WHEN FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',3),'=',-1) != C.DEAL_NO AND C.MTR_DCD = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',3),'=',-1) 
+                           THEN 'Y'
+                   ELSE 'Y' 
+               END           
+           AND A.EMPNO     = #{empno}
+           AND A.DEL_YN = '0'
+           AND A.PRCS_DT IS NULL
+		       AND A.RQST_DT <![CDATA[  <= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD')
+     UNION ALL
+        SELECT D.EMPNO                                                
+             , D.RQST_DT                            
+             , D.SN                                
+             , D.WORK_DCD 
+ 	           , (
+                 SELECT CD_VL_NM
+                   FROM IBIMS002B
+                  WHERE CMNS_CD_GRP = 'R008'
+                    AND CD_VL_ID = D.WORK_DCD
+                ) AS WORK_DCD_NM
+             , D.STDR_DT                            
+             , D.RQST_TM                            
+             , D.RGST_EMPNO
              , (
-                SELECT EMP_NM
-                  FROM IBIMS003B
-                 WHERE EMPNO = D.EMPNO
-               ) AS REG_ENO_NM     
+                 SELECT EMP_NM
+                   FROM IBIMS003B
+                  WHERE EMPNO = D.EMPNO
+                ) AS REG_ENO_NM     
              , (
-                SELECT DPRT_NM
-                  FROM IBIMS003B
-                 WHERE EMPNO = D.EMPNO
-               ) AS DPRT_NM                                     
-            , D.WORK_CTNS                          
-            , D.MENU_ID                           
-            , NVL(D.PRCS_DT, '')  AS PRCS_DT                                
-            , D.PRCS_TM                                   
-            , D.PRCS_EMPNO                                          
-            , D.SPV_YN                                    
-            , D.ENTP_NM                                    
-            , D.RMRK  
-            , D.DEL_YN                             
-            , NVL(E.DEAL_NO, '')			AS DEAL_NO
-            , NVL(F.MTR_NM, '')			AS MTR_NM
-         FROM IBIMS100B D
-    LEFT JOIN IBIMS101B E 
-           ON E.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(D.RMRK,',',1),'=',-1)        
-    LEFT JOIN IBIMS103B F
-   		   ON E.DEAL_NO = F.DEAL_NO
-  		  AND F.LAST_YN = '1'
-        WHERE (SELECT MAX(DEAL_NO) FROM IBIMS103B WHERE DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(D.RMRK,',',1),'=',-1) AND LAST_YN = '1') IS NULL
-          AND D.EMPNO      = #{empno}
-          AND D.DEL_YN = '0'
-          AND D.PRCS_DT IS NULL
-		      AND D.RQST_DT <![CDATA[  <= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD')
-     ORDER BY RQST_DT DESC
-            , SN
+                 SELECT DPRT_NM
+                   FROM IBIMS003B
+                  WHERE EMPNO = D.EMPNO
+                ) AS DPRT_NM                                     
+             , D.WORK_CTNS                          
+             , D.MENU_ID                           
+             , NVL(D.PRCS_DT, '')  AS PRCS_DT                                
+             , D.PRCS_TM                                   
+             , D.PRCS_EMPNO                                          
+             , D.SPV_YN                                    
+             , D.ENTP_NM                                    
+             , D.RMRK  
+             , D.DEL_YN                             
+             , NVL(E.DEAL_NO, '')			AS DEAL_NO
+             , NVL(F.MTR_NM, '')			AS MTR_NM
+          FROM IBIMS100B D
+     LEFT JOIN IBIMS101B E 
+            ON E.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(D.RMRK,',',1),'=',-1)        
+     LEFT JOIN IBIMS103B F
+    		    ON E.DEAL_NO = F.DEAL_NO
+   		     AND F.LAST_YN = '1'
+         WHERE (SELECT MAX(DEAL_NO) FROM IBIMS103B WHERE DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(D.RMRK,',',1),'=',-1) AND LAST_YN = '1') IS NULL
+           AND D.EMPNO      = #{empno}
+           AND D.DEL_YN = '0'
+           AND D.PRCS_DT IS NULL
+ 		       AND D.RQST_DT <![CDATA[  <= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD')
+      ORDER BY RQST_DT DESC
+             , SN
 	</select> 
 	
   <!-- 오늘의할일등록 -->	

@@ -34,7 +34,7 @@
                 , PTFD_CRRY_CD                                     	/* 부의통화코드 */
                 , PTFD_AMT                                          /* 부의금액 */
                 , INV_NTN_CD                                      	/* 투자국가코드 */
-                , APLY_EXRT                                       /* 적용환율 */
+                , APLY_EXRT                                         /* 적용환율 */
                 , KRW_TRSL_PTFD_AMT                                 /* 원화환산부의금액 */
                 , IND_TYP_DVD_CD                                    /* 업종분류코드 */
                 , CHECK_ITEM_CD                                     /* 점검항목코드(업무구분) */
@@ -67,7 +67,7 @@
                 , ENSR_YN                                           /* 보증여부 */
                 , RSPSB_CMPL_DCD                                    /* 책임준공구분코드 */
                 , ENTP_NM                                           /* 업체명 */
-                , BZNO                                      				/* 사업자등록번호 */
+                , BZNO                                      		/* 사업자등록번호 */
                 , CORP_NO                                           /* 법인번호 */
                 , CORPTN_TYP_CD                                     /* 협업유형코드 */
                 , BUSI_DPT_OPNN                                     /* 사업부서의견 */
@@ -88,8 +88,7 @@
                  #{dealNo}                                          /* 딜번호 */
                , #{mtrDcd}                                          /* 안건구분코드 */
                , #{jdgmDcd}                                         /* 심사구분코드 */
-           /* NEXTVAL(IBIMS103B_SQ) 일련번호 에서 변경 
-           		딜번호, 안건구분, 심사구분별 SN번호 생성으로 변경         	 */
+           	   /* NEXTVAL(IBIMS103B_SQ) 일련번호 에서 변경 딜번호, 안건구분, 심사구분별 SN번호 생성으로 변경         	 */
                , #{sn}
                , #{lastYn}                                          /* 최종여부 */
                , #{mtrPrgSttsDcd}                                   /* 안건진행상태구분코드 */
