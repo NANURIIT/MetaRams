@@ -82,6 +82,7 @@ public class TB06010SVO {
 	private String fndNm;
 	private String trOthrDscmNm;
 	private String trOthrDscmNo;
+	private String frxcHdgeYn;
 
 
 	private String         fincYn;							//250B테이블 프로덕트코드
