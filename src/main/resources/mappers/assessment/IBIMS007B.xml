@@ -24,19 +24,21 @@
 		    BY T1.ATH_CD
 	</select>
 
+	<!-- 메뉴별 권한수정 -->
 	<update id="updateAth" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
 		UPDATE IBIMS007B
-		   SET MDFY_RGHT_CCD = #{mdfyRghtCcd}
-		     , HND_DETL_DTM = SYSDATE
+		   SET MDFY_RGHT_CCD = #{mdfyRghtCcd}			/* 수정권한구분코드 1:조회 2:수정가능 데이터없을시 권한X 인듯 */
+		     , HND_DETL_DTM = SYSDATE					
 			 , HND_EMPNO = #{hndEmpno}
 			 , HND_TMNL_NO = #{hndTmnlNo}
 			 , HND_TR_ID = #{hndTrId}
 			 , GUID = #{guid}
 		 WHERE 1=1
-		   AND ATH_CD = #{athCd}
-		   AND MENU_ID = #{menuId}
+		   AND ATH_CD = #{athCd}						/* 권코 */
+		   AND MENU_ID = #{menuId}						/* 메뉴ID */
 	</update>
 
+	<!-- 권한체크쿼리 -->
 	<select id="chkAthCd" parameterType="com.nanuri.rams.business.common.vo.IBIMS007BVO" resultType="String">
 		SELECT CASE
 				WHEN COUNT(T1.MENU_ID) = 0 THEN 'NO'
@@ -57,18 +59,19 @@
 						)
 	</select>
 
+	
 	<update id="updateMdfyRghtCcd">
 		MERGE INTO IBIMS007B T
       USING (
-             SELECT #{athCd}  AS ATH_CD
-				  , #{sn}  AS SN
-				  , #{menuId}  AS MENU_ID
-				  , #{mdfyRghtCcd}  AS MDFY_RGHT_CCD
-				  , #{hndDetlDtm}  AS HND_DETL_DTM
-				  , #{hndEmpno}  AS HND_EMPNO
-				  , #{hndTmnlNo}  AS HND_TMNL_NO
-				  , #{hndTrId}  AS HND_TR_ID
-				  , #{guid}  AS GUID
+             SELECT #{athCd}  AS ATH_CD					/* 권한코드 */
+				  , #{sn}  AS SN						/* 일련번호 */
+				  , #{menuId}  AS MENU_ID				/* 메뉴ID */
+				  , #{mdfyRghtCcd}  AS MDFY_RGHT_CCD	/* 수정권한구분코드(1: 조회, 2: 수정가능) */
+				  , #{hndDetlDtm}  AS HND_DETL_DTM		/* 조작상세일시 */
+				  , #{hndEmpno}  AS HND_EMPNO			/* 조작사원번호 */
+				  , #{hndTmnlNo}  AS HND_TMNL_NO		/* 조작단말기번호 */
+				  , #{hndTrId}  AS HND_TR_ID			/* 조작거래ID */
+				  , #{guid}  AS GUID					/* GUID */
                FROM DUAL
              ) S
          ON (
@@ -83,15 +86,15 @@
 				 , T.HND_TR_ID = S.HND_TR_ID
 				 , T.GUID = S.GUID
       WHEN NOT MATCHED THEN
-        INSERT ( ATH_CD
-			   , SN
-			   , MENU_ID
-			   , MDFY_RGHT_CCD
-			   , HND_DETL_DTM
-			   , HND_EMPNO
-			   , HND_TMNL_NO
-			   , HND_TR_ID
-			   , GUID
+        INSERT ( ATH_CD				/* 권한코드 */
+			   , SN					/* 일련번호 */
+			   , MENU_ID			/* 메뉴ID */
+			   , MDFY_RGHT_CCD		/* 수정권한구분코드(1: 조회, 2: 수정가능) */
+			   , HND_DETL_DTM		/* 조작상세일시 */
+			   , HND_EMPNO			/* 조작사원번호 */
+			   , HND_TMNL_NO		/* 조작단말기번호 */
+			   , HND_TR_ID			/* 조작거래ID */
+			   , GUID				/* GUID */
                )
         VALUES ( S.ATH_CD
 			   , S.SN
@@ -134,12 +137,12 @@
 	
 	<insert id='insertUseMenu' parameterType='com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO'>
 		INSERT INTO IBIMS007B (
-				  ATH_CD				<!-- 권한코드 -->
-				, SN					<!-- 일련번호 -->
-				, MENU_ID				<!-- 메뉴ID -->
-				, MDFY_RGHT_CCD			<!-- 수정권한구분코드(1: 조회, 2: 수정가능) -->
-				, HND_DETL_DTM			<!-- 처리일시 -->
-				, HND_EMPNO				<!-- 처리자사번 -->
+				  ATH_CD				/* 권한코드 */
+				, SN					/* 일련번호 */
+				, MENU_ID				/* 메뉴ID */
+				, MDFY_RGHT_CCD			/* 수정권한구분코드(1: 조회, 2: 수정가능) */
+				, HND_DETL_DTM			/* 처리일시 */
+				, HND_EMPNO				/* 처리자사번 */
 				)
 		VALUES (
 				  #{athCd}
@@ -155,8 +158,8 @@
 	<delete id='deleteUseMenu' parameterType='com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO'>
 		DELETE
 		  FROM IBIMS007B
-		 WHERE SN			= #{sn}		<!-- 일련번호 -->
-		   AND ATH_CD		= #{athCd}	<!-- 권한코드 -->
+		 WHERE SN			= #{sn}		/* 일련번호 */
+		   AND ATH_CD		= #{athCd}	/* 권한코드 */
 	</delete>
 
 	<!-- SN 값 구하기 -->
@@ -173,12 +176,12 @@
 
 	<insert id="insertAuthCodeMenu" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
 		INSERT INTO IBIMS007B (
-			ATH_CD,						<!-- 권한코드 -->
-			SN,							<!-- 일련번호 -->
-			MENU_ID,					<!-- 메뉴ID -->
-			MDFY_RGHT_CCD,				<!-- 수정권한구분코드(1: 조회, 2: 수정가능) -->
-			HND_DETL_DTM,				<!-- 처리일시 -->
-			HND_EMPNO					<!-- 처리자사번 -->
+			ATH_CD,						/* 권한코드 */
+			SN,							/* 일련번호 */
+			MENU_ID,					/* 메뉴ID */
+			MDFY_RGHT_CCD,				/* 수정권한구분코드(1: 조회, 2: 수정가능) */
+			HND_DETL_DTM,				/* 처리일시 */
+			HND_EMPNO					/* 처리자사번 */
 		) VALUES (
 			#{athCd},
 			(SELECT NEXTVAL(IBIMS007B_SQ)),
@@ -203,8 +206,8 @@
 	<delete id="deleteAuthCodeMenu" parameterType="com.nanuri.rams.business.common.dto.IBIMS007BDTO">
 		DELETE
 		  FROM IBIMS007B
-		 WHERE ATH_CD = #{athCd}			<!-- 권한코드 -->
-		   AND MENU_ID = #{menuId}			<!-- 메뉴ID -->
+		 WHERE ATH_CD = #{athCd}			/* 권한코드 */
+		   AND MENU_ID = #{menuId}			/* 메뉴ID */
 	</delete>
 
 	<!-- 업데이트 시 SQ에 해당 권한코드 데이터가 있는지 유무 -->
@@ -213,7 +216,7 @@
 				  COUNT(*) = 0, 0, 1
 				 ) AS isExist
 		  FROM IBIMS007B
-		 WHERE ATH_CD 	= #{athCd}			<!-- 권한코드 -->
-		   AND SN 		= #{sn}				<!-- 일련번호 -->
+		 WHERE ATH_CD 	= #{athCd}			/* 권한코드 */
+		   AND SN 		= #{sn}				/* 일련번호 */
 	</select>
 </mapper>
