@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.nanuri.rams.business.common.dto.IBIMS402BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS402BVO;
 import com.nanuri.rams.business.common.vo.IBIMS404BVO;
 import com.nanuri.rams.business.common.vo.TB06015SVO;
@@ -22,7 +23,7 @@ public interface TB07080Service {
 
 	public int insertListIBIMS404B(TB06015SVO paramData);
 
-	public int updateListIBIMS404B(TB06015SVO paramData);
+	public int updateListIBIMS404B(List<IBIMS404BDTO> paramData);
 
     public int deleteIBIMS404B(TB06015SVO paramData);
 }

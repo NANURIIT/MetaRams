@@ -40,7 +40,7 @@ public interface IBIMS404BMapper {
 
 	public List<IBIMS404BVO> getIntrRateInfos(TB06015SVO param);
 	public int insertListIBIMS404B(TB06015SVO paramData);
-	public int updateListIBIMS404B(TB06015SVO paramData);	
+	public int updateListIBIMS404B(IBIMS404BDTO paramData);	
 	public int deleteIBIMS404B(TB06015SVO paramData);
 	
 }

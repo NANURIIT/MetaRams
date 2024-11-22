@@ -21,6 +21,13 @@ const TB07120Sjs = (function () {
   }
 
   /**
+   * 초기화
+   */
+  function reset () {
+    $("#con-srch input").val("")
+  }
+
+  /**
    * selectBox 공통코드 set
    */
   function fnSelectBox() {
@@ -145,7 +152,7 @@ const TB07120Sjs = (function () {
     {
       title: "거래처명",
       dataType: "string",
-      dataIndx: "bzepName",
+      dataIndx: "entpNm",
       align: "center",
       halign: "center",
       width: "",
@@ -190,7 +197,7 @@ const TB07120Sjs = (function () {
     {
       title: "통화코드",
       dataType: "string",
-      dataIndx: "trCrcyCd",
+      dataIndx: "trCrryCd",
       align: "center",
       halign: "center",
       width: "",
@@ -333,7 +340,7 @@ const TB07120Sjs = (function () {
       // , 입출금구분:
       prdtCd: $("#TB07120S_prdtCd").val(),
       consDecdStatCd: $("#TB07120S_consDecdStatCd").val(),
-      trCrcyCd: $("#TB07120S_trCrcyCd").val(),
+      trCrryCd: $("#TB07120S_trCrryCd").val(),
       trObjtBsnNo: $("#TB07120S_ardyBzepNo").val(),
       // , 업무구분:
     };
@@ -498,5 +505,6 @@ const TB07120Sjs = (function () {
   return {
     get07120sList: get07120sList,
     updateFndsCnstDecd: updateFndsCnstDecd,
+    reset: reset
   };
 })();

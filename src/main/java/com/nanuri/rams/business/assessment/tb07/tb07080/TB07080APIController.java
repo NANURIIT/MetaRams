@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nanuri.rams.business.assessment.tb07.tb07080.TB07080Service;
 import com.nanuri.rams.business.common.dto.IBIMS204BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS402BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS402BVO;
 import com.nanuri.rams.business.common.vo.IBIMS404BVO;
 import com.nanuri.rams.business.common.vo.TB06015SVO;
@@ -53,7 +54,7 @@ public class TB07080APIController {
 	}
 
     @PostMapping(value = "/updateIntrtData")
-	public int updateListIBIMS404B(@RequestBody TB06015SVO paramData) {
+	public int updateListIBIMS404B(@RequestBody List<IBIMS404BDTO> paramData) {
 		return tb07080service.updateListIBIMS404B(paramData);
 	}
 

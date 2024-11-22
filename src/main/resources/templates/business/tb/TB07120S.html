@@ -10,10 +10,14 @@
 	<script th:src="@{js/common.js}"></script>
 	<script th:src="@{js/fileUpload.js}"></script>
 	<script th:src="@{js/business/tb/TB07120S.js}"></script>
+	<script th:src="@{js/business/tb/TB06011P.js}"></script>
+	<script th:src="@{js/business/tb/TB03061P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -23,7 +27,7 @@
 			<div class="col-lg-12">
 				<div class="ibox">
 					<!-- 조회조건영역 -->
-					<div class="ibox-content i-filter">
+					<div class="ibox-content i-filter" id="con-srch">
 						<div class="form-group row form-inline">
 							<div class="col-sm-10 form-group mb-1">
 								<!-- 부서코드 -->
@@ -75,7 +79,7 @@
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07120S_prdtCd">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07120S');"><i class="fa fa-search"></i></button>
 										</span>
 										<input type="text" class="form-control" id="TB07120S_prdtNm" readonly="">
 									</div>
@@ -97,7 +101,7 @@
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<select class="form-control" id="TB07120S_trCrcyCd">
+										<select class="form-control" id="TB07120S_trCrryCd">
 											<option value="">전체</option>
 										</select>
 									</div>
@@ -112,9 +116,9 @@
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07120S_ardyBzepNo">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB03061P('TB07120S');"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB07120S_bzepName" readonly="">
+										<input type="text" class="form-control" id="TB07120S_entpNm" readonly="">
 									</div>
 								</div>
 								<!-- 업무구분 -->
@@ -133,7 +137,7 @@
 							<div class="col-sm-1-5 text-right">
 								<button class="btn btn-primary" onclick="TB07120Sjs.get07120sList();">
 									<i class="fa fa-search"></i>&nbsp;조회</button>
-								<button class="btn btn-default" type="button" onclick="">
+								<button class="btn btn-default" type="button" onclick="TB07120Sjs.reset()">
 									<i class="fa fa-undo"></i>&nbsp;초기화
 								</button>
 							</div>
@@ -252,11 +256,11 @@
 										<label class="col-sm-1">통화구분</label>
 										<div class="col-sm-3">
 											<div class="input-group">
-												<input type="text" class="form-control" id="TB07120S_trCrcyCd">
+												<input type="text" class="form-control" id="TB07120S_trCrryCd">
 												<span class="input-group-append">
 													<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
 												</span>
-												<input type="text" class="form-control" id="TB07120S_" readonly="" style="width: 100px">
+												<input type="text" class="form-control" id="TB07120S_trCrryNm" readonly="" style="width: 100px">
 											</div>
 										</div>
 										<label class="col-sm-1">환율</label>

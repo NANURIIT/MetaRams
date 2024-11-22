@@ -255,26 +255,24 @@
 	</select>
 
 	<update id="updateListIBIMS404B">
-		<foreach collection="intrtList" item="item" separator=";">
 			UPDATE IBIMS404B													/* 여신실행금리기본 */	
-			   SET   APLY_STRT_DT = #{item.aplyStrtDt} 							/* 적용시작일자 */
-				   , APLY_END_DT = #{item.aplyEndDt} 							/* 적용종료일자 */
-				   , STDR_INTRT_KND_CD = #{item.stdrIntrtKndCd} 				/* 기준금리종류코드 */
-				   , FXN_INTRT = #{item.fxnIntrt} 								/* 고정금리 */
-				   , ADD_INTRT = #{item.addIntrt} 								/* 가산금리 */
-				   , INTRT_CNGE_FRQC_CD = #{item.intrtCngeFrqcCd} 				/* 금리변동주기코드 */
-				   , INTRT_CNGE_FRQC_MNUM = #{item.intrtCngeFrqcMnum} 			/* 금리변동주기개월수 */
-				   , APLY_DNUM_DCD = #{item.aplyDnumDcd} 						/* 적용일수구분코드 */
-				   , STDR_INTRT_APLY_DNUM = #{item.stdrIntrtAplyDnum} 			/* 기준금리적용일수 */
+			   SET   APLY_STRT_DT = #{aplyStrtDt} 							/* 적용시작일자 */
+				   , APLY_END_DT = #{aplyEndDt} 							/* 적용종료일자 */
+				   , STDR_INTRT_KND_CD = #{stdrIntrtKndCd} 				/* 기준금리종류코드 */
+				   , FXN_INTRT = #{fxnIntrt} 								/* 고정금리 */
+				   , ADD_INTRT = #{addIntrt} 								/* 가산금리 */
+				   , INTRT_CNGE_FRQC_CD = #{intrtCngeFrqcCd} 				/* 금리변동주기코드 */
+				   , INTRT_CNGE_FRQC_MNUM = #{intrtCngeFrqcMnum} 			/* 금리변동주기개월수 */
+				   , APLY_DNUM_DCD = #{aplyDnumDcd} 						/* 적용일수구분코드 */
+				   , STDR_INTRT_APLY_DNUM = #{stdrIntrtAplyDnum} 			/* 기준금리적용일수 */
 				   , HND_DETL_DTM = SYSDATE 										/* 조작상세일시 */
-				   , HND_EMPNO = NVL(#{item.hndEmpno}, '') 					/* 조작사원번호 */
-				   , HND_TMNL_NO = NVL(#{item.hndTmnlNo}, '') 				/* 조작단말기번호 */
-				   , HND_TR_ID = NVL(#{item.hndTrId}, '') 					/* 조작거래id */
-				   , GUID = NVL(#{item.guid}, '') 							/* guid */
+				   , HND_EMPNO = NVL(#{hndEmpno}, '') 					/* 조작사원번호 */
+				   , HND_TMNL_NO = NVL(#{hndTmnlNo}, '') 				/* 조작단말기번호 */
+				   , HND_TR_ID = NVL(#{hndTrId}, '') 					/* 조작거래id */
+				   , GUID = NVL(#{guid}, '') 							/* guid */
 			WHERE PRDT_CD = #{prdtCd} 											/* 상품코드 */
 			  AND EXC_SN = #{excSn} 											/* 실행일련번호 */
-			  AND RGST_SN = #{item.rgstSn} 										/* 등록일련번호 */
-		</foreach>
+			  AND RGST_SN = #{rgstSn} 										/* 등록일련번호 */
     </update>
 
 	 <insert id="insertListIBIMS404B">

@@ -16,7 +16,7 @@ const TB07080Sjs = (function () {
     pqGrid();
     $("#disabledView").find("input").prop("disabled", true);
     createOption();
-    vldDateVal();
+    // vldDateVal();
   });
 
   function dateInputSet() {

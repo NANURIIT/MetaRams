@@ -50,6 +50,9 @@ public class TB07080ServiceImpl implements TB07080Service {
 
 	@Override
     public int uptExcInfo(IBIMS402BDTO data) {
+
+		data.setHndEmpno(facade.getDetails().getEno());
+
 		int result = ibims402bMapper.uptExcInfo(data);
 		return result;
 	};
@@ -75,8 +78,16 @@ public class TB07080ServiceImpl implements TB07080Service {
 	};
 
 	@Override
-	public int updateListIBIMS404B(TB06015SVO paramData){
-		int result = ibims404bMapper.updateListIBIMS404B(paramData);
+	public int updateListIBIMS404B(List<IBIMS404BDTO> paramData){
+
+		int result = 0;
+
+		for(int i = 0; i < paramData.size(); i++){
+			paramData.get(i).setHndEmpno(facade.getDetails().getEno());
+			ibims404bMapper.updateListIBIMS404B(paramData.get(i));
+			result += 1;
+		}
+
 		return result;
 	};
 
