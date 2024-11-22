@@ -67,7 +67,7 @@ public class TB06019ServiceImpl implements TB06019Service {
 
 		saveDto.setEntpCd(saveVo.getArdyBzepNo());	// 업체코드
 		saveDto.setEntpHnglNm(saveVo.getEntpNm()); // 업체한글명
-		saveDto.setCorpRgstNo(saveVo.getCrno());	// 법인등록번호
+		saveDto.setCrno(saveVo.getCrno());	// 법인등록번호
 		saveDto.setBsnsRgstNo(saveVo.getRnbn());	// 사업자등록번호
 
 		// 기업체번호 존재 유무에 따른 분기

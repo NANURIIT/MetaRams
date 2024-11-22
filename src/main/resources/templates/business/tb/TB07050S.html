@@ -5,14 +5,12 @@
 <th:block layout:fragment="script">
 	<script th:src="@{js/common.js}"></script>
 	<script th:src="@{js/toggleBtn.js}"></script>
-	<script th:src="@{js/business/tb/TB03023P.js}"></script>
 	<script th:src="@{js/business/tb/TB06011P.js}"></script>
 	<script th:src="@{js/business/tb/TB11111S.js}"></script>
 	<script th:src="@{js/business/tb/TB07050S.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
-	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
 	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
 </th:block>
 
@@ -90,9 +88,6 @@
 										<label class="col-sm-1 col-form-label text-right">거래상대방</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" style="width:30px;" id="TB07050S_trOthrDscmNo" disabled>
-											<!-- <span class="input-group-append">
-												<button type="button" class="btn btn-default" onclick="callTB03023P('TB07050S')"><i class="fa fa-search"></i></button>
-											</span> -->
 											&nbsp;
 											<input type="text" class="form-control" style="width:70px;" id="TB07050S_trOthrDscmNm" disabled>
 										</div>

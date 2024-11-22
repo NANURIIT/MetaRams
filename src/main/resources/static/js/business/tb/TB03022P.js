@@ -192,15 +192,18 @@ function setEmpNm(e) {
 	$(pageHdqtCd).val(hdqtCd);
 	$(pageHdqtNm).val(hdqtNm);
 
+	// 그리드(위원정보) 데이터 가져오기
+	const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid("option", "dataModel.data");	// 20241122 오류나서 바꿨습니다
+
 	// 공동
 	switch ( prefix ) {
 		// 공동영업관리자/협업부서
 		case "TB03020S":
 			let newRow = {
-				"dprtCd" : dprtCd,
-				"dprtNm" : dprtNm,
-				"bsnssMngPEno" : empNo,
-				"empNm" : empNm,
+				"dprtCd" : dprtCd,      //부서코드
+				"dprtNm" : dprtNm,      //부서명
+				"bsnssMngPEno" : empNo, //직원번호
+				"empNm" : empNm,        //직원명
 				"cntrt" : "",
 				"delYn" : "N",
 				
@@ -208,14 +211,25 @@ function setEmpNm(e) {
 			$("#gridEnoPList").pqGrid("addRow", {rowData: newRow,  checkEditable: false });
 			break;
 		case "TB05010S_mmbrTrgt" :
-			arrPqGridMmbrInfo.pdata[mmbrSn].atdcTrgtEmpnm = empNm;
-			arrPqGridMmbrInfo.pdata[mmbrSn].atdcTrgtEmpno = empNo;
-			arrPqGridMmbrInfo.refresh();
+			// 특정 행의 데이터 수정 
+			if (arrPqGridMmbrInfo.length > 0) {
+				arrPqGridMmbrInfo[mmbrSn].atdcTrgtEmpnm = empNm; // 버튼을 누른 행의 atdcTrgtEmpnm(위원명_화면) 값 변경
+				arrPqGridMmbrInfo[mmbrSn].atdcTrgtEmpno = empNo; // 버튼을 누른 행의 atdcTrgtEmpno(위원코드) 값 변경
+			}
+
+			// 변경 내용 적용
+			$("#gridMmbrList").pqGrid("refreshDataAndView");
+
 			break; 
 		case "TB05010S_mmbrAngt" :
-			arrPqGridMmbrInfo.pdata[mmbrSn].atdcAngtEmpnm = empNm;
-			arrPqGridMmbrInfo.pdata[mmbrSn].atdcAngtEmpno = empNo;
-			arrPqGridMmbrInfo.refresh();
+			// 특정 행의 데이터 수정 
+			if (arrPqGridMmbrInfo.length > 0) {
+				arrPqGridMmbrInfo[mmbrSn].atdcAngtEmpnm = empNm; // 버튼을 누른 행의 atdcTrgtEmpnm(대리참석위원_화면) 값 변경
+				arrPqGridMmbrInfo[mmbrSn].atdcAngtEmpno = empNo; // 버튼을 누른 행의 atdcTrgtEmpno(대리참석위원_코드) 값 변경
+			}
+
+			// 변경 내용 적용
+			$("#gridMmbrList").pqGrid("refreshDataAndView");
 			break; 
 		// 심사신청관리 > 관리점1
 		case "TB04012P1":

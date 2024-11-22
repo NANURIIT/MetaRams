@@ -83,7 +83,7 @@ public class TB9999DServiceImpl implements TB9999DService, Runnable {
                 } else {
                     // api 설정 해줘야함
                     // 임시 주소
-                    String ip = "http://localhost:18090/";
+                    String ip = "http://localhost:18092/";
                     String batchUpdateUriString = ip + needUpdateData.getJobId() + "/insert";
                     URI batchUpdateUri = URI.create(batchUpdateUriString);
 

@@ -34,7 +34,7 @@
                 , PTFD_CRRY_CD                                     	/* 부의통화코드 */
                 , PTFD_AMT                                          /* 부의금액 */
                 , INV_NTN_CD                                      	/* 투자국가코드 */
-                , APLC_EXCH_R                                       /* 적용환율 */
+                , APLY_EXRT                                       /* 적용환율 */
                 , KRW_TRSL_PTFD_AMT                                 /* 원화환산부의금액 */
                 , IND_TYP_DVD_CD                                    /* 업종분류코드 */
                 , CHECK_ITEM_CD                                     /* 점검항목코드(업무구분) */
@@ -107,7 +107,7 @@
                , #{ptfdCrryCd}                                     	/* 부의통화코드 */
                , #{ptfdAmt}                                         /* 부의금액 */
                , #{invNtnCd}                                      	/* 투자국가코드 */
-               , #{aplcExchR}                                       	/* 적용환율 */
+               , #{aplyExrt}                                       	/* 적용환율 */
                , #{krwTrslPtfdAmt}                                  /* 원화환산부의금액 */
                , #{indTypDvdCd}                                     /* 업종분류코드 */
                , #{checkItemCd}                                     /* 점검항목코드(업무구분) */
@@ -204,7 +204,7 @@
              , A.PTFD_CRRY_CD                                     /* 부의통화코드 */
              , A.PTFD_AMT                                          /* 부의금액 */
              , A.INV_NTN_CD                                      /* 투자국가코드 */
-             , A.APLC_EXCH_R                                       /* 적용환율 */
+             , A.APLY_EXRT                                       /* 적용환율 */
              , A.KRW_TRSL_PTFD_AMT                                 /* 원화환산부의금액 */
              , A.IND_TYP_DVD_CD                                    /* 업종분류코드 */
              , A.CHECK_ITEM_CD                                     /* 점검항목코드(업무구분) */
@@ -330,7 +330,7 @@
              , PTFD_CRRY_CD                                     /* 부의통화코드 */
              , PTFD_AMT                                          /* 부의금액 */
              , INV_NTN_CD                                      /* 투자국가코드 */
-             , APLC_EXCH_R                                       /* 적용환율 */
+             , APLY_EXRT                                       /* 적용환율 */
              , KRW_TRSL_PTFD_AMT                                 /* 원화환산부의금액 */
              , IND_TYP_DVD_CD                                    /* 업종분류코드 */
              , CHECK_ITEM_CD                                     /* 점검항목코드(업무구분) */
@@ -421,7 +421,7 @@
             , PTFD_CRRY_CD                                     	= #{ptfdCrryCd}                                     /* 부의통화코드 */
             , PTFD_AMT                                          = #{ptfdAmt}                                         /* 부의금액 */
             , INV_NTN_CD                                      	= #{invNtnCd}                                      /* 투자국가코드 */
-            , APLC_EXCH_R                                       = #{aplcExchR }                                       /* 적용환율 */
+            , APLY_EXRT                                       = #{aplyExrt }                                       /* 적용환율 */
             , KRW_TRSL_PTFD_AMT                                 = #{krwTrslPtfdAmt}                                  /* 원화환산부의금액 */
             , IND_TYP_DVD_CD                                    = #{indTypDvdCd}                                     /* 업종분류코드 */
             , CHECK_ITEM_CD                                     = #{checkItemCd}                                     /* 점검항목코드(업무구분) */
@@ -627,7 +627,7 @@
              , s103b.PTFD_AMT                                        /* 부의금액 */
              , s103b.INV_NTN_CD                                    /* 투자국가코드 */
              , s002b_5.CD_VL_NM AS INVST_NTN_CD_NM
-             , s103b.APLC_EXCH_R                                     /* 적용환율 */
+             , s103b.APLY_EXRT                                     /* 적용환율 */
              , s103b.KRW_TRSL_PTFD_AMT                               /* 원화환산부의금액 */
              , s103b.IND_TYP_DVD_CD                                  /* 업종분류코드 */
              , s103b.CHECK_ITEM_CD                                   /* 점검항목코드(업무구분) */
@@ -747,8 +747,8 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
            AND s003b_1.BDCD = #{dbcd}
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crncyCd)">
-           AND s101b.CRRY_CD = #{crncyCd}
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crryCd)">
+           AND s101b.CRRY_CD = #{crryCd}
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND s101b.DEAL_NO LIKE '%'|| #{dealNo} || '%'
@@ -776,11 +776,11 @@
 		     , s112b.CNSB_SQ                                               /* 협의체순번 */
 		     , s112b.SN                                                    /* 일련번호 */
 		     , s112b.APVL_DT                                               /* 승인일자 */
-		     , NVL(s201b.EPRZ_CRDL_APVL_AMT, s112b.EPRZ_CRDL_APVL_AMT) AS EPRZ_CRDL_APVL_AMT             /* 승인금액 */
+		     , NVL(s201b.EPRZ_CRDL_APVL_AMT, s112b.APVL_AMT) AS APVL_AMT             /* 승인금액 */
 		     , s112b.SDN_CNDT_F                                            /* 셀다운조건여부 */
 		     , s112b.ETC_CNDT_F                                            /* 기타조건여부 */
 		     , (
-		        SELECT NVL(sum(s112bX.EPRZ_CRDL_APVL_AMT), 0)	AS SUM_APVL_AMT
+		        SELECT NVL(sum(s112bX.APVL_AMT), 0)	AS SUM_APVL_AMT
 		          FROM IBIMS112B s112bX
 		         WHERE 1=1
 				  AND s103b.DEAL_NO 			  = s112bX.DEAL_NO 
@@ -1038,7 +1038,7 @@
              , PTFD_CRRY_CD                           /* 부의통화코드 */
              , PTFD_AMT                                /* 부의금액 */
              , INV_NTN_CD                            /* 투자국가코드 */
-             , APLC_EXCH_R                             /* 적용환율 */
+             , APLY_EXRT                             /* 적용환율 */
              , KRW_TRSL_PTFD_AMT                       /* 원화환산부의금액 */
              , IND_TYP_DVD_CD                          /* 업종분류코드 */
              , CHECK_ITEM_CD                           /* 점검항목코드(업무구분) */

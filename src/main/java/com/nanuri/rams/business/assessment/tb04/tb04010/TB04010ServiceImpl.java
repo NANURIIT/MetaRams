@@ -99,13 +99,13 @@ public class TB04010ServiceImpl implements TB04010Service {
 		if (mtrPrgSttsDcd.equals("202")) {
 			
 			ibims100BVO.setEmpno(facade.getDetails().getEno());					// 사원번호 					
-			ibims100BVO.setWorkDcd("01");                              			// 작업구분코드
-			ibims100BVO.setWorkCtns("(결재) 심사신청관리");                     // 작업내용
-			ibims100BVO.setPrcsEmpno(facade.getDetails().getEno());             // 등록사원번호
-			ibims100BVO.setMenuId("/TB04010S");                               	// 메뉴ID 
-			ibims100BVO.setEntpNm(param.getEntpNm());                           // 업체명 
-			ibims100BVO.setRmrk("dealNo=" + param.getDealNo());                 // 비고(메뉴별조회KEY)
-			ibims100BVO.setHndEmpno(facade.getDetails().getEno());              // 조작사원번호
+			ibims100BVO.setWorkDcd("01");                       // 작업구분코드
+			ibims100BVO.setWorkCtns("(결재) 심사신청관리");     // 작업내용
+			ibims100BVO.setRgstEmpno(facade.getDetails().getEno());    // 등록사원번호
+			ibims100BVO.setMenuId("/TB04010S");                 // 메뉴ID 
+			ibims100BVO.setEntpNm(param.getEntpNm());                  // 업체명 
+			ibims100BVO.setRmrk("dealNo=" + param.getDealNo());        // 비고(메뉴별조회KEY)
+			ibims100BVO.setHndEmpno(facade.getDetails().getEno());     // 조작사원번호
 			
 			ibims100bMapper.insertIBIMS100BInfo(ibims100BVO);
 			

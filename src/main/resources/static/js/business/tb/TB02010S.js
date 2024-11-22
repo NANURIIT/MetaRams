@@ -204,7 +204,7 @@ const TB02010Sjs = (function(){
 		var menuId;
 		var menuNm;
 
-		if(wfMapNm == "딜기본정보등록"){
+		if(wfMapNm == "딜정보등록승인"){
 			menuId = "TB03020S";
 			menuNm = "Deal정보 등록";
 		}else{

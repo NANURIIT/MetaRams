@@ -31,7 +31,7 @@ public class IBIMS103BDTO {
     private String     ptfdCrryCd;                   // 부의통화코드
     private BigDecimal ptfdAmt;                       // 부의금액
     private String     invNtnCd;                      // 투자국가코드
-    private BigDecimal aplcExchR;                     // 적용환율
+    private BigDecimal aplyExrt;                     // 적용환율
     private BigDecimal krwTrslPtfdAmt;                // 원화환산부의금액
     private String     indTypDvdCd;                   // 업종분류코드(고위험산업)
     private String     checkItemCd;                   // 점검항목코드(업무구분)

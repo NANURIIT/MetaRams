@@ -169,7 +169,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 		setParam.setBdbtRsvsRcknStdrMdclCd(getParam.getBdbtRsvsRcknStdrMdclCd()); /* 대손준비금산정기준중분류코드 */
 		setParam.setBdbtRsvsRcknStdrSclsCd(getParam.getBdbtRsvsRcknStdrSclsCd()); /* 대손준비금산정기준소분류코드 */
 		setParam.setBdbtRsvsRcknStdrRto(getParam.getBdbtRsvsRcknStdrRto()); /* 대손준비금산정기준비율 */
-		setParam.setEprzCrdlCtrtAmt(getParam.getEprzCrdlCtrtAmt()); /* 기업여신계약금액 */
+		setParam.setEprzCrdlCtrtAmt(getParam.getEprzCrdlCtrcAmt()); /* 기업여신계약금액 */
 		setParam.setThcoPtciAmt(getParam.getThcoPtciAmt()); /* 당사참여금액 */
 		setParam.setEprzCrdlIntrDnumClcMthCd(getParam.getIntrDnumClcMthCd()); /* 기업여신이자일수계산방법코드 */
 		setParam.setEprzCrdlHldyPrcsDcd(getParam.getHldyPrcsDcd()); /* 기업여신휴일처리구분코드 */

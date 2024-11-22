@@ -39,8 +39,8 @@ public class IBIMS100BVO {
 		private String     wrtDt;                     // 기표일자
 		private String     mtrtDt;                    // 만기일자
 		private String     invstNtnCd;                // 투자국가코드
-		private String     invstCrncyCd;              // 투자통화코드
-		private double     crncyAmt;                  // 통화금액
+		private String     invstCrryCd;              // 투자통화코드
+		private double     crryAmt;                  // 통화금액
 		private String     invstGdsLdvdCd;            // 투자상품대분류코드
 		private String     invstGdsMdvdCd;            // 투자상품중분류코드
 		private String     invstGdsSdvdCd;            // 투자상품소분류코드
