@@ -44,8 +44,10 @@ public class TB06030ServiceImpl implements TB06030Service {
 	public int regPrdtCd(IBIMS201BVO param) {
 
 		int result = 0;
+		String empNo = facade.getDetails().getEno();
 
 		if (StringUtil.isAllWhitespace(param.getPrdtCd())) {						// 없으면 등록
+			param.setHndEmpno(empNo);
 			List<IBIMS201BDTO> lstS201bDTO = ibims201bMapper.selectIBIMS201B(param);
 
 			if (lstS201bDTO.size() > 0) {
@@ -71,7 +73,7 @@ public class TB06030ServiceImpl implements TB06030Service {
 				}
 			}
 		} else {																	// 있으면 수정
-			
+			param.setHndEmpno(empNo);
 			ibims201bMapper.deletePrdtCd(param);
 
 			result = ibims201bMapper.regPrdtCd(param);
@@ -86,6 +88,8 @@ public class TB06030ServiceImpl implements TB06030Service {
 	public int registFinc(IBIMS250BDTO param) {
 
 		int result = 0;
+		String empNo = facade.getDetails().getEno();
+		param.setHndEmpno(empNo);
 
 		if (StringUtil.isAllWhitespace(param.getPrdtCd())) {						// 없으면 등록
 			List<IBIMS250BDTO> lstS250bDTO = ibims250bMapper.selectIBIMS250B(param);

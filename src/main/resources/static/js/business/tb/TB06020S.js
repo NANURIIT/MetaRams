@@ -252,7 +252,7 @@ const TB06020Sjs = (function(){
 	}
 
 	// 결의안건정보
-	function getCnfrncDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd, prdtCd) {
+	function getCnfrncDealInfo(ibDealNo, jdgmDcd, mtrDcd, prdtCd) {
 
 		if (isEmpty(ibDealNo) && isEmpty(prdtCd)) {
 			option.text = "Deal 정보 또는 종목코드 정보를 조회해주세요.";
@@ -262,8 +262,8 @@ const TB06020Sjs = (function(){
 
 		var paramData = {
 			"dealNo" : ibDealNo,
-			"mtrDcd" : lstCCaseCcd,
-			"jdgmDcd" : riskInspctCcd,
+			"mtrDcd" : mtrDcd,
+			"jdgmDcd" : jdgmDcd,
 			"prdtCd" : prdtCd
 		}
 
@@ -324,7 +324,7 @@ const TB06020Sjs = (function(){
 				$('#TB06020S_fndCd').val(dealDetail.ortnFndCd);													// 펀드코드
 				$('#TB06020S_fndNm').val(dealDetail.fndNm);														// 펀드코드명
 				$('#TB06020S_D012').val(dealDetail.dskCd).prop("selected", true);								// 데스크코드
-				$('#TB06020S_C006').val(dealDetail.invstNtnCd).prop("selected", true);							// 투자국가코드
+				$('#TB06020S_C006').val(dealDetail.invNtnCd).prop("selected", true);							// 투자국가코드
 				$(":radio[name='TB06020S_rlesFnnYn']").radioSelect(dealDetail.rlesFnnYn);						// 부동산금융여부
 				$('#TB06020S_R017').val(dealDetail.rlesFnnDetlDcd).prop("selected", true);						// 부동산금융구분코드
 				
@@ -333,7 +333,7 @@ const TB06020Sjs = (function(){
 				
 				/** 금융조건 정보 */
 				
-				$('#TB06020S_rcgAmt').val(Number(handleNullData(dealDetail.apvlAmt)).toLocaleString());			// 종목승인금액
+				$('#TB06020S_rcgAmt').val(Number(handleNullData(dealDetail.apvlAmt)).toLocaleString());	// 종목승인금액
 				$('#TB06020S_I027').val(dealDetail.trCrryCd).prop("selected", true);							// 투자통화코드
 				
 				$(":radio[name='TB06020S_untpFndYn']").radioSelect(dealDetail.untpFndYn);						// 단위형여부
