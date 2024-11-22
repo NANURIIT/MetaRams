@@ -37,6 +37,7 @@ public class IBIMS101BVO extends IBIMS101BDTO {
     private String eprzCrdlIntrBnaoDcd;
     private String trOthrDscmNo;
     private String bzepName;
+    private String entpNm;
     private String jdgmNm;
     private String rdmpTmrd; //상환회차
     private String mtrPrgSttsNm;

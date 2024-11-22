@@ -33,7 +33,7 @@ const TB06060Sjs = (function(){
         {
             title: "거래상대방명",
             dataType: "string",
-            dataIndx: "bzepName",
+            dataIndx: "entpNm",
             align: "center",
             halign: "center",
             width: "",
@@ -50,7 +50,7 @@ const TB06060Sjs = (function(){
         },
         {
             title: "종목승인금액",
-            dataIndx: "apvlAmt",
+            dataIndx: "eprzCrdlApvlAmt",
             dataType: "integer",
             align: "right",
             halign: "center",

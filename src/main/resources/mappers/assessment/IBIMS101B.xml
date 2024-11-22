@@ -484,7 +484,7 @@
                   ELSE 'NOT'
              END                        AS MTR_PRG_STTS_NM                  
             ,C.EPRZ_CRDL_APVL_AMT
-            ,C.EPRZ_CRDL_APVL_AMT                           
+            ,C.EPRZ_CRDL_CTRC_AMT                           
             ,C.LOAN_AMT                                     
     	      ,C.DEAL_EXC_BLCE                                
     	      ,C.EPRZ_CRDL_INTR_BNAO_DCD                      
@@ -534,8 +534,7 @@
              ,A.IB_PRDT_CLSF_CD
              ,A.RQS_KND_CD
              ,A.PRG_STTS_CD
-             ,B.EPRZ_CRDL_APVL_AMT
-             ,B.EPRZ_CRDL_CTRC_AMT                                                     /*  기업여신약정금액 */
+             ,B.EPRZ_CRDL_CTRC_AMT                                                    /*  기업여신약정금액 */
     	       ,B.EPRZ_CRDL_INTR_BNAO_DCD                                                /*  기업여신이자선후취구분코드 */
              ,(SELECT C1.TOT_RDMP_TMRD  FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1' AND ROWNUM = 1) AS TOT_RDMP_TMRD      /*  총상환회차 */
              ,(SELECT MAX(C1.LAST_RDMP_TMRD)  FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1') AS LAST_RDMP_TMRD              /*  최종상환회차 */
