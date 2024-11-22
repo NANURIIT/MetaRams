@@ -88,9 +88,9 @@ const TB03040Sjs = (function(){
     sessionStorage.setItem("dealNm", e.dealNm);
 
     if (inspctPrgrsStCd < 301) {
-      callPageTest("TB04010S", "심사신청관리");
+      callPage("TB04010S", "심사신청관리");
     } else {
-      callPageTest('TB05040S', '협의체 현황 및 결과조회');
+      callPage('TB05040S', '협의체 현황 및 결과조회');
     }
   }
 
