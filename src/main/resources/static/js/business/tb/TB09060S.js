@@ -320,7 +320,7 @@ const TB09060Sjs = function () {
 
   function getList1() {
     var dealNo = $("#TB09060S_ibDealNo").val();
-    var sn = $("#TB09060S_Sn").val();
+    var excSeq = $("#TB09060S_excSeq").val();
     var startDt =
       replaceAll($("#TB09060S_startDt").val(), "-", "") == null
         ? ""
@@ -336,7 +336,7 @@ const TB09060Sjs = function () {
     console.log(
       dealNo +
       "," +
-      sn +
+      excSeq +
       "," +
       startDt +
       "~" +
@@ -349,7 +349,7 @@ const TB09060Sjs = function () {
 
     const paramData = {
       dealNo: dealNo,
-      excSeq: sn,
+      excSeq: excSeq,
       startDt: startDt,
       endDt: endDt,
       dprtCd: dprtCd,

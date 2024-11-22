@@ -44,9 +44,6 @@
         <if test="endDt != ''">
            AND (A.FRS_PRNA_OVDU_OCRNC_DT <![CDATA[<=]]> #{endDt})
         </if>
-        <if test="dbcd != ''">
-           AND C.BDCD = #{dbcd}
-        </if>
         <if test="ovduRlseYn == 1">
            AND A.OVDU_STTS_CD <![CDATA[>=]]> 1
         </if>

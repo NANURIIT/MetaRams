@@ -64,7 +64,7 @@ const TB10710Sjs = function(){
             , {
                 title: "등록일자",
                 dataType: "string",
-                dataIndx: "erlmDt",
+                dataIndx: "rgstDt",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] }
