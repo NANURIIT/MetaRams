@@ -108,6 +108,47 @@ const TB06080Sjs = (function () {
     pqGridObjApvlList.setData([]);
     pqGridObjGbckList.setData([]);
   };
+  
+  
+  
+  /*
+    *  부분 초기화
+    */
+   function resetTb06080_below() {
+     //승인요청
+     $("#TB06080S_apvlRqstSq").val(""); // 승인요청순번
+     $("#TB06080S_chrrEno").val(""); // 책임자사번
+     $("#TB06080S_chrrEnm").val(""); // 책임자이름
+     $("#TB06080S_dcfcEno").val(""); // 요청자사번
+     $("#TB06080S_apvlRqstPEnm").val(""); // 요청자이름
+     $("#TB06080S_decdStepDcd").val(""); // 결재단계
+     $("#TB06080S_rqstDtm").val(""); // 승인요청일자
+     $("#TB06080S_rqstCnclDtm").val(""); // 승인요청취소일자
+     $("#TB06080S_dealNo").val(""); // Deal번호
+     $("#TB06080S_dealNm").val(""); // Deal명
+     $("#TB06080S_excSq").val(""); // 실행순번
+     $("#TB06080S_rqstSq").val(""); // 신청순번
+     $("#TB06080S_trSq").val(""); // 거래순번
+     $("#TB06080S_apvlRqstCntn").val(""); // 승인요청내용
+     $("#TB06080S_scrnNo").val(""); // 화면번호
+     $("#TB06080S_prcsRsltDcd").val(""); // 처리결과
+     $("#TB06080S_errCntn").val(""); // 오류내용
+     //반려
+     $("#TB06080S_decdSq").val(""); // 결재순번
+     $("#TB06080S_decdSttsDcd").val(""); // 결재상태
+     $("#TB06080S_decdDtm").val(""); // 결재일자
+     $("#TB06080S_dcfcEnoGbck").val(""); // 결재자사번
+     $("#TB06080S_dcfcEnmGbck").val(""); // 결재자이름
+     $("#TB06080S_dcfcAnnoCntn").val(""); // 결재자주석
+     $("#TB06080S_rjctYn").val(""); // 반려여부
+     $("#TB06080S_rjctRsnCntn").val(""); // 반려사유
+     //그리드
+     pqGridObjApvlList.setData([]);
+     pqGridObjGbckList.setData([]);
+   };
+   
+  
+  
 
   /*******************************************************************
    * AJAX
@@ -187,6 +228,7 @@ const TB06080Sjs = (function () {
             text: "조회된 내역이 없습니다.",
             confirmButtonText: "확인",
           });
+		  resetTb06080_below();
           return;
         }
       },
