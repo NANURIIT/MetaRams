@@ -48,7 +48,7 @@ public class TB08036ServiceImpl implements TB08036Service {
 		
 		if(null != s602b) {
 			result.setInspctYm(s602b.getInspctYm());
-			result.setInspctRmrk(s602b.getCheckRslt());
+			result.setInspctRmrk(s602b.getInspctRmrk());
 		}
 		if(s603b.size() > 0) {
 			result.setLstInspctRmrk(s603b);
@@ -86,12 +86,13 @@ public class TB08036ServiceImpl implements TB08036Service {
 			rtnValue = ibims603BMapper.insertIBIMS603B(param);
 		}	
 		ibims611BMapper.deleteIBIMS611B(param);
-		if(param.getIbims611bdto().size() > 0) {
+		if(param.getIbims611bdto() != null && !param.getIbims611bdto().isEmpty()) {
+
 			for(int i = 0; param.getIbims611bdto().size() > i; i ++) {
 				System.out.println(">>> deal ["+param.getIbims611bdto().get(i).getDealNo()+"] <<<<<<<");
 				param.getIbims611bdto().get(i).setHndEmpno(facade.getDetails().getEno());
 			}
-			rtnValue = ibims611BMapper.insertIBIMS611B(param.getIbims611bdto());
+			rtnValue = ibims611BMapper.insertIBIMS611B(param.getIbims611bdto());			
 		}			
 	}
 

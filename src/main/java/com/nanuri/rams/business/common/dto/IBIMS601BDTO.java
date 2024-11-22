@@ -30,7 +30,7 @@ public class IBIMS601BDTO {
     private String         estmPrgsRt;                                          // 예상진척률
     private String         pfmcPrgsRt;                                          // 실적진척률
     private String         busiPrgStep;                                         // 사업진행단계
-    private String         checkRslt;                                         	// 점검결과
+    private String         inspctRmrk;                                         	// 점검결과
     private String         bsnBdSlltBalcCheckOpnn;                              // 영업점분양수지점검의견
     private Date           hndDetlDtm;                                      	// 조작상세일시
     private String         hndEmpno;                                       		// 조작사원번호

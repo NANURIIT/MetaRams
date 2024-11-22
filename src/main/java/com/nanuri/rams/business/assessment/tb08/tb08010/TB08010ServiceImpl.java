@@ -99,6 +99,7 @@ public class TB08010ServiceImpl implements TB08010Service {
 		    
 		    eamInfo.setSn(maxSq);
 		    eamInfo.setFstRgstPEno(facade.getDetails().getEno());
+		    eamInfo.setHndEmpno(facade.getDetails().getEno());
 		    
 		    return ibims606bMapper.registEamInfo(eamInfo);  					// 재산조사 등록
 		} else {
@@ -168,6 +169,7 @@ public class TB08010ServiceImpl implements TB08010Service {
 		    
 		    esttInfo.setSn(maxSq);
 		    esttInfo.setFstRgstPEno(facade.getDetails().getEno());
+				esttInfo.setHndEmpno(facade.getDetails().getEno());
 		    
 		    return ibims607bMapper.registEsttInfo(esttInfo);  				// 재산조사 등록
 		} else {
@@ -211,6 +213,7 @@ public class TB08010ServiceImpl implements TB08010Service {
 
 			lglInfo.setSn(maxSq);
 			lglInfo.setFstRgstPEno(facade.getDetails().getEno());
+			lglInfo.setHndEmpno(facade.getDetails().getEno());
 
 			return ibims608bMapper.registLglInfo(lglInfo);  				// 법적절차 등록
 		} else {
@@ -255,6 +258,7 @@ public class TB08010ServiceImpl implements TB08010Service {
 
 			efctInfo.setSn(maxSq);
 			efctInfo.setFstRgstPEno(facade.getDetails().getEno());
+			efctInfo.setHndEmpno(facade.getDetails().getEno());
 
 			return ibims609bMapper.registEfctInfo(efctInfo);  				// 법적절차 등록
 		} else {

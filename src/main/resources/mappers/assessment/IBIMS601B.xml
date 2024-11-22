@@ -83,7 +83,7 @@
                , #{estmPrgsRt}                                      /* 예상진척률 */
                , #{pfmcPrgsRt}                                      /* 실적진척률 */
                , #{busiPrgStep}                                     /* 사업진행단계 */
-               , #{checkRslt}										                    /* 점검결과 */
+               , #{inspctRmrk}										                    /* 점검결과 */
                , #{bsnBdSlltBalcCheckOpnn}							            /* 영업점분양수지점검의견 */
                , SYSDATE                                            /* 작업상세일시 */
                , #{hndEmpno}                                        /* 조작사원번호 */
@@ -114,7 +114,7 @@
             , ESTM_PRGS_RT                                      = #{estmPrgsRt}                                      /* 예상진척률 */
             , PFMC_PRGS_RT                                      = #{pfmcPrgsRt}                                      /* 실적진척률 */
             , BUSI_PRG_STEP                                     = #{busiPrgStep}                                     /* 사업진행단계 */
-            , CHECK_RSLT										                    = #{checkRslt}							                  			 /* 점검결과 */
+            , CHECK_RSLT										                    = #{inspctRmrk}							                  			 /* 점검결과 */
             , BSN_BD_SLLT_BALC_CHECK_OPNN						            = #{bsnBdSlltBalcCheckOpnn}	                  			 /* 영업점분양수지점검의견 */
             ,HND_DETL_DTM                                       = SYSDATE                                            /* 조작상세일시 */
             , HND_EMPNO                                         = #{hndEmpno}                                        /* 조작사원번호 */
