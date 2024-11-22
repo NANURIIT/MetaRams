@@ -230,6 +230,9 @@ const TB06020Sjs = (function(){
 		var riskInspctCcd = $('#TB06020S_riskInspctCcd').val();
 		var lstCCaseCcd = $('#TB06020S_lstCCaseCcd').val();
 		var prdtCd = $('#TB06020S_prdtCd').val();
+		
+		console.log("riskInspctCcd:"+riskInspctCcd );
+		console.log("lstCCaseCcd:"+lstCCaseCcd );
 
 
 		getCnfrncDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd, prdtCd);
@@ -596,9 +599,9 @@ const TB06020Sjs = (function(){
 			, "dealNo": $('#TB06020S_ibDealNo').val()									// 딜번호
 			, "dealNm": $('#TB06020S_ibDealNm').val()                                  // 딜명
 			//, "mtrNo": mtrNo                                    // 안건번호
-			, "nmcpMtrDcd": $('#TB06020S_lstCCaseCcd').val()							// 부수안건구분코드
-			//, "nmcpMtrSn": nmcpMtrSn                            // 부수안건일련번호
-			, "lstCCaseDcd": $('#TB06020S_riskInspctCcd').val()							// 리스크심사구분코드
+			, "mtrDcd": $('#TB06020S_lstCCaseCcd').val()							// 부수안건구분코드
+			//, "mtrSn": mtrSn                            // 부수안건일련번호
+			, "jdgmDcd": $('#TB06020S_riskInspctCcd').val()							// 리스크심사구분코드
 			, "mtrNm": $('#TB06020S_mtrNm').val()										// 안건명
 			//, "locoIssMngmNo": ''                    			// loc발급관리번호
 			//, "invIdtrtSmitYn": invIdtrtSmitYn                  // 투자확약서제출여부
@@ -626,10 +629,10 @@ const TB06020Sjs = (function(){
 			//, "acctJobCd": acctJobCd                            // 회계업무코드
 			//, "acctUnJobCd": acctUnJobCd                        // 회계단위업무코드
 			//, "acctTrCd": acctTrCd                              // 회계거래코드
-			, "apvlAmt": replaceAll($('#TB06020S_rcgAmt').val(), ',', '') / 1			// 종목승인금액
-			//, "ctrtAmt": ctrtAmt                                // 기업여신계약금액
-			//, "invAmt": 0.0								        // 투자금액
-			//, "intrRcvnMthCd": intrRcvnMthCd                    // 기업여신이자수취방법코드
+			, "eprzCrdlApvlAmt": replaceAll($('#TB06020S_rcgAmt').val(), ',', '') / 1			// 종목승인금액
+			//, "eprzCrdlCtrtAmt": ctrtAmt                                // 기업여신계약금액
+			//, "eprzCrdlInvAmt": 0.0								        // 투자금액
+			//, "eprzCrdlIntrRcvnMthCd": intrRcvnMthCd                    // 기업여신이자수취방법코드
 			//, "intrBnaoDcd": intrBnaoDcd                        // 이자선후취구분코드
 			//, "tfdLyAplyDcd": tfdLyAplyDcd                      // 초일말일적용구분코드
 			//, "intrSnnoPrcsDcd": intrSnnoPrcsDcd                // 이자단수처리구분코드
@@ -640,7 +643,7 @@ const TB06020Sjs = (function(){
 			//, "prnaRdmpFrqcMnum": prnaRdmpFrqcMnum              // 원금상환주기개월수
 			//, "intrRdmpFrqcMnum": intrRdmpFrqcMnum              // 이자상환주기개월수
 			//, "prnaDfrPrdMnum": prnaDfrPrdMnum                  // 원금거치기간개월수
-			//, "ctrtNo": ctrtNo                                  // 기업여신계약번호
+			//, "eprzCrdlCtrtNo": ctrtNo                                  // 기업여신계약번호
 			//, "ctrcPrarDt": ''		                            // 약정예정일자
 			///, "ctrcPrdMnum": ($('#TB06020S_ctrcPrdMnum').val() / 1)						// 약정기간개월수
 			, "ctrcPrdDcd": $('#TB06020S_ctrcPrdDcd').val()								// 약정기간구분코드
@@ -652,13 +655,13 @@ const TB06020Sjs = (function(){
 			, "stupDt": replaceAll($('#TB06020S_stupDt').val(), '-', '')				// 설정일
 			, "trustEdDt": replaceAll($('#TB06020S_trustEdDt').val(), '-', '')			// 신탁종료일 
 			, "isuDt": replaceAll($('#TB06020S_isuDt').val(), '-', '')					// 발행일자 
-			//, "ctrtEndRsnCd": ctrtEndRsnCd                      // 기업여신계약종료사유코드
-			//, "ctrtEndRsnCtns": ctrtEndRsnCtns                  // 기업여신계약종료사유내용
+			//, "eprzCrdlCtrtEndRsnCd": ctrtEndRsnCd                      // 기업여신계약종료사유코드
+			//, "eprzCrdlCtrtEndRsnCtns": ctrtEndRsnCtns                  // 기업여신계약종료사유내용
 			, "trCrryCd": $('#TB06020S_I027').val()										// 거래통화코드
 			, "invNtnCd": $('#TB06020S_C006').val()										// 투자국가코드
 			, "ortnFndCd": $('#TB06020S_fndCd').val()								// 운용펀드코드
 			, "dskCd": $('#TB06020S_D012').val()										// 데스크코드
-			, "indvLmtDcd": $('#TB06020S_E010').val()									// 개별한도구분코드
+			, "eprzCrdlIndvLmtDcd": $('#TB06020S_E010').val()									// 개별한도구분코드
 			//, "ctlbCtrtShpDcd": ''                 			    // 우발채무계약형태구분코드
 			//, "ctlbBssAsstDcd": ''                  			// 우발채무기초자산구분코드
 			, "socYn": $('input[name=TB06020S_socYn]:checked').val()					// soc여부
@@ -709,7 +712,7 @@ const TB06020Sjs = (function(){
 			//, "addIntrt": addIntrt                              // 가산금리
 			//, "intrtCngeFrqcMnum": intrtCngeFrqcMnum            // 금리변동주기개월수
 			//, "hdwtEvlAmt": hdwtEvlAmt                          // 수기평가금액
-			//, "weekMrtgKndCd": weekMrtgKndCd                    // 기업여신주담보종류코드
+			//, "eprzCrdlWeekMrtgKndCd": weekMrtgKndCd                    // 기업여신주담보종류코드
 			//, "ovduIntrRt": ovduIntrRt                          // 연체이자율
 			//, "ovduIntrRtDcd": ovduIntrRtDcd                    // 연체이자율구분코드
 			//, "totRdmpTmrd": totRdmpTmrd                        // 총상환회차

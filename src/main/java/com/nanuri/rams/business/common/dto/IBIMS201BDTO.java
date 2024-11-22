@@ -55,7 +55,7 @@ public class IBIMS201BDTO {
     private String acctUnJobCd;                     //  회계단위업무코드
     private String acctTrCd;                        //  회계거래코드
     private BigDecimal eprzCrdlApvlAmt;             //  승인금액
-    private BigDecimal eprzCrdlCtrcAmt;             //  기업여신계약금액
+    private BigDecimal eprzCrdlCtrtAmt;             //  기업여신계약금액
     private BigDecimal eprzCrdlInvAmt;              //  기업여신투자금액
     private String eprzCrdlIntrRcvnMthCd;           //  기업여신이자수취방법코드
     private String intrBnaoDcd;                     //  이자선후취구분코드

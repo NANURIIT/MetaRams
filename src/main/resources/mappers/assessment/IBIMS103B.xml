@@ -828,7 +828,7 @@
 		     , s201b.CNNC_PRDT_CD                                          /* 연결상품코드 */
 		     , s201b.CHRR_EMPNO                                            /* 담당자사원번호 */
 		     , s003b.EMP_NM                                                /* 사원명 */
-		     , s003b.BDCD                                               /* 부서코드 */
+			 , s003b.DPRT_CD                                               /* 부서코드 */
 		     , s003b.DPRT_NM                                               /* 부서명 */
 		     , s201b.UNTP_FND_YN                                           /* 단위형펀드여부 */
 		     , s201b.PPLC_FND_YN                                           /* 사모펀드여부 */
@@ -974,6 +974,7 @@
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
            AND s201b.PRDT_CD 				= #{prdtCd}
            </if>
+           AND ROWNUM = 1
     </select>
 
     <select id="getDealDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS103BDTO" resultType="com.nanuri.rams.business.common.vo.TB05040SVO">

@@ -184,7 +184,7 @@ const TB04060Sjs = (function() {
 			title: "기업여신약정금액",
 			// editable: true,
 			dataType: "string",
-			dataIndx: "eprzCrdlCtrcAmt",
+			dataIndx: "eprzCrdlCtrtAmt",
 			align: "right",
 			halign: "center",
 			width: "180",
@@ -582,7 +582,7 @@ const TB04060Sjs = (function() {
 								"chrrEmpnm"			: value.chrrEmpnm,
 								"cnsbDcd"			: value.cnsbDcd,
 								"apvlDt"			: value.apvlDt,
-								"eprzCrdlCtrcAmt"	: value.eprzCrdlCtrcAmt,
+								"eprzCrdlCtrtAmt"	: value.eprzCrdlCtrtAmt,
 								"dealExcAmt"		: value.dealExcAmt,
 								"dealExcBlce"		: value.dealExcBlce
 							}
