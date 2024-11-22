@@ -5,50 +5,50 @@
 	<!-- 기업체 정보 조회 -->
 		<!-- 기업체 정보 조회 IBIMS010BMapper.selectArdyBzepInfo  -->
 	<select id="selectArdyBzepInfo" resultType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO" parameterType='com.nanuri.rams.business.common.vo.IBIMS010BVO$SchCondVO'>
-		SELECT  A.ARDY_BZEP_NO
-		      , A.ENTP_NM
-		      , A.RNBN
-		      , A.CRNO
-		      , A.CSNO
-		      , A.NICEI_BZEP_CD
-		      , A.BZPL_DVSN_CD
-		      , A.KOR_BZPL_NAME
-		      , A.ENG_BZPL_NAME
-		      , A.ATNO
-		      , A.BTNO
-		      , A.STNO
-		      , A.FAX_ATNO
-		      , A.FAX_BTNO
-		      , A.FAX_STNO
-		      , A.ZPCD
-		      , A.KOR_BZPL_ADDR
-		      , A.ENG_BZPL_ADDR
-		      , A.OPBS_DT
-		      , A.STD_IDST_SCLS_CD
-		      , A.BZCN_NM
-		      , A.CLSE_DVSN_CD
-		      , A.CLSE_DT
-		      , A.RGST_DT
-		      , A.RDM_TR_OPPN_NO
-		      , A.SMET_YN
-		      , A.ETPR_SHAP_DVSN_CD
-		      , A.LEI_CD
-		      , A.CTM_BIC_NAME
-		      , A.SWIFT_BANK_DSCM_CD
-		      , A.EPRZ_SCL_DCD
-		      , A.RVNU_AMT
-		      , A.TOT_ASST_AMT
-		      , A.FNAF_HLTY_SRNM_RT
-		      , A.OVRS_SPC_YN
-		      , A.USE_YN
-		      , A.HND_DETL_DTM
-		      , A.HND_EMPNO
-		      , A.HND_TMNL_NO
-		      , A.HND_TR_ID
-		      , A.GUID
-		      , A.EST_DT
-		      , A.STFF_NUM
-		      , A.OPRT_HNF_NUM
+		SELECT  A.ARDY_BZEP_NO			/* 기업체번호 */
+		      , A.ENTP_NM				/* 업체명 */
+		      , A.RNBN					/* 주민사업자등록번호 */
+		      , A.CRNO					/* 법인등록번호 */
+		      , A.CSNO					/* 고객번호 */
+		      , A.NICEI_BZEP_CD			/* 나이스신용평가업체코드 */
+		      , A.BZPL_DVSN_CD			/* 사업장구분코드 */
+		      , A.KOR_BZPL_NAME			/* 한글사업장명 */
+		      , A.ENG_BZPL_NAME			/* 영문사업장명 */
+		      , A.ATNO					/* 전화지역번호 */
+		      , A.BTNO					/* 전화국번호 */
+		      , A.STNO					/* 전화일련번호 */
+		      , A.FAX_ATNO				/* 팩스전화지역번호 */
+		      , A.FAX_BTNO				/* 팩스전화국번호 */
+		      , A.FAX_STNO				/* 팩스전화일련번호 */
+		      , A.ZPCD					/* 우편번호 */
+		      , A.KOR_BZPL_ADDR			/* 한글사업장주소 */
+		      , A.ENG_BZPL_ADDR			/* 영문사업장주소 */
+		      , A.OPBS_DT				/* 개업일자 */
+		      , A.STD_IDST_SCLS_CD		/* 표준산업소분류코드 */
+		      , A.BZCN_NM				/* 업태명 */
+		      , A.CLSE_DVSN_CD			/* 폐업구분코드 */
+		      , A.CLSE_DT				/* 폐업일자 */
+		      , A.RGST_DT				/* 등록일자 */
+		      , A.RDM_TR_OPPN_NO		/* RDM거래상대방번호 */
+		      , A.SMET_YN				/* 중소기업여부 */
+		      , A.ETPR_SHAP_DVSN_CD		/* 기업형태구분코드 */
+		      , A.LEI_CD				/* LEI코드 */
+		      , A.CTM_BIC_NAME			/* CTM은행인식코드명 */
+		      , A.SWIFT_BANK_DSCM_CD	/* SWIFT은행식별코드 */
+		      , A.EPRZ_SCL_DCD			/* 기업규모구분코드 */
+		      , A.RVNU_AMT				/* 매출금액 */
+		      , A.TOT_ASST_AMT			/* 총자산금액 */
+		      , A.FNAF_HLTY_SRNM_RT		/* 재무건전성비율 */
+		      , A.OVRS_SPC_YN			/* 해외SPC여부 */
+		      , A.USE_YN				/* 사용여부 */
+		      , A.EST_DT				/* 설립일자 */
+		      , A.STFF_NUM				/* 직원수 */
+		      , A.OPRT_HNF_NUM			/* 운영인력수 */
+		      , A.HND_DETL_DTM			/* 조작상세일시 */
+		      , A.HND_EMPNO				/* 조작사원번호 */
+		      , A.HND_TMNL_NO			/* 조작단말기번호 */
+		      , A.HND_TR_ID				/* 조작거래ID */
+		      , A.GUID					/* GUID */
 		   FROM IBIMS010B A      
 		  WHERE 1=1
 		    AND A.ARDY_BZEP_NO = #{ardyBzepNo}
@@ -136,7 +136,8 @@
 				OR A.KOR_BZPL_NAME LIKE '%'|| #{entpNm}|| '%'
 				OR UPPER(A.ENG_BZPL_NAME) LIKE '%'|| UPPER(#{entpNm})|| '%')
 		    </if>
-		    AND A.USE_YN = CASE WHEN NVL(#{useYn}, 'A') = 'A' THEN A.USE_YN ELSE #{useYn} END		    
+			AND A.USE_YN = 'Y'
+		    <!-- AND A.USE_YN = CASE WHEN NVL(#{useYn}, 'A') = 'A' THEN A.USE_YN ELSE #{useYn} END		     -->
 	</select>
 
 	<!-- 기업체리스트 생성  -->
@@ -296,7 +297,7 @@
 	<update id="updateArdyBzepUseYn" parameterType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO">		
 		UPDATE IBIMS010B 
 		   SET USE_YN				= 'N'                /* 사용여부 */
-             , HND_DETL_DTM			= TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')  /* 조작상세일시 */
+             , HND_DETL_DTM			= SYSDATE  /* 조작상세일시 */
              , HND_EMPNO			= #{hndEmpno}        /* 조작사원번호 */
              , HND_TMNL_NO			= #{hndTmnlNo}       /* 조작단말기번호 */
              , HND_TR_ID			= #{hndTrId}         /* 조작거래ID */
@@ -314,5 +315,13 @@
 		 WHERE CMNS_CD_GRP IN ('B022', 'E034', 'E035', 'S007', 'U005')
 	</select>
 	<!-- ORDER BY CD_SQ ASC -->
+
+
+	<select id="chk" parameterType="string" resultType="int">
+		SELECT COUNT(ARDY_BZEP_NO)
+		  FROM IBIMS010B
+		 WHERE 1=1
+		   AND ARDY_BZEP_NO = #{ardyBzepNo}
+	</select>
 
 </mapper>

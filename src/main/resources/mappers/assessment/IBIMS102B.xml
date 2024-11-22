@@ -52,7 +52,7 @@ VALUES (
 		
 		SELECT B.ARDY_BZEP_NO 				AS ENTP_CD      /* 업체코드 */
 			 , B.CRNO		  				AS CRNO	/* 법인등록번호 */
-			 , B.RNBN               		AS BZNO /* 사업자등록번호 */
+			 , B.RNBN               		AS bsnsRgstNo /* 사업자등록번호 */
 			 , NVL(B.ENTP_NM , '-')	    AS ENTP_HNGL_NM	/* 업체명 */
 			 , A.MET_DT				  		AS MET_DT		/* 미팅일자 */
 			 , NVL(A.MET_TM, '-')  		    AS MET_TM		/* 미팅시간 */
@@ -82,7 +82,7 @@ VALUES (
 	<select id="rmHistoryInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
 		SELECT A.RM_SQ 				AS RM_SQ			/*  RM일련번호 */
 	   		 , B.CRNO 		        AS CRNO		/*  법인등록번호 */
-			 , B.RNBN               AS BZNO     /*  사업자등록번호 */
+			 , B.RNBN               AS bsnsRgstNo     /*  사업자등록번호 */
 	   		 , B.ENTP_NM 		    AS ENTP_HNGL_NM		/*  업체명 */
 	   		 , A.MET_DT				AS MET_DT			/*  미팅일자 */
 	   		 , NVL(A.MET_TM, '')    AS MET_TM			/*  미팅시간 */

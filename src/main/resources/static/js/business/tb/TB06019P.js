@@ -12,6 +12,21 @@ function callTB06019P(prefix) {
 	$('#modal-TB06019P').modal('show');
 	indexChangeHandler("TB06019P");
 	setKeyFunction_TB06019P();
+	$('#TB06019P_delBtn').prop('disabled', true)
+
+}
+
+function vldDelBtn() {
+	const entpCd = $('#TB06019P_getArdyBzepNo').val();
+	if(entpCd === '' || entpCd === undefined){
+		$('#TB06019P_delBtn').prop('disabled', true)
+	}else{
+		$('#TB06019P_delBtn').prop('disabled', false)
+	}
+}
+
+function srchParam(){
+	$('#con-srchParam input').val('');
 }
 
 /**
@@ -28,7 +43,7 @@ function setKeyFunction_TB06019P() {
 		}
 
 		if ($("#TB06019P_ardyBzepNo").val().length === 0) {
-			$("#TB06019P_bzepName").val('');
+			$("#TB06019P_entpNm").val('');
 			reset_TB06019P();
 		}
 	});
@@ -52,13 +67,18 @@ function reset_TB06019P () {
 	$("#TB06019P_etprShapDvsnCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_stdIdstSclsCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprScleDvsnCd option:eq(0)").prop("selected", true);
+
+	/**
+	 * 초기화시 삭제버튼 비활성화
+	 */
+	vldDelBtn();
 }
 
 //기업체번호 조회
 function getArdyBzepInfo() {
 	let msgError = "";
 
-	var ardyBzepNo = $('#TB06019P_ardyBzepNo').val()		//기업체번호
+	var ardyBzepNo = $('#TB06019P_srch_ardyBzepNo').val()		//기업체번호
 
 	if (isEmpty(ardyBzepNo)) {
 		msgError = "기업체번호를 입력해주세요.";
@@ -67,8 +87,8 @@ function getArdyBzepInfo() {
 
 	function alertPopup() {
 		Swal.fire({
-			icon: 'error'
-			, title: "Error!"
+			icon: 'warning'
+			, title: "Warning!"
 			, text: msgError
 			, confirmButtonText: "확인"
 		});
@@ -85,10 +105,10 @@ function getArdyBzepInfo() {
 		dataType: "json",
 		success: function(data) {
 			/* 기본정보*/
-			$('#TB06019P_bzplDvsnCd').val(data.bzplDvsnCd).prop('selected', true);				//사업장구분
+			$('#TB06019P_bzplDvsnCd').val(data.bzplDvsnCd);				//사업장구분
 			$('#TB06019P_getArdyBzepNo').val(data.ardyBzepNo)			//기업체번호
-			$("#TB06019P_bzepName").val(data.bzepName);					//상단기업명
-			$('#TB06019P_bzepNm').val(data.bzepName)					//업체명
+			$("#TB06019P_srch_entpNm").val(data.entpNm);				//상단기업명
+			$('#TB06019P_entpNm').val(data.entpNm)						//업체명
 			$('#TB06019P_engBzplName').val(data.engBzplName)			//영문사업자명
 			$('#TB06019P_rnbn').val(checkBrnAcno(data.rnbn))			//사업자등록번호
 			$('#TB06019P_crno').val(checkBrnAcno(data.crno))			//법인등록번호
@@ -129,6 +149,11 @@ function getArdyBzepInfo() {
 			$('#TB06019P_fnafHltySrnmRt').val(data.fnafHltySrnmRt)		//재무건전성비율
 			$(':radio[name="ovrsSpcYn"]').radioSelect(data.ovrsSpcYn)	//해외SPC여부
 			$(':radio[name="useYn"]').radioSelect(data.useYn)			//사용여부
+
+			/**
+			 * 조회 성공시 삭제버튼 활성화
+			 */
+			vldDelBtn();
 		}
 
 	});
@@ -155,9 +180,9 @@ function saveArdyBzepInfo() {
 	function businessFunction() {
 
 		var inParam = {
-			"ardyBzepNo": $('#TB06019P_ardyBzepNo').val()					//기업체번호
+			"ardyBzepNo": $('#TB06019P_getArdyBzepNo').val()					//기업체번호
 			, "bzplDvsnCd": $('#TB06019P_bzplDvsnCd').val()					//사업장구분
-			, "bzepName": $('#TB06019P_bzepNm').val()						//업체명
+			, "entpNm": $('#TB06019P_entpNm').val()						//업체명
 			, "engBzplName": $('#TB06019P_engBzplName').val()				//영문사업자명
 			, "rnbn": $('#TB06019P_rnbn').val().replaceAll("-", "")			//사업자등록번호
 			, "crno": $('#TB06019P_crno').val().replaceAll("-", "")			//법인등록번호
@@ -205,7 +230,7 @@ function saveArdyBzepInfo() {
 		 		}).then(() => {
 					$('#TB06019P_ardyBzepNo').val(data.ardyBzepNo);
 					$('#TB06019P_bzplDvsnCd').val(data.bzplDvsnCd).prop('selected', true);
-					$('#TB06019P_bzepNm').val(data.bzepName);
+					$('#TB06019P_entpNm').val(data.entpNm);
 					$('#TB06019P_engBzplName').val(data.engBzplName);
 					$('#TB06019P_rnbn').val(data.rnbn);
 					$('#TB06019P_crno').val(data.crno);
@@ -264,6 +289,7 @@ function deleteArdyBzepInfo() {
 			confirmButtonText : "예",
 			cancelButtonText : "아니오",
 		}).then((e) => {
+			businessFunction();
 			if (e.isConfirmed) {
 				reset_TB06019P();
 			}
@@ -272,7 +298,7 @@ function deleteArdyBzepInfo() {
 		function businessFunction() {
 
 			var inParam = {
-				"ardyBzepNo": $('#TB06019P_ardyBzepNo').val()		//기업체번호
+				"ardyBzepNo": $('#TB06019P_getArdyBzepNo').val()		//기업체번호
 			};
 
 			$.ajax({
@@ -371,9 +397,9 @@ function validate (gb)
 				emptyParameter(msg);
 				return false;
 			}
-			if (isEmpty($("#TB06019P_bzepNm").val())) {
+			if (isEmpty($("#TB06019P_entpNm").val())) {
 				msg = '업체명';
-				input = $('#TB06019P_bzepNm');
+				input = $('#TB06019P_entpNm');
 				input.focus();
 				emptyParameter(msg);
 				return false;

@@ -75,10 +75,13 @@ public class TB06019ServiceImpl implements TB06019Service {
 			// 기업체정보 사용유무 수정
 			iCnt = ibims010bmapper.updateArdyBzepUseYn(saveVo);
 		} else {
-			if (saveVo.getArdyBzepNo() == null || saveVo.getArdyBzepNo().trim().isEmpty()) {
+
+			int chk = ibims010bmapper.chk(saveVo.getArdyBzepNo());
+
+			if (chk == 0) {
 				// 기업체정보 신규생성 [insert]
 				iCnt = ibims010bmapper.insertArdyBzepInfo(saveVo);
-				ibims114bmapper.registCorpInfo(saveDto);
+				// ibims114bmapper.registCorpInfo(saveDto);		// 기업체 정보 2개 등록중
 				log.debug("신규생성 기업체번호[" + saveVo.getArdyBzepNo() + "]");
 			} else {
 				// 기업체정보 신규생성 [update]
@@ -101,6 +104,9 @@ public class TB06019ServiceImpl implements TB06019Service {
 	// 기업체 정보 사용여부 수정
 	@Override
 	public int deleteArdyBzepInfo(ArdyBzepVO saveVo) {
+
+		saveVo.setHndEmpno(facade.getDetails().getEno());
+
 		return ibims010bmapper.updateArdyBzepUseYn(saveVo);
 	}
 

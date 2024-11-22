@@ -55,4 +55,9 @@ public interface IBIMS010BMapper {
 	 */
 	public List<ArdyBzepCdVO> selectCd(SchCondVO param);
 
+
+	/**
+	 * 업체존재유무 체크
+	 */
+	public int chk(String param);
 }
