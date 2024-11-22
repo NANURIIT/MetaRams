@@ -4,23 +4,23 @@
 	
 	<!-- 권한구분 목록 조회 -->
 	<select id="selectRghtCd" resultType="com.nanuri.rams.business.common.vo.IBIMS006BVO">
-		SELECT A.ATH_CD											<!-- 권한코드 -->
-		     , A.ATH_CD_NM										<!-- 권한코드명 -->
-		     , A.ATH_CD_EXPL									<!-- 권한코드설명 -->
-		     , A.ATH_DCD										<!-- 권한구분코드 -->
-		     , A.APLY_YN										<!-- 적용여부 -->
-		     , A.DEL_YN											<!-- 삭제여부 -->
-		     , A.DEL_DT											<!-- 삭제일자 -->
-		     , A.DEL_TM											<!-- 삭제시간 -->
-		     , A.DEL_EMPNO										<!-- 삭제자사번 -->
-         , NVL(TO_CHAR(A.HND_DETL_DTM, 'YYYYMMDD'), '') AS HND_DT
-         , NVL(TO_CHAR(A.HND_DETL_DTM, 'HH24MISS'), '') AS HND_TM
-         , A.HND_EMPNO
+		SELECT A.ATH_CD									                                  /* 권한코드 */
+		     , A.ATH_CD_NM							                                  /* 권한코드명 */
+		     , A.ATH_CD_EXPL						                                  /* 권한코드설명 */
+		     , A.ATH_DCD								                                  /* 권한구분코드 */
+		     , A.APLY_YN								                                  /* 적용여부 */
+		     , A.DEL_YN									                                  /* 삭제여부 */
+		     , A.DEL_DT									                                  /* 삭제일자 */
+		     , A.DEL_TM									                                  /* 삭제시간 */
+		     , A.DEL_EMPNO							                                  /* 삭제자사번 */
+         , NVL(TO_CHAR(A.HND_DETL_DTM, 'YYYYMMDD'), '') AS HND_DT     /* 처리일자 */
+         , NVL(TO_CHAR(A.HND_DETL_DTM, 'HH24MISS'), '') AS HND_TM     /* 처리상세시간 */
+         , A.HND_EMPNO                                                /* 처리사원번호 */
          , NVL((SELECT EMP_NM
                   FROM IBIMS003B
-                 WHERE EMPNO = A.HND_EMPNO), '') AS HND_EMP_NM
+                 WHERE EMPNO = A.HND_EMPNO), '') AS HND_EMP_NM        /* 처리사원명 */
 	  	FROM IBIMS006B A
-	   WHERE A.DEL_YN != 'Y'
+	   WHERE A.DEL_YN != 'Y'                                            /* 삭제여부 */
 	</select>
 
 	<select id="selectAuthCode" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS006BVO">
@@ -62,55 +62,55 @@
     <update id="mergeAthCd" parameterType="com.nanuri.rams.business.common.dto.IBIMS006BDTO">
       MERGE INTO IBIMS006B T
       USING (
-             SELECT #{athCd} AS ATH_CD,
-                    #{athCdNm} AS ATH_CD_NM,
-                    #{athCdExpl} AS ATH_CD_EXPL,
-                    #{athDcd} AS ATH_DCD,
-                    #{aplyYn} AS APLY_YN,
-                    #{rgstDt} AS RGST_DT,
-                    #{rgstTm} AS RGST_TM,
-                    #{rgstEmpno} AS RGST_EMPNO,
-                    #{delYn} AS DEL_YN,
-                    #{delDt} AS DEL_DT,
-                    #{delTm} AS DEL_TM,
-                    #{delEmpno} AS DEL_EMPNO,
-                    #{hndDetlDtm} AS HND_DETL_DTM,
-                    #{hndEmpno} AS HND_EMPNO,
-                    #{hndTmnlNo} AS HND_TMNL_NO,
-                    #{hndTrId} AS HND_TR_ID,
-                    #{guid} AS GUID
+             SELECT #{athCd} AS ATH_CD,                  /* 권한코드 */
+                    #{athCdNm} AS ATH_CD_NM,             /* 권한코드명 */
+                    #{athCdExpl} AS ATH_CD_EXPL,         /* 권한코드설명 */
+                    #{athDcd} AS ATH_DCD,                /* 권한구분코드 */
+                    #{aplyYn} AS APLY_YN,                /* 적용여부 */
+                    #{rgstDt} AS RGST_DT,                /* 등록일자 */
+                    #{rgstTm} AS RGST_TM,                /* 등록시간 */
+                    #{rgstEmpno} AS RGST_EMPNO,          /* 등록사원번호 */
+                    #{delYn} AS DEL_YN,                  /* 삭제여부 */
+                    #{delDt} AS DEL_DT,                  /* 삭제일자 */
+                    #{delTm} AS DEL_TM,                  /* 삭제시간 */
+                    #{delEmpno} AS DEL_EMPNO,            /* 삭제사원번호 */
+                    #{hndDetlDtm} AS HND_DETL_DTM,       /* 조작상세일시 */
+                    #{hndEmpno} AS HND_EMPNO,            /* 조작사원번호 */
+                    #{hndTmnlNo} AS HND_TMNL_NO,         /* 조작단말기번호 */
+                    #{hndTrId} AS HND_TR_ID,             /* 조작거래ID */
+                    #{guid} AS GUID                      /* GUID */
                FROM DUAL
              ) S
          ON (T.ATH_CD = S.ATH_CD)
       WHEN MATCHED THEN
-        UPDATE SET T.ATH_CD_NM = S.ATH_CD_NM,
-                   T.ATH_CD_EXPL = S.ATH_CD_EXPL,
-                   T.ATH_DCD = S.ATH_DCD,
-                   T.APLY_YN = S.APLY_YN,
-                   T.DEL_YN = S.DEL_YN,
+        UPDATE SET T.ATH_CD_NM = S.ATH_CD_NM,       /* 권한코드명 */
+                   T.ATH_CD_EXPL = S.ATH_CD_EXPL,   /* 권한코드설명 */
+                   T.ATH_DCD = S.ATH_DCD,           /* 권한구분코드 */
+                   T.APLY_YN = S.APLY_YN,           /* 적용여부 */
+                   T.DEL_YN = S.DEL_YN,             /* 삭제여부 */
                    T.HND_DETL_DTM = SYSDATE,
                    T.HND_EMPNO = S.HND_EMPNO,
                    T.HND_TMNL_NO = S.HND_TMNL_NO,
                    T.HND_TR_ID = S.HND_TR_ID,
                    T.GUID = S.GUID
       WHEN NOT MATCHED THEN
-        INSERT ( ATH_CD
-               , ATH_CD_NM
-               , ATH_CD_EXPL
-               , ATH_DCD
-               , APLY_YN
-               , RGST_DT
-               , RGST_TM
-               , RGST_EMPNO
-               , DEL_YN
-               , DEL_DT
-               , DEL_TM
-               , DEL_EMPNO
-               , HND_DETL_DTM
-               , HND_EMPNO
-               , HND_TMNL_NO
-               , HND_TR_ID
-               , GUID
+        INSERT ( ATH_CD          /* 권한코드 */           
+               , ATH_CD_NM       /* 권한코드명 */               
+               , ATH_CD_EXPL     /* 권한코드설명 */                 
+               , ATH_DCD         /* 권한구분코드 */             
+               , APLY_YN         /* 적용여부 */             
+               , RGST_DT         /* 등록일자 */             
+               , RGST_TM         /* 등록시간 */             
+               , RGST_EMPNO      /* 등록사원번호 */               
+               , DEL_YN          /* 삭제여부 */           
+               , DEL_DT          /* 삭제일자 */           
+               , DEL_TM          /* 삭제시간 */           
+               , DEL_EMPNO       /* 삭제사원번호 */               
+               , HND_DETL_DTM    /* 조작상세일시 */                 
+               , HND_EMPNO       /* 조작사원번호 */               
+               , HND_TMNL_NO     /* 조작단말기번호 */                 
+               , HND_TR_ID       /* 조작거래ID */               
+               , GUID            /* GUID */         
                )
         VALUES ( S.ATH_CD
                , S.ATH_CD_NM
@@ -133,37 +133,37 @@
     </update>
     
     <select id="getAuthCode" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS006BDTO">
-        SELECT ATH_CD											<!-- 권한코드 -->
-             , ATH_CD_NM										<!-- 권한코드명 -->
-             , ATH_CD_EXPL										<!-- 권한코드설명 -->
-             , ATH_DCD											<!-- 권한구분코드 -->
-             , APLY_YN											<!-- 적용여부 -->
-             , DEL_YN											<!-- 삭제여부 -->
-             , DEL_DT											<!-- 삭제일자 -->
-             , DEL_TM											<!-- 삭제시간 -->
-             , DEL_EMPNO										<!-- 삭제자사번 -->
+        SELECT ATH_CD									/* 권한코드 */
+             , ATH_CD_NM							/* 권한코드명 */
+             , ATH_CD_EXPL						/* 권한코드설명 */
+             , ATH_DCD								/* 권한구분코드 */
+             , APLY_YN								/* 적용여부 */
+             , DEL_YN									/* 삭제여부 */
+             , DEL_DT									/* 삭제일자 */
+             , DEL_TM									/* 삭제시간 */
+             , DEL_EMPNO							/* 삭제자사번 */
           FROM IBIMS006B A
          WHERE 1=1
-           AND ATH_CD = #{athCd}								<!-- 권한코드 -->
+           AND ATH_CD = #{athCd}			/* 권한코드 */
     </select>
 
     <insert id="insertAuthCode" parameterType="com.nanuri.rams.business.common.vo.IBIMS006BVO">
         INSERT INTO IBIMS006B
                (
-                  ATH_CD										<!-- 권한코드 -->
-                , ATH_CD_NM									    <!-- 권한코드명 -->
-                , ATH_CD_EXPL									<!-- 권한코드설명 -->
-                , ATH_DCD										<!-- 권한구분코드 -->
-                , APLY_YN										<!-- 적용여부 -->
-                , RGST_DT										<!-- 등록일자 -->
-                , RGST_TM										<!-- 등록시간 -->
-                , RGST_EMPNO									<!-- 등록자사번 -->
-                , DEL_YN										<!-- 삭제여부 -->
-                , DEL_DT										<!-- 삭제일자 -->
-                , DEL_TM 										<!-- 삭제시간 -->
-                , DEL_EMPNO 									<!-- 삭제자사번 -->
-                , HND_DETL_DTM 									<!-- 처리일시 -->
-                , HND_EMPNO 									<!-- 처리자사번 -->
+                  ATH_CD								/* 권한코드 */
+                , ATH_CD_NM							/* 권한코드명 */
+                , ATH_CD_EXPL						/* 권한코드설명 */
+                , ATH_DCD								/* 권한구분코드 */
+                , APLY_YN								/* 적용여부 */
+                , RGST_DT								/* 등록일자 */
+                , RGST_TM								/* 등록시간 */
+                , RGST_EMPNO						/* 등록자사번 */
+                , DEL_YN								/* 삭제여부 */
+                , DEL_DT								/* 삭제일자 */
+                , DEL_TM 								/* 삭제시간 */
+                , DEL_EMPNO 						/* 삭제자사번 */
+                , HND_DETL_DTM 					/* 처리일시 */
+                , HND_EMPNO 						/* 처리자사번 */
                ) 
         VALUES (
                   #{athCd}
@@ -207,15 +207,15 @@
 
     <update id="deleteAuthCode" parameterType="java.util.List">
         UPDATE IBIMS006B
-           SET APLY_YN = 'N'							<!-- 적용여부 -->
-              ,HND_EMPNO = #{hndEmpno}					<!-- 처리자사번 -->
-              ,HND_DETL_DTM = DEFAULT					<!-- 처리일시 -->
-              ,DEL_YN = 'Y'								<!-- 삭제여부 -->
-              ,DEL_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')	<!-- 삭제일자 -->
-              ,DEL_TM = TO_CHAR(SYSDATE, 'HH24MISS')	<!-- 삭제시간 -->
-              ,DEL_EMPNO = #{delEmpno}					<!-- 삭제자사번 -->
+           SET APLY_YN = 'N'							            /* 적용여부 */
+              ,HND_EMPNO = #{hndEmpno}					      /* 처리자사번 */
+              ,HND_DETL_DTM = DEFAULT					        /* 처리일시 */
+              ,DEL_YN = 'Y'								            /* 삭제여부 */
+              ,DEL_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')	/* 삭제일자 */
+              ,DEL_TM = TO_CHAR(SYSDATE, 'HH24MISS')	/* 삭제시간 */
+              ,DEL_EMPNO = #{delEmpno}					      /* 삭제자사번 */
          WHERE 1=1
-           AND ATH_CD IN					<!-- 권한코드 -->
+           AND ATH_CD IN					                    /* 권한코드 */
         <foreach collection="athCd" item="athCd" index="index" open="(" separator="," close=")">
                #{athCd}
         </foreach>
@@ -224,12 +224,12 @@
     
     <!-- 권한에 따른 사용가능 메뉴 조회 -->
 	<select id="getMenuList" resultType="map" parameterType="java.util.Map">
-		SELECT A.MENU_ID AS MENU_ID
+		SELECT A.MENU_ID AS MENU_ID      /* 메뉴아뒤 */
 		  FROM IBIMS007B A
 		  LEFT JOIN IBIMS005B B
 		    ON A.MENU_ID = B.MENU_ID
 		 WHERE 1=1
-		   AND A.ATH_CD = #{rghtCd}
+		   AND A.ATH_CD = #{rghtCd}     /* 권한코드 */
 		   AND B.HGRK_MENU_ID IS NOT NULL
 	</select>
 	
