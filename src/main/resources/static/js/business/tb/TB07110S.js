@@ -15,20 +15,20 @@ const TB07110Sjs = (function () {
       {
         title: "승인상태",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "jobDecdCd",
         halign: "center",
         align: "center",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "회계일자",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "acctDt",
         halign: "center",
         align: "center",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "발급일자",
@@ -37,16 +37,16 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
-      },
-      {
+        filter: { crules: [{ condition: 'range' }] },
+      }
+      , {
         title: "발급거래처명",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "bcncNm",
         halign: "center",
         align: "left",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "사업자번호",
@@ -55,7 +55,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "합계금액",
@@ -64,16 +64,16 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "세액",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "splmValuTxa",
         halign: "center",
         align: "right",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "증빙구분",
@@ -82,7 +82,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "매입공제구분",
@@ -91,7 +91,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "거래처명",
@@ -100,7 +100,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "left",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "실명확인번호",
@@ -109,7 +109,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "지급방법",
@@ -118,7 +118,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
     ];
 
@@ -129,8 +129,8 @@ const TB07110Sjs = (function () {
         dataIndx: "",
         halign: "center",
         align: "center",
-        width: "1%",
-        filter: { crules: [{ condition: "range" }] },
+        width: '1%',
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "순번",
@@ -138,8 +138,8 @@ const TB07110Sjs = (function () {
         dataIndx: "",
         halign: "center",
         align: "center",
-        width: "5%",
-        filter: { crules: [{ condition: "range" }] },
+        width: '5%',
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "계정과목명",
@@ -148,7 +148,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "left",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "차변금액",
@@ -157,7 +157,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "적요",
@@ -166,7 +166,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "차량등록",
@@ -175,7 +175,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "배부",
@@ -184,7 +184,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "펀드코드",
@@ -193,7 +193,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
+        filter: { crules: [{ condition: 'range' }] },
       },
       {
         title: "종목코드",
@@ -202,32 +202,32 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
-      },
+        filter: { crules: [{ condition: 'range' }] },
+      }
     ];
 
     let pqGridObjs = [
       {
-        height: 150,
-        maxHeight: 150,
-        id: "TB07110S_grd_txbl",
-        colModel: col_txbl,
+        height: 150
+        , maxHeight: 150
+        , id: 'TB07110S_grd_txbl'
+        , colModel: col_txbl
         //   , numberCell     : { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
         //   , scrollModel : { autoFit: false }
       },
       {
-        height: 150,
-        maxHeight: 150,
-        id: "TB07110S_grd_basic",
-        colModel: col_basic,
+        height: 150
+        , maxHeight: 150
+        , id: 'TB07110S_grd_basic'
+        , colModel: col_basic
         //   , numberCell     : { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
         //   , scrollModel : { autoFit: false }
       },
-    ];
+    ]
     setPqGrid(pqGridObjs);
     // Grid instance
-    txbl = $("#TB07110S_grd_txbl").pqGrid("instance");
-    basic = $("#TB07110S_grd_basic").pqGrid("instance");
+    txbl = $("#TB07110S_grd_txbl").pqGrid('instance');
+    basic = $("#TB07110S_grd_basic").pqGrid('instance');
   }
 
   /*******************************************************************
@@ -262,7 +262,7 @@ const TB07110Sjs = (function () {
         } else {
         }
       },
-      error: function () {},
+      error: function () { },
     });
   }
 
@@ -288,7 +288,7 @@ const TB07110Sjs = (function () {
         } else {
         }
       },
-      error: function () {},
+      error: function () { },
     });
   }
   /**
@@ -389,8 +389,8 @@ const TB07110Sjs = (function () {
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
-      success: function (data) {},
-      error: function () {},
+      success: function (data) { },
+      error: function () { },
     });
   }
 
@@ -458,8 +458,8 @@ const TB07110Sjs = (function () {
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
-      success: function (data) {},
-      error: function () {},
+      success: function (data) { },
+      error: function () { },
     });
   }
   /**
@@ -486,8 +486,8 @@ const TB07110Sjs = (function () {
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
-      success: function (data) {},
-      error: function () {},
+      success: function (data) { },
+      error: function () { },
     });
   }
 
@@ -505,8 +505,8 @@ const TB07110Sjs = (function () {
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
-      success: function (data) {},
-      error: function () {},
+      success: function (data) { },
+      error: function () { },
     });
   }
   /**
@@ -540,5 +540,10 @@ const TB07110Sjs = (function () {
   /*******************************************************************
    * ?
    *******************************************************************/
-  return {};
+  return {
+
+    TB07110S_selectIBIMS431B: TB07110S_selectIBIMS431B,
+    TB07110S_doExc:TB07110S_doExc,
+
+  };
 })();

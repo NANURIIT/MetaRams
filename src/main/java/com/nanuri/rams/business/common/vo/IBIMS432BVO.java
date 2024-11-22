@@ -14,6 +14,8 @@ import lombok.ToString;
 @ToString
 public class IBIMS432BVO extends IBIMS432BDTO {
 
+    private String bcncNm;
+
     private List<IBIMS432BVO> tb07100sList;
 
 }

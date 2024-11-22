@@ -54,11 +54,14 @@
              , T1.HND_TMNL_NO
              , T1.HND_TR_ID
              , T1.GUID
+             , T1.ACCT_DT
           FROM IBIMS431B T1
          WHERE 1=1
-           AND T1.CNST_STTM_DCD = #{cnstSttmDcd}
-           <if test="wrtnDt != ''">
-           AND T1.WRTN_DT = #{wrtnDt}
+           <if test="acctDt1 != ''">
+           AND T1.ACCT_DT &gt; #{acctDt1}
+           </if>
+           <if test="acctDt2 != ''">
+           AND T1.ACCT_DT &lt; #{acctDt2}
            </if>
            <if test="rslnBdcd != ''">
            AND T1.RSLN_BDCD = #{rslnBdcd}

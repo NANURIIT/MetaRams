@@ -20,7 +20,9 @@
              , GUID             /* GUID */  
          FROM IBIMS451B
         WHERE 1=1
+          <if test="stdrDt != ''">
           AND STDR_DT = #{stdrDt}
+          </if>
           AND ACTS_CD LIKE #{actsCd}
           AND MNGM_BDCD LIKE #{mngmBdcd}
     </select>

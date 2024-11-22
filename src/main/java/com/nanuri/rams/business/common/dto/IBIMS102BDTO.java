@@ -12,6 +12,7 @@ import lombok.Setter;
 */
 public class IBIMS102BDTO {
     private int rmSq;                      // RM일련번호
+    private String corpRgstNo;             // 법인등록번호
     private String crno;                   // 법인등록번호
     private String bsnsRgstNo;             // 사업자등록번호
     private String entpHnglNm;             // 업체한글명

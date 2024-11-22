@@ -45,7 +45,7 @@ public class IBIMS103BDTO {
     private String     dlDprtNm2;                     // 거래부점명2
     private String     dlDprtNm3;                     // 거래부점명3
     private String     hdqtCd;                        // 본부코드
-    private String     dbcd;                          // 부점코드
+    private String     bdcd;                          // 부점코드
     private String     dprtCd;                        // 부서코드  
     private String     chrrEmpno;                     // 담당자사번
     private String     ownPEno;                       // 심사역사번

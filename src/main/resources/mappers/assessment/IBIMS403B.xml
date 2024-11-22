@@ -587,8 +587,8 @@
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
                   AND D1.DEAL_NO  = #{dealNo}
                 </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
-                  AND D1.MNGM_BDCD = #{dbcd}
+                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+                  AND D1.MNGM_BDCD = #{dprtCd}
                 </if>
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
                   AND P.PRAR_DT &gt;= #{fromDt} 
@@ -612,8 +612,8 @@
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
                   AND D2.DEAL_NO  = #{dealNo}
                 </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
-                  AND D2.MNGM_BDCD = #{dbcd}
+                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+                  AND D2.MNGM_BDCD = #{dprtCd}
                 </if>
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
                   AND F.PRAR_DT &gt;= #{fromDt} 

@@ -15,7 +15,7 @@ public class TB05040SVO {
 	String     jdgmRsltRgstDt;
 	String     cnsbSq;
 	String     sn;
-	String     ptfdCrncyCdNm;
+	String     ptfdCrryCdNm;
 	String     rsltnRsltCd;
 	BigDecimal apvlAmt;
 	String     sdnCndtF;

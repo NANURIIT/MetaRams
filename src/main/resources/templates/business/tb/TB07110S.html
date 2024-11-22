@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="css">
 	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
@@ -49,12 +50,14 @@
 								</label>
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB07110S_" name="" value="" placeholder="YYYY-MM-DD">
+										<input type="text" class="form-control" id="TB07110S_" name="" value=""
+											placeholder="YYYY-MM-DD">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB07110S_" name="" value="" placeholder="YYYY-MM-DD">
+										<input type="text" class="form-control" id="TB07110S_" name="" value=""
+											placeholder="YYYY-MM-DD">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
@@ -66,9 +69,11 @@
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07110S_dprtCd" readonly>
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03022P('TB07110S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default"
+												onclick="callTB03022P('TB07110S');"><i
+													class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB07110S_dprtNm" >
+										<input type="text" class="form-control" id="TB07110S_dprtNm">
 									</div>
 								</div>
 							</div>
@@ -79,7 +84,7 @@
 								</label>
 								<div class="col-sm-2">
 									<div class="input-group">
-										<select class="form-control" id="TB07110S_" >
+										<select class="form-control" id="TB07110S_">
 											<option value="">전체</option>
 											<option value=""></option>
 										</select>
@@ -93,7 +98,9 @@
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07110S_ardyBzepNo">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03061P('TB07110S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default"
+												onclick="callTB03061P('TB07110S');"><i
+													class="fa fa-search"></i></button>
 										</span>
 										<input type="text" class="form-control" id="TB07110S_bzepName" readonly>
 									</div>
@@ -106,7 +113,8 @@
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07110S_">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick=""><i
+													class="fa fa-search"></i></button>
 										</span>
 										<input type="text" class="form-control" id="TB07110S_" readonly>
 									</div>
@@ -114,7 +122,7 @@
 							</div>
 							<!-- 버튼영역 -->
 							<div class="col-sm-1-5 text-right">
-								<button class="btn btn-primary" onclick="">
+								<button class="btn btn-primary" onclick="TB07110S_selectIBIMS431B();">
 									<i class="fa fa-search"></i>&nbsp;조회</button>
 								<button class="btn btn-default" type="button" onclick="">
 									<i class="fa fa-undo"></i>&nbsp;초기화
@@ -182,19 +190,21 @@
 									</tbody>
 								</table> -->
 							</div>
-							
+
 							<div class="ibox mt-2 mb-2">
 								<div class="col-sm-12 text-right pd0">
-									<button class="btn btn-default" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;엑셀저장</button>
-									<button class="btn btn-success" type="button" onclick=""><i class="fa fa-check"></i>&nbsp;결재요청</button>
+									<button class="btn btn-default" type="button" onclick=""><i
+											class="fa fa-save"></i>&nbsp;엑셀저장</button>
+									<button class="btn btn-success" type="button" onclick=""><i
+											class="fa fa-check"></i>&nbsp;결재요청</button>
 								</div>
 							</div>
 						</div>
 
-							
+
 						<div class="ibox">
 							<div class="ibox-content pd-3">
-								
+
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1">처리구분</label>
@@ -205,9 +215,9 @@
 											</div>
 											<span class="vr"> │ </span>
 											<div class="col-sm-5 input-group pd0">
-											<button class="btn btn-default" type="button" onclick="">
-												<i class="fa fa-undo"></i>&nbsp;초기화
-											</button>
+												<button class="btn btn-default" type="button" onclick="">
+													<i class="fa fa-undo"></i>&nbsp;초기화
+												</button>
 											</div>
 										</div>
 									</div>
@@ -215,7 +225,7 @@
 
 								<div class="hr"></div>
 
-								<div class="row form-group form-inline text-right">
+								<!-- <div class="row form-group form-inline text-right">
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1">회계일자</label>
 										<div class="col-sm-2">
@@ -387,9 +397,9 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 
-								<!-- <div class="row form-group form-inline text-right">
+								<div class="row form-group form-inline text-right">
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1">회계일자</label>
 										<div class="col-sm-2">
@@ -513,32 +523,33 @@
 										</span>
 									</div>
 								</div>
-							</div> -->
-							
-							<br>
+							</div>
 
-							<div class="tabs-container mt-2">
-								<ul class="nav nav-tabs" role="tablist" id="TB07110S_ramsTab">
-									<li><a class="nav-link" data-toggle="tab" href="#tab-1">기본</a></li>
-								</ul>
-								<div class="tab-content">
+								<br>
 
-									<div role="tabpanel" id="TB07110S_tab-1" class="tab-pane active">
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-sm-12">
-													<div class="ibox mb-0">
-														<div class="ibox-title">
-															<h5>▶&nbsp;기본</h5>
-															<div class="ibox-tools">
-																<button class="btn btn-default btn-xs" type="button" onclick="">
-																	<i class="fa fa-plus"></i>&nbsp;행추가
-																</button>
+								<div class="tabs-container mt-2">
+									<ul class="nav nav-tabs" role="tablist" id="ramsTab">
+										<li><a class="nav-link" data-toggle="tab" href="#tab-1">기본</a></li>
+									</ul>
+									<div class="tab-content">
+
+										<div role="tabpanel" id="tab-1" class="tab-pane active">
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-sm-12">
+														<div class="ibox mb-0">
+															<div class="ibox-title">
+																<h5>▶&nbsp;기본</h5>
+																<div class="ibox-tools">
+																	<button class="btn btn-default btn-xs" type="button"
+																		onclick="">
+																		<i class="fa fa-plus"></i>&nbsp;행추가
+																	</button>
+																</div>
 															</div>
-														</div>
-														<div class="ibox-content">
-															<div id="TB07110S_grd_basic"></div>
-															<!-- <table class="table result table-bordered footable">
+															<div class="ibox-content">
+																<div id="TB07110S_grd_basic"></div>
+																<!-- <table class="table result table-bordered footable">
 																<colgroup>
 																	<col>
 																	<col>
@@ -577,36 +588,40 @@
 																	</tr>
 																</tbody>
 															</table> -->
+															</div>
 														</div>
 													</div>
-												</div>	
+												</div>
 											</div>
-										</div>	
-									</div>	
-									<div role="tabpanel" id="TB07110S_tab-2" class="tab-pane">
-										<div class="panel-body">
-											<div class="col-sm-12">
-											</div>	
-										</div>	
-									</div>		
+										</div>
+										<div role="tabpanel" id="tab-2" class="tab-pane">
+											<div class="panel-body">
+												<div class="col-sm-12">
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>	
-						<div class="ibox form-inline">
-							<!-- 버튼영역 -->
-							<div class="col-sm-12 text-right pd0">
-								<button class="btn btn-default" type="button" onclick=""><i class="fa fa-road"></i></i>&nbsp;신구 계정과목 매핑</button>
-								<button class="btn btn-default" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;접대/기부 명세등록</button>
-								<button class="btn btn-default" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;편익제공등록</button>
-								<button class="btn btn-success" type="button" onclick=""><i class="fa fa-check"></i>&nbsp;실행</button>
+							<div class="ibox form-inline">
+								<!-- 버튼영역 -->
+								<div class="col-sm-12 text-right pd0">
+									<button class="btn btn-default" type="button" onclick=""><i
+											class="fa fa-road"></i></i>&nbsp;신구 계정과목 매핑</button>
+									<button class="btn btn-default" type="button" onclick=""><i
+											class="fa fa-save"></i>&nbsp;접대/기부 명세등록</button>
+									<button class="btn btn-default" type="button" onclick=""><i
+											class="fa fa-save"></i>&nbsp;편익제공등록</button>
+									<button class="btn btn-success" type="button" onclick=""><i
+											class="fa fa-check"></i>&nbsp;실행</button>
+								</div>
 							</div>
+
 						</div>
-						
 					</div>
 				</div>
-			</div>
-		</div><!-- row -->
-	</div>
+			</div><!-- row -->
+		</div>
 </th:block>
 
 </html>

@@ -399,7 +399,11 @@
              , B.DEAL_NM                                               /*  딜명  */
              , NVL(B.ORTN_FND_CD, '') AS ORTN_FND_CD                   /*  운용펀드코드  */
              , B.MNGM_BDCD                                             /*  관리부점코드  */
-             , (SELECT MAX(DPRT_NM) FROM IBIMS003B WHERE BDCD = B.MNGM_BDCD) AS MNGM_BDCD_NM
+             , (SELECT CD_VL_NM 
+                  FROM IBIMS002B 
+                 WHERE CMNS_CD_GRP = 'D010'
+                   AND CD_VL_ID = B.MNGM_BDCD
+               ) AS MNGM_BDCD_NM
              , B.CHRR_EMPNO                                            /*  담당자사원번호  */
              , (SELECT MAX(EMP_NM) FROM IBIMS003B WHERE EMPNO = B.CHRR_EMPNO) AS CHRR_EMPNM
              , NVL(

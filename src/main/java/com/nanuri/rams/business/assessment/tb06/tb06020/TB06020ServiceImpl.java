@@ -42,10 +42,12 @@ public class TB06020ServiceImpl implements TB06020Service {
 
 		int result = 0;
 		param.setApvlDt(LocalDate.now().toString().replace("-", ""));
+		String empNo = facade.getDetails().getEno();
 
 		if ((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
 			
-			param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));
+			param.setHndEmpno(empNo);
+			param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));			
 			result = ibims201bMapper.regPrdtCd(param);		
 			
 			if (result != 0) {
@@ -67,6 +69,7 @@ public class TB06020ServiceImpl implements TB06020Service {
 			
 	        IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
 			param.setSn(ibims201bvo.getSn());
+			param.setHndEmpno(empNo);
 			result = ibims201bMapper.updateIBIMS201BDTO(param);
 			
 		}

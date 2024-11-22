@@ -27,6 +27,7 @@
 
     <!--입금내역등록-->
     <insert id="rctmDtlsRgst" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
         INSERT INTO IBIMS430B 
             (
                 DEAL_NO 					    /*딜번호*/
@@ -47,24 +48,23 @@
                 , RGST_DTM					    /*등록일시*/
             )
         VALUES
-        <foreach collection="list" item="item" separator=",">
             (
                 #{item.dealNo}
-                , #{item.rctmDt}
-                , #{item.rgstSeq}
-                , #{item.rgstSeq}
-                , #{item.mngmBdcd}
-                , #{item.fndsDvsnCd}
-                , #{item.dealRctmAmt}
-                , #{item.pmntPrarAmt}
-                , #{item.dealExcsPymtAmt}
-                , #{item.reltIsttCd}
-                , #{item.reltIsttNm}
-                , #{item.reltBano}
-                , #{item.dptrNm}
-                , #{item.rgstEmpno}
-                , #{item.rgstBdcd}
-                , #{item.rgstDtm}
+              , #{item.rctmDt}
+              , #{item.rgstSeq}
+              , #{item.rgstSeq}
+              , #{item.mngmBdcd}
+              , #{item.fndsDvsnCd}
+              , #{item.dealRctmAmt}
+              , #{item.pmntPrarAmt}
+              , #{item.dealExcsPymtAmt}
+              , #{item.reltIsttCd}
+              , #{item.reltIsttNm}
+              , #{item.reltBano}
+              , #{item.dptrNm}
+              , #{item.rgstEmpno}
+              , #{item.rgstBdcd}
+              , #{item.rgstDtm}
             )
         </foreach>
     </insert>
@@ -137,8 +137,8 @@
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
         AND DEAL_NO = #{dealNo}
         </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
-        AND MNGM_BDCD = #{dbcd}
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+        AND MNGM_BDCD = #{dprtCd}
         </if>
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
         AND RCTM_DT = #{rctmDt}

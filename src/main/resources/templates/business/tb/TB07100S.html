@@ -37,13 +37,13 @@
 								</label>
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB07100S_" name="" value=""
+										<input type="text" class="form-control" id="TB07100S_acctDt1" name="" value=""
 											placeholder="YYYY-MM-DD">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB07100S_" name="" value=""
+										<input type="text" class="form-control" id="TB07100S_acctDt2" name="" value=""
 											placeholder="YYYY-MM-DD">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
@@ -92,7 +92,7 @@
 												onclick="callTB03061P('TB07100S');"><i
 													class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB07100S_bzepName" readonly>
+										<input type="text" class="form-control" id="TB07100S_entpNm" readonly>
 									</div>
 								</div>
 							</div>
@@ -100,7 +100,7 @@
 							<div class="col-sm-1-5 text-right">
 								<button class="btn btn-primary" onclick="TB07100Sjs.TB07100S_selectIBIMS431B();">
 									<i class="fa fa-search"></i>&nbsp;조회</button>
-								<button class="btn btn-default" type="button" onclick="">
+								<button class="btn btn-default" type="button" onclick="TB07100Sjs.TB07100S_removeAll();">
 									<i class="fa fa-undo"></i>&nbsp;초기화
 								</button>
 							</div>
@@ -409,12 +409,12 @@
 										<label class="col-sm-1">처리구분</label>
 										<div class="col-sm-3 input-group">
 											<div class="btn-group pd0">
-												<button id="btn-TB07100S_merge" class="btn btn-s toggleBtn1 btn-info" onclick="">등록/변경</button>
-												<button id="btn-TB07100S_delete" class="btn btn-s toggleBtn2 btn-default" onclick="">삭제</button>
+												<button id="btn-TB07100S_merge" class="btn btn-s toggleBtn1 btn-info" onclick="TB07100Sjs.TB07100S_insertBtn();">등록/변경</button>
+												<button id="btn-TB07100S_delete" class="btn btn-s toggleBtn2 btn-default" onclick="TB07100Sjs.TB07100S_cancelBtn();">삭제</button>
 											</div>
 											<span class="vr"> │ </span>
 											<div class="col-sm-5 input-group pd0">
-												<button class="btn btn-default" type="button" onclick="">
+												<button class="btn btn-default" type="button" onclick="TB07100Sjs.TB07100S_resetInput();">
 													<i class="fa fa-undo"></i>&nbsp;등록초기화
 												</button>
 											</div>
@@ -423,179 +423,185 @@
 								</div>
 
 								<div class="hr"></div>
+								<div id="ibims431bdto">
+									<div class="row form-group form-inline text-right">
+										<div class="col-sm-12 form-group">
+											<label class="col-sm-1">회계일자</label>
+											<div class="col-sm-2">
+												<span class="input-group date">
+													<input type="text" class="form-control" value=""
+														id="TB07100S_acctDt" placeholder="YYYY-MM-DD">
+													<span class="input-group-addon"><i
+															class="fa fa-calendar"></i></span>
+												</span>
+											</div>
+											<label class="col-sm-1">거래처명</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07100S_2_entpNm">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default"
+															onclick="callTB03061P('TB07100S_2');"><i
+																class="fa fa-search"></i></button>
+													</span>
+												</div>
+											</div>
+											<label class="col-sm-1">지급금액</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control text-right"
+														id="TB07100S_rslnAmt">
+												</div>
+											</div>
+											<label class="col-sm-1">지급방법</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB07100S_">
+														<option value="">전체</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row form-group form-inline text-right">
+										<div class="col-sm-12 form-group">
+											<label class="col-sm-1">품의번호</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07100S_cnstNo" disabled>
+												</div>
+											</div>
+											<label class="col-sm-1">계좌번호</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07100S_bano">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick=""><i
+																class="fa fa-search"></i></button>
+													</span>
+												</div>
+											</div>
+											<label class="col-sm-1">세액</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control text-right"
+														id="TB07100S_splmValuTxa">
+												</div>
+											</div>
+											<label class="col-sm-1">지급예정일자</label>
+											<div class="col-sm-2">
+												<span class="input-group date">
+													<input type="text" class="form-control" value=""
+														id="TB07100S_pymtPrarDt" placeholder="YYYY-MM-DD">
+													<span class="input-group-addon"><i
+															class="fa fa-calendar"></i></span>
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="row form-group form-inline text-right">
+										<div class="col-sm-12 form-group">
+											<label class="col-sm-1">증빙일자</label>
+											<div class="col-sm-2">
+												<span class="input-group date">
+													<input type="text" class="form-control" value=""
+														id="TB07100S_prufDt" placeholder="YYYY-MM-DD">
+													<span class="input-group-addon"><i
+															class="fa fa-calendar"></i></span>
+												</span>
+											</div>
+											<label class="col-sm-1">카드번호</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07100S_cdno">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick=""><i
+																class="fa fa-search"></i></button>
+													</span>
+												</div>
+											</div>
+											<label class="col-sm-1">매입공제</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB07100S_pchsDdcDcd">
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
 
-								<div class="row form-group form-inline text-right">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1">회계일자</label>
-										<div class="col-sm-2">
-											<span class="input-group date">
-												<input type="text" class="form-control" value="" id="TB07100S_wrtnDt"
-													placeholder="YYYY-MM-DD">
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</span>
-										</div>
-										<label class="col-sm-1">거래처명</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB07100S_2_bzepName">
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default"
-														onclick="callTB03061P('TB07100S_2');"><i
-															class="fa fa-search"></i></button>
-												</span>
+									<div class="row form-group form-inline text-right">
+										<div class="col-sm-12 form-group">
+											<label class="col-sm-1">증빙종류</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB07100S_prufKndDcd">
+														<option value="">전체</option>
+													</select>
+												</div>
+											</div>
+											<label class="col-sm-1">카드승인번호</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07100S_apvlNo">
+												</div>
+											</div>
+											<label class="col-sm-1">출금원장</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB07100S_fndsLdgDcd">
+														<option value="">전체</option>
+													</select>
+												</div>
+											</div>
+											<label class="col-sm-1">작성자</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07100S_2_empNo">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default"
+															onclick="callTB03022P('TB07100S_2');"><i
+																class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" id="TB07100S_2_empNm"
+														readonly="">
+												</div>
 											</div>
 										</div>
-										<label class="col-sm-1">지급금액</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB07100S_">
+									</div>
+									<div class="row form-group form-inline text-right">
+										<div class="col-sm-12 form-group">
+											<div class="col-sm-3"></div>
+											<div class="col-sm-3 form-group pd0">
+												<label class="col-sm-4">편익제공</label>
+												<input class="col-sm-1" type="checkbox" value="" id="TB07100S_bnftYn"
+													name="">
+												<label class="col-sm-3">접대비여부</label>
+												<input class="col-sm-1" type="checkbox" value=""
+													id="TB07100S_entmAccXstcYn" name="">
 											</div>
-										</div>
-										<label class="col-sm-1">지급방법</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<select class="form-control" id="TB07100S_">
-													<option value="">전체</option>
-												</select>
+											<label class="col-sm-1">관련근거</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07100S_entmAccXstcYn">
+												</div>
+											</div>
+											<label class="col-sm-1">승인자</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07100S_3_empNo">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default"
+															onclick="callTB03022P('TB07100S_3');"><i
+																class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" id="TB07100S_3_empNm"
+														readonly="">
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="row form-group form-inline text-right">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1">품의번호</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB07100S_">
-											</div>
-										</div>
-										<label class="col-sm-1">계좌번호</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB07100S_">
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default" onclick=""><i
-															class="fa fa-search"></i></button>
-												</span>
-											</div>
-										</div>
-										<label class="col-sm-1">세액</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control text-right" id="TB07100S_">
-											</div>
-										</div>
-										<label class="col-sm-1">지급예정일자</label>
-										<div class="col-sm-2">
-											<span class="input-group date">
-												<input type="text" class="form-control" value="" id="TB07100S_wrtnDt"
-													placeholder="YYYY-MM-DD">
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</span>
-										</div>
-									</div>
-								</div>
-								<div class="row form-group form-inline text-right">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1">증빙일자</label>
-										<div class="col-sm-2">
-											<span class="input-group date">
-												<input type="text" class="form-control" value="" id="TB07100S_"
-													placeholder="YYYY-MM-DD">
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</span>
-										</div>
-										<label class="col-sm-1">카드번호</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB07100S_">
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default" onclick=""><i
-															class="fa fa-search"></i></button>
-												</span>
-											</div>
-										</div>
-										<label class="col-sm-1">매입공제</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<select class="form-control" id="TB07100S_">
-													<option value="">전체</option>
-												</select>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="row form-group form-inline text-right">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1">증빙종류</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<select class="form-control" id="TB07100S_">
-													<option value="">전체</option>
-												</select>
-											</div>
-										</div>
-										<label class="col-sm-1">카드승인번호</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB07100S_">
-											</div>
-										</div>
-										<label class="col-sm-1">출금원장</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<select class="form-control" id="TB07100S_">
-													<option value="">전체</option>
-												</select>
-											</div>
-										</div>
-										<label class="col-sm-1">작성자</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB07100S_2_empNo">
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default"
-														onclick="callTB03022P('TB07100S_2');"><i
-															class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" id="TB07100S_2_empNm"
-													readonly="">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row form-group form-inline text-right">
-									<div class="col-sm-12 form-group">
-										<div class="col-sm-3"></div>
-										<div class="col-sm-3 form-group pd0">
-											<label class="col-sm-4">편익제공</label>
-											<input class="col-sm-1" type="checkbox" value="" id="TB07100S_" name=""
-												checked>
-											<label class="col-sm-3">접대비여부</label>
-											<input class="col-sm-1" type="checkbox" value="" id="TB07100S_" name=""
-												checked>
-										</div>
-										<label class="col-sm-1">관련근거</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB07100S_">
-											</div>
-										</div>
-										<label class="col-sm-1">승인자</label>
-										<div class="col-sm-2">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB07100S_3_empNo">
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default"
-														onclick="callTB03022P('TB07100S_3');"><i
-															class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" id="TB07100S_3_empNm"
-													readonly="">
-											</div>
-										</div>
-									</div>
 								</div>
 								<br>
 

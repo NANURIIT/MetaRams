@@ -15,6 +15,8 @@ import lombok.ToString;
 public class IBIMS431BVO extends IBIMS431BDTO {
 
     private String wrtnYm;
+    private String acctDt1;
+    private String acctDt2;
     private List<IBIMS431BVO> selectIBIMS431B;
     private IBIMS431BVO ibims431bvo;
     
