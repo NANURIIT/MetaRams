@@ -44,7 +44,7 @@ const TB09010Sjs = (function () {
     {
       title: "법인등록번호",
       dataType: "string",
-      dataIndx: "corpRgstNo",
+      dataIndx: "crno",
       align: "left",
       halign: "center",
       width: "",
@@ -267,6 +267,7 @@ const TB09010Sjs = (function () {
           );
         },
         success: function (data) {
+          console.log(data);
           if (data.length > 0) {
             $("#TB09010S_DealList").pqGrid(
               "option",
@@ -366,6 +367,7 @@ const TB09010Sjs = (function () {
         dataType: "json",
         success: function (data) {
           if (data > 0) {
+            console.log(data);
             Swal.fire({
               icon: "success",
               title: "Success!",
