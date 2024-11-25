@@ -27,6 +27,7 @@ public class IBIMS201BVO extends IBIMS201BDTO {
     private String        prdtMdclCdNm;									   // 기업여신상품중분류코드
     private String        prdtClsfCdNm;									   // 기업여신상품분류코드
     private String        ibPrdtClsfCdNm;								   // ib상품분류코드
+    private BigDecimal    eprzCrdlCtrcAmt; 								   // 기업여신약정금액(IBIMS401B)	
     
     private String dprtNm;   			// 부서명
     private String empNm2;   			// 담당자명

@@ -35,7 +35,7 @@ function callTB03031PRmHistoryInfo(prefix) {
 	$('#prefix_TB03031P').val(prefix);
 	$('#modal-TB03031P').modal('show');
 	setTimeout(() => {
-		$("#gridModalRmFileInfo").pqGrid(obj);
+		//$("#gridModalRmFileInfo").pqGrid(obj);
 		modalArrPqGridRmFileInfo2 = $("#gridModalRmFileInfo").pqGrid('instance');
 	}, 300);
 }
