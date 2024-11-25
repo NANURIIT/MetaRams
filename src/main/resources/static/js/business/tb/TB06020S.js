@@ -330,6 +330,7 @@ const TB06020Sjs = (function(){
 				
 				$(":radio[name='TB06020S_socYn']").radioSelect(dealDetail.socYn);								// SOC여부
 				$('#TB06020S_S002').val(dealDetail.socDcd).prop("selected", true);								// SOC구분코드
+				$(":radio[name='TB06020S_frxcHdgeYn']").radioSelect(dealDetail.frxcHdgeYn);						// 외환헷지여부
 				
 				/** 금융조건 정보 */
 				
@@ -669,7 +670,7 @@ const TB06020Sjs = (function(){
 			, "mrtgStupYn": $('input[name=TB06020S_mrtgStupYn]:checked').val()			// 담보설정여부
 			, "altnInvYn" : $('input[name="TB06020S_altnInvYn"]:checked').val()			// 대체투자여부
 			//, "crdtRifcAplyYn": ''                  			// 신용보강적용여부
-			//, "frxcHdgeYn": ''                          		// 외환헷지여부
+			, "frxcHdgeYn": $('input[name=TB06020S_frxcHdgeYn]:checked').val()   		// 외환헷지여부
 			, "sppiSfcYn": $('#TB06020S_sppiSfcYn').val()								// sppi충족여부
 			//, "projFnnYn": ''                            		// 프로젝트금융여부
 			, "pplcFndYn": $('input[name=TB06020S_pplcFndYn]:checked').val()			// 사모펀드여부 

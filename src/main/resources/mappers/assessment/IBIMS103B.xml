@@ -808,6 +808,7 @@
 		     , NVL(s201b.INV_NTN_CD, s103b.INV_NTN_CD) AS INV_NTN_CD   /* 투자국가코드 */
 		     , s201b.RLES_FNN_YN                                           /* 부동산금융여부 */
 		     , s201b.RLES_FNN_DETL_DCD                                     /* 부동산금융상세구분코드 */
+		     , s201b.FRXC_HDGE_YN                                          /* 외환헷지여부 */    
 		     , s201b.SOC_YN                                                /* soc여부 */
 		     , s201b.SOC_DCD                                               /* soc구분코드 */
 		     , s201b.HOLD_PRPS_DCD                                         /* 보유목적구분코드 */
