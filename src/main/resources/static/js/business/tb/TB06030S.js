@@ -339,6 +339,7 @@ const TB06030Sjs = (function(){
 				$('#TB06030S_D012').val(dealDetail.dskCd).prop("selected", true);								// 데스크코드
 				$('#TB06030S_C006').val(dealDetail.invNtnCd).prop("selected", true);							// 투자국가코드
 				$('#TB06030S_I004').val(dealDetail.ibPrdtPefDcd).prop("selected", true);						// PEF구분
+				$(":radio[name='TB06030S_frxcHdgeYn']").radioSelect(dealDetail.frxcHdgeYn);						// 외환헷지여부
 				
 				$(":radio[name='TB06030S_altnInvYn']").radioSelect(dealDetail.altnInvYn);						// 대체투자여부
 				$(":radio[name='TB06030S_rlesFnnYn']").radioSelect(dealDetail.rlesFnnYn);						// 부동산금융여부
@@ -390,7 +391,7 @@ const TB06030Sjs = (function(){
 					//$('#TB06030S_fincDiv').css("display","none");
 				}
 
-				$("#TB06030S_fondDt").val(formatDate(dealDetail.fondDt));
+				$("#TB06030S_fondDt").val(formatDate(dealDetail.estDt));
 				$("#TB06030S_keepExprDt").val(formatDate(dealDetail.keepExprDt));
 				$("#TB06030S_invExprDt").val(formatDate(dealDetail.invExprDt));
 				if(dealDetail.fincChrDcd != null){
@@ -779,7 +780,7 @@ const TB06030Sjs = (function(){
 			, "mrtgStupYn": $('input[name=TB06030S_mrtgStupYn]:checked').val()			// 담보설정여부
 			, "altnInvYn" : $('input[name="TB06030S_altnInvYn"]:checked').val()			// 대체투자여부
 			//, "crdtRifcAplyYn": ''                  			// 신용보강적용여부
-			//, "frxcHdgeYn": ''                          		// 외환헷지여부
+			, "frxcHdgeYn": $('input[name=TB06030S_frxcHdgeYn]:checked').val() 		// 외환헷지여부
 			, "sppiSfcYn": $('#TB06030S_sppiSfcYn').val()								// sppi충족여부
 			//, "projFnnYn": ''                            		// 프로젝트금융여부
 			, "pplcFndYn": $('input[name=TB06030S_pplcFndYn]:checked').val()			// 사모펀드여부 
@@ -879,7 +880,7 @@ const TB06030Sjs = (function(){
 			, "jobExcuMbdy" : null
 			, "realMngmBdcd" : null
 			, "realMngmEmpno" : null
-			, "fondDt" : replaceAll($('#TB06030S_fondDt').val(), '-', '')
+			, "estDt" : replaceAll($('#TB06030S_fondDt').val(), '-', '')
 			, "keepExprDt" : replaceAll($('#TB06030S_keepExprDt').val(), '-', '')
 			, "invExprDt" : replaceAll($('#TB06030S_invExprDt').val(), '-', '')
 			, "fincCtrcAmt" : replaceAll($('#TB06030S_fincCtrcAmt').val(), ',', '')
