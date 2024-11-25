@@ -61,7 +61,7 @@
     MERGE
      INTO IBIMS250B T1
     USING DUAL
-       ON T1.PRDT_CD = #{prdtCd}
+       ON ( T1.PRDT_CD = #{prdtCd} )
      WHEN MATCHED THEN
           UPDATE
              SET DCM_NO = #{dcmNo}              <!-- 문서번호 -->
