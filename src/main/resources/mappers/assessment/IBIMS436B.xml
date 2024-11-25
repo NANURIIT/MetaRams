@@ -35,7 +35,7 @@
         <if test="dealNo != ''">
            AND A.DEAL_NO = #{dealNo}
         </if>
-        <if test="excSeq != ''">
+        <if test="excSeq != -1">
            AND A.EXC_SEQ = #{excSeq}
         </if>
         <if test="startDt != ''">
