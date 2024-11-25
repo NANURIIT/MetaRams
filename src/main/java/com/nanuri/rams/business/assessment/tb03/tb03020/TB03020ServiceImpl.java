@@ -308,7 +308,7 @@ public class TB03020ServiceImpl implements TB03020Service {
 	public int wfRgstIBIMS101B(IBIMS101BDTO dealInfo){
 
 		WorkFlowDTO workFlowDTO = new WorkFlowDTO();
-		workFlowDTO.setWfMapNm("딜기본정보등록");
+		workFlowDTO.setWfMapNm("딜정보등록승인");
 
 		String wfMapId = workFlowMapper.getWfMapId(workFlowDTO);
 

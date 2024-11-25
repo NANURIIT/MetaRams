@@ -344,6 +344,7 @@
                , #{hndTmnlNo}                              /* 조작단말기번호 */
                , #{hndTrId}                                /* 조작거래id */
                , #{guid}                                   /* guid */
+          FROM DUAL
     </insert>
 
     <!-- 여신실행기본변경  -->
@@ -687,7 +688,7 @@
         , A.RCVB_INTR_AMT                             as rcvbIntrAmt
         , A.KRW_TRSL_EXC_BLCE                         as dealExcBlce
         , A.EXC_DT                                    as excDt
-        , A.EXP_DT                                    as expDt
+        , A.EXP_DT                                    as mtrtDt
         , A.PRNA_OVDU_DT                              as prnaOvduDt
         , A.INTR_OVDU_DT                              as intrOvduDt
         , B.EPRZ_CRDL_INTR_BNAO_DCD                   as intrBnaoDcd

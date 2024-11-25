@@ -20,6 +20,7 @@ import lombok.Setter;
 public class TB06015SVO {
     private String paiRdmpDcd; 		            // 원금상환방법 == 원리금상환구분코드
 	private String excDt; 			            // 신규일자 == 실행일자
+	private String expDt;
 	private BigDecimal dealExcBlce;             // 대출잔액 == 딜실행잔액
 	private BigDecimal  dealExcAmt;         	// 대출금액 == 딜실행금액
 	private String intrBnaoDcd; 	            // 이자선후취 == 이자선후취구분코드
