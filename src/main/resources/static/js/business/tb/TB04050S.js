@@ -300,7 +300,7 @@ const TB04050Sjs = (function () {
 				$('#TB04050S_wrtDt').val(formatDate(data.expDt));
 				$('#TB04050S_mtrtDt').val(formatDate(data.mtrtDt));
 
-				/* 기타정보 */console.log(`csucCmpDscmNo : ${data.csucCmpDscmNo}`)
+				/* 기타정보 */
 				$('#TB04050S_c_corpRgstNo').val(checkBrnAcno(data.csucCmpDscmNo));
 				$('#TB04050S_c_entpRnm').val(data.csucCmpDscmNm);
 				$('#TB04050S_C010').val(data.crdtEhcmntCcd);
