@@ -279,7 +279,6 @@ const TB04050Sjs = (function () {
 				}
 
 				$('#TB04050S_dealScl').val(addComma(data.allInvAmt));
-
 				if (data.thcoPtciAmtDcsnYn == 'Y') {
 					$('#TB04050S_ptctSclY').attr('checked', true);
 				} else {
@@ -296,12 +295,12 @@ const TB04050Sjs = (function () {
 				$('#TB04050S_thyrErn').val(addComma(data.theYearErnAmt));
 				$('#TB04050S_wrtErn').val(addComma(data.baltErnAmt));
 				$('#TB04050S_intrErn').val(addComma(data.intrErnAmt));
-				$('#TB04050S_invstCrncyCd').val(data.crncyCd);
-				$('#TB04050S_invstCrncyAmt').val(addComma(data.crncyAmt));
+				$('#TB04050S_invstCrncyCd').val(data.crryCd);
+				$('#TB04050S_invstCrncyAmt').val(addComma(data.crryAmt));
 				$('#TB04050S_wrtDt').val(formatDate(data.expDt));
 				$('#TB04050S_mtrtDt').val(formatDate(data.mtrtDt));
 
-				/* 기타정보 */
+				/* 기타정보 */console.log(`csucCmpDscmNo : ${data.csucCmpDscmNo}`)
 				$('#TB04050S_c_corpRgstNo').val(checkBrnAcno(data.csucCmpDscmNo));
 				$('#TB04050S_c_entpRnm').val(data.csucCmpDscmNm);
 				$('#TB04050S_C010').val(data.crdtEhcmntCcd);
@@ -409,7 +408,9 @@ const TB04050Sjs = (function () {
 		/**
 		 * 사용 할 함수 정의
 		 */
-		saveLoi : saveLoi
+		saveLoi : saveLoi,
+		getLoiDetail : getLoiDetail, //TB03021P에서 사용
+		getDealInfo_TB04050S : getDealInfo_TB04050S,//TB03021P에서 사용
 	}
 
 })();
