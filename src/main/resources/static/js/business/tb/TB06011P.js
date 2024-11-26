@@ -718,6 +718,14 @@ function setPrdtInfo(e) {
 		$('#TB04050S_prdtCd').val(e.prdtCd);
 		$('#TB04050S_prdtNm').val(e.prdtNm);
 	}
+	
+	//추가
+	if (prefix === 'TB04060S') {
+		$('#TB04060S_ibDealNo').val(e.dealNo);
+		$('#TB04060S_ibDealNm').val(e.dealNm);
+		$('#TB04060S_prdtCd').val(e.prdtCd);
+		$('#TB04060S_prdtNm').val(e.prdtNm);
+	}
 
 	/* 0726 add 대출계약 실행 */
 	if (prefix === 'TB07010S') {

@@ -188,10 +188,12 @@ public class TB06010ServiceImpl implements TB06010Service {
 		String rqsKndCd = param.getRqsKndCd();
 		int result = 0;
 		param.setApvlDt(LocalDate.now().toString().replace("-", ""));
+		String empNo = facade.getDetails().getEno();
 		
 		if ((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
 			
 			param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));
+			param.setHndEmpno(empNo);
 			result = ibims201bMapper.regPrdtCd(param);
 						
 		} else {
@@ -222,8 +224,10 @@ public class TB06010ServiceImpl implements TB06010Service {
 			param.setStdrIntrtKndCd(out202bdto.getStdrIntrtKndCd());		//기준금리종류코드
 			param.setPrgSttsCd(ibims201bvo.getPrgSttsCd());                 //진행상태코드
 			param.setEarlyRepayYn(out202bdto.getEarlyRepayYn());				//중도상환여부
+			//param.setHndEmpno("");
 			param.setLastYn("1");                                           //최종여부
 //			param.setRqsKndCd("01");                                        //신청종류
+			param.setHndEmpno(empNo);
 			result = ibims201bMapper.regPrdtCd(param);
 			
 		}
@@ -271,6 +275,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 				out401bdto.setFrsMngmBdcd(param.getFrsMngmBdcd()); 	// 최초관리부서
 				out401bdto.setMngmBdcd(param.getMngmBdcd()); 		// 관리부서
 				out401bdto.setTrrcDt(rfkDt);                        // 이수관일자
+				out401bdto.setHndEmpno(empNo);
 				result = ibims401BMapper.updateIBIMS401B(out401bdto);
 				result = ibims401HMapper.insertIBIMS401H(out401bdto);
 			}

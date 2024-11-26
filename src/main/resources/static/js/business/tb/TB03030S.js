@@ -160,7 +160,7 @@ const TB03030Sjs = (function(){
 				success: function(data) {
 					$.each(data, function(key, value) {
 						$('#TB03031P_rm_entpRnm').val(value.entpHnglNm);					// 업체명
-						$('#TB03031P_rm_corpRgstNo').val(checkBrnAcno(value.corpRgstNo));	// 법인등록번호	
+						$('#TB03031P_rm_corpRgstNo').val(checkBrnAcno(value.crno ));	    // 법인등록번호	
 						$("#TB03031P_rm_bsnsRgstNo").val(checkBrnAcno(value.bsnsRgstNo));	// 사업자등록번호
 						$('#TB03031P_metTitl').val(value.metTitl);							// 미팅제목
 						$('#TB03031P_metDt').val(formatDate(value.metDt));					// 미팅일자
