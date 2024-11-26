@@ -259,7 +259,7 @@ const TB07070Sjs = (function () {
       {
         title: "거래부서",
         dataType: "string",
-        dataIndx: "mngmBdcd",
+        dataIndx: "dprtNm",
         halign: "center",
         align: "left",
         width: "10%",
@@ -268,7 +268,7 @@ const TB07070Sjs = (function () {
       {
         title: "담당자",
         dataType: "string",
-        dataIndx: "chrrEmpno",
+        dataIndx: "chrrEnm",
         halign: "center",
         align: "left",
         width: "10%",

@@ -360,7 +360,7 @@
          <if test="prdtCd != ''">
          AND A.PRDT_CD = #{prdtCd}
          </if>
-         <if test="trObjtBsnNo != ''">
+         <if test="trObjtBsnNo != '' ">
          AND B.TR_OTHR_DSCM_NO = #{trObjtBsnNo}
          </if>
        ORDER BY PRDT_CD, TR_SN DESC

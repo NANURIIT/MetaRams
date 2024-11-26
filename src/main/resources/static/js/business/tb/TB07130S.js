@@ -6,6 +6,11 @@ const TB07130Sjs = (function () {
     pqGrid();
   });
 
+  /**
+   * 전역변수
+   */
+  let prevRowIndx;
+
   /*******************************************************************
    * PQGrid
    *******************************************************************/
@@ -24,7 +29,7 @@ const TB07130Sjs = (function () {
       {
         title: "부서명",
         dataType: "string",
-        dataIndx: "mngmBdcd",
+        dataIndx: "mngmBdcdNm",
         halign: "center",
         align: "center",
         // width    : '10%',
@@ -42,7 +47,7 @@ const TB07130Sjs = (function () {
       {
         title: "계정과목코드명",
         dataType: "string",
-        dataIndx: "actsCd",
+        dataIndx: "actsCdNm",
         halign: "center",
         align: "center",
         // width    : '10%',
@@ -200,8 +205,9 @@ const TB07130Sjs = (function () {
           title: "<p class='text-center'>No</p>",
         },
         rowDblClick: function (event, ui) {
-          console.log(ui.rowData);
-
+          $('#grd_acctDtls').pqGrid('removeClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: prevRowIndx });
+          $('#grd_acctDtls').pqGrid('addClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: ui.rowIndx});
+          prevRowIndx = ui.rowIndx;
           thdtTrDtlsGetData(ui.rowData);
         },
         //   , scrollModel : { autoFit: false }
@@ -247,6 +253,7 @@ const TB07130Sjs = (function () {
           let detail = $("#grd_acctDtls").pqGrid("instance");
           detail.setData(data);
           detail.getData();
+          console.log(data);
         } else {
           Swal.fire({
             icon: "warning",
