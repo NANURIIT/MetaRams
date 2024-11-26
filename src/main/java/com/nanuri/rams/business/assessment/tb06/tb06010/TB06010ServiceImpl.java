@@ -222,6 +222,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 			param.setStdrIntrtKndCd(out202bdto.getStdrIntrtKndCd());		//기준금리종류코드
 			param.setPrgSttsCd(ibims201bvo.getPrgSttsCd());                 //진행상태코드
 			param.setEarlyRepayYn(out202bdto.getEarlyRepayYn());				//중도상환여부
+			//param.setHndEmpno("");
 			param.setLastYn("1");                                           //최종여부
 //			param.setRqsKndCd("01");                                        //신청종류
 			result = ibims201bMapper.regPrdtCd(param);
