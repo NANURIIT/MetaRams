@@ -1271,9 +1271,11 @@ const TB06010Sjs = (function(){
 			, "dealNo": $('#TB06010S_ibDealNo').val()									// 딜번호
 			, "dealNm": $('#TB06010S_ibDealNm').val()                                  	// 딜명
 			//, "mtrNo": mtrNo                                    						// 안건번호
-			, "nmcpMtrDcd": $('#TB06010S_lstCCaseCcd').val()							// 부수안건구분코드
+			//, "nmcpMtrDcd": $('#TB06010S_lstCCaseCcd').val()							// 부수안건구분코드
+			, "mtrDcd" : $('#TB06010S_lstCCaseCcd').val()
 			//, "nmcpMtrSn": nmcpMtrSn                            						// 부수안건일련번호
-			, "lstCCaseDcd": $('#TB06010S_riskInspctCcd').val()							// 리스크심사구분코드
+			//, "lstCCaseDcd": $('#TB06010S_riskInspctCcd').val()							// 리스크심사구분코드
+			, "jdgmDcd" : $('#TB06010S_riskInspctCcd').val()	
 			, "mtrNm": $('#TB06010S_mtrNm').val()										// 안건명
 			//, "locoIssMngmNo": ''                    									// loc발급관리번호
 			//, "invIdtrtSmitYn": invIdtrtSmitYn                  						// 투자확약서제출여부
@@ -1401,7 +1403,7 @@ const TB06010Sjs = (function(){
 			, "rgstDt": getToday().replaceAll('-', '')			  // 등록일자
 			//, "chngDt": '' 									  // 변경일자
 			// 조작상세일시 , "hndDetlDtm": ''
-			//, "hndEmpno": ''                              	  // 조작사원번호
+			, "hndEmpno": $('#userEno').val()                              	  // 조작사원번호
 			//, "hndTmnlNo": ''                            		  // 조작단말기번호
 			//, "hndTrId": ''                                	  // 조작거래id
 			//, "guid": ''                                        // guid
