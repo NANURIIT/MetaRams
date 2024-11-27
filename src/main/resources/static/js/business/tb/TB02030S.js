@@ -60,11 +60,12 @@ const TB02030Sjs = (() => {
     function setGrid_TB20230S(){
         const obj_WfMap = {
             height: 220,
-            width: "100%",
             colModel: colWfMapList,
             editable: false,
             showTitle: false,
             numberCell: { show: false },
+            scrollModel: { autoFit: true },
+            strNoRows: '조회된 데이터가 없습니다.',
             rowDblClick: (evt, ui) => {
                 if (ui.rowData) {
                     const wfMapId = ui.rowData.wfMapId;
@@ -72,12 +73,6 @@ const TB02030Sjs = (() => {
                     lastWfMapId = wfMapId;
                 }
             },
-            scrollModel: {  // 수평 스크롤을 비활성화
-                horizontal: false,
-                vertical: true  // 수직 스크롤은 필요에 따라 활성화
-            },
-            autoResize: true ,// 열 너비 자동 조정
-            strNoRows: '조회된 데이터가 없습니다.'
         };
     
         const obj_WfStep = {
@@ -86,6 +81,7 @@ const TB02030Sjs = (() => {
             editable: false,
             showTitle: false,
             numberCell: { show: false },
+            scrollModel: { autoFit: true },
             strNoRows: '조회된 데이터가 없습니다.',
             cellSave: function (event, ui) {
                 if (ui.dataIndx === "stepNm") {
@@ -117,6 +113,7 @@ const TB02030Sjs = (() => {
     
         wfMapObj = $(GRID_MAP_ID).pqGrid('instance');
         wfStepObj = $(GRID_STEP_ID).pqGrid('instance');
+
     };
 
     //Wf 맵 관리
@@ -129,10 +126,11 @@ const TB02030Sjs = (() => {
             title: "",
             menuIcon: false,
             type: "checkbox",
-            editor: true,  
+            editor: false,  
             dataType: "bool",
             editable: true,
-            width    : "1%",
+            minWidth: 36,  // 최소 너비 설정
+            maxWidth: 36,  // 최대 너비 설정
             resizable: false,
             cb: {
                 all: false,
@@ -144,7 +142,6 @@ const TB02030Sjs = (() => {
 			dataType : "string", 
 			dataIndx : "wfMapId", 
 			align    : "center",
-			width    : "15%",
             editable : true,
 		},
 		{ 	
@@ -162,7 +159,6 @@ const TB02030Sjs = (() => {
 			dataIndx : "jobTable", 
 			halign   : "center",
 			align    : "center",
-			width    : "15%",
             editable : true,
 		},
 		{ 	
@@ -179,7 +175,6 @@ const TB02030Sjs = (() => {
 			dataType : "string",
 			dataIndx : "regUserId",
 			align    : "center",
-            width    : "15%",
             editable : true,
 		},
 		{ 	
@@ -187,15 +182,13 @@ const TB02030Sjs = (() => {
 			dataType : "string",
 			dataIndx : "regDttm",
 			align    : "center", 
-			width    : "15%",
-            editable: false // 이 열은 편집 불가능
+            editable: false // 편집 불가능
 		},
         { 	
 			title    : "상태", 
 			dataType : "string",
 			dataIndx : "state",
 			align    : "center", 
-			width    : "5%",
             hidden: true
 		},
 		{ 	
@@ -203,7 +196,6 @@ const TB02030Sjs = (() => {
 			dataType : "string",
 			dataIndx : "originalWfMapId",
 			align    : "center", 
-			width    : "5%",
             hidden: true
 		},
 	];
@@ -321,10 +313,12 @@ const TB02030Sjs = (() => {
             halign: "center",
             title: "",
             menuIcon: false,
-            type: "checkBoxSelection",
-            editor: false,
+            type: "checkbox",
             dataType: "bool",
             editable: true,
+            editor: false,
+            minWidth: 36,  // 최소 너비 설정
+            maxWidth: 36,  // 최대 너비 설정
             resizable: false,
             cb: {
                 all: false,
@@ -344,7 +338,6 @@ const TB02030Sjs = (() => {
 			dataIndx : "stepId", 
 			align    : "center",
 			halign   : "center",
-			width    : "14%",
             editable : true,
 		},
 		{ 	
@@ -353,7 +346,6 @@ const TB02030Sjs = (() => {
 			dataIndx : "stepNm", 
 			halign   : "center",
 			align    : "center",
-			width    : "14%",
             formatter: 'listItemText', // 선택된 항목의 label을 표시
             editor: {
                 type: "select",
@@ -369,7 +361,6 @@ const TB02030Sjs = (() => {
 			dataIndx : "nextStepId", 
 			halign   : "center",
 			align    : "center",
-            width    : "14%",
             editable : true,
 		},
 		{ 	
@@ -377,7 +368,6 @@ const TB02030Sjs = (() => {
 			dataType : "string",
 			dataIndx : "rtnStepId",
 			align    : "center",
-            width    : "14%",
             editable : true,
 		},
 		{ 	
@@ -385,7 +375,6 @@ const TB02030Sjs = (() => {
 			dataType : "string",
 			dataIndx : "wfAuthId",
 			align    : "center", 
-			width    : "14%",
             formatter: 'listItemText', 
             editor: {
                 type: "select",
@@ -401,7 +390,6 @@ const TB02030Sjs = (() => {
 			dataType : "string",
 			dataIndx : "excAuthEmp",
 			align    : "center", 
-			width    : "14%",
             editable : true,
 		},
         { 	
@@ -409,7 +397,6 @@ const TB02030Sjs = (() => {
 			dataType : "string",
 			dataIndx : "excAuthDept",
 			align    : "center", 
-			width    : "14%",
             editable: true 
 		},
         { 	
@@ -417,7 +404,6 @@ const TB02030Sjs = (() => {
 			dataType : "string",
 			dataIndx : "state",
 			align    : "center", 
-			width    : "5%",
             hidden: true
 		},
 		
