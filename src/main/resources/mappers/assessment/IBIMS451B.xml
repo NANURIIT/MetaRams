@@ -3,22 +3,28 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS451BMapper">
 
     <select id="selectIBIMS451B" parameterType="com.nanuri.rams.business.common.dto.IBIMS451BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS451BVO">
-        SELECT STDR_DT          /* 기준일자     */      
-             , ACTS_CD          /* 계정과목코드 */      
-             , MNGM_BDCD        /* 관리부서번호 */          
-             , LDGR_TR_AMT      /* 원장거래금액 */          
-             , ACCT_RFLT_AMT    /* 계정반영금액 */              
-             , THDT_DIFA_AMT    /* 당일차액금액 */              
-             , LDGR_RMND        /* 원장잔액     */          
-             , ACCT_RMND        /* 계정잔액     */          
-             , DIFA_AMT         /* 차액금액     */      
-             , ACRD_YN          /* 일치여부     */      
-             , HND_DETL_DTM     /* 조작상세일시 */          
-             , HND_EMPNO        /* 조작사원번호 */          
-             , HND_TMNL_NO      /* 조작단말기번호 */          
-             , HND_TR_ID        /* 조작거래ID */          
-             , GUID             /* GUID */  
-         FROM IBIMS451B
+        SELECT T1.STDR_DT          /* 기준일자     */      
+             , T1.ACTS_CD          /* 계정과목코드 */
+             , '' AS actsCdNm      /* 계정과목코드명 */      
+             , T1.MNGM_BDCD        /* 관리부서번호 */          
+             , (
+                SELECT MAX(S1.DPRT_NM)
+                  FROM IBIMS003B S1
+                 WHERE 1=1
+                   AND S1.DPRT_CD = T1.MNGM_BDCD
+                ) AS mngmBdcdNm    /* 관리부서번호 */          
+             , T1.LDGR_TR_AMT      /* 원장거래금액 */          
+             , T1.ACCT_RFLT_AMT    /* 계정반영금액 */              
+             , T1.THDT_DIFA_AMT    /* 당일차액금액 */              
+             , T1.LDGR_RMND        /* 원장잔액     */          
+             , T1.ACCT_RMND        /* 계정잔액     */          
+             , T1.DIFA_AMT         /* 차액금액     */      
+             , T1.ACRD_YN          /* 일치여부     */      
+             , T1.HND_DETL_DTM     /* 조작상세일시 */          
+             , T1.HND_EMPNO        /* 조작사원번호 */          
+             , T1.HND_TMNL_NO      /* 조작단말기번호 */          
+             , T1.HND_TR_ID        /* 조작거래ID */          
+         FROM IBIMS451B T1
         WHERE 1=1
           <if test="stdrDt != ''">
           AND STDR_DT = #{stdrDt}

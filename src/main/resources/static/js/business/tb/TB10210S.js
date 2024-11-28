@@ -519,7 +519,6 @@ const TB10210Sjs = (function () {
     $('#authCodeTable').pqGrid('addClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: rowIndx});
 
     prevRowIndx = rowIndx;
-
       let rowData = authCdTbObj.getRowData({ rowIndx: rowIndx });
       let rghtCd = rowData.athCd;
       getAuthCodeMenu(rghtCd);

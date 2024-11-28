@@ -50,7 +50,7 @@
          AND IB410B.TR_STAT_CD = #{trStatCd}   /* 거래상태 */ 
         </if>       
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
-         AND IB410B.TR_STFNO	    = #{chrrEmpno}   /* 거래직원번호 */
+         AND IB201B.CHRR_EMPNO	    = #{chrrEmpno}   /* 거래직원번호 */
         </if>       
        ORDER BY IB201B.PRDT_CD        
            , IB410B.EXC_SN         

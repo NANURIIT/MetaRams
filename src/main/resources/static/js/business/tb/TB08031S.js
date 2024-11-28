@@ -3236,5 +3236,6 @@ const TB08031Sjs = (function(){
 		, admsAsstInfoBtnSave : admsAsstInfoBtnSave
 		, saveTabInfo : saveTabInfo
         , ernInfoBtnSave : ernInfoBtnSave
+		, getReltDealInfo : getReltDealInfo
 	}
 })();

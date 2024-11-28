@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nanuri.rams.business.common.dto.IBIMS451BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS410BVO;
+import com.nanuri.rams.business.common.vo.IBIMS451BVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ public class TB07130APIController {
 	private final TB07130Service tb07130Service;
 
 	@PostMapping(value = "/selectIBIMS451B")
-	public List<IBIMS451BDTO> selectIBIMS451B(@RequestBody IBIMS451BDTO param) {
+	public List<IBIMS451BVO> selectIBIMS451B(@RequestBody IBIMS451BDTO param) {
 		return tb07130Service.selectIBIMS451B(param);
 	}
 	
