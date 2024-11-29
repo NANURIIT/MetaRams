@@ -476,6 +476,10 @@ async function getPrdtCdList() {
 		trDvsn = 'F'
 	}
 
+	if ($('#TB06011P_prefix').val() == "TB07150S") {
+		trDvsn = 'TB07150S'
+	}
+
 	var param = {
 		"prdtCd": $('#TB06011P_prdtCd').val()
 		, "prdtNm": $('#TB06011P_prdtNm').val()
@@ -517,6 +521,10 @@ async function getGridState() {
 
 	if ($('#TB06011P_prefix').val() == "TB06030S") {
 		trDvsn = 'F'
+	}
+
+	if ($('#TB06011P_prefix').val() == "TB07150S") {
+		trDvsn = 'TB07150S'
 	}
 
 	var param = {
