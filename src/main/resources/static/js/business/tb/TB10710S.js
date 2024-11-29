@@ -67,7 +67,10 @@ const TB10710Sjs = function(){
                 dataIndx: "rgstDt",
                 halign: "center",
                 align: "center",
-                filter: { crules: [{ condition: 'range' }] }
+                filter: { crules: [{ condition: 'range' }] },
+                render: function (ui) {
+                    return formatDate(ui.cellData);
+                  },
             }
             , {
                 title: "담당자사번",
@@ -91,7 +94,10 @@ const TB10710Sjs = function(){
                 dataIndx: "actnPrarDt",
                 halign: "center",
                 align: "center",
-                filter: { crules: [{ condition: 'range' }] }
+                filter: { crules: [{ condition: 'range' }] },
+                render: function (ui) {
+                    return formatDate(ui.cellData);
+                  },
             }
             , {
                 title: "조치일자",
@@ -99,7 +105,10 @@ const TB10710Sjs = function(){
                 dataIndx: "actnDt",
                 halign: "center",
                 align: "center",
-                filter: { crules: [{ condition: 'range' }] }
+                filter: { crules: [{ condition: 'range' }] },
+                render: function (ui) {
+                    return formatDate(ui.cellData);
+                  },
             }
             , {
                 title: "관리부서",
@@ -112,7 +121,7 @@ const TB10710Sjs = function(){
             , {
                 title: "부서명",
                 dataType: "string",
-                dataIndx: "mngmOrgno",
+                dataIndx: "cdVlNm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] }
@@ -389,6 +398,7 @@ const TB10710Sjs = function(){
             data: JSON.stringify(paramData),
             dataType: "json",
             success: function (data) {
+                console.log(data);
                 if (data.length > 0) {
                     let detail = $('#TB10710S_colModel1').pqGrid('instance')
                     detail.setData(data);

@@ -1,6 +1,9 @@
 const TB09100Sjs = (function () {
   $(document).ready(function () {
     setGrid_TB09100S();
+
+    $("#TB09100S_fromDate").val(getSomeDaysAgo(7));
+    $("#TB09100S_toDate").val(getToday());
   });
 
   //그리드 set
@@ -326,8 +329,8 @@ const TB09100Sjs = (function () {
     $("#TB09100S_ibDealNm").val(""); //Deal 명
     $("#TB09100S_prdtCd").val(""); //종목코드
     $("#TB09100S_prdtNm").val(""); //종목명
-    $("#TB09100S_fromDate").val(""); //투자기간 시작일
-    $("#TB09100S_toDate").val(""); //투자기간 종료일
+    $("#TB09100S_fromDate").val(getSomeDaysAgo(7));
+    $("#TB09100S_toDate").val(getToday());
   }
 
   //익스포져 현황 조회
