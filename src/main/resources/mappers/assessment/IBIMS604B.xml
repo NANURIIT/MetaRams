@@ -73,7 +73,7 @@
     AND (A.ANS_ACPT_DT IS NULL) OR (A.FST_CNFR_DT IS NULL) 
     </if>
     <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(stdrDt)">
-    AND A.STDR_DT /* 기준일자 */ <![CDATA[>=]]> #{stdrDt}
+    AND A.STDR_DT <![CDATA[>=]]> #{stdrDt} /* 기준일자 */ 
     </if>
 	ORDER 
 		 BY A.STDR_DT DESC
