@@ -256,7 +256,8 @@ const TB07110Sjs = (function () {
       dataType: "json",
       success: function (data) {
         if (data) {
-          let gridList = $("#TB07110S_grd_rlthPruf").pqGrid("instance");
+          //let gridList = $("#TB07110S_grd_rlthPruf").pqGrid("instance");
+          let gridList = $("#TB07110S_grd_txbl").pqGrid("instance");
           gridList.setData(data);
           gridList.getData();
         } else {
