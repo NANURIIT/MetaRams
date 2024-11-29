@@ -309,8 +309,15 @@ function setArdyBzepInfo(rowData) {
 		case "TB07150S" :
 			$('#TB07150S_trOthrDscmNo_chng').val(ardyBzepNo);		// 사업자등록번호
 			$('#TB07150S_trOthrDscmNm_chng').val(entpNm);			// 거래상대방(업체한글명)
-
 			break;
+		case "TB06020S" :
+			$('#TB06020S_ardyBzepNo').val(ardyBzepNo);		// 기업체코드
+			$('#TB06020S_bzepName').val(entpNm);			// 거래상대방(업체한글명)
+			break;	
+		case "TB06030S" :
+			$('#TB06030S_ardyBzepNo').val(ardyBzepNo);		// 기업체코드
+			$('#TB06030S_bzepName').val(entpNm);			// 거래상대방(업체한글명)
+			break;	
 		default:
 			break;
 	}

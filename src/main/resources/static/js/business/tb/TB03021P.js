@@ -231,7 +231,7 @@ let colDealInfo = [
   {
     title: "부서코드",
     dataType: "string",
-    dataIndx: "dprtCd",
+    dataIndx: "bdcd",
     align: "center",
     hidden: true,
     filter: { crules: [{ condition: "range" }] },
@@ -239,7 +239,7 @@ let colDealInfo = [
   {
     title: "부서",
     dataType: "string",
-    dataIndx: "dprtNm",
+    dataIndx: "bdNm",
     align: "center",
     filter: { crules: [{ condition: "range" }] },
   },
