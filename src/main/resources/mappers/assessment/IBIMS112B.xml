@@ -273,13 +273,19 @@
              , IBIMS112B.HND_TR_ID                                         /* 조작거래ID */
              , IBIMS112B.GUID                                              /* GUID */
              , IBIMS103B.CHRR_EMPNO		AS CHRR_EMPNO
-             , A.EMP_NM					AS CHRG_P_ENM
+             , (SELECT A.EMP_NM
+             	FROM IBIMS003B A
+             	WHERE 1=1
+             	AND A.EMPNO=IBIMS103B.CHRR_EMPNO
+             	)						AS CHRG_P_ENM
              , IBIMS103B.OWN_P_ENO		AS OWN_P_ENO
-             , B.EMP_NM					AS OWN_P_ENM
+             , (SELECT B.EMP_NM
+             	FROM IBIMS003B B
+             	WHERE 1=1
+             	AND B.EMPNO=IBIMS103B.OWN_P_ENO
+             	)						AS OWN_P_ENM
           FROM IBIMS112B
              , IBIMS103B
-             , IBIMS003B A
-             , IBIMS003B B
          WHERE 1=1
            AND IBIMS112B.DEAL_NO								= #{dealNo}
            AND IBIMS112B.MTR_DCD								= #{mtrDcd}
@@ -288,8 +294,6 @@
            AND IBIMS112B.MTR_DCD								= IBIMS103B.MTR_DCD
            AND IBIMS112B.JDGM_DCD								= IBIMS103B.JDGM_DCD
            AND IBIMS103B.LAST_YN								= '1'
-           AND A.EMPNO											    = IBIMS103B.CHRR_EMPNO
-           AND B.EMPNO											    = IBIMS103B.OWN_P_ENO
     </select>
 
 </mapper>
