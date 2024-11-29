@@ -1,39 +1,43 @@
 var arrPqGridPrdtCdList = [];
 let TB06011P_pf;
 let TB06011P_gridState = 1;
+
+
 /*
  *	팝업 자동 호출, 검색
  */
-$("input[id*='_prdtCd']").on('keydown', async function (evt) {
-	// Enter에만 작동하는 이벤트
-	if (evt.keyCode === 13) {
-		evt.preventDefault();
-
-		// 사용한 인풋박스의 출처 페이지 가져오기
-		let prefix;
-		if ($(this).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
-			prefix = TB06011P_pf;
-		} else {
-			prefix = $(this).attr('id').slice(0, 8);
-		}
-
-		// 인풋박스 밸류
-		let data = $(this).val();
-		$('#TB06011P_prdtCd').val(data);
-		await getGridState();
-
-		// 팝업 오픈
-		if (TB06011P_gridState === 0) {
-			callGridTB06011P(prefix);
+function TB06011P_srchPrdt () {
+	$("input[id*='_prdtCd']").on('keydown', async function (evt) {
+		// Enter에만 작동하는 이벤트
+		if (evt.keyCode === 13) {
+			evt.preventDefault();
+	
+			// 사용한 인풋박스의 출처 페이지 가져오기
+			let prefix;
+			if ($(this).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
+				prefix = TB06011P_pf;
+			} else {
+				prefix = $(this).attr('id').slice(0, 8);
+			}
+	
+			// 인풋박스 밸류
+			let data = $(this).val();
 			$('#TB06011P_prdtCd').val(data);
-			setTimeout(() => getPrdtCdList(), 400);
-		} else if (TB06011P_gridState === 1) {
-			callTB06011P(prefix);
-			$('#TB06011P_prdtCd').val(data);
-			setTimeout(() => getPrdtCdList(), 400);
+			await getGridState();
+	
+			// 팝업 오픈
+			if (TB06011P_gridState === 0) {
+				callGridTB06011P(prefix);
+				$('#TB06011P_prdtCd').val(data);
+				setTimeout(() => getPrdtCdList(), 400);
+			} else if (TB06011P_gridState === 1) {
+				callTB06011P(prefix);
+				$('#TB06011P_prdtCd').val(data);
+				setTimeout(() => getPrdtCdList(), 400);
+			}
 		}
-	}
-});
+	});
+}
 
 //그리드 컬럼 세팅
 var colPrdtCdList = [
@@ -349,6 +353,7 @@ function dataPrdtCdSetGrid(data) {
 
 // 초기설정
 $(document).ready(function () {
+	TB06011P_srchPrdt();
 	docRdySettings();
 });
 

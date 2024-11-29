@@ -33,7 +33,7 @@ public class TB07140APIController {
 	}
 	
 	@PostMapping(value = "/insertFinc")
-	public int insertFinc(IBIMS407BDTO paramData){
+	public int insertFinc(@RequestBody IBIMS407BDTO paramData){
 		return tb07140Service.insertFinc(paramData);
 	};
 

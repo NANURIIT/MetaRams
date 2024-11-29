@@ -471,6 +471,7 @@ const TB07070Sjs = (function () {
             text: "실행이 완료됐습니다.",
             confirmButtonText: "확인",
           });
+          $('#TB07070S_rvseCnclRsonText').val("")
           srch();
         } else {
           Swal.fire({
