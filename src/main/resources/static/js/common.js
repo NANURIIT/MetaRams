@@ -1516,11 +1516,15 @@ function getBasicValues(id) {
 function resetInputValue(selector) {
 	selector.find(`select`).val('');
 	selector.find(`input`).val('');
-	selector.find(`input[id*='Amt']
-				 , input[id*='Blce']
-				 , input[id*='Exrt']
-				 , input[id*='Mnum']
-				 , input[id*='Tmrd']`).val('0');
+	selector.find(`input[id$='Amt']
+				 , input[id$='Blce']
+				 , input[id$='Exrt']
+				 , input[id$='Mnum']
+				 , input[id$='Tmrd']
+				 , input[id$='Qnt']
+				 , input[id$='Shqt']
+				 , input[id$='Unpr']
+				 , input[id$='Rt']`).val('0');
 }
 
 /**
@@ -1666,4 +1670,14 @@ function pqGridDeleteRow(colModelSelector, rowIndx) {
 	colModelSelector.pqGrid("deleteRow", {
 		rowIndx: rowIndx
 	});
+}
+
+/**
+ * 화면 이동시 작동해야하는 함수
+ */
+function needRunFn (fn, menuId) {
+    const url = window.location.pathname;
+    if(menuId){
+      fn
+    }
 }

@@ -140,6 +140,14 @@ function chkPrevPage() {
  */
 async function callPage(menuId, pageName) {
 
+    /**
+     * 페이지명 하드코딩하지 마시라고 만듬
+     * callPage(menuId) 이렇게 하셔도 오류 안납니다.
+     */
+    if(!pageName){
+        pageName = $(`li[data-sidetabid='${menuId}'] a`).html();
+    }
+
     const url = window.location.pathname;
 
     if (url === "/" + menuId) {

@@ -279,6 +279,12 @@ const TB07020Sjs = (function() {
 		loadUserAuth(); // 담당자 정보 조회
 
 		setGrid_TB07020S();
+
+		/**
+		 * 인풋박스 초기화 공통
+		 * common.js
+		 */
+		resetInputValue($('div[data-menuid="/TB07020S"]'));
 	});
 
 	function setGrid_TB07020S(){
@@ -1182,6 +1188,16 @@ const TB07020Sjs = (function() {
 
 	// 검색조건 및 선택된 테이블 정보 초기화
 	function compClear() {
+
+		/**
+		 * 손대기 귀찮아서 그냥 제가 만든 공통 한번 더 실행하겠습니다 태안씨 화이팅
+		 * 인풋박스 초기화 공통
+		 * 출처 common.js
+		 * 
+		 * 보니까 이거 먼저 쓰시고 안되는 부분 조금씩 수정하시면 될듯요
+		 */
+		resetInputValue($('div[data-menuid="/TB07020S"]'));
+
 		/* 검색조건 */
 		$('#TB07020S_rsltnDt').val('');
 		$('#TB07020S_prdtCd').val('');
@@ -1614,6 +1630,16 @@ const TB07020Sjs = (function() {
 		}
 	}
 
+	/**
+	 * 엑셀저장 PQGrid ExcelExport
+	 */
+	 function saveExcelFile() {
+		let blob = $('#TB07020S_tableList').pqGrid('instance').exportExcel({});
+		let fileName;
+		fileName = "테스트 그만하고 집에 보내줘요.xlsx";
+		pq.saveAs(blob, fileName);
+	}
+
 	return {
 		/**
 		 * 사용 할 함수 정의
@@ -1626,6 +1652,7 @@ const TB07020Sjs = (function() {
 	,	calcTrslAmt : calcTrslAmt
 	,	showAlert : showAlert
 	,	calcTrAmt : calcTrAmt
+	,	saveExcelFile : saveExcelFile 	// 엑셀 저장 함수
 	}
 
 })();
