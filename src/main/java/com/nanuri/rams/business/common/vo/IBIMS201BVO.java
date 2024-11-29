@@ -19,6 +19,7 @@ public class IBIMS201BVO extends IBIMS201BDTO {
     private String     	  entpHnglNm;                    				   // 업체한글명
     private String     	  cnsbDcd;                    					   // 전결협의체
     private String        chrrEmpnm;                                       // 담당사원명
+    private String 		  mngmBdcd;										   // 관리부서
     private String        empNm;                                       	   // 담당자명
     private String        rgstEndDt;									   // 등록종료일자
     private String        apvlEndDt;									   // 승인종료일자

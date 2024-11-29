@@ -435,7 +435,7 @@ const TB07080Sjs = (function () {
     } else if (TB07080S_rowData != dummyData) {
       Swal.fire({
         icon: "warning",
-        text: "정말 삭제하시겠습니까?",
+        text: "데이터가 삭제됩니다",
         confirmButtonText: "확인",
         denyButtonText: "아니오",
         showDenyButton: true,

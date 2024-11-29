@@ -348,9 +348,9 @@
              , s101b.RGST_DT						  /*  등록일자  */
              , s101b.CHRR_EMPNO						/*  담당자사원번호  */
              , s003b.EMP_NM							  /*  담당자명  */
-             , s003b.BDCD						  /*  부서코드  */
+             , s003b.DPRT_CD						  /*  부서코드  */
              , s003b.DPRT_NM						  /*  부서코드명  */
-             , s010b.ENTP_NM   					/*  업체한글명  */
+             , s010b.ENTP_NM   					  /*  업체한글명  */
           FROM IBIMS101B s101b
           LEFT JOIN IBIMS003B s003b
                ON s101b.CHRR_EMPNO				= s003b.EMPNO

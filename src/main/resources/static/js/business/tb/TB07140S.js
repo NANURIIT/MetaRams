@@ -792,8 +792,8 @@ const TB07140Sjs = (function () {
   function insertFinc() {
     paramData = {
       prdtCd: $(`#TB07140S_prdtCd`).val(),
-      trSn: $(`#TB07140S_trSn`).val(),
-      excSn: $(`#TB07140S_excSn`).val(),
+      // trSn: $(`#TB07140S_trSn`).val(),
+      // excSn: $(`#TB07140S_excSn`).val(),
       trDt: $(`#TB07140S_trDt`).val(),
       etprCrdtGrntTrKindCd: $(`#TB07140S_etprCrdtGrntTrKindCd`).val(),
       nsFndCd: $(`#TB07140S_nsFndCd`).val(),

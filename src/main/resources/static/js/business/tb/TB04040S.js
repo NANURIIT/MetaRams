@@ -337,7 +337,7 @@ const TB04040Sjs = (function() {
 
 		sessionStorage.setItem("dealNo", dealNo);
 		sessionStorage.setItem("dealNm", dealNm);
-		location.href = '/TB04050S';
+		callPage("TB04050S");
 	}
 
 	return {

@@ -125,7 +125,7 @@
               , #{stlAcno}
               , #{fincPayCntn}
               , #{reFincPossYn}
-              , #{hndDetlDtm}
+              , SYSDATE
               , #{hndEmpno}
               , #{hndTmnlNo}
               , #{hndTrId}
