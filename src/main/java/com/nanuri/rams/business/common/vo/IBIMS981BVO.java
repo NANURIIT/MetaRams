@@ -19,4 +19,5 @@ public class IBIMS981BVO extends IBIMS981BDTO {
     private String prevDate;
     private String nextDate;
     private String trOthrDscmNo;               //  거래상대방식별번호
+    private String cdVlNm; //부서명
 }
