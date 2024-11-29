@@ -1584,7 +1584,7 @@
                 , (
                       SELECT DISTINCT(DPRT_NM)
                       FROM IBIMS003B 
-                      WHERE BDCD = A.MNGM_BDCD
+                      WHERE DPRT_CD = A.MNGM_BDCD
                   ) AS MNGM_BDNM									            /* 관리부서명 */
                 , A.PRDT_CLSF_CD 							                /* 상품분류코드 */
                 , (
