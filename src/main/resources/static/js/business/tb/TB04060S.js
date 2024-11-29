@@ -530,6 +530,7 @@ const TB04060Sjs = (function() {
 				, "prdtClsfCd": $('#TB04060S_E021').val() 								// 투자상품(소)
 				, "ibPrdtClsfCd": $('#TB04060S_I002').val()    							// IB상품분류
 				, "chrrEmpno": $('#TB04060S_chrr_empNo').val()							// 담당자번호
+				, "mngmBdcd": $('#TB04060S_dprtCd').val()								// 관리부서
 				, "cnsbDcd": $('#TB04060S_I008').val()									// 전결협의체
 				, "apvlDt": $('#TB04060S_apvlDt').val().replaceAll('-', '')				// 승인일자
 				, "apvlEndDt": $('#TB04060S_apvlEndDt').val().replaceAll('-', '')		// 승인종료일자
@@ -603,6 +604,40 @@ const TB04060Sjs = (function() {
 			});
 		}
 	};
+	
+	/**
+	 * 투자상품 대분류에 따른 중분류,소분류 필터 by hytest
+	 */
+	function changePrdtLclsCd(){
+		var tempPrdtLclsCd = $("#TB04060S_E022 option:selected").val();
+		var secondPrdt = document.getElementById("TB04060S_E023");
+		var thirdPrdt = document.getElementById("TB04060S_E021");
+      if(tempPrdtLclsCd !=undefined && tempPrdtLclsCd!="" ){
+			for(var i=0; i<secondPrdt.length; i++){
+				var txt =secondPrdt.options[i].text;
+				if(txt.indexOf("("+tempPrdtLclsCd)>0){
+					$(secondPrdt.options[i]).show();
+				}else{
+					$(secondPrdt.options[i]).hide();
+				}
+			}			
+			for(var i=0; i<thirdPrdt.length; i++){
+				var txt =thirdPrdt.options[i].text;
+				if(txt.indexOf("("+tempPrdtLclsCd)>0){
+					$(thirdPrdt.options[i]).show();
+				}else{
+					$(thirdPrdt.options[i]).hide();
+				}
+			}
+	  	}else{
+			for(var i=0; i<secondPrdt.length; i++){
+					$(secondPrdt.options[i]).show();				
+			}			
+			for(var i=0; i<thirdPrdt.length; i++){				
+					$(thirdPrdt.options[i]).show();				
+			}			
+		}		
+	}//end-func
 
 	return {
 		/**
@@ -610,6 +645,7 @@ const TB04060Sjs = (function() {
 		 */
 		checkDealSearch : checkDealSearch
 	,	resetSearchParam : resetSearchParam
+	,   changePrdtLclsCd : changePrdtLclsCd
 	}
 
 })();

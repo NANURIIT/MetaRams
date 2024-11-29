@@ -1274,54 +1274,55 @@
         <!-- 사업명세조회 -->
         <select id="checkDealSearch" parameterType="com.nanuri.rams.business.common.vo.IBIMS201BVO"
                 resultType="com.nanuri.rams.business.common.vo.IBIMS201BVO">
-            SELECT A.DEAL_NO AS DEAL_NO 															 <!-- 딜번호 -->
-                 , NVL(C.RGST_DT, '') AS RGST_DT 												 <!-- 등록일자 -->
+	SELECT 		   A.DEAL_NO 									AS DEAL_NO 							/* 딜번호 */
+                 , NVL(C.RGST_DT, '') 							AS RGST_DT 							/* 등록일자 */
                  , NVL(
                           (SELECT CD_VL_NM
-                             FROM IBIMS002B AS s002b
+                             FROM IBIMS002B s002b
                             WHERE CMNS_CD_GRP = 'I011'
                               AND s002b.CD_VL_ID = s103b.MTR_PRG_STTS_DCD
-                     ), '') AS PRG_STTS_CD_NM														 <!-- 심사진행상태코드 -->
+                     ), '') 									AS PRG_STTS_CD_NM					/* 심사진행상태코드 */
                  , NVL(
                           (SELECT CD_VL_NM
-                             FROM IBIMS002B AS s002b
+                             FROM IBIMS002B s002b
                             WHERE CMNS_CD_GRP = 'I008'
                               AND s002b.CD_VL_ID = D.CNSB_DCD
-                     ), '') AS CNSB_DCD      										 				 <!-- 협의체구분코드 -->
-                 , NVL(A.PRDT_CD, '') AS PRDT_CD													 <!-- 상품코드 -->
-                 , NVL(A.PRDT_NM, '') AS PRDT_NM 												 <!-- 상품명 -->
+                     ), '') 									AS CNSB_DCD      					/* 협의체구분코드 */
+                 , NVL(A.PRDT_CD, '') 							AS PRDT_CD							/* 상품코드 */
+                 , NVL(A.PRDT_NM, '')		 					AS PRDT_NM 							/* 상품명 */
                  , NVL((SELECT MAX(B.ENTP_HNGL_NM)
                              FROM IBIMS114B B
-                            WHERE B.BZNO = A.TR_OTHR_DSCM_NO), '') AS ENTP_HNGL_NM 			 <!-- 업체한글명 -->										 <!-- 업체한글명 -->
-                 , A.PRDT_LCLS_CD																	 <!-- 기업여신상품대분류코드 -->
-                 , NVL(s002b_1.CD_VL_NM , '') AS PRDT_LCLS_CD_NM  								 <!-- 기업여신상품대분류코드명 -->
-                 , A.PRDT_MDCL_CD																	 <!-- 기업여신상품중분류코드 -->
-                 , NVL(s002b_2.CD_VL_NM , '') AS PRDT_MDCL_CD_NM									 <!-- 기업여신상품중분류코드명 -->
-                 , A.PRDT_CLSF_CD																	 <!-- 상품분류코드 -->
-                 , NVL(s002b_3.CD_VL_NM , '') AS PRDT_CLSF_CD_NM									 <!-- 기업여신상품분류코드명 -->
-                 , A.IB_PRDT_CLSF_CD																 <!-- IB상품분류코드 -->
-                 , NVL(s002b_4.CD_VL_NM, '') AS IB_PRDT_CLSF_CD_NM								 <!-- IB상품분류코드명 -->
+                            WHERE B.BZNO = A.TR_OTHR_DSCM_NO)
+                            , '') 								AS ENTP_HNGL_NM 			 		/* 업체한글명 */	
+                 , A.PRDT_LCLS_CD																	/* 기업여신상품대분류코드 */
+                 , NVL(s002b_1.CD_VL_NM , '') 					AS PRDT_LCLS_CD_NM  				/* 기업여신상품대분류코드명 */
+                 , A.PRDT_MDCL_CD																	/* 기업여신상품중분류코드 */
+                 , NVL(s002b_2.CD_VL_NM , '') 					AS PRDT_MDCL_CD_NM				 	/* 기업여신상품중분류코드명 */
+                 , A.PRDT_CLSF_CD																	/* 상품분류코드 */
+                 , NVL(s002b_3.CD_VL_NM , '') 					AS PRDT_CLSF_CD_NM				 	/* 기업여신상품분류코드명 */
+                 , A.IB_PRDT_CLSF_CD																/* IB상품분류코드 */
+                 , NVL(s002b_4.CD_VL_NM, '') 					AS IB_PRDT_CLSF_CD_NM				/* IB상품분류코드명 */
                  , NVL(
-                          (SELECT sum(s12b.APVL_AMT)				AS LST_DEAL_SUM_RCG_AMT			 <!-- 승인금액 -->
-                             FROM IBIMS112B s12b													 <!-- 위원회안건내역(협의체안건정보) -->
+                          (SELECT sum(s12b.APVL_AMT)												/* 승인금액 */
+                             FROM IBIMS112B s12b													/* 위원회안건내역(협의체안건정보) */
                             WHERE 1=1
                               AND s12b.DEAL_NO = A.DEAL_NO)
-                            , '') AS sumRcgAmt  	 											 <!-- 딜승인금액 -->
-                 , NVL(A.EPRZ_CRDL_APVL_AMT , '') AS EPRZ_CRDL_APVL_AMT											 	 <!-- 종목승인금액 -->
-                 , NVL(D.APVL_DT , '') AS APVL_DT  												 <!-- 승인일자 -->
-                 , NVL(A.ACTS_CD  , '') AS ACTS_CD  												 <!-- 계정과목코드 -->
-                 , NVL(A.PRG_STTS_CD  , '') AS PRG_STTS_CD  										 <!-- 진행상태코드 -->
+                            , '') 								AS sumRcgAmt  	 				 	/* 딜승인금액 */
+                 , NVL(A.EPRZ_CRDL_APVL_AMT , '')  				AS EPRZ_CRDL_APVL_AMT 				/* 종목승인금액 */
+                 , NVL(D.APVL_DT , '') 							AS APVL_DT  						/* 승인일자 */
+                 , NVL(A.ACTS_CD  , '') 						AS ACTS_CD  	  				    /* 계정과목코드 */
+                 , NVL(A.PRG_STTS_CD  , '') 					AS PRG_STTS_CD  					/* 진행상태코드 */
                  , (SELECT MAX(EMP_NM)
                       FROM IBIMS003B s003b
-                     WHERE EMPNO = A.CHRR_EMPNO) AS CHRR_EMPNM								 		 <!-- 담당자사원번호 -->
-		         , A.MNGM_BDCD                                                                       <!-- 부서번호 -->
+                     WHERE EMPNO = A.CHRR_EMPNO) 				AS CHRR_EMPNM	  		   			/* 담당자사원번호 */
+		         , A.MNGM_BDCD                                                                      /* 부서번호 */
 				 , (
 				    SELECT C.DPRT_NM
 					  FROM IBIMS003B C
 					 WHERE C.BDCD = A.MNGM_BDCD
-             AND ROWNUM = 1				 
-				   ) AS DPRT_NM                                                                      <!-- 부서명 -->
-				, i401b.EPRZ_CRDL_CTRC_AMT	 /* 기업여신약정금액 */
+             		 AND ROWNUM = 1				 
+				   ) 											AS DPRT_NM                     		/* 부서명 */
+				, i401b.EPRZ_CRDL_CTRC_AMT	 														/* 기업여신약정금액 */
 			    , (SELECT SUM(V.DEAL_EXC_AMT) FROM IBIMS402B V WHERE V.PRDT_CD = A.PRDT_CD AND V.LDG_STTS_CD = '1' ) AS DEAL_EXC_AMT /* 투자금액 */
 			    , (SELECT SUM(X.DEAL_EXC_BLCE) FROM IBIMS402B X WHERE X.PRDT_CD = A.PRDT_CD AND X.LDG_STTS_CD = '1' ) AS DEAL_EXC_BLCE /* 투자잔액 */
             FROM IBIMS201B A				
@@ -1382,6 +1383,9 @@
             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
              AND A.CHRR_EMPNO LIKE '%' || #{chrrEmpno} || '%'
             </if>
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
+             AND A.MNGM_BDCD LIKE '%' || #{mngmBdcd} || '%'
+            </if>            
             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trOthrDscmNo)">
              AND A.TR_OTHR_DSCM_NO LIKE '%' || #{trOthrDscmNo} || '%'
             </if>

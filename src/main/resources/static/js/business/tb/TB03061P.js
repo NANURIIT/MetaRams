@@ -295,6 +295,10 @@ function setArdyBzepInfo(rowData) {
 			$("#TB04010S_rspsb_bsnsRgstNo").val(rnbn);
 			$("#TB04010S_rspsb_entpRnm").val(entpNm);
 			break; 
+		case "TB04060S" :
+			$('#TB04060S_bsnsRgstNo').val(ardyBzepNo);		// 기업체코드
+			$('#TB04060S_entpRnm').val(entpNm);			// 거래상대방(업체한글명)
+			break;		
 		case "TB06013P" : 
 			$("#TB06013P_bsnsRgstNo").val(ardyBzepNo);
 			$("#TB06013P_entpRnm").val(entpNm);
