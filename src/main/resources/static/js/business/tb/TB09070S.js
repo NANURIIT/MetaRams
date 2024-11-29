@@ -343,8 +343,18 @@ const TB09070Sjs = (function () {
     $("#TB09070S_fromDt").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
     $("#TB09070S_toDt").val(getToday()); //조회종료일
   }
+
+  function pqExportExcel() {
+    let blob = $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("instance").exportExcel({});
+    let fileName = "상환대상내역_" + getToday() + ".xlsx";
+
+    pq.saveAs(blob, fileName);
+  }
+
   return {
     rdmpTrgtDtlsInq: rdmpTrgtDtlsInq,
     reset_TB09070S: reset_TB09070S,
+    pqExportExcel: pqExportExcel,
   };
 })();
+

@@ -57,19 +57,19 @@
              , T1.ACCT_DT
           FROM IBIMS431B T1
          WHERE 1=1
-           <if test="acctDt1 != ''">
+           <if test="acctDt1 != null and acctDt1 != ''">
            AND T1.ACCT_DT &gt; #{acctDt1}
            </if>
-           <if test="acctDt2 != ''">
+           <if test="acctDt2 != null and acctDt2 != ''">
            AND T1.ACCT_DT &lt; #{acctDt2}
            </if>
-           <if test="rslnBdcd != ''">
+           <if test="rslnBdcd != null and rslnBdcd != ''">
            AND T1.RSLN_BDCD = #{rslnBdcd}
            </if>
-           <if test="bcncNm != ''">
+           <if test="bcncNm != null and bcncNm != ''">
            AND T1.BCNC_NM = #{bcncNm}
            </if>
-           <if test="actsCd != ''">
+           <if test="actsCd != null and actsCd != ''">
            AND T1.ACTS_CD = #{actsCd}
            </if>
     </select>

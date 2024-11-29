@@ -32,7 +32,7 @@ const TB10110Sjs = (function () {
     {
       title: "직책",
       dataType: "string",
-      dataIndx: "osdtDcd",
+      dataIndx: "athCdNm",
       align: "center",
       halign: "center",
       width: "",
@@ -41,7 +41,7 @@ const TB10110Sjs = (function () {
     {
       title: "권한",
       dataType: "string",
-      dataIndx: "athCdNm",
+      dataIndx: "athCd",
       align: "center",
       halign: "center",
       width: "",
@@ -55,6 +55,9 @@ const TB10110Sjs = (function () {
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+      render: function(ui){
+        return formatDate(ui.cellData);
+      }
     },
     {
       title: "회수(예정)일",
@@ -64,6 +67,9 @@ const TB10110Sjs = (function () {
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+      render: function(ui){
+        return formatDate(ui.cellData);
+      }
     },
     {
       title: "등록사유",
@@ -171,7 +177,8 @@ const TB10110Sjs = (function () {
       success: function (data) {
         // var a = '';
         // $('#TB10110S_tbodyUserList').html(a);
-        rebuildUserManageTable(data);
+        // rebuildUserManageTable(data);
+        userListObj.setData(data);
       },
     });
   };

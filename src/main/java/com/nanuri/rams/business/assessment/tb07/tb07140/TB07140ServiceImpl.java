@@ -53,6 +53,7 @@ public class TB07140ServiceImpl implements TB07140Service {
 
 	@Override
 	public int insertFinc(IBIMS407BDTO paramData) {
+		paramData.setHndEmpno(facade.getDetails().getEno());
 		return ibims407bMapper.insertFinc(paramData);
 	};
 

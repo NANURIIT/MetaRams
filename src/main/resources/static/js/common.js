@@ -3,6 +3,11 @@
 
 /** onload **/
 $(function () {
+	
+
+	if($('script[src="js/business/tb/TB06011P.js"]').attr('src') === 'js/business/tb/TB06011P.js'){
+		TB06011P_srchPrdt()
+	}
 	// datepicker 초기화
 	$('.input-group.date').datepicker({
 		format: "yyyy-mm-dd",

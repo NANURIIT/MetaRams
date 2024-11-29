@@ -259,7 +259,7 @@ const TB07070Sjs = (function () {
       {
         title: "거래부서",
         dataType: "string",
-        dataIndx: "mngmBdcd",
+        dataIndx: "dprtNm",
         halign: "center",
         align: "left",
         width: "10%",
@@ -268,7 +268,7 @@ const TB07070Sjs = (function () {
       {
         title: "담당자",
         dataType: "string",
-        dataIndx: "chrrEmpno",
+        dataIndx: "chrrEnm",
         halign: "center",
         align: "left",
         width: "10%",
@@ -471,6 +471,7 @@ const TB07070Sjs = (function () {
             text: "실행이 완료됐습니다.",
             confirmButtonText: "확인",
           });
+          $('#TB07070S_rvseCnclRsonText').val("")
           srch();
         } else {
           Swal.fire({

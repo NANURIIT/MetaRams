@@ -261,7 +261,7 @@ let colDealInfo = [
   {
     title: "거래상대방",
     dataType: "string",
-    dataIndx: "entpHnglNm",
+    dataIndx: "entpNm",
     halign : "center",
     align: "left",
     filter: { crules: [{ condition: "range" }] },

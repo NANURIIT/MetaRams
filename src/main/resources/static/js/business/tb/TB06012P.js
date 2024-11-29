@@ -133,6 +133,12 @@ function clearTB06012P() {
   $("#TB06012P_plnFairRt").val("");
   $("#TB06012P_nowFairRt").val("");
   $("#TB06012P_apvlCndActCtns").val("");
+  
+  //그리드 초기화 필요 by hytest
+   if(typeof modalAppvCndtList == "undefined") {
+   }else{
+    modalAppvCndtList.setData([]);
+   }
     
 }
 
@@ -286,6 +292,9 @@ function selectIBIMS208B() {
     dealNo: $("#TB06012P_ibDealNo").val(), // 딜번호
     prdtCd: $('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val(),
   };
+  
+  //그리드 초기화 by hytest
+  modalAppvCndtList.setData([]);
 
   $.ajax({
     type: "GET",

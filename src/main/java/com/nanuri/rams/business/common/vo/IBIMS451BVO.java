@@ -1,13 +1,15 @@
 package com.nanuri.rams.business.common.vo;
 
-import java.util.List;
-
 import com.nanuri.rams.business.common.dto.IBIMS451BDTO;
 
-public class IBIMS451BVO extends IBIMS451BDTO {
-    
-    private List<IBIMS451BDTO> list;
-    
-    private List<IBIMS410BVO> thdtTrDtlsList;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+public class IBIMS451BVO extends IBIMS451BDTO {
+
+    private String mngmBdcdNm;      //  부서명
+    private String actsCdNm;        //  계정과목코드명
+    
 }

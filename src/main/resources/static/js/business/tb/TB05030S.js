@@ -1257,7 +1257,6 @@ const TB05030Sjs = (function(){
   ];
 
   return {
-    //chngInspctPrgrsStCd : chngInspctPrgrsStCd
      fnStdYrChng : fnStdYrChng
     , chnginspctCnfrncSqcSq : chnginspctCnfrncSqcSq
     , searchCNFRNC : searchCNFRNC

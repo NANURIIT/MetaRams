@@ -71,7 +71,7 @@
 			   <if test='apvlRqstPEno != null and apvlRqstPEno !=""'>
 				 AND A.APVL_RQST_P_ENO	= #{apvlRqstPEno}
 			   </if>
-			   <if test='decdStepDcd != ""'>
+			   <if test='decdStepDcd != null and decdStepDcd != ""'>
 				 AND A.DECD_STEP_DCD	= #{decdStepDcd}
 			   </if>
 			 ) T
