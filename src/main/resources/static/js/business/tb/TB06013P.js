@@ -493,7 +493,7 @@ function regist(paramData) {
 }
 
 function modify(paramData) {
-	console.log("avblMrtgPrc"+paramData.avblMrtgPrc);
+	console.log("ovssEvlIsttYn"+paramData.ovssEvlIsttYn);
   $.ajax({
     type: "POST",
     url: "/TB06013P/modifyMtrt",
@@ -513,6 +513,9 @@ function modify(paramData) {
 function remove() {
 
   if (isNotEmpty($("#TB06013P_connPrdtCd").val())) {
+	var option = {}
+	option.title = "Error";
+	option.type = "error";
     option.text = "연결된 담보가 존재합니다.";
     openPopup(option);
     return false;
@@ -529,6 +532,8 @@ function remove() {
 		openPopup(option);
 		return false;
   }
+  
+  console.log("mrtgMngmNo"+paramData.mrtgMngmNo);
   
   $.ajax({
     type: "POST",
@@ -645,7 +650,8 @@ function getParamData() {
     avblMrtgPrcEtc: $("#TB06013P_avblMrtgPrc_etc").val().replaceAll(",", ""), // 가용담보가격
     etcMrtgAcqMthCd: $("#TB06013P_E031").val(), // 기타담보취득방법코드
     // IBIMS219B
-    ovssEvlIsttYn: $("input[name=TB06013P_ovssEvlIsttYn]:checked").val(), // 국외평가기관여부
+    //ovssEvlIsttYn: $("input[name=TB06013P_ovssEvlIsttYn]:checked").val(), // 국외평가기관여부
+	ovssEvlIsttYn: $("TB06013P_ovssEvlIsttYn").val(), // 국외평가기관여부
     rlthMrtgKndCd: $("#TB06013P_R019").val(), // 실물담보종류코드
     aprsStdrCd: $("#TB06013P_A011").val(), // 감정기준코드
     prfdRankList: prfdRankList // 선순위그리드
@@ -802,7 +808,7 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_mrtgQnt").val(infoDetails.mrtgQnt); // 담보수량
           $("input[name='TB06013P_ovssEvlIsttYn']").radioSelect(infoDetails.ovssEvlIsttYn); // 국외평가기관여부
           $("#TB06013P_R019").val(infoDetails.rlthMrtgKndCd).prop("selected", true); // 실물담보종류코드
-          $("#TB06013P_A011").val(infoDetails.aprsSdtrCd).prop("selected", true); // 감정기준코드
+          $("#TB06013P_A011").val(infoDetails.aprsStdrCd).prop("selected", true); // 감정기준코드
 
           break;
         // 보증담보

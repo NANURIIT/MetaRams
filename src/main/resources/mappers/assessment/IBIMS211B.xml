@@ -187,11 +187,17 @@ SELECT IB211B.MRTG_MNGM_NO,                         /* 담보관리번호 */
 			   MRTG_MDCL_CD,                           /* 담보중분류코드 */
 			   MRTG_DTL_USGE_CTNS,                     /* 담보세부용도내용 */
 			   MRTG_CRRY_CD,                           /* 담보통화코드 */
-			   IB211B.MRTG_QNT,                        /* 담보수량 */
+			   CASE WHEN MRTG_STUP_KND_CD='9' 
+                    THEN IB219B.MRTG_QNT
+                    ELSE IB211B.MRTG_QNT
+                    END AS MRTG_QNT,                   /* 담보수량 */
 			   IB211B.MRTG_UNPR,                       /* 담보단가 */
 			   IB211B.MRTG_AMT,                        /* 담보금액 */
 			   MRTG_EVL_AMT,                           /* 담보평가금액 */
-			   IB211B.MRTG_RTO,                        /* 담보비율 */
+			   CASE WHEN MRTG_STUP_KND_CD='9' 
+                    THEN IB219B.MRTG_RTO
+                    ELSE IB211B.MRTG_RTO
+                    END AS MRTG_RTO,                   /* 담보비율 */
 			   MRTG_EVL_DT,                            /* 담보평가일자 */
 			   IB211B.RGST_DT,                         /* 등록일자 */
 			   MRTG_STUP_DT,                           /* 담보설정일자 */
@@ -228,29 +234,44 @@ SELECT IB211B.MRTG_MNGM_NO,                         /* 담보관리번호 */
                  THEN IB215B.APRS_EVL_ISTT_CD
                  ELSE IB214B.APRS_EVL_ISTT_CD
                  END AS APRS_EVL_ISTT_CD,              /* 감정평가기관코드 */
-			   IB214B.CREV_ISTT_NM,                    /* 시가평가기관명 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.CREV_ISTT_NM
+                    ELSE IB214B.CREV_ISTT_NM
+                    END AS CREV_ISTT_NM,               /* 시가평가기관명 */
 			   CREV_STDR_CD,                           /* 시가평가기준코드 */
 			   APRS_PRPS_CD,                           /* 감정목적코드 */
 			   CASE WHEN MRTG_STUP_KND_CD='2' 
                  THEN IB214B.APRS_DT
                  WHEN MRTG_STUP_KND_CD='3'
                  THEN IB215B.APRS_DT
+                 WHEN MRTG_STUP_KND_CD='9'
+                 THEN IB219B.APRS_DT
                  ELSE IB214B.APRS_DT 
                  END AS APRS_DT,                       /* 감정일자 */
 			   LCTP_ADDR,                              /* 소재지주소 */
 			   RLES_SQMS_CTNS,                         /* 부동산면적내용 */
-			   IB214B.APRS_CRRY_CD,                    /* 감정통화코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+			           THEN IB219B.APRS_CRRY_CD
+			           ELSE IB214B.APRS_CRRY_CD
+			           END APRS_CRRY_CD,               /* 감정통화코드 */
 			   CASE WHEN MRTG_STUP_KND_CD='2' 
                  THEN IB214B.APRS_PRC
                  WHEN MRTG_STUP_KND_CD='3'
                  THEN IB215B.APRS_PRC
+                  WHEN MRTG_STUP_KND_CD='9'
+                 THEN IB219B.APRS_PRC
                  ELSE IB214B.APRS_PRC 
                  END AS APRS_PRC,                      /* 감정가격 */
-			   IB214B.KRW_TRSL_APRS_PRC,               /* 원화환산감정가격 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+			           THEN IB219B.KRW_TRSL_APRS_PRC
+			           ELSE IB214B.KRW_TRSL_APRS_PRC
+			           END AS KRW_TRSL_APRS_PRC,       /* 원화환산감정가격 */
 			   CASE WHEN MRTG_STUP_KND_CD='2' 
                     THEN IB214B.MRTG_RCG_RTO
                     WHEN MRTG_STUP_KND_CD='5'
                     THEN IB217B.MRTG_RCG_RTO
+                     WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.MRTG_RCG_RTO
                     ELSE IB214B.MRTG_RCG_RTO
                     END AS MRTG_RCG_RTO,               /* 담보인정비율 */
 			   CASE WHEN MRTG_STUP_KND_CD='2' 
@@ -259,12 +280,16 @@ SELECT IB211B.MRTG_MNGM_NO,                         /* 담보관리번호 */
                  THEN IB215B.MRTG_PRC
                  WHEN MRTG_STUP_KND_CD='5'
                  THEN IB217B.MRTG_PRC
+                 WHEN MRTG_STUP_KND_CD='9'
+                 THEN IB219B.MRTG_PRC
                  ELSE IB214B.MRTG_PRC 
                  END AS MRTG_PRC,                      /* 담보가격 */
 			   CASE WHEN MRTG_STUP_KND_CD='3'
                     THEN IB215B.MRTG_CTNS
                     WHEN MRTG_STUP_KND_CD='8'
                     THEN IB218B.MRTG_CTNS
+                    WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.MRTG_CTNS
                     ELSE IB215B.MRTG_CTNS
                     END AS MRTG_CTNS,                  /* 담보내용 */
 			   MVPP_MRTG_KND_CD,                       /* 동산담보종류코드 */
@@ -328,9 +353,18 @@ SELECT IB211B.MRTG_MNGM_NO,                         /* 담보관리번호 */
 			   MRTG_CD_CTNS,                           /* 담보코드내용 */
 			   ETC_MRTG_GRD_CTNS,                      /* 기타담보등급내용 */
 			   ETC_MRTG_ACQ_MTH_CD,                    /* 기타담보취득방법코드 */
-			   OVSS_EVL_ISTT_YN,                       /* 국외평가기관여부 */
-			   RLTH_MRTG_KND_CD,                       /* 실물담보종류코드 */
-			   APRS_STDR_CD,                           /* 감정기준코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.OVSS_EVL_ISTT_YN
+                    ELSE OVSS_EVL_ISTT_YN
+                    END AS OVSS_EVL_ISTT_YN,           /* 국외평가기관여부 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.RLTH_MRTG_KND_CD
+                    ELSE RLTH_MRTG_KND_CD
+                    END AS RLTH_MRTG_KND_CD,           /* 실물담보종류코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.APRS_STDR_CD
+                    ELSE APRS_STDR_CD
+                    END APRS_STDR_CD,                  /* 감정기준코드 */
 			   IB212B.PRDT_CD                          /* 상품코드 */
 		  FROM IBIMS211B AS IB211B
 		  LEFT JOIN IBIMS214B AS IB214B 
