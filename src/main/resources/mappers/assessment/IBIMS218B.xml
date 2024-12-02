@@ -35,7 +35,7 @@
                , #{mrtgUnpr}                                        <!-- 담보단가 -->
                , #{mrtgAmt}                                         <!-- 담보금액 -->
                , #{mrtgRto}                                         <!-- 담보비율 -->
-               , #{avblMrtgPrc}                                     <!-- 가용담보가격 -->
+               , #{avblMrtgPrcEtc}                                  <!-- 가용담보가격 -->
                , #{etcMrtgAcqMthCd}                                 <!-- 기타담보취득방법코드 -->
                , SYSDATE
                , #{hndEmpno}                                        <!-- 조작사원번호 -->

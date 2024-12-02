@@ -59,11 +59,33 @@ async function callTB06013P(prefix) {
   let mrtgNo = $("#TB06013P_mrtgMngmNo").val();
 
   if (isNotEmpty(prdtCd) && isNotEmpty(mrtgNo)) {
-
-    await getMrtgInfoDetails();
+	await TB06013P_getMrtgInfoDetails();
   }
 
 }
+
+/**
+ * 담보 상세조회 
+ */
+function getMrtgInfoDetails(arg){
+  if(arg==null || arg ==undefined){
+	arg=0;
+  }
+  let prdtCd = $("#TB06013P_prdtCd").val();
+  let mrtgNo = $("#TB06013P_mrtgMngmNo").val();
+
+  if (isNotEmpty(prdtCd) && isNotEmpty(mrtgNo)) {
+	 TB06013P_getMrtgInfoDetails();
+  }else if(arg==1){
+	swal.fire({
+       icon: "warning",
+       text: "조회할 담보번호가 존재하지 않습니다.",
+       confirmButtonText: "확인",
+     });
+	return ;
+  }
+}
+
 
 /**
  * 담보번호 변경이벤트
@@ -72,7 +94,7 @@ function chngMrtgMngmNo(e) {
   if (e.value.length === 0) {
     btnModalReset("modalReset");
   } else if (e.value.length === 16) {
-    getMrtgInfoDetails();
+	getMrtgInfoDetails();
   }
 }
 
@@ -464,13 +486,14 @@ function regist(paramData) {
       btnModalReset();
       $("#TB06013P_mrtgMngmNo").val(data)
       $("#TB06013P_mrtgNm_forSeach").val($("#TB06013P_mrtgNm").val());
-      openPopup({ type: "success", title: "Success", text: '담보/보증 등록을 완료하였습니다.' });
-      getMrtgInfoDetails();
+      openPopup({ type: "success", title: "Success", text: '담보/보증 등록을 완료하였습니다.' });      
+	  getMrtgInfoDetails();
     },
   });
 }
 
 function modify(paramData) {
+	console.log("avblMrtgPrc"+paramData.avblMrtgPrc);
   $.ajax({
     type: "POST",
     url: "/TB06013P/modifyMtrt",
@@ -482,7 +505,7 @@ function modify(paramData) {
       $("#TB06013P_mrtgMngmNo").val(paramData.mrtgMngmNo);
       $("#TB06013P_mrtgNm_forSeach").val(paramData.mrtgNm);
       openPopup({ type: "success", title: "Success", text: '담보/보증 수정을 완료하였습니다.' });
-      getMrtgInfoDetails();
+	  getMrtgInfoDetails();
     },
   });
 }
@@ -690,7 +713,7 @@ function TB06013P_getMrtgInfoDetails() {
       $("#TB06013P_bsnsRgstNo").val(infoDetails.trOthrDscmNo);
       $("#TB06013P_entpRnm").val(infoDetails.trOthrNm);
       $("#TB06013P_M006").val(infoDetails.mrtgEvlStdrCd);
-      $("#TB06013P_I027").val(infoDetails.stupCrryCd);                            //통화코드
+      $("#TB06013P_I027").val(infoDetails.mrtgCrryCd);                            //통화코드
       $("#TB06013P_empNm").val(infoDetails.empNm);
       infoDetails.mrtgEvlAmt ? $("#TB06013P_mrtgEvlAmt").val(addComma(infoDetails.mrtgEvlAmt)) : $("#TB06013P_mrtgEvlAmt").val(infoDetails.mrtgEvlAmt); //담보 평가금액
       $("#TB06013P_mrtgDtlUsgeCtns").val(infoDetails.mrtgDtlUsgeCtns);            //비고
@@ -709,7 +732,7 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_A009").val(infoDetails.aprsMthCd).prop("selected", true); // 감정구분코드
           $("#TB06013P_D009").val(infoDetails.ovssMrtgYn).prop("selected", true); // 국내국외구분코드
           $("#TB06013P_A008").val(infoDetails.aprsEvlIsttCd).prop("selected", true); // 감정기관
-          //$("#TB06013P_C013").val(infoDetails.aprsPrpsCd).prop("selected", true); // 감정평가기준
+          $("#TB06013P_C013").val(infoDetails.crevStdrCd).prop("selected", true); // 감정평가기준
           $("#TB06013P_rlesSqmsCtns").val(infoDetails.rlesSqmsCtns);  // 면적
           $("#TB06013P_A010").val(infoDetails.aprsPrpsCd).prop("selected", true);;  // 감정목적
           $("#TB06013P_aprsDt").val(formatDate(infoDetails.aprsDt)); // 감정일자
@@ -733,17 +756,18 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_mrtgCtns").val(infoDetails.mrtgCtns); // 담보내용
           $("#TB06013P_M012").val(infoDetails.mvppMrtgKndCd).prop("selected", true); // 동산담보종류코드
           $("#TB06013P_opprPrsmFdtnCtns").val(infoDetails.opprPrsmFdtnCtns); // 시가추정근거내용 
-          $("#TB06013P_M004").val(infoDetails.etcMrtgAcqMthCd).prop("selected", true); // 담보취득방법코드
+          $("#TB06013P_M004").val(infoDetails.mrtgAcqMthCd).prop("selected", true); // 담보취득방법코드
           break;
         // 보증서
         case "5":
+		  console.log("grteIsttCd:"+infoDetails.grteIsttDcd)	
           $("#TB06013P_mrtgRcgRto").val(infoDetails.mrtgRcgRto); // 담보비율
           $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
           $("#TB06013P_grteAmt").val(infoDetails.grteAmt); // 보증금액
           $("#TB06013P_I027_4").val(infoDetails.grteCrryCd).prop("selected", true); // 보증통화코드
           $("#TB06013P_mrtgGrteCtns").val(infoDetails.mrtgGrteCtns); // 담보보증내용
-          $("#TB06013P_G006").val(infoDetails.grteIsttCd).prop("selected", true); // 보증기관구분코드
-          $("#TB06013P_G005").val(infoDetails.grteIsttDcd).prop("selected", true); // 보증기관코드
+          $("#TB06013P_G006").val(infoDetails.grteIsttDcd).prop("selected", true); // 보증기관구분코드
+          $("#TB06013P_G005").val(infoDetails.grteIsttCd).prop("selected", true); // 보증기관코드
           $("#TB06013P_grteIsttNm").val(infoDetails.grteIsttNm); // 보증기관명
           $("#TB06013P_lgrteNm").val(infoDetails.lgrteNm); // 보증서명 
           $("#TB06013P_grteExprDt").val(infoDetails.grteExprDt); // 보증만료일자
@@ -759,7 +783,7 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_mrtgQnt").val(infoDetails.mrtgQnt); // 담보수량 
           infoDetails.mrtgUnpr ? $("#TB06013P_mrtgUnpr").val(addComma(infoDetails.mrtgUnpr)) : $("#TB06013P_mrtgUnpr").val(infoDetails.mrtgUnpr); // 담보단가
           infoDetails.mrtgAmt ? $("#TB06013P_mrtgAmt").val(addComma(infoDetails.mrtgAmt)) : $("#TB06013P_mrtgAmt").val(infoDetails.mrtgAmt); // 담보금액
-          infoDetails.avblMrtgPrc ? $("#TB06013P_avblMrtgPrc").val(addComma(infoDetails.avblMrtgPrc)) : $("#TB06013P_avblMrtgPrc").val(infoDetails.avblMrtgPrc); // 가용담보가격
+          infoDetails.avblMrtgPrcEtc ? $("#TB06013P_avblMrtgPrc_etc").val(addComma(infoDetails.avblMrtgPrcEtc)) : $("#TB06013P_avblMrtgPrc_etc").val(infoDetails.avblMrtgPrcEtc); // 가용담보가격
           $("#TB06013P_E031").val(infoDetails.etcMrtgAcqMthCd).prop("selected", true); // 기타담보취득방법코드
           break;
         // 실물
