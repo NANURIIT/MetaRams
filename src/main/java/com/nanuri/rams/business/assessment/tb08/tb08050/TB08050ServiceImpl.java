@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TB08050ServiceImpl implements TB08050Service {
 
  	@Autowired
- 	private EtprCrdtGrntAcctProc acctProc; 	
+ 	private EtprCrdtGrntAcctProc acctProc;
 	/* 딜수수료스케줄기본 */
 	private final IBIMS348BMapper ibims348BMapper;
 	/* 딜거래내역 */
@@ -37,23 +37,23 @@ public class TB08050ServiceImpl implements TB08050Service {
 	private final IBIMS420BMapper ibims420BMapper;
 	/* 로그인 사용자 정보 */
 	private final AuthenticationFacade facade;
-	
+
 	// 수수료내역 조회
 	@Override
 	public List<IBIMS420BVO> selectFeeRcivLst(String paramData) {
 		return ibims420BMapper.selectFeeRcivLst(paramData);
 	}
-	
+
 	// 수수료수납정보 저장
 	@Override
 	public int saveExcInfo(IBIMS420BVO paramData) {
-		
+
 		int rtnValue = 0;
-		
+
 		// 딜수수료수납내역 거래일련번호 채번
 		long lTrsn = ibims420BMapper.getMaxTrSn(paramData.getPrdtCd());
 		paramData.setTrSn(lTrsn);
-		
+
 		IBIMS348BVO in348bvo = new IBIMS348BVO();
 		in348bvo.setPrdtCd(paramData.getPrdtCd());
 		in348bvo.setFeeSn(paramData.getFeeSn());
@@ -69,31 +69,31 @@ public class TB08050ServiceImpl implements TB08050Service {
 		log.debug("EPRZ_CRDL_TXTN_TP_DCD 기업여신과세유형구분코드 :::: {}", paramData.getEprzCrdlTxtnTpDcd()); // 기업여신과세유형구분코드
 		rtnValue = ibims348BMapper.updateFeeScxInfo(in348bvo);	// 딜승인수수료스케쥴기본
 		rtnValue = ibims420BMapper.insertIBIMS420B(paramData);	// 딜수수료수납내역
-		
+
 		IBIMS410BDTO ibims410bdto = set410b(paramData);
 		rtnValue = ibims410BMapper.saveDlTrList(ibims410bdto);	// 딜거래내역
-		
+
 		EtprCrdtGrntAcctProcDTO inDTO1 = new EtprCrdtGrntAcctProcDTO();
 		inDTO1.setPrdtCd(paramData.getPrdtCd());
 		inDTO1.setExcSn(paramData.getExcSn());
 		inDTO1.setTrCrcyCd(paramData.getCrryCd());	  	/* 거래통화코드 */
 		inDTO1.setTrFeeAmt(paramData.getFeeRcivAmt());  /* 수수료수납금액 */
-		inDTO1.setWcrcTrslRt(paramData.getAplyExrt()); /* 원화환산율 */		
+		inDTO1.setWcrcTrslRt(paramData.getAplyExrt()); /* 원화환산율 */
 		inDTO1.setActgAfrsCd("G3");						/* 회계업무코드 */
 		inDTO1.setRkfrDt(paramData.getFeeRcivDt()); 	/* 수납일자 */
-		inDTO1.setCanYn("0");
+		inDTO1.setCanYn("N");
 		inDTO1.setEtprCrdtGrntTrKindCd(inDTO1.getActgAfrsCd());
-		EtprCrdtGrntAcctProcDTO outDTO1 = acctProc.acctPrcs(inDTO1);	
-		
-		return rtnValue; 
-		
+		EtprCrdtGrntAcctProcDTO outDTO1 = acctProc.acctPrcs(inDTO1);
+
+		return rtnValue;
+
 	}
-	
+
 
 	private IBIMS410BDTO set410b(IBIMS420BVO  param420){
-		
+
 		IBIMS410BDTO setParam = new IBIMS410BDTO();
-		
+
 		setParam.setPrdtCd(param420.getPrdtCd()); /* 상품코드 */
 		setParam.setTrSn(param420.getTrSn()); 	  /* 거래일련번호 */
 		setParam.setExcSn(param420.getExcSn());   /* 실행일련번호 */
@@ -178,7 +178,7 @@ public class TB08050ServiceImpl implements TB08050Service {
 		setParam.setHndTmnlNo(""); /* 조작단말기번호 */
 		setParam.setHndTrId(""); /* 조작거래ID */
 		setParam.setGuid(""); /* GUID */
-		
+
 		return setParam;
-	}	
+	}
 }

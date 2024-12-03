@@ -111,13 +111,13 @@ public class TB07020ServiceImpl implements TB07020Service {
 
 		int rtnValue = 0;
 
-		
+
 
 		IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
 
-		ibims201bvo.setLastYn("0");
+		ibims201bvo.setLastYn("N");
 		rtnValue = ibims201bMapper.updateIBIMS201BDTO(ibims201bvo);
-		ibims201bvo.setLastYn("1");
+		ibims201bvo.setLastYn("Y");
 		ibims201bvo.setPrgSttsCd("602");
 		rtnValue = ibims201bMapper.regPrdtCd(ibims201bvo);
 
