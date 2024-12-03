@@ -43,7 +43,7 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
                 AND DEAL_NM LIKE '%'|| #{dealNm} || '%'
            </if>
-                AND LAST_YN = '1'
+                AND LAST_YN = 'Y'
     </select>
 
     <!-- 딜기본정보등록 -->     
@@ -221,9 +221,9 @@
     
     <update id="updateLastYn" parameterType="string">
         UPDATE IBIMS101B
-           SET LAST_YN = '0'
+           SET LAST_YN = 'N'
          WHERE DEAL_NO = #{param}
-           AND LAST_YN = '1'
+           AND LAST_YN = 'Y'
     </update>
 
     <!-- 딜기본정보조회 -->    
@@ -336,7 +336,7 @@
           AND SN                  = #{sn}
       </if>
       <if test="sn == ''">
-          AND LAST_YN = '1'
+          AND LAST_YN = 'Y'
       </if>
     </select>
     
@@ -432,7 +432,7 @@
                )
                  , '딜정보저장') AS MTR_PRG_STTS_DCD_NM                     /*  테이블 컬럼 미존재로 임시 하드코딩 */
           FROM IBIMS101B B
-         WHERE LAST_YN = '1'
+         WHERE LAST_YN = 'Y'
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND DEAL_NO LIKE '%'|| #{dealNo} || '%'
         </if>
@@ -506,7 +506,7 @@
         FROM (select DEAL_NO
             ,SN
             ,DEAL_NM
-         from IBIMS101B where LAST_YN = '1' and NVL(DEL_YN,'N') = 'N'/* 딜 */ ) A
+         from IBIMS101B where LAST_YN = 'Y' and NVL(DEL_YN,'N') = 'N'/* 딜 */ ) A
    LEFT JOIN (
     	SELECT A.DEAL_NO
     	      ,A.MTR_DCD
@@ -523,7 +523,7 @@
     		    ,MTR_NM
     		    ,ROW_NUMBER() OVER(PARTITION BY DEAL_NO,MTR_DCD ORDER BY SN DESC) AS NO
     		FROM   IBIMS103B
-    	 WHERE  LAST_YN = '1' /* 딜심사 */
+    	 WHERE  LAST_YN = 'Y' /* 딜심사 */
     	) A
     	WHERE A.NO = 1
       ) B
@@ -551,7 +551,7 @@
                   ON A.PRDT_CD = B.PRDT_CD
                   LEFT JOIN IBIMS010B C
                   ON A.TR_OTHR_DSCM_NO = C.ARDY_BZEP_NO
-                  WHERE A.LAST_YN = '1'/* 딜승인기본 */
+                  WHERE A.LAST_YN = 'Y'/* 딜승인기본 */
                   AND   B.CTRC_CCLC_DCD = '1'
     ) C    
     ON  A.DEAL_NO = C.DEAL_NO

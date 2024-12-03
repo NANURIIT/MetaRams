@@ -111,7 +111,7 @@
           ON B.DEAL_NO  = C.DEAL_NO
          AND B.MTR_DCD  = C.MTR_DCD
          AND B.JDGM_DCD = C.JDGM_DCD
-         AND C.LAST_YN = '1'
+         AND C.LAST_YN = 'Y'
        WHERE A.CNSB_DCD = #{cnsbDcd}
          AND A.RSLTN_YR = #{rsltnYr}
          AND A.SN = #{sn}

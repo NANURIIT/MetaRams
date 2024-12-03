@@ -51,8 +51,7 @@
 		      , A.GUID					/* GUID */
 		   FROM IBIMS010B A      
 		  WHERE 1=1
-		    AND A.ARDY_BZEP_NO = #{ardyBzepNo}
-		    AND A.USE_YN = CASE WHEN NVL(#{useYn}, 'A') = 'A' THEN A.USE_YN ELSE #{useYn} END   		    		
+		    AND A.ARDY_BZEP_NO = #{ardyBzepNo}			    		
 	</select>
 
 	<!-- 기업체리스트 조회  -->
@@ -135,9 +134,7 @@
 			AND (  A.ENTP_NM     LIKE '%'|| #{entpNm}|| '%'
 				OR A.KOR_BZPL_NAME LIKE '%'|| #{entpNm}|| '%'
 				OR UPPER(A.ENG_BZPL_NAME) LIKE '%'|| UPPER(#{entpNm})|| '%')
-		    </if>
-			AND A.USE_YN = 'Y'
-		    <!-- AND A.USE_YN = CASE WHEN NVL(#{useYn}, 'A') = 'A' THEN A.USE_YN ELSE #{useYn} END		     -->
+		    </if>					   
 	</select>
 
 	<!-- 기업체리스트 생성  -->

@@ -33,7 +33,7 @@
          , A.GUID                                    /* GUID */
 		  FROM IBIMS006B A
      WHERE 1=1
-       AND DEL_YN = '0'
+       AND DEL_YN = 'N'
 	</select>
 
 	<select id="selectAuthCode" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS006BDTO">

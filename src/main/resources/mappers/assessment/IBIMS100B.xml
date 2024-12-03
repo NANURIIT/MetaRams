@@ -85,9 +85,9 @@
             ON B.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
      LEFT JOIN IBIMS103B C 
             ON B.DEAL_NO = C.DEAL_NO
-           AND C.LAST_YN = '1'
+           AND C.LAST_YN = 'Y'
          WHERE 1=1
-           AND B.LAST_YN = '1'
+           AND B.LAST_YN = 'Y'
            AND C.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',1),'=',-1)
            AND 'Y' = CASE WHEN FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',2),'=',-1) != C.DEAL_NO AND C.JDGM_DCD = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(A.RMRK,',',2),'=',-1) 
                            THEN 'Y'
@@ -98,7 +98,7 @@
                    ELSE 'Y' 
                END           
            AND A.EMPNO     = #{empno}
-           AND A.DEL_YN = '0'
+           AND A.DEL_YN = 'N'
            AND A.PRCS_DT IS NULL
 		       AND A.RQST_DT <![CDATA[  <= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD')
      UNION ALL
@@ -141,10 +141,10 @@
             ON E.DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(D.RMRK,',',1),'=',-1)        
      LEFT JOIN IBIMS103B F
     		    ON E.DEAL_NO = F.DEAL_NO
-   		     AND F.LAST_YN = '1'
-         WHERE (SELECT MAX(DEAL_NO) FROM IBIMS103B WHERE DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(D.RMRK,',',1),'=',-1) AND LAST_YN = '1') IS NULL
+   		     AND F.LAST_YN = 'Y'
+         WHERE (SELECT MAX(DEAL_NO) FROM IBIMS103B WHERE DEAL_NO = FN_SUBSTRING_INDEX( FN_SUBSTRING_INDEX(D.RMRK,',',1),'=',-1) AND LAST_YN = 'Y') IS NULL
            AND D.EMPNO      = #{empno}
-           AND D.DEL_YN = '0'
+           AND D.DEL_YN = 'N'
            AND D.PRCS_DT IS NULL
  		       AND D.RQST_DT <![CDATA[  <= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD')
       ORDER BY RQST_DT DESC
@@ -221,7 +221,7 @@
   <!-- 오늘의할일변경(결재요청취소) -->
 	<update id="deleteIBIMS100BInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS100BDTO"> 
        UPDATE IBIMS100B
-          SET DEL_YN                                  = '1'                                  	  /* 삭제여부 */
+          SET DEL_YN                                  = 'Y'                                  	  /* 삭제여부 */
             , HND_DETL_DTM                            = SYSDATE                                 /* 조작상세일시 */
             , HND_EMPNO                               = #{hndEmpno}                             /* 조작사원번호 */
         WHERE 1=1                                                                                 
