@@ -37,7 +37,7 @@ public class TB06030ServiceImpl implements TB06030Service {
 		return ibims103bMapper.selectTB06010SVO(searchParam);
 	}
 
-	
+
 	// 종목정보 등록
 	@Override
 	@Transactional
@@ -64,10 +64,10 @@ public class TB06030ServiceImpl implements TB06030Service {
 					s103b.setHndEmpno(facade.getDetails().getEno());
 
 					s103b = ibims103bMapper.selectOne103B(s103b);
-					s103b.setLastYn("0");
+					s103b.setLastYn("N");
 					ibims103bMapper.updateLastYn(s103b);
 
-					s103b.setLastYn("1");
+					s103b.setLastYn("Y");
 					s103b.setMtrPrgSttsDcd("401");
 					result = ibims103bMapper.insert103B(s103b);
 				}
@@ -81,7 +81,7 @@ public class TB06030ServiceImpl implements TB06030Service {
 
 		return result;
 	}
-	
+
 	//출자정보 등록
 	@Override
 	@Transactional
@@ -100,7 +100,7 @@ public class TB06030ServiceImpl implements TB06030Service {
 				result = ibims250bMapper.registFinc(param);
 			}
 		} else {																	// 있으면 수정
-			
+
 			ibims250bMapper.deleteFinc(param);
 			result = ibims250bMapper.registFinc(param);
 		}

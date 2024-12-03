@@ -31,7 +31,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 	private final IBIMS346BMapper ibims346BMapper;
 	private final IBIMS401BMapper ibims401BMapper;
 	private final IBIMS401HMapper ibims401HMapper;
-	
+
 	private final AuthenticationFacade facade;
 
 	// 약정 및 해지 정보 조회
@@ -43,26 +43,26 @@ public class TB06040ServiceImpl implements TB06040Service {
 	// 약정 및 해지 정보 저장
 	@Override
 	public int saveCtrcCclcInfo(TB06040SDTO paramData) {
-	
-		int rtnValue = 0;		
-		
+
+		int rtnValue = 0;
+
 		IBIMS201BVO out201BVO = ibims201BMapper.selectOnlyOneIBIMS201B(paramData.getPrdtCd());
-		out201BVO.setLastYn("0");
+		out201BVO.setLastYn("N");
 		rtnValue = ibims201BMapper.updateIBIMS201BDTO(out201BVO);
-		out201BVO.setLastYn("1");
+		out201BVO.setLastYn("Y");
 		out201BVO.setPrgSttsCd(("1".equals(paramData.getCtrcCclcDcd()))?"501":"502");
 		rtnValue = ibims201BMapper.regPrdtCd(out201BVO);
-		  
+
 		// 딜승인정보 조회
 		IBIMS201BDTO ibims201bdto = ibims201BMapper.selectOnlyOneIBIMS201B(paramData.getPrdtCd());
 		// 딜승인정보+약정정보로 여신기본 설정
 		IBIMS401BDTO ibims401bdto = set401b(ibims201bdto, paramData);
-		
+
 		if( "1".equals(paramData.getCtrcCclcDcd()) ) {
-			
+
 			if(("90".equals(ibims201bdto.getPrdtLclsCd()))
 			 ||("91".equals(ibims201bdto.getPrdtLclsCd()))) {
-				
+
 				IBIMS202BDTO in202bdto = new IBIMS202BDTO();
 				in202bdto.setPrdtCd(paramData.getPrdtCd());
 				// 딜승인현금흐름기본 - 상환구분/금리정보
@@ -70,7 +70,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 				IBIMS346BDTO ibims346bdto = new IBIMS346BDTO();
 				ibims346bdto.setPrdtCd(paramData.getPrdtCd());
 				ibims346bdto.setAplyStrtDt(paramData.getCtrcDt());					/* 적용시작일자 */
-				//ibims346bdto.setAplyEndDt(paramData.getCtrcExpDt());				/* 적용종료일자 */ 
+				//ibims346bdto.setAplyEndDt(paramData.getCtrcExpDt());				/* 적용종료일자 */
 				ibims346bdto.setAplyEndDt("25001231");								/* 적용종료일자 2024.08.04 임대표님 MAX EndDt로 설정변경 요청 */
 				ibims346bdto.setStdrIntrtKndCd(paramData.getStdrIntrtKndCd());   	/* 기준금리종류코드 */
 				ibims346bdto.setFxnIntrt(paramData.getStdrIntrt());					/* 기준금리 */
@@ -86,14 +86,14 @@ public class TB06040ServiceImpl implements TB06040Service {
 				ibims346bdto.setAplyDnumDcd("1");
 				ibims346bdto.setStdrIntrtAplyDnum(DateUtil.dateDiff(paramData.getCtrcDt(), paramData.getCtrcExpDt()));
 				ibims346bdto.setHndEmpno(facade.getDetails().getEno());	// 조작사원번호
-				
+
 				int Cnt = ibims346BMapper.selectCntIBIMS346B(paramData.getPrdtCd());
 				if(Cnt > 0) {
 					rtnValue = ibims346BMapper.deleteIBIMS346B(paramData.getPrdtCd());
-				} 
+				}
 				rtnValue = ibims346BMapper.insertIBIMS346B(ibims346bdto);
-				
-				
+
+
 			}
 			IBIMS401BDTO in401bdto = new IBIMS401BDTO();
 			in401bdto.setPrdtCd(ibims401bdto.getPrdtCd());
@@ -109,17 +109,17 @@ public class TB06040ServiceImpl implements TB06040Service {
 			rtnValue = ibims401BMapper.updateCclcInfo(ibims401bdto);
 		}
 		rtnValue = ibims401HMapper.insertIBIMS401H(ibims401bdto);
-		
+
 
 		return rtnValue;
-		
+
 	}
-	
-	
+
+
 	private IBIMS401BDTO set401b(IBIMS201BDTO getParam, TB06040SDTO disParam) {
-		
+
 		IBIMS401BDTO setParam = new IBIMS401BDTO();
-		
+
 		setParam.setPrdtCd(getParam.getPrdtCd()); /* 상품코드 */
 		setParam.setRqsSn(getParam.getSn());
 		setParam.setPtxtTrOthrDscmNo(getParam.getTrOthrDscmNo()); /* 거래상대방식별번호 */
@@ -175,7 +175,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 		setParam.setEprzCrdlHldyPrcsDcd(getParam.getHldyPrcsDcd()); /* 기업여신휴일처리구분코드 */
 		setParam.setCclcDt(disParam.getCclcDt()); 						/* 해지일자 */
 		setParam.setEprzCrdlCclcRsnCd(disParam.getEprzCrdlCclcRsnCd()); /* 기업여신해지사유코드 */
-		setParam.setCclcRsnCtns(disParam.getCclcRsnCtns()); 			/* 해지사유내용 */		
+		setParam.setCclcRsnCtns(disParam.getCclcRsnCtns()); 			/* 해지사유내용 */
 		setParam.setEprzCrdlWeekMrtgKndCd(getParam.getEprzCrdlWeekMrtgKndCd()); /* 기업여신주담보종류코드 */
 		setParam.setOvduIntrRt(getParam.getOvduIntrRt()); /* 연체이자율 */
 		setParam.setEprzCrdlOvduIntrRtDcd(getParam.getOvduIntrRtDcd()); /* 기업여신연체이자율구분코드 */
@@ -184,7 +184,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 		setParam.setInvJdgmComtNo(getParam.getInvJdgmComtNo()); /* 투자심사위원회번호 */
 		setParam.setCtrcCclcDcd(disParam.getCtrcCclcDcd()); /* 약정해지구분코드 */
 		setParam.setHndEmpno(facade.getDetails().getEno());	// 조작사원번호
-		
+
 		return setParam;
 	}
 

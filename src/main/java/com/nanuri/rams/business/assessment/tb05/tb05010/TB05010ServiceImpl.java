@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 public class TB05010ServiceImpl implements TB05010Service {
-	
+
 	private final RAA02BMapper raa02bMapper;
 	private final RAA02HMapper raa02hMapper;
 	private final RAA21BMapper raa21bMapper;
@@ -47,7 +47,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 
 	/* 사용자 정보 */
 	private final AuthenticationFacade facade;
-	
+
 	// 마지막 협의정보 검색
 	@Override
 	public IBIMS111BVO getLastCNFRNCInfo(IBIMS111BDTO paramData) {
@@ -92,8 +92,8 @@ public class TB05010ServiceImpl implements TB05010Service {
 		}
 
 		List<IBIMS115BDTO> enoList = new ArrayList<IBIMS115BDTO>();
-		IBIMS115BDTO enoInfo = new IBIMS115BDTO(); 
-		for( int i = 0 ; i < paramData.getEnoList().size() ; i ++ ) {			
+		IBIMS115BDTO enoInfo = new IBIMS115BDTO();
+		for( int i = 0 ; i < paramData.getEnoList().size() ; i ++ ) {
 			for(int j = 0 ; j < paramData.getDealList().size() ; j ++) {
 
 				enoInfo = new IBIMS115BDTO();
@@ -103,7 +103,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 				enoInfo.setHndEmpno(facade.getDetails().getEno());
 				// 딜번호
 				enoInfo.setDealNo(paramData.getDealList().get(j).getDealNo());
-	
+
 				// 안건구분코드
 				enoInfo.setMtrDcd(paramData.getDealList().get(j).getMtrDcd());
 				// 심사구분코드
@@ -112,7 +112,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 				enoList.add(enoInfo);
 			}
 		}
-		
+
 		/* 협의체 임시저장 */
 		// 기본정보 삭제 IBIMS111B
 		ibims111BMapper.delete111B(paramData);
@@ -132,7 +132,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 			/* IBIMS103B 최종여부 변경 파라미터 */
 			IBIMS103BDTO param = new IBIMS103BDTO();
 
-			param.setLastYn("0");
+			param.setLastYn("N");
 			param.setHndEmpno(facade.getDetails().getEno());
 			param.setDealNo(item.getDealNo());
 			param.setMtrDcd(item.getMtrDcd());
@@ -158,13 +158,13 @@ public class TB05010ServiceImpl implements TB05010Service {
 	// 준비확정 or 준비취소
 	@Override
 	public int changeCNFRNCStatus( IBIMS111BDTO paramData) {
-		
+
 		// cnsbDcd=1, rsltnYr=2023, sn=5->IBIMS115B 를 조회해서 LIST<IBIMS115BDTO> empList에 넣고
 		// empList의 길이만큼 for 문 돌려서 위원수만큼 오늘의 할일 insert
-		
+
 		/* IBIMS100B INSERT를 위한 VO 인스턴스화 */
 		IBIMS100BVO.selectVO ibims100BVO = new IBIMS100BVO.selectVO();
-		
+
 		// 협의체 회차정보 진행상태 업데이트 IBIMS111B
 		ibims111BMapper.updatePrgSttsDcd(paramData);
 
@@ -175,7 +175,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 			/* IBIMS103B 최종여부 변경 파라미터 */
 			IBIMS103BDTO param = new IBIMS103BDTO();
 
-			param.setLastYn("0");
+			param.setLastYn("N");
 			param.setHndEmpno(facade.getDetails().getEno());
 			param.setDealNo(item.getDealNo());
 			param.setMtrDcd(item.getMtrDcd());
@@ -185,53 +185,53 @@ public class TB05010ServiceImpl implements TB05010Service {
 			IBIMS103BDTO temp  = ibims103BMapper.selectOne103B(param);
 
 			temp.setMtrPrgSttsDcd(paramData.getJdgmRsltDcd());
-			temp.setHndEmpno(facade.getDetails().getEno()); 
+			temp.setHndEmpno(facade.getDetails().getEno());
 
 			/* 거래 실행 */
 			ibims103BMapper.updateLastYn(param);
 			ibims103BMapper.insert103B(temp);
 		}
-		
+
 		/* 위원정보 조회를 위한 IBIMS105B DTO 인스턴스화 */
 		IBIMS115BDTO param115B = new IBIMS115BDTO();
-		
+
 		// parameter setting
 		param115B.setCnsbDcd(paramData.getCnsbDcd());
 		param115B.setRsltnYr(paramData.getRsltnYr());
 		param115B.setSn(paramData.getSn());
-		
+
 		List<IBIMS115BVO> empList = ibims115BMapper.getMMBRInfo(param115B);
-		
+
 		for (IBIMS115BVO item : empList) {
 			/* IBIMS100B 저장 or 삭제 */
 			if (!paramData.getJdgmRsltDcd().equals("303")) {
-				
+
 				if ( item.getAtdcAngtEmpno().isEmpty() ) {
 					ibims100BVO.setEmpno(item.getAtdcTrgtEmpno());					// 사원번호
 				} else {
 					ibims100BVO.setEmpno(item.getAtdcAngtEmpno());
 				}
-				
+
 				ibims100BVO.setWorkDcd("03");                              			// 작업구분코드
 				ibims100BVO.setWorkCtns("(To-Do) 협의체 의견등록(승인조건)");       // 작업내용
 				ibims100BVO.setRgstEmpno(facade.getDetails().getEno());             // 등록사원번호
-				ibims100BVO.setMenuId("/TB05020S");                               	// 메뉴ID 
+				ibims100BVO.setMenuId("/TB05020S");                               	// 메뉴ID
 				ibims100BVO.setRmrk("dealNo=" + item.getDealNo());                  // 비고(메뉴별조회KEY)
 				ibims100BVO.setHndEmpno(facade.getDetails().getEno());              // 조작사원번호
-					
-				ibims100BMapper.insertIBIMS100BInfo(ibims100BVO);	
+
+				ibims100BMapper.insertIBIMS100BInfo(ibims100BVO);
 			} else {
 				ibims100BVO.setRmrk(item.getDealNo());
-				
+
 				if ( item.getAtdcAngtEmpno().isEmpty() ) {
 					ibims100BVO.setEmpno(item.getAtdcTrgtEmpno());					// 사원번호
 				} else {
 					ibims100BVO.setEmpno(item.getAtdcAngtEmpno());
 				}
-				
+
 				ibims100BVO.setHndEmpno(facade.getDetails().getEno());
-				ibims100BVO.setMenuId("/TB05020S"); 
-				
+				ibims100BVO.setMenuId("/TB05020S");
+
 				ibims100BMapper.deleteIBIMS100BInfo(ibims100BVO);
 			}
 		}

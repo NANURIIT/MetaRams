@@ -52,7 +52,7 @@ public class TB07050ServiceImpl implements TB07050Service {
     // 원리금 스케줄관리 조회
     @Override
     public TB06040SVO getPrnaRdmpSch(IBIMS403BDTO input) {
-        // return 
+        // return
         TB06040SVO ret = new TB06040SVO();
         List<IBIMS403BDTO> retList = new ArrayList<>();
 
@@ -87,12 +87,12 @@ public class TB07050ServiceImpl implements TB07050Service {
         ret.setCtrcExpDt(out201b.getCtrcExpDt());                        // 약정만기일자
         ret.setEprzCrdlCtrcAmt(out201b.getEprzCrdlCtrcAmt());            // 기업여신약정금액
         ret.setRgstDt(out201b.getRgstDt());                              // 등록일자
-        
+
         TB06015SVO inTb06015svo = new TB06015SVO();
         inTb06015svo.setPrdtCd(prdtCd);
         inTb06015svo.setExcSn(excSn);
 
-       
+
         if ( "02".equals(scxDcd) ) { // 원금상환스케줄
             List<IBIMS403BDTO> rdmpSch = ibims403bMp.getRdmpSchedule(inTb06015svo);
 
@@ -110,12 +110,12 @@ public class TB07050ServiceImpl implements TB07050Service {
             log.debug("intrRdmpSch ::: {}", intrRdmpSch);
             for (IBIMS403BDTO ibims403bdto : intrRdmpSch) {
                 ibims403bdto.setScxDcd("04"); // 일정구분코드
-                retList.add(ibims403bdto);        
+                retList.add(ibims403bdto);
             };
             ret.setIntrtPlanList(intrRdmpSch);
         } else if ( "01".equals(scxDcd) ) {
             List<IBIMS403BDTO> excSch = ibims403bMp.getExcSchedule(inTb06015svo);
-            
+
             ret.setExcSchList(excSch);
         }
 
@@ -124,9 +124,9 @@ public class TB07050ServiceImpl implements TB07050Service {
 
 
     /*
-     * 
+     *
      *  calcDto sett
-     * 
+     *
      */
     public List<CalculationResultDTO> calculationSett(IBIMS403BDTO inputDto){
 
@@ -147,8 +147,8 @@ public class TB07050ServiceImpl implements TB07050Service {
         return returnList;
     }
 
-    /** 이자계산 시뮬레이터 파라미터 세팅 
-	 * @param calcDto 원금/이자상환 계획정보 / 금리정보 / 상환 기본정보 파라미터 
+    /** 이자계산 시뮬레이터 파라미터 세팅
+	 * @param calcDto 원금/이자상환 계획정보 / 금리정보 / 상환 기본정보 파라미터
 	 * @return  시뮬레이션 결과 LIST
 	 */
 	public List<CalculationResultDTO> setIntrCalcSimul(TB06015SVO param){
@@ -222,7 +222,7 @@ public class TB07050ServiceImpl implements TB07050Service {
     // 원리금 스케줄관리 실행
     @Override
     public int savePrnaRdmpSch(TB07050SVO input) {
-        
+
         int result = 0;
 
         // LocalDate currentDate = LocalDate.now(); // 현재 날짜 가져오기
@@ -237,31 +237,31 @@ public class TB07050ServiceImpl implements TB07050Service {
         // long excSn = input.getExcSn(); // 실행일련번호
         log.debug("prdtCd ::: [{}]", prdtCd);
         log.debug("scxDcd ::: [{}]", scxDcd);
-        
+
         List<TB07050SVO> rdmpPlanList = input.getRdmpPlanList();    // 원금상환스케줄
         List<TB07050SVO> intrtPlanList = input.getIntrtPlanList();  // 이자상환스케줄
         List<TB07050SVO> excList = input.getExcSchList();           // 실행스케줄
- 
+
         // List<IBIMS403BDTO> inDto = new ArrayList<>();            // List<IBIMS403BDTO> ArrayList 생성
         if ( "02".equals(scxDcd) ) {    // 원금상환스케줄
             for (TB07050SVO tb07050svo : rdmpPlanList) {
 
             String rowType = tb07050svo.getRowType();
-        
+
                 if ( "I".equals(rowType) ) {
                     log.debug(" \n 원금상환스케줄 rowType :::: [{}]", rowType);
                     //long excSn = ibims403bMp.getExcSn(prdtCd); // 신규 실행일련번호 채번
-                    
-                    
+
+
                     //log.debug(" \nexcSn ::: {}", excSn);
-                    
+
                     tb07050svo.setPrdtCd(prdtCd);             // 종목코드
                     //tb07050svo.setExcSn(excSn);               // 실행일련번호
                     tb07050svo.setScxDcd(scxDcd);             // 일정구분코드
                     String rdmpTmrd = ibims403bMp.getPaiSchTmrd(tb07050svo);
                     tb07050svo.setRdmpTmrd(rdmpTmrd);         // 상환회차
                     log.debug(" \n 원금상환스케줄 rdmpTmrd :::: [{}]", rdmpTmrd);
-                    //tb07050svo.setPrcsCpltYn("1"); // 처리완료여부
+                    //tb07050svo.setPrcsCpltYn("Y"); // 처리완료여부
                     //tb07050svo.setPrcsDt(formattedDate);      // 처리일자
                     tb07050svo.setHndEmpno(eno);              // 조작사원번호
                     tb07050svo.setHndTmnlNo("");    // 조작단말기번호
@@ -269,17 +269,17 @@ public class TB07050ServiceImpl implements TB07050Service {
                     // inDto.add(tb07050svo);
                     result = ibims403bMp.insertCrdlSchBss(tb07050svo);
                 }
-    
+
                 if ( "M".equals(rowType) ) {
                     log.debug(" \n 원금상환스케줄 rowType :::: [{}]", rowType);
                     tb07050svo.setPrdtCd(prdtCd);             // 종목코드
                     tb07050svo.setScxDcd(scxDcd);             // 일정구분코드
-                    //tb07050svo.setPrcsCpltYn("1"); // 처리완료여부
+                    //tb07050svo.setPrcsCpltYn("Y"); // 처리완료여부
                     //tb07050svo.setPrcsDt(formattedDate);      // 처리일자
                     tb07050svo.setHndEmpno(eno);              // 조작사원번호
                     tb07050svo.setHndTmnlNo("");    // 조작단말기번호
                     tb07050svo.setGuid("");              // GUID
-    
+
                     result = ibims403bMp.updateCrdlSchBss(tb07050svo);
                 }
 
@@ -291,9 +291,9 @@ public class TB07050ServiceImpl implements TB07050Service {
                     tb07050svo.setHndEmpno(eno);              // 조작사원번호
                     tb07050svo.setHndTmnlNo("");    // 조작단말기번호
                     tb07050svo.setGuid("");              // GUID
-                    
+
                     // inDto.add(tb07050svo);
-    
+
                     result = ibims403bMp.deleteCrdlSchBss(tb07050svo);
                 }
             }
@@ -302,40 +302,40 @@ public class TB07050ServiceImpl implements TB07050Service {
             for (TB07050SVO tb07050svo : intrtPlanList) {
 
                 String rowType = tb07050svo.getRowType();
-            
+
                 if ( "I".equals(rowType) ) {
                     log.debug(" \n 이자상환스케줄 rowType :::: [{}]", rowType);
                     // long excSn = ibims403bMp.getExcSn(prdtCd); // 신규 실행일련번호 채번
-                    
+
                     //log.debug(" \nexcSn ::: {}", excSn);
                     tb07050svo.setPrdtCd(prdtCd);             // 종목코드
                     // tb07050svo.setExcSn(excSn);               // 실행일련번호
                     tb07050svo.setScxDcd(scxDcd);             // 일정구분코드
                     String rdmpTmrd = ibims403bMp.getPaiSchTmrd(tb07050svo);
                     tb07050svo.setRdmpTmrd("");         // 상환회차
-                    //tb07050svo.setPrcsCpltYn("1"); // 처리완료여부
+                    //tb07050svo.setPrcsCpltYn("Y"); // 처리완료여부
                     // tb07050svo.setPrcsDt(formattedDate);      // 처리일자
                     tb07050svo.setHndEmpno(eno);              // 조작사원번호
                     tb07050svo.setHndTmnlNo("");    // 조작단말기번호
                     tb07050svo.setGuid("");              // GUID
-                    
+
                     // inDto.add(tb07050svo);
-    
+
                     result = ibims403bMp.insertCrdlSchBss(tb07050svo);
                 }
-    
+
                 if ( "M".equals(rowType) ) {
                     log.debug(" \n 이자상환스케줄 rowType :::: [{}]", rowType);
                     tb07050svo.setPrdtCd(prdtCd);             // 종목코드
                     tb07050svo.setScxDcd(scxDcd);             // 일정구분코드
-                    //tb07050svo.setPrcsCpltYn("1"); // 처리완료여부
+                    //tb07050svo.setPrcsCpltYn("Y"); // 처리완료여부
                     // tb07050svo.setPrcsDt(formattedDate);      // 처리일자
                     tb07050svo.setHndEmpno(eno);              // 조작사원번호
                     tb07050svo.setHndTmnlNo("");    // 조작단말기번호
                     tb07050svo.setGuid("");              // GUID
-                    
+
                     // inDto.add(tb07050svo);
-    
+
                     result = ibims403bMp.updateCrdlSchBss(tb07050svo);
                 }
 
@@ -347,9 +347,9 @@ public class TB07050ServiceImpl implements TB07050Service {
                     tb07050svo.setHndEmpno(eno);              // 조작사원번호
                     tb07050svo.setHndTmnlNo("");    // 조작단말기번호
                     tb07050svo.setGuid("");              // GUID
-                    
+
                     // inDto.add(tb07050svo);
-    
+
                     result = ibims403bMp.deleteCrdlSchBss(tb07050svo);
                 }
             }
@@ -366,7 +366,7 @@ public class TB07050ServiceImpl implements TB07050Service {
                 if ( "I".equals(rowType) ) {
                     log.debug(" \n 실행스케줄 rowType :::: [{}]", rowType);
                     long excSn = ibims403bMp.getExcSchExcSn(in403Dto); // 실행스케줄 실행일련번호 채번(PK라서 채번만)
-                    
+
                     log.debug(" \n 실행스케줄 excSn :::: [{}]", excSn);
                     tb07050svo.setPrdtCd(prdtCd);             // 종목코드
                     tb07050svo.setExcSn(excSn);               // 실행일련번호
@@ -376,10 +376,10 @@ public class TB07050ServiceImpl implements TB07050Service {
                     tb07050svo.setHndEmpno(eno);              // 조작사원번호
                     tb07050svo.setHndTmnlNo("");    // 조작단말기번호
                     tb07050svo.setGuid("");              // GUID
-    
+
                     result = ibims403bMp.insertCrdlSchBss(tb07050svo);
                 }
-    
+
                 if ( "M".equals(rowType) ) {
                     log.debug(" \n 실행스케줄 rowType :::: [{}]", rowType);
                     tb07050svo.setPrdtCd(prdtCd);             // 종목코드
@@ -387,7 +387,7 @@ public class TB07050ServiceImpl implements TB07050Service {
                     tb07050svo.setHndEmpno(eno);              // 조작사원번호
                     tb07050svo.setHndTmnlNo("");    // 조작단말기번호
                     tb07050svo.setGuid("");              // GUID
-    
+
                     result = ibims403bMp.updateCrdlSchBss(tb07050svo);
                 }
 
@@ -398,7 +398,7 @@ public class TB07050ServiceImpl implements TB07050Service {
                     tb07050svo.setHndEmpno(eno);              // 조작사원번호
                     tb07050svo.setHndTmnlNo("");    // 조작단말기번호
                     tb07050svo.setGuid("");              // GUID
-    
+
                     result = ibims403bMp.deleteCrdlSchBss(tb07050svo);
                 }
             }

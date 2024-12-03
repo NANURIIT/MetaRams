@@ -90,7 +90,7 @@ public class TB03020ServiceImpl implements TB03020Service {
 		// 순번 채번
 		dealInfo.setSn(ibims101BMapper.selectDealNoFormat(dealInfo));
 		/**
-		 *   IBIMS101B 딜등록시 비어있는 컬럼이 많아서 
+		 *   IBIMS101B 딜등록시 비어있는 컬럼이 많아서
 		 *   구분코드는 00
 		 * 	 여부는 N
 		 * 	 으로 임시 세팅 TODO
@@ -142,8 +142,8 @@ public class TB03020ServiceImpl implements TB03020Service {
 
 		// 딜 정보 저장
 		ibims101BMapper.saveDeal(dealInfo);
-		
-		// 공동영업관리자 정보 삭제 
+
+		// 공동영업관리자 정보 삭제
 		ibims116BMapper.deleteMngP(dealInfo.getDealNo());
 		if( dealInfo.getEnoPList().size() > 0 ) {
 			for(IBIMS116BDTO temp : dealInfo.getEnoPList()){
@@ -170,12 +170,12 @@ public class TB03020ServiceImpl implements TB03020Service {
 		toDoInfo.setRgstEmpno(facade.getDetails().getEno());
 		toDoInfo.setPrcsEmpno(facade.getDetails().getEno());
 		toDoInfo.setHndEmpno(facade.getDetails().getEno());
-		toDoInfo.setDelYn("0");
-		
+		toDoInfo.setDelYn("N");
+
 		// 트랜젝션 요청
 		ibims100BMapper.insertIBIMS100BInfo(toDoInfo);
 		// rac02BMapper.reqApproveDeal(toDoInfo.getRmrk().substring(9));
-		
+
 		return result;
 
 	}
@@ -245,7 +245,7 @@ public class TB03020ServiceImpl implements TB03020Service {
 		// raa02BDTO.setFstRgstPDprtCd(facade.getDetails().getDprtCd());
 
 		// raa02BMapper.insertDealInfo(raa02BDTO);
-		
+
 		// // IBIMS100B UPDATE 개발중
 		// ibims100BVO.setEmpno(dealInfo.get("pyntEno"));
 		// ibims100BVO.setRmrk(dealInfo.get("ibDealNo"));
@@ -262,7 +262,7 @@ public class TB03020ServiceImpl implements TB03020Service {
 		String rtnYn = dealInfo.getRtnYn();				//반송여부
 
 		paramDto.setWfId(wfId);
-		paramDto.setRtnYn(rtnYn);					
+		paramDto.setRtnYn(rtnYn);
 
 		String nextStepId = workFlowMapper.getNxtStepId(paramDto);
 
@@ -278,7 +278,7 @@ public class TB03020ServiceImpl implements TB03020Service {
 
 		if(nextStepId.equals("99")){		//STEP 99까지 간 경우 WF 삭제
 			workFlowMapper.finishWF(paramDto);
-		}	
+		}
 
 		if(aprvRslt == 0 && update101Rslt == 0 && hisRslt == 0){
 			result = 1;
