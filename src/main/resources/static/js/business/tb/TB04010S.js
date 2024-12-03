@@ -598,13 +598,13 @@ const TB04010Sjs = (function () {
     $("#TB04010S_selectedDealNo").val(dealNo);
 
     setTab1(dealNo, mtrDcd, jdgmDcd);
-    setTab2(dealNo, mtrDcd, jdgmDcd);
-    setTab3(dealNo, mtrDcd, jdgmDcd);
-    setTab4(dealNo, mtrDcd, jdgmDcd);
-    setTab5(dealNo, mtrDcd, jdgmDcd);
-    setTab6(dealNo, mtrDcd, jdgmDcd);
-    setTab7(dealNo, mtrDcd, jdgmDcd);
-    setTab8(dealNo, mtrDcd, jdgmDcd);
+    //setTab2(dealNo, mtrDcd, jdgmDcd);
+    //setTab3(dealNo, mtrDcd, jdgmDcd);
+    //setTab4(dealNo, mtrDcd, jdgmDcd);
+    //setTab5(dealNo, mtrDcd, jdgmDcd);
+    //setTab6(dealNo, mtrDcd, jdgmDcd);
+    //setTab7(dealNo, mtrDcd, jdgmDcd);
+    //setTab8(dealNo, mtrDcd, jdgmDcd);
   }
 
   // 안건구조tab setting
@@ -658,19 +658,19 @@ const TB04010Sjs = (function () {
           .val(dealDetail.inspctDprtDcd)
           .prop("selected", true); // 심사부서구분
         $("#TB04010S_I029")
-          .val(dealDetail.invstGdsLdvdCd)
+          .val(dealDetail.invPrdtLclsCd)
           .prop("selected", true)
           .change(); // 투자상품대분류
         $("#TB04010S_I030")
-          .val(dealDetail.invstGdsMdvdCd)
+          .val(dealDetail.invPrdtMdclCd)
           .prop("selected", true)
           .change(); // 투자상품중분류
         $("#TB04010S_I031")
-          .val(dealDetail.invstGdsSdvdCd)
+          .val(dealDetail.invPrdtSclsCd)
           .prop("selected", true)
           .change(); // 투자상품소분류
         $("#TB04010S_I028")
-          .val(dealDetail.invstGdsDtlsDvdCd)
+          .val(dealDetail.invPrdtDtlsDvdCd)
           .prop("selected", true); // 투자상품상세분류
         $("#TB04010S_mainInvstTrgtNm").val(dealDetail.mainInvstTrgtNm); // 주요투자대상
 
@@ -1514,6 +1514,7 @@ const TB04010Sjs = (function () {
    */
   function onChangeInvstGdsLdvdCd() {
     $("#TB04010S_I029").on("change", function () {
+      console.log("TB04010S_I029 : ", $("#TB04010S_I029").val());
       var selectedLdvdCd = $(this).val(); // 선택된 대분류 코드 가져오기
       changeInvstGdsMdvdCd(selectedLdvdCd);
     });
@@ -1842,15 +1843,15 @@ const TB04010Sjs = (function () {
       raDealDcd: $("#TB04010S_R001").val(), // RADEAL구분코드
       riskRcgNo: $("#TB04010S_riskRcgNo").val(), // 리스크승인번호
       inspctDprtDcd: $("#TB04010S_I010").val(), // 심사부서구분코드
-      invstGdsLdvdCd: $("#TB04010S_I029").val(), // 투자상품대분류코드
-      invstGdsMdvdCd: $("#TB04010S_I030").val(), // 투자상품중분류코드
-      invstGdsSdvdCd: $("#TB04010S_I031").val(), // 투자상품소분류코드
-      invstGdsDtlsDvdCd: $("#TB04010S_I028").val(), // 투자상품상세분류코드
+      invPrdtLclsCd: $("#TB04010S_I029").val(), // 투자상품대분류코드
+      invPrdtMdclCd: $("#TB04010S_I030").val(), // 투자상품중분류코드
+      invPrdtSclsCd: $("#TB04010S_I031").val(), // 투자상품소분류코드
+      invPrdtDtlsDvdCd: $("#TB04010S_I028").val(), // 투자상품상세분류코드
       mainInvstTrgtNm: $("#TB04010S_mainInvstTrgtNm").val(), // 주요투자대상명
-      ptfdCrncyCd: $("#TB04010S_I027").val(), // 부의통화코드
+      ptfdCrryCd: $("#TB04010S_I027").val(), // 부의통화코드
       ptfdAmt: $("#crncyAmt").val().replace(/,/g, ""), // 부의금액
-      invstNtnCd: $("#TB04010S_C006").val(), // 투자국가코드
-      aplcExchR: $("#aplcExchR").val().replace(/,/g, ""), // 적용환율
+      invNtnCd: $("#TB04010S_C006").val(), // 투자국가코드
+      aplyExrt: $("#aplcExchR").val().replace(/,/g, ""), // 적용환율
       krwTrslPtfdAmt: $("#crncyAmtWn").val().replace(/,/g, ""), // 원화환산부의금액
       indTypDvdCd: $("#TB04010S_I006").val(), // 업종분류코드(고위험산업)
       checkItemCd: $("#TB04010S_C001").val(), // 점검항목코드(업무구분)
@@ -1862,7 +1863,7 @@ const TB04010Sjs = (function () {
       dlDprtCd3: $("#TB04012P_dlDprtCd3_dlDprtCd").val(), // 거래부점코드3
       hdqtCd: $("#TB04010S_hdqtCd").val(), // 본부코드
       dprtCd: $("#TB04010S_dprtCd").val(), // 부점코드
-      chrgPEno: $("#TB04010S_empNo").val(), // 담당자사번
+      chrrEmpno: $("#TB04010S_empNo").val(), // 담당자사번
       // TODO : 안건정보 재 저장시 심사역 초기화 여부 확인필요
       ownPEno: "", // 심사역사번
       esgYn: $("input[name=TB04010S_esgYn]:checked").val(), // ESG여부
@@ -1884,7 +1885,7 @@ const TB04010Sjs = (function () {
       ensrYn: $("input[name=TB04010S_ensrF]:checked").val(), // 보증여부
       rspsbCmplDcd: $("#TB04010S_R026").val(), // 책임준공구분코드
       entpNm: $("#TB04010S_entpRnm").val(), // 업체명
-      optrRgstNo: $("#TB04010S_bsnsRgstNo").val().replaceAll("-", ""), // 사업자등록번호
+      bzno: $("#TB04010S_bsnsRgstNo").val().replaceAll("-", ""), // 사업자등록번호
       corpNo: $("#TB04010S_corpRgstNo").val().replaceAll("-", ""), // 법인번호
       //, "coprtnTypCd": $('#TB04010S_C008').val()                        			// 협업유형코드
       busiDptOpnn: $("#TB04010S_bsnsDprtCmmtRmrk1").val(), // 사업부서의견

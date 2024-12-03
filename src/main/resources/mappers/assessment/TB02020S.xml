@@ -69,7 +69,7 @@
             JOIN WF_STEP C
              ON A.WF_MAP_ID  = C.WF_MAP_ID 
           WHERE A.WF_MAP_ID = #{wfMapId}
-          ORDER BY A.WF_STEP_ID                   
+          ORDER BY A.APRV_DTTM DESC                 
         
     </select>
     

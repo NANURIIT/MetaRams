@@ -33,23 +33,23 @@ public class IBIMS103BVO extends IBIMS103BDTO {
 	String dmsCrdtGrdDcdNm;
 	String invNtnCdNm;
 	String ptfdCrryCdNm;
-	String invPrdtLclsCdNm;                // 투자상품대분류코드
-    String invPrdtMdclCdNm;                // 투자상품중분류코드
-    String invPrdtSclsCdNm;                // 투자상품소분류코드
-    String invPrdtDtlsDvdCdNm;             // 투자상품상세분류코드
-    
-    /* --------------------------------------- */
-    
-    String dealNm;
-    
-    /* --------------------------------------- */
-    
-    String mtrPrgSttsDcdFrom;
-    String mtrPrgSttsDcdTo;
-    
-    /* --------------------------------------- */
-    String prdtCd;
-    String prdtNm;
+	String invPrdtLclsCd;                // 투자상품대분류코드
+  String invPrdtMdclCd;                // 투자상품중분류코드
+  String invPrdtSclsCd;                // 투자상품소분류코드
+  String invPrdtDtlsDvdCd;             // 투자상품상세분류코드
+  
+  /* --------------------------------------- */
+  
+  String dealNm;
+  
+  /* --------------------------------------- */
+  
+  String mtrPrgSttsDcdFrom;
+  String mtrPrgSttsDcdTo;
+  
+  /* --------------------------------------- */
+  String prdtCd;
+  String prdtNm;
 	/* ------------------- 20240613 정희조 추가 -------------------- */
 	// 대시보드
 	String pviusQtStrtDt;					// 전분기 시작일자
