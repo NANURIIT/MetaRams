@@ -3,6 +3,8 @@ const TB07110Sjs = (function () {
   let basic; // 기본?
 
   $(document).ready(function () {
+    $("#TB07110S_startDt").val(getSomeDaysAgo(7));
+    $("#TB07110S_endDt").val(getToday());
     pqGrid();
   });
 
@@ -300,6 +302,22 @@ const TB07110Sjs = (function () {
    * INSERT 모음
    */
 
+
+  function TB07110S_reset(){
+    $("#TB07110S_selCcd").val(0);
+    $("#TB07110S_startDt").val(getSomeDaysAgo(7));
+    $("#TB07110S_endDt").val(getToday());
+    $("#TB07110S_dprtCd").val('');
+    $("#TB07110S_dprtNm").val('');
+    $("#TB07110S_jobDecdCd").val(0);
+    $("#TB07110S_ardyBzepNo").val('');
+    $("#TB07110S_bzepName").val('');
+    $("#TB07110S_actsCd").val('');
+    $("#TB07110S_actsNm").val('');
+    let gridList = $("#TB07110S_grd_txbl").pqGrid("instance");
+    gridList.setData([]);
+  
+  }
   /**
    * 지급품의 MERGE
    */
@@ -545,6 +563,7 @@ const TB07110Sjs = (function () {
 
     TB07110S_selectIBIMS431B: TB07110S_selectIBIMS431B,
     TB07110S_doExc:TB07110S_doExc,
+    TB07110S_reset: TB07110S_reset,
 
   };
 })();

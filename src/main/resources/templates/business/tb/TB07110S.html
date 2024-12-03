@@ -38,9 +38,9 @@
 								</label>
 								<div class="col-sm-2">
 									<div class="input-group">
-										<select class="form-control" id="TB07110S_">
-											<option value="">전체</option>
-											<option value=""></option>
+										<select class="form-control" id="TB07110S_selCcd">
+											<option value="0">전체</option>
+											<option value="1"></option>
 										</select>
 									</div>
 								</div>
@@ -50,13 +50,13 @@
 								</label>
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB07110S_" name="" value=""
+										<input type="text" class="form-control" id="TB07110S_startDt" name="" value=""
 											placeholder="YYYY-MM-DD">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB07110S_" name="" value=""
+										<input type="text" class="form-control" id="TB07110S_endDt" name="" value=""
 											placeholder="YYYY-MM-DD">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
@@ -84,9 +84,9 @@
 								</label>
 								<div class="col-sm-2">
 									<div class="input-group">
-										<select class="form-control" id="TB07110S_">
-											<option value="">전체</option>
-											<option value=""></option>
+										<select class="form-control" id="TB07110S_jobDecdCd">
+											<option value="0">전체</option>
+											<option value="1"></option>
 										</select>
 									</div>
 								</div>
@@ -111,12 +111,12 @@
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<input type="text" class="form-control" id="TB07110S_">
+										<input type="text" class="form-control" id="TB07110S_actsCd">
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick=""><i
 													class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB07110S_" readonly>
+										<input type="text" class="form-control" id="TB07110S_actsNm" readonly>
 									</div>
 								</div>
 							</div>
@@ -124,7 +124,7 @@
 							<div class="col-sm-1-5 text-right">
 								<button class="btn btn-primary" onclick="TB07110Sjs.TB07110S_selectIBIMS431B();">
 									<i class="fa fa-search"></i>&nbsp;조회</button>
-								<button class="btn btn-default" type="button" onclick="">
+								<button class="btn btn-default" type="button" onclick="TB07110Sjs.TB07110S_reset()">
 									<i class="fa fa-undo"></i>&nbsp;초기화
 								</button>
 							</div>
