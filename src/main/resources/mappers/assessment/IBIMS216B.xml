@@ -31,14 +31,14 @@
                , #{grteCtrcDcd}                                     <!-- 보증약정구분코드 -->
                , #{grnrCpin}                                        <!-- 보증인고객식별번호 -->
                , #{grupItgrCrdtGrdDcd}                              <!-- 그룹통합신용등급구분코드 -->
-               , #{crdtInqDt}                                       <!-- 신용조회일자 -->
+               , TO_CHAR(SYSDATE,'YYYYMMDD')                        <!-- 신용조회일자 -->
                , #{dbtrCpin}                                        <!-- 채무자고객식별번호 -->
                , #{grteDbtrRltnDcd}                                 <!-- 보증채무자관계구분코드 -->
                , #{grteAmt}                                         <!-- 보증금액 -->
                , #{grtePrna}                                        <!-- 보증원금 -->
                , #{grteCrryCd}                                      <!-- 보증통화코드 -->
                , #{stlaOrznBlngDcd}                                 <!-- 결산기구분코드 -->
-               , #{grteStlaDe}                                      <!-- 보증결산일 -->
+               , TO_CHAR(SYSDATE,'YYYYMMDD')                        <!-- 보증결산일 -->
                , #{grteStlaDeEtcDcd}                                <!-- 보증결산일기타구분코드 -->
                , #{mrtgGrteCtns}                                    <!-- 담보보증내용 -->
                , SYSDATE
@@ -48,5 +48,12 @@
                , #{guid}                                            <!-- guid -->
                )
     </insert>
+    
+     <delete id="deleteIBIMS216B" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO">
+        DELETE 
+          FROM IBIMS216B
+         WHERE 1=1
+           AND MRTG_MNGM_NO                                      = #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
+    </delete>
 
 </mapper>
