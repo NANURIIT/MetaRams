@@ -5,7 +5,7 @@
 	<!-- IB승인조건내역 - 대출채권/채무보증 정보(TB06010S) - 셀다운승인조건조회  -->
     <select id="select208B" parameterType="com.nanuri.rams.business.common.vo.IBIMS208BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS208BVO">
         SELECT IBIMS208B.DEAL_NO                                           <!-- 딜번호 -->
-             , IBIMS208B.SN                                                <!-- 일련번호 -->
+             , IBIMS208B.APVL_CND_SN AS SN                                 <!-- 일련번호 -->
              , IBIMS208B.SDWN_DT_DCD                                       <!-- 샐다운일자구분코드 -->
              , IBIMS208B.SDWN_TLMT_MNUM                                    <!-- 샐다운기한개월수 -->
              , IBIMS208B.SDWN_TLMT_DT                                      <!-- 샐다운기한(목표)일자 -->
@@ -63,7 +63,7 @@
          WHERE 1=1
            AND IBIMS208B.DEAL_NO = #{dealNo}
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sn)">
-		   AND IBIMS208B.SN	  	 = #{sn}
+		   AND IBIMS208B.APVL_CND_SN = #{sn}
 		   </if>
          ORDER BY I209B.PRDT_CD DESC
     </select>
@@ -73,7 +73,7 @@
        INSERT INTO IBIMS208B 
                (
                   DEAL_NO                                           /* 딜번호 */
-                , SN                                                /* 일련번호 */
+                , APVL_CND_SN                                       /* 일련번호 */
                 , SDWN_DT_DCD                                       /* 샐다운일자구분코드 */
                 , SDWN_TLMT_MNUM                                    /* 샐다운기한개월수 */
                 , SDWN_TLMT_DT                                      /* 샐다운기한(목표)일자 */
@@ -108,7 +108,7 @@
                )
         VALUES (
                  #{dealNo}                                          /* 딜번호 */
-               , (SELECT NVL(MAX(A.SN), 0) + 1 FROM IBIMS208B A
+               , (SELECT NVL(MAX(A.APVL_CND_SN), 0) + 1 FROM IBIMS208B A
                    WHERE A.DEAL_NO = #{dealNo}
                   )    												/* 일련번호 */
                , #{sdwnDtDcd}                                       /* 샐다운일자구분코드 */
@@ -243,7 +243,7 @@
           AND DEAL_NO                                           = #{dealNo}                                          <!-- 딜번호 -->
           </if>
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sn)">
-          AND SN                                                = #{sn}                                              <!-- 일련번호 -->
+          AND APVL_CND_SN                                       = #{sn}                                              <!-- 일련번호 -->
           </if>
     </update>
 	
@@ -259,14 +259,14 @@
 		     , IBIMS209B s209b 
 		 WHERE 1=1
 		   AND s209b.DEAL_NO		= s208b.DEAL_NO 
-		   AND s209b.APVL_CND_SN	= s208b.SN 
+		   AND s209b.APVL_CND_SN	= s208b.APVL_CND_SN
 		   AND s209b.PRDT_CD		= #{prdtCd}
 	</select>
   <delete id="deleteAppvCndtList" parameterType="com.nanuri.rams.business.common.dto.IBIMS208BDTO">
   DELETE 
     FROM IBIMS208B 
    WHERE DEAL_NO = #{dealNo}
-     AND SN = #{sn}
+     AND APVL_CND_SN = #{sn}
   </delete>
   
 	

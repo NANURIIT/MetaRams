@@ -210,6 +210,8 @@ function callTB06017P(prefix) {
 	clearTB06017P();
 
 	$('#TB06017P_prefix').val(prefix);
+	//console.log("TB06013P_mrtgMngmNo"+$('#TB06013P_mrtgMngmNo').val());
+	
 	$('#modal-TB06017P').modal('show');
 	indexChangeHandler("TB06017P");
 	setTimeout(() => roadMrtgInfoListGrid(), 300);
