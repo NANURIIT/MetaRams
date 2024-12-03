@@ -87,9 +87,11 @@ const TB04030Sjs = (function () {
     sessionStorage.setItem("mtrPrgSttsDcd", mtrPrgSttsDcd);
 
     if (mtrPrgSttsDcd < 301) {
-      location.href = "/TB04010S";
+      callPage("TB04010S");
+      // location.href = "/TB04010S";
     } else {
-      location.href = "/TB05040S";
+      callPage("TB05040S");
+      // location.href = "/TB05040S";
     }
   }
 

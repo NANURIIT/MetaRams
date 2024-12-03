@@ -31,7 +31,7 @@
         VALUES (
                  #{mrtgMngmNo}                                      <!-- 담보관리번호 -->
                , #{drcMrtgYn}                                       <!-- 직접담보여부 -->
-               , #{ovssEvlIsttYn}                                   <!-- 국외평가기관여부 -->
+               , #{ovssEvlIsttYn}                                  	<!-- 국외평가기관여부 -->
                , #{aprsEvlIsttCd}                                   <!-- 감정평가기관코드 -->
                , #{crevIsttNm}                                      <!-- 시가평가기관명 -->
                , #{aprsDt}                                          <!-- 감정일자 -->

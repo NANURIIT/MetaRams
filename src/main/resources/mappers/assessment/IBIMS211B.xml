@@ -180,83 +180,191 @@
     
     <!-- 담보정보상세 -->
     <select id="mrtgInfoDetails" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO" resultType="com.nanuri.rams.business.common.vo.TB06013PVO">
-    	SELECT IB211B.MRTG_MNGM_NO,                    <!-- 담보관리번호 -->
-			   INV_JDGM_DEAL_NO,                       <!-- 투자심사딜번호 -->
-			   MRTG_NM,                                <!-- 담보명 -->
-			   MRTG_LCLS_CD,                           <!-- 담보대분류코드 -->
-			   MRTG_MDCL_CD,                           <!-- 담보중분류코드 -->
-			   MRTG_DTL_USGE_CTNS,                     <!-- 담보세부용도내용 -->
-			   MRTG_CRRY_CD,                           <!-- 담보통화코드 -->
-			   IB211B.MRTG_QNT,                        <!-- 담보수량 -->
-			   IB211B.MRTG_UNPR,                       <!-- 담보단가 -->
-			   IB211B.MRTG_AMT,                        <!-- 담보금액 -->
-			   MRTG_EVL_AMT,                           <!-- 담보평가금액 -->
-			   IB211B.MRTG_RTO,                        <!-- 담보비율 -->
-			   MRTG_EVL_DT,                            <!-- 담보평가일자 -->
-			   IB211B.RGST_DT,                         <!-- 등록일자 -->
-			   MRTG_STUP_DT,                           <!-- 담보설정일자 -->
-			   MRTG_CCLC_DT,                           <!-- 담보해지일자 -->
-			   TR_OTHR_DSCM_NO,                        <!-- 거래상대방식별번호 -->
-			   TR_OTHR_NM,                             <!-- 거래상대방명 -->
-			   TR_EMPNO,                               <!-- 거래부서코드 -->
-			   MRTG_EVL_STDR_CD,                       <!-- 담보평가기준코드 -->
-			   PRFD_RANK_YN,                           <!-- 우선순위여부 -->
-			   HDWT_EVL_YN,                            <!-- 수기평가여부 -->
-			   MRTG_OFFR_RCVN_DCD,                     <!-- 담보제공수취구분코드 -->
-			   IB211B.AVBL_MRTG_PRC,                   <!-- 가용담보가격 -->
-			   MRTG_STUP_KND_CD,                       <!-- 담보설정종류코드 -->
-			   STUP_CRRY_CD,                           <!-- 설정통화코드 -->
-			   STUP_TOP_AMT,                           <!-- 설정최고금액 -->
-			   KRW_TRSL_STUP_TOP_AMT,                  <!-- 원화환산설정최고금액 -->
-			   CPRN_MRTG_RTO,                          <!-- 공동담보비율 -->
-			   VALT_MRTG_PRC,                          <!-- 유효담보가격 -->
-			   KRW_TRSL_VALT_MRTG_PRC,                 <!-- 원화환산유효담보가격 -->
-			   DEL_YN,                                 <!-- 삭제여부 -->
-			   IB214B.DRC_MRTG_YN,                     <!-- 직접담보여부 -->
-			   OVSS_MRTG_YN,                           <!-- 국외담보여부 -->
-			   IB214B.APRS_MTH_CD,                     <!-- 감정방법코드 -->
-			   IB214B.APRS_EVL_ISTT_CD,                <!-- 감정평가기관코드 -->
-			   IB214B.CREV_ISTT_NM,                    <!-- 시가평가기관명 -->
-			   CREV_STDR_CD,                           <!-- 시가평가기준코드 -->
-			   APRS_PRPS_CD,                           <!-- 감정목적코드 -->
-			   IB214B.APRS_DT,                         <!-- 감정일자 -->
-			   LCTP_ADDR,                              <!-- 소재지주소 -->
-			   RLES_SQMS_CTNS,                         <!-- 부동산면적내용 -->
-			   IB214B.APRS_CRRY_CD,                    <!-- 감정통화코드 -->
-			   IB214B.APRS_PRC,                        <!-- 감정가격 -->
-			   IB214B.KRW_TRSL_APRS_PRC,               <!-- 원화환산감정가격 -->
-			   IB214B.MRTG_RCG_RTO,                    <!-- 담보인정비율 -->
-			   IB214B.MRTG_PRC,                        <!-- 담보가격 -->
-			   IB215B.MRTG_CTNS,                       <!-- 담보내용 -->
-			   MVPP_MRTG_KND_CD,                       <!-- 동산담보종류코드 -->
-			   OPPR_PRSM_FDTN_CTNS,                    <!-- 시가추정근거내용 -->
-			   MRTG_ACQ_MTH_CD,                        <!-- 담보취득방법코드 -->
-			   GRTE_CTRC_DCD,                          <!-- 보증약정구분코드 -->
-			   GRNR_CPIN,                              <!-- 보증인고객식별번호 -->
-			   GRUP_ITGR_CRDT_GRD_DCD,                 <!-- 그룹통합신용등급구분코드 -->
-			   CRDT_INQ_DT,                            <!-- 신용조회일자 -->
-			   DBTR_CPIN,                              <!-- 채무자고객식별번호 -->
-			   GRTE_DBTR_RLTN_DCD,                     <!-- 보증채무자관계구분코드 -->
-			   IB216B.GRTE_AMT,                        <!-- 보증금액 -->
-			   GRTE_PRNA,                              <!-- 보증원금 -->
-			   IB216B.GRTE_CRRY_CD,                    <!-- 보증통화코드 -->
-			   STLA_ORZN_BLNG_DCD,                     <!-- 결산기구분코드 -->
-			   GRTE_STLA_DE,                           <!-- 보증결산일 -->
-			   GRTE_STLA_DE_ETC_DCD,                   <!-- 보증결산일기타구분코드 -->
-			   IB216B.MRTG_GRTE_CTNS,                  <!-- 담보보증내용 -->
-			   GRTE_ISTT_DCD,                          <!-- 보증기관구분코드 -->
-			   GRTE_ISTT_CD,                           <!-- 보증기관코드 -->
-			   GRTE_ISTT_NM,                           <!-- 보증기관명 -->
-			   LGRTE_NM,                               <!-- 보증서명 -->
-			   GRTE_EXPR_DT,                           <!-- 보증만료일자 -->
-			   ETC_MRTG_TP_CD,                         <!-- 기타담보유형코드 -->
-			   ETC_MRTG_KND_CD,                        <!-- 기타담보종류코드 -->
-			   MRTG_CD_CTNS,                           <!-- 담보코드내용 -->
-			   ETC_MRTG_GRD_CTNS,                      <!-- 기타담보등급내용 -->
-			   ETC_MRTG_ACQ_MTH_CD,                    <!-- 기타담보취득방법코드 -->
-			   OVSS_EVL_ISTT_YN,                       <!-- 국외평가기관여부 -->
-			   RLTH_MRTG_KND_CD,                       <!-- 실물담보종류코드 -->
-			   APRS_STDR_CD,                           <!-- 감정기준코드 -->
+SELECT IB211B.MRTG_MNGM_NO,                         /* 담보관리번호 */
+			   INV_JDGM_DEAL_NO,                       /* 투자심사딜번호 */
+			   MRTG_NM,                                /* 담보명 */
+			   MRTG_LCLS_CD,                           /* 담보대분류코드 */
+			   MRTG_MDCL_CD,                           /* 담보중분류코드 */
+			   MRTG_DTL_USGE_CTNS,                     /* 담보세부용도내용 */
+			   MRTG_CRRY_CD,                           /* 담보통화코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='9' 
+                    THEN IB219B.MRTG_QNT
+                    ELSE IB211B.MRTG_QNT
+                    END AS MRTG_QNT,                   /* 담보수량 */
+			   IB211B.MRTG_UNPR,                       /* 담보단가 */
+			   IB211B.MRTG_AMT,                        /* 담보금액 */
+			   MRTG_EVL_AMT,                           /* 담보평가금액 */
+			   CASE WHEN MRTG_STUP_KND_CD='9' 
+                    THEN IB219B.MRTG_RTO
+                    ELSE IB211B.MRTG_RTO
+                    END AS MRTG_RTO,                   /* 담보비율 */
+			   MRTG_EVL_DT,                            /* 담보평가일자 */
+			   IB211B.RGST_DT,                         /* 등록일자 */
+			   MRTG_STUP_DT,                           /* 담보설정일자 */
+			   MRTG_CCLC_DT,                           /* 담보해지일자 */
+			   TR_OTHR_DSCM_NO,                        /* 거래상대방식별번호 */
+			   TR_OTHR_NM,                             /* 거래상대방명 */
+			   TR_EMPNO,                               /* 거래부서코드 */
+			   MRTG_EVL_STDR_CD,                       /* 담보평가기준코드 */
+			   PRFD_RANK_YN,                           /* 우선순위여부 */
+			   HDWT_EVL_YN,                            /* 수기평가여부 */
+			   MRTG_OFFR_RCVN_DCD,                     /* 담보제공수취구분코드 */
+               IB218B.AVBL_MRTG_PRC 
+               		AS AVBL_MRTG_PRC_ETC, 			   /* 가용담보가격(기타) */ 
+               IB211B.AVBL_MRTG_PRC,                   /* 가용담보가격 */
+			   MRTG_STUP_KND_CD,                       /* 담보설정종류코드 */
+			   STUP_CRRY_CD,                           /* 설정통화코드 */
+			   STUP_TOP_AMT,                           /* 설정최고금액 */
+			   KRW_TRSL_STUP_TOP_AMT,                  /* 원화환산설정최고금액 */
+			   CPRN_MRTG_RTO,                          /* 공동담보비율 */
+			   VALT_MRTG_PRC,                          /* 유효담보가격 */
+			   KRW_TRSL_VALT_MRTG_PRC,                 /* 원화환산유효담보가격 */
+			   DEL_YN,                                 /* 삭제여부 */
+			   IB214B.DRC_MRTG_YN,                     /* 직접담보여부 */
+			   OVSS_MRTG_YN,                           /* 국외담보여부 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                 THEN IB214B.APRS_MTH_CD
+                 WHEN MRTG_STUP_KND_CD='3'
+                 THEN IB215B.APRS_MTH_CD
+                 ELSE IB214B.APRS_MTH_CD 
+                 END AS APRS_MTH_CD,                   /* 감정방법코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                 THEN IB214B.APRS_EVL_ISTT_CD
+                 WHEN MRTG_STUP_KND_CD='3'
+                 THEN IB215B.APRS_EVL_ISTT_CD
+                 ELSE IB214B.APRS_EVL_ISTT_CD
+                 END AS APRS_EVL_ISTT_CD,              /* 감정평가기관코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.CREV_ISTT_NM
+                    ELSE IB214B.CREV_ISTT_NM
+                    END AS CREV_ISTT_NM,               /* 시가평가기관명 */
+			   CREV_STDR_CD,                           /* 시가평가기준코드 */
+			   APRS_PRPS_CD,                           /* 감정목적코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                 THEN IB214B.APRS_DT
+                 WHEN MRTG_STUP_KND_CD='3'
+                 THEN IB215B.APRS_DT
+                 WHEN MRTG_STUP_KND_CD='9'
+                 THEN IB219B.APRS_DT
+                 ELSE IB214B.APRS_DT 
+                 END AS APRS_DT,                       /* 감정일자 */
+			   LCTP_ADDR,                              /* 소재지주소 */
+			   RLES_SQMS_CTNS,                         /* 부동산면적내용 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+			           THEN IB219B.APRS_CRRY_CD
+			           ELSE IB214B.APRS_CRRY_CD
+			           END APRS_CRRY_CD,               /* 감정통화코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                 THEN IB214B.APRS_PRC
+                 WHEN MRTG_STUP_KND_CD='3'
+                 THEN IB215B.APRS_PRC
+                  WHEN MRTG_STUP_KND_CD='9'
+                 THEN IB219B.APRS_PRC
+                 ELSE IB214B.APRS_PRC 
+                 END AS APRS_PRC,                      /* 감정가격 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+			           THEN IB219B.KRW_TRSL_APRS_PRC
+			           ELSE IB214B.KRW_TRSL_APRS_PRC
+			           END AS KRW_TRSL_APRS_PRC,       /* 원화환산감정가격 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                    THEN IB214B.MRTG_RCG_RTO
+                    WHEN MRTG_STUP_KND_CD='5'
+                    THEN IB217B.MRTG_RCG_RTO
+                     WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.MRTG_RCG_RTO
+                    ELSE IB214B.MRTG_RCG_RTO
+                    END AS MRTG_RCG_RTO,               /* 담보인정비율 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                 THEN IB214B.MRTG_PRC
+                 WHEN MRTG_STUP_KND_CD='3'
+                 THEN IB215B.MRTG_PRC
+                 WHEN MRTG_STUP_KND_CD='5'
+                 THEN IB217B.MRTG_PRC
+                 WHEN MRTG_STUP_KND_CD='9'
+                 THEN IB219B.MRTG_PRC
+                 ELSE IB214B.MRTG_PRC 
+                 END AS MRTG_PRC,                      /* 담보가격 */
+			   CASE WHEN MRTG_STUP_KND_CD='3'
+                    THEN IB215B.MRTG_CTNS
+                    WHEN MRTG_STUP_KND_CD='8'
+                    THEN IB218B.MRTG_CTNS
+                    WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.MRTG_CTNS
+                    ELSE IB215B.MRTG_CTNS
+                    END AS MRTG_CTNS,                  /* 담보내용 */
+			   MVPP_MRTG_KND_CD,                       /* 동산담보종류코드 */
+			   OPPR_PRSM_FDTN_CTNS,                    /* 시가추정근거내용 */
+			   MRTG_ACQ_MTH_CD,                        /* 담보취득방법코드 */
+			   GRTE_CTRC_DCD,                          /* 보증약정구분코드 */
+			   GRNR_CPIN,                              /* 보증인고객식별번호 */
+			   GRUP_ITGR_CRDT_GRD_DCD,                 /* 그룹통합신용등급구분코드 */
+			   CRDT_INQ_DT,                            /* 신용조회일자 */
+			   DBTR_CPIN,                              /* 채무자고객식별번호 */
+			   GRTE_DBTR_RLTN_DCD,                     /* 보증채무자관계구분코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                    THEN IB216B.GRTE_AMT
+                    WHEN MRTG_STUP_KND_CD='5'
+                    THEN IB217B.GRTE_AMT
+                    ELSE IB216B.GRTE_AMT
+                    END AS GRTE_AMT,                    /* 보증금액 */
+			   GRTE_PRNA,                               /* 보증원금 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                    THEN IB216B.GRTE_CRRY_CD
+                    WHEN MRTG_STUP_KND_CD='5'
+                    THEN IB217B.GRTE_CRRY_CD
+                    ELSE IB216B.GRTE_CRRY_CD
+                    END AS GRTE_CRRY_CD,               /* 보증통화코드 */
+			   STLA_ORZN_BLNG_DCD,                     /* 결산기구분코드 */
+			   GRTE_STLA_DE,                           /* 보증결산일 */
+			   GRTE_STLA_DE_ETC_DCD,                   /* 보증결산일기타구분코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                    THEN IB216B.MRTG_GRTE_CTNS
+                    WHEN MRTG_STUP_KND_CD='5'
+                    THEN IB217B.MRTG_GRTE_CTNS
+                    ELSE IB216B.MRTG_GRTE_CTNS
+                    END AS MRTG_GRTE_CTNS,             /* 담보보증내용 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                    THEN GRTE_ISTT_DCD
+                    WHEN MRTG_STUP_KND_CD='5'
+                    THEN IB217B.GRTE_ISTT_DCD
+                    ELSE GRTE_ISTT_DCD
+                    END AS GRTE_ISTT_DCD,              /* 보증기관구분코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                    THEN GRTE_ISTT_CD
+                    WHEN MRTG_STUP_KND_CD='5'
+                    THEN IB217B.GRTE_ISTT_CD
+                    ELSE GRTE_ISTT_CD
+                    END AS GRTE_ISTT_CD,               /* 보증기관코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                    THEN GRTE_ISTT_NM
+                    WHEN MRTG_STUP_KND_CD='5'
+                    THEN IB217B.GRTE_ISTT_NM
+                    ELSE GRTE_ISTT_NM
+                    END AS GRTE_ISTT_NM,               /* 보증기관명 */
+			   CASE WHEN MRTG_STUP_KND_CD='2' 
+                    THEN LGRTE_NM
+                    WHEN MRTG_STUP_KND_CD='5'
+                    THEN IB217B.LGRTE_NM
+                    ELSE LGRTE_NM
+                    END AS LGRTE_NM,                   /* 보증서명 */
+			   GRTE_EXPR_DT,                           /* 보증만료일자 */
+			   ETC_MRTG_TP_CD,                         /* 기타담보유형코드 */
+			   ETC_MRTG_KND_CD,                        /* 기타담보종류코드 */
+			   MRTG_CD_CTNS,                           /* 담보코드내용 */
+			   ETC_MRTG_GRD_CTNS,                      /* 기타담보등급내용 */
+			   ETC_MRTG_ACQ_MTH_CD,                    /* 기타담보취득방법코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.OVSS_EVL_ISTT_YN
+                    ELSE OVSS_EVL_ISTT_YN
+                    END AS OVSS_EVL_ISTT_YN,           /* 국외평가기관여부 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.RLTH_MRTG_KND_CD
+                    ELSE RLTH_MRTG_KND_CD
+                    END AS RLTH_MRTG_KND_CD,           /* 실물담보종류코드 */
+			   CASE WHEN MRTG_STUP_KND_CD='9'
+                    THEN IB219B.APRS_STDR_CD
+                    ELSE APRS_STDR_CD
+                    END APRS_STDR_CD,                  /* 감정기준코드 */
 			   IB212B.PRDT_CD                          /* 상품코드 */
 		  FROM IBIMS211B AS IB211B
 		  LEFT JOIN IBIMS214B AS IB214B 
@@ -285,10 +393,8 @@
 		    ON IB211B.MRTG_MNGM_NO = IB212B.MRTG_MNGM_NO
 		    
 		 WHERE 1=1
-		 <!--<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mrtgMngmNo)">-->
        AND IB211B.MRTG_MNGM_NO = #{mrtgMngmNo}
        AND IB211B.DEL_YN = 'N'
-         <!--</if>-->
     </select>
     
     <!-- IB승인담보기본 - 대출채권/채무보증 정보(TB06010S) - 담보/보증정보변경  -->
