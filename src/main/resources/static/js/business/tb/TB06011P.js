@@ -17,7 +17,7 @@ function TB06011P_srchPrdt() {
 			if ($(this).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
 				prefix = TB06011P_pf;
 			} else {
-				prefix = $(this).attr('id').slice(0, 8);
+				prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 7);
 			}
 
 			$(`input[id='${prefix}_prdtNm']`).val("");
@@ -71,7 +71,7 @@ function TB06011P_srchPrdt() {
 		if ($(this).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
 			prefix = TB06011P_pf;
 		} else {
-			prefix = $(this).attr('id').slice(0, 8);
+			prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 7);
 		}
 
 		$(`input[id='${prefix}_prdtNm']`).val("");
