@@ -107,13 +107,13 @@ public class TB05030ServiceImpl implements TB05030Service {
 
 		// 최종 안건정보 취득 및 최종 안건 여부 변경
 		param = ibims103BMapper.selectOne103B(param);
-		param.setLastYn("0");
+		param.setLastYn("N");
 		ibims103BMapper.updateLastYn(param);
 
 		/* parameter setting */
 		param.setMtrPrgSttsDcd(mtrPrgSttsDcd);
 		param.setHndEmpno(facade.getDetails().getEno());
-		param.setLastYn("1");
+		param.setLastYn("Y");
 		// 리스크승인번호 채번
 		String riskRcgNo = facade.getDetails().getDprtCd();
 		// 현재 년도, 월, 일, 시간, 분, 초 가져오기.

@@ -60,17 +60,17 @@ public class TB04010ServiceImpl implements TB04010Service {
 
 	/**
 	 * deal list 가져오기
-	 * 
+	 *
 	 * @param DealInfo(VO)
 	 */
 	@Override
 	public List<IBIMS103BVO> getDealList(IBIMS103BVO dealInfo) {
-		return ibims103bMapper.getDealList(dealInfo); 
+		return ibims103bMapper.getDealList(dealInfo);
 	}
 
 	/**
 	 * deal detail info 가져오기
-	 * 
+	 *
 	 * @param ibDealNo(String)
 	 */
 	@Override
@@ -81,46 +81,46 @@ public class TB04010ServiceImpl implements TB04010Service {
 	// deal 심사요청
 	@Override
 	public int assesmentRequest(IBIMS103BDTO param) {
-		
+
 		/* IBIMS100B INSERT를 위한 VO 인스턴스화 */
 		IBIMS100BVO.selectVO ibims100BVO = new IBIMS100BVO.selectVO();
-		
+
 		String mtrPrgSttsDcd = param.getMtrPrgSttsDcd();
-		
+
 		IBIMS103BDTO s103b = ibims103bMapper.selectOne103B(param);
 
 		s103b.setMtrPrgSttsDcd(mtrPrgSttsDcd);
 		s103b.setHndEmpno(facade.getDetails().getEno());
-		
 
-		param.setLastYn("0");
+
+		param.setLastYn("N");
 		ibims103bMapper.updateLastYn(param);
 
 		if (mtrPrgSttsDcd.equals("202")) {
-			
-			ibims100BVO.setEmpno(facade.getDetails().getEno());					// 사원번호 					
+
+			ibims100BVO.setEmpno(facade.getDetails().getEno());					// 사원번호
 			ibims100BVO.setWorkDcd("01");                       // 작업구분코드
 			ibims100BVO.setWorkCtns("(결재) 심사신청관리");     // 작업내용
 			ibims100BVO.setRgstEmpno(facade.getDetails().getEno());    // 등록사원번호
-			ibims100BVO.setMenuId("/TB04010S");                 // 메뉴ID 
-			ibims100BVO.setEntpNm(param.getEntpNm());                  // 업체명 
+			ibims100BVO.setMenuId("/TB04010S");                 // 메뉴ID
+			ibims100BVO.setEntpNm(param.getEntpNm());                  // 업체명
 			ibims100BVO.setRmrk("dealNo=" + param.getDealNo());        // 비고(메뉴별조회KEY)
 			ibims100BVO.setHndEmpno(facade.getDetails().getEno());     // 조작사원번호
-			
+
 			ibims100bMapper.insertIBIMS100BInfo(ibims100BVO);
-			
+
 		} else if (mtrPrgSttsDcd.equals("203")) {
-			
+
 			ibims100BVO.setRmrk(param.getDealNo());
 			ibims100BVO.setEmpno(facade.getDetails().getEno());
 			ibims100BVO.setHndEmpno(facade.getDetails().getEno());
-			ibims100BVO.setMenuId("/TB04010S"); 
-			
+			ibims100BVO.setMenuId("/TB04010S");
+
 			ibims100bMapper.deleteIBIMS100BInfo(ibims100BVO);
-		} 
+		}
 
 		// 자체전결
-		if (mtrPrgSttsDcd.equals("309")) 
+		if (mtrPrgSttsDcd.equals("309"))
 		{
 			LocalDateTime now = LocalDateTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -132,7 +132,7 @@ public class TB04010ServiceImpl implements TB04010Service {
 			s103b.setOwnDt(time);									  // 심사역 배정일자
 			s103b.setRiskInspctRsltnCcd("0");	  // 리스크심사결의구분코드 자체전결
 		}
-		
+
 		return ibims103bMapper.insert103B(s103b);
 	}
 
@@ -140,13 +140,13 @@ public class TB04010ServiceImpl implements TB04010Service {
 	// 안건등록
 	@Override
 	public int registDealInfo(IBIMS103BDTO paramData) {
-		
+
 		IBIMS103BDTO temp = ibims103bMapper.selectOne103B(paramData);
-		
+
 		paramData.setHndEmpno(facade.getDetails().getEno());
-		
+
 		if(temp != null) {			// already exist
-			temp.setLastYn("0");
+			temp.setLastYn("N");
 			ibims103bMapper.updateLastYn(temp);
 		}
 		return ibims103bMapper.insert103B(paramData);
@@ -210,7 +210,7 @@ public class TB04010ServiceImpl implements TB04010Service {
 	} catch (Exception e) {
 		System.out.println("deleteDealInfo ==> : " + e.getMessage());
 	}
-	
+
 		return 1;
 	}
 
@@ -227,11 +227,11 @@ public class TB04010ServiceImpl implements TB04010Service {
 	public int deleteDocInfo(IBIMS104BDTO docInfo) {
 		return ibims104bMapper.deleteDocInfo(docInfo);
 	};
-	
+
 	// 관련문서정보 생성
 	@Override
 	public int registDocInfo(IBIMS104BDTO docInfo) {
-		
+
 		docInfo.setHndEmpno(facade.getDetails().getEno());
 
 		docInfo.setDcmDcd("00");	// 문서구분코드
@@ -239,12 +239,12 @@ public class TB04010ServiceImpl implements TB04010Service {
 		if("Y".equals(docInfo.getLastDcmYn())) {
 			ibims104bMapper.updateLastDcmYn(docInfo);
 		}
-		
+
 		/**
 		 * insert시 파라미터 null인 컬럼 하드코딩 TODO
 		 */
 
-		
+
 		if (docInfo.getSn() == 0) {
 			return ibims104bMapper.registDocInfo(docInfo);					// 문서정보 생성
 		} else {
@@ -263,12 +263,12 @@ public class TB04010ServiceImpl implements TB04010Service {
 	// 기초자산정보 생성
 	@Override
 	public int registAssetInfo(IBIMS105BDTO assetInfo) {
-		
+
 		/**
 		 * insert시 파라미터 null인 컬럼 하드코딩 TODO
 		 */
 		assetInfo.setHndEmpno(facade.getDetails().getEno());
-		
+
 		if (assetInfo.getSn() == 0) {
 			return ibims105bMapper.registAssetInfo(assetInfo);					// 기초자산정보 생성
 		} else {
@@ -281,19 +281,19 @@ public class TB04010ServiceImpl implements TB04010Service {
 	public int deleteAssetInfo(IBIMS105BDTO assetInfo) {
 		return ibims105bMapper.deleteAssetInfo(assetInfo);						// 기초자산정보 제거
 	}
-	
+
 	// 기초자산입력 예정 여부 생성
 	@Override
 	public int registBscAstsInptExptF(IBIMS103BDTO paramData) {
-		
+
 		IBIMS103BDTO temp = ibims103bMapper.selectOne103B(paramData);
-		
-		paramData.setLastYn("0");
+
+		paramData.setLastYn("N");
 		ibims103bMapper.updateLastYn(paramData);
-		
+
 		temp.setBscAstsInptExptF(paramData.getBscAstsInptExptF());
 		temp.setHndEmpno(facade.getDetails().getEno());
-		
+
 		return ibims103bMapper.insert103B(temp);
 	}
 
@@ -308,7 +308,7 @@ public class TB04010ServiceImpl implements TB04010Service {
 	// 관계사정보 생성
 	@Override
 	public int registCncCmpnyInfo(IBIMS106BDTO cncCmpnyInfo) {
-		
+
 		cncCmpnyInfo.setHndEmpno(facade.getDetails().getEno());
 		/**
 		 * insert시 파라미터 null인 컬럼 하드코딩 TODO
@@ -327,25 +327,25 @@ public class TB04010ServiceImpl implements TB04010Service {
 	public int deleteCncCmpnyInfo(IBIMS106BDTO cncCmpnyInfo) {
 		return ibims106bMapper.deleteCncCmpnyInfo(cncCmpnyInfo);
 	}
-	
+
 	// 기초자산입력 예정 여부 생성
 	@Override
 	public int registCncCmpnyInptExptF(IBIMS103BDTO paramData) {
-		
+
 		IBIMS103BDTO temp = ibims103bMapper.selectOne103B(paramData);
 		/**
 		 * insert시 파라미터 null인 컬럼 하드코딩 TODO
 		 */
-		
-		paramData.setLastYn("0");
-		
+
+		paramData.setLastYn("N");
+
 		ibims103bMapper.updateLastYn(paramData);
-		
+
 		temp.setCncCmpnyInptExptF(paramData.getCncCmpnyInptExptF());
 		temp.setHndEmpno(facade.getDetails().getEno());
-		
+
 		return ibims103bMapper.insert103B(temp);
-		
+
 	}
 
 	// ---------------tab5 start------------------
@@ -360,7 +360,7 @@ public class TB04010ServiceImpl implements TB04010Service {
 	@Override
 	public int registInsGrdInfo(IBIMS107BDTO insGrdInfo) {
 		insGrdInfo.setHndEmpno(facade.getDetails().getEno());
-		
+
 		if (insGrdInfo.getSn() == 0) {
 			return ibims107bMapper.registInsGrdInfo(insGrdInfo);						// 내부등급정보 생성
 		} else {
@@ -374,22 +374,22 @@ public class TB04010ServiceImpl implements TB04010Service {
 	public int deleteInsGrdInfo(IBIMS107BDTO insGrdInfo) {
 		return ibims107bMapper.deleteInsGrdInfo(insGrdInfo);
 	}
-	
+
 	// 내부등급 예정 여부 생성
 	@Override
 	public int registInsGrdInptExptF(IBIMS103BDTO paramData) {
-		
+
 		IBIMS103BDTO temp = ibims103bMapper.selectOne103B(paramData);
-		
-		paramData.setLastYn("0");
+
+		paramData.setLastYn("N");
 		ibims103bMapper.updateLastYn(paramData);
-		
+
 		temp.setInsGrdInptExptF(paramData.getInsGrdInptExptF());
 		temp.setHndEmpno(facade.getDetails().getEno());
-		
+
 		return ibims103bMapper.insert103B(temp);
 	}
-	
+
 
 	// ---------------tab6 start------------------
 
@@ -403,7 +403,7 @@ public class TB04010ServiceImpl implements TB04010Service {
 	@Override
 	public int registMrtgInfo(IBIMS108BDTO mrtgInfo) {
 		mrtgInfo.setHndEmpno(facade.getDetails().getEno());
-		
+
 		if (mrtgInfo.getSn() == 0) {
 			return ibims108bMapper.registMrtgInfo(mrtgInfo);							// 담보정보 생성
 		} else {
@@ -429,12 +429,12 @@ public class TB04010ServiceImpl implements TB04010Service {
 	@Override
 	public int registEnsrInfo(IBIMS109BDTO ensrInfo) {
 		ensrInfo.setHndEmpno(facade.getDetails().getEno());
-		
+
 		if (ensrInfo.getSn() == 0) {
 			return ibims109bMapper.registEnsrInfo(ensrInfo);							// 보증기관정보 생성
 		} else {
 			return ibims109bMapper.updateEnsrInfo(ensrInfo);					    	// 보증기관정보 갱신
-		} 
+		}
 	}
 
 	// 보증기관정보 삭제
@@ -442,7 +442,7 @@ public class TB04010ServiceImpl implements TB04010Service {
 	public int deleteEnsrInfo(IBIMS109BDTO ensrInfo) {
 		return ibims109bMapper.deleteEnsrInfo(ensrInfo);
 	}
-	
+
 	// ---------------tab8 start------------------
 
 	// 책임준공기관정보 취득
@@ -460,7 +460,7 @@ public class TB04010ServiceImpl implements TB04010Service {
 		 */
 		BigDecimal mtrtHldAmt = new BigDecimal("000000000000000000000000.000000");	// 만기보유금액
 		cmplInfo.setMtrtHldAmt(mtrtHldAmt);
-		
+
 		if (cmplInfo.getSn() == 0) {
 			return ibims110bMapper.registCmplInfo(cmplInfo);							// 보증기관정보 생성
 		} else {

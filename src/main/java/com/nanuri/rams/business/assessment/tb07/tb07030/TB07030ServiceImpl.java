@@ -51,9 +51,9 @@ public class TB07030ServiceImpl implements TB07030Service {
  	@Autowired
  	private Calculation calculation;
  	@Autowired
- 	private EtprCrdtGrntAcctProc acctProc; 	
+ 	private EtprCrdtGrntAcctProc acctProc;
 	/* 약정기본 */
-	private final  IBIMS401BMapper ibims401BMapper;	
+	private final  IBIMS401BMapper ibims401BMapper;
 	/* 딜실행기본 */
 	private final IBIMS402BMapper ibims402BMapper;
 	/* 딜실행이력 */
@@ -65,10 +65,10 @@ public class TB07030ServiceImpl implements TB07030Service {
 	/* 환율정보 */
 	private final IBIMS994BMapper ibims994BMapper;
 	/* 딜거래내역 */
-	private final IBIMS410BMapper ibims410BMapper;	
+	private final IBIMS410BMapper ibims410BMapper;
 	/* 이자계산내역 */
 	private final IBIMS406BMapper ibims406BMapper;
-	
+
 	/* 사용자정보 */
 	private final AuthenticationFacade facade;
 
@@ -81,11 +81,11 @@ public class TB07030ServiceImpl implements TB07030Service {
 	public TB07030SVO getExchR(String paramData) {
 		return ibims994BMapper.getExchR(paramData);
 	}
-	
+
 	// 실행정보 상세내역 조회
 	@Override
 	public TB07030SVO getRdmpDetail(TB07030SVO paramData) {
-		
+
 		CalculationDTO calcDto = new CalculationDTO();
 		CalculationSumDTO calcSumDto = new CalculationSumDTO();
 
@@ -95,7 +95,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 
 		// 태안 이자계산모듈이 완성되면 상환대상 조회처리 수정예정 (적용 후 주석제거 예정) 2024.07.14
 		for(int i = 0; i < param403lst.size(); i++) {
-			
+
 			//log.debug("!!!!!중도상환원금!!!!!!!: " + param403lst.get(i).getDealMrdpPrca());
 
 			TB06015SVO inSvo = new TB06015SVO();
@@ -116,17 +116,17 @@ public class TB07030ServiceImpl implements TB07030Service {
 			//log.debug("\n getDtlInf ::: [{}]", getDtlInf);
 			//log.debug("\n getDtlInf.getIntrSnnoPrcsDcd() ::: [{}]", getDtlInf.getIntrSnnoPrcsDcd());
 			calcDto.setIntrSnnoPrcsDcd(intrSnnoPrcsDcd);
-			
+
 			Iterator<CalculationResultDTO> it = outCalc.iterator();
 			while (it.hasNext()) {
 				CalculationResultDTO item = it.next();
 				//log.debug("\nCalculationResultDTO item = it.next()::::: [{}]", item);
-				IBIMS403BVO setItem = new IBIMS403BVO();	
+				IBIMS403BVO setItem = new IBIMS403BVO();
 
-				IBIMS403BVO setRscdlItem = new IBIMS403BVO();			// 중도상환 발생 시 이자상환스케줄 재설정 
+				IBIMS403BVO setRscdlItem = new IBIMS403BVO();			// 중도상환 발생 시 이자상환스케줄 재설정
 
 				if(item.getPaiTypCd() == null){							//중도상환 발생 시 이자상환스케줄 재설정
-					
+
 					setRscdlItem.setPmntAmt(item.getRdmpPrarIntr());
 					setRscdlItem.setTrgtAmt(item.getPrarPrna());
 					setRscdlItem.setPrdtCd(param403lst.get(i).getPrdtCd());
@@ -145,38 +145,38 @@ public class TB07030ServiceImpl implements TB07030Service {
 					ibims403RscdlList.add(setRscdlItem);
 
 				}else{
-					if( item.getPaiTypCd().equals("1") ){	
+					if( item.getPaiTypCd().equals("1") ){
 
 						setItem.setPmntAmt(item.getPrarPrna());				// 예정원금
 						setItem.setTrgtAmt(item.getBfBalance());			// 대상금액
-	
+
 						setItem.setPrarPrna(item.getPrarPrna());			// 예정원금
-	
+
 					}else if(item.getPaiTypCd().equals("2")){
-	
+
 						setItem.setPmntAmt(item.getRdmpPrarIntr());
 						setItem.setTrgtAmt(item.getPrarPrna());
-	
+
 					}else if(item.getPaiTypCd().equals("4") || item.getPaiTypCd().equals("5")){
-	
+
 						setItem.setPmntAmt(item.getRdmpPrarIntr());
 						setItem.setTrgtAmt(item.getPrarPrna());
-	
+
 						//log.debug("연체이자: "+setItem.getPmntAmt());
 						//log.debug("대상금액: "+setItem.getTrgtAmt());
-	
+
 					}else if(item.getPaiTypCd().equals("9")){		// 중도상환 수수료
-	
+
 						setItem.setPmntAmt(item.getRdmpPrarIntr());
 						setItem.setTrgtAmt(item.getPrarPrna());
-		
+
 					}else if(item.getPaiTypCd().equals("8")){		// 중도상환 원금
-	
+
 						setItem.setPmntAmt(item.getPrarPrna());
 						setItem.setTrgtAmt(item.getBfBalance());
-	
+
 						setItem.setPrarPrna(item.getPrarPrna());			// 예정원금
-	
+
 					}
 
 					setItem.setPrdtCd(param403lst.get(i).getPrdtCd());
@@ -192,9 +192,9 @@ public class TB07030ServiceImpl implements TB07030Service {
 					setItem.setAplyIrt(item.getAplyIrt());				// 이자율
 					setItem.setIntrAplyDnum((int)DateUtil.dateDiff(item.getStrtDt(), item.getEndDt())+1);	// 처리일수
 					//setItem.setTrgtAmt(item.getBfBalance());     		// 대상금액
-					//setItem.setPmntAmt(("02".equals(item.getScxDcd()))?item.getPrarPrna():item.getRdmpPrarIntr()); 
+					//setItem.setPmntAmt(("02".equals(item.getScxDcd()))?item.getPrarPrna():item.getRdmpPrarIntr());
 					ibims403lst.add(setItem);
-				} 
+				}
 
 				// log.debug("\n ibims403RscdlList ::: {}", ibims403RscdlList);
 				// log.debug("\n ibims403lst ::: {}", ibims403lst);
@@ -214,19 +214,19 @@ public class TB07030ServiceImpl implements TB07030Service {
 				calcSumDto.setTotalTrgtAmt(sumDto.getTotalTrgtAmt());
 				calcSumDto.setTotlaMrdpPrca(sumDto.getTotlaMrdpPrca());
 			}
-			
-			
+
+
 		}//end of for
 
 		ibims403lst.sort(Comparator.comparing(IBIMS403BVO::getTrgtAmt, Comparator.reverseOrder()).thenComparing(IBIMS403BVO::getStrtDt)
 								   .thenComparing(IBIMS403BVO::getPaiTypCd));
-		
+
 		ibims403lst = sort403lst(ibims403lst);
 
-		
+
 
 		TB07030SVO tb07030svo = new TB07030SVO();
-		
+
 		tb07030svo.setIbims403DtlLst(ibims403lst);
 		tb07030svo.setIbims403RscdlList(ibims403RscdlList);
 		tb07030svo.setTotalDTO(calcSumDto);
@@ -237,7 +237,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 		return tb07030svo;
 	}
 
-	//상환대상상세내역 정렬 
+	//상환대상상세내역 정렬
 	public List<IBIMS403BVO> sort403lst(List<IBIMS403BVO> ibims403lst){
 
 		List<IBIMS403BVO> intrOvduList = new ArrayList<>();  // 이자연체 리스트
@@ -315,7 +315,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 
 	@Override
 	public int saveRdpm(TB07030SVO paramData) {
-		
+
 		int rtnValue = 0;
 		int iLastRdmpTmrd = 0;
 		String prnaOvduDt = "";
@@ -327,7 +327,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 		List<IBIMS403BVO> param403RscdLst = paramData.getIbims403RscdlList();
 
 		log.debug("\nparam403RscdLst ::: {}", param403RscdLst);
-		
+
 		// 태안 이자계산모듈이 완성되면 아래 상환등록 내용을 수정예정 (적용 후 주석제거 예정) 2024.07.14
 		int iExTrsn = 0;
 		for(int i=0;i<param403Lst.size();i++) {
@@ -344,25 +344,25 @@ public class TB07030ServiceImpl implements TB07030Service {
 			if(i==0) {
 				iExTrsn = ibims410BMapper.getExTrSn(in410bdto);
 			}
-			
+
 			mrdpFeeAmtSum = mrdpFeeAmtSum.add((in403bdto.getMrdpFeeAmt()==null?BigDecimal.ZERO:in403bdto.getMrdpFeeAmt()));
-			
+
 			for(int v=0; v<param403DtlLst.size(); v++) {
-				
+
 				IBIMS403BVO in403Dtlbvo = new IBIMS403BVO();
 				param403DtlLst.get(v).setTrSn(iExTrsn);
 				in403Dtlbvo = param403DtlLst.get(v);
-				
+
 				IBIMS406BVO in406BVO = new IBIMS406BVO();
-				
+
 				if(in403Dtlbvo.getPaiTypCd().compareTo("9") < 0) {
 					if((in403bdto.getPrdtCd().equals(in403Dtlbvo.getPrdtCd()))
 					&& (in403bdto.getExcSn() == in403Dtlbvo.getExcSn())) {
-						
+
 						rtnValue = ibims403BMapper.saveIBIMS403B(param403DtlLst.get(v));		// 여신스케줄기본
-						
+
 						//exmptAmt = exmptAmt.add(in403Dtlbvo.getExmptAmt()==null?BigDecimal.ZERO:in403Dtlbvo.getExmptAmt());
-						
+
 						if(("1".equals(in403Dtlbvo.getPaiTypCd()))
 						|| ("5".equals(in403Dtlbvo.getPaiTypCd()))
 						|| ("8".equals(in403Dtlbvo.getPaiTypCd()))) {
@@ -381,7 +381,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 						if("04".equals(in403bdto.getScxDcd())) {
 							;//iLastRdmpTmrd = Integer.parseInt(in403Dtlbvo.getRdmpTmrd());
 						}
-						
+
 						if(("2".equals(in403Dtlbvo.getPaiTypCd()))
 						|| ("4".equals(in403Dtlbvo.getPaiTypCd()))
 						|| ("7".equals(in403Dtlbvo.getPaiTypCd()))) {
@@ -402,12 +402,12 @@ public class TB07030ServiceImpl implements TB07030Service {
 							in406BVO.setMrdpFeeAmt((in403bdto.getMrdpFeeAmt()==null?BigDecimal.ZERO:in403bdto.getMrdpFeeAmt()));
 							if("7".equals(in403Dtlbvo.getPaiTypCd())) {
 								in406BVO.setCrdtGrntRcvbIntAmt(in403Dtlbvo.getPmntAmt());
-							}	
+							}
 							in406BVO.setHndEmpno(facade.getDetails().getEno());
 							ibims406BMapper.insertIBIMS0406B(in406BVO);
 						}
 					}
-				} 
+				}
 			}
 			IBIMS403BVO in403AllListbvo = new IBIMS403BVO();
 			in403AllListbvo.setPrdtCd(in403bdto.getPrdtCd());
@@ -415,14 +415,14 @@ public class TB07030ServiceImpl implements TB07030Service {
 			in403AllListbvo.setTrSn(iExTrsn);
 			List<IBIMS403BDTO> out403BList = ibims403BMapper.selectIBIMS403BList(in403AllListbvo);
 			rtnValue = ibims403HMapper.insertIBIMS403H(out403BList);	// 여신스케줄기본이력
-			
+
 			// 약정기본
 			IBIMS401BVO in401bvo = new IBIMS401BVO();
 			in401bvo.setPrdtCd(in403bdto.getPrdtCd());
 			IBIMS401BVO ibims401bvo = ibims401BMapper.getIBIMS401BInfo(in401bvo);
 
 			paramData.setExmptSmmAmt((paramData.getExmptSmmAmt()==null)?BigDecimal.ZERO:paramData.getExmptSmmAmt());
-			
+
 			ibims410bdto.setPrdtCd(in403bdto.getPrdtCd());
 			ibims410bdto.setTrSn(iExTrsn);
 			ibims410bdto.setExcSn(in403bdto.getExcSn());
@@ -431,9 +431,9 @@ public class TB07030ServiceImpl implements TB07030Service {
 			ibims410bdto.setEtprCrdtGrntTrKindCd("20"); /* 거래종류코드 20상환 */
 			ibims410bdto.setDealTrPrca(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()));								/* 딜거래원금 = 거래원금합계+중도상환원금 */
 			ibims410bdto.setTrIntAmt((paramData.getNrmlIntAmt()==null?BigDecimal.ZERO:paramData.getNrmlIntAmt())
-		             			 .add(paramData.getCrdtGrntOvduIntAmt()==null?BigDecimal.ZERO:paramData.getCrdtGrntOvduIntAmt()));  /* 딜거래이자금액 = 정상이자+연체이자 */			
+		             			 .add(paramData.getCrdtGrntOvduIntAmt()==null?BigDecimal.ZERO:paramData.getCrdtGrntOvduIntAmt()));  /* 딜거래이자금액 = 정상이자+연체이자 */
 			ibims410bdto.setDealTrAmt(ibims410bdto.getDealTrPrca().add(ibims410bdto.getTrIntAmt()));  								/* 딜거래금액 = 거래원금합계+중도상환원금+딜거래이자금액 */
-			
+
 			ibims410bdto.setDealRdptObjtPrca(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()));  						/* 딜상환대상원금 = 거래원금합계+중도상환원금 */
 			ibims410bdto.setDealMrdpPrca(paramData.getDealMrdpPrca()); 		/* 딜중도상환원금 */
 			ibims410bdto.setNrmlIntAmt((paramData.getNrmlIntAmt()==null)?BigDecimal.ZERO:paramData.getNrmlIntAmt()); 						/* 정상이자금액 */
@@ -449,13 +449,13 @@ public class TB07030ServiceImpl implements TB07030Service {
 								             .add(paramData.getCrdtGrntOvduIntAmt()==null?BigDecimal.ZERO:paramData.getCrdtGrntOvduIntAmt())
 								             .multiply(paramData.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); 				/* 원화환산거래이자금액 == (정상이자+연체이자)*적용환율 */
 //			ibims410bdto.setWcrcTrslTrFeeAmt(mrdpFeeAmtSum.multiply(paramData.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); 	/* 원화환산거래수수료금액 == 수수료수납금액 */
-			
+
 //			ibims410bdto.setWcrcTrslCostAmt(ibims403Lst.get(i).getWcrcTrslCostAmt()); /* 원화환산비용금액 */
 			ibims410bdto.setAcctJobCd("G2"); /* 회계업무코드 */
 //			ibims410bdto.setActgUnitAfrsCd(ibims403Lst.get(i).getActgUnitAfrsCd()); /* 회계단위업무코드 */
 //			ibims410bdto.setActgTrCd(ibims403Lst.get(i).getActgTrCd()); /* 회계거래코드 */
 //			ibims410bdto.setActgErlmSeq(ibims403Lst.get(i).getActgErlmSeq()); /* 회계등록순번 */
-			
+
 			// 대출계약상환->기산일자(상환일자)
 			ibims410bdto.setRkfrDt(paramData.getPrarDt()); 			/* 기산일자 */
 //			ibims410bdto.setFndsDvsnCd(ibims403Lst.get(i).getFndsDcd()); /* 자금구분코드 */
@@ -463,15 +463,15 @@ public class TB07030ServiceImpl implements TB07030Service {
 //			ibims410bdto.setRctmBano(ibims403Lst.get(i).getBrkgAcno()); /* 입금은행계좌번호 */
 //			ibims410bdto.setDpowName(ibims403Lst.get(i).getAchdNm()); /* 예금주명 */
 //			ibims410bdto.setHdwrPrcsYn(ibims403Lst.get(i).getHdwrPrcsYn()); /* 수기처리여부 */
-			
+
 			ibims410bdto.setAcptPtclSmtlAmt(paramData.getRdmpPrnaSmmAmt()); /* 수납내역합계금액 == 상환대상총금액 */
-			
+
 			// 은행입금?? 입금원장명에 따라 딜대체, 딜타점, 딜자기앞수표등에 매핑되어야 하는게 아닌지? 코드가 없어서 현재는 알수 없음
 			ibims410bdto.setDealAltnAmt(paramData.getDealAltnAmt()); /* 딜대체금액 == 은행입금?? */
 			ibims410bdto.setDealCashAmt(paramData.getDealCashAmt()); /* 딜현금금액 */
 //			ibims410bdto.setDealBkchAmt(ibims403Lst.get(i).getDealBkchAmt()); /* 딜자기앞수표금액 */
 //			ibims410bdto.setDealCkblAmt(ibims403Lst.get(i).getDealCkblAmt()); /* 딜타점권금액 */
-			
+
 //			ibims410bdto.setBillPoutYn(ibims403Lst.get(i).getBillPoutYn()); /* 계산서출력여부 */
 //			ibims410bdto.setTrbkPoutYn(ibims403Lst.get(i).getTrbkPoutYn()); /* 거래장출력여부 */
 			ibims410bdto.setRclmDvsnCd(paramData.getRclmDvsnCd()); /* 회수구분코드 */
@@ -483,15 +483,15 @@ public class TB07030ServiceImpl implements TB07030Service {
 //			ibims410bdto.setRvseCnclDvsnCd(ibims403Lst.get(i).getRvseCnclDvsnCd()); /* 정정취소구분코드 */
 //			ibims410bdto.setRvseCnclRsonText(ibims403Lst.get(i).getRvseCnclRsonText()); /* 정정취소사유내용 */
 //			ibims410bdto.setRvseCnclTrSeq(ibims403Lst.get(i).getRvseCnclTrSeq()); /* 정정취소거래순번 */
-			if("2".equals(ibims401bvo.getEprzCrdlIndvLmtDcd())) { 
+			if("2".equals(ibims401bvo.getEprzCrdlIndvLmtDcd())) {
 				if((ibims410bdto.getTrAfLoanRmnd()==null)||(ibims410bdto.getTrAfLoanRmnd().compareTo(BigDecimal.ZERO) == 0)) {
 					ibims410bdto.setTrAfLoanRmnd(BigDecimal.ZERO);
 				} else {
-					ibims410bdto.setTrAfLoanRmnd(ibims410bdto.getTrAfLoanRmnd().subtract(ibims410bdto.getDealRdptObjtPrca())); 
+					ibims410bdto.setTrAfLoanRmnd(ibims410bdto.getTrAfLoanRmnd().subtract(ibims410bdto.getDealRdptObjtPrca()));
 				}
 			}
 			ibims410bdto.setRdmpTmrd(iLastRdmpTmrd); /* 상환회차 */
-			
+
 //			ibims410bdto.setDealPxdfPrca(ibims403Lst.get(i).getDealPxdfPrca()); /* 딜대지급원금 */
 //			ibims410bdto.setPxdfIntAmt(ibims403Lst.get(i).getPxdfIntAmt()); /* 대지급이자금액 */
 //			ibims410bdto.setPxdfEtcAmt(ibims403Lst.get(i).getPxdfEtcAmt()); /* 대지급기타금액 */
@@ -526,23 +526,23 @@ public class TB07030ServiceImpl implements TB07030Service {
 			ibims410bdto.setHndTrId(""); /* 조작거래ID */
 			ibims410bdto.setGuid(""); /* GUID */
 			rtnValue = ibims410BMapper.saveDlTrList(ibims410bdto);	// 딜거래내역
-			
+
 			EtprCrdtGrntAcctProcDTO inDTO = new EtprCrdtGrntAcctProcDTO();
 			inDTO.setPrdtCd(in403bdto.getPrdtCd());
 			inDTO.setExcSn(in403bdto.getExcSn());
 			inDTO.setTrCrcyCd(paramData.getCrryCd());	  		/* 거래통화코드 */
 			inDTO.setTrAmt(ibims410bdto.getDealTrPrca().add(ibims410bdto.getTrIntAmt()));
-			inDTO.setTrPrca(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()));	/* 거래원금 */  
+			inDTO.setTrPrca(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()));	/* 거래원금 */
 			inDTO.setTrIntAmt((paramData.getNrmlIntAmt()==null?BigDecimal.ZERO:paramData.getNrmlIntAmt())
 		                  .add(paramData.getCrdtGrntOvduIntAmt()==null?BigDecimal.ZERO:paramData.getCrdtGrntOvduIntAmt())); /* 거래이자금액 */
 			inDTO.setTrFeeAmt(mrdpFeeAmtSum);   			/* 수수료수납금액 */
-			inDTO.setWcrcTrslRt(paramData.getAplcExchR()); 	/* 원화환산율 */		
+			inDTO.setWcrcTrslRt(paramData.getAplcExchR()); 	/* 원화환산율 */
 			inDTO.setActgAfrsCd("G2");						/* 회계업무코드 */
 			inDTO.setRkfrDt(rkfrDt); 						/* 기산일자 */
-			inDTO.setCanYn("0");
+			inDTO.setCanYn("N");
 			inDTO.setEtprCrdtGrntTrKindCd(inDTO.getActgAfrsCd());
-			EtprCrdtGrntAcctProcDTO outDTO = acctProc.acctPrcs(inDTO);		
-			
+			EtprCrdtGrntAcctProcDTO outDTO = acctProc.acctPrcs(inDTO);
+
 			if(mrdpFeeAmtSum.compareTo(BigDecimal.ZERO) > 0 ) {
 				in410bdto.setEtprCrdtGrntTrKindCd("21");	 /* 거래종류코드 21수수료수납 */
 				long iFeeTrsn = ibims410BMapper.getFeeTrSn(in410bdto);
@@ -551,7 +551,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 				ibims410bdto.setTrFeeAmt((in403bdto.getMrdpFeeAmt()==null?BigDecimal.ZERO:in403bdto.getMrdpFeeAmt())); 		/* 거래수수료금액 */
 				ibims410bdto.setMrdpFeeAmt((in403bdto.getMrdpFeeAmt()==null?BigDecimal.ZERO:in403bdto.getMrdpFeeAmt())); 	/* 중도상환수수료금액 */
 				ibims410bdto.setKrwTrslTrFeeAmt((in403bdto.getMrdpFeeAmt()==null?BigDecimal.ZERO:in403bdto.getMrdpFeeAmt()).multiply(paramData.getAplcExchR()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
-				ibims410bdto.setFeeTotAmt(mrdpFeeAmtSum); /* 수수료총금액 */			
+				ibims410bdto.setFeeTotAmt(mrdpFeeAmtSum); /* 수수료총금액 */
 				ibims410bdto.setDealTrPrca(BigDecimal.ZERO);	/* 딜거래원금 == 거래원금합계 */
 				ibims410bdto.setTrIntAmt(BigDecimal.ZERO); 		/* 거래이자금액 == 정상이자+연체이자 */
 				ibims410bdto.setDealTrAmt(BigDecimal.ZERO);  	/* 딜거래금액 == 거래원금+거래이자금액 */
@@ -567,29 +567,29 @@ public class TB07030ServiceImpl implements TB07030Service {
 				ibims410bdto.setPucrIntRctmAmt(BigDecimal.ZERO); /* 환출이자입금금액 */
 				ibims410bdto.setTrAfLoanRmnd(BigDecimal.ZERO);
 				rtnValue = ibims410BMapper.saveDlTrList(ibims410bdto);	// 딜거래내역
-				
+
 				EtprCrdtGrntAcctProcDTO inDTO1 = new EtprCrdtGrntAcctProcDTO();
 				inDTO1.setPrdtCd(in403bdto.getPrdtCd());
 				inDTO1.setExcSn(in403bdto.getExcSn());
 				inDTO1.setTrCrcyCd(paramData.getCrryCd());	  		/* 거래통화코드 */
 				inDTO1.setTrAmt(BigDecimal.ZERO);
-				inDTO1.setTrPrca(BigDecimal.ZERO);	/* 거래원금 */  
+				inDTO1.setTrPrca(BigDecimal.ZERO);	/* 거래원금 */
 				inDTO1.setTrIntAmt(BigDecimal.ZERO); /* 거래이자금액 */
 				inDTO1.setTrFeeAmt(mrdpFeeAmtSum);   			/* 수수료수납금액 */
-				inDTO1.setWcrcTrslRt(paramData.getAplcExchR()); /* 원화환산율 */		
+				inDTO1.setWcrcTrslRt(paramData.getAplcExchR()); /* 원화환산율 */
 				inDTO1.setActgAfrsCd("G3");						/* 회계업무코드 */
 				inDTO1.setRkfrDt(rkfrDt); 						/* 기산일자 */
-				inDTO1.setCanYn("0");
+				inDTO1.setCanYn("N");
 				inDTO1.setEtprCrdtGrntTrKindCd(inDTO1.getActgAfrsCd());
-				EtprCrdtGrntAcctProcDTO outDTO1 = acctProc.acctPrcs(inDTO1);						
+				EtprCrdtGrntAcctProcDTO outDTO1 = acctProc.acctPrcs(inDTO1);
 			}
-			
+
 			IBIMS402BVO in402bvo = new IBIMS402BVO();
 			in402bvo.setPrdtCd(in403bdto.getPrdtCd());
 			in402bvo.setExcSn(in403bdto.getExcSn());
-			IBIMS402BVO nxt402bvo = ibims402BMapper.getNxtRdmpDt(in402bvo); 
+			IBIMS402BVO nxt402bvo = ibims402BMapper.getNxtRdmpDt(in402bvo);
 			IBIMS402BVO ibims402bvo = ibims402BMapper.selectOneIBIMS402B(in402bvo);
-						
+
 			ibims402bvo.setLastPrnaRdmpDt(nxt402bvo.getLastPrnaRdmpDt()); 	/*  최종원금상환일자  */
 			ibims402bvo.setLastIntrClcDt(nxt402bvo.getLastIntrClcDt());   	/*  최종이자계산일자  */
 			ibims402bvo.setNxtRdmpPrarDt(nxt402bvo.getNxtRdmpPrarDt());  	/*  다음상환예정일자  */
@@ -597,18 +597,18 @@ public class TB07030ServiceImpl implements TB07030Service {
 			ibims402bvo.setPrnaOvduDt(DateUtil.dayAdd(nxt402bvo.getNxtRdmpPrarDt(), 1));    /*  원금연체일자  */
 			ibims402bvo.setIntrOvduDt(DateUtil.dayAdd(nxt402bvo.getNxtIntrPymDt(), 1));     /*  이자연체일자  */
 			ibims402bvo.setLastRdmpTmrd(iLastRdmpTmrd);     				/*  최종상환회차  */
-			
-			if("2".equals(ibims401bvo.getEprzCrdlIndvLmtDcd())) { 
-				ibims402bvo.setDealExcBlce(ibims402bvo.getDealExcBlce().subtract(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca())));  /*  딜실행잔액  */	
-				ibims402bvo.setKrwTrslExcBlce(ibims402bvo.getKrwTrslExcBlce().subtract(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()).multiply(ibims402bvo.getKrwTrslRt())));     /*  원화환산실행잔액  */	
+
+			if("2".equals(ibims401bvo.getEprzCrdlIndvLmtDcd())) {
+				ibims402bvo.setDealExcBlce(ibims402bvo.getDealExcBlce().subtract(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca())));  /*  딜실행잔액  */
+				ibims402bvo.setKrwTrslExcBlce(ibims402bvo.getKrwTrslExcBlce().subtract(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()).multiply(ibims402bvo.getKrwTrslRt())));     /*  원화환산실행잔액  */
 			}
 			rtnValue = ibims402BMapper.uptExcInfo(ibims402bvo);			// 딜실행기본
 			rtnValue = ibims402HMapper.insertIBIMS402H(ibims402bvo);	// 딜실행기본이력 생성
-			
+
 		}
-		
+
 		return rtnValue;
-		
+
 	}
 
 
