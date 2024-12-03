@@ -1,4 +1,5 @@
 let arrPqGridMtrInfo;
+
 /**
  * 모달 팝업 show
  */
@@ -132,8 +133,8 @@ function setMtrInfo(e) {
   var pageRiskInspctCcd = "#" + prefix + "_riskInspctCcd";
   var pagePrdtCd = "#" + prefix + "_prdtCd";
   var pagePrdtNm = "#" + prefix + "_prdtNm";
-  var pageInspctPrgrsStCdNm = "#" + prefix + "_inspctPrgrsStCdNm";
-  var pageInspctPrgrsStCd = "#" + prefix + "_inspctPrgrsStCd";
+  //var pageInspctPrgrsStCdNm = "#" + prefix + "_inspctPrgrsStCdNm";
+  //var pageInspctPrgrsStCd = "#" + prefix + "_inspctPrgrsStCd";
   var pageApvlDt = "#" + prefix + "_apvlDt";
   var pageCnsbDcd = "#" + prefix + "_cnsbDcd";
   var pageInvJdgmComtNo = "#" + prefix + "_invJdgmComtNo";

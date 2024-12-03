@@ -264,7 +264,7 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label">적용환율</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control text-right" id="aplcExchR" onkeyup="inputNumberFormat(this)" maxlength="19">
+																<input type="text" class="form-control text-right" id="aplyExrt" onkeyup="inputNumberFormat(this)" maxlength="19">
 															</div>
 														</div>
 														<div class="form-group row">
@@ -428,7 +428,7 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label"><span class="req"></span>투자기간(개월)</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control" id="invstPrdMmC" style = "text-align:right;" oninput="this.value = this.value.replace(/[^0-9]/g, ''); setMtrtDt(this);" maxlength="5">
+																<input type="text" class="form-control" id="invPrdMnum" style = "text-align:right;" oninput="this.value = this.value.replace(/[^0-9]/g, ''); setMtrtDt(this);" maxlength="5">
 															</div>
 														</div>
 														<div class="form-group row">
@@ -494,10 +494,10 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label"><span class="req"></span>담보</label>
 															<div class="col-sm-2 text-left input-group">
-																<input type="radio" value="1" name="TB04010S_mrtgOfrF">&nbsp;Y
+																<input type="radio" value="Y" name="TB04010S_mrtgOfrF">&nbsp;Y
 															</div>
 															<div class="col-sm-2 text-left input-group input-h">
-																<input type="radio" value="0" name="TB04010S_mrtgOfrF">&nbsp;N
+																<input type="radio" value="N" name="TB04010S_mrtgOfrF">&nbsp;N
 															</div>
 															<div class="col-sm-4">
 															</div>
@@ -505,10 +505,10 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label"><span class="req"></span>보증</label>
 															<div class="col-sm-2 text-left input-group input-h">
-																<input type="radio" value="1" name="TB04010S_ensrF">&nbsp;Y
+																<input type="radio" value="Y" name="TB04010S_ensrF">&nbsp;Y
 															</div>
 															<div class="col-sm-2 text-left input-group input-h">
-																<input type="radio" value="0" name="TB04010S_ensrF">&nbsp;N
+																<input type="radio" value="N" name="TB04010S_ensrF">&nbsp;N
 															</div>
 															<div class="col-sm-4">
 															</div>
@@ -722,7 +722,7 @@
 															</div>
 															<label class="col-sm-1 col-form-label">적용환율</label>
 															<div class="col-sm-3">
-																<input type="text" class="form-control text-right" id="TB04010S_aplcExchR" onkeyup="inputNumberFormat(this)" maxlength="19">
+																<input type="text" class="form-control text-right" id="TB04010S_aplyExrt" onkeyup="inputNumberFormat(this)" maxlength="19">
 															</div>
 														</div>
 														<div class="form-group row">
