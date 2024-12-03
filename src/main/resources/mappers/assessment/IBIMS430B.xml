@@ -192,10 +192,10 @@
                      , LAST_YN
                   FROM IBIMS201B
                  WHERE 1=1
-                   AND LAST_YN = '1'
+                   AND LAST_YN = 'Y'
              ) T2
                     ON T1.DEAL_NO = T2.DEAL_NO
-                   AND T2.LAST_YN = '1'
+                   AND T2.LAST_YN = 'Y'
             )  AS A        
        LEFT JOIN
             (
@@ -214,8 +214,8 @@
                                , IBIMS201B D1 
                             WHERE 1=1
                               AND D1.PRDT_CD = P.PRDT_CD
-                              AND D1.LAST_YN = '1'
-                              AND (P.PRCS_CPLT_YN != '1' OR P.PRCS_CPLT_YN IS NULL)
+                              AND D1.LAST_YN = 'Y'
+                              AND (P.PRCS_CPLT_YN != 'Y' OR P.PRCS_CPLT_YN IS NULL)
                             UNION ALL
                            SELECT F.FEE_AMT				AS PMNT_PRAR_AMT	          /*납부예정금액*/
                                 , F.PRAR_DT                                       /*상환예정일자*/
@@ -229,8 +229,8 @@
                             	, IBIMS201B D2                            
                             WHERE 1=1 
                               AND D2.PRDT_CD = F.PRDT_CD
-                              AND D2.LAST_YN = '1'
-                              AND (F.PRCS_CPLT_YN != '1' OR F.PRCS_CPLT_YN IS NULL)
+                              AND D2.LAST_YN = 'Y'
+                              AND (F.PRCS_CPLT_YN != 'Y' OR F.PRCS_CPLT_YN IS NULL)
             ) AS B
            ON A.RCTM_DT = B.PRAR_DT
           AND A.PRDT_CD = B.PRDT_CD

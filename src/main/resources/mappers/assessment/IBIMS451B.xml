@@ -49,7 +49,7 @@
                 WHEN A.ACCT_JOB_CD IN ('G2','G5') THEN '2'  /* 2-감액 */
                 ELSE '0'
                 END
-                ) ICDC_DCD                  /* 증감구분코드 */
+                ) ICDC_DCD                  /* 증감구분코드 * 
           FROM IBIMS410B A
               ,IBIMS201B B
          WHERE 1=1
@@ -57,7 +57,7 @@
            /* 딜거래내역 기본조건 */
            AND A.TR_STAT_CD = '1'
            /* 딜승인 기본조건 */
-           AND B.LAST_YN(+) = '1'
+           AND B.LAST_YN(+) = 'Y'
            /* 조회조건 */
            AND A.TR_DT = #{stdrDt}
            AND A.ORGNO = #{mngmBdcd}

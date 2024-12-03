@@ -38,7 +38,7 @@
          AND IB401B.PRDT_CD = IB402B.PRDT_CD
          AND IB401B.PRDT_CD = IB410B.PRDT_CD
          AND IB402B.EXC_SN = IB410B.EXC_SN
-         AND IB201B.LAST_YN  = 1
+         AND IB201B.LAST_YN  = 'Y'
          AND IB410B.TR_DT           = #{trDt}   /* 거래일자 */
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
          AND IB401B.PRDT_CD = #{prdtCd}
@@ -250,7 +250,7 @@
 		     , IBIMS201B A
 	     WHERE 1=1     
 		   AND A.PRDT_CD = B.PRDT_CD
-		   AND A.LAST_YN = '1'
+		   AND A.LAST_YN = 'Y'
 		   AND B.PRDT_CD = #{prdtCd}  /* 종목코드 */        
     </select>
     
@@ -359,7 +359,7 @@
              	    END 										  AS TOT_INTRT          /*  총금리 */
              , (SELECT SUM(B.DEAL_EXC_AMT)  FROM IBIMS402B B WHERE B.PRDT_CD = #{prdtCd} AND B.LDG_STTS_CD = '1' ) AS LOAN_AMT      /*  대출금액 */
              , (SELECT SUM(B.DEAL_EXC_BLCE) FROM IBIMS402B B WHERE B.PRDT_CD = #{prdtCd} AND B.LDG_STTS_CD = '1' ) AS DEAL_EXC_BLCE /*  대출잔액 */
-             , (SELECT RQS_KND_CD FROM IBIMS201B C WHERE C.PRDT_CD = #{prdtCd} AND C.LAST_YN = '1') AS RQS_KND_CD /* 기업여신신청종류코드 */
+             , (SELECT RQS_KND_CD FROM IBIMS201B C WHERE C.PRDT_CD = #{prdtCd} AND C.LAST_YN = 'Y') AS RQS_KND_CD /* 기업여신신청종류코드 */
           FROM IBIMS401B A
          WHERE A.PRDT_CD = #{prdtCd}
            AND A.CTRC_CCLC_DCD = '1'
@@ -472,7 +472,7 @@
            AND A.PRDT_CD 		= D.PRDT_CD(+)
            AND A.PRDT_CD 		= E.PRDT_CD(+)
            AND A.PRDT_CD 		= #{prdtCd}  /* 종목코드 */   
-           AND A.LAST_YN 		= '1'
+           AND A.LAST_YN 		= 'Y'
     </select>
 
     <insert id="saveIBIMS401BInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO">
@@ -713,7 +713,7 @@
     	     , IBIMS201B B
   		WHERE A.PRDT_CD = #{prdtCd}    	     
           AND A.PRDT_CD = B.PRDT_CD(+)
-          AND B.LAST_YN(+) = '1'
+          AND B.LAST_YN(+) = 'Y'
     </select>
     
     <update id="updateIBIMS401B" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO">

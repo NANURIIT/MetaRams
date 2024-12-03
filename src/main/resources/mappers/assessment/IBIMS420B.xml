@@ -400,9 +400,9 @@
 		   AND A.PRDT_CD 				= C.PRDT_CD(+)
 		   AND A.FEE_SN 				= C.FEE_SN(+)
 		   AND A.PRDT_CD 				= D.PRDT_CD(+)
-		   AND D.LAST_YN(+) 			= '1'
+		   AND D.LAST_YN(+) 			= 'Y'
 		   AND D.DEAL_NO 				= E.DEAL_NO(+) 
-		   AND E.LAST_YN(+) 			= '1'
+		   AND E.LAST_YN(+) 			= 'Y'
 		   AND D.TR_OTHR_DSCM_NO 		= F.ARDY_BZEP_NO(+)
 		   AND A.PRDT_CD 				= G.PRDT_CD(+)	
 		   AND A.EPRZ_CRDL_FEE_KND_CD 	= H.FEE_KND_CD(+)

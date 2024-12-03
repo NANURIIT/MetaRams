@@ -17,7 +17,7 @@
 			    AND A.PRDT_CD = #{prdtCd}
 			    AND A.EXC_SN    = #{excSn}
 			    AND A.SCX_DCD IN ('02', '04') /* 02원금상환스케쥴 04이자상환스케쥴 */
-			    AND NVL(PRCS_CPLT_YN, '0') = '1'
+			    AND NVL(PRCS_CPLT_YN, 'N') = 'Y'
 			  UNION ALL
 			 SELECT NULL AS LAST_PRNA_RDMP_DT /* 최종원금상환일자 */
 	              , NULL AS LAST_INTR_CLC_DT  /* 최종이자계산일자 */
@@ -28,7 +28,7 @@
 			    AND A.PRDT_CD = #{prdtCd}
 			    AND A.EXC_SN    = #{excSn}
 			    AND A.SCX_DCD IN ('02', '04') /* 02원금상환스케쥴 04이자상환스케쥴 */
-			    AND NVL(PRCS_CPLT_YN, '0') = '0'
+			    AND NVL(PRCS_CPLT_YN, 'N') = 'N'
             )   V
 	</select>
 
@@ -76,7 +76,7 @@
 		    AND i402b.PRDT_CD = i401b.PRDT_CD 
 		    AND i401b.PRDT_LCLS_CD IN ('10', '11', '16', '30')
 		    AND   i201b.PRDT_CD = i401b.PRDT_CD 
-		    AND i201b.LAST_YN = '1'
+		    AND i201b.LAST_YN = 'Y'
     </select>
     
     
@@ -714,7 +714,7 @@
                               FROM IBIMS410B 
                               WHERE PRDT_CD = A.PRDT_CD 
                               AND EXC_SN = A.EXC_SN 
-                              AND EARLY_REPAY_YN = '1')
+                              AND EARLY_REPAY_YN = 'Y')
                 THEN 1 
                 ELSE 0 
                 END  as earlyRepayYn
@@ -722,7 +722,7 @@
             FROM IBIMS410B 
             where PRDT_CD = A.PRDT_CD 
             AND EXC_SN = A.EXC_SN 
-            AND EARLY_REPAY_YN = '1')	AS dealMrdpPrca
+            AND EARLY_REPAY_YN = 'Y')	AS dealMrdpPrca
       FROM IBIMS402B A
       	 , IBIMS401B B 
       WHERE 1=1

@@ -53,7 +53,7 @@
              , IBIMS992B D 
          WHERE 1=1
            AND A.PRDT_CD 			= B.PRDT_CD(+) 
-           AND B.LAST_YN(+) 		= '1'
+           AND B.LAST_YN(+) 		= 'Y'
            AND A.NS_FND_CD 		  	= C.FND_CD(+)
            AND B.TR_CRRY_CD 	  	= E.CRRY_CD(+)
            AND A.TR_DT 			  	= E.STDR_DT(+)

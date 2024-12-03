@@ -87,7 +87,7 @@
 	     	, IBIMS201B B
 	     WHERE 1=1	
 	       AND B.PRDT_CD = A.PRDT_CD
-	       AND B.LAST_YN = '1'
+	       AND B.LAST_YN = 'Y'
 	     GROUP BY A.PRDT_CD, B.PRDT_NM, A.TR_NM
    </select>    
         <!-- 딜거래내역조회  -->
@@ -188,7 +188,7 @@
              , IBIMS201B B
          WHERE 1=1
            AND A.PRDT_CD = B.PRDT_CD(+) 
-           AND B.LAST_YN(+) = '1' 
+           AND B.LAST_YN(+) = 'Y' 
            <if test="prdtCd != ''">
            AND A.PRDT_CD                                 = #{prdtCd}
            </if>
@@ -344,7 +344,7 @@
          AND A.TR_STFNO = C.EMPNO(+)
          AND B.PRG_STTS_CD = D.CD_VL_ID(+) 
          AND D.CMNS_CD_GRP(+) = 'I011'
-         AND B.LAST_YN = '1'
+         AND B.LAST_YN = 'Y'
          <if test="rsltnDt != ''">
          AND (A.TR_DT &gt;= #{rsltnDt})
          </if>
@@ -817,7 +817,7 @@
          AND T1.EXC_SN 	= T3.EXC_SN(+)
          AND T5.DEAL_NO = T6.DEAL_NO(+)
          AND T5.DEAL_NO = T7.DEAL_NO(+)
-         AND T5.LAST_YN = '1'
+         AND T5.LAST_YN = 'Y'
          AND T5.LAST_YN = T6.LAST_YN(+)
          AND T5.APVL_DT != ' '
          <if test="orgno != ''">

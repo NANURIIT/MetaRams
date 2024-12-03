@@ -106,7 +106,7 @@
              , 0 AS DEAL_MRDP_PRCA  /* 딜중도상환원금 */                      
              , 0 AS MRDP_FEE_AMT    /* 중도상환수수료금액 */                   
              , 0 AS RCVB_INTR_AMT   /* 미수이자금액 */       
-             , '0' AS EARLY_REPAY_YN 	    /* 중도상환여부 */
+             , 'N' AS EARLY_REPAY_YN 	    /* 중도상환여부 */
              , NVL(D.MDWY_RDMP_FEE_RTO, 0) AS MDWY_RDMP_FEE_RTO  /* 중도상환수수료비율 */
 		  FROM IBIMS401B B       /* 여신기본 */
              , IBIMS402B C  /* 실행기본 */
@@ -120,7 +120,7 @@
                 FROM IBIMS403B   /* 여신스케줄기본 */
                WHERE PRDT_CD     = #{prdtCd}                    
                  AND PRAR_DT &lt;= #{prarDt}  /* 상환일자 */
-                 AND NVL(PRCS_CPLT_YN, '0') = '0' 
+                 AND NVL(PRCS_CPLT_YN, 'N') = 'N' 
                GROUP BY PRDT_CD
                       , EXC_SN 
              ) A
@@ -193,7 +193,7 @@
              , 0 AS EXMPT_AMT               /* 면제금액 */ 
              , A.PRAR_DT					/* 예정일자 */ 
              , A.RDMP_PRAR_INTR				/* 상환예정이자 */	
-             , NVL(A.PRCS_CPLT_YN, '0') AS PRCS_CPLT_YN	/* 처리완료여부 */
+             , NVL(A.PRCS_CPLT_YN, 'N') AS PRCS_CPLT_YN	/* 처리완료여부 */
              , A.PRCS_INTR_AMT				/* 처리이자금액 */		
              , A.PRCS_DT					/* 처리일자 */		
              , A.OVDU_INTR_RT				/* 연체이자율 */	
@@ -205,7 +205,7 @@
 	      AND A.PRDT_CD       = #{prdtCd}
 	      AND A.EXC_SN          = #{excSn}
 	      AND A.PRAR_DT &lt;= #{rkfrDt} /* 상환일자 */
-	      AND NVL(PRCS_CPLT_YN, '0') = '0' 
+	      AND NVL(PRCS_CPLT_YN, 'N') = 'N' 
 	      AND #{dealMrdpPrca} &lt;= '0'			/* 중도상환금액이 없는경우 */
 	      AND B.PRDT_CD = A.PRDT_CD 
 	      AND B.EXC_SN  = A.EXC_SN 
@@ -260,7 +260,7 @@
             , 0 AS EXMPT_AMT                /* 면제금액 */ 
             , A.PRAR_DT						/* 예정일자 */ 
             , A.RDMP_PRAR_INTR				/* 상환예정이자 */	
-            , NVL(A.PRCS_CPLT_YN, '0') AS PRCS_CPLT_YN	/* 처리완료여부 */
+            , NVL(A.PRCS_CPLT_YN, 'N') AS PRCS_CPLT_YN	/* 처리완료여부 */
             , A.PRCS_INTR_AMT				/* 처리이자금액 */		
             , A.PRCS_DT						/* 처리일자 */		
             , A.OVDU_INTR_RT				/* 연체이자율 */	
@@ -273,7 +273,7 @@
 	      AND A.EXC_SN      = #{excSn}
 	      AND A.SCX_DCD   = '04'
 	      AND A.PRAR_DT &lt;= #{rkfrDt} /* 상환일자 */	      
-	      AND NVL(PRCS_CPLT_YN, '0') = '0' 
+	      AND NVL(PRCS_CPLT_YN, 'N') = 'N' 
 	      AND #{dealMrdpPrca} &gt; 0 					/* 중도상환금액이 있는경우  */
 	      AND B.PRDT_CD = A.PRDT_CD 
 	      AND B.EXC_SN  = A.EXC_SN 
@@ -328,7 +328,7 @@
             , 0 AS EXMPT_AMT                /* 면제금액 */ 
             , A.PRAR_DT						/* 예정일자 */ 
             , A.RDMP_PRAR_INTR				/* 상환예정이자 */	
-            , NVL(A.PRCS_CPLT_YN, '0') AS PRCS_CPLT_YN	/* 처리완료여부 */
+            , NVL(A.PRCS_CPLT_YN, 'N') AS PRCS_CPLT_YN	/* 처리완료여부 */
             , A.PRCS_INTR_AMT				/* 처리이자금액 */		
             , A.PRCS_DT						/* 처리일자 */		
             , A.OVDU_INTR_RT				/* 연체이자율 */	
@@ -340,7 +340,7 @@
 	      AND A.PRDT_CD = #{prdtCd}
 	      AND A.EXC_SN    = #{excSn}
 	      AND A.SCX_DCD = '02' 
-	      AND NVL(PRCS_CPLT_YN, '0') = '0' 
+	      AND NVL(PRCS_CPLT_YN, 'N') = 'N' 
 	      AND #{dealMrdpPrca} &gt; 0 					/* 중도상환금액이 있는경우  */
 	      AND B.PRDT_CD = A.PRDT_CD 
 	      AND B.EXC_SN  = A.EXC_SN 
@@ -582,8 +582,8 @@
                 	, IBIMS201B D1 
                 WHERE 1=1
                 AND D1.PRDT_CD = P.PRDT_CD
-                AND D1.LAST_YN = '1'
-                AND (P.PRCS_CPLT_YN != '1' OR P.PRCS_CPLT_YN IS NULL)
+                AND D1.LAST_YN = 'Y'
+                AND (P.PRCS_CPLT_YN != 'Y' OR P.PRCS_CPLT_YN IS NULL)
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
                   AND D1.DEAL_NO  = #{dealNo}
                 </if>
@@ -607,8 +607,8 @@
                 	, IBIMS201B D2                  
                 WHERE 1=1
                 AND D2.PRDT_CD = F.PRDT_CD
-                AND D2.LAST_YN = '1'
-                AND (F.PRCS_CPLT_YN != '1' OR F.PRCS_CPLT_YN IS NULL)
+                AND D2.LAST_YN = 'Y'
+                AND (F.PRCS_CPLT_YN != 'Y' OR F.PRCS_CPLT_YN IS NULL)
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
                   AND D2.DEAL_NO  = #{dealNo}
                 </if>
@@ -658,7 +658,7 @@
         AND D.PRDT_CD = A.PRDT_CD 
         AND D.EXC_SN = A.EXC_SN 
         AND C.PRDT_CD = A.PRDT_CD 
-        AND C.LAST_YN = '1'
+        AND C.LAST_YN = 'Y'
         AND B.PRDT_CD = A.PRDT_CD
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
         AND B.MNGM_BDCD = #{mngmBdcd}

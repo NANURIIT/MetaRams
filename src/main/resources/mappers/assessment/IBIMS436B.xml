@@ -31,7 +31,7 @@
           , IBIMS003B C 
          WHERE 1=1         
          AND A.DEAL_NO = B.DEAL_NO(+) 
-         AND B.LAST_YN(+) = '1' 
+         AND B.LAST_YN(+) = 'Y' 
          AND B.CHRR_EMPNO = C.EMPNO(+) 
         <if test="dealNo != '' and dealNo != null">
            AND A.DEAL_NO = #{dealNo}
@@ -45,10 +45,10 @@
         <if test="endDt != ''">
            AND (A.FRS_PRNA_OVDU_OCRNC_DT <![CDATA[<=]]> #{endDt})
         </if>
-        <if test="ovduRlseYn == 1">
+        <if test="ovduRlseYn == N">
            AND A.OVDU_STTS_CD <![CDATA[>=]]> 1
         </if>
-        <if test="ovduRlseYn == 2">
+        <if test="ovduRlseYn == Y">
            AND A.OVDU_STTS_CD = 0
         </if>
         <if test="dprtCd != '' and dprtCd != null">
