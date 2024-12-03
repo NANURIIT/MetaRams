@@ -14,6 +14,7 @@ import lombok.Setter;
 public class IBIMS208BDTO { 
     private String         dealNo;                                          // 딜번호
     private String         sn;                                              // 일련번호
+    private String    	   apvlCndSn;										// 승인조건일련번호
     private String         sdwnDtDcd;                                       // 샐다운일자구분코드
     private BigDecimal     sdwnTlmtMnum;                                    // 샐다운기한개월수
     private String         sdwnTlmtDt;                                      // 샐다운기한(목표)일자
