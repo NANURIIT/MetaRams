@@ -22,6 +22,7 @@
                 , MRTG_RCG_RTO                                      <!-- 담보인정비율 -->
                 , MRTG_RTO                                          <!-- 담보비율 -->
                 , MRTG_PRC                                          <!-- 담보가격 -->
+                , DMS_OVRS_FND_DCD									<!-- 국내해외펀드구분코드 -->
                 , HND_DETL_DTM
                 , HND_EMPNO                                         <!-- 조작사원번호 -->
                 , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
@@ -45,6 +46,7 @@
                , #{mrtgRcgRto}                                      <!-- 담보인정비율 -->
                , #{mrtgRto}                                         <!-- 담보비율 -->
                , #{mrtgPrc}                                         <!-- 담보가격 -->
+               , #{dmsOvrsFndDcd}									<!-- 국내해외펀드구분코드 -->
                , SYSDATE
                , #{hndEmpno}                                        <!-- 조작사원번호 -->
                , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->

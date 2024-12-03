@@ -57,13 +57,13 @@ public class TB06013ServiceImpl implements TB06013Service {
 		}
 
 		int result = 0;
-		String mrtgStupKndCd = searchParam.getMrtgStupKndCd();
+		String mrtgKndCd = searchParam.getEprzCrdlWeekMrtgKndCd();
 		searchParam.setHndEmpno(facade.getDetails().getEno());
-		if (!StringUtil.isAllWhitespace(mrtgStupKndCd)) {
+		if (!StringUtil.isAllWhitespace(mrtgKndCd)) {
 			
 			result = ibims211bMapper.insertIBIMS211B(searchParam);
 			if (result > 0) {
-				switch (mrtgStupKndCd) {
+				switch (mrtgKndCd) {
 				case "2":
 						result = ibims214bMapper.insertIBIMS214B(searchParam);
 					break;
@@ -124,15 +124,15 @@ public class TB06013ServiceImpl implements TB06013Service {
 	public int modifyMtrt(TB06013PVO searchParam) {
 
 		int result = 0;
-		String mrtgStupKndCd = searchParam.getMrtgStupKndCd();
+		String mrtgKndCd = searchParam.getEprzCrdlWeekMrtgKndCd();
 		searchParam.setHndEmpno(facade.getDetails().getEno());
 
-		if (!StringUtil.isAllWhitespace(mrtgStupKndCd) && !StringUtil.isAllWhitespace(searchParam.getMrtgMngmNo())) {
+		if (!StringUtil.isAllWhitespace(mrtgKndCd) && !StringUtil.isAllWhitespace(searchParam.getMrtgMngmNo())) {
 			
 			result = ibims211bMapper.updateIBIMS211B(searchParam);
 
 			if (result > 0) {
-				switch (mrtgStupKndCd) {
+				switch (mrtgKndCd) {
 				case "2":
 					ibims214bMapper.deleteIBIMS214B(searchParam);
 					result = ibims214bMapper.insertIBIMS214B(searchParam);
