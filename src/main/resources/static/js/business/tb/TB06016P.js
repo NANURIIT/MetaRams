@@ -161,6 +161,20 @@ function TB06016P_pqGrid() {
 	}
 };
 
+function TB06016P_search(){
+	let getPrdtCd = $('#TB06016P_prdtCd').val();
+	//추가(by hyTest)
+	if(isEmpty(getPrdtCd)){
+	var option = {}
+		option.title = "Error";
+		option.type = "error";
+		option.text = "조회할 종목코드가 존재하지않습니다..";
+		openPopup(option);
+		return false;
+	 }	
+	TB06016P_getMdwyRdmpFeeRto();
+}
+
 function TB06016P_addNewRow() {
 	let row = ["순번", "적용개월수(이내)", "중도상환수수율(%)", "구분", "일련번호"]
 	let newRow = {
@@ -212,6 +226,17 @@ function TB06016P_deleteRow() {
 }
 
 async function TB06016P_saveData() {
+	let getPrdtCd = $('#TB06016P_prdtCd').val()
+	//추가(by hyTest)
+	 if(isEmpty(getPrdtCd)){
+	var option = {}
+		option.title = "Error";
+		option.type = "error";
+		option.text = "저장할 종목코드가 존재하지않습니다..";
+		openPopup(option);
+		return false;
+	 }
+	
 	let mdwyRdmpFeeRtoList = $('#TB06016P_colModel').pqGrid('instance').getData();
 
 	let insertMdwyRdmpFeeRtoList = [];
@@ -224,7 +249,7 @@ async function TB06016P_saveData() {
 			insertMdwyRdmpFeeRtoList.push(mdwyRdmpFeeRtoList[i])
 		}
 	}
-	let getPrdtCd = $('#TB06016P_prdtCd').val()
+	
 	let insertParamData = {
 		prdtCd: getPrdtCd
 		, mdwyRdmpFeeRtoList: insertMdwyRdmpFeeRtoList

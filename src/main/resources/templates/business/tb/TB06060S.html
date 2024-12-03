@@ -197,7 +197,7 @@
 													<div class="flow-status" name="flow00">
 														<p>Deal 등록</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
@@ -208,7 +208,7 @@
 													<div class="flow-status" name="flow03">
 														<p>종목 정보등록</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callPage('TB06010S', '대출채권/채무보증 정보등록');">대출채권/채무보증 정보등록</button>
@@ -217,7 +217,7 @@
 													<div class="flow-status" name="flow04">
 														<p>약정</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callPage('TB06040S', '약정 및 해지');">약정 및 해지</button>
@@ -226,7 +226,7 @@
 													<div class="flow-status" name="flow05">
 														<p>실행</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callPage('TB07010S', '대출계약 실행');">대출계약 실행</button>
@@ -281,7 +281,7 @@
 													<div class="flow-status" name="flow01">
 														<p>Deal 등록</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
@@ -292,7 +292,7 @@
 													<div class="flow-status" name="flow03">
 														<p>종목 정보등록</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callPage('TB06020S', '집합투자증권 정보등록');">집합투자증권 정보등록</button>
@@ -300,18 +300,27 @@
 												
 												<div class="flow_item">
 													<div class="flow-status" name="flow05">
-														<p>실행</p>
+														<p>매수/매도</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callPage('TB07020S', '기타투자 매수관리');">기타투자 매수관리</button>
 													<button class="btn btn-default" type="button" onclick="callPage('TB07040S', '기타투자 매도권리관리');">기타투자 매도권리관리</button>
 												</div>
-												<div class="flow_item -none"></div>
+												
+												<div class="flow_item -nonstep">
+													<div class="flow-status">
+														<p>수수료/비용</p>
+													</div>
+													<button class="btn btn-default" type="button" onclick="callPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
+													<button class="btn btn-default" type="button" onclick="callPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
+													<button class="btn btn-default" type="button" onclick="callPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
+												</div>
+												<!--<div class="flow_item -none"></div> -->
 											</div>
 										</div>
-										<div class="col-sm-12 pd0">
+										<!--<div class="col-sm-12 pd0">
 											<div class="flow_wrap -arrow">
 												<div class="flow_item">
 													<div class="flow-status">
@@ -345,7 +354,7 @@
 													<button class="btn btn-default" type="button" onclick="callPage('TB07160S', '이수관처리');">이수관처리</button>
 												</div>
 											</div>
-										</div>
+										</div>-->
 									</div>
 								</div>
 
@@ -359,7 +368,7 @@
 													<div class="flow-status" name="flow02">
 														<p>거래상대방</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callAS03210P('TB06060S');">거래상대방 등록</button>
@@ -369,24 +378,32 @@
 													<div class="flow-status" name="flow03">
 														<p>종목 정보등록</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callPage('TB06030S', '주식(출자포함)/채권 정보등록');">주식(출자포함)/채권 정보등록</button>
 												</div>
 												<div class="flow_item">
 													<div class="flow-status" name="flow05">
-														<p>실행</p>
+														<p>매수/매도</p>
 														<div>
-															<span class="status-desc">상태 : <span class="status -wait">대기</span></span>
+															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
 													<button class="btn btn-default" type="button" onclick="callPage('TB07010S', '대출계약 실행');">대출계약 실행</button>
 												</div>
-												<div class="flow_item -none"></div>
+												<div class="flow_item -nonstep">
+													<div class="flow-status">
+														<p>수수료/비용</p>
+													</div>
+													<button class="btn btn-default" type="button" onclick="callPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
+													<button class="btn btn-default" type="button" onclick="callPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
+													<button class="btn btn-default" type="button" onclick="callPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
+												</div>
+												<!--<div class="flow_item -none"></div>-->
 											</div>
 										</div>
-										<div class="col-sm-12 pd0">
+										<!--<div class="col-sm-12 pd0">
 											<div class="flow_wrap -arrow">
 												<div class="flow_item">
 													<div class="flow-status">
@@ -420,7 +437,7 @@
 													<button class="btn btn-default" type="button" onclick="callPage('TB07160S', '이수관처리');">이수관처리</button>
 												</div>
 											</div>
-										</div>
+										</div>-->
 									</div>
 								</div>
 							</div>	

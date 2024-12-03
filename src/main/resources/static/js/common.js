@@ -8,6 +8,11 @@ $(function () {
 	if($('script[src="js/business/tb/TB06011P.js"]').attr('src') === 'js/business/tb/TB06011P.js'){
 		TB06011P_srchPrdt()
 	}
+
+	if($('script[src="js/business/tb/TB07022P.js"]').attr('src') === 'js/business/tb/TB07022P.js'){
+		TB07022P_srchFnd()
+	}
+
 	// datepicker 초기화
 	$('.input-group.date').datepicker({
 		format: "yyyy-mm-dd",

@@ -10105,6 +10105,10 @@ div.pq-theme .pq-toolbar .btn{ font-size: 0.7rem; height: inherit; margin: 0 2px
 .flow_wrap.-arrow .flow_item p::before {position: absolute; content: ''; width: 3px; height: 12px; background-color: #1C84C6;}
 .flow_wrap .flow_item.-none {visibility: hidden;}
 
+.flow_wrap.-step .flow_item.-nonstep p {padding-left: 8px;}
+.flow_wrap.-step .flow_item.-nonstep p::before {position: absolute; content: ''; width: 3px; height: 12px; background-color: #1C84C6;}
+.flow_wrap.-step .flow_item.-nonstep::before{display: none;}
+
 .flow_wrap .flow_item button{margin-right: 4px; margin-bottom: 8px; border: 1px solid #1C84C666; border-radius: 5px;font-weight: 500; font-size: 12px; padding: 5px; color: #1C84C6;} 
 .flow_wrap .flow_item button:focus{ box-shadow: inset -3px -3px 7px #ffffff73, inset 3px 3px 5px rgba(94, 104, 121, .288);}
 

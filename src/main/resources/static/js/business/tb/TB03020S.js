@@ -316,7 +316,7 @@ const TB03020Sjs = (function(){
 				$('#TB03020S_athCd').val(data.athCd);
 				// alert(data.athCd);
 
-				athCdCheck_TB03020S();
+				//athCdCheck_TB03020S();
 			}
 		});
 	}
@@ -696,9 +696,9 @@ const TB03020Sjs = (function(){
 			return false;
 		}
 
-		// 법인번호
+		// 기업체번호
 		if(isEmpty($('#TB03020S_corpRgstNo').val())) {
-			msg = '법인번호';
+			msg = '기업체번호';
 			input = $('#TB03020S_corpRgstNo');
 			input.focus();
 			emptyParameter(msg);
