@@ -36,7 +36,7 @@ public class TB06013APIController {
 
 	// 상품코드 리스트 삭제
 	@PostMapping(value = "/removeMtrt")
-	public int removeMtrt(TB06013PVO searchParam) {
+	public int removeMtrt(@RequestBody TB06013PVO searchParam) {
 		return tb06013Service.removeMtrt(searchParam);
 	}
 	

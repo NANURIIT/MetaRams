@@ -194,9 +194,8 @@ public class TB06013ServiceImpl implements TB06013Service {
 
 	@Override
 	public int removeMtrt(TB06013PVO searchParam) {
-		
 		searchParam.setDelYn("Y");
-		
+		searchParam.setHndEmpno(facade.getDetails().getEno());
 		return ibims211bMapper.updateIBIMS211B(searchParam);
 	}
 
