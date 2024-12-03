@@ -3,7 +3,6 @@ let TB06011P_pf;
 let TB06011P_gridState = 1;
 let srchCnt = 0;
 
-
 /*
  *	팝업 자동 호출, 검색
  */
@@ -66,6 +65,7 @@ function TB06011P_srchPrdt() {
 	});
 
 	$("input[id*='_prdtCd']").on('change', async function (evt) {
+
 		// 사용한 인풋박스의 출처 페이지 가져오기
 		let prefix;
 		if ($(this).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
@@ -421,6 +421,8 @@ function dataPrdtCdSetGrid(data) {
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
 	else if (arrPqGridPrdtCdList.pdata.length === 0) {
+		// 데이터 없는 경우 재조회 방지
+		srchCnt += 1;
 		$('#TB06011P_prdtCd').val("");
 		getPrdtCdList();
 	}
@@ -480,6 +482,7 @@ function callGridTB06011P(prefix) {
  * show modal
  */
 function callTB06011P(prefix) {
+	// $(`#${prefix}_prdtCd`).focus();
 	// console.log("저는 팝업을 열겁니다");
 	TB06011P_gridState = 0;
 	TB06011P_pf = prefix;
@@ -556,7 +559,6 @@ async function getPrdtCdList() {
 
 			console.log("진짜 쿼리", data);
 			dataPrdtCdSetGrid(data);
-			srchCnt += 1;
 		}
 	});
 }
