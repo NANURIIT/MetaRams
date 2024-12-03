@@ -6,12 +6,12 @@ let TB06011P_gridState = 1;
 /*
  *	팝업 자동 호출, 검색
  */
-function TB06011P_srchPrdt () {
+function TB06011P_srchPrdt() {
 	$("input[id*='_prdtCd']").on('keydown', async function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
-	
+
 			// 사용한 인풋박스의 출처 페이지 가져오기
 			let prefix;
 			if ($(this).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
@@ -21,7 +21,7 @@ function TB06011P_srchPrdt () {
 			}
 
 			$('#TB06011P_prefix').val(prefix);
-	
+
 			/**
 			 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
 			 * 그리드 상태 다시 체크해주기
@@ -38,7 +38,7 @@ function TB06011P_srchPrdt () {
 			let data = $(this).val();
 			$('#TB06011P_prdtCd').val(data);
 			await getGridState();
-	
+
 			// 팝업 오픈
 
 			/**
@@ -49,7 +49,58 @@ function TB06011P_srchPrdt () {
 				callGridTB06011P(prefix);
 				$('#TB06011P_prdtCd').val(data);
 				setTimeout(() => getPrdtCdList(), 400);
-			} else 
+			} else
+				/**
+				 * 팝업 닫혀있음
+				 */
+				if (TB06011P_gridState === 1) {
+					console.log("닫혀있음", TB06011P_gridState);
+					callTB06011P(prefix);
+					$('#TB06011P_prdtCd').val(data);
+					setTimeout(() => getPrdtCdList(), 400);
+				}
+		}
+	});
+
+	$("input[id*='_prdtCd']").on('change', async function (evt) {
+		// 사용한 인풋박스의 출처 페이지 가져오기
+		let prefix;
+		if ($(this).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
+			prefix = TB06011P_pf;
+		} else {
+			prefix = $(this).attr('id').slice(0, 8);
+		}
+
+		$('#TB06011P_prefix').val(prefix);
+
+		/**
+		 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
+		 * 그리드 상태 다시 체크해주기
+		 */
+		if ($(`div[id='modal-TB06011P'][style*="display: none;"]`).length === 1) {
+			TB06011P_gridState = 1;
+		}
+		// else {
+
+		// }
+
+
+		// 인풋박스 밸류
+		let data = $(this).val();
+		$('#TB06011P_prdtCd').val(data);
+		await getGridState();
+
+		// 팝업 오픈
+
+		/**
+		 * 팝업 열려있음
+		 */
+		if (TB06011P_gridState === 0) {
+			console.log("열려있음", TB06011P_gridState);
+			callGridTB06011P(prefix);
+			$('#TB06011P_prdtCd').val(data);
+			setTimeout(() => getPrdtCdList(), 400);
+		} else
 			/**
 			 * 팝업 닫혀있음
 			 */
@@ -59,7 +110,6 @@ function TB06011P_srchPrdt () {
 				$('#TB06011P_prdtCd').val(data);
 				setTimeout(() => getPrdtCdList(), 400);
 			}
-		}
 	});
 }
 
@@ -533,7 +583,7 @@ async function getGridState() {
 		, "trDvsn": trDvsn
 	}
 
-	if(TB06011P_gridState === 0){
+	if (TB06011P_gridState === 0) {
 		// console.log("열려있으니까 좀 쉬어라");
 		return;
 	}
@@ -768,7 +818,7 @@ function setPrdtInfo(e) {
 		$('#TB04050S_prdtCd').val(e.prdtCd);
 		$('#TB04050S_prdtNm').val(e.prdtNm);
 	}
-	
+
 	//추가
 	if (prefix === 'TB04060S') {
 		$('#TB04060S_ibDealNo').val(e.dealNo);
