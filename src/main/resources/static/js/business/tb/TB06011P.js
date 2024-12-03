@@ -1,6 +1,7 @@
 var arrPqGridPrdtCdList = [];
 let TB06011P_pf;
 let TB06011P_gridState = 1;
+let srchCnt = 0;
 
 
 /*
@@ -547,8 +548,15 @@ async function getPrdtCdList() {
 		data: JSON.stringify(param),
 		dataType: "json",
 		success: function (data) {
+
+			if(srchCnt >= 2){
+				alert("조회된 정보가 없습니다!")
+				return;
+			}
+
 			console.log("진짜 쿼리", data);
 			dataPrdtCdSetGrid(data);
+			srchCnt += 1;
 		}
 	});
 }
