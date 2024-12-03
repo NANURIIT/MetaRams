@@ -278,7 +278,7 @@ const TB06060Sjs = (function(){
             },
             error: function(e){
                 console.log(e);
-            /*  Swal.fire({
+              Swal.fire({
                     icon: 'error'
                     , title: "error!"
                     , text: "데이터를 불러오지 못 했습니다."
@@ -288,7 +288,7 @@ const TB06060Sjs = (function(){
                     $('#TB06060S_jdgmRsltDcd').val("");
                     $('#TB06060S_jdgmRsltRgstDt').val("");
                     $('#TB06060S_jdgmRsltCtns').val("");
-                }); */
+                }); 
                 $('#TB06060S_cnsbNm').val("");
                     $('#TB06060S_jdgmRsltDcd').val("");
                     $('#TB06060S_jdgmRsltRgstDt').val("");
