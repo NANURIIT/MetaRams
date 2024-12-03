@@ -95,21 +95,17 @@ function registRmSave() {
 	var cstmNm = $('#TB03031P_cstmNm').val();								// 고객명
 	var cstmPhNo = $('#TB03031P_cstmPhNo').val();							// 고객연락처
 	var rmSq = Number($('#TB03031P_rmSq').val());   						// 일련번호
-	var lastYn = '1'														// 최종여부
-	var entpCd = $("#TB03031P_rm_entpCd").val();								// 업체코드
+	var lastYn = 'Y'														// 최종여부
+	var entpCd = $("#TB03031P_rm_entpCd").val();							// 업체코드
 	
 	// 유효성 검사
-	if (isEmpty(entpHnglNm) || isEmpty(bsnsRgstNo) || isEmpty(cstmNm) || isEmpty(metDt) || isEmpty(metTitl) || isEmpty(metPrps) || isEmpty(metCntnt)) {
+	if (isEmpty(entpHnglNm) || isEmpty(cstmNm) || isEmpty(metDt) || isEmpty(metTitl) || isEmpty(metPrps) || isEmpty(metCntnt)) {
 		
 			let errorMsg = "";		
 			
 			if (isEmpty(entpHnglNm)) {
 				errorMsg = "업체명을 선택해 주세요.";
 				$('#TB03031P_rm_entpRnm').focus();
-	
-			} else if (isEmpty(bsnsRgstNo)) {
-				errorMsg = "사업자등록번호를 입력해 주세요.";
-				$('#TB03031P_rm_bsnsRgstNo').focus();
 	
 			} else if (isEmpty(cstmNm)) {
 				errorMsg = "고객담당자를 입력해 주세요.";
@@ -142,17 +138,31 @@ function registRmSave() {
 		return false;
 
 	} else {
-		var valCorp = corpRgstNo.replace(/[^0-9]/g, '');
-		if (valCorp.length !== 13) {
+		if (corpRgstNo) {
+			var valCorp = corpRgstNo.replace(/[^0-9]/g, '');
+			if (valCorp.length !== 13) {
 				Swal.fire({
-					icon: 'error'
-					, title: "Error!"
-					, text: "법인번호 13자리를 확인해주세요."
-					, confirmButtonText: "확인"
-			});
-		} else {
-			businessFunction();				
+					icon: 'error',
+					title: "Error!",
+					text: "법인번호 13자리를 확인해주세요.",
+					confirmButtonText: "확인"
+				});
+				return; 
+			}
 		}
+		if(bsnsRgstNo){
+			var valCorp = bsnsRgstNo.replace(/[^0-9]/g, '');
+			if (valCorp.length !== 10) {
+				Swal.fire({
+					icon: 'error',
+					title: "Error!",
+					text: "사업자등록번호 10자리를 확인해주세요.",
+					confirmButtonText: "확인"
+				});
+				return; 
+			}
+		}
+		businessFunction(); 
 
 	}
 
@@ -234,7 +244,7 @@ function modalReset() {
 	//$('#TB03031P_eno').val("");				// 담당자
 	$('#TB03031P_cstmNm').val("");				// 고객명
 	$('#TB03031P_cstmPhNo').val("");			// 고객연락처
-	$("#TB03031P_rm_entpCd").val("");				// 업체코드
+	$("#TB03031P_rm_entpCd").val("");			// 업체코드
 	$("#TB03031P_rmSq").val("");				// rm일련번호
 
 }

@@ -24,6 +24,11 @@
 	top: auto;
 	bottom: 6px;
 }
+
+.clockpicker-popover {
+    z-index: 5000 !important; /* modal의 z-index(4000)보다 높게 설정 */
+}
+
 .clockpicker-popover .popover-title {
 	background-color: #fff;
 	color: #999;
