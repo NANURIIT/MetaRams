@@ -185,7 +185,7 @@
 	LEFT JOIN IBIMS002B s002b_2
 		   ON T.PRDT_MDCL_CD	= s002b_2.CD_VL_ID
 		  AND s002b_2.CMNS_CD_GRP	    = 'E023'
-        WHERE A.LAST_YN = '1' 
+        WHERE A.LAST_YN = 'Y' 
           AND A.PRDT_CD = T.PRDT_CD
           AND A.FRS_MNGM_BDCD LIKE #{dptCd}
           AND NOT EXISTS (
