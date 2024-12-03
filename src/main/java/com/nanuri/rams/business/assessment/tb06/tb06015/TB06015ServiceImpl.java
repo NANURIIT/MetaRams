@@ -2861,11 +2861,11 @@ public class TB06015ServiceImpl implements TB06015Service {
 			IBIMS403BDTO paramDTO = IBIMS403BDTOList.get(i);
 			
 
-			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().equals("0")){
+			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().equals("N")){
 				if(paramDTO.getRdmpPrarIntr() == null){		//원금상환계획정보
 
 					if(i==0){	//첫회차
-						if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().equals("0")){
+						if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().equals("N")){
 							log.debug("첫회차는 대출잔액 가감 X");
 						}else{
 							bfBalance = bfBalance.subtract(paramDTO.getPrarPrna());
@@ -2980,7 +2980,7 @@ public class TB06015ServiceImpl implements TB06015Service {
 			
 			IBIMS403BDTO paramDTO = ibims403List.get(i);
 
-			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().equals("0")){//미처리
+			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().equals("N")){//미처리
 				
 				if(!(paramDTO.getPrarPrna() == null)){		//원금상환계획정보
 
@@ -3090,7 +3090,7 @@ public class TB06015ServiceImpl implements TB06015Service {
 			IBIMS403BDTO scdhInfo = scdhList.get(i);
 			LoanData lnItm = new LoanData();
 
-			if(scdhInfo.getPrcsCpltYn() == null ||  scdhInfo.getPrcsCpltYn().equals("0")){	//미처리
+			if(scdhInfo.getPrcsCpltYn() == null ||  scdhInfo.getPrcsCpltYn().equals("N")){	//미처리
 
 				if(scdhInfo.getRdmpPrarIntr() == null){			//원금상환계획정보
 
