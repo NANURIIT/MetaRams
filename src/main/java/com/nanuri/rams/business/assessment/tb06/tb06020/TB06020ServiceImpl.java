@@ -45,11 +45,11 @@ public class TB06020ServiceImpl implements TB06020Service {
 		String empNo = facade.getDetails().getEno();
 
 		if ((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
-			
+
 			param.setHndEmpno(empNo);
-			param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));			
-			result = ibims201bMapper.regPrdtCd(param);		
-			
+			param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));
+			result = ibims201bMapper.regPrdtCd(param);
+
 			if (result != 0) {
 				IBIMS103BDTO s103b = new IBIMS103BDTO();
 				s103b.setDealNo(param.getDealNo());
@@ -58,25 +58,25 @@ public class TB06020ServiceImpl implements TB06020Service {
 				s103b.setHndEmpno(facade.getDetails().getEno());
 
 				s103b = ibims103bMapper.selectOne103B(s103b);
-				s103b.setLastYn("0");
+				s103b.setLastYn("N");
 				ibims103bMapper.updateLastYn(s103b);
 
-				s103b.setLastYn("1");
+				s103b.setLastYn("Y");
 				s103b.setMtrPrgSttsDcd("401");
 				result = ibims103bMapper.insert103B(s103b);
-			}			
+			}
 		} else {
-			
+
 	        IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
 			param.setSn(ibims201bvo.getSn());
 			param.setHndEmpno(empNo);
 			result = ibims201bMapper.updateIBIMS201BDTO(param);
-			
+
 		}
-		
+
 		return result;
 	}
-	
+
 	// 종목정보 삭제
 	@Override
 	public int deletePrdtCd(IBIMS201BVO param) {

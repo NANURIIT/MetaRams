@@ -39,7 +39,7 @@
             ON A.MNGM_ORGNO = E.CD_VL_ID
             AND E.CMNS_CD_GRP = 'D010'
          WHERE 1=1
-           AND C.LAST_YN = 1
+           AND C.LAST_YN = 'Y'
            <if test="prevDate != ''">
            AND A.ACTN_PRAR_DT &gt; #{prevDate}
            </if>
@@ -82,10 +82,10 @@
                   	     , A.PRCS_DT
                   	     , A.PRCS_CPLT_YN
                   	     , CASE 
-                             WHEN PRAR_DT < B.BZ_DD AND PRCS_CPLT_YN != 1 THEN '0501' 
-                             WHEN PRAR_DT = B.DD1AF_BZ_DD AND PRCS_CPLT_YN != 1 THEN '0502'
-                             WHEN PRAR_DT = B.DD3AF_BZ_DD AND PRCS_CPLT_YN != 1 THEN '0503'
-                             WHEN PRAR_DT < B.BZ_DD AND PRCS_CPLT_YN = 1 THEN '0504'
+                             WHEN PRAR_DT < B.BZ_DD AND PRCS_CPLT_YN != 'Y' THEN '0501' 
+                             WHEN PRAR_DT = B.DD1AF_BZ_DD AND PRCS_CPLT_YN != 'Y' THEN '0502'
+                             WHEN PRAR_DT = B.DD3AF_BZ_DD AND PRCS_CPLT_YN != 'Y' THEN '0503'
+                             WHEN PRAR_DT < B.BZ_DD AND PRCS_CPLT_YN = 'Y' THEN '0504'
                             ELSE ''
                              END AS DUDT_MNGM_NO 
                           , B.BZ_DD

@@ -14,10 +14,10 @@
 		  LEFT JOIN IBIMS001B s001b
 		    ON s001b.CMNS_CD_GRP = s002b.CMNS_CD_GRP
 		 WHERE 1=1
-		   AND s002b.USE_YN = '1'                                 <!-- 사용여부 -->
-		   AND s002b.DEL_YN = '0'                                 <!-- 삭제여부 -->
-		   AND s001b.USE_YN = '1'                                 
-		   AND s001b.DEL_YN = '0'                                 
+		   AND s002b.USE_YN = 'Y'                                 <!-- 사용여부 -->
+		   AND s002b.DEL_YN = 'N'                                 <!-- 삭제여부 -->
+		   AND s001b.USE_YN = 'Y'                                 
+		   AND s001b.DEL_YN = 'N'                                 
 		<if test="cmnsCdGrp != null">
 		   AND s001b.CMNS_CD_GRP = #{cmnsCdGrp}
 		</if>
@@ -78,7 +78,7 @@
 		  FROM IBIMS002B A
          WHERE 1=1
            AND CMNS_CD_GRP                             = #{cmnsCdGrp}
-           AND DEL_YN                             	   = '0'
+           AND DEL_YN                             	   = 'N'
 		 ORDER BY CD_SQ ASC
     </select>
     
@@ -169,12 +169,12 @@
          WHERE 1=1
            AND CMNS_CD_GRP                             = #{cmnsCdGrp}                              
            AND CD_VL_ID                                = #{cdVlId}
-		   AND DEL_YN								   = '0'
+		   AND DEL_YN								   = 'N'
     </select>
 
     <update id="deleteCodeInfo">
         UPDATE IBIMS002B
-           SET DEL_YN                             	   = '1'                              		  <!-- 삭제여부 -->
+           SET DEL_YN                             	   = 'Y'                              		  <!-- 삭제여부 -->
              , HND_DETL_DTM                            = DEFAULT                             	  <!-- 조작상세일시 -->
              , HND_EMPNO                               = #{hndEmpno}                              <!-- 조작사원번호 -->
           WHERE 1=1

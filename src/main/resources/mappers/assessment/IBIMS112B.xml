@@ -86,7 +86,7 @@
          WHERE A.CNSB_DCD = #{cnsbDcd}
            AND A.CNSB_SQ  = #{sn}
            AND A.RSLTN_YR = #{rsltnYr}
-           AND B.LAST_YN  = '1'
+           AND B.LAST_YN  = 'Y'
     </select>
 
     <delete id="delete112B" parameterType="com.nanuri.rams.business.common.dto.IBIMS111BDTO">
@@ -150,7 +150,7 @@
                  ON A.DEAL_NO = B.DEAL_NO
                 AND A.MTR_DCD = B.MTR_DCD
                 AND A.JDGM_DCD = B.JDGM_DCD
-                AND B.LAST_YN = '1'
+                AND B.LAST_YN = 'Y'
           LEFT JOIN IBIMS111B C
                  ON A.CNSB_DCD = C.CNSB_DCD
                 AND A.CNSB_SQ  = C.SN
@@ -210,7 +210,7 @@
             ON A.DEAL_NO  = B.DEAL_NO
            AND A.MTR_DCD  = B.MTR_DCD
            AND A.JDGM_DCD = B.JDGM_DCD
-           AND B.LAST_YN  = 1
+           AND B.LAST_YN  = 'Y'
      LEFT JOIN (
                 SELECT CASE WHEN MTR_PRG_STTS_DCD = '307' THEN '4'
                             WHEN MTR_PRG_STTS_DCD = '308' THEN '2'
@@ -293,7 +293,7 @@
            AND IBIMS112B.DEAL_NO								= IBIMS103B.DEAL_NO
            AND IBIMS112B.MTR_DCD								= IBIMS103B.MTR_DCD
            AND IBIMS112B.JDGM_DCD								= IBIMS103B.JDGM_DCD
-           AND IBIMS103B.LAST_YN								= '1'
+           AND IBIMS103B.LAST_YN								= 'Y'
     </select>
 
 </mapper>

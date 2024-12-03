@@ -20,7 +20,7 @@
 		   AND s201b.DEAL_NO		= #{dealNo}
 		   AND s201b.MTR_DCD	= #{mtrDcd}
 		   AND s201b.JDGM_DCD	= #{jdgmDcd}
-		   AND s201b.LAST_YN		= '1'
+		   AND s201b.LAST_YN		= 'Y'
 	</select>
 	
 	<!-- IB승인조건연결기본 - 대출채권/채무보증 정보(TB06010S) - 셀다운승인조건등록  -->
@@ -47,7 +47,7 @@
                	     AND s201b.DEAL_NO			= #{dealNo}
 				     AND s201b.MTR_DCD		= #{mtrDcd}
 				     AND s201b.JDGM_DCD	= #{jdgmDcd}
-				     AND s201b.LAST_YN			= '1'
+				     AND s201b.LAST_YN			= 'Y'
                  )
                , #{rgstDt}                                          <!-- 등록일자 -->
                , SYSDATE                                            <!-- 조작상세일시 -->
@@ -70,7 +70,7 @@
 												               	      AND s201b.DEAL_NO			= #{dealNo}
 																      AND s201b.MTR_DCD	= #{mtrDcd}
 																      AND s201b.JDGM_DCD	= #{jdgmDcd}
-																      AND s201b.LAST_YN			= '1'
+																      AND s201b.LAST_YN			= 'Y'
 												                  ) <!-- 상품코드 -->
             , RGST_DT                                           = #{rgstDt}                                          <!-- 등록일자 -->
             , HND_DETL_DTM                                      = SYSDATE                                            <!-- 조작상세일시 -->
@@ -86,7 +86,7 @@
 												               	      AND s201b.DEAL_NO			= #{dealNo}
 																      AND s201b.MTR_DCD	= #{mtrDcd}
 																      AND s201b.JDGM_DCD	= #{jdgmDcd}
-																      AND s201b.LAST_YN			= '1'
+																      AND s201b.LAST_YN			= 'Y'
 												                  ) <!-- 상품코드 -->
     </update>
 	  <delete id="deleteIBIMS209B" parameterType="com.nanuri.rams.business.common.dto.IBIMS209BDTO">

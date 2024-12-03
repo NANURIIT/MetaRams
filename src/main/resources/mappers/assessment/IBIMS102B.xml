@@ -99,7 +99,7 @@ VALUES (
 	   	 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpCd)">
 		 	AND B.ARDY_BZEP_NO = #{entpCd}
 		 </if>
-		 AND A.LAST_YN = '1'
+		 AND A.LAST_YN = 'Y'
 		 AND A.RM_SQ = #{rmSq}
 	   ORDER BY A.MET_DT, A.MET_TM DESC
 	</select>
@@ -121,7 +121,7 @@ VALUES (
 			 , CHRR_EMPNO           = #{chrrEmpno}		/*  담당자사원번호 */
 			 , CSTM_NM              = #{cstmNm}			/*  고객명 */
 			 , CSTM_PH_NO           = #{cstmPhNo}		/*  고객전화번호 */
-			 , LAST_YN				= '1'			    /*  최종여부 */ 
+			 , LAST_YN				= 'Y'			    /*  최종여부 */ 
     	     , HND_EMPNO			= #{hndEmpno}		/*  조작사원번호 */
 			 , HND_TMNL_NO = #{hndTmnlNo}
 			 , HND_TR_ID = #{hndTrId}

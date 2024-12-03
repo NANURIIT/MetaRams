@@ -9,7 +9,7 @@
 			 , CMNS_CD_GRP_EXPL												<!-- 공통코드그룹설명 -->
 		  FROM IBIMS001B
 		 WHERE 1=1
-		   AND DEL_YN = '0'
+		   AND DEL_YN = 'N'
 		 ORDER BY CMNS_CD_GRP ASC      										<!-- 공통코드그룹 -->
     </select>
 
@@ -42,7 +42,7 @@
              , A.GUID                                                       <!-- GUID -->
           FROM IBIMS001B A
          WHERE 1=1
-           AND DEL_YN = '0'
+           AND DEL_YN = 'N'
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrp)">
            AND CMNS_CD_GRP                             = #{cmnsCdGrp}
           </if>
@@ -81,7 +81,7 @@
  
     <update id="deleteGroupCodeInfo" parameterType="java.util.List">
         UPDATE IBIMS001B
-           SET DEL_YN = '1'					<!-- 삭제여부 -->
+           SET DEL_YN = 'Y'					<!-- 삭제여부 -->
              , HND_EMPNO = #{hndEmpno}		<!-- 처리자사번 -->
              , HND_DETL_DTM = DEFAULT  		<!-- 조작상세일시 -->
          WHERE CMNS_CD_GRP IN

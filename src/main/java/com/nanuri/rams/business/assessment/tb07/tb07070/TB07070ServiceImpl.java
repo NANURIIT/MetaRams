@@ -189,7 +189,7 @@ public class TB07070ServiceImpl implements TB07070Service {
 				out348bvo.setFeeRcivDt("");
 				out348bvo.setFeeRcivAmt(BigDecimal.ZERO);
 				out348bvo.setTrSn(0);
-				out348bvo.setPrcsCpltYn("0");
+				out348bvo.setPrcsCpltYn("N");
 				rtvValue = ibims348BMapper.updateFeeScxInfo2(out348bvo); // 딜승인수수료스케쥴기본 변경
 
 				// 최종거래내역조회
@@ -227,7 +227,7 @@ public class TB07070ServiceImpl implements TB07070Service {
 			inDTO.setTrPrca(BigDecimal.ZERO); /* 거래원금 */
 			inDTO.setTrIntAmt(BigDecimal.ZERO); /* 거래이자금액 */
 			inDTO.setRkfrDt(rkfrDt); /* 기산일자 */
-			inDTO.setCanYn("1");
+			inDTO.setCanYn("Y");
 			inDTO.setEtprCrdtGrntTrKindCd(param.getEtprCrdtGrntTrKindCd()); /* 거래종류코드 */
 			EtprCrdtGrntAcctProcDTO outDTO = acctProc.acctPrcs(inDTO);
 
