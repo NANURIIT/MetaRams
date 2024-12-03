@@ -4,6 +4,33 @@ const TB06060Sjs = (function(){
     let colM_TB06060S = [
 
         {
+            title: "딜번호",
+            dataType: "string",
+            dataIndx: "dealNo",
+            align: "center",
+            halign: "center",
+            width: "",
+            filter: { crules: [{ condition: 'range' }] } 
+        },
+        {
+            title: "딜명",
+            dataType: "string",
+            dataIndx: "dealNm",
+            align: "center",
+            halign: "center",
+            width: "",
+            filter: { crules: [{ condition: 'range' }] } 
+        },
+        {
+            title: "안건명",
+            dataType: "string",
+            dataIndx: "mtrNm",
+            align: "center",
+            halign: "center",
+            width: "",
+            filter: { crules: [{ condition: 'range' }] } 
+        },
+        {
             title: "종목코드",
             dataType: "string",
             dataIndx: "prdtCd",
@@ -154,7 +181,7 @@ const TB06060Sjs = (function(){
         $('#TB06060S_jdgmRsltDcd').val('');        
         $('#TB06060S_jdgmRsltRgstDt').val('');        
         $('#TB06060S_jdgmRsltCtns').val('');     
-        var waitHtml = '<span class="status-desc">상태 : <span class="status -wait">대기</span></span>';
+        var waitHtml = '<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>';
         $(".flow-status p").removeClass("-check");
         $(".flow-status div").html(waitHtml);
         prdtInfoGridIns.setData([]);
@@ -243,7 +270,7 @@ const TB06060Sjs = (function(){
                         $('#TB06060S_jdgmRsltDcd').val("");
                         $('#TB06060S_jdgmRsltRgstDt').val("");
                         $('#TB06060S_jdgmRsltCtns').val("");
-                        var waitHtml = '<span class="status-desc">상태 : <span class="status -wait">대기</span></span>';
+                        var waitHtml = '<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>';
                         $(".flow-status p").removeClass("-check");
                         $(".flow-status div").html(waitHtml);
                     });
@@ -281,7 +308,7 @@ const TB06060Sjs = (function(){
 
     function setFlow(index){
 
-        var waitHtml = '<span class="status-desc">상태 : <span class="status -wait">대기</span></span>';
+        var waitHtml = '<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>';
         var registHtml = '<span class="status-desc">상태 : <span class="status -regist">완료</span></span>';
         $(".flow-status p").removeClass("-check");
         $(".flow-status div").html(waitHtml);
