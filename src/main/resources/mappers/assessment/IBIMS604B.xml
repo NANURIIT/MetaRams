@@ -56,7 +56,7 @@
 					   			 ) D
 					   	 	ON B.INSPCT_DPRT_DCD = D.INSPCT_DPRT_DCD
 					   WHERE 1=1
-					     AND B.LAST_YN 							= '1'
+					     AND B.LAST_YN 							= 'Y'
 					     AND B.MTR_PRG_STTS_DCD 		IN ('309', '308', '501')
 					     <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
 							AND (B.OWN_P_ENO = #{empno} OR #{empno} IS NULL)					/*담당자사원번호*/
