@@ -293,7 +293,7 @@
              , A.OWN_DT                                            /* 심사역배정일자 */
           FROM IBIMS103B A
          WHERE 1=1
-           AND A.LAST_YN                                           = '1'
+           AND A.LAST_YN                                           = 'Y'
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND A.DEAL_NO                                           = #{dealNo}
            </if>
@@ -380,7 +380,7 @@
              , OWN_DT                                            /* 심사역배정일자 */
           FROM IBIMS103B
          WHERE 1=1
-           AND LAST_YN                                           = '1'
+           AND LAST_YN                                           = 'Y'
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND DEAL_NO                                           LIKE '%'|| #{dealNo} || '%'
            </if>
@@ -557,12 +557,12 @@
 												  AND V.MTR_DCD  = s103b.MTR_DCD
 												  AND V.JDGM_DCD = s103b.JDGM_DCD
 											  )           
-		   AND s201b.LAST_YN											= '1'
+		   AND s201b.LAST_YN											= 'Y'
 		  LEFT JOIN IBIMS101B s101b
 			ON s103b.DEAL_NO				= s101b.DEAL_NO
 		 WHERE 1=1
-		   AND s101b.LAST_YN											= '1'
-		   AND s103b.LAST_YN											= '1'
+		   AND s101b.LAST_YN											= 'Y'
+		   AND s103b.LAST_YN											= 'Y'
  		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
  		   AND s103b.DEAL_NO                                           LIKE '%' || #{dealNo} || '%'
  		   </if>
@@ -732,8 +732,8 @@
             ON s103b.INV_PRDT_DTLS_DVD_CD	= s002b_10.CD_VL_ID
            AND s002b_10.CMNS_CD_GRP			= 'I028'
          WHERE 1=1
-           AND s101b.LAST_YN = '1'
-           AND s103b.LAST_YN = '1'
+           AND s101b.LAST_YN = 'Y'
+           AND s103b.LAST_YN = 'Y'
 		   AND s103b.MTR_PRG_STTS_DCD <![CDATA[ > ]]> 201
            AND s103b.MTR_PRG_STTS_DCD <![CDATA[ < ]]> 300	
 		   AND s103b.MTR_PRG_STTS_DCD <![CDATA[ <> ]]> 203	
@@ -916,14 +916,14 @@
 		        , MTR_DCD
 				, JDGM_DCD 
 		     FROM IBIMS103B 
-			WHERE LAST_YN = '1' 
+			WHERE LAST_YN = 'Y' 
 			  AND DEAL_NO = CASE WHEN #{dealNo} IS NULL THEN 'X' ELSE #{dealNo} END 
 		   UNION 
 		   SELECT DEAL_NO
 		        , MTR_DCD AS MTR_DCD
 				, JDGM_DCD AS JDGM_DCD
 		     FROM IBIMS201B 
-			WHERE LAST_YN = '1' 
+			WHERE LAST_YN = 'Y' 
 			  AND PRDT_CD = CASE WHEN #{prdtCd} IS NULL THEN 'X' ELSE #{prdtCd} END 		  
 		  ) V
 		  INNER JOIN IBIMS103B s103b
@@ -950,7 +950,7 @@
 		    ON s103b.DEAL_NO 				= s201b.DEAL_NO
 		   AND s103b.MTR_DCD 				= s201b.MTR_DCD
 		   AND s103b.JDGM_DCD 				= s201b.JDGM_DCD
-		   AND s201b.LAST_YN 				= '1'
+		   AND s201b.LAST_YN 				= 'Y'
 		  LEFT JOIN IBIMS003B s003b
 		    ON s201b.CHRR_EMPNO				= s003b.EMPNO
 		  LEFT JOIN IBIMS101B s101b
@@ -960,8 +960,8 @@
           LEFT JOIN IBIMS250B s250b
 		    ON s250b.PRDT_CD 				= s201b.PRDT_CD
 		 WHERE 1=1
-		   AND s103b.LAST_YN 				= '1'
-		   AND s101b.LAST_YN 				= '1' 
+		   AND s103b.LAST_YN 				= 'Y'
+		   AND s101b.LAST_YN 				= 'Y' 
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
 		   AND s103b.DEAL_NO 				= #{dealNo}
 		   </if>
@@ -1010,7 +1010,7 @@
              ON  B.CNSB_DCD = C.CNSB_DCD
             AND  B.CNSB_SQ  = C.SN
             AND  B.RSLTN_YR = C.RSLTN_YR
-          WHERE A.LAST_YN = 1
+          WHERE A.LAST_YN = 'Y'
             AND A.DEAL_NO  = #{dealNo}
             AND A.MTR_DCD  = #{mtrDcd}
             AND A.JDGM_DCD = #{jdgmDcd}
@@ -1140,8 +1140,8 @@
 					AND S103B.DEAL_NO = S101B.DEAL_NO 
 					AND S103B.WRT_EXPT_DT BETWEEN #{mmStartDt} AND #{mmEndDt} 
 					AND S103B.RISK_INSPCT_RSLTN_CCD IN ('1', '2', '3', '4', '5', '7', '8')
-					AND S103B.LAST_YN = '1'
-					AND S101B.LAST_YN = '1'
+					AND S103B.LAST_YN = 'Y'
+					AND S101B.LAST_YN = 'Y'
 					GROUP BY S103B.DEAL_NO, S101B.DEAL_NM ,S103B.DPRT_CD , S103B.CHRR_EMPNO , RISK_INSPCT_RSLTN_CCD
 		                   , S103B.INSPCT_DPRT_DCD , S103B.RISK_RCG_NO , S103B.WRT_EXPT_DT 
 			) A
@@ -1187,7 +1187,7 @@
 						AND A.INSPCT_DPRT_DCD = #{inspctDprtDcd}
 						</if>
 						AND A.RISK_INSPCT_RSLTN_CCD IN ('1', '2', '3', '4', '5', '7', '8')
-						AND A.LAST_YN = '1'
+						AND A.LAST_YN = 'Y'
 					) R02
 				WHERE 1=1
 				AND R02.WRT_EXPT_DT BETWEEN #{mmStartDt} AND #{mmEndDt}
