@@ -357,7 +357,7 @@
           LEFT JOIN IBIMS010B s010b
                ON s101b.PTXT_TR_OTHR_DSCM_NO	= s010b.ARDY_BZEP_NO
          WHERE 1 = 1
-           AND s101b.LAST_YN				= '1'
+           AND s101b.LAST_YN				= 'Y'
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND s101b.DEAL_NO             LIKE '%'|| #{dealNo} || '%'
         </if>
@@ -366,6 +366,12 @@
         </if>
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDt)">
            AND s101b.RGST_DT             <![CDATA[>=]]> #{rgstDt}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           AND s003b.DPRT_CD             = #{dprtCd}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
+           AND s101b.CHRR_EMPNO          = #{chrrEmpno}
         </if>
          ORDER BY s101b.RGST_DT DESC
     </select>

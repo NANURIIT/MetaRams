@@ -23,18 +23,36 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 				    				<form method="get">
 				    					<div class="form-group row">
 				    						<label class="col-sm-1 col-form-label">Deal번호</label>
-				                            <div class="col-sm-2"><input type="text" class="form-control" id="TB03021P_ibDealNo"></div>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB03021P_ibDealNo"></div>
 				                        	<label class="col-sm-1 col-form-label">Deal명</label>
-				                            <div class="col-sm-2 pr-3"><input type="text" class="form-control" id="TB03021P_ibDealNm"></div>
-				                        	<!-- <label class="col-sm-1 col-form-label text-nowrap" id="labelDscDt">Deal등록일자</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB03021P_ibDealNm"></div>
+										</div>	
+										<div class="form-group row">
+											<label class="col-sm-1 col-form-label text-right">담당자번호</label>
+										    <div class="col-sm-3 input-group">
+												<input type="text" class="form-control" style="width:30px;" id="TB03021P1_empNm">
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" onclick="callTB03022P('TB03021P1')"><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" style="width:70px;" id="TB03021P1_empNo" readonly>
+											</div>
+											<label class="col-sm-1 col-form-label text-right">부서번호</label>
+											<div class="col-sm-3 input-group">
+												<input type="text" class="form-control" style="width:30px;" id="TB03021P2_dprtNm">
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" onclick="callTB03022P('TB03021P2')"><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" style="width:70px;" id="TB03021P2_dprtCd" readonly>
+											</div>
+											<!-- <label class="col-sm-1 col-form-label text-nowrap" id="labelDscDt">Deal등록일자</label>
 			                            	<span class="col-sm-2 input-group date" id="spanDstDt">
 		                                    	<input type="text" class="form-control" id="TB03021P_datepicker1" value="" ><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 		                                	</span> -->
 				                        	<!-- <div class="col-sm-5" id="divSpan"></div> -->
-				                        	<div class="col-sm-6 text-right">
+											<div class="col-sm-4 text-right">
 				                        		<button type="button" class="btn btn-primary mr-2" onclick="getDealInfo();" ><i class="fa fa-search"></i>&nbsp;조회</button>
-				                        	</div>
-				                        </div>
+				                        	</div>	
+										</div>	
 				    				</form>
 				    			</div>
 				    			<!-- 조회결과 -->

@@ -50,6 +50,11 @@ function reset_TB03021P() {
   $("#TB03021P_dealInfoList").html("");
   $("#TB03021P_ibDealNo").val("");
   $("#TB03021P_ibDealNm").val("");
+  $('#TB03021P1_empNm').val("");
+  $('#TB03021P1_empNo').val("");
+  $('#TB03021P2_dprtNm').val("");
+  $('#TB03021P2_dprtCd').val("");
+
   //$("#TB03021P_datepicker1").val("");
 }
 
@@ -95,13 +100,18 @@ function keyDownEnter_TB03021P() {
  * deal 번호 조회 ajax
  */
 function getDealInfo() {
-  var dealNo = $("#TB03021P_ibDealNo").val();
-  var dealNm = $("#TB03021P_ibDealNm").val();
+  var dealNo = $("#TB03021P_ibDealNo").val(); //Deal 번호
+  var dealNm = $("#TB03021P_ibDealNm").val(); //Deal명
+  var chrrEmpno = $("#TB03021P1_empNo").val(); //담당자번호
+  var dprtCd = $("#TB03021P2_dprtCd").val();   //부서코드
+  
   // var rgstDt = $("#TB03021P_datepicker1").val().replaceAll("-", "");
 
   var dtoParam = {
     dealNo: dealNo,
     dealNm: dealNm,
+    chrrEmpno : chrrEmpno,
+    dprtCd : dprtCd,
     //rgstDt: rgstDt,
   };
 
@@ -192,6 +202,18 @@ function setDealInfo(e) {
 
   modalClose_TB03021P();
 }
+
+//담당자명 변경시 담당자번호클리어
+$('#TB03021P1_empNm').on('input', function(){
+  $('#TB03021P1_empNo').val("");  
+});
+
+//부서명 변경시 부서번호클리어
+$('#TB03021P2_dprtNm').on('input', function(){
+  $('#TB03021P2_dprtCd').val(""); 
+});
+  
+
 
 /* ***********************************그리드 컬럼******************************** */
 
