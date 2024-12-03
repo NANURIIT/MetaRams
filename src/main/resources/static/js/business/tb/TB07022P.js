@@ -199,6 +199,13 @@ function callTB07022P(prefix) {
 	setTimeout(() => showFndGrid(), 300);					//그리드 호출	
 }
 
+function callGridTB07022P(prefix) {
+	clearTB07022P();
+	$('#TB07022P_prefix').val(prefix);
+	setTimeout(() => showFndGrid(), 300);
+}
+
+
 /**
  * hide modal
  */
@@ -306,7 +313,7 @@ function TB07022P_srchFnd(){
 			 */
 			if (TB07022P_gridState === 0) {
 				console.log("열려있음", TB07022P_gridState);
-				callTB07022P(prefix);
+				callGridTB07022P(prefix);
 				$('#TB07022P_fndCd').val(data);
 				setTimeout(() => getFndList(), 400);
 			} else
@@ -361,7 +368,7 @@ function TB07022P_srchFnd(){
 		 */
 		if (TB07022P_gridState === 0) {
 			console.log("열려있음", TB07022P_gridState);
-			callTB07022P(prefix);
+			callGridTB07022P(prefix);
 			$('#TB07022P_fndCd').val(data);
 			setTimeout(() => getFndList(), 400);
 		} else
