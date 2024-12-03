@@ -39,6 +39,7 @@ public class TB06013PVO {
     private String         hdwtEvlYn;                                       // 수기평가여부
     private String         mrtgOffrRcvnDcd;                                 // 담보제공수취구분코드
     private BigDecimal     avblMrtgPrc;                                     // 가용담보가격
+    private BigDecimal     avblMrtgPrcEtc;                                  // 가용담보가격_기타
     private String         mrtgStupKndCd;                                   // 담보설정종류코드
     private String         stupCrryCd;                                      // 설정통화코드
     private BigDecimal     stupTopAmt;                                      // 설정최고금액

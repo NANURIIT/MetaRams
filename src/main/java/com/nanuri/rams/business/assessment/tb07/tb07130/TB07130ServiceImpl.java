@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nanuri.rams.business.common.dto.IBIMS451BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS451BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS410BVO;
+import com.nanuri.rams.business.common.vo.IBIMS451BVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,8 @@ public class TB07130ServiceImpl implements TB07130Service {
 	 * 회계대사내역
 	 */
 	@Override
-	public List<IBIMS451BDTO> selectIBIMS451B(IBIMS451BDTO param){
-		List<IBIMS451BDTO> result = ibims451bMapper.selectIBIMS451B(param);
-		return result;
+	public List<IBIMS451BVO> selectIBIMS451B(IBIMS451BDTO param){
+		return ibims451bMapper.selectIBIMS451B(param);
 	};
 
 	@Override

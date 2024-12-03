@@ -214,7 +214,7 @@ const TB09010Sjs = (function () {
 
   // 조회
   function checkDealSearch() {
-    var TB09010S_stdDt = $("#TB09010S_stdDt").val();
+    var TB09010S_stdDt = $("#TB09010S_stdDt").val().replaceAll("-","");
     var TB09010S_empno = $("#TB09010S_empno").val();
     var TB09010S_I010 = $("#TB09010S_I010").val();
     var checked = "N";
@@ -252,6 +252,8 @@ const TB09010Sjs = (function () {
         inspctDprtDcd: TB09010S_I010,
         checked: checked,
       };
+
+      console.log(dtoParam);
 
       $.ajax({
         type: "GET",

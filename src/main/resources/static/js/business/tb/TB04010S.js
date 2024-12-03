@@ -541,8 +541,8 @@ const TB04010Sjs = (function () {
     let ibDealNo = $("#TB04010S_ibDealNo").val();
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     // 유효성검사
     if (!isEmpty(ibDealNo)) {
@@ -1659,8 +1659,8 @@ const TB04010Sjs = (function () {
     var pattern = /(^\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     // 유효성검사
     if (isEmpty($("#TB04010S_selectedDealNo").val())) {
@@ -2063,9 +2063,10 @@ const TB04010Sjs = (function () {
     let jdgmDcd = $("#TB04010S_R014 option:selected").val(); // 조회된 신규/재부의정보
     let mtrPrgSttsDcd = $("#mtrPrgSttsDcd").val(); // 심사진행상태코드
 
+    option.title = "Warning";
+    option.type = "warning";
+
     if (isEmpty(dealNo)) {
-      option.title = "error";
-      option.type = "error";
       option.text = "삭제할 Deal번호를 조회해주세요.";
       openPopup(option);
       callTB03021P("TB04010S");
@@ -2073,8 +2074,6 @@ const TB04010Sjs = (function () {
     }
 
     if (!$("#TB04010S_L007").prop("disabled") || isEmpty(mtrDcd)) {
-      option.title = "error";
-      option.type = "error";
       option.text = "삭제할 안건을 조회해주세요.";
       openPopup(option);
       $("#TB04010S_L007").focus();
@@ -2082,8 +2081,6 @@ const TB04010Sjs = (function () {
     }
 
     if (!$("#TB04010S_R014").prop("disabled") || isEmpty(jdgmDcd)) {
-      option.title = "error";
-      option.type = "error";
       option.text = "삭제할 안건을 조회해주세요.";
       openPopup(option);
       $("#TB04010S_R014").focus();
@@ -2095,8 +2092,6 @@ const TB04010Sjs = (function () {
       mtrPrgSttsDcd != "201" &&
       mtrPrgSttsDcd != "203"
     ) {
-      option.title = "error";
-      option.type = "error";
       option.text =
         "안건 삭제는 '심사정보저장', '심사요청취소' 상태에서 가능합니다.";
       openPopup(option);
@@ -2168,8 +2163,8 @@ const TB04010Sjs = (function () {
     var sn = Number($("#TB04010S_tab2_sn").val()); // 일련번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -2357,8 +2352,8 @@ const TB04010Sjs = (function () {
     var sn = Number($("#TB04010S_tab3_sn").val()); // 일련번호
     console.log(crevAmt);
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -2438,8 +2433,8 @@ const TB04010Sjs = (function () {
     var sn = Number($("#TB04010S_tab3_sn").val()); // 일련번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -2512,8 +2507,8 @@ const TB04010Sjs = (function () {
 
     if (isEmpty(dealNo)) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "errowarningr",
+        title: "warning!",
         text: "선택된 안건이 없습니다.",
         confirmButtonText: "확인",
       });
@@ -2570,8 +2565,8 @@ const TB04010Sjs = (function () {
       !$("#TB04010S_R014").prop("disabled")
     ) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "warning!",
         text: "안건구조 등록 및 조회 이후 진행바랍니다.",
         confirmButtonText: "확인",
       });
@@ -2591,8 +2586,8 @@ const TB04010Sjs = (function () {
     var rnmCnfmNo = $("#TB04010S_cnc_bsnsRgstNo").val().replaceAll("-", ""); // 실명확인번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -2656,8 +2651,8 @@ const TB04010Sjs = (function () {
     var sn = Number($("#TB04010S_tab4_sn").val()); // 일련번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -2730,8 +2725,8 @@ const TB04010Sjs = (function () {
 
     if (isEmpty(dealNo)) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "warning!",
         text: "선택된 안건이 없습니다.",
         confirmButtonText: "확인",
       });
@@ -2791,8 +2786,8 @@ const TB04010Sjs = (function () {
       !$("#TB04010S_R014").prop("disabled")
     ) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "warning!",
         text: "안건구조 등록 및 조회 이후 진행바랍니다.",
         confirmButtonText: "확인",
       });
@@ -2905,8 +2900,8 @@ const TB04010Sjs = (function () {
     var sn = Number($("#TB04010S_tab5_sn").val()); // 항목일련번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -2979,8 +2974,8 @@ const TB04010Sjs = (function () {
 
     if (isEmpty(dealNo)) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "warning!",
         text: "선택된 안건이 없습니다.",
         confirmButtonText: "확인",
       });
@@ -3121,8 +3116,8 @@ const TB04010Sjs = (function () {
       !$("#TB04010S_R014").prop("disabled")
     ) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "warning!",
         text: "안건구조 등록 및 조회 이후 진행바랍니다.",
         confirmButtonText: "확인",
       });
@@ -3149,8 +3144,8 @@ const TB04010Sjs = (function () {
     var mrtgRsnCnts = $("#TB04010S_mrtgRsnCnts").val(); // 담보사유내용
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -3225,8 +3220,8 @@ const TB04010Sjs = (function () {
     var sn = Number($("#TB04010S_tab6_sn").val()); // 일련번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -3329,8 +3324,8 @@ const TB04010Sjs = (function () {
       .replace(/[^0-9]/g, ""); // 실명확인번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -3407,8 +3402,8 @@ const TB04010Sjs = (function () {
     var sn = Number($("#TB04010S_tab7_sn").val()); // 일련번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -3481,8 +3476,8 @@ const TB04010Sjs = (function () {
       !$("#TB04010S_R014").prop("disabled")
     ) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "warning!",
         text: "안건구조 등록 및 조회 이후 진행바랍니다.",
         confirmButtonText: "확인",
       });
@@ -3507,8 +3502,8 @@ const TB04010Sjs = (function () {
     var rnmCnfmNo = $("#TB04010S_rspsb_bsnsRgstNo").val().replaceAll("-", ""); // 실명확인번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -3586,8 +3581,8 @@ const TB04010Sjs = (function () {
     var sn = Number($("#TB04010S_tab8_sn").val()); // 일련번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";

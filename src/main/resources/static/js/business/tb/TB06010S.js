@@ -997,6 +997,8 @@ const TB06010Sjs = (function(){
 		}
 		
 		var paramData = makeParam(pageDcd, param);
+
+		console.log("regPrdtCd.paramData ::: " + JSON.stringify(paramData));
 		
 		if( isEmpty($('#TB06010S_ibDealNo').val()) ){
 			return false;

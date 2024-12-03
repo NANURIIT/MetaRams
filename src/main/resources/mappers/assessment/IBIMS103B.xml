@@ -677,10 +677,10 @@
              , s103b.OWN_DT                                          /* 심사역배정일자 */
              , s101b.RGST_DT                                         /* 등록일자 */
              , s003b_1.EMP_NM AS OWN_P_NM
-             , s003b_1.BDCD AS OWN_P_DPRT_CD
+             , s003b_1.DPRT_CD AS OWN_P_DPRT_CD
              , s003b_1.DPRT_NM AS OWN_P_DPRT_NM
              , s003b_2.EMP_NM AS CHRG_P_NM
-             , s003b_2.BDCD AS CHRG_P_DPRT_CD
+             , s003b_2.DPRT_CD AS CHRG_P_DPRT_CD
              , s003b_2.DPRT_NM AS CHRG_P_DPRT_NM
              , s101b.CRRY_CD                                        /* 통화코드 */
              , s114b.DMS_CRDT_GRD_DCD                                /* 국내신용등급구분코드 */

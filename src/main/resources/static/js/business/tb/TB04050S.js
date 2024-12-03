@@ -92,6 +92,7 @@ const TB04050Sjs = (function () {
 	$(document).ready(function () {
 		loadSelectBoxContents();
 		setGrid_TB04050S();
+		
 		getUrlDealInfo();
 	});
 

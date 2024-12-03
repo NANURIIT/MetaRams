@@ -30,10 +30,22 @@ const TB07150Sjs = (function () {
 
     initVal = getBasicValues("TB07150S"); // 초기화 초기 세팅
 
-    //
-    $("input").on("focus", function () {
-      $(this).select();
-    });
+    selectorNumberFormater(
+      $('div[data-menuid="/TB07150S"]').find(
+        `input[id$='Amt']
+       , input[id$='Blce']
+       , input[id$='Exrt']
+       , input[id$='Mnum']
+       , input[id$='Tmrd']
+       , input[id$='Qnt']
+       , input[id$='Shqt']
+       , input[id$='Unpr']
+       , input[id$='Rt']`)
+    );
+
+    // $("input").on("focus", function () {
+    //   $(this).select();
+    // });
   });
 
   /*******************************************************************

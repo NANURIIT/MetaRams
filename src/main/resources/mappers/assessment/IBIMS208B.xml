@@ -70,76 +70,78 @@
 	
 	<!-- IB승인조건내역 - 대출채권/채무보증 정보(TB06010S) - 셀다운승인조건등록  -->
     <insert id="insert208B" parameterType="com.nanuri.rams.business.common.dto.IBIMS208BDTO">
-        INSERT INTO IBIMS208B 
+       INSERT INTO IBIMS208B 
                (
-                  DEAL_NO                                           <!-- 딜번호 -->
-                , SN                                                <!-- 일련번호 -->
-                , SDWN_DT_DCD                                       <!-- 샐다운일자구분코드 -->
-                , SDWN_TLMT_MNUM                                    <!-- 샐다운기한개월수 -->
-                , SDWN_TLMT_DT                                      <!-- 샐다운기한(목표)일자 -->
-                , SDWN_STDR_AMT_DCD                                 <!-- 샐다운기준금액구분코드 -->
-                , SDWN_RTO                                          <!-- 샐다운비율 -->
-                , SDWN_TLMT_AMT                                     <!-- 샐다운목표금액 -->
-                , CRRY_CD                                           <!-- 통화코드 -->
-                , APLY_EXRT                                         <!-- 적용환율 -->
-                , SDWN_CPLT_DT                                      <!-- 샐다운완료일자 -->
-                , CTRC_AMT                                          <!-- 약정금액 -->
-                , EXC_AMT                                           <!-- 실행금액 -->
-                , SDWN_PRAR_AMT                                     <!-- 샐다운예정금액 -->
-                , SDWN_AMT                                          <!-- 샐다운금액 -->
-                , THCO_HOLD_AMT                                     <!-- 당사보유금액 -->
-                , NDISP_BLCE                                        <!-- 미매각금액 -->
-                , EXIT_SLLT_RT                                      <!-- exit분양율 -->
-                , NOW_SLLT_RT                                       <!-- 현재분양율 -->
-                , PLN_FAIR_RT                                       <!-- 계획공정율 -->
-                , NOW_FAIR_RT                                       <!-- 현재공정율 -->
-                , RGST_EMPNO                                        <!-- 등록사원번호 -->
-                , RGST_DT                                           <!-- 등록일자 -->
-                , CHNG_EMPNO                                        <!-- 변경사원번호 -->
-                , CHNG_DT                                           <!-- 변경일자 -->
-                , SDWN_CTNS                                         <!-- 샐다운내용 -->
-                , ETC_APVL_CND_CTNS                                 <!-- 기타승인조건내용 -->
-                , APVL_CND_ACT_CTNS                                 <!-- 승인조건활동내용 -->
-                , HND_DETL_DTM                                      <!-- 조작상세일시 -->  
-                , HND_EMPNO                                         <!-- 조작사원번호 -->
-                , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
-                , HND_TR_ID                                         <!-- 조작거래id -->
-                , GUID                                              <!-- guid -->
+                  DEAL_NO                                           /* 딜번호 */
+                , SN                                                /* 일련번호 */
+                , SDWN_DT_DCD                                       /* 샐다운일자구분코드 */
+                , SDWN_TLMT_MNUM                                    /* 샐다운기한개월수 */
+                , SDWN_TLMT_DT                                      /* 샐다운기한(목표)일자 */
+                , SDWN_STDR_AMT_DCD                                 /* 샐다운기준금액구분코드 */
+                , SDWN_RTO                                          /* 샐다운비율 */
+                , SDWN_TLMT_AMT                                     /* 샐다운목표금액 */
+                , CRRY_CD                                           /* 통화코드 */
+                , APLY_EXRT                                         /* 적용환율 */
+                , SDWN_CPLT_DT                                      /* 샐다운완료일자 */
+                , CTRC_AMT                                          /* 약정금액 */
+                , EXC_AMT                                           /* 실행금액 */
+                , SDWN_PRAR_AMT                                     /* 샐다운예정금액 */
+                , SDWN_AMT                                          /* 샐다운금액 */
+                , THCO_HOLD_AMT                                     /* 당사보유금액 */
+                , NDISP_BLCE                                        /* 미매각금액 */
+                , EXIT_SLLT_RT                                      /* exit분양율 */
+                , NOW_SLLT_RT                                       /* 현재분양율 */
+                , PLN_FAIR_RT                                       /* 계획공정율 */
+                , NOW_FAIR_RT                                       /* 현재공정율 */
+                , RGST_EMPNO                                        /* 등록사원번호 */
+                , RGST_DT                                           /* 등록일자 */
+                , CHNG_EMPNO                                        /* 변경사원번호 */
+                , CHNG_DT                                           /* 변경일자 */
+                , SDWN_CTNS                                         /* 샐다운내용 */
+                , ETC_APVL_CND_CTNS                                 /* 기타승인조건내용 */
+                , APVL_CND_ACT_CTNS                                 /* 승인조건활동내용 */
+                , HND_DETL_DTM                                      /* 조작상세일시 */  
+                , HND_EMPNO                                         /* 조작사원번호 */
+                , HND_TMNL_NO                                       /* 조작단말기번호 */
+                , HND_TR_ID                                         /* 조작거래id */
+                , GUID                                              /* guid */
                )
         VALUES (
-                 #{dealNo}                                          <!-- 딜번호 -->
-               , (SELECT NVL(MAX(A.SN), 0) + 1 FROM IBIMS208B A)    <!-- 일련번호 -->
-               , #{sdwnDtDcd}                                       <!-- 샐다운일자구분코드 -->
-               , #{sdwnTlmtMnum}                                    <!-- 샐다운기한개월수 -->
-               , #{sdwnTlmtDt}                                      <!-- 샐다운기한(목표)일자 -->
-               , #{sdwnStdrAmtDcd}                                  <!-- 샐다운기준금액구분코드 -->
-               , #{sdwnRto}                                         <!-- 샐다운비율 -->
-               , #{sdwnTlmtAmt}                                     <!-- 샐다운목표금액 -->
-               , #{crryCd}                                          <!-- 통화코드 -->
-               , #{aplyExrt}                                        <!-- 적용환율 -->
-               , #{sdwnCpltDt}                                      <!-- 샐다운완료일자 -->
-               , #{ctrcAmt}                                         <!-- 약정금액 -->
-               , #{excAmt}                                          <!-- 실행금액 -->
-               , #{sdwnPrarAmt}                                     <!-- 샐다운예정금액 -->
-               , #{sdwnAmt}                                         <!-- 샐다운금액 -->
-               , #{thcoHoldAmt}                                     <!-- 당사보유금액 -->
-               , #{ndispBlce}                                       <!-- 미매각금액 -->
-               , #{exitSlltRt}                                      <!-- exit분양율 -->
-               , #{nowSlltRt}                                       <!-- 현재분양율 -->
-               , #{plnFairRt}                                       <!-- 계획공정율 -->
-               , #{nowFairRt}                                       <!-- 현재공정율 -->
-               , #{rgstEmpno}                                       <!-- 등록사원번호 -->
-               , #{rgstDt}                                          <!-- 등록일자 -->
-               , #{chngEmpno}                                       <!-- 변경사원번호 -->
-               , #{chngDt}                                          <!-- 변경일자 -->
-               , #{sdwnCtns}                                        <!-- 샐다운내용 -->
-               , #{etcApvlCndCtns}                                  <!-- 기타승인조건내용 -->
-               , #{apvlCndActCtns}                                  <!-- 승인조건활동내용 -->
-               , SYSDATE                                            <!-- 조작상세일시 --> 
-               , #{hndEmpno}                                        <!-- 조작사원번호 -->
-               , #{hndTmnlNo}                                       <!-- 조작단말기번호 -->
-               , #{hndTrId}                                         <!-- 조작거래id -->
-               , #{guid}                                            <!-- guid -->
+                 #{dealNo}                                          /* 딜번호 */
+               , (SELECT NVL(MAX(A.SN), 0) + 1 FROM IBIMS208B A
+                   WHERE A.DEAL_NO = #{dealNo}
+                  )    												/* 일련번호 */
+               , #{sdwnDtDcd}                                       /* 샐다운일자구분코드 */
+               , #{sdwnTlmtMnum}                                    /* 샐다운기한개월수 */
+               , #{sdwnTlmtDt}                                      /* 샐다운기한(목표)일자 */
+               , #{sdwnStdrAmtDcd}                                  /* 샐다운기준금액구분코드 */
+               , #{sdwnRto}                                         /* 샐다운비율 */
+               , #{sdwnTlmtAmt}                                     /* 샐다운목표금액 */
+               , #{crryCd}                                          /* 통화코드 */
+               , #{aplyExrt}                                        /* 적용환율 */
+               , #{sdwnCpltDt}                                      /* 샐다운완료일자 */
+               , #{ctrcAmt}                                         /* 약정금액 */
+               , #{excAmt}                                          /* 실행금액 */
+               , #{sdwnPrarAmt}                                     /* 샐다운예정금액 */
+               , #{sdwnAmt}                                         /* 샐다운금액 */
+               , #{thcoHoldAmt}                                     /* 당사보유금액 */
+               , #{ndispBlce}                                       /* 미매각금액 */
+               , #{exitSlltRt}                                      /* exit분양율 */
+               , #{nowSlltRt}                                       /* 현재분양율 */
+               , #{plnFairRt}                                       /* 계획공정율 */
+               , #{nowFairRt}                                       /* 현재공정율 */
+               , #{rgstEmpno}                                       /* 등록사원번호 */
+               , #{rgstDt}                                          /* 등록일자 */
+               , #{chngEmpno}                                       /* 변경사원번호 */
+               , #{chngDt}                                          /* 변경일자 */
+               , #{sdwnCtns}                                        /* 샐다운내용 */
+               , #{etcApvlCndCtns}                                  /* 기타승인조건내용 */
+               , #{apvlCndActCtns}                                  /* 승인조건활동내용 */
+               , SYSDATE                                            /* 조작상세일시 */ 
+               , #{hndEmpno}                                        /* 조작사원번호 */
+               , #{hndTmnlNo}                                       /* 조작단말기번호 */
+               , #{hndTrId}                                         /* 조작거래id */
+               , #{guid}                                            /* guid */
                )
     </insert>
     

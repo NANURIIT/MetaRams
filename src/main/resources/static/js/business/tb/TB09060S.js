@@ -321,6 +321,10 @@ const TB09060Sjs = function () {
   function getList1() {
     var dealNo = $("#TB09060S_ibDealNo").val();
     var excSeq = $("#TB09060S_excSeq").val();
+    if(excSeq == ""){
+      console.log("순번 공백");
+      excSeq = -1;
+    }
     var startDt =
       replaceAll($("#TB09060S_startDt").val(), "-", "") == null
         ? ""

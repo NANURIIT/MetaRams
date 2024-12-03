@@ -25,6 +25,7 @@
              , A.OVDU_RLSE_DT              /* 연체해제일 */
              , C.BDCD                   /* 거래조직번호 */
              , C.DPRT_NM                   /* 조직명 */
+             , C.DPRT_CD                  /* 조직코드 */
           FROM IBIMS436B A                
           , IBIMS101B B  
           , IBIMS003B C 
@@ -32,13 +33,13 @@
          AND A.DEAL_NO = B.DEAL_NO(+) 
          AND B.LAST_YN(+) = '1' 
          AND B.CHRR_EMPNO = C.EMPNO(+) 
-        <if test="dealNo != ''">
+        <if test="dealNo != '' and dealNo != null">
            AND A.DEAL_NO = #{dealNo}
         </if>
-        <if test="excSeq != ''">
+        <if test="excSeq != -1 and excSeq != null">
            AND A.EXC_SEQ = #{excSeq}
         </if>
-        <if test="startDt != ''">
+        <if test="startDt != '' and startDt != null">
            AND (A.FRS_PRNA_OVDU_OCRNC_DT <![CDATA[>=]]> #{startDt})
         </if>
         <if test="endDt != ''">
@@ -49,6 +50,9 @@
         </if>
         <if test="ovduRlseYn == 2">
            AND A.OVDU_STTS_CD = 0
+        </if>
+        <if test="dprtCd != '' and dprtCd != null">
+           AND C.DPRT_CD = #{dprtCd}
         </if>
 
     </select>

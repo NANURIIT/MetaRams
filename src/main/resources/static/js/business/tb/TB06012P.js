@@ -80,22 +80,34 @@ $("#modal-TB06012P").on("hide.bs.modal", function (e) {
 /**
  * clear modal
  */
-function clearTB06012P() {
-  $("#TB06012P_prefix").val("");
-  $("#TB06012P_ibDealNo").val("");
-  $("#TB06012P_ibDealNm").val("");
+function clearTB06012P(cnd) {
+ //화면init
+ if(cnd==undefined ||cnd==null){
+	cnd=0;
+ }
+ 
+ if(cnd==0){
+	 $("#TB06012P_prefix").val("");
+	 $("#TB06012P_ibDealNo").val("");
+	 $("#TB06012P_ibDealNm").val("");
 
-  $("#TB06012P_chrgPEnm").val("");
-  $("#TB06012P_chrgPEno").val("");
-  $("#TB06012P_ownPEnm").val("");
-  $("#TB06012P_ownPEno").val("");
+	 $("#TB06012P_chrgPEnm").val("");
+	 $("#TB06012P_chrgPEno").val("");
+	 $("#TB06012P_ownPEnm").val("");
+	 $("#TB06012P_ownPEno").val("");
 
-  $("#TB06012P_apvlDt").val("");
-  $("#TB06012P_I008").val("").prop("selected", true).change();
-  $("#TB06012P_cnsbSq").val("");
+	 $("#TB06012P_apvlDt").val("");
+	 $("#TB06012P_I008").val("").prop("selected", true).change();
+	 $("#TB06012P_cnsbSq").val("");
 
-  $("#TB06012P_apvlAmt").val("");
-  $("#TB06012P_sdnCndtCtns").val("");
+	 $("#TB06012P_apvlAmt").val("");
+	 $("#TB06012P_sdnCndtCtns").val("");	 
+	 //그리드 초기화 필요 by hytest
+	   if(typeof modalAppvCndtList == "undefined") {
+	   }else{
+	    modalAppvCndtList.setData([]);
+	   }
+ }
 
   $("#TB06012P_sn").val("");
   $("#TB06012P_D007 option:eq(0)").prop("selected", true);
@@ -286,6 +298,9 @@ function selectIBIMS208B() {
     dealNo: $("#TB06012P_ibDealNo").val(), // 딜번호
     prdtCd: $('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val(),
   };
+  
+  //그리드 초기화 by hytest
+  modalAppvCndtList.setData([]);
 
   $.ajax({
     type: "GET",
@@ -404,6 +419,13 @@ function connectIBIMS209B() {
   
   if (isNotEmpty($("#TB06012P_prdtCd").val())) {
     option.text = "현재 종목에 연결된 승인조건이 존재합니다.";
+    openPopup(option);
+    return false;
+  }
+  
+  //부모창에서 넘어온 종목코드가 존재하지 않을때 by hytest
+  if(isEmpty($('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val())){
+	option.text = "선택된 종목코드가 존재하지 않습니다.";
     openPopup(option);
     return false;
   }
