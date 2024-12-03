@@ -493,7 +493,6 @@ function regist(paramData) {
 }
 
 function modify(paramData) {
-	console.log("ovssEvlIsttYn"+paramData.ovssEvlIsttYn);
   $.ajax({
     type: "POST",
     url: "/TB06013P/modifyMtrt",
