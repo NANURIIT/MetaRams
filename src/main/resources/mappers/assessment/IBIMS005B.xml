@@ -69,7 +69,7 @@
           , DEL_YN                /* 삭제여부 */
           , DEL_DT                /* 삭제일자 */
           , DEL_TM                /* 삭제시간 */
-          , DELT_EMPNO            /* 삭제사원번호 */
+          , DEL_EMPNO             /* 삭제사원번호 */
           , HND_DETL_DTM          /* 조작상세일시 */
           , HND_EMPNO             /* 조작사원번호 */
           , HND_TMNL_NO           /* 조작단말기번호 */
@@ -94,7 +94,7 @@
           , #{delYn}
           , #{delDt}
           , #{delTm}
-          , #{deltEmpno}
+          , #{delEmpno}
           , SYSDATE
           , #{hndEmpno}
           , #{hndTmnlNo}

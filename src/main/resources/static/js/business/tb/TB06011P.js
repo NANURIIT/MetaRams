@@ -418,6 +418,7 @@ function dataPrdtCdSetGrid(data) {
 	// 검색된 행이 1개일 경우 데이터 바로 입력
 	if (arrPqGridPrdtCdList.pdata.length === 1) {
 		setPrdtInfo(arrPqGridPrdtCdList.pdata[0]);
+		srchCnt = 0;
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
 	else if (arrPqGridPrdtCdList.pdata.length === 0) {
@@ -428,6 +429,7 @@ function dataPrdtCdSetGrid(data) {
 	}
 	// 그렇지 않은 경우 조건에 맞는 데이터 출력
 	else {
+		srchCnt = 0;
 	}
 
 }
@@ -556,7 +558,6 @@ async function getPrdtCdList() {
 				alert("조회된 정보가 없습니다!")
 				return;
 			}
-
 			console.log("진짜 쿼리", data);
 			dataPrdtCdSetGrid(data);
 		}
