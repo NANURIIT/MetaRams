@@ -20,6 +20,8 @@ function TB06011P_srchPrdt() {
 				prefix = $(this).attr('id').slice(0, 8);
 			}
 
+			$(`input[id='${prefix}_prdtNm']`).val("");
+
 			$('#TB06011P_prefix').val(prefix);
 
 			/**
@@ -70,6 +72,8 @@ function TB06011P_srchPrdt() {
 		} else {
 			prefix = $(this).attr('id').slice(0, 8);
 		}
+
+		$(`input[id='${prefix}_prdtNm']`).val("");
 
 		$('#TB06011P_prefix').val(prefix);
 
@@ -543,7 +547,7 @@ async function getPrdtCdList() {
 		data: JSON.stringify(param),
 		dataType: "json",
 		success: function (data) {
-			// console.log("진짜 쿼리", data);
+			console.log("진짜 쿼리", data);
 			dataPrdtCdSetGrid(data);
 		}
 	});
@@ -595,7 +599,7 @@ async function getGridState() {
 		data: JSON.stringify(param),
 		dataType: "json",
 		success: function (data) {
-			// console.log("숨는 쿼리", data);
+			console.log("숨는 쿼리", data);
 			if (!data || data === undefined || data.length === 0) {
 				// console.log("1번조건");
 				TB06011P_gridState = 1;
