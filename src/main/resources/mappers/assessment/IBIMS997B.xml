@@ -312,7 +312,7 @@
                                      )                      /* PRE_JOB_COUNT 건수 */
               , CONFIRM_JOB_COUNT  = (
                                         SELECT CASE 
-                                               WHEN CONFIRM_YN = '0' THEN '-1'
+                                               WHEN CONFIRM_YN = 'N' THEN '-1'
                                                ELSE CONFIRM_YN
                                                 END AS CONFIRM_YN
                                           FROM IBIMS995B
