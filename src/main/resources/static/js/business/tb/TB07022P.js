@@ -1,4 +1,6 @@
-var fndPgGrid;
+var fndPgGrid = [];
+let TB07022P_pf;
+let TB07022P_gridState = 1;
 
 
 //그리드 최하단 페이지모델
@@ -125,7 +127,17 @@ function dataFndSetGrid(data){
 		 	//alert(rowData);
 		 	setFndInfo(rowData);
 		});
-		
+	
+	//검색된 행이 1개일 경우 데이터 바로 입력
+	if (fndPgGrid.pdata.length === 1) {
+		setFndInfo(fndPgGrid.pdata[0]);
+	}
+	// 검색된 행이 0일 경우 모든 데이터 출력
+	else if (fndPgGrid.pdata.length === 0) {
+		$('#TB07022P_fndCd').val("");
+		getFndList();
+	}
+
 }
 
 
@@ -174,6 +186,10 @@ function keyDownEnter_TB07022P() {
  * show modal 
  */
 function callTB07022P(prefix) {
+
+	TB07022P_gridState = 0;
+	TB07022P_pf = prefix;
+
 	clearTB07022P();
 
 	$('#TB07022P_prefix').val(prefix);
@@ -187,7 +203,7 @@ function callTB07022P(prefix) {
  * hide modal
  */
 function modalClose_TB07022P() {
-	
+	TB07022P_gridState = 1;
 	if(typeof fndPgGrid != "undefined") fndPgGrid.setData([]);		
 	$('#modal-TB07022P').modal('hide');
 	
@@ -223,28 +239,7 @@ function getFndList() {
 		data: param,
 		dataType: "json",
 		success: function(data) {
-			/*var html = '';
-			var prdtCdList = data;
-			$('#TB07022P_fnltCd').html(html);
-			
-
-			if (prdtCdList.length > 0) {
-				$.each(prdtCdList, function(key, value) {
-					html += '<tr ondblclick="setFndInfo(this);">';
-					html += '<td>' + handleNullData(value.fndCd) + '</td>';
-					html += '<td align="left">' + handleNullData(value.fndNm) + '</td>';
-					html += '<td>' + handleNullData(value.fndDvsnNm) + '</td>';
-					html += '<td>' + handleNullData(value.stupDt) + '</td>';
-					html += '<td>' + handleNullData(value.fndTpNm) + '</td>';
-					html += '</tr>';
-				});
-			} else {
-				html += '<tr>';
-				html += '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-				html += '</tr>';
-			}
-			
-			$('#TB07022P_prdtCdList').html(html);*/
+			console.log(JSON.stringify(data));
 			dataFndSetGrid(data);
 		}
 	});
@@ -271,4 +266,146 @@ function setFndInfo(e) {
 	$(pageFndNm).val(e.fndNm);
 	
 	modalClose_TB07022P();
+}
+
+
+function TB07022P_srchFnd(){
+	$("input[id*='_fndCd']").on('keydown', async function (evt) {
+
+		if (evt.keyCode === 13) {
+			evt.preventDefault();
+
+			let prefix;
+			if ($(this).attr('id') === $("#TB07022P_fndCd").attr('id')) {
+				prefix = TB07022P_pf;
+			} else {
+				prefix = $(this).attr('id').slice(0, 8);
+			}
+
+			$(`input[id='${prefix}_fndNm']`).val("");
+
+			$('#TB07022P_prefix').val(prefix);
+
+			if ($(`div[id='modal-TB07022P'][style*="display: none;"]`).length === 1) {
+				TB07022P_gridState = 1;
+			}
+			// else {
+
+			// }
+
+
+			// 인풋박스 밸류
+			let data = $(this).val();
+			$('#TB07022P_fndCd').val(data);
+			await TB07022_getGridState();
+
+			// 팝업 오픈
+
+			/**
+			 * 팝업 열려있음
+			 */
+			if (TB07022P_gridState === 0) {
+				console.log("열려있음", TB07022P_gridState);
+				callTB07022P(prefix);
+				$('#TB07022P_fndCd').val(data);
+				setTimeout(() => getFndList(), 400);
+			} else
+				/**
+				 * 팝업 닫혀있음
+				 */
+				if (TB07022P_gridState === 1) {
+					console.log("닫혀있음", TB07022P_gridState);
+					callTB07022P(prefix);
+					$('#TB07022P_fndCd').val(data);
+					setTimeout(() => getFndList(), 400);
+				}
+		}
+	});
+
+	$("input[id*='_fndCd']").on('change', async function (evt) {
+
+		let prefix;
+		if ($(this).attr('id') === $("#TB07022P_fndCd").attr('id')) {
+			prefix = TB07022P_pf;
+		} else {
+			prefix = $(this).attr('id').slice(0, 8);
+		}
+
+		$(`input[id='${prefix}_fndNm']`).val("");
+
+		$('#TB07022P_prefix').val(prefix);
+
+		/**
+		 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
+		 * 그리드 상태 다시 체크해주기
+		 */
+		if ($(`div[id='modal-TB07022P'][style*="display: none;"]`).length === 1) {
+			TB07022P_gridState = 1;
+		}
+		// else {
+
+		// }
+
+
+		// 인풋박스 밸류
+		let data = $(this).val();
+		$('#TB07022P_fndCd').val(data);
+		await TB07022_getGridState();
+
+		// 팝업 오픈
+
+		console.log(TB07022P_gridState);
+
+		/**
+		 * 팝업 열려있음
+		 */
+		if (TB07022P_gridState === 0) {
+			console.log("열려있음", TB07022P_gridState);
+			callTB07022P(prefix);
+			$('#TB07022P_fndCd').val(data);
+			setTimeout(() => getFndList(), 400);
+		} else
+			/**
+			 * 팝업 닫혀있음
+			 */
+			if (TB07022P_gridState === 1) {
+				console.log("닫혀있음", TB07022P_gridState);
+				callTB07022P(prefix);
+				$('#TB07022P_fndCd').val(data);
+				setTimeout(() => getFndList(), 400);
+			}
+	});
+}
+
+async function TB07022_getGridState(){
+
+	if (TB07022P_gridState === 0) {
+		return;
+	}
+
+	var param = {
+		"fndCd" : $('#TB07022P_fndCd').val()
+		, "fndNm" : $('#TB07022P_fndNm').val()
+	}
+
+
+	await $.ajax({
+		type: "GET",
+		url: "/getFndList",
+		data: param,
+		dataType: "json",
+		success: function(data) {
+			console.log("숨는 쿼리:::" + data.length);
+			if (!data || data === undefined || data.length === 0) {
+				// console.log("1번조건");
+				TB07022P_gridState = 1;
+			} else if (data.length >= 2) {
+				// console.log("2번조건");
+				TB07022P_gridState = 1;
+			} else if (data) {
+				// console.log("3번조건");
+				TB07022P_gridState = 0;
+			}
+		}
+	});
 }

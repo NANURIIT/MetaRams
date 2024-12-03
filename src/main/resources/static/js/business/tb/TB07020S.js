@@ -1566,7 +1566,7 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_stlAcno').attr('readonly', false);
 		$('#TB07020S_empNo').attr('readonly', false);
 		$('#TB07020S_btnDprtCd').attr('disabled', false);
-		$('#TB07020S_btnFndCd').attr('disabled', false);
+		$('#TB07020S_btnFnd').attr('disabled', false);
 		$('#TB07020S_btnPrdtCd').attr('disabled', false);
 		$('#TB07020S_btnFnltCd').attr('disabled', false);
 		$('#TB07020S_btnEmpNo').attr('disabled', false);
@@ -1593,7 +1593,7 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_stlAcno').attr('readonly', true);
 		$('#TB07020S_empNo').attr('readonly', true);
 		$('#TB07020S_btnDprtCd').attr('disabled', true);
-		$('#TB07020S_btnFndCd').attr('disabled', true);
+		$('#TB07020S_btnFnd').attr('disabled', true);
 		$('#TB07020S_btnPrdtCd').attr('disabled', true);
 		$('#TB07020S_btnFnltCd').attr('disabled', true);
 		$('#TB07020S_btnEmpNo').attr('disabled', true);
