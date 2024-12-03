@@ -76,6 +76,7 @@ public class TB06013PVO {
     private BigDecimal     krwTrslAprsPrc;                                  // 원화환산감정가격
     private BigDecimal     mrtgRcgRto;                                      // 담보인정비율
     private BigDecimal     mrtgPrc;                                         // 담보가격
+    private String 		   dmsOvrsFndDcd;									// 국내해외펀드구분코드
     // IBIMS215B
     private String         mrtgCtns;                                        // 담보내용
     private String         mvppMrtgKndCd;                                   // 동산담보종류코드

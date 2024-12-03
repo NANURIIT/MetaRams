@@ -244,6 +244,7 @@ SELECT IB211B.MRTG_MNGM_NO,                         /* 담보관리번호 */
                     END AS CREV_ISTT_NM,               /* 시가평가기관명 */
 			   CREV_STDR_CD,                           /* 시가평가기준코드 */
 			   APRS_PRPS_CD,                           /* 감정목적코드 */
+			   IB219B.DMS_OVRS_FND_DCD,				   /* 국내해외펀드구분코드 */	
 			   CASE WHEN EPRZ_CRDL_WEEK_MRTG_KND_CD='2' 
                  THEN IB214B.APRS_DT
                  WHEN EPRZ_CRDL_WEEK_MRTG_KND_CD='3'

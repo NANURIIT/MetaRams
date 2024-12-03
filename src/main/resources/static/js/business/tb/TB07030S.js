@@ -497,9 +497,9 @@ const TB07030Sjs = (function () {
 
       addList.forEach((item) => {
         if (item.dealMrdpPrca > 0) {
-          item.prcsCpltYn = 1;
+          item.prcsCpltYn = "Y";
         } else {
-          item.prcsCpltYn = 0;
+          item.prcsCpltYn = "N";
         }
 
         item.dealMrdpPrca = uncomma(item.dealMrdpPrca);
@@ -599,7 +599,7 @@ const TB07030Sjs = (function () {
     let addList = grdRdmpTrgtDtl.getData();
 
     addList.forEach((item) => {
-      item.prcsCpltYn = 1;
+      item.prcsCpltYn = "Y";
       item.prcsDt = prcsDt;
       item.prcsAmt = item.pmntAmt;
       item.prcsIntrAmt = item.rdmpPrarIntr;

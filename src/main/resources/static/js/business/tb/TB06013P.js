@@ -585,7 +585,8 @@ function getParamData() {
     trEmpno: $("#TB06013P_empNo").val(),                                // 거래담당자 (사원번호)
     mrtgEvlStdrCd: $("#TB06013P_M006").val(),                           // 담보평가기준코드
     avblMrtgPrc: $("#TB06013P_avblMrtgPrc").val().replaceAll(",", ""), // 가용담보가격
-    eprzCrdlWeekMrtgKndCd: $("#TB06013P_E028").val(),                  // 담보설정종류코드  (todo: 담보종류??)
+    eprzCrdlWeekMrtgKndCd: $("#TB06013P_E028").val(),                  // 담보종류코드 
+	mrtgStupKndCd: $("#TB06013P_M011").val(),                  			// 담보설정종류코드  (todo: 담보종류??)
     stupCrryCd: $("#TB06013P_I027_3").val(),                            // 설정통화코드
     stupTopAmt: $("#TB06013P_stupTopAmt").val().replaceAll(",", ""),   // 설정최고금액
     krwTrslStupTopAmt: $("#TB06013P_krwTrslStupTopAmt").val().replaceAll(",", ""), // 원화환산설정최고금액
@@ -620,7 +621,7 @@ function getParamData() {
     mrtgAcqMthCd: $("#TB06013P_M004").val(), // 담보취득방법코드
     // IBIMS216B
     grteCtrcDcd: $("#TB06013P_G002").val(), // 보증약정구분코드
-    grnrCpin: $("#TB06013P_grteIsttNm").val().replaceAll("-", ""), // 보증인고객식별번호
+    grnrCpin: $("#TB06013P_grnrCpin").val().replaceAll("-", ""), // 보증인고객식별번호
     grupItgrCrdtGrdDcd: $("#TB06013P_C012").val(), // 그룹통합신용등급구분코드
     crdtInqDt: $("#TB06013P_crdtInqDt").val(), // 신용조회일자
     dbtrCpin: $("#TB06013P_dbtrCpin").val(), // 채무자고객식별번호
@@ -649,8 +650,8 @@ function getParamData() {
     avblMrtgPrcEtc: $("#TB06013P_avblMrtgPrc_etc").val().replaceAll(",", ""), // 가용담보가격
     etcMrtgAcqMthCd: $("#TB06013P_E031").val(), // 기타담보취득방법코드
     // IBIMS219B
-    //ovssEvlIsttYn: $("input[name=TB06013P_ovssEvlIsttYn]:checked").val(), // 국외평가기관여부
-	ovssEvlIsttYn: $("TB06013P_ovssEvlIsttYn").val(), // 국외평가기관여부
+    dmsOvrsFndDcd: $("#TB06013P_D009").val(), // 국내/국외 구분
+	ovssEvlIsttYn: $("#TB06013P_ovssEvlIsttYn").val(), // 국외평가기관여부
     rlthMrtgKndCd: $("#TB06013P_R019").val(), // 실물담보종류코드
     aprsStdrCd: $("#TB06013P_A011").val(), // 감정기준코드
     prfdRankList: prfdRankList // 선순위그리드
@@ -793,7 +794,7 @@ function TB06013P_getMrtgInfoDetails() {
           break;
         // 실물
         case "9":
-          $("#TB06013P_D009").val(infoDetails.ovssMrtgYn).prop("selected", true); // 국내국외구분코드
+          $("#TB06013P_D009").val(infoDetails.dmsOvrsFndDcd).prop("selected", true); // 국내국외구분코드
           $("#TB06013P_aprsDt").val(formatDate(infoDetails.aprsDt)); // 감정일자
           $("#TB06013P_crevIsttNm").val(infoDetails.crevIsttNm); // 평가기관명
           $("#TB06013P_A008").val(infoDetails.aprsEvlIsttCd).prop("selected", true); // 감정기관

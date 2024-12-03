@@ -1313,11 +1313,11 @@ public class Calculation {
 			IBIMS403BDTO paramDTO = IBIMS403BDTOList.get(i);
 			
 
-			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().isEmpty() || "0".equals(paramDTO.getPrcsCpltYn())){
+			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().isEmpty() || "N".equals(paramDTO.getPrcsCpltYn())){
 				if(paramDTO.getRdmpPrarIntr() == null){		//원금상환계획정보
 
 					if(i==0){	//첫회차
-						if(paramDTO.getPrcsCpltYn() == null || "0".equals(paramDTO.getPrcsCpltYn())){
+						if(paramDTO.getPrcsCpltYn() == null || "N".equals(paramDTO.getPrcsCpltYn())){
 							log.debug("첫회차는 대출잔액 가감 X");
 						}else{
 							bfBalance = bfBalance.subtract(paramDTO.getPrarPrna());
@@ -1432,7 +1432,7 @@ public class Calculation {
 			
 			IBIMS403BDTO paramDTO = ibims403List.get(i);
 
-			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().equals("0")){//미처리
+			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().equals("N")){//미처리
 				
 				if(paramDTO.getRdmpPrarIntr() == null){		//원금상환계획정보
 
@@ -1944,7 +1944,7 @@ public class Calculation {
 			IBIMS403BDTO scdhInfo = scdhList.get(i);
 			LoanData lnItm = new LoanData();
 			//log.debug("처리완료여부 ::: {}", scdhInfo.getPrcsCpltYn());
-			if(scdhInfo.getPrcsCpltYn() == null || "0".equals(scdhInfo.getPrcsCpltYn())){	//미처리
+			if(scdhInfo.getPrcsCpltYn() == null || "N".equals(scdhInfo.getPrcsCpltYn())){	//미처리
 
 				if(scdhInfo.getRdmpPrarIntr() == null){			//원금상환계획정보
 
