@@ -18,6 +18,7 @@ public class TB06013PVO {
 	private String         mrtgMngmNo;                                      // 담보관리번호
     private String         invJdgmDealNo;                                   // 투자심사딜번호
     private String         mrtgNm;                                          // 담보명
+    private String 		   eprzCrdlWeekMrtgKndCd;							// 기업여신주담보종류코드
     private String         mrtgLclsCd;                                      // 담보대분류코드
     private String         mrtgMdclCd;                                      // 담보중분류코드
     private String         mrtgDtlUsgeCtns;                                 // 담보세부용도내용

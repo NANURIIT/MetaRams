@@ -38,10 +38,10 @@
 		  LEFT JOIN IBIMS001B s001b
 		    ON s001b.CMNS_CD_GRP = s002b.CMNS_CD_GRP
 		 WHERE 1=1
-		   AND s002b.USE_YN = '1'                                  <!-- 사용여부 -->
-		   AND s002b.DEL_YN = '0'                                  <!-- 삭제여부 -->
-		   AND s001b.USE_YN = '1'                                  
-		   AND s001b.DEL_YN = '0'                                  
+		   AND s002b.USE_YN = 'Y'                                  <!-- 사용여부 -->
+		   AND s002b.DEL_YN = 'N'                                  <!-- 삭제여부 -->
+		   AND s001b.USE_YN = 'Y'                                  
+		   AND s001b.DEL_YN = 'N'                                  
 		   AND s001b.CMNS_CD_GRP IN                                
 			<foreach collection="list" item="listParam" index="index" open="(" separator="," close=")">
 	               #{listParam}

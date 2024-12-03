@@ -445,9 +445,9 @@ function dltRow_TB06013P() {
 
 function onChangeSelectBoxMrtgKndCd() {
   $("#TB06013P_E028").on("change", function () {
-    var mrtgKndCd = $("#TB06013P_E028").val();
+    var mrtgKndCdVal = $("#TB06013P_E028").val();
     var classNm = ".mrtgStupKndCd";
-    var mrtgStupKndCd = classNm + mrtgKndCd;
+    var mrtgStupKndCd = classNm + mrtgKndCdVal;
     var sbValue = $("#TB06013P_E028 option:selected").html();
     var index = sbValue.indexOf(" ");
     var selectedName = sbValue.substring(0, index);
@@ -585,7 +585,7 @@ function getParamData() {
     trEmpno: $("#TB06013P_empNo").val(),                                // 거래담당자 (사원번호)
     mrtgEvlStdrCd: $("#TB06013P_M006").val(),                           // 담보평가기준코드
     avblMrtgPrc: $("#TB06013P_avblMrtgPrc").val().replaceAll(",", ""), // 가용담보가격
-    mrtgStupKndCd: $("#TB06013P_E028").val(),                           // 담보설정종류코드  (todo: 담보종류??)
+    eprzCrdlWeekMrtgKndCd: $("#TB06013P_E028").val(),                  // 담보설정종류코드  (todo: 담보종류??)
     stupCrryCd: $("#TB06013P_I027_3").val(),                            // 설정통화코드
     stupTopAmt: $("#TB06013P_stupTopAmt").val().replaceAll(",", ""),   // 설정최고금액
     krwTrslStupTopAmt: $("#TB06013P_krwTrslStupTopAmt").val().replaceAll(",", ""), // 원화환산설정최고금액
@@ -708,7 +708,7 @@ function TB06013P_getMrtgInfoDetails() {
       $("#TB06013P_mrtgMngmNo").val(infoDetails.mrtgMngmNo);
       // $("#TB06013P_mrtgMngmNo_002").val(infoDetails.invJdgmDealNo);
       // $("#TB06013P_ibDealNo_002").val(infoDetails.invJdgmDealNo);
-      $("#TB06013P_E028").val(infoDetails.mrtgStupKndCd).prop("selected", true).change();
+      $("#TB06013P_E028").val(infoDetails.eprzCrdlWeekMrtgKndCd).prop("selected", true).change();
       $("#TB06013P_M008").val(infoDetails.mrtgLclsCd).prop("selected", true).change();
       $("#TB06013P_M009").val(infoDetails.mrtgMdclCd).prop("selected", true).change();
       $("#TB06013P_mrtgNm").val(infoDetails.mrtgNm);
@@ -731,7 +731,7 @@ function TB06013P_getMrtgInfoDetails() {
       infoDetails.krwTrslValtMrtgPrc ? $("#TB06013P_krwTrslValtMrtgPrc").val(addComma(infoDetails.krwTrslValtMrtgPrc)) : $("#TB06013P_krwTrslValtMrtgPrc").val(infoDetails.krwTrslValtMrtgPrc); // 유효담보가(원화)
       infoDetails.valtMrtgPrc ? $("#TB06013P_valtMrtgPrc").val(addComma(infoDetails.valtMrtgPrc)) : $("#TB06013P_valtMrtgPrc").val(infoDetails.valtMrtgPrc); // 유효담보가
       // 담보종류 분기
-      switch (infoDetails.mrtgStupKndCd) {
+      switch (infoDetails.eprzCrdlWeekMrtgKndCd) {
         // 부동산
         case "2":
           $("#TB06013P_A009").val(infoDetails.aprsMthCd).prop("selected", true); // 감정구분코드

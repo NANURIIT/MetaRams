@@ -254,7 +254,7 @@
 		     , s208b.SDWN_STDR_AMT_DCD    <!-- 샐다운기준금액구분코드 -->
 		     , s208b.SDWN_RTO             <!-- 샐다운비율 -->
 		     , s208b.SDWN_TLMT_AMT        <!-- 샐다운목표금액 -->
-		     , s208b.SN                   <!-- 일련번호 -->
+		     , s208b.APVL_CND_SN AS SN    <!-- 일련번호 -->
 		  FROM IBIMS208B s208b
 		     , IBIMS209B s209b 
 		 WHERE 1=1
