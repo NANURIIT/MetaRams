@@ -1,6 +1,8 @@
 let arrPqGridDealInfo;
+let empNo;
 
 $(document).ready(function () {
+  changeValues();
   docRdySettings();
 });
 
@@ -24,6 +26,7 @@ function callTB03021P(prefix) {
     setPqGrid(setPqGridObj);
     arrPqGridDealInfo = $("#gridDealInfo").pqGrid("instance");
   }, 300);
+  
 }
 
 /**
@@ -47,13 +50,14 @@ $("#modal-TB03021P").on("hide.bs.modal", function () {
  * reset
  */
 function reset_TB03021P() {
+  empNo = $('#userEno').val();
   $("#TB03021P_dealInfoList").html("");
   $("#TB03021P_ibDealNo").val("");
   $("#TB03021P_ibDealNm").val("");
-  $('#TB03021P1_empNm').val("");
-  $('#TB03021P1_empNo').val("");
-  $('#TB03021P2_dprtNm').val("");
-  $('#TB03021P2_dprtCd').val("");
+  $('#TB03021P1_empNm').val($('#userEmpNm').val());
+  $('#TB03021P1_empNo').val(empNo);
+  $('#TB03021P2_dprtNm').val($('#userDprtNm').val());
+  $('#TB03021P2_dprtCd').val($('#userDprtCd').val());
 
   //$("#TB03021P_datepicker1").val("");
 }
@@ -88,12 +92,14 @@ function keyDownEnter_TB03021P() {
     }
   });
 
+
   // $("input[id=TB03021P_datepicker1]").keydown(function (key) {
   //   if (key.keyCode == 13) {
   //     //키가 13이면 실행 (엔터는 13)
   //     getDealInfo();
   //   }
   // });
+  
 }
 
 /**
@@ -203,16 +209,27 @@ function setDealInfo(e) {
   modalClose_TB03021P();
 }
 
-//담당자명 변경시 담당자번호클리어
-$('#TB03021P1_empNm').on('input', function(){
-  $('#TB03021P1_empNo').val("");  
-});
+function changeValues(){
+  /**
+   *  담당자번호, 부서번호는 로그인 중인 사원으로 기본세팅이 된다.
+   *  1. 담당자명 변경
+   *    1-1. 팝업으로 담당자번호를 세팅할 경우(담당자만 변경), 부서번호를 빈값으로 변경해야한다. 
+   *    1-2. 담당자명 직접변경(input), 
+   *          1-2-1. 담당자목록에 있는 값이면 바로 세팅
+   *          1-2-2. 없으면 팝업창 띄움 
+  */
 
-//부서명 변경시 부서번호클리어
-$('#TB03021P2_dprtNm').on('input', function(){
-  $('#TB03021P2_dprtCd').val(""); 
-});
-  
+    //담당자명 실시간 변경시 담당자번호 클리어
+  $('#TB03021P1_empNm').on('input', function(){
+    $('#TB03021P1_empNo').val("");  
+  });
+
+  //부서명 실시간 변경시 부서번호 클리어
+  $('#TB03021P2_dprtNm').on('input', function(){
+    $('#TB03021P2_dprtCd').val(""); 
+  });
+
+}
 
 
 /* ***********************************그리드 컬럼******************************** */
