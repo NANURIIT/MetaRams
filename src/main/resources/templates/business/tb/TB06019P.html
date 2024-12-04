@@ -28,6 +28,7 @@
                                        <button type="button" class="btn btn-default"  onclick="callTB03061P('TB06019P_srch');"><i class="fa fa-search"></i></button>
                                     </span>
                                     <input type="text" class="form-control" id="TB06019P_srch_entpNm" style="width: 110px;"  disabled>
+                                    <input type="hidden" class="form-control" id="TB06019P_getArdyBzepNo" maxlength="13" disabled>
                                  </div>
       
                                  <!-- 상단 버튼 스타일 -->
@@ -60,10 +61,13 @@
                                                 <option value="">선택</option>
                                              </select>
                                           </div>
-                                          <label class="col-sm-1 col-form-label text-right">기업체 번호</label>
-                                          <div class="col-sm-3">
-                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="TB06019P_getArdyBzepNo" maxlength="13" disabled>
+                                          <label class="col-sm-1 col-form-label text-right">SPC여부</label>
+                                           <div class="col-sm-3 input-group input-h">
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="Y" name="spcYn" id="spcYn_Y">&nbsp;Y
+                                             </div>
+                                             <div class="col-sm-4 text-left input-group">
+                                                <input type="radio" value="N" name="spcYn" id="spcYn_N">&nbsp;N
                                              </div>
                                           </div>
                                           <label class="col-sm-1 control-label">고객번호</label>

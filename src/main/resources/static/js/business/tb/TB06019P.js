@@ -33,13 +33,14 @@ function srchParam(){
 	$("#TB06019P_etprShapDvsnCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_stdIdstSclsCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprScleDvsnCd option:eq(0)").prop("selected", true);
+	$("input:radio[name='spcYn']").prop('checked',false);
 	$("input:radio[name='smetYn']").prop('checked',false);
 	$("input:radio[name='clseDvsnCd']").prop('checked',false);
 	$("input:radio[name='ovrsSpcYn']").prop('checked',false);
 	$("input:radio[name='useYn']").prop('checked',false);
 	
 	//사업자등록번호
-	$("TB06019P_rnbn").val("999-99-99999");
+	$("#TB06019P_rnbn").val("999-99-99999");
 	
 }
 
@@ -92,13 +93,14 @@ function reset_TB06019P () {
 	$("#TB06019P_etprShapDvsnCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_stdIdstSclsCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprScleDvsnCd option:eq(0)").prop("selected", true);
+	$("input:radio[name='spcYn']").prop('checked',false);
 	$("input:radio[name='smetYn']").prop('checked',false);
 	$("input:radio[name='clseDvsnCd']").prop('checked',false);
 	$("input:radio[name='ovrsSpcYn']").prop('checked',false);
 	$("input:radio[name='useYn']").prop('checked',false);
 	
 	//사업자등록번호
-	$("TB06019P_rnbn").val("999-99-99999");
+	$("#TB06019P_rnbn").val("999-99-99999");
 
 	/**
 	 * 초기화시 삭제버튼 비활성화
@@ -154,6 +156,7 @@ function getArdyBzepInfo() {
 			$('#TB06019P_faxStno').val(data.faxStno);					//Fax전화일련번호
 			$('#TB06019P_korBzplAddr').val(data.korBzplAddr);			//한글사업장주소
 			$('#TB06019P_engBzplAddr').val(data.engBzplAddr);			//영문사업장주소
+			data.spcYn=="Y" ? $('#spcYn_Y').prop('checked',true):	$('#spcYn_N').prop('checked',true);	//spc여부		
 
 			/* 세부정보*/
 			data.smetYn=="Y" ? $('#smetYn_Y').prop('checked',true):	$('#smetYn_N').prop('checked',true);			
@@ -218,9 +221,9 @@ function saveArdyBzepInfo() {
 	function businessFunction() {
 
 		var inParam = {
-			"ardyBzepNo": $('#TB06019P_getArdyBzepNo').val()					//기업체번호
+			  "ardyBzepNo": $('#TB06019P_getArdyBzepNo').val()				//기업체번호
 			, "bzplDvsnCd": $('#TB06019P_bzplDvsnCd').val()					//사업장구분
-			, "entpNm": $('#TB06019P_entpNm').val()						//업체명
+			, "entpNm": $('#TB06019P_entpNm').val()							//업체명
 			, "engBzplName": $('#TB06019P_engBzplName').val()				//영문사업자명
 			, "rnbn": $('#TB06019P_rnbn').val().replaceAll("-", "")			//사업자등록번호
 			, "crno": $('#TB06019P_crno').val().replaceAll("-", "")			//법인등록번호
@@ -251,11 +254,10 @@ function saveArdyBzepInfo() {
 			, "swiftBankDscmCd": $('#TB06019P_swiftBankDscmCd').val()		//SWIFT은행식별코드
 			, "rvnuAmt": $('#TB06019P_rvnuAmt').val().replaceAll(",", "")		//매출금액
 			, "totAsstAmt": $('#TB06019P_totAsstAmt').val().replaceAll(",", "") //총자산금액
-			, "fnafHltySrnmRt": $('#TB06019P_fnafHltySrnmRt').val().replace("%", "")			//재무건전성비율
-			, "ovrsSpcYn": $('input:radio[name=ovrsSpcYn]:checked').val()					//해외SPC여부
-			, "spcYn" : "N"														//SPC여부
+			, "fnafHltySrnmRt": $('#TB06019P_fnafHltySrnmRt').val().replace("%", "") //재무건전성비율
+			, "ovrsSpcYn": $('input:radio[name=ovrsSpcYn]:checked').val()		//해외SPC여부
+			, "spcYn" :$('input:radio[name=spcYn]:checked').val()				//SPC여부
 			, "useYn": $('input:radio[name=useYn]:checked').val()				//사용여부
-
 		};
 		
 		 $.ajax({
