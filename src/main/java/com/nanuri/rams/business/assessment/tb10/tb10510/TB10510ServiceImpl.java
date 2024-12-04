@@ -138,9 +138,9 @@ public class TB10510ServiceImpl implements TB10510Service {
 			in997bVo.setChildPid(00000);				// 업무프로그램의 PID
 			in997bVo.setRunCount(0);					// 프로그램이 수행된 횟수 
 			String confirmYn = in995bVo.getConfirmYn();
-			if ( "0".equals(confirmYn)) {
+			if ( "N".equals(confirmYn)) {
 				in997bVo.setConfirmJobCount(-1);
-			} else if ("1".equals(confirmYn)) {
+			} else if ("Y".equals(confirmYn)) {
 				in997bVo.setConfirmJobCount(1);
 			}
 			in997bVo.setFirstStartTime("");		 // 최초 기동시간

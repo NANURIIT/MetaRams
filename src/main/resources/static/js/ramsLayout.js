@@ -6,6 +6,7 @@ $(function () {
 /**
  * 왼쪽 네비게이션 메뉴 생성
  * @param {String} empNo
+ * @author {김건우}
  */
 function createNav(empNo) {
 
@@ -116,6 +117,7 @@ function createNav(empNo) {
 
 /**
  * 이전 페이지 체크 함수
+ * @author {김건우}
  */
 function chkPrevPage() {
 
@@ -137,6 +139,7 @@ function chkPrevPage() {
  * 탭에 화면 추가하기
  * @param {String} menuId 
  * @param {String} pageName 
+ * @author {김건우}
  */
 async function callPage(menuId, pageName) {
 
@@ -324,6 +327,7 @@ async function callPage(menuId, pageName) {
 /**
  * 탭 이동
  * @param {String} menuId 
+ * @author {김건우}
  */
 function moveTab(menuId) {
 
@@ -355,6 +359,7 @@ function moveTab(menuId) {
 /**
  * 탭 제거
  * @param {String} menuId 
+ * @author {김건우}
  */
 function removeTab(menuId) {
 
