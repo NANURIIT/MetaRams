@@ -321,7 +321,11 @@ function setArdyBzepInfo(rowData) {
 		case "TB06030S" :
 			$('#TB06030S_ardyBzepNo').val(ardyBzepNo);		// 기업체코드
 			$('#TB06030S_bzepName').val(entpNm);			// 거래상대방(업체한글명)
-			break;	
+			break;
+		case "TB06019P_srch":
+			//기업체정보 등록에서 조회
+			getArdyBzepInfo();
+			break;		
 		default:
 			break;
 	}

@@ -40,6 +40,7 @@
 		      , A.TOT_ASST_AMT			/* 총자산금액 */
 		      , A.FNAF_HLTY_SRNM_RT		/* 재무건전성비율 */
 		      , A.OVRS_SPC_YN			/* 해외SPC여부 */
+		      , A.SPC_YN				/* SPC여부*/
 		      , A.USE_YN				/* 사용여부 */
 		      , A.EST_DT				/* 설립일자 */
 		      , A.STFF_NUM				/* 직원수 */
@@ -181,6 +182,7 @@
 		          , TOT_ASST_AMT
 		          , FNAF_HLTY_SRNM_RT
 		          , OVRS_SPC_YN
+		          , SPC_YN
 		          , USE_YN
 		          , HND_DETL_DTM
 		          , HND_EMPNO
@@ -226,6 +228,7 @@
 				  ,#{totAsstAmt}     	/* 총자산금액 */
 				  ,#{fnafHltySrnmRt} 	/* 재무건전성비율 */
 				  ,#{ovrsSpcYn}      	/* 해외SPC여부 */
+				  ,#{spcYn}				/* SPC여부*/
 				  ,'Y'               	/* 사용여부 */
 				  , SYSDATE      		/* 조작상세일시 */
 				  ,#{hndEmpno}        	/* 조작사원번호 */
@@ -277,6 +280,7 @@
              , TOT_ASST_AMT			= #{totAsstAmt}     						/* 총자산금액 */
              , FNAF_HLTY_SRNM_RT	= #{fnafHltySrnmRt} 						/* 재무건전성비율 */
              , OVRS_SPC_YN			= #{ovrsSpcYn}      						/* 해외SPC여부 */
+             , SPC_YN				= #{spcYn}									/* SPC여부*/
              , USE_YN				= 'Y'               						/* 사용여부 */
              , HND_DETL_DTM			= TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')  	/* 조작상세일시 */
              , HND_EMPNO			= #{hndEmpno}       						/* 조작사원번호 */

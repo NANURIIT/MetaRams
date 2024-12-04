@@ -33,6 +33,7 @@ public class IBIMS010BDTO {
 	private String opbsDt; /* 개업일자 */
 	private String stdIdstSclsCd; /* 표준산업소분류코드 */
 	private String bzcnNm; /* 업태명 */
+	private String bzcoName; /* 업태명 */
 	private String clseDvsnCd; /* 폐업구분코드 */
 	private String clseDt; /* 폐업일자 */
 	private String rgstDt; /* 등록일자 */
@@ -47,6 +48,7 @@ public class IBIMS010BDTO {
 	private BigDecimal totAsstAmt; /* 총자산금액 */
 	private BigDecimal fnafHltySrnmRt; /* 재무건전성비율 */
 	private String ovrsSpcYn; /* 해외SPC여부 */
+	private String spcYn; /* spc여부*/
 	private String useYn; /* 사용여부 */
 	
 	private Date hndDetlDtm; /* 조작상세일시 */
