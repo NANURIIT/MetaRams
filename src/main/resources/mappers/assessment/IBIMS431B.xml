@@ -58,10 +58,10 @@
           FROM IBIMS431B T1
          WHERE 1=1
            <if test="acctDt1 != null and acctDt1 != ''">
-           AND T1.ACCT_DT &gt; #{acctDt1}
+           AND T1.ACCT_DT &gt;&#61; #{acctDt1}
            </if>
            <if test="acctDt2 != null and acctDt2 != ''">
-           AND T1.ACCT_DT &lt; #{acctDt2}
+           AND T1.ACCT_DT &lt;&#61; #{acctDt2}
            </if>
            <if test="rslnBdcd != null and rslnBdcd != ''">
            AND T1.RSLN_BDCD = #{rslnBdcd}

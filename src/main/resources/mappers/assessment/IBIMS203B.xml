@@ -7,7 +7,7 @@
 		SELECT
 		       A.PRDT_CD					/* 상품코드 */
 		     , A.FEE_SN					/* 수수료일련번호 */
-		     , DATE_FORMAT(A.FEE_RCVN_DT, '%Y-%m-%d') AS FEE_RCVN_DT				/* 수수료수취일자 */
+		     , A.FEE_RCVN_DT				/* 수수료수취일자 */
 		     , A.EPRZ_CRDL_FEE_KND_CD		/* 기업여신수수료종류코드 */
  			 , (
                 SELECT CD_VL_NM
