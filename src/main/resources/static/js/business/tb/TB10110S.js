@@ -148,20 +148,20 @@ const TB10110Sjs = (function () {
   var runFindUser = function () {
     let empNm = $("#empNm").val();
     let rghtCd = $("#TB10110S_rghtCd option:selected").val();
-    let dltY = $("#TB10110S_dltY:checked").length;
-    findUser(empNm, rghtCd, dltY);
+    let delYn = $("#TB10110S_delYn:checked").length;
+    findUser(empNm, rghtCd, delYn);
   };
   /**
    * 사용자조회 ajax 호출
    * @param {String} empNm 검색어 - 직원명(사번)
    * @param {String} rghtCd <select> 권한구분
-   * @param {int} dltY 과거이력포함(1), 미포함(0, default) -> 20241203이후 과거이력포함(Y), 미포함(N, default)으로 바뀜
+   * @param {int} delYn 과거이력포함(1), 미포함(0, default) -> 20241203이후 과거이력포함(Y), 미포함(N, default)으로 바뀜
    */
-  var findUser = function (empNm, rghtCd, dltY) {
+  var findUser = function (empNm, rghtCd, delYn) {
     let dtoParam = {
       empNm: empNm,
       athCd: rghtCd,
-      delYn: dltY,
+      delYn: delYn,
     };
 
     $.ajax({

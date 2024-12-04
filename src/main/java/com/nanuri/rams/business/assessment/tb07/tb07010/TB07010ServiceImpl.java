@@ -180,7 +180,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 			in203bdto.setFeeSn(in348BVO.getFeeSn());
 			IBIMS203BDTO out203bdto = ibims203BMapper.selectOneFeeInfo(in203bdto);
 			if(out203bdto!=null) {
-				ibims348BVO.setBusiNmcpCplTxtnYn((out203bdto.getBusiNmcpCplTxtnYn()==null)?"0":out203bdto.getBusiNmcpCplTxtnYn()); /* 사업부수수료과세여부 */
+				ibims348BVO.setBusiNmcpCplTxtnYn((out203bdto.getBusiNmcpCplTxtnYn()==null)?"N":out203bdto.getBusiNmcpCplTxtnYn()); /* 사업부수수료과세여부 */
 			}
 
 			IBIMS420BDTO ibims420BDTO = set420b(ibims348BVO);
