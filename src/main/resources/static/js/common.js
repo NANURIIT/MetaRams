@@ -1158,28 +1158,6 @@ function getSelectBoxList(prefix, item, async = true) {
             }
             $("#TB04020S_I008").append(html);
           }
-
-          if (value.cmnsGrpCd == "I011") {
-            var selectBoxId = "#" + prefix + "_" + value.cmnsGrpCd;
-            var html = "";
-            // 숫자 범위 확인 (200 이상 300 미만)
-            $(selectBoxId).empty();
-            if (
-              parseInt(value.cdValue) >= 200 &&
-              parseInt(value.cdValue) < 300
-            ) {
-              html +=
-                '<option value="' +
-                value.cdValue +
-                '">' +
-                value.cdName +
-                " (" +
-                value.cdValue +
-                ")" +
-                "</option>";
-              $(selectBoxId).append(html); // 조건에 맞는 데이터 추가
-            }
-          }
         }
         if (prefix == "TB06010S") {
           if (value.cmnsGrpCd == "E022") {

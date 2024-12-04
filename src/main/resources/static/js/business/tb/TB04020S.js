@@ -79,6 +79,7 @@ const TB04020Sjs = (function () {
     let dprtCd = $("#TB04020S_D010").val(); // 담당부서
     let crncyCd = $("#TB04020S_I027").val(); // 통화
     let dealNo = $("#TB04020S_ibDealNo").val(); // deal번호
+    let mtrPrgSttsDcd = $("#TB04020S_I011").val(); // 안건진행상태
 
     if (
       isNotEmpty(rgstDtStart) ||
@@ -97,6 +98,7 @@ const TB04020Sjs = (function () {
         dprtCd: dprtCd,
         crncyCd: crncyCd,
         dealNo: dealNo,
+        mtrPrgSttsDcd: mtrPrgSttsDcd,
       };
 
       $.ajax({

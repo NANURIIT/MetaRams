@@ -752,6 +752,9 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND s101b.DEAL_NO LIKE '%'|| #{dealNo} || '%'
            </if>
+					  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mtrPrgSttsDcd)">
+           AND s103b.MTR_PRG_STTS_DCD = #{mtrPrgSttsDcd}
+           </if>
          ORDER BY s103b.MTR_PRG_STTS_DCD
          	    , s103b.DEAL_NO
          	    , SN
