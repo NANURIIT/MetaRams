@@ -169,9 +169,9 @@ function getArdyBzepInfo() {
 			$('#TB06019P_etprScleDvsnCd').val(data.eprzSclDcd).prop('selected', true);		//기업규모구분
 			$('#TB06019P_ctmBicName').val(data.ctmBicName);				//CTM은행인식코드명
 			$('#TB06019P_rdmTrOppnNo').val(data.rdmTrOppnNo);			//RDM거래상대방번호
-			$('#TB06019P_erlmDt').val(data.rgstDt);						//등록일자
-			$('#TB06019P_estDt').val(data.estDt);						//설립일자
-			$('#TB06019P_clseDt').val(data.clseDt);						//폐업일자
+			$('#TB06019P_erlmDt').val(formatDate(data.rgstDt));			//등록일자
+			$('#TB06019P_estDt').val(formatDate(data.estDt));			//설립일자
+			$('#TB06019P_clseDt').val(formatDate(data.clseDt));			//폐업일자
 			$('#TB06019P_stffNum').val(data.stffNum);					//임직원수
 			$('#TB06019P_oprtHnfNum').val(data.oprtHnfNum);				//운영인력수
 			
