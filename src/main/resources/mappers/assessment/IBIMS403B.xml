@@ -561,7 +561,7 @@
 
      <!-- /*실행 */ 스케줄관리 실행일련번호 채번 -->
      <select id="getExcSchExcSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="long">
-        SELECT NVL(MAX(NVL(NULLIF(EXC_SN, 0), 0)), 0) + 1 AS EXC_SN
+        SELECT NVL(MAX(NVL(IFNULL(EXC_SN, 0), 0)), 0) + 1 AS EXC_SN
           FROM IBIMS403B
          WHERE PRDT_CD  = #{prdtCd}
            AND SCX_DCD  = #{scxDcd}

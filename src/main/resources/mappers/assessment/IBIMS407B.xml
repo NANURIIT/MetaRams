@@ -60,7 +60,7 @@
            AND A.STL_XTNL_ISTT_CD 	= D.FNLT_CD(+)
            AND A.NS_FND_CD = #{nsFndCd}
            AND A.PRDT_CD = #{prdtCd}
-           AND A.TR_DT LIKE NVL(NULLIF(#{trDt}, ''), '%')
+           AND A.TR_DT LIKE NVL(IFNULL(#{trDt}, ''), '%')
          ORDER BY A.TR_DT ASC, A.PRDT_CD, A.TR_SN DESC
     </select>
 
