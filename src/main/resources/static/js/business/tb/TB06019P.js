@@ -38,6 +38,9 @@ function srchParam(){
 	$("input:radio[name='ovrsSpcYn']").prop('checked',false);
 	$("input:radio[name='useYn']").prop('checked',false);
 	
+	//사업자등록번호
+	$("TB06019P_rnbn").val("999-99-99999");
+	
 }
 
 /**
@@ -94,6 +97,8 @@ function reset_TB06019P () {
 	$("input:radio[name='ovrsSpcYn']").prop('checked',false);
 	$("input:radio[name='useYn']").prop('checked',false);
 	
+	//사업자등록번호
+	$("TB06019P_rnbn").val("999-99-99999");
 
 	/**
 	 * 초기화시 삭제버튼 비활성화
@@ -157,12 +162,16 @@ function getArdyBzepInfo() {
 			data.useYn=="Y" ?  $('#useYn_Y').prop('checked',true) :$('#useYn_N').prop('checked',true);
 			$('#TB06019P_stdIdstSclsCd').val(data.stdIdstSclsCd).prop('selected', true);		//표준산업소분류
 			$('#TB06019P_etprShapDvsnCd').val(data.etprShapDvsnCd).prop('selected', true);		//기업형태구분
-			$('#TB06019P_bucoName').val(data.bucoName);					//업태명
-			$('#TB06019P_etprScleDvsnCd').val(data.etprScleDvsnCd).prop('selected', true);		//기업규모구분
+			$('#TB06019P_bucoName').val(data.bzcnNm);					//업태명
+			$('#TB06019P_etprScleDvsnCd').val(data.eprzSclDcd).prop('selected', true);		//기업규모구분
 			$('#TB06019P_ctmBicName').val(data.ctmBicName);				//CTM은행인식코드명
 			$('#TB06019P_rdmTrOppnNo').val(data.rdmTrOppnNo);			//RDM거래상대방번호
-			$('#TB06019P_erlmDt').val(data.erlmDt);						//등록일자
+			$('#TB06019P_erlmDt').val(data.rgstDt);						//등록일자
+			$('#TB06019P_estDt').val(data.estDt);						//설립일자
 			$('#TB06019P_clseDt').val(data.clseDt);						//폐업일자
+			$('#TB06019P_stffNum').val(data.stffNum);					//임직원수
+			$('#TB06019P_oprtHnfNum').val(data.oprtHnfNum);				//운영인력수
+			
 			$('#TB06019P_leiCd').val(data.leiCd);						//LEI코드
 			$('#TB06019P_swiftBankDscmCd').val(data.swiftBankDscmCd);	//SWIFT은행식별코드
 			if (!isEmpty(data.rvnuAmt)) {
@@ -225,15 +234,18 @@ function saveArdyBzepInfo() {
 			, "faxStno": $('#TB06019P_faxStno').val()						//Fax전화일련번호
 			, "korBzplAddr": $('#TB06019P_korBzplAddr').val()				//한글사업장주소
 			, "engBzplAddr": $('#TB06019P_engBzplAddr').val()				//영문사업장주소
-			, "smetYn": $('input:radio[name=smetYn]:checked').val()				//중소기업여부
+			, "smetYn": $('input:radio[name=smetYn]:checked').val()			//중소기업여부
 			, "stdIdstSclsCd": $('#TB06019P_stdIdstSclsCd').val()			//표준산업소분류
 			, "etprShapDvsnCd": $('#TB06019P_etprShapDvsnCd').val()			//기업형태구분
-			, "bucoName": $('#TB06019P_bucoName').val()						//업태명
-			, "etprScleDvsnCd": $('#TB06019P_etprScleDvsnCd').val()			//기업규모구분
+			, "bzcnNm": $('#TB06019P_bucoName').val()						//업태명
+			, "eprzSclDcd": $('#TB06019P_etprScleDvsnCd').val()				//기업규모구분
 			, "ctmBicName": $('#TB06019P_ctmBicName').val()					//CTM은행인식코드명
-			, "erlmDt": $('#TB06019P_erlmDt').val().replaceAll("-", "")		//등록일자
-			, "clseDvsnCd": $('input:radio[name=clseDvsnCd]:checked').val()		//폐업구분
+			, "estDt": $('#TB06019P_estDt').val().replaceAll("-", "")		//설립일자
+			, "rgstDt": $('#TB06019P_erlmDt').val().replaceAll("-", "")		//등록일자
+			, "clseDvsnCd": $('input:radio[name=clseDvsnCd]:checked').val()	//폐업구분
 			, "clseDt": $('#TB06019P_clseDt').val().replaceAll("-", "")		//폐업일자
+			, "stffNum": $('#TB06019P_stffNum').val().replaceAll(",", "")	//임직원수
+			, "oprtHnfNum": $('#TB06019P_oprtHnfNum').val().replaceAll(",", "")	//운용인력수
 			, "rdmTrOppnNo": $('#TB06019P_rdmTrOppnNo').val()				//RDM거래상대방번호
 			, "leiCd": $('#TB06019P_leiCd').val()							//LEI코드
 			, "swiftBankDscmCd": $('#TB06019P_swiftBankDscmCd').val()		//SWIFT은행식별코드
@@ -241,6 +253,7 @@ function saveArdyBzepInfo() {
 			, "totAsstAmt": $('#TB06019P_totAsstAmt').val().replaceAll(",", "") //총자산금액
 			, "fnafHltySrnmRt": $('#TB06019P_fnafHltySrnmRt').val().replace("%", "")			//재무건전성비율
 			, "ovrsSpcYn": $('input:radio[name=ovrsSpcYn]:checked').val()					//해외SPC여부
+			, "spcYn" : "N"														//SPC여부
 			, "useYn": $('input:radio[name=useYn]:checked').val()				//사용여부
 
 		};
@@ -257,39 +270,9 @@ function saveArdyBzepInfo() {
 		 			, text: "기업정보를 등록하였습니다."
 		 			, confirmButtonText: "확인"
 		 		}).then(() => {
-					$('#TB06019P_ardyBzepNo').val(data.ardyBzepNo);
-					$('#TB06019P_bzplDvsnCd').val(data.bzplDvsnCd).prop('selected', true);
+					$('#TB06019P_srch_ardyBzepNo').val(data.ardyBzepNo);	
+					$('#TB06019P_ardyBzepNo').val(data.ardyBzepNo);					
 					$('#TB06019P_entpNm').val(data.entpNm);
-					$('#TB06019P_engBzplName').val(data.engBzplName);
-					$('#TB06019P_rnbn').val(data.rnbn);
-					$('#TB06019P_crno').val(data.crno);
-					$('#TB06019P_niceiBzepCd').val(data.niceiBzepCd);
-					$('#TB06019P_zpcd').val(data.zpcd);
-					$('#TB06019P_atno').val(data.atno);
-					$('#TB06019P_btno').val(data.btno);
-					$('#TB06019P_stno').val(data.stno);
-					$('#TB06019P_faxAtno').val(data.faxAtno).prop('selected', true);
-					$('#TB06019P_faxBtno').val(data.faxBtno);
-					$('#TB06019P_faxStno').val(data.faxStno);
-					$('#TB06019P_korBzplAddr').val(data.korBzplAddr);
-					$('#TB06019P_engBzplAddr').val(data.engBzplAddr);
-					$(':radio[name=useYn]').radioSelect(data.useYn);
-					$('#TB06019P_stdIdstSclsCd').val(data.stdIdstSclsCd).prop('selected', true);
-					$('#TB06019P_etprShapDvsnCd').val(data.etprShapDvsnCd).prop('selected', true);
-					$('#TB06019P_bucoName').val(data.bucoName);
-					$('#TB06019P_etprScleDvsnCd').val(data.etprScleDvsnCd).prop('selected', true);
-					$('#TB06019P_ctmBicName').val(data.ctmBicName);
-					$('#TB06019P_erlmDt').val(data.erlmDt);
-					$(':radio[name=clseDvsnCd]').radioSelect(data.clseDvsnCd);
-					$('#TB06019P_clseDt').val(data.clseDt);
-					$('#TB06019P_rdmTrOppnNo').val(data.rdmTrOppnNo);
-					$('#TB06019P_leiCd').val(data.leiCd);
-					$('#TB06019P_swiftBankDscmCd').val(data.swiftBankDscmCd);
-					$('#TB06019P_rvnuAmt').val(data.rvnuAmt);
-					$('#TB06019P_totAsstAmt').val(data.totAsstAmt);
-					$('#TB06019P_fnafHltySrnmRt').val(data.fnafHltySrnmRt);
-					$(':radio[name=ovrsSpcYn]').radioSelect(data.ovrsSpcYn);
-					$(':radio[name=useYn]').radioSelect(data.useYn);
 				});
 		 	},
 		 	error: function(e) {
