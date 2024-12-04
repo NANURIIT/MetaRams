@@ -54,17 +54,23 @@
 									</div>
 								</div>
 								<!-- 2 -->
-								<div class="form-group col-sm-12">
+								<div class="form-group col-sm-12 mb-1">
 									<label class="col-sm-1 control-label">Deal번호</label>
 									<div class="col-sm-4 input-group">
 										<input type="text" class="form-control" id="TB04020S_ibDealNo">
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB03021P('TB04020S');"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB04020S_ibDealNm" style="width: 210px;" disabled>
+										<input type="text" class="form-control" id="TB04020S_ibDealNm" disabled>
+									</div>
+									<label class="col-sm-1 control-label">안건진행상태</label>
+									<div class="col-sm-2 input-group">
+										<select class="form-control" id="TB04020S_I011">
+											<option value="">전체</option>
+										</select>
 									</div>
 									<!-- 버튼영역 -->
-									<div class="col-sm-7 text-right">
+									<div class="col-sm-4 text-right">
 										<button class="btn btn-primary" type="button" onclick="TB04020Sjs.checkDealSearch();">
 											<i class="fa fa-search"></i>&nbsp;조회
 										</button>

@@ -44,8 +44,8 @@
 		   AND s001b.DEL_YN = 'N'                                  
 		   AND s001b.CMNS_CD_GRP IN                                
 			<foreach collection="list" item="listParam" index="index" open="(" separator="," close=")">
-	               #{listParam}
-	        </foreach>
+	      #{listParam}
+	    </foreach>
 		 ORDER BY s001b.CMNS_CD_GRP, s002b.CD_SQ, s002b.CD_VL_ID 
 	</select>
 

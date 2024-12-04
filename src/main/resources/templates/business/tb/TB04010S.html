@@ -367,11 +367,11 @@
 															<label class="col-sm-4 col-form-label">직원</label>
 															<div class="col-sm-8">
 																<div class="input-group">
-																	<input type="hidden" id="TB04010S_empNo">
-																	<input type="text" class="form-control" id="TB04010S_empNm" readonly>
+																	<input type="text" class="form-control" style="width:30px;" id="TB04010S_empNo">
 																	<span class="input-group-append">
 																		<button type="button" class="btn btn-default" onclick="callTB03022P('TB04010S')"><i class="fa fa-search"></i></button>
 																	</span>
+																	<input type="text" class="form-control" id="TB04010S_empNm" style="width:70px;"readonly>
 																</div>
 															</div>
 														</div>
@@ -387,30 +387,35 @@
 														<div class="ibox-tools">
 															<button class="btn btn-default btn-xs" type="button" onclick="callTB04013P('TB04010S')"><i class="fa fa-check"></i>&nbsp;Check</button>
 														</div>
-													</div>
+													</div>									
 													<div class="ibox-content text-right">
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label">대상여부</label>
 															<div class="col-sm-2 text-left input-group input-h">
-																<input type="radio" value="Y" name="TB04010S_esgYn">&nbsp;Y
+																<input type="radio" value="Y" name="TB04010S_esgYn" disabled>&nbsp;Y
 															</div>
 															<div class="col-sm-2 text-left input-group input-h">
-																<input type="radio" value="N" name="TB04010S_esgYn" checked>&nbsp;N
+																<input type="radio" value="N" name="TB04010S_esgYn" disabled>&nbsp;N
 															</div>
 															<div class="col-sm-4">
 															</div>
 														</div>
 														<div class="form-group row">
-															<label class="col-sm-4 col-form-label">평가등급</label>
+															<label class="col-sm-4 col-form-label">평가등급(담당부서)</label>
 															<div class="col-sm-8 input-group">
 																<select class="form-control" id="TB04010S_R005" disabled>
 																	<option value="">선택</option>
-																</select>
-																<select class="form-control" id="TB04010S_R005_2" disabled>
+																</select>																
+															</div>
+														</div>
+														<div class="form-group row">
+															<label class="col-sm-4 col-form-label">평가등급(심사부서)</label>
+															<div class="col-sm-8 input-group">
+																	<select class="form-control" id="TB04010S_R005_2" disabled>
 																	<option value="">선택</option>
 																</select>
 															</div>
-														</div>
+														</div>													
 													</div>
 												</div>
 											</div>
