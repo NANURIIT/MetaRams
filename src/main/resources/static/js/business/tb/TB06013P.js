@@ -463,6 +463,32 @@ function onChangeSelectBoxMrtgKndCd() {
 function onClickExecute() {
   //if ($("#TB06013P_toggleBtn1").attr("class").includes("btn-info")) {
   var paramData = getParamData();
+  var check10reqCnt;
+  
+  //보증담보 선택시 by hytest
+  if(paramData.eprzCrdlWeekMrtgKndCd=='10'){
+	if(isEmpty(paramData.grteCtrcDcd)) check10reqCnt="보증약정구분코드";
+	else if(isEmpty(paramData.grnrCpin)) check10reqCnt="보증인고객식별번호";
+	else if(isEmpty(paramData.grupItgrCrdtGrdDcd)) check10reqCnt="그룹통합신용등급구분코드";
+	else if(isEmpty(paramData.dbtrCpin)) check10reqCnt="채무자고객식별번호";
+	else if(isEmpty(paramData.grteDbtrRltnDcd)) check10reqCnt="보증채무자관계구분코드";
+	else if(isEmpty(paramData.grteAmt)) check10reqCnt="보증금액";
+	else if(isEmpty(paramData.grtePrna)) check10reAqCnt="보증원금";	
+	else if(isEmpty(paramData.grteCrryCd)) check10reqCnt="보증통화코드";	
+	else if(isEmpty(paramData.stlaOrznBlngDcd)) check10reqCnt="결산기구분코드";	
+	else if(isEmpty(paramData.grteStlaDeEtcDcd)) check10reqCnt="보증결산일기타구분코드";	
+	else if(isEmpty(paramData.mrtgGrteCtns)) check10reqCnt="담보보증내용";	
+  }
+
+  if(check10reqCnt!=null && check10reqCnt!=undefined){
+	  var option = {}
+	  option.title = "Error";
+	  option.type = "error";
+	  option.text = check10reqCnt+"을(를) 입력해주세요";
+	  openPopup(option);
+	  return false;
+  }
+  
   if (isEmpty(paramData.mrtgMngmNo)) {
     regist(paramData);
   } else {
@@ -622,7 +648,7 @@ function getParamData() {
     // IBIMS216B
     grteCtrcDcd: $("#TB06013P_G002").val(), // 보증약정구분코드
     grnrCpin: $("#TB06013P_grnrCpin").val().replaceAll("-", ""), // 보증인고객식별번호
-    grupItgrCrdtGrdDcd: $("#TB06013P_C012").val(), // 그룹통합신용등급구분코드
+    grupItgrCrdtGrdDcd: $("#TB06013P_I012").val(), // 그룹통합신용등급구분코드
     crdtInqDt: $("#TB06013P_crdtInqDt").val(), // 신용조회일자
     dbtrCpin: $("#TB06013P_dbtrCpin").val(), // 채무자고객식별번호
     grteDbtrRltnDcd: $("#TB06013P_G003").val(), // 보증채무자관계구분코드
@@ -815,13 +841,13 @@ function TB06013P_getMrtgInfoDetails() {
         case "10":
           $("#TB06013P_G002").val(infoDetails.grteCtrcDcd).prop("selected", true); // 보증약정구분코드
           $("#TB06013P_grnrCpin").val(infoDetails.grnrCpin); // 보증인고객식별번호
-          $("#TB06013P_C012").val(infoDetails.crdtGRrdCd).prop("selected", true); // 그룹통합신용등급구분코드
+          $("#TB06013P_I012").val(infoDetails.grupItgrCrdtGrdDcd).prop("selected", true); // 그룹통합신용등급구분코드
           $("#TB06013P_crdtInqDt").val(formatDate(infoDetails.grnrCpin)); // 신용조회일자 
           $("#TB06013P_dbtrCpin").val(infoDetails.dbtrCpin); // 채무자고객식별번호
           $("#TB06013P_G003").val(infoDetails.grteDbtrRltnDcd).prop("selected", true); // 보증채무자관계구분코드
           $("#TB06013P_grteAmt").val(infoDetails.grteAmt); // 보증금액
           $("#TB06013P_grtePrna").val(infoDetails.grtePrna); // 보증원금
-          $("#TB06013P_I027_4").val(infoDetails.invstCrncyCd).prop("selected", true); // 보증통화코드 
+          $("#TB06013P_I027_4").val(infoDetails.grteCrryCd).prop("selected", true); // 보증통화코드 
           $("#TB06013P_S004").val(infoDetails.stlaOrznBlngDcd).prop("selected", true); // 결산기구분코드 
           $("#TB06013P_grteStlaDe").val(formatDate(infoDetails.grteStlaDe)); // 보증결산일
           $("#TB06013P_G007").val(infoDetails.grteStlaDeEtcDcd).prop("selected", true); // 보증결산일기타구분코드

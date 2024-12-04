@@ -212,9 +212,9 @@
 
 	<!-- 업데이트 시 SQ에 해당 권한코드 데이터가 있는지 유무 -->
 	<select id="isExist" parameterType="com.nanuri.rams.business.common.vo.IBIMS007BVO$selectUseMenuVO" resultType="boolean">
-		SELECT IF(
-				  COUNT(*) = 0, 0, 1
-				 ) AS isExist
+		SELECT CASE WHEN
+				  COUNT(*) = 0 THEN 0 ELSE 1 END
+				  AS isExist
 		  FROM IBIMS007B
 		 WHERE ATH_CD 	= #{athCd}			/* 권한코드 */
 		   AND SN 		= #{sn}				/* 일련번호 */

@@ -277,7 +277,7 @@ function setFndInfo(e) {
 
 
 function TB07022P_srchFnd(){
-	$("input[id*='_fndCd']").on('keydown', async function (evt) {
+	$('span.input-group-append').prev("input[id*='_fndCd']").on('keydown', async function (evt) {
 
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
@@ -286,7 +286,7 @@ function TB07022P_srchFnd(){
 			if ($(this).attr('id') === $("#TB07022P_fndCd").attr('id')) {
 				prefix = TB07022P_pf;
 			} else {
-				prefix = $(this).attr('id').slice(0, 8);
+				prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 6);
 			}
 
 			$(`input[id='${prefix}_fndNm']`).val("");
@@ -329,13 +329,13 @@ function TB07022P_srchFnd(){
 		}
 	});
 
-	$("input[id*='_fndCd']").on('change', async function (evt) {
+	$('span.input-group-append').prev("input[id*='_fndCd']").on('change', async function (evt) {
 
 		let prefix;
 		if ($(this).attr('id') === $("#TB07022P_fndCd").attr('id')) {
 			prefix = TB07022P_pf;
 		} else {
-			prefix = $(this).attr('id').slice(0, 8);
+			prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 6);
 		}
 
 		$(`input[id='${prefix}_fndNm']`).val("");

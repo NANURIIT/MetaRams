@@ -3,6 +3,10 @@
 
 /** onload **/
 $(function () {
+  /**
+   * keydown, onchange 이벤트 생성
+   * @author {김건우}
+   */
   if (
     $('script[src="js/business/tb/TB06011P.js"]').attr("src") ===
     "js/business/tb/TB06011P.js"
@@ -317,9 +321,11 @@ function uncomma(str) {
  *  셀렉터로 선택
  *  ex) selectorNumberFormater($('#TB07080S_dealExcAmt'));
  *  @param { $(selector) }
+ * 	@description
  *  document든 어디든 세팅해놓으면 됨
  * 	숫자허용 자리 12자리, 소수점 1개만 허용
  * 	!!경고메시지 필요
+ * 	@author {김건우}
  */
 function selectorNumberFormater(selector) {
   let deleteType;
@@ -404,9 +410,11 @@ function selectorNumberFormater(selector) {
  *  태그에 직접 코딩
  *  ex) <input class... id... name...   *oninput='inputNumberFormater(this)'*></input>
  *  @param {this}
+ * 	@description
  *  html 태그의 this만 부르면 됨
  * 	숫자허용 자리 12자리, 소수점 1개만 허용
  * 	!!경고메시지 필요
+ * 	@author {김건우}
  */
 function inputNumberFormater(target) {
   const $this = $(target);
@@ -1783,6 +1791,7 @@ function getBasicValues(id) {
  * 인풋박스 초기화
  * @param {$selector} selector 제이쿼리던 자바스크립트던 상관없음
  * div ibox로 잡혀있을텐데 원하는 태그에 id값을 주고 셀렉터로 받아서 인풋값 초기화
+ * @author {김건우}
  */
 function resetInputValue(selector) {
   selector.find(`select`).val("");
@@ -1809,6 +1818,7 @@ function resetInputValue(selector) {
  * pqgrid rowClick 이벤트
  * @param ui	pqgrid ui 요소
  * @param { String } menuId
+ * @author {김건우}
  */
 function setInputboxFromPdata(ui, menuId) {
   const keys = Object.keys(ui.rowData);
@@ -1821,6 +1831,7 @@ function setInputboxFromPdata(ui, menuId) {
  * 단건 select data뿌리기
  * @param data	ajax 셀렉트 데이터
  * @param { String } menuId
+ * @author {김건우}
  */
 function setInputDataFromSelectData(data, menuId) {
   const keys = Object.keys(data);
@@ -1851,6 +1862,7 @@ function setInputDataFromSelectData(data, menuId) {
 /**
  * @param {String} menuId  화면명
  * @param {Object} gridFunctionObj	함수를담은 오브젝트
+ * @author {김건우}
  */
 function ramsTabHandler(menuId) {
   // 화면 공통 탭들 선택
@@ -1905,6 +1917,7 @@ function vldDateVal() {
 /**
  * 마지막에 부른 모달 최상위 index로 올리기
  * @param {String} prefix 화면명
+ * @author {김건우}
  */
 function indexChangeHandler(prefix) {
   // console.log("");
@@ -1919,6 +1932,7 @@ function indexChangeHandler(prefix) {
 /**
  * PQGRID 줄추가
  * @param {selector} colModelSelector	// 쿼리 셀렉터 아이디
+ * @author {김건우}
  */
 function pqGridAddNewRow(colModelSelector) {
   let row = [];
@@ -1941,6 +1955,7 @@ function pqGridAddNewRow(colModelSelector) {
  * PQGRID 줄삭제
  * @param {selector} colModelSelector
  * @param {ui.rowIndx} rowIndx
+ * @author {김건우}
  */
 function pqGridDeleteRow(colModelSelector, rowIndx) {
   colModelSelector.pqGrid("deleteRow", {

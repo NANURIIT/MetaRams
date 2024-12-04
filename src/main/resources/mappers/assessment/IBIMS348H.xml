@@ -48,7 +48,7 @@
 			 , BUSI_NMCP_CPL_TXTN_YN	/* 사업부수수료과세여부 */
 			 , FEE_STDR_AMT				/* 수수료기준금액 */
 			 , FEE_TRGT_CTNS         	/* 수수료대상내용 */			    
-			 , IFNULL(PRCS_CPLT_YN, '0') AS PRCS_CPLT_YN /* 처리완료여부 */
+			 , IFNULL(PRCS_CPLT_YN, 'N') AS PRCS_CPLT_YN /* 처리완료여부 */
 			 , CRRY_CD					/* 통화코드 */			 
 			 , FEE_RT                   /* 수수료율      */
 			 , FEE_AMT                  /* 수수료금액    */
@@ -82,7 +82,7 @@
 		  FROM IBIMS348H A 	/* 딜승인수수료스케쥴기본 */
 		 WHERE 1 = 1
 		   AND A.PRDT_CD  = #{prdtCd} /*  'A000000001' */
-		   AND IFNULL(A.PRCS_CPLT_YN, '0') = '0'
+		   AND IFNULL(A.PRCS_CPLT_YN, 'N') = 'N'
 		   <if test = "prarDt != null and prarDt == ''">
 		   AND A.PRAR_DT &lt;= #{prarDt}
 		   </if>
