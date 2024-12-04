@@ -1,11 +1,13 @@
 const TB07110Sjs = (function () {
   let txbl; // 전자(세금)계산서
   let basic; // 기본?
+  let TB07110S_tagStatuses = [];
 
   $(document).ready(function () {
     $("#TB07110S_startDt").val(getSomeDaysAgo(7));
     $("#TB07110S_endDt").val(getToday());
     pqGrid();
+    TB07110S_getFirstStatus();
   });
 
   /*******************************************************************
@@ -216,6 +218,11 @@ const TB07110Sjs = (function () {
         , colModel: col_txbl
         //   , numberCell     : { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
         //   , scrollModel : { autoFit: false }
+        , rowDblClick: function (evt, ui) {
+
+          TB07110S_selectIBIMS432B();
+
+        }
       },
       {
         height: 150
@@ -248,6 +255,8 @@ const TB07110Sjs = (function () {
       rslnBdcd: $("#TB07110S_dprtCd").val(), //  부서코드  rslnBdcd
       actsCd: $("#TB07110S_actsCd").val(), //  계정과목
       bcncNm: $("#TB07110S_bcncNm").val(), //  거래처명
+      acctDt1:$("#TB07110S_startDt").val().replaceAll('-',''), 
+      acctDt2:$("#TB07110S_endDt").val().replaceAll('-','')
     };
 
     $.ajax({
@@ -284,6 +293,8 @@ const TB07110Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
+        console.log("selectIBIMS432B Success");
+        console.log(data);
         if (data) {
           let gridList = $("#TB07110S_grd_basic").pqGrid("instance");
           gridList.setData(data);
@@ -317,6 +328,51 @@ const TB07110Sjs = (function () {
     let gridList = $("#TB07110S_grd_txbl").pqGrid("instance");
     gridList.setData([]);
   
+  }
+
+  
+  /*
+   *  처음 인풋의 disabled, readonly 상태 가져오기
+   */
+  const TB07110S_getFirstStatus = () => {
+    $("#ibims431bdto input, #ibims431bdto select, #ibims431bdto button").each(function () {
+      TB07110S_tagStatuses.push({
+        id: $(this).attr('id'),
+        readonly: $(this).prop('readonly'),
+        disabled: $(this).prop('disabled'),
+        value: $(this).val()
+      });
+    });
+  }
+
+  /*
+   *  처음 인풋의 disabled, readonly 상태로 돌리기
+   */
+  const TB07110S_setFirstStatus = () => {
+    $('.toggleBtn1').addClass('btn-info').removeClass('btn-default');
+    $('.toggleBtn2').addClass('btn-default').removeClass('btn-info');
+    $('.ibox-content .ibox-content .btn.btn-default').prop('disabled', false);
+    TB07110S_tagStatuses.forEach(status => {
+      $(`#${status.id}`).prop('readonly', status.readonly);
+      $(`#${status.id}`).prop('disabled', status.disabled);
+    });
+    $('.toggleBtn2').prop('disabled', false);
+  }
+
+  /*
+   *  등록
+   */
+  const TB07110S_insertBtn = () => {
+    TB07110S_setFirstStatus();
+  }
+
+  const TB07110S_cancelBtn = () => {
+    $('.toggleBtn1').addClass('btn-default').removeClass('btn-info');
+    $('.toggleBtn2').addClass('btn-info').removeClass('btn-default');
+    $("#ibims431bdto input").prop("readonly", "true");
+    $("#ibims431bdto input, #ibims431bdto button, #ibims431bdto select").prop("disabled", "true");
+    $('.ibox-content .ibox-content .btn.btn-default').prop('disabled', true);
+    $('.toggleBtn1').prop('disabled', false);
   }
   /**
    * 지급품의 MERGE
@@ -564,6 +620,7 @@ const TB07110Sjs = (function () {
     TB07110S_selectIBIMS431B: TB07110S_selectIBIMS431B,
     TB07110S_doExc:TB07110S_doExc,
     TB07110S_reset: TB07110S_reset,
-
+    TB07110S_insertBtn: TB07110S_insertBtn,
+    TB07110S_cancelBtn: TB07110S_cancelBtn
   };
 })();

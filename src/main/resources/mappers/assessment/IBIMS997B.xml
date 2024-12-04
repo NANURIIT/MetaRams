@@ -44,7 +44,7 @@
 		       AND CUR_DATE = #{curDate}
            AND JOB_ID LIKE '%' || #{jobId} || '%'
 		       AND JOB_NAME LIKE '%' || #{jobName} || '%'
-           AND NVL(NULLIF(#{jobStatus}, ''), 'A') IN (JOB_STATUS, 'A')
+           AND NVL(IFNULL(#{jobStatus}, ''), 'A') IN (JOB_STATUS, 'A')
   	</select>
 
     <select id="batchMonitering" parameterType="string" resultType="int">
@@ -52,7 +52,7 @@
         FROM IBIMS997B
        WHERE 1=1
          AND JOB_STATUS IN (2, 5)
-         AND CUR_DATE = NVL(NULLIF(#{curDate}, ''),(
+         AND CUR_DATE = NVL(IFNULL(#{curDate}, ''),(
                           SELECT BZ_DD
 			                      FROM IBIMS999B
                         ))
@@ -82,7 +82,7 @@
         FROM IBIMS997B
        WHERE 1=1
          AND JOB_STATUS IN (0, 3, 5, 6, 7)
-         AND CUR_DATE = NVL(NULLIF(#{curDate}, ''),(
+         AND CUR_DATE = NVL(IFNULL(#{curDate}, ''),(
                           SELECT BZ_DD
 			                      FROM IBIMS999B
                         ))
@@ -96,7 +96,7 @@
       SELECT COUNT(JOB_ID)                                  /* JOB ID */
         FROM IBIMS997B
        WHERE 1=1
-         AND CUR_DATE = NVL(NULLIF(#{curDate}, ''),(
+         AND CUR_DATE = NVL(IFNULL(#{curDate}, ''),(
                           SELECT BZ_DD
 			                      FROM IBIMS999B
                         ))
@@ -198,7 +198,7 @@
               <!-- , RUN_COUNT          = #{runCount}           /* 실행횟수 */ -->
               , FIRST_START_TIME   = NVL(
                                             (
-                                             SELECT NULLIF(FIRST_START_TIME, '')
+                                             SELECT IFNULL(FIRST_START_TIME, '')
                                                FROM IBIMS997B
                                               WHERE JOB_ID = #{jobId}
                                                 AND CUR_DATE = #{curDate}
@@ -206,7 +206,7 @@
                                            )            /* 최초 시작시간 */
               , START_TIME         = NVL(TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss'), 
                                             (
-                                             SELECT NULLIF(START_TIME, '')
+                                             SELECT IFNULL(START_TIME, '')
                                                FROM IBIMS997B
                                               WHERE JOB_ID = #{jobId}
                                                 AND CUR_DATE = #{curDate}
@@ -236,7 +236,7 @@
          UPDATE IBIMS997B
             SET START_TIME         = ''                     /* 시작시간 */
               , END_TIME           = ''                     /* 종료시간 */
-              , ARGUMENT           = NVL(NULLIF(#{argument}, ''),
+              , ARGUMENT           = NVL(IFNULL(#{argument}, ''),
                                              (SELECT ARGUMENT 
                                                 FROM IBIMS997B 
                                                WHERE 1=1 
@@ -288,7 +288,7 @@
     <update id="subPreJobCount" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
       UPDATE IBIMS997B
          SET PRE_JOB_COUNT = (PRE_JOB_COUNT - 1)
-       WHERE CUR_DATE = NVL(NULLIF(#{curDate}, ''),(
+       WHERE CUR_DATE = NVL(IFNULL(#{curDate}, ''),(
                           SELECT BZ_DD
 			                      FROM IBIMS999B
                         ))

@@ -160,7 +160,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 
 		if(in348BVO.getPrcsCpltYn() == null) in348BVO.setPrcsCpltYn("N");
 		// 실행시 미납수수료를 수취한경우 수수료납입내역420 생성
-		if("1".equals(in348BVO.getPrcsCpltYn())) {
+		if("Y".equals(in348BVO.getPrcsCpltYn())) {
 
 			ibims348BVO = ibims348BMapper.selectOneFeeScxInfo(in348BVO);
 			ibims348BVO.setPrcsCpltYn(in348BVO.getPrcsCpltYn());	/* 처리완료여부 */
