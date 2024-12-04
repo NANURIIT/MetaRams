@@ -343,6 +343,8 @@ const TB07110Sjs = (function () {
         value: $(this).val()
       });
     });
+    console.log("===tags===");
+    console.log(TB07110S_tagStatuses);
   }
 
   /*
