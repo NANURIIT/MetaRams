@@ -103,7 +103,7 @@
                     SELECT C.DPRT_NM
                     FROM IBIMS003B C
                     WHERE C.BDCD = B.MNGM_BDCD
-                            LIMIT 1                     
+                        AND ROWNUM = 1                     
                     )                             AS DPRT_NM            /* 부서명   */
         FROM IBIMS800B A
         JOIN IBIMS201B B ON B.PRDT_CD = A.PRDT_CD 
