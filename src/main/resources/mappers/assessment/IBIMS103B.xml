@@ -1093,7 +1093,7 @@
            AND DEAL_NO                                 = #{dealNo}
            AND MTR_DCD                                 = #{mtrDcd}
            AND JDGM_DCD                                = #{jdgmDcd}
-           AND LAST_YN                                 = '1'
+           AND LAST_YN                                 = 'Y'
     </select>
     
     <select id="selectCnfStts" parameterType="com.nanuri.rams.business.common.vo.IBIMS103BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS103BVO">

@@ -147,7 +147,7 @@
                , #{cmnsCdClsf}                             <!-- 공통코드구분 -->
                , #{cdLngth}                                <!-- 코드길이 -->
                , #{cmnsCdGrpExpl}                          <!-- 공통코드그룹설명 -->
-               , DATE_FORMAT(NOW(), '%Y%m%d')              <!-- 등록일자 -->
+               , TO_CHAR(SYSDATE,'YYYYMMDD')               <!-- 등록일자 -->
                , #{rgstEmpno}                              <!-- 등록사원번호 -->
                , #{useYn}                                  <!-- 사용여부 -->
                , DEFAULT                                   <!-- 삭제여부 -->
