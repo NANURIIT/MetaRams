@@ -1,6 +1,24 @@
 let arrPqGridMtrInfo;
 
 /**
+ * enter 팝업 show
+ */
+
+function TB04011P_srchMtr() {
+  console.log("외않되");
+
+  $("input[id*='_ibDealNo']").on("keydown", async function (evt) {
+    if (evt.keyCode === 13) {
+      let prefix;
+      let ibDealNo;
+      prefix = $(this).attr("id").slice(0, 8);
+      ibDealNo = $(`input[id='${prefix}_prdtNm']`).val();
+      console.log("화면명 확인: ", prefix, "  딜번호확인: ", ibDealNo);
+    }
+  });
+}
+
+/**
  * 모달 팝업 show
  */
 function callTB04011P(prefix) {

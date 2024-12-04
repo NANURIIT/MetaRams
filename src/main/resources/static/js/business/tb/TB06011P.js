@@ -7,7 +7,8 @@ let srchCnt = 0;
  *	팝업 자동 호출, 검색
  */
 function TB06011P_srchPrdt() {
-	$("input[id*='_prdtCd']").on('keydown', async function (evt) {
+	
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_prdtCd']").on('keydown', async function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
@@ -64,7 +65,7 @@ function TB06011P_srchPrdt() {
 		}
 	});
 
-	$("input[id*='_prdtCd']").on('change', async function (evt) {
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_prdtCd']").on('change', async function (evt) {
 
 		// 사용한 인풋박스의 출처 페이지 가져오기
 		let prefix;

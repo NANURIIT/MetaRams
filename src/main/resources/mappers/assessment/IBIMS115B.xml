@@ -233,7 +233,7 @@
     <update id="cancelMMBRInfo" parameterType="map">
         <foreach collection="list" item="item">
         UPDATE IBIMS115B
-          SET ATDC_YN       = ''
+          SET ATDC_YN       = 'N'
             , APRV_OPPS_DCD = ''
             , OPNN_CTNS     = ''
             , OPNN_RGST_DT  = ''

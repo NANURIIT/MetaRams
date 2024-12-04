@@ -31,7 +31,7 @@
             ,IBIMS401B	E             /* 여신기본  */ 
             ,IBIMS820B F			        /* 기업여신월별결산내역 */
         WHERE 1 = 1
-        AND A.LAST_YN      = '1'
+        AND A.LAST_YN      = 'Y'
         AND A.PRDT_CD      = B.PRDT_CD 
         AND B.STDR_YM	    = SUBSTR(#{stdrDt},1,6)  /* 기준년월 */
         AND B.PRDT_CD      = C.PRDT_CD 
@@ -79,7 +79,7 @@
             ,IBIMS401B	E             /* 여신기본  */ 
             ,IBIMS820B F			        /* 기업여신월별결산내역 */
         WHERE 1 = 1
-        AND A.LAST_YN      = '1'
+        AND A.LAST_YN      = 'Y'
         AND A.PRDT_CD      = B.PRDT_CD 
         AND B.STDR_YM	    = SUBSTR(#{stdrDt},1,6)  /* 기준년월 */
         AND B.PRDT_CD      = C.PRDT_CD 
@@ -122,7 +122,7 @@
         WHERE 1 = 1
         AND A.PRDT_CD  = B.PRDT_CD 
         AND A.PRDT_CD  = C.PRDT_CD 
-        AND C.LAST_YN = '1'
+        AND C.LAST_YN = 'Y'
         AND A.STDR_YM	= SUBSTR(#{stdrDt},1,6)  /* 기준년월 */ 
         AND A.EPRZ_CRDL_STLA_DCD = '1'          /* 기업여신결산구분코드 1-미수이자  */
         ORDER BY A.PRDT_CD, A.EXC_SN 
@@ -154,7 +154,7 @@
             ,IBIMS401B	E             /* 여신기본  */ 
             ,IBIMS820B F			        /* 기업여신월별결산내역 */
         WHERE 1 = 1
-        AND A.LAST_YN      = '1'
+        AND A.LAST_YN      = 'Y'
         AND A.PRDT_CD      = B.PRDT_CD 
         AND B.STDR_YM	    = SUBSTR(#{stdrDt},1,6)  /* 기준년월 */ 
         AND B.PRDT_CD      = E.PRDT_CD 
@@ -237,7 +237,7 @@
                FROM  IBIMS201B A			                                        /* 딜승인기본 */
                    , IBIMS811B B                                              /* 딜월별잔액 */
               WHERE 1 = 1
-                AND A.LAST_YN = '1' 
+                AND A.LAST_YN = 'Y' 
                 AND A.PRDT_CD = B.PRDT_CD 
                 AND A.PRDT_LCLS_CD = '90'                       /* 기업여신상품대분류코드 90-대출 */ 
                 AND B.LDG_STTS_CD = '1'                         /* 원장상태코드 1-정상*/
@@ -329,7 +329,7 @@
                                 FROM DUAL
                                      ) F 
                        WHERE 1 = 1
-                         AND A.LAST_YN = '1'
+                         AND A.LAST_YN = 'Y'
                          AND A.PRDT_CD = E.PRDT_CD 
                          AND A.PRDT_CD = B.PRDT_CD 
                          AND A.PRDT_LCLS_CD = '90'     /* 기업여신상품대분류코드 90-대출 */ 
@@ -437,7 +437,7 @@
                                     FROM DUAL
                                   ) F
                           WHERE 1 = 1
-                            AND A.LAST_YN = '1'
+                            AND A.LAST_YN = 'Y'
                             AND A.PRDT_CD = E.PRDT_CD 
                             AND A.PRDT_CD = B.PRDT_CD 
                             AND B.LDG_STTS_CD = '1'                 /* 원장상태코드 1-정상*/
@@ -509,7 +509,7 @@
                FROM IBIMS201B A			                  /* 딜승인기본 */
                    ,IBIMS811B B                           /* 딜월별잔액 */
               WHERE 1 = 1
-                AND A.LAST_YN = '1' 
+                AND A.LAST_YN = 'Y' 
                 AND A.PRDT_CD = B.PRDT_CD  
                 AND B.LDG_STTS_CD = '1'                   /* 원장상태코드 1-정상*/
                 AND B.STDR_YM	= SUBSTR(#{stdrDt},1,6)   /* 기준년월 */

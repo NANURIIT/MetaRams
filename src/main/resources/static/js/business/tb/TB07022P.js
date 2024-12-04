@@ -277,7 +277,8 @@ function setFndInfo(e) {
 
 
 function TB07022P_srchFnd(){
-	$("input[id*='_fndCd']").on('keydown', async function (evt) {
+	
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fndCd']").on('keydown', async function (evt) {
 
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
@@ -329,7 +330,7 @@ function TB07022P_srchFnd(){
 		}
 	});
 
-	$("input[id*='_fndCd']").on('change', async function (evt) {
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fndCd']").on('change', async function (evt) {
 
 		let prefix;
 		if ($(this).attr('id') === $("#TB07022P_fndCd").attr('id')) {
