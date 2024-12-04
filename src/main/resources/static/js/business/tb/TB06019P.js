@@ -27,6 +27,17 @@ function vldDelBtn() {
 
 function srchParam(){
 	$('#con-srchParam input').val('');
+	
+	$("#TB06019P_bzplDvsnCd option:eq(0)").prop("selected", true);
+	$("#TB06019P_faxBtno option:eq(0)").prop("selected", true);
+	$("#TB06019P_etprShapDvsnCd option:eq(0)").prop("selected", true);
+	$("#TB06019P_stdIdstSclsCd option:eq(0)").prop("selected", true);
+	$("#TB06019P_etprScleDvsnCd option:eq(0)").prop("selected", true);
+	$("input:radio[name='smetYn']").prop('checked',false);
+	$("input:radio[name='clseDvsnCd']").prop('checked',false);
+	$("input:radio[name='ovrsSpcYn']").prop('checked',false);
+	$("input:radio[name='useYn']").prop('checked',false);
+	
 }
 
 /**
@@ -56,6 +67,16 @@ $("#TB06019P_ardyBzepNo").on("propertychange change paste input", function() {
 });
 
 
+/**
+ * 기업체번호 변경이벤트
+ */
+$("#TB06019P_srch_ardyBzepNo").on("propertychange change paste input", function() {
+	if (this.value.length === $("#TB06019P_srch_ardyBzepNo").prop('maxlength')) {
+		getArdyBzepInfo();
+	}
+});
+
+
 // 모달리셋
 function reset_TB06019P () {
 	let inputLength = $("#modal-TB06019P :input").length;
@@ -64,9 +85,15 @@ function reset_TB06019P () {
 		
 	}
 	$("#TB06019P_bzplDvsnCd option:eq(0)").prop("selected", true);
+	$("#TB06019P_faxBtno option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprShapDvsnCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_stdIdstSclsCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprScleDvsnCd option:eq(0)").prop("selected", true);
+	$("input:radio[name='smetYn']").prop('checked',false);
+	$("input:radio[name='clseDvsnCd']").prop('checked',false);
+	$("input:radio[name='ovrsSpcYn']").prop('checked',false);
+	$("input:radio[name='useYn']").prop('checked',false);
+	
 
 	/**
 	 * 초기화시 삭제버튼 비활성화
@@ -108,48 +135,50 @@ function getArdyBzepInfo() {
 			$('#TB06019P_bzplDvsnCd').val(data.bzplDvsnCd);				//사업장구분
 			$('#TB06019P_getArdyBzepNo').val(data.ardyBzepNo)			//기업체번호
 			$("#TB06019P_srch_entpNm").val(data.entpNm);				//상단기업명
-			$('#TB06019P_entpNm').val(data.entpNm)						//업체명
-			$('#TB06019P_engBzplName').val(data.engBzplName)			//영문사업자명
-			$('#TB06019P_rnbn').val(checkBrnAcno(data.rnbn))			//사업자등록번호
-			$('#TB06019P_crno').val(checkBrnAcno(data.crno))			//법인등록번호
-			$('#TB06019P_niceiBzepCd').val(data.niceiBzepCd)			//나이스신용평가업체코드
-			$('#TB06019P_zpcd').val(data.zpcd)							//우편번호
-			$('#TB06019P_atno').val(data.atno)							//전화지역번호
-			$('#TB06019P_btno').val(data.btno)							//전화국번호
-			$('#TB06019P_stno').val(data.stno)							//전화일련번호
-			$('#TB06019P_faxAtno').val(data.faxAtno)					//Fax전화지역번호
-			$('#TB06019P_faxBtno').val(data.faxBtno)					//Fax전화국번호
-			$('#TB06019P_faxStno').val(data.faxStno)					//Fax전화일련번호
-			$('#TB06019P_korBzplAddr').val(data.korBzplAddr)			//한글사업장주소
-			$('#TB06019P_engBzplAddr').val(data.engBzplAddr)			//영문사업장주소
+			$('#TB06019P_entpNm').val(data.entpNm);						//업체명
+			$('#TB06019P_engBzplName').val(data.engBzplName);			//영문사업자명
+			$('#TB06019P_rnbn').val(checkBrnAcno(data.rnbn));			//사업자등록번호
+			$('#TB06019P_crno').val(checkBrnAcno(data.crno));			//법인등록번호
+			$('#TB06019P_niceiBzepCd').val(data.niceiBzepCd);			//나이스신용평가업체코드
+			$('#TB06019P_zpcd').val(data.zpcd);							//우편번호
+			$('#TB06019P_atno').val(data.atno);							//전화지역번호
+			$('#TB06019P_btno').val(data.btno);							//전화국번호
+			$('#TB06019P_stno').val(data.stno);							//전화일련번호
+			$('#TB06019P_faxAtno').val(data.faxAtno);					//Fax전화지역번호
+			$('#TB06019P_faxBtno').val(data.faxBtno);					//Fax전화국번호
+			$('#TB06019P_faxStno').val(data.faxStno);					//Fax전화일련번호
+			$('#TB06019P_korBzplAddr').val(data.korBzplAddr);			//한글사업장주소
+			$('#TB06019P_engBzplAddr').val(data.engBzplAddr);			//영문사업장주소
 
 			/* 세부정보*/
-			$(':radio[name="smetYn"]').radioSelect(data.smetYn)			//중소기업여부
+			data.smetYn=="Y" ? $('#smetYn_Y').prop('checked',true):	$('#smetYn_N').prop('checked',true);			
+			data.clseDvsnCd=="Y" ?	$('#clseDvsnCd_Y').prop('checked',true) :$('#clseDvsnCd_N').prop('checked',true);			
+			data.ovrsSpcYn=="Y" ?  $('#ovrsSpcYn_Y').prop('checked',true) :$('#ovrsSpcYn_N').prop('checked',true);	
+			data.useYn=="Y" ?  $('#useYn_Y').prop('checked',true) :$('#useYn_N').prop('checked',true);
 			$('#TB06019P_stdIdstSclsCd').val(data.stdIdstSclsCd).prop('selected', true);		//표준산업소분류
 			$('#TB06019P_etprShapDvsnCd').val(data.etprShapDvsnCd).prop('selected', true);		//기업형태구분
-			$('#TB06019P_bucoName').val(data.bucoName)					//업태명
+			$('#TB06019P_bucoName').val(data.bucoName);					//업태명
 			$('#TB06019P_etprScleDvsnCd').val(data.etprScleDvsnCd).prop('selected', true);		//기업규모구분
-			$('#TB06019P_ctmBicName').val(data.ctmBicName)				//CTM은행인식코드명
-			$('#TB06019P_rdmTrOppnNo').val(data.rdmTrOppnNo)			//RDM거래상대방번호
-			$('#TB06019P_erlmDt').val(data.erlmDt)						//등록일자
-			$(":radio[name='clseDvsnCd']").radioSelect(data.clseDvsnCd); // 폐업구분
-			$('#TB06019P_clseDt').val(data.clseDt)						//폐업일자
-			$('#TB06019P_leiCd').val(data.leiCd)						//LEI코드
-			$('#TB06019P_swiftBankDscmCd').val(data.swiftBankDscmCd)	//SWIFT은행식별코드
+			$('#TB06019P_ctmBicName').val(data.ctmBicName);				//CTM은행인식코드명
+			$('#TB06019P_rdmTrOppnNo').val(data.rdmTrOppnNo);			//RDM거래상대방번호
+			$('#TB06019P_erlmDt').val(data.erlmDt);						//등록일자
+			$('#TB06019P_clseDt').val(data.clseDt);						//폐업일자
+			$('#TB06019P_leiCd').val(data.leiCd);						//LEI코드
+			$('#TB06019P_swiftBankDscmCd').val(data.swiftBankDscmCd);	//SWIFT은행식별코드
 			if (!isEmpty(data.rvnuAmt)) {
-				$('#TB06019P_rvnuAmt').val(addComma(data.rvnuAmt))			//매출금액
+				$('#TB06019P_rvnuAmt').val(addComma(data.rvnuAmt));			//매출금액
 			} else {
-				$('#TB06019P_rvnuAmt').val(data.rvnuAmt)				//매출금액
+				$('#TB06019P_rvnuAmt').val(data.rvnuAmt);				//매출금액
 			}
 			if (!isEmpty(data.totAsstAmt)) {
-				$('#TB06019P_totAsstAmt').val(addComma(data.totAsstAmt))	//총자산금액
+				$('#TB06019P_totAsstAmt').val(addComma(data.totAsstAmt));	//총자산금액
 			} else {
-				$('#TB06019P_totAsstAmt').val(data.totAsstAmt)			//총자산금액
+				$('#TB06019P_totAsstAmt').val(data.totAsstAmt);			//총자산금액
 			}
-			$('#TB06019P_fnafHltySrnmRt').val(data.fnafHltySrnmRt)		//재무건전성비율
-			$(':radio[name="ovrsSpcYn"]').radioSelect(data.ovrsSpcYn)	//해외SPC여부
-			$(':radio[name="useYn"]').radioSelect(data.useYn)			//사용여부
-
+			$('#TB06019P_fnafHltySrnmRt').val(data.fnafHltySrnmRt);		//재무건전성비율
+			//$(":radio[name='clseDvsnCd']").radioSelect(data.clseDvsnCd); // 폐업구분
+			//$(':radio[name="ovrsSpcYn"]').radioSelect(data.ovrsSpcYn);	//해외SPC여부
+			//$(':radio[name="useYn"]').radioSelect(data.useYn);			//사용여부
 			/**
 			 * 조회 성공시 삭제버튼 활성화
 			 */
@@ -196,14 +225,14 @@ function saveArdyBzepInfo() {
 			, "faxStno": $('#TB06019P_faxStno').val()						//Fax전화일련번호
 			, "korBzplAddr": $('#TB06019P_korBzplAddr').val()				//한글사업장주소
 			, "engBzplAddr": $('#TB06019P_engBzplAddr').val()				//영문사업장주소
-			, "smetYn": $('input[name=useYn]:checked').val()				//중소기업여부
+			, "smetYn": $('input:radio[name=smetYn]:checked').val()				//중소기업여부
 			, "stdIdstSclsCd": $('#TB06019P_stdIdstSclsCd').val()			//표준산업소분류
 			, "etprShapDvsnCd": $('#TB06019P_etprShapDvsnCd').val()			//기업형태구분
 			, "bucoName": $('#TB06019P_bucoName').val()						//업태명
 			, "etprScleDvsnCd": $('#TB06019P_etprScleDvsnCd').val()			//기업규모구분
 			, "ctmBicName": $('#TB06019P_ctmBicName').val()					//CTM은행인식코드명
 			, "erlmDt": $('#TB06019P_erlmDt').val().replaceAll("-", "")		//등록일자
-			, "clseDvsnCd": $('input[name=clseDvsnCd]:checked').val()		//폐업구분
+			, "clseDvsnCd": $('input:radio[name=clseDvsnCd]:checked').val()		//폐업구분
 			, "clseDt": $('#TB06019P_clseDt').val().replaceAll("-", "")		//폐업일자
 			, "rdmTrOppnNo": $('#TB06019P_rdmTrOppnNo').val()				//RDM거래상대방번호
 			, "leiCd": $('#TB06019P_leiCd').val()							//LEI코드
@@ -211,8 +240,8 @@ function saveArdyBzepInfo() {
 			, "rvnuAmt": $('#TB06019P_rvnuAmt').val().replaceAll(",", "")		//매출금액
 			, "totAsstAmt": $('#TB06019P_totAsstAmt').val().replaceAll(",", "") //총자산금액
 			, "fnafHltySrnmRt": $('#TB06019P_fnafHltySrnmRt').val().replace("%", "")			//재무건전성비율
-			, "ovrsSpcYn": $('input[name=ovrsSpcYn]:checked').val()					//해외SPC여부
-			, "useYn": $('input[name=useYn]:checked').val()				//사용여부
+			, "ovrsSpcYn": $('input:radio[name=ovrsSpcYn]:checked').val()					//해외SPC여부
+			, "useYn": $('input:radio[name=useYn]:checked').val()				//사용여부
 
 		};
 		
