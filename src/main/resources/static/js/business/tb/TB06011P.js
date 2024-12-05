@@ -2,122 +2,124 @@ var arrPqGridPrdtCdList = [];
 let TB06011P_pf;
 let TB06011P_gridState = 1;
 let srchCnt = 0;
+let TB06011P_onchangehandler = "on";	// on off
 
-/*
- *	팝업 자동 호출, 검색
+/**
+ * 팝업 자동 호출, 검색
+ * @author {김건우}
  */
 function TB06011P_srchPrdt() {
+
+	/**
+	 * 팝업 자체 조회
+	 * 팝업은 포커스아웃시 조회 없음
+	 */
+	$('#TB06011P_prdtCd').on('keydown', function (evt) {
+		// Enter에만 작동하는 이벤트
+		if (evt.keyCode === 13) {
+			evt.preventDefault();
+			console.log("으흐흐");
+
+			// 팝업창에서는 엔터 누를시 조회만.
+			getPrdtCdList();
+
+		}
+	});
+
+	/**
+	 * 코드길이체크 후 자동조회
+	 */
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_prdtCd']").on('input', async function () {
+		// console.log("화면 인풋 태그 감시중");
+		const str = $(this).val().length
+
+		// 같이 붙어있는 인풋박스 id
+		const result = $(this).attr('id').slice(0, $(this).attr('id').length - 2) + 'Nm';
+
+		// 데이터를 지울때 값이 없으면 지워줌
+		// 값이 있으면 온체인지 또는 온인풋 이벤트로 값 채워짐
+		$(`#${result}`).val("")
+
+		/**
+		 ********* 각 컬럼의 길이로 세팅을 하셔야해용 *********
+		 */
+		// ex) 종목코드 VARCHAR(10)
+		if(str === 10){
+			
+			await srchEvent(this);
+
+		}
+	})
 	
 	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_prdtCd']").on('keydown', async function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
+			// console.log("화면내 엔터 이벤트");
+
+			TB06011P_onchangehandler = "off";
+			
 			evt.preventDefault();
 
-			// 사용한 인풋박스의 출처 페이지 가져오기
-			let prefix;
-			if ($(this).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
-				prefix = TB06011P_pf;
-			} else {
-				prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 7);
-			}
+			await srchEvent(this);
 
-			$(`input[id='${prefix}_prdtNm']`).val("");
-
-			$('#TB06011P_prefix').val(prefix);
-
-			/**
-			 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
-			 * 그리드 상태 다시 체크해주기
-			 */
-			if ($(`div[id='modal-TB06011P'][style*="display: none;"]`).length === 1) {
-				TB06011P_gridState = 1;
-			}
-			// else {
-
-			// }
-
-
-			// 인풋박스 밸류
-			let data = $(this).val();
-			$('#TB06011P_prdtCd').val(data);
-			await getGridState();
-
-			// 팝업 오픈
-
-			/**
-			 * 팝업 열려있음
-			 */
-			if (TB06011P_gridState === 0) {
-				console.log("열려있음", TB06011P_gridState);
-				callGridTB06011P(prefix);
-				$('#TB06011P_prdtCd').val(data);
-				setTimeout(() => getPrdtCdList(), 400);
-			} else
-			/**
-			 * 팝업 닫혀있음
-			 */
-			if (TB06011P_gridState === 1) {
-				console.log("닫혀있음", TB06011P_gridState);
-				callTB06011P(prefix);
-				$('#TB06011P_prdtCd').val(data);
-				setTimeout(() => getPrdtCdList(), 400);
-			}
 		}
 	});
 
 	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_prdtCd']").on('change', async function (evt) {
 
+		// console.log("화면내 체인지 이벤트");
+
+		if (TB06011P_onchangehandler === "on"){
+			await srchEvent(this);
+		}
+	});
+
+	async function srchEvent (selector) {
 		// 사용한 인풋박스의 출처 페이지 가져오기
 		let prefix;
-		if ($(this).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
+		if ($(selector).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
 			prefix = TB06011P_pf;
 		} else {
-			prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 7);
+			prefix = $(selector).attr('id').slice(0, $(selector).attr('id').length - 7);
 		}
-
+	
 		$(`input[id='${prefix}_prdtNm']`).val("");
-
+	
 		$('#TB06011P_prefix').val(prefix);
-
+	
 		/**
 		 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
 		 * 그리드 상태 다시 체크해주기
 		 */
-		if ($(`div[id='modal-TB06011P'][style*="display: none;"]`).length === 1) {
+		if ($(`div[id='modal-TB06011P'][style*="display: none"]`).length === 1) {
+			// console.log("혹시 니가 닫았니?");
 			TB06011P_gridState = 1;
 		}
-		// else {
-
-		// }
-
-
+	
 		// 인풋박스 밸류
-		let data = $(this).val();
+		let data = $(selector).val();
 		$('#TB06011P_prdtCd').val(data);
 		await getGridState();
-
+	
 		// 팝업 오픈
-
-		/**
-		 * 팝업 열려있음
-		 */
+	
 		if (TB06011P_gridState === 0) {
 			console.log("열려있음", TB06011P_gridState);
+			// 그리드만 부릅니다
 			callGridTB06011P(prefix);
 			$('#TB06011P_prdtCd').val(data);
 			setTimeout(() => getPrdtCdList(), 400);
 		} else
-		/**
-		 * 팝업 닫혀있음
-		 */
 		if (TB06011P_gridState === 1) {
 			console.log("닫혀있음", TB06011P_gridState);
+			// 팝업을 열거예요
 			callTB06011P(prefix);
 			$('#TB06011P_prdtCd').val(data);
 			setTimeout(() => getPrdtCdList(), 400);
 		}
-	});
+	}
 }
+
 
 //그리드 컬럼 세팅
 var colPrdtCdList = [
@@ -418,11 +420,15 @@ function dataPrdtCdSetGrid(data) {
 
 	// 검색된 행이 1개일 경우 데이터 바로 입력
 	if (arrPqGridPrdtCdList.pdata.length === 1) {
+		// console.log("여기로와야해");
 		setPrdtInfo(arrPqGridPrdtCdList.pdata[0]);
 		srchCnt = 0;
+		// 입력되고 난 후 온체인지 이벤트 on
+		TB06011P_onchangehandler = "on"
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
 	else if (arrPqGridPrdtCdList.pdata.length === 0) {
+		// console.log("딴길로 새지마라");
 		// 데이터 없는 경우 재조회 방지
 		srchCnt += 1;
 		$('#TB06011P_prdtCd').val("");
@@ -430,6 +436,7 @@ function dataPrdtCdSetGrid(data) {
 	}
 	// 그렇지 않은 경우 조건에 맞는 데이터 출력
 	else {
+		// console.log("해쥐맬라고우~");
 		srchCnt = 0;
 	}
 
@@ -559,7 +566,7 @@ async function getPrdtCdList() {
 				alert("조회된 정보가 없습니다!")
 				return;
 			}
-			console.log("진짜 쿼리", data);
+			// console.log("진짜 쿼리", data);
 			dataPrdtCdSetGrid(data);
 		}
 	});
@@ -611,7 +618,7 @@ async function getGridState() {
 		data: JSON.stringify(param),
 		dataType: "json",
 		success: function (data) {
-			console.log("숨는 쿼리", data);
+			// console.log("숨는 쿼리", data);
 			if (!data || data === undefined || data.length === 0) {
 				// console.log("1번조건");
 				TB06011P_gridState = 1;
@@ -622,6 +629,7 @@ async function getGridState() {
 				// console.log("3번조건");
 				TB06011P_gridState = 0;
 			}
+			// console.log("데이터가 한건이면 0이라구욧!", TB06011P_gridState);
 		}
 	});
 }
