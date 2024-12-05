@@ -146,6 +146,8 @@ public class IBIMS201BDTO {
     private BigDecimal rcvbIntrAplyIrt;             //  미수이자적용이율
     private BigDecimal intrErnAmt;                  //  이자수익금액
     private BigDecimal fndsPrcrCtAmt;               //  자금조달비용금액
+    private BigDecimal totIssuShqt; 				//  총발행좌수
+    private BigDecimal totIssuStkQnt;				//  총발행주수
     private String intrClcEndDeDcd;                 //  이자계산종료일구분코드
     private String intrHdwtClcYn;                   //  이자수기계산여부
     private String grdCd;                           //  기업여신등급코드
