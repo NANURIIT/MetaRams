@@ -15,6 +15,13 @@ $(function () {
   }
 
   if (
+    $('script[src="js/business/tb/TB07021P.js"]').attr("src") ===
+    "js/business/tb/TB07021P.js"
+  ) {
+    TB07021P_srchFnlt();
+  }
+
+  if (
     $('script[src="js/business/tb/TB07022P.js"]').attr("src") ===
     "js/business/tb/TB07022P.js"
   ) {
