@@ -137,7 +137,7 @@
                  #{dealNo}             /*  딜번호  */
                , #{sn}                 /*  일련번호  */
                , TO_CHAR(SYSDATE, 'YYYY')/*  기준년도  */
-               , '1'                   /*  최종여부  */
+               , 'Y'                   /*  최종여부  */
                , #{dealNm}             /*  딜명  */
                , #{prdtIflwPathDcd}    /*  상품유입경로구분코드  */
                , #{invDealCntn}        /*  딜내용  */
