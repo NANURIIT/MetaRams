@@ -11,6 +11,10 @@ let TB06011P_onchangehandler = "on";	// on off
 function TB06011P_srchPrdt() {
 
 	/**
+	 * 완성된 함수는 common.js에 한번 더 세팅해주셔야해요
+	 */
+
+	/**
 	 * 팝업 자체 조회
 	 * 팝업은 포커스아웃시 조회 없음
 	 */
@@ -108,6 +112,7 @@ function TB06011P_srchPrdt() {
 			// 그리드만 부릅니다
 			callGridTB06011P(prefix);
 			$('#TB06011P_prdtCd').val(data);
+			// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
 			setTimeout(() => getPrdtCdList(), 400);
 		} else
 		if (TB06011P_gridState === 1) {
@@ -115,6 +120,7 @@ function TB06011P_srchPrdt() {
 			// 팝업을 열거예요
 			callTB06011P(prefix);
 			$('#TB06011P_prdtCd').val(data);
+			// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
 			setTimeout(() => getPrdtCdList(), 400);
 		}
 	}
