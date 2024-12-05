@@ -278,7 +278,7 @@ function saveArdyBzepInfo() {
 			, "faxStno": $('#TB06019P_faxStno').val()						//Fax전화일련번호
 			, "korBzplAddr": $('#TB06019P_korBzplAddr').val()				//한글사업장주소
 			, "engBzplAddr": $('#TB06019P_engBzplAddr').val()				//영문사업장주소
-			, "smetYn": $("input:radio[name='smetYn']").val()				//중소기업여부
+			, "smetYn": $("#smetYn_Y").prop("checked", true) ? "Y" :"N"		//중소기업여부
 		    , "stdIdstSclsCd": $('#TB06019P_stdIdstSclsCd').val()			//표준산업소분류
 			, "etprShapDvsnCd": $('#TB06019P_etprShapDvsnCd').val()			//기업형태구분
 			, "bzcnNm": $('#TB06019P_bucoName').val()						//업태명
@@ -286,7 +286,7 @@ function saveArdyBzepInfo() {
 			, "ctmBicName": $('#TB06019P_ctmBicName').val()					//CTM은행인식코드명
 			, "estDt": $('#TB06019P_estDt').val().replaceAll("-", "")		//설립일자
 			, "rgstDt": $('#TB06019P_erlmDt').val().replaceAll("-", "")		//등록일자
-			, "clseDvsnCd": $("input:radio[name='clseDvsnCd']").val()		//폐업구분
+			, "clseDvsnCd":  $("#clseDvsnCd_Y").prop("checked", true) ? "Y" :"N"			//폐업구분
 			, "clseDt": $('#TB06019P_clseDt').val().replaceAll("-", "")		//폐업일자
 			, "stffNum": $('#TB06019P_stffNum').val().replaceAll(",", "")	//임직원수
 			, "oprtHnfNum": $('#TB06019P_oprtHnfNum').val().replaceAll(",", "")	//운용인력수
@@ -296,9 +296,9 @@ function saveArdyBzepInfo() {
 			, "rvnuAmt": $('#TB06019P_rvnuAmt').val().replaceAll(",", "")		//매출금액
 			, "totAsstAmt": $('#TB06019P_totAsstAmt').val().replaceAll(",", "") //총자산금액
 			, "fnafHltySrnmRt": $('#TB06019P_fnafHltySrnmRt').val().replace("%", "") //재무건전성비율 
-			, "ovrsSpcYn": $("input:radio[name='ovrsSpcYn']").val()			//해외SPC여부
+			, "ovrsSpcYn":  $("#ovrsSpcYn_Y").prop("checked", true) ? "Y" :"N"		//해외SPC여부
 			, "spcYn" : (($("#TB06019P_spcYn").prop('checked') == true)? "Y":"N") //SPC여부
-			, "useYn": $("input:radio[name='useYn']").val()					//사용여부
+			, "useYn": $("#useYn_Y").prop("checked", true) ? "Y" :"N"					//사용여부
 			
 		};
 		
