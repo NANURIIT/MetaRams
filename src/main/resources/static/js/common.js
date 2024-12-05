@@ -1815,7 +1815,7 @@ function setInputboxFromPdata(ui, menuId) {
 /**
  * 단건 select data뿌리기
  * @param data	ajax 셀렉트 데이터
- * @param { String } menuId
+ * @param {String} menuId
  * @author {김건우}
  */
 function setInputDataFromSelectData(data, menuId) {
@@ -1956,4 +1956,11 @@ function needRunFn(fn, menuId) {
   if (menuId) {
     fn;
   }
+}
+
+
+function autoSrchFromPQGrid (pqGridId, url, paramData) {
+
+  
+
 }
