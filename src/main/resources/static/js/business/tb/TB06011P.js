@@ -499,10 +499,6 @@ function callGridTB06011P(prefix) {
 function callTB06011P(prefix) {
 	// $(`#${prefix}_prdtCd`).focus();
 	// console.log("저는 팝업을 열겁니다");
-	// console.log($("#TB06011P_prdtCdList").pqGrid('instance'));
-	// if($("#TB06011P_prdtCdList").pqGrid('instance')){
-	// 	$("#TB06011P_prdtCdList").pqGrid('instance').setData([]);
-	// }
 	clearTB06011P();
 	TB06011P_gridState = 0;
 	TB06011P_pf = prefix;
@@ -517,7 +513,8 @@ function callTB06011P(prefix) {
  */
 function modalClose_TB06011P() {
 	TB06011P_gridState = 1;
-	if (typeof fnltPgGrid != "undefined") arrPqGridPrdtCdList.setData([]);
+	// if (typeof fnltPgGrid != "undefined") arrPqGridPrdtCdList.setData([]);
+	$('#TB06011P_prdtCdList').pqGrid("destroy");
 	$('#modal-TB06011P').modal('hide');
 };
 
@@ -573,6 +570,7 @@ async function getPrdtCdList() {
 
 			if(srchCnt >= 2){
 				alert("조회된 정보가 없습니다!")
+				srchCnt = 0;
 				return;
 			}
 			// console.log("진짜 쿼리", data);
