@@ -63,11 +63,12 @@ const TB06020Sjs = (function(){
 		item += '/' + 'T002';			// 당사역할구분코드
 		item += '/' + 'R017';			// 부동산금융구분코드
 		item += '/' + 'S002';			// SOC구분코드
-		item += '/' + 'I011';			// 진행상태
+		//item += '/' + 'I011';			// 진행상태
 		item += '/' + 'D007';			// 매각일자구분코드
 		item += '/' + 'D008';			// 매각기준금액구분코드
 		
 		getSelectBoxList('TB06020S', item);
+		getSelectBoxCode2('TB06020S','I011');
 		
 		var item = '';
 		item += 'I008';					// 결의협의회구분코드
@@ -107,8 +108,11 @@ const TB06020Sjs = (function(){
 		
 		getSelectBoxList('TB06013P', item);
 		
-		onChangeSelectBoxMrtgKndCd();
+		onChangeSelectBoxMrtgKndCd(); 
 	}
+	
+	
+	
 
 	/**
 	 * 기업여신 대분류코드 이벤트 핸들러
@@ -305,7 +309,8 @@ const TB06020Sjs = (function(){
 					$('#TB06020S_res_prdtNm').val(dealDetail.prdtNm);											// 종목명
 				}
 				$('#TB06020S_res_prdtCd').val(dealDetail.prdtCd);												// 종목코드
-				$('#TB06020S_I011').val(dealDetail.prgSttsCd);													// 진행상태
+				console.log("dealDetail.prgSttsCd"+dealDetail.prgSttsCd);
+				$('#TB06020S_I011').val(dealDetail.prgSttsCd).prop("selected", true).change();					// 진행상태
 				
 				$('#TB06020S_ardyBzepNo').val(handleNullData(checkBrnAcno(dealDetail.trOthrDscmNo)));			// 거래상대방식별번호
 				$('#TB06020S_corpRgstNo').val(dealDetail.corpNo);												// 법인번호
