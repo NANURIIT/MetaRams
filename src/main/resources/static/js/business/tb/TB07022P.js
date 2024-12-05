@@ -1,6 +1,8 @@
 var fndPgGrid = [];
 let TB07022P_pf;
 let TB07022P_gridState = 1;
+let TB07022P_srchCnt = 0;
+let TB07022P_onchangehandler = "on";	// on off
 
 
 //그리드 최하단 페이지모델
@@ -128,14 +130,33 @@ function dataFndSetGrid(data){
 		 	setFndInfo(rowData);
 		});
 	
-	//검색된 행이 1개일 경우 데이터 바로 입력
-	if (fndPgGrid.pdata.length === 1) {
+	// //검색된 행이 1개일 경우 데이터 바로 입력
+	// if (fndPgGrid.pdata.length === 1) {
+	// 	setFndInfo(fndPgGrid.pdata[0]);
+	// }
+	// // 검색된 행이 0일 경우 모든 데이터 출력
+	// else if (fndPgGrid.pdata.length === 0) {
+	// 	$('#TB07022P_fndCd').val("");
+	// 	getFndList();
+	// }
+
+	// 검색된 행이 1개일 경우 데이터 바로 입력
+	if (fndPgGrid.pdata.length === 1 && $(`div[id='modal-TB07022P']`).css('display') === "none") {
 		setFndInfo(fndPgGrid.pdata[0]);
+		TB07022P_srchCnt = 0;
+		// 입력되고 난 후 온체인지 이벤트 on
+		TB07022P_onchangehandler = "on"
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
 	else if (fndPgGrid.pdata.length === 0) {
+		// 데이터 없는 경우 재조회 방지
+		TB07022P_srchCnt += 1;
 		$('#TB07022P_fndCd').val("");
 		getFndList();
+	}
+	// 그렇지 않은 경우 조건에 맞는 데이터 출력
+	else {
+		TB07022P_srchCnt = 0;
 	}
 
 }
@@ -247,6 +268,14 @@ function getFndList() {
 		dataType: "json",
 		success: function(data) {
 			//console.log(JSON.stringify(data));
+
+			if(TB07022P_srchCnt >= 2){
+				alert("조회된 정보가 없습니다!")
+				TB07022P_srchCnt = 0;
+				return;
+			}
+			// // console.log("진짜 쿼리", data);
+			// dataPrdtCdSetGrid(data);
 			dataFndSetGrid(data);
 		}
 	});
@@ -277,66 +306,75 @@ function setFndInfo(e) {
 
 
 function TB07022P_srchFnd(){
-	
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fndCd']").on('keydown', async function (evt) {
 
+	/**
+	 * 팝업 자체 조회
+	 * 팝업은 포커스아웃시 조회 없음
+	 */
+	$('#TB07022P_fndCd, #TB07022P_fndNm').on('keydown', function (evt) {
+		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
 
-			let prefix;
-			if ($(this).attr('id') === $("#TB07022P_fndCd").attr('id')) {
-				prefix = TB07022P_pf;
-			} else {
-				prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 6);
-			}
+			getFndList();
 
-			$(`input[id='${prefix}_fndNm']`).val("");
+		}
+	});
 
-			$('#TB07022P_prefix').val(prefix);
+	/**
+	 * 코드길이체크 후 자동조회
+	 */
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fndCd']").on('input', async function () {
+		// console.log("화면 인풋 태그 감시중");
+		const str = $(this).val().length
 
-			if ($(`div[id='modal-TB07022P'][style*="display: none;"]`).length === 1) {
-				TB07022P_gridState = 1;
-			}
-			// else {
+		// 같이 붙어있는 인풋박스 id
+		const result = $(this).attr('id').slice(0, $(this).attr('id').length - 2) + 'Nm';
 
-			// }
+		// 데이터를 지울때 값이 없으면 지워줌
+		// 값이 있으면 온체인지 또는 온인풋 이벤트로 값 채워짐
+		$(`#${result}`).val("")
 
+		/**
+		 ********* 각 컬럼의 길이로 세팅을 하셔야해용 *********
+		 */
+		// ex) 펀드코드 VARCHAR(5)
+		if(str === 5){
+			
+			await srchEvent_TB07022P(this);
 
-			// 인풋박스 밸류
-			let data = $(this).val();
-			$('#TB07022P_fndCd').val(data);
-			await TB07022_getGridState();
+		}
+	})
 
-			// 팝업 오픈
+	
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fndCd']").on('keydown', async function (evt) {
 
-			/**
-			 * 팝업 열려있음
-			 */
-			if (TB07022P_gridState === 0) {
-				console.log("열려있음", TB07022P_gridState);
-				callGridTB07022P(prefix);
-				$('#TB07022P_fndCd').val(data);
-				setTimeout(() => getFndList(), 400);
-			} else
-				/**
-				 * 팝업 닫혀있음
-				 */
-				if (TB07022P_gridState === 1) {
-					console.log("닫혀있음", TB07022P_gridState);
-					callTB07022P(prefix);
-					$('#TB07022P_fndCd').val(data);
-					setTimeout(() => getFndList(), 400);
-				}
+		// Enter에만 작동하는 이벤트
+		if (evt.keyCode === 13) {
+			// console.log("화면내 엔터 이벤트");
+			evt.preventDefault();
+
+			TB07022P_onchangehandler = "off";
+
+			await srchEvent_TB07022P(this);
+
 		}
 	});
 
 	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fndCd']").on('change', async function (evt) {
+		// console.log("화면내 체인지 이벤트");
 
+		if (TB07022P_onchangehandler === "on"){
+			await srchEvent_TB07022P(this);
+		}
+	});
+
+	async function srchEvent_TB07022P (selector){
 		let prefix;
-		if ($(this).attr('id') === $("#TB07022P_fndCd").attr('id')) {
+		if ($(selector).attr('id') === $("#TB07022P_fndCd").attr('id')) {
 			prefix = TB07022P_pf;
 		} else {
-			prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 6);
+			prefix = $(selector).attr('id').slice(0, $(selector).attr('id').length - 6);
 		}
 
 		$(`input[id='${prefix}_fndNm']`).val("");
@@ -356,12 +394,11 @@ function TB07022P_srchFnd(){
 
 
 		// 인풋박스 밸류
-		let data = $(this).val();
+		let data = $(selector).val();
 		$('#TB07022P_fndCd').val(data);
 		await TB07022_getGridState();
 
 		// 팝업 오픈
-
 
 		/**
 		 * 팝업 열려있음
@@ -381,7 +418,7 @@ function TB07022P_srchFnd(){
 				$('#TB07022P_fndCd').val(data);
 				setTimeout(() => getFndList(), 400);
 			}
-	});
+	}
 }
 
 async function TB07022_getGridState(){

@@ -1,6 +1,8 @@
 var fnltPgGrid = [];
 let TB07021P_pf;
 let TB07021P_gridState = 1;				//그리드 상태 (0:: 열림 1:: 닫힘)
+let TB07021P_srchCnt = 0;
+let TB07021P_onchangehandler = "on";	// on off
 
 //그리드 최하단 페이지모델
 var pageModel_Fnlt = {
@@ -94,15 +96,24 @@ function dataFnltSetGrid(data){
 		 	//alert(rowData);
 		 	setFnltInfo(rowData);
 		});
-	
-	//검색된 행이 1개일 경우 데이터 바로 입력
-	if (fnltPgGrid.pdata.length === 1) {
+
+	// 검색된 행이 1개일 경우 데이터 바로 입력
+	if (fnltPgGrid.pdata.length === 1 && $(`div[id='modal-TB07021P']`).css('display') === "none") {
 		setFnltInfo(fnltPgGrid.pdata[0]);
+		TB07021P_srchCnt = 0;
+		// 입력되고 난 후 온체인지 이벤트 on
+		TB07021P_onchangehandler = "on"
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
 	else if (fnltPgGrid.pdata.length === 0) {
+		// 데이터 없는 경우 재조회 방지
+		TB07021P_srchCnt += 1;
 		$('#TB07021P_fnltCd').val("");
 		getFnltList();
+	}
+	// 그렇지 않은 경우 조건에 맞는 데이터 출력
+	else {
+		TB07021P_srchCnt = 0;
 	}
 }
 
@@ -212,27 +223,13 @@ function getFnltList() {
 		data: param,
 		dataType: "json",
 		success: function(data) {
-			/*
-			var html = '';
-			var prdtCdList = data;
-			$('#TB07021P_fnltCd').html(html);
-			
-
-			if (prdtCdList.length > 0) {
-				$.each(prdtCdList, function(key, value) {
-					html += '<tr ondblclick="setFnltInfo(this);">';
-					html += '<td>' + handleNullData(value.fnltCd) + '</td>';
-					html += '<td>' + handleNullData(value.fnltNm) + '</td>';
-					html += '</tr>';
-				});
-			} else {
-				html += '<tr>';
-				html += '<td colspan="2" style="text-align: center">데이터가 없습니다.</td>';
-				html += '</tr>';
+			if(TB07021P_srchCnt >= 2){
+				alert("조회된 정보가 없습니다!")
+				TB07021P_srchCnt = 0;
+				return;
 			}
-			
-			$('#TB07021P_prdtCdList').html(html);
-			*/
+			// // console.log("진짜 쿼리", data);
+			// dataPrdtCdSetGrid(data);
 			dataFnltSetGrid(data);
 		}
 	});
@@ -265,63 +262,75 @@ function setFnltInfo(e) {
 
 function TB07021P_srchFnlt(){
 	
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fnltCd']").on('keydown', async function (evt) {
 
+	/**
+	 * 팝업 자체 조회
+	 * 팝업은 포커스아웃시 조회 없음
+	 */
+	$('#TB07021P_fnltCd, #TB07021P_fnltNm').on('keydown', function (evt) {
+		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
 
-			let prefix;
-			if ($(this).attr('id') === $("#TB07021P_fnltCd").attr('id')) {
-				prefix = TB07021P_pf;
-			} else {
-				prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 7);
-			}
+			getFnltList();
 
-			$(`input[id='${prefix}_fnltNm']`).val("");
+		}
+	});
 
-			$('#TB07021P_prefix').val(prefix);
+	/**
+	 * 코드길이체크 후 자동조회
+	 */
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fnltCd']").on('input', async function () {
+		// console.log("화면 인풋 태그 감시중");
+		const str = $(this).val().length
 
-			if ($(`div[id='modal-TB07021P'][style*="display: none;"]`).length === 1) {
-				TB07021P_gridState = 1;
-			}
+		// 같이 붙어있는 인풋박스 id
+		const result = $(this).attr('id').slice(0, $(this).attr('id').length - 2) + 'Nm';
+
+		// 데이터를 지울때 값이 없으면 지워줌
+		// 값이 있으면 온체인지 또는 온인풋 이벤트로 값 채워짐
+		$(`#${result}`).val("")
+
+		/**
+		 ********* 각 컬럼의 길이로 세팅을 하셔야해용 *********
+		 */
+		// ex) 은행지점코드 VARCHAR(3)
+		if(str === 3){
+			
+			await srchEvent_TB07021P(this);
+
+		}
+	})
 
 
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fnltCd']").on('keydown', async function (evt) {
+		// Enter에만 작동하는 이벤트
+		if (evt.keyCode === 13) {
+			// console.log("화면내 엔터 이벤트");
+			evt.preventDefault();
 
-			// 인풋박스 밸류
-			let data = $(this).val();
-			$('#TB07021P_fnltCd').val(data);
-			await TB07021_getGridState();
+			TB07021P_onchangehandler = "off";
 
-			// 팝업 오픈
+			await srchEvent_TB07021P(this);
 
-			/**
-			 * 팝업 열려있음
-			 */
-			if (TB07021P_gridState === 0) {
-				console.log("열려있음", TB07021P_gridState);
-				callGridTB07021P(prefix);
-				$('#TB07021P_fnltCd').val(data);
-				setTimeout(() => getFnltList(), 400);
-			} else
-				/**
-				 * 팝업 닫혀있음
-				 */
-				if (TB07021P_gridState === 1) {
-					console.log("닫혀있음", TB07021P_gridState);
-					callTB07021P(prefix);
-					$('#TB07021P_fnltCd').val(data);
-					setTimeout(() => getFnltList(), 400);
-				}
 		}
 	});
 
 	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fnltCd']").on('change', async function (evt) {
 
+		// console.log("화면내 체인지 이벤트");
+
+		if (TB07021P_onchangehandler === "on"){
+			await srchEvent_TB07021P(this);
+		}
+	});
+
+	async function srchEvent_TB07021P (selector){
 		let prefix;
-		if ($(this).attr('id') === $("#TB07021P_fnltCd").attr('id')) {
+		if ($(selector).attr('id') === $("#TB07021P_fnltCd").attr('id')) {
 			prefix = TB07021P_pf;
 		} else {
-			prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 7);
+			prefix = $(selector).attr('id').slice(0, $(selector).attr('id').length - 7);
 		}
 
 		$(`input[id='${prefix}_fnltNm']`).val("");
@@ -341,7 +350,7 @@ function TB07021P_srchFnlt(){
 
 
 		// 인풋박스 밸류
-		let data = $(this).val();
+		let data = $(selector).val();
 		$('#TB07021P_fnltCd').val(data);
 		await TB07021_getGridState();
 
@@ -365,7 +374,7 @@ function TB07021P_srchFnlt(){
 				$('#TB07021P_fnltCd').val(data);
 				setTimeout(() => getFnltList(), 400);
 			}
-	});
+	}
 }
 
 async function TB07021_getGridState(){
