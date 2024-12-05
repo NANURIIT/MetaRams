@@ -592,7 +592,7 @@ const TB06020Sjs = (function(){
 			"pageDcd" : pageDcd
 			, "prdtCd": $('#TB06020S_res_prdtCd').val()									// 상품코드
 			//, "sn": ''                                          // 일련번호
-			, "lastYn": '1'																// 최종여부
+			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06020S_res_prdtNm').val()									// 상품명
 			, "prdtDsc": $('#TB06020S_prdtDsc').val()									// 상품설명
 			//, "rqsKndCd": rqsKndCd                              // 기업여신신청종류코드
