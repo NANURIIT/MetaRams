@@ -10,12 +10,15 @@ import lombok.Setter;
 public class TB04020SVO {
 	String rgstDtStart;
 	String rgstDtEnd;
-	String dprtCd;
+	String dprtCd; // 처리부점코드
 	String dprtNm;
 	String crryCd;
 	String dealNo;
-	String dbcd;
-	String mtrPrgSttsDcd;	
+	String dbcd; //부서코드
+	String mtrPrgSttsDcd;	//안건진행상태
+	String ownPDprtCd; //심사부서코드
+	String chrrEmpno;//심사자번호
+
 
 	@Getter
 	@Setter

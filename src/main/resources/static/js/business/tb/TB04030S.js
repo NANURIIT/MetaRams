@@ -54,6 +54,9 @@ const TB04030Sjs = (function () {
   function assignmentSearch() {
     var rgstDtStart = $("#TB04030S_fromDate").val().replaceAll("-", ""); // Deal생성일자(시작)
     var rgstDtEnd = $("#TB04030S_toDate").val().replaceAll("-", ""); // Deal생성일자(종료)
+    var mtrPrgSttsDcd = $("#TB04030S_I011").val(); //진행상태
+    var ownPDprtCd = $("#TB04030S_D010").val(); // 심사부서
+    var chrrEmpno = $("#TB04030S_empNo").val(); // 심사자번호
 
     if (isNotEmpty(rgstDtStart) || isNotEmpty(rgstDtEnd)) {
       businessFunction();
@@ -65,6 +68,9 @@ const TB04030Sjs = (function () {
       var dtoParam = {
         rgstDtStart: rgstDtStart,
         rgstDtEnd: rgstDtEnd,
+        ownPDprtCd: ownPDprtCd,
+        chrrEmpno: chrrEmpno,
+        mtrPrgSttsDcd: mtrPrgSttsDcd,
       };
 
       $.ajax({
