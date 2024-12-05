@@ -573,6 +573,7 @@ async function getPrdtCdList() {
 
 			if(srchCnt >= 2){
 				alert("조회된 정보가 없습니다!")
+				srchCnt = 0;
 				return;
 			}
 			// console.log("진짜 쿼리", data);
