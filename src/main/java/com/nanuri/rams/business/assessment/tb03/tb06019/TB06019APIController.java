@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nanuri.rams.business.common.vo.IBIMS010BVO.ArdyBzepCdVO;
 import com.nanuri.rams.business.common.vo.IBIMS010BVO.ArdyBzepListVO;
 import com.nanuri.rams.business.common.vo.IBIMS010BVO.ArdyBzepVO;
 import com.nanuri.rams.business.common.vo.IBIMS010BVO.SchCondVO;
-import com.nanuri.rams.business.common.vo.IBIMS010BVO.ArdyBzepCdVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,13 +35,13 @@ public class TB06019APIController {
 
 	// 기업체 정보 등록/수정/사용여부 수정 처리
 	@PostMapping(value = "/saveArdyBzepInfo")
-	public SchCondVO saveArdyBzepInfo(ArdyBzepVO saveVo) {
+	public SchCondVO saveArdyBzepInfo( ArdyBzepVO saveVo) {
 		return TB06019Service.saveArdyBzepInfo(saveVo);
 	}
 
 	// 기업체 정보 사용여부 수정
 	@PostMapping(value = "/deleteArdyBzepInfo")
-	public int deleteArdyBzepInfo(ArdyBzepVO saveVo) {
+	public int deleteArdyBzepInfo( ArdyBzepVO saveVo) {
 		return TB06019Service.deleteArdyBzepInfo(saveVo);
 	}
 

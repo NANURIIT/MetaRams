@@ -64,11 +64,8 @@
                                           <label class="col-sm-1 col-form-label text-right">SPC여부</label>
                                            <div class="col-sm-3 input-group input-h">
                                              <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" value="Y" name="spcYn" id="spcYn_Y">&nbsp;Y
-                                             </div>
-                                             <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" value="N" name="spcYn" id="spcYn_N">&nbsp;N
-                                             </div>
+                                               <input type="checkbox" class="" id="TB06019P_spcYn" checked>                                               
+                                             </div>                                          
                                           </div>
                                           <label class="col-sm-1 control-label">고객번호</label>
                                           <div class="col-sm-3">
@@ -107,7 +104,7 @@
                                                 <input type="text" class="form-control" id="TB06019P_rnbn" oninput="this.value = checkBrnAcno(this.value.replace(/[^-0-9]/g,''));" placeholder="사업자등록번호 10자리" maxlength='10' value ='999-99-99999' readonly>
                                              </div>
                                           </div>
-                                          <label class="col-sm-1 col-form-label text-right">법인등록번호</label>
+                                          <label class="col-sm-1 col-form-label text-right"><span class="req"></span>법인등록번호</label>
                                           <div class="col-sm-3">
                                              <div class="input-group">
                                                 <input type="text" class="form-control" id="TB06019P_crno" oninput="this.value = this.value.length > 10 ? checkBrnAcno(this.value.replace(/[^-0-9]/g,'')) : this.value.replace(/[^-0-9]/g,'');" placeholder="법인번호 13자리" maxlength="13">
@@ -190,7 +187,7 @@
                                                 <input type="radio" value="Y" name="smetYn" id="smetYn_Y" >&nbsp;Y
                                              </div>
                                              <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" value="N" name="smetYn" id="smetYn_N" >&nbsp;N
+                                                <input type="radio" value="N" name="smetYn" id="smetYn_N" checked>&nbsp;N
                                              </div>
                                           </div>
                                           <label class="col-sm-1 col-form-label text-right">표준산업소분류</label>
@@ -265,7 +262,7 @@
                                                 <input type="radio" name="clseDvsnCd" value="Y" id="clseDvsnCd_Y"  >&nbsp;Y
                                              </div>
                                              <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" name="clseDvsnCd" value="N" id="clseDvsnCd_N" >&nbsp;N
+                                                <input type="radio" name="clseDvsnCd" value="N" id="clseDvsnCd_N" checked>&nbsp;N
                                              </div>
                                           </div>
                                           <label class="col-sm-1 col-form-label text-right">폐업일자</label>
@@ -331,7 +328,7 @@
                                                 <input type="radio" value="Y" name="ovrsSpcYn" id="ovrsSpcYn_Y">&nbsp;Y
                                              </div>
                                              <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" value="N" name="ovrsSpcYn" id="ovrsSpcYn_N">&nbsp;N
+                                                <input type="radio" value="N" name="ovrsSpcYn" id="ovrsSpcYn_N" checked>&nbsp;N
                                              </div>
                                           </div>
                                           <label class="col-sm-1 col-form-label text-right">사용여부</label>
@@ -340,7 +337,7 @@
                                                 <input type="radio" value="Y" name="useYn" id="useYn_Y">&nbsp;Y
                                              </div>
                                              <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" value="N" name="useYn" id="useYn_N">&nbsp;N
+                                                <input type="radio" value="N" name="useYn" id="useYn_N" checked>&nbsp;N
                                              </div>
                                           </div>												
                                        </div>
