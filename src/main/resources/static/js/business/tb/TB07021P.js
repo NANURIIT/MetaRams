@@ -168,6 +168,7 @@ function callTB07021P(prefix) {
 
 
 function callGridTB07021P(prefix){
+
 	clearTB07021P();
 	$('#TB07021P_prefix').val(prefix);
 	setTimeout(() => showFnltGrid(), 300);
@@ -378,7 +379,7 @@ async function TB07021_getGridState(){
 		, "fnltNm" : $('#TB07021P_fnltNm').val()
 	}
 	
-	$.ajax({
+	await $.ajax({
 		type: "GET",
 		url: "/getFnltList",
 		data: param,

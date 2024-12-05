@@ -246,7 +246,7 @@ function getFndList() {
 		data: param,
 		dataType: "json",
 		success: function(data) {
-			console.log(JSON.stringify(data));
+			//console.log(JSON.stringify(data));
 			dataFndSetGrid(data);
 		}
 	});
@@ -362,7 +362,6 @@ function TB07022P_srchFnd(){
 
 		// 팝업 오픈
 
-		console.log(TB07022P_gridState);
 
 		/**
 		 * 팝업 열려있음
