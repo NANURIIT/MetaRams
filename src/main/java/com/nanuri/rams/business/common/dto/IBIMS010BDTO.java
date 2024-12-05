@@ -58,6 +58,6 @@ public class IBIMS010BDTO {
 	private String guid; /* GUID */
 	
 	private String estDt;		/* 설립일자 */
-	private int    stffNum;		/* 직원수 */
-	private int    oprtHnfNum;	/* 운영인력수 */
+	private BigDecimal   stffNum;		/* 직원수 */
+	private BigDecimal   oprtHnfNum;	/* 운영인력수 */
 }
