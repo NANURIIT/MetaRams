@@ -216,6 +216,7 @@ const TB06020Sjs = (function(){
 		})
 	}
 
+	//초기화
 	function resetSearchRequiment() {
 		$('#TB06020S_ibDealNo').val('');
 		$('#TB06020S_riskInspctCcdNm').val('');
@@ -227,6 +228,11 @@ const TB06020Sjs = (function(){
 		$('#TB06020S_prdtCd').val('');
 		$('#TB06020S_prdtNm').val('');
 		
+		let inputLength = $("#page-TB06020S :input").length;
+		for (let i = 0; i < inputLength; i++) {
+			$("#page-TB06020S :input:eq("+i+")").val("");
+			
+		}
 	}
 
 
@@ -309,7 +315,7 @@ const TB06020Sjs = (function(){
 					$('#TB06020S_res_prdtNm').val(dealDetail.prdtNm);											// 종목명
 				}
 				$('#TB06020S_res_prdtCd').val(dealDetail.prdtCd);												// 종목코드
-				console.log("dealDetail.prgSttsCd"+dealDetail.prgSttsCd);
+				
 				$('#TB06020S_I011').val(dealDetail.prgSttsCd).prop("selected", true).change();					// 진행상태
 				
 				$('#TB06020S_ardyBzepNo').val(handleNullData(checkBrnAcno(dealDetail.trOthrDscmNo)));			// 거래상대방식별번호

@@ -65,12 +65,13 @@ const TB06030Sjs = (function(){
 		item += '/' + 'S002';			// SOC구분코드
 		item += '/' + 'I004';			// PEF구분
 		item += '/' + 'E030';			// 채무증권상태
-		item += '/' + 'I011';			// 진행상태
+		//item += '/' + 'I011';			// 진행상태
 		item += '/' + 'D007';			// 매각일자구분코드
 		item += '/' + 'D008';			// 매각기준금액구분코드
 		item += '/' + 'I008';			// 결의협의회구분코드
 		
 		getSelectBoxList('TB06030S', item);
+		getSelectBoxCode2('TB06020S','I011');
 		
 		var item = '';
 		item += 'I008';					// 결의협의회구분코드
@@ -246,6 +247,11 @@ const TB06030Sjs = (function(){
 		$('#TB06030S_prdtNm').val('');
 		$('#TB06030S_mtrNm').val('');
 		
+		let inputLength = $("#page-TB06030S :input").length;
+		for (let i = 0; i < inputLength; i++) {
+			$("#page-TB06030S :input:eq("+i+")").val("");
+			
+		}
 	}
 
 	function getDealList() {
