@@ -1818,7 +1818,7 @@ function getBasicValues(id) {
  */
 function resetInputValue(selector) {
   selector.find(`select`).val("");
-  selector.find(`input[type="radio"][name$="Yn"][value="N"]`).prop("checked", true);
+  selector.find(`input[type="radio"][name*="Yn"][value="N"]`).prop("checked", true);
   selector.find(`input[type="text"]`).val("");
   selector
     .find(
