@@ -1,21 +1,148 @@
 let arrPqGridMtrInfo;
+let TB04011P_pf;
+let TB04011P_gridState = 1;
+let TB04011P_onchangehandler = "on"; // on off
 
 /**
- * enter 팝업 show
+ * 팝업 자동 호출, 검색
+ * @author {김건우}
  */
-
 function TB04011P_srchMtr() {
-  console.log("외않되");
+  /**
+   * 완성된 함수는 common.js에 한번 더 세팅해주셔야해요
+   */
 
-  $("input[id*='_ibDealNo']").on("keydown", async function (evt) {
+  /**
+   * 팝업 자체 조회
+   * 팝업은 포커스아웃시 조회 없음
+   */
+  $("#TB04011P_ibDealNo").on("keydown", function (evt) {
+    // Enter에만 작동하는 이벤트
     if (evt.keyCode === 13) {
-      let prefix;
-      let ibDealNo;
-      prefix = $(this).attr("id").slice(0, 8);
-      ibDealNo = $(`input[id='${prefix}_prdtNm']`).val();
-      console.log("화면명 확인: ", prefix, "  딜번호확인: ", ibDealNo);
+      evt.preventDefault();
+      console.log("으흐흐");
+
+      // 팝업창에서는 엔터 누를시 조회만.
+      getMtrInfo();
     }
   });
+
+  /**
+   * 코드길이체크 후 자동조회
+   */
+  $("span.input-group-append > button:not([disabled])")
+    .closest("span.input-group-append")
+    .prev("input[id*='_ibDealNo']")
+    .on("input", async function () {
+      // console.log("화면 인풋 태그 감시중");
+      const str = $(this).val().length;
+
+      // 같이 붙어있는 인풋박스 id
+      const result =
+        $(this)
+          .attr("id")
+          .slice(0, $(this).attr("id").length - 2) + "Nm";
+
+      // 데이터를 지울때 값이 없으면 지워줌
+      // 값이 있으면 온체인지 또는 온인풋 이벤트로 값 채워짐
+      $(`#${result}`).val("");
+      /**
+       ********* 각 컬럼의 길이로 세팅을 하셔야해용 *********
+       */
+      // ex) 종목코드 VARCHAR(10)
+      if (str === 17) {
+        await srchEvent(this);
+      }
+    });
+
+  $("span.input-group-append > button:not([disabled])")
+    .closest("span.input-group-append")
+    .prev("input[id*='_ibDealNo']")
+    .on("keydown", async function (evt) {
+      // Enter에만 작동하는 이벤트
+      if (evt.keyCode === 13) {
+        // console.log("화면내 엔터 이벤트");
+        evt.preventDefault();
+
+        TB04011P_onchangehandler = "off";
+
+        await srchEvent(this);
+      }
+    });
+
+  $("span.input-group-append > button:not([disabled])")
+    .closest("span.input-group-append")
+    .prev("input[id*='_ibDealNo']")
+    .on("keydown", async function (evt) {
+      // Enter에만 작동하는 이벤트
+      if (evt.keyCode === 13) {
+        // console.log("화면내 엔터 이벤트");
+        evt.preventDefault();
+
+        TB04011P_onchangehandler = "off";
+
+        await srchEvent(this);
+      }
+    });
+
+  $("span.input-group-append > button:not([disabled])")
+    .closest("span.input-group-append")
+    .prev("input[id*='_ibDealNo']")
+    .on("change", async function (evt) {
+      // console.log("화면내 체인지 이벤트");
+
+      if (TB04011P_onchangehandler === "on") {
+        await srchEvent(this);
+      }
+    });
+
+  async function srchEvent(selector) {
+    // 사용한 인풋박스의 출처 페이지 가져오기
+    let prefix;
+    if ($(selector).attr("id") === $("#TB04011P_ibDealNo").attr("id")) {
+      prefix = TB04011P_pf;
+    } else {
+      prefix = $(selector)
+        .attr("id")
+        .slice(0, $(selector).attr("id").length - 7);
+    }
+
+    $(`input[id='${prefix}_ibDealNm']`).val("");
+
+    $("#TB04011P_prefix").val(prefix);
+
+    /**
+     * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
+     * 그리드 상태 다시 체크해주기
+     */
+    if ($(`div[id='modal-TB04011P']`).css("display") === "none") {
+      // console.log("혹시 니가 닫았니?");
+      TB04011P_gridState = 1;
+    }
+
+    // 인풋박스 밸류
+    let data = $(selector).val();
+    $("#TB04011P_ibDealNo").val(data);
+    getMtrInfo();
+
+    // 팝업 오픈
+
+    if (TB04011P_gridState === 0) {
+      console.log("열려있음", TB04011P_gridState);
+      // 그리드만 부릅니다
+      callGridTB04011P(prefix);
+      $("#TB04011P_ibDealNo").val(data);
+      // ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
+      setTimeout(() => getMtrInfo(), 400);
+    } else if (TB04011P_gridState === 1) {
+      console.log("닫혀있음", TB04011P_gridState);
+      // 팝업을 열거예요
+      callTB04011P(prefix);
+      $("#TB04011P_ibDealNo").val(data);
+      // ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
+      setTimeout(() => getMtrInfo(), 400);
+    }
+  }
 }
 
 /**
