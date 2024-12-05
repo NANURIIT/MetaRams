@@ -23,10 +23,10 @@
 					<div class="ibox-content text-right i-filter">
 						<form method="get">
 							<div class="form-group form-inline row mb-0">
-								<div class="col-sm-12 text-right"></div>
-								<div class="form-group col-sm-12">
+								<!-- <div class="col-sm-12 text-right"></div> -->
+								<div class="form-group col-sm-12 mb-1">
 									<label class="col-sm-1 col-form-label">Deal생성일자</label>
-									<div class="col-sm-3 input-group">
+									<div class="col-sm-4 input-group">
 										<div class="col-sm-5 input-group date px-0">
 											<input type="text" class="form-control" id="TB03040S_fromDate" name="FromDate" value="" maxlength="10">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -39,17 +39,34 @@
 									</div>
 									<label class="col-sm-1 col-form-label">Deal번호</label>
 									<div class="col-sm-4 input-group">
-										<div class="input-group">
-											<input type="text" class="form-control" id="TB03040S_ibDealNo">
-											<span class="input-group-append">
-												<button type="button" class="btn btn-default" onclick="callTB03021P('TB03040S');"><i class="fa fa-search"></i></button>
-											</span>
-											<input type="text" class="form-control" id="TB03040S_ibDealNm" style="width: 210px;" readonly>
-										</div>
+										<input type="text" class="form-control col-sm-4" id="TB03040S_ibDealNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03021P('TB03040S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB03040S_ibDealNm" readonly>
+									</div>
+								</div>
+								<div class="form-group col-sm-12">
+									<label class="col-sm-1 col-form-label text-right">담당자번호</label>
+									<div class="col-sm-3 input-group">
+										<input type="text" class="form-control col-sm-4" id="TB03040S_1_empNm">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03022P('TB03040S_1')"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB03040S_1_empNo" readonly>
+									</div>
+									<div class="col-sm-1"></div>
+									<label class="col-sm-1 col-form-label text-right">부서번호</label>
+									<div class="col-sm-4 input-group">
+										<input type="text" class="form-control col-sm-4" id="TB03040S_2_dprtNm">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03022P('TB03040S_2')"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB03040S_2_dprtCd" readonly>
 									</div>
 									<!-- 버튼영역 -->
-									<div class="col-sm-3 text-left">
-										<button class="btn btn-primary" type="button" onclick="TB03040Sjs.ibSpecSearch();"><i class="fa fa-search"></i>&nbsp;조회</button>
+									<div class="col-sm-2">
+										<button class="btn btn-primary" id="btnLine" type="button" onclick="TB03040Sjs.ibSpecSearch();"><i class="fa fa-search"></i>&nbsp;조회</button>
 									</div>
 								</div>
 							</div>

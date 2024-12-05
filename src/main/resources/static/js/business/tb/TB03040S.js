@@ -62,6 +62,8 @@ const TB03040Sjs = (function(){
         //	"inqDvsn": $('#TB03040S_inqDvsn').val(),
         start: $("#TB03040S_fromDate").val().replaceAll("-", ""),
         end: $("#TB03040S_toDate").val().replaceAll("-", ""),
+        chrrEmpno :$("#TB03040S_1_empNo").val(),
+        mngmBdcd : $("#TB03040S_2_dprtCd").val(),
       };
 
       $.ajax({
@@ -93,6 +95,17 @@ const TB03040Sjs = (function(){
       callPage('TB05040S', '협의체 현황 및 결과조회');
     }
   }
+
+  //담당자명 변경시 담당자번호 클리어
+  $("#TB03040S_1_empNm").on('input', function(){
+    $('#TB03040S_1_empNo').val("");  
+  });
+
+  //부서명 변경시 부서번호 클리어
+  $("#TB03040S_2_dprtNm").on('input', function(){
+    $('#TB03040S_2_dprtCd').val("");  
+  });
+
 
   /* ***********************************그리드 컬럼******************************** */
   let colDealList = [

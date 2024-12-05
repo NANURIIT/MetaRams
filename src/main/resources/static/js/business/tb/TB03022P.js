@@ -1,6 +1,7 @@
 let arrPqGridEmpInfo;
 let mmbrSn;
 let tb08040sIdx;
+let TB03021P1_empNo;
 
 $(document).ready(function () {
 	keyDownEnter_TB03022P();
@@ -35,6 +36,10 @@ function callTB03022P(prefix, e) {
 		console.log("grd_TB08040S:::prefix", prefix)
 		console.log("grd_TB08040S:::e", e)
 		tb08040sIdx = e;
+	}
+
+	if(prefix === 'TB03021P1'){
+		TB03021P1_empNo = $('#TB03021P1_empNo').val();
 	}
 }
 
@@ -101,6 +106,7 @@ function keyDownEnter_TB03022P() {
 			getEmpList();
 		}
 	});
+
 }
 
 /**
@@ -256,6 +262,16 @@ function setEmpNm(e) {
 			feeSch.pdata[tb08040sIdx].rgstBdcd = dprtCd;
 			feeSch.refresh();
 			break;
+		case "TB03021P1":
+			if(TB03021P1_empNo != empNo ){
+				$('#TB03021P2_dprtNm').val(""); 
+    			$('#TB03021P2_dprtCd').val("");
+			}
+			break;
+		// case "TB03021P2":
+		// 	$("#TB03021P1_empNm").val("");
+		// 	$("#TB03021P1_empNo").val("");
+		// 	break;
 		default:
 			break;
 	}

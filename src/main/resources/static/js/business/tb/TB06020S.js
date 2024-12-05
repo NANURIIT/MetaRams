@@ -307,10 +307,10 @@ const TB06020Sjs = (function(){
 				$('#TB06020S_res_prdtCd').val(dealDetail.prdtCd);												// 종목코드
 				$('#TB06020S_I011').val(dealDetail.prgSttsCd);													// 진행상태
 				
-				$('#TB06020S_ardyBzepNo').val(handleNullData(checkBrnAcno(dealDetail.trOthrDscmNo)));					// 거래상대방식별번호
+				$('#TB06020S_ardyBzepNo').val(handleNullData(checkBrnAcno(dealDetail.trOthrDscmNo)));			// 거래상대방식별번호
 				$('#TB06020S_corpRgstNo').val(dealDetail.corpNo);												// 법인번호
 				
-				$('#TB06020S_bzepName').val(dealDetail.trOthrDscmNm);													// 거래상대방(업체한글명)
+				$('#TB06020S_bzepName').val(dealDetail.trOthrDscmNm);											// 거래상대방(업체한글명)
 				$('#TB06020S_I012').val(dealDetail.dmsCrdtGrdDcd).prop("selected", true);						// 내부신용등급(신용등급코드)
 				$('#TB06020S_crdtInqDt').val(formatDate(dealDetail.crdtInqDt));									// 신용조회일
 				
@@ -335,7 +335,7 @@ const TB06020Sjs = (function(){
 				
 				/** 금융조건 정보 */
 				
-				$('#TB06020S_rcgAmt').val(Number(handleNullData(dealDetail.apvlAmt)).toLocaleString());	// 종목승인금액
+				$('#TB06020S_rcgAmt').val(Number(handleNullData(dealDetail.apvlAmt)).toLocaleString());		    // 종목승인금액
 				$('#TB06020S_I027').val(dealDetail.trCrryCd).prop("selected", true);							// 투자통화코드
 				
 				$(":radio[name='TB06020S_untpFndYn']").radioSelect(dealDetail.untpFndYn);						// 단위형여부
@@ -354,6 +354,7 @@ const TB06020Sjs = (function(){
 				$(":radio[name='TB06020S_sglInvYn']").radioSelect(dealDetail.sglInvYn);							// 단독투자여부
 				$(":radio[name='TB06020S_mrtgStupYn']").radioSelect(dealDetail.mrtgStupYn);						// 담보제공여부
 				$(":radio[name='TB06020S_sdnTrgtYn']").radioSelect(dealDetail.sdnTrgtYn);						// 셀다운대상여부
+				$('#TB06020S_totIssuShqt').val(Number(handleNullData(dealDetail.totIssuShqt)).toLocaleString());// 총발행좌수
 				
 				if (isEmpty($('#TB06020S_res_prdtCd').val())) {
 					$('#regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
@@ -592,7 +593,7 @@ const TB06020Sjs = (function(){
 			"pageDcd" : pageDcd
 			, "prdtCd": $('#TB06020S_res_prdtCd').val()									// 상품코드
 			//, "sn": ''                                          // 일련번호
-			, "lastYn": '1'																// 최종여부
+			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06020S_res_prdtNm').val()									// 상품명
 			, "prdtDsc": $('#TB06020S_prdtDsc').val()									// 상품설명
 			//, "rqsKndCd": rqsKndCd                              // 기업여신신청종류코드
@@ -736,6 +737,7 @@ const TB06020Sjs = (function(){
 			//, "guid": ''                                      	// guid
 			//, "earlyRepayYn": $('input[name=TB06020S_earlyRepayYn]:checked').val()		// 중도상환여부
 			, "sglInvYn": $('input[name=TB06020S_sglInvYn]:checked').val()				// 단독투자여부
+			, "totIssuShqt" : replaceAll($('#TB06020S_totIssuShqt').val(), ',', '') / 1 // 총발행좌수
 		}
 		
 		return paramData;
