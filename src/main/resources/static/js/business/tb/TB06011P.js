@@ -18,7 +18,7 @@ function TB06011P_srchPrdt() {
 	 * 팝업 자체 조회
 	 * 팝업은 포커스아웃시 조회 없음
 	 */
-	$('#TB06011P_prdtCd').on('keydown', function (evt) {
+	$('#TB06011P_prdtCd, #TB06011P_prdtNm').on('keydown', function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
@@ -59,10 +59,9 @@ function TB06011P_srchPrdt() {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
 			// console.log("화면내 엔터 이벤트");
+			evt.preventDefault();
 
 			TB06011P_onchangehandler = "off";
-			
-			evt.preventDefault();
 
 			await srchEvent(this);
 
@@ -95,7 +94,7 @@ function TB06011P_srchPrdt() {
 		 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
 		 * 그리드 상태 다시 체크해주기
 		 */
-		if ($(`div[id='modal-TB06011P'][style*="display: none"]`).length === 1) {
+		if ($(`div[id='modal-TB06011P']`).css('display') === "none") {
 			// console.log("혹시 니가 닫았니?");
 			TB06011P_gridState = 1;
 		}
@@ -425,8 +424,8 @@ function dataPrdtCdSetGrid(data) {
 	});
 
 	// 검색된 행이 1개일 경우 데이터 바로 입력
-	if (arrPqGridPrdtCdList.pdata.length === 1) {
-		// console.log("여기로와야해");
+	if (arrPqGridPrdtCdList.pdata.length === 1 && $(`div[id='modal-TB06011P']`).css('display') === "none") {
+		console.log("여기로와야해");
 		setPrdtInfo(arrPqGridPrdtCdList.pdata[0]);
 		srchCnt = 0;
 		// 입력되고 난 후 온체인지 이벤트 on
@@ -434,7 +433,7 @@ function dataPrdtCdSetGrid(data) {
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
 	else if (arrPqGridPrdtCdList.pdata.length === 0) {
-		// console.log("딴길로 새지마라");
+		console.log("딴길로 새지마라");
 		// 데이터 없는 경우 재조회 방지
 		srchCnt += 1;
 		$('#TB06011P_prdtCd').val("");
@@ -500,12 +499,16 @@ function callGridTB06011P(prefix) {
 function callTB06011P(prefix) {
 	// $(`#${prefix}_prdtCd`).focus();
 	// console.log("저는 팝업을 열겁니다");
+	// console.log($("#TB06011P_prdtCdList").pqGrid('instance'));
+	// if($("#TB06011P_prdtCdList").pqGrid('instance')){
+	// 	$("#TB06011P_prdtCdList").pqGrid('instance').setData([]);
+	// }
+	clearTB06011P();
 	TB06011P_gridState = 0;
 	TB06011P_pf = prefix;
-	clearTB06011P();
+	setTimeout(() => roadPrdtCdListGrid(), 300);
 	$('#TB06011P_prefix').val(prefix);
 	$('#modal-TB06011P').modal('show');
-	setTimeout(() => roadPrdtCdListGrid(), 300);
 	indexChangeHandler("TB06011P");
 }
 

@@ -1,4 +1,6 @@
-var fnltPgGrid;
+var fnltPgGrid = [];
+let TB07021P_pf;
+let TB07021P_gridState = 1;				//그리드 상태 (0:: 열림 1:: 닫힘)
 
 //그리드 최하단 페이지모델
 var pageModel_Fnlt = {
@@ -93,6 +95,15 @@ function dataFnltSetGrid(data){
 		 	setFnltInfo(rowData);
 		});
 	
+	//검색된 행이 1개일 경우 데이터 바로 입력
+	if (fnltPgGrid.pdata.length === 1) {
+		setFnltInfo(fnltPgGrid.pdata[0]);
+	}
+	// 검색된 행이 0일 경우 모든 데이터 출력
+	else if (fnltPgGrid.pdata.length === 0) {
+		$('#TB07021P_fnltCd').val("");
+		getFnltList();
+	}
 }
 
 
@@ -142,6 +153,9 @@ function keyDownEnter_TB07021P() {
  */
 function callTB07021P(prefix) {
 	
+	TB07021P_gridState = 0;
+	TB07021P_pf = prefix;
+
 	clearTB07021P();
 	
 	$('#TB07021P_prefix').val(prefix);
@@ -152,11 +166,18 @@ function callTB07021P(prefix) {
 
 }
 
+
+function callGridTB07021P(prefix){
+	clearTB07021P();
+	$('#TB07021P_prefix').val(prefix);
+	setTimeout(() => showFnltGrid(), 300);
+}
+
 /**
  * hide modal
  */
 function modalClose_TB07021P() {
-	
+	TB07021P_gridState = 1;
 	if(typeof fnltPgGrid != "undefined") fnltPgGrid.setData([]);		
 	$('#modal-TB07021P').modal('hide');
 	
@@ -238,4 +259,142 @@ function setFnltInfo(e) {
 
 	
 	modalClose_TB07021P();
+}
+
+
+function TB07021P_srchFnlt(){
+	
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fnltCd']").on('keydown', async function (evt) {
+
+		if (evt.keyCode === 13) {
+			evt.preventDefault();
+
+			let prefix;
+			if ($(this).attr('id') === $("#TB07021P_fnltCd").attr('id')) {
+				prefix = TB07021P_pf;
+			} else {
+				prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 7);
+			}
+
+			$(`input[id='${prefix}_fnltNm']`).val("");
+
+			$('#TB07021P_prefix').val(prefix);
+
+			if ($(`div[id='modal-TB07021P'][style*="display: none;"]`).length === 1) {
+				TB07021P_gridState = 1;
+			}
+
+
+
+			// 인풋박스 밸류
+			let data = $(this).val();
+			$('#TB07021P_fnltCd').val(data);
+			await TB07021_getGridState();
+
+			// 팝업 오픈
+
+			/**
+			 * 팝업 열려있음
+			 */
+			if (TB07021P_gridState === 0) {
+				console.log("열려있음", TB07021P_gridState);
+				callGridTB07021P(prefix);
+				$('#TB07021P_fnltCd').val(data);
+				setTimeout(() => getFnltList(), 400);
+			} else
+				/**
+				 * 팝업 닫혀있음
+				 */
+				if (TB07021P_gridState === 1) {
+					console.log("닫혀있음", TB07021P_gridState);
+					callTB07021P(prefix);
+					$('#TB07021P_fnltCd').val(data);
+					setTimeout(() => getFnltList(), 400);
+				}
+		}
+	});
+
+	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fnltCd']").on('change', async function (evt) {
+
+		let prefix;
+		if ($(this).attr('id') === $("#TB07021P_fnltCd").attr('id')) {
+			prefix = TB07021P_pf;
+		} else {
+			prefix = $(this).attr('id').slice(0, $(this).attr('id').length - 7);
+		}
+
+		$(`input[id='${prefix}_fnltNm']`).val("");
+
+		$('#TB07021P_prefix').val(prefix);
+
+		/**
+		 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
+		 * 그리드 상태 다시 체크해주기
+		 */
+		if ($(`div[id='modal-TB07021P'][style*="display: none;"]`).length === 1) {
+			TB07021P_gridState = 1;
+		}
+		// else {
+
+		// }
+
+
+		// 인풋박스 밸류
+		let data = $(this).val();
+		$('#TB07021P_fnltCd').val(data);
+		await TB07021_getGridState();
+
+		// 팝업 오픈
+
+		/**
+		 * 팝업 열려있음
+		 */
+		if (TB07021P_gridState === 0) {
+			console.log("열려있음", TB07021P_gridState);
+			callGridTB07021P(prefix);
+			$('#TB07021P_fnltCd').val(data);
+			setTimeout(() => getFnltList(), 400);
+		} else
+			/**
+			 * 팝업 닫혀있음
+			 */
+			if (TB07021P_gridState === 1) {
+				console.log("닫혀있음", TB07021P_gridState);
+				callTB07021P(prefix);
+				$('#TB07021P_fnltCd').val(data);
+				setTimeout(() => getFnltList(), 400);
+			}
+	});
+}
+
+async function TB07021_getGridState(){
+
+	if (TB07021P_gridState === 0) {
+		return;
+	}
+
+	var param = {
+		"fnltCd" : $('#TB07021P_fnltCd').val()
+		, "fnltNm" : $('#TB07021P_fnltNm').val()
+	}
+	
+	$.ajax({
+		type: "GET",
+		url: "/getFnltList",
+		data: param,
+		dataType: "json",
+		success: function(data) {
+			console.log("숨는 쿼리:::" + data.length);
+			if (!data || data === undefined || data.length === 0) {
+				// console.log("1번조건");
+				TB07021P_gridState = 1;
+			} else if (data.length >= 2) {
+				// console.log("2번조건");
+				TB07021P_gridState = 1;
+			} else if (data) {
+				// console.log("3번조건");
+				TB07021P_gridState = 0;
+			}
+		}
+	});
 }
