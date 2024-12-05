@@ -580,7 +580,7 @@ const TB03020Sjs = (function(){
 			, "invPrdtClsfCd" : invPrdtClsfCd
 			, "invPrdtDtlsDvdCd" : invstGdsDtlsDvdCd
 			, "invDealCntn" : invDealCntn
-			, "bnkBd" : bnkBd
+			//, "bnkBd" : bnkBd
 			, "ntnCd" : ntnCd
 			, "invstCty" : invstCty
 			/* 업체정보 */
