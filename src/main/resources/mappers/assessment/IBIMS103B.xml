@@ -846,6 +846,8 @@
 		     , s201b.EXP_DT                                                /* 만기일자 */
 		     , s201b.RDMP_CLM_PSBL_DT									   /* 상환청구가능일자 */
 		     , s201b.RQS_KND_CD	                                           /* 기업여신신청종류코드 */
+		     , s201b.TOT_ISSU_SHQT										   /* 총발행좌수*/
+		     , s201b.TOT_ISSU_STK_QNT									   /* 총발행주수*/	
 		     , (
 		        CASE WHEN s201b.TR_OTHR_DSCM_NO = '' THEN (
                                                            SELECT ARDY_BZEP_NO
