@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	$('#TB06019P_erlmDt').val(getToday());
 	getSlctBox();
+	checkBoxChangeFunction();
 });
 
 /**
@@ -33,14 +34,20 @@ function srchParam(){
 	$("#TB06019P_etprShapDvsnCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_stdIdstSclsCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprScleDvsnCd option:eq(0)").prop("selected", true);
-	$("input:radio[name='spcYn']").prop('checked',false);
-	$("input:radio[name='smetYn']").prop('checked',false);
-	$("input:radio[name='clseDvsnCd']").prop('checked',false);
-	$("input:radio[name='ovrsSpcYn']").prop('checked',false);
-	$("input:radio[name='useYn']").prop('checked',false);
+
+	//$("input:radio[name='smetYn']").prop('checked',false);
+	//$("input:radio[name='clseDvsnCd']").prop('checked',false);
+	//$("input:radio[name='ovrsSpcYn']").prop('checked',false);
+	//$("input:radio[name='useYn']").prop('checked',false);
+	$('#smetYn_N').prop('checked',true);
+	$('#clseDvsnCd_N').prop('checked',true);
+	$('#ovrsSpcYn_N').prop('checked',true);
+	$('#useYn_N').prop('checked',true);
 	
+	//spc여부
+	$("#TB06019P_spcYn").prop('checked',true);
 	//사업자등록번호
-	$("#TB06019P_rnbn").val("999-99-99999");
+	$("#TB06019P_rnbn").val("999-99-99999").prop('readonly',true);
 	
 }
 
@@ -80,6 +87,35 @@ $("#TB06019P_srch_ardyBzepNo").on("propertychange change paste input", function(
 	}
 });
 
+/**
+ * spc여부 변경이벤트
+ */
+function checkBoxChangeFunction(){
+	$("#TB06019P_spcYn").on('change',function(){
+		console.log($("#TB06019P_spcYn").prop('checked'));
+
+		if($("#TB06019P_spcYn").prop('checked') == true){
+			if(isNotEmpty($('#TB06019P_rnbn').val()) && $('#TB06019P_rnbn').val()!="999-99-99999"){
+				$("#TB06019P_spcYn").prop('checked',false);
+				Swal.fire({
+					title: '기등록된 사업자번호가 존재합니다.',
+					icon: 'error',
+					confirmButtonText: '확인',					
+				});
+				return ;
+			}
+					
+			$("#TB06019P_rnbn").val("999-99-99999");
+			$("#TB06019P_rnbn").prop('readonly',true);
+		}else{
+			$("#TB06019P_rnbn").val("");
+			$("#TB06019P_rnbn").prop('readonly',false);
+			$("#TB06019P_rnbn").focus();
+		}
+	})
+}
+
+
 
 // 모달리셋
 function reset_TB06019P () {
@@ -88,19 +124,24 @@ function reset_TB06019P () {
 		$("#modal-TB06019P :input:eq("+i+")").val("");
 		
 	}
+	
+	console.log("초기화1");
 	$("#TB06019P_bzplDvsnCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_faxBtno option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprShapDvsnCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_stdIdstSclsCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprScleDvsnCd option:eq(0)").prop("selected", true);
-	$("input:radio[name='spcYn']").prop('checked',false);
-	$("input:radio[name='smetYn']").prop('checked',false);
-	$("input:radio[name='clseDvsnCd']").prop('checked',false);
-	$("input:radio[name='ovrsSpcYn']").prop('checked',false);
-	$("input:radio[name='useYn']").prop('checked',false);
-	
+	console.log("초기화2");
+	$('#smetYn_N').prop('checked',true);
+	$('#clseDvsnCd_N').prop('checked',true);
+	$('#ovrsSpcYn_N').prop('checked',true);
+	$('#useYn_N').prop('checked',true);
+	console.log("초기화3");
+	//spc여부
+	$("#TB06019P_spcYn").prop('checked',true);
 	//사업자등록번호
-	$("#TB06019P_rnbn").val("999-99-99999");
+	$("#TB06019P_rnbn").val("999-99-99999").prop('readonly',true);
+	console.log("초기화4");
 
 	/**
 	 * 초기화시 삭제버튼 비활성화
@@ -156,10 +197,10 @@ function getArdyBzepInfo() {
 			$('#TB06019P_faxStno').val(data.faxStno);					//Fax전화일련번호
 			$('#TB06019P_korBzplAddr').val(data.korBzplAddr);			//한글사업장주소
 			$('#TB06019P_engBzplAddr').val(data.engBzplAddr);			//영문사업장주소
-			data.spcYn=="Y" ? $('#spcYn_Y').prop('checked',true):	$('#spcYn_N').prop('checked',true);	//spc여부		
+			data.spcYn=="Y" ? $('#TB06019P_spcYn').prop('checked',true): $("#TB06019P_spcYn").prop("checked", false);	//spc여부		
 
 			/* 세부정보*/
-			data.smetYn=="Y" ? $('#smetYn_Y').prop('checked',true):	$('#smetYn_N').prop('checked',true);			
+			data.smetYn=="Y" ? $("#smetYn_Y").prop("checked", true):	$('#smetYn_N').prop('checked',true);			
 			data.clseDvsnCd=="Y" ?	$('#clseDvsnCd_Y').prop('checked',true) :$('#clseDvsnCd_N').prop('checked',true);			
 			data.ovrsSpcYn=="Y" ?  $('#ovrsSpcYn_Y').prop('checked',true) :$('#ovrsSpcYn_N').prop('checked',true);	
 			data.useYn=="Y" ?  $('#useYn_Y').prop('checked',true) :$('#useYn_N').prop('checked',true);
@@ -237,15 +278,15 @@ function saveArdyBzepInfo() {
 			, "faxStno": $('#TB06019P_faxStno').val()						//Fax전화일련번호
 			, "korBzplAddr": $('#TB06019P_korBzplAddr').val()				//한글사업장주소
 			, "engBzplAddr": $('#TB06019P_engBzplAddr').val()				//영문사업장주소
-			, "smetYn": $('input:radio[name=smetYn]:checked').val()			//중소기업여부
-			, "stdIdstSclsCd": $('#TB06019P_stdIdstSclsCd').val()			//표준산업소분류
+			, "smetYn": $("#smetYn_Y").prop("checked", true) ? "Y" :"N"		//중소기업여부
+		    , "stdIdstSclsCd": $('#TB06019P_stdIdstSclsCd').val()			//표준산업소분류
 			, "etprShapDvsnCd": $('#TB06019P_etprShapDvsnCd').val()			//기업형태구분
 			, "bzcnNm": $('#TB06019P_bucoName').val()						//업태명
 			, "eprzSclDcd": $('#TB06019P_etprScleDvsnCd').val()				//기업규모구분
 			, "ctmBicName": $('#TB06019P_ctmBicName').val()					//CTM은행인식코드명
 			, "estDt": $('#TB06019P_estDt').val().replaceAll("-", "")		//설립일자
 			, "rgstDt": $('#TB06019P_erlmDt').val().replaceAll("-", "")		//등록일자
-			, "clseDvsnCd": $('input:radio[name=clseDvsnCd]:checked').val()	//폐업구분
+			, "clseDvsnCd":  $("#clseDvsnCd_Y").prop("checked", true) ? "Y" :"N"			//폐업구분
 			, "clseDt": $('#TB06019P_clseDt').val().replaceAll("-", "")		//폐업일자
 			, "stffNum": $('#TB06019P_stffNum').val().replaceAll(",", "")	//임직원수
 			, "oprtHnfNum": $('#TB06019P_oprtHnfNum').val().replaceAll(",", "")	//운용인력수
@@ -254,12 +295,14 @@ function saveArdyBzepInfo() {
 			, "swiftBankDscmCd": $('#TB06019P_swiftBankDscmCd').val()		//SWIFT은행식별코드
 			, "rvnuAmt": $('#TB06019P_rvnuAmt').val().replaceAll(",", "")		//매출금액
 			, "totAsstAmt": $('#TB06019P_totAsstAmt').val().replaceAll(",", "") //총자산금액
-			, "fnafHltySrnmRt": $('#TB06019P_fnafHltySrnmRt').val().replace("%", "") //재무건전성비율
-			, "ovrsSpcYn": $('input:radio[name=ovrsSpcYn]:checked').val()		//해외SPC여부
-			, "spcYn" :$('input:radio[name=spcYn]:checked').val()				//SPC여부
-			, "useYn": $('input:radio[name=useYn]:checked').val()				//사용여부
+			, "fnafHltySrnmRt": $('#TB06019P_fnafHltySrnmRt').val().replace("%", "") //재무건전성비율 
+			, "ovrsSpcYn":  $("#ovrsSpcYn_Y").prop("checked", true) ? "Y" :"N"		//해외SPC여부
+			, "spcYn" : (($("#TB06019P_spcYn").prop('checked') == true)? "Y":"N") //SPC여부
+			, "useYn": $("#useYn_Y").prop("checked", true) ? "Y" :"N"					//사용여부
+			
 		};
 		
+		console.log("param:"+inParam);
 		 $.ajax({
 		 	type: "POST",
 		 	url: "/TB06019P/saveArdyBzepInfo",

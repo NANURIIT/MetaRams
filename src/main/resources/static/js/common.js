@@ -1817,8 +1817,12 @@ function getBasicValues(id) {
  * @author {김건우}
  */
 function resetInputValue(selector) {
-  selector.find(`select`).val("");
-  selector.find(`input[type="radio"][name$="Yn"][value="N"]`).prop("checked", true);
+  const $selectInput = selector.find(`select`)
+  $selectInput.each(function () {
+    $(this).val($($(this).find('option')[0]).val())
+  })
+  selector.find(`select[id*="Yn"]`).val("N");
+  selector.find(`input[type="radio"][name*="Yn"][value="N"]`).prop("checked", true);
   selector.find(`input[type="text"]`).val("");
   selector
     .find(
