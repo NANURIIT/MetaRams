@@ -140,6 +140,8 @@
 			     , DSHN_RT_GRD_CD = #{dshnRtGrdCd}  /* 기업여신부도율등급코드 */
 			     , EARLY_REPAY_YN = #{earlyRepayYn}  /* 중도상환여부 */
 			     , SGL_INV_YN = #{sglInvYn}  /* 단독투자여부 */
+			     , TOT_ISSU_SHQT = #{totIssuShqt} /* 총발행좌수 */
+			     , TOT_ISSU_STK_QNT = #{totIssuStkQnt} /* 총발행주수 */
 			     , RGST_DT = #{rgstDt}  /* 등록일자 */
 			     , CHNG_DT = #{chngDt}  /* 변경일자 */
 			     , HND_DETL_DTM = SYSDATE  /* 조작상세일시 */
@@ -1092,6 +1094,8 @@
             , INTR_HDWT_CLC_YN                                  <!-- 이자수기계산여부 -->
             , GRD_CD                                            <!-- 기업여신등급코드 -->
             , DSHN_RT_GRD_CD                                    <!-- 기업여신부도율등급코드 -->
+            , TOT_ISSU_SHQT										<!-- 총발행좌수 -->
+            , TOT_ISSU_STK_QNT									<!-- 총발행주수 -->
             , RGST_DT                                           <!-- 등록일자 -->
             , CHNG_DT                                           <!-- 변경일자 -->
             , HND_DETL_DTM                                      <!-- 조작상세일시 -->
@@ -1242,6 +1246,8 @@
             , #{intrHdwtClcYn}                                   <!-- 이자수기계산여부 -->
             , #{grdCd}                                           <!-- 기업여신등급코드 -->
             , #{dshnRtGrdCd}                                     <!-- 기업여신부도율등급코드 -->
+            , #{totIssuShqt}									 <!-- 총발행좌수-->
+            , #{totIssuStkQnt}									 <!-- 총발행주수-->
             , #{rgstDt}                                          <!-- 등록일자 -->
             , #{chngDt}                                          <!-- 변경일자 -->
             , SYSDATE                                            <!-- 조작상세일시 -->

@@ -15,6 +15,7 @@ public class TB04020SVO {
 	String crryCd;
 	String dealNo;
 	String dbcd;
+	String mtrPrgSttsDcd;	
 
 	@Getter
 	@Setter
@@ -51,5 +52,6 @@ public class TB04020SVO {
 		private String ownPNm;				// 심사역
 		private String fstRgstDt;			// 접수배정일
 		private String riskInspctRsltnCcd;	// 접수배정일
+		private String mtrPrgSttsDcd;	// 안건진행상태코드
 	}
 }

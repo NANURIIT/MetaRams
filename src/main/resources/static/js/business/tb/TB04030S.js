@@ -2,6 +2,7 @@ const TB04030Sjs = (function () {
   let pqGridObjDealList;
   $(document).ready(function () {
     setKeyFunction_TB04030S();
+    loadSelectBoxContents();
 
     // 1개월전 ~ 오늘일자 디폴트 세팅
     $("#TB04030S_fromDate").val(addMonth(getToday(), -1));
@@ -30,6 +31,15 @@ const TB04030Sjs = (function () {
         assignmentSearch();
       }
     });
+  }
+
+  // 셀렉트박스 세팅
+  function loadSelectBoxContents() {
+    var item = "";
+    item += "D010"; // 심사부서구분코드
+    item += "/" + "I011"; // 안건진행상태구분코드
+
+    getSelectBoxList("TB04030S", item);
   }
 
   function alertPopup(msg) {
@@ -257,6 +267,6 @@ const TB04030Sjs = (function () {
   ];
 
   return {
-    assignmentSearch: assignmentSearch
-  }
+    assignmentSearch: assignmentSearch,
+  };
 })();

@@ -78,7 +78,7 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_invstGdsSdvdCd').val(data.invPrdtClsfCd);
 					$('#TB03020S_I028').val(data.invPrdtDtlsDvdCd);
 					$('#TB03020S_dealCntnt').val(data.invDealCntn);
-					$('#TB03020S_bnkBd').val(data.bnkBd);
+					//$('#TB03020S_bnkBd').val(data.bnkBd);
 					$('#TB03020S_C006').val(data.ntnCd);
 					$('#TB03020S_invstCty').val(data.invstCty);
 					
@@ -499,7 +499,7 @@ const TB03020Sjs = (function(){
 		var invPrdtClsfCd = $('#TB03020S_invstGdsSdvdCd').val();
 		var invstGdsDtlsDvdCd = $('#TB03020S_I028').val();
 		var invDealCntn = $('#TB03020S_dealCntnt').val();
-		var bnkBd = $('#TB03020S_bnkBd').val();
+		//var bnkBd = $('#TB03020S_bnkBd').val();
 		var ntnCd = $('#TB03020S_C006').val();
 		var invstCty = $('#TB03020S_invstCty').val();
 

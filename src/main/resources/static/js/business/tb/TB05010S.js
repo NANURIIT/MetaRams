@@ -36,8 +36,8 @@ const TB05010Sjs = (function(){
     $("#cancelAlert").prop('disabled', false);
     $("#saveButton").prop('disabled', false);
   
-    $("#gridMmbrList").pqGrid("option", "dataModel.data", []);
-    $("#gridMmbrList").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    //$("#gridMmbrList").pqGrid("option", "dataModel.data", []);
+    //$("#gridMmbrList").pqGrid("refreshDataAndView"); // 위원정보 pqgrid 초기화
     $("#gridCaseList").pqGrid("option", "dataModel.data", []);
     $("#gridCaseList").pqGrid("refreshDataAndView"); // pqgrid 초기화
   }
