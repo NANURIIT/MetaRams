@@ -15,6 +15,13 @@ $(function () {
   }
 
   if (
+    $('script[src="js/business/tb/TB07021P.js"]').attr("src") ===
+    "js/business/tb/TB07021P.js"
+  ) {
+    TB07021P_srchFnlt();
+  }
+
+  if (
     $('script[src="js/business/tb/TB07022P.js"]').attr("src") ===
     "js/business/tb/TB07022P.js"
   ) {
@@ -1436,6 +1443,44 @@ function getSelectBoxList(prefix, item, async = true) {
   return result;
 }
 
+/*
+	SelectBox 코드조회 및 html 맵핑 (단건)
+	@param {String} prefix	화면명
+	@param {String} item	셀렉트박스코드 ex) I011
+	@param {boolean} async  동기, 비동기
+ */
+function getSelectBoxCode2(prefix, item, async = true) {
+	  var code = item;
+	  var result = null;
+	  $.ajax({
+	    type: "GET",
+	    url: "/getSelectBoxCode2/"+item,
+	    data: code,
+	    async: async,
+	    dataType: "json",
+	    success: function (data) {
+			result = data;
+	      if (result.length > 0) {
+	        $.each(result, function (key, value) {
+	          var html = "";
+	          html +=
+	            '<option value="' +
+	            value.cdValue +
+	            '">' +
+	            value.cdName +
+	            " (" +
+	            value.cdValue +
+	            ")" +
+	            "</option>";
+	          $("#" + prefix + "_" + value.cmnsGrpCd).append(html);
+	        });
+	      }
+	    }
+	  });
+	  return result;
+}
+
+
 function setKRKRW(prefix) {
   $("#" + prefix + '_C006 option[value="KR"]').prop("selected", true); // 국가코드
   $("#" + prefix + '_I027 option[value="KRW"]').prop("selected", true); // 통화코드
@@ -1773,7 +1818,8 @@ function getBasicValues(id) {
  */
 function resetInputValue(selector) {
   selector.find(`select`).val("");
-  selector.find(`input`).val("");
+  selector.find(`input[type="radio"][name$="Yn"][value="N"]`).prop("checked", true);
+  selector.find(`input[type="text"]`).val("");
   selector
     .find(
       `input[id$='Amt']
