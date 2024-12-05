@@ -1266,7 +1266,7 @@ const TB06010Sjs = (function(){
 			"pageDcd" : pageDcd
 			, "prdtCd": $('#TB06010S_res_prdtCd').val()									// 상품코드
 			//, "sn": ''                                          						// 일련번호
-			, "lastYn": '1'																// 최종여부
+			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06010S_res_prdtNm').val()									// 상품명
 			, "prdtDsc": $('#TB06010S_prdtDsc').val()									// 상품설명
 			//, "rqsKndCd": rqsKndCd                              						// 기업여신신청종류코드
