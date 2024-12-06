@@ -36,6 +36,7 @@ $(function () {
   }
 
   if ($('script[src="js/business/tb/TB03061P.js"]').attr("src") === "js/business/tb/TB03061P.js") {
+    console.log("기업체팝업");
     TB03061P_srchMtr();
   }
 

@@ -58,7 +58,7 @@ function TB06011P_srchPrdt() {
 	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_prdtCd']").on('keydown', async function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
-			// console.log("화면내 엔터 이벤트");
+			console.log("화면내 엔터 이벤트 맞지?");
 			evt.preventDefault();
 
 			TB06011P_onchangehandler = "off";
