@@ -123,7 +123,7 @@ function TB04011P_srchMtr() {
     // 인풋박스 밸류
     let data = $(selector).val();
     $("#TB04011P_ibDealNo").val(data);
-    getMtrInfo();
+    testset();
 
     // 팝업 오픈
 
@@ -143,6 +143,23 @@ function TB04011P_srchMtr() {
       setTimeout(() => getMtrInfo(), 400);
     }
   }
+}
+
+function callGridTB04011P(prefix) {
+  reset_TB04011P();
+  $("#TB04011P_prefix").val(prefix);
+  setTimeout(() => {
+    let setPqGridObj = [
+      {
+        height: 300,
+        maxHeight: 300,
+        id: "gridMtrInfo",
+        colModel: colMtrInfo,
+      },
+    ];
+    setPqGrid(setPqGridObj);
+    arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
+  }, 300);
 }
 
 /**
@@ -237,9 +254,56 @@ function getMtrInfo() {
     dataType: "json",
     success: function (data) {
       arrPqGridMtrInfo.setData(data);
-      arrPqGridMtrInfo.option("rowDblClick", function (event, ui) {
+      arrPqGridMtrInfo.on("rowDblClick", function (event, ui) {
         setMtrInfo(ui.rowData);
       });
+    },
+  });
+}
+
+function testset() {
+  var prefix = $("#TB04011P_prefix").val();
+
+  var mtrPrgSttsDcdFrom = "";
+  var mtrPrgSttsDcdTo = "";
+
+  if (prefix == "AS04110S") {
+    mtrPrgSttsDcdFrom = "208";
+  }
+
+  if (prefix.startsWith("TB060")) {
+    mtrPrgSttsDcdFrom = "308";
+    mtrPrgSttsDcdTo = "404";
+  }
+
+  var ibDealNo = $("#TB04011P_ibDealNo").val();
+  var ibDealNm = $("#TB04011P_ibDealNm").val();
+
+  var dtoParam = {
+    dealNo: ibDealNo,
+    mtrNm: ibDealNm,
+    mtrPrgSttsDcdFrom: mtrPrgSttsDcdFrom,
+    mtrPrgSttsDcdTo: mtrPrgSttsDcdTo,
+  };
+
+  $.ajax({
+    type: "GET",
+    url: "/TB04011P/getDealInfo",
+    data: dtoParam,
+    dataType: "json",
+    success: function (data) {
+      console.log("타라좀");
+
+      if (!data || data === undefined || data.length === 0) {
+        console.log("없음");
+        TB04011P_gridState = 1;
+      } else if (data.length >= 2) {
+        console.log("2개이상");
+        TB04011P_gridState = 1;
+      } else if (data) {
+        console.log("하나임ㅋ");
+        TB04011P_gridState = 0;
+      }
     },
   });
 }
