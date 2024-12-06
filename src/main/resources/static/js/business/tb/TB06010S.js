@@ -29,6 +29,8 @@ const TB06010Sjs = (function(){
 		onChangeEprzCrdlPrdtLclsCd(); // 기업여신상품대분류코드 선택이벤트
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		pqGrid();
+
+		resetSearchRequiment();
 	});
 
 	var option = {}

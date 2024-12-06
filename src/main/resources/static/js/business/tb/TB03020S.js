@@ -13,6 +13,7 @@ const TB03020Sjs = (function(){
 		loadInvstGdsSdvdCd();
 		setKeyFunction_TB03020S();
 		rendorGrid();
+		
 
 		$('#TB03020S_dealSclN').attr('checked', true);
 		$('#TB03020S_ptctSclN').attr('checked', true);
@@ -21,8 +22,16 @@ const TB03020Sjs = (function(){
 		//athCdCheck_TB03020S();
 
 		$("#selectedMngDealNo").focus();
+
+		TB03020S_selectOption();
 		//getDealNo();
+
+		//TB03020S_dataListBnd('KR');
 	});
+
+	// function TB03020S_settingFrst(){
+
+	// }
 
 	// 그리드 렌더링함수
 	function rendorGrid () {
@@ -81,7 +90,10 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_I028').val(data.invPrdtDtlsDvdCd);
 					$('#TB03020S_dealCntnt').val(data.invDealCntn);
 					//$('#TB03020S_bnkBd').val(data.bnkBd);
-					$('#TB03020S_C006').val(data.ntnCd);
+					//$('#TB03020S_C006_srch').val(data.ntnCd);
+
+					TB03020S_dataListBnd(data.ntnCd);
+
 					$('#TB03020S_invstCty').val(data.invstCty);
 					
 					/* 업체정보 */
@@ -160,17 +172,46 @@ const TB03020Sjs = (function(){
 	}
 
 
-	// function pqGridObjEnopListSetting(enoPList){
+	function TB03020S_dataListBnd(value){
 
-	// 	for(var i=0; i < enoPList.length; i++){
+		//alert(value);
 
-	// 		var enoPInfo = enoPList[i];
+		const $inputField = $('#TB03020S_C006_srch');
+    	const $dataList = $('#TB03020S_C006');
+		
+		const $selectedOption = $dataList.find('option').filter(function () {
+            return $(this).val() === value; // value로 매칭
+        });
 
-	// 		var newRow = 
+        if ($selectedOption.length) {
+            // 해당 옵션의 텍스트를 `input` 필드에 바인딩
+            $inputField.val($selectedOption.text());
+        } else {
+            console.warn('해당 값에 매칭되는 옵션이 없습니다.');
+        }
 
-	// 	}
+	}
 
-	// }
+	function TB03020S_dataListVal(inputText){
+
+		//alert(inputText);
+
+		const $inputField = $('#TB03020S_C006_srch');
+		const $dataList = $('#TB03020S_C006');
+
+		 // `inputText`에 해당하는 옵션을 검색
+		 const $selectedOption = $dataList.find('option').filter(function () {
+            return $(this).text() === inputText; // 텍스트 비교
+        });
+
+        if ($selectedOption.length) {
+            // 옵션의 `value`를 반환
+            return $selectedOption.val();
+        } else {
+            console.warn('해당 텍스트에 매칭되는 옵션이 없습니다.');
+            return null; // 매칭되는 값이 없을 경우 null 반환
+        }
+	}
 
 	/**
 	 * input keydown 이벤트
@@ -453,6 +494,8 @@ const TB03020Sjs = (function(){
 
 				var ibDealNo_TB02010S = sessionStorage.getItem("ibDealNo_TB02010S");
 
+				TB03020S_dataListBnd("KR");
+
 				if(ibDealNo_TB02010S){
 					//alert(ibDealNo_TB02010S);
 					ibDealNo_TB02010S = ibDealNo_TB02010S.substring(0, 17);
@@ -523,7 +566,9 @@ const TB03020Sjs = (function(){
 		var invstGdsDtlsDvdCd = $('#TB03020S_I028').val();
 		var invDealCntn = $('#TB03020S_dealCntnt').val();
 		//var bnkBd = $('#TB03020S_bnkBd').val();
-		var ntnCd = $('#TB03020S_C006').val();
+		var ntnCdTxt = $('#TB03020S_C006_srch').val();
+
+		var ntnCd = TB03020S_dataListVal(ntnCdTxt);
 		var invstCty = $('#TB03020S_invstCty').val();
 
 		/* 업체정보 */
@@ -1067,6 +1112,23 @@ const TB03020Sjs = (function(){
 		}
 	});
 
+	function TB03020S_selectOption(){
+		const $inputField = $('#TB03020S_C006_srch');
+		const $dataList = $('#TB03020S_C006');
+	
+		$inputField.on('input', function () {
+			const inputValue = $(this).val();
+			const $selectedOption = $dataList.find('option').filter(function () {
+				return $(this).val() === inputValue;
+			});
+	
+			if ($selectedOption.length) {
+				// `option`의 텍스트를 input에 바인딩
+				$inputField.val($selectedOption.text());
+			}
+		});
+	}
+
 
 	// 탭 접었다 펴기
 	function tabCtrl(prefix) {
@@ -1189,6 +1251,7 @@ const TB03020Sjs = (function(){
 		, mngPListDelRow : mngPListDelRow
 		, saveDeal : saveDeal
 		, cnfmDeal : cnfmDeal
+		//, TB03020S_selectOption: TB03020S_selectOption
 	}
 })();
 
