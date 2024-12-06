@@ -198,18 +198,20 @@ function reset_TB04011P() {
  * close TB04011P modal
  */
 function modalClose_TB04011P() {
+	TB04011P_gridState = 1;
   // reset_TB04011P();
   // $("#gridMtrInfo").pqGrid("refreshDataAndView");
+  $("#gridMtrInfo").pqGrid("destroy");
   $("#modal-TB04011P").modal("hide");
 }
 
 /**
  * hide modal
  */
-$("#modal-TB04011P").on("hide.bs.modal", function () {
-  $("#gridMtrInfo").pqGrid("destroy");
-  reset_TB04011P();
-});
+// $("#modal-TB04011P").on("hide.bs.modal", function () {
+//   $("#gridMtrInfo").pqGrid("destroy");
+//   reset_TB04011P();
+// });
 
 /**
  * deal 번호 조회 ajax
@@ -251,8 +253,10 @@ function getMtrInfo() {
         return;
       }else
       if(data.length === 1){
-        setMtrInfo(data);
+        arrPqGridMtrInfo.setData(data);
+        setMtrInfo(arrPqGridMtrInfo.pdata);
         TB04011P_srchCnt = 0;
+        TB04011P_onchangehandler = "on"
       }
       else if (data.length === 0){
         TB04011P_srchCnt =+ 1;
