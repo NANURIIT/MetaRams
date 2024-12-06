@@ -85,7 +85,7 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_invstCty').val(data.invstCty);
 					
 					/* 업체정보 */
-					$('#TB03020S_corpRgstNo').val(checkBrnAcno(data.ptxtTrOthrDscmNo));
+					$('#TB03020S_corpRgstNo').val(data.ptxtTrOthrDscmNo);
 					$('#TB03020S_entpRnm').val(data.ptxtTrOthrDscmNm);
 					$('#TB03020S_B019').val(data.bzsacalCd);
 					$('#TB03020S_I006').val(data.indTypDvdCd);
@@ -132,7 +132,7 @@ const TB03020Sjs = (function(){
 					$('#mtrtDt').val(formatDate(data.expDt));
 					
 					/* 기타정보 */
-					$('#TB03020S_c_corpRgstNo').val(checkBrnAcno(data.csucCmpDscmNo));
+					$('#TB03020S_c_corpRgstNo').val(data.csucCmpDscmNo);
 					$('#TB03020S_c_entpRnm').val(data.csucCmpDscmNm);
 					$('#TB03020S_C010').val(data.crdtEhcmntCcd);
 					$('#TB03020S_ltv').val(data.ltv);
@@ -146,6 +146,8 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_chrg_dprtCd').val(data.mngmBdcd);
 	
 					pqGridObjEnopList.setData(data.enoPList);
+
+					//pqGridObjEnopListSetting(data.enoPList);
 					
 					/******  딜공통 파일첨부 추가 ******/ 
 					$('#key1').val(data.dealNo);
@@ -156,6 +158,19 @@ const TB03020Sjs = (function(){
 			});
 		}
 	}
+
+
+	// function pqGridObjEnopListSetting(enoPList){
+
+	// 	for(var i=0; i < enoPList.length; i++){
+
+	// 		var enoPInfo = enoPList[i];
+
+	// 		var newRow = 
+
+	// 	}
+
+	// }
 
 	/**
 	 * input keydown 이벤트
@@ -568,10 +583,13 @@ const TB03020Sjs = (function(){
 
 				let enoInfo = {
 				"sn"     : i+1
-				, "dprtCd" : dprtCd
+				, "bdcd" : dprtCd
 				, "bsnssMngPEno" : bsnssMngPEno
 				, "cntrt" : cntrt
 				}; 
+
+				//alert(JSON.stringify(enoInfo));
+
 				enoPList.push(enoInfo);
 			}
 		}
@@ -1140,6 +1158,7 @@ const TB03020Sjs = (function(){
 			render : function (ui) {
 				let cellData = ui.cellData;
 				if (cellData && cellData > 100) return `100%` ;
+				else if(!cellData) return '0%' ;
 				else return `${cellData}%`;
 			}
 		},

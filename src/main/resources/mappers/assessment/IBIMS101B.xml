@@ -290,9 +290,10 @@
             , DECD_SN             			/*  결재일련번호  */
             , MNGM_BDCD           			/*  관리부점코드  */
             , (
-                SELECT MAX(BDCD)
+                SELECT DPRT_NM
                   FROM IBIMS003B
-                WHERE BDCD = MNGM_BDCD
+                WHERE DPRT_CD = MNGM_BDCD
+                AND ROWNUM = 1
               ) AS DPRT_NM
             , CHRR_EMPNO          			/*  담당자사원번호  */
             , (
