@@ -941,11 +941,31 @@
 		       ON s103b.DEAL_NO = V.DEAL_NO
 		      AND s103b.MTR_DCD = V.MTR_DCD 
 		      AND s103b.JDGM_DCD = V.JDGM_DCD		  
-		  LEFT JOIN IBIMS112B s112b
+		  LEFT JOIN (SELECT 
+		  					CNSB_DCD
+							,CNSB_SQ
+							,RSLTN_YR
+							,SN
+							,DEAL_NO
+							,MTR_DCD
+							,JDGM_DCD
+							,RGST_DT
+							,SDN_CNDT_F
+							,SDN_CNDT_CTNS
+							,ETC_CNDT_F
+							,ETC_CNDT_CTNS
+							,MTR_PRG_STTS_DCD
+							,APVL_DT
+							,APVL_AMT
+							,RANK() OVER(PARTITION BY DEAL_NO, MTR_DCD, JDGM_DCD, CNSB_DCD ORDER BY DECODE(MTR_PRG_STTS_DCD,'308',1,'309',1,2) ASC, RSLTN_YR DESC, TO_NUMBER(CNSB_SQ) DESC, TO_NUMBER(SN) DESC) AS RK		  					
+		  				FROM IBIMS112B 
+		  				WHERE DEL_YN='N'
+		  				) s112b
 		    ON s103b.DEAL_NO 				= s112b.DEAL_NO 
 		   AND s103b.MTR_DCD 				= s112b.MTR_DCD 
 		   AND s103b.JDGM_DCD 				= s112b.JDGM_DCD 
 		   AND s103b.RISK_INSPCT_RSLTN_CCD	= s112b.CNSB_DCD 
+		   AND s112b.RK						= 1
 		  LEFT JOIN IBIMS106B s106b
 		   ON s103b.DEAL_NO 				= s106b.DEAL_NO 
 		   AND s103b.MTR_DCD 				= s106b.MTR_DCD 

@@ -71,7 +71,7 @@ const TB06030Sjs = (function(){
 		item += '/' + 'I008';			// 결의협의회구분코드
 		
 		getSelectBoxList('TB06030S', item);
-		getSelectBoxCode2('TB06020S','I011');
+		getSelectBoxCode2('TB06030S','I011');
 		
 		var item = '';
 		item += 'I008';					// 결의협의회구분코드
@@ -247,11 +247,13 @@ const TB06030Sjs = (function(){
 		$('#TB06030S_prdtNm').val('');
 		$('#TB06030S_mtrNm').val('');
 		
+		/*
 		let inputLength = $("#page-TB06030S :input").length;
 		for (let i = 0; i < inputLength; i++) {
 			$("#page-TB06030S :input:eq("+i+")").val("");
 			
-		}
+		}*/
+		resetInputValue($('div[data-menuid="/TB06030S"]'));
 	}
 
 	function getDealList() {

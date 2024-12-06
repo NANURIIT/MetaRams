@@ -227,14 +227,14 @@ const TB06020Sjs = (function(){
 		$('#TB06020S_prdtCd').val('');
 		$('#TB06020S_prdtNm').val('');
 		
-		
+		/*
 		let inputLength = $("#page-TB06020S :input").length;
 		for (let i = 0; i < inputLength; i++) {
 			$("#page-TB06020S :input:eq("+i+")").val("");
 			
-		}
+		}*/
 		
-		//resetInputValue();
+		resetInputValue($('div[data-menuid="/TB06020S"]'));
 	}
 
 
