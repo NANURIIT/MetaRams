@@ -2,6 +2,7 @@ let arrPqGridMtrInfo;
 let TB04011P_pf;
 let TB04011P_gridState = 1;
 let TB04011P_onchangehandler = "on"; // on off
+let TB04011P_srchCnt = 0;
 
 /**
  * 팝업 자동 호출, 검색
@@ -73,21 +74,6 @@ function TB04011P_srchMtr() {
   $("span.input-group-append > button:not([disabled])")
     .closest("span.input-group-append")
     .prev("input[id*='_ibDealNo']")
-    .on("keydown", async function (evt) {
-      // Enter에만 작동하는 이벤트
-      if (evt.keyCode === 13) {
-        // console.log("화면내 엔터 이벤트");
-        evt.preventDefault();
-
-        TB04011P_onchangehandler = "off";
-
-        await srchEvent(this);
-      }
-    });
-
-  $("span.input-group-append > button:not([disabled])")
-    .closest("span.input-group-append")
-    .prev("input[id*='_ibDealNo']")
     .on("change", async function (evt) {
       // console.log("화면내 체인지 이벤트");
 
@@ -101,10 +87,13 @@ function TB04011P_srchMtr() {
     let prefix;
     if ($(selector).attr("id") === $("#TB04011P_ibDealNo").attr("id")) {
       prefix = TB04011P_pf;
+
     } else {
+      // 컬럼명 길이로 바꾸셔야 합니당
       prefix = $(selector)
         .attr("id")
-        .slice(0, $(selector).attr("id").length - 7);
+        .slice(0, $(selector).attr("id").length - 9);
+
     }
 
     $(`input[id='${prefix}_ibDealNm']`).val("");
@@ -123,10 +112,9 @@ function TB04011P_srchMtr() {
     // 인풋박스 밸류
     let data = $(selector).val();
     $("#TB04011P_ibDealNo").val(data);
-    testset();
+    TB04011P_setGridState();
 
     // 팝업 오픈
-
     if (TB04011P_gridState === 0) {
       console.log("열려있음", TB04011P_gridState);
       // 그리드만 부릅니다
@@ -168,6 +156,8 @@ function callGridTB04011P(prefix) {
 function callTB04011P(prefix) {
   reset_TB04011P();
   $("#TB04011P_prefix").val(prefix);
+  TB04011P_gridState = 0;
+  TB04011P_pf = prefix;
   // ?????
   switch ($("#TB04011P_prefix").val()) {
     case "":
@@ -177,7 +167,6 @@ function callTB04011P(prefix) {
       $("#modal-TB04011P").modal("show");
       break;
   }
-  indexChangeHandler("TB04011P");
 
   setTimeout(() => {
     let setPqGridObj = [
@@ -191,13 +180,16 @@ function callTB04011P(prefix) {
     setPqGrid(setPqGridObj);
     arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
   }, 300);
+
+  indexChangeHandler("TB04011P");
+
 }
 
 /**
  * reset
  */
 function reset_TB04011P() {
-  $("#TB04011P_dealInfoList").html("");
+  // $("#TB04011P_dealInfoList").html("");
   $("#TB04011P_ibDealNo").val("");
   $("#TB04011P_ibDealNm").val("");
 }
@@ -206,8 +198,8 @@ function reset_TB04011P() {
  * close TB04011P modal
  */
 function modalClose_TB04011P() {
-  reset_TB04011P();
-  $("#gridMtrInfo").pqGrid("refreshDataAndView");
+  // reset_TB04011P();
+  // $("#gridMtrInfo").pqGrid("refreshDataAndView");
   $("#modal-TB04011P").modal("hide");
 }
 
@@ -253,15 +245,34 @@ function getMtrInfo() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      arrPqGridMtrInfo.setData(data);
-      arrPqGridMtrInfo.on("rowDblClick", function (event, ui) {
-        setMtrInfo(ui.rowData);
-      });
+      if(TB04011P_srchCnt >= 2){
+        alert("대충무한루프 막는 중");
+        TB04011P_srchCnt = 0;
+        return;
+      }else
+      if(data.length === 1){
+        setMtrInfo(data);
+        TB04011P_srchCnt = 0;
+      }
+      else if (data.length === 0){
+        TB04011P_srchCnt =+ 1;
+        $("#TB04011P_ibDealNo").val("");
+        $("#TB04011P_ibDealNm").val("");
+        getMtrInfo();
+      }
+      else {
+        arrPqGridMtrInfo.setData(data);
+        arrPqGridMtrInfo.on("rowDblClick", function (event, ui) {
+          setMtrInfo(ui.rowData);
+          console.log(ui.rowData);
+        });
+        TB04011P_srchCnt = 0;
+      }
     },
   });
 }
 
-function testset() {
+function TB04011P_setGridState() {
   var prefix = $("#TB04011P_prefix").val();
 
   var mtrPrgSttsDcdFrom = "";
@@ -292,8 +303,6 @@ function testset() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      console.log("타라좀");
-
       if (!data || data === undefined || data.length === 0) {
         console.log("없음");
         TB04011P_gridState = 1;

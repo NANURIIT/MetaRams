@@ -83,6 +83,7 @@ function TB06011P_srchPrdt() {
 		if ($(selector).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
 			prefix = TB06011P_pf;
 		} else {
+	      	// 컬럼명 길이로 바꾸셔야 합니당  이유는 callTB06011P('TB04010S_srch') 이런식으로 되어있는게 있어서
 			prefix = $(selector).attr('id').slice(0, $(selector).attr('id').length - 7);
 		}
 	
