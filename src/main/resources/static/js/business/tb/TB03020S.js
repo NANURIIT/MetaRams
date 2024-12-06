@@ -14,7 +14,9 @@ const TB03020Sjs = (function(){
 		setKeyFunction_TB03020S();
 		rendorGrid();
 
-		
+		$('#TB03020S_dealSclN').attr('checked', true);
+		$('#TB03020S_ptctSclN').attr('checked', true);
+
 
 		//athCdCheck_TB03020S();
 
@@ -91,6 +93,9 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_C012').val(data.crdtGrdCd);
 					$('#TB03020S_lstMkt').val(data.lstMkt);
 
+					// alert(data.invAmtDcsnYn);
+					// alert(data.thcoPtciAmtDcsnYn);
+
 					/* 수익정보 */
 					if( data.invAmtDcsnYn == 'Y'){
 						$('#TB03020S_dealSclY').attr('checked', true);
@@ -123,8 +128,8 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_intrErn').val(addComma(data.intrErnAmt));
 					$('#invstCrncyCd').val(data.crryCd);
 					$('#invstCrncyAmt').val(addComma(data.crryAmt));
-					$('#wrtDt').val(formatDate(data.expDt));
-					$('#mtrtDt').val(formatDate(data.mtrtDt));
+					$('#wrtDt').val(formatDate(data.baltDt));
+					$('#mtrtDt').val(formatDate(data.expDt));
 					
 					/* 기타정보 */
 					$('#TB03020S_c_corpRgstNo').val(checkBrnAcno(data.csucCmpDscmNo));
@@ -191,6 +196,9 @@ const TB03020Sjs = (function(){
 		$("#TB03020S_mngPList").html('');
 		$("#gridEnoPList").pqGrid("option", "dataModel.data", []);
 		$("#gridEnoPList").pqGrid("refreshDataAndView");
+
+		$('#TB03020S_dealSclN').attr('checked', true);
+		$('#TB03020S_ptctSclN').attr('checked', true);
 
 		// 로그인 사용자정보 재세팅 추후수정
 		loadUserAuth();
@@ -534,7 +542,7 @@ const TB03020Sjs = (function(){
 		var intrErnAmt = $('#TB03020S_intrErn').val().replaceAll(',', '');
 		var crncyCd = $('#TB03020S_I027').val();
 		var crncyAmt = $('#invstCrncyAmt').val().replaceAll(',', '');
-		var mtrtDt = $('#wrtDt').val().replaceAll('-', '');
+		var baltDt = $('#wrtDt').val().replaceAll('-', '');
 		var expDt = $('#mtrtDt').val().replaceAll('-', '');
 
 		/* 기타정보 */
@@ -601,7 +609,7 @@ const TB03020Sjs = (function(){
 			, "intrErnAmt" : (intrErnAmt / 1)
 			, "crryCd" : crncyCd
 			, "crryAmt" : (crncyAmt / 1)
-			, "mtrtDt" : mtrtDt
+			, "baltDt" : baltDt
 			, "expDt" : expDt
 			/* 기타정보 */
 			, "csucCmpDscmNo" : csucCmpDscmNo
