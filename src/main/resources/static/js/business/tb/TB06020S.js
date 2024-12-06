@@ -111,8 +111,7 @@ const TB06020Sjs = (function(){
 		onChangeSelectBoxMrtgKndCd(); 
 	}
 	
-	
-	
+
 
 	/**
 	 * 기업여신 대분류코드 이벤트 핸들러
@@ -228,11 +227,14 @@ const TB06020Sjs = (function(){
 		$('#TB06020S_prdtCd').val('');
 		$('#TB06020S_prdtNm').val('');
 		
+		
 		let inputLength = $("#page-TB06020S :input").length;
 		for (let i = 0; i < inputLength; i++) {
 			$("#page-TB06020S :input:eq("+i+")").val("");
 			
 		}
+		
+		//resetInputValue();
 	}
 
 

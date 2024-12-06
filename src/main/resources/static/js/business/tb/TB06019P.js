@@ -2,6 +2,7 @@ $(document).ready(function() {
 	$('#TB06019P_erlmDt').val(getToday());
 	getSlctBox();
 	checkBoxChangeFunction();
+	inputNumberChangeFunction();
 });
 
 /**
@@ -13,16 +14,17 @@ function callTB06019P(prefix) {
 	$('#modal-TB06019P').modal('show');
 	indexChangeHandler("TB06019P");
 	setKeyFunction_TB06019P();
-	$('#TB06019P_delBtn').prop('disabled', true)
+	$('#TB06019P_delBtn').prop('disabled', true);
+	getSelectBoxCode2('TB06019P', 'Z010');
 
 }
 
 function vldDelBtn() {
 	const entpCd = $('#TB06019P_getArdyBzepNo').val();
 	if(entpCd === '' || entpCd === undefined){
-		$('#TB06019P_delBtn').prop('disabled', true)
+		$('#TB06019P_delBtn').prop('disabled', true);
 	}else{
-		$('#TB06019P_delBtn').prop('disabled', false)
+		$('#TB06019P_delBtn').prop('disabled', false);
 	}
 }
 
@@ -30,7 +32,7 @@ function srchParam(){
 	$('#con-srchParam input').val('');
 	
 	$("#TB06019P_bzplDvsnCd option:eq(0)").prop("selected", true);
-	$("#TB06019P_faxBtno option:eq(0)").prop("selected", true);
+	$("#TB06019P_Z010 option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprShapDvsnCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_stdIdstSclsCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprScleDvsnCd option:eq(0)").prop("selected", true);
@@ -88,6 +90,28 @@ $("#TB06019P_srch_ardyBzepNo").on("propertychange change paste input", function(
 });
 
 /**
+ * 재무건정성비율 변경이벤트
+ */
+function inputNumberChangeFunction(){
+	$("#TB06019P_fnafHltySrnmRt").on('change',function(){
+		var formatNum="000.00";
+		if($("#TB06019P_fnafHltySrnmRt").val() > 999.99 ){
+			Swal.fire({
+					icon: 'error'
+					, title: "Error!"
+					, text: "재무건전성 비율은 000.00 형식으로 작성해주세요.;"
+					, confirmButtonText: "확인"
+					})
+			$("#TB06019P_fnafHltySrnmRt").val('');
+			$("#TB06019P_fnafHltySrnmRt").focus();		
+			return false;		
+		}
+		formatNum=(Math.round($("#TB06019P_fnafHltySrnmRt").val()*100)/100).toFixed(2);
+		$("#TB06019P_fnafHltySrnmRt").val(formatNum);
+	});
+}
+
+/**
  * spc여부 변경이벤트
  */
 function checkBoxChangeFunction(){
@@ -112,7 +136,7 @@ function checkBoxChangeFunction(){
 			$("#TB06019P_rnbn").prop('readonly',false);
 			$("#TB06019P_rnbn").focus();
 		}
-	})
+	});
 }
 
 
@@ -124,24 +148,20 @@ function reset_TB06019P () {
 		$("#modal-TB06019P :input:eq("+i+")").val("");
 		
 	}
-	
-	console.log("초기화1");
+
 	$("#TB06019P_bzplDvsnCd option:eq(0)").prop("selected", true);
-	$("#TB06019P_faxBtno option:eq(0)").prop("selected", true);
+	$("#TB06019P_Z010 option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprShapDvsnCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_stdIdstSclsCd option:eq(0)").prop("selected", true);
 	$("#TB06019P_etprScleDvsnCd option:eq(0)").prop("selected", true);
-	console.log("초기화2");
 	$('#smetYn_N').prop('checked',true);
 	$('#clseDvsnCd_N').prop('checked',true);
 	$('#ovrsSpcYn_N').prop('checked',true);
 	$('#useYn_N').prop('checked',true);
-	console.log("초기화3");
 	//spc여부
 	$("#TB06019P_spcYn").prop('checked',true);
 	//사업자등록번호
 	$("#TB06019P_rnbn").val("999-99-99999").prop('readonly',true);
-	console.log("초기화4");
 
 	/**
 	 * 초기화시 삭제버튼 비활성화
@@ -193,7 +213,7 @@ function getArdyBzepInfo() {
 			$('#TB06019P_btno').val(data.btno);							//전화국번호
 			$('#TB06019P_stno').val(data.stno);							//전화일련번호
 			$('#TB06019P_faxAtno').val(data.faxAtno);					//Fax전화지역번호
-			$('#TB06019P_faxBtno').val(data.faxBtno);					//Fax전화국번호
+			$('#TB06019P_Z010').val(data.faxBtno);						//Fax전화국번호
 			$('#TB06019P_faxStno').val(data.faxStno);					//Fax전화일련번호
 			$('#TB06019P_korBzplAddr').val(data.korBzplAddr);			//한글사업장주소
 			$('#TB06019P_engBzplAddr').val(data.engBzplAddr);			//영문사업장주소
@@ -228,7 +248,7 @@ function getArdyBzepInfo() {
 			} else {
 				$('#TB06019P_totAsstAmt').val(data.totAsstAmt);			//총자산금액
 			}
-			$('#TB06019P_fnafHltySrnmRt').val(data.fnafHltySrnmRt);		//재무건전성비율
+			$('#TB06019P_fnafHltySrnmRt').val((Math.round(data.fnafHltySrnmRt*100)/100).toFixed(2));		//재무건전성비율
 			//$(":radio[name='clseDvsnCd']").radioSelect(data.clseDvsnCd); // 폐업구분
 			//$(':radio[name="ovrsSpcYn"]').radioSelect(data.ovrsSpcYn);	//해외SPC여부
 			//$(':radio[name="useYn"]').radioSelect(data.useYn);			//사용여부
@@ -274,11 +294,11 @@ function saveArdyBzepInfo() {
 			, "btno": $('#TB06019P_btno').val()								//전화국번호
 			, "stno": $('#TB06019P_stno').val()								//전화일련번호
 			, "faxAtno": $('#TB06019P_faxAtno').val()						//Fax전화지역번호
-			, "faxBtno": $('#TB06019P_faxBtno').val()						//Fax전화국번호
+			, "faxBtno": $('#TB06019P_Z010').val()							//Fax전화국번호
 			, "faxStno": $('#TB06019P_faxStno').val()						//Fax전화일련번호
 			, "korBzplAddr": $('#TB06019P_korBzplAddr').val()				//한글사업장주소
 			, "engBzplAddr": $('#TB06019P_engBzplAddr').val()				//영문사업장주소
-			, "smetYn": $("#smetYn_Y").prop("checked", true) ? "Y" :"N"		//중소기업여부
+			, "smetYn": $("#smetYn_Y").is(":checked") ? "Y" :"N"			//중소기업여부
 		    , "stdIdstSclsCd": $('#TB06019P_stdIdstSclsCd').val()			//표준산업소분류
 			, "etprShapDvsnCd": $('#TB06019P_etprShapDvsnCd').val()			//기업형태구분
 			, "bzcnNm": $('#TB06019P_bucoName').val()						//업태명
@@ -286,7 +306,7 @@ function saveArdyBzepInfo() {
 			, "ctmBicName": $('#TB06019P_ctmBicName').val()					//CTM은행인식코드명
 			, "estDt": $('#TB06019P_estDt').val().replaceAll("-", "")		//설립일자
 			, "rgstDt": $('#TB06019P_erlmDt').val().replaceAll("-", "")		//등록일자
-			, "clseDvsnCd":  $("#clseDvsnCd_Y").prop("checked", true) ? "Y" :"N"			//폐업구분
+			, "clseDvsnCd": $("#clseDvsnCd_Y").is(":checked") ? "Y" :"N"	//폐업구분
 			, "clseDt": $('#TB06019P_clseDt').val().replaceAll("-", "")		//폐업일자
 			, "stffNum": $('#TB06019P_stffNum').val().replaceAll(",", "")	//임직원수
 			, "oprtHnfNum": $('#TB06019P_oprtHnfNum').val().replaceAll(",", "")	//운용인력수
@@ -296,13 +316,12 @@ function saveArdyBzepInfo() {
 			, "rvnuAmt": $('#TB06019P_rvnuAmt').val().replaceAll(",", "")		//매출금액
 			, "totAsstAmt": $('#TB06019P_totAsstAmt').val().replaceAll(",", "") //총자산금액
 			, "fnafHltySrnmRt": $('#TB06019P_fnafHltySrnmRt').val().replace("%", "") //재무건전성비율 
-			, "ovrsSpcYn":  $("#ovrsSpcYn_Y").prop("checked", true) ? "Y" :"N"		//해외SPC여부
+			, "ovrsSpcYn":  $("#ovrsSpcYn_Y").is(":checked") ? "Y" :"N"		//해외SPC여부
 			, "spcYn" : (($("#TB06019P_spcYn").prop('checked') == true)? "Y":"N") //SPC여부
-			, "useYn": $("#useYn_Y").prop("checked", true) ? "Y" :"N"					//사용여부
+			, "useYn": $("#useYn_Y").is(":checked") ? "Y" :"N"					//사용여부
 			
 		};
 		
-		console.log("param:"+inParam);
 		 $.ajax({
 		 	type: "POST",
 		 	url: "/TB06019P/saveArdyBzepInfo",
@@ -488,8 +507,8 @@ function validate (gb)
 				return false;
 			}
 			if (!isEmpty($("#TB06019P_fnafHltySrnmRt").val())) {
-				let regExp = new RegExp(/^([0-9]{2,3}\.[0-9]{1,2})?$/g);
-				if (!regExp.test(($("#TB06019P_fnafHltySrnmRt").val()))) {
+				let regExp = new RegExp(/^([0-9]{2,3}\.[0-9]{0,2})?$/g);
+				if (!regExp.test(($("#TB06019P_fnafHltySrnmRt").val())) && $("#TB06019P_fnafHltySrnmRt").val()!='0.00') {
 					Swal.fire({
 						icon: 'error'
 						, title: "Error!"
