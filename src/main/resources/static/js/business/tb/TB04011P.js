@@ -116,14 +116,14 @@ function TB04011P_srchMtr() {
 
     // 팝업 오픈
     if (TB04011P_gridState === 0) {
-      console.log("열려있음", TB04011P_gridState);
+      console.log("여기신지?", TB04011P_gridState);
       // 그리드만 부릅니다
       callGridTB04011P(prefix);
       $("#TB04011P_ibDealNo").val(data);
       // ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
       setTimeout(() => getMtrInfo(), 400);
     } else if (TB04011P_gridState === 1) {
-      console.log("닫혀있음", TB04011P_gridState);
+      console.log("저기신지?", TB04011P_gridState);
       // 팝업을 열거예요
       callTB04011P(prefix);
       $("#TB04011P_ibDealNo").val(data);
@@ -301,7 +301,7 @@ async function TB04011P_setGridState() {
     mtrPrgSttsDcdTo: mtrPrgSttsDcdTo,
   };
 
-  $.ajax({
+  await $.ajax({
     type: "GET",
     url: "/TB04011P/getDealInfo",
     data: dtoParam,
