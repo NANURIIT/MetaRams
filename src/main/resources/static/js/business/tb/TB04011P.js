@@ -112,7 +112,7 @@ function TB04011P_srchMtr() {
     // 인풋박스 밸류
     let data = $(selector).val();
     $("#TB04011P_ibDealNo").val(data);
-    TB04011P_setGridState();
+    await TB04011P_setGridState();
 
     // 팝업 오픈
     if (TB04011P_gridState === 0) {
@@ -272,7 +272,7 @@ function getMtrInfo() {
   });
 }
 
-function TB04011P_setGridState() {
+async function TB04011P_setGridState() {
   var prefix = $("#TB04011P_prefix").val();
 
   var mtrPrgSttsDcdFrom = "";
