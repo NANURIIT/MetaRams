@@ -18,69 +18,76 @@
 					<input type="hidden" name="TB04012P_prefix" id="TB04012P_prefix" value="" />
 					<div class="row">
 						<div class="col-sm-12 b-r">
-							<div class="ibox">
-								<div class="col-sm-12">
-									<div class="ibox">
-										<div class="ibox-content text-right">
-											<div class="form-group row mb-1">
-												<label class="col-sm-2 col-form-label">관리점1</label>
-												<div class="col-sm-10 form-inline">
-													<div class="input-group">
-														<input type="text" class="form-control" id="TB04012P_dlDprtCd1_dlDprtCd" readonly>
-														&nbsp;
-														<input type="text" class="form-control" id="TB04012P_dlDprtCd1_dlDprtNm" readonly>
-														&nbsp;
-														<span class="input-group-append">
-															<button type="button" class="btn btn-default" onclick="callTB03022P('TB04012P1');"><i class="fa fa-search"></i></button>
-														</span>
-														&nbsp; 
-													<div class="btn float-right" style="cursor: pointer;" id="delDprt1" onclick="fnDelDprt(this);">
-														<i class="fa fa-times"></i>
-													</div>
-													</div>
-												</div>
+							<div class="col-sm-12">
+									<div class="ibox">										
+										<!-- 담당부서 -->
+										<div class="form-group row mb-1 ">
+											<label class="col-sm-2 col-form-label">담당부서</label>
+											<div class="col-sm-8 d-flex">
+												<input type="text" class="form-control me-2" style="width: 30%;" id="TB04012P_dlDprtCd" readonly>
+												<input type="text" class="form-control" style="width: 70%;" id="TB04012P_dlDprtNm" readonly>
 											</div>
-											<div class="form-group row mb-1">
-												<label class="col-sm-2 col-form-label">관리점2</label>
-												<div class="col-sm-10 form-inline">
-													<div class="input-group">
-														<input type="text" class="form-control" id="TB04012P_dlDprtCd2_dlDprtCd" readonly>
-														&nbsp;
-														<input type="text" class="form-control" id="TB04012P_dlDprtCd2_dlDprtNm" readonly>
-														&nbsp;
-														<span class="input-group-append">
-															<button type="button" class="btn btn-default" onclick="callTB03022P('TB04012P2')"><i class="fa fa-search"></i></button>
-														</span>
-														&nbsp;
-													<div class="btn float-right" style="cursor: pointer;" id="delDprt2" onclick="fnDelDprt(this);">
-														<i class="fa fa-times"></i>
-													</div>
-													</div>
-												</div>
+										</div>
+							
+										<!-- 관리점1 -->
+										<div class="form-group row mb-1">
+											<label class="col-sm-2 col-form-label">관리점1</label>
+											<div class="col-sm-8 d-flex">
+													<input type="text" class="form-control me-2" id="TB04012P_dlDprtCd1_dlDprtCd" style="width: 30%;" readonly>
+													<input type="text" class="form-control" id="TB04012P_dlDprtCd1_dlDprtNm" style="width: 70%;" readonly>
 											</div>
-											<div class="form-group row mb-1">
-												<label class="col-sm-2 col-form-label">관리점3</label>
-												<div class="col-sm-10 form-inline">
-													<div class="input-group">
-														<input type="text" class="form-control" id="TB04012P_dlDprtCd3_dlDprtCd" readonly>
-														&nbsp;
-														<input type="text" class="form-control" id="TB04012P_dlDprtCd3_dlDprtNm" readonly>
-														&nbsp;
-														<span class="input-group-append">
-															<button type="button" class="btn btn-default" onclick="callTB03022P('TB04012P3')"><i class="fa fa-search"></i></button>
-														</span>
-														&nbsp;
-													<div class="btn float-right" style="cursor: pointer;" id="delDprt3" onclick="fnDelDprt(this);"> 
-														<i class="fa fa-times"></i>
+											<div class="col-sm-2 d-flex align-items-center">
+													<button type="button" class="btn btn-default me-2" onclick="callTB03022P('TB04012P1');">
+															<i class="fa fa-search"></i>
+													</button>
+													<div class="btn ms-2" style="cursor: pointer;" id="delDprt1" onclick="fnDelDprt(this);">
+															<i class="fa fa-times"></i>
 													</div>
-													</div>
+											</div>
+										</div>
+																
+							
+										<!-- 관리점2 -->
+										<div class="form-group row mb-1 ">
+											<label class="col-sm-2 col-form-label">관리점2</label>
+											<div class="col-sm-8 d-flex ">
+												<input type="text" class="form-control me-2" id="TB04012P_dlDprtCd2_dlDprtCd" style="width: 30%;" readonly>
+												<input type="text" class="form-control me-2" id="TB04012P_dlDprtCd2_dlDprtNm" style="width: 70%;" readonly>
+											</div>
+											<div class="col-sm-2 d-flex">
+												<button type="button" class="btn btn-default me-2" onclick="callTB03022P('TB04012P2');">
+													<i class="fa fa-search"></i>
+												</button>
+												<div class="btn" style="cursor: pointer;" id="delDprt2" onclick="fnDelDprt(this);">
+													<i class="fa fa-times"></i>
 												</div>
 											</div>
 										</div>
-									</div>
+							
+										<!-- 관리점3 -->
+										<div class="form-group row mb-1 ">
+											<label class="col-sm-2 col-form-label">관리점3</label>
+											<div class="col-sm-8 d-flex ">
+												<input type="text" class="form-control me-2" id="TB04012P_dlDprtCd3_dlDprtCd" style="width: 30%;" readonly>
+												<input type="text" class="form-control " id="TB04012P_dlDprtCd3_dlDprtNm" style="width: 70%;" readonly>
+											</div>
+											<div class="col-sm-2 d-flex ">
+												<button type="button" class="btn btn-default" onclick="callTB03022P('TB04012P3');">
+													<i class="fa fa-search"></i>
+												</button>
+												<div class="btn" style="cursor: pointer;" id="delDprt3" onclick="fnDelDprt(this);">
+													<i class="fa fa-times"></i>
+												</div>
+											</div>
+										</div>
+										<!-- 완료 버튼 -->
+										<div class="form-group row mb-1 d-flex justify-content-end">
+											<button type="button" class="btn btn-success mr-3 mt-3" onclick="completeBtn();">
+												완료
+											</button>
+										</div> 									   												
 								</div>
-							</div>
-						</div>
+							</div>							
 					</div>
 				</div>
 			</div>

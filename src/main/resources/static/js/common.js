@@ -35,6 +35,17 @@ $(function () {
     TB04011P_srchMtr();
   }
 
+  if ($('script[src="js/business/tb/TB03061P.js"]').attr("src") === "js/business/tb/TB03061P.js") {
+    TB03061P_srchMtr();
+  }
+
+  if (
+    $('script[src="js/business/tb/TB03022P.js"]').attr("src") ===
+    "js/business/tb/TB03022P.js"
+  ) {
+    TB03022P_srch();
+  }
+
   // datepicker 초기화
   $(".input-group.date").datepicker({
     format: "yyyy-mm-dd",
