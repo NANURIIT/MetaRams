@@ -39,7 +39,7 @@ VALUES (
 		, #{chrrEmpno}
 		, #{cstmNm}					
 		, #{cstmPhNo}
-		, '1' 
+		, 'Y' 
 		, SYSDATE
 		, #{hndEmpno}
 		, #{hndTmnlNo}
