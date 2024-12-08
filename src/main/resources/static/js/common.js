@@ -15,6 +15,13 @@ $(function () {
   }
 
   if (
+    $('script[src="js/business/tb/TB07021P.js"]').attr("src") ===
+    "js/business/tb/TB07021P.js"
+  ) {
+    TB07021P_srchFnlt();
+  }
+
+  if (
     $('script[src="js/business/tb/TB07022P.js"]').attr("src") ===
     "js/business/tb/TB07022P.js"
   ) {
@@ -26,6 +33,25 @@ $(function () {
     "js/business/tb/TB04011P.js"
   ) {
     TB04011P_srchMtr();
+  }
+
+  if ($('script[src="js/business/tb/TB03061P.js"]').attr("src") === "js/business/tb/TB03061P.js") {
+    console.log("기업체팝업");
+    TB03061P_srchMtr();
+  }
+
+  if (
+    $('script[src="js/business/tb/TB03022P.js"]').attr("src") ===
+    "js/business/tb/TB03022P.js"
+  ) {
+    TB03022P_srch();
+  }
+
+  if (
+    $('script[src="js/business/tb/TB03021P.js"]').attr("src") ===
+    "js/business/tb/TB03021P.js"
+  ) {
+    TB03021P_srch();
   }
 
   // datepicker 초기화
@@ -1158,28 +1184,6 @@ function getSelectBoxList(prefix, item, async = true) {
             }
             $("#TB04020S_I008").append(html);
           }
-
-          if (value.cmnsGrpCd == "I011") {
-            var selectBoxId = "#" + prefix + "_" + value.cmnsGrpCd;
-            var html = "";
-            // 숫자 범위 확인 (200 이상 300 미만)
-            $(selectBoxId).empty();
-            if (
-              parseInt(value.cdValue) >= 200 &&
-              parseInt(value.cdValue) < 300
-            ) {
-              html +=
-                '<option value="' +
-                value.cdValue +
-                '">' +
-                value.cdName +
-                " (" +
-                value.cdValue +
-                ")" +
-                "</option>";
-              $(selectBoxId).append(html); // 조건에 맞는 데이터 추가
-            }
-          }
         }
         if (prefix == "TB06010S") {
           if (value.cmnsGrpCd == "E022") {
@@ -1457,6 +1461,44 @@ function getSelectBoxList(prefix, item, async = true) {
   }
   return result;
 }
+
+/*
+	SelectBox 코드조회 및 html 맵핑 (단건)
+	@param {String} prefix	화면명
+	@param {String} item	셀렉트박스코드 ex) I011
+	@param {boolean} async  동기, 비동기
+ */
+function getSelectBoxCode2(prefix, item, async = true) {
+	  var code = item;
+	  var result = null;
+	  $.ajax({
+	    type: "GET",
+	    url: "/getSelectBoxCode2/"+item,
+	    data: code,
+	    async: async,
+	    dataType: "json",
+	    success: function (data) {
+			result = data;
+	      if (result.length > 0) {
+	        $.each(result, function (key, value) {
+	          var html = "";
+	          html +=
+	            '<option value="' +
+	            value.cdValue +
+	            '">' +
+	            value.cdName +
+	            " (" +
+	            value.cdValue +
+	            ")" +
+	            "</option>";
+	          $("#" + prefix + "_" + value.cmnsGrpCd).append(html);
+	        });
+	      }
+	    }
+	  });
+	  return result;
+}
+
 
 function setKRKRW(prefix) {
   $("#" + prefix + '_C006 option[value="KR"]').prop("selected", true); // 국가코드
@@ -1794,8 +1836,13 @@ function getBasicValues(id) {
  * @author {김건우}
  */
 function resetInputValue(selector) {
-  selector.find(`select`).val("");
-  selector.find(`input`).val("");
+  const $selectInput = selector.find(`select`)
+  $selectInput.each(function () {
+    $(this).val($($(this).find('option')[0]).val())
+  })
+  selector.find(`select[id*="Yn"]`).val("N");
+  selector.find(`input[type="radio"][name*="Yn"][value="N"]`).prop("checked", true);
+  selector.find(`input[type="text"]`).val("");
   selector
     .find(
       `input[id$='Amt']
@@ -1830,7 +1877,7 @@ function setInputboxFromPdata(ui, menuId) {
 /**
  * 단건 select data뿌리기
  * @param data	ajax 셀렉트 데이터
- * @param { String } menuId
+ * @param {String} menuId
  * @author {김건우}
  */
 function setInputDataFromSelectData(data, menuId) {
@@ -1971,4 +2018,11 @@ function needRunFn(fn, menuId) {
   if (menuId) {
     fn;
   }
+}
+
+
+function autoSrchFromPQGrid (pqGridId, url, paramData) {
+
+  
+
 }

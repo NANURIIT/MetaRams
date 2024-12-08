@@ -140,6 +140,8 @@
 			     , DSHN_RT_GRD_CD = #{dshnRtGrdCd}  /* 기업여신부도율등급코드 */
 			     , EARLY_REPAY_YN = #{earlyRepayYn}  /* 중도상환여부 */
 			     , SGL_INV_YN = #{sglInvYn}  /* 단독투자여부 */
+			     , TOT_ISSU_SHQT = #{totIssuShqt} /* 총발행좌수 */
+			     , TOT_ISSU_STK_QNT = #{totIssuStkQnt} /* 총발행주수 */
 			     , RGST_DT = #{rgstDt}  /* 등록일자 */
 			     , CHNG_DT = #{chngDt}  /* 변경일자 */
 			     , HND_DETL_DTM = SYSDATE  /* 조작상세일시 */
@@ -573,11 +575,31 @@
      LEFT JOIN IBIMS101B IB101B
             ON IB201B.DEAL_NO 				= IB101B.DEAL_NO 
            AND IB101B.LAST_YN         = 'Y'
-     LEFT JOIN IBIMS112B s112b
+     LEFT JOIN (SELECT 
+		  					CNSB_DCD
+							,CNSB_SQ
+							,RSLTN_YR
+							,SN
+							,DEAL_NO
+							,MTR_DCD
+							,JDGM_DCD
+							,RGST_DT
+							,SDN_CNDT_F
+							,SDN_CNDT_CTNS
+							,ETC_CNDT_F
+							,ETC_CNDT_CTNS
+							,MTR_PRG_STTS_DCD
+							,APVL_DT
+							,APVL_AMT
+							,RANK() OVER(PARTITION BY DEAL_NO, MTR_DCD, JDGM_DCD, CNSB_DCD ORDER BY DECODE(MTR_PRG_STTS_DCD,'308',1,'309',1,2) ASC, RSLTN_YR DESC, TO_NUMBER(CNSB_SQ) DESC, TO_NUMBER(SN) DESC) AS RK		  					
+		  				FROM IBIMS112B 
+		  				WHERE DEL_YN='N'
+		  				)  s112b
             ON s103b.DEAL_NO 				= s112b.DEAL_NO 
            AND s103b.MTR_DCD 				= s112b.MTR_DCD 
            AND s103b.JDGM_DCD 				= s112b.JDGM_DCD 
            AND s103b.RISK_INSPCT_RSLTN_CCD	= s112b.CNSB_DCD
+           AND s112b.RK						= 1
     <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trDvsn)">
       <if test='trDvsn == "TB07150S"'>
     INNER JOIN (
@@ -1092,6 +1114,8 @@
             , INTR_HDWT_CLC_YN                                  <!-- 이자수기계산여부 -->
             , GRD_CD                                            <!-- 기업여신등급코드 -->
             , DSHN_RT_GRD_CD                                    <!-- 기업여신부도율등급코드 -->
+            , TOT_ISSU_SHQT										<!-- 총발행좌수 -->
+            , TOT_ISSU_STK_QNT									<!-- 총발행주수 -->
             , RGST_DT                                           <!-- 등록일자 -->
             , CHNG_DT                                           <!-- 변경일자 -->
             , HND_DETL_DTM                                      <!-- 조작상세일시 -->
@@ -1242,6 +1266,8 @@
             , #{intrHdwtClcYn}                                   <!-- 이자수기계산여부 -->
             , #{grdCd}                                           <!-- 기업여신등급코드 -->
             , #{dshnRtGrdCd}                                     <!-- 기업여신부도율등급코드 -->
+            , #{totIssuShqt}									 <!-- 총발행좌수-->
+            , #{totIssuStkQnt}									 <!-- 총발행주수-->
             , #{rgstDt}                                          <!-- 등록일자 -->
             , #{chngDt}                                          <!-- 변경일자 -->
             , SYSDATE                                            <!-- 조작상세일시 -->

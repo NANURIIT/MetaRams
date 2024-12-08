@@ -90,7 +90,7 @@
                , #{jdgmDcd}                                         /* 심사구분코드 */
            	   /* NEXTVAL(IBIMS103B_SQ) 일련번호 에서 변경 딜번호, 안건구분, 심사구분별 SN번호 생성으로 변경         	 */
                , #{sn}
-               , #{lastYn}                                          /* 최종여부 */
+               , 'Y'                                          	    /* 최종여부 */
                , #{mtrPrgSttsDcd}                                   /* 안건진행상태구분코드 */
                , #{mtrNm}                                           /* 안건명 */
                , #{mtrAbbrNm}                                       /* 안건약어명 */
@@ -612,21 +612,21 @@
              , s103b.RA_DEAL_DCD                                     /* RADEAL구분코드 */
              , s103b.RISK_RCG_NO                                     /* 리스크승인번호 */
              , s103b.INSPCT_DPRT_DCD                                 /* 심사부서구분코드 */
-             , s103b.INV_PRDT_LCLS_CD                               /* 투자상품대분류코드 */
+             , s103b.INV_PRDT_LCLS_CD                                /* 투자상품대분류코드 */
              , s002b_7.CD_VL_NM AS INVST_GDS_LDVD_CD_NM
-             , s103b.INV_PRDT_MDCL_CD                               /* 투자상품중분류코드 */
+             , s103b.INV_PRDT_MDCL_CD                                /* 투자상품중분류코드 */
              , s002b_8.CD_VL_NM AS INVST_GDS_MDVD_CD_NM
-             , s103b.INV_PRDT_SCLS_CD                               /* 투자상품소분류코드 */
+             , s103b.INV_PRDT_SCLS_CD                                /* 투자상품소분류코드 */
              , s002b_9.CD_VL_NM AS INVST_GDS_SDVD_CD_NM
-             , s103b.INV_PRDT_DTLS_DVD_CD                           /* 투자상품상세분류코드 */
+             , s103b.INV_PRDT_DTLS_DVD_CD                            /* 투자상품상세분류코드 */
              , s002b_10.CD_VL_NM AS INVST_GDS_DTLS_DVD_CD_NM
              , s103b.MAIN_INVST_TRGT_NM                              /* 주요투자대상명 */
-             , s103b.PTFD_CRRY_CD                                   /* 부의통화코드 */
+             , s103b.PTFD_CRRY_CD                                    /* 부의통화코드 */
              , s002b_6.CD_VL_NM AS PTFD_CRRY_CD_NM
              , s103b.PTFD_AMT                                        /* 부의금액 */
-             , s103b.INV_NTN_CD                                    /* 투자국가코드 */
+             , s103b.INV_NTN_CD                                      /* 투자국가코드 */
              , s002b_5.CD_VL_NM AS INVST_NTN_CD_NM
-             , s103b.APLY_EXRT                                     /* 적용환율 */
+             , s103b.APLY_EXRT                                     	 /* 적용환율 */
              , s103b.KRW_TRSL_PTFD_AMT                               /* 원화환산부의금액 */
              , s103b.IND_TYP_DVD_CD                                  /* 업종분류코드 */
              , s103b.CHECK_ITEM_CD                                   /* 점검항목코드(업무구분) */
@@ -649,7 +649,7 @@
              , s103b.BSNS_DPRT_ESG_GRD_CMMT                          /* 사업부서ESG등급의견 */
              , s103b.INSPCT_DPRT_ESG_GRD_DCD                         /* 심사부서ESG등급구분코드 */
              , s103b.INSPCT_DPRT_ESG_GRD_CMMT                        /* 심사부서ESG등급의견 */
-             , s103b.INV_PRD_MNUM                                  /* 투자기간개월수 */
+             , s103b.INV_PRD_MNUM                                    /* 투자기간개월수 */
              , s103b.WRT_EXPT_DT                                     /* 기표예정일자 */
              , s103b.MTRT_EXPT_DT                                    /* 만기예정일자 */
              , s103b.TL_ERN_AMT                                      /* 전체수익 */
@@ -659,14 +659,14 @@
              , s103b.ENSR_YN                                         /* 보증여부 */
              , s103b.RSPSB_CMPL_DCD                                  /* 책임준공구분코드 */
              , s103b.ENTP_NM                                         /* 업체명 */
-             , s103b.BZNO                                    /* 사업자등록번호 */
+             , s103b.BZNO                                    				 /* 사업자등록번호 */
              , s103b.CORP_NO                                         /* 법인번호 */
              , s103b.CORPTN_TYP_CD                                   /* 협업유형코드 */
              , s103b.BUSI_DPT_OPNN                                   /* 사업부서의견 */
              , s103b.JDGM_DPT_OPNN                                   /* 심사부서의견 */
-             , s103b.BSC_ASTS_INPT_EXPT_F							 /* 기초자산입력예정여부 */
-			 , s103b.INS_GRD_INPT_EXPT_F							 /* 내부등급입력예정여부 */
-			 , s103b.CNC_CMPNY_INPT_EXPT_F							 /* 연결회사입력예정여부 */
+             , s103b.BSC_ASTS_INPT_EXPT_F							 							 /* 기초자산입력예정여부 */
+			 			 , s103b.INS_GRD_INPT_EXPT_F							 							 /* 내부등급입력예정여부 */
+			 			 , s103b.CNC_CMPNY_INPT_EXPT_F							 						 /* 연결회사입력예정여부 */
              , s103b.CNSB_MTG_NO                                     /* 협의체회의번호(협의체구분코드_결의년도_일련번호) */
              , s103b.HND_DETL_DTM                                    /* 조작상세일시 */
              , s103b.HND_EMPNO                                       /* 조작사원번호 */
@@ -752,6 +752,15 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND s101b.DEAL_NO LIKE '%'|| #{dealNo} || '%'
            </if>
+					 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mtrPrgSttsDcd)">
+           AND s103b.MTR_PRG_STTS_DCD = #{mtrPrgSttsDcd}
+           </if>
+					 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ownPDprtCd)">
+           AND s003b_1.DPRT_CD = #{ownPDprtCd}
+           </if>
+					 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
+           AND s103b.OWN_P_ENO = #{chrrEmpno}
+           </if>
          ORDER BY s103b.MTR_PRG_STTS_DCD
          	    , s103b.DEAL_NO
          	    , SN
@@ -759,9 +768,9 @@
     
     <select id="selectTB06010SVO" parameterType="com.nanuri.rams.business.common.vo.TB06010SVO"
                                      resultType="com.nanuri.rams.business.common.vo.TB06010SVO">
-    	SELECT s401b.PRDT_CD AS CFRM_YN									   /* 약정여부 */ 
-    	     , s103b.DEAL_NO                                               /* 딜번호 */
-    	     , s101b.DEAL_NM                                               /* 딜명 */
+    	SELECT s401b.PRDT_CD AS CFRM_YN									   							 /* 약정여부 */ 
+    	     , s103b.DEAL_NO                                             /* 딜번호 */
+    	     , s101b.DEAL_NM                                             /* 딜명 */
 		     , s103b.MTR_DCD                                               /* 안건구분코드 */
 		     , s103b.JDGM_DCD                                              /* 심사구분코드 */
 		     , s103b.MTR_NM                                                /* 안건명 */
@@ -788,7 +797,7 @@
 				  AND s103b.RISK_INSPCT_RSLTN_CCD = s112bX.CNSB_DCD 
 		          AND s112bX.APVL_DT IS NOT NULL
 		       ) SUM_APVL_AMT		 
-		     , s103b.BZNO                                          /* 사업자등록번호 */
+		     , s103b.BZNO                                          				 /* 사업자등록번호 */
 		     , s103b.CORP_NO                                               /* 법인번호 */
 		     , s103b.ENTP_NM                                               /* 업체명 */
 		     , s201b.DMS_CRDT_GRD_DCD                                      /* 국내신용등급구분코드 */
@@ -816,9 +825,9 @@
 		     , s201b.OFFR_SRVC_DCD                                         /* 제공서비스구분코드 */
 		     , s201b.ACTS_CD                                               /* 계정과목코드 */
 		     , s201b.RGST_CBND_YN                                          /* 등록사채여부 */
-		     , NVL(s201b.TR_CRRY_CD, s103b.PTFD_CRRY_CD) AS TR_CRRY_CD    /* 거래통화코드 */
+		     , NVL(s201b.TR_CRRY_CD, s103b.PTFD_CRRY_CD) AS TR_CRRY_CD     /* 거래통화코드 */
 		     , s201b.TR_CRRY_CD                                            /* 거래통화코드 */
-		     , s201b.EPRZ_CRDL_INDV_LMT_DCD                                          /* 기업여신개별한도구분코드 */
+		     , s201b.EPRZ_CRDL_INDV_LMT_DCD                                /* 기업여신개별한도구분코드 */
 		     , s201b.CTRC_PRD_DCD                                          /* 약정기간구분코드 */
 		     , s201b.CTRC_PRD_MNUM                                         /* 약정기간개월수 */
 		     , s201b.THCO_RL_DCD                                           /* 당사역할구분코드 */
@@ -828,7 +837,7 @@
 		     , s201b.CNNC_PRDT_CD                                          /* 연결상품코드 */
 		     , s201b.CHRR_EMPNO                                            /* 담당자사원번호 */
 		     , s003b.EMP_NM                                                /* 사원명 */
-			 , s003b.DPRT_CD                                               /* 부서코드 */
+			 , s003b.DPRT_CD                                               	 /* 부서코드 */
 		     , s003b.DPRT_NM                                               /* 부서명 */
 		     , s201b.UNTP_FND_YN                                           /* 단위형펀드여부 */
 		     , s201b.PPLC_FND_YN                                           /* 사모펀드여부 */
@@ -841,8 +850,10 @@
 		     , s201b.LST_YN                                                /* 상장여부 */
 		     , s201b.ISU_DT                                                /* 발행일자 */
 		     , s201b.EXP_DT                                                /* 만기일자 */
-		     , s201b.RDMP_CLM_PSBL_DT									   /* 상환청구가능일자 */
+		     , s201b.RDMP_CLM_PSBL_DT									   									 /* 상환청구가능일자 */
 		     , s201b.RQS_KND_CD	                                           /* 기업여신신청종류코드 */
+		     , s201b.TOT_ISSU_SHQT										   /* 총발행좌수*/
+		     , s201b.TOT_ISSU_STK_QNT									   /* 총발행주수*/	
 		     , (
 		        CASE WHEN s201b.TR_OTHR_DSCM_NO = '' THEN (
                                                            SELECT ARDY_BZEP_NO
@@ -930,11 +941,31 @@
 		       ON s103b.DEAL_NO = V.DEAL_NO
 		      AND s103b.MTR_DCD = V.MTR_DCD 
 		      AND s103b.JDGM_DCD = V.JDGM_DCD		  
-		  LEFT JOIN IBIMS112B s112b
+		  LEFT JOIN (SELECT 
+		  					CNSB_DCD
+							,CNSB_SQ
+							,RSLTN_YR
+							,SN
+							,DEAL_NO
+							,MTR_DCD
+							,JDGM_DCD
+							,RGST_DT
+							,SDN_CNDT_F
+							,SDN_CNDT_CTNS
+							,ETC_CNDT_F
+							,ETC_CNDT_CTNS
+							,MTR_PRG_STTS_DCD
+							,APVL_DT
+							,APVL_AMT
+							,RANK() OVER(PARTITION BY DEAL_NO, MTR_DCD, JDGM_DCD, CNSB_DCD ORDER BY DECODE(MTR_PRG_STTS_DCD,'308',1,'309',1,2) ASC, RSLTN_YR DESC, TO_NUMBER(CNSB_SQ) DESC, TO_NUMBER(SN) DESC) AS RK		  					
+		  				FROM IBIMS112B 
+		  				WHERE DEL_YN='N'
+		  				) s112b
 		    ON s103b.DEAL_NO 				= s112b.DEAL_NO 
 		   AND s103b.MTR_DCD 				= s112b.MTR_DCD 
 		   AND s103b.JDGM_DCD 				= s112b.JDGM_DCD 
 		   AND s103b.RISK_INSPCT_RSLTN_CCD	= s112b.CNSB_DCD 
+		   AND s112b.RK						= 1
 		  LEFT JOIN IBIMS106B s106b
 		   ON s103b.DEAL_NO 				= s106b.DEAL_NO 
 		   AND s103b.MTR_DCD 				= s106b.MTR_DCD 

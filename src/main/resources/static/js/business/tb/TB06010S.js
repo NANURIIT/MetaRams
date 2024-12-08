@@ -29,6 +29,8 @@ const TB06010Sjs = (function(){
 		onChangeEprzCrdlPrdtLclsCd(); // 기업여신상품대분류코드 선택이벤트
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		pqGrid();
+
+		resetSearchRequiment();
 	});
 
 	var option = {}
@@ -462,6 +464,7 @@ const TB06010Sjs = (function(){
 	}
 
 	function resetSearchRequiment() {
+		resetInputValue($('div[data-menuid="/TB06010S"]'))
 		$('#TB06010S_ibDealNo').val('');
 		$('#TB06010S_riskInspctCcdNm').val('');
 		$('#TB06010S_riskInspctCcd').val('');
@@ -1265,7 +1268,7 @@ const TB06010Sjs = (function(){
 			"pageDcd" : pageDcd
 			, "prdtCd": $('#TB06010S_res_prdtCd').val()									// 상품코드
 			//, "sn": ''                                          						// 일련번호
-			, "lastYn": '1'																// 최종여부
+			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06010S_res_prdtNm').val()									// 상품명
 			, "prdtDsc": $('#TB06010S_prdtDsc').val()									// 상품설명
 			//, "rqsKndCd": rqsKndCd                              						// 기업여신신청종류코드

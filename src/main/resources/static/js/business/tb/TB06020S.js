@@ -63,11 +63,12 @@ const TB06020Sjs = (function(){
 		item += '/' + 'T002';			// 당사역할구분코드
 		item += '/' + 'R017';			// 부동산금융구분코드
 		item += '/' + 'S002';			// SOC구분코드
-		item += '/' + 'I011';			// 진행상태
+		//item += '/' + 'I011';			// 진행상태
 		item += '/' + 'D007';			// 매각일자구분코드
 		item += '/' + 'D008';			// 매각기준금액구분코드
 		
 		getSelectBoxList('TB06020S', item);
+		getSelectBoxCode2('TB06020S','I011');
 		
 		var item = '';
 		item += 'I008';					// 결의협의회구분코드
@@ -107,8 +108,10 @@ const TB06020Sjs = (function(){
 		
 		getSelectBoxList('TB06013P', item);
 		
-		onChangeSelectBoxMrtgKndCd();
+		onChangeSelectBoxMrtgKndCd(); 
 	}
+	
+
 
 	/**
 	 * 기업여신 대분류코드 이벤트 핸들러
@@ -212,6 +215,7 @@ const TB06020Sjs = (function(){
 		})
 	}
 
+	//초기화
 	function resetSearchRequiment() {
 		$('#TB06020S_ibDealNo').val('');
 		$('#TB06020S_riskInspctCcdNm').val('');
@@ -223,6 +227,14 @@ const TB06020Sjs = (function(){
 		$('#TB06020S_prdtCd').val('');
 		$('#TB06020S_prdtNm').val('');
 		
+		/*
+		let inputLength = $("#page-TB06020S :input").length;
+		for (let i = 0; i < inputLength; i++) {
+			$("#page-TB06020S :input:eq("+i+")").val("");
+			
+		}*/
+		
+		resetInputValue($('div[data-menuid="/TB06020S"]'));
 	}
 
 
@@ -305,12 +317,13 @@ const TB06020Sjs = (function(){
 					$('#TB06020S_res_prdtNm').val(dealDetail.prdtNm);											// 종목명
 				}
 				$('#TB06020S_res_prdtCd').val(dealDetail.prdtCd);												// 종목코드
-				$('#TB06020S_I011').val(dealDetail.prgSttsCd);													// 진행상태
 				
-				$('#TB06020S_ardyBzepNo').val(handleNullData(checkBrnAcno(dealDetail.trOthrDscmNo)));					// 거래상대방식별번호
+				$('#TB06020S_I011').val(dealDetail.prgSttsCd).prop("selected", true).change();					// 진행상태
+				
+				$('#TB06020S_ardyBzepNo').val(handleNullData(checkBrnAcno(dealDetail.trOthrDscmNo)));			// 거래상대방식별번호
 				$('#TB06020S_corpRgstNo').val(dealDetail.corpNo);												// 법인번호
 				
-				$('#TB06020S_bzepName').val(dealDetail.trOthrDscmNm);													// 거래상대방(업체한글명)
+				$('#TB06020S_bzepName').val(dealDetail.trOthrDscmNm);											// 거래상대방(업체한글명)
 				$('#TB06020S_I012').val(dealDetail.dmsCrdtGrdDcd).prop("selected", true);						// 내부신용등급(신용등급코드)
 				$('#TB06020S_crdtInqDt').val(formatDate(dealDetail.crdtInqDt));									// 신용조회일
 				
@@ -335,7 +348,7 @@ const TB06020Sjs = (function(){
 				
 				/** 금융조건 정보 */
 				
-				$('#TB06020S_rcgAmt').val(Number(handleNullData(dealDetail.apvlAmt)).toLocaleString());	// 종목승인금액
+				$('#TB06020S_rcgAmt').val(Number(handleNullData(dealDetail.apvlAmt)).toLocaleString());		    // 종목승인금액
 				$('#TB06020S_I027').val(dealDetail.trCrryCd).prop("selected", true);							// 투자통화코드
 				
 				$(":radio[name='TB06020S_untpFndYn']").radioSelect(dealDetail.untpFndYn);						// 단위형여부
@@ -354,6 +367,7 @@ const TB06020Sjs = (function(){
 				$(":radio[name='TB06020S_sglInvYn']").radioSelect(dealDetail.sglInvYn);							// 단독투자여부
 				$(":radio[name='TB06020S_mrtgStupYn']").radioSelect(dealDetail.mrtgStupYn);						// 담보제공여부
 				$(":radio[name='TB06020S_sdnTrgtYn']").radioSelect(dealDetail.sdnTrgtYn);						// 셀다운대상여부
+				$('#TB06020S_totIssuShqt').val(Number(handleNullData(dealDetail.totIssuShqt)).toLocaleString());// 총발행좌수
 				
 				if (isEmpty($('#TB06020S_res_prdtCd').val())) {
 					$('#regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
@@ -592,7 +606,7 @@ const TB06020Sjs = (function(){
 			"pageDcd" : pageDcd
 			, "prdtCd": $('#TB06020S_res_prdtCd').val()									// 상품코드
 			//, "sn": ''                                          // 일련번호
-			, "lastYn": '1'																// 최종여부
+			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06020S_res_prdtNm').val()									// 상품명
 			, "prdtDsc": $('#TB06020S_prdtDsc').val()									// 상품설명
 			//, "rqsKndCd": rqsKndCd                              // 기업여신신청종류코드
@@ -736,6 +750,7 @@ const TB06020Sjs = (function(){
 			//, "guid": ''                                      	// guid
 			//, "earlyRepayYn": $('input[name=TB06020S_earlyRepayYn]:checked').val()		// 중도상환여부
 			, "sglInvYn": $('input[name=TB06020S_sglInvYn]:checked').val()				// 단독투자여부
+			, "totIssuShqt" : replaceAll($('#TB06020S_totIssuShqt').val(), ',', '') / 1 // 총발행좌수
 		}
 		
 		return paramData;

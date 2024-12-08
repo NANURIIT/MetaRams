@@ -32,7 +32,7 @@
                , #{item.mtrDcd}                           /* 안건구분코드 */
                , #{item.jdgmDcd}                          /* 심사구분코드 */
                , TO_CHAR(SYSDATE, 'YYYYMMDD')             /* 등록일자 */
-               , '0'                                      /* 삭제여부 */
+               , 'N'                                      /* 삭제여부 */
                , SYSDATE                                  /* 조작상세일시 */
                , #{item.hndEmpno}                         /* 조작사원번호 */
                , #{item.hndTmnlNo}                        /* 조작단말기번호 */

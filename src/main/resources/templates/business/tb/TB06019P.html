@@ -28,6 +28,7 @@
                                        <button type="button" class="btn btn-default"  onclick="callTB03061P('TB06019P_srch');"><i class="fa fa-search"></i></button>
                                     </span>
                                     <input type="text" class="form-control" id="TB06019P_srch_entpNm" style="width: 110px;"  disabled>
+                                    <input type="hidden" class="form-control" id="TB06019P_getArdyBzepNo" maxlength="13" disabled>
                                  </div>
       
                                  <!-- 상단 버튼 스타일 -->
@@ -60,11 +61,11 @@
                                                 <option value="">선택</option>
                                              </select>
                                           </div>
-                                          <label class="col-sm-1 col-form-label text-right">기업체 번호</label>
-                                          <div class="col-sm-3">
-                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="TB06019P_getArdyBzepNo" maxlength="13" disabled>
-                                             </div>
+                                          <label class="col-sm-1 col-form-label text-right">SPC여부</label>
+                                           <div class="col-sm-3 input-group input-h">
+                                             <div class="col-sm-4 text-left input-group">
+                                               <input type="checkbox" class="" id="TB06019P_spcYn" checked>                                               
+                                             </div>                                          
                                           </div>
                                           <label class="col-sm-1 control-label">고객번호</label>
                                           <div class="col-sm-3">
@@ -103,7 +104,7 @@
                                                 <input type="text" class="form-control" id="TB06019P_rnbn" oninput="this.value = checkBrnAcno(this.value.replace(/[^-0-9]/g,''));" placeholder="사업자등록번호 10자리" maxlength='10' value ='999-99-99999' readonly>
                                              </div>
                                           </div>
-                                          <label class="col-sm-1 col-form-label text-right">법인등록번호</label>
+                                          <label class="col-sm-1 col-form-label text-right"><span class="req"></span>법인등록번호</label>
                                           <div class="col-sm-3">
                                              <div class="input-group">
                                                 <input type="text" class="form-control" id="TB06019P_crno" oninput="this.value = this.value.length > 10 ? checkBrnAcno(this.value.replace(/[^-0-9]/g,'')) : this.value.replace(/[^-0-9]/g,'');" placeholder="법인번호 13자리" maxlength="13">
@@ -136,7 +137,7 @@
                                           </div>
                                           <label class="col-sm-1 col-form-label text-right">Fax번호</label>
                                           <div class="col-sm-3 input-group">
-                                             <select class="form-control" id="TB06019P_faxBtno">
+                                             <select class="form-control" id="TB06019P_Z010">
                                                 <option value="">선택</option>
                                              </select>
                                              <span class="input-group-addon border-none">-</span>
@@ -186,7 +187,7 @@
                                                 <input type="radio" value="Y" name="smetYn" id="smetYn_Y" >&nbsp;Y
                                              </div>
                                              <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" value="N" name="smetYn" id="smetYn_N" >&nbsp;N
+                                                <input type="radio" value="N" name="smetYn" id="smetYn_N" checked>&nbsp;N
                                              </div>
                                           </div>
                                           <label class="col-sm-1 col-form-label text-right">표준산업소분류</label>
@@ -197,7 +198,7 @@
                                           <label class="col-sm-1 col-form-label text-right">설립일</label>
                                           <div class="col-sm-3">
                                              <div class="input-group date">
-                                                <input type="text" class="form-control" id="" placeholder="yyyy-mm-dd" oninput="" maxlength="10"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                <input type="text" class="form-control" id="TB06019P_estDt" placeholder="yyyy-mm-dd" oninput="" maxlength="10"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                              </div>
                                           </div>
                                        </div>
@@ -219,7 +220,7 @@
                                           <label class="col-sm-1 col-form-label text-right">임직원수</label>
                                           <div class="col-sm-3">
                                              <div class="input-group">
-                                                <input type="text" class="form-control" id="" maxlength="60">
+                                                <input type="text" class="form-control" id="TB06019P_stffNum" maxlength="60">
                                              </div>
                                           </div>
                                        </div>
@@ -241,7 +242,7 @@
                                           <label class="col-sm-1 col-form-label text-right">운용인력수</label>
                                           <div class="col-sm-3">
                                              <div class="input-group">
-                                                <input type="text" class="form-control" id="" maxlength="60">
+                                                <input type="text" class="form-control" id="TB06019P_oprtHnfNum" maxlength="60">
                                              </div>
                                           </div>
                                        </div>
@@ -261,7 +262,7 @@
                                                 <input type="radio" name="clseDvsnCd" value="Y" id="clseDvsnCd_Y"  >&nbsp;Y
                                              </div>
                                              <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" name="clseDvsnCd" value="N" id="clseDvsnCd_N" >&nbsp;N
+                                                <input type="radio" name="clseDvsnCd" value="N" id="clseDvsnCd_N" checked>&nbsp;N
                                              </div>
                                           </div>
                                           <label class="col-sm-1 col-form-label text-right">폐업일자</label>
@@ -327,7 +328,7 @@
                                                 <input type="radio" value="Y" name="ovrsSpcYn" id="ovrsSpcYn_Y">&nbsp;Y
                                              </div>
                                              <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" value="N" name="ovrsSpcYn" id="ovrsSpcYn_N">&nbsp;N
+                                                <input type="radio" value="N" name="ovrsSpcYn" id="ovrsSpcYn_N" checked>&nbsp;N
                                              </div>
                                           </div>
                                           <label class="col-sm-1 col-form-label text-right">사용여부</label>
@@ -336,14 +337,14 @@
                                                 <input type="radio" value="Y" name="useYn" id="useYn_Y">&nbsp;Y
                                              </div>
                                              <div class="col-sm-4 text-left input-group">
-                                                <input type="radio" value="N" name="useYn" id="useYn_N">&nbsp;N
+                                                <input type="radio" value="N" name="useYn" id="useYn_N" checked>&nbsp;N
                                              </div>
                                           </div>												
                                        </div>
                                     </div>
                                     <div class="row">
                                        <div class="col-sm-12 text-right">
-                                          <button class="btn btn-default" onclick="reset_TB06019P();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+                                        <!--  <button class="btn btn-default" onclick="reset_TB06019P();"><i class="fa fa-undo"></i>&nbsp;초기화</button> --> 
                                           <button class="btn btn-danger" id="TB06019P_delBtn" onclick="deleteArdyBzepInfo()"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
                                           <button class="btn btn-success" onclick="saveArdyBzepInfo()"><i class="fa fa-save"></i>&nbsp;저장</button>
                                        </div>

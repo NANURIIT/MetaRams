@@ -65,12 +65,13 @@ const TB06030Sjs = (function(){
 		item += '/' + 'S002';			// SOC구분코드
 		item += '/' + 'I004';			// PEF구분
 		item += '/' + 'E030';			// 채무증권상태
-		item += '/' + 'I011';			// 진행상태
+		//item += '/' + 'I011';			// 진행상태
 		item += '/' + 'D007';			// 매각일자구분코드
 		item += '/' + 'D008';			// 매각기준금액구분코드
 		item += '/' + 'I008';			// 결의협의회구분코드
 		
 		getSelectBoxList('TB06030S', item);
+		getSelectBoxCode2('TB06030S','I011');
 		
 		var item = '';
 		item += 'I008';					// 결의협의회구분코드
@@ -246,6 +247,13 @@ const TB06030Sjs = (function(){
 		$('#TB06030S_prdtNm').val('');
 		$('#TB06030S_mtrNm').val('');
 		
+		/*
+		let inputLength = $("#page-TB06030S :input").length;
+		for (let i = 0; i < inputLength; i++) {
+			$("#page-TB06030S :input:eq("+i+")").val("");
+			
+		}*/
+		resetInputValue($('div[data-menuid="/TB06030S"]'));
 	}
 
 	function getDealList() {
@@ -371,6 +379,7 @@ const TB06030Sjs = (function(){
 				$(":radio[name='TB06030S_sdnTrgtYn']").radioSelect(dealDetail.sdnTrgtYn);						// 셀다운대상여부
 				
 				$('#TB06030S_cnnc_prdtCd').val(dealDetail.cnncPrdtCd);											// 연결종목코드
+				$('#TB06030S_totIssuQty').val(Number(handleNullData(dealDetail.totIssuStkQnt)).toLocaleString());// 총발행주수
 				
 				if (isEmpty($('#TB06030S_res_prdtCd').val())) {
 					$('#regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
@@ -701,7 +710,7 @@ const TB06030Sjs = (function(){
 			"pageDcd" : pageDcd
 			, "prdtCd": $('#TB06030S_res_prdtCd').val()									// 상품코드
 			//, "sn": ''                                          // 일련번호
-			, "lastYn": '1'																// 최종여부
+			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06030S_res_prdtNm').val()									// 상품명
 			, "prdtDsc": $('#TB06030S_prdtDsc').val()									// 상품설명
 			//, "rqsKndCd": rqsKndCd                              // 기업여신신청종류코드
@@ -846,6 +855,7 @@ const TB06030Sjs = (function(){
 			//, "guid": ''                                      	// guid
 			//, "earlyRepayYn": $('input[name=TB06030S_earlyRepayYn]:checked').val()		// 중도상환여부
 			, "sglInvYn": $('input[name=TB06030S_sglInvYn]:checked').val()				// 단독투자여부
+			, "totIssuStkQnt" : replaceAll($('#TB06030S_totIssuQty').val(), ',', '') / 1			// 총발행주수
 
 			//출자정보 관련 데이터 추가
 		}

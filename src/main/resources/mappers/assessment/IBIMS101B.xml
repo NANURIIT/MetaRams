@@ -137,7 +137,7 @@
                  #{dealNo}             /*  딜번호  */
                , #{sn}                 /*  일련번호  */
                , TO_CHAR(SYSDATE, 'YYYY')/*  기준년도  */
-               , '1'                   /*  최종여부  */
+               , 'Y'                   /*  최종여부  */
                , #{dealNm}             /*  딜명  */
                , #{prdtIflwPathDcd}    /*  상품유입경로구분코드  */
                , #{invDealCntn}        /*  딜내용  */
@@ -290,9 +290,10 @@
             , DECD_SN             			/*  결재일련번호  */
             , MNGM_BDCD           			/*  관리부점코드  */
             , (
-                SELECT MAX(BDCD)
+                SELECT DPRT_NM
                   FROM IBIMS003B
-                WHERE BDCD = MNGM_BDCD
+                WHERE DPRT_CD = MNGM_BDCD
+                AND ROWNUM = 1
               ) AS DPRT_NM
             , CHRR_EMPNO          			/*  담당자사원번호  */
             , (
@@ -444,6 +445,12 @@
         </if>
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(end)">
            AND B.RGST_DT             <![CDATA[<=]]> #{end}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)"> 
+           AND B.CHRR_EMPNO   = #{chrrEmpno}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)"> 
+           AND B.MNGM_BDCD    = #{mngmBdcd}
         </if>
         ORDER BY B.RGST_DT DESC
     </select>

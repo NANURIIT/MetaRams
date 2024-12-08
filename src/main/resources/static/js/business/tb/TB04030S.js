@@ -2,6 +2,7 @@ const TB04030Sjs = (function () {
   let pqGridObjDealList;
   $(document).ready(function () {
     setKeyFunction_TB04030S();
+    loadSelectBoxContents();
 
     // 1개월전 ~ 오늘일자 디폴트 세팅
     $("#TB04030S_fromDate").val(addMonth(getToday(), -1));
@@ -32,6 +33,15 @@ const TB04030Sjs = (function () {
     });
   }
 
+  // 셀렉트박스 세팅
+  function loadSelectBoxContents() {
+    var item = "";
+    item += "D010"; // 심사부서구분코드
+    item += "/" + "I011"; // 안건진행상태구분코드
+
+    getSelectBoxList("TB04030S", item);
+  }
+
   function alertPopup(msg) {
     Swal.fire({
       icon: "error",
@@ -44,6 +54,9 @@ const TB04030Sjs = (function () {
   function assignmentSearch() {
     var rgstDtStart = $("#TB04030S_fromDate").val().replaceAll("-", ""); // Deal생성일자(시작)
     var rgstDtEnd = $("#TB04030S_toDate").val().replaceAll("-", ""); // Deal생성일자(종료)
+    var mtrPrgSttsDcd = $("#TB04030S_I011").val(); //진행상태
+    var ownPDprtCd = $("#TB04030S_D010").val(); // 심사부서
+    var chrrEmpno = $("#TB04030S_empNo").val(); // 심사자번호
 
     if (isNotEmpty(rgstDtStart) || isNotEmpty(rgstDtEnd)) {
       businessFunction();
@@ -55,6 +68,9 @@ const TB04030Sjs = (function () {
       var dtoParam = {
         rgstDtStart: rgstDtStart,
         rgstDtEnd: rgstDtEnd,
+        ownPDprtCd: ownPDprtCd,
+        chrrEmpno: chrrEmpno,
+        mtrPrgSttsDcd: mtrPrgSttsDcd,
       };
 
       $.ajax({
@@ -257,6 +273,6 @@ const TB04030Sjs = (function () {
   ];
 
   return {
-    assignmentSearch: assignmentSearch
-  }
+    assignmentSearch: assignmentSearch,
+  };
 })();

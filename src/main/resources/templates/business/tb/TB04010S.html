@@ -11,8 +11,8 @@
 	<script th:src="@{js/business/popup/AC01140P.js}"></script>
 	<!-- <script th:src="@{js/business/tb/TB04014P.js}"></script> -->
 	<script th:src="@{js/business/tb/TB04013P.js}"></script>
-	<script th:src="@{js/business/tb/TB04012P.js}"></script>
-	<script th:src="@{js/business/tb/TB03023P.js}"></script>
+	<!-- <script th:src="@{js/business/tb/TB04012P.js}"></script> -->
+	<!-- <script th:src="@{js/business/tb/TB03023P.js}"></script> -->
 	<script th:src="@{js/business/tb/TB03022P.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
@@ -22,8 +22,8 @@
 	<th:block th:replace="business/popup/AC01140P :: AC01140P"></th:block>
 	<!-- <th:block th:replace="business/tb/TB04014P :: TB04014P"></th:block> -->
 	<th:block th:replace="business/tb/TB04013P :: TB04013P"></th:block>
-	<th:block th:replace="business/tb/TB04012P :: TB04012P"></th:block>
-	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
+	<!-- <th:block th:replace="business/tb/TB04012P :: TB04012P"></th:block> -->
+	<!-- <th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block> -->
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
@@ -367,11 +367,11 @@
 															<label class="col-sm-4 col-form-label">직원</label>
 															<div class="col-sm-8">
 																<div class="input-group">
-																	<input type="text" class="form-control" style="width:30px;" id="TB04010S_empNo">
+																	<input type="text" class="form-control" style="width:30px;" id="TB04010S_empNo" readonly>
 																	<span class="input-group-append">
-																		<button type="button" class="btn btn-default" onclick="callTB03022P('TB04010S')"><i class="fa fa-search"></i></button>
+																		<button type="button" class="btn btn-default" onclick="callTB03022P('TB04010S')" disabled><i class="fa fa-search"></i></button>
 																	</span>
-																	<input type="text" class="form-control" id="TB04010S_empNm" style="width:70px;"readonly>
+																	<input type="text" class="form-control" id="TB04010S_empNm" style="width:70px;" readonly>
 																</div>
 															</div>
 														</div>

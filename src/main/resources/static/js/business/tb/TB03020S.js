@@ -13,14 +13,25 @@ const TB03020Sjs = (function(){
 		loadInvstGdsSdvdCd();
 		setKeyFunction_TB03020S();
 		rendorGrid();
-
 		
+
+		$('#TB03020S_dealSclN').attr('checked', true);
+		$('#TB03020S_ptctSclN').attr('checked', true);
+
 
 		//athCdCheck_TB03020S();
 
 		$("#selectedMngDealNo").focus();
+
+		TB03020S_selectOption();
 		//getDealNo();
+
+		//TB03020S_dataListBnd('KR');
 	});
+
+	// function TB03020S_settingFrst(){
+
+	// }
 
 	// 그리드 렌더링함수
 	function rendorGrid () {
@@ -78,18 +89,24 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_invstGdsSdvdCd').val(data.invPrdtClsfCd);
 					$('#TB03020S_I028').val(data.invPrdtDtlsDvdCd);
 					$('#TB03020S_dealCntnt').val(data.invDealCntn);
-					$('#TB03020S_bnkBd').val(data.bnkBd);
-					$('#TB03020S_C006').val(data.ntnCd);
+					//$('#TB03020S_bnkBd').val(data.bnkBd);
+					//$('#TB03020S_C006_srch').val(data.ntnCd);
+
+					TB03020S_dataListBnd(data.ntnCd);
+
 					$('#TB03020S_invstCty').val(data.invstCty);
 					
 					/* 업체정보 */
-					$('#TB03020S_corpRgstNo').val(checkBrnAcno(data.ptxtTrOthrDscmNo));
+					$('#TB03020S_corpRgstNo').val(data.ptxtTrOthrDscmNo);
 					$('#TB03020S_entpRnm').val(data.ptxtTrOthrDscmNm);
 					$('#TB03020S_B019').val(data.bzsacalCd);
 					$('#TB03020S_I006').val(data.indTypDvdCd);
 					$('#TB03020S_irls').val(data.irls);
 					$('#TB03020S_C012').val(data.crdtGrdCd);
 					$('#TB03020S_lstMkt').val(data.lstMkt);
+
+					// alert(data.invAmtDcsnYn);
+					// alert(data.thcoPtciAmtDcsnYn);
 
 					/* 수익정보 */
 					if( data.invAmtDcsnYn == 'Y'){
@@ -123,11 +140,11 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_intrErn').val(addComma(data.intrErnAmt));
 					$('#invstCrncyCd').val(data.crryCd);
 					$('#invstCrncyAmt').val(addComma(data.crryAmt));
-					$('#wrtDt').val(formatDate(data.expDt));
-					$('#mtrtDt').val(formatDate(data.mtrtDt));
+					$('#wrtDt').val(formatDate(data.baltDt));
+					$('#mtrtDt').val(formatDate(data.expDt));
 					
 					/* 기타정보 */
-					$('#TB03020S_c_corpRgstNo').val(checkBrnAcno(data.csucCmpDscmNo));
+					$('#TB03020S_c_corpRgstNo').val(data.csucCmpDscmNo);
 					$('#TB03020S_c_entpRnm').val(data.csucCmpDscmNm);
 					$('#TB03020S_C010').val(data.crdtEhcmntCcd);
 					$('#TB03020S_ltv').val(data.ltv);
@@ -141,6 +158,8 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_chrg_dprtCd').val(data.mngmBdcd);
 	
 					pqGridObjEnopList.setData(data.enoPList);
+
+					//pqGridObjEnopListSetting(data.enoPList);
 					
 					/******  딜공통 파일첨부 추가 ******/ 
 					$('#key1').val(data.dealNo);
@@ -150,6 +169,48 @@ const TB03020Sjs = (function(){
 
 			});
 		}
+	}
+
+
+	function TB03020S_dataListBnd(value){
+
+		//alert(value);
+
+		const $inputField = $('#TB03020S_C006_srch');
+    	const $dataList = $('#TB03020S_C006');
+		
+		const $selectedOption = $dataList.find('option').filter(function () {
+            return $(this).val() === value; // value로 매칭
+        });
+
+        if ($selectedOption.length) {
+            // 해당 옵션의 텍스트를 `input` 필드에 바인딩
+            $inputField.val($selectedOption.text());
+        } else {
+            console.warn('해당 값에 매칭되는 옵션이 없습니다.');
+        }
+
+	}
+
+	function TB03020S_dataListVal(inputText){
+
+		//alert(inputText);
+
+		const $inputField = $('#TB03020S_C006_srch');
+		const $dataList = $('#TB03020S_C006');
+
+		 // `inputText`에 해당하는 옵션을 검색
+		 const $selectedOption = $dataList.find('option').filter(function () {
+            return $(this).text() === inputText; // 텍스트 비교
+        });
+
+        if ($selectedOption.length) {
+            // 옵션의 `value`를 반환
+            return $selectedOption.val();
+        } else {
+            console.warn('해당 텍스트에 매칭되는 옵션이 없습니다.');
+            return null; // 매칭되는 값이 없을 경우 null 반환
+        }
 	}
 
 	/**
@@ -191,6 +252,9 @@ const TB03020Sjs = (function(){
 		$("#TB03020S_mngPList").html('');
 		$("#gridEnoPList").pqGrid("option", "dataModel.data", []);
 		$("#gridEnoPList").pqGrid("refreshDataAndView");
+
+		$('#TB03020S_dealSclN').attr('checked', true);
+		$('#TB03020S_ptctSclN').attr('checked', true);
 
 		// 로그인 사용자정보 재세팅 추후수정
 		loadUserAuth();
@@ -430,6 +494,8 @@ const TB03020Sjs = (function(){
 
 				var ibDealNo_TB02010S = sessionStorage.getItem("ibDealNo_TB02010S");
 
+				TB03020S_dataListBnd("KR");
+
 				if(ibDealNo_TB02010S){
 					//alert(ibDealNo_TB02010S);
 					ibDealNo_TB02010S = ibDealNo_TB02010S.substring(0, 17);
@@ -499,8 +565,10 @@ const TB03020Sjs = (function(){
 		var invPrdtClsfCd = $('#TB03020S_invstGdsSdvdCd').val();
 		var invstGdsDtlsDvdCd = $('#TB03020S_I028').val();
 		var invDealCntn = $('#TB03020S_dealCntnt').val();
-		var bnkBd = $('#TB03020S_bnkBd').val();
-		var ntnCd = $('#TB03020S_C006').val();
+		//var bnkBd = $('#TB03020S_bnkBd').val();
+		var ntnCdTxt = $('#TB03020S_C006_srch').val();
+
+		var ntnCd = TB03020S_dataListVal(ntnCdTxt);
 		var invstCty = $('#TB03020S_invstCty').val();
 
 		/* 업체정보 */
@@ -534,7 +602,7 @@ const TB03020Sjs = (function(){
 		var intrErnAmt = $('#TB03020S_intrErn').val().replaceAll(',', '');
 		var crncyCd = $('#TB03020S_I027').val();
 		var crncyAmt = $('#invstCrncyAmt').val().replaceAll(',', '');
-		var mtrtDt = $('#wrtDt').val().replaceAll('-', '');
+		var baltDt = $('#wrtDt').val().replaceAll('-', '');
 		var expDt = $('#mtrtDt').val().replaceAll('-', '');
 
 		/* 기타정보 */
@@ -560,10 +628,13 @@ const TB03020Sjs = (function(){
 
 				let enoInfo = {
 				"sn"     : i+1
-				, "dprtCd" : dprtCd
+				, "bdcd" : dprtCd
 				, "bsnssMngPEno" : bsnssMngPEno
 				, "cntrt" : cntrt
 				}; 
+
+				//alert(JSON.stringify(enoInfo));
+
 				enoPList.push(enoInfo);
 			}
 		}
@@ -580,7 +651,7 @@ const TB03020Sjs = (function(){
 			, "invPrdtClsfCd" : invPrdtClsfCd
 			, "invPrdtDtlsDvdCd" : invstGdsDtlsDvdCd
 			, "invDealCntn" : invDealCntn
-			, "bnkBd" : bnkBd
+			//, "bnkBd" : bnkBd
 			, "ntnCd" : ntnCd
 			, "invstCty" : invstCty
 			/* 업체정보 */
@@ -601,7 +672,7 @@ const TB03020Sjs = (function(){
 			, "intrErnAmt" : (intrErnAmt / 1)
 			, "crryCd" : crncyCd
 			, "crryAmt" : (crncyAmt / 1)
-			, "mtrtDt" : mtrtDt
+			, "baltDt" : baltDt
 			, "expDt" : expDt
 			/* 기타정보 */
 			, "csucCmpDscmNo" : csucCmpDscmNo
@@ -1041,6 +1112,23 @@ const TB03020Sjs = (function(){
 		}
 	});
 
+	function TB03020S_selectOption(){
+		const $inputField = $('#TB03020S_C006_srch');
+		const $dataList = $('#TB03020S_C006');
+	
+		$inputField.on('input', function () {
+			const inputValue = $(this).val();
+			const $selectedOption = $dataList.find('option').filter(function () {
+				return $(this).val() === inputValue;
+			});
+	
+			if ($selectedOption.length) {
+				// `option`의 텍스트를 input에 바인딩
+				$inputField.val($selectedOption.text());
+			}
+		});
+	}
+
 
 	// 탭 접었다 펴기
 	function tabCtrl(prefix) {
@@ -1132,6 +1220,7 @@ const TB03020Sjs = (function(){
 			render : function (ui) {
 				let cellData = ui.cellData;
 				if (cellData && cellData > 100) return `100%` ;
+				else if(!cellData) return '0%' ;
 				else return `${cellData}%`;
 			}
 		},
@@ -1162,6 +1251,7 @@ const TB03020Sjs = (function(){
 		, mngPListDelRow : mngPListDelRow
 		, saveDeal : saveDeal
 		, cnfmDeal : cnfmDeal
+		//, TB03020S_selectOption: TB03020S_selectOption
 	}
 })();
 

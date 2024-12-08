@@ -2,6 +2,7 @@ const TB03040Sjs = (function(){
   let pqGridObjEnopList;
 
   $(document).ready(function () {
+    setFormElementsStateByUserRole();
     $(".table").footable();
 
     // 1개월전 ~ 오늘일자 디폴트 세팅
@@ -62,6 +63,8 @@ const TB03040Sjs = (function(){
         //	"inqDvsn": $('#TB03040S_inqDvsn').val(),
         start: $("#TB03040S_fromDate").val().replaceAll("-", ""),
         end: $("#TB03040S_toDate").val().replaceAll("-", ""),
+        chrrEmpno :$("#TB03040S_1_empNo").val(),
+        mngmBdcd : $("#TB03040S_2_dprtCd").val(),
       };
 
       $.ajax({
@@ -93,6 +96,44 @@ const TB03040Sjs = (function(){
       callPage('TB05040S', '협의체 현황 및 결과조회');
     }
   }
+
+  //담당자명 변경시 담당자번호 클리어
+  $("#TB03040S_1_empNm").on('input', function(){
+    $('#TB03040S_1_empNo').val("");  
+  });
+
+  //부서명 변경시 부서번호 클리어
+  $("#TB03040S_2_dprtNm").on('input', function(){
+    $('#TB03040S_2_dprtCd').val("");  
+  });
+
+  /**
+   * 로그인한 사용자의 권한에 따라 담당자번호 ,부서번호 비활성화 상태 조정
+   * 권한 조건은 미정이며,
+   * 현재는 로그인한 사원의 정보가 설정된 후, 관련 필드를 비활성화 상태로 설정
+   */
+  function setFormElementsStateByUserRole(){
+    let empNo  = $('#userEno').val();   
+    let empNm  = $('#userEmpNm').val();
+    let dprtCd = $('#userDprtCd').val();
+    let dprtNm = $('#userDprtNm').val();
+
+    //로그인한 사원 정보 세팅 
+    $('#TB03040S_1_empNo').val(empNo);
+    $('#TB03040S_1_empNm').val(empNm);
+    $('#TB03040S_2_dprtCd').val(dprtCd);
+    $('#TB03040S_2_dprtNm').val(dprtNm);
+    
+    //if(){ //권환에 따른 조건 필요 
+  
+    //} else{
+      $('#TB03040S_1_empNo').prop('disabled', true);    //담당자번호
+      $('#empNoSearch').prop("disabled", true);         //담당자 검색 버튼
+      $('#TB03040S_2_dprtCd').prop('disabled', true);   //부서번호
+      $('#dprtCdSearch').prop("disabled", true);        //부서 검색 버튼
+    //}
+  }
+
 
   /* ***********************************그리드 컬럼******************************** */
   let colDealList = [

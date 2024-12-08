@@ -46,7 +46,7 @@
                , #{item.opnnRgstDt}                       /* 의견등록일자 */
                , #{item.opnnRgstEmpno}                    /* 의견등록자사원번호 */
                , #{item.opnnCtns}                         /* 의견내용 */
-               , '0'                                      /* 삭제여부 */
+               , 'N'                                      /* 삭제여부 */
                , SYSDATE                                  /* 조작상세일시 */
                , #{item.hndEmpno}                         /* 조작사원번호 */
                , #{item.hndTmnlNo}                        /* 조작단말기번호 */

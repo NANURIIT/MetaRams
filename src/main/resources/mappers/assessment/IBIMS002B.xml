@@ -4,12 +4,12 @@
 
 	<!-- 셀렉트박스 코드, 밸류 취득 -->
 	<select id="getSelectBox2" resultType="java.util.HashMap">
-		SELECT s002b.CMNS_CD_GRP 		AS cmnsGrpCd	          <!-- 공통코드그룹 -->         
-		     , s001b.CMNS_CD_GRP_EXPL 	AS cmnsGrpCdNm	          <!-- 공통코드그룹설명 -->         
-		     , s001b.CMNS_CD_NM 		AS cmnsGrpCdNmEng         <!-- 공통코드명 -->         
-		     , s001b.CD_LNGTH 			AS cdLength               <!-- 코드길이 -->         
-		     , s002b.CD_VL_ID 			AS cdValue                <!-- 코드값ID -->         
-		     , s002b.CD_VL_NM 			AS cdName                 <!-- 코드값명 -->         
+		SELECT s002b.CMNS_CD_GRP 		AS "cmnsGrpCd"	            <!-- 공통코드그룹 -->         
+		     , s001b.CMNS_CD_GRP_EXPL 	AS "cmnsGrpCdNm"	        <!-- 공통코드그룹설명 -->         
+		     , s001b.CMNS_CD_NM 		AS "cmnsGrpCdNmEng"         <!-- 공통코드명 -->         
+		     , s001b.CD_LNGTH 			AS "cdLength"               <!-- 코드길이 -->         
+		     , s002b.CD_VL_ID 			AS "cdValue"                <!-- 코드값ID -->         
+		     , s002b.CD_VL_NM 			AS "cdName"                 <!-- 코드값명 -->         
 		  FROM IBIMS002B s002b 
 		  LEFT JOIN IBIMS001B s001b
 		    ON s001b.CMNS_CD_GRP = s002b.CMNS_CD_GRP
@@ -45,7 +45,8 @@
 		   AND s001b.CMNS_CD_GRP IN                                
 			<foreach collection="list" item="listParam" index="index" open="(" separator="," close=")">
 	      #{listParam}
-	    </foreach>
+	    </foreach>  
+      AND (s002b.CMNS_CD_GRP != 'I011' OR (s002b.CMNS_CD_GRP = 'I011' AND s002b.CD_VL_ID LIKE '2%%')) 
 		 ORDER BY s001b.CMNS_CD_GRP, s002b.CD_SQ, s002b.CD_VL_ID 
 	</select>
 

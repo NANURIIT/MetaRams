@@ -5,6 +5,7 @@
 <th:block layout:fragment="script">
 	<script th:src="@{js/common.js}"></script>
 	<script th:src="@{js/business/tb/TB04030S.js}"></script>
+
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -17,30 +18,54 @@
 					<div class="ibox-content text-right i-filter">
 						<form method="get">
 							<div class="form-group form-inline row mb-0">
-								<label class="col-sm-1 control-label">
-									<span class="req"></span>접수배정일
-								</label>
-								<div class="col-sm-4 input-group date">
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB04030S_fromDate" name="FromDate" value="" maxlength="10">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<!-- 1 -->
+								<div class="form-group col-sm-12 mb-1">
+									<label class="col-sm-1 control-label"><span class="req"></
+										<span class="req"></span>접수배정일</label>
+										<div class="col-sm-4 input-group date">
+											<div class="col-sm-5 input-group date px-0">
+												<input type="text" class="form-control" id="TB04030S_fromDate" name="FromDate" value="" maxlength="10">
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>
+											<span class="input-group-addon border-none"> ~ </span>
+											<div class="col-sm-5 input-group date px-0">
+												<input type="text" class="form-control" id="TB04030S_toDate" name="ToDate" value="" maxlength="10">
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>
+										</div>
+										<label class="col-sm-1 control-label">진행상태</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB04030S_I011">
+												<option value="">전체</option>
+											</select>	
+										</div>										
 									</div>
-									<span class="input-group-addon border-none"> ~ </span>
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB04030S_toDate" name="ToDate" value="" maxlength="10">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-								</div>
-								<div class="col-sm-6 text-right">
-									<button class="btn btn-primary" type="button" onclick="TB04030Sjs.assignmentSearch();">
+									<!-- 2 -->
+									<div class="form-group col-sm-12 mb-1">
+										<label class="col-sm-1 control-label">심사자</label>
+										<div class="col-sm-4 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB04030S_empNm" >
+												<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick="callTB03022P('TB04030S')"><i class="fa fa-search"></i></button>
+												</span>
+											<input type="text" class="form-control" style="width:30px;" id="TB04030S_empNo" readonly disabled>
+										</div>
+										<label class="col-sm-1 control-label">심사부서</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" id="TB04030S_D010">
+												<option value="">전체</option>
+											</select>
+										</div>										
+									<!-- 버튼영역 -->
+									<div class="col-sm-4 text-right">
+										<button class="btn btn-primary" type="button" onclick="TB04030Sjs.assignmentSearch();">
 										<i class="fa fa-search"></i>&nbsp;조회
-									</button>
+										</button>
+									</div>
 								</div>
-								<div class="col-sm-7"></div>
 							</div>
 						</form>
-					</div>
-					
+					</div>					
 					<!-- 조회결과 -->
 					<div class="ibox-content">
 						<div id="TB04030S_gridDealList"></div>
