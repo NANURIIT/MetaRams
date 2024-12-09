@@ -16,6 +16,9 @@ const fnSetDlDprt = () => {
   $("#dlDprtCd1").val($("#TB04012P_dlDprtCd1_dlDprtCd").val());
   $("#dlDprtCd2").val($("#TB04012P_dlDprtCd2_dlDprtCd").val());
   $("#dlDprtCd3").val($("#TB04012P_dlDprtCd3_dlDprtCd").val());
+  $("#dlDprtNm1").val($("#TB04012P_dlDprtNm1_dlDprtNm").val());
+  $("#dlDprtNm2").val($("#TB04012P_dlDprtNm2_dlDprtNm").val());
+  $("#dlDprtNm3").val($("#TB04012P_dlDprtNm3_dlDprtNm").val());
 };
 
 /**
@@ -50,8 +53,8 @@ function setDlDprt(prefix) {
   let delDprtCd = $(`input[id='${prefix}_dprtCd']`).val();
   let delDprtNm = $(`input[id='${prefix}_dprtNm']`).val();
   console.log("확인해보자: ", delDprtCd, delDprtNm);
-  $("#TB04012P_dlDprtCd").val(delDprtCd);
-  $("#TB04012P_dlDprtNm").val(delDprtNm);
+  $("#TB04012P_dlDprtCd0_dlDprtCd").val(delDprtCd);
+  $("#TB04012P_dlDprtCd0_dlDprtNm").val(delDprtNm);
 }
 
 /**

@@ -3,24 +3,16 @@ let TB04011P_pf;
 let TB04011P_gridState = 1;
 let TB04011P_onchangehandler = "on"; // on off
 let TB04011P_srchCnt = 0;
+let empNo;
+("");
 
 /**
  * 팝업 자동 호출, 검색
  * @author {김건우}
  */
-/**
- * 팝업 자체 조회
- * 팝업은 포커스아웃시 조회 없음
- */
-$("#TB04011P_ibDealNo").on("keydown", function (evt) {
-  // Enter에만 작동하는 이벤트
-  if (evt.keyCode === 13) {
-    evt.preventDefault();
-    console.log("으흐흐");
 
-    // 팝업창에서는 엔터 누를시 조회만.
-    getMtrInfo();
-  }
+$(document).ready(function () {
+  docRdySettings();
 });
 
 function TB04011P_srchMtr(menuId) {
@@ -133,18 +125,12 @@ function TB04011P_srchMtr(menuId) {
 
     // 팝업 오픈
     if (TB04011P_gridState === 0) {
-      console.log("여기신지?", TB04011P_gridState);
-      // 그리드만 부릅니다
       callGridTB04011P(prefix);
       $("#TB04011P_ibDealNo").val(data);
-      // ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
       setTimeout(() => getMtrInfo(), 400);
     } else if (TB04011P_gridState === 1) {
-      console.log("저기신지?", TB04011P_gridState);
-      // 팝업을 열거예요
       callTB04011P(prefix);
       $("#TB04011P_ibDealNo").val(data);
-      // ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
       setTimeout(() => getMtrInfo(), 400);
     }
   }
@@ -153,18 +139,14 @@ function TB04011P_srchMtr(menuId) {
 function callGridTB04011P(prefix) {
   reset_TB04011P();
   $("#TB04011P_prefix").val(prefix);
-  setTimeout(() => {
-    let setPqGridObj = [
-      {
-        height: 300,
-        maxHeight: 300,
-        id: "gridMtrInfo",
-        colModel: colMtrInfo,
-      },
-    ];
-    setPqGrid(setPqGridObj);
-    arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
-  }, 300);
+  setTimeout(() => roadListGrid_TB04011P(), 300);
+
+  //indexChangeHandler("TB04011P");
+}
+
+function clearTB04011P() {
+  $("#TB04011P_ibDealNo").val("");
+  $("#TB04011P_ibDealNm").val("");
 }
 
 /**
@@ -172,9 +154,10 @@ function callGridTB04011P(prefix) {
  */
 function callTB04011P(prefix) {
   reset_TB04011P();
-  $("#TB04011P_prefix").val(prefix);
   TB04011P_gridState = 0;
   TB04011P_pf = prefix;
+  setTimeout(() => roadListGrid_TB04011P(), 300);
+  $("#TB04011P_prefix").val(prefix);
   // ?????
   switch ($("#TB04011P_prefix").val()) {
     case "":
@@ -184,8 +167,15 @@ function callTB04011P(prefix) {
       $("#modal-TB04011P").modal("show");
       break;
   }
+  //setPqGrid(setPqGridObj);
+  //arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
+  indexChangeHandler("TB04011P");
+}
 
-  setTimeout(() => {
+function roadListGrid_TB04011P() {
+  arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
+
+  if (typeof arrPqGridMtrInfo === "undefined" || arrPqGridMtrInfo === null) {
     let setPqGridObj = [
       {
         height: 300,
@@ -194,20 +184,27 @@ function callTB04011P(prefix) {
         colModel: colMtrInfo,
       },
     ];
-    setPqGrid(setPqGridObj);
-    arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
-  }, 300);
 
-  indexChangeHandler("TB04011P");
+    setPqGrid(setPqGridObj);
+    // 초기화된 인스턴스를 다시 할당
+    arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
+  } else {
+    arrPqGridMtrInfo.setData([]);
+  }
 }
 
 /**
  * reset
  */
 function reset_TB04011P() {
+  empNo = $("#userEno").val();
   // $("#TB04011P_dealInfoList").html("");
   $("#TB04011P_ibDealNo").val("");
   $("#TB04011P_ibDealNm").val("");
+  $("#TB04011P1_empNm").val($("#userEmpNm").val());
+  $("#TB04011P1_empNo").val(empNo);
+  $("#TB04011P2_dprtNm").val($("#userDprtNm").val());
+  $("#TB04011P2_dprtCd").val($("#userDprtCd").val());
 }
 
 /**
@@ -215,31 +212,58 @@ function reset_TB04011P() {
  */
 function modalClose_TB04011P() {
   reset_TB04011P(); // 다른 초기화 작업
-  resetGrid_TB04011P(); // 그리드만 리프레시 또는 초기화
+  $("#gridMtrInfo").pqGrid("refreshDataAndView");
   $("#modal-TB04011P").modal("hide"); // 모달 닫기
-}
-
-/**
- * 그리드만 초기화
- */
-function resetGrid_TB04011P() {
-  $("#gridMtrInfo").pqGrid("refreshDataAndView"); // 그리드만 리프레시
-  // 또는
-  // $("#gridMtrInfo").pqGrid("destroy");  // 그리드 파괴 후 다시 세팅도 가능
 }
 
 /**
  * hide modal
  */
 $("#modal-TB04011P").on("hide.bs.modal", function () {
-  resetGrid_TB04011P(); // 그리드만 초기화
+  // 먼저 그리드 초기화 후 모달을 닫음
+  $("#gridMtrInfo").pqGrid("destroy");
   reset_TB04011P(); // 필요한 경우, 다른 리셋 작업을 추가
 });
+
+// 모달을 닫기 전에 그리드가 초기화되는지 확인
+$("#modal-TB04011P").on("hidden.bs.modal", function () {
+  console.log("모달이 닫혔습니다.");
+});
+
+function docRdySettings() {
+  modalShowFunction();
+  keyDownEnter_TB04011P();
+}
+
+function modalShowFunction() {
+  //모달 오픈 애니메이션 후 포커스 주도록 설정
+  $("#modal-TB04011P").on("shown.bs.modal", function () {
+    $("#modal-TB04011P input[id=TB0411P_ibDealNo]").focus();
+  });
+}
+
+/**
+ * Enter key event
+ */
+function keyDownEnter_TB04011P() {
+  $("input[id=TB04011P_ibDealNo]").keydown(function (key) {
+    if (key.keyCode == 13) {
+      //키가 13이면 실행 (엔터는 13)
+      getMtrInfo();
+    }
+  });
+
+  $("input[id=TB04011P_ibDealNm]").keydown(function (key) {
+    if (key.keyCode == 13) {
+      //키가 13이면 실행 (엔터는 13)
+      getMtrInfo();
+    }
+  });
+}
 
 /**
  * deal 번호 조회 ajax
  */
-
 function getMtrInfo() {
   var prefix = $("#TB04011P_prefix").val();
 
@@ -332,9 +356,9 @@ async function TB04011P_setGridState() {
   };
 
   if (TB04011P_gridState === 0) {
-		console.log("열려있으니까 좀 쉬어라");
-		return;
-	}
+    console.log("열려있으니까 좀 쉬어라");
+    return;
+  }
 
   await $.ajax({
     type: "GET",

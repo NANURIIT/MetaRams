@@ -1850,6 +1850,7 @@ function resetInputValue(selector) {
     .find(`input[type="radio"][name*="Yn"][value="N"]`)
     .prop("checked", true);
   selector.find(`input[type="text"]`).val("");
+  selector.find(`textarea`).val("")
   selector
     .find(
       `input[id$='Amt']
@@ -2035,7 +2036,11 @@ function needRunFn(fn, menuId) {
  */
 function resetPGgrids (menuid) {
   console.log("피큐 그리드 초기화 실행");
-  $("#" + $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).attr('id')).pqGrid('instance').setData([]);
+  if($(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).length != 0){
+    $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).each(function(){
+      $("#" + $(this).attr('id')).pqGrid('instance').setData([]);
+    })
+  }
 }
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) {}
