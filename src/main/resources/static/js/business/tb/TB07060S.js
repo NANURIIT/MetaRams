@@ -11,6 +11,7 @@ const TB07060Sjs = (function () {
     fnSelectBox(); // 셀렉트박스
     pqGrid(); // PqGrid 생성
     resetDd();
+    reset();
   });
 
   /*******************************************************************
@@ -1280,33 +1281,36 @@ const TB07060Sjs = (function () {
 
   // 초기화
   function reset() {
-    $('input[id^="TB07060S"]').each(function () {
-      const $this = $(this);
-      //console.log($this);
-      $this.val(initialValues[$this.attr("id")]);
-    });
 
-    $("select").each(function () {
-      const $this = $(this);
-      const id = $this.attr("id");
+    resetInputValue($('div[data-menuid="/TB07060S"]'))
 
-      // if (id.includes('I027')) {
-      // 	// 'I027'이 포함된 select 요소의 경우, value를 'KRW'로 설정
-      // 	$this.val('KRW');
-      // } else {
-      // 	// 나머지 select 요소의 경우, 첫 번째 옵션을 선택
-      // 	$this.prop('selectedIndex', 0);
-      // }
-      $this.prop("selectedIndex", 0);
-    });
-
-    // 버튼 클릭 시 탭 1로 이동하는 코드
-    // $('#tab1').on('click', function (e) {
-    //     e.preventDefault();
-
+    // $('input[id^="TB07060S"]').each(function () {
+    //   const $this = $(this);
+    //   //console.log($this);
+    //   $this.val(initialValues[$this.attr("id")]);
     // });
-    $("#TB07060S_excSn").html("");
-    $("#TB07060S_excSn").attr("disabled", true);
+
+    // $("select").each(function () {
+    //   const $this = $(this);
+    //   const id = $this.attr("id");
+
+    //   // if (id.includes('I027')) {
+    //   // 	// 'I027'이 포함된 select 요소의 경우, value를 'KRW'로 설정
+    //   // 	$this.val('KRW');
+    //   // } else {
+    //   // 	// 나머지 select 요소의 경우, 첫 번째 옵션을 선택
+    //   // 	$this.prop('selectedIndex', 0);
+    //   // }
+    //   $this.prop("selectedIndex", 0);
+    // });
+
+    // // 버튼 클릭 시 탭 1로 이동하는 코드
+    // // $('#tab1').on('click', function (e) {
+    // //     e.preventDefault();
+
+    // // });
+    // $("#TB07060S_excSn").html("");
+    // $("#TB07060S_excSn").attr("disabled", true);
 
     // $('#tab1').tab('show'); // 탭 1을 활성화
     trDtls.setData([]);
