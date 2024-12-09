@@ -54,10 +54,7 @@ const TB07140Sjs = (function () {
         $("#TB07140S_fincCngeAmt, #TB07140S_stlAmt").prop("readonly", false);
       },
       "03": () => {
-        $("#TB07140S_payErnAmt, #TB07140S_intx, #TB07140S_lotx").prop(
-          "readonly",
-          false
-        );
+        $("#TB07140S_payErnAmt, #TB07140S_intx, #TB07140S_lotx").prop("readonly", false);
       },
       "04": () => {
         $("#TB07140S_payErnAmt").prop("readonly", false);
@@ -67,10 +64,7 @@ const TB07140Sjs = (function () {
         $("#TB07140S_stlAcno ,#TB07140S_fnltCd").prop("readonly", true);
       },
       "06": () => {
-        $("#TB07140S_fincCngeAmt, #TB07140S_stlAmt, #TB07140S_trtx").prop(
-          "readonly",
-          false
-        );
+        $("#TB07140S_fincCngeAmt, #TB07140S_stlAmt, #TB07140S_trtx").prop("readonly", false);
       },
       "07": () => {
         $("#TB07140S_payErnAmt").prop("readonly", false);
@@ -108,7 +102,7 @@ const TB07140Sjs = (function () {
    *  처음 인풋의 disabled, readonly 상태 가져오기
    */
   const getFirstStatus = () => {
-    $("input, select").each(function () {
+    $("div[data-menuid='/TB07140S'] input, div[data-menuid='/TB07140S'] select").each(function () {
       TB07140S_tagStatuses.push({
         id: $(this).attr("id"),
         readonly: $(this).prop("readonly"),
@@ -133,11 +127,11 @@ const TB07140Sjs = (function () {
   };
 
   /*
-   *  날짜 기본세팅
+   *  날짜 기본세팅 ??건우야 이건 너무했다
    */
   function dateInputSet() {
-    const $this = $("input[id*='Dt']");
-    $this.val("YYYY-MM-DD");
+    const $this = $("#TB07140S_trDt");
+    $this.val(getToday());
   }
 
   /*
@@ -182,9 +176,14 @@ const TB07140Sjs = (function () {
 
   const resetInput = () => {
     $("input").val("");
-    $(
-      "input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Tmrd'], #TB07140S_trtx"
-    ).val("0");
+    $(`input[id*='Amt']
+     , input[id*='Blce']
+     , input[id*='Exrt']
+     , input[id*='Mnum']
+     , input[id*='Tmrd']
+     , #TB07140S_trtx
+     , #TB07140S_intx
+     , #TB07140S_lotx`).val("0");
   };
 
   /*
@@ -1047,7 +1046,7 @@ const TB07140Sjs = (function () {
    *  =====================DELETE모음=====================
    */
 
-  function deleteFinc() {
+  async function deleteFinc() {
     paramData = {
       prdtCd: $(`#TB07140S_prdtCd`).val(),
       trSn: $(`#TB07140S_trSn`).val(),
@@ -1076,7 +1075,7 @@ const TB07140Sjs = (function () {
       reFincPossYn: $(`#TB07140S_reFincPossYn`).val(),
     };
 
-    $.ajax({
+    await $.ajax({
       type: "POST",
       url: "/TB07140S/deleteFinc",
       contentType: "application/json; charset=UTF-8",
@@ -1105,7 +1104,7 @@ const TB07140Sjs = (function () {
       });
     }
 
-    getFincList();
+    await getFincList();
   }
 
   async function deleteIBIMS404B() {
@@ -1147,7 +1146,7 @@ const TB07140Sjs = (function () {
         });
       },
     });
-    selectTB07140S();
+    await selectTB07140S();
   }
 
   /*
