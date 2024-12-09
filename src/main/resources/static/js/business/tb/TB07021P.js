@@ -147,13 +147,13 @@ function modalShowFunction() {
 function keyDownEnter_TB07021P() {
 	$("input[id=TB07021P_fnltCd]").keydown(function(key) {
 		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
-			
+			getFnltList();
 		}
 	});
 
 	$("input[id=TB07021P_fnltNm]").keydown(function(key) {
 		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
-			
+			getFnltList();
 		}
 	});
 }
@@ -260,27 +260,26 @@ function setFnltInfo(e) {
 }
 
 
-function TB07021P_srchFnlt(){
+function TB07021P_srchFnlt(menuId){
 	
 
 	/**
 	 * 팝업 자체 조회
 	 * 팝업은 포커스아웃시 조회 없음
 	 */
-	$('#TB07021P_fnltCd, #TB07021P_fnltNm').on('keydown', function (evt) {
-		// Enter에만 작동하는 이벤트
-		if (evt.keyCode === 13) {
-			evt.preventDefault();
+	// $('#TB07021P_fnltCd, #TB07021P_fnltNm').on('keydown', function (evt) {
+	// 	// Enter에만 작동하는 이벤트
+	// 	if (evt.keyCode === 13) {
+	// 		evt.preventDefault();
 
-			getFnltList();
+	// 		getFnltList();
 
-		}
-	});
-
+	// 	}
+	// });
 	/**
 	 * 코드길이체크 후 자동조회
 	 */
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fnltCd']").on('input', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB07021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_fnltCd']").on('input', async function () {
 		// console.log("화면 인풋 태그 감시중");
 		const str = $(this).val().length
 
@@ -303,7 +302,7 @@ function TB07021P_srchFnlt(){
 	})
 
 
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fnltCd']").on('keydown', async function (evt) {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB07021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_fnltCd']").on('keydown', async function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
 			// console.log("화면내 엔터 이벤트");
@@ -316,7 +315,7 @@ function TB07021P_srchFnlt(){
 		}
 	});
 
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fnltCd']").on('change', async function (evt) {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB07021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_fnltCd']").on('change', async function (evt) {
 
 		// console.log("화면내 체인지 이벤트");
 

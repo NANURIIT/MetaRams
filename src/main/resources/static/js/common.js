@@ -21,14 +21,14 @@ $(function () {
     $('script[src="js/business/tb/TB07021P.js"]').attr("src") ===
     "js/business/tb/TB07021P.js"
   ) {
-    TB07021P_srchFnlt();
+    TB07021P_srchFnlt(url);
   }
 
   if (
     $('script[src="js/business/tb/TB07022P.js"]').attr("src") ===
     "js/business/tb/TB07022P.js"
   ) {
-    TB07022P_srchFnd();
+    TB07022P_srchFnd(url);
   }
 
   if (
