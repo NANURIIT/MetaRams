@@ -126,8 +126,8 @@ const TB07140Sjs = (function () {
     $(".toggleBtn2").prop("disabled", false);
   };
 
-  /*
-   *  날짜 기본세팅 ??건우야 이건 너무했다
+  /**
+   * 날짜 기본세팅 ??건우야 이건 너무했다
    */
   function dateInputSet() {
     const $this = $("#TB07140S_trDt");
