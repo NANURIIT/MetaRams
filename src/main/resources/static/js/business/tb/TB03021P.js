@@ -6,13 +6,12 @@ let TB03021P_onchangehandler;
 let ibDealNoSrchCnt = 0;
 
 $(document).ready(function () {
-  //changeValues();
   docRdySettings();
 });
 
-function TB03021P_srch() {
+function TB03021P_srch(menuId) {
   //input에 값 입력 시 자동 조회
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
 		const currentInput = $(this);
 		const ibDealpNmInput = currentInput.closest('.input-group').find('input[id*="_ibDealNm"]');  // 같은 div 내의 empNm input
 		ibDealpNmInput.val("");  // ibDealpNmInput 초기화
@@ -23,8 +22,8 @@ function TB03021P_srch() {
 	});
 
 	// 'keydown' 이벤트로 조회 (Enter키)
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('keydown', async function (evt) {
-		if (evt.keyCode === 13) {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('keydown', async function (evt) {
+    if (evt.keyCode === 13) {
 			evt.preventDefault();
 			TB03021P_onchangehandler == "off";
 			await ibDealNoSrchEvent($(this));
@@ -32,7 +31,7 @@ function TB03021P_srch() {
 	});
 
 	// 'change' 이벤트로 조회
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('change', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('change', async function (evt) {
 		if (TB03021P_onchangehandler === "on") {
 			await ibDealNoSrchEvent(this);
 		}

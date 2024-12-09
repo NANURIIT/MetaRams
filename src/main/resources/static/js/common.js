@@ -47,14 +47,14 @@ $(function () {
     $('script[src="js/business/tb/TB03022P.js"]').attr("src") ===
     "js/business/tb/TB03022P.js"
   ) {
-    TB03022P_srch();
+    TB03022P_srch(url);
   }
 
   if (
     $('script[src="js/business/tb/TB03021P.js"]').attr("src") ===
     "js/business/tb/TB03021P.js"
   ) {
-    TB03021P_srch();
+    TB03021P_srch(url);
   }
 
   // datepicker 초기화
