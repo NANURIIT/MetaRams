@@ -378,7 +378,7 @@ function selectorNumberFormater(selector) {
 
     //  마지막에 입력한 데이터 빼기
     let chk = str.split(".");
-    if (chk[0].length > 17) {
+    if (chk[0].length > 21) {
       str = str.slice(0, cursorIndex - 1) + str.slice(cursorIndex); // 해당 문자 제거
       $this.val(str);
       $this.prop("selectionEnd", cursorIndex - 1).focus();
@@ -457,7 +457,7 @@ function inputNumberFormater(target) {
 
   //  마지막에 입력한 데이터 빼기
   let chk = str.split(".");
-  if (chk[0].length > 17) {
+  if (chk[0].length > 21) {
     str = str.slice(0, cursorIndex - 1) + str.slice(cursorIndex); // 해당 문자 제거
     $this.val(str);
     $this.prop("selectionEnd", cursorIndex - 1).focus();
@@ -2033,9 +2033,10 @@ function needRunFn(fn, menuId) {
 /**
  * 화면내 PG Grid 초기화
  * @param {String} menuid 
+ * @author {김건우} 
  */
 function resetPGgrids (menuid) {
-  console.log("피큐 그리드 초기화 실행");
+  // console.log("피큐 그리드 초기화 실행");
   if($(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).length != 0){
     $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).each(function(){
       $("#" + $(this).attr('id')).pqGrid('instance').setData([]);
