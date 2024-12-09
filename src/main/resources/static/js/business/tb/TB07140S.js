@@ -12,7 +12,9 @@ const TB07140Sjs = (function () {
       "input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Tmrd'], input[id*='tx']"
     ).val("0");
     selectorNumberFormater(
-      $("input[id*='Amt'], input[id*='Blce'], input[id*='Rt']")
+      $(`div[data-menuid='/TB07140S'] input[id*='Amt']
+       , div[data-menuid='/TB07140S'] input[id*='Blce']
+       , div[data-menuid='/TB07140S'] input[id*='Rt']`)
     );
 
     // 처음 인풋 상태 체크
