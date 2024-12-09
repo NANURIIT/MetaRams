@@ -50,6 +50,13 @@ $(function () {
     TB03022P_srch();
   }
 
+  if (
+    $('script[src="js/business/tb/TB03021P.js"]').attr("src") ===
+    "js/business/tb/TB03021P.js"
+  ) {
+    TB03021P_srch();
+  }
+
   // datepicker 초기화
   $(".input-group.date").datepicker({
     format: "yyyy-mm-dd",
