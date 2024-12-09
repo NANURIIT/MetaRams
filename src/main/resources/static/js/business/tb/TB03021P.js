@@ -6,13 +6,12 @@ let TB03021P_onchangehandler;
 let ibDealNoSrchCnt = 0;
 
 $(document).ready(function () {
-  //changeValues();
   docRdySettings();
 });
 
-function TB03021P_srch() {
+function TB03021P_srch(menuId) {
   //input에 값 입력 시 자동 조회
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
 		const currentInput = $(this);
 		const ibDealpNmInput = currentInput.closest('.input-group').find('input[id*="_ibDealNm"]');  // 같은 div 내의 empNm input
 		ibDealpNmInput.val("");  // ibDealpNmInput 초기화
@@ -23,8 +22,8 @@ function TB03021P_srch() {
 	});
 
 	// 'keydown' 이벤트로 조회 (Enter키)
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('keydown', async function (evt) {
-		if (evt.keyCode === 13) {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('keydown', async function (evt) {
+    if (evt.keyCode === 13) {
 			evt.preventDefault();
 			TB03021P_onchangehandler == "off";
 			await ibDealNoSrchEvent($(this));
@@ -32,7 +31,7 @@ function TB03021P_srch() {
 	});
 
 	// 'change' 이벤트로 조회
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('change', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('change', async function (evt) {
 		if (TB03021P_onchangehandler === "on") {
 			await ibDealNoSrchEvent(this);
 		}
@@ -42,9 +41,9 @@ function TB03021P_srch() {
 		let prefix;
 		const inputId = $(selector).attr('id');
 		// 입력된 id에 따라 prefix 결정
-		prefix = inputId.split('_')[0];// _기준으로 prefix 추출
-		let data = $(selector).val();
-
+		const lastIndex = inputId.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
+		prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
+		
 		$('#TB03021P_prefix').val(prefix);
 		$(`input[id='${prefix}_ibDealNm']`).val("");   // ibDealNm초기화	
 
@@ -58,7 +57,7 @@ function TB03021P_srch() {
 			TB03021P_gridState = 1;
 		}
 
-
+    let data = $(selector).val();
 		$('#TB03021P_ibDealNo').val(data);
 		await getibDealGridState();
 
@@ -299,7 +298,7 @@ function dataIbDealSetGrid(data){
   // 검색된 행이 1개일 경우 데이터 바로 입력
 	if (arrPqGridDealInfo.pdata.length === 1 && $(`div[id='modal-TB03021P']`).css('display') === "none") {
 		console.log("여기로와야해");
-		var prefix = $("#TB03021P_prefix").val();
+		//var prefix = $("#TB03021P_prefix").val();
 		setDealInfo(arrPqGridDealInfo.pdata[0]);
 		ibDealNoSrchCnt = 0;
 		// 입력되고 난 후 온체인지 이벤트 on

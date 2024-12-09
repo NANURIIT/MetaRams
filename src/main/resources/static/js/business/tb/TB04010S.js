@@ -286,6 +286,11 @@ const TB04010Sjs = (function () {
     }
   }
 
+  document.getElementById("invPrdMnum").addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+    setMtrtDt(this);
+  });
+
   // 만기일 계산
   function calcDate() {
     var inputinvstPrdMmC = $("#invPrdMnum").val();
@@ -738,8 +743,8 @@ const TB04010Sjs = (function () {
         $("#mtrtDt").val(formatDate(dealDetail.mtrtExptDt)); // 만기일(예정)
 
         $("#tlErnAmt").val(dealDetail.tlErnAmt.toLocaleString("ko-KR")); // 전체수익
-        $("#rcvblErnAmt").val(dealDetail.rcvblErnAmt.toLocaleString("ko-KR")); // 수수료수익
-        $("#wrtErnAmt").val(dealDetail.wrtErnAmt.toLocaleString("ko-KR")); // 투자수익
+        $("#wrtErnAmt").val(dealDetail.rcvblErnAmt.toLocaleString("ko-KR")); // 수수료수익
+        $("#rcvblErnAmt").val(dealDetail.wrtErnAmt.toLocaleString("ko-KR")); // 투자수익
 
         $(":radio[name='TB04010S_mrtgOfrF']").radioSelect(dealDetail.mrtgOfrYn); // 담보
         $(":radio[name='TB04010S_ensrF']").radioSelect(dealDetail.ensrYn); // 보증
@@ -4495,5 +4500,6 @@ const TB04010Sjs = (function () {
     tab8BtnReset: tab8BtnReset,
     tab8BtnDelete: tab8BtnDelete,
     tab8BtnSave: tab8BtnSave,
+    setMtrtDt: setMtrtDt,
   };
 })();

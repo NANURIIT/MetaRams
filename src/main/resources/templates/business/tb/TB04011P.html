@@ -4,7 +4,7 @@
 
 <th:block th:fragment="TB04011P">
 	<!-- modal -->
-	<div id="modal-TB04011P" class="modal fade" role="dialog">
+	<div id="modal-TB04011P" class="modal fade"  aria-hidden="true" role="dialog">
 		<div class="modal-dialog modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header metis-modal-header">
@@ -37,13 +37,14 @@
 																		</span>
 																		<input type="text" class="form-control" style="width:70px;" id="TB03021P1_empNo" readonly>
 																	</div>
-																	<label class="col-sm-1 col-form-label text-right">부서번호</label>
-																	<div class="col-sm-3 input-group">
-																		<input type="text" class="form-control" style="width:30px;" id="TB03021P2_dprtNm">
-																		<span class="input-group-append">
-																			<button type="button" class="btn btn-default" onclick="callTB03022P('TB03021P2')"><i class="fa fa-search"></i></button>
-																		</span>
-																		<input type="text" class="form-control" style="width:70px;" id="TB03021P2_dprtCd" readonly>
+																	<label class="col-sm-1 col-form-label text-right">관리부서</label>
+																	<div class="col-sm-3">
+																		<div class="input-group">
+																			<select class="form-control" id="TB04011P_dprtNm">
+																				<option value="">전체</option>
+																			</select>
+																			<input type="text" class="form-control" id="TB09070S_dprtCd" readonly="">
+																		</div>
 																	</div>
 																	<!-- <label class="col-sm-1 col-form-label text-nowrap" id="labelDscDt">Deal등록일자</label>
 																								<span class="col-sm-2 input-group date" id="spanDstDt">

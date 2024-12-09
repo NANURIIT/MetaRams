@@ -191,13 +191,13 @@ function modalShowFunction() {
 function keyDownEnter_TB07022P() {
 	$("input[id=TB07022P_fndCd]").keydown(function(key) {
 		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
-			
+			getFndList();
 		}
 	});
 
 	$("input[id=TB07022P_fndNm]").keydown(function(key) {
 		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
-			
+			getFndList();
 		}
 	});
 }
@@ -305,26 +305,26 @@ function setFndInfo(e) {
 }
 
 
-function TB07022P_srchFnd(){
+function TB07022P_srchFnd(menuId){
 
 	/**
 	 * 팝업 자체 조회
 	 * 팝업은 포커스아웃시 조회 없음
 	 */
-	$('#TB07022P_fndCd, #TB07022P_fndNm').on('keydown', function (evt) {
-		// Enter에만 작동하는 이벤트
-		if (evt.keyCode === 13) {
-			evt.preventDefault();
+	// $('#TB07022P_fndCd, #TB07022P_fndNm').on('keydown', function (evt) {
+	// 	// Enter에만 작동하는 이벤트
+	// 	if (evt.keyCode === 13) {
+	// 		evt.preventDefault();
 
-			getFndList();
+	// 		getFndList();
 
-		}
-	});
+	// 	}
+	// });
 
 	/**
 	 * 코드길이체크 후 자동조회
 	 */
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fndCd']").on('input', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB07022P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_fndCd']").on('input', async function () {
 		// console.log("화면 인풋 태그 감시중");
 		const str = $(this).val().length
 
@@ -347,7 +347,7 @@ function TB07022P_srchFnd(){
 	})
 
 	
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fndCd']").on('keydown', async function (evt) {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB07022P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_fndCd']").on('keydown', async function (evt) {
 
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
@@ -361,7 +361,7 @@ function TB07022P_srchFnd(){
 		}
 	});
 
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_fndCd']").on('change', async function (evt) {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB07022P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_fndCd']").on('change', async function (evt) {
 		// console.log("화면내 체인지 이벤트");
 
 		if (TB07022P_onchangehandler === "on"){

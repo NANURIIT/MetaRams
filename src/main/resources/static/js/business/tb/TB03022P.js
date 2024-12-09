@@ -7,17 +7,17 @@ let TB03022P_onchangehandler;
 let empNoSrchYn;  //직원검색여부
 let dprtCdSrchYn; //부서검색여부
 let empInfoSrchCnt = 0;
-let findEmpList_dprtCd;
+//let findEmpList_dprtCd;
 
 /**
  * 팝업 자동 호출, 검색
  * @author {}
  */
-function TB03022P_srch() {
+function TB03022P_srch(menuId) {
 	
 	// == 직원번호 검색 ==================================================================================================
 	//input에 값 입력 시 자동 조회
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_empNo']").on('input', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_empNo']").on('input', async function () {
 		const currentInput = $(this);
 		const empNmInput = currentInput.closest('.input-group').find('input[id*="_empNm"]');  // 같은 div 내의 empNm input
 		empNmInput.val("");  // empNm 초기화
@@ -29,7 +29,7 @@ function TB03022P_srch() {
 	});
 
 	// 'keydown' 이벤트로 조회 (Enter키)
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_empNo']").on('keydown', async function (evt) {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_empNo']").on('keydown', async function (evt) {
 		empNoSrchYn = "Y";
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
@@ -39,7 +39,7 @@ function TB03022P_srch() {
 	});
 
 	// 'change' 이벤트로 조회
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_empNo']").on('change', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_empNo']").on('change', async function (evt) {
 		empNoSrchYn = "Y";
 		//const currentInput = $(this);
 		if (TB03022P_onchangehandler === "on") {
@@ -48,8 +48,8 @@ function TB03022P_srch() {
 	});
 
 	//== 부서번호 검색 ==================================================================================================
-
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_dprtCd']").on('input', async function () {
+	
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_dprtCd']").on('input', async function () {
 		const currentInput = $(this);
 		const dprtNmnput = currentInput.closest('.input-group').find('input[id*="_dprtNm"]');  // 같은 div 내의 empNm input
 		dprtNmnput.val("");  // prdtNm 초기화
@@ -61,7 +61,7 @@ function TB03022P_srch() {
 	});
 
 	// 'keydown' 이벤트로 조회 (Enter키)
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_dprtCd']").on('keydown', async function (evt) {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_dprtCd']").on('keydown', async function (evt) {
 		dprtCdSrchYn = "Y";
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
@@ -71,7 +71,7 @@ function TB03022P_srch() {
 	});
 
 	// 'change' 이벤트로 조회
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_dprtCd']").on('change', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_empNo']").on('change', async function (evt) {
 		dprtCdSrchYn = "Y";
 		//const currentInput = $(this);
 		if (TB03022P_onchangehandler === "on") {
@@ -86,7 +86,9 @@ function TB03022P_srch() {
 		let prefix;
 		const inputId = $(selector).attr('id');
 		// 입력된 id에 따라 prefix 결정
-		prefix = inputId.split('_')[0];// _기준으로 prefix 추출
+		const lastIndex = inputId.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
+		prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
+		
 		let data = $(selector).val();
 
 		$('#TB03022P_prefix').val(prefix);

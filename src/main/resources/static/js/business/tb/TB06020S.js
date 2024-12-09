@@ -246,6 +246,7 @@ const TB06020Sjs = (function(){
 		
 		console.log("riskInspctCcd:"+riskInspctCcd );
 		console.log("lstCCaseCcd:"+lstCCaseCcd );
+		console.log("ibDealNo:"+ibDealNo );
 
 
 		getCnfrncDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd, prdtCd);
@@ -266,7 +267,8 @@ const TB06020Sjs = (function(){
 
 	// 결의안건정보
 	function getCnfrncDealInfo(ibDealNo, jdgmDcd, mtrDcd, prdtCd) {
-
+		var option = {}
+		option.text = "";
 		if (isEmpty(ibDealNo) && isEmpty(prdtCd)) {
 			option.text = "Deal 정보 또는 종목코드 정보를 조회해주세요.";
 			openPopup(option);
@@ -312,6 +314,7 @@ const TB06020Sjs = (function(){
 				
 				/** 종목 정보 */
 				if( isEmpty($('#TB06020S_prdtCd').val()) ) {
+					$('#TB06030S_prdtCd').val(dealDetail.prdtCd);												// 종목코드
 					$('#TB06020S_res_prdtNm').val(dealDetail.mtrNm);											// 안건명
 				} else {
 					$('#TB06020S_res_prdtNm').val(dealDetail.prdtNm);											// 종목명
@@ -370,11 +373,11 @@ const TB06020Sjs = (function(){
 				$('#TB06020S_totIssuShqt').val(Number(handleNullData(dealDetail.totIssuShqt)).toLocaleString());// 총발행좌수
 				
 				if (isEmpty($('#TB06020S_res_prdtCd').val())) {
-					$('#regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
-					$('#delPrdt').attr('disabled', true); 
+					$('#TB06020S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
+					$('#TB06020S_delPrdt').attr('disabled', true); 
 				} else {
-					$('#regPrdt').attr('disabled', false); 
-					$('#delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
+					$('#TB06020S_regPrdt').attr('disabled', false); 
+					$('#TB06020S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
 				}
 				
 				/******  딜공통 파일첨부 추가 ******/ 
@@ -830,7 +833,7 @@ const TB06020Sjs = (function(){
 	function getIBIMS208BDTOInfo(prdtCd) {
 		
 		if (isEmpty($('#TB06020S_res_prdtCd').val())) {
-			$('#registApvlCnd').attr('disabled', false);
+			$('#TB06020S_registApvlCnd').attr('disabled', false);
 		}
 		
 		var paramData = {
@@ -927,7 +930,7 @@ const TB06020Sjs = (function(){
 	function getIBIMS212BDTOInfo(prdtCd) {
 		
 		if (isEmpty($('#TB06020S_res_prdtCd').val())) {
-			$('#registMrtgCnnc').attr('disabled', false);
+			$('#TB06020S_registMrtgCnnc').attr('disabled', false);
 		} else {
 			arrPqGridLstMrtgInfo.setData([]);
 		}

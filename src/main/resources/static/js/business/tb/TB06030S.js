@@ -320,6 +320,7 @@ const TB06030Sjs = (function(){
 				/** 종목 정보 */
 				
 				if( isEmpty($('#TB06030S_prdtCd').val()) ) {
+					$('#TB06030S_prdtCd').val(dealDetail.prdtCd);												// 종목코드
 					$('#TB06030S_res_prdtNm').val(dealDetail.mtrNm);											// 안건명
 				} else {
 					$('#TB06030S_res_prdtNm').val(dealDetail.prdtNm);											// 종목명
@@ -382,11 +383,11 @@ const TB06030Sjs = (function(){
 				$('#TB06030S_totIssuQty').val(Number(handleNullData(dealDetail.totIssuStkQnt)).toLocaleString());// 총발행주수
 				
 				if (isEmpty($('#TB06030S_res_prdtCd').val())) {
-					$('#regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
-					$('#delPrdt').attr('disabled', true); 
+					$('#TB06030S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
+					$('#TB06030S_delPrdt').attr('disabled', true); 
 				} else {
-					$('#regPrdt').attr('disabled', false); 
-					$('#delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
+					$('#TB06030S_regPrdt').attr('disabled', false); 
+					$('#TB06030S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
 				}
 				
 				/** 출자정보 */
@@ -1010,7 +1011,7 @@ const TB06030Sjs = (function(){
 	function getIBIMS208BDTOInfo(prdtCd) {
 		
 		if (isEmpty($('#TB06030S_res_prdtCd').val())) {
-			$('#registApvlCnd').attr('disabled', false);
+			$('#TB06030S_registApvlCnd').attr('disabled', false);
 		}
 		
 		var paramData = {
@@ -1105,7 +1106,7 @@ const TB06030Sjs = (function(){
 	function getIBIMS212BDTOInfo(prdtCd) {
 		
 		if (isEmpty($('#TB06030S_res_prdtCd').val())) {
-			$('#registMrtgCnnc').attr('disabled', false);
+			$('#TB06030S_registMrtgCnnc').attr('disabled', false);
 		} else {
 			arrPqGridLstMrtgInfo.setData([]);
 		}

@@ -366,6 +366,9 @@ function removeTab(menuId) {
     const url = window.location.pathname;
     // let selectedMenuId = $(`div[data-titleId*="TB"]`).first().attr('data-titleId');   // 미정
 
+    resetInputValue($(`div[data-menuId="/${menuId}"]`));
+    resetPGgrids(menuId);
+
     if (url === "/" + menuId) {
         history.pushState(null, '', '/' + menuId);
         // 탭 지우기

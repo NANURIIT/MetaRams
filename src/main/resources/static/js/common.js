@@ -21,24 +21,27 @@ $(function () {
     $('script[src="js/business/tb/TB07021P.js"]').attr("src") ===
     "js/business/tb/TB07021P.js"
   ) {
-    TB07021P_srchFnlt();
+    TB07021P_srchFnlt(url);
   }
 
   if (
     $('script[src="js/business/tb/TB07022P.js"]').attr("src") ===
     "js/business/tb/TB07022P.js"
   ) {
-    TB07022P_srchFnd();
+    TB07022P_srchFnd(url);
   }
 
   if (
     $('script[src="js/business/tb/TB04011P.js"]').attr("src") ===
     "js/business/tb/TB04011P.js"
   ) {
-    TB04011P_srchMtr();
+    TB04011P_srchMtr(url);
   }
 
-  if ($('script[src="js/business/tb/TB03061P.js"]').attr("src") === "js/business/tb/TB03061P.js") {
+  if (
+    $('script[src="js/business/tb/TB03061P.js"]').attr("src") ===
+    "js/business/tb/TB03061P.js"
+  ) {
     console.log("기업체팝업");
     TB03061P_srchMtr(url);
   }
@@ -47,14 +50,14 @@ $(function () {
     $('script[src="js/business/tb/TB03022P.js"]').attr("src") ===
     "js/business/tb/TB03022P.js"
   ) {
-    TB03022P_srch();
+    TB03022P_srch(url);
   }
 
   if (
     $('script[src="js/business/tb/TB03021P.js"]').attr("src") ===
     "js/business/tb/TB03021P.js"
   ) {
-    TB03021P_srch();
+    TB03021P_srch(url);
   }
 
   // datepicker 초기화
@@ -1472,36 +1475,35 @@ function getSelectBoxList(prefix, item, async = true) {
 	@param {boolean} async  동기, 비동기
  */
 function getSelectBoxCode2(prefix, item, async = true) {
-	  var code = item;
-	  var result = null;
-	  $.ajax({
-	    type: "GET",
-	    url: "/getSelectBoxCode2/"+item,
-	    data: code,
-	    async: async,
-	    dataType: "json",
-	    success: function (data) {
-			result = data;
-	      if (result.length > 0) {
-	        $.each(result, function (key, value) {
-	          var html = "";
-	          html +=
-	            '<option value="' +
-	            value.cdValue +
-	            '">' +
-	            value.cdName +
-	            " (" +
-	            value.cdValue +
-	            ")" +
-	            "</option>";
-	          $("#" + prefix + "_" + value.cmnsGrpCd).append(html);
-	        });
-	      }
-	    }
-	  });
-	  return result;
+  var code = item;
+  var result = null;
+  $.ajax({
+    type: "GET",
+    url: "/getSelectBoxCode2/" + item,
+    data: code,
+    async: async,
+    dataType: "json",
+    success: function (data) {
+      result = data;
+      if (result.length > 0) {
+        $.each(result, function (key, value) {
+          var html = "";
+          html +=
+            '<option value="' +
+            value.cdValue +
+            '">' +
+            value.cdName +
+            " (" +
+            value.cdValue +
+            ")" +
+            "</option>";
+          $("#" + prefix + "_" + value.cmnsGrpCd).append(html);
+        });
+      }
+    },
+  });
+  return result;
 }
-
 
 function setKRKRW(prefix) {
   $("#" + prefix + '_C006 option[value="KR"]').prop("selected", true); // 국가코드
@@ -1839,12 +1841,14 @@ function getBasicValues(id) {
  * @author {김건우}
  */
 function resetInputValue(selector) {
-  const $selectInput = selector.find(`select`)
+  const $selectInput = selector.find(`select`);
   $selectInput.each(function () {
-    $(this).val($($(this).find('option')[0]).val())
-  })
+    $(this).val($($(this).find("option")[0]).val());
+  });
   selector.find(`select[id*="Yn"]`).val("N");
-  selector.find(`input[type="radio"][name*="Yn"][value="N"]`).prop("checked", true);
+  selector
+    .find(`input[type="radio"][name*="Yn"][value="N"]`)
+    .prop("checked", true);
   selector.find(`input[type="text"]`).val("");
   selector
     .find(
@@ -1859,6 +1863,8 @@ function resetInputValue(selector) {
 				 , input[id$='Rt']`
     )
     .val("0");
+    setKRKRW(selector.attr('data-menuid').split('/')[1]);
+
 }
 
 /**
@@ -2023,9 +2029,13 @@ function needRunFn(fn, menuId) {
   }
 }
 
-
-function autoSrchFromPQGrid (pqGridId, url, paramData) {
-
-  
-
+/**
+ * 화면내 PG Grid 초기화
+ * @param {String} menuid 
+ */
+function resetPGgrids (menuid) {
+  console.log("피큐 그리드 초기화 실행");
+  $("#" + $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).attr('id')).pqGrid('instance').setData([]);
 }
+
+function autoSrchFromPQGrid(pqGridId, url, paramData) {}

@@ -475,6 +475,7 @@ const TB06010Sjs = (function(){
 		$('#TB06010S_prdtCd').val('');
 		$('#TB06010S_prdtNm').val('');
 		
+		// setKRKRW('TB06010S');
 	}
 
 	function loadSelectBoxContents() {
