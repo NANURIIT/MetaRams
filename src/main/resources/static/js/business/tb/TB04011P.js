@@ -328,6 +328,11 @@ async function TB04011P_setGridState() {
     mtrPrgSttsDcdTo: mtrPrgSttsDcdTo,
   };
 
+  if (TB04011P_gridState === 0) {
+		console.log("열려있으니까 좀 쉬어라");
+		return;
+	}
+
   await $.ajax({
     type: "GET",
     url: "/TB04011P/getDealInfo",
