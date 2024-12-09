@@ -2027,4 +2027,13 @@ function needRunFn(fn, menuId) {
   }
 }
 
+/**
+ * 화면내 PG Grid 초기화
+ * @param {String} menuid 
+ */
+function resetPGgrids (menuid) {
+  console.log("피큐 그리드 초기화 실행");
+  $("#" + $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).attr('id')).pqGrid('instance').setData([]);
+}
+
 function autoSrchFromPQGrid(pqGridId, url, paramData) {}
