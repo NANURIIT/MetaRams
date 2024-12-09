@@ -613,7 +613,8 @@ const TB07140Sjs = (function () {
    *  인설트 업데이트 구분
    */
   function TB07140S_checkQueryType() {
-    if (dummyData === TB07140S_rowData) {
+    console.log($("#TB07140S_trSn").val());
+    if (!$("#TB07140S_trSn").val()) {
       insertFinc();
     } else {
       updateFinc();

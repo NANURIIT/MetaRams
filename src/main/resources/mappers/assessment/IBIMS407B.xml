@@ -58,9 +58,15 @@
            AND B.TR_CRRY_CD 	  	= E.CRRY_CD(+)
            AND A.TR_DT 			  	= E.STDR_DT(+)
            AND A.STL_XTNL_ISTT_CD 	= D.FNLT_CD(+)
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(nsFndCd)">
            AND A.NS_FND_CD = #{nsFndCd}
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
            AND A.PRDT_CD = #{prdtCd}
-           AND A.TR_DT LIKE NVL(IFNULL(#{trDt}, ''), '%')
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trDt)">
+           AND A.TR_DT LIKE #{trDt}
+           </if>
          ORDER BY A.TR_DT ASC, A.PRDT_CD, A.TR_SN DESC
     </select>
 
@@ -159,8 +165,8 @@
              , STL_XTNL_ISTT_CD = #{stlXtnlIsttCd} 
              , STL_ACNO = #{stlAcno} 
              , FINC_PAY_CNTN = #{fincPayCntn} 
-             , RE_FINC_POSS_YN = #{reFincPossYn} 
-             , HND_DETL_DTM = #{hndDetlDtm} 
+             , RE_FINC_POSS_YN = #{reFincPossYn}
+             , HND_DETL_DTM = SYSDATE 
              , HND_EMPNO = #{hndEmpno} 
              , HND_TMNL_NO = #{hndTmnlNo} 
              , HND_TR_ID = #{hndTrId} 

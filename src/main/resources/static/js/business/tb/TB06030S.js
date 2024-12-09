@@ -1010,7 +1010,7 @@ const TB06030Sjs = (function(){
 	function getIBIMS208BDTOInfo(prdtCd) {
 		
 		if (isEmpty($('#TB06030S_res_prdtCd').val())) {
-			$('#registApvlCnd').attr('disabled', false);
+			$('#TB06030S_registApvlCnd').attr('disabled', false);
 		}
 		
 		var paramData = {
@@ -1105,7 +1105,7 @@ const TB06030Sjs = (function(){
 	function getIBIMS212BDTOInfo(prdtCd) {
 		
 		if (isEmpty($('#TB06030S_res_prdtCd').val())) {
-			$('#registMrtgCnnc').attr('disabled', false);
+			$('#TB06030S_registMrtgCnnc').attr('disabled', false);
 		} else {
 			arrPqGridLstMrtgInfo.setData([]);
 		}
