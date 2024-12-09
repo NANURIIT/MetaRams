@@ -276,13 +276,16 @@ function getMtrInfo() {
         TB04011P_srchCnt = 0;
         return;
       } else if (data.length === 1) {
-        if ($(`div[id='modal-TB06011P']`).css("display") === "none") {
+        if ($(`div[id='modal-TB04011P']`).css("display") === "none") {
           arrPqGridMtrInfo.setData(data);
           setMtrInfo(arrPqGridMtrInfo.pdata);
           TB04011P_srchCnt = 0;
           TB04011P_onchangehandler = "on";
         } else {
           arrPqGridMtrInfo.setData(data);
+          arrPqGridMtrInfo.on("rowDblClick", function (event, ui) {
+            setMtrInfo(ui.rowData);
+          });
           TB04011P_srchCnt = 0;
           TB04011P_onchangehandler = "on";
         }
