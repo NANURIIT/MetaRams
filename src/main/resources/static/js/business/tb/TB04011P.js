@@ -3,8 +3,7 @@ let TB04011P_pf;
 let TB04011P_gridState = 1;
 let TB04011P_onchangehandler = "on"; // on off
 let TB04011P_srchCnt = 0;
-let empNo;
-("");
+//let empNo = "";
 
 /**
  * 팝업 자동 호출, 검색
@@ -197,12 +196,12 @@ function roadListGrid_TB04011P() {
  * reset
  */
 function reset_TB04011P() {
-  empNo = $("#userEno").val();
+  //empNo = $("#userEno").val();
   // $("#TB04011P_dealInfoList").html("");
   $("#TB04011P_ibDealNo").val("");
   $("#TB04011P_ibDealNm").val("");
   $("#TB04011P1_empNm").val($("#userEmpNm").val());
-  $("#TB04011P1_empNo").val(empNo);
+  $("#TB04011P1_empNo").val($("#userEno").val());
   $("#TB04011P2_dprtNm").val($("#userDprtNm").val());
   $("#TB04011P2_dprtCd").val($("#userDprtCd").val());
 }
