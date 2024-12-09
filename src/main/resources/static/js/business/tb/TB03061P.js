@@ -31,10 +31,7 @@ $(document).ready(function () {
  * 팝업 자동 호출, 검색
  * @author {김건우}
  */
-function TB03061P_srchMtr() {
-
-	console.log("진짜 기업체 이벤트");
-	
+function TB03061P_srchMtr(menuId) {
 	/**
 	 * 완성된 함수는 common.js에 한번 더 세팅해주셔야해요
 	 */
@@ -65,8 +62,7 @@ function TB03061P_srchMtr() {
 	/**
 	 * 코드길이체크 후 자동조회
 	 */
-	$("span.input-group-append > button[onclick*='callTB03061P']:not([disabled])").closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("input", async function () {
-		console.log("화면 인풋 태그 감시중");
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03061P']:not([disabled])`).closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("input", async function () {
 		const str = $(this).val().length;
 
 		// 같이 붙어있는 인풋박스 id
@@ -85,9 +81,7 @@ function TB03061P_srchMtr() {
 		}
 	});
 
-	$("span.input-group-append > button[onclick*='callTB03061P']:not([disabled])").closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("keydown", async function (evt) {
-		console.log("엔!터!");
-		
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03061P']:not([disabled])`).closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("keydown", async function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
 			// console.log("화면내 엔터 이벤트");
@@ -100,13 +94,9 @@ function TB03061P_srchMtr() {
 		}
 	});
 
-	$("span.input-group-append > button[onclick*='callTB03061P']:not([disabled])").closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("change", async function (evt) {
-		console.log("화면내 체인지 이벤트");
-
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03061P']:not([disabled])`).closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("change", async function (evt) {
 		if (TB03061P_onchangehandler === "on") {
 
-			console.log("엔터치면 넌 멈춰");
-			
 			await srchEvent(this);
 
 		}
