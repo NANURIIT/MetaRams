@@ -277,7 +277,7 @@ function getMtrInfo() {
         return;
       } else if (data.length === 1) {
         if ($(`div[id='modal-TB04011P']`).css("display") === "none") {
-          arrPqGridMtrInfo.setData(data);
+          arrPqGridMtrInfo.setData(data[0]);
           setMtrInfo(arrPqGridMtrInfo.pdata);
           TB04011P_srchCnt = 0;
           TB04011P_onchangehandler = "on";
