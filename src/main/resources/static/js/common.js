@@ -7,11 +7,14 @@ $(function () {
    * keydown, onchange 이벤트 생성
    * @author {김건우}
    */
+
+  const url = window.location.pathname;
+
   if (
     $('script[src="js/business/tb/TB06011P.js"]').attr("src") ===
     "js/business/tb/TB06011P.js"
   ) {
-    TB06011P_srchPrdt();
+    TB06011P_srchPrdt(url);
   }
 
   if (
@@ -37,7 +40,7 @@ $(function () {
 
   if ($('script[src="js/business/tb/TB03061P.js"]').attr("src") === "js/business/tb/TB03061P.js") {
     console.log("기업체팝업");
-    TB03061P_srchMtr();
+    TB03061P_srchMtr(url);
   }
 
   if (

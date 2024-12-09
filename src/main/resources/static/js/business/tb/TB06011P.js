@@ -8,32 +8,16 @@ let TB06011P_onchangehandler = "on";	// on off
  * 팝업 자동 호출, 검색
  * @author {김건우}
  */
-function TB06011P_srchPrdt() {
+function TB06011P_srchPrdt(menuId) {
 
 	/**
 	 * 완성된 함수는 common.js에 한번 더 세팅해주셔야해요
 	 */
 
 	/**
-	 * 팝업 자체 조회
-	 * 팝업은 포커스아웃시 조회 없음
-	 */
-	$('#TB06011P_prdtCd, #TB06011P_prdtNm').on('keydown', function (evt) {
-		// Enter에만 작동하는 이벤트
-		if (evt.keyCode === 13) {
-			evt.preventDefault();
-			console.log("으흐흐");
-
-			// 팝업창에서는 엔터 누를시 조회만.
-			getPrdtCdList();
-
-		}
-	});
-
-	/**
 	 * 코드길이체크 후 자동조회
 	 */
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_prdtCd']").on('input', async function () {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB06011P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_prdtCd']").on('input', async function () {
 		// console.log("화면 인풋 태그 감시중");
 		const str = $(this).val().length
 
@@ -55,10 +39,9 @@ function TB06011P_srchPrdt() {
 		}
 	})
 	
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_prdtCd']").on('keydown', async function (evt) {
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB06011P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_prdtCd']").on('keydown', async function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
-			console.log("화면내 엔터 이벤트 맞지?");
 			evt.preventDefault();
 
 			TB06011P_onchangehandler = "off";
@@ -66,16 +49,13 @@ function TB06011P_srchPrdt() {
 			await srchEvent(this);
 
 		}
-	});
+	})
 
-	$('span.input-group-append > button:not([disabled])').closest('span.input-group-append').prev("input[id*='_prdtCd']").on('change', async function (evt) {
-
-		// console.log("화면내 체인지 이벤트");
-
+	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB06011P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_prdtCd']").on('change', async function (evt) {
 		if (TB06011P_onchangehandler === "on"){
 			await srchEvent(this);
 		}
-	});
+	})
 
 	async function srchEvent (selector) {
 		// 사용한 인풋박스의 출처 페이지 가져오기
@@ -477,13 +457,13 @@ function modalShowFunction() {
 function keyDownEnter_TB06011P() {
 	$("input[id=TB06011P_prdtCd]").keydown(function (key) {
 		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
-
+			getPrdtCdList();
 		}
 	});
 
 	$("input[id=TB06011P_prdtNm]").keydown(function (key) {
 		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
-
+			getPrdtCdList();
 		}
 	});
 }
