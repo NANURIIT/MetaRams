@@ -1863,6 +1863,8 @@ function resetInputValue(selector) {
 				 , input[id$='Rt']`
     )
     .val("0");
+    setKRKRW(selector.attr('data-menuid').split('/')[1]);
+
 }
 
 /**
