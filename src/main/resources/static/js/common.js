@@ -35,10 +35,13 @@ $(function () {
     $('script[src="js/business/tb/TB04011P.js"]').attr("src") ===
     "js/business/tb/TB04011P.js"
   ) {
-    TB04011P_srchMtr();
+    TB04011P_srchMtr(url);
   }
 
-  if ($('script[src="js/business/tb/TB03061P.js"]').attr("src") === "js/business/tb/TB03061P.js") {
+  if (
+    $('script[src="js/business/tb/TB03061P.js"]').attr("src") ===
+    "js/business/tb/TB03061P.js"
+  ) {
     console.log("기업체팝업");
     TB03061P_srchMtr(url);
   }
@@ -1472,36 +1475,35 @@ function getSelectBoxList(prefix, item, async = true) {
 	@param {boolean} async  동기, 비동기
  */
 function getSelectBoxCode2(prefix, item, async = true) {
-	  var code = item;
-	  var result = null;
-	  $.ajax({
-	    type: "GET",
-	    url: "/getSelectBoxCode2/"+item,
-	    data: code,
-	    async: async,
-	    dataType: "json",
-	    success: function (data) {
-			result = data;
-	      if (result.length > 0) {
-	        $.each(result, function (key, value) {
-	          var html = "";
-	          html +=
-	            '<option value="' +
-	            value.cdValue +
-	            '">' +
-	            value.cdName +
-	            " (" +
-	            value.cdValue +
-	            ")" +
-	            "</option>";
-	          $("#" + prefix + "_" + value.cmnsGrpCd).append(html);
-	        });
-	      }
-	    }
-	  });
-	  return result;
+  var code = item;
+  var result = null;
+  $.ajax({
+    type: "GET",
+    url: "/getSelectBoxCode2/" + item,
+    data: code,
+    async: async,
+    dataType: "json",
+    success: function (data) {
+      result = data;
+      if (result.length > 0) {
+        $.each(result, function (key, value) {
+          var html = "";
+          html +=
+            '<option value="' +
+            value.cdValue +
+            '">' +
+            value.cdName +
+            " (" +
+            value.cdValue +
+            ")" +
+            "</option>";
+          $("#" + prefix + "_" + value.cmnsGrpCd).append(html);
+        });
+      }
+    },
+  });
+  return result;
 }
-
 
 function setKRKRW(prefix) {
   $("#" + prefix + '_C006 option[value="KR"]').prop("selected", true); // 국가코드
@@ -1839,12 +1841,14 @@ function getBasicValues(id) {
  * @author {김건우}
  */
 function resetInputValue(selector) {
-  const $selectInput = selector.find(`select`)
+  const $selectInput = selector.find(`select`);
   $selectInput.each(function () {
-    $(this).val($($(this).find('option')[0]).val())
-  })
+    $(this).val($($(this).find("option")[0]).val());
+  });
   selector.find(`select[id*="Yn"]`).val("N");
-  selector.find(`input[type="radio"][name*="Yn"][value="N"]`).prop("checked", true);
+  selector
+    .find(`input[type="radio"][name*="Yn"][value="N"]`)
+    .prop("checked", true);
   selector.find(`input[type="text"]`).val("");
   selector
     .find(
@@ -2023,9 +2027,4 @@ function needRunFn(fn, menuId) {
   }
 }
 
-
-function autoSrchFromPQGrid (pqGridId, url, paramData) {
-
-  
-
-}
+function autoSrchFromPQGrid(pqGridId, url, paramData) {}

@@ -8,34 +8,42 @@ let TB04011P_srchCnt = 0;
  * 팝업 자동 호출, 검색
  * @author {김건우}
  */
-function TB04011P_srchMtr() {
+/**
+ * 팝업 자체 조회
+ * 팝업은 포커스아웃시 조회 없음
+ */
+$("#TB04011P_ibDealNo").on("keydown", function (evt) {
+  // Enter에만 작동하는 이벤트
+  if (evt.keyCode === 13) {
+    evt.preventDefault();
+    console.log("으흐흐");
+
+    // 팝업창에서는 엔터 누를시 조회만.
+    getMtrInfo();
+  }
+});
+
+function TB04011P_srchMtr(menuId) {
   /**
    * 완성된 함수는 common.js에 한번 더 세팅해주셔야해요
    */
 
   /**
-   * 팝업 자체 조회
-   * 팝업은 포커스아웃시 조회 없음
-   */
-  $("#TB04011P_ibDealNo").on("keydown", function (evt) {
-    // Enter에만 작동하는 이벤트
-    if (evt.keyCode === 13) {
-      evt.preventDefault();
-      console.log("으흐흐");
-
-      // 팝업창에서는 엔터 누를시 조회만.
-      getMtrInfo();
-    }
-  });
-
-  /**
    * 코드길이체크 후 자동조회
    */
-  $("span.input-group-append > button:not([disabled])")
+  let inputProcessing = false; // input 이벤트 처리 여부 상태
+  let keydownProcessing = false; // keydown 이벤트 처리 여부 상태
+  let changeProcessing = false; // change 이벤트 처리 여부 상태
+
+  $(
+    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB04011P"]:not([disabled])`
+  )
     .closest("span.input-group-append")
     .prev("input[id*='_ibDealNo']")
     .on("input", async function () {
-      // console.log("화면 인풋 태그 감시중");
+      if (inputProcessing) return; // 이미 input 이벤트가 처리 중이라면 종료
+      inputProcessing = true; // input 처리 시작
+
       const str = $(this).val().length;
 
       // 같이 붙어있는 인풋박스 id
@@ -44,42 +52,53 @@ function TB04011P_srchMtr() {
           .attr("id")
           .slice(0, $(this).attr("id").length - 2) + "Nm";
 
-      // 데이터를 지울때 값이 없으면 지워줌
+      // 데이터를 지울 때 값이 없으면 지워줌
       // 값이 있으면 온체인지 또는 온인풋 이벤트로 값 채워짐
       $(`#${result}`).val("");
-      /**
-       ********* 각 컬럼의 길이로 세팅을 하셔야해용 *********
-       */
-      // ex) 종목코드 VARCHAR(10)
+
+      // 코드 길이 체크 후 자동조회
       if (str === 17) {
         await srchEvent(this);
       }
+
+      inputProcessing = false; // input 처리 종료
     });
 
-  $("span.input-group-append > button:not([disabled])")
+  $(
+    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB04011P"]:not([disabled])`
+  )
     .closest("span.input-group-append")
     .prev("input[id*='_ibDealNo']")
     .on("keydown", async function (evt) {
-      // Enter에만 작동하는 이벤트
-      if (evt.keyCode === 13) {
-        // console.log("화면내 엔터 이벤트");
-        evt.preventDefault();
+      if (keydownProcessing) return; // 이미 keydown 이벤트가 처리 중이라면 종료
+      keydownProcessing = true; // keydown 처리 시작
 
-        TB04011P_onchangehandler = "off";
+      // Enter 키에만 작동하도록
+      if (evt.keyCode === 13) {
+        evt.preventDefault(); // 기본 동작 방지
+        TB04011P_onchangehandler = "off"; // 변경 처리 차단
 
         await srchEvent(this);
       }
+
+      keydownProcessing = false; // keydown 처리 종료
     });
 
-  $("span.input-group-append > button:not([disabled])")
+  $(
+    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB04011P"]:not([disabled])`
+  )
     .closest("span.input-group-append")
     .prev("input[id*='_ibDealNo']")
-    .on("change", async function (evt) {
-      // console.log("화면내 체인지 이벤트");
+    .on("change", async function () {
+      if (changeProcessing) return; // 이미 change 이벤트가 처리 중이라면 종료
+      changeProcessing = true; // change 처리 시작
 
+      // 상태 관리하여 onchange 이벤트가 중복 실행되지 않도록
       if (TB04011P_onchangehandler === "on") {
         await srchEvent(this);
       }
+
+      changeProcessing = false; // change 처리 종료
     });
 
   async function srchEvent(selector) {
@@ -87,13 +106,11 @@ function TB04011P_srchMtr() {
     let prefix;
     if ($(selector).attr("id") === $("#TB04011P_ibDealNo").attr("id")) {
       prefix = TB04011P_pf;
-
     } else {
       // 컬럼명 길이로 바꾸셔야 합니당
       prefix = $(selector)
         .attr("id")
         .slice(0, $(selector).attr("id").length - 9);
-
     }
 
     $(`input[id='${prefix}_ibDealNm']`).val("");
@@ -182,7 +199,6 @@ function callTB04011P(prefix) {
   }, 300);
 
   indexChangeHandler("TB04011P");
-
 }
 
 /**
@@ -198,24 +214,32 @@ function reset_TB04011P() {
  * close TB04011P modal
  */
 function modalClose_TB04011P() {
-	TB04011P_gridState = 1;
-  // reset_TB04011P();
-  // $("#gridMtrInfo").pqGrid("refreshDataAndView");
-  $("#gridMtrInfo").pqGrid("destroy");
-  $("#modal-TB04011P").modal("hide");
+  reset_TB04011P(); // 다른 초기화 작업
+  resetGrid_TB04011P(); // 그리드만 리프레시 또는 초기화
+  $("#modal-TB04011P").modal("hide"); // 모달 닫기
+}
+
+/**
+ * 그리드만 초기화
+ */
+function resetGrid_TB04011P() {
+  $("#gridMtrInfo").pqGrid("refreshDataAndView"); // 그리드만 리프레시
+  // 또는
+  // $("#gridMtrInfo").pqGrid("destroy");  // 그리드 파괴 후 다시 세팅도 가능
 }
 
 /**
  * hide modal
  */
-// $("#modal-TB04011P").on("hide.bs.modal", function () {
-//   $("#gridMtrInfo").pqGrid("destroy");
-//   reset_TB04011P();
-// });
+$("#modal-TB04011P").on("hide.bs.modal", function () {
+  resetGrid_TB04011P(); // 그리드만 초기화
+  reset_TB04011P(); // 필요한 경우, 다른 리셋 작업을 추가
+});
 
 /**
  * deal 번호 조회 ajax
  */
+
 function getMtrInfo() {
   var prefix = $("#TB04011P_prefix").val();
 
@@ -247,30 +271,27 @@ function getMtrInfo() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      if(TB04011P_srchCnt >= 2){
+      if (TB04011P_srchCnt >= 2) {
         alert("대충무한루프 막는 중");
         TB04011P_srchCnt = 0;
         return;
-      }else
-      if(data.length === 1){ 
-        if($(`div[id='modal-TB06011P']`).css('display') === "none"){
+      } else if (data.length === 1) {
+        if ($(`div[id='modal-TB06011P']`).css("display") === "none") {
           arrPqGridMtrInfo.setData(data);
           setMtrInfo(arrPqGridMtrInfo.pdata);
           TB04011P_srchCnt = 0;
-          TB04011P_onchangehandler = "on"
+          TB04011P_onchangehandler = "on";
         } else {
           arrPqGridMtrInfo.setData(data);
           TB04011P_srchCnt = 0;
-          TB04011P_onchangehandler = "on"
+          TB04011P_onchangehandler = "on";
         }
-      }
-      else if (data.length === 0){
-        TB04011P_srchCnt =+ 1;
+      } else if (data.length === 0) {
+        TB04011P_srchCnt = +1;
         $("#TB04011P_ibDealNo").val("");
         $("#TB04011P_ibDealNm").val("");
         getMtrInfo();
-      }
-      else {
+      } else {
         arrPqGridMtrInfo.setData(data);
         arrPqGridMtrInfo.on("rowDblClick", function (event, ui) {
           setMtrInfo(ui.rowData);
