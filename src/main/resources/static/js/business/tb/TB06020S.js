@@ -266,7 +266,8 @@ const TB06020Sjs = (function(){
 
 	// 결의안건정보
 	function getCnfrncDealInfo(ibDealNo, jdgmDcd, mtrDcd, prdtCd) {
-
+		var option = {}
+		option.text = "";
 		if (isEmpty(ibDealNo) && isEmpty(prdtCd)) {
 			option.text = "Deal 정보 또는 종목코드 정보를 조회해주세요.";
 			openPopup(option);
