@@ -13,7 +13,16 @@ const TB06030Sjs = (function(){
 		roadTabInfoGrid();
 		onChangeEprzCrdlPrdtLclsCd(); // 기업여신상품대분류코드 선택이벤트
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
+		defaultNumberFormat();
 	});
+	
+	
+	function defaultNumberFormat(){	
+		$("input[id*='Amt'], input[id*='Mnum'], input[id*='Blce'], input[id*='Qty']").val("0");
+		selectorNumberFormater(
+		      $("input[id*='Amt'], input[id*='Mnum'], input[id*='Blce'], input[id*='Qty']")
+		);
+	}
 
 	// pqGrid	
 	function roadTabInfoGrid() {

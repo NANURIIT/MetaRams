@@ -17,8 +17,7 @@ const TB06020Sjs = (function(){
 	});
 	
 	
-	function defaultNumberFormat(){
-	
+	function defaultNumberFormat(){	
 		$("input[id*='Amt'], input[id*='Mnum'], input[id*='Shqt']").val("0");
 		selectorNumberFormater(
 		      $("input[id*='Amt'], input[id*='Mnum'], input[id*='Shqt']")
