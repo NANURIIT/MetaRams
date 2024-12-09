@@ -42,9 +42,9 @@ function TB03021P_srch() {
 		let prefix;
 		const inputId = $(selector).attr('id');
 		// 입력된 id에 따라 prefix 결정
-		prefix = inputId.split('_')[0];// _기준으로 prefix 추출
-		let data = $(selector).val();
-
+		const lastIndex = inputId.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
+		prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
+		
 		$('#TB03021P_prefix').val(prefix);
 		$(`input[id='${prefix}_ibDealNm']`).val("");   // ibDealNm초기화	
 
@@ -58,7 +58,7 @@ function TB03021P_srch() {
 			TB03021P_gridState = 1;
 		}
 
-
+    let data = $(selector).val();
 		$('#TB03021P_ibDealNo').val(data);
 		await getibDealGridState();
 
@@ -299,7 +299,7 @@ function dataIbDealSetGrid(data){
   // 검색된 행이 1개일 경우 데이터 바로 입력
 	if (arrPqGridDealInfo.pdata.length === 1 && $(`div[id='modal-TB03021P']`).css('display') === "none") {
 		console.log("여기로와야해");
-		var prefix = $("#TB03021P_prefix").val();
+		//var prefix = $("#TB03021P_prefix").val();
 		setDealInfo(arrPqGridDealInfo.pdata[0]);
 		ibDealNoSrchCnt = 0;
 		// 입력되고 난 후 온체인지 이벤트 on

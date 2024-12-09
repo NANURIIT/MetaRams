@@ -86,7 +86,10 @@ function TB03022P_srch() {
 		let prefix;
 		const inputId = $(selector).attr('id');
 		// 입력된 id에 따라 prefix 결정
-		prefix = inputId.split('_')[0];// _기준으로 prefix 추출
+		const lastIndex = inputId.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
+		prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
+		
+		console.log("srchEmpEvent_prefix : ",prefix); 
 		let data = $(selector).val();
 
 		$('#TB03022P_prefix').val(prefix);
