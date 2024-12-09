@@ -382,11 +382,11 @@ const TB06030Sjs = (function(){
 				$('#TB06030S_totIssuQty').val(Number(handleNullData(dealDetail.totIssuStkQnt)).toLocaleString());// 총발행주수
 				
 				if (isEmpty($('#TB06030S_res_prdtCd').val())) {
-					$('#regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
-					$('#delPrdt').attr('disabled', true); 
+					$('#TB06030S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
+					$('#TB06030S_delPrdt').attr('disabled', true); 
 				} else {
-					$('#regPrdt').attr('disabled', false); 
-					$('#delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
+					$('#TB06030S_regPrdt').attr('disabled', false); 
+					$('#TB06030S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
 				}
 				
 				/** 출자정보 */
