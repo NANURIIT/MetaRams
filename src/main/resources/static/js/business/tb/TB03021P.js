@@ -1,12 +1,39 @@
 let arrPqGridDealInfo=[];
-let empNo;
 let TB03021P_gridState = 1;
 let TB03021P_pf;
 let TB03021P_onchangehandler;
 let ibDealNoSrchCnt = 0;
+// let TB03021P_CallTB0302P = "Y";
 
 $(document).ready(function () {
   docRdySettings();
+  selectBoxSet_TB03021P();
+});
+
+//부서 셀렉트박스 세팅
+function selectBoxSet_TB03021P() {
+  selectBox = getSelectBoxList("TB03021P", "D010", false);
+
+  dprtList = selectBox.filter(function (item) {
+    //부서코드 list
+    return item.cmnsGrpCd === "D010";
+  });
+
+  dprtList.forEach((item) => {
+    $("#TB03021P_dprtNm").append(
+      $("<option>", {
+        value: item.cdValue,
+        text: `${item.cdName}`,
+      })
+    );
+  });
+
+}
+
+$("#TB03021P_dprtNm").on("change", function () {
+  var dprtCd = $(this).val();
+
+  $("#TB03021P_dprtCd").val(dprtCd);
 });
 
 function TB03021P_srch(menuId) {
@@ -53,7 +80,6 @@ function TB03021P_srch(menuId) {
 		 * 그리드 상태 다시 체크해주기
 		 */
 		if ($(`div[id='modal-TB03021P']`).css('display') === "none") {
-			// console.log("혹시 니가 닫았니?");
 			TB03021P_gridState = 1;
 		}
 
@@ -138,10 +164,10 @@ function roadListGrid_TB03021P(){
 }
 
 async function getibDealGridState() {
-  var dealNo = $("#TB03021P_ibDealNo").val(); //Deal 번호
-  var dealNm = $("#TB03021P_ibDealNm").val(); //Deal명
-  var chrrEmpno = $("#TB03021P1_empNo").val(); //담당자번호
-  var dprtCd = $("#TB03021P2_dprtCd").val();   //부서코드
+  var dealNo    = $("#TB03021P_ibDealNo").val(); //Deal 번호
+  var dealNm    = $("#TB03021P_ibDealNm").val(); //Deal명
+  var chrrEmpno = $("#TB03021P_empNo").val();    //담당자번호
+  var dprtCd    = $("#TB03021P_dprtCd").val();   //부서코드
   
   // var rgstDt = $("#TB03021P_datepicker1").val().replaceAll("-", "");
 
@@ -198,14 +224,16 @@ $("#modal-TB03021P").on("hide.bs.modal", function () {
  * reset
  */
 function reset_TB03021P() {
-  empNo = $('#userEno').val();
+  empNo = $('#userEno').val();     //직원명
+  dprtCd = $('#userDprtCd').val(); //부서번호
+
   $("#TB03021P_dealInfoList").html("");
   $("#TB03021P_ibDealNo").val("");
   $("#TB03021P_ibDealNm").val("");
-  $('#TB03021P1_empNm').val($('#userEmpNm').val());
-  $('#TB03021P1_empNo').val(empNo);
-  $('#TB03021P2_dprtNm').val($('#userDprtNm').val());
-  $('#TB03021P2_dprtCd').val($('#userDprtCd').val());
+  $('#TB03021P_empNm').val($('#userEmpNm').val());
+  $('#TB03021P_empNo').val(empNo);
+  $("#TB03021P_dprtNm").val(dprtCd).prop("selected", true);
+  $('#TB03021P_dprtCd').val(dprtCd);
 
   //$("#TB03021P_datepicker1").val("");
 }
@@ -213,6 +241,7 @@ function reset_TB03021P() {
 function docRdySettings() {
   modalShowFunction();
   keyDownEnter_TB03021P();
+
 }
 
 function modalShowFunction() {
@@ -256,8 +285,8 @@ function keyDownEnter_TB03021P() {
 function getDealInfo() {
   var dealNo = $("#TB03021P_ibDealNo").val(); //Deal 번호
   var dealNm = $("#TB03021P_ibDealNm").val(); //Deal명
-  var chrrEmpno = $("#TB03021P1_empNo").val(); //담당자번호
-  var dprtCd = $("#TB03021P2_dprtCd").val();   //부서코드
+  var chrrEmpno = $("#TB03021P_empNo").val(); //담당자번호
+  var dprtCd = $("#TB03021P_dprtCd").val();    //부서코드
   
   // var rgstDt = $("#TB03021P_datepicker1").val().replaceAll("-", "");
 
@@ -391,19 +420,6 @@ function setDealInfo(e) {
 
   modalClose_TB03021P();
 }
-
-// function changeValues(){
-//     //담당자명 실시간 변경시 담당자번호 클리어
-//   $('#TB03021P1_empNo').on('input', function(){
-//     $('#TB03021P1_empNm').val("");  
-//   });
-
-//   //부서명 실시간 변경시 부서번호 클리어
-//   $('#TB03021P2_dprtCd').on('input', function(){
-//     $('#TB03021P2_dprtNm').val(""); 
-//   });
-
-// }
 
 
 /* ***********************************그리드 컬럼******************************** */
