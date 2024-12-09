@@ -320,6 +320,7 @@ const TB06030Sjs = (function(){
 				/** 종목 정보 */
 				
 				if( isEmpty($('#TB06030S_prdtCd').val()) ) {
+					$('#TB06030S_prdtCd').val(dealDetail.prdtCd);												// 종목코드
 					$('#TB06030S_res_prdtNm').val(dealDetail.mtrNm);											// 안건명
 				} else {
 					$('#TB06030S_res_prdtNm').val(dealDetail.prdtNm);											// 종목명
