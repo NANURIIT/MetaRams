@@ -376,9 +376,13 @@ function selectorNumberFormater(selector) {
     // 마지막에 입력된 문자의 인덱스 찾기
     let cursorIndex = $this.prop("selectionEnd");
 
+    console.log(str.slice(-1));
+    
     //  마지막에 입력한 데이터 빼기
     let chk = str.split(".");
-    if (chk[0].length > 21) {
+    if( chk[0].length === 20 && str.slice(-1) === "9" ){
+      return $this.val(str.slice(0, str.length - 1));
+    } else if (chk[0].length > 21) {
       str = str.slice(0, cursorIndex - 1) + str.slice(cursorIndex); // 해당 문자 제거
       $this.val(str);
       $this.prop("selectionEnd", cursorIndex - 1).focus();
