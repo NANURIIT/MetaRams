@@ -2,8 +2,19 @@ $(document).ready(function() {
 	$('#TB06019P_erlmDt').val(getToday());
 	getSlctBox();
 	checkBoxChangeFunction();
+	defaultNumberFormat();
 	inputNumberChangeFunction();
+	selectorNumberFormater(
+		      $("input[id*='Amt'], input[id*='Num']")
+		);
 });
+
+
+function defaultNumberFormat(){	
+	$("input[id*='Amt'], input[id*='Num']").val("0");	
+	//재무건정성비율
+	$("#TB06019P_fnafHltySrnmRt").val("0.00");
+}
 
 /**
  * show modal 
@@ -51,6 +62,7 @@ function srchParam(){
 	//사업자등록번호
 	$("#TB06019P_rnbn").val("999-99-99999").prop('readonly',true);
 	
+	defaultNumberFormat();
 }
 
 /**
@@ -162,6 +174,8 @@ function reset_TB06019P () {
 	$("#TB06019P_spcYn").prop('checked',true);
 	//사업자등록번호
 	$("#TB06019P_rnbn").val("999-99-99999").prop('readonly',true);
+	
+	defaultNumberFormat();
 
 	/**
 	 * 초기화시 삭제버튼 비활성화

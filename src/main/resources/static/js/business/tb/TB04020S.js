@@ -107,6 +107,8 @@ const TB04020Sjs = (function () {
         data: dtoParam,
         dataType: "json",
         success: function (data) {
+          console.log("dataconfirm!!: ", data.invtNtnCdNm);
+
           pqGridObjDealList.setData(data);
           pqGridObjDealList.option("rowDblClick", function (event, ui) {
             setDealDetails(ui.rowData);
@@ -126,7 +128,7 @@ const TB04020Sjs = (function () {
     $("#TB04020S_detail_mtrNm").val(e.mtrNm); // DEAL 명
 
     $("#TB04020S_detail_chrgPDprtCd").val(e.chrgPDprtCd); // 담당자부서
-    $("#TB04020S_detail_chrgPEno").val(e.chrgPEno); // 담당자명
+    $("#TB04020S_detail_chrgPEno").val(e.chrgPNm); // 담당자명
     $("#TB04020S_detail_mtrPrgSttsDcd").val(e.mtrPrgSttsDcdNm); // 안건진행상태
 
     $("#TB04020S_empNm").val(e.ownPNm); // 심사역명
@@ -544,7 +546,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자국가",
       dataType: "string",
-      dataIndx: "invstNtnCdNm",
+      dataIndx: "invNtnCdNm",
       align: "center",
       halign: "center",
       width: "120",
@@ -553,7 +555,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자국가코드",
       dataType: "string",
-      dataIndx: "invstNtnCd",
+      dataIndx: "invtNtnCd",
       align: "center",
       halign: "center",
       hidden: true,
@@ -561,7 +563,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자통화",
       dataType: "string",
-      dataIndx: "ptfdCrncyCdNm",
+      dataIndx: "ptfdCrryCdNm",
       align: "center",
       halign: "center",
       width: "120",
@@ -570,7 +572,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자통화코드",
       dataType: "string",
-      dataIndx: "ptfdCrncyCd",
+      dataIndx: "ptfdCrryCd",
       align: "center",
       halign: "center",
       hidden: true,
@@ -668,7 +670,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자상품대분류",
       dataType: "string",
-      dataIndx: "invstGdsLdvdCdNm",
+      dataIndx: "invPrdtLclsCdNm",
       align: "left",
       halign: "center",
       width: "120",
@@ -677,7 +679,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자상품대분류코드",
       dataType: "string",
-      dataIndx: "invstGdsLdvdCd",
+      dataIndx: "invPrdtLclsCd",
       align: "left",
       halign: "center",
       hidden: true,
@@ -685,7 +687,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자상품중분류",
       dataType: "string",
-      dataIndx: "invstGdsMdvdCdNm",
+      dataIndx: "invPrdtMdclCdNm",
       align: "left",
       halign: "center",
       width: "200",
@@ -694,7 +696,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자상품중분류코드",
       dataType: "string",
-      dataIndx: "invstGdsMdvdCd",
+      dataIndx: "invPrdtMdclCd",
       align: "left",
       halign: "center",
       hidden: true,
@@ -702,7 +704,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자상품소분류",
       dataType: "string",
-      dataIndx: "invstGdsSdvdCdNm",
+      dataIndx: "invPrdtSclsCdNm",
       align: "left",
       halign: "center",
       width: "200",
@@ -711,7 +713,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자상품소분류코드",
       dataType: "string",
-      dataIndx: "invstGdsSdvdCd",
+      dataIndx: "invPrdtSclsCd",
       align: "left",
       halign: "center",
       hidden: true,
@@ -719,7 +721,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자상품상세분류",
       dataType: "string",
-      dataIndx: "invstGdsDtlsDvdCdNm",
+      dataIndx: "invPrdtDtlsDvdCdNm",
       align: "left",
       halign: "center",
       width: "200",
@@ -728,7 +730,7 @@ const TB04020Sjs = (function () {
     {
       title: "투자상품상세분류코드",
       dataType: "string",
-      dataIndx: "invstGdsDtlsDvdCd",
+      dataIndx: "invPrdtDtlsDvdCd",
       align: "left",
       halign: "center",
       hidden: true,
