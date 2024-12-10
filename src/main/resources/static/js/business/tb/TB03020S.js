@@ -23,7 +23,7 @@ const TB03020Sjs = (function(){
 		loadInvstGdsLdvdCd();
 		loadInvstGdsMdvdCd();
 		loadInvstGdsSdvdCd();
-		setKeyFunction_TB03020S();
+		// setKeyFunction_TB03020S();
 		rendorGrid();
 		
 
@@ -229,18 +229,18 @@ const TB03020Sjs = (function(){
 	 * input keydown 이벤트
 	 */
 
-	function setKeyFunction_TB03020S() {
-		$("input[id=selectedMngDealNo]").keyup(function(key) {
-			if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
+	// function setKeyFunction_TB03020S() {
+	// 	$("input[id=selectedMngDealNo]").keyup(function(key) {
+	// 		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
 			
-				callTB03021P('TB03020S');
-			}
-			if ($("#selectedMngDealNo").val().length === 0) {
-				$("#selectedMngDealNo").val('');
-				resetSrchCondition();
-			}
-		});
-	}
+	// 			callTB03021P('TB03020S');
+	// 		}
+	// 		if ($("#selectedMngDealNo").val().length === 0) {
+	// 			$("#selectedMngDealNo").val('');
+	// 			resetSrchCondition();
+	// 		}
+	// 	});
+	// }
 
 	/* 초기화버튼 */
 	function resetSrchCondition() {
