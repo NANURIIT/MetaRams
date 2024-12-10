@@ -183,7 +183,10 @@ function callGridTB03061P(prefix) {
 /**
  * 모달 팝업 show - 기업체 목록
  */
-function callTB03061P(prefix) {
+function callTB03061P(prefix, rowIndx) {
+
+	console.log(rowIndx);
+	rowInx = rowIndx;
 
 	reset_TB03061P();
 
@@ -436,6 +439,9 @@ function setArdyBzepInfo(rowData) {
 	let rgstDt = rowData.rgstDt;
 	let clseDvsnCd = rowData.clseDvsnCd;
 	let clseDt = rowData.clseDt;
+
+	console.log(ardyBzepNo);
+	console.log(rowInx);
 
 	let prefix = $("#TB03061P_prefix").val(); 			// id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
 
