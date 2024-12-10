@@ -504,10 +504,10 @@
     	      ,C.TR_OTHR_DSCM_NO                              
             ,C.ENTP_NM
             ,C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD          /* 상환회차 */                 
-            /*,C.PRG_STTS_CD || '-' || CD4.CD_VL_NM   AS PRG_STTS_CD      
-            ,C.IB_PRDT_CLSF_CD || '-' || CD5.CD_VL_NM  AS IB_PRDT_CLSF_CD   
+            ,C.PRG_STTS_CD AS PRG_STTS_CD      
+            /*,C.IB_PRDT_CLSF_CD || '-' || CD5.CD_VL_NM  AS IB_PRDT_CLSF_CD   
             ,C.RQS_KND_CD || '-' || CD6.CD_VL_NM     AS  RQS_KND_CD   */
-            ,CD4.CD_VL_NM   AS PRG_STTS_CD      
+            ,CD4.CD_VL_NM   AS PRG_STTS_NM      
             ,CD5.CD_VL_NM  AS IB_PRDT_CLSF_CD   
             ,CD6.CD_VL_NM    AS  RQS_KND_CD   
         FROM (select DEAL_NO

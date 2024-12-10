@@ -51,7 +51,8 @@ const TB06060Sjs = (function(){
         {
             title: "진행상태",
             dataType: "string",
-            dataIndx: "mtrPrgSttsNm",
+            //dataIndx: "mtrPrgSttsNm",
+            dataIndx: "prgSttsNm",
             align: "center",
             halign: "center",
             width: "",
@@ -149,9 +150,9 @@ const TB06060Sjs = (function(){
             strNoRows : '조회된 데이터가 없습니다.',
             cellDblClick: function(event, ui){
                 var rowData = ui.rowData;
-
-                //console.log(rowData);
-                setFlow(parseInt(rowData.mtrPrgSttsDcd));
+                //setFlow(parseInt(rowData.mtrPrgSttsDcd));
+                setFlow(parseInt(rowData.prgSttsCd));
+                
                 showDetailData(rowData);
             },
             cellClick: function(event,ui){
@@ -308,13 +309,15 @@ const TB06060Sjs = (function(){
 
     function setFlow(index){
 
+        var flow =  Math.floor(index / Math.pow(10, String(index).length - 1));
+
         var waitHtml = '<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>';
         var registHtml = '<span class="status-desc">상태 : <span class="status -regist">완료</span></span>';
         $(".flow-status p").removeClass("-check");
         $(".flow-status div").html(waitHtml);
         
 
-        for(var i = 0;i<index;i++){
+        for(var i = 0;i<flow;i++){
             var indexNm = "[name = flow0"+i+"]";
             $(indexNm+" p").addClass("-check");
             $(indexNm+" div").html(registHtml);
