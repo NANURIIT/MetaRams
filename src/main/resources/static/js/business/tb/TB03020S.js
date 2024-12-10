@@ -23,7 +23,7 @@ const TB03020Sjs = (function(){
 		loadInvstGdsLdvdCd();
 		loadInvstGdsMdvdCd();
 		loadInvstGdsSdvdCd();
-		setKeyFunction_TB03020S();
+		// setKeyFunction_TB03020S();
 		rendorGrid();
 		
 
