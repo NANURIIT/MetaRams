@@ -34,9 +34,13 @@ public class IBIMS103BVO extends IBIMS103BDTO {
 	String invNtnCdNm;
 	String ptfdCrryCdNm;
 	String invPrdtLclsCd;                // 투자상품대분류코드
+	String invPrdtLclsCdNm;              // 투자상품대분류코드이름
   String invPrdtMdclCd;                // 투자상품중분류코드
+  String invPrdtMdclCdNm;              // 투자상품중분류코드이름
   String invPrdtSclsCd;                // 투자상품소분류코드
+  String invPrdtSclsCdNm;              // 투자상품소분류코드이름
   String invPrdtDtlsDvdCd;             // 투자상품상세분류코드
+  String invPrdtDtlsDvdCdNm;           // 투자상품상세분류코드이름
   
   /* --------------------------------------- */
   
@@ -60,13 +64,13 @@ public class IBIMS103BVO extends IBIMS103BDTO {
 	String mmEndDt;                         // 기준월 종료일자
 	String weekStrtDt;                      // 이번주 시작일자
 	String weekEndDt;                       // 이번주 종료일자
-    String ibDealNo;                        // 딜번호
-    String ibDealNm;                        // 딜명
-    BigDecimal ptcpAmt;                     // 부의금액
+  String ibDealNo;                        // 딜번호
+  String ibDealNm;                        // 딜명
+  BigDecimal ptcpAmt;                     // 부의금액
 	String riskInspctRsltnCcdNm;           	// 리스크심사결의구분코드명
 	String riskInspctRsltnCcd;            	// 리스크심사결의구분코드
-	String aplcExptDt;            			// 부의일정
-	String wrtDt;            				// 기표예정일자
+	String aplcExptDt;           			 			// 부의일정
+	String wrtDt;            								// 기표예정일자
 
 	// 협의체 부의 및 현황
 	String cdVlId;            				// 구분코드
@@ -87,29 +91,29 @@ public class IBIMS103BVO extends IBIMS103BDTO {
 	int waitBfr;							// 결의중_전분기
 	int waitAfr;							// 결의중_조회시점
 	// 투자자산 현황
-			String colNm;					// 승인건수
-			String stdYrMm; 				// 현재 기준년월
-			String inspctDprtCcd;			// 심사부구분코드
-		// ● 기표전
-			String qtaPef; 					// 지분증권 - PEF
-			String qtaPreIpo; 				// 지분증권 - PRE_IPO
-			String qtaSpac; 				// 지분증권 - SPAC
-			String qtaStock; 				// 지분증권 - 주식
-			String qtaSbtl; 				// 지분증권 - 소계
-			String invstSecur; 				// 집투증권
-			String lnBnd; 					// 대출채권
-			String accdtCmnt; 				// 우발채권 - 확약보증
-			String accdtByng; 				// 우발채권 - 매입약정
-			String accdtHug; 				// 우발채권 - HUG
-			String accdtSbtl; 				// 우발채권 - 소계
-			String total; 					// 합계
+	String colNm;						// 승인건수
+	String stdYrMm; 				// 현재 기준년월
+	String inspctDprtCcd;		// 심사부구분코드
+	// ● 기표전
+	String qtaPef; 					// 지분증권 - PEF
+	String qtaPreIpo; 			// 지분증권 - PRE_IPO
+	String qtaSpac; 				// 지분증권 - SPAC
+	String qtaStock; 				// 지분증권 - 주식
+	String qtaSbtl; 				// 지분증권 - 소계
+	String invstSecur; 			// 집투증권
+	String lnBnd; 					// 대출채권
+	String accdtCmnt; 			// 우발채권 - 확약보증
+	String accdtByng; 			// 우발채권 - 매입약정
+	String accdtHug; 				// 우발채권 - HUG
+	String accdtSbtl; 			// 우발채권 - 소계
+	String total; 					// 합계
 			
 	/* --------------------------------------- */
 	String apvlDt;							// 승인일자
-	BigDecimal apvlAmt;						// 승인금액		
-	String invJdgmComtNo;					// 투자심사위원회번호		
-	String cnsbDcd;                         // 위원회번호		
-	String sdnCndtF;                        // 셀다운조건여부		
-	String etcCndtF;                        // 기타조건여부
+	BigDecimal apvlAmt;					// 승인금액		
+	String invJdgmComtNo;				// 투자심사위원회번호		
+	String cnsbDcd;             // 위원회번호		
+	String sdnCndtF;            // 셀다운조건여부		
+	String etcCndtF;            // 기타조건여부
 			
 }
