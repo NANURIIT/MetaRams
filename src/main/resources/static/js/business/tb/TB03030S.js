@@ -6,6 +6,7 @@ const TB03030Sjs = (function(){
 	let arrPqGridRmFileInfo;
 
 	$(document).ready(function() {
+		$('#addRmActivityBtn').prop('disabled', true);
 		$("#TB03030S_entpRnm").focus();
 		rendorGrid();		// 그리드 렌더링
 	});
@@ -80,6 +81,9 @@ const TB03030Sjs = (function(){
 					arrPqGridRmEntpInfo.setData(data);
 					arrPqGridRmEntpInfo.option("rowDblClick", function(event, ui) {
 						setRmInfo(ui.rowData);
+
+						// 더블 클릭 시 RM활동신규 버튼 활성화
+						$('#addRmActivityBtn').prop('disabled', false);
 					});
 				}
 			});
