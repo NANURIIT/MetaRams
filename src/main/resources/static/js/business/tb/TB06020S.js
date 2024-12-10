@@ -13,7 +13,17 @@ const TB06020Sjs = (function(){
 		roadTabInfoGrid();
 		onChangeEprzCrdlPrdtLclsCd(); // 기업여신상품대분류코드 선택이벤트
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
+		defaultNumberFormat(); //기본 숫자타입
 	});
+	
+	
+	function defaultNumberFormat(){	
+		$("input[id*='Amt'], input[id*='Mnum'], input[id*='Shqt']").val("0");
+		selectorNumberFormater(
+		      $("input[id*='Amt'], input[id*='Mnum'], input[id*='Shqt']")
+		);
+	}
+	
 
 	// pqGrid	
 	function roadTabInfoGrid() {
@@ -235,6 +245,8 @@ const TB06020Sjs = (function(){
 		}*/
 		
 		resetInputValue($('div[data-menuid="/TB06020S"]'));
+		//$('#TB06020S_C006 option[value="KR"]').prop("selected", true); // 국가코드
+		//$('#TB06020S_C006_I027 option[value="KRW"]').prop("selected", true); // 통화코드
 	}
 
 

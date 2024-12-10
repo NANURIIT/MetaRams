@@ -232,9 +232,9 @@ function registRmSave() {
 // 모달창 데이터 초기화
 function modalReset() {
 
-	$('#TB03031P_rm_entpRnm').val("");			// 업체명
-	$('#TB03031P_rm_corpRgstNo').val("");		// 법인등록번호
-	$('#TB03031P_rm_bsnsRgstNo').val("");		// 사업자등록번호
+	//$('#TB03031P_rm_entpRnm').val("");			// 업체명
+	//$('#TB03031P_rm_corpRgstNo').val("");		// 법인등록번호
+	//$('#TB03031P_rm_bsnsRgstNo').val("");		// 사업자등록번호
 	$('#TB03031P_metTitl').val("");				// 미팅제목
 	$('#TB03031P_metDt').val("");				// 미팅일자
 	$('#TB03031P_metTm').val("");				// 미팅시간

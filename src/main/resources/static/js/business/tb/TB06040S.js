@@ -10,11 +10,20 @@ const TB06040Sjs = (function() {
         authInf();
         getSelectBoxList('TB06040S', 'R023/S003/I005/E020/E011/E005/I011');
         resetDd();
-
-        $('input').on('focus', function() {
+		defaultNumberFormat();
+      /*  $('input').on('focus', function() {
             $(this).select();
-        });
+        });*/
     });
+	
+	
+	
+	function defaultNumberFormat(){		
+		$("input[id*='Amt'], input[id*='Mnum']").val("0");
+		selectorNumberFormater(
+		      $("input[id*='Amt'], input[id*='Mnum']")
+		  );
+	}
 
     function validateParameter() {
         var prdtCd = $('#TB06040S_prdtCd').val();
@@ -461,7 +470,35 @@ const TB06040Sjs = (function() {
         switch (p) {
             case "1":
                 console.log("약정");
-                save('1');
+                if(isEmpty($('#TB06040S_ctrcDt').val())){
+					     Swal.fire({
+	                       icon: 'warning'
+	                       , text: "약정일자를 확인해주세요."
+	                       , confirmButtonText: "확인"
+	                   })
+					   $('#TB06040S_ctrcDt').focus();
+	                   return;
+				}
+				if(isEmpty($('#TB06040S_ctrcExpDt').val())){
+					     Swal.fire({
+	                       icon: 'warning'
+	                       , text: "약정만기일자를 확인해주세요."
+	                       , confirmButtonText: "확인"
+	                   })
+					   $('#TB06040S_ctrcExpDt').focus();
+	                   return;
+				}
+				
+				if(isEmpty($('#TB06040S_eprzCrdlCtrcAmt').val())||$('#TB06040S_eprzCrdlCtrcAmt').val()=='0' ){
+					     Swal.fire({
+				           icon: 'warning'
+				           , text: "약정금액을 확인해주세요."
+				           , confirmButtonText: "확인"
+				       })
+					   $('#TB06040S_eprzCrdlCtrcAmt').focus();
+				       return;
+				}				
+				save('1');
                 // if ( prgSttsCd >= "502") {
                 //     Swal.fire({
                 //         icon: 'warning'
@@ -498,6 +535,36 @@ const TB06040Sjs = (function() {
                 break;
             case "2":
                 console.log("해지");
+				if(isEmpty($('#TB06040S_E005').val())){
+					     Swal.fire({
+				           icon: 'warning'
+				           , text: "해지사유코드를 확인해주세요."
+				           , confirmButtonText: "확인"
+				       })
+					   $('#TB06040S_E005').focus();
+				       return;
+				}
+				if(isEmpty($('#TB06040S_cancelDt').val())){
+					     Swal.fire({
+				           icon: 'warning'
+				           , text: "해지일자를 확인해주세요."
+				           , confirmButtonText: "확인"
+				       })
+					   $('#TB06040S_cancelDt').focus();
+				       return;
+				}
+
+				if(isEmpty($('#TB06040S_cancelRsnCntn').val())){
+					     Swal.fire({
+				           icon: 'warning'
+				           , text: "해지사유내용 확인해주세요."
+				           , confirmButtonText: "확인"
+				       })
+					   $('#TB06040S_cancelRsnCntn').focus();
+				       return;
+				}	
+				
+				
                 save('2');
                 // if ( prgSttsCd >= "502" && fSts === '2' ) {
                 //     Swal.fire({
@@ -566,6 +633,8 @@ const TB06040Sjs = (function() {
             //console.log($this);
             $this.val(initObj[$this.attr('id')]);
         });
+		
+		$('#TB06040S_eprzCrdlCtrcAmt').val('0');            // 약정금액
 
         $('select').each(function() {
             const $this = $(this);
@@ -585,7 +654,8 @@ const TB06040Sjs = (function() {
 		/**
 		 * 사용 할 함수 정의
 		 */
-		srch : srch
+		defaultNumberFormat : defaultNumberFormat
+	,	srch : srch
 	,	reset : reset
     ,   btnCtr : btnCtr
 	}

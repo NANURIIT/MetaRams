@@ -335,7 +335,7 @@ const TB09060Sjs = function () {
         : replaceAll($("#TB09060S_endDt").val(), "-", "");
 
     var dprtCd = $("#TB09060S_dprtCd").val();
-    var ovduRlseYn = $("#TB09060S_ovduRlseYn").val();
+    var ovduRlseYnCd = $("#TB09060S_ovduRlseYnCd").val();
 
     console.log(
       dealNo +
@@ -348,7 +348,7 @@ const TB09060Sjs = function () {
       "," +
       dprtCd +
       "," +
-      ovduRlseYn
+      ovduRlseYnCd
     );
 
     const paramData = {
@@ -357,7 +357,7 @@ const TB09060Sjs = function () {
       startDt: startDt,
       endDt: endDt,
       dprtCd: dprtCd,
-      ovduRlseYn: ovduRlseYn,
+      ovduRlseYnCd: ovduRlseYnCd,
     };
 
     $.ajax({

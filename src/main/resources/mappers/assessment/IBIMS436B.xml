@@ -45,10 +45,10 @@
         <if test="endDt != ''">
            AND (A.FRS_PRNA_OVDU_OCRNC_DT <![CDATA[<=]]> #{endDt})
         </if>
-        <if test="ovduRlseYn == N">
+        <if test="ovduRlseYnCd == 1">
            AND A.OVDU_STTS_CD <![CDATA[>=]]> 1
         </if>
-        <if test="ovduRlseYn == Y">
+        <if test="ovduRlseYnCd == 2">
            AND A.OVDU_STTS_CD = 0
         </if>
         <if test="dprtCd != '' and dprtCd != null">

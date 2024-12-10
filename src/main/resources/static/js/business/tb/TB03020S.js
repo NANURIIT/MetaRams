@@ -6,6 +6,18 @@ const TB03020Sjs = (function(){
 	let pqGridObjEnopList;
 
 	$(document).ready(function() {
+
+		$(
+			"input[id*='Scl'], input[id*='Amt'], input[id*='Ern']"
+		).val("0");
+
+		selectorNumberFormater(
+			$(`div[data-menuid='/TB03020S'] input[id*='Scl']
+				, div[data-menuid='/TB03020S'] input[id*='Amt']
+				, div[data-menuid='/TB03020S'] input[id*='Ern']`)
+		);
+
+
 		getSelectBoxList('TB03020S', 'C008/B008/I028/C006/B019/I006/C012/C010/I027');
 		loadUserAuth();
 		loadInvstGdsLdvdCd();

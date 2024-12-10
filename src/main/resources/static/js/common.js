@@ -376,9 +376,13 @@ function selectorNumberFormater(selector) {
     // 마지막에 입력된 문자의 인덱스 찾기
     let cursorIndex = $this.prop("selectionEnd");
 
+    console.log(str.slice(-1));
+    
     //  마지막에 입력한 데이터 빼기
     let chk = str.split(".");
-    if (chk[0].length > 17) {
+    if( chk[0].length === 20 && str.slice(-1) === "9" ){
+      return $this.val(str.slice(0, str.length - 1));
+    } else if (chk[0].length > 21) {
       str = str.slice(0, cursorIndex - 1) + str.slice(cursorIndex); // 해당 문자 제거
       $this.val(str);
       $this.prop("selectionEnd", cursorIndex - 1).focus();
@@ -457,7 +461,7 @@ function inputNumberFormater(target) {
 
   //  마지막에 입력한 데이터 빼기
   let chk = str.split(".");
-  if (chk[0].length > 17) {
+  if (chk[0].length > 21) {
     str = str.slice(0, cursorIndex - 1) + str.slice(cursorIndex); // 해당 문자 제거
     $this.val(str);
     $this.prop("selectionEnd", cursorIndex - 1).focus();
@@ -1850,6 +1854,7 @@ function resetInputValue(selector) {
     .find(`input[type="radio"][name*="Yn"][value="N"]`)
     .prop("checked", true);
   selector.find(`input[type="text"]`).val("");
+  selector.find(`textarea`).val("")
   selector
     .find(
       `input[id$='Amt']
@@ -2032,10 +2037,15 @@ function needRunFn(fn, menuId) {
 /**
  * 화면내 PG Grid 초기화
  * @param {String} menuid 
+ * @author {김건우} 
  */
 function resetPGgrids (menuid) {
-  console.log("피큐 그리드 초기화 실행");
-  $("#" + $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).attr('id')).pqGrid('instance').setData([]);
+  // console.log("피큐 그리드 초기화 실행");
+  if($(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).length != 0){
+    $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).each(function(){
+      $("#" + $(this).attr('id')).pqGrid('instance').setData([]);
+    })
+  }
 }
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) {}
