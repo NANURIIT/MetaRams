@@ -11,5 +11,5 @@ import lombok.Getter;
 public class IBIMS107BVO extends IBIMS107BDTO {
 	String outsCrdtGrdDcdNm;
 	String insCrdtGrdDcdNm;
-	String entpHnglNm;
+	//String entpHnglNm;
 }

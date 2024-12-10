@@ -19,6 +19,7 @@ public class IBIMS107BDTO {
     private String     outsCrdtGrdDcd;                // 외부신용등급구분코드(SL내부등급)
     private String     brwrCrno;                      // 차주법인등록번호
     private String     insCrdtGrdDcd;                 // 내부신용등급구분코드
+    private String     entpHnglNm;                    // 한글법인명
     private String     rnmCnfmNo;                     // 실명확인번호
     private Date       hndDetlDtm;                    // 조작상세일시
     private String     hndEmpno;                      // 조작사원번호

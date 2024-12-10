@@ -33,7 +33,7 @@
            AND s107b.INS_CRDT_GRD_DCD						= s003b.CD_VL_ID
           LEFT JOIN IBIMS114B s114b
             ON s107b.RNM_CNFM_NO								= s114b.BZNO
-           AND s114b.BZNO != ''
+           AND s114b.BZNO != ' '
            AND s107b.BRWR_CRNO = s114b.BZNO
            AND s114b.DEL_YN = 'N'
          WHERE 1=1
