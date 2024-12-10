@@ -98,15 +98,15 @@ function TB03061P_srchMtr(menuId) {
 		}
 	});
 
-	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03061P']:not([disabled])`).closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("change", async function (evt) {
-		if (TB03061P_onchangehandler === "on") {
+	// $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03061P']:not([disabled])`).closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("change", async function (evt) {
+	// 	if (TB03061P_onchangehandler === "on") {
 
-			await srchEvent(this);
+	// 		await srchEvent(this);
 
-		} else if (TB03061P_onchangehandler === "off"){
-			TB03061P_onchangehandler = "on"
-		}
-	});
+	// 	} else if (TB03061P_onchangehandler === "off"){
+	// 		TB03061P_onchangehandler = "on"
+	// 	}
+	// });
 
 	async function srchEvent(selector) {
 		// 사용한 인풋박스의 출처 페이지 가져오기
