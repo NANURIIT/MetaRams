@@ -61,6 +61,8 @@ async function callTB06013P(prefix) {
   if (isNotEmpty(prdtCd) && isNotEmpty(mrtgNo)) {
 	await TB06013P_getMrtgInfoDetails();
   }
+  
+  btnModalReset("init");
 
 }
 
@@ -121,6 +123,8 @@ function filterSelectBox(obj, childObj) {
 function btnModalReset(mode) {
   let prdtCd = $("#TB06013P_prdtCd").val();
   let prdtNm = $("#TB06013P_prdtNm").val();
+  let mrtgNo = $("#TB06013P_mrtgMngmNo").val();
+  let mrtgNm = $("#TB06013P_mrtgNm_forSeach").val();
 
   switch (mode) {
     case "modalReset":
@@ -157,9 +161,19 @@ function btnModalReset(mode) {
       $("#TB06013P_prdtCd").val(prdtCd);
       $("#TB06013P_prdtNm").val(prdtNm);
       break;
+	case "init":
+		resetInputValue($('div[data-menuid="/TB06013P"]'));
+		$("#TB06013P_prdtCd").val(prdtCd);
+	    $("#TB06013P_prdtNm").val(prdtNm);
+		$("#TB06013P_mrtgMngmNo").val(mrtgNo);
+		$("#TB06013P_mrtgNm_forSeach").val(mrtgNm);			 
+
+	 break;	 
     default:
       break;
   }
+  $("input[id*='Amt'], input[id*='Prc'], input[id*='Rt'], input[id*='Qnt'], input[id*='Unpr'], input[id*='Prc_etc'], input[id*='Prna']" ).val("0");
+  selectorNumberFormater($("input[id*='Amt'], input[id*='Prc'], input[id*='Rt'], input[id*='Qnt'], input[id*='Unpr'], input[id*='Prc_etc'], input[id*='Prna']"));
 
 }
 
