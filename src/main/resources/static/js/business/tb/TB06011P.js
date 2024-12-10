@@ -494,8 +494,8 @@ function callTB06011P(prefix) {
  */
 function modalClose_TB06011P() {
 	TB06011P_gridState = 1;
-	// if (typeof fnltPgGrid != "undefined") arrPqGridPrdtCdList.setData([]);
-	$('#TB06011P_prdtCdList').pqGrid("destroy");
+	if (typeof fnltPgGrid != "undefined") arrPqGridPrdtCdList.setData([]);
+	//$('#TB06011P_prdtCdList').pqGrid("destroy");
 	$('#modal-TB06011P').modal('hide');
 };
 

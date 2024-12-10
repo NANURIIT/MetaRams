@@ -45,6 +45,10 @@ function callTB06012P(prefix) {
 	  $("#TB06012P_ibDealNo").val($("#TB06030S_ibDealNo").val());
 	  $("#TB06012P_ibDealNm").val($("#TB06030S_ibDealNm").val());
   }
+  
+  selectorNumberFormater(
+    $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Rt']")
+  );
 }
 
 // function loadSelectBoxContents() {
@@ -145,6 +149,8 @@ function clearTB06012P(cnd) {
   $("#TB06012P_plnFairRt").val("");
   $("#TB06012P_nowFairRt").val("");
   $("#TB06012P_apvlCndActCtns").val("");
+  
+  $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Rt']").val("0");
     
 }
 
