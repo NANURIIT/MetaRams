@@ -171,8 +171,8 @@ function ajaxCall(option) {
       //openPopup({type:"loding",show:false});
     },
   }).then(
-    $.type(option.success) === "function" ? option.success : function () {},
-    $.type(option.fail) === "function" ? option.fail : function () {}
+    $.type(option.success) === "function" ? option.success : function () { },
+    $.type(option.fail) === "function" ? option.fail : function () { }
   );
 }
 
@@ -377,10 +377,10 @@ function selectorNumberFormater(selector) {
     let cursorIndex = $this.prop("selectionEnd");
 
     console.log(str.slice(-1));
-    
+
     //  마지막에 입력한 데이터 빼기
     let chk = str.split(".");
-    if( chk[0].length === 20 && str.slice(-1) === "9" ){
+    if (chk[0].length === 20 && str.slice(-1) === "9") {
       return $this.val(str.slice(0, str.length - 1));
     } else if (chk[0].length > 21) {
       str = str.slice(0, cursorIndex - 1) + str.slice(cursorIndex); // 해당 문자 제거
@@ -787,11 +787,11 @@ function getSomeDaysAgo(n) {
 }
 
 /**
-	개월수 더하기, 빼기
-	@param   {String} date			'yyyy-mm-dd' / 'yyyymmdd'
-	@param   {int}    addedMonth
-	@returns {String} 				'yyyy-mm-dd' / 'yyyymmdd'
-	@throws  null
+  개월수 더하기, 빼기
+  @param   {String} date			'yyyy-mm-dd' / 'yyyymmdd'
+  @param   {int}    addedMonth
+  @returns {String} 				'yyyy-mm-dd' / 'yyyymmdd'
+  @throws  null
  */
 function addMonth(date, addedMonth) {
   var regExp8 = RegExp(/^\d{4}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$/);
@@ -1089,11 +1089,11 @@ function makeToDoList(empno, workDcd, workCtns, menuId, rmrk, entpNm) {
    @param {String} item		셀렉트박스리스트 ex) 'I075/C056/I081'
    @param {boolean} async   동기, 비동기
    @description <select class="form-control" id="TB06010S_I075">
-				</select>
-				
-				같은코드 셀렉트박스가 2개면 afterSelectBoxLoaded 에서 result 사용하여 추가 할 것
-				
-				동기 처리 필요 시, 3번째 파라미터로 false 추가 prefix, item, async
+        </select>
+      	
+        같은코드 셀렉트박스가 2개면 afterSelectBoxLoaded 에서 result 사용하여 추가 할 것
+      	
+        동기 처리 필요 시, 3번째 파라미터로 false 추가 prefix, item, async
  */
 function getSelectBoxList(prefix, item, async = true) {
   var codeList = {
@@ -1473,10 +1473,10 @@ function getSelectBoxList(prefix, item, async = true) {
 }
 
 /*
-	SelectBox 코드조회 및 html 맵핑 (단건)
-	@param {String} prefix	화면명
-	@param {String} item	셀렉트박스코드 ex) I011
-	@param {boolean} async  동기, 비동기
+  SelectBox 코드조회 및 html 맵핑 (단건)
+  @param {String} prefix	화면명
+  @param {String} item	셀렉트박스코드 ex) I011
+  @param {boolean} async  동기, 비동기
  */
 function getSelectBoxCode2(prefix, item, async = true) {
   var code = item;
@@ -1546,8 +1546,8 @@ function setKRKRW(prefix) {
 }
 
 /**
-	라디오버튼 셀렉트 공통
-	USEAGE : $(":radio[name='objectName']").radioSelect(radioVal);
+  라디오버튼 셀렉트 공통
+  USEAGE : $(":radio[name='objectName']").radioSelect(radioVal);
  */
 $.fn.radioSelect = function (val) {
   this.each(function () {
@@ -1646,15 +1646,15 @@ function setPqGrid(pqGridObjs) {
       numCl = pqGridObj.numberCell || { show: false }, // numberCell ex:::{ show: false, width: 40, resizable: true, title: "" }
       showTt = pqGridObj.showTitle || false, // showTitle
       showTb = pqGridObj.showToolbar || false, // showToolbar
-      cllSv = pqGridObj.cellSave || function (event, ui) {}, // cellSave
+      cllSv = pqGridObj.cellSave || function (event, ui) { }, // cellSave
       edit = pqGridObj.editable || false,
       tlbar = pqGridObj.toolbar || {},
-      rowClick = pqGridObj.rowClick || function (event, ui) {},
+      rowClick = pqGridObj.rowClick || function (event, ui) { },
       selMd = pqGridObj.selectionModel || {}, // { type: 'row' }
-      cellbs = pqGridObj.cellBeforeSave || function (event, ui) {},
-      cellClick = pqGridObj.cellClick || function (event, ui) {},
-      rowSelect = pqGridObj.rowSelect || function (event, ui) {},
-      rowDblClick = pqGridObj.rowDblClick || function (event, ui) {};
+      cellbs = pqGridObj.cellBeforeSave || function (event, ui) { },
+      cellClick = pqGridObj.cellClick || function (event, ui) { },
+      rowSelect = pqGridObj.rowSelect || function (event, ui) { },
+      rowDblClick = pqGridObj.rowDblClick || function (event, ui) { };
 
     let strNoRows = " "; // 최초 생성 시 body msg
 
@@ -1850,25 +1850,32 @@ function resetInputValue(selector) {
     $(this).val($($(this).find("option")[0]).val());
   });
   selector.find(`select[id*="Yn"]`).val("N");
-  selector
-    .find(`input[type="radio"][name*="Yn"][value="N"]`)
-    .prop("checked", true);
+  selector.find(`input[type="radio"][name*="Yn"][value="N"]`).prop("checked", true);
   selector.find(`input[type="text"]`).val("");
   selector.find(`textarea`).val("")
-  selector
-    .find(
-      `input[id$='Amt']
-				 , input[id$='Blce']
-				 , input[id$='Exrt']
-				 , input[id$='Mnum']
-				 , input[id$='Tmrd']
-				 , input[id$='Qnt']
-				 , input[id$='Shqt']
-				 , input[id$='Unpr']
-				 , input[id$='Rt']`
-    )
-    .val("0");
-    setKRKRW(selector.attr('data-menuid').split('/')[1]);
+  selector.find(`input[id$='Amt']
+				       , input[id$='Blce']
+				       , input[id$='Exrt']
+				       , input[id$='Mnum']
+				       , input[id$='Tmrd']
+				       , input[id$='Qnt']
+				       , input[id$='Shqt']
+				       , input[id$='Unpr']
+				       , input[id$='Rt']`).val("0");
+               
+  selector.find(`input[id$='Dt']`).val(getToday())
+  let 한달뒤ㅋ = () => {
+    let today = new Date();
+    today.setMonth(today.getMonth() + 1); // 한 달 뒤로 설정
+    let year = today.getFullYear();
+    let month = (today.getMonth() + 1).toString().padStart(2, '0'); // 0부터 시작하므로 +1
+    let day = today.getDate().toString().padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  };
+  selector.find(`input[id$='EndDt']`).val(한달뒤ㅋ)
+  
+  setKRKRW(selector.attr('data-menuid').split('/')[1]);
 
 }
 
@@ -2025,7 +2032,7 @@ function pqGridDeleteRow(colModelSelector, rowIndx) {
 }
 
 /**
- * 화면 이동시 작동해야하는 함수
+ * 화면 이동시 작동해야하는 함수 (미완)
  */
 function needRunFn(fn, menuId) {
   const url = window.location.pathname;
@@ -2035,17 +2042,17 @@ function needRunFn(fn, menuId) {
 }
 
 /**
- * 화면내 PG Grid 초기화
+ * 화면내 모든 PG Grid 초기화
  * @param {String} menuid 
  * @author {김건우} 
  */
-function resetPGgrids (menuid) {
+function resetPGgrids(menuid) {
   // console.log("피큐 그리드 초기화 실행");
-  if($(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).length != 0){
-    $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).each(function(){
+  if ($(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).length != 0) {
+    $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).each(function () {
       $("#" + $(this).attr('id')).pqGrid('instance').setData([]);
     })
   }
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) {}
+function autoSrchFromPQGrid(pqGridId, url, paramData) { }
