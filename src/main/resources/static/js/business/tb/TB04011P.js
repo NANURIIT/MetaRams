@@ -66,6 +66,8 @@ function TB04011P_srchMtr(menuId) {
 
       // Enter 키에만 작동하도록
       if (evt.keyCode === 13) {
+
+
         evt.preventDefault(); // 기본 동작 방지
         TB04011P_onchangehandler = "off"; // 변경 처리 차단
 
@@ -75,24 +77,25 @@ function TB04011P_srchMtr(menuId) {
       keydownProcessing = false; // keydown 처리 종료
     });
 
-  $(
-    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB04011P"]:not([disabled])`
-  )
-    .closest("span.input-group-append")
-    .prev("input[id*='_ibDealNo']")
-    .on("change", async function () {
-      if (changeProcessing) return; // 이미 change 이벤트가 처리 중이라면 종료
-      changeProcessing = true; // change 처리 시작
+  // $(
+  //   `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB04011P"]:not([disabled])`
+  // )
+  //   .closest("span.input-group-append")
+  //   .prev("input[id*='_ibDealNo']")
+  //   .on("change", async function () {
+  //     if (changeProcessing) return; // 이미 change 이벤트가 처리 중이라면 종료
+  //     changeProcessing = true; // change 처리 시작
 
-      // 상태 관리하여 onchange 이벤트가 중복 실행되지 않도록
-      if (TB04011P_onchangehandler === "on") {
-        await srchEvent(this);
-      }
+  //     // 상태 관리하여 onchange 이벤트가 중복 실행되지 않도록
+  //     if (TB04011P_onchangehandler === "on") {
+  //       await srchEvent(this);
+  //     }
 
-      changeProcessing = false; // change 처리 종료
-    });
+  //     changeProcessing = false; // change 처리 종료
+  //   });
 
   async function srchEvent(selector) {
+
     // 사용한 인풋박스의 출처 페이지 가져오기
     let prefix;
     if ($(selector).attr("id") === $("#TB04011P_ibDealNo").attr("id")) {
@@ -113,21 +116,23 @@ function TB04011P_srchMtr(menuId) {
      * 그리드 상태 다시 체크해주기
      */
     if ($(`div[id='modal-TB04011P']`).css("display") === "none") {
-      // console.log("혹시 니가 닫았니?");
       TB04011P_gridState = 1;
     }
 
     // 인풋박스 밸류
     let data = $(selector).val();
     $("#TB04011P_ibDealNo").val(data);
+    TB04011P_gridState = 8282;
     await TB04011P_setGridState();
 
     // 팝업 오픈
     if (TB04011P_gridState === 0) {
+      console.log("여기아님?");
       callGridTB04011P(prefix);
       $("#TB04011P_ibDealNo").val(data);
       setTimeout(() => getMtrInfo(), 400);
     } else if (TB04011P_gridState === 1) {
+      console.log("여기죠?");
       callTB04011P(prefix);
       $("#TB04011P_ibDealNo").val(data);
       setTimeout(() => getMtrInfo(), 400);
@@ -139,8 +144,6 @@ function callGridTB04011P(prefix) {
   reset_TB04011P();
   $("#TB04011P_prefix").val(prefix);
   setTimeout(() => roadListGrid_TB04011P(), 300);
-
-  //indexChangeHandler("TB04011P");
 }
 
 function clearTB04011P() {
@@ -157,15 +160,25 @@ function callTB04011P(prefix) {
   TB04011P_pf = prefix;
   setTimeout(() => roadListGrid_TB04011P(), 300);
   $("#TB04011P_prefix").val(prefix);
-  // ?????
-  switch ($("#TB04011P_prefix").val()) {
-    case "":
-      $("#modal-TB04011P").modal("show");
-      break;
-    default:
-      $("#modal-TB04011P").modal("show");
-      break;
+
+  console.log($(`div[id='modal-TB04011P']`).css("display"));
+
+  if($(`div[id='modal-TB04011P']`).css("display") === "none"){
+    console.log("쇼");
+    $("#modal-TB04011P").modal("show");
+  }else {
+    console.log("낫뜅! ㅋ");
   }
+
+  // ?????
+  // switch ($("#TB04011P_prefix").val()) {
+  //   case "":
+  //     $("#modal-TB04011P").modal("show");
+  //     break;
+  //   default:
+  //     $("#modal-TB04011P").modal("show");
+  //     break;
+  // }
   //setPqGrid(setPqGridObj);
   //arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
   indexChangeHandler("TB04011P");
@@ -196,8 +209,6 @@ function roadListGrid_TB04011P() {
  * reset
  */
 function reset_TB04011P() {
-  //empNo = $("#userEno").val();
-  // $("#TB04011P_dealInfoList").html("");
   $("#TB04011P_ibDealNo").val("");
   $("#TB04011P_ibDealNm").val("");
   $("#TB04011P1_empNm").val($("#userEmpNm").val());
@@ -211,7 +222,7 @@ function reset_TB04011P() {
  */
 function modalClose_TB04011P() {
   reset_TB04011P(); // 다른 초기화 작업
-  $("#gridMtrInfo").pqGrid("refreshDataAndView");
+  // $("#gridMtrInfo").pqGrid("refreshDataAndView");
   $("#modal-TB04011P").modal("hide"); // 모달 닫기
 }
 
@@ -357,26 +368,28 @@ async function TB04011P_setGridState() {
   if (TB04011P_gridState === 0) {
     console.log("열려있으니까 좀 쉬어라");
     return;
+  }else {
+    console.log("쉬지를 않는구나");
+    
+    await $.ajax({
+      type: "GET",
+      url: "/TB04011P/getDealInfo",
+      data: dtoParam,
+      dataType: "json",
+      success: function (data) {
+        if (!data || data === undefined || data.length === 0) {
+          console.log("없음");
+          TB04011P_gridState = 1;
+        } else if (data.length >= 2) {
+          console.log("2개이상");
+          TB04011P_gridState = 1;
+        } else if (data) {
+          console.log("하나임ㅋ");
+          TB04011P_gridState = 0;
+        }
+      },
+    });
   }
-
-  await $.ajax({
-    type: "GET",
-    url: "/TB04011P/getDealInfo",
-    data: dtoParam,
-    dataType: "json",
-    success: function (data) {
-      if (!data || data === undefined || data.length === 0) {
-        console.log("없음");
-        TB04011P_gridState = 1;
-      } else if (data.length >= 2) {
-        console.log("2개이상");
-        TB04011P_gridState = 1;
-      } else if (data) {
-        console.log("하나임ㅋ");
-        TB04011P_gridState = 0;
-      }
-    },
-  });
 }
 
 /**

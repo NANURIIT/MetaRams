@@ -77,7 +77,11 @@ function TB03061P_srchMtr(menuId) {
 		 */
 		// ex) 종목코드 VARCHAR(10)
 		if (str === 13) {
+
+			TB03061P_onchangehandler = "off";
+
 			await srchEvent(this);
+
 		}
 	});
 
@@ -99,6 +103,8 @@ function TB03061P_srchMtr(menuId) {
 
 			await srchEvent(this);
 
+		} else if (TB03061P_onchangehandler === "off"){
+			TB03061P_onchangehandler = "on"
 		}
 	});
 
@@ -130,7 +136,6 @@ function TB03061P_srchMtr(menuId) {
 		 * 그리드 상태 다시 체크해주기
 		 */
 		if ($(`div[id='modal-TB03061P']`).css("display") === "none") {
-			// console.log("혹시 니가 닫았니?");
 			TB03061P_gridState = 1;
 		}
 
@@ -141,7 +146,6 @@ function TB03061P_srchMtr(menuId) {
 
 		// 팝업 오픈
 		if (TB03061P_gridState === 0) {
-			console.log("여기신지?", TB03061P_gridState);
 			// 그리드만 부릅니다
 			callGridTB03061P(prefix);
 			$("#TB03061P_ardyBzepNo").val(data);
@@ -149,7 +153,6 @@ function TB03061P_srchMtr(menuId) {
 			// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
 			setTimeout(() => getArdyBzepInfoList(), 400);
 		} else if (TB03061P_gridState === 1) {
-			console.log("저기신지?", TB03061P_gridState);
 			// 팝업을 열거예요
 			callTB03061P(prefix);
 			$("#TB03061P_ardyBzepNo").val(data);
@@ -357,6 +360,10 @@ async function TB03061P_setGridState() {
 		, "crno": $('#TB03061P_crno').val()				// 법인등록번호
 		, "csno": $('#TB03061P_csno').val()				// 고객번호
 		, "useYn": $('#TB03061P_useYn').val()				// 사용여부
+	}
+
+	if (TB03061P_gridState === 0) {
+		return;
 	}
 
 	//기업체목록 조회			
