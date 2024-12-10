@@ -748,6 +748,8 @@ const TB06010Sjs = (function(){
 				} else {
 				$('#TB06010S_sdnCndtEtc').val(dealDetail.etcCndtF);
 				}
+				//alert(dealDetail.rqsKndCd);
+
 				$('#TB06010S_R023').val(dealDetail.rqsKndCd).prop("selected", true);	                       // 신청종류
 				
 				/** 종목 정보 */
@@ -759,6 +761,8 @@ const TB06010Sjs = (function(){
 				}
 				$('#TB06010S_prdtDsc').val(dealDetail.prdtDsc);													// 종목설명
 				$('#TB06010S_res_prdtCd').val(dealDetail.prdtCd);												// 종목코드
+
+				alert(dealDetail.prgSttsCd);
 				$('#TB06010S_I011').val(dealDetail.prgSttsCd);													// 진행상태
 				
 				//$('#TB06010S_bsnsRgstNo').val(checkBrnAcno(dealDetail.optrRgstNo));							// 사업자등록번호
@@ -781,7 +785,7 @@ const TB06010Sjs = (function(){
 				$('#TB06010S_fndCd').val(dealDetail.ortnFndCd);													// 운용펀드코드
 				$('#TB06010S_fndNm').val(dealDetail.fndNm);														// 운용펀드코드명
 				$('#TB06010S_D012').val(dealDetail.dskCd).prop("selected", true);								// 데스크코드
-				$('#TB06010S_C006').val(dealDetail.invstNtnCd).prop("selected", true);							// 투자국가코드
+				$('#TB06010S_C006').val(dealDetail.invNtnCd).prop("selected", true);							// 투자국가코드
 				$(":radio[name='TB06010S_rlesFnnYn']").radioSelect(dealDetail.rlesFnnYn);						// 부동산금융여부
 				$('#TB06010S_R017').val(dealDetail.rlesFnnDetlDcd).prop("selected", true);						// 부동산금융구분코드
 				
@@ -799,7 +803,7 @@ const TB06010Sjs = (function(){
 
 				$('#TB06010S_rcgAmt').val(Number(handleNullData(dealDetail.apvlAmt)).toLocaleString());			// 종목승인금액
 				$('#TB06010S_I027').val(dealDetail.trCrryCd).prop("selected", true);							// 투자통화코드
-				$('#TB06010S_E010').val(dealDetail.indvLmtDcd).prop("selected", true);							// 한도구분코드
+				$('#TB06010S_E010').val(dealDetail.eprzCrdlIndvLmtDcd).prop("selected", true);							// 한도구분코드
 				$('#TB06010S_ctrcPrdDcd').val(dealDetail.ctrcPrdDcd).prop("selected", true);					// 약정기간구분코드
 				$('#TB06010S_ctrcPrdMnum').val(dealDetail.ctrcPrdMnum);											// 약정기간
 				
@@ -1311,7 +1315,7 @@ const TB06010Sjs = (function(){
 			//, "acctJobCd": acctJobCd                            						// 회계업무코드
 			//, "acctUnJobCd": acctUnJobCd                        						// 회계단위업무코드
 			//, "acctTrCd": acctTrCd                              						// 회계거래코드
-			, "apvlAmt": replaceAll($('#TB06010S_rcgAmt').val(), ',', '') / 1			// 종목승인금액
+			, "eprzCrdlApvlAmt": replaceAll($('#TB06010S_rcgAmt').val(), ',', '') / 1			// 종목승인금액
 			//, "ctrtAmt": ctrtAmt                                						// 기업여신계약금액
 			//, "invAmt": 0.0								        					// 투자금액
 			//, "intrRcvnMthCd": intrRcvnMthCd                    						// 기업여신이자수취방법코드
@@ -1343,7 +1347,7 @@ const TB06010Sjs = (function(){
 			, "invNtnCd": $('#TB06010S_C006').val()										// 투자국가코드
 			, "ortnFndCd": $('#TB06010S_fndCd').val()									// 운용펀드코드
 			, "dskCd": $('#TB06010S_D012').val()										// 데스크코드
-			, "indvLmtDcd": $('#TB06010S_E010').val()									// 개별한도구분코드
+			, "eprzCrdlIndvLmtDcd": $('#TB06010S_E010').val()									// 개별한도구분코드
 			//, "ctlbCtrtShpDcd": ''                 			    					// 우발채무계약형태구분코드
 			//, "ctlbBssAsstDcd": ''                  									// 우발채무기초자산구분코드
 			, "socYn": $('input[name=TB06010S_socYn]:checked').val()					// soc여부
