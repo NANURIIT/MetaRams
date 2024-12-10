@@ -493,6 +493,8 @@ function callTB06011P(prefix) {
 	$('#TB06011P_prefix').val(prefix);
 	$('#modal-TB06011P').modal('show');
 	indexChangeHandler("TB06011P");
+	selectBoxSet_TB06011P();
+	loginUserSet_TB06011P();  
 }
 
 /**
@@ -898,3 +900,50 @@ function setPrdtInfo(e) {
 
 	modalClose_TB06011P();
 }
+
+
+/*
+* 부서 셀렉트박스 세팅
+*/
+
+function selectBoxSet_TB06011P() {
+	selectBox = getSelectBoxList("TB06011P", "D010", false);
+	dprtList = selectBox.filter(function (item) {
+	  //부서코드 list
+	  return item.cmnsGrpCd === "D010";
+	});
+  
+	dprtList.forEach((item) => {
+	  $("#TB06011P_dprtNm").append(
+		$("<option>", {
+		  value: item.cdValue,
+		  text: `${item.cdName}`,
+		})
+	  );
+	});
+  }
+  
+  /**
+   * 로그인 담당자,관리부서 세팅
+   */
+  
+  function loginUserSet_TB06011P(){
+	empNo = $('#userEno').val();     //직원명
+	dprtCd = $('#userDprtCd').val(); //부서번호
+
+	console.log("empno"+empNo);
+	$("#TB06011P_empNm").val($('#userEmpNm').val());
+	$("#TB06011P_empNo").val(empNo);
+	$("#TB06011P_dprtNm").val(dprtCd).prop("selected", true);
+	$("#TB06011P_dprtCd").val(dprtCd);
+  }
+
+  /**
+   * 부서명 변경시
+   */
+
+  $("#TB06011P_dprtNm").on("change", function () {
+  var dprtCd = $(this).val();
+  $("#TB06011P_dprtCd").val(dprtCd);
+  }); 
+  

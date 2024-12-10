@@ -536,6 +536,9 @@ function setEmpNm(e) {
 			feeSch.pdata[tb08040sIdx].rgstBdcd = dprtCd;
 			feeSch.refresh();
 			break;
+		case "TB06011P":
+			$("#TB06011P_dprtNm").val(e.dprtCd).prop("selected", true);
+			break;	
 		default:
 			break;
 	}
