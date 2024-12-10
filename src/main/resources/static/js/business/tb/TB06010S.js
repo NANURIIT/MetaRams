@@ -762,7 +762,7 @@ const TB06010Sjs = (function(){
 				$('#TB06010S_prdtDsc').val(dealDetail.prdtDsc);													// 종목설명
 				$('#TB06010S_res_prdtCd').val(dealDetail.prdtCd);												// 종목코드
 
-				alert(dealDetail.prgSttsCd);
+				//alert(dealDetail.prgSttsCd);
 				$('#TB06010S_I011').val(dealDetail.prgSttsCd);													// 진행상태
 				
 				//$('#TB06010S_bsnsRgstNo').val(checkBrnAcno(dealDetail.optrRgstNo));							// 사업자등록번호
