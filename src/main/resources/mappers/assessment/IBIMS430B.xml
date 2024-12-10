@@ -22,7 +22,7 @@
         FROM 
             IBIMS430B
         WHERE 
-            TO_CHAR(RGST_DTM , 'YYYYMMDD') = TO_CHAR(#{rgstDtm}, 'YYYYMMDD')
+            TO_CHAR(RGST_DTM , 'YYYYMMDD') = TO_CHAR(SYSDATE, 'YYYYMMDD');
     </select>
 
     <!--입금내역등록-->
@@ -30,41 +30,63 @@
         <foreach collection="list" item="item" separator=";">
         INSERT INTO IBIMS430B 
             (
-                DEAL_NO 					    /*딜번호*/
-                , RCTM_DT					    /*입금일자*/
-                , RGST_SEQ                      /*입금순번*/
-                , RGST_SEQ					    /*입금순번*/
-                , MNGM_BDCD					    /*관리부점코드*/
-                , FNDS_DVSN_CD				    /*자금구분코드*/
-                , DEAL_RCTM_AMT				    /*딜입금금액*/
-                , PMNT_PRAR_AMT                 /*납부예정금액*/
-                , DEAL_EXCS_PYMT_AMT			/*딜초과납입금액*/
-                , RELT_ISTT_CD				    /*관련기관코드*/
-                , RELT_ISTT_NM				    /*관련기관명*/
-                , RELT_BANO					    /*관련은행계좌번호*/
-                , DPTR_NM					    /*입금자명*/
-                , RGST_EMPNO					/*등록사원번호*/
-                , RGST_BDCD					    /*등록부서*/
-                , RGST_DTM					    /*등록일시*/
+                RCTM_DT
+              , RCTM_SEQ
+              , FNDS_DVSN_CD
+              , DEAL_NO
+              , TR_SEQ
+              , RDPT_OBJT_DVSN_CD
+              , DEAL_EXCS_PYMT_AMT
+              , EXCS_PYMT_PRCS_DVSN_CD
+              , EXCS_PYMT_PRCS_TEXT
+              , PMNT_PRAR_AMT
+              , DEAL_RCTM_AMT
+              , RELT_ISTT_CD
+              , RELT_ISTT_NM
+              , RELT_BANO
+              , MNGM_BDCD
+              , DPTR_NM
+              , LNKD_BANO
+              , LNKD_ACNT_TR_NO
+              , RGST_SEQ
+              , RGST_EMPNO
+              , RGST_BDCD
+              , RGST_DTM
+              , HND_DETL_DTM
+              , HND_EMPNO
+              , HND_TMNL_NO
+              , HND_TR_ID
+              , GUID
             )
         VALUES
             (
-                #{item.dealNo}
-              , #{item.rctmDt}
-              , #{item.rgstSeq}
-              , #{item.rgstSeq}
-              , #{item.mngmBdcd}
+                #{item.rctmDt}
+              , #{item.rctmSeq}
               , #{item.fndsDvsnCd}
-              , #{item.dealRctmAmt}
-              , #{item.pmntPrarAmt}
+              , #{item.dealNo}
+              , #{item.trSeq}
+              , #{item.rdptObjtDvsnCd}
               , #{item.dealExcsPymtAmt}
+              , #{item.excsPymtPrcsDvsnCd}
+              , #{item.excsPymtPrcsText}
+              , #{item.pmntPrarAmt}
+              , #{item.dealRctmAmt}
               , #{item.reltIsttCd}
               , #{item.reltIsttNm}
               , #{item.reltBano}
+              , #{item.mngmBdcd}
               , #{item.dptrNm}
+              , #{item.lnkdBano}
+              , #{item.lnkdAcntTrNo}
+              , #{item.rgstSeq}
               , #{item.rgstEmpno}
               , #{item.rgstBdcd}
               , #{item.rgstDtm}
+              , SYSDATE
+              , #{item.hndEmpno}
+              , #{item.hndTmnlNo}
+              , #{item.hndTrId}
+              , #{item.guid}
             )
         </foreach>
     </insert>
@@ -100,6 +122,9 @@
         </if>
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDt)">
         AND TO_CHAR(RGST_DTM , 'YYYYMMDD') = #{rgstDt}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+        AND MNGM_BDCD = #{dprtCd}
         </if>
         <if test="rgstSeq != 0">
         AND RGST_SEQ = #{rgstSeq}

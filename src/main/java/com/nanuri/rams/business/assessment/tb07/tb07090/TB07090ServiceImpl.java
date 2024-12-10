@@ -24,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TB07090ServiceImpl implements TB07090Service {
     
+	private final AuthenticationFacade facade;
+
     /*상환예정내역*/
     private final IBIMS403BMapper ibims403bMapper;
 
@@ -79,6 +81,8 @@ public class TB07090ServiceImpl implements TB07090Service {
             //등록순번 구하기
             int rgstSeq = ibims430bMapper.getNxtRgstSeq(rgstDtm);
             param.setRgstSeq(rgstSeq);
+
+            param.setHndEmpno(facade.getDetails().getEno());
             
             returnVal = rgstSeq;
         }

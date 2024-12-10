@@ -12,9 +12,14 @@ const TB07070Sjs = (function () {
     /* 순서 중요 */
     getSelBx();
     pqGrid();
-
-    $("#TB07070S_trDt").val(getToday()); // 오늘일자 바인딩
+    setDefaultVal();
   });
+
+  const setDefaultVal = () => {
+    $("#TB07070S_empNo").val(userEno);
+    $("#TB07070S_empNm").val(userEmpNm);
+    $("#TB07070S_trDt").val(getToday()); // 오늘일자 바인딩
+  }
 
   function getSelBx() {
     /**
