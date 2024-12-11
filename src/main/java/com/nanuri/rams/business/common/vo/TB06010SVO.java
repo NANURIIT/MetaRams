@@ -130,6 +130,7 @@ public class TB06010SVO {
     private BigDecimal 	   totIssuShqt;							   //총발행좌수
     private BigDecimal	   totIssuStkQnt;						   //총발행주수		
 
-	private String rqsKndCd;
-	private String eprzCrdlIndvLmtDcd;
+	private String 			rqsKndCd;
+	private String 			eprzCrdlIndvLmtDcd;
+	private String 			trDvsn;								   //화면구분	
 }

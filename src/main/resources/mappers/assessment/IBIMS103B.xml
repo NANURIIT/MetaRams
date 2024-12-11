@@ -1005,7 +1005,18 @@
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
            AND s201b.PRDT_CD 				= #{prdtCd}
            </if>
-           AND ROWNUM = 1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trDvsn)">
+           	<if test='trDvsn == "S"'>
+               	AND (s201b.PRDT_LCLS_CD IS NULL OR s201b.PRDT_LCLS_CD IN ('90', '91', '92'))
+           	</if>
+           	<if test='trDvsn == "D"'>
+               	AND (s201b.PRDT_LCLS_CD IS NULL OR s201b.PRDT_LCLS_CD IN ('30'))
+           	</if>
+           	<if test='trDvsn == "F"'>
+               	AND (s201b.PRDT_LCLS_CD IS NULL OR s201b.PRDT_LCLS_CD IN ('10', '11', '16'))
+           	</if>
+           </if>
+           AND ROWNUM =1
     </select>
 
     <select id="getDealDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS103BDTO" resultType="com.nanuri.rams.business.common.vo.TB05040SVO">
