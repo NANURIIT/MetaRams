@@ -251,7 +251,7 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label"><span class="req"></span>부의금액</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control text-right" id="crncyAmt" onkeyup="inputNumberFormater(this);" maxlength="24">
+																<input type="text" class="form-control text-right" id="crryAmt" onkeyup="inputNumberFormater(this);" maxlength="24">
 															</div>
 														</div>
 														<div class="form-group row">
@@ -270,7 +270,7 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label">부의금액(원)</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control text-right" id="crncyAmtWn" readonly>
+																<input type="text" class="form-control text-right" id="crryAmtWn" readonly>
 															</div>
 														</div>
 													</div>
@@ -926,20 +926,27 @@
 													</div>
 													<div class="ibox-content text-right">
 														<div class="form-group row">
-															<label class="col-sm-4 col-form-label">차주 법인번호</label>
+															<label class="col-sm-4 col-form-label">기업체코드(차주)</label>
 															<div class="col-sm-8">
-																<div class="input-group">
-																	<input type="hidden" id="TB04010S_ins_entpCd">
+																<div class="input-group">																	
 																	<input type="hidden" id="TB04010S_ins_entpRnm">
 																	<input type="hidden" id="TB04010S_ins_rprsNm">
-																	<input type="text" class="form-control" id="TB04010S_ins_corpRgstNo" readonly>
 																	<input type="hidden" id="TB04010S_ins_bsnsRgstNo">
+																	<input type="text" class="form-control" id="TB04010S_ins_entpCd" readonly>
 																	<span class="input-group-append">
 																		<button type="button" class="btn btn-default" onclick="callTB03061P('TB04010S_4')" id="btnCallTb03023p"><i class="fa fa-search"></i></button>
 																	</span>
 																</div>
 															</div>
 														</div>
+														<div class="form-group row">
+															<label class="col-sm-4 col-form-label">법인번호(차주)</label>
+															<div class="col-sm-8">
+																<div class="input-group">									
+																	<input type="text" class="form-control" id="TB04010S_ins_corpRgstNo" readonly>	
+																</div>
+															</div>
+														</div>																	
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label">내부등급</label>
 															<div class="col-sm-8">
@@ -1021,7 +1028,7 @@
 															</div>
 															<label class="col-sm-1 col-form-label">담보평가액(통화금액)</label>
 															<div class="col-sm-3">
-																<input type="text" class="form-control text-right" id="mrtgCrncyAmt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onkeyup="inputNumberFormater(this);">
+																<input type="text" class="form-control text-right" id="mrtgcrryAmt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onkeyup="inputNumberFormater(this);">
 															</div>
 														</div>
 														<div class="form-group row">
@@ -1037,13 +1044,13 @@
 															</div>
 															<label class="col-sm-1 col-form-label">적용환율</label>
 															<div class="col-sm-3">
-																<input type="text" class="form-control text-right" id="TB04010S_tab6_aplcExchR" value="" maxlength="19" onkeyup="inputNumberFormater(this)">
+																<input type="text" class="form-control text-right" id="TB04010S_tab6_aplyExrt" value="" maxlength="19" onkeyup="inputNumberFormater(this)">
 															</div>
 														</div>
 														<div class="form-group row">
 															<label class="col-sm-1 offset-sm-8 col-form-label">담보평가액(원)</label>
 															<div class="col-sm-3">
-																<input type="text" class="form-control text-right" id="mrtgValAmt" readonly="readonly" onkeyup="inputNumberFormater(this);">
+																<input type="text" class="form-control text-right" id="mrtgEvlAmt" readonly="readonly" onkeyup="inputNumberFormater(this);">
 															</div>
 														</div>
 													</div>
