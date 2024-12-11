@@ -77,7 +77,11 @@ function TB03061P_srchMtr(menuId) {
 		 */
 		// ex) 종목코드 VARCHAR(10)
 		if (str === 13) {
+
+			TB03061P_onchangehandler = "off";
+
 			await srchEvent(this);
+
 		}
 	});
 
@@ -94,13 +98,15 @@ function TB03061P_srchMtr(menuId) {
 		}
 	});
 
-	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03061P']:not([disabled])`).closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("change", async function (evt) {
-		if (TB03061P_onchangehandler === "on") {
+	// $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03061P']:not([disabled])`).closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("change", async function (evt) {
+	// 	if (TB03061P_onchangehandler === "on") {
 
-			await srchEvent(this);
+	// 		await srchEvent(this);
 
-		}
-	});
+	// 	} else if (TB03061P_onchangehandler === "off"){
+	// 		TB03061P_onchangehandler = "on"
+	// 	}
+	// });
 
 	async function srchEvent(selector) {
 		// 사용한 인풋박스의 출처 페이지 가져오기
@@ -130,7 +136,6 @@ function TB03061P_srchMtr(menuId) {
 		 * 그리드 상태 다시 체크해주기
 		 */
 		if ($(`div[id='modal-TB03061P']`).css("display") === "none") {
-			// console.log("혹시 니가 닫았니?");
 			TB03061P_gridState = 1;
 		}
 
@@ -141,7 +146,6 @@ function TB03061P_srchMtr(menuId) {
 
 		// 팝업 오픈
 		if (TB03061P_gridState === 0) {
-			console.log("여기신지?", TB03061P_gridState);
 			// 그리드만 부릅니다
 			callGridTB03061P(prefix);
 			$("#TB03061P_ardyBzepNo").val(data);
@@ -149,7 +153,6 @@ function TB03061P_srchMtr(menuId) {
 			// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
 			setTimeout(() => getArdyBzepInfoList(), 400);
 		} else if (TB03061P_gridState === 1) {
-			console.log("저기신지?", TB03061P_gridState);
 			// 팝업을 열거예요
 			callTB03061P(prefix);
 			$("#TB03061P_ardyBzepNo").val(data);
@@ -180,7 +183,10 @@ function callGridTB03061P(prefix) {
 /**
  * 모달 팝업 show - 기업체 목록
  */
-function callTB03061P(prefix) {
+function callTB03061P(prefix, rowIndx) {
+
+	console.log(rowIndx);
+	rowInx = rowIndx;
 
 	reset_TB03061P();
 
@@ -359,6 +365,10 @@ async function TB03061P_setGridState() {
 		, "useYn": $('#TB03061P_useYn').val()				// 사용여부
 	}
 
+	if (TB03061P_gridState === 0) {
+		return;
+	}
+
 	//기업체목록 조회			
 	await $.ajax({
 		type: "GET",
@@ -429,6 +439,9 @@ function setArdyBzepInfo(rowData) {
 	let rgstDt = rowData.rgstDt;
 	let clseDvsnCd = rowData.clseDvsnCd;
 	let clseDt = rowData.clseDt;
+
+	console.log(ardyBzepNo);
+	console.log(rowInx);
 
 	let prefix = $("#TB03061P_prefix").val(); 			// id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
 

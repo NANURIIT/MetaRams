@@ -1990,11 +1990,11 @@ function vldDateVal() {
 function indexChangeHandler(prefix) {
   // console.log("");
   $(`div[id*="modal-"]`).css("z-index", "");
-  $('div[id*="modal-"][style*="z-index: 4000 !important;"]').attr(
-    "style",
-    "display: block;"
-  );
-  $(`#modal-${prefix}`).attr("style", "z-index: 4000 !important;");
+  // $('div[id*="modal-"][style*="z-index: 4000 !important;"]').attr(
+  //   "style",
+  //   "display: block;"
+  // );
+  $(`#modal-${prefix}`).css("z-index", "4000 !important");
 }
 
 /**

@@ -604,10 +604,10 @@
       <if test='trDvsn == "TB07150S"'>
     INNER JOIN (
                 SELECT PRDT_CD
-                  FROM IBIMS403B
+                  FROM IBIMS402B
               GROUP BY PRDT_CD
-                ) AS IB403B
-            ON IB403B.PRDT_CD = IB201B.PRDT_CD
+                ) AS haveExcSn      /* 영어 잘 못해요... */
+            ON haveExcSn.PRDT_CD = IB201B.PRDT_CD
       </if>
     </if>
          WHERE 1=1

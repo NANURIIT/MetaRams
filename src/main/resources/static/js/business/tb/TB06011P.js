@@ -34,6 +34,8 @@ function TB06011P_srchPrdt(menuId) {
 		// ex) 종목코드 VARCHAR(10)
 		if(str === 10){
 			
+			TB06011P_onchangehandler = "off";
+
 			await srchEvent(this);
 
 		}
@@ -51,11 +53,21 @@ function TB06011P_srchPrdt(menuId) {
 		}
 	})
 
-	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB06011P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_prdtCd']").on('change', async function (evt) {
-		if (TB06011P_onchangehandler === "on"){
-			await srchEvent(this);
-		}
-	})
+	// $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB06011P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_prdtCd']").on('change', async function (evt) {
+
+	// 	if(!$(this).val()){
+	// 		return;
+	// 	}
+
+	// 	if (TB06011P_onchangehandler === "on"){
+	// 		await srchEvent(this);
+	// 	} else if (TB06011P_onchangehandler === "off") {
+	// 		/**
+	// 		 * 온체인지 이벤트 컨트롤
+	// 		 */
+	// 		TB06011P_onchangehandler = "on"
+	// 	}
+	// })
 
 	async function srchEvent (selector) {
 		// 사용한 인풋박스의 출처 페이지 가져오기
@@ -76,7 +88,6 @@ function TB06011P_srchPrdt(menuId) {
 		 * 그리드 상태 다시 체크해주기
 		 */
 		if ($(`div[id='modal-TB06011P']`).css('display') === "none") {
-			// console.log("혹시 니가 닫았니?");
 			TB06011P_gridState = 1;
 		}
 	
@@ -86,7 +97,6 @@ function TB06011P_srchPrdt(menuId) {
 		await getGridState();
 	
 		// 팝업 오픈
-	
 		if (TB06011P_gridState === 0) {
 			console.log("열려있음", TB06011P_gridState);
 			// 그리드만 부릅니다
@@ -409,8 +419,6 @@ function dataPrdtCdSetGrid(data) {
 		console.log("여기로와야해");
 		setPrdtInfo(arrPqGridPrdtCdList.pdata[0]);
 		srchCnt = 0;
-		// 입력되고 난 후 온체인지 이벤트 on
-		TB06011P_onchangehandler = "on"
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
 	else if (arrPqGridPrdtCdList.pdata.length === 0) {
@@ -478,8 +486,6 @@ function callGridTB06011P(prefix) {
  * show modal
  */
 function callTB06011P(prefix) {
-	// $(`#${prefix}_prdtCd`).focus();
-	// console.log("저는 팝업을 열겁니다");
 	clearTB06011P();
 	TB06011P_gridState = 0;
 	TB06011P_pf = prefix;
@@ -487,6 +493,8 @@ function callTB06011P(prefix) {
 	$('#TB06011P_prefix').val(prefix);
 	$('#modal-TB06011P').modal('show');
 	indexChangeHandler("TB06011P");
+	selectBoxSet_TB06011P();
+	loginUserSet_TB06011P();  
 }
 
 /**
@@ -531,7 +539,7 @@ async function getPrdtCdList() {
 		trDvsn = 'F'
 	}
 
-	if ($('#TB06011P_prefix').val() == "TB07150S") {
+	if ($('#TB06011P_prefix').val() == "TB07150S" || $('#TB06011P_prefix').val() == "TB07080S" || $('#TB06011P_prefix').val() == "TB07060S") {
 		trDvsn = 'TB07150S'
 	}
 
@@ -539,6 +547,8 @@ async function getPrdtCdList() {
 		"prdtCd": $('#TB06011P_prdtCd').val()
 		, "prdtNm": $('#TB06011P_prdtNm').val()
 		, "trDvsn": trDvsn
+		, "empNo" : $('#TB06011P_empNo').val()
+		, "dprtCd" : $('#TB06011P_dprtCd').val()
 	}
 
 	await $.ajax({
@@ -595,7 +605,6 @@ async function getGridState() {
 	}
 
 	if (TB06011P_gridState === 0) {
-		// console.log("열려있으니까 좀 쉬어라");
 		return;
 	}
 
@@ -606,18 +615,13 @@ async function getGridState() {
 		data: JSON.stringify(param),
 		dataType: "json",
 		success: function (data) {
-			// console.log("숨는 쿼리", data);
 			if (!data || data === undefined || data.length === 0) {
-				// console.log("1번조건");
 				TB06011P_gridState = 1;
 			} else if (data.length >= 2) {
-				// console.log("2번조건");
 				TB06011P_gridState = 1;
 			} else if (data) {
-				// console.log("3번조건");
 				TB06011P_gridState = 0;
 			}
-			// console.log("데이터가 한건이면 0이라구욧!", TB06011P_gridState);
 		}
 	});
 }
@@ -861,8 +865,8 @@ function setPrdtInfo(e) {
 	}
 
 	if (prefix === 'TB07020S') {
-		$('#TB07020S_input_prdtCd').val(e.prdtCd);
-		$('#TB07020S_input_prdtNm').val(e.prdtNm);
+		// $('#TB07020S_input_prdtCd').val(e.prdtCd);
+		// $('#TB07020S_input_prdtNm').val(e.prdtNm);
 	}
 
 	if (prefix === 'TB07030S') {
@@ -898,3 +902,50 @@ function setPrdtInfo(e) {
 
 	modalClose_TB06011P();
 }
+
+
+/*
+* 부서 셀렉트박스 세팅
+*/
+
+function selectBoxSet_TB06011P() {
+	selectBox = getSelectBoxList("TB06011P", "D010", false);
+	dprtList = selectBox.filter(function (item) {
+	  //부서코드 list
+	  return item.cmnsGrpCd === "D010";
+	});
+  
+	dprtList.forEach((item) => {
+	  $("#TB06011P_dprtNm").append(
+		$("<option>", {
+		  value: item.cdValue,
+		  text: `${item.cdName}`,
+		})
+	  );
+	});
+  }
+  
+  /**
+   * 로그인 담당자,관리부서 세팅
+   */
+  
+  function loginUserSet_TB06011P(){
+	empNo = $('#userEno').val();     //직원명
+	dprtCd = $('#userDprtCd').val(); //부서번호
+
+	console.log("empno"+empNo);
+	$("#TB06011P_empNm").val($('#userEmpNm').val());
+	$("#TB06011P_empNo").val(empNo);
+	$("#TB06011P_dprtNm").val(dprtCd).prop("selected", true);
+	$("#TB06011P_dprtCd").val(dprtCd);
+  }
+
+  /**
+   * 부서명 변경시
+   */
+
+  $("#TB06011P_dprtNm").on("change", function () {
+  var dprtCd = $(this).val();
+  $("#TB06011P_dprtCd").val(dprtCd);
+  }); 
+  
