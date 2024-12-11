@@ -14,5 +14,5 @@ public class IBIMS108BVO extends IBIMS108BDTO {
 	String rgtRnkDcdNm;
 	String mrtgAcqstStmDcdNm;
 	String mrtgAcqstDtlsDcdNm;
-	String invstCrncyCdNm;
+	String invstCrryCdNm; 
 }
