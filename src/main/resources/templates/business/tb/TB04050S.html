@@ -35,8 +35,6 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1">Deal번호</label>
 										<div class="col-sm-3 input-group">
-											<input type="hidden" class="form-control" id="TB04050S_dprtCd">
-											<input type="hidden" class="form-control" id="TB04050S_dprtNm" readonly="">
 											<input type="text" class="form-control" id="TB04050S_ibDealNo" style="width:30px;">
 											<span class="input-group-append">
 												<button type="button" class="btn btn-default" onclick="callTB03021P('TB04050S');"><i class="fa fa-search"></i></button>
@@ -124,12 +122,12 @@
 										<label class="col-sm-1">담당자</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" style="width:30px;" id="TB04050S_empNm">
-											<input type="hidden" class="form-control" style="width:30px;" id="TB04050S_empNo">
 											<span class="input-group-append">
 												<button type="button" class="btn btn-default" onclick="callTB03022P('TB04050S')"><i class="fa fa-search"></i></button>
 											</span>
-											<input type="hidden" class="form-control" style="width:70px;" id="TB04050S_dprtCd" readonly="">
-											<input type="text" class="form-control" style="width:70px;" id="TB04050S_dprtNm" readonly="">
+											<input type="text" class="form-control" style="width:70px;" id="TB04050S_dprtNm" readonly>
+											<input type="hidden" class="form-control" style="width:70px;" id="TB04050S_dprtCd" >
+											<input type="hidden" class="form-control" style="width:30px;" id="TB04050S_empNo">
 										</div>
 										<label class="col-sm-1">회수일자</label>
 										<div class="col-sm-3 input-group date">

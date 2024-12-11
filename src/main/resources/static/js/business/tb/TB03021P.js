@@ -37,6 +37,7 @@ $("#TB03021P_dprtNm").on("change", function () {
 });
 
 function TB03021P_srch(menuId) {
+  // .prev("input[type='text']:not([readonly])")
   //input에 값 입력 시 자동 조회
 	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
 		const currentInput = $(this);
@@ -54,13 +55,6 @@ function TB03021P_srch(menuId) {
 			evt.preventDefault();
 			TB03021P_onchangehandler == "off";
 			await ibDealNoSrchEvent($(this));
-		}
-	});
-
-	// 'change' 이벤트로 조회
-	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('change', async function (evt) {
-		if (TB03021P_onchangehandler === "on") {
-			await ibDealNoSrchEvent(this);
 		}
 	});
 
@@ -120,6 +114,15 @@ function clearTB03021P() {
  * 모달 팝업 show
  */
 function callTB03021P(prefix) {
+  // CustomEvent 발생 (팝업이 열렸음을 알림)
+  const event = new CustomEvent('openTB03021P', { 
+    detail: { 
+        status: 'opened', 
+        source: 'TB03021P.js'
+    } 
+  });
+  document.dispatchEvent(event); // 전역으로 이벤트 전파
+
   reset_TB03021P();
   TB03021P_gridState = 0;
 	TB03021P_pf = prefix;
@@ -210,6 +213,15 @@ function modalClose_TB03021P() {
   reset_TB03021P();
   $("#gridDealInfo").pqGrid("refreshDataAndView");
   $("#modal-TB03021P").modal("hide");
+
+  // CustomEvent 발생 (팝업이 열렸음을 알림)
+  const event = new CustomEvent('closeTB03021P', { 
+    detail: { 
+        status: 'closed', 
+        source: 'TB03021P.js'
+    } 
+  });
+  document.dispatchEvent(event); // 전역으로 이벤트 전파
 }
 
 /**
