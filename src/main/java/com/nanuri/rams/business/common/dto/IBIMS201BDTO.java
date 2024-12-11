@@ -161,6 +161,9 @@ public class IBIMS201BDTO {
     private String hndTmnlNo;                       //  조작단말기번호
     private String hndTrId;                         //  조작거래id
     private String guid;                            //  guid
+    private String empNo;							//  담당자사번
+    private String dprtCd;							//  관리부서
+    
 
     private String trDvsn;
 }

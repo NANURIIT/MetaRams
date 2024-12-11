@@ -547,6 +547,8 @@ async function getPrdtCdList() {
 		"prdtCd": $('#TB06011P_prdtCd').val()
 		, "prdtNm": $('#TB06011P_prdtNm').val()
 		, "trDvsn": trDvsn
+		, "empNo" : $('#TB06011P_empNo').val()
+		, "dprtCd" : $('#TB06011P_dprtCd').val()
 	}
 
 	await $.ajax({
