@@ -305,6 +305,10 @@ async function getEmpList() {
 
 function dataEmpSetGrid(data){
 	arrPqGridEmpInfo.setData(data);
+	arrPqGridEmpInfo.option("cellClick", function (event, ui) {
+		const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
+		copyClickData('TB03022P', clickData);  //셀 카피 가능
+	});
 	arrPqGridEmpInfo.option("rowDblClick", function(event, ui) {
 		setEmpNm(ui.rowData); 
 	});
