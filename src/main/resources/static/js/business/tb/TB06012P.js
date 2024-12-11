@@ -5,7 +5,7 @@ let modalAppvCndtList;
  */
 function callTB06012P(prefix) {
   
- 
+  loadSelectBoxContents_TB06012P();
   $("#TB06012P_prefix").val(prefix);
   TB06012P_getAppvCndt();
   $("#modal-TB06012P").modal("show");
@@ -52,6 +52,23 @@ function callTB06012P(prefix) {
     $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Rt']")
   );
 }
+
+
+/**
+ * SELECTBOX 세팅
+ */
+function loadSelectBoxContents_TB06012P(){
+	var item = '';
+	item += 'I008';					// 결의협의회구분코드
+	item += '/' + 'D007';			// 매각일자구분코드
+	item += '/' + 'D008';			// 매각기준금액구분코드
+	item += '/' + 'I027';			// 투자통화코드
+	
+	var selCnt =0;
+	selCnt= $("#TB06012P_I008 option").length;
+	if(selCnt==0 ||selCnt==1) getSelectBoxList('TB06012P', item);
+}
+
 
 // function loadSelectBoxContents() {
 

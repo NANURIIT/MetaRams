@@ -1277,45 +1277,7 @@ function getSelectBoxList(prefix, item, async = true) {
           }
         }
 
-        if (prefix == "TB06010S") {
-          if (value.cmnsGrpCd == "I027") {
-            // 통화코드
-            var html = "";
-            html +=
-              '<option value="' +
-              value.cdValue +
-              '">' +
-              value.cdName +
-              " (" +
-              value.cdValue +
-              ")" +
-              "</option>";
-
-            $("#TB06013P_I027_2").append(html);
-            $("#TB06013P_I027_3").append(html);
-            $("#TB06013P_I027_4").append(html);
-          }
-        }
-        if (prefix == "TB06020S") {
-          if (value.cmnsGrpCd == "I027") {
-            // 통화코드
-            var html = "";
-            html +=
-              '<option value="' +
-              value.cdValue +
-              '">' +
-              value.cdName +
-              " (" +
-              value.cdValue +
-              ")" +
-              "</option>";
-
-            $("#TB06013P_I027_2").append(html);
-            $("#TB06013P_I027_3").append(html);
-            $("#TB06013P_I027_4").append(html);
-          }
-        }
-        if (prefix == "TB06030S") {
+        if (prefix == "TB06013P") {
           if (value.cmnsGrpCd == "I027") {
             // 통화코드
             var html = "";
@@ -1524,24 +1486,21 @@ function setKRKRW(prefix) {
   }
 
   if (prefix == "TB06010S") {
-    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06010S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
   }
 
   if (prefix == "TB06020S") {
-    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06020S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
   }
 
   if (prefix == "TB06030S") {
-    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06030S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
+  }
+
+  if (prefix == "TB06013P") {
+    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
+  	$('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
+  	$('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
   }
 }
 
