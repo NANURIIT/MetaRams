@@ -104,7 +104,7 @@ function setDvdCdId(e){
 	
 	var vPrefix = $('#TB06018P_prefix').val();
 	if (vPrefix == "TB06010S") {
-		if((ldvdCdVl != "90")&&(ldvdCdVl != "91")) 
+		if((ldvdCdVl != "90")&&(ldvdCdVl != "91")&&(ldvdCdVl != "92")) 
 		{
 			option.text = "대출채권 또는 채무보증 분류가 아닙니다.";
 			openPopup(option);
