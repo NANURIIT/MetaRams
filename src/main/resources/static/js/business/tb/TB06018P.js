@@ -37,32 +37,37 @@ function modalClose_TB06018P() {
 
 function makeTable(){
 	var html = "";
+	var vPrefix = $('#TB06018P_prefix').val();
 	
 	$.each(sdvdCd, function(key, value) {
 		var sdvdCdPre1 = value.cdValue.slice(0,4);
 		var sdvdCdPre2 = value.cdValue.slice(0,2);
 		
-
-		html += "<tr>";
-		html += "<td style='display:none;'>";
-		html += sdvdCdPre2;
-		html += "</td>";
-		html += "<td style='display:none;'>";
-		html += sdvdCdPre1;
-		html += "</td>";
-		html += "<td style='display:none;'>";
-		html += value.cdValue;
-		html += "</td>";
-		html += "<td class='lDvdCdNm'>";
-		html += getLdvdCdNm(sdvdCdPre2);
-		html += "</td>";
-		html += "<td class='mDvdCdNm'>";
-		html += getMdvdCdNm(sdvdCdPre1);
-		html += "</td>";
-		html += "<td ondblclick='setDvdCdId_TB06018P(this)'><a>";
-		html += value.cdName;
-		html += "</a></td>";
-		html += "</tr>";
+		if (  ((vPrefix == "TB06010S") && (sdvdCdPre2=="90"||sdvdCdPre2=="91"||sdvdCdPre2=="92"))
+			||((vPrefix == "TB06020S") && (sdvdCdPre2=="30"))
+		    ||((vPrefix == "TB06030S") && (sdvdCdPre2=="10"||sdvdCdPre2=="11"||sdvdCdPre2=="16"))
+		) {
+			html += "<tr>";
+			html += "<td style='display:none;'>";
+			html += sdvdCdPre2;
+			html += "</td>";
+			html += "<td style='display:none;'>";
+			html += sdvdCdPre1;
+			html += "</td>";
+			html += "<td style='display:none;'>";
+			html += value.cdValue;
+			html += "</td>";
+			html += "<td class='lDvdCdNm'>";
+			html += getLdvdCdNm(sdvdCdPre2);
+			html += "</td>";
+			html += "<td class='mDvdCdNm'>";
+			html += getMdvdCdNm(sdvdCdPre1);
+			html += "</td>";
+			html += "<td ondblclick='setDvdCdId_TB06018P(this)'><a>";
+			html += value.cdName;
+			html += "</a></td>";
+			html += "</tr>";
+		}	
 	});
 	
 	$("#TB06018P_tbody").html(html);

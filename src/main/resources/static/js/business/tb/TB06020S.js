@@ -80,13 +80,6 @@ const TB06020Sjs = (function(){
 		getSelectBoxList('TB06020S', item);
 		getSelectBoxCode2('TB06020S','I011');
 		
-		var item = '';
-		item += 'I008';					// 결의협의회구분코드
-		item += '/' + 'D007';			// 매각일자구분코드
-		item += '/' + 'D008';			// 매각기준금액구분코드
-		item += '/' + 'I027';			// 투자통화코드
-		
-		getSelectBoxList('TB06012P', item);
 		
 		var item = '';
 		item += 'E028';					// 담보설정종류코드
@@ -116,9 +109,10 @@ const TB06020Sjs = (function(){
 		item += '/' + 'M004';			// 담보취득방법코드
 		item += '/' + 'G002';			// 보증약정구분코드
 		
-		getSelectBoxList('TB06013P', item);
-		
-		onChangeSelectBoxMrtgKndCd(); 
+		var selCnt =0;
+		selCnt= $("#TB06013P_E028 option").length;
+		if(selCnt==0 ||selCnt==1) getSelectBoxList('TB06013P', item);	
+		onChangeSelectBoxMrtgKndCd();	
 	}
 	
 
