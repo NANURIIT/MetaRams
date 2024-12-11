@@ -153,7 +153,7 @@
     <select id="dptrDtlsInq" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
         SELECT	DEAL_NO 					/*딜번호*/
             ,	EXCS_PYMT_PRCS_TEXT			/*초과납입처리내용*/
-            ,	RCTM_DT 					/*입금일자*/
+            ,	RCTM_DT 					/*입금일자*/                
             ,	MNGM_BDCD 					/*관리부서*/
             ,	RDPT_OBJT_DVSN_CD 			/*상환대상구분코드*/
             ,	DEAL_RCTM_AMT 				/*딜입금금액*/
@@ -168,7 +168,7 @@
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
         AND RCTM_DT = #{rctmDt}
         </if>
-    </select>
+    </select>                
 
     <!--TB07170S 입금내역조회-->
     <select id="getDptrDtlsList" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
@@ -273,6 +273,55 @@
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
           AND A.MNGM_BDCD = #{mngmBdcd}
           </if>
+    </select>
+    
+    <!-- 대충만듬ㅋ 입금증등록내역 셀렉트 -->
+    <select id="getNoDealList" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
+        SELECT DEAL_NO 						/* 딜번호 */
+             , RCTM_DT 						/* 은행입금일자 */
+             , RGST_SEQ 					/* 입금순번 */
+             , MNGM_BDCD 					/* 관리부서 */
+             , FNDS_DVSN_CD 				/* 자금구분코드 */
+             , DEAL_RCTM_AMT 				/* 딜입금금액 */
+             , PMNT_PRAR_AMT                /* 납부예정금액 */
+             , DEAL_EXCS_PYMT_AMT 			/* 딜초과납입금액 */
+             , RELT_ISTT_CD 				/* 관련기관코드 */
+             , RELT_BANO 					/* 관련은행계좌번호 */
+             , DPTR_NM                      /* 입금자 */
+             , RGST_BDCD 					/* 등록부점코드 */
+             , (
+                   SELECT ib.EMP_NM
+                   FROM IBIMS003B ib 
+                   WHERE ib.EMPNO = RGST_EMPNO
+               ) AS RGST_EMPNO				/* 등록자 */
+             , RGST_DTM
+          FROM IBIMS430B
+         WHERE 1=1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
+           AND RCTM_DT = #{rctmDt}
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           AND MNGM_BDCD = #{dprtCd}
+           </if>
+    </select>
+
+    <!-- 대충만듬2ㅋ 입금내역매핑 셀렉트 -->
+    <select id="getYesDealList" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
+        SELECT DEAL_NO 					/* 딜번호 */
+             , EXCS_PYMT_PRCS_TEXT		/* 초과납입처리내용 */
+             , RCTM_DT 					/* 입금일자 */                
+             , MNGM_BDCD 				/* 관리부서 */
+             , RDPT_OBJT_DVSN_CD 		/* 상환대상구분코드 */
+             , DEAL_RCTM_AMT 			/* 딜입금금액 */
+          FROM IBIMS430B
+         WHERE 1=1
+           AND DEAL_NO IS NOT NULL
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rctmDt)">
+           AND RCTM_DT = #{rctmDt}
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           AND MNGM_BDCD = #{dprtCd}
+           </if>
     </select>
 
 </mapper>

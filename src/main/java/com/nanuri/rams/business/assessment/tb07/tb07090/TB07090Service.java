@@ -20,4 +20,6 @@ public interface TB07090Service {
     //입금내역매핑
     public int rctmDtlsMapping(List<IBIMS430BDTO> paramList);
 
+    public int ibims430bInsert (List<IBIMS430BDTO> paramList);
+
 }

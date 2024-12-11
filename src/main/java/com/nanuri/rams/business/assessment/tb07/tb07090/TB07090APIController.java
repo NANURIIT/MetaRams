@@ -40,4 +40,10 @@ public class TB07090APIController {
     public int rctmDtlsMapping(@RequestBody List<IBIMS430BDTO> paramList){
         return tb07090Service.rctmDtlsMapping(paramList);
     }
+
+    @PostMapping("/ibims430bInsert")
+    public int ibims430bInsert (List<IBIMS430BDTO> paramList) {
+        return tb07090Service.ibims430bInsert(paramList);
+    }
+    
 }

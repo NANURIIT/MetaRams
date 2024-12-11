@@ -323,12 +323,15 @@ function getMtrInfo() {
           TB04011P_srchCnt = 0;
           TB04011P_onchangehandler = "on";
         }
-      } else if (data.length === 0) {
-        TB04011P_srchCnt = +1;
-        $("#TB04011P_ibDealNo").val("");
-        $("#TB04011P_ibDealNm").val("");
-        getMtrInfo();
-      } else {
+      } 
+      // 변부장님 지시로 삭제
+      // else if (data.length === 0) {
+      //   TB04011P_srchCnt = +1;
+      //   $("#TB04011P_ibDealNo").val("");
+      //   $("#TB04011P_ibDealNm").val("");
+      //   getMtrInfo();
+      // } 
+      else {
         arrPqGridMtrInfo.setData(data);
         arrPqGridMtrInfo.on("rowDblClick", function (event, ui) {
           setMtrInfo(ui.rowData);
