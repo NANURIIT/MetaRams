@@ -191,6 +191,10 @@ const TB06060Sjs = (function(){
 
     function getWorkflowList(){
 
+        if($('#TB06060S_ibDealNo').val()=="" && $('#TB06060S_prdtCd').val()==""){
+            console.log("필수입력항목!!!");
+            return 0;
+        }
 
         const paramData = {
             dealNo : $('#TB06060S_ibDealNo').val(),
@@ -209,6 +213,8 @@ const TB06060Sjs = (function(){
                 if(data){
                     console.log(data);
                     prdtInfoGridIns.setData(data);
+                    setFlow(parseInt(data[0].prgSttsCd));
+                    showDetailData(data[0]);
                 }else{
                     Swal.fire({
                         icon: 'warning'

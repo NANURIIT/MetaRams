@@ -413,10 +413,10 @@ function setDealInfo(e) {
 		
 	}
 
-  if(prefix == 'TB06060S'){ 
+  /*if(prefix == 'TB06060S'){ 
 		$("#TB06060S_prdtCd").val("");
 		$("#TB06060S_prdtNm").val("");
-	}
+	}*/
 
   modalClose_TB03021P();
 }
