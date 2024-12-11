@@ -3,7 +3,6 @@ let TB03021P_gridState = 1;
 let TB03021P_pf;
 let TB03021P_onchangehandler;
 let ibDealNoSrchCnt = 0;
-// let TB03021P_CallTB0302P = "Y";
 
 $(document).ready(function () {
   docRdySettings();
@@ -37,7 +36,6 @@ $("#TB03021P_dprtNm").on("change", function () {
 });
 
 function TB03021P_srch(menuId) {
-  // .prev("input[type='text']:not([readonly])")
   //input에 값 입력 시 자동 조회
 	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
 		const currentInput = $(this);
@@ -316,12 +314,7 @@ function getDealInfo() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      // arrPqGridDealInfo.setData(data);
-      // arrPqGridDealInfo.option("rowDblClick", function (event, ui) {
-      //   setDealInfo(ui.rowData);
-      // });
       if(ibDealNoSrchCnt >= 2){
-				alert("조회된 정보가 없습니다!")
 				ibDealNoSrchCnt = 0;
 				return;
 			}
