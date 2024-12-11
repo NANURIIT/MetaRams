@@ -59,7 +59,7 @@ function makeTable(){
 		html += "<td class='mDvdCdNm'>";
 		html += getMdvdCdNm(sdvdCdPre1);
 		html += "</td>";
-		html += "<td ondblclick='setDvdCdId(this)'><a>";
+		html += "<td ondblclick='setDvdCdId_TB06018P(this)'><a>";
 		html += value.cdName;
 		html += "</a></td>";
 		html += "</tr>";
@@ -90,7 +90,7 @@ function makeTable(){
 	});
 }
 
-function setDvdCdId(e){
+function setDvdCdId_TB06018P(e){
 	var tr = $(e).parent();									// function을 호출한 곳의 값을 가져온다. (this)
 	// var tr = event.currentTarget;						// event가 deprecated된 같은 기능
 	var td = $(tr).children();
