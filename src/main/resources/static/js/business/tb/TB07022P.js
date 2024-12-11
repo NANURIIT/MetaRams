@@ -148,12 +148,13 @@ function dataFndSetGrid(data){
 		TB07022P_onchangehandler = "on"
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
-	else if (fndPgGrid.pdata.length === 0) {
-		// 데이터 없는 경우 재조회 방지
-		TB07022P_srchCnt += 1;
-		$('#TB07022P_fndCd').val("");
-		getFndList();
-	}
+	// 변부장님 지시로 삭제
+	// else if (fndPgGrid.pdata.length === 0) {
+	// 	// 데이터 없는 경우 재조회 방지
+	// 	TB07022P_srchCnt += 1;
+	// 	$('#TB07022P_fndCd').val("");
+	// 	getFndList();
+	// }
 	// 그렇지 않은 경우 조건에 맞는 데이터 출력
 	else {
 		TB07022P_srchCnt = 0;
