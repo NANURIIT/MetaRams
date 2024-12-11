@@ -2026,8 +2026,15 @@ function pqGridAddNewRow(colModelSelector) {
  * @author {김건우}
  */
 function pqGridDeleteRow(colModelSelector, rowIndx) {
+
+  let idx = rowIndx;
+
+  if(!rowIndx){
+    idx = colModelSelector.pqGrid('instance').pdata.length - 1
+  }
+
   colModelSelector.pqGrid("deleteRow", {
-    rowIndx: rowIndx,
+    rowIndx: idx,
   });
 }
 

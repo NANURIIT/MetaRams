@@ -331,16 +331,16 @@ function getArdyBzepInfoList() {
 				TB03061P_srchCnt = 0;
 				TB03061P_onchangehandler = "on"
 			}
-			else if (data.length === 0) {
-				TB03061P_srchCnt = + 1;
-				$('#TB03061P_ardyBzepNo').val("")
-				$('#TB03061P_entpNm').val("")
-				$('#TB03061P_rnbn').val("")
-				$('#TB03061P_crno').val("")
-				$('#TB03061P_csno').val("")
-				$('#TB03061P_useYn').val("")
-				getArdyBzepInfoList();
-			}
+			// else if (data.length === 0) {
+			// 	TB03061P_srchCnt = + 1;
+			// 	$('#TB03061P_ardyBzepNo').val("")
+			// 	$('#TB03061P_entpNm').val("")
+			// 	$('#TB03061P_rnbn').val("")
+			// 	$('#TB03061P_crno').val("")
+			// 	$('#TB03061P_csno').val("")
+			// 	$('#TB03061P_useYn').val("")
+			// 	getArdyBzepInfoList();
+			// }
 			else {
 				modalPqGridBzepList.setData(data);
 				modalPqGridBzepList.on("rowDblClick", function (event, ui) {

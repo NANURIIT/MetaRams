@@ -338,14 +338,15 @@ function dataIbDealSetGrid(data){
 		// 입력되고 난 후 온체인지 이벤트 on
 		TB03021P_onchangehandler = "on"
 	}
+  // 변부장님 지시로 삭제
 	// 검색된 행이 0일 경우 모든 데이터 출력
-	else if (arrPqGridDealInfo.pdata.length === 0) {
-		//console.log("딴길로 새지마라");
-		// 데이터 없는 경우 재조회 방지
-		ibDealNoSrchCnt += 1;
-		//reset_TB03021P();
-		getDealInfo();
-	}
+	// else if (arrPqGridDealInfo.pdata.length === 0) {
+	// 	//console.log("딴길로 새지마라");
+	// 	// 데이터 없는 경우 재조회 방지
+	// 	ibDealNoSrchCnt += 1;
+	// 	//reset_TB03021P();
+	// 	getDealInfo();
+	// }
 	// 그렇지 않은 경우 조건에 맞는 데이터 출력
 	else {
 		ibDealNoSrchCnt = 0;	
