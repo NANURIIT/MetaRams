@@ -776,7 +776,7 @@ function setPrdtInfo(e) {
 		$(pageDealNm).val(e.dealNm);
 	}
 	if (prefix == "TB06060S") {
-		//$(pageDealNm).val('');
+		$(pageIbDealNo).val(e.dealNo);
 	}
 
 	if (prefix == 'TB06014P') {

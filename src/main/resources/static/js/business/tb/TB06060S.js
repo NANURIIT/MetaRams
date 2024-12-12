@@ -88,7 +88,7 @@ const TB06060Sjs = (function(){
         },
         {
             title: "약정금액",
-            dataIndx: "ctrcAmt",
+            dataIndx: "eprzCrdlCtrcAmt",
             dataType: "integer",
             align: "right",
             halign: "center",
