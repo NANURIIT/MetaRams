@@ -239,8 +239,7 @@ const TB06020Sjs = (function(){
 		}*/
 		
 		resetInputValue($('div[data-menuid="/TB06020S"]'));
-		//$('#TB06020S_C006 option[value="KR"]').prop("selected", true); // 국가코드
-		//$('#TB06020S_C006_I027 option[value="KRW"]').prop("selected", true); // 통화코드
+		$('#TB06020S_res_prdtCd').prop('readonly',false);
 	}
 
 
@@ -301,7 +300,18 @@ const TB06020Sjs = (function(){
 				/** Deal 정보 */
 				$('#TB06020S_ibDealNo').val(dealDetail.dealNo);													// 딜번호
 				$('#TB06020S_prdtCd').val(dealDetail.prdtCd);													// 종목코드
-				$('#TB06020S_prdtNm').val(dealDetail.prdtNm);													// 종목명
+				$('#TB06020S_prdtNm').val(dealDetail.prdtNm);	
+				$('#TB06020S_res_prdtCd').val(dealDetail.prdtCd);	// 종목코드
+				/** 종목 정보 */
+				if( isEmpty($('#TB06020S_prdtCd').val()) ) {
+					$('#TB06020S_prdtCd').val(dealDetail.prdtCd);	
+					$('#TB06020S_res_prdtNm').val(dealDetail.mtrNm);	// 안건명
+					$('#TB06020S_res_prdtCd').prop('readonly',false);
+				} else {
+					$('#TB06020S_res_prdtNm').val(dealDetail.prdtNm);// 종목명
+					$('#TB06020S_res_prdtCd').prop('readonly',true);											
+				}					
+				
 				$('#TB06020S_mtrNm').val(dealDetail.mtrNm);														// 안건명
 				$('#TB06020S_apvlDt').val(formatDate(dealDetail.apvlDt));										// 승인일자(결의일자)
 				$('#TB06020S_I008').val(dealDetail.cnsbDcd).prop("selected", true);								// 승인심사기구(결의협의회구분코드)
@@ -318,16 +328,7 @@ const TB06020Sjs = (function(){
 					$('#TB06020S_sdnCndtEtc').val('N')
 				} else {
 				$('#TB06020S_sdnCndtEtc').val(dealDetail.etcCndtF);
-				}
-				
-				/** 종목 정보 */
-				if( isEmpty($('#TB06020S_prdtCd').val()) ) {
-					$('#TB06030S_prdtCd').val(dealDetail.prdtCd);												// 종목코드
-					$('#TB06020S_res_prdtNm').val(dealDetail.mtrNm);											// 안건명
-				} else {
-					$('#TB06020S_res_prdtNm').val(dealDetail.prdtNm);											// 종목명
-				}
-				$('#TB06020S_res_prdtCd').val(dealDetail.prdtCd);												// 종목코드
+				}										
 				
 				$('#TB06020S_I011').val(dealDetail.prgSttsCd).prop("selected", true).change();					// 진행상태
 				
@@ -455,22 +456,15 @@ const TB06020Sjs = (function(){
 	// 종목등록
 	function regPrdtCd(pageDcd, param) {
 		
+		console.log("TB06020S_res_prdtCd_readonly:"+$('#TB06020S_res_prdtCd').attr("readonly"));
+		
 		if (!checkParam()) {
-			/*Swal.fire({
-			title: "Deal번호를 입력해주세요.",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: '확인'
-		})*/
-			
 			return false;
 		}
 		
 		var paramData = makeParam(pageDcd, param);
 		
-		if( isEmpty($('#TB06020S_ibDealNo').val()) ){
+		if( isEmpty($('#TB06020S_ibDealNo').val()) || isEmpty($('#TB06020S_res_prdtCd').val()) ){
 			return false;
 		}
 		
@@ -489,6 +483,13 @@ const TB06020Sjs = (function(){
 						confirmButtonText: '확인',
 					}).then((result) => {
 						getDealList();
+					});
+				} else if(data = -1) {
+					Swal.fire({
+						title: '종목등록 에러',
+						icon: 'error',
+						text : '동일한 종목코드가 존재합니다. 종목코드를 확인해주세요',
+						confirmButtonText: '확인',
 					});
 				} else {
 					Swal.fire({
@@ -509,6 +510,18 @@ const TB06020Sjs = (function(){
 		option.type = "error";
 
 		// 유효성검사
+		if (isEmpty($('#TB06020S_ibDealNm').val())) {
+			option.text = "Deal번호를 검색해주세요";
+			openPopup(option);
+			return false;
+		}
+		
+		if (isEmpty($('#TB06020S_res_prdtCd').val())) {
+			option.text = "종목코드를 입력해주세요.";
+			openPopup(option);
+			return false;
+		}
+		
 		if (isEmpty($('#TB06020S_res_prdtNm').val())) {
 			option.text = "종목명을 입력해주세요.";
 			openPopup(option);
@@ -630,6 +643,7 @@ const TB06020Sjs = (function(){
 		var paramData = {
 			"pageDcd" : pageDcd
 			, "prdtCd": $('#TB06020S_res_prdtCd').val()									// 상품코드
+			, "regDvsn" : ($('#TB06020S_res_prdtCd').attr("readonly")=="readonly") ? "U" : "I" // U:수정, I:등록
 			//, "sn": ''                                          // 일련번호
 			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06020S_res_prdtNm').val()									// 상품명
@@ -1156,7 +1170,7 @@ const TB06020Sjs = (function(){
 	}
 
 	return {
-		getDealList : getDealList
+		  getDealList : getDealList
 		, resetSearchRequiment : resetSearchRequiment
 		, managePrdtCd : managePrdtCd
 		, setLstMrtg : setLstMrtg
@@ -1165,5 +1179,11 @@ const TB06020Sjs = (function(){
 		, ldvdCd : ldvdCd
 		, mdvdCd : mdvdCd
 		, sdvdCd : sdvdCd
+		, loadSelectBoxContents : loadSelectBoxContents
+		, radioCheckFunction : radioCheckFunction
+		, roadTabInfoGrid : roadTabInfoGrid
+		, onChangeEprzCrdlPrdtLclsCd : onChangeEprzCrdlPrdtLclsCd
+		, onChangeEprzCrdlPrdtMdclCd : onChangeEprzCrdlPrdtMdclCd
+		, defaultNumberFormat: defaultNumberFormat
 	}
 })();
