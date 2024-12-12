@@ -312,6 +312,9 @@ const TB06020Sjs = (function(){
 					$('#TB06020S_res_prdtCd').prop('readonly',true);											
 				}					
 				
+				$('#TB06020S_lstCCaseCcd').val(dealDetail.mtrDcd);
+				$('#TB06020S_riskInspctCcd').val(dealDetail.jdgmDcd);	
+				
 				$('#TB06020S_mtrNm').val(dealDetail.mtrNm);														// 안건명
 				$('#TB06020S_apvlDt').val(formatDate(dealDetail.apvlDt));										// 승인일자(결의일자)
 				$('#TB06020S_I008').val(dealDetail.cnsbDcd).prop("selected", true);								// 승인심사기구(결의협의회구분코드)
