@@ -327,7 +327,7 @@ function dataIbDealSetGrid(data){
   arrPqGridDealInfo.setData(data);
   arrPqGridDealInfo.option("cellClick", function (event, ui) {
     const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
-    copyClickData('TB03021P', clickData); 
+    copyClickData(clickData); 
   });
   arrPqGridDealInfo.option("rowDblClick", function (event, ui) {
     setDealInfo(ui.rowData);

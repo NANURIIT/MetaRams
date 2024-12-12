@@ -251,28 +251,28 @@
     </update>
     
     <select id="getAppvCndt" parameterType="com.nanuri.rams.business.common.dto.IBIMS112BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS112BVO">
-        SELECT IBIMS112B.CNSB_DCD                                          /* 협의체구분코드 */
-             , IBIMS112B.CNSB_SQ                                           /* 협의체순번 */
-             , IBIMS112B.RSLTN_YR                                          /* 결의년도 */
-             , IBIMS112B.SN                                                /* 일련번호(순서정보) */
-             , IBIMS112B.DEAL_NO                                           /* 딜번호 */
-             , IBIMS112B.MTR_DCD                                           /* 안건구분코드 */
-             , IBIMS112B.JDGM_DCD                                          /* 심사구분코드 */
-             , IBIMS112B.RGST_DT                                           /* 등록일자 */
-             , IBIMS112B.SDN_CNDT_F                                        /* 셀다운조건여부 */
-             , IBIMS112B.SDN_CNDT_CTNS                                     /* 셀다운조건의견 */
-             , IBIMS112B.ETC_CNDT_F                                        /* 기타조건여부 */
-             , IBIMS112B.ETC_CNDT_CTNS                                     /* 기타조건의견 */
-             , IBIMS112B.MTR_PRG_STTS_DCD                                  /* 안건진행상태구분코드 */
-             , IBIMS112B.APVL_AMT                                          /* 승인금액 */
-             , IBIMS112B.APVL_DT                                           /* 승인일자 */
-             , IBIMS112B.DEL_YN                                            /* 삭제여부 */
-             , IBIMS112B.HND_DETL_DTM                                      /* 조작상세일시 */
-             , IBIMS112B.HND_EMPNO                                         /* 조작사원번호 */
-             , IBIMS112B.HND_TMNL_NO                                       /* 조작단말기번호 */
-             , IBIMS112B.HND_TR_ID                                         /* 조작거래ID */
-             , IBIMS112B.GUID                                              /* GUID */
-             , IBIMS103B.CHRR_EMPNO		AS CHRR_EMPNO
+        SELECT s112b.CNSB_DCD                                          /* 협의체구분코드 */
+             , s112b.CNSB_SQ                                           /* 협의체순번 */
+             , s112b.RSLTN_YR                                          /* 결의년도 */
+             , s112b.SN                                                /* 일련번호(순서정보) */
+             , s112b.DEAL_NO                                           /* 딜번호 */
+             , s112b.MTR_DCD                                           /* 안건구분코드 */
+             , s112b.JDGM_DCD                                          /* 심사구분코드 */
+             , s112b.RGST_DT                                           /* 등록일자 */
+             , s112b.SDN_CNDT_F                                        /* 셀다운조건여부 */
+             , s112b.SDN_CNDT_CTNS                                     /* 셀다운조건의견 */
+             , s112b.ETC_CNDT_F                                        /* 기타조건여부 */
+             , s112b.ETC_CNDT_CTNS                                     /* 기타조건의견 */
+             , s112b.MTR_PRG_STTS_DCD                                  /* 안건진행상태구분코드 */
+             , s112b.APVL_AMT                                          /* 승인금액 */
+             , s112b.APVL_DT                                           /* 승인일자 */
+             , s112b.DEL_YN                                            /* 삭제여부 */
+             , s112b.HND_DETL_DTM                                      /* 조작상세일시 */
+             , s112b.HND_EMPNO                                         /* 조작사원번호 */
+             , s112b.HND_TMNL_NO                                       /* 조작단말기번호 */
+             , s112b.HND_TR_ID                                         /* 조작거래ID */
+             , s112b.GUID                                              /* GUID */
+             , IBIMS103B.CHRR_EMPNO		AS CHRG_P_ENO
              , (SELECT A.EMP_NM
              	FROM IBIMS003B A
              	WHERE 1=1
@@ -284,16 +284,42 @@
              	WHERE 1=1
              	AND B.EMPNO=IBIMS103B.OWN_P_ENO
              	)						AS OWN_P_ENM
-          FROM IBIMS112B
+          FROM (SELECT 
+		  					CNSB_DCD
+							,CNSB_SQ
+							,RSLTN_YR
+							,SN
+							,DEAL_NO
+							,MTR_DCD
+							,JDGM_DCD
+							,RGST_DT
+							,SDN_CNDT_F
+							,SDN_CNDT_CTNS
+							,ETC_CNDT_F
+							,ETC_CNDT_CTNS
+							,MTR_PRG_STTS_DCD
+							,APVL_DT
+							,APVL_AMT
+							,DEL_YN
+							,HND_DETL_DTM                             
+							,HND_EMPNO                                  
+							,HND_TMNL_NO                               
+							,HND_TR_ID                                      
+							,GUID                                              
+							,RANK() OVER(PARTITION BY DEAL_NO, MTR_DCD, JDGM_DCD, CNSB_DCD ORDER BY DECODE(MTR_PRG_STTS_DCD,'308',1,'309',1,2) ASC, RSLTN_YR DESC, TO_NUMBER(CNSB_SQ) DESC, TO_NUMBER(SN) DESC) AS RK		  					
+		  				FROM IBIMS112B 
+		  				WHERE DEL_YN='N'
+		  				) s112b
              , IBIMS103B
          WHERE 1=1
-           AND IBIMS112B.DEAL_NO								= #{dealNo}
-           AND IBIMS112B.MTR_DCD								= #{mtrDcd}
-           AND IBIMS112B.JDGM_DCD								= #{jdgmDcd}
-           AND IBIMS112B.DEAL_NO								= IBIMS103B.DEAL_NO
-           AND IBIMS112B.MTR_DCD								= IBIMS103B.MTR_DCD
-           AND IBIMS112B.JDGM_DCD								= IBIMS103B.JDGM_DCD
-           AND IBIMS103B.LAST_YN								= 'Y'
+           AND s112b.DEAL_NO								= #{dealNo}
+           AND s112b.MTR_DCD								= #{mtrDcd}
+           AND s112b.JDGM_DCD								= #{jdgmDcd}
+           AND s112b.DEAL_NO								= IBIMS103B.DEAL_NO
+           AND s112b.MTR_DCD								= IBIMS103B.MTR_DCD
+           AND s112b.JDGM_DCD								= IBIMS103B.JDGM_DCD
+           AND s112b.RK										= 1
+           AND IBIMS103B.LAST_YN							= 'Y'
     </select>
 
 </mapper>

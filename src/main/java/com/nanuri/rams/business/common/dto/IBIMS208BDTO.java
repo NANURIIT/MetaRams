@@ -41,6 +41,7 @@ public class IBIMS208BDTO {
     private String         sdwnCtns;                                        // 샐다운내용
     private String         etcApvlCndCtns;                                  // 기타승인조건내용
     private String         apvlCndActCtns;                                  // 승인조건활동내용
+    private String 		   cndYn;											// 연결여부
     private Date           hndDetlDtm;                                      // 조작상세일시
     private String         hndEmpno;                                        // 조작사원번호
     private String         hndTmnlNo;                                       // 조작단말기번호
