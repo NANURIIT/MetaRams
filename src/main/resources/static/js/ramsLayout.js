@@ -392,7 +392,7 @@ function removeTab(menuId) {
         // 탭 지우기
         $(`li[data-tabId="/${menuId}"]`).remove()
 
-        이전페이지생존유무()
+        이전페이지생존유무();
         // 현재화면의 탭을 삭제시 무브탭 발생
         moveTab(e_jeon_page.pop());
     } else {
@@ -413,12 +413,12 @@ function removeTab(menuId) {
 
 function 이전페이지생존유무 () {
     let 이전페이지 = e_jeon_page[e_jeon_page.length - 1]
-    console.log(이전페이지);
-    console.log(e_jeon_page);
+    console.log(이전페이지, "이전페이지입니다.");
     while(true){
         if($(`li[data-tabId="/${이전페이지}"]`).length === 0){
             console.log("계속 빼");
-            이전페이지 = e_jeon_page.pop()
+            e_jeon_page.splice(-1, 1);
+            이전페이지 = e_jeon_page[e_jeon_page.length - 1];
         }else {
             break;
         }
