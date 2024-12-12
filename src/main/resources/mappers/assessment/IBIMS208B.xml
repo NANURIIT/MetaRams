@@ -46,6 +46,11 @@
              , IBIMS208B.HND_TR_ID                                         <!-- 조작거래id -->
              , IBIMS208B.GUID                                              <!-- guid -->
              , I209B.PRDT_CD                                               /* 상품번호 */
+             , CASE WHEN EXISTS (SELECT 1
+					             	FROM IBIMS209B L
+					             	WHERE L.DEAL_NO=IBIMS208B.DEAL_NO
+					             	AND L.APVL_CND_SN =IBIMS208B.APVL_CND_SN)
+		    		THEN 'Y' ELSE 'N' END AS CND_YN 					   /* 연결여부*/		
           FROM IBIMS208B 
           INNER JOIN IBIMS003B A
              ON IBIMS208B.RGST_EMPNO = A.EMPNO
