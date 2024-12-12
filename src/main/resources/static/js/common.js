@@ -1681,6 +1681,9 @@ function setPqGrid(pqGridObjs) {
       cellClick: cellClick,
       rowSelect: rowSelect,
       rowDblClick: rowDblClick,
+      // clipboard: { on: true }, // 클립보드 복사 활성화
+      // selectionModel: { type: "cell" } // 셀 선택 활성화
+    // selectionModel: { type: 'cell' }, // 셀 단위 선택 활성화
       // pageModel   : page
       // dataModel: { data: data },
     };

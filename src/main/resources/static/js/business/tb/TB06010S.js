@@ -31,6 +31,37 @@ const TB06010Sjs = (function(){
 		pqGrid();
 
 		resetSearchRequiment();
+
+
+		$('#TB06010S_E022').on('change', function() {
+			// alert($('#TB06010S_E022').val());
+			var prdtLclsCd = $('#TB06010S_E022').val(); //투자상품 대분류 코드
+
+			if (prdtLclsCd === "92") {
+				// "첨부파일" 탭(#TB06010S_tab-6)을 제외한 나머지 탭 비활성화
+				alert("수수료");
+				$('#TB06010S_ramsTab .nav-link').each(function () {
+					alert("disabled!!");
+					if (!$(this).attr('href').includes('#TB06010S_tab-6')) {
+						$(this).addClass('disabled-tab'); // 비활성화 클래스 추가
+						$(this).on('click.disable', function (e) {
+							e.preventDefault(); // 클릭 이벤트 차단
+						});
+						// onclick 속성 제거
+						$(this).removeAttr('onclick');
+					}
+				});
+			} else {
+				alert("수수료아님");
+				// 모든 탭 활성화
+				$('#TB06010S_ramsTab .nav-link').each(function () {
+					alert("enabled!!");
+					$(this).removeClass('disabled-tab'); // 비활성화 클래스 제거
+					$(this).off('click.disable'); // 클릭 이벤트 차단 해제
+					// onclick 속성 복원 (필요 시 별도 로직 추가)
+				});
+			}
+		});
 	});
 
 	var option = {}
@@ -705,6 +736,8 @@ const TB06010Sjs = (function(){
 	// 결의안건정보
 	function getCnfrncDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd, prdtCd) {
 
+		var trDvsn ="S"; //대출/채무보증
+
 		if (isEmpty(ibDealNo) && isEmpty(prdtCd)) {
 			option.text = "Deal 정보 또는 종목코드 정보를 조회해주세요.";
 			openPopup(option);
@@ -717,6 +750,7 @@ const TB06010Sjs = (function(){
 			"mtrDcd" : lstCCaseCcd,
 			"jdgmDcd" : riskInspctCcd,
 			"prdtCd" : prdtCd
+			, "trDvsn"  : trDvsn
 		}
 
 		$.ajax({
@@ -724,6 +758,20 @@ const TB06010Sjs = (function(){
 			url: "/TB06010S/getCnfrncDealInfo",
 			data: paramData,
 			dataType: "json",
+			error : function(request,  error ){
+				/*console.log("code:"+request.status);
+				console.log("message:"+request.responseText);
+				console.log("error:"+error);
+				*/
+				Swal.fire({
+					title: '안건 조회 확인',
+					icon: 'error',
+					text: '대출채권/채무보증 정보등록이 가능한 안건이 아닙니다.',
+					confirmButtonText: '확인',
+				}).then(() => {
+				   resetSearchRequiment(); //초기화
+				});
+			},
 			success: function(data) {
 				var dealDetail = data;
 				/** Deal 정보 */
