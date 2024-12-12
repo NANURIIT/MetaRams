@@ -583,8 +583,6 @@
      <if test="prdtCd != ''">
     AND C.PRDT_CD = #{prdtCd}
     </if>
-    AND A.DEAL_NO IS NOT NULL
-    AND C.PRDT_CD IS NOT NULL
     </select>
 
    
