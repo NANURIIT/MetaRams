@@ -681,10 +681,10 @@ const TB04010Sjs = (function () {
         $("#TB04010S_mainInvstTrgtNm").val(dealDetail.mainInvstTrgtNm); // 주요투자대상
 
         $("#TB04010S_I027").val(dealDetail.ptfdCrryCd).prop("selected", true); // 부의기준통화
-        $("#crncyAmt").val(dealDetail.ptfdAmt.toLocaleString("ko-KR")); // 부의금액
+        $("#crryAmt").val(dealDetail.ptfdAmt.toLocaleString("ko-KR")); // 부의금액
         $("#TB04010S_C006").val(dealDetail.invNtnCd).prop("selected", true); // 투자국가
         $("#aplyExrt").val(dealDetail.aplyExrt); // 적용환율
-        $("#crncyAmtWn").val(dealDetail.krwTrslPtfdAmt.toLocaleString("ko-KR")); // 부의금액(원)
+        $("#crryAmtWn").val(dealDetail.krwTrslPtfdAmt.toLocaleString("ko-KR")); // 부의금액(원)
 
         $("#TB04010S_I006").val(dealDetail.indTypDvdCd).prop("selected", true); // 고위험사업
         $("#TB04010S_C001").val(dealDetail.checkItemCd).prop("selected", true); // 업무구분
@@ -1112,7 +1112,7 @@ const TB04010Sjs = (function () {
     var invstCrryCd = e.invstCrryCd; // 투자통화코드
     var crryAmt = e.crryAmt; // 기초자산평가액(통화금액)
     var aplyExrt = e.aplyExrt; // 환율
-    var crevAmt = e.crevAmt; // 시가평가금액
+    var crevAmt = e.crevAmt || 0; // 시가평가금액
     var sn = e.sn; // 일련번호
 
     $("#TB04010S_B010").val(bssAsstKndCd).prop("selected", true); // 기초자산종류코드
@@ -1208,7 +1208,9 @@ const TB04010Sjs = (function () {
     var insGrdTrgtYn = e.insGrdTrgtYn; // 내부등급대상여부
     var spcltFncMngNo = e.spcltFncMngNo; // SL번호
     var outsCrdtGrdCcd = e.outsCrdtGrdDcd; // SL내부등급
+    // 하나의 법인이 다수의 기업체번호를 가지고있어 조회조건 변경
     var brwrCrno = e.brwrCrno; // 차주법인번호
+    var ardyBzepNo = e.ardyBzepNo; // 차주기업체번호
     var insCrdtGrdDcd = e.insCrdtGrdDcd; // 내부등급
     var rnmCnfmNo = e.rnmCnfmNo; // 실명번호
     var entpHnglNm = e.entpHnglNm; // 한글법인명
@@ -1219,6 +1221,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_spcltFncMngNo").val(spcltFncMngNo); // SL번호
     $("#TB04010S_O006").val(outsCrdtGrdCcd).prop("selected", true); // SL내부등급
     $("#TB04010S_ins_corpRgstNo").val(checkBrnAcno(brwrCrno)); // 차주 법인번호
+    $("#TB04010S_ins_entpCd").val(checkBrnAcno(ardyBzepNo)); // 차주기업체번호
     $("#TB04010S_I012").val(insCrdtGrdDcd).prop("selected", true); // 내부등급
     $("#TB04010S_ins_bsnsRgstNo").val(rnmCnfmNo); // 실명번호
     $("#TB04010S_ins_entpRnm").val(entpHnglNm); // 한글법인명
@@ -1226,12 +1229,14 @@ const TB04010Sjs = (function () {
   }
 
   function setTab5Selecbox() {
+    // 내부등급대상여부
     $("input[name='TB04010S_insGrdTrgtYn']").on("change", function () {
       var useYn1 = $("input[name=TB04010S_insGrdTrgtYn]:checked").val();
 
       if (useYn1 == "Y") {
         $("#TB04010S_ins_corpRgstNo").val("");
         $("#TB04010S_ins_bsnsRgstNo").val("");
+        $("#TB04010S_ins_entpRnm").val("");
         //$('#TB04010S_ins_corpRgstNo').prop("readonly", false);
         $("#TB04010S_I012").prop("disabled", false);
         $("#TB04010S_I012 option:eq(0)").prop("selected", true);
@@ -1239,13 +1244,14 @@ const TB04010Sjs = (function () {
       } else {
         $("#TB04010S_ins_corpRgstNo").val("");
         $("#TB04010S_ins_bsnsRgstNo").val("");
+        $("#TB04010S_ins_entpRnm").val("");
         //$('#TB04010S_ins_corpRgstNo').prop("readonly", true);
         $("#TB04010S_I012").prop("disabled", true);
         $("#TB04010S_I012 option:eq(0)").prop("selected", true);
         $("#btnCallTb03023p").prop("disabled", true);
       }
     });
-
+    // SL대상여부
     $("input[name='TB04010S_spcltFncTrgtYn']").on("change", function () {
       var useYn2 = $("input[name=TB04010S_spcltFncTrgtYn]:checked").val();
 
@@ -1297,24 +1303,24 @@ const TB04010Sjs = (function () {
     var mrtgKndDcd = e.mrtgKndDcd; // 담보유형코드
     var mrtgDtlsDcd = e.mrtgDtlsDcd; // 담보상세
     var mrtgRsnCnts = e.mrtgRsnCnts; // 담보사유내용
-    var mrtgEvlAmt = e.mrtgEvlAmt; // 담보평가액(원)
+    var mrtgEvlAmt = e.mrtgEvlAmt || 0; // 담보평가액(원)
     var rgtRnkDcd = e.rgtRnkDcd; // 권리순위
     var mrtgAcqstStmDcd = e.mrtgAcqstStmDcd; // 담보취득방식코드
     var mrtgAcqstDtlsDcd = e.mrtgAcqstDtlsDcd; // 담보취득방식상세코드
     var invstCrryCd = e.invstCrryCd; // 통화
-    var crncyAmt = e.crncyAmt; // 통화금액
+    var crryAmt = e.crryAmt || 0; // 통화금액
     var aplyExrt = e.aplyExrt; // 환율
     var sn = e.sn; // 항목일련번호
 
     $("#TB04010S_M007").val(mrtgKndDcd).prop("selected", true); // 담보유형
     $("#TB04010S_M005").val(mrtgDtlsDcd).prop("selected", true); // 담보상세
     $("#TB04010S_mrtgRsnCnts").val(mrtgRsnCnts); // 담보사유내용
-    $("#mrtgValAmt").val(mrtgEvlAmt.toLocaleString("ko-KR")); // 담보평가액(원)
+    $("#mrtgEvlAmt").val(mrtgEvlAmt.toLocaleString("ko-KR")); // 담보평가액(원)
     $("#TB04010S_R013").val(rgtRnkDcd).prop("selected", true); // 권리순위
     $("#TB04010S_M003").val(mrtgAcqstStmDcd).prop("selected", true); // 담보취득방식코드
     $("#TB04010S_M002").val(mrtgAcqstDtlsDcd).prop("selected", true); // 담보취득방식상세코드
     $("#TB04010S_I027_3").val(invstCrryCd).prop("selected", true); // 통화
-    $("#mrtgCrncyAmt").val(crncyAmt.toLocaleString("ko-KR")); // 통화금액
+    $("#mrtgcrryAmt").val(crryAmt.toLocaleString("ko-KR")); // 통화금액
     $("#TB04010S_tab6_aplyExrt").val(aplyExrt); // 환율
     $("#TB04010S_tab6_sn").val(sn); // 항목일련번호
   }
@@ -1443,7 +1449,7 @@ const TB04010Sjs = (function () {
     loadUserAuth();
 
     // 부의금액(원) 계산
-    $("#crncyAmt").on("focusin focusout", function () {
+    $("#crryAmt").on("focusin focusout", function () {
       checkErmAmt();
     });
     // 투자기간 숫자입력 & 만기일 체크
@@ -1628,29 +1634,29 @@ const TB04010Sjs = (function () {
   // 부의금액(원) 계산
   function checkErmAmt() {
     // 투자금액
-    $("#crncyAmt").on("propertychange change keyup paste input", function () {
+    $("#crryAmt").on("propertychange change keyup paste input", function () {
       //if (event.key >= 0 && event.key <= 9 || event.key === "Backspace" || event.key === "Delete") {// 1. 숫자입력 체크
       var input1 = $("#aplyExrt").val();
       if (!isEmpty(input1)) {
-        var input2 = $("#crncyAmt").val().replace(/,/g, ""); // 콤마 제거
-        $("#crncyAmtWn").val(
+        var input2 = $("#crryAmt").val().replace(/,/g, ""); // 콤마 제거
+        $("#crryAmtWn").val(
           Math.floor(Number(input1) * Number(input2)).toLocaleString("ko-KR")
         );
       } else {
         // 2-2. 적용환율 값이 없을경우
-        var input2 = $("#crncyAmt").val().replace(/,/g, ""); // 콤마 제거
-        $("#crncyAmtWn").val(input2);
+        var input2 = $("#crryAmt").val().replace(/,/g, ""); // 콤마 제거
+        $("#crryAmtWn").val(input2);
       }
       //}
     });
 
     // 적용환율
     $("#aplyExrt").on("propertychange change keyup paste input", function () {
-      var input1 = $("#crncyAmt").val().replace(/,/g, "");
+      var input1 = $("#crryAmt").val().replace(/,/g, "");
       if (!isEmpty(input1)) {
         // 2. 부의금액 값이 있으면 계산
         var input2 = $("#aplyExrt").val().replace(/,/g, "");
-        $("#crncyAmtWn").val(
+        $("#crryAmtWn").val(
           Math.floor(Number(input1) * Number(input2)).toLocaleString("ko-KR")
         );
       }
@@ -1729,7 +1735,7 @@ const TB04010Sjs = (function () {
       return false;
     }
 
-    if (isEmpty($("#crncyAmt").val())) {
+    if (isEmpty($("#crryAmt").val())) {
       option.text = "부의금액을 입력해주세요.";
       openPopup(option);
       return false;
@@ -1855,10 +1861,10 @@ const TB04010Sjs = (function () {
       invPrdtDtlsDvdCd: $("#TB04010S_I028").val(), // 투자상품상세분류코드
       mainInvstTrgtNm: $("#TB04010S_mainInvstTrgtNm").val(), // 주요투자대상명
       ptfdCrryCd: $("#TB04010S_I027").val(), // 부의통화코드
-      ptfdAmt: $("#crncyAmt").val().replace(/,/g, ""), // 부의금액
+      ptfdAmt: $("#crryAmt").val().replace(/,/g, ""), // 부의금액
       invNtnCd: $("#TB04010S_C006").val(), // 투자국가코드
       aplyExrt: $("#aplyExrt").val().replace(/,/g, ""), // 적용환율
-      krwTrslPtfdAmt: $("#crncyAmtWn").val().replace(/,/g, ""), // 원화환산부의금액
+      krwTrslPtfdAmt: $("#crryAmtWn").val().replace(/,/g, ""), // 원화환산부의금액
       indTypDvdCd: $("#TB04010S_I006").val(), // 업종분류코드(고위험산업)
       checkItemCd: $("#TB04010S_C001").val(), // 점검항목코드(업무구분)
       raBsnsZoneCd: $("#TB04010S_B011").val(), // RA사업지역코드
@@ -1994,10 +2000,10 @@ const TB04010Sjs = (function () {
     $("#TB04010S_mainInvstTrgtNm").val(""); // 주요투자대상
 
     $("#TB04010S_I027 option[value='KRW']").prop("selected", true).change(); // 부의기준통화
-    $("#crncyAmt").val(""); // 부의금액
+    $("#crryAmt").val(""); // 부의금액
     $("#TB04010S_C006 option[value='KR']").prop("selected", true).change(); // 투자국가
     $("#aplyExrt").val("1"); // 적용환율
-    $("#crncyAmtWn").val(""); // 부의금액(원)
+    $("#crryAmtWn").val(""); // 부의금액(원)
 
     $("#TB04010S_I006 option:eq(0)").prop("selected", true).change(); // 고위험산업
     $("#TB04010S_C001 option:eq(0)").prop("selected", true).change(); // 업무구분
@@ -2816,6 +2822,11 @@ const TB04010Sjs = (function () {
     var brwrCrno = $("#TB04010S_ins_corpRgstNo")
       .val()
       .replace(/[^0-9]/g, ""); // SL비대상 차주법인번호
+
+    var ardyBzepNo = $("#TB04010S_ins_entpCd")
+      .val()
+      .replace(/[^0-9]/g, ""); // SL비대상 차주기업체번호
+
     var insCrdtGrdDcd = $("#TB04010S_I012").val(); // SL비대상 내부등급
 
     var rnmCnfmNo = $("#TB04010S_ins_bsnsRgstNo")
@@ -2841,8 +2852,8 @@ const TB04010Sjs = (function () {
     }
 
     if ("Y".match(insGrdTrgtYn)) {
-      if (isEmpty(brwrCrno)) {
-        option.text = "차주법인번호정보를 입력해주세요.";
+      if (isEmpty(ardyBzepNo)) {
+        option.text = "기업체코드(차주)를 입력해주세요.";
         openPopup(option);
         return false;
       }
@@ -2869,6 +2880,7 @@ const TB04010Sjs = (function () {
         brwrCrno: brwrCrno,
         insCrdtGrdDcd: insCrdtGrdDcd,
         rnmCnfmNo: rnmCnfmNo,
+        ardyBzepNo: ardyBzepNo,
       };
 
       $.ajax({
@@ -3019,79 +3031,79 @@ const TB04010Sjs = (function () {
   // 담보평가액 * 환율
   function mrtgAmt() {
     // 담보평가평가액(원)
-    $("#mrtgCrncyAmt").keyup(function (event) {
+    $("#mrtgcrryAmt").keyup(function (event) {
       if (
         (event.key >= 0 && event.key <= 9) ||
         event.key === "Backspace" ||
         event.key === "Delete"
       ) {
         // 1. 숫자입력 체크
-        var input1 = $("#TB04010S_tab6_aplcExchR").val().replace(/,/g, "");
+        var input1 = $("#TB04010S_tab6_aplyExrt").val().replace(/,/g, "");
         if (!isEmpty(input1)) {
           // 2-1. 적용환율 값이 있을경우
-          var input2 = $("#mrtgCrncyAmt").val().replace(/,/g, ""); // 콤마 제거
-          $("#mrtgValAmt").val(
+          var input2 = $("#mrtgcrryAmt").val().replace(/,/g, ""); // 콤마 제거
+          $("#mrtgEvlAmt").val(
             Math.floor(Number(input1) * Number(input2)).toLocaleString("ko-KR")
           );
         } else {
           // 2-2. 적용환율 값이 없을경우
-          var input2 = $("#mrtgCrncyAmt").val().replace(/,/g, "");
-          $("#mrtgValAmt").val(input2);
+          var input2 = $("#mrtgcrryAmt").val().replace(/,/g, "");
+          $("#mrtgEvlAmt").val(input2);
         }
       }
     });
 
     // 담보평가평가액(원)
-    $("#mrtgCrncyAmt").change(function () {
-      var input1 = $("#TB04010S_tab6_aplcExchR").val().replace(/,/g, "");
+    $("#mrtgcrryAmt").change(function () {
+      var input1 = $("#TB04010S_tab6_aplyExrt").val().replace(/,/g, "");
       if (!isEmpty(input1)) {
         // 2-1. 적용환율 값이 있을경우
-        var input2 = $("#mrtgCrncyAmt").val().replace(/,/g, ""); // 콤마 제거
-        $("#mrtgValAmt").val(
+        var input2 = $("#mrtgcrryAmt").val().replace(/,/g, ""); // 콤마 제거
+        $("#mrtgEvlAmt").val(
           Math.floor(Number(input1) * Number(input2)).toLocaleString("ko-KR")
         );
       } else {
         // 2-2. 적용환율 값이 없을경우
-        var input2 = $("#mrtgCrncyAmt").val().replace(/,/g, "");
-        $("#mrtgValAmt").val(input2);
+        var input2 = $("#mrtgcrryAmt").val().replace(/,/g, "");
+        $("#mrtgEvlAmt").val(input2);
       }
     });
 
     // 적용환율
-    $("#TB04010S_tab6_aplcExchR").keyup(function (event) {
+    $("#TB04010S_tab6_aplyExrt").keyup(function (event) {
       if (
         (event.key >= 0 && event.key <= 9) ||
         event.key === "Backspace" ||
         event.key === "Delete"
       ) {
         // 1. 숫자입력 체크
-        var input1 = $("#mrtgCrncyAmt").val().replace(/,/g, "");
+        var input1 = $("#mrtgcrryAmt").val().replace(/,/g, "");
         if (!isEmpty(input1)) {
           // 2. 값이 있으면 계산
-          var input2 = $("#TB04010S_tab6_aplcExchR").val().replace(/,/g, "");
-          $("#mrtgValAmt").val(
+          var input2 = $("#TB04010S_tab6_aplyExrt").val().replace(/,/g, "");
+          $("#mrtgEvlAmt").val(
             Math.floor(Number(input1) * Number(input2)).toLocaleString("ko-KR")
           );
         } else {
           // 2-2. 적용환율 값이 없을경우
-          var input2 = $("#mrtgCrncyAmt").val().replace(/,/g, "");
-          $("#mrtgValAmt").val(input2);
+          var input2 = $("#mrtgcrryAmt").val().replace(/,/g, "");
+          $("#mrtgEvlAmt").val(input2);
         }
       }
     });
     // 적용환율
-    $("#TB04010S_tab6_aplcExchR").change(function () {
-      var input1 = $("#mrtgCrncyAmt").val().replace(/,/g, "");
+    $("#TB04010S_tab6_aplyExrt").change(function () {
+      var input1 = $("#mrtgcrryAmt").val().replace(/,/g, "");
       if (!isEmpty(input1)) {
         // 2. 값이 있으면 계산
-        var input2 = $("#TB04010S_tab6_aplcExchR").val().replace(/,/g, "");
-        $("#mrtgValAmt").val(
+        var input2 = $("#TB04010S_tab6_aplyExrt").val().replace(/,/g, "");
+        $("#mrtgEvlAmt").val(
           Math.floor(Number(input1) * Number(input2)).toLocaleString("ko-KR")
         );
       } else {
         // 2-2. 적용환율 값이 없을경우
-        var input2 = $("#mrtgCrncyAmt").val().replace(/,/g, "");
-        $("#mrtgValAmt").val(input2);
+        var input2 = $("#mrtgcrryAmt").val().replace(/,/g, "");
+        $("#mrtgEvlAmt").val(input2);
       }
     });
   }
@@ -3104,9 +3116,9 @@ const TB04010Sjs = (function () {
     $("#TB04010S_M002 option:eq(0)").prop("selected", true); // 담보취득방식상세
     $("#TB04010S_mrtgDtlsCcd option:eq(0)").prop("selected", true); // 담보상세
     $('#TB04010S_I027_3 option[value="KRW"]').prop("selected", true); // 부의기준통화
-    $("#mrtgCrncyAmt").val("0"); // 담보평가액(통화금액)
-    $("#TB04010S_tab6_aplcExchR").val("1"); // 적용환율
-    $("#mrtgValAmt").val(0); // 담보평가액(원)
+    $("#mrtgcrryAmt").val("0"); // 담보평가액(통화금액)
+    $("#TB04010S_tab6_aplyExrt").val("1"); // 적용환율
+    $("#mrtgEvlAmt").val(0); // 담보평가액(원)
     $("#TB04010S_R013 option:eq(0)").prop("selected", true); // 권리순위
     $("#TB04010S_mrtgRsnCnts").val(""); // 담보명
     $("#TB04010S_tab6_sn").val(""); // 항목일련번호
@@ -3141,9 +3153,10 @@ const TB04010Sjs = (function () {
     var mrtgAcqstStmDcd = $("#TB04010S_M003").val(); // 담보취득방식
     var mrtgAcqstDtlsDcd = $("#TB04010S_M002").val(); // 담보취득방식상세
     var invstCrryCd = $("#TB04010S_I027_3").val(); // 부의기준통화
-    var mrtgEvlAmt = $("#mrtgValAmt").val().replace(/,/g, ""); // 담보평가금액
-    var crncyAmt = $("#mrtgCrncyAmt").val().replace(/,/g, ""); // 통화금액
-    var aplyExrt = $("#TB04010S_tab6_aplyExrt").val().replace(/,/g, ""); // 적용환율
+    var mrtgEvlAmt = ($("#mrtgEvlAmt").val() || "").replace(/,/g, ""); // 담보평가금액
+    var crryAmt = ($("#mrtgcrryAmt").val() || "").replace(/,/g, ""); // 통화금액
+    var aplyExrt = ($("#TB04010S_tab6_aplyExrt").val() || "").replace(/,/g, ""); // 적용환율
+
     var rgtRnkDcd = $("#TB04010S_R013").val(); // 권리순위구분코드
     var mrtgRsnCnts = $("#TB04010S_mrtgRsnCnts").val(); // 담보사유내용
 
@@ -3183,7 +3196,7 @@ const TB04010Sjs = (function () {
         mrtgAcqstDtlsDcd: mrtgAcqstDtlsDcd,
         invstCrryCd: invstCrryCd,
         mrtgEvlAmt: mrtgEvlAmt,
-        crncyAmt: crncyAmt,
+        crryAmt: crryAmt,
         aplyExrt: aplyExrt,
         rgtRnkDcd: rgtRnkDcd,
         mrtgRsnCnts: mrtgRsnCnts,
@@ -3222,6 +3235,8 @@ const TB04010Sjs = (function () {
     var mtrDcd = $("#TB04010S_L007").val(); // 부수안건
     var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분
     var sn = Number($("#TB04010S_tab6_sn").val()); // 일련번호
+
+    console.log("datacheck: ", dealNo, mtrDcd, sn);
 
     var option = {};
     option.title = "Warning";
@@ -3864,14 +3879,6 @@ const TB04010Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "invstCrryCd",
-      dataType: "string",
-      dataIndx: "invstCrryCd",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden: true,
-    },
-    {
       title: "투자통화코드",
       dataType: "string",
       dataIndx: "invstCrryCd",
@@ -4195,7 +4202,7 @@ const TB04010Sjs = (function () {
     {
       title: "투자통화금액코드",
       dataType: "string",
-      dataIndx: "invstCrncyCd",
+      dataIndx: "invstCrryCd",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
       hidden: true,
@@ -4203,14 +4210,14 @@ const TB04010Sjs = (function () {
     {
       title: "투자통화금액코드명",
       dataType: "string",
-      dataIndx: "invstCrncyCdNm",
+      dataIndx: "invstCrryCdNm",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
       title: "담보평가액(통화금액)",
       dataType: "integer",
-      dataIndx: "crncyAmt",
+      dataIndx: "crryAmt",
       halign: "center",
       align: "right",
       filter: { crules: [{ condition: "range" }] },

@@ -635,7 +635,7 @@
                	AND IB201B.PRDT_LCLS_CD IN ('90', '91')
            	</if>
            	<if test='trDvsn == "S"'>
-               	AND IB201B.PRDT_LCLS_CD IN ('90', '91')
+               	AND IB201B.PRDT_LCLS_CD IN ('90', '91', '92')
            	</if>
            	<if test='trDvsn == "D"'>
                	AND IB201B.PRDT_LCLS_CD IN ('30')

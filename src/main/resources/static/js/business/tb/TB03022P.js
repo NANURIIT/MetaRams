@@ -8,245 +8,158 @@ let empNoSrchYn;  //직원번호검색여부
 let empNmSrchYn;  //직원명검색여부
 let dprtCdSrchYn; //부서번호검색여부
 let empInfoSrchCnt = 0;
-//let findEmpList_dprtCd;
+let isTB03021POpen = false; // 전역 상태 변수로 팝업 상태를 저장
+var TB03021P_searchConditions = {}; // 검색 조건을 담을 객체
+
+$(document).ready(function () {
+	keyDownEnter_TB03022P();
+	modalShowFunction();
+});
+
+// openTB03021P 이벤트 감지(TB03021P.js)
+document.addEventListener('openTB03021P', function(event) {
+    isTB03021POpen = true; // 팝업이 열렸다는 상태 저장
+	TB03022P_srch("TB03022P"); 
+});
+
+// closeTB03021P 이벤트 감지(TB03021P.js)
+document.addEventListener('closeTB03021P', function(event) {
+    isTB03021POpen = false; // 팝업이 닫히면 상태 초기화
+	const url = window.location.pathname; // 팝업 오픈 시점에서 URL을 다시 가져옴
+	TB03022P_srch(url); 
+});
+
+// selector를 만드는 함수
+function getSelectorString(menuId) {
+    let finalSelectorString;
+
+    if (isTB03021POpen) {
+        finalSelectorString = `span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`;
+    } else {
+        finalSelectorString = `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`;
+    }
+
+    return finalSelectorString;
+}
+
+/**
+ * 입력 이벤트 등록 함수
+ */
+function registerInputEvents(selector, inputLastId, inputLength) {
+
+    selector.closest('span.input-group-append').prev(`input[id*='${inputLastId}']`).on('input', async function () {
+        if(inputLastId === "_empNo"){
+			empNoSrchYn = "Y";
+		}else if(inputLastId === "_empNm"){
+			empNmSrchYn = "Y";
+		}else if(inputLastId === "_dprtCd"){
+			dprtCdSrchYn = "Y";
+		}
+		const currentInput = $(this);
+        if (currentInput.val().length === inputLength) {
+            await srchEmpEvent(currentInput);
+        }
+    });
+
+    selector.closest('span.input-group-append').prev(`input[id*='${inputLastId}']`).on('keydown', async function (evt) {
+        if (evt.keyCode === 13 && $(this).val().length !== inputLength) {
+            if(inputLastId === "_empNo"){
+				empNoSrchYn = "Y";
+			}else if(inputLastId === "_empNm"){
+				empNmSrchYn = "Y";
+			}else if(inputLastId === "_dprtCd"){
+				dprtCdSrchYn = "Y";
+			}
+			evt.preventDefault();
+			await srchEmpEvent($(this));
+        }
+    });
+}
 
 /**
  * 팝업 자동 호출, 검색
  * @author {}
  */
 function TB03022P_srch(menuId) {
-	let selector = $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`)
-	
-	// if(TB03021P_CallTB0302P === "Y"){
-	// 	selector.closest('div[data-menuid]').remove();
-	// }
+	let selectorString = getSelectorString(menuId); // 동적으로 selectorString 생성
+    let selector = $(selectorString); // selector 사용
+    // 이전에 바인딩된 이벤트 제거 후 새로 바인딩
+    selector.off('input keydown');
 
-	// == 직원번호 검색 ==================================================================================================
-	//input에 값 입력 시 자동 조회
-	selector.closest('span.input-group-append').prev("input[id*='_empNo']").on('input', async function () {
-		const currentInput = $(this);
-		const empNmInput = currentInput.closest('.input-group').find('input[id*="_empNm"]');  // 같은 div 내의 empNm input
-		empNmInput.val("");  // empNm 초기화
-		
-		// 입력값이 7자일 때 조회
-		if (currentInput.val().length === 7) {
-			empNoSrchYn = "Y";
-			await srchEmpEvent(currentInput);
-		}
-	});
+    // 공통 이벤트 등록
+    registerInputEvents(selector, '_empNo', 7);
+    registerInputEvents(selector, '_empNm', 3);
+    registerInputEvents(selector, '_dprtCd', 3);
+}
 
-	// 'keydown' 이벤트로 조회 (Enter키)
-	selector.closest('span.input-group-append').prev("input[id*='_empNo']").on('keydown', async function (evt) {
-		
-		console.log('_empNo enter')
-		if (evt.keyCode === 13) {
-			empNoSrchYn = "Y";
-			evt.preventDefault();
-			TB03022P_onchangehandler == "off";
-			await srchEmpEvent($(this));
-		}
-	});
+// 전역 함수로 srchEmpEvent 선언
+async function srchEmpEvent(selector) {
+    let prefix;
+    const inputId = $(selector).attr('id');
+    const lastIndex = inputId.lastIndexOf('_');
+    prefix = inputId.substring(0, lastIndex);
+    let data = $(selector).val();
 
-	// 'change' 이벤트로 조회
-	selector.closest('span.input-group-append').prev("input[id*='_empNo']").on('change', async function (evt) {
-		
-		//const currentInput = $(this);
-		if (TB03022P_onchangehandler === "on") {
-			empNoSrchYn = "Y";
-			await srchEmpEvent(this);
-		}
-	});
+    $('#TB03022P_prefix').val(prefix);
 
-	// == 직원명 검색 ==================================================================================================
-	//input에 값 입력 시 자동 조회
-	selector.closest('span.input-group-append').prev("input[id*='_empNm']").on('input', async function () {
-		const currentInput = $(this);
-		const empNmInput = currentInput.closest('.input-group').find('input[id*="_empNo"]');  // 같은 div 내의 empNm input
-		empNmInput.val("");  // empNm 초기화
-		
-		// 입력값이 7자일 때 조회
-		if (currentInput.val().length === 7) {
-			empNmSrchYn = "Y";
-			await srchEmpEvent(currentInput);
-		}
-	});
+    if ($(`div[id='modal-TB03022P']`).css('display') === "none") {
+        TB03022P_gridState = 1;
+    }
 
-	// 'keydown' 이벤트로 조회 (Enter키)
-	selector.closest('span.input-group-append').prev("input[id*='_empNm']").on('keydown', async function (evt) {
-		
-		if (evt.keyCode === 13) {
-			empNmSrchYn = "Y";
-			evt.preventDefault();
-			TB03022P_onchangehandler == "off";
-			await srchEmpEvent($(this));
-		}
-	});
+    // const fieldsToClear = ['empNm', 'empNo', 'dprtNm'];
+    // fieldsToClear.forEach(field => TB03022P_clearInput(`${prefix}_${field}`));
 
-	//== 부서번호 검색 ==================================================================================================
-	
-	selector.closest('span.input-group-append').prev("input[id*='_dprtCd']").on('input', async function () {
-		const currentInput = $(this);
-		const dprtNmnput = currentInput.closest('.input-group').find('input[id*="_dprtNm"]');  // 같은 div 내의 empNm input
-		dprtNmnput.val("");  // prdtNm 초기화
-		
-		// 입력값이 5자일 때 조회
-		if (currentInput.val().length === 3) {
-			dprtCdSrchYn = "Y";
-			await srchEmpEvent(currentInput);
-		}
-	});
+    $('#TB03022P_empno').val(empNoSrchYn === "Y" ? data : "");
+    $('#TB03022P_empNm').val(empNmSrchYn === "Y" ? data : "");
+    $('#TB03022P_dprtCd').val(dprtCdSrchYn === "Y" ? data : "");
 
-	// 'keydown' 이벤트로 조회 (Enter키)
-	selector.closest('span.input-group-append').prev("input[id*='_dprtCd']").on('keydown', async function (evt) {
-		
-		if (evt.keyCode === 13) {
-			dprtCdSrchYn = "Y";
-			evt.preventDefault();
-			TB03022P_onchangehandler == "off";
-			await srchEmpEvent($(this));
-		}
-	});
+    await getEmpList();
+    if (TB03022P_gridState === 0) {
+        callGridTB03022P(prefix);
+    } else if (TB03022P_gridState === 1) {
+        callTB03022P(prefix);
+    }
 
-	// 'change' 이벤트로 조회
-	selector.closest('span.input-group-append').prev("input[id*='_empNo']").on('change', async function (evt) {
-		
-		//const currentInput = $(this);
-		if (TB03022P_onchangehandler === "on") {
-			dprtCdSrchYn = "Y";
-			await srchEmpEvent(this);
-		}
-	});
-
-	// ===============================================================================================================
-
-	// 공통 검색 이벤트
-	async function srchEmpEvent(selector) {
-		let prefix;
-		const inputId = $(selector).attr('id');
-	
-		// 입력된 id에 따라 prefix 결정
-		const lastIndex = inputId.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
-		prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
-		console.log(`prefix : ${prefix}`)
-		let data = $(selector).val();
-	
-		// TB03022P_prefix 값 설정
-		$('#TB03022P_prefix').val(prefix);
-	
-		// 팝업이 닫힌 경우 그리드 상태 업데이트
-		if ($(`div[id='modal-TB03022P']`).css('display') === "none") {
-			TB03022P_gridState = 1;
-		}
-	
-		// 각 조건에 따른 입력 값 초기화 및 데이터 설정
-		if (empNoSrchYn === "Y") {
-			clearInput(`${prefix}_empNm`);
-			$('#TB03022P_empno').val(data);
-		}
-	
-		if (empNmSrchYn === "Y") {
-			clearInput(`${prefix}_empNo`);
-			$('#TB03022P_empNm').val(data);
-		}
-	
-		if (dprtCdSrchYn === "Y") {
-			clearInput(`${prefix}_dprtNm`);
-			$('#TB03022P_dprtCd').val(data);
-		}
-	
-		// 그리드 상태 체크 후 팝업 호출
-		await getEmpGridState();
-	
-		// 그리드 상태에 따라 팝업 호출 및 데이터 설정
-		if (TB03022P_gridState === 0) {
-			callGridTB03022P(prefix);
-		} else if (TB03022P_gridState === 1) {
-			callTB03022P(prefix);
-		}
-	
-		// 입력 데이터 세팅
-		$('#TB03022P_empno').val(empNoSrchYn === "Y" ? data : "");
-		$('#TB03022P_empNm').val(empNmSrchYn === "Y" ? data : "");
-		$('#TB03022P_dprtCd').val(dprtCdSrchYn === "Y" ? data : "");
-	
-		// 그리드 목록 가져오기 (400ms 지연)
-		setTimeout(() => getEmpList(), 400);
-	
-		// 상태 초기화
-		empNoSrchYn = "N";
-		empNmSrchYn = "N";
-		dprtCdSrchYn = "N";
-	}
-	
-	/**
-	 * 입력 필드 초기화
-	 * @param {string} inputId - 초기화할 input 필드의 id
-	 */
-	function clearInput(inputId) {
-		$(`input[id='${inputId}']`).val("");
-	}
+    //setTimeout(() => getEmpList(), 400);
+    empNoSrchYn = "N";
+    empNmSrchYn = "N";
+    dprtCdSrchYn = "N";
 }
 
 
-async function getEmpGridState(){
-
-	var empNm = $("#TB03022P_empNm").val();
-	var empno = $("#TB03022P_empno").val();
-	var dprtCd = $("#TB03022P_dprtCd").val();
-	var dprtNm = $("#TB03022P_dprtNm").val();
-	console.log("dtoParam : ", dtoParam)
-	var dtoParam = {
-		"empNm": empNm
-		, "empno": empno
-		, "dprtCd": dprtCd
-		, "dprtNm": dprtNm
-		, "hdqtCd": ""
-		, "hdqtNm": ""
-	}
-
-	if (TB03022P_gridState === 0) {
-		return;
-	}
-
-	await $.ajax({
-		type: "GET",
-		url: "/findEmpList",
-		data: dtoParam,
-		dataType: "json",
-		success: function (data) {
-			if (!data || data === undefined || data.length === 0) {
-				//console.log("1번조건");
-				TB03022P_gridState = 1;
-			} else if (data.length >= 2) {
-				//console.log("2번조건");
-				TB03022P_gridState = 1;
-
-				//부서검색인 경우
-                // if(dprtCdSrchYn == "Y"){
-                //     const firstDprtCd = data[0].dprtCd; // 첫 번째 dprtCd 값
-				// 	if (data.every(item => item.dprtCd === firstDprtCd)) {
-				// 		TB03022P_gridState = 0; 
-				// 		findEmpList_dprtCd = "Y";
-                //     }
-                   
-                // }
-			} else if (data) {
-				//console.log("3번조건");
-				TB03022P_gridState = 0;
-			}
-		}
-	});
-
+function TB03022P_clearInput(inputId) {
+    $(`input[id='${inputId}']`).val("");
 }
 
 function callGridTB03022P(prefix) {
-	$('#TB03022P_empNm').val("");
-	$('#TB03022P_empno').val("");
-	$('#TB03022P_dprtCd').val("");
-	$('#TB03022P_dprtNm').val("");
+	// $('#TB03022P_empNm').val("");
+	// $('#TB03022P_empno').val("");
+	// $('#TB03022P_dprtCd').val("");
+	// $('#TB03022P_dprtNm').val("");
 
 	$('#TB03022P_prefix').val(prefix);
 	setTimeout(() => roadListGrid(), 300);
+}
+
+/**
+ * 모달 팝업 show
+ * @param {string} prefix 결과전달 ID의 prefix
+ */
+function callTB03022P(prefix){
+	reset_TB03022P();
+	TB03022P_gridState = 0;
+	TB03022P_pf = prefix;
+	setTimeout(() => roadListGrid(), 300);
+	$('#TB03022P_prefix').val(prefix);
+	$('#modal-TB03022P').modal('show');
+	indexChangeHandler("TB03022P");
+
+	if ( prefix === 'grd_TB08040S' ) {
+		// console.log("grd_TB08040S:::prefix", prefix)
+		// console.log("grd_TB08040S:::e", e)
+		tb08040sIdx = e;
+	}
+
 }
 
 function roadListGrid() {
@@ -276,31 +189,8 @@ function roadListGrid() {
 }
 
 
-$(document).ready(function () {
-	keyDownEnter_TB03022P();
-	modalShowFunction();
-});
 
-/**
- * 모달 팝업 show
- * @param {string} prefix 결과전달 ID의 prefix
- */
-function callTB03022P(prefix){
-	reset_TB03022P();
-	TB03022P_gridState = 0;
-	TB03022P_pf = prefix;
-	setTimeout(() => roadListGrid(), 300);
-	$('#TB03022P_prefix').val(prefix);
-	$('#modal-TB03022P').modal('show');
-	indexChangeHandler("TB03022P");
 
-	if ( prefix === 'grd_TB08040S' ) {
-		console.log("grd_TB08040S:::prefix", prefix)
-		console.log("grd_TB08040S:::e", e)
-		tb08040sIdx = e;
-	}
-
-}
 
 /**
  * 모달 초기화
@@ -372,7 +262,7 @@ function keyDownEnter_TB03022P() {
 /**
  * ajax 통신(조회)
  */
-function getEmpList() {
+async function getEmpList() {
 
 	var empNm = $("#TB03022P_empNm").val();
 	var empno = $("#TB03022P_empno").val();
@@ -388,20 +278,26 @@ function getEmpList() {
 		, "hdqtNm": ""
 	}
 
-	$.ajax({
+	await $.ajax({
 		type: "GET",
 		url: "/findEmpList",
 		data: dtoParam,
 		dataType: "json",
 		success: function (data) {
-			
+			if (!data || data === undefined || data.length === 0) {
+				TB03022P_gridState = 1;
+			} else if (data.length >= 2) {
+				TB03022P_gridState = 1;
+			} else if (data) {
+				TB03022P_gridState = 0;
+			}
+
 			if(empInfoSrchCnt >= 2){
 				//alert("조회된 정보가 없습니다!")
 				empInfoSrchCnt = 0;
-				return;
+				//return;
 			}
-			dataEmpSetGrid(data);
-			
+			setTimeout(() => dataEmpSetGrid(data), 400);
 		}
 	});
 
@@ -409,40 +305,36 @@ function getEmpList() {
 
 function dataEmpSetGrid(data){
 	arrPqGridEmpInfo.setData(data);
+	arrPqGridEmpInfo.option("cellClick", function (event, ui) {
+		const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
+		copyClickData('TB03022P', clickData);  //셀 카피 가능
+	});
 	arrPqGridEmpInfo.option("rowDblClick", function(event, ui) {
 		setEmpNm(ui.rowData); 
 	});
 	
 	// 검색된 행이 1개일 경우 데이터 바로 입력
 	if (arrPqGridEmpInfo.pdata.length === 1 && $(`div[id='modal-TB03022P']`).css('display') === "none") {
-		//console.log("여기로와야해");
 		var prefix = $("#TB03022P_prefix").val();
 		setEmpNm(arrPqGridEmpInfo.pdata[0]);
-		//console.log(arrPqGridEmpInfo.pdata[0])
 		empInfoSrchCnt = 0;
 		// 입력되고 난 후 온체인지 이벤트 on
 		TB03022P_onchangehandler = "on"
 	}
+	// 변부장님 지시로 삭제
 	// 검색된 행이 0일 경우 모든 데이터 출력
-	else if (arrPqGridEmpInfo.pdata.length === 0) {
-		//console.log("딴길로 새지마라");
-		// 데이터 없는 경우 재조회 방지
-		empInfoSrchCnt += 1;
-		//reset_TB03022P();
-		getEmpList();
-	}
+	// else if (arrPqGridEmpInfo.pdata.length === 0) {
+
+	// 	// 데이터 없는 경우 재조회 방지
+	// 	empInfoSrchCnt += 1;
+
+	// 	getEmpList();
+	// }
 	// 그렇지 않은 경우 조건에 맞는 데이터 출력
 	else {
-		// console.log("해쥐맬라고우~");
 		empInfoSrchCnt = 0;	
-		// if(findEmpList_dprtCd == "Y"){
-		// 	setEmpNm(arrPqGridEmpInfo.pdata[0]);
-		// }	
 	}
 
-	//empNoSrchYn  = "N";
-	//empNmSrchYn  = "N";
-	//dprtCdSrchYn = "N";
 }
 
 /**
@@ -490,6 +382,9 @@ function setEmpNm(e) {
 			}
 			$("#gridEnoPList").pqGrid("addRow", {rowData: newRow,  checkEditable: false });
 			break;
+		case "TB03021P":
+			$("#TB03021P_dprtNm").val(dprtCd).prop("selected", true);
+			break;	
 		case "TB05010S_mmbrTrgt" :
 			// 특정 행의 데이터 수정 
 			if (arrPqGridMmbrInfo.length > 0) {

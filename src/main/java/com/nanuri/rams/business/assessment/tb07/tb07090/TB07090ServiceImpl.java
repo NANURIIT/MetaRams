@@ -49,8 +49,11 @@ public class TB07090ServiceImpl implements TB07090Service {
         TB07090SVO rsltVO = new TB07090SVO();
 
         List<IBIMS403BVO> rdmpPrarDtlsList = ibims403bMapper.getRdmpPrarDtls(param);
-        List<IBIMS430BVO> rctmDtlsList = ibims430bMapper.getRctmDtls(param);
-        List<IBIMS430BVO> dprtDtlsList = ibims430bMapper.dptrDtlsInq(param);
+        // List<IBIMS430BVO> rctmDtlsList = ibims430bMapper.getRctmDtls(param);
+        // List<IBIMS430BVO> dprtDtlsList = ibims430bMapper.dptrDtlsInq(param);
+
+        List<IBIMS430BVO> rctmDtlsList = ibims430bMapper.getNoDealList(param);
+        List<IBIMS430BVO> dprtDtlsList = ibims430bMapper.getYesDealList(param);
 
         rsltVO.setRdmpPrarDtlsList(rdmpPrarDtlsList);
         rsltVO.setDprtDtlsList(dprtDtlsList);
@@ -94,13 +97,22 @@ public class TB07090ServiceImpl implements TB07090Service {
         return returnVal;
     }
 
-    //입금내역매핑
+    // 입금내역매핑
     @Override
     public int rctmDtlsMapping(List<IBIMS430BDTO> paramList){
         log.debug("paramList(Before Sequence Setting):::{}", paramList);
 
         int returnVal = ibims430bMapper.rctmDtlsMapping(paramList);
 
+        return returnVal;
+    }
+
+    /**
+     * 대충만든 뉴버전
+     */
+    @Override
+    public int ibims430bInsert (List<IBIMS430BDTO> paramList) {
+        int returnVal = ibims430bMapper.rctmDtlsRgst(paramList);
         return returnVal;
     }
 }

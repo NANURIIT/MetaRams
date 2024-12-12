@@ -82,13 +82,7 @@ const TB06030Sjs = (function(){
 		getSelectBoxList('TB06030S', item);
 		getSelectBoxCode2('TB06030S','I011');
 		
-		var item = '';
-		item += 'I008';					// 결의협의회구분코드
-		item += '/' + 'D007';			// 매각일자구분코드
-		item += '/' + 'D008';			// 매각기준금액구분코드
-		item += '/' + 'I027';			// 투자통화코드
-		
-		getSelectBoxList('TB06012P', item);
+
 		
 		var item = '';
 		item += 'E028';					// 담보설정종류코드
@@ -118,9 +112,11 @@ const TB06030Sjs = (function(){
 		item += '/' + 'M004';			// 담보취득방법코드
 		item += '/' + 'G002';			// 보증약정구분코드
 		
-		getSelectBoxList('TB06013P', item);
-		
+		var selCnt =0;
+		selCnt= $("#TB06013P_E028 option").length;
+		if(selCnt==0 ||selCnt==1) getSelectBoxList('TB06013P', item);	
 		onChangeSelectBoxMrtgKndCd();
+
 	}
 
 	/**
@@ -281,6 +277,7 @@ const TB06030Sjs = (function(){
 	// 결의안건정보
 	function getCnfrncDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd, prdtCd) {
 		var option = {}
+		var trDvsn ="F"; //주식/채권		
 		option.text = "";
 		if (isEmpty(ibDealNo) && isEmpty(prdtCd)) {
 			option.text = "Deal 정보 또는 종목코드 정보를 조회해주세요.";
@@ -289,10 +286,11 @@ const TB06030Sjs = (function(){
 		}
 
 		var paramData = {
-			"dealNo" : ibDealNo,
-			"mtrDcd" : lstCCaseCcd,
-			"jdgmDcd" : riskInspctCcd,
-			"prdtCd" : prdtCd
+			  "dealNo" : ibDealNo
+			, "mtrDcd" : lstCCaseCcd
+			,"jdgmDcd" : riskInspctCcd
+			, "prdtCd" : prdtCd
+			, "trDvsn" : trDvsn
 		}
 
 		$.ajax({
@@ -452,6 +450,20 @@ const TB06030Sjs = (function(){
 				getFileInfo($('#key1').val(),'3');
 				/******  딜공통 파일첨부 추가 ******/ 
 				
+			},
+			error : function(request,  error ){
+				/*console.log("code:"+request.status);
+				console.log("message:"+request.responseText);
+				console.log("error:"+error);
+				*/
+				Swal.fire({
+					title: '안건 조회 확인',
+					icon: 'error',
+					text: '주식/채권 정보등록이 가능한 안건이 아닙니다.',
+					confirmButtonText: '확인',
+				}).then(() => {
+					resetSearchRequiment(); //초기화
+				});
 			}
 		});/* end of ajax*/
 

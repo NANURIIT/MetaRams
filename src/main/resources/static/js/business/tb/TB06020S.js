@@ -80,13 +80,6 @@ const TB06020Sjs = (function(){
 		getSelectBoxList('TB06020S', item);
 		getSelectBoxCode2('TB06020S','I011');
 		
-		var item = '';
-		item += 'I008';					// 결의협의회구분코드
-		item += '/' + 'D007';			// 매각일자구분코드
-		item += '/' + 'D008';			// 매각기준금액구분코드
-		item += '/' + 'I027';			// 투자통화코드
-		
-		getSelectBoxList('TB06012P', item);
 		
 		var item = '';
 		item += 'E028';					// 담보설정종류코드
@@ -116,9 +109,10 @@ const TB06020Sjs = (function(){
 		item += '/' + 'M004';			// 담보취득방법코드
 		item += '/' + 'G002';			// 보증약정구분코드
 		
-		getSelectBoxList('TB06013P', item);
-		
-		onChangeSelectBoxMrtgKndCd(); 
+		var selCnt =0;
+		selCnt= $("#TB06013P_E028 option").length;
+		if(selCnt==0 ||selCnt==1) getSelectBoxList('TB06013P', item);	
+		onChangeSelectBoxMrtgKndCd();	
 	}
 	
 
@@ -280,7 +274,8 @@ const TB06020Sjs = (function(){
 	// 결의안건정보
 	function getCnfrncDealInfo(ibDealNo, jdgmDcd, mtrDcd, prdtCd) {
 		var option = {}
-		option.text = "";
+		var trDvsn ="D"; //집합투자증권		
+		option.text = "";		
 		if (isEmpty(ibDealNo) && isEmpty(prdtCd)) {
 			option.text = "Deal 정보 또는 종목코드 정보를 조회해주세요.";
 			openPopup(option);
@@ -288,10 +283,11 @@ const TB06020Sjs = (function(){
 		}
 
 		var paramData = {
-			"dealNo" : ibDealNo,
-			"mtrDcd" : mtrDcd,
-			"jdgmDcd" : jdgmDcd,
-			"prdtCd" : prdtCd
+			  "dealNo"  : ibDealNo
+			, "mtrDcd"  : mtrDcd
+			, "jdgmDcd" : jdgmDcd
+			, "prdtCd"  : prdtCd
+			, "trDvsn"  : trDvsn
 		}
 
 		$.ajax({
@@ -398,6 +394,20 @@ const TB06020Sjs = (function(){
 				getFileInfo($('#key1').val(),'3');
 				/******  딜공통 파일첨부 추가 ******/ 
 						
+			},
+			error : function(request,  error ){
+				/*console.log("code:"+request.status);
+				console.log("message:"+request.responseText);
+				console.log("error:"+error);
+				*/
+				Swal.fire({
+					title: '안건 조회 확인',
+					icon: 'error',
+					text: '집합투자증권 정보등록이 가능한 안건이 아닙니다.',
+					confirmButtonText: '확인',
+				}).then(() => {
+					resetSearchRequiment(); //초기화
+				});
 			}
 		});/* end of ajax*/
 

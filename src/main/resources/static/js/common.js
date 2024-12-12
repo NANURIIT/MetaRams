@@ -1277,45 +1277,7 @@ function getSelectBoxList(prefix, item, async = true) {
           }
         }
 
-        if (prefix == "TB06010S") {
-          if (value.cmnsGrpCd == "I027") {
-            // 통화코드
-            var html = "";
-            html +=
-              '<option value="' +
-              value.cdValue +
-              '">' +
-              value.cdName +
-              " (" +
-              value.cdValue +
-              ")" +
-              "</option>";
-
-            $("#TB06013P_I027_2").append(html);
-            $("#TB06013P_I027_3").append(html);
-            $("#TB06013P_I027_4").append(html);
-          }
-        }
-        if (prefix == "TB06020S") {
-          if (value.cmnsGrpCd == "I027") {
-            // 통화코드
-            var html = "";
-            html +=
-              '<option value="' +
-              value.cdValue +
-              '">' +
-              value.cdName +
-              " (" +
-              value.cdValue +
-              ")" +
-              "</option>";
-
-            $("#TB06013P_I027_2").append(html);
-            $("#TB06013P_I027_3").append(html);
-            $("#TB06013P_I027_4").append(html);
-          }
-        }
-        if (prefix == "TB06030S") {
+        if (prefix == "TB06013P") {
           if (value.cmnsGrpCd == "I027") {
             // 통화코드
             var html = "";
@@ -1524,24 +1486,21 @@ function setKRKRW(prefix) {
   }
 
   if (prefix == "TB06010S") {
-    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06010S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
   }
 
   if (prefix == "TB06020S") {
-    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06020S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
   }
 
   if (prefix == "TB06030S") {
-    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06030S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
+  }
+
+  if (prefix == "TB06013P") {
+    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
+  	$('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
+  	$('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
   }
 }
 
@@ -2026,8 +1985,15 @@ function pqGridAddNewRow(colModelSelector) {
  * @author {김건우}
  */
 function pqGridDeleteRow(colModelSelector, rowIndx) {
+
+  let idx = rowIndx;
+
+  if(!rowIndx){
+    idx = colModelSelector.pqGrid('instance').pdata.length - 1
+  }
+
   colModelSelector.pqGrid("deleteRow", {
-    rowIndx: rowIndx,
+    rowIndx: idx,
   });
 }
 
@@ -2056,3 +2022,27 @@ function resetPGgrids(menuid) {
 }
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) { }
+
+/**
+ * 팝업 그리드 셀 카피를 위한이벤트
+ * rowDblClick 이벤트가 같이 있는 그리드도 셀카피를 할 수 있게 함
+ * @param {*} fileName  
+ * @param {*} clickData ui.rowData[ui.column.dataIndx]; 값을 넣어줘야 힘
+ * 예시 ) TB03022P.js
+ * arrPqGridEmpInfo.option("cellClick", function (event, ui) {
+ * 	const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
+ * 	copyClickData('TB03022P', clickData);  //셀 카피 가능
+	});
+ */
+  function copyClickData(fileName, clickData) {
+    $(document).keydown(function(event) {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
+          if (clickData !== null) {
+              navigator.clipboard.writeText(clickData).catch(function(error) {
+                  console.log(fileName + ' 복사 실패: ' + error);
+              });
+          }
+      
+      }
+    });
+  }

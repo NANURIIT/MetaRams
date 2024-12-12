@@ -14,11 +14,12 @@
              , s107b.SPCLT_FNC_MNG_NO                           /* 특수금융관리번호(SL) */
              , s107b.OUTS_CRDT_GRD_DCD                          /* 외부신용등급구분코드(SL내부등급) */
              , s002b.CD_VL_NM			AS OUTS_CRDT_GRD_DCD_NM	      /* 외부신용등급구분코드명(SL내부등급) */
-             , s107b.BRWR_CRNO                                  /* 차주법인등록번호 */
+             , s107b.BRWR_CRNO                                  /* 법인등록번호 */
              , s107b.INS_CRDT_GRD_DCD                           /* 내부신용등급구분코드 */
              , s003b.CD_VL_NM			AS INS_CRDT_GRD_DCD_NM	      /* 내부신용등급구분코드명 */
              , s107b.RNM_CNFM_NO                                /* 실명확인번호 */
-             , s114b.ENTP_HNGL_NM		AS ENTP_HNGL_NM			        /* 업체한글명 */
+             , s010b.ENTP_NM		AS ENTP_HNGL_NM			            /* 업체한글명 */
+             , s107b.ARDY_BZEP_NO								                /* 기업체코드 */
              , s107b.HND_DETL_DTM                               /* 조작상세일시 */
              , s107b.HND_EMPNO                                  /* 조작사원번호 */
              , s107b.HND_TMNL_NO                                /* 조작단말기번호 */
@@ -31,11 +32,11 @@
           LEFT JOIN IBIMS002B s003b
             ON s003b.CMNS_CD_GRP								= 'I012'			  /* 내부신용등급구분코드 */
            AND s107b.INS_CRDT_GRD_DCD						= s003b.CD_VL_ID
-          LEFT JOIN IBIMS114B s114b
-            ON s107b.RNM_CNFM_NO								= s114b.BZNO
-           AND s114b.BZNO != ' '
-           AND s107b.BRWR_CRNO = s114b.BZNO
-           AND s114b.DEL_YN = 'N'
+          LEFT JOIN IBIMS010B s010b
+            ON s107b.RNM_CNFM_NO = s010b.RNBN           
+           AND s107b.BRWR_CRNO = s010b.CRNO
+           AND s107b.ARDY_BZEP_NO = s010b.ARDY_BZEP_NO
+           AND s010b.USE_YN = 'Y'
          WHERE 1=1
            AND s107b.DEAL_NO                    = #{dealNo}
            AND s107b.MTR_DCD                    = #{mtrDcd}
@@ -69,6 +70,7 @@
                 , SPCLT_FNC_MNG_NO                                  /* 특수금융관리번호(SL) */
                 , OUTS_CRDT_GRD_DCD                                 /* 외부신용등급구분코드(SL내부등급) */
                 , BRWR_CRNO                                         /* 차주법인등록번호 */
+                , ARDY_BZEP_NO								                      /* 기업체코드 */
                 , INS_CRDT_GRD_DCD                                  /* 내부신용등급구분코드 */
                 , RNM_CNFM_NO                                       /* 실명확인번호 */
                 , HND_DETL_DTM                                      /* 조작상세일시 */
@@ -87,6 +89,7 @@
                , #{spcltFncMngNo}                                   /* 특수금융관리번호(SL) */
                , #{outsCrdtGrdDcd}                                  /* 외부신용등급구분코드(SL내부등급) */
                , #{brwrCrno}                                        /* 차주법인등록번호 */
+               , #{ardyBzepNo}								                      /* 기업체코드 */
                , #{insCrdtGrdDcd}                                   /* 내부신용등급구분코드 */
                , #{rnmCnfmNo}                                       /* 실명확인번호 */
                , SYSDATE                                            /* 조작상세일시 */
@@ -105,6 +108,7 @@
             , SPCLT_FNC_MNG_NO                                  = #{spcltFncMngNo}                                   /* 특수금융관리번호(SL) */
             , OUTS_CRDT_GRD_DCD                                 = #{outsCrdtGrdDcd}                                  /* 외부신용등급구분코드(SL내부등급) */
             , BRWR_CRNO                                         = #{brwrCrno}                                        /* 차주법인등록번호 */
+            , ARDY_BZEP_NO								                      = #{ardyBzepNo}                                      /* 기업체코드      */
             , INS_CRDT_GRD_DCD                                  = #{insCrdtGrdDcd}                                   /* 내부신용등급구분코드 */
             , RNM_CNFM_NO                                       = #{rnmCnfmNo}                                       /* 실명확인번호 */
             , HND_DETL_DTM                                      = SYSDATE                                            /* 조작상세일시 */

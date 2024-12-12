@@ -17,6 +17,7 @@ public class IBIMS107BDTO {
     private String     spcltFncTrgtYn;                // 특수금융대상여부(SL)
     private String     spcltFncMngNo;                 // 특수금융관리번호(SL)
     private String     outsCrdtGrdDcd;                // 외부신용등급구분코드(SL내부등급)
+    private String     ardyBzepNo;                    // 기업체코드
     private String     brwrCrno;                      // 차주법인등록번호
     private String     insCrdtGrdDcd;                 // 내부신용등급구분코드
     private String     entpHnglNm;                    // 한글법인명
