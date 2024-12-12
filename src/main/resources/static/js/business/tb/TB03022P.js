@@ -145,7 +145,7 @@ function callGridTB03022P(prefix) {
  * 모달 팝업 show
  * @param {string} prefix 결과전달 ID의 prefix
  */
-function callTB03022P(prefix){
+function callTB03022P(prefix, e){
 	reset_TB03022P();
 	TB03022P_gridState = 0;
 	TB03022P_pf = prefix;
@@ -153,6 +153,8 @@ function callTB03022P(prefix){
 	$('#TB03022P_prefix').val(prefix);
 	$('#modal-TB03022P').modal('show');
 	indexChangeHandler("TB03022P");
+
+	if (prefix == "TB05010S_mmbrTrgt" || prefix == "TB05010S_mmbrAngt") mmbrSn = e;
 
 	if ( prefix === 'grd_TB08040S' ) {
 		// console.log("grd_TB08040S:::prefix", prefix)
@@ -307,7 +309,7 @@ function dataEmpSetGrid(data){
 	arrPqGridEmpInfo.setData(data);
 	arrPqGridEmpInfo.option("cellClick", function (event, ui) {
 		const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
-		copyClickData('TB03022P', clickData);  //셀 카피 가능
+		copyClickData(clickData);  //셀 카피 가능
 	});
 	arrPqGridEmpInfo.option("rowDblClick", function(event, ui) {
 		setEmpNm(ui.rowData); 
@@ -378,7 +380,6 @@ function setEmpNm(e) {
 				"empNm" : empNm,        //직원명
 				"cntrt" : "",
 				"delYn" : "N",
-				
 			}
 			$("#gridEnoPList").pqGrid("addRow", {rowData: newRow,  checkEditable: false });
 			break;
@@ -388,6 +389,7 @@ function setEmpNm(e) {
 		case "TB05010S_mmbrTrgt" :
 			// 특정 행의 데이터 수정 
 			if (arrPqGridMmbrInfo.length > 0) {
+
 				arrPqGridMmbrInfo[mmbrSn].atdcTrgtEmpnm = empNm; // 버튼을 누른 행의 atdcTrgtEmpnm(위원명_화면) 값 변경
 				arrPqGridMmbrInfo[mmbrSn].atdcTrgtEmpno = empNo; // 버튼을 누른 행의 atdcTrgtEmpno(위원코드) 값 변경
 			}
