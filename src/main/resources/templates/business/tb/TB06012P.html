@@ -29,7 +29,7 @@
 												<div class="col-sm-3">
 													<div class="input-group">
 														<input type="text" class="form-control" id="TB06012P_ibDealNo" readonly>
-														<input type="hidden" id="TB06012P_prdtCd" value="">
+														<!--<input type="hidden" id="TB06012P_prdtCd" value=""> -->
 														<!-- <input type="hidden" id="TB06012P_lstCCaseCcd">
 														<input type="hidden" id="TB06012P_riskInspctCcd"> -->
 														<!--<span class="input-group-append">
@@ -87,7 +87,11 @@
 												<div class="col-sm-3 input-group">
 													<input type="text" class="form-control text-right" id="TB06012P_sn" readonly>
 												</div>
-						    					<div class="col-sm-8 text-right">
+												<label class="col-sm-1 col-form-label">연결대상<br class="br-mo">종목코드</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06012P_prdtCd" value="" readonly>								
+												</div>
+						    					<div class="col-sm-4 text-right">
 						    						<button class="btn btn-info" onclick="connectIBIMS209B();">승인조건 연결</button>
 													<button class="btn btn-primary" onclick="selectIBIMS208B();"><i class="fa fa-search"></i>&nbsp;조회</button>
 													<button class="btn btn-default" onclick="clearTB06012P(1);"><i class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
