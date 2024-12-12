@@ -631,7 +631,7 @@ const TB05040Sjs = (function(){
 	];
 
   return {
-	getDealList : getDealList
-	
+	getDealList : getDealList,
+	getUrlDealInfo: getUrlDealInfo,
   }
 })();

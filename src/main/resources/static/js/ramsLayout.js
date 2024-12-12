@@ -4,6 +4,13 @@ $(function () {
 });
 
 /**
+ * 이전 페이지 저장용 ☆전★역☆변★수☆
+ * @author {집에 가고싶은 사람}
+ */
+const e_jeon_page = [];   // 최초의 이전 페이지는 늘 오늘의 할일...인듯 ㅜㅜ
+let rtUseYn = "N";        // removeTab을 사용했는지 안했는지 구분용. 아이디어 있으신분 바꿔주세요
+
+/**
  * 왼쪽 네비게이션 메뉴 생성
  * @param {String} empNo
  * @author {김건우}
@@ -186,6 +193,8 @@ async function callPage(menuId, pageName) {
         return;
     }
 
+    e_jeon_page.push(url.split('/')[1]);
+
     history.pushState(null, '', '/' + menuId);
 
     // AJAX 요청으로 해당 콘텐츠를 가져옴
@@ -338,8 +347,12 @@ function moveTab(menuId) {
         return;
     }
 
+    if(rtUseYn === "N"){
+        console.log("리무브탭 사용 안했어요");
+        e_jeon_page.push(url.split('/')[1]);
+    }
+    
     $(".main-tab").removeClass("active");
-
     $("#myTab li button").removeClass('active');
     $(`#myTab li button[data-tabid="/${menuId}"]`).addClass('active');
     $(`#myTab li[data-tabid="/${menuId}"]`).addClass('active');
@@ -352,6 +365,8 @@ function moveTab(menuId) {
     $(`div[data-menuId*="TB"], div[data-menuId*="GD"]`).hide()
     $(`div[data-menuId="/${menuId}"]`).show()
 
+    needRunFn(menuId);
+
     history.pushState(null, '', '/' + menuId);
 
 }
@@ -363,6 +378,9 @@ function moveTab(menuId) {
  */
 function removeTab(menuId) {
 
+    // 리뭅탭 이용했어염ㅋ
+    rtUseYn = "Y"
+
     const url = window.location.pathname;
     // let selectedMenuId = $(`div[data-titleId*="TB"]`).first().attr('data-titleId');   // 미정
 
@@ -373,8 +391,10 @@ function removeTab(menuId) {
         history.pushState(null, '', '/' + menuId);
         // 탭 지우기
         $(`li[data-tabId="/${menuId}"]`).remove()
+
+        이전페이지생존유무()
         // 현재화면의 탭을 삭제시 무브탭 발생
-        moveTab("TB02010S");
+        moveTab(e_jeon_page.pop());
     } else {
         // 현재탭이 아닌 탭을 삭제시 탭만 지우고 컨텐츠는 숨기기
         $(`li[data-tabId="/${menuId}"]`).remove()
@@ -386,4 +406,21 @@ function removeTab(menuId) {
         location.href = "/TB02010S"
     }
 
+    // 이용 다했어요
+    rtUseYn = "N"
+
+}
+
+function 이전페이지생존유무 () {
+    let 이전페이지 = e_jeon_page[e_jeon_page.length - 1]
+    console.log(이전페이지);
+    console.log(e_jeon_page);
+    while(true){
+        if($(`li[data-tabId="/${이전페이지}"]`).length === 0){
+            console.log("계속 빼");
+            이전페이지 = e_jeon_page.pop()
+        }else {
+            break;
+        }
+    }
 }
