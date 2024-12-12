@@ -1,13 +1,15 @@
 const TB04030Sjs = (function () {
   let pqGridObjDealList;
+
   $(document).ready(function () {
-    setKeyFunction_TB04030S();
+    //setKeyFunction_TB04030S();
     loadSelectBoxContents();
+    setDateInput();
+    setArrPqGridObj();
+  });
 
-    // 1개월전 ~ 오늘일자 디폴트 세팅
-    $("#TB04030S_fromDate").val(addMonth(getToday(), -1));
-    $("#TB04030S_toDate").val(getToday());
-
+  /* 그리드설정 */
+  function setArrPqGridObj() {
     let arrPqGridObj = [
       {
         height: 600,
@@ -18,22 +20,39 @@ const TB04030Sjs = (function () {
     ];
     setPqGrid(arrPqGridObj);
     pqGridObjDealList = $("#TB04030S_gridDealList").pqGrid("instance");
-  });
-
-  function setKeyFunction_TB04030S() {
-    $("input[id=TB04030S_fromDate]").keyup(function (key) {
-      if (key.keyCode == 13) {
-        assignmentSearch();
-      }
-    });
-    $("input[id=TB04030S_toDate]").keyup(function (key) {
-      if (key.keyCode == 13) {
-        assignmentSearch();
-      }
-    });
   }
 
-  // 셀렉트박스 세팅
+  /* 1개월전 ~ 오늘일자 디폴트 세팅 */
+  function setDateInput() {
+    $("#TB04030S_fromDate").val(addMonth(getToday(), -1));
+    $("#TB04030S_toDate").val(getToday());
+  }
+
+  // 팝업 엔터로 조회
+  // function setKeyFunction_TB04030S() {
+  //   $("input[id=TB04030S_fromDate]").keyup(function (key) {
+  //     if (key.keyCode == 13) {
+  //       assignmentSearch();
+  //     }
+  //   });
+  //   $("input[id=TB04030S_toDate]").keyup(function (key) {
+  //     if (key.keyCode == 13) {
+  //       assignmentSearch();
+  //     }
+  //   });
+  // }
+
+  /*초기화 */
+  function reset_TB04030S() {
+    setDateInput();
+    $("#TB04030S_I011").val(""); //진행상태
+    $("#TB04030S_D010").val(""); // 심사부서
+    $("#TB04030S_empNo").val(""); // 심사자번호
+    $("#TB04030S_empNm").val("");
+    pqGridObjDealList.setData([]);
+  }
+
+  /* 셀렉트박스 세팅 */
   function loadSelectBoxContents() {
     var item = "";
     item += "D010"; // 심사부서구분코드
@@ -51,6 +70,7 @@ const TB04030Sjs = (function () {
     });
   }
 
+  /*조회*/
   function assignmentSearch() {
     var rgstDtStart = $("#TB04030S_fromDate").val().replaceAll("-", ""); // Deal생성일자(시작)
     var rgstDtEnd = $("#TB04030S_toDate").val().replaceAll("-", ""); // Deal생성일자(종료)
@@ -274,5 +294,6 @@ const TB04030Sjs = (function () {
 
   return {
     assignmentSearch: assignmentSearch,
+    reset_TB04030S: reset_TB04030S,
   };
 })();

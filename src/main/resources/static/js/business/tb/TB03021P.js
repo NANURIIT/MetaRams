@@ -3,7 +3,6 @@ let TB03021P_gridState = 1;
 let TB03021P_pf;
 let TB03021P_onchangehandler;
 let ibDealNoSrchCnt = 0;
-// let TB03021P_CallTB0302P = "Y";
 
 $(document).ready(function () {
   docRdySettings();
@@ -37,7 +36,6 @@ $("#TB03021P_dprtNm").on("change", function () {
 });
 
 function TB03021P_srch(menuId) {
-  // .prev("input[type='text']:not([readonly])")
   //input에 값 입력 시 자동 조회
 	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
 		const currentInput = $(this);
@@ -316,12 +314,7 @@ function getDealInfo() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      // arrPqGridDealInfo.setData(data);
-      // arrPqGridDealInfo.option("rowDblClick", function (event, ui) {
-      //   setDealInfo(ui.rowData);
-      // });
       if(ibDealNoSrchCnt >= 2){
-				alert("조회된 정보가 없습니다!")
 				ibDealNoSrchCnt = 0;
 				return;
 			}
@@ -332,6 +325,10 @@ function getDealInfo() {
 
 function dataIbDealSetGrid(data){
   arrPqGridDealInfo.setData(data);
+  arrPqGridDealInfo.option("cellClick", function (event, ui) {
+    const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
+    copyClickData(clickData); 
+  });
   arrPqGridDealInfo.option("rowDblClick", function (event, ui) {
     setDealInfo(ui.rowData);
   });
@@ -345,14 +342,15 @@ function dataIbDealSetGrid(data){
 		// 입력되고 난 후 온체인지 이벤트 on
 		TB03021P_onchangehandler = "on"
 	}
+  // 변부장님 지시로 삭제
 	// 검색된 행이 0일 경우 모든 데이터 출력
-	else if (arrPqGridDealInfo.pdata.length === 0) {
-		//console.log("딴길로 새지마라");
-		// 데이터 없는 경우 재조회 방지
-		ibDealNoSrchCnt += 1;
-		//reset_TB03021P();
-		getDealInfo();
-	}
+	// else if (arrPqGridDealInfo.pdata.length === 0) {
+	// 	//console.log("딴길로 새지마라");
+	// 	// 데이터 없는 경우 재조회 방지
+	// 	ibDealNoSrchCnt += 1;
+	// 	//reset_TB03021P();
+	// 	getDealInfo();
+	// }
 	// 그렇지 않은 경우 조건에 맞는 데이터 출력
 	else {
 		ibDealNoSrchCnt = 0;	
@@ -425,10 +423,10 @@ function setDealInfo(e) {
 		
 	}
 
-  if(prefix == 'TB06060S'){ 
+  /*if(prefix == 'TB06060S'){ 
 		$("#TB06060S_prdtCd").val("");
 		$("#TB06060S_prdtNm").val("");
-	}
+	}*/
 
   modalClose_TB03021P();
 }

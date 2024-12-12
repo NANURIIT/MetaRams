@@ -458,133 +458,82 @@
 
      <!-- 워크플로우조회 -->   
     <select id="getWorkflowInfoList" parameterType="com.nanuri.rams.business.common.vo.IBIMS101BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
-      SELECT A.DEAL_NO                                     
-            ,A.SN        AS DEAL_SN                                   
-            ,A.DEAL_NM                                      
-            /*,B.MTR_DCD || '-' ||CD2.CD_VL_NM    AS MTR_NM     */
-            ,B.MTR_DCD AS MTR_DCD
-            ,CD2.CD_VL_NM    AS MTR_NM         
-            ,B.MTR_NM                                       
-            /*,B.JDGM_DCD ||'-' ||CD3.CD_VL_NM   AS JDGM_NM      */ 
-            ,CD3.CD_VL_NM   AS JDGM_NM       
-            ,B.SN         AS JDGM_SN                                 
-            /*,B.MTR_PRG_STTS_DCD || '-' || CD1.CD_VL_NM  AS MTR_PRG_STTS_NM */
-            /*,CD1.CD_VL_NM AS MTR_PRG_STTS_NM      */
-            ,C.EPRZ_CRDL_CTRC_AMT AS CTRC_AMT
-            ,C.PRDT_CD                                      
-            ,C.PRDT_NM      
-            /*,C.PRDT_LCLS_CD ||'-' || CD7.CD_VL_NM   AS INV_PRDT_LCLS_CD     */
-            ,CD7.CD_VL_NM   AS INV_PRDT_LCLS_CD     
-            ,CASE WHEN C.PRDT_LCLS_CD IN('10','11','16') THEN '주식/채권'
-                  WHEN C.PRDT_LCLS_CD IN('90','91')      THEN '기업여신'
-                  WHEN C.PRDT_LCLS_CD IN('30')           THEN '집합투자'
-                  ELSE 'NOT'
-             END                                            
-            ,CASE WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '1' THEN '1'
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '2' THEN '2'    /* 심사 */
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '3' THEN '3'    /* 협의체 */
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '4' THEN '4'
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '5' THEN '5'
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '6' THEN '6'
-                  ELSE 'NOT'
-             END                        AS MTR_PRG_STTS_DCD 
-             ,CASE WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '1' THEN 'Deal 등록'
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '2' THEN 'Deal 등록'    /* 심사 */
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '3' THEN 'Deal 등록'    /* 협의체 */
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '4' THEN '종목정보등록'
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '5' THEN '약정'
-                  WHEN SUBSTR(B.MTR_PRG_STTS_DCD,1,1) = '6' THEN '실행'
-                  ELSE 'NOT'
-             END                        AS MTR_PRG_STTS_NM                  
-            ,C.EPRZ_CRDL_APVL_AMT
-            ,C.EPRZ_CRDL_CTRC_AMT                           
-            ,C.LOAN_AMT                                     
-    	      ,C.DEAL_EXC_BLCE                                
-    	      ,C.EPRZ_CRDL_INTR_BNAO_DCD                      
-    	      ,C.TR_OTHR_DSCM_NO                              
-            ,C.ENTP_NM
-            ,C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD          /* 상환회차 */                 
-            ,C.PRG_STTS_CD AS PRG_STTS_CD      
-            /*,C.IB_PRDT_CLSF_CD || '-' || CD5.CD_VL_NM  AS IB_PRDT_CLSF_CD   
-            ,C.RQS_KND_CD || '-' || CD6.CD_VL_NM     AS  RQS_KND_CD   */
-            ,CD4.CD_VL_NM   AS PRG_STTS_NM      
-            ,CD5.CD_VL_NM  AS IB_PRDT_CLSF_CD   
-            ,CD6.CD_VL_NM    AS  RQS_KND_CD   
-        FROM (select DEAL_NO
-            ,SN
-            ,DEAL_NM
-         from IBIMS101B where LAST_YN = 'Y' and NVL(DEL_YN,'N') = 'N'/* 딜 */ ) A
-   LEFT JOIN (
-    	SELECT A.DEAL_NO
-    	      ,A.MTR_DCD
-    	      ,A.JDGM_DCD
-    	      ,A.SN
-    	      ,A.MTR_PRG_STTS_DCD
-    	      ,A.MTR_NM
-    	  FROM (
-    	SELECT DEAL_NO
-    		    ,MTR_DCD
-    		    ,JDGM_DCD
-    		    ,SN
-    		    ,MTR_PRG_STTS_DCD
-    		    ,MTR_NM
-    		    ,ROW_NUMBER() OVER(PARTITION BY DEAL_NO,MTR_DCD ORDER BY SN DESC) AS NO
-    		FROM   IBIMS103B
-    	 WHERE  LAST_YN = 'Y' /* 딜심사 */
-    	) A
-    	WHERE A.NO = 1
-      ) B
-         ON  A.DEAL_NO = B.DEAL_NO
-    LEFT JOIN (
-       SELECT A.DEAL_NO
-             ,A.PRDT_CD
-             ,A.PRDT_NM
-             ,A.PRDT_LCLS_CD
-             ,A.EPRZ_CRDL_APVL_AMT
-             ,A.SN
-             ,A.TR_OTHR_DSCM_NO
-             ,C.ENTP_NM
-             ,A.IB_PRDT_CLSF_CD
-             ,A.RQS_KND_CD
-             ,A.PRG_STTS_CD
-             ,B.EPRZ_CRDL_CTRC_AMT                                                    /*  기업여신약정금액 */
-    	       ,B.EPRZ_CRDL_INTR_BNAO_DCD                                                /*  기업여신이자선후취구분코드 */
-             ,(SELECT C1.TOT_RDMP_TMRD  FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1' AND ROWNUM = 1) AS TOT_RDMP_TMRD      /*  총상환회차 */
-             ,(SELECT MAX(C1.LAST_RDMP_TMRD)  FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1') AS LAST_RDMP_TMRD              /*  최종상환회차 */
-    	       ,(SELECT SUM(C1.DEAL_EXC_AMT)  FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1' ) AS LOAN_AMT                     /*  대출금액 */
-    	       ,(SELECT SUM(C1.DEAL_EXC_BLCE) FROM IBIMS402B C1 WHERE C1.PRDT_CD = A.PRDT_CD AND C1.LDG_STTS_CD = '1' ) AS DEAL_EXC_BLCE                /*  대출잔액 */
-                  from IBIMS201B A
-                  LEFT JOIN IBIMS401B B
-                  ON A.PRDT_CD = B.PRDT_CD
-                  LEFT JOIN IBIMS010B C
-                  ON A.TR_OTHR_DSCM_NO = C.ARDY_BZEP_NO
-                  WHERE A.LAST_YN = 'Y'/* 딜승인기본 */
-                  AND   B.CTRC_CCLC_DCD = '1'
-    ) C    
-    ON  A.DEAL_NO = C.DEAL_NO
-    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I001') CD1
-    ON  B.MTR_PRG_STTS_DCD = CD1.CD_VL_ID
-    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'L007') CD2
-    ON  B.MTR_DCD = CD2.CD_VL_ID
-    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'R014') CD3
-    ON  B.JDGM_DCD = CD3.CD_VL_ID
-    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I011') CD4
-    ON  C.PRG_STTS_CD = CD4.CD_VL_ID
-    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I002') CD5
-    ON  C.IB_PRDT_CLSF_CD = CD5.CD_VL_ID
-    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'R023') CD6
-    ON  C.RQS_KND_CD = CD6.CD_VL_ID
-    LEFT JOIN (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'P005') CD7
-    ON  C.PRDT_LCLS_CD = CD7.CD_VL_ID
-    WHERE 1=1
-     <if test="dealNo != ''">
+      WITH PRDT_TB AS (
+	SELECT
+		A.DEAL_NO
+		, A.PRDT_CD
+		, A.PRDT_NM
+		, A.PRDT_LCLS_CD
+		, A.PRDT_MDCL_CD
+		, A.PRDT_CLSF_CD
+		, A.PRG_STTS_CD
+		, NVL(B.CTRC_DT, '') AS CTRC_DT
+		, NVL(B.EPRZ_CRDL_APVL_AMT, 0) AS EPRZ_CRDL_APVL_AMT
+		, NVL(B.EPRZ_CRDL_CTRC_AMT, 0) AS EPRZ_CRDL_CTRC_AMT
+		, C.LAST_RDMP_TMRD
+		, C.TOT_RDMP_TMRD
+		, E.DEAL_EXC_BLCE
+		, D.ENTP_NM
+	FROM IBIMS201B A
+		, IBIMS401B B
+		, (SELECT Y.PRDT_CD, Y.EXC_SN, Y.LAST_RDMP_TMRD, Y.TOT_RDMP_TMRD
+		   FROM IBIMS402B Y
+		   WHERE (Y.PRDT_CD, Y.EXC_SN) IN (
+		     	SELECT Z.PRDT_CD, MAX(Z.EXC_SN) EXC_SN FROM IBIMS402B Z WHERE Z.LDG_STTS_CD = '1' GROUP BY Z.PRDT_CD
+		     	)
+		   ) C
+		 , IBIMS010B D
+		 , (SELECT Z.PRDT_CD, SUM(Z.DEAL_EXC_BLCE) AS DEAL_EXC_BLCE FROM IBIMS402B Z WHERE Z.LDG_STTS_CD = '1' GROUP BY Z.PRDT_CD) E
+	WHERE 1=1
+		AND A.LAST_YN = 'Y'
+		AND A.PRDT_CD = B.PRDT_CD(+)
+		AND A.PRDT_CD = C.PRDT_CD(+)
+		AND A.TR_OTHR_DSCM_NO = D.ARDY_BZEP_NO(+)
+		AND A.PRDT_CD = E.PRDT_CD(+)
+)
+--SELECT * FROM PRDT_TB;
+SELECT 
+	A.DEAL_NO
+	,B.DEAL_NM
+	, CD2.CD_VL_NM AS MTR_NM
+	, NVL(C.PRDT_CD,'') AS PRDT_CD
+	, NVL(C.PRDT_NM,'') AS PRDT_NM
+	, DECODE(NVL(C.PRDT_CD,''), '', A.MTR_PRG_STTS_DCD, C.PRG_STTS_CD) AS PRG_STTS_CD
+	, CD4.CD_VL_NM AS PRG_STTS_NM
+	, DECODE(NVL(C.PRDT_CD,''), '', A.INV_PRDT_LCLS_CD, C.PRDT_LCLS_CD) AS INV_PRDT_LCLS_CD
+	, CD7.CD_VL_NM AS INV_PRDT_LCLS_NM
+	, DECODE(NVL(C.PRDT_CD,''), '', A.INV_PRDT_MDCL_CD, C.PRDT_MDCL_CD) AS INV_PRDT_MDCL_CD
+	, DECODE(NVL(C.PRDT_CD,''), '', A.INV_PRDT_SCLS_CD, C.PRDT_CLSF_CD) AS INV_PRDT_SCLS_CD
+	, DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_APVL_AMT) AS EPRZ_CRDL_APVL_AMT
+	, DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_CTRC_AMT) AS EPRZ_CRDL_CTRC_AMT
+	, DECODE(NVL(C.PRDT_CD,''), '', '', C.ENTP_NM) AS ENTP_NM
+	, C.DEAL_EXC_BLCE
+	, C.LAST_RDMP_TMRD
+	, C.TOT_RDMP_TMRD
+	, C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD
+	, A.MTR_DCD
+FROM IBIMS103B A
+   , IBIMS101B B
+   , PRDT_TB   C
+   , (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'L007') CD2
+   , (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I011') CD4
+   , (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'P005') CD7
+WHERE 1=1
+	<if test="dealNo != ''">
     AND A.DEAL_NO = #{dealNo}
-    </if>
-     <if test="prdtCd != ''">
+  </if>	
+	AND A.LAST_YN = 'Y'
+	AND A.DEAL_NO = B.DEAL_NO
+	AND B.LAST_YN = 'Y'
+	AND A.DEAL_NO = C.DEAL_NO(+)
+  <if test="prdtCd != ''">
     AND C.PRDT_CD = #{prdtCd}
-    </if>
-    AND A.DEAL_NO IS NOT NULL
-    AND C.PRDT_CD IS NOT NULL
+  </if>
+	AND A.MTR_DCD = CD2.CD_VL_ID
+	AND DECODE(NVL(C.PRDT_CD,''), '', A.MTR_PRG_STTS_DCD, C.PRG_STTS_CD) = CD4.CD_VL_ID
+	AND DECODE(NVL(C.PRDT_CD,''), '', A.INV_PRDT_LCLS_CD, C.PRDT_LCLS_CD) = CD7.CD_VL_ID
+     
+     
     </select>
 
    

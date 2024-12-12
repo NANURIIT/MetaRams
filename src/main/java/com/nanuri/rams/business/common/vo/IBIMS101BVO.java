@@ -32,6 +32,7 @@ public class IBIMS101BVO extends IBIMS101BDTO {
     //private BigDecimal eprzCrdlApvlAmt;
     private String apvlAmt;
     private String eprzCrdlApvlAmt;
+    private String eprzCrdlCtrcAmt;
     private String loanAmt;
     private String dealExcBlce;
     private String eprzCrdlIntrBnaoDcd;

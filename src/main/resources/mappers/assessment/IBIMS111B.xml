@@ -95,23 +95,18 @@
              , A.SN                                     /* 일련번호 */
              , A.CNSB_OPN_DT                            /* 협의체개최일자 */
              , A.CNSB_OPN_TM                            /* 협의체개최시각 */
-             , C.MTR_PRG_STTS_DCD                       /* 안건진행상태구분코드 */
+             , B.MTR_PRG_STTS_DCD                       /* 안건진행상태구분코드 */
              , (
                 SELECT CD_VL_NM
                   FROM IBIMS002B
                  WHERE CMNS_CD_GRP = 'I011'
-                   AND CD_VL_ID = C.MTR_PRG_STTS_DCD
+                   AND CD_VL_ID = B.MTR_PRG_STTS_DCD
                ) AS MTR_PRG_STTS_DCD_NM
         FROM IBIMS111B A
    LEFT JOIN IBIMS112B B
           ON A.CNSB_DCD = B.CNSB_DCD
          AND A.RSLTN_YR = B.RSLTN_YR
          AND A.SN       = B.CNSB_SQ         
-   LEFT JOIN IBIMS103B C
-          ON B.DEAL_NO  = C.DEAL_NO
-         AND B.MTR_DCD  = C.MTR_DCD
-         AND B.JDGM_DCD = C.JDGM_DCD
-         AND C.LAST_YN = 'Y'
        WHERE A.CNSB_DCD = #{cnsbDcd}
          AND A.RSLTN_YR = #{rsltnYr}
          AND A.SN = #{sn}
@@ -123,7 +118,7 @@
             , A.SN                                     
             , A.CNSB_OPN_DT                            
             , A.CNSB_OPN_TM                            
-            , C.MTR_PRG_STTS_DCD    
+            , B.MTR_PRG_STTS_DCD    
     </select>
 
     <update id="updatePrgSttsDcd" parameterType="com.nanuri.rams.business.common.dto.IBIMS111BDTO">

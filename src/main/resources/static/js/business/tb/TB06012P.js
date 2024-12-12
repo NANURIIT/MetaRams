@@ -5,7 +5,7 @@ let modalAppvCndtList;
  */
 function callTB06012P(prefix) {
   
- 
+  loadSelectBoxContents_TB06012P();
   $("#TB06012P_prefix").val(prefix);
   TB06012P_getAppvCndt();
   $("#modal-TB06012P").modal("show");
@@ -40,18 +40,40 @@ function callTB06012P(prefix) {
   if(prefix == 'TB06010S') {
 	  $("#TB06012P_ibDealNo").val($("#TB06010S_ibDealNo").val());
 	  $("#TB06012P_ibDealNm").val($("#TB06010S_ibDealNm").val());
+	  $("#TB06012P_prdtCd").val($("#TB06010S_res_prdtCd").val());
   } else if (prefix == 'TB06020S') {
 	  $("#TB06012P_ibDealNo").val($("#TB06020S_ibDealNo").val());
 	  $("#TB06012P_ibDealNm").val($("#TB06020S_ibDealNm").val());
+	  $("#TB06012P_prdtCd").val($("#TB06020S_res_prdtCd").val());
   } else if (prefix == 'TB06030S') {
 	  $("#TB06012P_ibDealNo").val($("#TB06030S_ibDealNo").val());
 	  $("#TB06012P_ibDealNm").val($("#TB06030S_ibDealNm").val());
+	  $("#TB06012P_prdtCd").val($("#TB06030S_res_prdtCd").val());
   }
+  
+  console.log("res_prdtCd["+$('#'+prefix+'_res_prdtCd').val()+"]");
   
   selectorNumberFormater(
     $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Rt']")
   );
 }
+
+
+/**
+ * SELECTBOX 세팅
+ */
+function loadSelectBoxContents_TB06012P(){
+	var item = '';
+	item += 'I008';					// 결의협의회구분코드
+	item += '/' + 'D007';			// 매각일자구분코드
+	item += '/' + 'D008';			// 매각기준금액구분코드
+	item += '/' + 'I027';			// 투자통화코드
+	
+	var selCnt =0;
+	selCnt= $("#TB06012P_I008 option").length;
+	if(selCnt==0 ||selCnt==1) getSelectBoxList('TB06012P', item);
+}
+
 
 // function loadSelectBoxContents() {
 
@@ -281,12 +303,12 @@ function selectIBIMS208B() {
     return false;
   }
   
-  $("#TB06012P_prdtCd").val("");
-  console.log("ibDealNo["+$("#TB06012P_ibDealNo").val()+"]");
-  console.log("res_prdtCd["+$('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val()+"]");
+  //$("#TB06012P_prdtCd").val("");
+  //console.log("ibDealNo["+$("#TB06012P_ibDealNo").val()+"]");
+  //console.log("res_prdtCd["+$('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val()+"]");
   var paramData = {
     dealNo: $("#TB06012P_ibDealNo").val(), // 딜번호
-    prdtCd: $('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val(),
+    prdtCd: $("#TB06012P_prdtCd").val()//$('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val()
   };
   
   //그리드 초기화 by hytest
@@ -298,7 +320,6 @@ function selectIBIMS208B() {
     data: paramData,
     dataType: "json",
     success: function (data) {
-		console.log(">>>>>>>>>>>> data.lengt["+data.lengt+"]<<<<<<<<<<<");
       if(data.length > 0) {		
 		setAppvCndt(data[0]);
 		modalAppvCndtList.setData(data);	  
@@ -484,7 +505,16 @@ let colModalAppvCndtList = [
     dataType: "int",
     dataIndx: "sn",
     halign: "center",
-    align: "right",
+    align: "right",	
+    filter: { crules: [{ condition: "range" }] },
+  },
+  {
+    title: "연결여부",
+    dataType: "string",
+    dataIndx: "cndYn",
+    halign: "center",
+    align: "center",
+	width: "7%",
     filter: { crules: [{ condition: "range" }] },
   },
   {

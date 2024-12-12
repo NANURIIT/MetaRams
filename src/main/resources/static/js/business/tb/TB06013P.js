@@ -19,10 +19,7 @@ async function callTB06013P(prefix) {
   $("#TB06013P_prefix").val(prefix);
   $("#modal-TB06013P").modal("show");
 	indexChangeHandler("TB06013P");
-
-  // setTimeout(() => {
-  //   setGrid_TB06013P();
-  // }, 300);
+	loadSelectBoxContents_TB06013P();
 
   if (prefix == 'TB06010S') {
     $("#TB06013P_prdtCd").val($("#TB06010S_prdtCd").val());
@@ -34,9 +31,6 @@ async function callTB06013P(prefix) {
     $("#TB06013P_prdtCd").val($("#TB06030S_prdtCd").val());
     $("#TB06013P_prdtNm").val($("#TB06030S_prdtNm").val());
   }
-
-  //$("#TB06013P_prdtCd").val($("#TB06010S_prdtCd").val());
-  //$("#TB06013P_prdtNm").val($("#TB06010S_prdtNm").val());
 
   $("#TB06013P_mrtgMngmNo").val($("#" + $("#TB06013P_prefix").val() + "_mrtgMngmNo_forPop").val());
   $("#TB06013P_mrtgNm_forSeach").val($("#" + $("#TB06013P_prefix").val() + "_mrtgNm_forPop").val());
@@ -65,6 +59,22 @@ async function callTB06013P(prefix) {
   btnModalReset("init");
 
 }
+
+/**
+ * SELECTBOX 세팅
+ */
+function loadSelectBoxContents_TB06013P(){
+	var item = '';
+	item += 'I027';					// 투자통화코드
+	var selCnt =0;
+	selCnt= $("#TB06013P_I027_2  option").length;
+	console.log("loadSelectBoxContents_TB06013P:"+selCnt);
+	if(selCnt==0 ||selCnt==1) {
+		getSelectBoxList('TB06013P', item);
+	}	
+	 
+}
+
 
 /**
  * 담보 상세조회 
@@ -125,53 +135,42 @@ function btnModalReset(mode) {
   let prdtNm = $("#TB06013P_prdtNm").val();
   let mrtgNo = $("#TB06013P_mrtgMngmNo").val();
   let mrtgNm = $("#TB06013P_mrtgNm_forSeach").val();
+  let modalId = document.getElementById("modal-TB06013P");
+  let fmIputLngth = modalId.querySelectorAll("input").length;
+  let fmSlctLngth = modalId.querySelectorAll("select").length;
+  
+  $("#TB06013P_connPrdtCd").val("");
+   for (let i = 0; i < fmIputLngth; i++) {
+     modalId.querySelectorAll("input")[i].value = "";
+   }
+   for (let i = 0; i < fmSlctLngth; i++) {
+     modalId.querySelectorAll("select")[i].value = "";
+   }
+  $("#TB06013P_snrtInfoList").pqGrid("option", "dataModel.data", []);
+  $("#TB06013P_snrtInfoList").pqGrid("refreshDataAndView");	// pqgrid 초기화
 
   switch (mode) {
-    case "modalReset":
-      $("#TB06013P_connPrdtCd").val("");
-      let id = document.getElementById("modal-TB06013P");
-      let fmIputLngth = id.querySelectorAll("input").length;
-      let fmSlctLngth = id.querySelectorAll("select").length;
-      for (let i = 0; i < fmIputLngth; i++) {
-        id.querySelectorAll("input")[i].value = "";
-      }
-      for (let i = 0; i < fmSlctLngth; i++) {
-        id.querySelectorAll("select")[i].value = "";
-      }
-      $("#TB06013P_snrtInfoList").pqGrid("option", "dataModel.data", []);
-      $("#TB06013P_snrtInfoList").pqGrid("refreshDataAndView");							// pqgrid 초기화
-      $("#TB06013P_prdtCd").val(prdtCd);
-      $("#TB06013P_prdtNm").val(prdtNm);
-
-      $("#TB06013P_M008 option:eq(0)").prop('selected', true);
-      $("#TB06013P_M009 option:eq(0)").prop('selected', true);
-      $("#TB06013P_M009").prop('disabled', true);
-
-      break;
-    case "resetMrtgKndCd":
-      let id2 = document.getElementById("areaMrtgKndCd");
-      let fmIputLngth2 = id2.querySelectorAll("input").length;
-      let fmSlctLngth2 = id2.querySelectorAll("select").length;
-      for (let i = 0; i < fmIputLngth2; i++) {
-        id2.querySelectorAll("input")[i].value = "";
-      }
-      for (let i = 0; i < fmSlctLngth2; i++) {
-        id2.querySelectorAll("select")[i].value = "";
-      }
-      $("#TB06013P_prdtCd").val(prdtCd);
-      $("#TB06013P_prdtNm").val(prdtNm);
-      break;
 	case "init":
-		resetInputValue($('div[data-menuid="/TB06013P"]'));
 		$("#TB06013P_prdtCd").val(prdtCd);
-	    $("#TB06013P_prdtNm").val(prdtNm);
+		$("#TB06013P_prdtNm").val(prdtNm);
 		$("#TB06013P_mrtgMngmNo").val(mrtgNo);
-		$("#TB06013P_mrtgNm_forSeach").val(mrtgNm);			 
-
-	 break;	 
+		$("#TB06013P_mrtgNm_forSeach").val(mrtgNm);	
+	break;	
+    case "modalReset":
+		$("#TB06013P_prdtCd").val(prdtCd);
+		$("#TB06013P_prdtNm").val(prdtNm);
+	break; 
     default:
       break;
   }
+  
+  $("#TB06013P_E028 option:eq(0)").prop('selected', true);
+  $("#TB06013P_M008 option:eq(0)").prop('selected', true);
+  $("#TB06013P_M009 option:eq(0)").prop('selected', true);
+  $("#TB06013P_M009").prop('disabled', true);
+  setKRKRW("TB06013P");
+  setSelectBoxMrtgKndCd();	
+  
   $("input[id*='Amt'], input[id*='Prc'], input[id*='Rt'], input[id*='Qnt'], input[id*='Unpr'], input[id*='Prc_etc'], input[id*='Prna']" ).val("0");
   selectorNumberFormater($("input[id*='Amt'], input[id*='Prc'], input[id*='Rt'], input[id*='Qnt'], input[id*='Unpr'], input[id*='Prc_etc'], input[id*='Prna']"));
 
@@ -459,6 +458,12 @@ function dltRow_TB06013P() {
 
 function onChangeSelectBoxMrtgKndCd() {
   $("#TB06013P_E028").on("change", function () {
+   	setSelectBoxMrtgKndCd();
+  });
+}
+
+
+function setSelectBoxMrtgKndCd() {
     var mrtgKndCdVal = $("#TB06013P_E028").val();
     var classNm = ".mrtgStupKndCd";
     var mrtgStupKndCd = classNm + mrtgKndCdVal;
@@ -469,8 +474,15 @@ function onChangeSelectBoxMrtgKndCd() {
     $("#sbName").html("▶&nbsp;" + selectedName + "감정");
     $(classNm).hide();
     $(mrtgStupKndCd).show();
-    btnModalReset("resetMrtgKndCd");
-  });
+	let id2 = document.getElementById("areaMrtgKndCd");
+	let fmIputLngth2 = id2.querySelectorAll("input").length;
+	let fmSlctLngth2 = id2.querySelectorAll("select").length;
+	for (let i = 0; i < fmIputLngth2; i++) {
+	  id2.querySelectorAll("input")[i].value = "";
+	}
+	for (let i = 0; i < fmSlctLngth2; i++) {
+	  id2.querySelectorAll("select")[i].value = "";
+	}
 }
 
 // 실행버튼 동작

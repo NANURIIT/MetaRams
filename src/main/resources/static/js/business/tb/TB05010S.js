@@ -14,12 +14,6 @@ const TB05010Sjs = (function(){
     // 결의년도 당해년도로 default 세팅..
     let year = getToday().substring(0, 4);
     $("#TB05010S_stdYr").val(year);
-    setTimeout(() => {
-      $("#TB05010S_R016 option:eq(0)").css("display", "none"); // 자체전결가리기
-      $("#TB05010S_R016_2 option:eq(0)").css("display", "none"); // 자체전결가리기
-      $("#TB05010S_R016 option:eq(1)").prop("selected", true);
-      $("#TB05010S_R016_2 option:eq(1)").prop("selected", true);
-    }, 200);
   });
   
   /**
@@ -318,7 +312,6 @@ const TB05010Sjs = (function(){
     var stdYr = $("#TB05010S_stdYr").val(); // 결의년도
   
     MMBRCount = 0;
-  
     if (inspctCnfrncCcd === "") {
       Swal.fire({
         icon: "error",
@@ -358,14 +351,14 @@ const TB05010Sjs = (function(){
     var rsltnDt = e.cnsbOpnDt; // 결의일자
   
     MMBRCount = 0;
-    
+
     if (
-      !isEmpty(cnsbDcd) &&
-      !isEmpty(rsltnYr) &&
-      !isEmpty(inspctCnfrncSqcSq)
+      cnsbDcd &&
+      rsltnYr &&
+      String(inspctCnfrncSqcSq)
     ) {
       businessFunction();
-    } else {
+    } else {  
       Swal.fire({
         icon: "error",
         title: "Error!",
@@ -988,15 +981,15 @@ const TB05010Sjs = (function(){
       } else {
         if (CASEListCount == "0") {
           Swal.fire({
-            icon: "error",
-            title: "Error!",
+            icon: "info",
+            title: "Info!",
             text: "안건정보가 없습니다.",
             confirmButtonText: "확인",
           });
         } else if (MMBRListCount == "0") {
           Swal.fire({
-            icon: "error",
-            title: "Error!",
+            icon: "info",
+            title: "Info!",
             text: "위원정보가 없습니다.",
             confirmButtonText: "확인",
           });

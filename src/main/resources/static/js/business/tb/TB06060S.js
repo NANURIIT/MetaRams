@@ -88,7 +88,7 @@ const TB06060Sjs = (function(){
         },
         {
             title: "약정금액",
-            dataIndx: "ctrcAmt",
+            dataIndx: "eprzCrdlCtrcAmt",
             dataType: "integer",
             align: "right",
             halign: "center",
@@ -191,6 +191,10 @@ const TB06060Sjs = (function(){
 
     function getWorkflowList(){
 
+        if($('#TB06060S_ibDealNo').val()=="" && $('#TB06060S_prdtCd').val()==""){
+            console.log("필수입력항목!!!");
+            return 0;
+        }
 
         const paramData = {
             dealNo : $('#TB06060S_ibDealNo').val(),
@@ -209,6 +213,18 @@ const TB06060Sjs = (function(){
                 if(data){
                     console.log(data);
                     prdtInfoGridIns.setData(data);
+                    if(data.length==0){
+                        $('#TB06060S_cnsbNm').val('');
+                        $('#TB06060S_jdgmRsltDcd').val('');        
+                        $('#TB06060S_jdgmRsltRgstDt').val('');        
+                        $('#TB06060S_jdgmRsltCtns').val('');  
+                        var waitHtml = '<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>';
+                        $(".flow-status p").removeClass("-check");
+                        $(".flow-status div").html(waitHtml);
+                    }else{
+                        setFlow(parseInt(data[0].prgSttsCd));
+                        showDetailData(data[0]); 
+                    }
                 }else{
                     Swal.fire({
                         icon: 'warning'

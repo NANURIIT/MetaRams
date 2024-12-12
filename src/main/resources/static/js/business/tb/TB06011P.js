@@ -421,13 +421,14 @@ function dataPrdtCdSetGrid(data) {
 		srchCnt = 0;
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
-	else if (arrPqGridPrdtCdList.pdata.length === 0) {
-		console.log("딴길로 새지마라");
-		// 데이터 없는 경우 재조회 방지
-		srchCnt += 1;
-		$('#TB06011P_prdtCd').val("");
-		getPrdtCdList();
-	}
+	// 변부장님 지시로 삭제
+	// else if (arrPqGridPrdtCdList.pdata.length === 0) {
+	// 	console.log("딴길로 새지마라");
+	// 	// 데이터 없는 경우 재조회 방지
+	// 	srchCnt += 1;
+	// 	$('#TB06011P_prdtCd').val("");
+	// 	getPrdtCdList();
+	// }
 	// 그렇지 않은 경우 조건에 맞는 데이터 출력
 	else {
 		// console.log("해쥐맬라고우~");
@@ -594,7 +595,7 @@ async function getGridState() {
 		trDvsn = 'F'
 	}
 
-	if ($('#TB06011P_prefix').val() == "TB07150S") {
+	if ($('#TB06011P_prefix').val() == "TB07150S" || $('#TB06011P_prefix').val() == "TB07080S" || $('#TB06011P_prefix').val() == "TB07060S") {
 		trDvsn = 'TB07150S'
 	}
 
@@ -775,7 +776,7 @@ function setPrdtInfo(e) {
 		$(pageDealNm).val(e.dealNm);
 	}
 	if (prefix == "TB06060S") {
-		$(pageDealNm).val('');
+		$(pageIbDealNo).val(e.dealNo);
 	}
 
 	if (prefix == 'TB06014P') {

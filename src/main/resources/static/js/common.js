@@ -1,6 +1,9 @@
 /** common **/
 "use strict";
 
+// 전역 변수를 window 속성으로 정의 (중복 선언 방지)
+window.latestClickData = window.latestClickData || null;
+
 /** onload **/
 $(function () {
   /**
@@ -1113,6 +1116,9 @@ function getSelectBoxList(prefix, item, async = true) {
 
       if (result.length > 0) {
         $.each(result, function (key, value) {
+          if(prefix === "TB05010S"){
+            if (value.cdValue === "0") return; 
+          }
           var html = "";
           html +=
             '<option value="' +
@@ -1277,45 +1283,7 @@ function getSelectBoxList(prefix, item, async = true) {
           }
         }
 
-        if (prefix == "TB06010S") {
-          if (value.cmnsGrpCd == "I027") {
-            // 통화코드
-            var html = "";
-            html +=
-              '<option value="' +
-              value.cdValue +
-              '">' +
-              value.cdName +
-              " (" +
-              value.cdValue +
-              ")" +
-              "</option>";
-
-            $("#TB06013P_I027_2").append(html);
-            $("#TB06013P_I027_3").append(html);
-            $("#TB06013P_I027_4").append(html);
-          }
-        }
-        if (prefix == "TB06020S") {
-          if (value.cmnsGrpCd == "I027") {
-            // 통화코드
-            var html = "";
-            html +=
-              '<option value="' +
-              value.cdValue +
-              '">' +
-              value.cdName +
-              " (" +
-              value.cdValue +
-              ")" +
-              "</option>";
-
-            $("#TB06013P_I027_2").append(html);
-            $("#TB06013P_I027_3").append(html);
-            $("#TB06013P_I027_4").append(html);
-          }
-        }
-        if (prefix == "TB06030S") {
+        if (prefix == "TB06013P") {
           if (value.cmnsGrpCd == "I027") {
             // 통화코드
             var html = "";
@@ -1356,6 +1324,7 @@ function getSelectBoxList(prefix, item, async = true) {
 
         if (prefix == "TB05010S") {
           if (value.cmnsGrpCd == "R016") {
+            if (value.cdValue == "0") return; 
             // 전결협의체
             var html = "";
             html +=
@@ -1524,24 +1493,21 @@ function setKRKRW(prefix) {
   }
 
   if (prefix == "TB06010S") {
-    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06010S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
   }
 
   if (prefix == "TB06020S") {
-    $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06020S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
   }
 
   if (prefix == "TB06030S") {
+    $('#TB06030S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
+  }
+
+  if (prefix == "TB06013P") {
     $('#TB06013P_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06013P_I027_3 option[value="KRW"]').prop("selected", true); // 통화코드
     $('#TB06013P_I027_4 option[value="KRW"]').prop("selected", true); // 통화코드
-    $('#TB06030S_I027_2 option[value="KRW"]').prop("selected", true); // 통화코드
   }
 }
 
@@ -1865,7 +1831,7 @@ function resetInputValue(selector) {
 				       , input[id$='Shqt']
 				       , input[id$='Unpr']
 				       , input[id$='Rt']`).val("0");
-               
+
   selector.find(`input[id$='Dt']`).val(getToday())
   let 한달뒤ㅋ = () => {
     let today = new Date();
@@ -1873,11 +1839,11 @@ function resetInputValue(selector) {
     let year = today.getFullYear();
     let month = (today.getMonth() + 1).toString().padStart(2, '0'); // 0부터 시작하므로 +1
     let day = today.getDate().toString().padStart(2, '0');
-  
+
     return `${year}-${month}-${day}`;
   };
   selector.find(`input[id$='EndDt']`).val(한달뒤ㅋ)
-  
+
   setKRKRW(selector.attr('data-menuid').split('/')[1]);
 
 }
@@ -2029,18 +1995,40 @@ function pqGridAddNewRow(colModelSelector) {
  * @author {김건우}
  */
 function pqGridDeleteRow(colModelSelector, rowIndx) {
+
+  let idx = rowIndx;
+
+  if (!rowIndx) {
+    idx = colModelSelector.pqGrid('instance').pdata.length - 1
+  }
+
   colModelSelector.pqGrid("deleteRow", {
-    rowIndx: rowIndx,
+    rowIndx: idx,
   });
 }
 
 /**
- * 화면 이동시 작동해야하는 함수 (미완)
+ * 화면 이동시 작동해야하는 함수
+ * 
+ * 
+ * @description
+ * 필요한 것 적어놓으세요!!
+ * ※ 함수명도 멋있는걸로 바꿔주세요... ※ (중요)
  */
-function needRunFn(fn, menuId) {
-  const url = window.location.pathname;
-  if (menuId) {
-    fn;
+function needRunFn(menuId) {
+
+  // TB04010S 심사신청관리
+  if (menuId === "TB04010S") {
+    // 딜정보조회!!!!!
+    TB04010Sjs.getUrlDealInfo();
+  }
+  // TB05040S 협의체 현황 및 결과조회
+  else if (menuId === "TB05040S") {
+    TB05040Sjs.getUrlDealInfo();
+  }
+  // 예시
+  else if (menuId === "??") {
+    console.log("Hello Nanuri!!");
   }
 }
 
@@ -2059,3 +2047,31 @@ function resetPGgrids(menuid) {
 }
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) { }
+
+/**
+ * 팝업 그리드 셀 카피를 위한이벤트
+ * rowDblClick 이벤트가 같이 있는 그리드도 셀카피를 할 수 있게 함
+ * @param {*} clickData ui.rowData[ui.column.dataIndx]; 값을 넣어줘야 함
+ * 
+ * 예시 ) TB03022P.js
+ * arrPqGridEmpInfo.option("cellClick", function (event, ui) {
+ * 	const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
+ * 	copyClickData('TB03022P', clickData);  //셀 카피 가능
+  });
+ */
+if (!window._keydownEventRegistered) {
+  window._keydownEventRegistered = true; // 키다운 이벤트 리스너가 중복 등록되지 않도록 방지
+  $(document).keydown(function (event) {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
+      if (latestClickData !== null) {
+        navigator.clipboard.writeText(latestClickData).catch(function (error) {
+          console.log('복사 실패: ' + error);
+        });
+      }
+    }
+  });
+}
+
+function copyClickData(clickData) {
+  latestClickData = clickData;
+}

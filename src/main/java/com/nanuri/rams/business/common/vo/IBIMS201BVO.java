@@ -39,5 +39,6 @@ public class IBIMS201BVO extends IBIMS201BDTO {
 	
 	private String ctrcDt1;				// 승인일자1
 	private String ctrcDt2;				// 승인일자2
+	private String regDvsn;				// 등록구분
 	
 }
