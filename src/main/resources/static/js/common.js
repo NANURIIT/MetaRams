@@ -1116,7 +1116,7 @@ function getSelectBoxList(prefix, item, async = true) {
 
       if (result.length > 0) {
         $.each(result, function (key, value) {
-          if(prefix === "TB05010S"){
+          if(prefix === "TB05010S" || prefix === "TB05030S"){
             if (value.cdValue === "0") return; 
           }
           var html = "";

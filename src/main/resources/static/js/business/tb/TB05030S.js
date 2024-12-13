@@ -3,6 +3,7 @@ const TB05030Sjs = (function(){
   let arrPqGridCaseInfo; // 안건정보
   let arrPqGridMmbrInfo; // 의결내용
   let arrPqGridIbDealInfo; // 협의결과
+
   $(document).ready(function () {
     touchSpin(); // 결의년도 좌우 가산
     loadSelectBoxContents(); // 셀렉트박스 정보 취득
@@ -16,8 +17,6 @@ const TB05030Sjs = (function(){
     getCNFRNCList();
     rendorGrid();
     setTimeout(() => {
-      $("#TB05030S_R016 option:eq(0)").css("display", "none");
-      $("#TB05030S_R016 option:eq(1)").prop('selected', true);
       loadAprvOpstnCcd(); // 찬반구분코드
       loadRsltnRsltCd(); //의결코드
     }, 100);
@@ -748,7 +747,7 @@ const TB05030Sjs = (function(){
             obj.cnsbSq = row.cnsbSq
             obj.sn = row.sn
             obj.atdcYn =row.atdcYn
-            obj.aprvOppsDcd = row.aprvOppsDcd
+            obj.aprvOppsDcd = row.aprvOppsDcdNm;
             obj.opnnCtns = row.opnnCtns
             obj.opnnRgstDt = row.opnnRgstDt
             mmbrList.push(obj);
@@ -1185,13 +1184,6 @@ const TB05030Sjs = (function(){
       dataIndx: "sdnCndtF",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
-      render   : function (ui) {
-        let cellData = ui.cellData;
-              if (cellData !== null && cellData !== undefined) {
-                  return `N`
-              }
-              return cellData; 
-      }
     },
     {
       title: "기타여부",
@@ -1199,13 +1191,6 @@ const TB05030Sjs = (function(){
       dataIndx: "etcCndtF",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
-      render   : function (ui) {
-        let cellData = ui.cellData;
-              if (cellData !== null && cellData !== undefined) {
-                  return `N`
-              }
-              return cellData; 
-      }
     },
     {
       title: "리스크승인번호",
