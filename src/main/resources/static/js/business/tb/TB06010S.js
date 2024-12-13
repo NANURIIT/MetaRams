@@ -38,28 +38,26 @@ const TB06010Sjs = (function(){
 			var prdtLclsCd = $('#TB06010S_E022').val(); //투자상품 대분류 코드
 
 			if (prdtLclsCd === "92") {
-				// "첨부파일" 탭(#TB06010S_tab-6)을 제외한 나머지 탭 비활성화
-				alert("수수료");
-				$('#TB06010S_ramsTab .nav-link').each(function () {
-					alert("disabled!!");
-					if (!$(this).attr('href').includes('#TB06010S_tab-6')) {
-						$(this).addClass('disabled-tab'); // 비활성화 클래스 추가
-						$(this).on('click.disable', function (e) {
-							e.preventDefault(); // 클릭 이벤트 차단
-						});
-						// onclick 속성 제거
-						$(this).removeAttr('onclick');
-					}
-				});
+
+				//alert("수수료");
+				$('#TB06010S_tabs1Btn').attr('disabled', true);
+				$('#registApvlCnd').attr('disabled', true);
+				$('#registMrtgCnnc').attr('disabled', true);
+				$('#TB06010S_tabs4Btn').attr('disabled', true);
+				$('#TB06010S_tabs5Rst').attr('disabled', true);
+				$('#TB06010S_tabs5Dlt').attr('disabled', true);
+				$('#TB06010S_tabs5Save').attr('disabled', true);
+
 			} else {
-				alert("수수료아님");
-				// 모든 탭 활성화
-				$('#TB06010S_ramsTab .nav-link').each(function () {
-					alert("enabled!!");
-					$(this).removeClass('disabled-tab'); // 비활성화 클래스 제거
-					$(this).off('click.disable'); // 클릭 이벤트 차단 해제
-					// onclick 속성 복원 (필요 시 별도 로직 추가)
-				});
+				//alert("수수료아님");
+				$('#TB06010S_tabs1Btn').attr('disabled', false);
+				$('#registApvlCnd').attr('disabled', false);
+				$('#registMrtgCnnc').attr('disabled', false);
+				$('#TB06010S_tabs4Btn').attr('disabled', false);
+				$('#TB06010S_tabs5Rst').attr('disabled', false);
+				$('#TB06010S_tabs5Dlt').attr('disabled', false);
+				$('#TB06010S_tabs5Save').attr('disabled', false);
+
 			}
 		});
 	});
@@ -1476,7 +1474,7 @@ const TB06010Sjs = (function(){
 	// 셀다운승인조건탭
 	function getIBIMS208BDTOInfo(prdtCd) {
 		console.log(">>>>>>>>>>> 1.getIBIMS208BDTOInfo["+prdtCd+"]<<<<<<<<<<<<");
-		if (isEmpty($('#TB06010S_res_prdtCd').val())) {
+		if (isEmpty($('#TB06010S_res_prdtCd').val()) && $('#TB06010S_E022').val() !== "92") {
 			$('#registApvlCnd').attr('disabled', false);
 		}
 		
@@ -1574,7 +1572,7 @@ const TB06010Sjs = (function(){
 	//담보/보증정보탭
 	function getIBIMS212BDTOInfo(prdtCd) {
 		
-		if (isEmpty($('#TB06010S_res_prdtCd').val())) {
+		if (isEmpty($('#TB06010S_res_prdtCd').val()) && $('#TB06010S_E022').val() !== "92") {
 			$('#registMrtgCnnc').attr('disabled', false);
 		} else {
 			arrPqGridLstMrtgInfo.setData([]);

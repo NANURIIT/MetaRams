@@ -131,11 +131,11 @@ span.req::before {content: '*'; font-size: 14px; font-weight: lighter;}
 .tabs-container > .nav-tabs {background-color: #1c84c6;}
 .tabs-container > .nav-tabs .nav-link {color: #fff;}
 .tabs-container > .nav-tabs .nav-link.active {color: #000;}
-.tabs-container > .nav-tabs .disabled-tab {
+/* .tabs-container > .nav-tabs .disabled-tab {
     pointer-events: none;
     color: gray; 
     cursor: not-allowed;
-}
+} */
 .panel-body .ibox .ibox-title{ background: #e6e9eb;}
 .panel-body .ibox .ibox-title,
 .panel-body .ibox .ibox-content{border-color:#e6e9eb;}

@@ -80,7 +80,7 @@ const TB07020Sjs = (function() {
 			filter: { crules: [{ condition: 'range' }] }
 		},
 		{
-			title: "좌수",
+			title: "수량",
 			dataType: "string",
 			dataIndx: "trQnt",
 			align: "right",
