@@ -471,12 +471,12 @@ const TB07020Sjs = (function() {
 
 	// 매수정보 실행
 	function showAlert() {
-		var strVal = $('.btn.btn-s.btn-info').text();
+		var strVal = "TB07020S_" + $('.btn.btn-s.btn-info').text();
 		var trSn = $('#TB07020S_trSn').val();
 
-		alert(strVal);
+		//alert(strVal);
 
-		if (strVal === '등록') {
+		if (strVal.includes('TB07020S_등록')) {
 			if ( isNotEmpty(trSn)) {
 				Swal.fire({
 								icon              : 'error'
@@ -1508,7 +1508,7 @@ const TB07020Sjs = (function() {
 			}
 		}
 		if( isNotEmpty($('#TB07020S_trQnt').val()) ) {
-			var qotaRt = (((Number($('#TB07020S_hldgShqt').val().replaceAll(',', '')) + Number($('#TB07020S_trQnt').val().replaceAll(',', ''))) / Number($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))) * 100).toFixed(8);
+			var qotaRt = (((Number($('#TB07020S_hldgShqt').val().replaceAll(',', '')) + Number($('#TB07020S_trQnt').val().replaceAll(',', ''))) / Number($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))) * 100).toFixed(2);
 
 			if(!isFinite(qotaRt)){
 				$('#TB07020S_qotaRt').val("0");
@@ -1519,7 +1519,7 @@ const TB07020Sjs = (function() {
 
 		}
 		else {
-			$('#TB07020S_qotaRt').val((((Number($('#TB07020S_hldgShqt').val().replaceAll(',', ''))) / Number($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))) * 100).toFixed(8));
+			$('#TB07020S_qotaRt').val((((Number($('#TB07020S_hldgShqt').val().replaceAll(',', ''))) / Number($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))) * 100).toFixed(2));
 		}
 		setHoldPrpsDcd();
 		// if( isNotEmpty($('#TB07020S_trQnt').val())) {
