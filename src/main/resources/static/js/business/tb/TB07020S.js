@@ -473,6 +473,9 @@ const TB07020Sjs = (function() {
 	function showAlert() {
 		var strVal = $('.btn.btn-s.btn-info').text();
 		var trSn = $('#TB07020S_trSn').val();
+
+		alert(strVal);
+
 		if (strVal === '등록') {
 			if ( isNotEmpty(trSn)) {
 				Swal.fire({
