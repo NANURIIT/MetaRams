@@ -44,29 +44,33 @@ public class TB06020ServiceImpl implements TB06020Service {
 		param.setApvlDt(LocalDate.now().toString().replace("-", ""));
 		String empNo = facade.getDetails().getEno();
 
-		if ((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
-
+	  //if((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
+		if(param.getRegDvsn().equals("I")) {
 			param.setHndEmpno(empNo);
-			param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));
-			result = ibims201bMapper.regPrdtCd(param);
-
-			if (result != 0) {
-				IBIMS103BDTO s103b = new IBIMS103BDTO();
-				s103b.setDealNo(param.getDealNo());
-				s103b.setMtrDcd(param.getMtrDcd());
-				s103b.setJdgmDcd(param.getJdgmDcd());
-				s103b.setHndEmpno(facade.getDetails().getEno());
-
-				s103b = ibims103bMapper.selectOne103B(s103b);
-				s103b.setLastYn("N");
-				ibims103bMapper.updateLastYn(s103b);
-
-				s103b.setLastYn("Y");
-				s103b.setMtrPrgSttsDcd("401");
-				result = ibims103bMapper.insert103B(s103b);
+			//param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));
+			IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
+			if(ibims201bvo == null) {
+				result = ibims201bMapper.regPrdtCd(param);
+				if (result != 0) {
+					IBIMS103BDTO s103b = new IBIMS103BDTO();
+					s103b.setDealNo(param.getDealNo());
+					s103b.setMtrDcd(param.getMtrDcd());
+					s103b.setJdgmDcd(param.getJdgmDcd());
+					s103b.setHndEmpno(facade.getDetails().getEno());
+	
+					s103b = ibims103bMapper.selectOne103B(s103b);
+					s103b.setLastYn("N");
+					ibims103bMapper.updateLastYn(s103b);
+	
+					s103b.setLastYn("Y");
+					s103b.setMtrPrgSttsDcd("401");
+					result = ibims103bMapper.insert103B(s103b);
+				}
+			}else {
+				result = -1; //기존 동일한 종목코드가 존재할경우 에러
 			}
-		} else {
-
+   	  //} else  {
+		} else if(param.getRegDvsn().equals("U")) {	
 	        IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
 			param.setSn(ibims201bvo.getSn());
 			param.setHndEmpno(empNo);

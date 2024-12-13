@@ -1116,6 +1116,9 @@ function getSelectBoxList(prefix, item, async = true) {
 
       if (result.length > 0) {
         $.each(result, function (key, value) {
+          if(prefix === "TB05010S"){
+            if (value.cdValue === "0") return; 
+          }
           var html = "";
           html +=
             '<option value="' +
@@ -1321,6 +1324,7 @@ function getSelectBoxList(prefix, item, async = true) {
 
         if (prefix == "TB05010S") {
           if (value.cmnsGrpCd == "R016") {
+            if (value.cdValue == "0") return; 
             // 전결협의체
             var html = "";
             html +=

@@ -259,6 +259,7 @@ const TB06030Sjs = (function(){
 			
 		}*/
 		resetInputValue($('div[data-menuid="/TB06030S"]'));
+		$('#TB06030S_res_prdtCd').prop('readonly',false);
 	}
 
 	function getDealList() {
@@ -305,7 +306,21 @@ const TB06030Sjs = (function(){
 				console.log(dealDetail);
 				/** Deal 정보 */
 				
-				$('#TB06030S_ibDealNo').val(dealDetail.dealNo);													// 딜번호
+				$('#TB06030S_ibDealNo').val(dealDetail.dealNo);	
+				$('#TB06030S_prdtCd').val(dealDetail.prdtCd);
+				$('#TB06030S_res_prdtCd').val(dealDetail.prdtCd);	
+				/** 종목 정보 */				
+				if( isEmpty($('#TB06030S_prdtCd').val()) ) {
+					$('#TB06030S_res_prdtNm').val(dealDetail.mtrNm);	
+					$('#TB06030S_res_prdtCd').prop('readonly',false);										// 안건명
+				} else {
+					$('#TB06030S_res_prdtNm').val(dealDetail.prdtNm);	
+					$('#TB06030S_res_prdtCd').prop('readonly',true);										// 종목명
+				}
+				
+				$('#TB06030S_lstCCaseCcd').val(dealDetail.mtrDcd);
+				$('#TB06030S_riskInspctCcd').val(dealDetail.jdgmDcd);	
+															// 딜번호
 				$('#TB06030S_mtrNm').val(dealDetail.mtrNm);														// 안건명
 				$('#TB06030S_apvlDt').val(formatDate(dealDetail.apvlDt));										// 승인일자(결의일자)
 				$('#TB06030S_I008').val(dealDetail.cnsbDcd).prop("selected", true);								// 승인심사기구(결의협의회구분코드)
@@ -324,15 +339,8 @@ const TB06030Sjs = (function(){
 				$('#TB06030S_sdnCndtEtc').val(dealDetail.etcCndtF);
 				}
 				
-				/** 종목 정보 */
-				
-				if( isEmpty($('#TB06030S_prdtCd').val()) ) {
-					$('#TB06030S_prdtCd').val(dealDetail.prdtCd);												// 종목코드
-					$('#TB06030S_res_prdtNm').val(dealDetail.mtrNm);											// 안건명
-				} else {
-					$('#TB06030S_res_prdtNm').val(dealDetail.prdtNm);											// 종목명
-				}
-				$('#TB06030S_res_prdtCd').val(dealDetail.prdtCd);												// 종목코드
+	
+															// 종목코드
 				$('#TB06030S_I011').val(dealDetail.prgSttsCd);													// 진행상태
 				
 				//$('#TB06030S_ardyBzepNo').val(checkBrnAcno(dealDetail.optrRgstNo));									// 사업자등록번호
@@ -517,7 +525,7 @@ const TB06030Sjs = (function(){
 		
 		var paramData = makeParam(pageDcd, param);
 		
-		if( isEmpty($('#TB06030S_ibDealNo').val()) ){
+		if( isEmpty($('#TB06030S_ibDealNo').val()) || isEmpty($('#TB06030S_res_prdtCd').val())  ){
 			return false;
 		}
 		
@@ -542,6 +550,13 @@ const TB06030Sjs = (function(){
 							getDealList();
 						}
 					});
+				} else if(data = -1) {
+					Swal.fire({
+						title: '종목등록 에러',
+						icon: 'error',
+						text : '동일한 종목코드가 존재합니다. 종목코드를 확인해주세요',
+						confirmButtonText: '확인',
+					});					
 				} else {
 					Swal.fire({
 						title: '종목정보를 등록하는데 실패하였습니다.',
@@ -563,6 +578,19 @@ const TB06030Sjs = (function(){
 		}
 		
 		var paramData = makeFincParam();
+		
+		if (isEmpty($('#TB06020S_ibDealNm').val())) {
+			option.text = "Deal번호를 검색해주세요";
+			openPopup(option);
+			return false;
+		}
+		
+		if (isEmpty($('#TB06020S_res_prdtCd').val())) {
+			option.text = "종목코드를 입력해주세요.";
+			openPopup(option);
+			return false;
+		}
+				
 		
 		if( isEmpty($('#TB06030S_ibDealNo').val()) ){
 			console.log("딜번호 누락");
@@ -599,10 +627,23 @@ const TB06030Sjs = (function(){
 		var option = {}
 		option.title = "Error";
 		option.type = "error";
-
+		
 		// 유효성검사
+		if (isEmpty($('#TB06030S_ibDealNm').val())) {
+			option.text = "Deal번호를 검색해주세요";
+			openPopup(option);
+			return false;
+		}
+
 		if (isEmpty($('#TB06030S_res_prdtNm').val())) {
 			option.text = "종목명을 입력해주세요.";
+			openPopup(option);
+			return false;
+		}
+		
+
+		if (isEmpty($('#TB06030S_res_prdtCd').val())) {
+			option.text = "종목코드를 입력해주세요.";
 			openPopup(option);
 			return false;
 		}
@@ -731,6 +772,7 @@ const TB06030Sjs = (function(){
 		var paramData = {
 			"pageDcd" : pageDcd
 			, "prdtCd": $('#TB06030S_res_prdtCd').val()									// 상품코드
+			, "regDvsn" : ($('#TB06030S_res_prdtCd').attr("readonly")=="readonly") ? "U" : "I" // U:수정, I:등록
 			//, "sn": ''                                          // 일련번호
 			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06030S_res_prdtNm').val()									// 상품명
@@ -1317,5 +1359,11 @@ const TB06030Sjs = (function(){
 		, ldvdCd : ldvdCd
 		, mdvdCd : mdvdCd
 		, sdvdCd : sdvdCd
+		, loadSelectBoxContents : loadSelectBoxContents
+		, radioCheckFunction : radioCheckFunction
+		, roadTabInfoGrid : roadTabInfoGrid
+		, onChangeEprzCrdlPrdtLclsCd : onChangeEprzCrdlPrdtLclsCd
+		, onChangeEprzCrdlPrdtMdclCd : onChangeEprzCrdlPrdtMdclCd
+		, defaultNumberFormat: defaultNumberFormat
 	}
 })();

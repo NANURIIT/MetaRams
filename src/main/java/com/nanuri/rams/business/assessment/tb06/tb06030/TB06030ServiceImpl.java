@@ -46,14 +46,17 @@ public class TB06030ServiceImpl implements TB06030Service {
 		int result = 0;
 		String empNo = facade.getDetails().getEno();
 
-		if (StringUtil.isAllWhitespace(param.getPrdtCd())) {						// 없으면 등록
+		//if (StringUtil.isAllWhitespace(param.getPrdtCd())) {						// 없으면 등록
+		if(param.getRegDvsn().equals("I")) {
 			param.setHndEmpno(empNo);
-			List<IBIMS201BDTO> lstS201bDTO = ibims201bMapper.selectIBIMS201B(param);
-
-			if (lstS201bDTO.size() > 0) {
-				return 0;
-			} else {
-				param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));
+//			List<IBIMS201BDTO> lstS201bDTO = ibims201bMapper.selectIBIMS201B(param);
+//
+//			if (lstS201bDTO.size() > 0) {
+//				return 0;
+//			} else {
+//				param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));
+			IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
+			if(ibims201bvo == null) {	
 				result = ibims201bMapper.regPrdtCd(param);
 
 				if (result != 0) {
@@ -71,6 +74,8 @@ public class TB06030ServiceImpl implements TB06030Service {
 					s103b.setMtrPrgSttsDcd("401");
 					result = ibims103bMapper.insert103B(s103b);
 				}
+			}else {
+				result = -1; //기존 동일한 종목코드가 존재할경우 에러
 			}
 		} else {																	// 있으면 수정
 			param.setHndEmpno(empNo);
