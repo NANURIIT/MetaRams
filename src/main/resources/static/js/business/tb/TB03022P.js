@@ -385,10 +385,10 @@ function setEmpNm(e) {
 		case "TB03021P":
 			$("#TB03021P_dprtNm").val(dprtCd).prop("selected", true);
 			break;	
-		case "TB04011P":
-			$("#TB04011P_dprtNm").val(dprtCd).prop("selected", true);
-			$("#TB04011P_dprtNm").val(dprtCd).prop("selected", true);
-			break;
+		// case "TB04011P":
+		// 	$("#TB04011P_dprtNm").val(dprtCd).prop("selected", true);
+		// 	$("#TB04011P_dprtNm").val(dprtCd).prop("selected", true);
+		// 	break;
 		case "TB05010S_mmbrTrgt" :
 			// 특정 행의 데이터 수정 
 			if (arrPqGridMmbrInfo.length > 0) {
