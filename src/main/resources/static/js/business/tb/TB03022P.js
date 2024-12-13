@@ -9,7 +9,6 @@ let empNmSrchYn;  //직원명검색여부
 let dprtCdSrchYn; //부서번호검색여부
 let empInfoSrchCnt = 0;
 let isTB03021POpen = false; // 전역 상태 변수로 팝업 상태를 저장
-var TB03021P_searchConditions = {}; // 검색 조건을 담을 객체
 
 $(document).ready(function () {
 	keyDownEnter_TB03022P();
@@ -386,6 +385,10 @@ function setEmpNm(e) {
 		case "TB03021P":
 			$("#TB03021P_dprtNm").val(dprtCd).prop("selected", true);
 			break;	
+		case "TB04011P":
+			$("#TB04011P_dprtNm").val(dprtCd).prop("selected", true);
+			$("#TB04011P_dprtNm").val(dprtCd).prop("selected", true);
+			break;
 		case "TB05010S_mmbrTrgt" :
 			// 특정 행의 데이터 수정 
 			if (arrPqGridMmbrInfo.length > 0) {

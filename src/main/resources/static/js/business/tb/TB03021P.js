@@ -49,7 +49,7 @@ function TB03021P_srch(menuId) {
 
 	// 'keydown' 이벤트로 조회 (Enter키)
 	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('keydown', async function (evt) {
-    if (evt.keyCode === 13) {
+    if (evt.keyCode === 13 && $(this).val().length !== 17) {
 			evt.preventDefault();
 			TB03021P_onchangehandler == "off";
 			await ibDealNoSrchEvent($(this));
@@ -77,19 +77,19 @@ function TB03021P_srch(menuId) {
 
     let data = $(selector).val();
 		$('#TB03021P_ibDealNo').val(data);
-		await getibDealGridState();
+    await getDealInfo();
 
 		// 팝업 오픈
 		if (TB03021P_gridState === 0) {
 			// console.log("열려있음", TB03021P_gridState);
 			callGridTB03021P(prefix);
       $('#TB03021P_ibDealNo').val(data);
-			setTimeout(() => getDealInfo(), 400);
+			// setTimeout(() => getDealInfo(), 400);
 		} else if (TB03021P_gridState === 1) {
 			// console.log("닫혀있음", TB03021P_gridState);
 			callTB03021P(prefix);
       $('#TB03021P_ibDealNo').val(data);
-			setTimeout(() => getDealInfo(), 400);
+			// setTimeout(() => getDealInfo(), 400);
 		}
 	}
 }
@@ -292,7 +292,7 @@ function keyDownEnter_TB03021P() {
 /**
  * deal 번호 조회 ajax
  */
-function getDealInfo() {
+async function getDealInfo() {
   var dealNo = $("#TB03021P_ibDealNo").val(); //Deal 번호
   var dealNm = $("#TB03021P_ibDealNm").val(); //Deal명
   var chrrEmpno = $("#TB03021P_empNo").val(); //담당자번호
@@ -308,7 +308,7 @@ function getDealInfo() {
     //rgstDt: rgstDt,
   };
 
-  $.ajax({
+  await $.ajax({
     type: "GET",
     url: "/TB03021P/getDealInfo",
     data: dtoParam,
@@ -316,9 +316,21 @@ function getDealInfo() {
     success: function (data) {
       if(ibDealNoSrchCnt >= 2){
 				ibDealNoSrchCnt = 0;
-				return;
+				//return;
 			}
-			dataIbDealSetGrid(data);
+
+      if (!data || data === undefined || data.length === 0) {
+				//console.log("1번조건");
+				TB03021P_gridState = 1;
+			} else if (data.length >= 2) {
+				//console.log("2번조건");
+				TB03021P_gridState = 1;
+			} else if (data) {
+				//console.log("3번조건");
+				TB03021P_gridState = 0;
+			}
+      
+			setTimeout(() => dataIbDealSetGrid(data) , 400);
     },
   });
 }
@@ -335,7 +347,7 @@ function dataIbDealSetGrid(data){
 
   // 검색된 행이 1개일 경우 데이터 바로 입력
 	if (arrPqGridDealInfo.pdata.length === 1 && $(`div[id='modal-TB03021P']`).css('display') === "none") {
-		console.log("여기로와야해");
+		// console.log("여기로와야해");
 		//var prefix = $("#TB03021P_prefix").val();
 		setDealInfo(arrPqGridDealInfo.pdata[0]);
 		ibDealNoSrchCnt = 0;
