@@ -116,6 +116,9 @@
            <if test="prdtCd != ''">
            AND A.PRDT_CD                                 = #{prdtCd}
            </if>
+           <if test="nsFndCd != ''">
+           AND A.NS_FND_CD                               = #{nsFndCd}
+           </if>
            <if test="etprCrdtGrntTrKindCd == '81'">
            AND A.ETPR_CRDT_GRNT_TR_KIND_CD               = #{etprCrdtGrntTrKindCd}
            </if>

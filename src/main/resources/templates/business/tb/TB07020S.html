@@ -43,17 +43,36 @@
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</span>
 								</div>
-								<label class="col-sm-1 col-form-label text-right">종목코드</label>
+								<!-- <label class="col-sm-1 col-form-label text-right">종목코드</label>
 								<div class="col-sm-4">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07020S_prdtCd">
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07020S');"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" style="width:210px;" id="TB07020S_prdtNm" readonly>
+										<input type="text" class="form-control" style="width:40px;" id="TB07020S_prdtNm" readonly>
+									</div>
+								</div> -->
+								<label class="col-sm-1 col-form-label text-right">운용펀드</label>
+								<div class="col-sm-2-5 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB07020S_srch_fndCd" >
+									<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick="callTB07022P('TB07020S_srch')"><i class="fa fa-search"></i></button>
+									</span>
+											<input type="text" class="form-control" style="width:40px;" id="TB07020S_srch_fndNm" readonly>
+									<!-- <button type="button" class="btn btn-default mg-l5">잔고선택</button> -->
+								</div>
+								<label class="col-sm-1 col-form-label text-right">종목코드</label>
+								<div class="col-sm-2-5">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB07020S_prdtCd">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07020S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" style="width:40px;" id="TB07020S_prdtNm" readonly>
 									</div>
 								</div>
-								<div class="col-sm-4 text-right">
+								<div class="col-sm-2 text-right">
 									<button class="btn btn-primary" type="button" onclick="TB07020Sjs.getBuyList();"><i class="fa fa-search"></i>&nbsp;조회</button>
 									<!-- <button id="" class="btn btn-info" onclick=""><i class="fa fa-arrow-right"></i>&nbsp;다음</button> -->
 									<button id="" class="btn btn-default" onclick="TB07020Sjs.compClear();"><i class="fa fa-undo"></i>&nbsp;초기화</button>

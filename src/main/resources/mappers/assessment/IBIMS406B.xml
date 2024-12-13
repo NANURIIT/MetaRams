@@ -64,11 +64,11 @@
 		, #{crdtGrntOvduIntAmt}  /* 신용공여연체이자금액 */
 		, #{mrdpFeeAmt}          /* 중도상환수수료금액 */
 		, #{crdtGrntRcvbIntAmt}  /* 신용공여미수이자금액 */
-		, #{hndDetlDtm}          
+		, SYSDATE          
 		, #{hndEmpno}            
-		, #{hndTmnlNo}           
-		, #{hndTrId}             
-		, #{guid}                
+		, ''          
+		, ''            
+		, ''                
 		)
     </insert>
 
