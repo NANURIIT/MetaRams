@@ -146,6 +146,22 @@ var colPrdtCdList = [
 	{
 		title: "부수안건구분코드",
 		dataType: "string",
+		dataIndx: "mtrDcd",
+		align: "center",
+		hidden: true,
+		filter: { crules: [{ condition: 'range' }] },
+	},
+	{
+		title: "리스크심사구분코드",
+		dataType: "string",
+		dataIndx: "jdgmDcd",
+		align: "center",
+		hidden: true,
+		filter: { crules: [{ condition: 'range' }] },
+	},
+	{
+		title: "부수안건구분코드",
+		dataType: "string",
 		dataIndx: "nmcpMtrDcd",
 		align: "center",
 		hidden: true,

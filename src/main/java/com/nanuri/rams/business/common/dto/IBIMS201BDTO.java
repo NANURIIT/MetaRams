@@ -165,6 +165,14 @@ public class IBIMS201BDTO {
     private String dprtCd;							//  관리부서
     private BigDecimal krwTrslExcAmt;				//  원화환산실행금액
     private BigDecimal krwTrslExcBlce;				//  원화환산실행잔액
+    private BigDecimal stdrExrt;					//  기준환율
+    private BigDecimal hldgShqt;                    //  보유좌수
+    private BigDecimal avrUnpr;                     //  평균단가
+    private BigDecimal evlPflsAmt;                  //  평가손익금액
+    private BigDecimal tradPflsAmt;                 //  매매손익금액
+    
+    private String nmcpMtrNm;						//  부수안건구분코드명
+    private String lstCCaseNm;						//  리스크심사구분코드명
     
 
     private String trDvsn;
