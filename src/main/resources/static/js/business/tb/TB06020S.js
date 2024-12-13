@@ -458,9 +458,6 @@ const TB06020Sjs = (function(){
 
 	// 종목등록
 	function regPrdtCd(pageDcd, param) {
-		
-		console.log("TB06020S_res_prdtCd_readonly:"+$('#TB06020S_res_prdtCd').attr("readonly"));
-		
 		if (!checkParam()) {
 			return false;
 		}
@@ -485,14 +482,20 @@ const TB06020Sjs = (function(){
 						icon: 'success',
 						confirmButtonText: '확인',
 					}).then((result) => {
-						getDealList();
+						if (result.isConfirmed) {
+							getDealList();
+						}
 					});
-				} else if(data = -1) {
+				} else if(data == -1) {					
 					Swal.fire({
 						title: '종목등록 에러',
 						icon: 'error',
 						text : '동일한 종목코드가 존재합니다. 종목코드를 확인해주세요',
 						confirmButtonText: '확인',
+					}).then((result) => {
+									if (result.isConfirmed) {
+										$('#TB06020S_res_prdtCd').focus();
+									}	
 					});
 				} else {
 					Swal.fire({
