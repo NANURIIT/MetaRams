@@ -312,12 +312,18 @@
         INSERT INTO IBIMS402H
            SELECT PRDT_CD                                 <!-- 상품코드 -->
                 , EXC_SN                                  <!-- 실행일련번호 -->
-                , ( SELECT IFNULL(MAX(A.RGST_SN),0)+1 AS RGST_SN
+                <!-- , ( SELECT IFNULL(MAX(A.RGST_SN),0)+1 AS RGST_SN
 					            FROM IBIMS402H A 	/* 딜실행기본이력 */
 					           WHERE 1 = 1
 					             AND A.PRDT_CD =  #{prdtCd}
 					             AND A.EXC_SN  =  #{excSn}
-                  ) AS RGST_SN                            <!-- 등록일련번호 -->
+                  ) AS RGST_SN                            등록일련번호 -->
+                  , ( SELECT NVL(MAX(A.RGST_SN), 0) + 1 AS RGST_SN
+                    FROM IBIMS401B A
+                    WHERE 1 = 1
+                      AND A.PRDT_CD =  #{prdtCd}
+                      AND A.EXC_SN  =  #{excSn}
+                  ) AS RGST_SN
                 , LDG_STTS_CD                             <!-- 원장상태코드 -->
                 , CRRY_CD                                 <!-- 통화코드 -->
                 , EXC_DT                                  <!-- 실행일자 -->
