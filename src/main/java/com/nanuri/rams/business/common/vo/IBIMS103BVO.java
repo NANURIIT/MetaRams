@@ -17,8 +17,10 @@ public class IBIMS103BVO extends IBIMS103BDTO {
 	String mtrDcdNm;							// 안건구분코드명
 	String jdgmDcdNm;							// 심사구분코드명
 	String chrgPNm;								// 담당자명
+	String chrrEmpno;        			//담당자코드
 	String ownPNm;								// 심사역명
 	String dprtNm;								// 부점명
+	String dprtCd;								// 부점코드
 	String mtrPrgSttsDcdNm;						// 안건진행상태구분코드명
 	
 	/* --------------------------------------- */

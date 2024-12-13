@@ -3,22 +3,13 @@ let TB04011P_pf;
 let TB04011P_gridState = 1;
 let TB04011P_onchangehandler = "on"; // on off
 let TB04011P_srchCnt = 0;
-//let empNo = "";
-
-/**
- * 팝업 자동 호출, 검색
- * @author {김건우}
- */
 
 $(document).ready(function () {
   docRdySettings();
+  selectBoxSet_TB04011P();
 });
 
 function TB04011P_srchMtr(menuId) {
-  /**
-   * 완성된 함수는 common.js에 한번 더 세팅해주셔야해요
-   */
-
   /**
    * 코드길이체크 후 자동조회
    */
@@ -31,85 +22,59 @@ function TB04011P_srchMtr(menuId) {
   )
     .closest("span.input-group-append")
     .prev("input[id*='_ibDealNo']")
-    .on("input", async function () {
-      if (inputProcessing) return; // 이미 input 이벤트가 처리 중이라면 종료
-      inputProcessing = true; // input 처리 시작
+    .on("input keydown change", async function (evt) {
+      const isInputEvent = evt.type === "input"; // input 이벤트 여부
+      const isKeydownEvent = evt.type === "keydown"; // keydown 이벤트 여부
+      const isChangeEvent = evt.type === "change"; // change 이벤트 여부
 
-      const str = $(this).val().length;
+      // 공통 플래그 처리
+      if (inputProcessing || keydownProcessing || changeProcessing) return;
 
-      // 같이 붙어있는 인풋박스 id
-      const result =
-        $(this)
-          .attr("id")
-          .slice(0, $(this).attr("id").length - 2) + "Nm";
+      if (isInputEvent) inputProcessing = true;
+      if (isKeydownEvent) keydownProcessing = true;
+      if (isChangeEvent) changeProcessing = true;
 
-      // 데이터를 지울 때 값이 없으면 지워줌
-      // 값이 있으면 온체인지 또는 온인풋 이벤트로 값 채워짐
-      $(`#${result}`).val("");
+      try {
+        const currentInput = $(this);
 
-      // 코드 길이 체크 후 자동조회
-      if (str === 17) {
-        await srchEvent(this);
+        if (isInputEvent && currentInput.val().length === 17) {
+          //17자리입력하면 자동검색
+
+          const ibDealpNmInput = currentInput
+            .closest(".input-group")
+            .find('input[id*="_ibDealNm"]'); // 같은 div 내의 empNm input
+          ibDealpNmInput.val(""); // ibDealpNmInput 초기화
+
+          await srchEvent(currentInput);
+        } else if (isKeydownEvent && evt.keyCode === 13) {
+          //엔터누르면 자동검색
+
+          evt.preventDefault(); // 기본 동작 방지
+          TB04011P_onchangehandler = "off"; // 변경 처리 차단
+          await srchEvent(this);
+        } else if (isChangeEvent) {
+          // 변경 이벤트 처리
+          //if (TB04011P_onchangehandler === "on") {
+          //  await srchEvent(this);
+          //}
+        }
+      } finally {
+        if (isInputEvent) inputProcessing = false;
+        if (isKeydownEvent) keydownProcessing = false;
+        if (isChangeEvent) changeProcessing = false;
       }
-
-      inputProcessing = false; // input 처리 종료
     });
-
-  $(
-    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB04011P"]:not([disabled])`
-  )
-    .closest("span.input-group-append")
-    .prev("input[id*='_ibDealNo']")
-    .on("keydown", async function (evt) {
-      if (keydownProcessing) return; // 이미 keydown 이벤트가 처리 중이라면 종료
-      keydownProcessing = true; // keydown 처리 시작
-
-      // Enter 키에만 작동하도록
-      if (evt.keyCode === 13) {
-
-
-        evt.preventDefault(); // 기본 동작 방지
-        TB04011P_onchangehandler = "off"; // 변경 처리 차단
-
-        await srchEvent(this);
-      }
-
-      keydownProcessing = false; // keydown 처리 종료
-    });
-
-  // $(
-  //   `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB04011P"]:not([disabled])`
-  // )
-  //   .closest("span.input-group-append")
-  //   .prev("input[id*='_ibDealNo']")
-  //   .on("change", async function () {
-  //     if (changeProcessing) return; // 이미 change 이벤트가 처리 중이라면 종료
-  //     changeProcessing = true; // change 처리 시작
-
-  //     // 상태 관리하여 onchange 이벤트가 중복 실행되지 않도록
-  //     if (TB04011P_onchangehandler === "on") {
-  //       await srchEvent(this);
-  //     }
-
-  //     changeProcessing = false; // change 처리 종료
-  //   });
 
   async function srchEvent(selector) {
-
     // 사용한 인풋박스의 출처 페이지 가져오기
-    let prefix;
-    if ($(selector).attr("id") === $("#TB04011P_ibDealNo").attr("id")) {
-      prefix = TB04011P_pf;
-    } else {
-      // 컬럼명 길이로 바꾸셔야 합니당
-      prefix = $(selector)
-        .attr("id")
-        .slice(0, $(selector).attr("id").length - 9);
-    }
 
-    $(`input[id='${prefix}_ibDealNm']`).val("");
+    let prefix;
+    const inputId = $(selector).attr("id"); // 입력된 id에 따라 prefix 결정
+    const lastIndex = inputId.lastIndexOf("_"); // 마지막 '_'의 위치 찾기
+    prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
 
     $("#TB04011P_prefix").val(prefix);
+    $(`input[id='${prefix}_ibDealNm']`).val("");
 
     /**
      * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
@@ -122,7 +87,7 @@ function TB04011P_srchMtr(menuId) {
     // 인풋박스 밸류
     let data = $(selector).val();
     $("#TB04011P_ibDealNo").val(data);
-    TB04011P_gridState = 8282;
+
     await TB04011P_setGridState();
 
     // 팝업 오픈
@@ -163,10 +128,10 @@ function callTB04011P(prefix) {
 
   console.log($(`div[id='modal-TB04011P']`).css("display"));
 
-  if($(`div[id='modal-TB04011P']`).css("display") === "none"){
+  if ($(`div[id='modal-TB04011P']`).css("display") === "none") {
     console.log("쇼");
     $("#modal-TB04011P").modal("show");
-  }else {
+  } else {
     console.log("낫뜅! ㅋ");
   }
 
@@ -271,6 +236,31 @@ function keyDownEnter_TB04011P() {
   });
 }
 
+/* 셀렉트박스 세팅 */
+function selectBoxSet_TB04011P() {
+  selectBox = getSelectBoxList("TB04011P", "D010", false);
+
+  dprtList = selectBox.filter(function (item) {
+    //부서코드 list
+    return item.cmnsGrpCd === "D010";
+  });
+
+  dprtList.forEach((item) => {
+    $("#TB04011P_dprtNm").append(
+      $("<option>", {
+        value: item.cdValue,
+        text: `${item.cdName}`,
+      })
+    );
+  });
+
+  $("#TB04011P_dprtNm").on("change", function () {
+    var dprtCd = $(this).val();
+
+    $("#TB04011P_dprtCd").val(dprtCd);
+  });
+}
+
 /**
  * deal 번호 조회 ajax
  */
@@ -291,12 +281,16 @@ function getMtrInfo() {
 
   var ibDealNo = $("#TB04011P_ibDealNo").val();
   var ibDealNm = $("#TB04011P_ibDealNm").val();
+  var chrrEmpno = $("#TB04011P_empNo").val();
+  var dprtCd = $("#TB04011P_dprtCd").val();
 
   var dtoParam = {
     dealNo: ibDealNo,
     mtrNm: ibDealNm,
     mtrPrgSttsDcdFrom: mtrPrgSttsDcdFrom,
     mtrPrgSttsDcdTo: mtrPrgSttsDcdTo,
+    chrrEmpno: chrrEmpno,
+    dprtCd: dprtCd,
   };
 
   $.ajax({
@@ -323,14 +317,14 @@ function getMtrInfo() {
           TB04011P_srchCnt = 0;
           TB04011P_onchangehandler = "on";
         }
-      } 
+      }
       // 변부장님 지시로 삭제
       // else if (data.length === 0) {
       //   TB04011P_srchCnt = +1;
       //   $("#TB04011P_ibDealNo").val("");
       //   $("#TB04011P_ibDealNm").val("");
       //   getMtrInfo();
-      // } 
+      // }
       else {
         arrPqGridMtrInfo.setData(data);
         arrPqGridMtrInfo.on("rowDblClick", function (event, ui) {
@@ -371,9 +365,9 @@ async function TB04011P_setGridState() {
   if (TB04011P_gridState === 0) {
     console.log("열려있으니까 좀 쉬어라");
     return;
-  }else {
+  } else {
     console.log("쉬지를 않는구나");
-    
+
     await $.ajax({
       type: "GET",
       url: "/TB04011P/getDealInfo",
