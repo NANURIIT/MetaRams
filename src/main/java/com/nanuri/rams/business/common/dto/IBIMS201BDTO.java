@@ -163,6 +163,8 @@ public class IBIMS201BDTO {
     private String guid;                            //  guid
     private String empNo;							//  담당자사번
     private String dprtCd;							//  관리부서
+    private BigDecimal krwTrslExcAmt;				//  원화환산실행금액
+    private BigDecimal krwTrslExcBlce;				//  원화환산실행잔액
     
 
     private String trDvsn;
