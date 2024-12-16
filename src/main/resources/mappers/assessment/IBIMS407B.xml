@@ -47,16 +47,16 @@
                                                 /* 거래부서명 */
              , E.STDR_EXRT                      /* 기준환율 */
           FROM IBIMS407B A
-     		 , IBIMS201B B  
+     		     , IBIMS201B B  
              , IBIMS993B C 
-     		 , IBIMS994B E 
+     		     , IBIMS994B E 
              , IBIMS992B D 
          WHERE 1=1
-           AND A.PRDT_CD 			= B.PRDT_CD(+) 
-           AND B.LAST_YN(+) 		= 'Y'
-           AND A.NS_FND_CD 		  	= C.FND_CD(+)
-           AND B.TR_CRRY_CD 	  	= E.CRRY_CD(+)
-           AND A.TR_DT 			  	= E.STDR_DT(+)
+           AND A.PRDT_CD 			      = B.PRDT_CD(+) 
+           AND B.LAST_YN(+) 	      = 'Y'
+           AND A.NS_FND_CD 		      = C.FND_CD(+)
+           AND B.TR_CRRY_CD 	      = E.CRRY_CD(+)
+           AND A.TR_DT 			        = E.STDR_DT(+)
            AND A.STL_XTNL_ISTT_CD 	= D.FNLT_CD(+)
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(nsFndCd)">
            AND A.NS_FND_CD = #{nsFndCd}

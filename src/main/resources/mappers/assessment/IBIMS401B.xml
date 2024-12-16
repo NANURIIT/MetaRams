@@ -3,7 +3,7 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS401BMapper">
 
     <select id="selectRvseTrInq" parameterType="com.nanuri.rams.business.common.vo.TB07070SVO" resultType="com.nanuri.rams.business.common.vo.IBIMS410BVO">
- 	SELECT IB201B.PRDT_CD          /* 종목코드 */
+    	SELECT IB201B.PRDT_CD          /* 종목코드 */
            , IB201B.PRDT_NM          /* 종목명 */
            , IB410B.TR_DT                     /* 거래일자 */
            , IB410B.TR_SN            /* 거래순번 */
@@ -40,21 +40,21 @@
          AND IB402B.EXC_SN = IB410B.EXC_SN
          AND IB201B.LAST_YN  = 'Y'
          AND IB410B.TR_DT           = #{trDt}   /* 거래일자 */
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
          AND IB401B.PRDT_CD = #{prdtCd}
-        </if>       
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(etprCrdtGrntTrKindCd)">
+         </if>       
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(etprCrdtGrntTrKindCd)">
          AND IB410B.ETPR_CRDT_GRNT_TR_KIND_CD  = #{etprCrdtGrntTrKindCd}  /* 거래종류 */
-        </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trStatCd)">
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trStatCd)">
          AND IB410B.TR_STAT_CD = #{trStatCd}   /* 거래상태 */ 
-        </if>       
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
+         </if>       
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
          AND IB201B.CHRR_EMPNO	    = #{chrrEmpno}   /* 거래직원번호 */
-        </if>       
+         </if>       
        ORDER BY IB201B.PRDT_CD        
-           , IB410B.EXC_SN         
-           , IB410B.TR_SN  DESC  
+              , IB410B.EXC_SN         
+              , IB410B.TR_SN DESC
     </select>
     
     <!-- 여신기본정보 검증  -->
