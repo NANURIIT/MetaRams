@@ -827,7 +827,7 @@ const TB07040Sjs = (function () {
       var trStfno = 0; // 거래직원번호
       var dcfcStfno = 0; // 결재자직원번호
       var clmSeq = 0; // 청구순번
-      var actgSynsCd = "20     "; // 회계적요코드
+      var actgSynsCd = "20"; // 회계적요코드
       var synsText = inputDcd == "1" ? "기타투자매도" : "기타투자매도취소"; // 적요내용
       var taxBillEvdcErlmDt; // 세금계산서증빙등록일자
       var taxBillEvdcErlmSeq = 0; // 세금계산서증빙등록순번
@@ -1331,7 +1331,7 @@ const TB07040Sjs = (function () {
       var trStfno = 0; // 거래직원번호
       var dcfcStfno = 0; // 결재자직원번호
       var clmSeq = 0; // 청구순번
-      var actgSynsCd = "20     "; // 회계적요코드
+      var actgSynsCd = "20"; // 회계적요코드
       var synsText = inputDcd == "1" ? "배당금" : "배당금취소"; // 적용내용
       var taxBillEvdcErlmDt; // 세금계산서증빙등록일자
       var taxBillEvdcErlmSeq = 0; // 세금계산서증빙등록순번
