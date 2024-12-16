@@ -190,7 +190,7 @@
              , (
                 SELECT CD_VL_NM
                   FROM IBIMS002B
-                 WHERE CMNS_CD_GRP = 'A012'
+                 WHERE CMNS_CD_GRP = 'R025'
                    AND CD_VL_ID = A.APRV_OPPS_DCD
                ) AS APRV_OPPS_DCD_NM
              , A.OPNN_CTNS AS OPNN_CTNS                                         /* 의견내용 */

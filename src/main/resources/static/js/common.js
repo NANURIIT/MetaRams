@@ -1116,7 +1116,7 @@ function getSelectBoxList(prefix, item, async = true) {
 
       if (result.length > 0) {
         $.each(result, function (key, value) {
-          if(prefix === "TB05010S"){
+          if(prefix === "TB05010S" || prefix === "TB05030S"){
             if (value.cdValue === "0") return; 
           }
           var html = "";
@@ -1647,6 +1647,9 @@ function setPqGrid(pqGridObjs) {
       cellClick: cellClick,
       rowSelect: rowSelect,
       rowDblClick: rowDblClick,
+      // clipboard: { on: true }, // 클립보드 복사 활성화
+      // selectionModel: { type: "cell" } // 셀 선택 활성화
+    // selectionModel: { type: 'cell' }, // 셀 단위 선택 활성화
       // pageModel   : page
       // dataModel: { data: data },
     };
@@ -1821,13 +1824,13 @@ function resetInputValue(selector) {
   selector.find(`textarea`).val("")
   selector.find(`input[id$='Amt']
 				       , input[id$='Blce']
-				       , input[id$='Exrt']
 				       , input[id$='Mnum']
 				       , input[id$='Tmrd']
 				       , input[id$='Qnt']
 				       , input[id$='Shqt']
 				       , input[id$='Unpr']
 				       , input[id$='Rt']`).val("0");
+  selector.find(`input[id$='Exrt']`).val("1.0");
 
   selector.find(`input[id$='Dt']`).val(getToday())
   let 한달뒤ㅋ = () => {

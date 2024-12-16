@@ -270,7 +270,7 @@ const TB07030Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        title: "납부금액",
+        title: "납부대상금액",
         dataType: "integer",
         dataIndx: "pmntAmt",
         halign: "center",

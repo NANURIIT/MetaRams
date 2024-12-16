@@ -540,23 +540,29 @@ const TB06030Sjs = (function(){
 
 				if (data > 0) {
 					Swal.fire({
-						title: '종목정보를 등록하였습니다.',
-						icon: 'success',
-						confirmButtonText: '확인',
-					}).then((result) => {
-						if($("#TB06030S_fincYn").prop("checked") == true){
-							registFinc(param);
-						}else{
-							getDealList();
-						}
-					});
-				} else if(data = -1) {
+								title: '종목정보를 등록하였습니다.',
+								icon: 'success',
+								confirmButtonText: '확인',
+							}).then((result) => {
+								if($("#TB06030S_fincYn").prop("checked") == true){
+									registFinc(param);
+								}else{
+									if (result.isConfirmed) {
+										getDealList();
+									}
+								}
+							});
+				} else if(data == -1) {
 					Swal.fire({
-						title: '종목등록 에러',
-						icon: 'error',
-						text : '동일한 종목코드가 존재합니다. 종목코드를 확인해주세요',
-						confirmButtonText: '확인',
-					});					
+							title: '종목등록 에러',
+							icon: 'error',
+							text : '동일한 종목코드가 존재합니다. 종목코드를 확인해주세요',
+							confirmButtonText: '확인',
+							}).then((result) => {
+									if (result.isConfirmed) {
+										$('#TB06030S_res_prdtCd').focus();
+									}	
+						});					
 				} else {
 					Swal.fire({
 						title: '종목정보를 등록하는데 실패하였습니다.',

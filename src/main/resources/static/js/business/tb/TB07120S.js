@@ -33,23 +33,29 @@ const TB07120Sjs = (function () {
   function fnSelectBox() {
     selectBox = getSelectBoxList(
       "TB07120S",
-      "D016" + //  결재단계구분코드
-        // + "/R031"           //  입출금구분코드
+        "D010"+   //부서코드
+        "/D016" + //  결재단계구분코드
+        // "/R031" + //  입출금구분코드
         "/I027" + //  통화구분코드
-        // + "/D015"           //  업무구분코드
+        // "/D015" + //  업무구분코드
         "/D006" + //  결재상태코드
-        "/F008", //  자금구분코드
+        "/F008",  //  자금구분코드
       false
     );
 
-    // TB07120S_grdSelect.R031 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'R031'; });
+    TB07120S_grdSelect.D010 = selectBox.filter(function (item) {
+      return item.cmnsGrpCd === "D010";
+    })
+    // TB07120S_grdSelect.R031 = selectBox.filter(function (item) { 
+    //   return item.cmnsGrpCd === 'R031'; });
     TB07120S_grdSelect.D016 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "D016";
     });
     TB07120S_grdSelect.I027 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "I027";
     });
-    // TB07120S_grdSelect.D015 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'D015'; });
+    // TB07120S_grdSelect.D015 = selectBox.filter(function (item) { 
+    //   return item.cmnsGrpCd === 'D015'; });
     TB07120S_grdSelect.D006 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "D006";
     });
@@ -60,12 +66,16 @@ const TB07120Sjs = (function () {
 
   function createOption() {
     // let R031html;
+    let D010html;
     let D016html;
     let I027html;
     // let D015html;
     let D006html;
     let F008html;
-
+    
+    TB07120S_grdSelect.D010.forEach((item) => {
+      D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+    });
     // TB07120S_grdSelect.R031.forEach(item => { R031html += `<option value="${item.cdValue}">${item.cdName}</option>` });
     TB07120S_grdSelect.D016.forEach((item) => {
       D016html += `<option value="${item.cdValue}">${item.cdName}</option>`;
@@ -81,6 +91,7 @@ const TB07120Sjs = (function () {
       F008html += `<option value="${item.cdValue}">${item.cdName}</option>`;
     });
 
+    $("#TB07120S_dprtNm").append(D010html);
     // $('#TB07080S_ldgSttsCd').append(R031html);
     $("#TB07120S_consDecdDvsnCd").append(D016html);
     $("#TB07120S_trCrcyCd").append(I027html);
@@ -90,6 +101,12 @@ const TB07120Sjs = (function () {
     );
     $("#TB07120S_fndsDvsnCd").append(F008html);
   }
+
+  $("#TB07120S_dprtNm").on("change", function () {
+    var dprtCd = $(this).val();
+  
+    $("#TB07120S_dprtCd").val(dprtCd);
+  });
 
   /**
    * PQGrid 세팅

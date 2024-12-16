@@ -80,7 +80,7 @@ const TB07020Sjs = (function() {
 			filter: { crules: [{ condition: 'range' }] }
 		},
 		{
-			title: "좌수",
+			title: "수량",
 			dataType: "string",
 			dataIndx: "trQnt",
 			align: "right",
@@ -381,6 +381,7 @@ const TB07020Sjs = (function() {
 		*/
 		var trDt = $('#TB07020S_rsltnDt').val().replaceAll('-', '');
 		var prdtCd = $('#TB07020S_prdtCd').val();
+		var nsFndCd = $('#TB07020S_srch_fndCd').val();
 		var ibPrdtTrDcd = $('#TB07020S_ibPrdtTrDcd').val();
 		if (ibPrdtTrDcd === '1') {
 			var etprCrdtGrntTrKindCd = '81'; //매수
@@ -391,6 +392,7 @@ const TB07020Sjs = (function() {
 			'trDt' : trDt
 			, 'prdtCd' : prdtCd
 			, 'etprCrdtGrntTrKindCd' : etprCrdtGrntTrKindCd
+			, 'nsFndCd'	: nsFndCd
 		};
 
 		$.ajax({
@@ -1199,9 +1201,10 @@ const TB07020Sjs = (function() {
 		resetInputValue($('div[data-menuid="/TB07020S"]'));
 
 		/* 검색조건 */
-		$('#TB07020S_rsltnDt').val('');
+		//$('#TB07020S_rsltnDt').val('');
 		$('#TB07020S_prdtCd').val('');
 		$('#TB07020S_prdtNm').val('');
+		$('#TB07020S_srch_fndCd').val('');
 
 		/* 상세정보 */
 		$('#TB07020S_trQnt').val('');

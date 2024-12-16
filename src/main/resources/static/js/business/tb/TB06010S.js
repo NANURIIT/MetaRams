@@ -31,6 +31,35 @@ const TB06010Sjs = (function(){
 		pqGrid();
 
 		resetSearchRequiment();
+
+
+		$('#TB06010S_E022').on('change', function() {
+			// alert($('#TB06010S_E022').val());
+			var prdtLclsCd = $('#TB06010S_E022').val(); //투자상품 대분류 코드
+
+			if (prdtLclsCd === "92") {
+
+				//alert("수수료");
+				$('#TB06010S_tabs1Btn').attr('disabled', true);
+				$('#registApvlCnd').attr('disabled', true);
+				$('#registMrtgCnnc').attr('disabled', true);
+				$('#TB06010S_tabs4Btn').attr('disabled', true);
+				$('#TB06010S_tabs5Rst').attr('disabled', true);
+				$('#TB06010S_tabs5Dlt').attr('disabled', true);
+				$('#TB06010S_tabs5Save').attr('disabled', true);
+
+			} else {
+				//alert("수수료아님");
+				$('#TB06010S_tabs1Btn').attr('disabled', false);
+				$('#registApvlCnd').attr('disabled', false);
+				$('#registMrtgCnnc').attr('disabled', false);
+				$('#TB06010S_tabs4Btn').attr('disabled', false);
+				$('#TB06010S_tabs5Rst').attr('disabled', false);
+				$('#TB06010S_tabs5Dlt').attr('disabled', false);
+				$('#TB06010S_tabs5Save').attr('disabled', false);
+
+			}
+		});
 	});
 
 	var option = {}
@@ -705,6 +734,8 @@ const TB06010Sjs = (function(){
 	// 결의안건정보
 	function getCnfrncDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd, prdtCd) {
 
+		var trDvsn ="S"; //대출/채무보증
+
 		if (isEmpty(ibDealNo) && isEmpty(prdtCd)) {
 			option.text = "Deal 정보 또는 종목코드 정보를 조회해주세요.";
 			openPopup(option);
@@ -717,6 +748,7 @@ const TB06010Sjs = (function(){
 			"mtrDcd" : lstCCaseCcd,
 			"jdgmDcd" : riskInspctCcd,
 			"prdtCd" : prdtCd
+			, "trDvsn"  : trDvsn
 		}
 
 		$.ajax({
@@ -724,6 +756,20 @@ const TB06010Sjs = (function(){
 			url: "/TB06010S/getCnfrncDealInfo",
 			data: paramData,
 			dataType: "json",
+			error : function(request,  error ){
+				/*console.log("code:"+request.status);
+				console.log("message:"+request.responseText);
+				console.log("error:"+error);
+				*/
+				Swal.fire({
+					title: '안건 조회 확인',
+					icon: 'error',
+					text: '대출채권/채무보증 정보등록이 가능한 안건이 아닙니다.',
+					confirmButtonText: '확인',
+				}).then(() => {
+				   resetSearchRequiment(); //초기화
+				});
+			},
 			success: function(data) {
 				var dealDetail = data;
 				/** Deal 정보 */
@@ -1428,7 +1474,7 @@ const TB06010Sjs = (function(){
 	// 셀다운승인조건탭
 	function getIBIMS208BDTOInfo(prdtCd) {
 		console.log(">>>>>>>>>>> 1.getIBIMS208BDTOInfo["+prdtCd+"]<<<<<<<<<<<<");
-		if (isEmpty($('#TB06010S_res_prdtCd').val())) {
+		if (isEmpty($('#TB06010S_res_prdtCd').val()) && $('#TB06010S_E022').val() !== "92") {
 			$('#registApvlCnd').attr('disabled', false);
 		}
 		
@@ -1526,7 +1572,7 @@ const TB06010Sjs = (function(){
 	//담보/보증정보탭
 	function getIBIMS212BDTOInfo(prdtCd) {
 		
-		if (isEmpty($('#TB06010S_res_prdtCd').val())) {
+		if (isEmpty($('#TB06010S_res_prdtCd').val()) && $('#TB06010S_E022').val() !== "92") {
 			$('#registMrtgCnnc').attr('disabled', false);
 		} else {
 			arrPqGridLstMrtgInfo.setData([]);

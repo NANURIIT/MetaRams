@@ -116,6 +116,9 @@
            <if test="prdtCd != ''">
            AND A.PRDT_CD                                 = #{prdtCd}
            </if>
+           <if test="nsFndCd != ''">
+           AND A.NS_FND_CD                               = #{nsFndCd}
+           </if>
            <if test="etprCrdtGrntTrKindCd == '81'">
            AND A.ETPR_CRDT_GRNT_TR_KIND_CD               = #{etprCrdtGrntTrKindCd}
            </if>
@@ -351,7 +354,7 @@
 
 
     <select id="getTrSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO" resultType="int">
-        SELECT CASE WHEN X.CNT = '' THEN '0000000001'
+        <!-- SELECT CASE WHEN X.CNT = '' THEN '0000000001'
                     ELSE X.NEXT_VAL
                 END AS TR_SN
           FROM (
@@ -368,7 +371,26 @@
                              FROM IBIMS410B A
                             WHERE A.PRDT_CD = #{prdtCd}
                        ) B
-               ) X
+               ) X -->
+         SELECT CASE WHEN NVL(X.CNT, 0) = 0 THEN '0000000001'
+                  ELSE X.NEXT_VAL
+            END AS TR_SN
+        FROM (
+              SELECT SUM(CNT) AS CNT,
+                      MAX(NEXT_VAL) AS NEXT_VAL
+                FROM (
+                      SELECT COUNT(A.TR_SN) AS CNT,
+                              LPAD(TO_NUMBER(NVL(MAX(A.TR_SN), 0)) + 1, 10, '0') AS NEXT_VAL
+                        FROM IBIMS405B A
+                        WHERE A.PRDT_CD = #{prdtCd}
+                      UNION ALL
+                      SELECT COUNT(A.TR_SN) AS CNT,
+                              LPAD(TO_NUMBER(NVL(MAX(A.TR_SN), 0)) + 1, 10, '0') AS NEXT_VAL
+                        FROM IBIMS410B A
+                        WHERE A.PRDT_CD = #{prdtCd}
+                      ) B
+            ) X
+        
     </select>
         
 </mapper>
