@@ -40,20 +40,16 @@
           FROM IBIMS206B A
          WHERE 1=1
            AND A.PRDT_CD = #{prdtCd}
-           AND A.NS_FND_CD = #{nsFndCd}
-           AND A.NS_PRDT_DCD = #{nsPrdtDcd}
-           AND ROWNUM = 1
     </select>
 
     <!-- SPPI테스트 신규 -->
     <insert id="insertSPPIData" parameterType="com.nanuri.rams.business.common.vo.IBIMS206BVO">
         INSERT INTO IBIMS206B
             (
-                RGST_DT                                  /* 고유자산펀드코드 */
-              , NS_FND_CD                                /* 고유자산상품구분코드 */
-              , NS_PRDT_DCD                              /* 상품코드 */
-              , PRDT_CD                                  /* 등록일자 */
+                PRDT_CD                                  /* 상품코드 */
+              , RGST_DT                                  /* 등록일자 */
               , RGST_SN                                  /* 등록일련번호 */
+              , NS_FND_CD                                /* 펀드코드 */
               , BUSI_MDL_DCD                             /* 사업모형구분코드 */
               , PAI_RDMP_CNCL_CND_XSTC_YN                /* 원리금상환취소조건존재여부 */
               , INTR_RT_CND_INTG_YN                      /* 이자율조건검토여부 */
@@ -85,11 +81,11 @@
             )
         VALUES
             (
-                TO_CHAR(SYSDATE, 'YYYYMMDD')
+                #{prdtCd}
+              ,  TO_CHAR(SYSDATE, 'YYYYMMDD')
+              , '1'
               , #{nsFndCd}
               , #{nsPrdtDcd}
-              , #{prdtCd}
-              , '1'
               , #{busiMdlDcd}
               , #{paiRdmpCnclCndXstcYn}
               , #{intrRtCndIntgYn}
@@ -128,12 +124,12 @@
              , NS_PRDT_DCD = #{nsPrdtDcd}
              , PRDT_CD = #{prdtCd}
              , RGST_SN = ((
-                            SELECT MAX(RGST_SN)
-                              FROM IBIMS206B
+                            SELECT MAX(Z.RGST_SN)
+                              FROM IBIMS206B Z
                              WHERE 1=1 
-                               AND A.PRDT_CD = #{prdtCd}
-                               AND A.NS_FND_CD = #{nsFndCd}
-                               AND A.NS_PRDT_DCD = #{nsPrdtDcd} 
+                               AND Z.PRDT_CD = #{prdtCd}
+                               AND Z.NS_FND_CD = #{nsFndCd}
+                               AND Z.NS_PRDT_DCD = #{nsPrdtDcd} 
                           ) + 1)                /* 누가 하실질 모르겠지만 채번 따로만들어서 해줘요... */
              , BUSI_MDL_DCD = #{busiMdlDcd}
              , PAI_RDMP_CNCL_CND_XSTC_YN = #{paiRdmpCnclCndXstcYn}
@@ -164,9 +160,9 @@
              , HND_TR_ID = #{hndTrId}
              , GUID = #{guid}
          WHERE 1=1
-           AND A.PRDT_CD = #{prdtCd}
-           AND A.NS_FND_CD = #{nsFndCd}
-           AND A.NS_PRDT_DCD = #{nsPrdtDcd}
+           AND PRDT_CD = #{prdtCd}
+           AND NS_FND_CD = #{nsFndCd}
+           AND NS_PRDT_DCD = #{nsPrdtDcd}
     </update>
 
 </mapper>
