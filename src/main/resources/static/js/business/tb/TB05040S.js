@@ -274,21 +274,21 @@ const TB05040Sjs = (function(){
 					$('#TB05040S_fstCnfrncF option:eq(1)').prop("selected", true);									// 지주사전협의
 				}
 				
-				$('#TB05040S_rprStrtDt').val(formatDate(dealInfo.cnsbOpnDt));										// 협의시작일
+				$('#TB05040S_rprStrtDt').val(formatDate(dealInfo.rprStrtDt));										// 협의시작일
 				$('#TB05040S_ofclDocAcptDt').val(dealInfo.ofclDocAcptDt);											// 공문접수일
-				$('#TB05040S_aplcExptDt').val(formatDate(dealInfo.cnsbOpnDt));										// 부의예정일
+				$('#TB05040S_aplcExptDt').val(formatDate(dealInfo.aplcExptDt));										// 부의예정일
 				
 				$('#TB05040S_cnclRsnCntnt').val(dealInfo.cnclRsnCntnt);												// 취소사유
 				
-				$('#TB05040S_rsltnDt').val(formatDate(dealInfo.jdgmRsltRgstDt));									// 결의일
+				$('#TB05040S_rsltnDt').val(formatDate(dealInfo.cnsbOpnDt));											// 결의일
 				$('#TB05040S_inspctCnfrncCcd').val(dealInfo.cnsbDcd).prop('selected', true);			     		// 결의협의체
 				$('#TB05040S_inspctCnfrncSqcSq').val(dealInfo.cnsbSq);												// 회차정보
 				$('#TB05040S_rnkNo').val(dealInfo.sn);																// 순서정보
 				
 				$('#TB05040S_rsltnRsltCd').val(dealInfo.rsltnRsltCd).prop('selected', true);						// 결의결과
-				$('#TB05040S_invstCrncyCd').val(dealInfo.ptfdCrryCdNm);											// 투자통화코드
+				$('#TB05040S_invstCrncyCd').val(dealInfo.ptfdCrryCdNm);											    // 투자통화코드
 				if (!isEmpty(dealInfo.apvlAmt)) {
-					$('#TB05040S_rcgAmt').val(addComma(dealInfo.apvlAmt));												// 승인금액
+					$('#TB05040S_rcgAmt').val(addComma(dealInfo.apvlAmt));										   // 승인금액
 				} else {
 					$('#TB05040S_rcgAmt').val(dealInfo.apvlAmt);
 				}
