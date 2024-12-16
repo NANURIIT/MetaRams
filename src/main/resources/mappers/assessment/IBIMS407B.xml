@@ -173,7 +173,7 @@
              , GUID = #{guid}
          WHERE 1=1
            AND PRDT_CD = #{prdtCd}
-           AND TR_SN = #{trSn} 
+           AND TR_SN = #{trSn}
            AND EXC_SN = #{excSn}
     </update>
 
