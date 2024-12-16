@@ -50,8 +50,8 @@ public class IBIMS103BVO extends IBIMS103BDTO {
   
   /* --------------------------------------- */
   
-  String mtrPrgSttsDcdFrom;
-  String mtrPrgSttsDcdTo;
+  //String mtrPrgSttsDcdFrom;
+  //String mtrPrgSttsDcdTo;
   
   /* --------------------------------------- */
   String prdtCd;
