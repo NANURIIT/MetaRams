@@ -1824,13 +1824,13 @@ function resetInputValue(selector) {
   selector.find(`textarea`).val("")
   selector.find(`input[id$='Amt']
 				       , input[id$='Blce']
-				       , input[id$='Exrt']
 				       , input[id$='Mnum']
 				       , input[id$='Tmrd']
 				       , input[id$='Qnt']
 				       , input[id$='Shqt']
 				       , input[id$='Unpr']
 				       , input[id$='Rt']`).val("0");
+  selector.find(`input[id$='Exrt']`).val("1.0");
 
   selector.find(`input[id$='Dt']`).val(getToday())
   let 한달뒤ㅋ = () => {
