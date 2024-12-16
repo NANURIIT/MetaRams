@@ -1,4 +1,6 @@
+
 const TB09100Sjs = (function () {
+
   $(document).ready(function () {
     setGrid_TB09100S();
 
@@ -75,6 +77,7 @@ const TB09100Sjs = (function () {
           if (value === 0 || ui.cellData == null || value == NaN) {
             return "";
           }
+          value = value/$("#TB09100S_expUnit").val();
 
           var formattedValue = value.toLocaleString("ko-KR", {
             minimumFractionDigits: 0,
@@ -98,6 +101,7 @@ const TB09100Sjs = (function () {
           if (value === 0 || ui.cellData == null || value == NaN) {
             return "";
           }
+          value = value/$("#TB09100S_expUnit").val();
 
           var formattedValue = value.toLocaleString("ko-KR", {
             minimumFractionDigits: 0,
@@ -117,10 +121,10 @@ const TB09100Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           var value = parseFloat(ui.cellData);
-
           if (value === 0 || ui.cellData == null || value == NaN) {
             return "";
           }
+          value = value/$("#TB09100S_expUnit").val();
 
           var formattedValue = value.toLocaleString("ko-KR", {
             minimumFractionDigits: 0,
@@ -144,6 +148,7 @@ const TB09100Sjs = (function () {
           if (value === 0 || ui.cellData == null || value == NaN) {
             return "";
           }
+          value = value/$("#TB09100S_expUnit").val();
 
           var formattedValue = value.toLocaleString("ko-KR", {
             minimumFractionDigits: 0,
