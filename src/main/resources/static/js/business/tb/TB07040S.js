@@ -273,9 +273,14 @@ const TB07040Sjs = (function () {
   $(document).ready(function () {
     loadSelectBoxContents();
     loadUserAuth(); // 담당자 정보 조회
-
+    dateInputSet();
     setGrid_TB07040S();
   });
+
+  function dateInputSet() {
+    const $this = $("#TB07040S_rsltnDt");
+    $this.val(getToday());
+  }
 
   function loadSelectBoxContents() {
     getSelectBoxList("TB07040S", "I027/H002/P012");
@@ -1771,6 +1776,8 @@ const TB07040Sjs = (function () {
     //$("#TB07040S_rsltnDt").val("");
     // $('#TB07040S_prdtCd').val('');
     // $('#TB07040S_prdtNm').val('');
+    $('#TB07040S_srch_fndCd').val("");
+    $('#TB07040S_srch_fndNm').val("");
     $("#TB07040S_trQnt").val("");
     $("#TB07040S_trDt").val("");
     $("#TB07040S_trSn").val("");

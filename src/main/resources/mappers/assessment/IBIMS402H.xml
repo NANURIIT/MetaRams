@@ -318,11 +318,11 @@
 					             AND A.PRDT_CD =  #{prdtCd}
 					             AND A.EXC_SN  =  #{excSn}
                   ) AS RGST_SN                            등록일련번호 -->
-                  , ( SELECT NVL(MAX(A.RQS_SN), 0) + 1 AS RGST_SN
-                    FROM IBIMS401B A
+                  , ( SELECT NVL(MAX(A.RGST_SN),0)+1 AS RGST_SN
+                    FROM IBIMS402H A
                     WHERE 1 = 1
                       AND A.PRDT_CD =  #{prdtCd}
-                      AND A.RQS_SN  =  #{excSn}
+                      AND A.EXC_SN  =  #{excSn}
                   ) AS RGST_SN
                 , LDG_STTS_CD                             <!-- 원장상태코드 -->
                 , CRRY_CD                                 <!-- 통화코드 -->
