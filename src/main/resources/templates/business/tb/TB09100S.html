@@ -111,7 +111,7 @@
 											<h4 class="col-sm-6 pl-3">▶ 딜 익스포져 현황</h4>
 											<div class="col-sm-6 input-group justify-content-end pr-3">
 												<label class="col-sm-3 col-form-label text-right">익스포져 금액단위</label>
-												<select class="col-sm-2 form-control " id="TB09100S_expUnit">
+												<select class="col-sm-2 form-control " id="TB09100S_expUnit" onchange="TB09100Sjs.refreshGrid('#TB09110S_exposureStatus');" >
 													<option value="100000000">억원</option>
 													<option value="1">원</option>
 												</select>
@@ -131,8 +131,9 @@
 											<h4 class="col-sm-6 pl-3">▶ 딜 손익 현황</h4>
 											<div class="col-sm-6 input-group justify-content-end pr-3">
 												<label class="col-sm-3 col-form-label text-right">손익현황 금액단위</label>
-												<select class="col-sm-2 form-control ">
-													<option>백만원</option>
+												<select class="col-sm-2 form-control " id="TB09100S_pflsUnit" onchange="TB09100Sjs.refreshGrid('#TB09110S_revenue');">
+													<option value="1000000">백만원</option>
+													<option value="1">원</option>
 												</select>
 											</div>
 										</div>
