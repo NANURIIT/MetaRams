@@ -387,6 +387,7 @@ const TB07040Sjs = (function () {
     var trDt = $("#TB07040S_rsltnDt").val().replaceAll("-", "");
     var prdtCd = $("#TB07040S_prdtCd").val();
     var ibPrdtTrDcd = $("#TB07040S_ibPrdtTrDcd").val();
+    var nsFndCd = $('#TB07040S_srch_fndCd').val();
     //var etprCrdtGrntTrKindCd = $('#TB07040S_ibPrdtTrDcd').val();
 
     //alert(ibPrdtTrDcd);
@@ -400,6 +401,7 @@ const TB07040Sjs = (function () {
       trDt: trDt,
       prdtCd: prdtCd,
       etprCrdtGrntTrKindCd: etprCrdtGrntTrKindCd,
+      nsFndCd	: nsFndCd
     };
 
     $.ajax({
@@ -1766,7 +1768,7 @@ const TB07040Sjs = (function () {
   // 검색조건 및 선택된 테이블 정보 초기화
   function compClear() {
     /* 검색조건 */
-    $("#TB07040S_rsltnDt").val("");
+    //$("#TB07040S_rsltnDt").val("");
     // $('#TB07040S_prdtCd').val('');
     // $('#TB07040S_prdtNm').val('');
     $("#TB07040S_trQnt").val("");
