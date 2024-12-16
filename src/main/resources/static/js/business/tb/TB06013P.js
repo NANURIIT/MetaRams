@@ -15,7 +15,6 @@ async function callTB06013P(prefix) {
 
   TB06013P_pfx = prefix;
   //clearTB06013P();
-
   $("#TB06013P_prefix").val(prefix);
   $("#modal-TB06013P").modal("show");
 	indexChangeHandler("TB06013P");
@@ -491,6 +490,10 @@ function onClickExecute() {
   var paramData = getParamData();
   var check10reqCnt;
   
+  if (!checkParam()) {
+	return false;
+   }
+  
   //보증담보 선택시 by hytest
   if(paramData.eprzCrdlWeekMrtgKndCd=='10'){
 	if(isEmpty(paramData.grteCtrcDcd)) check10reqCnt="보증약정구분코드";
@@ -525,6 +528,69 @@ function onClickExecute() {
   //} else if ($("#TB06013P_toggleBtn3").attr("class").includes("btn-info")) {
   //remove();
   //}
+}
+
+function checkParam() {
+	var option = {}
+	option.title = "Error";
+	option.type = "error";
+	
+	// 유효성검사
+	if (isEmpty($('#TB06013P_E028').val())) {
+		option.text = "담보종류를 선택해주세요";
+		openPopup(option);
+		return false;
+	}
+	
+	if (isEmpty($('#TB06013P_M008').val())) {
+		option.text = "담보분류를 선택해주세요";
+		openPopup(option);
+		return false;
+	}
+	
+	if (isEmpty($('#TB06013P_mrtgNm').val())) {
+		option.text = "담보명을 입력해주세요";
+		openPopup(option);
+		$('#TB06013P_mrtgNm').focus();
+		return false;
+	}
+	
+	if(isEmpty($('#TB06013P_rgstDt').val())) {
+		option.text = "등록일자를 입력해주세요";
+		openPopup(option);
+		$('#TB06013P_rgstDt').focus();
+		return false;
+	}
+	
+	if(isEmpty($('#TB06013P_mrtgCclcDt').val())) {
+		option.text = "해지일자를 입력해주세요";
+		openPopup(option);
+		$('#TB06013P_mrtgCclcDt').focus();
+		return false;
+	}
+	
+	if (isEmpty($('#TB06013P_empNo').val())) {
+		option.text = "담보거래담당자를 선택해주세요";
+		openPopup(option);
+		return false;
+	}
+	
+	if (isEmpty($('#TB06013P_M006').val())) {
+		option.text = "담보평가기준을 선택해주세요";
+		openPopup(option);
+		return false;
+	}
+	
+	
+	if(isEmpty($('#TB06013P_I027').val())) {
+		option.text = "담보평가금액을 입력해주세요";
+		openPopup(option);
+		$('#TB06013P_I027').focus();
+		return false;
+	}
+	
+	
+	return true;
 }
 
 function regist(paramData) {

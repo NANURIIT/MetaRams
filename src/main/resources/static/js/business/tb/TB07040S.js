@@ -273,9 +273,14 @@ const TB07040Sjs = (function () {
   $(document).ready(function () {
     loadSelectBoxContents();
     loadUserAuth(); // 담당자 정보 조회
-
+    dateInputSet();
     setGrid_TB07040S();
   });
+
+  function dateInputSet() {
+    const $this = $("#TB07040S_rsltnDt");
+    $this.val(getToday());
+  }
 
   function loadSelectBoxContents() {
     getSelectBoxList("TB07040S", "I027/H002/P012");
@@ -387,6 +392,7 @@ const TB07040Sjs = (function () {
     var trDt = $("#TB07040S_rsltnDt").val().replaceAll("-", "");
     var prdtCd = $("#TB07040S_prdtCd").val();
     var ibPrdtTrDcd = $("#TB07040S_ibPrdtTrDcd").val();
+    var nsFndCd = $('#TB07040S_srch_fndCd').val();
     //var etprCrdtGrntTrKindCd = $('#TB07040S_ibPrdtTrDcd').val();
 
     //alert(ibPrdtTrDcd);
@@ -400,6 +406,7 @@ const TB07040Sjs = (function () {
       trDt: trDt,
       prdtCd: prdtCd,
       etprCrdtGrntTrKindCd: etprCrdtGrntTrKindCd,
+      nsFndCd	: nsFndCd
     };
 
     $.ajax({
@@ -515,7 +522,7 @@ const TB07040Sjs = (function () {
   // 매도정보 실행
   function showAlert() {
     var ibPrdtTrDcd = $("#TB07040S_ibPrdtTrDcd").val(); //거래구분 (매도/배당금)
-    var strVal = $(".btn.btn-s.btn-info").text();
+    var strVal = $("div[data-menuid='/TB07040S'] .btn.btn-s.btn-info").text();
     var trSn = $("#TB07040S_trSn").val();
 
     // alert($("TB07040S_ibPrdtTrDcd").val());
@@ -561,7 +568,7 @@ const TB07040Sjs = (function () {
       }).then((result) => {
         if (result.isConfirmed) {
           //callTran();
-          if ($(".btn.btn-s.btn-info").text() === "등록") {
+          if ($("div[data-menuid='/TB07040S'] .btn.btn-s.btn-info").text() === "등록") {
             g_sllPosShqt = $("#TB07040S_hldgShqt").val().replaceAll(",", "");
             //g_krwTrslExcAmt = $('#TB07040S_krwTrslExcAmt').val().replaceAll(',', '');
             var paramData = makeParam();
@@ -621,7 +628,7 @@ const TB07040Sjs = (function () {
       }).then((result) => {
         if (result.isConfirmed) {
           //callTran();
-          if ($(".btn.btn-s.btn-info").text() === "등록") {
+          if ($("div[data-menuid='/TB07040S'] .btn.btn-s.btn-info").text() === "등록") {
             //g_sllPosShqt = $('#TB07040S_hldgShqt').val().replaceAll(',', '');
             //g_krwTrslExcAmt = $('#TB07040S_krwTrslExcAmt').val().replaceAll(',', '');
             var paramData = makeParam_forDividends();
@@ -646,7 +653,7 @@ const TB07040Sjs = (function () {
   function makeParam() {
     var inputDcd; // 입력구분 : 1:등록, 2:취소
     // 등록시 일련번호 채번
-    if ($(".btn.btn-s.btn-info").text() === "등록") {
+    if ($("div[data-menuid='/TB07040S'] .btn.btn-s.btn-info").text() === "등록") {
       // 거래번호 조회
       //trSn ='';
       inputDcd = "1";
@@ -820,7 +827,7 @@ const TB07040Sjs = (function () {
       var trStfno = 0; // 거래직원번호
       var dcfcStfno = 0; // 결재자직원번호
       var clmSeq = 0; // 청구순번
-      var actgSynsCd = "20     "; // 회계적요코드
+      var actgSynsCd = "20"; // 회계적요코드
       var synsText = inputDcd == "1" ? "기타투자매도" : "기타투자매도취소"; // 적요내용
       var taxBillEvdcErlmDt; // 세금계산서증빙등록일자
       var taxBillEvdcErlmSeq = 0; // 세금계산서증빙등록순번
@@ -1159,7 +1166,7 @@ const TB07040Sjs = (function () {
   function makeParam_forDividends() {
     var inputDcd; // 입력구분 : 1:등록, 2:취소
     // 등록시 일련번호 채번
-    if ($(".btn.btn-s.btn-info").text() === "등록") {
+    if ($("div[data-menuid='/TB07040S'] .btn.btn-s.btn-info").text() === "등록") {
       // 거래번호 조회
       //trSn ='';
       inputDcd = "1";
@@ -1324,7 +1331,7 @@ const TB07040Sjs = (function () {
       var trStfno = 0; // 거래직원번호
       var dcfcStfno = 0; // 결재자직원번호
       var clmSeq = 0; // 청구순번
-      var actgSynsCd = "20     "; // 회계적요코드
+      var actgSynsCd = "20"; // 회계적요코드
       var synsText = inputDcd == "1" ? "배당금" : "배당금취소"; // 적용내용
       var taxBillEvdcErlmDt; // 세금계산서증빙등록일자
       var taxBillEvdcErlmSeq = 0; // 세금계산서증빙등록순번
@@ -1766,9 +1773,11 @@ const TB07040Sjs = (function () {
   // 검색조건 및 선택된 테이블 정보 초기화
   function compClear() {
     /* 검색조건 */
-    $("#TB07040S_rsltnDt").val("");
+    //$("#TB07040S_rsltnDt").val("");
     // $('#TB07040S_prdtCd').val('');
     // $('#TB07040S_prdtNm').val('');
+    $('#TB07040S_srch_fndCd').val("");
+    $('#TB07040S_srch_fndNm').val("");
     $("#TB07040S_trQnt").val("");
     $("#TB07040S_trDt").val("");
     $("#TB07040S_trSn").val("");
@@ -1819,22 +1828,22 @@ const TB07040Sjs = (function () {
     //$('#TB07040S_tableList tr').removeClass('table-active');
     $("#TB07040S_tableList").pqGrid("setData", []);
 
-    let toggleBtn1 = document.querySelector(".toggleBtn1");
+    let toggleBtn1 = document.querySelector("div[data-menuid='/TB07040S'] .toggleBtn1");
     toggleBtn1.click();
   }
 
   // 매도정보 상세보기
   function getSellDetail(rowData) {
     //var td = $(e).children();
-    let toggleBtn1 = document.querySelector(".toggleBtn1");
-    let toggleBtn2 = document.querySelector(".toggleBtn2");
+    let toggleBtn1 = document.querySelector("div[data-menuid='/TB07040S'] .toggleBtn1");
+    let toggleBtn2 = document.querySelector("div[data-menuid='/TB07040S'] .toggleBtn2");
 
     // 모든 행의 active 클래스 제거
     $("#TB07040S_tableList tr").removeClass("table-active");
     // 클릭한 행에 active 클래스 추가
     //$(e).addClass('table-active');
 
-    if ($(".btn.btn-s.btn-info").text() === "등록") {
+    if ($("div[data-menuid='/TB07040S'] .btn.btn-s.btn-info").text() === "등록") {
       toggleBtn2.click();
       $("#TB07040S_trSn").val("");
     }
@@ -1845,7 +1854,7 @@ const TB07040Sjs = (function () {
 
     $("#TB07040S_trDt").val(rowData.trDt);
 
-    if ($(".btn.btn-s.btn-info").text() === "취소") {
+    if ($("div[data-menuid='/TB07040S'] .btn.btn-s.btn-info").text() === "취소") {
       $("#TB07040S_trSn").val(rowData.trSn);
     } else {
       $("#TB07040S_trSn").val("");

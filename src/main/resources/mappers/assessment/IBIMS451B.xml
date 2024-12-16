@@ -26,30 +26,34 @@
              , T1.HND_TR_ID        /* 조작거래ID */          
          FROM IBIMS451B T1
         WHERE 1=1
-          <if test="stdrDt != ''">
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(stdrDt)">
           AND STDR_DT = #{stdrDt}
           </if>
-          AND ACTS_CD LIKE #{actsCd}
-          AND MNGM_BDCD LIKE #{mngmBdcd}
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(actsCd)">
+          AND ACTS_CD = #{actsCd}
+          </if>
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
+          AND MNGM_BDCD = #{mngmBdcd}
+          </if>
     </select>
 
     <select id="thdtTrDtlsGetData" parameterType="com.nanuri.rams.business.common.dto.IBIMS451BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS451BVO">
        SELECT B.DEAL_NO                        /* 딜번호 */
-             , A.TR_SN                          /* 거래순번 */
-             , A.ETPR_CRDT_GRNT_TR_KIND_CD      /* 거래종류코드 */
-             , A.DEAL_TR_PRCA                   /* 거래원금 */
-             , A.TR_INT_AMT                     /* 거래이자 */
-             , A.TR_FEE_AMT                     /* 거래수수료 */
-             , A.DEAL_TR_AMT                    /* 거래비용 */
-             , A.ACCT_JOB_CD                   /* 회계업무코드 */
-             , A.ACCT_UN_JOB_CD              /* 회계단위업무코드 */
-             , (
-                CASE
-                WHEN A.ACCT_JOB_CD IN ('G1','G6') THEN '1'  /* 1-증액 */
-                WHEN A.ACCT_JOB_CD IN ('G2','G5') THEN '2'  /* 2-감액 */
-                ELSE '0'
-                END
-                ) ICDC_DCD                  /* 증감구분코드 * 
+            , A.TR_SN                          /* 거래순번 */
+            , A.ETPR_CRDT_GRNT_TR_KIND_CD      /* 거래종류코드 */
+            , A.DEAL_TR_PRCA                   /* 거래원금 */
+            , A.TR_INT_AMT                     /* 거래이자 */
+            , A.TR_FEE_AMT                     /* 거래수수료 */
+            , A.DEAL_TR_AMT                    /* 거래비용 */
+            , A.ACCT_JOB_CD                   /* 회계업무코드 */
+            , A.ACCT_UN_JOB_CD              /* 회계단위업무코드 */
+            , (
+               CASE
+               WHEN A.ACCT_JOB_CD IN ('G1','G6') THEN '1'  /* 1-증액 */
+               WHEN A.ACCT_JOB_CD IN ('G2','G5') THEN '2'  /* 2-감액 */
+               ELSE '0'
+               END
+               ) ICDC_DCD                  /* 증감구분코드 */
           FROM IBIMS410B A
               ,IBIMS201B B
          WHERE 1=1

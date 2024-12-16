@@ -10,13 +10,15 @@
 	<script th:src="@{js/common.js}"></script>
 	<script th:src="@{js/fileUpload.js}"></script>
 	<script th:src="@{js/business/tb/TB06050S.js}"></script>
+	<script th:src="@{js/business/tb/TB04011P.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script> 	<!-- 기업체 팝업 -->
 	<script th:src="@{js/business/tb/TB06011P.js}"></script> 	<!-- 기업체 팝업 -->
 	<!-- <script th:src="@{js/business/tb/TB03022P.js}"></script> -->
 </th:block>
 
 <th:block layout:fragment="modalpopup">
-	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<!--<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>-->
+	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
 	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
 	<!-- <th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block> -->
 </th:block>
@@ -30,29 +32,25 @@
 					<!-- 조회조건영역 -->
 					<div class="ibox-content i-filter">
 						<div class="form-group row form-inline">
-							<!-- deal번호 -->
+							<!-- deal 번호 -->
 							<label class="col-sm-1 control-label">
-								펀드코드
+								deal 번호
 							</label>
-							<div class="col-sm-1-5 input-group">
-								<select class="form-control" id="TB06050S_nsFndCd">
-									<option value="">전체</option>
-								</select>
+							<div class="col-sm-3">
+								<div class="input-group">
+									<input type="text" class="form-control" id="TB06050S_ibDealNo">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callTB04011P('TB06050S');"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" id="TB06050S_ibDealNm" readonly="">
+								</div>
 							</div>
-							<!-- 상품구분 -->
-							<label class="col-sm-1 control-label">
-								상품구분
-							</label>
-							<div class="col-sm-1-5 input-group">
-								<select class="form-control" id="TB06050S_nsPrdtDcd">
-									<option value="">전체</option>
-								</select>
-							</div>
+								
 							<!-- 종목코드 -->
 							<label class="col-sm-1 control-label">
 								종목코드
 							</label>
-							<div class="col-sm-2">
+							<div class="col-sm-3">
 								<div class="input-group">
 									<input type="text" class="form-control" id="TB06050S_prdtCd">
 									<span class="input-group-append">
@@ -83,24 +81,29 @@
 						<div class="ibox">
 							<div class="ibox-content">
 								<div class="form-group row form-inline" id="TB06050S_selectedData">
+
+								<input class="form-control" id="TB06050S_nsFndCd" readonly>
+								</input>
+								<input class="form-control" id="TB06050S_nsPrdtDcd" readonly>
+								</input>
 									<!-- deal번호 -->
-									<label class="col-sm-1 control-label">
+									<!--<label class="col-sm-1 control-label">
 										펀드코드
 									</label>
 									<div class="col-sm-1-5 input-group">
 										<input  class="form-control" type="text" id="TB06050S_nsFndCd-readonly" readonly>
 										</input>
-									</div>
+									</div> -->
 									<!-- 상품구분 -->
-									<label class="col-sm-1 control-label">
+									<!--<label class="col-sm-1 control-label">
 										상품구분
 									</label>
 									<div class="col-sm-1-5 input-group">
 										<input class="form-control" type="text" id="TB06050S_nsPrdtDcd-readonly" readonly>
 										</input>
-									</div>
+									</div> -->
 									<!-- 종목코드 -->
-									<label class="col-sm-1 control-label">
+									<!--<label class="col-sm-1 control-label">
 										종목코드
 									</label>
 									<div class="col-sm-3">
@@ -108,7 +111,7 @@
 											<input type="text" class="form-control" id="TB06050S_prdtCd-readonly" readonly="">
 											<input type="text" class="form-control" id="TB06050S_prdtNm-readonly" readonly="">
 										</div>
-									</div>
+									</div>-->
 									<!-- SSPI충족여부 -->
 									<label class="col-sm-1 control-label">
 										<span class="req"></span>
@@ -119,6 +122,7 @@
 											<input type="text" class="form-control" id="TB06050S_sppiSfcYn" readonly="">
 										</div>
 									</div>
+									<div class="col-sm-9 input-group"></div>
 								</div>
 							</div>
 						</div>

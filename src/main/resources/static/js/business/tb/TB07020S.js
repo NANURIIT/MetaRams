@@ -80,7 +80,7 @@ const TB07020Sjs = (function() {
 			filter: { crules: [{ condition: 'range' }] }
 		},
 		{
-			title: "좌수",
+			title: "수량",
 			dataType: "string",
 			dataIndx: "trQnt",
 			align: "right",
@@ -381,6 +381,7 @@ const TB07020Sjs = (function() {
 		*/
 		var trDt = $('#TB07020S_rsltnDt').val().replaceAll('-', '');
 		var prdtCd = $('#TB07020S_prdtCd').val();
+		var nsFndCd = $('#TB07020S_srch_fndCd').val();
 		var ibPrdtTrDcd = $('#TB07020S_ibPrdtTrDcd').val();
 		if (ibPrdtTrDcd === '1') {
 			var etprCrdtGrntTrKindCd = '81'; //매수
@@ -391,6 +392,7 @@ const TB07020Sjs = (function() {
 			'trDt' : trDt
 			, 'prdtCd' : prdtCd
 			, 'etprCrdtGrntTrKindCd' : etprCrdtGrntTrKindCd
+			, 'nsFndCd'	: nsFndCd
 		};
 
 		$.ajax({
@@ -469,9 +471,12 @@ const TB07020Sjs = (function() {
 
 	// 매수정보 실행
 	function showAlert() {
-		var strVal = $('.btn.btn-s.btn-info').text();
+		var strVal = $('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text();
 		var trSn = $('#TB07020S_trSn').val();
-		if (strVal === '등록') {
+
+		//alert(strVal);
+
+		if (strVal ==='등록') {
 			if ( isNotEmpty(trSn)) {
 				Swal.fire({
 								icon              : 'error'
@@ -506,7 +511,7 @@ const TB07020Sjs = (function() {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				//callTran();
-				if($('.btn.btn-s.btn-info').text() === '등록' ) {
+				if($('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '등록' ) {
 					g_eprzCrdlCtrcAmt = $('#TB07020S_eprzCrdlCtrcAmt').val().replaceAll(',', '');
 					g_krwTrslExcBlce = $('#TB07020S_krwTrslExcBlce').val().replaceAll(',', '');
 					//g_krwTrslExcAmt = $('#TB07020S_krwTrslExcAmt').val().replaceAll(',', '');
@@ -533,7 +538,7 @@ const TB07020Sjs = (function() {
 	function makeParam() {
 		var inputDcd; // 입력구분 : 1:등록, 2:취소
 		// 등록시 일련번호 채번
-		if($('.btn.btn-s.btn-info').text() === '등록' ) {
+		if($('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '등록' ) {
 			// 거래번호 조회
 			//trSn ='';
 			inputDcd = '1';
@@ -1199,9 +1204,10 @@ const TB07020Sjs = (function() {
 		resetInputValue($('div[data-menuid="/TB07020S"]'));
 
 		/* 검색조건 */
-		$('#TB07020S_rsltnDt').val('');
+		//$('#TB07020S_rsltnDt').val('');
 		$('#TB07020S_prdtCd').val('');
 		$('#TB07020S_prdtNm').val('');
+		$('#TB07020S_srch_fndCd').val('');
 
 		/* 상세정보 */
 		$('#TB07020S_trQnt').val('');
@@ -1253,7 +1259,7 @@ const TB07020Sjs = (function() {
 		$("#TB07020S_tableList").pqGrid("setData", []);
 
 
-		let toggleBtn1 = document.querySelector('.toggleBtn1');
+		let toggleBtn1 = document.querySelector('div[data-menuid="/TB07020S"] .toggleBtn1');
 		toggleBtn1.click();
 		//btnAdd();
 	}
@@ -1263,15 +1269,15 @@ const TB07020Sjs = (function() {
 		//alert(rowData.trCrcyCd);
 
 		// var td = $(e).children();
-		let toggleBtn1 = document.querySelector('.toggleBtn1');
-		let toggleBtn2 = document.querySelector('.toggleBtn2');
+		let toggleBtn1 = document.querySelector('div[data-menuid="/TB07020S"] .toggleBtn1');
+		let toggleBtn2 = document.querySelector('div[data-menuid="/TB07020S"] .toggleBtn2');
 
 		// 모든 행의 active 클래스 제거
 		$('#TB07020S_tableList tr').removeClass('table-active');
 		// 클릭한 행에 active 클래스 추가
 		//$(e).addClass('table-active');
 
-		if ( $('.btn.btn-s.btn-info').text() === '등록' ) {
+		if ( $('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '등록' ) {
 			toggleBtn2.click();
 			$('#TB07020S_trSn').val('');
 		}
@@ -1282,7 +1288,7 @@ const TB07020Sjs = (function() {
 
 		$('#TB07020S_trDt').val(rowData.trDt);
 
-		if ( $('.btn.btn-s.btn-info').text() === '취소' ) {
+		if ( $('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '취소' ) {
 			$('#TB07020S_trSn').val(rowData.trSn);
 		}
 		else
@@ -1502,7 +1508,7 @@ const TB07020Sjs = (function() {
 			}
 		}
 		if( isNotEmpty($('#TB07020S_trQnt').val()) ) {
-			var qotaRt = (((Number($('#TB07020S_hldgShqt').val().replaceAll(',', '')) + Number($('#TB07020S_trQnt').val().replaceAll(',', ''))) / Number($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))) * 100).toFixed(8);
+			var qotaRt = (((Number($('#TB07020S_hldgShqt').val().replaceAll(',', '')) + Number($('#TB07020S_trQnt').val().replaceAll(',', ''))) / Number($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))) * 100).toFixed(2);
 
 			if(!isFinite(qotaRt)){
 				$('#TB07020S_qotaRt').val("0");
@@ -1513,7 +1519,7 @@ const TB07020Sjs = (function() {
 
 		}
 		else {
-			$('#TB07020S_qotaRt').val((((Number($('#TB07020S_hldgShqt').val().replaceAll(',', ''))) / Number($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))) * 100).toFixed(8));
+			$('#TB07020S_qotaRt').val((((Number($('#TB07020S_hldgShqt').val().replaceAll(',', ''))) / Number($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))) * 100).toFixed(2));
 		}
 		setHoldPrpsDcd();
 		// if( isNotEmpty($('#TB07020S_trQnt').val())) {

@@ -238,8 +238,8 @@ const TB07130Sjs = (function () {
   function selectIBIMS451B() {
     paramData = {
       stdrDt: unformatDate($("#TB07130S_stdrDt").val()),
-      actsCd: $("#TB07130S_actsCd").val() || "%",
-      mngmBdcd: $("#TB07130S_mngmBdcd").val() || "%",
+      actsCd: $("#TB07130S_actsCd").val(),
+      mngmBdcd: $("#TB07130S_mngmBdcd").val(),
     };
 
     $.ajax({

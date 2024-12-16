@@ -367,6 +367,22 @@ var colPrdtCdList = [
 		hidden: true,
 		filter: { crules: [{ condition: 'range' }] },
 	},
+	{
+		title: "부수안건구분코드",
+		dataType: "string",
+		dataIndx: "mtrDcd",
+		align: "center",
+		hidden: true,
+		filter: { crules: [{ condition: 'range' }] },
+	},
+	{
+		title: "리스크심사구분코드",
+		dataType: "string",
+		dataIndx: "jdgmDcd",
+		align: "center",
+		hidden: true,
+		filter: { crules: [{ condition: 'range' }] },
+	},
 ];
 
 //그리드 호출
@@ -667,6 +683,8 @@ function setPrdtInfo(e) {
 	var invAmt = td.eq(24).text();
 	var dealExcBlce = td.eq(25).text();
 	var dealNm = td.eq(26).text();
+	nmcpMtrDcd = td.eq(27).text();
+	lstCCaseDcd = td.eq(28).text();
 
 	var prefix = $("#TB06011P_prefix").val();		// id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
 
@@ -775,7 +793,7 @@ function setPrdtInfo(e) {
 	if (prefix != "TB09080S") {
 		$(pageDealNm).val(e.dealNm);
 	}
-	if (prefix == "TB06060S") {
+	if (prefix == "TB06060S"||prefix == "TB06050S") {
 		$(pageIbDealNo).val(e.dealNo);
 	}
 

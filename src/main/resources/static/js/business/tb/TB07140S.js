@@ -7,10 +7,14 @@ const TB07140Sjs = (function () {
   let grdSelect = {};
   let TB07140S_tagStatuses = [];
 
+  let mode = "insert";
+
   $(document).ready(function () {
-    $(
-      "input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Tmrd'], input[id*='tx']"
-    ).val("0");
+    $("input[id*='Amt'], input[id*='Blce'], input[id*='Mnum'], input[id*='Tmrd'], input[id*='tx']").val("0");
+
+    $("input[id*='Exrt']").val("1.0");
+
+    // common.js 함수
     selectorNumberFormater(
       $(`div[data-menuid='/TB07140S'] input[id*='Amt']
        , div[data-menuid='/TB07140S'] input[id*='Blce']
@@ -152,6 +156,11 @@ const TB07140Sjs = (function () {
   const insertBtn = () => {
     setFirstStatus();
     fincInputHandler();
+    if (!$('#TB07140S_trSn').val()) {
+      mode = "insert";
+    }else {
+      mode = "update";
+    }
   };
 
   /*
@@ -165,27 +174,23 @@ const TB07140Sjs = (function () {
     $(".ibox-content .ibox-content select").prop("disabled", true);
     $(".ibox-content .ibox-content .btn.btn-default").prop("disabled", true);
     $(".toggleBtn1").prop("disabled", false);
-    resetInput();
+
+    // common.js 함수
+    resetInputValue($('div[data-menuid="/TB07140S"]'));
+
+    mode = "delete";
+
   };
 
   /*
    *  전체 초기화
    */
   const removeAll = () => {
-    resetInput();
-    TB07140S_resetPqGrid();
-  };
 
-  const resetInput = () => {
-    $("input").val("");
-    $(`input[id*='Amt']
-     , input[id*='Blce']
-     , input[id*='Exrt']
-     , input[id*='Mnum']
-     , input[id*='Tmrd']
-     , #TB07140S_trtx
-     , #TB07140S_intx
-     , #TB07140S_lotx`).val("0");
+    // common.js 함수
+    resetInputValue($('div[data-menuid="/TB07140S"]'));
+
+    TB07140S_resetPqGrid();
   };
 
   /*
@@ -337,6 +342,13 @@ const TB07140Sjs = (function () {
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        // 업데이트, 딜리트 용도
+        title: "실행순번",
+        dataType: "string",
+        dataIndx: "excSn",
+        hidden: true,
       },
       {
         title: "출자처리구분",
@@ -496,11 +508,7 @@ const TB07140Sjs = (function () {
         scrollModel: { autoFit: true },
         editable: true,
         rowClick: function (event, ui) {
-          if (TB07140S_rowData === ui.rowData) {
-            TB07140S_rowData = dummyData;
-          } else {
-            TB07140S_rowData = ui.rowData;
-          }
+          
         },
         selectionModel: { type: "row" },
       },
@@ -603,25 +611,19 @@ const TB07140Sjs = (function () {
    *  실행
    */
   function excFinc() {
-    let btnToggle1 = $(".btn.btn-s.toggleBtn1.btn-info");
-    if (btnToggle1) {
-      TB07140S_checkQueryType();
-    } else {
-      deleteFinc();
-    }
-  }
-
-  /*
-   *  인설트 업데이트 구분
-   */
-  function TB07140S_checkQueryType() {
-    console.log($("#TB07140S_trSn").val());
-    if (!$("#TB07140S_trSn").val()) {
+    if (mode === "insert") {
       insertFinc();
-    } else {
+    }
+    else if (mode === "update") {
       updateFinc();
     }
+    else if (mode === "delete") {
+      deleteFinc();
+    }
+
+    getFincList();
   }
+
 
   /*
    *  =====================SELECT모음=====================
@@ -633,17 +635,17 @@ const TB07140Sjs = (function () {
   function getFincList() {
     let result;
 
-    let prdtCd = $("#TB07140S_prdtCd").val();
-    let nsFndCd = $("#TB07140S_fndCd").val();
+    let prdtCd = $("#TB07140S_srch_prdtCd").val();
+    let nsFndCd = $("#TB07140S_srch_fndCd").val();
 
     let paramData;
     paramData = {
       prdtCd: prdtCd,
-      NS_FND_CD: nsFndCd,
+      nsFndCd: nsFndCd,
     };
 
     $.ajax({
-      type: "POST",
+      method: "POST",
       url: "/TB07140S/getFincList",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
@@ -792,27 +794,28 @@ const TB07140Sjs = (function () {
    *  출자금 거래등록
    */
   function insertFinc() {
-    paramData = {
+
+    let result;
+
+    const paramData = {
       prdtCd: $(`#TB07140S_prdtCd`).val(),
-      // trSn: $(`#TB07140S_trSn`).val(),
-      // excSn: $(`#TB07140S_excSn`).val(),
-      trDt: $(`#TB07140S_trDt`).val(),
+      trDt: unformatDate($(`#TB07140S_trDt`).val()),
       etprCrdtGrntTrKindCd: $(`#TB07140S_etprCrdtGrntTrKindCd`).val(),
       nsFndCd: $(`#TB07140S_nsFndCd`).val(),
       synsCd: $(`#TB07140S_synsCd`).val(),
       holdPrpsDcd: $(`#TB07140S_holdPrpsDcd`).val(),
       fincPrcsDcd: $(`#TB07140S_fincPrcsDcd`).val(),
       trDptCd: $(`#TB07140S_trDptCd`).val(),
-      fincCngeAmt: $(`#TB07140S_fincCngeAmt`).val(),
-      payErnAmt: $(`#TB07140S_payErnAmt`).val(),
-      stlAmt: $(`#TB07140S_stlAmt`).val(),
-      trdeExrt: $(`#TB07140S_trdeExrt`).val(),
-      trslFincCngeAmt: $(`#TB07140S_trslFincCngeAmt`).val(),
-      trslPayErnAmt: $(`#TB07140S_trslPayErnAmt`).val(),
-      trslStlAmt: $(`#TB07140S_trslStlAmt`).val(),
-      trtx: $(`#TB07140S_trtx`).val(),
-      intx: $(`#TB07140S_intx`).val(),
-      lotx: $(`#TB07140S_lotx`).val(),
+      fincCngeAmt: uncomma($(`#TB07140S_fincCngeAmt`).val()),
+      payErnAmt: uncomma($(`#TB07140S_payErnAmt`).val()),
+      stlAmt: uncomma($(`#TB07140S_stlAmt`).val()),
+      trdeExrt: uncomma($(`#TB07140S_trdeExrt`).val()),
+      trslFincCngeAmt: uncomma($(`#TB07140S_trslFincCngeAmt`).val()),
+      trslPayErnAmt: uncomma($(`#TB07140S_trslPayErnAmt`).val()),
+      trslStlAmt: uncomma($(`#TB07140S_trslStlAmt`).val()),
+      trtx: uncomma($(`#TB07140S_trtx`).val()),
+      intx: uncomma($(`#TB07140S_intx`).val()),
+      lotx: uncomma($(`#TB07140S_lotx`).val()),
       bfRsvPayDcd: $(`#TB07140S_bfRsvPayDcd`).val(),
       stlXtnlIsttCd: $(`#TB07140S_stlXtnlIsttCd`).val(),
       stlAcno: $(`#TB07140S_stlAcno`).val(),
@@ -820,12 +823,14 @@ const TB07140Sjs = (function () {
       reFincPossYn: $(`#TB07140S_reFincPossYn`).val(),
     };
 
+    console.log(paramData);
+
     $.ajax({
-      type: "POST",
+      method: "POST",
       url: "/TB07140S/insertFinc",
       contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(paramData),
       dataType: "json",
+      data: JSON.stringify(paramData),
       success: function (data) {
         if (data) {
           result = data;
@@ -849,7 +854,7 @@ const TB07140Sjs = (function () {
       });
     }
 
-    getFincList();
+    // getFincList();
   }
 
   /*
@@ -864,7 +869,10 @@ const TB07140Sjs = (function () {
    *  출자금 거래등록 업데이트
    */
   function updateFinc() {
-    paramData = {
+
+    let result;
+
+    const paramData = {
       prdtCd: $(`#TB07140S_prdtCd`).val(),
       trSn: $(`#TB07140S_trSn`).val(),
       excSn: $(`#TB07140S_excSn`).val(),
@@ -893,7 +901,7 @@ const TB07140Sjs = (function () {
     };
 
     $.ajax({
-      type: "POST",
+      method: "POST",
       url: "/TB07140S/updateFinc",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
@@ -921,125 +929,125 @@ const TB07140Sjs = (function () {
       });
     }
 
-    getFincList();
+    // getFincList();
   }
 
   /*
    *  UPDATE 실행금리정보
    */
-  function updateIntrtData() {
-    let result;
+  // function updateIntrtData() {
+  //   let result;
 
-    let prdtCd = $("#TB07140S_prdtCd").val();
-    let excSn = $("#TB07140S_excSn").val();
-    let intrtList = $("#TB07140S_colModel").pqGrid("instance").getData();
+  //   let prdtCd = $("#TB07140S_prdtCd").val();
+  //   let excSn = $("#TB07140S_excSn").val();
+  //   let intrtList = $("#TB07140S_colModel").pqGrid("instance").getData();
 
-    let insertList = [];
-    let updateList = [];
+  //   let insertList = [];
+  //   let updateList = [];
 
-    for (let i = 0; i < intrtList.length; i++) {
-      const item = intrtList[i];
-      if (!item.rgstSn && item.rgstSn === undefined) {
-        insertList.push(item);
-      } else {
-        updateList.push(item);
-      }
-    }
+  //   for (let i = 0; i < intrtList.length; i++) {
+  //     const item = intrtList[i];
+  //     if (!item.rgstSn && item.rgstSn === undefined) {
+  //       insertList.push(item);
+  //     } else {
+  //       updateList.push(item);
+  //     }
+  //   }
 
-    let insertParamData = {
-      prdtCd: prdtCd,
-      excSn: excSn,
-      intrtList: insertList,
-    };
-    let updateParamData = {
-      prdtCd: prdtCd,
-      excSn: excSn,
-      intrtList: updateList,
-    };
-    console.log(updateParamData);
-    if (insertList.length > 0) {
-      $.ajax({
-        type: "POST",
-        url: "/TB07140S/insertIntrtData",
-        contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(insertParamData),
-        dataType: "json",
-        success: function (data) {
-          if (data) {
-            result = data;
-          }
-        },
-        error: function () {
-          result = -1;
-        },
-      });
-    }
+  //   let insertParamData = {
+  //     prdtCd: prdtCd,
+  //     excSn: excSn,
+  //     intrtList: insertList,
+  //   };
+  //   let updateParamData = {
+  //     prdtCd: prdtCd,
+  //     excSn: excSn,
+  //     intrtList: updateList,
+  //   };
+  //   console.log(updateParamData);
+  //   if (insertList.length > 0) {
+  //     $.ajax({
+  //       method: "POST",
+  //       url: "/TB07140S/insertIntrtData",
+  //       contentType: "application/json; charset=UTF-8",
+  //       data: JSON.stringify(insertParamData),
+  //       dataType: "json",
+  //       success: function (data) {
+  //         if (data) {
+  //           result = data;
+  //         }
+  //       },
+  //       error: function () {
+  //         result = -1;
+  //       },
+  //     });
+  //   }
 
-    if (updateList.length > 0) {
-      $.ajax({
-        type: "POST",
-        url: "/TB07140S/updateIntrtData",
-        contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(updateParamData),
-        dataType: "json",
-        success: function (data) {
-          if (data) {
-            result = data;
-          }
-        },
-        error: function () {
-          result = -1;
-        },
-      });
-    }
-    return result;
-  }
+  //   if (updateList.length > 0) {
+  //     $.ajax({
+  //       method: "POST",
+  //       url: "/TB07140S/updateIntrtData",
+  //       contentType: "application/json; charset=UTF-8",
+  //       data: JSON.stringify(updateParamData),
+  //       dataType: "json",
+  //       success: function (data) {
+  //         if (data) {
+  //           result = data;
+  //         }
+  //       },
+  //       error: function () {
+  //         result = -1;
+  //       },
+  //     });
+  //   }
+  //   return result;
+  // }
 
   /*
    *  UPDATE TB07140S
    */
-  async function updateTB07140S() {
-    let excResult;
-    let intrtResult;
-    excResult = await updateExcData(); // 데이터값이 나온 함수
-    intrtResult = await updateIntrtData();
-    if (!$("#TB07140S_prdtCd").val()) {
-      Swal.fire({
-        icon: "warning",
-        text: "종목코드를 입력해주세요!",
-        confirmButtonText: "확인",
-      });
-      return;
-    } else if (!$("#TB07140S_prdtNm").val()) {
-      Swal.fire({
-        icon: "warning",
-        text: "상품명을 입력해주세요!",
-        confirmButtonText: "확인",
-      });
-      return;
-    } else if (!$("#TB07140S_excSn").val()) {
-      Swal.fire({
-        icon: "warning",
-        text: "실행순번을 지정해주세요!",
-        confirmButtonText: "확인",
-      });
-      return;
-    } else if (excResult === -1 || intrtResult === -1) {
-      Swal.fire({
-        icon: "error",
-        text: "저장실패!",
-        confirmButtonText: "확인",
-      });
-      return;
-    } else {
-      Swal.fire({
-        icon: "success",
-        text: "저장성공!",
-        confirmButtonText: "확인",
-      });
-    }
-    selectTB07140S();
-  }
+  // async function updateTB07140S() {
+  //   let excResult;
+  //   let intrtResult;
+  //   excResult = await updateExcData(); // 데이터값이 나온 함수
+  //   intrtResult = await updateIntrtData();
+  //   if (!$("#TB07140S_prdtCd").val()) {
+  //     Swal.fire({
+  //       icon: "warning",
+  //       text: "종목코드를 입력해주세요!",
+  //       confirmButtonText: "확인",
+  //     });
+  //     return;
+  //   } else if (!$("#TB07140S_prdtNm").val()) {
+  //     Swal.fire({
+  //       icon: "warning",
+  //       text: "상품명을 입력해주세요!",
+  //       confirmButtonText: "확인",
+  //     });
+  //     return;
+  //   } else if (!$("#TB07140S_excSn").val()) {
+  //     Swal.fire({
+  //       icon: "warning",
+  //       text: "실행순번을 지정해주세요!",
+  //       confirmButtonText: "확인",
+  //     });
+  //     return;
+  //   } else if (excResult === -1 || intrtResult === -1) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       text: "저장실패!",
+  //       confirmButtonText: "확인",
+  //     });
+  //     return;
+  //   } else {
+  //     Swal.fire({
+  //       icon: "success",
+  //       text: "저장성공!",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  //   selectTB07140S();
+  // }
 
   /*
    *  =====================UPDATE모음=====================
@@ -1079,7 +1087,7 @@ const TB07140Sjs = (function () {
     };
 
     await $.ajax({
-      type: "POST",
+      method: "POST",
       url: "/TB07140S/deleteFinc",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
@@ -1107,50 +1115,50 @@ const TB07140Sjs = (function () {
       });
     }
 
-    await getFincList();
+    // await getFincList();
   }
 
-  async function deleteIBIMS404B() {
-    let prdtCd = $("#TB07140S_prdtCd").val();
-    let excSn = $("#TB07140S_excSn").val();
-    let rgstSn = TB07140S_rowData.rgstSn;
+  // async function deleteIBIMS404B() {
+  //   let prdtCd = $("#TB07140S_prdtCd").val();
+  //   let excSn = $("#TB07140S_excSn").val();
+  //   let rgstSn = TB07140S_rowData.rgstSn;
 
-    paramData = {
-      prdtCd,
-      excSn,
-      rgstSn,
-    };
-    await $.ajax({
-      type: "POST",
-      url: "/TB07140S/deleteIBIMS404B",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(paramData),
-      dataType: "json",
-      success: function (data) {
-        if (data) {
-          Swal.fire({
-            icon: "success",
-            text: "삭제성공!",
-            confirmButtonText: "확인",
-          });
-        } else {
-          Swal.fire({
-            icon: "warning",
-            text: "삭제실패!",
-            confirmButtonText: "확인",
-          });
-        }
-      },
-      error: function () {
-        Swal.fire({
-          icon: "error",
-          text: "에러!",
-          confirmButtonText: "확인",
-        });
-      },
-    });
-    await selectTB07140S();
-  }
+  //   paramData = {
+  //     prdtCd,
+  //     excSn,
+  //     rgstSn,
+  //   };
+  //   await $.ajax({
+  //     method: "POST",
+  //     url: "/TB07140S/deleteIBIMS404B",
+  //     contentType: "application/json; charset=UTF-8",
+  //     data: JSON.stringify(paramData),
+  //     dataType: "json",
+  //     success: function (data) {
+  //       if (data) {
+  //         Swal.fire({
+  //           icon: "success",
+  //           text: "삭제성공!",
+  //           confirmButtonText: "확인",
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           icon: "warning",
+  //           text: "삭제실패!",
+  //           confirmButtonText: "확인",
+  //         });
+  //       }
+  //     },
+  //     error: function () {
+  //       Swal.fire({
+  //         icon: "error",
+  //         text: "에러!",
+  //         confirmButtonText: "확인",
+  //       });
+  //     },
+  //   });
+  //   await selectTB07140S();
+  // }
 
   /*
    *  =====================DELETE모음=====================
