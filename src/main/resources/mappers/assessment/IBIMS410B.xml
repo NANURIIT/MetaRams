@@ -743,11 +743,9 @@
 
     <!-- 자금품의결재 -->
     <select id="get07120sList" parameterType="com.nanuri.rams.business.common.vo.IBIMS410BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS410BVO">
-        SELECT T1.PRDT_CD                         /* 종목코드  410B */
+        SELECT T1.PRDT_CD                       /* 종목코드  410B */
            , T1.TR_DT                           /* 거래일자  410B */
-           , NVL(
-                    T7.CONS_DECD_STAT_CD , ''
-                   )      AS consDecdStatCd     /* 결재상태  452B */
+           , NVL(T7.CONS_DECD_STAT_CD , '0')   AS consDecdStatCd     /* 결재상태  452B */
            , T1.ORGNO     AS orgno              /* 부서코드  410B */
            , T1.ORGNO     AS dprtNm             /* 부서명   410B */
            , T1.TR_OBJT_BSN_NO                  /* 거래처번호 */
@@ -804,42 +802,43 @@
            , T1.TR_SN                           /* 거래일련번호 */
            , T1.EXC_SN                          /* 실행일련번호 */
         FROM  IBIMS410B T1  /* 딜거래내역 */
-  			, IBIMS401B T2  /* 약정기본 */
+  			    , IBIMS401B T2  /* 약정기본 */
             , IBIMS402B T3  /* 딜실행기본 */
             , IBIMS201B T5  /* 딜승인기본 */
             , IBIMS101B T6  /* 딜기본 */
             , IBIMS452B T7  /* 자금이체품의내역 */
-         
        WHERE 1=1
          AND T1.PRDT_CD = T2.PRDT_CD(+)
          AND T1.PRDT_CD = T3.PRDT_CD(+) 
          AND T1.PRDT_CD = T5.PRDT_CD
          AND T1.EXC_SN 	= T3.EXC_SN(+)
          AND T5.DEAL_NO = T6.DEAL_NO(+)
-         AND T5.DEAL_NO = T7.DEAL_NO(+)
+         AND T1.PRDT_CD = T7.PRDT_CD(+)
+         AND T1.TR_SN = T7.TR_SEQ(+)
+         AND T1.EXC_SN = T7.EXC_SEQ(+)
          AND T5.LAST_YN = 'Y'
          AND T5.LAST_YN = T6.LAST_YN(+)
          AND T5.APVL_DT != ' '
          <if test="orgno != ''">
          AND T1.ORGNO = #{orgno}
          </if>
-         <if test="prevDate != ''">
-         AND T1.TR_DT &gt; #{nextDate} /* 큰 날짜 */
+         <if test="prevDate != '' and nextDate != ''">
+         AND T1.TR_DT BETWEEN #{prevDate} AND #{nextDate} /* 큰 날짜 */
          </if>
-         <if test="nextDate != ''">
+         <!-- <if test="nextDate != ''">
          AND T1.TR_DT &lt; #{prevDate} /* 작은 날짜 */
-         </if>
+         </if> -->
          <!-- AND 입출금구분몰라.. -->
          <if test="prdtCd != ''">
          AND T1.PRDT_CD = #{prdtCd} /* 종목코드 */
          </if>
          <if test="consDecdStatCd != ''">
-         AND T7.CONS_DECD_STAT_CD(+) = #{consDecdStatCd} /* 결재상태 */
+         AND NVL(T7.CONS_DECD_STAT_CD, '0') = #{consDecdStatCd} /* 결재상태 */
          </if>
          <if test="trObjtBsnNo != ''">
          AND T1.TR_OBJT_BSN_NO = #{trObjtBsnNo} /* 거래처번호 */
          </if>
-         <if test="trCrryCd != ''">
+         <if test="trCrryCd != '' and  trCrryCd != null">
          AND T1.TR_CRRY_CD = #{trCrryCd} /* 통화구분 */
          </if>
          <!-- <if test=" != ''">

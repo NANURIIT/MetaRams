@@ -94,7 +94,7 @@ const TB07120Sjs = (function () {
     $("#TB07120S_dprtNm").append(D010html);
     // $('#TB07080S_ldgSttsCd').append(R031html);
     $("#TB07120S_consDecdDvsnCd").append(D016html);
-    $("#TB07120S_trCrcyCd").append(I027html);
+    $("#TB07120S_trCrryCd").append(I027html);
     // $('#TB07080S_ldgSttsCd').append(D015html);
     $("#TB07120S_consDecdStatCd, #ibims452 #TB07120S_consDecdStatCd").append(
       D006html
@@ -147,6 +147,12 @@ const TB07120Sjs = (function () {
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        const D006Data = TB07120S_grdSelect.D006; // D006 데이터를 활용
+        const cellData = ui.cellData;
+        const matchedItem = D006Data.find(item => item.cdValue === cellData);
+        return matchedItem ? matchedItem.cdName : cellData; // 데이터 매칭이 안되면 원본값 반환
+      }
     },
     {
       title: "부서코드",
@@ -210,6 +216,12 @@ const TB07120Sjs = (function () {
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        const F008Data = TB07120S_grdSelect.F008; // D006 데이터를 활용
+        const cellData = ui.cellData;
+        const matchedItem = F008Data.find(item => item.cdValue === cellData);
+        return matchedItem ? matchedItem.cdName : cellData; // 데이터 매칭이 안되면 원본값 반환
+      }
     },
     {
       title: "통화코드",
@@ -276,9 +288,19 @@ const TB07120Sjs = (function () {
       colModel: colM_Grid1,
       strNoRows: "조회된 데이터가 없습니다.",
       rowDblClick: function (evt, ui) {
-        console.log(ui.rowData);
-
         const keys = Object.keys(ui.rowData);
+
+        //포맷변경(포맷을'YYYY-MM-DD HH:MM:SS'로 변경)
+        //거래시간
+        if (ui.rowData["trDtm"]) {
+          let dateObj = new Date(ui.rowData["trDtm"]);
+          ui.rowData["trDtm"] = dateObj.toISOString().replace('T', ' ').slice(0, -5);
+        }
+         //처리시간
+        if(ui.rowData["hndlDtm"]){
+          let dateObj = new Date(ui.rowData["hndlDtm"]);
+          ui.rowData["hndlDtm"] = dateObj.toISOString().replace('T', ' ').slice(0, -5);
+        }
 
         for (let i = 0; i < keys.length; i++) {
           $(`#ibims452b #TB07120S_${keys[i]}`).val(ui.rowData[keys[i]]);
@@ -352,8 +374,8 @@ const TB07120Sjs = (function () {
 
     const paramData = {
       orgno: $("#TB07120S_dprtCd").val(),
-      prevDate: prevDate,
-      nextDate: nextDate,
+      prevDate: unformatDate(prevDate),
+      nextDate: unformatDate(nextDate),
       // , 입출금구분:
       prdtCd: $("#TB07120S_prdtCd").val(),
       consDecdStatCd: $("#TB07120S_consDecdStatCd").val(),
@@ -382,12 +404,15 @@ const TB07120Sjs = (function () {
         result = -2;
       },
     }).then(function () {
-      if (result != 1) {
-        Swal.fire({
-          icon: result == -1 ? "warning" : result == -2 ? "error" : "info",
-          text: "조회내역이 없습니다!",
-        });
+      if(result != 1){
+        console.log("조회내역이 없습니다!");
       }
+      // if (result != 1) {
+      //   Swal.fire({
+      //     icon: result == -1 ? "warning" : result == -2 ? "error" : "info",
+      //     text: "조회내역이 없습니다!",
+      //   });
+      // }
     });
   }
 
@@ -458,11 +483,11 @@ const TB07120Sjs = (function () {
 
     let result;
     let query;
-    const nowStat = $("#ibims452b #TB07120S_consDecdStatCd").val();
+    const nowStat = $("#TB07120S_consDecdStatCd").val();
 
     console.log(nowStat);
 
-    if (nowStat === "00") {
+    if (nowStat === "0") {
       query = "insert";
     } else {
       query = "update";
@@ -484,6 +509,8 @@ const TB07120Sjs = (function () {
       rqstStfno: $("#TB07120S_rqstStfno").val(),
       gbckRsonText: $("#TB07120S_gbckRsonText").val(),
       consDecdStatCd: consDecdStatBtnNo, // 결재상태코드
+      hndEmpno : $("#userEno").val(),
+
     };
 
     $.ajax({
@@ -498,6 +525,7 @@ const TB07120Sjs = (function () {
         result = -2;
       },
     }).then(function () {
+      console.log("result : ", result)
       if (result <= 0) {
         Swal.fire({
           icon:
