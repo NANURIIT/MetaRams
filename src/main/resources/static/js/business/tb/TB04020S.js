@@ -175,9 +175,8 @@ const TB04020Sjs = (function () {
     var item = "";
     item += "D010"; // 심사부서구분코드
     item += "/" + "I027"; // 투자통화코드
-    item += "/" + "R016"; // 전결협의체구분코드
     item += "/" + "I011"; // 안건진행상태구분코드
-
+    item += "/" + "I008"; // 전결협의체구분코드
     getSelectBoxList("TB04020S", item);
   }
 
