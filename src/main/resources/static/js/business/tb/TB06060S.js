@@ -70,7 +70,7 @@ const TB06060Sjs = (function(){
         {
             title: "상품대분류",
             dataType: "string",
-            dataIndx: "invPrdtLclsCd",
+            dataIndx: "invPrdtLclsNm",
             align: "center",
             halign: "center",
             width: "",

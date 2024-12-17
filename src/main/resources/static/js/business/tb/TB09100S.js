@@ -1,4 +1,6 @@
+
 const TB09100Sjs = (function () {
+
   $(document).ready(function () {
     setGrid_TB09100S();
 
@@ -75,6 +77,7 @@ const TB09100Sjs = (function () {
           if (value === 0 || ui.cellData == null || value == NaN) {
             return "";
           }
+          value = value/$("#TB09100S_expUnit").val();
 
           var formattedValue = value.toLocaleString("ko-KR", {
             minimumFractionDigits: 0,
@@ -98,6 +101,7 @@ const TB09100Sjs = (function () {
           if (value === 0 || ui.cellData == null || value == NaN) {
             return "";
           }
+          value = value/$("#TB09100S_expUnit").val();
 
           var formattedValue = value.toLocaleString("ko-KR", {
             minimumFractionDigits: 0,
@@ -117,10 +121,10 @@ const TB09100Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           var value = parseFloat(ui.cellData);
-
           if (value === 0 || ui.cellData == null || value == NaN) {
             return "";
           }
+          value = value/$("#TB09100S_expUnit").val();
 
           var formattedValue = value.toLocaleString("ko-KR", {
             minimumFractionDigits: 0,
@@ -144,6 +148,7 @@ const TB09100Sjs = (function () {
           if (value === 0 || ui.cellData == null || value == NaN) {
             return "";
           }
+          value = value/$("#TB09100S_expUnit").val();
 
           var formattedValue = value.toLocaleString("ko-KR", {
             minimumFractionDigits: 0,
@@ -232,6 +237,7 @@ const TB09100Sjs = (function () {
           if (value === 0 || ui.cellData == null || value == NaN) {
             return "";
           }
+          value= value/$('#TB09100S_pflsUnit').val();
 
           var formattedValue = value.toLocaleString("ko-KR", {
             minimumFractionDigits: 0,
@@ -291,6 +297,21 @@ const TB09100Sjs = (function () {
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          var value = parseFloat(ui.cellData);
+
+          if (value === 0 || ui.cellData == null || value == NaN) {
+            return "";
+          }
+          value= value/$('#TB09100S_pflsUnit').val();
+
+          var formattedValue = value.toLocaleString("ko-KR", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          });
+
+          return formattedValue;
+        },
       },
     ];
 
@@ -397,6 +418,19 @@ const TB09100Sjs = (function () {
     });
   }
 
+  function refreshGrid(index){
+ 
+    var currentData = $(index).pqGrid("option", "dataModel.data");
+    $(index).pqGrid("option", "dataModel.data", currentData);
+    $(index).pqGrid("refreshDataAndView");
+    if(index =="#TB09110S_revenue"){
+      var index2 = "#TB09110S_cost";
+      var currentData = $(index2).pqGrid("option", "dataModel.data");
+    $(index2).pqGrid("option", "dataModel.data", currentData);
+    $(index2).pqGrid("refreshDataAndView");
+    }
+  }
+
   //딜 손익현황 (수익정보) 조회
   function getFeeIntTrList(rowData) {
     var prdtCd = rowData.prdtCd;
@@ -449,5 +483,6 @@ const TB09100Sjs = (function () {
   return {
     getExposureList: getExposureList,
     reset_TB09110S: reset_TB09110S,
+    refreshGrid: refreshGrid,
   };
 })();

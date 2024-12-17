@@ -64,7 +64,12 @@ const TB06050Sjs = (function() {
                     
                 } else {
                     console.log("데이터 없음?");
+                    //조회조건 제외 전부 초기화
                     $("#TB06050S_sppiSfcYn").val("미검토");
+                    $("#TB06050S_busiMdlDcd").val("");
+                    $('#TB06050S_nsFndCd').val("");
+                    $('#TB06050S_nsPrdtDcd').val("");
+                    $("input[type='radio']").prop("checked", false);
                 }
 
                 const inputs = $("#TB06050S_selectedData input")
@@ -95,17 +100,16 @@ const TB06050Sjs = (function() {
 
         const inputs = $("#TB06050S_selectedData input")
 
-        for(let i = 0; i < inputs.length; i++){
-            if(!$(inputs[i]).val()){
-                alert("데이터 선택부터 하라 인간!(스위트 알럿으로 누군가 수정좀 부탁드립니다...<(_ _)>)");
-                return;
-            }else{
-                continue;
-            }
-        }
+        // for(let i = 0; i < inputs.length; i++){
+        //     if(!$(inputs[i]).val()){
+        //         alert("데이터 선택부터 하라 인간!(스위트 알럿으로 누군가 수정좀 부탁드립니다...<(_ _)>)");
+        //         return;
+        //     }else{
+        //         continue;
+        //     }
+        // }
 
         let url;
-
         let prdtCd;
         
         prdtCd = $('#TB06050S_prdtCd').val()
@@ -197,6 +201,13 @@ const TB06050Sjs = (function() {
         setRadioGroup();
     }
 
+
+    // 삭제
+    function deleteSPPIData() {
+
+        console.log("삭제버튼");
+    }
+
 	return {
 		/**
 		 * 사용 할 함수 정의
@@ -204,6 +215,7 @@ const TB06050Sjs = (function() {
 		getSPPIData : getSPPIData
 	    , reset : reset
         , mergeSPPIData : mergeSPPIData
+        , deleteSPPIData : deleteSPPIData
 	}
 
 })();
