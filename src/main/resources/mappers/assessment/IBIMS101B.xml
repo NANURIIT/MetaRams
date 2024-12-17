@@ -493,26 +493,26 @@
         )     
         SELECT 
 	        A.DEAL_NO
-	      , B.DEAL_NM
-	      , CD2.CD_VL_NM AS MTR_NM
-	      , NVL(C.PRDT_CD,'') AS PRDT_CD
-	      , NVL(C.PRDT_NM,'') AS PRDT_NM
-	      , DECODE(NVL(C.PRDT_CD,''), '', A.MTR_PRG_STTS_DCD, C.PRG_STTS_CD) AS PRG_STTS_CD
-	      , CD4.CD_VL_NM AS PRG_STTS_NM
-	      , DECODE(NVL(C.PRDT_CD,''), '', A.INV_PRDT_LCLS_CD, C.PRDT_LCLS_CD) AS INV_PRDT_LCLS_CD
-	      , DECODE(NVL(C.PRDT_CD,''), '', CD8.CD_VL_NM, CD7.CD_VL_NM) AS INV_PRDT_LCLS_NM
-	      , DECODE(NVL(C.PRDT_CD,''), '', '', C.ENTP_NM) AS ENTP_NM
-	      , DECODE(NVL(C.PRDT_CD,''), '', A.INV_PRDT_MDCL_CD, C.PRDT_MDCL_CD) AS INV_PRDT_MDCL_CD
-	      , DECODE(NVL(C.PRDT_CD,''), '', A.INV_PRDT_SCLS_CD, C.PRDT_CLSF_CD) AS INV_PRDT_SCLS_CD
-	      , DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_APVL_AMT) AS EPRZ_CRDL_APVL_AMT
-	      , DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_CTRC_AMT) AS EPRZ_CRDL_CTRC_AMT
-	      , DECODE(NVL(C.DEAL_EXC_BLCE,''), '', 0, C.DEAL_EXC_BLCE) AS DEAL_EXC_BLCE
-	      , C.LAST_RDMP_TMRD
-	      , C.TOT_RDMP_TMRD
-	      , C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD
-	      , A.MTR_DCD
-        FROM IBIMS103B A
-         , IBIMS101B B
+        ,A.DEAL_NM
+        , NVL(CD2.CD_VL_NM,'') AS MTR_NM
+        , NVL(C.PRDT_CD,'') AS PRDT_CD
+        , NVL(C.PRDT_NM,'') AS PRDT_NM
+        , DECODE(NVL(C.PRDT_CD,''), '', B.MTR_PRG_STTS_DCD, C.PRG_STTS_CD) AS PRG_STTS_CD
+        , NVL(CD4.CD_VL_NM,'') AS PRG_STTS_NM
+        , DECODE(NVL(C.PRDT_CD,''), '', B.INV_PRDT_LCLS_CD, C.PRDT_LCLS_CD) AS INV_PRDT_LCLS_CD
+        , NVL(CD7.CD_VL_NM,'') AS INV_PRDT_LCLS_NM
+        , DECODE(NVL(C.PRDT_CD,''), '', '', C.ENTP_NM) AS ENTP_NM
+        , DECODE(NVL(C.PRDT_CD,''), '', B.INV_PRDT_MDCL_CD, C.PRDT_MDCL_CD) AS INV_PRDT_MDCL_CD
+        , DECODE(NVL(C.PRDT_CD,''), '', B.INV_PRDT_SCLS_CD, C.PRDT_CLSF_CD) AS INV_PRDT_SCLS_CD
+        , DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_APVL_AMT) AS EPRZ_CRDL_APVL_AMT
+        , DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_CTRC_AMT) AS EPRZ_CRDL_CTRC_AMT
+        , DECODE(NVL(C.DEAL_EXC_BLCE,''), '', 0, C.DEAL_EXC_BLCE) AS DEAL_EXC_BLCE
+        , C.LAST_RDMP_TMRD
+        , C.TOT_RDMP_TMRD
+        , C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD
+        , NVL(B.MTR_DCD,'') AS MTR_DCD
+        FROM IBIMS101B A
+         , IBIMS103B B
          , PRDT_TB   C
          , (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'L007') CD2
          , (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I011') CD4
@@ -523,16 +523,16 @@
             AND A.DEAL_NO = #{dealNo}
           </if>	
         	AND A.LAST_YN = 'Y'
-        	AND A.DEAL_NO = B.DEAL_NO
-        	AND B.LAST_YN = 'Y'
-        	AND A.DEAL_NO = C.DEAL_NO(+)
+          AND A.DEAL_NO = B.DEAL_NO(+)
+          AND B.LAST_YN(+) = 'Y'
+          AND A.DEAL_NO = C.DEAL_NO(+)
           <if test="prdtCd != ''">
             AND C.PRDT_CD = #{prdtCd}
           </if>
-        	AND A.MTR_DCD = CD2.CD_VL_ID
-        	AND DECODE(NVL(C.PRDT_CD,''), '', A.MTR_PRG_STTS_DCD, C.PRG_STTS_CD) = CD4.CD_VL_ID
-	        AND DECODE(NVL(C.PRDT_CD,''), '', '', C.PRDT_LCLS_CD) = CD7.CD_VL_ID(+)
-	        AND DECODE(NVL(C.PRDT_CD,''), '', A.INV_PRDT_LCLS_CD, '') = CD8.CD_VL_ID(+)
+        	AND B.MTR_DCD = CD2.CD_VL_ID(+)
+          AND DECODE(NVL(C.PRDT_CD,''), '', B.MTR_PRG_STTS_DCD, C.PRG_STTS_CD) = CD4.CD_VL_ID(+)
+          AND A.INV_PRDT_LCLS_CD = CD7.CD_VL_ID(+)
+          AND C.PRDT_LCLS_CD = CD8.CD_VL_ID(+)
           ORDER BY DEAL_NO
         , PRDT_CD
      

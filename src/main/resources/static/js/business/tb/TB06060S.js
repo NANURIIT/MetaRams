@@ -222,7 +222,11 @@ const TB06060Sjs = (function(){
                         $(".flow-status p").removeClass("-check");
                         $(".flow-status div").html(waitHtml);
                     }else{
-                        setFlow(parseInt(data[0].prgSttsCd));
+                        if(data[0].prgSttsCd == null){
+                            setFlow(3);
+                        }else{
+                            setFlow(parseInt(data[0].prgSttsCd));
+                        }
                         showDetailData(data[0]); 
                     }
                 }else{
@@ -298,7 +302,7 @@ const TB06060Sjs = (function(){
               Swal.fire({
                     icon: 'error'
                     , title: "error!"
-                    , text: "데이터를 불러오지 못 했습니다."
+                    , text: "심사정보 데이터를 불러오지 못했습니다."
                     , confirmButtonText: "확인"
                 }).then((result) => {
                     $('#TB06060S_cnsbNm').val("");
