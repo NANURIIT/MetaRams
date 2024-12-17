@@ -10,9 +10,11 @@ const TB07140Sjs = (function () {
   let mode = "insert";
 
   $(document).ready(function () {
-    $(
-      "input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Tmrd'], input[id*='tx']"
-    ).val("0");
+    $("input[id*='Amt'], input[id*='Blce'], input[id*='Mnum'], input[id*='Tmrd'], input[id*='tx']").val("0");
+
+    $("input[id*='Exrt']").val("1.0");
+
+    // common.js 함수
     selectorNumberFormater(
       $(`div[data-menuid='/TB07140S'] input[id*='Amt']
        , div[data-menuid='/TB07140S'] input[id*='Blce']
@@ -172,7 +174,9 @@ const TB07140Sjs = (function () {
     $(".ibox-content .ibox-content select").prop("disabled", true);
     $(".ibox-content .ibox-content .btn.btn-default").prop("disabled", true);
     $(".toggleBtn1").prop("disabled", false);
-    resetInput();
+
+    // common.js 함수
+    resetInputValue($('div[data-menuid="/TB07140S"]'));
 
     mode = "delete";
 
@@ -182,20 +186,11 @@ const TB07140Sjs = (function () {
    *  전체 초기화
    */
   const removeAll = () => {
-    resetInput();
-    TB07140S_resetPqGrid();
-  };
 
-  const resetInput = () => {
-    $("input").val("");
-    $(`input[id*='Amt']
-     , input[id*='Blce']
-     , input[id*='Exrt']
-     , input[id*='Mnum']
-     , input[id*='Tmrd']
-     , #TB07140S_trtx
-     , #TB07140S_intx
-     , #TB07140S_lotx`).val("0");
+    // common.js 함수
+    resetInputValue($('div[data-menuid="/TB07140S"]'));
+
+    TB07140S_resetPqGrid();
   };
 
   /*
@@ -347,6 +342,13 @@ const TB07140Sjs = (function () {
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        // 업데이트, 딜리트 용도
+        title: "실행순번",
+        dataType: "string",
+        dataIndx: "excSn",
+        hidden: true,
       },
       {
         title: "출자처리구분",
