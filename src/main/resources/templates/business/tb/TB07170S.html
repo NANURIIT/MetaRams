@@ -11,10 +11,12 @@
 	<script th:src="@{js/fileUpload.js}"></script>
 	<script th:src="@{js/business/tb/TB07170S.js}"></script>
 	<script th:src="@{js/business/tb/TB04011P.js}"></script>
+	<script th:src="@{js/business/tb/TB07171P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
+	<th:block th:replace="business/tb/TB07171P :: TB07171P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -84,11 +86,11 @@
 							<div id="TB07170S_colModel"></div>
 						</div>
 						
-						<div class="row mt-2">
+						<!-- <div class="row mt-2">
 							<div class="col-sm-12 text-right">
 							<button class="btn btn-success" onclick=""><i class="fa fa-check"></i>&nbsp;실행</button>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>

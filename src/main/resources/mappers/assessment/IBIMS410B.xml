@@ -236,20 +236,20 @@
             , A.TR_FEE_AMT                /* 거래수수료금액 */
             , A.COST_AMT                  /* 비용금액 */
             , A.TR_CRRY_CD                /* 거래통화코드 */
-            , A.KRW_TRSL_RT              /* 원화환산율 */
-            , A.KRW_TRSL_TR_PRCA         /* 원화환산거래원금 */
-            , A.KRW_TRSL_TR_INT_AMT      /* 원화환산거래이자금액 */
-            , A.KRW_TRSL_TR_FEE_AMT      /* 원화환산거래수수료금액 */
-            , A.KRW_TRSL_COST_AMT        /* 원화환산비용금액 */
-            , A.ACCT_JOB_CD              /* 회계업무코드 */
-            , A.ACCT_UN_JOB_CD         /* 회계단위업무코드 */
+            , A.KRW_TRSL_RT               /* 원화환산율 */
+            , A.KRW_TRSL_TR_PRCA          /* 원화환산거래원금 */
+            , A.KRW_TRSL_TR_INT_AMT       /* 원화환산거래이자금액 */
+            , A.KRW_TRSL_TR_FEE_AMT       /* 원화환산거래수수료금액 */
+            , A.KRW_TRSL_COST_AMT         /* 원화환산비용금액 */
+            , A.ACCT_JOB_CD               /* 회계업무코드 */
+            , A.ACCT_UN_JOB_CD            /* 회계단위업무코드 */
             , A.ACCT_TR_CD                /* 회계거래코드 */
             , A.ACTG_ERLM_SEQ             /* 회계등록순번 */
             , A.RKFR_DT                   /* 기산일자 */
             , A.FNDS_DVSN_CD              /* 자금구분코드 */
             , A.RCTM_ISTT_CD              /* 입금기관코드 */
             , A.RCTM_BANO                 /* 입금은행계좌번호 */
-            , A.ACHD_NM                 /* 예금주명 */
+            , A.ACHD_NM                   /* 예금주명 */
             , A.HDWR_PRCS_YN              /* 수기처리여부 */
             , A.ACPT_PTCL_SMTL_AMT        /* 수납내역합계금액 */
             , A.DEAL_ALTN_AMT             /* 딜대체금액 */
@@ -269,7 +269,7 @@
         WHEN  '0' THEN '해당없음'
         WHEN  '1'	THEN '정정'
         WHEN  '2'	THEN '취소'
-        ELSE '' END  AS RVSE_CNCL_DVSN_NM                        /* 정정취소구분코드명 */
+        ELSE '' END  AS RVSE_CNCL_DVSN_NM /* 정정취소구분코드명 */
             , A.RVSE_CNCL_RSON_TEXT       /* 정정취소사유내용 */
             , A.RVSE_CNCL_TR_SEQ          /* 정정취소거래순번 */
             , A.TR_AF_LOAN_RMND           /* 거래이후대출잔액 */
@@ -278,7 +278,7 @@
             , A.PXDF_INT_AMT              /* 대지급이자금액 */
             , A.PXDF_ETC_AMT              /* 대지급기타금액 */
             , A.ORGNO                     /* 조직번호 */
-            , A.TR_STFNO AS CHRR_EMPNO                  /* 거래직원번호 */
+            , A.TR_STFNO AS CHRR_EMPNO    /* 거래직원번호 */
             , A.DCFC_STFNO                /* 결재자직원번호 */
             , A.CLM_SEQ                   /* 청구순번 */
             , A.ACTG_SYNS_CD              /* 회계적요코드 */
@@ -345,19 +345,19 @@
          AND B.PRG_STTS_CD = D.CD_VL_ID(+) 
          AND D.CMNS_CD_GRP(+) = 'I011'
          AND B.LAST_YN = 'Y'
-         <if test="rsltnDt != ''">
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rsltnDt)">
          AND (A.TR_DT &gt;= #{rsltnDt})
          </if>
-         <if test="rsltnEndDt != ''">
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rsltnEndDt)">
          AND (A.TR_DT &lt;= #{rsltnEndDt})
          </if>
-         <if test="orgno != ''">
-         /*AND C.BDCD = #{orgno}*/
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(orgno)">
+         AND C.BDCD = #{orgno}
          </if>
-         <if test="dealNo != ''">
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
          AND B.DEAL_NO = #{dealNo}
          </if>
-         <if test="prdtCd != ''">
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
          AND A.PRDT_CD = #{prdtCd}
          </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trObjtBsnNo)">
