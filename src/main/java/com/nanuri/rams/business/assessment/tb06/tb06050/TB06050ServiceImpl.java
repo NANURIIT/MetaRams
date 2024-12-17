@@ -30,12 +30,13 @@ public class TB06050ServiceImpl implements TB06050Service {
 	public int insertSPPIData(IBIMS206BVO param){
 
 		int result;
-
+		
 		int listSize = ibims206bMapper.getSPPIData(param).size();
-
-		if(listSize > 0){
+		
+		if(listSize > 1){
 			result = 0;
 		}else {
+			param.setHndEmpno(facade.getDetails().getEno());
 			result = ibims206bMapper.insertSPPIData(param);
 		}
 
@@ -44,6 +45,7 @@ public class TB06050ServiceImpl implements TB06050Service {
 
 	@Override
 	public int updateSPPIData(IBIMS206BVO param){
+		param.setHndEmpno(facade.getDetails().getEno());
 		return ibims206bMapper.updateSPPIData(param);
 	};
 

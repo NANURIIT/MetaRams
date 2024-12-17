@@ -80,9 +80,9 @@
 									</div>
 								</div>
 
-								<!-- 거래처 -->
+								<!-- 거래처명 -->
 								<label class="col-sm-1 control-label">
-									거래처
+									거래처명
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
@@ -166,14 +166,13 @@
 									</tbody>
 								</table> -->
 							</div>
-							<div class="ibox mt-2 mb-2">
+							<!--<div class="ibox mt-2 mb-2">
 								<div class="col-sm-12 text-right pd0">
 									<button class="btn btn-default" type="button" onclick=""><i
 											class="fa fa-save"></i>&nbsp;엑셀저장</button>
-									<button class="btn btn-success" type="button" onclick=""><i
-											class="fa fa-check"></i>&nbsp;결재요청</button>
+									
 								</div>
-							</div>
+							</div>-->
 						</div>
 
 						<!-- 수정이전 -->
@@ -621,9 +620,11 @@
 																<div class="ibox-tools">
 																	<span class="mr-1">※적요에 쌍따옴표("")를 입력할 수 없습니다</span>
 																	<button class="btn btn-default btn-xs" type="button"
-																		onclick="">
+																	onclick="TB07100Sjs.addRow();">
 																		<i class="fa fa-plus"></i>&nbsp;행추가
 																	</button>
+																	<button class="btn btn-default btn-xs" onclick="TB07100Sjs.delRow();"><i
+																		class="fa fa-minus"></i>&nbsp;행삭제</button>
 																</div>
 															</div>
 															<div class="ibox-content">
@@ -679,22 +680,25 @@
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="ibox form-inline">
-							<!-- 버튼영역 -->
-							<div class="col-sm-12 text-right pd0">
-								<button class="btn btn-default" type="button" onclick=""><i
-										class="fa fa-road"></i>&nbsp;신구 계정과목 매핑</button>
-								<button class="btn btn-default" type="button" onclick=""><i
-										class="fa fa-file"></i>&nbsp;거래증빙및영수증</button>
-								<button class="btn btn-default" type="button" onclick=""><i
-										class="fa fa-save"></i>&nbsp;접대/기부 명세등록</button>
-								<button class="btn btn-default" type="button" onclick=""><i
-										class="fa fa-save"></i>&nbsp;편익제공등록</button>
-								<button class="btn btn-success" type="button" onclick="TB07100Sjs.TB07100S_doExc();"><i
-										class="fa fa-check"></i>&nbsp;실행</button>
+							<div class="ibox form-inline">
+								<!-- 버튼영역 -->
+								<div class="col-sm-12 text-right pd0">
+									<!--<button class="btn btn-default" type="button" onclick=""><i
+											class="fa fa-road"></i>&nbsp;신구 계정과목 매핑</button>
+									<button class="btn btn-default" type="button" onclick=""><i
+											class="fa fa-file"></i>&nbsp;거래증빙및영수증</button>
+									<button class="btn btn-default" type="button" onclick=""><i
+											class="fa fa-save"></i>&nbsp;접대/기부 명세등록</button>
+									<button class="btn btn-default" type="button" onclick=""><i
+											class="fa fa-save"></i>&nbsp;편익제공등록</button>-->
+									<button class="btn btn-success" type="button" onclick="TB07100Sjs.TB07100S_doExc();"><i
+											class="fa fa-check"></i>&nbsp;실행</button>
+									<button class="btn btn-success" type="button" onclick=""><i
+										class="fa fa-check"></i>&nbsp;결재요청</button>
+								</div>
 							</div>
 						</div>
+						
 
 					</div>
 				</div>

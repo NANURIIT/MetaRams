@@ -289,16 +289,20 @@ const TB07090Sjs = (function () {
     ];
 
     let TB07090S_colModel2 = [
-      {
-        title: "deal번호",
-        editable: false,
-        dataType: "string",
-        dataIndx: "dealNo",
-        halign: "center",
-        align: "center",
-        width: "165",
-        filter: { crules: [{ condition: "range" }] },
-      },
+
+      // 대표님 지시로 삭제
+      // 2024-12-17 김건우
+
+      // {
+      //   title: "deal번호",
+      //   editable: false,
+      //   dataType: "string",
+      //   dataIndx: "dealNo",
+      //   halign: "center",
+      //   align: "center",
+      //   width: "165",
+      //   filter: { crules: [{ condition: "range" }] },
+      // },
       // ,{
       //     title: "예정일자",
       //     dataType: "string",
@@ -320,7 +324,7 @@ const TB07090Sjs = (function () {
       // 	}
       // }
       {
-        title: "은행입금일자",
+        title: "입금일자",
         dataType: "string",
         dataIndx: "rctmDt",
         halign: "center",
@@ -526,7 +530,7 @@ const TB07090Sjs = (function () {
         },
       },
       {
-        title: "기관(선택)",
+        title: "거래기관",
         dataType: "string",
         dataIndx: "reltIsttCd",
         halign: "center",
@@ -650,16 +654,6 @@ const TB07090Sjs = (function () {
           }
           return cellData;
         },
-        editor: {
-          type: "textbox",
-          init: function (ui) {
-            var $input = ui.$cell.find("input");
-            $input.attr("placeholder", "YYYY-MM-DD");
-            $input.on("input", function () {
-              this.value = this.value.replace(/[^0-9/]/g, "");
-            });
-          },
-        },
       },
       {
         title: "상환구분",
@@ -679,54 +673,29 @@ const TB07090Sjs = (function () {
         title: "입금금액",
         dataType: "string",
         dataIndx: "dealRctmAmt",
+        editable: true,
         halign: "center",
         align: "right",
+        format: "#,###",
         filter: { crules: [{ condition: "range" }] },
-        editor: {
-          type: "textbox",
-          init: function (ui) {
-            var $inp = ui.$cell.find("input");
-            $inp.on("input", function () {
-              this.value = this.value.replace(/[^0-9]/g, "");
-              inputNumberFormat(this);
-            });
-          },
-        },
-        render: function (ui) {
-          var cellData = ui.cellData;
-          if (cellData == null || cellData == "") {
-            cellData = 0;
-          }
-          var value = "";
-
-          if (String(cellData).includes(",")) {
-            value = parseInt(cellData.replaceAll(",", ""), 10);
-          } else {
-            value = parseInt(cellData, 10);
-          }
-
-          var formattedValue = value.toLocaleString("ko-KR", {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-          });
-
-          return formattedValue;
-        },
       },
       {
         title: "초과납입처리내용",
+        editable: true,
         dataType: "string",
         dataIndx: "excsPymtPrcsText",
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: "range" }] },
       },
-      {
-        title: "등록순번",
-        dataType: "string",
-        dataIndx: "rgstSeq",
-        hidden: true,
-      },
+      // 필요없어보여 제거
+      // 2024-12-17 김건우
+      // {
+      //   title: "등록순번",
+      //   dataType: "string",
+      //   dataIndx: "rgstSeq",
+      //   hidden: true,
+      // },
     ];
 
     pqGrid_TB07090S(TB07090S_colModel1, TB07090S_colModel2, TB07090S_colModel3);
@@ -1033,7 +1002,6 @@ const TB07090Sjs = (function () {
     // 2. 저장된 입금증등록내역 선택했는지?
     // 3. 선택 다했으면 행을 추가해주는데 데이터를 같이 넣어주면 됨
     // 4. 그 뒤 저장을 누르면 됨
-    // 5. 구조가 도무지 이해가 안됨 ㅋ
     // 6. 집에 가고싶다
     if (selected_rdmpPrarDtl === null) {
       swal.fire({
@@ -1049,13 +1017,13 @@ const TB07090Sjs = (function () {
       })
       return;
     }
-    // if(!selected_dptrRgstDtl.rgstDtm){
-    //   swal.fire({
-    //     icon: "warning"
-    //     , text: "등록된 입금증등록내역을 선택해주세요."
-    //   })
-    //   return;
-    // }
+    if(!selected_dptrRgstDtl.rgstDtm){
+      swal.fire({
+        icon: "warning"
+        , text: "등록된 입금증등록내역을 선택해주세요."
+      })
+      return;
+    }
 
     console.log(selected_rdmpPrarDtl.dealNo)
     console.log(selected_rdmpPrarDtl.mngmBdcd)

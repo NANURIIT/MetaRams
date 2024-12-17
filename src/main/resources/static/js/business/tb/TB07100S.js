@@ -9,6 +9,8 @@ const TB07100Sjs = (function () {
     selectorNumberFormater($("input[id*='Amt'], input[id*='Blce'], input[id*='Rt'], input[id='TB07100S_splmValuTxa']"));
     TB07100S_pqGrid();
     TB07100S_getFirstStatus();
+    $("#TB07100S_acctDt1").val(getToday());
+    $("#TB07100S_acctDt2").val(getToday());
   });
 
   /**
@@ -213,6 +215,7 @@ const TB07100Sjs = (function () {
         align: "center",
         width: '1%',
         filter: { crules: [{ condition: 'range' }] },
+        hidden: true
       },
       {
         title: "순번",
@@ -223,15 +226,7 @@ const TB07100Sjs = (function () {
         width: '5%',
         filter: { crules: [{ condition: 'range' }] },
       },
-      {
-        title: "종목코드",
-        dataType: "string",
-        dataIndx: "prdtCd",
-        halign: "center",
-        align: "center",
-        width: '5%',
-        filter: { crules: [{ condition: 'range' }] },
-      },
+     
       {
         title: "계정과목명",
         dataType: "string",
@@ -276,6 +271,7 @@ const TB07100Sjs = (function () {
         align: "right",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        hidden: true
       },
       {
         title: "배부",
@@ -284,6 +280,16 @@ const TB07100Sjs = (function () {
         halign: "center",
         align: "right",
         // width    : '10%',
+        filter: { crules: [{ condition: 'range' }] },
+        hidden: true
+      },
+      {
+        title: "종목코드",
+        dataType: "string",
+        dataIndx: "prdtCd",
+        halign: "center",
+        align: "center",
+        //width: '5%',
         filter: { crules: [{ condition: 'range' }] },
       },
       {
@@ -303,6 +309,7 @@ const TB07100Sjs = (function () {
         align: "right",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        hidden : true
       }
     ];
 
@@ -672,6 +679,14 @@ const TB07100Sjs = (function () {
     }
   }
 
+  function addRow(){
+    console.log("행추가");
+  }
+
+  function delRow(){
+    console.log("행삭제");
+  }
+
   return {
     TB07100S_selectIBIMS431B: TB07100S_selectIBIMS431B,
     TB07100S_doExc: TB07100S_doExc,
@@ -679,5 +694,7 @@ const TB07100Sjs = (function () {
     TB07100S_cancelBtn: TB07100S_cancelBtn,
     TB07100S_resetInput: TB07100S_resetInput,
     TB07100S_removeAll: TB07100S_removeAll,
+    addRow: addRow,
+    delRow: delRow,
   };
 })();
