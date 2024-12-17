@@ -52,6 +52,16 @@ const TB07140Sjs = (function () {
     const fincPrcsDcd = $("#TB07140S_fincPrcsDcd").val();
     const bfRsvPayDcd = $("#TB07140S_bfRsvPayDcd").val();
 
+    $('#TB07140S_fincCngeAmt').val("0");          //출자변동금액
+    $('#TB07140S_trslFincCngeAmt').val("0");      //환산출자변동금액
+    $('#TB07140S_payErnAmt').val("0");            //보수/수익
+    $('#TB07140S_trslPayErnAmt').val("0");        //환산보수/수익
+    $('#TB07140S_stlAmt').val("0");               //결제금액
+    $('#TB07140S_trslStlAmt').val("0");           //환산결제금액
+    $('#TB07140S_intx').val("0");                 //소득세
+    $('#TB07140S_trtx').val("0");                 //거래세
+    $('#TB07140S_lotx').val("0");                 //지방세
+
     const fincPrcsDcdMapping = {
       "01": () => {
         $("#TB07140S_fincCngeAmt").prop("readonly", false);
@@ -639,11 +649,13 @@ const TB07140Sjs = (function () {
 
     let prdtCd = $("#TB07140S_srch_prdtCd").val();
     let nsFndCd = $("#TB07140S_srch_fndCd").val();
+    let trDt = $("#TB07140S_trDt").val().replaceAll('-','');
 
     let paramData;
     paramData = {
       prdtCd: prdtCd,
       nsFndCd: nsFndCd,
+      trDt: trDt
     };
 
     $.ajax({
@@ -799,14 +811,23 @@ const TB07140Sjs = (function () {
 
     let result;
 
+    var etprCrdtGrntTrKindCd = "";
+    var fincPrcsDcd = $('#TB07140S_fincPrcsDcd').val();
+
+    if(fincPrcsDcd === "01" || fincPrcsDcd === "04" || fincPrcsDcd === "05"){
+      etprCrdtGrntTrKindCd = "84"
+    }else{
+      etprCrdtGrntTrKindCd = "85"
+    }
+
     const paramData = {
       prdtCd: $(`#TB07140S_prdtCd`).val(),
       trDt: unformatDate($(`#TB07140S_trDt`).val()),
-      etprCrdtGrntTrKindCd: $(`#TB07140S_etprCrdtGrntTrKindCd`).val(),
-      nsFndCd: $(`#TB07140S_nsFndCd`).val(),
+      etprCrdtGrntTrKindCd: etprCrdtGrntTrKindCd,
+      nsFndCd: $(`#TB07140S_fndCd`).val(),
       synsCd: $(`#TB07140S_synsCd`).val(),
       holdPrpsDcd: $(`#TB07140S_holdPrpsDcd`).val(),
-      fincPrcsDcd: $(`#TB07140S_fincPrcsDcd`).val(),
+      fincPrcsDcd: fincPrcsDcd,
       trDptCd: $(`#TB07140S_trDptCd`).val(),
       fincCngeAmt: uncomma($(`#TB07140S_fincCngeAmt`).val()),
       payErnAmt: uncomma($(`#TB07140S_payErnAmt`).val()),
@@ -819,7 +840,7 @@ const TB07140Sjs = (function () {
       intx: uncomma($(`#TB07140S_intx`).val()),
       lotx: uncomma($(`#TB07140S_lotx`).val()),
       bfRsvPayDcd: $(`#TB07140S_bfRsvPayDcd`).val(),
-      stlXtnlIsttCd: $(`#TB07140S_stlXtnlIsttCd`).val(),
+      stlXtnlIsttCd: $(`#TB07140S_fnltCd`).val(),
       stlAcno: $(`#TB07140S_stlAcno`).val(),
       fincPayCntn: $(`#TB07140S_fincPayCntn`).val(),
       reFincPossYn: $(`#TB07140S_reFincPossYn`).val(),
@@ -880,7 +901,7 @@ const TB07140Sjs = (function () {
       excSn: $(`#TB07140S_excSn`).val(),
       trDt: $(`#TB07140S_trDt`).val(),
       etprCrdtGrntTrKindCd: $(`#TB07140S_etprCrdtGrntTrKindCd`).val(),
-      nsFndCd: $(`#TB07140S_nsFndCd`).val(),
+      nsFndCd: $(`#TB07140S_fndCd`).val(),
       synsCd: $(`#TB07140S_synsCd`).val(),
       holdPrpsDcd: $(`#TB07140S_holdPrpsDcd`).val(),
       fincPrcsDcd: $(`#TB07140S_fincPrcsDcd`).val(),
@@ -896,7 +917,7 @@ const TB07140Sjs = (function () {
       intx: $(`#TB07140S_intx`).val(),
       lotx: $(`#TB07140S_lotx`).val(),
       bfRsvPayDcd: $(`#TB07140S_bfRsvPayDcd`).val(),
-      stlXtnlIsttCd: $(`#TB07140S_stlXtnlIsttCd`).val(),
+      stlXtnlIsttCd: $(`#TB07140S_btnFnltCd`).val(),
       stlAcno: $(`#TB07140S_stlAcno`).val(),
       fincPayCntn: $(`#TB07140S_fincPayCntn`).val(),
       reFincPossYn: $(`#TB07140S_reFincPossYn`).val(),
@@ -1120,9 +1141,9 @@ const TB07140Sjs = (function () {
     // await getFincList();
   }
 
-  function calcTrslAmt(mode){
+  function calcTrslAmt(knd){
     //환산출자변동금액 계산
-    if(mode === "fincCnge"){
+    if(knd === "fincCnge"){
 
       if(
         isNotEmpty($('#TB07140S_fincCngeAmt').val()) && isNotEmpty($('#TB07140S_trdeExrt'))
@@ -1131,7 +1152,7 @@ const TB07140Sjs = (function () {
       }
 
     //환산보수/수익 계산
-    }else if(mode === "patErn"){
+    }else if(knd === "payErn"){
 
       if(
         isNotEmpty($('#TB07140S_payErnAmt').val()) && isNotEmpty($('#TB07140S_trdeExrt'))
@@ -1140,7 +1161,7 @@ const TB07140Sjs = (function () {
       }
 
     //환산결제금액 계산
-    }else if(mode === "stl"){
+    }else if(knd === "stl"){
 
       if(
         isNotEmpty($('#TB07140S_stlAmt').val()) && isNotEmpty($('#TB07140S_trdeExrt'))
@@ -1159,10 +1180,11 @@ const TB07140Sjs = (function () {
 
     }
 
-    
-    
-
   }
+
+  // function makeParam(){
+
+  // }
 
   // async function deleteIBIMS404B() {
   //   let prdtCd = $("#TB07140S_prdtCd").val();

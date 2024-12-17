@@ -65,7 +65,7 @@
            AND A.PRDT_CD = #{prdtCd}
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trDt)">
-           AND A.TR_DT LIKE #{trDt}
+            AND A.TR_DT = #{trDt}
            </if>
          ORDER BY A.TR_DT ASC, A.PRDT_CD, A.TR_SN DESC
     </select>

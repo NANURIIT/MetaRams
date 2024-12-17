@@ -856,7 +856,7 @@ const TB07040Sjs = (function () {
       //IBIMS402B	딜실행기본;
       //var prdtCd;                                                               // 상품코드
       //var excSn;                                                                // 실행일련번호
-      var ldgSttsCd = inputDcd == "1" ? "01" : "02"; // 원장상태코드
+      var ldgSttsCd = inputDcd == "1" ? "1" : "2"; // 원장상태코드
       var crryCd = trCrcyCd; // 통화코드
       var excDt = trDt; // 실행일자
       var expDt = rfnDt; // 만기일자
