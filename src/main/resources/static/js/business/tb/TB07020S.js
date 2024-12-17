@@ -1620,8 +1620,14 @@ const TB07020Sjs = (function() {
 	function setHoldPrpsDcd() {
 		if( isNotEmpty($('#TB07020S_qotaRt').val())) {
 			if(Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) != 0 ) {
-				if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) >= 30) {
+				if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) < 30) {
+					$('#TB07020S_H002').val('1');
+				}else 
+				if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) >= 30 && Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) < 50) {
 					$('#TB07020S_H002').val('6');
+				}else 
+				if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) >= 50) {
+					$('#TB07020S_H002').val('7');
 				}
 				else {
 					if (isNotEmpty(g_holdPrpsDcd)) {
