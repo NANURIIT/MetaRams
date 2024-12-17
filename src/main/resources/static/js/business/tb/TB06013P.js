@@ -132,13 +132,42 @@ function filterSelectBox(obj, childObj) {
 
 // 담보인정가액(원)
 $('#TB06013P_mrtgPrc').keyup(function(event) {
-	if (event.key >= 0 && event.key <= 9 || event.key === "Backspace" || event.key === "Delete") {	// 1. 숫자입력 체크
+	if (event.key >= 0 && event.key <= 9 || event.key === "Backspace" || event.key === "Delete") {	
 		calcuAvblMrtgPrc();	
 	}
 });
 
+//가용담보가액
+$('#TB06013P_avblMrtgPrc').on('change', function() {
+	calcuKrwTrslValtMrtgPrc();
+});	
 
+//공동담보비율
+$('#TB06013P_cprnMrtgRto').on('change', function() {
+	var formatNum="000.00";
+	if($("#TB06013P_cprnMrtgRto").val() > 999.99 ){
+		Swal.fire({
+				icon: 'error'
+				, title: "Error!"
+				, text: "공동담보비율 비율은 000.00 형식으로 작성해주세요.;"
+				, confirmButtonText: "확인"
+				})
+		$("#TB06013P_cprnMrtgRto").val('');
+		$("#TB06013P_cprnMrtgRto").focus();		
+		return false;		
+	}
+	formatNum=(Math.round($("#TB06013P_cprnMrtgRto").val()*100)/100).toFixed(2);
+	$("#TB06013P_cprnMrtgRto").val(formatNum);
+	
+	calcuKrwTrslValtMrtgPrc();
+});	
 
+//설정최고액
+$('#TB06013P_krwTrslStupTopAmt').keyup(function(event) {
+	if (event.key >= 0 && event.key <= 9 || event.key === "Backspace" || event.key === "Delete") {			
+		calcuKrwTrslValtMrtgPrc();
+	}
+});
 
 function btnModalReset(mode) {
   let prdtCd = $("#TB06013P_prdtCd").val();
@@ -379,7 +408,9 @@ function showGrid_TB06013P(colM) {
 
 }
 
-/**/
+/*
+* 가용담보가 계산
+*/
 
 function calcuAvblMrtgPrc(){
 	var mrtgPrc;
@@ -392,10 +423,41 @@ function calcuAvblMrtgPrc(){
 		krwTrslPrfdRankAmtSum= Number(krwTrslPrfdRankAmtSum)+Number(krwTrslPrfdRankAmt);
 	}
 	console.log("krwTrslPrfdRankAmtSum1:"+krwTrslPrfdRankAmtSum);	
-	avblMrtgPrc= Number(mrtgPrc) - Number(krwTrslPrfdRankAmtSum);
+	avblMrtgPrc= comma(Number(mrtgPrc) - Number(krwTrslPrfdRankAmtSum));
 	console.log("avblMrtgPrc:"+avblMrtgPrc);	
 	$("#TB06013P_avblMrtgPrc").val(avblMrtgPrc);
+	calcuKrwTrslValtMrtgPrc();
 }
+
+/**
+ *  유효담보가 계산
+ */
+
+function calcuKrwTrslValtMrtgPrc(){
+	var avblMrtgPrc;
+	var krwTrslStupTopAmt;
+	var cprnMrtgRto;
+	var minAmt =0;
+	var krwTrslValtMrtgPrc;
+	
+	avblMrtgPrc = $("#TB06013P_avblMrtgPrc").val()=="0" ? Number("0") : Number($("#TB06013P_avblMrtgPrc").val().replaceAll(",", ""));
+	krwTrslStupTopAmt = $("#TB06013P_krwTrslStupTopAmt").val()=="0" ? 0 : Number($("#TB06013P_krwTrslStupTopAmt").val().replaceAll(",", ""));
+	cprnMrtgRto = $("#TB06013P_cprnMrtgRto").val()=="0" ? 0:  Number($("#TB06013P_cprnMrtgRto").val().replaceAll(",", ""));
+	
+	console.log("avblMrtgPrc"+avblMrtgPrc);
+	console.log("krwTrslStupTopAmt"+krwTrslStupTopAmt);
+	console.log("cprnMrtgRto"+cprnMrtgRto);
+	
+	if(avblMrtgPrc < krwTrslStupTopAmt){
+		minAmt = avblMrtgPrc; 
+	}else{
+		minAmt = krwTrslStupTopAmt;
+	}
+	
+	krwTrslValtMrtgPrc = comma(Number(minAmt)* Number(cprnMrtgRto));
+	$("#TB06013P_krwTrslValtMrtgPrc").val(krwTrslValtMrtgPrc);
+}
+
 
 /**
  * hide modal
