@@ -1,13 +1,9 @@
 const TB04020Sjs = (function () {
   let pqGridObjDealList;
   $(document).ready(function () {
-    setKeyFunction_TB04020S();
+    //setKeyFunction_TB04020S();
     loadSelectBoxContents();
-
-    // 1개월전 ~ 오늘일자 디폴트 세팅
-    $("#TB04020S_fromDate").val(addMonth(getToday(), -1));
-    $("#TB04020S_toDate").val(getToday());
-    $("#TB04020S_ownDt").val(getToday());
+    setDateInput();
     /**
      * 심사역 배정은 사업부 부서장만 가능함. AG18, IT10
      * 마스터 권한으로 전산도 가능.
@@ -35,6 +31,13 @@ const TB04020Sjs = (function () {
     $("#gridCheckDealList").pqGrid(obj);
     pqGridObjDealList = $("#gridCheckDealList").pqGrid("instance");
   });
+
+  function setDateInput() {
+    // 1개월전 ~ 오늘일자 디폴트 세팅
+    $("#TB04020S_fromDate").val(addMonth(getToday(), -1));
+    $("#TB04020S_toDate").val(getToday());
+    $("#TB04020S_ownDt").val(getToday());
+  }
 
   // 알람창 팝업
   function alertPopup(t) {
@@ -107,8 +110,6 @@ const TB04020Sjs = (function () {
         data: dtoParam,
         dataType: "json",
         success: function (data) {
-          console.log("dataconfirm!!: ", data.invtNtnCdNm);
-
           pqGridObjDealList.setData(data);
           pqGridObjDealList.option("rowDblClick", function (event, ui) {
             setDealDetails(ui.rowData);
@@ -313,6 +314,23 @@ const TB04020Sjs = (function () {
         },
       });
     }
+  }
+
+  function reset_TB04020S() {
+    setDateInput();
+    $("#TB04020S_D010").val(""); //심사부서
+    $("#TB04020S_I027").val("KRW"); // 통화
+    $("#TB04020S_ibDealNo").val(""); // 딜번호
+    $("#TB04020S_ibDealNm").val(""); // 딜번호
+    $("#TB04020S_I011").val(""); //안건진행상태
+    pqGridObjDealList.setData([]);
+    $("#dealInfBox input").val(""); //딜정보
+    $("#chrgInfoBox input").val(""); //거래담당
+    $("#TB04020S_empNo").val(""); //심사역
+    $("#TB04020S_empNm").val(""); //심사역
+    $("#TB04020S_I008").val(""); //전결협의체
+    $(".btn-success").prop("disabled", false);
+    $(".btn-danger").prop("disabled", false);
   }
 
   /* ***********************************그리드 컬럼******************************** */
@@ -740,5 +758,6 @@ const TB04020Sjs = (function () {
     checkDealSearch: checkDealSearch,
     receiptDeal: receiptDeal,
     returnDeal: returnDeal,
+    reset_TB04020S: reset_TB04020S,
   };
 })();

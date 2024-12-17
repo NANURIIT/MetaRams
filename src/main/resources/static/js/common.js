@@ -1120,7 +1120,7 @@ function getSelectBoxList(prefix, item, async = true) {
           if (prefix === "TB05010S" || prefix === "TB05030S") {
             if (value.cdValue === "0") return;
           }
-          if (prefix === "TB04020S") {
+          if (prefix === "TB04020S" && value.cmnsGrpCd == "I011") {
             if (parseInt(value.cdValue) < 200 || parseInt(value.cdValue) >= 300)
               return;
           }
