@@ -62,7 +62,7 @@ async function srchEvent(selector) {
   prefix = inputId.substring(0, lastIndex);
 
   $("#TB04011P_prefix").val(prefix);
-  //$(`input[id='${prefix}_ibDealNm']`).val("");
+  $(`input[id='${prefix}_ibDealNm']`).val("");
 
   /**
    * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
@@ -73,37 +73,47 @@ async function srchEvent(selector) {
   }
 
   // 인풋박스 밸류
-  //$("#TB04011P_ibDealNo").val(data);
+  let data = $(selector).val();
+  $("#TB04011P_ibDealNo").val(data);
 
+  //안건데이터가져오기(그리드상태체크를 같이 하고 있음)
   await getMtrInfo();
 
   if (TB04011P_gridState === 0) {
-    console.log("닫혀라");
-    callGridTB04011P(prefix);
-    // setda;
+    await callGridTB04011P(prefix); // 그리드 로드
   } else if (TB04011P_gridState === 1) {
-    console.log("열려라");
-    callTB04011P(prefix);
+    await callTB04011P(prefix); // 팝업 표시
   }
 }
 
-function callGridTB04011P(prefix) {
+async function callGridTB04011P(prefix) {
   //reset_TB04011P();
   $("#TB04011P_prefix").val(prefix);
-  setTimeout(() => roadListGrid_TB04011P(), 300);
+  //setTimeout(() => roadListGrid_TB04011P(), 300);
+  await roadListGrid_TB04011P();
 }
 
 /**
  * 모달 팝업 show
  */
-function callTB04011P(prefix) {
+async function callTB04011P(prefix) {
   reset_TB04011P();
   TB04011P_gridState = 0;
   TB04011P_pf = prefix;
-  setTimeout(() => roadListGrid_TB04011P(), 300);
+  //setTimeout(() => roadListGrid_TB04011P(), 300);
+  await roadListGrid_TB04011P();
   $("#TB04011P_prefix").val(prefix);
   $("#modal-TB04011P").modal("show");
   indexChangeHandler("TB04011P");
+}
+
+/**
+ * 모달 오픈 애니메이션 후 포커스
+ */
+function modalShowFunction() {
+  $("#modal-TB04011P").on("shown.bs.modal", function () {
+    $("#modal-TB04011P input[id=TB0411P_ibDealNo]").focus();
+  });
 }
 
 /**
@@ -123,7 +133,7 @@ function reset_TB04011P() {
  * close TB04011P modal
  */
 function modalClose_TB04011P() {
-  reset_TB04011P(); // 다른 초기화 작업
+  reset_TB04011P();
   // $("#gridMtrInfo").pqGrid("refreshDataAndView");
   $("#modal-TB04011P").modal("hide"); // 모달 닫기
   TB04011P_gridState = 1;
@@ -138,64 +148,9 @@ $("#modal-TB04011P").on("hide.bs.modal", function () {
 });
 
 /**
- * 모달 오픈 애니메이션 후 포커스
- */
-function modalShowFunction() {
-  $("#modal-TB04011P").on("shown.bs.modal", function () {
-    $("#modal-TB04011P input[id=TB0411P_ibDealNo]").focus();
-  });
-}
-
-/**
- * Enter key event
- */
-function keyDownEnter_TB04011P() {
-  $("input[id='TB04011P_ibDealNo']").keydown(function (key) {
-    if (key.keyCode == 13) {
-      //키가 13이면 실행 (엔터는 13)
-      getMtrInfo();
-    }
-  });
-
-  $("input[id='TB04011P_ibDealNm']").keydown(function (key) {
-    if (key.keyCode == 13) {
-      //키가 13이면 실행 (엔터는 13)
-      getMtrInfo();
-    }
-  });
-}
-
-/* 셀렉트박스 세팅 */
-function selectBoxSet_TB04011P() {
-  selectBox = getSelectBoxList("TB04011P", "D010", false);
-
-  dprtList = selectBox.filter(function (item) {
-    //부서코드 list
-    return item.cmnsGrpCd === "D010";
-  });
-
-  dprtList.forEach((item) => {
-    $("#TB04011P_dprtNm").append(
-      $("<option>", {
-        value: item.cdValue,
-        text: `${item.cdName}`,
-      })
-    );
-  });
-
-  $("#TB04011P_dprtNm").on("change", function () {
-    var dprtCd = $(this).val();
-
-    $("#TB04011P_dprtCd").val(dprtCd);
-  });
-}
-
-/**
  * deal 번호 조회 ajax
  */
 async function getMtrInfo() {
-  // roadListGrid_TB04011P();
-
   var ibDealNo = $("#TB04011P_ibDealNo").val();
   var ibDealNm = $("#TB04011P_ibDealNm").val();
   var chrrEmpno = $("#TB04011P_empNo").val();
@@ -210,7 +165,7 @@ async function getMtrInfo() {
 
   try {
     // AJAX 호출
-    await $.ajax({
+    $.ajax({
       type: "GET",
       url: "/TB04011P/getDealInfo",
       data: dtoParam,
@@ -226,10 +181,8 @@ async function getMtrInfo() {
         if (InfoSrchCnt >= 2) {
           InfoSrchCnt = 0;
         }
-
         setTimeout(function () {
-          console.log("찍힌다구");
-          dataSetGrid(data);
+          dataSetMrtGrid(data);
         }, 400);
       },
     });
@@ -238,38 +191,41 @@ async function getMtrInfo() {
   }
 }
 
-function roadListGrid_TB04011P() {
-  // pqGrid 인스턴스 초기화 확인
-  arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
+async function roadListGrid_TB04011P() {
+  return new Promise((resolve, reject) => {
+    try {
+      // pqGrid 인스턴스 초기화 확인
+      arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
 
-  // arrPqGridMtrInfo undefined일 경우 초기화
-  if (typeof arrPqGridMtrInfo === "undefined" || arrPqGridMtrInfo === null) {
-    let setPqGridObj = [
-      {
-        height: 300,
-        maxHeight: 300,
-        id: "gridMtrInfo",
-        colModel: colMtrInfo,
-      },
-    ];
-    // pqGrid 초기화
-    //$("#gridMtrInfo").pqGrid(setPqGridObj);
-    setPqGrid(setPqGridObj);
-    // 초기화된 인스턴스를 다시 할당
-    arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
-    console.log("여기??");
-    // $("#gridMtrInfo").pqGrid("instance").setData([]);
-    console.log(arrPqGridMtrInfo);
-  } else {
-    // 이미 초기화된 경우, 데이터 설정
-    console.log("저기??");
-    arrPqGridMtrInfo.setData([]);
-  }
+      // arrPqGridMtrInfo undefined일 경우 초기화
+      if (
+        typeof arrPqGridMtrInfo === "undefined" ||
+        arrPqGridMtrInfo === null
+      ) {
+        let setPqGridObj = [
+          {
+            height: 300,
+            maxHeight: 300,
+            id: "gridMtrInfo",
+            colModel: colMtrInfo,
+          },
+        ];
+        // pqGrid 초기화
+        //$("#gridMtrInfo").pqGrid(setPqGridObj);
+        setPqGrid(setPqGridObj);
+        arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
+      } else {
+        arrPqGridMtrInfo.setData([]);
+      }
+      // 그리드 로딩이 끝난 후 resolve 호출
+      resolve();
+    } catch (error) {
+      reject(error); // 오류 발생 시 reject 호출
+    }
+  });
 }
 
-function dataSetGrid(data) {
-  console.log("진짜루?");
-
+function dataSetMrtGrid(data) {
   arrPqGridMtrInfo.setData(data);
   arrPqGridMtrInfo.option("rowDblClick", function (event, ui) {
     setMtrInfo(ui.rowData);
@@ -299,6 +255,49 @@ function dataSetGrid(data) {
   else {
     InfoSrchCnt = 0;
   }
+}
+
+/**
+ * Enter key event
+ */
+function keyDownEnter_TB04011P() {
+  $("input[id='TB04011P_ibDealNo']").keydown(function (key) {
+    if (key.keyCode == 13) {
+      //키가 13이면 실행 (엔터는 13)
+      getMtrInfo();
+    }
+  });
+
+  $("input[id='TB04011P_ibDealNm']").keydown(function (key) {
+    if (key.keyCode == 13) {
+      //키가 13이면 실행 (엔터는 13)
+      getMtrInfo();
+    }
+  });
+}
+
+/* 셀렉트박스 세팅 */
+function selectBoxSet_TB04011P() {
+  selectBox = getSelectBoxList("TB04011P", "D010", false);
+  dprtList = selectBox.filter(function (item) {
+    //부서코드 list
+    return item.cmnsGrpCd === "D010";
+  });
+
+  dprtList.forEach((item) => {
+    $("#TB04011P_dprtNm").append(
+      $("<option>", {
+        value: item.cdValue,
+        text: `${item.cdName}`,
+      })
+    );
+  });
+
+  $("#TB04011P_dprtNm").on("change", function () {
+    var dprtCd = $(this).val();
+
+    $("#TB04011P_dprtCd").val(dprtCd);
+  });
 }
 
 /**

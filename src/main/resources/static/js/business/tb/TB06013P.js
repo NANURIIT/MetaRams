@@ -2,6 +2,7 @@ let prfdRankKndCdList;        //우선순위종류코드 list
 let prfdRankCrryCdList;       //우선순위통화코드 list
 let gridSnrtInfoList;// 선순위정보 그리드 인스턴스
 //let prfdRankBcncNmList;       //우선순위거래처명 list 
+let krwTrslPrfdRankAmtSum =0; 		//원화환산선순위합계액
 
 let TB06013P_pfx;
 
@@ -129,14 +130,55 @@ function filterSelectBox(obj, childObj) {
 }
 
 
+// 담보인정가액(원)
+$('#TB06013P_mrtgPrc').keyup(function(event) {
+	if (event.key >= 0 && event.key <= 9 || event.key === "Backspace" || event.key === "Delete") {	
+		calcuAvblMrtgPrc();	
+	}
+});
+
+//가용담보가액
+$('#TB06013P_avblMrtgPrc').on('change', function() {
+	calcuKrwTrslValtMrtgPrc();
+});	
+
+//공동담보비율
+$('#TB06013P_cprnMrtgRto').on('change', function() {
+	var formatNum="000.00";
+	if($("#TB06013P_cprnMrtgRto").val() > 999.99 ){
+		Swal.fire({
+				icon: 'error'
+				, title: "Error!"
+				, text: "공동담보비율 비율은 000.00 형식으로 작성해주세요.;"
+				, confirmButtonText: "확인"
+				})
+		$("#TB06013P_cprnMrtgRto").val('');
+		$("#TB06013P_cprnMrtgRto").focus();		
+		return false;		
+	}
+	formatNum=(Math.round($("#TB06013P_cprnMrtgRto").val()*100)/100).toFixed(2);
+	$("#TB06013P_cprnMrtgRto").val(formatNum);
+	
+	calcuKrwTrslValtMrtgPrc();
+});	
+
+//설정최고액
+$('#TB06013P_krwTrslStupTopAmt').keyup(function(event) {
+	if (event.key >= 0 && event.key <= 9 || event.key === "Backspace" || event.key === "Delete") {			
+		calcuKrwTrslValtMrtgPrc();
+	}
+});
+
 function btnModalReset(mode) {
   let prdtCd = $("#TB06013P_prdtCd").val();
   let prdtNm = $("#TB06013P_prdtNm").val();
+  let conPrdtCd = $("#TB06013P_connPrdtCd").val();
   let mrtgNo = $("#TB06013P_mrtgMngmNo").val();
   let mrtgNm = $("#TB06013P_mrtgNm_forSeach").val();
   let modalId = document.getElementById("modal-TB06013P");
   let fmIputLngth = modalId.querySelectorAll("input").length;
   let fmSlctLngth = modalId.querySelectorAll("select").length;
+  console.log("mrtgNm:"+mrtgNm);
   
   $("#TB06013P_connPrdtCd").val("");
    for (let i = 0; i < fmIputLngth; i++) {
@@ -148,20 +190,24 @@ function btnModalReset(mode) {
   $("#TB06013P_snrtInfoList").pqGrid("option", "dataModel.data", []);
   $("#TB06013P_snrtInfoList").pqGrid("refreshDataAndView");	// pqgrid 초기화
 
+
   switch (mode) {
-	case "init":
-		$("#TB06013P_prdtCd").val(prdtCd);
-		$("#TB06013P_prdtNm").val(prdtNm);
-		$("#TB06013P_mrtgMngmNo").val(mrtgNo);
-		$("#TB06013P_mrtgNm_forSeach").val(mrtgNm);	
+	case "init":		
 	break;	
     case "modalReset":
-		$("#TB06013P_prdtCd").val(prdtCd);
-		$("#TB06013P_prdtNm").val(prdtNm);
+		mrtgNo="";
+		mrtgNm="";	
 	break; 
     default:
       break;
   }
+  
+  console.log("mrtgNm1:"+mrtgNm);
+  $("#TB06013P_prdtCd").val(prdtCd);
+  $("#TB06013P_prdtNm").val(prdtNm);
+  $("#TB06013P_connPrdtCd").val(conPrdtCd);
+  $("#TB06013P_mrtgMngmNo").val(mrtgNo);
+  $("#TB06013P_mrtgNm_forSeach").val(mrtgNm);	
   
   $("#TB06013P_E028 option:eq(0)").prop('selected', true);
   $("#TB06013P_M008 option:eq(0)").prop('selected', true);
@@ -334,8 +380,23 @@ function showGrid_TB06013P(colM) {
     //toolbar: toolbar,
     scrollModel: { autoFit: true },
     colModel: colM,
-    strNoRows: '데이터가 없습니다.'
+    strNoRows: '데이터가 없습니다.',
     //dataModel: {data: data}
+	cellSave: function (event, ui){
+        let dataIndx = ui.dataIndx;
+       	var rowData = ui.rowData;
+		var rowCnt  = gridSnrtInfoList.length;
+        let rowType = rowData.rowType;
+		console.log("dataIndx"+dataIndx);
+		console.log("rowData"+rowData);
+		console.log("rowCnt"+rowCnt);
+		if(dataIndx ==='krwTrslPrfdRankAmt' ){
+			console.log("krwTrslPrfdRankAmt1"+rowData.krwTrslPrfdRankAmt);
+			//krwTrslPrfdRankAmtSum= rowData.krwTrslPrfdRankAmt;
+			calcuAvblMrtgPrc();
+		}
+	},
+	
   };
 
   if (typeof gridSnrtInfoList == "undefined") {
@@ -346,6 +407,57 @@ function showGrid_TB06013P(colM) {
   }
 
 }
+
+/*
+* 가용담보가 계산
+*/
+
+function calcuAvblMrtgPrc(){
+	var mrtgPrc;
+	var avblMrtgPrc;
+	krwTrslPrfdRankAmtSum =0;
+	mrtgPrc= $("#TB06013P_mrtgPrc").val().replaceAll(",", "");
+	console.log("mrtgPrc:"+mrtgPrc);
+	for (let i = 0; i < gridSnrtInfoList.pdata.length; i++) {
+		let krwTrslPrfdRankAmt = gridSnrtInfoList.pdata[i].krwTrslPrfdRankAmt;
+		krwTrslPrfdRankAmtSum= Number(krwTrslPrfdRankAmtSum)+Number(krwTrslPrfdRankAmt);
+	}
+	console.log("krwTrslPrfdRankAmtSum1:"+krwTrslPrfdRankAmtSum);	
+	avblMrtgPrc= comma(Number(mrtgPrc) - Number(krwTrslPrfdRankAmtSum));
+	console.log("avblMrtgPrc:"+avblMrtgPrc);	
+	$("#TB06013P_avblMrtgPrc").val(avblMrtgPrc);
+	calcuKrwTrslValtMrtgPrc();
+}
+
+/**
+ *  유효담보가 계산
+ */
+
+function calcuKrwTrslValtMrtgPrc(){
+	var avblMrtgPrc;
+	var krwTrslStupTopAmt;
+	var cprnMrtgRto;
+	var minAmt =0;
+	var krwTrslValtMrtgPrc;
+	
+	avblMrtgPrc = $("#TB06013P_avblMrtgPrc").val()=="0" ? Number("0") : Number($("#TB06013P_avblMrtgPrc").val().replaceAll(",", ""));
+	krwTrslStupTopAmt = $("#TB06013P_krwTrslStupTopAmt").val()=="0" ? 0 : Number($("#TB06013P_krwTrslStupTopAmt").val().replaceAll(",", ""));
+	cprnMrtgRto = $("#TB06013P_cprnMrtgRto").val()=="0" ? 0:  Number($("#TB06013P_cprnMrtgRto").val().replaceAll(",", ""));
+	
+	console.log("avblMrtgPrc"+avblMrtgPrc);
+	console.log("krwTrslStupTopAmt"+krwTrslStupTopAmt);
+	console.log("cprnMrtgRto"+cprnMrtgRto);
+	
+	if(avblMrtgPrc < krwTrslStupTopAmt){
+		minAmt = avblMrtgPrc; 
+	}else{
+		minAmt = krwTrslStupTopAmt;
+	}
+	
+	krwTrslValtMrtgPrc = comma(Number(minAmt)* Number(cprnMrtgRto));
+	$("#TB06013P_krwTrslValtMrtgPrc").val(krwTrslValtMrtgPrc);
+}
+
 
 /**
  * hide modal
@@ -422,6 +534,8 @@ function dltRow_TB06013P() {
   var gridLgth = $("#TB06013P_snrtInfoList").pqGrid('option', 'dataModel.data').length;
 
   $("#TB06013P_snrtInfoList").pqGrid("deleteRow", { rowIndx: gridLgth - 1 });
+  
+  calcuAvblMrtgPrc();
 
 }
 
@@ -603,7 +717,7 @@ function regist(paramData) {
     success: function (data) {
       btnModalReset();
       $("#TB06013P_mrtgMngmNo").val(data)
-      $("#TB06013P_mrtgNm_forSeach").val($("#TB06013P_mrtgNm").val());
+      $("#TB06013P_mrtgNm_forSeach").val(paramData.mrtgNm);
       openPopup({ type: "success", title: "Success", text: '담보/보증 등록을 완료하였습니다.' });      
 	  getMrtgInfoDetails();
     },
@@ -825,6 +939,7 @@ function TB06013P_getMrtgInfoDetails() {
       }
 
       $("#TB06013P_mrtgMngmNo").val(infoDetails.mrtgMngmNo);
+	  $("#TB06013P_mrtgNm_forSeach").val(infoDetails.mrtgNm);
       // $("#TB06013P_mrtgMngmNo_002").val(infoDetails.invJdgmDealNo);
       // $("#TB06013P_ibDealNo_002").val(infoDetails.invJdgmDealNo);
       $("#TB06013P_E028").val(infoDetails.eprzCrdlWeekMrtgKndCd).prop("selected", true).change();
