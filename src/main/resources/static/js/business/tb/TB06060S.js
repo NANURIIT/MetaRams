@@ -122,10 +122,18 @@ const TB06060Sjs = (function(){
             align: "right",
             halign: "center",
             width: "",
+            filter: { crules: [{ condition: 'range' }] }
+        },
+        {
+            title: "약정해지구분코드",
+            dataIndx: "ctrcCclcDcd",
+            dataType: "String",
+            align: "right",
+            halign: "center",
+            width: "",
             filter: { crules: [{ condition: 'range' }] },
-            hidden: true
         }
-
+        
     ]
 
     $(document).ready(function() {
@@ -150,17 +158,18 @@ const TB06060Sjs = (function(){
             strNoRows : '조회된 데이터가 없습니다.',
             cellDblClick: function(event, ui){
                 var rowData = ui.rowData;
-                if(rowData.prgSttsCd == null){
+                /*if(rowData.prgSttsCd == null){
                     setFlow(3);
                 }else{
                     setFlow(parseInt(rowData.prgSttsCd));
                 }
-                
+                */
+                setFlow(getFlowLevel(rowData));
                 showDetailData(rowData, true);
             },
             cellClick: function(event,ui){
                 //클릭시 선택한 열 볼드처리
-                console.log(ui.rowData)
+                //console.log(ui.rowData)
                 $("#TB06060S_prdtInfoGrid .pq-grid-row").css("font-weight",'');
                 //var row = $("#TB09060S_grid1").pqGrid("getRow", { rowIndx: ui.rowIndx});
                 $("#pq-body-row-u0-"+ui.rowIndx+"-right").css("font-weight",'bold');
@@ -173,6 +182,23 @@ const TB06060Sjs = (function(){
 
     }
 
+    function getFlowLevel(data){
+        if(data.prgSttsNm == '대출실행'||data.prgSttsNm == '매수'||data.prgSttsNm == '대출실행'){
+            //console.log("실행완료");
+            return 6;
+        }else if(data.ctrcCclcDcd == "1"){
+            //console.log("약정완료");
+            return 5;
+        }else if(data.prdtCd != null){
+            //console.log("종목코드 있음");
+            return 4;
+        }else if(data.mtrNm != null){
+            //console.log("안건명 있음");
+            return 3;
+        }
+        //console.log("딜번호만 있음");
+        return 3;
+    }
     /*********************
      * 240614 초기화 추가 * 
      *********************/
@@ -204,7 +230,7 @@ const TB06060Sjs = (function(){
             prdtCd : $('#TB06060S_prdtCd').val()
         }
 
-        console.log(paramData);
+        //console.log(paramData);
 
         $.ajax({
             type: "POST",
@@ -225,11 +251,12 @@ const TB06060Sjs = (function(){
                         $(".flow-status p").removeClass("-check");
                         $(".flow-status div").html(waitHtml);
                     }else{
-                        if(data[0].prgSttsCd == null){
+                       /* if(data[0].prgSttsCd == null){
                             setFlow(3);
                         }else{
                             setFlow(parseInt(data[0].prgSttsCd));
-                        }
+                        }*/
+                        setFlow(getFlowLevel(data[0]));
                         showDetailData(data[0],true); 
                     }
                 }else{
@@ -244,7 +271,7 @@ const TB06060Sjs = (function(){
                 }
             },
             error: function(e){
-                console.log(e);
+                //console.log(e);
                 Swal.fire({
                     icon: 'error'
                     , title: "error!"
@@ -266,7 +293,7 @@ const TB06060Sjs = (function(){
             mtrDcd : rowData.mtrDcd
         }
 
-        console.log(paramData);
+        //console.log(paramData);
 
         $.ajax({
             type: "POST",
@@ -301,7 +328,7 @@ const TB06060Sjs = (function(){
                 }
             },
             error: function(e){
-                console.log(e);
+                //console.log(e);
                 if(!isAuto){
               Swal.fire({
                     icon: 'error'

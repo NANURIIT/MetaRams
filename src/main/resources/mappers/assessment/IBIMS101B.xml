@@ -475,6 +475,7 @@
 	      	, E.DEAL_EXC_BLCE
 	      	, D.ENTP_NM
           , A.MTR_DCD
+          , B.CTRC_CCLC_DCD
 	      FROM IBIMS201B A
 	      	, IBIMS401B B
 	      	, (SELECT Y.PRDT_CD, Y.EXC_SN, Y.LAST_RDMP_TMRD, Y.TOT_RDMP_TMRD
@@ -512,6 +513,7 @@
         , C.TOT_RDMP_TMRD
         , C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD
         , NVL(B.MTR_DCD,'') AS MTR_DCD
+        , NVL(C.CTRC_CCLC_DCD, 'NOT') AS CTRC_CCLC_DCD
         FROM IBIMS101B A
          , IBIMS103B B
          , PRDT_TB   C
