@@ -150,10 +150,13 @@ const TB06060Sjs = (function(){
             strNoRows : '조회된 데이터가 없습니다.',
             cellDblClick: function(event, ui){
                 var rowData = ui.rowData;
-                //setFlow(parseInt(rowData.mtrPrgSttsDcd));
-                setFlow(parseInt(rowData.prgSttsCd));
+                if(rowData.prgSttsCd == null){
+                    setFlow(3);
+                }else{
+                    setFlow(parseInt(rowData.prgSttsCd));
+                }
                 
-                showDetailData(rowData);
+                showDetailData(rowData, false);
             },
             cellClick: function(event,ui){
                 //클릭시 선택한 열 볼드처리
@@ -227,7 +230,7 @@ const TB06060Sjs = (function(){
                         }else{
                             setFlow(parseInt(data[0].prgSttsCd));
                         }
-                        showDetailData(data[0]); 
+                        showDetailData(data[0],true); 
                     }
                 }else{
                     Swal.fire({
@@ -255,7 +258,7 @@ const TB06060Sjs = (function(){
     }
 
 
-    function showDetailData(rowData){
+    function showDetailData(rowData, isAuto){
 
         
         const paramData = {
@@ -299,6 +302,7 @@ const TB06060Sjs = (function(){
             },
             error: function(e){
                 console.log(e);
+                if(!isAuto){
               Swal.fire({
                     icon: 'error'
                     , title: "error!"
@@ -310,10 +314,11 @@ const TB06060Sjs = (function(){
                     $('#TB06060S_jdgmRsltRgstDt').val("");
                     $('#TB06060S_jdgmRsltCtns').val("");
                 }); 
+            }
                 $('#TB06060S_cnsbNm').val("");
-                    $('#TB06060S_jdgmRsltDcd').val("");
-                    $('#TB06060S_jdgmRsltRgstDt').val("");
-                    $('#TB06060S_jdgmRsltCtns').val("");
+                $('#TB06060S_jdgmRsltDcd').val("");
+                $('#TB06060S_jdgmRsltRgstDt').val("");
+                $('#TB06060S_jdgmRsltCtns').val("");
             }
         }); 
     }
