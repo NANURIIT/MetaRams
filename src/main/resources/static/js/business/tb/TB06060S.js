@@ -150,10 +150,13 @@ const TB06060Sjs = (function(){
             strNoRows : '조회된 데이터가 없습니다.',
             cellDblClick: function(event, ui){
                 var rowData = ui.rowData;
-                //setFlow(parseInt(rowData.mtrPrgSttsDcd));
-                setFlow(parseInt(rowData.prgSttsCd));
+                if(rowData.prgSttsCd == null){
+                    setFlow(3);
+                }else{
+                    setFlow(parseInt(rowData.prgSttsCd));
+                }
                 
-                showDetailData(rowData);
+                showDetailData(rowData, true);
             },
             cellClick: function(event,ui){
                 //클릭시 선택한 열 볼드처리
@@ -222,8 +225,12 @@ const TB06060Sjs = (function(){
                         $(".flow-status p").removeClass("-check");
                         $(".flow-status div").html(waitHtml);
                     }else{
-                        setFlow(parseInt(data[0].prgSttsCd));
-                        showDetailData(data[0]); 
+                        if(data[0].prgSttsCd == null){
+                            setFlow(3);
+                        }else{
+                            setFlow(parseInt(data[0].prgSttsCd));
+                        }
+                        showDetailData(data[0],true); 
                     }
                 }else{
                     Swal.fire({
@@ -251,7 +258,7 @@ const TB06060Sjs = (function(){
     }
 
 
-    function showDetailData(rowData){
+    function showDetailData(rowData, isAuto){
 
         
         const paramData = {
@@ -295,10 +302,11 @@ const TB06060Sjs = (function(){
             },
             error: function(e){
                 console.log(e);
+                if(!isAuto){
               Swal.fire({
                     icon: 'error'
                     , title: "error!"
-                    , text: "데이터를 불러오지 못 했습니다."
+                    , text: "심사정보 데이터를 불러오지 못했습니다."
                     , confirmButtonText: "확인"
                 }).then((result) => {
                     $('#TB06060S_cnsbNm').val("");
@@ -306,10 +314,11 @@ const TB06060Sjs = (function(){
                     $('#TB06060S_jdgmRsltRgstDt').val("");
                     $('#TB06060S_jdgmRsltCtns').val("");
                 }); 
+            }
                 $('#TB06060S_cnsbNm').val("");
-                    $('#TB06060S_jdgmRsltDcd').val("");
-                    $('#TB06060S_jdgmRsltRgstDt').val("");
-                    $('#TB06060S_jdgmRsltCtns').val("");
+                $('#TB06060S_jdgmRsltDcd').val("");
+                $('#TB06060S_jdgmRsltRgstDt').val("");
+                $('#TB06060S_jdgmRsltCtns').val("");
             }
         }); 
     }
