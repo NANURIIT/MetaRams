@@ -26,19 +26,14 @@ const TB07180Sjs = (function () {
   function fnSelectBox() {
     selectBox = getSelectBoxList(
       "TB07180",
-      "/F004" + "/F006" + "/A005" + "/R012" + "/F015" + "/A001" + "/A004",
+      "/F006" + "/R012" + "/F015" + "/A001" + "/A004" +"/A005",
       false
     );
 
-    grdSelect.F004 = selectBox.filter(function (item) {
-      return item.cmnsGrpCd === "F004";
-    }); //	수수료종류
+
     grdSelect.F006 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "F006";
     }); //	수수료인식구분
-    grdSelect.A005 = selectBox.filter(function (item) {
-      return item.cmnsGrpCd === "A005";
-    }); //	계정과목코드
     grdSelect.R012 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "R012";
     }); //	등록상태
@@ -50,16 +45,13 @@ const TB07180Sjs = (function () {
     }); //	회계업무코드
     grdSelect.A004 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "A004";
-    }); //	회계단위업무코드
+    }); //	회계단위업무코드	
+	grdSelect.A005 = selectBox.filter(function (item) {
+     return item.cmnsGrpCd === "A005";
+    }); //	계정과목코드
   }
 
-  function createSelectTag() {
-    //  수수료종류
-    let f004Html;
-    grdSelect.F004.forEach((item) => {
-      f004Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
-    });
-    $("#TB07180S_feeKndCd").append(f004Html);
+  function createSelectTag() {    
 
     //  수수료인식구분
     let f006Html;
@@ -67,15 +59,8 @@ const TB07180Sjs = (function () {
       f006Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
     });
     $("#TB07180S_feeRcogDcd").append(f006Html);
-
-    //  계정과목코드
-    let a005Html;
-    grdSelect.A005.forEach((item) => {
-      a005Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
-    });
-    $("#TB07180S_actCd").append(a005Html);
-
-    //  수수료산정구분
+    
+	//  수수료산정구분
     let f015Html;
     grdSelect.F015.forEach((item) => {
       f015Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
@@ -94,8 +79,54 @@ const TB07180Sjs = (function () {
     grdSelect.A004.forEach((item) => {
       a004Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
     });
-    $("#TB07180S_acctUnJobCd").append(a004Html);
+    $("#TB07180S_acctUnJobCd").append(a004Html);	
+	
+	//  계정과목코드
+	let a005Html;
+	grdSelect.A005.forEach((item) => {
+	  a005Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
+	});
+	$("#TB07180S_A005").append(a005Html);
+	
+	TB07180S_selectOption();
   }
+  
+  
+  function TB07180S_selectOption(){
+  	const $inputField = $('#TB07180S_actCd');
+  	const $dataList = $('#TB07180S_A005');
+
+  	$inputField.on('input', function () {
+  		const inputValue = $(this).val();
+  		const $selectedOption = $dataList.find('option').filter(function () {
+  			return $(this).val() === inputValue;
+  		});
+
+  		if ($selectedOption.length) {
+  			// `option`의 텍스트를 input에 바인딩
+  			$inputField.val($selectedOption.text());
+  		}
+  	});
+  }
+  
+  
+  function TB07180S_dataListBnd(value){
+  	//alert(value);
+  	const $inputField = $('#TB07180S_actCd');
+  	const $dataList = $('#TB07180S_A005');
+  	
+  	const $selectedOption = $dataList.find('option').filter(function () {
+          return $(this).val() === value; // value로 매칭
+      });
+
+      if ($selectedOption.length) {
+          // 해당 옵션의 텍스트를 `input` 필드에 바인딩
+          $inputField.val($selectedOption.text());
+      } else {
+          console.warn('해당 값에 매칭되는 옵션이 없습니다.');
+      }
+  }
+  
 
   /*
    *  =====================OptionBox데이터 SET=====================
@@ -529,6 +560,10 @@ const TB07180Sjs = (function () {
 
     let param = $("#feeData input, #feeData select");
     let paramData = {};
+	
+	if (!checkParam()) {
+		return false;
+    }
 
     param.each(function () {
       let id = $(this).attr("id");
@@ -573,13 +608,28 @@ const TB07180Sjs = (function () {
       },
     });
 
-    // if (result != 1) {
-    //     Swal.fire({
-    //         icon: result === -1 ? 'warning' : result === -2 ? 'error' : '',
-    //         text: '정보가 없습니다!'
-    //     })
-    // }
   }
+  
+  function checkParam() {
+  	var option = {}
+  	option.title = "Error";
+  	option.type = "error";
+	
+	// 유효성검사
+	if (isEmpty($('#TB07180S_actCd').val())) {
+		option.text = "계정과목을 입력해주세요";
+		openPopup(option);
+		return false;
+	}
+	
+	if (isEmpty($('#TB07180S_feeNm').val())) {
+		option.text = "수수료명을 입력해주세요";
+		openPopup(option);
+		return false;
+	}  
+	return true;
+}
+  
 
   function updateFeeData() {
     let result;
