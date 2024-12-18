@@ -29,8 +29,13 @@ function setFileUploadEvent (menuId) {
    * 파일 추가 후 event
    */
   $(`div[data-menuid="/${menuId}"]` + " #deal-upload-input").change(function () {
-    let mode = "m";
-    callCmFileUpload(mode);
+    if($(this).val() === ""){
+      // 아무것도 안하기
+    }else {
+      console.log("들어오시잖아");
+      let mode = "m";
+      callCmFileUpload(mode);
+    }
   });
 
   /**
