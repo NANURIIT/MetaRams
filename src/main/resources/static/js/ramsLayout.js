@@ -292,6 +292,7 @@ async function callPage(menuId, pageName) {
                                 || $($script[j]).attr('src') === "js/plugins/excelexport/FileSaver.min.js"
 
                                 || $($script[j]).attr('src') === "js/ramsLayout.js"
+                                || $($script[j]).attr('src') === "js/fileUpload.js"
 
                                 || $($script[j]).attr('src') === "js/callPage.js"
                                 || $($script[j]).attr('src') === "js/plugins/slimscroll/jquery.slimscroll.min.js"

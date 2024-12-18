@@ -9,8 +9,7 @@ const TB07100Sjs = (function () {
     selectorNumberFormater($("input[id*='Amt'], input[id*='Blce'], input[id*='Rt'], input[id='TB07100S_splmValuTxa']"));
     TB07100S_pqGrid();
     TB07100S_getFirstStatus();
-    $("#TB07100S_acctDt1").val(getToday());
-    $("#TB07100S_acctDt2").val(getToday());
+    autoSet();
   });
 
   /**
@@ -40,7 +39,7 @@ const TB07100Sjs = (function () {
         readonly: $(this).prop('readonly'),
         disabled: $(this).prop('disabled'),
         value: $(this).val()
-      });
+      });1
     });
   }
 
@@ -77,26 +76,39 @@ const TB07100Sjs = (function () {
     $('.toggleBtn1').prop('disabled', false);
   }
 
+  function autoSet(){//회계기간, 부서코드 기본값 세팅
+    $("#TB07100S_acctDt1").val(getToday());
+    $("#TB07100S_acctDt2").val(getToday());
+    $('#TB07100S_dprtCd').val($('#userDprtCd').val());
+    $('#TB07100S_dprtNm').val($('#userDprtNm').val());
+
+  }
   /*
    *  전체 초기화
    */
   const TB07100S_removeAll = () => {
 
-    $('input').val('');
+    //$('input').val('');
+    $(`#TB07100S_searchForm input`).val('');
+    $(`#TB07100S_mergeForm input`).val('');
 
     $("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
     $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').setData([]);
-
+    autoSet();
   }
 
   const TB07100S_resetInput = () => {
-    $(`#ibims431dto input`).val('');
-    $(`#ibims431dto input[id*='Amt']
-      ,#ibims431dto input[id*='Blce']
-      ,#ibims431dto input[id*='Exrt']
-      ,#ibims431dto input[id*='Mnum']
-      ,#ibims431dto input[id*='Tmrd']
-      ,#ibims431dto #TB07100S_trtx`).val('0');
+    $(`#TB07100S_mergeForm input`).val('');
+    $(`#TB07100S_mergeForm input[id*='bnftYn']
+      ,#TB07100S_mergeForm input[id*='entmAccXstcYn']`).prop('checked',false);
+
+    $(`#TB07100S_mergeForm input[id*='Amt']
+      ,#TB07100S_mergeForm input[id*='Blce']
+      ,#TB07100S_mergeForm input[id*='Exrt']
+      ,#TB07100S_mergeForm input[id*='Mnum']
+      ,#TB07100S_mergeForm input[id*='Tmrd']
+      ,#TB07100S_mergeForm input[id*='splmValuTxa']
+      ,#TB07100S_mergeForm #TB07100S_trtx`).val('0');
   }
 
   /*******************************************************************
@@ -348,7 +360,7 @@ const TB07100Sjs = (function () {
       {
         height: 150
         , maxHeight: 150
-        , id: 'TB07100S_grd_basic'
+        , id: 'TB07100S_grd_thdtTrDtls'
         , colModel: col_basic
         //   , numberCell     : { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
         //   , scrollModel : { autoFit: false }
@@ -687,6 +699,7 @@ const TB07100Sjs = (function () {
     console.log("행삭제");
   }
 
+  
   return {
     TB07100S_selectIBIMS431B: TB07100S_selectIBIMS431B,
     TB07100S_doExc: TB07100S_doExc,

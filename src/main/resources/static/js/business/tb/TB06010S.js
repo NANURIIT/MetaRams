@@ -2055,6 +2055,8 @@ const TB06010Sjs = (function(){
 		, tab5BtnSave : tab5BtnSave
 		, getIBIMS212BDTOInfo: getIBIMS212BDTOInfo
 
+		, setAtchFle: setAtchFle
+
 		// 변수
 		, ldvdCd : ldvdCd
 		, mdvdCd : mdvdCd
