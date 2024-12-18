@@ -1,5 +1,6 @@
 package com.nanuri.rams.business.assessment.tb07.tb07140;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.common.dto.IBIMS402BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS402HDTO;
 import com.nanuri.rams.business.common.dto.IBIMS405BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS407BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
@@ -94,6 +97,11 @@ public class TB07140ServiceImpl implements TB07140Service {
 		// log.debug("출자보수내용 IBIMS407BDTO.fincPayCntn:::" + paramData.getFincPayCntn());
 		// log.debug("재출자가능여부 IBIMS407BDTO.reFincPossYn:::" + paramData.getReFincPossYn());
 
+		int ibims410Rslt = 0;
+		int ibims407Rslt = 0;
+		int ibims402BRslt = 0;
+		int ibims402HRslt = 0;
+
 		/* 거래순번 채번 */
 		IBIMS405BDTO trSnDTO = new IBIMS405BDTO();
 
@@ -104,9 +112,12 @@ public class TB07140ServiceImpl implements TB07140Service {
 
 		String inputDcd = "1";					//입력구분 1: 등록 / 2: 취소
 
-		make410BDTOParam(paramData, inputDcd);			//IBIMS410BDTO 파라미터 set
+		IBIMS410BDTO ibims410bdto = make410BDTOParam(paramData, inputDcd);			//IBIMS410BDTO 파라미터 set
+		IBIMS402BDTO ibims402bdto = new IBIMS402BDTO();
 
 		//log.debug("trSn:::" + trSn);
+		ibims407Rslt = ibims407bMapper.insertFinc(paramData);
+		ibims410Rslt = ibims410bMapper.saveDlTrList(ibims410bdto);
 
 		return 0;
 	};
@@ -121,11 +132,34 @@ public class TB07140ServiceImpl implements TB07140Service {
 		return ibims407bMapper.deleteFinc(paramData);
 	};
 
-	/* IBIMS405BDTO 파라미터 set */
-	public IBIMS405BDTO make405BDTOParam(IBIMS407BDTO paramData, String inputDcd){
-		IBIMS405BDTO retrunDto = new IBIMS405BDTO();
+	/* IBIMS402BDTO 파라미터 set */
+	public IBIMS402BDTO make402BDTOParam(IBIMS407BDTO paramData, String inputDcd){
+		IBIMS402BDTO returnDto = new IBIMS402BDTO();
 
-		return retrunDto;
+		returnDto.setPrdtCd(paramData.getPrdtCd());					//종목코드
+		returnDto.setExcSn(1);								//실행일련번호
+		returnDto.setLdgSttsCd(inputDcd);							//원장상태코드
+		returnDto.setCrryCd("KRW");							//거래통화코드
+		returnDto.setExcDt(paramData.getTrDt());					//실행일자
+		returnDto.setExpDt("");								//만기일자
+		returnDto.setDealExcAmt(null);					//딜실행금액
+		returnDto.setDealExcBlce(null);					//딜실행잔액
+		returnDto.setKrwTrslRt(paramData.getTrdeExrt());			//원화환산율
+		returnDto.setKrwTrslExcAmt(null);				//원화환산실행금액
+		returnDto.setKrwTrslExcBlce(null);			//원화환산실행잔액
+		// returnDto.setPrnaDfrPrdMnum(0);				//
+		returnDto.setBrkgAcno(paramData.getStlAcno());				//위탁계좌번호
+		returnDto.setRctmIsttCd(paramData.getStlXtnlIsttCd());		//결제외부기관코드
+		returnDto.setDealNo("0");
+
+		return returnDto;
+	}
+
+	/* IBIMS402HDTO 파라미터 set */
+	public IBIMS402HDTO make402HDTOParam(IBIMS407BDTO paramData, String inputDcd){
+		IBIMS402HDTO returnDTO = new IBIMS402HDTO();
+
+		return returnDTO;
 	}
 	
 	/* IBIMS410BDTO 파라미터 set */
@@ -144,12 +178,51 @@ public class TB07140ServiceImpl implements TB07140Service {
 		}
 
 		returnDto.setEtprCrdtGrntTrKindCd(paramData.getEtprCrdtGrntTrKindCd());		//거래종류코드 (출자금납입 84, 출자금회수 85)
-		returnDto.setDealTrAmt(null);					//딜거래금액
-		returnDto.setDealTrPrca(null);				//딜거래원금
-		returnDto.setTrFeeAmt(null);					//거래수수료금액
-		returnDto.setCostAmt(null);						//비용금액
-		returnDto.setTrCrryCd(null);					//통화코드
-		//returnDto.setwcrcTr
+
+		BigDecimal dealTrAmt = BigDecimal.ZERO;			//딜거래금액
+		BigDecimal dealTrPrca = BigDecimal.ZERO;		//딜거래원금
+		BigDecimal krwTrslTrPrca = BigDecimal.ZERO;		//원화환산 딜거래원금
+
+		if(paramData.getFincPrcsDcd().equals("01")){				//딜거래금액 == 출자변동금액
+
+			dealTrAmt = paramData.getFincCngeAmt();
+			dealTrPrca = paramData.getFincCngeAmt();
+			krwTrslTrPrca = paramData.getTrslFincCngeAmt();
+
+		}else if(paramData.getFincPrcsDcd().equals("02") || paramData.getFincPrcsDcd().equals("06")){			//딜거래금액 == 결제금액
+
+			dealTrAmt = paramData.getStlAmt();
+			dealTrPrca = paramData.getStlAmt();
+			krwTrslTrPrca = paramData.getTrslStlAmt();
+
+		}else if(paramData.getFincPrcsDcd().equals("03") || paramData.getFincPrcsDcd().equals("04") 
+				|| paramData.getFincPrcsDcd().equals("05") || paramData.getFincPrcsDcd().equals("07")){			//딜거래금액 == 보수/수익
+			
+			dealTrAmt = paramData.getPayErnAmt();
+			dealTrPrca = paramData.getPayErnAmt();
+			krwTrslTrPrca = paramData.getTrslPayErnAmt();
+		}
+
+		returnDto.setDealTrAmt(dealTrAmt);											//딜거래금액
+		returnDto.setDealTrPrca(dealTrPrca);										//딜거래원금
+		//returnDto.setTrFeeAmt(null);												//거래수수료금액
+		returnDto.setCostAmt(paramData.getTrtx());									//비용금액(== 거래세)
+		returnDto.setTrCrryCd("KRW");										//통화코드
+		returnDto.setKrwTrslRt(paramData.getTrdeExrt());							//원화환산율
+		returnDto.setKrwTrslTrPrca(krwTrslTrPrca);									//원화환산거래원금
+		// returnDto.setKrwTrslTrIntAmt(null);										//원화환산거래이자금액
+		// returnDto.setKrwTrslTrFeeAmt(null);										//원화환산거래수수료금액
+		returnDto.setKrwTrslCostAmt(paramData.getTrtx());							//원화환산비용금액(== 거래세)
+		//returnDto.setAcctJobCd(null);												//회계업무코드	(회계업무코드 현재 공통코드에 대출계약밖에 없음)
+		returnDto.setAcctUnJobCd(paramData.getEtprCrdtGrntTrKindCd());				//회계단위업무코드 (==거래종류코드?)
+		returnDto.setAcctTrCd(inputDcd);											//회계거래코드
+		returnDto.setActgErlmSeq(paramData.getTrSn());								//회계등록순번(==거래순번)
+		//returnDto.setRkfrDt(null);												//기산일자
+		//returnDto.setFndsDvsnCd(null);											//자금구분코드
+		returnDto.setRctmIsttCd(paramData.getStlXtnlIsttCd());						//입금기관코드
+		returnDto.setRctmBano(paramData.getStlAcno());								//입금계좌번호
+		// returnDto.setAchdNm("");													//예금주명
+		returnDto.setHndEmpno(facade.getDetails().getEno());
 
 		return returnDto;
 	}
