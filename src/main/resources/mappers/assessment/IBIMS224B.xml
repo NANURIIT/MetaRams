@@ -99,16 +99,15 @@
             A.ISS_CTNS ,
             A.IVTG_RQST_CTNS ,
             A.DPRT_CD as dprtCd,
-            A.EMPNO ,
-            A.DPRT_CD ,
+            A.EMPNO ,            
             B.EMP_NM  ,
-            B.DPRT_NM       as decdDptNm,
+            B.DPRT_NM       as dprtNm,
             A.ISS_STTS_CD ,
             A.SMIT_ORGI 
       from IBIMS224B A
       left join IBIMS003B B 
           on B.EMPNO = A.EMPNO  
-          and B.BDCD  = A.DPRT_CD
+          and B.DPRT_CD  = A.DPRT_CD
       where A.DEAL_NO = #{dealNo}
       AND A.SN  = (
                   SELECT MAX(SN)
@@ -165,8 +164,8 @@
                , #{issSttsCd}                              															<!-- 발급상태코드 -->
                , #{dealNo}                                 															<!-- 딜번호 -->
 				       , #{sn}                               														        <!-- 일련번호 -->
-               , #{empno}                                  															<!-- 사원번호 -->
-               , #{dprtCd}                             															<!-- 부서명 -->
+               , #{empNo}                                  															<!-- 사원번호 -->
+               , #{dprtCd}                             															<!-- 부서코드 -->
                , #{fndNm}                                  															<!-- 펀드명 -->
                , #{prdtCd}                                 															<!-- 상품코드 -->
                , #{ibPrdtClsfCd}                           															<!-- ib상품분류코드 -->
@@ -188,12 +187,12 @@
                , #{rclmRsnDcd}                             															<!-- 회수사유구분코드 -->
                , #{rclmAmt}                                															<!-- 회수금액 -->
                , #{rclmSmmAmt}                             															<!-- 회수합계금액 -->
-               , #{ivtgCnfmYn}                             															<!-- 검토확인여부 -->
+               , DEFAULT                            															<!-- 검토확인여부 -->
                , #{smitOrgi}                               															<!-- 제출처 -->
                , #{hanfDcmNo}                              															<!-- 하나포털문서번호 -->
                , #{prgSttsCd}                              															<!-- 진행상태코드 -->
-               , #{sq1ApvlYn}                              															<!-- 1차승인여부 -->
-               , #{sq2ApvlYn}                              															<!-- 2차승인여부 -->
+               , DEFAULT                             															<!-- 1차승인여부 -->
+               , DEFAULT                              															<!-- 2차승인여부 -->
                , DEFAULT                             	   															  <!-- 조작상세일시 -->
                , #{hndEmpno}                               															<!-- 조작사원번호 -->
                , #{hndTmnlNo}                              															<!-- 조작단말기번호 -->

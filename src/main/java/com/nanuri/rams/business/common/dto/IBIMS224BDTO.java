@@ -17,7 +17,8 @@ public class IBIMS224BDTO {
     private String         issSttsCd;                              // 발급상태코드
     private String         dealNo;                                 // 딜번호
     private String	       sn;                                     // 일련번호
-    private String         empno;                                  // 사원번호
+    private String         empNo;                                  // 사원번호
+    private String         empNm;                                  // 사원이름
     private String         dprtCd;                                 // 부서코드
     private String         fndNm;                                  // 펀드명
     private String         prdtCd;                                 // 상품코드
