@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS421BMapper">
+	    <!-- 담보번호 채번 -->
+    <select id="makeFeeKndCd" resultType="String" parameterType="com.nanuri.rams.business.common.dto.IBIMS421BDTO">
+    	SELECT  LPAD(  NVL(
+    						(SELECT MAX(FEE_KND_CD)
+                             FROM IBIMS421B a 	) , 0
+                           ) +1
+                         , 2, '0'
+                    )
+                AS FEE_KND_CD 
+        FROM DUAL
+    </select>
+
+
 
     <select id="IBIMS421BSelect" parameterType="string" resultType="com.nanuri.rams.business.common.dto.IBIMS421BDTO">
         SELECT FEE_KND_CD        /* 수수료종류코드 */
-             , ACTS_CD            /* 계정과목코드 */
+             , ACTS_CD           /* 계정과목코드 */
              , RGST_STTS_CD      /* 등록상태코드 */
              , FEE_NAME          /* 수수료명 */
              , FEE_RCOG_DCD      /* 수수료인식구분코드 */
