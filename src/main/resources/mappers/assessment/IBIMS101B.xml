@@ -474,6 +474,7 @@
 	      	, C.TOT_RDMP_TMRD
 	      	, E.DEAL_EXC_BLCE
 	      	, D.ENTP_NM
+          , A.MTR_DCD
 	      FROM IBIMS201B A
 	      	, IBIMS401B B
 	      	, (SELECT Y.PRDT_CD, Y.EXC_SN, Y.LAST_RDMP_TMRD, Y.TOT_RDMP_TMRD
@@ -526,6 +527,7 @@
           AND A.DEAL_NO = B.DEAL_NO(+)
           AND B.LAST_YN(+) = 'Y'
           AND A.DEAL_NO = C.DEAL_NO(+)
+          AND B.MTR_DCD = C.MTR_DCD(+)
           <if test="prdtCd != ''">
             AND C.PRDT_CD = #{prdtCd}
           </if>

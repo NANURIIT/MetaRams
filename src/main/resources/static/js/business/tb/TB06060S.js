@@ -156,7 +156,7 @@ const TB06060Sjs = (function(){
                     setFlow(parseInt(rowData.prgSttsCd));
                 }
                 
-                showDetailData(rowData, false);
+                showDetailData(rowData, true);
             },
             cellClick: function(event,ui){
                 //클릭시 선택한 열 볼드처리
