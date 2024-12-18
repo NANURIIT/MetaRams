@@ -26,7 +26,7 @@ public class FileUtil {
     /** 업로드 경로 */
     private final String windowsPath = Paths.get("C:", "develop", "rams-files", today).toString();
     private final String linuxPath = Paths.get("/", "home", "nanuri", "rams-files", today).toString();
-    
+    private final String macPath = Paths.get(System.getProperty("user.home"), "rams-files", today).toString();
     /**
 	 * 서버에 생성할 파일명을 처리할 랜덤 문자열 반환
 	 * @return 랜덤 문자열
@@ -65,10 +65,10 @@ public class FileUtil {
   	 * @return 업로드 파일 정보
   	 */
      public FileDTO uploadFile(MultipartFile file) {
-    	 
+
     	 String uploadPath = makePath();
     	 FileDTO attach = new FileDTO();
-
+         
          try {
              final String extension = FilenameUtils.getExtension(file.getOriginalFilename());
              final String saveName = getRandomString() + "." + extension;
@@ -116,6 +116,9 @@ public class FileUtil {
          if (osName.contains("windows")) {
              dir = new File(windowsPath);
              uploadPath = windowsPath;
+         } else if (osName.contains("mac")) { // 🔥 MacOS 추가
+             dir = new File(macPath);
+             uploadPath = macPath;
          } else {
              dir = new File(linuxPath);
              uploadPath = linuxPath;
