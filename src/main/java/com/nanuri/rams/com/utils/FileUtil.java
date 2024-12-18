@@ -116,7 +116,7 @@ public class FileUtil {
          if (osName.contains("windows")) {
              dir = new File(windowsPath);
              uploadPath = windowsPath;
-         } else if (osName.contains("mac")) { // 🔥 MacOS 추가
+         } else if (osName.contains("mac")) { 
              dir = new File(macPath);
              uploadPath = macPath;
          } else {
