@@ -186,8 +186,8 @@ const TB04050Sjs = (function () {
         data: dtoParam,
         beforeSend: function () {
           $('[name="TB04050S_issLtrYN"][value="1"]').prop("checked", true); // 발급서류구분
+          $('[name="TB04050S_issSttsCd"][value="1"]').prop("checked", true);
           $("#TB04050S_smit").val(""); // 제출처
-          $("#TB04050S_L004").val("1"); // 발급상태
           $("#TB04050S_I027_1").val("KRW"); // 발급통화코드
           $("#TB04050S_issAmt").val(""); // 발급액
           $("#TB04050S_issDt").val(""); // 발급일자
@@ -203,10 +203,10 @@ const TB04050Sjs = (function () {
               "checked",
               true
             ); // 발급서류구분
-            console.log("확인해보자: ", data);
-
+            $(
+              '[name="TB04050S_issSttsCd"][value="' + data.issSttsCd + '"]'
+            ).prop("checked", true); // 발급상태
             $("#TB04050S_smit").val(data.smitOrgi); // 제출처
-            $("#TB04050S_L004").val(data.issSttsCd); // 발급상태
             $("#TB04050S_I027_1").val(data.issCrryCd); // 발급통화코드
             $("#TB04050S_issAmt").val(addComma(handleNullData(data.issAmt))); // 발급액
             $("#TB04050S_issDt").val(formatDate(data.issDt)); // 발급일자
@@ -326,8 +326,8 @@ const TB04050Sjs = (function () {
     var dealNm = $("#TB04050S_ibDealNm").val(); //Deal명
     //var fndNm = $('#TB04050S_fndNm').val();								//펀드명
     var issLtrDcd = $("input[name=TB04050S_issLtrYN]:checked").val(); //발급서류 (LOI/LOC)
+    var issSttsCd = $("input[name=TB04050S_issSttsCd]:checked").val(); //발급상태
     var smitOrgi = $("#TB04050S_smit").val(); //제출처
-    var issSttsCd = $("#TB04050S_L004").val(); //발급상태
     var issCrryCd = $("#TB04050S_I027_1").val(); //발급통화코드
     var issAmt = $("#TB04050S_issAmt").val(); //발급액
     var issDt = $("#TB04050S_issDt").val(); //발급일자
@@ -339,11 +339,10 @@ const TB04050Sjs = (function () {
     //var ivtgRsltCtns = $('#TB04050S_ivtgCtns').val(); ??
 
     var loiLocYn = "";
-
     if ($(":radio[name='TB04050S_issLtrYN']").radioSelect("1")) {
-      loiLocYn = "Y";
+      loiLocYn = "1";
     } else {
-      loiLocYn = "N";
+      loiLocYn = "2";
     }
 
     if (!isEmpty(dealNo)) {

@@ -66,11 +66,11 @@
 										<label class="col-sm-1">발급서류</label>
 										<div class="col-sm-3 input-group input-h">
 											<div class="col-sm-3 input-group">
-		                                       	<input type="radio" value="1" id="TB04050S_issLtrY" name="TB04050S_issLtrYN">
-		                                        <label class="col-sm-5">LOI</label>
+		                  	<input type="radio" value="1" id="TB04050S_issLtrY" name="TB04050S_issLtrYN" checked>
+		                    <label class="col-sm-5">LOI</label>
 											</div>
 											<div class="col-sm-3 input-group">
-												<input type="radio" value="2" id="TB04050S_issLtrN" name="TB04050S_issLtrYN" checked>
+												<input type="radio" value="2" id="TB04050S_issLtrN" name="TB04050S_issLtrYN">
 												<label class="col-sm-5">LOC</label>
 											</div>
 											<div class="col-sm-4 input-group">
@@ -80,45 +80,16 @@
 												 -->
 											</div>
 										</div>
-										<label class="col-sm-1">제출처</label>
-										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" id="TB04050S_smit">
-										</div>
+										<label class="col-sm-1">발급일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB04050S_issDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>										
 									</div>
 								</div>
 								<!-- row2 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-
-										<label class="col-sm-1">발급상태</label>
-										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB04050S_L004">
-											</select>
-										</div>
-										<label class="col-sm-1">발급액</label>
-										<div class="col-sm-3 input-group input-h">
-											<select class="form-control col-sm-4" id="TB04050S_I027_1">
-												<!-- <option value="">전체</option> -->
-											</select>
-											<input type="text" class="form-control text-right" id="TB04050S_issAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  onchange="inputNumberFormat2(this);">
-										</div>
-										<label class="col-sm-1">발급일자</label>
-										<div class="col-sm-3 input-group date">
-											<input type="text" class="form-control" id="TB04050S_issDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
-											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-										</div>
-									</div>
-								</div>
-								<!-- row3 -->
-								<div class="row form-group form-inline text-right mb-1">
-									<div class="col-sm-12 form-group">
-
-										<label class="col-sm-1">유효일자</label>
-										<div class="col-sm-3 input-group date">
-											<input type="text" class="form-control" id="TB04050S_valtDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
-											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-										</div>
-
 										<label class="col-sm-1">담당자</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" style="width:30px;" id="TB04050S_empNm">
@@ -128,10 +99,46 @@
 											<input type="text" class="form-control" style="width:70px;" id="TB04050S_dprtNm" readonly>
 											<input type="hidden" class="form-control" style="width:70px;" id="TB04050S_dprtCd" >
 											<input type="hidden" class="form-control" style="width:30px;" id="TB04050S_empNo">
-										</div>
+										</div>																	
+										<label class="col-sm-1">발급상태</label>
+										<div class="col-sm-3 input-group input-h">
+											<div class="col-sm-3 input-group">
+		                  	<input type="radio" value="1" id="TB04050S_issSttsCd1" name="TB04050S_issSttsCd" checked>
+		                    <label class="col-sm-5">발급</label>
+											</div>
+											<div class="col-sm-3 input-group">
+												<input type="radio" value="2" id="TB04050S_issSttsCd2" name="TB04050S_issSttsCd">
+												<label class="col-sm-5">변경</label>
+											</div>
+											<div class="col-sm-3 input-group">												
+												<input type="radio" value="4" id="TB04050S_issSttsCd3" name="TB04050S_issSttsCd">
+												<label class="col-sm-5">회수</label>												
+											</div>
+										</div>										
 										<label class="col-sm-1">회수일자</label>
 										<div class="col-sm-3 input-group date">
 											<input type="text" class="form-control" id="TB04050S_rclmDt" value="" placeholder="yyyy-mm-dd" oninput="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>										
+									</div>
+								</div>
+								<!-- row3 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">																			
+										<label class="col-sm-1">제출처</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB04050S_smit">
+										</div>	
+										<label class="col-sm-1">발급액</label>
+										<div class="col-sm-3 input-group input-h">
+											<input type="text" class="form-control text-right" style="padding: 3%;" id="TB04050S_issAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  onchange="inputNumberFormat2(this);">
+											<select class="form-control col-sm-5" id="TB04050S_I027_1">
+												<!-- <option value="">전체</option> -->
+											</select>
+										</div>
+										<label class="col-sm-1">유효일자</label>
+										<div class="col-sm-3 input-group date">
+											<input type="text" class="form-control" id="TB04050S_valtDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<!-- <label class="col-sm-1">부서명</label>
@@ -154,7 +161,6 @@
 							</div>
 						</div>
 						<!-- 요청정보 end -->
-
 						<!-- Deal 기본정보 -->
 						<div class="row">
 							<div class="col-sm-12">
@@ -172,18 +178,19 @@
 														<input type="text" class="form-control" id="TB04050S_dealNm" readonly>
 													</div>
 												</div>
-												<label class="col-sm-1 col-form-label text-right"><span class="req"></span>협업유형</label>
+												<!-- 현재 딜정보등록 화면과 동일하게 출력 -->
+												<!-- <label class="col-sm-1 col-form-label text-right"><span class="req"></span>협업유형</label>
 												<div class="col-sm-2 input-group">
 													<select class="form-control" id="TB04050S_C008" disabled>
 														<option value="">선택</option>
 													</select>
-												</div>
-												<label class="col-sm-1 control-label"><span class="req"></span>BOOK</label>
+												</div> -->
+												<!-- <label class="col-sm-1 control-label"><span class="req"></span>BOOK</label>
 												<div class="col-sm-2 input-group">
 													<select class="form-control" id="TB04050S_B008" disabled>
 														<option value="">선택</option>
 													</select>
-												</div>
+												</div> -->
 											</div>
 										</div>
 										<!-- row2 -->
@@ -229,12 +236,12 @@
 										<!-- row4 -->
 										<div class="row form-group form-inline text-right">
 											<div class="col-sm-12 form-group text-right">
-												<label class="col-sm-1 control-label">은행지점</label>
+												<!-- <label class="col-sm-1 control-label">은행지점</label>
 												<div class="col-sm-2">
 													<div class="input-group">
 														<input type="text" class="form-control" id="TB04050S_bnkBd" readonly>
-													</div>
-												</div>
+													</div> 
+												</div> -->
 												<label class="col-sm-1 control-label">투자국가</label>
 												<div class="col-sm-2">
 													<div class="input-group">
