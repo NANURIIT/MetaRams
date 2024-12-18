@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB07171P">
+    <!-- modal -->
+    <div id="modal-TB07171P" class="modal fade" role="dialog" aria-labelledby="lb-tb08032p" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header metis-modal-header">
+                    <h4 class="modal-title">입금내역조회</h4>
+                    <div class="col-sm-1 text-right">
+                        <button type="button" class="btn btn-default" onclick="modalClose_TB07171P();"><i
+                                class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="prefix" id="prefix" value="" />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox">
+                                <!-- row1 -->
+                                <div class="ibox-content i-filter text-right">
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">입금일자</label>
+                                        <div class="col-sm-3 input-group">
+                                            <span class="input-group date">
+                                                <input type="text" class="form-control" value="" id="TB07171P_rctmDt"
+                                                    placeholder="YYYY-MM-DD">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </span>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label">상환구분</label>
+                                        <div class="col-sm-3 input-group">
+                                            <select class="form-control" id="TB07171P_R038">
+                                                <option value="">전체</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4 text-right">
+                                            <button class="btn btn-primary" onclick="TB07171Pjs.inq();">
+                                                <i class="fa fa-search"></i>&nbsp;조회
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 조회결과 -->
+                                <div class="ibox-content">
+                                    <div>
+                                        <div id="TB07171P_colModel"></div>
+                                    </div>
+
+                                    <!-- <div class="row mt-2">
+                                        <div class="col-sm-12 text-right">
+                                        <button class="btn btn-success" onclick=""><i class="fa fa-check"></i>&nbsp;실행</button>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- row -->
+                </div>
+            </div><!-- end of modal_content -->
+        </div>
+    </div>
+</th:block>
+
+</html>
