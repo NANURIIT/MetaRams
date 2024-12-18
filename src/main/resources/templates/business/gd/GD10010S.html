@@ -268,24 +268,38 @@
 						</div>
 						
 						<div class="row">
-						
                             <div class="col-sm-12">
 								<div class="ibox">
 									<div class="ibox-title">
 										<h5>▶ 타이틀</h5>
 										<div class="ibox-tools">		                       		
-											<button class="btn btn-success btn-xs" onclick="" disabled=""><i class="fa fa-check"></i>&nbsp;확정</button>
-											<button class="btn btn-danger btn-xs" onclick="" disabled=""><i class="fa fa-undo"></i>&nbsp;확정취소</button>
+											<button class="btn btn-success btn-xs" onclick=""><i class="fa fa-check"></i>&nbsp;확정</button>
+											<button class="btn btn-danger btn-xs" onclick=""><i class="fa fa-undo"></i>&nbsp;확정취소</button>
 											<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-plus"></i>&nbsp;행추가</button>
 											<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+											<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
+											<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles"><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
 											<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-search-plus"></i>&nbsp;안건추가</button>
-											<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-search-minus"></i>&nbsp;삭제</button>											
+											<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-search-minus"></i>&nbsp;안건삭제</button>
 											<button class="btn btn-success btn-xs" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;저장</button>
 											<button class="btn btn-info btn-xs" onclick=""><i class="fa fa-comment"></i>&nbsp;확정쪽지</button>
 											<button class="btn btn-warning btn-xs" onclick=""><i class="fa fa-comment-o"></i>&nbsp;취소쪽지</button>
 											<button class="btn btn-info btn-xs" type="button" onclick=""><i class="fa fa-user"></i>&nbsp;사용자추가</button>
-											<button class="btn btn-warning btn-xs" onclick=""><i class="fa fa-file-excel-o"></i>&nbsp;Excel</button>
-											<button class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i>&nbsp;인쇄</button>
+											<button class="btn btn-warning btn-xs" onclick=""><i class="fa fa-file-excel-o"></i>&nbsp;서식다운로드</button>
+											<button class="btn btn-warning btn-xs" onclick=""><i class="fa fa-download"></i>&nbsp;엑셀다운로드</button>
+											<button class="btn btn-warning btn-xs" onclick=""><i class="fa fa-upload"></i>&nbsp;엑셀업로드</button>
+											<button class="btn btn-warning btn-xs"><i class="fa fa-print"></i>&nbsp;인쇄</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶ 타이틀</h5>
+										<div class="ibox-tools">
 											<div class="btn-group ml-3" role="group" aria-label="">
 												<button class="btn btn-default btn-xs toggleBtn1" onclick="" id="toggleBtn1">표준코드 존재</button>
 												<button class="btn btn-info btn-xs toggleBtn2" onclick="" id="toggleBtn2">표준코드 미존재</button>
@@ -294,8 +308,8 @@
 									</div>
 								</div>
 							</div>
-
 						</div>
+					</div>
 					</div>
 				</div>
 				<!-- end of ibox -->
