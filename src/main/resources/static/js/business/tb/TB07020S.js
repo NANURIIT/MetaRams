@@ -855,7 +855,7 @@ const TB07020Sjs = (function() {
 				,'pucrIntAmt'          : (pucrIntAmt           /1)
 				,'trFeeAmt'            : (trFeeAmt             /1)
 				,'costAmt'             : (costAmt              /1)
-				,'trCrcyCd'            : trCrcyCd
+				,'trCrryCd'            : trCrcyCd
 				,'wcrcTrslRt'          : (wcrcTrslRt           /1)
 				,'wcrcTrslTrPrca'      : (wcrcTrslTrPrca       /1)
 				,'wcrcTrslTrIntAmt'    : (wcrcTrslTrIntAmt     /1)

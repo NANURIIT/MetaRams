@@ -185,5 +185,32 @@
            AND EXC_SN = #{excSn}
     </delete>
 
+    <!-- <select id="getTrSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS407BDTO" resultType="int">
+        SELECT CASE WHEN NVL(X.CNT, 0) = 0 THEN '0000000001'
+                  ELSE X.NEXT_VAL
+            END AS TR_SN
+        FROM (
+              SELECT SUM(CNT) AS CNT,
+                      MAX(NEXT_VAL) AS NEXT_VAL
+                FROM (
+                      SELECT COUNT(A.TR_SN) AS CNT,
+                              LPAD(TO_NUMBER(NVL(MAX(A.TR_SN), 0)) + 1, 10, '0') AS NEXT_VAL
+                        FROM IBIMS405B A
+                        WHERE A.PRDT_CD = #{prdtCd}
+                      UNION ALL
+                      SELECT COUNT(A.TR_SN) AS CNT,
+                              LPAD(TO_NUMBER(NVL(MAX(A.TR_SN), 0)) + 1, 10, '0') AS NEXT_VAL
+                        FROM IBIMS407B A
+                        WHERE A.PRDT_CD = #{prdtCd}
+                      UNION ALL
+                      SELECT COUNT(A.TR_SN) AS CNT,
+                              LPAD(TO_NUMBER(NVL(MAX(A.TR_SN), 0)) + 1, 10, '0') AS NEXT_VAL
+                        FROM IBIMS410B A
+                        WHERE A.PRDT_CD = #{prdtCd}
+                      ) B
+            ) X
+        
+    </select> -->
+
       
 </mapper>
