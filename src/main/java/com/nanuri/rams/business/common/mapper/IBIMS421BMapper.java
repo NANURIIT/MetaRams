@@ -16,7 +16,8 @@ public interface IBIMS421BMapper {
     public int IBIMS421BInsert(IBIMS421BDTO param);
 
     public int IBIMS421BUpdate(IBIMS421BDTO param);
+    
+    public int mergeFeeKndCd(IBIMS421BDTO param);
 
     public int IBIMS421BDelete(IBIMS421BDTO param);
-
 }
