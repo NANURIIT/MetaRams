@@ -32,7 +32,6 @@ function setFileUploadEvent (menuId) {
     if($(this).val() === ""){
       // 아무것도 안하기
     }else {
-      console.log("들어오시잖아");
       let mode = "m";
       callCmFileUpload(mode);
     }
