@@ -105,11 +105,11 @@ public class FileUploadAPIController {
 			FileUploadervice.deleteFileInfo(dto);
 
 			vo.setFileKey1(fileKey1.get(i));
-			vo.setDelYn("Y");
+			// vo.setDelYn("Y");
 
 			List<FileUploadDTO> delFiles = FileUploadervice.getListFileInfo(vo);
 
-			FileUtil.deleteFile(delFiles.get(i).getSvFilePathNm(), delFiles.get(i).getSvFileNm());
+			FileUtil.deleteFile(delFiles.get(0).getSvFilePathNm(), delFiles.get(0).getSvFileNm());
 		}
 
 		vo = new FileUploadVO();

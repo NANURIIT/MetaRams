@@ -1048,7 +1048,14 @@ const TB07090Sjs = (function () {
 
   }
 
-
+  /**
+   * 초기화
+   * ㄱㄱㅇ
+   */
+  function resetAll () {
+    resetInputValue($("div[data-menuid='/TB07090S']"));
+    resetPGgrids("TB07090S");
+  }
 
   /**
    * 태안씨 버전
@@ -1632,6 +1639,7 @@ const TB07090Sjs = (function () {
     search_TB07090S: search_TB07090S,
     TB07090S_pqGridDeleteRow: TB07090S_pqGridDeleteRow,
     TB07090S_addRow: TB07090S_addRow,
+    resetAll: resetAll, // 초기화
     colModel2_rowIndx: colModel2_rowIndx,
     colModel3_rowIndx: colModel3_rowIndx,
   };
