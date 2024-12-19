@@ -369,27 +369,30 @@ const TB07090Sjs = (function () {
         width: "80",
         filter: { crules: [{ condition: "range" }] },
       },
-      {
-        title: "관리부서",
-        editable: false,
-        dataType: "string",
-        dataIndx: "mngmBdcd",
-        halign: "center",
-        align: "center",
-        width: "165",
-        filter: { crules: [{ condition: "range" }] },
-        editor: {
-          type: "select",
-          valueIndx: "cdValue",
-          labelIndx: "cdName",
-          options: dprtList,
-        },
-        render: function (ui) {
-          var options = dprtList;
-          var option = options.find((opt) => opt.cdValue == ui.cellData);
-          return option ? option.cdName : ui.cellData;
-        },
-      },
+
+      // 요청받아서 삭제
+      // 2024-12-19 김건우
+      // {
+      //   title: "관리부서",
+      //   editable: false,
+      //   dataType: "string",
+      //   dataIndx: "mngmBdcd",
+      //   halign: "center",
+      //   align: "center",
+      //   width: "165",
+      //   filter: { crules: [{ condition: "range" }] },
+      //   editor: {
+      //     type: "select",
+      //     valueIndx: "cdValue",
+      //     labelIndx: "cdName",
+      //     options: dprtList,
+      //   },
+      //   render: function (ui) {
+      //     var options = dprtList;
+      //     var option = options.find((opt) => opt.cdValue == ui.cellData);
+      //     return option ? option.cdName : ui.cellData;
+      //   },
+      // },
       {
         title: "자금구분",
         dataType: "string",

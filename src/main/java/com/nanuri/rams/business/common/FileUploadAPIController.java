@@ -46,9 +46,8 @@ public class FileUploadAPIController {
 	@PostMapping(value = "/uploadCmFile")
 	public FileUploadDTO uploadFile(
 			@RequestParam("uploadfile") MultipartFile uploadfile
-			// , @RequestParam(value = "fileKey1", required=false) String fileKey1
 			, @RequestParam(value = "fileKey2", required = false) String fileKey2
-			, @RequestParam(value = "ScrnMenuId", required = false) String ScrnMenuId
+			, @RequestParam(value = "key1", required = false) String key1
 			) {
 
 		/*
@@ -74,10 +73,9 @@ public class FileUploadAPIController {
 		log.debug(arrExpn.length + "");
 		dto.setSvFileExpnsnNm(arrExpn[arrExpn.length - 1]);
 		dto.setSvFileSz(fileInfo.getSize());
-		dto.setScrnMenuId(null);
 		dto.setOrgFileNm(fileInfo.getOriginalName());
+		dto.setScrnMenuId(key1);
 		// dto.setRgstDt(fileInfo.getRgstDt());
-		dto.setScrnMenuId(ScrnMenuId);
 
 		FileUploadervice.registFileInfo(dto);
 
