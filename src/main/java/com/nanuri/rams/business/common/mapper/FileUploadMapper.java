@@ -20,4 +20,5 @@ public interface FileUploadMapper {
 	
 	// 첨부파일 목록
 	public List<FileUploadDTO> selectFileList(FileUploadDTO dto);
+	
 }

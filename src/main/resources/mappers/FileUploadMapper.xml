@@ -3,13 +3,13 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.FileUploadMapper">
 	<!-- 관련문서정보 생성 -->
     <insert id="insertFileInfo" parameterType="com.nanuri.rams.business.common.dto.FileUploadDTO" useGeneratedKeys="true">
-    	<selectKey keyProperty="atchFleSn" resultType="int" order="BEFORE">
+		<selectKey keyProperty="atchFleSn" resultType="int" order="BEFORE">
     		SELECT NVL(MAX(ATCH_FLE_SN),0)+1		/* 첨부파일일련번호 */
     		  FROM IBIMS989B 								
-    		 WHERE FILE_KEY1 = #{fileKey1}				
-    		   AND FILE_KEY2 = #{fileKey2}
+    		 WHERE 1=1
+			   AND FILE_KEY2 = #{fileKey2}
+		   	   AND SCRN_MENU_ID = #{scrnMenuId}
     	</selectKey>
-    	
     	INSERT INTO IBIMS989B								
     	       ( 
     	          FILE_KEY1					/* 키1 */
@@ -29,7 +29,7 @@
     	       )
     	VALUES (
     			  #{fileKey1}					/* 키1 */
-    			, NVL(#{fileKey2},'*')			/* 키2 */
+    			, #{fileKey2}					/* 키2 */
     			, #{atchFleSn}					/* 첨부파일일련번호 */
     			, #{svFilePathNm}				/* 서버파일경로명 */
     			, #{svFileNm}					/* 서버파일명 */
@@ -47,46 +47,51 @@
     
     <!-- 첨부파일 삭제 -->
 	<update id="updateFileInfo" parameterType="com.nanuri.rams.business.common.dto.FileUploadDTO" >
-		UPDATE IBIMS989B							   
+		UPDATE IBIMS989B
 		   SET DEL_YN = 'Y'
 			 , HNDL_DY_TM = SYSDATE				/* 처리일시 */
 			 , HNDL_DPRT_CD	= #{hndlDprtCd}		/* 처리부점코드 */
 			 , HNDL_P_ENO = #{hndlPEno}			/* 처리자사번 */
-		 WHERE FILE_KEY1  = #{fileKey1}		    /* 키1 */
-		   AND FILE_KEY2  = #{fileKey2}		    /* 키2 */
-		   AND ATCH_FLE_SN = #{atchFleSn}		/* 첨부파일일련번호 */				
+		 WHERE FILE_KEY1 = #{fileKey1}		    /* 키1 */
 	</update>
 
-	<update id="dlatl" parameterType="com.nanuri.rams.business.common.dto.FileUploadDTO" >
+	<!-- 파일 등록시 업데이트 -->
+	<!-- <update id="updateFileKey2" parameterType="com.nanuri.rams.business.common.dto.FileUploadDTO" useGeneratedKeys="true">
+		<selectKey keyProperty="atchFleSn" resultType="int" order="BEFORE">
+    		SELECT NVL(MAX(ATCH_FLE_SN),0)+1		/* 첨부파일일련번호 */
+    		  FROM IBIMS989B 								
+    		 WHERE 1=1
+			   AND FILE_KEY2 = #{fileKey2}
+		   	   AND SCRN_MENU_ID = #{scrnMenuId}
+    	</selectKey>
 		UPDATE IBIMS989B							   
-		   SET FILE_KEY2 = SYSDATE				/* 처리일시 */
+		   SET FILE_KEY2 = #{fileKey2}			/* 처리일시 */
+			 , ATCH_FLE_SN = #{atchFleSn}		/* 첨부파일일련번호 */
 			 , HNDL_DY_TM = SYSDATE				/* 처리일시 */
 			 , HNDL_DPRT_CD	= #{hndlDprtCd}		/* 처리부점코드 */
 			 , HNDL_P_ENO = #{hndlPEno}			/* 처리자사번 */
-		 WHERE FILE_KEY1  = #{fileKey1}		    /* 키1 */
-		   AND FILE_KEY2  = #{fileKey2}		    /* 키2 */
-		   AND ATCH_FLE_SN = #{atchFleSn}		/* 첨부파일일련번호 */				
-	</update>
+		 WHERE 1=1
+		   AND FILE_KEY1 = #{fileKey1}		    /* 키1 */
+	</update> -->
 	
 	<!-- 첨부파일 목록 조회 -->
     <select id="selectFileList" parameterType="com.nanuri.rams.business.common.vo.FileUploadVO" resultType="com.nanuri.rams.business.common.dto.FileUploadDTO">
-    	SELECT    FILE_KEY1					/* 키1 */
-    	        , FILE_KEY2					/* 키2 */
-    	        ,ATCH_FLE_SN				/* 첨부파일일련번호 */
-    	        ,SV_FILE_PATH_NM			/* 서버파일경로명 */
-    	        ,SV_FILE_NM		    		/* 서버파일명 */
-    	        ,ORG_FILE_NM				/* 원본파일명 */
-    	        ,RGST_DT					/* 등록일자 */
+    	SELECT FILE_KEY1					/* 키1 */
+    	     , FILE_KEY2					/* 키2 */
+    	     , ATCH_FLE_SN					/* 첨부파일일련번호 */
+    	     , SV_FILE_PATH_NM				/* 서버파일경로명 */
+    	     , SV_FILE_NM		    		/* 서버파일명 */
+    	     , ORG_FILE_NM					/* 원본파일명 */
+    	     , RGST_DT						/* 등록일자 */
     	  FROM IBIMS989B					
-    	  WHERE FILE_KEY1  = #{fileKey1}	/* 키1 */
-    	  	AND FILE_KEY2  = #{fileKey2}	/* 키1 */
-      		AND DEL_YN = 'N'
-        <if test="arratchFleSn != null and arratchFleSn !='' and arratchFleSn.size() != 0"> 
-   		   AND ATCH_FLE_SN IN 
-    	   <foreach collection="arratchFleSn" item="atchFleSn" index="index" open="(" separator="," close=")">
-		   		${atchFleSn}
-           </foreach>
-        </if>
+    	 WHERE 1=1
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fileKey1)">
+		   AND FILE_KEY1 = #{fileKey1}
+		   </if>
+    	   AND FILE_KEY2 = #{fileKey2}		/* 키2 */
+		   AND SCRN_MENU_ID = #{scrnMenuId}	/* 화면번호 */
+    	   AND DEL_YN = 'N'
     	 ORDER BY ATCH_FLE_SN
     </select>
+
 </mapper>

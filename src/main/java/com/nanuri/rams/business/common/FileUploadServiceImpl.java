@@ -50,7 +50,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 	// 관리이력 파일 삭제
 	@Override
 	public void deleteFileInfo(FileUploadDTO dto) {
-		dto.setHndlPEno(facade.getDetails().getEno());	
+		dto.setHndlPEno(facade.getDetails().getEno());
 		dto.setHndlDprtCd(facade.getDetails().getDprtCd());
 		fileUploadMapper.updateFileInfo(dto);
 		
