@@ -15,6 +15,8 @@ $(function () {
 
   setFileUploadEvent(url.split("/")[1]);
 
+  $(`div[data-menuid="/${url.split("/")[1]}"] #key1`).val(url.split("/")[1]);
+
   if (
     $('script[src="js/business/tb/TB06011P.js"]').attr("src") ===
     "js/business/tb/TB06011P.js"
