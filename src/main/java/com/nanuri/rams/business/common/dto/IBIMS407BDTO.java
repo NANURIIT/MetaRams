@@ -15,7 +15,7 @@ public class IBIMS407BDTO {
 
     private String prdtCd;                     // 상품코드  varchar(32)
     private int trSn;                          // 거래일련번호  int(10)
-    private BigDecimal excSn;                         // 실행일련번호  int(10)
+    private long excSn;                         // 실행일련번호  int(10)
     private String trDt;                       // 거래일자  varchar(8)
     private String etprCrdtGrntTrKindCd;   // 거래종류코드  varchar(2)
     private String nsFndCd;                   // 고유자산펀드코드  varchar(5)

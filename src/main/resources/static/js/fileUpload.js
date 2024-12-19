@@ -47,17 +47,11 @@ function setFileUploadEvent (menuId) {
       return false;
     }
 
-    if (isEmpty($(`div[data-menuid="/${menuId}"]` + " #fileKey1").val())) {
-      if ($(`div[data-menuid="/${menuId}"]` + " #selectedMngDealNo").length > 5) {
-        $(`div[data-menuid="/${menuId}"]` + " #fileKey1").val($(`div[data-menuid="/${menuId}"]` + " #selectedMngDealNo").val());
-      } else {
-        $(`div[data-menuid="/${menuId}"]` + " #fileKey1").val($(`div[data-menuid="/${menuId}"]` + " #key1").val());
-      }
-
-      if ($(`div[data-menuid="/${menuId}"]` + " #key2").length > 0) {
-        $(`div[data-menuid="/${menuId}"]` + " #fileKey2").val($(`div[data-menuid="/${menuId}"]` + " #key2").val());
-      }
-    }
+    // GUID는 서비스에서 자체생성한단다
+    // if (isEmpty($(`div[data-menuid="/${menuId}"]` + ` #fileKey1`).val())) {
+    //   console.log("GUID 미생성");
+    //   return;
+    // }
 
     $.ajax({
       url: "/FileUpload/uploadCmFile",
@@ -71,9 +65,9 @@ function setFileUploadEvent (menuId) {
       //openPopup({type:"loding",show:true});
       //},
       success: function (result) {
-        $(`div[data-menuid="/${menuId}"]` + " #fileKey1").val(result.fileKey1);
-        $(`div[data-menuid="/${menuId}"]` + " #fileKey2").val(result.fileKey2);
-        $(`div[data-menuid="/${menuId}"]` + " #atchFleSn").val(result.atchFleSn);
+        $(`div[data-menuid="/${menuId}"]` + ` #fileKey1`).val(result.fileKey1);
+        $(`div[data-menuid="/${menuId}"]` + ` #fileKey2`).val(result.fileKey2);
+        // $(`div[data-menuid="/${menuId}"]` + " #atchFleSn").val(result.atchFleSn);
 
         openPopup({
           type: "success",
@@ -119,10 +113,9 @@ function setFileUploadEvent (menuId) {
     let _tr = $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_FileList").children();
 
     for (let i = 0; i < _tr.length; i++) {
-      let delCheck = $(_tr[i]).find("td:eq(0)").find("input");
-      if (delCheck.is(":checked")) {
-        _arr.push(delCheck.attr("id"));
-      }
+      let delKey = $(_tr[i]).find("td:eq(1)").attr('data-filekey');
+      console.log(delKey);
+      _arr.push(delKey);
     }
 
     if (_arr.length != 0) {
@@ -134,16 +127,19 @@ function setFileUploadEvent (menuId) {
    * 파일삭제 삭제 처리
    * @param {list} request 삭제대상 리스트
    */
-  let deleteCmFiles = function (mode, arratchFleSn) {
+  let deleteCmFiles = function (mode, delKey) {
+
+    console.log(delKey);
+
     let action = "delete";
 
     let fileKey1 = $(`div[data-menuid="/${menuId}"]` + " #fileKey1").val();
     let fileKey2 = $(`div[data-menuid="/${menuId}"]` + " #fileKey2").val();
 
     let paramData = {
-      fileKey1: fileKey1,
+      fileKey1: delKey,
       fileKey2: fileKey2,
-      arratchFleSn: arratchFleSn,
+      ScrnMenuId: menuId
     };
 
     $.ajax({
@@ -286,8 +282,8 @@ function makeFilList(html, result) {
   html += "<tr>";
   html += '    <td><input type="checkbox" id="' + result.atchFleSn + '">';
   html += "    </td>";
-  html += "    <td>" + result.fileKey1 + "</td>";
-  html += "    <td>" + result.fileKey2 + "</td>";
+  html += `    <td style='display: none;' data-fileKey='${result.fileKey1}'></td>`;
+  // html += "    <td>" + result.fileKey2 + "</td>";
   html += "    <td>" + result.atchFleSn + "</td>";
   html += '    <td><a href="' + encUri + '">' + result.orgFileNm + "</a></td>";
   html += "    <td>" + result.rgstDt + "</td>";

@@ -12,7 +12,6 @@ import lombok.Setter;
 public class IBIMS116BVO extends IBIMS116BDTO {
     private String empNm;
     private String dprtNm;
-
     private String dprtCd;
 }
 
