@@ -856,7 +856,7 @@ const TB07040Sjs = (function () {
       //IBIMS402B	딜실행기본;
       //var prdtCd;                                                               // 상품코드
       //var excSn;                                                                // 실행일련번호
-      var ldgSttsCd = inputDcd == "1" ? "01" : "02"; // 원장상태코드
+      var ldgSttsCd = inputDcd == "1" ? "1" : "2"; // 원장상태코드
       var crryCd = trCrcyCd; // 통화코드
       var excDt = trDt; // 실행일자
       var expDt = rfnDt; // 만기일자
@@ -2152,7 +2152,7 @@ const TB07040Sjs = (function () {
           )
         );
         if (Number($("#TB07040S_avrUnpr").val().replaceAll(",", "")) > 0) {
-          //$('#TB07040S_tradPflsAmt').val(addComma(Number(g_krwTrslExcAmt) - (Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_avrUnpr').val().replaceAll(',', '')))));
+          
           $("#TB07040S_tradPflsAmt").val(
             addComma(
               (
@@ -2327,22 +2327,26 @@ const TB07040Sjs = (function () {
 
   function setHoldPrpsDcd() {
     if (isNotEmpty($("#TB07040S_qotaRt").val())) {
-      if (Number($("#TB07040S_qotaRt").val().replaceAll(",", "")) != 0) {
-        if (
-          Number($("#TB07040S_qotaRt").val().replaceAll(",", "")) != 0 &&
-          Number($("#TB07040S_qotaRt").val().replaceAll(",", "")) >= 30
-        ) {
-          $("#TB07040S_H002").val("6");
-        } else {
-          if (isNotEmpty(g_holdPrpsDcd)) {
-            $("#TB07040S_H002").val(g_holdPrpsDcd);
-          }
-        }
-      } else {
-        if (isNotEmpty(g_holdPrpsDcd)) {
-          $("#TB07040S_H002").val(g_holdPrpsDcd);
-        }
-      }
+      if(Number($('#TB07040S_qotaRt').val().replaceAll(',', '')) != 0 ) {
+				if (Number($('#TB07040S_qotaRt').val().replaceAll(',', '')) < 30) {
+					$('#TB07040S_H002').val('1');
+				}else 
+				if (Number($('#TB07040S_qotaRt').val().replaceAll(',', '')) >= 30 && Number($('#TB07040S_qotaRt').val().replaceAll(',', '')) < 50) {
+					$('#TB07040S_H002').val('6');
+				}else 
+				if (Number($('#TB07040S_qotaRt').val().replaceAll(',', '')) >= 50) {
+					$('#TB07040S_H002').val('7');
+				}
+				else {
+					if (isNotEmpty(g_holdPrpsDcd)) {
+						$('#TB07040S_H002').val(g_holdPrpsDcd);
+					}
+				}
+			} else {
+				if (isNotEmpty(g_holdPrpsDcd)) {
+					$('#TB07040S_H002').val(g_holdPrpsDcd);
+				}
+			}
     }
   }
 
