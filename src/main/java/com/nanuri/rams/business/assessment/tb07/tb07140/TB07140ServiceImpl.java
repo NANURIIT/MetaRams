@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.assessment.tb07.tb07020.TB07020ServiceImpl;
 import com.nanuri.rams.business.common.dto.IBIMS402BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS402HDTO;
 import com.nanuri.rams.business.common.dto.IBIMS405BDTO;
@@ -59,6 +60,8 @@ public class TB07140ServiceImpl implements TB07140Service {
 	/* 거래내역 */
 	private final IBIMS410BMapper ibims410bMapper;
 
+	private final TB07020ServiceImpl tb07020ServiceImpl;
+
 	/* 로그인 사용자 정보 */
 	private final AuthenticationFacade facade;
 
@@ -102,6 +105,8 @@ public class TB07140ServiceImpl implements TB07140Service {
 		int ibims402BRslt = 0;
 		int ibims402HRslt = 0;
 
+		int rslt=0;
+
 		/* 거래순번 채번 */
 		IBIMS405BDTO trSnDTO = new IBIMS405BDTO();
 
@@ -112,14 +117,46 @@ public class TB07140ServiceImpl implements TB07140Service {
 
 		String inputDcd = "1";					//입력구분 1: 등록 / 2: 취소
 
+		paramData.setExcSn(1);
+		paramData.setHndEmpno(facade.getDetails().getEno());
+
 		IBIMS410BDTO ibims410bdto = make410BDTOParam(paramData, inputDcd);			//IBIMS410BDTO 파라미터 set
-		IBIMS402BDTO ibims402bdto = new IBIMS402BDTO();
+		IBIMS402BDTO ibims402bdto = make402BDTOParam(paramData, inputDcd);			//IBIMS402BDTO 파라미터 set
 
 		//log.debug("trSn:::" + trSn);
 		ibims407Rslt = ibims407bMapper.insertFinc(paramData);
 		ibims410Rslt = ibims410bMapper.saveDlTrList(ibims410bdto);
 
-		return 0;
+		String prdtCd = paramData.getPrdtCd();
+
+		String chkRslt = ibims402bMapper.chkExcInfo(prdtCd);
+
+		if(chkRslt == null || chkRslt.equals("")){
+			ibims402BRslt = ibims402bMapper.saveExcInfoNoKey(ibims402bdto);
+		}else{
+			ibims402BRslt = ibims402bMapper.saveExcInfo(ibims402bdto);
+		}
+
+		ibims402BRslt = ibims402bMapper.saveExcInfo(ibims402bdto);
+
+		//IBIMS402HDTO ibims402hdto = make402HDTOParam(ibims402bdto);
+
+		ibims402HRslt = tb07020ServiceImpl.insertIBIMS402HTr(ibims402bdto);
+
+		if(ibims407Rslt < 1){
+			log.debug("!!!!!!!!407INSERT ERROR!!!!!!!!");
+		}else if(ibims410Rslt < 1){
+			log.debug("!!!!!!!!410INSERT ERROR!!!!!!!!");
+		}else if(ibims402BRslt < 1){
+			log.debug("!!!!!!!!402BINSERT ERROR!!!!!!!!");
+		}else if(ibims402HRslt < 1){
+			log.debug("!!!!!!!!402HINSERT ERROR!!!!!!!!");
+		}else{
+			log.debug("^o^");
+			rslt = 1;
+		}
+
+		return rslt;
 	};
 
 	@Override
@@ -136,17 +173,40 @@ public class TB07140ServiceImpl implements TB07140Service {
 	public IBIMS402BDTO make402BDTOParam(IBIMS407BDTO paramData, String inputDcd){
 		IBIMS402BDTO returnDto = new IBIMS402BDTO();
 
+		BigDecimal dealExcAmt = BigDecimal.ZERO;			//딜실행금액 
+		BigDecimal krwTrslExcAmt = BigDecimal.ZERO;			//딜실행잔액
+
+		if(paramData.getFincPrcsDcd().equals("01")){				//딜거래금액 == 출자변동금액
+
+			dealExcAmt = paramData.getFincCngeAmt();
+			krwTrslExcAmt = paramData.getFincCngeAmt();
+
+
+		}else if(paramData.getFincPrcsDcd().equals("02") || paramData.getFincPrcsDcd().equals("06")){			//딜거래금액 == 결제금액
+
+			dealExcAmt = paramData.getStlAmt();
+			krwTrslExcAmt = paramData.getStlAmt();
+
+		}else if(paramData.getFincPrcsDcd().equals("03") || paramData.getFincPrcsDcd().equals("04") 
+				|| paramData.getFincPrcsDcd().equals("05") || paramData.getFincPrcsDcd().equals("07")){			//딜거래금액 == 보수/수익
+			
+			dealExcAmt = paramData.getPayErnAmt();
+			krwTrslExcAmt = paramData.getPayErnAmt();
+
+		}
+
+
 		returnDto.setPrdtCd(paramData.getPrdtCd());					//종목코드
 		returnDto.setExcSn(1);								//실행일련번호
 		returnDto.setLdgSttsCd(inputDcd);							//원장상태코드
 		returnDto.setCrryCd("KRW");							//거래통화코드
 		returnDto.setExcDt(paramData.getTrDt());					//실행일자
 		returnDto.setExpDt("");								//만기일자
-		returnDto.setDealExcAmt(null);					//딜실행금액
-		returnDto.setDealExcBlce(null);					//딜실행잔액
+		returnDto.setDealExcAmt(dealExcAmt);						//딜실행금액
+		returnDto.setDealExcBlce(dealExcAmt);						//딜실행잔액
 		returnDto.setKrwTrslRt(paramData.getTrdeExrt());			//원화환산율
-		returnDto.setKrwTrslExcAmt(null);				//원화환산실행금액
-		returnDto.setKrwTrslExcBlce(null);			//원화환산실행잔액
+		returnDto.setKrwTrslExcAmt(krwTrslExcAmt);					//원화환산실행금액
+		returnDto.setKrwTrslExcBlce(krwTrslExcAmt);					//원화환산실행잔액
 		// returnDto.setPrnaDfrPrdMnum(0);				//
 		returnDto.setBrkgAcno(paramData.getStlAcno());				//위탁계좌번호
 		returnDto.setRctmIsttCd(paramData.getStlXtnlIsttCd());		//결제외부기관코드
@@ -156,8 +216,23 @@ public class TB07140ServiceImpl implements TB07140Service {
 	}
 
 	/* IBIMS402HDTO 파라미터 set */
-	public IBIMS402HDTO make402HDTOParam(IBIMS407BDTO paramData, String inputDcd){
+	public IBIMS402HDTO make402HDTOParam(IBIMS402BDTO ibims402bdto){
 		IBIMS402HDTO returnDTO = new IBIMS402HDTO();
+
+		returnDTO.setPrdtCd(ibims402bdto.getPrdtCd());							//종목코드
+		returnDTO.setExcSn(ibims402bdto.getExcSn());							//실행일련번호
+		returnDTO.setLdgSttsCd(ibims402bdto.getLdgSttsCd());					//원장상태코드
+		returnDTO.setCrryCd(ibims402bdto.getCrryCd());							//거래통화코드
+		returnDTO.setExcDt(ibims402bdto.getExcDt());							//실행일자
+		returnDTO.setExpDt("");											//만기일자
+		returnDTO.setDealExcAmt(ibims402bdto.getDealExcAmt());					//딜실행금액
+		returnDTO.setDealExcBlce(ibims402bdto.getDealExcBlce());				//딜실행잔액
+		returnDTO.setKrwTrslRt(ibims402bdto.getKrwTrslRt());					//원화환산율
+		returnDTO.setKrwTrslExcAmt(ibims402bdto.getKrwTrslExcAmt());			//원화환산실행금액
+		returnDTO.setKrwTrslExcBlce(ibims402bdto.getKrwTrslExcBlce());			//원화환산실행잔액
+		returnDTO.setBrkgAcno(ibims402bdto.getBrkgAcno());						//위탁계좌번호
+		returnDTO.setRctmIsttCd(ibims402bdto.getRctmIsttCd());					//결제외부기관코드
+		returnDTO.setDealNo("0");
 
 		return returnDTO;
 	}

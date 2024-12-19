@@ -199,6 +199,7 @@ const TB07140Sjs = (function () {
 
     // common.js 함수
     resetInputValue($('div[data-menuid="/TB07140S"]'));
+    $("#TB07140S_trCrryCd").val("KRW");
 
     TB07140S_resetPqGrid();
 
@@ -242,6 +243,7 @@ const TB07140Sjs = (function () {
       i027Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
     });
     $("#TB07140S_trCrryCd").append(i027Html);
+    $("#TB07140S_trCrryCd").val("KRW");
 
     //	출자처리구분코드
     let f016Html;
@@ -1173,9 +1175,9 @@ const TB07140Sjs = (function () {
     }else{
 
       if(
-        isNotEmpty($('#TB07140S_intx').val()) && isNotEmpty($('#TB07140S_trdeExrt'))
+        isNotEmpty($('#TB07140S_intx').val()) && isNotEmpty($('#TB07140S_lotx'))
       ){
-        $('#TB07140S_trtx').val(addComma(Number($('#TB07140S_intx').val().replaceAll(',', '')) * Number($('#TB07140S_trdeExrt').val().replaceAll(',', ''))));
+        $('#TB07140S_trtx').val(addComma(Number($('#TB07140S_intx').val().replaceAll(',', '')) + Number($('#TB07140S_lotx').val().replaceAll(',', ''))));
       }
 
     }
