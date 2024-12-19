@@ -8,25 +8,15 @@
     <!--입금순번 구하기-->
     <select id="getNxtRctmSeq" parameterType="String" resultType="Integer">
         SELECT 
-            NVL(MAX(RGST_SEQ)+1, 1)
+            NVL(MAX(RCTM_SEQ)+1, 1)
         FROM 
             IBIMS430B
         WHERE 
             RCTM_DT = #{rctmDt}
     </select>
 
-    <!--입금순번 구하기-->
-    <select id="getNxtRgstSeq" parameterType="String" resultType="Integer">
-        SELECT 
-            COALESCE(MAX(RGST_SEQ)+1, 1)
-        FROM 
-            IBIMS430B
-        WHERE 
-            TO_CHAR(RGST_DTM , 'YYYYMMDD') = TO_CHAR(SYSDATE, 'YYYYMMDD');
-    </select>
-
     <!--입금내역등록-->
-    <insert id="rctmDtlsRgst" parameterType="java.util.List">
+    <insert id="rctmDtlsRgst" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO">
         <foreach collection="list" item="item" separator=";">
         INSERT INTO IBIMS430B 
             (
@@ -81,7 +71,7 @@
               , #{item.rgstSeq}
               , #{item.rgstEmpno}
               , #{item.rgstBdcd}
-              , #{item.rgstDtm}
+              , SYSDATE
               , SYSDATE
               , #{item.hndEmpno}
               , #{item.hndTmnlNo}

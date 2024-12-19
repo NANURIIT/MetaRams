@@ -100,7 +100,14 @@ public class TB07090ServiceImpl implements TB07090Service {
     // 입금내역매핑
     @Override
     public int rctmDtlsMapping(List<IBIMS430BDTO> paramList){
-        log.debug("paramList(Before Sequence Setting):::{}", paramList);
+
+        // int rctmSeq = ibims430bMapper.getNxtRctmSeq();
+
+        for(int i = 0; i < paramList.size(); i++) {
+            paramList.get(i).setRgstEmpno(facade.getDetails().getEno());
+            paramList.get(i).setRgstBdcd(facade.getDetails().getBdCd());
+            paramList.get(i).setHndEmpno(facade.getDetails().getEno());
+        }
 
         int returnVal = ibims430bMapper.rctmDtlsMapping(paramList);
 
