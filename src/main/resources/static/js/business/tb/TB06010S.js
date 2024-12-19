@@ -504,8 +504,8 @@ const TB06010Sjs = (function(){
 		$('#TB06010S_prdtCd').val('');
 		$('#TB06010S_prdtNm').val('');
 
-		$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", false);
-		$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", false);
+		$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", true);
+		$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", true);
 		
 		// setKRKRW('TB06010S');
 	}
