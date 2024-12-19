@@ -5,19 +5,39 @@ const TB05040Sjs = (function(){
 		loadSelectBoxContents();
 		
 		getUrlDealInfo();
-	/** 그리드 **/
-	let arrPqGridObj = [
-		// 협의체 결과현황
-		{
-		height: 150,
-		maxHeight: 150,
-		id: "gridIbDealList",
-		colModel: colDealListInfo,
-		},
-	];
-	setPqGrid(arrPqGridObj);
-	arrPqGridDealList = $("#gridIbDealList").pqGrid("instance");
+		
+		/** 그리드 **/
+		let arrPqGridObj = [
+			// 협의체 결과현황
+			{
+			height: 150,
+			maxHeight: 150,
+			id: "gridIbDealList",
+			colModel: colDealListInfo,
+			},
+		];
+		setPqGrid(arrPqGridObj);
+		arrPqGridDealList = $("#gridIbDealList").pqGrid("instance");
 	});
+
+	// TB05040S의 모든 입력 필드 초기화
+    function TB05040S_clearAllInputs(){
+		$("#TB05040S_riskInspctRsltnCcd").val(""); //전결협의체
+		$("#TB05040S_fstCnfrncF").val("");//지주사전협의
+		$("#TB05040S_rprStrtDt").val(""); //협의시작일
+		$("#TB05040S_ofclDocAcptDt").val(""); //공문접수일
+		$("#TB05040S_aplcExptDt").val(""); //부의예정일
+		$("#TB05040S_rsltnDt").val(""); //결의일
+		$("#TB05040S_inspctCnfrncCcd").val(""); //결의 협의체
+		$("#TB05040S_inspctCnfrncSqcSq").val(""); //회차 정보
+		$("#TB05040S_rnkNo").val(""); //순서 정보
+		$("#TB05040S_rsltnRsltCd").val(""); //결의결과
+		$("#TB05040S_invstCrncyCd").val(""); //승인금액
+		$("#TB05040S_rcgAmt").val("");
+		$("#TB05040S_sdnCndtF").val("");//승인조건(셀다운)
+		$("#TB05040S_etcCndtF").val(""); //승인조건(기타)
+		$("#TB05040S_rsltCntnt").val(""); //결과의견
+	}
 
 	function getUrlDealInfo() {
 		
@@ -193,8 +213,9 @@ const TB05040Sjs = (function(){
 		}
 	}
 
-
 	function setCouncilInfo(e) {
+		TB05040S_clearAllInputs();
+		
 		var ibDealNo = e.dealNo;					// ibDeal번호
 		var riskInspctCcd = e.mtrDcd;				// 리스크심사구분코드
 		var lstCCaseCcd = e.jdgmDcd;				// 부수안건구분코드번호

@@ -168,52 +168,46 @@
 							</div>
 						</div>
 						<!-- 첨부파일 start -->
-							<div class="col-lg-12">
-								<div class="ibox">
-									<div class="ibox-title">
-										<h5>▶ 관련자료</h5>
-										<div class="ibox-tools">
-											<div th:fragment="file" id="file-upload">
-												<form id="upload-file-form">
-												    <input type="hidden" id="fileKey1" name="fileKey1">
-													<input type="hidden" id="fileKey2" name="fileKey2" value="*">
-													
-													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
-													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles"><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
-													<div style="display: none">
-														<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
-													</div>
-												</form>
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 관련자료</h5>
+								<div class="ibox-tools">
+									<div th:fragment="file" id="file-upload">
+										<form id="upload-file-form">
+											<input type="hidden" id="fileKey1" name="fileKey1">
+											<input type="hidden" id="fileKey2" name="fileKey2" value="*">
+											
+											<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
+											<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles"><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+											<div style="display: none">
+												<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
 											</div>
-										</div>
-									</div>
-									<div class="ibox-content">
-										<table class="table table-bordered">
-											<colgroup>
-												<col style="width: 5%;">
-												<col style="width: 10%;">
-												<col style="width: 10%;">
-												<col style="width: 10%;">
-												<col style="width: 50%;">
-												<col style="width: 30%;">
-											</colgroup>
-											<thead>
-												<tr>
-													<th></th>
-													<th>Main Key</th>
-													<th>Sub Key</th>
-													<th>일련번호</th>
-													<th>파일명</th>
-													<th>등록일자</th>
-												</tr>
-											</thead>
-											<tbody id="UPLOAD_FileList">
-											</tbody>
-										</table>
+										</form>
 									</div>
 								</div>
 							</div>
-							<!-- 첨부파일 end -->
+							<div class="ibox-content">
+								<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 5%;">
+										<col style="width: 10%;">
+										<col style="width: 50%;">
+										<col style="width: 30%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th></th>
+											<th>일련번호</th>
+											<th>파일명</th>
+											<th>등록일자</th>
+										</tr>
+									</thead>
+									<tbody id="UPLOAD_FileList">
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- 첨부파일 end -->
 					</div>
 				</div>
 			</div>
