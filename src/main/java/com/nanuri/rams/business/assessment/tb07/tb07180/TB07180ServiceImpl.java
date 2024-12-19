@@ -2,6 +2,7 @@ package com.nanuri.rams.business.assessment.tb07.tb07180;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,13 @@ public class TB07180ServiceImpl implements TB07180Service {
 	public int IBIMS421BDelete(IBIMS421BDTO param){
 		return ibims421bMapper.IBIMS421BDelete(param);
 	};
+	
+	/**
+	 * 셀렉트박스 코드, 밸류 취득
+	 */
+	@Override
+	public List<Map<String, Object>> getSelectBox() {
+		return ibims421bMapper.getSelectBox();
+	}
 	
 }

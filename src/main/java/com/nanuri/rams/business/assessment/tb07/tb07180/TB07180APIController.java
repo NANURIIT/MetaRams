@@ -2,11 +2,14 @@ package com.nanuri.rams.business.assessment.tb07.tb07180;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nanuri.rams.business.common.dto.IBIMS421BDTO;
@@ -46,4 +49,11 @@ public class TB07180APIController {
 	public int IBIMS421BDelete(@RequestBody IBIMS421BDTO param){
 		return tb07180Service.IBIMS421BDelete(param);
 	};
+	
+	// 공통코드
+	@GetMapping(value = "/getSelectBoxCode")
+	public List<Map<String, Object>> getSelectBoxCode() {
+		return tb07180Service.getSelectBox();
+	}
+	
 }
