@@ -122,7 +122,8 @@ const TB06060Sjs = (function(){
             align: "right",
             halign: "center",
             width: "",
-            filter: { crules: [{ condition: 'range' }] }
+            filter: { crules: [{ condition: 'range' }] },
+            hidden:true
         },
         {
             title: "약정해지구분코드",
@@ -132,8 +133,8 @@ const TB06060Sjs = (function(){
             halign: "center",
             width: "",
             filter: { crules: [{ condition: 'range' }] },
+            hidden:true
         }
-        
     ]
 
     $(document).ready(function() {
