@@ -176,7 +176,7 @@ const TB03020Sjs = (function(){
 					$('#fileKey2').val('TB03020S' + '|' + data.dealNo);
 					
 					/******  딜공통 파일첨부 추가 ******/ 
-					$('#key1').val(data.dealNo);
+					// $('#key1').val(data.dealNo);
 					getFileInfo($('#key1').val(),$('#fileKey2').val());
 					/******  딜공통 파일첨부 추가 ******/ 
 
