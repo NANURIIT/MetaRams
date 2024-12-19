@@ -132,7 +132,7 @@ public class FileUploadAPIController {
 		FileUploadVO vo = new FileUploadVO();
 		// vo.setFileKey1(fileKey1);
 		vo.setFileKey2(fileKey2);
-		vo.setDelYn("Y");
+		vo.setDelYn("N");
 
 		List<FileUploadDTO> list = FileUploadervice.getListFileInfo(vo);
 
