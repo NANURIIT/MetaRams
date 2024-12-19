@@ -35,7 +35,7 @@
           FROM IBIMS421B
          WHERE 1=1
            AND FEE_NAME LIKE '%'|| #{feeName} ||'%'
-         ORDER BY  HND_DETL_DTM ASC 
+         ORDER BY  TO_NUMBER(FEE_KND_CD) ASC 
     </select>
 
     <insert id="IBIMS421BInsert" parameterType="com.nanuri.rams.business.common.dto.IBIMS421BDTO" >
@@ -116,18 +116,19 @@
     	ON ( FEE_KND_CD =  #{feeKndCd} )
     	WHEN MATCHED THEN
     	UPDATE SET
-    		   FEE_NAME = #{feeName}
-             , FEE_RCOG_DCD = #{feeRcogDcd}
-             , FEE_RCKN_DCD = #{feeRcknDcd}
-             , FEE_RT = #{feeRt}
-             , FEE_LWST_AMT = #{feeLwstAmt}
-             , FEE_HGST_AMT = #{feeHgstAmt}
-             , ACT_NAME = (SELECT L.CD_VL_NM
+    		   ACTS_CD = #{actsCd}
+    		 , ACT_NAME= (SELECT L.CD_VL_NM
 							FROM IBIMS002B L
 							WHERE 1=1
 							AND L.CMNS_CD_GRP =  'A005'
 							AND L.CD_VL_ID = #{actsCd} 
 						  )
+    		 , FEE_NAME = #{feeName}
+             , FEE_RCOG_DCD = #{feeRcogDcd}
+             , FEE_RCKN_DCD = #{feeRcknDcd}
+             , FEE_RT = #{feeRt}
+             , FEE_LWST_AMT = #{feeLwstAmt}
+             , FEE_HGST_AMT = #{feeHgstAmt}
              , ACCT_JOB_CD = #{acctJobCd}
              , ACCT_UN_JOB_CD = #{acctUnJobCd}
              , ACCT_TR_CD = #{acctTrCd}

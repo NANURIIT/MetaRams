@@ -124,7 +124,6 @@ const TB07180Sjs = (function () {
   	//alert(value);
   	const $inputField = $('#TB07180S_actCd');
   	const $dataList = $('#TB07180S_A005');
-	console.log("value"+value);
   	
   	const $selectedOption = $dataList.find('option').filter(function () {
           return $(this).val() === value; // value로 매칭
@@ -186,7 +185,7 @@ const TB07180Sjs = (function () {
 		}
       },
       {
-        title: "수수료종류코드",
+        title: "수수료종류",
         dataType: "string",
         dataIndx: "feeKndCd", //  FEE_KND_CD F004
         halign: "center",
@@ -199,7 +198,7 @@ const TB07180Sjs = (function () {
         dataType: "string",
         dataIndx: "feeName", //  FEE_NM
         halign: "center",
-        align: "center",
+        align: "left",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
       },
@@ -229,7 +228,7 @@ const TB07180Sjs = (function () {
         dataType: "string",
         dataIndx: "actName", //  ACT_CD A005
         halign: "center",
-		align: "center",
+		align: "left",
 	    width: "10%",
 	    filter: { crules: [{ condition: "range" }] },
       },
@@ -239,7 +238,7 @@ const TB07180Sjs = (function () {
         dataIndx: "rgstSttsCd", //  RGST_STTS_CD R012
         halign: "center",
         align: "center",
-        width: "10%",
+        width: "8%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -280,7 +279,7 @@ const TB07180Sjs = (function () {
         dataType: "string",
         dataIndx: "feeRt", //  FEE_RT
         halign: "center",
-        align: "center",
+        align: "right",
         width: "8%",
         filter: { crules: [{ condition: "range" }] },
       },
@@ -342,8 +341,8 @@ const TB07180Sjs = (function () {
         dataType: "string",
         dataIndx: "acctUnJobCd", //  ACCT_UN_JOB_CD A004
         halign: "center",
-        align: "center",
-        width: "10%",
+        align: "left",
+        width: "14%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -440,7 +439,6 @@ const TB07180Sjs = (function () {
     let newRow = {};
     const data = colModelIdSelector(colModelId).pqGrid("instance");
     const rowColumnsData = data.colModel;
-    console.log(rowColumnsData);
     const length = rowColumnsData.length;
     for (let i = 0; i < length; i++) {
       const title = rowColumnsData[i].title;
@@ -452,7 +450,6 @@ const TB07180Sjs = (function () {
         newRow[dataIndx] = "";
       }
     }
-    console.log(newRow);
 
     colModelIdSelector(colModelId).pqGrid("addRow", {
       rowData: newRow,
@@ -570,18 +567,19 @@ const TB07180Sjs = (function () {
       success: function (data) {
 		if(data.length > 0) {	
 			var rowSeq;
-			rowSeq=	data[data.length-1];
+			rowSeq=	data.length-1;
+			modalFeeKndCdList.setData(data);			
 			if(arg == undefined || arg == null){ //조회, 입력후 조회
 			}else{ //수정후 조회				
-				for (let i = 0; i < data.length; i++) {
-				   if (data[i].feeKndCd==arg){
+				for (let i = 0; i < modalFeeKndCdList.pdata.length; i++) {
+					var tempFeeKndCd;
+					tempFeeKndCd = modalFeeKndCdList.pdata[i].feeKndCd;
+				   if (tempFeeKndCd==arg){
 						rowSeq=i;
 				   }
 				}
 			}
-			setFeeKndCd(rowSeq);
-			
-			modalFeeKndCdList.setData(data);
+				setFeeKndCd(data[rowSeq]);
 		  } else {
 			if(data.length == "undefined") {
 				modalFeeKndCdList.setData([]);	 
@@ -590,7 +588,7 @@ const TB07180Sjs = (function () {
 			}	
 		  }
 	     modalFeeKndCdList.on("rowDblClick", function (event, ui) {
-	       setFeeKndCd(ui.rowData);
+	       		setFeeKndCd(ui.rowData);
 	     });
       },
     });
@@ -765,6 +763,15 @@ function setFeeKndCd(e) {
       },
     });
   }
+  
+  /*
+   *	엑셀(Excel) PQGrid ExcelExport
+   */
+  function pqExportExcel() {
+    let blob = $("#TB07180S_colModel1").pqGrid("instance").exportExcel({});
+    let fileName = "수수료종류관리.xlsx";
+    pq.saveAs(blob, fileName);
+  }
 
   /*
    *  =====================DELETE모음=====================
@@ -775,5 +782,6 @@ function setFeeKndCd(e) {
     resetInputData: resetInputData,
     insertFeeData: insertFeeData,
 	deleteFeeData: deleteFeeData,
+	pqExportExcel: pqExportExcel,
   };
 })();

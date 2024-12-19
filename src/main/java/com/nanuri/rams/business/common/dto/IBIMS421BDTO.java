@@ -26,6 +26,7 @@ public class IBIMS421BDTO {
     private String acctJobCd;				//  회계업무코드
     private String acctUnJobCd;				//  회계단위업무코드
     private String acctTrCd;                //  회계거래코드    varchar(2)
+    private String rgstSttsCd;				//  등록상태코드  
     private Date hndDetlDtm;                //  조작상세일시    datetime
     private String hndEmpno;                //  조작사원번호    varchar(7)
     private String hndTmnlNo;               //  조작단말기번호  varchar(8)
