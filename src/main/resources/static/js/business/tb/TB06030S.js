@@ -462,7 +462,7 @@ const TB06030Sjs = (function(){
 				var key2;
 				key2=dealDetail.dealNo+"-"+ dealDetail.prdtCd;
 				$('#fileKey2').val(key2);				
-				$('#key1').val(key2);
+				$('#key1').val("TB06030S");
 				getFileInfo($('#key1').val(),key2);				
 				/******  딜공통 파일첨부 추가 ******/ 
 			},
