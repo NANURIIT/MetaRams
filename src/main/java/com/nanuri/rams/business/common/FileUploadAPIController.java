@@ -47,7 +47,9 @@ public class FileUploadAPIController {
 	public FileUploadDTO uploadFile(
 			@RequestParam("uploadfile") MultipartFile uploadfile
 			// , @RequestParam(value = "fileKey1", required=false) String fileKey1
-			, @RequestParam(value = "fileKey2", required = false) String fileKey2) {
+			, @RequestParam(value = "fileKey2", required = false) String fileKey2
+			, @RequestParam(value = "ScrnMenuId", required = false) String ScrnMenuId
+			) {
 
 		/*
 		 * if(StringUtil.isNullOrEmpty(lstCCaseCcd)) { LocalDateTime today =
@@ -75,7 +77,7 @@ public class FileUploadAPIController {
 		dto.setScrnMenuId(null);
 		dto.setOrgFileNm(fileInfo.getOriginalName());
 		// dto.setRgstDt(fileInfo.getRgstDt());
-		dto.setScrnMenuId("AB01011S");
+		dto.setScrnMenuId(ScrnMenuId);
 
 		FileUploadervice.registFileInfo(dto);
 
@@ -127,11 +129,14 @@ public class FileUploadAPIController {
 	@GetMapping(value = "/getCmFiles")
 	public List<FileUploadDTO> getFileList(
 			// @RequestParam(value = "fileKey1", required=false) String fileKey1
-			@RequestParam(value = "fileKey2", required = false) String fileKey2) {
+			@RequestParam(value = "fileKey2", required = false) String fileKey2
+			, @RequestParam(value = "ScrnMenuId", required = false) String ScrnMenuId
+			) {
 
 		FileUploadVO vo = new FileUploadVO();
 		// vo.setFileKey1(fileKey1);
 		vo.setFileKey2(fileKey2);
+		vo.setScrnMenuId(ScrnMenuId);
 		vo.setDelYn("N");
 
 		List<FileUploadDTO> list = FileUploadervice.getListFileInfo(vo);

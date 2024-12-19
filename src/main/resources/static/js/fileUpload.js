@@ -212,6 +212,7 @@ function getFileInfo(key1, key2) {
   let paramData = {
     fileKey1: fileKey1,
     fileKey2: fileKey2,
+    ScrnMenuId: menuId
   };
 
   $.ajax({
