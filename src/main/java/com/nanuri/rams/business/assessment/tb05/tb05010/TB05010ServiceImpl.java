@@ -206,7 +206,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 			/* IBIMS100B 저장 or 삭제 */
 			if (!paramData.getJdgmRsltDcd().equals("303")) {
 
-				if ( item.getAtdcAngtEmpno().isEmpty() ) {
+				if (item.getAtdcAngtEmpno() == null || item.getAtdcAngtEmpno().isEmpty() ) {
 					ibims100BVO.setEmpno(item.getAtdcTrgtEmpno());					// 사원번호
 				} else {
 					ibims100BVO.setEmpno(item.getAtdcAngtEmpno());
@@ -223,7 +223,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 			} else {
 				ibims100BVO.setRmrk(item.getDealNo());
 
-				if ( item.getAtdcAngtEmpno().isEmpty() ) {
+				if ( item.getAtdcAngtEmpno() == null || item.getAtdcAngtEmpno().isEmpty() ) {
 					ibims100BVO.setEmpno(item.getAtdcTrgtEmpno());					// 사원번호
 				} else {
 					ibims100BVO.setEmpno(item.getAtdcAngtEmpno());
