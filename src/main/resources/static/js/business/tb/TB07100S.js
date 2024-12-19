@@ -9,6 +9,7 @@ const TB07100Sjs = (function () {
     selectorNumberFormater($("input[id*='Amt'], input[id*='Blce'], input[id*='Rt'], input[id='TB07100S_splmValuTxa']"));
     TB07100S_pqGrid();
     TB07100S_getFirstStatus();
+    getSelectBoxList("TB07100S", "/A005", false);
     autoSet();
   });
 
@@ -388,7 +389,7 @@ const TB07100Sjs = (function () {
       acctDt1: unformatDate($("#TB07100S_acctDt1").val())             //  회계기간
       , acctDt2: unformatDate($("#TB07100S_acctDt2").val())           //  회계기간
       , rslnBdcd: $("#TB07100S_dprtCd").val()                         //  부서코드  rslnBdcd
-      , actsCd: $("#TB07100S_actsCd").val()                           //  계정과목
+      , actsCd: $('#TB07100S_A005').val()                        //  계정과목
       , bcncNm: $("#TB07100S_2_entpNm").val()                         //  거래처명
       , prufKndDcd: "2"                                               //  계산서
     }
@@ -525,7 +526,7 @@ const TB07100Sjs = (function () {
       , fndsLdgDcd: $("#TB07100S_fndsLdgDcd").val()
       , fndsLdgNo: $("#TB07100S_fndsLdgNo").val()
       , rgstSn: $("#TB07100S_rgstSn").val()
-      , actsCd: $("#TB07100S_actsCd").val()
+      , actsCd: $('#TB07100S_A005').val()
       , edmsDcmId: $("#TB07100S_edmsDcmId").val()
       , cdno: $("#TB07100S_cdno").val()
       , apvlNo: $("#TB07100S_apvlNo").val()
