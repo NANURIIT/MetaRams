@@ -211,6 +211,7 @@ public class TB07140ServiceImpl implements TB07140Service {
 		returnDto.setBrkgAcno(paramData.getStlAcno());				//위탁계좌번호
 		returnDto.setRctmIsttCd(paramData.getStlXtnlIsttCd());		//결제외부기관코드
 		returnDto.setDealNo("0");
+		returnDto.setHndEmpno(paramData.getHndEmpno());
 
 		return returnDto;
 	}
@@ -233,6 +234,7 @@ public class TB07140ServiceImpl implements TB07140Service {
 		returnDTO.setBrkgAcno(ibims402bdto.getBrkgAcno());						//위탁계좌번호
 		returnDTO.setRctmIsttCd(ibims402bdto.getRctmIsttCd());					//결제외부기관코드
 		returnDTO.setDealNo("0");
+		returnDTO.setHndEmpno(ibims402bdto.getHndEmpno());
 
 		return returnDTO;
 	}

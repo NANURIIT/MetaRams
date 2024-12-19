@@ -520,11 +520,13 @@ const TB07140Sjs = (function () {
         id: "TB07140S_colModel",
         colModel: TB07140S_colModelData(),
         scrollModel: { autoFit: true },
-        editable: true,
-        rowClick: function (event, ui) {
-          
-        },
-        selectionModel: { type: "row" },
+        editable: false,
+        cellClick: function(event, ui) {
+          var rowData = ui.rowData;
+  
+          getFincDetail(rowData);
+        }
+        // selectionModel: { type: "row" },
       },
     ];
     setPqGrid(pqGridObjs);
@@ -879,7 +881,16 @@ const TB07140Sjs = (function () {
       });
     }
 
-    // getFincList();
+    
+  }
+
+  function getFincDetail(rowData){
+
+    let toggleBtn1 = document.querySelector('div[data-menuid="/TB07140S"] .toggleBtn1');
+		let toggleBtn2 = document.querySelector('div[data-menuid="/TB07140S"] .toggleBtn2');
+
+    
+
   }
 
   /*
