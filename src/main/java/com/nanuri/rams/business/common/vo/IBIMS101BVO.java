@@ -47,6 +47,6 @@ public class IBIMS101BVO extends IBIMS101BDTO {
     private String prgSttsCd; //진행상태코드
     private String prgSttsNm; //진행상태명
     private String invPrdtLclsNm; //상품대분류명
-
+    private String ctrcCclcDcd; //약정해지구분코드
     
 }

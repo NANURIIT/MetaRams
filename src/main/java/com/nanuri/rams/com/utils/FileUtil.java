@@ -19,115 +19,122 @@ import com.nanuri.rams.com.exception.FileException;
 
 @Component
 public class FileUtil {
-	
-	/** 오늘 날짜 */
+
+    /** 오늘 날짜 */
     private final String today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    
+
     /** 업로드 경로 */
     private final String windowsPath = Paths.get("C:", "develop", "rams-files", today).toString();
     private final String linuxPath = Paths.get("/", "home", "nanuri", "rams-files", today).toString();
     private final String macPath = Paths.get(System.getProperty("user.home"), "rams-files", today).toString();
+
     /**
-	 * 서버에 생성할 파일명을 처리할 랜덤 문자열 반환
-	 * @return 랜덤 문자열
-	 */
-     private final String getRandomString() {
-         return UUID.randomUUID().toString().replaceAll("-", "");
-     }
-     
-     
-     /**
- 	 * 서버에 첨부 파일을 생성하고, 업로드 파일 목록 반환
- 	 * @param files    - 파일 Array
- 	 * @return 업로드 파일 목록
- 	 */
-     public List<FileDTO> uploadFiles(MultipartFile[] files) {
-         if (files[0].getSize() < 1) {
-             return Collections.emptyList();
-         }
-         List<FileDTO> attachList = new ArrayList<>();
+     * 서버에 생성할 파일명을 처리할 랜덤 문자열 반환
+     * 
+     * @return 랜덤 문자열
+     */
+    private final String getRandomString() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
 
-         for (MultipartFile file : files) {
-             try {
-            	 FileDTO attach = uploadFile(file);
-                 attachList.add(attach);
-             } catch (Exception e) {
-                 throw new FileException("[" + file.getOriginalFilename() + "] failed to save");
-             }
-         }
+    /**
+     * 서버에 첨부 파일을 생성하고, 업로드 파일 목록 반환
+     * 
+     * @param files - 파일 Array
+     * @return 업로드 파일 목록
+     */
+    public List<FileDTO> uploadFiles(MultipartFile[] files) {
+        if (files[0].getSize() < 1) {
+            return Collections.emptyList();
+        }
+        List<FileDTO> attachList = new ArrayList<>();
 
-         return attachList;
-     }
-     
-     /**
-  	 * 서버에 첨부 파일을 생성하고, 업로드 파일 목록 반환
-  	 * @param file    - 파일 
-  	 * @return 업로드 파일 정보
-  	 */
-     public FileDTO uploadFile(MultipartFile file) {
+        for (MultipartFile file : files) {
+            try {
+                FileDTO attach = uploadFile(file);
+                attachList.add(attach);
+            } catch (Exception e) {
+                throw new FileException("[" + file.getOriginalFilename() + "] failed to save");
+            }
+        }
 
-    	 String uploadPath = makePath();
-    	 FileDTO attach = new FileDTO();
-         
-         try {
-             final String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-             final String saveName = getRandomString() + "." + extension;
+        return attachList;
+    }
 
-             File target = new File(uploadPath, saveName);
-             file.transferTo(target);
+    /**
+     * 서버에 첨부 파일을 생성하고, 업로드 파일 목록 반환
+     * 
+     * @param file - 파일
+     * @return 업로드 파일 정보
+     */
+    public FileDTO uploadFile(MultipartFile file) {
 
-             attach.setServerPath(uploadPath);
-             attach.setOriginalName(file.getOriginalFilename());
-             attach.setSaveName(saveName);
-             attach.setSize(file.getSize());
-             attach.setRgstDt(DateUtil.changeDateFormat(today,"yyyy-MM-dd"));
+        String uploadPath = makePath();
+        FileDTO attach = new FileDTO();
 
-         } catch (IOException e) {
-             throw new FileException("[" + file.getOriginalFilename() + "] failed to save");
-         } catch (Exception e) {
-             throw new FileException("[" + file.getOriginalFilename() + "] failed to save");
-         }
+        try {
+            final String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+            final String saveName = getRandomString() + "." + extension;
 
-         return attach;
-     }
-     
-     /**
-      * 파일 삭제
-      * @param serverPath
-      * @param saveName
-      * @return boolean
-      */
-     public static boolean deleteFile(String serverPath, String saveName) {
-    	 File file = new File(serverPath, saveName);
-    	 boolean result = file.delete();
-    	 
-    	 return result;
-     }
-     
-     /**
-   	 * 서버에 디렉토리를 생성
-   	 * @return String uploadPath
-   	 */
-     private String makePath() {
-    	 String uploadPath = "";
-         File dir = null;
-         String osName = System.getProperty("os.name").toLowerCase();
+            File target = new File(uploadPath, saveName);
+            file.transferTo(target);
 
-         if (osName.contains("windows")) {
-             dir = new File(windowsPath);
-             uploadPath = windowsPath;
-         } else if (osName.contains("mac")) { 
-             dir = new File(macPath);
-             uploadPath = macPath;
-         } else {
-             dir = new File(linuxPath);
-             uploadPath = linuxPath;
-         }
+            attach.setServerPath(uploadPath);
+            attach.setOriginalName(file.getOriginalFilename());
+            attach.setSaveName(saveName);
+            attach.setSize(file.getSize());
+            attach.setRgstDt(DateUtil.changeDateFormat(today, "yyyy-MM-dd"));
 
-         if (dir.exists() == false) {
-             dir.mkdirs();
-         }
-    	 return uploadPath;
-     }
-     
+        } catch (IOException e) {
+            throw new FileException("[" + file.getOriginalFilename() + "] failed to save");
+        } catch (Exception e) {
+            throw new FileException("[" + file.getOriginalFilename() + "] failed to save");
+        }
+
+        return attach;
+    }
+
+    /**
+     * 파일 삭제
+     * 
+     * @param serverPath
+     * @param saveName
+     * @return boolean
+     */
+    public static boolean deleteFile(String serverPath, String saveName) {
+
+        File file = new File(serverPath, saveName);
+
+        boolean result = file.delete();
+
+        return result;
+    }
+
+    /**
+     * 서버에 디렉토리를 생성
+     * 
+     * @return String uploadPath
+     */
+    private String makePath() {
+        String uploadPath = "";
+        File dir = null;
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        if (osName.contains("windows")) {
+            dir = new File(windowsPath);
+            uploadPath = windowsPath;
+        } else if (osName.contains("mac")) {
+            dir = new File(macPath);
+            uploadPath = macPath;
+        } else {
+            dir = new File(linuxPath);
+            uploadPath = linuxPath;
+        }
+
+        if (dir.exists() == false) {
+            dir.mkdirs();
+        }
+        return uploadPath;
+    }
+
 }

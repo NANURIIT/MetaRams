@@ -1,3 +1,6 @@
+let modalFeeKndCdList;
+
+
 const TB07180Sjs = (function () {
   let TB07180S_rowData = {};
   const TB07180S_dummyData = TB07180S_rowData;
@@ -11,13 +14,20 @@ const TB07180Sjs = (function () {
     selectorNumberFormater($('input[id*="Amt"], input[id*=Rt]'));
     fnSelectBox();
     createSelectTag();
-    pqGrid();
+    pqGrid_TB07180S();
   });
 
+  //초기화버튼
   const resetInputData = () => {
     $("input").val("");
     $("select").val("");
     $('input[id*="Amt"], input[id*=Rt]').val(0);
+	
+	if(typeof modalFeeKndCdList == "undefined") {
+	   }else{
+	    modalFeeKndCdList.setData([]);
+	   }
+	
   };
 
   /*
@@ -118,12 +128,31 @@ const TB07180Sjs = (function () {
   	const $selectedOption = $dataList.find('option').filter(function () {
           return $(this).val() === value; // value로 매칭
       });
-
       if ($selectedOption.length) {
           // 해당 옵션의 텍스트를 `input` 필드에 바인딩
-          $inputField.val($selectedOption.text());
+         return  $selectedOption.text();
       } else {
           console.warn('해당 값에 매칭되는 옵션이 없습니다.');
+      }
+  }
+  
+  
+  function TB07180S_dataListVal(inputText){
+  	//alert(inputText);
+  	const $inputField =  $('#TB07180S_actCd');
+  	const $dataList = $('#TB07180S_A005');
+
+  	 // `inputText`에 해당하는 옵션을 검색
+  	 const $selectedOption = $dataList.find('option').filter(function () {
+          return $(this).text() === inputText; // 텍스트 비교
+      });
+
+      if ($selectedOption.length) {
+          // 옵션의 `value`를 반환
+          return $selectedOption.val();
+      } else {
+          console.warn('해당 텍스트에 매칭되는 옵션이 없습니다.');
+          return null; // 매칭되는 값이 없을 경우 null 반환
       }
   }
   
@@ -149,6 +178,11 @@ const TB07180Sjs = (function () {
         align: "center",
         width: "5%",
         filter: { crules: [{ condition: "range" }] },
+		render: function (ui) {
+			let result
+			result = (ui.rowIndx + 1).toString();
+			return result;
+		}
       },
       {
         title: "수수료종류",
@@ -156,27 +190,15 @@ const TB07180Sjs = (function () {
         dataIndx: "feeKndCd", //  FEE_KND_CD F004
         halign: "center",
         align: "center",
-        width: "10%",
+        width: "8%",
         filter: { crules: [{ condition: "range" }] },
-        editor: {
-          type: "select",
-          valueIndx: "cdValue",
-          labelIndx: "cdName",
-          options: grdSelect.F004,
-        },
-        render: function (ui) {
-          let fSel = grdSelect.F004.find(
-            ({ cdValue }) => cdValue == ui.cellData
-          );
-          return fSel ? fSel.cdName : ui.cellData;
-        },
       },
       {
         title: "수수료명",
         dataType: "string",
-        dataIndx: "feeNm", //  FEE_NM
+        dataIndx: "feeName", //  FEE_NM
         halign: "center",
-        align: "center",
+        align: "left",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
       },
@@ -202,25 +224,13 @@ const TB07180Sjs = (function () {
         },
       },
       {
-        title: "계정과목코드",
+        title: "계정과목코드명",
         dataType: "string",
-        dataIndx: "actCd", //  ACT_CD A005
+        dataIndx: "actName", //  ACT_CD A005
         halign: "center",
-        align: "center",
-        width: "10%",
-        filter: { crules: [{ condition: "range" }] },
-        editor: {
-          type: "select",
-          valueIndx: "cdValue",
-          labelIndx: "cdName",
-          options: grdSelect.A005,
-        },
-        render: function (ui) {
-          let fSel = grdSelect.A005.find(
-            ({ cdValue }) => cdValue == ui.cellData
-          );
-          return fSel ? fSel.cdName : ui.cellData;
-        },
+		align: "left",
+	    width: "10%",
+	    filter: { crules: [{ condition: "range" }] },
       },
       {
         title: "등록상태",
@@ -228,7 +238,7 @@ const TB07180Sjs = (function () {
         dataIndx: "rgstSttsCd", //  RGST_STTS_CD R012
         halign: "center",
         align: "center",
-        width: "10%",
+        width: "8%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -269,27 +279,41 @@ const TB07180Sjs = (function () {
         dataType: "string",
         dataIndx: "feeRt", //  FEE_RT
         halign: "center",
-        align: "center",
-        width: "10%",
+        align: "right",
+        width: "8%",
         filter: { crules: [{ condition: "range" }] },
       },
       {
         title: "수수료최저금액",
-        dataType: "string",
+        dataType: "int",
         dataIndx: "feeLwstAmt", //  FEE_LWST_AMT
         halign: "center",
-        align: "center",
+        align: "right",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
+		render	 : function (ui) {
+			let cellData = ui.cellData;
+			if (cellData !== null && cellData !== undefined) {
+				return addComma(cellData); 
+			}
+			return cellData; 
+		}
       },
       {
         title: "수수료최고금액",
-        dataType: "string",
+        dataType: "int",
         dataIndx: "feeHgstAmt", //  FEE_HGST_AMT
         halign: "center",
-        align: "center",
+        align: "right",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
+		render	 : function (ui) {
+			let cellData = ui.cellData;
+			if (cellData !== null && cellData !== undefined) {
+				return addComma(cellData); 
+			}
+			return cellData; 
+		}
       },
       {
         title: "회계업무코드",
@@ -317,8 +341,8 @@ const TB07180Sjs = (function () {
         dataType: "string",
         dataIndx: "acctUnJobCd", //  ACCT_UN_JOB_CD A004
         halign: "center",
-        align: "center",
-        width: "10%",
+        align: "left",
+        width: "14%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -360,6 +384,16 @@ const TB07180Sjs = (function () {
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
       },
+	  {
+	    title: "계정과목코드",
+	    dataType: "string",
+	    dataIndx: "actsCd", //  ACT_CD A005
+		align: "center",
+		filter: { crules: [{ condition: "range" }] },
+		hidden: true,
+	  },
+	  
+	  
     ];
 
     return TB07180S_colModel1;
@@ -368,7 +402,7 @@ const TB07180Sjs = (function () {
   /*
    *  PQGRID SETTING
    */
-  function pqGrid() {
+  function pqGrid_TB07180S() {
     // 그리드 옵션 생성
     let pqGridObjs = [
       {
@@ -378,18 +412,15 @@ const TB07180Sjs = (function () {
         colModel: TB07180S_colModelData(),
         scrollModel: { autoFit: false },
         editable: false,
-        // , rowClick: function (event, ui) {
-        //     if (TB07180S_rowData === ui.rowData) {
-        //         TB07180S_rowData = TB07180S_dummyData;
-        //     } else {
-        //         TB07180S_rowData = ui.rowData;
-        //     }
-        // }
-        // , selectionModel: { type: 'row' }
       },
     ];
     setPqGrid(pqGridObjs);
-    $("#TB07180S_colModel1").pqGrid("instance");
+	
+	if(typeof modalFeeKndCdList == "undefined") {    
+	    $("#TB07180S_colModel1").pqGrid(pqGridObjs);
+	    modalFeeKndCdList = $("#TB07180S_colModel1").pqGrid("instance");
+    }
+	
   }
 
   /*
@@ -408,7 +439,6 @@ const TB07180Sjs = (function () {
     let newRow = {};
     const data = colModelIdSelector(colModelId).pqGrid("instance");
     const rowColumnsData = data.colModel;
-    console.log(rowColumnsData);
     const length = rowColumnsData.length;
     for (let i = 0; i < length; i++) {
       const title = rowColumnsData[i].title;
@@ -420,7 +450,6 @@ const TB07180Sjs = (function () {
         newRow[dataIndx] = "";
       }
     }
-    console.log(newRow);
 
     colModelIdSelector(colModelId).pqGrid("addRow", {
       rowData: newRow,
@@ -516,88 +545,92 @@ const TB07180Sjs = (function () {
 
   /*
    *  SELECT 수수료종류
+   * 조회 버튼
    */
-  function getFeeData() {
-    let result;
-
-    let 수수료명_미정 = $("").val();
-
+  function getFeeData(arg) {
+    var feeNameKeyIn;
+	if(arg == undefined || arg == null){
+		feeNameKeyIn =$("#TB07180S_feeNm_keyIn").val();
+	}
+	
+	var paramData ={		
+		"feeName" : feeNameKeyIn
+	}	
+	//그리드 초기화 by hytest
+	modalFeeKndCdList.setData([]);
     $.ajax({
-      type: "POST",
+      type: "GET",
       url: "/TB07180S/IBIMS421BSelect",
       contentType: "application/json; charset=UTF-8",
-      data: 수수료명_미정,
+	  data: paramData,
+	  dataType: "json",
       success: function (data) {
-        if (data) {
-          let grid = $("#TB07180S_colModel").pqGrid("instance");
-          grid.setData(data);
-          grid.getData();
-          TB07180S_pqGridLength = grid.pdata.length;
-          result = 1;
-        } else {
-          result = -1;
-        }
-      },
-      error: function () {
-        result = -2;
+		if(data.length > 0) {	
+			var rowSeq;
+			rowSeq=	data.length-1;
+			modalFeeKndCdList.setData(data);			
+			if(arg == undefined || arg == null){ //조회, 입력후 조회
+			}else{ //수정후 조회				
+				for (let i = 0; i < modalFeeKndCdList.pdata.length; i++) {
+					var tempFeeKndCd;
+					tempFeeKndCd = modalFeeKndCdList.pdata[i].feeKndCd;
+				   if (tempFeeKndCd==arg){
+						rowSeq=i;
+				   }
+				}
+			}
+				setFeeKndCd(data[rowSeq]);
+		  } else {
+			if(data.length == "undefined") {
+				modalFeeKndCdList.setData([]);	 
+			} else {
+				setFeeKndCd([]);
+			}	
+		  }
+	     modalFeeKndCdList.on("rowDblClick", function (event, ui) {
+	       		setFeeKndCd(ui.rowData);
+	     });
       },
     });
 
-    if (result != 1) {
-      Swal.fire({
-        icon: result === -1 ? "warning" : result === -2 ? "error" : "",
-        text: "정보가 없습니다!",
-      });
-    }
   }
 
   /*
    *  =====================SELECT모음=====================
    */
 
+  /**
+   * 저장 버튼
+   */
   function insertFeeData() {
     let result;
 
     let param = $("#feeData input, #feeData select");
     let paramData = {};
 	
-	if (!checkParam()) {
+	if (!checkParam("I")) {
 		return false;
     }
-
-    param.each(function () {
-      let id = $(this).attr("id");
-      let value = $(this).val();
-
-      if (value === "") {
-        // select 태그 바로 위에 있는 label 태그를 찾음
-        let labelElement = $(this).closest(".input-group").prev("label");
-
-        // label의 텍스트 가져오기
-        let labelText = labelElement.text();
-
-        if (labelText === "") {
-        } else {
-          // 경고 메시지 출력
-          alert(labelText + "을(를) 입력해주세요!");
-          return false;
-        }
-      }
-      paramData[id] = value;
-    });
+	
+	paramData =makeParam();
 
     $.ajax({
       type: "POST",
-      url: "/TB07180S/IBIMS421BInsert",
+      url: "/TB07180S/IBIMS421BSave",
       contentType: "application/json; charset=UTF-8",
       dataType: "json",
       data: JSON.stringify(paramData),
       success: function (data) {
-        if (data) {
-          let grid = $("#TB07180S_colModel").pqGrid("instance");
-          grid.setData(data);
-          grid.getData();
-          TB07180S_pqGridLength = grid.pdata.length;
+        if (data > 0) {
+		  //getFeeData(paramData.feeName);
+		  Swal.fire({
+			title: '저장 확인',
+			icon: 'success',
+			text: '[수수료종류] 저장이 실행되었습니다.',
+			confirmButtonText: '확인',
+		}).then(() => {
+		   getFeeData(paramData.feeKndCd);
+		});
           result = 1;
         } else {
           result = -1;
@@ -610,97 +643,134 @@ const TB07180Sjs = (function () {
 
   }
   
-  function checkParam() {
+  function checkParam(mode) {
   	var option = {}
   	option.title = "Error";
   	option.type = "error";
 	
-	// 유효성검사
-	if (isEmpty($('#TB07180S_actCd').val())) {
-		option.text = "계정과목을 입력해주세요";
-		openPopup(option);
-		return false;
+	switch (mode){
+		case "I" :	
+			// 유효성검사
+			if (isEmpty($('#TB07180S_actCd').val())) {
+				option.text = "계정과목을 입력해주세요";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB07180S_feeNm').val())) {
+				option.text = "수수료명을 입력해주세요";
+				openPopup(option);
+				return false;
+			}
+		break;
+		case "D" :
+			if (isEmpty($('#TB07180S_feeKndCd').val())) {
+				option.text = "삭제할 수수료종류 코드를 선택해주세요";
+				openPopup(option);
+				return false;
+			}	  
+	    break;
+		default :
+		break;	
 	}
 	
-	if (isEmpty($('#TB07180S_feeNm').val())) {
-		option.text = "수수료명을 입력해주세요";
-		openPopup(option);
-		return false;
-	}  
 	return true;
+	
 }
-  
 
-  function updateFeeData() {
-    let result;
+function makeParam() {
+	var actCdTxt = $('#TB07180S_actCd').val();
+	var actCdVal = TB07180S_dataListVal(actCdTxt);
 
-    let 수수료명_미정 = $("").val();
+	var paramData = {
+				"feeKndCd" 	: $('#TB07180S_feeKndCd').val()
+			  , "actsCd"	: actCdVal	
+			  , "feeName"	: $('#TB07180S_feeNm').val()		
+			  , "feeRcogDcd": $('#TB07180S_feeRcogDcd').val()		
+			  , "feeRcknDcd": $('#TB07180S_feeRcknDcd').val()		
+			  , "feeRt"		: $('#TB07180S_feeRt').val()		
+			  , "feeLwstAmt": $('#TB07180S_feeLwstAmt').val().replaceAll(",", "")		
+			  , "feeHgstAmt": $('#TB07180S_feeHgstAmt').val().replaceAll(",", "")	
+			  , "acctJobCd"	: $('#TB07180S_acctJobCd').val()		
+			  , "acctUnJobCd": $('#TB07180S_acctUnJobCd').val()		
+			  , "acctTrCd"	: $('#TB07180S_acctTrCd').val()			
+		}			
+	return paramData;
+}	
 
-    $.ajax({
-      type: "POST",
-      url: "/TB07180S/IBIMS421BUpdate",
-      contentType: "application/json; charset=UTF-8",
-      data: 수수료명_미정,
-      success: function (data) {
-        if (data) {
-          let grid = $("#TB07180S_colModel").pqGrid("instance");
-          grid.setData(data);
-          grid.getData();
-          TB07180S_pqGridLength = grid.pdata.length;
-          result = 1;
-        } else {
-          result = -1;
-        }
-      },
-      error: function () {
-        result = -2;
-      },
-    });
+/**
+ * dblclick event function
+ */
+function setFeeKndCd(e) {
+	var actCdTxt = TB07180S_dataListBnd(e.actsCd);
+	
+	$('#TB07180S_feeKndCd').val(e.feeKndCd);
+	$('#TB07180S_actCd').val(actCdTxt);
+	$('#TB07180S_feeNm').val(e.feeName);
+	$('#TB07180S_feeRcogDcd').val(e.feeRcogDcd);
+	$('#TB07180S_feeRcknDcd').val(e.feeRcknDcd);
+	$('#TB07180S_feeRt').val(e.feeRt);
+	$('#TB07180S_feeLwstAmt').val(addComma(e.feeLwstAmt));
+	$('#TB07180S_feeHgstAmt').val(addComma(e.feeHgstAmt));
+	$('#TB07180S_acctJobCd').val(e.acctJobCd);
+	$('#TB07180S_acctUnJobCd').val(e.acctUnJobCd);
+	$('#TB07180S_acctTrCd').val(e.acctTrCd);
+}	
 
-    if (result != 1) {
-      Swal.fire({
-        icon: result === -1 ? "warning" : result === -2 ? "error" : "",
-        text: "정보가 없습니다!",
-      });
-    }
-  }
+
 
   /*
-   *  =====================DELETE모음=====================
+   * =====================DELETE모음=====================
+   * 삭제버튼
    */
 
   function deleteFeeData() {
     let result;
-
-    let 수수료명_미정 = $("").val();
+    let feeKndCd = $("#TB07180S_feeKndCd").val();
+	
+	if (!checkParam("D")) {
+		return false;
+	}
+	
+	var paramData ={		
+		  "feeKndCd" : feeKndCd
+		, "actsCd"   : $("#TB07180S_actCd").val()
+	}
 
     $.ajax({
       type: "POST",
       url: "/TB07180S/IBIMS421BDelete",
       contentType: "application/json; charset=UTF-8",
-      data: 수수료명_미정,
+	  data: JSON.stringify(paramData),
+	  dataType: "json",
       success: function (data) {
-        if (data) {
-          let grid = $("#TB07180S_colModel").pqGrid("instance");
-          grid.setData(data);
-          grid.getData();
-          TB07180S_pqGridLength = grid.pdata.length;
-          result = 1;
-        } else {
-          result = -1;
-        }
+		if (data > 0) {
+			Swal.fire({
+				title: '삭제 확인',
+				icon: 'success',
+				text: '[수수료종류] 삭제가 완료되었습니다.',
+				confirmButtonText: '확인',
+			}).then(() => {
+			   getFeeData();
+			});  
+	         result = 1;
+	    } else {
+	         result = -1;
+	    }
       },
       error: function () {
         result = -2;
       },
     });
-
-    if (result != 1) {
-      Swal.fire({
-        icon: result === -1 ? "warning" : result === -2 ? "error" : "",
-        text: "정보가 없습니다!",
-      });
-    }
+  }
+  
+  /*
+   *	엑셀(Excel) PQGrid ExcelExport
+   */
+  function pqExportExcel() {
+    let blob = $("#TB07180S_colModel1").pqGrid("instance").exportExcel({});
+    let fileName = "수수료종류관리.xlsx";
+    pq.saveAs(blob, fileName);
   }
 
   /*
@@ -711,5 +781,7 @@ const TB07180Sjs = (function () {
     getFeeData: getFeeData,
     resetInputData: resetInputData,
     insertFeeData: insertFeeData,
+	deleteFeeData: deleteFeeData,
+	pqExportExcel: pqExportExcel,
   };
 })();
