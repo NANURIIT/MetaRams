@@ -31,7 +31,7 @@
 								수수료명
 							</label>
 							<div class="col-sm-2 input-group">
-								<input type="text" class="form-control" id="" name="">
+								<input type="text" class="form-control" id="TB07180S_feeNm_keyIn" name="">
 							</div>
 							<!-- 버튼영역 -->
 							<div class="col-sm-9 text-right">
@@ -120,7 +120,7 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">회계거래코드</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB07180S_acctTrCd">
+											<input type="text" class="form-control" id="TB07180S_acctTrCd" maxlength="2">
 										</div>
 									</div>
 								</div>
@@ -134,7 +134,7 @@
 							<!-- 버튼영역 -->
 							<div class="col-sm-12 text-right pd0">								
 								<button class="btn btn-success" onclick="TB07180Sjs.insertFeeData();"><i class="fa fa-save"></i>&nbsp;저장</button>
-								<button class="btn btn-danger" onclick=""><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+								<button class="btn btn-danger" onclick="TB07180Sjs.deleteFeeData();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
 							</div>
 						</div>
 				
