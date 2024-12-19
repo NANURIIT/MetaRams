@@ -240,6 +240,10 @@ const TB06020Sjs = (function(){
 		
 		resetInputValue($('div[data-menuid="/TB06020S"]'));
 		$('#TB06020S_res_prdtCd').prop('readonly',false);
+		$('#TB06020S_registApvlCnd').attr('disabled', true);
+		$('#TB06020S_registMrtgCnnc').attr('disabled', true);
+		$('#UPLOAD_AddFile').attr('disabled', true);
+		$('#UPLOAD_DelFiles').attr('disabled', true);
 	}
 
 
@@ -388,9 +392,20 @@ const TB06020Sjs = (function(){
 				if (isEmpty($('#TB06020S_res_prdtCd').val())) {
 					$('#TB06020S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
 					$('#TB06020S_delPrdt').attr('disabled', true); 
+					$('#TB06020S_res_prdtCd').prop('readonly',false);
+					$('#TB06020S_registApvlCnd').attr('disabled', true);
+					$('#TB06020S_registMrtgCnnc').attr('disabled', true);
+					$('#UPLOAD_AddFile').attr('disabled', true);
+					$('#UPLOAD_DelFiles').attr('disabled', true);
+					
 				} else {
 					$('#TB06020S_regPrdt').attr('disabled', false); 
 					$('#TB06020S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
+					$('#TB06020S_res_prdtCd').prop('readonly',false);
+					$('#TB06020S_registApvlCnd').attr('disabled', false);
+					$('#TB06020S_registMrtgCnnc').attr('disabled', false);
+					$('#UPLOAD_AddFile').attr('disabled', false);
+					$('#UPLOAD_DelFiles').attr('disabled', false);
 				}
 				
 				/******  딜공통 파일첨부 추가 ******/ 
@@ -398,7 +413,7 @@ const TB06020Sjs = (function(){
 				var key2;
 				key2=dealDetail.dealNo+"-"+ dealDetail.prdtCd;
 				$('#fileKey2').val(key2);				
-				$('#key1').val(key2);		
+				$('#key1').val("TB06020S");		
 				getFileInfo($('#key1').val(),key2);				
 				/******  딜공통 파일첨부 추가 ******/ 
 						

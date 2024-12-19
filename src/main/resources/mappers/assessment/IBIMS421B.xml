@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS421BMapper">
+	
+		<!-- 셀렉트박스 코드, 밸류 취득 -->
+	<select id="getSelectBox" resultType="java.util.HashMap">
+		SELECT FEE_KND_CD 		AS "cdValue"                 <!-- 코드값ID -->   
+			 , FEE_NAME         AS "cdName1"                 <!-- 코드값명 -->     
+		     , ACT_NAME			AS "cdName2"                 <!-- 코드값명 -->         
+		  FROM IBIMS421B  
+		 WHERE 1=1
+		 ORDER BY TO_NUMBER(FEE_KND_CD) ASC
+	</select>
+	
 	    <!-- 담보번호 채번 -->
     <select id="makeFeeKndCd" resultType="String" parameterType="com.nanuri.rams.business.common.dto.IBIMS421BDTO">
     	SELECT  LPAD(  NVL(

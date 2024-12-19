@@ -3,6 +3,7 @@ const TB08040Sjs = (function () {
   let grdSelect = {}; // select객체
   let feeSchLen = 0; // 수수료스케줄관리 원본
   let selectBox; // return selectBox
+  let selectBox2;
   let saveGrid = []; // 저장 리스트
   let fValid = -1; // 0 : 조회, 1 : 저장
 
@@ -19,9 +20,12 @@ const TB08040Sjs = (function () {
       "/E027" + // 과세유형구분코드 TXTN_TP_DCD
       "/F001" + // 수수료선후급구분코드 FEE_BNAP_DCD
       "/T006" + // 수수료과세여부 FEE_TXTN_YN
+	  "/A005" + // 계정과목코드
       "/I027", // 통화코드
       false
     );
+	selectBox2 =getSelBoxCdFeeKndCd();
+	
     // 수수료종류코드
     grdSelect.F004 = selectBox.filter((item) => item.cmnsGrpCd === "F004");
     // 수수료인식구분
@@ -34,7 +38,32 @@ const TB08040Sjs = (function () {
     grdSelect.T006 = selectBox.filter((item) => item.cmnsGrpCd === "T006");
     // 통화코드
     grdSelect.I027 = selectBox.filter((item) => item.cmnsGrpCd === "I027");
+	// 통화코드
+	grdSelect.A005 = selectBox.filter((item) => item.cmnsGrpCd === "A005");
   }
+  
+  
+  /*
+   */
+  function getSelBoxCdFeeKndCd(){
+    var result =null;	
+    $.ajax({
+	      type: "GET",
+	      url: "/TB07180S/getSelectBoxCode" ,
+	      async: false,
+	      dataType: "json",
+	      success: function (data) {
+		      result=data;
+		  	  console.log("data"+data);
+		  	  result=data;
+	      },
+		    error: function(){
+		  	result= null;
+		    }	  
+    	});
+	 return result;	
+  }
+
 
   function pqGrid() {
     /********************************************************************
@@ -94,6 +123,11 @@ const TB08040Sjs = (function () {
         align: "center",
         width: "5%",
         filter: { crules: [{ condition: "range" }] },
+		render: function (ui) {
+			let result
+			result = (ui.rowIndx + 1).toString();
+			return result;
+		}
       },
       {
         title: "수수료종류",
@@ -106,26 +140,39 @@ const TB08040Sjs = (function () {
         editor: {
           type: "select",
           valueIndx: "cdValue",
-          labelIndx: "cdName",
-          options: grdSelect.F004,
+          labelIndx: "cdName1",
+          options: selectBox2,//grdSelect.F004,
         },
         render: function (ui) {
-          let fSel = grdSelect.F004.find(
+			let rowIndx = ui.rowIndx;
+	  	    let fSel = selectBox2.find(	
             ({ cdValue }) => cdValue == ui.cellData
           );
-          return fSel ? fSel.cdName : ui.cellData;
+          return fSel ? fSel.cdName1 : ui.cellData;
         },
         editable: true,
       },
       {
         title: "계정과목",
         dataType: "string",
-        dataIndx: "actsNm",
+        dataIndx: "actName",
         halign: "center",
         align: "center",
         width: "10%",
-        filter: { crules: [{ condition: "range" }] },
-        editable: true,
+		filter: { crules: [{ condition: "range" }] },
+		editor: {
+		  type: "select",
+		  valueIndx: "cdValue",
+		  labelIndx: "cdName2",
+		  options: selectBox2,
+		},
+		render: function (ui) {
+		 let fSel = selectBox2.find(	
+		    ({ cdValue }) => cdValue == ui.cellData
+		  );
+		  return fSel ? fSel.cdName2 : ui.cellData;
+		},
+		editable: true,		
       },
       {
         title: "수수료인식구분",
@@ -184,20 +231,9 @@ const TB08040Sjs = (function () {
               value: "0",
             },
           ];
-          // console.log("stdrIntrtKndCdList{}", stdrIntrtKndCdList);
-          // console.log("options{}", options);
           let option = options.find((opt) => opt.value == ui.cellData);
           return option ? option.key : ui.cellData;
         },
-        // render     : function(ui) {
-        //     let cellData = ui.cellData;
-        //     if ( cellData === "1" ) {
-        //         return "Y";
-        //     } else {
-        //         return "N";
-        //     }
-        // },
-        //editable   : true,
       },
       {
         title: "과세유형구분코드",
@@ -236,11 +272,6 @@ const TB08040Sjs = (function () {
           labelIndx: "cdValue",
           options: grdSelect.I027,
         },
-        // render   : function(ui) {
-        //     let fSel = grdSelect.I027.find(({ cdValue }) => cdValue == ui.cellData );
-
-        //     return fSel ? fSel.cdValue : ui.cdValue = "KRW";
-        // },
         editable: true,
       },
       {
@@ -293,9 +324,6 @@ const TB08040Sjs = (function () {
               init: function (ui) {
                 let $inp = ui.$cell.find("input");
                 $inp.attr("maxlength", "5");
-                // $inp.on('input', function() {
-                //     inputNumberFormat(this);
-                // });
               },
             },
           },
@@ -320,20 +348,61 @@ const TB08040Sjs = (function () {
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
-          type: "textbox",
+         /* type: "textbox",
           init: function (ui) {
-            // let cellData = ui.cellData;
             let $inp = ui.$cell.find("input");
             $inp.attr("placeholder", "YYYY-MM-DD");
             $inp.on("input", function () {
-              //console.log(this.value.length)
-              if (this.value.length === 8) {
+               if (this.value.length === 8) {
                 formatDate(this.value);
               } else {
                 this.value;
               }
             });
           },
+		  */
+		  type: "textbox",
+		  init: function (ui) {
+			let $inp = ui.$cell.find("input");
+			$inp.attr("placeholder", "YYYY-MM-DD");
+			$inp
+			    .on("input", function (evt) {
+			        /*validate(this);*/
+					if (this.value.length === 8) {
+		               formatDate(this.value);
+		             } else {
+		               this.value;
+		             }
+			    })
+			    .datepicker({
+			        dateFormat: 'yyyy-mm-dd',
+					todayBtn: "linked",
+			        showButtonPanel: true,
+			        changeMonth: true,
+			        changeYear: true,
+					autoclose : true,			        
+					beforeShow: function (input, inst) {
+					    setTimeout(function () {
+					        $('.ui-datepicker').css('z-index', 999999999999);
+					    });
+					    return !this.firstOpen;
+					},
+					/*showAnim: '',
+			        onSelect: function () {
+						console.log("datePicker onSelect");
+			            this.firstOpen = true;
+			        },
+			        onClose: function () {
+						console.log("datePicker onClose");
+			        }*/
+			    })
+				.on('change', function(){
+					console.log('change'+this.value);
+				})
+		
+			
+		  },
+		  
         },
         render: function (ui) {
           let cellData = ui.cellData;
@@ -398,11 +467,9 @@ const TB08040Sjs = (function () {
         editor: {
           type: "textbox",
           init: function (ui) {
-            // let cellData = ui.cellData;
             let $inp = ui.$cell.find("input");
             $inp.attr("placeholder", "YYYY-MM-DD");
             $inp.on("input", function () {
-              //console.log(this.value.length)
               if (this.value.length === 8) {
                 formatDate(this.value);
               } else {
@@ -432,11 +499,9 @@ const TB08040Sjs = (function () {
         editor: {
           type: "textbox",
           init: function (ui) {
-            // let cellData = ui.cellData;
             let $inp = ui.$cell.find("input");
             $inp.attr("placeholder", "YYYY-MM-DD");
             $inp.on("input", function () {
-              //console.log(this.value.length)
               if (this.value.length === 8) {
                 formatDate(this.value);
               } else {
@@ -466,11 +531,9 @@ const TB08040Sjs = (function () {
         editor: {
           type: "textbox",
           init: function (ui) {
-            // let cellData = ui.cellData;
             let $inp = ui.$cell.find("input");
             $inp.attr("placeholder", "YYYY-MM-DD");
             $inp.on("input", function () {
-              //console.log(this.value.length)
               if (this.value.length === 8) {
                 formatDate(this.value);
               } else {
@@ -588,9 +651,24 @@ const TB08040Sjs = (function () {
         scrollModel: { autoFit: false },
         cellSave: function (event, ui) {
           // 수정된 행에 rowType 추가
+		  let dataIndx = ui.dataIndx;
           let rowIndx = ui.rowIndx;
           let rowData = feeSch.getRowData({ rowIndx });
           let rowType = rowData.rowType;
+		  if(dataIndx ==='feeKndCd' ){	  			
+				const grid = $("#grd_feeSch").pqGrid('instance');
+			    const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+				console.log("feeKndCd"+rowData.feeKndCd);
+                var tempRowData = rowData.feeKndCd;
+				var selectedIndex = selectBox2.findIndex(option => option.cdValue === tempRowData);
+				if (selectedIndex !== -1) {
+					// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
+					rowData.actName = selectBox2[selectedIndex].cdName2;	
+				  	// UI에 반영
+                  	grid.refreshRow({ rowIndx: ui.rowIndx });
+                }
+	  	  }
+		  
 
           if (rowType !== "I") {
             rowData.rowType = "M"; // rowData 객체의 rowType을 직접 "M"으로 설정
@@ -613,14 +691,23 @@ const TB08040Sjs = (function () {
           } else {
             rowData.rowType = rowType; // rowType이 "I"인 경우 그대로 유지
           }
+
         },
         cellClick: function (evt, ui) {
+			/*let dataIndx = ui.dataIndx;
+	        let rowData =ui.rowData;
+			 if(dataIndx ==='feeKndCd' ){
+				console.log("feeKndCd"+rowData.feeKndCd);
+			 }	
+			*/		
           if (!ui.column || !ui.column.editor || !ui.column.editor.type) {
             return;
           }
           if (ui.column.editor.type === "select") {
             let $tag = $(ui.$td[0]);
             $tag.trigger("dblclick");
+			
+			
           }
         },
       },
@@ -991,6 +1078,11 @@ const TB08040Sjs = (function () {
       }).then(callback);
     }
   }
+  
+
+  
+  
+  
   return {
     feeSch: feeSch
     , grdSelect: grdSelect
@@ -1004,5 +1096,6 @@ const TB08040Sjs = (function () {
     , gridEvt: gridEvt
     , chkGrd: chkGrd
     , sf: sf
+	, getSelBoxCdFeeKndCd: getSelBoxCdFeeKndCd
   };
 })();
