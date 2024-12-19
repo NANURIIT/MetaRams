@@ -63,13 +63,13 @@ const TB06050Sjs = (function() {
                     $(`input[name='radioGroup-tnchStdIvtgYn_2'][value='${data[0].tnchStdIvtgYn2}']`).prop("checked", true)
                     
                 } else {
-                    console.log("데이터 없음?");
+                    console.log("데이터 없음");
                     //조회조건 제외 전부 초기화
                     $("#TB06050S_sppiSfcYn").val("미검토");
                     $("#TB06050S_busiMdlDcd").val("");
                     $('#TB06050S_nsFndCd').val("");
                     $('#TB06050S_nsPrdtDcd').val("");
-                    $("input[type='radio']").prop("checked", false);
+                    $("input[type='radio'][value='N']").prop("checked", true);
                 }
 
                 const inputs = $("#TB06050S_selectedData input")
