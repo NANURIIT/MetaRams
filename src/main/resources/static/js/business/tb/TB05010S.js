@@ -110,7 +110,8 @@ const TB05010Sjs = (function(){
             dataIndx: "chkYn",
             halign : "center",
             align: "center",
-            width : "60",
+            minWidth: 35,  
+            maxWidth: 35,
             editable : true,
             filter: { crules: [{ condition: "range" }] },
             editor: false,
@@ -128,7 +129,7 @@ const TB05010Sjs = (function(){
             dataIndx: "atdcTrgtDcd",
             halign : "center",
             align: "center",
-            width : "100",
+            // width : "20%",
             editable : true,
             filter: { crules: [{ condition: "range" }] },
             editor: {
@@ -148,29 +149,31 @@ const TB05010Sjs = (function(){
             dataType: "",
             dataIndx: "",
             align: "center",
-            width : "260",
+            // width : "35%",
             filter: { crules: [{ condition: "range" }] },
             colModel  : [
-              { title : "위원명", dataType : "string",  dataIndx : "atdcTrgtEmpnm", align : "center", halign : "center", width : "240"},
-              { title : "위원명", dataType : "string",  dataIndx : "atdcTrgtEmpno", align : "center", halign : "center", hidden : true},
-              { title : "", dataType : "",  dataIndx : "", align : "center", halign : "center", width : "20", 
-              render: function (ui) {
-                let rowData = ui.rowData;
-                return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrTrgt', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
-              }},
-            ]
-          },
+              { title : "위원번호", dataType : "string",  dataIndx : "atdcTrgtEmpno", align : "center", halign : "center", hidden : true},
+              { title : "위원명", dataType : "string",  dataIndx : "atdcTrgtEmpnm", align : "center", halign : "center", },
+              { title : "", dataType : "",  dataIndx : "", align : "center", halign : "center",  minWidth: 36,  maxWidth: 36,
+                render: function (ui) {
+                  let rowData = ui.rowData;
+                  return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrTrgt', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                }
+              },
+            ],
+            
+          },  
           {
             title: "대리참석위원",
             dataType: "string",
             dataIndx: "",
-            width : "260",
+            // width : "35%",
             align: "center",
             filter: { crules: [{ condition: "range" }] },
             colModel  : [
-              { title : "대리참석위원", dataType : "string",  dataIndx : "atdcAngtEmpnm", align : "center", halign : "center", width : "240"},
-              { title : "대리참석위원", dataType : "string",  dataIndx : "atdcAngtEmpno", align : "center", halign : "center", hidden : true},
-              { title : "", dataType : "",  dataIndx : "", align : "center", halign : "center", width : "20", 
+              { title : "대리참석위원번호", dataType : "string",  dataIndx : "atdcAngtEmpno", align : "center", halign : "center", hidden : true},
+              { title : "대리참석위원", dataType : "string",  dataIndx : "atdcAngtEmpnm", align : "center", halign : "center"},
+              { title : "", dataType : "",  dataIndx : "", align : "center", halign : "center", minWidth: 36,  maxWidth: 36,
               render: function (ui) {
                 let rowData = ui.rowData;
                 return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrAngt', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
@@ -178,7 +181,8 @@ const TB05010Sjs = (function(){
             ]
           },
         ];
-        // 관련문서
+      
+      // 위원정보
       let obj = {
         height: 200,
         maxHeight: 200,
@@ -190,7 +194,7 @@ const TB05010Sjs = (function(){
         numberCell: { show: false },
         editable: false,
         //toolbar: toolbar,
-        scrollModel: { autoFit: false },
+        scrollModel: { autoFit: true },
         colModel: colMmbrList,
         strNoRows: '데이터가 없습니다.'
       }
@@ -306,6 +310,14 @@ const TB05010Sjs = (function(){
     $("#approveAlert").prop('disabled', false);
     $("#cancelAlert").prop('disabled', false);
   }
+
+  function inputReset(){
+    $("#gridCaseList").pqGrid("option", "dataModel.data", []);    // 안건정보
+    $("#gridCaseList").pqGrid("refreshDataAndView");							// pqgrid 초기화
+    $("#TB05010S_rsltnDt2").val(""); //결의일
+    $("#TB05010S_rsltnTm2").val(""); //시간 
+    $("#TB05010S_inspctPrgrsStCd2").val(""); //회차
+  }
   
   function getCNFRNCList() {
     var inspctCnfrncCcd = $("#TB05010S_R016").val(); // 전결협의체
@@ -349,9 +361,9 @@ const TB05010Sjs = (function(){
     var rsltnYr = e.rsltnYr; // 결의년도
     var inspctCnfrncSqcSq = e.sn; // 회차
     var rsltnDt = e.cnsbOpnDt; // 결의일자
-  
-    MMBRCount = 0;
 
+    MMBRCount = 0;
+    
     if (
       cnsbDcd &&
       rsltnYr &&
@@ -369,7 +381,7 @@ const TB05010Sjs = (function(){
   
     function businessFunction() {
       var paramData = {
-        cnsbDcd: cnsbDcd,
+        cnsbDcd: cnsbDcd ,
         rsltnYr: rsltnYr,
         sn: inspctCnfrncSqcSq,
         cnsbOpnDt: rsltnDt,
@@ -398,9 +410,10 @@ const TB05010Sjs = (function(){
         $("#TB05010S_inspctCnfrncSqcSq2").val(Number(data.sn));
         $("#TB05010S_rsltnDt2").val(formatDate(data.cnsbOpnDt));
         $("#TB05010S_rsltnTm2").val(data.cnsbOpnTm);
-        if (isNotEmpty(data.mtrPrgSttsDcd)) {
-          $("#TB05010S_inspctPrgrsStCd2").val(data.mtrPrgSttsDcdNm);
-        }
+        $("#TB05010S_inspctPrgrsStCd2").val(data.mtrPrgSttsDcdNm);
+        $("#TB05010S_mtrPrgSttdDcd").val(data.mtrPrgSttsDcd);
+
+
         if (Number(data.mtrPrgSttsDcd) < 303) {
           $("#saveButton").attr("disabled", false);
           $("#confirmButton").attr("disabled", true);
@@ -972,8 +985,22 @@ const TB05010Sjs = (function(){
   function tempSave() {
     var MMBRListCount = arrPqGridMmbrInfo.pdata.length;
     var CASEListCount = arrPqGridCaseList.pdata.length;
-    let CnfrncList = arrPqGridCnfrncList.pdata;
+    let CnfrncList = arrPqGridCnfrncList.pdata;         //// 협의체 결의 및 목록
     var inspctCnfrncSqcSq2 = $("#TB05010S_inspctCnfrncSqcSq2").val();
+
+    for (let i = 0; i < CnfrncList.length; i++) {
+      if (CnfrncList[i].sn == $("#TB05010S_inspctCnfrncSqcSq2").val()) {
+        console.log(`CnfrncList[i].sn : ${CnfrncList[i].sn}`)
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "해당 전결협의체에 중복된 협의체 회차정보가 존재합니다.",
+          confirmButtonText: "확인",
+        });
+        $("#TB05010S_inspctCnfrncSqcSq2").focus();
+        return; // 알림 후 함수 종료
+      }
+    }
   
     if (!isEmpty(inspctCnfrncSqcSq2)) {
       if (MMBRListCount != 0 && CASEListCount != 0) {
@@ -1002,28 +1029,17 @@ const TB05010Sjs = (function(){
         text: "회차정보를 확인하세요.",
         confirmButtonText: "확인",
       });
-    }
-    
-    for (let i = 0; i < CnfrncList.length; i++) {
-      if (CnfrncList[i].sn == $("#TB05010S_inspctCnfrncSqcSq2").val()) {
-        Swal.fire({
-          icon: "error",
-          title: "Error!",
-          text: "해당 전결협의체에 중복된 협의체 회차정보가 존재합니다.",
-          confirmButtonText: "확인",
-        });
-        $("#TB05010S_inspctCnfrncSqcSq2").focus();
-      }
-    }
+    }    
   
     function businessFunction() {
       
       /* 협의체 회차정보 */
-      var inspctCnfrncCcd = $("#TB05010S_R016_2").val();
-      var stdYr = $("#TB05010S_stdYr").val();
-      var inspctCnfrncSqcSq = $("#TB05010S_inspctCnfrncSqcSq2").val();
-      var rsltnDt = $("#TB05010S_rsltnDt2").val();
-      var rsltnTm = $("#TB05010S_rsltnTm2").val();
+      var inspctCnfrncCcd = $("#TB05010S_R016_2").val();               //전결협의체
+      var stdYr = $("#TB05010S_stdYr").val();                          //결의년도
+      var inspctCnfrncSqcSq = $("#TB05010S_inspctCnfrncSqcSq2").val(); //회차
+      var rsltnDt = $("#TB05010S_rsltnDt2").val();                     //결의일
+      var rsltnTm = $("#TB05010S_rsltnTm2").val();                     //결의시간 
+      var inspctPrgrsStCd = $("#TB05010S_inspctPrgrsStCd2").val();     //진행상태
   
       var dealList = [];
       var enoList = [];
@@ -1037,10 +1053,11 @@ const TB05010Sjs = (function(){
           dealNo: arrPqGridCaseList.pdata[i].dealNo,
           mtrDcd: arrPqGridCaseList.pdata[i].mtrDcd,
           jdgmDcd: arrPqGridCaseList.pdata[i].jdgmDcd,
+          mtrPrgSttsDcd : arrPqGridCaseList.pdata[i].mtrPrgSttsDcd ?? "303" , // null 또는 undefined일 때 303으로 할당
         };
         dealList.push(dealInfo);
       }
-  
+
       /* 협의체 위원정보 */
       for (var i = 0; i < MMBRListCount; i++) {
         var enoInfo = {
@@ -1103,7 +1120,7 @@ const TB05010Sjs = (function(){
     var rsltnYr = $("#TB05010S_stdYr").val();
     var sn = $("#TB05010S_inspctCnfrncSqcSq2").val();
     var jdgmRsltDcd = statusCode;
-  
+
     /* 협의체 안건정보 */
     var CASEListCount = arrPqGridCaseList.pdata.length;
   
@@ -1115,8 +1132,8 @@ const TB05010Sjs = (function(){
         rsltnYr: $("#TB05010S_stdYr").val(),
         sn: $("#TB05010S_inspctCnfrncSqcSq2").val(),
         dealNo: arrPqGridCaseList.pdata[i].dealNo,
-          mtrDcd: arrPqGridCaseList.pdata[i].mtrDcd,
-          jdgmDcd: arrPqGridCaseList.pdata[i].jdgmDcd,
+        mtrDcd: arrPqGridCaseList.pdata[i].mtrDcd,
+        jdgmDcd: arrPqGridCaseList.pdata[i].jdgmDcd,
       };
       dealList.push(dealInfo);
     }
@@ -1211,7 +1228,8 @@ const TB05010Sjs = (function(){
       dataIndx: "chkYn",
       halign : "center",
       align: "center",
-      width : "100",
+      minWidth: 36,  
+      maxWidth: 36,  
       editable : true,
       filter: { crules: [{ condition: "range" }] },
       editor: false,
@@ -1232,10 +1250,11 @@ const TB05010Sjs = (function(){
       hidden : true,
     },
     {
-      title: "순서정보",
+      title: "순서",
       dataType: "string",
       dataIndx: "sn",
       align: "center",
+      width: "5%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -1249,8 +1268,9 @@ const TB05010Sjs = (function(){
     {
       title: "안건구분",
       dataType: "string",
-      dataIndx: "mtrNm",
+      dataIndx: "mtrDcdNm",
       align: "center",
+      width: "10%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
