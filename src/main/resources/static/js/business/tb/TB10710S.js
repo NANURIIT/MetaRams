@@ -113,7 +113,7 @@ const TB10710Sjs = function(){
             , {
                 title: "관리부서",
                 dataType: "string",
-                dataIndx: "mngmOrgno",
+                dataIndx: "mngmBdcd",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] }
