@@ -569,7 +569,7 @@
 
     <!--입금내역관리 상환예정내역 조회-->
     <select id="getRdmpPrarDtls" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
-  SELECT  CASE  WHEN P.SCX_DCD = '02'
+      SELECT  CASE  WHEN P.SCX_DCD = '02'
                       THEN P.PRAR_PRNA
                       ELSE P.RDMP_PRAR_INTR
                     END                   AS 		PMNT_PRAR_AMT					/*납부예정금액*/
@@ -604,7 +604,7 @@
                     , '03'					      AS SCX_DCD                  /*상환구분*/
                     , D2.TR_CRRY_CD                                   /*통화코드*/
                 FROM IBIMS348B F                                      /*수수료상환스케줄*/
-                	, IBIMS201B D2                  
+                	 , IBIMS201B D2             
                 WHERE 1=1
                 AND D2.PRDT_CD = F.PRDT_CD
                 AND D2.LAST_YN = 'Y'

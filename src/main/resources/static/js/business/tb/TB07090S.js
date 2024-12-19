@@ -25,6 +25,26 @@ const TB07090Sjs = (function () {
   let scxDcdList = {}; //상환구분코드
   let rdptObjtDvsnCdList = {}; //상환대상구분코드
 
+   /**
+     * 화면 요건
+     * 1. 상환예정내역 조회 - 조회조건: Deal번호, 상환예정일자, 관리부서
+     * 
+     * 2. 입금증등록내역
+     * 2-1. 입금증등록내역 조회 - 조회 조건: 입금일자
+     * 2-2. 입금증등록내역 입력 
+     * 2-3. 입금증등록내역 삭제 - 입금내역매핑이 된 입금증등록내역인 경우 삭제, 수정 불가능 alert으로 경고.
+     * 
+     * 3. 입금내역매핑
+     * 3-1. 입금내역매핑 조회 - 조회 조건: Deal번호, 입금일자, 관리부서
+     * 3-2. 입금내역매핑 입력 - 데이터 입력시 화면에 안보이는 데이터도 입력 가능한것들 다 입력함. TB07170S 입금내역조회에 쓰일 테이블이라 그럼
+     * 3-3. 입금내역매핑 수정 - 입금금액, 초과납입처리내용만 수정.
+     * 3-4. 입금내역 행추가 - 행 추가시에 입금증등록내역 1건과, 상환예정내역 1건을 선택해야 행추가 가능.
+     * 
+     * 4. 저장버튼 - 해당 그리드 변경사항 저장(ajax)
+     * 
+     * 김건우 2024-12-19
+     */
+
   $(document).ready(function () {
     $("#TB07090S_rctmDt").val(getToday()); //입금일자
     $("#TB07090S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
@@ -288,11 +308,11 @@ const TB07090Sjs = (function () {
       },
     ];
 
+    // IBIMS435B
     let TB07090S_colModel2 = [
 
-      // 대표님 지시로 삭제
+      // 대표님 지시로 Deal번호 컬럼 삭제
       // 2024-12-17 김건우
-
       // {
       //   title: "deal번호",
       //   editable: false,
@@ -332,72 +352,12 @@ const TB07090Sjs = (function () {
         width: "165",
         format: "yy-mm-dd",
         cls: "pq-calendar pq-side-icon",
+        editable: false,
         render: function (ui) {
-          var cellData = ui.cellData;
-          if (cellData && cellData.length === 8) {
-            var year = cellData.substring(0, 4);
-            var month = cellData.substring(4, 6);
-            var day = cellData.substring(6, 8);
-            return year + "-" + month + "-" + day;
-          }
-          return cellData;
+          return (
+            `<button class="gw-custom-datepicker"><i class="fa fa-calendar"></i></button>`
+          );
         },
-        editor: {
-          // type: 'textbox',
-          // init: function(ui) {
-
-          //     var $inp = ui.$cell.find("input"),
-          //         grid = this,
-          //         validate = function (that) {
-          //             var valid = grid.isValid({
-          //                 dataIndx: ui.dataIndx,
-          //                 value: $inp.val(),
-          //                 rowIndx: ui.rowIndx
-          //             }).valid;
-          //             if (!valid) {
-          //                 that.firstOpen = false;
-          //             }
-          //         };
-
-          //     $inp
-          //         .on("input", function (evt) {
-          //             /*validate(this);*/
-          //         })
-          //         .datepicker({
-          //             dateFormat: 'yy-mm-dd',
-          //             showButtonPanel: true,
-          //             changeMonth: true,
-          //             changeYear: true,
-          //             showAnim: '',
-          //             language: "ko",
-          //             onSelect: function () {
-          //                 this.firstOpen = true;
-          //                 /*validate(this);*/
-          //             },
-          //             beforeShow: function (input, inst) {
-          //                 setTimeout(function () {
-          //                     $('.ui-datepicker').css('z-index', 999999999999);
-          //                 });
-          //                 return !this.firstOpen;
-          //             },
-          //             onClose: function () {
-          //                 this.focus();
-          //             }
-          //         });
-          // }
-
-          type: "textbox",
-          init: function (ui) {
-            var $input = ui.$cell.find("input");
-            $input.attr("placeholder", "YYYY-MM-DD");
-            $input.on("input", function () {
-              this.value = this.value.replace(/[^0-9/]/g, "");
-            });
-          },
-        },
-        // validations: [
-        //     { type: 'regexp', value: '^[0-9]{2}/[0-9]{2}/[0-9]{4}$', msg: 'Not in date format' }
-        // ]
       },
       {
         title: "등록순번",
@@ -607,6 +567,7 @@ const TB07090Sjs = (function () {
       },
     ];
 
+    // IBIMS431B 
     let TB07090S_colModel3 = [
       {
         title: "deal번호",
@@ -1654,7 +1615,6 @@ const TB07090Sjs = (function () {
   // }
 
   return {
-    // 딱봐도 되돌리라고 할거 같아서 냅둠
     // 기존버전
     // search_TB07090S: search_TB07090S,
     // TB07090S_addNewRow: TB07090S_addNewRow,
@@ -1664,6 +1624,7 @@ const TB07090Sjs = (function () {
 
     /**
      * 대충만듬ㄷㅈㄴㄻㄴㅇㄻㄴㅇㄿㅁㄴㅇㅍ
+     * 김건우 2024-12-19
      */
     search_TB07090S: search_TB07090S,
     TB07090S_pqGridDeleteRow: TB07090S_pqGridDeleteRow,
