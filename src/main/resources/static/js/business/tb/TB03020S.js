@@ -172,11 +172,16 @@ const TB03020Sjs = (function(){
 					pqGridObjEnopList.setData(data.enoPList);
 
 					//pqGridObjEnopListSetting(data.enoPList);
+
+					$('#fileKey2').val('TB03020S' + '|' + data.dealNo);
 					
 					/******  딜공통 파일첨부 추가 ******/ 
 					$('#key1').val(data.dealNo);
-					getFileInfo($('#key1').val(),'*');
+					getFileInfo($('#key1').val(),$('#fileKey2').val());
 					/******  딜공통 파일첨부 추가 ******/ 
+
+					$('div[data-menuid="/TB03020S"] #UPLOAD_AddFile').attr("disabled", false);
+					$('div[data-menuid="/TB03020S"] #UPLOAD_DelFiles').attr("disabled", false);
 				},
 
 			});
@@ -267,6 +272,9 @@ const TB03020Sjs = (function(){
 
 		$('#TB03020S_dealSclN').attr('checked', true);
 		$('#TB03020S_ptctSclN').attr('checked', true);
+
+		$('div[data-menuid="/TB03020S"] #UPLOAD_AddFile').attr("disabled", true);
+		$('div[data-menuid="/TB03020S"] #UPLOAD_DelFiles').attr("disabled", true);
 
 		// 로그인 사용자정보 재세팅 추후수정
 		loadUserAuth();
