@@ -486,12 +486,12 @@
     <!-- 안건목록조회  -->
     <select id="getDealList" parameterType="com.nanuri.rams.business.common.vo.IBIMS103BVO"
                                resultType="com.nanuri.rams.business.common.vo.IBIMS103BVO">
-		SELECT s103b.DEAL_NO 						AS DEAL_NO								/* 딜번호 */
-				 , s101b.DEAL_NM  					AS DEAL_NM								/* 딜명   */
-		     , s103b.MTR_DCD 						AS MTR_DCD								/* 안건구분코드 */
-		     , s002b_1.CD_VL_NM 				AS MTR_PRG_STTS_DCD_NM 		/* 안건구분코드명 */
+		SELECT s103b.DEAL_NO 					AS DEAL_NO								/* 딜번호 */
+			 , s101b.DEAL_NM  					AS DEAL_NM								/* 딜명  */
+		     , s103b.MTR_DCD 					AS MTR_DCD								/* 안건구분코드 */
+		     , s002b_1.CD_VL_NM 				AS MTR_DCD_NM 	                        /* 안건구분코드명 */
 		     , s103b.JDGM_DCD 					AS JDGM_DCD								/* 심사구분코드 */
-		     , s002b_2.CD_VL_NM 				AS JDGM_DCD_NM						/* 심사구분코드명 */
+		     , s002b_2.CD_VL_NM 				AS JDGM_DCD_NM							/* 심사구분코드명 */
 		     , s103b.CHRR_EMPNO 				AS CHRR_EMPNO		
 		     , (
 				 		SELECT EMP_NM
@@ -557,23 +557,23 @@
 												  AND V.MTR_DCD  = s103b.MTR_DCD
 												  AND V.JDGM_DCD = s103b.JDGM_DCD
 											  )           
-		   AND s201b.LAST_YN											= 'Y'
+		   AND s201b.LAST_YN				= 'Y'
 		  LEFT JOIN IBIMS101B s101b
 			ON s103b.DEAL_NO				= s101b.DEAL_NO
 		 WHERE 1=1
-		   AND s101b.LAST_YN											= 'Y'
-		   AND s103b.LAST_YN											= 'Y'
+		   AND s101b.LAST_YN				= 'Y'
+		   AND s103b.LAST_YN				= 'Y'
  		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
- 		   AND s103b.DEAL_NO                                           LIKE '%' || #{dealNo} || '%'
+ 		   AND s103b.DEAL_NO LIKE '%' || #{dealNo} || '%'
  		   </if>
  		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mtrNm)">
- 		   AND s103b.MTR_NM                                            LIKE '%'|| #{mtrNm}|| '%'
+ 		   AND s103b.MTR_NM LIKE '%'|| #{mtrNm}|| '%'
  		   </if>
 			 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
- 		   AND s103b.DPRT_CD                                           LIKE '%' || #{dprtCd} || '%'
+ 		   AND s103b.DPRT_CD LIKE '%' || #{dprtCd} || '%'
  		   </if>
 			 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
- 		   AND s103b.CHRR_EMPNO                                           LIKE '%' || #{chrrEmpno} || '%'
+ 		   AND s103b.CHRR_EMPNO LIKE '%' || #{chrrEmpno} || '%'
  		   </if>		 
 		 ORDER BY s103b.SN
     </select>

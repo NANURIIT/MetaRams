@@ -322,6 +322,7 @@ function setMtrInfo(e) {
   var apvlAmt = e.apvlAmt;
   var sdnCndtF = e.sdnCndtF;
   var etcCndtF = e.etcCndtF;
+  var mtrDcdNm = e.mtrDcdNm;
 
   var prefix = $("#TB04011P_prefix").val(); // id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
 
@@ -368,6 +369,7 @@ function setMtrInfo(e) {
     let newRow = {
       dealNo: ibDealNo,
       mtrDcd: lstCCaseCcd,
+      mtrDcdNm : mtrDcdNm,
       mtrNm: lstCCaseCcdNm,
       jdgmDcd: riskInspctCcd,
       jdgmDcdNm: riskInspctCcdNm,
