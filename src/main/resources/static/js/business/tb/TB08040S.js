@@ -335,6 +335,7 @@ const TB08040Sjs = (function () {
             align: "right",
             width: "10%",
             format: "#,###.00",
+			editable: true,
           },
         ],
         editable: true,
@@ -871,7 +872,9 @@ const TB08040Sjs = (function () {
       // 저장
       for (let i = 0; i < arr.length; i++) {
         const ele = arr[i];
-        console.log(ele.feeKndCd);
+        console.log(ele.txtnTpDcd);
+		console.log(ele.feeTxtnYn);
+		console.log(ele.rpsrNm);
 
         if (!ele.feeKndCd) {
           sf(2, "warning", `[수수료종류]`);
@@ -885,7 +888,9 @@ const TB08040Sjs = (function () {
           sf(2, "warning", `[수수료과세여부]`);
           return { isValid: false };
         }
-        if (!ele.txtnTpDcd) {
+        if (!ele.txtnTpDcd
+			&& (ele.feeTxtnYn=="1") //과세여부Y
+		) {
           sf(2, "warning", `[과세유형구분코드]`);
           return { isValid: false };
         }
@@ -893,11 +898,16 @@ const TB08040Sjs = (function () {
           sf(2, "warning", `[통화코드]`);
           return { isValid: false };
         }
-        if (!ele.rpsrNm) {
+        if (!ele.rpsrNm
+		  && (ele.txtnTpDcd=="1"||ele.txtnTpDcd=="2" ) //과세유형구분코드가 세금계산서나 계산서일 경우
+		  && (ele.feeTxtnYn=="1") //과세여부Y
+		) {
           sf(2, "warning", `[대표자(주주)]`);
           return { isValid: false };
         }
-        if (!ele.feeStdrAmt) {
+        if (!ele.feeStdrAmt 
+			 && !ele.feeAmt  //수수료금액이 없을경우
+		) {
           sf(2, "warning", `[수수료대상금액]`);
           return { isValid: false };
         }
@@ -905,7 +915,9 @@ const TB08040Sjs = (function () {
           sf(2, "warning", `[수수료대상내용(계산식)]`);
           return { isValid: false };
         }
-        if (!ele.feeRt) {
+        if (!ele.feeRt
+			&& !ele.feeAmt //수수료금액이 없을경우
+		) {
           sf(2, "warning", `[수수료율(%)]`);
           return { isValid: false };
         }
