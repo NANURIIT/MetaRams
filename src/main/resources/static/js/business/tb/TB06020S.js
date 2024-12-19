@@ -312,16 +312,17 @@ const TB06020Sjs = (function(){
 					$('#TB06020S_res_prdtCd').prop('readonly',true);											
 				}					
 				
+				
 				$('#TB06020S_lstCCaseCcd').val(dealDetail.mtrDcd);
 				$('#TB06020S_riskInspctCcd').val(dealDetail.jdgmDcd);	
+				
+				
 				
 				$('#TB06020S_mtrNm').val(dealDetail.mtrNm);														// 안건명
 				$('#TB06020S_apvlDt').val(formatDate(dealDetail.apvlDt));										// 승인일자(결의일자)
 				$('#TB06020S_I008').val(dealDetail.cnsbDcd).prop("selected", true);								// 승인심사기구(결의협의회구분코드)
 				$('#TB06020S_invJdgmComtNo').val(dealDetail.cnsbSq);											// 위원회번호(심사협의회차일련번호)
 				$('#TB06020S_sumApvlAmt').val(Number(dealDetail.sumApvlAmt).toLocaleString());					// 승인금액
-				//$(":radio[name='TB06020S_sdnCndtF']").radioSelect(dealDetail.sdnCndtF);						// 승인조건(셀다운)(셀다운조건여부)
-				//$(":radio[name='TB06020S_etcCndtF']").radioSelect(dealDetail.etcCndtF);						// 승인조건(기타)(기타조건여부)
 				if($('#TB06020S_sdnCndtDwn').val() == 'N') {													// 승인조건(셀다운)(셀다운조건여부)
 					$('#TB06020S_sdnCndtDwn').val('N')
 				} else {
@@ -393,17 +394,16 @@ const TB06020Sjs = (function(){
 				}
 				
 				/******  딜공통 파일첨부 추가 ******/ 
-
-				$('#key1').val(dealDetail.dealNo+'-'+dealDetail.prdtCd);
-				getFileInfo($('#key1').val(),'3');
+				//fileKey2
+				var key2;
+				key2=dealDetail.dealNo+"-"+ dealDetail.prdtCd;
+				$('#fileKey2').val(key2);				
+				$('#key1').val(key2);		
+				getFileInfo($('#key1').val(),key2);				
 				/******  딜공통 파일첨부 추가 ******/ 
 						
 			},
 			error : function(request,  error ){
-				/*console.log("code:"+request.status);
-				console.log("message:"+request.responseText);
-				console.log("error:"+error);
-				*/
 				Swal.fire({
 					title: '안건 조회 확인',
 					icon: 'error',

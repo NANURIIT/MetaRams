@@ -453,11 +453,18 @@ const TB06030Sjs = (function(){
 				}
 
 				/******  딜공통 파일첨부 추가 ******/ 
-
-				$('#key1').val(dealDetail.dealNo+'-'+dealDetail.prdtCd);
-				getFileInfo($('#key1').val(),'3');
+				//$('#key1').val(dealDetail.dealNo+'-'+dealDetail.prdtCd);
+				//getFileInfo($('#key1').val(),'3');
 				/******  딜공통 파일첨부 추가 ******/ 
 				
+				/******  딜공통 파일첨부 추가 ******/ 
+				//fileKey2
+				var key2;
+				key2=dealDetail.dealNo+"-"+ dealDetail.prdtCd;
+				$('#fileKey2').val(key2);				
+				$('#key1').val(key2);
+				getFileInfo($('#key1').val(),key2);				
+				/******  딜공통 파일첨부 추가 ******/ 
 			},
 			error : function(request,  error ){
 				/*console.log("code:"+request.status);
