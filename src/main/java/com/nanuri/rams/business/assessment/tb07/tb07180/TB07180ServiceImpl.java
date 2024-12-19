@@ -25,13 +25,14 @@ public class TB07180ServiceImpl implements TB07180Service {
 	private final AuthenticationFacade facade;
 
 	@Override
-	public List<IBIMS421BDTO> IBIMS421BSelect(String param){
-		return ibims421bMapper.IBIMS421BSelect(param);
+	public List<IBIMS421BDTO> IBIMS421BSelect(String feeName){		
+		return ibims421bMapper.IBIMS421BSelect(feeName);
 	};
 	
 	@Override
 	public int IBIMS421BInsert(IBIMS421BDTO param){
 		param.setHndEmpno(facade.getDetails().getEno());
+		
 		return ibims421bMapper.IBIMS421BInsert(param);
 	};
 
@@ -39,6 +40,12 @@ public class TB07180ServiceImpl implements TB07180Service {
 	public int IBIMS421BUpdate(IBIMS421BDTO param){
 		param.setHndEmpno(facade.getDetails().getEno());
 		return ibims421bMapper.IBIMS421BUpdate(param);
+	};
+	
+	@Override
+	public int IBIMS421BSave(IBIMS421BDTO param){
+		param.setHndEmpno(facade.getDetails().getEno());
+		return ibims421bMapper.mergeFeeKndCd(param);
 	};
 
 	@Override

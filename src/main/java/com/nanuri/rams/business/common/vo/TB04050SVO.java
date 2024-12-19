@@ -121,9 +121,10 @@ public class TB04050SVO {
     private String         sq1ApvlYn;                              // 1차승인여부
     private String         sq2ApvlYn;                              // 2차승인여부
     
-	private String 		   decdDptNm;							   // 부서명
+	//private String 		   decdDptNm;							   // 부서명
 	private String 		   dealNm;								   // 딜명
 	private String 		   empNm;								   // 담당자명
+    private String         dprtNm;                                 // 부서명
 	private String 		   issLtrNm;							   // 발급서류구분코드명
 	private String 		   strtDt;								   // 시작일자
 	private String 		   endDt;								   // 종료일자

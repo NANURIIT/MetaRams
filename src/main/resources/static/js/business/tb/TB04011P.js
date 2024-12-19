@@ -100,8 +100,8 @@ async function callTB04011P(prefix) {
   reset_TB04011P();
   TB04011P_gridState = 0;
   TB04011P_pf = prefix;
-  //setTimeout(() => roadListGrid_TB04011P(), 300);
-  await roadListGrid_TB04011P();
+  setTimeout(() => roadListGrid_TB04011P(), 300);
+  //await roadListGrid_TB04011P();
   $("#TB04011P_prefix").val(prefix);
   $("#modal-TB04011P").modal("show");
   indexChangeHandler("TB04011P");

@@ -176,8 +176,8 @@ function ajaxCall(option) {
       //openPopup({type:"loding",show:false});
     },
   }).then(
-    $.type(option.success) === "function" ? option.success : function () { },
-    $.type(option.fail) === "function" ? option.fail : function () { }
+    $.type(option.success) === "function" ? option.success : function () {},
+    $.type(option.fail) === "function" ? option.fail : function () {}
   );
 }
 
@@ -1118,8 +1118,16 @@ function getSelectBoxList(prefix, item, async = true) {
 
       if (result.length > 0) {
         $.each(result, function (key, value) {
-          if(prefix === "TB05010S" || prefix === "TB05030S"){
-            if (value.cdValue === "0") return; 
+          //일부데이터만 셀렉트박스에 출력할 경우
+          if (prefix === "TB05010S" || prefix === "TB05030S") {
+            if (value.cdValue === "0") return;
+          }
+          if (
+            (prefix === "TB04020S" || prefix === "TB04030S") &&
+            value.cmnsGrpCd == "I011"
+          ) {
+            if (parseInt(value.cdValue) < 200 || parseInt(value.cdValue) >= 300)
+              return;
           }
           var html = "";
           html +=
@@ -1185,24 +1193,7 @@ function getSelectBoxList(prefix, item, async = true) {
             TB04010Sjs.sdvdCd.push(value);
           }
         }
-        if (prefix == "TB04020S") {
-          if (value.cmnsGrpCd == "R016") {
-            // 리스크심사구분
-            var html = "";
-            if (value.cdValue != "0") {
-              html +=
-                '<option value="' +
-                value.cdValue +
-                '">' +
-                value.cdName +
-                " (" +
-                value.cdValue +
-                ")" +
-                "</option>";
-            }
-            $("#TB04020S_I008").append(html);
-          }
-        }
+
         if (prefix == "TB06010S") {
           if (value.cmnsGrpCd == "E022") {
             TB06010Sjs.ldvdCd.push(value);
@@ -1326,7 +1317,7 @@ function getSelectBoxList(prefix, item, async = true) {
 
         if (prefix == "TB05010S") {
           if (value.cmnsGrpCd == "R016") {
-            if (value.cdValue == "0") return; 
+            if (value.cdValue == "0") return;
             // 전결협의체
             var html = "";
             html +=
@@ -1614,15 +1605,15 @@ function setPqGrid(pqGridObjs) {
       numCl = pqGridObj.numberCell || { show: false }, // numberCell ex:::{ show: false, width: 40, resizable: true, title: "" }
       showTt = pqGridObj.showTitle || false, // showTitle
       showTb = pqGridObj.showToolbar || false, // showToolbar
-      cllSv = pqGridObj.cellSave || function (event, ui) { }, // cellSave
+      cllSv = pqGridObj.cellSave || function (event, ui) {}, // cellSave
       edit = pqGridObj.editable || false,
       tlbar = pqGridObj.toolbar || {},
-      rowClick = pqGridObj.rowClick || function (event, ui) { },
+      rowClick = pqGridObj.rowClick || function (event, ui) {},
       selMd = pqGridObj.selectionModel || {}, // { type: 'row' }
-      cellbs = pqGridObj.cellBeforeSave || function (event, ui) { },
-      cellClick = pqGridObj.cellClick || function (event, ui) { },
-      rowSelect = pqGridObj.rowSelect || function (event, ui) { },
-      rowDblClick = pqGridObj.rowDblClick || function (event, ui) { };
+      cellbs = pqGridObj.cellBeforeSave || function (event, ui) {},
+      cellClick = pqGridObj.cellClick || function (event, ui) {},
+      rowSelect = pqGridObj.rowSelect || function (event, ui) {},
+      rowDblClick = pqGridObj.rowDblClick || function (event, ui) {};
 
     let strNoRows = " "; // 최초 생성 시 body msg
 
@@ -1651,7 +1642,7 @@ function setPqGrid(pqGridObjs) {
       rowDblClick: rowDblClick,
       // clipboard: { on: true }, // 클립보드 복사 활성화
       // selectionModel: { type: "cell" } // 셀 선택 활성화
-    // selectionModel: { type: 'cell' }, // 셀 단위 선택 활성화
+      // selectionModel: { type: 'cell' }, // 셀 단위 선택 활성화
       // pageModel   : page
       // dataModel: { data: data },
     };
@@ -1821,33 +1812,38 @@ function resetInputValue(selector) {
     $(this).val($($(this).find("option")[0]).val());
   });
   selector.find(`select[id*="Yn"]`).val("N");
-  selector.find(`input[type="radio"][name*="Yn"][value="N"]`).prop("checked", true);
+  selector
+    .find(`input[type="radio"][name*="Yn"][value="N"]`)
+    .prop("checked", true);
   selector.find(`input[type="text"]`).val("");
-  selector.find(`textarea`).val("")
-  selector.find(`input[id$='Amt']
+  selector.find(`textarea`).val("");
+  selector
+    .find(
+      `input[id$='Amt']
 				       , input[id$='Blce']
 				       , input[id$='Mnum']
 				       , input[id$='Tmrd']
 				       , input[id$='Qnt']
 				       , input[id$='Shqt']
 				       , input[id$='Unpr']
-				       , input[id$='Rt']`).val("0");
+				       , input[id$='Rt']`
+    )
+    .val("0");
   selector.find(`input[id$='Exrt']`).val("1.0");
 
-  selector.find(`input[id$='Dt']`).val(getToday())
+  selector.find(`input[id$='Dt']`).val(getToday());
   let 한달뒤ㅋ = () => {
     let today = new Date();
     today.setMonth(today.getMonth() + 1); // 한 달 뒤로 설정
     let year = today.getFullYear();
-    let month = (today.getMonth() + 1).toString().padStart(2, '0'); // 0부터 시작하므로 +1
-    let day = today.getDate().toString().padStart(2, '0');
+    let month = (today.getMonth() + 1).toString().padStart(2, "0"); // 0부터 시작하므로 +1
+    let day = today.getDate().toString().padStart(2, "0");
 
     return `${year}-${month}-${day}`;
   };
-  selector.find(`input[id$='EndDt']`).val(한달뒤ㅋ)
+  selector.find(`input[id$='EndDt']`).val(한달뒤ㅋ);
 
-  setKRKRW(selector.attr('data-menuid').split('/')[1]);
-
+  setKRKRW(selector.attr("data-menuid").split("/")[1]);
 }
 
 /**
@@ -1960,7 +1956,10 @@ function vldDateVal() {
  */
 function indexChangeHandler(prefix) {
   $(`div[id*="modal-"][style*="block"]`).attr("style", "display: block;");
-  $(`#modal-${prefix}`).attr("style", "z-index: 4000 !important; display: block;");
+  $(`#modal-${prefix}`).attr(
+    "style",
+    "z-index: 4000 !important; display: block;"
+  );
   // $(`div[id*="modal-"]`).css("z-index", "");
   // setTimeout(() => {
   //   $(`#modal-${prefix}`).css("z-index", "4000 !important");
@@ -1996,11 +1995,10 @@ function pqGridAddNewRow(colModelSelector) {
  * @author {김건우}
  */
 function pqGridDeleteRow(colModelSelector, rowIndx) {
-
   let idx = rowIndx;
 
   if (!rowIndx) {
-    idx = colModelSelector.pqGrid('instance').pdata.length - 1
+    idx = colModelSelector.pqGrid("instance").pdata.length - 1;
   }
 
   colModelSelector.pqGrid("deleteRow", {
@@ -2010,14 +2008,13 @@ function pqGridDeleteRow(colModelSelector, rowIndx) {
 
 /**
  * 화면 이동시 작동해야하는 함수
- * 
- * 
+ *
+ *
  * @description
  * 필요한 것 적어놓으세요!!
  * ※ 함수명도 멋있는걸로 바꿔주세요... ※ (중요)
  */
 function needRunFn(menuId) {
-
   // TB04010S 심사신청관리
   if (menuId === "TB04010S") {
     // 딜정보조회!!!!!
@@ -2035,19 +2032,26 @@ function needRunFn(menuId) {
 
 /**
  * 화면내 모든 PG Grid 초기화
- * @param {String} menuid 
- * @author {김건우} 
+ * @param {String} menuid
+ * @author {김건우}
  */
 function resetPGgrids(menuid) {
   // console.log("피큐 그리드 초기화 실행");
-  if ($(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).length != 0) {
-    $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).each(function () {
-      $("#" + $(this).attr('id')).pqGrid('instance').setData([]);
-    })
+  if (
+    $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`)
+      .length != 0
+  ) {
+    $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`).each(
+      function () {
+        $("#" + $(this).attr("id"))
+          .pqGrid("instance")
+          .setData([]);
+      }
+    );
   }
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) { }
+function autoSrchFromPQGrid(pqGridId, url, paramData) {}
 
 /**
  * 팝업 그리드 셀 카피를 위한이벤트
@@ -2063,10 +2067,10 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) { }
 if (!window._keydownEventRegistered) {
   window._keydownEventRegistered = true; // 키다운 이벤트 리스너가 중복 등록되지 않도록 방지
   $(document).keydown(function (event) {
-    if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
+    if ((event.ctrlKey || event.metaKey) && event.key === "c") {
       if (latestClickData !== null) {
         navigator.clipboard.writeText(latestClickData).catch(function (error) {
-          console.log('복사 실패: ' + error);
+          console.log("복사 실패: " + error);
         });
       }
     }

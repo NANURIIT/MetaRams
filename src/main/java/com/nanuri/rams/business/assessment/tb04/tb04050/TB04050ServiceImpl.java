@@ -82,7 +82,7 @@ public class TB04050ServiceImpl implements TB04050Service {
 		param.setIssAmt(param.getIssAmt());				// 발급액
 		param.setIssDt(param.getIssDt());				// 발급일자
 		param.setValtDt(param.getValtDt());				// 유효일자
-		param.setEmpno(param.getEmpno());				// 담당자사번
+		param.setEmpNo(param.getEmpNo());				// 담당자사번
 		param.setIvtgRsltCtns(param.getIvtgRsltCtns()); // 검토요청내용
 		
 		return ibims224BMapper.registLoi(param);
