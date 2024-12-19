@@ -513,7 +513,7 @@
         , C.TOT_RDMP_TMRD
         , C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD
         , NVL(B.MTR_DCD,'') AS MTR_DCD
-        , NVL(C.CTRC_CCLC_DCD, 'NOT') AS CTRC_CCLC_DCD
+        , NVL(C.CTRC_CCLC_DCD, '') AS CTRC_CCLC_DCD
         FROM IBIMS101B A
          , IBIMS103B B
          , PRDT_TB   C
