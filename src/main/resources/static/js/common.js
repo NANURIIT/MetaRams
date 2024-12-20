@@ -15,6 +15,13 @@ $(function () {
 
   setFileUploadEvent(url.split("/")[1]);
 
+  /**
+   * 파일다운로드용 값 세팅
+   */
+  $(`div[data-menuid="/${url.split("/")[1]}"] #key1`)
+    .attr("name", "key1")
+    .val(url.split("/")[1]);
+
   if (
     $('script[src="js/business/tb/TB06011P.js"]').attr("src") ===
     "js/business/tb/TB06011P.js"
@@ -176,8 +183,8 @@ function ajaxCall(option) {
       //openPopup({type:"loding",show:false});
     },
   }).then(
-    $.type(option.success) === "function" ? option.success : function () {},
-    $.type(option.fail) === "function" ? option.fail : function () {}
+    $.type(option.success) === "function" ? option.success : function () { },
+    $.type(option.fail) === "function" ? option.fail : function () { }
   );
 }
 
@@ -1605,15 +1612,15 @@ function setPqGrid(pqGridObjs) {
       numCl = pqGridObj.numberCell || { show: false }, // numberCell ex:::{ show: false, width: 40, resizable: true, title: "" }
       showTt = pqGridObj.showTitle || false, // showTitle
       showTb = pqGridObj.showToolbar || false, // showToolbar
-      cllSv = pqGridObj.cellSave || function (event, ui) {}, // cellSave
+      cllSv = pqGridObj.cellSave || function (event, ui) { }, // cellSave
       edit = pqGridObj.editable || false,
       tlbar = pqGridObj.toolbar || {},
-      rowClick = pqGridObj.rowClick || function (event, ui) {},
+      rowClick = pqGridObj.rowClick || function (event, ui) { },
       selMd = pqGridObj.selectionModel || {}, // { type: 'row' }
-      cellbs = pqGridObj.cellBeforeSave || function (event, ui) {},
-      cellClick = pqGridObj.cellClick || function (event, ui) {},
-      rowSelect = pqGridObj.rowSelect || function (event, ui) {},
-      rowDblClick = pqGridObj.rowDblClick || function (event, ui) {};
+      cellbs = pqGridObj.cellBeforeSave || function (event, ui) { },
+      cellClick = pqGridObj.cellClick || function (event, ui) { },
+      rowSelect = pqGridObj.rowSelect || function (event, ui) { },
+      rowDblClick = pqGridObj.rowDblClick || function (event, ui) { };
 
     let strNoRows = " "; // 최초 생성 시 body msg
 
@@ -2051,7 +2058,7 @@ function resetPGgrids(menuid) {
   }
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) {}
+function autoSrchFromPQGrid(pqGridId, url, paramData) { }
 
 /**
  * 팝업 그리드 셀 카피를 위한이벤트

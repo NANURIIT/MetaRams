@@ -88,9 +88,15 @@
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fileKey1)">
 		   AND FILE_KEY1 = #{fileKey1}
 		   </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fileKey2)">
     	   AND FILE_KEY2 = #{fileKey2}		/* 키2 */
+		   </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(scrnMenuId)">
 		   AND SCRN_MENU_ID = #{scrnMenuId}	/* 화면번호 */
-    	   AND DEL_YN = 'N'
+		   </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(delYn)">
+    	   AND DEL_YN = #{delYn}
+		   </if>
     	 ORDER BY ATCH_FLE_SN
     </select>
 

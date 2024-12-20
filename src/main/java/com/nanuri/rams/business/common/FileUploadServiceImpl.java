@@ -59,6 +59,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 	// 관리이력 파일 조회
 	@Override
 	public List<FileUploadDTO> getListFileInfo(FileUploadDTO vo) {
+		
 		List<FileUploadDTO> list = fileUploadMapper.selectFileList(vo);
 		
 		return list;

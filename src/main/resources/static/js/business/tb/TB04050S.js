@@ -260,7 +260,7 @@ const TB04050Sjs = (function () {
         $("#TB04050S_I029").val(data.invPrdtLclsCd);
         $("#TB04050S_I030").val(data.invPrdtMdclCd);
         $("#TB04050S_I031").val(data.invPrdtClsfCd);
-        $("#TB04050S_I028").val(data.invstGdsDtlsDvdCd); //투자상품 상세분류
+        $("#TB04050S_I028").val(data.invPrdtDtlsDvdCd); //투자상품 상세분류
         $("#TB04050S_dealCntnt").val(data.invDealCntn);
         $("#TB04050S_bnkBd").val(data.bnkBd);
         $("#TB04050S_C006").val(data.ntnCd);
@@ -306,8 +306,8 @@ const TB04050Sjs = (function () {
         $("#TB04050S_intrErn").val(addComma(data.intrErnAmt));
         $("#TB04050S_invstCrncyCd").val(data.crryCd);
         $("#TB04050S_invstCrncyAmt").val(addComma(data.crryAmt));
-        $("#TB04050S_wrtDt").val(formatDate(data.expDt));
-        $("#TB04050S_mtrtDt").val(formatDate(data.mtrtDt));
+        $("#TB04050S_wrtDt").val(formatDate(data.baltDt));
+        $("#TB04050S_mtrtDt").val(formatDate(data.expDt));
 
         /* 기타정보 */
         $("#TB04050S_c_corpRgstNo").val(checkBrnAcno(data.csucCmpDscmNo));

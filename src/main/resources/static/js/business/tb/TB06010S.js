@@ -503,6 +503,9 @@ const TB06010Sjs = (function(){
 		$('#TB06010S_mtrNm').val('');
 		$('#TB06010S_prdtCd').val('');
 		$('#TB06010S_prdtNm').val('');
+
+		$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", true);
+		$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", true);
 		
 		// setKRKRW('TB06010S');
 	}
@@ -725,10 +728,7 @@ const TB06010Sjs = (function(){
 		getIBIMS220BDTOInfo(prdtCd);
 		getAssetInfo(prdtCd);
 		
-		/******  딜공통 파일첨부 추가 ******/ 
-		$('#key1').val(ibDealNo+'-'+prdtCd);
-		getFileInfo($('#key1').val(),'9');
-		/******  딜공통 파일첨부 추가 ******/ 
+		
 	}
 
 	// 결의안건정보
@@ -871,6 +871,19 @@ const TB06010Sjs = (function(){
 				} else {
 					$('#delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
 					$('#regPrdt').attr('disabled', false); 
+
+
+					/******  딜공통 파일첨부 추가 ******/ 
+					// $('#key1').val(ibDealNo+'-'+prdtCd);
+
+					$('#fileKey2').val(dealDetail.prdtCd);
+								
+					
+					getFileInfo($('#key1').val(), $('#fileKey2').val());
+					/******  딜공통 파일첨부 추가 ******/ 
+
+					$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", false);
+					$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", false);
 				}
 			}
 		});/* end of ajax*/

@@ -126,8 +126,8 @@ const TB03030Sjs = (function(){
 					});
 					arrPqGridRmInfo.option("rowClick", function(event, ui) {
 						/******  딜공통 파일첨부 추가 ******/ 
-						$('#key1').val(ui.rowData.entpCd+'-'+ui.rowData.rmSq);
-						getFileInfo($('#key1').val(),'*');
+						let key2 = `${ui.rowData.entpCd}|${ui.rowData.rmSq}`;
+						getFileInfo($('#key1').val(),key2);
 						/******  딜공통 파일첨부 추가 ******/ 
 					});
 					

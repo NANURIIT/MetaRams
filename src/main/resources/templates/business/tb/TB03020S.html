@@ -47,7 +47,7 @@
 											<input type="text" class="form-control" id="selectedMngDealNo"
 												oninput="mngDealNoInput(this);">
 											<input type="hidden" class="form-control" id="selectedDealSq">
-											<input type="hidden" class="form-control" id="key1">
+											<!-- <input type="hidden" class="form-control" id="key1"> -->
 											<span class="input-group-append">
 												<button type="button" class="btn btn-default"
 													onclick="callTB03021P('TB03020S');"><i
@@ -579,12 +579,12 @@
 												<form id="upload-file-form">
 													<input type="hidden" id="fileKey1" name="fileKey1">
 													<input type="hidden" id="fileKey2" name="fileKey2" value="*">
-													<input type="hidden" class="form-control" id="key1">
+													<input type="hidden" class="form-control" id="key1" value="TB03020S">
 													<button class="btn btn-default btn-xs" type="button"
-														id="UPLOAD_AddFile"><i
+														id="UPLOAD_AddFile" disabled><i
 															class="fa fa-upload"></i>&nbsp;파일추가</button>
 													<button class="btn btn-default btn-xs" type="button"
-														id="UPLOAD_DelFiles"><i
+														id="UPLOAD_DelFiles" disabled><i
 															class="fa fa-eraser"></i>&nbsp;파일삭제</button>
 													<div style="display: none">
 														<input type="file" class="custom-file-input"
@@ -598,17 +598,17 @@
 										<table class="table table-bordered">
 											<colgroup>
 												<col style="width: 5%;">
-												<col style="width: 10%;">
-												<col style="width: 10%;">
-												<col style="width: 10%;">
+												<!-- <col style="width: 10%;">
+												<col style="width: 10%;"> -->
+												<col style="width: 20%;">
 												<col style="width: 50%;">
-												<col style="width: 30%;">
+												<col style="width: 40%;">
 											</colgroup>
 											<thead>
 												<tr>
 													<th></th>
-													<th>Main Key</th>
-													<th>Sub Key</th>
+													<!-- <th>Main Key</th>
+													<th>Sub Key</th> -->
 													<th>일련번호</th>
 													<th>파일명</th>
 													<th>등록일자</th>

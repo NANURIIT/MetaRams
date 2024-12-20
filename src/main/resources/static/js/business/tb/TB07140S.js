@@ -503,6 +503,48 @@ const TB07140Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         format: "#,###",
       },
+      {
+        title: "소득세",
+        dataType: "string",
+        dataIndx: "intx",
+        hidden: true,
+      },
+      {
+        title: "지방세",
+        dataType: "string",
+        dataIndx: "lotx",
+        hidden: true,
+      },
+      {
+        title: "거래세",
+        dataType: "string",
+        dataIndx: "trtx",
+        hidden: true,
+      },
+      {
+        title: "전금/지준",
+        dataType: "string",
+        dataIndx: "bfRsvPayDcd",
+        hidden: true,
+      },
+      {
+        title: "결제은행",
+        dataType: "string",
+        dataIndx: "stlXtnlIsttCd",
+        hidden: true,
+      },
+      {
+        title: "결제계좌",
+        dataType: "string",
+        dataIndx: "stlAcno",
+        hidden: true,
+      },
+      {
+        title: "비고",
+        dataType: "string",
+        dataIndx: "fincPayCntn",
+        hidden: true,
+      },
     ];
 
     return TB07140S_colModel;
@@ -520,11 +562,13 @@ const TB07140Sjs = (function () {
         id: "TB07140S_colModel",
         colModel: TB07140S_colModelData(),
         scrollModel: { autoFit: true },
-        editable: true,
-        rowClick: function (event, ui) {
-          
-        },
-        selectionModel: { type: "row" },
+        editable: false,
+        cellClick: function(event, ui) {
+          var rowData = ui.rowData;
+  
+          getFincDetail(rowData);
+        }
+        // selectionModel: { type: "row" },
       },
     ];
     setPqGrid(pqGridObjs);
@@ -879,7 +923,50 @@ const TB07140Sjs = (function () {
       });
     }
 
-    // getFincList();
+    
+  }
+
+  function getFincDetail(rowData){
+
+    let toggleBtn1 = document.querySelector('div[data-menuid="/TB07140S"] .toggleBtn1');
+		let toggleBtn2 = document.querySelector('div[data-menuid="/TB07140S"] .toggleBtn2');
+
+    if ( $('div[data-menuid="/TB07140S"] .btn.btn-s.btn-info').text() === '등록' ) {
+			toggleBtn2.click();
+			$('#TB07140S_trSn').val('');
+		}
+
+    $('#TB07020S_trDt').val(rowData.trDt);
+
+    if ( $('div[data-menuid="/TB07140S"] .btn.btn-s.btn-info').text() === '취소' ) {
+			$('#TB07140S_trSn').val(rowData.trSn);
+		}
+		else
+		{
+			$('#TB07140S_trSn').val('');
+		}
+
+    $('#TB07140S_fincPrcsDcd').val();//출자처리구분코드
+    $('#TB07140S_dprtCd').val();//거래부서
+    $('#TB07140S_dprtNm').val();//거래부서명
+    $('#TB07140S_intx').val();//소득세
+    $('#TB07140S_stlAmt').val();//결제금액
+    $('#TB07140S_trslStlAmt').val();//환산결제금액
+    $('#TB07140S_trtx').val();//거래세
+    $('#TB07140S_fndCd').val();//운용펀드코드
+    $('#TB07140S_fndNm').val();//운용펀드명
+    $('#TB07140S_lotx').val();//지방세
+    $('#TB07140S_bfRsvPayDcd').val();//전금/지준구분코드
+    $('#TB07140S_fincPrcsDcd').val();
+    $('#TB07140S_fincPrcsDcd').val();
+    $('#TB07140S_fincPrcsDcd').val();
+    $('#TB07140S_fincPrcsDcd').val();
+    $('#TB07140S_fincPrcsDcd').val();
+    $('#TB07140S_fincPrcsDcd').val();
+    $('#TB07140S_fincPrcsDcd').val();
+    $('#TB07140S_fincPrcsDcd').val();
+    $('#TB07140S_fincPrcsDcd').val();
+
   }
 
   /*

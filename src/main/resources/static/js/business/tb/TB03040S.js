@@ -3,7 +3,7 @@ const TB03040Sjs = (function(){
 
   $(document).ready(function () {
     setFormElementsStateByUserRole();
-    $(".table").footable();
+    // $(".table").footable();
 
     // 1개월전 ~ 오늘일자 디폴트 세팅
     $("#TB03040S_fromDate").val(addMonth(getToday(), -1));

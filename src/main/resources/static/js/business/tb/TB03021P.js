@@ -5,8 +5,9 @@ let TB03021P_onchangehandler;
 let ibDealNoSrchCnt = 0;
 
 $(document).ready(function () {
-  docRdySettings();
   selectBoxSet_TB03021P();
+  keyDownEnter_TB03021P();
+  modalShowFunction();
 });
 
 //부서 셀렉트박스 세팅
@@ -35,7 +36,9 @@ $("#TB03021P_dprtNm").on("change", function () {
   $("#TB03021P_dprtCd").val(dprtCd);
 });
 
+
 function TB03021P_srch(menuId) {
+  // console.log("일단 체크 해보ㅏ ",$(this).val());
   //input에 값 입력 시 자동 조회
 	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
 		const currentInput = $(this);
@@ -55,6 +58,8 @@ function TB03021P_srch(menuId) {
 			await ibDealNoSrchEvent($(this));
 		}
 	});
+
+  
 
   async function ibDealNoSrchEvent(selector) {
 		let prefix;
@@ -248,12 +253,6 @@ function reset_TB03021P() {
   //$("#TB03021P_datepicker1").val("");
 }
 
-function docRdySettings() {
-  modalShowFunction();
-  keyDownEnter_TB03021P();
-
-}
-
 function modalShowFunction() {
   //모달 오픈 애니메이션 후 포커스 주도록 설정
   $("#modal-TB03021P").on("shown.bs.modal", function () {
@@ -271,7 +270,6 @@ function keyDownEnter_TB03021P() {
       getDealInfo();
     }
   });
-
   $("input[id=TB03021P_ibDealNm]").keydown(function (key) {
     if (key.keyCode == 13) {
       //키가 13이면 실행 (엔터는 13)
@@ -322,6 +320,8 @@ async function getDealInfo() {
       if (!data || data === undefined || data.length === 0) {
 				//console.log("1번조건");
 				TB03021P_gridState = 1;
+        arrPqGridDealInfo.option("strNoRows", "조회된 데이터가 없습니다.");
+        arrPqGridDealInfo.refreshDataAndView();
 			} else if (data.length >= 2) {
 				//console.log("2번조건");
 				TB03021P_gridState = 1;
@@ -329,7 +329,7 @@ async function getDealInfo() {
 				//console.log("3번조건");
 				TB03021P_gridState = 0;
 			}
-      
+
 			setTimeout(() => dataIbDealSetGrid(data) , 400);
     },
   });

@@ -320,7 +320,6 @@ const TB10210Sjs = (function () {
 
 
   $(function () {
-    //
 
     setGrid_TB10210S();
     getAuthCode();

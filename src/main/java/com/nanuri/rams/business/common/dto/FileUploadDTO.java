@@ -21,7 +21,7 @@ public class FileUploadDTO {
     private String scrnMenuId;		/* 화면메뉴ID */
     private String orgFileNm;		/* 파일내용 (원본파일이름) */
     private String rgstDt;			/* 등록일자 */
-    private String dltYn;			/* 삭제여부 */
+    private String delYn;			/* 삭제여부 */
     private String hndlDprtCd;				
     private String hndlPEno	;
 }

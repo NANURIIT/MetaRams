@@ -454,7 +454,7 @@ function calcuKrwTrslValtMrtgPrc(){
 		minAmt = krwTrslStupTopAmt;
 	}
 	
-	krwTrslValtMrtgPrc = comma(Number(minAmt)* Number(cprnMrtgRto));
+	krwTrslValtMrtgPrc = comma((Number(minAmt)* Number(cprnMrtgRto)/100));
 	$("#TB06013P_krwTrslValtMrtgPrc").val(krwTrslValtMrtgPrc);
 }
 

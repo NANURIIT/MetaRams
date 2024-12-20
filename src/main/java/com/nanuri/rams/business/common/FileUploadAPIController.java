@@ -46,8 +46,9 @@ public class FileUploadAPIController {
 	@PostMapping(value = "/uploadCmFile")
 	public FileUploadDTO uploadFile(
 			@RequestParam("uploadfile") MultipartFile uploadfile
-			// , @RequestParam(value = "fileKey1", required=false) String fileKey1
-			, @RequestParam(value = "fileKey2", required = false) String fileKey2) {
+			, @RequestParam(value = "fileKey2", required = false) String fileKey2
+			, @RequestParam(value = "key1", required = false) String key1
+			) {
 
 		/*
 		 * if(StringUtil.isNullOrEmpty(lstCCaseCcd)) { LocalDateTime today =
@@ -72,10 +73,9 @@ public class FileUploadAPIController {
 		log.debug(arrExpn.length + "");
 		dto.setSvFileExpnsnNm(arrExpn[arrExpn.length - 1]);
 		dto.setSvFileSz(fileInfo.getSize());
-		dto.setScrnMenuId(null);
 		dto.setOrgFileNm(fileInfo.getOriginalName());
+		dto.setScrnMenuId(key1);
 		// dto.setRgstDt(fileInfo.getRgstDt());
-		dto.setScrnMenuId("AB01011S");
 
 		FileUploadervice.registFileInfo(dto);
 
@@ -105,15 +105,18 @@ public class FileUploadAPIController {
 			FileUploadervice.deleteFileInfo(dto);
 
 			vo.setFileKey1(fileKey1.get(i));
+			// vo.setDelYn("Y");
+
 			List<FileUploadDTO> delFiles = FileUploadervice.getListFileInfo(vo);
 
-			FileUtil.deleteFile(delFiles.get(i).getSvFilePathNm(), delFiles.get(i).getSvFileNm());
+			FileUtil.deleteFile(delFiles.get(0).getSvFilePathNm(), delFiles.get(0).getSvFileNm());
 		}
 
 		vo = new FileUploadVO();
 
 		vo.setFileKey2(fileKey2);
 		vo.setScrnMenuId(ScrnMenuId);
+		vo.setDelYn("N");
 
 		List<FileUploadDTO> list = FileUploadervice.getListFileInfo(vo);
 
@@ -124,11 +127,15 @@ public class FileUploadAPIController {
 	@GetMapping(value = "/getCmFiles")
 	public List<FileUploadDTO> getFileList(
 			// @RequestParam(value = "fileKey1", required=false) String fileKey1
-			@RequestParam(value = "fileKey2", required = false) String fileKey2) {
+			@RequestParam(value = "fileKey2", required = false) String fileKey2
+			, @RequestParam(value = "ScrnMenuId", required = false) String ScrnMenuId
+			) {
 
 		FileUploadVO vo = new FileUploadVO();
 		// vo.setFileKey1(fileKey1);
 		vo.setFileKey2(fileKey2);
+		vo.setScrnMenuId(ScrnMenuId);
+		vo.setDelYn("N");
 
 		List<FileUploadDTO> list = FileUploadervice.getListFileInfo(vo);
 

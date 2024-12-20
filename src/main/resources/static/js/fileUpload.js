@@ -54,7 +54,7 @@ function setFileUploadEvent (menuId) {
     // }
 
     $.ajax({
-      url: "/FileUpload/uploadCmFile",
+      url: `/FileUpload/uploadCmFile`,
       type: "POST",
       data: new FormData($(`div[data-menuid="/${menuId}"]` + " #upload-file-form")[0]),
       enctype: "multipart/form-data",
@@ -212,6 +212,7 @@ function getFileInfo(key1, key2) {
   let paramData = {
     fileKey1: fileKey1,
     fileKey2: fileKey2,
+    ScrnMenuId: menuId
   };
 
   $.ajax({

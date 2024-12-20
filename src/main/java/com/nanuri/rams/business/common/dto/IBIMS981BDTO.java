@@ -22,7 +22,7 @@ public class IBIMS981BDTO {
     private String dudtDpchTpDcd;       //  기일통보유형코드
     private String chrrStfno;           //  담당자직원번호
     private String subChrrStfno;        //  부담당자직원번호
-    private String mngmOrgno;           //  관리조직번호
+    private String mngmBdcd;           //  관리조직번호
     // private String erlmDt;              //  등록일자
     private String rgstDt;              //  등록일자
     private String actnPrarDt;          //  조치예정일자
