@@ -174,7 +174,7 @@ function regIBIMS208B() {
   }
 
   var paramData = {
-    dealNo: $("#"+$("#TB06012P_prefix").val()+"_ibDealNo").val(), // 딜번호
+    dealNo: $("#TB06012P_ibDealNo").val(), // 딜번호
     sn: $("#TB06012P_sn").val(), // 일련번호
     sdwnDtDcd: $("#TB06012P_D007").val(), // 샐다운일자구분코드
     sdwnTlmtMnum: $("#TB06012P_sdwnTlmtMnum").val(), // 샐다운기한개월수
