@@ -38,6 +38,7 @@ public class TB08040ServiceImpl implements TB08040Service {
 	@Override
 	public List<IBIMS348BVO> srchFeeSch(IBIMS348BDTO input) {
 		String prdtCd = input.getPrdtCd(); // 종목코드
+		
 
 		List<IBIMS348BVO> outFeeSch = ibims348Bmp.selectFeeScxInfoList(prdtCd);
 
@@ -70,9 +71,7 @@ public class TB08040ServiceImpl implements TB08040Service {
 					ibims348bvo.setPrdtCd(prdtCd);		// 종목코드
 					ibims348bvo.setFeeSn(newFeeSn);		// 수수료일련번호
 					ibims348bvo.setRgstSttsCd("1");	// 등록상태코드
-					ibims348bvo.setActsCd("0");	// 계정과목코드
-					ibims348bvo.setIfrsFeeRcogDcd(""); // ifrs수수료인식구분코드
-					ibims348bvo.setBusiNmcpCplTxtnYn(""); // 사업부수수료과세여부
+					//ibims348bvo.setActsCd("0");	// 계정과목코드
 					ibims348bvo.setPrcsCpltYn("N"); // 처리완료여부
 					/* TODO */
 					ibims348bvo.setFeeRcivDt("");	// 수수료수납일자
@@ -89,6 +88,7 @@ public class TB08040ServiceImpl implements TB08040Service {
 					ibims348bvo.setRqsRgstYn(""); // 신청등록여부
 					// ibims348bvo.setExcSn(0); // 실행일련번호
 					ibims348bvo.setDcRt(BigDecimal.ZERO); // 할인율
+					ibims348bvo.setHndEmpno(eno);
 					ibims348bvo.setHndTmnlNo(""); // 조작단말기번호
 					ibims348bvo.setHndTrId(""); 	// 조작거래ID
 					ibims348bvo.setGuid(""); 			// GUID

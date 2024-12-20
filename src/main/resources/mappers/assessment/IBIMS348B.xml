@@ -63,7 +63,12 @@
              , PYMT_FEE					/* 지급수수료 */
              , RQS_RGST_YN				/* 신청등록여부 */			 
 			 , ACTS_CD 					/* 계정과목코드 */
-			 , '' AS ACTS_NM 			/* 계정과목명 */
+			 , (SELECT L.CD_VL_NM
+					FROM IBIMS002B L
+					WHERE 1=1
+					AND L.CMNS_CD_GRP =  'A005'
+					AND L.CD_VL_ID = A.ACTS_CD
+				) AS ACT_NAME 			/* 계정과목명 */
 			 , EXC_SN					/* 실행일련번호 */
 			 , DC_RT					/* 할인율 */
 			 , RPSR_NM					/* 대표자명 */
@@ -146,7 +151,12 @@
              , PYMT_FEE					/* 지급수수료 */
              , RQS_RGST_YN				/* 신청등록여부 */			 
 			 , ACTS_CD 					/* 계정과목코드 */
-			 , '' AS ACTS_NM 			/* 계정과목명 */
+			 , (SELECT L.CD_VL_NM
+					FROM IBIMS002B L
+					WHERE 1=1
+					AND L.CMNS_CD_GRP =  'A005'
+					AND L.CD_VL_ID = A.ACTS_CD
+				) AS ACT_NAME 			/* 계정과목명 */
 			 , EXC_SN					/* 실행일련번호 */
 			 , DC_RT					/* 할인율 */
 			 , RPSR_NM					/* 대표자명 */
@@ -221,7 +231,12 @@
              , PYMT_FEE					/* 지급수수료 */
              , RQS_RGST_YN				/* 신청등록여부 */			 
 			 , ACTS_CD 					/* 계정과목코드 */
-			 , '' AS ACTS_NM 			/* 계정과목명 */
+			 , (SELECT L.CD_VL_NM
+					FROM IBIMS002B L
+					WHERE 1=1
+					AND L.CMNS_CD_GRP =  'A005'
+					AND L.CD_VL_ID = A.ACTS_CD
+				) AS ACT_NAME 			/* 계정과목명 */
 			 , EXC_SN					/* 실행일련번호 */
 			 , DC_RT					/* 할인율 */
 			 , RPSR_NM					/* 대표자명 */
@@ -297,7 +312,12 @@
              , PYMT_FEE					/* 지급수수료 */
              , RQS_RGST_YN				/* 신청등록여부 */			 
 			 , ACTS_CD 					/* 계정과목코드 */
-			 , '' AS ACTS_NM 			/* 계정과목명 */
+			 , (SELECT L.CD_VL_NM
+					FROM IBIMS002B L
+					WHERE 1=1
+					AND L.CMNS_CD_GRP =  'A005'
+					AND L.CD_VL_ID = A.ACTS_CD
+				) AS ACT_NAME 			/* 계정과목명 */
 			 , EXC_SN					/* 실행일련번호 */
 			 , DC_RT					/* 할인율 */
 			 , RPSR_NM					/* 대표자명 */

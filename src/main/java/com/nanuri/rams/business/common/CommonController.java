@@ -52,7 +52,6 @@ public class CommonController {
 
         log.debug("체크########", facade.getDetails().getEno());
 
-        
         model.addAttribute("menuListM", menuListM); // 화면권한리스트
         model.addAttribute("menuList", menuList); // 화면권한리스트
         model.addAttribute("userAuth", userAuth); // 접속자 정보
