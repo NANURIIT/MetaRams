@@ -113,9 +113,10 @@ function setFileUploadEvent (menuId) {
     let _tr = $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_FileList").children();
 
     for (let i = 0; i < _tr.length; i++) {
-      let delKey = $(_tr[i]).find("td:eq(1)").attr('data-filekey');
-      console.log(delKey);
-      _arr.push(delKey);
+      if($(_tr[i]).find("td:eq(0)").find('input').prop('checked') === true){
+        let delKey = $(_tr[i]).find("td:eq(1)").attr('data-filekey');
+        _arr.push(delKey);
+      }
     }
 
     if (_arr.length != 0) {
@@ -285,9 +286,9 @@ function makeFilList(html, result) {
   html += "    </td>";
   html += `    <td style='display: none;' data-fileKey='${result.fileKey1}'></td>`;
   // html += "    <td>" + result.fileKey2 + "</td>";
-  html += "    <td>" + result.atchFleSn + "</td>";
+  // html += "    <td>" + result.atchFleSn + "</td>";
   html += '    <td><a href="' + encUri + '">' + result.orgFileNm + "</a></td>";
-  html += "    <td>" + result.rgstDt + "</td>";
+  html += "    <td style='text-align: center;'>" + formatDate(result.rgstDt) + "</td>";
   html += "</tr>";
 
   return html;
