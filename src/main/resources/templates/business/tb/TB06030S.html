@@ -721,17 +721,23 @@
 									<div class="ibox-title">
 										<h5>▶ 관련자료</h5>
 										<div class="ibox-tools">
-											<div th:fragment="file" id="file-upload">
+											<div th:fragment="file" id="file-upload_TB06030S" style="display: none">
 												<form id="upload-file-form">
 												    <input type="hidden" id="fileKey1" name="fileKey1">
 													<input type="hidden" id="fileKey2" name="fileKey2" value="*">
 													<input type="hidden" class="form-control" id="key1">
-													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile" disabled><i class="fa fa-upload"></i>&nbsp;파일추가</button>
-													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles" disabled><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile" ><i class="fa fa-upload"></i>&nbsp;파일추가</button>
+													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles" ><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
 													<div style="display: none">
 														<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
 													</div>
 												</form>
+											</div>
+											<div th:fragment="file" id="file-upload-temp_TB06030S" style="display: block">
+													<button class="btn btn-default btn-xs" type="button" disabled>													
+														<i class="fa fa-upload"></i>&nbsp;파일추가</button>
+													<button class="btn btn-default btn-xs" type="button" disabled>
+														<i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
 											</div>
 										</div>
 									</div>
