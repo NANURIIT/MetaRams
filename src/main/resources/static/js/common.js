@@ -1770,7 +1770,12 @@ $(function () {
 
   // 모달 드래그
   $(function () {
-    $(".modal-dialog").draggable();
+    $(".modal-header.metis-modal-header").on('mousedown', function(){
+      $(".modal-dialog").draggable();
+    })
+    $(".modal-header.metis-modal-header").on('mouseup', function(event){
+      $(".modal-dialog").draggable("destroy");
+    })
   });
 
   // 모달 사이즈 조절
@@ -2071,18 +2076,21 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) { }
  * 	copyClickData('TB03022P', clickData);  //셀 카피 가능
   });
  */
-if (!window._keydownEventRegistered) {
-  window._keydownEventRegistered = true; // 키다운 이벤트 리스너가 중복 등록되지 않도록 방지
-  $(document).keydown(function (event) {
-    if ((event.ctrlKey || event.metaKey) && event.key === "c") {
-      if (latestClickData !== null) {
-        navigator.clipboard.writeText(latestClickData).catch(function (error) {
-          console.log("복사 실패: " + error);
-        });
-      }
-    }
-  });
-}
+// if (!window._keydownEventRegistered) {
+//   window._keydownEventRegistered = true; // 키다운 이벤트 리스너가 중복 등록되지 않도록 방지
+//   $(document).keydown(function (event) {
+//     if ((event.ctrlKey || event.metaKey) && event.key === "c") {
+//       console.log("복사");
+//       if (latestClickData !== null) {
+//         navigator.clipboard.writeText(latestClickData).catch(function (error) {
+//           console.log("복사 실패: " + error);
+//         });
+//       }else {
+//         console.log("클릭데이타없음");
+//       }
+//     }
+//   });
+// }
 
 function copyClickData(clickData) {
   latestClickData = clickData;

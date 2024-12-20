@@ -54,7 +54,7 @@ const TB06050Sjs = (function() {
                     $(`input[name='radioGroup-fincCnvsPsblYn_2'][value='${data[0].fincCnvsPsblYn2}']`).prop("checked", true)
                     $(`input[name='radioGroup-expXtnsCndIvtgYn_1'][value='${data[0].expXtnsCndIvtgYn}']`).prop("checked", true)
                     $(`input[name='radioGroup-expXtnsCndIvtgYn_2'][value='${data[0].expXtnsCndIvtgYn2}']`).prop("checked", true)
-                    $(`input[name='radioGroup-elpdFdmpCndIvtgYn_1'][value='${data[0].elpdFdmpCndIvtgYn}']`).prop("checked", true)
+                    $(`input[name='radioGroup-elpdFdmpCndIvtgYn_3'][value='${data[0].elpdFdmpCndIvtgYn}']`).prop("checked", true)
                     $(`input[name='radioGroup-sobnIvtgYn_1'][value='${data[0].sobnIvtgYn}']`).prop("checked", true)
                     $(`input[name='radioGroup-sobnIvtgYn_2'][value='${data[0].sobnIvtgYn2}']`).prop("checked", true)
                     $(`input[name='radioGroup-sobnIvtgYn_3'][value='${data[0].sobnIvtgYn3}']`).prop("checked", true)
@@ -131,6 +131,8 @@ const TB06050Sjs = (function() {
         //     url = 'updateSPPIData'; // update
         // }
 
+        var sppiSfcYn = judgeSppiSfcYn();
+
         let paramData = {
               prdtCd: prdtCd
             , nsFndCd: $('#TB06050S_nsFndCd').val()
@@ -153,7 +155,7 @@ const TB06050Sjs = (function() {
             , spcInvIvtgYn: $(`input[name='radioGroup-spcInvIvtgYn_1']:checked`).val()
             , tnchStdIvtgYn: $(`input[name='radioGroup-tnchStdIvtgYn_1']:checked`).val()
             , tnchStdIvtgYn2: $(`input[name='radioGroup-tnchStdIvtgYn_2']:checked`).val()
-            , sppiSfcYn: 'N'
+            , sppiSfcYn: sppiSfcYn
         }
 
         console.log(paramData);
@@ -201,11 +203,77 @@ const TB06050Sjs = (function() {
         setRadioGroup();
     }
 
+    function judgeSppiSfcYn(){
+        if($(`input[name='radioGroup-paiRdmpCnclCndXstcYn_1']:checked`).val()=='Y'){
+            return 'N';
+        }else if($(`input[name='radioGroup-intrRtCndIntgYn_1']:checked`).val()=='Y'|| $(`input[name='radioGroup-intrRtCndIntgYn_2']:checked`).val()=='Y'){
+            return 'N';
+        }else if($(`input[name='radioGroup-intrRtCndIntgYn_3']:checked`).val()=='Y'|| $(`input[name='radioGroup-intrRtCndIntgYn_4']:checked`).val()=='Y'
+        || $(`input[name='radioGroup-intrRtCndIntgYn_5']:checked`).val()=='Y'){
+            return 'N';
+        }else if($(`input[name='radioGroup-fincCnvsPsblYn_1']:checked`).val()=='Y'|| $(`input[name='radioGroup-fincCnvsPsblYn_2']:checked`).val()=='Y'){
+            return 'N';
+        }else if($(`input[name='radioGroup-expXtnsCndIvtgYn_1']:checked`).val()=='N'|| $(`input[name='radioGroup-expXtnsCndIvtgYn_2']:checked`).val()=='N'
+        || $(`input[name='radioGroup-elpdFdmpCndIvtgYn_3']:checked`).val()=='N'){
+            return 'N';
+        }else if($(`input[name='radioGroup-sobnIvtgYn_1']:checked`).val()=='N'|| $(`input[name='radioGroup-sobnIvtgYn_2']:checked`).val()=='N'
+        || $(`input[name='radioGroup-sobnIvtgYn_3']:checked`).val()=='N'){
+            return 'N';
+        }else if($(`input[name='radioGroup-spcInvIvtgYn_1']:checked`).val()=='N'){
+            return 'N';
+        }else if($(`input[name='radioGroup-tnchStdIvtgYn_1']:checked`).val()=='N'||$(`input[name='radioGroup-tnchStdIvtgYn_2']:checked`).val()=='N'){
+            return 'N';
+        }
+        return 'Y';
+    }
+
 
     // 삭제
     function deleteSPPIData() {
 
         console.log("삭제버튼");
+
+        let prdtCd;
+        
+        prdtCd = $('#TB06050S_prdtCd').val()
+       
+        let paramData = {
+              prdtCd: prdtCd
+        }
+
+        console.log(paramData);
+
+        $.ajax({
+            type: "POST",
+            url: `/TB06050S/deleteSPPIData`,
+            contentType: "application/json; charset=UTF-8",
+            data: JSON.stringify(paramData),
+            success: function (data) {
+                if(data > 0){
+                    Swal.fire({
+                        icon: 'success'
+                        , title: "Success!"
+                        , text: "삭제 성공!"
+                        , confirmButtonText: "확인"
+                    });
+                }else{
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "삭제 실패!"
+                        , confirmButtonText: "확인"
+                    });
+                }
+            }, error: function (e) {
+                console.log(e);
+                Swal.fire({
+                    icon: 'error'
+                    , title: "Error!"
+                    , text: "정보 삭제 실패! 잠시 후 다시 시도 해주세요"
+                    , confirmButtonText: "확인"
+                });
+            }
+        });
     }
 
 	return {

@@ -50,6 +50,7 @@
               , RGST_DT                                  /* 등록일자 */
               , RGST_SN                                  /* 등록일련번호 */
               , NS_FND_CD                                /* 펀드코드 */
+              , NS_PRDT_DCD                              /* 고유자산상품구분코드 */
               , BUSI_MDL_DCD                             /* 사업모형구분코드 */
               , PAI_RDMP_CNCL_CND_XSTC_YN                /* 원리금상환취소조건존재여부 */
               , INTR_RT_CND_INTG_YN                      /* 이자율조건검토여부 */
@@ -84,9 +85,12 @@
                 #{prdtCd}
               ,  TO_CHAR(SYSDATE, 'YYYYMMDD')
               , '1'
-              , #{nsFndCd}
-              , #{nsPrdtDcd}
-              , #{busiMdlDcd}
+              , (SELECT ORTN_FND_CD 
+                 FROM IBIMS201B 
+                 WHERE PRDT_CD = #{prdtCd} 
+                   AND LAST_YN = 'Y')
+              , '00'
+              , ''
               , #{paiRdmpCnclCndXstcYn}
               , #{intrRtCndIntgYn}
               , #{intrRtCndIntgYn2}
@@ -164,5 +168,10 @@
            AND NS_FND_CD = #{nsFndCd}
            AND NS_PRDT_DCD = #{nsPrdtDcd}
     </update>
+
+    <delete id="deleteSPPIData" parameterType="com.nanuri.rams.business.common.vo.IBIMS206BVO">
+    DELETE FROM IBIMS206B
+    WHERE PRDT_CD = #{prdtCd}
+    </delete>
 
 </mapper>

@@ -48,5 +48,11 @@ public class TB06050ServiceImpl implements TB06050Service {
 		param.setHndEmpno(facade.getDetails().getEno());
 		return ibims206bMapper.updateSPPIData(param);
 	};
+	@Override
+	public int deleteSPPIData(IBIMS206BVO param){
+		return ibims206bMapper.deleteSPPIData(param);
+	};
+
+	
 
 }

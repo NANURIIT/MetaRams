@@ -13,6 +13,8 @@ public interface IBIMS206BMapper {
     public int insertSPPIData(IBIMS206BVO param);
 
     public int updateSPPIData(IBIMS206BVO param);
-
+    
+    public int deleteSPPIData(IBIMS206BVO param);
+    
 
 }

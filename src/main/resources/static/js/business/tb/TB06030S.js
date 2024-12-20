@@ -241,7 +241,9 @@ const TB06030Sjs = (function(){
 		})
 	}
 
-	function resetSearchRequiment() {
+	function resetSearchRequiment() {		
+		$("#UPLOAD_FileList").html(""); // 테이블 리셋
+		console.log("초기화");
 		resetInputValue($('div[data-menuid="/TB06030S"]'));
 		$('#TB06030S_ibDealNo').val('');
 		$('#TB06030S_riskInspctCcdNm').val('');
@@ -251,8 +253,7 @@ const TB06030Sjs = (function(){
 		$('#TB06030S_ibDealNm').val('');
 		$('#TB06030S_prdtCd').val('');
 		$('#TB06030S_prdtNm').val('');
-		$('#TB06030S_mtrNm').val('');
-		
+		$('#TB06030S_mtrNm').val('');		
 		/*
 		let inputLength = $("#page-TB06030S :input").length;
 		for (let i = 0; i < inputLength; i++) {
@@ -267,12 +268,12 @@ const TB06030Sjs = (function(){
 		$('#file-upload_TB06030S').attr("style","display: none");
 		$('#file-upload-temp_TB06030S').attr("style", "display: block");
 		
+		//화면ID중복시에는 적용이 안되는듯
 		var key2;
 		key2="-"; //
 		$('#fileKey2').val(key2);				
 		$('#key1').val("TB06020S");		
 		getFileInfo($('#key1').val(),key2);
-
 	}
 
 	function getDealList() {

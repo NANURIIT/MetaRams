@@ -15,4 +15,5 @@ public interface TB06050Service {
 
 	public int updateSPPIData(IBIMS206BVO param);
 
+	public int deleteSPPIData(IBIMS206BVO param);
 }

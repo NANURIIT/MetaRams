@@ -8,8 +8,6 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import com.nanuri.rams.business.common.vo.IBIMS206BVO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Slf4j
@@ -33,6 +31,11 @@ public class TB06050APIController {
 	@PostMapping("/updateSPPIData")
     public int updateSPPIData(@RequestBody IBIMS206BVO param){
 		return tb06050Service.updateSPPIData(param);
+	};
+
+	@PostMapping("/deleteSPPIData")
+    public int deleteSPPIData(@RequestBody IBIMS206BVO param){
+		return tb06050Service.deleteSPPIData(param);
 	};
 
 }
