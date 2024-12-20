@@ -233,7 +233,7 @@ const TB07100Sjs = (function () {
       {
         title: "순번",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "sn",
         halign: "center",
         align: "center",
         width: '5%',
@@ -248,33 +248,51 @@ const TB07100Sjs = (function () {
         align: "left",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        editable: true,
       },
       {
         title: "차변금액",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "index1",
         halign: "center",
         align: "right",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        editable: true,
+        render	 : function (ui) {
+          let cellData = ui.cellData;
+          if (cellData !== null && cellData !== undefined) {
+            return addComma(cellData); 
+          }
+          return cellData; 
+        }
       }
       , {
         title: "대변금액",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "index2",
         halign: "center",
         align: "right",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        editable: true,
+        render	 : function (ui) {
+          let cellData = ui.cellData;
+          if (cellData !== null && cellData !== undefined) {
+            return addComma(cellData); 
+          }
+          return cellData; 
+        }
       },
       {
         title: "적요",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "index3",
         halign: "center",
-        align: "right",
+        align: "center",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        editable: true,
       },
       {
         title: "차량등록코드",
@@ -304,15 +322,17 @@ const TB07100Sjs = (function () {
         align: "center",
         //width: '5%',
         filter: { crules: [{ condition: 'range' }] },
+        editable: true,
       },
       {
         title: "펀드코드",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "index4",
         halign: "center",
         align: "right",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        editable: true,
       },
       {
         title: "프로젝트ID",
@@ -390,7 +410,7 @@ const TB07100Sjs = (function () {
       , acctDt2: unformatDate($("#TB07100S_acctDt2").val())           //  회계기간
       , rslnBdcd: $("#TB07100S_dprtCd").val()                         //  부서코드  rslnBdcd
       , actsCd: $('#TB07100S_A005').val()                        //  계정과목
-      , bcncNm: $("#TB07100S_2_entpNm").val()                         //  거래처명
+      , bcncNm: $("#TB07100S_entpNm").val()                         //  거래처명
       , prufKndDcd: "2"                                               //  계산서
     }
 
@@ -694,6 +714,15 @@ const TB07100Sjs = (function () {
 
   function addRow(){
     console.log("행추가");
+    var gridData = $("#TB07100S_grd_thdtTrDtls").pqGrid("option", "dataModel.data");
+    var rowCount = gridData ? gridData.length : 0;
+    const newRow = {
+      chkDel: "",
+      sn: rowCount+1,
+      actsCd: "",
+  };
+  $("#TB07100S_grd_thdtTrDtls").pqGrid("addRow", { rowData: newRow, checkEditable: false });
+    
   }
 
   function delRow(){
