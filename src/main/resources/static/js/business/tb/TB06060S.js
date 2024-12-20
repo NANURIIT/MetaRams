@@ -351,15 +351,6 @@ const TB06060Sjs = (function(){
         }); 
     }
 
-
-    $('#TB06060S_prdtCd').on('change', function() {
-        $('#TB06060S_prdtNm').val('');
-    });
-
-    $('#TB06060S_ibDealNo').on('change', function() {
-        $('#TB06060S_ibDealNm').val('');
-    });
-
     function setFlow(index){
 
         var flow =  Math.floor(index / Math.pow(10, String(index).length - 1));
