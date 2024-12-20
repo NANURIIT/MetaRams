@@ -584,15 +584,26 @@ const TB04010Sjs = (function () {
           arrPqGridDealListInfo.setData(data);
           arrPqGridDealListInfo.option("rowDblClick", function (event, ui) {
             setTabContents(ui.rowData);
+            var dealNo = ui.rowData.dealNo || "";
+            var mtrDcd = ui.rowData.mtrDcd || "";
+            var jdgmDcd = ui.rowData.jdgmDcd || "";
+            var sn = ui.rowData.sn || 0;
+
+            var key2 = dealNo + mtrDcd + jdgmDcd + sn;
+            console.log("확인해보자: ", key2);
+            getFileInfo("", key2);
+            $('div[data-menuid="/TB04010S"] #UPLOAD_AddFile').attr(
+              "disabled",
+              false
+            );
+            $('div[data-menuid="/TB04010S"] #UPLOAD_DelFiles').attr(
+              "disabled",
+              false
+            );
           });
         },
       });
     }
-
-    /******  딜공통 파일첨부 추가 ******/
-    $("#key1").val(ibDealNo);
-    getFileInfo($("#key1").val(), "4");
-    /******  딜공통 파일첨부 추가 ******/
   }
 
   // 화면에서 deal Info 검색 후 더블클릭 set
@@ -973,8 +984,8 @@ const TB04010Sjs = (function () {
       data: paramData,
       dataType: "json",
       success: function (data) {
-        console.log("TEST_여기 들어옴!! 성공이야");
-        arrPqGridDocInfo.setData(data);
+        //console.log("TEST_여기 들어옴!! 성공이야");
+        //arrPqGridDocInfo.setData(data);
         arrPqGridDocInfo.option("rowDblClick", function (event, ui) {
           docInfoDetails(ui.rowData);
         });
@@ -2160,157 +2171,161 @@ const TB04010Sjs = (function () {
    */
   // 관련문서정보 초기화
   function tab2BtnReset() {
-    $("#TB04010S_dcmNo").val(""); // 문서번호
-    $(":radio[name='TB04010S_lastDcmYn']").radioSelect("Y"); // 최종문서여부
-    $("#TB04010S_rm").val(""); // 비고(URLLINK)
-    $("#TB04010S_tab2_sn").val(""); // 일련번호
-    $("#TB04010S_docInfo").html("");
+    $("#UPLOAD_FileList").html(""); // 테이블 리셋
+    $('div[data-menuid="/TB04010S"] #UPLOAD_AddFile').attr("disabled", true);
+    $('div[data-menuid="/TB04010S"] #UPLOAD_DelFiles').attr("disabled", true);
+
+    // $("#TB04010S_dcmNo").val(""); // 문서번호
+    // $(":radio[name='TB04010S_lastDcmYn']").radioSelect("Y"); // 최종문서여부
+    // $("#TB04010S_rm").val(""); // 비고(URLLINK)
+    // $("#TB04010S_tab2_sn").val(""); // 일련번호
+    // $("#TB04010S_docInfo").html("");
   }
 
   // 관련문서저장 삭제
-  function tab2BtnDelete() {
-    var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
-    var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
-    var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
-    var sn = Number($("#TB04010S_tab2_sn").val()); // 일련번호
+  // function tab2BtnDelete() {
+  //   var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
+  //   var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
+  //   var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
+  //   var sn = Number($("#TB04010S_tab2_sn").val()); // 일련번호
 
-    var option = {};
-    option.title = "Warning";
-    option.type = "warning";
+  //   var option = {};
+  //   option.title = "Warning";
+  //   option.type = "warning";
 
-    if (isEmpty(dealNo)) {
-      option.text = "Deal 정보를 조회해주세요.";
-      openPopup(option);
-      return false;
-    }
+  //   if (isEmpty(dealNo)) {
+  //     option.text = "Deal 정보를 조회해주세요.";
+  //     openPopup(option);
+  //     return false;
+  //   }
 
-    if (sn == 0) {
-      option.text = "관련문서정보를 선택해주세요.";
-      openPopup(option);
-      return false;
-    }
+  //   if (sn == 0) {
+  //     option.text = "관련문서정보를 선택해주세요.";
+  //     openPopup(option);
+  //     return false;
+  //   }
 
-    businessFunction();
+  //   businessFunction();
 
-    function businessFunction() {
-      var paramData = {
-        dealNo: dealNo,
-        sn: sn,
-        mtrDcd: mtrDcd,
-        jdgmDcd: jdgmDcd,
-      };
+  //   function businessFunction() {
+  //     var paramData = {
+  //       dealNo: dealNo,
+  //       sn: sn,
+  //       mtrDcd: mtrDcd,
+  //       jdgmDcd: jdgmDcd,
+  //     };
 
-      $.ajax({
-        type: "POST",
-        url: "/TB04010S/deleteDocInfo",
-        data: paramData,
-        dataType: "json",
-        success: function () {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "문서정보를 삭제하였습니다.",
-            confirmButtonText: "확인",
-          }).then((result) => {
-            getDocInfo(dealNo, mtrDcd, jdgmDcd);
-          });
-        },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "문서정보를 삭제하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
-    }
-  }
+  //     $.ajax({
+  //       type: "POST",
+  //       url: "/TB04010S/deleteDocInfo",
+  //       data: paramData,
+  //       dataType: "json",
+  //       success: function () {
+  //         Swal.fire({
+  //           icon: "success",
+  //           title: "Success!",
+  //           text: "문서정보를 삭제하였습니다.",
+  //           confirmButtonText: "확인",
+  //         }).then((result) => {
+  //           getDocInfo(dealNo, mtrDcd, jdgmDcd);
+  //         });
+  //       },
+  //       error: function () {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "Error!",
+  //           text: "문서정보를 삭제하는데 실패하였습니다.",
+  //           confirmButtonText: "확인",
+  //         });
+  //       },
+  //     });
+  //   }
+  // }
 
   // 관련문서정보 저장
-  function tab2BtnSave() {
-    // 안건구조 탭의 부수안건, 리스크심사구분 (pk) 가 조회되었는지 여부 판단
-    if (
-      isEmpty($("#TB04010S_L007").val()) &&
-      !$("#TB04010S_L007").prop("disabled") &&
-      isEmpty($("#TB04010S_R014").val()) &&
-      !$("#TB04010S_R014").prop("disabled")
-    ) {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "안건구조 등록 및 조회 이후 진행바랍니다.",
-        confirmButtonText: "확인",
-      });
-      // 에러메세지 출력후 tab1으로 이동 및 부수안건 input에 포커스
-      $('#ramsTab a[href="#tab-1"]').tab("show");
-      $("#TB04010S_L007").focus();
-      return;
-    }
-    var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
-    var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
-    var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
+  // function tab2BtnSave() {
+  //   // 안건구조 탭의 부수안건, 리스크심사구분 (pk) 가 조회되었는지 여부 판단
+  //   if (
+  //     isEmpty($("#TB04010S_L007").val()) &&
+  //     !$("#TB04010S_L007").prop("disabled") &&
+  //     isEmpty($("#TB04010S_R014").val()) &&
+  //     !$("#TB04010S_R014").prop("disabled")
+  //   ) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "안건구조 등록 및 조회 이후 진행바랍니다.",
+  //       confirmButtonText: "확인",
+  //     });
+  //     // 에러메세지 출력후 tab1으로 이동 및 부수안건 input에 포커스
+  //     $('#ramsTab a[href="#tab-1"]').tab("show");
+  //     $("#TB04010S_L007").focus();
+  //     return;
+  //   }
+  //   var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
+  //   var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
+  //   var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
 
-    var dcmNo = $("#TB04010S_dcmNo").val(); // 문서번호
-    var lastDcmYn = $("input[name=TB04010S_lastDcmYn]:checked").val(); // 최종문서여부
-    var rm = $("#TB04010S_rm").val(); // 비고(URLLINK)
-    var sn = Number($("#TB04010S_tab2_sn").val()); // 일련번호
+  //   var dcmNo = $("#TB04010S_dcmNo").val(); // 문서번호
+  //   var lastDcmYn = $("input[name=TB04010S_lastDcmYn]:checked").val(); // 최종문서여부
+  //   var rm = $("#TB04010S_rm").val(); // 비고(URLLINK)
+  //   var sn = Number($("#TB04010S_tab2_sn").val()); // 일련번호
 
-    var option = {};
-    option.title = "Error";
-    option.type = "error";
+  //   var option = {};
+  //   option.title = "Error";
+  //   option.type = "error";
 
-    if (isEmpty(dealNo)) {
-      option.text = "Deal 정보를 조회해주세요.";
-      openPopup(option);
-      return false;
-    }
+  //   if (isEmpty(dealNo)) {
+  //     option.text = "Deal 정보를 조회해주세요.";
+  //     openPopup(option);
+  //     return false;
+  //   }
 
-    if (isEmpty(dcmNo)) {
-      option.text = "문서번호를 입력해주세요.";
-      openPopup(option);
-      return false;
-    }
+  //   if (isEmpty(dcmNo)) {
+  //     option.text = "문서번호를 입력해주세요.";
+  //     openPopup(option);
+  //     return false;
+  //   }
 
-    businessFunction();
+  //   businessFunction();
 
-    function businessFunction() {
-      var paramData = {
-        dealNo: dealNo,
-        dcmNo: dcmNo,
-        lastDcmYn: lastDcmYn,
-        rm: rm,
-        sn: sn,
-        mtrDcd: mtrDcd,
-        jdgmDcd: jdgmDcd,
-      };
+  //   function businessFunction() {
+  //     var paramData = {
+  //       dealNo: dealNo,
+  //       dcmNo: dcmNo,
+  //       lastDcmYn: lastDcmYn,
+  //       rm: rm,
+  //       sn: sn,
+  //       mtrDcd: mtrDcd,
+  //       jdgmDcd: jdgmDcd,
+  //     };
 
-      $.ajax({
-        type: "POST",
-        url: "/TB04010S/registDocInfo",
-        data: paramData,
-        dataType: "json",
-        success: function () {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "문서정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          }).then((result) => {
-            getDocInfo(dealNo, mtrDcd, jdgmDcd);
-          });
-        },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "문서정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
-    }
-  }
+  //     $.ajax({
+  //       type: "POST",
+  //       url: "/TB04010S/registDocInfo",
+  //       data: paramData,
+  //       dataType: "json",
+  //       success: function () {
+  //         Swal.fire({
+  //           icon: "success",
+  //           title: "Success!",
+  //           text: "문서정보를 저장하였습니다.",
+  //           confirmButtonText: "확인",
+  //         }).then((result) => {
+  //           getDocInfo(dealNo, mtrDcd, jdgmDcd);
+  //         });
+  //       },
+  //       error: function () {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "Error!",
+  //           text: "문서정보를 저장하는데 실패하였습니다.",
+  //           confirmButtonText: "확인",
+  //         });
+  //       },
+  //     });
+  //   }
+  // }
 
   // 기초자산 초기화
   function tab3BtnReset() {
