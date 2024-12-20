@@ -4,16 +4,38 @@
 // 전역 변수를 window 속성으로 정의 (중복 선언 방지)
 window.latestClickData = window.latestClickData || null;
 
-/** onload **/
-$(function () {
-  /**
-   * keydown, onchange 이벤트 생성
-   * @author {김건우}
-   */
+/**
+ * keydown, onchange 이벤트 생성
+ * @author {김건우}
+ */
+function settingFunction() {
 
   const url = window.location.pathname;
 
   setFileUploadEvent(url.split("/")[1]);
+
+  /**
+   * 모달 드래그 이벤트
+   */
+  $(`.modal-header.metis-modal-header:not([data-event])`).on('mousedown', function () {
+    $(this).attr("data-event", "on");
+    // draggable 초기화
+    $(".modal-dialog").draggable();
+
+    $(document).on("mouseup.draggableDestroy", function () {
+      // draggable 비활성화
+      // $(".modal-dialog").draggable("destroy");
+
+      if ($(".modal-dialog").data("ui-draggable")) {
+        $(".modal-dialog").draggable("destroy");
+      }
+
+      // mouseup 이벤트 해제 (중복 방지)
+      $(document).off("mouseup.draggableDestroy");
+
+      console.log("드래그 비활성화 및 이벤트 해제 완료");
+    });
+  });
 
   /**
    * 파일다운로드용 값 세팅
@@ -54,7 +76,6 @@ $(function () {
     $('script[src="js/business/tb/TB03061P.js"]').attr("src") ===
     "js/business/tb/TB03061P.js"
   ) {
-    console.log("기업체팝업");
     TB03061P_srchMtr(url);
   }
 
@@ -94,42 +115,7 @@ $(function () {
   });
   $(".input-group.clockpicker").clockpicker({});
 
-  /**
-   * 심심해서 만들어봄 (폐기)
-   */
-  // $(document).on('keydown', function(event) {
-  // 	if (event.shiftKey && event.code === "Digit1") {
-  // 		moveTab($($('#myTab li')[0]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // 	else if (event.shiftKey && event.code === "Digit2") {
-  // 		moveTab($($('#myTab li')[1]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // 	else if (event.shiftKey && event.code === "Digit3") {
-  // 		moveTab($($('#myTab li')[2]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // 	else if (event.shiftKey && event.code === "Digit4") {
-  // 		moveTab($($('#myTab li')[3]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // 	else if (event.shiftKey && event.code === "Digit5") {
-  // 		moveTab($($('#myTab li')[4]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // 	else if (event.shiftKey && event.code === "Digit6") {
-  // 		moveTab($($('#myTab li')[5]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // 	else if (event.shiftKey && event.code === "Digit7") {
-  // 		moveTab($($('#myTab li')[6]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // 	else if (event.shiftKey && event.code === "Digit8") {
-  // 		moveTab($($('#myTab li')[7]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // 	else if (event.shiftKey && event.code === "Digit9") {
-  // 		moveTab($($('#myTab li')[8]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // 	else if (event.shiftKey && event.code === "Digit0") {
-  // 		moveTab($($('#myTab li')[9]).attr('data-tabid').split('/')[1]);
-  // 	}
-  // });
-});
+}
 
 /**
  * 비동기 통신함수
@@ -1752,43 +1738,6 @@ function newAddMonth(d, n) {
 /*************************************************************************
  * common ui js						                                     *
  *************************************************************************/
-// 내부 content 높이 가져오기 (내부 스크롤)
-$(function () {
-  // let innerH = window.innerHeight;
-  // let navH = $('.navbar').height();
-  // let headerH = $('.page-heading').height();
-  // let tabH = $('.top-nav-tabs').height();
-  // let footerH = $('.footer').height();
-  // $('.wrapper-content').height(innerH - navH - tabH - headerH - footerH - 62 + 'px');
-  // $(window).resize(function () {
-  // 	let innerH = window.innerHeight;
-  // 	let navH = $('.navbar').height();
-  // 	let headerH = $('.page-heading').height();
-  // 	let footerH = $('.footer').height();
-  // 	$('.wrapper-content').height(innerH - navH - tabH - headerH - footerH - 62 + 'px');
-  // });
-
-  // 모달 드래그
-  $(function () {
-    $(".modal-header.metis-modal-header").on('mousedown', function(){
-      $(".modal-dialog").draggable();
-    })
-    $(".modal-header.metis-modal-header").on('mouseup', function(event){
-      $(".modal-dialog").draggable("destroy");
-    })
-  });
-
-  // 모달 사이즈 조절
-  // $('.modal-dialog').on('show.bs.modal', function () {
-  // 	if( option.maxWidth !== ""){
-  // 		$(this).find('.modal-dialog > .modal-content').attr('style', 'max-width: ' + option.maxWidth + 'px;'); // modal.scss의 max-width를 override
-  // 	}
-  // 	$(this).find('.modal-body > .modal-content').css({'max-height':'100%'});
-  // 	if( option.contentHref !== ""){
-  // 		$(this).find(".modal-body").load(option.contentHref);
-  // 	}
-  // });
-});
 
 // 초기화
 // 페이지 로드 시, 입력 요소의 초기 값

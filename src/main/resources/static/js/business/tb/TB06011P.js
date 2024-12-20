@@ -1,7 +1,7 @@
-var arrPqGridPrdtCdList = [];
+var TB06011P_arrPqGridPrdtCdList = [];
 let TB06011P_pf;
 let TB06011P_gridState = 1;
-let srchCnt = 0;
+let TB06011P_srchCnt = 0;
 let TB06011P_onchangehandler = "on";	// on off
 
 /**
@@ -94,7 +94,7 @@ function TB06011P_srchPrdt(menuId) {
 		// 인풋박스 밸류
 		let data = $(selector).val();
 		$('#TB06011P_prdtCd').val(data);
-		await getGridState();
+		await TB06011P_getGridState();
 	
 		// 팝업 오픈
 		if (TB06011P_gridState === 0) {
@@ -387,9 +387,9 @@ var colPrdtCdList = [
 
 //그리드 호출
 function roadPrdtCdListGrid() {
-	arrPqGridPrdtCdList = $("#TB06011P_prdtCdList").pqGrid('instance');
+	TB06011P_arrPqGridPrdtCdList = $("#TB06011P_prdtCdList").pqGrid('instance');
 
-	if (typeof arrPqGridPrdtCdList == "undefined") {
+	if (typeof TB06011P_arrPqGridPrdtCdList == "undefined") {
 
 		var obj = {
 
@@ -408,11 +408,11 @@ function roadPrdtCdListGrid() {
 		};
 
 		$("#TB06011P_prdtCdList").pqGrid(obj);
-		arrPqGridPrdtCdList = $("#TB06011P_prdtCdList").pqGrid('instance');
+		TB06011P_arrPqGridPrdtCdList = $("#TB06011P_prdtCdList").pqGrid('instance');
 
 	}
 	else {
-		arrPqGridPrdtCdList.setData([]);
+		TB06011P_arrPqGridPrdtCdList.setData([]);
 	}
 
 }
@@ -421,34 +421,34 @@ function roadPrdtCdListGrid() {
 //그리드에 데이터 넣기 (CRUD)
 function dataPrdtCdSetGrid(data) {
 
-	arrPqGridPrdtCdList.setData(data);
+	TB06011P_arrPqGridPrdtCdList.setData(data);
 
-	arrPqGridPrdtCdList.option("strNoRows", '조회된 데이터가 없습니다.');
+	TB06011P_arrPqGridPrdtCdList.option("strNoRows", '조회된 데이터가 없습니다.');
 
-	arrPqGridPrdtCdList.on("cellDblClick", function (event, ui) {
+	TB06011P_arrPqGridPrdtCdList.on("cellDblClick", function (event, ui) {
 		var rowData = ui.rowData;
-		setPrdtInfo(rowData);
+		TB06011P_setPrdtInfo(rowData);
 	});
 
 	// 검색된 행이 1개일 경우 데이터 바로 입력
-	if (arrPqGridPrdtCdList.pdata.length === 1 && $(`div[id='modal-TB06011P']`).css('display') === "none") {
+	if (TB06011P_arrPqGridPrdtCdList.pdata.length === 1 && $(`div[id='modal-TB06011P']`).css('display') === "none") {
 		console.log("여기로와야해");
-		setPrdtInfo(arrPqGridPrdtCdList.pdata[0]);
-		srchCnt = 0;
+		TB06011P_setPrdtInfo(TB06011P_arrPqGridPrdtCdList.pdata[0]);
+		TB06011P_srchCnt = 0;
 	}
 	// 검색된 행이 0일 경우 모든 데이터 출력
 	// 변부장님 지시로 삭제
-	// else if (arrPqGridPrdtCdList.pdata.length === 0) {
+	// else if (TB06011P_arrPqGridPrdtCdList.pdata.length === 0) {
 	// 	console.log("딴길로 새지마라");
 	// 	// 데이터 없는 경우 재조회 방지
-	// 	srchCnt += 1;
+	// 	TB06011P_srchCnt += 1;
 	// 	$('#TB06011P_prdtCd').val("");
 	// 	getPrdtCdList();
 	// }
 	// 그렇지 않은 경우 조건에 맞는 데이터 출력
 	else {
 		// console.log("해쥐맬라고우~");
-		srchCnt = 0;
+		TB06011P_srchCnt = 0;
 	}
 
 }
@@ -456,21 +456,24 @@ function dataPrdtCdSetGrid(data) {
 // 초기설정
 $(document).ready(function () {
 	// TB06011P_srchPrdt();
-	docRdySettings();
+	console.log("ㅎㅇ");
+	TB06011P_docRdySettings();
 });
 
 /**
 	문서로드시 세팅
  */
-function docRdySettings() {
-	modalShowFunction();
+function TB06011P_docRdySettings() {
+	console.log("문서로드시 세팅");
+	TB06011P_modalShowFunction();
 	keyDownEnter_TB06011P();
 }
 
 /**
  * 모달 오픈 애니메이션 후 포커스 주도록 설정
  */
-function modalShowFunction() {
+function TB06011P_modalShowFunction() {
+	console.log("모달 오픈 애니메이션 후 포커스 헤헤");
 	$('#modal-TB06011P').on('shown.bs.modal', function () {
 		$('#modal-TB06011P input[id=TB06011P_prdtCd]').focus();
 	});
@@ -480,14 +483,18 @@ function modalShowFunction() {
  * 키다운엔터이벤트
  */
 function keyDownEnter_TB06011P() {
-	$("input[id=TB06011P_prdtCd]").keydown(function (key) {
-		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
+	console.log("키다운 엔터 이벤트");
+	$("input[id='TB06011P_prdtCd']").keydown(function (event) {
+		console.log("ㅎㅇ");
+		if (event.keyCode === 13) {//키가 13이면 실행 (엔터는 13)
+			console.log("ㅎㅇ");
 			getPrdtCdList();
 		}
 	});
 
-	$("input[id=TB06011P_prdtNm]").keydown(function (key) {
-		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
+	$("input[id='TB06011P_prdtNm']").keydown(function (event) {
+		if (event.keyCode === 13) {//키가 13이면 실행 (엔터는 13)
+			console.log("ㅎㅇ");
 			getPrdtCdList();
 		}
 	});
@@ -519,7 +526,7 @@ function callTB06011P(prefix) {
  */
 function modalClose_TB06011P() {
 	TB06011P_gridState = 1;
-	if (typeof fnltPgGrid != "undefined") arrPqGridPrdtCdList.setData([]);
+	if (typeof fnltPgGrid != "undefined") TB06011P_arrPqGridPrdtCdList.setData([]);
 	//$('#TB06011P_prdtCdList').pqGrid("destroy");
 	$('#modal-TB06011P').modal('hide');
 };
@@ -576,9 +583,9 @@ async function getPrdtCdList() {
 		dataType: "json",
 		success: function (data) {
 
-			if(srchCnt >= 2){
+			if(TB06011P_srchCnt >= 2){
 				alert("조회된 정보가 없습니다!")
-				srchCnt = 0;
+				TB06011P_srchCnt = 0;
 				return;
 			}
 			// console.log("진짜 쿼리", data);
@@ -587,7 +594,7 @@ async function getPrdtCdList() {
 	});
 }
 
-async function getGridState() {
+async function TB06011P_getGridState() {
 
 	var trDvsn = '';
 
@@ -646,7 +653,7 @@ async function getGridState() {
 /**
  * dblclick event function
  */
-function setPrdtInfo(e) {
+function TB06011P_setPrdtInfo(e) {
 
 	var tr = $(e);
 	var td = $(tr).children();

@@ -8,7 +8,7 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@ToString(callSuper = true)
+@ToString
 /* 
 IB승인조건내역 - 대출채권/채무보증 정보(TB06010S) - 셀다운승인조건 Table.IBIMS208B VO
 */
