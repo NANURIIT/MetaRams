@@ -242,6 +242,7 @@ const TB06030Sjs = (function(){
 	}
 
 	function resetSearchRequiment() {
+		resetInputValue($('div[data-menuid="/TB06030S"]'));
 		$('#TB06030S_ibDealNo').val('');
 		$('#TB06030S_riskInspctCcdNm').val('');
 		$('#TB06030S_riskInspctCcd').val('');
@@ -257,13 +258,21 @@ const TB06030Sjs = (function(){
 		for (let i = 0; i < inputLength; i++) {
 			$("#page-TB06030S :input:eq("+i+")").val("");
 			
-		}*/
-		resetInputValue($('div[data-menuid="/TB06030S"]'));
+		}*/		
 		$('#TB06030S_res_prdtCd').prop('readonly',false);
 		$('#TB06030S_registApvlCnd').attr('disabled', true);
 		$('#TB06030S_registMrtgCnnc').attr('disabled', true);
-		$('#UPLOAD_AddFile').attr('disabled', true);
-		$('#UPLOAD_DelFiles').attr('disabled', true);
+		//$('#UPLOAD_AddFile').attr('disabled', true);
+		//$('#UPLOAD_DelFiles').attr('disabled', true);
+		$('#file-upload_TB06030S').attr("style","display: none");
+		$('#file-upload-temp_TB06030S').attr("style", "display: block");
+		
+		var key2;
+		key2="-"; //
+		$('#fileKey2').val(key2);				
+		$('#key1').val("TB06020S");		
+		getFileInfo($('#key1').val(),key2);
+
 	}
 
 	function getDealList() {
@@ -406,15 +415,19 @@ const TB06030Sjs = (function(){
 					$('#TB06030S_delPrdt').attr('disabled', true); 
 					$('#TB06030S_registApvlCnd').attr('disabled', true);
 					$('#TB06030S_registMrtgCnnc').attr('disabled', true);
-					$('#UPLOAD_AddFile').attr('disabled', true);
-					$('#UPLOAD_DelFiles').attr('disabled', true);
+					//$('#UPLOAD_AddFile').attr('disabled', true);
+					//$('#UPLOAD_DelFiles').attr('disabled', true);
+					$('#file-upload_TB06030S').attr("style","display: none");
+					$('#file-upload-temp_TB06030S').attr("style", "display: block");
 				} else {
 					$('#TB06030S_regPrdt').attr('disabled', false); 
 					$('#TB06030S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
 					$('#TB06030S_registApvlCnd').attr('disabled', false);
 					$('#TB06030S_registMrtgCnnc').attr('disabled', false);
-					$('#UPLOAD_AddFile').attr('disabled', false);
-					$('#UPLOAD_DelFiles').attr('disabled', false);
+					//$('#UPLOAD_AddFile').attr('disabled', false);
+					//$('#UPLOAD_DelFiles').attr('disabled', false);
+					$('#file-upload_TB06030S').attr("style","display: block");
+					$('#file-upload-temp_TB06030S').attr("style", "display: none");
 				}
 				
 				/** 출자정보 */

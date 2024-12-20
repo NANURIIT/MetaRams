@@ -4,9 +4,10 @@
 	
 		<!-- 셀렉트박스 코드, 밸류 취득 -->
 	<select id="getSelectBox" resultType="java.util.HashMap">
-		SELECT FEE_KND_CD 		AS "cdValue"                 <!-- 코드값ID -->   
-			 , FEE_NAME         AS "cdName1"                 <!-- 코드값명 -->     
-		     , ACT_NAME			AS "cdName2"                 <!-- 코드값명 -->         
+		SELECT FEE_KND_CD 		AS "feeKndCd"                 <!-- 코드값ID -->   
+			 , FEE_NAME         AS "feeName"                 <!-- 코드값명 -->     
+		     , ACTS_CD			AS "actsCd"                  <!-- 코드값명 -->   
+		     , ACT_NAME			AS "actName"                 <!-- 코드값명 -->            
 		  FROM IBIMS421B  
 		 WHERE 1=1
 		 ORDER BY TO_NUMBER(FEE_KND_CD) ASC

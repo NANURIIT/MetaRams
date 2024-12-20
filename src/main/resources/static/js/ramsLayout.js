@@ -136,7 +136,12 @@ function chkPrevPage() {
 
     if (chk_menu === undefined) {
         window.location.href = "/TB02010S"
-    } else if (chk_menu != undefined && url_ref.indexOf("/TB") != -1 && url_ref.indexOf("TB02010S") === -1 && url === "/TB02010S") {
+    } else if (
+        chk_menu != undefined 
+        && (url_ref.indexOf("/TB") != -1 || url_ref.indexOf("/GD") != -1)
+        && url_ref.indexOf("TB02010S") === -1 
+        && url === "/TB02010S"
+    ) {
         const titleNm = $(`li[data-sidetabid="${result_id[result_id.length - 1]}"] a`).html();
         callPage(result_id[result_id.length - 1], titleNm);
     }
