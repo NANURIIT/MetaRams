@@ -148,6 +148,8 @@ const TB05030Sjs = (function(){
             dataType: "string",
             dataIndx: "MMBRChk",
             align: "center",
+            minWidth: 36,  
+            maxWidth: 36,  
             editable : true,
             filter: { crules: [{ condition: "range" }] },
             editor: false,
@@ -478,10 +480,8 @@ const TB05030Sjs = (function(){
         }else{
           arrPqGridCaseInfo.setData(data);
           arrPqGridCaseInfo.option("rowDblClick", function (event, ui) {
-            let dealNo = ui.rowData.dealNo;
-
-            $('#key1').val(ui.rowData.cnsbDcd+'-'+ui.rowData.cnsbSq+'-'+ui.rowData.rsltnYr+'-'+ui.rowData.sn);
-            getFileInfo($('#key1').val(),'*');
+            let key2 = `${ui.rowData.cnsbDcd}|${ui.rowData.cnsbSq}|${ui.rowData.rsltnYr}|${ui.rowData.sn}`;
+            getFileInfo($('#key1').val(),key2);
             CNFRNCDetail(ui.rowData);
           });
         }
@@ -545,18 +545,39 @@ const TB05030Sjs = (function(){
     let colModel = JSON.parse(JSON.stringify(colMmbrInfo));
     
     // 편집을 제어할 컬럼 목록
-    const targetColumns = ["atdcYn", "aprvOppsDcdNm", "opnnCtns"];
+    const targetColumns = ["MMBRChk","atdcYn", "aprvOppsDcdNm", "opnnCtns"];
 
     // 특정 컬럼의 편집 상태만 변경
     colModel.forEach(function (col) {
       if (targetColumns.includes(col.dataIndx)) {
         col.editable = isEditable; // 편집 가능/불가능 상태 동적 변경
         col.editor = isEditable ? col.editor : null; // 편집 가능할 때만 editor 유지
+        // MMBRChk 컬럼의 헤더 체크박스를 비활성화
+        // if (col.dataIndx === "MMBRChk") {
+        //   if (isEditable) {
+        //       // 헤더 체크박스 클릭을 막는 이벤트 처리
+        //       col.cb.header = true; // 체크박스 선택 못하게 비활성화
+        //   } else {
+        //       col.cb.header = false; // 편집 가능 시 헤더 체크박스 활성화
+        //   }
+        // }
       }
     });
 
     // 변경된 colModel을 pqGrid에 적용
     $("#gridMmbrInfo").pqGrid("option", "colModel", colModel);
+
+    // 헤더 체크박스 클릭을 막는 코드
+    // if (!isEditable) {
+    //   // MMBRChk 헤더 클릭을 막기 위해 이벤트 리스너 추가
+    //   $("#gridMmbrInfo").on("checkAll", function (event, ui) {
+    //       // MMBRChk 헤더의 체크를 막기 위해 이벤트를 취소
+    //       ui.checked = false; // 체크 상태 변경을 방지
+    //   });
+    // } else {
+    //     // 편집 가능 상태에서 체크박스 클릭 이벤트를 다시 활성화
+    //     $("#gridMmbrInfo").off("checkAll");
+    // }
   }
 
   function getMMBRInfo(paramData) {
