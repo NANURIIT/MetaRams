@@ -9,7 +9,14 @@ const TB03030Sjs = (function(){
 		$('#addRmActivityBtn').prop('disabled', true);
 		$("#TB03030S_entpRnm").focus();
 		rendorGrid();		// 그리드 렌더링
+		TB03030S_setFileButtonEnabled(false);
 	});
+
+	function TB03030S_setFileButtonEnabled(isEnabled) {
+		// enabled가 true이면 버튼 활성화, false이면 비활성화
+		$("#UPLOAD_AddFile").prop("disabled", !isEnabled);  
+		$("#UPLOAD_DelFiles").prop("disabled", !isEnabled);
+	}
 	
 	// 그리드 렌더링함수
 	function rendorGrid () {
@@ -28,11 +35,11 @@ const TB03030Sjs = (function(){
 			, colModel  : colRmInfo
 			},
 			{
-				height    : 145
-			  , maxHeight : 145
-			  , id        : 'gridRmFileInfo'
-			  , colModel  : colRmFileInfo
-			  }
+			  height    : 145
+			, maxHeight : 145
+			, id        : 'gridRmFileInfo'
+			, colModel  : colRmFileInfo
+			}
 	
 			
 		]
@@ -47,23 +54,34 @@ const TB03030Sjs = (function(){
 	// 화면 초기화
 	const rmReset = (() => {
 		let fmIputLngth = document.querySelectorAll("input").length;
+		console.log("fmIputLngth : ", fmIputLngth)
 		for (let i = 0; i < fmIputLngth; i++) {
 			document.querySelectorAll("input")[i].value = "";
 		}
+		TB03030S_clearAllGrid();
+		TB03030S_setFileButtonEnabled(false);
+	});
+
+	function TB03030S_clearAllGrid(){
+
 		$("#gridRmEntpInfo").pqGrid("option", "dataModel.data", []);
 		$("#gridRmEntpInfo").pqGrid("refreshDataAndView");
 		$("#gridRmInfo").pqGrid("option", "dataModel.data", []);
 		$("#gridRmInfo").pqGrid("refreshDataAndView");
 		$("#gridRmFileInfo").pqGrid("option", "dataModel.data", []);
 		$("#gridRmFileInfo").pqGrid("refreshDataAndView");
-	});
+
+		$('#UPLOAD_FileList').empty();                    //관련자료
+		
+	}
 	
 	// RM대상 조회
 	function getEntpInfo() {
-		
+		TB03030S_setFileButtonEnabled(false);
 		let entpCd = $('#TB03030S_entpCd').val();
 		let entpHnglNm = $('#TB03030S_entpRnm').val();
 		businessFunction();
+		TB03030S_clearAllGrid();	
 	
 		function businessFunction() {
 	
@@ -80,7 +98,7 @@ const TB03030Sjs = (function(){
 				success: function(data) {
 					arrPqGridRmEntpInfo.setData(data);
 					arrPqGridRmEntpInfo.option("rowDblClick", function(event, ui) {
-						setRmInfo(ui.rowData);
+						setRmInfo(ui.rowData); // RM활동이력 조회
 
 						// 더블 클릭 시 RM활동신규 버튼 활성화
 						$('#addRmActivityBtn').prop('disabled', false);
@@ -108,6 +126,7 @@ const TB03030Sjs = (function(){
 		$("#TB03030S_bsrnRgstNo").val(rowData.bsnsRgstNo);
 		$("#TB03030S_entpCd").val(rowData.entpCd);
 		$("#TB03030S_entpNm").val(rowData.entpHnglNm);
+
 		function businessFunction() {
 	
 			var dtoParam = {
@@ -125,16 +144,55 @@ const TB03030Sjs = (function(){
 						setFileInfo(ui.rowData);
 					});
 					arrPqGridRmInfo.option("rowClick", function(event, ui) {
+						TB03030S_setFileButtonEnabled(true);
 						/******  딜공통 파일첨부 추가 ******/ 
 						let key2 = `${ui.rowData.entpCd}|${ui.rowData.rmSq}`;
-						getFileInfo($('#key1').val(),key2);
+						let cnt2 = getFileInfo($('#key1').val(),key2);
+						// 파일 추가/삭제에 대한 이벤트 리스너 추가
+						// addFileChangeListener(ui.rowData);
 						/******  딜공통 파일첨부 추가 ******/ 
 					});
 					
 				}
 			});
 			
+			
 		}
+
+		// 파일 추가/삭제 시 변화를 감지하고 재조회하는 함수
+		// function addFileChangeListener(rowData) {
+		// 	const targetNode = document.getElementById('UPLOAD_FileList');
+		// 	const gridFileCount = $('#UPLOAD_FileList tr').length;//UPLOAD_FileList에서 파일 건수 구하기
+
+		// 	if (!targetNode) {
+		// 		console.warn('파일 목록 테이블이 없습니다.');
+		// 		return;
+		// 	}
+	
+		// 	// MutationObserver 설정 (자식 추가/삭제 감시)
+		// 	const observer = new MutationObserver(function(mutationsList) {
+		// 		for (const mutation of mutationsList) {
+		// 			if (mutation.type === 'childList') {
+		// 				console.log('파일 추가/삭제 감지됨!');
+		// 				// 파일 건수 비교 후 재조회
+		// 				let currentFileCount = rowData.fileCnt; // 현재 파일 건수
+		// 				console.log("currentFileCount : ",currentFileCount)
+		// 				console.log("gridFileCount : ",gridFileCount)
+		// 				// 파일 건수가 다를 경우에만 재조회
+		// 				if (currentFileCount !== gridFileCount) {
+		// 					console.log('파일 건수가 달라서 재조회합니다.');
+		// 					businessFunction(rowData); // 재조회
+		// 				} else {
+		// 					console.log('파일 건수가 동일하여 재조회하지 않습니다.');
+		// 				}
+		// 			}
+		// 		}
+		// 	});
+	
+		// 	// 감시 시작
+		// 	observer.observe(targetNode, { childList: true, subtree: true });
+		// 	console.log('파일 목록 감시 시작!');
+		// }
 	
 	}
 	
@@ -333,7 +391,7 @@ const TB03030Sjs = (function(){
 		{ 	
 			title    : "첨부파일여부", 
 			dataType : "string",
-			dataIndx : "",
+			dataIndx : "fileCnt",
 			align    : "center",  
 			filter   : { crules: [{ condition: 'range' }] }
 		}
