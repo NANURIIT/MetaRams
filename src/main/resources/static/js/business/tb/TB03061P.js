@@ -52,7 +52,7 @@ function TB03061P_srchMtr(menuId) {
 	// 	// Enter에만 작동하는 이벤트
 	// 	if (evt.keyCode === 13) {
 	// 		evt.preventDefault();
-	// 		console.log("으흐흐");
+			// console.log("으흐흐");
 
 	// 		// 팝업창에서는 엔터 누를시 조회만.
 	// 		getMtrInfo();
@@ -149,7 +149,7 @@ function TB03061P_srchMtr(menuId) {
 			// 그리드만 부릅니다
 			callGridTB03061P(prefix);
 			$("#TB03061P_ardyBzepNo").val(data);
-			console.log(data);
+			// console.log(data);
 			// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
 			setTimeout(() => getArdyBzepInfoList(), 400);
 		} else if (TB03061P_gridState === 1) {
@@ -185,7 +185,7 @@ function callGridTB03061P(prefix) {
  */
 function callTB03061P(prefix, rowIndx) {
 
-	console.log(rowIndx);
+	// console.log(rowIndx);
 	rowInx = rowIndx;
 
 	reset_TB03061P();
@@ -272,16 +272,17 @@ function modalClose_TB03061P() {
 	TB03061P_gridState = 1;
 	// reset_TB03061P();
 	// $("#gridBzepList").pqGrid('refreshDataAndView');
-	$("#gridBzepList").pqGrid('destroy');
+	// $("#gridBzepList").pqGrid('destroy');
 	$('#modal-TB03061P').modal('hide');
 }
 
 /**
  * hide modal
  */
-// $("#modal-TB03061P").on('hide.bs.modal', function () {
-// 	reset_TB03061P();
-// });
+$("#modal-TB03061P").on('hide.bs.modal', function () {
+	// modalClose_TB03061P();
+	$("#gridBzepList").pqGrid('destroy');
+});
 
 function modalShowFunction_TB03061P() {
 	//모달 오픈 애니메이션 후 포커스 주도록 설정
@@ -345,7 +346,7 @@ function getArdyBzepInfoList() {
 				modalPqGridBzepList.setData(data);
 				modalPqGridBzepList.on("rowDblClick", function (event, ui) {
 					setArdyBzepInfo(ui.rowData);
-					console.log(ui.rowData);
+					// console.log(ui.rowData);
 				});
 				modalPqGridBzepList.option("cellClick", function (event, ui) {
 					const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
@@ -381,13 +382,13 @@ async function TB03061P_setGridState() {
 		dataType: "json",
 		success: function (data) {
 			if (!data || data === undefined || data.length === 0) {
-				console.log("없음");
+				// console.log("없음");
 				TB03061P_gridState = 1;
 			} else if (data.length >= 2) {
-				console.log("2개이상");
+				// console.log("2개이상");
 				TB03061P_gridState = 1;
 			} else if (data) {
-				console.log("하나임ㅋ");
+				// console.log("하나임ㅋ");
 				TB03061P_gridState = 0;
 			}
 		},
@@ -444,8 +445,8 @@ function setArdyBzepInfo(rowData) {
 	let clseDvsnCd = rowData.clseDvsnCd;
 	let clseDt = rowData.clseDt;
 
-	console.log(ardyBzepNo);
-	console.log(rowInx);
+	// console.log(ardyBzepNo);
+	// console.log(rowInx);
 
 	let prefix = $("#TB03061P_prefix").val(); 			// id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
 

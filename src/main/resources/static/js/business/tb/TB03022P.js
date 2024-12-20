@@ -210,7 +210,7 @@ function reset_TB03022P() {
  * 모달 hide
  */
 function modalClose_TB03022P() {
-  reset_TB03022P();
+  // reset_TB03022P();
   $("#gridEmpList").pqGrid("refreshDataAndView");
   $("#modal-TB03022P").modal("hide");
   TB03022P_gridState = 1;

@@ -50,33 +50,34 @@ VALUES (
 	
 	<select id="getHistoryInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
 		
-		SELECT B.ARDY_BZEP_NO 				AS ENTP_CD      /* 업체코드 */
-			 , B.CRNO		  				AS CRNO			/* 법인등록번호 */
-			 , B.RNBN               		AS bsnsRgstNo   /* 사업자등록번호 */
-			 , NVL(B.ENTP_NM , '-')	        AS ENTP_HNGL_NM	/* 업체명 */
-			 , A.MET_DT				  		AS MET_DT		/* 미팅일자 */
-			 , NVL(A.MET_TM, '-')  		    AS MET_TM		/* 미팅시간 */
-			 , A.MET_TITL			  		AS MET_TITL		/* 미팅제목 */
-			 , NVL(A.CSTM_NM, '-')		    AS CSTM_NM		/* 고객명 */
-			 , NVL(A.CSTM_PH_NO, '-')	    AS CSTM_PH_NO	/* 고객전화번호 */
-			 , NVL(A.MET_CNTNT, '-')		AS MET_CNTNT	/* 미팅내용 */
-			 , A.RM_SQ						AS RM_SQ		/* RM일련번호 */
-			 , CASE WHEN NVL(C.CNT,0) <![CDATA[ > ]]>0 THEN C.CNT ||'건' ELSE '미등록' END FILE_CNT 
+		SELECT B.ARDY_BZEP_NO 			AS ENTP_CD      	/* 업체코드 */
+			 , B.CRNO 					              		/* 법인등록번호 */
+			 , B.RNBN 					AS bsnsRgstNo   	/* 사업자등록번호 */
+			 , NVL(B.ENTP_NM , '-') 	AS ENTP_HNGL_NM 	/* 업체명 */
+			 , A.MET_DT 				               		/* 미팅일자 */
+			 , NVL(A.MET_TM, '-') 		AS MET_TM           /* 미팅시간 */
+			 , A.MET_TITL 				             		/* 미팅제목 */
+			 , NVL(A.CSTM_NM, '-') 		AS CSTM_NM          /* 고객명 */
+			 , NVL(A.CSTM_PH_NO, '-') 	AS CSTM_PH_NO       /* 고객전화번호 */
+			 , NVL(A.MET_CNTNT, '-') 	AS MET_CNTNT    	/* 미팅내용 */
+			 , A.RM_SQ 					               		/* RM일련번호 */
+			 , C.CNT                                        /* 파일건수*/
+			 , CASE WHEN NVL(C.CNT,0) <![CDATA[ > ]]> 0 THEN C.CNT || '건' ELSE '미등록' END AS FILE_CNT /* 첨부파일건수 */
 		  FROM IBIMS010B B
-		 RIGHT OUTER JOIN IBIMS102B A
-		    ON B.ARDY_BZEP_NO = A.ENTP_CD 
-		 LEFT OUTER JOIN (
-		       SELECT FILE_KEY1,COUNT(*) AS CNT 
-		       FROM IBIMS989B
-		       WHERE TRIM(FILE_KEY1) <![CDATA[ <> ]]> ''
-		       GROUP BY FILE_KEY1
-		    )C
-		    ON A.ENTP_CD || '-' || A.RM_SQ = C.FILE_KEY1  
-		 WHERE 1=1 
-		 	<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpCd)">
-		   		AND B.ARDY_BZEP_NO = #{entpCd}
-		   </if>
-		 ORDER BY A.MET_DT, A.MET_TM DESC
+		  RIGHT OUTER JOIN IBIMS102B A
+		  	ON B.ARDY_BZEP_NO = A.ENTP_CD 
+		  LEFT OUTER JOIN (
+		  		SELECT FILE_KEY2, COUNT(*) AS CNT
+			  	  FROM IBIMS989B
+				 WHERE DEL_YN ='N'
+			     GROUP BY FILE_KEY2
+			) C
+			ON A.ENTP_CD || '|' || A.RM_SQ = C.FILE_KEY2  
+		 WHERE 1=1
+		<if test="entpCd != null and entpCd != ''">
+			AND B.ARDY_BZEP_NO = #{entpCd}
+		</if>
+		ORDER BY A.MET_DT, A.MET_TM DESC
 	</select>
 	
 	<select id="rmHistoryInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">

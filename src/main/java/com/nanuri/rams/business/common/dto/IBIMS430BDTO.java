@@ -24,8 +24,8 @@ public class IBIMS430BDTO {
     private BigDecimal  dealExcsPymtAmt;         //딜초과납입금액
     private String      excsPymtPrcsDvsnCd;      //초과납입처리구분코드
     private String      excsPymtPrcsText;        //초과납입처리내용
-    private BigDecimal  dealRctmAmt;             //딜입금금액
     private BigDecimal  pmntPrarAmt;             //납부예정금액
+    private BigDecimal  dealRctmAmt;             //딜입금금액
     private String      reltIsttCd;              //관련기관코드
     private String      reltIsttNm;              //관련기관명
     private String      reltBano;                //관련은행계좌번호
@@ -37,7 +37,7 @@ public class IBIMS430BDTO {
     private String      rgstEmpno;               //등록사원번호
     private String      rgstBdcd;                //등록부점코드
     private String      rgstDtm;                 //등록일시
-    private BigDecimal  dealDvdnAmt;             //딜배당금액
+    // private BigDecimal  dealDvdnAmt;             //딜배당금액
 
     private String      hndDetlDtm;              //조작상세일시
     private String      hndEmpno;                //조작사원번호

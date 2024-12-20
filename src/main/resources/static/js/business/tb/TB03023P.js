@@ -44,8 +44,7 @@ function reset_TB03023P() {
  * modal hide
  */
 function modalClose_TB03023P() {
-	reset_TB03023P();
-	
+	// reset_TB03023P();
 	$("#gridEntpList").pqGrid("refreshDataAndView");
 	$('#modal-TB03023P').modal('hide');
 }
