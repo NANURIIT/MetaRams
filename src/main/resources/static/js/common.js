@@ -16,6 +16,29 @@ $(function () {
   setFileUploadEvent(url.split("/")[1]);
 
   /**
+   * 모달 드래그 이벤트
+   */
+  $(`.modal-header.metis-modal-header:not([data-event])`).on('mousedown', function () {
+    $(this).attr("data-event", "on");
+    // draggable 초기화
+    $(".modal-dialog").draggable();
+
+    $(document).on("mouseup.draggableDestroy", function () {
+        // draggable 비활성화
+        // $(".modal-dialog").draggable("destroy");
+
+        if ($(".modal-dialog").data("ui-draggable")) {
+          $(".modal-dialog").draggable("destroy");
+      }
+
+        // mouseup 이벤트 해제 (중복 방지)
+        $(document).off("mouseup.draggableDestroy");
+
+        console.log("드래그 비활성화 및 이벤트 해제 완료");
+    });
+  });
+
+  /**
    * 파일다운로드용 값 세팅
    */
   $(`div[data-menuid="/${url.split("/")[1]}"] #key1`)
@@ -54,7 +77,6 @@ $(function () {
     $('script[src="js/business/tb/TB03061P.js"]').attr("src") ===
     "js/business/tb/TB03061P.js"
   ) {
-    console.log("기업체팝업");
     TB03061P_srchMtr(url);
   }
 
@@ -1770,12 +1792,7 @@ $(function () {
 
   // 모달 드래그
   $(function () {
-    $(".modal-header.metis-modal-header").on('mousedown', function(){
-      $(".modal-dialog").draggable();
-    })
-    $(".modal-header.metis-modal-header").on('mouseup', function(event){
-      $(".modal-dialog").draggable("destroy");
-    })
+
   });
 
   // 모달 사이즈 조절
