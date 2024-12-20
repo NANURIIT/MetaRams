@@ -139,16 +139,15 @@ const TB08040Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
-          valueIndx: "cdValue",
-          labelIndx: "cdName1",
+          valueIndx: "feeKndCd",
+          labelIndx: "feeName",
           options: selectBox2,//grdSelect.F004,
         },
         render: function (ui) {
-			let rowIndx = ui.rowIndx;
 	  	    let fSel = selectBox2.find(	
-            ({ cdValue }) => cdValue == ui.cellData
+            ({ feeKndCd }) => feeKndCd == ui.cellData
           );
-          return fSel ? fSel.cdName1 : ui.cellData;
+          return fSel ? fSel.feeName : ui.cellData;
         },
         editable: true,
       },
@@ -162,18 +161,25 @@ const TB08040Sjs = (function () {
 		filter: { crules: [{ condition: "range" }] },
 		editor: {
 		  type: "select",
-		  valueIndx: "cdValue",
-		  labelIndx: "cdName2",
+		  valueIndx: "actsCd",
+		  labelIndx: "actName",
 		  options: selectBox2,
 		},
 		render: function (ui) {
-		 let fSel = selectBox2.find(	
-		    ({ cdValue }) => cdValue == ui.cellData
-		  );
-		  return fSel ? fSel.cdName2 : ui.cellData;
-		},
-		editable: true,		
+	  	    let fSel = selectBox2.find(	
+            ({ actsCd }) => actsCd == ui.cellData
+          );
+          return fSel ? fSel.actName : ui.cellData;
+        },
+		editable: false,		
       },
+	  {
+	    title: "계정과목코드",
+	    dataType: "string",
+	    dataIndx: "actsCd",
+	    hidden: true,
+	  },
+	  
       {
         title: "수수료인식구분",
         dataType: "string",
@@ -578,7 +584,7 @@ const TB08040Sjs = (function () {
         halign: "center",
         align: "center",
         width: "10%",
-        editable: true,
+        editable: false,
         editor: {
           type: "textbox",
           init: function (ui) {
@@ -612,7 +618,7 @@ const TB08040Sjs = (function () {
         align: "right",
         width: "10%",
         format: "#,###.00",
-        editable: true,
+        editable: false,
       },
       {
         title: "거래일련번호",
@@ -629,6 +635,7 @@ const TB08040Sjs = (function () {
         halign: "center",
         align: "center",
         width: "10%",
+		editable: false,
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
@@ -661,14 +668,31 @@ const TB08040Sjs = (function () {
 			    const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
 				console.log("feeKndCd"+rowData.feeKndCd);
                 var tempRowData = rowData.feeKndCd;
-				var selectedIndex = selectBox2.findIndex(option => option.cdValue === tempRowData);
+				console.log("tempRowData"+tempRowData);
+				var selectedIndex = selectBox2.findIndex(option => option.feeKndCd === tempRowData);
+				console.log("selectedIndex"+selectedIndex);
 				if (selectedIndex !== -1) {
 					// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
-					rowData.actName = selectBox2[selectedIndex].cdName2;	
+					rowData.actsCd = selectBox2[selectedIndex].actsCd;	
+					rowData.actName = selectBox2[selectedIndex].actName;	
 				  	// UI에 반영
                   	grid.refreshRow({ rowIndx: ui.rowIndx });
                 }
 	  	  }
+		  
+		  if(dataIndx ==='feeStdrAmt' || dataIndx ==='feeRt' ){	  			
+  			const grid = $("#grd_feeSch").pqGrid('instance');
+  		    const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+  			console.log("feeStdrAmt"+rowData.feeStdrAmt);
+			console.log("feeRt"+rowData.feeRt);
+  			if (rowData.feeStdrAmt >0 && rowData.feeRt >0) {
+  				// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
+  				rowData.feeAmt = rowData.feeStdrAmt * (rowData.feeRt / 100);
+  			  	// UI에 반영
+                   	grid.refreshRow({ rowIndx: ui.rowIndx });
+                }
+    	  }
+		  
 		  
 
           if (rowType !== "I") {
@@ -725,17 +749,18 @@ const TB08040Sjs = (function () {
           return dateDiff(rd.fnnrRcogStrtDt, rd.fnnrRcogEndDt);
         },
       ],
-      [
+    /*  [
         // 수수료금액
         "feeAmt",
         function (rd) {
-          if (isNaN(rd.feeRt)) {
-            return 0;
-          } else {
-            return rd.feeStdrAmt * (rd.feeRt / 100);
-          }
+		 if(isNaN(rd.feeStdrAmt) || isNaN(rd.feeRt)){
+			return rd.feeAmt;
+		 }else{
+			
+			return rd.feeStdrAmt * (rd.feeRt / 100);
+		 }	
         },
-      ],
+      ], */
       [
         // 이연수수료
         "prlnFee",
@@ -889,7 +914,7 @@ const TB08040Sjs = (function () {
           return { isValid: false };
         }
         if (!ele.txtnTpDcd
-			&& (ele.feeTxtnYn=="1") //과세여부Y
+			//&& (ele.feeTxtnYn=="1") //과세여부Y
 		) {
           sf(2, "warning", `[과세유형구분코드]`);
           return { isValid: false };
@@ -900,7 +925,7 @@ const TB08040Sjs = (function () {
         }
         if (!ele.rpsrNm
 		  && (ele.txtnTpDcd=="1"||ele.txtnTpDcd=="2" ) //과세유형구분코드가 세금계산서나 계산서일 경우
-		  && (ele.feeTxtnYn=="1") //과세여부Y
+		 // && (ele.feeTxtnYn=="1") //과세여부Y
 		) {
           sf(2, "warning", `[대표자(주주)]`);
           return { isValid: false };

@@ -19,7 +19,8 @@ public class IBIMS348BVO extends IBIMS348BDTO {
     private String         pageDcd;    
     private String 		   feeBnapNm; 			// 수수료선후급구분명 
     private String         feeKndNm;			// 수수료종류명
-    private String         actsNm;				// 계정과목명
+    private String         actName;				// 계정과목명
+    private String 		   actsCd;	
     private String         ifrsFeeRcogNm;		// IFRS수수료인식구분명
     private String 		   feeRcogDcdNm; 		// 수수료인식구분명    
     private String         txtnTpNm;			// 과세유형구분명
