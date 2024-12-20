@@ -288,7 +288,7 @@ function makeFilList(html, result) {
   // html += "    <td>" + result.fileKey2 + "</td>";
   // html += "    <td>" + result.atchFleSn + "</td>";
   html += '    <td><a href="' + encUri + '">' + result.orgFileNm + "</a></td>";
-  html += "    <td>" + formatDate(result.rgstDt) + "</td>";
+  html += "    <td style='text-align: center;'>" + formatDate(result.rgstDt) + "</td>";
   html += "</tr>";
 
   return html;
