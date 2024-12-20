@@ -3,10 +3,10 @@ let TB04011P_pf;
 let TB04011P_gridState = 1;
 let TB04011P_onchangehandler = "on"; // on off
 let TB04011P_srchCnt = 0;
-let InfoSrchCnt = 0;
+let InfoSrchCnt_TB04011P = 0;
 
 $(document).ready(function () {
-  modalShowFunction();
+  modalShowFunction_TB04011P();
   keyDownEnter_TB04011P();
   selectBoxSet_TB04011P();
 });
@@ -14,7 +14,7 @@ $(document).ready(function () {
 /**
  * 입력 이벤트 등록 함수
  */
-function registerInputEvents(selector, inputLength) {
+function registerInputEvents_TB04011P(selector, inputLength) {
   // 검색데이터 길이 수 채우면 자동 검색 이벤트
   selector
     .closest("span.input-group-append")
@@ -22,7 +22,7 @@ function registerInputEvents(selector, inputLength) {
     .on("input", async function () {
       const currentInput = $(this);
       if (currentInput.val().length === inputLength) {
-        await srchEvent(currentInput);
+        await srchEvent_TB04011P(currentInput);
       }
     });
 
@@ -33,7 +33,7 @@ function registerInputEvents(selector, inputLength) {
     .on("keydown", async function (evt) {
       if (evt.keyCode === 13 && $(this).val().length !== inputLength) {
         evt.preventDefault();
-        await srchEvent($(this));
+        await srchEvent_TB04011P($(this));
       }
     });
 }
@@ -48,13 +48,13 @@ function TB04011P_srchMtr(menuId) {
 
   // 이전에 바인딩된 이벤트 제거 후 새로 바인딩
   selector.off("input keydown");
-  registerInputEvents(selector, 17); //딜번호는 17자리
+  registerInputEvents_TB04011P(selector, 17); //딜번호는 17자리
 }
 
 /**
  * 검색데이터 갯수에 따라 이 후 팝업이벤트 설정
  */
-async function srchEvent(selector) {
+async function srchEvent_TB04011P(selector) {
   let prefix;
 
   const inputId = $(selector).attr("id");
@@ -77,7 +77,7 @@ async function srchEvent(selector) {
   $("#TB04011P_ibDealNo").val(data);
 
   //안건데이터가져오기(그리드상태체크를 같이 하고 있음)
-  await getMtrInfo();
+  await getMtrInfo_TB04011P();
 
   if (TB04011P_gridState === 0) {
     await callGridTB04011P(prefix); // 그리드 로드
@@ -110,7 +110,7 @@ async function callTB04011P(prefix) {
 /**
  * 모달 오픈 애니메이션 후 포커스
  */
-function modalShowFunction() {
+function modalShowFunction_TB04011P() {
   $("#modal-TB04011P").on("shown.bs.modal", function () {
     $("#modal-TB04011P input[id=TB0411P_ibDealNo]").focus();
   });
@@ -150,7 +150,7 @@ $("#modal-TB04011P").on("hide.bs.modal", function () {
 /**
  * deal 번호 조회 ajax
  */
-async function getMtrInfo() {
+async function getMtrInfo_TB04011P() {
   var ibDealNo = $("#TB04011P_ibDealNo").val();
   var ibDealNm = $("#TB04011P_ibDealNm").val();
   var chrrEmpno = $("#TB04011P_empNo").val();
@@ -178,8 +178,8 @@ async function getMtrInfo() {
         } else if (data) {
           TB04011P_gridState = 0;
         }
-        if (InfoSrchCnt >= 2) {
-          InfoSrchCnt = 0;
+        if (InfoSrchCnt_TB04011P >= 2) {
+          InfoSrchCnt_TB04011P = 0;
         }
         setTimeout(function () {
           dataSetMrtGrid(data);
@@ -228,7 +228,7 @@ async function roadListGrid_TB04011P() {
 function dataSetMrtGrid(data) {
   arrPqGridMtrInfo.setData(data);
   arrPqGridMtrInfo.option("rowDblClick", function (event, ui) {
-    setMtrInfo(ui.rowData);
+    setMtrInfo_TB04011P(ui.rowData);
   });
 
   // 검색된 행이 1개일 경우 데이터 바로 입력
@@ -237,8 +237,8 @@ function dataSetMrtGrid(data) {
     $(`div[id='modal-TB04011P']`).css("display") === "none"
   ) {
     //var prefix = $("#TB04011P_prefix").val();
-    setMtrInfo(arrPqGridMtrInfo.pdata[0]);
-    InfoSrchCnt = 0;
+    setMtrInfo_TB04011P(arrPqGridMtrInfo.pdata[0]);
+    InfoSrchCnt_TB04011P = 0;
     // 입력되고 난 후 온체인지 이벤트 on
     TB04011P_onchangehandler = "on";
   }
@@ -247,13 +247,13 @@ function dataSetMrtGrid(data) {
   // else if (arrPqGridMtrInfo.pdata.length === 0) {
 
   // 	// 데이터 없는 경우 재조회 방지
-  // 	InfoSrchCnt += 1;
+  // 	InfoSrchCnt_TB04011P += 1;
 
   // 	getEmpList();
   // }
   // 그렇지 않은 경우 조건에 맞는 데이터 출력
   else {
-    InfoSrchCnt = 0;
+    InfoSrchCnt_TB04011P = 0;
   }
 }
 
@@ -264,14 +264,14 @@ function keyDownEnter_TB04011P() {
   $("input[id='TB04011P_ibDealNo']").keydown(function (key) {
     if (key.keyCode == 13) {
       //키가 13이면 실행 (엔터는 13)
-      getMtrInfo();
+      getMtrInfo_TB04011P();
     }
   });
 
   $("input[id='TB04011P_ibDealNm']").keydown(function (key) {
     if (key.keyCode == 13) {
       //키가 13이면 실행 (엔터는 13)
-      getMtrInfo();
+      getMtrInfo_TB04011P();
     }
   });
 }
@@ -303,7 +303,7 @@ function selectBoxSet_TB04011P() {
 /**
  * 팝업에서 deal 번호 조회후 더블클릭
  */
-function setMtrInfo(e) {
+function setMtrInfo_TB04011P(e) {
   //tr(selected) = event.currentTarget;
   //td(selected) = event.target;6
 
@@ -369,7 +369,7 @@ function setMtrInfo(e) {
     let newRow = {
       dealNo: ibDealNo,
       mtrDcd: lstCCaseCcd,
-      mtrDcdNm : mtrDcdNm,
+      mtrDcdNm: mtrDcdNm,
       mtrNm: lstCCaseCcdNm,
       jdgmDcd: riskInspctCcd,
       jdgmDcdNm: riskInspctCcdNm,
