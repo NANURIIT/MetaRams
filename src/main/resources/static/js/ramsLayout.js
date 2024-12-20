@@ -303,13 +303,11 @@ async function callPage(menuId, pageName) {
                                 || $($script[j]).attr('src') === "js/plugins/slimscroll/jquery.slimscroll.min.js"
                                 || $($script[j]).attr('src') === "js/plugins/pace/pace.min.js"
 
+                                || $($script[j]).attr('src') === "js/common.js"
                             ) {
                                 isDuplicateScript = true;
                             } else
-                                // 나머지 공통 플러그인은 재실행
                                 if (($($script[j]).attr('src')).split('/')[1] != "business") {
-                                    // console.log("가져왔어요?");
-                                    // console.log($($this[i]).attr('src'));
                                     isDuplicateScript = false;
                                 }
                                 /**
@@ -330,6 +328,9 @@ async function callPage(menuId, pageName) {
             }
 
             ramsTabHandler(menuId);
+
+            // 화면기본세팅함수
+            settingFunction();
 
         },
         error: function () {
