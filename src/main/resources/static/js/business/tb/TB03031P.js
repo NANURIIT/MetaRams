@@ -44,20 +44,20 @@ function callTB03031PRmHistoryInfo(prefix) {
  * close modal
  */
 function modalClose_TB03031P() {
-	$("#gridModalRmFileInfo").pqGrid('destroy');
-	modalReset();
+	// modalReset();
 	$('#modal-TB03031P').modal('hide');
 	
 };
 
 /**
  * hide modal
- */
-// $("#modal-TB03031P").on('hide.bs.modal', function(){
-// 	$("#gridModalRmFileInfo").pqGrid("option", "dataModel.data", []);
-// 	$("#gridModalRmFileInfo").pqGrid("refreshDataAndView");
-// 	modalReset();
-//   });
+*/
+$("#modal-TB03031P").on('hide.bs.modal', function(){
+	// $("#gridModalRmFileInfo").pqGrid("option", "dataModel.data", []);
+	// $("#gridModalRmFileInfo").pqGrid("refreshDataAndView");
+	$("#gridModalRmFileInfo").pqGrid('destroy');
+	modalReset();
+  });
 
 function modalShowFunction_TB03031P() {
 	//모달 오픈 애니메이션 후 포커스 주도록 설정
