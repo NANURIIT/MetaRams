@@ -3,6 +3,7 @@ const TB08040Sjs = (function () {
   let grdSelect = {}; // select객체
   let feeSchLen = 0; // 수수료스케줄관리 원본
   let selectBox; // return selectBox
+  let selectBox1;
   let selectBox2;
   let saveGrid = []; // 저장 리스트
   let fValid = -1; // 0 : 조회, 1 : 저장
@@ -10,7 +11,50 @@ const TB08040Sjs = (function () {
   $(document).ready(function () {
     selBox(); // 셀렉트박스
     pqGrid(); // PqGrid 생성
+	selectBoxSet_TB08040S(); //부서 셀렉트박스 세팅
+	loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
   });
+  
+  /**
+   * 초기화 버튼
+   */
+  function init_TB08040S(){	
+	resetAll('TB08040S', ['grd_feeSch']);
+	loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
+  }
+  
+  /*
+  * 부서 셀렉트박스 세팅
+  */
+  function selectBoxSet_TB08040S() {
+  	selectBox1 = getSelectBoxList("TB08040S", "D010", false);
+  	dprtList = selectBox1.filter(function (item) {
+  	  //부서코드 list
+  	  return item.cmnsGrpCd === "D010";
+  	});
+    
+  	dprtList.forEach((item) => {
+  	  $("#TB08040S_dprtNm").append(
+  		$("<option>", {
+  		  value: item.cdValue,
+  		  text: `${item.cdName}`,
+  		})
+  	  );
+  	});
+ }  
+  
+  /**
+   * 로그인 담당자,관리부서 세팅
+   */
+
+  function loginUserSet_TB08040S(){
+	  empNo = $('#userEno').val();     //직원명
+	  dprtCd = $('#userDprtCd').val(); //부서번호
+	  $("#TB08040S_empNm").val($('#userEmpNm').val());
+	  $("#TB08040S_empNo").val(empNo);
+	  $("#TB08040S_dprtNm").val(dprtCd).prop("selected", true);
+	  $("#TB08040S_dprtCd").val(dprtCd);
+  }
 
   function selBox() {
     selectBox = getSelectBoxList(
@@ -24,7 +68,7 @@ const TB08040Sjs = (function () {
       "/I027", // 통화코드
       false
     );
-	selectBox2 =getSelBoxCdFeeKndCd();
+	selectBox2 =getSelBoxCdFeeKndCd(); //수수료종류코드 리스트 전체 가져오기
 	
     // 수수료종류코드
     grdSelect.F004 = selectBox.filter((item) => item.cmnsGrpCd === "F004");
@@ -44,6 +88,8 @@ const TB08040Sjs = (function () {
   
   
   /*
+   * 수수료종류코드 리스트 전체 가져오기
+   * { feeKndCd, feeName, actsCd, actCd }
    */
   function getSelBoxCdFeeKndCd(){
     var result =null;	
@@ -1134,5 +1180,8 @@ const TB08040Sjs = (function () {
     , chkGrd: chkGrd
     , sf: sf
 	, getSelBoxCdFeeKndCd: getSelBoxCdFeeKndCd
+	, loginUserSet_TB08040S: loginUserSet_TB08040S
+	, selectBoxSet_TB08040S: selectBoxSet_TB08040S
+	, init_TB08040S : init_TB08040S
   };
 })();
