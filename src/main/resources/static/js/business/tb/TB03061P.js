@@ -272,16 +272,17 @@ function modalClose_TB03061P() {
 	TB03061P_gridState = 1;
 	// reset_TB03061P();
 	// $("#gridBzepList").pqGrid('refreshDataAndView');
-	$("#gridBzepList").pqGrid('destroy');
+	// $("#gridBzepList").pqGrid('destroy');
 	$('#modal-TB03061P').modal('hide');
 }
 
 /**
  * hide modal
  */
-// $("#modal-TB03061P").on('hide.bs.modal', function () {
-// 	reset_TB03061P();
-// });
+$("#modal-TB03061P").on('hide.bs.modal', function () {
+	// modalClose_TB03061P();
+	$("#gridBzepList").pqGrid('destroy');
+});
 
 function modalShowFunction_TB03061P() {
 	//모달 오픈 애니메이션 후 포커스 주도록 설정
