@@ -53,14 +53,14 @@ function clearTB06014P() {
  * 문서로드시 세팅
  */
 function docRdySettings() {
-	modalShowFunction();
+	TB060414P_modalShowFunction();
 	keyDownEnter_TB06014P();
 }
 
 /**
  * 모달 오픈 애니메이션 후 포커스 주도록 설정
  */
-function modalShowFunction() {
+function TB060414P_modalShowFunction() {
 	$('#modal-TB06014P').on('shown.bs.modal', function() {
 		$('#modal-TB06014P input[id=TB06014P_prdtCd]').focus();
 	});

@@ -6,6 +6,7 @@ const TB08040Sjs = (function () {
   let selectBox1;
   let selectBox2;
   let saveGrid = []; // 저장 리스트
+  let delGrid =[];
   let fValid = -1; // 0 : 조회, 1 : 저장
 
   $(document).ready(function () {
@@ -21,6 +22,8 @@ const TB08040Sjs = (function () {
   function init_TB08040S(){	
 	resetAll('TB08040S', ['grd_feeSch']);
 	loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
+	saveGrid = [];
+	delGrid =[];
   }
   
   /*
@@ -100,8 +103,6 @@ const TB08040Sjs = (function () {
 	      dataType: "json",
 	      success: function (data) {
 		      result=data;
-		  	  console.log("data"+data);
-		  	  result=data;
 	      },
 		    error: function(){
 		  	result= null;
@@ -164,7 +165,7 @@ const TB08040Sjs = (function () {
       {
         title: "순번",
         dataType: "string",
-        dataIndx: "feeSn",
+        dataIndx: "seq",
         halign: "center",
         align: "center",
         width: "5%",
@@ -175,6 +176,12 @@ const TB08040Sjs = (function () {
 			return result;
 		}
       },
+	  {
+	    title: "수수료일련번호",
+	    dataType: "string",
+	    dataIndx: "feeSn",
+		hidden: true,
+	  },	  
       {
         title: "수수료종류",
         dataType: "string",
@@ -415,12 +422,11 @@ const TB08040Sjs = (function () {
           },
 		  */
 		  type: "textbox",
-		  init: function (ui) {
+		 /* init: function (ui) {
 			let $inp = ui.$cell.find("input");
 			$inp.attr("placeholder", "YYYY-MM-DD");
 			$inp
 			    .on("input", function (evt) {
-			        /*validate(this);*/
 					if (this.value.length === 8) {
 		               formatDate(this.value);
 		             } else {
@@ -440,14 +446,6 @@ const TB08040Sjs = (function () {
 					    });
 					    return !this.firstOpen;
 					},
-					/*showAnim: '',
-			        onSelect: function () {
-						console.log("datePicker onSelect");
-			            this.firstOpen = true;
-			        },
-			        onClose: function () {
-						console.log("datePicker onClose");
-			        }*/
 			    })
 				.on('change', function(){
 					console.log('change'+this.value);
@@ -455,6 +453,7 @@ const TB08040Sjs = (function () {
 		
 			
 		  },
+		  */
 		  
         },
         render: function (ui) {
@@ -691,7 +690,13 @@ const TB08040Sjs = (function () {
             return "미처리";
           }
         },
-      },
+      },	  
+	  {
+	    title: "rowStatus",
+	    dataType: "string",
+	    dataIndx: "rowType",
+	    hidden: true,
+	  },
     ];
 
     let pqGridObjs = [];
@@ -741,28 +746,12 @@ const TB08040Sjs = (function () {
 		  
 		  
 
-          if (rowType !== "I") {
-            rowData.rowType = "M"; // rowData 객체의 rowType을 직접 "M"으로 설정
-            //saveGrid.push(rowData);
-
-            // saveGrid에서 동일한 pq_ri를 가진 객체의 인덱스를 찾기
-            let index = saveGrid.findIndex(function (item) {
-              return item.pq_ri === rowData.pq_ri;
-            });
-            // console.log("cellSave index ::: ", index);
-            // console.log("cellSave rowData ::: ", rowData);
-
-            if (index !== -1) {
-              // 기존 객체가 있으면 해당 객체를 업데이트
-              saveGrid[index] = rowData;
-            } else {
-              // 기존 객체가 없으면 새로 추가
-              saveGrid.push(rowData);
-            }
+         /* if (rowType !== "I") {
+            rowData.rowType = "U"; // rowData 객체의 rowType을 직접 "M"으로 설정
           } else {
             rowData.rowType = rowType; // rowType이 "I"인 경우 그대로 유지
           }
-
+			*/
         },
         cellClick: function (evt, ui) {
 			/*let dataIndx = ui.dataIndx;
@@ -837,31 +826,37 @@ const TB08040Sjs = (function () {
     feeSch.option("formulas", formulas);
   }
 
-  // 조회
+  // 조회버튼
   function srch() {
     fValid = 0;
 
     if (validation().isValid) {
-      let obj = {
-        prdtCd: validation().prdtCd,
+      var param = {
+        "prdtCd": validation().prdtCd,
+		"strPrarDt" : $("#TB08040S_strPrarDt").val(),
+		"endPrarDt": $("#TB08040S_endPrarDt").val(), 
+		//"empNo": $("#TB08040S_empNo").val(),
+		//"dprtCd":$("#TB08040S_dprtCd").val(),
       };
+	  
+	  //console.log("obj"+obj.strPrarDt);
 
       $.ajax({
         type: "POST",
         url: "/TB08040S/srchFeeSch",
-        contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(obj),
+       // contentType: "application/json; charset=UTF-8",
+        data: param,//JSON.stringify(param),
         dataType: "json",
         beforeSend: function (xhr) {
           feeSch.setData([]);
+		  saveGrid = [];
+		  delGrid =[];
         },
         success: function (data) {
-          console.log(data);
 
           if (data.length > 0) {
             feeSch.setData(data);
-
-            feeSchLen = feeSch.getData().length;
+            feeSchLen = feeSch.getData().length;			
           } else {
             Swal.fire({
               icon: "warning",
@@ -876,24 +871,31 @@ const TB08040Sjs = (function () {
     }
   }
 
-  // 저장
+  // 저장버튼
   function save() {
     fValid = 1;
+   let chkSchList; 
+   let feeSchList;
+   
 
-    let feeSchList = chkGrd(feeSch); // 체크된 그리드
+   saveGrid  = addGrd(feeSch);
+   feeSchList = saveGrid;
+   console.log("저장리스트"+feeSchList.length); //U+I+D
+   chkSchList = saveGrid.filter((item) => item.rowType !== null);
+   chkSchList = chkSchList.filter((item) => item.rowType !== "D");
+   console.log("체크리스트"+chkSchList.length);//U+I
+   saveGrid=[];
 
-    console.log(feeSchList);
-
-    if (saveGrid.length === 0) {
+    if (feeSchList.length === 0) {
       sf(1, "warning", "저장 할 정보가 없습니다.<br/>체크박스를 확인해주세요.");
       return;
     }
-
-    if (validation(feeSchList).isValid) {
-      let obj = {
-        feeSchList,
-        prdtCd: validation().prdtCd,
-      };
+	
+	if (validation(chkSchList).isValid) {		
+       let obj = {
+         feeSchList,
+         prdtCd: validation().prdtCd,
+       };
 
       $.ajax({
         type: "POST",
@@ -902,7 +904,6 @@ const TB08040Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         success: function (data) {
-          console.log(data);
           if (data > 0) {
             Swal.fire({
               icon: "success",
@@ -938,14 +939,46 @@ const TB08040Sjs = (function () {
       });
       return { isValid: false };
     }
+	
+	if(fValid ===0){ //조회시
+		let strPrarDt =$("#TB08040S_strPrarDt").val();  // 조회시작일자
+		let endPrarDt  =$("#TB08040S_endPrarDt").val(); // 조회종료일자
+		if(!strPrarDt && endPrarDt){
+				Swal.fire({
+		        icon: "warning",
+		        text: "예정 시작일을 입력해주세요.",
+		        confirmButtonText: "확인",
+		      });
+		      return { isValid: false };
+		}
+		if(strPrarDt && !endPrarDt){
+				Swal.fire({
+		        icon: "warning",
+		        text: "예정 종료일을 입력해주세요.",
+		        confirmButtonText: "확인",
+		      });
+		      return { isValid: false };
+		}
+		if(strPrarDt && endPrarDt){
+			if(strPrarDt> endPrarDt){
+				Swal.fire({
+		        icon: "warning",
+		        text: "입력하신 예정일 조회기간이 타당하지 않습니다. ",
+		        confirmButtonText: "확인",
+		      });
+		      return { isValid: false };
+			}
+		}	
+	}
+	
 
-    if (fValid === 1) {
+    if (fValid === 1) { //저장시
       // 저장
       for (let i = 0; i < arr.length; i++) {
         const ele = arr[i];
-        console.log(ele.txtnTpDcd);
-		console.log(ele.feeTxtnYn);
-		console.log(ele.rpsrNm);
+        //console.log(ele.txtnTpDcd);
+		//console.log(ele.feeTxtnYn);
+		//console.log(ele.rpsrNm);
 
         if (!ele.feeKndCd) {
           sf(2, "warning", `[수수료종류]`);
@@ -1056,11 +1089,23 @@ const TB08040Sjs = (function () {
             rowData: newRow,
             checkEditable: false,
           });
+
         }
         break;
       case "m":
-        // let delRow = prnaRdmpSch.getData().filter(item => item.rowType === "I");
-        // console.log(delRow);
+		let chkCnt;
+		chkCnt=0
+		  
+		 for(let i = 0; i < feeSch.pdata.length; i++){
+		 	if(feeSch.pdata[i].chk){
+				chkCnt++;
+			}
+		 }
+		 
+		 if (chkCnt === 0) {
+		       sf(1, "warning", "삭제할 정보가 없습니다.<br/>체크박스를 확인해주세요.");
+	       return;
+	     }
 
         if (validation().isValid) {
           let data = feeSch.getData();
@@ -1068,14 +1113,13 @@ const TB08040Sjs = (function () {
 
           data.forEach((item, index) => {
             if (item.chk) {
-              if (item.rowType !== "I" && item.rowType !== "D") {
+              if (item.rowType !== "I" && item.rowType !== "D"  && item.rowType !== null) {
                 item.rowType = "D";
-                saveGrid.push(item);
+                delGrid.push(item);
               }
               filteredIndexes.push(index);
             }
           });
-          console.log("saveGrid ::: ", saveGrid);
           // 구한 인덱스들을 삭제합니다. 뒤에서부터 삭제해야 인덱스가 꼬이지 않습니다.
           filteredIndexes
             .sort((a, b) => b - a)
@@ -1083,25 +1127,8 @@ const TB08040Sjs = (function () {
               feeSch.deleteRow({ rowIndx: index });
             });
           console.log("지우고 난 후의 index ::: ", feeSch.getData());
-          // feeSch.deleteRow( { rowIndx: feeSchLen + 1 } );
-
-          // let feeSchCnt = feeSch.getData().length;
-          // console.log("feeSchCnt ::: ", feeSchCnt);
-          // console.log("feeSchLen ::: ", feeSchLen);
-          // if ( feeSchCnt > feeSchLen ) {
-          //     feeSch.deleteRow( { rowIndx: feeSchLen + 1 } )
-          // };
         }
-
-        // 원본 데이터 안지우고 -
-        // if ( validation().isValid ) {
-        //     let feeSchCnt = feeSch.getData().length;
-        //     console.log("feeSchCnt ::: ", feeSchCnt);
-        //     console.log("feeSchLen ::: ", feeSchLen);
-        //     if ( feeSchCnt > feeSchLen ) {
-        //         feeSch.deleteRow( { rowIndx: feeSchLen + 1 } )
-        //     };
-        // };
+		console.log("삭제시saveGrid"+delGrid.length);
 
         break;
       default:
@@ -1120,7 +1147,7 @@ const TB08040Sjs = (function () {
       const chkData = data[i];
 
       if (
-        chkData.chk &&
+        chkData.chk &&  
         !addedIndx.has(i) &&
         !saveGrid.some((item) => item === chkData)
       ) {
@@ -1142,6 +1169,27 @@ const TB08040Sjs = (function () {
 
     return saveGrid;
   }
+  
+  
+  // 추가된 그리드
+  function addGrd(p){
+	let data = p.getData(); // 그리드 데이터
+	for (let i = 0; i < data.length; i++) { 
+		const chkData = data[i];
+	    if(chkData.rowType =="I" ||chkData.rowType =="U"){
+        	saveGrid.push(chkData);	  
+		}  
+	}	
+	
+	//let delGrd = delGrid.getData(); // 그리드 데이터
+	for (let i = 0; i < delGrid.length; i++) { 
+			const delData = delGrid[i];
+		    saveGrid.push(delData); 
+		}
+	
+	return saveGrid;
+  }
+  
 
   // swal.fire
   function sf(flag, icon, text, callback = () => { }) {
@@ -1178,6 +1226,7 @@ const TB08040Sjs = (function () {
     , validation: validation
     , gridEvt: gridEvt
     , chkGrd: chkGrd
+	, addGrd : addGrd
     , sf: sf
 	, getSelBoxCdFeeKndCd: getSelBoxCdFeeKndCd
 	, loginUserSet_TB08040S: loginUserSet_TB08040S

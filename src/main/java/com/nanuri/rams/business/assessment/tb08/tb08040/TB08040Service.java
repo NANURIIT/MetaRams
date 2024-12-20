@@ -11,7 +11,7 @@ import com.nanuri.rams.business.common.vo.IBIMS348BVO;
 public interface TB08040Service {
 
 	// 수수료스케줄관리 조회
-	public List<IBIMS348BVO> srchFeeSch(IBIMS348BDTO input);
+	public List<IBIMS348BVO> srchFeeSch(IBIMS348BVO param);
 
 	// 수수료스케줄관리 저장
 	public int saveFeeSch(IBIMS348BVO input);
