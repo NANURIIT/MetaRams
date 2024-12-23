@@ -38,6 +38,7 @@ public class IBIMS407BDTO {
     private String stlAcno;                    // 결제계좌번호  varchar(96)
     private String fincPayCntn;               // 출자보수내용  varchar(100)
     private String reFincPossYn;             // 재출자가능여부  varchar(1)
+    private String rqsEmpno;                  // 신청사원번호 
     private Date hndDetlDtm;                  // 조작상세일시  datetime
     private String hndEmpno;                   // 조작사원번호  varchar(7)
     private String hndTmnlNo;                 // 조작단말기번호  varchar(8)

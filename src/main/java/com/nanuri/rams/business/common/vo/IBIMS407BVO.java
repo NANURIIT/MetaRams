@@ -19,5 +19,6 @@ public class IBIMS407BVO extends IBIMS407BDTO {
     private String fnltNm;          
     private String dprtNm;
     private String stdrExrt;
-    
+    private String rqsEmpnm;
+
 }
