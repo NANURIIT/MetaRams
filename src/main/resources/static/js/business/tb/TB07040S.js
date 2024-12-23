@@ -416,7 +416,7 @@ const TB07040Sjs = (function () {
       dataType: "json",
       beforeSend: function () {
         //$("#TB07040S_tableList").pqGrid("setData", []);
-        compClear();
+        //compClear();
         $("#TB07040S_tableList").pqGrid(
           "option",
           "strNoRows",
