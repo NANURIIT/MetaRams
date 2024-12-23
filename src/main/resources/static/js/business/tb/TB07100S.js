@@ -2,14 +2,17 @@ const TB07100Sjs = (function () {
   let TB07100S_rlthPruf   // 실물증빙
   let TB07100S_basic      // 기본?
   let TB07100S_tagStatuses = [];
+	let grdSelect = {};
+	let selectBox;
 
 
   $(document).ready(function () {
     $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Tmrd'], input[id*='tx'], input[id='TB07100S_splmValuTxa']").val('0');
     selectorNumberFormater($("input[id*='Amt'], input[id*='Blce'], input[id*='Rt'], input[id='TB07100S_splmValuTxa']"));
-    TB07100S_pqGrid();
+    selectBox = getSelectBoxList("TB07100S", "/A005", false);
+    grdSelect.A005 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A005'; });	
     TB07100S_getFirstStatus();
-    getSelectBoxList("TB07100S", "/A005", false);
+    TB07100S_pqGrid();
     autoSet();
   });
 
@@ -239,20 +242,28 @@ const TB07100Sjs = (function () {
         width: '5%',
         filter: { crules: [{ condition: 'range' }] },
       },
-     
       {
         title: "계정과목명",
         dataType: "string",
         dataIndx: "actsCd",
         halign: "center",
-        align: "left",
-        // width    : '10%',
+        align: "center",
         filter: { crules: [{ condition: 'range' }] },
         editable: true,
+        editor: {
+							type: "select",
+							valueIndx: "cdValue",
+							labelIndx: "cdName",
+							options: grdSelect.A005
+						},
+						render: function (ui) {
+							let fSel = grdSelect.A005.find(({ cdValue }) => cdValue == ui.cellData);
+							return fSel ? fSel.cdName : ui.cellData;
+						}
       },
       {
         title: "차변금액",
-        dataType: "string",
+        dataType: "interger",
         dataIndx: "index1",
         halign: "center",
         align: "right",
@@ -269,7 +280,7 @@ const TB07100Sjs = (function () {
       }
       , {
         title: "대변금액",
-        dataType: "string",
+        dataType: "interger",
         dataIndx: "index2",
         halign: "center",
         align: "right",
