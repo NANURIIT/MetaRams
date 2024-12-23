@@ -38,12 +38,12 @@ public class TB07140APIController {
 	};
 
 	@PostMapping(value = "/updateFinc")
-	public int updateFinc(IBIMS407BDTO paramData){
+	public int updateFinc(@RequestBody IBIMS407BDTO paramData){
 		return tb07140Service.updateFinc(paramData);
 	};
 
 	@PostMapping(value = "/deleteFinc")
-	public int deleteFinc(IBIMS407BDTO paramData){
+	public int deleteFinc(@RequestBody IBIMS407BDTO paramData){
 		return tb07140Service.deleteFinc(paramData);
 	};
 }

@@ -21,7 +21,7 @@ public class IBIMS407BDTO {
     private String nsFndCd;                   // 고유자산펀드코드  varchar(5)
     private String synsCd;                     // 적용코드  varchar(6)
     private String holdPrpsDcd;               // 보유목적구분코드  varchar(1)
-    private String fincPrcsDcd;               // 출자처리구분코드  varchar(1)
+    private String fincPrcsDcd;               // 출자처리구분코드  varchar(2)
     private String trDptCd;                   // 거래부서코드  varchar(3)
     private BigDecimal fincCngeAmt;           // 출자변동금액  decimal(18,0)
     private BigDecimal payErnAmt;             // 보수수익금액  decimal(18,0)

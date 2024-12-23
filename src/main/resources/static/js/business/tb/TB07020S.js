@@ -402,7 +402,7 @@ const TB07020Sjs = (function() {
 			dataType: "json",
 			beforeSend: function(){
 				//$("#TB07020S_tableList").pqGrid("setData", []);
-				compClear();
+				//compClear();
 				$("#TB07020S_tableList").pqGrid("option", "strNoRows", "조회 중입니다...");
 			},
 			success: function(data) {
