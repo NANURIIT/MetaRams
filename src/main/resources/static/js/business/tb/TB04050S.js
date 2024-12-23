@@ -94,7 +94,7 @@ const TB04050Sjs = (function () {
     setGrid_TB04050S();
 
     getUrlDealInfo();
-    changeCheckCd3();
+    changeCheckCd();
   });
 
   // 세션으로 받앗을때
@@ -115,8 +115,8 @@ const TB04050Sjs = (function () {
   function setGrid_TB04050S() {
     pqGridObjFileList = [
       {
-        height: 73,
-        maxHeight: 73,
+        height: 75,
+        maxHeight: 75,
         id: "TB04050S_fileList",
         colModel: colModel_TB04050S,
       },
@@ -161,11 +161,14 @@ const TB04050Sjs = (function () {
     getSelectBoxList("TB04050S", item);
   }
 
-  function changeCheckCd3() {
+  function changeCheckCd() {
     $("input[name='TB04050S_issSttsCd']").change(function () {
       if ($("#TB04050S_issSttsCd3").is(":checked")) {
         $("input[name='TB04050S_issLtrYN']").prop("disabled", true);
         $("#TB04050S_issDt").prop("disabled", true);
+      } else {
+        $("input[name='TB04050S_issLtrYN']").prop("disabled", false);
+        $("#TB04050S_issDt").prop("disabled", false);
       }
     });
   }
