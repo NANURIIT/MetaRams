@@ -1,3 +1,7 @@
+/**
+ * 2024-12-20 FileUpload 수정 김건우
+ * @param {String} menuId 화면아이디 
+ */
 function setFileUploadEvent (menuId) {
 
   let fileTarget = $(`div[data-menuid="/${menuId}"]` + " .filebox .upload-hidden");
@@ -129,8 +133,6 @@ function setFileUploadEvent (menuId) {
    * @param {list} request 삭제대상 리스트
    */
   let deleteCmFiles = function (mode, delKey) {
-
-    console.log(delKey);
 
     let action = "delete";
 

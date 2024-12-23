@@ -36,11 +36,11 @@ public class TB08040ServiceImpl implements TB08040Service {
 
 	// 수수료스케줄관리 조회
 	@Override
-	public List<IBIMS348BVO> srchFeeSch(IBIMS348BDTO input) {
-		String prdtCd = input.getPrdtCd(); // 종목코드
+	public List<IBIMS348BVO> srchFeeSch(IBIMS348BVO param) {
+		String prdtCd = param.getPrdtCd(); // 종목코드
 		
 
-		List<IBIMS348BVO> outFeeSch = ibims348Bmp.selectFeeScxInfoList(prdtCd);
+		List<IBIMS348BVO> outFeeSch = ibims348Bmp.selectFeeScxInfoList(param);
 
 		return outFeeSch;
 	};
@@ -96,7 +96,7 @@ public class TB08040ServiceImpl implements TB08040Service {
 					result = ibims348Bmp.insertFeeSch(ibims348bvo);
 
 					break;
-				case "M": // 1. 등록
+				case "U": // 1. 수정
 					ibims348bvo.setRgstSttsCd("1"); // 등록상태코드
 					ibims348bvo.setHndEmpno(eno); // 조작사원번호
 					ibims348bvo.setHndTmnlNo("");
