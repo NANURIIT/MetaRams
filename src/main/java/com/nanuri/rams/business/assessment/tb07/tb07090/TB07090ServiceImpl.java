@@ -142,44 +142,44 @@ public class TB07090ServiceImpl implements TB07090Service {
         return result;
     }
 
-    // 입금내역매핑
-    // @Override
-    // public int rctmDtlsMapping(IBIMS430BVO param){
-    //     int result = 0;
+    // 입금내역매핑 저장
+    @Override
+    public int rctmDtlsMapping(IBIMS430BVO param){
+        int result = 0;
 
-    //     List<IBIMS430BDTO> insertList = param.getInsertList();
-    //     List<IBIMS430BDTO> updateList = param.getUpdateList();
-    //     List<IBIMS430BDTO> deleteList = param.getDeleteList();
+        List<IBIMS430BDTO> insertList = param.getInsertList();
+        List<IBIMS430BDTO> updateList = param.getUpdateList();
+        List<IBIMS430BDTO> deleteList = param.getDeleteList();
 
-    //     // 입력
-    //     for(int i = 0; i < insertList.size(); i++){
-    //         // 등록순번 채번
-    //         insertList.get(i).setRgstSeq(
-    //             ibims430bMapper.getRgstSeq(
-    //                 insertList.get(i).getRctmDt()
-    //             )
-    //         );
-    //         // 조작사원번호
-    //         insertList.get(i).setHndEmpno(facade.getDetails().getEno());
+        // 입력
+        for(int i = 0; i < insertList.size(); i++){
+            // 등록순번 채번
+            insertList.get(i).setRctmSeq(
+                ibims430bMapper.getNxtRctmSeq(
+                    insertList.get(i).getRctmDt()
+                )
+            );
+            // 조작사원번호
+            insertList.get(i).setHndEmpno(facade.getDetails().getEno());
 
-    //         ibims430bMapper.insertIBIMS435B(insertList.get(i));
+            ibims430bMapper.insertIBIMS435B(insertList.get(i));
 
-    //         result =+ 1;
-    //     }
+            result =+ 1;
+        }
 
-    //     // 수정
-    //     for(int i = 0; i < updateList.size(); i++){
-    //         ibims430bMapper.insertIBIMS435B(updateList.get(i));
-    //         result =+ 1;
-    //     }
+        // 수정
+        for(int i = 0; i < updateList.size(); i++){
+            ibims430bMapper.insertIBIMS435B(updateList.get(i));
+            result =+ 1;
+        }
 
-    //     // 삭제
-    //     for(int i = 0; i < deleteList.size(); i++){
-    //         ibims430bMapper.insertIBIMS435B(deleteList.get(i));
-    //         result =+ 1;
-    //     }
+        // 삭제
+        for(int i = 0; i < deleteList.size(); i++){
+            ibims430bMapper.insertIBIMS435B(deleteList.get(i));
+            result =+ 1;
+        }
 
-    //     return result;
-    // }
+        return result;
+    }
 
 }

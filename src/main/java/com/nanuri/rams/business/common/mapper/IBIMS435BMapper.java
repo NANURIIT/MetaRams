@@ -13,6 +13,10 @@ public interface IBIMS435BMapper {
 
     public int insertIBIMS435B (IBIMS435BDTO param);
 
+    public int updateIBIMS435B (IBIMS435BDTO param);
+
+    public int deleteIBIMS435B (IBIMS435BDTO param);
+
     public int getRgstSeq (String param);
 
 }

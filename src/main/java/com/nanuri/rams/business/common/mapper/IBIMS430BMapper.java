@@ -31,17 +31,13 @@ public interface IBIMS430BMapper {
 
     public List<IBIMS430BVO> getDptrDtlsList(IBIMS430BDTO param);
 
+    // 입금내역매핑 입력
+    public List<IBIMS430BDTO> insertIBIMS430B (IBIMS430BDTO param);
 
-    /**
-     * 입금증등록내역
-     * asdlkavnkjlnfiuanvuiafdnlkvjansl;oiguawrnhv;okfdunv;aleiruha;dfovbudfhjnp;bdnae;ro
-     */
-    public List<IBIMS430BVO> getNoDealList (IBIMS430BVO param);
+    // 입금내역매핑 수정
+    public List<IBIMS430BDTO> updateIBIMS430B (IBIMS430BDTO param);
 
-    /**
-     * 입금내역매핑
-     * fasdfasdgasdgasgawregargaw
-     */
-    public List<IBIMS430BVO> getYesDealList (IBIMS430BVO param);
+    // 입금내역매핑 삭제
+    public List<IBIMS430BDTO> deleteIBIMS430B (IBIMS430BDTO param);
 
 }

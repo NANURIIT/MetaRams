@@ -33,7 +33,7 @@
   </select>
 
   <!-- 입금증등록내역 등록 -->
-  <insert id="insertIBIMS435B">
+  <insert id="insertIBIMS435B" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
     INSERT INTO IBIMS435B (
         RCTM_DT
       , RGST_SEQ
@@ -69,5 +69,42 @@
       , #{guid}
     )
   </insert>
+
+  <!-- 입금증등록내역 수정 -->
+  <update id="updateIBIMS435B" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
+    UPDATE IBIMS435B
+       SET HND_DETL_DTM = SYSDATE
+         , HND_EMPNO = #{hndEmpno}
+         , HND_TMNL_NO = #{hndTmnlNo}
+         , HND_TR_ID = #{hndTrId}
+         , GUID = #{guid}
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fndsDvsnCd)">
+         , FNDS_DVSN_CD = #{fndsDvsnCd}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(reltIsttCd)">
+         , RELT_ISTT_CD = #{reltIsttCd}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(reltIsttNm)">
+         , RELT_ISTT_NM = #{reltIsttNm}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(reltBano)">
+         , RELT_BANO = #{reltBano}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dptrNm)">
+         , DPTR_NM = #{dptrNm}
+         </if>
+         
+     WHERE 1=1
+       AND RCTM_DT = #{rctmDt} 
+       AND RGST_SEQ = #{rgstSeq} 
+  </update>
+
+  <!-- 입금증등록내역 삭제 -->
+  <delete id="deleteIBIMS435B" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
+    DELETE IBIMS435B
+     WHERE 1=1
+       AND RCTM_DT = #{rctmDt} 
+       AND RGST_SEQ = #{rgstSeq}
+  </delete>
   
 </mapper>
