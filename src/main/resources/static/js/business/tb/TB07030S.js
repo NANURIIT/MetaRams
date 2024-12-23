@@ -288,6 +288,28 @@ const TB07030Sjs = (function () {
       // 	filter   : { crules: [{ condition: 'range' }] },
       // },
       {
+        title: "납부예정금액",
+        dataType: "integer",
+        dataIndx: "pmntPrarAmt",
+        halign: "center",
+        align: "right",
+        format: "#,###",
+        filter: { crules: [{ condition: "range" }] },
+        editable: true,
+        // editor: {
+        // 	type: 'textbox',
+        // 	init: function (ui) {
+        // 		var $input = ui.$cell.find("input");
+        // 		let tot = 0;
+        // 		$input.on("input", function () {
+        // 			let numVal = Number(this.value)
+        // 			tot += numVal;
+        // 			$('#TB07030S_exmptSmmAmt').val(tot)
+        // 		});
+        // 	}
+        // }
+      },
+      {
         title: "면제금액",
         dataType: "integer",
         dataIndx: "exmptAmt",
