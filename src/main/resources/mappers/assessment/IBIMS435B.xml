@@ -2,45 +2,72 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS435BMapper">
 
-    <select id="inqIBIMS435B" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
-        SELECT RCTM_DT                  /* 입금일자 */
-             , RGST_SEQ                 /* 등록순번 */
-             , RGST_BDCD                /* 등록부점코드 */
-             , FNDS_DVSN_CD             /* 자금구분코드 */
-             , PMNT_PRAR_AMT            /* 납부예정금액 */
-             , DEAL_RCTM_AMT            /* 딜입금금액 */
-             , RELT_ISTT_CD             /* 관련기관코드 */
-             , RELT_ISTT_NM             /* 관련기관명 */
-             , RELT_BANO                /* 관련은행계좌번호 */
-             , DPTR_NM                  /* 입금자명 */
-             , HND_DETL_DTM             /* 조작상세일시 */
-             , HND_EMPNO                /* 조작사원번호 */
-             , HND_TMNL_NO              /* 조작단말기번호 */
-             , HND_TR_ID                /* 조작거래ID */
-             , GUID                     /* GUID */
-          FROM IBIMS435B
-         WHERE 1=1
-           AND RCTM_DT = #{rctmDt}
-    </select>
+  <!-- 입금증등록내역 등록순번 채번 -->
+  <select id="getRgstSeq" parameterType="String" resultType="int">
+    SELECT NVL(MAX(RGST_SEQ) + 1, 1)
+      FROM IBIMS435B
+     WHERE 1=1
+       AND RCTM_DT = #{rctmDt}
+  </select>
 
-    <insert id="insertIBIMS435B">
-        INSERT INTO IBIMS435B (
-            RCTM_DT
-          , RGST_SEQ
-          , RGST_BDCD
-          , FNDS_DVSN_CD
-          , PMNT_PRAR_AMT
-          , DEAL_RCTM_AMT
-          , RELT_ISTT_CD
-          , RELT_ISTT_NM
-          , RELT_BANO
-          , DPTR_NM
-          , HND_DETL_DTM
-          , HND_EMPNO
-          , HND_TMNL_NO
-          , HND_TR_ID
-          , GUID
-        )
-    </insert>
-    
+  <!-- 입금내역조회 -->
+  <select id="inqIBIMS435B" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
+    SELECT RCTM_DT              /* 입금일자 */
+         , RGST_SEQ             /* 등록순번 */
+         , RGST_BDCD            /* 등록부점코드 */
+         , FNDS_DVSN_CD         /* 자금구분코드 */
+         , PMNT_PRAR_AMT        /* 납부예정금액 */
+         , DEAL_RCTM_AMT        /* 딜입금금액 */
+         , RELT_ISTT_CD         /* 관련기관코드 */
+         , RELT_ISTT_NM         /* 관련기관명 */
+         , RELT_BANO            /* 관련은행계좌번호 */
+         , DPTR_NM              /* 입금자명 */
+         , HND_DETL_DTM         /* 조작상세일시 */
+         , HND_EMPNO            /* 조작사원번호 */
+         , HND_TMNL_NO          /* 조작단말기번호 */
+         , HND_TR_ID            /* 조작거래ID */
+         , GUID                 /* GUID */
+      FROM IBIMS435B
+     WHERE 1=1
+       AND RCTM_DT = #{rctmDt}
+  </select>
+
+  <!-- 입금증등록내역 등록 -->
+  <insert id="insertIBIMS435B">
+    INSERT INTO IBIMS435B (
+        RCTM_DT
+      , RGST_SEQ
+      , RGST_BDCD
+      , FNDS_DVSN_CD
+      , PMNT_PRAR_AMT
+      , DEAL_RCTM_AMT
+      , RELT_ISTT_CD
+      , RELT_ISTT_NM
+      , RELT_BANO
+      , DPTR_NM
+      , HND_DETL_DTM
+      , HND_EMPNO
+      , HND_TMNL_NO
+      , HND_TR_ID
+      , GUID
+    )
+    VALUES(
+        #{rctmDt}
+      , #{rgstSeq}
+      , #{rgstBdcd}
+      , #{fndsDvsnCd}
+      , #{pmntPrarAmt}
+      , #{dealRctmAmt}
+      , #{reltIsttCd}
+      , #{reltIsttNm}
+      , #{reltBano}
+      , #{dptrNm}
+      , #{hndDetlDtm}
+      , #{hndEmpno}
+      , #{hndTmnlNo}
+      , #{hndTrId}
+      , #{guid}
+    )
+  </insert>
+  
 </mapper>
