@@ -355,6 +355,7 @@ public class TB07140ServiceImpl implements TB07140Service {
 
 		returnDto.setDealTrAmt(dealTrAmt);											//딜거래금액
 		returnDto.setDealTrPrca(dealTrPrca);										//딜거래원금
+		returnDto.setTrStfno(paramData.getRqsEmpno());								//거래직원번호
 		//returnDto.setTrFeeAmt(null);												//거래수수료금액
 		returnDto.setCostAmt(paramData.getTrtx());									//비용금액(== 거래세)
 		returnDto.setTrCrryCd("KRW");										//통화코드

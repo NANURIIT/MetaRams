@@ -46,6 +46,12 @@
                  WHERE DPRT_CD = A.TR_DPT_CD) AS DPRT_NM
                                                 /* 거래부서명 */
              , E.STDR_EXRT                      /* 기준환율 */
+             , A.RQS_EMPNO                      /* 신청사원 */
+             , (
+              SELECT EMP_NM
+              FROM IBIMS003B
+              WHERE EMPNO = A.RQS_EMPNO
+             )  AS RQS_EMPNM                    /* 신청사원명 */
           FROM IBIMS407B A
      		     , IBIMS201B B  
              , IBIMS993B C 
@@ -98,6 +104,7 @@
               , STL_ACNO
               , FINC_PAY_CNTN
               , RE_FINC_POSS_YN
+              , RQS_EMPNO
               , HND_DETL_DTM
               , HND_EMPNO
               , HND_TMNL_NO
@@ -131,6 +138,7 @@
               , #{stlAcno}
               , #{fincPayCntn}
               , #{reFincPossYn}
+              , #{rqsEmpno}
               , SYSDATE
               , #{hndEmpno}
               , #{hndTmnlNo}
@@ -166,6 +174,7 @@
              , STL_ACNO = #{stlAcno} 
              , FINC_PAY_CNTN = #{fincPayCntn} 
              , RE_FINC_POSS_YN = #{reFincPossYn}
+             , RQS_EMPNO = #{rqsEmpno}
              , HND_DETL_DTM = SYSDATE 
              , HND_EMPNO = #{hndEmpno} 
              , HND_TMNL_NO = #{hndTmnlNo} 
