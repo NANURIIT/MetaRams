@@ -1,6 +1,7 @@
 package com.nanuri.rams.business.common.vo;
 
 import com.nanuri.rams.business.common.dto.IBIMS430BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS435BDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -36,5 +37,9 @@ public class IBIMS430BVO extends IBIMS430BDTO {
     private BigDecimal      rctmRfltAmt;            //본건제외금액
     private String          dealNm;                 //딜명      
     private boolean         chceYn;                 //처리여부       
+
+    private List<IBIMS430BDTO> insertList;  // 입금내역매핑 저장리스트
+    private List<IBIMS430BDTO> updateList;  // 입금내역매핑 수정리스트
+    private List<IBIMS430BDTO> deleteList;  // 입금내역매핑 삭제리스트
     
 }

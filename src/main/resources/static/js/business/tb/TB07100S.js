@@ -324,6 +324,14 @@ const TB07100Sjs = (function () {
         filter: { crules: [{ condition: 'range' }] },
         editable: true,
       },
+      { title : "", dataType : "",  dataIndx : "", align : "center", halign : "center",  minWidth: 36,  maxWidth: 36,
+        render: function (ui) {
+          let rowData = ui.rowData;
+          //${ui.rowIndx}
+          //return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrTrgt', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+            return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB06011P('TB07100S_grid',${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+      }
+      },
       {
         title: "펀드코드",
         dataType: "string",
@@ -452,7 +460,7 @@ const TB07100Sjs = (function () {
       dataType: "json",
       success: function (data) {
         if (data) {
-          let gridList = $("#TB07100S_grd_basic").pqGrid('instance');
+          let gridList = $("#TB07100S_grd_thdtTrDtls").pqGrid('instance');
           gridList.setData(data);
           gridList.getData();
         } else {
@@ -725,8 +733,12 @@ const TB07100Sjs = (function () {
     
   }
 
+
   function delRow(){
     console.log("행삭제");
+    var gridData = $("#TB07100S_grd_thdtTrDtls").pqGrid("option", "dataModel.data");
+    var rowCount = gridData ? gridData.length : 0;
+    $("#TB07100S_grd_thdtTrDtls").pqGrid("deleteRow", { rowIndx: rowCount });
   }
 
   

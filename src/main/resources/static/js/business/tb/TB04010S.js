@@ -1707,7 +1707,7 @@ const TB04010Sjs = (function () {
     }
 
     if (isEmpty($("#TB04010S_R014").val())) {
-      option.text = "리스크심사구분코드를 선택해주세요.";
+      option.text = "신규/재부의 구분을 선택해주세요.";
       openPopup(option);
       return false;
     }
@@ -4022,27 +4022,12 @@ const TB04010Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "담보사유",
+      title: "담보명",
       dataType: "string",
       dataIndx: "mrtgRsnCnts",
       align: "left",
       halign: "center",
       filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "담보평가액(원)",
-      dataType: "integer",
-      dataIndx: "mrtgEvlAmt",
-      halign: "center",
-      align: "right",
-      filter: { crules: [{ condition: "range" }] },
-      render: function (ui) {
-        let cellData = ui.cellData;
-        if (cellData !== null && cellData !== undefined) {
-          return addComma(cellData);
-        }
-        return cellData;
-      },
     },
     {
       title: "권리순위코드",
@@ -4058,6 +4043,59 @@ const TB04010Sjs = (function () {
       dataIndx: "rgtRnkDcdNm",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "투자통화금액코드",
+      dataType: "string",
+      dataIndx: "invstCrryCd",
+      align: "center",
+      filter: { crules: [{ condition: "range" }] },
+      hidden: true,
+    },
+    {
+      title: "투자통화금액코드명",
+      dataType: "string",
+      dataIndx: "invstCrryCdNm",
+      align: "center",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "환율",
+      dataType: "integer",
+      dataIndx: "aplyExrt",
+      halign: "center",
+      align: "right",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "담보평가액(통화금액)",
+      dataType: "integer",
+      dataIndx: "crryAmt",
+      halign: "center",
+      align: "right",
+      filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        let cellData = ui.cellData;
+        if (cellData !== null && cellData !== undefined) {
+          return addComma(cellData);
+        }
+        return cellData;
+      },
+    },
+    {
+      title: "담보평가액(원)",
+      dataType: "integer",
+      dataIndx: "mrtgEvlAmt",
+      halign: "center",
+      align: "right",
+      filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        let cellData = ui.cellData;
+        if (cellData !== null && cellData !== undefined) {
+          return addComma(cellData);
+        }
+        return cellData;
+      },
     },
     {
       title: "담보취득방식코드",
@@ -4087,44 +4125,6 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "mrtgAcqstDtlsDcdNm",
       align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "투자통화금액코드",
-      dataType: "string",
-      dataIndx: "invstCrryCd",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden: true,
-    },
-    {
-      title: "투자통화금액코드명",
-      dataType: "string",
-      dataIndx: "invstCrryCdNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "담보평가액(통화금액)",
-      dataType: "integer",
-      dataIndx: "crryAmt",
-      halign: "center",
-      align: "right",
-      filter: { crules: [{ condition: "range" }] },
-      render: function (ui) {
-        let cellData = ui.cellData;
-        if (cellData !== null && cellData !== undefined) {
-          return addComma(cellData);
-        }
-        return cellData;
-      },
-    },
-    {
-      title: "환율",
-      dataType: "integer",
-      dataIndx: "aplyExrt",
-      halign: "center",
-      align: "right",
       filter: { crules: [{ condition: "range" }] },
     },
     {
