@@ -23,8 +23,7 @@
 				<div class="ibox ">
 					<!-- 조회조건영역 -->
 					<form method="get">					
-					<div class="ibox-content text-right">
-							
+					<div class="ibox-content text-right">							
 							<!-- row1 -->
 							<div class="form-group row">								
 									<label class="col-sm-1 col-form-label"><span class="req"></span>종목코드</label>
@@ -37,15 +36,22 @@
 											<input type="text" class="form-control" id="TB08040S_prdtNm" style="width: 170px;" readonly>
 										</div>
 									</div>
-									<div class="col-sm-7 text-right">
+									<label class="col-sm-1 col-form-label text-right">
+										예정일 조회기간
+									</label>
+									<div class="col-sm-4 input-group">
+										<div class="col-sm-5 input-group date px-0">
+											<input type="text" class="form-control" id="TB08040S_strPrarDt" name="" value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<span class="input-group-addon border-none"> ~ </span>
+										<div class="col-sm-5 input-group date px-0">
+											<input type="text" class="form-control" id="TB08040S_endPrarDt" name="" value="">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
 									</div>
-									<!-- 버튼영역 -->
-									<!--
-									<div class="col-sm-8 text-right">
-									 <button class="btn btn-primary" type="button" onclick="TB08040Sjs.srch();"><i class="fa fa-search"></i>&nbsp;조회</button>
-										<button class="btn btn-default" type="button" onclick="resetAll('TB08040S', ['grd_feeSch']);"><i class="fa fa-undo"></i>&nbsp;초기화</button>									
+									<div class="col-sm-2 text-right">
 									</div>
-									-->	
 							</div>	
 							
 							<!-- row2 -->	
@@ -66,34 +72,14 @@
 											</select>
 											<input type="text" class="form-control"style="width: 170px;"  id="TB08040S_dprtCd" readonly>
 										</div>
-									</div>									
-									<div class="col-sm-4 text-right">										
+									</div>	
+									<!--버튼영역-->								
+									<div class="col-sm-2 text-right">
+										<button class="btn btn-primary" type="button" onclick="TB08040Sjs.srch();"><i class="fa fa-search"></i>&nbsp;조회</button>
+										<button class="btn btn-default" type="button" onclick="TB08040Sjs.init_TB08040S();"><i class="fa fa-undo"></i>&nbsp;초기화</button>										
 									</div>
 							</div>
-							
-							<!-- row3 -->							
-							<div class="form-group row">
-								<label class="col-sm-1 col-form-label text-right">
-									조회기간
-								</label>
-								<div class="col-sm-4 input-group">
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="selectDate_1" name="" value="">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-									<span class="input-group-addon border-none"> ~ </span>
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="selectDate_2" name="" value="">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-								</div>
-									<div class="col-sm-7 text-right">
-										<button class="btn btn-primary" type="button" onclick="TB08040Sjs.srch();"><i class="fa fa-search"></i>&nbsp;조회</button>
-										<button class="btn btn-default" type="button" onclick="TB08040Sjs.init_TB08040S();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
-									</div>
-							</div>			
 					</div>
-
 					</form>
 					<!-- 조회결과 -->
 					<div class="ibox">

@@ -6,6 +6,7 @@ const TB05030Sjs = (function(){
   let colMmbrInfo = []; // 전역에 원본 colModel 저장
 
   $(document).ready(function () {
+    TB05030S_setFileButtonEnabled(false);
     touchSpin(); // 결의년도 좌우 가산
     loadSelectBoxContents(); // 셀렉트박스 정보 취득
     SB_inspctCnfrncCcd(); // 전결협의체 셀렉트박스 변경
@@ -22,6 +23,12 @@ const TB05030Sjs = (function(){
       loadRsltnRsltCd(); //의결코드
     }, 100);
   });
+
+  function TB05030S_setFileButtonEnabled(isEnabled) {
+		// enabled가 true이면 버튼 활성화, false이면 비활성화
+		$("#UPLOAD_AddFile").prop("disabled", !isEnabled);  
+		$("#UPLOAD_DelFiles").prop("disabled", !isEnabled);
+	}
   
   function chnginspctCnfrncSqcSq (e) {
     $("#gridCaseInfo").pqGrid("option", "dataModel.data", []);
@@ -467,6 +474,7 @@ const TB05030Sjs = (function(){
       data: paramData,
       dataType: "json",
       success: function (data) {
+        TB05030S_setFileButtonEnabled(false);
         if(data.length == 0 ){
           // 데이터가 없을 경우, "조회된 데이터가 없습니다" 메시지 설정
           arrPqGridCaseInfo.option("strNoRows", "조회된 데이터가 없습니다.");
@@ -480,6 +488,7 @@ const TB05030Sjs = (function(){
         }else{
           arrPqGridCaseInfo.setData(data);
           arrPqGridCaseInfo.option("rowDblClick", function (event, ui) {
+            TB05030S_setFileButtonEnabled(true);
             let key2 = `${ui.rowData.cnsbDcd}|${ui.rowData.cnsbSq}|${ui.rowData.rsltnYr}|${ui.rowData.sn}`;
             getFileInfo($('#key1').val(),key2);
             CNFRNCDetail(ui.rowData);

@@ -13,7 +13,7 @@ var TB03021P_searchConditions = {}; // 검색 조건을 담을 객체
 
 $(document).ready(function () {
   keyDownEnter_TB03022P();
-  modalShowFunction();
+  modalShowFunction_TB03022P();
 });
 
 // openTB03021P 이벤트 감지(TB03021P.js)
@@ -223,7 +223,7 @@ $("#modal-TB03022P").on("hide.bs.modal", function () {
   $("#gridEmpList").pqGrid("destroy");
 });
 
-function modalShowFunction() {
+function modalShowFunction_TB03022P() {
   //모달 오픈 애니메이션 후 포커스 주도록 설정
   $("#modal-TB03022P").on("shown.bs.modal", function () {
     $("#modal-TB03022P input[id=TB03022P_empNm]").focus();

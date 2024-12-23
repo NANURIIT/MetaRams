@@ -66,6 +66,8 @@ const TB04010Sjs = (function () {
 
     $("#TB04010S_ibDealNo").focus();
     $("#assesmenttlClsf").hide(); // 승인확정 버튼 hide
+
+    btnReset();
   });
 
   // 그리드 렌더링함수
@@ -74,8 +76,8 @@ const TB04010Sjs = (function () {
     let arrPqGridObj = [
       // 딜정보
       {
-        height: 140,
-        maxHeight: 140,
+        height: 150,
+        maxHeight: 150,
         id: "gridDealListInfo",
         colModel: colDealListInfo,
       },
@@ -669,7 +671,11 @@ const TB04010Sjs = (function () {
           $("#assesmentReturn").hide(); // 심사반송 버튼 hide
           $("#assesmenttlClsf").show(); // 승인확정 버튼 show
         }
-        $("#TB04010S_riskRcgNo").val(dealDetail.riskRcgNo); // 리스크승인번호
+        if (dealDetail.riskRcgNo == null) {
+          $("#TB04010S_riskRcgNo").val("미등록");
+        } else {
+          $("#TB04010S_riskRcgNo").val(dealDetail.riskRcgNo);
+        } // 리스크승인번호
 
         $("#TB04010S_I010")
           .val(dealDetail.inspctDprtDcd)
@@ -1231,8 +1237,8 @@ const TB04010Sjs = (function () {
     $(":radio[name='TB04010S_insGrdTrgtYn']").radioSelect(insGrdTrgtYn); // SL대상여부
     $("#TB04010S_spcltFncMngNo").val(spcltFncMngNo); // SL번호
     $("#TB04010S_O006").val(outsCrdtGrdCcd).prop("selected", true); // SL내부등급
-    $("#TB04010S_ins_corpRgstNo").val(checkBrnAcno(brwrCrno)); // 차주 법인번호
-    $("#TB04010S_ins_entpCd").val(checkBrnAcno(ardyBzepNo)); // 차주기업체번호
+    $("#TB04010S_ins_corpRgstNo").val(checkBrnAcno(brwrCrno || "")); // 차주 법인번호
+    $("#TB04010S_ins_entpCd").val(checkBrnAcno(ardyBzepNo || "")); // 차주기업체번호
     $("#TB04010S_I012").val(insCrdtGrdDcd).prop("selected", true); // 내부등급
     $("#TB04010S_ins_bsnsRgstNo").val(rnmCnfmNo); // 실명번호
     $("#TB04010S_ins_entpRnm").val(entpHnglNm); // 한글법인명
@@ -1247,6 +1253,7 @@ const TB04010Sjs = (function () {
       if (useYn1 == "Y") {
         $("#TB04010S_ins_corpRgstNo").val("");
         $("#TB04010S_ins_bsnsRgstNo").val("");
+        $("#TB04010S_ins_entpCd").val("");
         $("#TB04010S_ins_entpRnm").val("");
         //$('#TB04010S_ins_corpRgstNo').prop("readonly", false);
         $("#TB04010S_I012").prop("disabled", false);
@@ -1256,6 +1263,7 @@ const TB04010Sjs = (function () {
         $("#TB04010S_ins_corpRgstNo").val("");
         $("#TB04010S_ins_bsnsRgstNo").val("");
         $("#TB04010S_ins_entpRnm").val("");
+        $("#TB04010S_ins_entpCd").val("");
         //$('#TB04010S_ins_corpRgstNo').prop("readonly", true);
         $("#TB04010S_I012").prop("disabled", true);
         $("#TB04010S_I012 option:eq(0)").prop("selected", true);
@@ -1546,9 +1554,9 @@ const TB04010Sjs = (function () {
   function changeInvstGdsMdvdCd(selectedLdvdCd) {
     var html = "";
 
-    $("#TB04010S_I030").html(html);
-
     html += '<option value="">선택</option>';
+
+    //$("#TB04010S_I030").html(html);
 
     if (mdvdCd != undefined && mdvdCd.length > 0) {
       var validMdvdCds = [];
@@ -1596,7 +1604,7 @@ const TB04010Sjs = (function () {
   function changeInvstGdsSdvdCd(selectedMdvdCd) {
     var html = "";
 
-    $("#TB04010S_I031").html(html);
+    //$("#TB04010S_I031").html(html);
 
     html += '<option value="">선택</option>';
 
@@ -2174,158 +2182,7 @@ const TB04010Sjs = (function () {
     $("#UPLOAD_FileList").html(""); // 테이블 리셋
     $('div[data-menuid="/TB04010S"] #UPLOAD_AddFile').attr("disabled", true);
     $('div[data-menuid="/TB04010S"] #UPLOAD_DelFiles').attr("disabled", true);
-
-    // $("#TB04010S_dcmNo").val(""); // 문서번호
-    // $(":radio[name='TB04010S_lastDcmYn']").radioSelect("Y"); // 최종문서여부
-    // $("#TB04010S_rm").val(""); // 비고(URLLINK)
-    // $("#TB04010S_tab2_sn").val(""); // 일련번호
-    // $("#TB04010S_docInfo").html("");
   }
-
-  // 관련문서저장 삭제
-  // function tab2BtnDelete() {
-  //   var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
-  //   var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
-  //   var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
-  //   var sn = Number($("#TB04010S_tab2_sn").val()); // 일련번호
-
-  //   var option = {};
-  //   option.title = "Warning";
-  //   option.type = "warning";
-
-  //   if (isEmpty(dealNo)) {
-  //     option.text = "Deal 정보를 조회해주세요.";
-  //     openPopup(option);
-  //     return false;
-  //   }
-
-  //   if (sn == 0) {
-  //     option.text = "관련문서정보를 선택해주세요.";
-  //     openPopup(option);
-  //     return false;
-  //   }
-
-  //   businessFunction();
-
-  //   function businessFunction() {
-  //     var paramData = {
-  //       dealNo: dealNo,
-  //       sn: sn,
-  //       mtrDcd: mtrDcd,
-  //       jdgmDcd: jdgmDcd,
-  //     };
-
-  //     $.ajax({
-  //       type: "POST",
-  //       url: "/TB04010S/deleteDocInfo",
-  //       data: paramData,
-  //       dataType: "json",
-  //       success: function () {
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "Success!",
-  //           text: "문서정보를 삭제하였습니다.",
-  //           confirmButtonText: "확인",
-  //         }).then((result) => {
-  //           getDocInfo(dealNo, mtrDcd, jdgmDcd);
-  //         });
-  //       },
-  //       error: function () {
-  //         Swal.fire({
-  //           icon: "error",
-  //           title: "Error!",
-  //           text: "문서정보를 삭제하는데 실패하였습니다.",
-  //           confirmButtonText: "확인",
-  //         });
-  //       },
-  //     });
-  //   }
-  // }
-
-  // 관련문서정보 저장
-  // function tab2BtnSave() {
-  //   // 안건구조 탭의 부수안건, 리스크심사구분 (pk) 가 조회되었는지 여부 판단
-  //   if (
-  //     isEmpty($("#TB04010S_L007").val()) &&
-  //     !$("#TB04010S_L007").prop("disabled") &&
-  //     isEmpty($("#TB04010S_R014").val()) &&
-  //     !$("#TB04010S_R014").prop("disabled")
-  //   ) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Error!",
-  //       text: "안건구조 등록 및 조회 이후 진행바랍니다.",
-  //       confirmButtonText: "확인",
-  //     });
-  //     // 에러메세지 출력후 tab1으로 이동 및 부수안건 input에 포커스
-  //     $('#ramsTab a[href="#tab-1"]').tab("show");
-  //     $("#TB04010S_L007").focus();
-  //     return;
-  //   }
-  //   var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
-  //   var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
-  //   var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
-
-  //   var dcmNo = $("#TB04010S_dcmNo").val(); // 문서번호
-  //   var lastDcmYn = $("input[name=TB04010S_lastDcmYn]:checked").val(); // 최종문서여부
-  //   var rm = $("#TB04010S_rm").val(); // 비고(URLLINK)
-  //   var sn = Number($("#TB04010S_tab2_sn").val()); // 일련번호
-
-  //   var option = {};
-  //   option.title = "Error";
-  //   option.type = "error";
-
-  //   if (isEmpty(dealNo)) {
-  //     option.text = "Deal 정보를 조회해주세요.";
-  //     openPopup(option);
-  //     return false;
-  //   }
-
-  //   if (isEmpty(dcmNo)) {
-  //     option.text = "문서번호를 입력해주세요.";
-  //     openPopup(option);
-  //     return false;
-  //   }
-
-  //   businessFunction();
-
-  //   function businessFunction() {
-  //     var paramData = {
-  //       dealNo: dealNo,
-  //       dcmNo: dcmNo,
-  //       lastDcmYn: lastDcmYn,
-  //       rm: rm,
-  //       sn: sn,
-  //       mtrDcd: mtrDcd,
-  //       jdgmDcd: jdgmDcd,
-  //     };
-
-  //     $.ajax({
-  //       type: "POST",
-  //       url: "/TB04010S/registDocInfo",
-  //       data: paramData,
-  //       dataType: "json",
-  //       success: function () {
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "Success!",
-  //           text: "문서정보를 저장하였습니다.",
-  //           confirmButtonText: "확인",
-  //         }).then((result) => {
-  //           getDocInfo(dealNo, mtrDcd, jdgmDcd);
-  //         });
-  //       },
-  //       error: function () {
-  //         Swal.fire({
-  //           icon: "error",
-  //           title: "Error!",
-  //           text: "문서정보를 저장하는데 실패하였습니다.",
-  //           confirmButtonText: "확인",
-  //         });
-  //       },
-  //     });
-  //   }
-  // }
 
   // 기초자산 초기화
   function tab3BtnReset() {
@@ -2790,8 +2647,8 @@ const TB04010Sjs = (function () {
 
   // 내부등급정보 초기화
   function tab5BtnReset() {
-    $(":radio[name='TB04010S_spcltFncTrgtYn']").radioSelect("Y");
-    $(":radio[name='TB04010S_insGrdTrgtYn']").radioSelect("Y");
+    $(":radio[name='TB04010S_spcltFncTrgtYn']").radioSelect("N");
+    $(":radio[name='TB04010S_insGrdTrgtYn']").radioSelect("N");
     $("#TB04010S_spcltFncMngNo").val("");
     $("#TB04010S_O006 option:eq(0)").prop("selected", true);
     $("#TB04010S_ins_entpCd").val("");
@@ -3738,6 +3595,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "dealNo",
       align: "center",
+      width: "15%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -3749,10 +3607,19 @@ const TB04010Sjs = (function () {
       hidden: true,
     },
     {
-      title: "부수안건정보",
+      title: "부수안건",
       dataType: "string",
       dataIndx: "mtrDcdNm",
       align: "center",
+      width: "10%",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "안건명",
+      dataType: "stirng",
+      dataIndx: "mtrNm",
+      align: "center",
+      width: "40%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -3764,17 +3631,11 @@ const TB04010Sjs = (function () {
       hidden: true,
     },
     {
-      title: "신규/재부의정보",
+      title: "신규구분",
       dataType: "string",
       dataIndx: "jdgmDcdNm",
       align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "심사역",
-      dataType: "string",
-      dataIndx: "ownPNm",
-      align: "center",
+      width: "11%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -3790,14 +3651,19 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "mtrPrgSttsDcdNm",
       align: "center",
+      width: "12%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "안건명",
-      dataType: "stirng",
-      dataIndx: "mtrNm",
+      title: "심사역",
+      dataType: "string",
+      dataIndx: "ownPNm",
       align: "center",
+      width: "12%",
       filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        return ui.cellData == null ? "미지정" : ui.cellData;
+      },
     },
   ];
 
@@ -3837,10 +3703,11 @@ const TB04010Sjs = (function () {
   // (보증) 기초자산 탭 그리드
   let colAssetInfo = [
     {
-      title: "기초자산종류코드",
+      title: "기초자산종류",
       dataType: "string",
       dataIndx: "bssAsstKndCdNm",
       align: "center",
+      width: "10%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -3856,6 +3723,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "bscAstsCnts",
       align: "center",
+      width: "25%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -3863,6 +3731,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "rnmCnfmNo",
       align: "center",
+      width: "10%",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         let cellData = ui.cellData;
@@ -3877,6 +3746,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "bssAsstIsuCrno",
       align: "center",
+      width: "10%",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         let cellData = ui.cellData;
@@ -3891,21 +3761,24 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "crpNm",
       align: "center",
+      width: "10%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "투자통화코드",
+      title: "투자통화",
       dataType: "string",
       dataIndx: "invstCrryCd",
       align: "center",
+      width: "5%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "기초자산평가액(통화금액)",
+      title: "기초자산평가액",
       dataType: "integer",
       dataIndx: "crryAmt",
       halign: "center",
       align: "right",
+      width: "10%",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         let cellData = ui.cellData;
@@ -3921,6 +3794,7 @@ const TB04010Sjs = (function () {
       dataIndx: "aplyExrt",
       halign: "center",
       align: "right",
+      width: "5%",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         let cellData = ui.cellData;
@@ -3931,11 +3805,12 @@ const TB04010Sjs = (function () {
       },
     },
     {
-      title: "시가평가금액",
+      title: "시가평가금액(원)",
       dataType: "integer",
       dataIndx: "crevAmt",
       halign: "center",
       align: "right",
+      width: "10%",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         let cellData = ui.cellData;

@@ -42,5 +42,7 @@ public class IBIMS348BVO extends IBIMS348BDTO {
     
     private long           hgrkTrSn;            // 상위거래일련번호
     List<IBIMS348BVO> feeSchList;               // 수수료스케줄관리 리스트
+    
+
 }
 
