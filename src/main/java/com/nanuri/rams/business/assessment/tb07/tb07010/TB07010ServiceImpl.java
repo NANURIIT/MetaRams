@@ -129,7 +129,11 @@ public class TB07010ServiceImpl implements TB07010Service {
 		/* 여신실행기본 조회 */
 		//rtnObj.setExcInfo(ibims402BMapper.getEprzCrdlExcInfo(paramData.getPrdtCd()));
 		/* 수수료수납내역 */
-		rtnObj.setExcFee(ibims348BMapper.selectFeeScxInfoList(paramData.getPrdtCd()));
+		IBIMS348BVO prm = new IBIMS348BVO();
+
+		prm.setPrdtCd(paramData.getPrdtCd());
+
+		rtnObj.setExcFee(ibims348BMapper.selectFeeScxInfoList(prm));
 
 		return rtnObj;
 	}
