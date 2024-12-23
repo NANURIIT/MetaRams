@@ -162,20 +162,20 @@ public class TB07090ServiceImpl implements TB07090Service {
             // 조작사원번호
             insertList.get(i).setHndEmpno(facade.getDetails().getEno());
 
-            ibims430bMapper.insertIBIMS435B(insertList.get(i));
+            ibims430bMapper.insertIBIMS430B(insertList.get(i));
 
             result =+ 1;
         }
 
         // 수정
         for(int i = 0; i < updateList.size(); i++){
-            ibims430bMapper.insertIBIMS435B(updateList.get(i));
+            ibims430bMapper.updateIBIMS430B(updateList.get(i));
             result =+ 1;
         }
 
         // 삭제
         for(int i = 0; i < deleteList.size(); i++){
-            ibims430bMapper.insertIBIMS435B(deleteList.get(i));
+            ibims430bMapper.deleteIBIMS430B(deleteList.get(i));
             result =+ 1;
         }
 

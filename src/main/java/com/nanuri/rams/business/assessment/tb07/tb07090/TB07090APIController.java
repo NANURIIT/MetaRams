@@ -39,13 +39,8 @@ public class TB07090APIController {
 
     // 입금내역매핑
     @PostMapping(value="/rctmDtlsMapping")
-    public int rctmDtlsMapping(@RequestBody List<IBIMS430BDTO> paramList){
+    public int rctmDtlsMapping(@RequestBody IBIMS430BVO paramList){
         return tb07090Service.rctmDtlsMapping(paramList);
-    }
-
-    @PostMapping("/ibims430bInsert")
-    public int ibims430bInsert (List<IBIMS430BDTO> paramList) {
-        return tb07090Service.ibims430bInsert(paramList);
     }
     
 }
