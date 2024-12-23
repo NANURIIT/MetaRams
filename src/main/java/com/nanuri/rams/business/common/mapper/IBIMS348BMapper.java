@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.nanuri.rams.business.common.dto.IBIMS348BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS348BVO;
 
 @Mapper
@@ -11,7 +12,7 @@ public interface IBIMS348BMapper {
 
 	List<IBIMS348BVO> selectListIBIMS348B(IBIMS348BVO param);
 	// 딜승인수수료스케쥴기본
-	List<IBIMS348BVO> selectFeeScxInfoList(String param);
+	List<IBIMS348BVO> selectFeeScxInfoList(IBIMS348BVO param);
 	
 	IBIMS348BVO selectOneFeeScxInfo(IBIMS348BVO param);
 

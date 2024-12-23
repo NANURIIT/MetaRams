@@ -1969,6 +1969,7 @@ function pqGridDeleteRow(colModelSelector, rowIndx) {
 
 /**
  * 화면 이동시 작동해야하는 함수
+ * ramsLayout.js -> moveTab 참고
  *
  *
  * @description

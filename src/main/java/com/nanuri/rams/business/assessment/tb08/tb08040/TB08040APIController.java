@@ -22,16 +22,16 @@ public class TB08040APIController {
 	private final TB08040Service tb08040svc;
 
 	// 수수료스케줄관리 조회
-	@PostMapping("/srchFeeSch")
-	public List<IBIMS348BVO> srchFeeSch(@RequestBody IBIMS348BDTO input) {
+	@PostMapping(value = "/srchFeeSch")
+	public List<IBIMS348BVO> srchFeeSch(IBIMS348BVO param) {
 
-		log.debug("\n prdtCd ::: {}", input.getPrdtCd());
+		log.debug("\n prdtCd ::: {}", param.getPrdtCd());
 
-		return tb08040svc.srchFeeSch(input);
+		return tb08040svc.srchFeeSch(param);
 	}
 
 	// 수수료스케줄관리 조회
-	@PostMapping("/saveFeeSch")
+	@PostMapping(value ="/saveFeeSch")
 	public int saveFeeSch(@RequestBody IBIMS348BVO input) {
 
 		log.debug("\n List<IBIMS348BVO> ::: {}", input);
