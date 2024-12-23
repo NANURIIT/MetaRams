@@ -166,7 +166,78 @@ public class TB07140ServiceImpl implements TB07140Service {
 
 	@Override
 	public int deleteFinc(IBIMS407BDTO paramData) {
-		return ibims407bMapper.deleteFinc(paramData);
+
+		log.debug("종목코드 IBIMS407BDTO.prdtCd:::" + paramData.getPrdtCd());
+		log.debug("거래순번 IBIMS407BDTO.trSn:::" + paramData.getTrSn());
+		log.debug("거래일자 IBIMS407BDTO.trDt:::" + paramData.getTrDt());
+		log.debug("거래종류코드 IBIMS407BDTO.etprCrdtGrntTrKindCd:::" + paramData.getEtprCrdtGrntTrKindCd());
+		log.debug("고유자산펀드코드 IBIMS407BDTO.nsFndCd:::" + paramData.getNsFndCd());
+		log.debug("보유목적구분코드 IBIMS407BDTO.holdPrpsDcd:::" + paramData.getHoldPrpsDcd());
+		log.debug("출자처리구분코드 IBIMS407BDTO.fincPrcsDcd:::" + paramData.getFincPrcsDcd());
+		log.debug("출자변동금액 IBIMS407BDTO.fincCngeAmt:::" + paramData.getFincCngeAmt());
+		log.debug("보수수익금액 IBIMS407BDTO.payErnAmt:::" + paramData.getPayErnAmt());
+		log.debug("결제금액 IBIMS407BDTO.stlAmt:::" + paramData.getStlAmt());
+		log.debug("매매환율 IBIMS407BDTO.trdeExrt:::" + paramData.getTrdeExrt());
+		log.debug("환산출자변동금액 IBIMS407BDTO.trslFincCngeAmt:::" + paramData.getTrslFincCngeAmt());
+		log.debug("환산보수수익금액 IBIMS407BDTO.trslPayErnAmt:::" + paramData.getTrslPayErnAmt());
+		log.debug("환산결제금액 IBIMS407BDTO.trslStlAmt:::" + paramData.getTrslStlAmt());
+		log.debug("거래세 IBIMS407BDTO.trtx:::" + paramData.getTrtx());
+		log.debug("소득세 IBIMS407BDTO.intx:::" + paramData.getIntx());
+		log.debug("지방세 IBIMS407BDTO.lotx:::" + paramData.getLotx());
+		log.debug("전금지준구분코드 IBIMS407BDTO.bfRsvPayDcd:::" + paramData.getBfRsvPayDcd());
+		log.debug("결제외부기관코드 IBIMS407BDTO.stlXtnlIsttCd:::" + paramData.getStlXtnlIsttCd());
+		log.debug("결제계좌번호 IBIMS407BDTO.stlAcno:::" + paramData.getStlAcno());
+		log.debug("출자보수내용 IBIMS407BDTO.fincPayCntn:::" + paramData.getFincPayCntn());
+		log.debug("재출자가능여부 IBIMS407BDTO.reFincPossYn:::" + paramData.getReFincPossYn());
+
+		int ibims410Rslt = 0;
+		int ibims407Rslt = 0;
+		int ibims402BRslt = 0;
+		int ibims402HRslt = 0;
+
+		int rslt=0;
+
+		String inputDcd = "2";					//입력구분 1: 등록 / 2: 취소
+
+		paramData.setExcSn(1);
+		paramData.setHndEmpno(facade.getDetails().getEno());
+
+		IBIMS410BDTO ibims410bdto = make410BDTOParam(paramData, inputDcd);			//IBIMS410BDTO 파라미터 set
+		IBIMS402BDTO ibims402bdto = make402BDTOParam(paramData, inputDcd);			//IBIMS402BDTO 파라미터 set
+
+		ibims407Rslt = ibims407bMapper.deleteFinc(paramData);
+		ibims410Rslt = ibims410bMapper.saveDlTrList(ibims410bdto);
+
+		String prdtCd = paramData.getPrdtCd();
+
+		String chkRslt = ibims402bMapper.chkExcInfo(prdtCd);
+
+		if(chkRslt == null || chkRslt.equals("")){
+			ibims402BRslt = ibims402bMapper.saveExcInfoNoKey(ibims402bdto);
+		}else{
+			ibims402BRslt = ibims402bMapper.saveExcInfo(ibims402bdto);
+		}
+
+		ibims402BRslt = ibims402bMapper.saveExcInfo(ibims402bdto);
+
+		//IBIMS402HDTO ibims402hdto = make402HDTOParam(ibims402bdto);
+
+		ibims402HRslt = tb07020ServiceImpl.insertIBIMS402HTr(ibims402bdto);
+
+		if(ibims407Rslt < 1){
+			log.debug("!!!!!!!!407INSERT ERROR!!!!!!!!");
+		}else if(ibims410Rslt < 1){
+			log.debug("!!!!!!!!410INSERT ERROR!!!!!!!!");
+		}else if(ibims402BRslt < 1){
+			log.debug("!!!!!!!!402BINSERT ERROR!!!!!!!!");
+		}else if(ibims402HRslt < 1){
+			log.debug("!!!!!!!!402HINSERT ERROR!!!!!!!!");
+		}else{
+			log.debug("^o^");
+			rslt = 1;
+		}
+
+		return rslt;
 	};
 
 	/* IBIMS402BDTO 파라미터 set */
@@ -245,13 +316,15 @@ public class TB07140ServiceImpl implements TB07140Service {
 
 		returnDto.setPrdtCd(paramData.getPrdtCd());			//종목코드
 		returnDto.setTrSn(paramData.getTrSn());				//거래순번
-		returnDto.setExcSn(1);						//실행일련번호(투자매수/매도/출자금은 1로 고정됨)
+		
 		returnDto.setTrDt(paramData.getTrDt());				//거래일자
 
 		if(inputDcd.equals("1")){
-			returnDto.setTrStatCd("01");			//거래상태코드 (01:정상,11:취소원거래,12:취소거래)
+			returnDto.setTrStatCd("01");				//거래상태코드 (01:정상,11:취소원거래,12:취소거래)
+			returnDto.setExcSn(1);						//실행일련번호
 		}else if(inputDcd.equals("2")){
 			returnDto.setTrStatCd("12");
+			returnDto.setExcSn(2);						//실행일련번호
 		}
 
 		returnDto.setEtprCrdtGrntTrKindCd(paramData.getEtprCrdtGrntTrKindCd());		//거래종류코드 (출자금납입 84, 출자금회수 85)
@@ -282,6 +355,7 @@ public class TB07140ServiceImpl implements TB07140Service {
 
 		returnDto.setDealTrAmt(dealTrAmt);											//딜거래금액
 		returnDto.setDealTrPrca(dealTrPrca);										//딜거래원금
+		returnDto.setTrStfno(paramData.getRqsEmpno());								//거래직원번호
 		//returnDto.setTrFeeAmt(null);												//거래수수료금액
 		returnDto.setCostAmt(paramData.getTrtx());									//비용금액(== 거래세)
 		returnDto.setTrCrryCd("KRW");										//통화코드
