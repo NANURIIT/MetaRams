@@ -3,6 +3,7 @@ let TB06011P_pf;
 let TB06011P_gridState = 1;
 let TB06011P_srchCnt = 0;
 let TB06011P_onchangehandler = "on";	// on off
+let prdtSn;
 
 /**
  * 팝업 자동 호출, 검색
@@ -509,7 +510,7 @@ function callGridTB06011P(prefix) {
 /**
  * show modal
  */
-function callTB06011P(prefix) {
+function callTB06011P(prefix, e) {
 	clearTB06011P();
 	TB06011P_gridState = 0;
 	TB06011P_pf = prefix;
@@ -519,6 +520,10 @@ function callTB06011P(prefix) {
 	indexChangeHandler("TB06011P");
 	selectBoxSet_TB06011P();
 	loginUserSet_TB06011P();  
+	if (prefix == "TB07100S_grid"){
+		prdtSn = e;
+		console.log("TB07100S_grid, "+prdtSn);
+	}
 }
 
 /**
@@ -916,6 +921,13 @@ function TB06011P_setPrdtInfo(e) {
 
 	if (prefix === 'TB07080S') {
 		TB07080Sjs.getExcSn(e.prdtCd);
+	}
+
+	if(prefix == 'TB07100S_grid'){
+		console.log("prdtCd 입력 : "+prdtSn+"에"+e.prdtCd);
+
+		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow",{rowIndx: prdtSn, row: { prdtCd: e.prdtCd } });
+
 	}
 
 	if (prefix === 'TB08040S') {

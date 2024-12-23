@@ -77,15 +77,15 @@ const TB07170Sjs = (function () {
           return cellData;
         },
       },
-      {
-        title: "종목코드",
-        dataType: "string",
-        width: "180",
-        dataIndx: "prdtCd",
-        halign: "center",
-        align: "center",
-        filter: { crules: [{ condition: "range" }] },
-      },
+      // {
+      //   title: "종목코드",
+      //   dataType: "string",
+      //   width: "180",
+      //   dataIndx: "prdtCd",
+      //   halign: "center",
+      //   align: "center",
+      //   filter: { crules: [{ condition: "range" }] },
+      // },
       {
         title: "관리부서",
         dataType: "string",

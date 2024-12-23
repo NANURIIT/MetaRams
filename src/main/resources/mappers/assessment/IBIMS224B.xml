@@ -4,61 +4,61 @@
 	
 	<!-- LOI/LOC 발급내역 조회 -->
 	<select id="getLoiIssDtls" parameterType="com.nanuri.rams.business.common.vo.IBIMS224BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS224BVO">
-		SELECT A.ISS_MNGM_NO                             <!-- 발급관리번호 -->
-             , A.ISS_STTS_CD                             <!-- 발급상태코드 -->
-             , A.DEAL_NO                                 <!-- 딜번호 -->
-             , B.DEAL_NM                            	 <!-- 딜명 -->
-             , A.EMPNO                                   <!-- 사원번호 -->
+		SELECT A.ISS_MNGM_NO                                 /* 발급관리번호*/ 
+             , A.ISS_STTS_CD                             /* 발급상태코드*/ 
+             , A.DEAL_NO                                 /* 딜번호 */
+             , B.DEAL_NM                            	   /* 딜명 */
+             , A.EMPNO                                   /* 사원번호*/
              , (
              	 SELECT EMP_NM
              	   FROM IBIMS003B
              	  WHERE EMPNO = A.EMPNO
-               ) AS EMP_NM								 <!-- 담당자명 -->
-             , A.DPRT_CD                            <!-- 부서코드 -->
+               ) AS EMP_NM								          /* 담당자명 */
+             , A.DPRT_CD                            /* 부서코드 */
 			 , (
 				 SELECT CD_VL_NM
 				   FROM IBIMS002B
 				  WHERE CMNS_CD_GRP = 'D010'
 				    AND CD_VL_ID = A.DPRT_CD
-			   ) AS DECD_DPT_NM						  	 <!-- 부서명 -->
-             , A.FND_NM                                  <!-- 펀드명 -->
-             , A.PRDT_CD                                 <!-- 상품코드 -->
-             , A.IB_PRDT_CLSF_CD                         <!-- ib상품분류코드 -->
-             , A.ISS_BDCD                                <!-- 발급부점코드 -->
-             , A.ISS_CRRY_CD                             <!-- 발급통화코드 -->
-             , A.LOI_LOC_YN                              <!-- LOI/LOC여부 -->
-             , A.STDR_EXRT                               <!-- 기준환율 -->
-             , A.ISS_LTR_DCD                             <!-- 발급서류구분코드 -->
+			   ) AS DPRT_NM						  	                 /* 부서명 */
+             , A.FND_NM                                  /* 펀드명 */
+             , A.PRDT_CD                                 /* 상품코드 */
+             , A.IB_PRDT_CLSF_CD                         /* ib상품분류코드 */
+             , A.ISS_BDCD                                /* 발급부점코드 */
+             , A.ISS_CRRY_CD                             /* 발급통화코드 */
+             , A.LOI_LOC_YN                              /* LOI/LOC여부 */
+             , A.STDR_EXRT                               /* 기준환율 */
+             , A.ISS_LTR_DCD                             /* 발급서류구분코드*/ 
              , (
 				 SELECT CD_VL_NM
 				   FROM IBIMS002B
 				  WHERE CMNS_CD_GRP = 'I043'
 				    AND CD_VL_ID = A.ISS_LTR_DCD
-               ) AS ISS_LTR_NM                           <!-- 발급서류구분코드명 -->
-             , A.ISS_TR_OTHR_DSCM_NO                     <!-- 발급거래상대방식별번호 -->
-             , A.ISS_DT                                  <!-- 발급일자 -->
-             , A.TR_OTHR_NM                              <!-- 거래상대방명 -->
-             , A.VALT_DT                                 <!-- 유효일자 -->
-             , A.RCLM_DT                                 <!-- 회수일자 -->
-             , A.ISS_AMT                                 <!-- 발급금액 -->
-             , A.ISS_CTNS                                <!-- 발급내용 -->
-             , A.ISS_PCLR_CTNS                           <!-- 발급특이내용 -->
-             , A.IVTG_RQST_CTNS                          <!-- 발급요청내용 -->
-             , A.RCLM_RSN_CTNS                           <!-- 회수사유내용 -->
-             , A.RCLM_RSN_DCD                            <!-- 회수사유구분코드 -->
-             , A.RCLM_AMT                                <!-- 회수금액 -->
-             , A.RCLM_SMM_AMT                            <!-- 회수합계금액 -->
-             , A.IVTG_CNFM_YN                            <!-- 검토확인여부 -->
-             , A.SMIT_ORGI                               <!-- 제출처 -->
-             , A.HANF_DCM_NO                             <!-- 하나포털문서번호 -->
-             , A.PRG_STTS_CD                             <!-- 진행상태코드 -->
-             , A.SQ1_APVL_YN                             <!-- 1차승인여부 -->
-             , A.SQ2_APVL_YN                             <!-- 2차승인여부 -->
-             , A.HND_DETL_DTM                            <!-- 조작상세일시 -->
-             , A.HND_EMPNO                               <!-- 조작사원번호 -->
-             , A.HND_TMNL_NO                             <!-- 조작단말기번호 -->
-             , A.HND_TR_ID                               <!-- 조작거래id -->
-             , A.GUID                                    <!-- guid -->
+               ) AS ISS_LTR_NM                           /* 발급서류구분코드명 */
+             , A.ISS_TR_OTHR_DSCM_NO                     /* 발급거래상대방식별번호*/ 
+             , A.ISS_DT                                  /* 발급일자 */
+             , A.TR_OTHR_NM                              /* 거래상대방명 */
+             , A.VALT_DT                                 /* 유효일자 */
+             , A.RCLM_DT                                 /* 회수일자 */
+             , A.ISS_AMT                                 /* 발급금액 */
+             , A.ISS_CTNS                                /* 발급내용 */
+             , A.ISS_PCLR_CTNS                           /* 발급특이내용 */
+             , A.IVTG_RQST_CTNS                          /* 발급요청내용 */
+             , A.RCLM_RSN_CTNS                           /* 회수사유내용 */
+             , A.RCLM_RSN_DCD                            /* 회수사유구분코드 */
+             , A.RCLM_AMT                                /* 회수금액 */
+             , A.RCLM_SMM_AMT                            /* 회수합계금액 */
+             , A.IVTG_CNFM_YN                            /* 검토확인여부 */
+             , A.SMIT_ORGI                               /* 제출처 */
+             , A.HANF_DCM_NO                             /* 하나포털문서번호 */
+             , A.PRG_STTS_CD                             /* 진행상태코드 */
+             , A.SQ1_APVL_YN                             /* 1차승인여부 */
+             , A.SQ2_APVL_YN                             /* 2차승인여부 */
+             , A.HND_DETL_DTM                            /* 조작상세일시*/
+             , A.HND_EMPNO                               /* 조작사원번호*/
+             , A.HND_TMNL_NO                             /* 조작단말기번호 */
+             , A.HND_TR_ID                               /* 조작거래id */
+             , A.GUID                                    /* guid */
           FROM IBIMS224B A
      LEFT JOIN IBIMS101B B
             ON A.DEAL_NO = B.DEAL_NO
@@ -82,7 +82,9 @@
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(issLtrDcd)">
            AND A.ISS_LTR_DCD = #{issLtrDcd} 
          </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(strtDt) and @com.nanuri.rams.com.utils.MybatisCheck@notEmpty(endDt)">
            AND A.ISS_DT BETWEEN #{strtDt} AND #{endDt} 
+        </if>
 	</select>
 	
 	<!-- LOI/LOC 발급 조회 -->
