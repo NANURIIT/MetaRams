@@ -545,6 +545,18 @@ const TB07140Sjs = (function () {
         dataIndx: "fincPayCntn",
         hidden: true,
       },
+      {
+        title: "거래부서",
+        dataType: "string",
+        dataIndx: "trDptCd",
+        hidden: true,
+      },
+      {
+        title: "거래부서명",
+        dataType: "string",
+        dataIndx: "dprtNm",
+        hidden: true,
+      },
     ];
 
     return TB07140S_colModel;
@@ -866,7 +878,7 @@ const TB07140Sjs = (function () {
       etprCrdtGrntTrKindCd = "85"
     }
 
-    const paramData = {
+    let paramData = {
       prdtCd: $(`#TB07140S_prdtCd`).val(),
       trDt: unformatDate($(`#TB07140S_trDt`).val()),
       etprCrdtGrntTrKindCd: etprCrdtGrntTrKindCd,
@@ -874,7 +886,7 @@ const TB07140Sjs = (function () {
       synsCd: $(`#TB07140S_synsCd`).val(),
       holdPrpsDcd: $(`#TB07140S_holdPrpsDcd`).val(),
       fincPrcsDcd: fincPrcsDcd,
-      trDptCd: $(`#TB07140S_trDptCd`).val(),
+      trDptCd: $(`#TB07140S_dprtCd`).val(),
       fincCngeAmt: uncomma($(`#TB07140S_fincCngeAmt`).val()),
       payErnAmt: uncomma($(`#TB07140S_payErnAmt`).val()),
       stlAmt: uncomma($(`#TB07140S_stlAmt`).val()),
@@ -905,7 +917,8 @@ const TB07140Sjs = (function () {
           result = data;
           Swal.fire({
             icon: "success",
-            title: "등록성공!",
+            title: "[출자금거래] 등록이 실행되었습니다.",
+						confirmButtonText: "확인",
           });
         } else {
           result = -1;
@@ -919,7 +932,7 @@ const TB07140Sjs = (function () {
     if (result < 0) {
       Swal.fire({
         icon: result === -1 ? "warning" : result === -2 ? "error" : "",
-        title: "등록실패!",
+        title: "[출자금거래] 등록 오류!",
       });
     }
 
@@ -946,26 +959,29 @@ const TB07140Sjs = (function () {
 			$('#TB07140S_trSn').val('');
 		}
 
-    $('#TB07140S_fincPrcsDcd').val();//출자처리구분코드
-    $('#TB07140S_dprtCd').val();//거래부서
-    $('#TB07140S_dprtNm').val();//거래부서명
-    $('#TB07140S_intx').val();//소득세
-    $('#TB07140S_stlAmt').val();//결제금액
-    $('#TB07140S_trslStlAmt').val();//환산결제금액
-    $('#TB07140S_trtx').val();//거래세
-    $('#TB07140S_fndCd').val();//운용펀드코드
-    $('#TB07140S_fndNm').val();//운용펀드명
-    $('#TB07140S_lotx').val();//지방세
-    $('#TB07140S_bfRsvPayDcd').val();//전금/지준구분코드
-    $('#TB07140S_fincPrcsDcd').val();
-    $('#TB07140S_fincPrcsDcd').val();
-    $('#TB07140S_fincPrcsDcd').val();
-    $('#TB07140S_fincPrcsDcd').val();
-    $('#TB07140S_fincPrcsDcd').val();
-    $('#TB07140S_fincPrcsDcd').val();
-    $('#TB07140S_fincPrcsDcd').val();
-    $('#TB07140S_fincPrcsDcd').val();
-    $('#TB07140S_fincPrcsDcd').val();
+    $('#TB07140S_fincPrcsDcd').val(rowData.fincPrcsDcd);//출자처리구분코드
+    $('#TB07140S_dprtCd').val(rowData.trDptCd);//거래부서
+    $('#TB07140S_dprtNm').val(rowData.dprtNm);//거래부서명
+    $('#TB07140S_intx').val(rowData.intx);//소득세
+    $('#TB07140S_stlAmt').val(rowData.stlAmt);//결제금액
+    $('#TB07140S_trslStlAmt').val(rowData.trslStlAmt);//환산결제금액
+    $('#TB07140S_trtx').val(rowData.trtx);//거래세
+    $('#TB07140S_fndCd').val(rowData.nsFndCd);//운용펀드코드
+    $('#TB07140S_fndNm').val(rowData.fndNm);//운용펀드명
+    $('#TB07140S_lotx').val(rowData.lotx);//지방세
+    $('#TB07140S_bfRsvPayDcd').val(rowData.bfRsvPayDcd);//전금/지준구분코드
+    $('#TB07140S_prdtCd').val(rowData.prdtCd);//종목코드
+    $('#TB07140S_prdtNm').val();//종목명
+    $('#TB07140S_trdeExrt').val(rowData.trdeExrt);//매매환율
+    $('#TB07140S_fnltCd').val(rowData.stlXtnlIsttCd);//결제은행코드
+    $('#TB07140S_fnltNm').val(rowData.fnltNm);//결제은행명
+    $('#TB07140S_holdPrpsDcd').val(rowData.holdPrpsDcd);//보유목적
+    $('#TB07140S_trCrryCd').val(rowData.trCrryCd);//통화코드
+    $('#TB07140S_stlAcno').val(rowData.stlAcno);//결제계좌번호
+    $('#TB07140S_fincPayCntn').val(rowData.fincPayCntn);//비고
+    $('#TB07140S_stdrExrt').val(rowData.stdrExrt);//기준환율
+    $('#TB07140S_btnEmpNo').val();//담당자사번
+    $('#TB07140S_empNm').val();//담당자명
 
   }
 
@@ -984,7 +1000,7 @@ const TB07140Sjs = (function () {
 
     let result;
 
-    const paramData = {
+    let paramData = {
       prdtCd: $(`#TB07140S_prdtCd`).val(),
       trSn: $(`#TB07140S_trSn`).val(),
       excSn: $(`#TB07140S_excSn`).val(),
@@ -994,7 +1010,7 @@ const TB07140Sjs = (function () {
       synsCd: $(`#TB07140S_synsCd`).val(),
       holdPrpsDcd: $(`#TB07140S_holdPrpsDcd`).val(),
       fincPrcsDcd: $(`#TB07140S_fincPrcsDcd`).val(),
-      trDptCd: $(`#TB07140S_trDptCd`).val(),
+      trDptCd: $(`#TB07140S_dprtCd`).val(),
       fincCngeAmt: $(`#TB07140S_fincCngeAmt`).val(),
       payErnAmt: $(`#TB07140S_payErnAmt`).val(),
       stlAmt: $(`#TB07140S_stlAmt`).val(),
@@ -1169,47 +1185,87 @@ const TB07140Sjs = (function () {
    *  =====================DELETE모음=====================
    */
 
-  async function deleteFinc() {
-    paramData = {
+  function deleteFinc() {
+    // paramData = {
+    //   prdtCd: $(`#TB07140S_prdtCd`).val(),
+    //   trSn: $(`#TB07140S_trSn`).val(),
+    //   excSn: $(`#TB07140S_excSn`).val(),
+    //   trDt: $(`#TB07140S_trDt`).val(),
+    //   etprCrdtGrntTrKindCd: $(`#TB07140S_etprCrdtGrntTrKindCd`).val(),
+    //   nsFndCd: $(`#TB07140S_nsFndCd`).val(),
+    //   synsCd: $(`#TB07140S_synsCd`).val(),
+    //   holdPrpsDcd: $(`#TB07140S_holdPrpsDcd`).val(),
+    //   fincPrcsDcd: $(`#TB07140S_fincPrcsDcd`).val(),
+    //   trDptCd: $(`#TB07140S_dprtCd`).val(),
+    //   fincCngeAmt: $(`#TB07140S_fincCngeAmt`).val(),
+    //   payErnAmt: $(`#TB07140S_payErnAmt`).val(),
+    //   stlAmt: $(`#TB07140S_stlAmt`).val(),
+    //   trdeExrt: $(`#TB07140S_trdeExrt`).val(),
+    //   trslFincCngeAmt: $(`#TB07140S_trslFincCngeAmt`).val(),
+    //   trslPayErnAmt: $(`#TB07140S_trslPayErnAmt`).val(),
+    //   trslStlAmt: $(`#TB07140S_trslStlAmt`).val(),
+    //   trtx: $(`#TB07140S_trtx`).val(),
+    //   intx: $(`#TB07140S_intx`).val(),
+    //   lotx: $(`#TB07140S_lotx`).val(),
+    //   bfRsvPayDcd: $(`#TB07140S_bfRsvPayDcd`).val(),
+    //   stlXtnlIsttCd: $(`#TB07140S_stlXtnlIsttCd`).val(),
+    //   stlAcno: $(`#TB07140S_stlAcno`).val(),
+    //   fincPayCntn: $(`#TB07140S_fincPayCntn`).val(),
+    //   reFincPossYn: $(`#TB07140S_reFincPossYn`).val(),
+    // };
+
+    let result;
+
+    var etprCrdtGrntTrKindCd = "";
+    var fincPrcsDcd = $('#TB07140S_fincPrcsDcd').val();
+
+    if(fincPrcsDcd === "01" || fincPrcsDcd === "04" || fincPrcsDcd === "05"){
+      etprCrdtGrntTrKindCd = "84"
+    }else{
+      etprCrdtGrntTrKindCd = "85"
+    }
+
+    let param = {
       prdtCd: $(`#TB07140S_prdtCd`).val(),
       trSn: $(`#TB07140S_trSn`).val(),
-      excSn: $(`#TB07140S_excSn`).val(),
-      trDt: $(`#TB07140S_trDt`).val(),
-      etprCrdtGrntTrKindCd: $(`#TB07140S_etprCrdtGrntTrKindCd`).val(),
-      nsFndCd: $(`#TB07140S_nsFndCd`).val(),
+      trDt: unformatDate($(`#TB07140S_trDt`).val()),
+      etprCrdtGrntTrKindCd: etprCrdtGrntTrKindCd,
+      nsFndCd: $(`#TB07140S_fndCd`).val(),
       synsCd: $(`#TB07140S_synsCd`).val(),
       holdPrpsDcd: $(`#TB07140S_holdPrpsDcd`).val(),
-      fincPrcsDcd: $(`#TB07140S_fincPrcsDcd`).val(),
-      trDptCd: $(`#TB07140S_trDptCd`).val(),
-      fincCngeAmt: $(`#TB07140S_fincCngeAmt`).val(),
-      payErnAmt: $(`#TB07140S_payErnAmt`).val(),
-      stlAmt: $(`#TB07140S_stlAmt`).val(),
-      trdeExrt: $(`#TB07140S_trdeExrt`).val(),
-      trslFincCngeAmt: $(`#TB07140S_trslFincCngeAmt`).val(),
-      trslPayErnAmt: $(`#TB07140S_trslPayErnAmt`).val(),
-      trslStlAmt: $(`#TB07140S_trslStlAmt`).val(),
-      trtx: $(`#TB07140S_trtx`).val(),
-      intx: $(`#TB07140S_intx`).val(),
-      lotx: $(`#TB07140S_lotx`).val(),
+      fincPrcsDcd: fincPrcsDcd,
+      trDptCd: $(`#TB07140S_dprtCd`).val(),
+      fincCngeAmt: uncomma($(`#TB07140S_fincCngeAmt`).val()),
+      payErnAmt: uncomma($(`#TB07140S_payErnAmt`).val()),
+      stlAmt: uncomma($(`#TB07140S_stlAmt`).val()),
+      trdeExrt: uncomma($(`#TB07140S_trdeExrt`).val()),
+      trslFincCngeAmt: uncomma($(`#TB07140S_trslFincCngeAmt`).val()),
+      trslPayErnAmt: uncomma($(`#TB07140S_trslPayErnAmt`).val()),
+      trslStlAmt: uncomma($(`#TB07140S_trslStlAmt`).val()),
+      trtx: uncomma($(`#TB07140S_trtx`).val()),
+      intx: uncomma($(`#TB07140S_intx`).val()),
+      lotx: uncomma($(`#TB07140S_lotx`).val()),
       bfRsvPayDcd: $(`#TB07140S_bfRsvPayDcd`).val(),
-      stlXtnlIsttCd: $(`#TB07140S_stlXtnlIsttCd`).val(),
+      stlXtnlIsttCd: $(`#TB07140S_fnltCd`).val(),
       stlAcno: $(`#TB07140S_stlAcno`).val(),
       fincPayCntn: $(`#TB07140S_fincPayCntn`).val(),
       reFincPossYn: $(`#TB07140S_reFincPossYn`).val(),
     };
 
-    await $.ajax({
+    console.log(JSON.stringify(param));
+
+    $.ajax({
       method: "POST",
       url: "/TB07140S/deleteFinc",
       contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(paramData),
+      data: JSON.stringify(param),
       dataType: "json",
       success: function (data) {
         if (data) {
           result = data;
           Swal.fire({
             icon: "success",
-            title: "삭제완료!",
+            title: "[출자금거래] 취소가 완료되었습니다.",
           });
         } else {
           result = -1;
@@ -1223,7 +1279,7 @@ const TB07140Sjs = (function () {
     if (result < 0) {
       Swal.fire({
         icon: result === -1 ? "warning" : result === -2 ? "error" : "",
-        title: "삭제실패!",
+        title: "[출자금거래] 취소 오류!",
       });
     }
 

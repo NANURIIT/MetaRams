@@ -351,14 +351,10 @@ const TB07090Sjs = (function () {
         halign: "center",
         align: "center",
         width: "165",
-        format: "yy-mm-dd",
-        cls: "pq-calendar pq-side-icon",
         editable: false,
         render: function (ui) {
-          return (
-            `<button class="gw-custom-datepicker"><i class="fa fa-calendar"></i></button>`
-          );
-        },
+          return formatDate(ui.cellData)
+        }
       },
       {
         title: "등록순번",
@@ -547,7 +543,7 @@ const TB07090Sjs = (function () {
         title: "등록자",
         editable: false,
         dataType: "string",
-        dataIndx: "rgstEmpno",
+        dataIndx: "hndEmpno",
         halign: "center",
         align: "center",
         width: "165",
@@ -557,7 +553,7 @@ const TB07090Sjs = (function () {
         title: "등록일시",
         editable: false,
         dataType: "string",
-        dataIndx: "rgstDtm",
+        dataIndx: "hndDetlDtm",
         halign: "center",
         align: "center",
         width: "165",

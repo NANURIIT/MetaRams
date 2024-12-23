@@ -5,7 +5,7 @@
     <!--입금내역매핑 조회-->
     
     
-    <!--입금순번 구하기-->
+    <!--등록순번 구하기-->
     <select id="getNxtRctmSeq" parameterType="String" resultType="Integer">
         SELECT 
             NVL(MAX(RCTM_SEQ)+1, 1)
@@ -15,7 +15,7 @@
             RCTM_DT = #{rctmDt}
     </select>
 
-    <!--입금내역등록-->
+    <!--입금내역매핑 등록-->
     <insert id="rctmDtlsRgst" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO">
         <foreach collection="list" item="item" separator=";">
         INSERT INTO IBIMS430B 
@@ -81,26 +81,26 @@
         </foreach>
     </insert>
 
-    <!--입금내역조회-->
+    <!--입금내역매핑 조회-->
     <select id="getRctmDtls" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
         SELECT 
-            A.DEAL_NO ,						/*딜번호*/
-            A.RCTM_DT ,						/*은행입금일자*/
-            A.RGST_SEQ ,					/*입금순번*/
-            A.MNGM_BDCD ,					/*관리부서*/
-            A.FNDS_DVSN_CD ,				/*자금구분코드*/
-            A.DEAL_RCTM_AMT ,				/*딜입금금액*/
-            A.PMNT_PRAR_AMT ,               /*납부예정금액*/
-            A.DEAL_EXCS_PYMT_AMT ,			/*딜초과납입금액*/
-            A.RELT_ISTT_CD ,				/*관련기관코드*/
-            A.RELT_BANO ,					/*관련은행계좌번호*/
-            A.DPTR_NM,                      /*입금자*/
-            A.RGST_BDCD ,					/*등록부점코드*/
+            A.DEAL_NO ,						/* 딜번호 */
+            A.RCTM_DT ,						/* 은행입금일자 */
+            A.RGST_SEQ ,					/* 입금순번 */
+            A.MNGM_BDCD ,					/* 관리부서 */
+            A.FNDS_DVSN_CD ,				/* 자금구분코드 */
+            A.DEAL_RCTM_AMT ,				/* 딜입금금액 */
+            A.PMNT_PRAR_AMT ,               /* 납부예정금액 */
+            A.DEAL_EXCS_PYMT_AMT ,			/* 딜초과납입금액 */
+            A.RELT_ISTT_CD ,				/* 관련기관코드 */
+            A.RELT_BANO ,					/* 관련은행계좌번호 */
+            A.DPTR_NM,                      /* 입금자 */
+            A.RGST_BDCD ,					/* 등록부점코드 */
             (
                 SELECT ib.EMP_NM
                 FROM IBIMS003B ib 
                 WHERE ib.EMPNO = A.RGST_EMPNO 
-            ) AS RGST_EMPNO	,				/*등록자*/
+            ) AS RGST_EMPNO	,				/* 등록자 */
             A.RGST_DTM 
         FROM IBIMS430B A
         WHERE 1=1
@@ -313,5 +313,18 @@
            AND MNGM_BDCD = #{dprtCd}
            </if>
     </select>
+
+
+    <insert id="insertIBIMS430B" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO">
+
+    </insert>
+
+    <update id="updateIBIMS430B" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO">
+    
+    </update>
+
+    <delete id="deleteIBIMS430B" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO">
+    
+    </delete>
 
 </mapper>

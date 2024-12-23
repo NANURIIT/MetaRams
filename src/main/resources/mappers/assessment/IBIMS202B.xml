@@ -40,10 +40,10 @@
              , A.INTRT_CNGE_FRQC_MNUM                               <!-- 금리변동주기개월수 -->
              , B.CTRC_EXP_DT                                       <!-- 약정만기일자 -->
           FROM IBIMS202B A
-             , IBIMS401B B
+          LEFT OUTER JOIN IBIMS401B B ON B.PRDT_CD = A.PRDT_CD
          WHERE 1=1
            AND A.PRDT_CD                                           = #{prdtCd}
-           AND B.PRDT_CD = A.PRDT_CD 
+           <!-- AND B.PRDT_CD = A.PRDT_CD  -->
 	</select>
 	
 	<!-- 딜승인현금흐름기본등록  -->
