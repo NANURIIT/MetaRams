@@ -348,10 +348,6 @@ function getArdyBzepInfoList() {
 					setArdyBzepInfo(ui.rowData);
 					// console.log(ui.rowData);
 				});
-				modalPqGridBzepList.option("cellClick", function (event, ui) {
-					const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
-					copyClickData(clickData);  //셀 카피 가능
-				});
 				TB03061P_srchCnt = 0;
 			}
 		},
@@ -488,6 +484,7 @@ function setArdyBzepInfo(rowData) {
 		case "TB03030S":
 			$("#TB03030S_entpRnm").val(entpNm);
 			$("#TB03030S_entpCd").val(ardyBzepNo);
+			TB03030Sjs.getEntpInfo();
 			break;
 		case "TB03031P":
 			$("#TB03031P_rm_entpRnm").val(entpNm);
