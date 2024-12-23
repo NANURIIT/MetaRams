@@ -38,8 +38,8 @@
             ON s003b.CMNS_CD_GRP								= 'M005'			      /* 담보상세구분코드 */
            AND s108b.MRTG_DTLS_DCD							= s003b.CD_VL_ID
           LEFT JOIN IBIMS002B s004b
-            ON s004b.CMNS_CD_GRP								= 'M005'			      /* 권리순위구분코드 */
-           AND s108b.MRTG_DTLS_DCD							= s004b.CD_VL_ID
+            ON s004b.CMNS_CD_GRP								= 'R013'			      /* 권리순위구분코드 */
+           AND s108b.RGT_RNK_DCD							= s004b.CD_VL_ID
           LEFT JOIN IBIMS002B s005b
             ON s005b.CMNS_CD_GRP								= 'M003'			      /* 담보취득방식구분코드 */
            AND s108b.MRTG_ACQST_STM_DCD					= s005b.CD_VL_ID

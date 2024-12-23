@@ -592,7 +592,6 @@ const TB04010Sjs = (function () {
             var sn = ui.rowData.sn || 0;
 
             var key2 = dealNo + mtrDcd + jdgmDcd + sn;
-            console.log("확인해보자: ", key2);
             getFileInfo("", key2);
             $('div[data-menuid="/TB04010S"] #UPLOAD_AddFile').attr(
               "disabled",
@@ -1312,6 +1311,7 @@ const TB04010Sjs = (function () {
         arrPqGridMrtgInfo.setData(data);
         arrPqGridMrtgInfo.option("rowDblClick", function (event, ui) {
           getMrtgInfoDetails(ui.rowData);
+          console.log("확인해보자: ", data);
         });
       },
     });
@@ -4053,7 +4053,7 @@ const TB04010Sjs = (function () {
       hidden: true,
     },
     {
-      title: "투자통화금액코드명",
+      title: "투자통화",
       dataType: "string",
       dataIndx: "invstCrryCdNm",
       align: "center",
