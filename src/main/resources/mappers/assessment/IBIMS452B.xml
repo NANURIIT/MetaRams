@@ -4,7 +4,7 @@
       
     <insert id="insertFndsCnstDecd" parameterType="com.nanuri.rams.business.common.vo.IBIMS452BVO">
         INSERT INTO IBIMS452B (
-            DEAL_NO
+            PRDT_CD
           , EXC_SEQ
           , TR_SEQ
           , ERLM_SEQ
@@ -21,7 +21,7 @@
           , GUID
         )
         VALUES (
-            #{dealNo}
+            #{prdtCd}
           , #{excSeq}
           , #{trSeq}
           , (
@@ -55,7 +55,7 @@
              , HND_TR_ID = #{hndTrId}
              , GUID = #{guid}
          WHERE 1=1
-           AND DEAL_NO = #{dealNo}
+           AND PRDT_CD = #{prdtCd}
            AND EXC_SEQ = #{excSeq}
            AND TR_SEQ = #{trSeq}
            AND ERLM_SEQ = #{erlmSeq}
