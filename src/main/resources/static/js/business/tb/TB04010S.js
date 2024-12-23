@@ -4053,7 +4053,7 @@ const TB04010Sjs = (function () {
       hidden: true,
     },
     {
-      title: "투자통화금액코드명",
+      title: "투자통화",
       dataType: "string",
       dataIndx: "invstCrryCdNm",
       align: "center",

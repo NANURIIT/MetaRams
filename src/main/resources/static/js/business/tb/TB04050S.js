@@ -94,6 +94,7 @@ const TB04050Sjs = (function () {
     setGrid_TB04050S();
 
     getUrlDealInfo();
+    changeCheckCd3();
   });
 
   // 세션으로 받앗을때
@@ -104,6 +105,7 @@ const TB04050Sjs = (function () {
     if (isNotEmpty(dealNo)) {
       $("#TB04050S_ibDealNo").val(dealNo);
       $("#TB04050S_ibDealNm").val(dealNm);
+
       getLoiDetail();
       getDealInfo_TB04050S(dealNo);
     }
@@ -159,6 +161,16 @@ const TB04050Sjs = (function () {
     getSelectBoxList("TB04050S", item);
   }
 
+  function changeCheckCd3() {
+    $("input[name='TB04050S_issSttsCd']").change(function () {
+      if ($("#TB04050S_issSttsCd3").is(":checked")) {
+        $("input[name='TB04050S_issLtrYN']").prop("disabled", true);
+        $("#TB04050S_issDt").prop("disabled", true);
+      }
+    });
+  }
+  //회수로 체크했을 경우
+
   // 조회
   function getLoiDetail() {
     if (isEmpty($("#TB04050S_ibDealNo").val())) {
@@ -170,6 +182,21 @@ const TB04050Sjs = (function () {
       });
     } else {
       businessFunction();
+    }
+
+    // 담당직원정보조회
+    function loadUserAuth() {
+      $.ajax({
+        type: "GET",
+        url: "/getUserAuth",
+        dataType: "json",
+        success: function (data) {
+          $("#TB04050S_dprtCd").val(data.dprtCd);
+          $("#TB04050S_dprtNm").val(data.dprtNm);
+          $("#TB04050S_empNo").val(data.eno);
+          $("#TB04050S_empNm").val(data.empNm);
+        },
+      });
     }
 
     function businessFunction() {
@@ -186,7 +213,13 @@ const TB04050Sjs = (function () {
         data: dtoParam,
         beforeSend: function () {
           $('[name="TB04050S_issLtrYN"][value="1"]').prop("checked", true); // 발급서류구분
-          $('[name="TB04050S_issSttsCd"][value="1"]').prop("checked", true);
+          //$('[name="TB04050S_issSttsCd"][value="1"]').prop("checked", true);
+          // 라디오 버튼 활성화 및 체크
+          $("#TB04050S_issSttsCd1")
+            .prop("disabled", false)
+            .prop("checked", true);
+          $("#TB04050S_issSttsCd2").prop("disabled", false);
+          $("#TB04050S_issSttsCd3").prop("disabled", false);
           $("#TB04050S_smit").val(""); // 제출처
           $("#TB04050S_I027_1").val("KRW"); // 발급통화코드
           $("#TB04050S_issAmt").val(""); // 발급액
@@ -217,8 +250,21 @@ const TB04050Sjs = (function () {
             $("#TB04050S_empNo").val(data.empNo); // 담당자 사번
             $("#TB04050S_dprtCd").val(data.dprtCd); // 담당부서코드
             $("#TB04050S_ivtgRqstCtns").val(data.ivtgRqstCtns); // 검토요청내용
+            if ($("#TB04050S_issSttsCd3").is(":checked")) {
+              $("input[name='TB04050S_issLtrYN']").prop("disabled", true);
+              $("#TB04050S_issDt").prop("disabled", true);
+            }
           } else {
+            var today = new Date();
+            var formattedDate = today.toISOString().slice(0, 10);
+
+            $("#TB04050S_issSttsCd2").prop("disabled", true);
+            $("#TB04050S_issSttsCd3").prop("disabled", true);
             $("#TB04050S_I027_1").val("KRW"); // 발급통화코드
+            $("#TB04050S_issDt").val(formattedDate); // 오늘날짜세팅
+            $("#TB04050S_empNm").val(data.empNm); // 담당자이름
+            $("#TB04050S_dprtNm").val(data.dprtNm); // 담당자부서
+            loadUserAuth();
           }
         },
         error: function (request, status, error) {
