@@ -59,4 +59,11 @@ public class IBIMS348BDTO {
 	private String hndTrId;				/* 조작거래id */
 	private String guid;			    /* guid */
 
+	private String strPrarDt;			/* 예정일_시작일자*/
+	private String endPrarDt;			/* 예정일_종료일자*/
+	private String empNo;				/* 담당자사번*/
+	private String dprtCd;				/* 담당부서 */
+	
+	
+
 }

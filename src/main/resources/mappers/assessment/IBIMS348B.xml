@@ -4,7 +4,7 @@
 
 
 	<!-- 딜승인수수료스케쥴기본  -->
-	<select id="selectFeeScxInfoList" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
+	<select id="selectFeeScxInfoList" parameterType="com.nanuri.rams.business.common.vo.IBIMS348BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS348BVO">
 
 		SELECT PRDT_CD					/* 상품코드 */
 		     , FEE_SN 					/* 수수료일련번호     */
@@ -73,6 +73,7 @@
 			 , DC_RT					/* 할인율 */
 			 , RPSR_NM					/* 대표자명 */
 			 , RGST_BDCD				/* 등록부점코드 */
+			 , 'U'	 AS ROW_TYPE		/* rowStatus */					
 			 , HND_DETL_DTM				/* 조작상세일시 */
 			 , HND_EMPNO				/* 조작사원번호 */
 			 , HND_TMNL_NO				/* 조작단말기번호 */
@@ -82,8 +83,10 @@
 		 WHERE 1 = 1
 		   AND A.PRDT_CD  = #{prdtCd} /*  'A000000001' */
 		   AND NVL(A.PRCS_CPLT_YN, 'N') = 'N'
-		   <if test = "prarDt != null and prarDt == ''">
-		   AND A.PRAR_DT &lt;= #{prarDt}
+		    <if test="strPrarDt != null and strPrarDt != ''">
+			    <if test="endPrarDt != null and endPrarDt != ''">	
+			   AND A.PRAR_DT BETWEEN #{strPrarDt} AND #{endPrarDt}
+			   </if>
 		   </if>
 		   AND A.RGST_STTS_CD &lt; '2'
 		 ORDER BY FEE_SN DESC
