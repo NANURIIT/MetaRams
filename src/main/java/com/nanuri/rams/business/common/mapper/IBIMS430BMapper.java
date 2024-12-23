@@ -40,4 +40,16 @@ public interface IBIMS430BMapper {
     // 입금내역매핑 삭제
     public List<IBIMS430BDTO> deleteIBIMS430B (IBIMS430BDTO param);
 
+    /**
+     * 입금증등록내역
+     * asdlkavnkjlnfiuanvuiafdnlkvjansl;oiguawrnhv;okfdunv;aleiruha;dfovbudfhjnp;bdnae;ro
+     */
+     public List<IBIMS430BVO> getNoDealList (IBIMS430BVO param);
+     
+     /**
+     * 입금내역매핑
+     * fasdfasdgasdgasgawregargaw
+     */
+     public List<IBIMS430BVO> getYesDealList (IBIMS430BVO param);
 }
+
