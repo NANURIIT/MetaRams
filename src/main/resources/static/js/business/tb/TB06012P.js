@@ -52,6 +52,8 @@ function callTB06012P(prefix) {
   }
   
   console.log("res_prdtCd["+$('#'+prefix+'_res_prdtCd').val()+"]");
+ // $("#TB06012P_prdtCd").val($('#'+prefix+'_res_prdtCd').val());
+  
   
   selectorNumberFormater(
     $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Rt']")
@@ -375,7 +377,7 @@ function setAppvCndt(e) {
   if(!isEmpty(e.nowFairRt)){$("#TB06012P_nowFairRt").val(e.nowFairRt); }
   $("#TB06012P_apvlCndActCtns").val(e.apvlCndActCtns); 
   
-  $("#TB06012P_prdtCd").val(e.prdtCd);
+
                                       
 }
 
@@ -428,14 +430,21 @@ function connectIBIMS209B() {
     return false;
   }
   
-  if (isNotEmpty($("#TB06012P_prdtCd").val())) {
+  let conCnt =0;
+  for(let i=0; i <modalAppvCndtList.pdata.length ; i++){	
+	if(modalAppvCndtList.pdata[i].cndYn=="Y"){
+		conCnt++;
+	}
+  }
+  
+  if (conCnt> 0) {
     option.text = "현재 종목에 연결된 승인조건이 존재합니다.";
     openPopup(option);
     return false;
   }
   
   //부모창에서 넘어온 종목코드가 존재하지 않을때 by hytest
-  if(isEmpty($('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val())){
+  if(isEmpty($('#TB06012P_prdtCd').val())){
 	option.text = "선택된 종목코드가 존재하지 않습니다.";
     openPopup(option);
     return false;
@@ -443,6 +452,7 @@ function connectIBIMS209B() {
 
   var paramData = {
     dealNo: $("#TB06012P_ibDealNo").val(),
+	prdtCd: $("#TB06012P_prdtCd").val(),
     mtrDcd: $("#"+$("#TB06012P_prefix").val()+"_lstCCaseCcd").val(),
     jdgmDcd: $("#"+$("#TB06012P_prefix").val()+"_riskInspctCcd").val(),
     apvlCndSn: $("#TB06012P_sn").val(),
@@ -474,10 +484,10 @@ function connectIBIMS209B() {
 		          icon: "success",
 		          confirmButtonText: "확인",
 		        }).then((result) => {
-		          //selectIBIMS208B();
-		          console.log("connectIBIMS209B");
-		          getIBIMS208BDTOInfo($('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val());
-		          modalClose_TB06012P();
+		          selectIBIMS208B();
+		          //console.log("connectIBIMS209B");
+		          //getIBIMS208BDTOInfo($("#TB06012P_prdtCd").val());
+		          //modalClose_TB06012P();
 		        });
 		      }
 		    },
