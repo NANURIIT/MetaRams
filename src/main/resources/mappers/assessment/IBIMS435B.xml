@@ -62,7 +62,7 @@
       , #{reltIsttNm}
       , #{reltBano}
       , #{dptrNm}
-      , #{hndDetlDtm}
+      , SYSDATE
       , #{hndEmpno}
       , #{hndTmnlNo}
       , #{hndTrId}
@@ -101,7 +101,8 @@
 
   <!-- 입금증등록내역 삭제 -->
   <delete id="deleteIBIMS435B" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
-    DELETE IBIMS435B
+    DELETE 
+      FROM IBIMS435B
      WHERE 1=1
        AND RCTM_DT = #{rctmDt} 
        AND RGST_SEQ = #{rgstSeq}

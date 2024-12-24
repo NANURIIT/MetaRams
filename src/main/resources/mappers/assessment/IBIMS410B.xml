@@ -747,14 +747,19 @@
            , T1.TR_DT                           /* 거래일자  410B */
            , NVL(T7.CONS_DECD_STAT_CD , '0')   AS consDecdStatCd     /* 결재상태  452B */
            , T1.ORGNO     AS orgno              /* 부서코드  410B */
-           , T1.ORGNO     AS dprtNm             /* 부서명   410B */
+           <!-- , T1.ORGNO     AS dprtNm             /* 부서명   410B */ -->
+           , (
+           	  SELECT DPRT_NM
+           	    FROM IBIMS003B
+           	   WHERE DPRT_CD = T1.ORGNO
+             ) AS dprtNm                        /* 부서명   410B */
            , T1.TR_OBJT_BSN_NO                  /* 거래처번호 */
            , (
            		SELECT ENTP_NM
            		  FROM IBIMS010B
            		 WHERE 1=1
            		   AND ARDY_BZEP_NO = T1.TR_OBJT_BSN_NO
-           	 )            AS  entpNm          /* 거래처명  010B */
+           	 )            AS  entpNm            /* 거래처명  010B */
            , ''           AS  GoodGame          /* 입출금구분 (정체모름) */
            , T1.DEAL_TR_AMT                     /* 거래금액  410B */
            , T1.FNDS_DVSN_CD                    /* 자금구분  410B */
@@ -801,6 +806,7 @@
            , T5.DEAL_NO                         /* 딜번호 */
            , T1.TR_SN                           /* 거래일련번호 */
            , T1.EXC_SN                          /* 실행일련번호 */
+           , T7.ERLM_SEQ                        /* 등록순번 */
         FROM  IBIMS410B T1  /* 딜거래내역 */
   			    , IBIMS401B T2  /* 약정기본 */
             , IBIMS402B T3  /* 딜실행기본 */
@@ -823,11 +829,8 @@
          AND T1.ORGNO = #{orgno}
          </if>
          <if test="prevDate != '' and nextDate != ''">
-         AND T1.TR_DT BETWEEN #{prevDate} AND #{nextDate} /* 큰 날짜 */
+         AND T1.TR_DT BETWEEN #{prevDate} AND #{nextDate} /* 날짜 */
          </if>
-         <!-- <if test="nextDate != ''">
-         AND T1.TR_DT &lt; #{prevDate} /* 작은 날짜 */
-         </if> -->
          <!-- AND 입출금구분몰라.. -->
          <if test="prdtCd != ''">
          AND T1.PRDT_CD = #{prdtCd} /* 종목코드 */
