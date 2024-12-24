@@ -70,6 +70,7 @@ public class IBIMS410BVO extends IBIMS410BDTO {
     private String prgSttsNm; //진행상태코드명
 
     private String erlmSeq;
+    private String depositWithdrawalCode; //입출금구분
 
     private List<IBIMS410BVO> trDtls;     // 거래내역
 }
