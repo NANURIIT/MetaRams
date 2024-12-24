@@ -20,14 +20,11 @@
 				<!-- 조회조건영역 -->
 				<div class="ibox-content" style="min-height: 900px">
 					<!-- 조회조건 st-->
-					<div class="ibox">
-						<div class="ibox-title">
-							<h5>▶&nbsp;조회조건</h5>
-						</div>
+					<div class="ibox">						
 						<div class="ibox-content text-right">
 							<div class="form-group row mb-1">
 								<label class="col-sm-1 col-form-label">Deal번호</label>
-								<div class="col-sm-4">
+								<div class="col-sm-5">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB04040S_ibDealNo">
 										<span class="input-group-append">
@@ -35,23 +32,9 @@
 										</span>
 										<input type="text" class="form-control" id="TB04040S_ibDealNm" readonly="">
 									</div>
-								</div>				
-								<label class="col-sm-1 col-form-label">부서명</label>
-								<div class="col-sm-2">
-									<select class="form-control" id="TB04040S_D010">
-										<option value="">전체</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-1 col-form-label">발급서류</label>
-								<div class="col-sm-3">
-									<select class="form-control" id="TB04040S_I043">
-										<option value="">전체</option>
-									</select>
-								</div>
+								</div>								
 								<label class="col-sm-1 col-form-label">발급일자</label>
-								<div class="col-sm-3 input-group">
+								<div class="col-sm-5 input-group">
 									<div class="col-sm-5 input-group date px-0">
 										<input type="text" class="form-control" id="TB04040S_fromDate" name="FromDate" value="">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -62,7 +45,21 @@
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
-								<div class="col-sm-3 pr-3 text-right">
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-1 col-form-label">발급서류</label>
+								<div class="col-sm-2">
+									<select class="form-control" id="TB04040S_I043">
+										<option value="">전체</option>
+									</select>
+								</div>
+								<label class="col-sm-1 col-form-label">부서명</label>
+								<div class="col-sm-2">
+									<select class="form-control" id="TB04040S_D010">
+										<option value="">전체</option>
+									</select>
+								</div>
+								<div class="col-sm-6 pr-3 text-right">
 									<button class="btn btn-primary" onclick="TB04040Sjs.srchIssDtlsList();">
 										<i class="fa fa-search"></i>&nbsp;조회
 									</button>
@@ -73,12 +70,9 @@
 					<!-- 조회조건 ed -->
 
 					<!-- 발급내역 -->
-					<div class="ibox">
-						<div class="ibox-title">
-							<h5>▶&nbsp;발급내역</h5>
-						</div>
+					<!-- <div class="ibox">						 -->
 						<div class="ibox-content">
-							<div class="pq-theme tableFixHeader1">
+							<!-- <div class="pq-theme tableFixHeader1"> -->
 								<!-- <table class="table result table-bordered table-hover">
 									<colgroup>
 										<col style="width: 5%;">
@@ -122,9 +116,9 @@
 									</tbody>
 								</table> -->
 								<div id="TB04040_getIssDtls"></div>
-							</div>
+							<!-- </div> -->
 						</div>
-					</div>
+					<!-- </div> -->
 					<!-- 발급내역 end -->
 
 					<div class="ibox form-inline">

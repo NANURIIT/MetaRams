@@ -112,31 +112,39 @@ public class TB07090ServiceImpl implements TB07090Service {
         List<IBIMS435BDTO> deleteList = param.getDeleteList();
 
         // 입력
-        for(int i = 0; i < insertList.size(); i++){
-            // 입금순번 채번
-            insertList.get(i).setRgstSeq(
-                ibims435BMapper.getRgstSeq(
-                    insertList.get(i).getRctmDt()
-                )
-            );
-            // 조작사원번호
-            insertList.get(i).setHndEmpno(facade.getDetails().getEno());
-
-            ibims435BMapper.insertIBIMS435B(insertList.get(i));
-
-            result =+ 1;
+        if(insertList.size() > 0){
+            for(int i = 0; i < insertList.size(); i++){
+                // 입금순번 채번
+                insertList.get(i).setRgstSeq(
+                    ibims435BMapper.getRgstSeq(
+                        insertList.get(i).getRctmDt()
+                    )
+                );
+                // 관리부점 세팅 임시로 만듬. 원래는 고정관리부서가 존재함
+                insertList.get(i).setRgstBdcd(facade.getDetails().getDprtCd());
+                // 조작사원번호
+                insertList.get(i).setHndEmpno(facade.getDetails().getEno());
+    
+                ibims435BMapper.insertIBIMS435B(insertList.get(i));
+    
+                result =+ 1;
+            }
         }
 
         // 수정
-        for(int i = 0; i < updateList.size(); i++){
-            ibims435BMapper.insertIBIMS435B(updateList.get(i));
-            result =+ 1;
+        if(updateList.size() > 0){
+            for(int i = 0; i < updateList.size(); i++){
+                ibims435BMapper.updateIBIMS435B(updateList.get(i));
+                result =+ 1;
+            }
         }
-
+        
         // 삭제
-        for(int i = 0; i < deleteList.size(); i++){
-            ibims435BMapper.insertIBIMS435B(deleteList.get(i));
-            result =+ 1;
+        if(deleteList.size() > 0){
+            for(int i = 0; i < deleteList.size(); i++){
+                ibims435BMapper.deleteIBIMS435B(deleteList.get(i));
+                result =+ 1;
+            }
         }
 
         return result;
@@ -145,6 +153,7 @@ public class TB07090ServiceImpl implements TB07090Service {
     // 입금내역매핑 저장
     @Override
     public int rctmDtlsMapping(IBIMS430BVO param){
+
         int result = 0;
 
         List<IBIMS430BDTO> insertList = param.getInsertList();
@@ -152,31 +161,37 @@ public class TB07090ServiceImpl implements TB07090Service {
         List<IBIMS430BDTO> deleteList = param.getDeleteList();
 
         // 입력
-        for(int i = 0; i < insertList.size(); i++){
-            // 등록순번 채번
-            insertList.get(i).setRctmSeq(
-                ibims430bMapper.getNxtRctmSeq(
-                    insertList.get(i).getRctmDt()
-                )
-            );
-            // 조작사원번호
-            insertList.get(i).setHndEmpno(facade.getDetails().getEno());
-
-            ibims430bMapper.insertIBIMS430B(insertList.get(i));
-
-            result =+ 1;
+        if(insertList.size() > 0){
+            for(int i = 0; i < insertList.size(); i++){
+                // 등록순번 채번
+                insertList.get(i).setRgstSeq(
+                    ibims430bMapper.getNxtRgstSeq(
+                        insertList.get(i).getRctmDt()
+                    )
+                );
+                // 조작사원번호
+                insertList.get(i).setHndEmpno(facade.getDetails().getEno());
+    
+                ibims430bMapper.insertIBIMS430B(insertList.get(i));
+    
+                result =+ 1;
+            }
         }
 
         // 수정
-        for(int i = 0; i < updateList.size(); i++){
-            ibims430bMapper.updateIBIMS430B(updateList.get(i));
-            result =+ 1;
+        if(updateList.size() > 0){
+            for(int i = 0; i < updateList.size(); i++){
+                ibims430bMapper.updateIBIMS430B(updateList.get(i));
+                result =+ 1;
+            }
         }
 
         // 삭제
-        for(int i = 0; i < deleteList.size(); i++){
-            ibims430bMapper.deleteIBIMS430B(deleteList.get(i));
-            result =+ 1;
+        if(deleteList.size() > 0){
+            for(int i = 0; i < deleteList.size(); i++){
+                ibims430bMapper.deleteIBIMS430B(deleteList.get(i));
+                result =+ 1;
+            }
         }
 
         return result;

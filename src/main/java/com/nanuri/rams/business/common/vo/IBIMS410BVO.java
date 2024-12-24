@@ -69,7 +69,7 @@ public class IBIMS410BVO extends IBIMS410BDTO {
     private String prgSttsCd; //진행상태코드
     private String prgSttsNm; //진행상태코드명
 
-    
+    private String erlmSeq;
 
     private List<IBIMS410BVO> trDtls;     // 거래내역
 }

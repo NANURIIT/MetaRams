@@ -73,7 +73,7 @@
 			 , DC_RT					/* 할인율 */
 			 , RPSR_NM					/* 대표자명 */
 			 , RGST_BDCD				/* 등록부점코드 */
-			 , 'U'	 AS ROW_TYPE		/* rowStatus */					
+			 , ''	 AS ROW_TYPE		/* rowStatus */					
 			 , HND_DETL_DTM				/* 조작상세일시 */
 			 , HND_EMPNO				/* 조작사원번호 */
 			 , HND_TMNL_NO				/* 조작단말기번호 */
@@ -89,7 +89,7 @@
 			   </if>
 		   </if>
 		   AND A.RGST_STTS_CD &lt; '2'
-		 ORDER BY FEE_SN DESC
+		 ORDER BY FEE_SN ASC
 		 
 	</select>
 	
