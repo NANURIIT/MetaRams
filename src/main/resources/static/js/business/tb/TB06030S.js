@@ -272,7 +272,7 @@ const TB06030Sjs = (function(){
 		var key2;
 		key2="-"; //
 		$('#fileKey2').val(key2);				
-		$('#key1').val("TB06020S");		
+		$('#key1').val("TB06030S");		
 		getFileInfo($('#key1').val(),key2);
 	}
 
@@ -618,17 +618,19 @@ const TB06030Sjs = (function(){
 		
 		var paramData = makeFincParam();
 		
-		if (isEmpty($('#TB06020S_ibDealNm').val())) {
+		if (isEmpty($('#TB06030S_ibDealNm').val())) {
 			option.text = "Deal번호를 검색해주세요";
 			openPopup(option);
 			return false;
 		}
 		
-		if (isEmpty($('#TB06020S_res_prdtCd').val())) {
+		if (isEmpty($('#TB06030S_res_prdtCd').val())) {
 			option.text = "종목코드를 입력해주세요.";
 			openPopup(option);
 			return false;
 		}
+		
+	
 				
 		
 		if( isEmpty($('#TB06030S_ibDealNo').val()) ){
@@ -686,6 +688,22 @@ const TB06030Sjs = (function(){
 			openPopup(option);
 			return false;
 		}
+		
+		if (!isEmpty($('#TB06030S_res_prdtCd').val())) {
+				let regExp = new RegExp(/^[A-Z0-9]+$/);
+				var firStr = $('#TB06030S_res_prdtCd').val().substr(0,1);
+				if(!regExp.test($('#TB06030S_res_prdtCd').val())){
+					option.text = "종목코드 입력시 영문대문자, 숫자만 허용합니다.";
+					openPopup(option);
+					return false;
+				}
+				
+				if(firStr=="A"){
+					option.text = "A로 시작하는 종목코드를 허용하지 않습니다.";
+					openPopup(option);
+					return false;
+				}
+			}
 		
 		if (isEmpty($('#TB06030S_E022').val())) {
 			option.text = "자산분류 상품정보 대분류코드를 입력해주세요.";

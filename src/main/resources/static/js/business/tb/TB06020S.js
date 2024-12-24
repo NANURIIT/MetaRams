@@ -560,6 +560,24 @@ const TB06020Sjs = (function(){
 			return false;
 		}
 		
+		if (!isEmpty($('#TB06020S_res_prdtCd').val())) {
+			let regExp = new RegExp(/^[A-Z0-9]+$/);
+			var firStr = $('#TB06020S_res_prdtCd').val().substr(0,1);
+			if(!regExp.test($('#TB06020S_res_prdtCd').val())){
+				option.text = "종목코드 입력시 영문대문자, 숫자만 허용합니다.";
+				openPopup(option);
+				return false;
+			}
+			
+			if(firStr=="A"){
+				option.text = "A로 시작하는 종목코드를 허용하지 않습니다.";
+				openPopup(option);
+				return false;
+			}
+		}
+		
+		
+		
 		if (isEmpty($('#TB06020S_res_prdtNm').val())) {
 			option.text = "종목명을 입력해주세요.";
 			openPopup(option);
