@@ -254,6 +254,7 @@ const TB06030Sjs = (function(){
 		$('#TB06030S_prdtCd').val('');
 		$('#TB06030S_prdtNm').val('');
 		$('#TB06030S_mtrNm').val('');		
+		$('#TB06030S_apvlDt').val('');
 		/*
 		let inputLength = $("#page-TB06030S :input").length;
 		for (let i = 0; i < inputLength; i++) {

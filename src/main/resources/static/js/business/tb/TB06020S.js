@@ -234,7 +234,8 @@ const TB06020Sjs = (function(){
 		$('#TB06020S_ibDealNm').val('');
 		$('#TB06020S_mtrNm').val('');
 		$('#TB06020S_prdtCd').val('');
-		$('#TB06020S_prdtNm').val('');		
+		$('#TB06020S_prdtNm').val('');	
+		$('#TB06020S_apvlDt').val('');
 		/*
 		let inputLength = $("#page-TB06020S :input").length;
 		for (let i = 0; i < inputLength; i++) {

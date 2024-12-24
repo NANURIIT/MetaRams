@@ -58,6 +58,16 @@ const TB08040Sjs = (function () {
 	  $("#TB08040S_dprtNm").val(dprtCd).prop("selected", true);
 	  $("#TB08040S_dprtCd").val(dprtCd);
   }
+  
+  
+  /**
+   * 부서명 변경시
+   */
+
+  $("#TB08040S_dprtNm").on("change", function () {
+  var dprtCd = $(this).val();
+  $("#TB08040S_dprtCd").val(dprtCd);
+  }); 
 
   function selBox() {
     selectBox = getSelectBoxList(
@@ -839,8 +849,8 @@ const TB08040Sjs = (function () {
     if (validation().isValid) {
       var param = {
         "prdtCd": validation().prdtCd,
-		"strPrarDt" : $("#TB08040S_strPrarDt").val(),
-		"endPrarDt": $("#TB08040S_endPrarDt").val(), 
+		"strPrarDt" : $("#TB08040S_strPrarDt").val().replaceAll("-", ""),
+		"endPrarDt": $("#TB08040S_endPrarDt").val().replaceAll("-", ""), 
 		//"empNo": $("#TB08040S_empNo").val(),
 		//"dprtCd":$("#TB08040S_dprtCd").val(),
       };

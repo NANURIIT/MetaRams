@@ -31,7 +31,7 @@
 							<div class="col-sm-10 form-group mb-1">
 								<!-- deal 번호 -->
 								<label class="col-sm-1 control-label">
-									deal 번호
+									Deal 번호
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
@@ -48,12 +48,14 @@
 								</label>
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="selectDate_1" name="" value="">
+										<input type="text" class="form-control" id="TB07190S_strYmd" name="" value="" 
+										placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value);">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="selectDate_2" name="" value="">
+										<input type="text" class="form-control" id="TB07190S_endYmd" name="" value="" 
+										placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value);">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
@@ -63,10 +65,10 @@
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<select class="form-control" id="">
-											<option value="%">전체</option>
+										<select class="form-control" id="TB07190S_dprtNm">
+											<option value="">전체</option>
 										</select>
-										<input type="text" class="form-control" id="" readonly="">
+										<input type="text" class="form-control" id="TB07190S_dprtCd" readonly="">
 									</div>
 								</div>
 							</div>

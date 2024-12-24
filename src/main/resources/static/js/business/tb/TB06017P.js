@@ -80,9 +80,8 @@ function TB06017P_srch(menuId) {
 	/**
 	 * (1) 담보번호길이체크 후 자동조회
 	 */
-	console.log("menuId"+menuId);
-	menuId="TB06013P";
-	console.log("menuId"+menuId);
+	// 그리드만 부릅니다
+	callGridTB06017P('TB06013P');
 
 	$(`div[id="modal-TB06013P"] span.input-group-append > button[onclick*="callTB06017P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_mrtgMngmNo']").on('input', async function () {
 			const str = $(this).val().length
@@ -129,8 +128,7 @@ function TB06017P_srch(menuId) {
 		// 인풋박스 밸류
 		let data = $(selector).val();
 		$('#TB06017P_mrtgMngmNo').val(data);		
-		// 그리드만 부릅니다
-		callGridTB06017P(prefix);
+		
 		// 팝업 오픈
 		if (TB06017P_gridState === 0) {
 			console.log("열려있음", TB06017P_gridState);
