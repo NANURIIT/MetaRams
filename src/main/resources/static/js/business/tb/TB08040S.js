@@ -713,45 +713,51 @@ const TB08040Sjs = (function () {
 		  let dataIndx = ui.dataIndx;
           let rowIndx = ui.rowIndx;
           let rowData = feeSch.getRowData({ rowIndx });
-          let rowType = rowData.rowType;
+		  
 		  if(dataIndx ==='feeKndCd' ){	  			
 				const grid = $("#grd_feeSch").pqGrid('instance');
-			    const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
-				console.log("feeKndCd"+rowData.feeKndCd);
-                var tempRowData = rowData.feeKndCd;
-				console.log("tempRowData"+tempRowData);
+				const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+                var tempRowData = rowData.feeKndCd; 
 				var selectedIndex = selectBox2.findIndex(option => option.feeKndCd === tempRowData);
-				console.log("selectedIndex"+selectedIndex);
 				if (selectedIndex !== -1) {
 					// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
 					rowData.actsCd = selectBox2[selectedIndex].actsCd;	
-					rowData.actName = selectBox2[selectedIndex].actName;	
+					rowData.actName = selectBox2[selectedIndex].actName;
+					if(rowData.rowType !== "I"){
+						rowData.rowType = "U"; 
+					}		
 				  	// UI에 반영
                   	grid.refreshRow({ rowIndx: ui.rowIndx });
                 }
 	  	  }
 		  
-		  if(dataIndx ==='feeStdrAmt' || dataIndx ==='feeRt' ){	  			
-  			const grid = $("#grd_feeSch").pqGrid('instance');
-  		    const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+		  if(dataIndx ==='feeStdrAmt' || dataIndx ==='feeRt' ){	  
+			const grid = $("#grd_feeSch").pqGrid('instance');
+			const rowData = grid.getRowData({ rowIndx: ui.rowIndx });			
   			console.log("feeStdrAmt"+rowData.feeStdrAmt);
 			console.log("feeRt"+rowData.feeRt);
   			if (rowData.feeStdrAmt >0 && rowData.feeRt >0) {
   				// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
   				rowData.feeAmt = rowData.feeStdrAmt * (rowData.feeRt / 100);
-  			  	// UI에 반영
-                   	grid.refreshRow({ rowIndx: ui.rowIndx });
+				if(rowData.rowType !== "I"){
+					rowData.rowType = "U"; 
+				}				
+				// UI에 반영
+				grid.refreshRow({ rowIndx: ui.rowIndx });
                 }
     	  }
 		  
 		  
-
-         /* if (rowType !== "I") {
-            rowData.rowType = "U"; // rowData 객체의 rowType을 직접 "M"으로 설정
-          } else {
-            rowData.rowType = rowType; // rowType이 "I"인 경우 그대로 유지
-          }
-			*/
+		  if (rowData.rowType !== "I") {
+			const grid = $("#grd_feeSch").pqGrid('instance');
+			const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+  		       rowData.rowType = "U"; // rowData 객체의 rowType을 직접 "M"으로 설정
+  			   // rowType이 "I"인 경우 그대로 유지
+  			   // UI에 반영
+  			   grid.refreshRow({ rowIndx: ui.rowIndx });					   	
+		     } 
+		 
+   
         },
         cellClick: function (evt, ui) {
 			/*let dataIndx = ui.dataIndx;
@@ -838,13 +844,10 @@ const TB08040Sjs = (function () {
 		//"empNo": $("#TB08040S_empNo").val(),
 		//"dprtCd":$("#TB08040S_dprtCd").val(),
       };
-	  
-	  //console.log("obj"+obj.strPrarDt);
 
       $.ajax({
         type: "POST",
         url: "/TB08040S/srchFeeSch",
-       // contentType: "application/json; charset=UTF-8",
         data: param,//JSON.stringify(param),
         dataType: "json",
         beforeSend: function (xhr) {
