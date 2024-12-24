@@ -90,6 +90,13 @@ function settingFunction() {
   ) {
     TB03021P_srch(url);
   }
+  
+  if (
+    $('script[src="js/business/tb/TB06017P.js"]').attr("src") ===
+    "js/business/tb/TB06017P.js"
+  ) {
+    TB06017P_srch(url);
+  }
 
   // datepicker 초기화
   $(".input-group.date").datepicker({

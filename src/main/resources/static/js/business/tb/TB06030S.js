@@ -699,7 +699,7 @@ const TB06030Sjs = (function(){
 				}
 				
 				if(firStr=="A"){
-					option.text = "A로 시작하는 종목코드를 허용하지 않습니다.";
+					option.text = "종목번호가 'A'로 시작할수 없습니다.";
 					openPopup(option);
 					return false;
 				}

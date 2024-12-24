@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
+<th:block layout:fragment="script">
+	<script th:src="@{js/business/tb/TB06017P.js}"></script>
+</th:block>
+
 <th:block th:fragment="TB06013P">
 	<!-- modal -->
 	<div id="modal-TB06013P" class="modal fade" role="dialog">
@@ -27,13 +31,13 @@
 													<input type="text" class="form-control" id="TB06013P_prdtCd" readonly>
 													<input type="hidden" id="TB06013P_connPrdtCd" value="" >
 													<span class="input-group-append">
-														<button type="button" class="btn btn-default" onclick="callTB06011P('TB06013P');"><i class="fa fa-search"></i></button>
+														<button type="button" class="btn btn-default" onclick="callTB06011P('TB06013P');" disabled><i class="fa fa-search"></i></button>
 													</span>
 													<input type="text" class="form-control" style="width:100px;" id="TB06013P_prdtNm" readonly>
 												</div>
 				                            	<label class="col-sm-1 col-form-label text-right">담보번호</label>
 												<div class="col-sm-3 input-group">
-													<input type="text" class="form-control" id="TB06013P_mrtgMngmNo" maxlength="16" onchange="chngMrtgMngmNo(this)">
+													<input type="text" class="form-control" id="TB06013P_mrtgMngmNo" maxlength="16" > <!-- onchange="chngMrtgMngmNo(this)">-->
 													<span class="input-group-append">
 														<button type="button" class="btn btn-default" onclick="callTB06017P('TB06013P');"><i class="fa fa-search"></i></button>
 													</span>
