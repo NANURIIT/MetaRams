@@ -234,7 +234,8 @@ const TB06020Sjs = (function(){
 		$('#TB06020S_ibDealNm').val('');
 		$('#TB06020S_mtrNm').val('');
 		$('#TB06020S_prdtCd').val('');
-		$('#TB06020S_prdtNm').val('');		
+		$('#TB06020S_prdtNm').val('');	
+		$('#TB06020S_apvlDt').val('');
 		/*
 		let inputLength = $("#page-TB06020S :input").length;
 		for (let i = 0; i < inputLength; i++) {
@@ -559,6 +560,24 @@ const TB06020Sjs = (function(){
 			openPopup(option);
 			return false;
 		}
+		
+		if (!isEmpty($('#TB06020S_res_prdtCd').val())) {
+			let regExp = new RegExp(/^[A-Z0-9]+$/);
+			var firStr = $('#TB06020S_res_prdtCd').val().substr(0,1);
+			if(!regExp.test($('#TB06020S_res_prdtCd').val())){
+				option.text = "종목코드 입력시 영문대문자, 숫자만 허용합니다.";
+				openPopup(option);
+				return false;
+			}
+			
+			if(firStr=="A"){
+				option.text = "종목번호가 'A'로 시작할수 없습니다.";
+				openPopup(option);
+				return false;
+			}
+		}
+		
+		
 		
 		if (isEmpty($('#TB06020S_res_prdtNm').val())) {
 			option.text = "종목명을 입력해주세요.";

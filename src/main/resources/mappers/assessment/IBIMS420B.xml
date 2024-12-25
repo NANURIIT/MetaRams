@@ -320,10 +320,12 @@
 	</select>
 
 	<select id="getTB07190SData" parameterType="com.nanuri.rams.business.common.vo.IBIMS420BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS420BVO">
- 		SELECT A.PRDT_CD
+ 		SELECT A.PRDT_CD 		     
     		 , A.TR_SN
     		 , A.EXC_SN
     		 , A.FEE_SN
+    		 , B.TR_DT 
+    		 , D.PRDT_NM
     		 , A.EPRZ_CRDL_RGST_STTS_CD
     		 , A.EPRZ_CRDL_FEE_KND_CD
     		 , A.EPRZ_CRDL_FEE_STDR_AMT
@@ -422,14 +424,14 @@
 		<if test="ardyBzepNo != ''">
 		   AND F.ARDY_BZEP_NO = #{ardyBzepNo}
 		</if>
-           <!-- AND A.TR_DT &lt; #{prevDate}
-           AND A.TR_DT &gt; #{nextDate}
-        <if test="dealNo != ''">
-           AND B.DEAL_NO = #{dealNo}
-        </if>
-        <if test="trObjtBsnNo != ''">
-           AND A.TR_OBJT_BSN_NO = #{trObjtBsnNo}
-        </if> -->
+	   <if test="strYmd != null and strYmd != ''">
+		    <if test="endYmd != null and endYmd != ''">	
+		   AND B.TR_DT BETWEEN #{strYmd} AND #{endYmd}
+		   </if>
+	   </if>
+	   <if test="dprtCd != ''">
+		   AND D.MNGM_BDCD = #{dprtCd} 
+		</if>
     </select>
 
 	

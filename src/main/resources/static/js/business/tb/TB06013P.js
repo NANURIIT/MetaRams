@@ -949,11 +949,13 @@ function TB06013P_getMrtgInfoDetails() {
       $("#TB06013P_rgstDt").val(formatDate(infoDetails.rgstDt));                  //등록일자
       $("#TB06013P_mrtgCclcDt").val(formatDate(infoDetails.mrtgCclcDt));          //해지일자 
       $("#TB06013P_empNo").val(infoDetails.trEmpno);
+
+	  	  $("#TB06013P_empNm").val(infoDetails.trEmpNm);
       $("#TB06013P_bsnsRgstNo").val(infoDetails.trOthrDscmNo);
       $("#TB06013P_entpRnm").val(infoDetails.trOthrNm);
       $("#TB06013P_M006").val(infoDetails.mrtgEvlStdrCd);
       $("#TB06013P_I027").val(infoDetails.mrtgCrryCd);                            //통화코드
-      $("#TB06013P_empNm").val(infoDetails.empNm);
+
       infoDetails.mrtgEvlAmt ? $("#TB06013P_mrtgEvlAmt").val(addComma(infoDetails.mrtgEvlAmt)) : $("#TB06013P_mrtgEvlAmt").val(infoDetails.mrtgEvlAmt); //담보 평가금액
       $("#TB06013P_mrtgDtlUsgeCtns").val(infoDetails.mrtgDtlUsgeCtns);            //비고
       infoDetails.avblMrtgPrc ? $("#TB06013P_avblMrtgPrc").val(addComma(infoDetails.avblMrtgPrc)) : $("#TB06013P_avblMrtgPrc").val(infoDetails.avblMrtgPrc); // 가용담보가(원액)

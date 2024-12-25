@@ -200,7 +200,10 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">신용조회일</label>
 										<div class="col-sm-2 input-group date">
-											<input type="text" class="form-control" id="TB06030S_crdtInqDt" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											<input type="text" class="form-control" id="TB06030S_crdtInqDt" 
+											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value);"
+											><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 									</div>
 								</div>
@@ -396,17 +399,26 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">발행일</label>
 										<div class="col-sm-2 input-group date">
-											<input type="text" class="form-control" id="TB06030S_isuDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<input type="text" class="form-control" id="TB06030S_isuDt" value="" 
+											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value);"
+											>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">만기일</label>
 										<div class="col-sm-2 input-group date">
-											<input type="text" class="form-control" id="TB06030S_expDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<input type="text" class="form-control" id="TB06030S_expDt" value="" 
+											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value);"
+											>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">상환청구가능일</label>
 										<div class="col-sm-2 input-group date">
-											<input type="text" class="form-control" id="TB06030S_rdmpClmPsblDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<input type="text" class="form-control" id="TB06030S_rdmpClmPsblDt" value="" 
+											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value);"
+											>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 									</div>

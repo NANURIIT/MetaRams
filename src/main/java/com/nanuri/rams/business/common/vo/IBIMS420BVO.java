@@ -55,6 +55,13 @@ public class IBIMS420BVO extends IBIMS420BDTO {
 	private BigDecimal wcrcTrslRt;			// 원화환산율
 	private BigDecimal wcrcTrslTrFeeAmt;	// 원화환산거래수수료금액
 	private String trStatCd;				// 거래상태코드
+	private String prdtNm;					// 상품명
+	
+	private String strYmd;					// 시작일자
+	private String endYmd;					// 종료일자
+	private String dprtCd;					// 부서코드
+	
+
 	
 	// private IBIMS010BDTO ibims010bdto;
 	// private IBIMS101BDTO ibims101bdto;

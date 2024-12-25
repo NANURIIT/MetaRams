@@ -18,6 +18,9 @@ const TB07120Sjs = (function () {
     $("#ibims452b button, #ibims452b select").prop("disabled", true);
     $("#TB07120S_rqstStfno, #TB07120S_reltStfno").prop("readonly", false);
     $("#TB07120S_rqstBtn, #TB07120S_reltBtn").prop("disabled", false);
+    $(".TB07120S_isForeignTransfer").prop("disabled", true);
+    $("#TB07120S_apvl").hide(); //승인버튼
+    $("#TB07120S_gbck").hide(); //반려버튼
   }
 
   /**
@@ -100,6 +103,13 @@ const TB07120Sjs = (function () {
       D006html
     );
     $("#TB07120S_fndsDvsnCd").append(F008html);
+
+    // 입출금 구분 옵션 추가 
+    $("#TB07120S_depositWithdrawalCode").append(`
+      <option value="">전체</option>
+      <option value="01">입금</option>
+      <option value="02">출금</option>
+    `);
   }
 
   $("#TB07120S_dprtNm").on("change", function () {
@@ -209,7 +219,7 @@ const TB07120Sjs = (function () {
     {
       title: "입출금구분",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "depositWithdrawalCode",
       align: "center",
       halign: "center",
       width: "",
@@ -310,44 +320,10 @@ const TB07120Sjs = (function () {
       colModel: colM_Grid1,
       strNoRows: "",
       rowDblClick: function (evt, ui) {
-        const keys = Object.keys(ui.rowData);
-        let consDecdStatCd = ui.rowData.consDecdStatCd; //결재상태
-
-        if(ui.rowData["trDt"]){
-          let trDt = ui.rowData["trDt"];
-          console.log("trDt : ", formatDate(trDt));
-          
-          //ui.rowData["trDt"] = formatDate(trDt);
-        }
-        //포맷변경(포맷을'YYYY-MM-DD HH:MM:SS'로 변경)
-        //거래시간
-        if (ui.rowData["trDtm"]) {
-          let dateObj = new Date(ui.rowData["trDtm"]); 
-          ui.rowData["trDtm"] = dateObj.format("yyyy-MM-dd HH:mm:ss");
-        }
-         //처리시간
-        if(ui.rowData["hndlDtm"]){
-          let dateObj = new Date(ui.rowData["hndlDtm"]);
-          ui.rowData["hndlDtm"] = dateObj.format("yyyy-MM-dd HH:mm:ss");
-        }
-
-        for (let i = 0; i < keys.length; i++) {
-          $(`#ibims452b #TB07120S_${keys[i]}`).val(ui.rowData[keys[i]]);
-        }
-
-        $('#TB07120S_consDecdDvsnCd').val(ui.rowData.consDecdDvsnCd) //결재단계구분
-        $('#TB07120S_consDecdStatCd2').val(consDecdStatCd) //결재상태
-
-        TB07120S_nowRowData = {
-          prdtCd : ui.rowData.prdtCd,
-          dealNo: ui.rowData.dealNo,
-          excSeq: ui.rowData.excSn,
-          trSeq: ui.rowData.trSn,
-          consDecdStatCd : consDecdStatCd,
-          erlmSeq : ui.rowData.erlmSeq,
-        };
-
+        let consDecdStatCd = ui.rowData.consDecdStatCd;   
+        setIbims452b(ui.rowData);    
         decdStatChk(consDecdStatCd);
+        //TODO : 부속서류목록 정보를 가져오는 로직 추가 필요
       },
     };
 
@@ -372,6 +348,62 @@ const TB07120Sjs = (function () {
     $("#TB07120S_grid2").pqGrid(gridObj2);
     $("#TB07120S_grid2").pqGrid("refreshDataAndView");
   }
+
+  /**
+  * setIbims452b 함수는 그리드에서 선택된 행의 데이터를 받아서 화면(id:Ibims452b)에 표시
+  * @param {Object} rowData - 그리드에서 선택된 행의 데이터
+  */
+  function setIbims452b(rowData){
+    const keys = Object.keys(rowData);
+
+    let consDecdStatCd = rowData.consDecdStatCd;               //결재상태
+    let trDt = rowData.trDt;                                   //거래일자
+    let trDtm = rowData.trDtm;                                 //거래시간
+    let hndlDtm = rowData.hndlDtm;                             //처리시간
+    let trCrryCd = rowData.trCrryCd;                           //통화코드
+    let depositWithdrawalCode = rowData.depositWithdrawalCode; //입출금구분
+
+    // '-'가 포함되어 있지 않은 경우에만 변환
+    if (!trDt.includes("-")) {
+      rowData.trDt = formatDate(trDt);
+    }
+
+    //포맷변경(포맷을'YYYY-MM-DD HH:MM:SS'로 변경)
+    //거래시간
+    if (trDtm) {
+      let dateObj = new Date(trDtm); 
+      rowData.trDtm = dateObj.format("yyyy-MM-dd HH:mm:ss");
+    }
+      //처리시간
+    if(hndlDtm){
+      let dateObj = new Date(hndlDtm);
+      rowData.hndlDtm = dateObj.format("yyyy-MM-dd HH:mm:ss");
+    }
+    
+    for (let i = 0; i < keys.length; i++) {
+      $(`#ibims452b #TB07120S_${keys[i]}`).val(rowData[keys[i]]);
+    }
+ 
+    // FIXME : 확인 필요
+    // 입출금 구분이 "출금"인 경우, 해외송금여부 라디오박스 값 세팅
+    if (depositWithdrawalCode === "출금" && trCrryCd) {
+      const isForeignTransfer = trCrryCd !== "KRW";  // KRW가 아닌 경우 Y, KRW일 경우 N
+      $(".TB07120S_isForeignTransfer[value='" + (isForeignTransfer ? 'Y' : 'N') + "']").prop("checked", true);
+    }
+    
+    $('#TB07120S_consDecdDvsnCd').val(rowData.consDecdDvsnCd) //결재단계구분
+    $('#TB07120S_consDecdStatCd2').val(consDecdStatCd) //결재상태
+
+    TB07120S_nowRowData = {
+      prdtCd : rowData.prdtCd,
+      dealNo: rowData.dealNo,
+      excSeq: rowData.excSn,
+      trSeq: rowData.trSn,
+      consDecdStatCd : consDecdStatCd,
+      erlmSeq : rowData.erlmSeq,
+    };
+  }
+
   /**
    * PQGrid 세팅
    */
@@ -380,44 +412,39 @@ const TB07120Sjs = (function () {
    *  =====================SELECT모음=====================
    */
 
-  /**
-   * 조회
-   */
+  /** 
+   * 조회 
+  */
   function get07120sList() {
-    // if('' === $("#TB07120S_dprtCd").val()){
-    //     Swal.fire({
-    //         icon: 'warning',
-    //         text: '부서정보를 입력해주세요!'
-    //     }).then(function() {
-    //         $("#TB07120S_dprtCd").focus();
-    //     })
-    //     return;
-    // }
-
     let result;
 
-    let prevDate;
-    let nextDate;
+    let prevDate = $("#TB07120S_selectDate1").val();
+    let nextDate = $("#TB07120S_selectDate2").val();
 
-    if ($("#TB07120S_selectDate1").val() < $("#TB07120S_selectDate2").val()) {
-      prevDate = $("#TB07120S_selectDate1").val();
-      nextDate = $("#TB07120S_selectDate2").val();
-    } else {
-      nextDate = $("#TB07120S_selectDate1").val();
-      prevDate = $("#TB07120S_selectDate2").val();
+    //날짜를 비교하여 오류가 있을 경우 경고 메시지를 띄움.
+    if (prevDate > nextDate) {
+      //openPopup 함수엔 알림확인 후 이벤트가 없어 Swal사용
+      Swal.fire({
+        icon: "warning",
+        title: "경고",
+        text: "시작일이 종료일보다 늦습니다. 날짜를 다시 확인해주세요.",
+        confirmButtonText: "확인"
+      }).then(() => {
+        $("#TB07120S_selectDate1").focus();
+      });
+      return; 
     }
 
     const paramData = {
       orgno: $("#TB07120S_dprtCd").val(),
       prevDate: unformatDate(prevDate),
       nextDate: unformatDate(nextDate),
-      // , 입출금구분:
+      depositWithdrawalCode :  $("#TB07120S_depositWithdrawalCode").val(), 
       prdtCd: $("#TB07120S_prdtCd").val(),
       consDecdStatCd: $("#TB07120S_consDecdStatCd").val(),
-      // consDecdStatCd: consDecdStatCd,//$("#TB07120S_consDecdStatCd").val(),
       trCrryCd: $("#TB07120S_trCrryCd").val(),
       trObjtBsnNo: $("#TB07120S_ardyBzepNo").val(),
-      // , 업무구분:
+      // , 업무구분: //아직 정해진게 없음
     };
 
     $.ajax({
@@ -447,8 +474,8 @@ const TB07120Sjs = (function () {
       }
       // if (result != 1) {
       //   Swal.fire({
-      //     icon: result == -1 ? "warning" : result == -2 ? "error" : "info",
-      //     text: "조회내역이 없습니다!",
+      //     icon:
+      //     text: "조회내역이 없습니 result == -1 ? "warning" : result == -2 ? "error" : "info",다!",
       //   });
       // }
     });
@@ -463,53 +490,73 @@ const TB07120Sjs = (function () {
    */
 
   /**
-   * 결재상태 Check
+   * 결재상태에 따른 버튼 활성화 상태 설정
    * @param consDecdStatCd 결재상태
-   * === 추후 추가 ========
-   * 1. 승인요청자일 경우, 저장과 승인 요청 버튼 활성화 
-   * 2. 승인담당자일 경우, 승인, 반려 버튼활성화 
-   * ==================== 
-   */
+   *
+   * // TODO : 추후 결재상태에 따른 추가 동작 구현
+   * 1. 승인요청자일 경우, 저장 및 승인 요청 버튼 활성화
+   * 2. 승인담당자일 경우, 승인 및 반려 버튼 활성화
+   * 
+   * 현재 동작:
+   * - 결재상태가 '해당없음(0)', '반려(3)', '승인취소(4)'일 경우, 저장 및 승인요청 버튼 활성화
+   * - 결재상태가 '진행중(1)'일 경우, 승인 및 반려 버튼 활성화
+   * - 로그인한 사원이 승인자일 경우, 버튼 상태 및 반려사유 입력란을 활성화
+  */
   function decdStatChk(consDecdStatCd) {
-    // let consDecdStatCd = $("#TB07120S_consDecdStatCd").val();
-    
+    let userNo = $("#userEno").val();                //로그인한 사원번호
+    let reltStfno = $("#TB07120S_reltStfno").val();  //해당건의 승인담당자 번호 
+
     if (!consDecdStatCd) {
       consDecdStatCd = "0";
     }
 
     /**
+     * @param save = 저장버튼
      * @param apvlRqst = 승인요청버튼
      * @param apvl = 승인버튼
      * @param gbck = 반려버튼
-     * @param apvlCncl = 승인취소버튼
+     * @param apvlCncl = 승인취소버튼(현재 주석처리)
      */
 
     // 모든 버튼 비활성화
+    $("#TB07120S_save").prop("disabled", true);
     $("#TB07120S_apvlRqst").prop("disabled", true);
     $("#TB07120S_apvl").prop("disabled", true);
     $("#TB07120S_gbck").prop("disabled", true);
-    $("#TB07120S_apvlCncl").prop("disabled", true);
+    // $("#TB07120S_apvlCncl").prop("disabled", true);
 
     //반려사유 비활성화
     $("#TB07120S_rjctRsnCntn").prop("disabled", true);
 
-    // 승인요청버튼만 활성화
+    // 저장, 승인요청버튼만 활성화
     if (
       consDecdStatCd === "0" ||
       consDecdStatCd === "3" ||
       consDecdStatCd === "4"
     ) {
+      $("#TB07120S_save").prop("disabled", false);
       $("#TB07120S_apvlRqst").prop("disabled", false);
     }
     // 승인, 반려만 활성화
     else if (consDecdStatCd === "1") {
       $("#TB07120S_apvl").prop("disabled", false);
       $("#TB07120S_gbck").prop("disabled", false);
-      $("#TB07120S_rjctRsnCntn").prop("disabled", false); 
+      // $("#TB07120S_rjctRsnCntn").prop("disabled", false); 
     }
     // 승인취소만 활성화
-    else if (consDecdStatCd === "2") {
-      $("#TB07120S_apvlCncl").prop("disabled", false);
+    // else if (consDecdStatCd === "2") {
+    //   $("#TB07120S_apvlCncl").prop("disabled", false);
+    // }
+    
+    // 현재 로그인한 직원인 승인자인지 확인
+    // 승인자인 경우, 버튼 상태 및 반려사유 입력란을 설정
+    if(userNo === reltStfno){
+      $("#TB07120S_save").hide();     //저장버튼 숨기기
+      $("#TB07120S_apvlRqst").hide(); //승인요청버튼 숨기기
+      $("#TB07120S_apvl").show();     //승인버튼 보이기
+      $("#TB07120S_gbck").show();     //반려버튼 보이기
+
+      $("#TB07120S_rjctRsnCntn").prop("disabled", false); //반려사유 활성화
     }
   }
 
@@ -542,12 +589,14 @@ const TB07120Sjs = (function () {
     const nowStat = $("#TB07120S_consDecdStatCd").val();
 
     if(nowStat == ""){ //전체
-      if(TB07120S_nowRowData.consDecdStatCd === null){
+      if(TB07120S_nowRowData.consDecdStatCd === "0"){
         query = "insert";
       }else{
         query = "update";
       }
-    }else{
+    } else if(owStat === "0"){
+      query = "insert";
+    } else{
       query = "update";
     }
     console.log(nowStat);
@@ -556,12 +605,12 @@ const TB07120Sjs = (function () {
     // } else{
     //   query = "update";
     // }
+
     // 유효성 검사 실패 시 멈추도록 수정
     if (!TB07120S_validateFields(consDecdStatBtnNo)) {
         return;
     }
-    console.log(`TB07120S_nowRowData : ${JSON.stringify(TB07120S_nowRowData)}`)
-    console.log(`query: ${query}`)
+
     /**
      * @param dealNo 딜번호
      * @param excSeq 거래일련번호
@@ -585,7 +634,6 @@ const TB07120Sjs = (function () {
      
     };
 
-    console.log(`paramData : ${JSON.stringify(paramData)}`)
     $.ajax({
       type: "POST",
       url: `/TB07120S/${query}FndsCnstDecd`,
@@ -599,7 +647,7 @@ const TB07120Sjs = (function () {
         result = -2;
       },
     }).then(function () {
-      console.log("result : ", result)
+      // console.log("result : ", result)
       if (result <= 0) {
         Swal.fire({
           icon:
@@ -621,14 +669,14 @@ const TB07120Sjs = (function () {
     });
   }
 
+  /**
+  * 결재상태 버튼 클릭 시 입력 필드 검증
+  * @param consDecdStatBtnNo 결재상태 번호 ('1' - 승인요청, '3' - 반려)
+  */
   function TB07120S_validateFields(consDecdStatBtnNo){
     let rqstStfno = $("#TB07120S_rqstStfno").val(); //담당자
     let reltStfno = $("#TB07120S_reltStfno").val(); //승인자
     let rjctRsnCntn = $("#TB07120S_rjctRsnCntn").val(); //반려사유
-    
-    //해외송금여부 : 현재 정의 X
-
-    console.log("TB07120S_validateFields_reltStfno :", reltStfno);
     
     //승인요청
     if(consDecdStatBtnNo === "1" ){
