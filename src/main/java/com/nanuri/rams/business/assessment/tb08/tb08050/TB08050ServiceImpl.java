@@ -40,8 +40,8 @@ public class TB08050ServiceImpl implements TB08050Service {
 
 	// 수수료내역 조회
 	@Override
-	public List<IBIMS420BVO> selectFeeRcivLst(String paramData) {
-		return ibims420BMapper.selectFeeRcivLst(paramData);
+	public List<IBIMS420BVO> selectFeeRcivLst(IBIMS420BVO param) {
+		return ibims420BMapper.selectFeeRcivLst(param);
 	}
 
 	// 수수료수납정보 저장

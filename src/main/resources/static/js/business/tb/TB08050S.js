@@ -12,14 +12,25 @@ const TB08050Sjs = (function () {
   function onload() {
     selBox(); // 셀렉트박스
     pqGrid(); // 그리드 생성
-
+	loginUserSet_TB08050S(); //로그인담당자 세팅
     reBdin();
   }
+  
+  /**
+   * 초기화 버튼
+   */
+  function init_TB08050S(){	
+  resetAll('TB08050S', ['grd_feeDtls']);
+  TB08050Sjs.reBdin();
+  TB08050Sjs.resetMore();
+  loginUserSet_TB08050S(); //로그인 담당자,관리부서 세팅
+  }
+  
 
   function selBox() {
     selectBox = getSelectBoxList(
       "TB08050S",
-      "F004" + // 수수료종류코드 FEE_BNAP_DCD
+      	 "F004" + // 수수료종류코드 FEE_BNAP_DCD
         "/F006" + // 수수료인식구분 FEE_RCOG_DCD
         "/E027" + // 과세유형구분코드 TXTN_TP_DCD
         "/F001" + // 수수료선후급구분코드 FEE_BNAP_DCD
@@ -29,6 +40,9 @@ const TB08050Sjs = (function () {
         "/I027", // 통화코드
       false
     );
+	
+	selectBoxSet_TB08050S();
+	
     // 수수료종류코드
     grdSelect.F004 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "F004";
@@ -58,6 +72,49 @@ const TB08050Sjs = (function () {
       return item.cmnsGrpCd === "I027";
     });
   }
+  
+   /*
+   * 부서 셀렉트박스 세팅
+   */
+   function selectBoxSet_TB08050S() {
+   	selectBox1 = getSelectBoxList("TB08050S", "D010", false);
+   	dprtList = selectBox1.filter(function (item) {
+   	  //부서코드 list
+   	  return item.cmnsGrpCd === "D010";
+   	});
+     
+   	dprtList.forEach((item) => {
+   	  $("#TB08050S_dprtNm").append(
+   		$("<option>", {
+   		  value: item.cdValue,
+   		  text: `${item.cdName}`,
+   		})
+   	  );
+   	});
+  }  
+   
+   /**
+    * 로그인 담당자,관리부서 세팅
+    */
+
+   function loginUserSet_TB08050S(){
+    empNo = $('#userEno').val();     //직원명
+    dprtCd = $('#userDprtCd').val(); //부서번호
+    $("#TB08050S_empNm").val($('#userEmpNm').val());
+    $("#TB08050S_empNo").val(empNo);
+    $("#TB08050S_dprtNm").val(dprtCd).prop("selected", true);
+    $("#TB08050S_dprtCd").val(dprtCd);
+   }
+   
+   /**
+    * 부서명 변경시
+    */
+
+   $("#TB08050S_dprtNm").on("change", function () {
+   var dprtCd = $(this).val();
+   $("#TB08050S_dprtCd").val(dprtCd);
+   }); 
+  
 
   function pqGrid() {
     /********************************************************************
@@ -534,18 +591,21 @@ const TB08050Sjs = (function () {
     feeDtls.option("formulas", formulas);
   }
 
-  // 조회
+  // 조회버튼
   function srch() {
     if (validation().isValid) {
       let obj = {
-        prdtCd: validation().prdtCd,
+        "prdtCd": validation().prdtCd,
+		"strPrarDt" : $("#TB08050S_strPrarDt").val().replaceAll("-", ""),
+		"endPrarDt": $("#TB08050S_endPrarDt").val().replaceAll("-", ""), 
+		//"empNo": $("#TB08050S_empNo").val(),
+		//"dprtCd":$("#TB08050S_dprtCd").val(),
       };
 
       $.ajax({
         type: "POST",
         url: "/TB08050S/selectFeeRcivLst",
-        contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(obj),
+        data: obj,//JSON.stringify(obj),
         dataType: "json",
         beforeSend: function (xhr) {
           feeDtls.setData([]);
@@ -581,7 +641,11 @@ const TB08050Sjs = (function () {
               $("#TB08050S_F008").val(rd.fndsDvsnCd); // 자금구분코드
               if (rd.crryCd === "KRW") {
                 $("#TB08050S_aplcExchR").val("1.00"); // 적용환율
-              }
+				$("#TB08050S_aplcExchR").prop("disabled",true);
+              }else{
+				$("#TB08050S_aplcExchR").val(""); // 적용환율
+				$("#TB08050S_aplcExchR").prop("disabled",false);
+			  }
               $("#TB08050S_I027").val(rd.crryCd); // 적용환율
               $("#TB08050S_E027").val(rd.txtnTpDcd); // 기업여신과세유형코드
               $("#TB08050S_feeRcivAmt").val(commaNull(rd.feeRcivAmt)); // 수수료수납금액구분코드
@@ -631,7 +695,7 @@ const TB08050Sjs = (function () {
     }
   }
 
-  // 저장
+  // 저장버튼
   function save() {
     if (validation().isValid) {
       let feeSn = $("#TB08050S_feeSn").val(); // 수수료일련번호
@@ -799,8 +863,10 @@ const TB08050Sjs = (function () {
 
   function resetMore() {
     prlnFee = "";
+	$("#TB08050S_feeTrgtCtns").val(""); //수수료대상내용
   }
   return {
+	init_TB08050S :init_TB08050S,
     srch: srch,
     reBdin: reBdin,
     resetMore: resetMore,
