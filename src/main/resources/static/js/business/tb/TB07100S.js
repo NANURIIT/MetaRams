@@ -83,6 +83,7 @@ const TB07100Sjs = (function () {
   function autoSet(){//회계기간, 부서코드 기본값 세팅
     $("#TB07100S_acctDt1").val(getToday());
     $("#TB07100S_acctDt2").val(getToday());
+    $("#TB07100S_wrtnDt").val(getToday());
     $('#TB07100S_dprtCd').val($('#userDprtCd').val());
     $('#TB07100S_dprtNm').val($('#userDprtNm').val());
 
@@ -113,6 +114,8 @@ const TB07100Sjs = (function () {
       ,#TB07100S_mergeForm input[id*='Tmrd']
       ,#TB07100S_mergeForm input[id*='splmValuTxa']
       ,#TB07100S_mergeForm #TB07100S_trtx`).val('0');
+      
+    $("#TB07100S_wrtnDt").val(getToday());
   }
 
   /*******************************************************************
@@ -131,7 +134,16 @@ const TB07100Sjs = (function () {
         filter: { crules: [{ condition: 'range' }] },
       },
       {
-        title: "결재자",
+        title: "결재자명",
+        dataType: "string",
+        dataIndx: "reltStfNm",
+        halign: "center",
+        align: "center",
+        // width    : '10%',
+        filter: { crules: [{ condition: 'range' }] },
+      },
+      {
+        title: "결재자사번(히든)",
         dataType: "string",
         dataIndx: "reltStfno",
         halign: "center",
@@ -147,22 +159,44 @@ const TB07100Sjs = (function () {
         align: "center",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        render: function (ui) {
+          return formatDate(ui.cellData);
+        },
       }
       , {
         title: "작성자",
+        dataType: "string",
+        dataIndx: "empNm",
+        halign: "center",
+        align: "center",
+        // width    : '10%',
+        filter: { crules: [{ condition: 'range' }] },
+      }
+      , {
+        title: "작성자사번(히든)",
         dataType: "string",
         dataIndx: "rgstEmpno",
         halign: "center",
         align: "left",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        hidden: true
       },
       {
         title: "거래처명",
         dataType: "string",
         dataIndx: "bcncNm",
         halign: "center",
-        align: "right",
+        align: "left",
+        // width    : '10%',
+        filter: { crules: [{ condition: 'range' }] },
+      },
+      {
+        title: "거래처코드(히든)",
+        dataType: "string",
+        dataIndx: "acctBcncCd",
+        halign: "center",
+        align: "left",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
       },
@@ -198,9 +232,12 @@ const TB07100Sjs = (function () {
         dataType: "string",
         dataIndx: "prufDt",
         halign: "center",
-        align: "right",
+        align: "center",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        render: function (ui) {
+          return formatDate(ui.cellData);
+        },
       },
       {
         title: "지급방법",
@@ -216,10 +253,14 @@ const TB07100Sjs = (function () {
         dataType: "string",
         dataIndx: "pymtPrarDt",
         halign: "center",
-        align: "right",
+        align: "center",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
+        render: function (ui) {
+          return formatDate(ui.cellData);
+        },
       },
+     
     ];
 
     let col_basic = [
@@ -383,9 +424,24 @@ const TB07100Sjs = (function () {
               $(`#ibims431bdto #TB07100S_${keys[i]}`).val(formatDate(ui.rowData[keys[i]]));
             } else if (keys[i] === "pymtPrarDt") {
               $(`#ibims431bdto #TB07100S_${keys[i]}`).val(formatDate(ui.rowData[keys[i]]));
+            } else if (keys[i] === "wrtnDt") {
+              $(`#ibims431bdto #TB07100S_${keys[i]}`).val(formatDate(ui.rowData[keys[i]]));
             }
           }
-
+          $(`#ibims431bdto #TB07100S_2_ardyBzepNo`).val(ui.rowData['acctBcncCd']);
+          $(`#ibims431bdto #TB07100S_2_entpNm`).val(ui.rowData['bcncNm']);
+          $(`#ibims431bdto #TB07100S_2_empNm`).val(ui.rowData['empNm']);
+          $(`#ibims431bdto #TB07100S_2_empNo`).val(ui.rowData['rgstEmpno']);
+          $(`#ibims431bdto #TB07100S_rslnAmt`).val(addComma(ui.rowData['rslnAmt']));
+          $(`#ibims431bdto #TB07100S_splmValuTxa`).val(addComma(ui.rowData['splmValuTxa']));
+          $(`#ibims431bdto #TB07100S_3_empNm`).val(ui.rowData['reltStfNm']);
+          $(`#ibims431bdto #TB07100S_3_empNo`).val(ui.rowData['reltStfno']);
+          
+          
+          
+          $(`#ibims431bdto #TB07100S_bnftYn`).prop('checked',ui.rowData['bnftYn'] == "Y");
+          $(`#ibims431bdto #TB07100S_entmAccXstcYn`).prop('checked',ui.rowData['entmAccXstcYn'] == "Y");
+                      
           const paramData = {
             acctDt: ui.rowData.acctDt
             , rslnBdcd: ui.rowData.rslnBdcd
@@ -441,6 +497,7 @@ const TB07100Sjs = (function () {
       dataType: "json",
       success: function (data) {
         if (data) {
+          console.log("431B Data : ", data);
           let gridList = $("#TB07100S_grd_rlthPruf").pqGrid('instance');
           gridList.setData(data);
           gridList.getData();
@@ -522,58 +579,88 @@ const TB07100Sjs = (function () {
       , exrt: $("TB07100S_exrt").val()
     }
 
+    // const paramData = {
+    //   // wrtnDt: unformatDate($("#TB07100S_wrtnDt").val())
+    //   // , wrtnYm: unformatDate($("#TB07100S_wrtnDt").val()).slice(0, 6)
+    //   rslnBdcd: $("#TB07100S_rslnBdcd").val()
+    //   , acctDt: unformatDate($("#TB07100S_acctDt").val())
+    //   , cnstNo: $("#TB07100S_cnstNo").val()
+    //   , baltDt: $("#TB07100S_baltDt").val()
+    //   , sttmNo: $("#TB07100S_sttmNo").val()
+    //   , sttmBdcd: $("#TB07100S_sttmBdcd").val()
+    //   , cnclBaltDt: unformatDate($("#TB07100S_cnclBaltDt").val())
+    //   , cnclSttmNo: $("#TB07100S_cnclSttmNo").val()
+    //   , cnstSttmDcd: $("#TB07100S_cnstSttmDcd").val()
+    //   , prufDt: unformatDate($("#TB07100S_prufDt").val())
+    //   , crryCd: $("#TB07100S_crryCd").val()
+    //   , exrt: $("#TB07100S_exrt").val()
+    //   , rgstEmpno: $("#TB07100S_rgstEmpno").val()
+    //   , acctBcncCd: $("#TB07100S_acctBcncCd").val()
+    //   , bcncNm: $("#TB07100S_2_bzepName").val()
+    //   , acctPymtMthCd: $("#TB07100S_acctPymtMthCd").val()
+    //   , xtnlIsttCd: $("#TB07100S_xtnlIsttCd").val()
+    //   , bano: $("#TB07100S_bano").val()
+    //   , bnkAchdNm: $("#TB07100S_bnkAchdNm").val()
+    //   , pymtPrarDt: unformatDate($("#TB07100S_pymtPrarDt").val())
+    //   , fndsIstrSn: $("#TB07100S_fndsIstrSn").val()
+    //   , prufKndDcd: $("#TB07100S_prufKndDcd").val()
+    //   , pchsDdcDcd: $("#TB07100S_pchsDdcDcd").val()
+    //   , rslnAmt: $("#TB07100S_rslnAmt").val()
+    //   , splmValuTxa: $("#TB07100S_splmValuTxa").val()
+    //   , cnclYn: "N"
+    //   , trId: $("#TB07100S_trId").val()
+    //   , bnftYn: $("#TB07100S_bnftYn").val()
+    //   , reltDcmNo: $("#TB07100S_reltDcmNo").val()
+    //   , reltFdtnCtns: $("#TB07100S_reltFdtnCtns").val()
+    //   , elcPrufYn: "N"
+    //   , entmAccXstcYn: $("#TB07100S_entmAccXstcYn").val()
+    //   , cntrAccXstcYn: $("#TB07100S_cntrAccXstcYn").val()
+    //   , jobDecdCd: $("#TB07100S_jobDecdCd").val()
+    //   , jobDecdNo: $("#TB07100S_jobDecdNo").val()
+    //   , cnclJobDecdNo: $("#TB07100S_cnclJobDecdNo").val()
+    //   , excalYn: $("#TB07100S_excalYn").val()
+    //   , fndsLdgDcd: $("#TB07100S_fndsLdgDcd").val()
+    //   , fndsLdgNo: $("#TB07100S_fndsLdgNo").val()
+    //   , rgstSn: $("#TB07100S_rgstSn").val()
+    //   , actsCd: $('#TB07100S_A005').val()
+    //   , edmsDcmId: $("#TB07100S_edmsDcmId").val()
+    //   , cdno: $("#TB07100S_cdno").val()
+    //   , apvlNo: $("#TB07100S_apvlNo").val()
+    //   , bdgBusiCd: $("#TB07100S_bdgBusiCd").val()
+    //   , frcrRslnAmt: $("#TB07100S_frcrRslnAmt").val()
+    //   , ibims432bvo: ibims432bvo
+    // }
     const paramData = {
-      // wrtnDt: unformatDate($("#TB07100S_wrtnDt").val())
-      // , wrtnYm: unformatDate($("#TB07100S_wrtnDt").val()).slice(0, 6)
-      rslnBdcd: $("#TB07100S_rslnBdcd").val()
-      , acctDt: unformatDate($("#TB07100S_acctDt").val())
-      , cnstNo: $("#TB07100S_cnstNo").val()
-      , baltDt: $("#TB07100S_baltDt").val()
-      , sttmNo: $("#TB07100S_sttmNo").val()
-      , sttmBdcd: $("#TB07100S_sttmBdcd").val()
-      , cnclBaltDt: unformatDate($("#TB07100S_cnclBaltDt").val())
-      , cnclSttmNo: $("#TB07100S_cnclSttmNo").val()
-      , cnstSttmDcd: $("#TB07100S_cnstSttmDcd").val()
-      , prufDt: unformatDate($("#TB07100S_prufDt").val())
-      , crryCd: $("#TB07100S_crryCd").val()
-      , exrt: $("#TB07100S_exrt").val()
-      , rgstEmpno: $("#TB07100S_rgstEmpno").val()
-      , acctBcncCd: $("#TB07100S_acctBcncCd").val()
-      , bcncNm: $("#TB07100S_2_bzepName").val()
-      , acctPymtMthCd: $("#TB07100S_acctPymtMthCd").val()
-      , xtnlIsttCd: $("#TB07100S_xtnlIsttCd").val()
-      , bano: $("#TB07100S_bano").val()
-      , bnkAchdNm: $("#TB07100S_bnkAchdNm").val()
-      , pymtPrarDt: unformatDate($("#TB07100S_pymtPrarDt").val())
-      , fndsIstrSn: $("#TB07100S_fndsIstrSn").val()
-      , prufKndDcd: $("#TB07100S_prufKndDcd").val()
-      , pchsDdcDcd: $("#TB07100S_pchsDdcDcd").val()
-      , rslnAmt: $("#TB07100S_rslnAmt").val()
-      , splmValuTxa: $("#TB07100S_splmValuTxa").val()
-      , cnclYn: "N"
-      , trId: $("#TB07100S_trId").val()
-      , bnftYn: $("#TB07100S_bnftYn").val()
-      , reltDcmNo: $("#TB07100S_reltDcmNo").val()
-      , reltFdtnCtns: $("#TB07100S_reltFdtnCtns").val()
-      , elcPrufYn: "N"
-      , entmAccXstcYn: $("#TB07100S_entmAccXstcYn").val()
-      , cntrAccXstcYn: $("#TB07100S_cntrAccXstcYn").val()
-      , jobDecdCd: $("#TB07100S_jobDecdCd").val()
-      , jobDecdNo: $("#TB07100S_jobDecdNo").val()
-      , cnclJobDecdNo: $("#TB07100S_cnclJobDecdNo").val()
-      , excalYn: $("#TB07100S_excalYn").val()
-      , fndsLdgDcd: $("#TB07100S_fndsLdgDcd").val()
-      , fndsLdgNo: $("#TB07100S_fndsLdgNo").val()
-      , rgstSn: $("#TB07100S_rgstSn").val()
-      , actsCd: $('#TB07100S_A005').val()
-      , edmsDcmId: $("#TB07100S_edmsDcmId").val()
-      , cdno: $("#TB07100S_cdno").val()
-      , apvlNo: $("#TB07100S_apvlNo").val()
-      , bdgBusiCd: $("#TB07100S_bdgBusiCd").val()
-      , frcrRslnAmt: $("#TB07100S_frcrRslnAmt").val()
-      , ibims432bvo: ibims432bvo
+        wrtnDt : unformatDate($("#TB07100S_wrtnDt").val()) //작성일자
+      , wrtnYm : unformatDate($("#TB07100S_wrtnDt").val()).substring(0,6)
+      , rslnBdcd : $('#userDprtCd').val() //부점코드
+      , acctDt : unformatDate($("#TB07100S_acctDt").val()) //회계일자
+      , cnstNo : $("#TB07100S_cnstNo").val() //품의번호
+      , prufDt : unformatDate($("#TB07100S_prufDt").val())  //증빙일자
+      , prufKndDcd : $("#TB07100S_prufKndDcd").val() //증빙종류
+      , acctBcncCd : $("#TB07100S_2_ardyBzepNo").val() //거래처번호
+      , bcncNm : $("#TB07100S_2_entpNm").val() //거래처명
+      , bano : $("#TB07100S_bano").val() //계좌번호
+      , cdno : $("#TB07100S_cdno").val() //카드번호
+      , apvlNo : $("#TB07100S_apvlNo").val() //카드승인번호
+      , bnftYn : $("#TB07100S_bnftYn").is(":checked") ? "Y" : "N" //편익제공여부
+      , entmAccXstcYn : $("#TB07100S_entmAccXstcYn").is(":checked") ? "Y" : "N"//접대비여부  // 테이블 접대계정존재여부 
+      , rslnAmt : $("#TB07100S_rslnAmt").val().replaceAll(',','') //지급금액 //테이블 결의금액? 
+      , splmValuTxa : $("#TB07100S_splmValuTxa").val().replaceAll(',','') //세액 // 테이블 부가가치세액? 
+      , pchsDdcDcd : $("#TB07100S_pchsDdcDcd").val() //매입공제
+      , fndsLdgDcd : $("#TB07100S_fndsLdgDcd").val() //출금원장 //테이블 자금원장구분코드 
+      , reltFdtnCtns : $("#TB07100S_reltFdtnCtns").val() //관련근거
+      , acctPymtMthCd : $("#TB07100S_acctPymtMthCd").val() //지급방법
+      , pymtPrarDt : unformatDate($("#TB07100S_pymtPrarDt").val())  //지급예정일자
+      , rgstEmpno : $("#TB07100S_2_empNo").val() //작성자
+      , reltStfno : $("#TB07100S_3_empNo").val() //승인자
+      , cnclYn : 'N'
+      , elcPrufYn : 'N'
+      , cntrAccXstcYn : 'N'
+      , excalYn : 'N'
+      , jobDecdCd : 'N'
     }
-
+    console.log("paramData : ", paramData);
     // console.log(paramData.acctDt);
 
     $.ajax({
@@ -675,7 +762,7 @@ const TB07100Sjs = (function () {
   function TB07100S_deleteIBIMS431B() {
     const paramData = {
       wrtnDt: unformatDate($("#TB07100S_wrtnDt").val())   //  작성일자
-      , rslnBdcd: $("#TB07100S_rslnBdcd").val()             //  부서코드
+      , rslnBdcd: $("#TB07100S_dprtCd").val()             //  부서코드
       , cnstNo: $("#TB07100S_cnstNo").val()                 //  품의번호
     }
 

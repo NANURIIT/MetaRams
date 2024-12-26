@@ -10,6 +10,7 @@ import com.nanuri.rams.business.common.mapper.IBIMS431BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS432BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS431BVO;
 import com.nanuri.rams.business.common.vo.IBIMS432BVO;
+import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class TB07100ServiceImpl implements TB07100Service {
+
+	private final AuthenticationFacade facade;
 
 	private final IBIMS431BMapper ibims431bMapper;
 	private final IBIMS432BMapper ibims432bMapper;
@@ -46,8 +49,16 @@ public class TB07100ServiceImpl implements TB07100Service {
 	public int mergeIBIMS431B(IBIMS431BVO param){
 
 		int result = 0;
-
-		return ibims431bMapper.insertIBIMS431B(param);
+		param.setHndEmpno(facade.getDetails().getEno());
+		if(param.getCnstNo()==""){
+			System.out.print("Service = insertIBIMS431B");
+			return ibims431bMapper.insertIBIMS431B(param);
+		}else{
+			System.out.print("Service = updateIBIMS431B");
+			return ibims431bMapper.updateIBIMS431B(param);
+		}
+		
+		
 
 	};
 

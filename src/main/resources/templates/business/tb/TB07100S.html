@@ -431,6 +431,7 @@
 												</button>
 											</div>
 										</div>
+											
 									</div>
 								</div>
 
@@ -472,7 +473,7 @@
 											<label class="col-sm-1">지급방법</label>
 											<div class="col-sm-2">
 												<div class="input-group">
-													<select class="form-control" id="TB07100S_">
+													<select class="form-control" id="TB07100S_acctPymtMthCd">
 														<option value="">전체</option>
 													</select>
 												</div>
@@ -491,10 +492,7 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07100S_bano">
-													<span class="input-group-append">
-														<button type="button" class="btn btn-default" onclick=""><i
-																class="fa fa-search"></i></button>
-													</span>
+													
 												</div>
 											</div>
 											<label class="col-sm-1">세액</label>
@@ -530,16 +528,14 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07100S_cdno">
-													<span class="input-group-append">
-														<button type="button" class="btn btn-default" onclick=""><i
-																class="fa fa-search"></i></button>
-													</span>
+													
 												</div>
 											</div>
 											<label class="col-sm-1">매입공제</label>
 											<div class="col-sm-2">
 												<div class="input-group">
 													<select class="form-control" id="TB07100S_pchsDdcDcd">
+														<option value="">전체</option>
 													</select>
 												</div>
 											</div>
@@ -587,7 +583,15 @@
 									</div>
 									<div class="row form-group form-inline text-right">
 										<div class="col-sm-12 form-group">
-											<div class="col-sm-3"></div>
+												<label class="col-sm-1">작성일자(히든처리할것)</label>
+											<div class="col-sm-2">
+												<span class="input-group date">
+													<input type="text" class="form-control" value=""
+														id="TB07100S_wrtnDt" placeholder="YYYY-MM-DD" readonly>
+													<span class="input-group-addon"><i
+															class="fa fa-calendar"></i></span>
+												</span>
+											</div>
 											<div class="col-sm-3 form-group pd0">
 												<label class="col-sm-4">편익제공</label>
 												<input class="col-sm-1" type="checkbox" value="" id="TB07100S_bnftYn"
