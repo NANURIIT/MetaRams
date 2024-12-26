@@ -239,19 +239,40 @@
 		   , C.TR_DT					                    /* 거래일자 */
 		   , C.RCTM_DT					                    /* 입금일자 */
 	    FROM IBIMS348B	A 				                    /* 딜승인수수료스케쥴기본 */
-	       , IBIMS420B  B 				                    /* 딜수수료수납내역 */
+	       , (SELECT PRDT_CD
+				   , FEE_SN
+				   , EXC_SN
+				   , TR_SN	
+				   , RKFR_DT					                    
+				   , FNDS_DVSN_CD				                    
+				   , PRUF_ISU_DT				                    
+				   , APLY_EXRT                                    
+				   , DECD_STTS_DCD           	                    	
+				   , PRCS_EMPNO            	                    
+				   , PRCS_TM           		                    
+				   , EPRZ_CRDL_RGST_STTS_CD	                    
+			       , EPRZ_CRDL_FEE_KND_CD		                
+			       , EPRZ_CRDL_FEE_STDR_AMT	                    
+			       , EPRZ_CRDL_FEE_RCOG_DCD	                    	
+			       , SPLM_TXA					                
+			       , EPRZ_CRDL_TXTN_TP_DCD	                    
+			       , DTM_RCOG_AMT				                
+			       , PRLN_FEE					                
+			       , MNGM_DTM_RCOG_AMT		                    
+			       , MNGM_PRLN_FEE			                    
+			       , RSTRN_PRDT_CD			                    	
+			       , RSTRN_TR_SN				                	
+			       , RSTRN_FEE				                    
+			       , BCNC_NM									
+	       		   , RANK() OVER(PARTITION BY PRDT_CD, FEE_SN, EXC_SN ORDER BY TR_SN DESC ) AS RK
+			 FROM  IBIMS420B )  B 				            /* 딜수수료수납내역 */
            , IBIMS410B  C 				                    /* 딜거래내역 */
            , IBIMS201B  D	                                /* 딜승인기본 */	
 	   WHERE 1=1
 		 AND A.PRDT_CD       = B.PRDT_CD(+) 		        /* 종목코드 */
 		 AND A.FEE_SN        = B.FEE_SN(+)		            /* 수수료일련번호 */
 		 AND A.EXC_SN        = B.EXC_SN(+)		            /* 실행일련번호 */
-		 AND B.TR_SN(+)      = (   SELECT MAX(TR_SN) 
-					                FROM IBIMS420B V 
-					               WHERE V.PRDT_CD = B.PRDT_CD 
-					                 AND V.FEE_SN = B.FEE_SN 
-					                 AND V.EXC_SN = B.EXC_SN 
-					             )				            /* 거래일련번호 */
+		 AND B.RK(+)         = 1  			                /* 거래일련번호 MAX */
 		 AND A.PRDT_CD 	     = C.PRDT_CD(+)		            /* 종목코드 */
 		 AND A.TR_SN 	     = C.TR_SN(+) 		            /* 거래일련번호 */
 		 AND A.EXC_SN 	     = C.EXC_SN(+) 		            /* 실행일련번호 */

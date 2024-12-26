@@ -1038,10 +1038,10 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_A008").val(infoDetails.aprsEvlIsttCd).prop("selected", true); // 감정기관
           infoDetails.aprsPrc ? $("#TB06013P_aprsPrc").val(addComma(infoDetails.aprsPrc)) : $("#TB06013P_aprsPrc").val(infoDetails.aprsPrc); // 감정가격
           $("#TB06013P_I027_2").val(infoDetails.aprsCrryCd).prop("selected", true); // 감정통화
-          $("#TB06013P_krwTrslAprsPrc").val(infoDetails.krwTrslAprsPrc); // 감정가격(원화)
+          infoDetails.krwTrslAprsPrc ? $("#TB06013P_krwTrslAprsPrc").val(addComma(infoDetails.krwTrslAprsPrc)) : $("#TB06013P_krwTrslAprsPrc").val(infoDetails.krwTrslAprsPrc) ; // 감정가격(원화)
           $("#TB06013P_mrtgRto").val(infoDetails.mrtgRto); // 담보비율
           $("#TB06013P_mrtgRcgRto").val(infoDetails.mrtgRcgRto); // 담보인정비율
-          $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
+          infoDetails.mrtgPrc ? $("#TB06013P_mrtgPrc").val(addComma(infoDetails.mrtgPrc)): $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
           $("#TB06013P_mrtgCtns").val(infoDetails.mrtgCtns); // 담보내용
           $("#TB06013P_mrtgQnt").val(infoDetails.mrtgQnt); // 담보수량
           $("input[name='TB06013P_ovssEvlIsttYn']").radioSelect(infoDetails.ovssEvlIsttYn); // 국외평가기관여부
