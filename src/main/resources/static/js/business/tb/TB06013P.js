@@ -465,13 +465,13 @@ function calcuKrwTrslValtMrtgPrc(){
 function modalClose_TB06013P() {
   $("#modal-TB06013P").modal("hide");
   var prdtCd;
-  //if($("#TB06013P_prefix").val() == 'TB06010S') {
-  //  	prdtCd = $("#TB06010S_res_prdtCd").val();       
-  //  } else if ($("#TB06013P_prefix").val() == 'TB06020S') {
-  //	prdtCd = $("#TB06020S_res_prdtCd").val();
-  //  } else if ($("#TB06013P_prefix").val() == 'TB06030S') {
-  prdtCd = $("#TB06030S_res_prdtCd").val();
-  //  }
+  if($("#TB06013P_prefix").val() == 'TB06010S') {
+		prdtCd = $("#TB06010S_res_prdtCd").val();       
+  } else if ($("#TB06013P_prefix").val() == 'TB06020S') {
+		prdtCd = $("#TB06020S_res_prdtCd").val();
+  } else if ($("#TB06013P_prefix").val() == 'TB06030S') {
+		prdtCd = $("#TB06030S_res_prdtCd").val();
+  }
   $("#" + $("#TB06013P_prefix").val() + "_mrtgMngmNo_forPop").val($("#TB06013P_mrtgMngmNo").val());
   $("#" + $("#TB06013P_prefix").val() + "_mrtgNm_forPop").val($("#TB06013P_mrtgNm_forSeach").val());
 
@@ -707,6 +707,9 @@ function checkParam() {
 	return true;
 }
 
+/**
+ * 저장버튼
+ */
 function regist(paramData) {
   $.ajax({
     type: "POST",
