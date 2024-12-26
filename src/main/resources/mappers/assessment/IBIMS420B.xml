@@ -235,6 +235,7 @@
 	       , B.RSTRN_PRDT_CD			                    /* 환출상품코드 */	
 	       , B.RSTRN_TR_SN				                    /* 환출거래일련번호 */	
 	       , B.RSTRN_FEE				                    /* 환출수수료 */
+	       , B.BCNC_NM										/* 거래처명 */
 		   , C.TR_DT					                    /* 거래일자 */
 		   , C.RCTM_DT					                    /* 입금일자 */
 	    FROM IBIMS348B	A 				                    /* 딜승인수수료스케쥴기본 */

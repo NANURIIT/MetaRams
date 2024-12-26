@@ -49,10 +49,12 @@ public class TB08050ServiceImpl implements TB08050Service {
 	public int saveExcInfo(IBIMS420BVO paramData) {
 
 		int rtnValue = 0;
+		String eno = facade.getDetails().getEno(); // 사원번호
 
 		// 딜수수료수납내역 거래일련번호 채번
 		long lTrsn = ibims420BMapper.getMaxTrSn(paramData.getPrdtCd());
 		paramData.setTrSn(lTrsn);
+		paramData.setHndEmpno(eno);
 
 		IBIMS348BVO in348bvo = new IBIMS348BVO();
 		in348bvo.setPrdtCd(paramData.getPrdtCd());
@@ -63,6 +65,7 @@ public class TB08050ServiceImpl implements TB08050Service {
 		in348bvo.setPrcsCpltYn(paramData.getPrcsCpltYn());
 		in348bvo.setFnnrRcogStrtDt(paramData.getFnnrRcogStrtDt()); // 인식시작일자
 		in348bvo.setFnnrRcogEndDt(paramData.getFnnrRcogEndDt());   // 인식종료일자
+		in348bvo.setHndEmpno(paramData.getHndEmpno());
 		log.debug("PRUF_ISU_DT :::: ", paramData.getPrufIsuDt());
 		log.debug("FndsDvsnCd 자금구분코드 :::: {}", paramData.getFndsDvsnCd()); // 자금구분코드
 		log.debug("EPRZ_CRDL_FEE_RCOG_DCD 기업여신수수료인식구분코드 :::: {}", paramData.getEprzCrdlFeeRcogDcd()); // 기업여신수수료인식구분코드
@@ -115,7 +118,9 @@ public class TB08050ServiceImpl implements TB08050Service {
 		setParam.setKrwTrslRt(param420.getAplyExrt()); /* 원화환산율 == 적용환율 */
 //		setParam.setWcrcTrslTrPrca(param402.getKrwTrslExcAmt()); /* 원화환산거래원금 == 최종지급금액 */
 //		setParam.setWcrcTrslTrIntAmt(param402.getKrwTrslIntAmt()); /* 원화환산거래이자금액 == 원화환산이자금액*/
-		setParam.setKrwTrslTrFeeAmt(param420.getFeeRcivAmt().multiply(param420.getAplyExrt()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
+//		setParam.setKrwTrslTrFeeAmt(param420.getFeeRcivAmt().multiply(param420.getAplyExrt()).setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
+		setParam.setKrwTrslTrFeeAmt(param420.getKrwTrslTrFeeAmt().setScale(2, RoundingMode.HALF_UP)); /* 원화환산거래수수료금액 == 수수료수납금액 */
+		
 //		setParam.setWcrcTrslCostAmt(getParam.getWcrcTrslCostAmt()); /* 원화환산비용금액 */
 //		setParam.setActgAfrsCd(getParam.getActgAfrsCd()); /* 회계업무코드 */
 //		setParam.setActgUnitAfrsCd(getParam.getActgUnitAfrsCd()); /* 회계단위업무코드 */

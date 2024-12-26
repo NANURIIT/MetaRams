@@ -43,13 +43,13 @@
 								<div class="col-sm-4 input-group">
 									<div class="col-sm-5 input-group date px-0">
 										<input type="text" class="form-control" id="TB08050S_strPrarDt" name="" value="" 
-										placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value);">
+										placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value);">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
 										<input type="text" class="form-control" id="TB08050S_endPrarDt" name="" value="" 
-										placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value);">
+										placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value);">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
@@ -261,7 +261,7 @@
 												</div>
 												<label class="col-sm-1">원화환산수수료</label>
 												<div class="col-sm-3 input-group">
-													<input class="form-control text-right" type="text" id="TB08050S_wcrcTrslTrFeeAmt" placeholder="0" oninput="inputNumberFormat(this); ">
+													<input class="form-control text-right" type="text" id="TB08050S_wcrcTrslTrFeeAmt" placeholder="0" oninput="inputNumberFormat(this); " disabled>
 												</div>
 											</div>
 										</div>
