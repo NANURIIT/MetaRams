@@ -129,9 +129,10 @@
 										<div class="ibox-tools">
 											<div th:fragment="file" id="file-upload">
 												<form id="upload-file-form">
-												    <input type="hidden" id="fileKey1" name="fileKey1">
+												  <input type="hidden" id="fileKey1" name="fileKey1">
 													<input type="hidden" id="fileKey2" name="fileKey2" value="*">
-													
+													<input type="hidden" id="key1" name="key1" value="*">
+													<!-- 화면명을 넘김-->
 													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
 													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles"><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
 													<div style="display: none">
