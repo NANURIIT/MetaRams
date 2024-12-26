@@ -1,5 +1,5 @@
 const TB07090Sjs = (function () {
-  
+
   let TB07090S_rowData = {};
   const TB07090S_dummyData = TB07090S_rowData;
 
@@ -29,25 +29,25 @@ const TB07090Sjs = (function () {
   let rctmDtlsRgstDeleteList = [];
   let rctmDtlsMappingDeleteList = [];
 
-   /**
-     * 화면 요건
-     * 1. 상환예정내역 조회 - 조회조건: Deal번호, 상환예정일자, 관리부서
-     * 
-     * 2. 입금증등록내역
-     * 2-1. 입금증등록내역 조회 - 조회 조건: 입금일자
-     * 2-2. 입금증등록내역 입력 
-     * 2-3. 입금증등록내역 삭제 - 입금내역매핑이 된 입금증등록내역인 경우 삭제, 수정 불가능 alert으로 경고.
-     * 
-     * 3. 입금내역매핑
-     * 3-1. 입금내역매핑 조회 - 조회 조건: Deal번호, 입금일자, 관리부서
-     * 3-2. 입금내역매핑 입력 - 데이터 입력시 화면에 안보이는 데이터도 입력 가능한것들 다 입력함. TB07170S 입금내역조회에 쓰일 테이블이라 그럼
-     * 3-3. 입금내역매핑 수정 - 입금금액, 초과납입처리내용만 수정.
-     * 3-4. 입금내역 행추가 - 행 추가시에 입금증등록내역 1건과, 상환예정내역 1건을 선택해야 행추가 가능.
-     * 
-     * 4. 저장버튼 - 해당 그리드 변경사항 저장(ajax)
-     * 
-     * 김건우 2024-12-19
-     */
+  /**
+    * 화면 요건
+    * 1. 상환예정내역 조회 - 조회조건: Deal번호, 상환예정일자, 관리부서
+    * 
+    * 2. 입금증등록내역
+    * 2-1. 입금증등록내역 조회 - 조회 조건: 입금일자
+    * 2-2. 입금증등록내역 입력 
+    * 2-3. 입금증등록내역 삭제 - 입금내역매핑이 된 입금증등록내역인 경우 삭제, 수정 불가능 alert으로 경고.
+    * 
+    * 3. 입금내역매핑
+    * 3-1. 입금내역매핑 조회 - 조회 조건: Deal번호, 입금일자, 관리부서
+    * 3-2. 입금내역매핑 입력 - 데이터 입력시 화면에 안보이는 데이터도 입력 가능한것들 다 입력함. TB07170S 입금내역조회에 쓰일 테이블이라 그럼
+    * 3-3. 입금내역매핑 수정 - 입금금액, 초과납입처리내용만 수정.
+    * 3-4. 입금내역 행추가 - 행 추가시에 입금증등록내역 1건과, 상환예정내역 1건을 선택해야 행추가 가능.
+    * 
+    * 4. 저장버튼 - 해당 그리드 변경사항 저장(ajax)
+    * 
+    * 김건우 2024-12-19
+    */
 
   $(document).ready(function () {
     $("#TB07090S_rctmDt").val(getToday()); //입금일자
@@ -531,6 +531,17 @@ const TB07090Sjs = (function () {
         align: "center",
         width: "165",
         filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          valueIndx: "cdValue",
+          labelIndx: "cdName",
+          options: dprtList,
+        },
+        render: function (ui) {
+          var options = dprtList;
+          var option = options.find((opt) => opt.cdValue == ui.cellData);
+          return option ? option.cdName : ui.cellData;
+        },
       },
       {
         title: "등록자",
@@ -564,7 +575,7 @@ const TB07090Sjs = (function () {
     let TB07090S_colModel3 = [
       {
         title: "deal번호",
-        editable: true,
+        editable: false,
         dataType: "string",
         dataIndx: "dealNo",
         halign: "center",
@@ -573,7 +584,7 @@ const TB07090Sjs = (function () {
       },
       {
         title: "관리부서",
-        editable: true,
+        editable: false,
         dataType: "string",
         dataIndx: "mngmBdcd",
         halign: "center",
@@ -597,6 +608,7 @@ const TB07090Sjs = (function () {
         dataIndx: "rctmDt",
         halign: "center",
         align: "center",
+        editable: false,
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           var cellData = ui.cellData;
@@ -611,7 +623,7 @@ const TB07090Sjs = (function () {
       },
       {
         title: "상환구분",
-        editable: true,
+        editable: false,
         dataType: "string",
         dataIndx: "rdptObjtDvsnCd",
         halign: "center",
@@ -642,6 +654,55 @@ const TB07090Sjs = (function () {
         align: "center",
         filter: { crules: [{ condition: "range" }] },
       },
+      {
+        dataIndx: "prdtCd",
+        hidden: true
+      },
+      {
+        dataIndx: "excSn",
+        hidden: true
+      },
+      {
+        dataIndx: "excsPymtPrcsDvsnCd",
+        hidden: true
+      },
+      {
+        dataIndx: "pmntPrarAmt",
+        hidden: true
+      },
+      {
+        dataIndx: "reltIsttCd",
+        hidden: true
+      },
+      {
+        dataIndx: "reltIsttNm",
+        hidden: true
+      },
+      {
+        dataIndx: "reltBano",
+        hidden: true
+      },
+      {
+        dataIndx: "dptrNm",
+        hidden: true
+      },
+      {
+        dataIndx: "rgstSeq",
+        hidden: true
+      },
+      {
+        dataIndx: "rgstEmpno",
+        hidden: true
+      },
+      {
+        dataIndx: "rgstBdcd",
+        hidden: true
+      },
+      {
+        dataIndx: "rgstDtm",
+        hidden: true
+      },
+
       // 필요없어보여 제거
       // 2024-12-17 김건우
       // {
@@ -968,8 +1029,9 @@ const TB07090Sjs = (function () {
         , text: "상환예정내역을 선택해주세요."
       })
       return;
-    } 
-    if(!selected_dptrRgstDtl.hndDetlDtm){
+    }
+
+    if (!selected_dptrRgstDtl.hndDetlDtm) {
       swal.fire({
         icon: "warning"
         , text: "등록된 입금증등록내역을 선택해주세요."
@@ -984,30 +1046,88 @@ const TB07090Sjs = (function () {
     // console.log(selected_dptrRgstDtl.dealRctmAmt)
     // console.log(selected_dptrRgstDtl.rgstSeq)
 
-    let newRow = {
-      dealNo: selected_rdmpPrarDtl.dealNo,           // 거래 번호
-      mngmBdcd: selected_rdmpPrarDtl.mngmBdcd,       // 관리 부서 코드
-      rctmDt: selected_dptrRgstDtl.rctmDt,           // 접수 날짜 (YYYYMMDD 형식 유지)
-      rdptObjtDvsnCd: selected_rdmpPrarDtl.scxDcd,   // 환급 대상 구분 코드
-      dealRctmAmt: selected_rdmpPrarDtl.pmntPrarAmt, // 거래 접수 금액 (숫자 형식 유지)
-      excsPymtPrcsText: "",                          // 초과 지급 처리 텍스트 (빈 값)
-      rgstSeq: selected_dptrRgstDtl.rgstSeq          // 등록 순번
+    let row = [];
+    let newRow = {};
+    const data = $('#TB07090S_colModel3').pqGrid("instance");
+    const rowColumnsData = data.colModel;
+    const length = rowColumnsData.length;
+    for (let i = 0; i < length; i++) {
+      const title = rowColumnsData[i].title;
+      const labelIndx = rowColumnsData[i].labelIndx;
+      const dataIndx = rowColumnsData[i].dataIndx;
+      row.push(title);
+
+      switch (dataIndx) {
+        case "rctmDt":
+          newRow[dataIndx] = selected_dptrRgstDtl.rctmDt;
+          break;
+        case "rctmSeq":
+          newRow[dataIndx] = ""; // 서비스에서 채번
+          break;
+        case "fndsDvsnCd":
+          newRow[dataIndx] = selected_dptrRgstDtl.fndsDvsnCd;
+          break;
+        case "dealNo":
+          newRow[dataIndx] = selected_rdmpPrarDtl.dealNo;
+          break;
+        case "prdtCd":
+          newRow[dataIndx] = selected_rdmpPrarDtl.prdtCd;
+          break;
+        case "excSn":
+          newRow[dataIndx] = selected_rdmpPrarDtl.excSn;
+          break;
+        case "rdptObjtDvsnCd":
+          newRow[dataIndx] = selected_rdmpPrarDtl.scxDcd; 
+          break;
+        case "excsPymtPrcsDvsnCd":
+          newRow[dataIndx] = ""; // 이것도 모르겠음
+          break;
+        case "pmntPrarAmt":
+          newRow[dataIndx] = selected_rdmpPrarDtl.pmntPrarAmt;
+          break;
+        case "dealRctmAmt":
+          newRow[dataIndx] = selected_rdmpPrarDtl.pmntPrarAmt;
+          break;
+        case "reltIsttCd":
+          newRow[dataIndx] = selected_dptrRgstDtl.reltIsttCd;
+          break;
+        case "reltIsttNm":
+          newRow[dataIndx] = fnltList.find( bank => bank.fnltCd === selected_dptrRgstDtl.reltIsttCd).fnltNm;
+          break;
+        case "reltBano":
+          newRow[dataIndx] = selected_dptrRgstDtl.reltBano;
+          break;
+        case "mngmBdcd":
+          newRow[dataIndx] = $("#userDprtCd").val();
+          break;
+        case "dptrNm":
+          newRow[dataIndx] = selected_dptrRgstDtl.dptrNm;
+          break;
+        case "rgstSeq":
+          newRow[dataIndx] = selected_dptrRgstDtl.rgstSeq;
+          break;
+        case "rgstEmpno":
+          newRow[dataIndx] = selected_dptrRgstDtl.hndEmpno;
+          break;
+        case "rgstBdcd":
+          newRow[dataIndx] = selected_dptrRgstDtl.rgstBdcd;
+          break;
+        case "rgstDtm":
+          newRow[dataIndx] = selected_dptrRgstDtl.hndDetlDtm;
+          break;
+      }
     }
 
-    console.log(selected_dptrRgstDtl);
-    console.log($('#TB07090S_colModel2').pqGrid('instance').pdata[selected_dptrRgstDtl.pq_ri].pmntPrarAmt);
-
-    selected_rdmpPrarDtl.pmntPrarAmt =+ selected_dptrRgstDtl.pmntPrarAmt;
-    
-    $('#TB07090S_colModel2').pqGrid('instance').pdata[selected_dptrRgstDtl.pq_ri].pmntPrarAmt =+ selected_rdmpPrarDtl.pmntPrarAmt;
-
-    console.log(newRow.dealNo);
-    console.log(selected_rdmpPrarDtl);
-    
-
     $('#TB07090S_colModel3').pqGrid("addRow", {
-      rowData: newRow
+      rowData: newRow,
+      checkEditable: false,
     });
+
+    $('#TB07090S_colModel2').pqGrid('instance').pdata[0].pmntPrarAmt =+ newRow["pmntPrarAmt"]
+
+    console.log();
+    
+
   }
 
   /**
@@ -1018,7 +1138,7 @@ const TB07090Sjs = (function () {
   function TB07090S_pqGridDeleteRow(colModelSelector) {
 
     let rowIndx;
-   
+
     if (colModelSelector.attr('id') === 'TB07090S_colModel2') {
       rowIndx = colModel2_rowIndx
       rctmDtlsRgstDeleteList.push(
@@ -1056,7 +1176,7 @@ const TB07090Sjs = (function () {
   /**
    * 입금증등록내역 저장
    */
-  function saveRctmDtlsRgst () {
+  function saveRctmDtlsRgst() {
 
     const colModel_rctmDtlsRgst = $('#TB07090S_colModel2').pqGrid('instance').pdata;
 
@@ -1090,14 +1210,14 @@ const TB07090Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if(data > 0){
+        if (data > 0) {
           console.log("성★공★");
           swal.fire({
             icon: "success"
             , text: "성★공★"
           })
         }
-        else{
+        else {
           swal.fire({
             icon: "warning"
             , text: "저장실패!"
@@ -1111,11 +1231,11 @@ const TB07090Sjs = (function () {
     search_TB07090S();
 
   }
-  
+
   /**
    * 입금내역매핑 저장
    */
-  function saveRctmDtlsMapping () {
+  function saveRctmDtlsMapping() {
 
     const colModel_rctmDtlsMapping = $('#TB07090S_colModel3').pqGrid('instance').pdata;
 
@@ -1147,14 +1267,14 @@ const TB07090Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if(data > 0){
+        if (data > 0) {
           console.log("성★공★");
           swal.fire({
             icon: "success"
             , text: "성★공★"
           })
         }
-        else{
+        else {
           swal.fire({
             icon: "warning"
             , text: "저장실패!"
@@ -1173,7 +1293,7 @@ const TB07090Sjs = (function () {
    * 초기화
    * ㄱㄱㅇ
    */
-  function resetAll () {
+  function resetAll() {
     resetInputValue($("div[data-menuid='/TB07090S']"));
     resetPGgrids("TB07090S");
   }
