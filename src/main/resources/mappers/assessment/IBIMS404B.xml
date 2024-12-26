@@ -357,5 +357,22 @@
            AND RGST_SN = #{rgstSn}
 	</delete>
 
+	<select id="getIBIMS404ListInfo" parameterType="com.nanuri.rams.business.common.vo.TB07150SVO" resultType="com.nanuri.rams.business.common.dto.IBIMS404BDTO">
+		SELECT  
+			APLY_STRT_DT 							/*시작일자*/
+			, APLY_END_DT 							/*종료일자*/
+			, STDR_INTRT_KND_CD 					/*기준금리종류코드*/
+			, FXN_INTRT 							/*고정금리*/
+			, ADD_INTRT 							/*가산금리*/
+			, INTRT_CNGE_FRQC_CD 					/*금리변동주기코드*/
+			, INTRT_CNGE_FRQC_MNUM 					/*금리변동주기개월수*/
+			, APLY_DNUM_DCD 						/*적용일수구분코드*/
+			, STDR_INTRT_APLY_DNUM 					/*기준금리적용일수*/
+		FROM IBIMS404B A
+		WHERE 1=1
+			AND PRDT_CD = #{prdtCd}
+			AND EXC_SN  = #{excSn}
+	</select>
+
 
 </mapper>

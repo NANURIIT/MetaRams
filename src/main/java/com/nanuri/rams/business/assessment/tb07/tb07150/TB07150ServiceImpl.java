@@ -83,9 +83,11 @@ public class TB07150ServiceImpl implements TB07150Service {
 		rtnObj = ibims201BMapper.getCndChngBfInf(paramData.getPrdtCd());
 
 		/* 변경전금리정보 */
-		rtnObj.setChngBf346BList(ibims346BMapper.selectIBIMS346BListInfo(paramData.getPrdtCd()));
+		//rtnObj.setChngBf346BList(ibims346BMapper.selectIBIMS346BListInfo(paramData.getPrdtCd()));
+		rtnObj.setChngBf404BList(ibims404BMapper.getIBIMS404ListInfo(paramData));
 		/* 조건변경금리정보 */
-		rtnObj.setCndChng346BList(ibims346BMapper.selectIBIMS346BListInfo(paramData.getPrdtCd()));
+		//rtnObj.setCndChng346BList(ibims346BMapper.selectIBIMS346BListInfo(paramData.getPrdtCd()));
+		rtnObj.setCndChng404BList(ibims404BMapper.getIBIMS404ListInfo(paramData));
 
 		return rtnObj;
 		

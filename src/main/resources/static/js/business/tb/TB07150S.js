@@ -679,8 +679,11 @@ const TB07150Sjs = (function () {
         $("#TB07150S_E013_2").val(data.intrDnumClcMthCd); //이자일수계산구분
         $("#TB07150S_ovduIntrRt_chng").val(data.ovduIntrRt); //연체이자율
 
-        var chngBf346BList = data.chngBf346BList; //변경 전 금리정보
-        var cndChng346BList = data.cndChng346BList; //조건변경금리정보
+        // var chngBf346BList = data.chngBf346BList; //변경 전 금리정보
+        // var cndChng346BList = data.cndChng346BList; //조건변경금리정보
+
+        var chngBf404BList = data.chngBf404BList; //변경 전 금리정보
+        var cndChng404BList = data.cndChng404BList; //조건변경금리정보
 
         // //alert(JSON.stringify(intrtInfList));
         // setGrid_TB07150S(chngBf346BList, "grd_intrtInf_1");
@@ -689,11 +692,11 @@ const TB07150Sjs = (function () {
         var options = [
           {
             gridNm: "grd_intrtInf_1",
-            data: chngBf346BList,
+            data: chngBf404BList,
           },
           {
             gridNm: "grd_intrtInf_2",
-            data: cndChng346BList,
+            data: cndChng404BList,
           },
         ];
 
