@@ -138,7 +138,7 @@ const TB07150Sjs = (function () {
       $("#TB07150S_prnaRdmpFrqcMnum_chng").prop("disabled", true); //원금상환주기
       $("#TB07150S_intrRdmpFrqcMnum_chng").prop("disabled", true); //이자상환주기
       $("#TB07150S_istmDtmRdmpAmt_chng").prop("disabled", true); //일시상환금액
-      $("#TB07150S_I005_2").prop("disabled", false); //한도/개별
+      $("#TB07150S_I005_2").prop("disabled", true); //한도/개별
       $("#TB07150S_H001_2").prop("disabled", true); //휴일처리구분
       $("#TB07150S_prnaDfrPrdMnum_chng").prop("disabled", true); //거치기간개월수
       $("#TB07150S_E011_2").prop("disabled", true); //이자선후취구분
@@ -153,14 +153,14 @@ const TB07150Sjs = (function () {
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", false); //만기일자
       $("#TB07150S_eprzCrdlCtrcAmt_chng").prop("disabled", true); //악정금액
       $("#TB07150S_E020_2").prop("disabled", true); //상환방법
-      $("#TB07150S_prnaRdmpFrqcMnum_chng").prop("disabled", false); //원금상환주기
-      $("#TB07150S_intrRdmpFrqcMnum_chng").prop("disabled", false); //이자상환주기
+      $("#TB07150S_prnaRdmpFrqcMnum_chng").prop("disabled", true); //원금상환주기
+      $("#TB07150S_intrRdmpFrqcMnum_chng").prop("disabled", true); //이자상환주기
       $("#TB07150S_istmDtmRdmpAmt_chng").prop("disabled", true); //일시상환금액
       $("#TB07150S_I005_2").prop("disabled", true); //한도/개별
-      $("#TB07150S_H001_2").prop("disabled", false); //휴일처리구분
-      $("#TB07150S_prnaDfrPrdMnum_chng").prop("disabled", false); //거치기간개월수
-      $("#TB07150S_E011_2").prop("disabled", false); //이자선후취구분
-      $("#TB07150S_E013_2").prop("disabled", false); //이자계산방법
+      $("#TB07150S_H001_2").prop("disabled", true); //휴일처리구분
+      $("#TB07150S_prnaDfrPrdMnum_chng").prop("disabled", true); //거치기간개월수
+      $("#TB07150S_E011_2").prop("disabled", true); //이자선후취구분
+      $("#TB07150S_E013_2").prop("disabled", true); //이자계산방법
       $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
 
       $("#trOthrSrchBtn").prop("disabled", true);
@@ -517,6 +517,18 @@ const TB07150Sjs = (function () {
         dataIndx: "prdtCd",
         hidden: true,
       },
+      {
+        title: "실행일련번호",
+        dataType: "string",
+        dataIndx: "excSn",
+        hidden: true,
+      },
+      {
+        title: "등록일련번호",
+        dataType: "string",
+        dataIndx: "rgstSn",
+        hidden: true,
+      },
     ];
 
     /**
@@ -748,7 +760,7 @@ const TB07150Sjs = (function () {
 
       var chngBfEprzCrdlCtrcAmt = $("#TB07150S_eprzCrdlCtrcAmt").val(); //변경 전 약정금액
 
-      var cndChng346BList = $("#grd_intrtInf_2").pqGrid(
+      var cndChng404BList = $("#grd_intrtInf_2").pqGrid(
         "option",
         "dataModel.data"
       ); //변경 후 금리정보
@@ -771,7 +783,7 @@ const TB07150Sjs = (function () {
         intrBnaoDcd: intrBnaoDcd,
         intrDnumClcMthCd: intrDnumClcMthCd,
         ovduIntrRt: ovduIntrRt,
-        cndChng346BList: cndChng346BList,
+        cndChng404BList: cndChng404BList,
         chngBfEprzCrdlCtrcAmt: uncomma(chngBfEprzCrdlCtrcAmt),
       };
 
