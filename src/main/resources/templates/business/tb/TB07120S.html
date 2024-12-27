@@ -72,10 +72,7 @@
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<select class="form-control" id="TB07120S_">
-											<option value="">전체</option>
-											<option value="">입금</option>
-											<option value="">출금</option>
+										<select class="form-control" id="TB07120S_depositWithdrawalCode">
 										</select>
 									</div>
 								</div>
@@ -278,12 +275,13 @@
 										<label class="col-sm-1">해외송금여부</label>
 										<div class="col-sm-3 input-group input-h">
 											<div class="col-sm-4 text-left input-group">
-												<input type="radio" value="Y" name="radioGroup-1" id="TB07120S_">&nbsp;Y
+												<input type="radio" value="Y" name="radioGroup-1" class="TB07120S_isForeignTransfer">&nbsp;Y
 											</div>
 											<div class="col-sm-4 text-left input-group">
-												<input type="radio" value="N" name="radioGroup-1" id="TB07120S_">&nbsp;N
+												<input type="radio" value="N" name="radioGroup-1" class="TB07120S_isForeignTransfer">&nbsp;N
 											</div>
 										</div>
+										
 									</div>
 								</div>
 								<div class="row form-group form-inline text-right">
@@ -375,7 +373,7 @@
 								</div>
 								<span class="vr"> │ </span>
 								<div class="col-sm-3 text-right">
-									<button class="btn btn-success" id="TB07120S_apvlRqst" onclick="TB07120Sjs.updateFndsCnstDecd('0')" ><i class="fa fa-save"></i>&nbsp;저장</button>
+									<button class="btn btn-success" id="TB07120S_save" onclick="TB07120Sjs.updateFndsCnstDecd('0')" ><i class="fa fa-save"></i>&nbsp;저장</button>
 									<button class="btn btn-info" id="TB07120S_apvlRqst" onclick="TB07120Sjs.updateFndsCnstDecd('1')" ><i class="fa fa-square-o"></i>&nbsp;승인요청</button>
 									<button class="btn btn-success" id="TB07120S_apvl" onclick="TB07120Sjs.updateFndsCnstDecd('2')" ><i class="fa fa-check-square-o"></i>&nbsp;승인</button>
 									<button class="btn btn-danger" id="TB07120S_gbck" onclick="TB07120Sjs.updateFndsCnstDecd('3')" ><i class="fa fa-ban"></i>&nbsp;반려</button>

@@ -25,11 +25,7 @@ public class TB07170ServiceImpl implements TB07170Service {
     private final IBIMS430BMapper ibims430bMapper;
 
     @Override
-    public List<IBIMS430BVO> getDptrDtlsList(IBIMS430BDTO param){
-        // log.debug("getDptrDtlsList param check!!!!");
-
-        // log.debug("param.rctmDT:::" + param.getRctmDt());
-
-        return ibims430bMapper.getDptrDtlsList(param);
+    public List<IBIMS430BDTO> getDptrDtlsList(IBIMS430BDTO param){
+        return ibims430bMapper.TB07170Sinq(param);
     }
 }

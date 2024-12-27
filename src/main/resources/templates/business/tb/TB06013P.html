@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
+<th:block layout:fragment="script">
+	<script th:src="@{js/business/tb/TB06017P.js}"></script>
+</th:block>
+
 <th:block th:fragment="TB06013P">
 	<!-- modal -->
 	<div id="modal-TB06013P" class="modal fade" role="dialog">
@@ -27,13 +31,13 @@
 													<input type="text" class="form-control" id="TB06013P_prdtCd" readonly>
 													<input type="hidden" id="TB06013P_connPrdtCd" value="" >
 													<span class="input-group-append">
-														<button type="button" class="btn btn-default" onclick="callTB06011P('TB06013P');"><i class="fa fa-search"></i></button>
+														<button type="button" class="btn btn-default" onclick="callTB06011P('TB06013P');" disabled><i class="fa fa-search"></i></button>
 													</span>
 													<input type="text" class="form-control" style="width:100px;" id="TB06013P_prdtNm" readonly>
 												</div>
 				                            	<label class="col-sm-1 col-form-label text-right">담보번호</label>
 												<div class="col-sm-3 input-group">
-													<input type="text" class="form-control" id="TB06013P_mrtgMngmNo" maxlength="16" onchange="chngMrtgMngmNo(this)">
+													<input type="text" class="form-control" id="TB06013P_mrtgMngmNo" maxlength="16" > <!-- onchange="chngMrtgMngmNo(this)">-->
 													<span class="input-group-append">
 														<button type="button" class="btn btn-default" onclick="callTB06017P('TB06013P');"><i class="fa fa-search"></i></button>
 													</span>
@@ -94,12 +98,16 @@
 						    				<div class="form-group form-inline row">
 						    					<label class="col-sm-1 col-form-label"><span class="req"></span>등록일자</label>
 												<div class="col-sm-3 input-group date">
-													<input type="text" class="form-control" id="TB06013P_rgstDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+													<input type="text" class="form-control" id="TB06013P_rgstDt" value="" 
+													placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+													onblur="this.value=formatDate(this.value.replaceAll('-',''));">
 													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 												</div>
 												<label class="col-sm-1 col-form-label"><span class="req"></span>해지일자</label>
 												<div class="col-sm-3 input-group date">
-													<input type="text" class="form-control" id="TB06013P_mrtgCclcDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+													<input type="text" class="form-control" id="TB06013P_mrtgCclcDt" value="" 
+													placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+													onblur="this.value=formatDate(this.value.replaceAll('-',''));">
 													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 												</div>
 												<label class="col-sm-1 col-form-label text-right"><span class="req"></span>담보거래<br class="br-mo">담당자</label>
@@ -191,7 +199,9 @@
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd9 py-0">감정일자</label>
 													<div class="col-sm-3 input-group date mrtgStupKndCd mrtgStupKndCd2 mrtgStupKndCd3 mrtgStupKndCd9">
-														<input type="text" class="form-control" id="TB06013P_aprsDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
+														<input type="text" class="form-control" id="TB06013P_aprsDt" value="" 
+														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10"
+														onblur="this.value=formatDate(this.value.replaceAll('-',''));">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd2 py-0">소재지</label>
@@ -261,7 +271,10 @@
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">신용조회일자</label>
 													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
-														<input type="text" class="form-control" id="TB06013P_crdtInqDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly>
+														<input type="text" class="form-control" id="TB06013P_crdtInqDt" value="" 
+														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly
+														onblur="this.value=formatDate(this.value.replaceAll('-',''));"
+														>
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">채무자고객<br>식별번호</label>
@@ -293,7 +306,10 @@
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">보증결산일</label>
 													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
-														<input type="text" class="form-control" id="TB06013P_grteStlaDe" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly>
+														<input type="text" class="form-control" id="TB06013P_grteStlaDe" value="" 
+														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly
+														onblur="this.value=formatDate(this.value.replaceAll('-',''));"
+														>
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">보증결산일기타구분코드</label>
@@ -325,7 +341,10 @@
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 py-0">보증만료일자</label>
 													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5">
-														<input type="text" class="form-control" id="TB06013P_grteExprDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly>
+														<input type="text" class="form-control" id="TB06013P_grteExprDt" value="" 
+														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly
+														onblur="this.value=formatDate(this.value.replaceAll('-',''));"
+														>
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">기타담보유형코드</label>

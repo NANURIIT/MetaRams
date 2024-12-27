@@ -760,7 +760,11 @@
            		 WHERE 1=1
            		   AND ARDY_BZEP_NO = T1.TR_OBJT_BSN_NO
            	 )            AS  entpNm            /* 거래처명  010B */
-           , ''           AS  GoodGame          /* 입출금구분 (정체모름) */
+           , T1.ETPR_CRDT_GRNT_TR_KIND_CD       /* 거래종류코드 */
+           , CASE 
+               WHEN T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('20', '21', '82', '83', '85') THEN '입금'
+               ELSE '출금'
+            END AS depositWithdrawalCode
            , T1.DEAL_TR_AMT                     /* 거래금액  410B */
            , T1.FNDS_DVSN_CD                    /* 자금구분  410B */
            , T1.TR_CRRY_CD                      /* 통화코드  410B */
@@ -783,7 +787,7 @@
                  WHERE 1=1
                    AND EMPNO = T7.RELT_STFNO
               )           AS  reltStfnm
-           , T7.RJCT_RSN_CNTN                  /* 반려사유  452B */
+           , T7.RJCT_RSN_CNTN                   /* 반려사유  452B */
            , T2.EPRZ_CRDL_CTRT_AMT              /* 계약금액  401B */
            , T1.NRML_INT_AMT                    /* 이자  410B */
            , T1.VAT                             /* 부가세  410B */
@@ -797,10 +801,10 @@
            , T1.RCTM_BANO                       /* 계좌번호  410B */
            , T1.HND_DETL_DTM   AS TR_DTM        /* 거래시간  410B */
            , T7.HND_DETL_DTM   AS HNDL_DTM      /* 처리시간  452B */
-           , T5.EPRZ_CRDL_INV_AMT                         /* 투자금액  201B */
+           , T5.EPRZ_CRDL_INV_AMT               /* 투자금액  201B */
            , T1.DEAL_TR_AMT                     /* 자금처리금액  410B */
-           , T1.KRW_TRSL_TR_PRCA               /* 원화환산금액  410B */
-           , T1.ACHD_NM                       /* 예금주명  410B */
+           , T1.KRW_TRSL_TR_PRCA                /* 원화환산금액  410B */
+           , T1.ACHD_NM                         /* 예금주명  410B */
            , 'N'          AS  GGYO              /* 해외송금여부 */
            , T7.CONS_DECD_DVSN_CD               /* 결재단계구분  452B */
            , T5.DEAL_NO                         /* 딜번호 */
@@ -831,7 +835,16 @@
          <if test="prevDate != '' and nextDate != ''">
          AND T1.TR_DT BETWEEN #{prevDate} AND #{nextDate} /* 날짜 */
          </if>
-         <!-- AND 입출금구분몰라.. -->
+         <if test="depositWithdrawalCode != null and depositWithdrawalCode != ''">
+            <choose>
+                <when test="depositWithdrawalCode == '01'">
+                    AND T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('20', '21', '82', '83', '85')
+                </when>
+                <when test="depositWithdrawalCode == '02'">
+                    AND T1.ETPR_CRDT_GRNT_TR_KIND_CD NOT IN ('20', '21', '82', '83', '85')
+                </when>
+            </choose>
+         </if>
          <if test="prdtCd != ''">
          AND T1.PRDT_CD = #{prdtCd} /* 종목코드 */
          </if>

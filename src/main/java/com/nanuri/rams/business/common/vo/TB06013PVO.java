@@ -34,7 +34,8 @@ public class TB06013PVO {
     private String         mrtgCclcDt;                                      // 담보해지일자
     private String         trOthrDscmNo;                                    // 거래상대방식별번호
     private String         trOthrNm;                                        // 거래상대방명
-    private String         trEmpno;                                         // 거래부점코드
+    private String         trEmpno;                                         // 거래담당자번호
+    private String         trEmpNm;                                         // 거래담당자명
     private String         mrtgEvlStdrCd;                                   // 담보평가기준코드
     private String         prfdRankYn;                                      // 우선순위여부
     private String         hdwtEvlYn;                                       // 수기평가여부

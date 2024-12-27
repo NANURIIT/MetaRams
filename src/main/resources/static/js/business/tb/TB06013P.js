@@ -465,13 +465,13 @@ function calcuKrwTrslValtMrtgPrc(){
 function modalClose_TB06013P() {
   $("#modal-TB06013P").modal("hide");
   var prdtCd;
-  //if($("#TB06013P_prefix").val() == 'TB06010S') {
-  //  	prdtCd = $("#TB06010S_res_prdtCd").val();       
-  //  } else if ($("#TB06013P_prefix").val() == 'TB06020S') {
-  //	prdtCd = $("#TB06020S_res_prdtCd").val();
-  //  } else if ($("#TB06013P_prefix").val() == 'TB06030S') {
-  prdtCd = $("#TB06030S_res_prdtCd").val();
-  //  }
+  if($("#TB06013P_prefix").val() == 'TB06010S') {
+		prdtCd = $("#TB06010S_res_prdtCd").val();       
+  } else if ($("#TB06013P_prefix").val() == 'TB06020S') {
+		prdtCd = $("#TB06020S_res_prdtCd").val();
+  } else if ($("#TB06013P_prefix").val() == 'TB06030S') {
+		prdtCd = $("#TB06030S_res_prdtCd").val();
+  }
   $("#" + $("#TB06013P_prefix").val() + "_mrtgMngmNo_forPop").val($("#TB06013P_mrtgMngmNo").val());
   $("#" + $("#TB06013P_prefix").val() + "_mrtgNm_forPop").val($("#TB06013P_mrtgNm_forSeach").val());
 
@@ -707,6 +707,9 @@ function checkParam() {
 	return true;
 }
 
+/**
+ * 저장버튼
+ */
 function regist(paramData) {
   $.ajax({
     type: "POST",
@@ -949,11 +952,13 @@ function TB06013P_getMrtgInfoDetails() {
       $("#TB06013P_rgstDt").val(formatDate(infoDetails.rgstDt));                  //등록일자
       $("#TB06013P_mrtgCclcDt").val(formatDate(infoDetails.mrtgCclcDt));          //해지일자 
       $("#TB06013P_empNo").val(infoDetails.trEmpno);
+
+	  	  $("#TB06013P_empNm").val(infoDetails.trEmpNm);
       $("#TB06013P_bsnsRgstNo").val(infoDetails.trOthrDscmNo);
       $("#TB06013P_entpRnm").val(infoDetails.trOthrNm);
       $("#TB06013P_M006").val(infoDetails.mrtgEvlStdrCd);
       $("#TB06013P_I027").val(infoDetails.mrtgCrryCd);                            //통화코드
-      $("#TB06013P_empNm").val(infoDetails.empNm);
+
       infoDetails.mrtgEvlAmt ? $("#TB06013P_mrtgEvlAmt").val(addComma(infoDetails.mrtgEvlAmt)) : $("#TB06013P_mrtgEvlAmt").val(infoDetails.mrtgEvlAmt); //담보 평가금액
       $("#TB06013P_mrtgDtlUsgeCtns").val(infoDetails.mrtgDtlUsgeCtns);            //비고
       infoDetails.avblMrtgPrc ? $("#TB06013P_avblMrtgPrc").val(addComma(infoDetails.avblMrtgPrc)) : $("#TB06013P_avblMrtgPrc").val(infoDetails.avblMrtgPrc); // 가용담보가(원액)
@@ -972,7 +977,7 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_D009").val(infoDetails.ovssMrtgYn).prop("selected", true); // 국내국외구분코드
           $("#TB06013P_A008").val(infoDetails.aprsEvlIsttCd).prop("selected", true); // 감정기관
           $("#TB06013P_C013").val(infoDetails.crevStdrCd).prop("selected", true); // 감정평가기준
-          $("#TB06013P_rlesSqmsCtns").val(infoDetails.rlesSqmsCtns);  // 면적
+          infoDetails.rlesSqmsCtns ? $("#TB06013P_rlesSqmsCtns").val(addComma(infoDetails.rlesSqmsCtns)) : $("#TB06013P_rlesSqmsCtns").val(infoDetails.rlesSqmsCtns);  // 면적
           $("#TB06013P_A010").val(infoDetails.aprsPrpsCd).prop("selected", true);;  // 감정목적
           $("#TB06013P_aprsDt").val(formatDate(infoDetails.aprsDt)); // 감정일자
           $("#TB06013P_lctpAddr").val(infoDetails.lctpAddr);  // 소재지
@@ -991,7 +996,7 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_aprsDt").val(formatDate(infoDetails.aprsDt)); // 감정일자
           infoDetails.aprsPrc ? $("#TB06013P_aprsPrc").val(addComma(infoDetails.aprsPrc)) : $("#TB06013P_aprsPrc").val(infoDetails.aprsPrc); // 감정가격
           $("#TB06013P_mrtgRto").val(infoDetails.mrtgRto); // 담보비율
-          $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
+          infoDetails.mrtgPrc ? $("#TB06013P_mrtgPrc").val(addComma(infoDetails.mrtgPrc)): $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
           $("#TB06013P_mrtgCtns").val(infoDetails.mrtgCtns); // 담보내용
           $("#TB06013P_M012").val(infoDetails.mvppMrtgKndCd).prop("selected", true); // 동산담보종류코드
           $("#TB06013P_opprPrsmFdtnCtns").val(infoDetails.opprPrsmFdtnCtns); // 시가추정근거내용 
@@ -1001,8 +1006,8 @@ function TB06013P_getMrtgInfoDetails() {
         case "5":
 		  console.log("grteIsttCd:"+infoDetails.grteIsttDcd)	
           $("#TB06013P_mrtgRcgRto").val(infoDetails.mrtgRcgRto); // 담보비율
-          $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
-          $("#TB06013P_grteAmt").val(infoDetails.grteAmt); // 보증금액
+          infoDetails.mrtgPrc ? $("#TB06013P_mrtgPrc").val(addComma(infoDetails.mrtgPrc)) : $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
+          infoDetails.grteAmt ? $("#TB06013P_grteAmt").val(addComma(infoDetails.grteAmt)) : $("#TB06013P_grteAmt").val(infoDetails.grteAmt); // 보증금액
           $("#TB06013P_I027_4").val(infoDetails.grteCrryCd).prop("selected", true); // 보증통화코드
           $("#TB06013P_mrtgGrteCtns").val(infoDetails.mrtgGrteCtns); // 담보보증내용
           $("#TB06013P_G006").val(infoDetails.grteIsttDcd).prop("selected", true); // 보증기관구분코드
@@ -1019,7 +1024,7 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_E032").val(infoDetails.etcMrtgKndCd).prop("selected", true); // 기타담보종류코드
           $("#TB06013P_mrtgCdCtns").val(infoDetails.mrtgCdCtns); // 담보코드내용
           $("#TB06013P_etcMrtgGrdCtns").val(infoDetails.etcMrtgGrdCtns); // 기타담보등급내용
-          $("#TB06013P_mrtgQnt").val(infoDetails.mrtgQnt); // 담보수량 
+          infoDetails.mrtgQnt ? $("#TB06013P_mrtgQnt").val(addComma(infoDetails.mrtgQnt)) : $("#TB06013P_mrtgQnt").val(infoDetails.mrtgQnt); // 담보수량 
           infoDetails.mrtgUnpr ? $("#TB06013P_mrtgUnpr").val(addComma(infoDetails.mrtgUnpr)) : $("#TB06013P_mrtgUnpr").val(infoDetails.mrtgUnpr); // 담보단가
           infoDetails.mrtgAmt ? $("#TB06013P_mrtgAmt").val(addComma(infoDetails.mrtgAmt)) : $("#TB06013P_mrtgAmt").val(infoDetails.mrtgAmt); // 담보금액
           infoDetails.avblMrtgPrcEtc ? $("#TB06013P_avblMrtgPrc_etc").val(addComma(infoDetails.avblMrtgPrcEtc)) : $("#TB06013P_avblMrtgPrc_etc").val(infoDetails.avblMrtgPrcEtc); // 가용담보가격
@@ -1033,12 +1038,12 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_A008").val(infoDetails.aprsEvlIsttCd).prop("selected", true); // 감정기관
           infoDetails.aprsPrc ? $("#TB06013P_aprsPrc").val(addComma(infoDetails.aprsPrc)) : $("#TB06013P_aprsPrc").val(infoDetails.aprsPrc); // 감정가격
           $("#TB06013P_I027_2").val(infoDetails.aprsCrryCd).prop("selected", true); // 감정통화
-          $("#TB06013P_krwTrslAprsPrc").val(infoDetails.krwTrslAprsPrc); // 감정가격(원화)
+          infoDetails.krwTrslAprsPrc ? $("#TB06013P_krwTrslAprsPrc").val(addComma(infoDetails.krwTrslAprsPrc)) : $("#TB06013P_krwTrslAprsPrc").val(infoDetails.krwTrslAprsPrc) ; // 감정가격(원화)
           $("#TB06013P_mrtgRto").val(infoDetails.mrtgRto); // 담보비율
           $("#TB06013P_mrtgRcgRto").val(infoDetails.mrtgRcgRto); // 담보인정비율
-          $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
+          infoDetails.mrtgPrc ? $("#TB06013P_mrtgPrc").val(addComma(infoDetails.mrtgPrc)): $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
           $("#TB06013P_mrtgCtns").val(infoDetails.mrtgCtns); // 담보내용
-          $("#TB06013P_mrtgQnt").val(infoDetails.mrtgQnt); // 담보수량
+          infoDetails.mrtgQnt ? $("#TB06013P_mrtgQnt").val(addComma(infoDetails.mrtgQnt)) : $("#TB06013P_mrtgQnt").val(infoDetails.mrtgQnt); // 담보수량
           $("input[name='TB06013P_ovssEvlIsttYn']").radioSelect(infoDetails.ovssEvlIsttYn); // 국외평가기관여부
           $("#TB06013P_R019").val(infoDetails.rlthMrtgKndCd).prop("selected", true); // 실물담보종류코드
           $("#TB06013P_A011").val(infoDetails.aprsStdrCd).prop("selected", true); // 감정기준코드
@@ -1052,8 +1057,8 @@ function TB06013P_getMrtgInfoDetails() {
           $("#TB06013P_crdtInqDt").val(formatDate(infoDetails.grnrCpin)); // 신용조회일자 
           $("#TB06013P_dbtrCpin").val(infoDetails.dbtrCpin); // 채무자고객식별번호
           $("#TB06013P_G003").val(infoDetails.grteDbtrRltnDcd).prop("selected", true); // 보증채무자관계구분코드
-          $("#TB06013P_grteAmt").val(infoDetails.grteAmt); // 보증금액
-          $("#TB06013P_grtePrna").val(infoDetails.grtePrna); // 보증원금
+          infoDetails.grteAmt ?  $("#TB06013P_grteAmt").val(addComma(infoDetails.grteAmt)) :  $("#TB06013P_grteAmt").val(infoDetails.grteAmt); // 보증금액
+          infoDetails.grtePrna ? $("#TB06013P_grtePrna").val(addComma(infoDetails.grtePrna)) : $("#TB06013P_grtePrna").val(infoDetails.grtePrna); // 보증원금
           $("#TB06013P_I027_4").val(infoDetails.grteCrryCd).prop("selected", true); // 보증통화코드 
           $("#TB06013P_S004").val(infoDetails.stlaOrznBlngDcd).prop("selected", true); // 결산기구분코드 
           $("#TB06013P_grteStlaDe").val(formatDate(infoDetails.grteStlaDe)); // 보증결산일

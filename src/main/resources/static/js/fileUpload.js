@@ -2,7 +2,7 @@
  * 2024-12-20 FileUpload 수정 김건우
  * @param {String} menuId 화면아이디 
  */
-function setFileUploadEvent (menuId) {
+function setFileUploadEvent(menuId) {
 
   let fileTarget = $(`div[data-menuid="/${menuId}"]` + " .filebox .upload-hidden");
 
@@ -33,9 +33,9 @@ function setFileUploadEvent (menuId) {
    * 파일 추가 후 event
    */
   $(`div[data-menuid="/${menuId}"]` + " #deal-upload-input").change(function () {
-    if($(this).val() === ""){
+    if ($(this).val() === "") {
       // 아무것도 안하기
-    }else {
+    } else {
       let mode = "m";
       callCmFileUpload(mode);
     }
@@ -50,6 +50,13 @@ function setFileUploadEvent (menuId) {
     if ($(`div[data-menuid="/${menuId}"]` + " #deal-upload-input").length < 1) {
       return false;
     }
+
+    /**
+     * 파일다운로드용 값 세팅
+     */
+    $(`div[data-menuid="/${menuId}"] #key1`)
+      .attr("name", "key1")
+      .val(menuId);
 
     // GUID는 서비스에서 자체생성한단다
     // if (isEmpty($(`div[data-menuid="/${menuId}"]` + ` #fileKey1`).val())) {
@@ -117,7 +124,7 @@ function setFileUploadEvent (menuId) {
     let _tr = $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_FileList").children();
 
     for (let i = 0; i < _tr.length; i++) {
-      if($(_tr[i]).find("td:eq(0)").find('input').prop('checked') === true){
+      if ($(_tr[i]).find("td:eq(0)").find('input').prop('checked') === true) {
         let delKey = $(_tr[i]).find("td:eq(1)").attr('data-filekey');
         _arr.push(delKey);
       }

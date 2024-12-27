@@ -19,5 +19,4 @@ public class TB07090SVO {
     private List<IBIMS403BVO> rdmpPrarDtlsList;     //상환예정내역 list
     private List<IBIMS435BDTO> rctmDtlsList;        //입금증등록내역 list
     private List<IBIMS430BVO> dprtDtlsList;         //입금내역매핑 list
-    
 }

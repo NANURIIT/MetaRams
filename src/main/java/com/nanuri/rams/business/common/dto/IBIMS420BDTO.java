@@ -16,9 +16,9 @@ import java.util.Date;
 public class IBIMS420BDTO {
 	
 	private String prdtCd; 					/* 상품코드 */
-	private long   trSn; 					/* 거래일련번호 */
-	private long   excSn; 					/* 실행일련번호 */
-	private long   feeSn; 					/* 수수료일련번호 */
+	private long trSn; 						/* 거래일련번호 */
+	private long excSn;						/* 실행일련번호 */
+	private long feeSn;						/* 수수료일련번호 */
 	private String eprzCrdlRgstSttsCd;  	/* 기업여신등록상태코드 */
 	private String eprzCrdlFeeKndCd; 		/* 기업여신수수료종류코드 */
 	private BigDecimal eprzCrdlFeeStdrAmt;  /* 기업여신수수료기준금액 */

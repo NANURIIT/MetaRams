@@ -35,13 +35,6 @@ function settingFunction() {
     });
   });
 
-  /**
-   * 파일다운로드용 값 세팅
-   */
-  $(`div[data-menuid="/${url.split("/")[1]}"] #key1`)
-    .attr("name", "key1")
-    .val(url.split("/")[1]);
-
   if (
     $('script[src="js/business/tb/TB06011P.js"]').attr("src") ===
     "js/business/tb/TB06011P.js"
@@ -89,6 +82,13 @@ function settingFunction() {
     "js/business/tb/TB03021P.js"
   ) {
     TB03021P_srch(url);
+  }
+  
+  if (
+    $('script[src="js/business/tb/TB06017P.js"]').attr("src") ===
+    "js/business/tb/TB06017P.js"
+  ) {
+    TB06017P_srch(url);
   }
 
   // datepicker 초기화
