@@ -69,6 +69,14 @@
            AND PRDT_CD                                           = #{prdtCd}                                          <!-- 상품코드 -->
     </delete>
     
+    <delete id="deleteIBIMS212BbyPrdtCd" parameterType="string">
+        DELETE 
+          FROM IBIMS212B
+         WHERE 1=1
+           AND PRDT_CD                                           = #{prdtCd}                                          <!-- 상품코드 -->
+    </delete>
+    
+    
     <select id="getIBIMS212BDTOInfo" parameterType="com.nanuri.rams.business.common.vo.TB06013PVO" resultType="com.nanuri.rams.business.common.vo.TB06013PVO">
 		SELECT PRDT_CD											 <!-- 상품코드 -->
 		     , IB211B.MRTG_MNGM_NO                               <!-- 담보관리번호 -->

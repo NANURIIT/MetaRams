@@ -22,11 +22,11 @@ public class TB08050APIController {
 
 	// 수수료내역 조회
 	@PostMapping("/selectFeeRcivLst")
-	public List<IBIMS420BVO> selectFeeRcivLst(@RequestBody IBIMS420BVO input) {
+	public List<IBIMS420BVO> selectFeeRcivLst(IBIMS420BVO input) {
 		
 		String prdtCd = input.getPrdtCd();
 
-		List<IBIMS420BVO> rtnVal = tb08050Service.selectFeeRcivLst(prdtCd);
+		List<IBIMS420BVO> rtnVal = tb08050Service.selectFeeRcivLst(input);
 
 		return rtnVal;
 	}

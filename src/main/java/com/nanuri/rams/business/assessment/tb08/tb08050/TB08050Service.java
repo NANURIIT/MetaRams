@@ -10,7 +10,7 @@ import com.nanuri.rams.business.common.vo.IBIMS420BVO;
 @Service
 public interface TB08050Service {
 
-	List<IBIMS420BVO> selectFeeRcivLst(String paramData);
+	List<IBIMS420BVO> selectFeeRcivLst(IBIMS420BVO param);
 	
 	public int saveExcInfo(IBIMS420BVO paramData);
 	

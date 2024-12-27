@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS404BVO;
 import com.nanuri.rams.business.common.vo.TB06015SVO;
+import com.nanuri.rams.business.common.vo.TB07150SVO;
 
 @Mapper
 public interface IBIMS404BMapper {
@@ -36,6 +37,8 @@ public interface IBIMS404BMapper {
 	
 	public List<IBIMS404BVO> selectIBIMS404B(String param);
 
+	//TB07150S(조건변경) 금리정보 조회
+	public List<IBIMS404BDTO> getIBIMS404ListInfo(TB07150SVO param);
 
 
 	public List<IBIMS404BVO> getIntrRateInfos(TB06015SVO param);

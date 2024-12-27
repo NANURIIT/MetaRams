@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.nanuri.rams.business.common.dto.IBIMS346BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -47,5 +48,8 @@ public class TB07150SVO {
 	private IBIMS401BVO   cndChngInf;              // 조건변경정보
     private List<IBIMS346BDTO> chngBf346BList;     // 변경전승인금리정보
     private List<IBIMS346BDTO> cndChng346BList;    // 조건변경승인금리정보
+
+	private List<IBIMS404BDTO> chngBf404BList;     // 변경전승인금리정보
+    private List<IBIMS404BDTO> cndChng404BList;    // 조건변경승인금리정보
     
 }

@@ -23,14 +23,14 @@ const TB03030Sjs = (function(){
 		/** RM대상그리드 **/
 		let arrPqGridObj = [
 			{
-			  height    : 145
-			, maxHeight : 145
+			  height    : 179
+			, maxHeight : 179
 			, id        : 'gridRmEntpInfo'
 			, colModel  : colRmEntpInfo
 			},
 			{
-			  height    : 145
-			, maxHeight : 145
+			  height    : 179
+			, maxHeight : 179
 			, id        : 'gridRmInfo'
 			, colModel  : colRmInfo
 			},

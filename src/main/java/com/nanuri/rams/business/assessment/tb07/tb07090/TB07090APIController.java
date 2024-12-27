@@ -31,16 +31,23 @@ public class TB07090APIController {
         return tb07090Service.getDprtDtlsInfo(param);
     }
 
-    // 입금증등록내역
+    // 입금증등록내역 저★장☆
     @PostMapping(value="/rctmDtlsRgst")
     public int rctmDtlsRgst(@RequestBody IBIMS435BVO param){
         return tb07090Service.rctmDtlsRgst(param);
     }
 
-    // 입금내역매핑
+    // 입금내역매핑 저★장☆
     @PostMapping(value="/rctmDtlsMapping")
-    public int rctmDtlsMapping(@RequestBody IBIMS430BVO paramList){
-        return tb07090Service.rctmDtlsMapping(paramList);
+    public int rctmDtlsMapping(@RequestBody IBIMS430BVO param){
+        return tb07090Service.rctmDtlsMapping(param);
     }
+
+    // 입금내역매핑 확인
+    @PostMapping("/chkRctmDtlsMapping")
+    public int chkRctmDtlsMapping(@RequestBody IBIMS430BDTO param) {
+        return tb07090Service.chkRctmDtlsMapping(param);
+    }
+    
     
 }

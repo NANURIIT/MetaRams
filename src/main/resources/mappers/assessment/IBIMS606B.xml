@@ -81,17 +81,17 @@
     <!-- 부실자산사후관리이력정보변경 -->
     <update id="updateEamInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS606BDTO">
        UPDATE IBIMS606B
-          SET EVNT_AFTR_MNG_CCD                                 = #{evntAftrMngCcd}                                  /* 사후관리구분코드 */
-            , EVNT_AFTR_MNG_CNTNT                               = #{evntAftrMngCntnt}                                /* 사후관리내용 */
-            , RGST_DT                                           = #{rgstDt}                                          /* 등록일자 */
-            , RGST_TM                                           = #{rgstTm}                                          /* 등록시간 */
-            , HNDL_DPRT_CD                                      = #{hndlDprtCd}                                      /* 처리부서코드 */
-            , HNDL_P_ENO                                        = #{hndlPEno}                                        /* 처리자사번 */
-           	, HND_EMPNO                                         = #{hndEmpno}										/* 조작상세일시*/
-			, HND_TMNL_NO                                       = #{hndTmnlNo}                                       /* 조작사원번호*/
-            , HND_DETL_DTM                                      = SYSDATE	                                        /* 조작단말기번호*/
-			, HND_TR_ID                                         = #{hndTrId}                                        /* 조작거래id*/
-			, GUID                                              = #{guid}											/* guid*/
+          SET EVNT_AFTR_MNG_CCD       = #{evntAftrMngCcd}             /* 사후관리구분코드 */
+            , EVNT_AFTR_MNG_CNTNT     = #{evntAftrMngCntnt}           /* 사후관리내용 */
+            , RGST_DT                 = TO_CHAR(SYSDATE, 'YYYYMMDD')  /* 등록일자 */
+			      , RGST_TM                 = TO_CHAR(SYSDATE, 'HH24MISS')	/* 등록시간 */
+            , HNDL_DPRT_CD            = #{hndlDprtCd}                 /* 처리부서코드 */
+            , HNDL_P_ENO              = #{hndlPEno}                   /* 처리자사번 */
+           	, HND_EMPNO               = #{hndEmpno}						        /* 조작상세일시*/
+			      , HND_TMNL_NO             = #{hndTmnlNo}                  /* 조작사원번호*/
+            , HND_DETL_DTM            = SYSDATE	                      /* 조작단말기번호*/
+			      , HND_TR_ID               = #{hndTrId}                    /* 조작거래id*/
+			      , GUID                    = #{guid}								        /* guid*/
         WHERE 1=1
           AND DEAL_NO                                           = #{dealNo}                                          /* 딜번호 */
           AND MTR_DCD                                           = #{mtrDcd}                                          /* 부수안건구분코드 */

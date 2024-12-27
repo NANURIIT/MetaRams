@@ -32,6 +32,15 @@
        AND RCTM_DT = #{rctmDt}
   </select>
 
+  <!-- 납부예정금액 체크 -->
+  <select id="inqPmntPrarAmt" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO" resultType="BigDecimal">
+    SELECT PMNT_PRAR_AMT        /* 납부예정금액 */
+      FROM IBIMS435B
+     WHERE 1=1
+       AND RCTM_DT = #{rctmDt} 
+       AND RGST_SEQ = #{rgstSeq}
+  </select>
+
   <!-- 입금증등록내역 등록 -->
   <insert id="insertIBIMS435B" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
     INSERT INTO IBIMS435B (
@@ -62,7 +71,7 @@
       , #{reltIsttNm}
       , #{reltBano}
       , #{dptrNm}
-      , #{hndDetlDtm}
+      , SYSDATE
       , #{hndEmpno}
       , #{hndTmnlNo}
       , #{hndTrId}
@@ -93,15 +102,24 @@
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dptrNm)">
          , DPTR_NM = #{dptrNm}
          </if>
-         
      WHERE 1=1
        AND RCTM_DT = #{rctmDt} 
        AND RGST_SEQ = #{rgstSeq} 
   </update>
 
+  <!-- 입금증등록내역 납부예정금액 업데이트 -->
+  <update id="updatePmntPrarAmt" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
+    UPDATE IBIMS435B
+       SET PMNT_PRAR_AMT = #{pmntPrarAmt}
+     WHERE 1=1
+       AND RCTM_DT = #{rctmDt}
+       AND RGST_SEQ = #{rgstSeq}
+  </update>
+
   <!-- 입금증등록내역 삭제 -->
   <delete id="deleteIBIMS435B" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
-    DELETE IBIMS435B
+    DELETE 
+      FROM IBIMS435B
      WHERE 1=1
        AND RCTM_DT = #{rctmDt} 
        AND RGST_SEQ = #{rgstSeq}
