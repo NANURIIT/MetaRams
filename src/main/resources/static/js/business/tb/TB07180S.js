@@ -25,7 +25,7 @@ const TB07180Sjs = (function () {
 	
 	if(typeof modalFeeKndCdList == "undefined") {
 	   }else{
-	    modalFeeKndCdList.setData([]);
+	   // modalFeeKndCdList.setData([]);
 	   }
 	
   };
@@ -578,8 +578,9 @@ const TB07180Sjs = (function () {
 						rowSeq=i;
 				   }
 				}
-			}
 				setFeeKndCd(data[rowSeq]);
+			}
+				
 		  } else {
 			if(data.length == "undefined") {
 				modalFeeKndCdList.setData([]);	 
