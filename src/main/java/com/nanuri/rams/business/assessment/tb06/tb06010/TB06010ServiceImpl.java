@@ -192,9 +192,38 @@ public class TB06010ServiceImpl implements TB06010Service {
 
 		if ((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
 
-			param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));
+			if(param.getPrdtLclsCd() == "92"){
+				param.setPageDcd("Z");
+			}
+	
+			// 새로운 종목코드 채번
+			String newPrdtCd = ibims201bMapper.getPrdtCdSq(param.getPageDcd());
+
+			// 종목코드 셋
+			param.setPrdtCd(newPrdtCd);
 			param.setHndEmpno(empNo);
+
+			// 결국 등록되어버린 종목
 			result = ibims201bMapper.regPrdtCd(param);
+
+			// 최초 종목등록시엔 이해관계자를 같이 등록해줌
+			/**
+			 * 상품코드				newPrdtCd
+			 * 거래상대방일련번호	채번
+			 * 거래상대방식별번호	param.getTrOthrDscmNo();
+			 * 이해관계자성격코드	"1"
+			 * 이해관계자형태코드	"4"
+			 * 조작사원번호			facade.getDetails().getEno();
+			 */
+			List<IBIMS220BVO> itrList = new ArrayList<>();
+			IBIMS220BVO voItem = new IBIMS220BVO();
+			voItem.setPrdtCd(newPrdtCd);
+			voItem.setTrOthrDscmNo(param.getTrOthrDscmNo());
+			voItem.setItrRelrChrCd("1");
+			voItem.setItrRelrShpCd("4");
+			voItem.setHndEmpno(facade.getDetails().getEno());
+			itrList.add(voItem);
+			ibims220bMapper.saveIBIMS220BDTOInfo(itrList);
 
 		} else {
 
