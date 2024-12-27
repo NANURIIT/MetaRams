@@ -87,4 +87,10 @@
 		 WHERE DEAL_NO = #{dealNo}
 		   AND APVL_CND_SN = #{apvlCndSn}
   </delete>
+  
+   <delete id="deleteIBIMS209BbyPrdtCd" parameterType="string">
+		DELETE 
+	      FROM IBIMS209B 
+		 WHERE PRDT_CD = #{prdtCd}	  /* 종목코드 */
+  </delete>
 </mapper>

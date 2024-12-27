@@ -318,6 +318,11 @@ public class TB06010ServiceImpl implements TB06010Service {
 	// 종목정보 삭제
 	@Override
 	public int deletePrdtCd(IBIMS201BVO param) {
+		String prdtCd =param.getPrdtCd();
+		//연결 승인조건내역 삭제
+		ibims209bMapper.deleteIBIMS209BbyPrdtCd(prdtCd);
+		//연결 담보내역 삭제
+		ibims212bMapper.deleteIBIMS212BbyPrdtCd(prdtCd);
 		return ibims201bMapper.deletePrdtCd(param);
 	}
 

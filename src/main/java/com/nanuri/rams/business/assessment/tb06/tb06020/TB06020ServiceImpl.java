@@ -1,20 +1,19 @@
 package com.nanuri.rams.business.assessment.tb06.tb06020;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.common.dto.IBIMS103BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS103BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS201BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS209BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS212BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS201BVO;
 import com.nanuri.rams.business.common.vo.TB06010SVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
-import com.nanuri.rams.com.utils.StringUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +24,8 @@ public class TB06020ServiceImpl implements TB06020Service {
 
 	private final IBIMS103BMapper ibims103bMapper;
 	private final IBIMS201BMapper ibims201bMapper;
+	private final IBIMS212BMapper ibims212bMapper;
+	private final IBIMS209BMapper ibims209bMapper;
 
 	@Autowired
 	private AuthenticationFacade facade;
@@ -84,6 +85,11 @@ public class TB06020ServiceImpl implements TB06020Service {
 	// 종목정보 삭제
 	@Override
 	public int deletePrdtCd(IBIMS201BVO param) {
+		String prdtCd =param.getPrdtCd();
+		//연결 승인조건내역 삭제
+		ibims209bMapper.deleteIBIMS209BbyPrdtCd(prdtCd);
+		//연결 담보내역 삭제
+		ibims212bMapper.deleteIBIMS212BbyPrdtCd(prdtCd);
 		return ibims201bMapper.deletePrdtCd(param);
 	}
 

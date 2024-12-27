@@ -316,7 +316,13 @@
             , IB201B.EARLY_REPAY_YN                                    <!-- 중도상환여부 -->
             , IB201B.SGL_INV_YN                                        <!-- 단독투자여부 -->
             , ROUND(IB994B.STDR_EXRT, 2) AS STDR_EXRT                  <!-- 기준환율 -->
-            , 10000000000 AS WHOL_ISSU_SHQT                            <!-- 전체발행좌수 -->
+            , CASE WHEN IB201B.PRDT_LCLS_CD ='30' 
+                   THEN NVL(IB201B.TOT_ISSU_SHQT ,0) 
+                   WHEN IB201B.PRDT_LCLS_CD ='10'  
+                   THEN NVL(IB201B.TOT_ISSU_STK_QNT ,0)
+                   ELSE 0 END  AS WHOL_ISSU_SHQT                       <!-- 전체발행좌수 -->
+            , NVL(IB201B.TOT_ISSU_SHQT ,0) AS TOT_ISSU_SHQT            <!-- 총발행좌수 -->   
+            , NVL(IB201B.TOT_ISSU_STK_QNT ,0) AS TOT_ISSU_STK_QNT      <!-- 총발행주수 -->           
             , NVL(IB402B.BUY_SHQT,0) - NVL(IB402B.SLL_SHQT,0) AS HLDG_SHQT <!-- 보유좌수 -->
             , NVL(IB401B.EPRZ_CRDL_CTRC_AMT, 0) AS EPRZ_CRDL_CTRC_AMT <!-- 기업여신약정금액-->
             , NVL(IB402B.KRW_TRSL_EXC_AMT, 0) AS KRW_TRSL_EXC_AMT     <!-- 원화환산실행금액-->
