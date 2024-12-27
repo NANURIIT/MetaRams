@@ -277,15 +277,20 @@ const TB06060Sjs = (function(){
     }
 
     function openPage(menuId,pageNm){
-        sessionStorage.setItem("wfDealNo", $('#TB06060S_ibDealNo').val());
-        sessionStorage.setItem("wfDealNm", $('#TB06060S_ibDealNm').val());
-        sessionStorage.setItem("wfPrdtCd", $('#TB06060S_prdtCd').val());
-        sessionStorage.setItem("wfPrdtNm", $('#TB06060S_prdtNm').val());
+        sessionStorage.setItem("wfDealNo", $('#sessionDealNo').val());
+        sessionStorage.setItem("wfDealNm", $('#sessionDealNm').val());
+        sessionStorage.setItem("wfPrdtCd", $('#sessionPrdtCd').val());
+        sessionStorage.setItem("wfPrdtNm", $('#sessionPrdtNm').val());
         callPage(menuId,pageNm)
 
     }
 
     function showDetailData(rowData, isAuto){
+
+        $('#sessionDealNo').val(rowData.dealNo);
+        $('#sessionDealNm').val(rowData.dealNm);
+        $('#sessionPrdtCd').val(rowData.prdtCd);
+        $('#sessionPrdtNm').val(rowData.prdtNm);
         const paramData = {
             dealNo : rowData.dealNo,	
             mtrDcd : rowData.mtrDcd
