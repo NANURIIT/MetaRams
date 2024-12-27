@@ -206,6 +206,28 @@ const TB07140Sjs = (function () {
     setDprtData();
   };
 
+
+  function inputClear(){
+
+    var srchFndCd = $('#TB07140S_srch_fndCd').val();
+    var srchFndNm = $('#TB07140S_srch_fndNm').val();
+    var srchPrdtCd = $('#TB07140S_srch_prdtCd').val();
+    var srchPrdtNm = $('#TB07140S_srch_prdtNm').val();
+
+    resetInputValue($('div[data-menuid="/TB07140S"]'));
+
+    $('#TB07140S_srch_fndCd').val(srchFndCd);
+    $('#TB07140S_srch_fndNm').val(srchFndNm);
+    $('#TB07140S_srch_prdtCd').val(srchPrdtCd);
+    $('#TB07140S_srch_prdtNm').val(srchPrdtNm);
+    $("#TB07140S_trCrryCd").val("KRW");
+
+    TB07140S_resetPqGrid();
+
+    setDprtData();
+
+  }
+
   /*
    *  =====================OptionBox데이터 SET=====================
    */
@@ -735,6 +757,17 @@ const TB07140Sjs = (function () {
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
+      beforeSend: function () {
+        //$("#TB07040S_tableList").pqGrid("setData", []);
+        //compClear();
+        inputClear();
+
+        // $("#TB07140S_colModel").pqGrid(
+        //   "option",
+        //   "strNoRows",
+        //   "조회 중입니다..."
+        // );
+      },
       success: function (data) {
         if (data) {
           let gridList = $("#TB07140S_colModel").pqGrid("instance");
