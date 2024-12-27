@@ -670,9 +670,24 @@ const TB07100Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-
+        console.log("Generated CNST_NO:", data.cnstNo);
+        Swal.fire({
+          icon: 'success'
+          , title: "Success!"
+          , text: "등록 완료."
+          , confirmButtonText: "확인"
+      }).then((result) => {
+          TB07100S_selectIBIMS431B();
+      });
       }, error: function () {
-
+        Swal.fire({
+          icon: 'warning'
+          , title: "Warning!"
+          , text: "등록 실패."
+          , confirmButtonText: "확인"
+      }).then((result) => {
+          TB07100S_selectIBIMS431B();
+      });
       }
     });
   }
@@ -760,12 +775,22 @@ const TB07100Sjs = (function () {
    * 지급품의 DELETE
    */
   function TB07100S_deleteIBIMS431B() {
+    if($("#TB07100S_cnstNo").val()==""){
+      Swal.fire({
+        icon: 'warning'
+        , title: "warning!"
+        , text: "먼저 삭제할 항목을 선택해주세요."
+        , confirmButtonText: "확인"
+    });
+      return;
+    }
+
     const paramData = {
       wrtnDt: unformatDate($("#TB07100S_wrtnDt").val())   //  작성일자
       , rslnBdcd: $("#TB07100S_dprtCd").val()             //  부서코드
       , cnstNo: $("#TB07100S_cnstNo").val()                 //  품의번호
     }
-
+    
     $.ajax({
       type: "POST",
       url: "/TB07100S/deleteIBIMS431B",
@@ -773,9 +798,23 @@ const TB07100Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-
+        Swal.fire({
+          icon: 'success'
+          , title: "Success!"
+          , text: "삭제 완료."
+          , confirmButtonText: "확인"
+      }).then((result) => {
+          TB07100S_selectIBIMS431B();
+      });
       }, error: function () {
-
+        Swal.fire({
+                  icon: 'warning'
+                  , title: "warning!"
+                  , text: "삭제 실패."
+                  , confirmButtonText: "확인"
+              }).then((result) => {
+                  TB07100S_selectIBIMS431B();
+              });
       }
     });
   }
