@@ -15,7 +15,7 @@ const TB06030Sjs = (function(){
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		defaultNumberFormat();
 		//초기화버튼
-		resetSearchRequiment();
+		resetSearchRequiment_TB06030S();
 	});
 	
 	
@@ -244,7 +244,7 @@ const TB06030Sjs = (function(){
 		})
 	}
 
-	function resetSearchRequiment() {		
+	function resetSearchRequiment_TB06030S() {		
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
 		console.log("초기화");
 		resetInputValue($('div[data-menuid="/TB06030S"]'));
@@ -1351,7 +1351,7 @@ const TB06030Sjs = (function(){
 
 	return{
 		getDealList : getDealList
-		, resetSearchRequiment : resetSearchRequiment
+		, resetSearchRequiment_TB06030S : resetSearchRequiment_TB06030S
 		, managePrdtCd : managePrdtCd
 		, setLstMrtg : setLstMrtg
 		, setAtchFle : setAtchFle

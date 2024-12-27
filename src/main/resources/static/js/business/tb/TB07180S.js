@@ -18,7 +18,7 @@ const TB07180Sjs = (function () {
   });
 
   //초기화버튼
-  const resetInputData = () => {
+  const resetInputData_TB07180S = () => {
     $("input").val("");
     $("select").val("");
     $('input[id*="Amt"], input[id*=Rt]').val(0);
@@ -780,9 +780,10 @@ function setFeeKndCd(e) {
 
   return {
     getFeeData: getFeeData,
-    resetInputData: resetInputData,
+    resetInputData_TB07180S: resetInputData_TB07180S,
     insertFeeData: insertFeeData,
 	deleteFeeData: deleteFeeData,
 	pqExportExcel: pqExportExcel,
+	
   };
 })();
