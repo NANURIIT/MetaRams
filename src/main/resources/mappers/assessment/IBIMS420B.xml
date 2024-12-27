@@ -441,16 +441,19 @@
 		   AND A.EXC_SN 				= B.EXC_SN(+)
 		   AND A.PRDT_CD 				= C.PRDT_CD(+)
 		   AND A.FEE_SN 				= C.FEE_SN(+)
+		   AND C.RGST_STTS_CD(+)			= 1
 		   AND A.PRDT_CD 				= D.PRDT_CD(+)
 		   AND D.LAST_YN(+) 			= 'Y'
 		   AND D.DEAL_NO 				= E.DEAL_NO(+) 
 		   AND E.LAST_YN(+) 			= 'Y'
 		   AND D.TR_OTHR_DSCM_NO 		= F.ARDY_BZEP_NO(+)
 		   AND A.PRDT_CD 				= G.PRDT_CD(+)	
-		   AND A.EPRZ_CRDL_FEE_KND_CD 	= H.FEE_KND_CD(+)
 		   AND A.ACTS_CD 				= H.ACTS_CD(+)
 		<if test="actsCd != ''">
 		   AND A.ACTS_CD = #{actsCd} 
+		</if>
+		<if test="feeKndCd != ''">
+		   AND H.FEE_KND_CD = #{feeKndCd} 
 		</if>
 		<if test="etprCrdtGrntTrKindCd != ''">
 		   AND B.ETPR_CRDT_GRNT_TR_KIND_CD = #{etprCrdtGrntTrKindCd}
