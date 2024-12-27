@@ -1307,6 +1307,7 @@ const TB07010Sjs = (function () {
     ldgMovePage: ldgMovePage,
     calAcbkAmt: calAcbkAmt,
     calKrwTrsl: calKrwTrsl,
+    getDealInfoFromWF : getDealInfoFromWF 
 
   };
 })();
