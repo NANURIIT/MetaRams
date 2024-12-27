@@ -102,7 +102,7 @@
 											<input type="text" class="form-control text-right" id="TB07040S_trSn"
 												value="" readonly>
 										</div>
-										<label class="col-sm-1 col-form-label text-right">좌수</label>
+										<label class="col-sm-1 col-form-label text-right">수량</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right" id="TB07040S_trQnt"
 												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
@@ -263,12 +263,12 @@
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
 
-										<label class="col-sm-1">전체발행좌수</label>
+										<label class="col-sm-1">전체발행수량</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right"
 												id="TB07040S_wholIssuShqt" value=""
 												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormat(this);">
+												onkeyup="inputNumberFormat(this);" readonly>
 										</div>
 										<label class="col-sm-1">기준환율</label>
 										<div class="col-sm-3 input-group">
@@ -291,7 +291,7 @@
 								<!-- row10 -->
 								<div class="row form-group form-inline text-right mb-3">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1">보유좌수</label>
+										<label class="col-sm-1">보유수량</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right" id="TB07040S_hldgShqt"
 												value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
