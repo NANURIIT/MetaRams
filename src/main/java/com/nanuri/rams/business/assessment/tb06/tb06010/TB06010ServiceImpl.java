@@ -52,7 +52,9 @@ import com.nanuri.rams.com.utils.DateUtil;
 import com.nanuri.rams.com.utils.StringUtil;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -192,10 +194,10 @@ public class TB06010ServiceImpl implements TB06010Service {
 
 		if ((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
 
-			if(param.getPrdtLclsCd() == "92"){
+			if(param.getPrdtLclsCd().equals("92")){
 				param.setPageDcd("Z");
 			}
-	
+			
 			// 새로운 종목코드 채번
 			String newPrdtCd = ibims201bMapper.getPrdtCdSq(param.getPageDcd());
 
@@ -318,6 +320,11 @@ public class TB06010ServiceImpl implements TB06010Service {
 	// 종목정보 삭제
 	@Override
 	public int deletePrdtCd(IBIMS201BVO param) {
+		String prdtCd =param.getPrdtCd();
+		//연결 승인조건내역 삭제
+		ibims209bMapper.deleteIBIMS209BbyPrdtCd(prdtCd);
+		//연결 담보내역 삭제
+		ibims212bMapper.deleteIBIMS212BbyPrdtCd(prdtCd);
 		return ibims201bMapper.deletePrdtCd(param);
 	}
 

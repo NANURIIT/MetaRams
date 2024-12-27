@@ -1957,7 +1957,7 @@ const TB07040Sjs = (function () {
 
     g_sllPosShqt = Number(rowData.hldgShqt);
 
-    $("#TB07040S_qotaRt").val(Number(rowData.qotaRt));
+    $("#TB07040S_qotaRt").val(parseFloat(rowData.qotaRt).toFixed(2));
 
     g_qotaRt = Number(rowData.qotaRt);
 

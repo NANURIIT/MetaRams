@@ -316,7 +316,13 @@
             , IB201B.EARLY_REPAY_YN                                    <!-- 중도상환여부 -->
             , IB201B.SGL_INV_YN                                        <!-- 단독투자여부 -->
             , ROUND(IB994B.STDR_EXRT, 2) AS STDR_EXRT                  <!-- 기준환율 -->
-            , 10000000000 AS WHOL_ISSU_SHQT                            <!-- 전체발행좌수 -->
+            , CASE WHEN IB201B.PRDT_LCLS_CD ='30' 
+                   THEN NVL(IB201B.TOT_ISSU_SHQT ,0) 
+                   WHEN IB201B.PRDT_LCLS_CD ='10'  
+                   THEN NVL(IB201B.TOT_ISSU_STK_QNT ,0)
+                   ELSE 0 END  AS WHOL_ISSU_SHQT                       <!-- 전체발행좌수 -->
+            , NVL(IB201B.TOT_ISSU_SHQT ,0) AS TOT_ISSU_SHQT            <!-- 총발행좌수 -->   
+            , NVL(IB201B.TOT_ISSU_STK_QNT ,0) AS TOT_ISSU_STK_QNT      <!-- 총발행주수 -->           
             , NVL(IB402B.BUY_SHQT,0) - NVL(IB402B.SLL_SHQT,0) AS HLDG_SHQT <!-- 보유좌수 -->
             , NVL(IB401B.EPRZ_CRDL_CTRC_AMT, 0) AS EPRZ_CRDL_CTRC_AMT <!-- 기업여신약정금액-->
             , NVL(IB402B.KRW_TRSL_EXC_AMT, 0) AS KRW_TRSL_EXC_AMT     <!-- 원화환산실행금액-->
@@ -515,7 +521,7 @@
              , IB201B.INTR_CLC_END_DE_DCD                               /*  이자계산종료일구분코드  */
              , IB201B.INTR_HDWT_CLC_YN                                  /*  이자수기계산여부  */
              , IB201B.GRD_CD                                            /*  기업여신등급코드  */
-             , IB201B.DSHN_RT_GRD_CD                                    /*  기업여신부도율등급코드  */
+             , IB201B.DSHN_RT_GRD_CD                                    /*  기업여신부도율등급코드  */             
              , IB994B.RGST_DT                                           /*  등록일자  */
              , IB201B.CHNG_DT                                           /*  변경일자  */
              , IB201B.HND_DETL_DTM                                      /*  조작상세일시  */
@@ -526,6 +532,13 @@
              , IB201B.EARLY_REPAY_YN                                    /*  중도상환여부  */
              , IB201B.SGL_INV_YN                                        /*  단독투자여부  */
              , ROUND(IB994B.STDR_EXRT, 2) AS STDR_EXRT                  /*  기준환율  */
+             , CASE WHEN IB201B.PRDT_LCLS_CD ='30' 
+                    THEN NVL(IB201B.TOT_ISSU_SHQT ,0) 
+                    WHEN IB201B.PRDT_LCLS_CD ='10'  
+                    THEN NVL(IB201B.TOT_ISSU_STK_QNT ,0)
+                    ELSE 0 END  AS WHOL_ISSU_SHQT                       /* 전체발행좌수 */
+             , NVL(IB201B.TOT_ISSU_SHQT ,0) AS TOT_ISSU_SHQT            /* 총발행좌수 */   
+             , NVL(IB201B.TOT_ISSU_STK_QNT ,0) AS TOT_ISSU_STK_QNT      /* 총발행주수 */  
              , NVL(IB402B.BUY_SHQT,0) - NVL(IB402B.SLL_SHQT,0) AS HLDG_SHQT /*  보유좌수  */
              , NVL(IB401B.EPRZ_CRDL_CTRC_AMT, 0) AS EPRZ_CRDL_CTRC_AMT /*  기업여신약정금액 */
              , NVL(IB402B.KRW_TRSL_EXC_AMT, 0) AS KRW_TRSL_EXC_AMT     /*  원화환산실행금액 */
@@ -787,6 +800,8 @@
                , INTR_HDWT_CLC_YN                                  /* 이자수기계산여부 */
                , GRD_CD                                            /* 기업여신등급코드 */
                , DSHN_RT_GRD_CD                                    /* 기업여신부도율등급코드 */
+               , TOT_ISSU_SHQT									   /* 총발행좌수 */									
+               , TOT_ISSU_STK_QNT								   /* 총발행주수 */		
                , IB994B.RGST_DT                                    /* 등록일자 */
                , CHNG_DT                                           /* 변경일자 */
                , HND_DETL_DTM                                      /* 조작상세일시 */
@@ -964,6 +979,8 @@
 			    , A.GUID								/* guid                 */
 			    , A.EARLY_REPAY_YN						/* 중도상환여부           */
 			    , A.SGL_INV_YN							/* 단독투자여부           */
+			    , A.TOT_ISSU_SHQT						/* 총발행좌수 */
+			    , A.TOT_ISSU_STK_QNT						/* 총발행주수 */
 			 FROM IBIMS201B A 		/* 딜승인기본 */
 			WHERE 1=1
 			  AND LAST_YN = 'Y'

@@ -1388,7 +1388,7 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_excSn').val(rowData.excSn);
 		$('#TB07020S_wholIssuShqt').val(rowData.wholIssuShqt);
 		$('#TB07020S_hldgShqt').val(rowData.hldgShqt);
-		$('#TB07020S_qotaRt').val(rowData.qotaRt);
+		$('#TB07020S_qotaRt').val(parseFloat(rowData.qotaRt).toFixed(2));
 		g_qotaRt = rowData.qotaRt;
 		$('#TB07020S_evlPflsAmt').val(rowData.evlPflsAmt);
 		//$('#TB07020S_tradPflsAmt').val(td.eq(32).text());

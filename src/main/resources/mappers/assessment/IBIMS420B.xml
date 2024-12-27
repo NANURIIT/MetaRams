@@ -238,6 +238,12 @@
 	       , B.BCNC_NM										/* 거래처명 */
 		   , C.TR_DT					                    /* 거래일자 */
 		   , C.RCTM_DT					                    /* 입금일자 */
+		   , D.TR_OTHR_DSCM_NO								/* 거래상대방식별번호 */
+		   , (SELECT L.ENTP_NM
+		   		FROM IBIMS010B L /* 기업체기본 */
+		   		WHERE 1=1
+		   		AND L.ARDY_BZEP_NO = D.TR_OTHR_DSCM_NO
+		   	 ) AS ENTP_NM									/* 거래처명 */	
 	    FROM IBIMS348B	A 				                    /* 딜승인수수료스케쥴기본 */
 	       , (SELECT PRDT_CD
 				   , FEE_SN

@@ -1204,8 +1204,9 @@ const TB06010Sjs = (function(){
 			openPopup(option);
 			return false;
 		}
+
 		// 수수료 전용이 아닐경우만 체크함
-		else if ($('#TB06010S_E022').val() != 92) {
+		if ($('#TB06010S_E022').val() != 92) {
 			if (isEmpty($('#TB06010S_I002').val())) {
 				option.text = "자산분류 상품정보 IB상품분류코드를 입력해주세요.";
 				openPopup(option);

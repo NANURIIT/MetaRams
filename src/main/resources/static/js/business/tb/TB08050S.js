@@ -579,6 +579,13 @@ const TB08050Sjs = (function () {
           }
         },
       },
+	  
+	  {
+	    title: "거채러명",
+	    dataType: "string",
+	    dataIndx: "entpNm",
+	    hidden: true,
+	  },
     ];
 
     let pqGridObjs = [];
@@ -685,6 +692,7 @@ const TB08050Sjs = (function () {
 				$("#TB08050S_aplcExchR").val(""); // 적용환율
 				$("#TB08050S_aplcExchR").prop("disabled",false);
 			  }
+			  $("#TB08050S_entpNm").val(rd.entpNm);
               $("#TB08050S_I027").val(rd.crryCd); // 적용환율
               $("#TB08050S_E027").val(rd.txtnTpDcd); // 기업여신과세유형코드
               $("#TB08050S_feeRcivAmt").val(commaNull(rd.feeRcivAmt)); // 수수료수납금액구분코드
@@ -698,7 +706,7 @@ const TB08050Sjs = (function () {
                 `input[name="TB08050S_prcsCpltYn"][value="${rd.prcsCpltYn}"]`
               ).prop("checked", true); // 수납완료여부
               $("#TB08050S_prcsEmpno").val(rd.prcsEmpno); // 처리사원번호
-             // $("#TB08050S_prcsTm").val(rd.hndDetlDtm); // 처리시간
+              $("#TB08050S_prcsTm").val(rd.hndDetlDtm); // 처리시간
               $("#TB08050S_rkfrDt").val(dateNull(rd.rkfrDt)); // 회계일자 ? 기산일자
 
               prlnFee = rd.prlnFee; // 이연수수료
@@ -749,7 +757,7 @@ const TB08050Sjs = (function () {
       let fnnrRcogStrtDt = unformatDate($("#TB08050S_fnnrRcogStrtDt").val()); // 인식시작일자
       let fnnrRcogEndDt = unformatDate($("#TB08050S_fnnrRcogEndDt").val()); // 인식종료일
       let fndsDvsnCd = $("#TB08050S_F008").val(); // 자금구분코드
-      let bcncNm = $("#TB08050S_bcncNm").val(); // 거래처명
+      let bcncNm = $("#TB08050S_entpNm").val(); // 거래처명
       let crryCd = $("#TB08050S_I027").val(); // 통화코드
 	  console.log("saveTest2");
       let aplyExrt = $("#TB08050S_aplcExchR").val(); // 적용환율
