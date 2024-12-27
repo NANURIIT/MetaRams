@@ -547,10 +547,17 @@ const TB07100Sjs = (function () {
    * INSERT 모음
    */
 
-  /**
-   * 지급품의 MERGE
-   */
-  function TB07100S_mergeIBIMS431B() {
+  function TB07100S_mergeIBIMS431B(){
+    if($("#TB07100S_cnstNo").val()==""){
+      console.log("insert");
+      getCnstNo();
+    }else{
+      console.log("update");
+      TB07100S_updateIBIMS431B();
+    }
+  }
+
+  function TB07100S_insertIBIMS431B(cnstNo) {
 
     const ibims432bvo = {
       // wrtnDt: unformatDate($("#TB07100S_wrtnDt").val())             //  작성일자
@@ -579,63 +586,12 @@ const TB07100Sjs = (function () {
       , exrt: $("TB07100S_exrt").val()
     }
 
-    // const paramData = {
-    //   // wrtnDt: unformatDate($("#TB07100S_wrtnDt").val())
-    //   // , wrtnYm: unformatDate($("#TB07100S_wrtnDt").val()).slice(0, 6)
-    //   rslnBdcd: $("#TB07100S_rslnBdcd").val()
-    //   , acctDt: unformatDate($("#TB07100S_acctDt").val())
-    //   , cnstNo: $("#TB07100S_cnstNo").val()
-    //   , baltDt: $("#TB07100S_baltDt").val()
-    //   , sttmNo: $("#TB07100S_sttmNo").val()
-    //   , sttmBdcd: $("#TB07100S_sttmBdcd").val()
-    //   , cnclBaltDt: unformatDate($("#TB07100S_cnclBaltDt").val())
-    //   , cnclSttmNo: $("#TB07100S_cnclSttmNo").val()
-    //   , cnstSttmDcd: $("#TB07100S_cnstSttmDcd").val()
-    //   , prufDt: unformatDate($("#TB07100S_prufDt").val())
-    //   , crryCd: $("#TB07100S_crryCd").val()
-    //   , exrt: $("#TB07100S_exrt").val()
-    //   , rgstEmpno: $("#TB07100S_rgstEmpno").val()
-    //   , acctBcncCd: $("#TB07100S_acctBcncCd").val()
-    //   , bcncNm: $("#TB07100S_2_bzepName").val()
-    //   , acctPymtMthCd: $("#TB07100S_acctPymtMthCd").val()
-    //   , xtnlIsttCd: $("#TB07100S_xtnlIsttCd").val()
-    //   , bano: $("#TB07100S_bano").val()
-    //   , bnkAchdNm: $("#TB07100S_bnkAchdNm").val()
-    //   , pymtPrarDt: unformatDate($("#TB07100S_pymtPrarDt").val())
-    //   , fndsIstrSn: $("#TB07100S_fndsIstrSn").val()
-    //   , prufKndDcd: $("#TB07100S_prufKndDcd").val()
-    //   , pchsDdcDcd: $("#TB07100S_pchsDdcDcd").val()
-    //   , rslnAmt: $("#TB07100S_rslnAmt").val()
-    //   , splmValuTxa: $("#TB07100S_splmValuTxa").val()
-    //   , cnclYn: "N"
-    //   , trId: $("#TB07100S_trId").val()
-    //   , bnftYn: $("#TB07100S_bnftYn").val()
-    //   , reltDcmNo: $("#TB07100S_reltDcmNo").val()
-    //   , reltFdtnCtns: $("#TB07100S_reltFdtnCtns").val()
-    //   , elcPrufYn: "N"
-    //   , entmAccXstcYn: $("#TB07100S_entmAccXstcYn").val()
-    //   , cntrAccXstcYn: $("#TB07100S_cntrAccXstcYn").val()
-    //   , jobDecdCd: $("#TB07100S_jobDecdCd").val()
-    //   , jobDecdNo: $("#TB07100S_jobDecdNo").val()
-    //   , cnclJobDecdNo: $("#TB07100S_cnclJobDecdNo").val()
-    //   , excalYn: $("#TB07100S_excalYn").val()
-    //   , fndsLdgDcd: $("#TB07100S_fndsLdgDcd").val()
-    //   , fndsLdgNo: $("#TB07100S_fndsLdgNo").val()
-    //   , rgstSn: $("#TB07100S_rgstSn").val()
-    //   , actsCd: $('#TB07100S_A005').val()
-    //   , edmsDcmId: $("#TB07100S_edmsDcmId").val()
-    //   , cdno: $("#TB07100S_cdno").val()
-    //   , apvlNo: $("#TB07100S_apvlNo").val()
-    //   , bdgBusiCd: $("#TB07100S_bdgBusiCd").val()
-    //   , frcrRslnAmt: $("#TB07100S_frcrRslnAmt").val()
-    //   , ibims432bvo: ibims432bvo
-    // }
     const paramData = {
         wrtnDt : unformatDate($("#TB07100S_wrtnDt").val()) //작성일자
       , wrtnYm : unformatDate($("#TB07100S_wrtnDt").val()).substring(0,6)
       , rslnBdcd : $('#userDprtCd').val() //부점코드
       , acctDt : unformatDate($("#TB07100S_acctDt").val()) //회계일자
-      , cnstNo : $("#TB07100S_cnstNo").val() //품의번호
+      , cnstNo : cnstNo  //품의번호
       , prufDt : unformatDate($("#TB07100S_prufDt").val())  //증빙일자
       , prufKndDcd : $("#TB07100S_prufKndDcd").val() //증빙종류
       , acctBcncCd : $("#TB07100S_2_ardyBzepNo").val() //거래처번호
@@ -661,20 +617,18 @@ const TB07100Sjs = (function () {
       , jobDecdCd : 'N'
     }
     console.log("paramData : ", paramData);
-    // console.log(paramData.acctDt);
 
     $.ajax({
       type: "POST",
-      url: "/TB07100S/mergeIBIMS431B",
+      url: "/TB07100S/insertIBIMS431B",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        console.log("Generated CNST_NO:", data.cnstNo);
         Swal.fire({
           icon: 'success'
           , title: "Success!"
-          , text: "등록 완료."
+          , text: "입력 완료."
           , confirmButtonText: "확인"
       }).then((result) => {
           TB07100S_selectIBIMS431B();
@@ -683,7 +637,100 @@ const TB07100Sjs = (function () {
         Swal.fire({
           icon: 'warning'
           , title: "Warning!"
-          , text: "등록 실패."
+          , text: "입력 실패."
+          , confirmButtonText: "확인"
+      }).then((result) => {
+          TB07100S_selectIBIMS431B();
+      });
+      }
+    });
+  }
+
+  /**
+   * 지급품의 MERGE
+   */
+  function TB07100S_updateIBIMS431B() {
+
+    const ibims432bvo = {
+      // wrtnDt: unformatDate($("#TB07100S_wrtnDt").val())             //  작성일자
+      rslnBdcd: $("#TB07100S_dprtCd").val()           //  부서코드  rslnBdcd
+      //   , STTM_DETL_SN        //  쿼리에서 처리
+      , dbitCritDcd: $("#TB07100S_dbitCritDcd").val()
+      , rptsActsCd: $("#TB07100S_rptsActsCd").val()
+      , actsCd: $("#TB07100S_actsCd").val()             //  계정과목
+      , krwAmt: $("TB07100S_krwAmt").val()
+      , frcrAmt: $("TB07100S_frcrAmt").val()
+      , bdgExcuBdcd: $("TB07100S_bdgExcuBdcd").val()
+      , bdgActsCd: $("TB07100S_bdgActsCd").val()
+      , rvrsBdcd: $("TB07100S_rvrsBdcd").val()
+      , rslnSynsCtns: $("TB07100S_rslnSynsCtns").val()
+      , fndsIstrJobClsfCd: $("TB07100S_fndsIstrJobClsfCd").val()
+      , acctBcncCd: $("TB07100S_acctBcncCd").val()
+      , prufKndDcd: $("TB07100S_prufKndDcd").val()
+      , prufDt: unformatDate($("TB07100S_prufDt").val())
+      , ntsApvlNo: $("TB07100S_ntsApvlNo").val()
+      , elcPrufYn: $("TB07100S_elcPrufYn").val()
+      , vhclRgstCd: $("TB07100S_vhclRgstCd").val()
+      , nsFnsCd: $("TB07100S_nsFnsCd").val()
+      , prdtCd: $("TB07100S_prdtCd").val()
+      , projId: $("TB07100S_projId").val()
+      , crryCd: $("TB07100S_crryCd").val()
+      , exrt: $("TB07100S_exrt").val()
+    }
+
+    const paramData = {
+        wrtnDt : unformatDate($("#TB07100S_wrtnDt").val()) //작성일자
+      , wrtnYm : unformatDate($("#TB07100S_wrtnDt").val()).substring(0,6)
+      , rslnBdcd : $('#userDprtCd').val() //부점코드
+      , acctDt : unformatDate($("#TB07100S_acctDt").val()) //회계일자
+      , cnstNo : $("#TB07100S_cnstNo").val()  //품의번호
+      , prufDt : unformatDate($("#TB07100S_prufDt").val())  //증빙일자
+      , prufKndDcd : $("#TB07100S_prufKndDcd").val() //증빙종류
+      , acctBcncCd : $("#TB07100S_2_ardyBzepNo").val() //거래처번호
+      , bcncNm : $("#TB07100S_2_entpNm").val() //거래처명
+      , bano : $("#TB07100S_bano").val() //계좌번호
+      , cdno : $("#TB07100S_cdno").val() //카드번호
+      , apvlNo : $("#TB07100S_apvlNo").val() //카드승인번호
+      , bnftYn : $("#TB07100S_bnftYn").is(":checked") ? "Y" : "N" //편익제공여부
+      , entmAccXstcYn : $("#TB07100S_entmAccXstcYn").is(":checked") ? "Y" : "N"//접대비여부  // 테이블 접대계정존재여부 
+      , rslnAmt : $("#TB07100S_rslnAmt").val().replaceAll(',','') //지급금액 //테이블 결의금액? 
+      , splmValuTxa : $("#TB07100S_splmValuTxa").val().replaceAll(',','') //세액 // 테이블 부가가치세액? 
+      , pchsDdcDcd : $("#TB07100S_pchsDdcDcd").val() //매입공제
+      , fndsLdgDcd : $("#TB07100S_fndsLdgDcd").val() //출금원장 //테이블 자금원장구분코드 
+      , reltFdtnCtns : $("#TB07100S_reltFdtnCtns").val() //관련근거
+      , acctPymtMthCd : $("#TB07100S_acctPymtMthCd").val() //지급방법
+      , pymtPrarDt : unformatDate($("#TB07100S_pymtPrarDt").val())  //지급예정일자
+      , rgstEmpno : $("#TB07100S_2_empNo").val() //작성자
+      , reltStfno : $("#TB07100S_3_empNo").val() //승인자
+      , cnclYn : 'N'
+      , elcPrufYn : 'N'
+      , cntrAccXstcYn : 'N'
+      , excalYn : 'N'
+      , jobDecdCd : 'N'
+    }
+    console.log("paramData : ", paramData);
+
+    $.ajax({
+      type: "POST",
+      url: "/TB07100S/updateIBIMS431B",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(paramData),
+      dataType: "json",
+      success: function (data) {
+        console.log("Generated CNST_NO:", data.cnstNo);
+        Swal.fire({
+          icon: 'success'
+          , title: "Success!"
+          , text: "갱신 완료."
+          , confirmButtonText: "확인"
+      }).then((result) => {
+          TB07100S_selectIBIMS431B();
+      });
+      }, error: function () {
+        Swal.fire({
+          icon: 'warning'
+          , title: "Warning!"
+          , text: "갱신 실패."
           , confirmButtonText: "확인"
       }).then((result) => {
           TB07100S_selectIBIMS431B();
@@ -834,9 +881,8 @@ const TB07100Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-
+        
       }, error: function () {
-
       }
     });
   }
@@ -878,6 +924,28 @@ const TB07100Sjs = (function () {
     $("#TB07100S_grd_thdtTrDtls").pqGrid("deleteRow", { rowIndx: rowCount });
   }
 
+  function getCnstNo(){
+
+    const paramData = {
+      wrtnDt: unformatDate($("#TB07100S_wrtnDt").val())   //  작성일자
+      , wrtnYm : unformatDate($("#TB07100S_wrtnDt").val()).substring(0,6)
+      , rslnBdcd: $("#TB07100S_dprtCd").val()             //  부서코드
+    }
+    
+    $.ajax({
+      type: "POST",
+      url: "/TB07100S/getCnstNo",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(paramData),
+      dataType: "json",
+      success: function (data) {
+        console.log("cnstNo:",data);
+        TB07100S_insertIBIMS431B(data);
+      }, error: function () {
+      }
+    });
+  }
+
   
   return {
     TB07100S_selectIBIMS431B: TB07100S_selectIBIMS431B,
@@ -888,5 +956,6 @@ const TB07100Sjs = (function () {
     TB07100S_removeAll: TB07100S_removeAll,
     addRow: addRow,
     delRow: delRow,
+    getCnstNo: getCnstNo,
   };
 })();

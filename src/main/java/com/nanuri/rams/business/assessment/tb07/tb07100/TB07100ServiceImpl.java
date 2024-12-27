@@ -57,9 +57,22 @@ public class TB07100ServiceImpl implements TB07100Service {
 			System.out.print("Service = updateIBIMS431B");
 			return ibims431bMapper.updateIBIMS431B(param);
 		}
-		
-		
+	};
 
+	// 지급품의 기본 등록
+	@Override
+	public int insertIBIMS431B(IBIMS431BVO param){
+
+		param.setHndEmpno(facade.getDetails().getEno());
+		return ibims431bMapper.insertIBIMS431B(param);
+	};
+	
+	// 지급품의 기본 변경
+	@Override
+	public int updateIBIMS431B(IBIMS431BVO param){
+
+		param.setHndEmpno(facade.getDetails().getEno());
+		return ibims431bMapper.updateIBIMS431B(param);
 	};
 
 	// 기본 삭제
@@ -74,4 +87,10 @@ public class TB07100ServiceImpl implements TB07100Service {
 		return ibims432bMapper.deleteIBIMS432B(param);
 	};
 	
+
+	//품의번호 채번
+	@Override
+	public String getCnstNo(IBIMS431BVO param){
+		return ibims431bMapper.getCnstNo(param);
+	};
 } // class end

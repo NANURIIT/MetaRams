@@ -47,6 +47,19 @@ public class TB07100APIController {
 		return tb07100Service.mergeIBIMS431B(param);
 	}
 
+	// 지급품의 등록
+	@PostMapping(value = "/insertIBIMS431B")
+	public int insertIBIMS431B(@RequestBody IBIMS431BVO param) {
+		return tb07100Service.insertIBIMS431B(param);
+	}
+
+	// 지급품의 변경
+	@PostMapping(value = "/updateIBIMS431B")
+	public int updateIBIMS431B(@RequestBody IBIMS431BVO param) {
+		return tb07100Service.updateIBIMS431B(param);
+	}
+
+
 	// 기본 삭제
 	@PostMapping(value = "/deleteIBIMS431B")
 	public int deleteIBIMS431B(@RequestBody IBIMS431BVO param) {
@@ -59,4 +72,8 @@ public class TB07100APIController {
 		return tb07100Service.deleteIBIMS432B(param);
 	}
 	
+	@PostMapping(value = "/getCnstNo")
+    public String getCnstNo (@RequestBody IBIMS431BVO param){
+		return tb07100Service.getCnstNo(param);
+	}
 }

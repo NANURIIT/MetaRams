@@ -284,4 +284,14 @@
            AND CNST_NO = #{cnstNo}
     </delete>
 
+    <select id="getCnstNo" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO" resultType = "String">
+
+     SELECT NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1
+                    FROM (
+                      SELECT CNST_NO
+                        FROM IBIMS431B
+                       WHERE WRTN_DT LIKE #{wrtnDt}||'%'
+                ) AS temp
+    </select>
+
 </mapper>
