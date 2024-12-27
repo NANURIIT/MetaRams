@@ -1,5 +1,6 @@
 package com.nanuri.rams.business.common.mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public interface IBIMS430BMapper {
 
     // public Integer getNxtRctmSeq(String rctmDt);
 
-    public Integer getNxtRgstSeq(String rgstDtm);
+    public Integer getNxtRctmSeq(String rgstDtm);
 
     //입금내역등록
     public int rctmDtlsRgst(List<IBIMS430BDTO> paramList);
@@ -46,5 +47,15 @@ public interface IBIMS430BMapper {
      */
      public List<IBIMS430BVO> getYesDealList (IBIMS430BVO param);
      
+    /**
+     * 이미 입력된 상환예정 내역인지 확인
+     */
+    public int chkRctmDtlsMapping (IBIMS430BDTO param);
+
+    /**
+     * 딜입금금액 체크
+     */
+    public BigDecimal inqDealRctmAmt (IBIMS430BDTO param);
+    
 }
 

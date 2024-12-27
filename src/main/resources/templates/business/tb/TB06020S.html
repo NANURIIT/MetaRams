@@ -225,7 +225,7 @@
 												<input type="text" class="form-control" placeholder="yyyy-mm-dd"
 													id="TB06020S_crdtInqDt"
 													oninput="this.value = this.value.replace(/[^0-9-]/g, '');"
-													onblur="this.value=formatDate(this.value);"
+													onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 													><span
 													class="input-group-addon"><i class="fa fa-calendar"></i></span>
 											</div>
@@ -446,7 +446,7 @@
 											<input type="text" class="form-control" id="TB06020S_stupDt" value=""
 												placeholder="yyyy-mm-dd"
 												oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-												onblur="this.value=formatDate(this.value);"
+												onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 												>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
@@ -455,7 +455,7 @@
 											<input type="text" class="form-control" id="TB06020S_trustEdDt" value=""
 												placeholder="yyyy-mm-dd"
 												oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-												onblur="this.value=formatDate(this.value);"
+												onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 												>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
@@ -464,7 +464,7 @@
 											<input type="text" class="form-control" id="TB06020S_rpchPsblDt" value=""
 												placeholder="yyyy-mm-dd"
 												oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-												onblur="this.value=formatDate(this.value);"
+												onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 												>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>

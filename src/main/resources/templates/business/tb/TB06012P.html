@@ -159,7 +159,7 @@
 															<div class="col-sm-3 input-group date">
 																<input type="text" class="form-control" id="TB06012P_sdwnTlmtDt" value="" 
 																placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10"
-																onblur="this.value=formatDate(this.value);">
+																onblur="this.value=formatDate(this.value.replaceAll('-',''));">
 																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 															</div>
 														</div>
@@ -202,7 +202,7 @@
 															<div class="col-sm-5 input-group date pr-18">
 																<input type="text" class="form-control" id="TB06012P_sdwnCpltDt" value="" 
 																placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-																onblur="this.value=formatDate(this.value);">
+																onblur="this.value=formatDate(this.value.replaceAll('-',''));">
 																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 															</div>
 														</div>

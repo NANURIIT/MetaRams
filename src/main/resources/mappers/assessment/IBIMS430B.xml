@@ -2,12 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS430BMapper">
 
-    <!--입금내역매핑 조회-->
-    
+    <!--입금내역매핑 확인-->
+    <select id="chkRctmDtlsMapping" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO" resultType="Integer">
+        SELECT COUNT(RCTM_DT)
+          FROM IBIMS430B
+         WHERE 1=1
+           AND DEAL_NO = #{dealNo}
+           AND PRDT_CD = #{prdtCd}
+           AND EXC_SN = #{excSn}
+           AND RDPT_OBJT_DVSN_CD = #{rdptObjtDvsnCd}
+    </select>
     
     <!--등록순번 구하기-->
-    <select id="getNxtRgstSeq" parameterType="String" resultType="Integer">
-        SELECT NVL(MAX(RGST_SEQ)+1, 1)
+    <select id="getNxtRctmSeq" parameterType="String" resultType="Integer">
+        SELECT NVL(MAX(RCTM_SEQ)+1, 1)
           FROM IBIMS430B
          WHERE 1=1
            AND RCTM_DT = #{rctmDt}
@@ -261,12 +269,28 @@
 
     <!-- 대충만듬2ㅋ 입금내역매핑 셀렉트 -->
     <select id="getYesDealList" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
-        SELECT DEAL_NO 					/* 딜번호 */
-             , EXCS_PYMT_PRCS_TEXT		/* 초과납입처리내용 */
-             , RCTM_DT 					/* 입금일자 */                
-             , MNGM_BDCD 				/* 관리부서 */
-             , RDPT_OBJT_DVSN_CD 		/* 상환대상구분코드 */
-             , DEAL_RCTM_AMT 			/* 딜입금금액 */
+        SELECT RCTM_DT                      /* 입금일자 */
+             , RCTM_SEQ                     /* 입금순번 */
+             , FNDS_DVSN_CD                 /* 자금구분코드 */
+             , DEAL_NO                      /* ┌딜번호 */
+             , PRDT_CD                      /* │종목코드 */
+             , EXC_SN                       /* └실행일련번호 */
+             , RDPT_OBJT_DVSN_CD            /* 상환대상구분코드 */
+             , DEAL_EXCS_PYMT_AMT           /* 딜초과납입금액 */
+             , EXCS_PYMT_PRCS_DVSN_CD       /* 초과납입처리구분코드 */
+             , EXCS_PYMT_PRCS_TEXT          /* 초과납입처리내용 */
+             , PMNT_PRAR_AMT                /* 납부예정금액 */
+             , DEAL_RCTM_AMT                /* 딜입금금액 */
+             , RELT_ISTT_CD                 /* 관련기관코드 */
+             , RELT_ISTT_NM                 /* 관련기관명 */
+             , RELT_BANO                    /* 관련은행계좌번호 */
+             , MNGM_BDCD                    /* 관리부점코드 */
+             , DPTR_NM                      /* 입금자명 */
+             , RGST_SEQ                     /* 등록순번 */
+             , RGST_EMPNO                   /* 등록사원번호 */
+             , RGST_BDCD                    /* 등록부점코드 */
+             , RGST_DTM                     /* 등록일시 */
+             , HND_DETL_DTM                 /* 다들아는 그 시간 */
           FROM IBIMS430B
          WHERE 1=1
            AND DEAL_NO IS NOT NULL
@@ -278,6 +302,13 @@
            </if>
     </select>
 
+    <select id="inqDealRctmAmt" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
+        SELECT DEAL_RCTM_AMT                /* 딜입금금액 */
+          FROM IBIMS430B
+         WHERE 1=1
+           AND RCTM_DT = #{rctmDt}
+           AND RCTM_SEQ = #{rctmSeq}
+    </select>
 
     <insert id="insertIBIMS430B" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO">
         INSERT INTO IBIMS430B (
@@ -317,7 +348,7 @@
             , #{rdptObjtDvsnCd}
             , #{dealExcsPymtAmt}
             , #{excsPymtPrcsDvsnCd}
-            , #{excsPymtPrcsText}
+            , NVL(#{excsPymtPrcsText}, '')
             , #{pmntPrarAmt}
             , #{dealRctmAmt}
             , #{reltIsttCd}
@@ -344,7 +375,9 @@
              , HND_TMNL_NO = #{hndTmnlNo}
              , HND_TR_ID = #{hndTrId}
              , GUID = #{guid}
-
+             , DEAL_RCTM_AMT = #{dealRctmAmt}
+             , DEAL_EXCS_PYMT_AMT = #{dealExcsPymtAmt}
+             , EXCS_PYMT_PRCS_TEXT = #{excsPymtPrcsText}
          WHERE 1=1
            AND RCTM_DT = #{rctmDt}
            AND RCTM_SEQ = #{rctmSeq}

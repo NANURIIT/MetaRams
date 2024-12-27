@@ -173,91 +173,125 @@
     </insert>
     
 	<!-- 딜승인수수료스케쥴기본  -->
-	<select id="selectFeeRcivLst" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS420BVO">
-	  SELECT A.PRDT_CD					/* 상품코드 */
-	       , A.FEE_SN					/* 수수료일련번호 */
-	       , A.RGST_STTS_CD				/* 등록상태코드 */
-	       , A.PRAR_DT					/* 예정일자 */
-	       , A.FEE_BNAP_DCD				/* 수수료선후급구분코드 */
-	       , A.FEE_KND_CD				/* 수수료종류코드 */
-	       , A.IFRS_FEE_RCOG_DCD		/* ifrs수수료인식구분코드 */
-	       , A.FEE_RCOG_DCD				/* 수수료인식구분코드 */
-	       , A.FEE_TXTN_YN				/* 수수료과세여부 */
-	       , A.TXTN_TP_DCD				/* 과세유형구분코드 */
-	       , A.BUSI_NMCP_CPL_TXTN_YN	/* 사업부수수료과세여부 */
-	       , A.FEE_STDR_AMT				/* 수수료기준금액 */
-	       , A.FEE_TRGT_CTNS			/* 수수료대상내용 */
-	       , A.PRCS_CPLT_YN				/* 처리완료여부 */
-	       , A.CRRY_CD					/* 통화코드 */
-	       , A.FEE_RT					/* 수수료율 */
-	       , A.FEE_AMT					/* 수수료금액 */
-	       , A.FEE_RCIV_DT				/* 수수료수납일자 */
-	       , A.FEE_RCIV_AMT				/* 수수료수납금액 */
-	       , A.TR_SN					/* 거래일련번호 */
-	       , A.FNNR_PRLN_RTO			/* 재무이연비율 */
-		   , A.PRLN_FEE					/* 이연수수료 */
-	       , A.FNNR_RCOG_STRT_DT		/* 재무인식시작일자 */
-	       , A.FNNR_RCOG_END_DT			/* 재무인식종료일자 */
-	       , A.FNNR_PRLN_PRD_DNUM		/* 재무이연기간일수 */
-	       , A.MNGM_PRLN_RTO			/* 관리이연비율 */
-	       , A.MNGM_RCOG_STRT_DT		/* 관리인식시작일자 */
-	       , A.MNGM_RCOG_END_DT			/* 관리인식종료일자 */
-	       , A.MNGM_PRLN_PRD_DNUM		/* 관리이연기간일수 */
-	       , A.MNG_CNFM_YN				/* 경영확인여부 */
-	       , A.INOG_CNFM_YN				/* 출납확인여부 */
-	       , A.TAFF_CNFM_YN				/* 세무확인여부 */
-	       , A.PYMT_FEE					/* 지급수수료 */
-	       , A.RQS_RGST_YN				/* 신청등록여부 */
-	       , A.ACTS_CD					/* 계정과목코드 */
-	       , A.EXC_SN					/* 실행일련번호 */
-	       , A.DC_RT					/* 할인율 */
-	       , A.RPSR_NM					/* 대표자명 */
-	       , A.RGST_BDCD				/* 등록부점코드 */
-		   , B.RKFR_DT					/* 기산일자 */
-		   , B.FNDS_DVSN_CD				/* 자금구분코드 */
-		   , B.PRUF_ISU_DT				/* 증빙발행일자 */
-		   , B.APLY_EXRT              /* 적용환율 */
-		   , B.DECD_STTS_DCD           	/* 결재상태구분코드 */			
-		   , B.PRCS_EMPNO            	/* 처리사원번호 */			
-		   , B.PRCS_TM           		/* 처리시각 */		
-	       , A.HND_DETL_DTM				/* 조작상세일시 */
-	       , A.HND_EMPNO				/* 조작사원번호 */
-	       , A.HND_TMNL_NO				/* 조작단말기번호 */
-	       , A.HND_TR_ID				/* 조작거래id */
-		   , B.EPRZ_CRDL_RGST_STTS_CD	/* 기업여신등록상태코드 */
-	       , B.EPRZ_CRDL_FEE_KND_CD		/* 기업여신수수료종류코드 */
-	       , B.EPRZ_CRDL_FEE_STDR_AMT	/* 기업여신수수료기준금액 */
-	       , B.EPRZ_CRDL_FEE_RCOG_DCD	/* 기업여신수수료인식구분코드 */	
-	       , B.SPLM_TXA					/* 부가세액 */
-	       , B.EPRZ_CRDL_TXTN_TP_DCD	/* 기업여신과세유형구분코드 */
-	       , B.DTM_RCOG_AMT				/* 일시인식금액 */
-	       , B.PRLN_FEE					/* 이연수수료	 */
-	       , B.MNGM_DTM_RCOG_AMT		/* 관리일시인식금액 */
-	       , B.MNGM_PRLN_FEE			/* 관리이연수수료 */
-	       , B.RSTRN_PRDT_CD			/* 환출상품코드 */	
-	       , B.RSTRN_TR_SN				/* 환출거래일련번호 */	
-	       , B.RSTRN_FEE				/* 환출수수료 */
-		   , C.TR_DT					/* 거래일자 */
-		   , C.RCTM_DT					/* 입금일자 */
-	    FROM IBIMS348B	A 				/* 딜승인수수료스케쥴기본 */
-	       , IBIMS420B  B 				/* 딜수수료수납내역 */
-           , IBIMS410B  C 				/* 딜거래내역 */
+	<select id="selectFeeRcivLst" parameterType="com.nanuri.rams.business.common.vo.IBIMS420BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS420BVO">
+	  SELECT A.PRDT_CD					                    /* 상품코드 */
+	       , A.FEE_SN					                    /* 수수료일련번호 */
+	       , A.RGST_STTS_CD				                    /* 등록상태코드 */
+	       , A.PRAR_DT					                    /* 예정일자 */
+	       , A.FEE_BNAP_DCD				                    /* 수수료선후급구분코드 */
+	       , A.FEE_KND_CD				                    /* 수수료종류코드 */
+	       , A.FEE_RCOG_DCD  								/* 수수료인식구분코드 */
+	       , A.FEE_TXTN_YN									/* 수수료과세여부 */
+	       , A.TXTN_TP_DCD				                    /* 과세유형구분코드 */
+	       , A.FEE_STDR_AMT				                    /* 수수료기준금액 */
+	       , A.FEE_TRGT_CTNS			                    /* 수수료대상내용 */
+	       , A.PRCS_CPLT_YN				                    /* 처리완료여부 */
+	       , A.CRRY_CD					                    /* 통화코드 */
+	       , A.FEE_RT					                    /* 수수료율 */
+	       , A.FEE_AMT					                    /* 수수료금액 */
+	       , A.FEE_RCIV_DT				                    /* 수수료수납일자 */
+	       , A.FEE_RCIV_AMT				                    /* 수수료수납금액 */
+	       , A.TR_SN					                    /* 거래일련번호 */
+	       , A.FNNR_PRLN_RTO			                    /* 재무이연비율 */
+		   , A.PRLN_FEE					                    /* 이연수수료 */
+	       , A.FNNR_RCOG_STRT_DT		                    /* 재무인식시작일자 */
+	       , A.FNNR_RCOG_END_DT			                    /* 재무인식종료일자 */
+	       , A.FNNR_PRLN_PRD_DNUM		                    /* 재무이연기간일수 */
+	       , A.MNGM_PRLN_RTO			                    /* 관리이연비율 */
+	       , A.MNGM_RCOG_STRT_DT		                    /* 관리인식시작일자 */
+	       , A.MNGM_RCOG_END_DT			                    /* 관리인식종료일자 */
+	       , A.MNGM_PRLN_PRD_DNUM		                    /* 관리이연기간일수 */
+	       , A.MNG_CNFM_YN				                    /* 경영확인여부 */
+	       , A.INOG_CNFM_YN				                    /* 출납확인여부 */
+	       , A.TAFF_CNFM_YN				                    /* 세무확인여부 */
+	       , A.PYMT_FEE					                    /* 지급수수료 */
+	       , A.RQS_RGST_YN				                    /* 신청등록여부 */
+	       , A.ACTS_CD					                    /* 계정과목코드 */
+	       , A.EXC_SN					                    /* 실행일련번호 */
+	       , A.DC_RT					                    /* 할인율 */
+	       , A.RPSR_NM					                    /* 대표자명 */
+	       , A.RGST_BDCD				                    /* 등록부점코드 */
+		   , B.RKFR_DT					                    /* 기산일자 */
+		   , B.FNDS_DVSN_CD				                    /* 자금구분코드 */
+		   , B.PRUF_ISU_DT				                    /* 증빙발행일자 */
+		   , B.APLY_EXRT                                    /* 적용환율 */
+		   , B.DECD_STTS_DCD           	                    /* 결재상태구분코드 */			
+		   , B.PRCS_EMPNO            	                    /* 처리사원번호 */			
+		   , B.PRCS_TM           		                    /* 처리시각 */		
+	       , A.HND_DETL_DTM				                    /* 조작상세일시 */
+	       , A.HND_EMPNO				                    /* 조작사원번호 */
+	       , A.HND_TMNL_NO				                    /* 조작단말기번호 */
+	       , A.HND_TR_ID				                    /* 조작거래id */
+		   , B.EPRZ_CRDL_RGST_STTS_CD	                    /* 기업여신등록상태코드 */
+	       , B.EPRZ_CRDL_FEE_KND_CD		                    /* 기업여신수수료종류코드 */
+	       , B.EPRZ_CRDL_FEE_STDR_AMT	                    /* 기업여신수수료기준금액 */
+	       , B.EPRZ_CRDL_FEE_RCOG_DCD	                    /* 기업여신수수료인식구분코드 */	
+	       , B.SPLM_TXA					                    /* 부가세액 */
+	       , B.EPRZ_CRDL_TXTN_TP_DCD	                    /* 기업여신과세유형구분코드 */
+	       , B.DTM_RCOG_AMT				                    /* 일시인식금액 */
+	       , B.PRLN_FEE					                    /* 이연수수료	 */
+	       , B.MNGM_DTM_RCOG_AMT		                    /* 관리일시인식금액 */
+	       , B.MNGM_PRLN_FEE			                    /* 관리이연수수료 */
+	       , B.RSTRN_PRDT_CD			                    /* 환출상품코드 */	
+	       , B.RSTRN_TR_SN				                    /* 환출거래일련번호 */	
+	       , B.RSTRN_FEE				                    /* 환출수수료 */
+	       , B.BCNC_NM										/* 거래처명 */
+		   , C.TR_DT					                    /* 거래일자 */
+		   , C.RCTM_DT					                    /* 입금일자 */
+	    FROM IBIMS348B	A 				                    /* 딜승인수수료스케쥴기본 */
+	       , (SELECT PRDT_CD
+				   , FEE_SN
+				   , EXC_SN
+				   , TR_SN	
+				   , RKFR_DT					                    
+				   , FNDS_DVSN_CD				                    
+				   , PRUF_ISU_DT				                    
+				   , APLY_EXRT                                    
+				   , DECD_STTS_DCD           	                    	
+				   , PRCS_EMPNO            	                    
+				   , PRCS_TM           		                    
+				   , EPRZ_CRDL_RGST_STTS_CD	                    
+			       , EPRZ_CRDL_FEE_KND_CD		                
+			       , EPRZ_CRDL_FEE_STDR_AMT	                    
+			       , EPRZ_CRDL_FEE_RCOG_DCD	                    	
+			       , SPLM_TXA					                
+			       , EPRZ_CRDL_TXTN_TP_DCD	                    
+			       , DTM_RCOG_AMT				                
+			       , PRLN_FEE					                
+			       , MNGM_DTM_RCOG_AMT		                    
+			       , MNGM_PRLN_FEE			                    
+			       , RSTRN_PRDT_CD			                    	
+			       , RSTRN_TR_SN				                	
+			       , RSTRN_FEE				                    
+			       , BCNC_NM									
+	       		   , RANK() OVER(PARTITION BY PRDT_CD, FEE_SN, EXC_SN ORDER BY TR_SN DESC ) AS RK
+			 FROM  IBIMS420B )  B 				            /* 딜수수료수납내역 */
+           , IBIMS410B  C 				                    /* 딜거래내역 */
+           , IBIMS201B  D	                                /* 딜승인기본 */	
 	   WHERE 1=1
-		 AND A.PRDT_CD = B.PRDT_CD(+) 		/* 종목코드 */
-		 AND A.FEE_SN  = B.FEE_SN(+)		/* 수수료일련번호 */
-		 AND A.EXC_SN  = B.EXC_SN(+)		/* 실행일련번호 */
-		 AND B.TR_SN(+)   = (   SELECT MAX(TR_SN) 
-				                FROM IBIMS420B V 
-				               WHERE V.PRDT_CD = B.PRDT_CD 
-				                 AND V.FEE_SN = B.FEE_SN 
-				                 AND V.EXC_SN = B.EXC_SN 
-				             )				/* 거래일련번호 */
-		 AND A.PRDT_CD 	= C.PRDT_CD(+)		/* 종목코드 */
-		 AND A.TR_SN 	= C.TR_SN(+) 		/* 거래일련번호 */
-		 AND A.EXC_SN 	= C.EXC_SN(+) 		/* 실행일련번호 */
-		 AND C.TR_STAT_CD(+) = '1'         /* 거래상태 1정상 */		             
-	     AND A.PRDT_CD = #{prdtCd}
-	   	 AND A.RGST_STTS_CD = '1'		/* 등록상태코드 */
+		 AND A.PRDT_CD       = B.PRDT_CD(+) 		        /* 종목코드 */
+		 AND A.FEE_SN        = B.FEE_SN(+)		            /* 수수료일련번호 */
+		 AND A.EXC_SN        = B.EXC_SN(+)		            /* 실행일련번호 */
+		 AND B.RK(+)         = 1  			                /* 거래일련번호 MAX */
+		 AND A.PRDT_CD 	     = C.PRDT_CD(+)		            /* 종목코드 */
+		 AND A.TR_SN 	     = C.TR_SN(+) 		            /* 거래일련번호 */
+		 AND A.EXC_SN 	     = C.EXC_SN(+) 		            /* 실행일련번호 */
+		 AND C.TR_STAT_CD(+) = '1'                          /* 거래상태 1정상 */	
+		 AND A.PRDT_CD       = D.PRDT_CD(+)
+		 AND D.LAST_YN(+)    ='Y'	             
+	     AND A.PRDT_CD       = #{prdtCd}
+	   	 AND A.RGST_STTS_CD  = '1'		                    /* 등록상태코드 */
+   	  <if test="strPrarDt != null and strPrarDt != ''">
+	    <if test="endPrarDt != null and endPrarDt != ''">	
+	     AND A.PRAR_DT BETWEEN #{strPrarDt} AND #{endPrarDt}
+	   </if>
+	  </if>
+	  <if test="empNo != null and empNo != ''">
+         AND D.CHRR_EMPNO LIKE '%' || #{empNo} || '%'
+      </if>
+      <if test="dprtCd != null and dprtCd != ''">
+         AND D.MNGM_BDCD LIKE '%' || #{dprtCd} || '%'
+      </if>  
 	   ORDER
 	      BY A.FEE_SN DESC
 	</select>

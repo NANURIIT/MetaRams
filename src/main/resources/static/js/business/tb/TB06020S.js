@@ -940,7 +940,7 @@ const TB06020Sjs = (function(){
 			dataType: "json",
 			success: function(data) {
 				$('#TB06020S_D007').val(data.sdwnDtDcd).prop('selected', true).change();
-				$('#TB06020S_sdwnTlmtMnum').val(data.sdwnTlmtMnum);
+				$('#TB06020S_sdwnTlmtMnum').val(Number(data.sdwnTlmtMnum).toLocaleString());
 				$('#TB06020S_sdwnTlmtDt').val(formatDate(data.sdwnTlmtDt));
 				$('#TB06020S_D008').val(data.sdwnStdrAmtDcd).prop('selected', true).change();
 				$('#TB06020S_sdwnRto').val(data.sdwnRto);
@@ -1232,6 +1232,7 @@ const TB06020Sjs = (function(){
 		, managePrdtCd : managePrdtCd
 		, setLstMrtg : setLstMrtg
 		, setAtchFle : setAtchFle
+		, getIBIMS208BDTOInfo: getIBIMS208BDTOInfo
 		, getIBIMS212BDTOInfo: getIBIMS212BDTOInfo
 		, ldvdCd : ldvdCd
 		, mdvdCd : mdvdCd
