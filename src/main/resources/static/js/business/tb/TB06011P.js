@@ -797,7 +797,7 @@ function TB06011P_setPrdtInfo(e) {
 	$(pageTrQnt).val(0);
 	$(pageTrUnpr).val(0);
 
-	var qotaRt = isEmpty(e.hldgShqt) ? '0' : ((e.hldgShqt / e.wholIssuShqt) * 100).toFixed(8);
+	var qotaRt = isEmpty(e.hldgShqt) ? '0' : ((e.hldgShqt / e.wholIssuShqt) * 100).toFixed(2);
 	//alert(qotaRt);
 	if (!isFinite(qotaRt)) {
 		$(pageQotaRt).val("0");

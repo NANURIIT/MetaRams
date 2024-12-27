@@ -225,7 +225,7 @@ const TB06020Sjs = (function(){
 	}
 
 	//초기화
-	function resetSearchRequiment() {
+	function resetSearchRequiment_TB06020S() {
 		console.log("초기화");
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
 		
@@ -1169,7 +1169,7 @@ const TB06020Sjs = (function(){
 
 	return {
 		  getDealList : getDealList
-		, resetSearchRequiment : resetSearchRequiment
+		, resetSearchRequiment_TB06020S : resetSearchRequiment_TB06020S
 		, managePrdtCd : managePrdtCd
 		, setLstMrtg : setLstMrtg
 		, setAtchFle : setAtchFle
