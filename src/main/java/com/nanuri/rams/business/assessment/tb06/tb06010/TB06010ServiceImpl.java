@@ -52,7 +52,9 @@ import com.nanuri.rams.com.utils.DateUtil;
 import com.nanuri.rams.com.utils.StringUtil;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -192,10 +194,10 @@ public class TB06010ServiceImpl implements TB06010Service {
 
 		if ((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
 
-			if(param.getPrdtLclsCd() == "92"){
+			if(param.getPrdtLclsCd().equals("92")){
 				param.setPageDcd("Z");
 			}
-	
+			
 			// 새로운 종목코드 채번
 			String newPrdtCd = ibims201bMapper.getPrdtCdSq(param.getPageDcd());
 
