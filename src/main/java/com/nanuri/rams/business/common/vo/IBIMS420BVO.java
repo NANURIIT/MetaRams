@@ -39,6 +39,8 @@ public class IBIMS420BVO extends IBIMS420BDTO {
 	private String rgstBdcd;			/* 등록부점코드 */
 	private String rctmDt;				/* 입금일자 */
 	private String trDt;				/* 거래일자 */
+	private String trOthrDscmNo;		/* 거래상대방식별번호 */
+	private String entpNm; 				/* 거래처명 */
 
 	// TB07190S Data
 	private String dealNo;					// 딜번호
