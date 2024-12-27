@@ -657,6 +657,10 @@ const TB07090Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
+        dataIndx: "fndsDvsnCd",
+        hidden: true
+      },
+      {
         dataIndx: "prdtCd",
         hidden: true
       },
