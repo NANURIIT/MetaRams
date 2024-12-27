@@ -452,6 +452,9 @@ function setEmpNm(e) {
 	case "TB08040S":
 		$("#TB08040S_dprtNm").val(e.dprtCd).prop("selected", true);
 	  break;
+    case "TB08050S":
+	 	$("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
+	    break;  
     default:
       break;
   }

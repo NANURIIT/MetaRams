@@ -186,7 +186,7 @@
 										<label class="col-sm-1 col-form-label text-right"><span
 												class="req"></span>종목코드</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB06020S_res_prdtCd">
+											<input type="text" class="form-control" id="TB06020S_res_prdtCd" readonly  maxlength="10">
 										</div>
 										<label class="col-sm-1 col-form-label text-right">진행상태</label>
 										<div class="col-sm-2 input-group">
@@ -326,15 +326,25 @@
 								<div class="row form-group form-inline text-right">
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>외환헷지여부</label>
-										<div class="col-sm-2 input-group input-h">
+										 <div class="col-sm-2 input-group input-h"> 
 											<div class="col-sm-3 text-left input-group">
 												<input type="radio" value="Y" name="TB06020S_frxcHdgeYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
 												<input type="radio" value="N" name="TB06020S_frxcHdgeYn">&nbsp;N
 											</div>
-											<div class="col-sm-6">
-											</div>
+										</div> 
+										<label class="col-sm-1 col-form-label text-right">계정과목</label>
+										<div class="col-sm-5 input-group">
+											<input type="text" class="form-control" id="TB06020S_actsCd" readonly>
+											<input type="text" class="form-control" id="TB06020S_actName" style="width:180px;" readonly>
+										</div>
+											
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>보유목적구분</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" style="width:70px;" id="TB06020S_H002">
+												<option value="">선택</option>
+											</select>
 										</div>
 									</div>
 								</div>

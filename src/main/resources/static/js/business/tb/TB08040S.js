@@ -222,19 +222,6 @@ const TB08040Sjs = (function () {
         align: "center",
         width: "10%",
 		filter: { crules: [{ condition: "range" }] },
-		editor: {
-		  type: "select",
-		  valueIndx: "actsCd",
-		  labelIndx: "actName",
-		  options: selectBox2,
-		},
-		render: function (ui) {
-	  	    let fSel = selectBox2.find(	
-            ({ actsCd }) => actsCd == ui.cellData
-          );
-          return fSel ? fSel.actName : ui.cellData;
-        },
-		editable: false,		
       },
 	  {
 	    title: "계정과목코드",
