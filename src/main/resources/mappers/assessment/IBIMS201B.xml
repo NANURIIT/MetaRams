@@ -800,6 +800,8 @@
                , INTR_HDWT_CLC_YN                                  /* 이자수기계산여부 */
                , GRD_CD                                            /* 기업여신등급코드 */
                , DSHN_RT_GRD_CD                                    /* 기업여신부도율등급코드 */
+               , TOT_ISSU_SHQT									   /* 총발행좌수 */									
+               , TOT_ISSU_STK_QNT								   /* 총발행주수 */		
                , IB994B.RGST_DT                                    /* 등록일자 */
                , CHNG_DT                                           /* 변경일자 */
                , HND_DETL_DTM                                      /* 조작상세일시 */
@@ -977,6 +979,8 @@
 			    , A.GUID								/* guid                 */
 			    , A.EARLY_REPAY_YN						/* 중도상환여부           */
 			    , A.SGL_INV_YN							/* 단독투자여부           */
+			    , A.TOT_ISSU_SHQT						/* 총발행좌수 */
+			    , A.TOT_ISSU_STK_QNT						/* 총발행주수 */
 			 FROM IBIMS201B A 		/* 딜승인기본 */
 			WHERE 1=1
 			  AND LAST_YN = 'Y'
