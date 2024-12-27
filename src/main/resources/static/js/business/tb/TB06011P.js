@@ -385,14 +385,6 @@ var colPrdtCdList = [
 		filter: { crules: [{ condition: 'range' }] },
 	},
 	{
-		title: "전체발행좌수",
-		dataType: "string",
-		dataIndx: "wholIssuShqt",
-		align: "center",
-		hidden: true,
-		filter: { crules: [{ condition: 'range' }] },
-	},
-	{
 		title: "총발행좌수",
 		dataType: "string",
 		dataIndx: "totIssuShqt",
@@ -721,9 +713,8 @@ function TB06011P_setPrdtInfo(e) {
 	var dealNm = td.eq(26).text();
 	nmcpMtrDcd = td.eq(27).text();
 	lstCCaseDcd = td.eq(28).text();
-	var wholIssuShqt = td.eq(29).text();
-	var totIssuShqt  = td.eq(30).text();
-	var totIssuStkQnt = td.eq(31).text();
+	var totIssuShqt  = td.eq(29).text();
+	var totIssuStkQnt = td.eq(30).text();
 
 	var prefix = $("#TB06011P_prefix").val();		// id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
 
@@ -761,6 +752,10 @@ function TB06011P_setPrdtInfo(e) {
 	var pageInvAmt = '#' + $('#TB06011P_prefix').val() + '_invAmt';
 	var pagedealExcBlce = '#' + $('#TB06011P_prefix').val() + '_dealExcBlce';
 	var pageDealNm = '#' + $('#TB06011P_prefix').val() + '_ibDealNm';
+	var pageTotIssuShqt = '#' + $('#TB06011P_prefix').val() + '_totIssuShqt';
+	var pageTotIssuStkQnt = '#' + $('#TB06011P_prefix').val() + '_totIssuStkQnt';
+	
+	console.log("pageWholIssuShqt"+pageWholIssuShqt);
 
 
 
@@ -786,7 +781,7 @@ function TB06011P_setPrdtInfo(e) {
 		var pageTrCrryCd = '#' + $('#TB06011P_prefix').val() + '_trCrryCd';
 		var pageStdrExrt = '#' + $('#TB06011P_prefix').val() + '_stdrExrt';
 	}
-
+	console.log("WholIssuShqt"+e.wholIssuShqt);
 	// 값 전달
 	$(pagePrdtCd).val(e.prdtCd);
 	$(pagePrdtNm).val(e.prdtNm);
