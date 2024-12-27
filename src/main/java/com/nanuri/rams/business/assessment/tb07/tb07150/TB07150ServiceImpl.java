@@ -25,6 +25,7 @@ import com.nanuri.rams.business.common.mapper.IBIMS203BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS346BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS348BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS401BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS401HMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS402BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS402HMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS403BMapper;
@@ -58,6 +59,8 @@ public class TB07150ServiceImpl implements TB07150Service {
 	private final IBIMS346BMapper ibims346BMapper;
 	/* 약정기본 */
 	private final  IBIMS401BMapper ibims401BMapper;
+	/* 약정이력 */
+	private final IBIMS401HMapper ibims401HMapper;
 	/* 여신실행금리기본 */
 	private final IBIMS404BMapper ibims404BMapper;	
 
@@ -125,11 +128,17 @@ public class TB07150ServiceImpl implements TB07150Service {
 			ibims401bVo.setPrdtCd(param.getPrdtCd());							//종목코드
 			ibims401bVo.setRqsKndCd(rqsKndCd);									//신청종류코드
 			ibims401bVo.setEprzCrdlCtrcAmt(param.getEprzCrdlCtrcAmt());			//변경 약정금액
+			ibims401bVo.setHndEmpno(facade.getDetails().getEno());				
 
 			int lmtChngRslt = ibims401BMapper.cndChng(ibims401bVo);
+			int hRslt = ibims401HMapper.rgstIBIMS401H(ibims401bVo);
+
 
 			if(lmtChngRslt < 1){
 				log.debug("!!!한도변경 오류!!!");
+				result = 1;
+			}else if(hRslt < 1){
+				log.debug("!!!약정이력테이블 오류!!!");
 				result = 1;
 			}
 

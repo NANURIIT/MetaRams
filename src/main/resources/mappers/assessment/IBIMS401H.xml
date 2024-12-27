@@ -172,5 +172,175 @@
         , #{guid}
         )
     </insert>
+
+    <insert id="rgstIBIMS401H" parameterType="com.nanuri.rams.business.common.vo.IBIMS401BVO">
+    INSERT INTO IBIMS401H
+	        (
+	          PRDT_CD
+	        , RGST_SN                                 /* 등록일련번호 */
+	        , EPRZ_CRDL_LDG_STTS_CD
+	        , RQS_SN
+	        , PTXT_TR_OTHR_DSCM_NO
+	        , STDR_INTRT
+	        , ADD_INTRT
+	        , TOT_INTRT
+	        , FRS_MNGM_BDCD
+	        , MNGM_BDCD
+	        , PRDT_CLSF_CD
+	        , PRDT_MDCL_CD
+	        , PRDT_LCLS_CD
+	        , ACTS_CD
+	        , EPRZ_CRDL_ACCT_JOB_CD
+	        , EPRZ_CRDL_ACCT_UN_JOB_CD
+	        , EPRZ_CRDL_ACCT_TR_CD
+	        , EPRZ_CRDL_APVL_DT
+	        , EPRZ_CRDL_APVL_AMT
+	        , CRRY_CD
+	        , EPRZ_CRDL_LOAN_PRD_DCD
+	        , CTRC_DT
+	        , CTRC_EXP_DT
+	        , STDR_INTRT_KND_CD
+	        , EPRZ_CRDL_CTRC_AMT
+	        , DEBT_CRTF_ISS_DT
+	        , PRPMT_AMT
+	        , EPRZ_CRDL_INDV_LMT_DCD
+	        , EPRZ_CRDL_INTR_RCVN_MTH_CD
+	        , EPRZ_CRDL_INTR_BNAO_DCD
+	        , EPRZ_CRDL_TFD_LY_APLY_DCD
+	        , EPRZ_CRDL_INTR_SNNO_PRCS_DCD
+	        , EPRZ_CRDL_PAI_RDMP_DCD
+	        , PRNA_RDMP_FRQC_MNUM
+	        , INTR_RDMP_FRQC_MNUM
+	        , PRNA_DFR_PRD_MNUM
+	        , TLMT_PRF_LOSE_FRQC_NUM
+	        , TLMT_PRF_LOSE_DT
+	        , TLMT_PRF_RSRR_DT
+	        , EPRZ_CRDL_ORTN_FND_CD
+	        , EPRZ_CRDL_CTRT_NO
+	        , PF_LOAN_YN
+	        , UNDW_FNN_YN
+	        , INV_IDTRT_SMIT_YN
+	        , TRG_YN
+	        , TRG_CND_CTNS
+	        , INV_IDTRT_SMIT_DT
+	        , CHRR_EMPNO
+	        , SUB_CHRR_EMPNO
+	        , ED_DT
+	        , EPRZ_CRDL_CTRT_END_RSN_CD
+	        , EPRZ_CRDL_CTRT_END_RSN_CTNS
+	        , TRCH_APLY_YN
+	        , BDBT_RSVS_RCKN_STDR_LCLS_CD
+	        , BDBT_RSVS_RCKN_STDR_MDCL_CD
+	        , BDBT_RSVS_RCKN_STDR_SCLS_CD
+	        , BDBT_RSVS_RCKN_STDR_RTO
+	        , EPRZ_CRDL_CTRT_AMT
+	        , THCO_PTCI_AMT
+	        , EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD
+	        , EPRZ_CRDL_HLDY_PRCS_DCD
+	        , CCLC_DT
+	        , EPRZ_CRDL_CCLC_RSN_CD
+	        , CCLC_RSN_CTNS
+	        , EPRZ_CRDL_WEEK_MRTG_KND_CD
+	        , OVDU_INTR_RT
+	        , EPRZ_CRDL_OVDU_INTR_RT_DCD
+	        , TRRC_DT
+	        , EPRZ_CRDL_INTR_CLC_END_DE_DCD
+	        , INTR_HDWT_CLC_YN
+	        , INV_JDGM_COMT_NO
+	        , BDBT_ALWC_RCKN_LMT_STDR_DCD
+	        , CTRC_CCLC_DCD
+	        , HND_DETL_DTM
+	        , HND_EMPNO
+	        , HND_TMNL_NO
+	        , HND_TR_ID
+	        , GUID
+	        ) 
+        SELECT    
+        	PRDT_CD
+		   	, (
+		        SELECT NVL(MAX(A.RGST_SN), 0) + 1
+		        FROM IBIMS401H A  /* 약정기본이력 */
+		        WHERE A.PRDT_CD = 'TATEST0001'
+		    ) AS RGST_SN
+	        , EPRZ_CRDL_LDG_STTS_CD
+	        , RQS_SN
+	        , PTXT_TR_OTHR_DSCM_NO
+	        , STDR_INTRT
+	        , ADD_INTRT
+	        , TOT_INTRT
+	        , FRS_MNGM_BDCD
+	        , MNGM_BDCD
+	        , PRDT_CLSF_CD
+	        , PRDT_MDCL_CD
+	        , PRDT_LCLS_CD
+	        , ACTS_CD
+	        , EPRZ_CRDL_ACCT_JOB_CD
+	        , EPRZ_CRDL_ACCT_UN_JOB_CD
+	        , EPRZ_CRDL_ACCT_TR_CD
+	        , EPRZ_CRDL_APVL_DT
+	        , EPRZ_CRDL_APVL_AMT
+	        , CRRY_CD
+	        , EPRZ_CRDL_LOAN_PRD_DCD
+	        , CTRC_DT
+	        , CTRC_EXP_DT
+	        , STDR_INTRT_KND_CD
+	        , EPRZ_CRDL_CTRC_AMT
+	        , DEBT_CRTF_ISS_DT
+	        , PRPMT_AMT
+	        , EPRZ_CRDL_INDV_LMT_DCD
+	        , EPRZ_CRDL_INTR_RCVN_MTH_CD
+	        , EPRZ_CRDL_INTR_BNAO_DCD
+	        , EPRZ_CRDL_TFD_LY_APLY_DCD
+	        , EPRZ_CRDL_INTR_SNNO_PRCS_DCD
+	        , EPRZ_CRDL_PAI_RDMP_DCD
+	        , PRNA_RDMP_FRQC_MNUM
+	        , INTR_RDMP_FRQC_MNUM
+	        , PRNA_DFR_PRD_MNUM
+	        , TLMT_PRF_LOSE_FRQC_NUM
+	        , TLMT_PRF_LOSE_DT
+	        , TLMT_PRF_RSRR_DT
+	        , EPRZ_CRDL_ORTN_FND_CD
+	        , EPRZ_CRDL_CTRT_NO
+	        , PF_LOAN_YN
+	        , UNDW_FNN_YN
+	        , INV_IDTRT_SMIT_YN
+	        , TRG_YN
+	        , TRG_CND_CTNS
+	        , INV_IDTRT_SMIT_DT
+	        , CHRR_EMPNO
+	        , SUB_CHRR_EMPNO
+	        , ED_DT
+	        , EPRZ_CRDL_CTRT_END_RSN_CD
+	        , EPRZ_CRDL_CTRT_END_RSN_CTNS
+	        , TRCH_APLY_YN
+	        , BDBT_RSVS_RCKN_STDR_LCLS_CD
+	        , BDBT_RSVS_RCKN_STDR_MDCL_CD
+	        , BDBT_RSVS_RCKN_STDR_SCLS_CD
+	        , BDBT_RSVS_RCKN_STDR_RTO
+	        , EPRZ_CRDL_CTRT_AMT
+	        , THCO_PTCI_AMT
+	        , EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD
+	        , EPRZ_CRDL_HLDY_PRCS_DCD
+	        , CCLC_DT
+	        , EPRZ_CRDL_CCLC_RSN_CD
+	        , CCLC_RSN_CTNS
+	        , EPRZ_CRDL_WEEK_MRTG_KND_CD
+	        , OVDU_INTR_RT
+	        , EPRZ_CRDL_OVDU_INTR_RT_DCD
+	        , TRRC_DT
+	        , EPRZ_CRDL_INTR_CLC_END_DE_DCD
+	        , INTR_HDWT_CLC_YN
+	        , INV_JDGM_COMT_NO
+	        , BDBT_ALWC_RCKN_LMT_STDR_DCD
+	        , CTRC_CCLC_DCD
+	        , HND_DETL_DTM
+	        , HND_EMPNO
+	        , HND_TMNL_NO
+	        , HND_TR_ID
+	        , GUID
+        FROM IBIMS401B 
+        WHERE 1=1
+        AND PRDT_CD = #{prdtCd}
+    </insert>
     
 </mapper>
