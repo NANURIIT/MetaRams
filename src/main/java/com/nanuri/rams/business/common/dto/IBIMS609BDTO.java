@@ -23,6 +23,7 @@ public class IBIMS609BDTO {
     private String rgstDt;              //  등록일자
     private String rgstTm;              //  등록시간
     private String fstRgstPEno;         //  최초등록자사번
+    private String fstRgstPEnoNm;         //  최초등록자
     private Date hndlDyTm;              //  처리일시
     private String hndlDprtCd;          //  처리부서코드
     private String hndlPEno;            //  처리자사번

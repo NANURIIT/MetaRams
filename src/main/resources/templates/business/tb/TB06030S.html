@@ -168,7 +168,7 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목코드</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB06030S_res_prdtCd">
+											<input type="text" class="form-control" id="TB06030S_res_prdtCd" readonly  maxlength="10">
 										</div>
 										<label class="col-sm-1 col-form-label text-right">진행상태</label>
 										<div class="col-sm-2 input-group">
@@ -202,7 +202,7 @@
 										<div class="col-sm-2 input-group date">
 											<input type="text" class="form-control" id="TB06030S_crdtInqDt" 
 											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-											onblur="this.value=formatDate(this.value);"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 											><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 									</div>
@@ -289,8 +289,18 @@
 											<div class="col-sm-3 text-left input-group">
 												<input type="radio" value="N" name="TB06030S_frxcHdgeYn">&nbsp;N
 											</div>
-											<div class="col-sm-6">
-											</div>
+										</div>	
+										<label class="col-sm-1 col-form-label text-right">계정과목</label>
+										<div class="col-sm-5 input-group">
+											<input type="text" class="form-control" id="TB06030S_actsCd" readonly>
+											<input type="text" class="form-control" id="TB06030S_actName" style="width:180px;" readonly>
+										</div>
+											
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>보유목적구분</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" style="width:70px;" id="TB06030S_H002">
+												<option value="">선택</option>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -401,7 +411,7 @@
 										<div class="col-sm-2 input-group date">
 											<input type="text" class="form-control" id="TB06030S_isuDt" value="" 
 											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-											onblur="this.value=formatDate(this.value);"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 											>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
@@ -409,7 +419,7 @@
 										<div class="col-sm-2 input-group date">
 											<input type="text" class="form-control" id="TB06030S_expDt" value="" 
 											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-											onblur="this.value=formatDate(this.value);"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 											>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
@@ -417,7 +427,7 @@
 										<div class="col-sm-2 input-group date">
 											<input type="text" class="form-control" id="TB06030S_rdmpClmPsblDt" value="" 
 											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-											onblur="this.value=formatDate(this.value);"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 											>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>

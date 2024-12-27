@@ -42,5 +42,12 @@ public class TB07090APIController {
     public int rctmDtlsMapping(@RequestBody IBIMS430BVO param){
         return tb07090Service.rctmDtlsMapping(param);
     }
+
+    // 입금내역매핑 확인
+    @PostMapping("/chkRctmDtlsMapping")
+    public int chkRctmDtlsMapping(@RequestBody IBIMS430BDTO param) {
+        return tb07090Service.chkRctmDtlsMapping(param);
+    }
+    
     
 }

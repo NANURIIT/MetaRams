@@ -1,9 +1,11 @@
 let modalAppvCndtList;
+let TB06012P_pfx;
 
 /**
  * show modal
  */
 function callTB06012P(prefix) {
+	TB06012P_pfx=prefix;	
   
   loadSelectBoxContents_TB06012P();
   $("#TB06012P_prefix").val(prefix);
@@ -89,9 +91,22 @@ function loadSelectBoxContents_TB06012P(){
  * hide modal
  */
 function modalClose_TB06012P() {
+  let prdtCd =$("#TB06012P_prdtCd").val();	
+  console.log("prdt_cd"+prdtCd);
   clearTB06012P();
   //$("#gridAppvCndtList").pqGrid("destroy");
   $("#modal-TB06012P").modal("hide");
+ 
+  if (TB06012P_pfx === 'TB06010S') {
+	prdtCd = $("#TB06010S_res_prdtCd").val();       
+    TB06010Sjs.getIBIMS208BDTOInfo(prdtCd);
+  } else if (TB06012P_pfx === 'TB06020S') {
+	prdtCd = $("#TB06020S_res_prdtCd").val();
+    TB06020Sjs.getIBIMS208BDTOInfo(prdtCd);
+  } else if (TB06012P_pfx === 'TB06030S') {
+	prdtCd = $("#TB06030S_res_prdtCd").val();
+    TB06030Sjs.getIBIMS208BDTOInfo(prdtCd);
+  }
   
 }
 
@@ -179,7 +194,7 @@ function regIBIMS208B() {
     dealNo: $("#TB06012P_ibDealNo").val(), // 딜번호
     sn: $("#TB06012P_sn").val(), // 일련번호
     sdwnDtDcd: $("#TB06012P_D007").val(), // 샐다운일자구분코드
-    sdwnTlmtMnum: $("#TB06012P_sdwnTlmtMnum").val(), // 샐다운기한개월수
+    sdwnTlmtMnum: $("#TB06012P_sdwnTlmtMnum").val().replaceAll(",", ""), // 샐다운기한개월수
     sdwnTlmtDt: replaceAll($("#TB06012P_sdwnTlmtDt").val(), "-", ""), // 샐다운기한(목표)일자
     sdwnStdrAmtDcd: $("#TB06012P_D008").val(), // 샐다운기준금액구분코드
     sdwnRto: $("#TB06012P_sdwnRto").val(), // 샐다운비율
@@ -274,7 +289,6 @@ function deleteIBIMS208B() {
             //selectIBIMS208B();
             modalAppvCndtList.setData([]);
            	console.log("deleteIBIMS208B");
-			getIBIMS208BDTOInfo($('#'+$("#TB06012P_prefix").val()+'_res_prdtCd').val());
             modalClose_TB06012P();
           });
         },
@@ -352,7 +366,7 @@ function setAppvCndt(e) {
   $("#TB06012P_chngEmpNo").val(e.chngEmpno);
   $("#TB06012P_chngDt").val(formatDate(e.chngDt));
   $("#TB06012P_D007").val(e.sdwnDtDcd).prop("selected", true);
-  if(!isEmpty(e.sdwnTlmtMnum)){ $("#TB06012P_sdwnTlmtMnum").val(e.sdwnTlmtMnum); }
+  if(!isEmpty(e.sdwnTlmtMnum)){ $("#TB06012P_sdwnTlmtMnum").val(e.sdwnTlmtMnum.toLocaleString("ko-KR")); }
   $("#TB06012P_sdwnTlmtDt").val(formatDate(e.sdwnTlmtDt));
   $("#TB06012P_D008").val(e.sdwnStdrAmtDcd).prop("selected", true);
   if(!isEmpty(e.sdwnRto)){ $("#TB06012P_sdwnRto").val(e.sdwnRto); }
@@ -411,7 +425,9 @@ function TB06012P_getAppvCndt() {
     },
   }); /* end of ajax*/
 }
-
+/**
+ * 승인조건연결 버튼
+ */
 function connectIBIMS209B() {
   var option = {};
   option.title = "Error";
