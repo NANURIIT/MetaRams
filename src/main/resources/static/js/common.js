@@ -1988,6 +1988,13 @@ function needRunFn(menuId) {
   else if (menuId === "??") {
     console.log("Hello Nanuri!!");
   }
+
+  if( menuId === "TB06010S"){
+    TB06010Sjs.getUrlDealInfo();
+  }
+  if( menuId === "TB06040S"){
+    TB06040Sjs.getUrlDealInfo();
+  }
 }
 
 /**

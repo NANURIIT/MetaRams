@@ -159,12 +159,7 @@ const TB06060Sjs = (function(){
             strNoRows : '조회된 데이터가 없습니다.',
             cellDblClick: function(event, ui){
                 var rowData = ui.rowData;
-                /*if(rowData.prgSttsCd == null){
-                    setFlow(3);
-                }else{
-                    setFlow(parseInt(rowData.prgSttsCd));
-                }
-                */
+                
                 setFlow(getFlowLevel(rowData));
                 showDetailData(rowData, true);
             },
@@ -252,11 +247,7 @@ const TB06060Sjs = (function(){
                         $(".flow-status p").removeClass("-check");
                         $(".flow-status div").html(waitHtml);
                     }else{
-                       /* if(data[0].prgSttsCd == null){
-                            setFlow(3);
-                        }else{
-                            setFlow(parseInt(data[0].prgSttsCd));
-                        }*/
+                       
                         setFlow(getFlowLevel(data[0]));
                         showDetailData(data[0],true); 
                     }
@@ -285,10 +276,16 @@ const TB06060Sjs = (function(){
         }); 
     }
 
+    function openPage(menuId,pageNm){
+        sessionStorage.setItem("wfDealNo", $('#TB06060S_ibDealNo').val());
+        sessionStorage.setItem("wfDealNm", $('#TB06060S_ibDealNm').val());
+        sessionStorage.setItem("wfPrdtCd", $('#TB06060S_prdtCd').val());
+        sessionStorage.setItem("wfPrdtNm", $('#TB06060S_prdtNm').val());
+        callPage(menuId,pageNm)
+
+    }
 
     function showDetailData(rowData, isAuto){
-
-        
         const paramData = {
             dealNo : rowData.dealNo,	
             mtrDcd : rowData.mtrDcd
@@ -371,6 +368,7 @@ const TB06060Sjs = (function(){
     return {
         getWorkflowList : getWorkflowList
         , resetAll : resetAll
+        , openPage : openPage
         
     }
 })();

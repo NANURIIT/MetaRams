@@ -2055,6 +2055,25 @@ const TB06010Sjs = (function(){
 		setTimeout(() => arrPqGridAssetInfo.refresh(), 1);
 	}
 
+	function getUrlDealInfo() {
+		
+		var dealNo = sessionStorage.getItem("wfDealNo");
+		var dealNm = sessionStorage.getItem("wfDealNm");
+		var prdtCd = sessionStorage.getItem("wfPrdtCd");
+		var prdtNm = sessionStorage.getItem("wfPrdtNm");
+		if(dealNo !=null){
+			console.log("WF세션 있음");
+			$("#TB06010S_ibDealNo").val(dealNo);
+			$("#TB06010S_ibDealNm").val(dealNm);
+			$("#TB06010S_prdtCd").val(prdtCd);
+			$("#TB06010S_prdtNm").val(prdtNm);
+		getDealList();
+		sessionStorage.clear();
+		}else{
+			console.log("WF세션 비었음");
+		}
+	}
+
 	return {
 		
 		// 함수
@@ -2082,5 +2101,7 @@ const TB06010Sjs = (function(){
 		, ldvdCd : ldvdCd
 		, mdvdCd : mdvdCd
 		, sdvdCd : sdvdCd
+
+		,getUrlDealInfo : getUrlDealInfo
 	}
 })();
