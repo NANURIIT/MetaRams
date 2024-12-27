@@ -223,8 +223,8 @@ const TB04010Sjs = (function () {
   }
 
   function getUrlDealInfo() {
-    var dealNo = sessionStorage.getItem("dealNo");
-    var dealNm = sessionStorage.getItem("dealNm");
+    let dealNo = sessionStorage.getItem("dealNo");
+    let dealNm = sessionStorage.getItem("dealNm");
     //var mtrDcd			= sessionStorage.getItem("mtrDcd");
     //var jdgmDcd			= sessionStorage.getItem("jdgmDcd");
     //var mtrPrgSttsDcd	= sessionStorage.getItem("mtrPrgSttsDcd");
