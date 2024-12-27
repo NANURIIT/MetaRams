@@ -723,7 +723,7 @@ const TB07190Sjs = (function () {
       ardyBzepNo: $("#TB07190S_ardyBzepNo").val(), //기업체번호
 	  strYmd : $("#TB07190S_strYmd").val().replaceAll("-", ""), //시작일자
 	  endYmd : $("#TB07190S_endYmd").val().replaceAll("-", ""), //종료일자
-	  dprtCd : $("#TB07190S_dprtCd").val(), //부서코드
+	  //dprtCd : $("#TB07190S_dprtCd").val(), //부서코드
     };
 
     $.ajax({
