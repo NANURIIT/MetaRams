@@ -353,7 +353,7 @@
            </if>
     </select>
 
-    <select id="inqDealRctmAmt" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS430BVO">
+    <select id="inqDealRctmAmt" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="BigDecimal">
         SELECT DEAL_RCTM_AMT                /* 딜입금금액 */
           FROM IBIMS430B
          WHERE 1=1

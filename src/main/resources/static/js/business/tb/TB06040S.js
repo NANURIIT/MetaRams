@@ -650,6 +650,21 @@ const TB06040Sjs = (function() {
         });
     }
 
+    function getUrlDealInfo() {
+		
+		var prdtCd = sessionStorage.getItem("wfPrdtCd");
+		var prdtNm = sessionStorage.getItem("wfPrdtNm");
+		if(prdtCd !=null){
+			console.log("WF세션 있음");
+            $("#TB06040S_prdtCd").val(prdtCd);
+            $("#TB06040S_prdtNm").val(prdtNm);
+		srch();
+		sessionStorage.clear();
+		}else{
+			console.log("WF세션 비었음");
+		}
+	}
+
 	return {
 		/**
 		 * 사용 할 함수 정의
@@ -658,6 +673,7 @@ const TB06040Sjs = (function() {
 	,	srch : srch
 	,	reset : reset
     ,   btnCtr : btnCtr
+    , getUrlDealInfo : getUrlDealInfo
 	}
 
 })();

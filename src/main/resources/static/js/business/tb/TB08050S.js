@@ -874,11 +874,13 @@ const TB08050Sjs = (function () {
 
         let num_feeStdrAmt = Number(feeStdrAmt);
         let flt_feeRt = parseFloat(feeRt);
-
-        tot = feeStdrAmt * (feeRt / 100);
-
+		
+		tot = uncomma($("#TB08050S_feeAmt").val()); // 수수료금앢		
+		if(Number(tot)==0){		
+        	tot = feeStdrAmt * (feeRt / 100);
+		}
+		
         $("#TB08050S_feeAmt").val(comma(Math.round(tot))); // 수수료금앢
-
         feeAmt = uncomma($("#TB08050S_feeAmt").val());
 
         let num_feeAmt = Number(feeAmt);

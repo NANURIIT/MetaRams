@@ -16,6 +16,9 @@
              , T1.CRRY_CD
              , T1.EXRT
              , T1.RGST_EMPNO
+             , T2.EMP_NM
+             , T1.RELT_STFNO
+             , T3.EMP_NM AS RELT_STF_NM
              , T1.ACCT_BCNC_CD
              , T1.BCNC_NM
              , T1.ACCT_PYMT_MTH_CD
@@ -56,7 +59,11 @@
              , T1.GUID
              , T1.ACCT_DT
           FROM IBIMS431B T1
+             , IBIMS003B T2
+             , IBIMS003B T3
          WHERE 1=1
+           AND T1.RGST_EMPNO = T2.EMPNO(+)
+           AND T1.RELT_STFNO = T3.EMPNO(+)
            <if test="acctDt1 != null and acctDt1 != ''">
            AND T1.ACCT_DT &gt;&#61; #{acctDt1}
            </if>
@@ -79,6 +86,7 @@
                 WRTN_DT
               , RSLN_BDCD
               , CNST_NO
+              , ACCT_DT
               , BALT_DT
               , STTM_NO
               , STTM_BDCD
@@ -89,6 +97,7 @@
               , CRRY_CD
               , EXRT
               , RGST_EMPNO
+              , RELT_STFNO
               , ACCT_BCNC_CD
               , BCNC_NM
               , ACCT_PYMT_MTH_CD
@@ -131,22 +140,16 @@
         VALUES
             (
                 #{wrtnDt}
+              , #{rslnBdcd}
               , (
                   SELECT NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1
                     FROM (
                       SELECT CNST_NO
                         FROM IBIMS431B
-                       WHERE WRTN_DT LIKE #{wrtnYm}|| '%'
+                       WHERE WRTN_DT LIKE #{wrtnDt}||'%'
                   ) AS temp
                 )
-              , (
-                  SELECT NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1
-                    FROM (
-                      SELECT CNST_NO
-                        FROM IBIMS431B
-                       WHERE WRTN_DT LIKE #{wrtnYm}||'%'
-                  ) AS temp
-                )
+              , #{acctDt}
               , #{baltDt}
               , #{sttmNo}
               , #{sttmBdcd}
@@ -157,6 +160,7 @@
               , #{crryCd}
               , #{exrt}
               , #{rgstEmpno}
+              , #{reltStfno}
               , #{acctBcncCd}
               , #{bcncNm}
               , #{acctPymtMthCd}
@@ -210,6 +214,7 @@
              , CRRY_CD = #{crryCd}
              , EXRT = #{exrt}
              , RGST_EMPNO = #{rgstEmpno}
+             , RELT_STFNO = #{reltStfno}
              , ACCT_BCNC_CD = #{acctBcncCd}
              , BCNC_NM = #{bcncNm}
              , ACCT_PYMT_MTH_CD = #{acctPymtMthCd}
@@ -243,7 +248,7 @@
              , APVL_NO = #{apvlNo}
              , BDG_BUSI_CD = #{bdgBusiCd}
              , FRCR_RSLN_AMT = #{frcrRslnAmt}
-             , HND_DETL_DTM = #{hndDetlDtm}
+             , HND_DETL_DTM = SYSDATE
              , HND_EMPNO = #{hndEmpno}
              , HND_TMNL_NO = #{hndTmnlNo}
              , HND_TR_ID = #{hndTrId}
@@ -278,5 +283,15 @@
            AND RSLN_BDCD = #{rslnBdcd}
            AND CNST_NO = #{cnstNo}
     </delete>
+
+    <select id="getCnstNo" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO" resultType = "String">
+
+     SELECT NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1
+                    FROM (
+                      SELECT CNST_NO
+                        FROM IBIMS431B
+                       WHERE WRTN_DT LIKE #{wrtnDt}||'%'
+                ) AS temp
+    </select>
 
 </mapper>
