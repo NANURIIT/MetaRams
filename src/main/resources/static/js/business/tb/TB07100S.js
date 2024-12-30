@@ -4,7 +4,7 @@ const TB07100Sjs = (function () {
   let TB07100S_tagStatuses = [];
 	let grdSelect = {};
 	let selectBox;
-
+  let arrPqGrid432BList;
 
   $(document).ready(function () {
     $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Tmrd'], input[id*='tx'], input[id='TB07100S_splmValuTxa']").val('0');
@@ -59,6 +59,11 @@ const TB07100Sjs = (function () {
       $(`#${status.id}`).prop('disabled', status.disabled);
     });
     $('.toggleBtn2').prop('disabled', false);
+    $("#TB07100S_excBtn").html('<i class="fa fa-check"></i>&nbsp;저장');
+    $("#TB07100S_excBtn").show();
+    $("#TB07100S_request").show();
+    $("#TB07100S_apvl").hide();
+    $("#TB07100S_gbck").hide();
   }
 
   /*
@@ -78,6 +83,7 @@ const TB07100Sjs = (function () {
     $("#ibims431bdto input, #ibims431bdto button, #ibims431bdto select").prop("disabled", "true");
     $('.ibox-content .ibox-content .btn.btn-default').prop('disabled', true);
     $('.toggleBtn1').prop('disabled', false);
+    $("#TB07100S_excBtn").html('<i class="fa fa-check"></i>&nbsp;삭제');
   }
 
   function autoSet(){//회계기간, 부서코드 기본값 세팅
@@ -114,6 +120,11 @@ const TB07100Sjs = (function () {
       ,#TB07100S_mergeForm input[id*='Tmrd']
       ,#TB07100S_mergeForm input[id*='splmValuTxa']
       ,#TB07100S_mergeForm #TB07100S_trtx`).val('0');
+      
+    $("#TB07100S_excBtn").show();
+    $("#TB07100S_request").show();
+    $("#TB07100S_apvl").hide();
+    $("#TB07100S_gbck").hide();
       
     $("#TB07100S_wrtnDt").val(getToday());
   }
@@ -289,18 +300,19 @@ const TB07100Sjs = (function () {
         dataIndx: "actsCd",
         halign: "center",
         align: "center",
+        width: '15%',
         filter: { crules: [{ condition: 'range' }] },
         editable: true,
-        editor: {
-							type: "select",
-							valueIndx: "cdValue",
-							labelIndx: "cdName",
-							options: grdSelect.A005
-						},
-						render: function (ui) {
-							let fSel = grdSelect.A005.find(({ cdValue }) => cdValue == ui.cellData);
-							return fSel ? fSel.cdName : ui.cellData;
-						}
+        // editor: {
+				// 			type: "select",
+				// 			valueIndx: "cdValue",
+				// 			labelIndx: "cdName",
+				// 			options: grdSelect.A005
+				// 		},
+				// 		render: function (ui) {
+				// 			let fSel = grdSelect.A005.find(({ cdValue }) => cdValue == ui.cellData);
+				// 			return fSel ? fSel.cdName : ui.cellData;
+				// 		}
       },
       {
         title: "차변금액",
@@ -342,7 +354,7 @@ const TB07100Sjs = (function () {
         dataIndx: "index3",
         halign: "center",
         align: "center",
-        // width    : '10%',
+        width    : '40%',
         filter: { crules: [{ condition: 'range' }] },
         editable: true,
       },
@@ -387,9 +399,9 @@ const TB07100Sjs = (function () {
       {
         title: "펀드코드",
         dataType: "string",
-        dataIndx: "index4",
+        dataIndx: "fndCd",
         halign: "center",
-        align: "right",
+        align: "center",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
         editable: true,
@@ -449,6 +461,21 @@ const TB07100Sjs = (function () {
             , bcncNm: ui.rowData.bcncNm
           }
 
+          if(ui.rowData['reltStfno'] == $('#userEno').val()){
+            console.log("승인자 일치");
+            $("#TB07100S_apvl").show(); //승인버튼
+            $("#TB07100S_gbck").show(); //반려버튼
+            $("#TB07100S_excBtn").hide(); //승인버튼
+            $("#TB07100S_request").hide(); //반려버튼
+          }else{
+            console.log("승인자 불일치");
+            $("#TB07100S_apvl").hide(); //승인버튼
+            $("#TB07100S_gbck").hide(); //반려버튼
+            $("#TB07100S_excBtn").show(); //승인버튼
+            $("#TB07100S_request").show(); //반려버튼
+
+          }
+
           TB07100S_selectIBIMS432B(paramData);
 
         }
@@ -465,7 +492,7 @@ const TB07100Sjs = (function () {
     setPqGrid(pqGridObjs);
     // Grid instance
     TB07100S_rlthPruf = $("#TB07100S_grd_rlthPruf").pqGrid('instance');
-    TB07100S_basic = $("#TB07100S_grd_thdtTrDtls").pqGrid('instance');
+    arrPqGrid432BList = $("#TB07100S_grd_thdtTrDtls").pqGrid('instance');
   }
 
   /*******************************************************************
@@ -737,6 +764,11 @@ const TB07100Sjs = (function () {
       });
       }
     });
+  }
+
+  function TB07100S_mergeIBIMS432B(){
+    const paramData ={}
+
   }
 
   // function TB07100S_mergeIBIMS432B(){
