@@ -12,6 +12,7 @@ const TB07160Sjs = (function () {
     $("input").on("focus", function () {
       $(this).select();
     });
+    getDealInfoFromWF();
   });
 
   /*******************************************************************
@@ -213,7 +214,24 @@ const TB07160Sjs = (function () {
       }).then(callback);
     }
   }
+
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07160S_prdtCd").val(prdtCd);
+			$("#TB07160S_prdtNm").val(prdtNm);
+      srch_TB07160S();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     srch_TB07160S: srch_TB07160S,
+    getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

@@ -653,10 +653,10 @@ const TB06040Sjs = (function() {
 
     function getDealInfoFromWF() {
 		
-		var prdtCd = sessionStorage.getItem("wfPrdtCd");
-		var prdtNm = sessionStorage.getItem("wfPrdtNm");
-		if(prdtCd !=null){
+		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
+            var prdtCd = sessionStorage.getItem("wfPrdtCd");
+            var prdtNm = sessionStorage.getItem("wfPrdtNm");
             $("#TB06040S_prdtCd").val(prdtCd);
             $("#TB06040S_prdtNm").val(prdtNm);
 		    srch();

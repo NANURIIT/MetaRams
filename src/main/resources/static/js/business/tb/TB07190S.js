@@ -16,6 +16,7 @@ const TB07190Sjs = (function () {
 	selBox();
 	selectBoxSet_TB07190S();
 	loginUserSet_TB07190S();
+  getDealInfoFromWF();
   });
 
    /*
@@ -868,6 +869,22 @@ const TB07190Sjs = (function () {
    *  =====================DELETE모음=====================
    */
 
+
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var dealNo = sessionStorage.getItem("wfDealNo");
+			var dealNm = sessionStorage.getItem("wfDealNm");
+			$("#TB07190S_ibDealNo").val(dealNo);
+			$("#TB07190S_ibDealNm").val(dealNm);
+      //getData(); 다른 입력값 필요해서 조회는 자동으로 안 해줘도 될 것 같음
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     getData: getData,
 	selectBoxSet_TB07190S:selectBoxSet_TB07190S,
@@ -878,5 +895,6 @@ const TB07190Sjs = (function () {
 	pqGrid:pqGrid,
 	TB07190S_resetPqGrid:TB07190S_resetPqGrid,
 	colModelIdSelector:colModelIdSelector,
+  getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

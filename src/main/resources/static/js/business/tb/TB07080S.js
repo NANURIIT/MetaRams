@@ -16,6 +16,8 @@ const TB07080Sjs = (function () {
     pqGrid();
     $("#disabledView").find("input").prop("disabled", true);
     createOption();
+    
+		getDealInfoFromWF();
     // vldDateVal();
   });
 
@@ -999,12 +1001,29 @@ const TB07080Sjs = (function () {
    *  =====================DELETE모음=====================
    */
 
+
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07080S_prdtCd").val(prdtCd);
+			$("#TB07080S_prdtNm").val(prdtNm);
+      selectTB07080S();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     selectTB07080S: selectTB07080S,
     TB07080S_inputReset: TB07080S_inputReset,
     TB07080S_addNewRow: TB07080S_addNewRow,
     TB07080S_deleteRow: TB07080S_deleteRow,
     updateTB07080S: updateTB07080S,
-    getExcSn: getExcSn
+    getExcSn: getExcSn,
+		getDealInfoFromWF: getDealInfoFromWF
   };
 })();

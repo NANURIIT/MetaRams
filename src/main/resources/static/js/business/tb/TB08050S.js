@@ -16,6 +16,7 @@ const TB08050Sjs = (function () {
     pqGrid(); // 그리드 생성
 	loginUserSet_TB08050S(); //로그인담당자 세팅
     reBdin();
+    getDealInfoFromWF();
   }
   
   /**
@@ -945,6 +946,23 @@ const TB08050Sjs = (function () {
 	$("#TB08050S_rkfrDt").val(dateNull("")); // 회계일자 ? 기산일자
 	$("#TB08050S_prcsTm").val(""); //처리시간
   }
+
+
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB08050S_prdtCd").val(prdtCd);
+			$("#TB08050S_prdtNm").val(prdtNm);
+      srch();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
 	init_TB08050S :init_TB08050S,
     srch: srch,
@@ -952,5 +970,6 @@ const TB08050Sjs = (function () {
     resetMore: resetMore,
     calulator: calulator,
     save: save,
+    getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

@@ -1989,6 +1989,8 @@ function needRunFn(menuId) {
     console.log("Hello Nanuri!!");
   }
 
+  //워크플로우에서 버튼 눌러 페이지 이동시 인풋 자동 세팅
+
   if( menuId === "TB06010S"){
     TB06010Sjs.getDealInfoFromWF();
   }
@@ -2003,13 +2005,18 @@ function needRunFn(menuId) {
   }
   if( menuId === "TB07010S"){
     TB07010Sjs.getDealInfoFromWF();
-  }//여기까지 작업함
-  
+  }
   if( menuId === "TB07020S"){
     TB07020Sjs.getDealInfoFromWF();
   }
+  if( menuId === "TB07030S"){
+    TB07030Sjs.getDealInfoFromWF();
+  }
   if( menuId === "TB07040S"){
     TB07040Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07070S"){
+    TB07070Sjs.getDealInfoFromWF();
   }
   if( menuId === "TB07080S"){
     TB07080Sjs.getDealInfoFromWF();
@@ -2020,20 +2027,18 @@ function needRunFn(menuId) {
   if( menuId === "TB07120S"){
     TB07120Sjs.getDealInfoFromWF();
   }
+
   if( menuId === "TB07150S"){
     TB07150Sjs.getDealInfoFromWF();
   }
   if( menuId === "TB07160S"){
     TB07160Sjs.getDealInfoFromWF();
   }
+  if( menuId === "TB07170S"){
+    TB07170Sjs.getDealInfoFromWF();
+  }
   if( menuId === "TB07190S"){
     TB07190Sjs.getDealInfoFromWF();
-  }
-  if( menuId === "TB07030S"){
-    TB07030Sjs.getDealInfoFromWF();
-  }
-  if( menuId === "TB07070S"){
-    TB07070Sjs.getDealInfoFromWF();
   }
   if( menuId === "TB08040S"){
     TB08040Sjs.getDealInfoFromWF();

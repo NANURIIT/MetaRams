@@ -277,6 +277,7 @@ const TB06060Sjs = (function(){
     }
 
     function openPage(menuId,pageNm){
+        sessionStorage.setItem("isFromWF", true);
         sessionStorage.setItem("wfDealNo", $('#sessionDealNo').val());
         sessionStorage.setItem("wfDealNm", $('#sessionDealNm').val());
         sessionStorage.setItem("wfPrdtCd", $('#sessionPrdtCd').val());

@@ -12,7 +12,6 @@ const TB07010Sjs = (function () {
 
   $(document).ready(function () {
     authInf();
-    getDealInfoFromWF();
     /**
      * 기업여신개별한도구분코드 E010
      * 기준금리종류코드 S003
@@ -40,6 +39,8 @@ const TB07010Sjs = (function () {
     $("input").on("focus", function () {
       $(this).select();
     });
+    
+    getDealInfoFromWF();
   });
 
   /*******************************************************************
@@ -1270,11 +1271,10 @@ const TB07010Sjs = (function () {
 
 
   function getDealInfoFromWF() {
-		
-		var prdtCd = sessionStorage.getItem("wfPrdtCd");
-		var prdtNm = sessionStorage.getItem("wfPrdtNm");
-		if(prdtCd !=""){
+		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
+      var prdtCd = sessionStorage.getItem("wfPrdtCd");
+      var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07010S_prdtCd").val(prdtCd);
 			$("#TB07010S_prdtNm").val(prdtNm);
 		srch();

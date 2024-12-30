@@ -1171,12 +1171,12 @@ const TB06020Sjs = (function(){
 
 	function getDealInfoFromWF() {
 		
-		var dealNo = sessionStorage.getItem("wfDealNo");
-		var dealNm = sessionStorage.getItem("wfDealNm");
-		var prdtCd = sessionStorage.getItem("wfPrdtCd");
-		var prdtNm = sessionStorage.getItem("wfPrdtNm");
-		if(dealNo !=""){
+		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
+			var dealNo = sessionStorage.getItem("wfDealNo");
+			var dealNm = sessionStorage.getItem("wfDealNm");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB06020S_ibDealNo").val(dealNo);
 			$("#TB06020S_ibDealNm").val(dealNm);
 			$("#TB06020S_prdtCd").val(prdtCd);

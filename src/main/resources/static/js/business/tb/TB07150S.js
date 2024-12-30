@@ -46,6 +46,7 @@ const TB07150Sjs = (function () {
     // $("input").on("focus", function () {
     //   $(this).select();
     // });
+    getDealInfoFromWF();
   });
 
   /*******************************************************************
@@ -842,12 +843,29 @@ const TB07150Sjs = (function () {
         html: `${html}를(을) 확인해주세요.`,
         confirmButtonText: "확인",
       }).then(callback);
-    }
+    }    
   }
+
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07150S_prdtCd").val(prdtCd);
+			$("#TB07150S_prdtNm").val(prdtNm);
+      srch();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     srch: srch,
     reset: reset,
     cndChng: cndChng,
     srchExcSn_TB07150S: srchExcSn_TB07150S,
+    getDealInfoFromWF: getDealInfoFromWF,
   };
 })();
