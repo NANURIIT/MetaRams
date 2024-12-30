@@ -1,5 +1,6 @@
 package com.nanuri.rams.business.assessment.tb10.tb10010;
 
+import com.nanuri.rams.business.common.dto.IBIMS001BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS001BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS002BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS001BVO;
@@ -42,33 +43,37 @@ public class TB10010ServiceImpl implements TB10010Service {
         return dtoList;
     }
 
+    /**
+     * 그룹코드 그리드 저장
+     */
     @Override
-    public boolean registGroupCodeInfo(List<IBIMS001BVO> requestDtos) {
-        int count = 0;
-        for (IBIMS001BVO requestDto : requestDtos) {
-            if (ibims001BMapper.getGroupCodeInfo(requestDto.getCmnsCdGrp()).isPresent()) {
-                throw new IllegalArgumentException("해당 그룹코드가 존재합니다. " + requestDto.getCmnsCdGrp());
-            }
-            // 새로운 그룹코드 등록시에도 처리자 사번을 추가해야한다.
-            if (ibims001BMapper.getGroupCodeInfo(requestDto.getOldCmnsCdGrp()).isEmpty()) {
-            	requestDto.setRgstEmpno(facade.getDetails().getEno());
-            	requestDto.setHndEmpno(facade.getDetails().getEno());
-            	//requestDto.setHndlDprtCd(facade.getDetails().getDprtCd());
-                count += ibims001BMapper.insertGroupCodeInfo(requestDto);
-            } else {
-            	requestDto.setHndEmpno(facade.getDetails().getEno());
-            	//requestDto.setHndlDprtCd(facade.getDetails().getDprtCd());
-                count += ibims001BMapper.registGroupCodeInfo(requestDto);
-            }
+    public boolean registGroupCodeInfo(IBIMS001BVO paramData) {
+
+        int cnt = 0;
+
+        List<IBIMS001BDTO> insertList = paramData.getInsertList();
+        List<IBIMS001BDTO> updateList = paramData.getUpdateList();
+
+        for(int i = 0; i < insertList.size(); i++){
+            String cmnsCdNm = ibims001BMapper.makeCmnsCdGrp(insertList.get(i));
+            insertList.get(i).setCmnsCdNm(cmnsCdNm);
+            insertList.get(i).setHndEmpno(facade.getDetails().getEno());
+            ibims001BMapper.insertGroupCodeInfo(insertList.get(i));
+            cnt += 1;
         }
-        return count > 0;
+
+        for(int i = 0; i < updateList.size(); i++){
+            updateList.get(i).setHndEmpno(facade.getDetails().getEno());
+            ibims001BMapper.registGroupCodeInfo(updateList.get(i));
+            cnt += 1;
+        }
+
+        return cnt > 0;
     }
 
     @Override
     public boolean deleteGroupCodeInfo(List<String> cmnsCdGrp) {
-    	log.debug("eno ====> " + facade.getDetails().getEno());
         int count = ibims001BMapper.deleteGroupCodeInfo(cmnsCdGrp, facade.getDetails().getEno());
-        log.debug("count ====> " + count);
         return count > 0;
     }
 
