@@ -17,7 +17,7 @@ const TB07120Sjs = (function () {
   function setInput() {
     $("#ibims452b input").prop("readonly", true);
     $("#ibims452b button, #ibims452b select").prop("disabled", true);
-    $("#TB07120S_rqstStfno, #TB07120S_reltStfno").prop("readonly", false);
+    $("#TB07120S1_empNo, #TB07120S2_empNo").prop("readonly", false);
     $("#TB07120S_rqstBtn, #TB07120S_reltBtn").prop("disabled", false);
     $(".TB07120S_isForeignTransfer").prop("disabled", true);
     $("#TB07120S_apvl").hide(); //승인버튼
@@ -25,10 +25,11 @@ const TB07120Sjs = (function () {
   }
 
   /**
-   * 초기화
+   * 검색 조건 초기화
    */
-  function reset () {
-    $("#con-srch input").val("")
+  function srchReset_TB07120S () {
+    $("#con-srch input").val("");
+    $("#con-srch select").val("");
   }
 
   /**
@@ -358,33 +359,41 @@ const TB07120Sjs = (function () {
     const keys = Object.keys(rowData);
 
     let consDecdStatCd = rowData.consDecdStatCd;               //결재상태
-    let trDt = rowData.trDt;                                   //거래일자
-    let trDtm = rowData.trDtm;                                 //거래시간
-    let hndlDtm = rowData.hndlDtm;                             //처리시간
     let trCrryCd = rowData.trCrryCd;                           //통화코드
     let depositWithdrawalCode = rowData.depositWithdrawalCode; //입출금구분
 
-    // '-'가 포함되어 있지 않은 경우에만 변환
-    if (!trDt.includes("-")) {
-      rowData.trDt = formatDate(trDt);
-    }
-
-    //포맷변경(포맷을'YYYY-MM-DD HH:MM:SS'로 변경)
-    //거래시간
-    if (trDtm) {
-      let dateObj = new Date(trDtm); 
-      rowData.trDtm = dateObj.format("yyyy-MM-dd HH:mm:ss");
-    }
-      //처리시간
-    if(hndlDtm){
-      let dateObj = new Date(hndlDtm);
-      rowData.hndlDtm = dateObj.format("yyyy-MM-dd HH:mm:ss");
-    }
+    // input ID 매핑 객체
+    const idMap = {
+      rqstStfno: "TB07120S1_empNo", //담당자(번호)
+      rqstStfnm: "TB07120S1_empNm", //담당자(명)
+      reltStfno: "TB07120S2_empNo", //승인자(번호)
+      reltStfnm: "TB07120S2_empNm"  //승인자(명)
+    };
     
     for (let i = 0; i < keys.length; i++) {
-      $(`#ibims452b #TB07120S_${keys[i]}`).val(rowData[keys[i]]);
+      let key = keys[i];
+      let value = rowData[key];
+    
+      // 기본 값 세팅
+      $(`#ibims452b #TB07120S_${key}`).val(value);
+    
+      // 포맷 변환 로직
+      // 거래일자(YYYY-MM-DD)
+      if (key === "trDt") {
+        $(`#ibims452b #TB07120S_trDt`).val(formatDate(rowData[keys[i]]))
+      }
+      //거래시간,처리시간
+      if (key === "trDtm" || key === "hndlDtm") {
+        let dateObj = new Date(rowData[keys[i]]);
+        $(`#ibims452b #TB07120S_${key}`).val(dateObj.format("yyyy-MM-dd HH:mm:ss"));
+      }
+    
+      // 특정 key에 따른 직접 세팅 (매핑 활용)
+      if (idMap[key]) {
+        $(`#ibims452b #${idMap[key]}`).val(value);
+      }
     }
- 
+
     // FIXME : 확인 필요
     // 입출금 구분이 "출금"인 경우, 해외송금여부 라디오박스 값 세팅
     if (depositWithdrawalCode === "출금" && trCrryCd) {
@@ -393,7 +402,7 @@ const TB07120Sjs = (function () {
     }
     
     $('#TB07120S_consDecdDvsnCd').val(rowData.consDecdDvsnCd) //결재단계구분
-    $('#TB07120S_consDecdStatCd2').val(consDecdStatCd) //결재상태
+    $('#TB07120S_consDecdStatCd2').val(consDecdStatCd)        //결재상태
 
     TB07120S_nowRowData = {
       prdtCd : rowData.prdtCd,
@@ -505,7 +514,7 @@ const TB07120Sjs = (function () {
   */
   function decdStatChk(consDecdStatCd) {
     let userNo = $("#userEno").val();                //로그인한 사원번호
-    let reltStfno = $("#TB07120S_reltStfno").val();  //해당건의 승인담당자 번호 
+    let reltStfno = $("#TB07120S2_empNo").val();  //해당건의 승인담당자 번호 
 
     if (!consDecdStatCd) {
       consDecdStatCd = "0";
@@ -616,8 +625,8 @@ const TB07120Sjs = (function () {
      * @param dealNo 딜번호
      * @param excSeq 거래일련번호
      * @param trSeq 실행일련번호
-     * @param TB07120S_reltStfno 승인자
-     * @param TB07120S_rqstStfno 담당자
+     * @param TB07120S2_empNo 승인자
+     * @param TB07120S1_empNo 담당자
      * @param TB07120S_rjctRsnCntn 반려사유
      */
     const paramData = {
@@ -626,8 +635,8 @@ const TB07120Sjs = (function () {
       trSeq: TB07120S_nowRowData.trSeq,              //거래순번
       erlmSeq : TB07120S_nowRowData.erlmSeq,         //등록순번
       //chrrDvsnCd:            // 담당자구분코드
-      reltStfno: $("#TB07120S_reltStfno").val(),     //신청직원번호
-      rqstStfno: $("#TB07120S_rqstStfno").val(),     //승인자
+      reltStfno: $("#TB07120S2_empNo").val(),        //신청직원번호
+      rqstStfno: $("#TB07120S1_empNo").val(),        //승인자
       consDecdDvsnCd: consDecdDvsnCd,                //품의결재구분코드
       consDecdStatCd: consDecdStatBtnNo,             //결재상태코드
       rjctRsnCntn: $("#TB07120S_rjctRsnCntn").val(), //반려사유내용
@@ -675,8 +684,8 @@ const TB07120Sjs = (function () {
   * @param consDecdStatBtnNo 결재상태 번호 ('1' - 승인요청, '3' - 반려)
   */
   function TB07120S_validateFields(consDecdStatBtnNo){
-    let rqstStfno = $("#TB07120S_rqstStfno").val(); //담당자
-    let reltStfno = $("#TB07120S_reltStfno").val(); //승인자
+    let rqstStfno = $("#TB07120S1_empNo").val(); //담당자
+    let reltStfno = $("#TB07120S2_empNo").val(); //승인자
     let rjctRsnCntn = $("#TB07120S_rjctRsnCntn").val(); //반려사유
     
     //승인요청
@@ -703,14 +712,14 @@ const TB07120Sjs = (function () {
   function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
+			// console.log("WF세션 있음");
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
 			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07120S_prdtCd").val(prdtCd);
 			$("#TB07120S_prdtNm").val(prdtNm);
       get07120sList();
 		}else{
-			console.log("WF세션 비었음");
+			// console.log("WF세션 비었음");
 		}
 		sessionStorage.clear();
 	}
@@ -718,7 +727,7 @@ const TB07120Sjs = (function () {
   return {
     get07120sList: get07120sList,
     updateFndsCnstDecd: updateFndsCnstDecd,
-    reset: reset,
+    srchReset_TB07120S: srchReset_TB07120S,
     getDealInfoFromWF: getDealInfoFromWF,
   };
 })();
