@@ -1,7 +1,17 @@
 const TB08036Sjs = (function () {
   $(document).ready(function () {
-    //alert("11");
+    loadSelectBoxContents();
   });
+
+  //셀렉트박스 세팅
+  function loadSelectBoxContents() {
+    var item = "";
+    item += "B014"; // 사업진행상태구분코드
+    item += "/" + "C010"; // 신용보강기관내용구분코드
+    item += "/" + "I012"; // 신용등급구분코드
+
+    getSelectBoxList("TB08036S", item);
+  }
 
   function btnResetTB08036S() {
     $("#TB08036S_ibDealNo").val("");
