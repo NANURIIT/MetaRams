@@ -160,9 +160,13 @@ public class TB07150ServiceImpl implements TB07150Service {
 			//ibims201bdto.setExpDt(param.getCtrcExpDt());					//딜승인기본 만기일자
 
 			int tlmtChngRslt = ibims401BMapper.cndChng(ibims401bVo);
+			int hRslt = ibims401HMapper.rgstIBIMS401H(ibims401bVo);
 
 			if(tlmtChngRslt < 1){
 				log.debug("!!!기한변경 오류!!!");
+				result = 1;
+			}else if(hRslt < 1){
+				log.debug("!!!약정이력테이블 오류!!!");
 				result = 1;
 			}
 
@@ -175,30 +179,20 @@ public class TB07150ServiceImpl implements TB07150Service {
 			ibims401bVo.setCtrcExpDt(param.getCtrcExpDt());					//약정기본 약정만기일자
 
 			int tlmtChngRslt = ibims401BMapper.cndChng(ibims401bVo);
+			int hRslt = ibims401HMapper.rgstIBIMS401H(ibims401bVo);
 
 			if(tlmtChngRslt < 1){
 				log.debug("!!!기한변경 오류!!!");
 				result = 1;
-			}
-
-			List<IBIMS346BDTO> cndChng346BList = param.getCndChng346BList();		//변경금리정보
-
-			String prdtCd = cndChng346BList.get(0).getPrdtCd();
-
-			int dltIntrtList = ibims346BMapper.deleteIBIMS346B(prdtCd);
-
-			if(dltIntrtList > 0){
-
-				int intrtChngRslt = ibims346BMapper.insertIntrtInfoList(cndChng346BList);
-
-				if(intrtChngRslt < 1){
-					log.debug("!!!금리정보 insert 오류!!!");
-					result = 1;
-				}
-
-			}else{
-				log.debug("!!!기존 금리정보 삭제 오류!!!");
+			}else if(hRslt < 1){
+				log.debug("!!!약정이력테이블 오류!!!");
 				result = 1;
+			}else{
+
+				List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();		//변경금리정보
+				String prdtCd = param.getPrdtCd();		//종목코드
+				long excSn = param.getExcSn();			//실행순번 
+
 			}
 			
 			
