@@ -49,13 +49,13 @@
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-5 input-group date px-0">
 										<input type="text" class="form-control" id="TB07190S_strYmd" name="" value="" 
-										placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));">
+										placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
 										<input type="text" class="form-control" id="TB07190S_endYmd" name="" value="" 
-										placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));">
+										placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
@@ -92,7 +92,10 @@
 									수수료종류
 								</label>
 								<div class="col-sm-3 input-group">
-									<select class="form-control" id="TB07190S_etprCrdtGrntTrKindCd">
+									<select class="form-control" id="TB07190S_etprCrdtGrntTrKindCd" style="display:none">
+										<option value="">전체</option>
+									</select>
+									<select class="form-control" id="TB07190S_feeKndCd">
 										<option value="">전체</option>
 									</select>
 								</div>

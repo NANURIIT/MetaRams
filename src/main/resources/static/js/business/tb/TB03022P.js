@@ -426,7 +426,6 @@ function setEmpNm(e) {
       $("#TB04012P_dlDprtCd3_dlDprtCd").val(e.dprtCd);
       $("#TB04012P_dlDprtCd3_dlDprtNm").val(e.dprtNm);
       break;
-
     case "grd_TB08040S":
       console.log(feeSch);
       console.log(dprtCd);
@@ -442,16 +441,19 @@ function setEmpNm(e) {
       $("#TB04011P_dprtNm").val(e.dprtCd).prop("selected", true);
       break;
     case "TB07120S1":
-      $("#TB07120S_rqstStfno").val(empNo);
-      $("#TB07120S_rqstStfnm").val(empNm);
+      $("#TB07120S1_empNo").val(empNo);
+      $("#TB07120S1_empNm").val(empNm);
       break;
     case "TB07120S2":
-      $("#TB07120S_reltStfno").val(empNo);
-      $("#TB07120S_reltStfnm").val(empNm);
+      $("#TB07120S2_empNo").val(empNo);
+      $("#TB07120S2_empNm").val(empNm);
       break;
 	case "TB08040S":
 		$("#TB08040S_dprtNm").val(e.dprtCd).prop("selected", true);
 	  break;
+    case "TB08050S":
+	 	$("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
+	    break;  
     default:
       break;
   }

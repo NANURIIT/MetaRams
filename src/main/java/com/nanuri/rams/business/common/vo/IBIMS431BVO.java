@@ -19,5 +19,7 @@ public class IBIMS431BVO extends IBIMS431BDTO {
     private String acctDt2;
     private List<IBIMS431BVO> selectIBIMS431B;
     private IBIMS431BVO ibims431bvo;
+    private String empNm; //등록사원명
+    private String reltStfNm; //승인자명
     
 }

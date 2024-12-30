@@ -56,6 +56,7 @@ const TB07090Sjs = (function () {
 
     loadUserAuth(); //로그인유저정보
     selectBoxSet_TB07090S();
+    getDealInfoFromWF();
   });
 
   function loadUserAuth() {
@@ -655,6 +656,10 @@ const TB07090Sjs = (function () {
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        dataIndx: "fndsDvsnCd",
+        hidden: true
       },
       {
         dataIndx: "prdtCd",
@@ -1998,6 +2003,21 @@ const TB07090Sjs = (function () {
   //   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   // }
 
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var dealNo = sessionStorage.getItem("wfDealNo");
+			var dealNm = sessionStorage.getItem("wfDealNm");
+			$("#TB07090S_ibDealNm").val(dealNo);
+			$("#TB07090S_ibDealNm").val(dealNm);
+      search_TB07090S();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     // 기존버전
     // search_TB07090S: search_TB07090S,
@@ -2018,5 +2038,6 @@ const TB07090Sjs = (function () {
     saveRctmDtlsMapping: saveRctmDtlsMapping,
     colModel2_rowIndx: colModel2_rowIndx,
     colModel3_rowIndx: colModel3_rowIndx,
+    getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

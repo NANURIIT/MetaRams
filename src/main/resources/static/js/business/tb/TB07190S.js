@@ -16,6 +16,7 @@ const TB07190Sjs = (function () {
 	selBox();
 	selectBoxSet_TB07190S();
 	loginUserSet_TB07190S();
+  getDealInfoFromWF();
   });
 
    /*
@@ -50,11 +51,33 @@ const TB07190Sjs = (function () {
         "/F001" + // 수수료선후급구분코드 FEE_BNAP_DCD
         "/T006" + // 수수료과세여부 FEE_TXTN_YN
   	    "/A005" + // 계정과목코드
+		"/E025" + // 거래종류코드
         "/I027", // 통화코드
         false
       );
 	  
 	  selectBox2 =getSelBoxCdFeeKndCd(); //수수료종류코드 리스트 전체 가져오기
+	  
+	  //수수료종류코드
+	  selectBox2.forEach((item) => { 
+	    $("#TB07190S_feeKndCd").append(
+		  	$("<option>", {
+		  	  value: item.feeKndCd,
+		  	  text: `${item.feeName}`,
+		  	})
+		    );
+	  	});
+		
+	  //계정과목코드
+	  selectBox2.forEach((item) => { 
+	    $("#TB07190S_actsCd").append(
+	    	$("<option>", {
+	    	  value: item.actsCd,
+	    	  text: `${item.actName}`,
+	    	})
+	      );
+	  	});	
+	  
   	
       // 수수료종류코드
       grdSelect.F004 = selectBox.filter((item) => item.cmnsGrpCd === "F004");
@@ -70,6 +93,9 @@ const TB07190Sjs = (function () {
       grdSelect.I027 = selectBox.filter((item) => item.cmnsGrpCd === "I027");
   	  // 통화코드
   	  grdSelect.A005 = selectBox.filter((item) => item.cmnsGrpCd === "A005");
+	  // 거래종류코드
+	  grdSelect.E025 = selectBox.filter((item) => item.cmnsGrpCd === "E025");
+	  
     }
 	
 	/*
@@ -691,13 +717,14 @@ const TB07190Sjs = (function () {
 
     let paramData = {
       actsCd: $("#TB07190S_actsCd").val(),			//계정과목
-      etprCrdtGrntTrKindCd: $("#TB07190S_etprCrdtGrntTrKindCd").val(), //수수료종류
+      etprCrdtGrntTrKindCd: $("#TB07190S_etprCrdtGrntTrKindCd").val(), //거래종류
+	  feeKndCd: $("#TB07190S_feeKndCd").val(), //수수료종류
       trStatCd: $("#TB07190S_trStatCd").val(), //거래상태
       dealNo: $("#TB07190S_ibDealNo").val(),   // 딜번호
       ardyBzepNo: $("#TB07190S_ardyBzepNo").val(), //기업체번호
 	  strYmd : $("#TB07190S_strYmd").val().replaceAll("-", ""), //시작일자
 	  endYmd : $("#TB07190S_endYmd").val().replaceAll("-", ""), //종료일자
-	  dprtCd : $("#TB07190S_dprtCd").val(), //부서코드
+	  //dprtCd : $("#TB07190S_dprtCd").val(), //부서코드
     };
 
     $.ajax({
@@ -868,6 +895,22 @@ const TB07190Sjs = (function () {
    *  =====================DELETE모음=====================
    */
 
+
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var dealNo = sessionStorage.getItem("wfDealNo");
+			var dealNm = sessionStorage.getItem("wfDealNm");
+			$("#TB07190S_ibDealNo").val(dealNo);
+			$("#TB07190S_ibDealNm").val(dealNm);
+      //getData(); 다른 입력값 필요해서 조회는 자동으로 안 해줘도 될 것 같음
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     getData: getData,
 	selectBoxSet_TB07190S:selectBoxSet_TB07190S,
@@ -878,5 +921,6 @@ const TB07190Sjs = (function () {
 	pqGrid:pqGrid,
 	TB07190S_resetPqGrid:TB07190S_resetPqGrid,
 	colModelIdSelector:colModelIdSelector,
+  getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

@@ -31,6 +31,9 @@ const TB06010Sjs = (function(){
 		pqGrid();
 
 		resetSearchRequiment();
+		console.log("성격", I041);
+		console.log("형태", I042);
+		
 
 
 		$('#TB06010S_E022').on('change', function() {
@@ -60,6 +63,8 @@ const TB06010Sjs = (function(){
 
 			}
 		});
+		
+		getDealInfoFromWF();
 	});
 
 	var option = {}
@@ -1200,121 +1205,124 @@ const TB06010Sjs = (function(){
 			openPopup(option);
 			return false;
 		}
+
+		// 수수료 전용이 아닐경우만 체크함
+		if ($('#TB06010S_E022').val() != 92) {
+			if (isEmpty($('#TB06010S_I002').val())) {
+				option.text = "자산분류 상품정보 IB상품분류코드를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
 			
-		if (isEmpty($('#TB06010S_I002').val())) {
-			option.text = "자산분류 상품정보 IB상품분류코드를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty( $('input[name=TB06010S_altnInvYn]:checked').val())) {
-			option.text = "자산분류 대체투자여부를 선택해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_fndCd').val())) {
-			option.text = "자산분류 펀드코드를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_D012').val())) {
-			option.text = "자산분류 데스크코드를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_C006').val())) {
-			option.text = "투자국가를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty( $('input[name=TB06010S_rlesFnnYn]:checked').val())) {
-			option.text = "부동산금융여부를 선택해주세요.";
-			openPopup(option);
-			return false;
-		} else if ($('input[name=TB06010S_rlesFnnYn]:checked').val() == 'Y' && $('#TB06010S_R017').val() == '') {
-			option.text = "부동산금융여부를 선택해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty( $('input[name=TB06010S_socYn]:checked').val())) {
-			option.text = "SOC여부를 선택해주세요.";
-			openPopup(option);
-			return false;
-		} else if ($('input[name=TB06010S_socYn]:checked').val() == 'Y' && $('#TB06010S_S002').val() == '') {
-			option.text = "SOC여부를 선택해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_H002').val())) {
-			option.text = "자산분류 보유목적구분코드를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_O002').val())) {
-			option.text = "자산분류 제공용역구분코드를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_rcgAmt').val())) {
-			option.text = "금융조건 종목승인금액을 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_I027').val())) {
-			option.text = "금융조건 통화코드를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_E010').val())) {
-			option.text = "금융조건 한도구분코드를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_ctrcPrdDcd').val())) {
-			option.text = "금융조건 약정기간구분코드를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_T002').val())) {
-			option.text = "금융조건 당사역할구분코드를 입력해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty( $('input[name=TB06010S_sglLoanYn]:checked').val())) {
-			option.text = "단독대출여부를 선택해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty( $('input[name=TB06010S_mrtgStupYn]:checked').val())) {
-			option.text = "담보여부를 선택해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty( $('input[name=TB06010S_sdnTrgtYn]:checked').val())) {
-			option.text = "셀다운대상여부를 선택해주세요.";
-			openPopup(option);
-			return false;
-		}
-		
-		if (isEmpty($('#TB06010S_dprtCd').val()) && isEmpty($('#TB06010S_empNo').val())) {
-			option.text = "담당자 정보를 입력해주세요.";
-			openPopup(option);
-			return false;
+			if (isEmpty( $('input[name=TB06010S_altnInvYn]:checked').val())) {
+				option.text = "자산분류 대체투자여부를 선택해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_fndCd').val())) {
+				option.text = "자산분류 펀드코드를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_D012').val())) {
+				option.text = "자산분류 데스크코드를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_C006').val())) {
+				option.text = "투자국가를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty( $('input[name=TB06010S_rlesFnnYn]:checked').val())) {
+				option.text = "부동산금융여부를 선택해주세요.";
+				openPopup(option);
+				return false;
+			} else if ($('input[name=TB06010S_rlesFnnYn]:checked').val() == 'Y' && $('#TB06010S_R017').val() == '') {
+				option.text = "부동산금융여부를 선택해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty( $('input[name=TB06010S_socYn]:checked').val())) {
+				option.text = "SOC여부를 선택해주세요.";
+				openPopup(option);
+				return false;
+			} else if ($('input[name=TB06010S_socYn]:checked').val() == 'Y' && $('#TB06010S_S002').val() == '') {
+				option.text = "SOC여부를 선택해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_H002').val())) {
+				option.text = "자산분류 보유목적구분코드를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_O002').val())) {
+				option.text = "자산분류 제공용역구분코드를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_rcgAmt').val())) {
+				option.text = "금융조건 종목승인금액을 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_I027').val())) {
+				option.text = "금융조건 통화코드를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_E010').val())) {
+				option.text = "금융조건 한도구분코드를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_ctrcPrdDcd').val())) {
+				option.text = "금융조건 약정기간구분코드를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_T002').val())) {
+				option.text = "금융조건 당사역할구분코드를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty( $('input[name=TB06010S_sglLoanYn]:checked').val())) {
+				option.text = "단독대출여부를 선택해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty( $('input[name=TB06010S_mrtgStupYn]:checked').val())) {
+				option.text = "담보여부를 선택해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty( $('input[name=TB06010S_sdnTrgtYn]:checked').val())) {
+				option.text = "셀다운대상여부를 선택해주세요.";
+				openPopup(option);
+				return false;
+			}
+			
+			if (isEmpty($('#TB06010S_dprtCd').val()) && isEmpty($('#TB06010S_empNo').val())) {
+				option.text = "담당자 정보를 입력해주세요.";
+				openPopup(option);
+				return false;
+			}
 		}
 		
 		return true;
@@ -2048,6 +2056,21 @@ const TB06010Sjs = (function(){
 		setTimeout(() => arrPqGridAssetInfo.refresh(), 1);
 	}
 
+	function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			$("#TB06010S_ibDealNo").val(sessionStorage.getItem("wfDealNo"));
+			$("#TB06010S_ibDealNm").val(sessionStorage.getItem("wfDealNm"));
+			$("#TB06010S_prdtCd").val(sessionStorage.getItem("wfPrdtCd"));
+			$("#TB06010S_prdtNm").val(sessionStorage.getItem("wfPrdtNm"));
+		getDealList();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
 	return {
 		
 		// 함수
@@ -2075,5 +2098,7 @@ const TB06010Sjs = (function(){
 		, ldvdCd : ldvdCd
 		, mdvdCd : mdvdCd
 		, sdvdCd : sdvdCd
+
+		, getDealInfoFromWF : getDealInfoFromWF
 	}
 })();

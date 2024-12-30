@@ -39,6 +39,7 @@ import com.nanuri.rams.business.common.vo.TB07150SVO;
 import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS346BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS401BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
 import com.nanuri.rams.com.acctPrcs.EtprCrdtGrntAcctProc;
 import com.nanuri.rams.com.calculation.Calculation;
@@ -83,9 +84,11 @@ public class TB07150ServiceImpl implements TB07150Service {
 		rtnObj = ibims201BMapper.getCndChngBfInf(paramData.getPrdtCd());
 
 		/* 변경전금리정보 */
-		rtnObj.setChngBf346BList(ibims346BMapper.selectIBIMS346BListInfo(paramData.getPrdtCd()));
+		//rtnObj.setChngBf346BList(ibims346BMapper.selectIBIMS346BListInfo(paramData.getPrdtCd()));
+		rtnObj.setChngBf404BList(ibims404BMapper.getIBIMS404ListInfo(paramData));
 		/* 조건변경금리정보 */
-		rtnObj.setCndChng346BList(ibims346BMapper.selectIBIMS346BListInfo(paramData.getPrdtCd()));
+		//rtnObj.setCndChng346BList(ibims346BMapper.selectIBIMS346BListInfo(paramData.getPrdtCd()));
+		rtnObj.setCndChng404BList(ibims404BMapper.getIBIMS404ListInfo(paramData));
 
 		return rtnObj;
 		
@@ -194,25 +197,34 @@ public class TB07150ServiceImpl implements TB07150Service {
 
 			log.debug("#######금리변경#######");
 
-			List<IBIMS346BDTO> cndChng346BList = param.getCndChng346BList();		//변경금리정보
+			//List<IBIMS346BDTO> cndChng346BList = param.getCndChng346BList();		//변경금리정보
 
-			String prdtCd = cndChng346BList.get(0).getPrdtCd();
+			List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();		//변경금리정보
 
-			int dltIntrtList = ibims346BMapper.deleteIBIMS346B(prdtCd);
-
-			if(dltIntrtList > 0){
-
-				int intrtChngRslt = ibims346BMapper.insertIntrtInfoList(cndChng346BList);
-
-				if(intrtChngRslt < 1){
-					log.debug("!!!금리정보 insert 오류!!!");
-					result = 1;
-				}
-
-			}else{
-				log.debug("!!!기존 금리정보 삭제 오류!!!");
-				result = 1;
+			for(int i=0; i < cndChng404BList.size(); i++){
+				log.debug("prdtCd:::" + cndChng404BList.get(i).getPrdtCd());
+				log.debug("excSn:::" + cndChng404BList.get(i).getExcSn());
+				log.debug("rgstSn:::" + cndChng404BList.get(i).getRgstSn());
 			}
+			
+
+			// String prdtCd = cndChng346BList.get(0).getPrdtCd();
+
+			// int dltIntrtList = ibims346BMapper.deleteIBIMS346B(prdtCd);
+
+			// if(dltIntrtList > 0){
+
+			// 	int intrtChngRslt = ibims346BMapper.insertIntrtInfoList(cndChng346BList);
+
+			// 	if(intrtChngRslt < 1){
+			// 		log.debug("!!!금리정보 insert 오류!!!");
+			// 		result = 1;
+			// 	}
+
+			// }else{
+			// 	log.debug("!!!기존 금리정보 삭제 오류!!!");
+			// 	result = 1;
+			// }
 			
 		}else if(rqsKndCd.equals("06")){			// 06: 차주변경
 

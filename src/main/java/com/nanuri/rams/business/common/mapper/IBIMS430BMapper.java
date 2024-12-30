@@ -56,6 +56,10 @@ public interface IBIMS430BMapper {
      * 딜입금금액 체크
      */
     public BigDecimal inqDealRctmAmt (IBIMS430BDTO param);
-    
+
+    /**
+     * 입금내역조회 (TB07170S)
+     */
+    public List<IBIMS430BDTO> TB07170Sinq (IBIMS430BDTO param);
 }
 

@@ -238,6 +238,12 @@
 	       , B.BCNC_NM										/* 거래처명 */
 		   , C.TR_DT					                    /* 거래일자 */
 		   , C.RCTM_DT					                    /* 입금일자 */
+		   , D.TR_OTHR_DSCM_NO								/* 거래상대방식별번호 */
+		   , (SELECT L.ENTP_NM
+		   		FROM IBIMS010B L /* 기업체기본 */
+		   		WHERE 1=1
+		   		AND L.ARDY_BZEP_NO = D.TR_OTHR_DSCM_NO
+		   	 ) AS ENTP_NM									/* 거래처명 */	
 	    FROM IBIMS348B	A 				                    /* 딜승인수수료스케쥴기본 */
 	       , (SELECT PRDT_CD
 				   , FEE_SN
@@ -435,16 +441,19 @@
 		   AND A.EXC_SN 				= B.EXC_SN(+)
 		   AND A.PRDT_CD 				= C.PRDT_CD(+)
 		   AND A.FEE_SN 				= C.FEE_SN(+)
+		   AND C.RGST_STTS_CD(+)			= 1
 		   AND A.PRDT_CD 				= D.PRDT_CD(+)
 		   AND D.LAST_YN(+) 			= 'Y'
 		   AND D.DEAL_NO 				= E.DEAL_NO(+) 
 		   AND E.LAST_YN(+) 			= 'Y'
 		   AND D.TR_OTHR_DSCM_NO 		= F.ARDY_BZEP_NO(+)
 		   AND A.PRDT_CD 				= G.PRDT_CD(+)	
-		   AND A.EPRZ_CRDL_FEE_KND_CD 	= H.FEE_KND_CD(+)
 		   AND A.ACTS_CD 				= H.ACTS_CD(+)
 		<if test="actsCd != ''">
 		   AND A.ACTS_CD = #{actsCd} 
+		</if>
+		<if test="feeKndCd != ''">
+		   AND H.FEE_KND_CD = #{feeKndCd} 
 		</if>
 		<if test="etprCrdtGrntTrKindCd != ''">
 		   AND B.ETPR_CRDT_GRNT_TR_KIND_CD = #{etprCrdtGrntTrKindCd}
@@ -463,7 +472,7 @@
 		   AND B.TR_DT BETWEEN #{strYmd} AND #{endYmd}
 		   </if>
 	   </if>
-	   <if test="dprtCd != ''">
+	   <if test="dprtCd != null and dprtCd != ''">
 		   AND D.MNGM_BDCD = #{dprtCd} 
 		</if>
     </select>

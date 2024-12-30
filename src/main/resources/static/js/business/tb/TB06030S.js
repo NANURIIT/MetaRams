@@ -14,6 +14,9 @@ const TB06030Sjs = (function(){
 		onChangeEprzCrdlPrdtLclsCd(); // 기업여신상품대분류코드 선택이벤트
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		defaultNumberFormat();
+		//초기화버튼
+		resetSearchRequiment_TB06030S();
+		getDealInfoFromWF();
 	});
 	
 	
@@ -78,6 +81,7 @@ const TB06030Sjs = (function(){
 		item += '/' + 'D007';			// 매각일자구분코드
 		item += '/' + 'D008';			// 매각기준금액구분코드
 		item += '/' + 'I008';			// 결의협의회구분코드
+		item += '/' + 'H002';			// 보유목적구분코드(KB)
 		
 		getSelectBoxList('TB06030S', item);
 		getSelectBoxCode2('TB06030S','I011');
@@ -241,7 +245,7 @@ const TB06030Sjs = (function(){
 		})
 	}
 
-	function resetSearchRequiment() {		
+	function resetSearchRequiment_TB06030S() {		
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
 		console.log("초기화");
 		resetInputValue($('div[data-menuid="/TB06030S"]'));
@@ -264,6 +268,10 @@ const TB06030Sjs = (function(){
 		$('#TB06030S_res_prdtCd').prop('readonly',false);
 		$('#TB06030S_registApvlCnd').attr('disabled', true);
 		$('#TB06030S_registMrtgCnnc').attr('disabled', true);
+		$('#TB06030S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
+		$('#TB06030S_delPrdt').attr('disabled', true); 
+				
+		
 		//$('#UPLOAD_AddFile').attr('disabled', true);
 		//$('#UPLOAD_DelFiles').attr('disabled', true);
 		$('#file-upload_TB06030S').attr("style","display: none");
@@ -325,7 +333,7 @@ const TB06030Sjs = (function(){
 				$('#TB06030S_prdtCd').val(dealDetail.prdtCd);
 				$('#TB06030S_res_prdtCd').val(dealDetail.prdtCd);	
 				/** 종목 정보 */				
-				if( isEmpty($('#TB06030S_prdtCd').val()) ) {
+				if( isEmpty(dealDetail.prdtCd) ) {
 					$('#TB06030S_res_prdtNm').val(dealDetail.mtrNm);	
 					$('#TB06030S_res_prdtCd').prop('readonly',false);										// 안건명
 				} else {
@@ -387,6 +395,10 @@ const TB06030Sjs = (function(){
 				$(":radio[name='TB06030S_socYn']").radioSelect(dealDetail.socYn);								// SOC여부
 				$('#TB06030S_S002').val(dealDetail.socDcd).prop("selected", true);								// SOC구분코드
 				$('#TB06030S_E030').val(dealDetail.etcDetSctyDcd).prop("selected", true);						// 채무증권구분
+				$('#TB06030S_actsCd').val(dealDetail.actsCd);													// 계정과목코드
+				$('#TB06030S_H002').val(dealDetail.holdPrpsDcd).prop("selected", true);							// 보유목적구분	
+						
+				
 				
 				/** 금융조건 정보 */
 
@@ -415,6 +427,7 @@ const TB06030Sjs = (function(){
 				if (isEmpty($('#TB06030S_res_prdtCd').val())) {
 					$('#TB06030S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
 					$('#TB06030S_delPrdt').attr('disabled', true); 
+					$('#TB06030S_res_prdtCd').prop('readonly',false);
 					$('#TB06030S_registApvlCnd').attr('disabled', true);
 					$('#TB06030S_registMrtgCnnc').attr('disabled', true);
 					//$('#UPLOAD_AddFile').attr('disabled', true);
@@ -424,6 +437,7 @@ const TB06030Sjs = (function(){
 				} else {
 					$('#TB06030S_regPrdt').attr('disabled', false); 
 					$('#TB06030S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
+					$('#TB06030S_res_prdtCd').prop('readonly',true);
 					$('#TB06030S_registApvlCnd').attr('disabled', false);
 					$('#TB06030S_registMrtgCnnc').attr('disabled', false);
 					//$('#UPLOAD_AddFile').attr('disabled', false);
@@ -693,6 +707,7 @@ const TB06030Sjs = (function(){
 		if (!isEmpty($('#TB06030S_res_prdtCd').val())) {
 				let regExp = new RegExp(/^[A-Z0-9]+$/);
 				var firStr = $('#TB06030S_res_prdtCd').val().substr(0,1);
+				var prdtLen = $('#TB06030S_res_prdtCd').val().length;
 				if(!regExp.test($('#TB06030S_res_prdtCd').val())){
 					option.text = "종목코드 입력시 영문대문자, 숫자만 허용합니다.";
 					openPopup(option);
@@ -701,6 +716,12 @@ const TB06030Sjs = (function(){
 				
 				if(firStr=="A"){
 					option.text = "종목번호가 'A'로 시작할수 없습니다.";
+					openPopup(option);
+					return false;
+				}
+				
+				if(prdtLen!=10){
+					option.text = "종목코드를 10자리로 입력해주세요.";
 					openPopup(option);
 					return false;
 				}
@@ -732,6 +753,12 @@ const TB06030Sjs = (function(){
 		
 		if (isEmpty($('#TB06030S_C006').val())) {
 			option.text = "투자국가를 입력해주세요.";
+			openPopup(option);
+			return false;
+		}
+		
+		if (isEmpty($('#TB06030S_H002').val())) {
+			option.text = "자산분류 보유목적구분코드를 입력해주세요.";
 			openPopup(option);
 			return false;
 		}
@@ -830,152 +857,68 @@ const TB06030Sjs = (function(){
 		var paramData = {
 			"pageDcd" : pageDcd
 			, "prdtCd": $('#TB06030S_res_prdtCd').val()									// 상품코드
-			, "regDvsn" : ($('#TB06030S_res_prdtCd').attr("readonly")=="readonly") ? "U" : "I" // U:수정, I:등록
-			//, "sn": ''                                          // 일련번호
+			, "regDvsn" : ($('#TB06030S_res_prdtCd').attr("readonly")=="readonly") ? "U" : "I" // U:수정, I:등록			
 			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06030S_res_prdtNm').val()									// 상품명
 			, "prdtDsc": $('#TB06030S_prdtDsc').val()									// 상품설명
-			//, "rqsKndCd": rqsKndCd                              // 기업여신신청종류코드
 			, "prgSttsCd": prgSttsCd													// 진행상태코드
 			, "cnncPrdtCd": $('#TB06030S_cnnc_prdtCd').val()							// 연결상품코드
 			, "dealNo": $('#TB06030S_ibDealNo').val()									// 딜번호
 			, "dealNm": $('#TB06030S_ibDealNm').val()                                   // 딜명
-			//, "dealNm": dealNm                                  // 딜명
-			//, "mtrNo": mtrNo                                    // 안건번호
-			, "mtrDcd": $('#TB06030S_lstCCaseCcd').val()							// 부수안건구분코드
-			//, "mtrSn": mtrSn                            // 부수안건일련번호
-			, "jdgmDcd": $('#TB06030S_riskInspctCcd').val()							// 리스크심사구분코드
+			, "mtrDcd": $('#TB06030S_lstCCaseCcd').val()								// 부수안건구분코드
+			, "jdgmDcd": $('#TB06030S_riskInspctCcd').val()								// 리스크심사구분코드
 			, "mtrNm": $('#TB06030S_mtrNm').val()										// 안건명
-			//, "locoIssMngmNo": ''                    			// loc발급관리번호
-			//, "invIdtrtSmitYn": invIdtrtSmitYn                  // 투자확약서제출여부
-			//, "trgYn": trgYn                                    // 트리거여부
-			//, "trgCndCtns": trgCndCtns                          // 트리거조건내용
-			//, "invIdtrtSmitDt": invIdtrtSmitDt                  // 투자확약서제출일자
 			, "trOthrDscmNo": replaceAll($('#TB06030S_ardyBzepNo').val(), '-', '')		// 거래상대방식별번호
-			//, "grupItgrCrdtGrdDcd": grupItgrCrdtGrdDcd          // 그룹통합신용등급구분코드
 			, "dmsCrdtGrdDcd": $('#TB06030S_I012').val()								// 국내신용등급구분코드
 			, "crdtInqDt": replaceAll($('#TB06030S_crdtInqDt').val(), '-', '')			// 신용조회일자
-			, "lstYn": $('input[name=TB06030S_lstYn]:checked').val()					// 상장여부
-			//, "stlnCpstDcd": ''                        			// 대주구성구분코드
-			, "frsMngmBdcd": $('#TB06030S_dprtCd').val()								// 최초관리부점코드
-			, "mngmBdcd": $('#TB06030S_dprtCd').val()									// 관리부점코드
-			, "chrrEmpno": $('#TB06030S_empNo').val()									// 담당자사원번호
-			//, "subChrrEmpno": ''                     		    						// 서브담당자사원번호
+			
+			
+			//자산분류
 			, "prdtClsfCd": $('#TB06030S_P004').val()									// 상품분류코드
 			, "prdtMdclCd": $('#TB06030S_E023').val()									// 상품중분류코드
 			, "prdtLclsCd": $('#TB06030S_E022').val()									// 상품대분류코드
 			, "ibPrdtClsfCd": $('#TB06030S_I002').val()									// ib상품분류코드
-			//, "ibPrdtIflwPathDcd": ''            				// ib상품유입경로구분코드
 			, "ibPrdtPefDcd": $('#TB06030S_I004').val()                      			// ib상품pef구분코드
 			, "actsCd": $('#TB06030S_actsCd').val()										// 계정과목코드
-			//, "dcrbAthDcd": dcrbAthDcd                          // 기업여신전결권한구분코드
-			//, "acctJobCd": acctJobCd                            // 회계업무코드
-			//, "acctUnJobCd": acctUnJobCd                        // 회계단위업무코드
-			//, "acctTrCd": acctTrCd                              // 회계거래코드
-			, "eprzCrdlApvlAmt": replaceAll($('#TB06030S_rcgAmt').val(), ',', '') / 1			// 종목승인금액
-			//, "eprzCrdlCtrtAmt": eprzCrdlCtrtAmt                  // 기업여신계약금액
-			//, "eprzCrdlInvAmt": 0.0						        // 투자금액
-			//, "eprzCrdlIntrRcvnMthCd": eprzCrdlIntrRcvnMthCd     // 기업여신이자수취방법코드
-			//, "intrBnaoDcd": intrBnaoDcd                        // 이자선후취구분코드
-			//, "tfdLyAplyDcd": tfdLyAplyDcd                      // 초일말일적용구분코드
-			//, "intrSnnoPrcsDcd": intrSnnoPrcsDcd                // 이자단수처리구분코드
-			//, "paiRdmpDcd": paiRdmpDcd                          // 원리금상환구분코드
-			//, "ortnPrdtClsfCd": ortnPrdtClsfCd                  // 기업여신운용상품분류코드
-			//, "intrtExpDcd": intrtExpDcd                        // 기업여신금리만기구분코드
-			//, "intrtRestFrqcMnum": intrtRestFrqcMnum            // 금리재설정주기개월수
-			//, "prnaRdmpFrqcMnum": prnaRdmpFrqcMnum              // 원금상환주기개월수
-			//, "intrRdmpFrqcMnum": intrRdmpFrqcMnum              // 이자상환주기개월수
-			//, "prnaDfrPrdMnum": prnaDfrPrdMnum                  // 원금거치기간개월수
-			//, "eprzCrdlCtrtNo": eprzCrdlCtrtNo                  // 기업여신계약번호
-			//, "ctrcPrarDt": ''		                            // 약정예정일자
-			//, "ctrcPrdMnum": ($('#TB06030S_ctrcPrdMnum').val() / 1)						// 약정기간개월수
+			, "holdPrpsDcd": $('#TB06030S_H002').val()									// 보유목적구분코드
+			, "invNtnCd": $('#TB06030S_C006').val()										// 투자국가코드
+			, "ortnFndCd": $('#TB06030S_fndCd').val()									// 운용펀드코드
+			, "dskCd": $('#TB06030S_D012').val()										// 데스크코드
+			, "socYn": $('input[name=TB06030S_socYn]:checked').val()					// soc여부
+			, "socDcd": $('#TB06030S_S002').val()										// soc구분코드
+			, "altnInvYn" : $('input[name="TB06030S_altnInvYn"]:checked').val()			// 대체투자여부
+			, "frxcHdgeYn": $('input[name=TB06030S_frxcHdgeYn]:checked').val() 			// 외환헷지여부
+
+
+			// 금융조건
+			, "eprzCrdlApvlAmt": replaceAll($('#TB06030S_rcgAmt').val(), ',', '') / 1	// 종목승인금액
+			, "lstYn": $('input[name=TB06030S_lstYn]:checked').val()					// 상장여부
+			, "frsMngmBdcd": $('#TB06030S_dprtCd').val()								// 최초관리부점코드
+			, "mngmBdcd": $('#TB06030S_dprtCd').val()									// 관리부점코드
+			, "chrrEmpno": $('#TB06030S_empNo').val()									// 담당자사원번호
 			, "ctrcPrdDcd": $('#TB06030S_ctrcPrdDcd').val()								// 약정기간구분코드
 			, "sglLoanYn": $('input[name=TB06030S_sglLoanYn]:checked').val()			// 단독대출여부
 			, "rgstCbndYn": $('input[name=TB06030S_rgstCbndYn]:checked').val()			// 등록사채여부
 			, "apvlDt": replaceAll($('#TB06030S_apvlDt').val(), '-', '')                // 승인일자
 			, "expDt": replaceAll($('#TB06030S_expDt').val(), '-', '')					// 만기일자
-			//, "edDt": edDt                                      // 종결일자
 			, "stupDt": replaceAll($('#TB06030S_stupDt').val(), '-', '')				// 설정일
 			, "trustEdDt": replaceAll($('#TB06030S_trustEdDt').val(), '-', '')			// 신탁종료일 
 			, "isuDt": replaceAll($('#TB06030S_isuDt').val(), '-', '')					// 발행일자 
-			//, "eprzCrdlCtrtEndRsnCd": eprzCrdlCtrtEndRsnCd      // 기업여신계약종료사유코드
-			//, "eprzCrdlCtrtEndRsnCtns": eprzCrdlCtrtEndRsnCtns                  // 기업여신계약종료사유내용
 			, "trCrryCd": $('#TB06030S_I027').val()										// 거래통화코드
-			, "invNtnCd": $('#TB06030S_C006').val()										// 투자국가코드
-			, "ortnFndCd": $('#TB06030S_fndCd').val()								// 운용펀드코드
-			, "dskCd": $('#TB06030S_D012').val()										// 데스크코드
-			//, "eprzCrdlIndvLmtDcd": $('#TB06030S_E010').val()									// 개별한도구분코드
-			//, "ctlbCtrtShpDcd": ''                 			    // 우발채무계약형태구분코드
-			//, "ctlbBssAsstDcd": ''                  			// 우발채무기초자산구분코드
-			, "socYn": $('input[name=TB06030S_socYn]:checked').val()					// soc여부
-			, "socDcd": $('#TB06030S_S002').val()										// soc구분코드
 			, "mrtgStupYn": $('input[name=TB06030S_mrtgStupYn]:checked').val()			// 담보설정여부
-			, "altnInvYn" : $('input[name="TB06030S_altnInvYn"]:checked').val()			// 대체투자여부
-			//, "crdtRifcAplyYn": ''                  			// 신용보강적용여부
-			, "frxcHdgeYn": $('input[name=TB06030S_frxcHdgeYn]:checked').val() 		// 외환헷지여부
 			, "sppiSfcYn": $('#TB06030S_sppiSfcYn').val()								// sppi충족여부
-			//, "projFnnYn": ''                            		// 프로젝트금융여부
 			, "pplcFndYn": $('input[name=TB06030S_pplcFndYn]:checked').val()			// 사모펀드여부 
 			, "untpFndYn": $('input[name=TB06030S_untpFndYn]:checked').val()			// 단위형펀드여부
-			//, "pfLoanYn": pfLoanYn                              // pf대출여부
-			//, "undwFnnYn": undwFnnYn                            // 인수금융여부
-			//, "trchAplyYn": trchAplyYn                          // 트렌치적용여부
 			, "rlesFnnYn": $('input[name=TB06030S_rlesFnnYn]:checked').val()			// 부동산금융여부
 			, "sdnTrgtYn": $('input[name=TB06030S_sdnTrgtYn]:checked').val()			// 셀다운대상여부
-			//, "etcCndtYn": etcCndtYn                            // 기타승인조건여부
 			, "rlesFnnDetlDcd": $('#TB06030S_R017').val()								// 부동산금융상세구분코드
 			, "holdPrpsDcd": $('#TB06030S_H002').val()									// 보유목적구분코드
 			, "thcoRlDcd": $('#TB06030S_T002').val()									// 당사역할구분코드
 			, "offrSrvcDcd": $('#TB06030S_O002').val()									// 제공서비스구분코드
-			//, "ncrRt": 0.0                                    	// ncr율
-			//, "rwaRt": 0.0                                    	// rwa율
-			, "rpchPsblDt": replaceAll($('#TB06030S_rpchPsblDt').val(), '-', '')			// 환매가능일자
-			//, "dispYn": ''                                  	// 매각여부
-			//, "pplcCbndMpngYnDcd": ''            				// 사모사채매핑여부구분코드
-			//, "etcDetSctyDcd": ''                    			// 기타채무증권구분코드
+			, "rpchPsblDt": replaceAll($('#TB06030S_rpchPsblDt').val(), '-', '')		// 환매가능일자
 			, "invJdgmComtNo": $('#TB06030S_I008').val()								// 투자심사위원회번호
-			//, "dispDtDcd": ''                            		// 매각일자구분코드
-			//, "dispTlmtMnum": 0.0                      			// 매각기한개월수
-			//, "dispStdrAmtDcd": ''                  			// 매각기준금액구분코드
-			//, "dispRto": 0.0                               		// 매각비율
-			//, "dispTlmtDt": ''            		           		// 매각기한일자
-			//, "dispAmt": 0.0                               		// 매각금액
 			, "rdmpClmPsblDt": replaceAll($('#TB06030S_rdmpClmPsblDt').val(), '-', '')	// 상환청구가능일자
-			//, "aprnGoldStupTrgtYn": ''          				// 충당금설정대상여부
-			//, "bdbtRsvsRcknStdrLclsCd": bdbtRsvsRcknStdrLclsCd  // 대손준비금산정기준대분류코드
-			//, "bdbtRsvsRcknStdrMdclCd": bdbtRsvsRcknStdrMdclCd  // 대손준비금산정기준중분류코드
-			//, "bdbtRsvsRcknStdrSclsCd": bdbtRsvsRcknStdrSclsCd  // 대손준비금산정기준소분류코드
-			//, "bdbtRsvsRcknStdrRto": bdbtRsvsRcknStdrRto        // 대손준비금산정기준비율
-			//, "thcoPtciAmt": thcoPtciAmt                        // 당사참여금액
-			//, "prdtTotAmt": prdtTotAmt                          // 상품총금액
-			//, "intrDnumClcMthCd": intrDnumClcMthCd              // 이자일수계산방법코드
-			//, "hldyPrcsDcd": hldyPrcsDcd                        // 휴일처리구분코드
-			//, "stdrIntrtKndCd": stdrIntrtKndCd                  // 기준금리종류코드
-			//, "fxnIntrt": fxnIntrt                              // 고정금리
-			//, "addIntrt": addIntrt                              // 가산금리
-			//, "intrtCngeFrqcMnum": intrtCngeFrqcMnum            // 금리변동주기개월수
-			//, "hdwtEvlAmt": hdwtEvlAmt                          // 수기평가금액
-			//, "eprzCrdlWeekMrtgKndCd": eprzCrdlWeekMrtgKndCd    // 기업여신주담보종류코드
-			//, "ovduIntrRt": ovduIntrRt                          // 연체이자율
-			//, "ovduIntrRtDcd": ovduIntrRtDcd                    // 연체이자율구분코드
-			//, "totRdmpTmrd": totRdmpTmrd                        // 총상환회차
-			//, "eqlRdmpAmt": eqlRdmpAmt                          // 균등상환금액
-			//, "istmDtmRdmpAmt": istmDtmRdmpAmt                  // 할부일시상환금액
-			//, "rcvbIntrAplyIrt": rcvbIntrAplyIrt                // 미수이자적용이율
-			//, "intrErnAmt": intrErnAmt                          // 이자수익금액
-			//, "fndsPrcrCtAmt": fndsPrcrCtAmt                    // 자금조달비용금액
-			//, "intrClcEndDeDcd": intrClcEndDeDcd                // 이자계산종료일구분코드
-			//, "intrHdwtClcYn": intrHdwtClcYn                    // 이자수기계산여부
-			//, "grdCd": grdCd                                    // 기업여신등급코드
-			//, "dshnRtGrdCd": dshnRtGrdCd                        // 기업여신부도율등급코드
 			, "rgstDt": getToday().replaceAll('-', '')									// 등록일자
-			//, "chngDt": '' 										// 변경일자
-			// 조작상세일시 , "hndDetlDtm": ''
-			//, "hndEmpno": ''                              		// 조작사원번호
-			//, "hndTmnlNo": ''                            		// 조작단말기번호
-			//, "hndTrId": ''                                		// 조작거래id
-			//, "guid": ''                                      	// guid
-			//, "earlyRepayYn": $('input[name=TB06030S_earlyRepayYn]:checked').val()		// 중도상환여부
 			, "sglInvYn": $('input[name=TB06030S_sglInvYn]:checked').val()				// 단독투자여부
 			, "totIssuStkQnt" : replaceAll($('#TB06030S_totIssuQty').val(), ',', '') / 1			// 총발행주수
 
@@ -1407,9 +1350,28 @@ const TB06030Sjs = (function(){
 		//setTimeout(() => arrPqGridAtchFleInfo.refresh(), 1)
 	}
 
+	function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var dealNo = sessionStorage.getItem("wfDealNo");
+			var dealNm = sessionStorage.getItem("wfDealNm");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB06030S_ibDealNo").val(dealNo);
+			$("#TB06030S_ibDealNm").val(dealNm);
+			$("#TB06030S_prdtCd").val(prdtCd);
+			$("#TB06030S_prdtNm").val(prdtNm);
+			getDealList();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
 	return{
 		getDealList : getDealList
-		, resetSearchRequiment : resetSearchRequiment
+		, resetSearchRequiment_TB06030S : resetSearchRequiment_TB06030S
 		, managePrdtCd : managePrdtCd
 		, setLstMrtg : setLstMrtg
 		, setAtchFle : setAtchFle
@@ -1424,5 +1386,6 @@ const TB06030Sjs = (function(){
 		, onChangeEprzCrdlPrdtLclsCd : onChangeEprzCrdlPrdtLclsCd
 		, onChangeEprzCrdlPrdtMdclCd : onChangeEprzCrdlPrdtMdclCd
 		, defaultNumberFormat: defaultNumberFormat
+		, getDealInfoFromWF : getDealInfoFromWF
 	}
 })();

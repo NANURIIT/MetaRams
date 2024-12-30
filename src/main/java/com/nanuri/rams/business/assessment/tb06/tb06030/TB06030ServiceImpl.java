@@ -11,6 +11,8 @@ import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS250BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS103BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS201BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS209BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS212BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS250BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS201BVO;
 import com.nanuri.rams.business.common.vo.TB06010SVO;
@@ -27,6 +29,8 @@ public class TB06030ServiceImpl implements TB06030Service {
 	private final IBIMS103BMapper ibims103bMapper;
 	private final IBIMS201BMapper ibims201bMapper;
 	private final IBIMS250BMapper ibims250bMapper;
+	private final IBIMS212BMapper ibims212bMapper;
+	private final IBIMS209BMapper ibims209bMapper;
 
 	@Autowired
 	private AuthenticationFacade facade;
@@ -116,6 +120,11 @@ public class TB06030ServiceImpl implements TB06030Service {
 	// 종목정보 삭제
 	@Override
 	public int deletePrdtCd(IBIMS201BVO param) {
+		String prdtCd =param.getPrdtCd();
+		//연결 승인조건내역 삭제
+		ibims209bMapper.deleteIBIMS209BbyPrdtCd(prdtCd);
+		//연결 담보내역 삭제
+		ibims212bMapper.deleteIBIMS212BbyPrdtCd(prdtCd);
 		return ibims201bMapper.deletePrdtCd(param);
 	}
 

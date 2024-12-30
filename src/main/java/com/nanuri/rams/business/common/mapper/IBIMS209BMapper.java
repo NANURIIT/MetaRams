@@ -15,5 +15,7 @@ public interface IBIMS209BMapper {
 	IBIMS209BDTO select209B(IBIMS209BVO param);
 
 	int deleteIBIMS209B(IBIMS209BDTO param);
+	
+	int deleteIBIMS209BbyPrdtCd(String prdtCd);
 
 }

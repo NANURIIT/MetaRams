@@ -13,6 +13,7 @@ const TB07070Sjs = (function () {
     getSelBx();
     pqGrid();
     setDefaultVal();
+    getDealInfoFromWF();
   });
 
   const setDefaultVal = () => {
@@ -553,8 +554,24 @@ const TB07070Sjs = (function () {
     excRdmpCncl.setData([]); // 취소대상내역
   }
 
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07070S_prdtCd").val(prdtCd);
+			$("#TB07070S_prdtNm").val(prdtNm);
+			srch();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     srch: srch,
     reset: reset,
+    getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

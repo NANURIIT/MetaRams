@@ -14,6 +14,7 @@ const TB08040Sjs = (function () {
     pqGrid(); // PqGrid 생성
 	selectBoxSet_TB08040S(); //부서 셀렉트박스 세팅
 	loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
+  getDealInfoFromWF();
   });
   
   /**
@@ -222,19 +223,6 @@ const TB08040Sjs = (function () {
         align: "center",
         width: "10%",
 		filter: { crules: [{ condition: "range" }] },
-		editor: {
-		  type: "select",
-		  valueIndx: "actsCd",
-		  labelIndx: "actName",
-		  options: selectBox2,
-		},
-		render: function (ui) {
-	  	    let fSel = selectBox2.find(	
-            ({ actsCd }) => actsCd == ui.cellData
-          );
-          return fSel ? fSel.actName : ui.cellData;
-        },
-		editable: false,		
       },
 	  {
 	    title: "계정과목코드",
@@ -891,7 +879,7 @@ const TB08040Sjs = (function () {
    let feeSchList;
    
 
-   saveGrid  = addGrd(feeSch);
+   saveGrid   = addGrd(feeSch);
    feeSchList = saveGrid;
    console.log("저장리스트"+feeSchList.length); //U+I+D
    chkSchList = saveGrid.filter((item) => item.rowType !== null);
@@ -1190,6 +1178,13 @@ const TB08040Sjs = (function () {
 	for (let i = 0; i < data.length; i++) { 
 		const chkData = data[i];
 	    if(chkData.rowType =="I" ||chkData.rowType =="U"){
+			chkData.prarDt 			=replaceAll(chkData.prarDt, '-', '');
+			chkData.fnnrRcogStrtDt  =replaceAll(chkData.fnnrRcogStrtDt, '-', '');
+			chkData.fnnrRcogEndDt 	=replaceAll(chkData.fnnrRcogEndDt, '-', '');
+			chkData.feeRcivDt 		=replaceAll(chkData.feeRcivDt, '-', '');
+			chkData.feeStdrAmt		=uncomma(chkData.feeStdrAmt);
+			chkData.feeRt			=uncomma(chkData.feeRt);
+			chkData.feeAmt			=uncomma(chkData.feeAmt);
         	saveGrid.push(chkData);	  
 		}  
 	}	
@@ -1198,11 +1193,12 @@ const TB08040Sjs = (function () {
 	for (let i = 0; i < delGrid.length; i++) { 
 			const delData = delGrid[i];
 		    saveGrid.push(delData); 
-		}
+	}
 	
 	return saveGrid;
   }
   
+
 
   // swal.fire
   function sf(flag, icon, text, callback = () => { }) {
@@ -1223,9 +1219,20 @@ const TB08040Sjs = (function () {
     }
   }
   
-
-  
-  
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB08040S_prdtCd").val(prdtCd);
+			$("#TB08040S_prdtNm").val(prdtNm);
+      srch();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
   
   return {
     feeSch: feeSch
@@ -1245,5 +1252,6 @@ const TB08040Sjs = (function () {
 	, loginUserSet_TB08040S: loginUserSet_TB08040S
 	, selectBoxSet_TB08040S: selectBoxSet_TB08040S
 	, init_TB08040S : init_TB08040S
+  , getDealInfoFromWF: getDealInfoFromWF,
   };
 })();
