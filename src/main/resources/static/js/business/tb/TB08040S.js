@@ -879,7 +879,7 @@ const TB08040Sjs = (function () {
    let feeSchList;
    
 
-   saveGrid  = addGrd(feeSch);
+   saveGrid   = addGrd(feeSch);
    feeSchList = saveGrid;
    console.log("저장리스트"+feeSchList.length); //U+I+D
    chkSchList = saveGrid.filter((item) => item.rowType !== null);
@@ -1178,6 +1178,13 @@ const TB08040Sjs = (function () {
 	for (let i = 0; i < data.length; i++) { 
 		const chkData = data[i];
 	    if(chkData.rowType =="I" ||chkData.rowType =="U"){
+			chkData.prarDt 			=replaceAll(chkData.prarDt, '-', '');
+			chkData.fnnrRcogStrtDt  =replaceAll(chkData.fnnrRcogStrtDt, '-', '');
+			chkData.fnnrRcogEndDt 	=replaceAll(chkData.fnnrRcogEndDt, '-', '');
+			chkData.feeRcivDt 		=replaceAll(chkData.feeRcivDt, '-', '');
+			chkData.feeStdrAmt		=uncomma(chkData.feeStdrAmt);
+			chkData.feeRt			=uncomma(chkData.feeRt);
+			chkData.feeAmt			=uncomma(chkData.feeAmt);
         	saveGrid.push(chkData);	  
 		}  
 	}	
@@ -1186,11 +1193,12 @@ const TB08040Sjs = (function () {
 	for (let i = 0; i < delGrid.length; i++) { 
 			const delData = delGrid[i];
 		    saveGrid.push(delData); 
-		}
+	}
 	
 	return saveGrid;
   }
   
+
 
   // swal.fire
   function sf(flag, icon, text, callback = () => { }) {
