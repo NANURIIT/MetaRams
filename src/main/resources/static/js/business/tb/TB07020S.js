@@ -279,12 +279,12 @@ const TB07020Sjs = (function() {
 		loadUserAuth(); // 담당자 정보 조회
 
 		setGrid_TB07020S();
-
 		/**
 		 * 인풋박스 초기화 공통
 		 * common.js
 		 */
 		resetInputValue($('div[data-menuid="/TB07020S"]'));
+		getDealInfoFromWF();
 	});
 
 	function setGrid_TB07020S(){
@@ -1708,6 +1708,21 @@ const TB07020Sjs = (function() {
 		pq.saveAs(blob, fileName);
 	}
 
+	function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07020S_srch_prdtCd").val(prdtCd);
+			$("#TB07020S_srch_prdtNm").val(prdtNm);
+			getBuyList();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
 	return {
 		/**
 		 * 사용 할 함수 정의
@@ -1721,6 +1736,7 @@ const TB07020Sjs = (function() {
 	,	showAlert : showAlert
 	,	calcTrAmt : calcTrAmt
 	,	saveExcelFile : saveExcelFile 	// 엑셀 저장 함수
+	, getDealInfoFromWF : getDealInfoFromWF
 	}
 
 })();

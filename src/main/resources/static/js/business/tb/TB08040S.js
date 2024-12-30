@@ -14,6 +14,7 @@ const TB08040Sjs = (function () {
     pqGrid(); // PqGrid 생성
 	selectBoxSet_TB08040S(); //부서 셀렉트박스 세팅
 	loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
+  getDealInfoFromWF();
   });
   
   /**
@@ -1218,9 +1219,20 @@ const TB08040Sjs = (function () {
     }
   }
   
-
-  
-  
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB08040S_prdtCd").val(prdtCd);
+			$("#TB08040S_prdtNm").val(prdtNm);
+      srch();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
   
   return {
     feeSch: feeSch
@@ -1240,5 +1252,6 @@ const TB08040Sjs = (function () {
 	, loginUserSet_TB08040S: loginUserSet_TB08040S
 	, selectBoxSet_TB08040S: selectBoxSet_TB08040S
 	, init_TB08040S : init_TB08040S
+  , getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

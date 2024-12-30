@@ -31,7 +31,6 @@ const TB06010Sjs = (function(){
 		pqGrid();
 
 		resetSearchRequiment();
-
 		console.log("성격", I041);
 		console.log("형태", I042);
 		
@@ -64,6 +63,8 @@ const TB06010Sjs = (function(){
 
 			}
 		});
+		
+		getDealInfoFromWF();
 	});
 
 	var option = {}
@@ -2055,23 +2056,19 @@ const TB06010Sjs = (function(){
 		setTimeout(() => arrPqGridAssetInfo.refresh(), 1);
 	}
 
-	function getUrlDealInfo() {
+	function getDealInfoFromWF() {
 		
-		var dealNo = sessionStorage.getItem("wfDealNo");
-		var dealNm = sessionStorage.getItem("wfDealNm");
-		var prdtCd = sessionStorage.getItem("wfPrdtCd");
-		var prdtNm = sessionStorage.getItem("wfPrdtNm");
-		if(dealNo !=null){
+		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
-			$("#TB06010S_ibDealNo").val(dealNo);
-			$("#TB06010S_ibDealNm").val(dealNm);
-			$("#TB06010S_prdtCd").val(prdtCd);
-			$("#TB06010S_prdtNm").val(prdtNm);
+			$("#TB06010S_ibDealNo").val(sessionStorage.getItem("wfDealNo"));
+			$("#TB06010S_ibDealNm").val(sessionStorage.getItem("wfDealNm"));
+			$("#TB06010S_prdtCd").val(sessionStorage.getItem("wfPrdtCd"));
+			$("#TB06010S_prdtNm").val(sessionStorage.getItem("wfPrdtNm"));
 		getDealList();
-		sessionStorage.clear();
 		}else{
 			console.log("WF세션 비었음");
 		}
+		sessionStorage.clear();
 	}
 
 	return {
@@ -2102,6 +2099,6 @@ const TB06010Sjs = (function(){
 		, mdvdCd : mdvdCd
 		, sdvdCd : sdvdCd
 
-		,getUrlDealInfo : getUrlDealInfo
+		, getDealInfoFromWF : getDealInfoFromWF
 	}
 })();

@@ -8,6 +8,7 @@ const TB07120Sjs = (function () {
     setInput();
     fnSelectBox();
     createOption();
+    getDealInfoFromWF();
   });
 
   /**
@@ -699,9 +700,25 @@ const TB07120Sjs = (function () {
     return true;
   }
 
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07120S_prdtCd").val(prdtCd);
+			$("#TB07120S_prdtNm").val(prdtNm);
+      get07120sList();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     get07120sList: get07120sList,
     updateFndsCnstDecd: updateFndsCnstDecd,
-    reset: reset
+    reset: reset,
+    getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

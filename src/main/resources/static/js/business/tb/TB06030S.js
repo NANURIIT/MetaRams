@@ -16,6 +16,7 @@ const TB06030Sjs = (function(){
 		defaultNumberFormat();
 		//초기화버튼
 		resetSearchRequiment_TB06030S();
+		getDealInfoFromWF();
 	});
 	
 	
@@ -1349,6 +1350,25 @@ const TB06030Sjs = (function(){
 		//setTimeout(() => arrPqGridAtchFleInfo.refresh(), 1)
 	}
 
+	function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var dealNo = sessionStorage.getItem("wfDealNo");
+			var dealNm = sessionStorage.getItem("wfDealNm");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB06030S_ibDealNo").val(dealNo);
+			$("#TB06030S_ibDealNm").val(dealNm);
+			$("#TB06030S_prdtCd").val(prdtCd);
+			$("#TB06030S_prdtNm").val(prdtNm);
+			getDealList();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
 	return{
 		getDealList : getDealList
 		, resetSearchRequiment_TB06030S : resetSearchRequiment_TB06030S
@@ -1366,5 +1386,6 @@ const TB06030Sjs = (function(){
 		, onChangeEprzCrdlPrdtLclsCd : onChangeEprzCrdlPrdtLclsCd
 		, onChangeEprzCrdlPrdtMdclCd : onChangeEprzCrdlPrdtMdclCd
 		, defaultNumberFormat: defaultNumberFormat
+		, getDealInfoFromWF : getDealInfoFromWF
 	}
 })();

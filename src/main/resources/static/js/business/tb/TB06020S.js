@@ -15,7 +15,9 @@ const TB06020Sjs = (function(){
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		defaultNumberFormat(); //기본 숫자타입
 		//초기화버튼
-		resetSearchRequiment();
+		resetSearchRequiment_TB06020S();
+		
+		getDealInfoFromWF();
 	});
 	
 	
@@ -452,7 +454,7 @@ const TB06020Sjs = (function(){
 					text: '집합투자증권 정보등록이 가능한 안건이 아닙니다.',
 					confirmButtonText: '확인',
 				}).then(() => {
-					resetSearchRequiment(); //초기화
+					resetSearchRequiment_TB06020S(); //초기화
 				});
 			}
 		});/* end of ajax*/
@@ -1167,6 +1169,25 @@ const TB06020Sjs = (function(){
 		setTimeout(() => arrPqGridAtchFleInfo.refresh(), 1)
 	}
 
+	function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var dealNo = sessionStorage.getItem("wfDealNo");
+			var dealNm = sessionStorage.getItem("wfDealNm");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB06020S_ibDealNo").val(dealNo);
+			$("#TB06020S_ibDealNm").val(dealNm);
+			$("#TB06020S_prdtCd").val(prdtCd);
+			$("#TB06020S_prdtNm").val(prdtNm);
+		getDealList();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
 	return {
 		  getDealList : getDealList
 		, resetSearchRequiment_TB06020S : resetSearchRequiment_TB06020S
@@ -1184,5 +1205,6 @@ const TB06020Sjs = (function(){
 		, onChangeEprzCrdlPrdtLclsCd : onChangeEprzCrdlPrdtLclsCd
 		, onChangeEprzCrdlPrdtMdclCd : onChangeEprzCrdlPrdtMdclCd
 		, defaultNumberFormat: defaultNumberFormat
+		, getDealInfoFromWF : getDealInfoFromWF
 	}
 })();

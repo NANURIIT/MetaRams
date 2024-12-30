@@ -203,7 +203,7 @@
 															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
+													<button class="btn btn-default" type="button" onclick="callPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
 													<!--<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage(''">기업체등록</button>-->
 													<button class="btn btn-default" type="button" onclick="callTB06019P('TB06060S');">기업체 등록</button><br>
 												</div>
@@ -287,7 +287,7 @@
 															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
 														</div>
 													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
+													<button class="btn btn-default" type="button" onclick="callPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
 													<!--<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage(''">기업체등록</button>-->
 													<button class="btn btn-default" type="button" onclick="callTB06019P('TB06060S');">기업체 등록</button>
 												</div>
@@ -453,7 +453,13 @@
 						</div>
 					</div>
 				</div>
-				
+				<div style="display:none">
+				<input id="sessionDealNo" readonly>
+				<input id="sessionDealNm" readonly>
+				<input id="sessionPrdtCd" readonly>
+				<input id="sessionPrdtNm" readonly>
+				</div>
+
 			</div>
 		</div>
 	</div>

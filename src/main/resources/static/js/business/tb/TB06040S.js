@@ -11,6 +11,7 @@ const TB06040Sjs = (function() {
         getSelectBoxList('TB06040S', 'R023/S003/I005/E020/E011/E005/I011');
         resetDd();
 		defaultNumberFormat();
+        getDealInfoFromWF();
       /*  $('input').on('focus', function() {
             $(this).select();
         });*/
@@ -650,19 +651,19 @@ const TB06040Sjs = (function() {
         });
     }
 
-    function getUrlDealInfo() {
+    function getDealInfoFromWF() {
 		
-		var prdtCd = sessionStorage.getItem("wfPrdtCd");
-		var prdtNm = sessionStorage.getItem("wfPrdtNm");
-		if(prdtCd !=null){
+		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
+            var prdtCd = sessionStorage.getItem("wfPrdtCd");
+            var prdtNm = sessionStorage.getItem("wfPrdtNm");
             $("#TB06040S_prdtCd").val(prdtCd);
             $("#TB06040S_prdtNm").val(prdtNm);
-		srch();
-		sessionStorage.clear();
+		    srch();
 		}else{
 			console.log("WF세션 비었음");
 		}
+		sessionStorage.clear();
 	}
 
 	return {
@@ -673,7 +674,7 @@ const TB06040Sjs = (function() {
 	,	srch : srch
 	,	reset : reset
     ,   btnCtr : btnCtr
-    , getUrlDealInfo : getUrlDealInfo
+    ,   getDealInfoFromWF : getDealInfoFromWF
 	}
 
 })();
