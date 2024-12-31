@@ -119,7 +119,7 @@ const TB10110Sjs = (function () {
    */
   function setGrid_TB10110S() {
     var obj_TB10110S = {
-      height: 790,
+      height: 580,
       maxHeight: 790,
       showTitle: false,
       showToolbar: false,
