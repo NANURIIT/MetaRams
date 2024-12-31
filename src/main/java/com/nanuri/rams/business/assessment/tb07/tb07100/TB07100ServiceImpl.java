@@ -1,11 +1,14 @@
 package com.nanuri.rams.business.assessment.tb07.tb07100;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.common.dto.IBIMS115BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS431BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS432BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS431BVO;
@@ -81,6 +84,18 @@ public class TB07100ServiceImpl implements TB07100Service {
 		return ibims431bMapper.deleteIBIMS431B(param);
 	};
 
+	
+	@Override
+	public int insertIBIMS432B(IBIMS432BVO param){
+		param.setHndEmpno(facade.getDetails().getEno());
+
+		
+		for( int i = 0 ; i < param.getRowInfoList().size() ; i ++ ) {
+			param.getRowInfoList().get(i).setHndEmpno(facade.getDetails().getEno());
+		}
+
+		return ibims432bMapper.insertIBIMS432B(param.getRowInfoList());
+	};
 	// 상세 삭제
 	@Override
 	public int deleteIBIMS432B(IBIMS432BVO param){
