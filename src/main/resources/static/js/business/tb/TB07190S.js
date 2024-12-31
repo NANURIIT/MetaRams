@@ -7,16 +7,18 @@ const TB07190Sjs = (function () {
   let selectBox1;
   let selectBox2;
   let grdSelect = {};
+  let modalFeelRecvList;
 
 
   $(document).ready(function () {
     // fnSelectBox();
     // createSelectTag();
-    pqGrid();
+    //pqGrid();
 	selBox();
 	selectBoxSet_TB07190S();
 	loginUserSet_TB07190S();
-  getDealInfoFromWF();
+  	getDealInfoFromWF();
+	pqGrid_TB07190S();
   });
 
    /*
@@ -50,8 +52,10 @@ const TB07190Sjs = (function () {
         "/E027" + // 과세유형구분코드 TXTN_TP_DCD
         "/F001" + // 수수료선후급구분코드 FEE_BNAP_DCD
         "/T006" + // 수수료과세여부 FEE_TXTN_YN
+		"/A004" + // 회계단위업무코드
   	    "/A005" + // 계정과목코드
 		"/E025" + // 거래종류코드
+		"/E008" + // 수수료종류코드
         "/I027", // 통화코드
         false
       );
@@ -91,10 +95,14 @@ const TB07190Sjs = (function () {
       grdSelect.T006 = selectBox.filter((item) => item.cmnsGrpCd === "T006");
       // 통화코드
       grdSelect.I027 = selectBox.filter((item) => item.cmnsGrpCd === "I027");
-  	  // 통화코드
+	  // 회계단위업무코드
+	  grdSelect.A004 = selectBox.filter((item) => item.cmnsGrpCd === "A004");
+  	  // 계정과목코드
   	  grdSelect.A005 = selectBox.filter((item) => item.cmnsGrpCd === "A005");
 	  // 거래종류코드
 	  grdSelect.E025 = selectBox.filter((item) => item.cmnsGrpCd === "E025");
+	  // 수수료종류코드
+	  grdSelect.E008 = selectBox.filter((item) => item.cmnsGrpCd === "E008");
 	  
     }
 	
@@ -209,16 +217,16 @@ const TB07190Sjs = (function () {
         dataIndx: "actsCd",
         halign: "center",
         align: "center",
-        width: "120",
+        width: "100",
         filter: { crules: [{ condition: "range" }] },
       },
       {
         title: "계정과목명",
         dataType: "string",
-        dataIndx: "actName",
+        dataIndx: "actsCd",
         halign: "center",
         align: "left",
-        width: "180",
+        width: "160",
         filter: { crules: [{ condition: "range" }] },
 		editor: {
 		         type: "select",
@@ -245,7 +253,7 @@ const TB07190Sjs = (function () {
       {
         title: "기업체명",
         dataType: "string",
-        dataIndx: "bzepName",
+        dataIndx: "entpNm",
         halign: "center",
         align: "left",
         width: "180",
@@ -286,7 +294,7 @@ const TB07190Sjs = (function () {
         halign: "center",
         align: "right",
         format: "#,###",
-        width: "180",
+        width: "150",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -294,9 +302,21 @@ const TB07190Sjs = (function () {
         dataType: "string",
         dataIndx: "eprzCrdlFeeKndCd",
         halign: "center",
-        align: "center",
+        align: "left",
         width: "180",
         filter: { crules: [{ condition: "range" }] },
+		editor: {
+		         type: "select",
+		         valueIndx: "cdValue",
+		         labelIndx: "cdName",
+		         options: grdSelect.E008,
+		       },
+		   render: function (ui) {
+		     let fSel = grdSelect.E008.find(
+		       ({ cdValue }) => cdValue == ui.cellData
+		     );
+		     return fSel ? fSel.cdName : ui.cellData;
+		   },
       },
       {
         title: "수수료명",
@@ -306,6 +326,7 @@ const TB07190Sjs = (function () {
         align: "left",
         width: "180",
         filter: { crules: [{ condition: "range" }] },
+	
       },
       {
         title: "예정일자",
@@ -383,18 +404,42 @@ const TB07190Sjs = (function () {
         dataType: "string",
         dataIndx: "etprCrdtGrntTrKindCd",
         halign: "center",
-        align: "left",
+        align: "center",
         width: "120",
         filter: { crules: [{ condition: "range" }] },
+		editor: {
+	         type: "select",
+	         valueIndx: "cdValue",
+	         labelIndx: "cdName",
+	         options:  grdSelect.E025,
+	       },
+	   render: function (ui) {
+	     let fSel =  grdSelect.E025.find(
+	       ({ cdValue }) => cdValue == ui.cellData
+	     );
+	     return fSel ? fSel.cdName : ui.cellData;
+	   },
       },
       {
-        title: "회계단위업무코드",
+        title: "회계단위업무",
         dataType: "string",
-        dataIndx: "actgAfrsCd",
+        dataIndx: "acctUnJobCd",
         halign: "center",
         align: "left",
-        width: "180",
+        width: "100",
         filter: { crules: [{ condition: "range" }] },
+		editor: {
+         type: "select",
+         valueIndx: "cdValue",
+         labelIndx: "cdName",
+         options:  grdSelect.A004,
+       },
+	   render: function (ui) {
+	     let fSel =  grdSelect.A004.find(
+	       ({ cdValue }) => cdValue == ui.cellData
+	     );
+	     return fSel ? fSel.cdName : ui.cellData;	
+   		},
       },
       {
         title: "IFRS수수료인식구분코드",
@@ -402,7 +447,7 @@ const TB07190Sjs = (function () {
         dataIndx: "ifrsFeeRcogDcd",
         halign: "center",
         align: "left",
-        width: "180",
+        width: "160",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -654,7 +699,7 @@ const TB07190Sjs = (function () {
   /*
    *  PQGRID SETTING
    */
-  function pqGrid() {
+  function pqGrid_TB07190S() {
     // 그리드 옵션 생성
     let pqGridObjs = [
       {
@@ -675,7 +720,11 @@ const TB07190Sjs = (function () {
       },
     ];
     setPqGrid(pqGridObjs);
-    $("#TB07190S_colModel1").pqGrid("instance");
+	if(typeof modalFeelRecvList =="undefined"){
+		$("#TB07190S_colModel1").pqGrid(pqGridObjs);
+		modalFeelRecvList = $("#TB07190S_colModel1").pqGrid("instance");
+		console.log("modalFeelRecvList생성"+modalFeelRecvList);
+	}
   }
 
   /*
@@ -726,7 +775,9 @@ const TB07190Sjs = (function () {
 	  endYmd : $("#TB07190S_endYmd").val().replaceAll("-", ""), //종료일자
 	  //dprtCd : $("#TB07190S_dprtCd").val(), //부서코드
     };
-
+	//그리드 초기화 by hytest
+	modalFeelRecvList.setData([]);
+	
     $.ajax({
       type: "POST",
       url: "/TB07190S/getTB07190SData",
@@ -735,12 +786,15 @@ const TB07190Sjs = (function () {
       success: function (data) {
         if (data) {
           result = 1;
-          let grid = $("#TB07190S_colModel1").pqGrid("instance");
-          grid.setData(data);
-          grid.getData();
-          TB07190S_pqGridLength = grid.pdata.length;
+		  modalFeelRecvList.setData(data);
+		  
+          TB07190S_pqGridLength = modalFeelRecvList.pdata.length;
         } else {
           result = -1;
+		  if(data.length == "undefined") {
+			modalFeelRecvList.setData([]);	 
+		} 
+		  
           Swal.fire({
             icon: "warning",
             text: "정보가 없습니다!",
@@ -910,6 +964,19 @@ const TB07190Sjs = (function () {
 		}
 		sessionStorage.clear();
 	}
+	
+	//초기화버튼
+	const resetInputData_TB07190S = () => {
+	  $("input").val("");
+	  $("select").val("");
+	  $('input[id*="Amt"], input[id*=Rt]').val(0);
+
+		if(typeof modalFeelRecvList == "undefined") {
+	   	}else{
+	    	modalFeelRecvList.setData([]);
+	   	}
+	};
+	
 
   return {
     getData: getData,
@@ -918,7 +985,8 @@ const TB07190Sjs = (function () {
 	getSelBoxCdFeeKndCd:getSelBoxCdFeeKndCd,
 	loginUserSet_TB07190S:loginUserSet_TB07190S,
 	TB07190S_colModelData:TB07190S_colModelData,
-	pqGrid:pqGrid,
+	resetInputData_TB07190S:resetInputData_TB07190S,
+	pqGrid_TB07190S:pqGrid_TB07190S,
 	TB07190S_resetPqGrid:TB07190S_resetPqGrid,
 	colModelIdSelector:colModelIdSelector,
   getDealInfoFromWF: getDealInfoFromWF,
