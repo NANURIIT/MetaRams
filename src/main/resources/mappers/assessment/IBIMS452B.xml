@@ -13,6 +13,7 @@
           , RELT_STFNO
           , CONS_DECD_DVSN_CD
           , CONS_DECD_STAT_CD
+          , OVRS_TRNS_YN
           , RJCT_RSN_CNTN
           , HND_DETL_DTM
           , HND_EMPNO
@@ -32,6 +33,7 @@
           , #{reltStfno}
           , #{consDecdDvsnCd}
           , #{consDecdStatCd}
+          , #{ovrsTrnsYn}
           , #{rjctRsnCntn}
           , SYSDATE
           , #{hndEmpno}
@@ -48,6 +50,7 @@
              , RELT_STFNO = #{reltStfno}
              , CONS_DECD_DVSN_CD = #{consDecdDvsnCd}
              , CONS_DECD_STAT_CD = #{consDecdStatCd}
+             , OVRS_TRNS_YN = #{ovrsTrnsYn}
              , RJCT_RSN_CNTN = #{rjctRsnCntn}
              , HND_DETL_DTM = SYSDATE
              , HND_EMPNO = #{hndEmpno}

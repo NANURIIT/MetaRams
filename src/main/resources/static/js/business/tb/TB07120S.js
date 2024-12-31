@@ -325,11 +325,8 @@ const TB07120Sjs = (function () {
         let consDecdStatCd = ui.rowData.consDecdStatCd;   
         setIbims452b(ui.rowData);    
         decdStatChk(consDecdStatCd);
-        //TODO : 부속서류목록 정보를 가져오는 로직 추가 필요
-        console.log("key1 : ",$('#key1').val())
-        
+        //부속서류목록(TB06010S의 첨부파일 그대로 가져옴)
         $('#fileKey2').val(ui.rowData.prdtCd)
-        console.log("key2 : ",$('#fileKey2').val())
         getFileInfo($('#key1').val(), $('#fileKey2').val());
       },
     };
@@ -397,13 +394,6 @@ const TB07120Sjs = (function () {
       if (idMap[key]) {
         $(`#ibims452b #${idMap[key]}`).val(value);
       }
-    }
-
-    // FIXME : 확인 필요
-    // 입출금 구분이 "출금"인 경우, 해외송금여부 라디오박스 값 세팅
-    if (depositWithdrawalCode === "출금" && trCrryCd) {
-      const isForeignTransfer = trCrryCd !== "KRW";  // KRW가 아닌 경우 Y, KRW일 경우 N
-      $(".TB07120S_isForeignTransfer[value='" + (isForeignTransfer ? 'Y' : 'N') + "']").prop("checked", true);
     }
     
     $('#TB07120S_consDecdDvsnCd').val(rowData.consDecdDvsnCd) //결재단계구분
@@ -509,8 +499,6 @@ const TB07120Sjs = (function () {
    * @param consDecdStatCd 결재상태
    *
    * // TODO : 추후 결재상태에 따른 추가 동작 구현
-   * 1. 승인요청자일 경우, 저장 및 승인 요청 버튼 활성화
-   * 2. 승인담당자일 경우, 승인 및 반려 버튼 활성화
    * 
    * 현재 동작:
    * - 결재상태가 '해당없음(0)', '반려(3)', '승인취소(4)'일 경우, 저장 및 승인요청 버튼 활성화
@@ -551,11 +539,13 @@ const TB07120Sjs = (function () {
     ) {
       $("#TB07120S_save").prop("disabled", false);
       $("#TB07120S_apvlRqst").prop("disabled", false);
+      $(".TB07120S_isForeignTransfer").prop("disabled", false);
     }
     // 승인, 반려만 활성화
     else if (consDecdStatCd === "1") {
       $("#TB07120S_apvl").prop("disabled", false);
       $("#TB07120S_gbck").prop("disabled", false);
+      $(".TB07120S_isForeignTransfer").prop("disabled", true);
       // $("#TB07120S_rjctRsnCntn").prop("disabled", false); 
     }
     // 승인취소만 활성화
@@ -577,8 +567,12 @@ const TB07120Sjs = (function () {
 
   /**
    * @param consDecdStatBtnNo // 버튼번호
+   * 
+   *  
    */
   function updateFndsCnstDecd(consDecdStatBtnNo) {
+    let result;
+    let query;
     let swalText;
     let consDecdDvsnCd; //결재단계구분
 
@@ -599,33 +593,34 @@ const TB07120Sjs = (function () {
       consDecdDvsnCd = ""; 
     }
 
-    let result;
-    let query;
-    const nowStat = $("#TB07120S_consDecdStatCd").val();
-
-    if(nowStat == ""){ //전체
-      if(TB07120S_nowRowData.consDecdStatCd === "0"){
-        query = "insert";
-      }else{
-        query = "update";
-      }
-    } else if(owStat === "0"){
+    // const nowStat = $("#TB07120S_consDecdStatCd").val();
+    // TODO : query 결제단계구분에 담당자작성중일 때 따로 처리 해야함
+    if(TB07120S_nowRowData.consDecdStatCd === "0"){
       query = "insert";
-    } else{
+    }else{
       query = "update";
     }
-    console.log(nowStat);
-    // if (nowStat === "0") { //해당없음
+
+    console.log("query : ", query);
+    
+    // if(nowStat == ""){ //전체
+    //   if(TB07120S_nowRowData.consDecdStatCd === "0"){
+    //     query = "insert";
+    //   }else{
+    //     query = "update";
+    //   }
+    // } else if(nowStat === "0"){
     //   query = "insert";
     // } else{
     //   query = "update";
     // }
+    // console.log(nowStat);
 
     // 유효성 검사 실패 시 멈추도록 수정
     if (!TB07120S_validateFields(consDecdStatBtnNo)) {
         return;
     }
-
+    
     /**
      * @param dealNo 딜번호
      * @param excSeq 거래일련번호
@@ -634,7 +629,7 @@ const TB07120Sjs = (function () {
      * @param TB07120S1_empNo 담당자
      * @param TB07120S_rjctRsnCntn 반려사유
      * // TODO : 해와송금여부 입력 받기로 함(2024.12.30)
-     *    - 현재 테이블에 해외송금여부 칼럼이 없어 추가 필요   
+     *    - 현재 테이블(IBIMS452B:자금이체품의내역)에 해외송금여부 칼럼이 없어 추가 필요   
      */
     const paramData = {
       prdtCd : TB07120S_nowRowData.prdtCd,           //상품코드
@@ -648,12 +643,12 @@ const TB07120Sjs = (function () {
       consDecdStatCd: consDecdStatBtnNo,             //결재상태코드
       rjctRsnCntn: $("#TB07120S_rjctRsnCntn").val(), //반려사유내용
       hndEmpno : $("#userEno").val(),                //조작사원번호
-      //해외송금여부 : 
+      ovrsTrnsYn : $("input[name='radioGroup-1']:checked").val() //해외송금여부 
     };
 
     $.ajax({
       type: "POST",
-      url: `/TB07120S/${query}FndsCnstDecd`,
+      // url: `/TB07120S/${query}FndsCnstDecd`,
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       success: function (data) {
@@ -688,15 +683,21 @@ const TB07120Sjs = (function () {
 
   /**
   * 결재상태 버튼 클릭 시 입력 필드 검증
-  * @param consDecdStatBtnNo 결재상태 번호 ('1' - 승인요청, '3' - 반려)
+  * @param consDecdStatBtnNo 결재상태 번호 ('0'- 저장, '1' - 승인요청, '3' - 반려)
   */
   function TB07120S_validateFields(consDecdStatBtnNo){
     let rqstStfno = $("#TB07120S1_empNo").val(); //담당자
     let reltStfno = $("#TB07120S2_empNo").val(); //승인자
     let rjctRsnCntn = $("#TB07120S_rjctRsnCntn").val(); //반려사유
-    
+    let ovrsTrnsYn = $("input[name='radioGroup-1']:checked").val(); //해외송금여부 
+    //저장
+    if(consDecdStatBtnNo === "0" ){
+      if(!rqstStfno){
+        openPopup({ type: "info", text: "담당자 정보를 입력해주세요." });
+        return false;
+      }
     //승인요청
-    if(consDecdStatBtnNo === "1" ){
+    } else if(consDecdStatBtnNo === "1" ){
       if(!rqstStfno){
         openPopup({ type: "info", text: "담당자 정보를 입력해주세요." });
         return false;
@@ -706,6 +707,12 @@ const TB07120Sjs = (function () {
         openPopup({ type: "info", text: "승인자 정보를 입력해주세요." });
         return false;
       }
+
+      if(!ovrsTrnsYn){
+        openPopup({ type: "info", text: "해외송금여부를 선택해주세요." });
+        return false;
+      }
+
     } else if(consDecdStatBtnNo === "3" ){
       //반려
       if(!rjctRsnCntn){

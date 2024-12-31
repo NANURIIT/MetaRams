@@ -747,7 +747,6 @@
            , T1.TR_DT                           /* 거래일자  410B */
            , NVL(T7.CONS_DECD_STAT_CD , '0')   AS consDecdStatCd     /* 결재상태  452B */
            , T1.ORGNO     AS orgno              /* 부서코드  410B */
-           <!-- , T1.ORGNO     AS dprtNm             /* 부서명   410B */ -->
            , (
            	  SELECT DPRT_NM
            	    FROM IBIMS003B
@@ -771,7 +770,6 @@
            , T1.DEAL_TR_PRCA                    /* 거래원금  410B */
            , T1.FEE_TOT_AMT                     /* 수수료  410B */
            , T1.TR_CRRY_CD                      /* 통화구분  410B */
-           , T1.FNDS_DVSN_CD                    /* 자금구분  410B */
            , T1.RCTM_ISTT_CD                    /* 금융기관  410B */
            , T7.RQST_STFNO                      /* 담당자 452B */
            , T7.RELT_STFNO                      /* 승인자 452B */
