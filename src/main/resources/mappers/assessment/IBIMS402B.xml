@@ -734,12 +734,14 @@
     <!-- TB06015P 실행순번 selectBox 세팅 -->
     <select id="getExcSnTB06015P" parameterType = "String" resultType = "String">
       SELECT DISTINCT ib2.EXC_SN
-      FROM IBIMS402B ib2
-          , IBIMS404B ib4
-      WHERE 1=1
-      AND ib2.PRDT_CD = ib4.PRDT_CD 
-      AND ib2.EXC_SN = ib4.EXC_SN
-      AND ib2.PRDT_CD = #{paramData}
+        FROM IBIMS402B ib2
+           , IBIMS404B ib4
+       WHERE 1=1
+         AND ib2.PRDT_CD = ib4.PRDT_CD 
+         AND ib2.EXC_SN = ib4.EXC_SN
+         AND ib2.PRDT_CD = #{paramData}
+       ORDER
+          BY ib2.EXC_SN
     </select>
 
     <!-- 실행일련번호 조회 -->

@@ -1,144 +1,78 @@
 <!DOCTYPE html>
-<html
-  lang="ko"
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layout/ramsLayout}"
->
-  <th:block layout:fragment="script">
-    <script th:src="@{js/common.js}"></script>
-    <script th:src="@{/js/business/tb/TB10010S.js}"></script>
-  </th:block>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/ramsLayout}">
+<th:block layout:fragment="script">
+  <script th:src="@{js/common.js}"></script>
+  <script th:src="@{/js/business/tb/TB10010S.js}"></script>
+</th:block>
 
-  <th:block layout:fragment="customContent">
-    <!-- 공통코드관리 -->
-    <div class="wrapper wrapper-content animated fadeIn">
-      <div class="row">
-        <!-- 조회영역 -->
-        <div class="col-lg-12">
-          <div class="ibox">
-            <div class="ibox-content i-filter">
-              <div class="row form-group form-inline text-right">
-                <div class="col-sm-12 input-group">
-                  <label class="col-sm-1 control-label">코드구분</label>
-                  <select
-                    class="col-sm-2 form-control m-b"
-                    id="commonCodeInfo"
-                  ></select>
-                  <div class="col-sm-1">
-                    <button
-                      class="btn btn-primary"
-                      type="button"
-                      id="commonCodeSearch"
-                    >
-                      <i class="fa fa-search"></i>&nbsp;조회
-                    </button>
-                  </div>
+<th:block layout:fragment="customContent">
+  <!-- 공통코드관리 -->
+  <div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+      <!-- 조회영역 -->
+      <div class="col-lg-12">
+        <div class="ibox">
+          <div class="ibox-content i-filter">
+            <div class="row form-group form-inline text-right">
+              <div class="col-sm-12 input-group">
+                <label class="col-sm-1 control-label">코드구분</label>
+                <select class="col-sm-2 form-control m-b" id="commonCodeInfo"></select>
+                <div class="col-sm-1">
+                  <button class="btn btn-primary" type="button" id="commonCodeSearch">
+                    <i class="fa fa-search"></i>&nbsp;조회
+                  </button>
                 </div>
               </div>
             </div>
-            <!-- 조회결과 -->
-            <div class="ibox-content">
-              <div class="ibox">
-                <div class="ibox-title">
-                  <h5>▶ 그룹코드</h5>
-                  <div class="ibox-tools">
-                    <button
-                      class="btn btn-default btn-xs"
-                      type="button"
-                      onclick="TB10010Sjs.addGroupCodeRow();"
-                    >
-                      <i class="fa fa-plus"></i>&nbsp;행추가
-                    </button>
-                    <button
-                      class="btn btn-default btn-xs"
-                      type="button"
-                      onclick="TB10010Sjs.deleteGroupCodeRow();"
-                    >
-                      <i class="fa fa-minus"></i>&nbsp;행삭제
-                    </button>
-                    <button
-                      class="btn btn-success btn-xs"
-                      type="button"
-                      onclick="TB10010Sjs.clickSaveGroupCode();"
-                    >
-                      <i class="fa fa-save"></i>&nbsp;저장
-                    </button>
-                  </div>
-                </div>
-                <div class="ibox-content">
-                  <div id="groupCodeListTable"></div>
+          </div>
+          <!-- 조회결과 -->
+          <div class="ibox-content">
+            <div class="ibox">
+              <div class="ibox-title">
+                <h5>▶ 그룹코드</h5>
+                <div class="ibox-tools">
+                  <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.addGroupCodeRow();">
+                    <i class="fa fa-plus"></i>&nbsp;행추가
+                  </button>
+                  <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.deleteGroupCodeRow();">
+                    <i class="fa fa-minus"></i>&nbsp;행삭제
+                  </button>
+                  <button class="btn btn-success btn-xs" type="button" onclick="TB10010Sjs.clickSaveGroupCode();">
+                    <i class="fa fa-save"></i>&nbsp;저장
+                  </button>
                 </div>
               </div>
-              <!-- ibox -->
-              <div class="ibox">
-                <div class="ibox-title">
-                  <h5>▶ 상세코드</h5>
-                  <div class="ibox-tools">
-                    <button
-                      class="btn btn-default btn-xs"
-                      type="button"
-                      onclick="TB10010Sjs.addCodeRow();"
-                    >
-                      <i class="fa fa-plus"></i>&nbsp;행추가
-                    </button>
-                    <button
-                      class="btn btn-default btn-xs"
-                      type="button"
-                      onclick="TB10010Sjs.deleteCodeRow();"
-                    >
-                      <i class="fa fa-minus"></i>&nbsp;행삭제
-                    </button>
-                    <button
-                      class="btn btn-success btn-xs"
-                      type="button"
-                      onclick="TB10010Sjs.clickSaveCode();"
-                    >
-                      <i class="fa fa-save"></i>&nbsp;저장
-                    </button>
-                  </div>
-                </div>
-                <div class="ibox-content">
-                  <div class="tableFixHead">
-                    <!-- <table class="table table-bordered text-center">
-										<colgroup>
-											<col style="width: 5%;">
-											<col style="width: 10%;">
-											<col style="width: 27%;">
-											<col style="width: 10%;">
-											<col style="width: 7%;">
-											<col style="width: 7%;">
-											<col style="width: 10%;">
-											<col style="width: 7%;">
-											<col style="width: 10%;">
-											<col style="width: 7%;">
-										</colgroup>
-										<thead>
-											<tr>
-												<th>삭제</th>
-												<th>코드</th>
-												<th>코드명</th>
-												<th>변환후코드</th>
-												<th>순서</th>
-												<th>사용여부</th>
-												<th>등록일</th>
-												<th>등록자</th>
-												<th>처리일시</th>
-												<th>처리자</th>
-											</tr>
-										</thead>
-										<tbody id="codeListTable">
-										</tbody>
-									</table> -->
-                    <div id="codeListTable"></div>
-                  </div>
-                </div>
+              <div class="ibox-content">
+                <div id="groupCodeListTable"></div>
               </div>
-              <!-- ibox -->
             </div>
+            <!-- ibox -->
+            <div class="ibox">
+              <div class="ibox-title">
+                <h5>▶ 상세코드</h5>
+                <div class="ibox-tools">
+                  <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.addCodeRow();">
+                    <i class="fa fa-plus"></i>&nbsp;행추가
+                  </button>
+                  <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.deleteCodeRow();">
+                    <i class="fa fa-minus"></i>&nbsp;행삭제
+                  </button>
+                  <button class="btn btn-success btn-xs" type="button" onclick="TB10010Sjs.clickSaveCode();">
+                    <i class="fa fa-save"></i>&nbsp;저장
+                  </button>
+                </div>
+              </div>
+              <div class="ibox-content">
+                <div id="codeListTable"></div>
+              </div>
+            </div>
+            <!-- ibox -->
           </div>
         </div>
       </div>
     </div>
-  </th:block>
+  </div>
+</th:block>
+
 </html>
