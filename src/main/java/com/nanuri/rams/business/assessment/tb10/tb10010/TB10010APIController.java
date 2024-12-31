@@ -45,8 +45,8 @@ public class TB10010APIController {
 
 	// 그룹코드정보 등록하기
 	@PostMapping(value = "/registGroupCodeInfo")
-	public boolean registGroupCodeInfo(@RequestBody List<IBIMS001BVO> requestDtos) {
-		return service.registGroupCodeInfo(requestDtos);
+	public boolean registGroupCodeInfo(@RequestBody IBIMS001BVO paramData) {
+		return service.registGroupCodeInfo(paramData);
 	}
 
 	// 코드정보 등록하기

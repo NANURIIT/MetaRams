@@ -763,8 +763,8 @@
            , T1.ETPR_CRDT_GRNT_TR_KIND_CD       /* 거래종류코드 */
            , CASE 
                WHEN T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('20', '21', '82', '83', '85') THEN '입금'
-               ELSE '출금'
-            END AS depositWithdrawalCode
+               WHEN T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10', '22', '81', '84')       THEN '출금'
+             END AS depositWithdrawalCode       /* 입출금구분코드 */
            , T1.DEAL_TR_AMT                     /* 거래금액  410B */
            , T1.FNDS_DVSN_CD                    /* 자금구분  410B */
            , T1.TR_CRRY_CD                      /* 통화코드  410B */
@@ -841,7 +841,7 @@
                     AND T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('20', '21', '82', '83', '85')
                 </when>
                 <when test="depositWithdrawalCode == '02'">
-                    AND T1.ETPR_CRDT_GRNT_TR_KIND_CD NOT IN ('20', '21', '82', '83', '85')
+                    AND T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10', '22', '81', '84')
                 </when>
             </choose>
          </if>

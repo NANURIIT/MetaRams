@@ -219,10 +219,16 @@ function getFileInfo(key1, key2) {
   let fileKey1 = key1;
   let fileKey2 = key2;
 
+  let ScrnMenuId = menuId;
+
+  if(ScrnMenuId === "TB07120S"){
+    ScrnMenuId = "TB06010S"
+  }
+
   let paramData = {
     fileKey1: fileKey1,
     fileKey2: fileKey2,
-    ScrnMenuId: menuId
+    ScrnMenuId: ScrnMenuId
   };
 
   $.ajax({
