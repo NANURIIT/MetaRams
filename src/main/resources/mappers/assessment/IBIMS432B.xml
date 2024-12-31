@@ -33,17 +33,12 @@
              , A.HND_TMNL_NO
              , A.HND_TR_ID
              , A.GUID
-             , B.BCNC_NM
           FROM IBIMS432B A
-     LEFT JOIN IBIMS431B B
-            ON A.CNST_NO = B.CNST_NO
-           AND A.RSLN_BDCD = B.RSLN_BDCD
-           AND A.WRTN_DT = B.WRTN_DT
          WHERE 1=1
            AND A.WRTN_DT = #{wrtnDt}
            AND A.RSLN_BDCD = #{rslnBdcd}
-           AND A.ACTS_CD = #{actsCd}
-           AND B.BCNC_NM = #{bcncNm}
+           AND A.CNST_NO = #{cnstNo}
+           ORDER BY A.STTM_DETL_SN
     </select>
 
     <insert id="insertIBIMS432B" parameterType="com.nanuri.rams.business.common.vo.IBIMS432BVO">

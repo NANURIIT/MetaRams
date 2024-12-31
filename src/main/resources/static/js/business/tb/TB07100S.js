@@ -459,10 +459,9 @@ const TB07100Sjs = (function () {
           $(`#ibims431bdto #TB07100S_entmAccXstcYn`).prop('checked',ui.rowData['entmAccXstcYn'] == "Y");
                       
           const paramData = {
-            acctDt: ui.rowData.acctDt
-            , rslnBdcd: ui.rowData.rslnBdcd
-            , actsCd: ui.rowData.actsCd
-            , bcncNm: ui.rowData.bcncNm
+            wrtnDt: ui.rowData['wrtnDt']
+            , rslnBdcd: ui.rowData['rslnBdcd']
+            , cnstNo: ui.rowData['cnstNo']
           }
 
           if(ui.rowData['reltStfno'] == $('#userEno').val()){
