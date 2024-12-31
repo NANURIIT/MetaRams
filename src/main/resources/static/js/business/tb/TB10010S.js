@@ -797,12 +797,40 @@ const TB10010Sjs = (function () {
   };
 
   /**
+   * 상세코드 체크
+   * @description 그룹코드 삭제 시도시 해당 그룹내 상세코드 데이터가 존재하는지 확인
+   */
+  function chkDetailCode () {
+    let paramData = {
+      deleteList: deleteList
+    }
+
+    $.ajax({
+      method: "POST",
+      url: "/TB10010S/deleteGroupCodeInfo",
+      data: JSON.stringify(paramData),
+      contentType: "application/json; charset=UTF-8",
+      dataType: "json",
+      success: function (data) {
+        
+      },
+      error: function (response) {
+        let message = response.responseJSON.message;
+        openPopup({
+          title: "실패",
+          text: message,
+        });
+      },
+    });
+  }
+
+  /**
    * 그룹코드 행 삭제 처리
    * @param {list} groupCodeList 그룹코드 리스트
    */
-  var deleteGroupCode = function (groupCodeList) {
+  function deleteGroupCode (groupCodeList) {
     $.ajax({
-      method: "PATCH",
+      method: "POST",
       url: "/TB10010S/deleteGroupCodeInfo",
       data: JSON.stringify(groupCodeList),
       contentType: "application/json; charset=UTF-8",
