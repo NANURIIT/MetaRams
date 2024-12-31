@@ -1,6 +1,16 @@
 const TB10010Sjs = (function () {
   var codeId = "";
 
+  /**
+   * *** 그룹코드 ***
+   * 1. 설명, 사용여부만 업데이트 가능
+   * 2. 삭제시 관련 상세코드가 존재하는지 확인. 존재하는 상세코드가 있다면 삭제 불가
+   * 3. 신규 저장시 그룹코드명은 쿼리내에서 자동으로 지정
+   * 
+   * *** 상세코드 ***
+   * 1. 코드명, 사용여부 업데이트 가능
+   */
+
   let colModel_groupCdListTb = [
     //체크박스
     {
@@ -41,7 +51,6 @@ const TB10010Sjs = (function () {
       dataType: "string",
       dataIndx: "cmnsCdGrp",
       width: "7%",
-      editable: true,
       align: "left",
       halign: "center",
       width: "",
@@ -52,7 +61,6 @@ const TB10010Sjs = (function () {
       dataType: "string",
       dataIndx: "cmnsCdNm",
       width: "10%",
-      editable: true,
       align: "left",
       halign: "center",
       width: "",
@@ -63,7 +71,6 @@ const TB10010Sjs = (function () {
       dataType: "string",
       dataIndx: "cmnsCdGrpExpl",
       width: "15%",
-      editable: true,
       align: "left",
       halign: "center",
       width: "",
@@ -74,7 +81,6 @@ const TB10010Sjs = (function () {
       dataType: "string",
       dataIndx: "cmnsCdClsf",
       width: "7%",
-      editable: true,
       align: "center",
       halign: "center",
       width: "",
@@ -102,7 +108,6 @@ const TB10010Sjs = (function () {
       dataType: "string",
       dataIndx: "cdLngth",
       width: "7%",
-      editable: true,
       align: "center",
       halign: "center",
       width: "",
@@ -132,13 +137,16 @@ const TB10010Sjs = (function () {
       dataIndx: "cdListDltBtn",
       width: "7%",
       render: function (ui) {
-        return (
-          "<button class='ui-button ui-corner-all ui-widget' name='detail_btn' data-row-indx='" +
-          ui.rowIndx +
-          "'><i class='fa fa-arrow-down'></i>&nbsp;상세</button>"
-        );
-
-        //return '<td style="text-align:center;"><button class="groupCodeDetail btn btn-warning btn-xs" name = "detail_btn" data-row-indx="' + ui.rowIndx + '"><i class="fa fa-arrow-down"></i>&nbsp;상세</button></td>'
+        if(!ui.cellData){
+          return (
+            "<button class='ui-button ui-corner-all ui-widget' name='detail_btn' data-row-indx='" +
+            ui.rowIndx +
+            "'><i class='fa fa-arrow-down'></i>&nbsp;상세</button>"
+          );
+        }
+        else {
+          return "";
+        }
       },
     },
     {
@@ -205,7 +213,6 @@ const TB10010Sjs = (function () {
       title: "코드명",
       dataType: "string",
       dataIndx: "cdVlNm",
-      editable: true,
       align: "left",
       halign: "center",
       width: "26%",
@@ -215,7 +222,6 @@ const TB10010Sjs = (function () {
       title: "변환후코드",
       dataType: "string",
       dataIndx: "rsltCdVl",
-      editable: true,
       align: "center",
       halign: "center",
       width: "10%",
@@ -353,10 +359,34 @@ const TB10010Sjs = (function () {
       hwrap: false,
       numberCell: { show: false },
       scrollModel: { autoFit: true },
+      editable: false,
       //toolbar: cdDtlToolBar,
       colModel: colModel_groupCdListTb,
       strNoRows: "조회된 데이터가 없습니다.",
       //pageModel: pageMdCdDtl
+      cellClick: function(event, ui){
+
+        /**
+         * 그룹명
+         * 설명
+         * 코드성격
+         * 코드길이
+         * 
+         * 신규입력일때 입력가능.
+         */
+        if (ui.rowData.cdListDltBtn === "new" && ui.column.dataIndx === "cmnsCdNm") {
+          ui.column.editable = true;
+        }
+        else if (ui.rowData.cdListDltBtn === "new" && ui.column.dataIndx === "cmnsCdGrpExpl") {
+          ui.column.editable = true;
+        }
+        else if (ui.rowData.cdListDltBtn === "new" && ui.column.dataIndx === "cmnsCdClsf") {
+          ui.column.editable = true;
+        }
+        else if (ui.rowData.cdListDltBtn === "new" && ui.column.dataIndx === "cdLngth") {
+          ui.column.editable = true;
+        }
+      }
     };
 
     $("#groupCodeListTable").pqGrid(obj_groupCdListTb);
@@ -375,6 +405,20 @@ const TB10010Sjs = (function () {
       scrollModel: { autoFit: true },
       colModel: colModel_cdListTable,
       strNoRows: "조회된 데이터가 없습니다.",
+      cellClick: function(event, ui){
+        /**
+         * 코드
+         * 코드명
+         * 
+         * 신규입력일때 입력가능.
+         */
+        if (!ui.rowData.hndDetlDtm && ui.column.dataIndx === "cdVlId") {
+          ui.column.editable = true;
+        }
+        else if (!ui.rowData.hndDetlDtm && ui.column.dataIndx === "cdVlNm") {
+          ui.column.editable = true;
+        }
+      }
     };
 
     $("#codeListTable").pqGrid(obj_cdListTb);
@@ -448,6 +492,7 @@ const TB10010Sjs = (function () {
       cmnsCdClsf: "1",
       cdLngth: "",
       useYn: false,
+      cdListDltBtn: "new",
       rgstDt: "",
       hndDetlDtm: "",
       hndEmpnm: "",
@@ -507,203 +552,179 @@ const TB10010Sjs = (function () {
    * 그룹코드 저장 버튼 클릭
    * validation check
    */
-  async function clickSaveGroupCode() {
-    let groupCodeList = [];
+  // function clickSaveGroupCode() {
+  //   let groupCodeList = [];
 
-    let tr = $("#groupCodeListTable").children();
-    const alldata = $("#groupCodeListTable").pqGrid("option", "dataModel").data;
-    const getCheckedRows = (data) => data.filter(row => row.grpCdLstState);
+  //   let tr = $("#groupCodeListTable").children();
 
-    const checkedRows = getCheckedRows(alldata);
+  //   for (let i = 0; i < tr.length; i++) {
+  //     let groupCode = new Object();
 
-    // 체크박스가 선택되지 않았을 경우 메시지 표시 후 종료
-    if (checkedRows.length === 0) {
-      openPopup({ type: "info", text: "저장하려면 체크박스를 먼저 선택하세요." });
-      return;
-    }
+  //     let groupCodeInput = $(tr[i]).find("td:eq(1)").find("input");
+  //     let groupCodeNameInput = $(tr[i]).find("td:eq(2)").find("input");
+  //     let groupCodeExplainInput = $(tr[i]).find("td:eq(3)").find("input");
+  //     let groupCodeCmnsClsf = $(tr[i])
+  //       .find("td:eq(4)")
+  //       .find("select")
+  //       .find("option:selected");
+  //     let groupCodeLengthInput = $(tr[i]).find("td:eq(5)").find("input");
+  //     let groupCodeUseYn = $(tr[i])
+  //       .find("td:eq(6)")
+  //       .find(".group_code_use_yn")
+  //       .prop("checked");
+  //     let groupCodeUseYnCheck = $(tr[i])
+  //       .find("td:eq(6)")
+  //       .find(".hidden_yn")
+  //       .val();
 
-    //  벨리데이션 체크
-    if (!validateGroupCodeRows(checkedRows)) return;
-    
-    if (checkedRows.length != 0) {
-      checkedRows.forEach(row => {
-        row.useYn = row.useYn ? "Y" : "N";
-        console.log("Row useYn : ", row.useYn);
-      });
-      await saveGroupCode(checkedRows);
-    }
+  //     if (groupCodeInput.length == 1) {
+  //       if (groupCodeInput.val().length != 4) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "그룹코드는 4자리 여야 합니다.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               groupCodeInput.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       } else if (!groupCodeInput.val()) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "그룹코드를 입력해주세요.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               groupCodeInput.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       }
+  //       groupCode.cmnsCdGrp = groupCodeInput.val();
+  //     }
 
-    // for (let i = 0; i < tr.length; i++) {
-    //   let groupCode = new Object();
+  //     if (groupCodeNameInput.length == 1) {
+  //       if (!groupCodeNameInput.val()) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "그룹명을 입력해주세요.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               groupCodeNameInput.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       }
+  //       groupCode.cmnsCdNm = groupCodeNameInput.val();
+  //     }
+  //     if (groupCodeCmnsClsf.length == 1) {
+  //       if (!groupCodeCmnsClsf.val()) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "코드성격을 입력해주세요.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               groupCodeCmnsClsf.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       }
+  //       groupCode.cmnsCdClsf = groupCodeCmnsClsf.val();
+  //     }
+  //     if (groupCodeLengthInput.length == 1) {
+  //       if (!groupCodeLengthInput.val()) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "코드 길이를 입력해주세요.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               groupCodeLengthInput.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       } else if (isNaN(groupCodeLengthInput.val())) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "코드 길이를 숫자로 입력해주세요.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               groupCodeLengthInput.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       }
+  //       groupCode.cdLngth = groupCodeLengthInput.val();
+  //     } else {
+  //       if (
+  //         groupCodeInput.length == 1 ||
+  //         groupCodeNameInput.length == 1 ||
+  //         groupCodeExplainInput.length == 1 ||
+  //         groupCodeCmnsClsf.length == 1
+  //       ) {
+  //         groupCode.cdLngth = $(tr[i]).find("td:eq(5)").html();
+  //       }
 
-    //   let groupCodeInput = $(tr[i]).find("td:eq(1)").find("input");
-    //   let groupCodeNameInput = $(tr[i]).find("td:eq(2)").find("input");
-    //   let groupCodeExplainInput = $(tr[i]).find("td:eq(3)").find("input");
-    //   let groupCodeCmnsClsf = $(tr[i])
-    //     .find("td:eq(4)")
-    //     .find("select")
-    //     .find("option:selected");
-    //   let groupCodeLengthInput = $(tr[i]).find("td:eq(5)").find("input");
-    //   let groupCodeUseYn = $(tr[i])
-    //     .find("td:eq(6)")
-    //     .find(".group_code_use_yn")
-    //     .prop("checked");
-    //   let groupCodeUseYnCheck = $(tr[i])
-    //     .find("td:eq(6)")
-    //     .find(".hidden_yn")
-    //     .val();
+  //       if (
+  //         !groupCodeUseYnCheck ||
+  //         (groupCodeUseYn && groupCodeUseYnCheck === "n") ||
+  //         (!groupCodeUseYn && groupCodeUseYnCheck === "y")
+  //       ) {
+  //         if (groupCodeLengthInput.length == 0) {
+  //           groupCode.cdLngth = $(tr[i]).find("td:eq(5)").html();
+  //         }
+  //       }
+  //     }
 
-    //     console.log("groupCodeUseYn : ", groupCodeUseYn)
-    //     console.log("groupCodeUseYnCheck : ", groupCodeUseYnCheck)
-    //   if (groupCodeInput.length == 1) {
-    //     if (groupCodeInput.val().length != 4) {
-    //       openPopup({
-    //         title: "실패",
-    //         text: "그룹코드는 4자리 여야 합니다.",
-    //         type: "error",
-    //         callback: function () {
-    //           $(document).on("click", ".confirm", function () {
-    //             groupCodeInput.focus();
-    //           });
-    //         },
-    //       });
-    //       return;
-    //     } else if (!groupCodeInput.val()) {
-    //       openPopup({
-    //         title: "실패",
-    //         text: "그룹코드를 입력해주세요.",
-    //         type: "error",
-    //         callback: function () {
-    //           $(document).on("click", ".confirm", function () {
-    //             groupCodeInput.focus();
-    //           });
-    //         },
-    //       });
-    //       return;
-    //     }
-    //     groupCode.cmnsCdGrp = groupCodeInput.val();
-    //   }
+  //     if (groupCodeExplainInput.length == 1) {
+  //       if (!groupCodeExplainInput.val()) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "코드 설명을 입력해주세요.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               groupCodeExplainInput.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       }
+  //       groupCode.cmnsCdGrpExpl = groupCodeExplainInput.val();
+  //     }
 
-    //   if (groupCodeNameInput.length == 1) {
-    //     if (!groupCodeNameInput.val()) {
-    //       openPopup({
-    //         title: "실패",
-    //         text: "그룹명을 입력해주세요.",
-    //         type: "error",
-    //         callback: function () {
-    //           $(document).on("click", ".confirm", function () {
-    //             groupCodeNameInput.focus();
-    //           });
-    //         },
-    //       });
-    //       return;
-    //     }
-    //     groupCode.cmnsCdNm = groupCodeNameInput.val();
-    //   }
-    //   if (groupCodeCmnsClsf.length == 1) {
-    //     if (!groupCodeCmnsClsf.val()) {
-    //       openPopup({
-    //         title: "실패",
-    //         text: "코드성격을 입력해주세요.",
-    //         type: "error",
-    //         callback: function () {
-    //           $(document).on("click", ".confirm", function () {
-    //             groupCodeCmnsClsf.focus();
-    //           });
-    //         },
-    //       });
-    //       return;
-    //     }
-    //     groupCode.cmnsCdClsf = groupCodeCmnsClsf.val();
-    //   }
-    //   if (groupCodeLengthInput.length == 1) {
-    //     if (!groupCodeLengthInput.val()) {
-    //       openPopup({
-    //         title: "실패",
-    //         text: "코드 길이를 입력해주세요.",
-    //         type: "error",
-    //         callback: function () {
-    //           $(document).on("click", ".confirm", function () {
-    //             groupCodeLengthInput.focus();
-    //           });
-    //         },
-    //       });
-    //       return;
-    //     } else if (isNaN(groupCodeLengthInput.val())) {
-    //       openPopup({
-    //         title: "실패",
-    //         text: "코드 길이를 숫자로 입력해주세요.",
-    //         type: "error",
-    //         callback: function () {
-    //           $(document).on("click", ".confirm", function () {
-    //             groupCodeLengthInput.focus();
-    //           });
-    //         },
-    //       });
-    //       return;
-    //     }
-    //     groupCode.cdLngth = groupCodeLengthInput.val();
-    //   } else {
-    //     if (
-    //       groupCodeInput.length == 1 ||
-    //       groupCodeNameInput.length == 1 ||
-    //       groupCodeExplainInput.length == 1 ||
-    //       groupCodeCmnsClsf.length == 1
-    //     ) {
-    //       groupCode.cdLngth = $(tr[i]).find("td:eq(5)").html();
-    //     }
+  //     if (
+  //       !groupCodeUseYnCheck ||
+  //       (groupCodeUseYn && groupCodeUseYnCheck === "n") ||
+  //       (!groupCodeUseYn && groupCodeUseYnCheck === "y")
+  //     ) {
+  //       groupCode.useYn = groupCodeUseYn ? "1" : "0";
+  //     }
 
-    //     if (
-    //       !groupCodeUseYnCheck ||
-    //       (groupCodeUseYn && groupCodeUseYnCheck === "n") ||
-    //       (!groupCodeUseYn && groupCodeUseYnCheck === "y")
-    //     ) {
-    //       if (groupCodeLengthInput.length == 0) {
-    //         groupCode.cdLngth = $(tr[i]).find("td:eq(5)").html();
-    //       }
-    //     }
-    //   }
+  //     if (!(Object.keys(groupCode).length === 0)) {
+  //       groupCode.oldCmnsCdGrp = $(tr[i])
+  //         .find("td:eq(0)")
+  //         .find("input")
+  //         .attr("id");
 
-    //   if (groupCodeExplainInput.length == 1) {
-    //     if (!groupCodeExplainInput.val()) {
-    //       openPopup({
-    //         title: "실패",
-    //         text: "코드 설명을 입력해주세요.",
-    //         type: "error",
-    //         callback: function () {
-    //           $(document).on("click", ".confirm", function () {
-    //             groupCodeExplainInput.focus();
-    //           });
-    //         },
-    //       });
-    //       return;
-    //     }
-    //     groupCode.cmnsCdGrpExpl = groupCodeExplainInput.val();
-    //   }
+  //       groupCodeList.push(groupCode);
+  //     }
+  //   }
 
-    //   if (
-    //     !groupCodeUseYnCheck ||
-    //     (groupCodeUseYn && groupCodeUseYnCheck === "n") ||
-    //     (!groupCodeUseYn && groupCodeUseYnCheck === "y")
-    //   ) {
-    //     groupCode.useYn = groupCodeUseYn ? "1" : "0";
-    //   }
-
-    //   if (!(Object.keys(groupCode).length === 0)) {
-    //     groupCode.oldCmnsCdGrp = $(tr[i])
-    //       .find("td:eq(0)")
-    //       .find("input")
-    //       .attr("id");
-
-    //     groupCodeList.push(groupCode);
-    //   }
-    // }
-
-    // if (groupCodeList.length != 0) {
-    //   console.log("groupCodeList : ", JSON.stringify(groupCodeList))
-    //   // saveGroupCode(groupCodeList);
-    // }
-  }
+  //   if (groupCodeList.length != 0) {
+  //     saveGroupCode(groupCodeList);
+  //   }
+  // }
 
   /**
    * 그룹코드 리스트 호출
@@ -843,50 +864,77 @@ const TB10010Sjs = (function () {
    * 그룹코드 저장 처리
    * @param {list} groupCodeList 그룹코드 리스트
    */
-  function saveGroupCode(groupCodeList) {
-    console.log(`groupCodeList22 : ${groupCodeList}`);
-    console.log(`groupCodeList33 : ${JSON.stringify(groupCodeList)}`);
-  
-    return new Promise(function (resolve, reject) {
-      $.ajax({
-        method: "POST",
-        url: "/TB10010S/registGroupCodeInfo",
-        data: JSON.stringify(groupCodeList),  // JSON으로 변환
-        contentType: "application/json; charset=UTF-8",
-        dataType: "json",
-        success: function (data) {
-          getGroupCodeInfoList();
-          getCommonCodeInfo();
-          Swal.fire({
-            icon: "success",
-            title: "그룹코드 등록이 완료되었습니다.",
-            text: "",
-            confirmButtonText: "확인",
-          });
-          resolve(data);  // 성공 시 resolve
-        },
-        error: function (response) {
-          let message = response.responseJSON.message;
-          openPopup({
-            title: "실패",
-            text: message,
-          });
-          reject(response);  // 실패 시 reject
-        },
-      });
+  function saveGroupCode () {
+
+    let insertList;
+    let updateList;
+
+    let paramData = {
+      insertList: insertList
+      , updateList: updateList
+    }
+
+    $.ajax({
+      method: "POST",
+      url: "/TB10010S/registGroupCodeInfo",
+      data: JSON.stringify(paramData),
+      contentType: "application/json; charset=UTF-8",
+      dataType: "json",
+      success: function (data) {
+        getGroupCodeInfoList();
+        getCommonCodeInfo();
+        Swal.fire({
+          icon: "success",
+          title: "그룹코드 등록이 완료되었습니다.",
+          confirmButtonText: "확인",
+        });
+      },
+      error: function (response) {
+        let message = response.responseJSON.message;
+        openPopup({
+          title: "실패",
+          text: message,
+        });
+      },
     });
   }
   
 
   /**
+   * 상세코드 체크
+   * @description 그룹코드 삭제 시도시 해당 그룹내 상세코드 데이터가 존재하는지 확인
+   */
+  function chkDetailCode () {
+    let paramData = {
+      deleteList: deleteList
+    }
+
+    $.ajax({
+      method: "POST",
+      url: "/TB10010S/deleteGroupCodeInfo",
+      data: JSON.stringify(paramData),
+      contentType: "application/json; charset=UTF-8",
+      dataType: "json",
+      success: function (data) {
+        
+      },
+      error: function (response) {
+        let message = response.responseJSON.message;
+        openPopup({
+          title: "실패",
+          text: message,
+        });
+      },
+    });
+  }
+
+  /**
    * 그룹코드 행 삭제 처리
    * @param {list} groupCodeList 그룹코드 리스트
    */
-  var deleteGroupCode = function (groupCodeList) {
-    console.log("groupCodeList222 : ", JSON.stringify(groupCodeList));
-    
+  function deleteGroupCode (groupCodeList) {
     $.ajax({
-      method: "PATCH",
+      method: "POST",
       url: "/TB10010S/deleteGroupCodeInfo",
       data: JSON.stringify(groupCodeList),
       contentType: "application/json; charset=UTF-8",
@@ -1025,192 +1073,179 @@ const TB10010Sjs = (function () {
   /**
    * 코드 저장 버튼 클릭
    */
-  function clickSaveCode() {
-    let codeList = new Array();
-    let tr = $("#codeListTable").children();
+  // function clickSaveCode() {
+  //   let codeList = new Array();
+  //   let tr = $("#codeListTable").children();
+  //   for (let i = 0; i < tr.length; i++) {
+  //     let code = new Object();
 
-    console.log("tr.length : ", tr.length)
-    for (let i = 0; i < tr.length; i++) {
-      let code = new Object();
+  //     // TODO => 변수 할당 확인
+  //     let groupCodeId = codeId;
 
-      // TODO => 변수 할당 확인
-      let groupCodeId = codeId;
+  //     let oldCodeId = $(tr[i]).find("td:eq(0)").find("input").attr("id");
+  //     let codeInput = $(tr[i]).find("td:eq(1)").find("input");
+  //     let codeNameInput = $(tr[i]).find("td:eq(2)").find("input");
+  //     let codeRsltCdVl = $(tr[i])
+  //       .find("td:eq(3)")
+  //       .find("select")
+  //       .find("option:selected");
+  //     let codeSqInput = $(tr[i]).find("td:eq(4)").find("input");
+  //     let codeUseYn = $(tr[i])
+  //       .find("td:eq(5)")
+  //       .find(".code_use_yn")
+  //       .prop("checked");
+  //     let codeUseYnCheck = $(tr[i]).find("td:eq(5)").find(".hidden_yn").val();
 
-      let oldCodeId = $(tr[i]).find("td:eq(0)").find("input").attr("id");
-      let codeInput = $(tr[i]).find("td:eq(1)").find("input");
-      let codeNameInput = $(tr[i]).find("td:eq(2)").find("input");
-      let codeRsltCdVl = $(tr[i])
-        .find("td:eq(3)")
-        .find("select")
-        .find("option:selected");
-      let codeSqInput = $(tr[i]).find("td:eq(4)").find("input");
-      let codeUseYn = $(tr[i])
-        .find("td:eq(5)")
-        .find(".code_use_yn")
-        .prop("checked");
-      let codeUseYnCheck = $(tr[i]).find("td:eq(5)").find(".hidden_yn").val();
+  //     if (codeInput.length == 1) {
+  //       if (!codeInput.val()) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "코드를 입력해주세요.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               codeInput.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       } else if (codeInput.val().length > 20) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "코드는 20자리 이하로 입력해주세요.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               codeInput.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       }
+  //       code.cdVlId = codeInput.val();
+  //     }
 
-      if (codeInput.length == 1) {
-        if (!codeInput.val()) {
-          openPopup({
-            title: "실패",
-            text: "코드를 입력해주세요.",
-            type: "error",
-            callback: function () {
-              $(document).on("click", ".confirm", function () {
-                codeInput.focus();
-              });
-            },
-          });
-          return;
-        } else if (codeInput.val().length > 20) {
-          openPopup({
-            title: "실패",
-            text: "코드는 20자리 이하로 입력해주세요.",
-            type: "error",
-            callback: function () {
-              $(document).on("click", ".confirm", function () {
-                codeInput.focus();
-              });
-            },
-          });
-          return;
-        }
-        code.cdVlId = codeInput.val();
-        console.log("code.cdVlId : ", code.cdVlId);
-      }
+  //     if (codeNameInput.length == 1) {
+  //       if (!codeNameInput.val()) {
+  //         openPopup({
+  //           title: "실패",
+  //           text: "코드명을 입력해주세요.",
+  //           type: "error",
+  //           callback: function () {
+  //             $(document).on("click", ".confirm", function () {
+  //               codeNameInput.focus();
+  //             });
+  //           },
+  //         });
+  //         return;
+  //       }
+  //       code.cdVlNm = codeNameInput.val();
+  //     }
 
-      if (codeNameInput.length == 1) {
-        if (!codeNameInput.val()) {
-          openPopup({
-            title: "실패",
-            text: "코드명을 입력해주세요.",
-            type: "error",
-            callback: function () {
-              $(document).on("click", ".confirm", function () {
-                codeNameInput.focus();
-              });
-            },
-          });
-          return;
-        }
-        code.cdVlNm = codeNameInput.val();
-        console.log("code.cdVlNm : ", code.cdVlNm);
-      }
+  //     if (codeRsltCdVl.length == 1) {
+  //       code.rsltCdVl = codeRsltCdVl.val();
+  //     }
 
-      if (codeRsltCdVl.length == 1) {
-        code.rsltCdVl = codeRsltCdVl.val();
-        console.log("code.rsltCdVl : ", code.rsltCdVl);
-      }
+  //     if (isEmpty(codeSqInput)) {
+  //       openPopup({
+  //         title: "실패",
+  //         text: "순서를 입력해주세요.",
+  //         type: "error",
+  //         callback: function () {
+  //           $(document).on("click", ".confirm", function () {
+  //             codeSqInput.focus();
+  //           });
+  //         },
+  //       });
+  //       return;
+  //     } else {
+  //       code.cdSq = codeSqInput.val();
+  //     }
 
-      if (isEmpty(codeSqInput)) {
-        openPopup({
-          title: "실패",
-          text: "순서를 입력해주세요.",
-          type: "error",
-          callback: function () {
-            $(document).on("click", ".confirm", function () {
-              codeSqInput.focus();
-            });
-          },
-        });
-        return;
-      } else {
-        code.cdSq = codeSqInput.val();
-        console.log("code.cdSq : ", code.cdSq);
-      }
+  //     if (
+  //       !codeUseYnCheck ||
+  //       (codeUseYn && codeUseYnCheck === "n") ||
+  //       (!codeUseYn && codeUseYnCheck === "y")
+  //     ) {
+  //       code.useYn = codeUseYn ? "1" : "0";
+  //     }
 
-      if (
-        !codeUseYnCheck ||
-        (codeUseYn && codeUseYnCheck === "n") ||
-        (!codeUseYn && codeUseYnCheck === "y")
-      ) {
-        code.useYn = codeUseYn ? "1" : "0";
-        console.log("code.useYn : ", code.useYn);
-      }
+  //     if (!(Object.keys(code).length === 0)) {
+  //       code.oldCdVlId = oldCodeId;
+  //       code.cmnsCdGrp = groupCodeId;
+  //       codeList.push(code);
+  //     }
+  //   }
 
-      if (!(Object.keys(code).length === 0)) {
-        code.oldCdVlId = oldCodeId;
-        code.cmnsCdGrp = groupCodeId;
-        codeList.push(code);
-        console.log("codeList : ", codeList);
-        console.log("codeList : ", JSON.stringify(codeList));
-      }
-    }
-
-    if (codeList.length > 0) {
-      console.log("codeList2 : ", codeList);
-      console.log("codeList2 : ", JSON.stringify(codeList));
-      saveCode(codeList);
-    }
-  }
+  //   if (codeList.length > 0) {
+  //     saveCode(codeList);
+  //   }
+  // }
 
   /**
    * 코드 저장 처리
    * @param {list} codeList 코드 리스트
    */
-  var saveCode = function (codeList) {
-    var cmnsCdGrp = codeList[0].cmnsCdGrp;
+  // var saveCode = function (codeList) {
+  //   var cmnsCdGrp = codeList[0].cmnsCdGrp;
 
-    $.ajax({
-      method: "POST",
-      url: "/TB10010S/registCodeInfo",
-      data: JSON.stringify(codeList),
-      contentType: "application/json; charset=UTF-8",
-      dataType: "json",
-      success: function () {
-        getGroupCodeInfo(cmnsCdGrp);
-        Swal.fire({
-          icon: "success",
-          title: "코드 등록이 완료되었습니다.",
-          text: "",
-          confirmButtonText: "확인",
-        });
-      },
-      error: function (response) {
-        Swal.fire({
-          icon: "error",
-          title: "error!",
-          text: "코드 등록중 오류가 발생했습니다. 관리자에게 문의하세요.",
-          confirmButtonText: "확인",
-        });
-      },
-    });
-  };
+  //   $.ajax({
+  //     method: "POST",
+  //     url: "/TB10010S/registCodeInfo",
+  //     data: JSON.stringify(codeList),
+  //     contentType: "application/json; charset=UTF-8",
+  //     dataType: "json",
+  //     success: function () {
+  //       getGroupCodeInfo(cmnsCdGrp);
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "코드 등록이 완료되었습니다.",
+  //         text: "",
+  //         confirmButtonText: "확인",
+  //       });
+  //     },
+  //     error: function (response) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "error!",
+  //         text: "코드 등록중 오류가 발생했습니다. 관리자에게 문의하세요.",
+  //         confirmButtonText: "확인",
+  //       });
+  //     },
+  //   });
+  // };
 
   /**
    * 코드 삭제 처리
    * @param {list} request 삭제코드 리스트
    */
-  var deleteCode = function (request) {
-    var cmnsCdGrp = request.cmnsCdGrp;
+  // var deleteCode = function (request) {
+  //   var cmnsCdGrp = request.cmnsCdGrp;
 
-    $.ajax({
-      method: "PATCH",
-      url: "/TB10010S/deleteCodeInfo",
-      data: JSON.stringify(request),
-      contentType: "application/json; charset=UTF-8",
-      dataType: "json",
-      success: function () {
-        getGroupCodeInfo(cmnsCdGrp);
+  //   $.ajax({
+  //     method: "PATCH",
+  //     url: "/TB10010S/deleteCodeInfo",
+  //     data: JSON.stringify(request),
+  //     contentType: "application/json; charset=UTF-8",
+  //     dataType: "json",
+  //     success: function () {
+  //       getGroupCodeInfo(cmnsCdGrp);
 
-        Swal.fire({
-          icon: "success",
-          title: "코드 삭제가 완료되었습니다.",
-          text: "",
-          confirmButtonText: "확인",
-        });
-      },
-      error: function (response) {},
-    });
-  };
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "코드 삭제가 완료되었습니다.",
+  //         text: "",
+  //         confirmButtonText: "확인",
+  //       });
+  //     },
+  //     error: function (response) {},
+  //   });
+  // };
 
   return {
     addGroupCodeRow: addGroupCodeRow,
     deleteGroupCodeRow: deleteGroupCodeRow,
-    clickSaveGroupCode: clickSaveGroupCode,
     addCodeRow: addCodeRow,
     deleteCodeRow: deleteCodeRow,
-    clickSaveCode: clickSaveCode,
   };
 })();
