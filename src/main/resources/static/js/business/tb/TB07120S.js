@@ -19,7 +19,7 @@ const TB07120Sjs = (function () {
     $("#ibims452b button, #ibims452b select").prop("disabled", true);
     $("#TB07120S1_empNo, #TB07120S2_empNo").prop("readonly", false);
     $("#TB07120S_rqstBtn, #TB07120S_reltBtn").prop("disabled", false);
-    $(".TB07120S_isForeignTransfer").prop("disabled", true);
+    // $(".TB07120S_isForeignTransfer").prop("disabled", true);
     $("#TB07120S_apvl").hide(); //승인버튼
     $("#TB07120S_gbck").hide(); //반려버튼
   }
@@ -326,29 +326,34 @@ const TB07120Sjs = (function () {
         setIbims452b(ui.rowData);    
         decdStatChk(consDecdStatCd);
         //TODO : 부속서류목록 정보를 가져오는 로직 추가 필요
+        console.log("key1 : ",$('#key1').val())
+        
+        $('#fileKey2').val(ui.rowData.prdtCd)
+        console.log("key2 : ",$('#fileKey2').val())
+        getFileInfo($('#key1').val(), $('#fileKey2').val());
       },
     };
 
     $("#TB07120S_grid1").pqGrid(gridObj1);
     $("#TB07120S_grid1").pqGrid("refreshDataAndView");
 
-    var gridObj2 = {
-      height: 100,
-      maxHeight: 100,
-      showTitle: false,
-      showToolbar: false,
-      collapsible: false,
-      editable: false,
-      wrap: false,
-      hwrap: false,
-      numberCell: { show: false },
-      scrollModel: { autoFit: true },
-      colModel: colM_Grid2,
-      strNoRows: "",
-    };
+    // var gridObj2 = {
+    //   height: 100,
+    //   maxHeight: 100,
+    //   showTitle: false,
+    //   showToolbar: false,
+    //   collapsible: false,
+    //   editable: false,
+    //   wrap: false,
+    //   hwrap: false,
+    //   numberCell: { show: false },
+    //   scrollModel: { autoFit: true },
+    //   colModel: colM_Grid2,
+    //   strNoRows: "",
+    // };
 
-    $("#TB07120S_grid2").pqGrid(gridObj2);
-    $("#TB07120S_grid2").pqGrid("refreshDataAndView");
+    // $("#TB07120S_grid2").pqGrid(gridObj2);
+    // $("#TB07120S_grid2").pqGrid("refreshDataAndView");
   }
 
   /**
@@ -628,6 +633,8 @@ const TB07120Sjs = (function () {
      * @param TB07120S2_empNo 승인자
      * @param TB07120S1_empNo 담당자
      * @param TB07120S_rjctRsnCntn 반려사유
+     * // TODO : 해와송금여부 입력 받기로 함(2024.12.30)
+     *    - 현재 테이블에 해외송금여부 칼럼이 없어 추가 필요   
      */
     const paramData = {
       prdtCd : TB07120S_nowRowData.prdtCd,           //상품코드
@@ -641,7 +648,7 @@ const TB07120Sjs = (function () {
       consDecdStatCd: consDecdStatBtnNo,             //결재상태코드
       rjctRsnCntn: $("#TB07120S_rjctRsnCntn").val(), //반려사유내용
       hndEmpno : $("#userEno").val(),                //조작사원번호
-     
+      //해외송금여부 : 
     };
 
     $.ajax({

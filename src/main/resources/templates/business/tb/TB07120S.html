@@ -162,16 +162,50 @@
 								</div>
 							</div>
 						</div>
-						
-
 						<!-- 부속서류목록 -->
 						<div class="ibox">
 							<div class="ibox-title">
 								<h5>▶ 부속서류목록</h5>
+								<div class="ibox-tools">
+									<div th:fragment="file" id="file-upload">
+										<form id="upload-file-form">
+											<input type="hidden" id="fileKey1" name="fileKey1">
+											<input type="hidden" id="fileKey2" name="fileKey2" value="*">
+											<input type="hidden" class="form-control" id="key1">
+											<div style="display: none">
+												<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
+											</div>
+										</form>
+									</div>
+								</div>
 							</div>
 							<div class="ibox-content">
-								<div id="TB07120S_grid2"></div>
+								<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 10%;">
+										<!-- <col style="width: 0%;"> -->
+										<!-- <col style="width: 5%;"> -->
+										<!-- <col style="width: 10%;"> -->
+										<col style="width: 70%;">
+										<col style="width: 30%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th></th>
+											<!-- <th></th> -->
+											<!-- <th>Sub Key</th> -->
+											<!-- <th>일련번호</th> -->
+											<th>파일명</th>
+											<th>등록일자</th>
+										</tr>
+									</thead>
+									<tbody id="UPLOAD_FileList">
+									</tbody>
+								</table>
 							</div>
+							<!-- <div class="ibox-content">
+								<div id="TB07120S_grid2"></div>
+							</div> -->
 						</div>
 
 						<!-- 자금품의 정보 -->

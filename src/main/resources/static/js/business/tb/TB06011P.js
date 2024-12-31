@@ -987,9 +987,11 @@ function TB06011P_setPrdtInfo(e) {
 	}
 
 	if(prefix == 'TB07100S_grid'){
+		console.log(e);
 		console.log("prdtCd 입력 : "+prdtSn+"에"+e.prdtCd);
 
 		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow",{rowIndx: prdtSn, row: { prdtCd: e.prdtCd } });
+		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow",{rowIndx: prdtSn, row: { fndCd: e.ortnFndCd } });
 
 	}
 

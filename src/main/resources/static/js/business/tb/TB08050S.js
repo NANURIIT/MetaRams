@@ -629,7 +629,7 @@ const TB08050Sjs = (function () {
     feeDtls.option("formulas", formulas);
   }
 
-  // 조회버튼
+  // 조회 버튼
   function srch() {
     if (validation().isValid) {
       let obj = {
@@ -679,9 +679,12 @@ const TB08050Sjs = (function () {
 			  );
 			  
 			  $("#TB08050S_actName").val((actsRow ? actsRow.actName :"")); // 계정과목코드
-              $(
-                `input[name="TB08050S_feeTxtnYn"][value="${rd.feeTxtnYn}"]`
-              ).prop("checked", true); // 수수료과세여부
+              //$(
+              //  `input[name="TB08050S_feeTxtnYn"][value="${rd.feeTxtnYn}"]`
+              //).prop("checked", true); // 수수료과세여부
+			  
+			  rd.feeTxtnYn=="Y" ? $("#TB08050S_feeTxtnYn_Y").prop("checked", true): $("#TB08050S_feeTxtnYn_N").prop("checked", true);
+			  
               $("#TB08050S_F006").val(rd.feeRcogDcd); // 기업여신수수료인식구분코드
               $("#TB08050S_fnnrRcogStrtDt").val(dateNull(rd.fnnrRcogStrtDt)); // 인식시작일자
               $("#TB08050S_fnnrRcogEndDt").val(dateNull(rd.fnnrRcogEndDt)); // 인식종료일자
@@ -703,9 +706,12 @@ const TB08050Sjs = (function () {
               $("#TB08050S_prufIsuDt").val(dateNull(rd.prufIsuDt)); // 증빙발행일자
               $("#TB08050S_splmTxa").val(commaNull(rd.splmTxa)); // 부가세액
               $("#TB08050S_rctmDt").val(dateNull(rd.rctmDt)); // 입금일자
-              $(
-                `input[name="TB08050S_prcsCpltYn"][value="${rd.prcsCpltYn}"]`
-              ).prop("checked", true); // 수납완료여부
+              //$(
+              //  `input[name="TB08050S_prcsCpltYn"][value="${rd.prcsCpltYn}"]`
+              //).prop("checked", true); // 수납완료여부
+			  
+			  rd.prcsCpltYn=="Y" ? $("#TB08050S_prcsCpltYn_Y").prop("checked", true): $("#TB08050S_prcsCpltYn_N").prop("checked", true);
+			  
               $("#TB08050S_prcsEmpno").val(rd.prcsEmpno); // 처리사원번호
               $("#TB08050S_prcsTm").val(rd.hndDetlDtm); // 처리시간
               $("#TB08050S_rkfrDt").val(dateNull(rd.rkfrDt)); // 회계일자 ? 기산일자
@@ -753,8 +759,9 @@ const TB08050Sjs = (function () {
 	  console.log("saveTest1");
       let feeTrgtCtns = $("#TB08050S_feeTrgtCtns").val(); // 수수료대상내용
       let actsCd = $("#TB08050S_actsCd").val(); // 계정과목코드
-      let feeTxtnYn = $('input[name="#TB08050S_feeTxtnYn"]:checked').val(); // 수수료과세여부 (체박)
-      let eprzCrdlFeeRcogDcd = $("#TB08050S_F006").val(); // 수수료인식구분
+	  console.log("수수료과세여부"+$("#TB08050S_feeTxtnYn_Y").is(":checked"));
+      let feeTxtnYn = $("#TB08050S_feeTxtnYn_Y").is(":checked") ? "Y" :"N"	; // 수수료과세여부 (체박)
+      let ifrsFeeRcogDcd = $("#TB08050S_F006").val(); // 수수료인식구분
       let fnnrRcogStrtDt = unformatDate($("#TB08050S_fnnrRcogStrtDt").val()); // 인식시작일자
       let fnnrRcogEndDt = unformatDate($("#TB08050S_fnnrRcogEndDt").val()); // 인식종료일
       let fndsDvsnCd = $("#TB08050S_F008").val(); // 자금구분코드
@@ -769,7 +776,7 @@ const TB08050Sjs = (function () {
       let splmTxa = uncomma($("#TB08050S_splmTxa").val()); // 부가세액
       let rctmDt = unformatDate($("#TB08050S_rctmDt").val()); // 입금일자 ? 예정일자
 	  console.log("saveTest3");
-      let prcsCpltYn = $('input[name="TB08050S_prcsCpltYn"]:checked').val(); // 수납완료여부 ? 처리완료여부
+      let prcsCpltYn =  $("#TB08050S_prcsCpltYn_Y").is(":checked") ? "Y" :"N";// 수납완료여부 ? 처리완료여부
       let prcsEmpno = $("#TB08050S_prcsEmpno").val(); // 처리사원번호
       // let prcsTm = $('#TB08050S_prcsTm').val(); // 처리시각
       let decdSttsDcd = $("#TB08050S_decdSttsDcd").val(); // 결재상태구분코드
@@ -791,7 +798,7 @@ const TB08050Sjs = (function () {
         feeTrgtCtns,
         actsCd,
         feeTxtnYn,
-        eprzCrdlFeeRcogDcd,
+        ifrsFeeRcogDcd,
         fnnrRcogStrtDt,
         fnnrRcogEndDt,
         fndsDvsnCd,
@@ -895,7 +902,8 @@ const TB08050Sjs = (function () {
       case "crry":
         feeAmt = uncomma($("#TB08050S_feeAmt").val());
         let aplcExchR = $("#TB08050S_aplcExchR").val(); // 적용환율
-        tot = feeAmt * (aplcExchR / 100);
+       // tot = feeAmt * (aplcExchR / 100);
+		tot = feeAmt * (aplcExchR);
 
         $("#TB08050S_wcrcTrslTrFeeAmt").val(comma(tot.toFixed(2))); // 원화환산수수료
 
