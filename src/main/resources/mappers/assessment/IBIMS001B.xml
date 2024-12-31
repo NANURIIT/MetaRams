@@ -2,81 +2,81 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS001BMapper">
 
-	<!--  select박스에 담을 공통코드 호출  -->
+	  <!--  select박스에 담을 공통코드 호출  -->
     <select id="getCommonCodeName" resultType="com.nanuri.rams.business.common.vo.IBIMS001BVO">
-		SELECT DISTINCT(CMNS_CD_NM)											<!-- 공통코드명 -->
-			 , CMNS_CD_GRP													<!-- 공통코드그룹 -->
-			 , CMNS_CD_GRP_EXPL												<!-- 공통코드그룹설명 -->
-		  FROM IBIMS001B
-		 WHERE 1=1
-		   AND DEL_YN = 'N'
-		 ORDER BY CMNS_CD_GRP ASC      										<!-- 공통코드그룹 -->
+		  SELECT DISTINCT(CMNS_CD_NM)											<!-- 공통코드명 -->
+		  	   , CMNS_CD_GRP													<!-- 공통코드그룹 -->
+		  	   , CMNS_CD_GRP_EXPL												<!-- 공통코드그룹설명 -->
+		    FROM IBIMS001B
+		   WHERE 1=1
+		     AND DEL_YN = 'N'
+		   ORDER BY CMNS_CD_GRP ASC      										<!-- 공통코드그룹 -->
     </select>
 
     <!--  그룹코드 호출  -->
-	<select id="getGroupCodeInfoList" resultType="com.nanuri.rams.business.common.vo.IBIMS001BVO" parameterType="String">
-        SELECT A.CMNS_CD_GRP                                              	<!-- 공통코드그룹 -->
-             , NVL(A.CMNS_CD_NM, '-') 			AS CMNS_CD_NM				<!-- 공통코드명 -->            
-             , NVL(A.CMNS_CD_CLSF, '-')			AS CMNS_CD_CLSF				<!-- 공통코드구분 -->           
-             , A.CD_LNGTH                                                   <!-- 코드길이 -->
-             , NVL(A.CMNS_CD_GRP_EXPL, '-')		AS CMNS_CD_GRP_EXPL			<!-- 공통코드그룹설명 -->         
-             , A.RGST_DT                                                   	<!-- 등록일자 -->
-             , A.RGST_EMPNO                                                 <!-- 등록사원번호 -->
+	  <select id="getGroupCodeInfoList" resultType="com.nanuri.rams.business.common.vo.IBIMS001BVO" parameterType="String">
+        SELECT A.CMNS_CD_GRP                                              	/* 공통코드그룹 */
+             , NVL(A.CMNS_CD_NM, '-') 			  AS CMNS_CD_NM				          /* 공통코드명 */            
+             , NVL(A.CMNS_CD_CLSF, '-')			  AS CMNS_CD_CLSF				        /* 공통코드구분 */           
+             , A.CD_LNGTH                                                   /* 코드길이 */
+             , NVL(A.CMNS_CD_GRP_EXPL, '-')		AS CMNS_CD_GRP_EXPL			      /* 공통코드그룹설명 */         
+             , A.RGST_DT                                                   	/* 등록일자 */
+             , A.RGST_EMPNO                                                 /* 등록사원번호 */
              , (
              	 SELECT EMP_NM
              	   FROM IBIMS003B
              	  WHERE EMPNO = A.RGST_EMPNO
-               ) AS RGST_EMPNM                                              <!-- 등록사원명 -->
-             , A.USE_YN                                                     <!-- 사용여부 -->
-             , A.DEL_YN                                                     <!-- 삭제여부 -->
-             , A.TRNSFRM_AFT_CD_GRP                                         <!-- 변환후코드그룹 -->
-             , A.HND_DETL_DTM                                               <!-- 조작상세일시 -->
-             , A.HND_EMPNO                                                  <!-- 조작사원번호 -->
+               ) AS RGST_EMPNM                                              /* 등록사원명 */
+             , A.USE_YN                                                     /* 사용여부 */
+             , A.DEL_YN                                                     /* 삭제여부 */
+             , A.TRNSFRM_AFT_CD_GRP                                         /* 변환후코드그룹 */
+             , A.HND_DETL_DTM                                               /* 조작상세일시 */
+             , A.HND_EMPNO                                                  /* 조작사원번호 */
              , (
              	 SELECT EMP_NM
              	   FROM IBIMS003B
              	  WHERE EMPNO = A.HND_EMPNO
-               ) AS HND_EMPNM												<!-- 조작사원명 -->   
-             , A.HND_TMNL_NO                                                <!-- 조작단말기번호 -->
-             , A.HND_TR_ID                                                  <!-- 조작거래ID -->
-             , A.GUID                                                       <!-- GUID -->
+               ) AS HND_EMPNM												                        /* 조작사원명 */   
+             , A.HND_TMNL_NO                                                /* 조작단말기번호 */
+             , A.HND_TR_ID                                                  /* 조작거래ID */
+             , A.GUID                                                       /* GUID */
           FROM IBIMS001B A
          WHERE 1=1
            AND DEL_YN = 'N'
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrp)">
            AND CMNS_CD_GRP                             = #{cmnsCdGrp}
           </if>
-	</select>
+	  </select>
 
     <select id="getGroupCodeInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS001BVO">
 	    SELECT A.CMNS_CD_GRP                         <!-- 공통코드그룹 -->    
-			 , A.CMNS_CD_NM                          <!-- 공통코드명 -->    
-			 , A.CMNS_CD_CLSF                        <!-- 공통코드구분 -->    
-			 , A.CD_LNGTH                            <!-- 코드길이 -->    
-			 , A.CMNS_CD_GRP_EXPL                    <!-- 공통코드그룹설명 -->    
-			 , A.RGST_DT                             <!-- 등록일자 -->    
-			 , A.RGST_EMPNO                          <!-- 등록사원번호 -->
-			 , (                                     
-				 SELECT EMP_NM                       
-				   FROM IBIMS003B                    
-				  WHERE EMPNO = A.RGST_EMPNO         
-				) AS RGST_EMPNM                      <!-- 등록사원명 -->                   
-			 , A.USE_YN                              <!-- 사용여부 -->   
-			 , A.DEL_YN                              <!-- 삭제여부 --> 
-			 , A.TRNSFRM_AFT_CD_GRP                  <!-- 변환후코드그룹 -->
-			 , A.HND_DETL_DTM                        <!-- 조작상세일시 -->
-			 , A.HND_EMPNO							 <!-- 조작사원번호 -->   
-			 , (                                     
-				 SELECT EMP_NM                       
-				   FROM IBIMS003B                    
-				  WHERE EMPNO = A.HND_EMPNO          
-			   ) AS HND_EMPNM						 <!-- 조작사원명 --> 							 
-			 , A.HND_TMNL_NO                         <!-- 조작단말기번호 -->      
-			 , A.HND_TR_ID                           <!-- 조작거래ID -->         
-			 , A.GUID                                <!-- GUID -->        
-		  FROM IBIMS001B A                           		
-		 WHERE 1=1
-		   AND CMNS_CD_GRP                             = #{cmnsCdGrp} 
+	     		 , A.CMNS_CD_NM                          <!-- 공통코드명 -->    
+	     		 , A.CMNS_CD_CLSF                        <!-- 공통코드구분 -->    
+	     		 , A.CD_LNGTH                            <!-- 코드길이 -->    
+	     		 , A.CMNS_CD_GRP_EXPL                    <!-- 공통코드그룹설명 -->    
+	     		 , A.RGST_DT                             <!-- 등록일자 -->    
+	     		 , A.RGST_EMPNO                          <!-- 등록사원번호 -->
+	     		 , (                                     
+	     			 SELECT EMP_NM                       
+	     			   FROM IBIMS003B                    
+	     			  WHERE EMPNO = A.RGST_EMPNO         
+	     			) AS RGST_EMPNM                      <!-- 등록사원명 -->                   
+	     		 , A.USE_YN                              <!-- 사용여부 -->   
+	     		 , A.DEL_YN                              <!-- 삭제여부 --> 
+	     		 , A.TRNSFRM_AFT_CD_GRP                  <!-- 변환후코드그룹 -->
+	     		 , A.HND_DETL_DTM                        <!-- 조작상세일시 -->
+	     		 , A.HND_EMPNO							 <!-- 조작사원번호 -->   
+	     		 , (                                     
+	     			 SELECT EMP_NM                       
+	     			   FROM IBIMS003B                    
+	     			  WHERE EMPNO = A.HND_EMPNO          
+	     		   ) AS HND_EMPNM						 <!-- 조작사원명 --> 							 
+	     		 , A.HND_TMNL_NO                         <!-- 조작단말기번호 -->      
+	     		 , A.HND_TR_ID                           <!-- 조작거래ID -->         
+	     		 , A.GUID                                <!-- GUID -->        
+	      FROM IBIMS001B A                           		
+	     WHERE 1=1
+	     	 AND CMNS_CD_GRP                             = #{cmnsCdGrp} 
     </select>
  
     <update id="deleteGroupCodeInfo" parameterType="java.util.List">
@@ -91,38 +91,41 @@
     </update>
 
     <select id="selectTotalCount" resultType="int">
-        SELECT
-            count(*)
-        FROM IBIMS001B
+        SELECT COUNT(*)
+          FROM IBIMS001B
     </select>
 
-    <update id="registGroupCodeInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS001BVO">
-           UPDATE IBIMS001B
-		      SET 
-		          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrp)">
-					  CMNS_CD_GRP = #{cmnsCdGrp},
-				  </if>
-				  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdNm)">
-					  CMNS_CD_NM = #{cmnsCdNm},
-				  </if>
-				  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdClsf)">
-					  CMNS_CD_CLSF = #{cmnsCdClsf},
-				  </if>
-				  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cdLngth)">
-					  CD_LNGTH = #{cdLngth},
-				  </if>
-				  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrpExpl)">
-					  CMNS_CD_GRP_EXPL = #{cmnsCdGrpExpl},
-				  </if>
-				  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(useYn)">
-					  USE_YN = #{useYn},
-				  </if>
-				  HND_DETL_DTM	= DEFAULT,					<!-- 조작상세일시 -->
-				  HND_EMPNO		= #{hndEmpno}				<!-- 조작사원번호 -->
-			WHERE CMNS_CD_GRP	= #{oldCmnsCdGrp}			<!-- 공통코드그룹 -->
+    <update id="registGroupCodeInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS001BDTO">
+      UPDATE IBIMS001B
+		     SET HND_DETL_DTM	= SYSDATE					    /* 조작상세일시 */
+				   , HND_EMPNO		= #{hndEmpno}				  /* 조작사원번호 */
+				   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdNm)">
+				   , CMNS_CD_NM = #{cmnsCdNm}
+				   </if>
+				   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdClsf)">
+				   , CMNS_CD_CLSF = #{cmnsCdClsf}
+				   </if>
+				   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cdLngth)">
+				   , CD_LNGTH = #{cdLngth}
+				   </if>
+				   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrpExpl)">
+				   , CMNS_CD_GRP_EXPL = #{cmnsCdGrpExpl}
+				   </if>
+				   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(useYn)">
+				   , USE_YN = #{useYn}
+				   </if>
+			 WHERE 1=1
+         AND CMNS_CD_GRP = #{cmnsCdGrp}			    /* 공통코드그룹 */
     </update>
 
-    <insert id="insertGroupCodeInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS001BVO">
+    <select id="makeCmnsCdGrp" parameterType="com.nanuri.rams.business.common.dto.IBIMS001BDTO" resultType="String">
+      SELECT SUBSTR(#{cmnsCdNm}, 0, 1) || SUBSTR(NVL(MAX(CMNS_CD_GRP), '0001'), 1, 3)
+        FROM IBIMS001B
+       WHERE 1=1
+         AND CMNS_CD_NM LIKE % || SUBSTR(#{cmnsCdNm}, 0, 1)
+    </select>
+
+    <insert id="insertGroupCodeInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS001BDTO">
         INSERT INTO IBIMS001B 
                (
                   CMNS_CD_GRP                             <!-- 공통코드그룹 -->
