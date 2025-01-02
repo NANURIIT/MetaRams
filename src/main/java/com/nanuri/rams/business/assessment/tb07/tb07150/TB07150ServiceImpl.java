@@ -1,6 +1,7 @@
 package com.nanuri.rams.business.assessment.tb07.tb07150;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ import com.nanuri.rams.business.common.mapper.IBIMS406BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS410BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS420BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS991BMapper;
+import com.nanuri.rams.business.common.vo.IBIMS201BVO;
 import com.nanuri.rams.business.common.vo.IBIMS401BVO;
 import com.nanuri.rams.business.common.vo.TB07150SVO;
 import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
@@ -65,6 +67,8 @@ public class TB07150ServiceImpl implements TB07150Service {
 	private final IBIMS404BMapper ibims404BMapper;	
 
 	private final IBIMS201BMapper ibims201BMapper;
+
+	private final IBIMS410BMapper ibims410BMapper;
 	/* 로그인 사용자 정보 */
 	private final AuthenticationFacade facade;
 
@@ -156,6 +160,7 @@ public class TB07150ServiceImpl implements TB07150Service {
 			ibims401bVo.setPrdtCd(param.getPrdtCd());						//종목코드
 			ibims401bVo.setRqsKndCd(rqsKndCd);								//신청종류코드
 			ibims401bVo.setCtrcExpDt(param.getCtrcExpDt());					//약정기본 약정만기일자
+			ibims401bVo.setHndEmpno(facade.getDetails().getEno());	
 			//todo: 기한변경은 딜승인기본테이블 만기일자도 수정해야하는지 확인 필요
 			//ibims201bdto.setExpDt(param.getCtrcExpDt());					//딜승인기본 만기일자
 
@@ -177,6 +182,7 @@ public class TB07150ServiceImpl implements TB07150Service {
 			ibims401bVo.setPrdtCd(param.getPrdtCd());						//종목코드
 			ibims401bVo.setRqsKndCd(rqsKndCd);								//신청종류코드
 			ibims401bVo.setCtrcExpDt(param.getCtrcExpDt());					//약정기본 약정만기일자
+			ibims401bVo.setHndEmpno(facade.getDetails().getEno());	
 
 			int tlmtChngRslt = ibims401BMapper.cndChng(ibims401bVo);
 			int hRslt = ibims401HMapper.rgstIBIMS401H(ibims401bVo);
@@ -190,8 +196,31 @@ public class TB07150ServiceImpl implements TB07150Service {
 			}else{
 
 				List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();		//변경금리정보
-				String prdtCd = param.getPrdtCd();		//종목코드
-				long excSn = param.getExcSn();			//실행순번 
+
+				//조작사원번호 세팅
+				for(IBIMS404BDTO cndChngPara : cndChng404BList){
+					cndChngPara.setHndEmpno(facade.getDetails().getEno());
+				}
+
+				IBIMS404BDTO ibims404Param = new IBIMS404BDTO();
+
+				ibims404Param.setPrdtCd(param.getPrdtCd());
+				ibims404Param.setExcSn(param.getExcSn());
+
+				int dltChngBf404Blist = ibims404BMapper.deleteChngBf404BList(ibims404Param);		//변경 전 금리정보 삭제
+
+				if(dltChngBf404Blist < 1){
+					log.debug("!!!!!변경전 금리정보 삭제 오류!!!!!");
+					result = 1;
+				}else{
+
+					int insrt404BListRslt = ibims404BMapper.insertChng404BList(cndChng404BList);
+
+					if(insrt404BListRslt < 1){
+						log.debug("!!!!!금리정보 등록 오류!!!!!");
+						result = 1;
+					}
+				}
 
 			}
 			
@@ -204,10 +233,29 @@ public class TB07150ServiceImpl implements TB07150Service {
 
 			List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();		//변경금리정보
 
-			for(int i=0; i < cndChng404BList.size(); i++){
-				log.debug("prdtCd:::" + cndChng404BList.get(i).getPrdtCd());
-				log.debug("excSn:::" + cndChng404BList.get(i).getExcSn());
-				log.debug("rgstSn:::" + cndChng404BList.get(i).getRgstSn());
+			//조작사원번호 세팅
+			for(IBIMS404BDTO cndChngPara : cndChng404BList){
+				cndChngPara.setHndEmpno(facade.getDetails().getEno());
+			}
+
+			IBIMS404BDTO ibims404Param = new IBIMS404BDTO();
+
+			ibims404Param.setPrdtCd(param.getPrdtCd());
+			ibims404Param.setExcSn(param.getExcSn());
+
+			int dltChngBf404Blist = ibims404BMapper.deleteChngBf404BList(ibims404Param);		//변경 전 금리정보 삭제
+
+			if(dltChngBf404Blist < 1){
+				log.debug("!!!!!변경전 금리정보 삭제 오류!!!!!");
+				result = 1;
+			}else{
+
+				int insrt404BListRslt = ibims404BMapper.insertChng404BList(cndChng404BList);
+
+				if(insrt404BListRslt < 1){
+					log.debug("!!!!!금리정보 등록 오류!!!!!");
+					result = 1;
+				}
 			}
 			
 
@@ -236,16 +284,76 @@ public class TB07150ServiceImpl implements TB07150Service {
 			ibims401bVo.setPrdtCd(param.getPrdtCd());						//종목코드
 			ibims401bVo.setRqsKndCd(rqsKndCd);								//신청종류코드
 			ibims401bVo.setPtxtTrOthrDscmNo(param.getTrOthrDscmNo());		//약정기본 거래상대방 식별번호
+			ibims401bVo.setHndEmpno(facade.getDetails().getEno());	
 
 			int trOthrChngRslt = ibims401BMapper.cndChng(ibims401bVo);
 
 			if(trOthrChngRslt < 1){
-				log.debug("!!!차주변경 오류!!!");
+				log.debug("!!!약정 차주변경 오류!!!");
 				result = 1;
+			}else{
+
+				IBIMS201BVO ibims201bvo = new IBIMS201BVO();
+				ibims201bvo.setPrdtCd(param.getPrdtCd());	//종목코드
+
+				int sn = ibims201BMapper.getIBIMS201BSN(ibims201bvo);
+				ibims201bvo.setSn(sn);						//일련번호
+				ibims201bvo.setTrOthrDscmNo(param.getTrOthrDscmNo());		//거래상대방식별번호
+				ibims201bvo.setHndEmpno(facade.getDetails().getEno());		//조작사원번호
+
+				int setLastYnRslt = ibims201BMapper.setLastYnN(ibims201bvo);
+				int insertIBIMS201BRslt = ibims201BMapper.cndChng201B(ibims201bvo);
+
+				if(setLastYnRslt < 1){
+					log.debug("!!!승인기본 LAST_YN 오류!!!");
+					result = 1;
+				}else if(insertIBIMS201BRslt < 1){
+					log.debug("!!!승인기본 INSERT 오류!!!");
+					result = 1;
+				}
+				
 			}
 			
 		}else {
-			log.debug("rqsKndCd");
+			log.debug("rqsKndCd:::" + param.getRqsKndCd());
+			result = 1;
+		}
+
+		if(result == 0){
+			log.debug("내역쌓기 (조건변경 성공 시)");
+
+			IBIMS410BDTO hParam = new IBIMS410BDTO();
+
+			hParam.setPrdtCd(param.getPrdtCd());				//종목코드
+			hParam.setExcSn(param.getExcSn());					//실행일련번호
+
+			int trSn = ibims410BMapper.getTrSn(hParam);
+
+			hParam.setTrSn(trSn);								//거래일련번호
+
+			hParam.setTrStatCd("1");					//거래상태코드(정상거래 1)
+			LocalDate today = LocalDate.now();
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+			String formattedDate = today.format(formatter);
+			hParam.setTrDt(formattedDate);						//거래일자
+
+			hParam.setEtprCrdtGrntTrKindCd("33");			//거래종류코드 (33: 조건변경)
+			hParam.setTrStfno(facade.getDetails().getEno());					//거래직원번호
+			hParam.setHndEmpno(facade.getDetails().getEno());					//조작사원번호
+			
+			int saveDlTrList = ibims410BMapper.saveDlTrList(hParam);
+
+			if(saveDlTrList < 1){
+				log.debug("!!!거래내역 쌓기 오류!!!");
+				result = 1;
+			}else{
+				log.debug("^o^");
+			}
+
+
+		}else{
+			log.debug("내역쌓기 x (조건변경 실패 시)");
 		}
 
 

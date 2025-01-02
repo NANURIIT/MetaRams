@@ -260,7 +260,7 @@
 		   	, (
 		        SELECT NVL(MAX(A.RGST_SN), 0) + 1
 		        FROM IBIMS401H A  /* 약정기본이력 */
-		        WHERE A.PRDT_CD = 'TATEST0001'
+		        WHERE A.PRDT_CD = #{prdtCd}
 		    ) AS RGST_SN
 	        , EPRZ_CRDL_LDG_STTS_CD
 	        , RQS_SN
