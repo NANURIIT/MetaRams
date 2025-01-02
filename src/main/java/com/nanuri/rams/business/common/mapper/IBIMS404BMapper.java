@@ -45,5 +45,10 @@ public interface IBIMS404BMapper {
 	public int insertListIBIMS404B(TB06015SVO paramData);
 	public int updateListIBIMS404B(IBIMS404BDTO paramData);	
 	public int deleteIBIMS404B(TB06015SVO paramData);
+
+	//변경 전 금리정보 삭제(조건변경)
+	public int deleteChngBf404BList(IBIMS404BDTO param);
+
+	public int insertChng404BList(List<IBIMS404BDTO> param);
 	
 }
