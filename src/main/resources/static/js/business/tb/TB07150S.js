@@ -46,6 +46,7 @@ const TB07150Sjs = (function () {
     // $("input").on("focus", function () {
     //   $(this).select();
     // });
+    getDealInfoFromWF();
   });
 
   /*******************************************************************
@@ -146,6 +147,9 @@ const TB07150Sjs = (function () {
       $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
 
       $("#trOthrSrchBtn").prop("disabled", true);
+
+      $("#TB07150S_plsBtn").prop("disabled", true);             
+      $("#TB07150S_mnsBtn").prop("disabled", true);
     } else if (ctgry == "03") {
       //기한변경
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
@@ -164,6 +168,9 @@ const TB07150Sjs = (function () {
       $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
 
       $("#trOthrSrchBtn").prop("disabled", true);
+
+      $("#TB07150S_plsBtn").prop("disabled", true);             
+      $("#TB07150S_mnsBtn").prop("disabled", true);
     } else if (ctgry == "31") {
       //기한연장 + 금리변경
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
@@ -182,6 +189,9 @@ const TB07150Sjs = (function () {
       $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
 
       $("#trOthrSrchBtn").prop("disabled", true);
+
+      $("#TB07150S_plsBtn").prop("disabled", false);             
+      $("#TB07150S_mnsBtn").prop("disabled", false);
     } else if (ctgry == "04") {
       //금리변경
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
@@ -200,6 +210,9 @@ const TB07150Sjs = (function () {
       $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
 
       $("#trOthrSrchBtn").prop("disabled", true);
+
+      $("#TB07150S_plsBtn").prop("disabled", false);             
+      $("#TB07150S_mnsBtn").prop("disabled", false);
     } else if (ctgry == "06") {
       //차주변경
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", false); //거래상대방번호
@@ -218,6 +231,9 @@ const TB07150Sjs = (function () {
       $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
 
       $("#trOthrSrchBtn").prop("disabled", false);
+
+      $("#TB07150S_plsBtn").prop("disabled", true);             
+      $("#TB07150S_mnsBtn").prop("disabled", true);
     } else {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
@@ -235,6 +251,9 @@ const TB07150Sjs = (function () {
       $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
 
       $("#trOthrSrchBtn").prop("disabled", true);
+
+      $("#TB07150S_plsBtn").prop("disabled", true);             
+      $("#TB07150S_mnsBtn").prop("disabled", true);
     }
   });
 
@@ -565,6 +584,25 @@ const TB07150Sjs = (function () {
     intrtInf_2 = $("#grd_intrtInf_2").pqGrid("instance");
   }
 
+  //변경 후 금리정보 행추가
+  function addRow_grdIntrtInf2(){
+
+    $("#grd_intrtInf_2").pqGrid("addRow", { rowData: {}, checkEditable: true });
+  
+  }
+
+  //변경 후 금리정보 행삭제
+  function dltRow_grdIntrtInf2(){
+  
+    
+    var gridLgth =  $("#grd_intrtInf_2").pqGrid('option', 'dataModel.data').length;
+  
+    $("#grd_intrtInf_2").pqGrid("deleteRow", {rowIndx: gridLgth-1});
+  
+  
+    // $("#intrtInfoTable").pqGrid("setData", []);
+  }
+
   /*******************************************************************
    * AJAX
    *******************************************************************/
@@ -610,7 +648,7 @@ const TB07150Sjs = (function () {
           option.type = "error";
 
           var msg =
-            "실행순번이 없는 종목입니다.\n해당 종목의 실행순번을 업로드하고 다시 시도해주세요.";
+            "실행순번이 없는 종목입니다. 해당 종목의 실행순번을 업로드하고 다시 시도해주세요.";
 
           option.text = msg;
           openPopup(option);
@@ -743,7 +781,7 @@ const TB07150Sjs = (function () {
       var rqsKndCd = $("#TB07150S_R023_1").val(); //신청종류
       var prdtCd = $("#TB07150S_prdtCd").val(); //종목코드
       var excSn = $("#TB07150S_excSn").val(); //실행일련번호
-      var trOthrDscmNo = $("#TB07150S_trOthrDscmNo").val(); //거래상대방 식별번호
+      var trOthrDscmNo = $("#TB07150S_trOthrDscmNo_chng").val(); //거래상대방 식별번호
       var chngDt = $("#TB07150S_prcsDt").val(); //변경일자 IBIMS201B
       var ctrcExpDt = $("#TB07150S_ctrcExpDt_chng").val(); //만기일자
       var eprzCrdlCtrcAmt = $("#TB07150S_eprzCrdlCtrcAmt_chng").val(); //약정금액
@@ -794,7 +832,25 @@ const TB07150Sjs = (function () {
         data: JSON.stringify(param),
         dataType: "json",
         success: function (data) {
-          //alert("성공!");
+
+          //console.log(data);
+          if(data === 0){
+            Swal.fire({
+              icon: 'success'
+            , title: "Success!"
+            , text: "조건변경이 완료되었습니다."
+            , confirmButtonText: "확인"
+            });
+            srch();
+
+          }else{
+            Swal.fire({
+              icon: 'error'
+              , title: "Error!"
+              , text: "조건변경에 실패하였습니다."
+              , confirmButtonText: "확인"
+            });
+          }
         },
       });
     }
@@ -817,6 +873,38 @@ const TB07150Sjs = (function () {
 
       $this.val(initVal[$this.attr("id")]);
     });
+
+    $("#TB07150S_R023_1").val("");
+    $("#TB07150S_E020_2").val("");
+    $("#TB07150S_E011_2").val("");
+    $("#TB07150S_H001").val("");
+    $("#TB07150S_I011").val("");
+    $("#TB07150S_E013").val("");
+    $("#TB07150S_H001_2").val("");
+    $("#TB07150S_E013_2").val("");
+
+    $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
+    $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
+    $("#TB07150S_ctrcExpDt_chng").prop("disabled", true); //만기일자
+    $("#TB07150S_eprzCrdlCtrcAmt_chng").prop("disabled", true); //악정금액
+    $("#TB07150S_E020_2").prop("disabled", true); //상환방법
+    $("#TB07150S_prnaRdmpFrqcMnum_chng").prop("disabled", true); //원금상환주기
+    $("#TB07150S_intrRdmpFrqcMnum_chng").prop("disabled", true); //이자상환주기
+    $("#TB07150S_istmDtmRdmpAmt_chng").prop("disabled", true); //일시상환금액
+    $("#TB07150S_I005_2").prop("disabled", true); //한도/개별
+    $("#TB07150S_H001_2").prop("disabled", true); //휴일처리구분
+    $("#TB07150S_prnaDfrPrdMnum_chng").prop("disabled", true); //거치기간개월수
+    $("#TB07150S_E011_2").prop("disabled", true); //이자선후취구분
+    $("#TB07150S_E013_2").prop("disabled", true); //이자계산방법
+    $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
+
+    $("#trOthrSrchBtn").prop("disabled", true);
+
+    $("#TB07150S_plsBtn").prop("disabled", true);             
+    $("#TB07150S_mnsBtn").prop("disabled", true);
+
+    $("#TB07150S_excSn").attr("disabled", true);
+    $('#TB07150S_excSn').empty();
 
     $("#grd_intrtInf_1").pqGrid("option", "strNoRows", "");
     $("#grd_intrtInf_1").pqGrid("setData", []);
@@ -842,12 +930,31 @@ const TB07150Sjs = (function () {
         html: `${html}를(을) 확인해주세요.`,
         confirmButtonText: "확인",
       }).then(callback);
-    }
+    }    
   }
+
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07150S_prdtCd").val(prdtCd);
+			$("#TB07150S_prdtNm").val(prdtNm);
+      srch();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     srch: srch,
     reset: reset,
     cndChng: cndChng,
     srchExcSn_TB07150S: srchExcSn_TB07150S,
+    addRow_grdIntrtInf2: addRow_grdIntrtInf2,
+    dltRow_grdIntrtInf2: dltRow_grdIntrtInf2,
+    getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

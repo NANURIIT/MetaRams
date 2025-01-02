@@ -31,7 +31,6 @@ const TB06010Sjs = (function(){
 		pqGrid();
 
 		resetSearchRequiment();
-
 		console.log("성격", I041);
 		console.log("형태", I042);
 		
@@ -64,6 +63,8 @@ const TB06010Sjs = (function(){
 
 			}
 		});
+		
+		getDealInfoFromWF();
 	});
 
 	var option = {}
@@ -2055,6 +2056,21 @@ const TB06010Sjs = (function(){
 		setTimeout(() => arrPqGridAssetInfo.refresh(), 1);
 	}
 
+	function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			$("#TB06010S_ibDealNo").val(sessionStorage.getItem("wfDealNo"));
+			$("#TB06010S_ibDealNm").val(sessionStorage.getItem("wfDealNm"));
+			$("#TB06010S_prdtCd").val(sessionStorage.getItem("wfPrdtCd"));
+			$("#TB06010S_prdtNm").val(sessionStorage.getItem("wfPrdtNm"));
+		getDealList();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
 	return {
 		
 		// 함수
@@ -2082,5 +2098,7 @@ const TB06010Sjs = (function(){
 		, ldvdCd : ldvdCd
 		, mdvdCd : mdvdCd
 		, sdvdCd : sdvdCd
+
+		, getDealInfoFromWF : getDealInfoFromWF
 	}
 })();

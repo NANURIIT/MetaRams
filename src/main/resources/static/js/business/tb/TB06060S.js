@@ -159,12 +159,7 @@ const TB06060Sjs = (function(){
             strNoRows : '조회된 데이터가 없습니다.',
             cellDblClick: function(event, ui){
                 var rowData = ui.rowData;
-                /*if(rowData.prgSttsCd == null){
-                    setFlow(3);
-                }else{
-                    setFlow(parseInt(rowData.prgSttsCd));
-                }
-                */
+                
                 setFlow(getFlowLevel(rowData));
                 showDetailData(rowData, true);
             },
@@ -252,11 +247,7 @@ const TB06060Sjs = (function(){
                         $(".flow-status p").removeClass("-check");
                         $(".flow-status div").html(waitHtml);
                     }else{
-                       /* if(data[0].prgSttsCd == null){
-                            setFlow(3);
-                        }else{
-                            setFlow(parseInt(data[0].prgSttsCd));
-                        }*/
+                       
                         setFlow(getFlowLevel(data[0]));
                         showDetailData(data[0],true); 
                     }
@@ -285,10 +276,22 @@ const TB06060Sjs = (function(){
         }); 
     }
 
+    function openPage(menuId,pageNm){
+        sessionStorage.setItem("isFromWF", true);
+        sessionStorage.setItem("wfDealNo", $('#sessionDealNo').val());
+        sessionStorage.setItem("wfDealNm", $('#sessionDealNm').val());
+        sessionStorage.setItem("wfPrdtCd", $('#sessionPrdtCd').val());
+        sessionStorage.setItem("wfPrdtNm", $('#sessionPrdtNm').val());
+        callPage(menuId,pageNm)
+
+    }
 
     function showDetailData(rowData, isAuto){
 
-        
+        $('#sessionDealNo').val(rowData.dealNo);
+        $('#sessionDealNm').val(rowData.dealNm);
+        $('#sessionPrdtCd').val(rowData.prdtCd);
+        $('#sessionPrdtNm').val(rowData.prdtNm);
         const paramData = {
             dealNo : rowData.dealNo,	
             mtrDcd : rowData.mtrDcd
@@ -371,6 +374,7 @@ const TB06060Sjs = (function(){
     return {
         getWorkflowList : getWorkflowList
         , resetAll : resetAll
+        , openPage : openPage
         
     }
 })();

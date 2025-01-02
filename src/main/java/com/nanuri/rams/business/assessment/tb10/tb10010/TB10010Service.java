@@ -33,10 +33,10 @@ public interface TB10010Service {
 	
 	/**
 	 * 그룹코드정보 등록하기
-	 * @param requestDtos
+	 * @param paramData
 	 * @return
 	 */
-	public boolean registGroupCodeInfo(List<IBIMS001BVO> requestDtos); 					
+	public boolean registGroupCodeInfo(IBIMS001BVO paramData); 					
 
 	public boolean deleteGroupCodeInfo(List<String> cmnsCdGrp);
 	

@@ -144,7 +144,7 @@
 							<div class="col-sm-1-5 text-right">
 								<button class="btn btn-primary" onclick="TB07120Sjs.get07120sList();">
 									<i class="fa fa-search"></i>&nbsp;조회</button>
-								<button class="btn btn-default" type="button" onclick="TB07120Sjs.reset()">
+								<button class="btn btn-default" type="button" onclick="TB07120Sjs.srchReset_TB07120S()">
 									<i class="fa fa-undo"></i>&nbsp;초기화
 								</button>
 							</div>
@@ -162,16 +162,50 @@
 								</div>
 							</div>
 						</div>
-						
-
 						<!-- 부속서류목록 -->
 						<div class="ibox">
 							<div class="ibox-title">
 								<h5>▶ 부속서류목록</h5>
+								<div class="ibox-tools">
+									<div th:fragment="file" id="file-upload">
+										<form id="upload-file-form">
+											<input type="hidden" id="fileKey1" name="fileKey1">
+											<input type="hidden" id="fileKey2" name="fileKey2" value="*">
+											<input type="hidden" class="form-control" id="key1">
+											<div style="display: none">
+												<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
+											</div>
+										</form>
+									</div>
+								</div>
 							</div>
 							<div class="ibox-content">
-								<div id="TB07120S_grid2"></div>
+								<table class="table table-bordered">
+									<colgroup>
+										<col style="width: 10%;">
+										<!-- <col style="width: 0%;"> -->
+										<!-- <col style="width: 5%;"> -->
+										<!-- <col style="width: 10%;"> -->
+										<col style="width: 70%;">
+										<col style="width: 30%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th></th>
+											<!-- <th></th> -->
+											<!-- <th>Sub Key</th> -->
+											<!-- <th>일련번호</th> -->
+											<th>파일명</th>
+											<th>등록일자</th>
+										</tr>
+									</thead>
+									<tbody id="UPLOAD_FileList">
+									</tbody>
+								</table>
 							</div>
+							<!-- <div class="ibox-content">
+								<div id="TB07120S_grid2"></div>
+							</div> -->
 						</div>
 
 						<!-- 자금품의 정보 -->
@@ -318,11 +352,11 @@
 										<label class="col-sm-1">담당자</label>
 										<div class="col-sm-3">
 											<div class="input-group">
-												<input type="text" class="form-control" id="TB07120S_rqstStfno">
+												<input type="text" class="form-control" id="TB07120S1_empNo">
 												<span class="input-group-append">
 													<button type="button" id="TB07120S_rqstBtn" class="btn btn-default" onclick="callTB03022P('TB07120S1')"><i class="fa fa-search"></i></button>
 												</span>
-												<input type="text" class="form-control" id="TB07120S_rqstStfnm" readonly="" style="width: 100px">
+												<input type="text" class="form-control" id="TB07120S1_empNm" readonly="" style="width: 100px">
 											</div>
 										</div>
 										<label class="col-sm-1">거래시간</label>
@@ -336,11 +370,11 @@
 										<label class="col-sm-1">승인자</label>
 										<div class="col-sm-3">
 											<div class="input-group">
-												<input type="text" class="form-control" id="TB07120S_reltStfno">
+												<input type="text" class="form-control" id="TB07120S2_empNo">
 												<span class="input-group-append">
 													<button type="button" id="TB07120S_reltBtn" class="btn btn-default" onclick="callTB03022P('TB07120S2')"><i class="fa fa-search"></i></button>
 												</span>
-												<input type="text" class="form-control" id="TB07120S_reltStfnm" readonly="" style="width: 100px">
+												<input type="text" class="form-control" id="TB07120S2_empNm" readonly="" style="width: 100px">
 											</div>
 										</div>
 										<label class="col-sm-1">처리시간</label>

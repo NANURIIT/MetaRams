@@ -104,6 +104,7 @@ public class IBIMS410BDTO {
     private BigDecimal    noprCostEtcAmt      ; //영업외비용기타금액
     private String        rcvbRstrYn          ; //미수환원여부
     private String        rcvbYn              ; //미수여부
+    private String 		  eprzCrdlFeeRcogDcd  ; //수수료인식구분		
     private Date          hndDetlDtm          ; //조작상세일시
     private String        hndEmpno            ; //조작사원번호
     private String        hndTmnlNo           ; //조작단말기번호

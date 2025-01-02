@@ -49,4 +49,9 @@ public interface IBIMS201BMapper {
 
 	public TB07160SVO getTrrcInf(String prdtCd);
 
+	/* TB07150S 조건변경 */
+	public int getIBIMS201BSN(IBIMS201BVO param);
+	public int setLastYnN(IBIMS201BVO param);
+	public int cndChng201B(IBIMS201BVO param);
+
 }

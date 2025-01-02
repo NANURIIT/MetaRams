@@ -20,5 +20,5 @@ public interface IBIMS431BMapper {
 
     public int deleteIBIMS431B (IBIMS431BVO param);
 
-
+    public String getCnstNo (IBIMS431BVO param);
 }

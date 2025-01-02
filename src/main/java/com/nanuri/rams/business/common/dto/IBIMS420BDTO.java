@@ -53,6 +53,7 @@ public class IBIMS420BDTO {
 	private String bcncNm ; 				/* 거래처명 */
 	private String rkfrDt; 					/* 기산일자 */
 	// private BigDecimal wcrcTrslTrFeeAmt; 	/* 원화환산거래수수료금액 */
+	private BigDecimal krwTrslRt;			/* 원화환산율*/
 	private BigDecimal krwTrslTrFeeAmt; 	/* 원화환산거래수수료금액 */
 	private String prufIsuDt; 				/* 증빙발행일자 */
 	// private BigDecimal aplcExchR;       	/* 적용환율 */

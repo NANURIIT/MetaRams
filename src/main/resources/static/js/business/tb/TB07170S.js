@@ -24,6 +24,7 @@ const TB07170Sjs = (function () {
     $("#TB07170S_rctmDt").val(getToday()); //입금일자
 
     selectBoxSet_TB07170S();
+    getDealInfoFromWF();
   });
 
   function selectBoxSet_TB07170S() {
@@ -338,7 +339,24 @@ const TB07170Sjs = (function () {
       },
     });
   }
+
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var dealNo = sessionStorage.getItem("wfDealNo");
+			var dealNm = sessionStorage.getItem("wfDealNm");
+			$("#TB07170S_ibDealNo").val(dealNo);
+			$("#TB07170S_ibDealNm").val(dealNm);
+      inq();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     inq: inq,
+    getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

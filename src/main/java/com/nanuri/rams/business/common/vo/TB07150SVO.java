@@ -38,7 +38,7 @@ public class TB07150SVO {
 	private int           prnaDfrPrdMnum;          // 원금거치기간개월수
 	private String        intrBnaoDcd;             // 이자선후취구분코드
 	private String        intrDnumClcMthCd;        // 이자일수계산방법코드
-	private BigDecimal    ovduIntrRt;              // 연체이자율
+	private BigDecimal    ovduIntrRt;              // 연체이자율	  
 
 	private BigDecimal    chngBfEprzCrdlCtrcAmt;   // 변경 전 기업여신 약정금액 
 	private String 		  chngDt;				   // 변경일자
