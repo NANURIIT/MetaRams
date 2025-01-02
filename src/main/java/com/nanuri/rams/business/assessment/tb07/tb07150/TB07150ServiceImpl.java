@@ -360,18 +360,6 @@ public class TB07150ServiceImpl implements TB07150Service {
 		return result;
 	} 
 
-	//거래내역 매핑 todo:: 거래내역 쌓는 경우 확인받아야 함
-	private IBIMS410BDTO set410bDto(TB07150SVO param){
-		IBIMS410BDTO ibims410bdto = new IBIMS410BDTO();
-
-		ibims410bdto.setPrdtCd(param.getPrdtCd());			//종목코드
-		ibims410bdto.setExcSn(param.getExcSn());			//실행순번
-		ibims410bdto.setTrDt(param.getChngDt());			//거래일자
-		ibims410bdto.setTrStatCd("01");			//거래상태코드 01: 정상
-		//ibims410bdto.setEtprCrdtGrntTrKindCd(rkfrDt);
-		return ibims410bdto;
-	}
-
 
 } // class end
 
