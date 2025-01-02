@@ -269,11 +269,11 @@ const TB08040Sjs = (function () {
           options: [
             {
               key: "Y",
-              value: "1",
+              value: "Y",
             },
             {
               key: "N",
-              value: "0",
+              value: "N",
             },
           ],
         },
@@ -281,11 +281,11 @@ const TB08040Sjs = (function () {
           let options = [
             {
               key: "Y",
-              value: "1",
+              value: "Y",
             },
             {
               key: "N",
-              value: "0",
+              value: "N",
             },
           ];
           let option = options.find((opt) => opt.value == ui.cellData);
@@ -888,7 +888,7 @@ const TB08040Sjs = (function () {
    saveGrid=[];
 
     if (feeSchList.length === 0) {
-      sf(1, "warning", "저장 할 정보가 없습니다.<br/>체크박스를 확인해주세요.");
+      sf(1, "warning", "저장 할 정보가 없습니다.");
       return;
     }
 	

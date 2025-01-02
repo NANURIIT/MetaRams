@@ -73,6 +73,8 @@ public class TB10010ServiceImpl implements TB10010Service {
 
     @Override
     public boolean deleteGroupCodeInfo(List<String> cmnsCdGrp) {
+
+        
         int count = ibims001BMapper.deleteGroupCodeInfo(cmnsCdGrp, facade.getDetails().getEno());
         return count > 0;
     }

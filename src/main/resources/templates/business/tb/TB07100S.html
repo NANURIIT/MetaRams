@@ -64,7 +64,7 @@
 										<input type="text" class="form-control" id="TB07100S_actsNm" readonly>
 									</div>
 								</div>-->
-								<!-- 계정과목코드 -->
+								<!-- 계정과목코드
 								<label class="col-sm-1 control-label">
 									계정과목코드
 								</label>
@@ -74,9 +74,7 @@
 											<option value="">전체</option>
 										</select>
 									</div>
-								</div>
-							</div>
-							<div class="col-sm-10 form-group">
+								</div> -->
 								<!-- 부점코드 -->
 								<label class="col-sm-1 control-label">
 									부서코드
@@ -92,6 +90,21 @@
 										<input type="text" class="form-control" id="TB07100S_dprtNm" readonly>
 									</div>
 								</div>
+							</div>
+							<div class="col-sm-10 form-group">
+								<!-- 승인상태 -->
+								<label class="col-sm-1 control-label">
+									승인상태
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB07100S_jobDecdCd">
+											<option value="0">전체</option>
+											<option value="1"></option>
+										</select>
+									</div>
+								</div>
+								
 
 								<!-- 거래처 -->
 								<label class="col-sm-1 control-label">
@@ -492,7 +505,9 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07100S_bano">
-													
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+													</span>
 												</div>
 											</div>
 											<label class="col-sm-1">세액</label>
@@ -528,7 +543,9 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07100S_cdno">
-													
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+													</span>
 												</div>
 											</div>
 											<label class="col-sm-1">매입공제</label>
@@ -714,10 +731,12 @@
 											class="fa fa-save"></i>&nbsp;편익제공등록</button>
 											<button class="btn btn-success" type="button" onclick="TB07100Sjs.getCnstNo();"><i
 												class="fa fa-check"></i>&nbsp;품의번호채번</button>-->
-									<button class="btn btn-success" type="button" onclick="TB07100Sjs.TB07100S_doExc();"><i
-											class="fa fa-check"></i>&nbsp;실행</button>
-									<button class="btn btn-success" type="button" onclick=""><i
+									<button class="btn btn-success" type="button" onclick="TB07100Sjs.TB07100S_doExc();" id="TB07100S_excBtn"><i
+											class="fa fa-check"></i>&nbsp;저장</button>
+									<button class="btn btn-success" type="button" onclick="" id="TB07100S_request"><i
 										class="fa fa-check"></i>&nbsp;결재요청</button>
+										<button class="btn btn-success" id="TB07100S_apvl" style="display: none;"><i class="fa fa-check-square-o"></i>&nbsp;승인</button>
+										<button class="btn btn-danger" id="TB07100S_gbck" style="display: none;"><i class="fa fa-ban"></i>&nbsp;반려</button>
 								</div>
 							</div>
 						</div>
