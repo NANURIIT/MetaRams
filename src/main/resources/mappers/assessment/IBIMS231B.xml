@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS231BMapper">
+
+    <!-- 결재요청내역 확인 -->
+    <select id="apvlListChk" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS003BVO">
+        SELECT T2.EMPNO							/* 사원번호 */
+		     , T2.EMP_NM						/* 직원명 */
+		     , T2.DPRT_NM						/* 부서명 */
+		     , (
+                SELECT S1.ATH_CD_NM
+                  FROM IBIMS006B S1
+                 WHERE 1=1
+                   AND S1.ATH_CD = T2.ATH_CD
+            ) AS ATH_CD_NM				/* 직책 */
+		  FROM IBIMS231B T1
+     LEFT JOIN IBIMS003B T2
+            ON T1.APVL_RQST_P_ENO = T2.EMPNO
+		 WHERE 1=1
+           AND T1.DEAL_NO = #{dealNo}
+           AND T1.PRDT_CD = #{prdtCd}
+           AND T1.DECD_JOB_DCD = (
+                                    SELECT CD_VL_ID
+                                      FROM IBIMS002B
+                                     WHERE 1=1
+                                       AND CMNS_CD_GRP = 'D005'
+                                       AND RSLT_CD_VL = #{decdJobDcd}
+                                )
+           AND T1.SCRN_NO = #{scrnNo}
+           AND T1.EXC_SEQ = #{excSeq}
+           AND T1.RQST_SQ = #{rqstSq}
+           AND T1.TR_SEQ = #{trSeq}
+    </select>
+
+</mapper>

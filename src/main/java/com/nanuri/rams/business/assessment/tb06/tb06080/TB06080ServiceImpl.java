@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nanuri.rams.business.common.mapper.TB06080SMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS232BMapper;
 import com.nanuri.rams.business.common.vo.TB06080SVO;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TB06080ServiceImpl implements TB06080Service {
 
-	private final TB06080SMapper tb06080sMp;
+	private final IBIMS232BMapper tb06080sMp;
 
 	@Override
 	public TB06080SVO inqTB06080S(TB06080SVO input) {
