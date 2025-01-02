@@ -284,10 +284,10 @@
 												class="req"></span>대체투자</label>
 										<div class="col-sm-2 input-group input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06020S_altnInvYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06020S_altnInvYn_Y" name="TB06020S_altnInvYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06020S_altnInvYn">&nbsp;N
+												<input type="radio" value="N" id="TB06020S_altnInvYn_N" name="TB06020S_altnInvYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -328,10 +328,10 @@
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>외환헷지여부</label>
 										 <div class="col-sm-2 input-group input-h"> 
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06020S_frxcHdgeYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06020S_frxcHdgeYn_Y" name="TB06020S_frxcHdgeYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06020S_frxcHdgeYn">&nbsp;N
+												<input type="radio" value="N" id="TB06020S_frxcHdgeYn_N" name="TB06020S_frxcHdgeYn">&nbsp;N
 											</div>
 										</div> 
 										<label class="col-sm-1 col-form-label text-right">계정과목</label>
@@ -400,6 +400,7 @@
 											승인금액</label>
 										<div class="col-sm-2 input-group">
 											<input type="text" class="form-control" id="TB06020S_rcgAmt"
+											    style="text-align:right"
 												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 												onchange="inputNumberFormat2(this);">
 										</div>
@@ -413,10 +414,10 @@
 												class="req"></span>단위형여부</label>
 										<div class="col-sm-2 input-group  input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06020S_untpFndYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06020S_untpFndYn_Y" name="TB06020S_untpFndYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06020S_untpFndYn">&nbsp;N
+												<input type="radio" value="N" id="TB06020S_untpFndYn_N" name="TB06020S_untpFndYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -425,10 +426,10 @@
 												class="req"></span>사모펀드여부</label>
 										<div class="col-sm-2 input-group  input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06020S_pplcFndYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06020S_pplcFndYn_Y" name="TB06020S_pplcFndYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06020S_pplcFndYn">&nbsp;N
+												<input type="radio" value="N"  id="TB06020S_pplcFndYn_N" name="TB06020S_pplcFndYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -507,10 +508,10 @@
 												class="req"></span>단독투자</label>
 										<div class="col-sm-2 input-group  input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06020S_sglInvYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06020S_sglInvYn_Y" name="TB06020S_sglInvYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06020S_sglInvYn">&nbsp;N
+												<input type="radio" value="N" id="TB06020S_sglInvYn_N"  name="TB06020S_sglInvYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -519,10 +520,10 @@
 												class="req"></span>담보</label>
 										<div class="col-sm-2 input-group  input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06020S_mrtgStupYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06020S_mrtgStupYn_Y" name="TB06020S_mrtgStupYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06020S_mrtgStupYn">&nbsp;N
+												<input type="radio" value="N" id="TB06020S_mrtgStupYn_N" name="TB06020S_mrtgStupYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -536,10 +537,10 @@
 												class="req"></span>셀다운대상</label>
 										<div class="col-sm-2 input-group  input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06020S_sdnTrgtYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06020S_sdnTrgtYn_Y" name="TB06020S_sdnTrgtYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06020S_sdnTrgtYn">&nbsp;N
+												<input type="radio" value="N" id="TB06020S_sdnTrgtYn_N"  name="TB06020S_sdnTrgtYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -547,6 +548,7 @@
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>총 발행좌수</label>
 										<div class="col-sm-2 input-group">
 											<input type="text" class="form-control" id="TB06020S_totIssuShqt"
+											    style="text-align:right"
 												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 												onchange="inputNumberFormat2(this);">
 										</div>
