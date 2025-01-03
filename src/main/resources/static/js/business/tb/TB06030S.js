@@ -14,6 +14,7 @@ const TB06030Sjs = (function(){
 		onChangeEprzCrdlPrdtLclsCd(); // 기업여신상품대분류코드 선택이벤트
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		defaultNumberFormat();
+		inputNumberChangeFunction_TB06030S();
 		//초기화버튼
 		resetSearchRequiment_TB06030S();
 		getDealInfoFromWF();
@@ -26,6 +27,44 @@ const TB06030Sjs = (function(){
 		      $("input[id*='Amt'], input[id*='Mnum'], input[id*='Blce'], input[id*='Qty']")
 		);
 	}
+	
+	function inputNumberChangeFunction_TB06030S(){
+		//종목 승인금액
+		$("#TB06030S_rcgAmt").on('change', function(){
+			let formatNum="000.00";
+			formatNum=(Math.round(uncomma($("#TB06030S_rcgAmt").val())*100)/100).toFixed(2);
+			$("#TB06030S_rcgAmt").val(addComma(uncomma(formatNum)));
+		});
+		//총발행주수
+		$("#TB06030S_totIssuQty").on('change', function(){
+			let formatNum="0";
+			formatNum=(Math.round(uncomma($("#TB06030S_totIssuQty").val())*1)/1).toFixed(0);
+			$("#TB06030S_totIssuQty").val(addComma(uncomma(formatNum)));
+		});
+		
+		//출자약정금액
+		$("#TB06030S_fincCtrcAmt").on('change', function(){
+			let formatNum="000.00";
+			formatNum=(Math.round(uncomma($("#TB06030S_fincCtrcAmt").val())*100)/100).toFixed(2);
+			$("#TB06030S_fincCtrcAmt").val(addComma(uncomma(formatNum)));
+		});
+		
+		//출자이행금액
+		$("#TB06030S_fincFlflAmt").on('change', function(){
+			let formatNum="000.00";
+			formatNum=(Math.round(uncomma($("#TB06030S_fincFlflAmt").val())*100)/100).toFixed(2);
+			$("#TB06030S_fincFlflAmt").val(addComma(uncomma(formatNum)));
+		});	
+		
+		//당사출자약정금액
+		$("#TB06030S_thcoFincCtrcAmt").on('change', function(){
+			let formatNum="000.00";
+			formatNum=(Math.round(uncomma($("#TB06030S_thcoFincCtrcAmt").val())*100)/100).toFixed(2);
+			$("#TB06030S_thcoFincCtrcAmt").val(addComma(uncomma(formatNum)));
+		});	
+				
+	}
+	
 
 	// pqGrid	
 	function roadTabInfoGrid() {
@@ -1391,6 +1430,7 @@ const TB06030Sjs = (function(){
 	return{
 		getDealList : getDealList
 		, resetSearchRequiment_TB06030S : resetSearchRequiment_TB06030S
+		, inputNumberChangeFunction_TB06030S:inputNumberChangeFunction_TB06030S
 		, managePrdtCd : managePrdtCd
 		, setLstMrtg : setLstMrtg
 		, setAtchFle : setAtchFle
