@@ -591,6 +591,12 @@ const TB07140Sjs = (function () {
         dataIndx: "rqsEmpnm",
         hidden: true,
       },
+      {
+        title: "종목명",
+        dataType: "string",
+        dataIndx: "prdtNm",
+        hidden: true,
+      },
     ];
 
     return TB07140S_colModel;
@@ -1006,29 +1012,33 @@ const TB07140Sjs = (function () {
 			$('#TB07140S_trSn').val('');
 		}
 
-    $('#TB07140S_fincPrcsDcd').val(rowData.fincPrcsDcd);      //출자처리구분코드
-    $('#TB07140S_dprtCd').val(rowData.trDptCd);               //거래부서
-    $('#TB07140S_dprtNm').val(rowData.dprtNm);                //거래부서명
-    $('#TB07140S_intx').val(rowData.intx);                    //소득세
-    $('#TB07140S_stlAmt').val(rowData.stlAmt);                //결제금액
-    $('#TB07140S_trslStlAmt').val(rowData.trslStlAmt);        //환산결제금액
-    $('#TB07140S_trtx').val(rowData.trtx);                    //거래세
-    $('#TB07140S_fndCd').val(rowData.nsFndCd);                //운용펀드코드
-    $('#TB07140S_fndNm').val(rowData.fndNm);                  //운용펀드명
-    $('#TB07140S_lotx').val(rowData.lotx);                    //지방세
-    $('#TB07140S_bfRsvPayDcd').val(rowData.bfRsvPayDcd);      //전금/지준구분코드
-    $('#TB07140S_prdtCd').val(rowData.prdtCd);                //종목코드
-    $('#TB07140S_prdtNm').val();                              //종목명
-    $('#TB07140S_trdeExrt').val(rowData.trdeExrt);            //매매환율
-    $('#TB07140S_fnltCd').val(rowData.stlXtnlIsttCd);         //결제은행코드
-    $('#TB07140S_fnltNm').val(rowData.fnltNm);                //결제은행명
-    $('#TB07140S_holdPrpsDcd').val(rowData.holdPrpsDcd);      //보유목적
-    $('#TB07140S_trCrryCd').val(rowData.trCrryCd);            //통화코드
-    $('#TB07140S_stlAcno').val(rowData.stlAcno);              //결제계좌번호
-    $('#TB07140S_fincPayCntn').val(rowData.fincPayCntn);      //비고
-    $('#TB07140S_stdrExrt').val(rowData.stdrExrt);            //기준환율
-    $('#TB07140S_empNo').val(rowData.rqsEmpno);               //담당자사번
-    $('#TB07140S_empNm').val(rowData.rqsEmpnm);               //담당자명
+    $('#TB07140S_fincCngeAmt').val(addComma(rowData.fincCngeAmt));          //출자변동금액
+    $('#TB07140S_trslFincCngeAmt').val(addComma(rowData.trslFincCngeAmt));  //환산출자변동금액
+    $('#TB07140S_payErnAmt').val(addComma(rowData.payErnAmt));              //보수/수익
+    $('#TB07140S_trslPayErnAmt').val(addComma(rowData.trslPayErnAmt));      //환산보수/수익
+    $('#TB07140S_fincPrcsDcd').val(rowData.fincPrcsDcd);                    //출자처리구분코드
+    $('#TB07140S_dprtCd').val(rowData.trDptCd);                             //거래부서
+    $('#TB07140S_dprtNm').val(rowData.dprtNm);                              //거래부서명
+    $('#TB07140S_intx').val(rowData.intx);                                  //소득세
+    $('#TB07140S_stlAmt').val(addComma(rowData.stlAmt));                    //결제금액
+    $('#TB07140S_trslStlAmt').val(addComma(rowData.trslStlAmt));            //환산결제금액
+    $('#TB07140S_trtx').val(rowData.trtx);                                  //거래세
+    $('#TB07140S_fndCd').val(rowData.nsFndCd);                              //운용펀드코드
+    $('#TB07140S_fndNm').val(rowData.fndNm);                                //운용펀드명
+    $('#TB07140S_lotx').val(rowData.lotx);                                  //지방세
+    $('#TB07140S_bfRsvPayDcd').val(rowData.bfRsvPayDcd);                    //전금/지준구분코드
+    $('#TB07140S_prdtCd').val(rowData.prdtCd);                              //종목코드
+    $('#TB07140S_prdtNm').val(rowData.prdtNm);                              //종목명
+    $('#TB07140S_trdeExrt').val(rowData.trdeExrt);                          //매매환율
+    $('#TB07140S_fnltCd').val(rowData.stlXtnlIsttCd);                       //결제은행코드
+    $('#TB07140S_fnltNm').val(rowData.fnltNm);                              //결제은행명
+    $('#TB07140S_holdPrpsDcd').val(rowData.holdPrpsDcd);                    //보유목적
+    $('#TB07140S_trCrryCd').val(rowData.trCrryCd);                          //통화코드
+    $('#TB07140S_stlAcno').val(rowData.stlAcno);                            //결제계좌번호
+    $('#TB07140S_fincPayCntn').val(rowData.fincPayCntn);                    //비고
+    $('#TB07140S_stdrExrt').val(rowData.stdrExrt);                          //기준환율
+    $('#TB07140S_empNo').val(rowData.rqsEmpno);                             //담당자사번
+    $('#TB07140S_empNm').val(rowData.rqsEmpnm);                             //담당자명
 
   }
 

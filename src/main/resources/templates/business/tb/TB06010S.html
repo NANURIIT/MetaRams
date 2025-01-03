@@ -23,7 +23,8 @@
 	<script th:src="@{js/business/tb/TB06017P.js}"></script>
 	<script th:src="@{js/business/tb/TB06018P.js}"></script>
 	<script th:src="@{js/business/tb/TB06019P.js}"></script>
-	<script th:src="@{js/business/tb/TB07022P.js}"></script>
+	<script th:src="@{js/business/tb/TB06019P.js}"></script>
+	<script th:src="@{js/business/tb/TB06081P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -33,6 +34,7 @@
 	<!-- 최상단 팝업 E -->
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
 	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
 	<th:block th:replace="business/tb/TB06014P :: TB06014P"></th:block>
 	<th:block th:replace="business/tb/TB06015P :: TB06015P"></th:block>
@@ -41,7 +43,7 @@
 	<th:block th:replace="business/tb/TB06017P :: TB06017P"></th:block>
 	<th:block th:replace="business/tb/TB06018P :: TB06018P"></th:block>
 	<th:block th:replace="business/tb/TB06019P :: TB06019P"></th:block>
-	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<th:block th:replace="business/tb/TB06081P :: TB06081P"></th:block>
 	<th:block th:replace="business/tb/TB07022P :: TB07022P"></th:block>
 </th:block>
 
@@ -529,6 +531,12 @@
 							<div class="text-right">
 								<button class="btn btn-default" type="button" onclick="TB06010Sjs.managePrdtCd(0);" style="margin-left:2px; margin-right:2px;" id="regPrdt" disabled>종목 등록</button>
 								<button class="btn btn-default" type="button" onclick="TB06010Sjs.managePrdtCd(1);" style="margin-left:2px; margin-right:2px;" id="delPrdt" disabled>종목 삭제</button>
+							</div>
+						</div>
+						<div class="ibox">
+							<!-- 여기에 버튼을! (임시) -->
+							<div class="text-right">
+								<button class="btn btn-success" onclick="callTB06081P('TB06010S');"><i class="fa fa-check"></i>&nbsp;결재요청</button>
 							</div>
 						</div>
 					</div>

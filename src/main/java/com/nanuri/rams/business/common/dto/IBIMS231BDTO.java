@@ -20,6 +20,7 @@ public class IBIMS231BDTO {
 	private String		decdStepDcd;	/* 결재단계구분코드	*/
 	private String		decdSttsDcd;	/* 결재상태구분코드	*/
 	private String		dealNo;			/* 딜번호			*/
+	private String		prdtCd;			/* 종목코드			*/
 	private String		decdJobDcd;		/* 결재업무구분코드	*/
 	private String		scrnNo;			/* 화면번호		*/
 	private String		apvlRqstCntn;	/* 승인요청내용		*/

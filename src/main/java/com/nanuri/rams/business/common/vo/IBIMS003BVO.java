@@ -21,4 +21,6 @@ public class IBIMS003BVO extends IBIMS003BDTO {
 	private String rgstEmpNm;
 	private String hndEmpNm;
 	
+	private String nowEmpno;
+
 }
