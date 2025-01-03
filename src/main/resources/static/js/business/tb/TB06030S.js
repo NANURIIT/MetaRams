@@ -373,7 +373,8 @@ const TB06030Sjs = (function(){
 				$('#TB06030S_I011').val(dealDetail.prgSttsCd);													// 진행상태
 				
 				//$('#TB06030S_ardyBzepNo').val(checkBrnAcno(dealDetail.optrRgstNo));									// 사업자등록번호
-				$('#TB06030S_ardyBzepNo').val(handleNullData(checkBrnAcno(dealDetail.trOthrDscmNo)));					// 거래상대방식별번호
+				//$('#TB06030S_ardyBzepNo').val(handleNullData(checkBrnAcno(dealDetail.trOthrDscmNo)));			// 거래상대방식별번호
+				$('#TB06030S_ardyBzepNo').val(dealDetail.trOthrDscmNo);											// 거래상대방식별번호
 				$('#TB06030S_bzepName').val(dealDetail.trOthrDscmNm);											// 거래상대방(업체한글명)
 				$('#TB06030S_corpRgstNo').val(dealDetail.corpNo);												// 법인번호
 				
