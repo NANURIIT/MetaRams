@@ -148,14 +148,15 @@ const TB08040Sjs = (function () {
 		               };	*/ 
 	     $inp.on("input", function () {
 		         //validateCal(this);	
-				 /*let temVal;
-				  if ($inp.val().length === 8) {
-	                 temVal=formatDate($inp.val());
+				 let temVal;
+				 temVal=replaceAll($inp.val(),'-','');
+				  if (temVal.length === 8) {
+	                 temVal=formatDate(temVal);
 					 console.log("onformat"+temVal);
 					 $inp.val(temVal);
-	               } else {
-	                 //$inp.val();
-	               }*/
+	               } else if(temVal.length > 8) {
+					 $inp.val(formatDate(temVal.slice(0, 8)));
+	               }
 		   		})	
 	         .datepicker({
 	             changeMonth: true,
@@ -467,8 +468,8 @@ const TB08040Sjs = (function () {
 			type: "textbox",
 		  	init: dateEditor_feeSch,
         },
-		//validations:[ {type: 'regexp', value: '^([0-9]{4}-[0-9]{2}-[0-9]{2})|([0-9]{8})$', msg : 'Not in yyyy-mm-dd format'}],
-		validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
+		validations:[ {type: 'regexp', value: '^([0-9]{4}-[0-9]{2}-[0-9]{2})|([0-9]{8})$', msg : 'Not in yyyy-mm-dd format'}],
+		//validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
         editable: true,
 		render: function (ui) {
          let cellData = replaceAll( ui.cellData , '-','') ;
