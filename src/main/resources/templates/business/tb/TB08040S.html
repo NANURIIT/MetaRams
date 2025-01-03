@@ -16,6 +16,37 @@
 </th:block>
 
 <th:block layout:fragment="customContent">
+	 <style>	
+ /*   .pq-grid > .pq-grid-top
+    {
+        border-top-width:1px;
+    }
+    
+    .ui-autocomplete {
+        max-height: 200px;        
+        overflow-y: auto;
+        overflow-x: hidden;
+    } 
+     */ 
+    .pq-grid .pq-editor-focus
+    {
+        outline:none;
+        border:1px solid #bbb;    
+        border-radius:6px;
+        background-image: linear-gradient(#e6e6e6, #fefefe);
+
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e6e6e6', endColorstr='#fefefe'); 
+        background: -webkit-gradient(linear, left top, left bottom, from(#e6e6e6), to(#fefefe)); 
+        background: -moz-linear-gradient(top,  #e6e6e6,  #fefefe); /* for firefox 3.6+ */	        
+    }
+    div.pq-grid
+    {
+        overflow:visible;
+    } 
+	
+	
+	</style>
+
 	<!-- 사업정보조회 -->
 	<div class="wrapper wrapper-content animated fadeIn">
 		<div class="row">
@@ -95,7 +126,7 @@
 											</div>
 										</div>
 										<div class="ibox-content">
-											<div id="grd_feeSch"></div>
+											<div id="grd_feeSch" style="margin:auto;"></div>
 											<!-- <table class="table table-bordered table-hover">
 												<colgroup>
 													<col style="width: 5%;">

@@ -18,10 +18,10 @@
 			   ) AS FEE_BNAP_NM 		/* 수수료선후급구분명 */ 					 
 			 , A.FEE_KND_CD 				/* 수수료종류코드     */
 			 , (
-				SELECT CD_VL_NM
-				  FROM IBIMS002B
-				 WHERE CMNS_CD_GRP = 'E008'
-				   AND CD_VL_ID = A.FEE_KND_CD	 
+				SELECT FEE_NAME
+				  FROM IBIMS421B
+				 WHERE 1=1
+				   AND FEE_KND_CD = A.FEE_KND_CD	 
 			   ) AS FEE_KND_NM 			/* 수수료종류명 */ 				 
 			 , A.FEE_RCOG_DCD 		     /* 수수료인식구분 */
 			 , (
@@ -118,10 +118,10 @@
 			   ) AS FEE_BNAP_NM 			/* 수수료선후급구분명 */ 					 
 			 , FEE_KND_CD 				/* 수수료종류코드     */
 			 , (
-				SELECT CD_VL_NM
-				  FROM IBIMS002B
-				 WHERE CMNS_CD_GRP = 'E008'
-				   AND CD_VL_ID = FEE_KND_CD	 
+				SELECT FEE_NAME
+				  FROM IBIMS421B
+				 WHERE 1=1
+				   AND FEE_KND_CD = A.FEE_KND_CD	 
 			   ) AS FEE_KND_NM 			/* 수수료종류명 */ 				 
 			 , FEE_RCOG_DCD 		/* 수수료인식구분 */
 			 , (
@@ -199,10 +199,10 @@
 			   ) AS FEE_BNAP_NM 			/* 수수료선후급구분명 */ 					 
 			 , FEE_KND_CD 				/* 수수료종류코드     */
 			 , (
-				SELECT CD_VL_NM
-				  FROM IBIMS002B
-				 WHERE CMNS_CD_GRP = 'E008'
-				   AND CD_VL_ID = FEE_KND_CD	 
+				SELECT FEE_NAME
+				  FROM IBIMS421B
+				 WHERE 1=1
+				   AND FEE_KND_CD = A.FEE_KND_CD	 
 			   ) AS FEE_KND_NM 			/* 수수료종류명 */ 				 
 			 , FEE_RCOG_DCD 		/* 수수료인식구분 */
 			 , (
@@ -280,10 +280,10 @@
 			   ) AS FEE_BNAP_NM 			/* 수수료선후급구분명 */ 					 
 			 , FEE_KND_CD 				/* 수수료종류코드     */
 			 , (
-				SELECT CD_VL_NM
-				  FROM IBIMS002B
-				 WHERE CMNS_CD_GRP = 'E008'
-				   AND CD_VL_ID = FEE_KND_CD	 
+				SELECT FEE_NAME
+				  FROM IBIMS421B
+				 WHERE 1=1
+				   AND FEE_KND_CD = A.FEE_KND_CD	 
 			   ) AS FEE_KND_NM 			/* 수수료종류명 */ 				 
 			 , FEE_RCOG_DCD 		/* 수수료인식구분 */
 			 , (
