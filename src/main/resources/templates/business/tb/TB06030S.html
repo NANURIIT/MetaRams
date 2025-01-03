@@ -365,7 +365,8 @@
 										<div class="col-sm-2 input-group">
 											<input type="text" class="form-control" id="TB06030S_rcgAmt" 
 											style="text-align:right"
-											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onchange="inputNumberFormat2(this);">
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"> 
+											<!-- onchange="inputNumberFormat2(this);"-->
 										</div>
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>통화코드</label>
 										<div class="col-sm-2 input-group">
@@ -494,8 +495,8 @@
 										<div class="col-sm-2 input-group">
 											<input type="text" class="form-control" id="TB06030S_totIssuQty"
 												style="text-align:right"
-												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-												onchange="inputNumberFormat2(this);">
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+												<!--onchange="inputNumberFormat2(this);"-->
 										</div>
 									</div>
 								</div>
@@ -522,7 +523,9 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">출자약정금액</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control text-right" id="TB06030S_fincCtrcAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onchange="inputNumberFormat2(this);">
+											<input type="text" class="form-control text-right" id="TB06030S_fincCtrcAmt" 
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"> 
+											<!-- onchange="inputNumberFormat2(this);"-->
 										</div>
 										<label class="col-sm-1 col-form-label text-right text-nowrap">당사출자금액(이행)</label>
 										<div class="col-sm-2 input-group ">
@@ -543,7 +546,9 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">출자이행금액</label>
 										<div class="col-sm-2 input-group ">
-											<input type="text" class="form-control text-right" id="TB06030S_fincFlflAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onchange="inputNumberFormat2(this);">
+											<input type="text" class="form-control text-right" id="TB06030S_fincFlflAmt" 
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"> 
+											<!-- onchange="inputNumberFormat2(this);"-->
 										</div>
 										<label class="col-sm-1 col-form-label text-right">현재출자잔액</label>
 										<div class="col-sm-2 input-group ">
@@ -565,7 +570,9 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right text-nowrap">당사출자약정금액</label>
 										<div class="col-sm-2 input-group ">
-											<input type="text" class="form-control text-right" id="TB06030S_thcoFincCtrcAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onchange="inputNumberFormat2(this);">
+											<input type="text" class="form-control text-right" id="TB06030S_thcoFincCtrcAmt" 
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+											<!-- onchange="inputNumberFormat2(this);" -->
 										</div>
 										<label class="col-sm-1 col-form-label text-right">관리보수잔액</label>
 										<div class="col-sm-2 input-group ">

@@ -14,6 +14,7 @@ const TB06020Sjs = (function(){
 		onChangeEprzCrdlPrdtLclsCd(); // 기업여신상품대분류코드 선택이벤트
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		defaultNumberFormat(); //기본 숫자타입
+		inputNumberChangeFunction_TB06020S();
 		//초기화버튼
 		resetSearchRequiment_TB06020S();
 		
@@ -28,6 +29,21 @@ const TB06020Sjs = (function(){
 		);
 	}
 	
+	function inputNumberChangeFunction_TB06020S(){
+		//종목 승인금액
+		$("#TB06020S_rcgAmt").on('change', function(){
+			let formatNum="000.00";
+			formatNum=(Math.round(uncomma($("#TB06020S_rcgAmt").val())*100)/100).toFixed(2);
+			$("#TB06020S_rcgAmt").val(addComma(uncomma(formatNum)));
+		});
+		
+		// 총발행좌수
+		$("#TB06020S_totIssuShqt").on('change', function(){
+			let formatNum="0";
+			formatNum=(Math.round(uncomma($("#TB06020S_totIssuShqt").val())*1)/1).toFixed(0);
+			$("#TB06020S_totIssuShqt").val(addComma(uncomma(formatNum)));
+		});
+	}
 
 	// pqGrid	
 	function roadTabInfoGrid() {
@@ -1224,6 +1240,7 @@ const TB06020Sjs = (function(){
 
 	return {
 		  getDealList : getDealList
+		, inputNumberChangeFunction_TB06020S : inputNumberChangeFunction_TB06020S
 		, resetSearchRequiment_TB06020S : resetSearchRequiment_TB06020S
 		, managePrdtCd : managePrdtCd
 		, setLstMrtg : setLstMrtg

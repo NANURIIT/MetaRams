@@ -449,7 +449,7 @@
 		   AND E.LAST_YN(+) 			= 'Y'
 		   AND D.TR_OTHR_DSCM_NO 		= F.ARDY_BZEP_NO(+)
 		   AND A.PRDT_CD 				= G.PRDT_CD(+)	
-		   AND A.ACTS_CD 				= H.ACTS_CD(+)
+		   AND A.EPRZ_CRDL_FEE_KND_CD 	= H.FEE_KND_CD(+)
 		<if test="actsCd != ''">
 		   AND A.ACTS_CD = #{actsCd} 
 		</if>
