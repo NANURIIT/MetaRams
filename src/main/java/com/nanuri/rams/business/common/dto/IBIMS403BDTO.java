@@ -20,6 +20,7 @@ public class IBIMS403BDTO {
     private String         scxDcd;                                 // 일정구분코드
     private String         rdmpTmrd;                               // 상환회차
     private String         prarDt;                                 // 예정일자
+    private BigDecimal     trgtAmt;                                // 대상금액
     private BigDecimal     prarPrna;                               // 예정원금
     private String         strtDt;                                 // 시작일자
     private String         endDt;                                  // 종료일자
