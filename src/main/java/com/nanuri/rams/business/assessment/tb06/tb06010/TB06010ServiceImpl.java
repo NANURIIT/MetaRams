@@ -325,6 +325,9 @@ public class TB06010ServiceImpl implements TB06010Service {
 		ibims209bMapper.deleteIBIMS209BbyPrdtCd(prdtCd);
 		//연결 담보내역 삭제
 		ibims212bMapper.deleteIBIMS212BbyPrdtCd(prdtCd);
+		//연결 이해관계자 내역 삭제
+		ibims220bMapper.delIBIMS220BDTOInfo(prdtCd);
+
 		return ibims201bMapper.deletePrdtCd(param);
 	}
 
