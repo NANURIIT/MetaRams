@@ -389,9 +389,9 @@ const TB04050Sjs = (function () {
 
     var loiLocYn = "";
     if ($(":radio[name='TB04050S_issLtrYN']").radioSelect("1")) {
-      loiLocYn = "1";
+      loiLocYn = "Y";
     } else {
-      loiLocYn = "2";
+      loiLocYn = "N";
     }
 
     if (!isEmpty(dealNo)) {
@@ -427,6 +427,7 @@ const TB04050Sjs = (function () {
       };
 
       //alert(JSON.stringify(dtoParam));
+      console.log("확인해보자:", dtoParam);
 
       $.ajax({
         type: "POST",

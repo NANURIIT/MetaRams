@@ -616,7 +616,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_selectedDealNo").val(dealNo);
 
     setTab1(dealNo, mtrDcd, jdgmDcd);
-    setTab2(dealNo, mtrDcd, jdgmDcd);
+    //setTab2(dealNo, mtrDcd, jdgmDcd);
     setTab3(dealNo, mtrDcd, jdgmDcd);
     setTab4(dealNo, mtrDcd, jdgmDcd);
     setTab5(dealNo, mtrDcd, jdgmDcd);
@@ -849,6 +849,7 @@ const TB04010Sjs = (function () {
           $("#tab-6 .btn").prop("disabled", true);
           $("#tab-7 .btn").prop("disabled", true);
           $("#tab-8 .btn").prop("disabled", true);
+          $(".save").prop("disabled", true);
         } else {
           $("#tab-1 .btn-success").prop("disabled", false);
           $("#tab-2 .btn").prop("disabled", false);
@@ -858,6 +859,7 @@ const TB04010Sjs = (function () {
           $("#tab-6 .btn").prop("disabled", false);
           $("#tab-7 .btn").prop("disabled", false);
           $("#tab-8 .btn").prop("disabled", false);
+          $(".save").prop("disabled", false);
         }
 
         if (
@@ -874,6 +876,7 @@ const TB04010Sjs = (function () {
           $("#tab-6 .btn").prop("disabled", false);
           $("#tab-7 .btn").prop("disabled", false);
           $("#tab-8 .btn").prop("disabled", false);
+          $(".save").prop("disabled", false);
         }
 
         // 심사요청 버튼 활성
@@ -886,6 +889,7 @@ const TB04010Sjs = (function () {
             $("#bscAstsInptExptF").prop("disabled", false); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
+            $(".save").prop("disabled", false);
             break;
           case 203:
             $("#assesmentDelete").prop("disabled", false); // 삭제버튼 활성화
@@ -893,6 +897,7 @@ const TB04010Sjs = (function () {
             $("#bscAstsInptExptF").prop("disabled", false); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
+            $(".save").prop("disabled", true);
             break;
           case 206:
             $("#assesmentRequest").prop("disabled", false);
@@ -903,6 +908,7 @@ const TB04010Sjs = (function () {
             $("#bscAstsInptExptF").prop("disabled", false); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
+            $(".save").prop("disabled", true);
             break;
 
           // 심사요청취소 활성화
@@ -915,6 +921,7 @@ const TB04010Sjs = (function () {
             $("#bscAstsInptExptF").prop("disabled", false); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
+            $(".save").prop("disabled", true);
             break;
 
           // 승인, 반송, 보류 활성화
@@ -932,7 +939,7 @@ const TB04010Sjs = (function () {
             $("#bscAstsInptExptF").prop("disabled", false); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
-
+            $(".save").prop("disabled", true);
             break;
           case 208:
             $("#assesmentRequest").prop("disabled", true);
@@ -944,6 +951,7 @@ const TB04010Sjs = (function () {
             $("#bscAstsInptExptF").prop("disabled", true); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", true); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", true); // 내부등급 입력예정여부 disabled false
+            $(".save").prop("disabled", true);
             break;
           case 309:
             $("#assesmenttlClsf").prop("disabled", true);
@@ -951,6 +959,7 @@ const TB04010Sjs = (function () {
             $("#bscAstsInptExptF").prop("disabled", true); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", true); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", true); // 내부등급 입력예정여부 disabled false
+            $(".save").prop("disabled", true);
             break;
           default:
             $("#assesmentRequest").prop("disabled", true);
@@ -961,7 +970,7 @@ const TB04010Sjs = (function () {
             $("#bscAstsInptExptF").prop("disabled", true); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", true); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", true); // 내부등급 입력예정여부 disabled false
-
+            $(".save").prop("disabled", true);
             break;
         }
       },
@@ -969,46 +978,46 @@ const TB04010Sjs = (function () {
   }
 
   // 관련문서tab setting
-  function setTab2(dealNo, mtrDcd, jdgmDcd) {
-    getDocInfo(dealNo, mtrDcd, jdgmDcd);
-  }
+  // function setTab2(dealNo, mtrDcd, jdgmDcd) {
+  //   getDocInfo(dealNo, mtrDcd, jdgmDcd);
+  // }
 
   // 관련문서 정보
-  function getDocInfo(dealNo, mtrDcd, jdgmDcd) {
-    tab2BtnReset();
+  // function getDocInfo(dealNo, mtrDcd, jdgmDcd) {
+  //   tab2BtnReset();
 
-    var paramData = {
-      dealNo: dealNo, // deal번호
-      mtrDcd: mtrDcd, // 부수안건구분코드
-      jdgmDcd: jdgmDcd, // 리스크심사구분코드
-    };
+  //   var paramData = {
+  //     dealNo: dealNo, // deal번호
+  //     mtrDcd: mtrDcd, // 부수안건구분코드
+  //     jdgmDcd: jdgmDcd, // 리스크심사구분코드
+  //   };
 
-    $.ajax({
-      type: "GET",
-      url: "/TB04010S/getDocInfo",
-      data: paramData,
-      dataType: "json",
-      success: function (data) {
-        //console.log("TEST_여기 들어옴!! 성공이야");
-        //arrPqGridDocInfo.setData(data);
-        arrPqGridDocInfo.option("rowDblClick", function (event, ui) {
-          docInfoDetails(ui.rowData);
-        });
-      },
-    });
-  }
+  //   $.ajax({
+  //     type: "GET",
+  //     url: "/TB04010S/getDocInfo",
+  //     data: paramData,
+  //     dataType: "json",
+  //     success: function (data) {
+  //       //console.log("TEST_여기 들어옴!! 성공이야");
+  //       //arrPqGridDocInfo.setData(data);
+  //       arrPqGridDocInfo.option("rowDblClick", function (event, ui) {
+  //         docInfoDetails(ui.rowData);
+  //       });
+  //     },
+  //   });
+  // }
 
-  function docInfoDetails(e) {
-    var dcmNo = e.dcmNo; // 문서번호
-    var lastDcmYn = e.lastDcmYn; // 최종문서여부
-    var rm = e.rm; // 비고(URLLINK)
-    var sn = e.sn; // 일련번호
+  // function docInfoDetails(e) {
+  //   var dcmNo = e.dcmNo; // 문서번호
+  //   var lastDcmYn = e.lastDcmYn; // 최종문서여부
+  //   var rm = e.rm; // 비고(URLLINK)
+  //   var sn = e.sn; // 일련번호
 
-    $("#TB04010S_dcmNo").val(dcmNo);
-    $(":radio[name='TB04010S_lastDcmYn']").radioSelect(lastDcmYn);
-    $("#TB04010S_rm").val(rm);
-    $("#TB04010S_tab2_sn").val(sn);
-  }
+  //   $("#TB04010S_dcmNo").val(dcmNo);
+  //   $(":radio[name='TB04010S_lastDcmYn']").radioSelect(lastDcmYn);
+  //   $("#TB04010S_rm").val(rm);
+  //   $("#TB04010S_tab2_sn").val(sn);
+  // }
 
   // 기초자산정보 탭
   function setTab3(dealNo, mtrDcd, jdgmDcd) {
@@ -1311,7 +1320,6 @@ const TB04010Sjs = (function () {
         arrPqGridMrtgInfo.setData(data);
         arrPqGridMrtgInfo.option("rowDblClick", function (event, ui) {
           getMrtgInfoDetails(ui.rowData);
-          console.log("확인해보자: ", data);
         });
       },
     });
