@@ -1251,6 +1251,10 @@ const TB07090Sjs = (function () {
           $('#TB07090S_colModel2').pqGrid('instance').pdata[colModel2_rowIndx]
         )
       }
+      else if(selected_dptrRgstDtl.rgstSeq === undefined){
+        // 그냥 지우기
+        rowIndx = colModel2_rowIndx
+      }
       else {
         swal.fire({
           icon: "warning"
@@ -1269,7 +1273,7 @@ const TB07090Sjs = (function () {
 
       for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
         if (rctmDtlsMappingGridData[i].rctmDt === TB07090S_rowData.rctmDt
-          && rctmDtlsMappingGridData[i].rgstSeq === TB07090S_rowData.rgstSeq
+          && rctmDtlsMappingGridData[i].rgstSeq === Number(TB07090S_rowData.rgstSeq)
         ) {
           updateIndx = i;
           break;

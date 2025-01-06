@@ -34,7 +34,7 @@
 
   <!-- 납부예정금액 체크 -->
   <select id="inqPmntPrarAmt" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO" resultType="BigDecimal">
-    SELECT PMNT_PRAR_AMT        /* 납부예정금액 */
+    SELECT NVL(PMNT_PRAR_AMT, 0)        /* 납부예정금액 */
       FROM IBIMS435B
      WHERE 1=1
        AND RCTM_DT = #{rctmDt} 
