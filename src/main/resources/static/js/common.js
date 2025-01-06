@@ -1,13 +1,11 @@
 /** common **/
 "use strict";
 
-
 /**
  * keydown, onchange 이벤트 생성
  * @author {김건우}
  */
 function settingFunction() {
-
   const url = window.location.pathname;
 
   setFileUploadEvent(url.split("/")[1]);
@@ -15,25 +13,28 @@ function settingFunction() {
   /**
    * 모달 드래그 이벤트
    */
-  $(`.modal-header.metis-modal-header:not([data-event])`).on('mousedown', function () {
-    $(this).attr("data-event", "on");
-    // draggable 초기화
-    $(".modal-dialog").draggable();
+  $(`.modal-header.metis-modal-header:not([data-event])`).on(
+    "mousedown",
+    function () {
+      $(this).attr("data-event", "on");
+      // draggable 초기화
+      $(".modal-dialog").draggable();
 
-    $(document).on("mouseup.draggableDestroy", function () {
-      // draggable 비활성화
-      // $(".modal-dialog").draggable("destroy");
+      $(document).on("mouseup.draggableDestroy", function () {
+        // draggable 비활성화
+        // $(".modal-dialog").draggable("destroy");
 
-      if ($(".modal-dialog").data("ui-draggable")) {
-        $(".modal-dialog").draggable("destroy");
-      }
+        if ($(".modal-dialog").data("ui-draggable")) {
+          $(".modal-dialog").draggable("destroy");
+        }
 
-      // mouseup 이벤트 해제 (중복 방지)
-      $(document).off("mouseup.draggableDestroy");
+        // mouseup 이벤트 해제 (중복 방지)
+        $(document).off("mouseup.draggableDestroy");
 
-      console.log("드래그 비활성화 및 이벤트 해제 완료");
-    });
-  });
+        console.log("드래그 비활성화 및 이벤트 해제 완료");
+      });
+    }
+  );
 
   if (
     $('script[src="js/business/tb/TB06011P.js"]').attr("src") ===
@@ -83,7 +84,7 @@ function settingFunction() {
   ) {
     TB03021P_srch(url);
   }
-  
+
   if (
     $('script[src="js/business/tb/TB06017P.js"]').attr("src") ===
     "js/business/tb/TB06017P.js"
@@ -112,7 +113,6 @@ function settingFunction() {
     startView: "months",
   });
   $(".input-group.clockpicker").clockpicker({});
-
 }
 
 /**
@@ -167,8 +167,8 @@ function ajaxCall(option) {
       //openPopup({type:"loding",show:false});
     },
   }).then(
-    $.type(option.success) === "function" ? option.success : function () { },
-    $.type(option.fail) === "function" ? option.fail : function () { }
+    $.type(option.success) === "function" ? option.success : function () {},
+    $.type(option.fail) === "function" ? option.fail : function () {}
   );
 }
 
@@ -1377,6 +1377,26 @@ function getSelectBoxList(prefix, item, async = true) {
           }
         }
 
+        if (prefix == "TB08036S") {
+          if (value.cmnsGrpCd == "I012") {
+            // 신용등급구분코드
+            var html = "";
+            html +=
+              '<option value="' +
+              value.cdValue +
+              '">' +
+              value.cdName +
+              " (" +
+              value.cdValue +
+              ")" +
+              "</option>";
+
+            $("#TB08036S_I012_1").append(html);
+            $("#TB08036S_I012_2").append(html);
+            $("#TB08036S_I012_3").append(html);
+          }
+        }
+
         if (prefix == "TB07040S") {
           if (value.cmnsGrpCd == "P012") {
             if (value.cdValue == "82" || value.cdValue == "83") {
@@ -1596,15 +1616,15 @@ function setPqGrid(pqGridObjs) {
       numCl = pqGridObj.numberCell || { show: false }, // numberCell ex:::{ show: false, width: 40, resizable: true, title: "" }
       showTt = pqGridObj.showTitle || false, // showTitle
       showTb = pqGridObj.showToolbar || false, // showToolbar
-      cllSv = pqGridObj.cellSave || function (event, ui) { }, // cellSave
+      cllSv = pqGridObj.cellSave || function (event, ui) {}, // cellSave
       edit = pqGridObj.editable || false,
       tlbar = pqGridObj.toolbar || {},
-      rowClick = pqGridObj.rowClick || function (event, ui) { },
+      rowClick = pqGridObj.rowClick || function (event, ui) {},
       selMd = pqGridObj.selectionModel || {}, // { type: 'row' }
-      cellbs = pqGridObj.cellBeforeSave || function (event, ui) { },
-      cellClick = pqGridObj.cellClick || function (event, ui) { },
-      rowSelect = pqGridObj.rowSelect || function (event, ui) { },
-      rowDblClick = pqGridObj.rowDblClick || function (event, ui) { };
+      cellbs = pqGridObj.cellBeforeSave || function (event, ui) {},
+      cellClick = pqGridObj.cellClick || function (event, ui) {},
+      rowSelect = pqGridObj.rowSelect || function (event, ui) {},
+      rowDblClick = pqGridObj.rowDblClick || function (event, ui) {};
 
     let strNoRows = " "; // 최초 생성 시 body msg
 
@@ -2069,5 +2089,4 @@ function resetPGgrids(menuid) {
   }
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) { }
-
+function autoSrchFromPQGrid(pqGridId, url, paramData) {}

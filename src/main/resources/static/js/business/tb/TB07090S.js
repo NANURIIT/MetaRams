@@ -486,7 +486,7 @@ const TB07090Sjs = (function () {
         // },
       },
       {
-        title: "거래기관",
+        title: "이체기관",
         dataType: "string",
         dataIndx: "reltIsttCd",
         halign: "center",
