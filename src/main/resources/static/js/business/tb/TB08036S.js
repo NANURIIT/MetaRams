@@ -1,7 +1,21 @@
 const TB08036Sjs = (function () {
+  let pqGridObjInfoList;
+
   $(document).ready(function () {
     loadSelectBoxContents();
   });
+
+  // 그리드설정
+  function setArrPqGridObj() {
+    let setArrPqGridObj = [
+      {
+        height: 600,
+        maxHeight: 600,
+        id: "TB08036S_gridCncCmpnyInfo",
+        colModel: colList,
+      },
+    ];
+  }
 
   //셀렉트박스 세팅
   function loadSelectBoxContents() {
