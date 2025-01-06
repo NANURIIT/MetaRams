@@ -2092,7 +2092,6 @@ function resetPGgrids(menuid) {
   }
 }
 
-<<<<<<< HEAD
 function autoSrchFromPQGrid(pqGridId, url, paramData) { }
 
 /**
@@ -2150,6 +2149,5 @@ function chkDecdStep (menuId){
   });
 
 } 
-=======
+
 function autoSrchFromPQGrid(pqGridId, url, paramData) {}
->>>>>>> de8862ca80946b68520d31e111e5db8053df85bc
