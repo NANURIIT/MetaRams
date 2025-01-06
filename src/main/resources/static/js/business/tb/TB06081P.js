@@ -11,9 +11,9 @@
  * 
  * 4. 결재요청이 이미 된 경우, 팝업내에서 결재요청 취소를 위한 텍스트 박스만 조작가능. 승인자 추가 변경기능 disabled
  */
-$(document).ready(function () {
+// $(document).ready(function(){
 
-});
+// });
 
 // 승인자목록
 let TB06081P_apvlList = [];
@@ -36,11 +36,11 @@ function callTB06081P(prefix) {
  * @description 결재상태 확인 후 데이터 가져옴 화면에서 세팅해야 할 값들 존재
  */
 function TB06081P_setScrnData(prefix) {
-    $('#TB06081P_dealNo').val($(`${prefix}_dealNo`).val());
-    $('#TB06081P_prdtCd').val($(`${prefix}_prdtCd`).val());
-    $('#TB06081P_excSeq').val($(`${prefix}_excSeq`).val());
-    $('#TB06081P_rqstSq').val($(`${prefix}_rqstSq`).val());
-    $('#TB06081P_trSeq').val($(`${prefix}_trSeq`).val());
+    $('#TB06081P_dealNo').val($(`#${prefix}_ibDealNo`).val());
+    $('#TB06081P_prdtCd').val($(`#${prefix}_prdtCd`).val());
+    $('#TB06081P_excSeq').val($(`#${prefix}_excSeq`).val());
+    $('#TB06081P_rqstSq').val($(`#${prefix}_rqstSq`).val());
+    $('#TB06081P_trSeq').val($(`#${prefix}_trSeq`).val());
     $('#TB06081P_decdJobDcd').val(prefix);
     $('#TB06081P_scrnNo').val(prefix);
 }
@@ -53,12 +53,14 @@ function TB06081P_closeModal() {
 }
 
 $("#modal-TB06081P").on("hide.bs.modal", function () {
+    TB06081P_apvlList = [];
+    TB06081P_setApvlList();
     TB06081P_reset();
     $("#TB06081P_pqgrid").pqGrid("destroy");
 });
 
 /**
- * 조회조건, PGGrid reset
+ * 조회조건, PQGrid reset
  */
 function TB06081P_reset() {
     $("#TB06081P_empNo").val("")
@@ -178,44 +180,78 @@ function TB06081P_srchApvlList() {
 /**
  * 결재요청 저장
  */
-function TB06081P_saveApvl() {
+function TB06081P_apvlRqst(decdSttsDcd) {
 
-    let apvlList 
-    
+    let decdStepDcd;
+    let url;
+    let text;
+
+    // 승인요청
+    if(decdSttsDcd === "1"){
+        decdStepDcd = "04"
+        url = "apvlRqst"
+        text = "승인요청"
+    }
+    // 승인요청취소
+    else if(decdSttsDcd === "4"){
+        decdStepDcd = "00"
+        url = "cancelApvlRqst"
+        text = "승인요청취소"
+    }
+
+    let apvlList = [];
+
+    for(let i = 0; i < TB06081P_apvlList.length; i++){
+        let param = {
+            chrrEno: TB06081P_apvlList[i].empno                 // 책임자사번 - TB06081P_apvlList
+            // , apvlRqstPEno: ""                               // 승인요청자사번 - 서비스처리
+            , decdStepDcd: decdStepDcd                          // 결재단계구분코드 - 00해당무, 01담당자작성중, 02재승인요청, 03담당자수정중, 04승인요청, 05결재완료
+            , decdSttsDcd: decdSttsDcd                          // 결재상태구분코드 - 0해당없음, 1진행중, 2승인완료, 3반려, 4승인취소
+            , dealNo: $('#TB06081P_dealNo').val()               // 딜번호
+            , prdtCd: $('#TB06081P_prdtCd').val()               // 상품코드
+            , decdJobDcd: $('#TB06081P_decdJobDcd').val()       // 결재업무구분코드
+            , scrnNo: $('#TB06081P_scrnNo').val()               // 화면번호
+            , apvlRqstCntn: $('#TB06081P_apvlRqstCntn').val()   // 승인요청내용 
+            , excSeq: $('#TB06081P_excSeq').val() || 0          // 실행순번
+            , rqstSq: $('#TB06081P_rqstSq').val() || 0          // 신청순번
+            , trSeq: $('#TB06081P_trSeq').val() || 0            // 거래순번
+            , errCntn: $('#TB06081P_errCntn').val()             // 오류내용
+        }
+        apvlList.push(param);
+    }
+
+    console.log(apvlList);
+
     let paramData = {
-        apvlRqstSq: ""      // 승인요청순번
-        , chrrEno: ""       // 책임자사번
-        , apvlRqstPEno: ""  // 승인요청자사번
-        , decdStepDcd: ""   // 결재단계구분코드
-        , decdSttsDcd: ""   // 결재상태구분코드
-        , dealNo: ""        // 딜번호
-        , prdtCd: ""        // 상품코드
-        , decdJobDcd: ""    // 결재업무구분코드
-        , scrnNo: ""        // 화면번호
-        , apvlRqstCntn: ""  // 승인요청내용
-        , rqstDtm: ""       // 신청일시
-        , rqstCnclDtm: ""   // 신청취소일시
-        , prcsRsltDcd: ""   // 처리결과구분코드
-        , excSeq: ""        // 실행순번
-        , rqstSq: ""        // 신청순번
-        , trSeq: ""         // 거래순번
-        , errCntn: ""       // 오류내용
-        , lastDecdSq: ""    // 최종결재순번
+        apvlList: apvlList
     }
 
     $.ajax({
         type: "POST",
-        url: "/TB06081P/saveApvl",
+        url: `/TB06081P/${url}`,
         contentType: "application/json; charset=UTF-8",
         data: JSON.stringify(paramData),
         dataType: "json",
         success: function (data) {
-            Swal.fire({
-                icon: "success",
-                text: "승인요청이 되었습니다!",
-              });
+            // 성공
+            if(data > 0){
+                Swal.fire({
+                    icon: "success",
+                    text: `${text} 되었습니다!`,
+                  });
+                  TB06081P_apvlListChk();
+            }
+            // 실패
+            else {
+                Swal.fire({
+                    icon: "warning",
+                    text: `${text} 실패!`,
+                  });
+                  TB06081P_apvlListChk();
+            }
         },
     });
+
 }
 
 /**
@@ -242,12 +278,18 @@ function TB06081P_apvlListChk() {
         data: JSON.stringify(paramData),
         dataType: "json",
         success: function (data) {
+            // 성공
             if(data.length > 0){
                 TB06081P_apvlList = data;
                 TB06081P_setApvlList();
                 // 결재요청중
                 TB06081P_apvlReqStatusHandler("ing");
-            }else {
+                // 결재진행중인 내용이면 승인자 그리드 사용불가
+                $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", true)
+            }
+            // 실패
+            else {
+                $("#modal-TB06081P .con-tb06081p tbody").html("");
                 // 결재요청사항 없음
                 TB06081P_apvlReqStatusHandler("nothing");
             }
@@ -269,14 +311,20 @@ function TB06081P_apvlReqStatusHandler(status) {
     if(status === "ing"){
         $("#apvlReqBtn").prop("disabled", true)
         $("#apvlReqCancelBtn").prop("disabled", false)
+        $("#TB06081P_apvlRqstCntn").prop("disabled", true)
+        $("#TB06081P_errCntn").prop("disabled", false)
     }
     else if (status === "nothing") {
         $("#apvlReqBtn").prop("disabled", true)
         $("#apvlReqCancelBtn").prop("disabled", true)
+        $("#TB06081P_apvlRqstCntn").prop("disabled", false)
+        $("#TB06081P_errCntn").prop("disabled", true)
     }
     else if (status === "new"){
         $("#apvlReqBtn").prop("disabled", false)
         $("#apvlReqCancelBtn").prop("disabled", true)
+        $("#TB06081P_apvlRqstCntn").prop("disabled", false)
+        $("#TB06081P_errCntn").prop("disabled", true)
     }
 }
 
@@ -288,6 +336,13 @@ function TB06081P_apvlReqStatusHandler(status) {
 function TB06081P_addApvlList(rowIdx){
 
     let apvlData = $("#TB06081P_pqgrid").pqGrid('instance').pdata[rowIdx]
+
+    for(let i = 0; i < TB06081P_apvlList.length; i++){
+        // 들어있는 데이터를 추가했을시 아무 동작 안함
+        if(TB06081P_apvlList[i].empno === apvlData.empno){
+            return;
+        }
+    }
 
     if(TB06081P_apvlList.length < 3){
         TB06081P_apvlList.push(apvlData);
@@ -367,7 +422,7 @@ function TB06081P_setApvlList() {
         html += `
             <tr style="text-align: center;">
 			    <td style="text-align: right;">
-			        ${i+1}
+			        ${apvlList.length - i}
 			    </td>
 			    <td>
                     ${apvlList[i].empno}

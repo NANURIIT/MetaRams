@@ -81,9 +81,9 @@ public class TB08040ServiceImpl implements TB08040Service {
 					ibims348bvo.setMngmRcogStrtDt(""); // 관리인식시작일자
 					ibims348bvo.setMngmRcogEndDt(""); // 관리인식종료일자
 					ibims348bvo.setMngmPrlnPrdDnum(0); // 관리이연기간일수
-					ibims348bvo.setMngCnfmYn(""); // 경영확인여부
-					ibims348bvo.setInogCnfmYn(""); // 출납확인여부
-					ibims348bvo.setTaffCnfmYn(""); // 세무확인여부
+					ibims348bvo.setMngCnfmYn("N"); // 경영확인여부
+					ibims348bvo.setInogCnfmYn("N"); // 출납확인여부
+					ibims348bvo.setTaffCnfmYn("N"); // 세무확인여부
 					ibims348bvo.setPymtFee(BigDecimal.ZERO); // 지급수수료
 					ibims348bvo.setRqsRgstYn(""); // 신청등록여부
 					// ibims348bvo.setExcSn(0); // 실행일련번호

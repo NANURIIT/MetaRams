@@ -25,6 +25,7 @@
 	<script th:src="@{js/business/tb/TB06019P.js}"></script>
 	<script th:src="@{js/business/tb/TB06019P.js}"></script>
 	<script th:src="@{js/business/tb/TB06081P.js}"></script>
+	<script th:src="@{js/business/tb/TB06082P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -44,6 +45,7 @@
 	<th:block th:replace="business/tb/TB06018P :: TB06018P"></th:block>
 	<th:block th:replace="business/tb/TB06019P :: TB06019P"></th:block>
 	<th:block th:replace="business/tb/TB06081P :: TB06081P"></th:block>
+	<th:block th:replace="business/tb/TB06082P :: TB06082P"></th:block>
 	<th:block th:replace="business/tb/TB07022P :: TB07022P"></th:block>
 </th:block>
 
@@ -415,7 +417,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="ibox">
+						<div class="ibox" id="TB06010S_3rdCon_handler">
 							<div class="ibox-title">
 								<h5>▶&nbsp;금융조건</h5>
 							</div>
@@ -536,7 +538,9 @@
 						<div class="ibox">
 							<!-- 여기에 버튼을! (임시) -->
 							<div class="text-right">
-								<button class="btn btn-success" onclick="callTB06081P('TB06010S');"><i class="fa fa-check"></i>&nbsp;결재요청</button>
+								<button class="btn btn-info btn-xs" type="button" onclick="callTB06081P('TB06010S');"><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
+								<button class="btn btn-success btn-xs" type="button" onclick="callTB06082P('TB06010S', 'DECD');"><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
+								<button class="btn btn-danger btn-xs" type="button" onclick="callTB06082P('TB06010S', 'RJCT');"><i class="fa fa-undo"></i>&nbsp;반려</button>
 							</div>
 						</div>
 					</div>
