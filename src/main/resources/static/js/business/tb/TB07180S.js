@@ -12,9 +12,11 @@ const TB07180Sjs = (function () {
   $(document).ready(function () {
     $('input[id*="Amt"], input[id*=Rt]').val(0);
     selectorNumberFormater($('input[id*="Amt"], input[id*=Rt]'));
-    fnSelectBox();
-    createSelectTag();
+    fnSelectBox_TB07180S();
+    createSelectTag_TB07180S();
     pqGrid_TB07180S();
+	inputNumberChangeFunction_TB07180S();
+	
   });
 
   //초기화버튼
@@ -33,7 +35,7 @@ const TB07180Sjs = (function () {
   /*
    *  =====================OptionBox데이터 SET=====================
    */
-  function fnSelectBox() {
+  function fnSelectBox_TB07180S() {
     selectBox = getSelectBoxList(
       "TB07180",
       "/F006" + "/R012" + "/F015" + "/A001" + "/A004" +"/A005",
@@ -61,7 +63,7 @@ const TB07180Sjs = (function () {
     }); //	계정과목코드
   }
 
-  function createSelectTag() {    
+  function createSelectTag_TB07180S() {    
 
     //  수수료인식구분
     let f006Html;
@@ -118,6 +120,31 @@ const TB07180Sjs = (function () {
   		}
   	});
   }
+  
+  /**
+   * 절사, 금액 반올림
+   */
+
+  function inputNumberChangeFunction_TB07180S(){
+	//수수료율
+	$("#TB07180S_feeRt").on('change', function(){
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB07180S_feeRt").val())*100)/100).toFixed(2);
+		$("#TB07180S_feeRt").val(addComma(uncomma(formatNum)));
+	});	
+	//수수료최저금액
+	$("#TB07180S_feeLwstAmt").on('change', function(){
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB07180S_feeLwstAmt").val())*100)/100).toFixed(2);
+		$("#TB07180S_feeLwstAmt").val(addComma(uncomma(formatNum)));
+	});	
+	//수수료최고금액
+	$("#TB07180S_feeHgstAmt").on('change', function(){
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB07180S_feeHgstAmt").val())*100)/100).toFixed(2);
+		$("#TB07180S_feeHgstAmt").val(addComma(uncomma(formatNum)));
+	});	
+  }	
   
   
   function TB07180S_dataListBnd(value){
