@@ -220,6 +220,7 @@ public class Calculation {
 			prnaCalcRstDTO.setScxDcd("02");
 			prnaCalcRstDTO.setRdmpTmrd(Integer.toString(i+1));
 			prnaCalcRstDTO.setPrarDt(DateUtil.dayAdd(itm.getEndDt(),1));
+			prnaCalcRstDTO.setBfBalance(bfBalance);
 			if("02".equals(inCalcDTO.getPaiRdmpDcd())) {
 				prnaCalcRstDTO.setPrarPrna(process_down(inCalcDTO.getIntrSnnoPrcsDcd(), MonthlyPaymentTotal.subtract(monthlySubInterest)));
 				prnaCalcRstDTO.setPrarRdmpAmt(MonthlyPaymentTotal);	// 원리금균등만..
@@ -410,7 +411,8 @@ public class Calculation {
 			intrCalcRstDTO.setScxDcd("04");
 			intrCalcRstDTO.setRdmpTmrd(Integer.toString(i+1));
 			intrCalcRstDTO.setPrarDt(DateUtil.dayAdd(item.getEndDt(),1));
-			intrCalcRstDTO.setPrarPrna(bfBalance);										
+			intrCalcRstDTO.setPrarPrna(bfBalance);
+			intrCalcRstDTO.setBfBalance(bfBalance);										
 			intrCalcRstDTO.setStrtDt(item.getStrtDt());
 			intrCalcRstDTO.setEndDt(item.getEndDt());
 			intrCalcRstDTO.setRdmpPrarIntr(process_down(inCalcDTO.getIntrSnnoPrcsDcd(), monthlySubInterest));

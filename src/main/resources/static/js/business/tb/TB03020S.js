@@ -797,7 +797,7 @@ const TB03020Sjs = (function(){
 		}
 
 		// Deal규모
-		if(isEmpty($('#TB03020S_dealScl').val())) {
+		if(isEmpty($('#TB03020S_dealScl').val()) || (Number($('#TB03020S_dealScl').val()) <= 0) ) {
 			msg = 'Deal규모';
 			input = $('#TB03020S_dealScl');
 			input.focus();

@@ -48,6 +48,7 @@
                 , SCX_DCD                                 <!-- /*일정구분코드 */ -->
                 , RDMP_TMRD                               <!-- /*상환회차 */ -->
                 , PRAR_DT                                 <!-- /*예정일자 */ -->
+                , TRGT_AMT                                /*대상금액*/
                 , PRAR_PRNA                               <!-- /*예정원금 */ -->
                 , STRT_DT                                 <!-- /*시작일자 */ -->
                 , END_DT                                  <!-- /*종료일자 */ -->
@@ -69,11 +70,12 @@
         VALUES
         <foreach collection="list" item="item" separator=",">
                (
-                 #{item.prdtCd}                           <!-- /*상품코드 */ -->
-               , #{item.excSn}                            <!-- /*실행일련번호 */ -->
+                 #{item.prdtCd}                           /*상품코드 */ 
+               , #{item.excSn}                            /*실행일련번호 */ 
                , #{item.scxDcd}                           <!-- /*일정구분코드 */ -->
                , #{item.rdmpTmrd}                         <!-- /*상환회차 */ -->
                , #{item.prarDt}                           <!-- /*예정일자 */ -->
+               , #{item.trgtAmt}                          /*대상금액*/
                , #{item.prarPrna}                         <!-- /*예정원금 */ -->
                , #{item.strtDt}                           <!-- /*시작일자 */ -->
                , #{item.endDt}                            <!-- /*종료일자 */ -->
@@ -393,6 +395,8 @@
                , A.PRAR_PRNA              /* 예정원금 */
                , A.STRT_DT                /* 시작일자 */
                , A.END_DT                 /* 종료일자 */
+               , A.PRCS_DT                /* 처리일자 */
+               , A.PRCS_AMT               /* 처리금액 */
                , A.PRCS_CPLT_YN           /* 처리여부 */
                , A.PRCS_DT                /* 처리일시 */
                , A.EXC_SN                 /* 실행일련번호 */
@@ -410,6 +414,7 @@
           SELECT A.PRDT_CD                /* 종목코드 */
                , A.RDMP_TMRD              /* 상환회차 */
                , A.PRAR_DT                /* 예정일자 */
+               , A.TRGT_AMT               /* 대상금액 */
                , A.RDMP_PRAR_INTR         /* 상환예정이자 */
                , A.STRT_DT                /* 시작일자 */
                , A.END_DT                 /* 종료일자 */
@@ -451,6 +456,7 @@
                 , SCX_DCD                                 <!-- /*일정구분코드 */ -->
                 , RDMP_TMRD                               <!-- /*상환회차 */ -->
                 , PRAR_DT                                 <!-- /*예정일자 */ -->
+                , TRGT_AMT                                /*대상금액*/
                 , PRAR_PRNA                               <!-- /*예정원금 */ -->
                 , STRT_DT                                 <!-- /*시작일자 */ -->
                 , END_DT                                  <!-- /*종료일자 */ -->
@@ -476,6 +482,7 @@
                , #{scxDcd}                           <!-- /*일정구분코드 */ -->
                , #{rdmpTmrd}                         <!-- /*상환회차 */ -->
                , #{prarDt}                           <!-- /*예정일자 */ -->
+               , #{trgtAmt}                          /* 대상금액 */
                , #{prarPrna}                         <!-- /*예정원금 */ -->
                , #{strtDt}                           <!-- /*시작일자 */ -->
                , #{endDt}                            <!-- /*종료일자 */ -->
@@ -499,7 +506,8 @@
      <!-- /*원리금 */ 스케줄관리 업데이트 -->
      <update  id="updateCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
           UPDATE IBIMS403B
-             SET PRAR_DT           = #{prarDt}                     /* 예정일자 */  
+             SET PRAR_DT           = #{prarDt}                     /* 예정일자 */
+               , TRGT_AMT          = #{trgtAmt}                    /* 대상금액 */ 
                , PRAR_PRNA         = #{prarPrna}                   /* 예정원금 */
                , STRT_DT           = #{strtDt}                     /* 시작일자 */
                , END_DT            = #{endDt}                      /* 종료일자 */

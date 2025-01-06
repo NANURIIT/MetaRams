@@ -698,6 +698,24 @@ const TB06020Sjs = (function(){
 			option.text = "금융조건 종목승인금액을 입력해주세요.";
 			openPopup(option);
 			return false;
+		}else{
+			if($('#TB06020S_rcgAmt').val()<=0){
+				option.text = "금융조건 종목승인금액을 입력해주세요.";
+				openPopup(option);
+				return false;	
+			}
+		}
+		
+		if (isEmpty($('#TB06020S_rcgAmt').val())) {
+			option.text = "금융조건 종목승인금액을 입력해주세요.";
+			openPopup(option);
+			return false;
+		}else{
+			if($('#TB06020S_rcgAmt').val()==0){
+				option.text = "금융조건 종목승인금액을 입력해주세요.";
+				openPopup(option);
+				return false;	
+			}
 		}
 		
 		if (isEmpty($('#TB06020S_I027').val())) {
@@ -747,6 +765,18 @@ const TB06020Sjs = (function(){
 			option.text = "셀다운대상여부를 선택해주세요.";
 			openPopup(option);
 			return false;
+		}
+		
+		if (isEmpty($('#TB06020S_totIssuShqt').val())) {
+			option.text = "금융조건 총 발행좌수를 입력해주세요.";
+			openPopup(option);
+			return false;
+		}else{
+			if($('#TB06020S_totIssuShqt').val()<= 0){
+				option.text = "금융조건 총 발행좌수를 입력해주세요.";
+				openPopup(option);
+				return false;	
+			}
 		}
 		
 		return true;

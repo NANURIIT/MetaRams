@@ -382,6 +382,7 @@ function setDealInfo(e) {
 
   if (prefix == "TB03020S") {
     $("#selectedMngDealNo").val(ibDealNo);
+    $("#selectedMngDealNm").val(ibDealNm);
     $("#selectedMngDealNo").focus();
     TB03020Sjs.getBscDealDetail();
   }

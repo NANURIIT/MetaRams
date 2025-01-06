@@ -845,8 +845,14 @@ const TB06030Sjs = (function(){
 			option.text = "금융조건 종목승인금액을 입력해주세요.";
 			openPopup(option);
 			return false;
+		}else{
+			if($('#TB06030S_rcgAmt').val()<=0){
+				option.text = "금융조건 종목승인금액을 입력해주세요.";
+				openPopup(option);
+				return false;	
+			}
 		}
-		
+
 		if (isEmpty($('#TB06030S_I027').val())) {
 			option.text = "금융조건 통화코드를 입력해주세요.";
 			openPopup(option);
@@ -894,6 +900,21 @@ const TB06030Sjs = (function(){
 			openPopup(option);
 			return false;
 		}
+		
+
+		if (isEmpty($('#TB06030S_totIssuQty').val())) {
+			option.text = "금융조건 총 발행주수를 입력해주세요.";
+			openPopup(option);
+			return false;
+		}else{
+			if($('#TB06030S_totIssuQty').val()<=0){
+				option.text = "금융조건 총 발행주수를 입력해주세요.";
+				openPopup(option);
+				return false;	
+			}
+		}
+
+
 		
 		return true;
 	}

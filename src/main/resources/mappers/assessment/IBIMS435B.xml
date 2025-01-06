@@ -23,7 +23,11 @@
          , RELT_BANO            /* 관련은행계좌번호 */
          , DPTR_NM              /* 입금자명 */
          , HND_DETL_DTM         /* 조작상세일시 */
-         , HND_EMPNO            /* 조작사원번호 */
+         , (SELECT EMP_NM
+              FROM IBIMS003B
+             WHERE 1=1
+               AND EMPNO = HND_EMPNO
+            ) AS HND_EMPNO      /* 조작사원번호 */
          , HND_TMNL_NO          /* 조작단말기번호 */
          , HND_TR_ID            /* 조작거래ID */
          , GUID                 /* GUID */
@@ -34,7 +38,7 @@
 
   <!-- 납부예정금액 체크 -->
   <select id="inqPmntPrarAmt" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO" resultType="BigDecimal">
-    SELECT PMNT_PRAR_AMT        /* 납부예정금액 */
+    SELECT NVL(PMNT_PRAR_AMT, 0)        /* 납부예정금액 */
       FROM IBIMS435B
      WHERE 1=1
        AND RCTM_DT = #{rctmDt} 

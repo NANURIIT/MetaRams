@@ -69,7 +69,7 @@ const TB07050Sjs = (function () {
         dataType: "string",
         dataIndx: "prarDt",
         align: "center",
-        width: "10%",
+        // width: "30%",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
         editor: {
@@ -104,26 +104,53 @@ const TB07050Sjs = (function () {
         halign: "center",
         align: "right",
         format: "#,###",
-        width: "15%",
+        // width: "50%",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
-        // editor: {
-        // 	type: 'textbox',
-        // 	init: function(ui) {
-        // 		let $inp = ui.$cell.find("input");
-        // 		$inp.on('input', function() {
-        // 			inputNumberFormat(this);
-        // 		});
-        // 	}
-        // },
-        // render     : function(ui) {
-        //     let cd = ui.cellData;
-        //     if ( isEmpty(cd) ) {
-        //         return ui.cellData = 0
-        //     } else {
-        //         return comma(cd);
-        //     }
-        // }
+      },
+      {
+        title: "상환일자",
+        dataType: "string",
+        dataIndx: "prcsDt",
+        align: "center",
+        // width: "30%",
+        editable: false,
+        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "textbox",
+          init: function (ui) {
+            // let cellData = ui.cellData;
+            let $inp = ui.$cell.find("input");
+            $inp.attr("placeholder", "YYYY-MM-DD");
+            $inp.on("input", function () {
+              //console.log(this.value.length)
+              if (this.value.length === 8) {
+                formatDate(this.value);
+              } else {
+                this.value;
+              }
+            });
+          },
+        },
+        render: function (ui) {
+          let cellData = ui.cellData;
+          if (!isEmpty(cellData) && cellData.length === 8) {
+            return formatDate(cellData);
+          } else {
+            return cellData;
+          }
+        },
+      },
+      {
+        title: "상환원금",
+        dataType: "integer",
+        dataIndx: "prcsAmt",
+        halign: "center",
+        align: "right",
+        format: "#,###",
+        // width: "50%",
+        editable: false,
+        filter: { crules: [{ condition: "range" }] },
       },
       {
         title: "처리완료여부",
@@ -132,10 +159,11 @@ const TB07050Sjs = (function () {
         halign: "center",
         align: "center",
         width: "8%",
+        editable: false,
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
-          if (cellData === "1") {
+          if (cellData === "Y") {
             return "처리";
           } else {
             return "미처리";
@@ -269,10 +297,10 @@ const TB07050Sjs = (function () {
       {
         title: "대상금액",
         dataType: "integer",
-        dataIndx: "prarPrna",
+        dataIndx: "trgtAmt",
         halign: "center",
         align: "right",
-        width: "15%",
+        // width: "15%",
         format: "#,###",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
@@ -292,7 +320,7 @@ const TB07050Sjs = (function () {
         dataIndx: "rdmpPrarIntr",
         halign: "center",
         align: "right",
-        width: "15%",
+        // width: "15%",
         format: "#,###",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
@@ -307,7 +335,7 @@ const TB07050Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
-          if (cellData === "1") {
+          if (cellData === "Y") {
             //console.log("처리구분",cellData);
             return "처리";
           } else {
@@ -351,11 +379,11 @@ const TB07050Sjs = (function () {
       // 	filter     : { crules: [{ condition: 'range' }] }
       // },
       {
-        title: "예정일자",
+        title: "상환일자",
         dataType: "string",
         dataIndx: "prarDt",
         align: "center",
-        width: "10%",
+        // width: "10%",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
         editor: {
@@ -384,13 +412,13 @@ const TB07050Sjs = (function () {
         },
       },
       {
-        title: "예정원금",
+        title: "상환원금",
         dataType: "integer",
         dataIndx: "prarPrna",
         halign: "center",
         align: "right",
         format: "#,###",
-        width: "15%",
+        // width: "15%",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
       },

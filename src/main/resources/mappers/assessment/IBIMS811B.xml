@@ -56,7 +56,7 @@
 				, NVL(#{hdwtEvlAmt}, 0)       				AS HDWT_EVL_AMT
 				, NVL(#{qotaRt}, 0)           				AS QOTA_RT
 				, NVL(#{setlShqt}, 0)         				AS SETL_SHQT
-				, NVL(#{dcsnYn}, 'N')           				AS DCSN_YN
+				, NVL(#{dcsnYn}, 'N')           		    AS DCSN_YN
 				, HND_DETL_DTM
 				, HND_EMPNO
 				, HND_TMNL_NO
