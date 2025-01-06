@@ -14,8 +14,8 @@ const TB08040Sjs = (function () {
   
 
   $(document).ready(function () {
-    selBox(); // 셀렉트박스
-    pqGrid(); // PqGrid 생성
+    selBox_TB08040S(); // 셀렉트박스
+    pqGrid_TB08040S(); // PqGrid 생성
 	selectBoxSet_TB08040S(); //부서 셀렉트박스 세팅
 	loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
   getDealInfoFromWF();
@@ -74,7 +74,7 @@ const TB08040Sjs = (function () {
   $("#TB08040S_dprtCd").val(dprtCd);
   }); 
 
-  function selBox() {
+  function selBox_TB08040S() {
     selectBox = getSelectBoxList(
       "TB08040S",
       "F004" + // 수수료종류코드 FEE_KND_CD
@@ -130,7 +130,7 @@ const TB08040Sjs = (function () {
 
 
 
-  function pqGrid() {
+  function pqGrid_TB08040S() {
 
 
 	var dateEditor_feeSch = function(ui) {
@@ -378,7 +378,7 @@ const TB08040Sjs = (function () {
         dataType: "string",
         dataIndx: "crryCd",
         halign: "center",
-        align: "left",
+        align: "center",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
         editable: true,
@@ -409,13 +409,21 @@ const TB08040Sjs = (function () {
         colModel: [
           {
             title: "대상금액",
-            dataType: "integer",
+            dataType: "string",
             dataIndx: "feeStdrAmt",
             align: "right",
             halign: "center",
             align: "right",
             width: "10%",
-            format: "#,###.00",
+//          format: "#,###.##",
+			render: function (ui) {
+			  var value = parseFloat(ui.cellData);
+			  var formattedValue = value.toLocaleString('ko-KR', {
+			    minimumFractionDigits: 0,
+			    maximumFractionDigits: 2
+			  });
+			  return formattedValue;
+			},
             editable: true,
           },
           {
@@ -434,28 +442,43 @@ const TB08040Sjs = (function () {
             halign: "center",
             align: "right",
             width: "10%",
+			render: function (ui) {
+			  var value = parseFloat(ui.cellData);
+			  var formattedValue = value.toLocaleString('ko-KR', {
+			    minimumFractionDigits: 0,
+			    maximumFractionDigits: 2
+			  });
+			  return formattedValue;
+			},			
             editable: true,
-            editor: {
+/*          editor: {
               type: "textbox",
               init: function (ui) {
                 let $inp = ui.$cell.find("input");
                 $inp.attr("maxlength", "5");
               },
             },
-          },
+*/		  },
           {
             title: "수수료금액",
-            dataType: "integer",
+            dataType: "string",
             dataIndx: "feeAmt",
             halign: "center",
             align: "right",
             width: "10%",
-            format: "#,###.00",
+//          format: "#,###.00",
 			editable: true,
-          },
-        ],
-        editable: true,
-      },
+			render: function (ui) {
+			  var value = parseFloat(ui.cellData);
+			  var formattedValue = value.toLocaleString('ko-KR', {
+			    minimumFractionDigits: 0,
+			    maximumFractionDigits: 2
+			  });
+			  return formattedValue;
+			},
+      	 },
+	  ],
+	},	
       {
         title: "예정일자",
         dataType: "date",
@@ -472,15 +495,15 @@ const TB08040Sjs = (function () {
 		//validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
         editable: true,
 		render: function (ui) {
-         let cellData = replaceAll( ui.cellData , '-','') ;
-         if (!isEmpty(cellData) && cellData.length === 8) {
-			 return formatDate(cellData);
- 		  } else if(!isEmpty(cellData) && cellData.length > 8){
-			 return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
-		  } else {
-	           return cellData;
-	         }
-	     },
+	         let cellData = replaceAll( ui.cellData , '-','') ;
+	         if (!isEmpty(cellData) && cellData.length === 8) {
+				 return formatDate(cellData);
+	 		  } else if(!isEmpty(cellData) && cellData.length > 8){
+				 return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
+			  } else {
+		           return cellData;
+		         }
+		     },
       },
       {
         title: "수수료선후급구분코드",
@@ -513,6 +536,14 @@ const TB08040Sjs = (function () {
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
         editable: true,
+		render: function (ui) {
+		  var value = parseFloat(ui.cellData);
+		  var formattedValue = value.toLocaleString('ko-KR', {
+		    minimumFractionDigits: 0,
+		    maximumFractionDigits: 2
+		  });
+		  return formattedValue;
+		},
       },
       {
         title: "이연수수료",
@@ -1135,9 +1166,11 @@ const TB08040Sjs = (function () {
             crryCd: "KRW", // 통화코드
             rgstBdcd: $("#userDprtCd").val(), // 등록부점코드
             feeStdrAmt: 0,
+			feeAmt: 0, 
             feeRt: 0,
             feeRcivAmt: 0,
             prlnFee: 0,
+			fnnrPrlnRto : 0,
           };
           //let gLen = grd.length;
 
