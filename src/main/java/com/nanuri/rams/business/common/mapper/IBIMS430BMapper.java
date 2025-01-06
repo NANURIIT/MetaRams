@@ -60,6 +60,6 @@ public interface IBIMS430BMapper {
     /**
      * 입금내역조회 (TB07170S)
      */
-    public List<IBIMS430BDTO> TB07170Sinq (IBIMS430BDTO param);
+    public List<IBIMS430BVO> TB07170Sinq (IBIMS430BDTO param);
 }
 

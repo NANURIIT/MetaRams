@@ -149,7 +149,7 @@ const TB07170Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        title: "거래기관",
+        title: "이체기관",
         dataType: "string",
         width: "180",
         dataIndx: "reltIsttNm",
@@ -173,7 +173,7 @@ const TB07170Sjs = (function () {
         width: "180",
         dataIndx: "dealExcsPymtAmt",
         halign: "center",
-        align: "center",
+        align: "right",
         filter: { crules: [{ condition: "range" }] },
       },
       {

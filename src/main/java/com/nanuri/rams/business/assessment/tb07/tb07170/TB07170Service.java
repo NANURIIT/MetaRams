@@ -10,5 +10,5 @@ import com.nanuri.rams.business.common.vo.IBIMS430BVO;
 @Service
 public interface TB07170Service {
     
-    public List<IBIMS430BDTO> getDptrDtlsList(IBIMS430BDTO param);
+    public List<IBIMS430BVO> getDptrDtlsList(IBIMS430BDTO param);
 }

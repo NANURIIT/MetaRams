@@ -23,7 +23,7 @@ public class TB07170APIController {
     private final TB07170Service tb07170Service;
 
     @PostMapping(value="/getDptrDtlsList")
-    public List<IBIMS430BDTO> getDptrDtlsList(@RequestBody IBIMS430BDTO param){
+    public List<IBIMS430BVO> getDptrDtlsList(@RequestBody IBIMS430BDTO param){
         return tb07170Service.getDptrDtlsList(param);
     }
     
