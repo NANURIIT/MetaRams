@@ -42,7 +42,7 @@
 							<div class="form-group form-inline row mb-0">
 								<div class="col-sm-12 input-group text-right">
 									<label class="col-sm-1 control-label">Deal번호</label>
-									<div class="col-sm-2">
+									<div class="col-sm-4">
 										<div class="input-group">
 											<input type="text" class="form-control" id="selectedMngDealNo"
 												oninput="mngDealNoInput(this);">
@@ -53,6 +53,7 @@
 													onclick="callTB03021P('TB03020S');"><i
 														class="fa fa-search"></i></button>
 											</span>
+											<input type="text" class="form-control" id="selectedMngDealNm" readonly>
 										</div>
 									</div>
 									<!-- 임시로 막아둠 -->
@@ -63,7 +64,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-9 text-left">
+									<div class="col-sm text-right">
 										<button class="btn btn-primary" onclick="TB03020Sjs.getBscDealDetail();">
 											<i class="fa fa-search"></i>&nbsp;조회</button>
 										<button class="btn btn-default" type="button"
