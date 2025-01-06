@@ -71,6 +71,31 @@
        AND DECD_STTS_DCD = '1'
   </select>
 
+  <!-- 결재단계체크 -->
+  <select id="chkDecdStep" parameterType="com.nanuri.rams.business.common.vo.IBIMS231BVO" resultType="String">
+    		SELECT T1.DECD_STTS_DCD
+    		  FROM IBIMS231B T1
+     LEFT JOIN IBIMS232B T2
+    	 		  ON T1.DECD_SN = T2.DECD_SN
+    		 WHERE 1=1
+    		   AND T1.DEAL_NO = #{dealNo}
+    		   AND T1.PRDT_CD = #{prdtCd}
+    		   AND T1.DECD_JOB_DCD = (
+    		   						  SELECT CD_VL_ID
+    		   						    FROM IBIMS002B
+    		   						   WHERE 1=1
+    		   						     AND CMNS_CD_GRP = 'D005'
+    		   						     AND RSLT_CD_VL = #{decdJobDcd}
+    		   						  )
+    		   AND T1.SCRN_NO = #{scrnNo}
+    		   AND T1.EXC_SEQ = #{excSeq}
+    		   AND T1.RQST_SQ = #{rqstSq}
+    		   AND T1.TR_SEQ = #{trSeq}
+    		   AND T1.RQST_CNCL_DTM IS NULL
+    		   AND T1.PRCS_RSLT_DCD = '00'
+    		   AND T2.DCFC_ENO = #{dcfcEno}
+	</select>
+
   <!-- 결재요청 -->
   <insert id="apvlRqst" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO">
     INSERT INTO IBIMS231B(

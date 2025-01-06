@@ -9,6 +9,7 @@ import com.nanuri.rams.business.common.dto.IBIMS003BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS007BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS100BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS114BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS992BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS993BDTO;
 import com.nanuri.rams.business.common.dto.RAA02BDTO;
@@ -17,6 +18,7 @@ import com.nanuri.rams.business.common.dto.RAA98ADTO;
 import com.nanuri.rams.business.common.dto.RAB98BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS005BVO;
 import com.nanuri.rams.business.common.vo.IBIMS007BVO;
+import com.nanuri.rams.business.common.vo.IBIMS231BVO;
 import com.nanuri.rams.business.common.vo.RAA20BVO;
 import com.nanuri.rams.com.code.AthCd;
 
@@ -83,4 +85,7 @@ public interface CommonService {
 
 	// 권한확인
 	public String chkAthCd(IBIMS007BVO param);
+
+	// 결재상태체크
+	public String chkDecdStep (IBIMS231BVO param);
 }

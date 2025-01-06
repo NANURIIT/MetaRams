@@ -12,6 +12,9 @@ function settingFunction() {
 
   setFileUploadEvent(url.split("/")[1]);
 
+  // 결재단계체크
+  chkDecdStep(url.split("/")[1]);
+
   /**
    * 모달 드래그 이벤트
    */
@@ -2071,3 +2074,58 @@ function resetPGgrids(menuid) {
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) { }
 
+/**
+ * 결재단계확인
+ * @param {String} menuId 메뉴아이디입니다.
+ * @discription
+ * 실행시키시면 됩니다.
+ */
+function chkDecdStep (menuId){
+
+  let dealNo = $(`#${menuId}_dealNo`).val() || ''     // 딜번호
+  let prdtCd = $(`#${menuId}_prdtCd`).val() || ''     // 상품코드
+  let decdJobDcd = menuId                             // 결재업무구분코드
+  let scrnNo = menuId                                 // 화면번호
+  let excSeq = $(`#${menuId}_excSeq`).val() || 0      // 실행순번
+  let rqstSq = $(`#${menuId}_rqstSq`).val() || 0      // 신청순번
+  let trSeq = $(`#${menuId}_trSeq`).val() || 0        // 거래순번
+
+  let paramData = {
+    dealNo: dealNo
+    , prdtCd: prdtCd
+    , decdJobDcd: decdJobDcd
+    , scrnNo: scrnNo
+    , excSeq: excSeq
+    , rqstSq: rqstSq
+    , trSeq: trSeq
+  }
+
+  $.ajax({
+    type: "POST",
+    url: `/chkDecdStep`,
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(paramData),
+    dataType: "json",
+    success: function (data) {
+
+      console.log(data);
+      
+      // 해당사항이 없으면 결재요청 버튼만 활성화
+      if(data.toString() === '9742'){
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', false);
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', true);
+      }
+      // 승인요청중이면 결재, 반려버튼 활성화
+      else if (data.toString() === '04'){
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', false);
+      }
+      // 승인요청 진행중이나 담당자가 아니거나 결재자가 아니면 아무것도 뜨지않음
+      else {
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', true);
+      }
+    },
+  });
+
+} 

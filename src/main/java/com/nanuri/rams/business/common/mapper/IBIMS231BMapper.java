@@ -43,4 +43,9 @@ public interface IBIMS231BMapper {
      */
     public int decdSn(IBIMS231BDTO paramData);
 
+    /**
+     * 결재단계체크
+     */
+    public String chkDecdStep (IBIMS231BVO param);
+
 }

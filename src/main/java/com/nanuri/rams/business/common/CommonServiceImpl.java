@@ -10,6 +10,7 @@ import java.util.Map;
 import com.nanuri.rams.business.common.mapper.*;
 import com.nanuri.rams.business.common.vo.IBIMS005BVO;
 import com.nanuri.rams.business.common.vo.IBIMS007BVO;
+import com.nanuri.rams.business.common.vo.IBIMS231BVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import com.nanuri.rams.business.common.dto.IBIMS003BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS007BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS100BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS114BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS992BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS993BDTO;
 import com.nanuri.rams.business.common.dto.RAA02BDTO;
@@ -82,6 +84,8 @@ public class CommonServiceImpl implements CommonService {
 	private final IBIMS993BMapper ibims993bMapper;
 
 	private final IBIMS007BMapper ibims007bMapper;
+
+	private final IBIMS231BMapper ibims231bMapper;
 	
 	/**
 	 * 셀렉트박스 코드, 밸류 취득
@@ -327,5 +331,31 @@ public class CommonServiceImpl implements CommonService {
 	public String chkAthCd(IBIMS007BVO param){
 		return ibims007bMapper.chkAthCd(param);
 	};
+
+	/**
+	 * 결재단계체크
+	 */
+	@Override
+	public String chkDecdStep (IBIMS231BVO param) {
+
+		param.setDcfcEno(facade.getDetails().getEno());
+
+		String result = ibims231bMapper.chkDecdStep(param);
+
+		log.debug("######Dcd:::::::::", result);
+
+		// 딜번호 종목번호가 없는경우
+		if("".equals(param.getPrdtCd()) && "".equals(param.getDealNo())){
+			return "7574";
+		}
+		// 조회시 해당사항이 없는경우
+		else if(result == null) {
+			return "9742";
+		}
+		// 결재요청이 된 경우
+		else{
+			return result;
+		}
+	}
 
 }

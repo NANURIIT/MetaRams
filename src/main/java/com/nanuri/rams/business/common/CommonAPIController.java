@@ -23,12 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nanuri.rams.business.common.dto.IBIMS003BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS100BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS114BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS992BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS993BDTO;
 import com.nanuri.rams.business.common.dto.RAA02BDTO;
 import com.nanuri.rams.business.common.dto.RAA20BDTO;
 import com.nanuri.rams.business.common.dto.RAA98ADTO;
 import com.nanuri.rams.business.common.dto.RAB98BDTO;
+import com.nanuri.rams.business.common.vo.IBIMS231BVO;
 import com.nanuri.rams.business.common.vo.RAA20BVO;
 import com.nanuri.rams.com.WF.WorkFlow;
 import com.nanuri.rams.com.dto.FileDTO;
@@ -279,6 +281,14 @@ public class CommonAPIController {
 	@GetMapping(value = "/wfAuthIdCheck")
 	public int wfAuthIdCheck(WorkFlowDTO param){
 		return workFlow.wfAuthIdCheck(param);
+	}
+
+	/**
+	 * 결재단계체크
+	 */
+	@PostMapping(value = "/chkDecdStep")
+	public String chkDecdStep(@RequestBody IBIMS231BVO paramData) {
+		return commonService.chkDecdStep(paramData);
 	}
 
 }
