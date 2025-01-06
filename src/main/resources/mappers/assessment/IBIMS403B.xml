@@ -48,6 +48,7 @@
                 , SCX_DCD                                 <!-- /*일정구분코드 */ -->
                 , RDMP_TMRD                               <!-- /*상환회차 */ -->
                 , PRAR_DT                                 <!-- /*예정일자 */ -->
+                , TRGT_AMT                                /*대상금액*/
                 , PRAR_PRNA                               <!-- /*예정원금 */ -->
                 , STRT_DT                                 <!-- /*시작일자 */ -->
                 , END_DT                                  <!-- /*종료일자 */ -->
@@ -69,11 +70,12 @@
         VALUES
         <foreach collection="list" item="item" separator=",">
                (
-                 #{item.prdtCd}                           <!-- /*상품코드 */ -->
-               , #{item.excSn}                            <!-- /*실행일련번호 */ -->
+                 #{item.prdtCd}                           /*상품코드 */ 
+               , #{item.excSn}                            /*실행일련번호 */ 
                , #{item.scxDcd}                           <!-- /*일정구분코드 */ -->
                , #{item.rdmpTmrd}                         <!-- /*상환회차 */ -->
                , #{item.prarDt}                           <!-- /*예정일자 */ -->
+               , #{item.trgtAmt}                          /*대상금액*/
                , #{item.prarPrna}                         <!-- /*예정원금 */ -->
                , #{item.strtDt}                           <!-- /*시작일자 */ -->
                , #{item.endDt}                            <!-- /*종료일자 */ -->
@@ -410,6 +412,7 @@
           SELECT A.PRDT_CD                /* 종목코드 */
                , A.RDMP_TMRD              /* 상환회차 */
                , A.PRAR_DT                /* 예정일자 */
+               , A.TRGT_AMT               /* 대상금액 */
                , A.RDMP_PRAR_INTR         /* 상환예정이자 */
                , A.STRT_DT                /* 시작일자 */
                , A.END_DT                 /* 종료일자 */
