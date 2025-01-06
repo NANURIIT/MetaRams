@@ -58,6 +58,7 @@ public class IBIMS420BVO extends IBIMS420BDTO {
 	private BigDecimal wcrcTrslTrFeeAmt;	// 원화환산거래수수료금액
 	private String trStatCd;				// 거래상태코드
 	private String prdtNm;					// 상품명
+	private String acctUnJobCd;				// 회계단위업무코드
 	
 	private String strYmd;					// 시작일자
 	private String endYmd;					// 종료일자

@@ -33,6 +33,8 @@ public interface TB07100Service {
 	// 기본 삭제
 	public int deleteIBIMS431B(IBIMS431BVO param);
 
+	public int insertIBIMS432B(IBIMS432BVO param);
+	
 	// 상세 삭제
 	public int deleteIBIMS432B(IBIMS432BVO param);
 

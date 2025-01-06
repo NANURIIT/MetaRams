@@ -134,11 +134,13 @@ public class EtprCrdtGrntAcctProc {
         IBIMS401BDTO in401bdto = new IBIMS401BDTO();
         in401bdto.setPrdtCd(paramData.getPrdtCd());
 		IBIMS401BVO ibims401bvo = ibims401BMapper.getIBIMS401BInfo(in401bdto);
-		StrCrcyCd         	  = ibims401bvo.getCrryCd()      == null ? "" : ibims401bvo.getCrryCd(); 	  // 통화코드
-		sIntBnaoDcd       	  = ibims401bvo.getIntrBnaoDcd() == null ? "" : ibims401bvo.getIntrBnaoDcd(); // 이자선후급구분코드
-		sActgUnitAfrsCd   	  = ibims201bvo.getAcctUnJobCd() == null ? "" : ibims201bvo.getAcctUnJobCd(); // 회계단위업무코드
-		strEprzCrdlPrdtMdclCd = ibims201bvo.getPrdtMdclCd()  == null ? "" : ibims201bvo.getPrdtMdclCd();  // 기업여신상품중분류코드
-		
+		//약정되지 않아도 회계처리 가능
+		if(ibims401bvo!=null) {
+			StrCrcyCd         	  = ibims401bvo.getCrryCd()      == null ? "" : ibims401bvo.getCrryCd(); 	  // 통화코드
+			sIntBnaoDcd       	  = ibims401bvo.getIntrBnaoDcd() == null ? "" : ibims401bvo.getIntrBnaoDcd(); // 이자선후급구분코드
+			sActgUnitAfrsCd   	  = ibims201bvo.getAcctUnJobCd() == null ? "" : ibims201bvo.getAcctUnJobCd(); // 회계단위업무코드
+			strEprzCrdlPrdtMdclCd = ibims201bvo.getPrdtMdclCd()  == null ? "" : ibims201bvo.getPrdtMdclCd();  // 기업여신상품중분류코드
+		}
 		// 딜실행정보
 		IBIMS402BVO in402bvo = new IBIMS402BVO();
 		in402bvo.setPrdtCd(paramData.getPrdtCd());

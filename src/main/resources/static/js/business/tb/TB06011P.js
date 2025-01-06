@@ -161,6 +161,14 @@ var colPrdtCdList = [
 		filter: { crules: [{ condition: 'range' }] },
 	},
 	{
+		title: "운용펀드코드",
+		dataType: "string",
+		dataIndx: "ortnFndCd",
+		align: "center",
+		// hidden: true,
+		filter: { crules: [{ condition: 'range' }] },
+	},
+	{
 		title: "통화코드",
 		dataType: "string",
 		dataIndx: "trCrryCd",
@@ -679,42 +687,75 @@ function TB06011P_setPrdtInfo(e) {
 	var tr = $(e);
 	var td = $(tr).children();
 
+	console.log();
+
+	let prdtCd = e.prdtCd;
+	let prdtNm = e.prdtNm;
+	let ibDealNo = e.ibDealNo;
+	let trCrryCd = e.trCrryCd;
+	let stdrExrt = e.stdrExrt;
+	let wholIssuShqt = e.wholIssuShqt;
+	let hldgShqt = e.hldgShqt;
+	let holdPrpsDcd = e.holdPrpsDcd;
+	let eprzCrdlCtrcAmt = e.eprzCrdlCtrcAmt;
+	let krwTrslExcAmt = e.krwTrslExcAmt;
+	let avrUnpr = e.avrUnpr;
+	let evlPflsAmt = e.evlPflsAmt;
+	let tradPflsAmt = e.tradPflsAmt;
+	let krwTrslExcBlce = e.krwTrslExcBlce;
+	let mtrNm = e.mtrNm;
+	let nmcpMtrNm = e.nmcpMtrNm;
+	let lstCCaseNm = e.lstCCaseNm;
+	let prgSttsCd = e.prgSttsCd;
+	let prgSttsNm = e.prgSttsNm;
+	let trOthrDscmNm = e.trOthrDscmNm;
+	let chrrDprtCd = e.chrrDprtCd;
+	let chrrEmpno = e.chrrEmpno;
+	let eprzCrdlApvlAmt = e.eprzCrdlApvlAmt;
+	let invAmt = e.invAmt;
+	let dealExcBlce = e.dealExcBlce;
+	let dealNm = e.dealNm;
+	let nmcpMtrDcd = e.nmcpMtrDcd;
+	let lstCCaseDcd = e.lstCCaseDcd;
+	let totIssuShqt = e.totIssuShqt;
+	let totIssuStkQnt = e.totIssuStkQnt;
+	let ortnFndCd = e.ortnFndCd;
+
 	// 종목정보
-	var prdtCd = td.eq(0).text();
-	var prdtNm = td.eq(1).text();
-	var ibDealNo = td.eq(2).text();
-	var nmcpMtrDcd = td.eq(3).text();
-	var lstCCaseDcd = td.eq(4).text();
-	var trCrryCd = td.eq(5).text();
-	var stdrExrt = td.eq(6).text();
-	var wholIssuShqt = td.eq(7).text();
-	var hldgShqt = td.eq(8).text();
-	var holdPrpsDcd = td.eq(9).text();
-	var eprzCrdlCtrcAmt = td.eq(10).text();
-	var krwTrslExcAmt = td.eq(11).text();
-	var krwTrslExcBlce = td.eq(12).text();
-	var avrUnpr = td.eq(13).text();
-	var evlPflsAmt = td.eq(14).text();
-	var tradPflsAmt = td.eq(15).text();
-
-	var krwTrslExcBlce = td.eq(11).text();
-	var mtrNm = td.eq(12).text();
-	var nmcpMtrNm = td.eq(13).text();
-	var lstCCaseNm = td.eq(14).text();
-
-	var prgSttsCd = td.eq(18).text();
-	var prgSttsNm = td.eq(19).text();
-	var trOthrDscmNm = td.eq(20).text();
-	var chrrDprtCd = td.eq(21).text();
-	var chrrEmpno = td.eq(22).text();
-	var eprzCrdlApvlAmt = td.eq(23).text();
-	var invAmt = td.eq(24).text();
-	var dealExcBlce = td.eq(25).text();
-	var dealNm = td.eq(26).text();
-	nmcpMtrDcd = td.eq(27).text();
-	lstCCaseDcd = td.eq(28).text();
-	var totIssuShqt  = td.eq(29).text();
-	var totIssuStkQnt = td.eq(30).text();
+	// var prdtCd = td.eq(0).text();
+	// var prdtNm = td.eq(1).text();
+	// var ibDealNo = td.eq(2).text();
+	// var nmcpMtrDcd = td.eq(3).text();
+	// var lstCCaseDcd = td.eq(4).text();
+	// var trCrryCd = td.eq(5).text();
+	// var stdrExrt = td.eq(6).text();
+	// var wholIssuShqt = td.eq(7).text();
+	// var hldgShqt = td.eq(8).text();
+	// var holdPrpsDcd = td.eq(9).text();
+	// var eprzCrdlCtrcAmt = td.eq(10).text();
+	// var krwTrslExcAmt = td.eq(11).text();
+	// var krwTrslExcBlce = td.eq(12).text();
+	// var avrUnpr = td.eq(13).text();
+	// var evlPflsAmt = td.eq(14).text();
+	// var tradPflsAmt = td.eq(15).text();
+	// var krwTrslExcBlce = td.eq(11).text();
+	// var mtrNm = td.eq(12).text();
+	// var nmcpMtrNm = td.eq(13).text();
+	// var lstCCaseNm = td.eq(14).text();
+	// var prgSttsCd = td.eq(18).text();
+	// var prgSttsNm = td.eq(19).text();
+	// var trOthrDscmNm = td.eq(20).text();
+	// var chrrDprtCd = td.eq(21).text();
+	// var chrrEmpno = td.eq(22).text();
+	// var eprzCrdlApvlAmt = td.eq(23).text();
+	// var invAmt = td.eq(24).text();
+	// var dealExcBlce = td.eq(25).text();
+	// var dealNm = td.eq(26).text();
+	// 	nmcpMtrDcd = td.eq(27).text();
+	// 	lstCCaseDcd = td.eq(28).text();
+	// var totIssuShqt  = td.eq(29).text();
+	// var totIssuStkQnt = td.eq(30).text();
+	// var ortnFndCd = td.eq(31).text();	// 운용펀드코드
 
 	var prefix = $("#TB06011P_prefix").val();		// id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
 
@@ -946,9 +987,11 @@ function TB06011P_setPrdtInfo(e) {
 	}
 
 	if(prefix == 'TB07100S_grid'){
+		console.log(e);
 		console.log("prdtCd 입력 : "+prdtSn+"에"+e.prdtCd);
 
 		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow",{rowIndx: prdtSn, row: { prdtCd: e.prdtCd } });
+		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow",{rowIndx: prdtSn, row: { fndCd: e.ortnFndCd } });
 
 	}
 

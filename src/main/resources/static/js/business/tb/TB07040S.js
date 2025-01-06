@@ -827,7 +827,7 @@ const TB07040Sjs = (function () {
       var pxdfIntAmt = 0; // 대지급이자금액
       var pxdfEtcAmt = 0; // 대지급기타금액
       var orgno = 0; // 조직번호
-      var trStfno = 0; // 거래직원번호
+      var trStfno = $('#TB07040S_empNo').val(); // 거래직원번호
       var dcfcStfno = 0; // 결재자직원번호
       var clmSeq = 0; // 청구순번
       var actgSynsCd = "20"; // 회계적요코드
@@ -1016,7 +1016,7 @@ const TB07040Sjs = (function () {
         pxdfIntAmt: pxdfIntAmt / 1,
         pxdfEtcAmt: pxdfEtcAmt / 1,
         orgno: orgno / 1,
-        trStfno: trStfno / 1,
+        trStfno: trStfno,
         dcfcStfno: dcfcStfno / 1,
         clmSeq: clmSeq / 1,
         actgSynsCd: actgSynsCd,
@@ -1331,7 +1331,7 @@ const TB07040Sjs = (function () {
       var pxdfIntAmt = 0; // 대지급이자금액
       var pxdfEtcAmt = 0; // 대지급기타금액
       var orgno = 0; // 조직번호
-      var trStfno = 0; // 거래직원번호
+      var trStfno = $('#TB07040S_empNo').val(); // 거래직원번호
       var dcfcStfno = 0; // 결재자직원번호
       var clmSeq = 0; // 청구순번
       var actgSynsCd = "20"; // 회계적요코드
@@ -1462,7 +1462,7 @@ const TB07040Sjs = (function () {
         pxdfIntAmt: pxdfIntAmt / 1,
         pxdfEtcAmt: pxdfEtcAmt / 1,
         orgno: orgno / 1,
-        trStfno: trStfno / 1,
+        trStfno: trStfno,
         dcfcStfno: dcfcStfno / 1,
         clmSeq: clmSeq / 1,
         actgSynsCd: actgSynsCd,
@@ -1963,11 +1963,13 @@ const TB07040Sjs = (function () {
     g_qotaRt = Number(rowData.qotaRt);
 
     $("#TB07040S_evlPflsAmt").val(rowData.evlPflsAmt);
-    $("#TB07040S_tradPflsAmt").val(rowData.tradPflsAmt);
+    //$("#TB07040S_tradPflsAmt").val(rowData.tradPflsAmt);
 
     g_krwTrslExcAmt = rowData.krwTrslExcAmt;
 
     $("#TB07040S_avrUnpr").val(rowData.avrUnpr);
+
+    $('#TB07040S_tradPflsAmt').val(addComma(((Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.trUnpr.replaceAll(',','')))-(Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.avrUnpr.replaceAll(',','')))).toFixed(2)));
   }
 
   function checkParam(paramData, inputDcd, etprCrdtGrntTrKindCd) {

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB06081P">
+	<!-- modal -->
+	<div id="modal-TB06081P" class="modal fade" role="dialog" style="">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">승인요청</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="TB06081P_closeModal();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<div name="hidden모음ㅋㅋ">
+						<input type="hidden" name="TB06081P_prefix" id="TB06081P_prefix" value=""/>
+						<input type="hidden" id="TB06081P_dealNo" value=""/>
+						<input type="hidden" id="TB06081P_prdtCd" value=""/>
+						<input type="hidden" id="TB06081P_excSeq" value=""/>
+						<input type="hidden" id="TB06081P_rqstSq" value=""/>
+						<input type="hidden" id="TB06081P_trSeq"  value=""/>
+						<input type="hidden" id="TB06081P_decdJobDcd" value=""/>
+						<input type="hidden" id="TB06081P_scrnNo" value=""/>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox mb-0">
+								<!-- 조회조건영역 -->
+				    			<div class="ibox-content i-filter text-right">
+				    				<form method="get">
+										<div class="form-group row">
+											<label class="col-sm-1 col-form-label text-right">사원번호</label>
+										    <div class="col-sm-3 input-group">
+												<input type="text" class="form-control" id="TB06081P_empNo">
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" onclick="callTB03022P('TB06081P')"><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" id="TB06081P_empNm" readonly>
+											</div>
+											<label class="col-sm-1 col-form-label text-right">부서명</label>
+											<div class="col-sm-3">
+												<div class="input-group">
+													<select class="form-control" id="TB06081P_dprtNm">
+														<option value="">전체</option>
+													</select>
+													<input type="text" class="form-control" id="TB06081P_dprtCd" readonly>
+												</div>
+											</div>
+											
+											<!-- <label class="col-sm-1 col-form-label text-nowrap" id="labelDscDt">Deal등록일자</label>
+			                            	<span class="col-sm-2 input-group date" id="spanDstDt">
+		                                    	<input type="text" class="form-control" id="TB06081P_datepicker1" value="" ><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		                                	</span> -->
+				                        	<!-- <div class="col-sm-5" id="divSpan"></div> -->
+											<div class="col-sm-4 text-right">
+				                        		<button type="button" class="btn btn-primary mr-2" onclick="TB06081P_srchApvlList();" ><i class="fa fa-search"></i>&nbsp;조회</button>
+				                        	</div>	
+										</div>	
+				    				</form>
+				    			</div>
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content i-filter">
+				    				<div id="TB06081P_pqgrid"></div>
+				    			</div>
+
+								<!-- 승인자 -->
+								<div class="ibox-content i-filter">
+									<div class="con-tb06081p">
+										<div style="width: 85%;">
+											<table class="table table-bordered">
+												<colgroup>
+													<!-- 승인순번 -->
+													<col style="width: 10%;">
+													<!-- 사번 -->
+													<col style="width: 15%;">
+													<!-- 이름 -->
+													<col style="width: 15%;">
+													<!-- 부서 -->
+													<col style="width: 15%;">
+													<!-- 직책 -->
+													<col style="width: 20%;">
+													<!-- 삭제버튼 -->
+													<col style="width: 10%;">
+													<!-- 화살표영역 -->
+													<col style="width: 15%;">
+												</colgroup>
+												<thead>
+													<tr>
+														<th>
+															승인순번
+														</th>
+														<th>
+															사번
+														</th>
+														<th>
+															이름
+														</th>
+														<th>
+															부서
+														</th>
+														<th>
+															직책
+														</th>
+														<th>
+															
+														</th>
+														<th>
+															
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													<!-- <tr style="text-align: center;">
+														<td style="text-align: right;">
+															1
+														</td>
+														<td></td>
+														<td></td>
+														<td></td>
+														<td></td>
+														<td>
+															<button class="td-btn">삭제</button>
+														</td>
+														<td>
+															<button class="td-btn">▲</button>
+															<button class="td-btn">▼</button>
+														</td>
+													</tr>
+													<tr style="text-align: center;">
+														<td style="text-align: right;">
+															2
+														</td>
+														<td></td>
+														<td></td>
+														<td></td>
+														<td></td>
+														<td>
+															<button>삭제</button>
+														</td>
+														<td></td>
+													</tr>
+													<tr style="text-align: center;">
+														<td style="text-align: right;">
+															3
+														</td>
+														<td></td>
+														<td></td>
+														<td></td>
+														<td></td>
+														<td>
+															<button>삭제</button>
+														</td>
+														<td></td>
+													</tr> -->
+												</tbody>
+											</table>
+										</div>
+										<div style="width: 15%; text-align: center;">
+											<br/>
+											화
+											<br/>
+											살
+											<br/>
+											표
+											<br/>
+										</div>
+									</div>
+								</div>
+
+								<!-- 승인요청 버튼 영역 -->
+								<div>
+									<div class="text-right">
+										<button id="apvlReqBtn" class="btn btn-info btn-xs" type="button" onclick="alert('ㅇㅋ 고려해봄');"><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
+										<button id="apvlReqCancelBtn" class="btn btn-danger btn-xs" type="button" onclick="alert('뭘 잘못했니?');"><i class="fa fa-undo"></i>&nbsp;회수</button>
+									</div>
+								</div>
+							</div><!-- ibox -->
+						</div>
+					</div>
+				</div>
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

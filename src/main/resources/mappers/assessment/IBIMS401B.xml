@@ -824,14 +824,16 @@
     <update id="cndChng" parameterType="com.nanuri.rams.business.common.vo.IBIMS401BVO">
       UPDATE IBIMS401B
           <if test="rqsKndCd == '02'">      /*한도변경*/
-            SET EPRZ_CRDL_CTRC_AMT = #{eprzCrdlCtrcAmt}
+            SET EPRZ_CRDL_CTRC_AMT = #{eprzCrdlCtrcAmt} ,
           </if>
           <if test="rqsKndCd == '03'">      /*기한변경*/
-            SET CTRC_EXP_DT = #{ctrcExpDt}
+            SET CTRC_EXP_DT = #{ctrcExpDt} ,
           </if>
           <if test="rqsKndCd == '06'">      /*차주변경*/
-            SET PTXT_TR_OTHR_DSCM_NO = #{trOthrDscmNo}
+            SET PTXT_TR_OTHR_DSCM_NO = #{ptxtTrOthrDscmNo} ,
           </if>
+          HND_DETL_DTM = SYSDATE ,
+          HND_EMPNO = #{hndEmpno}
       WHERE PRDT_CD = #{prdtCd}
     </update>
 

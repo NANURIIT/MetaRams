@@ -21,6 +21,24 @@ const TB09080Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
+      title: "종목코드",
+      dataType: "string",
+      dataIndx: "prdtCd",
+      align: "left",
+      halign: "center",
+      width: "250",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "종목명",
+      dataType: "string",
+      dataIndx: "prdtNm",
+      align: "left",
+      halign: "center",
+      width: "250",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
       title: "거래순번",
       dataType: "string",
       dataIndx: "trSn",
@@ -69,7 +87,7 @@ const TB09080Sjs = (function () {
     {
       title: "통화코드",
       dataType: "string",
-      dataIndx: "trCrcyCd",
+      dataIndx: "trCrryCd",
       align: "center",
       halign: "center",
       width: "80",

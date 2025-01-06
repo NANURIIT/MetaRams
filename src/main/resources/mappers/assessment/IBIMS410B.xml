@@ -464,7 +464,7 @@
   
 
      <!-- 딜거래내역등록 -->
-    <insert id="saveDlTrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO">
+     <insert id="saveDlTrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO">
         INSERT INTO IBIMS410B
                (
                    PRDT_CD                   /* 상품코드 */
@@ -485,20 +485,20 @@
                   ,TR_FEE_AMT                /* 거래수수료금액 */
                   ,COST_AMT                  /* 비용금액 */
                   ,TR_CRRY_CD                /* 거래통화코드 */
-                  ,KRW_TRSL_RT              /* 원화환산율 */
-                  ,KRW_TRSL_TR_PRCA         /* 원화환산거래원금 */
-                  ,KRW_TRSL_TR_INT_AMT      /* 원화환산거래이자금액 */
-                  ,KRW_TRSL_TR_FEE_AMT      /* 원화환산거래수수료금액 */
-                  ,KRW_TRSL_COST_AMT        /* 원화환산비용금액 */
-                  ,ACCT_JOB_CD              /* 회계업무코드 */
-                  ,ACCT_UN_JOB_CD         /* 회계단위업무코드 */
+                  ,KRW_TRSL_RT               /* 원화환산율 */
+                  ,KRW_TRSL_TR_PRCA          /* 원화환산거래원금 */
+                  ,KRW_TRSL_TR_INT_AMT       /* 원화환산거래이자금액 */
+                  ,KRW_TRSL_TR_FEE_AMT       /* 원화환산거래수수료금액 */
+                  ,KRW_TRSL_COST_AMT         /* 원화환산비용금액 */
+                  ,ACCT_JOB_CD               /* 회계업무코드 */
+                  ,ACCT_UN_JOB_CD            /* 회계단위업무코드 */
                   ,ACCT_TR_CD                /* 회계거래코드 */
                   ,ACTG_ERLM_SEQ             /* 회계등록순번 */
                   ,RKFR_DT                   /* 기산일자 */
                   ,FNDS_DVSN_CD              /* 자금구분코드 */
                   ,RCTM_ISTT_CD              /* 입금기관코드 */
                   ,RCTM_BANO                 /* 입금은행계좌번호 */
-                  ,ACHD_NM                 /* 예금주명 */
+                  ,ACHD_NM                   /* 예금주명 */
                   ,HDWR_PRCS_YN              /* 수기처리여부 */
                   ,ACPT_PTCL_SMTL_AMT        /* 수납내역합계금액 */
                   ,DEAL_ALTN_AMT             /* 딜대체금액 */
@@ -540,7 +540,7 @@
                   ,DFRM_FEE_CLM_OBJT_AMT     /* 지급수수료청구대상금액 */
                   ,MRDP_FEE_AMT              /* 중도상환수수료금액 */
                   ,CHCK_ISSU_ISTT_NAME       /* 수표발행기관명 */
-                  ,EARLY_REPAY_YN                   /* 중도상환여부 */
+                  ,EARLY_REPAY_YN            /* 중도상환여부 */
                   ,RCTM_DT                   /* 입금일자 */
                   ,TR_OBJT_BSN_NO            /* 거래대상기업체번호 */
                   ,NOPR_ERNG_ETC_AMT         /* 영업외수익기타금액 */
@@ -747,7 +747,6 @@
            , T1.TR_DT                           /* 거래일자  410B */
            , NVL(T7.CONS_DECD_STAT_CD , '0')   AS consDecdStatCd     /* 결재상태  452B */
            , T1.ORGNO     AS orgno              /* 부서코드  410B */
-           <!-- , T1.ORGNO     AS dprtNm             /* 부서명   410B */ -->
            , (
            	  SELECT DPRT_NM
            	    FROM IBIMS003B
@@ -763,15 +762,14 @@
            , T1.ETPR_CRDT_GRNT_TR_KIND_CD       /* 거래종류코드 */
            , CASE 
                WHEN T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('20', '21', '82', '83', '85') THEN '입금'
-               ELSE '출금'
-            END AS depositWithdrawalCode
+               WHEN T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10', '22', '81', '84')       THEN '출금'
+             END AS depositWithdrawalCode       /* 입출금구분코드 */
            , T1.DEAL_TR_AMT                     /* 거래금액  410B */
            , T1.FNDS_DVSN_CD                    /* 자금구분  410B */
            , T1.TR_CRRY_CD                      /* 통화코드  410B */
            , T1.DEAL_TR_PRCA                    /* 거래원금  410B */
            , T1.FEE_TOT_AMT                     /* 수수료  410B */
            , T1.TR_CRRY_CD                      /* 통화구분  410B */
-           , T1.FNDS_DVSN_CD                    /* 자금구분  410B */
            , T1.RCTM_ISTT_CD                    /* 금융기관  410B */
            , T7.RQST_STFNO                      /* 담당자 452B */
            , T7.RELT_STFNO                      /* 승인자 452B */
@@ -841,7 +839,7 @@
                     AND T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('20', '21', '82', '83', '85')
                 </when>
                 <when test="depositWithdrawalCode == '02'">
-                    AND T1.ETPR_CRDT_GRNT_TR_KIND_CD NOT IN ('20', '21', '82', '83', '85')
+                    AND T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10', '22', '81', '84')
                 </when>
             </choose>
          </if>

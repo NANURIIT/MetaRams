@@ -232,4 +232,27 @@
        WHERE EMPNO = #{empno}
     </select>
 
+    <!-- 승인자 선택 조회 -->
+    <select id="srchApvlList" parameterType="com.nanuri.rams.business.common.vo.IBIMS003BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS003BVO">
+      SELECT A.EMPNO							/* 사원번호 */
+		       , A.EMP_NM							/* 직원명 */
+		       , A.DPRT_NM						/* 부서명 */
+		       , (
+              SELECT S1.ATH_CD_NM
+                FROM IBIMS006B S1
+               WHERE 1=1
+                 AND S1.ATH_CD = A.ATH_CD
+              ) AS ATH_CD_NM				/* 직책 */
+		    FROM IBIMS003B A
+		   WHERE 1=1
+         AND DEL_YN = 'N'
+         AND A.EMPNO != #{nowEmpno}   /* 현재 로그인한 사원번호 */
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
+         AND A.EMPNO = #{empno}       /* 조회조건의 사원번호 */
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+         AND A.DPRT_CD = #{dprtCd}    /* 부서번호 */
+         </if>
+    </select>
+
 </mapper>

@@ -75,7 +75,7 @@
 	     , EXC_SN					/* 실행일련번호 */
 	     , FEE_SN					/* 수수료일련번호 */
 	     , EPRZ_CRDL_RGST_STTS_CD	/* 기업여신등록상태코드 */
-	     , EPRZ_CRDL_FEE_KND_CD	/* 기업여신수수료종류코드 */
+	     , EPRZ_CRDL_FEE_KND_CD		/* 기업여신수수료종류코드 */
 	     , EPRZ_CRDL_FEE_STDR_AMT	/* 기업여신수수료기준금액 */
 	     , FEE_TRGT_CTNS			/* 수수료대상내용 */
 	     , FEE_RT					/* 수수료율 */
@@ -427,6 +427,7 @@
     		 , G.CTRC_EXP_DT
     		 , G.EPRZ_CRDL_CTRC_AMT
 			 , H.FEE_NAME
+			 , H.ACCT_UN_JOB_CD
           FROM IBIMS420B A
      		 , IBIMS410B B
      		 , IBIMS348B C
@@ -448,7 +449,7 @@
 		   AND E.LAST_YN(+) 			= 'Y'
 		   AND D.TR_OTHR_DSCM_NO 		= F.ARDY_BZEP_NO(+)
 		   AND A.PRDT_CD 				= G.PRDT_CD(+)	
-		   AND A.ACTS_CD 				= H.ACTS_CD(+)
+		   AND A.EPRZ_CRDL_FEE_KND_CD 	= H.FEE_KND_CD(+)
 		<if test="actsCd != ''">
 		   AND A.ACTS_CD = #{actsCd} 
 		</if>

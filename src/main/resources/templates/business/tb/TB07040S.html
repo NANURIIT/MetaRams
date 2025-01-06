@@ -224,6 +224,18 @@
 											<input type="text" class="form-control text-right" id="TB07040S_trslAmt"
 												readonly>
 										</div>
+										<label class="col-sm-1">결제은행</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" style="width:30px;"
+												id="TB07040S_fnltCd">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" id="TB07040S_btnFnltCd"
+													onclick="callTB07021P('TB07040S')"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;"
+												id="TB07040S_fnltNm" readonly>
+										</div>
 										<!--<label class="col-sm-1">배당일자</label>
 											<div class="col-sm-3 input-group date">
 												<input type="text" class="form-control" id="TB07040S_rfnDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
@@ -245,17 +257,9 @@
 												<!-- <select class="form-control" id="TB07040S_input_trCrryCd" readonly> -->
 											</select>
 										</div>
-										<label class="col-sm-1">결제은행</label>
+										<label class="col-sm-1">결제계좌</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" style="width:30px;"
-												id="TB07040S_fnltCd">
-											<span class="input-group-append">
-												<button type="button" class="btn btn-default" id="TB07040S_btnFnltCd"
-													onclick="callTB07021P('TB07040S')"><i
-														class="fa fa-search"></i></button>
-											</span>
-											<input type="text" class="form-control" style="width:70px;"
-												id="TB07040S_fnltNm" readonly>
+											<input type="text" class="form-control" id="TB07040S_stlAcno">
 										</div>
 									</div>
 								</div>
@@ -275,9 +279,17 @@
 											<input type="text" class="form-control text-right" id="TB07040S_stdrExrt"
 												value="0" readonly>
 										</div>
-										<label class="col-sm-1">결제계좌</label>
+										<label class="col-sm-1">담당자</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" id="TB07040S_stlAcno">
+											<input type="text" class="form-control" style="width:30px;"
+												id="TB07040S_empNo">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" id="TB07040S_btnEmpNo"
+													onclick="callTB03022P('TB07040S')"><i
+														class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;"
+												id="TB07040S_empNm" readonly>
 										</div>
 										<!-- <label class="col-sm-1">FVOCI 지정사유</label>
 										<div class="col-sm-3 input-group">
@@ -303,17 +315,9 @@
 												value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
 												onkeyup="inputNumberFormat(this);" readonly>
 										</div>
-										<label class="col-sm-1">담당자</label>
-										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" style="width:30px;"
-												id="TB07040S_empNo">
-											<span class="input-group-append">
-												<button type="button" class="btn btn-default" id="TB07040S_btnEmpNo"
-													onclick="callTB03022P('TB07040S')"><i
-														class="fa fa-search"></i></button>
-											</span>
-											<input type="text" class="form-control" style="width:70px;"
-												id="TB07040S_empNm" readonly>
+										<label class="col-sm-1"></label>
+										<div class="col-sm-3 text-left input-group">
+											* 매매손익금액 = 수량 × 거래단가 － 수량 × 평균단가
 										</div>
 									</div>
 								</div>

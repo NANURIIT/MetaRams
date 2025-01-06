@@ -17,7 +17,7 @@ const TB10010Sjs = (function () {
       dataIndx: "grpCdLstState",
       align: "center",
       halign: "center",
-      title: "삭제",
+      title: "선택",
       menuIcon: false,
       width: "5%",
       type: "checkBoxSelection",
@@ -29,6 +29,23 @@ const TB10010Sjs = (function () {
         header: false,
       },
     },
+    //체크박스
+    // {
+    //   dataIndx: "grpCdLstState",
+    //   align: "center",
+    //   halign: "center",
+    //   title: "삭제",
+    //   menuIcon: false,
+    //   width: "5%",
+    //   type: "checkBoxSelection",
+    //   editor: false,
+    //   dataType: "bool",
+    //   editable: "true",
+    //   cb: {
+    //     all: false,
+    //     header: false,
+    //   },
+    // },
     {
       title: "그룹코드",
       dataType: "string",
@@ -491,32 +508,45 @@ const TB10010Sjs = (function () {
    * 그룹코드 행삭제 버튼 클릭
    */
   function deleteGroupCodeRow() {
-    var groupCodeList = new Array();
-    //var tr = $('#groupCodeListTable').children();
+    var groupCodeList = [];  // 삭제할 그룹 코드 ID를 저장할 배열
     var gridData = $("#groupCodeListTable").pqGrid("option", "dataModel.data");
 
-    //var checkedRowsData = [];
+    // 체크된 데이터가 없으면 경고 메시지 표시
+    var checkedRows = gridData.filter(function(row) {
+      return row.grpCdLstState;  // 체크된 데이터만 필터링
+    });
+
+    if (checkedRows.length === 0) {
+      openPopup({ type: "info", text: "삭제하려면 체크박스를 먼저 선택하세요." });
+      return;
+    }
+
+    // 삭제할 항목 처리
     for (var i = 0; i < gridData.length; i++) {
       var rowData = gridData[i];
+      var deleteCheckBox = rowData.grpCdLstState;  // 체크된 항목인지 확인
+      var groupcdId = rowData.cmnsCdGrp;  // 그룹 코드 ID
 
-      var deleteCheckBox = rowData.grpCdLstState;
-
-      var groupcdId = rowData.cmnsCdGrp;
-
-      if (deleteCheckBox == true && isEmpty(groupcdId)) {
-        $("#groupCodeListTable").pqGrid("deleteRow", { rowIndx: i });
-      }
-
-      if (deleteCheckBox == true && isNotEmpty(groupcdId)) {
-        groupCodeList.push(rowData);
+      // 체크된 항목인 경우
+      if (deleteCheckBox === true) {
+        // 그룹 코드가 비어있으면 테이블에서 삭제
+        if (isEmpty(groupcdId)) {
+          $("#groupCodeListTable").pqGrid("deleteRow", { rowIndx: i });
+        } else {
+          // 그룹 코드가 있으면 삭제할 리스트에 추가
+          groupCodeList.push(groupcdId);
+        }
       }
     }
 
-    if (groupCodeList.length != 0) {
-      //alert(JSON.stringify(groupCodeList));
-      deleteGroupCode(groupCodeList);
+    // 삭제할 그룹 코드가 있을 경우 서버로 전송
+    if (groupCodeList.length !== 0) {
+      console.log("groupCodeList:", JSON.stringify(groupCodeList));  // 삭제할 그룹 코드 확인
+      deleteGroupCode(groupCodeList);  // 서버에 삭제 요청
     }
-  }
+}
+
+
 
   /**
    * 그룹코드 저장 버튼 클릭
@@ -758,6 +788,79 @@ const TB10010Sjs = (function () {
   };
 
   /**
+   * 그룹코드 4자리
+   * 그룹 코드 필수
+   * 그룹명 필수
+   * 코드길이 숫자
+   * 코드설명 
+   */
+  function validateGroupCodeRows(rows){
+    for (const row of rows) {
+      if (!row.cmnsCdGrp || row.cmnsCdGrp.length !== 4) { //그룸코드
+        openPopup({
+            type: "info",
+            title:"그룹코드를 확인해주세요.",
+            text: `그룹코드는 4자리여야 합니다.`,
+            callback: function () {
+              $(document).on("click", ".confirm", function () {
+                row.cmnsCdGrp.focus();
+              });
+            },
+        });
+        return false;
+      }else if (!row.cmnsCdNm) { //그룹명
+        openPopup({
+          title: "info",
+          text: "그룹명을 입력해주세요.",
+          type: "error",
+          callback: function () {
+            $(document).on("click", ".confirm", function () {
+              row.cmnsCdNm.focus();
+            });
+          },
+        });
+        return false; 
+      }else if (!row.cmnsCdGrpExpl) { //설명
+        openPopup({
+          title: "info",
+          text: "코드 설명을 입력해주세요.",
+          type: "error",
+          callback: function () {
+            $(document).on("click", ".confirm", function () {
+              row.cmnsCdGrpExpl.focus();
+            });
+          },
+        });
+        return false;
+      }else if (!row.cdLngth) { //코드길이
+        openPopup({
+          title: "info",
+          text: "코드 길이를 입력해주세요.",
+          type: "error",
+          callback: function () {
+            $(document).on("click", ".confirm", function () {
+              row.cdLngth.focus();
+            });
+          },
+        });
+        return false;
+      }else if (isNaN(row.cdLngth)) { //코드길이
+        openPopup({
+          title: "info",
+          text: "코드 길이를 숫자로 입력해주세요.",
+          type: "error",
+          callback: function () {
+            $(document).on("click", ".confirm", function () {
+              row.cdLngth.focus();
+            });
+          },
+        });
+      }
+    }
+    return true;
+  }
+
+  /**
    * 그룹코드 저장 처리
    * @param {list} groupCodeList 그룹코드 리스트
    */
@@ -794,7 +897,8 @@ const TB10010Sjs = (function () {
         });
       },
     });
-  };
+  }
+  
 
   /**
    * 상세코드 체크

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.nanuri.rams.business.common.vo.TB06080SVO;
 
 @Mapper
-public interface TB06080SMapper {
+public interface IBIMS232BMapper {
 	
 	// 결재내역 조회
 	public List<TB06080SVO.ApvlList> inqTB06080S(TB06080SVO input);

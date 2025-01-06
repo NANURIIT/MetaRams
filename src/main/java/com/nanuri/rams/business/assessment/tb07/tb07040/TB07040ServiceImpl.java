@@ -70,12 +70,14 @@ public class TB07040ServiceImpl implements TB07040Service {
     //딜거래내역 저장
 	@Override
 	public int saveDlTrList(IBIMS410BDTO paramData) {
+		paramData.setHndEmpno(facade.getDetails().getEno());
 		return ibims410BMapper.saveDlTrList(paramData);
 	}
 
 	//딜거래내역 수정
 	@Override
 	public int updateDlTrList(IBIMS410BDTO paramData) {
+		paramData.setHndEmpno(facade.getDetails().getEno());
 		return ibims410BMapper.updateDlTrList(paramData);
 	}
 

@@ -11,8 +11,8 @@ public interface IBIMS432BMapper {
 
     public List<IBIMS432BVO> selectIBIMS432B(IBIMS432BVO param);
 
-    public int insertIBIMS432B(IBIMS432BVO param);
-
+    public int insertIBIMS432B(List<IBIMS432BVO> param);
+    
     public int updateIBIMS432B(IBIMS432BVO param);
     
     public int deleteIBIMS432B(IBIMS432BVO param);

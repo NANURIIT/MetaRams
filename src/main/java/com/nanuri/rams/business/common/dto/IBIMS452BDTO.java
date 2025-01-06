@@ -22,6 +22,7 @@ public class IBIMS452BDTO {
     private String reltStfno;	            // 승인자	IBIMS452B	varchar(6)
     private String consDecdDvsnCd;	        // 품의결재구분코드	IBIMS452B	varchar(2)
     private String consDecdStatCd;	        // 결재상태코드	IBIMS452B	varchar(2)
+    private String ovrsTrnsYn;              // 해외송금여부 IBIMS452B	varchar(2)
     //private String gbckRsonText;	        // 반려사유내용	IBIMS452B	varchar(500)(메타 변경 전)
     private String rjctRsnCntn;	            // 반려사유내용	IBIMS452B	varchar(500)
     private Date hndDetlDtm;	            // 조작상세일시	IBIMS452B	datetime
