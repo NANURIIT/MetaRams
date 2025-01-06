@@ -454,6 +454,7 @@
                 , SCX_DCD                                 <!-- /*일정구분코드 */ -->
                 , RDMP_TMRD                               <!-- /*상환회차 */ -->
                 , PRAR_DT                                 <!-- /*예정일자 */ -->
+                , TRGT_AMT                                /*대상금액*/
                 , PRAR_PRNA                               <!-- /*예정원금 */ -->
                 , STRT_DT                                 <!-- /*시작일자 */ -->
                 , END_DT                                  <!-- /*종료일자 */ -->
@@ -479,6 +480,7 @@
                , #{scxDcd}                           <!-- /*일정구분코드 */ -->
                , #{rdmpTmrd}                         <!-- /*상환회차 */ -->
                , #{prarDt}                           <!-- /*예정일자 */ -->
+               , #{trgtAmt}                          /* 대상금액 */
                , #{prarPrna}                         <!-- /*예정원금 */ -->
                , #{strtDt}                           <!-- /*시작일자 */ -->
                , #{endDt}                            <!-- /*종료일자 */ -->
@@ -502,7 +504,8 @@
      <!-- /*원리금 */ 스케줄관리 업데이트 -->
      <update  id="updateCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
           UPDATE IBIMS403B
-             SET PRAR_DT           = #{prarDt}                     /* 예정일자 */  
+             SET PRAR_DT           = #{prarDt}                     /* 예정일자 */
+               , TRGT_AMT          = #{trgtAmt}                    /* 대상금액 */ 
                , PRAR_PRNA         = #{prarPrna}                   /* 예정원금 */
                , STRT_DT           = #{strtDt}                     /* 시작일자 */
                , END_DT            = #{endDt}                      /* 종료일자 */
