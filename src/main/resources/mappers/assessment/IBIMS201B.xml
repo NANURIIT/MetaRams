@@ -316,7 +316,13 @@
             , IB201B.EARLY_REPAY_YN                                    <!-- 중도상환여부 -->
             , IB201B.SGL_INV_YN                                        <!-- 단독투자여부 -->
             , ROUND(IB994B.STDR_EXRT, 2) AS STDR_EXRT                  <!-- 기준환율 -->
-            , 10000000000 AS WHOL_ISSU_SHQT                            <!-- 전체발행좌수 -->
+            , CASE WHEN IB201B.PRDT_LCLS_CD ='30' 
+                   THEN NVL(IB201B.TOT_ISSU_SHQT ,0) 
+                   WHEN IB201B.PRDT_LCLS_CD ='10'  
+                   THEN NVL(IB201B.TOT_ISSU_STK_QNT ,0)
+                   ELSE 0 END  AS WHOL_ISSU_SHQT                       <!-- 전체발행좌수 -->
+            , NVL(IB201B.TOT_ISSU_SHQT ,0) AS TOT_ISSU_SHQT            <!-- 총발행좌수 -->   
+            , NVL(IB201B.TOT_ISSU_STK_QNT ,0) AS TOT_ISSU_STK_QNT      <!-- 총발행주수 -->           
             , NVL(IB402B.BUY_SHQT,0) - NVL(IB402B.SLL_SHQT,0) AS HLDG_SHQT <!-- 보유좌수 -->
             , NVL(IB401B.EPRZ_CRDL_CTRC_AMT, 0) AS EPRZ_CRDL_CTRC_AMT <!-- 기업여신약정금액-->
             , NVL(IB402B.KRW_TRSL_EXC_AMT, 0) AS KRW_TRSL_EXC_AMT     <!-- 원화환산실행금액-->
@@ -515,7 +521,7 @@
              , IB201B.INTR_CLC_END_DE_DCD                               /*  이자계산종료일구분코드  */
              , IB201B.INTR_HDWT_CLC_YN                                  /*  이자수기계산여부  */
              , IB201B.GRD_CD                                            /*  기업여신등급코드  */
-             , IB201B.DSHN_RT_GRD_CD                                    /*  기업여신부도율등급코드  */
+             , IB201B.DSHN_RT_GRD_CD                                    /*  기업여신부도율등급코드  */             
              , IB994B.RGST_DT                                           /*  등록일자  */
              , IB201B.CHNG_DT                                           /*  변경일자  */
              , IB201B.HND_DETL_DTM                                      /*  조작상세일시  */
@@ -526,6 +532,13 @@
              , IB201B.EARLY_REPAY_YN                                    /*  중도상환여부  */
              , IB201B.SGL_INV_YN                                        /*  단독투자여부  */
              , ROUND(IB994B.STDR_EXRT, 2) AS STDR_EXRT                  /*  기준환율  */
+             , CASE WHEN IB201B.PRDT_LCLS_CD ='30' 
+                    THEN NVL(IB201B.TOT_ISSU_SHQT ,0) 
+                    WHEN IB201B.PRDT_LCLS_CD ='10'  
+                    THEN NVL(IB201B.TOT_ISSU_STK_QNT ,0)
+                    ELSE 0 END  AS WHOL_ISSU_SHQT                       /* 전체발행좌수 */
+             , NVL(IB201B.TOT_ISSU_SHQT ,0) AS TOT_ISSU_SHQT            /* 총발행좌수 */   
+             , NVL(IB201B.TOT_ISSU_STK_QNT ,0) AS TOT_ISSU_STK_QNT      /* 총발행주수 */  
              , NVL(IB402B.BUY_SHQT,0) - NVL(IB402B.SLL_SHQT,0) AS HLDG_SHQT /*  보유좌수  */
              , NVL(IB401B.EPRZ_CRDL_CTRC_AMT, 0) AS EPRZ_CRDL_CTRC_AMT /*  기업여신약정금액 */
              , NVL(IB402B.KRW_TRSL_EXC_AMT, 0) AS KRW_TRSL_EXC_AMT     /*  원화환산실행금액 */
@@ -787,6 +800,8 @@
                , INTR_HDWT_CLC_YN                                  /* 이자수기계산여부 */
                , GRD_CD                                            /* 기업여신등급코드 */
                , DSHN_RT_GRD_CD                                    /* 기업여신부도율등급코드 */
+               , TOT_ISSU_SHQT									   /* 총발행좌수 */									
+               , TOT_ISSU_STK_QNT								   /* 총발행주수 */		
                , IB994B.RGST_DT                                    /* 등록일자 */
                , CHNG_DT                                           /* 변경일자 */
                , HND_DETL_DTM                                      /* 조작상세일시 */
@@ -964,6 +979,8 @@
 			    , A.GUID								/* guid                 */
 			    , A.EARLY_REPAY_YN						/* 중도상환여부           */
 			    , A.SGL_INV_YN							/* 단독투자여부           */
+			    , A.TOT_ISSU_SHQT						/* 총발행좌수 */
+			    , A.TOT_ISSU_STK_QNT						/* 총발행주수 */
 			 FROM IBIMS201B A 		/* 딜승인기본 */
 			WHERE 1=1
 			  AND LAST_YN = 'Y'
@@ -1706,4 +1723,332 @@
               WHERE A.LAST_YN = 'Y'
               AND A.PRDT_CD = #{prdtCd}
         </select>
+
+        <!--TB07150S 조건변경 SN 체크-->
+        <select id="getIBIMS201BSN" parameterType="com.nanuri.rams.business.common.vo.IBIMS201BVO" resultType="int">
+          SELECT SN 
+          FROM IBIMS201B
+          WHERE PRDT_CD = #{prdtCd}
+          AND LAST_YN = 'Y'
+        </select>
+
+        <!--TB07150S 조건변경 LAST_YN 변경-->
+        <update id="setLastYnN" parameterType="com.nanuri.rams.business.common.vo.IBIMS201BVO">
+          UPDATE IBIMS201B 
+          SET   LAST_YN = 'N'
+              , HND_DETL_DTM = SYSDATE                                     <!-- 조작상세일시 -->
+              , HND_EMPNO = #{hndEmpno}                                    <!-- 조작사원번호 -->
+          WHERE PRDT_CD = #{prdtCd}
+          AND SN = #{sn}
+          AND LAST_YN = 'Y'
+        </update>
+
+        <!--TB07150S 조건변경(차주변경)-->
+        <insert id="cndChng201B" parameterType="com.nanuri.rams.business.common.vo.IBIMS201BVO">
+          INSERT INTO IBIMS201B
+            (
+              PRDT_CD                                           <!-- 상품코드 -->
+            , SN                                                <!-- 일련번호 -->
+            , LAST_YN                                           <!-- 최종여부 -->
+            , PRDT_NM                                           <!-- 상품명 -->
+            , PRDT_DSC                                          <!-- 상품설명 -->
+            , RQS_KND_CD                                        <!-- 기업여신신청종류코드 -->
+            , PRG_STTS_CD                                       <!-- 진행상태코드 -->
+            , CNNC_PRDT_CD                                      <!-- 연결상품코드 -->
+            , DEAL_NO                                           <!-- 딜번호 -->
+            , DEAL_NM                                           <!-- 딜명 -->
+            , MTR_NO                                            <!-- 안건번호 -->
+            , MTR_DCD                                      <!-- 부수안건구분코드 -->
+            , MTR_SN                                       <!-- 부수안건일련번호 -->
+            , JDGM_DCD                                    <!-- 심사구분코드 -->
+            , MTR_NM                                            <!-- 안건명 -->
+            , LOCO_ISS_MNGM_NO                                  <!-- loc발급관리번호 -->
+            , INV_IDTRT_SMIT_YN                                 <!-- 투자확약서제출여부 -->
+            , TRG_YN                                            <!-- 트리거여부 -->
+            , TRG_CND_CTNS                                      <!-- 트리거조건내용 -->
+            , INV_IDTRT_SMIT_DT                                 <!-- 투자확약서제출일자 -->
+            , TR_OTHR_DSCM_NO                                   <!-- 거래상대방식별번호 -->
+            , GRUP_ITGR_CRDT_GRD_DCD                            <!-- 그룹통합신용등급구분코드 -->
+            , DMS_CRDT_GRD_DCD                                  <!-- 국내신용등급구분코드 -->
+            , CRDT_INQ_DT                                       <!-- 신용조회일자 -->
+            , LST_YN                                            <!-- 상장여부 -->
+            , STLN_CPST_DCD                                     <!-- 대주구성구분코드 -->
+            , FRS_MNGM_BDCD                                     <!-- 최초관리부점코드 -->
+            , MNGM_BDCD                                         <!-- 관리부점코드 -->
+            , CHRR_EMPNO                                        <!-- 담당자사원번호 -->
+            , SUB_CHRR_EMPNO                                    <!-- 서브담당자사원번호 -->
+            , PRDT_CLSF_CD                                      <!-- 상품분류코드 -->
+            , PRDT_MDCL_CD                                      <!-- 기업여신상품중분류코드 -->
+            , PRDT_LCLS_CD                                      <!-- 기업여신상품대분류코드 -->
+            , IB_PRDT_CLSF_CD                                   <!-- ib상품분류코드 -->
+            , IB_PRDT_IFLW_PATH_DCD                             <!-- ib상품유입경로구분코드 -->
+            , IB_PRDT_PEF_DCD                                   <!-- ib상품pef구분코드 -->
+            , ACTS_CD                                           <!-- 계정과목코드 -->
+            , DCRB_ATH_DCD                                      <!-- 기업여신전결권한구분코드 -->
+            , ACCT_JOB_CD                                       <!-- 회계업무코드 -->
+            , ACCT_UN_JOB_CD                                    <!-- 회계단위업무코드 -->
+            , ACCT_TR_CD                                        <!-- 회계거래코드 -->
+            , EPRZ_CRDL_APVL_AMT                                          <!-- 승인금액 -->
+            , EPRZ_CRDL_CTRT_AMT                                          <!-- 기업여신계약금액 -->
+            , EPRZ_CRDL_INV_AMT                                           <!-- 기업여신투자금액 -->
+            , EPRZ_CRDL_INTR_RCVN_MTH_CD                                  <!-- 기업여신이자수취방법코드 -->
+            , INTR_BNAO_DCD                                     <!-- 이자선후취구분코드 -->
+            , TFD_LY_APLY_DCD                                   <!-- 초일말일적용구분코드 -->
+            , INTR_SNNO_PRCS_DCD                                <!-- 이자단수처리구분코드 -->
+            , PAI_RDMP_DCD                                      <!-- 원리금상환구분코드 -->
+            , ORTN_PRDT_CLSF_CD                                 <!-- 기업여신운용상품분류코드 -->
+            , INTRT_EXP_DCD                                     <!-- 기업여신금리만기구분코드 -->
+            , INTRT_REST_FRQC_MNUM                              <!-- 금리재설정주기개월수 -->
+            , PRNA_RDMP_FRQC_MNUM                               <!-- 원금상환주기개월수 -->
+            , INTR_RDMP_FRQC_MNUM                               <!-- 이자상환주기개월수 -->
+            , PRNA_DFR_PRD_MNUM                                 <!-- 원금거치기간개월수 -->
+            , EPRZ_CRDL_CTRT_NO                                           <!-- 기업여신계약번호 -->
+            , CTRC_PRAR_DT                                      <!-- 약정예정일자 -->
+            , CTRC_PRD_MNUM                                     <!-- 약정기간개월수 -->
+            , CTRC_PRD_DCD                                      <!-- 약정기간구분코드 -->
+            , SGL_LOAN_YN                                       <!-- 단독대출여부 -->
+            , RGST_CBND_YN                                      <!-- 등록사채여부 -->
+            , APVL_DT                                           <!-- 승인일자 -->
+            , EXP_DT                                            <!-- 만기일자 -->
+            , ED_DT                                             <!-- 종결일자 -->
+            , STUP_DT                                           <!-- 설정일자 -->
+            , TRUST_ED_DT                                       <!-- 신탁종료일자 -->
+            , ISU_DT                                            <!-- 발행일자 -->
+            , EPRZ_CRDL_CTRT_END_RSN_CD                                   <!-- 기업여신계약종료사유코드 -->
+            , EPRZ_CRDL_CTRT_END_RSN_CTNS                                 <!-- 기업여신계약종료사유내용 -->
+            , TR_CRRY_CD                                        <!-- 거래통화코드 -->
+            , INV_NTN_CD                                        <!-- 투자국가코드 -->
+            , ORTN_FND_CD                                       <!-- 운용펀드코드 -->
+            , DSK_CD                                            <!-- 데스크코드 -->
+            , EPRZ_CRDL_INDV_LMT_DCD                                      <!-- 기업여신개별한도구분코드 -->
+            , CTLB_CTRT_SHP_DCD                                 <!-- 우발채무계약형태구분코드 -->
+            , CTLB_BSS_ASST_DCD                                 <!-- 우발채무기초자산구분코드 -->
+            , SOC_YN                                            <!-- soc여부 -->
+            , SOC_DCD                                           <!-- soc구분코드 -->
+            , MRTG_STUP_YN                                      <!-- 담보설정여부 -->
+            , ALTN_INV_YN                                       <!-- 대체투자여부 -->
+            , CRDT_RIFC_APLY_YN                                 <!-- 신용보강적용여부 -->
+            , FRXC_HDGE_YN                                      <!-- 외환헷지여부 -->
+            , SPPI_SFC_YN                                       <!-- sppi충족여부 -->
+            , PROJ_FNN_YN                                       <!-- 프로젝트금융여부 -->
+            , PPLC_FND_YN                                       <!-- 사모펀드여부 -->
+            , UNTP_FND_YN                                       <!-- 단위형펀드여부 -->
+            , PF_LOAN_YN                                        <!-- pf대출여부 -->
+            , UNDW_FNN_YN                                       <!-- 인수금융여부 -->
+            , TRCH_APLY_YN                                      <!-- 트렌치적용여부 -->
+            , RLES_FNN_YN                                       <!-- 부동산금융여부 -->
+            , SDN_TRGT_YN                                       <!-- 셀다운대상여부 -->
+            , ETC_CNDT_YN                                       <!-- 기타승인조건여부 -->
+            , RLES_FNN_DETL_DCD                                 <!-- 부동산금융상세구분코드 -->
+            , HOLD_PRPS_DCD                                     <!-- 보유목적구분코드 -->
+            , THCO_RL_DCD                                       <!-- 당사역할구분코드 -->
+            , OFFR_SRVC_DCD                                     <!-- 제공서비스구분코드 -->
+            , NCR_RT                                            <!-- ncr율 -->
+            , RWA_RT                                            <!-- rwa율 -->
+            , RPCH_PSBL_DT                                      <!-- 환매가능일자 -->
+            , DISP_YN                                           <!-- 매각여부 -->
+            , PPLC_CBND_MPNG_YN_DCD                             <!-- 사모사채매핑여부구분코드 -->
+            , ETC_DET_SCTY_DCD                                  <!-- 기타채무증권구분코드 -->
+            , INV_JDGM_COMT_NO                                  <!-- 투자심사위원회번호 -->
+            , DISP_DT_DCD                                       <!-- 매각일자구분코드 -->
+            , DISP_TLMT_MNUM                                    <!-- 매각기한개월수 -->
+            , DISP_STDR_AMT_DCD                                 <!-- 매각기준금액구분코드 -->
+            , DISP_RTO                                          <!-- 기업여신매각비율 -->
+            , DISP_TLMT_DT                                      <!-- 매각기한일자 -->
+            , DISP_AMT                                          <!-- 기업여신매각금액 -->
+            , RDMP_CLM_PSBL_DT                                  <!-- 상환청구가능일자 -->
+            , APRN_GOLD_STUP_TRGT_YN                            <!-- 충당금설정대상여부 -->
+            , BDBT_RSVS_RCKN_STDR_LCLS_CD                       <!-- 대손준비금산정기준대분류코드 -->
+            , BDBT_RSVS_RCKN_STDR_MDCL_CD                       <!-- 대손준비금산정기준중분류코드 -->
+            , BDBT_RSVS_RCKN_STDR_SCLS_CD                       <!-- 대손준비금산정기준소분류코드 -->
+            , BDBT_RSVS_RCKN_STDR_RTO                           <!-- 대손준비금산정기준비율 -->
+            , THCO_PTCI_AMT                                     <!-- 당사참여금액 -->
+            , PRDT_TOT_AMT                                      <!-- 상품총금액 -->
+            , INTR_DNUM_CLC_MTH_CD                              <!-- 이자일수계산방법코드 -->
+            , HLDY_PRCS_DCD                                     <!-- 휴일처리구분코드 -->
+            , STDR_INTRT_KND_CD                                 <!-- 기준금리종류코드 -->
+            , FXN_INTRT                                         <!-- 고정금리 -->
+            , ADD_INTRT                                         <!-- 가산금리 -->
+            , INTRT_CNGE_FRQC_MNUM                              <!-- 금리변동주기개월수 -->
+            , HDWT_EVL_AMT                                      <!-- 수기평가금액 -->
+            , EPRZ_CRDL_WEEK_MRTG_KND_CD                                  <!-- 기업여신주담보종류코드 -->
+            , OVDU_INTR_RT                                      <!-- 연체이자율 -->
+            , OVDU_INTR_RT_DCD                                  <!-- 연체이자율구분코드 -->
+            , TOT_RDMP_TMRD                                     <!-- 총상환회차 -->
+            , EQL_RDMP_AMT                                      <!-- 균등상환금액 -->
+            , ISTM_DTM_RDMP_AMT                                 <!-- 할부일시상환금액 -->
+            , RCVB_INTR_APLY_IRT                                <!-- 미수이자적용이율 -->
+            , INTR_ERN_AMT                                      <!-- 이자수익금액 -->
+            , FNDS_PRCR_CT_AMT                                  <!-- 자금조달비용금액 -->
+            , INTR_CLC_END_DE_DCD                               <!-- 이자계산종료일구분코드 -->
+            , INTR_HDWT_CLC_YN                                  <!-- 이자수기계산여부 -->
+            , GRD_CD                                            <!-- 기업여신등급코드 -->
+            , DSHN_RT_GRD_CD                                    <!-- 기업여신부도율등급코드 -->
+            , TOT_ISSU_SHQT										<!-- 총발행좌수 -->
+            , TOT_ISSU_STK_QNT									<!-- 총발행주수 -->
+            , RGST_DT                                           <!-- 등록일자 -->
+            , CHNG_DT                                           <!-- 변경일자 -->
+            , HND_DETL_DTM                                      <!-- 조작상세일시 -->
+            , HND_EMPNO                                         <!-- 조작사원번호 -->
+            , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+            , HND_TR_ID                                         <!-- 조작거래id -->
+            , GUID                                              <!-- guid -->
+            , EARLY_REPAY_YN                                    <!-- 중도상환여부 -->
+            , SGL_INV_YN                                        <!-- 단독투자여부 -->
+            )
+          SELECT
+              PRDT_CD                                           <!-- 상품코드 -->
+            , ( SELECT LPAD(NVL(MAX(SN), 0) + 1, 10, '0') 
+                FROM IBIMS201B	   			                       
+              ) AS SN                                           <!-- 일련번호 -->
+            , 'Y' AS LAST_YN                                    <!-- 최종여부 -->
+            , PRDT_NM                                           <!-- 상품명 -->
+            , PRDT_DSC                                          <!-- 상품설명 -->
+            , RQS_KND_CD                                        <!-- 기업여신신청종류코드 -->
+            , PRG_STTS_CD                                       <!-- 진행상태코드 -->
+            , CNNC_PRDT_CD                                      <!-- 연결상품코드 -->
+            , DEAL_NO                                           <!-- 딜번호 -->
+            , DEAL_NM                                           <!-- 딜명 -->
+            , MTR_NO                                            <!-- 안건번호 -->
+            , MTR_DCD                                           <!-- 부수안건구분코드 -->
+            , MTR_SN                                            <!-- 부수안건일련번호 -->
+            , JDGM_DCD                                          <!-- 심사구분코드 -->
+            , MTR_NM                                            <!-- 안건명 -->
+            , LOCO_ISS_MNGM_NO                                  <!-- loc발급관리번호 -->
+            , INV_IDTRT_SMIT_YN                                 <!-- 투자확약서제출여부 -->
+            , TRG_YN                                            <!-- 트리거여부 -->
+            , TRG_CND_CTNS                                      <!-- 트리거조건내용 -->
+            , INV_IDTRT_SMIT_DT                                 <!-- 투자확약서제출일자 -->
+            , #{trOthrDscmNo} AS TR_OTHR_DSCM_NO                <!-- 거래상대방식별번호 -->
+            , GRUP_ITGR_CRDT_GRD_DCD                            <!-- 그룹통합신용등급구분코드 -->
+            , DMS_CRDT_GRD_DCD                                  <!-- 국내신용등급구분코드 -->
+            , CRDT_INQ_DT                                       <!-- 신용조회일자 -->
+            , LST_YN                                            <!-- 상장여부 -->
+            , STLN_CPST_DCD                                     <!-- 대주구성구분코드 -->
+            , FRS_MNGM_BDCD                                     <!-- 최초관리부점코드 -->
+            , MNGM_BDCD                                         <!-- 관리부점코드 -->
+            , CHRR_EMPNO                                        <!-- 담당자사원번호 -->
+            , SUB_CHRR_EMPNO                                    <!-- 서브담당자사원번호 -->
+            , PRDT_CLSF_CD                                      <!-- 상품분류코드 -->
+            , PRDT_MDCL_CD                                      <!-- 기업여신상품중분류코드 -->
+            , PRDT_LCLS_CD                                      <!-- 기업여신상품대분류코드 -->
+            , IB_PRDT_CLSF_CD                                   <!-- ib상품분류코드 -->
+            , IB_PRDT_IFLW_PATH_DCD                             <!-- ib상품유입경로구분코드 -->
+            , IB_PRDT_PEF_DCD                                   <!-- ib상품pef구분코드 -->
+            , ACTS_CD                                           <!-- 계정과목코드 -->
+            , DCRB_ATH_DCD                                      <!-- 기업여신전결권한구분코드 -->
+            , ACCT_JOB_CD                                       <!-- 회계업무코드 -->
+            , ACCT_UN_JOB_CD                                    <!-- 회계단위업무코드 -->
+            , ACCT_TR_CD                                        <!-- 회계거래코드 -->
+            , EPRZ_CRDL_APVL_AMT                                          <!-- 승인금액 -->
+            , EPRZ_CRDL_CTRT_AMT                                          <!-- 기업여신계약금액 -->
+            , EPRZ_CRDL_INV_AMT                                           <!-- 기업여신투자금액 -->
+            , EPRZ_CRDL_INTR_RCVN_MTH_CD                                  <!-- 기업여신이자수취방법코드 -->
+            , INTR_BNAO_DCD                                     <!-- 이자선후취구분코드 -->
+            , TFD_LY_APLY_DCD                                   <!-- 초일말일적용구분코드 -->
+            , INTR_SNNO_PRCS_DCD                                <!-- 이자단수처리구분코드 -->
+            , PAI_RDMP_DCD                                      <!-- 원리금상환구분코드 -->
+            , ORTN_PRDT_CLSF_CD                                 <!-- 기업여신운용상품분류코드 -->
+            , INTRT_EXP_DCD                                     <!-- 기업여신금리만기구분코드 -->
+            , INTRT_REST_FRQC_MNUM                              <!-- 금리재설정주기개월수 -->
+            , PRNA_RDMP_FRQC_MNUM                               <!-- 원금상환주기개월수 -->
+            , INTR_RDMP_FRQC_MNUM                               <!-- 이자상환주기개월수 -->
+            , PRNA_DFR_PRD_MNUM                                 <!-- 원금거치기간개월수 -->
+            , EPRZ_CRDL_CTRT_NO                                           <!-- 기업여신계약번호 -->
+            , CTRC_PRAR_DT                                      <!-- 약정예정일자 -->
+            , CTRC_PRD_MNUM                                     <!-- 약정기간개월수 -->
+            , CTRC_PRD_DCD                                      <!-- 약정기간구분코드 -->
+            , SGL_LOAN_YN                                       <!-- 단독대출여부 -->
+            , RGST_CBND_YN                                      <!-- 등록사채여부 -->
+            , APVL_DT                                           <!-- 승인일자 -->
+            , EXP_DT                                            <!-- 만기일자 -->
+            , ED_DT                                             <!-- 종결일자 -->
+            , STUP_DT                                           <!-- 설정일자 -->
+            , TRUST_ED_DT                                       <!-- 신탁종료일자 -->
+            , ISU_DT                                            <!-- 발행일자 -->
+            , EPRZ_CRDL_CTRT_END_RSN_CD                                   <!-- 기업여신계약종료사유코드 -->
+            , EPRZ_CRDL_CTRT_END_RSN_CTNS                                 <!-- 기업여신계약종료사유내용 -->
+            , TR_CRRY_CD                                        <!-- 거래통화코드 -->
+            , INV_NTN_CD                                        <!-- 투자국가코드 -->
+            , ORTN_FND_CD                                       <!-- 운용펀드코드 -->
+            , DSK_CD                                            <!-- 데스크코드 -->
+            , EPRZ_CRDL_INDV_LMT_DCD                                      <!-- 기업여신개별한도구분코드 -->
+            , CTLB_CTRT_SHP_DCD                                 <!-- 우발채무계약형태구분코드 -->
+            , CTLB_BSS_ASST_DCD                                 <!-- 우발채무기초자산구분코드 -->
+            , SOC_YN                                            <!-- soc여부 -->
+            , SOC_DCD                                           <!-- soc구분코드 -->
+            , MRTG_STUP_YN                                      <!-- 담보설정여부 -->
+            , ALTN_INV_YN                                       <!-- 대체투자여부 -->
+            , CRDT_RIFC_APLY_YN                                 <!-- 신용보강적용여부 -->
+            , FRXC_HDGE_YN                                      <!-- 외환헷지여부 -->
+            , SPPI_SFC_YN                                       <!-- sppi충족여부 -->
+            , PROJ_FNN_YN                                       <!-- 프로젝트금융여부 -->
+            , PPLC_FND_YN                                       <!-- 사모펀드여부 -->
+            , UNTP_FND_YN                                       <!-- 단위형펀드여부 -->
+            , PF_LOAN_YN                                        <!-- pf대출여부 -->
+            , UNDW_FNN_YN                                       <!-- 인수금융여부 -->
+            , TRCH_APLY_YN                                      <!-- 트렌치적용여부 -->
+            , RLES_FNN_YN                                       <!-- 부동산금융여부 -->
+            , SDN_TRGT_YN                                       <!-- 셀다운대상여부 -->
+            , ETC_CNDT_YN                                       <!-- 기타승인조건여부 -->
+            , RLES_FNN_DETL_DCD                                 <!-- 부동산금융상세구분코드 -->
+            , HOLD_PRPS_DCD                                     <!-- 보유목적구분코드 -->
+            , THCO_RL_DCD                                       <!-- 당사역할구분코드 -->
+            , OFFR_SRVC_DCD                                     <!-- 제공서비스구분코드 -->
+            , NCR_RT                                            <!-- ncr율 -->
+            , RWA_RT                                            <!-- rwa율 -->
+            , RPCH_PSBL_DT                                      <!-- 환매가능일자 -->
+            , DISP_YN                                           <!-- 매각여부 -->
+            , PPLC_CBND_MPNG_YN_DCD                             <!-- 사모사채매핑여부구분코드 -->
+            , ETC_DET_SCTY_DCD                                  <!-- 기타채무증권구분코드 -->
+            , INV_JDGM_COMT_NO                                  <!-- 투자심사위원회번호 -->
+            , DISP_DT_DCD                                       <!-- 매각일자구분코드 -->
+            , DISP_TLMT_MNUM                                    <!-- 매각기한개월수 -->
+            , DISP_STDR_AMT_DCD                                 <!-- 매각기준금액구분코드 -->
+            , DISP_RTO                                          <!-- 기업여신매각비율 -->
+            , DISP_TLMT_DT                                      <!-- 매각기한일자 -->
+            , DISP_AMT                                          <!-- 기업여신매각금액 -->
+            , RDMP_CLM_PSBL_DT                                  <!-- 상환청구가능일자 -->
+            , APRN_GOLD_STUP_TRGT_YN                            <!-- 충당금설정대상여부 -->
+            , BDBT_RSVS_RCKN_STDR_LCLS_CD                       <!-- 대손준비금산정기준대분류코드 -->
+            , BDBT_RSVS_RCKN_STDR_MDCL_CD                       <!-- 대손준비금산정기준중분류코드 -->
+            , BDBT_RSVS_RCKN_STDR_SCLS_CD                       <!-- 대손준비금산정기준소분류코드 -->
+            , BDBT_RSVS_RCKN_STDR_RTO                           <!-- 대손준비금산정기준비율 -->
+            , THCO_PTCI_AMT                                     <!-- 당사참여금액 -->
+            , PRDT_TOT_AMT                                      <!-- 상품총금액 -->
+            , INTR_DNUM_CLC_MTH_CD                              <!-- 이자일수계산방법코드 -->
+            , HLDY_PRCS_DCD                                     <!-- 휴일처리구분코드 -->
+            , STDR_INTRT_KND_CD                                 <!-- 기준금리종류코드 -->
+            , FXN_INTRT                                         <!-- 고정금리 -->
+            , ADD_INTRT                                         <!-- 가산금리 -->
+            , INTRT_CNGE_FRQC_MNUM                              <!-- 금리변동주기개월수 -->
+            , HDWT_EVL_AMT                                      <!-- 수기평가금액 -->
+            , EPRZ_CRDL_WEEK_MRTG_KND_CD                        <!-- 기업여신주담보종류코드 -->
+            , OVDU_INTR_RT                                      <!-- 연체이자율 -->
+            , OVDU_INTR_RT_DCD                                  <!-- 연체이자율구분코드 -->
+            , TOT_RDMP_TMRD                                     <!-- 총상환회차 -->
+            , EQL_RDMP_AMT                                      <!-- 균등상환금액 -->
+            , ISTM_DTM_RDMP_AMT                                 <!-- 할부일시상환금액 -->
+            , RCVB_INTR_APLY_IRT                                <!-- 미수이자적용이율 -->
+            , INTR_ERN_AMT                                      <!-- 이자수익금액 -->
+            , FNDS_PRCR_CT_AMT                                  <!-- 자금조달비용금액 -->
+            , INTR_CLC_END_DE_DCD                               <!-- 이자계산종료일구분코드 -->
+            , INTR_HDWT_CLC_YN                                  <!-- 이자수기계산여부 -->
+            , GRD_CD                                            <!-- 기업여신등급코드 -->
+            , DSHN_RT_GRD_CD                                    <!-- 기업여신부도율등급코드 -->
+            , TOT_ISSU_SHQT										                  <!-- 총발행좌수 -->
+            , TOT_ISSU_STK_QNT									                <!-- 총발행주수 -->
+            , RGST_DT                                           <!-- 등록일자 -->
+            , CHNG_DT                                           <!-- 변경일자 -->
+            , SYSDATE AS HND_DETL_DTM                           <!-- 조작상세일시 -->
+            , #{hndEmpno} AS HND_EMPNO                          <!-- 조작사원번호 -->
+            , HND_TMNL_NO                                       <!-- 조작단말기번호 -->
+            , HND_TR_ID                                         <!-- 조작거래id -->
+            , GUID                                              <!-- guid -->
+            , EARLY_REPAY_YN                                    <!-- 중도상환여부 -->
+            , SGL_INV_YN                                        <!-- 단독투자여부 -->
+          FROM IBIMS201B
+          WHERE PRDT_CD = #{prdtCd}
+          AND SN = #{sn}
+        </insert>
 </mapper>

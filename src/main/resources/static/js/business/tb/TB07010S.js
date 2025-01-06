@@ -39,6 +39,8 @@ const TB07010Sjs = (function () {
     $("input").on("focus", function () {
       $(this).select();
     });
+    
+    getDealInfoFromWF();
   });
 
   /*******************************************************************
@@ -1267,6 +1269,21 @@ const TB07010Sjs = (function () {
   // 	$('#btnSave').prop("disabled", false);
   // }
 
+
+  function getDealInfoFromWF() {
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+      var prdtCd = sessionStorage.getItem("wfPrdtCd");
+      var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07010S_prdtCd").val(prdtCd);
+			$("#TB07010S_prdtNm").val(prdtNm);
+		srch();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     /**
      * 사용 할 함수 정의
@@ -1290,6 +1307,7 @@ const TB07010Sjs = (function () {
     ldgMovePage: ldgMovePage,
     calAcbkAmt: calAcbkAmt,
     calKrwTrsl: calKrwTrsl,
+    getDealInfoFromWF : getDealInfoFromWF 
 
   };
 })();

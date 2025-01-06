@@ -54,7 +54,7 @@ const TB06050Sjs = (function() {
                     $(`input[name='radioGroup-fincCnvsPsblYn_2'][value='${data[0].fincCnvsPsblYn2}']`).prop("checked", true)
                     $(`input[name='radioGroup-expXtnsCndIvtgYn_1'][value='${data[0].expXtnsCndIvtgYn}']`).prop("checked", true)
                     $(`input[name='radioGroup-expXtnsCndIvtgYn_2'][value='${data[0].expXtnsCndIvtgYn2}']`).prop("checked", true)
-                    $(`input[name='radioGroup-elpdFdmpCndIvtgYn_3'][value='${data[0].elpdFdmpCndIvtgYn}']`).prop("checked", true)
+                    $(`input[name='radioGroup-elpdFdmpCndIvtgYn'][value='${data[0].elpdFdmpCndIvtgYn}']`).prop("checked", true)
                     $(`input[name='radioGroup-sobnIvtgYn_1'][value='${data[0].sobnIvtgYn}']`).prop("checked", true)
                     $(`input[name='radioGroup-sobnIvtgYn_2'][value='${data[0].sobnIvtgYn2}']`).prop("checked", true)
                     $(`input[name='radioGroup-sobnIvtgYn_3'][value='${data[0].sobnIvtgYn3}']`).prop("checked", true)
@@ -148,7 +148,7 @@ const TB06050Sjs = (function() {
             , fincCnvsPsblYn2: $(`input[name='radioGroup-fincCnvsPsblYn_2']:checked`).val()
             , expXtnsCndIvtgYn: $(`input[name='radioGroup-expXtnsCndIvtgYn_1']:checked`).val()
             , expXtnsCndIvtgYn2: $(`input[name='radioGroup-expXtnsCndIvtgYn_2']:checked`).val()
-            , elpdFdmpCndIvtgYn3: $(`input[name='radioGroup-elpdFdmpCndIvtgYn_3']:checked`).val()
+            , elpdFdmpCndIvtgYn: $(`input[name='radioGroup-elpdFdmpCndIvtgYn']:checked`).val()
             , sobnIvtgYn: $(`input[name='radioGroup-sobnIvtgYn_1']:checked`).val()
             , sobnIvtgYn2: $(`input[name='radioGroup-sobnIvtgYn_2']:checked`).val()
             , sobnIvtgYn3: $(`input[name='radioGroup-sobnIvtgYn_3']:checked`).val()
@@ -172,6 +172,10 @@ const TB06050Sjs = (function() {
                         , title: "Success!"
                         , text: "업데이트 성공!"
                         , confirmButtonText: "확인"
+                    }).then(result => {
+                        if(result.isConfirmed){
+                            getSPPIData();
+                        }
                     });
                 }else{
                     Swal.fire({
@@ -214,7 +218,7 @@ const TB06050Sjs = (function() {
         }else if($(`input[name='radioGroup-fincCnvsPsblYn_1']:checked`).val()=='Y'|| $(`input[name='radioGroup-fincCnvsPsblYn_2']:checked`).val()=='Y'){
             return 'N';
         }else if($(`input[name='radioGroup-expXtnsCndIvtgYn_1']:checked`).val()=='N'|| $(`input[name='radioGroup-expXtnsCndIvtgYn_2']:checked`).val()=='N'
-        || $(`input[name='radioGroup-elpdFdmpCndIvtgYn_3']:checked`).val()=='N'){
+        || $(`input[name='radioGroup-elpdFdmpCndIvtgYn']:checked`).val()=='N'){
             return 'N';
         }else if($(`input[name='radioGroup-sobnIvtgYn_1']:checked`).val()=='N'|| $(`input[name='radioGroup-sobnIvtgYn_2']:checked`).val()=='N'
         || $(`input[name='radioGroup-sobnIvtgYn_3']:checked`).val()=='N'){

@@ -148,7 +148,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 					if( item.getPaiTypCd().equals("1") ){
 
 						setItem.setPmntAmt(item.getPrarPrna());				// 예정원금
-						setItem.setTrgtAmt(item.getBfBalance());			// 대상금액
+						setItem.setTrgtAmt(item.getBfBalance());			// 대상금액		
 
 						setItem.setPrarPrna(item.getPrarPrna());			// 예정원금
 
@@ -193,6 +193,8 @@ public class TB07030ServiceImpl implements TB07030Service {
 					setItem.setIntrAplyDnum((int)DateUtil.dateDiff(item.getStrtDt(), item.getEndDt())+1);	// 처리일수
 					//setItem.setTrgtAmt(item.getBfBalance());     		// 대상금액
 					//setItem.setPmntAmt(("02".equals(item.getScxDcd()))?item.getPrarPrna():item.getRdmpPrarIntr());
+					setItem.setPmntPrarAmt(setItem.getPmntAmt());
+
 					ibims403lst.add(setItem);
 				}
 

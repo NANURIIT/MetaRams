@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nanuri.rams.business.common.dto.IBIMS430BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS435BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS992BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS430BVO;
+import com.nanuri.rams.business.common.vo.IBIMS435BVO;
 import com.nanuri.rams.business.common.vo.TB07090SVO;
 
 import lombok.RequiredArgsConstructor;
@@ -29,21 +31,23 @@ public class TB07090APIController {
         return tb07090Service.getDprtDtlsInfo(param);
     }
 
-    //입금내역등록
+    // 입금증등록내역 저★장☆
     @PostMapping(value="/rctmDtlsRgst")
-    public int rctmDtlsRgst(@RequestBody List<IBIMS430BDTO> paramList){
-        return tb07090Service.rctmDtlsRgst(paramList);
+    public int rctmDtlsRgst(@RequestBody IBIMS435BVO param){
+        return tb07090Service.rctmDtlsRgst(param);
     }
 
-    //입금내역매핑
+    // 입금내역매핑 저★장☆
     @PostMapping(value="/rctmDtlsMapping")
-    public int rctmDtlsMapping(@RequestBody List<IBIMS430BDTO> paramList){
-        return tb07090Service.rctmDtlsMapping(paramList);
+    public int rctmDtlsMapping(@RequestBody IBIMS430BVO param){
+        return tb07090Service.rctmDtlsMapping(param);
     }
 
-    @PostMapping("/ibims430bInsert")
-    public int ibims430bInsert (List<IBIMS430BDTO> paramList) {
-        return tb07090Service.ibims430bInsert(paramList);
+    // 입금내역매핑 확인
+    @PostMapping("/chkRctmDtlsMapping")
+    public int chkRctmDtlsMapping(@RequestBody IBIMS430BDTO param) {
+        return tb07090Service.chkRctmDtlsMapping(param);
     }
+    
     
 }

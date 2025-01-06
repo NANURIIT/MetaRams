@@ -23,7 +23,9 @@
 	<script th:src="@{js/business/tb/TB06017P.js}"></script>
 	<script th:src="@{js/business/tb/TB06018P.js}"></script>
 	<script th:src="@{js/business/tb/TB06019P.js}"></script>
-	<script th:src="@{js/business/tb/TB07022P.js}"></script>
+	<script th:src="@{js/business/tb/TB06019P.js}"></script>
+	<script th:src="@{js/business/tb/TB06081P.js}"></script>
+	<script th:src="@{js/business/tb/TB06082P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -33,6 +35,7 @@
 	<!-- 최상단 팝업 E -->
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
 	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
 	<th:block th:replace="business/tb/TB06014P :: TB06014P"></th:block>
 	<th:block th:replace="business/tb/TB06015P :: TB06015P"></th:block>
@@ -41,7 +44,8 @@
 	<th:block th:replace="business/tb/TB06017P :: TB06017P"></th:block>
 	<th:block th:replace="business/tb/TB06018P :: TB06018P"></th:block>
 	<th:block th:replace="business/tb/TB06019P :: TB06019P"></th:block>
-	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<th:block th:replace="business/tb/TB06081P :: TB06081P"></th:block>
+	<th:block th:replace="business/tb/TB06082P :: TB06082P"></th:block>
 	<th:block th:replace="business/tb/TB07022P :: TB07022P"></th:block>
 </th:block>
 
@@ -413,7 +417,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="ibox">
+						<div class="ibox" id="TB06010S_3rdCon_handler">
 							<div class="ibox-title">
 								<h5>▶&nbsp;금융조건</h5>
 							</div>
@@ -529,6 +533,14 @@
 							<div class="text-right">
 								<button class="btn btn-default" type="button" onclick="TB06010Sjs.managePrdtCd(0);" style="margin-left:2px; margin-right:2px;" id="regPrdt" disabled>종목 등록</button>
 								<button class="btn btn-default" type="button" onclick="TB06010Sjs.managePrdtCd(1);" style="margin-left:2px; margin-right:2px;" id="delPrdt" disabled>종목 삭제</button>
+							</div>
+						</div>
+						<div class="ibox">
+							<!-- 여기에 버튼을! (임시) -->
+							<div class="text-right">
+								<button class="btn btn-info btn-xs" type="button" onclick="callTB06081P('TB06010S');"><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
+								<button class="btn btn-success btn-xs" type="button" onclick="callTB06082P('TB06010S', 'DECD');"><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
+								<button class="btn btn-danger btn-xs" type="button" onclick="callTB06082P('TB06010S', 'RJCT');"><i class="fa fa-undo"></i>&nbsp;반려</button>
 							</div>
 						</div>
 					</div>
@@ -913,8 +925,8 @@
 											</div>
 										</div> -->
 										<div class="text-right mt-2" style="padding-right:5px;" >
-											<button class="btn btn-default" onclick="TB06010Sjs.addRowItrRelr()">+</button>
-											<button class="btn btn-default" onclick="TB06010Sjs.delRowItrRelr()">-</button>
+											<button class="btn btn-default" onclick="TB06010Sjs.addRowItrRelr()">+행추가</button>
+											<button class="btn btn-default" onclick="TB06010Sjs.delRowItrRelr()">-행삭제</button>
 											<button class="btn btn-success" id="TB06010S_tabs4Btn" type="button" onclick="TB06010Sjs.saveItrRelr();"><i class="fa fa-save"></i>&nbsp;저장</button>
 										</div>
 									</div>

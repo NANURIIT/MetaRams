@@ -1,3 +1,4 @@
+
 const TB08040Sjs = (function () {
   let feeSch; // 수수료스케줄관리 그리드
   let grdSelect = {}; // select객체
@@ -6,13 +7,18 @@ const TB08040Sjs = (function () {
   let selectBox1;
   let selectBox2;
   let saveGrid = []; // 저장 리스트
+  let delGrid =[];
   let fValid = -1; // 0 : 조회, 1 : 저장
+  
+
+  
 
   $(document).ready(function () {
     selBox(); // 셀렉트박스
     pqGrid(); // PqGrid 생성
 	selectBoxSet_TB08040S(); //부서 셀렉트박스 세팅
 	loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
+  getDealInfoFromWF();
   });
   
   /**
@@ -21,6 +27,8 @@ const TB08040Sjs = (function () {
   function init_TB08040S(){	
 	resetAll('TB08040S', ['grd_feeSch']);
 	loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
+	saveGrid = [];
+	delGrid =[];
   }
   
   /*
@@ -55,6 +63,16 @@ const TB08040Sjs = (function () {
 	  $("#TB08040S_dprtNm").val(dprtCd).prop("selected", true);
 	  $("#TB08040S_dprtCd").val(dprtCd);
   }
+  
+  
+  /**
+   * 부서명 변경시
+   */
+
+  $("#TB08040S_dprtNm").on("change", function () {
+  var dprtCd = $(this).val();
+  $("#TB08040S_dprtCd").val(dprtCd);
+  }); 
 
   function selBox() {
     selectBox = getSelectBoxList(
@@ -100,8 +118,6 @@ const TB08040Sjs = (function () {
 	      dataType: "json",
 	      success: function (data) {
 		      result=data;
-		  	  console.log("data"+data);
-		  	  result=data;
 	      },
 		    error: function(){
 		  	result= null;
@@ -109,9 +125,64 @@ const TB08040Sjs = (function () {
     	});
 	 return result;	
   }
+  
+ 
+
 
 
   function pqGrid() {
+
+
+	var dateEditor_feeSch = function(ui) {
+	  var $inp = ui.$cell.find("input");
+		/* var  grid = this;
+		 validateCal = function (that) {
+		                   var valid = grid.isValid({
+		                       dataIndx: ui.dataIndx,
+		                       value: $inp.val(),
+		                       rowIndx: ui.rowIndx
+		                   }).valid;
+		                  if (!valid) {
+		                       that.firstOpen = false;
+		                   }
+		               };	*/ 
+	     $inp.on("input", function () {
+		         //validateCal(this);	
+				 let temVal;
+				 temVal=replaceAll($inp.val(),'-','');
+				  if (temVal.length === 8) {
+	                 temVal=formatDate(temVal);
+					 console.log("onformat"+temVal);
+					 $inp.val(temVal);
+	               } else if(temVal.length > 8) {
+					 $inp.val(formatDate(temVal.slice(0, 8)));
+	               }
+		   		})	
+	         .datepicker({
+	             changeMonth: true,
+	             changeYear: true,
+	             //convert from excel to jquery ui format
+	             dateFormat: 'yyyy-mm-dd',//ui.column.format,//pq.excelToJui(ui.column.format),
+			     keyboardNavigation: false,
+			     forceParse: false,
+			     calendarWeeks: false,
+			 	 //autoclose: true,
+				 language: "ko",
+	             //showAnim: '',
+	             /*onSelect: function () {
+	                this.firstOpen = true;
+				  	validateCal(this);
+	             },
+	             beforeShow: function (input, inst) {
+	                 return !this.firstOpen;// uncomment if don't want to allow datepicker editor to open upon focus in editor after first opening.
+	             },
+	             onClose: function () {
+	                 this.focus();
+	             }*/
+	         });
+	 }
+
+	
     /********************************************************************
      * PQGrid Column
      ********************************************************************/
@@ -164,7 +235,7 @@ const TB08040Sjs = (function () {
       {
         title: "순번",
         dataType: "string",
-        dataIndx: "feeSn",
+        dataIndx: "seq",
         halign: "center",
         align: "center",
         width: "5%",
@@ -175,6 +246,12 @@ const TB08040Sjs = (function () {
 			return result;
 		}
       },
+	  {
+	    title: "수수료일련번호",
+	    dataType: "string",
+	    dataIndx: "feeSn",
+		hidden: true,
+	  },	  
       {
         title: "수수료종류",
         dataType: "string",
@@ -205,19 +282,6 @@ const TB08040Sjs = (function () {
         align: "center",
         width: "10%",
 		filter: { crules: [{ condition: "range" }] },
-		editor: {
-		  type: "select",
-		  valueIndx: "actsCd",
-		  labelIndx: "actName",
-		  options: selectBox2,
-		},
-		render: function (ui) {
-	  	    let fSel = selectBox2.find(	
-            ({ actsCd }) => actsCd == ui.cellData
-          );
-          return fSel ? fSel.actName : ui.cellData;
-        },
-		editable: false,		
       },
 	  {
 	    title: "계정과목코드",
@@ -264,11 +328,11 @@ const TB08040Sjs = (function () {
           options: [
             {
               key: "Y",
-              value: "1",
+              value: "Y",
             },
             {
               key: "N",
-              value: "0",
+              value: "N",
             },
           ],
         },
@@ -276,11 +340,11 @@ const TB08040Sjs = (function () {
           let options = [
             {
               key: "Y",
-              value: "1",
+              value: "Y",
             },
             {
               key: "N",
-              value: "0",
+              value: "N",
             },
           ];
           let option = options.find((opt) => opt.value == ui.cellData);
@@ -394,78 +458,29 @@ const TB08040Sjs = (function () {
       },
       {
         title: "예정일자",
-        dataType: "string",
+        dataType: "date",
+		format:"yy-mm-dd",
         dataIndx: "prarDt",
         halign: "center",
         align: "center",
         width: "10%",
-        filter: { crules: [{ condition: "range" }] },
         editor: {
-         /* type: "textbox",
-          init: function (ui) {
-            let $inp = ui.$cell.find("input");
-            $inp.attr("placeholder", "YYYY-MM-DD");
-            $inp.on("input", function () {
-               if (this.value.length === 8) {
-                formatDate(this.value);
-              } else {
-                this.value;
-              }
-            });
-          },
-		  */
-		  type: "textbox",
-		  init: function (ui) {
-			let $inp = ui.$cell.find("input");
-			$inp.attr("placeholder", "YYYY-MM-DD");
-			$inp
-			    .on("input", function (evt) {
-			        /*validate(this);*/
-					if (this.value.length === 8) {
-		               formatDate(this.value);
-		             } else {
-		               this.value;
-		             }
-			    })
-			    .datepicker({
-			        dateFormat: 'yyyy-mm-dd',
-					todayBtn: "linked",
-			        showButtonPanel: true,
-			        changeMonth: true,
-			        changeYear: true,
-					autoclose : true,			        
-					beforeShow: function (input, inst) {
-					    setTimeout(function () {
-					        $('.ui-datepicker').css('z-index', 999999999999);
-					    });
-					    return !this.firstOpen;
-					},
-					/*showAnim: '',
-			        onSelect: function () {
-						console.log("datePicker onSelect");
-			            this.firstOpen = true;
-			        },
-			        onClose: function () {
-						console.log("datePicker onClose");
-			        }*/
-			    })
-				.on('change', function(){
-					console.log('change'+this.value);
-				})
-		
-			
-		  },
-		  
+			type: "textbox",
+		  	init: dateEditor_feeSch,
         },
-        render: function (ui) {
-          let cellData = ui.cellData;
-          if (!isEmpty(cellData) && cellData.length === 8) {
-            return formatDate(cellData);
-          } else {
-            return cellData;
-          }
-        },
+		validations:[ {type: 'regexp', value: '^([0-9]{4}-[0-9]{2}-[0-9]{2})|([0-9]{8})$', msg : 'Not in yyyy-mm-dd format'}],
+		//validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
         editable: true,
+		render: function (ui) {
+         let cellData = replaceAll( ui.cellData , '-','') ;
+         if (!isEmpty(cellData) && cellData.length === 8) {
+			 return formatDate(cellData);
+ 		  } else if(!isEmpty(cellData) && cellData.length > 8){
+			 return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
+		  } else {
+	           return cellData;
+	         }
+	     },
       },
       {
         title: "수수료선후급구분코드",
@@ -511,7 +526,8 @@ const TB08040Sjs = (function () {
       },
       {
         title: "인식시작일자",
-        dataType: "string",
+		dataType: "date",
+		format:"yy-mm-dd",
         dataIndx: "fnnrRcogStrtDt",
         halign: "center",
         align: "center",
@@ -519,23 +535,27 @@ const TB08040Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "textbox",
-          init: function (ui) {
+          /*init: function (ui) {
             let $inp = ui.$cell.find("input");
             $inp.attr("placeholder", "YYYY-MM-DD");
             $inp.on("input", function () {
               if (this.value.length === 8) {
-                formatDate(this.value);
+                formatDate(this.value);				
               } else {
                 this.value;
               }
             });
-          },
+          },*/
+		  init: dateEditor_feeSch,
         },
+		validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
         render: function (ui) {
-          let cellData = ui.cellData;
+          let cellData = replaceAll( ui.cellData , '-','') ;
           if (!isEmpty(cellData) && cellData.length === 8) {
             return formatDate(cellData);
-          } else {
+  		  } else if(!isEmpty(cellData) && cellData.length > 8){
+			return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
+		  } else {
             return cellData;
           }
         },
@@ -543,7 +563,8 @@ const TB08040Sjs = (function () {
       },
       {
         title: "인식종료일자",
-        dataType: "string",
+		dataType: "date",
+		format:"yy-mm-dd",
         dataIndx: "fnnrRcogEndDt",
         halign: "center",
         align: "center",
@@ -551,7 +572,7 @@ const TB08040Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "textbox",
-          init: function (ui) {
+         /* init: function (ui) {
             let $inp = ui.$cell.find("input");
             $inp.attr("placeholder", "YYYY-MM-DD");
             $inp.on("input", function () {
@@ -560,14 +581,18 @@ const TB08040Sjs = (function () {
               } else {
                 this.value;
               }
-            });
-          },
+            });			
+          },*/
+		  init: dateEditor_feeSch,
         },
+		validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
         render: function (ui) {
-          let cellData = ui.cellData;
+          let cellData = replaceAll(ui.cellData,'-','');
           if (!isEmpty(cellData) && cellData.length === 8) {
             return formatDate(cellData);
-          } else {
+          } else if(!isEmpty(cellData) && cellData.length > 8){
+			return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
+		  } else {
             return cellData;
           }
         },
@@ -581,28 +606,6 @@ const TB08040Sjs = (function () {
         align: "center",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
-        editor: {
-          type: "textbox",
-          init: function (ui) {
-            let $inp = ui.$cell.find("input");
-            $inp.attr("placeholder", "YYYY-MM-DD");
-            $inp.on("input", function () {
-              if (this.value.length === 8) {
-                formatDate(this.value);
-              } else {
-                this.value;
-              }
-            });
-          },
-        },
-        render: function (ui) {
-          let cellData = ui.cellData;
-          if (!isEmpty(cellData) && cellData.length === 8) {
-            return formatDate(cellData);
-          } else {
-            return cellData;
-          }
-        },
         //editable   : true,
       },
       {
@@ -648,10 +651,12 @@ const TB08040Sjs = (function () {
           },
         },
         render: function (ui) {
-          let cellData = ui.cellData;
+          let cellData = replaceAll(ui.cellData,'-','');
           if (!isEmpty(cellData) && cellData.length === 8) {
             return formatDate(cellData);
-          } else {
+          }else if(!isEmpty(cellData) && cellData.length > 8){
+			return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
+		  } else {
             return cellData;
           }
         },
@@ -691,104 +696,149 @@ const TB08040Sjs = (function () {
             return "미처리";
           }
         },
-      },
+      },	  
+	  {
+	    title: "rowStatus",
+	    dataType: "string",
+	    dataIndx: "rowType",
+	    hidden: true,
+	  },
     ];
 
     let pqGridObjs = [];
 
     pqGridObjs = [
       {
-        height: 500,
-        maxHeight: 500,
-        id: "grd_feeSch",
-        colModel: col_feeSch,
-        scrollModel: { autoFit: false },
+	    height: 500,
+	    maxHeight: 500,
+	    id: "grd_feeSch",
+	    colModel: col_feeSch,
+	    scrollModel: { autoFit: false },
+		selectionModel: { type: 'cell' },
+		create: function (evt, ui) {
+	               this.widget().pqTooltip();
+	           },
+	    editModel: {
+	                   saveKey: $.ui.keyCode.ENTER,
+	                   //filterKeys: false,
+	                   keyUpDown: false,
+	                   cellBorderWidth: 0
+	               },
         cellSave: function (event, ui) {
-          // 수정된 행에 rowType 추가
-		  let dataIndx = ui.dataIndx;
-          let rowIndx = ui.rowIndx;
-          let rowData = feeSch.getRowData({ rowIndx });
-          let rowType = rowData.rowType;
-		  if(dataIndx ==='feeKndCd' ){	  			
+	          // 수정된 행에 rowType 추가
+			  let dataIndx = ui.dataIndx;
+	          let rowIndx = ui.rowIndx;
+	          let rowData = feeSch.getRowData({ rowIndx });			  
+			  
+			  if(dataIndx ==='feeKndCd' ){	  			
+					const grid = $("#grd_feeSch").pqGrid('instance');
+					const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+	                var tempRowData = rowData.feeKndCd; 
+					var selectedIndex = selectBox2.findIndex(option => option.feeKndCd === tempRowData);
+					if (selectedIndex !== -1) {
+						// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
+						rowData.actsCd = selectBox2[selectedIndex].actsCd;	
+						rowData.actName = selectBox2[selectedIndex].actName;
+						if(rowData.rowType !== "I"){
+							rowData.rowType = "U"; 
+						}		
+					  	// UI에 반영
+	                  	grid.refreshRow({ rowIndx: ui.rowIndx });
+	                }
+		  	  }
+			  
+			  if(dataIndx ==='feeStdrAmt' || dataIndx ==='feeRt' ){	  
 				const grid = $("#grd_feeSch").pqGrid('instance');
-			    const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
-				console.log("feeKndCd"+rowData.feeKndCd);
-                var tempRowData = rowData.feeKndCd;
-				console.log("tempRowData"+tempRowData);
-				var selectedIndex = selectBox2.findIndex(option => option.feeKndCd === tempRowData);
-				console.log("selectedIndex"+selectedIndex);
-				if (selectedIndex !== -1) {
-					// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
-					rowData.actsCd = selectBox2[selectedIndex].actsCd;	
-					rowData.actName = selectBox2[selectedIndex].actName;	
-				  	// UI에 반영
-                  	grid.refreshRow({ rowIndx: ui.rowIndx });
-                }
-	  	  }
-		  
-		  if(dataIndx ==='feeStdrAmt' || dataIndx ==='feeRt' ){	  			
-  			const grid = $("#grd_feeSch").pqGrid('instance');
-  		    const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
-  			console.log("feeStdrAmt"+rowData.feeStdrAmt);
-			console.log("feeRt"+rowData.feeRt);
-  			if (rowData.feeStdrAmt >0 && rowData.feeRt >0) {
-  				// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
-  				rowData.feeAmt = rowData.feeStdrAmt * (rowData.feeRt / 100);
-  			  	// UI에 반영
-                   	grid.refreshRow({ rowIndx: ui.rowIndx });
-                }
-    	  }
-		  
-		  
-
-          if (rowType !== "I") {
-            rowData.rowType = "M"; // rowData 객체의 rowType을 직접 "M"으로 설정
-            //saveGrid.push(rowData);
-
-            // saveGrid에서 동일한 pq_ri를 가진 객체의 인덱스를 찾기
-            let index = saveGrid.findIndex(function (item) {
-              return item.pq_ri === rowData.pq_ri;
-            });
-            // console.log("cellSave index ::: ", index);
-            // console.log("cellSave rowData ::: ", rowData);
-
-            if (index !== -1) {
-              // 기존 객체가 있으면 해당 객체를 업데이트
-              saveGrid[index] = rowData;
-            } else {
-              // 기존 객체가 없으면 새로 추가
-              saveGrid.push(rowData);
-            }
-          } else {
-            rowData.rowType = rowType; // rowType이 "I"인 경우 그대로 유지
-          }
-
-        },
-        cellClick: function (evt, ui) {
-			/*let dataIndx = ui.dataIndx;
-	        let rowData =ui.rowData;
-			 if(dataIndx ==='feeKndCd' ){
-				console.log("feeKndCd"+rowData.feeKndCd);
-			 }	
-			*/		
-          if (!ui.column || !ui.column.editor || !ui.column.editor.type) {
-            return;
-          }
-          if (ui.column.editor.type === "select") {
-            let $tag = $(ui.$td[0]);
-            $tag.trigger("dblclick");
-			
-			
-          }
-        },
-      },
+				const rowData = grid.getRowData({ rowIndx: ui.rowIndx });			
+	  			console.log("feeStdrAmt"+rowData.feeStdrAmt);
+				console.log("feeRt"+rowData.feeRt);
+	  			if (rowData.feeStdrAmt >=0 && rowData.feeRt >=0) {
+		  				// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
+		  				rowData.feeAmt = rowData.feeStdrAmt * (rowData.feeRt / 100);
+						if(rowData.rowType !== "I"){
+							rowData.rowType = "U"; 
+						}				
+						// UI에 반영
+						grid.refreshRow({ rowIndx: ui.rowIndx });
+	                }
+	    	  }		
+			  
+			  if (rowData.rowType !== "I") {
+					const grid = $("#grd_feeSch").pqGrid('instance');
+					const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+	  		       rowData.rowType = "U"; // rowData 객체의 rowType을 직접 "M"으로 설정
+	  			   // rowType이 "I"인 경우 그대로 유지
+	  			   // UI에 반영
+	  			   grid.refreshRow({ rowIndx: ui.rowIndx });					   	
+			     } 
+	   
+	        },
+	       /* cellClick: function (evt, ui) {
+	          if (!ui.column || !ui.column.editor || !ui.column.editor.type) {
+	            return;
+	          }
+	          if (ui.column.editor.type === "select") {
+	            let $tag = $(ui.$td[0]);
+	            $tag.trigger("dblclick");
+				
+				
+	          }
+	        },*/
+	      },
     ];
     setPqGrid(pqGridObjs);
     // Grid instance
     feeSch = $("#grd_feeSch").pqGrid("instance");
+	
+
+
 
     let formulas = [
-      [
+	/*[
+	  // 예정일자
+	  "prarDt",
+	  function (rd) {
+		let cellData = replaceAll( rd.prarDt , '-','') ;
+	     if (!isEmpty(cellData) && cellData.length === 8) {
+	       	return cellData;
+		 } else if(!isEmpty(cellData) && cellData.length > 8){
+			return cellData.slice(0, 8);  // 최대 자리수 초과 시 잘라내기
+	  	 } else {
+	       	return cellData;
+	     }
+	  },
+	],	
+*/
+	[
+	  // 인식시작일자
+	  "fnnrRcogStrtDt",
+	  function (rd) {
+		let cellData = replaceAll( rd.fnnrRcogStrtDt , '-','') ;
+         if (!isEmpty(cellData) && cellData.length === 8) {
+           	return cellData;
+ 		 } else if(!isEmpty(cellData) && cellData.length > 8){
+			return cellData.slice(0, 8);  // 최대 자리수 초과 시 잘라내기
+	  	 } else {
+           	return cellData;
+         }
+	  },
+	], 
+	[
+	  // 인식종료일자
+	  "fnnrRcogEndDt",
+	  function (rd) {
+		let cellData = replaceAll( rd.fnnrRcogEndDt , '-','') ;
+         if (!isEmpty(cellData) && cellData.length === 8) {
+           	return cellData;
+ 		 } else if(!isEmpty(cellData) && cellData.length > 8){
+			return cellData.slice(0, 8);  // 최대 자리수 초과 시 잘라내기
+	  	 } else {
+           	return cellData;
+         }
+	  },
+	],
+	
+	  [
         // 이연기간일수
         "fnnrPrlnPrdDnum",
         function (rd) {
@@ -837,31 +887,34 @@ const TB08040Sjs = (function () {
     feeSch.option("formulas", formulas);
   }
 
-  // 조회
+  // 조회버튼
   function srch() {
     fValid = 0;
 
-    if (validation().isValid) {
-      let obj = {
-        prdtCd: validation().prdtCd,
+    if (validation_TB08040S().isValid) {
+      var param = {
+        "prdtCd": validation_TB08040S().prdtCd,
+		"strPrarDt" : $("#TB08040S_strPrarDt").val().replaceAll("-", ""),
+		"endPrarDt": $("#TB08040S_endPrarDt").val().replaceAll("-", ""), 
+		//"empNo": $("#TB08040S_empNo").val(),
+		//"dprtCd":$("#TB08040S_dprtCd").val(),
       };
 
       $.ajax({
         type: "POST",
         url: "/TB08040S/srchFeeSch",
-        contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(obj),
+        data: param,//JSON.stringify(param),
         dataType: "json",
         beforeSend: function (xhr) {
           feeSch.setData([]);
+		  saveGrid = [];
+		  delGrid =[];
         },
         success: function (data) {
-          console.log(data);
 
           if (data.length > 0) {
             feeSch.setData(data);
-
-            feeSchLen = feeSch.getData().length;
+            feeSchLen = feeSch.getData().length;			
           } else {
             Swal.fire({
               icon: "warning",
@@ -876,24 +929,31 @@ const TB08040Sjs = (function () {
     }
   }
 
-  // 저장
+  // 저장버튼
   function save() {
     fValid = 1;
+   let chkSchList; 
+   let feeSchList;
+   
 
-    let feeSchList = chkGrd(feeSch); // 체크된 그리드
+   saveGrid   = addGrd(feeSch);
+   feeSchList = saveGrid;
+   console.log("저장리스트"+feeSchList.length); //U+I+D
+   chkSchList = saveGrid.filter((item) => item.rowType !== null);
+   chkSchList = chkSchList.filter((item) => item.rowType !== "D");
+   console.log("체크리스트"+chkSchList.length);//U+I
+   saveGrid=[];
 
-    console.log(feeSchList);
-
-    if (saveGrid.length === 0) {
-      sf(1, "warning", "저장 할 정보가 없습니다.<br/>체크박스를 확인해주세요.");
+    if (feeSchList.length === 0) {
+      sf(1, "warning", "저장 할 정보가 없습니다.");
       return;
     }
-
-    if (validation(feeSchList).isValid) {
-      let obj = {
-        feeSchList,
-        prdtCd: validation().prdtCd,
-      };
+	
+	if (validation_TB08040S(chkSchList).isValid) {		
+       let obj = {
+         feeSchList,
+         prdtCd: validation_TB08040S().prdtCd,
+       };
 
       $.ajax({
         type: "POST",
@@ -902,7 +962,6 @@ const TB08040Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         success: function (data) {
-          console.log(data);
           if (data > 0) {
             Swal.fire({
               icon: "success",
@@ -927,7 +986,7 @@ const TB08040Sjs = (function () {
   /*******************************************************************
    * validation
    *******************************************************************/
-  function validation(arr = []) {
+  function validation_TB08040S(arr = []) {
     let prdtCd = $("#TB08040S_prdtCd").val(); // 종목코드
 
     if (!prdtCd) {
@@ -938,14 +997,46 @@ const TB08040Sjs = (function () {
       });
       return { isValid: false };
     }
+	
+	if(fValid ===0){ //조회시
+		let strPrarDt =$("#TB08040S_strPrarDt").val();  // 조회시작일자
+		let endPrarDt  =$("#TB08040S_endPrarDt").val(); // 조회종료일자
+		if(!strPrarDt && endPrarDt){
+				Swal.fire({
+		        icon: "warning",
+		        text: "예정 시작일을 입력해주세요.",
+		        confirmButtonText: "확인",
+		      });
+		      return { isValid: false };
+		}
+		if(strPrarDt && !endPrarDt){
+				Swal.fire({
+		        icon: "warning",
+		        text: "예정 종료일을 입력해주세요.",
+		        confirmButtonText: "확인",
+		      });
+		      return { isValid: false };
+		}
+		if(strPrarDt && endPrarDt){
+			if(strPrarDt> endPrarDt){
+				Swal.fire({
+		        icon: "warning",
+		        text: "입력하신 예정일 조회기간이 타당하지 않습니다. ",
+		        confirmButtonText: "확인",
+		      });
+		      return { isValid: false };
+			}
+		}	
+	}
+	
 
-    if (fValid === 1) {
+    if (fValid === 1) { //저장시
       // 저장
       for (let i = 0; i < arr.length; i++) {
         const ele = arr[i];
-        console.log(ele.txtnTpDcd);
-		console.log(ele.feeTxtnYn);
-		console.log(ele.rpsrNm);
+        //console.log(ele.txtnTpDcd);
+		//console.log(ele.feeTxtnYn);
+		//console.log(ele.rpsrNm);
 
         if (!ele.feeKndCd) {
           sf(2, "warning", `[수수료종류]`);
@@ -1036,11 +1127,11 @@ const TB08040Sjs = (function () {
   function gridEvt(p) {
     switch (p) {
       case "p":
-        if (validation().isValid) {
+        if (validation_TB08040S().isValid) {
           //let grd = prnaRdmpSch.getData();
           let newRow = {
             rowType: "I",
-            prdtCd: validation().prdtCd,
+            prdtCd: validation_TB08040S().prdtCd,
             crryCd: "KRW", // 통화코드
             rgstBdcd: $("#userDprtCd").val(), // 등록부점코드
             feeStdrAmt: 0,
@@ -1056,26 +1147,37 @@ const TB08040Sjs = (function () {
             rowData: newRow,
             checkEditable: false,
           });
+
         }
         break;
       case "m":
-        // let delRow = prnaRdmpSch.getData().filter(item => item.rowType === "I");
-        // console.log(delRow);
+		let chkCnt;
+		chkCnt=0
+		  
+		 for(let i = 0; i < feeSch.pdata.length; i++){
+		 	if(feeSch.pdata[i].chk){
+				chkCnt++;
+			}
+		 }
+		 
+		 if (chkCnt === 0) {
+		       sf(1, "warning", "삭제할 정보가 없습니다.<br/>체크박스를 확인해주세요.");
+	       return;
+	     }
 
-        if (validation().isValid) {
+        if (validation_TB08040S().isValid) {
           let data = feeSch.getData();
           let filteredIndexes = [];
 
           data.forEach((item, index) => {
             if (item.chk) {
-              if (item.rowType !== "I" && item.rowType !== "D") {
+              if (item.rowType !== "I" && item.rowType !== "D"  && item.rowType !== null) {
                 item.rowType = "D";
-                saveGrid.push(item);
+                delGrid.push(item);
               }
               filteredIndexes.push(index);
             }
           });
-          console.log("saveGrid ::: ", saveGrid);
           // 구한 인덱스들을 삭제합니다. 뒤에서부터 삭제해야 인덱스가 꼬이지 않습니다.
           filteredIndexes
             .sort((a, b) => b - a)
@@ -1083,25 +1185,8 @@ const TB08040Sjs = (function () {
               feeSch.deleteRow({ rowIndx: index });
             });
           console.log("지우고 난 후의 index ::: ", feeSch.getData());
-          // feeSch.deleteRow( { rowIndx: feeSchLen + 1 } );
-
-          // let feeSchCnt = feeSch.getData().length;
-          // console.log("feeSchCnt ::: ", feeSchCnt);
-          // console.log("feeSchLen ::: ", feeSchLen);
-          // if ( feeSchCnt > feeSchLen ) {
-          //     feeSch.deleteRow( { rowIndx: feeSchLen + 1 } )
-          // };
         }
-
-        // 원본 데이터 안지우고 -
-        // if ( validation().isValid ) {
-        //     let feeSchCnt = feeSch.getData().length;
-        //     console.log("feeSchCnt ::: ", feeSchCnt);
-        //     console.log("feeSchLen ::: ", feeSchLen);
-        //     if ( feeSchCnt > feeSchLen ) {
-        //         feeSch.deleteRow( { rowIndx: feeSchLen + 1 } )
-        //     };
-        // };
+		console.log("삭제시saveGrid"+delGrid.length);
 
         break;
       default:
@@ -1120,7 +1205,7 @@ const TB08040Sjs = (function () {
       const chkData = data[i];
 
       if (
-        chkData.chk &&
+        chkData.chk &&  
         !addedIndx.has(i) &&
         !saveGrid.some((item) => item === chkData)
       ) {
@@ -1142,6 +1227,37 @@ const TB08040Sjs = (function () {
 
     return saveGrid;
   }
+  
+  
+  // 추가된 그리드
+  function addGrd(p){
+	let data = p.getData(); // 그리드 데이터
+	for (let i = 0; i < data.length; i++) { 
+		const chkData = data[i];
+	    if(chkData.rowType =="I" ||chkData.rowType =="U"){
+			chkData.prarDt 			=replaceAll(chkData.prarDt, '-', '');
+			chkData.fnnrRcogStrtDt  =replaceAll(chkData.fnnrRcogStrtDt, '-', '');
+			chkData.fnnrRcogEndDt 	=replaceAll(chkData.fnnrRcogEndDt, '-', '');
+			chkData.feeRcivDt 		=replaceAll(chkData.feeRcivDt, '-', '');
+			chkData.feeStdrAmt		=uncomma(chkData.feeStdrAmt);
+			chkData.feeRt			=uncomma(chkData.feeRt);
+			chkData.feeAmt			=uncomma(chkData.feeAmt);
+			console.log("addGrd chkData.prarDt"+chkData.prarDt);
+			
+        	saveGrid.push(chkData);	  
+		}  
+	}	
+	
+	//let delGrd = delGrid.getData(); // 그리드 데이터
+	for (let i = 0; i < delGrid.length; i++) { 
+			const delData = delGrid[i];
+		    saveGrid.push(delData); 
+	}
+	
+	return saveGrid;
+  }
+  
+
 
   // swal.fire
   function sf(flag, icon, text, callback = () => { }) {
@@ -1162,9 +1278,20 @@ const TB08040Sjs = (function () {
     }
   }
   
-
-  
-  
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB08040S_prdtCd").val(prdtCd);
+			$("#TB08040S_prdtNm").val(prdtNm);
+      srch();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
   
   return {
     feeSch: feeSch
@@ -1175,13 +1302,15 @@ const TB08040Sjs = (function () {
     , fValid: fValid
     , srch: srch
     , save: save
-    , validation: validation
+    , validation_TB08040S: validation_TB08040S
     , gridEvt: gridEvt
     , chkGrd: chkGrd
+	, addGrd : addGrd
     , sf: sf
 	, getSelBoxCdFeeKndCd: getSelBoxCdFeeKndCd
 	, loginUserSet_TB08040S: loginUserSet_TB08040S
 	, selectBoxSet_TB08040S: selectBoxSet_TB08040S
 	, init_TB08040S : init_TB08040S
+  , getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

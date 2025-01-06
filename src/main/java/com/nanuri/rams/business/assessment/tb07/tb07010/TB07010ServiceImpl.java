@@ -129,7 +129,11 @@ public class TB07010ServiceImpl implements TB07010Service {
 		/* 여신실행기본 조회 */
 		//rtnObj.setExcInfo(ibims402BMapper.getEprzCrdlExcInfo(paramData.getPrdtCd()));
 		/* 수수료수납내역 */
-		rtnObj.setExcFee(ibims348BMapper.selectFeeScxInfoList(paramData.getPrdtCd()));
+		IBIMS348BVO prm = new IBIMS348BVO();
+
+		prm.setPrdtCd(paramData.getPrdtCd());
+
+		rtnObj.setExcFee(ibims348BMapper.selectFeeScxInfoList(prm));
 
 		return rtnObj;
 	}
@@ -224,7 +228,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 		ibims402BDTO.setIntrRdmpFrqcMnum(ibims401bvo.getIntrRdmpFrqcMnum());    // 이자상환주기개월수
 		ibims402BDTO.setDealNo(ibims201bvo.getDealNo());						// 딜번호
 		ibims402BDTO.setMtrDcd(ibims201bvo.getMtrDcd());					    // 부수안건구분코드
-		ibims402BDTO.setJdgmDcd(ibims201bvo.getJdgmDcd());					// 리스크심사구분코드
+		ibims402BDTO.setJdgmDcd(ibims201bvo.getJdgmDcd());						// 리스크심사구분코드
 		ibims402BDTO.setHndEmpno(facade.getDetails().getEno());					// 조작사원번호
 
 		IBIMS404BDTO in404bdto = new IBIMS404BDTO();
@@ -238,26 +242,26 @@ public class TB07010ServiceImpl implements TB07010Service {
 		if(!"03".equals(paramData.getEprzCrdlPaiRdmpDcd())) {
 
 			CalculationDTO inCalcDTO = new CalculationDTO();
-			inCalcDTO.setPrdtCd(ibims402BDTO.getPrdtCd());							// 상품코드
-			inCalcDTO.setExcSn(ibims402BDTO.getExcSn());							// 실행일련번호
-			inCalcDTO.setPaiRdmpDcd(paramData.getEprzCrdlPaiRdmpDcd());				// 상환방법코드
-			inCalcDTO.setExcDt(ibims402BDTO.getExcDt());							// 실행일자
-			inCalcDTO.setExpDt(ibims402BDTO.getExpDt());							// 만기일자
-			inCalcDTO.setDfrExpMnum(ibims402BDTO.getDfrExpMnum());  				// 거치만기개월수
-			inCalcDTO.setStdrIntrt(paramData.getStdrIntrt().doubleValue());			// 기준금리
-			inCalcDTO.setAddIntrt(ibims402BDTO.getExcAddIntrt().doubleValue());		// 가산금리
-			inCalcDTO.setTotIntrt(paramData.getTotIntrt().doubleValue());			// 총금리
-			inCalcDTO.setDealExcAmt(ibims402BDTO.getDealExcAmt());   				// 실행금액==대출금액
-			inCalcDTO.setIntrPymDtCd(ibims402BDTO.getIntrPymDtCd());				// 이자상환지정일
-			inCalcDTO.setPrnaRdmpFrqcMnum(paramData.getPrnaRdmpFrqcMnum());         // 원금상환주기개월수
-			inCalcDTO.setIntrRdmpFrqcMnum(paramData.getIntrRdmpFrqcMnum());         // 이자상환주기개월수
-			inCalcDTO.setHldyPrcsDcd(paramData.getEprzCrdlHldyPrcsDcd());           // 기업여신휴일처리구분코드
-			inCalcDTO.setIntrDnumClcMthCd(ibims401bvo.getEprzCrdlIntrDnumClcMthCd()); // 이자일수계산방법
-			inCalcDTO.setIntrSnnoPrcsDcd(ibims401bvo.getEprzCrdlIntrSnnoPrcsDcd());   // 이자단수처리구분코드
-			inCalcDTO.setIntrClcEndDeDcd(paramData.getEprzCrdlIntrClcEndDeDcd());   // 이자계산종료일구분코드(휴일포..)
-			inCalcDTO.setOvduIntrRtDcd(paramData.getEprzCrdlOvduIntrRtDcd());       // 연체이자율구분코드
-			inCalcDTO.setTrIntAmt(ibims402BDTO.getPrcsIntrAmt());					// 선취이자
-			inCalcDTO.setIntrBnaoDcd(paramData.getEprzCrdlIntrBnaoDcd());           // 선후취구분
+			inCalcDTO.setPrdtCd(ibims402BDTO.getPrdtCd());								// 상품코드
+			inCalcDTO.setExcSn(ibims402BDTO.getExcSn());								// 실행일련번호
+			inCalcDTO.setPaiRdmpDcd(paramData.getEprzCrdlPaiRdmpDcd());					// 상환방법코드
+			inCalcDTO.setExcDt(ibims402BDTO.getExcDt());								// 실행일자
+			inCalcDTO.setExpDt(ibims402BDTO.getExpDt());								// 만기일자
+			inCalcDTO.setDfrExpMnum(ibims402BDTO.getDfrExpMnum());  					// 거치만기개월수
+			inCalcDTO.setStdrIntrt(paramData.getStdrIntrt().doubleValue());				// 기준금리
+			inCalcDTO.setAddIntrt(ibims402BDTO.getExcAddIntrt().doubleValue());			// 가산금리
+			inCalcDTO.setTotIntrt(paramData.getTotIntrt().doubleValue());				// 총금리
+			inCalcDTO.setDealExcAmt(ibims402BDTO.getDealExcAmt());   					// 실행금액==대출금액
+			inCalcDTO.setIntrPymDtCd(ibims402BDTO.getIntrPymDtCd());					// 이자상환지정일
+			inCalcDTO.setPrnaRdmpFrqcMnum(paramData.getPrnaRdmpFrqcMnum());         	// 원금상환주기개월수
+			inCalcDTO.setIntrRdmpFrqcMnum(paramData.getIntrRdmpFrqcMnum());         	// 이자상환주기개월수
+			inCalcDTO.setHldyPrcsDcd(paramData.getEprzCrdlHldyPrcsDcd());           	// 기업여신휴일처리구분코드
+			inCalcDTO.setIntrDnumClcMthCd(ibims401bvo.getEprzCrdlIntrDnumClcMthCd()); 	// 이자일수계산방법
+			inCalcDTO.setIntrSnnoPrcsDcd(ibims401bvo.getEprzCrdlIntrSnnoPrcsDcd());   	// 이자단수처리구분코드
+			inCalcDTO.setIntrClcEndDeDcd(paramData.getEprzCrdlIntrClcEndDeDcd());   	// 이자계산종료일구분코드(휴일포..)
+			inCalcDTO.setOvduIntrRtDcd(paramData.getEprzCrdlOvduIntrRtDcd());       	// 연체이자율구분코드
+			inCalcDTO.setTrIntAmt(ibims402BDTO.getPrcsIntrAmt());						// 선취이자
+			inCalcDTO.setIntrBnaoDcd(paramData.getEprzCrdlIntrBnaoDcd());           	// 선후취구분
 
 			String strDfrExpDt = null;
 			if(ibims402BDTO.getDfrExpMnum() > 0) {
@@ -307,6 +311,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 					intr403BDTO.setPrdtCd(ibims402BDTO.getPrdtCd());		// 종목코드
 					intr403BDTO.setExcSn(ibims402BDTO.getExcSn());			// 실행일련번호
 					intr403BDTO.setScxDcd("04");							// 일정구분
+					intr403BDTO.setTrgtAmt(prnaitem.getBfBalance());		// 대상금액
 					intr403BDTO.setRdmpTmrd(prnaitem.getRdmpTmrd());    	// 상환회차
 					intr403BDTO.setPrarDt(prnaitem.getPrarDt());        	// 예정일자
 					intr403BDTO.setStrtDt(prnaitem.getStrtDt());    		// 시작일자
@@ -358,6 +363,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 					intr403BDTO.setScxDcd(intritem.getScxDcd());			// 일정구분
 					intr403BDTO.setPrarDt(intritem.getPrarDt());        	// 예정일자
 					//	intr403BDTO.setPrarPrna(intritem.getPrarPrna());    	// 예정원금
+					intr403BDTO.setTrgtAmt(intritem.getBfBalance());		// 대상금액
 					intr403BDTO.setStrtDt(intritem.getStrtDt());    		// 시작일자
 					intr403BDTO.setEndDt(intritem.getEndDt());    			// 종료일자
 					intr403BDTO.setRdmpPrarIntr(intritem.getRdmpPrarIntr());// 상환예정이자

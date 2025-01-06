@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.nanuri.rams.business.common.dto.IBIMS346BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +38,7 @@ public class TB07150SVO {
 	private int           prnaDfrPrdMnum;          // 원금거치기간개월수
 	private String        intrBnaoDcd;             // 이자선후취구분코드
 	private String        intrDnumClcMthCd;        // 이자일수계산방법코드
-	private BigDecimal    ovduIntrRt;              // 연체이자율
+	private BigDecimal    ovduIntrRt;              // 연체이자율	  
 
 	private BigDecimal    chngBfEprzCrdlCtrcAmt;   // 변경 전 기업여신 약정금액 
 	private String 		  chngDt;				   // 변경일자
@@ -47,5 +48,8 @@ public class TB07150SVO {
 	private IBIMS401BVO   cndChngInf;              // 조건변경정보
     private List<IBIMS346BDTO> chngBf346BList;     // 변경전승인금리정보
     private List<IBIMS346BDTO> cndChng346BList;    // 조건변경승인금리정보
+
+	private List<IBIMS404BDTO> chngBf404BList;     // 변경전승인금리정보
+    private List<IBIMS404BDTO> cndChng404BList;    // 조건변경승인금리정보
     
 }

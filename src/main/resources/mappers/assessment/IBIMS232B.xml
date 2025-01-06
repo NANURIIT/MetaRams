@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nanuri.rams.business.common.mapper.TB06080SMapper">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS232BMapper">
 
 	<!-- 결재내역 조회 -->
 	<select id='inqTB06080S' parameterType="com.nanuri.rams.business.common.vo.TB06080SVO" resultType="com.nanuri.rams.business.common.vo.TB06080SVO$ApvlList">
@@ -106,4 +106,68 @@
 			      AND A.APVL_RQST_SQ = #{apvlRqstSq}
 			 ) T
 	</select>
+
+	<select id="getDecdSq" parameterType="com.nanuri.rams.business.common.dto.IBIMS232BDTO" resultType="int">
+		SELECT DECD_SQ
+		  FROM IBIMS232B
+		 WHERE 1=1
+		   AND DECD_SN = #{decdSn}
+		   AND DCFC_ENO = #{dcfcEno}
+	</select>
+
+	<insert id="apvlRqst" parameterType="com.nanuri.rams.business.common.dto.IBIMS232BDTO">
+		INSERT INTO IBIMS232B (
+			  DECD_SN
+			, DECD_SQ
+			, DECD_STTS_DCD
+			, DCFC_ENO
+			, DECD_DTM
+			, DCFC_ANNO_CNTN
+			, RJCT_YN
+			, RJCT_RSN_CNTN
+			, HND_DETL_DTM
+			, HND_EMPNO
+			, HND_TMNL_NO
+			, HND_TR_ID
+			, GUID
+		) VALUES (
+			  #{decdSn}
+			, #{decdSq}
+			, #{decdSttsDcd}
+			, #{dcfcEno}
+			, #{decdDtm}
+			, #{dcfcAnnoCntn}
+			, 'N'
+			, #{rjctRsnCntn}
+			, SYSDATE
+			, #{hndEmpno}
+			, #{hndTmnlNo}
+			, #{hndTrId}
+			, #{guid}
+		)
+	</insert>
+
+	<!-- 승인요청중 상태관리 -->
+    <update id="updateDecd" parameterType="com.nanuri.rams.business.common.dto.IBIMS232BDTO">
+      UPDATE IBIMS232B
+         SET DECD_STTS_DCD = #{decdSttsDcd}
+		   , DECD_DTM = SYSDATE
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dcfcAnnoCntn)">
+           , DCFC_ANNO_CNTN = #{dcfcAnnoCntn}
+           </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rjctYn)">
+           , RJCT_YN = #{rjctYn}
+           </if>
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rjctRsnCntn)">
+		   , RJCT_RSN_CNTN = #{rjctRsnCntn}
+           </if>
+           , HND_EMPNO = #{hndEmpno}
+           , HND_DETL_DTM = SYSDATE
+       WHERE 1=1
+         AND DECD_SN = #{decdSn}
+		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdSq)">
+		 AND DECD_SQ = #{decdSq}
+		 </if>
+    </update>
+
 </mapper>

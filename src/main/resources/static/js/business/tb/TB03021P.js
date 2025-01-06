@@ -7,7 +7,7 @@ let ibDealNoSrchCnt = 0;
 $(document).ready(function () {
   selectBoxSet_TB03021P();
   keyDownEnter_TB03021P();
-  modalShowFunction();
+  modalShowFunction_TB03021P();
 });
 
 //부서 셀렉트박스 세팅
@@ -253,7 +253,7 @@ function reset_TB03021P() {
   //$("#TB03021P_datepicker1").val("");
 }
 
-function modalShowFunction() {
+function modalShowFunction_TB03021P() {
   //모달 오픈 애니메이션 후 포커스 주도록 설정
   $("#modal-TB03021P").on("shown.bs.modal", function () {
     $("#modal-TB03021P input[id=TB03021P_ibDealNo]").focus();
@@ -337,10 +337,6 @@ async function getDealInfo() {
 
 function dataIbDealSetGrid(data){
   arrPqGridDealInfo.setData(data);
-  arrPqGridDealInfo.option("cellClick", function (event, ui) {
-    const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
-    copyClickData(clickData); 
-  });
   arrPqGridDealInfo.option("rowDblClick", function (event, ui) {
     setDealInfo(ui.rowData);
   });

@@ -279,12 +279,12 @@ const TB07020Sjs = (function() {
 		loadUserAuth(); // 담당자 정보 조회
 
 		setGrid_TB07020S();
-
 		/**
 		 * 인풋박스 초기화 공통
 		 * common.js
 		 */
 		resetInputValue($('div[data-menuid="/TB07020S"]'));
+		getDealInfoFromWF();
 	});
 
 	function setGrid_TB07020S(){
@@ -375,12 +375,12 @@ const TB07020Sjs = (function() {
 
 	function getBuyList() {
 		/*
-		if(isEmpty($('#TB07020S_prdtCd').val())){
+		if(isEmpty($('#TB07020S_srch_prdtCd').val())){
 			return false;
 		}
 		*/
 		var trDt = $('#TB07020S_rsltnDt').val().replaceAll('-', '');
-		var prdtCd = $('#TB07020S_prdtCd').val();
+		var prdtCd = $('#TB07020S_srch_prdtCd').val();
 		var nsFndCd = $('#TB07020S_srch_fndCd').val();
 		var ibPrdtTrDcd = $('#TB07020S_ibPrdtTrDcd').val();
 		if (ibPrdtTrDcd === '1') {
@@ -402,7 +402,8 @@ const TB07020Sjs = (function() {
 			dataType: "json",
 			beforeSend: function(){
 				//$("#TB07020S_tableList").pqGrid("setData", []);
-				compClear();
+				//compClear();
+				inputClear();
 				$("#TB07020S_tableList").pqGrid("option", "strNoRows", "조회 중입니다...");
 			},
 			success: function(data) {
@@ -699,7 +700,7 @@ const TB07020Sjs = (function() {
 			var pxdfIntAmt = 0;                                               // 대지급이자금액
 			var pxdfEtcAmt = 0;                                               // 대지급기타금액
 			var orgno = 0;                                                    // 조직번호
-			var trStfno = 0;                                                  // 거래직원번호
+			var trStfno = $('#TB07020S_empNo').val();                         // 거래직원번호
 			var dcfcStfno = 0;                                                // 결재자직원번호
 			var clmSeq = 0;                                                   // 청구순번
 			var actgSynsCd ='10';                                             // 회계적요코드
@@ -893,7 +894,7 @@ const TB07020Sjs = (function() {
 				,'pxdfIntAmt'          : (pxdfIntAmt           /1)
 				,'pxdfEtcAmt'          : (pxdfEtcAmt           /1)
 				,'orgno'               : (orgno                /1)
-				,'trStfno'             : (trStfno              /1)
+				,'trStfno'             : trStfno             
 				,'dcfcStfno'           : (dcfcStfno            /1)
 				,'clmSeq'              : (clmSeq               /1)
 				,'actgSynsCd'          : actgSynsCd
@@ -1205,8 +1206,8 @@ const TB07020Sjs = (function() {
 
 		/* 검색조건 */
 		//$('#TB07020S_rsltnDt').val('');
-		$('#TB07020S_prdtCd').val('');
-		$('#TB07020S_prdtNm').val('');
+		$('#TB07020S_srch_prdtCd').val('');
+		$('#TB07020S_srch_prdtNm').val('');
 		$('#TB07020S_srch_fndCd').val('');
 
 		/* 상세정보 */
@@ -1262,6 +1263,61 @@ const TB07020Sjs = (function() {
 		let toggleBtn1 = document.querySelector('div[data-menuid="/TB07020S"] .toggleBtn1');
 		toggleBtn1.click();
 		//btnAdd();
+	}
+
+
+	//조회 시 입력값 초기화
+	function inputClear(){
+		/* 검색조건 */
+
+		/* 상세정보 */
+		$('#TB07020S_trQnt').val('');
+		$('#TB07020S_trDt').val('');
+		$('#TB07020S_trSn').val('');
+		$('#TB07020S_trUnpr').val('');
+		$('#TB07020S_trAmt').val('0');
+		// $('#TB07020S_dprtCd').val('');
+		// $('#TB07020S_dprtNm').val('');
+		$('#TB07020S_trdeExrt').val('');
+		$('#TB07020S_fnltCd').val('');
+		$('#TB07020S_fnltNm').val('');
+		$('#TB07020S_fndCd').val('');
+		$('#TB07020S_fndNm').val('');
+		$('#TB07020S_trslAmt').val('');
+		$('#TB07020S_stlAcno').val('');
+		$('#TB07020S_input_prdtCd').val('');
+		$('#TB07020S_input_prdtNm').val('');
+		$('#TB07020S_prfdCorpIntx').val('0');
+		// $('#TB07020S_empNo').val('');
+		// $('#TB07020S_empNm').val('');
+		$('#TB07020S_H002').val("0");
+		$('#TB07020S_I027').val('KRW');
+		//$('#TB07020S_trtx').val('');
+		$('#TB07020S_ibPrdtTrDcd').val('1');
+		$('#TB07020S_rfnDt').val('');
+		$('#TB07020S_stdrExrt').val('0');
+		$('#TB07020S_wholIssuShqt').val('0');
+		$('#TB07020S_hldgShqt').val('0');
+		$('#TB07020S_qotaRt').val('0');
+		$('#TB07020S_eprzCrdlCtrcAmt').val('0');
+		$('#TB07020S_krwTrslExcBlce').val('0');
+		$('#TB07020S_avrUnpr').val('0');
+
+		$('#TB07020S_dprtCd').val(loginUsrDprtCd);
+		$('#TB07020S_dprtNm').val(loginUsrDprtNm);
+
+		$('#TB07020S_empNo').val(loginUsrId);
+		$('#TB07020S_empNm').val(loginUsrNm);
+		g_qotaRt = 0;
+		//g_holdPrpsDcd ='0';
+		g_eprzCrdlCtrcAmt = 0;
+		g_krwTrslExcBlce = 0;
+		g_krwTrslExcAmt = 0;
+		$('#TB07020S_evlPflsAmt').val('0');
+
+
+		let toggleBtn1 = document.querySelector('div[data-menuid="/TB07020S"] .toggleBtn1');
+		toggleBtn1.click();
 	}
 
 	// 매수정보 상세보기
@@ -1332,9 +1388,14 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_excSn').val(rowData.excSn);
 		$('#TB07020S_wholIssuShqt').val(rowData.wholIssuShqt);
 		$('#TB07020S_hldgShqt').val(rowData.hldgShqt);
-		$('#TB07020S_qotaRt').val(rowData.qotaRt);
+		$('#TB07020S_qotaRt').val(parseFloat(rowData.qotaRt).toFixed(2));
 		g_qotaRt = rowData.qotaRt;
-		$('#TB07020S_evlPflsAmt').val(rowData.evlPflsAmt);
+
+		// alert(rowData.trQnt);
+		// alert(Number(rowData.trQnt.replaceAll(',','')));
+
+		$('#TB07020S_evlPflsAmt').val(addComma(((Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.avrUnpr.replaceAll(',','')))-(Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.trUnpr.replaceAll(',','')))).toFixed(2)));
+
 		//$('#TB07020S_tradPflsAmt').val(td.eq(32).text());
 		$('#TB07020S_eprzCrdlCtrcAmt').val(rowData.tradPflsAmt);
 		$('#TB07020S_krwTrslExcBlce').val(rowData.krwTrslExcBlce);
@@ -1652,6 +1713,21 @@ const TB07020Sjs = (function() {
 		pq.saveAs(blob, fileName);
 	}
 
+	function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07020S_srch_prdtCd").val(prdtCd);
+			$("#TB07020S_srch_prdtNm").val(prdtNm);
+			getBuyList();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
 	return {
 		/**
 		 * 사용 할 함수 정의
@@ -1665,6 +1741,7 @@ const TB07020Sjs = (function() {
 	,	showAlert : showAlert
 	,	calcTrAmt : calcTrAmt
 	,	saveExcelFile : saveExcelFile 	// 엑셀 저장 함수
+	, getDealInfoFromWF : getDealInfoFromWF
 	}
 
 })();

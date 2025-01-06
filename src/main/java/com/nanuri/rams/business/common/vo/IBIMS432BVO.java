@@ -18,4 +18,6 @@ public class IBIMS432BVO extends IBIMS432BDTO {
 
     private List<IBIMS432BVO> tb07100sList;
 
+    private List<IBIMS432BVO> rowInfoList;
+
 }

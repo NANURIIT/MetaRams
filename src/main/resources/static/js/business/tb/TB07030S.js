@@ -33,6 +33,8 @@ const TB07030Sjs = (function () {
     $("input").on("focus", function () {
       $(this).select();
     });
+
+    getDealInfoFromWF();
   }
 
   /********************************************************************
@@ -287,6 +289,28 @@ const TB07030Sjs = (function () {
       // 	format   : "#,###",
       // 	filter   : { crules: [{ condition: 'range' }] },
       // },
+      {
+        title: "납부예정금액",
+        dataType: "integer",
+        dataIndx: "pmntPrarAmt",
+        halign: "center",
+        align: "right",
+        format: "#,###",
+        filter: { crules: [{ condition: "range" }] },
+        editable: true,
+        // editor: {
+        // 	type: 'textbox',
+        // 	init: function (ui) {
+        // 		var $input = ui.$cell.find("input");
+        // 		let tot = 0;
+        // 		$input.on("input", function () {
+        // 			let numVal = Number(this.value)
+        // 			tot += numVal;
+        // 			$('#TB07030S_exmptSmmAmt').val(tot)
+        // 		});
+        // 	}
+        // }
+      },
       {
         title: "면제금액",
         dataType: "integer",
@@ -1233,6 +1257,21 @@ const TB07030Sjs = (function () {
   // 	grdRdmpTrgtDtl.refreshDataAndView();
   // }
 
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var prdtCd = sessionStorage.getItem("wfPrdtCd");
+			var prdtNm = sessionStorage.getItem("wfPrdtNm");
+			$("#TB07030S_prdtCd").val(prdtCd);
+			$("#TB07030S_prdtNm").val(prdtNm);
+			srch();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     /**
      * 사용 할 함수 정의
@@ -1242,5 +1281,6 @@ const TB07030Sjs = (function () {
     reset: reset,
     calPrarAmt: calPrarAmt,
     save: save,
+    getDealInfoFromWF : getDealInfoFromWF,
   };
 })();

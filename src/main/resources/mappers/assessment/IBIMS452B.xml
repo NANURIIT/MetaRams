@@ -4,7 +4,7 @@
       
     <insert id="insertFndsCnstDecd" parameterType="com.nanuri.rams.business.common.vo.IBIMS452BVO">
         INSERT INTO IBIMS452B (
-            DEAL_NO
+            PRDT_CD
           , EXC_SEQ
           , TR_SEQ
           , ERLM_SEQ
@@ -13,6 +13,7 @@
           , RELT_STFNO
           , CONS_DECD_DVSN_CD
           , CONS_DECD_STAT_CD
+          , OVRS_TRNS_YN
           , RJCT_RSN_CNTN
           , HND_DETL_DTM
           , HND_EMPNO
@@ -21,7 +22,7 @@
           , GUID
         )
         VALUES (
-            #{dealNo}
+            #{prdtCd}
           , #{excSeq}
           , #{trSeq}
           , (
@@ -32,6 +33,7 @@
           , #{reltStfno}
           , #{consDecdDvsnCd}
           , #{consDecdStatCd}
+          , #{ovrsTrnsYn}
           , #{rjctRsnCntn}
           , SYSDATE
           , #{hndEmpno}
@@ -48,6 +50,7 @@
              , RELT_STFNO = #{reltStfno}
              , CONS_DECD_DVSN_CD = #{consDecdDvsnCd}
              , CONS_DECD_STAT_CD = #{consDecdStatCd}
+             , OVRS_TRNS_YN = #{ovrsTrnsYn}
              , RJCT_RSN_CNTN = #{rjctRsnCntn}
              , HND_DETL_DTM = SYSDATE
              , HND_EMPNO = #{hndEmpno}
@@ -55,7 +58,7 @@
              , HND_TR_ID = #{hndTrId}
              , GUID = #{guid}
          WHERE 1=1
-           AND DEAL_NO = #{dealNo}
+           AND PRDT_CD = #{prdtCd}
            AND EXC_SEQ = #{excSeq}
            AND TR_SEQ = #{trSeq}
            AND ERLM_SEQ = #{erlmSeq}

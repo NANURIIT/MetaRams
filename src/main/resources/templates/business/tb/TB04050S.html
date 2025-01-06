@@ -33,7 +33,7 @@
 								<!-- row1 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1">Deal번호</label>
+										<label class="col-sm-1 control-label"><span class="req"></span>Deal번호</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" id="TB04050S_ibDealNo" style="width:30px;">
 											<span class="input-group-append">
@@ -111,7 +111,7 @@
 												<label class="col-sm-5">변경</label>
 											</div>
 											<div class="col-sm-3 input-group">												
-												<input type="radio" value="4" id="TB04050S_issSttsCd3" name="TB04050S_issSttsCd">
+												<input type="radio" value="4" id="TB04050S_issSttsCd3" name="TB04050S_issSttsCd" >
 												<label class="col-sm-5">회수</label>												
 											</div>
 										</div>										
@@ -365,39 +365,24 @@
 														<input type="text" class="form-control text-right" id="TB04050S_dealScl" oninput="" onchange="" readonly>&nbsp;백만원
 													</div>
 												</div>
-												<!-- <label class="col-sm-1 col-form-label text-right">참여규모</label>
-												<div class="col-sm-2 input-group input-h">
-													<div class="col-sm-4 text-left input-group">
-														<input type="radio" value="Y" name="" id="TB04050S_ptctSclY" disabled>&nbsp;확정
-													</div>
-													<div class="col-sm-4 text-left input-group">
-														<input type="radio" value="N" name="" id="TB04050S_ptctSclN" disabled>&nbsp;미정
-													</div>
-												</div> -->
-												<!-- <label class="col-sm-1 control-label "></span>참여규모</label>
+												<label class="col-sm-1 control-label "></span>전체수익</label>
 												<div class="col-sm-2">
 													<div class="input-group">
-														<input type="text" class="form-control text-right" id="TB04050S_ptctScl" oninput="" onchange="" readonly>&nbsp;백만원
+														<input type="text" class="form-control text-right" id="TB04050S_allErn" oninput="" readonly>&nbsp;백만원
 													</div>
-												</div> -->
+												</div>
+												<label class="col-sm-1 control-label"></span>당해수익</label>
+												<div class="col-sm-2 ">
+													<div class="input-group">
+														<input type="text" class="form-control text-right" id="TB04050S_thyrErn" oninput=""  onchange="" readonly>&nbsp;백만원
+													</div>
+												</div>
 											</div>
 										</div>
 
 										<!-- row1 -->
 										<div class="form-group form-inline row">
-											<div class="col-sm-12 input-group text-right">
-												<!-- <label class="col-sm-1 control-label "></span>전체수익</label>
-												<div class="col-sm-2">
-													<div class="input-group">
-														<input type="text" class="form-control text-right" id="TB04050S_allErn" oninput="" readonly>&nbsp;백만원
-													</div>
-												</div> -->
-												<!-- <label class="col-sm-1 control-label"></span>당해수익</label>
-												<div class="col-sm-2 ">
-													<div class="input-group">
-														<input type="text" class="form-control text-right" id="TB04050S_thyrErn" oninput=""  onchange="" readonly>&nbsp;백만원
-													</div>
-												</div> -->
+											<div class="col-sm-12 input-group text-right">												
 												<label class="col-sm-1 col-form-label text-right">참여규모</label>
 												<div class="col-sm-2 input-group input-h">
 													<div class="col-sm-4 text-left input-group">
@@ -438,6 +423,12 @@
 												<label class="col-sm-1 control-label"></span>만기일자</label>
 												<div class="col-sm-2 input-group">
 													<input type="text" class="form-control" id="TB04050S_mtrtDt" readonly="">
+												</div>												
+												<label class="col-sm-1 control-label">통화금액</label>
+												<div class="col-sm-2">
+													<div class="input-group">
+														<input type="text" class="form-control text-right" id="TB04050S_invstCrncyAmt" oninput=""  onchange="" readonly>&nbsp;백만원
+													</div>
 												</div>
 												<label class="col-sm-1 control-label">통화코드</label>
 												<div class="col-sm-2">
@@ -445,12 +436,6 @@
 														<select class="form-control" id="TB04050S_I027" readonly>
 															<option value="">선택</option>
 														</select>
-													</div>
-												</div>
-												<label class="col-sm-1 control-label">통화금액</label>
-												<div class="col-sm-2">
-													<div class="input-group">
-														<input type="text" class="form-control text-right" id="TB04050S_invstCrncyAmt" oninput=""  onchange="" readonly>&nbsp;백만원
 													</div>
 												</div>
 											</div>
@@ -471,39 +456,36 @@
 										<!-- row1 -->
 										<div class="form-group form-inline row">
 											<div class="col-sm-12 input-group text-right">
-												<label class="col-sm-1 control-label">시공사 법인번호</label>
-												<div class="col-sm-5 input-group">
-													<input type="hidden" id="">
-													<input type="text" class="form-control" id="TB04050S_c_corpRgstNo" readonly>
-													<input type="text" class="form-control" id="TB04050S_c_entpRnm" style="width:210px;" readonly>
-												</div>
-												<label class="col-sm-1 control-label">신용보강여부</label>
-												<div class="col-sm-2 input-group">
-													<select class="form-control" id="TB04050S_C010" readonly>
-														<option value="">선택</option>
-													</select>
-												</div>
-												<label class="col-sm-1 control-label">LTV</label>
-												<div class="col-sm-2">
-													<div class="input-group">
-														<input type="text" class="form-control text-right" id="TB04050S_ltv" oninput="" readonly>&nbsp;%
+													<label class="col-sm-1 control-label">시공사 법인번호</label>
+													<div class="col-sm-4 input-group">
+															<input type="hidden" id="">
+															<input type="text" class="form-control" id="TB04050S_c_corpRgstNo" readonly>
+															<input type="text" class="form-control" id="TB04050S_c_entpRnm" style="width:180px;" readonly>
 													</div>
-												</div>
+													<label class="col-sm-1 control-label">신용보강여부</label>
+													<div class="col-sm-2 input-group">
+															<select class="form-control" id="TB04050S_C010" readonly>
+																	<option value="">선택</option>
+															</select>
+													</div>													
+													<label class="col-sm-1 control-label">현지법인협업</label>
+													<div class="col-sm-1 input-group">
+															<select class="form-control" id="TB04050S_ovrsCorpCoprtnCd" readonly>
+																	<option value="">선택</option>
+																	<option value="1">Y</option>
+																	<option value="2">N</option>
+															</select>
+													</div>
+													<label class="col-sm-1 control-label">LTV</label>
+													<div class="col-sm-1">
+															<div class="input-group">
+																	<input type="text" class="form-control text-right" id="TB04050S_ltv" readonly>&nbsp;%
+															</div>
+													</div>
 											</div>
-										</div>
+									</div>
+														
 										<!-- row2 -->
-										<div class="form-group form-inline row">
-											<div class="col-sm-12 input-group text-right">
-												<label class="col-sm-1 control-label"></span>현지법인협업</label>
-												<div class="col-sm-2 input-group">
-													<select class="form-control" id="TB04050S_ovrsCorpCoprtnCd" readonly>
-														<option value="">선택</option>
-														<option value="1">Y</option>
-														<option value="2">N</option>
-													</select>
-												</div>
-											</div>
-										</div>
 										<div class="form-group form-inline row">
 											<div class="col-sm-12 input-group text-right">
 												<label class="col-sm-1 control-label">비고</label>

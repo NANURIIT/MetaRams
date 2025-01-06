@@ -89,7 +89,7 @@
 								</div>
 								<div class="col-sm text-right">
 									<button class="btn btn-primary" type="button" onclick="TB06030Sjs.getDealList();"><i class="fa fa-search"></i>&nbsp;조회</button>
-									<button class="btn btn-default" onclick="TB06030Sjs.resetSearchRequiment();"><i class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
+									<button class="btn btn-default" onclick="TB06030Sjs.resetSearchRequiment_TB06030S();"><i class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
 								</div>
 							</div>
 						</div>
@@ -168,7 +168,7 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목코드</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB06030S_res_prdtCd">
+											<input type="text" class="form-control" id="TB06030S_res_prdtCd" readonly  maxlength="10">
 										</div>
 										<label class="col-sm-1 col-form-label text-right">진행상태</label>
 										<div class="col-sm-2 input-group">
@@ -200,7 +200,10 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">신용조회일</label>
 										<div class="col-sm-2 input-group date">
-											<input type="text" class="form-control" id="TB06030S_crdtInqDt" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											<input type="text" class="form-control" id="TB06030S_crdtInqDt" 
+											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));"
+											><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 									</div>
 								</div>
@@ -281,13 +284,23 @@
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>외환헷지여부</label>
 										<div class="col-sm-2 input-group input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06030S_frxcHdgeYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06030S_frxcHdgeYn_Y"  name="TB06030S_frxcHdgeYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06030S_frxcHdgeYn">&nbsp;N
+												<input type="radio" value="N" id="TB06030S_frxcHdgeYn_N"  name="TB06030S_frxcHdgeYn">&nbsp;N
 											</div>
-											<div class="col-sm-6">
-											</div>
+										</div>	
+										<label class="col-sm-1 col-form-label text-right">계정과목</label>
+										<div class="col-sm-5 input-group">
+											<input type="text" class="form-control" id="TB06030S_actsCd" readonly>
+											<input type="text" class="form-control" id="TB06030S_actName" style="width:180px;" readonly>
+										</div>
+											
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>보유목적구분</label>
+										<div class="col-sm-2 input-group">
+											<select class="form-control" style="width:70px;" id="TB06030S_H002">
+												<option value="">선택</option>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -350,7 +363,10 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목 승인금액</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB06030S_rcgAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onchange="inputNumberFormat2(this);">
+											<input type="text" class="form-control" id="TB06030S_rcgAmt" 
+											style="text-align:right"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"> 
+											<!-- onchange="inputNumberFormat2(this);"-->
 										</div>
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>통화코드</label>
 										<div class="col-sm-2 input-group">
@@ -366,10 +382,10 @@
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>상장여부</label>
 										<div class="col-sm-2 input-group input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06030S_lstYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06030S_lstYn_Y" name="TB06030S_lstYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06030S_lstYn">&nbsp;N
+												<input type="radio" value="N" id="TB06030S_lstYn_N" name="TB06030S_lstYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -396,17 +412,26 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">발행일</label>
 										<div class="col-sm-2 input-group date">
-											<input type="text" class="form-control" id="TB06030S_isuDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<input type="text" class="form-control" id="TB06030S_isuDt" value="" 
+											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));"
+											>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">만기일</label>
 										<div class="col-sm-2 input-group date">
-											<input type="text" class="form-control" id="TB06030S_expDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<input type="text" class="form-control" id="TB06030S_expDt" value="" 
+											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));"
+											>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">상환청구가능일</label>
 										<div class="col-sm-2 input-group date">
-											<input type="text" class="form-control" id="TB06030S_rdmpClmPsblDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+											<input type="text" class="form-control" id="TB06030S_rdmpClmPsblDt" value="" 
+											placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));"
+											>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 									</div>
@@ -431,10 +456,10 @@
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>단독투자</label>
 										<div class="col-sm-2 input-group input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06030S_sglInvYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06030S_sglInvYn_Y" name="TB06030S_sglInvYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06030S_sglInvYn">&nbsp;N
+												<input type="radio" value="N" id="TB06030S_sglInvYn_N" name="TB06030S_sglInvYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -442,10 +467,10 @@
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>담보</label>
 										<div class="col-sm-2 input-group input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06030S_mrtgStupYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06030S_mrtgStupYn_Y" name="TB06030S_mrtgStupYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06030S_mrtgStupYn">&nbsp;N
+												<input type="radio" value="N" id="TB06030S_mrtgStupYn_N"  name="TB06030S_mrtgStupYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -458,10 +483,10 @@
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>셀다운대상</label>
 										<div class="col-sm-2 input-group input-h">
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" name="TB06030S_sdnTrgtYn">&nbsp;Y
+												<input type="radio" value="Y" id="TB06030S_sdnTrgtYn_Y"  name="TB06030S_sdnTrgtYn">&nbsp;Y
 											</div>
 											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" name="TB06030S_sdnTrgtYn">&nbsp;N
+												<input type="radio" value="N" id="TB06030S_sdnTrgtYn_N"  name="TB06030S_sdnTrgtYn">&nbsp;N
 											</div>
 											<div class="col-sm-6">
 											</div>
@@ -469,8 +494,9 @@
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>총 발행주수</label>
 										<div class="col-sm-2 input-group">
 											<input type="text" class="form-control" id="TB06030S_totIssuQty"
-												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-												onchange="inputNumberFormat2(this);">
+												style="text-align:right"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+												<!--onchange="inputNumberFormat2(this);"-->
 										</div>
 									</div>
 								</div>
@@ -497,7 +523,9 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">출자약정금액</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control text-right" id="TB06030S_fincCtrcAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onchange="inputNumberFormat2(this);">
+											<input type="text" class="form-control text-right" id="TB06030S_fincCtrcAmt" 
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"> 
+											<!-- onchange="inputNumberFormat2(this);"-->
 										</div>
 										<label class="col-sm-1 col-form-label text-right text-nowrap">당사출자금액(이행)</label>
 										<div class="col-sm-2 input-group ">
@@ -518,7 +546,9 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">출자이행금액</label>
 										<div class="col-sm-2 input-group ">
-											<input type="text" class="form-control text-right" id="TB06030S_fincFlflAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onchange="inputNumberFormat2(this);">
+											<input type="text" class="form-control text-right" id="TB06030S_fincFlflAmt" 
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"> 
+											<!-- onchange="inputNumberFormat2(this);"-->
 										</div>
 										<label class="col-sm-1 col-form-label text-right">현재출자잔액</label>
 										<div class="col-sm-2 input-group ">
@@ -540,7 +570,9 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right text-nowrap">당사출자약정금액</label>
 										<div class="col-sm-2 input-group ">
-											<input type="text" class="form-control text-right" id="TB06030S_thcoFincCtrcAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onchange="inputNumberFormat2(this);">
+											<input type="text" class="form-control text-right" id="TB06030S_thcoFincCtrcAmt" 
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+											<!-- onchange="inputNumberFormat2(this);" -->
 										</div>
 										<label class="col-sm-1 col-form-label text-right">관리보수잔액</label>
 										<div class="col-sm-2 input-group ">

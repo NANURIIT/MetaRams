@@ -63,4 +63,11 @@ public interface IBIMS003BMapper {
 	public List<IBIMS003BVO> selectUser (IBIMS003BDTO paramData);
 
 	public String atcCdInq(String empno);
+
+	/**
+	 * 승인요청 팝업 조회
+	 * @param IBIMS003BVO
+	 * @return
+	 */
+	public List<IBIMS003BVO> srchApvlList (IBIMS003BVO paramData);
 }

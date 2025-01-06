@@ -19,7 +19,7 @@ public interface IBIMS420BMapper {
 
 	public void deleteIBIMS420B(IBIMS420BDTO param);
 	
-	List<IBIMS420BVO> selectFeeRcivLst(String param);
+	List<IBIMS420BVO> selectFeeRcivLst(IBIMS420BVO param);
 	
 	// 딜수수료내역 조회
 	public List<IBIMS420BVO> selectFeeRcivDtls(IBIMS420BDTO input);

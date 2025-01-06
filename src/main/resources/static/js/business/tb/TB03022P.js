@@ -13,7 +13,7 @@ var TB03021P_searchConditions = {}; // 검색 조건을 담을 객체
 
 $(document).ready(function () {
   keyDownEnter_TB03022P();
-  modalShowFunction();
+  modalShowFunction_TB03022P();
 });
 
 // openTB03021P 이벤트 감지(TB03021P.js)
@@ -223,7 +223,7 @@ $("#modal-TB03022P").on("hide.bs.modal", function () {
   $("#gridEmpList").pqGrid("destroy");
 });
 
-function modalShowFunction() {
+function modalShowFunction_TB03022P() {
   //모달 오픈 애니메이션 후 포커스 주도록 설정
   $("#modal-TB03022P").on("shown.bs.modal", function () {
     $("#modal-TB03022P input[id=TB03022P_empNm]").focus();
@@ -307,10 +307,6 @@ async function getEmpList() {
 
 function dataEmpSetGrid(data) {
   arrPqGridEmpInfo.setData(data);
-  arrPqGridEmpInfo.option("cellClick", function (event, ui) {
-    const clickData = ui.rowData[ui.column.dataIndx]; // 클릭한 셀의 값 저장
-    copyClickData(clickData); //셀 카피 가능
-  });
   arrPqGridEmpInfo.option("rowDblClick", function (event, ui) {
     setEmpNm(ui.rowData);
   });
@@ -430,7 +426,6 @@ function setEmpNm(e) {
       $("#TB04012P_dlDprtCd3_dlDprtCd").val(e.dprtCd);
       $("#TB04012P_dlDprtCd3_dlDprtNm").val(e.dprtNm);
       break;
-
     case "grd_TB08040S":
       console.log(feeSch);
       console.log(dprtCd);
@@ -445,6 +440,20 @@ function setEmpNm(e) {
     case "TB04011P":
       $("#TB04011P_dprtNm").val(e.dprtCd).prop("selected", true);
       break;
+    case "TB07120S1":
+      $("#TB07120S1_empNo").val(empNo);
+      $("#TB07120S1_empNm").val(empNm);
+      break;
+    case "TB07120S2":
+      $("#TB07120S2_empNo").val(empNo);
+      $("#TB07120S2_empNm").val(empNm);
+      break;
+	case "TB08040S":
+		$("#TB08040S_dprtNm").val(e.dprtCd).prop("selected", true);
+	  break;
+    case "TB08050S":
+	 	$("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
+	    break;  
     default:
       break;
   }

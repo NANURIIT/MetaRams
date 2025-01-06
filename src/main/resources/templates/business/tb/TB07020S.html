@@ -65,11 +65,11 @@
 								<label class="col-sm-1 col-form-label text-right">종목코드</label>
 								<div class="col-sm-2-5">
 									<div class="input-group">
-										<input type="text" class="form-control" id="TB07020S_prdtCd">
+										<input type="text" class="form-control" id="TB07020S_srch_prdtCd">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07020S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07020S_srch');"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" style="width:40px;" id="TB07020S_prdtNm" readonly>
+										<input type="text" class="form-control" style="width:40px;" id="TB07020S_srch_prdtNm" readonly>
 									</div>
 								</div>
 								<div class="col-sm-2 text-right">
@@ -148,7 +148,7 @@
 								<!-- row4 -->
 						<div class="row form-group form-inline text-right mb-1">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right">거래부서</label>
+								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>거래부서</label>
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" style="width:30px;" id="TB07020S_dprtCd">
 									<span class="input-group-append">
@@ -170,7 +170,7 @@
 								<!-- row5 -->
 						<div class="row form-group form-inline text-right mb-1">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right">운용펀드</label>
+								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>운용펀드</label>
 								<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" style="width:30px;" id="TB07020S_fndCd" >
 									<span class="input-group-append">
@@ -197,7 +197,7 @@
 						<!-- row7 -->
 						<div class="row form-group form-inline text-right mb-1">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right">종목코드</label>
+								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목코드</label>
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" style="width:30px;" id="TB07020S_input_prdtCd">
 									<span class="input-group-append">
@@ -227,7 +227,7 @@
 						<!-- row7 -->
 						<div class="row form-group form-inline text-right mb-1">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right">보유목적</label>
+								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>보유목적</label>
 								<div class="col-sm-3 input-group">
 									<select class="form-control" id="TB07020S_H002">
 									</select>
@@ -268,7 +268,7 @@
 					<div class="col-sm-12 form-group">
 						<label class="col-sm-1">전체발행수량</label>
 						<div class="col-sm-3 input-group">
-							<input type="text" class="form-control text-right" id="TB07020S_wholIssuShqt" value="" onkeyup="inputNumberFormater(this);">
+							<input type="text" class="form-control text-right" id="TB07020S_wholIssuShqt" value="" onkeyup="inputNumberFormater(this);" disabled>
 						</div>
 						<label class="col-sm-1">기준환율</label>
 						<div class="col-sm-3 input-group">
@@ -306,6 +306,11 @@
 								<div class="col-sm-3 text-left input-group">
 									<input type="text" class="form-control text-right"  id="TB07020S_evlPflsAmt" value="0" onkeyup="inputNumberFormater(this);" readonly>
 								</div>
+								<label class="col-sm-1"></label>
+								<div class="col-sm-3 text-left input-group">
+									* 평가손익금액 = 수량 × 평균단가 － 수량 × 거래단가
+								</div>
+								
 							</div>
 						</div>
 
@@ -365,7 +370,7 @@
 						</div>
 								<div class="row">
 							<div class="col-sm-12 text-right">
-								<button class="btn btn-info" onclick="TB07020Sjs.saveExcelFile();"><i class="fa fa-save"></i>&nbsp;엑셀저장</button>
+								<button class="btn btn-warning " onclick="TB07020Sjs.saveExcelFile();"><i class="fa fa-download"></i>&nbsp;엑셀다운로드</button>
 								<button class="btn btn-success" onclick="TB07020Sjs.showAlert();"><i class="fa fa-check"></i>&nbsp;실행</button>
 							</div>
 						</div>

@@ -51,14 +51,14 @@
 								<label class="col-sm-1 col-form-label text-right">종목코드</label>
 								<div class="col-sm-2-5">
 									<div class="input-group">
-										<input type="text" class="form-control" id="TB07040S_prdtCd">
+										<input type="text" class="form-control" id="TB07040S_srch_prdtCd">
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default"
-												onclick="callTB06011P('TB07040S');"><i
+												onclick="callTB06011P('TB07040S_srch');"><i
 													class="fa fa-search"></i></button>
 										</span>
 										<input type="text" class="form-control" style="width:40px;"
-											id="TB07040S_prdtNm" readonly>
+											id="TB07040S_srch_prdtNm" readonly>
 									</div>
 								</div>
 								<div class="col-sm-2 text-right">
@@ -102,7 +102,7 @@
 											<input type="text" class="form-control text-right" id="TB07040S_trSn"
 												value="" readonly>
 										</div>
-										<label class="col-sm-1 col-form-label text-right">좌수</label>
+										<label class="col-sm-1 col-form-label text-right">수량</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right" id="TB07040S_trQnt"
 												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
@@ -140,7 +140,7 @@
 								<!-- row4 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">거래부서</label>
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>거래부서</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" style="width:30px;"
 												id="TB07040S_dprtCd">
@@ -177,7 +177,7 @@
 								<!-- row5 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">운용펀드</label>
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>운용펀드</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" style="width:30px;"
 												id="TB07040S_fndCd">
@@ -207,7 +207,7 @@
 								<!-- row6 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">종목코드</label>
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목코드</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" style="width:30px;"
 												id="TB07040S_input_prdtCd">
@@ -224,27 +224,6 @@
 											<input type="text" class="form-control text-right" id="TB07040S_trslAmt"
 												readonly>
 										</div>
-										<!--<label class="col-sm-1">배당일자</label>
-											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB07040S_rfnDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>-->
-									</div>
-								</div>
-								<!-- row7 -->
-								<div class="row form-group form-inline text-right mb-1">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">보유목적</label>
-										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07040S_H002">
-											</select>
-										</div>
-										<label class="col-sm-1">통화코드</label>
-										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07040S_I027" readonly disabled>
-												<!-- <select class="form-control" id="TB07040S_input_trCrryCd" readonly> -->
-											</select>
-										</div>
 										<label class="col-sm-1">결제은행</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" style="width:30px;"
@@ -257,51 +236,48 @@
 											<input type="text" class="form-control" style="width:70px;"
 												id="TB07040S_fnltNm" readonly>
 										</div>
+										<!--<label class="col-sm-1">배당일자</label>
+											<div class="col-sm-3 input-group date">
+												<input type="text" class="form-control" id="TB07040S_rfnDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>-->
+									</div>
+								</div>
+								<!-- row7 -->
+								<div class="row form-group form-inline text-right mb-1">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>보유목적</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07040S_H002">
+											</select>
+										</div>
+										<label class="col-sm-1">통화코드</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07040S_I027" readonly disabled>
+												<!-- <select class="form-control" id="TB07040S_input_trCrryCd" readonly> -->
+											</select>
+										</div>
+										<label class="col-sm-1">결제계좌</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control" id="TB07040S_stlAcno">
+										</div>
 									</div>
 								</div>
 								<!-- row8 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
 
-										<label class="col-sm-1">전체발행좌수</label>
+										<label class="col-sm-1">전체발행수량</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right"
 												id="TB07040S_wholIssuShqt" value=""
 												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormat(this);">
+												onkeyup="inputNumberFormat(this);" readonly>
 										</div>
 										<label class="col-sm-1">기준환율</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right" id="TB07040S_stdrExrt"
 												value="0" readonly>
-										</div>
-										<label class="col-sm-1">결제계좌</label>
-										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" id="TB07040S_stlAcno">
-										</div>
-										<!-- <label class="col-sm-1">FVOCI 지정사유</label>
-										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07040S_fvociTrdeRsnDcd">
-												<option value="1">금투업 유지 목적 (1)</option>
-											</select>
-											<input type="text" class="form-control text-right" id="">
-										</div>-->
-									</div>
-								</div>
-								<!-- row10 -->
-								<div class="row form-group form-inline text-right mb-3">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1">보유좌수</label>
-										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_hldgShqt"
-												value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormat(this);" readonly>
-										</div>
-										<label class="col-sm-1">매매손익금액</label>
-										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_tradPflsAmt"
-												value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormat(this);" readonly>
 										</div>
 										<label class="col-sm-1">담당자</label>
 										<div class="col-sm-3 input-group">
@@ -315,6 +291,34 @@
 											<input type="text" class="form-control" style="width:70px;"
 												id="TB07040S_empNm" readonly>
 										</div>
+										<!-- <label class="col-sm-1">FVOCI 지정사유</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07040S_fvociTrdeRsnDcd">
+												<option value="1">금투업 유지 목적 (1)</option>
+											</select>
+											<input type="text" class="form-control text-right" id="">
+										</div>-->
+									</div>
+								</div>
+								<!-- row10 -->
+								<div class="row form-group form-inline text-right mb-3">
+									<div class="col-sm-12 form-group">
+										<label class="col-sm-1">보유수량</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07040S_hldgShqt"
+												value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+												onkeyup="inputNumberFormat(this);" readonly>
+										</div>
+										<label class="col-sm-1">매매손익금액</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-right" id="TB07040S_tradPflsAmt"
+												value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+												onkeyup="inputNumberFormat(this);" readonly>
+										</div>
+										<label class="col-sm-1"></label>
+										<div class="col-sm-3 text-left input-group">
+											* 매매손익금액 = 수량 × 거래단가 － 수량 × 평균단가
+										</div>
 									</div>
 								</div>
 								<div class="tableFixHeader2">
@@ -322,8 +326,8 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-12 text-right">
-										<button class="btn btn-info" onclick="testAlert('저장을 완료하였습니다.')"><i
-												class="fa fa-save"></i>&nbsp;엑셀저장</button>
+										<button class="btn btn-warning" onclick="testAlert('저장을 완료하였습니다.')"><i
+												class="fa fa-download"></i>&nbsp;엑셀다운로드</button>
 										<button class="btn btn-success" onclick="TB07040Sjs.showAlert();"><i
 												class="fa fa-check"></i>&nbsp;실행</button>
 									</div>

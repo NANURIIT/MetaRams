@@ -48,6 +48,7 @@
                 , SCX_DCD                                 <!-- /*일정구분코드 */ -->
                 , RDMP_TMRD                               <!-- /*상환회차 */ -->
                 , PRAR_DT                                 <!-- /*예정일자 */ -->
+                , TRGT_AMT                                /*대상금액*/
                 , PRAR_PRNA                               <!-- /*예정원금 */ -->
                 , STRT_DT                                 <!-- /*시작일자 */ -->
                 , END_DT                                  <!-- /*종료일자 */ -->
@@ -69,11 +70,12 @@
         VALUES
         <foreach collection="list" item="item" separator=",">
                (
-                 #{item.prdtCd}                           <!-- /*상품코드 */ -->
-               , #{item.excSn}                            <!-- /*실행일련번호 */ -->
+                 #{item.prdtCd}                           /*상품코드 */ 
+               , #{item.excSn}                            /*실행일련번호 */ 
                , #{item.scxDcd}                           <!-- /*일정구분코드 */ -->
                , #{item.rdmpTmrd}                         <!-- /*상환회차 */ -->
                , #{item.prarDt}                           <!-- /*예정일자 */ -->
+               , #{item.trgtAmt}                          /*대상금액*/
                , #{item.prarPrna}                         <!-- /*예정원금 */ -->
                , #{item.strtDt}                           <!-- /*시작일자 */ -->
                , #{item.endDt}                            <!-- /*종료일자 */ -->
@@ -410,6 +412,7 @@
           SELECT A.PRDT_CD                /* 종목코드 */
                , A.RDMP_TMRD              /* 상환회차 */
                , A.PRAR_DT                /* 예정일자 */
+               , A.TRGT_AMT               /* 대상금액 */
                , A.RDMP_PRAR_INTR         /* 상환예정이자 */
                , A.STRT_DT                /* 시작일자 */
                , A.END_DT                 /* 종료일자 */
@@ -451,6 +454,7 @@
                 , SCX_DCD                                 <!-- /*일정구분코드 */ -->
                 , RDMP_TMRD                               <!-- /*상환회차 */ -->
                 , PRAR_DT                                 <!-- /*예정일자 */ -->
+                , TRGT_AMT                                /*대상금액*/
                 , PRAR_PRNA                               <!-- /*예정원금 */ -->
                 , STRT_DT                                 <!-- /*시작일자 */ -->
                 , END_DT                                  <!-- /*종료일자 */ -->
@@ -476,6 +480,7 @@
                , #{scxDcd}                           <!-- /*일정구분코드 */ -->
                , #{rdmpTmrd}                         <!-- /*상환회차 */ -->
                , #{prarDt}                           <!-- /*예정일자 */ -->
+               , #{trgtAmt}                          /* 대상금액 */
                , #{prarPrna}                         <!-- /*예정원금 */ -->
                , #{strtDt}                           <!-- /*시작일자 */ -->
                , #{endDt}                            <!-- /*종료일자 */ -->
@@ -499,7 +504,8 @@
      <!-- /*원리금 */ 스케줄관리 업데이트 -->
      <update  id="updateCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
           UPDATE IBIMS403B
-             SET PRAR_DT           = #{prarDt}                     /* 예정일자 */  
+             SET PRAR_DT           = #{prarDt}                     /* 예정일자 */
+               , TRGT_AMT          = #{trgtAmt}                    /* 대상금액 */ 
                , PRAR_PRNA         = #{prarPrna}                   /* 예정원금 */
                , STRT_DT           = #{strtDt}                     /* 시작일자 */
                , END_DT            = #{endDt}                      /* 종료일자 */
@@ -572,13 +578,15 @@
       SELECT  CASE  WHEN P.SCX_DCD = '02'
                       THEN P.PRAR_PRNA
                       ELSE P.RDMP_PRAR_INTR
-                    END                   AS 		PMNT_PRAR_AMT					/*납부예정금액*/
-                    , P.PRAR_DT 				                              /*상환예정일자*/
-                    , D1.DEAL_NO 				                              /*딜번호*/
-                    , D1.MNGM_BDCD 			                              /*관리부서*/
-                    , P.SCX_DCD 				                              /*상환구분*/
-                    , D1.TR_CRRY_CD 			                            /*통화코드*/
-                FROM IBIMS403B P				                              /*원리금상환스케줄*/
+                    END                   AS 		PMNT_PRAR_AMT					/* 납부예정금액 */
+                    , P.PRAR_DT 				                              /* 상환예정일자 */
+                    , D1.DEAL_NO 				  AS    DEAL_NO               /* 딜번호 */
+                    , P.PRDT_CD           AS    PRDT_CD               /* 상품코드 */ 
+                    , P.EXC_SN            AS    EXC_SN                /* 실행일련번호 */   
+                    , D1.MNGM_BDCD 			                              /* 관리부서 */
+                    , P.SCX_DCD 				                              /* 상환구분 */
+                    , D1.TR_CRRY_CD 			                            /* 통화코드 */
+                FROM IBIMS403B P				                              /* 원리금상환스케줄 */
                 	, IBIMS201B D1 
                 WHERE 1=1
                 AND D1.PRDT_CD = P.PRDT_CD
@@ -596,14 +604,16 @@
                 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
                   AND P.PRAR_DT &lt;= #{toDt} 
                 </if>
-                UNION ALL
-                SELECT   F.FEE_AMT				AS PMNT_PRAR_AMT	          /*납부예정금액*/
-                    , F.PRAR_DT                                       /*상환예정일자*/
-                    , D2.DEAL_NO                                      /*딜번호*/
-                    , D2.MNGM_BDCD                                    /*관리부서*/
-                    , '03'					      AS SCX_DCD                  /*상환구분*/
-                    , D2.TR_CRRY_CD                                   /*통화코드*/
-                FROM IBIMS348B F                                      /*수수료상환스케줄*/
+          UNION ALL
+                SELECT   F.FEE_AMT				AS PMNT_PRAR_AMT	          /* 납부예정금액 */
+                    , F.PRAR_DT                                       /* 상환예정일자 */
+                    , D2.DEAL_NO          AS DEAL_NO                  /* 딜번호 */
+                    , F.PRDT_CD           AS PRDT_CD                  /* 상품코드 */ 
+                    , F.FEE_SN            AS EXC_SN                   /* 수수료일련번호 */
+                    , D2.MNGM_BDCD                                    /* 관리부서 */
+                    , '03'					      AS SCX_DCD                  /* 상환구분 */
+                    , D2.TR_CRRY_CD                                   /* 통화코드 */
+                FROM IBIMS348B F                                      /* 수수료상환스케줄 */
                 	 , IBIMS201B D2             
                 WHERE 1=1
                 AND D2.PRDT_CD = F.PRDT_CD

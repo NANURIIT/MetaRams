@@ -1,3 +1,12 @@
+/**
+ * 입금내역조회
+ * 조회조건 주의사항
+ * 1. 상환구분
+ * 1-1. 원리금 : 원금, 이자
+ * 1-2. 원금
+ * 1-3. 수수료
+ * 1-4. 이자
+ */
 const TB07170Sjs = (function () {
   let TB07170S_rowIndx;
   let TB07170S_pqGridLength = 0;
@@ -15,6 +24,7 @@ const TB07170Sjs = (function () {
     $("#TB07170S_rctmDt").val(getToday()); //입금일자
 
     selectBoxSet_TB07170S();
+    getDealInfoFromWF();
   });
 
   function selectBoxSet_TB07170S() {
@@ -78,10 +88,10 @@ const TB07170Sjs = (function () {
         },
       },
       {
-        title: "종목코드",
+        title: "Deal번호",
         dataType: "string",
         width: "180",
-        dataIndx: "prdtCd",
+        dataIndx: "dealNo",
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: "range" }] },
@@ -130,35 +140,16 @@ const TB07170Sjs = (function () {
       },
       {
         title: "입금금액",
-        dataType: "string",
+        dataType: "integer",
+        format: "#,###",
         width: "180",
         dataIndx: "dealRctmAmt",
         align: "right",
         halign: "center",
         filter: { crules: [{ condition: "range" }] },
-        render: function (ui) {
-          var cellData = ui.cellData;
-          if (cellData == null || cellData == "") {
-            cellData = 0;
-          }
-          var value = "";
-
-          if (String(cellData).includes(",")) {
-            value = parseInt(cellData.replaceAll(",", ""), 10);
-          } else {
-            value = parseInt(cellData, 10);
-          }
-
-          var formattedValue = value.toLocaleString("ko-KR", {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-          });
-
-          return formattedValue;
-        },
       },
       {
-        title: "집금은행",
+        title: "거래기관",
         dataType: "string",
         width: "180",
         dataIndx: "reltIsttNm",
@@ -167,7 +158,7 @@ const TB07170Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        title: "집금모계좌번호",
+        title: "계좌번호",
         dataType: "string",
         width: "180",
         dataIndx: "reltBano",
@@ -176,60 +167,14 @@ const TB07170Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        title: "연계계좌번호",
-        dataType: "string",
-        width: "180",
-        dataIndx: "lnkdBano",
-        halign: "center",
-        align: "center",
-        filter: { crules: [{ condition: "range" }] },
-      },
-      {
-        title: "연계계좌거래번호",
-        dataType: "string",
-        width: "180",
-        dataIndx: "lnkdActnTrNo",
-        halign: "center",
-        align: "center",
-        filter: { crules: [{ condition: "range" }] },
-      },
-      {
-        title: "초과납입처리구분",
-        dataType: "string",
-        width: "180",
-        dataIndx: "excsPymtPrcsDvsnCd",
-        halign: "center",
-        align: "center",
-        filter: { crules: [{ condition: "range" }] },
-      },
-      {
         title: "초과납입금액",
-        dataType: "string",
+        dataType: "integer",
+        format: "#,###",
         width: "180",
         dataIndx: "dealExcsPymtAmt",
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: "range" }] },
-        render: function (ui) {
-          var cellData = ui.cellData;
-          if (cellData == null || cellData == "") {
-            cellData = 0;
-          }
-          var value = "";
-
-          if (String(cellData).includes(",")) {
-            value = parseInt(cellData.replaceAll(",", ""), 10);
-          } else {
-            value = parseInt(cellData, 10);
-          }
-
-          var formattedValue = value.toLocaleString("ko-KR", {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-          });
-
-          return formattedValue;
-        },
       },
       {
         title: "입금자명",
@@ -241,34 +186,7 @@ const TB07170Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        title: "상환처리여부",
-        dataType: "string",
-        width: "180",
-        dataIndx: "chceYn",
-        halign: "center",
-        align: "center",
-        filter: { crules: [{ condition: "range" }] },
-        render: function (ui) {
-          var cellData = ui.cellData;
-
-          if (isEmpty(cellData) || cellData == "0") {
-            return "미처리";
-          } else {
-            return "처리";
-          }
-        },
-      },
-      {
-        title: "상환일자",
-        dataType: "string",
-        width: "180",
-        dataIndx: "prcsDt",
-        halign: "center",
-        align: "center",
-        filter: { crules: [{ condition: "range" }] },
-      },
-      {
-        title: "처리부서",
+        title: "등록부서",
         dataType: "string",
         width: "180",
         dataIndx: "rgstBdcd",
@@ -282,7 +200,7 @@ const TB07170Sjs = (function () {
         },
       },
       {
-        title: "처리자명",
+        title: "등록자",
         dataType: "string",
         width: "180",
         dataIndx: "rgstEmpnm",
@@ -421,7 +339,24 @@ const TB07170Sjs = (function () {
       },
     });
   }
+
+  function getDealInfoFromWF() {
+		
+		if(sessionStorage.getItem("isFromWF")){
+			console.log("WF세션 있음");
+			var dealNo = sessionStorage.getItem("wfDealNo");
+			var dealNm = sessionStorage.getItem("wfDealNm");
+			$("#TB07170S_ibDealNo").val(dealNo);
+			$("#TB07170S_ibDealNm").val(dealNm);
+      inq();
+		}else{
+			console.log("WF세션 비었음");
+		}
+		sessionStorage.clear();
+	}
+
   return {
     inq: inq,
+    getDealInfoFromWF: getDealInfoFromWF,
   };
 })();

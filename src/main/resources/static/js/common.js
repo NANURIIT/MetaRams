@@ -1,8 +1,6 @@
 /** common **/
 "use strict";
 
-// 전역 변수를 window 속성으로 정의 (중복 선언 방지)
-window.latestClickData = window.latestClickData || null;
 
 /**
  * keydown, onchange 이벤트 생성
@@ -36,13 +34,6 @@ function settingFunction() {
       console.log("드래그 비활성화 및 이벤트 해제 완료");
     });
   });
-
-  /**
-   * 파일다운로드용 값 세팅
-   */
-  $(`div[data-menuid="/${url.split("/")[1]}"] #key1`)
-    .attr("name", "key1")
-    .val(url.split("/")[1]);
 
   if (
     $('script[src="js/business/tb/TB06011P.js"]').attr("src") ===
@@ -91,6 +82,13 @@ function settingFunction() {
     "js/business/tb/TB03021P.js"
   ) {
     TB03021P_srch(url);
+  }
+  
+  if (
+    $('script[src="js/business/tb/TB06017P.js"]').attr("src") ===
+    "js/business/tb/TB06017P.js"
+  ) {
+    TB06017P_srch(url);
   }
 
   // datepicker 초기화
@@ -1969,6 +1967,7 @@ function pqGridDeleteRow(colModelSelector, rowIndx) {
 
 /**
  * 화면 이동시 작동해야하는 함수
+ * ramsLayout.js -> moveTab 참고
  *
  *
  * @description
@@ -1988,6 +1987,64 @@ function needRunFn(menuId) {
   // 예시
   else if (menuId === "??") {
     console.log("Hello Nanuri!!");
+  }
+
+  //워크플로우에서 버튼 눌러 페이지 이동시 인풋 자동 세팅
+
+  if( menuId === "TB06010S"){
+    TB06010Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB06020S"){
+    TB06020Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB06030S"){
+    TB06030Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB06040S"){
+    TB06040Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07010S"){
+    TB07010Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07020S"){
+    TB07020Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07030S"){
+    TB07030Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07040S"){
+    TB07040Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07070S"){
+    TB07070Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07080S"){
+    TB07080Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07090S"){
+    TB07090Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07120S"){
+    TB07120Sjs.getDealInfoFromWF();
+  }
+
+  if( menuId === "TB07150S"){
+    TB07150Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07160S"){
+    TB07160Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07170S"){
+    TB07170Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB07190S"){
+    TB07190Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB08040S"){
+    TB08040Sjs.getDealInfoFromWF();
+  }
+  if( menuId === "TB08050S"){
+    TB08050Sjs.getDealInfoFromWF();
   }
 }
 
@@ -2014,33 +2071,3 @@ function resetPGgrids(menuid) {
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) { }
 
-/**
- * 팝업 그리드 셀 카피를 위한이벤트
- * rowDblClick 이벤트가 같이 있는 그리드도 셀카피를 할 수 있게 함
- * @param {*} clickData ui.rowData[ui.column.dataIndx]; 값을 넣어줘야 함
- * 
- * 예시 ) TB03022P.js
- * arrPqGridEmpInfo.option("cellClick", function (event, ui) {
- * 	const clickData = ui.rowData[ui.column.dataIndx];  // 클릭한 셀의 값 저장
- * 	copyClickData('TB03022P', clickData);  //셀 카피 가능
-  });
- */
-// if (!window._keydownEventRegistered) {
-//   window._keydownEventRegistered = true; // 키다운 이벤트 리스너가 중복 등록되지 않도록 방지
-//   $(document).keydown(function (event) {
-//     if ((event.ctrlKey || event.metaKey) && event.key === "c") {
-//       console.log("복사");
-//       if (latestClickData !== null) {
-//         navigator.clipboard.writeText(latestClickData).catch(function (error) {
-//           console.log("복사 실패: " + error);
-//         });
-//       }else {
-//         console.log("클릭데이타없음");
-//       }
-//     }
-//   });
-// }
-
-function copyClickData(clickData) {
-  latestClickData = clickData;
-}

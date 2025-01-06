@@ -32,23 +32,23 @@
 							<input type="hidden" id="hidden_mtrDcd" />
 							<!-- 부수안건구분코드 -->
 							<input type="hidden" id="hidden_jdgmDcd" />
-							<!-- 관리이력 sq -->
-							<input type="hidden" id="hidden_tab1_sq" value="0" />
-							<!-- 조사대상 sq -->
-							<input type="hidden" id="hidden_tab2_sq" value="0" />
-							<!-- 법적절차 sq-->
-							<input type="hidden" id="hidden_tab3_sq" value="0" />
-							<!-- 시효관리 sq-->
-							<input type="hidden" id="hidden_tab4_sq" value="0" />
-							<!-- 안건연결 sq-->
-							<input type="hidden" id="hidden_tab5_sq" value="0" />
+							<!-- 관리이력 sn -->
+							<input type="hidden" id="hidden_tab1_sn" value="0" />
+							<!-- 조사대상 sn -->
+							<input type="hidden" id="hidden_tab2_sn" value="0" />
+							<!-- 법적절차 sn-->
+							<input type="hidden" id="hidden_tab3_sn" value="0" />
+							<!-- 시효관리 sn-->
+							<input type="hidden" id="hidden_tab4_sn" value="0" />
+							<!-- 안건연결 sn-->
+							<input type="hidden" id="hidden_tab5_sn" value="0" />
 						</div>
 						<div class="form-group form-inline row">
 							<div class="col-sm-12 input-group text-right">
 								<label class="col-sm-1 col-form-label">Deal번호</label>
 								<div class="col-sm-4">
 									<div class="input-group">
-										<input type="text" class="form-control" id="TB08010S_ibDealNo" readonly> 
+										<input type="text" class="form-control" id="TB08010S_ibDealNo"> 
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB03021P('TB08010S');"><i class="fa fa-search"></i></button>
 										</span>
@@ -109,7 +109,7 @@
 													<div class="col-sm-2">
 														<select class="form-control" id="TB08010S_F012">
 														</select>
-														<input type="hidden" class="form-control" id="key1">
+														<input type="hidden" class="form-control" id="key2">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -144,19 +144,13 @@
 									<div class="ibox-content">
 										<table class="table table-bordered">
 											<colgroup>
-												<col style="width: 5%;">
-												<col style="width: 20%;">
-												<col style="width: 5%;">
 												<col style="width: 10%;">
 												<col style="width: 50%;">
 												<col style="width: 30%;">
 											</colgroup>
 											<thead>
 												<tr>
-													<th></th>
-													<th>키1</th>
-													<th>키2</th>
-													<th>일련번호</th>
+													<th>선택</th>													
 													<th>파일명</th>
 													<th>등록일자</th>
 												</tr>

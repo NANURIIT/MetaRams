@@ -16,7 +16,7 @@ import lombok.ToString;
 public class IBIMS435BDTO {
 
     private String rctmDt;           /* 입금일자 */
-    private int rgstSeq;             /* 등록순번 */
+    private long rgstSeq;             /* 등록순번 */
     private String rgstBdcd;         /* 등록부점코드 */
     private String fndsDvsnCd;       /* 자금구분코드 */
     private BigDecimal pmntPrarAmt;  /* 납부예정금액 */

@@ -208,6 +208,11 @@ SELECT IB211B.MRTG_MNGM_NO,                         /* 담보관리번호 */
 			   TR_OTHR_DSCM_NO,                        /* 거래상대방식별번호 */
 			   TR_OTHR_NM,                             /* 거래상대방명 */
 			   TR_EMPNO,                               /* 거래부서코드 */
+			   (SELECT EMP_NM
+			    FROM IBIMS003B L /* 사원기본 */
+			    WHERE 1=1
+			    AND L.EMPNO = TR_EMPNO
+			   ) AS TR_EMP_NM,						   /* 거래담당자명 */
 			   MRTG_EVL_STDR_CD,                       /* 담보평가기준코드 */
 			   PRFD_RANK_YN,                           /* 우선순위여부 */
 			   HDWT_EVL_YN,                            /* 수기평가여부 */

@@ -21,5 +21,7 @@ public interface IBIMS212BMapper {
 	List<TB06013PVO> getIBIMS212BDTOInfo(TB06013PVO param);
 
 	int connectMrtgInfo(TB06013PVO searchParam);
+	
+	int deleteIBIMS212BbyPrdtCd(String prdtCd);
 
 }
