@@ -286,7 +286,6 @@ const TB06030Sjs = (function(){
 
 	function resetSearchRequiment_TB06030S() {		
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
-		console.log("초기화");
 		resetInputValue($('div[data-menuid="/TB06030S"]'));
 		$('#TB06030S_ibDealNo').val('');
 		$('#TB06030S_riskInspctCcdNm').val('');
@@ -382,7 +381,6 @@ const TB06030Sjs = (function(){
 						text: '가결 또는 조건부 가결된 안건이 아닙니다.',
 						confirmButtonText: '확인',
 					}).then(() => {
-						console.log();
 						resetSearchRequiment_TB06030S(); //초기화
 					});
 					return false;
