@@ -46,6 +46,8 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrp)">
            AND CMNS_CD_GRP                             = #{cmnsCdGrp}
           </if>
+         ORDER
+            BY A.CMNS_CD_GRP ASC
 	  </select>
 
     <select id="getGroupCodeInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS001BVO">
