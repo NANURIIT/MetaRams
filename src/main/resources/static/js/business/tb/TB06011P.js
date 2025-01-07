@@ -408,6 +408,23 @@ var colPrdtCdList = [
 		hidden: true,
 		filter: { crules: [{ condition: 'range' }] },
 	},
+	{
+		title: "부수안건구분코드",
+		dataType: "string",
+		dataIndx: "mtrDcd",
+		align: "center",
+		hidden: true,
+		filter: { crules: [{ condition: 'range' }] },
+	},
+	{
+		title: "리스크심사구분코드",
+		dataType: "string",
+		dataIndx: "jdgmDcd",
+		align: "center",
+		hidden: true,
+		filter: { crules: [{ condition: 'range' }] },
+	},
+	
 ];
 
 //그리드 호출
@@ -881,8 +898,8 @@ function TB06011P_setPrdtInfo(e) {
 	if (prefix == 'TB06010S' || prefix == 'TB06020S' || prefix == 'TB06030S') {
 		$('#' + prefix + '_ibDealNo').val(ibDealNo);
 		$('#' + prefix + '_ibDealNo').focus();
-		$('#' + prefix + '_lstCCaseCcd').val(e.nmcpMtrDcd);
-		$('#' + prefix + '_riskInspctCcd').val(e.lstCCaseDcd);
+		$('#' + prefix + '_lstCCaseCcd').val(e.mtrDcd);
+		$('#' + prefix + '_riskInspctCcd').val(e.jdgmDcd);
 		if (prefix == 'TB06010S') {
 			TB06010Sjs.getDealList();
 

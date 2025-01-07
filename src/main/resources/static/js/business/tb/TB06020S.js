@@ -358,7 +358,6 @@ const TB06020Sjs = (function(){
 						text: '가결 또는 조건부 가결된 안건이 아닙니다.',
 						confirmButtonText: '확인',
 					}).then(() => {
-						console.log();
 						resetSearchRequiment_TB06020S(); //초기화
 					});
 					return false;
