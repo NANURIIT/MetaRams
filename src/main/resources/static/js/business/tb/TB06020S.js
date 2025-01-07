@@ -244,7 +244,6 @@ const TB06020Sjs = (function(){
 
 	//초기화
 	function resetSearchRequiment_TB06020S() {
-		console.log("초기화");
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
 		
 		resetInputValue($('div[data-menuid="/TB06020S"]'));
