@@ -3,7 +3,6 @@ let modalArrPqGridRmFileInfo2;
 $(document).ready(function() {
 	loadUserAuth();
 	setMetDt();
-	modalShowFunction_TB03031P();
 });
 
 /**
@@ -15,11 +14,6 @@ function callTB03031P(prefix) {
 	$('#modal-TB03031P').modal('show');
 	indexChangeHandler("TB03031P");
 
-	// setTimeout(() => {
-		
-	// 	$("#gridModalRmFileInfo").pqGrid(obj);
-	// 	modalArrPqGridRmFileInfo2 = $("#gridModalRmFileInfo").pqGrid('instance');
-	// }, 300);
 	if (isNotEmpty($("#TB03030S_entpCd").val())) {
 		$("#TB03031P_rm_corpRgstNo").val(checkBrnAcno($("#TB03030S_corpRgstNo").val()));
 		$("#TB03031P_rm_bsnsRgstNo").val(checkBrnAcno($("#TB03030S_bsrnRgstNo").val()));
@@ -34,17 +28,12 @@ function callTB03031P(prefix) {
 function callTB03031PRmHistoryInfo(prefix) {
 	$('#prefix_TB03031P').val(prefix);
 	$('#modal-TB03031P').modal('show');
-	setTimeout(() => {
-		//$("#gridModalRmFileInfo").pqGrid(obj);
-		modalArrPqGridRmFileInfo2 = $("#gridModalRmFileInfo").pqGrid('instance');
-	}, 300);
 }
 
 /**
  * close modal
  */
 function modalClose_TB03031P() {
-	// modalReset();
 	$('#modal-TB03031P').modal('hide');
 	
 };
@@ -52,19 +41,18 @@ function modalClose_TB03031P() {
 /**
  * hide modal
 */
-$("#modal-TB03031P").on('hide.bs.modal', function(){
-	// $("#gridModalRmFileInfo").pqGrid("option", "dataModel.data", []);
-	// $("#gridModalRmFileInfo").pqGrid("refreshDataAndView");
-	$("#gridModalRmFileInfo").pqGrid('destroy');
-	modalReset();
-  });
+// $("#modal-TB03031P").on('hide.bs.modal', function(){
+// 	console.log("데이트피커가 모달 안에 존재한다면 모달이 강제 하이드가 됩니다. 때문에 이 이벤트는 없애도록 하겠습니다 만약 다시 열어서 이 콘솔을 확인하신다면 앞으로 소스 바꾸실때 하나씩 바꿔가며 테스트 하도록 합시다");
+// 	// $("#gridModalRmFileInfo").pqGrid("option", "dataModel.data", []);
+// 	// $("#gridModalRmFileInfo").pqGrid("refreshDataAndView");
+// 	// $("#gridModalRmFileInfo").pqGrid('destroy');
+// 	// modalReset();
+//   });
 
-function modalShowFunction_TB03031P() {
-	//모달 오픈 애니메이션 후 포커스 주도록 설정
-	$('#modal-TB03031P').on('shown.bs.modal', function(){
-		$('#modal-TB03031P input[id=TB03031P_rm_entpRnm]').focus();	
-	});
-}
+//모달 오픈 애니메이션 후 포커스 주도록 설정
+$('#modal-TB03031P').on('shown.bs.modal', function(){
+	// $('#modal-TB03031P input[id=TB03031P_rm_entpRnm]').focus();
+});
 
 // 담당직원정보
 function loadUserAuth() {
@@ -249,62 +237,7 @@ function modalReset() {
 
 }
 
-
 // 금일 날짜 세팅
 function setMetDt() {
 	$('#TB03031P_metDt').val(getToday());
 }
-	
-/** ************************************그리드 컬럼********************************** **/
-
-let colModalRmFileInfo = [
-	{ 	
-		title    : "처리구분", 
-		dataType : "string",
-		dataIndx : "", 
-		align    : "center", 
-		filter   : { crules: [{ condition: 'range' }] },
-	},
-	{ 	
-		title    : "일련번호", 
-		dataType : "string", 
-		dataIndx : "",
-		align    : "center", 
-		filter   : { crules: [{ condition: 'range' }] }
-	},
-	{ 	
-		title    : "전송상세일시", 
-		dataType : "string",
-		dataIndx : "",
-		align    : "center",  
-		filter   : { crules: [{ condition: 'range' }] }
-	},
-	{ 	
-		title    : "파일구분", 
-		dataType : "string", 
-		dataIndx : "", 
-		align    : "center", 
-		filter   : { crules: [{ condition: 'range' }] }
-	},
-	{ 	
-		title    : "파일명", 
-		dataType : "string",
-		dataIndx : "",
-		align    : "center",  
-		filter   : { crules: [{ condition: 'range' }] }
-	},
-	{ 	
-		title    : "다운로드", 
-		dataType : "string",
-		dataIndx : "",
-		align    : "center" ,  
-		filter   : { crules: [{ condition: 'range' }] }
-	},
-	{ 	
-		title    : "삭제", 
-		dataType : "string",
-		dataIndx : "",
-		align    : "center" ,  
-		filter   : { crules: [{ condition: 'range' }] }
-	}
-];
