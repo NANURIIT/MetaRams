@@ -3,18 +3,28 @@ const TB08036Sjs = (function () {
 
   $(document).ready(function () {
     loadSelectBoxContents();
+    convertDateFormat();
   });
 
   // 그리드설정
-  function setArrPqGridObj() {
-    let setArrPqGridObj = [
-      {
-        height: 600,
-        maxHeight: 600,
-        id: "TB08036S_gridCncCmpnyInfo",
-        colModel: colList,
-      },
-    ];
+  // function setArrPqGridObj() {
+  //   let setArrPqGridObj = [
+  //     {
+  //       height: 600,
+  //       maxHeight: 600,
+  //       id: "TB08036S_gridCncCmpnyInfo",
+  //       colModel: colList,
+  //     },
+  //   ];
+  // }
+
+  // 에러메시지
+  function showErrorPopup(message) {
+    openPopup({
+      type: "error",
+      title: "Error!",
+      text: message,
+    });
   }
 
   //셀렉트박스 세팅
@@ -46,6 +56,81 @@ const TB08036Sjs = (function () {
 
     $("#inspctRmrk").val("");
     $("#TB08036S_etcList").html("");
+  }
+
+  // 페이지가 로드되면 모든 날짜 입력 필드에 대해 이벤트 핸들러를 설정
+  document.querySelectorAll(".date-input").forEach(function (inputElement) {
+    inputElement.addEventListener("blur", function () {
+      convertDateFormat(inputElement);
+    });
+  });
+
+  function convertDateFormat(inputElement) {
+    if (!inputElement || typeof inputElement.value !== "string") {
+      return;
+    }
+
+    var dateInput = inputElement.value;
+
+    // 만약 입력값이 yyyymmdd 형식이라면
+    if (dateInput.length === 8 && !isNaN(dateInput)) {
+      var year = dateInput.substring(0, 4);
+      var month = dateInput.substring(4, 6);
+      var day = dateInput.substring(6, 8);
+
+      if (isValidDate(year, month, day)) {
+        var formattedDate = year + "-" + month + "-" + day;
+        inputElement.value = formattedDate;
+      } else {
+        showErrorPopup("잘못된 날짜 형식입니다. 다시 입력해주세요.");
+      }
+    }
+  }
+
+  function isValidDate(year, month, day) {
+    if (month < 1 || month > 12) return false;
+    var daysInMonth = getDaysInMonth(month, year);
+    if (day < 1 || day > daysInMonth) return false;
+
+    return true;
+  }
+
+  function getDaysInMonth(month, year) {
+    // 각 월별 최대 일 수
+    var daysInMonth;
+
+    switch (month) {
+      case "01":
+      case "03":
+      case "05":
+      case "07":
+      case "08":
+      case "10":
+      case "12":
+        daysInMonth = 31;
+        break;
+      case "04":
+      case "06":
+      case "09":
+      case "11":
+        daysInMonth = 30;
+        break;
+      case "02":
+        // 윤년을 고려하여 2월의 일수를 반환
+        daysInMonth = isLeapYear(year) ? 29 : 28;
+        break;
+      default:
+        daysInMonth = 0;
+        break;
+    }
+
+    return daysInMonth;
+  }
+
+  // 윤년 확인 함수
+  function isLeapYear(year) {
+    year = parseInt(year);
+    return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
   }
 
   // TAB3  테이블 행추가
@@ -80,11 +165,7 @@ const TB08036Sjs = (function () {
 
   function getDealInfoTB08036S() {
     if (isEmpty($("#TB08036S_ibDealNo").val())) {
-      openPopup({
-        type: "error",
-        title: "Error!",
-        text: "Deal번호를 입력해주세요!",
-      });
+      showErrorPopup("딜번호를 입력해주세요.");
 
       return false;
     }
@@ -100,86 +181,96 @@ const TB08036Sjs = (function () {
       data: paramData,
       dataType: "json",
       success: function (data) {
-        var dealInfo = data;
+        if (data && Object.keys(data).length > 0) {
+          var dealInfo = data;
 
-        $("#slStDt").val(formatDate(dealInfo.slStDt));
-        $("#slEdDt").val(formatDate(dealInfo.slEdDt));
-        $("#slPrd").val(dealInfo.slPrd);
-        $("#cnstStDt").val(formatDate(dealInfo.cnstStDt));
-        $("#cnstEdDt").val(formatDate(dealInfo.cnstEdDt));
-        $("#cnstPrd").val(dealInfo.cnstPrd);
-        $("#crdtRifcIsttCtns").val(dealInfo.crdtRifcIsttCtns);
-        $("#unitNum").val(dealInfo.unitNum);
-        $("#loanBondTakYn")
-          .val(dealInfo.loanBondTakYn)
-          .prop("selected", true)
-          .change();
-        $("#prfbIslfEvl")
-          .val(dealInfo.prfbIslfEvl)
-          .prop("selected", true)
-          .change();
-        $("#ipreYn").val(dealInfo.ipreYn).prop("selected", true).change();
-        $("#clcIntlGrd").val(dealInfo.clcIntlGrd);
-        $("#dcsnIntlGrd").val(dealInfo.dcsnIntlGrd);
-        $("#mgtnRt").val(dealInfo.mgtnRt);
-        $("#estmPrgsRt").val(dealInfo.estmPrgsRt);
-        $("#pfmcPrgsRt").val(dealInfo.pfmcPrgsRt);
-        $("#busiPrgStep").val(dealInfo.busiPrgStep);
-        $("#inspctRmrk")
-          .val(dealInfo.inspctRmrk)
-          .prop("selected", true)
-          .change();
-        $("#bsnBdSlltBalcCheckOpnn").val(dealInfo.bsnBdSlltBalcCheckOpnn);
-
-        $("#inspctRmrk").val(dealInfo.inspctRmrk);
-
-        var lstInspctRmrk = data.lstInspctRmrk;
-        var html = "";
-
-        lstInspctRmrk.forEach(function (tr, index) {
-          html += "<tr>";
-          html +=
-            '<td><div class="input-group date"><input type="text" class="form-control" value="' +
-            tr.inspctDt +
-            '"><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div></td>';
-          html +=
-            '<td><input type="text" class="form-control" style="width: 100%;" value="' +
-            tr.inspctRmrk +
-            '"></td>';
-          html +=
-            '<td><input type="text" class="form-control" style="width: 100%;" value="' +
-            tr.rmrk +
-            '"></td>';
-          html += '<td><input type="checkbox" class="form-control"></td>';
-          html += "</tr>";
-        });
-
-        $("#TB08036S_etcList").html(html);
-
-        dpDate = $(".input-group.date").datepicker({
-          format: "yyyy-mm-dd",
-          todayBtn: "linked",
-          keyboardNavigation: false,
-          forceParse: false,
-          calendarWeeks: false,
-          autoclose: true,
-          language: "ko",
-        });
+          $("#unitNum").val(dealInfo.unitNum); // 세대수
+          $("#slStDt").val(formatDate(dealInfo.slStDt)); // 분양시작일
+          $("#slEdDt").val(formatDate(dealInfo.slEdDt)); // 분양종료일
+          $("#slPrd").val(dealInfo.slPrd); // 분양기간
+          $("#cnstStDt").val(formatDate(dealInfo.cnstStDt)); // 공사시작일
+          $("#cnstEdDt").val(formatDate(dealInfo.cnstEdDt)); // 공사종료일
+          $("#cnstPrd").val(dealInfo.cnstPrd); // 공사기간
+          $("#TB08036S_C010")
+            .val(dealInfo.crdtRifcIsttCtns)
+            .prop("selected", true)
+            .change(); // 신용보강기관내용
+          $("#loanBondTakYn").radioSelect(dealInfo.loanBondTakYn); // 대출채권양수여부
+          $("#TB08036S_I012_1")
+            .val(dealInfo.prfbIslfEvl)
+            .prop("selected", true)
+            .change(); // 사업장자체평가
+          $("#ipreYn").radioSelect(dealInfo.ipreYn); // IPRE여부
+          $("#clcIntlGrd").val(dealInfo.clcIntlGrd); // 계산내부등급
+          $("#dcsnIntlGrd").val(dealInfo.dcsnIntlGrd); // 확장내부등급
+          $("#mgtnRt").val(dealInfo.mgtnRt); // 이주율
+          $("#estmPrgsRt").val(dealInfo.estmPrgsRt); // 예상진척율
+          $("#pfmcPrgsRt").val(dealInfo.pfmcPrgsRt); // 실적진척율
+          $("#busiPrgStep").val(dealInfo.busiPrgStep); // 사업진행단계
+          $("#inspctRmrk")
+            .val(dealInfo.inspctRmrk)
+            .prop("selected", true)
+            .change(); // 분양수지점검결과
+          $("#bsnBdSlltBalcCheckOpnn").val(dealInfo.bsnBdSlltBalcCheckOpnn); // 영업점분양수지점검의견
+        } else {
+          // 데이터가 없을 경우 경고창 띄우기
+          openPopup({
+            type: "warning",
+            title: "Warning!",
+            text: "등록된 사업정보가 없습니다.",
+          });
+        }
       },
-      error: function () {
-        clearObject();
+      error: function (xhr, status, error) {
+        // 에러 발생 시 콘솔에 출력
+        console.error("AJAX 요청 실패:", {
+          status: status,
+          error: error,
+          response: xhr.responseText,
+        });
       },
     }); /* end of ajax*/
   }
 
+  function getParamData() {
+    // 공통 함수: Input 값 가져오기
+    const getInputValue = (id, defaultValue = "") =>
+      $(`#${id}`).val() || defaultValue;
+
+    // 공통 함수: 날짜 형식 제거
+    const formatDate = (dateStr) => (dateStr ? dateStr.replace(/-/g, "") : "");
+
+    // paramData 생성
+    const paramData = {
+      dealNo: getInputValue("TB08036S_ibDealNo"), // Deal번호
+      unitNum: getInputValue("unitNum"), // 세대수
+      crdtRifcIsttCtns: getInputValue("TB08036S_C010"), // 신용보강기관내용
+      clcIntlGrd: getInputValue("TB08036S_I012_2"), // 계산내부등급
+      prfbIslfEvl: getInputValue("TB08036S_I012_1"), // 사업성자체평가
+      loanBondTakYn: $("input[name='loanBondTakYn']:checked").val(), // 대출채권양수여부
+      inspctYyMm: formatDate(getInputValue("TB08036S_inspctYyMm")), // 점검기준년월
+      slStDt: formatDate(getInputValue("slStDt")), // 분양시작일
+      slEdDt: formatDate(getInputValue("slEdDt")), // 분양종료일
+      slPrd: getInputValue("slPrd"), // 분양기간
+      cnstStDt: formatDate(getInputValue("cnstStDt")), // 공사시작일
+      cnstEdDt: formatDate(getInputValue("cnstEdDt")), // 공사종료일
+      cnstPrd: getInputValue("cnstPrd"), // 공사기간
+      ipreYn: $("input[name='ipreYn']:checked").val(), // IPRE여부
+      dcsnIntlGrd: getInputValue("TB08036S_I012_3"), // 확정내부등급
+      mgtnRt: getInputValue("mgtnRt"), // 이주율
+      estmPrgsRt: getInputValue("estmPrgsRt"), // 예상진척율
+      pfmcPrgsRt: getInputValue("pfmcPrgsRt"), // 실적진척율
+      busiPrgStep: getInputValue("TB08036S_B014"), // 사업진행단계
+      inspctRmrk: getInputValue("inspctRmrk"), // 점검결과
+      bsnBdSlltBalcCheckOpnn: getInputValue("bsnBdSlltBalcCheckOpnn"), // 영업점분양수지점검의견
+    };
+
+    return paramData;
+  }
+
   function modifyDealInfoTB08036S() {
     if (isEmpty($("#TB08036S_ibDealNo").val())) {
-      openPopup({
-        type: "error",
-        title: "Error!",
-        text: "Deal번호를 입력해주세요!",
-      });
-
+      showErrorPopup("딜번호를 입력해주세요.");
       return false;
     }
 
@@ -191,9 +282,7 @@ const TB08036Sjs = (function () {
       data: JSON.stringify(paramData),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      success: function (data) {},
-      error: function () {},
-      complete: function () {
+      success: function (data) {
         Swal.fire({
           icon: "success",
           title: "Success!",
@@ -201,16 +290,13 @@ const TB08036Sjs = (function () {
           confirmButtonText: "확인",
         });
       },
+      error: function () {},
     }); /* end of ajax*/
   }
 
   function deleteDealInfoTB08036S() {
     if (isEmpty($("#TB08036S_ibDealNo").val())) {
-      openPopup({
-        type: "error",
-        title: "Error!",
-        text: "Deal번호를 입력해주세요!",
-      });
+      showErrorPopup("딜번호를 입력해주세요.");
 
       return false;
     }
@@ -255,56 +341,6 @@ const TB08036Sjs = (function () {
         },
       }); /* end of ajax*/
     }
-  }
-
-  function getParamData() {
-    var etcList = new Array();
-
-    $("#TB08036S_etcList tr").each(function () {
-      var td = $(this).children();
-
-      var etc = {
-        dealNo: $("#TB08036S_ibDealNo").val(),
-        inspctDt: td.eq(0).find("input").val(),
-        inspctRmrk: td.eq(1).find("input").val(),
-        rmrk: td.eq(2).find("input").val(),
-      };
-
-      etcList.push(etc);
-    });
-
-    var paramData = {
-      dealNo: $("#TB08036S_ibDealNo").val(), // Deal번호
-      inspctYyMm: replaceAll($("#TB08036S_inspctYyMm").val(), "-", ""), // 점검기준년월
-
-      slStDt: replaceAll($("#slStDt").val(), "-", ""), // 분양시작일
-      slEdDt: replaceAll($("#slEdDt").val(), "-", ""), // 분양종료일
-      slPrd: replaceAll($("#slPrd").val(), "-", ""), // 분양기간
-      cnstStDt: replaceAll($("#cnstStDt").val(), "-", ""), // 공사시작일
-      cnstEdDt: replaceAll($("#cnstEdDt").val(), "-", ""), // 공사종료일
-      cnstPrd: replaceAll($("#cnstPrd").val(), "-", ""), // 공사기간
-      crdtRifcIsttCtns: $("#crdtRifcIsttCtns").val(), // 신용보강기관내용
-      unitNum: $("#unitNum").val(), // 세대수
-      loanBondTakYn: $("#loanBondTakYn").val(), // 대출채권양수여부
-      prfbIslfEvl: $("#prfbIslfEvl").val(), // 사업성자체평가
-      ipreYn: $("#ipreYn").val(), // IPRE여부
-      clcIntlGrd: $("#clcIntlGrd").val(), // 계산내부등급
-      dcsnIntlGrd: $("#dcsnIntlGrd").val(), // 확정내부등급
-      mgtnRt: $("#mgtnRt").val(), // 이주율
-      estmPrgsRt: $("#estmPrgsRt").val(), // 예상진척율
-      pfmcPrgsRt: $("#pfmcPrgsRt").val(), // 실적진척율
-      busiPrgStep: $("#busiPrgStep").val(), // 사업진행단계
-
-      inspctRmrk: $("#inspctRmrk").val(), // 점검결과
-      bsnBdSlltBalcCheckOpnn: $("#bsnBdSlltBalcCheckOpnn").val(), // 영업점분양수지점검의견
-
-      inspctRmrk: $("#inspctRmrk").val(), // 점검결과
-
-      lstInspctRmrk: etcList,
-      // , "" : $('#').val()
-    };
-
-    return paramData;
   }
 
   return {

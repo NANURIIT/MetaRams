@@ -977,48 +977,6 @@ const TB04010Sjs = (function () {
     }); /* end of ajax*/
   }
 
-  // 관련문서tab setting
-  // function setTab2(dealNo, mtrDcd, jdgmDcd) {
-  //   getDocInfo(dealNo, mtrDcd, jdgmDcd);
-  // }
-
-  // 관련문서 정보
-  // function getDocInfo(dealNo, mtrDcd, jdgmDcd) {
-  //   tab2BtnReset();
-
-  //   var paramData = {
-  //     dealNo: dealNo, // deal번호
-  //     mtrDcd: mtrDcd, // 부수안건구분코드
-  //     jdgmDcd: jdgmDcd, // 리스크심사구분코드
-  //   };
-
-  //   $.ajax({
-  //     type: "GET",
-  //     url: "/TB04010S/getDocInfo",
-  //     data: paramData,
-  //     dataType: "json",
-  //     success: function (data) {
-  //       //console.log("TEST_여기 들어옴!! 성공이야");
-  //       //arrPqGridDocInfo.setData(data);
-  //       arrPqGridDocInfo.option("rowDblClick", function (event, ui) {
-  //         docInfoDetails(ui.rowData);
-  //       });
-  //     },
-  //   });
-  // }
-
-  // function docInfoDetails(e) {
-  //   var dcmNo = e.dcmNo; // 문서번호
-  //   var lastDcmYn = e.lastDcmYn; // 최종문서여부
-  //   var rm = e.rm; // 비고(URLLINK)
-  //   var sn = e.sn; // 일련번호
-
-  //   $("#TB04010S_dcmNo").val(dcmNo);
-  //   $(":radio[name='TB04010S_lastDcmYn']").radioSelect(lastDcmYn);
-  //   $("#TB04010S_rm").val(rm);
-  //   $("#TB04010S_tab2_sn").val(sn);
-  // }
-
   // 기초자산정보 탭
   function setTab3(dealNo, mtrDcd, jdgmDcd) {
     getAssetInfo(dealNo, mtrDcd, jdgmDcd);

@@ -21,7 +21,7 @@
 			<div class="col-lg-12">
 				<div class="ibox">									
 					<!-- 조회조건영역 -->
-					<div class="ibox-content">
+					<div class="ibox-content i-filter">
 						<div class="row form-group form-inline">
 							<div class="col-sm-12 input-group text-right">
 								<label class="col-sm-1 col-form-label">Deal번호</label>
@@ -54,6 +54,8 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="ibox">	
 					<!-- TAB -->
 					<div class="tabs-container p">
 						<ul class="nav nav-tabs " role="tablist" id="TB08036S_ramsTab">
@@ -70,16 +72,16 @@
 								<!-- 분양수지 관리 -->
 								<div role="tabpanel" id="TB08036S_tab-1" class="tab-pane active">
 									<div class="panel-body">
-										<div class="row form-inline form-group text-right align-items-start">
+										<div class="row ">
 											<!-- 사업기본정보 -->
 											<div class="ibox col-sm-6">
 												<div class="ibox">
-													<div class="ibox-title text-left">
+													<div class="ibox-title">
 														<h5>▶&nbsp;사업기본정보</h5>
 													</div>
-													<div class="ibox-content">
+													<div class="ibox-content text-right">
 														<!-- 첫 번째 줄 -->
-														<div class="row">
+														<div class="form-group row">
 															<div class="col-sm-6 form-group row">
 																<label class="col-sm-4 col-form-label">세대수</label>
 																<div class="col-sm-8 input-group">
@@ -120,12 +122,12 @@
 																<label class="col-sm-4 col-form-label">대출채권양수여부</label>
 																<div class="col-sm-8 input-group">
 																	<div class="form-check form-check-inline">
-																		<input class="form-check-input" type="radio" name="loanBondTakYn" id="loanBondTakYnYes" value="Y">
-																		<label class="form-check-label" for="loanBondTakYnYes">Y</label>
+																		<input class="form-check-input" type="radio" name="loanBondTakYn" id="loanBondTakYnYes" value="Y" checked>
+																		<label class="form-check-label">Y</label>
 																	</div>
 																	<div class="form-check form-check-inline">
 																		<input class="form-check-input" type="radio" name="loanBondTakYn" id="loanBondTakYnNo" value="N">
-																		<label class="form-check-label" for="loanBondTakYnNo">N</label>
+																		<label class="form-check-label">N</label>
 																	</div>
 																</div>
 															</div>
@@ -144,12 +146,12 @@
 																<label class="col-sm-4 col-form-label">IPRE여부</label>
 																<div class="col-sm-8 input-group">
 																	<div class="form-check form-check-inline">
-																		<input class="form-check-input" type="radio" name="ipreYn" id="ipreYnYes" value="Y">
-																		<label class="form-check-label" for="ipreYnYes">Y</label>
+																		<input class="form-check-input" type="radio" name="ipreYn" id="ipreYnYes" value="Y" checked>
+																		<label class="form-check-label">Y</label>
 																	</div>
 																	<div class="form-check form-check-inline">
 																		<input class="form-check-input" type="radio" name="ipreYn" id="ipreYnNo" value="N">
-																		<label class="form-check-label" for="ipreYnNo">N</label>
+																		<label class="form-check-label">N</label>
 																	</div>
 																</div>
 															</div>
@@ -160,16 +162,26 @@
 											<!-- 공사정보 -->
 											<div class="ibox col-sm-3">
 												<div class="ibox">
-													<div class="ibox-title text-left">
+													<div class="ibox-title">
 														<h5>▶&nbsp;공사기간</h5>
 													</div>
-													<div class="ibox-content">
+													<div class="ibox-content text-right">
 														<div class="form-group row">
 															<!-- 공사 시작일 -->
 															<label class="col-sm-4 col-form-label">공사시작일</label>
 															<div class="col-sm-8 input-group">
 																<div class="input-group date">
-																	<input type="text" class="form-control" id="cnstStDt">
+																	<input type="text" class="form-control date-input" id="cnstStDt">
+																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																</div>
+															</div>
+														</div>														
+														<div class="form-group row">
+															<!-- 공사 종료일 -->
+															<label class="col-sm-4 col-form-label">공사종료일</label>
+															<div class="col-sm-8 input-group">
+																<div class="input-group date">
+																	<input type="text" class="form-control date-input" id="cnstEdDt">
 																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 																</div>
 															</div>
@@ -178,18 +190,7 @@
 															<!-- 공사 기간 -->
 															<label class="col-sm-4 col-form-label">공사기간</label>
 															<div class="col-sm-8 input-group">
-																<input type="text" class="form-control" id="cnstPrd">
-																<span class="ml-1">개월</span>
-															</div>
-														</div>
-														<div class="form-group row">
-															<!-- 공사 종료일 -->
-															<label class="col-sm-4 col-form-label">공사종료일</label>
-															<div class="col-sm-8 input-group">
-																<div class="input-group date">
-																	<input type="text" class="form-control" id="cnstEdDt">
-																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-																</div>
+																<input type="text" class="form-control" id="cnstPrd">																
 															</div>
 														</div>
 													</div>
@@ -199,16 +200,26 @@
 											<!-- 분양정보 -->
 											<div class="ibox col-sm-3">
 												<div class="ibox">
-													<div class="ibox-title text-left">
+													<div class="ibox-title">
 														<h5>▶&nbsp;분양기간</h5>
 													</div>
-													<div class="ibox-content">
+													<div class="ibox-content text-right">														
 														<!-- 분양 시작일 -->
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label">분양시작일</label>
 															<div class="col-sm-8 input-group">
 																<div class="input-group date">
-																	<input type="text" class="form-control" id="slStDt">
+																	<input type="text" class="form-control date-input" id="slStDt">
+																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																</div>
+															</div>
+														</div>														
+														<!-- 분양 종료일 -->
+														<div class="form-group row">
+															<label class="col-sm-4 col-form-label">분양종료일</label>
+															<div class="col-sm-8 input-group">
+																<div class="input-group date">
+																	<input type="text" class="form-control date-input" id="slEdDt">
 																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 																</div>
 															</div>
@@ -217,17 +228,7 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label">분양기간</label>
 															<div class="col-sm-8 input-group">
-																<input type="text" class="form-control" id="slPrd"><span class="ml-1">개월</span>
-															</div>
-														</div>
-														<!-- 분양 종료일 -->
-														<div class="form-group row">
-															<label class="col-sm-4 col-form-label">분양종료일</label>
-															<div class="col-sm-8 input-group">
-																<div class="input-group date">
-																	<input type="text" class="form-control" id="slEdDt">
-																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-																</div>
+																<input type="text" class="form-control" id="slPrd"></span>
 															</div>
 														</div>
 													</div>
@@ -237,10 +238,10 @@
 											<!-- 진행관리 -->
 											<div class="ibox col-sm-6">
 												<div class="ibox">
-													<div class="ibox-title text-left">
+													<div class="ibox-title">
 														<h5>▶&nbsp;진행관리</h5>
 													</div>
-													<div class="ibox-content">
+													<div class="ibox-content text-right">
 														<div class="row">
 															<!-- 사업진행단계 & 예상진척율 -->
 															<div class="col-sm-6 form-group row">
@@ -308,15 +309,15 @@
 											<!-- 분양수입/공사비 점검의견 -->
 											<div class="ibox col-sm-6">
 												<div class="ibox">
-													<div class="ibox-title text-left">
+													<div class="ibox-title">
 														<h5>▶&nbsp;분양수입/공사비 점검의견</h5>
 													</div>
-													<div class="ibox-content">
+													<div class="ibox-content text-right">
 														<!-- 점검결과 -->
 														<div class="form-group row mb-1">
 															<label class="col-sm-4 col-form-label">분양수지점검결과</label>
 															<div class="col-sm-8 input-group">
-																<select class="form-control" id="inspctRmrk"></select>
+																<select class="form-control mb-1" id="inspctRmrk"></select>
 															</div>
 															<label class="col-sm-4 col-form-label">영업점분양수지점검의견</label>
 															<div class="col-sm-8 input-group">
@@ -328,23 +329,23 @@
 											</div>
 											<div class="ibox col-sm-12">												
 												<div class="ibox">
-													<div class="ibox-title text-left">
+													<div class="ibox-title">
 														<h5>▶&nbsp;관련문서</h5>
-													</div>																										
 														<div class="ibox-tools">
 															<div th:fragment="file" id="file-upload">
 																<form id="upload-file-form">
-																		<input type="hidden" id="fileKey1" name="fileKey1">
+																	<input type="hidden" id="fileKey1" name="fileKey1">
 																	<input type="hidden" id="fileKey2" name="fileKey2" value="*">
 																	<input type="hidden" class="form-control" id="key1">
-																	<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile" disabled><i class="fa fa-upload"></i>&nbsp;파일추가</button>
+																	<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile" disabled style="margin-right: 5px;"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
 																	<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles" disabled><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
 																	<div style="display: none">
 																		<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
 																	</div>
-																</form>															
+																</form>   
 															</div>
-														</div>
+														</div>																										
+													</div>													
 													<div class="ibox-content">
 														<table class="table table-bordered">
 															<colgroup>
@@ -373,11 +374,11 @@
 											</div>																				
 											<div class="ibox col-sm-12">
 												<div class="row">													
-													<div class="col-sm-12 text-right mt-1 mb-1">
+													<div class="col-sm-12 text-right mb-2">
 														<button id="" class="btn btn-success" onclick="TB08036Sjs.modifyDealInfoTB08036S();">
 															<i class="fa fa-save"></i>&nbsp;저장
 														</button>
-														<button id="" class="btn btn-danger" onclick="TB08036Sjs.deleteDealInfoTB08036S();">
+														<button id="" class="btn btn-danger mr-2" onclick="TB08036Sjs.deleteDealInfoTB08036S();">
 															<i class="fa fa-eraser"></i>&nbsp;삭제
 														</button>
 													</div>													
