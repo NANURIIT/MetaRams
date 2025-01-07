@@ -237,11 +237,11 @@ const TB07010Sjs = (function () {
                 ? ""
                 : checkBrnAcno(data.ptxtTrOthrDscmNo)
             ); // 거래상대방
-            $("#TB07010S_ptxtTrOthrDscmNm").val(data.ptxtTrOthrDscmNm); // 거래상대방명
-            $("#TB07010S_prdtLclsCd").val(data.eprzCrdlPrdtLclsCd); // 상품대분류
-            $("#TB07010S_prdtMdclCd").val(data.eprzCrdlPrdtMdclCd); // 상품중분류
-            $("#TB07010S_prdtSclsCd").val(data.eprzCrdlPrdtClsfCd); // 상품소분류
-            $("#TB07010S_prdtSclsNm").val(data.eprzCrdlPrdtClsfNm); // 상품소분류명
+            $("#TB07010S_ptxtTrOthrDscmNm").val(data.ptxtTrOthrDscmNm);   // 거래상대방명
+            $("#TB07010S_prdtLclsCd").val(data.prdtLclsCd);               // 상품대분류
+            $("#TB07010S_prdtMdclCd").val(data.prdtMdclCd);               // 상품중분류
+            $("#TB07010S_prdtSclsCd").val(data.prdtClsfCd);               // 상품소분류
+            $("#TB07010S_prdtSclsNm").val(data.eprzCrdlPrdtClsfNm);       // 상품소분류명
             $("#TB07010S_regDt").val(
               isEmpty(data.eprzCrdlApvlDt)
                 ? ""
@@ -270,23 +270,23 @@ const TB07010Sjs = (function () {
 
             if (crryCd === "KRW") {
               $("#TB07010S_contractAmt").val(
-                isEmpty(contractAmt) ? "" : addComma(Math.round(contractAmt))
+                isEmpty(contractAmt) ? "0" : addComma(Math.round(contractAmt))
               ); // 약정금액
               $("#TB07010S_loanAmt").val(
-                isEmpty(loanAmt) ? "" : addComma(Math.round(loanAmt))
+                isEmpty(loanAmt) ? "0" : addComma(Math.round(loanAmt))
               ); // 대출금액
               $("#TB07010S_dealExcBlce").val(
-                isEmpty(dealExcBlce) ? "" : addComma(Math.round(dealExcBlce))
+                isEmpty(dealExcBlce) ? "0" : addComma(Math.round(dealExcBlce))
               ); // 대출잔액
             } else {
               $("#TB07010S_contractAmt").val(
-                isEmpty(contractAmt) ? "" : addComma(contractAmt.toFixed(2))
+                isEmpty(contractAmt) ? "0" : addComma(contractAmt.toFixed(2))
               ); // 약정금액
               $("#TB07010S_loanAmt").val(
-                isEmpty(loanAmt) ? "" : addComma(loanAmt.toFixed(2))
+                isEmpty(loanAmt) ? "0" : addComma(loanAmt.toFixed(2))
               ); // 대출금액
               $("#TB07010S_dealExcBlce").val(
-                isEmpty(dealExcBlce) ? "" : addComma(dealExcBlce.toFixed(2))
+                isEmpty(dealExcBlce) ? "0" : addComma(dealExcBlce.toFixed(2))
               ); // 대출잔액
             }
 
@@ -654,7 +654,7 @@ const TB07010Sjs = (function () {
       case "F008": // 이체방법 ::: 자동입출금만 금융기관,계좌번호,은행부실점명,예금주 open
         // console.log('이체방법 ::: ', obj);
         // 조회 후
-        if (obj.fndsDcd === "6" || !obj.fndsDcd) {
+        if (obj.fndsDcd === "6" || obj.fndsDcd === "1" || obj.fndsDcd === "2" || obj.fndsDcd === "3" || !obj.fndsDcd) {
           $("#TB07010S_fnltCd").prop("disabled", false);
           $("#TB07010S_brkgAcno").prop("disabled", false);
           $("#TB07010S_bankBsjNm").prop("disabled", false);
@@ -672,7 +672,7 @@ const TB07010Sjs = (function () {
         $("#TB07010S_F008").on("change", function () {
           //selected value
           let val = $(this).val();
-          if (val === "6" || !val) {
+          if (val === "6" || val === "1" || val === "2" || val === "3" || !val) {
             $("#TB07010S_fnltCd").prop("disabled", false);
             $("#TB07010S_brkgAcno").prop("disabled", false);
             $("#TB07010S_bankBsjNm").prop("disabled", false);
@@ -1269,6 +1269,18 @@ const TB07010Sjs = (function () {
   // 	$('#btnSave').prop("disabled", false);
   // }
 
+  function calcAcbkAmt(){
+    var dealExcAmt = $('#TB07010S_dealExcAmt').val();             //실행금액
+    var krwTrslRt = $('#TB07010S_krwTrslRt').val();               //적용환율
+
+    var krwTrslExcAmt = Number(dealExcAmt.replaceAll(',', ''))*Number(krwTrslRt);
+
+    $('#TB07010S_krwTrslExcAmt').val(addComma(krwTrslExcAmt));
+
+  }
+
+
+
 
   function getDealInfoFromWF() {
 		if(sessionStorage.getItem("isFromWF")){
@@ -1307,6 +1319,7 @@ const TB07010Sjs = (function () {
     ldgMovePage: ldgMovePage,
     calAcbkAmt: calAcbkAmt,
     calKrwTrsl: calKrwTrsl,
+    // calcAcbkAmt: calcAcbkAmt,
     getDealInfoFromWF : getDealInfoFromWF 
 
   };
