@@ -82,8 +82,8 @@ function inputNumberChangeFunction_TB06012P(){
 	});
 	//셀다운 목표금액
 	$("#TB06012P_sdwnTlmtAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB06012P_sdwnTlmtAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB06012P_sdwnTlmtAmt").val())*1)/1).toFixed(0);
 		$("#TB06012P_sdwnTlmtAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//적용환율
@@ -94,38 +94,38 @@ function inputNumberChangeFunction_TB06012P(){
 	});	
 	//약정금액
 	$("#TB06012P_ctrcAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB06012P_ctrcAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB06012P_ctrcAmt").val())*1)/1).toFixed(0);
 		$("#TB06012P_ctrcAmt").val(addComma(uncomma(formatNum)));
 	});
 	//실행금액
 	$("#TB06012P_excAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB06012P_excAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB06012P_excAmt").val())*1)/1).toFixed(0);
 		$("#TB06012P_excAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//셀다운예정금액
 	$("#TB06012P_sdwnPrarAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB06012P_sdwnPrarAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB06012P_sdwnPrarAmt").val())*1)/1).toFixed(0);
 		$("#TB06012P_sdwnPrarAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//셀다운금액
 	$("#TB06012P_sdwnAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB06012P_sdwnAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB06012P_sdwnAmt").val())*1)/1).toFixed(0);
 		$("#TB06012P_sdwnAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//당사보유금액
 	$("#TB06012P_thcoHoldAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB06012P_thcoHoldAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB06012P_thcoHoldAmt").val())*1)/1).toFixed(2);
 		$("#TB06012P_thcoHoldAmt").val(addComma(uncomma(formatNum)));
 	});		
 	//미매각잔액
 	$("#TB06012P_ndispBlce").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB06012P_ndispBlce").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB06012P_ndispBlce").val())*1)/1).toFixed(2);
 		$("#TB06012P_ndispBlce").val(addComma(uncomma(formatNum)));
 	});	
 	//exit분양율

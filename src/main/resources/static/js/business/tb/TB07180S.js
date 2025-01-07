@@ -135,13 +135,13 @@ const TB07180Sjs = (function () {
 	//수수료최저금액
 	$("#TB07180S_feeLwstAmt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB07180S_feeLwstAmt").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB07180S_feeLwstAmt").val())*1)/1).toFixed(0);
 		$("#TB07180S_feeLwstAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//수수료최고금액
 	$("#TB07180S_feeHgstAmt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB07180S_feeHgstAmt").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB07180S_feeHgstAmt").val())*1)/1).toFixed(0);
 		$("#TB07180S_feeHgstAmt").val(addComma(uncomma(formatNum)));
 	});	
   }	

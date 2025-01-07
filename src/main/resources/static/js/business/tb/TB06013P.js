@@ -84,98 +84,92 @@ function inputNumberChangeFunction_TB06013P(){
 	//담보평가금액
 	$("#TB06013P_mrtgEvlAmt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06012P_sdwnRto").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06012P_sdwnRto").val())*1)/1).toFixed(0);
 		$("#TB06013P_mrtgEvlAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//면적
 	$("#TB06013P_rlesSqmsCtns").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_rlesSqmsCtns").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_rlesSqmsCtns").val())*1)/1).toFixed(0);
 		$("#TB06013P_rlesSqmsCtns").val(addComma(uncomma(formatNum)));
 	});	
 	//감정가격
 	$("#TB06013P_aprsPrc").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_aprsPrc").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_aprsPrc").val())*1)/1).toFixed(0);
 		$("#TB06013P_aprsPrc").val(addComma(uncomma(formatNum)));
-	});	
-	//감정통화
-	$("#TB06013P_I027_2").on('change', function(){
-		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_I027_2").val())*100)/100).toFixed(2);
-		$("#TB06013P_I027_2").val(addComma(uncomma(formatNum)));
 	});	
 	//감정가격(원화)
 	$("#TB06013P_krwTrslAprsPrc").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_krwTrslAprsPrc").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_krwTrslAprsPrc").val())*1)/1).toFixed(0);
 		$("#TB06013P_krwTrslAprsPrc").val(addComma(uncomma(formatNum)));
 	});	
 	//담보비율
 	$("#TB06013P_mrtgRto").on('change', function(){
-		let formatNum="0";
+		let formatNum="0.00";
 		formatNum=(Math.round(uncomma($("#TB06013P_mrtgRto").val())*100)/100).toFixed(2);
 		$("#TB06013P_mrtgRto").val(addComma(uncomma(formatNum)));
 	});	
 	//담보인정비율
 	$("#TB06013P_mrtgRcgRto").on('change', function(){
-		let formatNum="0";
+		let formatNum="0.00";
 		formatNum=(Math.round(uncomma($("#TB06013P_mrtgRcgRto").val())*100)/100).toFixed(2);
 		$("#TB06013P_mrtgRcgRto").val(addComma(uncomma(formatNum)));
 	});	
 	//담보인정가액(원화)
 	$("#TB06013P_mrtgPrc").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_mrtgPrc").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_mrtgPrc").val())*1)/1).toFixed(0);
 		$("#TB06013P_mrtgPrc").val(addComma(uncomma(formatNum)));
 	});	
 	//보증금액
 	$("#TB06013P_grteAmt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_grteAmt").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_grteAmt").val())*1)/1).toFixed(0);
 		$("#TB06013P_grteAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//담보수량
 	$("#TB06013P_mrtgQnt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_mrtgQnt").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_mrtgQnt").val())*1)/1).toFixed(0);
 		$("#TB06013P_mrtgQnt").val(addComma(uncomma(formatNum)));
 	});	
 	//담보단가
 	$("#TB06013P_mrtgUnpr").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_mrtgUnpr").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_mrtgUnpr").val())*1)/1).toFixed(0);
 		$("#TB06013P_mrtgUnpr").val(addComma(uncomma(formatNum)));
 	});	
 	//담보금액
 	$("#TB06013P_mrtgAmt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_mrtgAmt").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_mrtgAmt").val())*1)/1).toFixed(0);
 		$("#TB06013P_mrtgAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//가용담보가격
 	$("#TB06013P_avblMrtgPrc_etc").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_avblMrtgPrc_etc").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_avblMrtgPrc_etc").val())*1)/1).toFixed(0);
 		$("#TB06013P_avblMrtgPrc_etc").val(addComma(uncomma(formatNum)));
 	});	
 	//보증원금
 	$("#TB06013P_grtePrna").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_grtePrna").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_grtePrna").val())*1)/1).toFixed(0);
 		$("#TB06013P_grtePrna").val(addComma(uncomma(formatNum)));
 	});	
 	
 	//가용담보가(원화)
 	$("#TB06013P_avblMrtgPrc").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_avblMrtgPrc").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_avblMrtgPrc").val())*1)/1).toFixed(0);
 		$("#TB06013P_avblMrtgPrc").val(addComma(uncomma(formatNum)));
 	});	
 	
 	//고용담보비율
 	$("#TB06013P_cprnMrtgRto").on('change', function(){
-		let formatNum="0";
+		let formatNum="0.00";
 		formatNum=(Math.round(uncomma($("#TB06013P_cprnMrtgRto").val())*100)/100).toFixed(2);
 		$("#TB06013P_cprnMrtgRto").val(addComma(uncomma(formatNum)));
 	});	
@@ -183,28 +177,28 @@ function inputNumberChangeFunction_TB06013P(){
 	//설정최고액(원화)
 	$("#TB06013P_krwTrslStupTopAmt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_krwTrslStupTopAmt").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_krwTrslStupTopAmt").val())*1)/1).toFixed(0);
 		$("#TB06013P_krwTrslStupTopAmt").val(addComma(uncomma(formatNum)));
 	});	
 	
 	//설정최고액
 	$("#TB06013P_stupTopAmt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_stupTopAmt").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_stupTopAmt").val())*1)/1).toFixed(0);
 		$("#TB06013P_stupTopAmt").val(addComma(uncomma(formatNum)));
 	});	
 	
 	//유효담보가(원화)
 	$("#TB06013P_krwTrslValtMrtgPrc").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_krwTrslValtMrtgPrc").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_krwTrslValtMrtgPrc").val())*1)/1).toFixed(0);
 		$("#TB06013P_krwTrslValtMrtgPrc").val(addComma(uncomma(formatNum)));
 	});	
 	
 	//유효담보가
 	$("#TB06013P_valtMrtgPrc").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06013P_valtMrtgPrc").val())*100)/100).toFixed(2);
+		formatNum=(Math.round(uncomma($("#TB06013P_valtMrtgPrc").val())*1)/1).toFixed(0);
 		$("#TB06013P_valtMrtgPrc").val(addComma(uncomma(formatNum)));
 	});		
 		

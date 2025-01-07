@@ -128,7 +128,8 @@ public class TB06010SVO {
     private BigDecimal     prfmPayBlce;                            //성과보수잔액
     private BigDecimal     prcrPrfmPayBlce;                        //외화성과보수잔액
     private BigDecimal 	   totIssuShqt;							   //총발행좌수
-    private BigDecimal	   totIssuStkQnt;						   //총발행주수		
+    private BigDecimal	   totIssuStkQnt;						   //총발행주수	
+    private String 		   psblRsltnYn;							   //가결여부	
 
 	private String 			rqsKndCd;
 	private String 			eprzCrdlIndvLmtDcd;

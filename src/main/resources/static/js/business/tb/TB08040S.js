@@ -279,7 +279,7 @@ const TB08040Sjs = (function () {
         dataType: "string",
         dataIndx: "actName",
         halign: "center",
-        align: "center",
+        align: "left",
         width: "10%",
 		filter: { crules: [{ condition: "range" }] },
       },
@@ -295,7 +295,7 @@ const TB08040Sjs = (function () {
         dataType: "string",
         dataIndx: "feeRcogDcd",
         halign: "center",
-        align: "left",
+        align: "center",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
@@ -319,7 +319,7 @@ const TB08040Sjs = (function () {
         dataIndx: "feeTxtnYn",
         halign: "center",
         align: "center",
-        width: "10%",
+        width: "8%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -379,7 +379,7 @@ const TB08040Sjs = (function () {
         dataIndx: "crryCd",
         halign: "center",
         align: "center",
-        width: "10%",
+        width: "8%",
         filter: { crules: [{ condition: "range" }] },
         editable: true,
         editor: {
@@ -420,7 +420,7 @@ const TB08040Sjs = (function () {
 			  var value = parseFloat(ui.cellData);
 			  var formattedValue = value.toLocaleString('ko-KR', {
 			    minimumFractionDigits: 0,
-			    maximumFractionDigits: 2
+			    maximumFractionDigits: 0
 			  });
 			  return formattedValue;
 			},
@@ -472,7 +472,7 @@ const TB08040Sjs = (function () {
 			  var value = parseFloat(ui.cellData);
 			  var formattedValue = value.toLocaleString('ko-KR', {
 			    minimumFractionDigits: 0,
-			    maximumFractionDigits: 2
+			    maximumFractionDigits: 0
 			  });
 			  return formattedValue;
 			},
@@ -553,7 +553,7 @@ const TB08040Sjs = (function () {
         align: "right",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
-        format: "#,###.00",
+        format: "#,###",
       },
       {
         title: "인식시작일자",
@@ -699,7 +699,7 @@ const TB08040Sjs = (function () {
         halign: "center",
         align: "right",
         width: "10%",
-        format: "#,###.00",
+        format: "#,###",
         editable: false,
       },
       {
@@ -721,7 +721,7 @@ const TB08040Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
-          if (cellData === "1") {
+          if (cellData === "Y") {
             return "처리";
           } else {
             return "미처리";
