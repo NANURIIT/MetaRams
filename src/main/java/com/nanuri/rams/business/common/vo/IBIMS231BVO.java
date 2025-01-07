@@ -22,6 +22,8 @@ public class IBIMS231BVO extends IBIMS231BDTO {
     private String dcfcAnnoCntn;    // 결재자주석내용
     private String rjctRsnCntn;     // 반려사유내용
 
+    private String dcfcEno;         // 결재자사번
+
     private List<IBIMS231BDTO> apvlList;
 
 }

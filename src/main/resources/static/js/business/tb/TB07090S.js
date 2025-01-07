@@ -810,6 +810,8 @@ const TB07090Sjs = (function () {
           } else {
             colModel2_rowIndx = ui.rowIndx;
             selected_dptrRgstDtl = ui.rowData;
+            console.log(selected_dptrRgstDtl);
+            
           }
         },
         selectionModel: { type: "row" },
@@ -1061,8 +1063,14 @@ const TB07090Sjs = (function () {
       })
       return;
     }
-
-    if (!selected_dptrRgstDtl.hndDetlDtm) {
+    else if(!selected_dptrRgstDtl){
+      swal.fire({
+        icon: "warning"
+        , text: "입금증등록내역을 선택해주세요."
+      })
+      return;
+    }
+    else if (selected_dptrRgstDtl && !selected_dptrRgstDtl.hndDetlDtm) {
       swal.fire({
         icon: "warning"
         , text: "등록된 입금증등록내역을 선택해주세요."

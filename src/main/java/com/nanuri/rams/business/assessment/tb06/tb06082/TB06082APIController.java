@@ -22,5 +22,4 @@ public class TB06082APIController {
 		return tb06082Service.decdUpdate(paramData);
 	}
 	
-	
 }
