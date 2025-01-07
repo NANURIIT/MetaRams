@@ -118,11 +118,13 @@
          AND CMNS_CD_GRP = #{cmnsCdGrp}			    /* 공통코드그룹 */
     </update>
 
+    <!-- 코드 만들기 2025-01-07 김건우 -->
     <select id="makeCmnsCdGrp" parameterType="com.nanuri.rams.business.common.dto.IBIMS001BDTO" resultType="String">
-      SELECT SUBSTR(#{cmnsCdNm}, 0, 1) || SUBSTR(NVL(MAX(CMNS_CD_GRP), '0001'), 1, 3)
+      SELECT SUBSTR(#{cmnsCdNm}, 0, 1) || LPAD((SUBSTR(NVL(MAX(CMNS_CD_GRP), SUBSTR(#{cmnsCdNm}, 0, 1) || '001'), 2, 4) + 1), 3, '0')
         FROM IBIMS001B
        WHERE 1=1
-         AND CMNS_CD_NM LIKE % || SUBSTR(#{cmnsCdNm}, 0, 1)
+         AND CMNS_CD_NM LIKE SUBSTR(#{cmnsCdNm}, 0, 1) || '%'
+         AND CMNS_CD_GRP LIKE SUBSTR(#{cmnsCdNm}, 0, 1) || '%'
     </select>
 
     <insert id="insertGroupCodeInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS001BDTO">

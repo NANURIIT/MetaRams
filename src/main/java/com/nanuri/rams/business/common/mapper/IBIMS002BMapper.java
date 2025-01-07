@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.nanuri.rams.business.common.dto.IBIMS002BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS001BVO;
 import com.nanuri.rams.business.common.vo.IBIMS002BVO;
 
@@ -19,9 +20,9 @@ public interface IBIMS002BMapper {
 
 	List<Map<String, Object>> getSelectBoxList(List<String> listParam);				// 공통코드
 	
-	public int registCodeInfo(IBIMS002BVO vo); 										// 코드정보 등록하기
+	public int registCodeInfo(IBIMS002BDTO paramData); 										// 코드정보 등록하기
 	
-	public int insertCodeInfo(IBIMS002BVO vo);
+	public int insertCodeInfo(IBIMS002BDTO paramData);
 	
 	public Integer getMaxSeq(String cmnsCdGrp);
 	

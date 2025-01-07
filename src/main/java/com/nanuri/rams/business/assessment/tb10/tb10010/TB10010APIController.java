@@ -51,8 +51,8 @@ public class TB10010APIController {
 
 	// 코드정보 등록하기
 	@PostMapping(value = "/registCodeInfo")
-	public boolean registCodeInfo(@RequestBody List<IBIMS002BVO> requestDtos) {
-		return service.registCodeInfo(requestDtos);
+	public boolean registCodeInfo(@RequestBody IBIMS002BVO paramData) {
+		return service.registCodeInfo(paramData);
 	}
 
 }

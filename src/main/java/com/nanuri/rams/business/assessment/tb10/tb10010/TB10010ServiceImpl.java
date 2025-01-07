@@ -1,6 +1,7 @@
 package com.nanuri.rams.business.assessment.tb10.tb10010;
 
 import com.nanuri.rams.business.common.dto.IBIMS001BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS002BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS001BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS002BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS001BVO;
@@ -44,7 +45,7 @@ public class TB10010ServiceImpl implements TB10010Service {
     }
 
     /**
-     * 그룹코드 그리드 저장
+     * 그룹코드 그리드 저장 2025-01-07 김건우 새로만듬니ㅏㅡㅜ;ㄹㅇㄴ미;ㅏ뭫ㅇㄹㄴㅍㅇㅁㄴㄹ; ㅏㅣㅓㅜㅎㄻㅇㄴ ㅍ;ㅓㅏㅣㅜㅗㅊㅌ
      */
     @Override
     public boolean registGroupCodeInfo(IBIMS001BVO paramData) {
@@ -55,8 +56,9 @@ public class TB10010ServiceImpl implements TB10010Service {
         List<IBIMS001BDTO> updateList = paramData.getUpdateList();
 
         for(int i = 0; i < insertList.size(); i++){
-            String cmnsCdNm = ibims001BMapper.makeCmnsCdGrp(insertList.get(i));
-            insertList.get(i).setCmnsCdNm(cmnsCdNm);
+            String cmnsCdGrp = ibims001BMapper.makeCmnsCdGrp(insertList.get(i));
+            insertList.get(i).setCmnsCdGrp(cmnsCdGrp);
+            insertList.get(i).setRgstEmpno(facade.getDetails().getEno());
             insertList.get(i).setHndEmpno(facade.getDetails().getEno());
             ibims001BMapper.insertGroupCodeInfo(insertList.get(i));
             cnt += 1;
@@ -79,26 +81,34 @@ public class TB10010ServiceImpl implements TB10010Service {
         return count > 0;
     }
 
+    /**
+     * 코드 저장,수정  2025-01-07 김건우
+     */
     @Override
-    public boolean registCodeInfo(List<IBIMS002BVO> vo) {
-        int count = 0;
-        for (IBIMS002BVO requestVO : vo) {
-            if (ibims002BMapper.getCodeInfo(requestVO.getCmnsCdGrp(), requestVO.getCdVlId()).isPresent()) {
-                throw new IllegalArgumentException("해당 코드가 존재합니다." + requestVO.getCmnsCdGrp() + " : " + requestVO.getCdVlId());
-            }
+    public boolean registCodeInfo(IBIMS002BVO paramData) {
+        int cnt = 0;
 
-            if (ibims002BMapper.getCodeInfo(requestVO.getCmnsCdGrp(), requestVO.getOldCdVlId()).isEmpty()) {
-                // 신규등록
-                requestVO.setRgstEmpno(facade.getDetails().getEno());
-                requestVO.setHndEmpno(facade.getDetails().getEno());
-                count += ibims002BMapper.insertCodeInfo(requestVO);
-            } else {
-                // 수정
-            	requestVO.setHndEmpno(facade.getDetails().getEno());
-                count += ibims002BMapper.registCodeInfo(requestVO);
-            }
+        List<IBIMS002BDTO> insertList = paramData.getInsertList();
+        List<IBIMS002BDTO> updateList = paramData.getUpdateList();
+
+        for(int i = 0; i < insertList.size(); i++){
+            int cdSq = ibims002BMapper.getMaxSeq(
+                insertList.get(i).getCmnsCdGrp()
+            );
+            insertList.get(i).setCdSq(cdSq);
+            insertList.get(i).setRgstEmpno(facade.getDetails().getEno());
+            insertList.get(i).setHndEmpno(facade.getDetails().getEno());
+            ibims002BMapper.insertCodeInfo(insertList.get(i));
+            cnt += 1;
         }
-        return count > 0;
+
+        for(int i = 0; i < updateList.size(); i++){
+            updateList.get(i).setHndEmpno(facade.getDetails().getEno());
+            ibims002BMapper.registCodeInfo(updateList.get(i));
+            cnt += 1;
+        }
+
+        return cnt > 0;
     }
 
     @Override
