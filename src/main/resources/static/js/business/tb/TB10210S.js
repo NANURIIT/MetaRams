@@ -281,7 +281,10 @@ const TB10210Sjs = (function () {
       if (title === "메뉴관리") {
         newRow[dataIndx] = "new";
       }
-      else if (title === "삭제여부" || title === "적용여부") {
+      else if (title === "삭제여부") {
+        newRow[dataIndx] = "N";
+      }
+      else if (title === "적용여부") {
         newRow[dataIndx] = "Y";
       }
       else if (title === "") {
@@ -513,16 +516,16 @@ const TB10210Sjs = (function () {
         if (paramData[i].athCd === "" || paramData[i].athCd.indexOf(" ") > 0) {
           Swal.fire({
             icon: 'warning',
-            title: '권한코드를 입력해주세요!'
+            title: '권한코드를 수정해주세요!'
           });
           return;
-        } else if (paramData[i].athCdNm === "" || paramData[i].athCdNm.indexOf(" ") > 0) {
+        } else if (paramData[i].athCdNm === "") {
           Swal.fire({
             icon: 'warning',
             title: '권한명을 입력해주세요!'
           });
           return;
-        } else if (paramData[i].athCdExpl === "" || paramData[i].athCdExpl.indexOf(" ") > 0) {
+        } else if (paramData[i].athCdExpl === "") {
           Swal.fire({
             icon: 'warning',
             title: '권한설명을 입력해주세요!'
