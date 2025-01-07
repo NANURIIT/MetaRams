@@ -227,7 +227,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 			itrList.add(voItem);
 			ibims220bMapper.saveIBIMS220BDTOInfo(itrList);
 
-		} else {
+		} else { 
 
 	        IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
 	        ibims201bvo.setLastYn("N");
