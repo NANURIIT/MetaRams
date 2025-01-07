@@ -420,7 +420,7 @@ const TB08040Sjs = (function () {
 			  var value = parseFloat(ui.cellData);
 			  var formattedValue = value.toLocaleString('ko-KR', {
 			    minimumFractionDigits: 0,
-			    maximumFractionDigits: 2
+			    maximumFractionDigits: 0
 			  });
 			  return formattedValue;
 			},
@@ -472,7 +472,7 @@ const TB08040Sjs = (function () {
 			  var value = parseFloat(ui.cellData);
 			  var formattedValue = value.toLocaleString('ko-KR', {
 			    minimumFractionDigits: 0,
-			    maximumFractionDigits: 2
+			    maximumFractionDigits: 0
 			  });
 			  return formattedValue;
 			},
@@ -553,7 +553,7 @@ const TB08040Sjs = (function () {
         align: "right",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
-        format: "#,###.00",
+        format: "#,###",
       },
       {
         title: "인식시작일자",
@@ -699,7 +699,7 @@ const TB08040Sjs = (function () {
         halign: "center",
         align: "right",
         width: "10%",
-        format: "#,###.00",
+        format: "#,###",
         editable: false,
       },
       {
