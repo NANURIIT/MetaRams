@@ -348,7 +348,21 @@ const TB06020Sjs = (function(){
 			dataType: "json",
 			success: function(data) {
 				var dealDetail = data;
-
+				let psblRsltnYn; //가결여부
+				psblRsltnYn= isEmpty(dealDetail.psblRsltnYn) ? "N" : dealDetail.psblRsltnYn;
+				
+				if(psblRsltnYn=="N"){
+					Swal.fire({
+						title: '안건 조회 확인',
+						icon: 'error',
+						text: '가결 또는 조건부 가결된 안건이 아닙니다.',
+						confirmButtonText: '확인',
+					}).then(() => {
+						console.log();
+						resetSearchRequiment_TB06020S(); //초기화
+					});
+					return false;
+				}
 				/** Deal 정보 */
 				$('#TB06020S_ibDealNo').val(dealDetail.dealNo);													// 딜번호
 				$('#TB06020S_prdtCd').val(dealDetail.prdtCd);													// 종목코드
@@ -362,13 +376,9 @@ const TB06020Sjs = (function(){
 				} else {
 					$('#TB06020S_res_prdtNm').val(dealDetail.prdtNm);// 종목명
 					$('#TB06020S_res_prdtCd').prop('readonly',true);											
-				}					
-
-				
+				}				
 				$('#TB06020S_lstCCaseCcd').val(dealDetail.mtrDcd);
-				$('#TB06020S_riskInspctCcd').val(dealDetail.jdgmDcd);	
-				
-				
+				$('#TB06020S_riskInspctCcd').val(dealDetail.jdgmDcd);
 				
 				$('#TB06020S_mtrNm').val(dealDetail.mtrNm);														// 안건명
 				$('#TB06020S_apvlDt').val(formatDate(dealDetail.apvlDt));										// 승인일자(결의일자)
@@ -483,7 +493,7 @@ const TB06020Sjs = (function(){
 				$('#key1').val("TB06020S");		
 				getFileInfo($('#key1').val(),key2);				
 				/******  딜공통 파일첨부 추가 ******/ 
-						
+				
 			},
 			error : function(request,  error ){
 				Swal.fire({
@@ -492,6 +502,7 @@ const TB06020Sjs = (function(){
 					text: '집합투자증권 정보등록이 가능한 안건이 아닙니다.',
 					confirmButtonText: '확인',
 				}).then(() => {
+					console.log();
 					resetSearchRequiment_TB06020S(); //초기화
 				});
 			}
