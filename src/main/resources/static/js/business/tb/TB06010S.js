@@ -931,7 +931,7 @@ const TB06010Sjs = (function(){
 					$("input:radio[name = 'TB06010S_intrHdwtClcYn']:input[value='Y']").attr("checked", true);			// 이자수기계산여부
 				}else {
 					$("input:radio[name = 'TB06010S_intrHdwtClcYn']:input[value='N']").attr("checked", true);			// 이자수기계산여부
-				}*/
+				}*/ 
 				
 				$('#TB06010S_fxnIntrt').val(repayInterestInfo.fxnIntrt)														// 고정금리
 				$('#TB06010S_S003').val(repayInterestInfo.aictStdrIntrtKndCd).prop("selected", true);					// 변동금리기준금리종류코드(올인코스트기준금리종류코드)
