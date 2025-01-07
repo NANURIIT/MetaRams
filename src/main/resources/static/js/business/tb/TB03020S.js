@@ -33,7 +33,7 @@ const TB03020Sjs = (function(){
 
 		//athCdCheck_TB03020S();
 
-		$("#selectedMngDealNo").focus();
+		$("#TB03020S_ibDealNo").focus();
 
 		TB03020S_selectOption();
 		//getDealNo();
@@ -62,14 +62,14 @@ const TB03020Sjs = (function(){
 	// 딜정보 상세조회
 	function getBscDealDetail() { 
 
-		if( isEmpty($('#selectedMngDealNo').val()) ){
+		if( isEmpty($('#TB03020S_ibDealNo').val()) ){
 			Swal.fire({
 				icon              : 'error'
 				, title             : "Error!"
 				, text              : "Deal 번호를 입력해주세요."
 				, confirmButtonText : "확인"
 			}).then(() => {
-				$('#selectedMngDealNo').focus();
+				$('#TB03020S_ibDealNo').focus();
 			});
 		}else{
 			businessFunction();
@@ -77,7 +77,7 @@ const TB03020Sjs = (function(){
 
 		function businessFunction() {
 
-			var dealNo = $('#selectedMngDealNo').val();
+			var dealNo = $('#TB03020S_ibDealNo').val();
 			var sn = $('#TB03020S_sq').val();
 
 			var inputParam = {
@@ -235,13 +235,13 @@ const TB03020Sjs = (function(){
 	 */
 
 	// function setKeyFunction_TB03020S() {
-	// 	$("input[id=selectedMngDealNo]").keyup(function(key) {
+	// 	$("input[id=TB03020S_ibDealNo]").keyup(function(key) {
 	// 		if (key.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
 			
 	// 			callTB03021P('TB03020S');
 	// 		}
-	// 		if ($("#selectedMngDealNo").val().length === 0) {
-	// 			$("#selectedMngDealNo").val('');
+	// 		if ($("#TB03020S_ibDealNo").val().length === 0) {
+	// 			$("#TB03020S_ibDealNo").val('');
 	// 			resetSrchCondition();
 	// 		}
 	// 	});
@@ -249,7 +249,7 @@ const TB03020Sjs = (function(){
 
 	/* 초기화버튼 */
 	function resetSrchCondition() {
-		$('#selectedMngDealNo').val('');
+		$('#TB03020S_ibDealNo').val('');
 		$('#selectedDealSq').val('');
 		$("#TB03020S_B019 option:eq(0)").attr('selected', true);
 		//$("#TB03020S_C008 option:eq(0)").attr('selected', true);
@@ -519,7 +519,7 @@ const TB03020Sjs = (function(){
 				if(ibDealNo_TB02010S){
 					//alert(ibDealNo_TB02010S);
 					ibDealNo_TB02010S = ibDealNo_TB02010S.substring(0, 17);
-					$('#selectedMngDealNo').val(ibDealNo_TB02010S);
+					$('#TB03020S_ibDealNo').val(ibDealNo_TB02010S);
 					getBscDealDetail();
 				}
 
@@ -541,7 +541,7 @@ const TB03020Sjs = (function(){
 				dataType: "text",
 				success: function(data) {
 
-					$('#selectedMngDealNo').val(data);
+					$('#TB03020S_ibDealNo').val(data);
 					Swal.fire({
 						icon: 'success'
 						, title: "Success!"
@@ -569,8 +569,8 @@ const TB03020Sjs = (function(){
 
 	function parameterSetting() {
 		let dealNo;
-		if( isNotEmpty($('#selectedMngDealNo').val()) ){
-			dealNo = $('#selectedMngDealNo').val();
+		if( isNotEmpty($('#TB03020S_ibDealNo').val()) ){
+			dealNo = $('#TB03020S_ibDealNo').val();
 		} else { 
 			dealNo = $("#getNmbrDealNo").val();
 		}
@@ -915,7 +915,7 @@ const TB03020Sjs = (function(){
 				data: parameterSetting(),
 				dataType: "text",
 				success: function(data) {
-					$('#selectedMngDealNo').val(data);
+					$('#TB03020S_ibDealNo').val(data);
 				}
 			}).then( function (){
 				approveDeal();
@@ -927,7 +927,7 @@ const TB03020Sjs = (function(){
 	// Deal 결재요청
 	function approveDeal() {
 
-		var ibDealNo = $('#selectedMngDealNo').val();
+		var ibDealNo = $('#TB03020S_ibDealNo').val();
 		var eno = $('#TB03020S_pynt_eno').val();
 		var entpNm = $('#TB03020S_entpRnm').val();
 
@@ -981,7 +981,7 @@ const TB03020Sjs = (function(){
 	// 컴포넌트 컨트롤
 	function componentCtrl() {
 		
-		var dealNo = $('#selectedMngDealNo').val();					// 딜번호
+		var dealNo = $('#TB03020S_ibDealNo').val();					// 딜번호
 		var prgrsStCd = $('#selectedInspctPrgrsStCd').val();		// 진행상태코드
 		let pyntEno = $('#TB03020S_pynt_eno').val();				// 결재자사번
 
@@ -1066,7 +1066,7 @@ const TB03020Sjs = (function(){
 				dataType: "text",
 				success: function(data) {
 
-					// $('#selectedMngDealNo').val(data);
+					// $('#TB03020S_ibDealNo').val(data);
 					Swal.fire({
 						icon: 'success'
 						, title: "Success!"
@@ -1092,7 +1092,7 @@ const TB03020Sjs = (function(){
 	// 반송
 	function rejtDeal() {
 
-		ibDealNo = $('#selectedMngDealNo').val();
+		ibDealNo = $('#TB03020S_ibDealNo').val();
 
 		var paramData = {
 			"ibDealNo" : ibDealNo
@@ -1126,8 +1126,8 @@ const TB03020Sjs = (function(){
 	}
 
 	// 딜번호 조회 팝업 키다운 호출
-	$('#selectedMngDealNo').keydown(function (e) {
-		if(e.originalEvent.key === 'Enter' && $("#selectedMngDealNo").length < 30) {
+	$('#TB03020S_ibDealNo').keydown(function (e) {
+		if(e.originalEvent.key === 'Enter' && $("#TB03020S_ibDealNo").length < 30) {
 			//callAS02020P('TB03020S');
 		}
 	});

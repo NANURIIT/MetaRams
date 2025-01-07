@@ -40,11 +40,14 @@ $("#TB03021P_dprtNm").on("change", function () {
 function TB03021P_srch(menuId) {
   // console.log("일단 체크 해보ㅏ ",$(this).val());
   //input에 값 입력 시 자동 조회
+  console.log("여기오긴함??");
 	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
 		const currentInput = $(this);
 		const ibDealpNmInput = currentInput.closest('.input-group').find('input[id*="_ibDealNm"]');  // 같은 div 내의 empNm input
 		ibDealpNmInput.val("");  // ibDealpNmInput 초기화
 		// 입력값이 7자일 때 조회
+    console.log("currentInput.val().length:::" + currentInput.val().length);
+
 		if (currentInput.val().length === 17) {
 			await ibDealNoSrchEvent(currentInput);
 		}
@@ -62,6 +65,8 @@ function TB03021P_srch(menuId) {
   
 
   async function ibDealNoSrchEvent(selector) {
+
+    console.log("ibDealNoSrchEvent 도달~~~");
 		let prefix;
 		const inputId = $(selector).attr('id');
 		// 입력된 id에 따라 prefix 결정
@@ -381,9 +386,9 @@ function setDealInfo(e) {
   $(pageIbDealNm).val(ibDealNm);
 
   if (prefix == "TB03020S") {
-    $("#selectedMngDealNo").val(ibDealNo);
-    $("#selectedMngDealNm").val(ibDealNm);
-    $("#selectedMngDealNo").focus();
+    // $("#selectedMngDealNo").val(ibDealNo);
+    // $("#selectedMngDealNm").val(ibDealNm);
+    //$("#selectedMngDealNo").focus();
     TB03020Sjs.getBscDealDetail();
   }
 
