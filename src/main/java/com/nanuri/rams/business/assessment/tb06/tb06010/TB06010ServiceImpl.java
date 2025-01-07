@@ -243,7 +243,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 			param.setIntrtCngeFrqcMnum((out202bdto.getIntrtCngeFrqcMnum()==null)?0:out202bdto.getIntrtCngeFrqcMnum());	//변동주기
 			param.setOvduIntrRtDcd(out202bdto.getOvduIntrRtDcd());			//연체이자율구분
 			param.setOvduIntrRt(out202bdto.getOvduIntrRt());				//연체이자율
-			param.setPrnaDfrPrdMnum((out202bdto.getPrnaDfrPrdMnum()==null)?0:param.getPrnaDfrPrdMnum());		//거치기간
+			param.setPrnaDfrPrdMnum((out202bdto.getPrnaDfrPrdMnum()==null)?0:out202bdto.getPrnaDfrPrdMnum());		//거치기간
 			param.setIntrBnaoDcd(out202bdto.getIntrBnaoDcd());				//선후취구분
 			param.setIntrRdmpFrqcMnum(out202bdto.getIntrRdmpFrqcMnum());	//이자상환주기
 			param.setIntrDnumClcMthCd(out202bdto.getIntrDnumClcMthCd());	//일수계산방법
