@@ -302,7 +302,7 @@ const TB06020Sjs = (function(){
 		
 		console.log("riskInspctCcd:"+riskInspctCcd );
 		console.log("lstCCaseCcd:"+lstCCaseCcd );
-		console.log("ibDealNo:"+ibDealNo );
+		//console.log("ibDealNo:"+ibDealNo );
 
 
 		getCnfrncDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd, prdtCd);
