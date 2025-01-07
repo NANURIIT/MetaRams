@@ -404,7 +404,7 @@ const TB08050Sjs = (function () {
         dataType: "string",
         dataIndx: "rpsrNm",
         halign: "center",
-        align: "left",
+        align: "center",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
       },
@@ -714,10 +714,6 @@ const TB08050Sjs = (function () {
               console.log(ui.rowData);
               const rd = ui.rowData;
 
-              console.log("trSn ::: ", rd.trSn, "excSn :::: ", rd.excSn);
-              console.log("feeSn ::: ", rd.feeSn);
-              console.log("prcsCpltYn ::: ", rd.prcsCpltYn);
-
               $("#TB08050S_feeSn").val(rd.feeSn); // 수수료일련번호
               //$("#TB08050S_feeRcivDt").val(dateNull(rd.feeRcivDt)); // 수취일자 ? 수납일자
 			  $("#TB08050S_feeRcivDt").val(rd.feeRcivDt); // 수취일자 ? 수납일자
@@ -807,11 +803,10 @@ const TB08050Sjs = (function () {
       let eprzCrdlFeeStdrAmt = uncomma($("#TB08050S_eprzCrdlFeeStdrAmt").val()); // 수수료대상금액 ? 기업여신수수료기준금액
       let feeRt = $("#TB08050S_feeRt").val(); // 수수료율
       let feeAmt = uncomma($("#TB08050S_feeAmt").val()); // 수수료금액
-	  
-	  console.log("saveTest1");
+
       let feeTrgtCtns = $("#TB08050S_feeTrgtCtns").val(); // 수수료대상내용
       let actsCd = $("#TB08050S_actsCd").val(); // 계정과목코드
-	  console.log("수수료과세여부"+$("#TB08050S_feeTxtnYn_Y").is(":checked"));
+
       let feeTxtnYn = $("#TB08050S_feeTxtnYn_Y").is(":checked") ? "Y" :"N"	; // 수수료과세여부 (체박)
       let ifrsFeeRcogDcd = $("#TB08050S_F006").val(); // 수수료인식구분
       let fnnrRcogStrtDt = unformatDate($("#TB08050S_fnnrRcogStrtDt").val()); // 인식시작일자
@@ -819,7 +814,7 @@ const TB08050Sjs = (function () {
       let fndsDvsnCd = $("#TB08050S_F008").val(); // 자금구분코드
       let bcncNm = $("#TB08050S_entpNm").val(); // 거래처명
       let crryCd = $("#TB08050S_I027").val(); // 통화코드
-	  console.log("saveTest2");
+	
       let aplyExrt = $("#TB08050S_aplcExchR").val(); // 적용환율
       let eprzCrdlTxtnTpDcd = $("#TB08050S_E027").val(); // 기업여신과세유형구분코드
       let feeRcivAmt = uncomma($("#TB08050S_feeRcivAmt").val()); //수수료수납금액 ? 기업여신수수료기준금액
@@ -827,14 +822,13 @@ const TB08050Sjs = (function () {
       let prufIsuDt = unformatDate($("#TB08050S_prufIsuDt").val()); // 증빙발행일자
       let splmTxa = uncomma($("#TB08050S_splmTxa").val()); // 부가세액
       let rctmDt = unformatDate($("#TB08050S_rctmDt").val()); // 입금일자 ? 예정일자
-	  console.log("saveTest3");
+	  
       let prcsCpltYn =  $("#TB08050S_prcsCpltYn_Y").is(":checked") ? "Y" :"N";// 수납완료여부 ? 처리완료여부
       let prcsEmpno = $("#TB08050S_prcsEmpno").val(); // 처리사원번호
       // let prcsTm = $('#TB08050S_prcsTm').val(); // 처리시각
       let decdSttsDcd = $("#TB08050S_decdSttsDcd").val(); // 결재상태구분코드
       let rkfrDt = unformatDate($("#TB08050S_rkfrDt").val()); // 회계일자 ? 기산일자
-      console.log("prcsCpltYn :::: ", prcsCpltYn);
-      console.log("prlnFee :::: ", prlnFee);
+
 
       // 반려 ?
       // 부서합의여부 ?

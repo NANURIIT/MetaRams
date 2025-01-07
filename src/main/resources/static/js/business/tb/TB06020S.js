@@ -32,8 +32,8 @@ const TB06020Sjs = (function(){
 	function inputNumberChangeFunction_TB06020S(){
 		//종목 승인금액
 		$("#TB06020S_rcgAmt").on('change', function(){
-			let formatNum="000.00";
-			formatNum=(Math.round(uncomma($("#TB06020S_rcgAmt").val())*100)/100).toFixed(2);
+			let formatNum="0";
+			formatNum=(Math.round(uncomma($("#TB06020S_rcgAmt").val())*1)/1).toFixed(0);
 			$("#TB06020S_rcgAmt").val(addComma(uncomma(formatNum)));
 		});
 		

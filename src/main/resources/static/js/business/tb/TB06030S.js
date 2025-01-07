@@ -31,8 +31,8 @@ const TB06030Sjs = (function(){
 	function inputNumberChangeFunction_TB06030S(){
 		//종목 승인금액
 		$("#TB06030S_rcgAmt").on('change', function(){
-			let formatNum="000.00";
-			formatNum=(Math.round(uncomma($("#TB06030S_rcgAmt").val())*100)/100).toFixed(2);
+			let formatNum="0";
+			formatNum=(Math.round(uncomma($("#TB06030S_rcgAmt").val())*1)/1).toFixed(0);
 			$("#TB06030S_rcgAmt").val(addComma(uncomma(formatNum)));
 		});
 		//총발행주수
@@ -44,22 +44,22 @@ const TB06030Sjs = (function(){
 		
 		//출자약정금액
 		$("#TB06030S_fincCtrcAmt").on('change', function(){
-			let formatNum="000.00";
-			formatNum=(Math.round(uncomma($("#TB06030S_fincCtrcAmt").val())*100)/100).toFixed(2);
+			let formatNum="0";
+			formatNum=(Math.round(uncomma($("#TB06030S_fincCtrcAmt").val())*1)/1).toFixed(0);
 			$("#TB06030S_fincCtrcAmt").val(addComma(uncomma(formatNum)));
 		});
 		
 		//출자이행금액
 		$("#TB06030S_fincFlflAmt").on('change', function(){
-			let formatNum="000.00";
-			formatNum=(Math.round(uncomma($("#TB06030S_fincFlflAmt").val())*100)/100).toFixed(2);
+			let formatNum="0";
+			formatNum=(Math.round(uncomma($("#TB06030S_fincFlflAmt").val())*1)/1).toFixed(0);
 			$("#TB06030S_fincFlflAmt").val(addComma(uncomma(formatNum)));
 		});	
 		
 		//당사출자약정금액
 		$("#TB06030S_thcoFincCtrcAmt").on('change', function(){
-			let formatNum="000.00";
-			formatNum=(Math.round(uncomma($("#TB06030S_thcoFincCtrcAmt").val())*100)/100).toFixed(2);
+			let formatNum="0";
+			formatNum=(Math.round(uncomma($("#TB06030S_thcoFincCtrcAmt").val())*1)/1).toFixed(0);
 			$("#TB06030S_thcoFincCtrcAmt").val(addComma(uncomma(formatNum)));
 		});	
 				

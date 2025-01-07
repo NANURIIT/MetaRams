@@ -10,8 +10,9 @@ const TB06040Sjs = (function() {
         authInf();
         getSelectBoxList('TB06040S', 'R023/S003/I005/E020/E011/E005/I011');
         resetDd();
-		defaultNumberFormat();
-        getDealInfoFromWF();
+		defaultNumberFormat_TB06040S();
+        getDealInfoFromWF_TB06040S();
+		inputNumberChangeFunction_TB06040S();
       /*  $('input').on('focus', function() {
             $(this).select();
         });*/
@@ -19,12 +20,26 @@ const TB06040Sjs = (function() {
 	
 	
 	
-	function defaultNumberFormat(){		
+	function defaultNumberFormat_TB06040S(){		
 		$("input[id*='Amt'], input[id*='Mnum']").val("0");
 		selectorNumberFormater(
 		      $("input[id*='Amt'], input[id*='Mnum']")
 		  );
 	}
+	
+	/**
+	 * 절사, 금액 반올림
+	 */
+
+	function inputNumberChangeFunction_TB06040S(){
+		//약정금액
+		$("#TB06040S_eprzCrdlCtrcAmt").on('change', function(){
+			let formatNum="0";
+			formatNum=(Math.floor(uncomma($("#TB06040S_eprzCrdlCtrcAmt").val()))).toFixed(0);
+			$("#TB06040S_eprzCrdlCtrcAmt").val(addComma(uncomma(formatNum)));
+		});	
+	}	
+	
 
     function validateParameter() {
         var prdtCd = $('#TB06040S_prdtCd').val();
@@ -76,7 +91,7 @@ const TB06040Sjs = (function() {
                     // btnCtr(data.ctrcCclcDcd); // btn 약정, 해지
                     /* 기업여신 정보 */
                     $('#TB06040S_I011').val(data.prgSttsCd); // 심사진행상태코드
-                    $('#TB06040S_trOthrDscmNo').val(isEmpty(data.trOthrDscmNo)?'':checkBrnAcno(data.trOthrDscmNo));
+                    $('#TB06040S_trOthrDscmNo').val(isEmpty(data.trOthrDscmNo)?'':data.trOthrDscmNo); //checkBrnAcno(data.trOthrDscmNo));
                     $('#TB06040S_trOthrDscmNm').val(data.trOthrDscmNm);
                     $('#TB06040S_R023').val(data.rqsKndCd);
                     $('#TB06040S_prdtClsfCd').val(data.prdtClsfCd);
@@ -651,7 +666,7 @@ const TB06040Sjs = (function() {
         });
     }
 
-    function getDealInfoFromWF() {
+    function getDealInfoFromWF_TB06040S() {
 		
 		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
@@ -670,11 +685,12 @@ const TB06040Sjs = (function() {
 		/**
 		 * 사용 할 함수 정의
 		 */
-		defaultNumberFormat : defaultNumberFormat
+		defaultNumberFormat_TB06040S : defaultNumberFormat_TB06040S
+	,   inputNumberChangeFunction_TB06040S : inputNumberChangeFunction_TB06040S	
 	,	srch : srch
 	,	reset : reset
     ,   btnCtr : btnCtr
-    ,   getDealInfoFromWF : getDealInfoFromWF
+    ,   getDealInfoFromWF_TB06040S : getDealInfoFromWF_TB06040S
 	}
 
 })();
