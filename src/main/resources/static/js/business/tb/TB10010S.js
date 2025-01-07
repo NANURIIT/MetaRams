@@ -549,7 +549,7 @@ const TB10010Sjs = (function () {
 
     for(let i = 0; i < pqgridList.length; i++){
       // 신규데이터
-      if(!pqgridList[i].rgstDt && !pqgridList[i].rgstEmpnm){
+      if(!pqgridList[i].cdSq){
         // 코드
         if(!pqgridList[i].cdVlId){
           Swal.fire({
