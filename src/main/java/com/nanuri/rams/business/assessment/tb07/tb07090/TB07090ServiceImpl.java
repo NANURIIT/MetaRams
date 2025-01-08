@@ -123,6 +123,8 @@ public class TB07090ServiceImpl implements TB07090Service {
                 insertList.get(i).setRgstBdcd(facade.getDetails().getDprtCd());
                 // 조작사원번호
                 insertList.get(i).setHndEmpno(facade.getDetails().getEno());
+                // 납부예정금액 초기화
+                insertList.get(i).setPmntPrarAmt(BigDecimal.ZERO);
 
                 ibims435BMapper.insertIBIMS435B(insertList.get(i));
 
