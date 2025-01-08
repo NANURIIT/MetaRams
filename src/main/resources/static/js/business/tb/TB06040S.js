@@ -11,7 +11,7 @@ const TB06040Sjs = (function() {
         getSelectBoxList('TB06040S', 'R023/S003/I005/E020/E011/E005/I011');
         resetDd();
 		defaultNumberFormat_TB06040S();
-        getDealInfoFromWF_TB06040S();
+        getDealInfoFromWF();
 		inputNumberChangeFunction_TB06040S();
       /*  $('input').on('focus', function() {
             $(this).select();
@@ -666,7 +666,7 @@ const TB06040Sjs = (function() {
         });
     }
 
-    function getDealInfoFromWF_TB06040S() {
+    function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
@@ -690,7 +690,7 @@ const TB06040Sjs = (function() {
 	,	srch : srch
 	,	reset : reset
     ,   btnCtr : btnCtr
-    ,   getDealInfoFromWF_TB06040S : getDealInfoFromWF_TB06040S
+    ,   getDealInfoFromWF : getDealInfoFromWF
 	}
 
 })();
