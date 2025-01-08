@@ -13,6 +13,7 @@ const TB07090Sjs = (function () {
 
   let colModel2_rowIndx = null;
   let colModel3_rowIndx = null;
+  let colModel3_dealRctmAmt = 0;
 
   let TB07090S_rowIndx;
   let TB07090S_pqGridLength = 0;
@@ -647,6 +648,38 @@ const TB07090Sjs = (function () {
         halign: "center",
         align: "right",
         filter: { crules: [{ condition: "range" }] },
+        // 데이터 변경시 입금증등록내역 - 납부예정금액 변경 실패했음 헬프 2025-01-08
+        // beforeEdit: function (event, ui) {
+        //   // 셀 수정 전 값을 저장
+        //   colModel3_dealRctmAmt = ui.cellData;
+        //   console.log(colModel3_dealRctmAmt);
+        // },
+        // cellSave: function (event, ui) {
+        //   // pqgrid값을 바꿨을때 입금증등록내역에 납부예정금액이 얼마가 되는지 보여주기
+
+        //   const rctmDtlsMappingGridData = $('#TB07090S_colModel2').pqGrid("instance").pdata;
+
+        //   let updateIndx;
+
+        //   for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
+        //     if (rctmDtlsMappingGridData[i].rctmDt === ui.rowData.rctmDt
+        //       && rctmDtlsMappingGridData[i].rgstSeq === Number(ui.rowData.rgstSeq)
+        //     ) {
+        //       updateIndx = i;
+        //       break;
+        //     }
+        //   }
+
+        //   $('#TB07090S_colModel2').pqGrid("instance").updateRow({
+        //     rowIndx: updateIndx,
+        //     row: {
+        //       pmntPrarAmt: Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number(colModel3_dealRctmAmt) + Number(ui.cellData)
+        //     }
+        //   });
+
+        //   console.log("실행");
+
+        // }
       },
       {
         title: "초과납입처리내용",
@@ -811,7 +844,7 @@ const TB07090Sjs = (function () {
             colModel2_rowIndx = ui.rowIndx;
             selected_dptrRgstDtl = ui.rowData;
             console.log(selected_dptrRgstDtl);
-            
+
           }
         },
         selectionModel: { type: "row" },
@@ -836,92 +869,6 @@ const TB07090Sjs = (function () {
       },
     ];
     setPqGrid(pqGridObjs);
-
-    // var obj1 = {
-
-    //     height: 200,
-    //     maxHeight: 200,
-    //     showTitle: false,
-    //     showToolbar: false,
-    //     collapsible: false,
-    //     wrap: false,
-    //     hwrap: false,
-    //     numberCell: { show: false },
-    //     editable: true,
-    //     //toolbar: toolbar,
-    //     scrollModel: { autoFit: true },
-    //     colModel: col1,
-    //     strNoRows: '조회된 데이터가 없습니다.',
-    //     cellClick: function (event, ui) {
-    //         //             // if (TB07090S_rowData === ui.rowData) {
-    //         //             //     TB07090S_rowData = TB07090S_dummyData;
-    //         //             // } else {
-    //         //             //     TB07090S_rowData = ui.rowData;
-    //         //             // }
-    //         //         }
-    //     },
-    //     selectionModel: { type: 'row' }
-
-    // }
-
-    // var obj2 = {
-
-    //     height: 200,
-    //     maxHeight: 200,
-    //     showTitle: false,
-    //     showToolbar: false,
-    //     collapsible: false,
-    //     wrap: false,
-    //     hwrap: false,
-    //     numberCell: { show: false },
-    //     editable: true,
-    //     //toolbar: toolbar,
-    //     dataModel: { data: [] },
-    //     scrollModel: { autoFit: true },
-    //     colModel: col2,
-    //     strNoRows: '조회된 데이터가 없습니다.',
-    //     cellClick: function (event, ui) {
-    //         //             // if (TB07090S_rowData === ui.rowData) {
-    //         //             //     TB07090S_rowData = TB07090S_dummyData;
-    //         //             // } else {
-    //         //             //     TB07090S_rowData = ui.rowData;
-    //         //             // }
-    //         //         }
-    //     },
-    //     selectionModel: { type: 'row' }
-
-    // }
-
-    // var obj3 = {
-
-    //     height: 200,
-    //     maxHeight: 200,
-    //     showTitle: false,
-    //     showToolbar: false,
-    //     collapsible: false,
-    //     wrap: false,
-    //     hwrap: false,
-    //     numberCell: { show: false },
-    //     editable: true,
-    //     //toolbar: toolbar,
-    //     scrollModel: { autoFit: true },
-    //     colModel: col3,
-    //     strNoRows: '조회된 데이터가 없습니다.',
-    //     cellClick: function (event, ui) {
-    //         //             // if (TB07090S_rowData === ui.rowData) {
-    //         //             //     TB07090S_rowData = TB07090S_dummyData;
-    //         //             // } else {
-    //         //             //     TB07090S_rowData = ui.rowData;
-    //         //             // }
-    //         //         }
-    //     },
-    //     selectionModel: { type: 'row' }
-
-    // }
-
-    //  $("#TB07090S_colModel1").pqGrid(obj1);
-    // $("#TB07090S_colModel2").pqGrid(obj2);
-    // $("#TB07090S_colModel3").pqGrid(obj3);
   }
 
   /**
@@ -1063,7 +1010,7 @@ const TB07090Sjs = (function () {
       })
       return;
     }
-    else if(!selected_dptrRgstDtl){
+    else if (!selected_dptrRgstDtl) {
       swal.fire({
         icon: "warning"
         , text: "입금증등록내역을 선택해주세요."
@@ -1252,14 +1199,21 @@ const TB07090Sjs = (function () {
     let rowIndx;
 
     if (colModelSelector.attr('id') === 'TB07090S_colModel2') {
-      if (selected_dptrRgstDtl.pmntPrarAmt === 0) {
+      if (colModel3_rowIndx === "" || colModel3_rowIndx === null) {
+        swal.fire({
+          icon: 'warning'
+          , text: "선택하고 지웁시다."
+        })
+        return;
+      }
+      else if (selected_dptrRgstDtl.pmntPrarAmt === 0) {
         rowIndx = colModel2_rowIndx
         // 삭제용 리스트 추가
         rctmDtlsRgstDeleteList.push(
           $('#TB07090S_colModel2').pqGrid('instance').pdata[colModel2_rowIndx]
         )
       }
-      else if(selected_dptrRgstDtl.rgstSeq === undefined){
+      else if (selected_dptrRgstDtl.rgstSeq === undefined) {
         // 그냥 지우기
         rowIndx = colModel2_rowIndx
       }
@@ -1272,6 +1226,14 @@ const TB07090Sjs = (function () {
       }
     }
     else if (colModelSelector.attr('id') === 'TB07090S_colModel3') {
+
+      if (colModel3_rowIndx === "" || colModel3_rowIndx === null) {
+          swal.fire({
+            icon: 'warning'
+            , text: "선택하고 지웁시다."
+          })
+          return;
+      }
 
       rowIndx = colModel3_rowIndx
 
@@ -1300,14 +1262,6 @@ const TB07090Sjs = (function () {
       rctmDtlsMappingDeleteList.push(
         $('#TB07090S_colModel3').pqGrid('instance').pdata[colModel3_rowIndx]
       )
-    }
-
-    if (rowIndx === null || rowIndx === undefined) {
-      swal.fire({
-        icon: 'warning'
-        , text: "선택하고 지웁시다."
-      })
-      return;
     }
 
     colModelSelector.pqGrid("deleteRow", {
@@ -1366,6 +1320,7 @@ const TB07090Sjs = (function () {
             icon: "success"
             , text: "성★공★"
           })
+          search_TB07090S();
         }
         else {
           swal.fire({
@@ -1378,7 +1333,7 @@ const TB07090Sjs = (function () {
 
     rctmDtlsRgstDeleteList = [];
 
-    search_TB07090S();
+    
 
   }
 
@@ -1423,6 +1378,7 @@ const TB07090Sjs = (function () {
             icon: "success"
             , text: "성★공★"
           })
+          search_TB07090S();
         }
         else {
           swal.fire({
@@ -1434,8 +1390,6 @@ const TB07090Sjs = (function () {
     });
 
     rctmDtlsMappingDeleteList = [];
-
-    search_TB07090S();
 
   }
 
@@ -2016,19 +1970,19 @@ const TB07090Sjs = (function () {
   // }
 
   function getDealInfoFromWF() {
-		
-		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
-			var dealNo = sessionStorage.getItem("wfDealNo");
-			var dealNm = sessionStorage.getItem("wfDealNm");
-			$("#TB07090S_ibDealNm").val(dealNo);
-			$("#TB07090S_ibDealNm").val(dealNm);
+
+    if (sessionStorage.getItem("isFromWF")) {
+      console.log("WF세션 있음");
+      var dealNo = sessionStorage.getItem("wfDealNo");
+      var dealNm = sessionStorage.getItem("wfDealNm");
+      $("#TB07090S_ibDealNm").val(dealNo);
+      $("#TB07090S_ibDealNm").val(dealNm);
       search_TB07090S();
-		}else{
-			console.log("WF세션 비었음");
-		}
-		sessionStorage.clear();
-	}
+    } else {
+      console.log("WF세션 비었음");
+    }
+    sessionStorage.clear();
+  }
 
   return {
     // 기존버전
