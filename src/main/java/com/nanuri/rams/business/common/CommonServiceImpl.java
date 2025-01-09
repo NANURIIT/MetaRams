@@ -212,12 +212,12 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getMenuList(AthCd rghtCd) {
+	public List<Map<String, Object>> getMenuList(String rghtCd) {
 		return ibims006BMapper.getMenuList(rghtCd);
 	}
 	
 	@Override
-	public List<Map<String, Object>> getMenuListM(AthCd rghtCd) {
+	public List<Map<String, Object>> getMenuListM(String rghtCd) {
 		return ibims006BMapper.getMenuListM(rghtCd);
 	}
 

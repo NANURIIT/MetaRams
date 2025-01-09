@@ -286,7 +286,6 @@ const TB06030Sjs = (function(){
 
 	function resetSearchRequiment_TB06030S() {		
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
-		console.log("초기화");
 		resetInputValue($('div[data-menuid="/TB06030S"]'));
 		$('#TB06030S_ibDealNo').val('');
 		$('#TB06030S_riskInspctCcdNm').val('');
@@ -372,6 +371,20 @@ const TB06030Sjs = (function(){
 				var dealDetail = data;
 				console.log("prdtCd : "+dealDetail.prdtCd);
 				console.log(dealDetail);
+				let psblRsltnYn; //가결여부
+				psblRsltnYn= isEmpty(dealDetail.psblRsltnYn) ? "N" : dealDetail.psblRsltnYn;
+				
+				if(psblRsltnYn=="N"){
+					Swal.fire({
+						title: '안건 조회 확인',
+						icon: 'error',
+						text: '가결 또는 조건부 가결된 안건이 아닙니다.',
+						confirmButtonText: '확인',
+					}).then(() => {
+						resetSearchRequiment_TB06030S(); //초기화
+					});
+					return false;
+				}
 				/** Deal 정보 */
 				
 				$('#TB06030S_ibDealNo').val(dealDetail.dealNo);	

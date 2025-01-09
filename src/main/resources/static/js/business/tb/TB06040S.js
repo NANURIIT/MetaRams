@@ -11,7 +11,7 @@ const TB06040Sjs = (function() {
         getSelectBoxList('TB06040S', 'R023/S003/I005/E020/E011/E005/I011');
         resetDd();
 		defaultNumberFormat_TB06040S();
-        getDealInfoFromWF_TB06040S();
+        getDealInfoFromWF();
 		inputNumberChangeFunction_TB06040S();
       /*  $('input').on('focus', function() {
             $(this).select();
@@ -35,7 +35,7 @@ const TB06040Sjs = (function() {
 		//약정금액
 		$("#TB06040S_eprzCrdlCtrcAmt").on('change', function(){
 			let formatNum="0";
-			formatNum=(Math.floor(uncomma($("#TB06040S_eprzCrdlCtrcAmt").val()))).toFixed(0);
+			formatNum=(Math.round(uncomma($("#TB06040S_eprzCrdlCtrcAmt").val())*1/1)).toFixed(0);
 			$("#TB06040S_eprzCrdlCtrcAmt").val(addComma(uncomma(formatNum)));
 		});	
 	}	
@@ -115,7 +115,7 @@ const TB06040Sjs = (function() {
                     /* 240617 약정정보 */
                     $('#TB06040S_ctrcDt').val(formatDate(data.ctrcDt));
                     $('#TB06040S_ctrcExpDt').val(formatDate(data.ctrcExpDt));
-                    $('#TB06040S_eprzCrdlCtrcAmt').val(isEmpty(data.eprzCrdlCtrcAmt) ? '0' : addComma(data.eprzCrdlCtrcAmt.toFixed(2)));
+                    $('#TB06040S_eprzCrdlCtrcAmt').val(isEmpty(data.eprzCrdlCtrcAmt) ? '0' : addComma(data.eprzCrdlCtrcAmt.toFixed(0)));
                     $('#TB06040S_stdrClrt').val(isEmpty(data.stdrIntrt) ? '0' : data.stdrIntrt);
                     $('#TB06040S_addClrt').val(isEmpty(data.addIntrt) ? '0' : data.addIntrt);
                     $('#TB06040S_totClrt').val(isEmpty(data.totIntrt) ? '0' : data.totIntrt);
@@ -666,7 +666,7 @@ const TB06040Sjs = (function() {
         });
     }
 
-    function getDealInfoFromWF_TB06040S() {
+    function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
@@ -690,7 +690,7 @@ const TB06040Sjs = (function() {
 	,	srch : srch
 	,	reset : reset
     ,   btnCtr : btnCtr
-    ,   getDealInfoFromWF_TB06040S : getDealInfoFromWF_TB06040S
+    ,   getDealInfoFromWF : getDealInfoFromWF
 	}
 
 })();

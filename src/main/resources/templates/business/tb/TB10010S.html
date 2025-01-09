@@ -35,10 +35,10 @@
                   <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.addGroupCodeRow();">
                     <i class="fa fa-plus"></i>&nbsp;행추가
                   </button>
-                  <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.deleteGroupCodeRow();">
+                  <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.pqGridDeleteRow($('#groupCodeListTable'));">
                     <i class="fa fa-minus"></i>&nbsp;행삭제
                   </button>
-                  <button class="btn btn-success btn-xs" type="button" onclick="TB10010Sjs.clickSaveGroupCode();">
+                  <button class="btn btn-success btn-xs" type="button" onclick="TB10010Sjs.saveGroupCode();">
                     <i class="fa fa-save"></i>&nbsp;저장
                   </button>
                 </div>
@@ -55,7 +55,7 @@
                   <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.addCodeRow();">
                     <i class="fa fa-plus"></i>&nbsp;행추가
                   </button>
-                  <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.deleteCodeRow();">
+                  <button class="btn btn-default btn-xs" type="button" onclick="TB10010Sjs.pqGridDeleteRow($('#codeListTable'));">
                     <i class="fa fa-minus"></i>&nbsp;행삭제
                   </button>
                   <button class="btn btn-success btn-xs" type="button" onclick="TB10010Sjs.clickSaveCode();">

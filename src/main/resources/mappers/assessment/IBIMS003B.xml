@@ -131,10 +131,10 @@
             , #{rgstRsn}
             , #{rgstEmpno}
             , #{rgstDt}
-            , #{dprtCd}
-            , (SELECT MAX(A.DPRT_NM)
-                 FROM IBIMS003B A
-                WHERE A.DPRT_CD = #{dprtCd})
+            , SUBSTR(#{athCd}, 1, 3)
+            , (SELECT MAX(A.CD_VL_NM)
+                 FROM IBIMS002B A
+                WHERE A.CD_VL_ID = SUBSTR(#{athCd}, 1, 3))
             , #{delYn}
             , #{hndEmpno}
             , DEFAULT
@@ -209,6 +209,10 @@
              , APLY_END_DT			= #{aplyEndDt}          /* 부여마감기간 수정 */
              , RGST_RSN				= #{rgstRsn}              /* 부여사유 수정 */
              , ATH_CD				= #{athCd}                  /* 권한 수정 */
+             , DPRT_CD      = SUBSTR(#{athCd}, 1, 3)
+             , DPRT_NM = (SELECT MAX(A.CD_VL_NM)
+                            FROM IBIMS002B A
+                           WHERE A.CD_VL_ID = SUBSTR(#{athCd}, 1, 3))
              , HND_DETL_DTM			= DEFAULT               /* 최종처리일 */
              , HND_EMPNO			= #{hndEmpno}             /* 최종처리자 */
          WHERE 1 = 1

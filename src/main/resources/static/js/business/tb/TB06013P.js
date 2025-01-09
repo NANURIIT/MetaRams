@@ -84,7 +84,7 @@ function inputNumberChangeFunction_TB06013P(){
 	//담보평가금액
 	$("#TB06013P_mrtgEvlAmt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB06012P_sdwnRto").val())*1)/1).toFixed(0);
+		formatNum=(Math.round(uncomma($("#TB06013P_mrtgEvlAmt").val())*1)/1).toFixed(0);
 		$("#TB06013P_mrtgEvlAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//면적
@@ -345,8 +345,17 @@ function btnModalReset_TB06013P(mode) {
   setKRKRW("TB06013P");
   setSelectBoxMrtgKndCd();	
   
-  $("input[id*='Amt'], input[id*='Prc'], input[id*='Rt'], input[id*='Qnt'], input[id*='Unpr'], input[id*='Prc_etc'], input[id*='Prna']" ).val("0");
-  selectorNumberFormater($("input[id*='Amt'], input[id*='Prc'], input[id*='Rt'], input[id*='Qnt'], input[id*='Unpr'], input[id*='Prc_etc'], input[id*='Prna']"));
+  var patterns = $("input[id*='Amt'], input[id*='Prc'], input[id*='Rt'], input[id*='Qnt'], input[id*='Unpr'], input[id*='Prc_etc'], input[id*='Prna']" );
+  
+  for(var i =0; i < patterns.length; i++){
+	if(patterns[i].id.includes('TB06013P')){
+		patterns[i].value = 0; 
+	}
+  }
+  
+  //$("input[id*='Amt'][id*='TB06013P']").val("0");
+  //$("input[id*='Amt'], input[id*='Prc'], input[id*='Rt'], input[id*='Qnt'], input[id*='Unpr'], input[id*='Prc_etc'], input[id*='Prna']" ).val("0");
+  //selectorNumberFormater($("input[id*='Amt'], input[id*='Prc'], input[id*='Rt'], input[id*='Qnt'], input[id*='Unpr'], input[id*='Prc_etc'], input[id*='Prna']"));
 
 }
 
@@ -963,7 +972,7 @@ function getParamData() {
       $("#TB06013P_toggleBtn11").attr("class").includes("btn-info") == true
         ? "Y"
         : "N", // 직접담보여부
-    ovssMrtgYn: $("#TB06013P_D009").val(), // 국외담보여부
+   ovssMrtgYn: $("#TB06013P_D009").val(), // 국외담보여부
     aprsMthCd: $("#TB06013P_A009").val(), // 감정방법코드(감정구분코드)
     aprsEvlIsttCd: $("#TB06013P_A008").val(), // 감정평가기관코드
     crevIsttNm: $("#TB06013P_crevIsttNm").val(), // 시가평가기관명
@@ -979,7 +988,7 @@ function getParamData() {
     mrtgRto: $("#TB06013P_mrtgRto").val(), // 담보비율
     mrtgPrc: $("#TB06013P_mrtgPrc").val().replaceAll(",", ""), // 담보가격
     // IBIMS215B
-    mrtgCtns: $("#TB06013P_mrtgCtns").val(), // 담보내용
+   mrtgCtns: $("#TB06013P_mrtgCtns").val(), // 담보내용
     mvppMrtgKndCd: $("#TB06013P_M012").val(), // 동산담보종류코드
     opprPrsmFdtnCtns: $("#TB06013P_opprPrsmFdtnCtns").val(), // 시가추정근거내용
     mrtgAcqMthCd: $("#TB06013P_M004").val(), // 담보취득방법코드
@@ -990,14 +999,15 @@ function getParamData() {
     crdtInqDt: $("#TB06013P_crdtInqDt").val(), // 신용조회일자
     dbtrCpin: $("#TB06013P_dbtrCpin").val(), // 채무자고객식별번호
     grteDbtrRltnDcd: $("#TB06013P_G003").val(), // 보증채무자관계구분코드
-    grteAmt: $("#TB06013P_grteAmt").val(), // 보증금액
+    grteAmt: $("#TB06013P_grteAmt").val().replaceAll(",", ""), // 보증금액
     grtePrna: $("#TB06013P_grtePrna").val().replaceAll(",", ""), // 보증원금
     grteCrryCd: $("#TB06013P_I027_4").val(), // 보증통화코드
     stlaOrznBlngDcd: $("#TB06013P_S004").val(), // 결산기구분코드
     grteStlaDe: $("#TB06013P_grteStlaDe").val().replaceAll("-", ""), // 보증결산일
     grteStlaDeEtcDcd: $("#TB06013P_G007").val(), // 보증결산일기타구분코드
     mrtgGrteCtns: $("#TB06013P_mrtgGrteCtns").val(), // 담보보증내용
-    // IBIMS217B
+	
+   // IBIMS217B
     grteIsttDcd: $("#TB06013P_G006").val(), // 보증기관구분코드
     grteIsttCd: $("#TB06013P_G005").val(), // 보증기관코드
     grteIsttNm: $("#TB06013P_grteIsttNm").val(), // 보증기관명
@@ -1018,6 +1028,7 @@ function getParamData() {
 	ovssEvlIsttYn: $("#TB06013P_ovssEvlIsttYn").val(), // 국외평가기관여부
     rlthMrtgKndCd: $("#TB06013P_R019").val(), // 실물담보종류코드
     aprsStdrCd: $("#TB06013P_A011").val(), // 감정기준코드
+	
     prfdRankList: prfdRankList // 선순위그리드
   };
   return paramData;

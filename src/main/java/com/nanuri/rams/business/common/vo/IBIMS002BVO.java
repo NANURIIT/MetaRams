@@ -20,5 +20,8 @@ public class IBIMS002BVO extends IBIMS002BDTO {
 	
 	private String 		   oldCdVlId;		  // 코드값ID
     private List<String>   cdVlIds = new ArrayList<>();
+
+	private List<IBIMS002BDTO> insertList;
+	private List<IBIMS002BDTO> updateList;
 	
 }

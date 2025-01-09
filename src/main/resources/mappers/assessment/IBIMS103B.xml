@@ -789,6 +789,7 @@
 		     , s112b.RSLTN_YR                                              /* 결의년도 */
 		     , s112b.CNSB_SQ                                               /* 협의체순번 */
 		     , s112b.SN                                                    /* 일련번호 */
+		     , s112b.PSBL_RSLTN_YN										   /* 가결여부 */	
 		     , s112b.APVL_DT                                               /* 승인일자 */
 		     , NVL(s201b.EPRZ_CRDL_APVL_AMT, s112b.APVL_AMT) AS APVL_AMT   /* 승인금액 */
 		     , s112b.SDN_CNDT_F                                            /* 셀다운조건여부 */
@@ -963,6 +964,7 @@
 							,MTR_PRG_STTS_DCD
 							,APVL_DT
 							,APVL_AMT
+							,CASE WHEN MTR_PRG_STTS_DCD IN ('308','309') THEN 'Y' ELSE 'N' END AS PSBL_RSLTN_YN /*결의 여부, 안건진행상태코드 가결, 조건부가결 (협의체결의 결과: 가결, 조건부가결, 가결(자체조건))*/
 							,RANK() OVER(PARTITION BY DEAL_NO, MTR_DCD, JDGM_DCD, CNSB_DCD ORDER BY DECODE(MTR_PRG_STTS_DCD,'308',1,'309',1,2) ASC, RSLTN_YR DESC, TO_NUMBER(CNSB_SQ) DESC, TO_NUMBER(SN) DESC) AS RK		  					
 		  				FROM IBIMS112B 
 		  				WHERE DEL_YN='N'

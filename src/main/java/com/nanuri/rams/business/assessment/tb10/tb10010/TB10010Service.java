@@ -45,7 +45,7 @@ public interface TB10010Service {
 	 * @param vo
 	 * @return
 	 */
-	public boolean registCodeInfo(List<IBIMS002BVO> vo);
+	public boolean registCodeInfo(IBIMS002BVO paramData);
 
 	public boolean deleteCodeInfo(IBIMS002BVO requestDto);
 	

@@ -931,13 +931,13 @@ const TB06010Sjs = (function(){
 					$("input:radio[name = 'TB06010S_intrHdwtClcYn']:input[value='Y']").attr("checked", true);			// 이자수기계산여부
 				}else {
 					$("input:radio[name = 'TB06010S_intrHdwtClcYn']:input[value='N']").attr("checked", true);			// 이자수기계산여부
-				}*/
+				}*/ 
 				
 				$('#TB06010S_fxnIntrt').val(repayInterestInfo.fxnIntrt)														// 고정금리
 				$('#TB06010S_S003').val(repayInterestInfo.aictStdrIntrtKndCd).prop("selected", true);					// 변동금리기준금리종류코드(올인코스트기준금리종류코드)
 				$('#TB06010S_aictAddIntrt').val(repayInterestInfo.addIntrt);											// 변동금리가산금리(올인코스트가산금리)
 				$('#TB06010S_addIntrt').val(repayInterestInfo.addIntrt)													// 가산금리
-				$('#TB06010S_intrCngeFrqcMnum').val(repayInterestInfo.intrCngeFrqcMnum)									// 금리변동주기개월수
+				$('#TB06010S_intrCngeFrqcMnum').val(repayInterestInfo.intrtCngeFrqcMnum)									// 금리변동주기개월수
 				$('#TB06010S_E019').val(repayInterestInfo.ovduIntrRtDcd).prop("selected", true);						// 연체이자율구분코드(기업여신연체이자율구분코드)
 				$('#TB06010S_ovduIntrRt').val(repayInterestInfo.ovduIntrRt)												// 연체이자율
 				$('#TB06010S_intrRdmpFrqcMnum').val(repayInterestInfo.intrRdmpFrqcMnum)									// 이자상환주기
@@ -1353,7 +1353,7 @@ const TB06010Sjs = (function(){
 			//, "nmcpMtrDcd": $('#TB06010S_lstCCaseCcd').val()							// 부수안건구분코드
 			, "mtrDcd" : $('#TB06010S_lstCCaseCcd').val()
 			//, "nmcpMtrSn": nmcpMtrSn                            						// 부수안건일련번호
-			//, "lstCCaseDcd": $('#TB06010S_riskInspctCcd').val()							// 리스크심사구분코드
+			//, "lstCCaseDcd": $('#TB06010S_riskInspctCcd').val()						// 리스크심사구분코드
 			, "jdgmDcd" : $('#TB06010S_riskInspctCcd').val()	
 			, "mtrNm": $('#TB06010S_mtrNm').val()										// 안건명
 			//, "locoIssMngmNo": ''                    									// loc발급관리번호

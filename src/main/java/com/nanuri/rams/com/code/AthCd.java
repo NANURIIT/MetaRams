@@ -24,7 +24,8 @@ public enum AthCd {
 	AG68(15, "WM사업부 부서장"),
 	AG69(16, "WN사업부 본부장"),
 	AG70(17, "감사부"),
-	IT10(99, "IT관리자");
+	IT10(99, "IT관리자"),
+	ST11(100, "결제업무실");
 	
 	int level;
 	String text;

@@ -153,8 +153,8 @@ const TB08050Sjs = (function () {
   function inputNumberChangeFunction_TB08050S(){
 	//수수료대상금액
 	$("#TB08050S_eprzCrdlFeeStdrAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB08050S_eprzCrdlFeeStdrAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB08050S_eprzCrdlFeeStdrAmt").val())*1)/1).toFixed(0);
 		$("#TB08050S_eprzCrdlFeeStdrAmt").val(addComma(uncomma(formatNum)));
 	});
 	//수수료율
@@ -165,14 +165,14 @@ const TB08050Sjs = (function () {
 	});	
 	//수수료금액
 	$("#TB08050S_feeAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB08050S_feeAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB08050S_feeAmt").val())*1)/1).toFixed(0);
 		$("#TB08050S_feeAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//합계금액
 	$("#TB08050S_tempTot").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB08050S_tempTot").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB08050S_tempTot").val())*1)/1).toFixed(0);
 		$("#TB08050S_tempTot").val(addComma(uncomma(formatNum)));
 	});	
 	//적용환율
@@ -183,19 +183,19 @@ const TB08050Sjs = (function () {
 	});	
 	//수수료수납금액
 	$("#TB08050S_feeRcivAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB08050S_feeRcivAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB08050S_feeRcivAmt").val())*1)/1).toFixed(0);
 		$("#TB08050S_feeRcivAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//원화환산수수료
 	$("#TB08050S_wcrcTrslTrFeeAmt").on('change', function(){
-		let formatNum="000.00";
-		formatNum=(Math.round(uncomma($("#TB08050S_wcrcTrslTrFeeAmt").val())*100)/100).toFixed(2);
+		let formatNum="0";
+		formatNum=(Math.round(uncomma($("#TB08050S_wcrcTrslTrFeeAmt").val())*1)/1).toFixed(0);
 		$("#TB08050S_wcrcTrslTrFeeAmt").val(addComma(uncomma(formatNum)));
 	});	
 	//세액 (10원절사)
 	$("#TB08050S_splmTxa").on('change', function(){
-		let formatNum="000";
+		let formatNum="0";
 		formatNum=(Math.floor(uncomma($("#TB08050S_splmTxa").val())/10)*10).toFixed(0);
 		$("#TB08050S_splmTxa").val(addComma(uncomma(formatNum)));
 	});		
@@ -423,7 +423,7 @@ const TB08050Sjs = (function () {
             halign: "center",
             align: "right",
             width: "10%",
-            format: "#,###.00",
+            format: "#,###",
           },
           {
             title: "대상내용(계산식)",
@@ -449,7 +449,7 @@ const TB08050Sjs = (function () {
             halign: "center",
             align: "right",
             width: "10%",
-            format: "#,###.00",
+            format: "#,###",
             render: function (ui) {
               let cellData = ui.cellData;
               if (isNaN(cellData)) {
@@ -515,7 +515,7 @@ const TB08050Sjs = (function () {
         align: "right",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
-        format: "#,###.00",
+        format: "#,###",
       },
       {
         title: "인식시작일자",
@@ -608,7 +608,7 @@ const TB08050Sjs = (function () {
         halign: "center",
         align: "right",
         width: "10%",
-        format: "#,###.00",
+        format: "#,###",
       },
       {
         title: "거래일련번호",
@@ -716,7 +716,7 @@ const TB08050Sjs = (function () {
 
               $("#TB08050S_feeSn").val(rd.feeSn); // 수수료일련번호
               //$("#TB08050S_feeRcivDt").val(dateNull(rd.feeRcivDt)); // 수취일자 ? 수납일자
-			  $("#TB08050S_feeRcivDt").val(rd.feeRcivDt); // 수취일자 ? 수납일자
+			  $("#TB08050S_feeRcivDt").val(dateNull(rd.feeRcivDt)); // 수취일자 ? 수납일자
 
 			  $("#TB08050S_F004").val(rd.feeKndCd); // 기업여신수수료종류코드
               if(!isEmpty(rd.feeStdrAmt)) $("#TB08050S_eprzCrdlFeeStdrAmt").val(commaNull(rd.feeStdrAmt)); // 기업여신수수료기준금액
