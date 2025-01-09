@@ -7,7 +7,7 @@ $(function () {
  * 이전 페이지 저장용 ☆전★역☆변★수☆
  * @author {집에 가고싶은 사람}
  */
-const e_jeon_page = [];   // 최초의 이전 페이지는 늘 오늘의 할일...인듯 ㅜㅜ
+const prevPage = [];   // 최초의 이전 페이지는 늘 오늘의 할일...인듯 ㅜㅜ
 let rtUseYn = "N";        // removeTab을 사용했는지 안했는지 구분용. 아이디어 있으신분 바꿔주세요
 
 /**
@@ -198,7 +198,7 @@ async function callPage(menuId, pageName) {
         return;
     }
 
-    e_jeon_page.push(url.split('/')[1]);
+    prevPage.push(url.split('/')[1]);
 
     history.pushState(null, '', '/' + menuId);
 
@@ -356,7 +356,7 @@ function moveTab(menuId) {
 
     if(rtUseYn === "N"){
         console.log("리무브탭 사용 안했어요");
-        e_jeon_page.push(url.split('/')[1]);
+        prevPage.push(url.split('/')[1]);
     }
     
     $(".main-tab").removeClass("active");
@@ -399,9 +399,9 @@ function removeTab(menuId) {
         // 탭 지우기
         $(`li[data-tabId="/${menuId}"]`).remove()
 
-        이전페이지생존유무();
+        chkPrevPageTag();
         // 현재화면의 탭을 삭제시 무브탭 발생
-        moveTab(e_jeon_page.pop());
+        moveTab(prevPage.pop());
     } else {
         // 현재탭이 아닌 탭을 삭제시 탭만 지우고 컨텐츠는 숨기기
         $(`li[data-tabId="/${menuId}"]`).remove()
@@ -418,12 +418,15 @@ function removeTab(menuId) {
 
 }
 
-function 이전페이지생존유무 () {
-    let 이전페이지 = e_jeon_page[e_jeon_page.length - 1]
+/**
+ * 이전페이지 태그유무 확인
+ */
+function chkPrevPageTag () {
+    let prevMenuId = prevPage[prevPage.length - 1]
     while(true){
-        if($(`li[data-tabId="/${이전페이지}"]`).length === 0){
-            e_jeon_page.splice(-1, 1);
-            이전페이지 = e_jeon_page[e_jeon_page.length - 1];
+        if($(`li[data-tabId="/${prevMenuId}"]`).length === 0){
+            prevPage.splice(-1, 1);
+            prevMenuId = prevPage[prevPage.length - 1];
         }else {
             break;
         }

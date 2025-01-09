@@ -707,13 +707,13 @@ const TB07090Sjs = (function () {
           console.log("실행");
         }
       },
-      {
-        title: "변경전입금금액",
-        dataType: "integer",
-        format: "#,###",
-        dataIndx: "beforeDealRctmAmt",
-        editable: true,
-      },
+      // {
+      //   title: "변경전입금금액",
+      //   dataType: "integer",
+      //   format: "#,###",
+      //   dataIndx: "beforeDealRctmAmt",
+      //   editable: true,
+      // },
       {
         title: "초과납입처리내용",
         editable: true,
@@ -857,43 +857,19 @@ const TB07090Sjs = (function () {
           }
           // UPDATE용 ROW는 입금일자 수정불가능
           else if (ui.rowData.hndDetlDtm && ui.column.dataIndx === "rctmDt") {
-            console.log("ㅇㅇ");
             ui.column.editable = false;
           }
           // INSERT용 ROW는 입금일자 수정가능
           else if (!ui.rowData.hndDetlDtm && ui.column.dataIndx === "rctmDt") {
-            // $(ui.$td[0]).find("div").on("click", function () {
-            //   console.log("이벤트추가");
-            //   //validateCal(this);	
-            //   let temVal;
-            //   temVal = replaceAll($(this).val(), '-', '');
-            //   if (temVal.length === 8) {
-            //     temVal = formatDate(temVal);
-            //     console.log("onformat" + temVal);
-            //     $(this).val(temVal);
-            //   } else if (temVal.length > 8) {
-            //     $(this).val(formatDate(temVal.slice(0, 8)));
-            //   }
-            // })
-
-            // $(ui.$td[0]).datepicker({
-            //     changeMonth: true,
-            //     changeYear: true,
-            //     dateFormat: 'yyyymmdd',
-            //     keyboardNavigation: false,
-            //     forceParse: false,
-            //     calendarWeeks: false,
-            //     language: "ko",
-            //   });
             ui.column.editable = true;
           }
         },
         rowClick: function (event, ui) {
-          // if (TB07090S_rowData === ui.rowData) {
-          //     TB07090S_rowData = TB07090S_dummyData;
-          // } else {
-          //     TB07090S_rowData = ui.rowData;
-          // }
+          if (TB07090S_rowData === ui.rowData) {
+              TB07090S_rowData = TB07090S_dummyData;
+          } else {
+              TB07090S_rowData = ui.rowData;
+          }
           if (selected_dptrRgstDtl === ui.rowData) {
             colModel2_rowIndx = null;
             selected_dptrRgstDtl = null;
@@ -904,6 +880,7 @@ const TB07090Sjs = (function () {
 
           }
         },
+        selectionModel: { type: "row" },
       },
       {
         height: 200,

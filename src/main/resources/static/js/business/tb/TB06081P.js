@@ -311,6 +311,8 @@ function TB06081P_apvlListChk() {
         success: function (data) {
             // 성공
             if (data.length > 0) {
+                console.log(data);
+                
                 TB06081P_apvlList = data;
                 TB06081P_setApvlList();
                 // 결재요청중
