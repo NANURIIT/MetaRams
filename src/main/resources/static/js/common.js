@@ -2151,3 +2151,15 @@ function chkDecdStep (menuId){
 } 
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) {}
+
+/**
+ * 컴포넌트포커스
+ * @param {String} 컴포넌트Id.
+ * @discription
+ * 컴포넌트에 포커스를 위치한다
+ * ex) idFocus('TB06040S_ctrtDt');
+ */
+function idFocus(id){
+	$('#' + id).focus();
+}
+
