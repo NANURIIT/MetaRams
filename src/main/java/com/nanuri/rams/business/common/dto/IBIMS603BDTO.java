@@ -22,4 +22,15 @@ public class IBIMS603BDTO {
     private String         hndTrId;                                         // 조작거래id
     private String         guid;                                            // guid
     
+
+    @Override
+    public String toString() {
+        return "IBIMS603BDTO{" +
+               "dealNo='" + dealNo + '\'' +
+               ", inspctDt='" + inspctDt + '\'' +
+               ", inspctRmrk='" + inspctRmrk + '\'' +
+               ", Rmrk='" + rmrk + '\'' +
+               ", hndEmpno='" + hndEmpno + '\'' +
+               '}';
+    }
 }

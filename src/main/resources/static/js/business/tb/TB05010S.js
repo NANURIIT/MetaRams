@@ -1,11 +1,11 @@
-const TB05010Sjs = (function(){
+const TB05010Sjs = (function () {
   var MMBRCount = 0; // 위원정보 ID컨트롤 상수
   var readyOption = false;
   let mmbrListbox; // 협의체 위원구분
   let arrPqGridCnfrncList; // 협의체 결의 및 목록
-  let arrPqGridMmbrInfo;  // 위원정보
+  let arrPqGridMmbrInfo; // 위원정보
   let arrPqGridCaseList; // 안건정보
-  
+
   $(document).ready(function () {
     touchSpin(); // 결의년도 좌우 가산
     //tableFunction(); // 테이블 이벤트등록
@@ -15,88 +15,88 @@ const TB05010Sjs = (function(){
     let year = getToday().substring(0, 4);
     $("#TB05010S_stdYr").val(year);
   });
-  
+
   /**
    * 회차 변경이벤트
    */
-  function chngInspctCnfrncSqc () {
+  function chngInspctCnfrncSqc() {
     $("#TB05010S_rsltnDt2").val(getToday());
     $("#TB05010S_rsltnTm2").val("");
-    $("#TB05010S_inspctPrgrsStCd2").val('');
-  
-    $("#addCnfrncInfo").prop('disabled', false);
-    $("#delCnfrncInfo").prop('disabled', false);
-    $("#approveAlert").prop('disabled', false);
-    $("#cancelAlert").prop('disabled', false);
-    $("#saveButton").prop('disabled', false);
-  
+    $("#TB05010S_inspctPrgrsStCd2").val("");
+
+    $("#addCnfrncInfo").prop("disabled", false);
+    $("#delCnfrncInfo").prop("disabled", false);
+    $("#approveAlert").prop("disabled", false);
+    $("#cancelAlert").prop("disabled", false);
+    $("#saveButton").prop("disabled", false);
+
     //$("#gridMmbrList").pqGrid("option", "dataModel.data", []);
     //$("#gridMmbrList").pqGrid("refreshDataAndView"); // 위원정보 pqgrid 초기화
     $("#gridCaseList").pqGrid("option", "dataModel.data", []);
     $("#gridCaseList").pqGrid("refreshDataAndView"); // pqgrid 초기화
   }
-  
+
   function mmbrDelRow() {
     /* 그리드 체크 갯수 */
-    let gridData = $('#gridMmbrList').pqGrid("option", "dataModel.data");
+    let gridData = $("#gridMmbrList").pqGrid("option", "dataModel.data");
     let checkedRows = [];
     for (let i = 0; i < gridData.length; i++) {
       MMBRCount--;
       let rowData = gridData[i];
-      if (rowData.chkYn == 'Y') {	
+      if (rowData.chkYn == "Y") {
         indexDel = i;
         checkedRows.push(rowData);
       }
     }
-  
-      if (checkedRows && checkedRows.length > 0) {
-          // 체크된 행들을 반복하며 삭제
-          checkedRows.forEach(function(row) {
-              $('#gridMmbrList').pqGrid('deleteRow', { rowIndx: row.pq_ri});
-          });
-      }
-    if(checkedRows.length <= 0){
-       Swal.fire({
-         icon                : 'error'
-         , title             : "Error!"
-         , text              : "삭제할 위원정보 행을 체크해주세요."
-         , confirmButtonText : "확인"
-       });
+
+    if (checkedRows && checkedRows.length > 0) {
+      // 체크된 행들을 반복하며 삭제
+      checkedRows.forEach(function (row) {
+        $("#gridMmbrList").pqGrid("deleteRow", { rowIndx: row.pq_ri });
+      });
+    }
+    if (checkedRows.length <= 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "삭제할 위원정보 행을 체크해주세요.",
+        confirmButtonText: "확인",
+      });
       return false;
     }
   }
-  
-  function delCaseList () {
+
+  function delCaseList() {
     /* 그리드 체크 갯수 */
-    let gridData = $('#gridCaseList').pqGrid("option", "dataModel.data");
+    let gridData = $("#gridCaseList").pqGrid("option", "dataModel.data");
     let checkedRows = [];
     for (let i = 0; i < gridData.length; i++) {
       MMBRCount--;
       let rowData = gridData[i];
-      if (rowData.chkYn == 'Y') {	
+      if (rowData.chkYn == "Y") {
         indexDel = i;
         checkedRows.push(rowData);
       }
     }
-  
-      if (checkedRows && checkedRows.length > 0) {
-          // 체크된 행들을 반복하며 삭제
-          checkedRows.forEach(function(row) {
-              $('#gridCaseList').pqGrid('deleteRow', { rowIndx: row.pq_ri});
-          });
-      }
-    if(checkedRows.length <= 0){
-       Swal.fire({
-         icon                : 'error'
-         , title             : "Error!"
-         , text              : "삭제할 안건정보 행을 체크해주세요."
-         , confirmButtonText : "확인"
-       });
+
+    if (checkedRows && checkedRows.length > 0) {
+      // 체크된 행들을 반복하며 삭제
+      checkedRows.forEach(function (row) {
+        $("#gridCaseList").pqGrid("deleteRow", { rowIndx: row.pq_ri });
+      });
+    }
+    if (checkedRows.length <= 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "삭제할 안건정보 행을 체크해주세요.",
+        confirmButtonText: "확인",
+      });
       return false;
     }
   }
-  
-  function mmbrList () {
+
+  function mmbrList() {
     $.ajax({
       type: "GET",
       url: "/getSelectBoxCode/C003",
@@ -108,39 +108,39 @@ const TB05010Sjs = (function(){
             title: "",
             dataType: "string",
             dataIndx: "chkYn",
-            halign : "center",
+            halign: "center",
             align: "center",
-            minWidth: 35,  
+            minWidth: 35,
             maxWidth: 35,
-            editable : true,
+            editable: true,
             filter: { crules: [{ condition: "range" }] },
             editor: false,
-            type : 'checkBoxSelection',
+            type: "checkBoxSelection",
             cb: {
               all: true,
               header: true,
               check: "Y",
-              uncheck: "N"
-            }
+              uncheck: "N",
+            },
           },
           {
             title: "위원구분",
             dataType: "string",
             dataIndx: "atdcTrgtDcd",
-            halign : "center",
+            halign: "center",
             align: "center",
             // width : "20%",
-            editable : true,
+            editable: true,
             filter: { crules: [{ condition: "range" }] },
             editor: {
               type: "select",
               valueIndx: "CD_VL_ID",
               labelIndx: "CD_VL_NM",
-              options: data
+              options: data,
             },
             render: function (ui) {
               var options = data;
-              var option = options.find(opt => opt.CD_VL_ID == ui.cellData);
+              var option = options.find((opt) => opt.CD_VL_ID == ui.cellData);
               return option ? option.CD_VL_NM : ui.cellData;
             },
           },
@@ -151,18 +151,37 @@ const TB05010Sjs = (function(){
             align: "center",
             // width : "35%",
             filter: { crules: [{ condition: "range" }] },
-            colModel  : [
-              { title : "위원번호", dataType : "string",  dataIndx : "atdcTrgtEmpno", align : "center", halign : "center", hidden : true},
-              { title : "위원명", dataType : "string",  dataIndx : "atdcTrgtEmpnm", align : "center", halign : "center", },
-              { title : "", dataType : "",  dataIndx : "", align : "center", halign : "center",  minWidth: 36,  maxWidth: 36,
+            colModel: [
+              {
+                title: "위원번호",
+                dataType: "string",
+                dataIndx: "atdcTrgtEmpno",
+                align: "center",
+                halign: "center",
+                hidden: true,
+              },
+              {
+                title: "위원명",
+                dataType: "string",
+                dataIndx: "atdcTrgtEmpnm",
+                align: "center",
+                halign: "center",
+              },
+              {
+                title: "",
+                dataType: "",
+                dataIndx: "",
+                align: "center",
+                halign: "center",
+                minWidth: 36,
+                maxWidth: 36,
                 render: function (ui) {
                   let rowData = ui.rowData;
                   return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrTrgt', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
-                }
+                },
               },
             ],
-            
-          },  
+          },
           {
             title: "대리참석위원",
             dataType: "string",
@@ -170,41 +189,61 @@ const TB05010Sjs = (function(){
             // width : "35%",
             align: "center",
             filter: { crules: [{ condition: "range" }] },
-            colModel  : [
-              { title : "대리참석위원번호", dataType : "string",  dataIndx : "atdcAngtEmpno", align : "center", halign : "center", hidden : true},
-              { title : "대리참석위원", dataType : "string",  dataIndx : "atdcAngtEmpnm", align : "center", halign : "center"},
-              { title : "", dataType : "",  dataIndx : "", align : "center", halign : "center", minWidth: 36,  maxWidth: 36,
-              render: function (ui) {
-                let rowData = ui.rowData;
-                return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrAngt', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
-              }},
-            ]
+            colModel: [
+              {
+                title: "대리참석위원번호",
+                dataType: "string",
+                dataIndx: "atdcAngtEmpno",
+                align: "center",
+                halign: "center",
+                hidden: true,
+              },
+              {
+                title: "대리참석위원",
+                dataType: "string",
+                dataIndx: "atdcAngtEmpnm",
+                align: "center",
+                halign: "center",
+              },
+              {
+                title: "",
+                dataType: "",
+                dataIndx: "",
+                align: "center",
+                halign: "center",
+                minWidth: 36,
+                maxWidth: 36,
+                render: function (ui) {
+                  let rowData = ui.rowData;
+                  return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrAngt', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                },
+              },
+            ],
           },
         ];
-      
-      // 위원정보
-      let obj = {
-        height: 200,
-        maxHeight: 200,
-        showTitle: false,
-        showToolbar: false,
-        collapsible: false,
-        wrap: false,
-        hwrap: false,
-        numberCell: { show: false },
-        editable: false,
-        //toolbar: toolbar,
-        scrollModel: { autoFit: true },
-        colModel: colMmbrList,
-        strNoRows: '데이터가 없습니다.'
-      }
-      $("#gridMmbrList").pqGrid(obj);
-      arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid('instance');
+
+        // 위원정보
+        let obj = {
+          height: 200,
+          maxHeight: 200,
+          showTitle: false,
+          showToolbar: false,
+          collapsible: false,
+          wrap: false,
+          hwrap: false,
+          numberCell: { show: false },
+          editable: false,
+          //toolbar: toolbar,
+          scrollModel: { autoFit: true },
+          colModel: colMmbrList,
+          strNoRows: "데이터가 없습니다.",
+        };
+        $("#gridMmbrList").pqGrid(obj);
+        arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid("instance");
       },
     });
-    
   }
-  
+
   // 그리드 렌더링함수
   function rendorGrid() {
     /** 그리드 **/
@@ -225,7 +264,7 @@ const TB05010Sjs = (function(){
       },
     ];
     setPqGrid(arrPqGridObj);
-  
+
     arrPqGridCnfrncList = $("#gridCnfrncList").pqGrid("instance");
     arrPqGridCaseList = $("#gridCaseList").pqGrid("instance");
   }
@@ -241,27 +280,27 @@ const TB05010Sjs = (function(){
     $("#gridMmbrList").pqGrid("refreshDataAndView"); // pqgrid 초기화
     $("#gridCaseList").pqGrid("option", "dataModel.data", []);
     $("#gridCaseList").pqGrid("refreshDataAndView"); // pqgrid 초기화
-  
+
     $("#TB05010S_inspctCnfrncSqcSq2").val("");
     $("#TB05010S_rsltnDt2").val(getToday());
     $("#TB05010S_rsltnTm2").val("");
     $("#TB05010S_inspctPrgrsStCd2").val("");
   }
-  
-  function chngStdYr (e) {
+
+  function chngStdYr(e) {
     $("#gridCnfrncList").pqGrid("option", "dataModel.data", []);
     $("#gridCnfrncList").pqGrid("refreshDataAndView"); // pqgrid 초기화
     $("#gridMmbrList").pqGrid("option", "dataModel.data", []);
     $("#gridMmbrList").pqGrid("refreshDataAndView"); // pqgrid 초기화
     $("#gridCaseList").pqGrid("option", "dataModel.data", []);
     $("#gridCaseList").pqGrid("refreshDataAndView"); // pqgrid 초기화
-  
+
     $("#TB05010S_inspctCnfrncSqcSq2").val("");
     $("#TB05010S_rsltnDt2").val(getToday());
     $("#TB05010S_rsltnTm2").val("");
     $("#TB05010S_inspctPrgrsStCd2").val("");
   }
-  
+
   function touchSpin() {
     //TouchSpin
     $(".touchspin").TouchSpin({
@@ -270,7 +309,7 @@ const TB05010Sjs = (function(){
       buttonup_class: "btn btn-white",
     });
   }
-  
+
   // 전결협의체
   getSelectBoxList("TB05010S", "R016");
   // 초기화버튼 - 협의체 전결협의체, 회차별로 조회 후 신규 회차 추가 시 사용
@@ -281,7 +320,7 @@ const TB05010Sjs = (function(){
       $("#saveButton").attr("disabled", false);
       $("#confirmButton").attr("disabled", true);
       $("#cancleButton").attr("disabled", true);
-  
+
       //협의체 기본정보 초기화 및 셋팅
       $("#TB05010S_inspctCnfrncSqcSq2").val(
         Number($("#TB05010S_inspctCnfrncSqcSq2").val()) + 1
@@ -289,40 +328,40 @@ const TB05010Sjs = (function(){
       $("#TB05010S_rsltnDt2").val("");
       $("#TB05010S_rsltnTm2").val("");
       $("#TB05010S_inspctPrgrsStCd2").val("");
-  
+
       $("#TB05010_fileList").html("");
-      //  $('#TB05010S_MMBRList').html(''); 
+      //  $('#TB05010S_MMBRList').html('');
       $("#TB05010S_CASEList").html("");
       $("#gridCnfrncList").pqGrid("option", "dataModel.data", []);
-      $("#gridCnfrncList").pqGrid("refreshDataAndView");							// pqgrid 초기화 
+      $("#gridCnfrncList").pqGrid("refreshDataAndView"); // pqgrid 초기화
       $("#gridCaseList").pqGrid("option", "dataModel.data", []);
-      $("#gridCaseList").pqGrid("refreshDataAndView");							// pqgrid 초기화
+      $("#gridCaseList").pqGrid("refreshDataAndView"); // pqgrid 초기화
       $("#gridMmbrList").pqGrid("option", "dataModel.data", []);
-      $("#gridMmbrList").pqGrid("refreshDataAndView");							// pqgrid 초기화 
+      $("#gridMmbrList").pqGrid("refreshDataAndView"); // pqgrid 초기화
     } else {
       // 버튼 활성화/비활성화
       $("#saveButton").attr("disabled", false);
       $("#confirmButton").attr("disabled", true);
       $("#cancleButton").attr("disabled", true);
     }
-    $("#addCnfrncInfo").prop('disabled', false);
-    $("#delCnfrncInfo").prop('disabled', false);
-    $("#approveAlert").prop('disabled', false);
-    $("#cancelAlert").prop('disabled', false);
+    $("#addCnfrncInfo").prop("disabled", false);
+    $("#delCnfrncInfo").prop("disabled", false);
+    $("#approveAlert").prop("disabled", false);
+    $("#cancelAlert").prop("disabled", false);
   }
 
-  function inputReset(){
-    $("#gridCaseList").pqGrid("option", "dataModel.data", []);    // 안건정보
-    $("#gridCaseList").pqGrid("refreshDataAndView");							// pqgrid 초기화
+  function inputReset() {
+    $("#gridCaseList").pqGrid("option", "dataModel.data", []); // 안건정보
+    $("#gridCaseList").pqGrid("refreshDataAndView"); // pqgrid 초기화
     $("#TB05010S_rsltnDt2").val(""); //결의일
-    $("#TB05010S_rsltnTm2").val(""); //시간 
+    $("#TB05010S_rsltnTm2").val(""); //시간
     $("#TB05010S_inspctPrgrsStCd2").val(""); //회차
   }
-  
+
   function getCNFRNCList() {
     var inspctCnfrncCcd = $("#TB05010S_R016").val(); // 전결협의체
     var stdYr = $("#TB05010S_stdYr").val(); // 결의년도
-  
+
     MMBRCount = 0;
     if (inspctCnfrncCcd === "") {
       Swal.fire({
@@ -333,12 +372,12 @@ const TB05010Sjs = (function(){
       });
       return false;
     }
-  
+
     var paramData = {
       cnsbDcd: inspctCnfrncCcd,
       rsltnYr: stdYr,
     };
-  
+
     $.ajax({
       type: "GET",
       url: "/TB05010S/getCNFRNCList",
@@ -355,7 +394,7 @@ const TB05010Sjs = (function(){
       },
     });
   }
-  
+
   function getCNFRNCInfo(e) {
     var cnsbDcd = e.cnsbDcd; // 전결협의체
     var rsltnYr = e.rsltnYr; // 결의년도
@@ -363,14 +402,10 @@ const TB05010Sjs = (function(){
     var rsltnDt = e.cnsbOpnDt; // 결의일자
 
     MMBRCount = 0;
-    
-    if (
-      cnsbDcd &&
-      rsltnYr &&
-      String(inspctCnfrncSqcSq)
-    ) {
+
+    if (cnsbDcd && rsltnYr && String(inspctCnfrncSqcSq)) {
       businessFunction();
-    } else {  
+    } else {
       Swal.fire({
         icon: "error",
         title: "Error!",
@@ -378,24 +413,24 @@ const TB05010Sjs = (function(){
         confirmButtonText: "확인",
       });
     }
-  
+
     function businessFunction() {
       var paramData = {
-        cnsbDcd: cnsbDcd ,
+        cnsbDcd: cnsbDcd,
         rsltnYr: rsltnYr,
         sn: inspctCnfrncSqcSq,
         cnsbOpnDt: rsltnDt,
       };
-  
+
       // TODO: reset TB05010S
       // 페이지에서 기존정보 제거 후 취득
       $("#TB05010S_MMBRList").empty();
       $("#TB05010_fileList").empty();
-  
+
       getCNFRNC(paramData); // 결의협의회 기본정보
     }
   }
-  
+
   // 결의협의회 기본정보
   function getCNFRNC(paramData) {
     $.ajax({
@@ -412,7 +447,6 @@ const TB05010Sjs = (function(){
         $("#TB05010S_rsltnTm2").val(data.cnsbOpnTm);
         $("#TB05010S_inspctPrgrsStCd2").val(data.mtrPrgSttsDcdNm);
         $("#TB05010S_mtrPrgSttdDcd").val(data.mtrPrgSttsDcd);
-
 
         if (Number(data.mtrPrgSttsDcd) < 303) {
           $("#saveButton").attr("disabled", false);
@@ -433,23 +467,22 @@ const TB05010Sjs = (function(){
         }
         // 협의체 진행상태가 협의체 결의 이후의 건이면 안건변경 불가
         if (Number(data.mtrPrgSttsDcd) > 306) {
-          $("#addCnfrncInfo").prop('disabled', true);
-          $("#delCnfrncInfo").prop('disabled', true);
-          $("#approveAlert").prop('disabled', true);
-          $("#cancelAlert").prop('disabled', true);
+          $("#addCnfrncInfo").prop("disabled", true);
+          $("#delCnfrncInfo").prop("disabled", true);
+          $("#approveAlert").prop("disabled", true);
+          $("#cancelAlert").prop("disabled", true);
         } else if (Number(data.mtrPrgSttsDcd) <= 306) {
-          $("#addCnfrncInfo").prop('disabled', false);
-          $("#delCnfrncInfo").prop('disabled', false);
-          $("#approveAlert").prop('disabled', false);
-          $("#cancelAlert").prop('disabled', false);
+          $("#addCnfrncInfo").prop("disabled", false);
+          $("#delCnfrncInfo").prop("disabled", false);
+          $("#approveAlert").prop("disabled", false);
+          $("#cancelAlert").prop("disabled", false);
         } else {
-          $("#addCnfrncInfo").prop('disabled', false);
-          $("#delCnfrncInfo").prop('disabled', false);
-          $("#approveAlert").prop('disabled', false);
-          $("#cancelAlert").prop('disabled', false);
+          $("#addCnfrncInfo").prop("disabled", false);
+          $("#delCnfrncInfo").prop("disabled", false);
+          $("#approveAlert").prop("disabled", false);
+          $("#cancelAlert").prop("disabled", false);
         }
-  
-  
+
         getMMBRInfo(paramData); // 결의협의회 위원정보
         getCaseInfo(paramData); // 결의협의회 안건정보
       },
@@ -463,12 +496,12 @@ const TB05010Sjs = (function(){
         $("#TB05010S_rsltnDt2").val("");
         $("#TB05010S_rsltnTm2").val("");
         $("#TB05010S_inspctPrgrsStCd2").val("");
-  
+
         //
         $("#TB05010S_MMBRList").empty();
         $("#TB05010_fileList").empty();
         $("#TB05010S_CASEList").empty();
-  
+
         // 버튼 컨트롤
         $("#saveButton").attr("disabled", false);
         $("#confirmButton").attr("disabled", true);
@@ -476,7 +509,7 @@ const TB05010Sjs = (function(){
       },
     });
   }
-  
+
   // 결의협의회 위원정보
   function getMMBRInfo(paramData) {
     $.ajax({
@@ -486,116 +519,116 @@ const TB05010Sjs = (function(){
       dataType: "json",
       success: function (data) {
         arrPqGridMmbrInfo.setData(data);
-           //var MMBRInfo = data;
-  
-          //  if (MMBRInfo.length > 0) {
-          //    // 있을경우
-          //    var html = "";
-          //    $.each(MMBRInfo, function (key, MMBR) {
-          //      html += "<tr>";
-          //      // td chkbox
-          //      html +=
-          //        '<td style="vertical-align: middle;"><input type="checkbox" class="MMBRChk" id="MMBR_chkbox_' +
-          //        (MMBRCount + 1) +
-          //        '"></td>';
-  
-          //      // td selectbox
-          //      html +=
-          //        '<td><select class="form-control" id="CMMTT_MMBR_CCD_' +
-          //        (MMBRCount + 1) +
-          //        '">';
-          //      if (selectbox.length > 0) {
-          //        $.each(selectbox, function (key, value) {
-          //          if (MMBR.atdcTrgtDcd == value.CD_VL_ID) {
-          //            html +=
-          //              '<option value="' +
-          //              value.CD_VL_ID +
-          //              '" selected>' +
-          //              value.CD_VL_NM +
-          //              " (" +
-          //              value.CD_VL_ID +
-          //              ") " +
-          //              "</option>";
-          //          } else {
-          //            html +=
-          //              '<option value="' +
-          //              value.CD_VL_ID +
-          //              '">' +
-          //              value.CD_VL_NM +
-          //              " (" +
-          //              value.CD_VL_ID +
-          //              ") " +
-          //              "</option>";
-          //          }
-          //        });
-          //      }
-          //      html += "</select></td>";
-  
-          //      // td inputbox
-          //      html += "<td>";
-          //      html += '<div class="input-group">';
-          //      html +=
-          //        '<input type="text" class="form-control" id="ATDNC_' +
-          //        (MMBRCount + 1) +
-          //        '_empNm" readonly value="' +
-          //        MMBR.atdcTrgtEmpnm +
-          //        '">';
-          //      html +=
-          //        '<input type="hidden" id="ATDNC_' +
-          //        (MMBRCount + 1) +
-          //        '_empNo" value="' +
-          //        MMBR.atdcTrgtEmpno +
-          //        '">';
-          //      html += '<span class="input-group-append">';
-          //      html +=
-          //        '<button type="button" class="btn btn-default" onclick="callTB03022P(\'ATDNC_' +
-          //        (MMBRCount + 1) +
-          //        "')\">";
-          //      html += '<i class="fa fa-search"></i>';
-          //      html += "</button>";
-          //      html += "</span>";
-          //      html += "</div>";
-          //      html += "</td>";
-  
-          //      //td inputbox
-          //      html += "<td>";
-          //      html += '<div class="input-group">';
-          //      html +=
-          //        '<input type="text" class="form-control" id="ATDNC_PRXY_' +
-          //        (MMBRCount + 1) +
-          //        '_empNm" readonly value="' +
-          //        MMBR.atdcAngtEmpnm +
-          //        '">';
-          //      html +=
-          //        '<input type="hidden" id="ATDNC_PRXY_' +
-          //        (MMBRCount + 1) +
-          //        '_empNo" value="' +
-          //        MMBR.atdcAngtEmpno +
-          //        '">';
-          //      html += '<span class="input-group-append">';
-          //      html +=
-          //        '<button type="button" class="btn btn-default" onclick="callTB03022P(\'ATDNC_PRXY_' +
-          //        (MMBRCount + 1) +
-          //        "')\">";
-          //      html += '<i class="fa fa-search"></i>';
-          //      html += "</button>";
-          //      html += "</span>";
-          //      html += "</div>";
-          //      html += "</td>";
-  
-          //      html += "</tr>";
-  
-          //      MMBRCount++;
-          //    });
-          //    $("#TB05010S_MMBRList").append(html);
-          //  }
+        //var MMBRInfo = data;
+
+        //  if (MMBRInfo.length > 0) {
+        //    // 있을경우
+        //    var html = "";
+        //    $.each(MMBRInfo, function (key, MMBR) {
+        //      html += "<tr>";
+        //      // td chkbox
+        //      html +=
+        //        '<td style="vertical-align: middle;"><input type="checkbox" class="MMBRChk" id="MMBR_chkbox_' +
+        //        (MMBRCount + 1) +
+        //        '"></td>';
+
+        //      // td selectbox
+        //      html +=
+        //        '<td><select class="form-control" id="CMMTT_MMBR_CCD_' +
+        //        (MMBRCount + 1) +
+        //        '">';
+        //      if (selectbox.length > 0) {
+        //        $.each(selectbox, function (key, value) {
+        //          if (MMBR.atdcTrgtDcd == value.CD_VL_ID) {
+        //            html +=
+        //              '<option value="' +
+        //              value.CD_VL_ID +
+        //              '" selected>' +
+        //              value.CD_VL_NM +
+        //              " (" +
+        //              value.CD_VL_ID +
+        //              ") " +
+        //              "</option>";
+        //          } else {
+        //            html +=
+        //              '<option value="' +
+        //              value.CD_VL_ID +
+        //              '">' +
+        //              value.CD_VL_NM +
+        //              " (" +
+        //              value.CD_VL_ID +
+        //              ") " +
+        //              "</option>";
+        //          }
+        //        });
+        //      }
+        //      html += "</select></td>";
+
+        //      // td inputbox
+        //      html += "<td>";
+        //      html += '<div class="input-group">';
+        //      html +=
+        //        '<input type="text" class="form-control" id="ATDNC_' +
+        //        (MMBRCount + 1) +
+        //        '_empNm" readonly value="' +
+        //        MMBR.atdcTrgtEmpnm +
+        //        '">';
+        //      html +=
+        //        '<input type="hidden" id="ATDNC_' +
+        //        (MMBRCount + 1) +
+        //        '_empNo" value="' +
+        //        MMBR.atdcTrgtEmpno +
+        //        '">';
+        //      html += '<span class="input-group-append">';
+        //      html +=
+        //        '<button type="button" class="btn btn-default" onclick="callTB03022P(\'ATDNC_' +
+        //        (MMBRCount + 1) +
+        //        "')\">";
+        //      html += '<i class="fa fa-search"></i>';
+        //      html += "</button>";
+        //      html += "</span>";
+        //      html += "</div>";
+        //      html += "</td>";
+
+        //      //td inputbox
+        //      html += "<td>";
+        //      html += '<div class="input-group">';
+        //      html +=
+        //        '<input type="text" class="form-control" id="ATDNC_PRXY_' +
+        //        (MMBRCount + 1) +
+        //        '_empNm" readonly value="' +
+        //        MMBR.atdcAngtEmpnm +
+        //        '">';
+        //      html +=
+        //        '<input type="hidden" id="ATDNC_PRXY_' +
+        //        (MMBRCount + 1) +
+        //        '_empNo" value="' +
+        //        MMBR.atdcAngtEmpno +
+        //        '">';
+        //      html += '<span class="input-group-append">';
+        //      html +=
+        //        '<button type="button" class="btn btn-default" onclick="callTB03022P(\'ATDNC_PRXY_' +
+        //        (MMBRCount + 1) +
+        //        "')\">";
+        //      html += '<i class="fa fa-search"></i>';
+        //      html += "</button>";
+        //      html += "</span>";
+        //      html += "</div>";
+        //      html += "</td>";
+
+        //      html += "</tr>";
+
+        //      MMBRCount++;
+        //    });
+        //    $("#TB05010S_MMBRList").append(html);
+        //  }
       },
       error: function () {
         // 없을경우
       },
     });
   }
-  
+
   // 결의협의회 안건정보
   function getCaseInfo(paramData) {
     $.ajax({
@@ -650,7 +683,7 @@ const TB05010Sjs = (function(){
         //       html += "</td>";
         //       html += "<td>" + value.ownPEnm;
         //       html += "</td>";
-  
+
         //       // btn updown
         //       /*html += '<td>';
         //                 html += '<button type="button" id="" class="btn btn-default btn-xs">';
@@ -660,16 +693,16 @@ const TB05010Sjs = (function(){
         //                 html += '<i class="fa fa-caret-down"></i>';
         //                 html += '</button>';
         //                 html += '</td>';*/
-  
+
         //       html += "</tr>";
-  
+
         //       var dtoParam = {
         //         fileIbDealNo: value.ibDealNo,
         //         fileRiskInspctCcd: value.riskInspctCcd,
         //         fileLstCCaseCcd: value.lstCCaseCcd,
         //       };
         //       //fileInfo(dtoParam);
-  
+
         //       $("#TB05010S_CASEList").html(html);
         //     });
         //   }
@@ -679,7 +712,7 @@ const TB05010Sjs = (function(){
       },
     });
   }
-  
+
   // 관련보고서 목록 호출
   function fileInfo(dtoParam) {
     $.ajax({
@@ -694,11 +727,11 @@ const TB05010Sjs = (function(){
       },
     });
   }
-  
+
   function callbackFile(action, result) {
     var html = "";
     var temp = "";
-  
+
     if (action == "upload") {
       html = makeFilList(html, result);
       $("#TB05010_fileList").append(html);
@@ -710,7 +743,7 @@ const TB05010Sjs = (function(){
       $("#TB05010_fileList").append(html);
     }
   }
-  
+
   /**
    * 파일목록 Table 생성
    */
@@ -723,41 +756,45 @@ const TB05010Sjs = (function(){
     html += "<tr>";
     //html += '    <td><input type="checkbox" id="' +result.attFileSq + '">';
     //html += '    </td>';
-    html += '    <td><a href="' + encUri + '">' + result.orgFileNm + "</a></td>";
+    html +=
+      '    <td><a href="' + encUri + '">' + result.orgFileNm + "</a></td>";
     html += "    <td>" + result.rgstDt + "</td>";
     html += '    <td style="display:none;">' + result.ibDealNo + "</td>";
     html += '    <td style="display:none;">' + result.riskInspctCcd + "</td>";
     html += '    <td style="display:none;">' + result.lstCCaseCcd + "</td>";
     html += "</tr>";
-  
+
     return html;
   }
-  
+
   // 위원정보 행추가 버튼기능
   function addMMBRRow() {
     MMBRCount++;
     let newRow = {
-      aprvOppsDcd : "",
-      aprvOppsDcdNm : "",
-      atdcTrgtDcd : "",
-      atdcTrgtEmpnm : "",
-      atdcTrgtEmpno : "",
-      atdcAngtEmpnm : "",
-      atdcAngtEmpno : "",
-      atdcYn : "",
-      cnsbDcd : "",
-      cnsbSq : "",
-    }
-    $('#gridMmbrList').pqGrid("addRow", {rowData: newRow, checkEditable: false });
+      aprvOppsDcd: "",
+      aprvOppsDcdNm: "",
+      atdcTrgtDcd: "",
+      atdcTrgtEmpnm: "",
+      atdcTrgtEmpno: "",
+      atdcAngtEmpnm: "",
+      atdcAngtEmpno: "",
+      atdcYn: "",
+      cnsbDcd: "",
+      cnsbSq: "",
+    };
+    $("#gridMmbrList").pqGrid("addRow", {
+      rowData: newRow,
+      checkEditable: false,
+    });
   }
-  
+
   // 테이블 이벤트등록
   // function tableFunction() {
   //   MMBRChk(); // 위원정보 테이블 체크박스 이벤트 설정
   //   CASEChk(); // 안건정보 테이블 체크박스 이벤트 설정
   //   // TODO: 안건정보 업다운 버튼시 순서변경 이벤트
   // }
-  
+
   // // 위원정보 테이블 체크박스 이벤트 설정
   // function MMBRChk() {
   //   $("#MMBRChk").change(function () {
@@ -768,7 +805,7 @@ const TB05010Sjs = (function(){
   //     }
   //   });
   // }
-  
+
   // // 안건정보 테이블 체크박스 이벤트 설정
   // function CASEChk() {
   //   $("#CASEChk").change(function () {
@@ -779,12 +816,12 @@ const TB05010Sjs = (function(){
   //     }
   //   });
   // }
-  
+
   // 테이블 행삭제 버튼기능
   // function delTableRow(tableId) {
   //   var tableIdCheckBox = "#" + tableId + " input:checkbox:checked";
   //   var text = "";
-  
+
   //   if (tableId == "TB05010S_MMBRList") {
   //     text = "위원정보 체크박스를 확인해주세요.";
   //   } else if (tableId == "TB05010S_CASEList") {
@@ -792,10 +829,10 @@ const TB05010Sjs = (function(){
   //   } else {
   //     text = "체크박스를 확인해주세요.";
   //   }
-  
+
   //   // tr 체크된 갯수 확인
   //   var checkboxes = $(tableIdCheckBox);
-  
+
   //   if (checkboxes.length > 0) {
   //     businessFunction();
   //   } else {
@@ -806,7 +843,7 @@ const TB05010Sjs = (function(){
   //       confirmButtonText: "확인",
   //     });
   //   }
-  
+
   //   function businessFunction() {
   //     MMBRCount -= checkboxes.length;
   //     checkboxes.each(function (i) {
@@ -815,16 +852,16 @@ const TB05010Sjs = (function(){
   //       var ibDealNo = td.eq(1).text();
   //       var riskInspctCcd = td.eq(4).text();
   //       var lstCCaseCcd = td.eq(6).text();
-  
+
   //       if (tableId == "TB05010S_CASEList") {
   //         deleteFileInfo(ibDealNo, riskInspctCcd, lstCCaseCcd);
   //       }
-  
+
   //       tr.remove();
   //     });
   //   }
   // }
-  
+
   function deleteFileInfo(ibDealNo, riskInspctCcd, lstCCaseCcd) {
     if ($("#CASEChk").is(":checked")) {
       $("#TB05010_fileList").empty();
@@ -835,7 +872,7 @@ const TB05010Sjs = (function(){
           var fileIbDealNo = $(val).find("td:eq(2)").html();
           var fileRiskInspctCcd = $(val).find("td:eq(3)").html();
           var fileLstCCaseCcd = $(val).find("td:eq(4)").html();
-  
+
           if (
             fileIbDealNo == ibDealNo &&
             fileRiskInspctCcd == riskInspctCcd &&
@@ -846,23 +883,23 @@ const TB05010Sjs = (function(){
         });
     }
   }
-  
+
   // 안건정보 추가 - AS02020P 에서 전달받음
   // function addDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd) {
   //   var count = 0;
-  
+
   //   var paramData = {
   //     dealNo: ibDealNo,
   //     jdgmDcd: riskInspctCcd,
   //     mtrDcd: lstCCaseCcd,
   //   };
-  
+
   //   if ($("#TB05010S_CASEList").length > 0) {
   //     $("#TB05010S_CASEList tr").each(function (index, item) {
   //       var dealNo = $(item).children().eq(1).text();
   //       var jdgmDcd = $(item).children().eq(4).text();
   //       var mtrDcd = $(item).children().eq(6).text();
-  
+
   //       if (
   //         ibDealNo == dealNo &&
   //         riskInspctCcd == jdgmDcd &&
@@ -878,7 +915,7 @@ const TB05010Sjs = (function(){
   //       }
   //     });
   //   }
-  
+
   //   if (count === 0) {
   //     $.ajax({
   //       type: "GET",
@@ -887,7 +924,7 @@ const TB05010Sjs = (function(){
   //       dataType: "json",
   //       success: function (data) {
   //         businessFunction();
-  
+
   //         /*
   //                 if (data.inspctPrgrsStCd == 310 || data.inspctPrgrsStCd == 330) {
   //                     businessFunction();
@@ -900,59 +937,59 @@ const TB05010Sjs = (function(){
   //                     });
   //                 }
   //                 */
-  
+
   //         function businessFunction() {
   //           var trLength = $("#TB05010S_CASEList tr").length;
-  
+
   //           html = "";
   //           html += "<tr>";
   //           // chkbox
   //           html += "<td>";
   //           html += '<input type="checkbox" class="CASEChk">';
   //           html += "</td>";
-  
+
   //           // ibDealNo
   //           html += '<td style="display:none;">' + data.dealNo;
   //           html += "</td>";
-  
+
   //           // rnkNo
   //           html += "<td>" + (trLength + 1);
   //           html += "</td>";
-  
+
   //           // ibDealNm
   //           html += "<td>" + data.mtrNm;
   //           html += "</td>";
-  
+
   //           // riskInspctCcd
   //           html += '<td style="display:none">' + data.jdgmDcd;
   //           html += "</td>";
   //           html += "<td>" + data.jdgmDcdNm;
   //           html += "</td>";
-  
+
   //           // lstCCaseCcd
   //           html += '<td style="display:none">' + data.mtrDcd;
   //           html += "</td>";
   //           html += "<td>" + data.mtrDcdNm;
   //           html += "</td>";
-  
+
   //           // dprtNm
   //           html += '<td style="display:none">' + data.dprtCd;
   //           html += "</td>";
   //           html += "<td>" + data.dprtNm;
   //           html += "</td>";
-  
+
   //           // chrgPEno
   //           html += '<td style="display:none">' + data.chrgPEno;
   //           html += "</td>";
   //           html += "<td>" + data.chrgPNm;
   //           html += "</td>";
-  
+
   //           // ownPEno
   //           html += '<td style="display:none">' + data.ownPEno;
   //           html += "</td>";
   //           html += "<td>" + data.ownPNm;
   //           html += "</td>";
-  
+
   //           // btn updown
   //           html += "<td>";
   //           html += '<button type="button" id="" class="btn btn-default btn-xs">';
@@ -962,17 +999,17 @@ const TB05010Sjs = (function(){
   //           html += '<i class="fa fa-caret-down"></i>';
   //           html += "</button>";
   //           html += "</td>";
-  
+
   //           html += "</tr>";
-  
+
   //           $("#TB05010S_CASEList").append(html);
-  
+
   //           var dtoParam = {
   //             fileIbDealNo: data.ibDealNo,
   //             fileRiskInspctCcd: data.riskInspctCcd,
   //             fileLstCCaseCcd: data.lstCCaseCcd,
   //           };
-  
+
   //           //fileInfo(dtoParam);
   //         }
   //       },
@@ -980,17 +1017,17 @@ const TB05010Sjs = (function(){
   //   } else {
   //   }
   // }
-  
+
   // TB05010S 임시저장버튼
   function tempSave() {
     var MMBRListCount = arrPqGridMmbrInfo.pdata.length;
     var CASEListCount = arrPqGridCaseList.pdata.length;
-    let CnfrncList = arrPqGridCnfrncList.pdata;         //// 협의체 결의 및 목록
+    let CnfrncList = arrPqGridCnfrncList.pdata; //// 협의체 결의 및 목록
     var inspctCnfrncSqcSq2 = $("#TB05010S_inspctCnfrncSqcSq2").val();
 
     for (let i = 0; i < CnfrncList.length; i++) {
       if (CnfrncList[i].sn == $("#TB05010S_inspctCnfrncSqcSq2").val()) {
-        console.log(`CnfrncList[i].sn : ${CnfrncList[i].sn}`)
+        console.log(`CnfrncList[i].sn : ${CnfrncList[i].sn}`);
         Swal.fire({
           icon: "error",
           title: "Error!",
@@ -1001,7 +1038,7 @@ const TB05010Sjs = (function(){
         return; // 알림 후 함수 종료
       }
     }
-  
+
     if (!isEmpty(inspctCnfrncSqcSq2)) {
       if (MMBRListCount != 0 && CASEListCount != 0) {
         businessFunction();
@@ -1029,21 +1066,20 @@ const TB05010Sjs = (function(){
         text: "회차정보를 확인하세요.",
         confirmButtonText: "확인",
       });
-    }    
-  
+    }
+
     function businessFunction() {
-      
       /* 협의체 회차정보 */
-      var inspctCnfrncCcd = $("#TB05010S_R016_2").val();               //전결협의체
-      var stdYr = $("#TB05010S_stdYr").val();                          //결의년도
+      var inspctCnfrncCcd = $("#TB05010S_R016_2").val(); //전결협의체
+      var stdYr = $("#TB05010S_stdYr").val(); //결의년도
       var inspctCnfrncSqcSq = $("#TB05010S_inspctCnfrncSqcSq2").val(); //회차
-      var rsltnDt = $("#TB05010S_rsltnDt2").val();                     //결의일
-      var rsltnTm = $("#TB05010S_rsltnTm2").val();                     //결의시간 
-      var inspctPrgrsStCd = $("#TB05010S_inspctPrgrsStCd2").val();     //진행상태
-  
+      var rsltnDt = $("#TB05010S_rsltnDt2").val(); //결의일
+      var rsltnTm = $("#TB05010S_rsltnTm2").val(); //결의시간
+      var inspctPrgrsStCd = $("#TB05010S_inspctPrgrsStCd2").val(); //진행상태
+
       var dealList = [];
       var enoList = [];
-  
+
       /* 협의체 안건정보 */
       for (var i = 0; i < CASEListCount; i++) {
         var dealInfo = {
@@ -1053,7 +1089,7 @@ const TB05010Sjs = (function(){
           dealNo: arrPqGridCaseList.pdata[i].dealNo,
           mtrDcd: arrPqGridCaseList.pdata[i].mtrDcd,
           jdgmDcd: arrPqGridCaseList.pdata[i].jdgmDcd,
-          mtrPrgSttsDcd : arrPqGridCaseList.pdata[i].mtrPrgSttsDcd ?? "303" , // null 또는 undefined일 때 303으로 할당
+          mtrPrgSttsDcd: arrPqGridCaseList.pdata[i].mtrPrgSttsDcd ?? "303", // null 또는 undefined일 때 303으로 할당
         };
         dealList.push(dealInfo);
       }
@@ -1070,7 +1106,7 @@ const TB05010Sjs = (function(){
         };
         enoList.push(enoInfo);
       }
-  
+
       var paramData = {
         cnsbDcd: inspctCnfrncCcd,
         rsltnYr: stdYr,
@@ -1111,10 +1147,9 @@ const TB05010Sjs = (function(){
       });
     }
   }
-  
+
   // 협의체 상태 변경 - 준비확정 or 준비취소
   function changeCNFRNCStatus(statusCode) {
-  
     /* 협의체 기본정보 */
     var cnsbDcd = $("#TB05010S_R016_2").val();
     var rsltnYr = $("#TB05010S_stdYr").val();
@@ -1123,9 +1158,9 @@ const TB05010Sjs = (function(){
 
     /* 협의체 안건정보 */
     var CASEListCount = arrPqGridCaseList.pdata.length;
-  
+
     var dealList = [];
-  
+
     for (var i = 0; i < CASEListCount; i++) {
       var dealInfo = {
         cnsbDcd: $("#TB05010S_R016_2").val(),
@@ -1137,7 +1172,7 @@ const TB05010Sjs = (function(){
       };
       dealList.push(dealInfo);
     }
-  
+
     var paramData = {
       cnsbDcd: cnsbDcd,
       rsltnYr: rsltnYr,
@@ -1145,14 +1180,14 @@ const TB05010Sjs = (function(){
       jdgmRsltDcd: jdgmRsltDcd,
       dealList: dealList,
     };
-  
+
     var text = "";
     if (statusCode === 303) {
       text = "준비취소가 완료되었습니다.";
     } else {
       text = "준비확정이 완료되었습니다.";
     }
-  
+
     $.ajax({
       type: "POST",
       url: "/TB05010S/changeCNFRNCStatus",
@@ -1166,14 +1201,16 @@ const TB05010Sjs = (function(){
           text: text,
           confirmButtonText: "확인",
         }).then((result) => {
-          location.reload();
+          //location.reload();
+          $("#confirmButton").attr("disabled", true);
+          $("#cancleButton").attr("disabled", false);
         });
       },
       error: function () {},
     });
   }
   /* ***********************************그리드 컬럼******************************** */
-  
+
   // 협의체 결의 및 목록 탭 그리드
   let colCnfrncList = [
     {
@@ -1182,10 +1219,10 @@ const TB05010Sjs = (function(){
       dataIndx: "dealNo",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
-      render   : function (ui) {
+      render: function (ui) {
         let rowData = ui.rowData;
-        return `${rowData.cnsbDcdNm} ${rowData.rsltnYr}년도 ${rowData.sn}회차 협의회 결의`
-      }
+        return `${rowData.cnsbDcdNm} ${rowData.rsltnYr}년도 ${rowData.sn}회차 협의회 결의`;
+      },
     },
     {
       title: "cnsbDcd",
@@ -1220,26 +1257,26 @@ const TB05010Sjs = (function(){
       hidden: true,
     },
   ];
-  
+
   let colCaseList = [
     {
       title: "",
       dataType: "string",
       dataIndx: "chkYn",
-      halign : "center",
+      halign: "center",
       align: "center",
-      minWidth: 36,  
-      maxWidth: 36,  
-      editable : true,
+      minWidth: 36,
+      maxWidth: 36,
+      editable: true,
       filter: { crules: [{ condition: "range" }] },
       editor: false,
-      type : 'checkBoxSelection',
+      type: "checkBoxSelection",
       cb: {
         all: true,
         header: true,
         check: "Y",
-        uncheck: "N"
-      }
+        uncheck: "N",
+      },
     },
     {
       title: "딜번호",
@@ -1247,7 +1284,7 @@ const TB05010Sjs = (function(){
       dataIndx: "dealNo",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
-      hidden : true,
+      hidden: true,
     },
     {
       title: "순서",
@@ -1263,7 +1300,7 @@ const TB05010Sjs = (function(){
       dataIndx: "mtrDcd",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
-      hidden : true
+      hidden: true,
     },
     {
       title: "안건구분",
@@ -1277,7 +1314,7 @@ const TB05010Sjs = (function(){
       title: "안건명",
       dataType: "string",
       dataIndx: "mtrNm",
-      halign : "center",
+      halign: "center",
       align: "left",
       filter: { crules: [{ condition: "range" }] },
     },
@@ -1287,7 +1324,7 @@ const TB05010Sjs = (function(){
       dataIndx: "jdgmDcd",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
-      hidden : true
+      hidden: true,
     },
     {
       title: "신규/재부의정보",
@@ -1302,7 +1339,7 @@ const TB05010Sjs = (function(){
       dataIndx: "dprtCd",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
-      hidden : true
+      hidden: true,
     },
     {
       title: "부서",
@@ -1317,7 +1354,7 @@ const TB05010Sjs = (function(){
       dataIndx: "chrgPEno",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
-      hidden : true
+      hidden: true,
     },
     {
       title: "직원",
@@ -1332,7 +1369,7 @@ const TB05010Sjs = (function(){
       dataIndx: "ownPEno",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
-      hidden : true
+      hidden: true,
     },
     {
       title: "심사역",
@@ -1342,17 +1379,16 @@ const TB05010Sjs = (function(){
       filter: { crules: [{ condition: "range" }] },
     },
   ];
-  
-  return{
-    tempSave : tempSave
-    , changeCNFRNCStatus : changeCNFRNCStatus
-    , chngInspctPrgrsStCd : chngInspctPrgrsStCd
-    , getCNFRNCList : getCNFRNCList
-    , btnReset : btnReset
-    , delCaseList : delCaseList
-    , chngInspctCnfrncSqc : chngInspctCnfrncSqc
-    , addMMBRRow : addMMBRRow
-    , mmbrDelRow : mmbrDelRow
 
-  }
+  return {
+    tempSave: tempSave,
+    changeCNFRNCStatus: changeCNFRNCStatus,
+    chngInspctPrgrsStCd: chngInspctPrgrsStCd,
+    getCNFRNCList: getCNFRNCList,
+    btnReset: btnReset,
+    delCaseList: delCaseList,
+    chngInspctCnfrncSqc: chngInspctCnfrncSqc,
+    addMMBRRow: addMMBRRow,
+    mmbrDelRow: mmbrDelRow,
+  };
 })();

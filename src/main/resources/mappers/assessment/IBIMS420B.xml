@@ -299,7 +299,7 @@
          AND D.MNGM_BDCD LIKE '%' || #{dprtCd} || '%'
       </if>  
 	   ORDER
-	      BY A.FEE_SN DESC
+	      BY A.FEE_SN ASC
 	</select>
 
 	<!-- 딜수수료내역 조회 --> 
