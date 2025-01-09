@@ -777,6 +777,20 @@ const TB06010Sjs = (function(){
 			},
 			success: function(data) {
 				var dealDetail = data;
+				let psblRsltnYn; //가결여부
+				psblRsltnYn= isEmpty(dealDetail.psblRsltnYn) ? "N" : dealDetail.psblRsltnYn;
+				
+				if(psblRsltnYn=="N"){
+					Swal.fire({
+						title: '안건 조회 확인',
+						icon: 'error',
+						text: '심사진행상태 완료되지 않았습니다.',
+						confirmButtonText: '확인',
+					}).then(() => {
+						resetSearchRequiment(); //초기화
+					});
+					return false;
+				}
 				/** Deal 정보 */
 				$('#TB06010S_ibDealNo').val(dealDetail.dealNo);													// 딜번호
 				//$('#TB06010S_ibDealNm').val(dealDetail.dealNm);												// 딜명

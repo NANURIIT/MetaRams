@@ -491,8 +491,11 @@ const TB06040Sjs = (function() {
 	                       icon: 'warning'
 	                       , text: "약정일자를 확인해주세요."
 	                       , confirmButtonText: "확인"
-	                   })
-					   $('#TB06040S_ctrcDt').focus();
+	                   }).then((result)=>{
+						if(result.isConfirmed){
+							idFocus("TB06040S_ctrcDt");
+						}	
+					   });
 	                   return;
 				}
 				if(isEmpty($('#TB06040S_ctrcExpDt').val())){
@@ -500,8 +503,12 @@ const TB06040Sjs = (function() {
 	                       icon: 'warning'
 	                       , text: "약정만기일자를 확인해주세요."
 	                       , confirmButtonText: "확인"
-	                   })
-					   $('#TB06040S_ctrcExpDt').focus();
+					   }).then((result)=>{
+							if(result.isConfirmed){
+								idFocus("TB06040S_ctrcExpDt");
+							}	
+	   				   });
+					  // $('#TB06040S_ctrcExpDt').focus();
 	                   return;
 				}
 				
@@ -510,8 +517,12 @@ const TB06040Sjs = (function() {
 				           icon: 'warning'
 				           , text: "약정금액을 확인해주세요."
 				           , confirmButtonText: "확인"
-				       })
-					   $('#TB06040S_eprzCrdlCtrcAmt').focus();
+					   }).then((result)=>{
+					   	if(result.isConfirmed){
+					   		idFocus("TB06040S_eprzCrdlCtrcAmt");
+					   	}	
+					   });
+					  // $('#TB06040S_eprzCrdlCtrcAmt').focus();
 				       return;
 				}				
 				save('1');
@@ -556,8 +567,12 @@ const TB06040Sjs = (function() {
 				           icon: 'warning'
 				           , text: "해지사유코드를 확인해주세요."
 				           , confirmButtonText: "확인"
-				       })
-					   $('#TB06040S_E005').focus();
+					   }).then((result)=>{
+						   	if(result.isConfirmed){
+						   		idFocus("TB06040S_E005");
+						   	}	
+					      });
+					   //$('#TB06040S_E005').focus();
 				       return;
 				}
 				if(isEmpty($('#TB06040S_cancelDt').val())){
@@ -565,8 +580,11 @@ const TB06040Sjs = (function() {
 				           icon: 'warning'
 				           , text: "해지일자를 확인해주세요."
 				           , confirmButtonText: "확인"
-				       })
-					   $('#TB06040S_cancelDt').focus();
+					   }).then((result)=>{
+					      	if(result.isConfirmed){
+					      		idFocus("TB06040S_cancelDt");
+					      	}	
+					      });
 				       return;
 				}
 
@@ -575,8 +593,11 @@ const TB06040Sjs = (function() {
 				           icon: 'warning'
 				           , text: "해지사유내용 확인해주세요."
 				           , confirmButtonText: "확인"
-				       })
-					   $('#TB06040S_cancelRsnCntn').focus();
+						   }).then((result)=>{
+					      	if(result.isConfirmed){
+					      		idFocus("TB06040S_cancelRsnCntn");
+					      	}	
+					      });
 				       return;
 				}	
 				
@@ -641,6 +662,8 @@ const TB06040Sjs = (function() {
             initObj[$this.attr('id')] = $this.val();
             //console.log(initObj);
         });
+		
+		$('#TB06040S_cancelRsnCntn').val("");
     }
 
     function reset() {
@@ -664,6 +687,8 @@ const TB06040Sjs = (function() {
                 $this.prop('selectedIndex', 0);
             }
         });
+		
+		$('#TB06040S_cancelRsnCntn').val("");
     }
 
     function getDealInfoFromWF() {

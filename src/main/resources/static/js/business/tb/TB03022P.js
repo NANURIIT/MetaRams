@@ -57,7 +57,13 @@ function registerInputEvents(selector, inputLastId, inputLength) {
       } else if (inputLastId === "_dprtCd") {
         dprtCdSrchYn = "Y";
       }
+      
       const currentInput = $(this);
+
+      const result = $(this).attr('id').slice(0, $(this).attr('id').length - 2) + 'Nm';
+
+      $(`#${result}`).val("");
+
       if (currentInput.val().length === inputLength) {
         await srchEmpEvent(currentInput);
       }
@@ -89,7 +95,7 @@ function TB03022P_srch(menuId) {
   let selectorString = getSelectorString(menuId); // 동적으로 selectorString 생성
   let selector = $(selectorString); // selector 사용
   // 이전에 바인딩된 이벤트 제거 후 새로 바인딩
-  selector.off("input keydown");
+  // selector.off("input keydown");
 
   // 공통 이벤트 등록
   registerInputEvents(selector, "_empNo", 7);

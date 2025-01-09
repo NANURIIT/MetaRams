@@ -4,36 +4,41 @@
 
 	<!-- 결재내역 조회 -->
 	<select id='inqTB06080S' parameterType="com.nanuri.rams.business.common.vo.TB06080SVO" resultType="com.nanuri.rams.business.common.vo.TB06080SVO$ApvlList">
-		SELECT DECD_SN			/* 결재일련번호		*/
-			 , APVL_RQST_SQ		/* 승인요청순번		*/
-			 , CHRR_ENO			/* 책임자사번		*/
-			 , CHRR_ENM			/* 책임자명		*/
-			 , APVL_RQST_P_ENO	/* 승인요청자사번	*/
-			 , APVL_RQST_P_ENM	/* 승인요청자명		*/
-			 , DECD_STEP_DCD	/* 결재단계구분코드	*/
-			 , DECD_STEP_NM		/* 결재단계명		*/
-			 , DECD_STTS_DCD	/* 결재상태구분코드	*/
-			 , DECD_STTS_NM		/* 결재상태명		*/
-			 , DEAL_NO			/* 딜번호			*/
-			 , DEAL_NM			/* 딜명			*/
-			 , DECD_JOB_DCD		/* 결재업무구분코드	*/
-			 , DECD_JOB_NM		/* 결재업무명		*/
-			 , SCRN_NO			/* 화면번호		*/
-			 , APVL_RQST_CNTN	/* 승인요청내용		*/
-			 , RQST_DTM			/* 신청일시		*/
-			 , RQST_CNCL_DTM	/* 신청취소일시		*/
-			 , DCFC_ENO			/* 담당자사번		*/
-			 , DCFC_ENM			/* 담당자명		*/
-			 , PRCS_RSLT_DCD	/* 처리결과구분코드	*/
-			 , PRCS_RSLT_NM		/* 처리결과명		*/
-			 , EXC_SEQ			/* 실행순번		*/
-			 , RQST_SQ			/* 신청순번		*/
-			 , TR_SEQ			/* 거래순번		*/
-			 , ERR_CNTN			/* 오류내번		*/
-			 , LAST_DECD_SQ		/* 최종결재순번		*/
+		SELECT T.DECD_SN			/* 결재일련번호		*/
+			 , T.CHRR_ENO			/* 책임자사번		*/
+			 , T.CHRR_ENM			/* 책임자명		*/
+			 , T.APVL_RQST_P_ENO	/* 승인요청자사번	*/
+			 , T.APVL_RQST_P_ENM	/* 승인요청자명		*/
+			 , T.DECD_STEP_DCD		/* 결재단계구분코드	*/
+			 , T.DECD_STEP_NM		/* 결재단계명		*/
+			 , T.DECD_STTS_DCD		/* 결재상태구분코드	*/
+			 , T.DECD_STTS_NM		/* 결재상태명		*/
+			 , T.PRDT_CD			/* 종목코드 */
+			 , (
+				SELECT MAX(PRDT_NM)
+				  FROM IBIMS201B
+				 WHERE 1=1
+				   AND PRDT_CD = T.PRDT_CD
+			 	) AS PRDT_NM		/* 종목명 */
+			 , T.DEAL_NO			/* 딜번호			*/
+			 , T.DEAL_NM			/* 딜명			*/
+			 , T.DECD_JOB_DCD		/* 결재업무구분코드	*/
+			 , T.DECD_JOB_NM		/* 결재업무명		*/
+			 , T.SCRN_NO			/* 화면번호		*/
+			 , T.APVL_RQST_CNTN		/* 승인요청내용		*/
+			 , T.RQST_DTM			/* 신청일시		*/
+			 , T.RQST_CNCL_DTM		/* 신청취소일시		*/
+			 , T.DCFC_ENO			/* 담당자사번		*/
+			 , T.DCFC_ENM			/* 담당자명		*/
+			 , T.PRCS_RSLT_DCD		/* 처리결과구분코드	*/
+			 , T.PRCS_RSLT_NM		/* 처리결과명		*/
+			 , T.EXC_SEQ			/* 실행순번		*/
+			 , T.RQST_SQ			/* 신청순번		*/
+			 , T.TR_SEQ				/* 거래순번		*/
+			 , T.ERR_CNTN			/* 오류내번		*/
+			 , T.LAST_DECD_SQ		/* 최종결재순번		*/
 		FROM (
 			  SELECT A.DECD_SN
-			  	   , A.APVL_RQST_SQ
 			  	   , A.CHRR_ENO
 			  	   , (SELECT EMP_NM FROM IBIMS003B WHERE EMPNO = A.CHRR_ENO) AS CHRR_ENM
 			  	   , A.APVL_RQST_P_ENO
@@ -42,6 +47,7 @@
 				   , (SELECT D.CD_VL_NM  FROM IBIMS001B A RIGHT JOIN IBIMS002B D ON A.CMNS_CD_GRP = D.CMNS_CD_GRP WHERE  A.CMNS_CD_GRP = 'D016' AND D.CD_VL_ID = A.DECD_STEP_DCD) AS DECD_STEP_NM
 			  	   , B.DECD_STTS_DCD
 				   , (SELECT D.CD_VL_NM  FROM IBIMS001B A RIGHT JOIN IBIMS002B D ON A.CMNS_CD_GRP = D.CMNS_CD_GRP WHERE  A.CMNS_CD_GRP = 'D006' AND D.CD_VL_ID = B.DECD_STTS_DCD) AS DECD_STTS_NM
+				   , A.PRDT_CD
 			  	   , A.DEAL_NO
 			  	   , C.DEAL_NM
 			  	   , A.DECD_JOB_DCD
@@ -63,7 +69,6 @@
 			  	   , IBIMS232B B															/* 딜승인결재담당자내역	*/
 			  	   , (SELECT DEAL_NO, DEAL_NM FROM IBIMS101B GROUP BY DEAL_NO, DEAL_NM) C	/* 딜기본정보			*/
 			   WHERE A.DECD_SN			= B.DECD_SN
-			     AND A.APVL_RQST_SQ		= B.APVL_RQST_SQ
 			     AND A.DEAL_NO			= C.DEAL_NO
 			   <if test='chrrEno != null and chrrEno !=""'>
 				 AND A.CHRR_ENO			= #{chrrEno}
@@ -78,20 +83,18 @@
 	</select>
 	
 	<select id='inqIBMS232B' parameterType="com.nanuri.rams.business.common.vo.TB06080SVO$ApvlList" resultType="com.nanuri.rams.business.common.vo.TB06080SVO$GbckList">
-		SELECT DECD_SN
-			 , APVL_RQST_SQ
-			 , DECD_SQ
-			 , DECD_STTS_DCD
-			 , DECD_STTS_NM
-			 , DCFC_ENO
-			 , DCFC_ENM
-			 , DECD_DTM
-			 , DCFC_ANNO_CNTN
-			 , RJCT_YN
-			 , RJCT_RSN_CNTN
+		SELECT T.DECD_SN
+			 , T.DECD_SQ
+			 , T.DECD_STTS_DCD
+			 , T.DECD_STTS_NM
+			 , T.DCFC_ENO
+			 , T.DCFC_ENM
+			 , T.DECD_DTM
+			 , T.DCFC_ANNO_CNTN
+			 , T.RJCT_YN
+			 , T.RJCT_RSN_CNTN
 		 FROM (
 			   SELECT A.DECD_SN
-			   		, A.APVL_RQST_SQ
 			   		, A.DECD_SQ
 			   		, A.DECD_STTS_DCD
 			   		, (SELECT Z.CD_VL_NM FROM IBIMS001B A RIGHT JOIN IBIMS002B Z ON A.CMNS_CD_GRP = Z.CMNS_CD_GRP WHERE  A.CMNS_CD_GRP = 'D006' AND Z.CD_VL_ID = A.DECD_STTS_DCD) AS DECD_STTS_NM
@@ -103,7 +106,6 @@
 			   		, A.RJCT_RSN_CNTN
 			     FROM IBIMS232B A
 			    WHERE A.DECD_SN = #{decdSn}
-			      AND A.APVL_RQST_SQ = #{apvlRqstSq}
 			 ) T
 	</select>
 

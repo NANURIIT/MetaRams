@@ -55,8 +55,8 @@ public class TB06081ServiceImpl implements TB06081Service {
 		int decdSn = ibims231bMapper.getDecdSn();
 		String apvlRqstPEno = facade.getDetails().getEno();
 
-		for(int i = 0; i < apvlList.size(); i++){
-			if( i == 0 ){
+		for(int i = apvlList.size() - 1; i >= 0; i--){
+			if( i == apvlList.size() - 1){
 				/* IBIMS231B data */
 
 				// 일련번호
@@ -77,7 +77,7 @@ public class TB06081ServiceImpl implements TB06081Service {
 			// 결재일련번호
 			ibims232bdto.setDecdSn(decdSn);
 			// 결재순번
-			ibims232bdto.setDecdSq( apvlList.size() - i );
+			ibims232bdto.setDecdSq( i );
 			// 결재상태구분코드
 			ibims232bdto.setDecdSttsDcd( apvlList.get(i).getDecdSttsDcd() );
 			// 결재자사번
@@ -99,12 +99,12 @@ public class TB06081ServiceImpl implements TB06081Service {
 		int result = 0;
 
 		List<IBIMS231BDTO> apvlList = paramData.getApvlList();
-		String apvlRqstPEno = facade.getDetails().getEno();
+		String hndEmpno = facade.getDetails().getEno();
 		int decdSn = ibims231bMapper.decdSn(apvlList.get(0));
 		
-		for(int i = 0; i < apvlList.size(); i++){
+		for(int i = apvlList.size() - 1; i >= 0; i--){
 			// 마지막처리사원
-			apvlList.get(i).setHndEmpno(apvlRqstPEno);
+			apvlList.get(i).setHndEmpno(hndEmpno);
 			
 			if(i == 0){
 				ibims231bMapper.updateDecd(apvlList.get(i));
@@ -123,6 +123,7 @@ public class TB06081ServiceImpl implements TB06081Service {
 			// 조작상세일시 ~ GUID
 			updateData.setDecdSn(decdSn);
 			updateData.setDecdSttsDcd(apvlList.get(i).getDecdSttsDcd());
+			updateData.setHndEmpno(apvlList.get(i).getHndEmpno());
 			ibims232bMapper.updateDecd(updateData);
 			
 			result += 1;
