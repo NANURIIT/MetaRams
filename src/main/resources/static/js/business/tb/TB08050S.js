@@ -254,8 +254,20 @@ const TB08050Sjs = (function () {
         dataIndx: "feeKndCd",
         halign: "center",
         align: "center",
-        width: "8%",
+        width: "12%",
         filter: { crules: [{ condition: "range" }] },
+		editor: {
+		  type: "select",
+		  valueIndx: "feeKndCd",
+		  labelIndx: "feeName",
+		  options: selectBox2,
+		},
+		render: function (ui) {
+		    let fSel = selectBox2.find(	
+		    ({ feeKndCd }) => feeKndCd == ui.cellData
+		  );
+		  return fSel ? fSel.feeName : ui.cellData;
+		},
       },
       {
         title: "계정과목",
@@ -265,6 +277,7 @@ const TB08050Sjs = (function () {
         align: "center",
         width: "6%",
         filter: { crules: [{ condition: "range" }] },
+		hidden : true,
       },
       {
         title: "계정과목명",
@@ -628,7 +641,7 @@ const TB08050Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
-          if (cellData === "1") {
+          if (cellData === "Y") {
             return "처리";
           } else {
             return "미처리";
