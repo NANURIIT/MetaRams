@@ -5,9 +5,8 @@ const TB05030Sjs = (function(){
   let arrPqGridIbDealInfo; // 협의결과
   let aprvOppsDcd = [];
   let rsltnRsltCd = [];   // R025 찬반구분코드?
-  let setEditable = true;
+  let setEditable = true; // 의결내용 그리드 내 editable 상태 관리해야 할 컬럼 "MMBRChk","atdcYn", "aprvOppsDcdNm", "opnnCtns"
 
-  const targetColumns = ["MMBRChk","atdcYn", "aprvOppsDcdNm", "opnnCtns"];
 
 
   $(document).ready(function () {
@@ -33,6 +32,9 @@ const TB05030Sjs = (function(){
 		$("#UPLOAD_DelFiles").prop("disabled", !isEnabled);
 	}
   
+  /**
+   * 그리드 초기화
+   */
   function chnginspctCnfrncSqcSq (e) {
     $("#gridCaseInfo").pqGrid("option", "dataModel.data", []);
     $("#gridCaseInfo").pqGrid("refreshDataAndView");							// pqgrid 초기화
@@ -42,7 +44,9 @@ const TB05030Sjs = (function(){
     $("#gridIbDealInfo").pqGrid("refreshDataAndView");						// pqgrid 초기화
   }
   
-  // 그리드 렌더링함수
+  /**
+   * 그리드세팅
+   */
   function rendorGrid() {
     /** 그리드 **/
     let arrPqGridObj = [
@@ -76,7 +80,10 @@ const TB05030Sjs = (function(){
     arrPqGridIbDealInfo = $("#gridIbDealInfo").pqGrid("instance");
   }
   
-  // 결의년도 input change이벤트
+  /**
+   * 결의년도 input change이벤트
+   * @param {*} obj 
+   */
   function fnStdYrChng(obj) {
     $("#gridCaseInfo").pqGrid("option", "dataModel.data", []);
     $("#gridMmbrInfo").pqGrid("option", "dataModel.data", []);
@@ -132,6 +139,9 @@ const TB05030Sjs = (function(){
     
   }
   
+  /**
+   * 찬반구분코드
+   */
   function loadAprvOpstnCcd() {
     var codeList = {
       codeList: "A012",
@@ -149,6 +159,10 @@ const TB05030Sjs = (function(){
       },
     });
   }
+
+  /**
+   * 결의결과코드
+   */
   function loadRsltnRsltCd () {
     var codeList = {
       codeList: "R025",
@@ -168,8 +182,8 @@ const TB05030Sjs = (function(){
   // 컴포넌트 컨트롤
   function compControl() {
     // 의결내용 버튼 비활성
-    //$(".ibox-tools .btn-success").prop("disabled", true);
-    //$(".ibox-tools .btn-danger").prop("disabled", true);
+    $(".ibox-tools .btn-success").prop("disabled", true);
+    $(".ibox-tools .btn-danger").prop("disabled", true);
   }
   
   // 결의협의체 셀렉트박스 변경
@@ -225,7 +239,9 @@ const TB05030Sjs = (function(){
     });
   }
   
-  // 안건정보 테이블 체크박스 이벤트 설정
+  /**
+   * 안건정보 테이블 체크박스 이벤트 설정
+   */
   function CASEChk() {
     $("#CASEChk").change(function () {
       if ($("#CASEChk").is(":checked")) {
@@ -236,6 +252,14 @@ const TB05030Sjs = (function(){
     });
   }
 
+  /**
+   * 안건 그리드 조회
+   * 조회조건
+   * 1. 결의협의체
+   * 2. 결의년도
+   * 3. 회차
+   * @returns 
+   */  
   function searchCNFRNC() {
     TB05030S_clearAllGrid()
     var cnsbDcd = $("#TB05030S_R016").val();          // 결의협의체
@@ -327,6 +351,16 @@ const TB05030Sjs = (function(){
     });
   }
   
+  /**
+   * 안건 상세보기 느낌??
+   * @param {*} e 
+   * @description
+   * 의결내용 그리드 조회
+   * 안건 상태구분코드에 따라서 의결내용 그리드 컬럼 수정가능,불가능 상태 제어 
+   * 
+   * 협의결과 그리드 조회
+   * 관련자료 조회
+   */
   function CNFRNCDetail(e) {
     let cnsbDcd = e.cnsbDcd;
     let rsltnYr = e.rsltnYr;
@@ -351,6 +385,7 @@ const TB05030Sjs = (function(){
       $("#btnCancelDeal").prop('disabled', true);
       setEditable = true;
     }
+    // 나머지는 수정 불가능
     else if (Number(e.mtrPrgSttsDcd) > 304 && Number(e.mtrPrgSttsDcd) <= 400) {
       $("#saveMmbrConfirm").prop('disabled', true);
       $("#btnConfirmDeal").prop('disabled', true);
@@ -364,10 +399,12 @@ const TB05030Sjs = (function(){
       setEditable = false;
     }
 
+    // 파일 조회 검색 조건 세팅
     $("#fileIbDealNo").val("M" + cnsbDcd + "0000000000");
     $("#fileRiskInspctCcd").val(rsltnYr.substring(2, 4));
     $("#fileLstCCaseCcd").val(("0" + cnsbSq).slice(-2));
 
+    // editable 상태는 전역변수 상태를 변경 그리드 옵션초기화
     setPqGrid(
       [
         {
@@ -431,6 +468,10 @@ const TB05030Sjs = (function(){
   //   // }
   // }
 
+  /**
+   * 의결내용 업데이트
+   * @param {Object} paramData 안건데이터 
+   */
   function getMMBRInfo (paramData) {
     var MMBRCount = 0;
   
@@ -477,6 +518,10 @@ const TB05030Sjs = (function(){
     updateMMBRInfo(mode);
   }
   
+  /**
+   * 의결 내용 업데이트
+   * @param {*} mode 
+   */
   function updateMMBRInfo(mode) {
     let mmbrList = [];
     let checkList = [];
@@ -514,39 +559,6 @@ const TB05030Sjs = (function(){
       }
     });
     
-    // $("#TB05030S_MMBRInfo tr").each(function () {
-    //   var tr = $(this);
-    //   var td = tr.children();
-  
-    //   if (td.eq(0).find("input").is(":checked")) {
-    //     selectedDealOption = true;
-    //     var object = {};
-    //     // 확정 confirm
-    //     if (mode === "confirm") {
-    //       object.mode = mode;
-    //       object.cnsbDcd = selectedTd.eq(0).text();
-    //       object.rsltnYr = selectedTd.eq(1).text();
-    //       object.cnsbSq = selectedTd.eq(3).text();
-    //       object.sn = td.eq(12).text();
-    //       object.atdcYn = td.eq(5).find("select").val();
-    //       object.aprvOppsDcd = td.eq(6).find("select").val();
-    //       object.opnnCtns = td.eq(7).find("input").val();
-    //       object.opnnRgstDt = getToday().replaceAll("-", "");
-  
-    //       MMBRList.push(object);
-    //       // 확정취소 cancel
-    //     } else {
-    //       object.mode = mode;
-    //       object.cnsbDcd = selectedTd.eq(0).text();
-    //       object.rsltnYr = selectedTd.eq(1).text();
-    //       object.cnsbSq = selectedTd.eq(3).text();
-    //       object.sn = td.eq(12).text();
-  
-    //       MMBRList.push(object);
-    //     }
-    //   }
-    // });
-  
     if (selectedDealOption === true) {
       $.ajax({
         type: "POST",
@@ -589,6 +601,11 @@ const TB05030Sjs = (function(){
     }
   }
   
+  /**
+   * 협의결과 확정, 확정취소
+   * @param {String} mode 
+   * @returns 
+   */
   function ibDealConfirm(mode) {
     var cnsbDcd = arrPqGridIbDealInfo.pdata[0].cnsbDcd;
     var rsltnYr = $("#TB05030S_stdYr").val();
@@ -744,6 +761,9 @@ const TB05030Sjs = (function(){
     });
   }
 
+  /**
+   * 화면 초기화
+   */
   function TB05030S_clearAllGrid(){
     $("#TB05030S_R025").val("")                       //결의결과
     $("#TB05030S_invstCrncyCdNm").val("")             //승인금액
@@ -759,9 +779,6 @@ const TB05030Sjs = (function(){
 
     $('#UPLOAD_FileList').empty();                    //관련자료
 
-    // arrPqGridCaseInfo.refreshDataAndView();
-    // arrPqGridMmbrInfo.refreshDataAndView();
-    // arrPqGridIbDealInfo.refreshDataAndView();
   }
   
   /* ***********************************그리드 컬럼******************************** */
