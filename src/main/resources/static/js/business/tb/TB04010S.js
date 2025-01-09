@@ -2,6 +2,7 @@ const TB04010Sjs = (function () {
   var ldvdCd = [];
   var mdvdCd = [];
   var sdvdCd = [];
+  var sameYn = [];
 
   // 안건구조-> 딜정보 그리드
   let arrPqGridDealListInfo;
@@ -590,6 +591,9 @@ const TB04010Sjs = (function () {
             var mtrDcd = ui.rowData.mtrDcd || "";
             var jdgmDcd = ui.rowData.jdgmDcd || "";
             var sn = ui.rowData.sn || 0;
+            var ownPEno = ui.rowData.ownPEno || ""; // 심사역사번
+
+            compareAuth(ownPEno);
 
             var key2 = dealNo + mtrDcd + jdgmDcd + sn;
             getFileInfo("", key2);
@@ -928,14 +932,14 @@ const TB04010Sjs = (function () {
           case 205:
             $("#assesmentRequest").prop("disabled", true);
             $("#assesmentRequestCancel").prop("disabled", true);
-            //$('#assesmentRequestHold').prop("disabled", false);
-            // if (dealDetail.ownPEno === $("#userEno").val()) {
-            $("#assesmentApprove").prop("disabled", false);
-            $("#assesmentReturn").prop("disabled", false);
-            // } else {
-            // 	$('#assesmentApprove').prop("disabled", true);
-            // 	$('#assesmentReturn').prop("disabled", true);
-            // }
+            $("#assesmentRequestHold").prop("disabled", false);
+            if (sameYn === "same") {
+              $("#assesmentApprove").prop("disabled", false);
+              $("#assesmentReturn").prop("disabled", false);
+            } else {
+              $("#assesmentApprove").prop("disabled", true);
+              $("#assesmentReturn").prop("disabled", true);
+            }
             $("#bscAstsInptExptF").prop("disabled", false); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
@@ -952,7 +956,6 @@ const TB04010Sjs = (function () {
             $("#cncCmpnyInptExptF").prop("disabled", true); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", true); // 내부등급 입력예정여부 disabled false
             $(".save").prop("disabled", true);
-            break;
           case 309:
             $("#assesmenttlClsf").prop("disabled", true);
             $("#assesmentDelete").prop("disabled", true); // 삭제버튼 비활성화
@@ -975,6 +978,20 @@ const TB04010Sjs = (function () {
         }
       },
     }); /* end of ajax*/
+  }
+
+  //로그인사원이 심사역인지 확인
+  function compareAuth(compareVal) {
+    var loginP = $("#TB04010S_empNo").val();
+    var compareP = compareVal;
+
+    // 두 값 비교하여 결과 리턴
+    if (loginP === compareP) {
+      console.log("확인해보자:", loginP, "이랑", compareP);
+      sameYn = "same";
+    } else {
+      sameYn = "diff";
+    }
   }
 
   // 기초자산정보 탭
@@ -3625,11 +3642,19 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "ownPNm",
       align: "center",
-      width: "12%",
+      width: "12",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         return ui.cellData == null ? "미지정" : ui.cellData;
       },
+    },
+    {
+      title: "심사역사번",
+      dataType: "string",
+      dataIndx: "ownPEno",
+      align: "center",
+      width: "6%",
+      hide: true,
     },
   ];
 
@@ -4328,6 +4353,7 @@ const TB04010Sjs = (function () {
     ldvdCd: ldvdCd,
     mdvdCd: mdvdCd,
     sdvdCd: sdvdCd,
+    sameYn: sameYn,
 
     //	함수
     getDealList: getDealList,
