@@ -13,8 +13,12 @@
                WHERE 1=1
                  AND S1.ATH_CD = T2.ATH_CD
               ) AS ATH_CD_NM				/* 직책 */
+           , T1.APVL_RQST_CNTN
+           , T1.ERR_CNTN
      	  FROM (
               SELECT B.DCFC_ENO
+                   , A.APVL_RQST_CNTN
+                   , A.ERR_CNTN
                 FROM IBIMS231B A
            LEFT JOIN IBIMS232B B
                   ON A.DECD_SN = B.DECD_SN

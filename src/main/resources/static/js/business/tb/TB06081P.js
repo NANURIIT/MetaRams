@@ -79,6 +79,7 @@ function TB06081P_closeModal() {
 $("#modal-TB06081P").on("hide.bs.modal", function () {
     TB06081P_apvlList = [];
     TB06081P_setApvlList();
+    $("#TB06081P_pqgrid").pqGrid('instance').setData([]);
     TB06081P_reset();
     $("#TB06081P_pqgrid").pqGrid("destroy");
 });
@@ -98,7 +99,8 @@ function TB06081P_reset() {
     $('#TB06081P_trSeq').val("");
     $('#TB06081P_decdJobDcd').val("");
     $('#TB06081P_scrnNo').val("");
-    $("#TB06081P_pqgrid").pqGrid('instance').setData([]);
+    $('#TB06081P_apvlRqstCntn').val("");
+    $('#TB06081P_errCntn').val("");
 }
 
 /**
@@ -263,6 +265,11 @@ function TB06081P_apvlRqst(decdSttsDcd) {
                     icon: "success",
                     text: `${text} 되었습니다!`,
                 });
+                // 승인취소일경우 승인요청내용 초기화를 위해
+                if(decdSttsDcd === "4"){
+                    TB06081P_reset();
+                }
+
                 TB06081P_apvlListChk();
             }
             // 실패
@@ -443,6 +450,12 @@ function TB06081P_setApvlList() {
     let html;
 
     for (let i = 0; i < apvlList.length; i++) {
+
+        if(i === 0){
+            $("#TB06081P_apvlRqstCntn").val(apvlList[i].apvlRqstCntn);
+            $("#TB06081P_errCntn").val(apvlList[i].errCntn);
+        }
+
         html += `
             <tr style="text-align: center;">
 			    <td style="text-align: right;">
