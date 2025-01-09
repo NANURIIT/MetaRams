@@ -196,13 +196,16 @@ const TB06080Sjs = (function () {
                 rd = ul[0].rowData;
 
                 console.log(rd);
+                console.log(rd.prdtCd);
+                console.log(rd.prdtNm);
 
-                $("#TB06080S_apvlRqstSq").val(rd.apvlRqstSq);
                 $("#TB06080S_chrrEno").val(rd.chrrEno);
                 $("#TB06080S_chrrEnm").val(rd.chrrEnm);
                 $("#TB06080S_apvlRqstPEno").val(rd.apvlRqstPEno);
                 $("#TB06080S_apvlRqstPEnm").val(rd.apvlRqstPEnm);
                 $("#TB06080S_decdSttsDcd").val(rd.decdSttsDcd);
+                $("#TB06080S_prdtCd").val(rd.prdtCd);
+                $("#TB06080S_prdtNm").val(rd.prdtNm);
                 $("#TB06080S_dealNo").val(rd.dealNo);
                 $("#TB06080S_dealNm").val(rd.dealNm);
                 $("#TB06080S_decdJobDcd").val(rd.decdJobDcd);
@@ -278,7 +281,6 @@ const TB06080Sjs = (function () {
 
   function apvlListSetting(apvlListRowData) {
     console.log(apvlListRowData);
-    $("#TB06080S_apvlRqstSq").val(apvlListRowData.apvlRqstSq); // 승인요청순번
     $("#TB06080S_chrrEno").val(apvlListRowData.chrrEno); // 책임자사번
     $("#TB06080S_chrrEnm").val(apvlListRowData.chrrEnm); // 책임자이름
     $("#TB06080S_dcfcEno").val(apvlListRowData.dcfcEno); // 요청자사번
@@ -290,6 +292,8 @@ const TB06080Sjs = (function () {
     $("#TB06080S_rqstCnclDtm").val(
       formatDateTime(apvlListRowData.rqstCnclDtm).split(" ")[0]
     ); // 승인요청취소일자
+    $("#TB06080S_prdtCd").val(apvlListRowData.prdtCd); // 종목코드
+    $("#TB06080S_prdtNm").val(apvlListRowData.prdtNm); // 종목명
     $("#TB06080S_dealNo").val(apvlListRowData.dealNo); // Deal번호
     $("#TB06080S_dealNm").val(apvlListRowData.dealNm); // Deal명
     $("#TB06080S_excSq").val(apvlListRowData.excSq); // 실행순번
@@ -338,14 +342,6 @@ const TB06080Sjs = (function () {
 
   let colApvlList = [
     {
-      title: "승인요청순번",
-      dataType: "integer",
-      dataIndx: "apvlRqstSq",
-      align: "center",
-      width: 95,
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
       title: "결재단계",
       dataType: "string",
       dataIndx: "decdStepNm", //코드명으로
@@ -362,10 +358,29 @@ const TB06080Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
+      title: "종목코드",
+      dataType: "string",
+      dataIndx: "prdtCd",
+      halign: "center",
+      align: "left",
+      width: 90,
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "종목명",
+      dataType: "string",
+      dataIndx: "prdtNm",
+      halign: "center",
+      align: "left",
+      width: 160,
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
       title: "Deal번호",
       dataType: "string",
       dataIndx: "dealNo",
-      align: "center",
+      halign: "center",
+      align: "left",
       width: 160,
       filter: { crules: [{ condition: "range" }] },
     },
@@ -373,7 +388,8 @@ const TB06080Sjs = (function () {
       title: "Deal명",
       dataType: "string",
       dataIndx: "dealNm", //딜명가져오기
-      align: "center",
+      halign: "center",
+      align: "left",
       width: 160,
       filter: { crules: [{ condition: "range" }] },
     },
@@ -490,14 +506,6 @@ const TB06080Sjs = (function () {
   ];
 
   let colGbckList = [
-    {
-      title: "승인요청순번",
-      dataType: "integer",
-      dataIndx: "apvlRqstSq",
-      align: "center",
-      width: 95,
-      filter: { crules: [{ condition: "range" }] },
-    },
     {
       title: "결재순번",
       dataType: "integer",
