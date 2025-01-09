@@ -16,7 +16,7 @@ const TB08050Sjs = (function () {
     pqGrid_TB08050S(); // 그리드 생성
 	loginUserSet_TB08050S(); //로그인담당자 세팅
     reBdin_TB08050S();
-    getDealInfoFromWF_TB08050S();
+    getDealInfoFromWF();
 	inputNumberChangeFunction_TB08050S();
   }
   
@@ -1015,7 +1015,7 @@ const TB08050Sjs = (function () {
   }
 
 
-  function getDealInfoFromWF_TB08050S() {
+  function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
@@ -1037,7 +1037,7 @@ const TB08050Sjs = (function () {
     resetMore: resetMore,
     calulator: calulator,
     save: save,
-    getDealInfoFromWF_TB08050S: getDealInfoFromWF_TB08050S,
+    getDealInfoFromWF: getDealInfoFromWF,
 	inputNumberChangeFunction_TB08050S:inputNumberChangeFunction_TB08050S,
   };
 })();
