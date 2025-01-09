@@ -1398,6 +1398,23 @@ function getSelectBoxList(prefix, item, async = true) {
             $("#TB08036S_I012_2").append(html);
             $("#TB08036S_I012_3").append(html);
           }
+
+          if (value.cmnsGrpCd == "B014") {
+            // 사업진행단계
+            var html = "";
+            html +=
+              '<option value="' +
+              value.cdValue +
+              '">' +
+              value.cdName +
+              " (" +
+              value.cdValue +
+              ")" +
+              "</option>";
+
+            $("#TB08036S_B014_01").append(html);
+            $("#TB08036S_B014_02").append(html);
+          }
         }
 
         if (prefix == "TB07040S") {
@@ -2014,59 +2031,59 @@ function needRunFn(menuId) {
 
   //워크플로우에서 버튼 눌러 페이지 이동시 인풋 자동 세팅
 
-  if( menuId === "TB06010S"){
+  if (menuId === "TB06010S") {
     TB06010Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB06020S"){
+  if (menuId === "TB06020S") {
     TB06020Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB06030S"){
+  if (menuId === "TB06030S") {
     TB06030Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB06040S"){
+  if (menuId === "TB06040S") {
     TB06040Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07010S"){
+  if (menuId === "TB07010S") {
     TB07010Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07020S"){
+  if (menuId === "TB07020S") {
     TB07020Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07030S"){
+  if (menuId === "TB07030S") {
     TB07030Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07040S"){
+  if (menuId === "TB07040S") {
     TB07040Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07070S"){
+  if (menuId === "TB07070S") {
     TB07070Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07080S"){
+  if (menuId === "TB07080S") {
     TB07080Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07090S"){
+  if (menuId === "TB07090S") {
     TB07090Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07120S"){
+  if (menuId === "TB07120S") {
     TB07120Sjs.getDealInfoFromWF();
   }
 
-  if( menuId === "TB07150S"){
+  if (menuId === "TB07150S") {
     TB07150Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07160S"){
+  if (menuId === "TB07160S") {
     TB07160Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07170S"){
+  if (menuId === "TB07170S") {
     TB07170Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07190S"){
+  if (menuId === "TB07190S") {
     TB07190Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB08040S"){
+  if (menuId === "TB08040S") {
     TB08040Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB08050S"){
+  if (menuId === "TB08050S") {
     TB08050Sjs.getDealInfoFromWF();
   }
 }
@@ -2092,7 +2109,7 @@ function resetPGgrids(menuid) {
   }
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) { }
+function autoSrchFromPQGrid(pqGridId, url, paramData) {}
 
 /**
  * 결재단계확인
@@ -2100,25 +2117,24 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) { }
  * @discription
  * 실행시키시면 됩니다.
  */
-function chkDecdStep (menuId){
-
-  let dealNo = $(`#${menuId}_dealNo`).val() || ''     // 딜번호
-  let prdtCd = $(`#${menuId}_prdtCd`).val() || ''     // 상품코드
-  let decdJobDcd = menuId                             // 결재업무구분코드
-  let scrnNo = menuId                                 // 화면번호
-  let excSeq = $(`#${menuId}_excSeq`).val() || 0      // 실행순번
-  let rqstSq = $(`#${menuId}_rqstSq`).val() || 0      // 신청순번
-  let trSeq = $(`#${menuId}_trSeq`).val() || 0        // 거래순번
+function chkDecdStep(menuId) {
+  let dealNo = $(`#${menuId}_dealNo`).val() || ""; // 딜번호
+  let prdtCd = $(`#${menuId}_prdtCd`).val() || ""; // 상품코드
+  let decdJobDcd = menuId; // 결재업무구분코드
+  let scrnNo = menuId; // 화면번호
+  let excSeq = $(`#${menuId}_excSeq`).val() || 0; // 실행순번
+  let rqstSq = $(`#${menuId}_rqstSq`).val() || 0; // 신청순번
+  let trSeq = $(`#${menuId}_trSeq`).val() || 0; // 거래순번
 
   let paramData = {
-    dealNo: dealNo
-    , prdtCd: prdtCd
-    , decdJobDcd: decdJobDcd
-    , scrnNo: scrnNo
-    , excSeq: excSeq
-    , rqstSq: rqstSq
-    , trSeq: trSeq
-  }
+    dealNo: dealNo,
+    prdtCd: prdtCd,
+    decdJobDcd: decdJobDcd,
+    scrnNo: scrnNo,
+    excSeq: excSeq,
+    rqstSq: rqstSq,
+    trSeq: trSeq,
+  };
 
   $.ajax({
     type: "POST",
@@ -2127,27 +2143,43 @@ function chkDecdStep (menuId){
     data: JSON.stringify(paramData),
     dataType: "json",
     success: function (data) {
-
       console.log(data);
-      
+
       // 해당사항이 없으면 결재요청 버튼만 활성화
-      if(data.toString() === '9742'){
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', false);
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', true);
+      if (data.toString() === "9742") {
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+          "hidden",
+          false
+        );
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+          "hidden",
+          true
+        );
       }
       // 승인요청중이면 결재, 반려버튼 활성화
-      else if (data.toString() === '04'){
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', false);
+      else if (data.toString() === "04") {
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+          "hidden",
+          true
+        );
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+          "hidden",
+          false
+        );
       }
       // 승인요청 진행중이나 담당자가 아니거나 결재자가 아니면 아무것도 뜨지않음
       else {
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', true);
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+          "hidden",
+          true
+        );
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+          "hidden",
+          true
+        );
       }
     },
   });
-
-} 
+}
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) {}
