@@ -21,6 +21,11 @@ function registerInputEvents_TB04011P(selector, inputLength) {
     .prev(`input[id*='_ibDealNo']`)
     .on("input", async function () {
       const currentInput = $(this);
+
+      const result = $(this).attr('id').slice(0, $(this).attr('id').length - 2) + 'Nm';
+
+      $(`#${result}`).val("");
+      
       if (currentInput.val().length === inputLength) {
         await srchEvent_TB04011P(currentInput);
       }
