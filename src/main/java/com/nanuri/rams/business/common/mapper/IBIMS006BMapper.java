@@ -25,9 +25,9 @@ public interface IBIMS006BMapper {
 
 	public Optional<IBIMS006BDTO> getAuthCode(String rghtCd);
 
-	public List<Map<String, Object>> getMenuList(AthCd rghtCd); // 로그인 사용자 권한에 따른 메뉴 리스트
+	public List<Map<String, Object>> getMenuList(String rghtCd); // 로그인 사용자 권한에 따른 메뉴 리스트
 
-	public List<Map<String, Object>> getMenuListM(AthCd rghtCd);
+	public List<Map<String, Object>> getMenuListM(String rghtCd);
 
 	public int athCdvldChk(String param);
 

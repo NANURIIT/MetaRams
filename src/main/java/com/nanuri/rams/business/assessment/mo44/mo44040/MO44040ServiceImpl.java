@@ -252,7 +252,7 @@ public class MO44040ServiceImpl implements MO44040Service{
 			
 			
 			// 대체투자관리부 부서장은 바로 진행상태완료처리
-	        if("".equals(facade.getDetails().getRghtCd().name())) {
+	        if("".equals(facade.getDetails().getRghtCd())) {
 	        	raa31b.setRprPrgrsStCd(paramData.getRprPrgrsStCd());
 				raa31b.setAprvDyTm2(date);
 				raa31b.setAprvPEno2(facade.getDetails().getEno());

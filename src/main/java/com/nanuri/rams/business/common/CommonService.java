@@ -57,10 +57,10 @@ public interface CommonService {
 	public int registHistoy(Map<String, Object> dealInfoMap);
 	
 	// 메뉴리스트 조회
-	public List<Map<String, Object>> getMenuList(AthCd rghtCd);
+	public List<Map<String, Object>> getMenuList(String rghtCd);
 
 	// 메뉴리스트 조회 
-	public List<Map<String, Object>> getMenuListM(AthCd rghtCd);
+	public List<Map<String, Object>> getMenuListM(String rghtCd);
 
     // 금리정보 조회
 	public List<RAB98BDTO> getBitrKind();

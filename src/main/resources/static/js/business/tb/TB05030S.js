@@ -3,13 +3,20 @@ const TB05030Sjs = (function(){
   let arrPqGridCaseInfo; // 안건정보
   let arrPqGridMmbrInfo; // 의결내용
   let arrPqGridIbDealInfo; // 협의결과
-  let colMmbrInfo = []; // 전역에 원본 colModel 저장
+  let aprvOppsDcd = [];
+  let rsltnRsltCd = [];   // R025 찬반구분코드?
+  let setEditable = true;
+
+  const targetColumns = ["MMBRChk","atdcYn", "aprvOppsDcdNm", "opnnCtns"];
+
 
   $(document).ready(function () {
     TB05030S_setFileButtonEnabled(false);
     touchSpin(); // 결의년도 좌우 가산
     loadSelectBoxContents(); // 셀렉트박스 정보 취득
     SB_inspctCnfrncCcd(); // 전결협의체 셀렉트박스 변경
+    loadAprvOpstnCcd(); // 찬반구분코드
+    loadRsltnRsltCd(); //의결코드
     tableFunction();
     compControl();
     // 이번년도
@@ -18,10 +25,6 @@ const TB05030Sjs = (function(){
     $("#TB05030S_stdYr").val(getYr);
     getCNFRNCList();
     rendorGrid();
-    setTimeout(() => {
-      loadAprvOpstnCcd(); // 찬반구분코드
-      loadRsltnRsltCd(); //의결코드
-    }, 100);
   });
 
   function TB05030S_setFileButtonEnabled(isEnabled) {
@@ -48,30 +51,36 @@ const TB05030Sjs = (function(){
         height: 150,
         maxHeight: 150,
         id: "gridCaseInfo",
-        colModel: colCaseInfo,
+        colModel: selectColModel(1),
+      },
+      // 의결내용
+      {
+        height: 150,
+        maxHeight: 150,
+        id: "gridMmbrInfo",
+        colModel: selectColModel(2),
       },
       // 협의결과
       {
         height: 80,
         maxHeight: 80,
         id: "gridIbDealInfo",
-        colModel: colIbDealInfo,
+        colModel: selectColModel(3),
       },
     ];
+    
     setPqGrid(arrPqGridObj);
   
     arrPqGridCaseInfo = $("#gridCaseInfo").pqGrid("instance");
+    arrPqGridMmbrInfo = $("#gridMmbrInfo").pqGrid("instance");
     arrPqGridIbDealInfo = $("#gridIbDealInfo").pqGrid("instance");
   }
   
   // 결의년도 input change이벤트
   function fnStdYrChng(obj) {
     $("#gridCaseInfo").pqGrid("option", "dataModel.data", []);
-    $("#gridCaseInfo").pqGrid("refreshDataAndView");							// pqgrid 초기화
     $("#gridMmbrInfo").pqGrid("option", "dataModel.data", []);
-    $("#gridMmbrInfo").pqGrid("refreshDataAndView");							// pqgrid 초기화
     $("#gridIbDealInfo").pqGrid("option", "dataModel.data", []);
-    $("#gridIbDealInfo").pqGrid("refreshDataAndView");							// pqgrid 초기화
   
     $("#TB05030S_R025 option:eq(0)").prop("selected", true);
     $("#TB05030S_invstCrncyCdNm").val("");
@@ -134,7 +143,9 @@ const TB05030Sjs = (function(){
       data: codeList,
       dataType: "json",
       success: function (data) {
-        aprvOppsDcd = data;
+        for(let i = 0; i < data.length; i++){
+          aprvOppsDcd.push(data[i]);
+        }
       },
     });
   }
@@ -149,191 +160,11 @@ const TB05030Sjs = (function(){
       data: codeList,
       dataType: "json",
       success: function (data) {
-        colMmbrInfo = [
-          {
-            title: "",
-            dataType: "string",
-            dataIndx: "MMBRChk",
-            align: "center",
-            minWidth: 36,  
-            maxWidth: 36,  
-            editable : true,
-            filter: { crules: [{ condition: "range" }] },
-            editor: false,
-            type : 'checkBoxSelection',
-            cb: {
-              all: true,
-              header: true,
-              check: "Y",
-              uncheck: "N"
-            }
-          },
-          {
-            title: "참석자",
-            dataType: "string",
-            dataIndx: "atdcTrgtEmpno",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-          },
-          {
-            title: "참석위원",
-            dataType: "string",
-            dataIndx: "atdcTrgtEmpnm",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-          },
-          {
-            title: "대리참석자사번",
-            dataType: "string",
-            dataIndx: "atdcAngtEmpno",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-          },
-          {
-            title: "대리참석자",
-            dataType: "string",
-            dataIndx: "atdcAngtEmpnm",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-          },
-          {
-            title: "참석여부",
-            dataType: "string",
-            dataIndx: "atdcYn",
-            halign : "center",
-            align: "center",
-            editable : true,
-            filter: { crules: [{ condition: "range" }] },
-            editor: {
-              type: "select",
-              options: ['Y','N']
-            }
-          },
-          {
-            title: "의결",
-            dataType: "string",
-            dataIndx: "aprvOppsDcd",
-            halign : "center",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-            hidden : true
-          },
-          {
-            title: "의결",
-            dataType: "string",
-            dataIndx: "aprvOppsDcdNm",
-            halign : "center",
-            align: "center",
-            editable : true,
-            filter: { crules: [{ condition: "range" }] },
-            editor: {
-              type: "select",
-              valueIndx: "cdValue",
-              labelIndx: "cdName",
-              options: data
-            },
-            render: function (ui) {
-              var options = data;
-              var option = options.find(opt => opt.cdValue == ui.cellData);
-              return option ? option.cdName : ui.cellData;
-            },
-          },
-          {
-            title: "심의의견",
-            dataType: "string",
-            dataIndx: "opnnCtns",
-            halign : "center",
-            align: "left",
-            editable : true,
-            filter: { crules: [{ condition: "range" }] },
-            editor : {type : 'textarea'}
-          },
-          {
-            title: "등록년월일",
-            dataType: "date",
-            dataIndx: "opnnRgstDt",
-            halign : "center",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-            render   : function (ui) {
-              let cellData = ui.cellData;
-              if (cellData && cellData.length !== 0) {
-                let cnsbOpnDt1 = cellData.substring(0, 4);
-                let cnsbOpnDt2 = cellData.substring(4, 6);
-                let cnsbOpnDt3 = cellData.substring(6, 8);
-                return `${cnsbOpnDt1}-${cnsbOpnDt2}-${cnsbOpnDt3}`.trim();
-              }
-              return cellData; 
-            }
-          },
-          {
-            title: "회의록확인",
-            dataType: "string",
-            dataIndx: "",
-            halign : "center",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-            hidden : true,
-          },
-          {
-            title: "확인자",
-            dataType: "string",
-            dataIndx: "",
-            halign : "center",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-            hidden : true,
-          },
-          {
-            title: "확인일시",
-            dataType: "date",
-            dataIndx: "", 
-            halign : "center",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-            hidden : true,
-          },
-          {
-            title: "위원회멤버구분코드",
-            dataType: "string",
-            dataIndx: "atdcTrgtDcd",
-            halign : "center",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-            hidden : true
-          },
-          {
-            title: "일련번호",
-            dataType: "string",
-            dataIndx: "sn",
-            halign : "center",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-            hidden : true
-          },
-        ];      
-        // 의결내용
-        let obj = {
-          height: 150,
-          maxHeight: 150,
-          showTitle: false,
-          showToolbar: false,
-          collapsible: false,
-          wrap: false,
-          hwrap: false,
-          numberCell: { show: false },
-          editable: false,
-          //toolbar: toolbar,
-          scrollModel: { autoFit: true },
-          colModel: colMmbrInfo,
-          strNoRows: ''
-        }
-        $("#gridMmbrInfo").pqGrid(obj);
-        arrPqGridMmbrInfo = $("#gridMmbrInfo").pqGrid('instance');
+        rsltnRsltCd = data
       },
     });
   }
-  
+
   // 컴포넌트 컨트롤
   function compControl() {
     // 의결내용 버튼 비활성
@@ -480,11 +311,6 @@ const TB05030Sjs = (function(){
           arrPqGridCaseInfo.option("strNoRows", "조회된 데이터가 없습니다.");
           arrPqGridMmbrInfo.option("strNoRows", "조회된 데이터가 없습니다.");
           arrPqGridIbDealInfo.option("strNoRows", "조회된 데이터가 없습니다.");
-
-          // 그리드 새로고침
-          arrPqGridCaseInfo.refreshDataAndView();
-          arrPqGridMmbrInfo.refreshDataAndView();
-          arrPqGridIbDealInfo.refreshDataAndView();
         }else{
           arrPqGridCaseInfo.setData(data);
           arrPqGridCaseInfo.option("rowDblClick", function (event, ui) {
@@ -517,27 +343,43 @@ const TB05030Sjs = (function(){
       dealNo: dealNo,
       mtrPrgSttsDcd : e.mtrPrgSttsDcd
     };
+
     // 협의체 준비확정인 안건만 의결내용 저장가능.
     if (e.mtrPrgSttsDcd === '304') {
       $("#saveMmbrConfirm").prop('disabled', false);
       $("#btnConfirmDeal").prop('disabled', false);
       $("#btnCancelDeal").prop('disabled', true);
-      colMmbrInfoSetColumnEditable(true)
-    } else if (Number(e.mtrPrgSttsDcd) > 304 && Number(e.mtrPrgSttsDcd) <= 400) {
+      setEditable = true;
+    }
+    else if (Number(e.mtrPrgSttsDcd) > 304 && Number(e.mtrPrgSttsDcd) <= 400) {
       $("#saveMmbrConfirm").prop('disabled', true);
       $("#btnConfirmDeal").prop('disabled', true);
       $("#btnCancelDeal").prop('disabled', false);
-      colMmbrInfoSetColumnEditable(false);
-    } else if (Number(e.mtrPrgSttsDcd) > 400) {
+      setEditable = false;
+    }
+    else if (Number(e.mtrPrgSttsDcd) > 400) {
       $("#saveMmbrConfirm").prop('disabled', true);
       $("#btnConfirmDeal").prop('disabled', true);
       $("#btnCancelDeal").prop('disabled', true);
-      colMmbrInfoSetColumnEditable(false);
+      setEditable = false;
     }
 
     $("#fileIbDealNo").val("M" + cnsbDcd + "0000000000");
     $("#fileRiskInspctCcd").val(rsltnYr.substring(2, 4));
     $("#fileLstCCaseCcd").val(("0" + cnsbSq).slice(-2));
+
+    setPqGrid(
+      [
+        {
+          height: 150,
+          maxHeight: 150,
+          id: "gridMmbrInfo",
+          colModel: selectColModel(2),
+        },
+      ]
+    )
+
+    $("#gridMmbrInfo").pqGrid("refreshDataAndView");
   
     getMMBRInfo(paramData);
     getIBDEALInfo(paramData);
@@ -546,50 +388,50 @@ const TB05030Sjs = (function(){
 
 
   /**
+   * 이거 사용하시면 pqgrid작동 안합니다.
    * 특정 컬럼의 편집 가능/불가능 상태를 제어합니다.
    * @param {boolean} isEditable - true면 편집 가능, false면 편집 불가능
    */
-  function colMmbrInfoSetColumnEditable(isEditable) {
-    // 원본 colModel 깊은 복사
-    let colModel = JSON.parse(JSON.stringify(colMmbrInfo));
+  // function colMmbrInfoSetColumnEditable(isEditable) {
+  //   // 원본 colModel 깊은 복사
+  //   let colModel = JSON.parse(JSON.stringify(colMmbrInfo));
     
-    // 편집을 제어할 컬럼 목록
-    const targetColumns = ["MMBRChk","atdcYn", "aprvOppsDcdNm", "opnnCtns"];
+  //   // 편집을 제어할 컬럼 목록
 
-    // 특정 컬럼의 편집 상태만 변경
-    colModel.forEach(function (col) {
-      if (targetColumns.includes(col.dataIndx)) {
-        col.editable = isEditable; // 편집 가능/불가능 상태 동적 변경
-        col.editor = isEditable ? col.editor : null; // 편집 가능할 때만 editor 유지
-        // MMBRChk 컬럼의 헤더 체크박스를 비활성화
-        // if (col.dataIndx === "MMBRChk") {
-        //   if (isEditable) {
-        //       // 헤더 체크박스 클릭을 막는 이벤트 처리
-        //       col.cb.header = true; // 체크박스 선택 못하게 비활성화
-        //   } else {
-        //       col.cb.header = false; // 편집 가능 시 헤더 체크박스 활성화
-        //   }
-        // }
-      }
-    });
+  //   // 특정 컬럼의 편집 상태만 변경
+  //   colModel.forEach(function (col) {
+  //     if (targetColumns.includes(col.dataIndx)) {
+  //       col.editable = isEditable; // 편집 가능/불가능 상태 동적 변경
+  //       col.editor = isEditable ? col.editor : null; // 편집 가능할 때만 editor 유지
+  //       // MMBRChk 컬럼의 헤더 체크박스를 비활성화
+  //       // if (col.dataIndx === "MMBRChk") {
+  //       //   if (isEditable) {
+  //       //       // 헤더 체크박스 클릭을 막는 이벤트 처리
+  //       //       col.cb.header = true; // 체크박스 선택 못하게 비활성화
+  //       //   } else {
+  //       //       col.cb.header = false; // 편집 가능 시 헤더 체크박스 활성화
+  //       //   }
+  //       // }
+  //     }
+  //   });
 
-    // 변경된 colModel을 pqGrid에 적용
-    $("#gridMmbrInfo").pqGrid("option", "colModel", colModel);
+  //   // 변경된 colModel을 pqGrid에 적용
+  //   $("#gridMmbrInfo").pqGrid("option", "colModel", colModel);
 
-    // 헤더 체크박스 클릭을 막는 코드
-    // if (!isEditable) {
-    //   // MMBRChk 헤더 클릭을 막기 위해 이벤트 리스너 추가
-    //   $("#gridMmbrInfo").on("checkAll", function (event, ui) {
-    //       // MMBRChk 헤더의 체크를 막기 위해 이벤트를 취소
-    //       ui.checked = false; // 체크 상태 변경을 방지
-    //   });
-    // } else {
-    //     // 편집 가능 상태에서 체크박스 클릭 이벤트를 다시 활성화
-    //     $("#gridMmbrInfo").off("checkAll");
-    // }
-  }
+  //   // 헤더 체크박스 클릭을 막는 코드
+  //   // if (!isEditable) {
+  //   //   // MMBRChk 헤더 클릭을 막기 위해 이벤트 리스너 추가
+  //   //   $("#gridMmbrInfo").on("checkAll", function (event, ui) {
+  //   //       // MMBRChk 헤더의 체크를 막기 위해 이벤트를 취소
+  //   //       ui.checked = false; // 체크 상태 변경을 방지
+  //   //   });
+  //   // } else {
+  //   //     // 편집 가능 상태에서 체크박스 클릭 이벤트를 다시 활성화
+  //   //     $("#gridMmbrInfo").off("checkAll");
+  //   // }
+  // }
 
-  function getMMBRInfo(paramData) {
+  function getMMBRInfo (paramData) {
     var MMBRCount = 0;
   
     $.ajax({
@@ -917,258 +759,433 @@ const TB05030Sjs = (function(){
 
     $('#UPLOAD_FileList').empty();                    //관련자료
 
-    arrPqGridCaseInfo.refreshDataAndView();
-    arrPqGridMmbrInfo.refreshDataAndView();
-    arrPqGridIbDealInfo.refreshDataAndView();
+    // arrPqGridCaseInfo.refreshDataAndView();
+    // arrPqGridMmbrInfo.refreshDataAndView();
+    // arrPqGridIbDealInfo.refreshDataAndView();
   }
   
   /* ***********************************그리드 컬럼******************************** */
   
-  // 안건
-  let colCaseInfo = [
-    {
-      title: "dealNo",
-      dataType: "string",
-      dataIndx: "dealNo",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden : true
-    },
-    {
-      title: "결의협의체",
-      dataType: "string",
-      dataIndx: "cnsbDcd",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden : true
-    },
-    {
-      title: "결의협의체",
-      dataType: "string",
-      dataIndx: "cnsbDcdNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "회차",
-      dataType: "string",
-      dataIndx: "cnsbSq",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "안건번호",
-      dataType: "string",
-      dataIndx: "mtrDcd",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden : true
-    },
-    {
-      title: "안건명",
-      dataType: "string",
-      dataIndx: "mtrNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "통화",
-      dataType: "string",
-      dataIndx: "ptfdCrryCdNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "참여금액",
-      dataType: "int",
-      dataIndx: "ptfdAmt",
-      halign : "center",
-      align: "right",
-      filter: { crules: [{ condition: "range" }] },
-      render   : function (ui) {
-        let cellData = ui.cellData;
-              if (cellData !== null && cellData !== undefined) {
-                  return addComma(cellData);
-              }
-              return cellData; 
-      }
-    },
-    {
-      title: "결의일자",
-      dataType: "date",
-      dataIndx: "cnsbOpnDt",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      render   : function (ui) {
-        let cellData = ui.cellData;
-        if (cellData && cellData.length !== 0) {
-          let cnsbOpnDt1 = cellData.substring(0, 4);
-          let cnsbOpnDt2 = cellData.substring(4, 6);
-          let cnsbOpnDt3 = cellData.substring(6, 8);
-          return `${cnsbOpnDt1}-${cnsbOpnDt2}-${cnsbOpnDt3}`.trim();
+  function selectColModel (number) {
+    // 안건
+    let colCaseInfo = [
+      {
+        title: "dealNo",
+        dataType: "string",
+        dataIndx: "dealNo",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+      {
+        title: "결의협의체",
+        dataType: "string",
+        dataIndx: "cnsbDcd",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+      {
+        title: "결의협의체",
+        dataType: "string",
+        dataIndx: "cnsbDcdNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "회차",
+        dataType: "string",
+        dataIndx: "cnsbSq",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "안건번호",
+        dataType: "string",
+        dataIndx: "mtrDcd",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+      {
+        title: "안건명",
+        dataType: "string",
+        dataIndx: "mtrNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "통화",
+        dataType: "string",
+        dataIndx: "ptfdCrryCdNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "참여금액",
+        dataType: "int",
+        dataIndx: "ptfdAmt",
+        halign : "center",
+        align: "right",
+        filter: { crules: [{ condition: "range" }] },
+        render   : function (ui) {
+          console.log("렌더 되네?");
+          
+          let cellData = ui.cellData;
+                if (cellData !== null && cellData !== undefined) {
+                    return addComma(cellData);
+                }
+                return cellData; 
         }
-        return cellData; 
-      }
-    },
-    {
-      title: "부서",
-      dataType: "string",
-      dataIndx: "dprtNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "직원",
-      dataType: "string",
-      dataIndx: "chrgPEnm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "심사역",
-      dataType: "string",
-      dataIndx: "ownPEnm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "진행상태",
-      dataType: "string",
-      dataIndx: "mtrPrgSttsDcdNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-  ];
-  // 협의결과
-  let colIbDealInfo = [
-    {
-      title: "안건명",
-      dataType: "string",
-      dataIndx: "mtrNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "신규/재부의",
-      dataType: "string",
-      dataIndx: "jdgmDcdNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "통화",
-      dataType: "string",
-      dataIndx: "ptfdCrryCdNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "참여금액",
-      dataType: "int",
-      dataIndx: "ptfdAmt",
-      halign: "center",
-      align: "right",
-      filter: { crules: [{ condition: "range" }] },
-      render   : function (ui) {
-        let cellData = ui.cellData;
-              if (cellData !== null && cellData !== undefined) {
-                return addComma(cellData);
-              }
-              return cellData; 
-      }
-    },
-    {
-      title: "결의결과",
-      dataType: "string",
-      dataIndx: "rsltnRsltCdNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "승인금액",
-      dataType: "int",
-      dataIndx: "apvlAmt",
-      halign: "center",
-      align: "right",
-      filter: { crules: [{ condition: "range" }] },
-      render   : function (ui) {
-        let cellData = ui.cellData;
-              if (cellData !== null && cellData !== undefined) { 
-                return addComma(cellData);
-              }
-              return cellData; 
-      }
-    },
-    {
-      title: "승인조건",
-      dataType: "string",
-      dataIndx: "rsltnRsltCdNm",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden : true
-    },
-    {
-      title: "셀다운여부",
-      dataType: "string",
-      dataIndx: "sdnCndtF",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "기타여부",
-      dataType: "string",
-      dataIndx: "etcCndtF",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "리스크승인번호",
-      dataType: "string",
-      dataIndx: "riskRcgNo",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "딜번호",
-      dataType: "string",
-      dataIndx: "dealNo",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden : true
-    },
-    {
-      title: "jdgmDcd",
-      dataType: "string",
-      dataIndx: "jdgmDcd",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden : true
-    },
-    {
-      title: "mtrDcd",
-      dataType: "string",
-      dataIndx: "mtrDcd",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden : true
-    },
-    {
-      title: "sn",
-      dataType: "string",
-      dataIndx: "sn",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden : true
-    },
-    {
-      title: "cnsbSq",
-      dataType: "string",
-      dataIndx: "cnsbSq",
-      align: "center",
-      filter: { crules: [{ condition: "range" }] },
-      hidden : true
-    },
-  ];
+      },
+      {
+        title: "결의일자",
+        dataType: "date",
+        dataIndx: "cnsbOpnDt",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        render   : function (ui) {
+          let cellData = ui.cellData;
+          if (cellData && cellData.length !== 0) {
+            let cnsbOpnDt1 = cellData.substring(0, 4);
+            let cnsbOpnDt2 = cellData.substring(4, 6);
+            let cnsbOpnDt3 = cellData.substring(6, 8);
+            return `${cnsbOpnDt1}-${cnsbOpnDt2}-${cnsbOpnDt3}`.trim();
+          }
+          return cellData; 
+        }
+      },
+      {
+        title: "부서",
+        dataType: "string",
+        dataIndx: "dprtNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "직원",
+        dataType: "string",
+        dataIndx: "chrgPEnm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "심사역",
+        dataType: "string",
+        dataIndx: "ownPEnm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "진행상태",
+        dataType: "string",
+        dataIndx: "mtrPrgSttsDcdNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+    ];
+
+    // 의결내용
+    let colMmbrInfo = [
+      {
+        title: "",
+        dataType: "string",
+        dataIndx: "MMBRChk",
+        align: "center",
+        minWidth: 36,  
+        maxWidth: 36,  
+        editable : setEditable,
+        filter: { crules: [{ condition: "range" }] },
+        editor: false,
+        type : 'checkBoxSelection',
+        cb: {
+          all: true,
+          header: true,
+          check: "Y",
+          uncheck: "N"
+        }
+      },
+      {
+        title: "참석자",
+        dataType: "string",
+        dataIndx: "atdcTrgtEmpno",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "참석위원",
+        dataType: "string",
+        dataIndx: "atdcTrgtEmpnm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "대리참석자사번",
+        dataType: "string",
+        dataIndx: "atdcAngtEmpno",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "대리참석자",
+        dataType: "string",
+        dataIndx: "atdcAngtEmpnm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "참석여부",
+        dataType: "string",
+        dataIndx: "atdcYn",
+        halign : "center",
+        align: "center",
+        editable : setEditable,
+        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          options: ['Y','N']
+        }
+      },
+      // {
+      //   title: "의결",
+      //   dataType: "string",
+      //   dataIndx: "aprvOppsDcd",
+      //   halign : "center",
+      //   align: "center",
+      //   filter: { crules: [{ condition: "range" }] },
+      //   hidden : true
+      // },
+      {
+        title: "의결",
+        dataType: "string",
+        dataIndx: "aprvOppsDcd",
+        halign : "center",
+        align: "center",
+        editable : setEditable,
+        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          valueIndx: "cdValue",
+          labelIndx: "cdName",
+          options: aprvOppsDcd,
+        },
+        render: function (ui) {
+          var options = aprvOppsDcd;
+          var option = options.find((opt) => opt.cdValue == ui.cellData);
+          return option ? option.cdName : ui.cellData;
+        },
+      },
+      {
+        title: "심의의견",
+        dataType: "string",
+        dataIndx: "opnnCtns",
+        halign : "center",
+        align: "left",
+        editable : setEditable,
+        filter: { crules: [{ condition: "range" }] },
+        editor : {type : 'textarea'}
+      },
+      {
+        title: "등록년월일",
+        dataType: "date",
+        dataIndx: "opnnRgstDt",
+        halign : "center",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          console.log("렌더 왜 안돔");
+          return formatDate(ui.cellData); 
+        }
+      },
+      {
+        title: "회의록확인",
+        dataType: "string",
+        dataIndx: "",
+        halign : "center",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true,
+      },
+      {
+        title: "확인자",
+        dataType: "string",
+        dataIndx: "",
+        halign : "center",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true,
+      },
+      {
+        title: "확인일시",
+        dataType: "date",
+        dataIndx: "", 
+        halign : "center",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true,
+      },
+      {
+        title: "위원회멤버구분코드",
+        dataType: "string",
+        dataIndx: "atdcTrgtDcd",
+        halign : "center",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+      {
+        title: "일련번호",
+        dataType: "string",
+        dataIndx: "sn",
+        halign : "center",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+    ];
+  
+    // 협의결과
+    let colIbDealInfo = [
+      {
+        title: "안건명",
+        dataType: "string",
+        dataIndx: "mtrNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "신규/재부의",
+        dataType: "string",
+        dataIndx: "jdgmDcdNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "통화",
+        dataType: "string",
+        dataIndx: "ptfdCrryCdNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "참여금액",
+        dataType: "int",
+        dataIndx: "ptfdAmt",
+        halign: "center",
+        align: "right",
+        filter: { crules: [{ condition: "range" }] },
+        render   : function (ui) {
+          let cellData = ui.cellData;
+                if (cellData !== null && cellData !== undefined) {
+                  return addComma(cellData);
+                }
+                return cellData; 
+        }
+      },
+      {
+        title: "결의결과",
+        dataType: "string",
+        dataIndx: "rsltnRsltCdNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "승인금액",
+        dataType: "int",
+        dataIndx: "apvlAmt",
+        halign: "center",
+        align: "right",
+        filter: { crules: [{ condition: "range" }] },
+        render   : function (ui) {
+          let cellData = ui.cellData;
+                if (cellData !== null && cellData !== undefined) { 
+                  return addComma(cellData);
+                }
+                return cellData; 
+        }
+      },
+      {
+        title: "승인조건",
+        dataType: "string",
+        dataIndx: "rsltnRsltCdNm",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+      {
+        title: "셀다운여부",
+        dataType: "string",
+        dataIndx: "sdnCndtF",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "기타여부",
+        dataType: "string",
+        dataIndx: "etcCndtF",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "리스크승인번호",
+        dataType: "string",
+        dataIndx: "riskRcgNo",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "딜번호",
+        dataType: "string",
+        dataIndx: "dealNo",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+      {
+        title: "jdgmDcd",
+        dataType: "string",
+        dataIndx: "jdgmDcd",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+      {
+        title: "mtrDcd",
+        dataType: "string",
+        dataIndx: "mtrDcd",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+      {
+        title: "sn",
+        dataType: "string",
+        dataIndx: "sn",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+      {
+        title: "cnsbSq",
+        dataType: "string",
+        dataIndx: "cnsbSq",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        hidden : true
+      },
+    ];
+
+    if(number === 1){
+      return colCaseInfo;
+    }
+    else if(number === 2){
+      return colMmbrInfo;
+    }
+    else if(number === 3){
+      return colIbDealInfo;
+    }
+
+  }
 
   return {
      fnStdYrChng : fnStdYrChng

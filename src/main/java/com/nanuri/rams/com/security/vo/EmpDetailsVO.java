@@ -21,7 +21,7 @@ public class EmpDetailsVO implements UserDetails {
 	private final String eno;
 	private final String empNm;
 	private final String pwd;
-	private final AthCd rghtCd;
+	private final String rghtCd;
 	private final String dprtCd;
 	private final String dprtNm;
 	private final String bdCd;
@@ -30,7 +30,7 @@ public class EmpDetailsVO implements UserDetails {
 	private final Boolean isLocked;
 	private final List<GrantedAuthority> authorities;
 	
-	private EmpDetailsVO(String eno, String empNm, String pwd, AthCd rghtCd, String dprtCd, String dprtNm, String bdCd, String bdNm, String opstDcd, Boolean isLocked
+	private EmpDetailsVO(String eno, String empNm, String pwd, String rghtCd, String dprtCd, String dprtNm, String bdCd, String bdNm, String opstDcd, Boolean isLocked
 			, List<GrantedAuthority> authorities) {
 		this.eno = eno;
 		this.empNm = empNm;
@@ -45,19 +45,19 @@ public class EmpDetailsVO implements UserDetails {
 		this.authorities = authorities;
 	}
 	
-	public static EmpDetailsVO of (String eno, String empNm, String pwd, AthCd rghtCd, String dprtCd, String dprtNm, String bdCd, String bdNm, String opstDcd, Boolean isLocked
+	public static EmpDetailsVO of (String eno, String empNm, String pwd, String rghtCd, String dprtCd, String dprtNm, String bdCd, String bdNm, String opstDcd, Boolean isLocked
 			, List<GrantedAuthority> authorities) {
 		return new EmpDetailsVO(eno, empNm, pwd, rghtCd, dprtCd, dprtNm, bdCd, bdNm, opstDcd, isLocked, authorities);
 	}
 	
-	public static EmpDetailsVO of (String eno, String empNm, String pwd, AthCd rghtCd, String dprtCd, String dprtNm, String bdCd, String bdNm, String opstDcd, Boolean isLocked
+	public static EmpDetailsVO of (String eno, String empNm, String pwd, String rghtCd, String dprtCd, String dprtNm, String bdCd, String bdNm, String opstDcd, Boolean isLocked
 			, GrantedAuthority authority) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(authority);
         return new EmpDetailsVO(eno, empNm, pwd, rghtCd, dprtCd, dprtNm, bdCd, bdNm, opstDcd, isLocked, authorities);
     }
 
-    public static EmpDetailsVO of (String eno, String empNm, String pwd, AthCd rghtCd, String dprtCd, String dprtNm, String bdCd, String bdNm, String opstDcd, Boolean isLocked
+    public static EmpDetailsVO of (String eno, String empNm, String pwd, String rghtCd, String dprtCd, String dprtNm, String bdCd, String bdNm, String opstDcd, Boolean isLocked
     		, String authority) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(authority));
