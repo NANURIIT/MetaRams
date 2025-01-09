@@ -283,7 +283,7 @@ const TB07190Sjs = (function () {
        },
       },
       {
-        title: "기업체번호",
+        title: "거래상대방",
         dataType: "string",
         dataIndx: "ardyBzepNo",
         halign: "center",

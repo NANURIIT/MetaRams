@@ -231,6 +231,7 @@ const TB08050Sjs = (function () {
             return cellData;
           }
         },
+		hidden: true,
       },
       {
         title: "처리일자",
@@ -632,7 +633,7 @@ const TB08050Sjs = (function () {
         hidden: true,
       },
       {
-        title: "처리완료여부",
+        title: "수납완료여부",
         dataType: "string",
         dataIndx: "prcsCpltYn",
         halign: "center",
@@ -642,9 +643,9 @@ const TB08050Sjs = (function () {
         render: function (ui) {
           let cellData = ui.cellData;
           if (cellData === "Y") {
-            return "처리";
+            return "Y";
           } else {
-            return "미처리";
+            return "N";
           }
         },
       },
