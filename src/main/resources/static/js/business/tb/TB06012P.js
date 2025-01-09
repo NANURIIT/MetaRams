@@ -57,9 +57,16 @@ function callTB06012P(prefix) {
  // $("#TB06012P_prdtCd").val($('#'+prefix+'_res_prdtCd').val());
   
   
-  selectorNumberFormater(
-    $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Rt']")
-  );
+  //selectorNumberFormater(
+  //  $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Rt']")
+  //);
+  
+  var patterns =  $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Rt']");
+  for(var i =0; i < patterns.length; i++){
+	  if(patterns[i].id.includes('TB06012P')){
+	  	patterns[i].value = 0; 
+	  }
+  }
   
   inputNumberChangeFunction_TB06012P();
 }
@@ -265,7 +272,13 @@ function clearTB06012P(cnd) {
   $("#TB06012P_etcApvlCndCtns").val("");
   $("#TB06012P_apvlCndActCtns").val("");
   
-  $("input[id*='Amt'], input[id*='Blce'], input[id*='Mnum'], input[id*='Rt']").val("0");
+  //$("input[id*='Amt'], input[id*='Blce'], input[id*='Mnum'], input[id*='Rt']").val("0");
+  var patterns =  $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Rt']");
+  for(var i =0; i < patterns.length; i++){
+    if(patterns[i].id.includes('TB06012P')){
+    	patterns[i].value = 0; 
+    }
+  }
     
 }
 
