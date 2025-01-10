@@ -81,10 +81,13 @@ public class TB06030ServiceImpl implements TB06030Service {
 			}else {
 				result = -1; //기존 동일한 종목코드가 존재할경우 에러
 			}
-		} else {																	// 있으면 수정
-			param.setHndEmpno(empNo);
-			ibims201bMapper.deletePrdtCd(param);
-
+		} else if(param.getRegDvsn().equals("U")) {																	// 있으면 수정
+			IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
+	        ibims201bvo.setLastYn("N");
+	        result = ibims201bMapper.updateIBIMS201BDTO(ibims201bvo);
+	
+	        param.setHndEmpno(empNo);
+			param.setLastYn("Y"); 
 			result = ibims201bMapper.regPrdtCd(param);
 		}
 

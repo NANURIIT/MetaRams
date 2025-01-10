@@ -73,10 +73,12 @@ public class TB06020ServiceImpl implements TB06020Service {
    	  //} else  {
 		} else if(param.getRegDvsn().equals("U")) {	
 	        IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
-			param.setSn(ibims201bvo.getSn());
-			param.setHndEmpno(empNo);
-			result = ibims201bMapper.updateIBIMS201BDTO(param);
-
+	        ibims201bvo.setLastYn("N");
+	        result = ibims201bMapper.updateIBIMS201BDTO(ibims201bvo);
+			
+	        param.setHndEmpno(empNo);
+			param.setLastYn("Y"); 
+			result = ibims201bMapper.regPrdtCd(param);
 		}
 
 		return result;
