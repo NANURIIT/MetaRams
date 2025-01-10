@@ -342,8 +342,6 @@ public class CommonServiceImpl implements CommonService {
 
 		String result = ibims231bMapper.chkDecdStep(param);
 
-		log.debug("######Dcd:::::::::", result);
-
 		// 딜번호 종목번호가 없는경우
 		if("".equals(param.getPrdtCd()) && "".equals(param.getDealNo())){
 			return "7574";

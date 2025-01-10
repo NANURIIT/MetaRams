@@ -152,6 +152,8 @@ const TB06080Sjs = (function () {
       d016Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
     });
     $('select[name="TB06080S_decdStepDcd"]').append(d016Html);
+    console.log(d016Html);
+    
     //  처리결과구분코드
     let p028Html = "";
     grdSelect.P028.forEach((item) => {

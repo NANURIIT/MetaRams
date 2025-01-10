@@ -77,7 +77,7 @@ public class TB06081ServiceImpl implements TB06081Service {
 			// 결재일련번호
 			ibims232bdto.setDecdSn(decdSn);
 			// 결재순번
-			ibims232bdto.setDecdSq( i );
+			ibims232bdto.setDecdSq( apvlList.size() - i );
 			// 결재상태구분코드
 			ibims232bdto.setDecdSttsDcd( apvlList.get(i).getDecdSttsDcd() );
 			// 결재자사번
