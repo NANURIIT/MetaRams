@@ -119,10 +119,12 @@
               ) AS ATH_CD_NM				/* 직책 */
            , T1.APVL_RQST_CNTN
            , T1.ERR_CNTN
+           , T1.DECD_SQ
      	  FROM (
               SELECT B.DCFC_ENO
                    , A.APVL_RQST_CNTN
                    , A.ERR_CNTN
+                   , B.DECD_SQ
                 FROM IBIMS231B A
            LEFT JOIN IBIMS232B B
                   ON A.DECD_SN = B.DECD_SN
@@ -148,6 +150,8 @@
    LEFT JOIN IBIMS003B T2
           ON T1.DCFC_ENO = T2.EMPNO
      	 WHERE 1=1
+       ORDER
+          BY DECD_SQ DESC
   </select>
 
   <select id="getDecdSn" resultType="int">
