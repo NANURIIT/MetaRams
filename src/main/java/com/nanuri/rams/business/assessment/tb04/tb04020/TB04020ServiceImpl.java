@@ -75,6 +75,9 @@ public class TB04020ServiceImpl implements TB04020Service {
 		IBIMS103BDTO temp = ibims103bMapper.selectOne103B(param);
 
 		temp.setMtrPrgSttsDcd(param.getMtrPrgSttsDcd());				// 심사진행상태코드
+		temp.setOwnPEno(param.getOwnPEno()); // 심사역
+		temp.setOwnDt(param.getOwnDt());//접수배정일
+		temp.setRiskInspctRsltnCcd(param.getRiskInspctRsltnCcd());//전결협의체
 		temp.setHndEmpno(facade.getDetails().getEno());					// 조작사원번호
 
 		param.setLastYn("N");

@@ -3653,7 +3653,7 @@ const TB04010Sjs = (function () {
       dataIndx: "ownPEno",
       align: "center",
       width: "6%",
-      hide: "true",
+      hidden: true,
     },
   ];
 

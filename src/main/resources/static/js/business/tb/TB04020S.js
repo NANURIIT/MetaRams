@@ -4,6 +4,7 @@ const TB04020Sjs = (function () {
     //setKeyFunction_TB04020S();
     loadSelectBoxContents();
     setDateInput();
+    compareP();
     /**
      * 심사역 배정은 사업부 부서장만 가능함. AG18, IT10
      * 마스터 권한으로 전산도 가능.
@@ -129,7 +130,8 @@ const TB04020Sjs = (function () {
     $("#TB04020S_detail_mtrNm").val(e.mtrNm); // DEAL 명
 
     $("#TB04020S_detail_chrgPDprtCd").val(e.chrgPDprtCd); // 담당자부서
-    $("#TB04020S_detail_chrgPEno").val(e.chrgPNm); // 담당자명
+    $("#TB04020S_detail_chrgPNo").val(e.chrrEmpno); // 담당자사번
+    $("#TB04020S_detail_chrgPNm").val(e.chrgPNm); // 담당자명
     $("#TB04020S_detail_mtrPrgSttsDcd").val(e.mtrPrgSttsDcdNm); // 안건진행상태
 
     $("#TB04020S_empNm").val(e.ownPNm); // 심사역명
@@ -261,6 +263,28 @@ const TB04020Sjs = (function () {
     }
   }
 
+  // 담당자와 심사역 비교
+  function compareP() {
+    $(document).on("change", "#TB04020S_empNo", function () {
+      var empNmValue = $(this).val();
+      var detailChrgPNoValue = $("#TB04020S_detail_chrgPNo").val();
+
+      if (empNmValue === detailChrgPNoValue) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "담당자와 심사역이 동일할 수 없습니다.",
+          confirmButtonText: "확인",
+        }).then(function () {
+          // 팝업이 닫힌 후에 실행되는 코드
+          $("#TB04020S_empNo").val(""); // 심사역사번
+          $("#TB04020S_empNm").val(""); // 심사역이름
+          $("#btnCallTB03022P").click();
+        });
+      }
+    });
+  }
+
   // 안건반송버튼 function
   function returnDeal() {
     var dealNo = $("#TB04020S_detail_dealNo").val(); // Deal번호
@@ -268,12 +292,18 @@ const TB04020Sjs = (function () {
     var jdgmDcd = $("#TB04020S_detail_jdgmDcd").val(); // 리스크심사구분
 
     var mtrPrgSttsDcd = "206"; // 심사진행상태코드
+    var ownPEno = ""; // 심사역
+    var ownDt = ""; // 접수배정일
+    var riskInspctRsltnCcd = ""; // 전결협의체
 
     var dtoParam = {
       dealNo: dealNo,
       mtrDcd: mtrDcd,
       jdgmDcd: jdgmDcd,
       mtrPrgSttsDcd: mtrPrgSttsDcd,
+      ownPEno: ownPEno,
+      ownDt: ownDt,
+      riskInspctRsltnCcd: riskInspctRsltnCcd,
     };
 
     var option = {};
@@ -759,5 +789,6 @@ const TB04020Sjs = (function () {
     receiptDeal: receiptDeal,
     returnDeal: returnDeal,
     reset_TB04020S: reset_TB04020S,
+    compareP: compareP,
   };
 })();
