@@ -649,6 +649,7 @@ const TB04010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         var dealDetail = data;
+        console.log("확인해보자::::", dealDetail);
 
         $("#TB04010S_R014").prop("disabled", true);
         $("#TB04010S_L007").prop("disabled", true);
@@ -799,8 +800,7 @@ const TB04010Sjs = (function () {
           $("#insGrdInptExptF").prop("checked", true);
         }
 
-        var chrgPEno = dealDetail.chrgPEno;
-
+        var chrgPEno = dealDetail.chrrEmpno;
         var dtoParam = {
           empNm: "",
           empno: chrgPEno,
@@ -822,7 +822,7 @@ const TB04010Sjs = (function () {
               $("#TB04010S_dprtCd").val(data[0].dprtCd); // 부서코드
               $("#TB04010S_dprtNm").val(data[0].dprtNm); // 부서코드명
               $("#TB04010S_empNm").val(data[0].empNm); // 직원명
-              $("#TB04010S_eno").val(chrgPEno);
+              $("#TB04010S_empNo").val(chrgPEno);
             }
           },
         }); /* end of ajax*/
@@ -987,7 +987,6 @@ const TB04010Sjs = (function () {
 
     // 두 값 비교하여 결과 리턴
     if (loginP === compareP) {
-      console.log("확인해보자:", loginP, "이랑", compareP);
       sameYn = "same";
     } else {
       sameYn = "diff";
@@ -3654,7 +3653,7 @@ const TB04010Sjs = (function () {
       dataIndx: "ownPEno",
       align: "center",
       width: "6%",
-      hide: true,
+      hide: "true",
     },
   ];
 
