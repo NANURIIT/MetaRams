@@ -363,7 +363,10 @@ hr{ margin-top: 0.5rem;
 	border: 1px solid #2e6da4;
 	color: #fff;
   }
-
+.arrow_area{position: relative;}
+.arrow_area div{position: absolute; bottom: 0; width: 100%;}
+.arrow_area i{ font-size: 18px; opacity: 0.8;}
+.arrow_area div p{ font-weight: bold;}
 
 /* 상단 tab */
 
