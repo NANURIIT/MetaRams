@@ -55,14 +55,14 @@
 								<label class="col-sm-1 col-form-label text-right">결재단계</label>
 								<div class="col-sm-1-5 input-group">
 									<select class="form-control" name="TB06080S_decdStepDcd" id='decdStepDcd'>
-										<option value="00">선택</option>
+										<option value="">선택</option>
 										<!-- <option value=""></option> -->
 									</select>
 								</div>
 								<div class="col-sm-1-5 text-right">
 									<button class="btn btn-primary" type="button" id=""
 										onclick="TB06080Sjs.inqTB06080S()"><i class="fa fa-search"></i>&nbsp;조회</button>
-									<button id="" class="btn btn-default" onclick="TB06080Sjs.resetTb06080()"><i
+									<button id="" class="btn btn-default" onclick="resetInputValue($(`div[data-menuid='/TB06080S']`)); resetPGgrids('TB06080S');"><i
 											class="fa fa-undo"></i>&nbsp;초기화</button>
 								</div>
 							</div>
@@ -87,25 +87,28 @@
 										<div class="col-sm-12 form-group">
 											<label class="col-sm-1 control-label">책임자</label>
 											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_chrrEno" readonly
+												<input type="text" class="form-control" id="TB06080S_chrrNm" readonly
 													disabled>
 												<span class="input-group-append">
 													<button type="button" class="btn btn-default" onclick=""><i
 															class="fa fa-search"></i></button>
 												</span>
 												<input type="text" class="form-control" style="width:40px;"
-													id="TB06080S_chrrEnm" readonly disabled>
+													id="TB06080S_chrrEno" readonly disabled>
 											</div>
 											<label class="col-sm-1 control-label">요청자</label>
 											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_dcfcEno" readonly
+												<input type="text" class="form-control" id="TB06080S_apvlRqstPNm" readonly
 													disabled>
 												<span class="input-group-append">
 													<button type="button" class="btn btn-default" onclick=""><i
 															class="fa fa-search"></i></button>
 												</span>
 												<input type="text" class="form-control" style="width:40px;"
-													id="TB06080S_apvlRqstPEnm" readonly disabled>
+													id="TB06080S_apvlRqstPEno" readonly disabled>
+											</div>
+											<div class="col-sm-4 text-right">
+												<button id="TB06080S_apvlPage" class="btn btn-warning" onclick="">결재화면이동</button>
 											</div>
 										</div>
 									</div>
@@ -165,7 +168,7 @@
 										<div class="col-sm-12 form-group">
 											<label class="col-sm-1 control-label">실행순번</label>
 											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_excSq" readonly
+												<input type="text" class="form-control" id="TB06080S_excSeq" readonly
 													disabled>
 											</div>
 											<label class="col-sm-1 control-label">신청순번</label>
@@ -175,7 +178,7 @@
 											</div>
 											<label class="col-sm-1 control-label">거래순번</label>
 											<div class="col-sm-3 text-left input-group">
-												<input type="text" class="form-control" id="TB06080S_trSq" readonly
+												<input type="text" class="form-control" id="TB06080S_trSeq" readonly
 													disabled>
 											</div>
 										</div>
@@ -185,7 +188,7 @@
 										<div class="col-sm-12 form-group">
 											<label class="col-sm-1 control-label">승인요청내용</label>
 											<div class="col-sm-11 input-group">
-												<textarea class="form-control" rows="2" id="TB06080S_apvlRqstCntn"
+												<textarea class="form-control" rows="1" id="TB06080S_apvlRqstCntn"
 													readonly disabled></textarea>
 											</div>
 										</div>
@@ -211,7 +214,7 @@
 										<div class="col-sm-12 form-group">
 											<label class="col-sm-1 control-label">오류내용</label>
 											<div class="col-sm-11 input-group">
-												<textarea class="form-control" rows="2" id="TB06080S_errCntn" readonly
+												<textarea class="form-control" rows="1" id="TB06080S_errCntn" readonly
 													disabled></textarea>
 											</div>
 										</div>
@@ -224,7 +227,7 @@
 							
 							<div class="ibox-title">
 								<div>
-									<h5>▶ 반려</h5>
+									<h5>▶ 결재정보</h5>
 								</div>
 							</div>
 							<div class="ibox">
@@ -260,14 +263,14 @@
 											</div>
 											<label class="col-sm-1 control-label">결재자</label>
 											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB06080S_dcfcEnoGbck"
+												<input type="text" class="form-control" id="TB06080S_dcfcEnm"
 													readonly disabled>
 												<span class="input-group-append">
 													<button type="button" class="btn btn-default" onclick=""><i
 															class="fa fa-search"></i></button>
 												</span>
 												<input type="text" class="form-control" style="width:40px;"
-													id="TB06080S_dcfcEnmGbck" readonly disabled>
+													id="TB06080S_dcfcEno" readonly disabled>
 											</div>
 										</div>
 									</div>

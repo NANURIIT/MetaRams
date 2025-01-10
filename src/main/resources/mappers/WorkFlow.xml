@@ -259,6 +259,7 @@
             JOIN IBIMS003B u ON u.EMPNO = wf.APRV_EMP_NO
             JOIN WF_STEP s1 ON wf.WF_MAP_ID = s1.WF_MAP_ID AND wf.WF_STEP_ID = s1.STEP_ID
             WHERE s1.WF_AUTH_ID = #{wfAuthId}
+              AND u.DEL_YN = 'N'
             ORDER BY wf.APRV_DTTM
     </select>
 

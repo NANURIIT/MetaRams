@@ -358,6 +358,7 @@
           LEFT JOIN IBIMS010B s010b
                ON s101b.PTXT_TR_OTHR_DSCM_NO	= s010b.ARDY_BZEP_NO
          WHERE 1 = 1
+         AND s003b.DEL_YN = 'N'
            AND s101b.LAST_YN				= 'Y'
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND s101b.DEAL_NO             LIKE '%'|| #{dealNo} || '%'

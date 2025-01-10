@@ -542,6 +542,18 @@ function keyDownEnter_TB06011P() {
 	});
 }
 
+/**
+ * 담당자번호 
+ */
+
+$("#TB06011P_empNo").on('change', function(){
+		let tmpEmpNo="";
+		tmpEmpNo=$("#TB06011P_empNo").val();
+		if(tmpEmpNo.length != 7){
+			$("#TB06011P_empNm").val("");
+		}
+});	
+
 function callGridTB06011P(prefix) {
 	clearTB06011P();
 	$('#TB06011P_prefix').val(prefix);

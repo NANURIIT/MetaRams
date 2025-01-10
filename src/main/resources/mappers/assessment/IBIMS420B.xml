@@ -442,6 +442,8 @@
     		 , IBIMS003B I
     		 , IBIMS003B J
          WHERE 1=1
+				 AND I.DEL_YN = 'N'
+				 AND J.DEL_YN = 'N'
            AND A.PRDT_CD 				= B.PRDT_CD(+) 
 		   AND A.TR_SN 					= B.TR_SN(+)
 		   AND A.EXC_SN 				= B.EXC_SN(+)

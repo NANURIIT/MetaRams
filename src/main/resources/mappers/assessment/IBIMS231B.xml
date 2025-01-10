@@ -2,6 +2,110 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS231BMapper">
 
+  <!-- 승인요청 조회 -->
+	<select id='inqTB06080S' parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS231BVO">
+        SELECT T1.DECD_SN
+             , T1.CHRR_ENO
+             , (
+              SELECT EMP_NM
+                FROM IBIMS003B
+               WHERE 1=1
+                 AND EMPNO = T1.CHRR_ENO
+             ) AS CHRR_NM
+             , T1.APVL_RQST_P_ENO
+             , (
+              SELECT EMP_NM
+                FROM IBIMS003B
+               WHERE 1=1
+                 AND EMPNO = T1.APVL_RQST_P_ENO
+             ) AS APVL_RQST_P_NM
+             , T1.DECD_STEP_DCD
+             , (
+              SELECT CD_VL_NM
+                FROM IBIMS002B
+               WHERE 1=1
+                 AND CMNS_CD_GRP = 'D016'
+                 AND CD_VL_ID = T1.DECD_STEP_DCD
+             ) AS DECD_STEP_NM
+             , T1.DECD_STTS_DCD
+             , (
+              SELECT CD_VL_NM
+                FROM IBIMS002B
+               WHERE 1=1
+                 AND CMNS_CD_GRP = 'D006'
+                 AND CD_VL_ID = T1.DECD_STTS_DCD
+             ) AS DECD_STTS_NM
+             , T1.DEAL_NO
+             , (
+              SELECT MAX(DEAL_NM)
+                FROM IBIMS101B
+               WHERE 1=1
+                 AND DEAL_NO = T1.DEAL_NO
+             ) AS DEAL_NM
+             , T1.PRDT_CD
+             , (
+              SELECT MAX(PRDT_NM)
+                FROM IBIMS201B
+               WHERE 1=1
+                 AND PRDT_CD = T1.PRDT_CD
+             ) AS PRDT_NM
+             , T1.DECD_JOB_DCD
+             , T1.SCRN_NO
+             , T1.APVL_RQST_CNTN
+             , T1.RQST_DTM
+             , T1.RQST_CNCL_DTM
+             , T1.PRCS_RSLT_DCD
+             , (
+              SELECT CD_VL_NM
+                FROM IBIMS002B
+               WHERE 1=1
+                 AND CMNS_CD_GRP = 'P028'
+                 AND CD_VL_ID = T1.PRCS_RSLT_DCD
+             ) AS PRCS_RSLT_NM
+             , T1.EXC_SEQ
+             , T1.RQST_SQ
+             , T1.TR_SEQ
+             , T1.ERR_CNTN
+             , T1.LAST_DECD_SQ
+             , T2.DPRT_NM
+          FROM IBIMS231B T1
+     LEFT JOIN IBIMS003B T2
+            ON T1.APVL_RQST_P_ENO = T2.EMPNO
+         WHERE 1=1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdStepDcd)">
+           AND T1.DECD_STEP_DCD = #{decdStepDcd}					/* 결재단계구분코드 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEno)">
+           AND T1.CHRR_ENO = #{chrrEno}                   /* 책임자 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(apvlRqstPEno)">
+           AND T1.APVL_RQST_P_ENO = #{apvlRqstPEno}       /* 승인요청자 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(hndEmpno)">
+           AND (
+             /* 승인요청자가 접속한 경우 */
+             T1.APVL_RQST_P_ENO = #{hndEmpno}					
+             /* 결재자가 접속한 경우 */
+             OR T1.DECD_SN IN (
+                   SELECT DECD_SN
+                     FROM IBIMS232B
+                    WHERE 1=1
+                      AND DCFC_ENO = #{hndEmpno}		
+             )
+               /* 현재 접속자가 상급자중 부서장 이상인 경우도 검색 가능 */
+             OR (
+                8 &gt;= SUBSTR(T2.ATH_CD, 4)
+            AND T2.DPRT_CD = (
+                      SELECT DPRT_CD
+                        FROM IBIMS003B
+                      WHERE 1=1
+                        AND EMPNO = #{hndEmpno}
+                    )
+              )
+           )
+           </if>
+	</select>
+
   <!-- 결재요청내역 확인 -->
   <select id="apvlListChk" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS003BVO">
       SELECT T2.EMPNO							/* 사원번호 */
@@ -15,10 +119,12 @@
               ) AS ATH_CD_NM				/* 직책 */
            , T1.APVL_RQST_CNTN
            , T1.ERR_CNTN
+           , T1.DECD_SQ
      	  FROM (
               SELECT B.DCFC_ENO
                    , A.APVL_RQST_CNTN
                    , A.ERR_CNTN
+                   , B.DECD_SQ
                 FROM IBIMS231B A
            LEFT JOIN IBIMS232B B
                   ON A.DECD_SN = B.DECD_SN
@@ -44,6 +150,8 @@
    LEFT JOIN IBIMS003B T2
           ON T1.DCFC_ENO = T2.EMPNO
      	 WHERE 1=1
+       ORDER
+          BY DECD_SQ DESC
   </select>
 
   <select id="getDecdSn" resultType="int">
@@ -128,7 +236,17 @@
       , GUID
     ) VALUES (
         #{decdSn}
-      , #{chrrEno}
+      , (
+        SELECT MAX(EMPNO)
+          FROM IBIMS003B
+         WHERE 1=1
+           AND ATH_CD = (
+                          SELECT DPRT_CD || 8
+                            FROM IBIMS003B
+                           WHERE 1=1
+                             AND EMPNO = #{apvlRqstPEno}
+                         )
+      )
       , #{apvlRqstPEno}
       , #{decdStepDcd}
       , #{decdSttsDcd}
@@ -163,16 +281,19 @@
   <update id="updateDecd" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO">
     UPDATE IBIMS231B
        SET DECD_STEP_DCD = #{decdStepDcd}
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdSttsDcd)">
          , DECD_STTS_DCD = #{decdSttsDcd}
+         </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(apvlRqstCntn)">
          , APVL_RQST_CNTN = #{apvlRqstCntn}
          </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(errCntn)">
          , ERR_CNTN = #{errCntn}
          </if>
-         <if test="decdSttsDcd == '4'">
-         , RQST_CNCL_DTM = SYSDATE
-         </if>
+         , RQST_CNCL_DTM = CASE 
+                           WHEN #{decdSttsDcd} = '4' THEN SYSDATE 
+                           ELSE NULL 
+                            END
          , HND_EMPNO = #{hndEmpno}
          , HND_DETL_DTM = SYSDATE
      WHERE 1=1
@@ -198,7 +319,6 @@
                          AND DECD_STEP_DCD = '04'
                          AND DECD_STTS_DCD = '1'
                       )
-       
   </update>
 
 </mapper>

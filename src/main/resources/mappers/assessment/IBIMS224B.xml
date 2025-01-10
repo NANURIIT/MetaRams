@@ -116,6 +116,7 @@
                     FROM IBIMS224B
                     WHERE DEAL_NO = #{dealNo}
                 )
+      AND B.DEL_YN = 'N'          
 	</select>
 	
 	<!-- LOI/LOC 발급 저장 -->

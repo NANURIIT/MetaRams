@@ -48,4 +48,9 @@ public interface IBIMS231BMapper {
      */
     public String chkDecdStep (IBIMS231BVO param);
 
+    /**
+     * 승인요청그리드 조회
+     */
+    public List<IBIMS231BVO> inqTB06080S (IBIMS231BDTO paramData);
+
 }

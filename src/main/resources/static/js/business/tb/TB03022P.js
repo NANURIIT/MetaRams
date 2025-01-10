@@ -57,10 +57,13 @@ function registerInputEvents(selector, inputLastId, inputLength) {
       } else if (inputLastId === "_dprtCd") {
         dprtCdSrchYn = "Y";
       }
-      
+
       const currentInput = $(this);
 
-      const result = $(this).attr('id').slice(0, $(this).attr('id').length - 2) + 'Nm';
+      const result =
+        $(this)
+          .attr("id")
+          .slice(0, $(this).attr("id").length - 2) + "Nm";
 
       $(`#${result}`).val("");
 
@@ -432,6 +435,13 @@ function setEmpNm(e) {
       $("#TB04012P_dlDprtCd3_dlDprtCd").val(e.dprtCd);
       $("#TB04012P_dlDprtCd3_dlDprtNm").val(e.dprtNm);
       break;
+
+    case "TB04020S":
+      $("#TB04020S_empNo").trigger("change");
+      $("#TB04020S_empNo").val(empNo);
+      $("#TB04020S_empNm").val(empNm);
+      break;
+
     case "grd_TB08040S":
       console.log(feeSch);
       console.log(dprtCd);
@@ -454,12 +464,12 @@ function setEmpNm(e) {
       $("#TB07120S2_empNo").val(empNo);
       $("#TB07120S2_empNm").val(empNm);
       break;
-	case "TB08040S":
-		$("#TB08040S_dprtNm").val(e.dprtCd).prop("selected", true);
-	  break;
+    case "TB08040S":
+      $("#TB08040S_dprtNm").val(e.dprtCd).prop("selected", true);
+      break;
     case "TB08050S":
-	 	$("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
-	    break;  
+      $("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
+      break;
     default:
       break;
   }

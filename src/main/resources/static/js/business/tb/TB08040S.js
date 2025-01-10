@@ -927,8 +927,8 @@ const TB08040Sjs = (function () {
         "prdtCd": validation_TB08040S().prdtCd,
 		"strPrarDt" : $("#TB08040S_strPrarDt").val().replaceAll("-", ""),
 		"endPrarDt": $("#TB08040S_endPrarDt").val().replaceAll("-", ""), 
-		//"empNo": $("#TB08040S_empNo").val(),
-		//"dprtCd":$("#TB08040S_dprtCd").val(),
+		"empNo": $("#TB08040S_empNo").val(),
+		"dprtCd":$("#TB08040S_dprtCd").val(),
       };
 
       $.ajax({
