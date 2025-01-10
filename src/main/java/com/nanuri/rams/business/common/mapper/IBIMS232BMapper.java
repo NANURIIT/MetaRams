@@ -33,4 +33,5 @@ public interface IBIMS232BMapper {
 	 */
 	public List<IBIMS232BVO> dcfcList (IBIMS231BDTO paramData);
 
+	public int chkSttsDcd (int paramData);
 }

@@ -105,13 +105,14 @@ public class TB06081ServiceImpl implements TB06081Service {
 		for(int i = apvlList.size() - 1; i >= 0; i--){
 			// 마지막처리사원
 			apvlList.get(i).setHndEmpno(hndEmpno);
-			
-			if(i == 0){
+
+			if(i == 0 && "02".equals(apvlList.get(0).getDecdStepDcd())){
+				apvlList.get(i).setDecdSttsDcd("1");
 				ibims231bMapper.updateDecd(apvlList.get(i));
 			}
-
+			
 			IBIMS232BDTO updateData = new IBIMS232BDTO();
-
+			
 			// 결재일련번호 set
 			// 결재순번
 			// 결재상태구분코드 set
@@ -122,10 +123,13 @@ public class TB06081ServiceImpl implements TB06081Service {
 			// 반려사유내용
 			// 조작상세일시 ~ GUID
 			updateData.setDecdSn(decdSn);
+			updateData.setDecdSq(i + 1);
 			updateData.setDecdSttsDcd(apvlList.get(i).getDecdSttsDcd());
 			updateData.setHndEmpno(apvlList.get(i).getHndEmpno());
+			log.debug("int:::::::" + updateData.getDecdSq());
+			log.debug("getDecdSttsDcd:::::::" + updateData.getDecdSttsDcd());
 			ibims232bMapper.updateDecd(updateData);
-			
+
 			result += 1;
 		}
 		
