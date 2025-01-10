@@ -542,6 +542,18 @@ function keyDownEnter_TB06011P() {
 	});
 }
 
+/**
+ * 담당자번호 
+ */
+
+$("#TB06011P_empNo").on('change', function(){
+		let tmpEmpNo="";
+		tmpEmpNo=$("#TB06011P_empNo").val();
+		if(tmpEmpNo.length != 7){
+			$("#TB06011P_empNm").val("");
+		}
+});	
+
 function callGridTB06011P(prefix) {
 	clearTB06011P();
 	$('#TB06011P_prefix').val(prefix);
@@ -1013,11 +1025,15 @@ function TB06011P_setPrdtInfo(e) {
 	}
 
 	if (prefix === 'TB08040S') {
-		TB08040Sjs.srch()
+		TB08040Sjs.srch();
 	}
 
 	if (prefix === 'TB08050S') {
-		TB08050Sjs.srch()
+		TB08050Sjs.srch();
+	}
+	
+	if (prefix === 'TB07190S') {
+		$('#TB07190S_ibDealNo').val(e.dealNo);
 	}
 
 	modalClose_TB06011P();

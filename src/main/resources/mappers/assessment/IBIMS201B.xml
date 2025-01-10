@@ -640,6 +640,12 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jdgmDcd)">
                AND IB201B.JDGM_DCD = #{jdgmDcd}
            </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empNo)">
+               AND IB201B.CHRR_EMPNO = #{empNo}
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+               AND IB201B.MNGM_BDCD = #{dprtCd}
+           </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trDvsn)">
            	<if test='trDvsn == "T"'>
                	AND IB201B.PRDT_LCLS_CD IN ('10', '11', '16', '30')

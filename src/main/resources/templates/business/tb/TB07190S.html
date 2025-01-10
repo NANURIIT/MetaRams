@@ -12,11 +12,13 @@
 	<script th:src="@{js/business/tb/TB07190S.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>	<!-- 기업체 팝업 -->
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>	<!-- 딜정보 팝업 -->
+	<script th:src="@{js/business/tb/TB06011P.js}"></script>	<!-- 종목정보 팝업 -->
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -42,6 +44,19 @@
 										<input type="text" class="form-control" id="TB07190S_ibDealNm" readonly="">
 									</div>
 								</div>
+								<!-- 종목코드 -->
+								<label class="col-sm-1 control-label">
+									종목코드
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB07190S_prdtCd">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07190S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB07190S_prdtNm" readonly>
+									</div>
+								</div>
 								<!-- 조회기간 -->
 								<label class="col-sm-1 control-label text-nowrap">
 									조회기간
@@ -57,18 +72,6 @@
 										<input type="text" class="form-control" id="TB07190S_endYmd" name="" value="" 
 										placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-								</div>
-								<!-- 부서코드 -->
-								<label class="col-sm-1 control-label">
-									부서코드
-								</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-										<select class="form-control" id="TB07190S_dprtNm">
-											<option value="">전체</option>
-										</select>
-										<input type="text" class="form-control" id="TB07190S_dprtCd" readonly="">
 									</div>
 								</div>
 							</div>
@@ -119,6 +122,18 @@
 									<select class="form-control" id="TB07190S_actsCd">
 										<option value="">전체</option>
 									</select>
+								</div>
+								<!-- 부서코드 -->
+								<label class="col-sm-1 control-label">
+									부서코드
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB07190S_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="TB07190S_dprtCd" readonly="">
+									</div>
 								</div>
 							</div>
 							<div class="col-sm-2 form-group mb-1">	
