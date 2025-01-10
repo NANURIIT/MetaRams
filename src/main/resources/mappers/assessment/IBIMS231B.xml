@@ -72,7 +72,9 @@
      LEFT JOIN IBIMS003B T2
             ON T1.APVL_RQST_P_ENO = T2.EMPNO
          WHERE 1=1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdStepDcd)">
            AND T1.DECD_STEP_DCD = #{decdStepDcd}					/* 결재단계구분코드 */
+           </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEno)">
            AND T1.CHRR_ENO = #{chrrEno}                   /* 책임자 */
            </if>
@@ -230,7 +232,17 @@
       , GUID
     ) VALUES (
         #{decdSn}
-      , #{chrrEno}
+      , (
+        SELECT MAX(EMPNO)
+          FROM IBIMS003B
+         WHERE 1=1
+           AND ATH_CD = (
+                          SELECT DPRT_CD || 8
+                            FROM IBIMS003B
+                           WHERE 1=1
+                             AND EMPNO = #{apvlRqstPEno}
+                         )
+      )
       , #{apvlRqstPEno}
       , #{decdStepDcd}
       , #{decdSttsDcd}
