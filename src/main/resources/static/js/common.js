@@ -34,7 +34,6 @@ function settingFunction() {
         // mouseup 이벤트 해제 (중복 방지)
         $(document).off("mouseup.draggableDestroy");
 
-        console.log("드래그 비활성화 및 이벤트 해제 완료");
       });
     }
   );
@@ -1831,7 +1830,7 @@ function resetInputValue(selector) {
   selector.find(`input[id$='Exrt']`).val("1.0");
 
   selector.find(`input[id$='Dt']`).val(getToday());
-  let 한달뒤ㅋ = () => {
+  let after1M = () => {
     let today = new Date();
     today.setMonth(today.getMonth() + 1); // 한 달 뒤로 설정
     let year = today.getFullYear();
@@ -1840,7 +1839,7 @@ function resetInputValue(selector) {
 
     return `${year}-${month}-${day}`;
   };
-  selector.find(`input[id$='EndDt']`).val(한달뒤ㅋ);
+  selector.find(`input[id$='EndDt']`).val(after1M);
 
   setKRKRW(selector.attr("data-menuid").split("/")[1]);
 }
@@ -2117,24 +2116,27 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) {}
  * @discription
  * 실행시키시면 됩니다.
  */
-function chkDecdStep(menuId) {
-  let dealNo = $(`#${menuId}_dealNo`).val() || ""; // 딜번호
-  let prdtCd = $(`#${menuId}_prdtCd`).val() || ""; // 상품코드
-  let decdJobDcd = menuId; // 결재업무구분코드
-  let scrnNo = menuId; // 화면번호
-  let excSeq = $(`#${menuId}_excSeq`).val() || 0; // 실행순번
-  let rqstSq = $(`#${menuId}_rqstSq`).val() || 0; // 신청순번
-  let trSeq = $(`#${menuId}_trSeq`).val() || 0; // 거래순번
+function chkDecdStep (menuId){
 
+  let dealNo = $(`#${menuId}_ibDealNo`).val() || ''   // 딜번호
+  let prdtCd = $(`#${menuId}_prdtCd`).val() || ''     // 상품코드
+  let decdJobDcd = menuId                             // 결재업무구분코드
+  let scrnNo = menuId                                 // 화면번호
+  let excSeq = $(`#${menuId}_excSeq`).val() || 0      // 실행순번
+  let rqstSq = $(`#${menuId}_rqstSq`).val() || 0      // 신청순번
+  let trSeq = $(`#${menuId}_trSeq`).val() || 0        // 거래순번
+
+  console.log($(`#${menuId}_ibDealNo`).val());
+  
   let paramData = {
-    dealNo: dealNo,
-    prdtCd: prdtCd,
-    decdJobDcd: decdJobDcd,
-    scrnNo: scrnNo,
-    excSeq: excSeq,
-    rqstSq: rqstSq,
-    trSeq: trSeq,
-  };
+    dealNo: dealNo
+    , prdtCd: prdtCd
+    , decdJobDcd: decdJobDcd
+    , scrnNo: scrnNo
+    , excSeq: excSeq
+    , rqstSq: rqstSq
+    , trSeq: trSeq
+  }
 
   $.ajax({
     type: "POST",
@@ -2143,8 +2145,6 @@ function chkDecdStep(menuId) {
     data: JSON.stringify(paramData),
     dataType: "json",
     success: function (data) {
-      console.log(data);
-
       // 해당사항이 없으면 결재요청 버튼만 활성화
       if (data.toString() === "9742") {
         $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
@@ -2157,15 +2157,9 @@ function chkDecdStep(menuId) {
         );
       }
       // 승인요청중이면 결재, 반려버튼 활성화
-      else if (data.toString() === "04") {
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-          "hidden",
-          true
-        );
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-          "hidden",
-          false
-        );
+      else if (data.toString() === '1'){
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', false);
       }
       // 승인요청 진행중이나 담당자가 아니거나 결재자가 아니면 아무것도 뜨지않음
       else {

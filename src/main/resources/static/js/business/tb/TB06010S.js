@@ -733,7 +733,6 @@ const TB06010Sjs = (function(){
 		getIBIMS220BDTOInfo(prdtCd);
 		getAssetInfo(prdtCd);
 
-		chkDecdStep("TB06010S")
 	}
 
 	// 결의안건정보
@@ -904,6 +903,9 @@ const TB06010Sjs = (function(){
 					$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", false);
 					$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", false);
 				}
+				
+				// 권한확인
+				chkDecdStep("TB06010S");
 
 			}
 		});/* end of ajax*/
