@@ -199,7 +199,7 @@
             AND A.EXC_SN                                 = #{excSn}
            </if>
            <!-- AND A.ETPR_CRDT_GRNT_TR_KIND_CD                            = #{etprCrdtGrntTrKindCd} -->
-        ORDER BY PRDT_CD, EXC_SN, TR_SN DESC
+        ORDER BY PRDT_CD, TR_SN DESC, EXC_SN DESC
     </select>
 
  <!-- 거래내역조회  -->
