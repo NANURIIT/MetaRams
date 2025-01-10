@@ -265,16 +265,19 @@
   <update id="updateDecd" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO">
     UPDATE IBIMS231B
        SET DECD_STEP_DCD = #{decdStepDcd}
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdSttsDcd)">
          , DECD_STTS_DCD = #{decdSttsDcd}
+         </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(apvlRqstCntn)">
          , APVL_RQST_CNTN = #{apvlRqstCntn}
          </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(errCntn)">
          , ERR_CNTN = #{errCntn}
          </if>
-         <if test="decdSttsDcd == '4'">
-         , RQST_CNCL_DTM = SYSDATE
-         </if>
+         , RQST_CNCL_DTM = CASE 
+                           WHEN #{decdSttsDcd} = '4' THEN SYSDATE 
+                           ELSE NULL 
+                            END
          , HND_EMPNO = #{hndEmpno}
          , HND_DETL_DTM = SYSDATE
      WHERE 1=1
@@ -300,7 +303,6 @@
                          AND DECD_STEP_DCD = '04'
                          AND DECD_STTS_DCD = '1'
                       )
-       
   </update>
 
 </mapper>

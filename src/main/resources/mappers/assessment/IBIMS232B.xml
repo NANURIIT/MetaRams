@@ -87,7 +87,7 @@
            , HND_DETL_DTM = SYSDATE
        WHERE 1=1
          AND DECD_SN = #{decdSn}
-		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdSq)">
+		 <if test="decdSq != 0">
 		 AND DECD_SQ = #{decdSq}
 		 </if>
     </update>
