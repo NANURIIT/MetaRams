@@ -68,7 +68,9 @@ public class IBIMS420BVO extends IBIMS420BDTO {
 	private String endPrarDt;			/* 예정일_종료일자*/
 	private String empNo;				/* 담당자사번*/
 	
-
+	private String hndEmpnm;				/* 조작사원명*/
+	private String chrrEmpno;				/* 담당자사원번호*/
+	private String chrrEmpnm;				/* 담당자사원명*/
 	
 	// private IBIMS010BDTO ibims010bdto;
 	// private IBIMS101BDTO ibims101bdto;

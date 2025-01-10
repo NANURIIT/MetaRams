@@ -266,17 +266,24 @@ function removeWhiteSpace(str) {
  * @returns {boolean} 빈값 여부
  */
 function isEmpty(value) {
-  if (
-    value == "" ||
-    value == null ||
-    value == "null" ||
-    value == undefined ||
-    (value != null && typeof value == "object" && !Object.keys(value).length)
-  ) {
-    return true;
-  }
 
-  return false;
+	//20250110 case 스페이스바 trim 추가
+	if (value != null) {
+		value = value.toString().trim();
+	}
+	//----------
+	
+	if (
+		value == "" ||
+		value == null ||
+		value == "null" ||
+		value == undefined ||
+		(value != null && typeof value == "object" && !Object.keys(value).length)
+	) {
+		return true;
+	}
+
+	return false;
 }
 
 function isNotEmpty(value) {
