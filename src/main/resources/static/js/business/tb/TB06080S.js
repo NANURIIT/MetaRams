@@ -1,9 +1,19 @@
+/**
+ * 결재내역조회
+ * 
+ * 1. 상단 그리드는 반려된 요청내역 나오면 안됨
+ * 현재 접속중인 사람이 1.승인요청자 2.결재자 3.승인요청자의 부서장급 이상 인 경우도 조회 가능
+ * 
+ * 
+ * 2. 결재내역 그리드 승인요청 그리드 클릭 시 조회
+ */
 const TB06080Sjs = (function () {
   let pqGridObjApvlList;
   let pqGridObjGbckList;
   let selectBox;
   let grdSelect = {};
   let grd_TB06080S;
+  
 
   $(document).ready(function () {
     // 공통 코드 불러오기
@@ -26,34 +36,6 @@ const TB06080Sjs = (function () {
         id: gridId,
         colModel: colId,
         scrollModel: { autofit: false },
-        // TO-DO 더블클릭 이벤트 수정
-        // cellDblClick: function (event, ui) {
-        //   console.log("aaaaaaaaaaa");
-        //   var rowData = ui.rowData;
-        //   console.log(rowData);
-        // },
-        cellClick: function (event, ui) {
-          //클릭시 선택한 열 볼드처리
-          $("#" + gridId + " .pq-grid-row").css("font-weight", "");
-          //var row = $("#TB09060S_grid1").pqGrid("getRow", { rowIndx: ui.rowIndx});
-          if (gridId == "gridApvlList") {
-            $("#pq-body-row-u0-" + ui.rowIndx + "-right").css(
-              "font-weight",
-              "bold"
-            );
-            //상단 그리드의 셀 선택시 input 채우기
-            var apvlListRowData = ui.rowData;
-            apvlListSetting(apvlListRowData);
-          } else if (gridId == "gridGbckList") {
-            $("#pq-body-row-u3-" + ui.rowIndx + "-right").css(
-              "font-weight",
-              "bold"
-            );
-            //하단 그리드의 셀 선택시 input 채우기
-            var gbckListRowData = ui.rowData;
-            gbckListSetting(gbckListRowData);
-          }
-        },
       },
     ];
     setPqGrid(pqGridObj);
@@ -66,89 +48,6 @@ const TB06080Sjs = (function () {
       pqGridObjGbckList = $("#" + gridId).pqGrid("instance");
     }
   }
-
-  /*
-   *  전체 초기화
-   */
-  const resetTb06080 = () => {
-    // 조회조건
-    $("#TB06080S_rspl_empNm").val(""); // 책임자
-    $("#TB06080S_rspl_empNo").val(""); // 책임자사번
-    $("#TB06080S_rqst_empNm").val(""); // 승인요청자
-    $("#TB06080S_rqst_empNo").val(""); // 승인요청자사번
-    $("#decdStepDcd").val("sel"); // 결재단계
-    //승인요청
-    $("#TB06080S_apvlRqstSq").val(""); // 승인요청순번
-    $("#TB06080S_chrrEno").val(""); // 책임자사번
-    $("#TB06080S_chrrEnm").val(""); // 책임자이름
-    $("#TB06080S_dcfcEno").val(""); // 요청자사번
-    $("#TB06080S_apvlRqstPEnm").val(""); // 요청자이름
-    $("#TB06080S_decdStepDcd").val(""); // 결재단계
-    $("#TB06080S_rqstDtm").val(""); // 승인요청일자
-    $("#TB06080S_rqstCnclDtm").val(""); // 승인요청취소일자
-    $("#TB06080S_dealNo").val(""); // Deal번호
-    $("#TB06080S_dealNm").val(""); // Deal명
-    $("#TB06080S_excSq").val(""); // 실행순번
-    $("#TB06080S_rqstSq").val(""); // 신청순번
-    $("#TB06080S_trSq").val(""); // 거래순번
-    $("#TB06080S_apvlRqstCntn").val(""); // 승인요청내용
-    $("#TB06080S_scrnNo").val(""); // 화면번호
-    $("#TB06080S_prcsRsltDcd").val(""); // 처리결과
-    $("#TB06080S_errCntn").val(""); // 오류내용
-    //반려
-    $("#TB06080S_decdSq").val(""); // 결재순번
-    $("#TB06080S_decdSttsDcd").val(""); // 결재상태
-    $("#TB06080S_decdDtm").val(""); // 결재일자
-    $("#TB06080S_dcfcEnoGbck").val(""); // 결재자사번
-    $("#TB06080S_dcfcEnmGbck").val(""); // 결재자이름
-    $("#TB06080S_dcfcAnnoCntn").val(""); // 결재자주석
-    $("#TB06080S_rjctYn").val(""); // 반려여부
-    $("#TB06080S_rjctRsnCntn").val(""); // 반려사유
-    //그리드
-    pqGridObjApvlList.setData([]);
-    pqGridObjGbckList.setData([]);
-  };
-  
-  
-  
-  /*
-    *  부분 초기화
-    */
-   function resetTb06080_below() {
-     //승인요청
-     $("#TB06080S_apvlRqstSq").val(""); // 승인요청순번
-     $("#TB06080S_chrrEno").val(""); // 책임자사번
-     $("#TB06080S_chrrEnm").val(""); // 책임자이름
-     $("#TB06080S_dcfcEno").val(""); // 요청자사번
-     $("#TB06080S_apvlRqstPEnm").val(""); // 요청자이름
-     $("#TB06080S_decdStepDcd").val(""); // 결재단계
-     $("#TB06080S_rqstDtm").val(""); // 승인요청일자
-     $("#TB06080S_rqstCnclDtm").val(""); // 승인요청취소일자
-     $("#TB06080S_dealNo").val(""); // Deal번호
-     $("#TB06080S_dealNm").val(""); // Deal명
-     $("#TB06080S_excSq").val(""); // 실행순번
-     $("#TB06080S_rqstSq").val(""); // 신청순번
-     $("#TB06080S_trSq").val(""); // 거래순번
-     $("#TB06080S_apvlRqstCntn").val(""); // 승인요청내용
-     $("#TB06080S_scrnNo").val(""); // 화면번호
-     $("#TB06080S_prcsRsltDcd").val(""); // 처리결과
-     $("#TB06080S_errCntn").val(""); // 오류내용
-     //반려
-     $("#TB06080S_decdSq").val(""); // 결재순번
-     $("#TB06080S_decdSttsDcd").val(""); // 결재상태
-     $("#TB06080S_decdDtm").val(""); // 결재일자
-     $("#TB06080S_dcfcEnoGbck").val(""); // 결재자사번
-     $("#TB06080S_dcfcEnmGbck").val(""); // 결재자이름
-     $("#TB06080S_dcfcAnnoCntn").val(""); // 결재자주석
-     $("#TB06080S_rjctYn").val(""); // 반려여부
-     $("#TB06080S_rjctRsnCntn").val(""); // 반려사유
-     //그리드
-     pqGridObjApvlList.setData([]);
-     pqGridObjGbckList.setData([]);
-   };
-   
-  
-  
 
   /*******************************************************************
    * AJAX
@@ -170,57 +69,54 @@ const TB06080Sjs = (function () {
       data: JSON.stringify(obj),
       dataType: "json",
       beforeSend: function (xhr) {
-        // $('#btnExc').prop('disabled', false)
-        // $('#TB10720S_rgst_jobId').prop('disabled', false)
-        pqGridObjApvlList.setData([]);
-        pqGridObjGbckList.setData([]);
+        resetInputValue($(`div[data-menuid='/TB06080S']`));
+        resetPGgrids('TB06080S');
+        $('#TB06080S_apvlPage').off('click');
       },
       success: function (data) {
-        // chkEvt();
+        if (data.length > 0) {
+          pqGridObjApvlList.setData(data);
 
-        if (data && data.apvlList.length > 0) {
-          console.log(data.apvlList);
-          pqGridObjApvlList.setData(data.apvlList);
-          pqGridObjGbckList.setData(data.gbckList);
+          pqGridObjApvlList.on("rowClick", function (evt, ui) {
+            // 공통 피큐그리드에서 인풋으로 값 보내기
+            setInputboxFromPdata(ui, "TB06080S");
 
-          console.log(pqGridObjApvlList);
-          pqGridObjApvlList.on("rowSelect", function (evt, ui) {
-            console.log("1");
+            $('#TB06080S_apvlPage').off('click');
+            $('#TB06080S_apvlPage').on('click', function(){
+              callPage(ui.rowData.scrnNo)
+              console.log("여러번 가는지 확인용");
+            })
 
-            let ul = ui.addList;
-            let sel = pqGridObjApvlList.SelectRow();
-            let getSel = sel.getSelection();
+            // 해당 승인요청의 승인자 리스트
+            $.ajax({
+              type: "POST",
+              url: "/TB06080S/dcfcList",
+              contentType: "application/json; charset=UTF-8",
+              data: JSON.stringify(
+                {
+                  decdSn: ui.rowData.decdSn
+                }
+              ),
+              dataType: "json",
+              success: function (data) {
+                if (data.length > 0) {
+                  pqGridObjGbckList.setData(data);
+        
+                  pqGridObjGbckList.on("rowClick", function (evt, ui) {
+                    // 공통 피큐그리드에서 인풋으로 값 보내기
+                    setInputboxFromPdata(ui, "TB06080S");
+                  });
+                } else {
+                  swal.fire({
+                    icon: "warning",
+                    text: "조회된 내역이 없습니다.",
+                    confirmButtonText: "확인",
+                  });
+                  return;
+                }
+              },
+            });
 
-            if (getSel.length > 0) {
-              if (ul[0].rowData.pq_rowselect) {
-                rd = ul[0].rowData;
-
-                console.log(rd);
-
-                $("#TB06080S_apvlRqstSq").val(rd.apvlRqstSq);
-                $("#TB06080S_chrrEno").val(rd.chrrEno);
-                $("#TB06080S_chrrEnm").val(rd.chrrEnm);
-                $("#TB06080S_apvlRqstPEno").val(rd.apvlRqstPEno);
-                $("#TB06080S_apvlRqstPEnm").val(rd.apvlRqstPEnm);
-                $("#TB06080S_decdSttsDcd").val(rd.decdSttsDcd);
-                $("#TB06080S_dealNo").val(rd.dealNo);
-                $("#TB06080S_dealNm").val(rd.dealNm);
-                $("#TB06080S_decdJobDcd").val(rd.decdJobDcd);
-                $("#TB06080S_scrnNo").val(rd.scrnNo);
-                $("#TB06080S_apvlRqstCntn").val(rd.apvlRqstCntn);
-                $("#TB06080S_rqstDtm").val(rd.rqstDtm);
-                $("#TB06080S_rqstCnclDtm").val(rd.rqstCnclDtm);
-                $("#TB06080S_dcfcEno").val(rd.dcfcEno);
-                $("#TB06080S_dcfcEnm").val(rd.dcfcEnm);
-                $("#TB06080S_prcsRsltDcd").val(rd.prcsRsltDcd);
-                $("#TB06080S_excSq").val(rd.excSq);
-                $("#TB06080S_rqstSq").val(rd.rqstSq);
-                $("#TB06080S_trSq").val(rd.trSq);
-                $("#TB06080S_errCntn").val(rd.errCntn);
-
-                rd.rowType = "M";
-              }
-            }
           });
         } else {
           swal.fire({
@@ -228,7 +124,6 @@ const TB06080Sjs = (function () {
             text: "조회된 내역이 없습니다.",
             confirmButtonText: "확인",
           });
-		  resetTb06080_below();
           return;
         }
       },
@@ -264,6 +159,8 @@ const TB06080Sjs = (function () {
       d016Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
     });
     $('select[name="TB06080S_decdStepDcd"]').append(d016Html);
+    console.log(d016Html);
+    
     //  처리결과구분코드
     let p028Html = "";
     grdSelect.P028.forEach((item) => {
@@ -275,45 +172,6 @@ const TB06080Sjs = (function () {
   /*
    *  =====================OptionBox데이터 SET=====================
    */
-
-  function apvlListSetting(apvlListRowData) {
-    console.log(apvlListRowData);
-    $("#TB06080S_apvlRqstSq").val(apvlListRowData.apvlRqstSq); // 승인요청순번
-    $("#TB06080S_chrrEno").val(apvlListRowData.chrrEno); // 책임자사번
-    $("#TB06080S_chrrEnm").val(apvlListRowData.chrrEnm); // 책임자이름
-    $("#TB06080S_dcfcEno").val(apvlListRowData.dcfcEno); // 요청자사번
-    $("#TB06080S_apvlRqstPEnm").val(apvlListRowData.dcfcEnm); // 요청자이름
-    $("#TB06080S_decdStepDcd").val(apvlListRowData.decdStepDcd); // 결재단계
-    $("#TB06080S_rqstDtm").val(
-      formatDateTime(apvlListRowData.rqstDtm).split(" ")[0]
-    ); // 승인요청일자
-    $("#TB06080S_rqstCnclDtm").val(
-      formatDateTime(apvlListRowData.rqstCnclDtm).split(" ")[0]
-    ); // 승인요청취소일자
-    $("#TB06080S_dealNo").val(apvlListRowData.dealNo); // Deal번호
-    $("#TB06080S_dealNm").val(apvlListRowData.dealNm); // Deal명
-    $("#TB06080S_excSq").val(apvlListRowData.excSq); // 실행순번
-    $("#TB06080S_rqstSq").val(apvlListRowData.rqstSq); // 신청순번
-    $("#TB06080S_trSq").val(apvlListRowData.trSq); // 거래순번
-    $("#TB06080S_apvlRqstCntn").val(apvlListRowData.apvlRqstCntn); // 승인요청내용
-    $("#TB06080S_scrnNo").val(apvlListRowData.scrnNo); // 화면번호
-    $("#TB06080S_prcsRsltDcd").val(apvlListRowData.prcsRsltDcd); // 처리결과
-    $("#TB06080S_errCntn").val(apvlListRowData.errCntn); // 오류내용
-  }
-
-  function gbckListSetting(gbckListRowData) {
-    console.log(gbckListRowData);
-    $("#TB06080S_decdSq").val(gbckListRowData.decdSq); // 결재순번
-    $("#TB06080S_decdSttsDcd").val(gbckListRowData.decdSttsDcd); // 결재상태
-    $("#TB06080S_decdDtm").val(
-      formatDateTime(gbckListRowData.decdDtm).split(" ")[0]
-    ); // 결재일자
-    $("#TB06080S_dcfcEnoGbck").val(gbckListRowData.dcfcENo); // 결재자사번
-    $("#TB06080S_dcfcEnmGbck").val(gbckListRowData.dcfcENm); // 결재자이름
-    $("#TB06080S_dcfcAnnoCntn").val(gbckListRowData.dcfcAnnoCntn); // 결재자주석
-    $("#TB06080S_rjctYn").val(gbckListRowData.rjctYn); // 반려여부
-    $("#TB06080S_rjctRsnCntn").val(gbckListRowData.rjctRsnCntn); // 반려사유
-  }
 
   function formatDateTime(dateString) {
     if (dateString != null) {
@@ -338,14 +196,6 @@ const TB06080Sjs = (function () {
 
   let colApvlList = [
     {
-      title: "승인요청순번",
-      dataType: "integer",
-      dataIndx: "apvlRqstSq",
-      align: "center",
-      width: 95,
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
       title: "결재단계",
       dataType: "string",
       dataIndx: "decdStepNm", //코드명으로
@@ -362,10 +212,29 @@ const TB06080Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
+      title: "종목코드",
+      dataType: "string",
+      dataIndx: "prdtCd",
+      halign: "center",
+      align: "left",
+      width: 90,
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "종목명",
+      dataType: "string",
+      dataIndx: "prdtNm",
+      halign: "center",
+      align: "left",
+      width: 160,
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
       title: "Deal번호",
       dataType: "string",
       dataIndx: "dealNo",
-      align: "center",
+      halign: "center",
+      align: "left",
       width: 160,
       filter: { crules: [{ condition: "range" }] },
     },
@@ -373,14 +242,15 @@ const TB06080Sjs = (function () {
       title: "Deal명",
       dataType: "string",
       dataIndx: "dealNm", //딜명가져오기
-      align: "center",
+      halign: "center",
+      align: "left",
       width: 160,
       filter: { crules: [{ condition: "range" }] },
     },
     {
       title: "실행순번",
       dataType: "integer",
-      dataIndx: "excSq",
+      dataIndx: "excSeq",
       align: "center",
       width: 70,
       filter: { crules: [{ condition: "range" }] },
@@ -396,7 +266,7 @@ const TB06080Sjs = (function () {
     {
       title: "거래순번",
       dataType: "integer",
-      dataIndx: "trSq",
+      dataIndx: "trSeq",
       align: "center",
       width: 70,
       filter: { crules: [{ condition: "range" }] },
@@ -428,7 +298,7 @@ const TB06080Sjs = (function () {
     {
       title: "책임자",
       dataType: "string",
-      dataIndx: "chrrEnm", //책임자명
+      dataIndx: "chrrNm", //책임자명
       align: "center",
       width: 70,
       filter: { crules: [{ condition: "range" }] },
@@ -456,22 +326,6 @@ const TB06080Sjs = (function () {
       },
     },
     {
-      title: "담당자사번",
-      dataType: "string",
-      dataIndx: "dcfcEno",
-      align: "center",
-      width: 90,
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "담당자",
-      dataType: "string",
-      dataIndx: "dcfcEnm",
-      align: "center",
-      width: 70,
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
       title: "처리결과",
       dataType: "string",
       dataIndx: "prcsRsltNm",
@@ -489,15 +343,8 @@ const TB06080Sjs = (function () {
     },
   ];
 
+  // 결재정보
   let colGbckList = [
-    {
-      title: "승인요청순번",
-      dataType: "integer",
-      dataIndx: "apvlRqstSq",
-      align: "center",
-      width: 95,
-      filter: { crules: [{ condition: "range" }] },
-    },
     {
       title: "결재순번",
       dataType: "integer",
@@ -528,7 +375,7 @@ const TB06080Sjs = (function () {
     {
       title: "결재자사번",
       dataType: "string",
-      dataIndx: "dcfcENo",
+      dataIndx: "dcfcEno",
       align: "center",
       width: 90,
       filter: { crules: [{ condition: "range" }] },
@@ -536,7 +383,7 @@ const TB06080Sjs = (function () {
     {
       title: "결재자",
       dataType: "string",
-      dataIndx: "dcfcENm",
+      dataIndx: "dcfcEnm",
       align: "center",
       width: 70,
       filter: { crules: [{ condition: "range" }] },
@@ -571,8 +418,6 @@ const TB06080Sjs = (function () {
     /**
      * 사용 할 함수 정의
      */
-
-    resetTb06080: resetTb06080,
     inqTB06080S: inqTB06080S,
   };
 })();

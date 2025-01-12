@@ -212,12 +212,12 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getMenuList(AthCd rghtCd) {
+	public List<Map<String, Object>> getMenuList(String rghtCd) {
 		return ibims006BMapper.getMenuList(rghtCd);
 	}
 	
 	@Override
-	public List<Map<String, Object>> getMenuListM(AthCd rghtCd) {
+	public List<Map<String, Object>> getMenuListM(String rghtCd) {
 		return ibims006BMapper.getMenuListM(rghtCd);
 	}
 
@@ -341,8 +341,6 @@ public class CommonServiceImpl implements CommonService {
 		param.setDcfcEno(facade.getDetails().getEno());
 
 		String result = ibims231bMapper.chkDecdStep(param);
-
-		log.debug("######Dcd:::::::::", result);
 
 		// 딜번호 종목번호가 없는경우
 		if("".equals(param.getPrdtCd()) && "".equals(param.getDealNo())){

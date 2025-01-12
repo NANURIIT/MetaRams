@@ -34,7 +34,7 @@
                 , GUID                                              /* guid */
                )
         VALUES 
-        	<foreach collection="lstInspctRmrk" item="item" index="index" separator=",">
+        	<foreach collection="listEtc" item="item" index="index" separator=",">
         	   (
                  #{item.dealNo}                                          /* 딜번호 */
                , #{item.inspctDt}                                        /* 점검일자 */

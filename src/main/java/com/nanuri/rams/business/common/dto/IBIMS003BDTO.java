@@ -17,7 +17,7 @@ public class IBIMS003BDTO {
     private String         empno;                                  // 사원번호
     private String         empNm;                                  // 사원명
     private String         usrDcd;                                  // 사용자구분코드
-    private AthCd          athCd;                                 // 권한코드
+    private String          athCd;                                 // 권한코드
     private String         engEmpNm;                               // 영문사원명
     private String         cpin;                                   // 고객식별번호
     private String         brdt;                                   // 생년월일

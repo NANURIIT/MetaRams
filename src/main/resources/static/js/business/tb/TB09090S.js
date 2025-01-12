@@ -730,6 +730,7 @@ const TB09090Sjs = (function() {
 									options: grdSelect.O011
 								},
 								render: function (ui) {
+									console.log(grdSelect.O011);
 									let fSel = grdSelect.O011.find(({ cdValue }) => cdValue == ui.cellData);
 									return fSel ? fSel.cdName : ui.cellData;
 								}

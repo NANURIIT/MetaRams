@@ -34,4 +34,9 @@ public class TB08036APIController {
 		tb08036Service.deleteDealInfo(param);
 	}
 
+	@PostMapping(value = "/insertIBIMS603B")
+	public void insertIBIMS603B(@RequestBody IBIMS601BVO param){
+		tb08036Service.insertIBIMS603B(param);
+	}
+
 }

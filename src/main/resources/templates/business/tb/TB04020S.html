@@ -149,7 +149,10 @@
 											<div class="form-group row">
 												<label class="col-sm-4 col-form-label">직원</label>
 												<div class="col-sm-8">
-													<input type="text" id="TB04020S_detail_chrgPEno" class="form-control" readonly>
+													<div class="input-group">
+														<input type="text" class="form-control" style="width:30px;" id="TB04020S_detail_chrgPNo" readonly>														
+														<input type="text" class="form-control" id="TB04020S_detail_chrgPNm" style="width:70px;" readonly>
+													</div>
 												</div>
 											</div>
 											<div class="form-group row">
@@ -168,19 +171,19 @@
 										</div>
 										<div class="ibox-content text-right">
 											<div class="form-group row ">
-												<label class="col-sm-4 col-form-label">심사역</label>
+												<label class="col-sm-4 col-form-label"><span class="req"></span>심사역</label>
 												<div class="col-sm-8">
 													<div class="input-group">
-														<input type="hidden" id="TB04020S_empNo">
-														<input type="text" class="form-control" id="TB04020S_empNm" readonly>
+														<input type="text" class="form-control" style="width:30px;" id="TB04020S_empNo">
 														<span class="input-group-append">
-															<button type="button" class="btn btn-default" id="btnEnoListPop" onclick="callTB03022P('TB04020S')" ><i class="fa fa-search"></i></button>
+															<button type="button" class="btn btn-default" onclick="callTB03022P('TB04020S')" id="btnCallTB03022P"><i class="fa fa-search"></i></button>
 														</span>
-													</div>
+														<input type="text" class="form-control" id="TB04020S_empNm" style="width:70px;" readonly>
+													</div>												
 												</div>
 											</div>
 											<div class="form-group row">
-												<label class="col-sm-4 col-form-label">전결협의체&nbsp;<a onclick="callTB04021P('TB04020S');"><i class="fa fa-question-circle"></i></a></label>
+												<label class="col-sm-4 col-form-label"><span class="req"></span>전결협의체&nbsp;<a onclick="callTB04021P('TB04020S');"><i class="fa fa-question-circle"></i></a></label>
 												<div class="col-sm-8">
 													<select class="form-control" id="TB04020S_I008">
 														<option value="">선택</option>
@@ -188,7 +191,7 @@
 												</div>
 											</div>
 											<div class="form-group row">	
-												<label class="col-sm-4 col-form-label">접수배정일</label>
+												<label class="col-sm-4 col-form-label"><span class="req"></span>접수배정일</label>
 												<div class="col-sm-8 input-group date mb-1">
 													<input type="text" class="form-control" id="TB04020S_ownDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
 													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>

@@ -52,6 +52,7 @@
            ON C.EMPNO = A.APRV_EMP_NO       /* 사번 */
         WHERE A.WF_STEP_ID = #{wfStepId}
           AND A.WF_MAP_ID = #{wfMapId}
+          AND C.DEL_YN = 'N'
         ORDER BY A.WF_STEP_ID                 
         
     </select>
@@ -69,6 +70,7 @@
             JOIN WF_STEP C
              ON A.WF_MAP_ID  = C.WF_MAP_ID 
           WHERE A.WF_MAP_ID = #{wfMapId}
+          AND B.DEL_YN = 'N'
           ORDER BY A.APRV_DTTM DESC                 
         
     </select>

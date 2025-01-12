@@ -25,7 +25,7 @@ public class LoginService implements UserDetailsService {
 	public static String ROLE_PREFIX = "ROLE_";
 	
 	@Autowired
-	private IBIMS003BMapper ibims003bMapper;
+	private final IBIMS003BMapper ibims003bMapper;
 	
 	@Override
 	public EmpDetailsVO loadUserByUsername(String eno) {
@@ -35,13 +35,24 @@ public class LoginService implements UserDetailsService {
 			log.debug("employee is null => UsernameNotFoundException");
 			throw new UsernameNotFoundException("사번 또는 비밀번호가 맞지 않습니다.");
         }else {
+			log.debug("권한코드 확인root:::::#######" + employee.getAthCd());
+			log.debug("아무개코드 확인:::::#######" + employee.getEmpno());
 			return EmpDetailsVO.of(employee, getGrantedAuthorities(employee));
 		}
 	}
 	
 	private List<GrantedAuthority> getGrantedAuthorities(IBIMS003BDTO emp) {
-        AthCd rghtCd = emp.getAthCd();
-        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(ROLE_PREFIX.concat(rghtCd.name()));
+		log.debug("권한코드 확인:::::#######" + emp.getAthCd());
+		log.debug("아무개코드 확인:::::#######" + emp.getEmpno());
+        String rghtCd = emp.getAthCd();
+		String dprtCd = emp.getDprtCd();
+		String dprtNm = emp.getDprtNm();
+
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(ROLE_PREFIX.concat(rghtCd));
+
+		for(int i = 0; i < authorities.size(); i++){
+			log.debug("code list:::::#######" + authorities.get(i).getAuthority());
+		}
         return authorities;
     }
 }

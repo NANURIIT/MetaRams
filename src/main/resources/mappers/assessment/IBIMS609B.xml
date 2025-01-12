@@ -29,6 +29,7 @@
 		 WHERE A.DEAL_NO 					= #{dealNo}					/* IBDEAL명 */
 		   AND A.JDGM_DCD  				= #{jdgmDcd}				/* 심사구분코드*/
 		   AND A.MTR_DCD   				= #{mtrDcd}					/* 부수안건구분코드*/
+			 AND B.DEL_YN = 'N'
 		 ORDER 
 		 		BY SN DESC
 	</select>

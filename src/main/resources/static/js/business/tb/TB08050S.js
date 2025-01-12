@@ -16,7 +16,7 @@ const TB08050Sjs = (function () {
     pqGrid_TB08050S(); // 그리드 생성
 	loginUserSet_TB08050S(); //로그인담당자 세팅
     reBdin_TB08050S();
-    getDealInfoFromWF_TB08050S();
+    getDealInfoFromWF();
 	inputNumberChangeFunction_TB08050S();
   }
   
@@ -231,6 +231,7 @@ const TB08050Sjs = (function () {
             return cellData;
           }
         },
+		hidden: true,
       },
       {
         title: "처리일자",
@@ -254,8 +255,20 @@ const TB08050Sjs = (function () {
         dataIndx: "feeKndCd",
         halign: "center",
         align: "center",
-        width: "8%",
+        width: "12%",
         filter: { crules: [{ condition: "range" }] },
+		editor: {
+		  type: "select",
+		  valueIndx: "feeKndCd",
+		  labelIndx: "feeName",
+		  options: selectBox2,
+		},
+		render: function (ui) {
+		    let fSel = selectBox2.find(	
+		    ({ feeKndCd }) => feeKndCd == ui.cellData
+		  );
+		  return fSel ? fSel.feeName : ui.cellData;
+		},
       },
       {
         title: "계정과목",
@@ -265,6 +278,7 @@ const TB08050Sjs = (function () {
         align: "center",
         width: "6%",
         filter: { crules: [{ condition: "range" }] },
+		hidden : true,
       },
       {
         title: "계정과목명",
@@ -619,7 +633,7 @@ const TB08050Sjs = (function () {
         hidden: true,
       },
       {
-        title: "처리완료여부",
+        title: "수납완료여부",
         dataType: "string",
         dataIndx: "prcsCpltYn",
         halign: "center",
@@ -628,10 +642,10 @@ const TB08050Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
-          if (cellData === "1") {
-            return "처리";
+          if (cellData === "Y") {
+            return "Y";
           } else {
-            return "미처리";
+            return "N";
           }
         },
       },
@@ -691,8 +705,8 @@ const TB08050Sjs = (function () {
         "prdtCd": validation().prdtCd,
 		"strPrarDt" : $("#TB08050S_strPrarDt").val().replaceAll("-", ""),
 		"endPrarDt": $("#TB08050S_endPrarDt").val().replaceAll("-", ""), 
-		//"empNo": $("#TB08050S_empNo").val(),
-		//"dprtCd":$("#TB08050S_dprtCd").val(),
+		"empNo": $("#TB08050S_empNo").val(),
+		"dprtCd":$("#TB08050S_dprtCd").val(),
       };
 
       $.ajax({
@@ -1002,7 +1016,7 @@ const TB08050Sjs = (function () {
   }
 
 
-  function getDealInfoFromWF_TB08050S() {
+  function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
 			console.log("WF세션 있음");
@@ -1024,7 +1038,7 @@ const TB08050Sjs = (function () {
     resetMore: resetMore,
     calulator: calulator,
     save: save,
-    getDealInfoFromWF_TB08050S: getDealInfoFromWF_TB08050S,
+    getDealInfoFromWF: getDealInfoFromWF,
 	inputNumberChangeFunction_TB08050S:inputNumberChangeFunction_TB08050S,
   };
 })();

@@ -12,28 +12,28 @@
 
   <!-- 입금내역조회 -->
   <select id="inqIBIMS435B" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
-    SELECT RCTM_DT              /* 입금일자 */
-         , RGST_SEQ             /* 등록순번 */
-         , RGST_BDCD            /* 등록부점코드 */
-         , FNDS_DVSN_CD         /* 자금구분코드 */
-         , PMNT_PRAR_AMT        /* 납부예정금액 */
-         , DEAL_RCTM_AMT        /* 딜입금금액 */
-         , RELT_ISTT_CD         /* 관련기관코드 */
-         , RELT_ISTT_NM         /* 관련기관명 */
-         , RELT_BANO            /* 관련은행계좌번호 */
-         , DPTR_NM              /* 입금자명 */
-         , HND_DETL_DTM         /* 조작상세일시 */
+    SELECT A.RCTM_DT              /* 입금일자 */
+         , A.RGST_SEQ             /* 등록순번 */
+         , A.RGST_BDCD            /* 등록부점코드 */
+         , A.FNDS_DVSN_CD         /* 자금구분코드 */
+         , A.PMNT_PRAR_AMT        /* 납부예정금액 */
+         , A.DEAL_RCTM_AMT        /* 딜입금금액 */
+         , A.RELT_ISTT_CD         /* 관련기관코드 */
+         , A.RELT_ISTT_NM         /* 관련기관명 */
+         , A.RELT_BANO            /* 관련은행계좌번호 */
+         , A.DPTR_NM              /* 입금자명 */
+         , A.HND_DETL_DTM         /* 조작상세일시 */
          , (SELECT EMP_NM
               FROM IBIMS003B
              WHERE 1=1
-               AND EMPNO = HND_EMPNO
+               AND EMPNO = A.HND_EMPNO
             ) AS HND_EMPNO      /* 조작사원번호 */
-         , HND_TMNL_NO          /* 조작단말기번호 */
-         , HND_TR_ID            /* 조작거래ID */
-         , GUID                 /* GUID */
-      FROM IBIMS435B
+         , A.HND_TMNL_NO          /* 조작단말기번호 */
+         , A.HND_TR_ID            /* 조작거래ID */
+         , A.GUID                 /* GUID */
+      FROM IBIMS435B A
      WHERE 1=1
-       AND RCTM_DT = #{rctmDt}
+       AND A.RCTM_DT = #{rctmDt}
   </select>
 
   <!-- 납부예정금액 체크 -->

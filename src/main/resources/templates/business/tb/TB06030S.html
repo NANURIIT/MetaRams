@@ -48,7 +48,7 @@
 						<div class="row form-group form-inline text-right mb-1">
 							<div class="col-sm-12 form-group">
 								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>Deal번호</label>
-								<div class="col-sm-2">
+								<div class="col-sm-4">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB06030S_ibDealNo">
 										<span class="input-group-append">
@@ -72,7 +72,7 @@
 									</div>
 								</div> -->
 								<label class="col-sm-1 col-form-label text-right">종목코드</label>
-								<div class="col-sm-2">
+								<div class="col-sm-4">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB06030S_prdtCd">
 										<span class="input-group-append">
@@ -81,18 +81,26 @@
 										<input type="text" class="form-control" id="TB06030S_prdtNm" readonly>
 									</div>
 								</div>
-								<label class="col-sm-1 col-form-label text-right">안건명</label>
-								<div class="col-sm-2 input-group">
-									<div class="col-sm-12 text-left input-group">
-										<input type="text" class="form-control" id="TB06030S_mtrNm" readonly>
-									</div>
-								</div>
+							
 								<div class="col-sm text-right">
 									<button class="btn btn-primary" type="button" onclick="TB06030Sjs.getDealList();"><i class="fa fa-search"></i>&nbsp;조회</button>
 									<button class="btn btn-default" onclick="TB06030Sjs.resetSearchRequiment_TB06030S();"><i class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
 								</div>
 							</div>
 						</div>
+												<!-- row2 -->
+						<div class="row form-group form-inline text-right">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-1 col-form-label text-right">안건명</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB06030S_mtrNm" readonly>
+									</div>
+								</div>
+								<div class="col-sm-3">
+								</div>
+							</div>
+						
 					</div>
 				</div>
 				<div class="ibox">

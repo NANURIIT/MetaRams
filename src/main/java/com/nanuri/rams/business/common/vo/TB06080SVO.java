@@ -35,6 +35,8 @@ public class TB06080SVO {
 		private String 		decdStepNm;		/* 결재단계구분명	*/
 		private String 		decdSttsDcd;	/* 결재상태구분코드	*/
 		private String 		decdSttsNm;		/* 결재상태구분명	*/
+		private String 		prdtCd;			/* 종목코드			*/
+		private String 		prdtNm;			/* 종목명			*/
 		private String 		dealNo;			/* 딜번호			*/
 		private String 		dealNm;			/* 딜명			*/
 		private String 		decdJobDcd;		/* 결재업무구분코드	*/

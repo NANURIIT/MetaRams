@@ -6,8 +6,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
+import com.nanuri.rams.business.common.mapper.IBIMS231BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS232BMapper;
-import com.nanuri.rams.business.common.vo.TB06080SVO;
+import com.nanuri.rams.business.common.vo.IBIMS231BVO;
+import com.nanuri.rams.business.common.vo.IBIMS232BVO;
+import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,27 +19,20 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class TB06080ServiceImpl implements TB06080Service {
+	
+	private final AuthenticationFacade facade;
 
-	private final IBIMS232BMapper tb06080sMp;
+	private final IBIMS231BMapper ibims231bMapper;
+	private final IBIMS232BMapper ibims232bMapper;
 
 	@Override
-	public TB06080SVO inqTB06080S(TB06080SVO input) {
-		TB06080SVO vo = new TB06080SVO();
-		
-		List<TB06080SVO.ApvlList> apvlList = new ArrayList<TB06080SVO.ApvlList>();
-		apvlList = tb06080sMp.inqTB06080S(input);
-		List<TB06080SVO.GbckList> gbckList = new ArrayList<TB06080SVO.GbckList>();
-		
-		for (int i = 0; i < apvlList.size(); i++) {
-			
-			gbckList.addAll(tb06080sMp.inqIBMS232B(apvlList.get(i)));
-			
-		}
-		
-		vo.setApvlList(apvlList);
-		vo.setGbckList(gbckList);
-		
-		return vo;
+	public List<IBIMS231BVO> inqTB06080S(IBIMS231BDTO paramData) {
+		paramData.setHndEmpno(facade.getDetails().getEno());
+		return ibims231bMapper.inqTB06080S(paramData);
 	}
 
+	@Override
+	public List<IBIMS232BVO> dcfcList(IBIMS231BDTO paramData) {
+		return ibims232bMapper.dcfcList(paramData);
+	}
 }

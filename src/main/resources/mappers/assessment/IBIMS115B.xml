@@ -186,7 +186,7 @@
                  WHERE EMPNO = A.ATDC_ANGT_EMPNO
                ), '') AS ATDC_ANGT_EMPNM
              , A.ATDC_YN AS ATDC_YN                                             /* 참석여부 */
-             , A.APRV_OPPS_DCD AS APRV_OPPS_DCD                                 /* 찬성반대구분코드 */
+             , A.APRV_OPPS_DCD                                                  /* 찬성반대구분코드 */
              , (
                 SELECT CD_VL_NM
                   FROM IBIMS002B

@@ -57,7 +57,16 @@ function registerInputEvents(selector, inputLastId, inputLength) {
       } else if (inputLastId === "_dprtCd") {
         dprtCdSrchYn = "Y";
       }
+
       const currentInput = $(this);
+
+      const result =
+        $(this)
+          .attr("id")
+          .slice(0, $(this).attr("id").length - 2) + "Nm";
+
+      $(`#${result}`).val("");
+
       if (currentInput.val().length === inputLength) {
         await srchEmpEvent(currentInput);
       }
@@ -89,7 +98,7 @@ function TB03022P_srch(menuId) {
   let selectorString = getSelectorString(menuId); // 동적으로 selectorString 생성
   let selector = $(selectorString); // selector 사용
   // 이전에 바인딩된 이벤트 제거 후 새로 바인딩
-  selector.off("input keydown");
+  // selector.off("input keydown");
 
   // 공통 이벤트 등록
   registerInputEvents(selector, "_empNo", 7);
@@ -426,6 +435,13 @@ function setEmpNm(e) {
       $("#TB04012P_dlDprtCd3_dlDprtCd").val(e.dprtCd);
       $("#TB04012P_dlDprtCd3_dlDprtNm").val(e.dprtNm);
       break;
+
+    case "TB04020S":
+      $("#TB04020S_empNo").trigger("change");
+      $("#TB04020S_empNo").val(empNo);
+      $("#TB04020S_empNm").val(empNm);
+      break;
+
     case "grd_TB08040S":
       console.log(feeSch);
       console.log(dprtCd);
@@ -448,12 +464,12 @@ function setEmpNm(e) {
       $("#TB07120S2_empNo").val(empNo);
       $("#TB07120S2_empNm").val(empNm);
       break;
-	case "TB08040S":
-		$("#TB08040S_dprtNm").val(e.dprtCd).prop("selected", true);
-	  break;
+    case "TB08040S":
+      $("#TB08040S_dprtNm").val(e.dprtCd).prop("selected", true);
+      break;
     case "TB08050S":
-	 	$("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
-	    break;  
+      $("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
+      break;
     default:
       break;
   }

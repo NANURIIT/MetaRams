@@ -45,9 +45,9 @@ public class TB10110ServiceImpl implements TB10110Service {
 
         String rgstDt = today.format(date);
         String eno = facade.getDetails().getEno();
-        String dprtCd = facade.getDetails().getDprtCd();
+        // String dprtCd = facade.getDetails().getDprtCd();
 
-        dto.setDprtCd(dprtCd);
+        dto.setDprtCd(dto.getAthCd());
         dto.setRgstEmpno(eno);
         dto.setRgstDt(rgstDt);
         dto.setAplyStrtDt(dto.getAplyStrtDt().replace("-", ""));

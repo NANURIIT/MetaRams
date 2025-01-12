@@ -153,41 +153,49 @@ const TB07190Sjs = (function () {
     $("#TB07190S_dprtCd").val(dprtCd);
   }
   
-  /**
-   * 부서명 변경시
-   */
-
-  $("#TB07190S_dprtNm").on("change", function () {
-  var dprtCd = $(this).val();
-  $("#TB07190S_dprtCd").val(dprtCd);
-  }); 
+	/**
+	 * 부서명 변경시
+	 */
+	$("#TB07190S_dprtNm").on("change", function() {
+		var dprtCd = $(this).val();
+		$("#TB07190S_dprtCd").val(dprtCd);
+	});
   
-  /**
-   * 수수료종류코드 변경시
-   */
-  $('#TB07190S_feeKndCd').on('change', function() {
-	let selectedIndex = selectBox2.findIndex(
-	       ({ feeKndCd }) => feeKndCd == this.value
-	     );
-	let selectActsCd = selectBox2[selectedIndex].actsCd;
-	if(selectActsCd){
-		$('#TB07190S_actsCd').val(selectActsCd);
-	} 
-	
-  });	
+	/**
+	 * 수수료종류코드 변경시
+	 */
+	$('#TB07190S_feeKndCd').on('change', function() {
+		let selectedIndex = selectBox2.findIndex(
+			({ feeKndCd }) => feeKndCd == this.value
+		);
+
+		if (selectedIndex == -1) {
+			$('#TB07190S_actsCd').val("");
+		} else {
+			let selectActsCd = selectBox2[selectedIndex].actsCd;
+			if (selectActsCd) {
+				$('#TB07190S_actsCd').val(selectActsCd);
+			}
+		}
+	});
  
-  /**
-   * 계정과목코드 변경시
-   */
-  $('#TB07190S_actsCd').on('change', function() {
-	let selectedIndex = selectBox2.findIndex(
-	       ({ actsCd }) => actsCd == this.value
-	     );
-	let selectFeeKndCd = selectBox2[selectedIndex].feeKndCd;
-	if(selectFeeKndCd){
-		$('#TB07190S_feeKndCd').val(selectFeeKndCd);
-	} 
-  });	
+	/**
+	 * 계정과목코드 변경시
+	 */
+	$('#TB07190S_actsCd').on('change', function() {
+		let selectedIndex = selectBox2.findIndex(
+			({ actsCd }) => actsCd == this.value
+		);
+		
+		if (selectedIndex == -1) {
+			$('#TB07190S_feeKndCd').val("");
+		} else {
+			let selectFeeKndCd = selectBox2[selectedIndex].feeKndCd;
+			if (selectFeeKndCd) {
+				$('#TB07190S_feeKndCd').val(selectFeeKndCd);
+			}
+		}
+	});
   
   /*
    *  =====================OptionBox데이터 SET=====================
@@ -238,6 +246,24 @@ const TB07190Sjs = (function () {
 	    width: "180",
 	    filter: { crules: [{ condition: "range" }] },
 	  },
+		{
+			title: "담당자",
+			dataType: "string",
+			dataIndx: "chrrEmpno",
+			halign: "center",
+			align: "center",
+			width: "120",
+			filter: { crules: [{ condition: "range" }] },
+		},
+		{
+			title: "담당자명",
+			dataType: "string",
+			dataIndx: "chrrEmpnm",
+			halign: "center",
+			align: "center",
+			width: "120",
+			filter: { crules: [{ condition: "range" }] },
+		},
 	  {
 	    title: "거래일자",
 	    dataType: "string",
@@ -283,7 +309,7 @@ const TB07190Sjs = (function () {
        },
       },
       {
-        title: "기업체번호",
+        title: "거래상대방",
         dataType: "string",
         dataIndx: "ardyBzepNo",
         halign: "center",
@@ -752,6 +778,15 @@ const TB07190Sjs = (function () {
         width: "180",
         filter: { crules: [{ condition: "range" }] },
       },
+		{
+			title: "조작사원명",
+			dataType: "string",
+			dataIndx: "hndEmpnm",
+			halign: "center",
+			align: "center",
+			width: "120",
+			filter: { crules: [{ condition: "range" }] },
+		},
       {
         title: "조작직원번호",
         dataType: "string",
@@ -761,6 +796,7 @@ const TB07190Sjs = (function () {
         width: "120",
         filter: { crules: [{ condition: "range" }] },
       },
+		
       // , {
       //     title: "기안문서번호",
       //     dataType: "string",
@@ -852,6 +888,8 @@ const TB07190Sjs = (function () {
       ardyBzepNo: $("#TB07190S_ardyBzepNo").val(), //기업체번호
 	  strYmd : $("#TB07190S_strYmd").val().replaceAll("-", ""), //시작일자
 	  endYmd : $("#TB07190S_endYmd").val().replaceAll("-", ""), //종료일자
+	  prdtCd : $("#TB07190S_prdtCd").val(),		//종목코드
+	  
 	  //dprtCd : $("#TB07190S_dprtCd").val(), //부서코드
     };
 	//그리드 초기화 by hytest

@@ -733,7 +733,6 @@ const TB06010Sjs = (function(){
 		getIBIMS220BDTOInfo(prdtCd);
 		getAssetInfo(prdtCd);
 
-		chkDecdStep("TB06010S")
 	}
 
 	// 결의안건정보
@@ -777,6 +776,20 @@ const TB06010Sjs = (function(){
 			},
 			success: function(data) {
 				var dealDetail = data;
+				let psblRsltnYn; //가결여부
+				psblRsltnYn= isEmpty(dealDetail.psblRsltnYn) ? "N" : dealDetail.psblRsltnYn;
+				
+				if(psblRsltnYn=="N"){
+					Swal.fire({
+						title: '안건 조회 확인',
+						icon: 'error',
+						text: '심사진행상태 완료되지 않았습니다.',
+						confirmButtonText: '확인',
+					}).then(() => {
+						resetSearchRequiment(); //초기화
+					});
+					return false;
+				}
 				/** Deal 정보 */
 				$('#TB06010S_ibDealNo').val(dealDetail.dealNo);													// 딜번호
 				//$('#TB06010S_ibDealNm').val(dealDetail.dealNm);												// 딜명
@@ -890,6 +903,9 @@ const TB06010Sjs = (function(){
 					$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", false);
 					$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", false);
 				}
+				
+				// 권한확인
+				chkDecdStep("TB06010S");
 
 			}
 		});/* end of ajax*/

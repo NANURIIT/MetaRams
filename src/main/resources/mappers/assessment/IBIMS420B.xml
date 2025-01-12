@@ -299,7 +299,7 @@
          AND D.MNGM_BDCD LIKE '%' || #{dprtCd} || '%'
       </if>  
 	   ORDER
-	      BY A.FEE_SN DESC
+	      BY A.FEE_SN ASC
 	</select>
 
 	<!-- 딜수수료내역 조회 --> 
@@ -428,6 +428,9 @@
     		 , G.EPRZ_CRDL_CTRC_AMT
 			 , H.FEE_NAME
 			 , H.ACCT_UN_JOB_CD
+			 , I.EMP_NM AS HND_EMPNM
+			 , D.CHRR_EMPNO
+			 , J.EMP_NM AS CHRR_EMPNM
           FROM IBIMS420B A
      		 , IBIMS410B B
      		 , IBIMS348B C
@@ -436,7 +439,11 @@
              , IBIMS010B F
              , IBIMS401B G
     		 , IBIMS421B H
+    		 , IBIMS003B I
+    		 , IBIMS003B J
          WHERE 1=1
+				 AND I.DEL_YN = 'N'
+				 AND J.DEL_YN = 'N'
            AND A.PRDT_CD 				= B.PRDT_CD(+) 
 		   AND A.TR_SN 					= B.TR_SN(+)
 		   AND A.EXC_SN 				= B.EXC_SN(+)
@@ -450,6 +457,8 @@
 		   AND D.TR_OTHR_DSCM_NO 		= F.ARDY_BZEP_NO(+)
 		   AND A.PRDT_CD 				= G.PRDT_CD(+)	
 		   AND A.EPRZ_CRDL_FEE_KND_CD 	= H.FEE_KND_CD(+)
+		   AND A.HND_EMPNO				= I.EMPNO(+)
+		   AND D.CHRR_EMPNO				= J.EMPNO(+)
 		<if test="actsCd != ''">
 		   AND A.ACTS_CD = #{actsCd} 
 		</if>
@@ -468,18 +477,18 @@
 		<if test="ardyBzepNo != ''">
 		   AND F.ARDY_BZEP_NO = #{ardyBzepNo}
 		</if>
-	   <if test="strYmd != null and strYmd != ''">
-		    <if test="endYmd != null and endYmd != ''">	
+		<if test="strYmd != null and strYmd != ''">
+			<if test="endYmd != null and endYmd != ''">	
 		   AND B.TR_DT BETWEEN #{strYmd} AND #{endYmd}
-		   </if>
-	   </if>
-	   <if test="dprtCd != null and dprtCd != ''">
+			</if>
+		</if>
+		<if test="dprtCd != null and dprtCd != ''">
 		   AND D.MNGM_BDCD = #{dprtCd} 
 		</if>
+		<if test="prdtCd != ''">
+		   AND A.PRDT_CD = #{prdtCd} 
+		</if>
     </select>
-
-	
-	
 	   
      <!-- 원리금 스케줄관리 삭제 -->
      <delete  id="deleteIBIMS420B" parameterType="com.nanuri.rams.business.common.dto.IBIMS420BDTO">

@@ -1,6 +1,5 @@
 package com.nanuri.rams.business.assessment.tb07.tb07190;
 
-
 import java.util.List;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RestController
 public class TB07190APIController {
-	
+
 	private final TB07190Service tb07190Service;
 
 	@PostMapping(value = "/getTB07190SData")
 	public List<IBIMS420BVO> getTB07190SData(@RequestBody IBIMS420BVO param) {
 		return tb07190Service.getTB07190SData(param);
 	}
-	
+
 }

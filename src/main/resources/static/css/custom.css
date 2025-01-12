@@ -477,3 +477,9 @@ hr{ margin-top: 0.5rem;
 	border-radius: 5px;
 	font-weight: 400;
 }
+
+/* 결재조회팝업 화살표 2025-01-10 박아중 과장님 */
+.arrow_area{position: relative;}
+.arrow_area div{position: absolute; bottom: 0; width: 100%;}
+.arrow_area i{ font-size: 18px; opacity: 0.8;}
+.arrow_area div p{ font-weight: bold;}

@@ -34,7 +34,6 @@ function settingFunction() {
         // mouseup 이벤트 해제 (중복 방지)
         $(document).off("mouseup.draggableDestroy");
 
-        console.log("드래그 비활성화 및 이벤트 해제 완료");
       });
     }
   );
@@ -267,17 +266,24 @@ function removeWhiteSpace(str) {
  * @returns {boolean} 빈값 여부
  */
 function isEmpty(value) {
-  if (
-    value == "" ||
-    value == null ||
-    value == "null" ||
-    value == undefined ||
-    (value != null && typeof value == "object" && !Object.keys(value).length)
-  ) {
-    return true;
-  }
 
-  return false;
+	//20250110 case 스페이스바 trim 추가
+	if (value != null) {
+		value = value.toString().trim();
+	}
+	//----------
+	
+	if (
+		value == "" ||
+		value == null ||
+		value == "null" ||
+		value == undefined ||
+		(value != null && typeof value == "object" && !Object.keys(value).length)
+	) {
+		return true;
+	}
+
+	return false;
 }
 
 function isNotEmpty(value) {
@@ -1398,6 +1404,23 @@ function getSelectBoxList(prefix, item, async = true) {
             $("#TB08036S_I012_2").append(html);
             $("#TB08036S_I012_3").append(html);
           }
+
+          if (value.cmnsGrpCd == "B014") {
+            // 사업진행단계
+            var html = "";
+            html +=
+              '<option value="' +
+              value.cdValue +
+              '">' +
+              value.cdName +
+              " (" +
+              value.cdValue +
+              ")" +
+              "</option>";
+
+            $("#TB08036S_B014_01").append(html);
+            $("#TB08036S_B014_02").append(html);
+          }
         }
 
         if (prefix == "TB07040S") {
@@ -1814,7 +1837,7 @@ function resetInputValue(selector) {
   selector.find(`input[id$='Exrt']`).val("1.0");
 
   selector.find(`input[id$='Dt']`).val(getToday());
-  let 한달뒤ㅋ = () => {
+  let after1M = () => {
     let today = new Date();
     today.setMonth(today.getMonth() + 1); // 한 달 뒤로 설정
     let year = today.getFullYear();
@@ -1823,7 +1846,7 @@ function resetInputValue(selector) {
 
     return `${year}-${month}-${day}`;
   };
-  selector.find(`input[id$='EndDt']`).val(한달뒤ㅋ);
+  selector.find(`input[id$='EndDt']`).val(after1M);
 
   setKRKRW(selector.attr("data-menuid").split("/")[1]);
 }
@@ -2014,59 +2037,59 @@ function needRunFn(menuId) {
 
   //워크플로우에서 버튼 눌러 페이지 이동시 인풋 자동 세팅
 
-  if( menuId === "TB06010S"){
+  if (menuId === "TB06010S") {
     TB06010Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB06020S"){
+  if (menuId === "TB06020S") {
     TB06020Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB06030S"){
+  if (menuId === "TB06030S") {
     TB06030Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB06040S"){
+  if (menuId === "TB06040S") {
     TB06040Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07010S"){
+  if (menuId === "TB07010S") {
     TB07010Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07020S"){
+  if (menuId === "TB07020S") {
     TB07020Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07030S"){
+  if (menuId === "TB07030S") {
     TB07030Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07040S"){
+  if (menuId === "TB07040S") {
     TB07040Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07070S"){
+  if (menuId === "TB07070S") {
     TB07070Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07080S"){
+  if (menuId === "TB07080S") {
     TB07080Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07090S"){
+  if (menuId === "TB07090S") {
     TB07090Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07120S"){
+  if (menuId === "TB07120S") {
     TB07120Sjs.getDealInfoFromWF();
   }
 
-  if( menuId === "TB07150S"){
+  if (menuId === "TB07150S") {
     TB07150Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07160S"){
+  if (menuId === "TB07160S") {
     TB07160Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07170S"){
+  if (menuId === "TB07170S") {
     TB07170Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB07190S"){
+  if (menuId === "TB07190S") {
     TB07190Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB08040S"){
+  if (menuId === "TB08040S") {
     TB08040Sjs.getDealInfoFromWF();
   }
-  if( menuId === "TB08050S"){
+  if (menuId === "TB08050S") {
     TB08050Sjs.getDealInfoFromWF();
   }
 }
@@ -2092,7 +2115,7 @@ function resetPGgrids(menuid) {
   }
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) { }
+function autoSrchFromPQGrid(pqGridId, url, paramData) {}
 
 /**
  * 결재단계확인
@@ -2102,7 +2125,20 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) { }
  */
 function chkDecdStep (menuId){
 
-  let dealNo = $(`#${menuId}_dealNo`).val() || ''     // 딜번호
+  let chrrNo = $(`#${menuId}_empNo`).val();
+
+  console.log("체크");
+  console.log("체크");
+  
+
+  if(chrrNo === $('#userEno').val()){
+    console.log("체크? 됐네");
+    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop("hidden", false);
+    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop("hidden", true);
+    return;
+  }
+
+  let dealNo = $(`#${menuId}_ibDealNo`).val() || ''   // 딜번호
   let prdtCd = $(`#${menuId}_prdtCd`).val() || ''     // 상품코드
   let decdJobDcd = menuId                             // 결재업무구분코드
   let scrnNo = menuId                                 // 화면번호
@@ -2110,6 +2146,8 @@ function chkDecdStep (menuId){
   let rqstSq = $(`#${menuId}_rqstSq`).val() || 0      // 신청순번
   let trSeq = $(`#${menuId}_trSeq`).val() || 0        // 거래순번
 
+  console.log($(`#${menuId}_ibDealNo`).val());
+  
   let paramData = {
     dealNo: dealNo
     , prdtCd: prdtCd
@@ -2130,24 +2168,47 @@ function chkDecdStep (menuId){
 
       console.log(data);
       
-      // 해당사항이 없으면 결재요청 버튼만 활성화
-      if(data.toString() === '9742'){
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', false);
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', true);
+      // 해당사항이 없거나 반려요청된 내역이면 결재요청 버튼만 활성화
+      if (data.toString() === "9742") {
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+          "hidden",
+          false
+        );
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+          "hidden",
+          true
+        );
       }
       // 승인요청중이면 결재, 반려버튼 활성화
-      else if (data.toString() === '04'){
+      else if (data.toString() === '1'){
         $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
         $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', false);
       }
       // 승인요청 진행중이나 담당자가 아니거나 결재자가 아니면 아무것도 뜨지않음
       else {
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', true);
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+          "hidden",
+          true
+        );
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+          "hidden",
+          true
+        );
       }
     },
   });
-
-} 
+}
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) {}
+
+/**
+ * 컴포넌트포커스
+ * @param {String} 컴포넌트Id.
+ * @discription
+ * 컴포넌트에 포커스를 위치한다
+ * ex) idFocus('TB06040S_ctrtDt');
+ */
+function idFocus(id){
+	$('#' + id).focus();
+}
+

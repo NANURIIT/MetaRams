@@ -22,5 +22,10 @@ public class IBIMS003BVO extends IBIMS003BDTO {
 	private String hndEmpNm;
 	
 	private String nowEmpno;
+	
+	/* TB06081P IBIMS231B */
+	private String decdSttsDcd;			/* 결재상태구분코드 */
+	private String apvlRqstCntn;		/* 승인요청내용 */
+	private String errCntn;				/* 오류내용*/
 
 }

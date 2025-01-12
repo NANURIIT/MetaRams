@@ -927,8 +927,8 @@ const TB08040Sjs = (function () {
         "prdtCd": validation_TB08040S().prdtCd,
 		"strPrarDt" : $("#TB08040S_strPrarDt").val().replaceAll("-", ""),
 		"endPrarDt": $("#TB08040S_endPrarDt").val().replaceAll("-", ""), 
-		//"empNo": $("#TB08040S_empNo").val(),
-		//"dprtCd":$("#TB08040S_dprtCd").val(),
+		"empNo": $("#TB08040S_empNo").val(),
+		"dprtCd":$("#TB08040S_dprtCd").val(),
       };
 
       $.ajax({
@@ -936,11 +936,6 @@ const TB08040Sjs = (function () {
         url: "/TB08040S/srchFeeSch",
         data: param,//JSON.stringify(param),
         dataType: "json",
-        beforeSend: function (xhr) {
-          feeSch.setData([]);
-		  saveGrid = [];
-		  delGrid =[];
-        },
         success: function (data) {
 
           if (data.length > 0) {
@@ -992,6 +987,13 @@ const TB08040Sjs = (function () {
         contentType: "application/json; charset=UTF-8",
         data: JSON.stringify(obj),
         dataType: "json",
+		beforeSend: function (xhr) {
+		 var inPrdtCd =$('#TB08040S_prdtCd').val();
+		 var inPrdtNm = $('#TB08040S_prdtNm').val();
+		 init_TB08040S();
+		 $('#TB08040S_prdtCd').val(inPrdtCd);
+		 $('#TB08040S_prdtNm').val(inPrdtNm);		 
+		},
         success: function (data) {
           if (data > 0) {
             Swal.fire({

@@ -358,9 +358,41 @@ const TB07090Sjs = (function () {
         align: "center",
         width: "165",
         editable: true,
-        render: function (ui) {
-          return formatDate(ui.cellData)
-        }
+        editor: {
+          type: "textbox",
+          init: function (ui) {
+              ui.cellData = "";
+              ui.$cell.find("input")
+              // .on("click", function () {
+              //   console.log("발생했는가.");
+              //   $('#TB07090S_colModel2').pqGrid("instance").updateRow({
+              //     rowIndx: ui.rowIndx,
+              //     row: {
+              //       rctmDt: $(this).val()
+              //     }
+              //   })
+              // })
+              .datepicker({
+                  changeMonth: true,
+                  changeYear: true,
+                  dateFormat: 'yy-mm-dd',
+                  autoclose: true,
+                  language: "ko",
+                  onSelect: function (selectedDate) {
+                    console.log(selectedDate);
+                    
+                    // 선택한 값을 데이터 모델에 반영
+                    $('#TB07090S_colModel2').pqGrid("updateRow", {
+                        rowIndx: ui.rowIndx,
+                        row: { rctmDt: selectedDate }
+                    });
+
+                    // 선택한 값을 셀에 즉시 표시
+                    $(this).val(selectedDate);
+                  }
+                });
+          },
+        },
       },
       {
         title: "등록순번",
@@ -649,38 +681,39 @@ const TB07090Sjs = (function () {
         align: "right",
         filter: { crules: [{ condition: "range" }] },
         // 데이터 변경시 입금증등록내역 - 납부예정금액 변경 실패했음 헬프 2025-01-08
-        // beforeEdit: function (event, ui) {
-        //   // 셀 수정 전 값을 저장
-        //   colModel3_dealRctmAmt = ui.cellData;
-        //   console.log(colModel3_dealRctmAmt);
-        // },
-        // cellSave: function (event, ui) {
-        //   // pqgrid값을 바꿨을때 입금증등록내역에 납부예정금액이 얼마가 되는지 보여주기
+        render: function (ui) {
+          // pqgrid값을 바꿨을때 입금증등록내역에 납부예정금액이 얼마가 되는지 보여주기
+          const rctmDtlsMappingGridData = $('#TB07090S_colModel2').pqGrid("instance").pdata;
 
-        //   const rctmDtlsMappingGridData = $('#TB07090S_colModel2').pqGrid("instance").pdata;
+          let updateIndx;
 
-        //   let updateIndx;
+          for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
+            if (rctmDtlsMappingGridData[i].rctmDt === ui.rowData.rctmDt
+              && rctmDtlsMappingGridData[i].rgstSeq === Number(ui.rowData.rgstSeq)
+            ) {
+              updateIndx = i;
+              break;
+            }
+          }
 
-        //   for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
-        //     if (rctmDtlsMappingGridData[i].rctmDt === ui.rowData.rctmDt
-        //       && rctmDtlsMappingGridData[i].rgstSeq === Number(ui.rowData.rgstSeq)
-        //     ) {
-        //       updateIndx = i;
-        //       break;
-        //     }
-        //   }
-
-        //   $('#TB07090S_colModel2').pqGrid("instance").updateRow({
-        //     rowIndx: updateIndx,
-        //     row: {
-        //       pmntPrarAmt: Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number(colModel3_dealRctmAmt) + Number(ui.cellData)
-        //     }
-        //   });
-
-        //   console.log("실행");
-
-        // }
+          if (Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number(colModel3_dealRctmAmt) + Number(ui.cellData)) {
+            $('#TB07090S_colModel3').pqGrid("instance").updateRow({
+              rowIndx: ui.rowIndx,
+              row: {
+                beforeDealRctmAmt: Number(ui.cellData)
+              }
+            })
+          }
+          console.log("실행");
+        }
       },
+      // {
+      //   title: "변경전입금금액",
+      //   dataType: "integer",
+      //   format: "#,###",
+      //   dataIndx: "beforeDealRctmAmt",
+      //   editable: true,
+      // },
       {
         title: "초과납입처리내용",
         editable: true,
@@ -832,11 +865,11 @@ const TB07090Sjs = (function () {
           }
         },
         rowClick: function (event, ui) {
-          // if (TB07090S_rowData === ui.rowData) {
-          //     TB07090S_rowData = TB07090S_dummyData;
-          // } else {
-          //     TB07090S_rowData = ui.rowData;
-          // }
+          if (TB07090S_rowData === ui.rowData) {
+              TB07090S_rowData = TB07090S_dummyData;
+          } else {
+              TB07090S_rowData = ui.rowData;
+          }
           if (selected_dptrRgstDtl === ui.rowData) {
             colModel2_rowIndx = null;
             selected_dptrRgstDtl = null;
@@ -871,6 +904,29 @@ const TB07090Sjs = (function () {
     setPqGrid(pqGridObjs);
   }
 
+  var dateEditor_feeSch = function (ui) {
+    console.log(ui);
+    ui.$cell.find("input").on("input", function () {
+      let temVal;
+      temVal = replaceAll($(this).val(), '-', '');
+      if (temVal.length === 8) {
+        temVal = formatDate(temVal);
+        console.log("onformat" + temVal);
+        $(this).val(temVal);
+      } else if (temVal.length > 8) {
+        $(this).val(formatDate(temVal.slice(0, 8)));
+      }
+    })
+      .datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yyyy-mm-dd',//ui.column.format,//pq.excelToJui(ui.column.format),
+        keyboardNavigation: false,
+        forceParse: false,
+        calendarWeeks: false,
+        language: "ko",
+      });
+  }
   /**
    * 뭔지모를 요건을 받은 김건우버전
    */
@@ -1199,7 +1255,7 @@ const TB07090Sjs = (function () {
     let rowIndx;
 
     if (colModelSelector.attr('id') === 'TB07090S_colModel2') {
-      if (colModel3_rowIndx === "" || colModel3_rowIndx === null) {
+      if (colModel2_rowIndx === "" || colModel2_rowIndx === null) {
         swal.fire({
           icon: 'warning'
           , text: "선택하고 지웁시다."
@@ -1228,11 +1284,11 @@ const TB07090Sjs = (function () {
     else if (colModelSelector.attr('id') === 'TB07090S_colModel3') {
 
       if (colModel3_rowIndx === "" || colModel3_rowIndx === null) {
-          swal.fire({
-            icon: 'warning'
-            , text: "선택하고 지웁시다."
-          })
-          return;
+        swal.fire({
+          icon: 'warning'
+          , text: "선택하고 지웁시다."
+        })
+        return;
       }
 
       rowIndx = colModel3_rowIndx
@@ -1291,13 +1347,16 @@ const TB07090Sjs = (function () {
     for (let i = 0; i < colModel_rctmDtlsRgst.length; i++) {
       // 추가할 내용
       if (colModel_rctmDtlsRgst[i].pq_cellcls != undefined && !colModel_rctmDtlsRgst[i].hndDetlDtm) {
-        console.log("insert", colModel_rctmDtlsRgst[i]);
         insertList.push(colModel_rctmDtlsRgst[i]);
       }
       // 수정할 내용
       else if (colModel_rctmDtlsRgst[i].pq_cellcls != undefined) {
-        console.log("update", colModel_rctmDtlsRgst[i]);
-        updateList.push(colModel_rctmDtlsRgst[i]);
+        for (let j = 0; j < deleteList.length; j++) {
+          // deleteList와 중복되는 updateList는 뺴준다
+          if (deleteList[j] != colModel_rctmDtlsRgst[i]) {
+            updateList.push(colModel_rctmDtlsRgst[i]);
+          }
+        }
       }
     }
 
@@ -1330,11 +1389,7 @@ const TB07090Sjs = (function () {
         }
       },
     });
-
     rctmDtlsRgstDeleteList = [];
-
-    
-
   }
 
   /**
@@ -1348,6 +1403,10 @@ const TB07090Sjs = (function () {
     let updateList = [];
     let deleteList = rctmDtlsMappingDeleteList;
 
+    for (let i = 0; i < deleteList.length; i++) {
+      deleteList[i].rowIndx
+    }
+
     for (let i = 0; i < colModel_rctmDtlsMapping.length; i++) {
       // 추가할 내용
       if (!colModel_rctmDtlsMapping[i].hndDetlDtm) {
@@ -1355,7 +1414,11 @@ const TB07090Sjs = (function () {
       }
       // 수정할 내용
       else if (colModel_rctmDtlsMapping[i].pq_cellcls != undefined) {
-        updateList.push(colModel_rctmDtlsMapping[i]);
+        for (let j = 0; j < deleteList.length; j++) {
+          if (deleteList[j] != colModel_rctmDtlsMapping[i]) {
+            updateList.push(colModel_rctmDtlsMapping[i]);
+          }
+        }
       }
     }
 
@@ -1388,9 +1451,7 @@ const TB07090Sjs = (function () {
         }
       },
     });
-
     rctmDtlsMappingDeleteList = [];
-
   }
 
   /**

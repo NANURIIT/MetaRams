@@ -378,7 +378,7 @@ const TB06030Sjs = (function(){
 					Swal.fire({
 						title: '안건 조회 확인',
 						icon: 'error',
-						text: '가결 또는 조건부 가결된 안건이 아닙니다.',
+						text: '심사진행상태 완료되지 않았습니다.',
 						confirmButtonText: '확인',
 					}).then(() => {
 						resetSearchRequiment_TB06030S(); //초기화
