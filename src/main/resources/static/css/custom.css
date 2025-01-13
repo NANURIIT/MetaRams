@@ -479,6 +479,7 @@ hr{ margin-top: 0.5rem;
 
 /* 결재조회팝업 화살표 2025-01-10 박아중 과장님 */
 .arrow_area{position: relative;}
-.arrow_area div{position: absolute; bottom: 0; width: 100%;}
-.arrow_area i{ font-size: 18px; opacity: 0.8;}
-.arrow_area div p{ font-weight: bold;}
+.arrow_area::before{position: absolute; content: ''; width: 4px; top: 4px;  margin-top: 20px; height: 100%; background: #7d7d7d; margin: auto; left: 0; right: 0;}
+.arrow_area > .arrow_box{ width: 100%;}
+.arrow_area > .arrow_box i{ font-size: 18px; position: relative; height: auto;  color: #7d7d7d; }
+.arrow_area p{ font-weight: bold;  position: absolute;  bottom: -4px;  margin: auto;  left: 0; right: 0;  background: #fff; line-height: 32px;}
