@@ -137,10 +137,7 @@ function keyDownEnter_TB07021P() {
  */
 function callTB07021P(prefix) {
 
-	TB07021P_gridState = 0;
 	TB07021P_pf = prefix;
-
-	clearTB07021P();
 
 	$('#TB07021P_prefix').val(prefix);
 	$('#modal-TB07021P').modal('show');
@@ -154,7 +151,7 @@ function callTB07021P(prefix) {
  * hide modal
  */
 function modalClose_TB07021P() {
-	TB07021P_gridState = 1;
+	clearTB07021P();
 	if (typeof fnltPgGrid != "undefined") fnltPgGrid.setData([]);
 	$('#modal-TB07021P').modal('hide');
 
@@ -181,7 +178,14 @@ function getFnltList() {
 		data: param,
 		dataType: "json",
 		success: function (data) {
-			dataFnltSetGrid(data);
+			if($(`div[id='modal-TB07021P']`).css('display') === "none" && data.length === 1){
+				setFnltInfo(data[0]);
+				modalClose_TB07021P();
+			}
+			else {
+				callTB07021P($('#TB07021P_prefix').val());
+				setTimeout(() => dataFnltSetGrid(data), 400);
+			}
 		}
 	});
 }
@@ -259,8 +263,7 @@ function TB07021P_srchFnlt(menuId) {
 		let data = $(selector).val();
 
 		// 팝업 오픈
-		callTB07021P(prefix);
 		$('#TB07021P_fnltCd').val(data);
-		setTimeout(() => getFnltList(), 400);
+		getFnltList();
 	}
 }

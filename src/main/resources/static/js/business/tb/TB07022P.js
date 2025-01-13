@@ -209,10 +209,7 @@ function keyDownEnter_TB07022P() {
  */
 function callTB07022P(prefix) {
 
-	TB07022P_gridState = 0;
 	TB07022P_pf = prefix;
-
-	clearTB07022P();
 
 	$('#TB07022P_prefix').val(prefix);
 	$('#modal-TB07022P').modal('show');
@@ -225,7 +222,7 @@ function callTB07022P(prefix) {
  * hide modal
  */
 function modalClose_TB07022P() {
-	TB07022P_gridState = 1;
+	clearTB07022P();
 	if(typeof fndPgGrid != "undefined") fndPgGrid.setData([]);		
 	$('#modal-TB07022P').modal('hide');
 	
@@ -235,17 +232,8 @@ function modalClose_TB07022P() {
  * clear modal
  */
 function clearTB07022P() {
-	
 	$('#TB07022P_fndCd').val("");
 	$('#TB07022P_fndNm').val("");
-	
-	/*var html = '';
-	html += '<tr>';
-	html += '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-	html += '</tr>';
-	
-	$('#TB07022P_prdtCdList').html(html);*/
-				
 }
 
 function getFndList() {
@@ -261,16 +249,14 @@ function getFndList() {
 		data: param,
 		dataType: "json",
 		success: function(data) {
-			//console.log(JSON.stringify(data));
-
-			if(TB07022P_srchCnt >= 2){
-				alert("조회된 정보가 없습니다!")
-				TB07022P_srchCnt = 0;
-				return;
+			if($(`div[id='modal-TB07022P']`).css('display') === "none" && data.length === 1){
+				setFndInfo(data[0]);
+				modalClose_TB07022P();
 			}
-			// // console.log("진짜 쿼리", data);
-			// dataPrdtCdSetGrid(data);
-			dataFndSetGrid(data);
+			else {
+				callTB07022P($('#TB07022P_prefix').val());
+				setTimeout(() => dataFndSetGrid(data), 400)
+			}
 		}
 	});
 }
@@ -334,8 +320,6 @@ function TB07022P_srchFnd(menuId){
 			// console.log("화면내 엔터 이벤트");
 			evt.preventDefault();
 
-			TB07022P_onchangehandler = "off";
-
 			await srchEvent_TB07022P(this);
 
 		}
@@ -355,11 +339,9 @@ function TB07022P_srchFnd(menuId){
 
 		// 인풋박스 밸류
 		let data = $(selector).val();
-		$('#TB07022P_fndCd').val(data);
 
 		// 팝업 오픈
-		callTB07022P(prefix);
 		$('#TB07022P_fndCd').val(data);
-		setTimeout(() => getFndList(), 400);
+		getFndList();
 	}
 }

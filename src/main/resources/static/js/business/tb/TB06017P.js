@@ -12,7 +12,6 @@ $(document).ready(function () {
  * show modal 
  */
 function callTB06017P(prefix) {
-	clearTB06017P();
 	keyDownEnter_TB06017P();
 	$('#TB06017P_prefix').val(prefix);
 
@@ -105,10 +104,7 @@ function TB06017P_srch(menuId) {
 		// 인풋박스 밸류
 		let data = $(selector).val();
 		$('#TB06017P_mrtgMngmNo').val(data);
-
-		callTB06017P(prefix);
-		$('#TB06017P_mrtgMngmNo').val(data);
-		setTimeout(() => getMrtgInfo(), 200);
+		getMrtgInfo()
 	}
 }
 
@@ -277,6 +273,7 @@ function dataMrtgInfoSetGrid(data) {
  * hide modal
  */
 function modalClose_TB06017P() {
+	clearTB06017P();
 	if (typeof fnltPgGrid != "undefined") arrPqGridMrtgInfoList.setData([]);
 	$('#modal-TB06017P').modal('hide');
 };
@@ -305,7 +302,14 @@ function getMrtgInfo() {
 		data: paramData,
 		dataType: "json",
 		success: function (data) {
-			dataMrtgInfoSetGrid(data);
+			if($(`div[id='modal-TB06017P']`).css('display') === "none" && data.length === 1){
+				setMrtgInfo(data[0]);
+				modalClose_TB06017P();
+			}
+			else {
+				callTB06017P($('#TB06017P_prefix').val());
+				setTimeout(() => dataMrtgInfoSetGrid(data), 400)
+			}
 		}
 	});
 }
