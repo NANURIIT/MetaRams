@@ -171,7 +171,7 @@ var colMrtgInfoList = [
 	{
 		title: "담보금액",
 		dataType: "integer",
-		dataIndx: "mrtgAmt",
+		dataIndx: "mrtgEvlAmt",
 		align: "right",
 		halign: "center",
 		filter: { crules: [{ condition: 'range' }] },
