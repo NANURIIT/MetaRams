@@ -46,6 +46,14 @@
 		   AND DCFC_ENO = #{dcfcEno}
 	</select>
 
+	<select id="chkDecdSttsDcd" parameterType="com.nanuri.rams.business.common.dto.IBIMS232BDTO" resultType="String">
+		SELECT DECD_STTS_DCD
+		  FROM IBIMS232B
+		 WHERE 1=1
+		   AND DECD_SN = #{decdSn}
+		   AND DECD_SQ = #{decdSq}
+	</select>
+
 	<insert id="apvlRqst" parameterType="com.nanuri.rams.business.common.dto.IBIMS232BDTO">
 		INSERT INTO IBIMS232B (
 			  DECD_SN
@@ -96,7 +104,6 @@
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rjctRsnCntn)">
 		   , RJCT_RSN_CNTN = #{rjctRsnCntn}
            </if>
-           
        WHERE 1=1
          AND DECD_SN = #{decdSn}
 		 <if test="decdSq != 0">

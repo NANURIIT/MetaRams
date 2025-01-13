@@ -6,15 +6,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nanuri.rams.business.common.dto.IBIMS003BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS232BDTO;
-import com.nanuri.rams.business.common.mapper.IBIMS003BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS231BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS232BMapper;
-import com.nanuri.rams.business.common.vo.IBIMS003BVO;
 import com.nanuri.rams.business.common.vo.IBIMS231BVO;
-import com.nanuri.rams.business.common.vo.TB06080SVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
@@ -62,7 +58,7 @@ public class TB06082ServiceImpl implements TB06082Service {
 
 		int decdSq = ibims232bMapper.getDecdSq(dto232);			// 결재순번
 
-		int lastDecdSq = ibims231bMapper.getLastDecdSq(decdSn);
+		int lastDecdSq = ibims231bMapper.getLastDecdSq(decdSn);	// 최종결재순번 확인
 
 		dto232.setDecdSq(decdSq);
 		dto232.setDecdSttsDcd(paramData.getDecdSttsDcd());		// 결재상태구분코드

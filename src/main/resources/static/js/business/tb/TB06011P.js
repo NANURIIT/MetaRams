@@ -54,22 +54,6 @@ function TB06011P_srchPrdt(menuId) {
 		}
 	})
 
-	// $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB06011P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_prdtCd']").on('change', async function (evt) {
-
-	// 	if(!$(this).val()){
-	// 		return;
-	// 	}
-
-	// 	if (TB06011P_onchangehandler === "on"){
-	// 		await srchEvent(this);
-	// 	} else if (TB06011P_onchangehandler === "off") {
-	// 		/**
-	// 		 * 온체인지 이벤트 컨트롤
-	// 		 */
-	// 		TB06011P_onchangehandler = "on"
-	// 	}
-	// })
-
 	async function srchEvent (selector) {
 		// 사용한 인풋박스의 출처 페이지 가져오기
 		let prefix;
@@ -95,25 +79,11 @@ function TB06011P_srchPrdt(menuId) {
 		// 인풋박스 밸류
 		let data = $(selector).val();
 		$('#TB06011P_prdtCd').val(data);
-		await TB06011P_getGridState();
-	
-		// 팝업 오픈
-		if (TB06011P_gridState === 0) {
-			console.log("열려있음", TB06011P_gridState);
-			// 그리드만 부릅니다
-			callGridTB06011P(prefix);
-			$('#TB06011P_prdtCd').val(data);
-			// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
-			setTimeout(() => getPrdtCdList(), 400);
-		} else
-		if (TB06011P_gridState === 1) {
-			console.log("닫혀있음", TB06011P_gridState);
-			// 팝업을 열거예요
-			callTB06011P(prefix);
-			$('#TB06011P_prdtCd').val(data);
-			// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
-			setTimeout(() => getPrdtCdList(), 400);
-		}
+
+		callTB06011P(prefix);
+		$('#TB06011P_prdtCd').val(data);
+		// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
+		setTimeout(() => getPrdtCdList(), 400);
 	}
 }
 
@@ -554,12 +524,6 @@ $("#TB06011P_empNo").on('change', function(){
 		}
 });	
 
-function callGridTB06011P(prefix) {
-	clearTB06011P();
-	$('#TB06011P_prefix').val(prefix);
-	setTimeout(() => roadPrdtCdListGrid(), 300);
-}
-
 /**
  * show modal
  */
@@ -648,62 +612,6 @@ async function getPrdtCdList() {
 			}
 			// console.log("진짜 쿼리", data);
 			dataPrdtCdSetGrid(data);
-		}
-	});
-}
-
-async function TB06011P_getGridState() {
-
-	var trDvsn = '';
-
-	if ($('#TB06011P_prefix').val() == "TB07020S" || $('#TB06011P_prefix').val() == "TB07020S_input" || $('#TB06011P_prefix').val() == "TB07040S" || $('#TB06011P_prefix').val() == "TB07040S_input") {
-		trDvsn = 'T'
-	}
-
-	if ($('#TB06011P_prefix').val() == "TB07010S" || $('#TB06011P_prefix').val() == "TB07030S" || $('#TB06011P_prefix').val() == "TB07050S") {
-		trDvsn = 'L'
-	}
-
-	if ($('#TB06011P_prefix').val() == "TB06010S") {
-		trDvsn = 'S'
-	}
-
-	if ($('#TB06011P_prefix').val() == "TB06020S") {
-		trDvsn = 'D'
-	}
-
-	if ($('#TB06011P_prefix').val() == "TB06030S") {
-		trDvsn = 'F'
-	}
-
-	if ($('#TB06011P_prefix').val() == "TB07150S" || $('#TB06011P_prefix').val() == "TB07080S" || $('#TB06011P_prefix').val() == "TB07060S") {
-		trDvsn = 'TB07150S'
-	}
-
-	var param = {
-		"prdtCd": $('#TB06011P_prdtCd').val()
-		, "prdtNm": $('#TB06011P_prdtNm').val()
-		, "trDvsn": trDvsn
-	}
-
-	if (TB06011P_gridState === 0) {
-		return;
-	}
-
-	await $.ajax({
-		type: "Post",
-		url: "/TB06011P/getPrdtCdList",
-		contentType: "application/json; charset=UTF-8",
-		data: JSON.stringify(param),
-		dataType: "json",
-		success: function (data) {
-			if (!data || data === undefined || data.length === 0) {
-				TB06011P_gridState = 1;
-			} else if (data.length >= 2) {
-				TB06011P_gridState = 1;
-			} else if (data) {
-				TB06011P_gridState = 0;
-			}
 		}
 	});
 }

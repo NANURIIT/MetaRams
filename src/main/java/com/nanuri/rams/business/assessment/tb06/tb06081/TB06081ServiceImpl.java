@@ -94,9 +94,12 @@ public class TB06081ServiceImpl implements TB06081Service {
 	}
 
 	@Override
-	public int cancelApvlRqst(IBIMS231BVO paramData) {
+	public int updateApvlRqst(IBIMS231BVO paramData) {
 
 		int result = 0;
+
+		// 1. 재승인요청 - decdSttsDcd === "1" && decdStepDcd = "02"
+		// 2. 승인요청취소 - decdSttsDcd === "4" && decdStepDcd = "00"
 
 		List<IBIMS231BDTO> apvlList = paramData.getApvlList();
 		String hndEmpno = facade.getDetails().getEno();
@@ -122,12 +125,16 @@ public class TB06081ServiceImpl implements TB06081Service {
 			// 반려여부
 			// 반려사유내용
 			// 조작상세일시 ~ GUID
+
+			// decdStepDcd 결재단계구분코드 - 00해당무, 01담당자작성중, 02재승인요청, 03담당자수정중, 04승인요청, 05결재완료
+			// decdSttsDcd 결재상태구분코드 - 0해당없음, 1진행중, 2승인완료, 3반려, 4승인취소
 			updateData.setDecdSn(decdSn);
 			updateData.setDecdSq(i + 1);
+
+			// 결재자상태확인. 반려만 재승인요청으로 되돌리기.
+
 			updateData.setDecdSttsDcd(apvlList.get(i).getDecdSttsDcd());
 			updateData.setHndEmpno(apvlList.get(i).getHndEmpno());
-			log.debug("int:::::::" + updateData.getDecdSq());
-			log.debug("getDecdSttsDcd:::::::" + updateData.getDecdSttsDcd());
 			ibims232bMapper.updateDecd(updateData);
 
 			result += 1;
