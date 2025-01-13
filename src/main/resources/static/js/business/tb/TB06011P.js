@@ -39,6 +39,8 @@ function TB06011P_srchPrdt(menuId) {
 
 			await srchEvent(this);
 
+			// $(this).focus();
+
 		}
 	})
 	
@@ -50,6 +52,8 @@ function TB06011P_srchPrdt(menuId) {
 			TB06011P_onchangehandler = "off";
 
 			await srchEvent(this);
+
+			// $(this).focus();
 
 		}
 	})
@@ -597,11 +601,10 @@ function TB06011P_setPrdtInfo(e) {
 	var tr = $(e);
 	var td = $(tr).children();
 
-	console.log();
-
 	let prdtCd = e.prdtCd;
 	let prdtNm = e.prdtNm;
-	let ibDealNo = e.ibDealNo;
+	let ibDealNo = e.dealNo;
+	let ibDealNm = e.dealNm;
 	let trCrryCd = e.trCrryCd;
 	let stdrExrt = e.stdrExrt;
 	let wholIssuShqt = e.wholIssuShqt;
@@ -805,11 +808,8 @@ function TB06011P_setPrdtInfo(e) {
 	}
 
 	if (prefix == 'TB09080S') {
-		console.log(tr);
-		/* 
-		$('#TB09080S_ibDealNo').val(e.dealNo);
-		$('#TB09080S_ibDealNm').val(e.dealNm); */
-		//getDealList();
+		$(`#${prefix}_ibDealNo`).val(ibDealNo);
+		$(`#${prefix}_ibDealNm`).val(ibDealNm);
 	}
 
 	if (prefix == 'TB06015P') {
