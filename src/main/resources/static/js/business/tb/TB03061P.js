@@ -48,16 +48,6 @@ function TB03061P_srchMtr(menuId) {
 	 * ******************************
 	 * 
 	 */
-	// $("#TB03061P_ardyBzepNo").on("keydown", function (evt) {
-	// 	// Enter에만 작동하는 이벤트
-	// 	if (evt.keyCode === 13) {
-	// 		evt.preventDefault();
-	// console.log("으흐흐");
-
-	// 		// 팝업창에서는 엔터 누를시 조회만.
-	// 		getMtrInfo();
-	// 	}
-	// });
 
 	/**
 	 * 코드길이체크 후 자동조회
@@ -123,15 +113,11 @@ function TB03061P_srchMtr(menuId) {
  */
 function callTB03061P(prefix, rowIndx) {
 
-	// console.log(rowIndx);
 	rowInx = rowIndx;
-
-	reset_TB03061P();
 
 	keyDownEnter_TB03061P();
 
 	$('#TB03061P_prefix').val(prefix);
-	TB03061P_gridState = 0;
 	TB03061P_pf = prefix;
 	$('#modal-TB03061P').modal('show');
 	indexChangeHandler("TB03061P");
@@ -258,12 +244,12 @@ function getArdyBzepInfoList() {
 				modalClose_TB03061P();
 			}
 			else {
-				callTB03061P(prefix);
+				callTB03061P($("#TB03061P_prefix").val());
 				setTimeout(() => {
 					modalPqGridBzepList.setData(data);
 				}, 400)
 				setTimeout(() => {
-					modalPqGridBzepList.on("rowDblClick", function (event, ui) {
+					modalPqGridBzepList.on("cellDblClick", function (event, ui) {
 						setArdyBzepInfo(ui.rowData);
 					});
 				}, 600);
