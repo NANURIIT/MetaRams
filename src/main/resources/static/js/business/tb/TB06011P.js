@@ -80,10 +80,10 @@ function TB06011P_srchPrdt(menuId) {
 		let data = $(selector).val();
 		$('#TB06011P_prdtCd').val(data);
 
-		callTB06011P(prefix);
-		$('#TB06011P_prdtCd').val(data);
-		// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
-		setTimeout(() => getPrdtCdList(), 400);
+		selectBoxSet_TB06011P();
+		loginUserSet_TB06011P();
+		await getPrdtCdList()
+			
 	}
 }
 
@@ -441,28 +441,6 @@ function dataPrdtCdSetGrid(data) {
 		var rowData = ui.rowData;
 		TB06011P_setPrdtInfo(rowData);
 	});
-
-	// 검색된 행이 1개일 경우 데이터 바로 입력
-	if (TB06011P_arrPqGridPrdtCdList.pdata.length === 1 && $(`div[id='modal-TB06011P']`).css('display') === "none") {
-		console.log("여기로와야해");
-		TB06011P_setPrdtInfo(TB06011P_arrPqGridPrdtCdList.pdata[0]);
-		TB06011P_srchCnt = 0;
-	}
-	// 검색된 행이 0일 경우 모든 데이터 출력
-	// 변부장님 지시로 삭제
-	// else if (TB06011P_arrPqGridPrdtCdList.pdata.length === 0) {
-	// 	console.log("딴길로 새지마라");
-	// 	// 데이터 없는 경우 재조회 방지
-	// 	TB06011P_srchCnt += 1;
-	// 	$('#TB06011P_prdtCd').val("");
-	// 	getPrdtCdList();
-	// }
-	// 그렇지 않은 경우 조건에 맞는 데이터 출력
-	else {
-		// console.log("해쥐맬라고우~");
-		TB06011P_srchCnt = 0;
-	}
-
 }
 
 // 초기설정
@@ -476,7 +454,6 @@ $(document).ready(function () {
 	문서로드시 세팅
  */
 function TB06011P_docRdySettings() {
-	console.log("문서로드시 세팅");
 	TB06011P_modalShowFunction();
 	keyDownEnter_TB06011P();
 }
@@ -485,7 +462,6 @@ function TB06011P_docRdySettings() {
  * 모달 오픈 애니메이션 후 포커스 주도록 설정
  */
 function TB06011P_modalShowFunction() {
-	console.log("모달 오픈 애니메이션 후 포커스 헤헤");
 	$('#modal-TB06011P').on('shown.bs.modal', function () {
 		$('#modal-TB06011P input[id=TB06011P_prdtCd]').focus();
 	});
@@ -495,11 +471,8 @@ function TB06011P_modalShowFunction() {
  * 키다운엔터이벤트
  */
 function keyDownEnter_TB06011P() {
-	console.log("키다운 엔터 이벤트");
 	$("input[id='TB06011P_prdtCd']").keydown(function (event) {
-		console.log("ㅎㅇ");
 		if (event.keyCode === 13) {//키가 13이면 실행 (엔터는 13)
-			console.log("ㅎㅇ");
 			getPrdtCdList();
 		}
 	});
@@ -528,15 +501,14 @@ $("#TB06011P_empNo").on('change', function(){
  * show modal
  */
 function callTB06011P(prefix, e) {
-	clearTB06011P();
 	TB06011P_gridState = 0;
 	TB06011P_pf = prefix;
-	setTimeout(() => roadPrdtCdListGrid(), 300);
+	selectBoxSet_TB06011P();
+	loginUserSet_TB06011P();
 	$('#TB06011P_prefix').val(prefix);
 	$('#modal-TB06011P').modal('show');
+	setTimeout(() => roadPrdtCdListGrid(), 300);
 	indexChangeHandler("TB06011P");
-	selectBoxSet_TB06011P();
-	loginUserSet_TB06011P();  
 	if (prefix == "TB07100S_grid"){
 		prdtSn = e;
 		console.log("TB07100S_grid, "+prdtSn);
@@ -547,6 +519,7 @@ function callTB06011P(prefix, e) {
  * hide modal
  */
 function modalClose_TB06011P() {
+	clearTB06011P();
 	TB06011P_gridState = 1;
 	if (typeof fnltPgGrid != "undefined") TB06011P_arrPqGridPrdtCdList.setData([]);
 	//$('#TB06011P_prdtCdList').pqGrid("destroy");
@@ -604,14 +577,14 @@ async function getPrdtCdList() {
 		data: JSON.stringify(param),
 		dataType: "json",
 		success: function (data) {
-
-			if(TB06011P_srchCnt >= 2){
-				alert("조회된 정보가 없습니다!")
-				TB06011P_srchCnt = 0;
-				return;
+			if($(`div[id='modal-TB06011P']`).css('display') === "none" && data.length === 1){
+				TB06011P_setPrdtInfo(data[0]);
+				modalClose_TB06011P();
 			}
-			// console.log("진짜 쿼리", data);
-			dataPrdtCdSetGrid(data);
+			else {
+				callTB06011P($('#TB06011P_prefix').val());
+				setTimeout(() => dataPrdtCdSetGrid(data), 400)
+			}
 		}
 	});
 }

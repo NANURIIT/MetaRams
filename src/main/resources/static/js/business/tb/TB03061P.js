@@ -77,36 +77,17 @@ function TB03061P_srchMtr(menuId) {
 		 */
 		// ex) 종목코드 VARCHAR(10)
 		if (str === 13) {
-
-			TB03061P_onchangehandler = "off";
-
 			await srchEvent(this);
-
 		}
 	});
 
 	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03061P']:not([disabled])`).closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("keydown", async function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
-			// console.log("화면내 엔터 이벤트");
-
-			TB03061P_onchangehandler = "off";
-
 			evt.preventDefault();
-
 			await srchEvent(this);
 		}
 	});
-
-	// $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03061P']:not([disabled])`).closest("span.input-group-append").prev("input[type='text']:not([readonly])").on("change", async function (evt) {
-	// 	if (TB03061P_onchangehandler === "on") {
-
-	// 		await srchEvent(this);
-
-	// 	} else if (TB03061P_onchangehandler === "off"){
-	// 		TB03061P_onchangehandler = "on"
-	// 	}
-	// });
 
 	async function srchEvent(selector) {
 		// 사용한 인풋박스의 출처 페이지 가져오기
@@ -128,24 +109,12 @@ function TB03061P_srchMtr(menuId) {
 			prefix = $(selector).attr("id").slice(0, _index);
 		}
 
-		$("span.input-group-append > button[onclick*='callTB03061P']:not([disabled])").closest("span.input-group-append").next().val("");
 		$("#TB03061P_prefix").val(prefix);
-
-		/**
-		 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
-		 * 그리드 상태 다시 체크해주기
-		 */
-		if ($(`div[id='modal-TB03061P']`).css("display") === "none") {
-			TB03061P_gridState = 1;
-		}
 
 		// 인풋박스 밸류
 		let data = $(selector).val();
-
-		callTB03061P(prefix);
 		$("#TB03061P_ardyBzepNo").val(data);
-		// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
-		setTimeout(() => getArdyBzepInfoList(), 400);
+		getArdyBzepInfoList();
 	}
 }
 
@@ -238,10 +207,6 @@ function reset_TB03061P() {
  * 모달 hide
  */
 function modalClose_TB03061P() {
-	TB03061P_gridState = 1;
-	// reset_TB03061P();
-	// $("#gridBzepList").pqGrid('refreshDataAndView');
-	// $("#gridBzepList").pqGrid('destroy');
 	$('#modal-TB03061P').modal('hide');
 }
 
@@ -249,7 +214,7 @@ function modalClose_TB03061P() {
  * hide modal
  */
 $("#modal-TB03061P").on('hide.bs.modal', function () {
-	// modalClose_TB03061P();
+	reset_TB03061P();
 	$("#gridBzepList").pqGrid('destroy');
 });
 
@@ -288,11 +253,21 @@ function getArdyBzepInfoList() {
 		data: inputParam,
 		dataType: "json",
 		success: function (data) {
-			modalPqGridBzepList.setData(data);
-			modalPqGridBzepList.on("rowDblClick", function (event, ui) {
-				setArdyBzepInfo(ui.rowData);
-				// console.log(ui.rowData);
-			});
+			if($(`div[id='modal-TB03061P']`).css('display') === "none" && data.length === 1){
+				setArdyBzepInfo(data[0]);
+				modalClose_TB03061P();
+			}
+			else {
+				callTB03061P(prefix);
+				setTimeout(() => {
+					modalPqGridBzepList.setData(data);
+				}, 400)
+				setTimeout(() => {
+					modalPqGridBzepList.on("rowDblClick", function (event, ui) {
+						setArdyBzepInfo(ui.rowData);
+					});
+				}, 600);
+			}
 		},
 
 	});

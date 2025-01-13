@@ -1,4 +1,4 @@
-let arrPqGridDealInfo=[];
+let arrPqGridDealInfo = [];
 let TB03021P_gridState = 1;
 let TB03021P_pf;
 let TB03021P_onchangehandler;
@@ -27,7 +27,6 @@ function selectBoxSet_TB03021P() {
       })
     );
   });
-
 }
 
 $("#TB03021P_dprtNm").on("change", function () {
@@ -36,95 +35,87 @@ $("#TB03021P_dprtNm").on("change", function () {
   $("#TB03021P_dprtCd").val(dprtCd);
 });
 
-
 function TB03021P_srch(menuId) {
-  // console.log("일단 체크 해보ㅏ ",$(this).val());
   //input에 값 입력 시 자동 조회
-  console.log("여기오긴함??");
-	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
-		const currentInput = $(this);
-		const ibDealpNmInput = currentInput.closest('.input-group').find('input[id*="_ibDealNm"]');  // 같은 div 내의 empNm input
-		ibDealpNmInput.val("");  // ibDealpNmInput 초기화
-		// 입력값이 7자일 때 조회
-    console.log("currentInput.val().length:::" + currentInput.val().length);
+  $(
+    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`
+  )
+    .closest("span.input-group-append")
+    .prev("input[id*='_ibDealNo']")
+    .on("input", async function () {
+      const currentInput = $(this);
+      const ibDealpNmInput = currentInput
+        .closest(".input-group")
+        .find('input[id*="_ibDealNm"]'); // 같은 div 내의 empNm input
+      ibDealpNmInput.val(""); // ibDealpNmInput 초기화
 
-		if (currentInput.val().length === 17) {
-			await ibDealNoSrchEvent(currentInput);
-		}
-	});
+      if (currentInput.val().length === 17) {
+        await ibDealNoSrchEvent(currentInput);
+      }
+    });
 
-	// 'keydown' 이벤트로 조회 (Enter키)
-	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('keydown', async function (evt) {
-    if (evt.keyCode === 13 && $(this).val().length !== 17) {
-			evt.preventDefault();
-			TB03021P_onchangehandler == "off";
-			await ibDealNoSrchEvent($(this));
-		}
-	});
+  // 'keydown' 이벤트로 조회 (Enter키)
+  $(
+    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`
+  )
+    .closest("span.input-group-append")
+    .prev("input[id*='_ibDealNo']")
+    .on("keydown", async function (evt) {
+      if (evt.keyCode === 13 && $(this).val().length !== 17) {
+        evt.preventDefault();
+        await ibDealNoSrchEvent($(this));
+      }
+    });
 
   async function ibDealNoSrchEvent(selector) {
+    let prefix;
+    const inputId = $(selector).attr("id");
+    // 입력된 id에 따라 prefix 결정
+    const lastIndex = inputId.lastIndexOf("_"); // 마지막 '_'의 위치 찾기
+    prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
 
-		let prefix;
-		const inputId = $(selector).attr('id');
-		// 입력된 id에 따라 prefix 결정
-		const lastIndex = inputId.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
-		prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
-		
-		$('#TB03021P_prefix').val(prefix);
-		$(`input[id='${prefix}_ibDealNm']`).val("");   // ibDealNm초기화	
+    $("#TB03021P_prefix").val(prefix);
 
     let data = $(selector).val();
 
-		// 팝업 오픈
-		callTB03021P(prefix);
-    $('#TB03021P_ibDealNo').val(data);
+    // 팝업 오픈
+    $("#TB03021P_ibDealNo").val(data);
     getDealInfo();
-	}
+  }
 }
 
 function clearTB03021P() {
-	$('#TB03021P_ibDealNo').val("");
-	$('#TB03021P_ibDealNm').val("");
+  $("#TB03021P_ibDealNo").val("");
+  $("#TB03021P_ibDealNm").val("");
 }
 /**
  * 모달 팝업 show
  */
 function callTB03021P(prefix) {
-  // CustomEvent 발생 (팝업이 열렸음을 알림)
-  const event = new CustomEvent('openTB03021P', { 
-    detail: { 
-        status: 'opened', 
-        source: 'TB03021P.js'
-    } 
-  });
-  document.dispatchEvent(event); // 전역으로 이벤트 전파
-
-  reset_TB03021P();
-  TB03021P_gridState = 0;
-	TB03021P_pf = prefix;
+  TB03021P_pf = prefix;
   setTimeout(() => roadListGrid_TB03021P(), 300);
   $("#TB03021P_prefix").val(prefix);
   $("#modal-TB03021P").modal("show");
-	indexChangeHandler("TB03021P");
+  indexChangeHandler("TB03021P");
 }
 
-function roadListGrid_TB03021P(){
+function roadListGrid_TB03021P() {
   arrPqGridDealInfo = $("#gridDealInfo").pqGrid("instance");
 
-  if(typeof arrPqGridDealInfo === "undefined" || arrPqGridDealInfo === null){
+  if (typeof arrPqGridDealInfo === "undefined" || arrPqGridDealInfo === null) {
     let setPqGridObj = [
-          {
-            height: 300,
-            maxHeight: 300,
-            id: "gridDealInfo",
-            colModel: colDealInfo,
-          },
-        ];
+      {
+        height: 300,
+        maxHeight: 300,
+        id: "gridDealInfo",
+        colModel: colDealInfo,
+      },
+    ];
 
-        setPqGrid(setPqGridObj);
-        // 초기화된 인스턴스를 다시 할당
-        arrPqGridDealInfo = $("#gridDealInfo").pqGrid('instance');
-  }else{
+    setPqGrid(setPqGridObj);
+    // 초기화된 인스턴스를 다시 할당
+    arrPqGridDealInfo = $("#gridDealInfo").pqGrid("instance");
+  } else {
     arrPqGridDealInfo.setData([]);
   }
 }
@@ -136,15 +127,6 @@ function modalClose_TB03021P() {
   // reset_TB03021P();
   $("#gridDealInfo").pqGrid("refreshDataAndView");
   $("#modal-TB03021P").modal("hide");
-
-  // CustomEvent 발생 (팝업이 열렸음을 알림)
-  const event = new CustomEvent('closeTB03021P', { 
-    detail: { 
-        status: 'closed', 
-        source: 'TB03021P.js'
-    } 
-  });
-  document.dispatchEvent(event); // 전역으로 이벤트 전파
 }
 
 /**
@@ -159,16 +141,16 @@ $("#modal-TB03021P").on("hide.bs.modal", function () {
  * reset
  */
 function reset_TB03021P() {
-  empNo = $('#userEno').val();     //직원명
-  dprtCd = $('#userDprtCd').val(); //부서번호
+  empNo = $("#userEno").val(); //직원명
+  dprtCd = $("#userDprtCd").val(); //부서번호
 
   $("#TB03021P_dealInfoList").html("");
   $("#TB03021P_ibDealNo").val("");
   $("#TB03021P_ibDealNm").val("");
-  $('#TB03021P_empNm').val($('#userEmpNm').val());
-  $('#TB03021P_empNo').val(empNo);
+  $("#TB03021P_empNm").val($("#userEmpNm").val());
+  $("#TB03021P_empNo").val(empNo);
   $("#TB03021P_dprtNm").val(dprtCd).prop("selected", true);
-  $('#TB03021P_dprtCd').val(dprtCd);
+  $("#TB03021P_dprtCd").val(dprtCd);
 
   //$("#TB03021P_datepicker1").val("");
 }
@@ -205,15 +187,15 @@ async function getDealInfo() {
   var dealNo = $("#TB03021P_ibDealNo").val(); //Deal 번호
   var dealNm = $("#TB03021P_ibDealNm").val(); //Deal명
   var chrrEmpno = $("#TB03021P_empNo").val(); //담당자번호
-  var dprtCd = $("#TB03021P_dprtCd").val();    //부서코드
-  
+  var dprtCd = $("#TB03021P_dprtCd").val(); //부서코드
+
   // var rgstDt = $("#TB03021P_datepicker1").val().replaceAll("-", "");
 
   var dtoParam = {
     dealNo: dealNo,
     dealNm: dealNm,
-    chrrEmpno : chrrEmpno,
-    dprtCd : dprtCd,
+    chrrEmpno: chrrEmpno,
+    dprtCd: dprtCd,
     //rgstDt: rgstDt,
   };
 
@@ -223,12 +205,19 @@ async function getDealInfo() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-			setTimeout(() => dataIbDealSetGrid(data) , 400);
+      if($(`div[id='modal-TB03021P']`).css('display') === "none" && data.length === 1){
+				setDealInfo(data[0]);
+				modalClose_TB03021P();
+			}
+			else {
+				callTB03021P($('#TB03021P_prefix').val());
+				setTimeout(() => dataIbDealSetGrid(data), 400)
+			}
     },
   });
 }
 
-function dataIbDealSetGrid(data){
+function dataIbDealSetGrid(data) {
   arrPqGridDealInfo.setData(data);
   arrPqGridDealInfo.option("rowDblClick", function (event, ui) {
     setDealInfo(ui.rowData);
@@ -279,7 +268,7 @@ function setDealInfo(e) {
     TB03040Sjs.ibSpecSearch();
   }
 
-  if (prefix == 'TB04020S') {
+  if (prefix == "TB04020S") {
     TB04020Sjs.checkDealSearch();
   }
 
@@ -297,7 +286,6 @@ function setDealInfo(e) {
   modalClose_TB03021P();
 }
 
-
 /* ***********************************그리드 컬럼******************************** */
 
 let colDealInfo = [
@@ -312,7 +300,7 @@ let colDealInfo = [
     title: "Deal명",
     dataType: "string",
     dataIndx: "dealNm",
-    halign : "center",
+    halign: "center",
     align: "left",
     filter: { crules: [{ condition: "range" }] },
   },
@@ -367,7 +355,7 @@ let colDealInfo = [
     title: "거래상대방",
     dataType: "string",
     dataIndx: "entpNm",
-    halign : "center",
+    halign: "center",
     align: "left",
     filter: { crules: [{ condition: "range" }] },
   },
