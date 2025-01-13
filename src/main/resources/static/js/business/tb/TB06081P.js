@@ -11,6 +11,13 @@
  * 
  * 4. 결재요청이 이미 된 경우, 팝업내에서 결재요청 취소를 위한 텍스트 박스만 조작가능. 승인자 추가 변경기능 disabled
  */
+
+
+/**
+ * 신규일 경우 결재요청 버튼
+ * 진행중일 경우 한명이라도 결재한 상태면 결재요청, 회수 불가
+ * 반려상태인 경우 결재요청, 회수 둘다 가능
+ */
 $(document).ready(function () {
     TB06081P_getSelectBox();
 });
@@ -211,9 +218,21 @@ function TB06081P_apvlRqst(decdSttsDcd) {
     let decdStepDcd;
     let url;
     let text;
-
+    
+    // 재승인요청
+    if(
+        decdSttsDcd === "1" 
+        && $("#apvlReqBtn").prop("disabled") === false
+        && $("#apvlReqCancelBtn").prop("disabled") === false
+        && $("#TB06081P_apvlRqstCntn").prop("disabled") === false
+        && $("#TB06081P_errCntn").prop("disabled") === false
+    ){
+        decdStepDcd = "02"
+        url = "updateApvlRqst"
+        text = "재승인요청"
+    }
     // 승인요청
-    if (decdSttsDcd === "1") {
+    else if (decdSttsDcd === "1") {
         decdStepDcd = "04"
         url = "apvlRqst"
         text = "승인요청"
@@ -221,7 +240,7 @@ function TB06081P_apvlRqst(decdSttsDcd) {
     // 승인요청취소
     else if (decdSttsDcd === "4") {
         decdStepDcd = "00"
-        url = "cancelApvlRqst"
+        url = "updateApvlRqst"
         text = "승인요청취소"
     }
 
@@ -314,9 +333,9 @@ function TB06081P_apvlListChk() {
                 console.log(data);
                 
                 TB06081P_apvlList = data;
-                TB06081P_setApvlList();
                 // 결재요청중
                 TB06081P_apvlReqStatusHandler("ing");
+                TB06081P_setApvlList();
                 // 결재진행중인 내용이면 승인자 그리드 사용불가
                 $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", true)
             }
@@ -484,6 +503,32 @@ function TB06081P_setApvlList() {
 			    </td>
 			</tr>
         `
+    }
+
+    for (let i = 0; i < apvlList.length; i++) {
+
+        console.log(apvlList[i].decdSttsDcd);
+        
+        if(apvlList[i].decdSttsDcd === '3'){
+            $("#apvlReqBtn").prop("disabled", false)
+            $("#apvlReqCancelBtn").prop("disabled", false)
+            $("#TB06081P_apvlRqstCntn").prop("disabled", false)
+            $("#TB06081P_errCntn").prop("disabled", false)
+            break;
+        }
+        else if(apvlList[i].decdSttsDcd != '1'){
+            $("#apvlReqBtn").prop("disabled", true)
+            $("#apvlReqCancelBtn").prop("disabled", true)
+            $("#TB06081P_apvlRqstCntn").prop("disabled", true)
+            $("#TB06081P_errCntn").prop("disabled", true)
+        }
+        else {
+            $("#apvlReqBtn").prop("disabled", false)
+            $("#apvlReqCancelBtn").prop("disabled", true)
+            $("#TB06081P_apvlRqstCntn").prop("disabled", false)
+            $("#TB06081P_errCntn").prop("disabled", true)
+        }
+
     }
 
     $("#modal-TB06081P .con-tb06081p tbody").html(html);

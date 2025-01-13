@@ -37,7 +37,7 @@ const TB07060Sjs = (function () {
         "/E015" + // 기업여신이자단수법구분코드 EPRZ_CRDL_INTR_SNNO_PRCS_DCD
         "/I017" + // 이자납입일자코드
         "/E005" + // 해지사유코드
-        "/E025" + // 기업여신거래종류코드
+        "/P012" + // 기업여신거래종류코드
         "/P013" + // 원리금유형코드
         "/E008" + // 기업여신수수료종류코드
         "/F006" + // 수수료인식구분코드 FEE_RCOG_DCD
@@ -53,7 +53,7 @@ const TB07060Sjs = (function () {
     );
 
     // 기업여신거래종류코드
-    grdSelect.E025 = selectBox.filter((item) => item.cmnsGrpCd === "E025");
+    grdSelect.P012 = selectBox.filter((item) => item.cmnsGrpCd === "P012");
     // 기업여신거래상태코드
     grdSelect.E026 = selectBox.filter((item) => item.cmnsGrpCd === "E026");
     // 원리금유형코드
@@ -147,10 +147,10 @@ const TB07060Sjs = (function () {
           type: "select",
           valueIndx: "cdValue",
           labelIndx: "cdName",
-          options: grdSelect.E025,
+          options: grdSelect.P012,
         },
         render: function (ui) {
-          let fSel = grdSelect.E025.find(
+          let fSel = grdSelect.P012.find(
             ({ cdValue }) => cdValue == ui.cellData
           );
           return fSel ? fSel.cdName : ui.cellData;

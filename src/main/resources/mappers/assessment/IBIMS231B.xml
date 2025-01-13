@@ -120,11 +120,13 @@
            , T1.APVL_RQST_CNTN
            , T1.ERR_CNTN
            , T1.DECD_SQ
+           , T1.DECD_STTS_DCD
      	  FROM (
               SELECT B.DCFC_ENO
                    , A.APVL_RQST_CNTN
                    , A.ERR_CNTN
                    , B.DECD_SQ
+                   , B.DECD_STTS_DCD
                 FROM IBIMS231B A
            LEFT JOIN IBIMS232B B
                   ON A.DECD_SN = B.DECD_SN
@@ -144,8 +146,6 @@
                  AND A.TR_SEQ = #{trSeq}
                  AND A.RQST_CNCL_DTM IS NULL
                  AND A.PRCS_RSLT_DCD = '00'
-                 AND A.DECD_STEP_DCD = '04'
-                 AND A.DECD_STTS_DCD = '1'
               ) T1
    LEFT JOIN IBIMS003B T2
           ON T1.DCFC_ENO = T2.EMPNO
@@ -179,13 +179,20 @@
        AND TR_SEQ = #{trSeq}
        AND RQST_CNCL_DTM IS NULL
        AND PRCS_RSLT_DCD = '00'
-       AND DECD_STEP_DCD = '04'
-       AND DECD_STTS_DCD = '1'
   </select>
 
   <!-- 결재단계체크 -->
   <select id="chkDecdStep" parameterType="com.nanuri.rams.business.common.vo.IBIMS231BVO" resultType="String">
-    		SELECT T1.DECD_STTS_DCD
+    		SELECT NVL(MAX(
+                  CASE WHEN
+                      (
+                        SELECT DECODE(COUNT(*), 0, 'Y', DECODE(NVL(SUM(DECODE(DECD_STTS_DCD, '2', 1, 0)), 0), COUNT(*), 'Y', 'N'))
+                        FROM IBIMS232B
+                        WHERE 1=1
+                        AND DECD_SN = T2.DECD_SN
+                        AND DECD_SQ &lt; T2.DECD_SQ
+                      ) = 'N' THEN '0' ELSE T2.DECD_STTS_DCD END
+                  ), '0')AS DECD_STTS_DCD
     		  FROM IBIMS231B T1
      LEFT JOIN IBIMS232B T2
     	 		  ON T1.DECD_SN = T2.DECD_SN
@@ -205,9 +212,16 @@
     		   AND T1.TR_SEQ = #{trSeq}
     		   AND T1.RQST_CNCL_DTM IS NULL
     		   AND T1.PRCS_RSLT_DCD = '00'
-    		   AND T2.DCFC_ENO = #{dcfcEno}
+           AND T2.DCFC_ENO = #{dcfcEno}
+           /* 결재자이긴한데 현재 결재순서가 아닌경우 결재요청 버튼도 보여주면 안됨 */
 	</select>
 
+  <select id="getLastDecdSq" parameterType="int" resultType="int">
+    SELECT LAST_DECD_SQ
+      FROM IBIMS231B
+     WHERE 1=1
+       AND DECD_SN = #{decdSn}
+  </select>
   <!-- 결재요청 -->
   <insert id="apvlRqst" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO">
     INSERT INTO IBIMS231B(

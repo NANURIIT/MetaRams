@@ -2125,6 +2125,19 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) {}
  */
 function chkDecdStep (menuId){
 
+  let chrrNo = $(`#${menuId}_empNo`).val();
+
+  console.log("체크");
+  console.log("체크");
+  
+
+  if(chrrNo === $('#userEno').val()){
+    console.log("체크? 됐네");
+    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop("hidden", false);
+    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop("hidden", true);
+    return;
+  }
+
   let dealNo = $(`#${menuId}_ibDealNo`).val() || ''   // 딜번호
   let prdtCd = $(`#${menuId}_prdtCd`).val() || ''     // 상품코드
   let decdJobDcd = menuId                             // 결재업무구분코드
@@ -2152,7 +2165,10 @@ function chkDecdStep (menuId){
     data: JSON.stringify(paramData),
     dataType: "json",
     success: function (data) {
-      // 해당사항이 없으면 결재요청 버튼만 활성화
+
+      console.log(data);
+      
+      // 해당사항이 없거나 반려요청된 내역이면 결재요청 버튼만 활성화
       if (data.toString() === "9742") {
         $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
           "hidden",
