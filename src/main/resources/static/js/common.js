@@ -2127,12 +2127,7 @@ function chkDecdStep (menuId){
 
   let chrrNo = $(`#${menuId}_empNo`).val();
 
-  console.log("체크");
-  console.log("체크");
-  
-
   if(chrrNo === $('#userEno').val()){
-    console.log("체크? 됐네");
     $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop("hidden", false);
     $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop("hidden", true);
     return;
