@@ -429,7 +429,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 			ibims410bdto.setTrSn(iExTrsn);
 			ibims410bdto.setExcSn(in403bdto.getExcSn());
 			ibims410bdto.setTrDt(rkfrDt); /* 거래일자 */
-			ibims410bdto.setTrStatCd("01"); /* 거래상태코드 1정상 */
+			ibims410bdto.setTrStatCd("1"); /* 거래상태코드 1정상 */
 			ibims410bdto.setEtprCrdtGrntTrKindCd("20"); /* 거래종류코드 20상환 */
 			ibims410bdto.setDealTrPrca(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()));								/* 딜거래원금 = 거래원금합계+중도상환원금 */
 			ibims410bdto.setTrIntAmt((paramData.getNrmlIntAmt()==null?BigDecimal.ZERO:paramData.getNrmlIntAmt())
