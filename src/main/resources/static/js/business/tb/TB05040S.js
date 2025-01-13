@@ -196,6 +196,7 @@ const TB05040Sjs = (function(){
 				data: dtoParam,
 				dataType: "json",
 				success: function(data) {
+					arrPqGridDealList.option("strNoRows", "조회된 데이터가 없습니다.");
 					arrPqGridDealList.setData(data);
 					arrPqGridDealList.option("rowDblClick", function (event, ui) {
 						setCouncilInfo(ui.rowData);
