@@ -697,6 +697,7 @@
             ON s101b.DEAL_NO = s103b.DEAL_NO
           LEFT JOIN IBIMS003B s003b_1
             ON s103b.OWN_P_ENO = s003b_1.EMPNO
+					 AND s003b_1.DEL_YN = 'N'	
           LEFT JOIN IBIMS003B s003b_2
             ON s103b.CHRR_EMPNO = s003b_2.EMPNO
           LEFT JOIN IBIMS002B s002b_1
@@ -740,9 +741,9 @@
          WHERE 1=1
            AND s101b.LAST_YN = 'Y'
            AND s103b.LAST_YN = 'Y'
-		   AND s103b.MTR_PRG_STTS_DCD <![CDATA[ > ]]> 201
+		   		 AND s103b.MTR_PRG_STTS_DCD <![CDATA[ > ]]> 201
            AND s103b.MTR_PRG_STTS_DCD <![CDATA[ < ]]> 300	
-		   AND s103b.MTR_PRG_STTS_DCD <![CDATA[ <> ]]> 203	
+		   		 AND s103b.MTR_PRG_STTS_DCD <![CDATA[ <> ]]> 203	
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDtStart)">
            AND s101b.RGST_DT <![CDATA[>=]]> #{rgstDtStart}
            </if>
@@ -767,7 +768,7 @@
 					 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
            AND s103b.OWN_P_ENO = #{chrrEmpno}
            </if>
-					 AND s003b_1.DEL_YN = 'N'
+					 
 					 AND s003b_2.DEL_YN = 'N'					
          ORDER BY s103b.MTR_PRG_STTS_DCD
          	    , s103b.DEAL_NO
