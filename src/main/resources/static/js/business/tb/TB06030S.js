@@ -17,14 +17,27 @@ const TB06030Sjs = (function(){
 		inputNumberChangeFunction_TB06030S();
 		//초기화버튼
 		resetSearchRequiment_TB06030S();
+		loginUserSet();
 		getDealInfoFromWF();
 	});
+
+	function loginUserSet(){
+		let empNo  = $('#userEno').val();   
+		let empNm  = $('#userEmpNm').val();
+		let dprtCd = $('#userDprtCd').val();
+		let dprtNm = $('#userDprtNm').val();
+
+		$('#TB06030S_empNo').val(empNo);
+		$('#TB06030S_empNm').val(empNm);
+		$('#TB06030S_dprtCd').val(dprtCd);
+		$('#TB06030S_dprtNm').val(dprtNm);
+	}
 	
 	
 	function defaultNumberFormat(){	
 		$("input[id*='Amt'], input[id*='Mnum'], input[id*='Blce'], input[id*='Qty']").val("0");
 		selectorNumberFormater(
-		      $("input[id*='Amt'], input[id*='Mnum'], input[id*='Blce'], input[id*='Qty']")
+				$("input[id*='Amt'], input[id*='Mnum'], input[id*='Blce'], input[id*='Qty']")
 		);
 	}
 	
@@ -285,6 +298,8 @@ const TB06030Sjs = (function(){
 	}
 
 	function resetSearchRequiment_TB06030S() {		
+
+		console.log("resetSearchRequiment_TB06030S 실행~~~~");
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
 		resetInputValue($('div[data-menuid="/TB06030S"]'));
 		$('#TB06030S_ibDealNo').val('');

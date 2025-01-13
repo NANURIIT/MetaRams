@@ -410,13 +410,16 @@
 								<!-- row2 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>담당부서</label>
-										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" style="width:30px;" id="TB06030S_dprtCd">
-											<span class="input-group-append">
-												<button type="button" class="btn btn-default" onclick="callTB03022P('TB06030S')"><i class="fa fa-search"></i></button>
-											</span>
-											<input type="text" class="form-control" style="width:70px;" id="TB06030S_dprtNm" readonly>
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>셀다운대상</label>
+										<div class="col-sm-2 input-group input-h">
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="Y" id="TB06030S_sdnTrgtYn_Y"  name="TB06030S_sdnTrgtYn">&nbsp;Y
+											</div>
+											<div class="col-sm-3 text-left input-group">
+												<input type="radio" value="N" id="TB06030S_sdnTrgtYn_N"  name="TB06030S_sdnTrgtYn">&nbsp;N
+											</div>
+											<div class="col-sm-6">
+											</div>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">발행일</label>
 										<div class="col-sm-2 input-group date">
@@ -447,13 +450,12 @@
 								<!-- row3 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>담당자</label>
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>총 발행주수</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" style="width:30px;" id="TB06030S_empNo">
-											<span class="input-group-append">
-												<button type="button" class="btn btn-default" onclick="callTB03022P('TB06030S')"><i class="fa fa-search"></i></button>
-											</span>
-											<input type="text" class="form-control" style="width:70px;" id="TB06030S_empNm" readonly>
+											<input type="text" class="form-control" id="TB06030S_totIssuQty"
+												style="text-align:right"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+												<!--onchange="inputNumberFormat2(this);"-->
 										</div>
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>당사역할</label>
 										<div class="col-sm-2 input-group">
@@ -488,23 +490,21 @@
 								<!-- row4 -->
 								<div class="row form-group form-inline text-right">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>셀다운대상</label>
-										<div class="col-sm-2 input-group input-h">
-											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="Y" id="TB06030S_sdnTrgtYn_Y"  name="TB06030S_sdnTrgtYn">&nbsp;Y
-											</div>
-											<div class="col-sm-3 text-left input-group">
-												<input type="radio" value="N" id="TB06030S_sdnTrgtYn_N"  name="TB06030S_sdnTrgtYn">&nbsp;N
-											</div>
-											<div class="col-sm-6">
-											</div>
-										</div>
-										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>총 발행주수</label>
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>담당자</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB06030S_totIssuQty"
-												style="text-align:right"
-												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-												<!--onchange="inputNumberFormat2(this);"-->
+											<input type="text" class="form-control" style="width:30px;" id="TB06030S_empNo">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick="callTB03022P('TB06030S')"><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" style="width:70px;" id="TB06030S_empNm" readonly>
+										</div>
+										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>담당부서</label>
+										<div class="col-sm-2 input-group">
+											<input type="text" class="form-control" style="width:30px;" id="TB06030S_dprtCd" readonly>
+											<!-- <span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick="callTB03022P('TB06030S')"><i class="fa fa-search"></i></button>
+											</span> -->
+											<input type="text" class="form-control" style="width:70px;" id="TB06030S_dprtNm" readonly>
 										</div>
 									</div>
 								</div>
