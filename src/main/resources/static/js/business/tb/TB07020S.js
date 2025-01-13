@@ -489,6 +489,16 @@ const TB07020Sjs = (function() {
 							});
 				return false;
 			}
+
+			if(parseFloat($('#TB07020S_trQnt').val().replaceAll(',', '')) > (parseFloat($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))-parseFloat($('#TB07020S_hldgShqt').val().replaceAll(',', '')))){
+				Swal.fire({
+					icon              : 'error'
+					, title             : "[매수거래] 등록 Error!"
+					, text              : "[매수거래] 등록은 거래번호를 미입력 하셔야 합니다."
+					, confirmButtonText : "확인"
+				});
+	return false;
+			}
 		}
 		else {
 			if ( isEmpty(trSn)) {
