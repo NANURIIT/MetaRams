@@ -17,11 +17,22 @@ const TB06020Sjs = (function(){
 		inputNumberChangeFunction_TB06020S();
 		//초기화버튼
 		resetSearchRequiment_TB06020S();
-		
+		loginUserSet();
 		getDealInfoFromWF();
 	});
 	
-	
+	function loginUserSet(){
+		let empNo  = $('#userEno').val();   
+		let empNm  = $('#userEmpNm').val();
+		let dprtCd = $('#userDprtCd').val();
+		let dprtNm = $('#userDprtNm').val();
+
+		$('#TB06020S_empNo').val(empNo);
+		$('#TB06020S_empNm').val(empNm);
+		$('#TB06020S_dprtCd').val(dprtCd);
+		$('#TB06020S_dprtNm').val(dprtNm);
+	}
+
 	function defaultNumberFormat(){	
 		$("input[id*='Amt'], input[id*='Mnum'], input[id*='Shqt']").val("0");
 		selectorNumberFormater(

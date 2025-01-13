@@ -36,14 +36,29 @@ const TB03020Sjs = (function(){
 		$("#TB03020S_ibDealNo").focus();
 
 		TB03020S_selectOption();
-		//getDealNo();
-
-		//TB03020S_dataListBnd('KR');
+		
+		urlSetDealInfo();
 	});
 
 	// function TB03020S_settingFrst(){
 
 	// }
+
+	function urlSetDealInfo(){
+		console.log("urlSetDealInfo!!!");
+
+		let dealNo = sessionStorage.getItem("dealNo");
+    	let dealNm = sessionStorage.getItem("dealNm");
+
+		if (isNotEmpty(dealNo)) {
+			$("#TB03020S_ibDealNo").val(dealNo);
+			$("#TB03020S_ibDealNm").val(dealNm);
+
+			getBscDealDetail();
+		}
+	
+		sessionStorage.clear();
+	}
 
 	// 그리드 렌더링함수
 	function rendorGrid () {
@@ -1271,6 +1286,7 @@ const TB03020Sjs = (function(){
 		, mngPListDelRow : mngPListDelRow
 		, saveDeal : saveDeal
 		, cnfmDeal : cnfmDeal
+		, urlSetDealInfo : urlSetDealInfo
 		//, TB03020S_selectOption: TB03020S_selectOption
 	}
 })();
