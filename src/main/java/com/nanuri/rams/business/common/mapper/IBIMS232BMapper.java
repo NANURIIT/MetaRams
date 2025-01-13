@@ -33,5 +33,17 @@ public interface IBIMS232BMapper {
 	 */
 	public List<IBIMS232BVO> dcfcList (IBIMS231BDTO paramData);
 
+	/**
+	 * 
+	 * @param paramData
+	 * @return
+	 */
 	public int chkSttsDcd (int paramData);
+
+	/**
+	 * 결재상태확인
+	 * @param paramData 결재일련번호, 결재순번
+	 * @return
+	 */
+	public String chkDecdSttsDcd (IBIMS232BDTO paramData);
 }

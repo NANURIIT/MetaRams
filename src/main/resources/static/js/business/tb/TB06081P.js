@@ -228,7 +228,7 @@ function TB06081P_apvlRqst(decdSttsDcd) {
         && $("#TB06081P_errCntn").prop("disabled") === false
     ){
         decdStepDcd = "02"
-        url = "cancelApvlRqst"
+        url = "updateApvlRqst"
         text = "재승인요청"
     }
     // 승인요청
@@ -240,7 +240,7 @@ function TB06081P_apvlRqst(decdSttsDcd) {
     // 승인요청취소
     else if (decdSttsDcd === "4") {
         decdStepDcd = "00"
-        url = "cancelApvlRqst"
+        url = "updateApvlRqst"
         text = "승인요청취소"
     }
 
