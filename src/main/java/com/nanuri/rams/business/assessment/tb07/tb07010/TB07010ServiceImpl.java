@@ -486,7 +486,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 		setParam.setTrSn(lTrsn); /* 거래일련번호 */
 		setParam.setExcSn(param402.getExcSn()); /* 실행일련번호 */
 		setParam.setTrDt(rkfrDt); /* 거래일자 */
-		setParam.setTrStatCd("1"); /* 거래상태코드 1정상 */
+		setParam.setTrStatCd("01"); /* 거래상태코드 1정상 */
 		setParam.setEtprCrdtGrntTrKindCd("10"); /* 거래종류코드 10실행 */
 		setParam.setDealTrAmt(param402.getDealExcAmt().add((param402.getPrcsIntrAmt()==null)?BigDecimal.ZERO:param402.getPrcsIntrAmt())); /* 딜거래금액 == 실행금액? */
 		setParam.setDealTrPrca(param402.getDealExcAmt()); /* 딜거래원금 */
@@ -593,7 +593,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 		setParam.setTrSn(lTrsn); /* 거래일련번호 */
 		setParam.setExcSn(param402.getExcSn()); /* 실행일련번호 */
 		setParam.setTrDt(rkfrDt); /* 거래일자 */
-		setParam.setTrStatCd("1"); /* 거래상태코드 1정상 */
+		setParam.setTrStatCd("01"); /* 거래상태코드 1정상 */
 		setParam.setEtprCrdtGrntTrKindCd("21"); /* 거래종류코드 21수수료수납 */
 //		setParam.setDealTrAmt(param402.getDealExcAmt()); /* 딜거래금액 == 실행금액? */
 //		setParam.setDealTrPrca(param402.getAcbkAmt()); /* 딜거래원금 == 최종지급금액? */

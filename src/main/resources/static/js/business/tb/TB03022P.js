@@ -16,142 +16,56 @@ $(document).ready(function () {
   modalShowFunction_TB03022P();
 });
 
-// openTB03021P 이벤트 감지(TB03021P.js)
-document.addEventListener("openTB03021P", function (event) {
-  isTB03021POpen = true; // 팝업이 열렸다는 상태 저장
-  TB03022P_srch("TB03022P");
-});
-
-// closeTB03021P 이벤트 감지(TB03021P.js)
-document.addEventListener("closeTB03021P", function (event) {
-  isTB03021POpen = false; // 팝업이 닫히면 상태 초기화
-  const url = window.location.pathname; // 팝업 오픈 시점에서 URL을 다시 가져옴
-  TB03022P_srch(url);
-});
-
-// selector를 만드는 함수
-function getSelectorString(menuId) {
-  let finalSelectorString;
-
-  if (isTB03021POpen) {
-    finalSelectorString = `span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`;
-  } else {
-    finalSelectorString = `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03022P"]:not([disabled])`;
-  }
-
-  return finalSelectorString;
-}
-
 /**
  * 입력 이벤트 등록 함수
  */
-function registerInputEvents(selector, inputLastId, inputLength) {
-  selector
+function TB03022P_srch(menuId) {
+  $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03022P']:not([disabled])`)
     .closest("span.input-group-append")
-    .prev(`input[id*='${inputLastId}']`)
+    .prev("input[type='text']:not([readonly])")
     .on("input", async function () {
-      if (inputLastId === "_empNo") {
-        empNoSrchYn = "Y";
-      } else if (inputLastId === "_empNm") {
-        empNmSrchYn = "Y";
-      } else if (inputLastId === "_dprtCd") {
-        dprtCdSrchYn = "Y";
-      }
 
       const currentInput = $(this);
 
-      const result =
-        $(this)
-          .attr("id")
-          .slice(0, $(this).attr("id").length - 2) + "Nm";
+      const result = $(this).attr("id").slice(0, $(this).attr("id").length - 2) + "Nm";
 
       $(`#${result}`).val("");
 
-      if (currentInput.val().length === inputLength) {
+      if (currentInput.val().length === 7) {
         await srchEmpEvent(currentInput);
       }
     });
 
-  selector
+  $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03022P']:not([disabled])`)
     .closest("span.input-group-append")
-    .prev(`input[id*='${inputLastId}']`)
+    .prev("input[type='text']:not([readonly])")
     .on("keydown", async function (evt) {
-      if (evt.keyCode === 13 && $(this).val().length !== inputLength) {
-        if (inputLastId === "_empNo") {
-          empNoSrchYn = "Y";
-        } else if (inputLastId === "_empNm") {
-          empNmSrchYn = "Y";
-        } else if (inputLastId === "_dprtCd") {
-          dprtCdSrchYn = "Y";
-        }
+      if (evt.keyCode === 13) {
         evt.preventDefault();
         await srchEmpEvent($(this));
       }
     });
-}
 
-/**
- * 팝업 자동 호출, 검색
- * @author {}
- */
-function TB03022P_srch(menuId) {
-  let selectorString = getSelectorString(menuId); // 동적으로 selectorString 생성
-  let selector = $(selectorString); // selector 사용
-  // 이전에 바인딩된 이벤트 제거 후 새로 바인딩
-  // selector.off("input keydown");
+  // 전역 함수로 srchEmpEvent 선언
+  async function srchEmpEvent(selector) {
+    let prefix;
+    const inputId = $(selector).attr("id");
+    const lastIndex = inputId.lastIndexOf("_");
+    prefix = inputId.substring(0, lastIndex);
+    let data = $(selector).val();
 
-  // 공통 이벤트 등록
-  registerInputEvents(selector, "_empNo", 7);
-  registerInputEvents(selector, "_empNm", 3);
-  registerInputEvents(selector, "_dprtCd", 3);
-}
+    $("#TB03022P_prefix").val(prefix);
 
-// 전역 함수로 srchEmpEvent 선언
-async function srchEmpEvent(selector) {
-  let prefix;
-  const inputId = $(selector).attr("id");
-  const lastIndex = inputId.lastIndexOf("_");
-  prefix = inputId.substring(0, lastIndex);
-  let data = $(selector).val();
-
-  $("#TB03022P_prefix").val(prefix);
-
-  if ($(`div[id='modal-TB03022P']`).css("display") === "none") {
-    TB03022P_gridState = 1;
-  }
-
-  // const fieldsToClear = ['empNm', 'empNo', 'dprtNm'];
-  // fieldsToClear.forEach(field => TB03022P_clearInput(`${prefix}_${field}`));
-
-  $("#TB03022P_empno").val(empNoSrchYn === "Y" ? data : "");
-  $("#TB03022P_empNm").val(empNmSrchYn === "Y" ? data : "");
-  $("#TB03022P_dprtCd").val(dprtCdSrchYn === "Y" ? data : "");
-
-  await getEmpList();
-  if (TB03022P_gridState === 0) {
-    callGridTB03022P(prefix);
-  } else if (TB03022P_gridState === 1) {
     callTB03022P(prefix);
-  }
+    $("#TB03022P_empno").val(data);
+    await getEmpList();
 
-  //setTimeout(() => getEmpList(), 400);
-  empNoSrchYn = "N";
-  empNmSrchYn = "N";
-  dprtCdSrchYn = "N";
+  }
 }
+
 
 function TB03022P_clearInput(inputId) {
   $(`input[id='${inputId}']`).val("");
-}
-
-function callGridTB03022P(prefix) {
-  // $('#TB03022P_empNm').val("");
-  // $('#TB03022P_empno').val("");
-  // $('#TB03022P_dprtCd').val("");
-  // $('#TB03022P_dprtNm').val("");
-
-  $("#TB03022P_prefix").val(prefix);
-  setTimeout(() => roadListGrid(), 300);
 }
 
 /**
