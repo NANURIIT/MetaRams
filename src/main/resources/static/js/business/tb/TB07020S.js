@@ -491,13 +491,17 @@ const TB07020Sjs = (function() {
 			}
 
 			if(parseFloat($('#TB07020S_trQnt').val().replaceAll(',', '')) > (parseFloat($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))-parseFloat($('#TB07020S_hldgShqt').val().replaceAll(',', '')))){
+				
+				var validTrQnt = parseFloat($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))-parseFloat($('#TB07020S_hldgShqt').val().replaceAll(',', ''));
+				var stringValidTrQnt = addComma(validTrQnt);
+
 				Swal.fire({
 					icon              : 'error'
 					, title             : "[매수거래] 등록 Error!"
-					, text              : "[매수거래] 등록은 거래번호를 미입력 하셔야 합니다."
+					, text              : "[매수거래] 최대입력가능수량은 " + stringValidTrQnt + " 입니다."
 					, confirmButtonText : "확인"
 				});
-	return false;
+				return false;
 			}
 		}
 		else {
