@@ -36,9 +36,7 @@ $("#TB03021P_dprtNm").on("change", function () {
 });
 
 function TB03021P_srch(menuId) {
-  // console.log("일단 체크 해보ㅏ ",$(this).val());
   //input에 값 입력 시 자동 조회
-  console.log("여기오긴함??");
   $(
     `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`
   )
@@ -50,8 +48,6 @@ function TB03021P_srch(menuId) {
         .closest(".input-group")
         .find('input[id*="_ibDealNm"]'); // 같은 div 내의 empNm input
       ibDealpNmInput.val(""); // ibDealpNmInput 초기화
-      // 입력값이 7자일 때 조회
-      console.log("currentInput.val().length:::" + currentInput.val().length);
 
       if (currentInput.val().length === 17) {
         await ibDealNoSrchEvent(currentInput);
@@ -67,7 +63,6 @@ function TB03021P_srch(menuId) {
     .on("keydown", async function (evt) {
       if (evt.keyCode === 13 && $(this).val().length !== 17) {
         evt.preventDefault();
-        TB03021P_onchangehandler == "off";
         await ibDealNoSrchEvent($(this));
       }
     });
@@ -80,12 +75,10 @@ function TB03021P_srch(menuId) {
     prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
 
     $("#TB03021P_prefix").val(prefix);
-    $(`input[id='${prefix}_ibDealNm']`).val(""); // ibDealNm초기화
 
     let data = $(selector).val();
 
     // 팝업 오픈
-    callTB03021P(prefix);
     $("#TB03021P_ibDealNo").val(data);
     getDealInfo();
   }
@@ -99,17 +92,6 @@ function clearTB03021P() {
  * 모달 팝업 show
  */
 function callTB03021P(prefix) {
-  // CustomEvent 발생 (팝업이 열렸음을 알림)
-  const event = new CustomEvent("openTB03021P", {
-    detail: {
-      status: "opened",
-      source: "TB03021P.js",
-    },
-  });
-  document.dispatchEvent(event); // 전역으로 이벤트 전파
-
-  reset_TB03021P();
-  TB03021P_gridState = 0;
   TB03021P_pf = prefix;
   setTimeout(() => roadListGrid_TB03021P(), 300);
   $("#TB03021P_prefix").val(prefix);
@@ -145,15 +127,6 @@ function modalClose_TB03021P() {
   // reset_TB03021P();
   $("#gridDealInfo").pqGrid("refreshDataAndView");
   $("#modal-TB03021P").modal("hide");
-
-  // CustomEvent 발생 (팝업이 열렸음을 알림)
-  const event = new CustomEvent("closeTB03021P", {
-    detail: {
-      status: "closed",
-      source: "TB03021P.js",
-    },
-  });
-  document.dispatchEvent(event); // 전역으로 이벤트 전파
 }
 
 /**
@@ -232,7 +205,14 @@ async function getDealInfo() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      setTimeout(() => dataIbDealSetGrid(data), 400);
+      if($(`div[id='modal-TB03021P']`).css('display') === "none" && data.length === 1){
+				setDealInfo(data[0]);
+				modalClose_TB03021P();
+			}
+			else {
+				callTB03021P($('#TB03021P_prefix').val());
+				setTimeout(() => dataIbDealSetGrid(data), 400)
+			}
     },
   });
 }

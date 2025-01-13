@@ -72,16 +72,18 @@ async function srchEvent_TB04011P(selector) {
   // 인풋박스 밸류
   let data = $(selector).val();
   $("#TB04011P_ibDealNo").val(data);
-  await callTB04011P(prefix); // 팝업 표시
+  $("#TB04011P_empNm").val($("#userEmpNm").val());
+  $("#TB04011P_empNo").val($("#userEno").val());
+  getMtrInfo_TB04011P();
 }
 
 /**
  * 모달 팝업 show
  */
 async function callTB04011P(prefix) {
-  reset_TB04011P();
-  TB04011P_gridState = 0;
   TB04011P_pf = prefix;
+  $("#TB04011P_empNm").val($("#userEmpNm").val());
+  $("#TB04011P_empNo").val($("#userEno").val());
   setTimeout(() => roadListGrid_TB04011P(), 300);
   //await roadListGrid_TB04011P();
   $("#TB04011P_prefix").val(prefix);
@@ -95,6 +97,39 @@ async function callTB04011P(prefix) {
 function modalShowFunction_TB04011P() {
   $("#modal-TB04011P").on("shown.bs.modal", function () {
     $("#modal-TB04011P input[id=TB0411P_ibDealNo]").focus();
+  });
+}
+
+async function roadListGrid_TB04011P() {
+  return new Promise((resolve, reject) => {
+    try {
+      // pqGrid 인스턴스 초기화 확인
+      arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
+      // arrPqGridMtrInfo undefined일 경우 초기화
+      if (
+        typeof arrPqGridMtrInfo === "undefined" ||
+        arrPqGridMtrInfo === null
+      ) {
+        let setPqGridObj = [
+          {
+            height: 300,
+            maxHeight: 300,
+            id: "gridMtrInfo",
+            colModel: colMtrInfo,
+          },
+        ];
+        // pqGrid 초기화
+        //$("#gridMtrInfo").pqGrid(setPqGridObj);
+        setPqGrid(setPqGridObj);
+        arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
+      } else {
+        arrPqGridMtrInfo.setData([]);
+      }
+      // 그리드 로딩이 끝난 후 resolve 호출
+      resolve();
+    } catch (error) {
+      reject(error); // 오류 발생 시 reject 호출
+    }
   });
 }
 
@@ -133,6 +168,9 @@ $("#modal-TB04011P").on("hide.bs.modal", function () {
  * deal 번호 조회 ajax
  */
 async function getMtrInfo_TB04011P() {
+
+	let result;
+
   var ibDealNo = $("#TB04011P_ibDealNo").val();
   var ibDealNm = $("#TB04011P_ibDealNm").val();
   var chrrEmpno = $("#TB04011P_empNo").val();
@@ -153,24 +191,25 @@ async function getMtrInfo_TB04011P() {
       data: dtoParam,
       dataType: "json",
       success: function (data) {
-        if (!data || data === undefined || data.length === 0) {
-          TB04011P_gridState = 1;
-        } else if (data.length >= 2) {
-          TB04011P_gridState = 1;
-        } else if (data) {
-          TB04011P_gridState = 0;
+        if($(`div[id='modal-TB04011P']`).css('display') === "none" && data.length === 1){
+          setMtrInfo_TB04011P(data[0]);
+				  modalClose_TB04011P();
+				  result = false
         }
-        if (InfoSrchCnt_TB04011P >= 2) {
-          InfoSrchCnt_TB04011P = 0;
+        else {
+          callTB04011P($("#TB04011P_prefix").val());
+          setTimeout(function () {
+            dataSetMrtGrid(data);
+          }, 400);
+				result = true
         }
-        setTimeout(function () {
-          dataSetMrtGrid(data);
-        }, 400);
       },
     });
   } catch (error) {
     console.error("AJAX 호출 중 오류 발생:", error);
   }
+
+	return result
 }
 
 function dataSetMrtGrid(data) {
