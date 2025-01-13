@@ -115,28 +115,38 @@ function callTB03061P(prefix, rowIndx) {
 
 	rowInx = rowIndx;
 
-	keyDownEnter_TB03061P();
-
 	$('#TB03061P_prefix').val(prefix);
 	TB03061P_pf = prefix;
 	$('#modal-TB03061P').modal('show');
 	indexChangeHandler("TB03061P");
-	setTimeout(() => {
-		/** 첨부파일그리드 **/
+	setTimeout(() => TB03061P_roadBzepList(), 300);
+	// if (prefix == "TB06010S" || prefix == "grid_TB06010S") rowInx = e;
+}
+
+/**
+ * 그리드호출
+ */
+function TB03061P_roadBzepList() {
+	modalPqGridBzepList = $("#TB06011P_prdtCdList").pqGrid('instance');
+	if (typeof modalPqGridBzepList == "undefined") {
 		let arrModalPqGridObj = [
 			{
 				height: 500
 				, maxHeight: 500
 				, id: 'gridBzepList'
 				, colModel: colModalBzepList
+				, rowDblClick: function (evt, ui){
+					setArdyBzepInfo(ui.rowData);
+				}
 			}
 		]
 		setPqGrid(arrModalPqGridObj);
 		modalPqGridBzepList = $("#gridBzepList").pqGrid('instance');
-	}, 300);
-	// if (prefix == "TB06010S" || prefix == "grid_TB06010S") rowInx = e;
+	}
+	else {
+		modalPqGridBzepList.setData([]);
+	}
 }
-
 
 
 /**
@@ -174,6 +184,7 @@ function keyDownEnter_TB03061P() {
 			getArdyBzepInfoList();
 		}
 	});
+
 }
 
 /**
@@ -193,14 +204,14 @@ function reset_TB03061P() {
  * 모달 hide
  */
 function modalClose_TB03061P() {
+	reset_TB03061P();
 	$('#modal-TB03061P').modal('hide');
 }
 
 /**
  * hide modal
- */
+*/
 $("#modal-TB03061P").on('hide.bs.modal', function () {
-	reset_TB03061P();
 	$("#gridBzepList").pqGrid('destroy');
 });
 
@@ -246,13 +257,8 @@ function getArdyBzepInfoList() {
 			else {
 				callTB03061P($("#TB03061P_prefix").val());
 				setTimeout(() => {
-					modalPqGridBzepList.setData(data);
+					$("#gridBzepList").pqGrid('instance').setData(data);
 				}, 400)
-				setTimeout(() => {
-					modalPqGridBzepList.on("cellDblClick", function (event, ui) {
-						setArdyBzepInfo(ui.rowData);
-					});
-				}, 600);
 			}
 		},
 
@@ -274,14 +280,6 @@ function getSlctBox_cd() {
 
 				if (value.cmnsCdGrp == "U005") {
 					$('#TB03061P_useYn').append('<option value="' + value.cdVlId + '">' + value.cdVlNm + '</option>');
-
-					// if(value.cdVlNm == "전체"){
-					// 	useYn = value.cdVlId;
-					// }else if(value.cdVlNm == "사용"){
-					// 	useYn = value.cdVlId;
-					// }else if(value.cdVlNm == "미사용"){
-					// 	useYn = value.cdVlId;
-					// }
 				}
 
 			});

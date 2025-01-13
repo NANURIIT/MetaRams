@@ -151,7 +151,6 @@ function reset_TB04011P() {
  */
 function modalClose_TB04011P() {
   reset_TB04011P();
-  // $("#gridMtrInfo").pqGrid("refreshDataAndView");
   $("#modal-TB04011P").modal("hide"); // 모달 닫기
   TB04011P_gridState = 1;
 }
