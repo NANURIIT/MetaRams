@@ -1,4 +1,4 @@
-let arrPqGridDealInfo=[];
+let arrPqGridDealInfo = [];
 let TB03021P_gridState = 1;
 let TB03021P_pf;
 let TB03021P_onchangehandler;
@@ -27,7 +27,6 @@ function selectBoxSet_TB03021P() {
       })
     );
   });
-
 }
 
 $("#TB03021P_dprtNm").on("change", function () {
@@ -36,108 +35,115 @@ $("#TB03021P_dprtNm").on("change", function () {
   $("#TB03021P_dprtCd").val(dprtCd);
 });
 
-
 function TB03021P_srch(menuId) {
   // console.log("일단 체크 해보ㅏ ",$(this).val());
   //input에 값 입력 시 자동 조회
   console.log("여기오긴함??");
-	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('input', async function () {
-		const currentInput = $(this);
-		const ibDealpNmInput = currentInput.closest('.input-group').find('input[id*="_ibDealNm"]');  // 같은 div 내의 empNm input
-		ibDealpNmInput.val("");  // ibDealpNmInput 초기화
-		// 입력값이 7자일 때 조회
-    console.log("currentInput.val().length:::" + currentInput.val().length);
+  $(
+    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`
+  )
+    .closest("span.input-group-append")
+    .prev("input[id*='_ibDealNo']")
+    .on("input", async function () {
+      const currentInput = $(this);
+      const ibDealpNmInput = currentInput
+        .closest(".input-group")
+        .find('input[id*="_ibDealNm"]'); // 같은 div 내의 empNm input
+      ibDealpNmInput.val(""); // ibDealpNmInput 초기화
+      // 입력값이 7자일 때 조회
+      console.log("currentInput.val().length:::" + currentInput.val().length);
 
-		if (currentInput.val().length === 17) {
-			await ibDealNoSrchEvent(currentInput);
-		}
-	});
+      if (currentInput.val().length === 17) {
+        await ibDealNoSrchEvent(currentInput);
+      }
+    });
 
-	// 'keydown' 이벤트로 조회 (Enter키)
-	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_ibDealNo']").on('keydown', async function (evt) {
-    if (evt.keyCode === 13 && $(this).val().length !== 17) {
-			evt.preventDefault();
-			TB03021P_onchangehandler == "off";
-			await ibDealNoSrchEvent($(this));
-		}
-	});
-
-  
+  // 'keydown' 이벤트로 조회 (Enter키)
+  $(
+    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB03021P"]:not([disabled])`
+  )
+    .closest("span.input-group-append")
+    .prev("input[id*='_ibDealNo']")
+    .on("keydown", async function (evt) {
+      if (evt.keyCode === 13 && $(this).val().length !== 17) {
+        evt.preventDefault();
+        TB03021P_onchangehandler == "off";
+        await ibDealNoSrchEvent($(this));
+      }
+    });
 
   async function ibDealNoSrchEvent(selector) {
-
     console.log("ibDealNoSrchEvent 도달~~~");
-		let prefix;
-		const inputId = $(selector).attr('id');
-		// 입력된 id에 따라 prefix 결정
-		const lastIndex = inputId.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
-		prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
-		
-		$('#TB03021P_prefix').val(prefix);
-		$(`input[id='${prefix}_ibDealNm']`).val("");   // ibDealNm초기화	
+    let prefix;
+    const inputId = $(selector).attr("id");
+    // 입력된 id에 따라 prefix 결정
+    const lastIndex = inputId.lastIndexOf("_"); // 마지막 '_'의 위치 찾기
+    prefix = inputId.substring(0, lastIndex); // 0부터 마지막 '_' 전까지 자르기
 
+    $("#TB03021P_prefix").val(prefix);
+    $(`input[id='${prefix}_ibDealNm']`).val(""); // ibDealNm초기화
 
-		/**
-		 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
-		 * 그리드 상태 다시 체크해주기
-		 */
-		if ($(`div[id='modal-TB03021P']`).css('display') === "none") {
-			TB03021P_gridState = 1;
-		}
+    /**
+     * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
+     * 그리드 상태 다시 체크해주기
+     */
+    if ($(`div[id='modal-TB03021P']`).css("display") === "none") {
+      TB03021P_gridState = 1;
+    }
 
     let data = $(selector).val();
-		$('#TB03021P_ibDealNo').val(data);
+    $("#TB03021P_ibDealNo").val(data);
     await getDealInfo();
 
-		// 팝업 오픈
-		if (TB03021P_gridState === 0) {
-			// console.log("열려있음", TB03021P_gridState);
-			callGridTB03021P(prefix);
-      $('#TB03021P_ibDealNo').val(data);
-			// setTimeout(() => getDealInfo(), 400);
-		} else if (TB03021P_gridState === 1) {
-			// console.log("닫혀있음", TB03021P_gridState);
-			callTB03021P(prefix);
-      $('#TB03021P_ibDealNo').val(data);
-			// setTimeout(() => getDealInfo(), 400);
-		}
-	}
+    // 팝업 오픈
+    if (TB03021P_gridState === 0) {
+      // console.log("열려있음", TB03021P_gridState);
+      callGridTB03021P(prefix);
+      $("#TB03021P_ibDealNo").val(data);
+      // setTimeout(() => getDealInfo(), 400);
+    } else if (TB03021P_gridState === 1) {
+      // console.log("닫혀있음", TB03021P_gridState);
+      callTB03021P(prefix);
+      $("#TB03021P_ibDealNo").val(data);
+      // setTimeout(() => getDealInfo(), 400);
+    }
+  }
 }
 
-function callGridTB03021P(prefix){
+function callGridTB03021P(prefix) {
   clearTB03021P();
-	// TB03021P_gridState = 0;
-	// TB03021P_pf = prefix;
-  $('#TB03021P_prefix').val(prefix);
-	setTimeout(() => roadListGrid_TB03021P(), 300);
-	
-	//indexChangeHandler("TB03021P");
+  // TB03021P_gridState = 0;
+  // TB03021P_pf = prefix;
+  $("#TB03021P_prefix").val(prefix);
+  setTimeout(() => roadListGrid_TB03021P(), 300);
+
+  //indexChangeHandler("TB03021P");
 }
 
 function clearTB03021P() {
-	$('#TB03021P_ibDealNo').val("");
-	$('#TB03021P_ibDealNm').val("");
+  $("#TB03021P_ibDealNo").val("");
+  $("#TB03021P_ibDealNm").val("");
 }
 /**
  * 모달 팝업 show
  */
 function callTB03021P(prefix) {
   // CustomEvent 발생 (팝업이 열렸음을 알림)
-  const event = new CustomEvent('openTB03021P', { 
-    detail: { 
-        status: 'opened', 
-        source: 'TB03021P.js'
-    } 
+  const event = new CustomEvent("openTB03021P", {
+    detail: {
+      status: "opened",
+      source: "TB03021P.js",
+    },
   });
   document.dispatchEvent(event); // 전역으로 이벤트 전파
 
   reset_TB03021P();
   TB03021P_gridState = 0;
-	TB03021P_pf = prefix;
+  TB03021P_pf = prefix;
   setTimeout(() => roadListGrid_TB03021P(), 300);
   $("#TB03021P_prefix").val(prefix);
   $("#modal-TB03021P").modal("show");
-	indexChangeHandler("TB03021P");
+  indexChangeHandler("TB03021P");
   // setTimeout(() => {
   //   let setPqGridObj = [
   //     {
@@ -150,49 +156,48 @@ function callTB03021P(prefix) {
   //   setPqGrid(setPqGridObj);
   //   arrPqGridDealInfo = $("#gridDealInfo").pqGrid("instance");
   // }, 300);
-  
 }
 
-function roadListGrid_TB03021P(){
+function roadListGrid_TB03021P() {
   arrPqGridDealInfo = $("#gridDealInfo").pqGrid("instance");
 
-  if(typeof arrPqGridDealInfo === "undefined" || arrPqGridDealInfo === null){
+  if (typeof arrPqGridDealInfo === "undefined" || arrPqGridDealInfo === null) {
     let setPqGridObj = [
-          {
-            height: 300,
-            maxHeight: 300,
-            id: "gridDealInfo",
-            colModel: colDealInfo,
-          },
-        ];
+      {
+        height: 300,
+        maxHeight: 300,
+        id: "gridDealInfo",
+        colModel: colDealInfo,
+      },
+    ];
 
-        setPqGrid(setPqGridObj);
-        // 초기화된 인스턴스를 다시 할당
-        arrPqGridDealInfo = $("#gridDealInfo").pqGrid('instance');
-  }else{
+    setPqGrid(setPqGridObj);
+    // 초기화된 인스턴스를 다시 할당
+    arrPqGridDealInfo = $("#gridDealInfo").pqGrid("instance");
+  } else {
     arrPqGridDealInfo.setData([]);
   }
 }
 
 async function getibDealGridState() {
-  var dealNo    = $("#TB03021P_ibDealNo").val(); //Deal 번호
-  var dealNm    = $("#TB03021P_ibDealNm").val(); //Deal명
-  var chrrEmpno = $("#TB03021P_empNo").val();    //담당자번호
-  var dprtCd    = $("#TB03021P_dprtCd").val();   //부서코드
-  
+  var dealNo = $("#TB03021P_ibDealNo").val(); //Deal 번호
+  var dealNm = $("#TB03021P_ibDealNm").val(); //Deal명
+  var chrrEmpno = $("#TB03021P_empNo").val(); //담당자번호
+  var dprtCd = $("#TB03021P_dprtCd").val(); //부서코드
+
   // var rgstDt = $("#TB03021P_datepicker1").val().replaceAll("-", "");
 
   var dtoParam = {
     dealNo: dealNo,
     dealNm: dealNm,
-    chrrEmpno : chrrEmpno,
-    dprtCd : dprtCd,
+    chrrEmpno: chrrEmpno,
+    dprtCd: dprtCd,
     //rgstDt: rgstDt,
   };
 
   if (TB03021P_gridState === 0) {
-		return;
-	}
+    return;
+  }
 
   await $.ajax({
     type: "GET",
@@ -201,15 +206,15 @@ async function getibDealGridState() {
     dataType: "json",
     success: function (data) {
       if (!data || data === undefined || data.length === 0) {
-				//console.log("1번조건");
-				TB03021P_gridState = 1;
-			} else if (data.length >= 2) {
-				//console.log("2번조건");
-				TB03021P_gridState = 1;
-			} else if (data) {
-				//console.log("3번조건");
-				TB03021P_gridState = 0;
-			}
+        //console.log("1번조건");
+        TB03021P_gridState = 1;
+      } else if (data.length >= 2) {
+        //console.log("2번조건");
+        TB03021P_gridState = 1;
+      } else if (data) {
+        //console.log("3번조건");
+        TB03021P_gridState = 0;
+      }
     },
   });
 }
@@ -223,11 +228,11 @@ function modalClose_TB03021P() {
   $("#modal-TB03021P").modal("hide");
 
   // CustomEvent 발생 (팝업이 열렸음을 알림)
-  const event = new CustomEvent('closeTB03021P', { 
-    detail: { 
-        status: 'closed', 
-        source: 'TB03021P.js'
-    } 
+  const event = new CustomEvent("closeTB03021P", {
+    detail: {
+      status: "closed",
+      source: "TB03021P.js",
+    },
   });
   document.dispatchEvent(event); // 전역으로 이벤트 전파
 }
@@ -244,16 +249,16 @@ $("#modal-TB03021P").on("hide.bs.modal", function () {
  * reset
  */
 function reset_TB03021P() {
-  empNo = $('#userEno').val();     //직원명
-  dprtCd = $('#userDprtCd').val(); //부서번호
+  empNo = $("#userEno").val(); //직원명
+  dprtCd = $("#userDprtCd").val(); //부서번호
 
   $("#TB03021P_dealInfoList").html("");
   $("#TB03021P_ibDealNo").val("");
   $("#TB03021P_ibDealNm").val("");
-  $('#TB03021P_empNm').val($('#userEmpNm').val());
-  $('#TB03021P_empNo').val(empNo);
+  $("#TB03021P_empNm").val($("#userEmpNm").val());
+  $("#TB03021P_empNo").val(empNo);
   $("#TB03021P_dprtNm").val(dprtCd).prop("selected", true);
-  $('#TB03021P_dprtCd').val(dprtCd);
+  $("#TB03021P_dprtCd").val(dprtCd);
 
   //$("#TB03021P_datepicker1").val("");
 }
@@ -282,14 +287,12 @@ function keyDownEnter_TB03021P() {
     }
   });
 
-
   // $("input[id=TB03021P_datepicker1]").keydown(function (key) {
   //   if (key.keyCode == 13) {
   //     //키가 13이면 실행 (엔터는 13)
   //     getDealInfo();
   //   }
   // });
-  
 }
 
 /**
@@ -299,15 +302,15 @@ async function getDealInfo() {
   var dealNo = $("#TB03021P_ibDealNo").val(); //Deal 번호
   var dealNm = $("#TB03021P_ibDealNm").val(); //Deal명
   var chrrEmpno = $("#TB03021P_empNo").val(); //담당자번호
-  var dprtCd = $("#TB03021P_dprtCd").val();    //부서코드
-  
+  var dprtCd = $("#TB03021P_dprtCd").val(); //부서코드
+
   // var rgstDt = $("#TB03021P_datepicker1").val().replaceAll("-", "");
 
   var dtoParam = {
     dealNo: dealNo,
     dealNm: dealNm,
-    chrrEmpno : chrrEmpno,
-    dprtCd : dprtCd,
+    chrrEmpno: chrrEmpno,
+    dprtCd: dprtCd,
     //rgstDt: rgstDt,
   };
 
@@ -317,57 +320,60 @@ async function getDealInfo() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      if(ibDealNoSrchCnt >= 2){
-				ibDealNoSrchCnt = 0;
-				//return;
-			}
+      if (ibDealNoSrchCnt >= 2) {
+        ibDealNoSrchCnt = 0;
+        //return;
+      }
 
       if (!data || data === undefined || data.length === 0) {
-				//console.log("1번조건");
-				TB03021P_gridState = 1;
+        //console.log("1번조건");
+        TB03021P_gridState = 1;
         arrPqGridDealInfo.option("strNoRows", "조회된 데이터가 없습니다.");
         arrPqGridDealInfo.refreshDataAndView();
-			} else if (data.length >= 2) {
-				//console.log("2번조건");
-				TB03021P_gridState = 1;
-			} else if (data) {
-				//console.log("3번조건");
-				TB03021P_gridState = 0;
-			}
+      } else if (data.length >= 2) {
+        //console.log("2번조건");
+        TB03021P_gridState = 1;
+      } else if (data) {
+        //console.log("3번조건");
+        TB03021P_gridState = 0;
+      }
 
-			setTimeout(() => dataIbDealSetGrid(data) , 400);
+      setTimeout(() => dataIbDealSetGrid(data), 400);
     },
   });
 }
 
-function dataIbDealSetGrid(data){
+function dataIbDealSetGrid(data) {
   arrPqGridDealInfo.setData(data);
   arrPqGridDealInfo.option("rowDblClick", function (event, ui) {
     setDealInfo(ui.rowData);
   });
 
   // 검색된 행이 1개일 경우 데이터 바로 입력
-	if (arrPqGridDealInfo.pdata.length === 1 && $(`div[id='modal-TB03021P']`).css('display') === "none") {
-		// console.log("여기로와야해");
-		//var prefix = $("#TB03021P_prefix").val();
-		setDealInfo(arrPqGridDealInfo.pdata[0]);
-		ibDealNoSrchCnt = 0;
-		// 입력되고 난 후 온체인지 이벤트 on
-		TB03021P_onchangehandler = "on"
-	}
+  if (
+    arrPqGridDealInfo.pdata.length === 1 &&
+    $(`div[id='modal-TB03021P']`).css("display") === "none"
+  ) {
+    // console.log("여기로와야해");
+    //var prefix = $("#TB03021P_prefix").val();
+    setDealInfo(arrPqGridDealInfo.pdata[0]);
+    ibDealNoSrchCnt = 0;
+    // 입력되고 난 후 온체인지 이벤트 on
+    TB03021P_onchangehandler = "on";
+  }
   // 변부장님 지시로 삭제
-	// 검색된 행이 0일 경우 모든 데이터 출력
-	// else if (arrPqGridDealInfo.pdata.length === 0) {
-	// 	//console.log("딴길로 새지마라");
-	// 	// 데이터 없는 경우 재조회 방지
-	// 	ibDealNoSrchCnt += 1;
-	// 	//reset_TB03021P();
-	// 	getDealInfo();
-	// }
-	// 그렇지 않은 경우 조건에 맞는 데이터 출력
-	else {
-		ibDealNoSrchCnt = 0;	
-	}
+  // 검색된 행이 0일 경우 모든 데이터 출력
+  // else if (arrPqGridDealInfo.pdata.length === 0) {
+  // 	//console.log("딴길로 새지마라");
+  // 	// 데이터 없는 경우 재조회 방지
+  // 	ibDealNoSrchCnt += 1;
+  // 	//reset_TB03021P();
+  // 	getDealInfo();
+  // }
+  // 그렇지 않은 경우 조건에 맞는 데이터 출력
+  else {
+    ibDealNoSrchCnt = 0;
+  }
 }
 
 /**
@@ -414,7 +420,7 @@ function setDealInfo(e) {
     TB03040Sjs.ibSpecSearch();
   }
 
-  if (prefix == 'TB04020S') {
+  if (prefix == "TB04020S") {
     TB04020Sjs.checkDealSearch();
   }
 
@@ -429,13 +435,16 @@ function setDealInfo(e) {
     TB08010Sjs.getEamList();
   }
 
-  
-	if(prefix == 'TB09080S'){/* 
+  if (prefix == "TB08036S") {
+    TB08036Sjs.getDealInfoTB08036S();
+  }
+
+  if (prefix == "TB09080S") {
+    /* 
 		$("#TB09080S_prdtCd").val("");
 		$("#TB09080S_prdtNm").val(""); */
-		//getDealList();
-		
-	}
+    //getDealList();
+  }
 
   /*if(prefix == 'TB06060S'){ 
 		$("#TB06060S_prdtCd").val("");
@@ -444,7 +453,6 @@ function setDealInfo(e) {
 
   modalClose_TB03021P();
 }
-
 
 /* ***********************************그리드 컬럼******************************** */
 
@@ -460,7 +468,7 @@ let colDealInfo = [
     title: "Deal명",
     dataType: "string",
     dataIndx: "dealNm",
-    halign : "center",
+    halign: "center",
     align: "left",
     filter: { crules: [{ condition: "range" }] },
   },
@@ -515,7 +523,7 @@ let colDealInfo = [
     title: "거래상대방",
     dataType: "string",
     dataIndx: "entpNm",
-    halign : "center",
+    halign: "center",
     align: "left",
     filter: { crules: [{ condition: "range" }] },
   },
