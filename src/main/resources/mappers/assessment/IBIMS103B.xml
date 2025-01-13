@@ -768,8 +768,7 @@
            AND s103b.OWN_P_ENO = #{chrrEmpno}
            </if>
 					 AND s003b_1.DEL_YN = 'N'
-					 AND s003b_2.DEL_YN = 'N'
-					 AND s003b.DEL_YN = 'N'
+					 AND s003b_2.DEL_YN = 'N'					
          ORDER BY s103b.MTR_PRG_STTS_DCD
          	    , s103b.DEAL_NO
          	    , SN
