@@ -284,6 +284,8 @@ const TB07020Sjs = (function() {
 		 * common.js
 		 */
 		resetInputValue($('div[data-menuid="/TB07020S"]'));
+
+
 		getDealInfoFromWF();
 	});
 
@@ -1703,6 +1705,24 @@ const TB07020Sjs = (function() {
 		}
 	}
 
+	/**  
+	 *매수수량  < 전체발행수량 조건 설정
+	 */
+	// function trQntValid(){
+
+	// 	if( isNotEmpty($('#TB07020S_wholIssuShqt').val()) && isNotEmpty($('#TB07020S_trQnt').val())) {
+	// 		var wholIssuShqt = $('#TB07020S_wholIssuShqt').val().replaceAll(',', '');
+	// 		var trQnt = $('#TB07020S_trQnt').val().replaceAll(',', '');
+
+	// 		var maxVal = parseFloat(wholIssuShqt) || 0;
+	// 		var currentVal = parseFloat(trQnt) || 0;
+
+	// 		if (currentVal > maxVal) {
+	// 			$('#TB07020S_trQnt').val(maxVal.toLocaleString()); // 기준 값으로 변경 (쉼표 추가)
+	// 		}
+	// 	}
+	// }
+
 	/**
 	 * 엑셀저장 PQGrid ExcelExport
 	 */
@@ -1742,6 +1762,7 @@ const TB07020Sjs = (function() {
 	,	calcTrAmt : calcTrAmt
 	,	saveExcelFile : saveExcelFile 	// 엑셀 저장 함수
 	, getDealInfoFromWF : getDealInfoFromWF
+	// , trQntValid: trQntValid
 	}
 
 })();
