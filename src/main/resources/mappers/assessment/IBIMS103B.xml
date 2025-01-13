@@ -767,6 +767,9 @@
 					 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
            AND s103b.OWN_P_ENO = #{chrrEmpno}
            </if>
+					 AND s003b_1.DEL_YN = 'N'
+					 AND s003b_2.DEL_YN = 'N'
+					 AND s003b.DEL_YN = 'N'
          ORDER BY s103b.MTR_PRG_STTS_DCD
          	    , s103b.DEAL_NO
          	    , SN
@@ -1001,6 +1004,7 @@
           LEFT JOIN IBIMS250B s250b
 		    ON s250b.PRDT_CD 				= s201b.PRDT_CD
 		 WHERE 1=1
+		 AND s003b.DEL_YN = 'N'
 		   AND s103b.LAST_YN 				= 'Y'
 		   AND s101b.LAST_YN 				= 'Y' 
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
@@ -1200,6 +1204,7 @@
 			, IBIMS003B S003B /* 사원기본 */
 		WHERE 1=1
 		AND S003B.EMPNO = A.CHRR_EMPNO
+		AND S003B.DEL_YN = 'N'
 		ORDER BY A.APLC_EXPT_DT
 				, A.RISK_INSPCT_RSLTN_CCD
 				, A.RISK_RCG_NO

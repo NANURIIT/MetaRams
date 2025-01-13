@@ -705,8 +705,8 @@ const TB08050Sjs = (function () {
         "prdtCd": validation().prdtCd,
 		"strPrarDt" : $("#TB08050S_strPrarDt").val().replaceAll("-", ""),
 		"endPrarDt": $("#TB08050S_endPrarDt").val().replaceAll("-", ""), 
-		//"empNo": $("#TB08050S_empNo").val(),
-		//"dprtCd":$("#TB08050S_dprtCd").val(),
+		"empNo": $("#TB08050S_empNo").val(),
+		"dprtCd":$("#TB08050S_dprtCd").val(),
       };
 
       $.ajax({

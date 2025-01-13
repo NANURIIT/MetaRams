@@ -163,11 +163,13 @@ const TB07050Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
-          if (cellData === "Y") {
-            return "처리";
-          } else {
-            return "미처리";
-          }
+			if (cellData == "") {
+				return "";
+			} else if (cellData === "Y") {
+				return "처리";
+			} else {
+				return "미처리";
+			}
         },
       },
     ];
@@ -304,15 +306,12 @@ const TB07050Sjs = (function () {
         format: "#,###",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
-        // editor: {
-        //     type: 'textbox',
-        //     init: function(ui) {
-        //         let $inp = ui.$cell.find("input");
-        //         $inp.on('input', function() {
-        //             inputNumberFormat(this);
-        //         });
-        //     }
-        // },
+		  render: function(ui) {
+			  let cellData = ui.cellData;
+			  if (cellData == "") {
+				  return "";
+			  }
+		  },
       },
       {
         title: "이자금액",
@@ -324,6 +323,12 @@ const TB07050Sjs = (function () {
         format: "#,###",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
+		  render: function(ui) {
+			  let cellData = ui.cellData;
+			  if (cellData == "") {
+				  return "";
+			  }
+		  },
       },
       {
         title: "처리완료여부",
@@ -335,13 +340,13 @@ const TB07050Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
-          if (cellData === "Y") {
-            //console.log("처리구분",cellData);
-            return "처리";
-          } else {
-            //console.log("미처리구분", cellData);
-            return "미처리";
-          }
+		  if (cellData == "") {
+			  return "";
+		  } else if (cellData === "Y") {
+			  return "처리";
+		  } else {
+			  return "미처리";
+		  }
         },
       },
     ];
@@ -444,7 +449,9 @@ const TB07050Sjs = (function () {
 
                 let transformedData = data.map((row) => {
                   // console.log(row)
-                  if (row.prcsCpltYn === "1") {
+				  if (row.prcsCpltYn == "") {
+					row.prcsCpltYn = "";
+				  }else if (row.prcsCpltYn === "1") {
                     row.prcsCpltYn = "처리";
                   } else {
                     row.prcsCpltYn = "미처리";
@@ -453,6 +460,8 @@ const TB07050Sjs = (function () {
                   return {
                     상환예정일자: formatDate(row.prarDt),
                     상환예정원금: row.prarPrna,
+					상환일자: row.prcsDt,
+					상환원금: row.prcsAmt,
                     처리완료여부: row.prcsCpltYn,
                   };
                 });
@@ -462,6 +471,8 @@ const TB07050Sjs = (function () {
                 ws["!cols"] = [
                   { wpx: 100 }, // 상환예정일자
                   { wpx: 120 }, // 상환예정원금
+				  { wpx: 100 }, // 상환일자
+				  { wpx: 120 }, // 상환원금
                   { wpx: 100 }, // 처리완료여부
                 ];
 
@@ -545,11 +556,13 @@ const TB07050Sjs = (function () {
 
                 let transformedData = data.map((row) => {
                   // console.log(row)
-                  if (row.prcsCpltYn === "1") {
-                    row.prcsCpltYn = "처리";
-                  } else {
-                    row.prcsCpltYn = "미처리";
-                  }
+					if (row.prcsCpltYn == "") {
+						row.prcsCpltYn = "";
+					} else if (row.prcsCpltYn === "1") {
+						row.prcsCpltYn = "처리";
+					} else {
+						row.prcsCpltYn = "미처리";
+					}
 
                   return {
                     시작일: formatDate(row.strtDt),
@@ -679,8 +692,8 @@ const TB07050Sjs = (function () {
                   // }
 
                   return {
-                    예정일자: formatDate(row.prarDt),
-                    예정원금: row.prarPrna,
+                    상환일자: formatDate(row.prarDt),
+                    상환원금: row.prarPrna,
                   };
                 });
 
@@ -1303,16 +1316,66 @@ const TB07050Sjs = (function () {
    *******************************************************************/
   // 엑셀 다운로드 버튼 클릭 시
   $("#exelDown").click(function () {
-    if (validation().prdtCd) {
-      $("#download-file-TB07050S").click();
-    }
+	  var scxDcdVal = $('input:radio[name="TB07050S_scxDcd"]:checked').val();
+	  if (scxDcdVal == '02') {
+		  if (prnaRdmpSch.getData().length == 0) {
+			  var rowData = {
+				'chk': 0,
+				'prarDt' : "",
+				'prarPrna' : "",
+				'prcsDt' : "",
+				'prcsAmt' : "",
+				'prcsCpltYn' : "",
+			  }
+			  $("#prnaRdmpSchGrid").pqGrid("addRow", { rowData: rowData, checkEditable: false });
+			  $("#download-file-TB07050S").click();
+			  prnaRdmpSch.deleteRow({ rowIndx: 1 });
+		  } else {
+			  $("#download-file-TB07050S").click();
+		  }
+	  } else if (scxDcdVal == '04') {
+		  if (intrRdmpSch.getData().length == 0) {
+			  var rowData = {
+				'chk': 0,
+				'strtDt' : "",
+				'endDt' : "",
+				'aplyIrt' : "",
+				'trgtAmt' : "",
+				'rdmpPrarIntr' : "",
+				'prcsCpltYn' : "",
+			  }
+			  $("#intrRdmpSchGrid").pqGrid("addRow", { rowData: rowData, checkEditable: false });
+			  $("#download-file-TB07050S").click();
+			  intrRdmpSch.deleteRow({ rowIndx: 1 });
+		  } else {
+			  $("#download-file-TB07050S").click();
+		  }
+	  } else if (scxDcdVal == '01') {
+		  if (excSch.getData().length == 0) {
+			  var rowData = {
+				'chk': 0,
+				'prarDt' : "",
+				'prarPrna' : "",
+			  }
+			  $("#excSchGrid").pqGrid("addRow", { rowData: rowData, checkEditable: false });
+			  $("#download-file-TB07050S").click();
+			  excSch.deleteRow({ rowIndx: 1 });
+		  } else {
+			  $("#download-file-TB07050S").click();
+		  }
+	  }
   });
 
   // 업로드 버튼 클릭 시
   $("#exelUp").click(function () {
     // console.log("업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드");
     if (validation().prdtCd) {
+		
+	  grid.addRow();	
+		
       $("#upload-file-input-TB07050S").click();
+	  
+	  grid.deleteRow({ rowIndx: 1 });
     }
   });
 

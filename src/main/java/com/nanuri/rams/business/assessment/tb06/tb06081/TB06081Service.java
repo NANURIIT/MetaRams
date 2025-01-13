@@ -18,6 +18,6 @@ public interface TB06081Service {
 
 	public int apvlRqst(IBIMS231BVO paramData);
 
-	public int cancelApvlRqst(IBIMS231BVO paramData);
+	public int updateApvlRqst(IBIMS231BVO paramData);
 	
 }

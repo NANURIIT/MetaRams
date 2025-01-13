@@ -95,6 +95,7 @@
            AND A.ARDY_BZEP_NO = #{entpCd}
 		 </if>
 		   AND UPPER(A.ENTP_NM) LIKE '%'|| UPPER(#{entpHnglNm}) || '%'
+			 AND C.DEL_YN = 'N'
 		 GROUP BY A.ENTP_NM , A.CRNO,A.RNBN, A.ARDY_BZEP_NO
 		 ORDER BY A.ARDY_BZEP_NO 
 	</select>

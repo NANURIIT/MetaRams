@@ -52,7 +52,7 @@ function TB03061P_srchMtr(menuId) {
 	// 	// Enter에만 작동하는 이벤트
 	// 	if (evt.keyCode === 13) {
 	// 		evt.preventDefault();
-			// console.log("으흐흐");
+	// console.log("으흐흐");
 
 	// 		// 팝업창에서는 엔터 누를시 조회만.
 	// 		getMtrInfo();
@@ -91,7 +91,7 @@ function TB03061P_srchMtr(menuId) {
 			// console.log("화면내 엔터 이벤트");
 
 			TB03061P_onchangehandler = "off";
-			
+
 			evt.preventDefault();
 
 			await srchEvent(this);
@@ -119,9 +119,9 @@ function TB03061P_srchMtr(menuId) {
 			const prefixId = $(selector).attr("id")
 			let _index = 0;
 			for (let i = 0; i < prefixId.length; i++) {
-				if(prefixId[i] === "_") {
+				if (prefixId[i] === "_") {
 					_index = i;
-				}else {
+				} else {
 					continue;
 				}
 			}
@@ -141,43 +141,12 @@ function TB03061P_srchMtr(menuId) {
 
 		// 인풋박스 밸류
 		let data = $(selector).val();
+
+		callTB03061P(prefix);
 		$("#TB03061P_ardyBzepNo").val(data);
-		await TB03061P_setGridState();
-
-		// 팝업 오픈
-		if (TB03061P_gridState === 0) {
-			// 그리드만 부릅니다
-			callGridTB03061P(prefix);
-			$("#TB03061P_ardyBzepNo").val(data);
-			// console.log(data);
-			// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
-			setTimeout(() => getArdyBzepInfoList(), 400);
-		} else if (TB03061P_gridState === 1) {
-			// 팝업을 열거예요
-			callTB03061P(prefix);
-			$("#TB03061P_ardyBzepNo").val(data);
-			// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
-			setTimeout(() => getArdyBzepInfoList(), 400);
-		}
+		// ajax통신인데 각 팝업마다 구조가 달라서 다르게 세팅해야해요
+		setTimeout(() => getArdyBzepInfoList(), 400);
 	}
-}
-
-function callGridTB03061P(prefix) {
-	reset_TB03061P();
-	$("#TB03061P_prefix").val(prefix);
-	setTimeout(() => {
-		/** 첨부파일그리드 **/
-		let arrModalPqGridObj = [
-			{
-				height: 500
-				, maxHeight: 500
-				, id: 'gridBzepList'
-				, colModel: colModalBzepList
-			}
-		]
-		setPqGrid(arrModalPqGridObj);
-		modalPqGridBzepList = $("#gridBzepList").pqGrid('instance');
-	}, 300);
 }
 
 /**
@@ -194,7 +163,7 @@ function callTB03061P(prefix, rowIndx) {
 
 	$('#TB03061P_prefix').val(prefix);
 	TB03061P_gridState = 0;
- 	TB03061P_pf = prefix;
+	TB03061P_pf = prefix;
 	$('#modal-TB03061P').modal('show');
 	indexChangeHandler("TB03061P");
 	setTimeout(() => {
@@ -319,81 +288,15 @@ function getArdyBzepInfoList() {
 		data: inputParam,
 		dataType: "json",
 		success: function (data) {
-			if (TB03061P_srchCnt >= 2) {
-				alert("대충무한루프 막는 중");
-				TB03061P_srchCnt = 0;
-				return;
-			}
-			else if (data.length === 1) {
-				modalPqGridBzepList.setData(data);
-				if($(`div[id='modal-TB06011P']`).css('display') === "none"){
-					setArdyBzepInfo(modalPqGridBzepList.pdata[0]);
-				}
-				TB03061P_srchCnt = 0;
-				TB03061P_onchangehandler = "on"
-			}
-			// else if (data.length === 0) {
-			// 	TB03061P_srchCnt = + 1;
-			// 	$('#TB03061P_ardyBzepNo').val("")
-			// 	$('#TB03061P_entpNm').val("")
-			// 	$('#TB03061P_rnbn').val("")
-			// 	$('#TB03061P_crno').val("")
-			// 	$('#TB03061P_csno').val("")
-			// 	$('#TB03061P_useYn').val("")
-			// 	getArdyBzepInfoList();
-			// }
-			else {
-				modalPqGridBzepList.setData(data);
-				modalPqGridBzepList.on("rowDblClick", function (event, ui) {
-					setArdyBzepInfo(ui.rowData);
-					// console.log(ui.rowData);
-				});
-				TB03061P_srchCnt = 0;
-			}
+			modalPqGridBzepList.setData(data);
+			modalPqGridBzepList.on("rowDblClick", function (event, ui) {
+				setArdyBzepInfo(ui.rowData);
+				// console.log(ui.rowData);
+			});
 		},
 
 	});
 }
-
-async function TB03061P_setGridState() {
-
-	var inputParam = {
-		"entpNm": $('#TB03061P_entpNm').val()			// 기업체명
-		, "ardyBzepNo": $('#TB03061P_ardyBzepNo').val()	// 기업체코드
-		, "rnbn": $('#TB03061P_rnbn').val()				// 사업자등록번호
-		, "crno": $('#TB03061P_crno').val()				// 법인등록번호
-		, "csno": $('#TB03061P_csno').val()				// 고객번호
-		, "useYn": $('#TB03061P_useYn').val()				// 사용여부
-	}
-
-	if (TB03061P_gridState === 0) {
-		return;
-	}
-
-	//기업체목록 조회			
-	await $.ajax({
-		type: "GET",
-		url: "/TB06019P/getArdyBzepInfoList",
-		data: inputParam,
-		dataType: "json",
-		success: function (data) {
-			if (!data || data === undefined || data.length === 0) {
-				// console.log("없음");
-				TB03061P_gridState = 1;
-			} else if (data.length >= 2) {
-				// console.log("2개이상");
-				TB03061P_gridState = 1;
-			} else if (data) {
-				// console.log("하나임ㅋ");
-				TB03061P_gridState = 0;
-			}
-		},
-
-	});
-
-}
-
-
 
 //selectBox 데이터 가져오기
 function getSlctBox_cd() {

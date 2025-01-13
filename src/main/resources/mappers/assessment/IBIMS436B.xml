@@ -29,7 +29,8 @@
           FROM IBIMS436B A                
           , IBIMS101B B  
           , IBIMS003B C 
-         WHERE 1=1         
+         WHERE 1=1
+         AND C.DEL_YN = 'N'         
          AND A.DEAL_NO = B.DEAL_NO(+) 
          AND B.LAST_YN(+) = 'Y' 
          AND B.CHRR_EMPNO = C.EMPNO(+) 

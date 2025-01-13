@@ -48,9 +48,9 @@ public class TB06081APIController {
 	 * @param paramData
 	 * @return
 	 */
-	@PostMapping("/cancelApvlRqst")
-	public int cancelApvlRqst(@RequestBody IBIMS231BVO paramData) {
-		return tb06081Service.cancelApvlRqst(paramData);
+	@PostMapping("/updateApvlRqst")
+	public int updateApvlRqst(@RequestBody IBIMS231BVO paramData) {
+		return tb06081Service.updateApvlRqst(paramData);
 	}
 
 	/**

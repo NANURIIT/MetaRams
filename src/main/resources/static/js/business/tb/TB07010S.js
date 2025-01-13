@@ -624,10 +624,11 @@ const TB07010Sjs = (function () {
 
     $("#TB07010S_loanablAmt").val(comma(loanablAmt));
   }
-
+  
   function ldgMovePage() {
     // 원장조회 화면으로 이동
-    location.href = "/TB07060S";
+    callPage('TB07060S', '여신원장조회');
+	window.scrollTo(0,0);
   }
 
   /**

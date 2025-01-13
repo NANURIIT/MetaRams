@@ -22,7 +22,8 @@
           LEFT JOIN IBIMS003B B
             ON A.HND_EMPNO = B.EMPNO
          WHERE A.HND_EMPNO = B.EMPNO
-           AND A.STDR_YM LIKE #{stdrYm};
+           AND A.STDR_YM LIKE #{stdrYm}
+           AND B.DEL_YN = 'N';
 	  </select>
 
     <insert id="insertIBIMS704B" parameterType="com.nanuri.rams.business.common.dto.IBIMS704BDTO">

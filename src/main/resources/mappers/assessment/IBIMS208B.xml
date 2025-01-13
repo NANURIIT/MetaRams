@@ -70,6 +70,8 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sn)">
 		   AND IBIMS208B.APVL_CND_SN = #{sn}
 		   </if>
+       AND A.DEL_YN = 'N'
+       AND B.DEL_YN = 'N'
          ORDER BY I209B.PRDT_CD DESC
     </select>
 	

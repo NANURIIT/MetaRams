@@ -62,11 +62,8 @@ function TB03021P_srch(menuId) {
 		}
 	});
 
-  
-
   async function ibDealNoSrchEvent(selector) {
 
-    console.log("ibDealNoSrchEvent 도달~~~");
 		let prefix;
 		const inputId = $(selector).attr('id');
 		// 입력된 id에 따라 prefix 결정
@@ -76,42 +73,13 @@ function TB03021P_srch(menuId) {
 		$('#TB03021P_prefix').val(prefix);
 		$(`input[id='${prefix}_ibDealNm']`).val("");   // ibDealNm초기화	
 
-
-		/**
-		 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
-		 * 그리드 상태 다시 체크해주기
-		 */
-		if ($(`div[id='modal-TB03021P']`).css('display') === "none") {
-			TB03021P_gridState = 1;
-		}
-
     let data = $(selector).val();
-		$('#TB03021P_ibDealNo').val(data);
-    await getDealInfo();
 
 		// 팝업 오픈
-		if (TB03021P_gridState === 0) {
-			// console.log("열려있음", TB03021P_gridState);
-			callGridTB03021P(prefix);
-      $('#TB03021P_ibDealNo').val(data);
-			// setTimeout(() => getDealInfo(), 400);
-		} else if (TB03021P_gridState === 1) {
-			// console.log("닫혀있음", TB03021P_gridState);
-			callTB03021P(prefix);
-      $('#TB03021P_ibDealNo').val(data);
-			// setTimeout(() => getDealInfo(), 400);
-		}
+		callTB03021P(prefix);
+    $('#TB03021P_ibDealNo').val(data);
+    getDealInfo();
 	}
-}
-
-function callGridTB03021P(prefix){
-  clearTB03021P();
-	// TB03021P_gridState = 0;
-	// TB03021P_pf = prefix;
-  $('#TB03021P_prefix').val(prefix);
-	setTimeout(() => roadListGrid_TB03021P(), 300);
-	
-	//indexChangeHandler("TB03021P");
 }
 
 function clearTB03021P() {
@@ -138,19 +106,6 @@ function callTB03021P(prefix) {
   $("#TB03021P_prefix").val(prefix);
   $("#modal-TB03021P").modal("show");
 	indexChangeHandler("TB03021P");
-  // setTimeout(() => {
-  //   let setPqGridObj = [
-  //     {
-  //       height: 300,
-  //       maxHeight: 300,
-  //       id: "gridDealInfo",
-  //       colModel: colDealInfo,
-  //     },
-  //   ];
-  //   setPqGrid(setPqGridObj);
-  //   arrPqGridDealInfo = $("#gridDealInfo").pqGrid("instance");
-  // }, 300);
-  
 }
 
 function roadListGrid_TB03021P(){
@@ -172,46 +127,6 @@ function roadListGrid_TB03021P(){
   }else{
     arrPqGridDealInfo.setData([]);
   }
-}
-
-async function getibDealGridState() {
-  var dealNo    = $("#TB03021P_ibDealNo").val(); //Deal 번호
-  var dealNm    = $("#TB03021P_ibDealNm").val(); //Deal명
-  var chrrEmpno = $("#TB03021P_empNo").val();    //담당자번호
-  var dprtCd    = $("#TB03021P_dprtCd").val();   //부서코드
-  
-  // var rgstDt = $("#TB03021P_datepicker1").val().replaceAll("-", "");
-
-  var dtoParam = {
-    dealNo: dealNo,
-    dealNm: dealNm,
-    chrrEmpno : chrrEmpno,
-    dprtCd : dprtCd,
-    //rgstDt: rgstDt,
-  };
-
-  if (TB03021P_gridState === 0) {
-		return;
-	}
-
-  await $.ajax({
-    type: "GET",
-    url: "/TB03021P/getDealInfo",
-    data: dtoParam,
-    dataType: "json",
-    success: function (data) {
-      if (!data || data === undefined || data.length === 0) {
-				//console.log("1번조건");
-				TB03021P_gridState = 1;
-			} else if (data.length >= 2) {
-				//console.log("2번조건");
-				TB03021P_gridState = 1;
-			} else if (data) {
-				//console.log("3번조건");
-				TB03021P_gridState = 0;
-			}
-    },
-  });
 }
 
 /**
@@ -281,15 +196,6 @@ function keyDownEnter_TB03021P() {
       getDealInfo();
     }
   });
-
-
-  // $("input[id=TB03021P_datepicker1]").keydown(function (key) {
-  //   if (key.keyCode == 13) {
-  //     //키가 13이면 실행 (엔터는 13)
-  //     getDealInfo();
-  //   }
-  // });
-  
 }
 
 /**
@@ -317,24 +223,6 @@ async function getDealInfo() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      if(ibDealNoSrchCnt >= 2){
-				ibDealNoSrchCnt = 0;
-				//return;
-			}
-
-      if (!data || data === undefined || data.length === 0) {
-				//console.log("1번조건");
-				TB03021P_gridState = 1;
-        arrPqGridDealInfo.option("strNoRows", "조회된 데이터가 없습니다.");
-        arrPqGridDealInfo.refreshDataAndView();
-			} else if (data.length >= 2) {
-				//console.log("2번조건");
-				TB03021P_gridState = 1;
-			} else if (data) {
-				//console.log("3번조건");
-				TB03021P_gridState = 0;
-			}
-
 			setTimeout(() => dataIbDealSetGrid(data) , 400);
     },
   });
@@ -345,29 +233,6 @@ function dataIbDealSetGrid(data){
   arrPqGridDealInfo.option("rowDblClick", function (event, ui) {
     setDealInfo(ui.rowData);
   });
-
-  // 검색된 행이 1개일 경우 데이터 바로 입력
-	if (arrPqGridDealInfo.pdata.length === 1 && $(`div[id='modal-TB03021P']`).css('display') === "none") {
-		// console.log("여기로와야해");
-		//var prefix = $("#TB03021P_prefix").val();
-		setDealInfo(arrPqGridDealInfo.pdata[0]);
-		ibDealNoSrchCnt = 0;
-		// 입력되고 난 후 온체인지 이벤트 on
-		TB03021P_onchangehandler = "on"
-	}
-  // 변부장님 지시로 삭제
-	// 검색된 행이 0일 경우 모든 데이터 출력
-	// else if (arrPqGridDealInfo.pdata.length === 0) {
-	// 	//console.log("딴길로 새지마라");
-	// 	// 데이터 없는 경우 재조회 방지
-	// 	ibDealNoSrchCnt += 1;
-	// 	//reset_TB03021P();
-	// 	getDealInfo();
-	// }
-	// 그렇지 않은 경우 조건에 맞는 데이터 출력
-	else {
-		ibDealNoSrchCnt = 0;	
-	}
 }
 
 /**
@@ -428,19 +293,6 @@ function setDealInfo(e) {
   if (prefix == "TB08010S") {
     TB08010Sjs.getEamList();
   }
-
-  
-	if(prefix == 'TB09080S'){/* 
-		$("#TB09080S_prdtCd").val("");
-		$("#TB09080S_prdtNm").val(""); */
-		//getDealList();
-		
-	}
-
-  /*if(prefix == 'TB06060S'){ 
-		$("#TB06060S_prdtCd").val("");
-		$("#TB06060S_prdtNm").val("");
-	}*/
 
   modalClose_TB03021P();
 }

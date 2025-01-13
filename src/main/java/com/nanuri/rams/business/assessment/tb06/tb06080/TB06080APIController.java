@@ -1,12 +1,16 @@
 package com.nanuri.rams.business.assessment.tb06.tb06080;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nanuri.rams.business.common.vo.TB06080SVO;
+import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
+import com.nanuri.rams.business.common.vo.IBIMS231BVO;
+import com.nanuri.rams.business.common.vo.IBIMS232BVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,20 +23,16 @@ public class TB06080APIController {
 
 	private final TB06080Service tb06080Service;
 	
-	// 결재내역 조회
-	@PostMapping(value = "inqTB06080S")
-	public TB06080SVO inqTB06080S(@RequestBody TB06080SVO input) {
-		
-		Logger logger = org.slf4j.LoggerFactory.getLogger(this.getClass());
-		
-		logger.debug(input.getDecdStepDcd());
-		
-		TB06080SVO returnVo = new TB06080SVO();
-				
-		returnVo.setApvlList(tb06080Service.inqTB06080S(input).getApvlList());
-		returnVo.setGbckList(tb06080Service.inqTB06080S(input).getGbckList());
-		
-		return returnVo;
+	// 승인요청내역 조회
+	@PostMapping("/inqTB06080S")
+	public List<IBIMS231BVO> inqTB06080S(@RequestBody IBIMS231BDTO paramData) {
+		return tb06080Service.inqTB06080S(paramData);
 	}
 	
+	// 결재정보 조회
+	@PostMapping("/dcfcList")
+	public List<IBIMS232BVO> dcfcList(@RequestBody IBIMS231BDTO paramData) {
+		return tb06080Service.dcfcList(paramData);
+	}
+
 }

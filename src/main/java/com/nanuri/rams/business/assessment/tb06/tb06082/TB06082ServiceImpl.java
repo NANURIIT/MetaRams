@@ -6,15 +6,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nanuri.rams.business.common.dto.IBIMS003BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS232BDTO;
-import com.nanuri.rams.business.common.mapper.IBIMS003BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS231BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS232BMapper;
-import com.nanuri.rams.business.common.vo.IBIMS003BVO;
 import com.nanuri.rams.business.common.vo.IBIMS231BVO;
-import com.nanuri.rams.business.common.vo.TB06080SVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
@@ -54,8 +50,6 @@ public class TB06082ServiceImpl implements TB06082Service {
 		 * 업데이트전에 결재일련번호를 세팅해야함
 		 */
 		int decdSn = ibims231bMapper.decdSn(dto231);
-		// 딜승인결재기본 업데이트
-		ibims231bMapper.updateDecd(dto231);
 
 		IBIMS232BDTO dto232 = new IBIMS232BDTO();
 
@@ -64,13 +58,29 @@ public class TB06082ServiceImpl implements TB06082Service {
 
 		int decdSq = ibims232bMapper.getDecdSq(dto232);			// 결재순번
 
+		int lastDecdSq = ibims231bMapper.getLastDecdSq(decdSn);	// 최종결재순번 확인
+
 		dto232.setDecdSq(decdSq);
 		dto232.setDecdSttsDcd(paramData.getDecdSttsDcd());		// 결재상태구분코드
 		dto232.setDcfcAnnoCntn(paramData.getDcfcAnnoCntn());	// 결재자주석내용
 		dto232.setRjctRsnCntn(paramData.getRjctRsnCntn());		// 반려사유내용
 		dto232.setHndEmpno(facade.getDetails().getEno());		// 처리사원번호
+
+		if(lastDecdSq == decdSq && "2".equals(dto232.getDecdSttsDcd())){
+			dto231.setDecdStepDcd("05");
+			ibims231bMapper.updateDecd(dto231);
+		}
+		
 		if("3".equals(dto232.getDecdSttsDcd())){
 			dto232.setRjctYn("Y");
+		}
+
+		if("3".equals(paramData.getDecdSttsDcd())){
+			ibims231bMapper.updateDecd(dto231);
+		}
+		else if(ibims232bMapper.chkSttsDcd(decdSn) == 3){
+			// 딜승인결재기본 업데이트
+			ibims231bMapper.updateDecd(dto231);
 		}
 
 		return ibims232bMapper.updateDecd(dto232);

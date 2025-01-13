@@ -101,7 +101,7 @@ public class TB08050ServiceImpl implements TB08050Service {
 		setParam.setTrSn(param420.getTrSn()); 	  /* 거래일련번호 */
 		setParam.setExcSn(param420.getExcSn());   /* 실행일련번호 */
 		setParam.setTrDt(LocalDate.now().toString().replace("-", "")); /* 거래일자 */
-		setParam.setTrStatCd("1"); /* 거래상태코드 1정상 */
+		setParam.setTrStatCd("01"); /* 거래상태코드 1정상 */
 		setParam.setEtprCrdtGrntTrKindCd("21"); /* 거래종류코드 21수수료수납 */
 //		setParam.setDealTrAmt(param402.getDealExcAmt()); /* 딜거래금액 == 실행금액? */
 //		setParam.setDealTrPrca(param402.getAcbkAmt()); /* 딜거래원금 == 최종지급금액? */

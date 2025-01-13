@@ -331,7 +331,7 @@ public class TB07150ServiceImpl implements TB07150Service {
 
 			hParam.setTrSn(trSn);								//거래일련번호
 
-			hParam.setTrStatCd("1");					//거래상태코드(정상거래 1)
+			hParam.setTrStatCd("01");					//거래상태코드(정상거래 1)
 			LocalDate today = LocalDate.now();
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");

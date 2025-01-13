@@ -68,6 +68,7 @@
 		     , A.OPST_DCD						/* 직책 */
 		  FROM IBIMS003B A
 		 WHERE A.EMPNO = #{eno}
+       AND A.DEL_YN = 'N'
 		/* TODO: 로그인 권한 부여기간 검증하는 로직 추가 필요 2023. 12. 21 KHJ */
 	</select>
 	
@@ -99,6 +100,7 @@
        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bdNm)">
        AND BD_NM LIKE '%'|| #{bdNm}|| '%'
        </if>
+       AND DEL_YN = 'N'
 	</select>
 	
 	
@@ -234,6 +236,7 @@
       SELECT ATH_CD 
         FROM IBIMS003B 
        WHERE EMPNO = #{empno}
+         AND DEL_YN = 'N'
     </select>
 
     <!-- 승인자 선택 조회 -->
@@ -249,7 +252,7 @@
               ) AS ATH_CD_NM				/* 직책 */
 		    FROM IBIMS003B A
 		   WHERE 1=1
-         AND DEL_YN = 'N'
+         AND A.DEL_YN = 'N'
          AND A.EMPNO != #{nowEmpno}   /* 현재 로그인한 사원번호 */
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
          AND A.EMPNO = #{empno}       /* 조회조건의 사원번호 */

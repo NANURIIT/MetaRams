@@ -182,9 +182,8 @@ const TB08036Sjs = (function () {
     //var mtrPrgSttsDcd	= sessionStorage.getItem("mtrPrgSttsDcd");
 
     if (isNotEmpty(dealNo)) {
-      $("#TB04010S_ibDealNo").val(dealNo);
-      $("#TB04010S_ibDealNm").val(dealNm);
-
+      $("#TB08036S_ibDealNo").val(dealNo);
+      $("#TB08036S_ibDealNm").val(dealNm);
       getDealInfoTB08036S();
     }
     sessionStorage.clear();

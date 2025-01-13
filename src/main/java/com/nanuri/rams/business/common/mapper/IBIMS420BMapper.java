@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.nanuri.rams.business.common.dto.IBIMS420BDTO;
-import com.nanuri.rams.business.common.vo.IBIMS410BVO;
 import com.nanuri.rams.business.common.vo.IBIMS420BVO;
 
 @Mapper
@@ -18,9 +17,9 @@ public interface IBIMS420BMapper {
 	public int insertIBIMS420B(IBIMS420BDTO param);
 
 	public void deleteIBIMS420B(IBIMS420BDTO param);
-	
+
 	List<IBIMS420BVO> selectFeeRcivLst(IBIMS420BVO param);
-	
+
 	// 딜수수료내역 조회
 	public List<IBIMS420BVO> selectFeeRcivDtls(IBIMS420BDTO input);
 
