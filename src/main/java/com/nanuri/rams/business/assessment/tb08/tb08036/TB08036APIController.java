@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nanuri.rams.business.common.dto.IBIMS603BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS601BVO;
 
 import lombok.RequiredArgsConstructor;
@@ -30,13 +31,20 @@ public class TB08036APIController {
 	}
 	
 	@PostMapping(value = "/deleteDealInfoTB08036S")
-	public void deleteDealInfo(@RequestBody IBIMS601BVO param){
+	public void deleteDealInfo(@RequestBody IBIMS601BVO param){		
 		tb08036Service.deleteDealInfo(param);
 	}
 
+	//기타사후관리
 	@PostMapping(value = "/insertIBIMS603B")
-	public void insertIBIMS603B(@RequestBody IBIMS601BVO param){
-		tb08036Service.insertIBIMS603B(param);
+	public void insertIBIMS603B(@RequestBody IBIMS603BDTO param){
+    tb08036Service.insertIBIMS603B(param);
+	}
+
+	@PostMapping(value = "/deleteIBIMS603B")
+	public void deleteIBIMS603B(@RequestBody IBIMS601BVO param){
+		System.out.println("Received param: " + param);
+    tb08036Service.deleteIBIMS603B(param);
 	}
 
 }

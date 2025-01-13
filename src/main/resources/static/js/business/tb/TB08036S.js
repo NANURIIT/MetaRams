@@ -54,7 +54,7 @@ const TB08036Sjs = (function () {
       {
         title: "점검일자",
         dataType: "string",
-        dataIndx: "dealNo",
+        dataIndx: "inspctDt",
         align: "center",
         width: "15%",
         filter: { crules: [{ condition: "range" }] },
@@ -62,7 +62,7 @@ const TB08036Sjs = (function () {
       {
         title: "점검결과",
         dataType: "string",
-        dataIndx: "dealNo",
+        dataIndx: "inspctRmrk",
         align: "center",
         width: "15%",
         filter: { crules: [{ condition: "range" }] },
@@ -70,7 +70,7 @@ const TB08036Sjs = (function () {
       {
         title: "비고",
         dataType: "string",
-        dataIndx: "dealNo",
+        dataIndx: "rmrk",
         align: "center",
         width: "15%",
         filter: { crules: [{ condition: "range" }] },
@@ -173,7 +173,6 @@ const TB08036Sjs = (function () {
     $("#TB08036S_etcList").html("");
   }
 
-  // 자동조회
   function TB08036S_getUrlDealInfo() {
     let dealNo = sessionStorage.getItem("dealNo");
     let dealNm = sessionStorage.getItem("dealNm");
@@ -184,7 +183,6 @@ const TB08036Sjs = (function () {
     if (isNotEmpty(dealNo)) {
       $("#TB08036S_ibDealNo").val(dealNo);
       $("#TB08036S_ibDealNm").val(dealNm);
-      getDealInfoTB08036S();
     }
     sessionStorage.clear();
   }
@@ -264,7 +262,11 @@ const TB08036Sjs = (function () {
     return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
   }
 
-  // 사후관리 데이터 세팅
+  /**
+   * 사후관리 데이터 세팅
+   * @returns
+   */
+
   function getDealInfoTB08036S() {
     const dealNo = $("#TB08036S_ibDealNo").val();
     const inspctYyMm = replaceAll($("#TB08036S_inspctYyMm").val(), "-", "");
@@ -285,6 +287,7 @@ const TB08036Sjs = (function () {
       success: function (data) {
         if (data && Object.keys(data).length > 0) {
           populateDealInfo(data);
+          setTabEtc(data.listEtc);
         } else {
           showErrorPopup("등록된 사업정보가 없습니다.");
         }
@@ -364,12 +367,17 @@ const TB08036Sjs = (function () {
         dealNo: getInputValue("TB08036S_ibDealNo"), // Deal번호
         inspctDt: formatDate(getInputValue("inspctDt")), //기준년월
         inspctRmrk: getInputValue("etcInspctRmrk"), //점결결과
-        Rmrk: getInputValue("Rmrk"), // 비고
+        rmrk: getInputValue("Rmrk"), // 비고
       };
     }
 
     return paramData;
   }
+
+  /**
+   * 분양수지관리 탭
+   * @returns
+   */
   // 분양수지관리 저장
   function modifyDealInfoTB08036S() {
     if (isEmpty($("#TB08036S_ibDealNo").val())) {
@@ -397,7 +405,35 @@ const TB08036Sjs = (function () {
     }); /* end of ajax*/
   }
 
-  // 분양수지관리 저장
+  /**
+   * 기타사후관리 탭
+   * @param {*} data
+   */
+
+  //데이터 세팅
+  function setTabEtc(data) {
+    resetTabEtc();
+    if (!Array.isArray(data)) {
+      data = data ? [data] : [];
+    }
+
+    arrPqGridEctInfo.setData(data);
+    arrPqGridEctInfo.option("rowDblClick", function (event, ui) {
+      setEtcItem(ui.rowData);
+    });
+  }
+
+  function setEtcItem(e) {
+    var inspctDt = e.inspctDt; // 점검일자
+    var inspctRmrk = e.inspctRmrk; //점검내용
+    var rmrk = e.rmrk; // 비고
+
+    $("#inspctDt").val(inspctDt);
+    $("#etcInspctRmrk").val(inspctRmrk);
+    $("#rmrk").val(rmrk);
+  }
+
+  // 기타사후관리저장
   function modifyEtcInfoTB08036S() {
     if (isEmpty($("#TB08036S_ibDealNo").val())) {
       showErrorPopup("딜번호를 입력해주세요.");
@@ -424,6 +460,7 @@ const TB08036Sjs = (function () {
     }); /* end of ajax*/
   }
 
+  //기타사후관리 삭제
   function deleteDealInfoTB08036S() {
     if (isEmpty($("#TB08036S_ibDealNo").val())) {
       showErrorPopup("딜번호를 입력해주세요.");
@@ -433,7 +470,6 @@ const TB08036Sjs = (function () {
 
     Swal.fire({
       title: "정보를 삭제 하시겠습니까?",
-      //text: "대출이 실행됩니다.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -441,9 +477,6 @@ const TB08036Sjs = (function () {
       confirmButtonText: "확인",
       cancelButtonText: "취소",
     }).then((result) => {
-      // isConfirmed
-      // isDenied
-      // isDismissed
       if (result.isConfirmed) {
         businessFunction();
       } else if (result.isDismissed) {
@@ -451,11 +484,13 @@ const TB08036Sjs = (function () {
     });
 
     function businessFunction() {
-      var paramData = getParamData();
+      var paramData = getParamData("etc");
+
+      console.log("checkdata::::::", paramData);
 
       $.ajax({
         type: "POST",
-        url: "/TB08036S/deleteDealInfoTB08036S",
+        url: "/TB08036S/deleteIBIMS603B",
         data: JSON.stringify(paramData),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -471,6 +506,15 @@ const TB08036Sjs = (function () {
         },
       }); /* end of ajax*/
     }
+  }
+
+  //기타사후관리 리셋
+  function resetTabEtc() {
+    $("#TB08036S_etcList").pqGrid("option", "dataModel.data", []);
+    $("#TB08036S_etcList").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("#inspctDt").val("");
+    $("#etcInspctRmrk").val("");
+    $("#rmrk").val("");
   }
 
   function setCncCmpnyInfoList() {

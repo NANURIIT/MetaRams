@@ -33,20 +33,18 @@
                 , HND_TR_ID                                         /* 조작거래id */
                 , GUID                                              /* guid */
                )
-        VALUES 
-        	<foreach collection="listEtc" item="item" index="index" separator=",">
+        VALUES        
         	   (
-                 #{item.dealNo}                                          /* 딜번호 */
-               , #{item.inspctDt}                                        /* 점검일자 */
-               , #{item.inspctRmrk}                                       /* 점검결과 */
-               , #{item.rmrk}                                            /* 비고 */
+                 #{dealNo}                                          /* 딜번호 */
+               , #{inspctDt}                                        /* 점검일자 */
+               , #{inspctRmrk}                                       /* 점검결과 */
+               , #{rmrk}                                            /* 비고 */
                , SYSDATE                                                 /* 조작상세일시 */
-               , #{item.hndEmpno}                                        /* 조작사원번호 */
-               , #{item.hndTmnlNo}                                       /* 조작단말기번호 */
-               , #{item.hndTrId}                                         /* 조작거래id */
-               , #{item.guid}                                            /* guid */
-               )
-            </foreach>
+               , #{hndEmpno}                                        /* 조작사원번호 */
+               , #{hndTmnlNo}                                       /* 조작단말기번호 */
+               , #{hndTrId}                                         /* 조작거래id */
+               , #{guid}                                            /* guid */
+               )         
     </insert>
     
     <delete id="deleteIBIMS603B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
@@ -54,6 +52,7 @@
           FROM IBIMS603B
          WHERE 1=1
            AND DEAL_NO = #{dealNo}										/* 딜번호 */	
+           AND INSPCT_DT = #{inspctDt}                /* 점검기준년월 */
     </delete>
 
 </mapper>

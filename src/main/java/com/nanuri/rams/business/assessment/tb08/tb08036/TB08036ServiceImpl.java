@@ -90,40 +90,26 @@ public class TB08036ServiceImpl implements TB08036Service {
 	}
 	// 기타사후관리 등록
 	@Override
-	public int insertIBIMS603B(IBIMS601BVO param) {
-
-    // param.getListEtc()가 null이면 초기화
-    if (param.getListEtc() == null) {
-        param.setListEtc(new ArrayList<>()); // listEtc 필드를 초기화
-    }
-
+	public void insertIBIMS603B(IBIMS603BDTO param) {
+		
     param.setHndEmpno(facade.getDetails().getEno());
-
-    ibims603BMapper.deleteIBIMS603B(param);
-
-    // param.getListEtc()에 새로운 항목 추가
-    IBIMS603BDTO newItem = new IBIMS603BDTO();
-    param.getListEtc().add(newItem); // param의 listEtc에 newItem 추가
-
-    if (param.getListEtc().size() > 0) {            
-        for (int i = 0; i < param.getListEtc().size(); i++) {
-            param.getListEtc().get(i).setHndEmpno(facade.getDetails().getEno());
-						System.out.println("Item " + i + " HndEmpno: " + param.getListEtc().get(i).getHndEmpno());
-        
-        }
-        ibims603BMapper.insertIBIMS603B(param);
-    }
-
-    return 0;
-}
-
+    ibims603BMapper.insertIBIMS603B(param);
+    
+	}
+	// 기타사후관리 등록
+	@Override
+	public void deleteIBIMS603B(IBIMS601BVO param) {
+		
+		ibims603BMapper.deleteIBIMS603B(param);
+    
+	}
 
 	@Override
 	public void deleteDealInfo(IBIMS601BVO param) {
 		
 		ibims601BMapper.deleteIBIMS601B(param);
 		ibims602BMapper.deleteIBIMS602B(param);
-		ibims603BMapper.deleteIBIMS603B(param);
+		//ibims603BMapper.deleteIBIMS603B(param);
 		ibims611BMapper.deleteIBIMS611B(param);
 		
 	}
