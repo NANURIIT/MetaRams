@@ -69,33 +69,10 @@ async function srchEvent_TB04011P(selector) {
   $("#TB04011P_prefix").val(prefix);
   $(`input[id='${prefix}_ibDealNm']`).val("");
 
-  /**
-   * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
-   * 그리드 상태 다시 체크해주기
-   */
-  if ($(`div[id='modal-TB04011P']`).css("display") === "none") {
-    TB04011P_gridState = 1;
-  }
-
   // 인풋박스 밸류
   let data = $(selector).val();
   $("#TB04011P_ibDealNo").val(data);
-
-  //안건데이터가져오기(그리드상태체크를 같이 하고 있음)
-  await getMtrInfo_TB04011P();
-
-  if (TB04011P_gridState === 0) {
-    await callGridTB04011P(prefix); // 그리드 로드
-  } else if (TB04011P_gridState === 1) {
-    await callTB04011P(prefix); // 팝업 표시
-  }
-}
-
-async function callGridTB04011P(prefix) {
-  //reset_TB04011P();
-  $("#TB04011P_prefix").val(prefix);
-  //setTimeout(() => roadListGrid_TB04011P(), 300);
-  await roadListGrid_TB04011P();
+  await callTB04011P(prefix); // 팝업 표시
 }
 
 /**
@@ -196,70 +173,11 @@ async function getMtrInfo_TB04011P() {
   }
 }
 
-async function roadListGrid_TB04011P() {
-  return new Promise((resolve, reject) => {
-    try {
-      // pqGrid 인스턴스 초기화 확인
-      arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
-
-      // arrPqGridMtrInfo undefined일 경우 초기화
-      if (
-        typeof arrPqGridMtrInfo === "undefined" ||
-        arrPqGridMtrInfo === null
-      ) {
-        let setPqGridObj = [
-          {
-            height: 300,
-            maxHeight: 300,
-            id: "gridMtrInfo",
-            colModel: colMtrInfo,
-          },
-        ];
-        // pqGrid 초기화
-        //$("#gridMtrInfo").pqGrid(setPqGridObj);
-        setPqGrid(setPqGridObj);
-        arrPqGridMtrInfo = $("#gridMtrInfo").pqGrid("instance");
-      } else {
-        arrPqGridMtrInfo.setData([]);
-      }
-      // 그리드 로딩이 끝난 후 resolve 호출
-      resolve();
-    } catch (error) {
-      reject(error); // 오류 발생 시 reject 호출
-    }
-  });
-}
-
 function dataSetMrtGrid(data) {
   arrPqGridMtrInfo.setData(data);
   arrPqGridMtrInfo.option("rowDblClick", function (event, ui) {
     setMtrInfo_TB04011P(ui.rowData);
   });
-
-  // 검색된 행이 1개일 경우 데이터 바로 입력
-  if (
-    arrPqGridMtrInfo.pdata.length === 1 &&
-    $(`div[id='modal-TB04011P']`).css("display") === "none"
-  ) {
-    //var prefix = $("#TB04011P_prefix").val();
-    setMtrInfo_TB04011P(arrPqGridMtrInfo.pdata[0]);
-    InfoSrchCnt_TB04011P = 0;
-    // 입력되고 난 후 온체인지 이벤트 on
-    TB04011P_onchangehandler = "on";
-  }
-  // 변부장님 지시로 삭제
-  // 검색된 행이 0일 경우 모든 데이터 출력
-  // else if (arrPqGridMtrInfo.pdata.length === 0) {
-
-  // 	// 데이터 없는 경우 재조회 방지
-  // 	InfoSrchCnt_TB04011P += 1;
-
-  // 	getEmpList();
-  // }
-  // 그렇지 않은 경우 조건에 맞는 데이터 출력
-  else {
-    InfoSrchCnt_TB04011P = 0;
-  }
 }
 
 /**
