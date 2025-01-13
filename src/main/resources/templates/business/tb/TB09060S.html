@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="css">
 	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
@@ -38,9 +39,12 @@
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB09060S_ibDealNo">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03021P('TB09060S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default"
+												onclick="callTB03021P('TB09060S');"><i
+													class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB09060S_ibDealNm" readonly="" style="width: 45px;">
+										<input type="text" class="form-control" id="TB09060S_ibDealNm" readonly=""
+											style="width: 45px;">
 									</div>
 								</div>
 								<!-- 실행순번 -->
@@ -70,11 +74,12 @@
 								<!-- 관리부서 -->
 								<label class="col-sm-1 col-form-label text-right">관리부서</label>
 								<div class="col-sm-3 input-group">
-									<input type="text" class="form-control" style="width: 30px;" id="TB09060S_dprtCd">
-									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick="callTB03022P('TB09060S');"><i class="fa fa-search"></i></button>
-									</span>
-									<input type="text" class="form-control" style="width: 70px;" id="TB09060S_dprtNm" readonly>
+									<div class="input-group">
+										<select class="form-control" id="TB09060S_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="TB09060S_dprtCd" readonly="">
+									</div>
 								</div>
 								<!-- 연체해제여부 -->
 								<label class="col-sm-1 control-label">
@@ -97,60 +102,68 @@
 					</div>
 					<!-- 조회결과 -->
 					<div class="ibox-content">
-							<div class="ibox mb-2">
-								<div id="TB09060S_grid1"></div>
-							</div>
-							
-					</div>	
-				<div class="ibox-content i-filter">
-					<div class="form-group row form-inline">
-							
-						<div class="col-sm-10 form-group mb-1">
-						<label class="col-sm-1 control-label">
-							사후관리번호
-						</label>
-						<div class="col-sm-2 input-group">
-							<input type="text" class="form-control" id="TB09060S_afctMngmNo2" name="" value="" readonly="">
+						<div class="ibox mb-2">
+							<div id="TB09060S_grid1"></div>
 						</div>
-						<label class="col-sm-1 control-label">
-							DEAL번호
-						</label>
-						<div class="col-sm-2 input-group">
-							<input type="text" class="form-control" id="TB09060S_dealNo" name="" value="" readonly="">
-						</div>
-						<label class="col-sm-1 control-label">
-							DEAL명
-						</label>
-						<div class="col-sm-2 input-group">
-							<input type="text" class="form-control" id="TB09060S_dealNm" name="" value="" readonly="">
-						</div>
-						<label class="col-sm-1 control-label">
-							실행순번
-						</label>
-						<div class="col-sm-2 input-group">
-							<input type="text" class="form-control" id="TB09060S_excSeq2" name="" value="" readonly="">
-						</div>
-						
+
 					</div>
-						
-			<div class="col-sm-10 form-group">
-							<label class="col-sm-1 col-form-label text-right">확정여부</label><div class="col-sm-2 input-group">
-								<input type="checkbox" id="TB09060S_dcsnYn">
+					<div class="ibox-content i-filter">
+						<div class="form-group row form-inline">
+
+							<div class="col-sm-10 form-group mb-1">
+								<label class="col-sm-1 control-label">
+									사후관리번호
+								</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" id="TB09060S_afctMngmNo2" name="" value=""
+										readonly="">
+								</div>
+								<label class="col-sm-1 control-label">
+									DEAL번호
+								</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" id="TB09060S_dealNo" name="" value=""
+										readonly="">
+								</div>
+								<label class="col-sm-1 control-label">
+									DEAL명
+								</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" id="TB09060S_dealNm" name="" value=""
+										readonly="">
+								</div>
+								<label class="col-sm-1 control-label">
+									실행순번
+								</label>
+								<div class="col-sm-2 input-group">
+									<input type="text" class="form-control" id="TB09060S_excSeq2" name="" value=""
+										readonly="">
+								</div>
+
 							</div>
-						</div><div class="col-sm-1 text-right">
-							<button class="btn btn-success" type="button" onclick="TB09060Sjs.saveDcsn();"><i class="fa fa-save"></i>&nbsp;저장</button>
-						</div></div>
-			</div>
+
+							<div class="col-sm-10 form-group">
+								<label class="col-sm-1 col-form-label text-right">확정여부</label>
+								<div class="col-sm-2 input-group">
+									<input type="checkbox" id="TB09060S_dcsnYn">
+								</div>
+							</div>
+							<div class="col-sm-1 text-right">
+								<button class="btn btn-success" type="button" onclick="TB09060Sjs.saveDcsn();"><i
+										class="fa fa-save"></i>&nbsp;저장</button>
+							</div>
+						</div>
+					</div>
 					<div class="ibox">
 						<div class="ibox-title">
 							<h5>▶ 일별연체내역</h5>
 						</div>
 						<div class="ibox-content">
-						<!-- 일별연체내역 -->
+							<!-- 일별연체내역 -->
 							<div id="TB09060S_grid2"></div>
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
 		</div><!-- row -->
