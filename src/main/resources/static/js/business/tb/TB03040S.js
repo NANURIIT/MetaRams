@@ -90,7 +90,11 @@ const TB03040Sjs = (function(){
     sessionStorage.setItem("dealNo", e.dealNo);
     sessionStorage.setItem("dealNm", e.dealNm);
 
-    if (inspctPrgrsStCd < 301) {
+    // alert(inspctPrgrsStCd);
+
+    if(inspctPrgrsStCd === "101"){
+      callPage("TB03020S", "Deal정보 등록");
+    }else if (inspctPrgrsStCd < 301) {
       callPage("TB04010S", "심사신청관리");
     } else {
       callPage('TB05040S', '협의체 현황 및 결과조회');
@@ -127,10 +131,10 @@ const TB03040Sjs = (function(){
     //if(){ //권환에 따른 조건 필요 
   
     //} else{
-      $('#TB03040S_1_empNo').prop('disabled', true);    //담당자번호
-      $('#empNoSearch').prop("disabled", true);         //담당자 검색 버튼
-      $('#TB03040S_2_dprtCd').prop('disabled', true);   //부서번호
-      $('#dprtCdSearch').prop("disabled", true);        //부서 검색 버튼
+      // $('#TB03040S_1_empNo').prop('disabled', true);    //담당자번호
+      // $('#empNoSearch').prop("disabled", true);         //담당자 검색 버튼
+      // $('#TB03040S_2_dprtCd').prop('disabled', true);   //부서번호
+      // $('#dprtCdSearch').prop("disabled", true);        //부서 검색 버튼
     //}
   }
 
@@ -201,7 +205,7 @@ const TB03040Sjs = (function(){
       dataType: "string",
       dataIndx: "mtrPrgSttsDcd",
       align: "center",
-      hidden: true,
+      // hidden: true,
     },
     {
       title: "진행상태",

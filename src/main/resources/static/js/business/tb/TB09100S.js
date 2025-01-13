@@ -2,6 +2,7 @@
 const TB09100Sjs = (function () {
 
   $(document).ready(function () {
+    fnSelectBox();
     setGrid_TB09100S();
 
     $("#TB09100S_fromDate").val(getSomeDaysAgo(7));
@@ -480,6 +481,37 @@ const TB09100Sjs = (function () {
       },
     });
   }
+
+  /**
+   * selectBox 부서코드 set
+   */
+  function fnSelectBox() {
+    let selectBox = getSelectBoxList(
+      "TB09100S",
+        "D010",   //부서코드
+      false
+    );
+
+    let TB07120S_grdSelect
+
+    TB07120S_grdSelect = selectBox.filter(function (item) {
+      return item.cmnsGrpCd === "D010";
+    })
+
+    let D010html;
+    
+    TB07120S_grdSelect.forEach((item) => {
+      D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+    });
+
+    $("#TB09100S_dprtNm").append(D010html);
+
+    $('#TB09100S_dprtNm').on('change', function(){
+      $('#TB09100S_dprtCd').val($('#TB09100S_dprtNm').val())
+    })
+    
+  }
+
   return {
     getExposureList: getExposureList,
     reset_TB09110S: reset_TB09110S,

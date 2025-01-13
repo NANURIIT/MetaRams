@@ -34,7 +34,7 @@ const TB06010Sjs = (function(){
 		console.log("성격", I041);
 		console.log("형태", I042);
 		
-
+		loginUserSet();
 
 		$('#TB06010S_E022').on('change', function() {
 			// alert($('#TB06010S_E022').val());
@@ -66,6 +66,20 @@ const TB06010Sjs = (function(){
 		
 		getDealInfoFromWF();
 	});
+
+
+	function loginUserSet(){
+		let empNo  = $('#userEno').val();   
+		let empNm  = $('#userEmpNm').val();
+		let dprtCd = $('#userDprtCd').val();
+		let dprtNm = $('#userDprtNm').val();
+
+		$('#TB06010S_empNo').val(empNo);
+		$('#TB06010S_empNm').val(empNm);
+		$('#TB06010S_dprtCd').val(dprtCd);
+		$('#TB06010S_dprtNm').val(dprtNm);
+		
+	}
 
 	var option = {}
 		option.title = "Error";

@@ -55,11 +55,8 @@ function TB03022P_srch(menuId) {
     let data = $(selector).val();
 
     $("#TB03022P_prefix").val(prefix);
-
-    callTB03022P(prefix);
     $("#TB03022P_empno").val(data);
     await getEmpList();
-
   }
 }
 
@@ -73,8 +70,6 @@ function TB03022P_clearInput(inputId) {
  * @param {string} prefix 결과전달 ID의 prefix
  */
 function callTB03022P(prefix, e) {
-  reset_TB03022P();
-  TB03022P_gridState = 0;
   TB03022P_pf = prefix;
   setTimeout(() => roadListGrid(), 300);
   $("#TB03022P_prefix").val(prefix);
@@ -190,6 +185,7 @@ function keyDownEnter_TB03022P() {
  * ajax 통신(조회)
  */
 async function getEmpList() {
+
   var empNm = $("#TB03022P_empNm").val();
   var empno = $("#TB03022P_empno").val();
   var dprtCd = $("#TB03022P_dprtCd").val();
@@ -210,20 +206,14 @@ async function getEmpList() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      if (!data || data === undefined || data.length === 0) {
-        TB03022P_gridState = 1;
-      } else if (data.length >= 2) {
-        TB03022P_gridState = 1;
-      } else if (data) {
-        TB03022P_gridState = 0;
-      }
-
-      if (empInfoSrchCnt >= 2) {
-        //alert("조회된 정보가 없습니다!")
-        empInfoSrchCnt = 0;
-        //return;
-      }
-      setTimeout(() => dataEmpSetGrid(data), 400);
+      if($(`div[id='modal-TB03022P']`).css('display') === "none" && data.length === 1){
+				setEmpNm(data[0]);
+				modalClose_TB03022P();
+			}
+			else {
+				callTB03022P($('#TB03022P_prefix').val());
+				setTimeout(() => dataEmpSetGrid(data), 400)
+			}
     },
   });
 }
