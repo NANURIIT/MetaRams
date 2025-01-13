@@ -71,6 +71,7 @@ const TB06080Sjs = (function () {
       beforeSend: function (xhr) {
         resetInputValue($(`div[data-menuid='/TB06080S']`));
         resetPGgrids('TB06080S');
+        $('#TB06080S_apvlPage').off('click');
       },
       success: function (data) {
         if (data.length > 0) {
@@ -79,6 +80,12 @@ const TB06080Sjs = (function () {
           pqGridObjApvlList.on("rowClick", function (evt, ui) {
             // 공통 피큐그리드에서 인풋으로 값 보내기
             setInputboxFromPdata(ui, "TB06080S");
+
+            $('#TB06080S_apvlPage').off('click');
+            $('#TB06080S_apvlPage').on('click', function(){
+              callPage(ui.rowData.scrnNo)
+              console.log("여러번 가는지 확인용");
+            })
 
             // 해당 승인요청의 승인자 리스트
             $.ajax({

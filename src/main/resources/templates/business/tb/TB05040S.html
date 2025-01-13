@@ -21,30 +21,26 @@
 				<div class="ibox ">
 					<!-- 조회조건영역 -->
 					<div class="ibox-content i-filter">
-						<div class="form-group row">
-							<label class="col-sm-1 col-form-label  text-right">Deal번호</label>
-							<div class="col-sm-2">
-								<div class="input-group">
-									<input type="text" class="form-control" id="TB05040S_ibDealNo" readonly>
-									<input type="hidden" id="TB05040S_riskInspctCcd">
-									<input type="hidden" id="TB05040S_lstCCaseCcd">
-									<span class="input-group-append">
-										<button type="button" id="open_modal_AS02020P" class="btn btn-default" onclick="callTB03021P('TB05040S');"><i class="fa fa-search"></i></button>
-									</span>
+						<div class="form-group form-inline row mb-0">
+							<div class="col-sm-12 input-group text-right">
+								<label class="col-sm-1 control-label">Deal번호</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB05040S_ibDealNo" maxlength="17">
+										<input type="hidden" id="TB05040S_riskInspctCcd">
+										<input type="hidden" id="TB05040S_lstCCaseCcd">
+										<span class="input-group-append">
+											<button type="button" id="open_modal_AS02020P" class="btn btn-default" onclick="callTB03021P('TB05040S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB05040S_ibDealNm" readonly>
+									</div>
+								</div>
+								<div class="col-sm-6">
+								</div>
+								<div class="col-sm-1">
+									<button class="btn btn-primary" type="button" onclick="TB05040Sjs.getDealList();"><i class="fa fa-search"></i>조회</button>
 								</div>
 							</div>
-							<div class="col-sm-2 text-left">
-								<button class="btn btn-primary" type="button" onclick="TB05040Sjs.getDealList();"><i class="fa fa-search"></i>조회</button>
-							</div>
-							<div class="col-sm-5"></div>
-							<!-- 버튼 -->
-							<!-- 
-							<div class="col-sm-2 text-right px-3">
-								<button class="btn btn-success" type="button" onclick="saveDealInfo();">저장</button>
-								<button class="btn btn-info" type="button" onclick="updateDealInfo('incRegist')">부의등록</button>
-								<button class="btn btn-danger" type="button" onclick="updateDealInfo('incCancel')">부의취소</button>
-							</div>
-							 -->
 						</div>
 					</div>
 

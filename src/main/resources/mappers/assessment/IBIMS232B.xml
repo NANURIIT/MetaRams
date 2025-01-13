@@ -29,12 +29,29 @@
 		   AND T1.DECD_SN = #{decdSn}
 	</select>
 
+	<select id="chkSttsDcd" parameterType="int" resultType="int">
+		SELECT COUNT(DECD_SQ)
+		  FROM IBIMS232B
+		 WHERE 1=1
+		   AND DECD_SN = #{decdSn}
+		   AND DECD_STTS_DCD = '2'
+	</select>
+
+
 	<select id="getDecdSq" parameterType="com.nanuri.rams.business.common.dto.IBIMS232BDTO" resultType="int">
 		SELECT DECD_SQ
 		  FROM IBIMS232B
 		 WHERE 1=1
 		   AND DECD_SN = #{decdSn}
 		   AND DCFC_ENO = #{dcfcEno}
+	</select>
+
+	<select id="chkDecdSttsDcd" parameterType="com.nanuri.rams.business.common.dto.IBIMS232BDTO" resultType="String">
+		SELECT DECD_STTS_DCD
+		  FROM IBIMS232B
+		 WHERE 1=1
+		   AND DECD_SN = #{decdSn}
+		   AND DECD_SQ = #{decdSq}
 	</select>
 
 	<insert id="apvlRqst" parameterType="com.nanuri.rams.business.common.dto.IBIMS232BDTO">
@@ -72,8 +89,12 @@
 	<!-- 승인요청중 상태관리 -->
     <update id="updateDecd" parameterType="com.nanuri.rams.business.common.dto.IBIMS232BDTO">
       UPDATE IBIMS232B
-         SET DECD_STTS_DCD = #{decdSttsDcd}
+         SET HND_EMPNO = #{hndEmpno}
+           , HND_DETL_DTM = SYSDATE
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdSttsDcd)">
+		   , DECD_STTS_DCD = #{decdSttsDcd}
 		   , DECD_DTM = SYSDATE
+           </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dcfcAnnoCntn)">
            , DCFC_ANNO_CNTN = #{dcfcAnnoCntn}
            </if>
@@ -83,8 +104,6 @@
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rjctRsnCntn)">
 		   , RJCT_RSN_CNTN = #{rjctRsnCntn}
            </if>
-           , HND_EMPNO = #{hndEmpno}
-           , HND_DETL_DTM = SYSDATE
        WHERE 1=1
          AND DECD_SN = #{decdSn}
 		 <if test="decdSq != 0">
