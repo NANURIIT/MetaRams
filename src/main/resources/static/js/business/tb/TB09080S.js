@@ -208,7 +208,7 @@ const TB09080Sjs = (function () {
   ];
 
   $(document).ready(function () {
-    //selectBox()
+    fnSelectBox();
     setGrid_TB09080S();
 
     $("#TB09080S_rsltnDt").val(getSomeDaysAgo(7));
@@ -316,6 +316,36 @@ const TB09080Sjs = (function () {
     let fileName = "거래내역리스트.xlsx";
 
     pq.saveAs(blob, fileName);
+  }
+
+  /**
+   * selectBox 부서코드 set
+   */
+  function fnSelectBox() {
+    let selectBox = getSelectBoxList(
+      "TB09080S",
+        "D010",   //부서코드
+      false
+    );
+
+    let TB07120S_grdSelect
+
+    TB07120S_grdSelect = selectBox.filter(function (item) {
+      return item.cmnsGrpCd === "D010";
+    })
+
+    let D010html;
+    
+    TB07120S_grdSelect.forEach((item) => {
+      D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+    });
+
+    $("#TB09080S_dprtNm").append(D010html);
+
+    $('#TB09080S_dprtNm').on('change', function(){
+      $('#TB09080S_dprtCd').val($('#TB09080S_dprtNm').val())
+    })
+    
   }
 
   return {

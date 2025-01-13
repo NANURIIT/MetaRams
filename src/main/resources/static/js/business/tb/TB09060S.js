@@ -5,6 +5,7 @@ const TB09060Sjs = function () {
   $(document).ready(function () {
     //loadSelectBoxContents();
     //loadUserAuth(); // 담당자 정보 조회
+    fnSelectBox();
     setGrid_TB09060S();
     $("#TB09060S_startDt").val(getSomeDaysAgo(7));
     $("#TB09060S_endDt").val(getToday());
@@ -337,20 +338,6 @@ const TB09060Sjs = function () {
     var dprtCd = $("#TB09060S_dprtCd").val();
     var ovduRlseYnCd = $("#TB09060S_ovduRlseYnCd").val();
 
-    console.log(
-      dealNo +
-      "," +
-      excSeq +
-      "," +
-      startDt +
-      "~" +
-      endDt +
-      "," +
-      dprtCd +
-      "," +
-      ovduRlseYnCd
-    );
-
     const paramData = {
       dealNo: dealNo,
       excSeq: excSeq,
@@ -516,6 +503,36 @@ const TB09060Sjs = function () {
     } else {
       return "-";
     }
+  }
+
+  /**
+   * selectBox 부서코드 set
+   */
+  function fnSelectBox() {
+    let selectBox = getSelectBoxList(
+      "TB09060S",
+        "D010",   //부서코드
+      false
+    );
+
+    let TB07120S_grdSelect
+
+    TB07120S_grdSelect = selectBox.filter(function (item) {
+      return item.cmnsGrpCd === "D010";
+    })
+
+    let D010html;
+    
+    TB07120S_grdSelect.forEach((item) => {
+      D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+    });
+
+    $("#TB09060S_dprtNm").append(D010html);
+
+    $('#TB09060S_dprtNm').on('change', function(){
+      $('#TB09060S_dprtCd').val($('#TB09060S_dprtNm').val())
+    })
+    
   }
 
   return {

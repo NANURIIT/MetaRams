@@ -3,6 +3,7 @@ const TB07130Sjs = (function () {
   let thdtTrDtls; // 당일거래내역
 
   $(document).ready(function () {
+    fnSelectBox();
     pqGrid();
   });
 
@@ -239,7 +240,7 @@ const TB07130Sjs = (function () {
     paramData = {
       stdrDt: unformatDate($("#TB07130S_stdrDt").val()),
       actsCd: $("#TB07130S_actsCd").val(),
-      mngmBdcd: $("#TB07130S_mngmBdcd").val(),
+      mngmBdcd: $("#TB07130S_dprtCd").val(),
     };
 
     $.ajax({
@@ -303,6 +304,36 @@ const TB07130Sjs = (function () {
         });
       },
     });
+  }
+
+  /**
+   * selectBox 부서코드 set
+   */
+  function fnSelectBox() {
+    let selectBox = getSelectBoxList(
+      "TB07130S",
+        "D010",   //부서코드
+      false
+    );
+
+    let TB07120S_grdSelect
+
+    TB07120S_grdSelect = selectBox.filter(function (item) {
+      return item.cmnsGrpCd === "D010";
+    })
+
+    let D010html;
+    
+    TB07120S_grdSelect.forEach((item) => {
+      D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+    });
+
+    $("#TB07130S_dprtNm").append(D010html);
+
+    $('#TB07130S_dprtNm').on('change', function(){
+      $('#TB07130S_dprtCd').val($('#TB07130S_dprtNm').val())
+    })
+    
   }
 
   /*******************************************************************
