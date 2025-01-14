@@ -289,20 +289,25 @@ function dataEmpSetGrid(data) {
  * 부모창에 결과값 전달
  */
 function setEmpNm(e) {
-  var empNo = e.empno; // 직원번호
-  var empNm = e.empNm; // 직원명
-  var dprtCd = e.dprtCd; // 부점코드
-  var dprtNm = e.dprtNm; // 부점명
-  var hdqtCd = e.hdqtCd; // 본부코드
-  var hdqtNm = e.hdqtNm; // 본부명
+  let empNo = e.empno; // 직원번호
+  let empNm = e.empNm; // 직원명
+  let dprtCd = e.dprtCd; // 부점코드
+  let dprtNm = e.dprtNm; // 부점명
+  let hdqtCd = e.hdqtCd; // 본부코드
+  let hdqtNm = e.hdqtNm; // 본부명
+  let athCd = e.athCd;
 
-  var prefix = $("#TB03022P_prefix").val(); // id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
-  var pageEmpNm = "#" + prefix + "_empNm";
-  var pageEmpNo = "#" + prefix + "_empNo";
-  var pageDprtCd = "#" + prefix + "_dprtCd";
-  var pageDprtNm = "#" + prefix + "_dprtNm";
-  var pageHdqtCd = "#" + prefix + "_hdqtCd";
-  var pageHdqtNm = "#" + prefix + "_hdqtNm";
+  let prefix = $("#TB03022P_prefix").val(); // id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
+  let pageEmpNm = "#" + prefix + "_empNm";
+  let pageEmpNo = "#" + prefix + "_empNo";
+  let pageDprtCd = "#" + prefix + "_dprtCd";
+  let pageDprtNm = "#" + prefix + "_dprtNm";
+  let pageHdqtCd = "#" + prefix + "_hdqtCd";
+  let pageHdqtNm = "#" + prefix + "_hdqtNm";
+  let pageAthCd = "#" + prefix + "_athCd";
+
+  console.log(pageAthCd, athCd);
+  
 
   $(pageEmpNm).val(empNm);
   $(pageEmpNo).val(empNo);
@@ -310,6 +315,7 @@ function setEmpNm(e) {
   $(pageDprtNm).val(dprtNm);
   $(pageHdqtCd).val(hdqtCd);
   $(pageHdqtNm).val(hdqtNm);
+  $(pageAthCd).val(athCd);
 
   // 그리드(위원정보) 데이터 가져오기
   const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid(
@@ -409,6 +415,9 @@ function setEmpNm(e) {
     case "TB08050S":
       $("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
       break;
+    case "TB10110S":
+       $("#TB10110S_dprtNm").val(e.dprtCd);
+       break;
     default:
       break;
   }
@@ -461,5 +470,11 @@ let colEmpInfo = [
     dataIndx: "hdqtNm",
     align: "center",
     filter: { crules: [{ condition: "range" }] },
+  },
+  {
+    title: "권한코드",
+    dataType: "string",
+    dataIndx: "athCd",
+    hidden: true
   },
 ];
