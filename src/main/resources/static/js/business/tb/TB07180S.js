@@ -129,9 +129,9 @@ const TB07180Sjs = (function () {
 	//수수료율
 	$("#TB07180S_feeRt").on('change', function(){
 		let formatNum="0";
-		formatNum=(Math.round(uncomma($("#TB07180S_feeRt").val())*100)/100).toFixed(2);
-		$("#TB07180S_feeRt").val(addComma(uncomma(formatNum)));
-	});	
+		formatNum=parseFloat(Number(Math.round(uncomma($("#TB07180S_feeRt").val())*10000000)/10000000).toFixed(7));
+		$("#TB07180S_feeRt").val(addComma(formatNum));
+	});
 	//수수료최저금액
 	$("#TB07180S_feeLwstAmt").on('change', function(){
 		let formatNum="0";
@@ -689,6 +689,14 @@ const TB07180Sjs = (function () {
 				option.text = "수수료명을 입력해주세요";
 				openPopup(option);
 				return false;
+			}
+			
+			if(isNotEmpty($('#TB07180S_feeLwstAmt').val()) && isNotEmpty($('#TB07180S_feeHgstAmt').val())){
+				if (Number($('#TB07180S_feeLwstAmt').val()) > Number($('#TB07180S_feeHgstAmt').val())) {
+					option.text = "수수료최저금액이 수수료최고금액보다 많습니다.";
+					openPopup(option);
+					return false;
+				}
 			}
 		break;
 		case "D" :
