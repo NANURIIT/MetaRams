@@ -19,7 +19,6 @@ function TB06011P_srchPrdt(menuId) {
 	 * 코드길이체크 후 자동조회
 	 */
 	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB06011P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_prdtCd']").on('input', async function () {
-		// console.log("화면 인풋 태그 감시중");
 		const str = $(this).val().length
 
 		// 같이 붙어있는 인풋박스 id
@@ -39,6 +38,8 @@ function TB06011P_srchPrdt(menuId) {
 
 			await srchEvent(this);
 
+			// $(this).focus();
+
 		}
 	})
 	
@@ -50,6 +51,8 @@ function TB06011P_srchPrdt(menuId) {
 			TB06011P_onchangehandler = "off";
 
 			await srchEvent(this);
+
+			// $(this).focus();
 
 		}
 	})
@@ -445,8 +448,6 @@ function dataPrdtCdSetGrid(data) {
 
 // 초기설정
 $(document).ready(function () {
-	// TB06011P_srchPrdt();
-	console.log("ㅎㅇ");
 	TB06011P_docRdySettings();
 });
 
@@ -479,7 +480,6 @@ function keyDownEnter_TB06011P() {
 
 	$("input[id='TB06011P_prdtNm']").keydown(function (event) {
 		if (event.keyCode === 13) {//키가 13이면 실행 (엔터는 13)
-			console.log("ㅎㅇ");
 			getPrdtCdList();
 		}
 	});
@@ -511,7 +511,6 @@ function callTB06011P(prefix, e) {
 	indexChangeHandler("TB06011P");
 	if (prefix == "TB07100S_grid"){
 		prdtSn = e;
-		console.log("TB07100S_grid, "+prdtSn);
 	}
 }
 
@@ -597,11 +596,10 @@ function TB06011P_setPrdtInfo(e) {
 	var tr = $(e);
 	var td = $(tr).children();
 
-	console.log();
-
 	let prdtCd = e.prdtCd;
 	let prdtNm = e.prdtNm;
-	let ibDealNo = e.ibDealNo;
+	let ibDealNo = e.dealNo;
+	let ibDealNm = e.dealNm;
 	let trCrryCd = e.trCrryCd;
 	let stdrExrt = e.stdrExrt;
 	let wholIssuShqt = e.wholIssuShqt;
@@ -706,10 +704,6 @@ function TB06011P_setPrdtInfo(e) {
 	var pageTotIssuShqt = '#' + $('#TB06011P_prefix').val() + '_totIssuShqt';
 	var pageTotIssuStkQnt = '#' + $('#TB06011P_prefix').val() + '_totIssuStkQnt';
 	
-	console.log("pageWholIssuShqt"+pageWholIssuShqt);
-
-
-
 	if (prefix == 'TB07020S_input' || prefix == 'TB07040S_input') {
 		pageTrCrryCd = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_I027';
 		pageStdrExrt = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_stdrExrt';
@@ -732,7 +726,6 @@ function TB06011P_setPrdtInfo(e) {
 		var pageTrCrryCd = '#' + $('#TB06011P_prefix').val() + '_trCrryCd';
 		var pageStdrExrt = '#' + $('#TB06011P_prefix').val() + '_stdrExrt';
 	}
-	console.log("WholIssuShqt"+e.wholIssuShqt);
 	// 값 전달
 	$(pagePrdtCd).val(e.prdtCd);
 	$(pagePrdtNm).val(e.prdtNm);
@@ -805,11 +798,8 @@ function TB06011P_setPrdtInfo(e) {
 	}
 
 	if (prefix == 'TB09080S') {
-		console.log(tr);
-		/* 
-		$('#TB09080S_ibDealNo').val(e.dealNo);
-		$('#TB09080S_ibDealNm').val(e.dealNm); */
-		//getDealList();
+		$(`#${prefix}_ibDealNo`).val(ibDealNo);
+		$(`#${prefix}_ibDealNm`).val(ibDealNm);
 	}
 
 	if (prefix == 'TB06015P') {
@@ -851,7 +841,6 @@ function TB06011P_setPrdtInfo(e) {
 	if (prefix === 'TB07010S') {
 		let numPrgSttsCd = Number(e.prgSttsCd);
 
-		// console.log(typeof e.prgSttsCd);
 		if (numPrgSttsCd < 501) {
 			Swal.fire({
 				icon: 'warning'
@@ -897,12 +886,8 @@ function TB06011P_setPrdtInfo(e) {
 	}
 
 	if(prefix == 'TB07100S_grid'){
-		console.log(e);
-		console.log("prdtCd 입력 : "+prdtSn+"에"+e.prdtCd);
-
 		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow",{rowIndx: prdtSn, row: { prdtCd: e.prdtCd } });
 		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow",{rowIndx: prdtSn, row: { fndCd: e.ortnFndCd } });
-
 	}
 
 	if (prefix === 'TB08040S') {
@@ -950,7 +935,6 @@ function selectBoxSet_TB06011P() {
 	empNo = $('#userEno').val();     //직원명
 	dprtCd = $('#userDprtCd').val(); //부서번호
 
-	console.log("empno"+empNo);
 	$("#TB06011P_empNm").val($('#userEmpNm').val());
 	$("#TB06011P_empNo").val(empNo);
 	$("#TB06011P_dprtNm").val(dprtCd).prop("selected", true);

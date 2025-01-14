@@ -31,8 +31,6 @@ const TB06010Sjs = (function(){
 		pqGrid();
 
 		resetSearchRequiment();
-		console.log("성격", I041);
-		console.log("형태", I042);
 		
 		loginUserSet();
 
