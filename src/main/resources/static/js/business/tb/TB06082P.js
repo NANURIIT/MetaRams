@@ -122,8 +122,6 @@ function TB06082P_decdUpdate() {
         , rjctRsnCntn: $('#TB06082P_rjctRsnCntn').val()     // 반려사유내용
     }
 
-    console.log(paramData);
-
     $.ajax({
         type: "POST",
         url: "/TB06082P/decdUpdate",
@@ -137,6 +135,10 @@ function TB06082P_decdUpdate() {
                     icon: "success",
                     text: `${text} 되었습니다!`,
                 });
+                TB06082P_closeModal();
+                const url = window.location.pathname;
+                const menuId = url.split("/")[1]
+                $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop("hidden", true);
             }
             // 실패
             else {

@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nanuri.rams.business.common.dto.IBIMS003BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS232BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS003BMapper;
@@ -14,7 +13,6 @@ import com.nanuri.rams.business.common.mapper.IBIMS231BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS232BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS003BVO;
 import com.nanuri.rams.business.common.vo.IBIMS231BVO;
-import com.nanuri.rams.business.common.vo.TB06080SVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
@@ -106,14 +104,22 @@ public class TB06081ServiceImpl implements TB06081Service {
 		int decdSn = ibims231bMapper.decdSn(apvlList.get(0));
 		
 		for(int i = apvlList.size() - 1; i >= 0; i--){
+			// 결재일련번호
+			apvlList.get(i).setDecdSn(decdSn);
 			// 마지막처리사원
 			apvlList.get(i).setHndEmpno(hndEmpno);
 
-			if(i == 0 && "02".equals(apvlList.get(0).getDecdStepDcd())){
+			log.debug("체크용::::::" + apvlList.get(0).getDecdStepDcd());
+
+			if(i == apvlList.size() - 1 && "02".equals(apvlList.get(i).getDecdStepDcd())){
 				apvlList.get(i).setDecdSttsDcd("1");
 				ibims231bMapper.updateDecd(apvlList.get(i));
 			}
-			
+			else if(i == apvlList.size() - 1 && "00".equals(apvlList.get(0).getDecdStepDcd())){
+				apvlList.get(i).setDecdSn(decdSn);
+				ibims231bMapper.updateDecd(apvlList.get(i));
+			}
+
 			IBIMS232BDTO updateData = new IBIMS232BDTO();
 			
 			// 결재일련번호 set
@@ -132,8 +138,22 @@ public class TB06081ServiceImpl implements TB06081Service {
 			updateData.setDecdSq(i + 1);
 
 			// 결재자상태확인. 반려만 재승인요청으로 되돌리기.
+			String decdSttsDcd = ibims232bMapper.chkDecdSttsDcd(updateData);
 
-			updateData.setDecdSttsDcd(apvlList.get(i).getDecdSttsDcd());
+			// 재승인요청시 반려는 진행중으로
+			if ("3".equals(decdSttsDcd) && "02".equals(apvlList.get(i).getDecdStepDcd())){
+				updateData.setDecdSttsDcd("1");
+				updateData.setRjctYn("N");
+			}
+			// 재승인요청시 승인상태는 그대로
+			else if ("2".equals(decdSttsDcd) && "02".equals(apvlList.get(i).getDecdStepDcd())) {
+				updateData.setDecdSttsDcd("2");
+			}
+			// 나머지
+			else {
+				updateData.setDecdSttsDcd(apvlList.get(i).getDecdSttsDcd());
+			}
+
 			updateData.setHndEmpno(apvlList.get(i).getHndEmpno());
 			ibims232bMapper.updateDecd(updateData);
 

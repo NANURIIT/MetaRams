@@ -53,7 +53,6 @@ function TB03022P_srch(menuId) {
     const lastIndex = inputId.lastIndexOf("_");
     prefix = inputId.substring(0, lastIndex);
 
-    console.log(prefix)
     let data = $(selector).val();
 
     $("#TB03022P_prefix").val(prefix);
@@ -118,8 +117,6 @@ function callTB03022P(prefix, e) {
     mmbrSn = e;
 
   if (prefix === "grd_TB08040S") {
-    // console.log("grd_TB08040S:::prefix", prefix)
-    // console.log("grd_TB08040S:::e", e)
     tb08040sIdx = e;
   }
 }
@@ -306,9 +303,6 @@ function setEmpNm(e) {
   let pageHdqtNm = "#" + prefix + "_hdqtNm";
   let pageAthCd = "#" + prefix + "_athCd";
 
-  console.log(pageAthCd, athCd);
-  
-
   $(pageEmpNm).val(empNm);
   $(pageEmpNo).val(empNo);
   $(pageDprtCd).val(dprtCd);
@@ -388,10 +382,6 @@ function setEmpNm(e) {
       break;
 
     case "grd_TB08040S":
-      console.log(feeSch);
-      console.log(dprtCd);
-      console.log(feeSch.pdata);
-
       feeSch.pdata[tb08040sIdx].rgstBdcd = dprtCd;
       feeSch.refresh();
       break;
