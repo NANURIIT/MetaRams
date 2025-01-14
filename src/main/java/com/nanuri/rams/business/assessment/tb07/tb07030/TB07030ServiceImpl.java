@@ -93,7 +93,6 @@ public class TB07030ServiceImpl implements TB07030Service {
 		List<IBIMS403BVO> ibims403RscdlList = new ArrayList<IBIMS403BVO>();
 		List<IBIMS403BVO> param403lst = paramData.getIbims403Lst();
 
-		// 태안 이자계산모듈이 완성되면 상환대상 조회처리 수정예정 (적용 후 주석제거 예정) 2024.07.14
 		for(int i = 0; i < param403lst.size(); i++) {
 
 			//log.debug("!!!!!중도상환원금!!!!!!!: " + param403lst.get(i).getDealMrdpPrca());
@@ -329,6 +328,8 @@ public class TB07030ServiceImpl implements TB07030Service {
 		List<IBIMS403BVO> param403RscdLst = paramData.getIbims403RscdlList();
 
 		log.debug("\nparam403RscdLst ::: {}", param403RscdLst);
+		log.debug("\nparam403Lst ::: {}", param403Lst);
+		log.debug("\nparam403DtlLst ::: {}", param403DtlLst);
 
 		// 태안 이자계산모듈이 완성되면 아래 상환등록 내용을 수정예정 (적용 후 주석제거 예정) 2024.07.14
 		int iExTrsn = 0;
@@ -610,7 +611,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 		}
 
 		return rtnValue;
-
+		//return 0;
 	}
 
 

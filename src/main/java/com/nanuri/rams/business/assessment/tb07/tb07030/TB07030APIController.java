@@ -42,10 +42,10 @@ public class TB07030APIController {
 	@PostMapping(value = "/saveRdpm")
 	public int saveRdpm(@RequestBody TB07030SVO paramData) { 
 		
-		log.debug("/saveRdpm ::: TB07030SVO paramData :::::: {}", paramData);
-		log.debug("/saveRdpm ::: TB07030SVO paramData.ibims403Lst.size() :::::: {}", paramData.getIbims403Lst().size());
-		log.debug("/saveRdpm ::: TB07030SVO paramData.getIbims403DtlLst.size() :::::: {}", paramData.getIbims403DtlLst().size());
-		log.debug("/saveRdpm ::: TB07030SVO paramData.getIbims403DtlLst.getPaiTypCd() :::::: {}", paramData.getIbims403DtlLst().get(1).getPaiTypCd());
+		// log.debug("/saveRdpm ::: TB07030SVO paramData :::::: {}", paramData);
+		// log.debug("/saveRdpm ::: TB07030SVO paramData.ibims403Lst.size() :::::: {}", paramData.getIbims403Lst().size());
+		// log.debug("/saveRdpm ::: TB07030SVO paramData.getIbims403DtlLst.size() :::::: {}", paramData.getIbims403DtlLst().size());
+		// log.debug("/saveRdpm ::: TB07030SVO paramData.getIbims403DtlLst.getPaiTypCd() :::::: {}", paramData.getIbims403DtlLst().get(1).getPaiTypCd());
 
 		return tb07030Service.saveRdpm(paramData); 
 	}
