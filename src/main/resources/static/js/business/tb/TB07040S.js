@@ -543,6 +543,18 @@ const TB07040Sjs = (function () {
           });
           return false;
         }
+
+        if(parseFloat($('#TB07040S_trQnt').val().replaceAll(',', '')) > parseFloat($('#TB07040S_hldgShqt').val().replaceAll(',', ''))){
+          var stringValidTrQnt = $('#TB07040S_hldgShqt').val();
+
+          Swal.fire({
+            icon: "error",
+            title: "[매도거래] 등록 Error!",
+            text: "[매도거래] 최대입력가능수량은 " + stringValidTrQnt + " 입니다.",
+            confirmButtonText: "확인",
+          });
+          return false;
+        }
       } else {
         if (isEmpty(trSn)) {
           Swal.fire({
