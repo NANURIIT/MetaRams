@@ -60,6 +60,42 @@ function TB03022P_srch(menuId) {
   }
 }
 
+/**
+ * 팝업내 사원번호조회팝업 이벤트
+ * @param { String } popupId 
+ * @author 김건우
+ */
+function TB03022P_inModalSrch(popupId) {
+  $(`#modal-${popupId} span.input-group-append > button[onclick*='callTB03022P']:not([disabled])`)
+    .closest("span.input-group-append")
+    .prev("input[type='text']:not([readonly])")
+    .off("input")
+    .on("input", async function () {
+
+      const currentInput = $(this);
+
+      const result = $(this).attr("id").slice(0, $(this).attr("id").length - 2) + "Nm";
+
+      $(`#${result}`).val("");
+
+      if (currentInput.val().length === 7) {
+        await srchEmpEvent(currentInput);
+      }
+    });
+
+  async function srchEmpEvent(selector) {
+    let prefix;
+    const inputId = $(selector).attr("id");
+    const lastIndex = inputId.lastIndexOf("_");
+    prefix = inputId.substring(0, lastIndex);
+    let data = $(selector).val();
+
+    $("#TB03022P_prefix").val(prefix);
+    $("#TB03022P_empno").val(data);
+    await getEmpList();
+  }
+}
+
 
 function TB03022P_clearInput(inputId) {
   $(`input[id='${inputId}']`).val("");
