@@ -802,6 +802,11 @@ function TB06011P_setPrdtInfo(e) {
 		$(`#${prefix}_ibDealNm`).val(ibDealNm);
 	}
 
+	if (prefix == 'TB09100S') {
+		$(`#${prefix}_ibDealNo`).val(ibDealNo);
+		$(`#${prefix}_ibDealNm`).val(ibDealNm);
+	}
+
 	if (prefix == 'TB06015P') {
 		excSnSet(e.prdtCd);
 	}
