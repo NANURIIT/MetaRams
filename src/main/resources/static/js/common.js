@@ -2142,19 +2142,8 @@ function chkDecdStep (menuId){
     data: JSON.stringify(paramData),
     dataType: "json",
     success: function (data) {
-      // 해당사항이 없거나 반려요청된 내역이면 결재요청 버튼만 활성화
-      if (data.toString() === "9742") {
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-          "hidden",
-          false
-        );
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-          "hidden",
-          true
-        );
-      }
       // 승인요청중이면 결재, 반려버튼 활성화
-      else if (data.toString() === '1'){
+      if (data.toString() === '1'){
         $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
         $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', false);
       }
