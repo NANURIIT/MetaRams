@@ -1,10 +1,8 @@
 package com.nanuri.rams.business.assessment.tb07.tb07180;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +24,8 @@ public class TB07180ServiceImpl implements TB07180Service {
 	private final AuthenticationFacade facade;
 
 	@Override
-	public List<IBIMS421BDTO> IBIMS421BSelect(String feeName){		
-		return ibims421bMapper.IBIMS421BSelect(feeName);
+	public List<IBIMS421BDTO> IBIMS421BSelect(IBIMS421BDTO param){		
+		return ibims421bMapper.IBIMS421BSelect(param);
 	};
 	
 	@Override
