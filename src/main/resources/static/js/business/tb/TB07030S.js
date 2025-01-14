@@ -433,6 +433,13 @@ const TB07030Sjs = (function () {
     grdRdmpTrgt = $("#grdRdmpTrgt").pqGrid("instance");
     grdRdmpTrgtDtl = $("#grdRdmpTrgtDtl").pqGrid("instance");
 
+    // grdRdmpTrgt.option("change", function (event, ui) {
+
+    //   console.log(ui.dealMrdpPrca);
+    //   console.log("Row Data:", JSON.stringify(ui.dealMrdpPrca)); // 변경된 행 데이터 전체
+    // });
+
+
     // 중도상환원금 * 중도상환수수료비율 = 중도상환수수료 calulation.java 참조 *** 식이 틀림.
     // let formulas = [
     // 	[
@@ -578,7 +585,7 @@ const TB07030Sjs = (function () {
           grdRdmpTrgtDtl.setData(data.ibims403DtlLst);
           ibims403RscdlList = data.ibims403RscdlList; // 중도상환원금이 발생했을 경우 새로운 스케줄
 
-          // console.log(ibims403RscdlList);
+          console.log(ibims403RscdlList);
 
           $("#TB07030S_rdmpTrgtPrna").val(comma(data.totalDTO.totalPrna)); // 원금합계
           $("#TB07030S_nrmlIntrAmt").val(comma(data.totalDTO.totalIntr)); // 정상이자합계
@@ -642,8 +649,13 @@ const TB07030Sjs = (function () {
     addList.forEach((item) => {
       item.prcsCpltYn = "Y";
       item.prcsDt = prcsDt;
-      item.prcsAmt = item.pmntAmt;
-      item.prcsIntrAmt = item.rdmpPrarIntr;
+
+      if(item.paiTypCd === "2"){  //정상이자
+        item.prcsIntrAmt = item.pmntPrarAmt;
+      }else{                      //원금/중도상환원금/중도상환수수료.... todo:: 정상이자 외 연체금도 이자로 들어가야 하는지?
+          item.prcsAmt = item.pmntPrarAmt;
+      }
+      
     });
 
     let ibims403Lst = chkGrdRdmpTrgt(); // 상환대상내역

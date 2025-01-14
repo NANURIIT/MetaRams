@@ -385,9 +385,9 @@ public class TB07030ServiceImpl implements TB07030Service {
 							;//iLastRdmpTmrd = Integer.parseInt(in403Dtlbvo.getRdmpTmrd());
 						}
 
-						if(("2".equals(in403Dtlbvo.getPaiTypCd()))
-						|| ("4".equals(in403Dtlbvo.getPaiTypCd()))
-						|| ("7".equals(in403Dtlbvo.getPaiTypCd()))) {
+						if(("2".equals(in403Dtlbvo.getPaiTypCd()))				//정상이자
+						|| ("4".equals(in403Dtlbvo.getPaiTypCd()))				//납부이자연체금액
+						|| ("7".equals(in403Dtlbvo.getPaiTypCd()))) {			//미수이자
 							in406BVO.setPrdtCd(in403Dtlbvo.getPrdtCd());
 							in406BVO.setTrSn(iExTrsn);
 							in406BVO.setExcSn(in403Dtlbvo.getExcSn());
@@ -412,6 +412,72 @@ public class TB07030ServiceImpl implements TB07030Service {
 					}
 				}
 			}
+
+			//중도상환 발생 시 
+			if(param403RscdLst.size() > 0){
+				log.debug("#########중도상환 발생#########");
+
+				for(int j=0; j < param403RscdLst.size(); j++){
+
+					int dltRslt = 0;
+					int insrtRslt = 0;
+
+					IBIMS403BVO rscdVo = new IBIMS403BVO();
+					param403RscdLst.get(j).setTrSn(iExTrsn);
+					rscdVo = param403RscdLst.get(j);
+
+					IBIMS406BVO in406BVO = new IBIMS406BVO();
+
+					if((in403bdto.getPrdtCd().equals(rscdVo.getPrdtCd()))
+					&& (in403bdto.getExcSn() == rscdVo.getExcSn())) {
+
+						IBIMS403BDTO rscdParamDTO = new IBIMS403BDTO();			//기존 스케줄 삭제 파라미터
+						rscdParamDTO.setPrdtCd(rscdVo.getPrdtCd());				//종목코드
+						rscdParamDTO.setExcSn(rscdVo.getExcSn());				//실행일련번호
+						rscdParamDTO.setScxDcd(rscdVo.getScxDcd());				//일정구분코드
+						rscdParamDTO.setRdmpTmrd(rscdVo.getRdmpTmrd());			//상환회차 
+
+						dltRslt = ibims403BMapper.deleteCrdlSchBss(rscdParamDTO);
+
+						if(dltRslt > 0){
+
+							rscdVo.setHndEmpno(facade.getDetails().getEno());	//조작사원번호
+							insrtRslt = ibims403BMapper.rgstNewScdl(rscdVo);
+
+							if(insrtRslt > 0){
+
+								if(rscdVo.getScxDcd().equals("04")){	//이자스케줄 
+									log.debug("신규 스케줄 (이자) >>> 여신이자계산내역 테이블 INSERT");
+									
+									in406BVO.setPrdtCd(rscdVo.getPrdtCd());
+									in406BVO.setTrSn(iExTrsn);
+									in406BVO.setExcSn(rscdVo.getExcSn());
+									in406BVO.setRkfrDt(paramData.getRkfrDt()); // 기산일자
+									in406BVO.setIntrCalcStrtDt(rscdVo.getStrtDt());
+									in406BVO.setIntrCalcEndDt(rscdVo.getEndDt());
+									in406BVO.setPaiTypCd(rscdVo.getPaiTypCd());
+									in406BVO.setTrgtDnum(rscdVo.getIntrAplyDnum());
+									in406BVO.setAplyIntr(rscdVo.getAplyIrt());
+									in406BVO.setDealTrgtAmt(rscdVo.getTrgtAmt());
+									in406BVO.setNrmlIntAmt(rscdVo.getTrgtAmt());
+									in406BVO.setHndEmpno(facade.getDetails().getEno());
+									ibims406BMapper.insertIBIMS0406B(in406BVO);
+								}else{
+									log.debug("신규 스케줄 (원금)");
+								}
+
+							}else{
+								log.debug("!!!!!스케줄 재생성 INSERT 에러!!!!!");
+							}
+
+						}else{
+							log.debug("!!!!!기존 스케줄 삭제 에러!!!!!");
+						}
+					}
+				}
+			}
+
+			//스케줄 이력 쌓기
 			IBIMS403BVO in403AllListbvo = new IBIMS403BVO();
 			in403AllListbvo.setPrdtCd(in403bdto.getPrdtCd());
 			in403AllListbvo.setExcSn(in403bdto.getExcSn());
