@@ -397,6 +397,8 @@ const TB10110Sjs = (function () {
 
     $('#TB10110S_dprtNm').on('change', function(){
       $('#TB10110S_dprtCd').val($('#TB10110S_dprtNm').val())
+      $('#TB10110S_athCd').find(`option`).css('display', 'inline');
+      $('#TB10110S_athCd').find('option').not(`option[value*=${$('#TB10110S_dprtCd').val()}]`).css('display', 'none');
     })
     
   }
