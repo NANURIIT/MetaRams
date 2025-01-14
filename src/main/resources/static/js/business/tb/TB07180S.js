@@ -801,16 +801,23 @@ function setFeeKndCd(e) {
     pq.saveAs(blob, fileName);
   }
 
-  /*
-   *  =====================DELETE모음=====================
-   */
+	/*
+	 *  =====================DELETE모음=====================
+	 */
 
-  return {
-    getFeeData: getFeeData,
-    resetInputData_TB07180S: resetInputData_TB07180S,
-    insertFeeData: insertFeeData,
-	deleteFeeData: deleteFeeData,
-	pqExportExcel: pqExportExcel,
+	return {
+		getFeeData: getFeeData,
+		resetInputData_TB07180S: resetInputData_TB07180S,
+		insertFeeData: insertFeeData,
+		deleteFeeData: deleteFeeData,
+		pqExportExcel: pqExportExcel,
+
+	};
+
+	/*
+	*  =================================================
+	*/
 	
-  };
+	
+  
 })();

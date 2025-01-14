@@ -1,10 +1,10 @@
 package com.nanuri.rams.business.common.mapper;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.nanuri.rams.business.common.dto.IBIMS421BDTO;
-
-import java.util.List;
-import java.util.Map;
 
 @Mapper
 /*
@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface IBIMS421BMapper {
     
-    public List<IBIMS421BDTO> IBIMS421BSelect(String param);
+    public List<IBIMS421BDTO> IBIMS421BSelect(IBIMS421BDTO param);
 
     public int IBIMS421BInsert(IBIMS421BDTO param);
 

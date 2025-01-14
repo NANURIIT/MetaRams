@@ -25,7 +25,7 @@
         FROM DUAL
     </select>
 
-    <select id="IBIMS421BSelect" parameterType="string" resultType="com.nanuri.rams.business.common.dto.IBIMS421BDTO">
+    <select id="IBIMS421BSelect" parameterType="com.nanuri.rams.business.common.dto.IBIMS421BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS421BDTO">
         SELECT FEE_KND_CD        /* 수수료종류코드 */
              , ACTS_CD           /* 계정과목코드 */
              , RGST_STTS_CD      /* 등록상태코드 */
@@ -46,8 +46,13 @@
              , GUID              /* GUID */
           FROM IBIMS421B
          WHERE 1=1
+		<if test="feeName != null and feeName != ''">
            AND FEE_NAME LIKE '%'|| #{feeName} ||'%'
-         ORDER BY  TO_NUMBER(FEE_KND_CD) ASC 
+		</if>
+		<if test="feeKndCd != null and feeKndCd != ''">
+           AND FEE_KND_CD = #{feeKndCd}
+		</if>
+         ORDER BY TO_NUMBER(FEE_KND_CD) ASC 
     </select>
 
     <insert id="IBIMS421BInsert" parameterType="com.nanuri.rams.business.common.dto.IBIMS421BDTO" >
