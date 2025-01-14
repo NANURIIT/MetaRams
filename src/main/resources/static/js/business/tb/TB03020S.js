@@ -179,8 +179,8 @@ const TB03020Sjs = (function(){
 					$('#TB03020S_etcCntn').val(data.etcCntn);
 
 					/* 직원정보 */
+					$('#TB03020S_chrg_empNo').val(data.chrrEmpno);
 					$('#TB03020S_chrg_empNm').val(data.empNm);
-					$('#TB03020S_chrg_eno').val(data.chrrEmpno);
 					$('#TB03020S_chrg_dprtNm').val(data.dprtNm);
 					$('#TB03020S_chrg_dprtCd').val(data.mngmBdcd);
 	
@@ -411,7 +411,7 @@ const TB03020Sjs = (function(){
 				$('#TB03020S_chrg_dprtNm').val(data.dprtNm); 
 				$('#TB03020S_chrg_dprtCd').val(data.dprtCd);
 				$('#TB03020S_chrg_empNm').val(data.empNm);
-				$('#TB03020S_chrg_eno').val(data.eno);
+				$('#TB03020S_chrg_empNo').val(data.eno);
 				$('#TB03020S_athCd').val(data.athCd);
 				// alert(data.athCd);
 
@@ -648,7 +648,7 @@ const TB03020Sjs = (function(){
 		var etcCntn = $('#TB03020S_etcCntn').val();
 
 		/* 직원정보 */
-		var chrrEmpno = $('#TB03020S_chrg_eno').val();
+		var chrrEmpno = $('#TB03020S_chrg_empNo').val();
 		var mngmBdcd = $('#TB03020S_chrg_dprtCd').val();
 
 		/* 공동영업관리자/협업부서 정보 */

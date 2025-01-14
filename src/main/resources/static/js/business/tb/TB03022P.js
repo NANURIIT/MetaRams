@@ -52,6 +52,8 @@ function TB03022P_srch(menuId) {
     const inputId = $(selector).attr("id");
     const lastIndex = inputId.lastIndexOf("_");
     prefix = inputId.substring(0, lastIndex);
+
+    console.log(prefix)
     let data = $(selector).val();
 
     $("#TB03022P_prefix").val(prefix);
