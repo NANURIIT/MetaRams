@@ -18,6 +18,9 @@
 	<script th:src="@{js/business/tb/TB07022P.js}"></script>
 	<script th:src="@{js/business/tb/TB06018P.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
+	<script th:src="@{js/business/tb/TB06081P.js}"></script>
+	<script th:src="@{js/business/tb/TB06082P.js}"></script>
+	<script th:src="@{js/business/tb/TB06083P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -32,6 +35,9 @@
 	<th:block th:replace="business/tb/TB07022P :: TB07022P"></th:block>
 	<th:block th:replace="business/tb/TB06018P :: TB06018P"></th:block>
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB06081P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB06082P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB06083P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -270,6 +276,7 @@
 													<input type="radio" value="N" id="TB06030S_frxcHdgeYn_N"  name="TB06030S_frxcHdgeYn">&nbsp;N
 												</div>
 											</div>	
+											<!-- 20250115 추후계정과목 관리/조회 기능 추가하여 데이터 가져올 예정 -->
 											<label class="col-sm-1 col-form-label text-right">계정과목</label>
 											<div class="col-sm-5 input-group">
 												<input type="text" class="form-control" id="TB06030S_actsCd" readonly>
