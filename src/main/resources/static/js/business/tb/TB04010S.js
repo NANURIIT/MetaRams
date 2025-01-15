@@ -649,7 +649,6 @@ const TB04010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         var dealDetail = data;
-        console.log("확인해보자::::", dealDetail);
 
         $("#TB04010S_R014").prop("disabled", true);
         $("#TB04010S_L007").prop("disabled", true);

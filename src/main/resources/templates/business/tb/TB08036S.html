@@ -24,8 +24,8 @@
 					<div class="ibox-content i-filter">
 						<div class="row form-group form-inline">
 							<div class="col-sm-12 input-group text-right">
-								<label class="col-sm-1 col-form-label">Deal번호</label>
-								<div class="col-sm-4">
+								<label class="col-sm-1 col-form-label"><span class="req"></span>Deal번호</label>
+								<div class="col-sm-5">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB08036S_ibDealNo">
 										<span class="input-group-append">
@@ -37,7 +37,7 @@
 									</div>
 								</div>
 								<label class="col-sm-1 col-form-label">점검기준년월</label>
-								<div class="col-sm-3 form-group">
+								<div class="col-sm-2 form-group text-right">
 									<span class="col-sm-8 input-group month">
 										<input type="text" class="form-control" id="TB08036S_inspctYyMm">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -60,9 +60,9 @@
 					<div class="tabs-container p">
 						<ul class="nav nav-tabs " role="tablist" id="TB08036S_ramsTab">
 							<li class=""><a class="nav-link active" data-toggle="tab" href="#TB08036S_tab-1">분양수지관리</a></li>
-							<li class=""><a class="nav-link" data-toggle="tab" href="#TB08036S_tab-2" onclick="TB08036Sjs.setCncCmpnyInfoList();">월별 공사 및 분양 현황</a></li>
+							<li class=""><a class="nav-link" data-toggle="tab" href="#TB08036S_tab-2" onclick="TB08036Sjs.setStepInfoList();">월별 공사 및 분양 현황</a></li>
 							<li class=""><a class="nav-link" data-toggle="tab" href="#TB08036S_tab-3" onclick="TB08036Sjs.setInspctRmrkInfoList();">월별사업관리</a></li>
-							<li class=""><a class="nav-link" data-toggle="tab" href="#TB08036S_tab-4" onclick="TB08036Sjs.setEctList();">기타사후관리</a></li>							
+							<li class=""><a class="nav-link" data-toggle="tab" href="#TB08036S_tab-4" onclick="TB08036Sjs.setEtcList();">기타사후관리</a></li>							
 							<!-- <div class="">
 								<button class="btn btn-default btn-xs mt-1" type="button">
 									<i class="fa fa-arrow-right"></i> ┃사업개요
@@ -123,11 +123,11 @@
 																<label class="col-sm-4 col-form-label">대출채권양수여부</label>
 																<div class="col-sm-8 input-group">
 																	<div class="form-check form-check-inline">
-																		<input class="form-check-input" type="radio" name="loanBondTakYn" id="loanBondTakYnYes" value="Y" checked>
+																		<input class="form-check-input" type="radio" name="loanBondTakYn" id="loanBondTakYnYes" value="Y">
 																		<label class="form-check-label">Y</label>
 																	</div>
 																	<div class="form-check form-check-inline">
-																		<input class="form-check-input" type="radio" name="loanBondTakYn" id="loanBondTakYnNo" value="N">
+																		<input class="form-check-input" type="radio" name="loanBondTakYn" id="loanBondTakYnNo" value="N" checked>
 																		<label class="form-check-label">N</label>
 																	</div>
 																</div>
@@ -147,11 +147,11 @@
 																<label class="col-sm-4 col-form-label">IPRE여부</label>
 																<div class="col-sm-8 input-group">
 																	<div class="form-check form-check-inline">
-																		<input class="form-check-input" type="radio" name="ipreYn" id="ipreYnYes" value="Y" checked>
+																		<input class="form-check-input" type="radio" name="ipreYn" id="ipreYnYes" value="Y" >
 																		<label class="form-check-label">Y</label>
 																	</div>
 																	<div class="form-check form-check-inline">
-																		<input class="form-check-input" type="radio" name="ipreYn" id="ipreYnNo" value="N">
+																		<input class="form-check-input" type="radio" name="ipreYn" id="ipreYnNo" value="N" checked>
 																		<label class="form-check-label">N</label>
 																	</div>
 																</div>
@@ -166,7 +166,7 @@
 													<div class="ibox-title">
 														<h5>▶&nbsp;공사기간</h5>
 													</div>
-													<div class="ibox-content text-right">
+													<div class="ibox-content">
 														<div class="form-group row">
 															<!-- 공사 시작일 -->
 															<label class="col-sm-4 col-form-label">공사시작일</label>
@@ -190,7 +190,7 @@
 														<div class="form-group row">
 															<!-- 공사 기간 -->
 															<label class="col-sm-4 col-form-label">공사기간</label>
-															<div class="col-sm-8 input-group">
+															<div class="col-sm-8 input-group text-right">
 																<input type="text" class="form-control text-right" id="cnstPrd">																
 															</div>
 														</div>
@@ -204,7 +204,7 @@
 													<div class="ibox-title">
 														<h5>▶&nbsp;분양기간</h5>
 													</div>
-													<div class="ibox-content text-right">														
+													<div class="ibox-content">														
 														<!-- 분양 시작일 -->
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label">분양시작일</label>
@@ -256,7 +256,7 @@
 															<div class="col-sm-6 form-group row">
 																<label class="col-sm-4 col-form-label">예상진척율</label>
 																<div class="col-sm-8 input-group">
-																	<input type="text" class="form-control text-right" id="estmPrgsRt">
+																	<input type="text" class="form-control text-right" id="estmPrgsRt" onkeyup="inputNumberFormater(this)">
 																</div>
 															</div>
 														</div>
@@ -265,13 +265,13 @@
 															<div class="col-sm-6 form-group row">
 																<label class="col-sm-4 col-form-label">실적진척율</label>
 																<div class="col-sm-8 input-group">
-																	<input type="text" class="form-control text-right" id="pfmcPrgsRt">
+																	<input type="text" class="form-control text-right" id="pfmcPrgsRt" onkeyup="inputNumberFormater(this)">
 																</div>
 															</div>
 															<div class="col-sm-6 form-group row">
 																<label class="col-sm-4 col-form-label">이주율</label>
 																<div class="col-sm-8 input-group">
-																	<input type="text" class="form-control text-right" id="mgtnRt">
+																	<input type="text" class="form-control text-right" id="mgtnRt" onkeyup="inputNumberFormater(this)">
 																</div>
 															</div>
 														</div>
@@ -347,10 +347,10 @@
 											<div class="ibox col-sm-12">
 												<div class="row">													
 													<div class="col-sm-12 text-right mb-2">
-														<button id="" class="btn btn-success" onclick="TB08036Sjs.modifyDealInfoTB08036S();">
+														<button id="" class="btn btn-success" onclick="TB08036Sjs.dealInfoTab_TB08036('modify');">
 															<i class="fa fa-save"></i>&nbsp;저장
 														</button>
-														<button id="" class="btn btn-danger mr-2" onclick="TB08036Sjs.deleteDealInfoTB08036S();">
+														<button id="" class="btn btn-danger mr-2" onclick="TB08036Sjs.dealInfoTab_TB08036('delete');">
 															<i class="fa fa-eraser"></i>&nbsp;삭제
 														</button>
 													</div>													
@@ -358,8 +358,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
-								<!-- 당월 사업 관리의견 -->
+								</div>								
 								<div role="tabpanel" id="TB08036S_tab-2" class="tab-pane">
 									<div class="panel-body">
 										<div class="row">											
@@ -370,7 +369,7 @@
 													<div class="col-sm-12">
 														<div class="ibox">
 															<div class="ibox-content">																
-																	<div id="TB08036S_gridCncCmpnyInfo"></div>																
+																	<div id="TB08036S_gridStepInfo"></div>																
 															</div>
 														</div>
 													</div>
@@ -382,7 +381,7 @@
 															<label class="col-sm-1 col-form-label"><span class="req"></span>기준년월</label>
 															<div class="col-sm-2 form-group">
 																<span class="col-sm-12 input-group month">
-																	<input type="text" class="form-control" id="TB08036S_inspctYyMm">
+																	<input type="text" class="form-control" id="step_inspctYyMm">
 																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 																</span>
 															</div>
@@ -394,21 +393,21 @@
 															</div>
 															<label class="col-sm-1 col-form-label"></span>예상진척율</label>
 															<div class="col-sm-2">
-																<input type="text" class="form-control" id="">
+																<input type="text" class="form-control text-right" id="stepEstmPrgsRt" onkeyup="inputNumberFormater(this)">
 															</div>
 															<label class="col-sm-1 col-form-label"></span>실적진척율</label>
 															<div class="col-sm-2">
-																<input type="text" class="form-control" id="">
+																<input type="text" class="form-control text-right" id="stepPfmcPrgsRt" onkeyup="inputNumberFormater(this)"> 
 															</div>														
 														</div>
 													</div>
 													<div class="ibox col-sm-12">
 														<div class="row">													
 															<div class="col-sm-12 text-right mb-2">
-																<button id="" class="btn btn-success" onclick="">
+																<button id="" class="btn btn-success" onclick="TB08036Sjs.stepInfoTab_TB08036('modify')">
 																	<i class="fa fa-save"></i>&nbsp;저장
 																</button>
-																<button id="" class="btn btn-danger mr-2" onclick="">
+																<button id="" class="btn btn-danger mr-2" onclick="TB08036Sjs.stepInfoTab_TB08036('delete')">
 																	<i class="fa fa-eraser"></i>&nbsp;삭제
 																</button>
 															</div>													
@@ -441,25 +440,25 @@
 														<label class="col-sm-1 col-form-label"><span class="req"></span>기준년월</label>
 														<div class="col-sm-2 form-group">
 															<span class="col-sm-12 input-group month">
-																<input type="text" class="form-control" id="TB08036S_inspctYyMm">
+																<input type="text" class="form-control" id="rmrkInspctYyMm">
 																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 															</span>
 														</div>
 														</div>
 														<div class="form-group row">
 															<label for="inspctRmrk" class="col-sm-1 col-form-label">점검결과</label>
-															<div class="col-sm-11">
-																<textarea class="form-control ml-1" id="inspctRmrk" rows="4"></textarea>
+															<div class="col-sm-10">
+																<textarea class="form-control ml-1" id="monCheckRslt" rows="4"></textarea>
 															</div>
 														</div>
 													</div>
 													<div class="ibox col-sm-12">
 														<div class="row">													
 															<div class="col-sm-12 text-right mb-2">
-																<button id="" class="btn btn-success" onclick="">
+																<button id="" class="btn btn-success" onclick="TB08036Sjs.inspctRmrkTab_TB08036S('modify')">
 																	<i class="fa fa-save"></i>&nbsp;저장
 																</button>
-																<button id="" class="btn btn-danger mr-2" onclick="">
+																<button id="" class="btn btn-danger mr-2" onclick="TB08036Sjs.inspctRmrkTab_TB08036S('delete')">
 																	<i class="fa fa-eraser"></i>&nbsp;삭제
 																</button>
 															</div>													
@@ -490,9 +489,9 @@
 													<div class="ibox-content text-right">
 														<div class="form-group row">
 														<label class="col-sm-1 col-form-label"><span class="req"></span>점검일자</label>
-														<div class="col-sm-8 input-group">
+														<div class="col-sm-4 input-group">
 															<div class="input-group date">
-																<input type="text" class="form-control date-input text-right" id="inspctDt">
+																<input type="text" class="form-control date-input" id="inspctDt">
 																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 															</div>
 														</div>
@@ -513,10 +512,10 @@
 													<div class="ibox col-sm-12">
 														<div class="row">													
 															<div class="col-sm-12 text-right mb-2">
-																<button id="" class="btn btn-success" onclick="TB08036Sjs.modifyEtcInfoTB08036S();">
+																<button id="" class="btn btn-success" onclick="TB08036Sjs.etcTab_TB08036S('modify');">
 																	<i class="fa fa-save"></i>&nbsp;저장
 																</button>
-																<button id="" class="btn btn-danger mr-2" onclick="TB08036Sjs.deleteDealInfoTB08036S()">
+																<button id="" class="btn btn-danger mr-2" onclick="TB08036Sjs.etcTab_TB08036S('delete')">
 																	<i class="fa fa-eraser"></i>&nbsp;삭제
 																</button>
 															</div>													

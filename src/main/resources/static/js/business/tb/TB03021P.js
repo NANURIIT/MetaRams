@@ -205,14 +205,16 @@ async function getDealInfo() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      if($(`div[id='modal-TB03021P']`).css('display') === "none" && data.length === 1){
-				setDealInfo(data[0]);
-				modalClose_TB03021P();
-			}
-			else {
-				callTB03021P($('#TB03021P_prefix').val());
-				setTimeout(() => dataIbDealSetGrid(data), 400)
-			}
+      if (
+        $(`div[id='modal-TB03021P']`).css("display") === "none" &&
+        data.length === 1
+      ) {
+        setDealInfo(data[0]);
+        modalClose_TB03021P();
+      } else {
+        callTB03021P($("#TB03021P_prefix").val());
+        setTimeout(() => dataIbDealSetGrid(data), 400);
+      }
     },
   });
 }
@@ -281,6 +283,9 @@ function setDealInfo(e) {
   }
   if (prefix == "TB08010S") {
     TB08010Sjs.getEamList();
+  }
+  if (prefix == "TB08036S") {
+    TB08036Sjs.getDealInfoTB08036S();
   }
 
   modalClose_TB03021P();

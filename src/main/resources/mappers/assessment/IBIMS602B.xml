@@ -17,10 +17,8 @@
            AND DEAL_NO = #{dealNo}
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctYm)">
            AND INSPCT_YM = #{inspctYm}
-		   </if>
-		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(inspctYm)">
-           AND INSPCT_YM = (SELECT MAX(INSPCT_YM) FROM IBIMS602B WHERE DEAL_NO = #{dealNo})
-		   </if>
+		   </if>	
+       ORDER BY INSPCT_YM DESC	   
     </select>
     
     <!-- 당월사업관리의견등록 -->
@@ -64,6 +62,9 @@
           FROM IBIMS602B
          WHERE 1=1
            AND DEAL_NO                                           = #{dealNo}                                         						 /* 딜번호 */
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctYm)">
+           AND INSPCT_YM = #{inspctYm}                /* 점검기준년월 */
+           </if>
     </delete>
 	
 </mapper>

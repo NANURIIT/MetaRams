@@ -16,7 +16,7 @@
           FROM IBIMS603B
          WHERE 1=1
            AND DEAL_NO = #{dealNo}
-         ORDER BY INSPCT_DT
+         ORDER BY INSPCT_DT DESC
     </select>
     
     <!-- 기타사후관리등록 -->
@@ -52,7 +52,9 @@
           FROM IBIMS603B
          WHERE 1=1
            AND DEAL_NO = #{dealNo}										/* 딜번호 */	
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDt)">
            AND INSPCT_DT = #{inspctDt}                /* 점검기준년월 */
+           </if>
     </delete>
 
 </mapper>

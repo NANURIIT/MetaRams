@@ -6,7 +6,11 @@
     <select id="selectIBIMS611B" resultType="com.nanuri.rams.business.common.vo.IBIMS611BVO" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
    		SELECT DEAL_NO				/* Deal번호 */
 			 		 , STDR_YM				/* 기준년월 */
-			 		 , BUSI_PRG_STEP	/* 사업진행단계 */
+			 		 , (SELECT CD_VL_NM
+           FROM IBIMS002B
+          WHERE CMNS_CD_GRP = 'B014'
+            AND CD_VL_ID  = BUSI_PRG_STEP) AS BUSI_PRG_STEP_NM	/* 사업진행단계 */
+					 , BUSI_PRG_STEP
 			 		 , ESTM_PRGS_RT		/* 예상진척률 */
 			 		 , PFMC_PRGS_RT		/* 실적진척률 */
 			 		 , HND_DETL_DTM		/* 조작상세일시 */
@@ -16,12 +20,16 @@
 			 		 , GUID						/* guid */
         FROM IBIMS611B	/* 월별공사및분양형황 */
        WHERE 1=1
-         AND DEAL_NO  = #{dealNo}	                                       
+         AND DEAL_NO  = #{dealNo}
+				 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(stdrYm)">
+           AND STDR_YM = #{stdrYm}
+		   </if>		  
+			 ORDER BY STDR_YM DESC                                  
     </select>
         
 	<!-- 분양수지관리등록  -->
     <insert id="insertIBIMS611B" parameterType="com.nanuri.rams.business.common.vo.IBIMS611BVO">
-		INSERT IBIMS611B    /* 월별공사및분양형황 */
+		INSERT INTO IBIMS611B    /* 월별공사및분양형황 */
 				 (
 				   DEAL_NO				/* Deal번호 */
 				 , STDR_YM				/* 기준년월 */
@@ -34,21 +42,20 @@
 				 , HND_TR_ID			/* 조작거래id */
 				 , GUID						/* guid */
 				 )
-				 VALUES
-    		     <foreach collection="list" item="item" separator=";">		
+				 VALUES    		   
 				 (                   
-				   #{item.dealNo}         /* Deal번호 */ 
-				 , #{item.stdrYm}         /* 기준년월 */ 
-				 , #{item.busiPrgStep}    /* 사업진행단계 */     
-				 , #{item.estmPrgsRt}     /* 예상진척률 */    
-				 , #{item.pfmcPrgsRt}     /* 실적진척률 */    
+				   #{dealNo}         /* Deal번호 */ 
+				 , #{stdrYm}         /* 기준년월 */ 
+				 , #{busiPrgStep}    /* 사업진행단계 */     
+				 , #{estmPrgsRt}     /* 예상진척률 */    
+				 , #{pfmcPrgsRt}     /* 실적진척률 */    
 				 , SYSDATE								/* 조작상세일시 */
-				 , #{item.hndEmpno}       /* 조작사원번호 */  
-				 , #{item.hndTmnlNo}      /* 조작단말기번호 */   
-				 , #{item.hndTrId}        /* 조작거래id */ 
-				 , #{item.guid}           /* guid */ 
+				 , #{hndEmpno}       /* 조작사원번호 */  
+				 , #{hndTmnlNo}      /* 조작단말기번호 */   
+				 , #{hndTrId}        /* 조작거래id */ 
+				 , #{guid}           /* guid */ 
 				 )
-		</foreach>
+	
     </insert>
 	
 	<!-- 분양수지관리변경 -->
@@ -73,6 +80,9 @@
         DELETE 
           FROM IBIMS611B  /* 월별공사및분양형황 */
          WHERE 1=1
-           AND DEAL_NO = #{dealNo}  
+           AND DEAL_NO = #{dealNo}
+					 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(stdrYm)">
+           AND STDR_YM = #{stdrYm}                /* 점검기준년월 */
+           </if>
     </delete>
 </mapper>
