@@ -915,7 +915,7 @@ const TB06010Sjs = (function(){
 					$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", false);
 				}
 				
-				// 권한확인
+				// 결재상태확인
 				chkDecdStep("TB06010S");
 
 			}
