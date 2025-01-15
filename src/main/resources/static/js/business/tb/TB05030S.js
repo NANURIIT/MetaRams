@@ -911,8 +911,9 @@ const TB05030Sjs = (function () {
           all: true,
           header: true,
           check: "Y",
-          uncheck: "N",
+          uncheck: "Y",
         },
+        hidden: true,
       },
       {
         title: "참석자",

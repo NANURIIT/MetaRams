@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.common.dto.IBIMS602BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS603BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS611BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS601BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS602BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS603BMapper;
@@ -40,7 +41,7 @@ public class TB08036ServiceImpl implements TB08036Service {
 		IBIMS601BVO result = new IBIMS601BVO();
 		List<IBIMS602BDTO> s602b = new ArrayList<IBIMS602BDTO>();
 		List<IBIMS603BDTO> s603b = new ArrayList<IBIMS603BDTO>();
-		List<IBIMS611BVO> s611b = new ArrayList<IBIMS611BVO>();
+		List<IBIMS611BDTO> s611b = new ArrayList<IBIMS611BDTO>();
 
 		result = ibims601BMapper.selectIBIMS601B(param);
 		s602b = ibims602BMapper.selectIBIMS602B(param);
@@ -63,56 +64,71 @@ public class TB08036ServiceImpl implements TB08036Service {
 	@Override
 	public void modifyDealInfo(IBIMS601BVO param) {
 		
-		int rtnValue = 0;
-		
 		param.setHndEmpno(facade.getDetails().getEno());
 		
 		ibims601BMapper.deleteIBIMS601B(param);
-		rtnValue = ibims601BMapper.insertIBIMS601B(param);
+		ibims601BMapper.insertIBIMS601B(param);
 		
-		if((param.getInspctRmrk() != null ) 
-		&& (param.getInspctYm() != null ))
-		{
-			ibims602BMapper.deleteIBIMS602B(param);
-			rtnValue = ibims602BMapper.insertIBIMS602B(param);
-		}	
-
-		ibims611BMapper.deleteIBIMS611B(param);
-		
-		if(param.getIbims611bdto() != null && !param.getIbims611bdto().isEmpty()) {
-
-			for(int i = 0; param.getIbims611bdto().size() > i; i ++) {
-				System.out.println(">>> deal ["+param.getIbims611bdto().get(i).getDealNo()+"] <<<<<<<");
-				param.getIbims611bdto().get(i).setHndEmpno(facade.getDetails().getEno());
-			}
-			rtnValue = ibims611BMapper.insertIBIMS611B(param.getIbims611bdto());			
-		}			
 	}
+
+	//월별공사및분양현황 등록
+	@Override
+	public void insertIBIMS611B(IBIMS611BDTO param) {
+		IBIMS601BVO deleteParam = new IBIMS601BVO();
+		deleteParam.setDealNo(param.getDealNo());
+		deleteParam.setStdrYm(param.getStdrYm());	
+		ibims611BMapper.deleteIBIMS611B(deleteParam);
+		param.setHndEmpno(facade.getDetails().getEno());
+    ibims611BMapper.insertIBIMS611B(param);
+	}
+
+	//월별사업관리 등록
+	@Override
+	public void insertIBIMS602B(IBIMS602BDTO param) {
+		IBIMS601BVO deleteParam = new IBIMS601BVO();
+		deleteParam.setDealNo(param.getDealNo());
+		deleteParam.setInspctYm(param.getInspctYm());
+		ibims602BMapper.deleteIBIMS602B(deleteParam);
+		param.setHndEmpno(facade.getDetails().getEno());
+		ibims602BMapper.insertIBIMS602B(param);
+	
+	}
+
 	// 기타사후관리 등록
 	@Override
 	public void insertIBIMS603B(IBIMS603BDTO param) {
-		
+		IBIMS601BVO deleteParam = new IBIMS601BVO();
+		deleteParam.setDealNo(param.getDealNo());
+		deleteParam.setInspctDt(param.getInspctDt());
+		ibims603BMapper.deleteIBIMS603B(deleteParam);
     param.setHndEmpno(facade.getDetails().getEno());
     ibims603BMapper.insertIBIMS603B(param);
     
 	}
-	// 기타사후관리 등록
+
+
 	@Override
-	public void deleteIBIMS603B(IBIMS601BVO param) {
-		
-		ibims603BMapper.deleteIBIMS603B(param);
-    
+	public void deleteDealInfo(IBIMS601BVO param) {		
+		ibims601BMapper.deleteIBIMS601B(param);
+		ibims602BMapper.deleteIBIMS602B(param);
+		ibims611BMapper.deleteIBIMS611B(param);
+		ibims603BMapper.deleteIBIMS603B(param);				
+	}
+	@Override
+	public void deleteIBIMS602B(IBIMS601BVO param) {
+		ibims602BMapper.deleteIBIMS602B(param);		
 	}
 
 	@Override
-	public void deleteDealInfo(IBIMS601BVO param) {
-		
-		ibims601BMapper.deleteIBIMS601B(param);
-		ibims602BMapper.deleteIBIMS602B(param);
-		//ibims603BMapper.deleteIBIMS603B(param);
-		ibims611BMapper.deleteIBIMS611B(param);
-		
+	public void deleteIBIMS611B(IBIMS601BVO param) {
+		ibims611BMapper.deleteIBIMS611B(param);		
 	}
+
+	@Override
+	public void deleteIBIMS603B(IBIMS601BVO param) {
+		ibims603BMapper.deleteIBIMS603B(param);		
+	}
+
 
 
 }
