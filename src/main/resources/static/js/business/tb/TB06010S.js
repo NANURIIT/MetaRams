@@ -63,6 +63,9 @@ const TB06010Sjs = (function(){
 		});
 		
 		getDealInfoFromWF();
+
+		// 승인요청 종목코드
+		getApvlItem();
 	});
 
 
@@ -2093,11 +2096,23 @@ const TB06010Sjs = (function(){
 			$("#TB06010S_ibDealNm").val(sessionStorage.getItem("wfDealNm"));
 			$("#TB06010S_prdtCd").val(sessionStorage.getItem("wfPrdtCd"));
 			$("#TB06010S_prdtNm").val(sessionStorage.getItem("wfPrdtNm"));
-		getDealList();
+			getDealList();
 		}else{
 			console.log("WF세션 비었음");
 		}
-		sessionStorage.clear();
+		// sessionStorage.clear();
+	}
+
+	function getApvlItem () {
+		console.log("함수타는지 확인용");
+		if(sessionStorage.getItem("apvlItem")){
+			console.log("확인입니다 휴먼.");
+			$("#TB06010S_prdtCd").val(sessionStorage.getItem("apvlItem"));
+			getDealList();
+		}else{
+			console.log("이프엘즈구문 확인용");
+		}
+		// sessionStorage.clear();
 	}
 
 	return {
@@ -2129,5 +2144,6 @@ const TB06010Sjs = (function(){
 		, sdvdCd : sdvdCd
 
 		, getDealInfoFromWF : getDealInfoFromWF
+		, getApvlItem: getApvlItem
 	}
 })();
