@@ -14,7 +14,7 @@ public class IBIMS602BDTO {
     
     private String         dealNo;                             // 딜번호
     private String         inspctYm;                           // 점검기준년월
-    private String         inspctRmrk;                          // 점검결과
+    private String         checkRslt;                          // 점검결과
     private Date           hndDetlDtm;                         // 조작상세일시
     private String         hndEmpno;                           // 조작사원번호
     private String         hndTmnlNo;                          // 조작단말기번호

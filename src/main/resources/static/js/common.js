@@ -33,48 +33,74 @@ function settingFunction() {
 
         // mouseup 이벤트 해제 (중복 방지)
         $(document).off("mouseup.draggableDestroy");
-
       });
     }
   );
-  
+
   // 딜조회
-  if ( $('script[src="js/business/tb/TB03021P.js"]').attr("src") === "js/business/tb/TB03021P.js" ) {
+  if (
+    $('script[src="js/business/tb/TB03021P.js"]').attr("src") ===
+    "js/business/tb/TB03021P.js"
+  ) {
     TB03021P_srch(url);
-    TB03022P_inModalSrch('TB03021P');
+    TB03022P_inModalSrch("TB03021P");
   }
   // 사원조회
-  if ( $('script[src="js/business/tb/TB03022P.js"]').attr("src") === "js/business/tb/TB03022P.js" ) {
+  if (
+    $('script[src="js/business/tb/TB03022P.js"]').attr("src") ===
+    "js/business/tb/TB03022P.js"
+  ) {
     TB03022P_srch(url);
   }
   // 기업체조회
-  if ( $('script[src="js/business/tb/TB03061P.js"]').attr("src") === "js/business/tb/TB03061P.js" ) {
+  if (
+    $('script[src="js/business/tb/TB03061P.js"]').attr("src") ===
+    "js/business/tb/TB03061P.js"
+  ) {
     TB03061P_srchMtr(url);
   }
   // 안건조회
-  if ( $('script[src="js/business/tb/TB04011P.js"]').attr("src") === "js/business/tb/TB04011P.js" ) {
+  if (
+    $('script[src="js/business/tb/TB04011P.js"]').attr("src") ===
+    "js/business/tb/TB04011P.js"
+  ) {
     TB04011P_srchMtr(url);
-    TB03022P_inModalSrch('TB04011P');
+    TB03022P_inModalSrch("TB04011P");
   }
   // 종목조회
-  if ( $('script[src="js/business/tb/TB06011P.js"]').attr("src") === "js/business/tb/TB06011P.js" ) {
+  if (
+    $('script[src="js/business/tb/TB06011P.js"]').attr("src") ===
+    "js/business/tb/TB06011P.js"
+  ) {
     TB06011P_srchPrdt(url);
-    TB03022P_inModalSrch('TB06011P');
+    TB03022P_inModalSrch("TB06011P");
   }
   // 담보조회
-  if ( $('script[src="js/business/tb/TB06017P.js"]').attr("src") === "js/business/tb/TB06017P.js" ) {
+  if (
+    $('script[src="js/business/tb/TB06017P.js"]').attr("src") ===
+    "js/business/tb/TB06017P.js"
+  ) {
     TB06017P_srch(url);
   }
   // 기업체등록
-  if( $('script[src="js/business/tb/TB06019P.js"]').attr("src") === "js/business/tb/TB06019P.js" ) {
-    TB03061P_inModalSrchMtr('TB06019P');
+  if (
+    $('script[src="js/business/tb/TB06019P.js"]').attr("src") ===
+    "js/business/tb/TB06019P.js"
+  ) {
+    TB03061P_inModalSrchMtr("TB06019P");
   }
   // 은행조회
-  if ( $('script[src="js/business/tb/TB07021P.js"]').attr("src") === "js/business/tb/TB07021P.js" ) {
+  if (
+    $('script[src="js/business/tb/TB07021P.js"]').attr("src") ===
+    "js/business/tb/TB07021P.js"
+  ) {
     TB07021P_srchFnlt(url);
   }
   // 펀드조회
-  if ( $('script[src="js/business/tb/TB07022P.js"]').attr("src") === "js/business/tb/TB07022P.js" ) {
+  if (
+    $('script[src="js/business/tb/TB07022P.js"]').attr("src") ===
+    "js/business/tb/TB07022P.js"
+  ) {
     TB07022P_srchFnd(url);
   }
 
@@ -250,24 +276,23 @@ function removeWhiteSpace(str) {
  * @returns {boolean} 빈값 여부
  */
 function isEmpty(value) {
+  //20250110 case 스페이스바 trim 추가
+  if (value != null) {
+    value = value.toString().trim();
+  }
+  //----------
 
-	//20250110 case 스페이스바 trim 추가
-	if (value != null) {
-		value = value.toString().trim();
-	}
-	//----------
-	
-	if (
-		value == "" ||
-		value == null ||
-		value == "null" ||
-		value == undefined ||
-		(value != null && typeof value == "object" && !Object.keys(value).length)
-	) {
-		return true;
-	}
+  if (
+    value == "" ||
+    value == null ||
+    value == "null" ||
+    value == undefined ||
+    (value != null && typeof value == "object" && !Object.keys(value).length)
+  ) {
+    return true;
+  }
 
-	return false;
+  return false;
 }
 
 function isNotEmpty(value) {
@@ -622,13 +647,17 @@ function formatPhoneNo(str) {
  */
 function formatDate(datetmp) {
   if (isNotEmpty(datetmp)) {
-    var year = datetmp.substr(0, 4);
-    var month = datetmp.substr(4, 2);
-    var day = datetmp.substr(6, 2);
+    var year = datetmp.substr(0, 4); // 연도 추출
+    var month = datetmp.substr(4, 2); // 월 추출
+    var day = datetmp.length > 6 ? datetmp.substr(6, 2) : ""; // 일자 추출 (길이가 6 초과일 경우)
 
-    return [year, month, day].join("-");
+    if (day) {
+      return [year, month, day].join("-"); // 년-월-일
+    } else {
+      return [year, month].join("-"); // 년-월
+    }
   } else {
-    return datetmp;
+    return datetmp; // 비어 있는 경우 그대로 반환
   }
 }
 
@@ -2108,33 +2137,38 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) {}
  * @discription
  * 실행시키시면 됩니다.
  */
-function chkDecdStep (menuId){
-
+function chkDecdStep(menuId) {
   let chrrNo = $(`#${menuId}_empNo`).val();
 
-  if(chrrNo === $('#userEno').val()){
-    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop("hidden", false);
-    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop("hidden", true);
+  if (chrrNo === $("#userEno").val()) {
+    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+      "hidden",
+      false
+    );
+    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+      "hidden",
+      true
+    );
     return;
   }
 
-  let dealNo = $(`#${menuId}_ibDealNo`).val() || ''   // 딜번호
-  let prdtCd = $(`#${menuId}_prdtCd`).val() || ''     // 상품코드
-  let decdJobDcd = menuId                             // 결재업무구분코드
-  let scrnNo = menuId                                 // 화면번호
-  let excSeq = $(`#${menuId}_excSeq`).val() || 0      // 실행순번
-  let rqstSq = $(`#${menuId}_rqstSq`).val() || 0      // 신청순번
-  let trSeq = $(`#${menuId}_trSeq`).val() || 0        // 거래순번
+  let dealNo = $(`#${menuId}_ibDealNo`).val() || ""; // 딜번호
+  let prdtCd = $(`#${menuId}_prdtCd`).val() || ""; // 상품코드
+  let decdJobDcd = menuId; // 결재업무구분코드
+  let scrnNo = menuId; // 화면번호
+  let excSeq = $(`#${menuId}_excSeq`).val() || 0; // 실행순번
+  let rqstSq = $(`#${menuId}_rqstSq`).val() || 0; // 신청순번
+  let trSeq = $(`#${menuId}_trSeq`).val() || 0; // 거래순번
 
   let paramData = {
-    dealNo: dealNo
-    , prdtCd: prdtCd
-    , decdJobDcd: decdJobDcd
-    , scrnNo: scrnNo
-    , excSeq: excSeq
-    , rqstSq: rqstSq
-    , trSeq: trSeq
-  }
+    dealNo: dealNo,
+    prdtCd: prdtCd,
+    decdJobDcd: decdJobDcd,
+    scrnNo: scrnNo,
+    excSeq: excSeq,
+    rqstSq: rqstSq,
+    trSeq: trSeq,
+  };
 
   $.ajax({
     type: "POST",
@@ -2144,9 +2178,15 @@ function chkDecdStep (menuId){
     dataType: "json",
     success: function (data) {
       // 승인요청중이면 결재, 반려버튼 활성화
-      if (data.toString() === '1'){
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', false);
+      if (data.toString() === "1") {
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+          "hidden",
+          true
+        );
+        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+          "hidden",
+          false
+        );
       }
       // 승인요청 진행중이나 담당자가 아니거나 결재자가 아니면 아무것도 뜨지않음
       else {
@@ -2172,7 +2212,6 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) {}
  * 컴포넌트에 포커스를 위치한다
  * ex) idFocus('TB06040S_ctrtDt');
  */
-function idFocus(id){
-	$('#' + id).focus();
+function idFocus(id) {
+  $("#" + id).focus();
 }
-
