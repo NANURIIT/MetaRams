@@ -518,12 +518,13 @@ function callTB06011P(prefix, e) {
  * hide modal
  */
 function modalClose_TB06011P() {
-	clearTB06011P();
-	TB06011P_gridState = 1;
-	if (typeof fnltPgGrid != "undefined") TB06011P_arrPqGridPrdtCdList.setData([]);
-	//$('#TB06011P_prdtCdList').pqGrid("destroy");
 	$('#modal-TB06011P').modal('hide');
 };
+
+$("#modal-TB03061P").on('hide.bs.modal', function () {
+	clearTB06011P();
+	$('#TB06011P_prdtCdList').pqGrid("destroy");
+});
 
 /**
  * clear modal

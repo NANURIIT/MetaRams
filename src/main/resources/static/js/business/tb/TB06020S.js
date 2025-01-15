@@ -19,6 +19,7 @@ const TB06020Sjs = (function(){
 		resetSearchRequiment_TB06020S();
 		loginUserSet();
 		getDealInfoFromWF();
+		getApvlItem('TB06020S', getDealList);
 	});
 	
 	function loginUserSet(){

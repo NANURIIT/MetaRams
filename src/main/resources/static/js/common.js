@@ -2022,14 +2022,16 @@ function needRunFn(menuId) {
   //워크플로우에서 버튼 눌러 페이지 이동시 인풋 자동 세팅
 
   if (menuId === "TB06010S") {
-    // TB06010Sjs.getDealInfoFromWF();
-    TB06010Sjs.getApvlItem();
+    TB06010Sjs.getDealInfoFromWF();
+    getApvlItem( menuId, TB06010Sjs.getDealList);
   }
   if (menuId === "TB06020S") {
     TB06020Sjs.getDealInfoFromWF();
+    getApvlItem( menuId, TB06020Sjs.getDealList);
   }
   if (menuId === "TB06030S") {
     TB06030Sjs.getDealInfoFromWF();
+    getApvlItem( menuId, TB06030Sjs.getDealList);
   }
   if (menuId === "TB06040S") {
     TB06040Sjs.getDealInfoFromWF();
@@ -2176,3 +2178,28 @@ function idFocus(id){
 	$('#' + id).focus();
 }
 
+/**
+ * 결재내역조회에서 이동시 결재관련정보조회
+ * @param {String} menuId 
+ * @param {function} inq_fucntion 
+ * @description 
+ * 결재내역조회에서 세션값 저장.
+ * 결재내역조회에서 페이지이동버튼 클릭시 조회
+ * 화면내 document 에서 한번 실행시켜줘야 합니다.
+ */
+function getApvlItem ( menuId, inq_fucntion ) {
+
+  // 세션값이 없는 경우 아무것도 하지 않음
+  if(!sessionStorage.getItem("apvlItemDealNo")){
+    
+  }
+  // 기본세팅값
+  else{
+    $(`#${menuId}_ibDealNo`).val(sessionStorage.getItem("apvlItemDealNo"));
+    $(`#${menuId}_ibDealNm`).val(sessionStorage.getItem("apvlItemDealNm"));
+    $(`#${menuId}_prdtCd`).val(sessionStorage.getItem("apvlItemPrdtCd"));
+    $(`#${menuId}_prdtNm`).val(sessionStorage.getItem("apvlItemPrdtNm"));
+    inq_fucntion()
+  }
+  sessionStorage.clear();
+}

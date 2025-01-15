@@ -42,7 +42,7 @@ const TB07120Sjs = (function () {
         "/D016" + //  결재단계구분코드
         // "/R031" + //  입출금구분코드
         "/I027" + //  통화구분코드
-        // "/D015" + //  업무구분코드
+        "/D015" + //  업무구분코드
         "/D006" + //  결재상태코드
         "/F008",  //  자금구분코드
       false
@@ -59,8 +59,9 @@ const TB07120Sjs = (function () {
     TB07120S_grdSelect.I027 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "I027";
     });
-    // TB07120S_grdSelect.D015 = selectBox.filter(function (item) { 
-    //   return item.cmnsGrpCd === 'D015'; });
+    TB07120S_grdSelect.D015 = selectBox.filter(function (item) { 
+      return item.cmnsGrpCd === 'D015'; 
+    });
     TB07120S_grdSelect.D006 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "D006";
     });

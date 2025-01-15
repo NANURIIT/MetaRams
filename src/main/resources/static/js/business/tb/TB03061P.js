@@ -183,7 +183,7 @@ function callTB03061P(prefix, rowIndx) {
  * 그리드호출
  */
 function TB03061P_roadBzepList() {
-	modalPqGridBzepList = $("#TB06011P_prdtCdList").pqGrid('instance');
+	modalPqGridBzepList = $("#gridBzepList").pqGrid('instance');
 	if (typeof modalPqGridBzepList == "undefined") {
 		let arrModalPqGridObj = [
 			{

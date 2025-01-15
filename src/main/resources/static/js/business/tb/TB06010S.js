@@ -65,7 +65,7 @@ const TB06010Sjs = (function(){
 		getDealInfoFromWF();
 
 		// 승인요청 종목코드
-		getApvlItem();
+		getApvlItem('TB06010S', getDealList);
 	});
 
 
@@ -776,10 +776,6 @@ const TB06010Sjs = (function(){
 			data: paramData,
 			dataType: "json",
 			error : function(request,  error ){
-				/*console.log("code:"+request.status);
-				console.log("message:"+request.responseText);
-				console.log("error:"+error);
-				*/
 				Swal.fire({
 					title: '안건 조회 확인',
 					icon: 'error',
@@ -1103,8 +1099,6 @@ const TB06010Sjs = (function(){
 		
 		var paramData = makeParam(pageDcd, param);
 
-		console.log("regPrdtCd.paramData ::: " + JSON.stringify(paramData));
-		
 		if( isEmpty($('#TB06010S_ibDealNo').val()) ){
 			return false;
 		}
@@ -1526,7 +1520,7 @@ const TB06010Sjs = (function(){
 
 	// 셀다운승인조건탭
 	function getIBIMS208BDTOInfo(prdtCd) {
-		console.log(">>>>>>>>>>> 1.getIBIMS208BDTOInfo["+prdtCd+"]<<<<<<<<<<<<");
+		// console.log(">>>>>>>>>>> 1.getIBIMS208BDTOInfo["+prdtCd+"]<<<<<<<<<<<<");
 		if (isEmpty($('#TB06010S_res_prdtCd').val()) && $('#TB06010S_E022').val() !== "92") {
 			$('#registApvlCnd').attr('disabled', false);
 		}
@@ -1534,7 +1528,7 @@ const TB06010Sjs = (function(){
 		var paramData = {
 			"prdtCd" : prdtCd
 		}
-		console.log(">>>>>>>>>>> 2.getIBIMS208BDTOInfo["+prdtCd+"]<<<<<<<<<<<<");
+		// console.log(">>>>>>>>>>> 2.getIBIMS208BDTOInfo["+prdtCd+"]<<<<<<<<<<<<");
 		$.ajax({
 			type: "GET",
 			url: "/TB06010S/getIBIMS208BDTOInfo",
@@ -1764,8 +1758,6 @@ const TB06010Sjs = (function(){
 					, "itrRelrChrCd": arrPqGridItrRelrInfo.pdata[i].itrRelrChrCd	     	// 성격
 					, "itrRelrShpCd": arrPqGridItrRelrInfo.pdata[i].itrRelrShpCd    	 	// 형태				
 				};
-				console.log(arrPqGridItrRelrInfo.pdata[i].itrRelrChrNm);
-				
 				itrList.push(itrInfo);
 			}
 			
@@ -1970,8 +1962,6 @@ const TB06010Sjs = (function(){
 				, "crevAmt": crevAmt						
 			}
 			
-			console.log("paramData{}", paramData);
-			
 			$.ajax({
 				type: "POST",
 				url: "/TB06010S/registAssetInfo",
@@ -2099,18 +2089,6 @@ const TB06010Sjs = (function(){
 			getDealList();
 		}else{
 			console.log("WF세션 비었음");
-		}
-		// sessionStorage.clear();
-	}
-
-	function getApvlItem () {
-		console.log("함수타는지 확인용");
-		if(sessionStorage.getItem("apvlItem")){
-			console.log("확인입니다 휴먼.");
-			$("#TB06010S_prdtCd").val(sessionStorage.getItem("apvlItem"));
-			getDealList();
-		}else{
-			console.log("이프엘즈구문 확인용");
 		}
 		// sessionStorage.clear();
 	}

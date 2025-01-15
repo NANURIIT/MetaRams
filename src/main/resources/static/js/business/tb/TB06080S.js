@@ -83,8 +83,10 @@ const TB06080Sjs = (function () {
 
             $('#TB06080S_apvlPage').off('click');
             $('#TB06080S_apvlPage').on('click', function(){
-              console.log("종목코드",ui.rowData.prdtCd);
-              sessionStorage.setItem("apvlItem", ui.rowData.prdtCd);
+              sessionStorage.setItem("apvlItemDealNo", ui.rowData.dealNo);
+              sessionStorage.setItem("apvlItemDealNm", ui.rowData.dealNm);
+              sessionStorage.setItem("apvlItemPrdtCd", ui.rowData.prdtCd);
+              sessionStorage.setItem("apvlItemPrdtNm", ui.rowData.prdtNm);
               callPage(ui.rowData.scrnNo)
             })
 
