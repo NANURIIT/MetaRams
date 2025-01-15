@@ -42,7 +42,7 @@ const TB07120Sjs = (function () {
         "/D016" + //  결재단계구분코드
         // "/R031" + //  입출금구분코드
         "/I027" + //  통화구분코드
-        // "/D015" + //  업무구분코드
+        // "/D005" + //  업무구분코드
         "/D006" + //  결재상태코드
         "/F008",  //  자금구분코드
       false
@@ -59,8 +59,9 @@ const TB07120Sjs = (function () {
     TB07120S_grdSelect.I027 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "I027";
     });
-    // TB07120S_grdSelect.D015 = selectBox.filter(function (item) { 
-    //   return item.cmnsGrpCd === 'D015'; });
+    // TB07120S_grdSelect.D005 = selectBox.filter(function (item) { 
+    //   return item.cmnsGrpCd === 'D005'; 
+    // });
     TB07120S_grdSelect.D006 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "D006";
     });
@@ -74,7 +75,7 @@ const TB07120Sjs = (function () {
     let D010html;
     let D016html;
     let I027html;
-    // let D015html;
+    let D005html;
     let D006html;
     let F008html;
     
@@ -95,6 +96,11 @@ const TB07120Sjs = (function () {
     TB07120S_grdSelect.F008.forEach((item) => {
       F008html += `<option value="${item.cdValue}">${item.cdName}</option>`;
     });
+    // TB07120S_grdSelect.D005.forEach((item) => {
+    //   D005html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+    // });
+
+    console.log(TB07120S_grdSelect.D005);
 
     $("#TB07120S_dprtNm").append(D010html);
     // $('#TB07080S_ldgSttsCd').append(R031html);
@@ -105,6 +111,7 @@ const TB07120Sjs = (function () {
       D006html
     );
     $("#TB07120S_fndsDvsnCd").append(F008html);
+    // $('#TB07120S_decdJobDcd').append(D005html);
 
     // 입출금 구분 옵션 추가 
     $("#TB07120S_depositWithdrawalCode").append(`
@@ -134,6 +141,12 @@ const TB07120Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
+      title: "종목명",
+      dataType: "string",
+      dataIndx: "prdtNm",
+      hidden: true
+    },
+    {
       title: "거래일자",
       dataType: "string",
       dataIndx: "trDt",
@@ -158,7 +171,7 @@ const TB07120Sjs = (function () {
     {
       title: "결재단계구분",
       dataType: "string",
-      dataIndx: "consDecdDvsnCd",
+      dataIndx: "decdStepDcd",
       align: "center",
       halign: "center",
       render: function (ui) {
@@ -171,7 +184,7 @@ const TB07120Sjs = (function () {
     {
       title: "결재상태",
       dataType: "string",
-      dataIndx: "consDecdStatCd",
+      dataIndx: "decdSttsDcd",
       align: "center",
       halign: "center",
       filter: { crules: [{ condition: "range" }] },
@@ -209,15 +222,20 @@ const TB07120Sjs = (function () {
       width: "",
       filter: { crules: [{ condition: "range" }] },
     },
-    {
-      title: "업무구분",
-      dataType: "string",
-      dataIndx: "",
-      align: "center",
-      halign: "center",
-      width: "",
-      filter: { crules: [{ condition: "range" }] },
-    },
+    /**
+     * 2025-01-15 X건X
+     * 대표님이 해당화면 관련 업무구분코드 주신다고 하셨음
+     * 주신지 3주째 된듯함 주실때까지 숨을 참아보겠습니다.
+     */
+    // {
+    //   title: "업무구분",
+    //   dataType: "string",
+    //   dataIndx: "",
+    //   align: "center",
+    //   halign: "center",
+    //   width: "",
+    //   filter: { crules: [{ condition: "range" }] },
+    // },
     {
       title: "입출금구분",
       dataType: "string",
@@ -323,7 +341,7 @@ const TB07120Sjs = (function () {
       strNoRows: "",
       rowDblClick: function (evt, ui) {
         let consDecdStatCd = ui.rowData.consDecdStatCd;   
-        setIbims452b(ui.rowData);    
+        setIbims452b(ui.rowData);
         decdStatChk(consDecdStatCd);
         //부속서류목록(TB06010S의 첨부파일 그대로 가져옴)
         $('#fileKey2').val(ui.rowData.prdtCd)

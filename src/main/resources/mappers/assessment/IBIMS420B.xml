@@ -282,22 +282,22 @@
 		 AND A.PRDT_CD 	     = C.PRDT_CD(+)		            /* 종목코드 */
 		 AND A.TR_SN 	     = C.TR_SN(+) 		            /* 거래일련번호 */
 		 AND A.EXC_SN 	     = C.EXC_SN(+) 		            /* 실행일련번호 */
-		 AND C.TR_STAT_CD(+) = '1'                          /* 거래상태 1정상 */	
+		 AND C.TR_STAT_CD(+) = '01'                         /* 거래상태 01:정상 */	
 		 AND A.PRDT_CD       = D.PRDT_CD(+)
-		 AND D.LAST_YN(+)    ='Y'	             
+		 AND D.LAST_YN(+)    = 'Y'	             
 	     AND A.PRDT_CD       = #{prdtCd}
 	   	 AND A.RGST_STTS_CD  = '1'		                    /* 등록상태코드 */
-   	  <if test="strPrarDt != null and strPrarDt != ''">
-	    <if test="endPrarDt != null and endPrarDt != ''">	
+		<if test="strPrarDt != null and strPrarDt != ''">
+			<if test="endPrarDt != null and endPrarDt != ''">	
 	     AND A.PRAR_DT BETWEEN #{strPrarDt} AND #{endPrarDt}
-	   </if>
-	  </if>
-	  <if test="empNo != null and empNo != ''">
+			</if>
+		</if>
+		<if test="empNo != null and empNo != ''">
          AND D.CHRR_EMPNO LIKE '%' || #{empNo} || '%'
-      </if>
-      <if test="dprtCd != null and dprtCd != ''">
+		</if>
+		<if test="dprtCd != null and dprtCd != ''">
          AND D.MNGM_BDCD LIKE '%' || #{dprtCd} || '%'
-      </if>  
+		</if>  
 	   ORDER
 	      BY A.FEE_SN ASC
 	</select>
@@ -407,6 +407,7 @@
     		 , A.PRCS_TM
     		 , A.DFR_EXP_MNUM
     		 , A.HND_DETL_DTM
+    		 , TO_CHAR(A.HND_DETL_DTM, 'YYYY-MM-DD HH24:MI:SS') AS HND_DETL_DTM_STR	/* 조작상세일시 */
     		 , A.HND_EMPNO
     		 , A.HND_TMNL_NO
     		 , A.HND_TR_ID
@@ -488,6 +489,7 @@
 		<if test="prdtCd != ''">
 		   AND A.PRDT_CD = #{prdtCd} 
 		</if>
+		 ORDER BY A.HND_DETL_DTM DESC
     </select>
 	   
      <!-- 원리금 스케줄관리 삭제 -->

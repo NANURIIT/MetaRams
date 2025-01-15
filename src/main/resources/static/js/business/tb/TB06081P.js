@@ -354,6 +354,11 @@ function TB06081P_apvlListChk() {
                 // 결재요청사항 없음
                 TB06081P_apvlReqStatusHandler("nothing");
             }
+
+            // 결재상태체크 후 버튼컨트롤
+            const url = window.location.pathname;
+            chkDecdStep(url.split("/")[1]);
+          
         },
     });
 }
