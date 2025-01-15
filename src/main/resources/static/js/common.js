@@ -2022,7 +2022,8 @@ function needRunFn(menuId) {
   //워크플로우에서 버튼 눌러 페이지 이동시 인풋 자동 세팅
 
   if (menuId === "TB06010S") {
-    TB06010Sjs.getDealInfoFromWF();
+    // TB06010Sjs.getDealInfoFromWF();
+    TB06010Sjs.getApvlItem();
   }
   if (menuId === "TB06020S") {
     TB06020Sjs.getDealInfoFromWF();
