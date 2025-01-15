@@ -1511,7 +1511,7 @@
 				 , (
 				    SELECT C.DPRT_NM
 					  FROM IBIMS003B C
-					 WHERE C.BDCD = A.MNGM_BDCD
+					 WHERE C.DPRT_CD = A.MNGM_BDCD
              AND ROWNUM = 1					 
 				   ) AS DPRT_NM                                                                      /*  부서명 */
 			    , (SELECT SUM(NVL(DEAL_EXC_AMT,0)) FROM IBIMS402B WHERE PRDT_CD = A.PRDT_CD ) AS DEAL_EXC_AMT /* 투자금액 */
@@ -1561,12 +1561,13 @@
              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
               AND A.CHRR_EMPNO LIKE '%' || #{chrrEmpno} || '%'
              </if>
-             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ctrcDt1)">
+             <!-- <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ctrcDt1)">
               AND #{ctrcDt1} BETWEEN Q.CTRC_DT AND Q.CTRC_EXP_DT
              </if>
              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ctrcDt2)">
               AND #{ctrcDt2} BETWEEN Q.CTRC_DT AND Q.CTRC_EXP_DT
-             </if>
+             </if> -->
+             AND ((Q.CTRC_DT BETWEEN #{ctrcDt1} AND #{ctrcDt2})OR (Q.CTRC_EXP_DT BETWEEN #{ctrcDt1} AND #{ctrcDt2}))
              AND E.DEL_YN = 'N'
         </select>
         
