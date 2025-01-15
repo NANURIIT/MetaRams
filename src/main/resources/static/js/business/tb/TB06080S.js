@@ -83,10 +83,11 @@ const TB06080Sjs = (function () {
 
             $('#TB06080S_apvlPage').off('click');
             $('#TB06080S_apvlPage').on('click', function(){
-              sessionStorage.setItem("apvlItemDealNo", ui.rowData.dealNo);
-              sessionStorage.setItem("apvlItemDealNm", ui.rowData.dealNm);
-              sessionStorage.setItem("apvlItemPrdtCd", ui.rowData.prdtCd);
-              sessionStorage.setItem("apvlItemPrdtNm", ui.rowData.prdtNm);
+              sessionStorage.setItem("isFromApvl", true);
+              sessionStorage.setItem("wfDealNo", ui.rowData.dealNo);
+              sessionStorage.setItem("wfDealNm", ui.rowData.dealNm);
+              sessionStorage.setItem("wfPrdtCd", ui.rowData.prdtCd);
+              sessionStorage.setItem("wfPrdtNm", ui.rowData.prdtNm);
               callPage(ui.rowData.scrnNo)
             })
 

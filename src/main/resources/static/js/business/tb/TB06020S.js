@@ -19,7 +19,6 @@ const TB06020Sjs = (function(){
 		resetSearchRequiment_TB06020S();
 		loginUserSet();
 		getDealInfoFromWF();
-		getApvlItem('TB06020S', getDealList);
 	});
 	
 	function loginUserSet(){
@@ -1275,8 +1274,7 @@ const TB06020Sjs = (function(){
 
 	function getDealInfoFromWF() {
 		
-		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
+		if(sessionStorage.getItem("isFromWF") || sessionStorage.getItem("isFromApvl")){
 			var dealNo = sessionStorage.getItem("wfDealNo");
 			var dealNm = sessionStorage.getItem("wfDealNm");
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");

@@ -2080,7 +2080,7 @@ const TB06010Sjs = (function(){
 
 	function getDealInfoFromWF() {
 		
-		if(sessionStorage.getItem("isFromWF")){
+		if(sessionStorage.getItem("isFromWF") || sessionStorage.getItem("isFromApvl")){
 			console.log("WF세션 있음");
 			$("#TB06010S_ibDealNo").val(sessionStorage.getItem("wfDealNo"));
 			$("#TB06010S_ibDealNm").val(sessionStorage.getItem("wfDealNm"));
@@ -2090,7 +2090,8 @@ const TB06010Sjs = (function(){
 		}else{
 			console.log("WF세션 비었음");
 		}
-		// sessionStorage.clear();
+		sessionStorage.clear();
+
 	}
 
 	return {
@@ -2122,6 +2123,5 @@ const TB06010Sjs = (function(){
 		, sdvdCd : sdvdCd
 
 		, getDealInfoFromWF : getDealInfoFromWF
-		, getApvlItem: getApvlItem
 	}
 })();

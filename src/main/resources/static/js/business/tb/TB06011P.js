@@ -34,8 +34,6 @@ function TB06011P_srchPrdt(menuId) {
 		// ex) 종목코드 VARCHAR(10)
 		if(str === 10){
 			
-			TB06011P_onchangehandler = "off";
-
 			await srchEvent(this);
 
 			// $(this).focus();
@@ -47,8 +45,6 @@ function TB06011P_srchPrdt(menuId) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
 			evt.preventDefault();
-
-			TB06011P_onchangehandler = "off";
 
 			await srchEvent(this);
 
@@ -70,14 +66,6 @@ function TB06011P_srchPrdt(menuId) {
 		$(`input[id='${prefix}_prdtNm']`).val("");
 	
 		$('#TB06011P_prefix').val(prefix);
-	
-		/**
-		 * 팝업 밖의 회색부분을 클릭하여 꺼진경우 modalClose 함수가 작동하지 않아 그리드 상태 업데이트가 안됨
-		 * 그리드 상태 다시 체크해주기
-		 */
-		if ($(`div[id='modal-TB06011P']`).css('display') === "none") {
-			TB06011P_gridState = 1;
-		}
 	
 		// 인풋박스 밸류
 		let data = $(selector).val();
