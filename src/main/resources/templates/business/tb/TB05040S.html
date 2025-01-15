@@ -27,8 +27,6 @@
 								<div class="col-sm-4">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB05040S_ibDealNo" maxlength="17">
-										<input type="hidden" id="TB05040S_riskInspctCcd">
-										<input type="hidden" id="TB05040S_lstCCaseCcd">
 										<span class="input-group-append">
 											<button type="button" id="open_modal_AS02020P" class="btn btn-default" onclick="callTB03021P('TB05040S');"><i class="fa fa-search"></i></button>
 										</span>
@@ -36,6 +34,8 @@
 									</div>
 								</div>
 								<div class="col-sm-6">
+									<input type="hidden" id="TB05040S_riskInspctCcd">
+									<input type="hidden" id="TB05040S_lstCCaseCcd">
 								</div>
 								<div class="col-sm-1">
 									<button class="btn btn-primary" type="button" onclick="TB05040Sjs.getDealList();"><i class="fa fa-search"></i>조회</button>
@@ -43,7 +43,6 @@
 							</div>
 						</div>
 					</div>
-
 					<!-- 조회결과 -->
 					<div class="ibox-content mb-2">
 						<div id="gridIbDealList"></div>

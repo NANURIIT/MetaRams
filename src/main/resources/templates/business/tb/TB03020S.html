@@ -214,9 +214,7 @@
 								<div class="ibox">
 									<div class="ibox-title">
 										<h5>▶&nbsp;업체정보</h5>
-										<button type="button" class=" btn btn-default btn-xs invst ml-1" id="invstClose"
-											onclick="TB03020Sjs.tabCtrl('#invst');"><i class="fa fa-arrow-up"
-												id="invstIcon"></i></button>
+										<button type="button" class=" btn btn-default btn-xs invst ml-1" id="invstClose" onclick="TB03020Sjs.tabCtrl('#invst');"><i class="fa fa-arrow-up" id="invstIcon"></i></button>
 										<span class="pl-2">
 											<button class="btn btn-success btn-xs"
 												onclick="callTB06019P('TB06010S');">기업체 등록</button>
@@ -230,16 +228,12 @@
 														class="req"></span>거래상대방</label>
 												<div class="col-sm-5 input-group">
 													<input type="hidden" id="TB03020S_corpNo">
-													<input type="text" class="form-control" id="TB03020S_corpRgstNo"
-														oninput="this.value = this.value.length > 10 ? checkBrnAcno(this.value.replace(/[^-0-9]/g,'')) : this.value.replace(/[^-0-9]/g,'');"
-														>
+													<!-- <input type="text" class="form-control" id="TB03020S_corpRgstNo" oninput="this.value = this.value.length > 10 ? checkBrnAcno(this.value.replace(/[^-0-9]/g,'')) : this.value.replace(/[^-0-9]/g,'');"> -->
+													<input type="text" class="form-control" id="TB03020S_corpRgstNo" maxlength="13">
 													<span class="input-group-append">
-														<button type="button" class="btn btn-default"
-															onclick="callTB03061P('TB03020S')"><i
-																class="fa fa-search"></i></button>
+														<button type="button" class="btn btn-default" onclick="callTB03061P('TB03020S')"><i class="fa fa-search"></i></button>
 													</span>
-													<input type="text" class="form-control" id="TB03020S_entpRnm"
-														style="width:210px;" readonly>
+													<input type="text" class="form-control" id="TB03020S_entpRnm" style="width:210px;" readonly>
 												</div>
 												<label class="col-sm-1 col-form-label text-right">기업규모</label>
 												<div class="col-sm-2 input-group">
@@ -543,10 +537,10 @@
 													readonly>
 											</div> -->
 
+											<input type="hidden" class="form-control" id="TB03020S_athCd" disabled>
 											<label class="col-sm-2 col-form-label text-right"><span class="req"></span>담당자</label>
 											<div class="col-sm-4 input-group">
-												<input type="hidden" class="form-control" id="TB03020S_athCd" disabled>
-												<input type="text" class="form-control" style="width:30px;" id="TB03020S_chrg_eno">
+												<input type="text" class="form-control" style="width:30px;" id="TB03020S_chrg_empNo">
 												<span class="input-group-append">
 													<button type="button" class="btn btn-default" onclick="callTB03022P('TB03020S_chrg');"><i class="fa fa-search"></i></button>
 												</span>

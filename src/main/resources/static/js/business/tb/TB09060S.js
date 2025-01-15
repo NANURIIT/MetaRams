@@ -4,13 +4,28 @@ const TB09060Sjs = function () {
 
   $(document).ready(function () {
     //loadSelectBoxContents();
-    //loadUserAuth(); // 담당자 정보 조회
     fnSelectBox();
     setGrid_TB09060S();
+	loadUserAuth();
+	
     $("#TB09060S_startDt").val(getSomeDaysAgo(7));
     $("#TB09060S_endDt").val(getToday());
-    //alert("1");
   });
+  
+  // 담당직원정보
+  	function loadUserAuth() {
+  		$.ajax({
+  			type: "GET",
+  			url: "/getUserAuth",
+  			dataType: "json",
+  			success: function(data) {
+  				$("#TB09060S_dprtNm").val(data.dprtCd).prop("selected", true);
+  				$("#TB09060S_dprtCd").val(data.dprtCd);
+  				$("#TB09060S_chrr_empNo").val(data.eno);
+  				$("#TB09060S_chrr_empNm").val(data.empNm);
+  			},
+  		});
+  	}
 
   let colM_Grid1 = [
     {
@@ -32,7 +47,7 @@ const TB09060Sjs = function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "deal번호",
+      title: "Deal번호",
       dataType: "string",
       dataIndx: "dealNo",
       align: "center",
@@ -41,7 +56,7 @@ const TB09060Sjs = function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "deal명",
+      title: "Deal명",
       dataType: "string",
       dataIndx: "dealNm",
       align: "center",

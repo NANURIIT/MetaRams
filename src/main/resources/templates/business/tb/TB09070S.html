@@ -11,12 +11,12 @@
 	<script th:src="@{js/fileUpload.js}"></script>
 	<script th:src="@{js/business/tb/TB09070S.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
-	<script th:src="@{js/business/tb/TB04011P.js}"></script>
+	<script th:src="@{js/business/tb/TB03021P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
-	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
+	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -71,7 +71,7 @@
 							<div class="col-sm-10 form-group mb-1">
 								<!-- deal 번호 -->
 								<label class="col-sm-1 control-label">
-									deal 번호
+									Deal번호
 								</label>
 								<!-- <div class="col-sm-3">
 									<div class="input-group">
@@ -86,7 +86,7 @@
 										<input type="text" class="form-control" id="TB09070S_ibDealNo">
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default"
-												onclick="callTB04011P('TB09070S');"><i
+												onclick="callTB03021P('TB09070S');"><i
 													class="fa fa-search"></i></button>
 										</span>
 										<input type="text" class="form-control" id="TB09070S_ibDealNm" readonly>

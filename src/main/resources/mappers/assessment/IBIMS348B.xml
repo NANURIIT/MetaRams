@@ -78,12 +78,17 @@
 			 , A.HND_TMNL_NO				/* 조작단말기번호 */
 			 , A.HND_TR_ID				/* 조작거래id */
 			 , A.GUID						/* guid	 */ 
+			 , C.FEE_RCKN_DCD			/* 수수료인식구분코드 */
+			 , C.FEE_LWST_AMT			/* 수수료최저금액 */
+			 , C.FEE_HGST_AMT			/* 수수료최고금액 */
 		  FROM IBIMS348B A 	/* 딜승인수수료스케쥴기본 */
 		  	   , IBIMS201B B /* 딜승인기본 */	
+		  	   , IBIMS421B C /* 딜승인수수료스케쥴기본 */
 		 WHERE 1 = 1
 		   AND A.PRDT_CD  = #{prdtCd} /*  'A000000001' */
 		   AND A.PRDT_CD  = B.PRDT_CD(+)
 		   AND B.LAST_YN(+) ='Y'
+		   AND A.FEE_KND_CD = C.FEE_KND_CD
 		   AND NVL(A.PRCS_CPLT_YN, 'N') = 'N'
 		    <if test="strPrarDt != null and strPrarDt != ''">
 			    <if test="endPrarDt != null and endPrarDt != ''">	

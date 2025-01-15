@@ -80,6 +80,7 @@
 		     , DPRT_NM								/* 부서명 */
 		     , BDCD									  /* 소속부점코드 */
 		     , BD_NM									/* 소속부점명 */
+         , ATH_CD                 /* 권한코드 */
 		  FROM IBIMS003B
 		 WHERE 1=1
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
@@ -188,18 +189,17 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(athCd)">
         	 AND A.ATH_CD = #{athCd}
         	 </if>
-        	 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empNm)">
-        	 AND (A.EMP_NM LIKE '%'|| #{empNm}|| '%')
-        	  OR  (A.EMPNO LIKE '%'|| #{empNm}|| '%')
+        	 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
+        	 AND A.EMPNO LIKE '%'|| #{empno}|| '%'
+        	 </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+        	 AND A.DPRT_CD LIKE '%'|| #{dprtCd}|| '%'
         	 </if>
         	 <if test='delYn == 0'>
-        	 AND A.DEL_YN  ='N'
+        	 AND A.DEL_YN  = 'N'
         	 </if>
         	 <if test='delYn == 1'>
-        	 AND (A.DEL_YN = 'Y' OR A.DEL_YN  ='N')
-        	 </if>
-        	 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
-        	 AND A.EMPNO = #{empno}
+        	 AND (A.DEL_YN = 'Y' OR A.DEL_YN  = 'N')
         	 </if>
          ORDER BY EMPNO ASC
     </select>

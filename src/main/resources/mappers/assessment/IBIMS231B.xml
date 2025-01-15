@@ -146,6 +146,7 @@
                  AND A.TR_SEQ = #{trSeq}
                  AND A.RQST_CNCL_DTM IS NULL
                  AND A.PRCS_RSLT_DCD = '00'
+                 AND A.DECD_STTS_DCD != '4'
               ) T1
    LEFT JOIN IBIMS003B T2
           ON T1.DCFC_ENO = T2.EMPNO
@@ -160,7 +161,7 @@
      WHERE 1=1
   </select>
 
-  <select id="decdSn" resultType="int">
+  <select id="decdSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="int">
     SELECT DECD_SN
       FROM IBIMS231B
      WHERE 1=1
@@ -179,6 +180,7 @@
        AND TR_SEQ = #{trSeq}
        AND RQST_CNCL_DTM IS NULL
        AND PRCS_RSLT_DCD = '00'
+       AND DECD_STTS_DCD != '4'
   </select>
 
   <!-- 결재단계체크 -->
@@ -311,28 +313,7 @@
          , HND_EMPNO = #{hndEmpno}
          , HND_DETL_DTM = SYSDATE
      WHERE 1=1
-       AND DECD_SN IN (
-                      SELECT DECD_SN
-                        FROM IBIMS231B
-                       WHERE 1=1
-                         AND DEAL_NO = #{dealNo}
-                         AND PRDT_CD = #{prdtCd}
-                         AND DECD_JOB_DCD = (
-                                               SELECT CD_VL_ID
-                                                 FROM IBIMS002B
-                                               WHERE 1=1
-                                                 AND CMNS_CD_GRP = 'D005'
-                                                 AND RSLT_CD_VL = #{decdJobDcd}
-                                               )
-                         AND SCRN_NO = #{scrnNo}
-                         AND EXC_SEQ = #{excSeq}
-                         AND RQST_SQ = #{rqstSq}
-                         AND TR_SEQ = #{trSeq}
-                         AND RQST_CNCL_DTM IS NULL
-                         AND PRCS_RSLT_DCD = '00'
-                         AND DECD_STEP_DCD = '04'
-                         AND DECD_STTS_DCD = '1'
-                      )
+       AND DECD_SN = #{decdSn}
   </update>
 
 </mapper>

@@ -43,12 +43,7 @@
 						</div>
 					</div>
 					<!-- 일별연체내역 -->
-						<table class="table result table-bordered footable mb-2" data-page-size="20" data-paging="true"
-							data-sort="false">
-							<div id="TB07180S_colModel1"></div>
-						</table>
-						
-					
+					<div id="TB07180S_colModel1"></div>
 					<div class="ibox-content">
 						<div class="ibox">
 							<div class="ibox-content mb-5" id="feeData">
@@ -61,12 +56,12 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>계정과목코드</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control"  list="TB07180S_A005"  id="TB07180S_actCd" maxlength="20"></input>
+											<input type="text" class="form-control"  list="TB07180S_A005"  id="TB07180S_actCd" maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 											<datalist id ="TB07180S_A005"></datalist>
 										</div>
 										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>수수료명</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB07180S_feeNm"></input>
+											<input type="text" class="form-control" id="TB07180S_feeNm" maxlength="60"></input>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">수수료인식구분</label>
 										<div class="col-sm-2 input-group">
@@ -88,15 +83,15 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">수수료율</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control text-right" id="TB07180S_feeRt"></input>
+											<input type="text" class="form-control text-right" id="TB07180S_feeRt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="15"></input>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">수수료최저금액</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control text-right" id="TB07180S_feeLwstAmt"></input>
+											<input type="text" class="form-control text-right" id="TB07180S_feeLwstAmt" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="18"></input>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">수수료최고금액</label>
 										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control text-right" id="TB07180S_feeHgstAmt"></input>
+											<input type="text" class="form-control text-right" id="TB07180S_feeHgstAmt" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="18"></input>
 										</div>
 									</div>
 								</div>

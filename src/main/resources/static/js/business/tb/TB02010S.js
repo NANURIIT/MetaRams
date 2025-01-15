@@ -5,8 +5,6 @@ const TB02010Sjs = (function(){
 	$(document).ready(function() {
 
 		sessionStorage.clear();
-		//console.log(JSON.stringify(colM_TB02010S));
-		//getAthCd_TB02010S();
 		setPqGrid_TB02010S();
 
 	});
@@ -119,7 +117,6 @@ const TB02010Sjs = (function(){
 		
 
 		var empno = $('#userEno').val();
-		//console.log("wfAuthId: " + wfAuthId);
 
 		var param = {
 			empno
@@ -134,19 +131,13 @@ const TB02010Sjs = (function(){
 				$("#wfGrid_TB02010S").pqGrid("setData", []);
 				$("#wfGrid_TB02010S").pqGrid("option", "strNoRows", "조회 중입니다...");
 				$("#wfGrid_TB02010S").pqGrid("refreshDataAndView");
-				// settlementObj.option("strNoRows", "조회 중입니다...");
-				// settlementObj.refreshDataAndView();
 			},
 			success: function(data) {
-				// console.log(JSON.stringify(data));
-
 				var workFlowList = data.workFlowList;
 				var wfCntList = data.wfCntList;
 
 				var $ulElement = $("#TB02010S_appvPrgrsCnt");
 				$ulElement.text(workFlowList.length + "건");
-
-				console.log(JSON.stringify(wfCntList));
 
 				$("#wfGrid_TB02010S").pqGrid("option", "strNoRows", "조회된 데이터가 없습니다.");
 
@@ -229,8 +220,6 @@ const TB02010Sjs = (function(){
 	
 		const getMenuId = menuId.split('/');
 		const getPageName = pageName.split(') ');
-		console.log(getMenuId[1]);
-		console.log(getPageName[1]);
 		
 		callPage(getMenuId[1], getPageName[1]);
 		

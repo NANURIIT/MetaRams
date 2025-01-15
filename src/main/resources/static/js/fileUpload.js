@@ -86,6 +86,8 @@ function setFileUploadEvent(menuId) {
           text: "파일을 upload 하였습니다.",
         });
 
+        $(`div[data-menuid="/${menuId}"]` + " #deal-upload-input").val(null)
+
         if (mode == "single") {
           let encUri = downloadURI(
             result.svFilePathNm,

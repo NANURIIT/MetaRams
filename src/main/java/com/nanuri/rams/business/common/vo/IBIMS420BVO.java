@@ -3,14 +3,7 @@ package com.nanuri.rams.business.common.vo;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.nanuri.rams.business.common.dto.IBIMS010BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS101BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS348BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS401BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS420BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS421BDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -71,6 +64,8 @@ public class IBIMS420BVO extends IBIMS420BDTO {
 	private String hndEmpnm;				/* 조작사원명*/
 	private String chrrEmpno;				/* 담당자사원번호*/
 	private String chrrEmpnm;				/* 담당자사원명*/
+	
+	private String hndDetlDtmStr; 				/* 조작상세일시 */
 	
 	// private IBIMS010BDTO ibims010bdto;
 	// private IBIMS101BDTO ibims101bdto;

@@ -37,61 +37,45 @@ function settingFunction() {
       });
     }
   );
-
-  if (
-    $('script[src="js/business/tb/TB06011P.js"]').attr("src") ===
-    "js/business/tb/TB06011P.js"
-  ) {
-    TB06011P_srchPrdt(url);
+  
+  // 딜조회
+  if ( $('script[src="js/business/tb/TB03021P.js"]').attr("src") === "js/business/tb/TB03021P.js" ) {
+    TB03021P_srch(url);
+    TB03022P_inModalSrch('TB03021P');
   }
-
-  if (
-    $('script[src="js/business/tb/TB07021P.js"]').attr("src") ===
-    "js/business/tb/TB07021P.js"
-  ) {
-    TB07021P_srchFnlt(url);
-  }
-
-  if (
-    $('script[src="js/business/tb/TB07022P.js"]').attr("src") ===
-    "js/business/tb/TB07022P.js"
-  ) {
-    TB07022P_srchFnd(url);
-  }
-
-  if (
-    $('script[src="js/business/tb/TB04011P.js"]').attr("src") ===
-    "js/business/tb/TB04011P.js"
-  ) {
-    TB04011P_srchMtr(url);
-  }
-
-  if (
-    $('script[src="js/business/tb/TB03061P.js"]').attr("src") ===
-    "js/business/tb/TB03061P.js"
-  ) {
-    TB03061P_srchMtr(url);
-  }
-
-  if (
-    $('script[src="js/business/tb/TB03022P.js"]').attr("src") ===
-    "js/business/tb/TB03022P.js"
-  ) {
+  // 사원조회
+  if ( $('script[src="js/business/tb/TB03022P.js"]').attr("src") === "js/business/tb/TB03022P.js" ) {
     TB03022P_srch(url);
   }
-
-  if (
-    $('script[src="js/business/tb/TB03021P.js"]').attr("src") ===
-    "js/business/tb/TB03021P.js"
-  ) {
-    TB03021P_srch(url);
+  // 기업체조회
+  if ( $('script[src="js/business/tb/TB03061P.js"]').attr("src") === "js/business/tb/TB03061P.js" ) {
+    TB03061P_srchMtr(url);
   }
-
-  if (
-    $('script[src="js/business/tb/TB06017P.js"]').attr("src") ===
-    "js/business/tb/TB06017P.js"
-  ) {
+  // 안건조회
+  if ( $('script[src="js/business/tb/TB04011P.js"]').attr("src") === "js/business/tb/TB04011P.js" ) {
+    TB04011P_srchMtr(url);
+    TB03022P_inModalSrch('TB04011P');
+  }
+  // 종목조회
+  if ( $('script[src="js/business/tb/TB06011P.js"]').attr("src") === "js/business/tb/TB06011P.js" ) {
+    TB06011P_srchPrdt(url);
+    TB03022P_inModalSrch('TB06011P');
+  }
+  // 담보조회
+  if ( $('script[src="js/business/tb/TB06017P.js"]').attr("src") === "js/business/tb/TB06017P.js" ) {
     TB06017P_srch(url);
+  }
+  // 기업체등록
+  if( $('script[src="js/business/tb/TB06019P.js"]').attr("src") === "js/business/tb/TB06019P.js" ) {
+    TB03061P_inModalSrchMtr('TB06019P');
+  }
+  // 은행조회
+  if ( $('script[src="js/business/tb/TB07021P.js"]').attr("src") === "js/business/tb/TB07021P.js" ) {
+    TB07021P_srchFnlt(url);
+  }
+  // 펀드조회
+  if ( $('script[src="js/business/tb/TB07022P.js"]').attr("src") === "js/business/tb/TB07022P.js" ) {
+    TB07022P_srchFnd(url);
   }
 
   // datepicker 초기화
@@ -2038,7 +2022,8 @@ function needRunFn(menuId) {
   //워크플로우에서 버튼 눌러 페이지 이동시 인풋 자동 세팅
 
   if (menuId === "TB06010S") {
-    TB06010Sjs.getDealInfoFromWF();
+    // TB06010Sjs.getDealInfoFromWF();
+    TB06010Sjs.getApvlItem();
   }
   if (menuId === "TB06020S") {
     TB06020Sjs.getDealInfoFromWF();
@@ -2100,7 +2085,6 @@ function needRunFn(menuId) {
  * @author {김건우}
  */
 function resetPGgrids(menuid) {
-  // console.log("피큐 그리드 초기화 실행");
   if (
     $(`div[data-menuId='/${menuid}'] div[class*='pq-grid'][role='grid']`)
       .length != 0
@@ -2120,6 +2104,7 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) {}
 /**
  * 결재단계확인
  * @param {String} menuId 메뉴아이디입니다.
+ * @author {김건우}
  * @discription
  * 실행시키시면 됩니다.
  */
@@ -2127,12 +2112,7 @@ function chkDecdStep (menuId){
 
   let chrrNo = $(`#${menuId}_empNo`).val();
 
-  console.log("체크");
-  console.log("체크");
-  
-
   if(chrrNo === $('#userEno').val()){
-    console.log("체크? 됐네");
     $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop("hidden", false);
     $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop("hidden", true);
     return;
@@ -2146,8 +2126,6 @@ function chkDecdStep (menuId){
   let rqstSq = $(`#${menuId}_rqstSq`).val() || 0      // 신청순번
   let trSeq = $(`#${menuId}_trSeq`).val() || 0        // 거래순번
 
-  console.log($(`#${menuId}_ibDealNo`).val());
-  
   let paramData = {
     dealNo: dealNo
     , prdtCd: prdtCd
@@ -2165,22 +2143,8 @@ function chkDecdStep (menuId){
     data: JSON.stringify(paramData),
     dataType: "json",
     success: function (data) {
-
-      console.log(data);
-      
-      // 해당사항이 없거나 반려요청된 내역이면 결재요청 버튼만 활성화
-      if (data.toString() === "9742") {
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-          "hidden",
-          false
-        );
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-          "hidden",
-          true
-        );
-      }
       // 승인요청중이면 결재, 반려버튼 활성화
-      else if (data.toString() === '1'){
+      if (data.toString() === '1'){
         $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop('hidden', true);
         $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop('hidden', false);
       }

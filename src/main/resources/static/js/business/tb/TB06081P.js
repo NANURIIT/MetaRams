@@ -47,8 +47,6 @@ function TB06081P_getSelectBox() {
         , false);
     TB06081P_dprtList = dprtList.filter(function (item) { return item.cmnsGrpCd === 'D010'; });		//	RPTS_CTRT_TP_DETL_CD
 
-    console.log(TB06081P_dprtList);
-
     let html = ""
     for (let i = 0; i < TB06081P_dprtList.length; i++ ) {
         html += `<option value="${TB06081P_dprtList[i].cdValue}">${TB06081P_dprtList[i].cdName}</option>`
@@ -265,8 +263,6 @@ function TB06081P_apvlRqst(decdSttsDcd) {
         apvlList.push(param);
     }
 
-    console.log(apvlList);
-
     let paramData = {
         apvlList: apvlList
     }
@@ -319,8 +315,6 @@ function TB06081P_apvlListChk() {
         , scrnNo: $('#TB06081P_scrnNo').val()
     }
 
-    console.log(paramData);
-
     $.ajax({
         type: "POST",
         url: "/TB06081P/apvlListChk",
@@ -330,11 +324,26 @@ function TB06081P_apvlListChk() {
         success: function (data) {
             // 성공
             if (data.length > 0) {
-                console.log(data);
-                
                 TB06081P_apvlList = data;
-                // 결재요청중
-                TB06081P_apvlReqStatusHandler("ing");
+                for(let i = 0; i < data.length; i++) {
+                    console.log(data[i].decdSttsDcd);
+                    if ( data[i].decdSttsDcd === "3" ) {
+                        TB06081P_apvlReqStatusHandler("no");
+                        break;
+                    }
+                    else if ( data[i].decdSttsDcd === "1" ) {
+                        TB06081P_apvlReqStatusHandler("ing");
+                        break;
+                    }
+                    else if ( data[i].decdSttsDcd === "4" ) {
+                        TB06081P_apvlReqStatusHandler("apvlcc");
+                        break;
+                    }
+                    else if ( data[i].decdSttsDcd === "2" ) {
+                        TB06081P_apvlReqStatusHandler("nothing");
+                        break;
+                    }
+                }
                 TB06081P_setApvlList();
                 // 결재진행중인 내용이면 승인자 그리드 사용불가
                 $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", true)
@@ -361,18 +370,30 @@ function TB06081P_apvlListChk() {
  */
 function TB06081P_apvlReqStatusHandler(status) {
     if (status === "ing") {
-        $("#apvlReqBtn").prop("disabled", true)
+        $("#apvlReqBtn").prop("disabled", false)
         $("#apvlReqCancelBtn").prop("disabled", false)
-        $("#TB06081P_apvlRqstCntn").prop("disabled", true)
+        $("#TB06081P_apvlRqstCntn").prop("disabled", false)
         $("#TB06081P_errCntn").prop("disabled", false)
     }
     else if (status === "nothing") {
         $("#apvlReqBtn").prop("disabled", true)
         $("#apvlReqCancelBtn").prop("disabled", true)
-        $("#TB06081P_apvlRqstCntn").prop("disabled", false)
+        $("#TB06081P_apvlRqstCntn").prop("disabled", true)
         $("#TB06081P_errCntn").prop("disabled", true)
     }
     else if (status === "new") {
+        $("#apvlReqBtn").prop("disabled", false)
+        $("#apvlReqCancelBtn").prop("disabled", true)
+        $("#TB06081P_apvlRqstCntn").prop("disabled", false)
+        $("#TB06081P_errCntn").prop("disabled", true)
+    }
+    else if (status === "no") {
+        $("#apvlReqBtn").prop("disabled", false)
+        $("#apvlReqCancelBtn").prop("disabled", false)
+        $("#TB06081P_apvlRqstCntn").prop("disabled", false)
+        $("#TB06081P_errCntn").prop("disabled", false)
+    }
+    else if (status === "apvlcc") {
         $("#apvlReqBtn").prop("disabled", false)
         $("#apvlReqCancelBtn").prop("disabled", true)
         $("#TB06081P_apvlRqstCntn").prop("disabled", false)
@@ -505,31 +526,27 @@ function TB06081P_setApvlList() {
         `
     }
 
-    for (let i = 0; i < apvlList.length; i++) {
-
-        console.log(apvlList[i].decdSttsDcd);
-        
-        if(apvlList[i].decdSttsDcd === '3'){
-            $("#apvlReqBtn").prop("disabled", false)
-            $("#apvlReqCancelBtn").prop("disabled", false)
-            $("#TB06081P_apvlRqstCntn").prop("disabled", false)
-            $("#TB06081P_errCntn").prop("disabled", false)
-            break;
-        }
-        else if(apvlList[i].decdSttsDcd != '1'){
-            $("#apvlReqBtn").prop("disabled", true)
-            $("#apvlReqCancelBtn").prop("disabled", true)
-            $("#TB06081P_apvlRqstCntn").prop("disabled", true)
-            $("#TB06081P_errCntn").prop("disabled", true)
-        }
-        else {
-            $("#apvlReqBtn").prop("disabled", false)
-            $("#apvlReqCancelBtn").prop("disabled", true)
-            $("#TB06081P_apvlRqstCntn").prop("disabled", false)
-            $("#TB06081P_errCntn").prop("disabled", true)
-        }
-
-    }
+    // for (let i = 0; i < apvlList.length; i++) {
+    //     if(apvlList[i].decdSttsDcd === '3'){
+    //         $("#apvlReqBtn").prop("disabled", false)
+    //         $("#apvlReqCancelBtn").prop("disabled", false)
+    //         $("#TB06081P_apvlRqstCntn").prop("disabled", false)
+    //         $("#TB06081P_errCntn").prop("disabled", false)
+    //         break;
+    //     }
+    //     else if(apvlList[i].decdSttsDcd != '1'){
+    //         $("#apvlReqBtn").prop("disabled", true)
+    //         $("#apvlReqCancelBtn").prop("disabled", true)
+    //         $("#TB06081P_apvlRqstCntn").prop("disabled", true)
+    //         $("#TB06081P_errCntn").prop("disabled", true)
+    //     }
+    //     else {
+    //         $("#apvlReqBtn").prop("disabled", false)
+    //         $("#apvlReqCancelBtn").prop("disabled", true)
+    //         $("#TB06081P_apvlRqstCntn").prop("disabled", false)
+    //         $("#TB06081P_errCntn").prop("disabled", true)
+    //     }
+    // }
 
     $("#modal-TB06081P .con-tb06081p tbody").html(html);
 }
