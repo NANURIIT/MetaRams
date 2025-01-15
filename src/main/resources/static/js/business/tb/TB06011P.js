@@ -521,7 +521,7 @@ function modalClose_TB06011P() {
 	$('#modal-TB06011P').modal('hide');
 };
 
-$("#modal-TB03061P").on('hide.bs.modal', function () {
+$("#modal-TB06011P").on('hide.bs.modal', function () {
 	clearTB06011P();
 	$('#TB06011P_prdtCdList').pqGrid("destroy");
 });
