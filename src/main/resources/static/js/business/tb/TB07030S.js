@@ -632,7 +632,7 @@ const TB07030Sjs = (function () {
     let rcvbIntrSmmAmt = uncomma($("#TB07030S_rcvbIntrSmmAmt").val()); // 미수이자합계
     let exmptSmmAmt = uncomma($("#TB07030S_exmptSmmAmt").val()); // 면제금액합계
     let rdmpPrnaSmmAmt = uncomma($("#TB07030S_rdmpPrnaSmmAmt").val()); // 상환대상총금액
-    let crncyCd = $("#TB07030S_I027").val(); // 통화구분
+    let trCrryCd = $("#TB07030S_I027").val(); // 통화구분
     let rctmLgdNm = $("#TB07030S_rctmLgdNm").val(); // 입금원장명
     let rclmDvsnCd = $("#TB07030S_R006").val(); // 회수구분
     let bcncNm = $("#TB07030S_bcncNm").val(); // 거래처명
@@ -674,7 +674,7 @@ const TB07030Sjs = (function () {
       rcvbIntrSmmAmt, // 미수이자
       exmptSmmAmt,
       rdmpPrnaSmmAmt,
-      crncyCd,
+      trCrryCd,
       rctmLgdNm,
       rclmDvsnCd,
       bcncNm,

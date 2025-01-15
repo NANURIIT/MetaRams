@@ -146,6 +146,7 @@ public class TB07060ServiceImpl implements TB07060Service {
 			resObj.setBdbtAlwcRcknLmtStdrDcd(crdlLdg.getBdbtAlwcRcknLmtStdrDcd());// 대손충당금산정한도기준구분코드
 			resObj.setCtrcCclcDcd(crdlLdg.getCtrcCclcDcd());// 약정해지구분코드
 			resObj.setDealExcAmt(crdlLdg.getDealExcAmt()); // 대출금액
+			resObj.setDealExcBlce(crdlLdg.getDealExcBlce());		//대출/채무보증잔액
 			resObj.setDealTrPrca(crdlLdg.getDealTrPrca()); // 딜거래원금
 			resObj.setHndDetlDtm(crdlLdg.getHndDetlDtm());// 조작상세일시
 			resObj.setHndEmpno(crdlLdg.getHndEmpno());// 조작사원번호

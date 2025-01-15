@@ -702,6 +702,8 @@
             	  SELECT SUM(DEAL_TR_PRCA)
             	    FROM IBIMS410B
             	   WHERE PRDT_CD = #{prdtCd}
+                 AND TR_STAT_CD = '01'
+                 AND ETPR_CRDT_GRNT_TR_KIND_CD = '20'
               ) AS DEAL_TR_PRCA													                          /* 딜거래원금 */
             , (
                 SELECT SUM(DEAL_EXC_AMT)
