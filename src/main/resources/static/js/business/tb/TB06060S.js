@@ -4,7 +4,7 @@ const TB06060Sjs = (function(){
     let colM_TB06060S = [
 
         {
-            title: "딜번호",
+            title: "Deal번호",
             dataType: "string",
             dataIndx: "dealNo",
             align: "center",
@@ -13,7 +13,7 @@ const TB06060Sjs = (function(){
             filter: { crules: [{ condition: 'range' }] } 
         },
         {
-            title: "딜명",
+            title: "Deal명",
             dataType: "string",
             dataIndx: "dealNm",
             align: "center",

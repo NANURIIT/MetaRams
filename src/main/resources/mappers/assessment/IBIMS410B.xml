@@ -211,12 +211,6 @@
             , A.EXC_SN                          /* 실행일련번호 */
             , A.TR_DT                           /* 거래일자 */
             , A.TR_STAT_CD                      /* 거래상태코드 */
-       ,CASE  A.TR_STAT_CD
-        WHEN  '01' THEN '정상'
-        WHEN  '1' THEN '정상'
-        WHEN  '11'	THEN '취소원거래'
-        WHEN  '12'	THEN '취소거래'
-        ELSE '' END  AS TR_STAT_NM                        /* 거래상태코드명 */
             , A.ETPR_CRDT_GRNT_TR_KIND_CD       /* 거래종류코드 */
             , NVL((
                       SELECT CD_VL_NM
@@ -265,11 +259,6 @@
             , A.IMPT_STMP_AMT             /* 수입인지금액 */
             , A.FEE_TOT_AMT               /* 수수료총금액 */
             , A.RVSE_CNCL_DVSN_CD         /* 정정취소구분코드 */
-       ,CASE  A.RVSE_CNCL_DVSN_CD
-        WHEN  '0' THEN '해당없음'
-        WHEN  '1'	THEN '정정'
-        WHEN  '2'	THEN '취소'
-        ELSE '' END  AS RVSE_CNCL_DVSN_NM /* 정정취소구분코드명 */
             , A.RVSE_CNCL_RSON_TEXT       /* 정정취소사유내용 */
             , A.RVSE_CNCL_TR_SEQ          /* 정정취소거래순번 */
             , A.TR_AF_LOAN_RMND           /* 거래이후대출잔액 */
@@ -311,30 +300,11 @@
             , B.DEAL_NO
             , B.DEAL_NM
             , B.PRDT_MDCL_CD               /* 신용공여중분류코드 */
-       ,CASE  B.PRDT_MDCL_CD
-        WHEN  9013	THEN 'ABCP'
-        WHEN  1110	THEN '국내 채권'
-        WHEN  9014	THEN '할인어음'
-        WHEN  1150	THEN '해외 채권'
-        WHEN  9110	THEN '보증'
-        WHEN  1610	THEN '국내 단기금융상품'
-        WHEN  9111	THEN '유동성공급/신용보강약정'
-        WHEN  1650	THEN '해외단기금융상품'
-        WHEN  9112	THEN '인수계약'
-        WHEN  3010	THEN '국내 집합투자증권'
-        WHEN  3050	THEN '해외(역내) 집합투자증권'
-        WHEN  3051	THEN '해외(역외) 집합투자증권'
-        WHEN  9010	THEN '대출'
-        WHEN  9011	THEN '매입대출채권'
-        WHEN  1010	THEN '국내 주식'
-        WHEN  9012	THEN '사모사채'
-        WHEN  1050	THEN '해외 주식'
-        ELSE ''
-      END AS PRDT_MDCL_NM
             , B.PRG_STTS_CD                  /* 진행상태코드 */
             , D.CD_VL_NM AS PRG_STTS_NM                       /* 진행상태코드명 */
             , C.EMP_NM AS CHRR_ENM
-            , C.DPRT_NM
+            , C.DPRT_CD         AS MNGM_BDCD
+   		      , C.DPRT_NM 
         FROM IBIMS410B A
    			, IBIMS201B B 
    			, IBIMS003B C 

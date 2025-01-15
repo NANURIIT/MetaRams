@@ -677,7 +677,6 @@ var toolbar_rdmp = {
 
 $(document).ready(function() {
 	
-	console.log("test");
 	cloadSelectBoxContents();
 	docRdySettings();
 
@@ -708,10 +707,6 @@ function sltBoxSet_pqGrid(){
 	intrtCngeFrqcCdList = selectBox.filter(function(item){
 		return item.cmnsGrpCd === 'I013';
 	})
-
-	// console.log("stdrIntrtKndCdList{}", stdrIntrtKndCdList);
-	// console.log("aplyDnumDcdList{}", aplyDnumDcdList);
-	// console.log("intrtCngeFrqcCdList{}", intrtCngeFrqcCdList);
 
 	setIntrInfoGrid();
 
@@ -782,8 +777,6 @@ function setIntrInfoGrid(){
 			},
 			render: function (ui) {
 				var options = stdrIntrtKndCdList
-				// console.log("stdrIntrtKndCdList{}", stdrIntrtKndCdList);
-				// console.log("options{}", options);
 				var option = options.find(opt => opt.cdValue == ui.cellData);
 				return option ? option.cdName : ui.cellData;
 			},
@@ -843,8 +836,6 @@ function setIntrInfoGrid(){
 			},
 			render: function (ui) {
 				var options = aplyDnumDcdList
-				// console.log("stdrIntrtKndCdList{}", stdrIntrtKndCdList);
-				// console.log("options{}", options);
 				var option = options.find(opt => opt.cdValue == ui.cellData);
 				return option ? option.cdName : ui.cellData;
 			}, 
@@ -885,8 +876,6 @@ function setIntrInfoGrid(){
 			},
 			render: function (ui) {
 				var options = intrtCngeFrqcCdList
-				// console.log("stdrIntrtKndCdList{}", stdrIntrtKndCdList);
-				// console.log("options{}", options);
 				var option = options.find(opt => opt.cdValue == ui.cellData);
 				return option ? option.cdName : ui.cellData;
 			},
@@ -1451,8 +1440,6 @@ function getRateCalcSimulation() {
 		},
 		success: function(data) {
 
-			//console.log(data.totalDTO);
-
 			var totalItm = data.totalDTO;
 
 			if(totalItm != null){
@@ -1764,7 +1751,6 @@ function dataSetGrid_rdmpPlanGrid(rdmpPlanList){
 function dataSetGrid_intrPlanGrid(intrtPlanList){
 
 	intrtPlanList.forEach(function(item){
-		//console.log(item.prarDt);
 
 		var formattedStrtDt = formatDate(item.strtDt);							//적용시작일자 포맷
 		var formattedEndDt = formatDate(item.endDt);							//적용종료일자 포맷
@@ -1782,8 +1768,6 @@ function dataSetGrid_intrPlanGrid(intrtPlanList){
 			"prarDt"		: item.prarDt,
 			"prcsDt"		: item.prcsDt
 		}
-
-		//console.log(JSON.stringify(newRow));
 
 		$("#intrPlanGrid").pqGrid("addRow", {rowData: newRow,  checkEditable: false });
 		$("#intrPlanGrid").pqGrid("refreshDataAndView");
@@ -2005,9 +1989,7 @@ function callTB06015P(prefix) {
 	let promise3 = new Promise((resolve) => setTimeout(() => resolve(showGrid_intr()), 300));
 
 	Promise.all([promise1, promise2, promise3]).then((results) => {
-		//console.log(results);
-
-		//alert("그리드 생성 완료");
+		// ?
 	});
 
 }

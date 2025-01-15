@@ -101,6 +101,7 @@ const TB10110Sjs = (function () {
   ];
 
   $(document).ready(function () {
+    fnSelectBox();
     // Enter key event
     findKeydown();
     // 페이지 로딩 시 권한구분의 <select> 데이터로 RAA94B.RGHT_CD_NM을 가져온다.
@@ -146,21 +147,24 @@ const TB10110Sjs = (function () {
    * 조회 버튼 클릭 이벤트
    */
   var runFindUser = function () {
-    let empNm = $("#empNm").val();
-    let rghtCd = $("#TB10110S_rghtCd option:selected").val();
-    let delYn = $("#TB10110S_delYn:checked").length;
-    findUser(empNm, rghtCd, delYn);
+    let empNo = $("#TB10110S_empNo").val();
+    let dprtCd = $("#TB10110S_dprtCd").val();
+    let athCd = $("#TB10110S_athCd option:selected").val();
+    let delYn = $("#TB10110S_delYn").is(":checked") ? "1" : "0";
+    findUser(empNo, dprtCd, athCd, delYn);
   };
   /**
    * 사용자조회 ajax 호출
    * @param {String} empNm 검색어 - 직원명(사번)
-   * @param {String} rghtCd <select> 권한구분
+   * @param {String} dprtCd 검색어 - 직원명(사번)
+   * @param {String} athCd <select> 권한구분
    * @param {int} delYn 과거이력포함(1), 미포함(0, default) -> 20241203이후 과거이력포함(Y), 미포함(N, default)으로 바뀜
    */
-  var findUser = function (empNm, rghtCd, delYn) {
+  var findUser = function (empNo, dprtCd, athCd, delYn) {
     let dtoParam = {
-      empNm: empNm,
-      athCd: rghtCd,
+      empno: empNo,
+      dprtCd: dprtCd,
+      athCd: athCd,
       delYn: delYn,
     };
 
@@ -244,7 +248,7 @@ const TB10110Sjs = (function () {
       dataType: "json",
       success: function (data) {
         var a = "";
-        $("#TB10110S_rghtCd").html(a);
+        $("#TB10110S_athCd").html(a);
         $("#AC01130P_rghtCd").html(a);
         makeRghtCdList(data);
       },
@@ -286,7 +290,7 @@ const TB10110Sjs = (function () {
         "</option>";
       modalHtml += "</div>";
     });
-    $("#TB10110S_rghtCd").html(html);
+    $("#TB10110S_athCd").html(html);
     $("#AC01130P_rghtCd").html(modalHtml);
   };
 
@@ -366,6 +370,38 @@ const TB10110Sjs = (function () {
     $("#AC01130P_dltPEno").val("");
     $("#AC01130P_dltF").val("");
   });
+
+  /**
+   * selectBox 부서코드 set
+   */
+  function fnSelectBox() {
+    let selectBox = getSelectBoxList(
+      "TB10110S",
+        "D010",   //부서코드
+      false
+    );
+
+    let TB07120S_grdSelect
+
+    TB07120S_grdSelect = selectBox.filter(function (item) {
+      return item.cmnsGrpCd === "D010";
+    })
+
+    let D010html;
+    
+    TB07120S_grdSelect.forEach((item) => {
+      D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+    });
+
+    $("#TB10110S_dprtNm").append(D010html);
+
+    $('#TB10110S_dprtNm').on('change', function(){
+      $('#TB10110S_dprtCd').val($('#TB10110S_dprtNm').val())
+      $('#TB10110S_athCd').find(`option`).css('display', 'inline');
+      $('#TB10110S_athCd').find('option').not(`option[value*=${$('#TB10110S_dprtCd').val()}]`).css('display', 'none');
+    })
+    
+  }
 
   return {
     runFindUser: runFindUser,

@@ -218,7 +218,7 @@
 		   , B.DECD_STTS_DCD           	                    /* 결재상태구분코드 */			
 		   , B.PRCS_EMPNO            	                    /* 처리사원번호 */			
 		   , B.PRCS_TM           		                    /* 처리시각 */		
-	       , A.HND_DETL_DTM				                    /* 조작상세일시 */
+	       , TO_CHAR(A.HND_DETL_DTM, 'YYYY-MM-DD HH24:MI:SS') AS HND_DETL_DTM_STR	/* 조작상세일시 */
 	       , A.HND_EMPNO				                    /* 조작사원번호 */
 	       , A.HND_TMNL_NO				                    /* 조작단말기번호 */
 	       , A.HND_TR_ID				                    /* 조작거래id */

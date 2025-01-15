@@ -1279,7 +1279,7 @@ const TB05010Sjs = (function () {
       },
     },
     {
-      title: "딜번호",
+      title: "Deal번호",
       dataType: "string",
       dataIndx: "dealNo",
       align: "center",

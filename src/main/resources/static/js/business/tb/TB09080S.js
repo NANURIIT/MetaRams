@@ -1,221 +1,260 @@
 const TB09080Sjs = (function () {
+  let selectBox;
   let dealDtlsIns; //거래내역 grid instance
-
-  let colM_TB09080S = [
-    {
-      title: "deal번호",
-      dataType: "string",
-      dataIndx: "dealNo",
-      align: "center",
-      halign: "center",
-      width: "180",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "딜명",
-      dataType: "string",
-      dataIndx: "dealNm",
-      align: "left",
-      halign: "center",
-      width: "250",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "종목코드",
-      dataType: "string",
-      dataIndx: "prdtCd",
-      align: "left",
-      halign: "center",
-      width: "250",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "종목명",
-      dataType: "string",
-      dataIndx: "prdtNm",
-      align: "left",
-      halign: "center",
-      width: "250",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "거래순번",
-      dataType: "string",
-      dataIndx: "trSn",
-      align: "center",
-      halign: "center",
-      width: "80",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "실행순번",
-      dataType: "string",
-      dataIndx: "excSn",
-      align: "center",
-      halign: "center",
-      width: "80",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "신용공여중분류코드",
-      dataType: "string",
-      //dataIndx: "prdtMdclCd",
-      dataIndx: "prdtMdclNm",
-      align: "center",
-      halign: "center",
-      width: "160",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "기업신용공여거래종류코드",
-      dataType: "string",
-      dataIndx: "etprCrdtGrntTrKindNm",
-      align: "center",
-      halign: "center",
-      width: "200",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "거래상태코드",
-      dataType: "string",
-      dataIndx: "trStatNm",
-      align: "center",
-      halign: "center",
-      width: "100",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "통화코드",
-      dataType: "string",
-      dataIndx: "trCrryCd",
-      align: "center",
-      halign: "center",
-      width: "80",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "거래금액",
-      dataType: "integer",
-      dataIndx: "dealTrAmt",
-      align: "right",
-      halign: "center",
-      width: "140",
-      filter: { crules: [{ condition: "range" }] },
-      format: "#,###",
-    },
-    {
-      title: "거래원금",
-      dataType: "integer",
-      dataIndx: "dealTrPrca",
-      align: "right",
-      halign: "center",
-      width: "140",
-      filter: { crules: [{ condition: "range" }] },
-      format: "#,###",
-    },
-    {
-      title: "거래이자금액",
-      dataType: "integer",
-      dataIndx: "trIntAmt",
-      align: "right",
-      halign: "center",
-      width: "120",
-      filter: { crules: [{ condition: "range" }] },
-      format: "#,###",
-    },
-    {
-      title: "거래수수료금액",
-      dataType: "integer",
-      dataIndx: "trFeeAmt",
-      align: "right",
-      halign: "center",
-      width: "140",
-      filter: { crules: [{ condition: "range" }] },
-      format: "#,###",
-    },
-    {
-      title: "관리조직번호",
-      dataType: "string",
-      dataIndx: "orgno",
-      align: "center",
-      halign: "center",
-      width: "120",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "관리조직명",
-      dataType: "string",
-      dataIndx: "",
-      align: "center",
-      halign: "center",
-      width: "100",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "처리자직원번호",
-      dataType: "string",
-      dataIndx: "chrrEmpno",
-      align: "center",
-      halign: "center",
-      width: "140",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "처리자직원명",
-      dataType: "string",
-      dataIndx: "chrrEnm",
-      align: "center",
-      halign: "center",
-      width: "120",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "정정취소구분코드",
-      dataType: "string",
-      dataIndx: "rvseCnclDvsnNm",
-      align: "center",
-      halign: "center",
-      width: "180",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "정정취소사유내용",
-      dataType: "string",
-      dataIndx: "rvseCnclRsonText",
-      align: "left",
-      halign: "center",
-      width: "250",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "진행상태코드",
-      dataType: "string",
-      dataIndx: "prgSttsNm",
-      align: "center",
-      halign: "center",
-      width: "200",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "청구순번",
-      dataType: "string",
-      dataIndx: "clmSeq",
-      align: "center",
-      halign: "center",
-      width: "80",
-      filter: { crules: [{ condition: "range" }] },
-    },
-  ];
+  let prdtMdclCdList;     //신용공여중분류코드 리스트
+  let rvseCnclDvsnCdList; //정정취소구분코드 리스트
+  let trStatCdList;       //거래상태코드 리스트
 
   $(document).ready(function () {
     fnSelectBox();
-    setGrid_TB09080S();
 
     $("#TB09080S_rsltnDt").val(getSomeDaysAgo(7));
     $("#TB09080S_rsltnEndDt").val(getToday());
   });
 
   function setGrid_TB09080S() {
+
+    let colM_TB09080S = [
+      {
+        title: "Deal번호",
+        dataType: "string",
+        dataIndx: "dealNo",
+        align: "center",
+        halign: "center",
+        width: "180",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "Deal명",
+        dataType: "string",
+        dataIndx: "dealNm",
+        align: "left",
+        halign: "center",
+        width: "250",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "종목코드",
+        dataType: "string",
+        dataIndx: "prdtCd",
+        align: "left",
+        halign: "center",
+        width: "250",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "종목명",
+        dataType: "string",
+        dataIndx: "prdtNm",
+        align: "left",
+        halign: "center",
+        width: "250",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "거래순번",
+        dataType: "string",
+        dataIndx: "trSn",
+        align: "center",
+        halign: "center",
+        width: "80",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "실행순번",
+        dataType: "string",
+        dataIndx: "excSn",
+        align: "center",
+        halign: "center",
+        width: "80",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "신용공여중분류코드",
+        dataType: "string",
+        dataIndx: "prdtMdclCd",
+        align: "center",
+        halign: "center",
+        width: "160",
+        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          valueIndx: "cdValue",
+          labelIndx: "cdName",
+          options: prdtMdclCdList,
+        },
+        render: function (ui) {
+          // console.log("cellData ::: ", ui.cellData);
+          // console.log(P013);
+          let rtnValue = prdtMdclCdList.find(({ cdValue }) => cdValue == ui.cellData);
+          return rtnValue ? rtnValue.cdName : ui.cellData;
+        },
+      },
+      {
+        title: "기업신용공여거래종류코드",
+        dataType: "string",
+        dataIndx: "etprCrdtGrntTrKindNm",
+        align: "center",
+        halign: "center",
+        width: "200",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "거래상태코드",
+        dataType: "string",
+        dataIndx: "trStatCd",
+        align: "center",
+        halign: "center",
+        width: "100",
+        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          valueIndx: "cdValue",
+          labelIndx: "cdName",
+          options: trStatCdList,
+        },
+        render: function (ui) {
+          // console.log("cellData ::: ", ui.cellData);
+          // console.log(P013);
+          let rtnValue = trStatCdList.find(({ cdValue }) => cdValue == ui.cellData);
+          return rtnValue ? rtnValue.cdName : ui.cellData;
+        },
+      },
+      {
+        title: "통화코드",
+        dataType: "string",
+        dataIndx: "trCrryCd",
+        align: "center",
+        halign: "center",
+        width: "80",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "거래금액",
+        dataType: "integer",
+        dataIndx: "dealTrAmt",
+        align: "right",
+        halign: "center",
+        width: "140",
+        filter: { crules: [{ condition: "range" }] },
+        format: "#,###",
+      },
+      {
+        title: "거래원금",
+        dataType: "integer",
+        dataIndx: "dealTrPrca",
+        align: "right",
+        halign: "center",
+        width: "140",
+        filter: { crules: [{ condition: "range" }] },
+        format: "#,###",
+      },
+      {
+        title: "거래이자금액",
+        dataType: "integer",
+        dataIndx: "trIntAmt",
+        align: "right",
+        halign: "center",
+        width: "120",
+        filter: { crules: [{ condition: "range" }] },
+        format: "#,###",
+      },
+      {
+        title: "거래수수료금액",
+        dataType: "integer",
+        dataIndx: "trFeeAmt",
+        align: "right",
+        halign: "center",
+        width: "140",
+        filter: { crules: [{ condition: "range" }] },
+        format: "#,###",
+      },
+      {
+        title: "관리조직번호",
+        dataType: "string",
+        dataIndx: "mngmBdcd",
+        align: "center",
+        halign: "center",
+        width: "120",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "관리조직명",
+        dataType: "string",
+        dataIndx: "dprtNm",
+        align: "center",
+        halign: "center",
+        width: "100",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "처리자직원번호",
+        dataType: "string",
+        dataIndx: "chrrEmpno",
+        align: "center",
+        halign: "center",
+        width: "140",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "처리자직원명",
+        dataType: "string",
+        dataIndx: "chrrEnm",
+        align: "center",
+        halign: "center",
+        width: "120",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "정정취소구분코드",
+        dataType: "string",
+        dataIndx: "rvseCnclDvsnCd",
+        align: "center",
+        halign: "center",
+        width: "180",
+        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          valueIndx: "cdValue",
+          labelIndx: "cdName",
+          options: rvseCnclDvsnCdList,
+        },
+        render: function (ui) {
+          // console.log("cellData ::: ", ui.cellData);
+          // console.log(P013);
+          let rtnValue = trStatCdList.find(({ cdValue }) => cdValue == ui.cellData);
+          return rtnValue ? rtnValue.cdName : ui.cellData;
+        },
+      },
+      {
+        title: "정정취소사유내용",
+        dataType: "string",
+        dataIndx: "rvseCnclRsonText",
+        align: "left",
+        halign: "center",
+        width: "250",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "진행상태코드",
+        dataType: "string",
+        dataIndx: "prgSttsNm",
+        align: "center",
+        halign: "center",
+        width: "200",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "청구순번",
+        dataType: "string",
+        dataIndx: "clmSeq",
+        align: "center",
+        halign: "center",
+        width: "80",
+        filter: { crules: [{ condition: "range" }] },
+      },
+    ];
+
     var obj = {
       height: 400,
       maxHeight: 400,
@@ -322,11 +361,13 @@ const TB09080Sjs = (function () {
    * selectBox 부서코드 set
    */
   function fnSelectBox() {
-    let selectBox = getSelectBoxList(
-      "TB09080S",
-        "D010",   //부서코드
-      false
-    );
+    selectBox = getSelectBoxList("TB09080S", "D010/P006/E026/R028", false);
+
+    prdtMdclCdList = selectBox.filter((item) => item.cmnsGrpCd === "P006");
+    rvseCnclDvsnCdList = selectBox.filter((item) => item.cmnsGrpCd === "R028");
+    trStatCdList = selectBox.filter((item) => item.cmnsGrpCd === "E026");
+
+    setGrid_TB09080S();
 
     let TB07120S_grdSelect
 

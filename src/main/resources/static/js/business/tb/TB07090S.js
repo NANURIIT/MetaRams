@@ -157,7 +157,7 @@ const TB07090Sjs = (function () {
 
     let TB07090S_colModel1 = [
       {
-        title: "deal번호",
+        title: "Deal번호",
         dataType: "string",
         dataIndx: "dealNo",
         halign: "center",
@@ -610,7 +610,7 @@ const TB07090Sjs = (function () {
     // IBIMS431B 
     let TB07090S_colModel3 = [
       {
-        title: "deal번호",
+        title: "Deal번호",
         editable: false,
         dataType: "string",
         dataIndx: "dealNo",

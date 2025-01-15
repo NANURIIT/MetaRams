@@ -68,4 +68,7 @@ public interface IBIMS403BMapper {
 
 	//상환대상내역 조회
 	public List<TB09070SVO.RdmpTrgtDtlsVO> rdmpTrgtDtlsInq(TB09070SVO param);
+
+	//중도상환 시 스케줄 재생성
+	public int rgstNewScdl(IBIMS403BVO param);
 }

@@ -775,7 +775,7 @@ const TB08050Sjs = (function () {
 			  rd.prcsCpltYn=="Y" ? $("#TB08050S_prcsCpltYn_Y").prop("checked", true): $("#TB08050S_prcsCpltYn_N").prop("checked", true);
 			  
               $("#TB08050S_prcsEmpno").val(rd.prcsEmpno); // 처리사원번호
-              $("#TB08050S_prcsTm").val(rd.hndDetlDtm); // 처리시간
+              $("#TB08050S_prcsTm").val(rd.hndDetlDtmStr); // 처리시간
               $("#TB08050S_rkfrDt").val(dateNull(rd.rkfrDt)); // 회계일자 ? 기산일자
 
               prlnFee = rd.prlnFee; // 이연수수료

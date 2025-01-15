@@ -125,7 +125,6 @@ function roadListGrid_TB03021P() {
  */
 function modalClose_TB03021P() {
   // reset_TB03021P();
-  $("#gridDealInfo").pqGrid("refreshDataAndView");
   $("#modal-TB03021P").modal("hide");
 }
 

@@ -83,8 +83,9 @@ const TB06080Sjs = (function () {
 
             $('#TB06080S_apvlPage').off('click');
             $('#TB06080S_apvlPage').on('click', function(){
+              console.log("종목코드",ui.rowData.prdtCd);
+              sessionStorage.setItem("apvlItem", ui.rowData.prdtCd);
               callPage(ui.rowData.scrnNo)
-              console.log("여러번 가는지 확인용");
             })
 
             // 해당 승인요청의 승인자 리스트

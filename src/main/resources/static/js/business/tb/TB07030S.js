@@ -433,6 +433,13 @@ const TB07030Sjs = (function () {
     grdRdmpTrgt = $("#grdRdmpTrgt").pqGrid("instance");
     grdRdmpTrgtDtl = $("#grdRdmpTrgtDtl").pqGrid("instance");
 
+    // grdRdmpTrgt.option("change", function (event, ui) {
+
+    //   console.log(ui.dealMrdpPrca);
+    //   console.log("Row Data:", JSON.stringify(ui.dealMrdpPrca)); // 변경된 행 데이터 전체
+    // });
+
+
     // 중도상환원금 * 중도상환수수료비율 = 중도상환수수료 calulation.java 참조 *** 식이 틀림.
     // let formulas = [
     // 	[
@@ -446,6 +453,22 @@ const TB07030Sjs = (function () {
     // grdRdmpTrgt.option("formulas", formulas);
 
     //$("#grdRdmpTrgtDtl .pq-toolbar .ui-button").attr("id", "download-file-TB07030S");	//엑셀 다운로드 버튼 id부여
+
+    // grdRdmpTrgtDtl.on("cellSave", function (event, ui) {
+
+    //   let totalAmt;
+
+    //   if (ui.dataIndx === "pmntPrarAmt") {
+    //     let gridData = grdRdmpTrgtDtl.option("dataModel").data;
+    //     totalAmt = gridData.reduce((sum, row) => sum + (row.pmntPrarAmt || 0), 0);
+
+    //     console.log("rdmpPrnaSmmAmt total:::" + totalAmt);
+    //     console.log("addComma(rdmpPrnaSmmAmt total) ::: " + comma(totalAmt));
+        
+    //   }
+
+    //   $('#TB07030S_rdmpPrnaSmmAmt').val(comma(totalAmt));
+    // });
   }
 
   /********************************************************************
@@ -585,7 +608,7 @@ const TB07030Sjs = (function () {
           // calculator('dmp_mfa', chkGrdRdmpTrgt());  // 중도상환원금합계, 중도상환수수료
           // calculator('rdmpTrgtPrna', data);		 // 상환대상원금 : 원금
           // calculator('paiTypCd', data);			 // 이자유형코드별 합계 : 정상이자, 연체이자
-          calculator("exmptAmt", data.ibims403DtlLst); // 면제금액합계
+          calculator("calcTotAmt", data.ibims403DtlLst); 
           // calculator('rdmpPrnaSmmAmt');			 // 상환대상총금액
           // calculator('acptPtclSmtlAmt');			 // 수납내역합계
         },
@@ -626,8 +649,13 @@ const TB07030Sjs = (function () {
     addList.forEach((item) => {
       item.prcsCpltYn = "Y";
       item.prcsDt = prcsDt;
-      item.prcsAmt = item.pmntAmt;
-      item.prcsIntrAmt = item.rdmpPrarIntr;
+
+      if(item.paiTypCd === "2"){  //정상이자
+        item.prcsIntrAmt = item.pmntPrarAmt;
+      }else{                      //원금/중도상환원금/중도상환수수료.... todo:: 정상이자 외 연체금도 이자로 들어가야 하는지?
+          item.prcsAmt = item.pmntPrarAmt;
+      }
+      
     });
 
     let ibims403Lst = chkGrdRdmpTrgt(); // 상환대상내역
@@ -917,6 +945,67 @@ const TB07030Sjs = (function () {
           });
           $("#TB07030S_exmptSmmAmt").val(comma(Math.round(tot))); // 면제금액합계
           $("#TB07030S_KRW_exmptSmmAmt").val(comma(Math.round(tot))); // [원환]면제금액합계
+          calculator("rdmpPrnaSmmAmt");
+        });
+        break;
+
+      //20250113추가
+      case "calcTotAmt":      //납부예정금액 합계
+        grdRdmpTrgtDtl.on("editorEnd", function (evt, ui) {
+          let totRdmpPrna = 0;          //상환대상원금 합계
+          let totRdmpIntr = 0;          //납부예정이자 합계
+          let totOvduIntr = 0;          //연체이자 합계
+          let totMrdpPrca = 0;          //중도상환원금 합계
+          let totMrdpFee  = 0;          //중도상환수수료 합계
+          let totRcvbIntr = 0;          //미수이자 합계
+          let totExmptAmt = 0;          //면제금액 합계
+
+          p.forEach((ele) => {
+            let paiTypCd = ele.paiTypCd;//원리금유형코드
+
+            let exmptAmt = ele.exmptAmt;
+            totExmptAmt += exmptAmt;
+
+            if(paiTypCd === "1"){         //원금
+              totRdmpPrna += ele.pmntPrarAmt;
+            }else if(paiTypCd === "2"){   //정상이자
+              totRdmpIntr += ele.pmntPrarAmt;
+            }else if(paiTypCd === "3"){   //분할금연체금액
+
+            }else if(paiTypCd === "4"){   //납부이자연체금액
+              totOvduIntr += ele.pmntPrarAmt;
+            }else if(paiTypCd === "5"){   //원금연체금액
+              totOvduIntr += ele.pmntPrarAmt;
+            }else if(paiTypCd === "6"){   //환출이자
+
+            }else if(paiTypCd === "7"){   //미수이자
+
+            }else if(paiTypCd === "8"){   //중도상환원금
+              totMrdpPrca += ele.pmntPrarAmt;
+            }else if(paiTypCd === "9"){   //중도상환수수료
+              totMrdpFee += ele.pmntPrarAmt;
+            }
+            
+          });
+
+          $("#TB07030S_exmptSmmAmt").val(comma(Math.round(totExmptAmt)));         
+          $("#TB07030S_KRW_exmptSmmAmt").val(comma(Math.round(totExmptAmt)));     
+
+          $("#TB07030S_rdmpTrgtPrna").val(comma(Math.round(totRdmpPrna)));         
+          $("#TB07030S_KRW_rdmpTrgtPrna").val(comma(Math.round(totRdmpPrna)));    
+
+          $("#TB07030S_nrmlIntrAmt").val(comma(Math.round(totRdmpIntr)));         
+          $("#TB07030S_KRW_nrmlIntrAmt").val(comma(Math.round(totRdmpIntr)));    
+
+          $("#TB07030S_crdtGrntOvduIntAmt").val(comma(Math.round(totOvduIntr)));        
+          $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(comma(Math.round(totOvduIntr)));     
+
+          $("#TB07030S_dealMrdpPrca").val(comma(Math.round(totMrdpPrca)));         
+          $("#TB07030S_KRW_dealMrdpPrca").val(comma(Math.round(totMrdpPrca)));    
+
+          $("#TB07030S_mrdpFeeAmt").val(comma(Math.round(totMrdpFee)));         
+          $("#TB07030S_KRW_mrdpFeeAmt").val(comma(Math.round(totMrdpFee)));     
+
           calculator("rdmpPrnaSmmAmt");
         });
         break;

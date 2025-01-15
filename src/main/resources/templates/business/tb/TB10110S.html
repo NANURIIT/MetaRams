@@ -27,21 +27,21 @@
 								<label class="col-sm-1 control-label">권한구분</label>
 								<div class="col-sm-2">
 									<div class="input-group">
-										<select class="form-control m-b" id="TB10110S_rghtCd">
+										<select class="form-control m-b" id="TB10110S_athCd">
 											<option value="">전체</option>
 										</select>
 									</div>
 								</div>
 								<label class="col-sm-1 col-form-label ls-15">사번</label>
 								<div class="col-sm-2 input-group">
-									<input type="text" class="form-control" id="TB10110S_empNo" name=""
-										placeholder=""> <span class="input-group-append">
+									<input type="text" class="form-control" id="TB10110S_empNo" name="" placeholder="">
+									<span class="input-group-append">
 										<button type="button" class="btn btn-default"
 											onclick="callTB03022P('TB10110S');">
 											<i class="fa fa-search"></i>
 										</button>
-									</span> <input type="text" class="form-control border-left-none"
-										id="TB10110S_empNm" name="" placeholder="전체" readonly="">
+									</span> <input type="text" class="form-control border-left-none" id="TB10110S_empNm"
+										name="" placeholder="전체" readonly="">
 								</div>
 								<!-- <div class="col-sm-2 input-group">
 									<input type="text" class="form-control text-right" id="empNm">
@@ -49,16 +49,16 @@
 								<label class=" control-label" for="TB05030S_chkF">
 									<input type="checkbox" id="TB10110S_delYn"> 과거이력포함
 								</label>
-								<label class="col-sm-1 col-form-label ls-15">부서코드</label>
-								<div class="col-sm-2 input-group">
-									<input type="text" class="form-control" id="TB10110S_empNo" name=""
-										placeholder=""> <span class="input-group-append">
-										<button type="button" class="btn btn-default"
-											onclick="callTB03022P('TB10110S');">
-											<i class="fa fa-search"></i>
-										</button>
-									</span> <input type="text" class="form-control border-left-none"
-										id="TB10110S_empNm" name="" placeholder="전체" readonly="">
+								<label class="col-sm-1 control-label">
+									부서코드
+								</label>
+								<div class="col-sm-2">
+									<div class="input-group">
+										<select class="form-control" id="TB10110S_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="TB10110S_dprtCd" readonly="">
+									</div>
 								</div>
 								<div class="col-sm-1 text-right">
 									<button class="btn btn-primary" onclick="TB10110Sjs.runFindUser();">

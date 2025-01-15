@@ -32,8 +32,14 @@ public class TB06082ServiceImpl implements TB06082Service {
 
 		IBIMS231BDTO dto231 = new IBIMS231BDTO();
 
-		dto231.setDecdStepDcd(paramData.getDecdStepDcd());			// 결재단계구분코드
-		dto231.setDecdSttsDcd(paramData.getDecdSttsDcd());			// 결재상태구분코드
+		if("3".equals(paramData.getDecdSttsDcd())){
+			dto231.setDecdStepDcd("04");
+			dto231.setDecdSttsDcd("3");
+		}
+		else {
+			dto231.setDecdStepDcd(paramData.getDecdStepDcd());		// 결재단계구분코드
+			dto231.setDecdSttsDcd(paramData.getDecdSttsDcd());		// 결재상태구분코드
+		}
 		dto231.setDealNo(paramData.getDealNo());					// 딜번호
 		dto231.setPrdtCd(paramData.getPrdtCd());					// 상품코드
 		dto231.setDecdJobDcd(paramData.getDecdJobDcd());			// 결재업무구분코드
@@ -50,6 +56,8 @@ public class TB06082ServiceImpl implements TB06082Service {
 		 * 업데이트전에 결재일련번호를 세팅해야함
 		 */
 		int decdSn = ibims231bMapper.decdSn(dto231);
+
+		dto231.setDecdSn(decdSn);
 
 		IBIMS232BDTO dto232 = new IBIMS232BDTO();
 
