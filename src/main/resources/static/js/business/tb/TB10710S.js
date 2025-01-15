@@ -46,7 +46,7 @@ const TB10710Sjs = function () {
                 filter: { crules: [{ condition: 'range' }] }
             }
             , {
-                title: "딜번호",
+                title: "Deal번호",
                 dataType: "string",
                 dataIndx: "dealNo",
                 halign: "center",
@@ -54,7 +54,7 @@ const TB10710Sjs = function () {
                 filter: { crules: [{ condition: 'range' }] }
             }
             , {
-                title: "딜명",
+                title: "Deal명",
                 dataType: "string",
                 dataIndx: "dealNm",
                 halign: "center",

@@ -50,7 +50,7 @@ const TB08090Sjs = (function () {
 
 		let colM_TB08090S = [
 			{
-				title: "딜번호",
+				title: "Deal번호",
 				dataType: "string",
 				dataIndx: "dealNo",
 				align: "left",
@@ -59,7 +59,7 @@ const TB08090Sjs = (function () {
 				filter: { crules: [{ condition: 'range' }] },
 			},
 			{
-				title: "딜명",
+				title: "Deal명",
 				dataType: "string",
 				dataIndx: "dealNm",
 				align: "left",
@@ -259,8 +259,8 @@ const TB08090Sjs = (function () {
 							var astsQtyDvdNm = option ? option.cdName : row.astsQtyDvdCd;
 
 							return {
-								"딜번호": row.dealNo,
-								"딜명": row.dealNm,
+								"Deal번호": row.dealNo,
+								"Deal명": row.dealNm,
 								"종목코드": row.prdtCd,
 								"종목명": row.prdtNm,
 								"실행일련번호": row.excSn,
@@ -276,8 +276,8 @@ const TB08090Sjs = (function () {
 						var ws = XLSX.utils.json_to_sheet(transformedData);
 
 						ws['!cols'] = [
-							{ wpx: 120 }, // 딜번호
-							{ wpx: 200 }, // 딜명
+							{ wpx: 120 }, // Deal번호
+							{ wpx: 200 }, // Deal명
 							{ wpx: 120 }, // 종목코드
 							{ wpx: 200 }, // 종목명
 							{ wpx: 120 }, // 실행일련번호
@@ -543,8 +543,8 @@ const TB08090Sjs = (function () {
 			var option = options.find(opt => opt.cdName == row["자산건전성"]);
 			var astsQtyDvdCd = option ? option.cdValue : row["자산건전성"];
 
-			var dealNo = row["딜번호"];
-			var dealNm = row["딜명"];
+			var dealNo = row["Deal번호"];
+			var dealNm = row["Deal명"];
 			var prdtCd = row["종목코드"];
 			var prdtNm = row["종목명"];
 			var excSn = row["실행일련번호"];

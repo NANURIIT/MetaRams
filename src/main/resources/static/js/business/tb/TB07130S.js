@@ -98,7 +98,7 @@ const TB07130Sjs = (function () {
 
     let col_thdtTrDtls = [
       {
-        title: "딜번호",
+        title: "Deal번호",
         dataType: "string",
         dataIndx: "dealNo",
         halign: "center",

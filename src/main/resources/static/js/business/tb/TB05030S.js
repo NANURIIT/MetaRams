@@ -1143,7 +1143,7 @@ const TB05030Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        title: "딜번호",
+        title: "Deal번호",
         dataType: "string",
         dataIndx: "dealNo",
         align: "center",
