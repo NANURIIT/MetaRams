@@ -1,9 +1,9 @@
 const TB09080Sjs = (function () {
   let selectBox;
   let dealDtlsIns; //거래내역 grid instance
-  let prdtMdclCdList;     //신용공여중분류코드 리스트
+  let prdtMdclCdList; //신용공여중분류코드 리스트
   let rvseCnclDvsnCdList; //정정취소구분코드 리스트
-  let trStatCdList;       //거래상태코드 리스트
+  let trStatCdList; //거래상태코드 리스트
 
   $(document).ready(function () {
     fnSelectBox();
@@ -13,7 +13,6 @@ const TB09080Sjs = (function () {
   });
 
   function setGrid_TB09080S() {
-
     let colM_TB09080S = [
       {
         title: "Deal번호",
@@ -37,7 +36,7 @@ const TB09080Sjs = (function () {
         title: "종목코드",
         dataType: "string",
         dataIndx: "prdtCd",
-        align: "left",
+        align: "center",
         halign: "center",
         width: "250",
         filter: { crules: [{ condition: "range" }] },
@@ -55,7 +54,7 @@ const TB09080Sjs = (function () {
         title: "거래순번",
         dataType: "string",
         dataIndx: "trSn",
-        align: "center",
+        align: "right",
         halign: "center",
         width: "80",
         filter: { crules: [{ condition: "range" }] },
@@ -64,7 +63,7 @@ const TB09080Sjs = (function () {
         title: "실행순번",
         dataType: "string",
         dataIndx: "excSn",
-        align: "center",
+        align: "right",
         halign: "center",
         width: "80",
         filter: { crules: [{ condition: "range" }] },
@@ -73,7 +72,7 @@ const TB09080Sjs = (function () {
         title: "신용공여중분류코드",
         dataType: "string",
         dataIndx: "prdtMdclCd",
-        align: "center",
+        align: "left",
         halign: "center",
         width: "160",
         filter: { crules: [{ condition: "range" }] },
@@ -86,7 +85,9 @@ const TB09080Sjs = (function () {
         render: function (ui) {
           // console.log("cellData ::: ", ui.cellData);
           // console.log(P013);
-          let rtnValue = prdtMdclCdList.find(({ cdValue }) => cdValue == ui.cellData);
+          let rtnValue = prdtMdclCdList.find(
+            ({ cdValue }) => cdValue == ui.cellData
+          );
           return rtnValue ? rtnValue.cdName : ui.cellData;
         },
       },
@@ -94,7 +95,7 @@ const TB09080Sjs = (function () {
         title: "기업신용공여거래종류코드",
         dataType: "string",
         dataIndx: "etprCrdtGrntTrKindNm",
-        align: "center",
+        align: "left",
         halign: "center",
         width: "200",
         filter: { crules: [{ condition: "range" }] },
@@ -103,7 +104,7 @@ const TB09080Sjs = (function () {
         title: "거래상태코드",
         dataType: "string",
         dataIndx: "trStatCd",
-        align: "center",
+        align: "left",
         halign: "center",
         width: "100",
         filter: { crules: [{ condition: "range" }] },
@@ -116,7 +117,9 @@ const TB09080Sjs = (function () {
         render: function (ui) {
           // console.log("cellData ::: ", ui.cellData);
           // console.log(P013);
-          let rtnValue = trStatCdList.find(({ cdValue }) => cdValue == ui.cellData);
+          let rtnValue = trStatCdList.find(
+            ({ cdValue }) => cdValue == ui.cellData
+          );
           return rtnValue ? rtnValue.cdName : ui.cellData;
         },
       },
@@ -124,7 +127,7 @@ const TB09080Sjs = (function () {
         title: "통화코드",
         dataType: "string",
         dataIndx: "trCrryCd",
-        align: "center",
+        align: "left",
         halign: "center",
         width: "80",
         filter: { crules: [{ condition: "range" }] },
@@ -182,7 +185,7 @@ const TB09080Sjs = (function () {
         title: "관리조직명",
         dataType: "string",
         dataIndx: "dprtNm",
-        align: "center",
+        align: "left",
         halign: "center",
         width: "100",
         filter: { crules: [{ condition: "range" }] },
@@ -200,7 +203,7 @@ const TB09080Sjs = (function () {
         title: "처리자직원명",
         dataType: "string",
         dataIndx: "chrrEnm",
-        align: "center",
+        align: "left",
         halign: "center",
         width: "120",
         filter: { crules: [{ condition: "range" }] },
@@ -222,7 +225,9 @@ const TB09080Sjs = (function () {
         render: function (ui) {
           // console.log("cellData ::: ", ui.cellData);
           // console.log(P013);
-          let rtnValue = trStatCdList.find(({ cdValue }) => cdValue == ui.cellData);
+          let rtnValue = trStatCdList.find(
+            ({ cdValue }) => cdValue == ui.cellData
+          );
           return rtnValue ? rtnValue.cdName : ui.cellData;
         },
       },
@@ -239,7 +244,7 @@ const TB09080Sjs = (function () {
         title: "진행상태코드",
         dataType: "string",
         dataIndx: "prgSttsNm",
-        align: "center",
+        align: "left",
         halign: "center",
         width: "200",
         filter: { crules: [{ condition: "range" }] },
@@ -248,7 +253,7 @@ const TB09080Sjs = (function () {
         title: "청구순번",
         dataType: "string",
         dataIndx: "clmSeq",
-        align: "center",
+        align: "right",
         halign: "center",
         width: "80",
         filter: { crules: [{ condition: "range" }] },
@@ -369,24 +374,23 @@ const TB09080Sjs = (function () {
 
     setGrid_TB09080S();
 
-    let TB07120S_grdSelect
+    let TB07120S_grdSelect;
 
     TB07120S_grdSelect = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "D010";
-    })
+    });
 
     let D010html;
-    
+
     TB07120S_grdSelect.forEach((item) => {
       D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
     });
 
     $("#TB09080S_dprtNm").append(D010html);
 
-    $('#TB09080S_dprtNm').on('change', function(){
-      $('#TB09080S_dprtCd').val($('#TB09080S_dprtNm').val())
-    })
-    
+    $("#TB09080S_dprtNm").on("change", function () {
+      $("#TB09080S_dprtCd").val($("#TB09080S_dprtNm").val());
+    });
   }
 
   return {
