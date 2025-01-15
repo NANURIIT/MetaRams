@@ -739,7 +739,6 @@ const TB07030Sjs = (function () {
         ibims403Lst.push(chkData);
       }
     }
-
     return ibims403Lst;
   }
 
