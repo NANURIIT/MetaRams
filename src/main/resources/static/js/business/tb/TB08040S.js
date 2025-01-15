@@ -404,6 +404,7 @@ const TB08040Sjs = (function() {
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 				editable: true,
+				editor: { type: 'input', attr: 'maxlength = "200"',},
 			},
 			{
 				title: "수수료",
@@ -425,11 +426,12 @@ const TB08040Sjs = (function() {
 							var value = parseFloat(ui.cellData);
 							var formattedValue = value.toLocaleString('ko-KR', {
 								minimumFractionDigits: 0,
-								maximumFractionDigits: 0
+								maximumFractionDigits: 2
 							});
 							return formattedValue;
 						},
 						editable: true,
+						editor: { type: 'input', attr: 'maxlength = "18"', oninput: "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"},
 					},
 					{
 						title: "대상내용(계산식)",
@@ -439,6 +441,7 @@ const TB08040Sjs = (function() {
 						align: "left",
 						width: "10%",
 						editable: true,
+						editor: { type: 'input', attr: 'maxlength = "500"',},
 					},
 					{
 						title: "율(%)",
@@ -468,7 +471,7 @@ const TB08040Sjs = (function() {
 							var value = parseFloat(ui.cellData);
 							var formattedValue = value.toLocaleString('ko-KR', {
 								minimumFractionDigits: 0,
-								maximumFractionDigits: 7
+								maximumFractionDigits: 0
 							});
 							return formattedValue;
 						},
@@ -504,10 +507,11 @@ const TB08040Sjs = (function() {
 							var value = parseFloat(ui.cellData);
 							var formattedValue = value.toLocaleString('ko-KR', {
 								minimumFractionDigits: 0,
-								maximumFractionDigits: 0
+								maximumFractionDigits: 2
 							});
 							return formattedValue;
 						},
+						editor: { type: 'input', attr: 'maxlength = "24"', oninput: "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"},
 					},
 				],
 			},
@@ -887,6 +891,20 @@ const TB08040Sjs = (function() {
 						
 						// UI에 반영
 						grid.refreshRow({ rowIndx: ui.rowIndx });
+					}
+					
+					if (dataIndx === 'feeAmt') {
+						var feeRcknDcd = rowData.feeRcknDcd;
+						var feeHgstAmt = rowData.feeHgstAmt;
+						var feeLwstAmt = rowData.feeLwstAmt;
+						
+						if (feeRcknDcd != '02') {
+							if (rowData.feeAmt > feeHgstAmt) {
+								rowData.feeAmt = feeHgstAmt;
+							} else if (rowData.feeAmt < feeLwstAmt) {
+								rowData.feeAmt = feeLwstAmt;
+							}
+						}
 					}
 
 					if (rowData.rowType !== "I") {
