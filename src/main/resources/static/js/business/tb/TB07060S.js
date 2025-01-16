@@ -927,7 +927,7 @@ const TB07060Sjs = (function () {
             /* TODO: IBIMS401B에 있는 모든 항목을 가져오게 해놨는데 아직 없는 데이터가 많아서 추후 확인 및 수정 필요 */
             /* ROW1 */
             $("#TB07060S_ptxtTrOthrDscmNo").val(
-              checkBrnAcno(data.ptxtTrOthrDscmNo)
+              data.ptxtTrOthrDscmNo
             ); // 거래상대방 사업자등록번호
             $("#TB07060S_ptxtTrOthrDscmNm").val(data.ptxtTrOthrDscmNm); // 거래상대방 법인명
             $("#TB07060S_I011").val(data.prgSttsCd); // 진행상태

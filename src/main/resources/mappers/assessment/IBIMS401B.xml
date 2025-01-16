@@ -676,7 +676,7 @@
             , (
                SELECT MAX(DPRT_NM)
                  FROM IBIMS003B
-                WHERE BDCD = A.MNGM_BDCD
+                WHERE DPRT_CD = A.MNGM_BDCD
               ) AS MNGM_BDCD_NM                                                  /* 관리부점명 */
             , A.CHRR_EMPNO                                                       /* 담당자사원번호 */
             , (
