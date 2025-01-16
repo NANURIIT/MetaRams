@@ -391,6 +391,10 @@ function setEmpNm(e) {
       $('#TB10110S_athCd').find(`option`).css('display', 'inline');
       $('#TB10110S_athCd').find('option').not(`option[value*=${e.dprtCd}]`).css('display', 'none');
       break;
+    case "TB03040S_1":
+      $("#TB03040S_2_dprtNm").val(e.dprtCd);
+      $("#TB03040S_2_dprtCd").val(e.dprtCd);
+      break;
     default:
       break;
   }

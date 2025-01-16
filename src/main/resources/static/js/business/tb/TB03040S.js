@@ -2,7 +2,9 @@ const TB03040Sjs = (function(){
   let pqGridObjEnopList;
 
   $(document).ready(function () {
-    setFormElementsStateByUserRole();
+    //setFormElementsStateByUserRole();
+
+    sltctBoxSet();
     // $(".table").footable();
 
     // 1개월전 ~ 오늘일자 디폴트 세팅
@@ -19,6 +21,35 @@ const TB03040Sjs = (function(){
     setPqGrid(arrPqGridObj);
     pqGridObjEnopList = $("#TB03040S_gridDealList").pqGrid("instance");
   });
+
+  //selectBox 세팅
+  function sltctBoxSet(){
+    let selectBox = getSelectBoxList(
+			"TB03040S",
+			"D010",   //부서코드
+			false
+		);
+
+    let TB03040S_dprtSelect;
+
+		TB03040S_dprtSelect = selectBox.filter(function(item) {
+			return item.cmnsGrpCd === "D010";
+		})
+
+		let D010html;
+
+		TB03040S_dprtSelect.forEach((item) => {
+			D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+		});
+
+		$("#TB03040S_2_dprtNm").append(D010html);
+
+		$('#TB03040S_2_dprtNm').on('change', function() {
+			$('#TB03040S_2_dprtCd').val($('#TB03040S_2_dprtNm').val())
+		});
+
+    setFormElementsStateByUserRole();
+  }
 
   // 유효성 검사용 날짜패턴
   var pattern = /(^\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
@@ -126,7 +157,7 @@ const TB03040Sjs = (function(){
     $('#TB03040S_1_empNo').val(empNo);
     $('#TB03040S_1_empNm').val(empNm);
     $('#TB03040S_2_dprtCd').val(dprtCd);
-    $('#TB03040S_2_dprtNm').val(dprtNm);
+    $('#TB03040S_2_dprtNm').val(dprtCd);
     
     //if(){ //권환에 따른 조건 필요 
   
