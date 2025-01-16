@@ -69,7 +69,7 @@ const TB06080Sjs = (function () {
       data: JSON.stringify(obj),
       dataType: "json",
       beforeSend: function (xhr) {
-        resetInputValue($(`div[data-menuid='/TB06080S']`));
+        resetInputValue($(`#TB06080S_resultInputs`));
         resetPGgrids('TB06080S');
         $('#TB06080S_apvlPage').off('click');
       },
@@ -80,6 +80,8 @@ const TB06080Sjs = (function () {
           pqGridObjApvlList.on("rowClick", function (evt, ui) {
             // 공통 피큐그리드에서 인풋으로 값 보내기
             setInputboxFromPdata(ui, "TB06080S");
+            $("#TB06080S_rqstDtm").val($("#TB06080S_rqstDtm").val().split('T')[0])
+            $("#TB06080S_rqstCnclDtm").val($("#TB06080S_rqstCnclDtm").val().split('T')[0])
 
             $('#TB06080S_apvlPage').off('click');
             $('#TB06080S_apvlPage').on('click', function(){
@@ -102,6 +104,9 @@ const TB06080Sjs = (function () {
                 }
               ),
               dataType: "json",
+              beforeSend: function () {
+                resetInputValue($(`#TB06080S_dsfcLists`));
+              },
               success: function (data) {
                 if (data.length > 0) {
                   pqGridObjGbckList.setData(data);
@@ -109,6 +114,7 @@ const TB06080Sjs = (function () {
                   pqGridObjGbckList.on("rowClick", function (evt, ui) {
                     // 공통 피큐그리드에서 인풋으로 값 보내기
                     setInputboxFromPdata(ui, "TB06080S");
+                    $("#TB06080S_decdDtm").val($("#TB06080S_decdDtm").val().split('T')[0])
                   });
                 } else {
                   swal.fire({
@@ -315,7 +321,10 @@ const TB06080Sjs = (function () {
       width: 130,
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
-        return formatDateTime(ui.cellData);
+        if(ui.cellData){
+          let result = ui.cellData.replace('T', ' ').slice(0, 19);
+          return result;
+        }
       },
     },
     {
@@ -326,7 +335,10 @@ const TB06080Sjs = (function () {
       width: 130,
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
-        return formatDateTime(ui.cellData);
+        if(ui.cellData){
+          let result = ui.cellData.replace('T', ' ').slice(0, 19);
+          return result;
+        }
       },
     },
     {
@@ -373,7 +385,10 @@ const TB06080Sjs = (function () {
       width: 170,
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
-        return formatDateTime(ui.cellData);
+        if(ui.cellData){
+          let result = ui.cellData.replace('T', ' ').slice(0, 19);
+          return result;
+        }
       },
     },
     {

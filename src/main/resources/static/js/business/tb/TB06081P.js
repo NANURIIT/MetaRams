@@ -326,12 +326,13 @@ function TB06081P_apvlListChk() {
             if (data.length > 0) {
                 TB06081P_apvlList = data;
                 for(let i = 0; i < data.length; i++) {
-                    console.log(data[i].decdSttsDcd);
+                    console.log("상태체크", data[i].decdSttsDcd);
                     if ( data[i].decdSttsDcd === "3" ) {
                         TB06081P_apvlReqStatusHandler("no");
                         break;
                     }
                     else if ( data[i].decdSttsDcd === "1" ) {
+                        $('button[onclick*="TB06081P_srchApvlList"]').prop('disabled', true);
                         TB06081P_apvlReqStatusHandler("ing");
                         break;
                     }
@@ -340,6 +341,7 @@ function TB06081P_apvlListChk() {
                         break;
                     }
                     else if ( data[i].decdSttsDcd === "2" ) {
+                        $('button[onclick*="TB06081P_srchApvlList"]').prop('disabled', true);
                         TB06081P_apvlReqStatusHandler("nothing");
                         break;
                     }
