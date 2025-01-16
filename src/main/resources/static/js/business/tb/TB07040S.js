@@ -2252,14 +2252,14 @@ const TB07040Sjs = (function () {
               Number($("#TB07040S_trQnt").val().replaceAll(",", ""))) /
               Number($("#TB07040S_wholIssuShqt").val().replaceAll(",", ""))) *
             100
-          ).toFixed(8)
+          ).toFixed(2)
         );
       } else if (Number($("#TB07040S_wholIssuShqt").val())) {
         let value = (
           (Number($("#TB07040S_hldgShqt").val().replaceAll(",", "")) /
             Number($("#TB07040S_wholIssuShqt").val().replaceAll(",", ""))) *
           100
-        ).toFixed(8);
+        ).toFixed(2);
         // alert(value);
         if (isFinite(value)) {
           $("#TB07040S_qotaRt").val(value);
