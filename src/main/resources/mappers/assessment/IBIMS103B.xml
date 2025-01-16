@@ -997,6 +997,7 @@
 		   AND s201b.LAST_YN 				= 'Y'
 		  LEFT JOIN IBIMS003B s003b
 		    ON s201b.CHRR_EMPNO				= s003b.EMPNO
+		   AND s003b.DEL_YN = 'N'
 		  LEFT JOIN IBIMS101B s101b
 		    ON s103b.DEAL_NO 				= s101b.DEAL_NO       
 	      LEFT JOIN IBIMS401B s401b
@@ -1004,7 +1005,6 @@
           LEFT JOIN IBIMS250B s250b
 		    ON s250b.PRDT_CD 				= s201b.PRDT_CD
 		 WHERE 1=1
-		 AND s003b.DEL_YN = 'N'
 		   AND s103b.LAST_YN 				= 'Y'
 		   AND s101b.LAST_YN 				= 'Y' 
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
