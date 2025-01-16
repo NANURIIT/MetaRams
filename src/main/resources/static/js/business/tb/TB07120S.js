@@ -206,7 +206,7 @@ const TB07120Sjs = (function () {
     {
       title: "부서명",
       dataType: "string",
-      dataIndx: "dprtNm",
+      dataIndx: "orgnm",
       align: "center",
       halign: "center",
       width: "",
@@ -248,10 +248,16 @@ const TB07120Sjs = (function () {
       title: "거래금액",
       dataType: "string",
       dataIndx: "dealTrAmt",
-      align: "center",
+      align: "right",
       halign: "center",
+      format: "#,###",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        if(!ui.cellData){
+          return 0;
+        }
+      }
     },
     {
       title: "자금구분",
@@ -336,6 +342,36 @@ const TB07120Sjs = (function () {
       dataType: "string",
       dataIndx: "dcfcEnm",
       hidden: true
+    },
+    {
+      title: "거래처번호",
+      dataType: "string",
+      dataIndx: "trObjtBsnNo",
+      hidden: true
+    },
+    {
+      title: "딜번호",
+      dataType: "string",
+      dataIndx: "dealNo",
+      hidden: true,
+    },
+    {
+      title: "실행일련번호",
+      dataType: "string",
+      dataIndx: "excSeq",
+      hidden: true,
+    },
+    {
+      title: "",
+      dataType: "string",
+      dataIndx: "trSeq",
+      hidden: true,
+    },
+    {
+      title: "",
+      dataType: "string",
+      dataIndx: "erlmSeq",
+      hidden: true,
     },
   ];
 
@@ -435,40 +471,21 @@ const TB07120Sjs = (function () {
     let trCrryCd = rowData.trCrryCd;                           //통화코드
     let depositWithdrawalCode = rowData.depositWithdrawalCode; //입출금구분
 
-    // input ID 매핑 객체
-    const idMap = {
-      rqstStfno: "TB07120S1_empNo", //담당자(번호)
-      rqstStfnm: "TB07120S1_empNm", //담당자(명)
-      reltStfno: "TB07120S2_empNo", //승인자(번호)
-      reltStfnm: "TB07120S2_empNm"  //승인자(명)
-    };
-    
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
       let value = rowData[key];
     
+      //숫자로 변환이 될 경우
+      if(!isNaN(Number(value))){
+        let formattedValue = Number(value).toLocaleString('en');
+        $(`#ibims452b #TB07120S_${key}`).val(formattedValue);
+      }
       // 기본 값 세팅
-      $(`#ibims452b #TB07120S_${key}`).val(value);
-    
-      // 포맷 변환 로직
-      // 거래일자(YYYY-MM-DD)
-      if (key === "trDt") {
-        $(`#ibims452b #TB07120S_trDt`).val(formatDate(rowData[keys[i]]))
+      else {
+        $(`#ibims452b #TB07120S_${key}`).val(value);
       }
-      //거래시간,처리시간
-      if (key === "trDtm" || key === "hndlDtm") {
-        let dateObj = new Date(rowData[keys[i]]);
-        $(`#ibims452b #TB07120S_${key}`).val(dateObj.format("yyyy-MM-dd HH:mm:ss"));
-      }
-    
-      // 특정 key에 따른 직접 세팅 (매핑 활용)
-      if (idMap[key]) {
-        $(`#ibims452b #${idMap[key]}`).val(value);
-      }
+      
     }
-    
-    $('#TB07120S_consDecdDvsnCd').val(rowData.consDecdDvsnCd) //결재단계구분
-    $('#TB07120S_consDecdStatCd2').val(consDecdStatCd)        //결재상태
 
     TB07120S_nowRowData = {
       prdtCd : rowData.prdtCd,
@@ -478,6 +495,7 @@ const TB07120Sjs = (function () {
       consDecdStatCd : consDecdStatCd,
       erlmSeq : rowData.erlmSeq,
     };
+
   }
 
   /**

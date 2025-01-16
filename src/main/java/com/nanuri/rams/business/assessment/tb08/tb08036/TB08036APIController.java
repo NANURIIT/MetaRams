@@ -28,43 +28,43 @@ public class TB08036APIController {
 	}
 	
 	@PostMapping(value = "/modifyDealInfoTB08036S")
-	public void modifyDealInfo(@RequestBody IBIMS601BVO param){
-		tb08036Service.modifyDealInfo(param);
+	public int modifyDealInfo(@RequestBody IBIMS601BVO param){
+		return tb08036Service.modifyDealInfo(param);
 	}
 	
 	@PostMapping(value = "/insertIBIMS603B")
-	public void insertIBIMS603B(@RequestBody IBIMS603BDTO param){
-		tb08036Service.insertIBIMS603B(param);
+	public int insertIBIMS603B(@RequestBody IBIMS603BDTO param){
+		return tb08036Service.insertIBIMS603B(param);
 	}
 
 	@PostMapping(value = "/insertIBIMS602B")
-	public void insertIBIMS602B(@RequestBody IBIMS602BDTO param){
-		tb08036Service.insertIBIMS602B(param);
+	public int insertIBIMS602B(@RequestBody IBIMS602BDTO param){
+		return tb08036Service.insertIBIMS602B(param);
 	}
 
 	@PostMapping(value = "/insertIBIMS611B")
-	public void insertIBIMS611B(@RequestBody IBIMS611BDTO param){
-		tb08036Service.insertIBIMS611B(param);
+	public IBIMS611BDTO insertIBIMS611B(@RequestBody IBIMS611BDTO param){
+		return tb08036Service.insertIBIMS611B(param);
 	}
 
 	@PostMapping(value = "/deleteDealInfoTB08036S")
-	public void deleteDealInfo(@RequestBody IBIMS601BVO param){		
-		tb08036Service.deleteDealInfo(param);
+	public int deleteDealInfo(@RequestBody IBIMS601BVO param){		
+		return tb08036Service.deleteDealInfo(param);
 	}
 
 	@PostMapping(value = "/deleteIBIMS602B")
-	public void deleteIBIMS602B(@RequestBody IBIMS601BVO param){		
-		tb08036Service.deleteIBIMS602B(param);
+	public int deleteIBIMS602B(@RequestBody IBIMS601BVO param){		
+		return tb08036Service.deleteIBIMS602B(param);
 	}
 	
 	@PostMapping(value = "/deleteIBIMS611B")
-	public void deleteIBIMS611B(@RequestBody IBIMS601BVO param){		
-		tb08036Service.deleteIBIMS611B(param);
+	public IBIMS601BVO deleteIBIMS611B(@RequestBody IBIMS601BVO param){		
+		return tb08036Service.deleteIBIMS611B(param);
 	}
 
 	@PostMapping(value = "/deleteIBIMS603B")
-	public void deleteIBIMS603B(@RequestBody IBIMS601BVO param){		
-		tb08036Service.deleteIBIMS603B(param);
+	public int deleteIBIMS603B(@RequestBody IBIMS601BVO param){		
+		return tb08036Service.deleteIBIMS603B(param);
 	}
 
 }

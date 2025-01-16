@@ -23,12 +23,11 @@ public class IBIMS452BDTO {
     private String consDecdDvsnCd;	        // 품의결재구분코드	IBIMS452B	varchar(2)
     private String consDecdStatCd;	        // 결재상태코드	IBIMS452B	varchar(2)
     private String ovrsTrnsYn;              // 해외송금여부 IBIMS452B	varchar(2)
-    //private String gbckRsonText;	        // 반려사유내용	IBIMS452B	varchar(500)(메타 변경 전)
     private String rjctRsnCntn;	            // 반려사유내용	IBIMS452B	varchar(500)
     private Date hndDetlDtm;	            // 조작상세일시	IBIMS452B	datetime
     private String hndEmpno;	            // 조작사원번호	IBIMS452B	varchar(7)
     private String hndTmnlNo;	            // 조작단말기번호	IBIMS452B	varchar(8)
     private String hndTrId;	                // 조작거래ID	IBIMS452B	varchar(10)
     private String guid;	                // GUID	IBIMS452B	varchar(29)
-    
+
 }

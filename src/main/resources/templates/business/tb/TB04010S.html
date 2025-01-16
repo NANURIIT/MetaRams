@@ -189,6 +189,7 @@
 													<div class="col-sm-8">
 														<div class="input-group">
 															<input type="text" class="form-control" style="width:30px;" id="TB04010S_empNo" readonly>
+															<input type="text" class="form-control" style="width:0px;" id="TB04010S_empNo1" hidden>
 															<span class="input-group-append">
 																<button type="button" class="btn btn-default" onclick="callTB03022P('TB04010S')" disabled><i class="fa fa-search"></i></button>
 															</span>
@@ -498,7 +499,7 @@
 																<input type="radio" value="Y" name="TB04010S_mrtgOfrF">&nbsp;Y
 															</div>
 															<div class="col-sm-2 text-left input-group input-h">
-																<input type="radio" value="N" name="TB04010S_mrtgOfrF">&nbsp;N
+																<input type="radio" value="N" name="TB04010S_mrtgOfrF" checked>&nbsp;N
 															</div>
 															<div class="col-sm-4">
 															</div>
@@ -509,7 +510,7 @@
 																<input type="radio" value="Y" name="TB04010S_ensrF">&nbsp;Y
 															</div>
 															<div class="col-sm-2 text-left input-group input-h">
-																<input type="radio" value="N" name="TB04010S_ensrF">&nbsp;N
+																<input type="radio" value="N" name="TB04010S_ensrF" checked>&nbsp;N
 															</div>
 															<div class="col-sm-4">
 															</div>
@@ -763,7 +764,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="form-group row">
+								<div class="form-group row">									
 									<div class="col-sm-6 mb-2">	
 										<input type="checkbox" id="bscAstsInptExptF">입력예정(심사의뢰 시점 입력이 불가능한 경우)
 									</div>
@@ -841,7 +842,8 @@
 								</div>
 								<div class="form-group row">
 									<div class="col-sm-6 mb-2">	
-										<input type="checkbox" id="cncCmpnyInptExptF">입력예정(심사의뢰 시점 입력이 불가능한 경우)
+										<!-- 거래상대방 필수 입력 변경되어 주석처리함 -->
+										<!-- <input type="checkbox" id="cncCmpnyInptExptF">입력예정(심사의뢰 시점 입력이 불가능한 경우) -->
 									</div>
 									<!-- button -->
 									<div class="col-sm-6 text-right mb-2">

@@ -30,10 +30,19 @@ public class TB07120SVO extends IBIMS410BDTO {
     private String decdStepDcd;                 // 결재단계구분코드
     private String decdSttsDcd;                 // 결재상태구분코드
 
-    private Date trDtm;                         // 거래시간
-    private Date decdDtm;                       // 처리시간
+    private String trDtm;                       // 거래시간
+    private String decdDtm;                     // 처리시간
 
     private String dcfcEno;                     // 승인자번호
     private String dcfcEnm;                     // 승인자명
+
+    private String dealNo;                      // 딜번호
+    private int trSeq;                          // 거래순번
+    private int excSeq;                         // 실행순번
+    private int erlmSeq;                        // 등록순번 452채번
+
+    
+    
+    
 
 }

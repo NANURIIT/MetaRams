@@ -716,30 +716,32 @@
     <select id="get07120sList" parameterType="com.nanuri.rams.business.common.vo.IBIMS410BVO" resultType="com.nanuri.rams.business.common.vo.TB07120SVO">
          SELECT T1.PRDT_CD                                                    /* 종목코드  410B */
               , T5.PRDT_NM                                                    /* 종목명 201B */
-              , T1.TR_DT                                                      /* 거래일자  410B */
+              , TO_CHAR(
+                  TO_DATE(T1.TR_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'
+                  )                                 AS TR_DT                  /* 거래일자  410B */
               , (
                  SELECT CD_VL_NM
                    FROM IBIMS002B
                   WHERE 1=1
                     AND CMNS_CD_GRP = 'D010'
                     AND CD_VL_ID = T1.ORGNO
-                 )                                                            /* 부서명   410B */
+                 )                                  AS ORGNM                  /* 부서명   410B */
               , T1.TR_OBJT_BSN_NO                                             /* 거래처번호 */
               , (
               		SELECT ENTP_NM
               		  FROM IBIMS010B
               		 WHERE 1=1
               		   AND ARDY_BZEP_NO = T1.TR_OBJT_BSN_NO
-              	 )            AS  entpNm                                      /* 거래처명  010B */
+              	 )                                  AS ENTP_NM                /* 거래처명  010B */
               , T1.ETPR_CRDT_GRNT_TR_KIND_CD                                  /* 거래종류코드 */
               , CASE 
                 WHEN T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('20', '21', '82', '83', '85') THEN '입금'
                 WHEN T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10', '22', '81', '84')       THEN '출금'
                  END AS depositWithdrawalCode                                 /* 입출금구분코드 */
-              , T1.DEAL_TR_AMT                                                /* 거래금액  410B */
+              , NVL(T1.DEAL_TR_AMT, 0)              AS DEAL_TR_AMT            /* 거래금액  410B */
               , T1.FNDS_DVSN_CD                                               /* 자금구분  410B */
               , T1.TR_CRRY_CD                                                 /* 통화코드  410B */
-              , T1.DEAL_TR_PRCA                                               /* 거래원금  410B */
+              , NVL(T1.DEAL_TR_PRCA, 0)             AS DEAL_TR_PRCA           /* 거래원금  410B */
               , NVL(T1.FEE_TOT_AMT, 0)              AS FEE_TOT_AMT            /* 수수료  410B */
               , T1.TR_CRRY_CD                                                 /* 통화구분  410B */
               , T1.RCTM_ISTT_CD                                               /* 금융기관  410B */
@@ -768,20 +770,24 @@
                 )                                   AS  STDR_EXRT             /* 환율 */
               , T6.BNK_BD                                                     /* 은행부실점명 */
               , T1.RCTM_BANO                                                  /* 계좌번호  410B */
-              , T1.HND_DETL_DTM                     AS TR_DTM                 /* 거래시간  410B */
-              , NVL(T9.DECD_DTM, '')                AS DECD_DTM               /* 처리시간 232B */
+              , TO_CHAR(T1.HND_DETL_DTM, 'YYYY-MM-DD HH24:MI:SS') AS TR_DTM   /* 거래시간  410B */
+              , TO_CHAR(
+                      NVL(T9.DECD_DTM, ''), 'YYYY-MM-DD HH24:MI:SS'
+                    )                               AS DECD_DTM               /* 처리시간 232B */
               , NVL(T5.EPRZ_CRDL_INV_AMT, 0)        AS EPRZ_CRDL_INV_AMT      /* 투자금액  201B */
               , NVL(T1.DEAL_TR_AMT, 0)              AS DEAL_TR_AMT            /* 자금처리금액  410B */
               , NVL(T1.KRW_TRSL_TR_PRCA, 0)         AS KRW_TRSL_TR_PRCA       /* 원화환산금액  410B */
               , T1.ACHD_NM                                                    /* 예금주명  410B */
               , NVL(T7.OVRS_TRNS_YN, 'N')           AS OVRS_TRNS_YN           /* 해외송금여부 */
               , T5.DEAL_NO                                                    /* 딜번호 */
-              , T1.TR_SN                                                      /* 거래일련번호 */
-              , T1.EXC_SN                                                     /* 실행일련번호 */
-              , T7.ERLM_SEQ                                                   /* 등록순번 */
+              , T1.TR_SN                            AS TR_SEQ                 /* 거래일련번호 */
+              , T1.EXC_SN                           AS EXC_SEQ                /* 실행일련번호 */
+              , NVL(T7.ERLM_SEQ, '')                AS ERLM_SEQ               /* 등록순번 */
               , NVL(T8.DECD_STEP_DCD, '00')         AS DECD_STEP_DCD          /* 결재단계구분코드 */
               , NVL(T8.DECD_STTS_DCD, '0')          AS DECD_STTS_DCD          /* 결재상태구분코드 */
-              , NVL(TO_CHAR(T9.DECD_DTM, 'YYYYMMDD'), '') AS DECD_DT          /* 처리일자 232B */
+              , TO_CHAR(
+                  NVL(T9.DECD_DTM, ''), 'YYYY-MM-DD'
+                  )                                 AS DECD_DT                /* 처리일자 232B */
               , T9.DCFC_ENO                         AS DCFC_ENO               /* 승인자 232B */
               , (
                   SELECT EMP_NM

@@ -16,6 +16,9 @@
           FROM IBIMS603B
          WHERE 1=1
            AND DEAL_NO = #{dealNo}
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDt)">
+          AND INSPCT_DT LIKE CONCAT(#{inspctDt}, '%')
+		   </if>      	 
          ORDER BY INSPCT_DT DESC
     </select>
     

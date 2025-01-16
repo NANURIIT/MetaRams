@@ -189,10 +189,10 @@
                   CASE WHEN
                       (
                         SELECT DECODE(COUNT(*), 0, 'Y', DECODE(NVL(SUM(DECODE(DECD_STTS_DCD, '2', 1, 0)), 0), COUNT(*), 'Y', 'N'))
-                        FROM IBIMS232B
-                        WHERE 1=1
-                        AND DECD_SN = T2.DECD_SN
-                        AND DECD_SQ &lt; T2.DECD_SQ
+                          FROM IBIMS232B
+                         WHERE 1=1
+                           AND DECD_SN = T2.DECD_SN
+                           AND DECD_SQ &lt; T2.DECD_SQ
                       ) = 'N' THEN '0' ELSE T2.DECD_STTS_DCD END
                   ), '0')AS DECD_STTS_DCD
     		  FROM IBIMS231B T1
