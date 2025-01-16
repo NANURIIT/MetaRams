@@ -445,6 +445,7 @@ const TB04010Sjs = (function () {
     var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
     var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
     var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
+    //var bscAstsInptExptF
 
     var mtrPrgSttsDcd = mtrPrgSttsDcd; // 안건진행상태구분코드
     var errorText = "Deal 정보를 확인해 주세요.";
@@ -599,6 +600,7 @@ const TB04010Sjs = (function () {
             var ownPEno = ui.rowData.ownPEno || ""; // 심사역사번
 
             compareAuth(ownPEno);
+            $(".save").prop("disabled", false);
 
             var key2 = dealNo + mtrDcd + jdgmDcd + sn;
             getFileInfo("", key2);
@@ -905,7 +907,7 @@ const TB04010Sjs = (function () {
             $("#bscAstsInptExptF").prop("disabled", false); // 기초자산 입력예정여부 disabled false
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
-            $(".save").prop("disabled", true);
+            $(".save").prop("disabled", false);
             break;
           case 206:
             $("#assesmentRequest").prop("disabled", false);
@@ -2366,7 +2368,6 @@ const TB04010Sjs = (function () {
     var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
     var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
     var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
-
     var bscAstsInptExptF;
 
     if ($("#bscAstsInptExptF").is(":checked")) {
@@ -2382,7 +2383,7 @@ const TB04010Sjs = (function () {
         text: "선택된 안건이 없습니다.",
         confirmButtonText: "확인",
       });
-
+      bscAstsInptExptF = "N";
       return false;
     }
 
