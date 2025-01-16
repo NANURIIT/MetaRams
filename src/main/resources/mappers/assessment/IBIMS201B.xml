@@ -1511,7 +1511,7 @@
 				 , (
 				    SELECT C.DPRT_NM
 					  FROM IBIMS003B C
-					 WHERE C.BDCD = A.MNGM_BDCD
+					 WHERE C.DPRT_CD = A.MNGM_BDCD
              AND ROWNUM = 1					 
 				   ) AS DPRT_NM                                                                      /*  부서명 */
 			    , (SELECT SUM(NVL(DEAL_EXC_AMT,0)) FROM IBIMS402B WHERE PRDT_CD = A.PRDT_CD ) AS DEAL_EXC_AMT /* 투자금액 */
@@ -1561,12 +1561,13 @@
              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
               AND A.CHRR_EMPNO LIKE '%' || #{chrrEmpno} || '%'
              </if>
-             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ctrcDt1)">
+             <!-- <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ctrcDt1)">
               AND #{ctrcDt1} BETWEEN Q.CTRC_DT AND Q.CTRC_EXP_DT
              </if>
              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ctrcDt2)">
               AND #{ctrcDt2} BETWEEN Q.CTRC_DT AND Q.CTRC_EXP_DT
-             </if>
+             </if> -->
+             AND ((Q.CTRC_DT BETWEEN #{ctrcDt1} AND #{ctrcDt2})OR (Q.CTRC_EXP_DT BETWEEN #{ctrcDt1} AND #{ctrcDt2}))
              AND E.DEL_YN = 'N'
         </select>
         
@@ -1662,7 +1663,7 @@
                 , A.PRNA_RDMP_FRQC_MNUM 							        /* 원금상환주기개월수 */
                 , A.INTR_RDMP_FRQC_MNUM 							        /* 이자상환주기개월수 */
                 , A.ISTM_DTM_RDMP_AMT 						            /* 할부일시상환금액 */
-                , A.EPRZ_CRDL_INDV_LMT_DCD									            /* 기업여신개별한도구분코드 */
+                , A.EPRZ_CRDL_INDV_LMT_DCD	          AS INDV_LMT_DCD								    /* 기업여신개별한도구분코드 */
                 , A.HLDY_PRCS_DCD								              /* 휴일처리구분코드 */
                 , A.PRNA_DFR_PRD_MNUM 							          /* 원금거치기간개월수 */
                 , B.EPRZ_CRDL_INTR_BNAO_DCD		        AS INTR_BNAO_DCD				          /* 기업여신이자선후취구분코드 */

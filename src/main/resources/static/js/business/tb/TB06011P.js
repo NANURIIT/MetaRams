@@ -534,7 +534,7 @@ async function getPrdtCdList() {
 		trDvsn = 'L'
 	}
 
-	if ($('#TB06011P_prefix').val() == "TB06010S") {
+	if ($('#TB06011P_prefix').val() == "TB06010S" || $('#TB06011P_prefix').val() == "TB07060S") {
 		trDvsn = 'S'
 	}
 
@@ -546,7 +546,7 @@ async function getPrdtCdList() {
 		trDvsn = 'F'
 	}
 
-	if ($('#TB06011P_prefix').val() == "TB07150S" || $('#TB06011P_prefix').val() == "TB07080S" || $('#TB06011P_prefix').val() == "TB07060S") {
+	if ($('#TB06011P_prefix').val() == "TB07150S" || $('#TB06011P_prefix').val() == "TB07080S") {
 		trDvsn = 'TB07150S'
 	}
 

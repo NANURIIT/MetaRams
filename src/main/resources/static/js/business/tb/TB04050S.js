@@ -302,6 +302,8 @@ const TB04050Sjs = (function () {
       data: inputParam,
       dataType: "json",
       success: function (data) {
+        console.log("확인해보자: ", data);
+
         /* 기본정보*/
         $("#TB04050S_dealNm").val(data.dealNm);
         $("#TB04050S_C008").val(data.corptnTypCd);

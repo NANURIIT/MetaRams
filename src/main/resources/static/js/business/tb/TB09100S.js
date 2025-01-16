@@ -83,7 +83,7 @@ const TB09100Sjs = (function() {
 			{
 				title: "승인금액",
 				dataType: "string",
-				dataIndx: "apvlAmt",
+				dataIndx: "sumRcgAmt",
 				align: "right",
 				halign: "center",
 				width: "",
@@ -108,7 +108,7 @@ const TB09100Sjs = (function() {
 			{
 				title: "약정금액",
 				dataType: "string",
-				dataIndx: "eprzCrdlCtrcAmt",
+				dataIndx: "eprzCrdlApvlAmt",
 				align: "right",
 				halign: "center",
 				width: "",
@@ -185,7 +185,7 @@ const TB09100Sjs = (function() {
 				title: "담당부서",
 				dataType: "string",
 				dataIndx: "dprtNm",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "",
 				filter: { crules: [{ condition: "range" }] },

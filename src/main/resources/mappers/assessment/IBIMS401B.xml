@@ -676,7 +676,7 @@
             , (
                SELECT MAX(DPRT_NM)
                  FROM IBIMS003B
-                WHERE BDCD = A.MNGM_BDCD
+                WHERE DPRT_CD = A.MNGM_BDCD
               ) AS MNGM_BDCD_NM                                                  /* 관리부점명 */
             , A.CHRR_EMPNO                                                       /* 담당자사원번호 */
             , (
@@ -702,6 +702,8 @@
             	  SELECT SUM(DEAL_TR_PRCA)
             	    FROM IBIMS410B
             	   WHERE PRDT_CD = #{prdtCd}
+                 AND TR_STAT_CD = '01'
+                 AND ETPR_CRDT_GRNT_TR_KIND_CD = '20'
               ) AS DEAL_TR_PRCA													                          /* 딜거래원금 */
             , (
                 SELECT SUM(DEAL_EXC_AMT)
@@ -827,6 +829,9 @@
             SET EPRZ_CRDL_CTRC_AMT = #{eprzCrdlCtrcAmt} ,
           </if>
           <if test="rqsKndCd == '03'">      /*기한변경*/
+            SET CTRC_EXP_DT = #{ctrcExpDt} ,
+          </if>
+          <if test="rqsKndCd == '31'">      /*기한변경+금리변경*/
             SET CTRC_EXP_DT = #{ctrcExpDt} ,
           </if>
           <if test="rqsKndCd == '06'">      /*차주변경*/

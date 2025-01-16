@@ -445,7 +445,7 @@ const TB04010Sjs = (function () {
     var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
     var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
     var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
-    //var bscAstsInptExptF
+    var bscAstsInptExptF = $("#bscAstsInptExptF").val(); //입력예정여부
 
     var mtrPrgSttsDcd = mtrPrgSttsDcd; // 안건진행상태구분코드
     var errorText = "Deal 정보를 확인해 주세요.";
@@ -471,7 +471,7 @@ const TB04010Sjs = (function () {
           text: `거래상대방을 입력해주세요`,
           focusCancel: true,
         });
-        $('#ramsTab a[href="#tab-4"]').tab("show");
+        $('#ramsTab a[href="#TB04010S_tab-4"]').tab("show");
         setCncCmpnyInfoGrid();
         return false;
       }
@@ -494,7 +494,7 @@ const TB04010Sjs = (function () {
           text: `거래상대방 차주를 입력해주세요`,
           focusCancel: true,
         });
-        $('#ramsTab a[href="#tab-4"]').tab("show");
+        $('#ramsTab a[href="#TB04010S_tab-4"]').tab("show");
         return false;
       }
     }
@@ -598,7 +598,6 @@ const TB04010Sjs = (function () {
             var jdgmDcd = ui.rowData.jdgmDcd || "";
             var sn = ui.rowData.sn || 0;
             var ownPEno = ui.rowData.ownPEno || ""; // 심사역사번
-
             compareAuth(ownPEno);
             $(".save").prop("disabled", false);
 
@@ -765,7 +764,7 @@ const TB04010Sjs = (function () {
         $("#TB04012P_dlDprtCd2_dlDprtNm").val(dealDetail.dlDprtNm2); // 공동투자 관리점2
         $("#TB04012P_dlDprtCd3_dlDprtNm").val(dealDetail.dlDprtNm3); // 공동투자 관리점3
 
-        $("#TB04010S_invPrdMnum").val(dealDetail.TB04010S_invPrdMnum); // 투자기간(개월)
+        $("#TB04010S_invPrdMnum").val(dealDetail.invPrdMnum); // 투자기간(개월)
         $("#TB04010S_tab1_datepicker1").val(formatDate(dealDetail.wrtExptDt)); // 기표일(예정)
         $("#TB04010S_mtrtDt").val(formatDate(dealDetail.mtrtExptDt)); // 만기일(예정)
 
@@ -835,6 +834,8 @@ const TB04010Sjs = (function () {
 
         // 심사진행상태코드에 따라서 심사요청버튼 활성화
         let mtrPrgSttsDcd = Number(dealDetail.mtrPrgSttsDcd);
+        console.log("확인해보자:::::", mtrPrgSttsDcd, "::::::::::", sameYn);
+
         /**
          * 심사진행상태 >
          * 202 : 심사요청
@@ -988,8 +989,9 @@ const TB04010Sjs = (function () {
 
   //로그인사원이 심사역인지 확인
   function compareAuth(compareVal) {
-    var loginP = $("#TB04010S_empNo").val();
+    var loginP = $("#TB04010S_empNo1").val();
     var compareP = compareVal;
+    console.log("이값이 중요하잖아", loginP, ":::::::", compareP);
 
     // 두 값 비교하여 결과 리턴
     if (loginP === compareP) {
@@ -1482,6 +1484,7 @@ const TB04010Sjs = (function () {
         $("#TB04010S_dprtCd").val(data.dprtCd);
         $("#TB04010S_dprtNm").val(data.dprtNm);
         $("#TB04010S_empNo").val(data.eno);
+        $("#TB04010S_empNo1").val(data.eno);
         $("#TB04010S_empNm").val(data.empNm);
       },
     });
@@ -2047,8 +2050,8 @@ const TB04010Sjs = (function () {
     $("#rcvblErnAmt").val(""); // 수수료수익
     $("#wrtErnAmt").val(""); // 투자수익
 
-    $(':radio[name="TB04010S_mrtgOfrF"]').prop("checked", false); // 담보
-    $(':radio[name="TB04010S_ensrF"]').prop("checked", false); // 보증
+    $(':radio[name="TB04010S_mrtgOfrF"][value="N"]').prop("checked", true); // 담보
+    $(':radio[name="TB04010S_ensrF"][value="N"]').prop("checked", true); // 보증
     $("#TB04010S_R026 option:eq(0)").prop("selected", true).change(); // 책임준공
 
     $("#TB04010S_entpCd").val(""); // 업체코드
@@ -2368,7 +2371,6 @@ const TB04010Sjs = (function () {
     var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
     var mtrDcd = $("#TB04010S_L007").val(); // 부수안건구분코드
     var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분코드
-    var bscAstsInptExptF;
 
     if ($("#bscAstsInptExptF").is(":checked")) {
       bscAstsInptExptF = "Y";
@@ -2589,9 +2591,9 @@ const TB04010Sjs = (function () {
     var cncCmpnyInptExptF;
 
     if ($("#cncCmpnyInptExptF").is(":checked")) {
-      cncCmpnyInptExptF = "1";
+      cncCmpnyInptExptF = "Y";
     } else {
-      cncCmpnyInptExptF = "0";
+      cncCmpnyInptExptF = "N";
     }
 
     if (isEmpty(dealNo)) {
@@ -2844,9 +2846,9 @@ const TB04010Sjs = (function () {
     var insGrdInptExptF;
 
     if ($("#insGrdInptExptF").is(":checked")) {
-      insGrdInptExptF = "1";
+      insGrdInptExptF = "Y";
     } else {
-      insGrdInptExptF = "0";
+      insGrdInptExptF = "N";
     }
 
     if (isEmpty(dealNo)) {
