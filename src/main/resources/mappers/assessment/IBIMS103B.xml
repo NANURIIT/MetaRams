@@ -217,7 +217,7 @@
              	 SELECT L.BD_NM
              	   FROM IBIMS004B L /* 부점기본 */
              	  WHERE A.DL_DPRT_CD1 = L.BDCD
-             	    AND L.END_DT IS NULL
+             	    AND L.END_DT ='0'
 /*             	    AND TO_CHAR(L.OPNG_DT, 'YYYYMMDD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD') 데이터 문제로 인해 임시주석 */
 /*             	    AND TO_CHAR(L.CLSG_PRAR_DT, 'YYYYMMDD') <![CDATA[ < ]]> TO_CHAR(SYSDATE , 'YYYYMMDD') 데이터 문제로 인해 임시주석 */
                ) AS DL_DPRT_NM1
@@ -225,7 +225,7 @@
              	 SELECT L.BD_NM
              	   FROM IBIMS004B L /* 부점기본 */
              	  WHERE A.DL_DPRT_CD2 = L.BDCD
-             	    AND L.END_DT IS NULL
+             	    AND L.END_DT ='0'
 /*             	    AND TO_CHAR(L.OPNG_DT, 'YYYYMMDD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD') 데이터 문제로 인해 임시주석 */
 /*             	    AND TO_CHAR(L.CLSG_PRAR_DT, 'YYYYMMDD') <![CDATA[ < ]]> TO_CHAR(SYSDATE , 'YYYYMMDD') 데이터 문제로 인해 임시주석 */
                ) AS DL_DPRT_NM2
@@ -233,7 +233,7 @@
              	 SELECT L.BD_NM
              	   FROM IBIMS004B L /* 부점기본 */
              	  WHERE A.DL_DPRT_CD3 = L.BDCD
-             	    AND L.END_DT IS NULL
+             	    AND L.END_DT ='0'
 /*             	    AND TO_CHAR(L.OPNG_DT, 'YYYYMMDD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE, 'YYYYMMDD') 데이터 문제로 인해 임시주석 */
 /*             	    AND TO_CHAR(L.CLSG_PRAR_DT, 'YYYYMMDD') <![CDATA[ < ]]> TO_CHAR(SYSDATE , 'YYYYMMDD') 데이터 문제로 인해 임시주석 */
                ) AS DL_DPRT_NM3

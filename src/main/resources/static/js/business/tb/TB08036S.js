@@ -57,6 +57,13 @@ const TB08036Sjs = (function () {
         align: "center",
         width: "15%",
         filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          let value = ui.cellData;
+          if (value) {
+            return value + "%";
+          }
+          return value;
+        },
       },
       {
         title: "실적진척율",
@@ -65,6 +72,13 @@ const TB08036Sjs = (function () {
         align: "center",
         width: "15%",
         filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          let value = ui.cellData;
+          if (value) {
+            return value + "%";
+          }
+          return value;
+        },
       },
     ];
 
@@ -204,6 +218,37 @@ const TB08036Sjs = (function () {
 
     getSelectBoxList("TB08036S", item);
   }
+
+  // %포멧 확인
+  function formatPerInput(element) {
+    let value = element.value;
+
+    //숫자와 소수점만 허용
+    value = value.replace(/[^0-9.]/g, "");
+
+    // 소수점 두 자리까지만 허용
+    if (value.includes(".")) {
+      let parts = value.split(".");
+      parts[1] = parts[1].substring(0, 2); // 소수점 두 자리로 제한
+      value = parts.join(".");
+    }
+
+    if (parseFloat(value) > 100.0) {
+      showErrorPopup("입력값은 100을 넘을 수 없습니다");
+    }
+
+    // 값이 있고 소수점이 없는 경우 .00 추가
+    if (value && !value.includes(".")) {
+      value = parseFloat(value).toFixed(2);
+    }
+
+    if (!value) {
+      value = "0.00";
+    }
+
+    element.value = value;
+  }
+  window.formatPerInput = formatPerInput;
 
   // 초기화버튼
   function btnResetTB08036S() {
@@ -747,5 +792,6 @@ const TB08036Sjs = (function () {
     rendorGrid: rendorGrid,
     inspctRmrkTab_TB08036S: inspctRmrkTab_TB08036S,
     etcTab_TB08036S: etcTab_TB08036S,
+    formatPerInput: formatPerInput,
   };
 })();
