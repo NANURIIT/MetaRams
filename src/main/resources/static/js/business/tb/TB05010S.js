@@ -177,7 +177,7 @@ const TB05010Sjs = (function () {
                 maxWidth: 36,
                 render: function (ui) {
                   let rowData = ui.rowData;
-                  return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrTrgt', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                  return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrTrgt', ${ui.rowIndx});"><i class='fa fa-search'></i></button>`;
                 },
               },
             ],
@@ -215,7 +215,7 @@ const TB05010Sjs = (function () {
                 maxWidth: 36,
                 render: function (ui) {
                   let rowData = ui.rowData;
-                  return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrAngt', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                  return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrAngt', ${ui.rowIndx});"><i class='fa fa-search'></i></button>`.trim();
                 },
               },
             ],
@@ -1390,5 +1390,6 @@ const TB05010Sjs = (function () {
     chngInspctCnfrncSqc: chngInspctCnfrncSqc,
     addMMBRRow: addMMBRRow,
     mmbrDelRow: mmbrDelRow,
+    chngStdYr: chngStdYr,
   };
 })();

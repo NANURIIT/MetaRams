@@ -18,7 +18,8 @@ const TB07120Sjs = (function () {
     $("#ibims452b input").prop("readonly", true);
     $("#ibims452b button, #ibims452b select").prop("disabled", true);
     $("#TB07120S2_empNo").prop("readonly", false);
-    $("#TB07120S_reltBtn").prop("disabled", false);
+    $("#TB07120S_dcfcEno").prop("readonly", false);
+    $("#TB07120S_dcfcBtn").prop("disabled", false);
     // $(".TB07120S_isForeignTransfer").prop("disabled", true);
     $("#TB07120S_apvl").hide(); //승인버튼
     $("#TB07120S_gbck").hide(); //반려버튼
@@ -154,12 +155,6 @@ const TB07120Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "거래시간",
-      dataType: "string",
-      dataIndx: "trDtm",
-      hidden: true
-    },
-    {
       title: "처리일자",
       dataType: "string",
       dataIndx: "hndlDtm",
@@ -229,7 +224,7 @@ const TB07120Sjs = (function () {
     /**
      * 2025-01-15 X건X
      * 대표님이 해당화면 관련 업무구분코드 주신다고 하셨음
-     * 주신지 3주째 된듯함 주실때까지 숨을 참아보겠습니다.
+     * 3주째 된듯함 주실때까지 숨을 참아보겠습니다.
      */
     // {
     //   title: "업무구분",
@@ -311,6 +306,36 @@ const TB07120Sjs = (function () {
       dataType: "string",
       dataIndx: "feeTotAmt",
       hidden: true,
+    },
+    {
+      title: "거래시간",
+      dataType: "string",
+      dataIndx: "trDtm",
+      hidden: true
+    },
+    {
+      title: "처리시간",
+      dataType: "string",
+      dataIndx: "decdDtm",
+      hidden: true
+    },
+    {
+      title: "처리일자",
+      dataType: "string",
+      dataIndx: "decdDt",
+      hidden: true
+    },
+    {
+      title: "승인자번호",
+      dataType: "string",
+      dataIndx: "dcfcEno",
+      hidden: true
+    },
+    {
+      title: "승인자명",
+      dataType: "string",
+      dataIndx: "dcfcEnm",
+      hidden: true
     },
   ];
 
