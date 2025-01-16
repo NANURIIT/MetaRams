@@ -257,31 +257,6 @@ function dataEmpSetGrid(data) {
   arrPqGridEmpInfo.option("rowDblClick", function (event, ui) {
     setEmpNm(ui.rowData);
   });
-
-  // 검색된 행이 1개일 경우 데이터 바로 입력
-  if (
-    arrPqGridEmpInfo.pdata.length === 1 &&
-    $(`div[id='modal-TB03022P']`).css("display") === "none"
-  ) {
-    var prefix = $("#TB03022P_prefix").val();
-    setEmpNm(arrPqGridEmpInfo.pdata[0]);
-    empInfoSrchCnt = 0;
-    // 입력되고 난 후 온체인지 이벤트 on
-    TB03022P_onchangehandler = "on";
-  }
-  // 변부장님 지시로 삭제
-  // 검색된 행이 0일 경우 모든 데이터 출력
-  // else if (arrPqGridEmpInfo.pdata.length === 0) {
-
-  // 	// 데이터 없는 경우 재조회 방지
-  // 	empInfoSrchCnt += 1;
-
-  // 	getEmpList();
-  // }
-  // 그렇지 않은 경우 조건에 맞는 데이터 출력
-  else {
-    empInfoSrchCnt = 0;
-  }
 }
 
 /**
@@ -314,7 +289,7 @@ function setEmpNm(e) {
   $(pageAthCd).val(athCd);
 
   // 그리드(위원정보) 데이터 가져오기
-  const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid('instance').pdata; // 20241122 오류나서 바꿨습니다
+  const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid("option", "dataModel.data"); // 20241122 오류나서 바꿨습니다
 
   // 공동
   switch (prefix) {
@@ -337,8 +312,6 @@ function setEmpNm(e) {
       $("#TB03021P_dprtNm").val(dprtCd).prop("selected", true);
       break;
     case "TB05010S_mmbrTrgt":
-      console.log(arrPqGridMmbrInfo[mmbrSn]);
-      
       // 특정 행의 데이터 수정
       if ( arrPqGridMmbrInfo.length > 0 && arrPqGridMmbrInfo[mmbrSn] ) {
         arrPqGridMmbrInfo[mmbrSn].atdcTrgtEmpnm = empNm; // 버튼을 누른 행의 atdcTrgtEmpnm(위원명_화면) 값 변경
