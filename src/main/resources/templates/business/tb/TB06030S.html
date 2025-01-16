@@ -18,6 +18,8 @@
 	<script th:src="@{js/business/tb/TB07022P.js}"></script>
 	<script th:src="@{js/business/tb/TB06018P.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
+	<script th:src="@{js/business/tb/TB06081P.js}"></script>
+	<script th:src="@{js/business/tb/TB06082P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -32,6 +34,8 @@
 	<th:block th:replace="business/tb/TB07022P :: TB07022P"></th:block>
 	<th:block th:replace="business/tb/TB06018P :: TB06018P"></th:block>
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<th:block th:replace="business/tb/TB06081P :: TB06081P"></th:block>
+	<th:block th:replace="business/tb/TB06082P :: TB06082P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -270,6 +274,7 @@
 													<input type="radio" value="N" id="TB06030S_frxcHdgeYn_N"  name="TB06030S_frxcHdgeYn">&nbsp;N
 												</div>
 											</div>	
+											<!-- 20250115 추후계정과목 관리/조회 기능 추가하여 데이터 가져올 예정 -->
 											<label class="col-sm-1 col-form-label text-right">계정과목</label>
 											<div class="col-sm-5 input-group">
 												<input type="text" class="form-control" id="TB06030S_actsCd" readonly>
@@ -532,6 +537,14 @@
 								<div class="text-right">
 									<button class="btn btn-default" type="button" onclick="TB06030Sjs.managePrdtCd(0);" style="margin-left: 2px; margin-right: 2px;" id="TB06030S_regPrdt" disabled>종목 등록</button>
 									<button class="btn btn-default" type="button" onclick="TB06030Sjs.managePrdtCd(1);" style="margin-left: 2px; margin-right: 2px;" id="TB06030S_delPrdt" disabled>종목 삭제</button>
+								</div>
+							</div>
+							<div class="ibox">
+								<!-- 여기에 버튼을! (임시) -->
+								<div class="text-right">
+									<button class="btn btn-info btn-xs" type="button" onclick="callTB06081P('TB06030S');"><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
+									<button class="btn btn-success btn-xs" type="button" onclick="callTB06082P('TB06030S', 'DECD');"><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
+									<button class="btn btn-danger btn-xs" type="button" onclick="callTB06082P('TB06030S', 'RJCT');"><i class="fa fa-undo"></i>&nbsp;반려</button>
 								</div>
 							</div>
 						</div>

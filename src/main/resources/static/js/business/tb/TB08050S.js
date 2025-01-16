@@ -233,6 +233,7 @@ const TB08050Sjs = (function () {
         },
 		hidden: true,
       },
+	  /*
       {
         title: "처리일자",
         dataType: "string",
@@ -249,6 +250,7 @@ const TB08050Sjs = (function () {
           }
         },
       },
+	  */
       {
         title: "수수료종류",
         dataType: "integer",
@@ -839,8 +841,9 @@ const TB08050Sjs = (function () {
 	  
       let prcsCpltYn =  $("#TB08050S_prcsCpltYn_Y").is(":checked") ? "Y" :"N";// 수납완료여부 ? 처리완료여부
       let prcsEmpno = $("#TB08050S_prcsEmpno").val(); // 처리사원번호
-      // let prcsTm = $('#TB08050S_prcsTm').val(); // 처리시각
-      let decdSttsDcd = $("#TB08050S_decdSttsDcd").val(); // 결재상태구분코드
+      //let prcsTm = $('#TB08050S_prcsTm').val(); // 처리시각
+      //let decdSttsDcd = $("#TB08050S_decdSttsDcd").val(); // 결재상태구분코드
+	  
       let rkfrDt = unformatDate($("#TB08050S_rkfrDt").val()); // 회계일자 ? 기산일자
 
 
@@ -873,7 +876,7 @@ const TB08050Sjs = (function () {
         rctmDt,
         prcsCpltYn,
         prcsEmpno,
-        decdSttsDcd,
+        //decdSttsDcd,
         rkfrDt,
         prlnFee,
       };

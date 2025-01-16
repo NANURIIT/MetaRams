@@ -183,13 +183,13 @@ function callTB03061P(prefix, rowIndx) {
  * 그리드호출
  */
 function TB03061P_roadBzepList() {
-	modalPqGridBzepList = $("#TB06011P_prdtCdList").pqGrid('instance');
+	modalPqGridBzepList = $("#TB03061P_gridBzepList").pqGrid('instance');
 	if (typeof modalPqGridBzepList == "undefined") {
 		let arrModalPqGridObj = [
 			{
 				height: 500
 				, maxHeight: 500
-				, id: 'gridBzepList'
+				, id: 'TB03061P_gridBzepList'
 				, colModel: colModalBzepList
 				, rowDblClick: function (evt, ui) {
 					setArdyBzepInfo(ui.rowData);
@@ -197,7 +197,7 @@ function TB03061P_roadBzepList() {
 			}
 		]
 		setPqGrid(arrModalPqGridObj);
-		modalPqGridBzepList = $("#gridBzepList").pqGrid('instance');
+		modalPqGridBzepList = $("#TB03061P_gridBzepList").pqGrid('instance');
 	}
 	else {
 		modalPqGridBzepList.setData([]);
@@ -268,7 +268,7 @@ function modalClose_TB03061P() {
 */
 $("#modal-TB03061P").on('hide.bs.modal', function () {
 	reset_TB03061P();
-	$("#gridBzepList").pqGrid('destroy');
+	$("#TB03061P_gridBzepList").pqGrid("destroy");
 });
 
 function modalShowFunction_TB03061P() {
@@ -313,7 +313,7 @@ function getArdyBzepInfoList() {
 			else {
 				callTB03061P($("#TB03061P_prefix").val());
 				setTimeout(() => {
-					$("#gridBzepList").pqGrid('instance').setData(data);
+					$("#TB03061P_gridBzepList").pqGrid('instance').setData(data);
 				}, 400)
 			}
 		},

@@ -211,7 +211,7 @@ const TB07190Sjs = (function () {
   function TB07190S_colModelData() {
     const TB07190S_colModel1 = [
       {
-        title: "딜번호",
+        title: "Deal번호",
         dataType: "string",
         dataIndx: "dealNo",
         halign: "center",
@@ -220,7 +220,7 @@ const TB07190Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        title: "딜명",
+        title: "Deal명",
         dataType: "string",
         dataIndx: "dealNm",
         halign: "center",
@@ -772,7 +772,7 @@ const TB07190Sjs = (function () {
       {
         title: "조작상세일시",
         dataType: "string",
-        dataIndx: "hndDetlDtm",
+        dataIndx: "hndDetlDtmStr",
         halign: "center",
         align: "center",
         width: "180",

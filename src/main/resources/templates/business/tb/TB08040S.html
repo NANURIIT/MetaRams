@@ -53,14 +53,14 @@
 			<div class="col-lg-12">
 				<div class="ibox ">
 					<!-- 조회조건영역 -->
-					<form method="get">					
-					<div class="ibox-content text-right">							
+					<form method="get">
+					<div class="ibox-content text-right">
 							<!-- row1 -->
-							<div class="form-group row">								
+							<div class="form-group row">
 									<label class="col-sm-1 col-form-label"><span class="req"></span>종목코드</label>
 									<div class="col-sm-4">
 										<div class="input-group">
-											<input type="text" class="form-control" id="TB08040S_prdtCd">
+											<input type="text" class="form-control" id="TB08040S_prdtCd" maxlength="10">
 											<span class="input-group-append">
 												<button type="button" class="btn btn-default" onclick="callTB06011P('TB08040S');"><i class="fa fa-search"></i></button>
 											</span>
@@ -73,13 +73,13 @@
 									<div class="col-sm-4 input-group">
 										<div class="col-sm-5 input-group date px-0">
 											<input type="text" class="form-control" id="TB08040S_strPrarDt" name="" value="" 
-											placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));">
+											placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<span class="input-group-addon border-none"> ~ </span>
 										<div class="col-sm-5 input-group date px-0">
 											<input type="text" class="form-control" id="TB08040S_endPrarDt" name="" value="" 
-											placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));">
+											placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 									</div>
@@ -91,7 +91,7 @@
 							<div class="form-group row">
 									<label class="col-sm-1 col-form-label text-right">담당자번호</label>
 									<div class="col-sm-4 input-group">
-									<input type="text" class="form-control"  id="TB08040S_empNo">
+									<input type="text" class="form-control"  id="TB08040S_empNo" maxlength="7">
 									<span class="input-group-append">
 										<button type="button" class="btn btn-default" onclick="callTB03022P('TB08040S')"><i class="fa fa-search"></i></button>
 									</span>

@@ -586,6 +586,10 @@ const TB06030Sjs = (function(){
 				$('#key1').val("TB06030S");
 				getFileInfo($('#key1').val(),key2);				
 				/******  딜공통 파일첨부 추가 ******/ 
+
+				// 결재상태확인
+				chkDecdStep('TB06020S');
+
 			},
 			error : function(request,  error ){
 				/*console.log("code:"+request.status);
@@ -1459,7 +1463,7 @@ const TB06030Sjs = (function(){
 
 	function getDealInfoFromWF() {
 		
-		if(sessionStorage.getItem("isFromWF")){
+		if(sessionStorage.getItem("isFromWF") || sessionStorage.getItem("isFromApvl")){
 			console.log("WF세션 있음");
 			var dealNo = sessionStorage.getItem("wfDealNo");
 			var dealNm = sessionStorage.getItem("wfDealNm");

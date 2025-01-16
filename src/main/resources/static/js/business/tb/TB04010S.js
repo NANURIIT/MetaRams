@@ -270,9 +270,9 @@ const TB04010Sjs = (function () {
 	*/
 
   function setDatePicker() {
-    // #tab1_datepicker1 btn apply function
-    $("#tab1_datepicker1").on("change", function () {
-      var month = $("#invPrdMnum").val();
+    // #TB04010S_tab1_datepicker1 btn apply function
+    $("#TB04010S_tab1_datepicker1").on("change", function () {
+      var month = $("#TB04010S_invPrdMnum").val();
       if (month != "") {
         calcDate();
       }
@@ -284,20 +284,25 @@ const TB04010Sjs = (function () {
    * 투자기간(개월) 입력시 만기일(예정) 구하기
    */
   function setMtrtDt(obj) {
-    if (obj.value.length >= 2 && !isEmpty($("#tab1_datepicker1").val())) {
+    if (
+      obj.value.length >= 2 &&
+      !isEmpty($("#TB04010S_tab1_datepicker1").val())
+    ) {
       calcDate();
     }
   }
 
-  document.getElementById("invPrdMnum").addEventListener("input", function () {
-    this.value = this.value.replace(/[^0-9]/g, "");
-    setMtrtDt(this);
-  });
+  document
+    .getElementById("TB04010S_invPrdMnum")
+    .addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+      setMtrtDt(this);
+    });
 
   // 만기일 계산
   function calcDate() {
-    var inputinvstPrdMmC = $("#invPrdMnum").val();
-    var inputDate = $("#tab1_datepicker1").val();
+    var inputinvstPrdMmC = $("#TB04010S_invPrdMnum").val();
+    var inputDate = $("#TB04010S_tab1_datepicker1").val();
 
     var year = inputDate.substring(0, 4);
     var month = inputDate.substring(5, 7);
@@ -351,7 +356,7 @@ const TB04010Sjs = (function () {
         : new Array(width - str.length + 1).join("0") + str;
     }
 
-    $("#mtrtDt").val(nxt);
+    $("#TB04010S_mtrtDt").val(nxt);
   }
 
   function loadSelectBoxContents() {
@@ -758,9 +763,9 @@ const TB04010Sjs = (function () {
         $("#TB04012P_dlDprtCd2_dlDprtNm").val(dealDetail.dlDprtNm2); // 공동투자 관리점2
         $("#TB04012P_dlDprtCd3_dlDprtNm").val(dealDetail.dlDprtNm3); // 공동투자 관리점3
 
-        $("#invPrdMnum").val(dealDetail.invPrdMnum); // 투자기간(개월)
-        $("#tab1_datepicker1").val(formatDate(dealDetail.wrtExptDt)); // 기표일(예정)
-        $("#mtrtDt").val(formatDate(dealDetail.mtrtExptDt)); // 만기일(예정)
+        $("#TB04010S_invPrdMnum").val(dealDetail.TB04010S_invPrdMnum); // 투자기간(개월)
+        $("#TB04010S_tab1_datepicker1").val(formatDate(dealDetail.wrtExptDt)); // 기표일(예정)
+        $("#TB04010S_mtrtDt").val(formatDate(dealDetail.mtrtExptDt)); // 만기일(예정)
 
         $("#tlErnAmt").val(dealDetail.tlErnAmt.toLocaleString("ko-KR")); // 전체수익
         $("#wrtErnAmt").val(dealDetail.rcvblErnAmt.toLocaleString("ko-KR")); // 수수료수익
@@ -1619,10 +1624,10 @@ const TB04010Sjs = (function () {
 
   // 투자기간 숫자입력 & 만기일 체크 function
   function checkNumber() {
-    $("#invPrdMnum").keyup(function (event) {
+    $("#TB04010S_invPrdMnum").keyup(function (event) {
       if (event.key >= 0 && event.key <= 9) {
         // 1. 숫자입력 체크
-        var input = $("#tab1_datepicker1").val();
+        var input = $("#TB04010S_tab1_datepicker1").val();
         if (input != "") {
           // 2. 기표일 값이 있을경우 만기일 계산
           calcDate(); // 개월수 계산하여 만기일 입력 fucntion
@@ -1765,19 +1770,19 @@ const TB04010Sjs = (function () {
     // 	return false;
     // }
 
-    if (isEmpty($("#invPrdMnum").val())) {
+    if (isEmpty($("#TB04010S_invPrdMnum").val())) {
       option.text = "투자기간개월수를 입력해주세요.";
       openPopup(option);
       return false;
     }
 
-    if (isEmpty($("#tab1_datepicker1").val())) {
+    if (isEmpty($("#TB04010S_tab1_datepicker1").val())) {
       option.text = "기표예정일자를 입력해주세요.";
       openPopup(option);
       return false;
     }
 
-    if (!pattern.test($("#tab1_datepicker1").val())) {
+    if (!pattern.test($("#TB04010S_tab1_datepicker1").val())) {
       option.text = "날짜형식을 확인주세요.";
       openPopup(option);
       return false;
@@ -1887,9 +1892,9 @@ const TB04010Sjs = (function () {
       bsnsDprtEsgGrdCmmt: $("#TB04013P_bsnsDprtEsgGrdCmmt").val(), // 사업부서ESG등급의견
       inspctDprtEsgGrdDcd: $("#TB04013P_R005_2").val(), // 심사부서ESG등급구분코드
       inspctDprtEsgGrdCmmt: $("#TB04013P_inspctDprtEsgGrdCmmt").val(), // 심사부서ESG등급의견
-      invPrdMnum: $("#invPrdMnum").val(), // 투자기간개월수
-      wrtExptDt: $("#tab1_datepicker1").val().replaceAll("-", ""), // 기표예정일자
-      mtrtExptDt: $("#mtrtDt").val().replaceAll("-", ""), // 만기예정일자
+      TB04010S_invPrdMnum: $("#TB04010S_invPrdMnum").val(), // 투자기간개월수
+      wrtExptDt: $("#TB04010S_tab1_datepicker1").val().replaceAll("-", ""), // 기표예정일자
+      mtrtExptDt: $("#TB04010S_mtrtDt").val().replaceAll("-", ""), // 만기예정일자
       tlErnAmt: $("#tlErnAmt").val().replace(/,/g, ""), // 전체수익
       wrtErnAmt: $("#rcvblErnAmt").val().replace(/,/g, ""), // 기표수익금액(수수료수익)
       rcvblErnAmt: $("#wrtErnAmt").val().replace(/,/g, ""), // 미수수익금액(투자수익)
@@ -2032,9 +2037,9 @@ const TB04010Sjs = (function () {
     $("#TB04013P_R005_2 option:eq(0)").prop("selected", true); // ESG리스크심사 심사담당부서
     $("#TB04013P_inspctDprtEsgGrdCmmt").val(""); // ESG리스크심사 심사담당부서 기타 특이사항
 
-    $("#invPrdMnum").val(""); // 투자기간(개월)
-    $("#tab1_datepicker1").val(""); // 기표일(예정)
-    $("#mtrtDt").val(""); // 만기일
+    $("#TB04010S_invPrdMnum").val(""); // 투자기간(개월)
+    $("#TB04010S_tab1_datepicker1").val(""); // 기표일(예정)
+    $("#TB04010S_mtrtDt").val(""); // 만기일
 
     $("#tlErnAmt").val(""); // 전체수익
     $("#rcvblErnAmt").val(""); // 수수료수익
