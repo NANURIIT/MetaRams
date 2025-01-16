@@ -379,6 +379,7 @@ const TB04060Sjs = (function() {
 
 
 	$(document).ready(function() {
+		fnSelectBox();
 		loadSelectBoxContents();
 		setGrid_TB04060S();
 	});
@@ -638,6 +639,37 @@ const TB04060Sjs = (function() {
 			}			
 		}		
 	}//end-func
+
+	/**
+	 * selectBox 부서코드 set
+	 */
+	function fnSelectBox() {
+		let selectBox = getSelectBoxList(
+		  "TB04060S",
+			"D010",   //부서코드
+		  false
+		);
+	
+		let TB07120S_grdSelect
+	
+		TB07120S_grdSelect = selectBox.filter(function (item) {
+		  return item.cmnsGrpCd === "D010";
+		})
+	
+		let D010html;
+		
+		TB07120S_grdSelect.forEach((item) => {
+		  D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+		});
+	
+		$("#TB04060S_dprtNm").append(D010html);
+	
+		$('#TB04060S_dprtNm').on('change', function(){
+		  $('#TB04060S_dprtCd').val($('#TB04060S_dprtNm').val())
+		})
+		
+	  }
+	
 
 	return {
 		/**
