@@ -240,6 +240,9 @@ public class TB07150ServiceImpl implements TB07150Service {
 
 			IBIMS404BDTO ibims404Param = new IBIMS404BDTO();
 
+			log.debug("param.getPrdtCd ::: " + param.getPrdtCd());
+			log.debug("param.getExcSn ::: " + param.getExcSn());
+
 			ibims404Param.setPrdtCd(param.getPrdtCd());
 			ibims404Param.setExcSn(param.getExcSn());
 

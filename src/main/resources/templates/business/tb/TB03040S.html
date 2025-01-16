@@ -48,24 +48,25 @@
 								</div>
 								<div class="form-group col-sm-12">
 									<label class="col-sm-1 col-form-label text-right">담당자</label>
-									<div class="col-sm-3 input-group">
+									<div class="col-sm-4 input-group">
 										<input type="text" class="form-control col-sm-4" id="TB03040S_1_empNo">
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB03022P('TB03040S_1')" id="empNoSearch"><i class="fa fa-search"></i></button>
 										</span>
 										<input type="text" class="form-control" id="TB03040S_1_empNm" readonly>
 									</div>
-									<div class="col-sm-1"></div>
+									<!-- <div class="col-sm-1"></div> -->
 									<label class="col-sm-1 col-form-label text-right">부서</label>
-									<div class="col-sm-2">
-										<div class="input-group">
+									<div class="col-sm-4 input-group">
+										<!-- <div class="input-group"> -->
 											<select class="form-control" id="TB04060S_dprtNm">
 												<option value="">전체</option>
+											</select>
 											<input type="text" class="form-control" id="TB04060S_dprtCd" readonly="">
-										</div>
+										<!-- </div> -->
 									</div>
-									<div class="col-sm-2">
-									</div>
+									<!-- <div class="col-sm-2">
+									</div> -->
 									<!-- 버튼영역 -->
 									<div class="col-sm-2">
 										<button class="btn btn-primary" id="btnLine" type="button" onclick="TB03040Sjs.ibSpecSearch();"><i class="fa fa-search"></i>&nbsp;조회</button>

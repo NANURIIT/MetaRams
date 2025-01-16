@@ -455,7 +455,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 									in406BVO.setRkfrDt(paramData.getRkfrDt()); // 기산일자
 									in406BVO.setIntrCalcStrtDt(rscdVo.getStrtDt());
 									in406BVO.setIntrCalcEndDt(rscdVo.getEndDt());
-									in406BVO.setPaiTypCd(rscdVo.getPaiTypCd());
+									in406BVO.setPaiTypCd("2");					//원리금유형 2:: 정상이자
 									in406BVO.setTrgtDnum(rscdVo.getIntrAplyDnum());
 									in406BVO.setAplyIntr(rscdVo.getAplyIrt());
 									in406BVO.setDealTrgtAmt(rscdVo.getTrgtAmt());
@@ -496,7 +496,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 			ibims410bdto.setTrSn(iExTrsn);
 			ibims410bdto.setExcSn(in403bdto.getExcSn());
 			ibims410bdto.setTrDt(rkfrDt); /* 거래일자 */
-			ibims410bdto.setTrStatCd("1"); /* 거래상태코드 1정상 */
+			ibims410bdto.setTrStatCd("01"); /* 거래상태코드 1정상 */
 			ibims410bdto.setEtprCrdtGrntTrKindCd("20"); /* 거래종류코드 20상환 */
 			ibims410bdto.setDealTrPrca(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()));								/* 딜거래원금 = 거래원금합계+중도상환원금 */
 			ibims410bdto.setTrIntAmt((paramData.getNrmlIntAmt()==null?BigDecimal.ZERO:paramData.getNrmlIntAmt())
