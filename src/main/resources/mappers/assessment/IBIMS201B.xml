@@ -1663,7 +1663,7 @@
                 , A.PRNA_RDMP_FRQC_MNUM 							        /* 원금상환주기개월수 */
                 , A.INTR_RDMP_FRQC_MNUM 							        /* 이자상환주기개월수 */
                 , A.ISTM_DTM_RDMP_AMT 						            /* 할부일시상환금액 */
-                , A.EPRZ_CRDL_INDV_LMT_DCD									            /* 기업여신개별한도구분코드 */
+                , A.EPRZ_CRDL_INDV_LMT_DCD	          AS INDV_LMT_DCD								    /* 기업여신개별한도구분코드 */
                 , A.HLDY_PRCS_DCD								              /* 휴일처리구분코드 */
                 , A.PRNA_DFR_PRD_MNUM 							          /* 원금거치기간개월수 */
                 , B.EPRZ_CRDL_INTR_BNAO_DCD		        AS INTR_BNAO_DCD				          /* 기업여신이자선후취구분코드 */

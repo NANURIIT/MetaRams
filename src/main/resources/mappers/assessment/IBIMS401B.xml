@@ -831,6 +831,9 @@
           <if test="rqsKndCd == '03'">      /*기한변경*/
             SET CTRC_EXP_DT = #{ctrcExpDt} ,
           </if>
+          <if test="rqsKndCd == '31'">      /*기한변경+금리변경*/
+            SET CTRC_EXP_DT = #{ctrcExpDt} ,
+          </if>
           <if test="rqsKndCd == '06'">      /*차주변경*/
             SET PTXT_TR_OTHR_DSCM_NO = #{ptxtTrOthrDscmNo} ,
           </if>

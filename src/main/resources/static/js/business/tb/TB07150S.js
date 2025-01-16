@@ -178,20 +178,20 @@ const TB07150Sjs = (function () {
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", false); //만기일자
       $("#TB07150S_eprzCrdlCtrcAmt_chng").prop("disabled", true); //악정금액
       $("#TB07150S_E020_2").prop("disabled", true); //상환방법
-      $("#TB07150S_prnaRdmpFrqcMnum_chng").prop("disabled", false); //원금상환주기
-      $("#TB07150S_intrRdmpFrqcMnum_chng").prop("disabled", false); //이자상환주기
+      $("#TB07150S_prnaRdmpFrqcMnum_chng").prop("disabled", true); //원금상환주기
+      $("#TB07150S_intrRdmpFrqcMnum_chng").prop("disabled", true); //이자상환주기
       $("#TB07150S_istmDtmRdmpAmt_chng").prop("disabled", true); //일시상환금액
       $("#TB07150S_I005_2").prop("disabled", true); //한도/개별
-      $("#TB07150S_H001_2").prop("disabled", false); //휴일처리구분
-      $("#TB07150S_prnaDfrPrdMnum_chng").prop("disabled", false); //거치기간개월수
-      $("#TB07150S_E011_2").prop("disabled", false); //이자선후취구분
-      $("#TB07150S_E013_2").prop("disabled", false); //이자계산방법
+      $("#TB07150S_H001_2").prop("disabled", true); //휴일처리구분
+      $("#TB07150S_prnaDfrPrdMnum_chng").prop("disabled", true); //거치기간개월수
+      $("#TB07150S_E011_2").prop("disabled", true); //이자선후취구분
+      $("#TB07150S_E013_2").prop("disabled", true); //이자계산방법
       $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
 
       $("#trOthrSrchBtn").prop("disabled", true);
 
-      $("#TB07150S_plsBtn").prop("disabled", false);             
-      $("#TB07150S_mnsBtn").prop("disabled", false);
+      $("#TB07150S_plsBtn").prop("disabled", true);             
+      $("#TB07150S_mnsBtn").prop("disabled", true);
     } else if (ctgry == "04") {
       //금리변경
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
@@ -802,6 +802,8 @@ const TB07150Sjs = (function () {
         "option",
         "dataModel.data"
       ); //변경 후 금리정보
+
+      console.log("cndChng404BList ::: " + JSON.stringify(cndChng404BList));
 
       var param = {
         rqsKndCd: rqsKndCd,
