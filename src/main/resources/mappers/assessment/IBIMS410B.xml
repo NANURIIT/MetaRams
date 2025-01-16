@@ -744,7 +744,6 @@
               , T1.TR_CRRY_CD                                                 /* 통화구분  410B */
               , T1.RCTM_ISTT_CD                                               /* 금융기관  410B */
               , T7.RQST_STFNO                                                 /* 담당자 452B */
-              , T7.RELT_STFNO                                                 /* 승인자 452B */
               , (
                    SELECT EMP_NM
                      FROM IBIMS003B
@@ -782,7 +781,14 @@
               , T7.ERLM_SEQ                                                   /* 등록순번 */
               , NVL(T8.DECD_STEP_DCD, '00')         AS DECD_STEP_DCD          /* 결재단계구분코드 */
               , NVL(T8.DECD_STTS_DCD, '0')          AS DECD_STTS_DCD          /* 결재상태구분코드 */
-              , NVL(TO_CHAR(T9.DECD_DTM, 'YYYYMMDD'), '')AS DECD_DT           /* 처리일자 232B */
+              , NVL(TO_CHAR(T9.DECD_DTM, 'YYYYMMDD'), '') AS DECD_DT          /* 처리일자 232B */
+              , T9.DCFC_ENO                         AS DCFC_ENO               /* 승인자 232B */
+              , (
+                  SELECT EMP_NM
+                    FROM IBIMS003B
+                   WHERE 1=1
+                     AND EMPNO = T9.DCFC_ENO
+                )                                   AS DCFC_ENM               /* 승인자 232B */
            FROM IBIMS410B T1  /* 딜거래내역 */
       LEFT JOIN IBIMS401B T2  /* 약정기본 */
              ON T1.PRDT_CD = T2.PRDT_CD
