@@ -107,14 +107,16 @@ function TB03022P_clearInput(inputId) {
  * @param {string} prefix 결과전달 ID의 prefix
  */
 function callTB03022P(prefix, e) {
+
   TB03022P_pf = prefix;
   setTimeout(() => roadListGrid(), 300);
   $("#TB03022P_prefix").val(prefix);
   $("#modal-TB03022P").modal("show");
   indexChangeHandler("TB03022P");
 
-  if (prefix == "TB05010S_mmbrTrgt" || prefix == "TB05010S_mmbrAngt")
+  if (prefix == "TB05010S_mmbrTrgt" || prefix == "TB05010S_mmbrAngt"){
     mmbrSn = e;
+  }
 
   if (prefix === "grd_TB08040S") {
     tb08040sIdx = e;
@@ -243,7 +245,7 @@ async function getEmpList() {
 				modalClose_TB03022P();
 			}
 			else {
-				callTB03022P($('#TB03022P_prefix').val());
+				callTB03022P($('#TB03022P_prefix').val(), mmbrSn);
 				setTimeout(() => dataEmpSetGrid(data), 400)
 			}
     },
@@ -312,10 +314,7 @@ function setEmpNm(e) {
   $(pageAthCd).val(athCd);
 
   // 그리드(위원정보) 데이터 가져오기
-  const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid(
-    "option",
-    "dataModel.data"
-  ); // 20241122 오류나서 바꿨습니다
+  const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid('instance').pdata; // 20241122 오류나서 바꿨습니다
 
   // 공동
   switch (prefix) {
@@ -338,8 +337,10 @@ function setEmpNm(e) {
       $("#TB03021P_dprtNm").val(dprtCd).prop("selected", true);
       break;
     case "TB05010S_mmbrTrgt":
+      console.log(arrPqGridMmbrInfo[mmbrSn]);
+      
       // 특정 행의 데이터 수정
-      if (arrPqGridMmbrInfo.length > 0) {
+      if ( arrPqGridMmbrInfo.length > 0 && arrPqGridMmbrInfo[mmbrSn] ) {
         arrPqGridMmbrInfo[mmbrSn].atdcTrgtEmpnm = empNm; // 버튼을 누른 행의 atdcTrgtEmpnm(위원명_화면) 값 변경
         arrPqGridMmbrInfo[mmbrSn].atdcTrgtEmpno = empNo; // 버튼을 누른 행의 atdcTrgtEmpno(위원코드) 값 변경
       }
@@ -350,7 +351,7 @@ function setEmpNm(e) {
       break;
     case "TB05010S_mmbrAngt":
       // 특정 행의 데이터 수정
-      if (arrPqGridMmbrInfo.length > 0) {
+      if ( arrPqGridMmbrInfo.length > 0 && arrPqGridMmbrInfo[mmbrSn] ) {
         arrPqGridMmbrInfo[mmbrSn].atdcAngtEmpnm = empNm; // 버튼을 누른 행의 atdcTrgtEmpnm(대리참석위원_화면) 값 변경
         arrPqGridMmbrInfo[mmbrSn].atdcAngtEmpno = empNo; // 버튼을 누른 행의 atdcTrgtEmpno(대리참석위원_코드) 값 변경
       }
@@ -391,9 +392,16 @@ function setEmpNm(e) {
     case "TB04011P":
       $("#TB04011P_dprtNm").val(e.dprtCd).prop("selected", true);
       break;
-    case "TB07120S1":
-      $("#TB07120S1_empNo").val(empNo);
-      $("#TB07120S1_empNm").val(empNm);
+    case "TB07120S":
+      $("#TB07120S_dcfcEno").val(empNo);
+      $("#TB07120S_dcfcEnm").val(empNm);
+      $(pageEmpNm).val("");
+      $(pageEmpNo).val("");
+      $(pageDprtCd).val("");
+      $(pageDprtNm).val("");
+      $(pageHdqtCd).val("");
+      $(pageHdqtNm).val("");
+      $(pageAthCd).val("");
       break;
     case "TB07120S2":
       $("#TB07120S2_empNo").val(empNo);

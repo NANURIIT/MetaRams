@@ -1,6 +1,7 @@
 package com.nanuri.rams.business.common.vo;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
 
@@ -28,5 +29,11 @@ public class TB07120SVO extends IBIMS410BDTO {
 
     private String decdStepDcd;                 // 결재단계구분코드
     private String decdSttsDcd;                 // 결재상태구분코드
+
+    private Date trDtm;                         // 거래시간
+    private Date decdDtm;                       // 처리시간
+
+    private String dcfcEno;                     // 승인자번호
+    private String dcfcEnm;                     // 승인자명
 
 }
