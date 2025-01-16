@@ -306,6 +306,9 @@
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(errCntn)">
          , ERR_CNTN = #{errCntn}
          </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prcsRsltDcd)">
+         , PRCS_RSLT_DCD = #{prcsRsltDcd}
+         </if>
          , RQST_CNCL_DTM = CASE 
                            WHEN #{decdSttsDcd} = '4' THEN SYSDATE 
                            ELSE NULL 

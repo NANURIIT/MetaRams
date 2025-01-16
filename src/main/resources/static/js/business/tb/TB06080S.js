@@ -22,6 +22,9 @@ const TB06080Sjs = (function () {
     // 공통 코드 html에 셋팅하기
     createSelectTag();
 
+    // 초기값세팅
+    $('#decdStepDcd').val('04')
+
     // PQ Grid
     renderGrid(colApvlList, "gridApvlList");
     renderGrid(colGbckList, "gridGbckList");

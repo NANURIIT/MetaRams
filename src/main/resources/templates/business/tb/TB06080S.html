@@ -32,24 +32,24 @@
 							<div class="col-sm-12 form-group">
 								<label class="col-sm-1 col-form-label text-right">책임자</label>
 								<div class="col-sm-3 input-group">
-									<input type="text" class="form-control" id="TB06080S_rspl_empNm">
+									<input type="text" class="form-control" id="TB06080S_rspl_empNo">
 									<span class="input-group-append">
 										<button type="button" class="btn btn-default"
 											onclick="callTB03022P('TB06080S_rspl')"><i
 												class="fa fa-search"></i></button>
 									</span>
-									<input type="text" class="form-control" style="width:40px;" id="TB06080S_rspl_empNo"
+									<input type="text" class="form-control" style="width:40px;" id="TB06080S_rspl_empNm"
 										readonly disabled>
 								</div>
 								<label class="col-sm-1 col-form-label text-right">승인요청자</label>
 								<div class="col-sm-3 input-group">
-									<input type="text" class="form-control" id="TB06080S_rqst_empNm">
+									<input type="text" class="form-control" id="TB06080S_rqst_empNo">
 									<span class="input-group-append">
 										<button type="button" class="btn btn-default"
 											onclick="callTB03022P('TB06080S_rqst')"><i
 												class="fa fa-search"></i></button>
 									</span>
-									<input type="text" class="form-control" style="width:40px;" id="TB06080S_rqst_empNo"
+									<input type="text" class="form-control" style="width:40px;" id="TB06080S_rqst_empNm"
 										readonly disabled>
 								</div>
 								<label class="col-sm-1 col-form-label text-right">결재단계</label>
@@ -62,7 +62,7 @@
 								<div class="col-sm-1-5 text-right">
 									<button class="btn btn-primary" type="button" id=""
 										onclick="TB06080Sjs.inqTB06080S()"><i class="fa fa-search"></i>&nbsp;조회</button>
-									<button id="" class="btn btn-default" onclick="resetInputValue($(`div[data-menuid='/TB06080S']`)); resetPGgrids('TB06080S');"><i
+									<button id="" class="btn btn-default" onclick="resetInputValue($(`div[data-menuid='/TB06080S']`)); resetPGgrids('TB06080S'); $('#decdStepDcd').val('04');"><i
 											class="fa fa-undo"></i>&nbsp;초기화</button>
 								</div>
 							</div>

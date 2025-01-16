@@ -76,10 +76,14 @@ public class TB06082ServiceImpl implements TB06082Service {
 
 		if(lastDecdSq == decdSq && "2".equals(dto232.getDecdSttsDcd())){
 			dto231.setDecdStepDcd("05");
+			// 처리결과구분코드 정상
+			dto231.setPrcsRsltDcd("01");
 			ibims231bMapper.updateDecd(dto231);
 		}
 		
 		if("3".equals(dto232.getDecdSttsDcd())){
+			// 처리결과구분코드 정상
+			dto231.setPrcsRsltDcd("02");
 			dto232.setRjctYn("Y");
 		}
 
