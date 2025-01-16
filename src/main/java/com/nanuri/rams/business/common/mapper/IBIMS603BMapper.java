@@ -12,12 +12,12 @@ public interface IBIMS603BMapper {
 
 	List<IBIMS603BDTO> selectIBIMS603B(IBIMS601BVO param);
 
-	void insertIBIMS603B(IBIMS603BDTO param);
+	int insertIBIMS603B(IBIMS603BDTO param);
 
 	int updateIBIMS603B(IBIMS601BVO param);
 
 	//void deleteDealInfo(IBIMS601BVO param);
 
-	void deleteIBIMS603B(IBIMS601BVO param);
+	int deleteIBIMS603B(IBIMS601BVO param);
 
 }

@@ -13,24 +13,24 @@ import com.nanuri.rams.business.common.vo.IBIMS601BVO;
 @Service
 public interface TB08036Service {
 	// pf사후관리 조회
-	IBIMS601BVO getDealInfo(IBIMS601BVO param);
-	
+	IBIMS601BVO getDealInfo(IBIMS601BVO param);	
 	// 분양수지관리 등록
-	void modifyDealInfo(IBIMS601BVO param);
+	int modifyDealInfo(IBIMS601BVO param);
+	//월별공사및분양현황
+	IBIMS611BDTO insertIBIMS611B(IBIMS611BDTO param);
 	// 월별사업관리 등록
-	void insertIBIMS602B(IBIMS602BDTO param);
+	int insertIBIMS602B(IBIMS602BDTO param);
 	// 기타사후관리 등록
-	void insertIBIMS603B(IBIMS603BDTO param);
+	int insertIBIMS603B(IBIMS603BDTO param);
   // 분양수지관리 삭제
-	void deleteDealInfo(IBIMS601BVO param);
+	int deleteDealInfo(IBIMS601BVO param);
   // 기타사후관리 삭제
-	void deleteIBIMS602B(IBIMS601BVO param);
-	  // 기타사후관리 삭제
-	void deleteIBIMS611B(IBIMS601BVO param);
-		  // 기타사후관리 삭제
-	void deleteIBIMS603B(IBIMS601BVO param);
+	int deleteIBIMS602B(IBIMS601BVO param);
+	// 기타사후관리 삭제
+	IBIMS601BVO deleteIBIMS611B(IBIMS601BVO param);
+	// 기타사후관리 삭제
+	int deleteIBIMS603B(IBIMS601BVO param);
 
-	void insertIBIMS611B(IBIMS611BDTO param);
 
 
 	

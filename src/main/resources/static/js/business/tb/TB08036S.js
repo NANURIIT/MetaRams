@@ -199,7 +199,7 @@ const TB08036Sjs = (function () {
     });
   }
 
-  // 에이작스 경고창
+  // 에이작스 알람팝업
   function showSwalMessage(type, title, text) {
     Swal.fire({
       icon: type, // success, error, warning, info
@@ -550,12 +550,17 @@ const TB08036Sjs = (function () {
         data: JSON.stringify(paramData),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        complete: function () {
-          showSwalMessage(
-            "success",
-            "Success!",
-            "분양수지관리정보를 저장하였습니다."
-          );
+        success: function () {
+          try {
+            showSwalMessage(
+              "success",
+              "Success!",
+              "분양수지관리정보를 저장하였습니다."
+            );
+            getDealInfoTB08036S();
+          } catch (e) {
+            console.error("에러 발생:", e);
+          }
           getDealInfoTB08036S();
         },
       }); /* end of ajax*/
@@ -566,7 +571,7 @@ const TB08036Sjs = (function () {
         data: JSON.stringify(paramData),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        complete: function (data) {
+        success: function (data) {
           showSwalMessage(
             "success",
             "Success!",
@@ -621,7 +626,7 @@ const TB08036Sjs = (function () {
         data: JSON.stringify(paramData),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        complete: function () {
+        success: function () {
           Swal.fire({
             icon: "success",
             title: "Success!",
@@ -637,7 +642,7 @@ const TB08036Sjs = (function () {
         data: JSON.stringify(paramData),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        complete: function (data) {
+        success: function (data) {
           showSwalMessage("success", "Success!", "정보를 삭제하였습니다.");
         },
       }); /* end of ajax*/
@@ -677,7 +682,7 @@ const TB08036Sjs = (function () {
         data: JSON.stringify(paramData),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        complete: function () {
+        success: function () {
           Swal.fire({
             icon: "success",
             title: "Success!",
@@ -693,7 +698,7 @@ const TB08036Sjs = (function () {
         data: JSON.stringify(paramData),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        complete: function (data) {
+        success: function (data) {
           showSwalMessage("success", "Success!", "점검결과를 삭제하였습니다.");
         },
       }); /* end of ajax*/
@@ -733,7 +738,7 @@ const TB08036Sjs = (function () {
         data: JSON.stringify(paramData),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        complete: function () {
+        success: function () {
           Swal.fire({
             icon: "success",
             title: "Success!",
@@ -749,7 +754,7 @@ const TB08036Sjs = (function () {
         data: JSON.stringify(paramData),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        complete: function (data) {
+        success: function (data) {
           showSwalMessage(
             "success",
             "Success!",

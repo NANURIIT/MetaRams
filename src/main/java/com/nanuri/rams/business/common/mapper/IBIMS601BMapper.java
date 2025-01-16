@@ -13,6 +13,6 @@ public interface IBIMS601BMapper {
 
 	int updateIBIMS601B(IBIMS601BVO param);
 
-	void deleteIBIMS601B(IBIMS601BVO param);
+	int deleteIBIMS601B(IBIMS601BVO param);
 
 }
