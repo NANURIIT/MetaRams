@@ -515,8 +515,17 @@ const TB05030Sjs = (function () {
     let mmbrList = [];
     let checkList = [];
     let selectedDealOption = false;
+
+    // 단건저장이라 무조건 체크박스 선택함
+    var grid = $("#gridMmbrInfo");
     for (let i = 0; i < arrPqGridMmbrInfo.pdata.length; i++) {
       let checkedRows = arrPqGridMmbrInfo.pdata[i];
+      var firstRow = grid.pqGrid("getData")[0];
+      if (firstRow && firstRow.MMBRChk !== "Y") {
+        firstRow.MMBRChk = "Y";
+      }
+      grid.pqGrid("refreshDataAndView");
+
       if (checkedRows.MMBRChk == "Y") {
         checkList.push(checkedRows);
       }
@@ -911,7 +920,7 @@ const TB05030Sjs = (function () {
           all: true,
           header: true,
           check: "Y",
-          uncheck: "Y",
+          uncheck: "N",
         },
         hidden: true,
       },
