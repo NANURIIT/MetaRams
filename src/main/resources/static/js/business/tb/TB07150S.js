@@ -356,16 +356,6 @@ const TB07150Sjs = (function () {
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: "range" }] },
-        // editor     : {
-        // 	type      : "select",
-        // 	valueIndx : "cdValue",
-        // 	labelIndx : "cdName",
-        // 	options   : F006
-        // },
-        // render   : function(ui) {
-        // 	let fSel = F006.find(({ cdValue }) => cdValue == ui.cellData );
-        // 	return fSel ? fSel.cdName : ui.cellData;
-        // },
       },
       {
         title: "적용일수구분",
