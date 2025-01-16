@@ -403,7 +403,7 @@ const TB07020Sjs = (function() {
 			data: paramData,
 			dataType: "json",
 			beforeSend: function(){
-				//$("#TB07020S_tableList").pqGrid("setData", []);
+				$("#TB07020S_tableList").pqGrid("setData", []);
 				//compClear();
 				inputClear();
 				$("#TB07020S_tableList").pqGrid("option", "strNoRows", "조회 중입니다...");
@@ -1007,8 +1007,8 @@ const TB07020Sjs = (function() {
 					.then(() => {
 						Swal.fire({
 							icon: 'success',
-							title: (inputDcd=='1'?'[매수거래] 등록':'[매수거래] 취소'),
-							text: (inputDcd=='1'?'[매수거래] 등록이 실행되었습니다.':'[매수거래] 취소가 완료되었습니다.'),
+							title: inputDcd == '1' ? '[매수거래] 등록' : '[매수거래] 취소',
+							text: inputDcd == '1' ? '[매수거래] 등록이 실행되었습니다.' : '[매수거래] 취소가 완료되었습니다.',
 							confirmButtonText: "확인",
 						});
 					})
@@ -1020,7 +1020,9 @@ const TB07020Sjs = (function() {
 							,confirmButtonText: "확인"
 						});
 					})
-					//.finally(getBuyList);
+					.finally(() => {
+						getBuyList(); 
+					});
 			}
 			else {
 				Promise.resolve()
@@ -1031,8 +1033,8 @@ const TB07020Sjs = (function() {
 				.then(() => {
 					Swal.fire({
 						icon: 'success',
-						title: (inputDcd=='1'?'[매수거래] 등록':'[매수거래] 취소'),
-						text: (inputDcd=='1'?'[매수거래] 등록이 실행되었습니다.':'[매수거래] 취소가 완료되었습니다.'),
+						title: inputDcd == '1' ? '[매수거래] 등록' : '[매수거래] 취소',
+						text: inputDcd == '1' ? '[매수거래] 등록이 실행되었습니다.' : '[매수거래] 취소가 완료되었습니다.',
 						confirmButtonText: "확인",
 					});
 				})
@@ -1044,7 +1046,9 @@ const TB07020Sjs = (function() {
 						,confirmButtonText: "확인"
 					});
 				})
-				//.finally(getBuyList);
+				.finally(() => {
+					getBuyList(); 
+				});
 			}
 		}
 	}

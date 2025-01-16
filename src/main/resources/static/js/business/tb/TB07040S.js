@@ -416,7 +416,7 @@ const TB07040Sjs = (function () {
       data: paramData,
       dataType: "json",
       beforeSend: function () {
-        //$("#TB07040S_tableList").pqGrid("setData", []);
+        $("#TB07040S_tableList").pqGrid("setData", []);
         //compClear();
         inputClear();
 
@@ -1143,8 +1143,10 @@ const TB07040Sjs = (function () {
                   : "[매도거래] 취소오류!!!",
               confirmButtonText: "확인",
             });
-          });
-        //.finally(getSellList);
+          })
+          .finally(() => {
+						getSellList(); 
+					});
       } else {
         Promise.resolve()
           .then(cancelSellList(paramData_405B))
@@ -1172,8 +1174,10 @@ const TB07040Sjs = (function () {
                   : "[매도거래] 취소오류!!!",
               confirmButtonText: "확인",
             });
-          });
-        //.finally(getSellList);
+          })
+          .finally(() => {
+						getSellList(); 
+					});
       }
     }
   }

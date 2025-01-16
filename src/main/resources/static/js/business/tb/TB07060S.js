@@ -82,18 +82,19 @@ const TB07060Sjs = (function () {
      ********************************************************************/
     // 거래내역
     let col_trDtls = [
+      
       {
-        title: "거래순번",
+        title: "실행순번",
         dataType: "string",
-        dataIndx: "trSn",
+        dataIndx: "excSn",
         align: "center",
         width: "5%",
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        title: "실행순번",
+        title: "거래순번",
         dataType: "string",
-        dataIndx: "excSn",
+        dataIndx: "trSn",
         align: "center",
         width: "5%",
         filter: { crules: [{ condition: "range" }] },
