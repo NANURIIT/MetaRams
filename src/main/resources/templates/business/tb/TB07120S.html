@@ -238,7 +238,7 @@
 										</div>
 										<label class="col-sm-1">투자금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07120S_invAmt">
+											<input type="text" class="form-control text-right" id="TB07120S_eprzCrdlInvAmt">
 										</div>
 									</div>
 								</div>
@@ -270,7 +270,7 @@
 										</div>
 										<label class="col-sm-1">원화환산금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07120S_wcrcTrslTrPrca">
+											<input type="text" class="form-control text-right" id="TB07120S_krwTrslTrPrca">
 										</div>
 									</div>
 								</div>
@@ -286,7 +286,7 @@
 										</div>
 										<label class="col-sm-1">예금주명</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" id="TB07120S_dpowName">
+											<input type="text" class="form-control" id="TB07120S_achdNm">
 										</div>
 									</div>
 								</div>
@@ -346,11 +346,11 @@
 										<label class="col-sm-1">담당자</label>
 										<div class="col-sm-3">
 											<div class="input-group">
-												<input type="text" class="form-control" id="TB07120S1_empNo">
+												<input type="text" class="form-control" id="TB07120S1_empNo" readonly>
 												<span class="input-group-append">
-													<button type="button" id="TB07120S_rqstBtn" class="btn btn-default" onclick="callTB03022P('TB07120S1')"><i class="fa fa-search"></i></button>
+													<button type="button" id="TB07120S_rqstBtn" class="btn btn-default" onclick="callTB03022P('TB07120S1')" disabled><i class="fa fa-search"></i></button>
 												</span>
-												<input type="text" class="form-control" id="TB07120S1_empNm" readonly="" style="width: 100px">
+												<input type="text" class="form-control" id="TB07120S1_empNm" readonly style="width: 100px">
 											</div>
 										</div>
 										<label class="col-sm-1">거래시간</label>
@@ -373,7 +373,7 @@
 										</div>
 										<label class="col-sm-1">처리시간</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" id="TB07120S_hndlDtm">
+											<input type="text" class="form-control" id="TB07120S_decdDtm">
 										</div>
 									</div>
 								</div>
@@ -391,12 +391,12 @@
 							<div class="form-group col-sm-12 justify-content-end">
 								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>결재단계구분</label>
 								<div class="col-sm-2 input-group">
-									<select class="form-control" id="TB07120S_consDecdDvsnCd" disabled="">
+									<select class="form-control" id="TB07120S_decdStepDcd" disabled="">
 									</select>
 								</div>
 								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>결재상태</label>
 								<div class="col-sm-2 input-group">
-									<select class="form-control" id="TB07120S_consDecdStatCd2" disabled="">
+									<select class="form-control" id="TB07120S_decdSttsDcd" disabled="">
 									</select>
 								</div>
 								<span class="vr"> │ </span>

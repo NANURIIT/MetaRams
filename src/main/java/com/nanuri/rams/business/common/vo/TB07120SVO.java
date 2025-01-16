@@ -26,4 +26,7 @@ public class TB07120SVO extends IBIMS410BDTO {
     
     private String depositWithdrawalCode;       // 입출금구분코드
 
+    private String decdStepDcd;                 // 결재단계구분코드
+    private String decdSttsDcd;                 // 결재상태구분코드
+
 }

@@ -17,8 +17,8 @@ const TB07120Sjs = (function () {
   function setInput() {
     $("#ibims452b input").prop("readonly", true);
     $("#ibims452b button, #ibims452b select").prop("disabled", true);
-    $("#TB07120S1_empNo, #TB07120S2_empNo").prop("readonly", false);
-    $("#TB07120S_rqstBtn, #TB07120S_reltBtn").prop("disabled", false);
+    $("#TB07120S2_empNo").prop("readonly", false);
+    $("#TB07120S_reltBtn").prop("disabled", false);
     // $(".TB07120S_isForeignTransfer").prop("disabled", true);
     $("#TB07120S_apvl").hide(); //승인버튼
     $("#TB07120S_gbck").hide(); //반려버튼
@@ -100,18 +100,16 @@ const TB07120Sjs = (function () {
     //   D005html += `<option value="${item.cdValue}">${item.cdName}</option>`;
     // });
 
-    console.log(TB07120S_grdSelect.D005);
-
     $("#TB07120S_dprtNm").append(D010html);
     // $('#TB07080S_ldgSttsCd').append(R031html);
-    $("#TB07120S_consDecdDvsnCd").append(D016html);
+    $("#TB07120S_decdStepDcd").append(D016html);
     $("#TB07120S_trCrryCd").append(I027html);
     // $('#TB07080S_ldgSttsCd').append(D015html);
-    $("#TB07120S_consDecdStatCd, #TB07120S_consDecdStatCd2").append(
-      D006html
-    );
+    $("#TB07120S_consDecdStatCd, #TB07120S_decdSttsDcd").append(D006html);
     $("#TB07120S_fndsDvsnCd").append(F008html);
     // $('#TB07120S_decdJobDcd').append(D005html);
+
+    $('#TB07120S_decdSttsDcd').val('0')
 
     // 입출금 구분 옵션 추가 
     $("#TB07120S_depositWithdrawalCode").append(`
@@ -154,6 +152,12 @@ const TB07120Sjs = (function () {
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "거래시간",
+      dataType: "string",
+      dataIndx: "trDtm",
+      hidden: true
     },
     {
       title: "처리일자",
@@ -282,6 +286,30 @@ const TB07120Sjs = (function () {
       title: "등록순번",
       dataType: "string",
       dataIndx: "erlmSeq",
+      hidden: true,
+    },
+    {
+      title: "투자금액",
+      dataType: "string",
+      dataIndx: "eprzCrdlInvAmt",
+      hidden: true,
+    },
+    {
+      title: "원화환산금액",
+      dataType: "string",
+      dataIndx: "krwTrslTrPrca",
+      hidden: true,
+    },
+    {
+      title: "예금주명",
+      dataType: "string",
+      dataIndx: "achdNm",
+      hidden: true,
+    },
+    {
+      title: "수수료",
+      dataType: "string",
+      dataIndx: "feeTotAmt",
       hidden: true,
     },
   ];
