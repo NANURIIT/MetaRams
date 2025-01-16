@@ -83,8 +83,8 @@ const TB06080Sjs = (function () {
           pqGridObjApvlList.on("rowClick", function (evt, ui) {
             // 공통 피큐그리드에서 인풋으로 값 보내기
             setInputboxFromPdata(ui, "TB06080S");
-            $("#TB06080S_rqstDtm").val($("#TB06080S_rqstDtm").val().split('T')[0])
-            $("#TB06080S_rqstCnclDtm").val($("#TB06080S_rqstCnclDtm").val().split('T')[0])
+            $("#TB06080S_rqstDtm").val($("#TB06080S_rqstDtm").val().replace('T', ' ').slice(0, 19))
+            $("#TB06080S_rqstCnclDtm").val($("#TB06080S_rqstCnclDtm").val().replace('T', ' ').slice(0, 19))
 
             $('#TB06080S_apvlPage').off('click');
             $('#TB06080S_apvlPage').on('click', function(){
@@ -117,7 +117,7 @@ const TB06080Sjs = (function () {
                   pqGridObjGbckList.on("rowClick", function (evt, ui) {
                     // 공통 피큐그리드에서 인풋으로 값 보내기
                     setInputboxFromPdata(ui, "TB06080S");
-                    $("#TB06080S_decdDtm").val($("#TB06080S_decdDtm").val().split('T')[0])
+                    $("#TB06080S_decdDtm").val($("#TB06080S_decdDtm").val().replace('T', ' ').slice(0, 19))
                   });
                 } else {
                   swal.fire({
