@@ -280,15 +280,6 @@ const TB07030Sjs = (function () {
         format: "#,###",
         filter: { crules: [{ condition: "range" }] },
       },
-      // {
-      // 	title    : "중도상환수수료",
-      // 	dataType : "integer",
-      // 	dataIndx : "mrdpFeeAmt",
-      // 	halign   : "center",
-      // 	align    : "right",
-      // 	format   : "#,###",
-      // 	filter   : { crules: [{ condition: 'range' }] },
-      // },
       {
         title: "납부예정금액",
         dataType: "integer",
@@ -298,18 +289,36 @@ const TB07030Sjs = (function () {
         format: "#,###",
         filter: { crules: [{ condition: "range" }] },
         editable: true,
-        // editor: {
-        // 	type: 'textbox',
-        // 	init: function (ui) {
-        // 		var $input = ui.$cell.find("input");
-        // 		let tot = 0;
-        // 		$input.on("input", function () {
-        // 			let numVal = Number(this.value)
-        // 			tot += numVal;
-        // 			$('#TB07030S_exmptSmmAmt').val(tot)
-        // 		});
-        // 	}
-        // }
+        editor: {
+          type: "textbox",
+          init: function (ui) {
+            $(ui.$editor)
+              .on("input", function () {
+                let value = Number($(this).val());
+                let rowData = ui.rowData;
+                let pmntAmt = rowData.pmntAmt || 0;
+    
+                if (value <= 0 || value > pmntAmt) {
+                  $(this).css("border", "1px solid red");
+                } else {
+                  $(this).css("border", "");
+                }
+              })
+              .on("blur", function () {
+                let value = Number($(this).val());
+                let rowData = ui.rowData;
+                let pmntAmt = rowData.pmntAmt || 0;
+    
+                if (value < 0 || value > pmntAmt) {
+
+                  $(this).val("").focus(); 
+                  $(this).css("border", "1px solid red");
+                } else {
+                  $(this).css("border", "");
+                }
+              });
+          },
+        },
       },
       {
         title: "면제금액",
@@ -938,6 +947,7 @@ const TB07030Sjs = (function () {
 
       case "exmptAmt": // 면제금액합계
         grdRdmpTrgtDtl.on("editorEnd", function (evt, ui) {
+
           let tot = 0;
           p.forEach((ele) => {
             let exmptAmt = ele.exmptAmt;
@@ -952,6 +962,31 @@ const TB07030Sjs = (function () {
       //20250113추가
       case "calcTotAmt":      //납부예정금액 합계
         grdRdmpTrgtDtl.on("editorEnd", function (evt, ui) {
+          
+          // alert(ui.dataIndx);
+          // alert(JSON.stringify(ui.dataIndx));
+
+          if (ui.dataIndx === "pmntPrarAmt") {
+            // let value = Number(ui.newVal);
+            let rowData = ui.rowData;
+            let pmntAmt = rowData.pmntAmt || 0;
+            let pmntPrarAmt = rowData.pmntPrarAmt || 0;
+
+            console.log("pmntPrarAmt ::: " + pmntPrarAmt);
+            console.log("pmntAmt ::: " + pmntAmt);
+        
+            if (pmntPrarAmt <= 0 || pmntPrarAmt > pmntAmt) {
+              console.log("Invalid value");
+              ui.$cell.find(".pq-editor-input").css("border", "1px solid red");
+
+              // grdRdmpTrgtDtl.beginEdit(ui.rowIndx, ui.dataIndx);
+              return false; 
+            } else {
+              console.log("Valid  value");
+              ui.$cell.find(".pq-editor-input").css("border", "");
+            }
+          }
+
           let totRdmpPrna = 0;          //상환대상원금 합계
           let totRdmpIntr = 0;          //납부예정이자 합계
           let totOvduIntr = 0;          //연체이자 합계
