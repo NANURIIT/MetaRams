@@ -131,14 +131,14 @@ public class TB03020ServiceImpl implements TB03020Service {
 		dealInfo.setDcfcBdcd(facade.getDetails().getBdCd());	// 결재자부점코드
 		dealInfo.setDcfcEmpNo(facade.getDetails().getEno());	// 결재자사번
 
-		UUID wfId = UUID.randomUUID();
+		// UUID wfId = UUID.randomUUID();
 
-        log.debug("wfId.toString(): " + wfId.toString());
+        // log.debug("wfId.toString(): " + wfId.toString());
 
-		dealInfo.setWfId(wfId.toString());						// 워크플로우 ID
-		dealInfo.setWfState("01");						// 워크플로우 상태
+		// dealInfo.setWfId(wfId.toString());						// 워크플로우 ID
+		// dealInfo.setWfState("01");						// 워크플로우 상태
 
-		wfRgstIBIMS101B(dealInfo);
+		// wfRgstIBIMS101B(dealInfo);
 
 		// 딜 정보 저장
 		ibims101BMapper.saveDeal(dealInfo);
