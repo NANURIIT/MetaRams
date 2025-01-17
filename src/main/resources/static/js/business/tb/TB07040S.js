@@ -275,6 +275,8 @@ const TB07040Sjs = (function () {
     loadUserAuth(); // 담당자 정보 조회
     dateInputSet();
     setGrid_TB07040S();
+    resetInputValue($('div[data-menuid="/TB07040S"]'));
+
     getDealInfoFromWF();
   });
 
@@ -1795,16 +1797,19 @@ const TB07040Sjs = (function () {
     //$("#TB07040S_rsltnDt").val("");
     // $('#TB07040S_srch_prdtCd').val('');
     // $('#TB07040S_srch_prdtNm').val('');
+
+    resetInputValue($('div[data-menuid="/TB07040S"]'));
+
     $('#TB07040S_srch_fndCd').val("");
     $('#TB07040S_srch_fndNm').val("");
-    $("#TB07040S_trQnt").val("");
+    // $("#TB07040S_trQnt").val("");
     $("#TB07040S_trDt").val("");
     $("#TB07040S_trSn").val("");
-    $("#TB07040S_trUnpr").val("");
-    $("#TB07040S_trAmt").val("0");
+    // $("#TB07040S_trUnpr").val("");
+    // $("#TB07040S_trAmt").val("0");
     $("#TB07040S_dprtCd").val("");
     $("#TB07040S_dprtNm").val("");
-    $("#TB07040S_trdeExrt").val("");
+    // $("#TB07040S_trdeExrt").val("");
     $("#TB07040S_fnltCd").val("");
     $("#TB07040S_fnltNm").val("");
     $("#TB07040S_fndCd").val("");
@@ -1819,7 +1824,7 @@ const TB07040Sjs = (function () {
     //$('#TB07040S_H002').val('0');
     $("#TB07040S_I027").val("KRW");
     //$('#TB07040S_input_trCrryCd').val('KRW');
-    $("#TB07040S_trtx").val("");
+    // $("#TB07040S_trtx").val("");
     $("#TB07040S_ibPrdtTrDcd").val("82");
     $("#TB07040S_rfnDt").val("");
     $("#TB07040S_stdrExrt").val("0");
@@ -2252,14 +2257,14 @@ const TB07040Sjs = (function () {
               Number($("#TB07040S_trQnt").val().replaceAll(",", ""))) /
               Number($("#TB07040S_wholIssuShqt").val().replaceAll(",", ""))) *
             100
-          ).toFixed(8)
+          ).toFixed(2)
         );
       } else if (Number($("#TB07040S_wholIssuShqt").val())) {
         let value = (
           (Number($("#TB07040S_hldgShqt").val().replaceAll(",", "")) /
             Number($("#TB07040S_wholIssuShqt").val().replaceAll(",", ""))) *
           100
-        ).toFixed(8);
+        ).toFixed(2);
         // alert(value);
         if (isFinite(value)) {
           $("#TB07040S_qotaRt").val(value);

@@ -1892,7 +1892,9 @@ function resetInputValue(selector) {
   };
   selector.find(`input[id$='EndDt']`).val(after1M);
 
-  setKRKRW(selector.attr("data-menuid").split("/")[1]);
+  if(selector.attr("data-menuid")){
+    setKRKRW(selector.attr("data-menuid").split("/")[1]);
+  }
 }
 
 /**

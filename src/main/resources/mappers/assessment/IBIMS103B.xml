@@ -947,7 +947,9 @@
 				, JDGM_DCD AS JDGM_DCD
 		     FROM IBIMS201B 
 			WHERE LAST_YN = 'Y' 
-			  AND PRDT_CD = CASE WHEN #{prdtCd} IS NULL THEN 'X' ELSE #{prdtCd} END 		  
+			  AND PRDT_CD = CASE WHEN #{prdtCd} IS NULL THEN 'X' 
+			  					 WHEN #{prdtCd} = '' THEN 'X' 
+								 ELSE #{prdtCd} END 		  
 		  ) V
 		  INNER JOIN IBIMS103B s103b
 		       ON s103b.DEAL_NO = V.DEAL_NO

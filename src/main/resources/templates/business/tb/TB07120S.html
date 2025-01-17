@@ -157,8 +157,8 @@
 								<h5>▶ 거래내역</h5>
 							</div>
 							<div class="ibox-content">
-								<div class="ibox">
-									<div id="TB07120S_grid1"></div>
+								<div class="pq-theme">
+									<div class="pq-blue" id="TB07120S_grid1"></div>
 								</div>
 							</div>
 						</div>
@@ -229,11 +229,11 @@
 										<label class="col-sm-1">거래처</label>
 										<div class="col-sm-3">
 											<div class="input-group">
-												<input type="text" class="form-control" id="TB07120S_trObjtBsnNo">
+												<input type="text" class="form-control" id="TB07120S_entpCd">
 												<span class="input-group-append">
 													<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
 												</span>
-												<input type="text" class="form-control" id="TB07120S_bzepName" readonly="">
+												<input type="text" class="form-control" id="TB07120S_entpNm" readonly="">
 											</div>
 										</div>
 										<label class="col-sm-1">투자금액</label>
@@ -346,11 +346,11 @@
 										<label class="col-sm-1">담당자</label>
 										<div class="col-sm-3">
 											<div class="input-group">
-												<input type="text" class="form-control" id="TB07120S1_empNo" readonly>
+												<input type="text" class="form-control" id="TB07120S_rqstStfno" readonly>
 												<span class="input-group-append">
-													<button type="button" id="TB07120S_rqstBtn" class="btn btn-default" onclick="callTB03022P('TB07120S1')" disabled><i class="fa fa-search"></i></button>
+													<button type="button" id="TB07120S_rqstBtn" class="btn btn-default" disabled><i class="fa fa-search"></i></button>
 												</span>
-												<input type="text" class="form-control" id="TB07120S1_empNm" readonly style="width: 100px">
+												<input type="text" class="form-control" id="TB07120S_rqstStfnm" readonly style="width: 100px">
 											</div>
 										</div>
 										<label class="col-sm-1">거래시간</label>
@@ -375,6 +375,11 @@
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control" id="TB07120S_decdDtm">
 										</div>
+										<label class="col-sm-1 col-form-label text-right">결재단계구분</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07120S_decdStepDcd" disabled="">
+											</select>
+										</div>
 									</div>
 								</div>
 								<div class="row form-group form-inline text-right mb-2">
@@ -383,29 +388,25 @@
 										<div class="col-sm-7 input-group">
 											<textarea class="form-control" rows="1" id="TB07120S_rjctRsnCntn" disabled></textarea>
 										</div>
+										<label class="col-sm-1 col-form-label text-right">결재상태</label>
+										<div class="col-sm-3 input-group">
+											<select class="form-control" id="TB07120S_decdSttsDcd" disabled="">
+											</select>
+										</div>
+										<input type="hidden" id="TB07120S_trSeq" />
+										<input type="hidden" id="TB07120S_excSeq" />
+										<input type="hidden" id="TB07120S_erlmSeq" />
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="form-group form-inline row mb-0">
 							<div class="form-group col-sm-12 justify-content-end">
-								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>결재단계구분</label>
-								<div class="col-sm-2 input-group">
-									<select class="form-control" id="TB07120S_decdStepDcd" disabled="">
-									</select>
-								</div>
-								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>결재상태</label>
-								<div class="col-sm-2 input-group">
-									<select class="form-control" id="TB07120S_decdSttsDcd" disabled="">
-									</select>
-								</div>
-								<span class="vr"> │ </span>
 								<div class="col-sm-3 text-right">
-									<button class="btn btn-success" id="TB07120S_save" onclick="TB07120Sjs.updateFndsCnstDecd('0')" ><i class="fa fa-save"></i>&nbsp;저장</button>
 									<button class="btn btn-info" id="TB07120S_apvlRqst" onclick="TB07120Sjs.updateFndsCnstDecd('1')" ><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
+									<button class="btn btn-danger" id="TB07120S_apvlCncl" onclick="TB07120Sjs.updateFndsCnstDecd('4')" ><i class="fa fa-undo"></i>&nbsp;회수</button>
 									<button class="btn btn-success" id="TB07120S_apvl" onclick="TB07120Sjs.updateFndsCnstDecd('2')" ><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
 									<button class="btn btn-danger" id="TB07120S_gbck" onclick="TB07120Sjs.updateFndsCnstDecd('3')" ><i class="fa fa-ban"></i>&nbsp;반려</button>
-									<!-- <button class="btn btn-default" id="TB07120S_apvlCncl" onclick="TB07120Sjs.updateFndsCnstDecd('4')" ><i class="fa fa-undo"></i>&nbsp;승인취소</button> -->
 								</div>
 							</div>
 						</div>

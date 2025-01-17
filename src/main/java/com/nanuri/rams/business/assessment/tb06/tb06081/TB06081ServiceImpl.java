@@ -113,6 +113,7 @@ public class TB06081ServiceImpl implements TB06081Service {
 
 			if(i == apvlList.size() - 1 && "02".equals(apvlList.get(i).getDecdStepDcd())){
 				apvlList.get(i).setDecdSttsDcd("1");
+				apvlList.get(i).setPrcsRsltDcd("00");
 				ibims231bMapper.updateDecd(apvlList.get(i));
 			}
 			else if(i == apvlList.size() - 1 && "00".equals(apvlList.get(0).getDecdStepDcd())){

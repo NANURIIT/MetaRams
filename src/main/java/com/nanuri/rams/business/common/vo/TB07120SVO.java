@@ -13,8 +13,10 @@ import lombok.Setter;
 public class TB07120SVO extends IBIMS410BDTO {
     
     private String prdtNm;
+    private String entpCd;
     private String entpNm;
-    // private String entpNm;
+    private String orgnm;
+
     private String rqstStfno;                   // 담당자 사원번호
     private String rqstStfnm;                   // 담당자 이름
     private String reltStfno;                   // 승인자 사원번호
@@ -30,10 +32,22 @@ public class TB07120SVO extends IBIMS410BDTO {
     private String decdStepDcd;                 // 결재단계구분코드
     private String decdSttsDcd;                 // 결재상태구분코드
 
-    private Date trDtm;                         // 거래시간
-    private Date decdDtm;                       // 처리시간
+    private String trDtm;                       // 거래시간
+    private String decdDtm;                     // 처리시간
 
-    private String dcfcEno;                     // 승인자번호
     private String dcfcEnm;                     // 승인자명
+
+    private int erlmSeq;                        // 등록순번 452채번
+
+    private String dealNo;                      // 딜번호
+    private String prdtCd;                      // 종목코드
+    private String decdJobDcd;                  // 업무구분코드
+    private String scrnNo;                      // 화면번호
+    private int excSeq;                         // 실행일련번호
+    private int rqstSq;                         // 등록일련번호
+    private int trSeq;                          // 거래일련번호
+    private String dcfcEno;                     // 승인자
+    private String rjctRsnCntn;                 // 반려사유
+    private String ovrsTrnsYn;                  // 해외송금여부
 
 }

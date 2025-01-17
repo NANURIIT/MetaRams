@@ -2,6 +2,8 @@ package com.nanuri.rams.business.common.mapper;
 
 import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS410BVO;
+import com.nanuri.rams.business.common.vo.TB07120SVO;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -42,6 +44,6 @@ public interface IBIMS410BMapper {
 
 
 	// 자금품의결재
-	public List<IBIMS410BVO> get07120sList(IBIMS410BVO param);
+	public List<TB07120SVO> get07120sList(IBIMS410BVO param);
 	
 }
