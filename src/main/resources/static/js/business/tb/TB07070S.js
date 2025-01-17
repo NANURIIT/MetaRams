@@ -353,7 +353,7 @@ const TB07070Sjs = (function () {
               //console.log(ui);
               if (al.length > 0) {
                 let trSts = al[0].rowData.trStatCd;
-                if (trSts !== "1") {
+                if (trSts !== "01") {
                   $("#btnSave").prop("disabled", true);
                 } else {
                   $("#btnSave").prop("disabled", false);
