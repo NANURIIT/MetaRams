@@ -12,14 +12,14 @@ public interface IBIMS611BMapper {
 
 	List<IBIMS611BDTO> selectIBIMS611B(IBIMS601BVO param);
 	
-	int saveIBIMS611B(List<IBIMS611BDTO> param);
+	//int saveIBIMS611B(List<IBIMS611BDTO> param);
 	
-	//int insertIBIMS611B(List<IBIMS611BVO> param);
-  IBIMS611BDTO insertIBIMS611B(IBIMS611BDTO param);
+	int insertIBIMS611B(IBIMS601BVO param);
+  //IBIMS611BDTO insertIBIMS611B(IBIMS611BDTO param);
 
 	int updateIBIMS611B(IBIMS601BVO param);
 
-	IBIMS601BVO deleteIBIMS611B(IBIMS601BVO param);
+	int deleteIBIMS611B(IBIMS601BVO param);
 
 
 }

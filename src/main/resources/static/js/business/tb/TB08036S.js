@@ -4,7 +4,13 @@ const TB08036Sjs = (function () {
   let arrPqGridEtcInfo; // 기타사후관리
   let paramData = {};
 
+  let B014;
+
   $(document).ready(function () {
+    selectBox = getSelectBoxList("TB08036S", "B014", false);
+    B014 = selectBox.filter(function (item) {
+      return item.cmnsGrpCd === "B014";
+    });
     loadSelectBoxContents();
     convertDateFormat();
     rendorGrid();
@@ -17,52 +23,95 @@ const TB08036Sjs = (function () {
     // 월별 공사 및 분양 현황
     let colStepInfoList = [
       {
+        dataIndx: "chk",
+        maxWidth: 36,
+        minWidth: 36,
+        align: "center",
+        resizable: false,
+        title: "",
+        menuIcon: false,
+        type: "checkBoxSelection",
+        cls: "ui-state-default",
+        sortable: false,
+        editor: false,
+        dataType: "bool",
+        editable: "true",
+        cb: {
+          all: false,
+          header: true,
+        },
+      },
+      {
         title: "기준년월",
         dataType: "string",
         dataIndx: "stdrYm",
         align: "center",
-        width: "15%",
-        filter: { crules: [{ condition: "range" }] },
-        render: function (ui) {
-          let cellData = ui.cellData;
-          if (cellData && cellData.length !== 0) {
-            let rgstDt1 = cellData.substring(0, 4);
-            let rgstDt2 = cellData.substring(4, 6);
-            return `${rgstDt1}년 ${rgstDt2}월`.trim();
+        width: "25%",
+        editable: true,
+        editor: {
+          type: "input",
+          valueIndx: "stdrYm",
+        },
+        format: function (cellData) {
+          if (cellData) {
+            // 입력 데이터가 6자리인지 확인
+            if (cellData.length === 6) {
+              let year = cellData.substring(0, 4); // 앞 4자리: 연도
+              let month = cellData.substring(4, 6); // 뒤 2자리: 월
+              return `${year}년 ${month}월`; // 변환된 형식 반환
+            } else {
+              showErrorPopup("입력 데이터는 YYYYMM 형식이어야 합니다.");
+              return "";
+            }
           }
           return cellData;
         },
       },
       {
-        title: "사업진행단계코드",
+        title: "사업진행단계",
         dataType: "string",
         dataIndx: "busiPrgStep",
         align: "center",
-        width: "15%",
+        width: "30%",
+        editable: true,
         filter: { crules: [{ condition: "range" }] },
-        hidden: true,
-      },
-      {
-        title: "사업진행단계",
-        dataType: "string",
-        dataIndx: "busiPrgStepNm",
-        align: "center",
-        width: "15%",
-        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          valueIndx: "cdValue",
+          labelIndx: "cdName",
+          options: B014,
+        },
+        render: function (ui) {
+          let busiPrgStep = B014.find(({ cdValue }) => cdValue == ui.cellData);
+          return busiPrgStep ? busiPrgStep.cdName : ui.cellData;
+        },
       },
       {
         title: "예상진척율",
         dataType: "string",
         dataIndx: "estmPrgsRt",
         align: "center",
-        width: "15%",
+        width: "18%",
         filter: { crules: [{ condition: "range" }] },
-        render: function (ui) {
-          let value = ui.cellData;
-          if (value) {
-            return value + "%";
+        editable: true,
+        editor: {
+          type: "input",
+          valueIndx: "estmPrgsRt",
+        },
+        format: function (cellData) {
+          if (cellData) {
+            let value = parseFloat(cellData);
+            if (isNaN(value)) {
+              return "";
+            }
+            if (value > 100) {
+              showErrorPopup("100을 초과할 수 없습니다.");
+              value = ""; // 100을 초과하는 값은 100으로 제한
+            } else {
+              return value.toFixed(2) + "%"; // 99.99 형식으로 표시
+            }
           }
-          return value;
+          return cellData;
         },
       },
       {
@@ -70,14 +119,27 @@ const TB08036Sjs = (function () {
         dataType: "string",
         dataIndx: "pfmcPrgsRt",
         align: "center",
-        width: "15%",
+        width: "18%",
         filter: { crules: [{ condition: "range" }] },
-        render: function (ui) {
-          let value = ui.cellData;
-          if (value) {
-            return value + "%";
+        editable: true,
+        editor: {
+          type: "input",
+          valueIndx: "pfmcPrgsRt",
+        },
+        format: function (cellData) {
+          if (cellData) {
+            let value = parseFloat(cellData);
+            if (isNaN(value)) {
+              return "";
+            }
+            if (value > 100) {
+              showErrorPopup("100을 초과할 수 없습니다.");
+              value = ""; // 100을 초과하는 값은 100으로 제한
+            } else {
+              return value.toFixed(2) + "%"; // 99.99 형식으로 표시
+            }
           }
-          return value;
+          return cellData;
         },
       },
     ];
@@ -89,7 +151,7 @@ const TB08036Sjs = (function () {
         dataType: "string",
         dataIndx: "inspctDt",
         align: "center",
-        width: "15%",
+        width: "20%",
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
@@ -107,7 +169,7 @@ const TB08036Sjs = (function () {
         dataType: "string",
         dataIndx: "inspctRmrk",
         align: "center",
-        width: "15%",
+        width: "30%",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -115,7 +177,7 @@ const TB08036Sjs = (function () {
         dataType: "string",
         dataIndx: "rmrk",
         align: "center",
-        width: "15%",
+        width: "50%",
         filter: { crules: [{ condition: "range" }] },
       },
     ];
@@ -127,7 +189,7 @@ const TB08036Sjs = (function () {
         dataType: "string",
         dataIndx: "inspctYm",
         align: "center",
-        width: "15%",
+        width: "30%",
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
           let cellData = ui.cellData;
@@ -144,7 +206,7 @@ const TB08036Sjs = (function () {
         dataType: "string",
         dataIndx: "checkRslt",
         align: "center",
-        width: "15%",
+        width: "70%",
         filter: { crules: [{ condition: "range" }] },
       },
     ];
@@ -153,8 +215,8 @@ const TB08036Sjs = (function () {
     let arrPqGridObj = [
       //월별 공사 및 분양 현황
       {
-        height: 150,
-        maxHeight: 150,
+        height: 160,
+        maxHeight: 160,
         id: "TB08036S_gridStepInfo",
         colModel: colStepInfoList,
         dataModel: {
@@ -235,6 +297,9 @@ const TB08036Sjs = (function () {
 
     if (parseFloat(value) > 100.0) {
       showErrorPopup("입력값은 100을 넘을 수 없습니다");
+      element.value = "";
+      element.focus();
+      return;
     }
 
     // 값이 있고 소수점이 없는 경우 .00 추가
@@ -243,7 +308,7 @@ const TB08036Sjs = (function () {
     }
 
     if (!value) {
-      value = "0.00";
+      value = "";
     }
 
     element.value = value;
@@ -358,6 +423,45 @@ const TB08036Sjs = (function () {
     return $(`#${id}`).val() || defaultValue;
   }
 
+  // 행추가
+  function TB08036S_addRow() {
+    var newRow = {
+      chk: false,
+      stdrYm: "",
+      busiPrgStep: "",
+      estmPrgsRt: "",
+      pfmcPrgsRt: "",
+    };
+
+    let bbb = $("#TB08036S_gridStepInfo").pqGrid("addRow", {
+      rowData: newRow,
+      checkEditable: false,
+    });
+
+    rowIndx = bbb;
+  }
+
+  // 행삭제
+  function TB08036S_delRow() {
+    var gridData = $("#TB08036S_gridStepInfo").pqGrid(
+      "option",
+      "dataModel.data"
+    );
+    var rowData;
+    var deleteCheckBox;
+
+    for (var i = 0; i < gridData.length; i++) {
+      rowData = gridData[i];
+
+      deleteCheckBox = rowData.chk;
+
+      if (deleteCheckBox == true) {
+        $("#TB08036S_gridStepInfo").pqGrid("deleteRow", { rowIndx: i });
+        i--;
+      }
+    }
+  }
+
   /**
    * 사후관리(tb08036s) 데이터 가져오기
    * @returns
@@ -385,7 +489,7 @@ const TB08036Sjs = (function () {
         if (data && Object.keys(data).length > 0) {
           setTabDealInfo(data);
           setTabEtc(data.listEtc);
-          setTabStep(data.ibims611bdto);
+          setTabStep(data.listMonthStep);
           setTabInspctRmrk(data.listInspctRmrk);
           //관련문서
           var key2 = dealNo;
@@ -445,23 +549,7 @@ const TB08036Sjs = (function () {
     if (!Array.isArray(data)) {
       data = data ? [data] : [];
     }
-
     arrPqGridStepInfo.setData(data);
-    arrPqGridStepInfo.option("rowDblClick", function (event, ui) {
-      setStepItem(ui.rowData);
-    });
-  }
-
-  function setStepItem(e) {
-    var stdrYm = e.stdrYm; // 기준년월
-    var busiPrgStep = e.busiPrgStep; // 사업진행단계
-    var estmPrgsRt = e.estmPrgsRt; // 예상진척율
-    var pfmcPrgsRt = e.pfmcPrgsRt; // 실적진척율
-
-    $("#step_inspctYyMm").val(formatDate(stdrYm));
-    $("#TB08036S_B014_02").val(busiPrgStep);
-    $("#stepEstmPrgsRt").val(estmPrgsRt);
-    $("#stepPfmcPrgsRt").val(pfmcPrgsRt);
   }
 
   // 월별사업관리 데이터 세팅
@@ -488,6 +576,7 @@ const TB08036Sjs = (function () {
   // 기타사후관리 데이터 세팅
   function setTabEtc(data) {
     resetTabEtc();
+
     if (!Array.isArray(data)) {
       data = data ? [data] : [];
     }
@@ -514,6 +603,18 @@ const TB08036Sjs = (function () {
    */
 
   function dealInfoTab_TB08036(type) {
+    var listMonthStep = [];
+    for (var i = 0; i < arrPqGridStepInfo.pdata.length; i++) {
+      var listData = {
+        dealNo: $("#TB08036S_ibDealNo").val(),
+        stdrYm: arrPqGridStepInfo.pdata[i].stdrYm,
+        busiPrgStep: arrPqGridStepInfo.pdata[i].busiPrgStep,
+        estmPrgsRt: arrPqGridStepInfo.pdata[i].estmPrgsRt,
+        pfmcPrgsRt: arrPqGridStepInfo.pdata[i].pfmcPrgsRt,
+      };
+      listMonthStep.push(listData);
+    }
+
     paramData = {
       dealNo: getInputValue("TB08036S_ibDealNo"), // Deal번호
       unitNum: getInputValue("unitNum"), // 세대수
@@ -536,6 +637,7 @@ const TB08036Sjs = (function () {
       busiPrgStep: getInputValue("TB08036S_B014_01"), // 사업진행단계
       inspctRmrk: getInputValue("checkRslt"), // 점검결과
       bsnBdSlltBalcCheckOpnn: getInputValue("bsnBdSlltBalcCheckOpnn"), // 영업점분양수지점검의견
+      listMonthStep: listMonthStep,
     };
 
     if (isEmpty($("#TB08036S_ibDealNo").val())) {
@@ -551,16 +653,11 @@ const TB08036Sjs = (function () {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function () {
-          try {
-            showSwalMessage(
-              "success",
-              "Success!",
-              "분양수지관리정보를 저장하였습니다."
-            );
-            getDealInfoTB08036S();
-          } catch (e) {
-            console.error("에러 발생:", e);
-          }
+          showSwalMessage(
+            "success",
+            "Success!",
+            "분양수지관리정보를 저장하였습니다."
+          );
           getDealInfoTB08036S();
         },
       }); /* end of ajax*/
@@ -599,65 +696,10 @@ const TB08036Sjs = (function () {
     $("#bsnBdSlltBalcCheckOpnn").val("");
   }
 
-  /**
-   * 월별 공사 및 분양 현황
-   *
-   */
-
-  // 월별 공사 및 분양 현황 저장
-  function stepInfoTab_TB08036(type) {
-    paramData = {
-      dealNo: getInputValue("TB08036S_ibDealNo"), // Deal번호
-      stdrYm: unformatDate(getInputValue("step_inspctYyMm")),
-      busiPrgStep: getInputValue("TB08036S_B014_02"),
-      estmPrgsRt: getInputValue("stepEstmPrgsRt"),
-      pfmcPrgsRt: getInputValue("stepPfmcPrgsRt"),
-    };
-
-    if (isEmpty($("#TB08036S_ibDealNo").val())) {
-      showErrorPopup("딜번호를 입력해주세요.");
-      return false;
-    }
-
-    if (type === "modify") {
-      $.ajax({
-        type: "POST",
-        url: "/TB08036S/insertIBIMS611B",
-        data: JSON.stringify(paramData),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function () {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      }); /* end of ajax*/
-    } else if (type === "delete") {
-      $.ajax({
-        type: "POST",
-        url: "/TB08036S/deleteIBIMS611B",
-        data: JSON.stringify(paramData),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-          showSwalMessage("success", "Success!", "정보를 삭제하였습니다.");
-        },
-      }); /* end of ajax*/
-    }
-    getDealInfoTB08036S();
-  }
-
   //월별 공사 및 분양 현황 리셋
   function resetTabStep() {
     $("#TB08036S_gridStepInfo").pqGrid("option", "dataModel.data", []);
     $("#TB08036S_gridStepInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
-    $("#step_inspctYyMm").val("");
-    $("#TB08036S_B014_02").val("");
-    $("#stepEstmPrgsRt").val("");
-    $("#stepPfmcPrgsRt").val("");
   }
 
   /**
@@ -683,12 +725,8 @@ const TB08036Sjs = (function () {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function () {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "점검결과를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
+          showSwalMessage("success", "Success!", "점검결과를 저장하였습니다.");
+          getDealInfoTB08036S();
         },
       }); /* end of ajax*/
     } else if (type === "delete") {
@@ -700,10 +738,10 @@ const TB08036Sjs = (function () {
         dataType: "json",
         success: function (data) {
           showSwalMessage("success", "Success!", "점검결과를 삭제하였습니다.");
+          getDealInfoTB08036S();
         },
       }); /* end of ajax*/
     }
-    getDealInfoTB08036S();
   }
 
   //월별사업관리 리셋
@@ -739,12 +777,12 @@ const TB08036Sjs = (function () {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function () {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "기타사후관리를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
+          showSwalMessage(
+            "success",
+            "Success!",
+            "기타사후관리를 등록하였습니다."
+          );
+          getDealInfoTB08036S();
         },
       }); /* end of ajax*/
     } else if (type === "delete") {
@@ -760,10 +798,10 @@ const TB08036Sjs = (function () {
             "Success!",
             "기타사후관리를 삭제하였습니다."
           );
+          getDealInfoTB08036S();
         },
       }); /* end of ajax*/
     }
-    getDealInfoTB08036S();
   }
 
   //기타사후관리 리셋
@@ -775,9 +813,6 @@ const TB08036Sjs = (function () {
     $("#rmrk").val("");
   }
 
-  function setStepInfoList() {
-    setTimeout(() => arrPqGridStepInfo.refresh(), 1);
-  }
   function setInspctRmrkInfoList() {
     setTimeout(() => arrPqGridInspctRmrkInfo.refresh(), 1);
   }
@@ -788,8 +823,6 @@ const TB08036Sjs = (function () {
   return {
     getDealInfoTB08036S: getDealInfoTB08036S,
     btnResetTB08036S: btnResetTB08036S,
-    setStepInfoList: setStepInfoList,
-    stepInfoTab_TB08036: stepInfoTab_TB08036,
     setInspctRmrkInfoList: setInspctRmrkInfoList,
     setEtcList: setEtcList,
     dealInfoTab_TB08036: dealInfoTab_TB08036,
@@ -798,5 +831,7 @@ const TB08036Sjs = (function () {
     inspctRmrkTab_TB08036S: inspctRmrkTab_TB08036S,
     etcTab_TB08036S: etcTab_TB08036S,
     formatPerInput: formatPerInput,
+    TB08036S_addRow: TB08036S_addRow,
+    TB08036S_delRow: TB08036S_delRow,
   };
 })();
