@@ -1108,6 +1108,16 @@ public class Calculation {
 		calcDto.setIntrtInfoList(intrInfoList);						//금리기본정보
 		calcDto.setPrdtCd(param.getPrdtCd());
 
+		if(param.getPostUrl() == null){
+			calcDto.setRunCd("1");
+		}else{
+			if(param.getPostUrl().equals("TB07030S")){
+				calcDto.setRunCd("2");
+			}else{
+				calcDto.setRunCd("1");
+			}
+		}
+
 		// if(intrInfoList.size() < 0){
 		// 	return null;
 		// }
@@ -1169,6 +1179,8 @@ public class Calculation {
 
 			//log.debug("intrScdlList{}", intrScdlList);
 
+			log.debug("calcDto.getDealMrdpPrca:::" + calcDto.getDealMrdpPrca());
+
 			if(calcDto.getDealMrdpPrca() == null || calcDto.getDealMrdpPrca().compareTo(BigDecimal.ZERO) == 0){
 				log.debug("#########중도상환 발생 X#########");
 			}else{
@@ -1192,6 +1204,8 @@ public class Calculation {
 			prnaCalcList = listTypeSett(calcDto, prnaScdlList);
 
 			intrCalcList = intrCalc(calcDto, prnaCalcList, intrScdlList);
+
+			log.debug("intrCalcList ::: {} ", intrCalcList);
 
 			// if(earlyRpCalcList.size() > 0){
 
@@ -1220,7 +1234,10 @@ public class Calculation {
 
 		List<CalculationResultDTO> earlyIntrList = new ArrayList<>();
 
+		log.debug("!!!!earlyRpCalcList.size() ::::" + earlyRpCalcList.size());
+
 		if(earlyRpCalcList.size() > 0){
+			log.debug("1번시나리오~~~");
 			outList.addAll(earlyRpCalcList);
 
 			// earlyIntrList = intrCalcWhenMdwy(calcDto, earlyRpCalcList, intrCalcList);
@@ -1248,7 +1265,7 @@ public class Calculation {
 			outList.addAll(earlyRpList);
 
 		}else if(calcDto.getLastIntrClcDt() != null && calcDto.getLastIntrClcDt().compareTo(calcDto.getStdrDt()) <= 0){
-
+			log.debug("2번시나리오~~~");
 			if(listTypeSett2(calcDto, calcDto.getRdmpPlanList()).size() < 1){
 
 			}else{
@@ -1268,7 +1285,13 @@ public class Calculation {
 				List<CalculationResultDTO> frstIntrList = intrCalcWhenMdwy(calcDto, frstPrnaList, intrCalcList);
 
 				//log.debug("\nfrstIntrList:::{}", frstIntrList);
-				outList.addAll(frstIntrList);
+				if(calcDto.getRunCd().equals("1")){
+					outList.addAll(frstIntrList);
+				}else{
+
+				}
+
+				
 
 				//List<CalculationResultDTO> reScdhList = rescheduling(calcDto, frstPrnaList, frstIntrList, listTypeSett2(calcDto, calcDto.getRdmpPlanList()), intrCalc(calcDto, listTypeSett2(calcDto, calcDto.getRdmpPlanList()), calcDto.getIntrtPlanList()), intrCalcList);
 
@@ -1278,6 +1301,8 @@ public class Calculation {
 			}
 
 			
+		}else{
+			log.debug("3번시나리오~~~");
 		}
 
 		//log.debug("\ncalculation.outList ::: {}", outList);
@@ -1604,7 +1629,7 @@ public class Calculation {
 				Date strtDate = dateFormat.parse(returnDto.getStrtDt());
 				Date endDate = dateFormat.parse(returnDto.getEndDt());
 
-				if(endDate.before(baseDate)){
+				if(endDate.before(baseDate) && strtDate.before(baseDate)){
 					returnList.add(returnDto);
 				}else{
 					break;

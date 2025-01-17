@@ -585,7 +585,8 @@ const TB07030Sjs = (function () {
           grdRdmpTrgtDtl.setData(data.ibims403DtlLst);
           ibims403RscdlList = data.ibims403RscdlList; // 중도상환원금이 발생했을 경우 새로운 스케줄
 
-          console.log(ibims403RscdlList);
+          console.log(JSON.stringify(data.ibims403DtlLst));       
+          // console.log(ibims403RscdlList);
 
           $("#TB07030S_rdmpTrgtPrna").val(comma(data.totalDTO.totalPrna)); // 원금합계
           $("#TB07030S_nrmlIntrAmt").val(comma(data.totalDTO.totalIntr)); // 정상이자합계

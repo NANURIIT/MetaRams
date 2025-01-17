@@ -102,6 +102,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 			inSvo.setExcSn(param403lst.get(i).getExcSn());
 			inSvo.setDealMrdpPrca(param403lst.get(i).getDealMrdpPrca());
 			inSvo.setStdrDt(paramData.getPrarDt());
+			inSvo.setPostUrl("TB07030S");
 			//log.debug("getRdmpDetail 처리완료여부 ::: {}", param403lst.get(i).getPrcsCpltYn());
 			//inSvo.setPrcsCpltYn(param403lst.get(i).getPrcsCpltYn()); // 처리완료여부
 

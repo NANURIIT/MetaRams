@@ -112,4 +112,6 @@ public class TB06015SVO {
 	private List<TB06015OVO> scdhList;			//상환스케줄 리스트
 	private CalculationSumDTO totalDTO;			//계산결과 합계
 
+	private String postUrl;
+
 }

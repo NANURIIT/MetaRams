@@ -1802,11 +1802,11 @@ const TB07040Sjs = (function () {
 
     $('#TB07040S_srch_fndCd').val("");
     $('#TB07040S_srch_fndNm').val("");
-    // $("#TB07040S_trQnt").val("");
+    $("#TB07040S_trQnt").val("0");
     $("#TB07040S_trDt").val("");
     $("#TB07040S_trSn").val("");
-    // $("#TB07040S_trUnpr").val("");
-    // $("#TB07040S_trAmt").val("0");
+    $("#TB07040S_trUnpr").val("0");
+    $("#TB07040S_trAmt").val('0');
     $("#TB07040S_dprtCd").val("");
     $("#TB07040S_dprtNm").val("");
     // $("#TB07040S_trdeExrt").val("");

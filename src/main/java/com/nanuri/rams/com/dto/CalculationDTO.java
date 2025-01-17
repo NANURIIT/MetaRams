@@ -63,5 +63,7 @@ public class CalculationDTO  {
 	private List<IBIMS404BVO> intrtInfoList;	 //금리정보 리스트
 	private List<IBIMS403BDTO> rdmpPlanList;	 //원금상환 계획정보 리스트
 	private List<IBIMS403BDTO> intrtPlanList; 	 //이자상환 계획정보 리스트
+
+	private String runCd;
 	
 }
