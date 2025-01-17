@@ -157,8 +157,8 @@
 								<h5>▶ 거래내역</h5>
 							</div>
 							<div class="ibox-content">
-								<div class="ibox">
-									<div id="TB07120S_grid1"></div>
+								<div class="pq-theme">
+									<div class="pq-blue" id="TB07120S_grid1"></div>
 								</div>
 							</div>
 						</div>
@@ -229,11 +229,11 @@
 										<label class="col-sm-1">거래처</label>
 										<div class="col-sm-3">
 											<div class="input-group">
-												<input type="text" class="form-control" id="TB07120S_trObjtBsnNo">
+												<input type="text" class="form-control" id="TB07120S_entpCd">
 												<span class="input-group-append">
 													<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
 												</span>
-												<input type="text" class="form-control" id="TB07120S_bzepName" readonly="">
+												<input type="text" class="form-control" id="TB07120S_entpNm" readonly="">
 											</div>
 										</div>
 										<label class="col-sm-1">투자금액</label>
@@ -393,6 +393,9 @@
 											<select class="form-control" id="TB07120S_decdSttsDcd" disabled="">
 											</select>
 										</div>
+										<input type="hidden" id="TB07120S_trSeq" />
+										<input type="hidden" id="TB07120S_excSeq" />
+										<input type="hidden" id="TB07120S_erlmSeq" />
 									</div>
 								</div>
 							</div>
