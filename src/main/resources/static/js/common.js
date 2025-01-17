@@ -457,6 +457,37 @@ function selectorNumberFormater(selector) {
 }
 
 /**
+ * text box의 byte 체크
+ * @param {} element // 텍스트박스(ex. this)
+ * @param {*} maxLength // 제한할 바이트 수
+ */
+function checkByteLimit(element, maxLength) {
+  let text = element.value;
+  let byteLength = 0;
+
+  // 바이트 길이 계산 (한글 2바이트, 영문 1바이트)
+  for (let i = 0; i < text.length; i++) {
+    let charCode = text.charCodeAt(i);
+    byteLength += charCode > 127 ? 2 : 1; // 한글은 2바이트, 영문은 1바이트
+  }
+
+  // 바이트 길이가 최대값을 초과하면 글자 잘라내기
+  if (byteLength > maxLength) {
+    text = text.slice(0, text.length - 1); // 마지막 문자 잘라내기
+    byteLength = maxLength; // 최대 길이 설정
+  }
+
+  // 텍스트를 textarea에 다시 설정
+  element.value = text;
+
+  // 바이트 수 업데이트
+  let byteCountElement = document.getElementById("byte-count");
+  if (byteCountElement) {
+    byteCountElement.innerText = byteLength + " / " + maxLength + " bytes";
+  }
+}
+
+/**
  *  태그에 직접 코딩
  *  ex) <input class... id... name...   *oninput='inputNumberFormater(this)'*></input>
  *  @param {this}
@@ -2052,7 +2083,6 @@ function needRunFn(menuId) {
 
   //워크플로우에서 버튼 눌러 페이지 이동시 인풋 자동 세팅
 
-  
   if (menuId === "TB06010S") {
     TB06010Sjs.getDealInfoFromWF();
   }

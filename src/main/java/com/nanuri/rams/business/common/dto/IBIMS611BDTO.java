@@ -22,4 +22,6 @@ public class IBIMS611BDTO {
 	private String hndTrId;			//	조작거래id
 	private String guid;			//	guid
 
+	
+
 }

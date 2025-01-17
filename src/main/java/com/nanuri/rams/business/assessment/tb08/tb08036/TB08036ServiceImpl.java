@@ -49,7 +49,7 @@ public class TB08036ServiceImpl implements TB08036Service {
 		s611b = ibims611BMapper.selectIBIMS611B(param);
 		
 		if(s611b.size() > 0) {
-			result.setIbims611bdto(s611b);//월별공사및분양형황
+			result.setListMonthStep(s611b);//월별공사및분양형황
 		}
 		if(s602b.size() > 0) {
 			result.setListInspctRmrk(s602b);	// 당월사업관리의견	
@@ -63,23 +63,28 @@ public class TB08036ServiceImpl implements TB08036Service {
 
 	@Override
 	public int modifyDealInfo(IBIMS601BVO param) {
+		int result;
+		param.setHndEmpno(facade.getDetails().getEno()); //사원
 		
-		param.setHndEmpno(facade.getDetails().getEno());
-		
+		// 분양수지관리
 		ibims601BMapper.deleteIBIMS601B(param);
-		return ibims601BMapper.insertIBIMS601B(param);
+		result = ibims601BMapper.insertIBIMS601B(param);		
 		
-	}
-
-	//월별공사및분양현황 등록
-	@Override
-	public IBIMS611BDTO insertIBIMS611B(IBIMS611BDTO param) {
-		IBIMS601BVO deleteParam = new IBIMS601BVO();
-		deleteParam.setDealNo(param.getDealNo());
-		deleteParam.setStdrYm(param.getStdrYm());	
-		ibims611BMapper.deleteIBIMS611B(deleteParam);
-		param.setHndEmpno(facade.getDetails().getEno());
-    return ibims611BMapper.insertIBIMS611B(param);
+		// 월별 공사 및 분양 현황		
+		ibims611BMapper.deleteIBIMS611B(param);
+		
+		if(param.getListMonthStep() != null && !param.getListMonthStep().isEmpty()) {
+			
+			for(int i = 0; param.getListMonthStep().size() > i; i ++) {
+				System.out.println(">>> deal ["+param.getListMonthStep().get(i).getDealNo()+"] <<<<<<<");
+				param.getListMonthStep().get(i).setHndEmpno(facade.getDetails().getEno());
+			}
+			ibims611BMapper.insertIBIMS611B(param);
+			
+		}			
+		
+		 return result;
+		
 	}
 
 	//월별사업관리 등록
@@ -120,7 +125,7 @@ public class TB08036ServiceImpl implements TB08036Service {
 	}
 
 	@Override
-	public IBIMS601BVO deleteIBIMS611B(IBIMS601BVO param) {
+	public int deleteIBIMS611B(IBIMS601BVO param) {
 		return ibims611BMapper.deleteIBIMS611B(param);		
 	}
 
@@ -128,7 +133,5 @@ public class TB08036ServiceImpl implements TB08036Service {
 	public int deleteIBIMS603B(IBIMS601BVO param) {
 		return ibims603BMapper.deleteIBIMS603B(param);		
 	}
-
-
 
 }

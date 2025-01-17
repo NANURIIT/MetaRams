@@ -29,7 +29,10 @@ public class TB08036APIController {
 	
 	@PostMapping(value = "/modifyDealInfoTB08036S")
 	public int modifyDealInfo(@RequestBody IBIMS601BVO param){
+		System.out.println("Received param: " + param);
+
 		return tb08036Service.modifyDealInfo(param);
+
 	}
 	
 	@PostMapping(value = "/insertIBIMS603B")
@@ -42,10 +45,10 @@ public class TB08036APIController {
 		return tb08036Service.insertIBIMS602B(param);
 	}
 
-	@PostMapping(value = "/insertIBIMS611B")
-	public IBIMS611BDTO insertIBIMS611B(@RequestBody IBIMS611BDTO param){
-		return tb08036Service.insertIBIMS611B(param);
-	}
+	// @PostMapping(value = "/insertIBIMS611B")
+	// public IBIMS611BDTO insertIBIMS611B(@RequestBody IBIMS611BDTO param){
+	// 	return tb08036Service.insertIBIMS611B(param);
+	// }
 
 	@PostMapping(value = "/deleteDealInfoTB08036S")
 	public int deleteDealInfo(@RequestBody IBIMS601BVO param){		
@@ -57,10 +60,10 @@ public class TB08036APIController {
 		return tb08036Service.deleteIBIMS602B(param);
 	}
 	
-	@PostMapping(value = "/deleteIBIMS611B")
-	public IBIMS601BVO deleteIBIMS611B(@RequestBody IBIMS601BVO param){		
-		return tb08036Service.deleteIBIMS611B(param);
-	}
+	// @PostMapping(value = "/deleteIBIMS611B")
+	// public IBIMS601BVO deleteIBIMS611B(@RequestBody IBIMS601BVO param){		
+	// 	return tb08036Service.deleteIBIMS611B(param);
+	// }
 
 	@PostMapping(value = "/deleteIBIMS603B")
 	public int deleteIBIMS603B(@RequestBody IBIMS601BVO param){		

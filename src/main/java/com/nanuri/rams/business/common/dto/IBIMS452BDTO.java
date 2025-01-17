@@ -14,7 +14,7 @@ import lombok.Setter;
 public class IBIMS452BDTO {
     
     private String prdtCd;	                // 상품코드	IBIMS452B	varchar(32)
-    private BigDecimal excSeq;	            // 실행순번	IBIMS452B	decimal(16,0)
+    private int excSeq;	            // 실행순번	IBIMS452B	decimal(16,0)
     private int trSeq;	                    // 거래순번	IBIMS452B	decimal(16,0)
     private int erlmSeq;	                // 등록순번	IBIMS452B	decimal(16,0)
     private String chrrDvsnCd;	            // 담당자구분코드	IBIMS452B	varchar(2)

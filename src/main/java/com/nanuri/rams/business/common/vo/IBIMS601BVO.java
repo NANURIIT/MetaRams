@@ -22,6 +22,6 @@ public class IBIMS601BVO extends IBIMS601BDTO{
 
     List<IBIMS602BDTO>		listInspctRmrk; // 당월사업관리의견
     List<IBIMS603BDTO>		listEtc; // 기타사후관리
-    List<IBIMS611BDTO>		ibims611bdto; // 월별공사 및 분양현황
+    List<IBIMS611BDTO>		listMonthStep; // 월별공사 및 분양현황
 
 }

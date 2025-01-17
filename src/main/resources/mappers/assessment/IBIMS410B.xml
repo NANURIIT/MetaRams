@@ -719,19 +719,14 @@
               , TO_CHAR(
                   TO_DATE(T1.TR_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'
                   )                                 AS TR_DT                  /* 거래일자  410B */
-              , (
-                 SELECT CD_VL_NM
-                   FROM IBIMS002B
-                  WHERE 1=1
-                    AND CMNS_CD_GRP = 'D010'
-                    AND CD_VL_ID = T1.ORGNO
-                 )                                  AS ORGNM                  /* 부서명   410B */
-              , T1.TR_OBJT_BSN_NO                                             /* 거래처번호 */
+              , T10.DPRT_CD                         AS ORGNO                  /* 부서코드 201B */
+              , T10.DPRT_NM                         AS ORGNM                  /* 부서명   201B */
+              , T5.TR_OTHR_DSCM_NO                  AS ENTP_CD                /* 거래처번호 */
               , (
               		SELECT ENTP_NM
               		  FROM IBIMS010B
               		 WHERE 1=1
-              		   AND ARDY_BZEP_NO = T1.TR_OBJT_BSN_NO
+              		   AND ARDY_BZEP_NO = T5.TR_OTHR_DSCM_NO
               	 )                                  AS ENTP_NM                /* 거래처명  010B */
               , T1.ETPR_CRDT_GRNT_TR_KIND_CD                                  /* 거래종류코드 */
               , CASE 
@@ -745,19 +740,8 @@
               , NVL(T1.FEE_TOT_AMT, 0)              AS FEE_TOT_AMT            /* 수수료  410B */
               , T1.TR_CRRY_CD                                                 /* 통화구분  410B */
               , T1.RCTM_ISTT_CD                                               /* 금융기관  410B */
-              , T7.RQST_STFNO                                                 /* 담당자 452B */
-              , (
-                   SELECT EMP_NM
-                     FROM IBIMS003B
-                    WHERE 1=1
-                      AND EMPNO = T7.RQST_STFNO
-                 )                                  AS  rqstStfnm
-              , (
-                   SELECT EMP_NM
-                     FROM IBIMS003B
-                    WHERE 1=1
-                      AND EMPNO = T7.RELT_STFNO
-                 )                                  AS  reltStfnm
+              , T5.CHRR_EMPNO                       AS RQST_STFNO             /* 담당자 452B */
+              , T10.EMP_NM                          AS RQST_STFNM
               , T7.RJCT_RSN_CNTN                                              /* 반려사유  452B */
               , NVL(T2.EPRZ_CRDL_CTRT_AMT, 0)       AS EPRZ_CRDL_CTRT_AMT     /* 계약금액  401B */
               , NVL(T1.NRML_INT_AMT, 0)             AS NRML_INT_AMT           /* 이자  410B */
@@ -767,7 +751,7 @@
                    FROM IBIMS994B
                   WHERE 1=1
                     AND CRRY_CD = T1.TR_CRRY_CD
-                )                                   AS  STDR_EXRT             /* 환율 */
+                )                                   AS STDR_EXRT              /* 환율 */
               , T6.BNK_BD                                                     /* 은행부실점명 */
               , T1.RCTM_BANO                                                  /* 계좌번호  410B */
               , TO_CHAR(T1.HND_DETL_DTM, 'YYYY-MM-DD HH24:MI:SS') AS TR_DTM   /* 거래시간  410B */
@@ -810,6 +794,7 @@
              ON T1.PRDT_CD = T7.PRDT_CD
             AND T1.TR_SN = T7.TR_SEQ
             AND T1.EXC_SN = T7.EXC_SEQ
+            AND T7.CONS_DECD_STAT_CD != '4'
       LEFT JOIN IBIMS231B T8  /* 딜승인결재기본 */
              ON T8.DEAL_NO = T5.DEAL_NO
             AND T8.PRDT_CD = T1.PRDT_CD
@@ -819,16 +804,19 @@
             AND T8.TR_SEQ = T1.TR_SN
       LEFT JOIN IBIMS232B T9 /* 딜결재담당자내역 */
              ON T8.DECD_SN = T9.DECD_SN
+      LEFT JOIN IBIMS003B T10
+             ON T5.CHRR_EMPNO = T10.EMPNO
           WHERE 1=1
             AND T5.LAST_YN = 'Y'
             AND T5.APVL_DT != ' '
-            <if test="orgno != ''">
-            AND T1.ORGNO = #{orgno}
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(orgno)">
+            <!-- /* AND T1.ORGNO = #{orgno} */ -->
+            AND T10.DPRT_CD = #{orgno}
             </if>
             <if test="prevDate != '' and nextDate != ''">
             AND T1.TR_DT BETWEEN #{prevDate} AND #{nextDate} /* 날짜 */
             </if>
-            <if test="depositWithdrawalCode != null and depositWithdrawalCode != ''">
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(depositWithdrawalCode)">
                <choose>
                    <when test="depositWithdrawalCode == '01'">
                        AND T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('20', '21', '82', '83', '85')
@@ -838,16 +826,16 @@
                    </when>
                </choose>
             </if>
-            <if test="prdtCd != ''">
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
             AND T1.PRDT_CD = #{prdtCd} /* 종목코드 */
             </if>
-            <if test="consDecdStatCd != ''">
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(consDecdStatCd)">
             AND NVL(T8.DECD_STTS_DCD, '0') = #{consDecdStatCd} /* 결재상태 */
             </if>
-            <if test="trObjtBsnNo != ''">
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trObjtBsnNo)">
             AND T1.TR_OBJT_BSN_NO = #{trObjtBsnNo} /* 거래처번호 */
             </if>
-            <if test="trCrryCd != '' and  trCrryCd != null">
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trCrryCd)">
             AND T1.TR_CRRY_CD = #{trCrryCd} /* 통화구분 */
             </if>
             <!-- <if test=" != ''">

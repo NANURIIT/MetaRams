@@ -28,36 +28,37 @@
     </select>
         
 	<!-- 분양수지관리등록  -->
-    <insert id="insertIBIMS611B" parameterType="com.nanuri.rams.business.common.vo.IBIMS611BVO">
-		INSERT INTO IBIMS611B    /* 월별공사및분양형황 */
-				 (
-				   DEAL_NO				/* Deal번호 */
-				 , STDR_YM				/* 기준년월 */
-				 , BUSI_PRG_STEP	/* 사업진행단계 */
-				 , ESTM_PRGS_RT		/* 예상진척률 */
-				 , PFMC_PRGS_RT		/* 실적진척률 */
-				 , HND_DETL_DTM		/* 조작상세일시 */
-				 , HND_EMPNO			/* 조작사원번호 */
-				 , HND_TMNL_NO		/* 조작단말기번호 */
-				 , HND_TR_ID			/* 조작거래id */
-				 , GUID						/* guid */
-				 )
-				 VALUES    		   
-				 (                   
-				   #{dealNo}         /* Deal번호 */ 
-				 , #{stdrYm}         /* 기준년월 */ 
-				 , #{busiPrgStep}    /* 사업진행단계 */     
-				 , #{estmPrgsRt}     /* 예상진척률 */    
-				 , #{pfmcPrgsRt}     /* 실적진척률 */    
-				 , SYSDATE								/* 조작상세일시 */
-				 , #{hndEmpno}       /* 조작사원번호 */  
-				 , #{hndTmnlNo}      /* 조작단말기번호 */   
-				 , #{hndTrId}        /* 조작거래id */ 
-				 , #{guid}           /* guid */ 
-				 )
-	
-    </insert>
-	
+   <insert id="insertIBIMS611B" parameterType="java.util.List">
+   INSERT INTO IBIMS611B
+    (
+        DEAL_NO               <!-- Deal 번호 -->
+        , STDR_YM             <!-- 기준 년월 -->
+        , BUSI_PRG_STEP       <!-- 사업 진행 단계 -->
+        , ESTM_PRGS_RT        <!-- 예상 진척률 -->
+        , PFMC_PRGS_RT        <!-- 실적 진척률 -->
+        , HND_DETL_DTM        <!-- 조작 상세 일시 (SYSDATE로 자동 삽입) -->
+        , HND_EMPNO           <!-- 조작 사원 번호 -->
+        , HND_TMNL_NO         <!-- 조작 단말기 번호 -->
+        , HND_TR_ID           <!-- 조작 거래 ID -->
+        , GUID                <!-- GUID -->
+    )
+    VALUES    
+    <foreach collection="listMonthStep" item="item" separator=",">       
+        (
+            #{item.dealNo},      
+            #{item.stdrYm},      
+            #{item.busiPrgStep}, 
+            #{item.estmPrgsRt},  
+            #{item.pfmcPrgsRt},  
+            SYSDATE,             
+            #{item.hndEmpno},    
+            #{item.hndTmnlNo},   
+            #{item.hndTrId},     
+            #{item.guid}         
+        )
+    </foreach>
+</insert>
+
 	<!-- 분양수지관리변경 -->
     <update id="updateIBIMS611B" parameterType="com.nanuri.rams.business.common.vo.IBIMS611BVO">
         <foreach collection="list" item="item" separator=";"> 
