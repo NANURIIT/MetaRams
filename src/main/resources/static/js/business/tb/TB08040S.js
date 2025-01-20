@@ -132,50 +132,32 @@ const TB08040Sjs = (function() {
 	function pqGrid_TB08040S() {
 		var dateEditor_feeSch = function(ui) {
 			var $inp = ui.$cell.find("input");
-			/* var  grid = this;
-			 validateCal = function (that) {
-							   var valid = grid.isValid({
-								   dataIndx: ui.dataIndx,
-								   value: $inp.val(),
-								   rowIndx: ui.rowIndx
-							   }).valid;
-							  if (!valid) {
-								   that.firstOpen = false;
-							   }
-						   };	*/
-			$inp.on("input", function() {
-				//validateCal(this);	
-				let temVal;
-				temVal = replaceAll($inp.val(), '-', '');
-				if (temVal.length === 8) {
-					temVal = formatDate(temVal);
-					$inp.val(temVal);
-				} else if (temVal.length > 8) {
-					$inp.val(formatDate(temVal.slice(0, 8)));
-				}
-			})
-				.datepicker({
-					changeMonth: true,
-					changeYear: true,
-					//convert from excel to jquery ui format
-					dateFormat: 'yyyy-mm-dd',//ui.column.format,//pq.excelToJui(ui.column.format),
+			
+			$inp.datepicker({
+					todayBtn: "linked",
+					autoclose: true,
+					format: "yyyy-mm-dd",
 					keyboardNavigation: false,
-					forceParse: false,
-					calendarWeeks: false,
-					//autoclose: true,
+				    forceParse: false,
+				    calendarWeeks: false,
 					language: "ko",
-					//showAnim: '',
-					/*onSelect: function () {
-					   this.firstOpen = true;
-						   validateCal(this);
-					},
-					beforeShow: function (input, inst) {
-						return !this.firstOpen;// uncomment if don't want to allow datepicker editor to open upon focus in editor after first opening.
-					},
-					onClose: function () {
-						this.focus();
-					}*/
-				});
+			}).on("changeDate", function(e) {
+				//이벤트의 종류
+				//show : datePicker가 보이는 순간 호출
+				//hide : datePicker가 숨겨지는 순간 호출
+				//clearDate: clear 버튼 누르면 호출
+				//changeDate : 사용자가 클릭해서 날짜가 변경되면 호출 (개인적으로 가장 많이 사용함)
+				//changeMonth : 월이 변경되면 호출
+				//changeYear : 년이 변경되는 호출
+				//changeCentury : 한 세기가 변경되면 호출 ex) 20세기에서 21세기가 되는 순간
+
+				//console.log(e);
+				
+				//setSelection(data) 하지 않고 setSelection = null 실행시 실행안됨. 이유불명
+				$( "#grd_feeSch" ).pqGrid( "setSelection", { rowIndx: ui.rowIndx, dataIndx: ui.dataIndx });
+				$( "#grd_feeSch" ).pqGrid( "setSelection", null);
+			});
+			
 		}
 
 
@@ -518,7 +500,7 @@ const TB08040Sjs = (function() {
 			{
 				title: "예정일자",
 				dataType: "date",
-				format: "yy-mm-dd",
+				format: "yyyy-mm-dd",
 				dataIndx: "prarDt",
 				halign: "center",
 				align: "center",

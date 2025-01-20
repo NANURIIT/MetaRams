@@ -292,8 +292,9 @@ $('#TB06013P_cprnMrtgRto').on('change', function() {
 });	
 
 //설정최고액
-$('#TB06013P_krwTrslStupTopAmt').keyup(function(event) {
-	if (event.key >= 0 && event.key <= 9 || event.key === "Backspace" || event.key === "Delete") {			
+$('#TB06013P_stupTopAmt').keyup(function(event) {
+	if (event.key >= 0 && event.key <= 9 || event.key === "Backspace" || event.key === "Delete") {
+		$('#TB06013P_krwTrslStupTopAmt').val($('#TB06013P_stupTopAmt').val());
 		calcuKrwTrslValtMrtgPrc();
 	}
 });
@@ -725,14 +726,19 @@ function setSelectBoxMrtgKndCd() {
     $("#sbName").html("▶&nbsp;" + selectedName + "감정");
     $(classNm).hide();
     $(mrtgStupKndCd).show();
-	let id2 = document.getElementById("areaMrtgKndCd");
-	let fmIputLngth2 = id2.querySelectorAll("input").length;
-	let fmSlctLngth2 = id2.querySelectorAll("select").length;
-	for (let i = 0; i < fmIputLngth2; i++) {
+	var id2 = document.getElementById("areaMrtgKndCd");
+	var fmIputLngth2 = id2.querySelectorAll("input").length;
+	var fmSlctLngth2 = id2.querySelectorAll("select").length;
+	var fmRdoLngth2  = id2.querySelectorAll("input[type=radio]").length;
+	
+	for (var i = 0; i < fmIputLngth2; i++) {
 	  id2.querySelectorAll("input")[i].value = "";
 	}
-	for (let i = 0; i < fmSlctLngth2; i++) {
+	for (var i = 0; i < fmSlctLngth2; i++) {
 	  id2.querySelectorAll("select")[i].value = "";
+	}
+	for (var i = 0; i < fmRdoLngth2; i++) {
+	  id2.querySelectorAll("input[type=radio]")[i].checked = false;
 	}
 }
 
