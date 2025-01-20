@@ -515,8 +515,7 @@ const TB08036Sjs = (function () {
 
   // 분양수지관리 데이터 세팅
   function setTabDealInfo(dealInfo) {
-    resetTabDeal();
-
+    //resetTabDeal();
     $("#unitNum").val(dealInfo.unitNum); // 세대수
     $("#slStDt").val(formatDate(dealInfo.slStDt)); // 분양시작일
     $("#slEdDt").val(formatDate(dealInfo.slEdDt)); // 분양종료일
