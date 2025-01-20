@@ -451,7 +451,7 @@ const TB07050Sjs = (function () {
                   // console.log(row)
 				  if (row.prcsCpltYn == "") {
 					row.prcsCpltYn = "";
-				  }else if (row.prcsCpltYn === "1") {
+				  }else if (row.prcsCpltYn === "Y") {
                     row.prcsCpltYn = "처리";
                   } else {
                     row.prcsCpltYn = "미처리";
@@ -558,7 +558,7 @@ const TB07050Sjs = (function () {
                   // console.log(row)
 					if (row.prcsCpltYn == "") {
 						row.prcsCpltYn = "";
-					} else if (row.prcsCpltYn === "1") {
+					} else if (row.prcsCpltYn === "Y") {
 						row.prcsCpltYn = "처리";
 					} else {
 						row.prcsCpltYn = "미처리";
@@ -1459,7 +1459,7 @@ const TB07050Sjs = (function () {
         prarPrna: prarPrna,
         rdmpPrarIntr: rdmpPrarIntr,
         prcsCpltYn: prcsCpltYn,
-        prcsCpltYn: "0",
+        prcsCpltYn: "N",
       };
       intrRdmpSch.addRow({ rowData: newRow, checkEditable: false });
       // $("#grdRdmpTrgtDtl").pqGrid("addRow", { rowData: newRow, checkEditable: false });

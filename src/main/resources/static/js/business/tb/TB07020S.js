@@ -667,8 +667,8 @@ const TB07020Sjs = (function() {
 			//var trDt                       ;                                // 거래일자
 			var trStatCd = (inputDcd=='1'?'01':'12');                         // 거래상태코드 01:정상,11:취소원거래,12:취소거래
 			//var etprCrdtGrntTrKindCd       ;                                // 거래종류코드
-			var dealTrAmt = trAmt;                                            // 딜거래금액
-			var dealTrPrca = trAmt;                                           // 딜거래원금
+			var dealTrAmt = (inputDcd=='1'?1:-1) * trAmt;                                            // 딜거래금액
+			var dealTrPrca = (inputDcd=='1'?1:-1) * trAmt;                                           // 딜거래원금
 			var trIntAmt = 0;                                                 // 거래이자금액
 			var dealRdptObjtPrca = 0;                                         // 딜상환대상원금
 			var dealMrdpPrca = 0;                                             // 딜중도상환원금
@@ -751,8 +751,8 @@ const TB07020Sjs = (function() {
 			var expDt = rfnDt;                                                // 만기일자
 			var eprzCrdlCtrcAmt = $('#TB07020S_eprzCrdlCtrcAmt').val().replaceAll(',', ''); // 약정금액
 			var krwTrslExcBlce = $('#TB07020S_krwTrslExcBlce').val().replaceAll(',', ''); // 매수가능금액
-			var dealExcAmt = trAmt;                                           // 딜실행금액
-			var dealExcBlce = trAmt;                                          // 딜실행잔액
+			var dealExcAmt = (inputDcd=='1'?1:-1) * trAmt;                                           // 딜실행금액
+			var dealExcBlce = (inputDcd=='1'?1:-1) * trAmt;                                        // 딜실행잔액
 			// if ( Number(eprzCrdlCtrcAmt) == Number(krwTrslExcBlce)) {
 			// 	dealExcBlce = eprzCrdlCtrcAmt - trAmt;
 			// }
@@ -760,8 +760,8 @@ const TB07020Sjs = (function() {
 			// 	dealExcBlce = trAmt * -1 ;
 			// }
 			var krwTrslRt = trdeExrt;                                         // 원화환산율
-			var krwTrslExcAmt = trslAmt;                                      // 원화환산실행금액
-			var krwTrslExcBlce = trslAmt;                                     // 원화환산실행잔액
+			var krwTrslExcAmt = (inputDcd=='1'?1:-1) * trslAmt;                                      // 원화환산실행금액
+			var krwTrslExcBlce = (inputDcd=='1'?1:-1) * trslAmt;                                     // 원화환산실행잔액
 			// if ( Number(eprzCrdlCtrcAmt) == Number(krwTrslExcBlce)) {         // 매수가능금액
 			// 	krwTrslExcBlce = eprzCrdlCtrcAmt - trslAmt;
 			// }

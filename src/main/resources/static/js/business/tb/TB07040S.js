@@ -792,8 +792,8 @@ const TB07040Sjs = (function () {
       //var trDt;                                                                 // 거래일자
       var trStatCd = inputDcd == "1" ? "01" : "12"; // 거래상태코드 01:정상,11:취소원거래,12:취소거래
       //var etprCrdtGrntTrKindCd;                                                 // 거래종류코드
-      var dealTrAmt = trAmt; // 딜거래금액
-      var dealTrPrca = trAmt; // 딜거래원금
+      var dealTrAmt = (inputDcd == "1" ? 1 : -1) * trAmt; // 딜거래금액
+      var dealTrPrca = (inputDcd == "1" ? 1 : -1) * trAmt; // 딜거래원금
       var trIntAmt = 0; // 거래이자금액
       var dealRdptObjtPrca = 0; // 딜상환대상원금
       var dealMrdpPrca = 0; // 딜중도상환원금
@@ -805,7 +805,7 @@ const TB07040Sjs = (function () {
       var costAmt = lTrtx; // 비용금액
       var trCrcyCd = $("#TB07040S_I027").val(); // 거래통화코드
       var wcrcTrslRt = trdeExrt; // 원화환산율
-      var wcrcTrslTrPrca = trslAmt; // 원화환산거래원금
+      var wcrcTrslTrPrca = (inputDcd == "1" ? 1 : -1) * trslAmt; // 원화환산거래원금
       var wcrcTrslTrIntAmt = 0; // 원화환산거래이자금액
       var wcrcTrslTrFeeAmt = lFee; // 원화환산거래수수료금액
       var wcrcTrslCostAmt = lTrtx; // 원화환산비용금액

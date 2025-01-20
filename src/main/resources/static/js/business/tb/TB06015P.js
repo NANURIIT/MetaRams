@@ -266,9 +266,9 @@ var colModel_prnaScd = [
 		filter: { crules: [{ condition: 'range' }] },
 		render:  function (ui) {
             var cellData = ui.cellData;
-            if (cellData === "0") {
+            if (cellData === "N") {
                 return "미처리";
-            }else if(cellData === "1"){
+            }else if(cellData === "Y"){
 				return "처리";
 			}
             return cellData;
@@ -389,9 +389,9 @@ let rdmpCol = [
 		filter: { crules: [{ condition: 'range' }] },
 		render:  function (ui) {
             var cellData = ui.cellData;
-            if (cellData === "0") {
+            if (cellData === "N") {
                 return "미처리";
-            }else if(cellData === "1"){
+            }else if(cellData === "Y"){
 				return "처리";
 			}
             return cellData;
@@ -550,9 +550,9 @@ let intrCol = [
 		filter: { crules: [{ condition: 'range' }] },
 		render:  function (ui) {
             var cellData = ui.cellData;
-            if (cellData === "0") {
+            if (cellData === "N") {
                 return "미처리";
-            }else if(cellData === "1"){
+            }else if(cellData === "Y"){
 				return "처리";
 			}
             return cellData;
@@ -596,7 +596,7 @@ var toolbar_intr = {
 			label: '<i class="fa fa-plus"></i>',
 			listener: function() {
 				var rowData = {
-					"prcsCpltYn": "0"
+					"prcsCpltYn": "N"
 				};
 
 				$('#intrPlanGrid').pqGrid("addRow", {rowData: rowData, checkEditable: false });
@@ -652,7 +652,7 @@ var toolbar_rdmp = {
 			listener: function() {
 
 				var rowData = {
-					"prcsCpltYn": "0"
+					"prcsCpltYn": "N"
 				};
 
 				$('#rdmpPlanGrid').pqGrid("addRow", {rowData: rowData, checkEditable: false });
@@ -1564,7 +1564,7 @@ function addRows_rdmpPlanGrid(rows){
 		var newRow = {
 			prarPrna	: prarPrna,
 			prarDt		: formattedDate,
-			prcsCpltYn	: "0"
+			prcsCpltYn	: "N"
 		};
 
 		$("#rdmpPlanGrid").pqGrid("addRow", { rowData: newRow, checkEditable: false });
@@ -1605,7 +1605,7 @@ function addRows_intrPlanGrid(rows){
 			aplyIrt		: aplyIrt,
 			prarPrna	: prarPrna,
 			rdmpPrarIntr: rdmpPrarIntr,
-			prcsCpltYn	: "0"
+			prcsCpltYn	: "N"
 		}
 
 		$("#intrPlanGrid").pqGrid("addRow", { rowData: newRow, checkEditable: false });
