@@ -277,6 +277,7 @@ const TB08036Sjs = (function () {
     item += "B014"; // 사업진행상태구분코드
     item += "/" + "C010"; // 신용보강기관내용구분코드
     item += "/" + "I012"; // 신용등급구분코드
+    item += "/" + "I050"; //점검결과
 
     getSelectBoxList("TB08036S", item);
   }
@@ -537,7 +538,10 @@ const TB08036Sjs = (function () {
     $("#estmPrgsRt").val(dealInfo.estmPrgsRt); // 예상진척율
     $("#pfmcPrgsRt").val(dealInfo.pfmcPrgsRt); // 실적진척율
     $("#TB08036S_B014_01").val(dealInfo.busiPrgStep); // 사업진행단계
-    $("#inspctRmrk").val(dealInfo.inspctRmrk).prop("selected", true).change(); // 분양수지점검결과
+    $("#TB08036S_I050")
+      .val(dealInfo.inspctRmrk)
+      .prop("selected", true)
+      .change(); // 분양수지점검결과
     $("#bsnBdSlltBalcCheckOpnn").val(dealInfo.bsnBdSlltBalcCheckOpnn); // 영업점분양수지점검의견
   }
 
@@ -635,7 +639,7 @@ const TB08036Sjs = (function () {
       estmPrgsRt: getInputValue("estmPrgsRt"), // 예상진척율
       pfmcPrgsRt: getInputValue("pfmcPrgsRt"), // 실적진척율
       busiPrgStep: getInputValue("TB08036S_B014_01"), // 사업진행단계
-      inspctRmrk: getInputValue("checkRslt"), // 점검결과
+      inspctRmrk: getInputValue("TB08036S_I050"), // 점검결과
       bsnBdSlltBalcCheckOpnn: getInputValue("bsnBdSlltBalcCheckOpnn"), // 영업점분양수지점검의견
       listMonthStep: listMonthStep,
     };

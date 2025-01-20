@@ -22,8 +22,8 @@
              , ESTM_PRGS_RT                                      /* 예상진척률 */
              , PFMC_PRGS_RT                                      /* 실적진척률 */
              , BUSI_PRG_STEP                                     /* 사업진행단계 */
-             , CHECK_RSLT										                     /* 점검결과 */
-             , BSN_BD_SLLT_BALC_CHECK_OPNN						           /* 영업점분양수지점검의견 */
+             , CHECK_RSLT										 /* 점검결과 */
+             , BSN_BD_SLLT_BALC_CHECK_OPNN						 /* 영업점분양수지점검의견 */
              , HND_DETL_DTM                                      /* 조작상세일시 */
              , HND_EMPNO                                         /* 조작사원번호 */
              , HND_TMNL_NO                                       /* 조작단말기번호 */
