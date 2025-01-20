@@ -270,9 +270,9 @@
 														</select>
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">신용조회일자</label>
-													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+													<div class="col-sm-3 input-group date mrtgStupKndCd mrtgStupKndCd10">
 														<input type="text" class="form-control" id="TB06013P_crdtInqDt" value="" 
-														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly
+														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10"
 														onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 														>
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -305,9 +305,9 @@
 														</select>
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd10 py-0">보증결산일</label>
-													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd10">
+													<div class="col-sm-3 input-group date mrtgStupKndCd mrtgStupKndCd10">
 														<input type="text" class="form-control" id="TB06013P_grteStlaDe" value="" 
-														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly
+														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10"
 														onblur="this.value=formatDate(this.value.replaceAll('-',''));"
 														>
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -340,11 +340,10 @@
 														<input type="text" class="form-control" id="TB06013P_lgrteNm">
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd5 py-0">보증만료일자</label>
-													<div class="col-sm-3 input-group mrtgStupKndCd mrtgStupKndCd5">
+													<div class="col-sm-3 input-group date mrtgStupKndCd mrtgStupKndCd5">
 														<input type="text" class="form-control" id="TB06013P_grteExprDt" value="" 
-														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10" readonly
-														onblur="this.value=formatDate(this.value.replaceAll('-',''));"
-														>
+														placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10"
+														onblur="this.value=formatDate(this.value.replaceAll('-',''));">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 													<label class="col-sm-1 col-form-label mrtgStupKndCd mrtgStupKndCd8 py-0">기타담보유형코드</label>
@@ -467,7 +466,7 @@
 												<div class="col-sm-12 form-group">
 													<label class="col-sm-1 col-form-label">가용담보가<br class="br-mo">(원화)</label>
 													<div class="col-sm-3 input-group">
-														<input type="text" class="form-control text-right" id="TB06013P_avblMrtgPrc" >
+														<input type="text" class="form-control text-right" id="TB06013P_avblMrtgPrc" disabled="disabled">
 													</div>
 													<label class="col-sm-1 col-form-label">설정통화</label>
 													<div class="col-sm-3 input-group">
@@ -476,7 +475,7 @@
 													</div>
 													<label class="col-sm-1 col-form-label">공동담보<br class="br-mo">비율</label>
 													<div class="col-sm-3 input-group">
-														<input type="text" class="form-control text-right" id="TB06013P_cprnMrtgRto" maxlength="6" >
+														<input type="text" class="form-control text-right" id="TB06013P_cprnMrtgRto">
 													</div>
 												</div>
 											</div>
@@ -485,7 +484,7 @@
 												<div class="col-sm-12 form-group">
 													<label class="col-sm-1 col-form-label">설정최고액<br class="br-mo">(원화)</label>
 													<div class="col-sm-3 input-group">
-														<input type="text" class="form-control text-right" id="TB06013P_krwTrslStupTopAmt" onkeyup="inputNumberFormat(this);">
+														<input type="text" class="form-control text-right" id="TB06013P_krwTrslStupTopAmt" onkeyup="inputNumberFormat(this);" disabled="disabled">
 													</div>
 													<label class="col-sm-1 col-form-label">설정최고액</label>
 													<div class="col-sm-3 input-group">
@@ -503,11 +502,11 @@
 												<div class="col-sm-12 form-group">
 													<label class="col-sm-1 col-form-label">유효담보가<br class="br-mo">(원화)</label>
 													<div class="col-sm-3 input-group">
-														<input type="text" class="form-control text-right" id="TB06013P_krwTrslValtMrtgPrc" onkeyup="inputNumberFormat(this);">
+														<input type="text" class="form-control text-right" id="TB06013P_krwTrslValtMrtgPrc" onkeyup="inputNumberFormat(this);" disabled="disabled">
 													</div>
 													<label class="col-sm-1 col-form-label">유효담보가</label>
 													<div class="col-sm-3 input-group">
-														<input type="text" class="form-control text-right" id="TB06013P_valtMrtgPrc" onkeyup="inputNumberFormat(this);">
+														<input type="text" class="form-control text-right" id="TB06013P_valtMrtgPrc" onkeyup="inputNumberFormat(this);" disabled="disabled">
 													</div>
 												</div>
 											</div>
