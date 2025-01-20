@@ -407,7 +407,10 @@ function roadPrdtCdListGrid() {
 			editable: false,
 			scrollModel: { autoFit: true },
 			colModel: colPrdtCdList,
-			strNoRows: '데이터가 없습니다.'
+			strNoRows: '데이터가 없습니다.',
+			rowDblClick: function (event, ui) {
+				TB06011P_setPrdtInfo(ui.rowData);
+			}
 		};
 
 		$("#TB06011P_prdtCdList").pqGrid(obj);
@@ -418,20 +421,6 @@ function roadPrdtCdListGrid() {
 		TB06011P_arrPqGridPrdtCdList.setData([]);
 	}
 
-}
-
-
-//그리드에 데이터 넣기 (CRUD)
-function dataPrdtCdSetGrid(data) {
-
-	TB06011P_arrPqGridPrdtCdList.setData(data);
-
-	TB06011P_arrPqGridPrdtCdList.option("strNoRows", '조회된 데이터가 없습니다.');
-
-	TB06011P_arrPqGridPrdtCdList.on("cellDblClick", function (event, ui) {
-		var rowData = ui.rowData;
-		TB06011P_setPrdtInfo(rowData);
-	});
 }
 
 // 초기설정
@@ -571,7 +560,7 @@ async function getPrdtCdList() {
 			}
 			else {
 				callTB06011P($('#TB06011P_prefix').val());
-				setTimeout(() => dataPrdtCdSetGrid(data), 400)
+				setTimeout(() => $("#TB06011P_prdtCdList").pqGrid('instance').setData(data), 400);
 			}
 		}
 	});

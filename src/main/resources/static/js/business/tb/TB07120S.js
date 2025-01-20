@@ -21,16 +21,11 @@ const TB07120Sjs = (function () {
     $("#TB07120S_dcfcEno").prop("readonly", false);
     $("#TB07120S_dcfcBtn").prop("disabled", false);
     // $(".TB07120S_isForeignTransfer").prop("disabled", true);
-    $("#TB07120S_apvl").hide(); //승인버튼
-    $("#TB07120S_gbck").hide(); //반려버튼
 
-    $('#TB07120S_apvlRqst').prop('hidden', true)
-    $('#TB07120S_apvlCncl').prop('hidden', true)
-    $('#TB07120S_apvl').prop('hidden', true)
-    $('#TB07120S_gbck').prop('hidden', true)
-
-    $('#TB07120S_dprtNm').val($('#userDprtCd').val())
-    $('#TB07120S_dprtCd').val($('#userDprtCd').val())
+    $('#TB07120S_apvlRqst').hide();
+    $('#TB07120S_apvlCncl').hide();
+    $('#TB07120S_apvl').hide();
+    $('#TB07120S_gbck').hide();
   }
 
   /**
@@ -154,26 +149,22 @@ const TB07120Sjs = (function () {
       hidden: true
     },
     {
-      title: "거래일자",
+      title: "거래시간",
       dataType: "string",
-      dataIndx: "trDt",
+      dataIndx: "trDtm",
       align: "center",
       halign: "center",
-      width: "",
+      width: "10%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "처리일자",
+      title: "처리시간",
       dataType: "string",
-      dataIndx: "hndlDtm",
+      dataIndx: "decdDtm",
       align: "center",
       halign: "center",
-      width: "",
+      width: "10%",
       filter: { crules: [{ condition: "range" }] },
-      render: function (ui) {
-        let cellData = unformatDate(ui.cellData);
-        return cellData ? cellData.substring(0, 8) : null;
-      },
     },
     {
       title: "결재단계구분",
@@ -322,15 +313,9 @@ const TB07120Sjs = (function () {
       hidden: true,
     },
     {
-      title: "거래시간",
+      title: "거래일자",
       dataType: "string",
-      dataIndx: "trDtm",
-      hidden: true
-    },
-    {
-      title: "처리시간",
-      dataType: "string",
-      dataIndx: "decdDtm",
+      dataIndx: "trDt",
       hidden: true
     },
     {
@@ -370,15 +355,21 @@ const TB07120Sjs = (function () {
       hidden: true,
     },
     {
-      title: "",
+      title: "거래일련번호",
       dataType: "string",
       dataIndx: "trSeq",
       hidden: true,
     },
     {
-      title: "",
+      title: "등록일련번호",
       dataType: "string",
       dataIndx: "erlmSeq",
+      hidden: true,
+    },
+    {
+      title: "해외송금여부",
+      dataType: "string",
+      dataIndx: "ovrsTrnsYn",
       hidden: true,
     },
   ];
@@ -444,9 +435,9 @@ const TB07120Sjs = (function () {
         }
         $('#TB07120S_grid1').pqGrid('addClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: ui.rowIndx });
 
-        let consDecdStatCd = ui.rowData.consDecdStatCd;
+        // let consDecdStatCd = ui.rowData.consDecdStatCd;
         setIbims452b(ui.rowData);
-        decdStatChk(consDecdStatCd);
+        // decdStatChk(consDecdStatCd);
         //부속서류목록(TB06010S의 첨부파일 그대로 가져옴)
         $('#fileKey2').val(ui.rowData.prdtCd)
         getFileInfo($('#key1').val(), $('#fileKey2').val());
@@ -456,23 +447,6 @@ const TB07120Sjs = (function () {
     $("#TB07120S_grid1").pqGrid(gridObj1);
     $("#TB07120S_grid1").pqGrid("refreshDataAndView");
 
-    // var gridObj2 = {
-    //   height: 100,
-    //   maxHeight: 100,
-    //   showTitle: false,
-    //   showToolbar: false,
-    //   collapsible: false,
-    //   editable: false,
-    //   wrap: false,
-    //   hwrap: false,
-    //   numberCell: { show: false },
-    //   scrollModel: { autoFit: true },
-    //   colModel: colM_Grid2,
-    //   strNoRows: "",
-    // };
-
-    // $("#TB07120S_grid2").pqGrid(gridObj2);
-    // $("#TB07120S_grid2").pqGrid("refreshDataAndView");
   }
 
   /**
@@ -480,6 +454,7 @@ const TB07120Sjs = (function () {
   * @param {Object} rowData - 그리드에서 선택된 행의 데이터
   */
   function setIbims452b(rowData) {
+
     const keys = Object.keys(rowData);
 
     let consDecdStatCd = rowData.consDecdStatCd;               //결재상태
@@ -505,6 +480,16 @@ const TB07120Sjs = (function () {
         let formattedValue = Number(value).toLocaleString('en');
         $(`#ibims452b #TB07120S_${key}`).val(formattedValue);
       }
+      else if ( key === "ovrsTrnsYn") {
+        if( !value ){
+          $(`#ibims452b input[name="TB07120S_${key}"]`).prop('disabled', false)
+          value = "N"
+        }
+        else {
+          $(`#ibims452b input[name="TB07120S_${key}"]`).prop('disabled', true)
+        }
+        $(`#ibims452b input[name="TB07120S_${key}"][value="${value}"]`).prop('checked', true)
+      }
       // 기본 값 세팅
       else {
         $(`#ibims452b #TB07120S_${key}`).val(value);
@@ -516,28 +501,31 @@ const TB07120Sjs = (function () {
     const stfno = $('#TB07120S_rqstStfno').val()
     const dcfcEno = $('#TB07120S_dcfcEno').val()
 
+    console.log( nowEmpno === dcfcEno );
+    
+
     // 담당자인 경우
     if ( nowEmpno === stfno ) {
-      $('#TB07120S_apvlRqst').prop('hidden', false)
-      $('#TB07120S_apvlCncl').prop('hidden', false)
-      $('#TB07120S_apvl').prop('hidden', true)
-      $('#TB07120S_gbck').prop('hidden', true)
+      $('#TB07120S_apvlRqst').show()
+      $('#TB07120S_apvlCncl').show()
+      $('#TB07120S_apvl').hide()
+      $('#TB07120S_gbck').hide()
       $('#TB07120S_rjctRsnCntn').prop('disabled', true)
     }
     // 승인자인 경우
     else if ( nowEmpno === dcfcEno ) {
-      $('#TB07120S_apvlRqst').prop('hidden', true)
-      $('#TB07120S_apvlCncl').prop('hidden', true)
-      $('#TB07120S_apvl').prop('hidden', false)
-      $('#TB07120S_gbck').prop('hidden', false)
+      $('#TB07120S_apvlRqst').hide()
+      $('#TB07120S_apvlCncl').hide()
+      $('#TB07120S_apvl').show()
+      $('#TB07120S_gbck').show()
       $('#TB07120S_rjctRsnCntn').prop('disabled', false)
     }
     // 해당사항이 없는경우 Default
     else {
-      $('#TB07120S_apvlRqst').prop('hidden', true)
-      $('#TB07120S_apvlCncl').prop('hidden', true)
-      $('#TB07120S_apvl').prop('hidden', true)
-      $('#TB07120S_gbck').prop('hidden', true)
+      $('#TB07120S_apvlRqst').hide()
+      $('#TB07120S_apvlCncl').hide()
+      $('#TB07120S_apvl').hide()
+      $('#TB07120S_gbck').hide()
       $('#TB07120S_rjctRsnCntn').prop('disabled', true)
     }
     
@@ -553,8 +541,8 @@ const TB07120Sjs = (function () {
     }
     // 결재 진행중인 경우
     else if (rowData.decdSttsDcd === "1") {
-      $('#TB07120S_apvlRqst').prop('disabled', false)
-      $('#TB07120S_apvlCncl').prop('disabled', true)
+      $('#TB07120S_apvlRqst').prop('disabled', true)
+      $('#TB07120S_apvlCncl').prop('disabled', false)
       $('#TB07120S_apvl').prop('disabled', false)
       $('#TB07120S_gbck').prop('disabled', false)
       $('#TB07120S_dcfcEno').prop('disabled', true)
@@ -680,6 +668,21 @@ const TB07120Sjs = (function () {
    */
 
   /**
+   * 결재전 데이터 체크
+   */
+  function chkDcfcEno () {
+
+    // 뭘 체크하려 했더라...
+    let dcfcEno = $('#TB07120S_dcfcEno').val()
+
+    // 승인자 정보를 받아서
+    $.ajax({
+
+    })
+
+  }
+
+  /**
    * @param mode 결재단계구분코드 
    */
   function updateFndsCnstDecd( mode ) {
@@ -731,7 +734,7 @@ const TB07120Sjs = (function () {
      */
 
     let dealNo = $('#TB07120S_dealNo').val()
-    let prdtCd = $('#TB07120S_prdtCd').val()
+    let prdtCd = $('#ibims452b #TB07120S_prdtCd').val()
     let scrnNo = "TB07120S"
     let excSeq = $('#TB07120S_excSeq').val()
     let rqstSq = $('#TB07120S_erlmSeq').val()
@@ -753,6 +756,8 @@ const TB07120Sjs = (function () {
       decdStepDcd: paramDecdStepDcd,    // 결재단계구분코드
       decdSttsDcd: mode,                // 결재상태구분코드
     };
+
+    console.log(paramData);
 
     $.ajax({
       type: "POST",
