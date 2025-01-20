@@ -697,7 +697,7 @@ function TB06011P_setPrdtInfo(e) {
 		pageTrslAmt = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_trslAmt';
 		pageKrwTrslExcAmt = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_krwTrslExcAmt';
 		pageAvrUnpr = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_avrUnpr';
-		pageEvlPflsAmt = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_evlPflsAmt';
+		// pageEvlPflsAmt = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_evlPflsAmt';
 		pageTradPflsAmt = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_tradPflsAmt';
 	}
 	else {
