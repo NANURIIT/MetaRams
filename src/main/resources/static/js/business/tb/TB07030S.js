@@ -691,8 +691,6 @@ const TB07030Sjs = (function () {
     let ibims403Lst = chkGrdRdmpTrgt(); // 상환대상내역
     let ibims403DtlLst = addList; // 상환대상상세내역
 
-    // console.log("ibims403Lst ::: ", ibims403Lst);
-    // console.log("ibims403DtlLst ::: ", ibims403DtlLst);
     let obj = {
       rkfrDt,
       aplcExchR,
