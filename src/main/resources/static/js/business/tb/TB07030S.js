@@ -611,6 +611,10 @@ const TB07030Sjs = (function () {
         success: function (data) {
           //console.log(data)
 
+          data.ibims403DtlLst.forEach(item => {
+            item.chk = true;
+          });
+
           grdRdmpTrgtDtl.setData(data.ibims403DtlLst);
           ibims403RscdlList = data.ibims403RscdlList; // 중도상환원금이 발생했을 경우 새로운 스케줄
 
@@ -981,88 +985,218 @@ const TB07030Sjs = (function () {
 
       //20250113추가
       case "calcTotAmt":      //납부예정금액 합계
-        grdRdmpTrgtDtl.on("editorEnd", function (evt, ui) {
-          
-          // alert(ui.dataIndx);
-          // alert(JSON.stringify(ui.dataIndx));
-
-          if (ui.dataIndx === "pmntPrarAmt") {
-            // let value = Number(ui.newVal);
+        grdRdmpTrgtDtl.on("cellClick", function (evt, ui) {
+          if (ui.dataIndx === "chk") {
+            console.log("여기 오긴 함??");
             let rowData = ui.rowData;
-            let pmntAmt = rowData.pmntAmt || 0;
-            let pmntPrarAmt = rowData.pmntPrarAmt || 0;
+            // let state = rowData.chk;
+            // console.log("chk1::: " + state);
 
-            console.log("pmntPrarAmt ::: " + pmntPrarAmt);
-            console.log("pmntAmt ::: " + pmntAmt);
-        
-            if (pmntPrarAmt <= 0 || pmntPrarAmt > pmntAmt) {
-              console.log("Invalid value");
-              ui.$cell.find(".pq-editor-input").css("border", "1px solid red");
+            let totRdmpPrna = 0;          //상환대상원금 합계
+            let totRdmpIntr = 0;          //납부예정이자 합계
+            let totOvduIntr = 0;          //연체이자 합계
+            let totMrdpPrca = 0;          //중도상환원금 합계
+            let totMrdpFee  = 0;          //중도상환수수료 합계
+            let totRcvbIntr = 0;          //미수이자 합계
+            let totExmptAmt = 0;          //면제금액 합계
 
-              // grdRdmpTrgtDtl.beginEdit(ui.rowIndx, ui.dataIndx);
-              return false; 
-            } else {
-              console.log("Valid  value");
-              ui.$cell.find(".pq-editor-input").css("border", "");
+            p.forEach((ele) => {
+
+              let chk = ele.chk;
+              console.log("chk::: " + chk);
+
+              if(!chk){
+                let paiTypCd = ele.paiTypCd;//원리금유형코드
+
+                let exmptAmt = ele.exmptAmt;
+                totExmptAmt += exmptAmt;
+
+                if(paiTypCd === "1"){         //원금
+                  totRdmpPrna += ele.pmntPrarAmt;
+                }else if(paiTypCd === "2"){   //정상이자
+                  totRdmpIntr += ele.pmntPrarAmt;
+                }else if(paiTypCd === "3"){   //분할금연체금액
+
+                }else if(paiTypCd === "4"){   //납부이자연체금액
+                  totOvduIntr += ele.pmntPrarAmt;
+                }else if(paiTypCd === "5"){   //원금연체금액
+                  totOvduIntr += ele.pmntPrarAmt;
+                }else if(paiTypCd === "6"){   //환출이자
+
+                }else if(paiTypCd === "7"){   //미수이자
+
+                }else if(paiTypCd === "8"){   //중도상환원금
+                  totMrdpPrca += ele.pmntPrarAmt;
+                }else if(paiTypCd === "9"){   //중도상환수수료
+                  totMrdpFee += ele.pmntPrarAmt;
+                }
+              }else{
+                // let paiTypCd = ele.paiTypCd;//원리금유형코드
+
+                // let exmptAmt = ele.exmptAmt;
+                // totExmptAmt -= exmptAmt;
+
+                // if(paiTypCd === "1"){         //원금
+                //   totRdmpPrna -= ele.pmntPrarAmt;
+                // }else if(paiTypCd === "2"){   //정상이자
+                //   totRdmpIntr -= ele.pmntPrarAmt;
+                // }else if(paiTypCd === "3"){   //분할금연체금액
+
+                // }else if(paiTypCd === "4"){   //납부이자연체금액
+                //   totOvduIntr -= ele.pmntPrarAmt;
+                // }else if(paiTypCd === "5"){   //원금연체금액
+                //   totOvduIntr -= ele.pmntPrarAmt;
+                // }else if(paiTypCd === "6"){   //환출이자
+
+                // }else if(paiTypCd === "7"){   //미수이자
+
+                // }else if(paiTypCd === "8"){   //중도상환원금
+                //   totMrdpPrca -= ele.pmntPrarAmt;
+                // }else if(paiTypCd === "9"){   //중도상환수수료
+                //   totMrdpFee -= ele.pmntPrarAmt;
+                // }
+              }
+
+              
+              
+            });
+
+            $("#TB07030S_exmptSmmAmt").val(comma(Math.round(totExmptAmt)));         
+            $("#TB07030S_KRW_exmptSmmAmt").val(comma(Math.round(totExmptAmt)));     
+
+            $("#TB07030S_rdmpTrgtPrna").val(comma(Math.round(totRdmpPrna)));         
+            $("#TB07030S_KRW_rdmpTrgtPrna").val(comma(Math.round(totRdmpPrna)));    
+
+            $("#TB07030S_nrmlIntrAmt").val(comma(Math.round(totRdmpIntr)));         
+            $("#TB07030S_KRW_nrmlIntrAmt").val(comma(Math.round(totRdmpIntr)));    
+
+            $("#TB07030S_crdtGrntOvduIntAmt").val(comma(Math.round(totOvduIntr)));        
+            $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(comma(Math.round(totOvduIntr)));     
+
+            $("#TB07030S_dealMrdpPrca").val(comma(Math.round(totMrdpPrca)));         
+            $("#TB07030S_KRW_dealMrdpPrca").val(comma(Math.round(totMrdpPrca)));    
+
+            $("#TB07030S_mrdpFeeAmt").val(comma(Math.round(totMrdpFee)));         
+            $("#TB07030S_KRW_mrdpFeeAmt").val(comma(Math.round(totMrdpFee)));     
+
+            calculator("rdmpPrnaSmmAmt");
             }
-          }
-
-          let totRdmpPrna = 0;          //상환대상원금 합계
-          let totRdmpIntr = 0;          //납부예정이자 합계
-          let totOvduIntr = 0;          //연체이자 합계
-          let totMrdpPrca = 0;          //중도상환원금 합계
-          let totMrdpFee  = 0;          //중도상환수수료 합계
-          let totRcvbIntr = 0;          //미수이자 합계
-          let totExmptAmt = 0;          //면제금액 합계
-
-          p.forEach((ele) => {
-            let paiTypCd = ele.paiTypCd;//원리금유형코드
-
-            let exmptAmt = ele.exmptAmt;
-            totExmptAmt += exmptAmt;
-
-            if(paiTypCd === "1"){         //원금
-              totRdmpPrna += ele.pmntPrarAmt;
-            }else if(paiTypCd === "2"){   //정상이자
-              totRdmpIntr += ele.pmntPrarAmt;
-            }else if(paiTypCd === "3"){   //분할금연체금액
-
-            }else if(paiTypCd === "4"){   //납부이자연체금액
-              totOvduIntr += ele.pmntPrarAmt;
-            }else if(paiTypCd === "5"){   //원금연체금액
-              totOvduIntr += ele.pmntPrarAmt;
-            }else if(paiTypCd === "6"){   //환출이자
-
-            }else if(paiTypCd === "7"){   //미수이자
-
-            }else if(paiTypCd === "8"){   //중도상환원금
-              totMrdpPrca += ele.pmntPrarAmt;
-            }else if(paiTypCd === "9"){   //중도상환수수료
-              totMrdpFee += ele.pmntPrarAmt;
-            }
-            
           });
 
-          $("#TB07030S_exmptSmmAmt").val(comma(Math.round(totExmptAmt)));         
-          $("#TB07030S_KRW_exmptSmmAmt").val(comma(Math.round(totExmptAmt)));     
+        // grdRdmpTrgtDtl.on("editorEnd", function (evt, ui) {
+          
+        //   // alert(ui.dataIndx);
+        //   // alert(JSON.stringify(ui.dataIndx));
 
-          $("#TB07030S_rdmpTrgtPrna").val(comma(Math.round(totRdmpPrna)));         
-          $("#TB07030S_KRW_rdmpTrgtPrna").val(comma(Math.round(totRdmpPrna)));    
+        //   // if (ui.dataIndx === "pmntPrarAmt") {
+        //   //   // let value = Number(ui.newVal);
+        //   //   let rowData = ui.rowData;
+        //   //   let pmntAmt = rowData.pmntAmt || 0;
+        //   //   let pmntPrarAmt = rowData.pmntPrarAmt || 0;
 
-          $("#TB07030S_nrmlIntrAmt").val(comma(Math.round(totRdmpIntr)));         
-          $("#TB07030S_KRW_nrmlIntrAmt").val(comma(Math.round(totRdmpIntr)));    
+        //   //   console.log("pmntPrarAmt ::: " + pmntPrarAmt);
+        //   //   console.log("pmntAmt ::: " + pmntAmt);
+        
+        //   //   if (pmntPrarAmt <= 0 || pmntPrarAmt > pmntAmt) {
+        //   //     console.log("Invalid value");
+        //   //     ui.$cell.find(".pq-editor-input").css("border", "1px solid red");
 
-          $("#TB07030S_crdtGrntOvduIntAmt").val(comma(Math.round(totOvduIntr)));        
-          $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(comma(Math.round(totOvduIntr)));     
+        //   //     // grdRdmpTrgtDtl.beginEdit(ui.rowIndx, ui.dataIndx);
+        //   //     return false; 
+        //   //   } else {
+        //   //     console.log("Valid  value");
+        //   //     ui.$cell.find(".pq-editor-input").css("border", "");
+        //   //   }
+        //   // }
 
-          $("#TB07030S_dealMrdpPrca").val(comma(Math.round(totMrdpPrca)));         
-          $("#TB07030S_KRW_dealMrdpPrca").val(comma(Math.round(totMrdpPrca)));    
+        //   let totRdmpPrna = 0;          //상환대상원금 합계
+        //   let totRdmpIntr = 0;          //납부예정이자 합계
+        //   let totOvduIntr = 0;          //연체이자 합계
+        //   let totMrdpPrca = 0;          //중도상환원금 합계
+        //   let totMrdpFee  = 0;          //중도상환수수료 합계
+        //   let totRcvbIntr = 0;          //미수이자 합계
+        //   let totExmptAmt = 0;          //면제금액 합계
 
-          $("#TB07030S_mrdpFeeAmt").val(comma(Math.round(totMrdpFee)));         
-          $("#TB07030S_KRW_mrdpFeeAmt").val(comma(Math.round(totMrdpFee)));     
+        //   p.forEach((ele) => {
 
-          calculator("rdmpPrnaSmmAmt");
-        });
+        //     let chk = ele.chk;
+
+        //     if(chk){
+        //       let paiTypCd = ele.paiTypCd;//원리금유형코드
+
+        //       let exmptAmt = ele.exmptAmt;
+        //       totExmptAmt += exmptAmt;
+
+        //       if(paiTypCd === "1"){         //원금
+        //         totRdmpPrna += ele.pmntPrarAmt;
+        //       }else if(paiTypCd === "2"){   //정상이자
+        //         totRdmpIntr += ele.pmntPrarAmt;
+        //       }else if(paiTypCd === "3"){   //분할금연체금액
+
+        //       }else if(paiTypCd === "4"){   //납부이자연체금액
+        //         totOvduIntr += ele.pmntPrarAmt;
+        //       }else if(paiTypCd === "5"){   //원금연체금액
+        //         totOvduIntr += ele.pmntPrarAmt;
+        //       }else if(paiTypCd === "6"){   //환출이자
+
+        //       }else if(paiTypCd === "7"){   //미수이자
+
+        //       }else if(paiTypCd === "8"){   //중도상환원금
+        //         totMrdpPrca += ele.pmntPrarAmt;
+        //       }else if(paiTypCd === "9"){   //중도상환수수료
+        //         totMrdpFee += ele.pmntPrarAmt;
+        //       }
+        //     }else{
+        //       // let paiTypCd = ele.paiTypCd;//원리금유형코드
+
+        //       // let exmptAmt = ele.exmptAmt;
+        //       // totExmptAmt -= exmptAmt;
+
+        //       // if(paiTypCd === "1"){         //원금
+        //       //   totRdmpPrna -= ele.pmntPrarAmt;
+        //       // }else if(paiTypCd === "2"){   //정상이자
+        //       //   totRdmpIntr -= ele.pmntPrarAmt;
+        //       // }else if(paiTypCd === "3"){   //분할금연체금액
+
+        //       // }else if(paiTypCd === "4"){   //납부이자연체금액
+        //       //   totOvduIntr -= ele.pmntPrarAmt;
+        //       // }else if(paiTypCd === "5"){   //원금연체금액
+        //       //   totOvduIntr -= ele.pmntPrarAmt;
+        //       // }else if(paiTypCd === "6"){   //환출이자
+
+        //       // }else if(paiTypCd === "7"){   //미수이자
+
+        //       // }else if(paiTypCd === "8"){   //중도상환원금
+        //       //   totMrdpPrca -= ele.pmntPrarAmt;
+        //       // }else if(paiTypCd === "9"){   //중도상환수수료
+        //       //   totMrdpFee -= ele.pmntPrarAmt;
+        //       // }
+        //     }
+
+            
+            
+        //   });
+
+        //   $("#TB07030S_exmptSmmAmt").val(comma(Math.round(totExmptAmt)));         
+        //   $("#TB07030S_KRW_exmptSmmAmt").val(comma(Math.round(totExmptAmt)));     
+
+        //   $("#TB07030S_rdmpTrgtPrna").val(comma(Math.round(totRdmpPrna)));         
+        //   $("#TB07030S_KRW_rdmpTrgtPrna").val(comma(Math.round(totRdmpPrna)));    
+
+        //   $("#TB07030S_nrmlIntrAmt").val(comma(Math.round(totRdmpIntr)));         
+        //   $("#TB07030S_KRW_nrmlIntrAmt").val(comma(Math.round(totRdmpIntr)));    
+
+        //   $("#TB07030S_crdtGrntOvduIntAmt").val(comma(Math.round(totOvduIntr)));        
+        //   $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(comma(Math.round(totOvduIntr)));     
+
+        //   $("#TB07030S_dealMrdpPrca").val(comma(Math.round(totMrdpPrca)));         
+        //   $("#TB07030S_KRW_dealMrdpPrca").val(comma(Math.round(totMrdpPrca)));    
+
+        //   $("#TB07030S_mrdpFeeAmt").val(comma(Math.round(totMrdpFee)));         
+        //   $("#TB07030S_KRW_mrdpFeeAmt").val(comma(Math.round(totMrdpFee)));     
+
+        //   calculator("rdmpPrnaSmmAmt");
+        // });
         break;
 
       case "aplcExchR": // 적용환율
