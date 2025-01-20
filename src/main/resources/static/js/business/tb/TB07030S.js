@@ -188,6 +188,26 @@ const TB07030Sjs = (function () {
     // 상환대상상세내역
     let colRdmpTrgtDtl = [
       {
+        dataIndx: "chk",
+        maxWidth: 36,
+        minWidth: 36,
+        align: "center",
+        resizable: false,
+        title: "",
+        menuIcon: false,
+        type: "checkBoxSelection",
+        cls: "ui-state-default",
+        sortable: false,
+        editor: false,
+        dataType: "bool",
+        width: "6%",
+        editable: "true",
+        cb: {
+          all: false,
+          header: true,
+        },
+      },
+      {
         title: "회차",
         dataType: "integer",
         dataIndx: "rdmpTmrd",
