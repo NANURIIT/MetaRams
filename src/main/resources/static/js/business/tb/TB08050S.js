@@ -786,7 +786,7 @@ const TB08050Sjs = (function () {
               calulator("fee");
               calulator("crry");
 
-              if (rd.prcsCpltYn === "1") {
+              if (rd.prcsCpltYn == "Y") {
                 $("#btnSave").attr("disabled", true);
               } else {
                 $("#btnSave").attr("disabled", false);
