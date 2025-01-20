@@ -1904,7 +1904,6 @@ const TB07040Sjs = (function () {
     $("#TB07040S_H002").val("0");
 
     g_qotaRt = 0;
-    //g_holdPrpsDcd ='0';
     g_sllPosShqt = 0;
     g_krwTrslExcAmt = 0;
 
