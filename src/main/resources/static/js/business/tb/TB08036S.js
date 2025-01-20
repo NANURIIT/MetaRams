@@ -3,14 +3,9 @@ const TB08036Sjs = (function () {
   let arrPqGridInspctRmrkInfo; //월별 사업 관리의견
   let arrPqGridEtcInfo; // 기타사후관리
   let paramData = {};
-
   let B014;
 
   $(document).ready(function () {
-    selectBox = getSelectBoxList("TB08036S", "B014", false);
-    B014 = selectBox.filter(function (item) {
-      return item.cmnsGrpCd === "B014";
-    });
     loadSelectBoxContents();
     convertDateFormat();
     rendorGrid();
@@ -280,6 +275,11 @@ const TB08036Sjs = (function () {
     item += "/" + "I050"; //점검결과
 
     getSelectBoxList("TB08036S", item);
+
+    selectBox = getSelectBoxList("TB08036S", "B014", false);
+    B014 = selectBox.filter(function (item) {
+      return item.cmnsGrpCd === "B014";
+    });
   }
 
   // %포멧 확인
@@ -515,6 +515,8 @@ const TB08036Sjs = (function () {
 
   // 분양수지관리 데이터 세팅
   function setTabDealInfo(dealInfo) {
+    resetTabDeal();
+
     $("#unitNum").val(dealInfo.unitNum); // 세대수
     $("#slStDt").val(formatDate(dealInfo.slStDt)); // 분양시작일
     $("#slEdDt").val(formatDate(dealInfo.slEdDt)); // 분양종료일
@@ -526,12 +528,28 @@ const TB08036Sjs = (function () {
       .val(dealInfo.crdtRifcIsttCtns)
       .prop("selected", true)
       .change(); // 신용보강기관내용
-    $(":radio[name='loanBondTakYn']").radioSelect(dealInfo.loanBondTakYn); // 대출채권양수여부
+    // dealInfo.loanBondTakYn 값에 따라 라디오 버튼을 선택
+    if (dealInfo.loanBondTakYn === "Y") {
+      $(":radio[name='TB08036S_loanBondTakYn'][value='Y']").prop(
+        "checked",
+        true
+      );
+    } else if (dealInfo.loanBondTakYn === "N") {
+      $(":radio[name='TB08036S_loanBondTakYn'][value='N']").prop(
+        "checked",
+        true
+      );
+    }
+    // 대출채권양수여부
     $("#TB08036S_I012_1")
       .val(dealInfo.prfbIslfEvl)
       .prop("selected", true)
       .change(); // 사업장자체평가
-    $(":radio[name='ipreYn']").radioSelect(dealInfo.ipreYn); // IPRE여부
+    if (dealInfo.ipreYn === "Y") {
+      $(":radio[name='TB08036S_ipreYn'][value='Y']").prop("checked", true);
+    } else if (dealInfo.ipreYn === "N") {
+      $(":radio[name='TB08036S_ipreYn'][value='N']").prop("checked", true);
+    }
     $("#TB08036S_I012_2").val(dealInfo.clcIntlGrd); // 계산내부등급
     $("#TB08036S_I012_3").val(dealInfo.dcsnIntlGrd); // 확정내부등급
     $("#mgtnRt").val(dealInfo.mgtnRt); // 이주율
@@ -622,7 +640,6 @@ const TB08036Sjs = (function () {
       crdtRifcIsttCtns: getInputValue("TB08036S_C010"), // 신용보강기관내용
       clcIntlGrd: getInputValue("TB08036S_I012_2"), // 계산내부등급
       prfbIslfEvl: getInputValue("TB08036S_I012_1"), // 사업성자체평가
-      loanBondTakYn: $("input[name='loanBondTakYn']:checked").val(), // 대출채권양수여부
       inspctYyMm: unformatDate(getInputValue("TB08036S_inspctYyMm")), // 점검기준년월
       slStDt: unformatDate(getInputValue("slStDt")), // 분양시작일
       slEdDt: unformatDate(getInputValue("slEdDt")), // 분양종료일
@@ -630,7 +647,8 @@ const TB08036Sjs = (function () {
       cnstStDt: unformatDate(getInputValue("cnstStDt")), // 공사시작일
       cnstEdDt: unformatDate(getInputValue("cnstEdDt")), // 공사종료일
       cnstPrd: getInputValue("cnstPrd"), // 공사기간
-      ipreYn: $("input[name='ipreYn']:checked").val(), // IPRE여부
+      loanBondTakYn: $("input[name='TB08036S_loanBondTakYn']:checked").val(), // 대출채권양수여부
+      ipreYn: $("input[name='TB08036S_ipreYn']:checked").val(), // IPRE여부
       dcsnIntlGrd: getInputValue("TB08036S_I012_3"), // 확정내부등급
       mgtnRt: getInputValue("mgtnRt"), // 이주율
       estmPrgsRt: getInputValue("estmPrgsRt"), // 예상진척율
@@ -683,18 +701,52 @@ const TB08036Sjs = (function () {
 
   //분양수지관리 리셋
   function resetTabDeal() {
-    $("#TB08036S_tab-1 input").each(function () {
-      $(this).val("");
-    });
+    // Deal 번호
+    $("#TB08036S_ibDealNo").val("");
+    $("#TB08036S_ibDealNm").val("");
 
+    // 점검기준년월
+    $("#TB08036S_inspctYyMm").val("");
+
+    // 공사 시작일, 종료일, 기간
+    $("#cnstStDt").val("");
+    $("#cnstEdDt").val("");
+    $("#cnstPrd").val("");
+
+    // 분양 시작일, 종료일, 기간
+    $("#slStDt").val("");
+    $("#slEdDt").val("");
+    $("#slPrd").val("");
+
+    // 사업기본정보
+    $("#unitNum").val("");
+    $("#TB08036S_C010").val("");
+    $("#TB08036S_I012_1").val("");
+    $("#TB08036S_I012_2").val("");
+    $("#TB08036S_I012_3").val("");
+
+    // 진행 관리
+    $("#TB08036S_B014_01").val("");
+    $("#estmPrgsRt").val("");
+    $("#pfmcPrgsRt").val("");
+    $("#mgtnRt").val("");
+
+    // 분양수입/공사비 점검의견
+    $("#TB08036S_I050").val("");
+    $("#bsnBdSlltBalcCheckOpnn").val("");
+
+    // 관련문서
+    $("#fileKey1").val("");
+    $("#fileKey2").val("*");
+
+    // 라디오 버튼의 n번째 옵션을 선택 (예: 1번째)
+    $("input[name='TB08036S_loanBondTakYn']").eq(1).prop("checked", true);
+    $("input[name='TB08036S_ipreYn']").eq(1).prop("checked", true);
+
+    // 셀렉트 박스의 0번째 옵션 선택
     $("#TB08036S_tab-1 select").each(function () {
       $(this).find("option:eq(0)").prop("selected", true).change();
     });
-    $("#TB08036S_tab-1 select").each(function () {
-      $(this).prop("selectedIndex", 0).change();
-    });
-
-    $("#bsnBdSlltBalcCheckOpnn").val("");
   }
 
   //월별 공사 및 분양 현황 리셋
