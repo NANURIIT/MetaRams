@@ -186,6 +186,20 @@ const TB07170Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
+        title: "상환일자",
+        dataType: "string",
+        width: "180",
+        dataIndx: "rgstBdcd",
+        halign: "center",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          var options = dprtList;
+          var option = options.find((opt) => opt.cdValue == ui.cellData);
+          return option ? option.cdName : ui.cellData;
+        },
+      },
+      {
         title: "등록부서",
         dataType: "string",
         width: "180",
