@@ -468,22 +468,12 @@ function checkByteLimit(element, maxLength) {
   // 바이트 길이 계산 (한글 2바이트, 영문 1바이트)
   for (let i = 0; i < text.length; i++) {
     let charCode = text.charCodeAt(i);
-    byteLength += charCode > 127 ? 2 : 1; // 한글은 2바이트, 영문은 1바이트
-  }
-
-  // 바이트 길이가 최대값을 초과하면 글자 잘라내기
-  if (byteLength > maxLength) {
-    text = text.slice(0, text.length - 1); // 마지막 문자 잘라내기
-    byteLength = maxLength; // 최대 길이 설정
-  }
-
-  // 텍스트를 textarea에 다시 설정
-  element.value = text;
-
-  // 바이트 수 업데이트
-  let byteCountElement = document.getElementById("byte-count");
-  if (byteCountElement) {
-    byteCountElement.innerText = byteLength + " / " + maxLength + " bytes";
+    let charByte = charCode > 127 ? 2 : 1; // 한글은 2바이트, 영문은 1바이트
+    if (byteLength + charByte > maxLength) {
+      element.value = text.slice(0, i); // 초과한 부분은 잘라냄
+      break;
+    }
+    byteLength += charByte;
   }
 }
 
@@ -1892,7 +1882,7 @@ function resetInputValue(selector) {
   };
   selector.find(`input[id$='EndDt']`).val(after1M);
 
-  if(selector.attr("data-menuid")){
+  if (selector.attr("data-menuid")) {
     setKRKRW(selector.attr("data-menuid").split("/")[1]);
   }
 }
