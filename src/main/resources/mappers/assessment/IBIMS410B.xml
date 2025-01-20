@@ -762,7 +762,7 @@
               , NVL(T1.DEAL_TR_AMT, 0)              AS DEAL_TR_AMT            /* 자금처리금액  410B */
               , NVL(T1.KRW_TRSL_TR_PRCA, 0)         AS KRW_TRSL_TR_PRCA       /* 원화환산금액  410B */
               , T1.ACHD_NM                                                    /* 예금주명  410B */
-              , NVL(T7.OVRS_TRNS_YN, 'N')           AS OVRS_TRNS_YN           /* 해외송금여부 */
+              , T7.OVRS_TRNS_YN                     AS OVRS_TRNS_YN           /* 해외송금여부 */
               , T5.DEAL_NO                                                    /* 딜번호 */
               , T1.TR_SN                            AS TR_SEQ                 /* 거래일련번호 */
               , T1.EXC_SN                           AS EXC_SEQ                /* 실행일련번호 */
@@ -794,7 +794,6 @@
              ON T1.PRDT_CD = T7.PRDT_CD
             AND T1.TR_SN = T7.TR_SEQ
             AND T1.EXC_SN = T7.EXC_SEQ
-            AND T7.CONS_DECD_STAT_CD != '4'
       LEFT JOIN IBIMS231B T8  /* 딜승인결재기본 */
              ON T8.DEAL_NO = T5.DEAL_NO
             AND T8.PRDT_CD = T1.PRDT_CD
@@ -838,8 +837,14 @@
             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trCrryCd)">
             AND T1.TR_CRRY_CD = #{trCrryCd} /* 통화구분 */
             </if>
-            <!-- <if test=" != ''">
-            AND T1.TR_CRRY_CD = #{trCrryCd} /* 업무구분 */
-            </if> -->
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trSn)">
+            AND T1.TR_SN = #{trSn}
+            </if>
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(excSn)">
+            AND T1.EXC_SN = #{excSn}
+            </if>
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(erlmSeq)">
+            AND T7.ERLM_SEQ = #{erlmSeq}
+            </if>
     </select>
 </mapper>

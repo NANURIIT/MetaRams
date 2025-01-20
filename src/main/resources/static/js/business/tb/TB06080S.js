@@ -93,6 +93,10 @@ const TB06080Sjs = (function () {
               sessionStorage.setItem("wfDealNm", ui.rowData.dealNm);
               sessionStorage.setItem("wfPrdtCd", ui.rowData.prdtCd);
               sessionStorage.setItem("wfPrdtNm", ui.rowData.prdtNm);
+              sessionStorage.setItem("excSeq", ui.rowData.excSeq);
+              sessionStorage.setItem("rqstSq", ui.rowData.rqstSq);
+              sessionStorage.setItem("trSeq", ui.rowData.trSeq);
+              sessionStorage.setItem("decdStepDcd", ui.rowData.decdStepDcd);
               callPage(ui.rowData.scrnNo)
             })
 

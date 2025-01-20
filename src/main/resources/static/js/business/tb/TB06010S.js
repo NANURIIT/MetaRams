@@ -64,8 +64,6 @@ const TB06010Sjs = (function(){
 		
 		getDealInfoFromWF();
 
-		// 승인요청 종목코드
-		getApvlItem('TB06010S', getDealList);
 	});
 
 
