@@ -370,7 +370,7 @@ const TB07010Sjs = (function () {
             feeRciv.option("cellDblClick", function (event, ui) {
               let rowData = ui.rowData;
               $("#TB07010S_feeAmt").val(addComma(rowData.feeAmt));
-              prcsCpltYn = "1"; // 처리완료여부
+              prcsCpltYn = "Y"; // 처리완료여부
               feeSn = rowData.feeSn; // 수수료일련번호
               prarDt = rowData.prarDt; // 수납일자 == 수취일자
 
