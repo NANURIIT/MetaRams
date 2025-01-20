@@ -5,23 +5,19 @@ let TB06017P_gridState = 1;
 let TB06017P_onchangehandler = "on";	// on off
 
 $(document).ready(function () {
-	docRdySettings();
+	TB06017P_docRdySettings();
 });
 
 /**
  * show modal 
  */
 function callTB06017P(prefix) {
-	keyDownEnter_TB06017P();
 	$('#TB06017P_prefix').val(prefix);
-
 	$('#modal-TB06017P').modal('show');
-	indexChangeHandler("TB06017P");
 	setTimeout(() => roadMrtgInfoListGrid(), 300);
-
+	indexChangeHandler("TB06017P");
 	if (prefix == 'TB06013P') {
 		$("#TB06017P_mrtgMngmNo").val($("#TB06013P_mrtgMngmNo").val());  //담보번호
-		//$("#TB06017P_mrtgNm").val($("#TB06013P_mrtgNm").val()); //담보명
 		if (isNotEmpty($("#TB06017P_mrtgMngmNo").val())) {
 			setTimeout(() => getMrtgInfo(), 300);
 		}
@@ -31,7 +27,7 @@ function callTB06017P(prefix) {
 /**
 	문서로드시 세팅
  */
-function docRdySettings() {
+function TB06017P_docRdySettings() {
 	modalShowFunction_TB06017P();
 	keyDownEnter_TB06017P();
 }
@@ -73,7 +69,6 @@ function TB06017P_srch(menuId) {
 		const str = $(this).val().length
 		// 같이 붙어있는 인풋박스 id
 		$('#TB06013P_mrtgNm_forSeach').val("");
-
 		// ex) 담보번호 VARCHAR(16)
 		if (str === 16) {
 			await srchEvent_TB06017P(this);
@@ -244,8 +239,12 @@ function roadMrtgInfoListGrid() {
 			editable: false,
 			scrollModel: { autoFit: true },
 			colModel: colMrtgInfoList,
-			strNoRows: '데이터가 없습니다.'
+			strNoRows: '데이터가 없습니다.',
+			rowDblClick: function(event, ui) {
+				setMrtgInfo(ui.rowData);
+			}
 		};
+		
 		$("#TB06017P_mrtgInfoList").pqGrid(obj);
 		arrPqGridMrtgInfoList = $("#TB06017P_mrtgInfoList").pqGrid('instance');
 	}
@@ -254,20 +253,6 @@ function roadMrtgInfoListGrid() {
 	}
 
 }
-
-//그리드에 데이터 넣기 (CRUD)
-function dataMrtgInfoSetGrid(data) {
-	arrPqGridMrtgInfoList.setData(data);
-	arrPqGridMrtgInfoList.option("strNoRows", '조회된 데이터가 없습니다.');
-	arrPqGridMrtgInfoList.on("cellDblClick", function (event, ui) {
-		var rowData = ui.rowData;
-		setMrtgInfo(rowData);
-	});
-}
-
-
-
-
 
 /**
  * hide modal
@@ -307,8 +292,7 @@ function getMrtgInfo() {
 				modalClose_TB06017P();
 			}
 			else {
-				callTB06017P($('#TB06017P_prefix').val());
-				setTimeout(() => dataMrtgInfoSetGrid(data), 400)
+				setTimeout(() => $("#TB06017P_mrtgInfoList").pqGrid('instance').setData(data), 400);
 			}
 		}
 	});
