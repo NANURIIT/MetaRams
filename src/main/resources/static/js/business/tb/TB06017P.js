@@ -18,9 +18,6 @@ function callTB06017P(prefix) {
 	indexChangeHandler("TB06017P");
 	if (prefix == 'TB06013P') {
 		$("#TB06017P_mrtgMngmNo").val($("#TB06013P_mrtgMngmNo").val());  //담보번호
-		if (isNotEmpty($("#TB06017P_mrtgMngmNo").val())) {
-			setTimeout(() => getMrtgInfo(), 300);
-		}
 	}
 }
 
@@ -292,6 +289,7 @@ function getMrtgInfo() {
 				modalClose_TB06017P();
 			}
 			else {
+				callTB06017P($('#TB06017P_prefix').val());
 				setTimeout(() => $("#TB06017P_mrtgInfoList").pqGrid('instance').setData(data), 400);
 			}
 		}
