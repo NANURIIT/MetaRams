@@ -538,10 +538,7 @@ const TB08036Sjs = (function () {
     $("#estmPrgsRt").val(dealInfo.estmPrgsRt); // 예상진척율
     $("#pfmcPrgsRt").val(dealInfo.pfmcPrgsRt); // 실적진척율
     $("#TB08036S_B014_01").val(dealInfo.busiPrgStep); // 사업진행단계
-    $("#TB08036S_I050")
-      .val(dealInfo.inspctRmrk)
-      .prop("selected", true)
-      .change(); // 분양수지점검결과
+    $("#TB08036S_I050").val(dealInfo.checkRslt).prop("selected", true).change(); // 분양수지점검결과
     $("#bsnBdSlltBalcCheckOpnn").val(dealInfo.bsnBdSlltBalcCheckOpnn); // 영업점분양수지점검의견
   }
 
