@@ -451,55 +451,55 @@
      <insert id="insertCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
         INSERT INTO IBIMS403B
                (
-                  PRDT_CD                                 <!-- /*상품코드 */ -->
-                , EXC_SN                                  <!-- /*실행일련번호 */ -->
-                , SCX_DCD                                 <!-- /*일정구분코드 */ -->
-                , RDMP_TMRD                               <!-- /*상환회차 */ -->
-                , PRAR_DT                                 <!-- /*예정일자 */ -->
-                , TRGT_AMT                                /*대상금액*/
-                , PRAR_PRNA                               <!-- /*예정원금 */ -->
-                , STRT_DT                                 <!-- /*시작일자 */ -->
-                , END_DT                                  <!-- /*종료일자 */ -->
-                , RDMP_PRAR_INTR                          <!-- /*상환예정이자 */ -->
-                , PRCS_CPLT_YN                            <!-- /*처리완료여부 */ -->
-                , PRCS_DT                                 <!-- /*처리일자 */ -->
-                , PRCS_AMT                                <!-- /*처리금액 */ -->
-                , PRCS_INTR_AMT                           <!-- /*처리이자금액 */ -->
-                , APLY_IRT                                <!-- /*적용이율 */ -->
-                , OVDU_INTR_RT                            <!-- /*연체이자율 */ -->
-                , TRCH_DCD                                <!-- /*트렌치구분코드 */ -->
-                , TR_SN                                   <!-- /*거래일련번호 */ -->
-                , HND_DETL_DTM                            <!-- /*조작상세일시 */ -->
-                , HND_EMPNO                               <!-- /*조작사원번호 */ -->
-                , HND_TMNL_NO                             <!-- /*조작단말기번호 */ -->
-                , HND_TR_ID                               <!-- /*조작거래id */ -->
-                , GUID                                    <!-- /*guid */ -->
+                  PRDT_CD                             /* 상품코드 */
+                , EXC_SN                              /* 실행일련번호 */
+                , SCX_DCD                             /* 일정구분코드 */
+                , RDMP_TMRD                           /* 상환회차 */
+                , PRAR_DT                             /* 예정일자 */
+                , TRGT_AMT                            /* 대상금액*/
+                , PRAR_PRNA                           /* 예정원금 */
+                , STRT_DT                             /* 시작일자 */
+                , END_DT                              /* 종료일자 */
+                , RDMP_PRAR_INTR                      /* 상환예정이자 */
+                , PRCS_CPLT_YN                        /* 처리완료여부 */
+                , PRCS_DT                             /* 처리일자 */
+                , PRCS_AMT                            /* 처리금액 */
+                , PRCS_INTR_AMT                       /* 처리이자금액 */
+                , APLY_IRT                            /* 적용이율 */
+                , OVDU_INTR_RT                        /* 연체이자율 */
+                , TRCH_DCD                            /* 트렌치구분코드 */
+                , TR_SN                               /* 거래일련번호 */
+                , HND_DETL_DTM                        /* 조작상세일시 */
+                , HND_EMPNO                           /* 조작사원번호 */
+                , HND_TMNL_NO                         /* 조작단말기번호 */
+                , HND_TR_ID                           /* 조작거래id */
+                , GUID                                /* guid */
                )
         VALUES
                (
-                 #{prdtCd}                           <!-- /*상품코드 */ -->
-               , #{excSn}                            <!-- /*실행일련번호 */ -->
-               , #{scxDcd}                           <!-- /*일정구분코드 */ -->
-               , #{rdmpTmrd}                         <!-- /*상환회차 */ -->
-               , #{prarDt}                           <!-- /*예정일자 */ -->
+                 #{prdtCd}                           /*상품코드 */
+               , #{excSn}                            /*실행일련번호 */
+               , #{scxDcd}                           /*일정구분코드 */
+               , #{rdmpTmrd}                         /*상환회차 */
+               , #{prarDt}                           /*예정일자 */
                , #{trgtAmt}                          /* 대상금액 */
-               , #{prarPrna}                         <!-- /*예정원금 */ -->
-               , #{strtDt}                           <!-- /*시작일자 */ -->
-               , #{endDt}                            <!-- /*종료일자 */ -->
-               , #{rdmpPrarIntr}                     <!-- /*상환예정이자 */ -->
-               , #{prcsCpltYn}                       <!-- /*처리완료여부 */ -->
-               , TO_CHAR(SYSDATE, 'YYYYMMDD')         <!-- /*처리일자 */ -->
-               , #{prcsAmt}                          <!-- /*처리금액 */ -->
-               , #{prcsIntrAmt}                      <!-- /*처리이자금액 */ -->
-               , #{aplyIrt}                          <!-- /*적용이율 */ -->
-               , #{ovduIntrRt}                       <!-- /*연체이자율 */ -->
-               , #{trchDcd}                          <!-- /*트렌치구분코드 */ -->
-               , #{trSn}                             <!-- /*거래일련번호 */ -->
-               , SYSDATE                               <!-- /*조작상세일시 */ -->
-               , #{hndEmpno}                         <!-- /*조작사원번호 */ -->
-               , #{hndTmnlNo}                        <!-- /*조작단말기번호 */ -->
-               , #{hndTrId}                          <!-- /*조작거래id */ -->
-               , #{guid}                             <!-- /*guid */ -->
+               , #{prarPrna}                         /*예정원금 */
+               , #{strtDt}                           /*시작일자 */
+               , #{endDt}                            /*종료일자 */
+               , #{rdmpPrarIntr}                     /*상환예정이자 */
+               , #{prcsCpltYn}                       /*처리완료여부 */
+               , TO_CHAR(SYSDATE, 'YYYYMMDD')        /*처리일자 */
+               , #{prcsAmt}                          /*처리금액 */
+               , #{prcsIntrAmt}                      /*처리이자금액 */
+               , #{aplyIrt}                          /*적용이율 */
+               , #{ovduIntrRt}                       /*연체이자율 */
+               , #{trchDcd}                          /*트렌치구분코드 */
+               , #{trSn}                             /*거래일련번호 */
+               , SYSDATE                             /*조작상세일시 */
+               , #{hndEmpno}                         /*조작사원번호 */
+               , #{hndTmnlNo}                        /*조작단말기번호 */
+               , #{hndTrId}                          /*조작거래id */
+               , #{guid}                             /*guid */
                )
      </insert>
 
@@ -577,63 +577,73 @@
 
     <!--입금내역관리 상환예정내역 조회-->
     <select id="getRdmpPrarDtls" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
-      SELECT  CASE  WHEN P.SCX_DCD = '02'
-                      THEN P.PRAR_PRNA
-                      ELSE P.RDMP_PRAR_INTR
-                    END                   AS 		PMNT_PRAR_AMT					/* 납부예정금액 */
-                    , P.PRAR_DT 				                              /* 상환예정일자 */
-                    , D1.DEAL_NO 				  AS    DEAL_NO               /* 딜번호 */
-                    , P.PRDT_CD           AS    PRDT_CD               /* 상품코드 */ 
-                    , P.EXC_SN            AS    EXC_SN                /* 실행일련번호 */   
-                    , D1.MNGM_BDCD 			                              /* 관리부서 */
-                    , P.SCX_DCD 				                              /* 상환구분 */
-                    , D1.TR_CRRY_CD 			                            /* 통화코드 */
-                FROM IBIMS403B P				                              /* 원리금상환스케줄 */
-                	, IBIMS201B D1 
-                WHERE 1=1
-                AND D1.PRDT_CD = P.PRDT_CD
-                AND D1.LAST_YN = 'Y'
-                AND (P.PRCS_CPLT_YN != 'Y' OR P.PRCS_CPLT_YN IS NULL)
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
-                  AND D1.DEAL_NO  = #{dealNo}
-                </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-                  AND D1.MNGM_BDCD = #{dprtCd}
-                </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
-                  AND P.PRAR_DT &gt;= #{fromDt} 
-                </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
-                  AND P.PRAR_DT &lt;= #{toDt} 
-                </if>
-          UNION ALL
-                SELECT   F.FEE_AMT				AS PMNT_PRAR_AMT	          /* 납부예정금액 */
-                    , F.PRAR_DT                                       /* 상환예정일자 */
-                    , D2.DEAL_NO          AS DEAL_NO                  /* 딜번호 */
-                    , F.PRDT_CD           AS PRDT_CD                  /* 상품코드 */ 
-                    , F.FEE_SN            AS EXC_SN                   /* 수수료일련번호 */
-                    , D2.MNGM_BDCD                                    /* 관리부서 */
-                    , '03'					      AS SCX_DCD                  /* 상환구분 */
-                    , D2.TR_CRRY_CD                                   /* 통화코드 */
-                FROM IBIMS348B F                                      /* 수수료상환스케줄 */
-                	 , IBIMS201B D2             
-                WHERE 1=1
-                AND D2.PRDT_CD = F.PRDT_CD
-                AND D2.LAST_YN = 'Y'
-                AND (F.PRCS_CPLT_YN != 'Y' OR F.PRCS_CPLT_YN IS NULL)
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
-                  AND D2.DEAL_NO  = #{dealNo}
-                </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-                  AND D2.MNGM_BDCD = #{dprtCd}
-                </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
-                  AND F.PRAR_DT &gt;= #{fromDt} 
-                </if>
-                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
-                  AND F.PRAR_DT &lt;= #{toDt} 
-                </if>
-                ORDER BY PRAR_DT 
+      SELECT CASE
+             WHEN TT1.SCX_DCD = '02'
+             THEN TT1.PRAR_PRNA
+             ELSE TT1.RDMP_PRAR_INTR
+              END                   AS PMNT_PRAR_AMT			  /* 납부예정금액 */
+           , TT1.PRAR_DT 				    AS PRAR_DT              /* 상환예정일자 */
+           , TT2.DEAL_NO 				    AS DEAL_NO              /* 딜번호 */
+           , TT1.PRDT_CD            AS PRDT_CD              /* 상품코드 */ 
+           , TT1.EXC_SN             AS EXC_SN               /* 실행일련번호 */
+           , TT1.TR_SN              AS TR_SN                /* 거래일련번호 */
+           , TT1.RDMP_TMRD          AS RDMP_TMRD            /* 상환회차 */
+           , ''                     AS FEE_SN               /* 수수료일련번호 */
+           , TT2.MNGM_BDCD 			                            /* 관리부서 */
+           , TT1.SCX_DCD 				                            /* 상환구분 */
+           , TT2.TR_CRRY_CD 			                          /* 통화코드 */
+        FROM IBIMS403B TT1				                          /* 원리금상환스케줄 */
+   LEFT JOIN IBIMS201B TT2
+          ON TT1.PRDT_CD = TT2.PRDT_CD
+       WHERE 1=1
+         AND TT2.LAST_YN = 'Y'
+         AND (TT1.PRCS_CPLT_YN != 'Y' OR TT1.PRCS_CPLT_YN IS NULL)
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+         AND TT2.DEAL_NO  = #{dealNo}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+         AND TT2.MNGM_BDCD = #{dprtCd}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
+         AND TT1.PRAR_DT &gt;= #{fromDt} 
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
+         AND TT1.PRAR_DT &lt;= #{toDt} 
+         </if>
+       UNION ALL
+      SELECT BT2.FEE_AMT				  AS PMNT_PRAR_AMT	        /* 납부예정금액 */
+           , BT2.PRAR_DT          AS PRAR_DT                /* 상환예정일자 */
+           , BT3.DEAL_NO          AS DEAL_NO                /* 딜번호 */
+           , BT2.PRDT_CD          AS PRDT_CD                /* 상품코드 */ 
+           , BT1.EXC_SN           AS EXC_SN                 /* 수수료일련번호 */
+           , BT1.TR_SN            AS TR_SN                  /* 거래일련번호 */
+           , '0'                  AS RDMP_TMRD              /* 상환회차 */
+           , BT1.FEE_SN           AS FEE_SN                 /* 수수료일련번호 */
+           , BT3.MNGM_BDCD                                  /* 관리부서 */
+           , '03'					        AS SCX_DCD                /* 상환구분 */
+           , BT3.TR_CRRY_CD                                 /* 통화코드 */
+        FROM IBIMS420B BT1 
+  INNER JOIN IBIMS348B BT2                                  /* 수수료상환스케줄 */
+          ON BT1.PRDT_CD = BT2.PRDT_CD
+         AND BT1.FEE_SN = BT2.FEE_SN
+   LEFT JOIN IBIMS201B BT3
+          ON BT1.PRDT_CD = BT3.PRDT_CD
+       WHERE 1=1
+         AND BT3.LAST_YN = 'Y'
+         AND (BT2.PRCS_CPLT_YN != 'Y' OR BT2.PRCS_CPLT_YN IS NULL)
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+         AND BT3.DEAL_NO  = #{dealNo}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+         AND BT3.MNGM_BDCD = #{dprtCd}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
+         AND BT2.PRAR_DT &gt;= #{fromDt} 
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
+         AND BT2.PRAR_DT &lt;= #{toDt} 
+         </if>
+       ORDER BY PRAR_DT
     </select>
 
     <!--상환대상내역 조회-->

@@ -358,41 +358,9 @@ const TB07090Sjs = (function () {
         align: "center",
         width: "165",
         editable: true,
-        editor: {
-          type: "textbox",
-          init: function (ui) {
-              ui.cellData = "";
-              ui.$cell.find("input")
-              // .on("click", function () {
-              //   console.log("발생했는가.");
-              //   $('#TB07090S_colModel2').pqGrid("instance").updateRow({
-              //     rowIndx: ui.rowIndx,
-              //     row: {
-              //       rctmDt: $(this).val()
-              //     }
-              //   })
-              // })
-              .datepicker({
-                  changeMonth: true,
-                  changeYear: true,
-                  dateFormat: 'yy-mm-dd',
-                  autoclose: true,
-                  language: "ko",
-                  onSelect: function (selectedDate) {
-                    console.log(selectedDate);
-                    
-                    // 선택한 값을 데이터 모델에 반영
-                    $('#TB07090S_colModel2').pqGrid("updateRow", {
-                        rowIndx: ui.rowIndx,
-                        row: { rctmDt: selectedDate }
-                    });
-
-                    // 선택한 값을 셀에 즉시 표시
-                    $(this).val(selectedDate);
-                  }
-                });
-          },
-        },
+        render: function ( ui ) {
+          return formatDate(ui.cellData);
+        }
       },
       {
         title: "등록순번",
@@ -704,7 +672,6 @@ const TB07090Sjs = (function () {
               }
             })
           }
-          console.log("실행");
         }
       },
       // {
@@ -733,6 +700,18 @@ const TB07090Sjs = (function () {
       },
       {
         dataIndx: "excSn",
+        hidden: true
+      },
+      {
+        dataIndx: "trSn",
+        hidden: true
+      },
+      {
+        dataIndx: "rdmpTmrd",
+        hidden: true
+      },
+      {
+        dataIndx: "feeSn",
         hidden: true
       },
       {
@@ -866,9 +845,9 @@ const TB07090Sjs = (function () {
         },
         rowClick: function (event, ui) {
           if (TB07090S_rowData === ui.rowData) {
-              TB07090S_rowData = TB07090S_dummyData;
+            TB07090S_rowData = TB07090S_dummyData;
           } else {
-              TB07090S_rowData = ui.rowData;
+            TB07090S_rowData = ui.rowData;
           }
           if (selected_dptrRgstDtl === ui.rowData) {
             colModel2_rowIndx = null;
@@ -1118,6 +1097,9 @@ const TB07090Sjs = (function () {
         case "excSn":
           newRow[dataIndx] = selected_rdmpPrarDtl.excSn;
           break;
+        case "trSn":
+          newRow[dataIndx] = selected_rdmpPrarDtl.trSn;
+          break;
         case "rdptObjtDvsnCd":
           newRow[dataIndx] = selected_rdmpPrarDtl.scxDcd;
           break;
@@ -1171,6 +1153,9 @@ const TB07090Sjs = (function () {
       dealNo: selected_rdmpPrarDtl.dealNo
       , prdtCd: selected_rdmpPrarDtl.prdtCd
       , excSn: selected_rdmpPrarDtl.excSn
+      , trSn: selected_rdmpPrarDtl.trSn
+      , feeSn: selected_rdmpPrarDtl.feeSn
+      , rdmpTmrd: selected_rdmpPrarDtl.rdmpTmrd
       , rdptObjtDvsnCd: selected_rdmpPrarDtl.scxDcd
     }
 
@@ -1179,9 +1164,20 @@ const TB07090Sjs = (function () {
     const chkRctmDtlsMapping = () => {
       let result = true;
       for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
-        if (rctmDtlsMappingGridData[i].dealNo === selected_rdmpPrarDtl.dealNo
+        if (
+          /* 딜번호! */
+          rctmDtlsMappingGridData[i].dealNo === selected_rdmpPrarDtl.dealNo
+          /* 종목코드! */
           && rctmDtlsMappingGridData[i].prdtCd === selected_rdmpPrarDtl.prdtCd
+          /* 실행일련번호! */
           && Number(rctmDtlsMappingGridData[i].excSn) === Number(selected_rdmpPrarDtl.excSn)
+          /* 거래일련번호! */
+          && Number(rctmDtlsMappingGridData[i].trSn) === Number(selected_rdmpPrarDtl.trSn)
+          /* 수수료일련번호! */
+          && Number(rctmDtlsMappingGridData[i].feeSn) === Number(selected_rdmpPrarDtl.feeSn)
+          /* 상환회차! */
+          && Number(rctmDtlsMappingGridData[i].rdmpTmrd) === Number(selected_rdmpPrarDtl.rdmpTmrd)
+          /* 상환형태?구분코드! */
           && rctmDtlsMappingGridData[i].rdptObjtDvsnCd === selected_rdmpPrarDtl.scxDcd
         ) {
           // 화면내 매핑된 정보가 있다면 false

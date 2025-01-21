@@ -189,7 +189,7 @@ const TB07170Sjs = (function () {
         title: "상환일자",
         dataType: "string",
         width: "180",
-        dataIndx: "rgstBdcd",
+        dataIndx: "prarDt",
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: "range" }] },

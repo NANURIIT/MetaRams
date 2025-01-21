@@ -20,7 +20,10 @@ public class IBIMS430BDTO {
     private String      fndsDvsnCd;              // 자금구분코드
     private String      dealNo;                  // ┌ 딜번호
     private String      prdtCd;                  // │ 종목코드
-    private String      excSn;                   // └ 실행일련번호 
+    private int         excSn;                   // │ 실행일련번호
+    private int         feeSn;                   // │ 수수료일련번호
+    private int         trSn;                    // │ 거래일련번호
+    private String      rdmpTmrd;                // └ 상환회차
     private String      rdptObjtDvsnCd;          // 상환대상구분코드
     private BigDecimal  dealExcsPymtAmt;         // 딜초과납입금액
     private String      excsPymtPrcsDvsnCd;      // 초과납입처리구분코드
@@ -36,7 +39,6 @@ public class IBIMS430BDTO {
     private String      rgstEmpno;               // 등록사원번호
     private String      rgstBdcd;                // 등록부점코드
     private String      rgstDtm;                 // 등록일시
-    // private BigDecimal  dealDvdnAmt;             //딜배당금액
     private String      hndDetlDtm;              // 조작상세일시
     private String      hndEmpno;                // 조작사원번호
     private String      hndTmnlNo;               // 조작단말기번호
