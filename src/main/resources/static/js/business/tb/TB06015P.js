@@ -1587,7 +1587,7 @@ function addRows_intrPlanGrid(rows){
 		var endDt = row["종료일"];
 		var aplyIrt = row["이자율(%)"];
 		var prarPrna = row["대상금액"];
-		var rdmpPrarIntr = row["이자액수"];
+		var rdmpPrarIntr = row["이자금액"];
 
 		var strtDate = new Date(strtDt);
 		var endDate = new Date(endDt);

@@ -229,7 +229,7 @@ const TB09100Sjs = (function() {
 		//딜 손익현황 - 수익 항목 colM
 		let colM_revenue = [
 			{
-				title: "상품코드",
+				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
 				align: "center",
@@ -296,7 +296,7 @@ const TB09100Sjs = (function() {
 		//딜 손익현황 - 비용 항목 colM
 		let colM_cost = [
 			{
-				title: "상품코드",
+				title: "종목코드",
 				dataType: "string",
 				dataIndx: "",
 				align: "center",
