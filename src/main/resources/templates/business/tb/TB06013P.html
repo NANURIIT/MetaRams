@@ -91,28 +91,24 @@
 												</div>
 												<label class="col-sm-1 col-form-label"><span class="req"></span>담보명</label>
 												<div class="col-sm-3 input-group">
-													<input type="text" class="form-control" id="TB06013P_mrtgNm">
+													<input type="text" class="form-control" id="TB06013P_mrtgNm" maxlength="50">
 												</div>
 											</div>
 											<!-- row4 -->
 						    				<div class="form-group form-inline row">
 						    					<label class="col-sm-1 col-form-label"><span class="req"></span>등록일자</label>
 												<div class="col-sm-3 input-group date">
-													<input type="text" class="form-control" id="TB06013P_rgstDt" value="" 
-													placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-													onblur="this.value=formatDate(this.value.replaceAll('-',''));">
+													<input type="text" class="form-control" id="TB06013P_rgstDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 												</div>
 												<label class="col-sm-1 col-form-label"><span class="req"></span>해지일자</label>
 												<div class="col-sm-3 input-group date">
-													<input type="text" class="form-control" id="TB06013P_mrtgCclcDt" value="" 
-													placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-													onblur="this.value=formatDate(this.value.replaceAll('-',''));">
+													<input type="text" class="form-control" id="TB06013P_mrtgCclcDt" value=""  placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 												</div>
 												<label class="col-sm-1 col-form-label text-right"><span class="req"></span>담보거래<br class="br-mo">담당자</label>
 												<div class="col-sm-3 input-group">
-													<input type="text" class="form-control" id="TB06013P_empNo">
+													<input type="text" class="form-control" id="TB06013P_empNo" maxlength="7">
 													<span class="input-group-append">
 														<button type="button" class="btn btn-default" onclick="callTB03022P('TB06013P');"><i class="fa fa-search"></i></button>
 													</span>
@@ -123,7 +119,7 @@
 						    				<div class="form-group row">
 						    					<label class="col-sm-1 col-form-label">담보제공<br class="br-mo">거래상대방</label>
 												<div class="col-sm-7 input-group">
-													<input type="text" class="form-control" id="TB06013P_bsnsRgstNo">
+													<input type="text" class="form-control" id="TB06013P_bsnsRgstNo" maxlength="13">
 													<span class="input-group-append">
 														<button type="button" class="btn btn-default" onclick="callTB03061P('TB06013P')"><i class="fa fa-search"></i></button>
 													</span>
@@ -141,14 +137,14 @@
 												<div class="col-sm-4 input-group">
 													<select class="form-control" id="TB06013P_I027">
 													</select>
-													<input type="text" class="form-control text-right mg-l5" id="TB06013P_mrtgEvlAmt" onkeyup="inputNumberFormat(this);">
+													<input type="text" class="form-control text-right mg-l5" id="TB06013P_mrtgEvlAmt" onkeyup="inputNumberFormat(this);" maxlength="18">
 												</div>
 											</div>
 											<!-- row7 -->
 											<div class="form-group row">
 						    					<label class="col-sm-1 col-form-label">비고</label>
 												<div class="col-sm-11 input-group">
-													<input type="text" class="form-control" id="TB06013P_mrtgDtlUsgeCtns">
+													<input type="text" class="form-control" id="TB06013P_mrtgDtlUsgeCtns" maxlength="500">
 												</div>
 											</div>
 											
@@ -412,47 +408,12 @@
 									<div class="ibox">
 										<div class="ibox-title flex-box flex-jc-i">
 											 <h5>▶&nbsp;선순위 정보</h5>
-											<!--<span class="ml-3">선순위 유무</span>
-											
-											<div class="mg-l5 title-select-ex">
-			                                    <select class="form-control pd-lr5" id="TB06013P_prfdRankYn">
-			                                    	<option value="Y">유</option>
-			                                    	<option value="N">무</option>
-												</select>
-			                                </div> -->
 											<div class="ibox-tools">
 												<button class="btn btn-default btn-xs" type="button" onclick="addRow_TB06013P();"><i class="fa fa-plus"></i>&nbsp;행추가<!-- <i class="fa fa-plus"></i> --></button>
 												<button class="btn btn-default btn-xs" type="button" onclick="dltRow_TB06013P();"><i class="fa fa-minus"></i>&nbsp;향삭제<!-- <i class="fa fa-minus"></i>--></button>
 											</div>
 										</div>
 										<div class="ibox-content">
-											<!-- row1 -->
-											<!-- <table class="table result table-bordered">
-												<colgroup>
-													<col style="width: 10%;">
-													<col style="width: 5%;">
-													<col>
-													<col>
-													<col>
-													<col>
-													<col>
-													<col>
-												</colgroup>
-												<thead>
-													<tr>
-														<th>처리구분</th>
-														<th>순번</th>
-														<th>선순위종류</th>
-														<th>우선순위</th>
-														<th>선순위권자</th>
-														<th>선순위통화</th>
-														<th>선순위금액</th>
-														<th>선순위원화환산액</th>
-													</tr>
-												</thead>
-												<tbody>
-												</tbody>
-											</table> -->
 											<div id="TB06013P_snrtInfoList"></div>
 										</div>
 									</div>
@@ -466,7 +427,7 @@
 												<div class="col-sm-12 form-group">
 													<label class="col-sm-1 col-form-label">가용담보가<br class="br-mo">(원화)</label>
 													<div class="col-sm-3 input-group">
-														<input type="text" class="form-control text-right" id="TB06013P_avblMrtgPrc" disabled="disabled">
+														<input type="text" class="form-control text-right" id="TB06013P_avblMrtgPrc" disabled="disabled" maxlength="18">
 													</div>
 													<label class="col-sm-1 col-form-label">설정통화</label>
 													<div class="col-sm-3 input-group">
@@ -475,7 +436,7 @@
 													</div>
 													<label class="col-sm-1 col-form-label">공동담보<br class="br-mo">비율</label>
 													<div class="col-sm-3 input-group">
-														<input type="text" class="form-control text-right" id="TB06013P_cprnMrtgRto">
+														<input type="text" class="form-control text-right" id="TB06013P_cprnMrtgRto" maxlength="5">
 													</div>
 												</div>
 											</div>
@@ -488,7 +449,7 @@
 													</div>
 													<label class="col-sm-1 col-form-label">설정최고액</label>
 													<div class="col-sm-3 input-group">
-														<input type="text" class="form-control text-right" id="TB06013P_stupTopAmt" onkeyup="inputNumberFormat(this);">
+														<input type="text" class="form-control text-right" id="TB06013P_stupTopAmt" onkeyup="inputNumberFormat(this);" maxlength="18">
 													</div>
 													<label class="col-sm-1 col-form-label">설정종류</label>
 													<div class="col-sm-3 input-group">

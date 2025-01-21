@@ -11,5 +11,5 @@ import lombok.Setter;
  *  출자금 거래등록
  */
 public class IBIMS421BVO extends IBIMS421BDTO {
-    
+	private String hndDetlDtmStr; 				/* 조작상세일시 */
 }

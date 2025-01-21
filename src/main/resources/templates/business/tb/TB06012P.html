@@ -152,7 +152,7 @@
 															<div class="col-sm-7 input-group">
 																<select class="form-control" id="TB06012P_D007">
 																</select>
-																<input type="text" class="form-control col-sm-3 mg-l5" id="TB06012P_sdwnTlmtMnum" style="text-align: right;">											
+																<input type="text" class="form-control col-sm-3 mg-l5" id="TB06012P_sdwnTlmtMnum" style="text-align: right;" maxlength="4">											
 																<span class="input-unit">개월</span>
 															</div>
 															<label class="col-sm-1 col-form-label">셀다운<br class="br-mo">목표일자</label>
@@ -171,7 +171,7 @@
 															<div class="col-sm-7 input-group">
 																<select class="form-control" id="TB06012P_D008">
 																</select>
-																<input type="text" class="form-control col-sm-3 mg-l5" id="TB06012P_sdwnRto" style="text-align: right;">									
+																<input type="text" class="form-control col-sm-3 mg-l5" id="TB06012P_sdwnRto" style="text-align: right;" maxlength="5">									
 																<span class="input-unit">%</span>
 															</div>
 															<label class="col-sm-1 col-form-label">셀다운<br class="br-mo">목표금액</label>
@@ -200,9 +200,7 @@
 														<div class="col-sm-12 form-group">
 															<label class="col-sm-1 col-form-label">셀다운<br class="br-mo">완료일자</label>
 															<div class="col-sm-5 input-group date pr-18">
-																<input type="text" class="form-control" id="TB06012P_sdwnCpltDt" value="" 
-																placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-																onblur="this.value=formatDate(this.value.replaceAll('-',''));">
+																<input type="text" class="form-control" id="TB06012P_sdwnCpltDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 															</div>
 														</div>
@@ -229,7 +227,7 @@
 														<div class="col-sm-12 form-group">
 															<label class="col-sm-1 col-form-label">기타<br class="br-mo">승인조건</label>
 															<div class="col-sm-11 input-group">
-																<textarea class="form-control" rows="2" cols="" id="TB06012P_etcApvlCndCtns"></textarea>
+																<textarea class="form-control" rows="2" cols="" id="TB06012P_etcApvlCndCtns" maxlength="500"></textarea>
 															</div>
 														</div>
 													</div>
@@ -245,7 +243,7 @@
 													<div class="row form-group form-inline text-right">
 														<div class="col-sm-12 form-group">
 															<div class="col-sm-12 text-right">(단위: 원)</div>
-														</div>
+														</div> 
 													</div>
 													<!-- row2 -->
 													<div class="row form-group form-inline text-right">
@@ -294,11 +292,11 @@
 														<div class="col-sm-12 form-group">
 															<label class="col-sm-1 col-form-label">Exit 분양율(%)</label>
 															<div class="col-sm-3 input-group">
-																<input type="text" class="form-control text-right" id="TB06012P_exitSlltRt"  maxlength="3">
+																<input type="text" class="form-control text-right" id="TB06012P_exitSlltRt"  maxlength="5">
 															</div>
 															<label class="col-sm-1 col-form-label ls-6">현재 분양율(%)</label>
 															<div class="col-sm-3 input-group">
-																<input type="text" class="form-control text-right" id="TB06012P_nowSlltRt" maxlength="3">
+																<input type="text" class="form-control text-right" id="TB06012P_nowSlltRt" maxlength="5">
 															</div>
 														</div>
 													</div>
@@ -307,11 +305,11 @@
 														<div class="col-sm-12 form-group">
 															<label class="col-sm-1 col-form-label ls-6">계획 공정율(%)</label>
 															<div class="col-sm-3 input-group">
-																<input type="text" class="form-control text-right" id="TB06012P_plnFairRt"  maxlength="3">
+																<input type="text" class="form-control text-right" id="TB06012P_plnFairRt"  maxlength="5">
 															</div>
 															<label class="col-sm-1 col-form-label ls-6">현재 공정율(%)</label>
 															<div class="col-sm-3 input-group">
-																<input type="text" class="form-control text-right" id="TB06012P_nowFairRt"  maxlength="3">
+																<input type="text" class="form-control text-right" id="TB06012P_nowFairRt"  maxlength="5">
 															</div>
 														</div>
 													</div>
