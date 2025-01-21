@@ -1066,7 +1066,6 @@ const TB07050Sjs = (function () {
           excSch = "";
         }
 
-        //excSch.destroy();
         pqGrid("02");
         grdInf();
 
