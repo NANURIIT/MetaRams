@@ -20,7 +20,7 @@ const TB09050Sjs = (function () {
         dataType: "string",
         // dataIndx: "aplyStrtDt",
         halign: "center",
-        align: "center",
+        align: "right",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -92,7 +92,7 @@ const TB09050Sjs = (function () {
         dataType: "string",
         // dataIndx: "aplyStrtDt",
         halign: "center",
-        align: "center",
+        align: "right",
         filter: { crules: [{ condition: "range" }] },
       },
     ];

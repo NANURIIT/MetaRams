@@ -368,7 +368,7 @@ const TB07090Sjs = (function () {
         dataType: "string",
         dataIndx: "rgstSeq",
         halign: "center",
-        align: "center",
+        align: "right",
         width: "80",
         filter: { crules: [{ condition: "range" }] },
       },
@@ -687,7 +687,7 @@ const TB07090Sjs = (function () {
         dataType: "string",
         dataIndx: "excsPymtPrcsText",
         halign: "center",
-        align: "center",
+        align: "left",
         filter: { crules: [{ condition: "range" }] },
       },
       {

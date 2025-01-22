@@ -310,7 +310,8 @@ const TB03030Sjs = (function(){
 			title    : "RM활동건수", 
 			dataType : "integer", 
 			dataIndx : "rmCount", 
-			align    : "center", 
+			halign	 : "center",
+			align    : "right", 
 			filter   : { crules: [{ condition: 'range' }] },
 		}
 	];

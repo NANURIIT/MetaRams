@@ -16,7 +16,7 @@ const TB06060Sjs = (function(){
             title: "Deal명",
             dataType: "string",
             dataIndx: "dealNm",
-            align: "center",
+            align: "left",
             halign: "center",
             width: "",
             filter: { crules: [{ condition: 'range' }] } 
@@ -25,7 +25,7 @@ const TB06060Sjs = (function(){
             title: "안건명",
             dataType: "string",
             dataIndx: "mtrNm",
-            align: "center",
+            align: "left",
             halign: "center",
             width: "",
             filter: { crules: [{ condition: 'range' }] } 
@@ -62,7 +62,7 @@ const TB06060Sjs = (function(){
             title: "거래상대방명",
             dataType: "string",
             dataIndx: "entpNm",
-            align: "center",
+            align: "left",
             halign: "center",
             width: "",
             filter: { crules: [{ condition: 'range' }] } 
