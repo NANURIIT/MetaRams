@@ -19,7 +19,8 @@ public class TB9999DAPIController {
 
     @PostMapping(value = "/start")
     public String tb9999d(@RequestBody String date) {
-        return tb9999dService.tb9999d(date);
+        // return tb9999dService.tb9999d(date);
+        return "";
     };
 
 }
