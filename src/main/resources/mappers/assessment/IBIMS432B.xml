@@ -76,40 +76,38 @@
               , GUID
             )
         VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
             (
-                #{item.wrtnDt}
-              , #{item.rslnBdcd}
-              , #{item.cnstNo}
-              , #{item.sttmDetlSn}
-              , #{item.dbitCritDcd}
-              , #{item.rptsActsCd}
-              , #{item.actsCd}
-              , #{item.krwAmt}
-              , #{item.frcrAmt}
-              , #{item.bdgExcuBdcd}
-              , #{item.bdgActsCd}
-              , #{item.rvrsBdcd}
-              , #{item.rslnSynsCtns}
-              , #{item.fndsIstrJobClsfCd}
-              , #{item.acctBcncCd}
-              , #{item.prufKndDcd}
-              , #{item.prufDt}
-              , #{item.ntsApvlNo}
-              , #{item.elcPrufYn}
-              , #{item.vhclRgstCd}
-              , #{item.nsFndCd}
-              , #{item.prdtCd}
-              , #{item.projId}
-              , #{item.crryCd}
-              , #{item.exrt}
+                #{wrtnDt}
+              , #{rslnBdcd}
+              , #{cnstNo}
+              , #{sttmDetlSn}
+              , #{dbitCritDcd}
+              , #{rptsActsCd}
+              , #{actsCd}
+              , #{krwAmt}
+              , #{frcrAmt}
+              , #{bdgExcuBdcd}
+              , #{bdgActsCd}
+              , #{rvrsBdcd}
+              , #{rslnSynsCtns}
+              , #{fndsIstrJobClsfCd}
+              , #{acctBcncCd}
+              , #{prufKndDcd}
+              , #{prufDt}
+              , #{ntsApvlNo}
+              , #{elcPrufYn}
+              , #{vhclRgstCd}
+              , #{nsFndCd}
+              , #{prdtCd}
+              , #{projId}
+              , #{crryCd}
+              , #{exrt}
               , SYSDATE
-              , #{item.hndEmpno}
-              , #{item.hndTmnlNo}
-              , #{item.hndTrId}
-              , #{item.guid}
+              , #{hndEmpno}
+              , #{hndTmnlNo}
+              , #{hndTrId}
+              , #{guid}
             )
-            </foreach>
     </insert>
 
     <update  id="updateIBIMS432B" parameterType="com.nanuri.rams.business.common.vo.IBIMS432BVO">

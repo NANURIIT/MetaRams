@@ -3,69 +3,61 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS431BMapper">
 
     <select id="selectIBIMS431B" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS431BVO">
-        SELECT T1.WRTN_DT
-             , T1.RSLN_BDCD
-             , T1.CNST_NO
-             , T1.BALT_DT
-             , T1.STTM_NO
-             , T1.STTM_BDCD
-             , T1.CNCL_BALT_DT
-             , T1.CNCL_STTM_NO
-             , T1.CNST_STTM_DCD
-             , T1.PRUF_DT
-             , T1.CRRY_CD
-             , T1.EXRT
-             , T1.RGST_EMPNO
-             , T2.EMP_NM
-             , T1.RELT_STFNO
-             , T3.EMP_NM AS RELT_STF_NM
-             , T1.ACCT_BCNC_CD
-             , T1.BCNC_NM
-             , T1.ACCT_PYMT_MTH_CD
-             , T1.XTNL_ISTT_CD
-             , T1.BANO
-             , T1.BNK_ACHD_NM
-             , T1.PYMT_PRAR_DT
-             , T1.FNDS_ISTR_SN
-             , T1.PRUF_KND_DCD
-             , T1.PCHS_DDC_DCD
-             , T1.RSLN_AMT
-             , T1.SPLM_VALU_TXA
-             , T1.CNCL_YN
-             , T1.TR_ID
-             , T1.BNFT_YN
-             , T1.RELT_DCM_NO
-             , T1.RELT_FDTN_CTNS
-             , T1.ELC_PRUF_YN
-             , T1.ENTM_ACC_XSTC_YN
-             , T1.CNTR_ACC_XSTC_YN
-             , T1.JOB_DECD_CD
-             , T1.JOB_DECD_NO
-             , T1.CNCL_JOB_DECD_NO
-             , T1.EXCAL_YN
-             , T1.FNDS_LDG_DCD
-             , T1.FNDS_LDG_NO
-             , T1.RGST_SN
-             , T1.ACTS_CD
-             , T1.EDMS_DCM_ID
-             , T1.CDNO
-             , T1.APVL_NO
-             , T1.BDG_BUSI_CD
-             , T1.FRCR_RSLN_AMT
-             , T1.HND_DETL_DTM
-             , T1.HND_EMPNO
-             , T1.HND_TMNL_NO
-             , T1.HND_TR_ID
-             , T1.GUID
-             , T1.ACCT_DT
+        SELECT T1.WRTN_DT	                    /* ┌작성일자 */
+             , T1.RSLN_BDCD	                  /* │결의부점코드 */
+             , T1.CNST_NO	                    /* └품의번호 */
+             , T1.ACCT_DT	                    /* 회계일자 */
+             , T1.BALT_DT	                    /* 기표일자 */
+             , T1.STTM_NO	                    /* 전표번호 */
+             , T1.STTM_BDCD	                  /* 전표부점코드 */
+             , T1.CNCL_BALT_DT	              /* 취소기표일자 */
+             , T1.CNCL_STTM_NO	              /* 취소전표번호 */
+             , T1.CNST_STTM_DCD	              /* 품의전표구분코드 */
+             , T1.PRUF_DT	                    /* 증빙일자 */
+             , T1.CRRY_CD	                    /* 통화코드 */
+             , T1.EXRT	                      /* 환율 */
+             , T1.RGST_EMPNO	                /* 등록사원번호 */
+             , T1.RELT_STFNO	                /* 승인자 */
+             , T1.ACCT_BCNC_CD	              /* 회계거래처코드 */
+             , T1.BCNC_NM	                    /* 거래처명 */
+             , T1.ACCT_PYMT_MTH_CD	          /* 회계지급방법코드 */
+             , T1.XTNL_ISTT_CD	              /* 외부기관코드 */
+             , T1.BANO	                      /* 은행계좌번호 */
+             , T1.BNK_ACHD_NM	                /* 은행예금주명 */
+             , T1.PYMT_PRAR_DT	              /* 지급예정일자 */
+             , T1.FNDS_ISTR_SN	              /* 자금지시일련번호 */
+             , T1.PRUF_KND_DCD	              /* 증빙종류구분코드 */
+             , T1.PCHS_DDC_DCD	              /* 매입공채구분코드 */
+             , T1.RSLN_AMT	                  /* 결의금액 */
+             , T1.SPLM_VALU_TXA	              /* 부가가치세액 */
+             , T1.CNCL_YN	                    /* 취소여부 */
+             , T1.TR_ID	                      /* 거래ID */
+             , T1.BNFT_YN	                    /* 편익여부 */
+             , T1.RELT_DCM_NO	                /* 관련문서번호 */
+             , T1.RELT_FDTN_CTNS	            /* 관련근거내용 */
+             , T1.ELC_PRUF_YN	                /* 전자증빙여부 */
+             , T1.ENTM_ACC_XSTC_YN	          /* 접대계정존재여부 */
+             , T1.CNTR_ACC_XSTC_YN	          /* 기부계정존재여부 */
+             , T1.JOB_DECD_CD	                /* 업무결재코드 */
+             , T1.JOB_DECD_NO	                /* 업무결재번호 */
+             , T1.CNCL_JOB_DECD_NO	          /* 취소업무결재번호 */
+             , T1.EXCAL_YN	                  /* 정산여부 */
+             , T1.FNDS_LDG_DCD	              /* 자금원장구분코드 */
+             , T1.FNDS_LDG_NO	                /* 자금원장번호 */
+             , T1.RGST_SN	                    /* 등록일련번호 */
+             , T1.ACTS_CD	                    /* 계정과목코드 */
+             , T1.EDMS_DCM_ID	                /* EDMS문서ID */
+             , T1.CDNO	                      /* 카드번호 */
+             , T1.APVL_NO	                    /* 카드승인번호 */
+             , T1.BDG_BUSI_CD	                /* 예산사업코드 */
+             , T1.FRCR_RSLN_AMT	              /* 외화결의금액 */
+             , T1.HND_DETL_DTM	              /* 조작상세일시 */
+             , T1.HND_EMPNO	                  /* 조작사원번호 */
+             , T1.HND_TMNL_NO	                /* 조작단말기번호 */
+             , T1.HND_TR_ID	                  /* 조작거래ID */
+             , T1.GUID	                      /* GUID */
           FROM IBIMS431B T1
-             , IBIMS003B T2
-             , IBIMS003B T3
          WHERE 1=1
-         AND T2.DEL_YN = 'N'
-         AND T3.DEL_YN = 'N'
-           AND T1.RGST_EMPNO = T2.EMPNO(+)
-           AND T1.RELT_STFNO = T3.EMPNO(+)
            <if test="acctDt1 != null and acctDt1 != ''">
            AND T1.ACCT_DT &gt;&#61; #{acctDt1}
            </if>
@@ -81,6 +73,15 @@
            <if test="actsCd != null and actsCd != ''">
            AND T1.ACTS_CD = #{actsCd}
            </if>
+    </select>
+
+    <select id="setCnstNo" parameterType="String" resultType="String">
+      SELECT TO_CHAR(NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1)
+        FROM (
+              SELECT CNST_NO
+                FROM IBIMS431B
+               WHERE WRTN_DT LIKE #{wrtnDt}||'%'
+              ) AS temp
     </select>
 
     <insert id="insertIBIMS431B" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO">
@@ -143,14 +144,7 @@
             (
                 #{wrtnDt}
               , #{rslnBdcd}
-              , (
-                  SELECT NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1
-                    FROM (
-                      SELECT CNST_NO
-                        FROM IBIMS431B
-                       WHERE WRTN_DT LIKE #{wrtnDt}||'%'
-                  ) AS temp
-                )
+              , #{cnstNo}
               , #{acctDt}
               , #{baltDt}
               , #{sttmNo}
@@ -206,51 +200,139 @@
 
     <update id="updateIBIMS431B" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO">
         UPDATE IBIMS431B
-           SET BALT_DT = #{baltDt}
+           SET HND_DETL_DTM = SYSDATE
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(baltDt)">
+             , BALT_DT = #{baltDt}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sttmNo)">             
              , STTM_NO = #{sttmNo}
+             </if>             
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sttmBdcd)">
              , STTM_BDCD = #{sttmBdcd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cnclBaltDt)">
              , CNCL_BALT_DT = #{cnclBaltDt}
+             </if>        
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cnclSttmNo)">
              , CNCL_STTM_NO = #{cnclSttmNo}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cnstSttmDcd)">
              , CNST_STTM_DCD = #{cnstSttmDcd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prufDt)">
              , PRUF_DT = #{prufDt}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crryCd)">
              , CRRY_CD = #{crryCd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(exrt)">
              , EXRT = #{exrt}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstEmpno)">
              , RGST_EMPNO = #{rgstEmpno}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(reltStfno)">
              , RELT_STFNO = #{reltStfno}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(acctBcncCd)">
              , ACCT_BCNC_CD = #{acctBcncCd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bcncNm)">
              , BCNC_NM = #{bcncNm}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(acctPymtMthCd)">
              , ACCT_PYMT_MTH_CD = #{acctPymtMthCd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(xtnlIsttCd)">
              , XTNL_ISTT_CD = #{xtnlIsttCd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bano)">
              , BANO = #{bano}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bnkAchdNm)">
              , BNK_ACHD_NM = #{bnkAchdNm}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(pymtPrarDt)">
              , PYMT_PRAR_DT = #{pymtPrarDt}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fndsIstrSn)">
              , FNDS_ISTR_SN = #{fndsIstrSn}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prufKndDcd)">
              , PRUF_KND_DCD = #{prufKndDcd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(pchsDdcDcd)">
              , PCHS_DDC_DCD = #{pchsDdcDcd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rslnAmt)">
              , RSLN_AMT = #{rslnAmt}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(splmValuTxa)">
              , SPLM_VALU_TXA = #{splmValuTxa}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cnclYn)">
              , CNCL_YN = #{cnclYn}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trId)">
              , TR_ID = #{trId}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bnftYn)">
              , BNFT_YN = #{bnftYn}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(reltDcmNo)">
              , RELT_DCM_NO = #{reltDcmNo}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(reltFdtnCtns)">
              , RELT_FDTN_CTNS = #{reltFdtnCtns}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(elcPrufYn)">
              , ELC_PRUF_YN = #{elcPrufYn}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entmAccXstcYn)">
              , ENTM_ACC_XSTC_YN = #{entmAccXstcYn}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cntrAccXstcYn)">
              , CNTR_ACC_XSTC_YN = #{cntrAccXstcYn}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDecdCd)">
              , JOB_DECD_CD = #{jobDecdCd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDecdNo)">
              , JOB_DECD_NO = #{jobDecdNo}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cnclJobDecdNo)">
              , CNCL_JOB_DECD_NO = #{cnclJobDecdNo}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(excalYn)">
              , EXCAL_YN = #{excalYn}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fndsLdgDcd)">
              , FNDS_LDG_DCD = #{fndsLdgDcd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fndsLdgNo)">
              , FNDS_LDG_NO = #{fndsLdgNo}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstSn)">
              , RGST_SN = #{rgstSn}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(actsCd)">
              , ACTS_CD = #{actsCd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(edmsDcmId)">
              , EDMS_DCM_ID = #{edmsDcmId}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cdno)">
              , CDNO = #{cdno}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(apvlNo)">
              , APVL_NO = #{apvlNo}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bdgBusiCd)">
              , BDG_BUSI_CD = #{bdgBusiCd}
+             </if>
+             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(frcrRslnAmt)">
              , FRCR_RSLN_AMT = #{frcrRslnAmt}
-             , HND_DETL_DTM = SYSDATE
+             </if>
              , HND_EMPNO = #{hndEmpno}
              , HND_TMNL_NO = #{hndTmnlNo}
              , HND_TR_ID = #{hndTrId}
