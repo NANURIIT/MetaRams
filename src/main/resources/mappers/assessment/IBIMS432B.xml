@@ -41,6 +41,12 @@
            ORDER BY A.STTM_DETL_SN
     </select>
 
+    <!-- 일련번호 채번 -->
+    <select id="setSttmDetlSn">
+      SELECT NVL(STTM_DETL_SN, 0) + 1
+        FROM IBIMS432B
+    </select>
+
     <insert id="insertIBIMS432B" parameterType="com.nanuri.rams.business.common.vo.IBIMS432BVO">
         INSERT INTO IBIMS432B
             (

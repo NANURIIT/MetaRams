@@ -16,7 +16,7 @@ const TB07100Sjs = (function () {
     $("input[id*='Amt'], input[id*='Blce'], input[id*='Exrt'], input[id*='Mnum'], input[id*='Tmrd'], input[id*='tx'], input[id='TB07100S_splmValuTxa']").val('0');
     selectorNumberFormater($("input[id*='Amt'], input[id*='Blce'], input[id*='Rt'], input[id='TB07100S_splmValuTxa']"));
     selectBox = getSelectBoxList("TB07100S", "/A005", false);
-    grdSelect.A005 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A005'; });	
+    grdSelect.A018 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A005'; });	
     TB07100S_getFirstStatus();
     TB07100S_pqGrid();
     autoSet();

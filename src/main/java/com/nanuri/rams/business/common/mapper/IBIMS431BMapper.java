@@ -13,7 +13,7 @@ public interface IBIMS431BMapper {
     // 지급품의목록
     public List<IBIMS431BVO> selectIBIMS431B(IBIMS431BVO param);
 
-    public int insertIBIMS431B (IBIMS431BDTO param);
+    public int insertIBIMS431B (IBIMS431BVO param);
 
     public int updateIBIMS431B (IBIMS431BDTO param);
 
