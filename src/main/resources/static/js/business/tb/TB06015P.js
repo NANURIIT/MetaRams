@@ -1821,8 +1821,6 @@ function dataSet_intrCalcInfo(){
 	var rdmpScdlLgth = $("#rdmpPlanGrid").pqGrid('option', 'dataModel.data').length;				//원금상환계획정보 길이
 	var intrScdlLgth = $("#intrPlanGrid").pqGrid('option', 'dataModel.data').length;				//이자상환계획정보 길이
 
-	//alert(intrCalcInfoLgth);
-
 	var earlyRpFee = 0;				//중도상환수수료
 	var prarPrna = 0;				//상환대상원금
 	var fnlIntrCalcDt = "";			//최종이자계산일
