@@ -834,7 +834,6 @@ const TB04010Sjs = (function () {
 
         // 심사진행상태코드에 따라서 심사요청버튼 활성화
         let mtrPrgSttsDcd = Number(dealDetail.mtrPrgSttsDcd);
-        console.log("확인해보자:::::", mtrPrgSttsDcd, "::::::::::", sameYn);
 
         /**
          * 심사진행상태 >
@@ -991,7 +990,6 @@ const TB04010Sjs = (function () {
   function compareAuth(compareVal) {
     var loginP = $("#TB04010S_empNo1").val();
     var compareP = compareVal;
-    console.log("이값이 중요하잖아", loginP, ":::::::", compareP);
 
     // 두 값 비교하여 결과 리턴
     if (loginP === compareP) {
@@ -3602,7 +3600,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "mtrDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       width: "10%",
       filter: { crules: [{ condition: "range" }] },
     },
@@ -3629,7 +3627,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "jdgmDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       width: "11%",
       filter: { crules: [{ condition: "range" }] },
     },
@@ -3647,7 +3645,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "mtrPrgSttsDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       width: "12%",
       filter: { crules: [{ condition: "range" }] },
     },
@@ -3656,7 +3654,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "ownPNm",
       halign: "center",
-      align: "left",
+      align: "center",
       width: "12",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
@@ -3718,7 +3716,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "bssAsstKndCdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       width: "10%",
       filter: { crules: [{ condition: "range" }] },
     },
@@ -3777,7 +3775,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "crpNm",
       halign: "center",
-      align: "left",
+      align: "center",
       width: "10%",
       filter: { crules: [{ condition: "range" }] },
     },
@@ -3786,7 +3784,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "invstCrryCd",
       halign: "center",
-      align: "left",
+      align: "center",
       width: "5%",
       filter: { crules: [{ condition: "range" }] },
     },
@@ -3856,7 +3854,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "crpShpDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -3873,7 +3871,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "crpNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -3911,7 +3909,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "mxmSthdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -3955,7 +3953,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "outsCrdtGrdDcd",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
       hidden: true,
     },
@@ -3964,7 +3962,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "outsCrdtGrdDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -3996,7 +3994,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "insCrdtGrdDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4013,7 +4011,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "entpHnglNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4042,7 +4040,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "mrtgKndDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4059,7 +4057,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "mrtgDtlsDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4084,7 +4082,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "rgtRnkDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4101,7 +4099,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "invstCrryCdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4156,7 +4154,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "mrtgAcqstStmDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4173,7 +4171,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "mrtgAcqstDtlsDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4193,7 +4191,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "crdtRifcGrteDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4240,7 +4238,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "grteIsttNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4292,7 +4290,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "rspsbCmplOgnDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4330,7 +4328,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "isttNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -4347,7 +4345,7 @@ const TB04010Sjs = (function () {
       dataType: "string",
       dataIndx: "dbtNnfDutyDcdNm",
       halign: "center",
-      align: "left",
+      align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
     {
