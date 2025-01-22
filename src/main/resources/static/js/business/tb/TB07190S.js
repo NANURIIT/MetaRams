@@ -292,7 +292,7 @@ const TB07190Sjs = (function () {
         dataType: "string",
         dataIndx: "actsCd",
         halign: "center",
-        align: "left",
+        align: "center",
         width: "160",
         filter: { crules: [{ condition: "range" }] },
 		editor: {
@@ -369,7 +369,7 @@ const TB07190Sjs = (function () {
         dataType: "string",
         dataIndx: "eprzCrdlFeeKndCd",
         halign: "center",
-        align: "left",
+        align: "center",
         width: "180",
         filter: { crules: [{ condition: "range" }] },
 		editor: {
@@ -492,7 +492,7 @@ const TB07190Sjs = (function () {
         dataType: "string",
         dataIndx: "acctUnJobCd",
         halign: "center",
-        align: "left",
+        align: "center",
         width: "150",
         filter: { crules: [{ condition: "range" }] },
 		editor: {

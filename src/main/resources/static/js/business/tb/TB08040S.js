@@ -253,11 +253,11 @@ const TB08040Sjs = (function() {
 				editable: true,
 			},
 			{
-				title: "계정과목",
+				title: "계정과목명",
 				dataType: "string",
 				dataIndx: "actName",
 				halign: "center",
-				align: "left",
+				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 			},
@@ -339,11 +339,11 @@ const TB08040Sjs = (function() {
 				},
 			},
 			{
-				title: "과세유형구분코드",
+				title: "과세유형구분",
 				dataType: "string",
 				dataIndx: "txtnTpDcd",
 				halign: "center",
-				align: "left",
+				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
@@ -528,7 +528,7 @@ const TB08040Sjs = (function() {
 				dataType: "string",
 				dataIndx: "feeBnapDcd",
 				halign: "center",
-				align: "left",
+				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {

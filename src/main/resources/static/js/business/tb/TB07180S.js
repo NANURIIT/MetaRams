@@ -251,11 +251,11 @@ const TB07180Sjs = (function() {
 				},
 			},
 			{
-				title: "계정과목코드명",
+				title: "계정과목",
 				dataType: "string",
 				dataIndx: "actName", //  ACT_CD A005
 				halign: "center",
-				align: "left",
+				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 			},
@@ -368,7 +368,7 @@ const TB07180Sjs = (function() {
 				dataType: "string",
 				dataIndx: "acctUnJobCd", //  ACCT_UN_JOB_CD A004
 				halign: "center",
-				align: "left",
+				align: "center",
 				width: "14%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {

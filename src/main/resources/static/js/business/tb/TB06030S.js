@@ -1325,7 +1325,7 @@ const TB06030Sjs = (function(){
 			dataType : "string",
 			dataIndx : "mrtgLclsNm", 
 			halign	 : "center",
-			align    : "left", 
+			align    : "center", 
 			filter   : { crules: [{ condition: 'range' }] },
 		},
 		{ 	
@@ -1333,7 +1333,7 @@ const TB06030Sjs = (function(){
 			dataType : "string", 
 			dataIndx : "mrtgMdclNm",
 			halign	 : "center",
-			align    : "left", 
+			align    : "center", 
 			filter   : { crules: [{ condition: 'range' }] },
 		},
 		{ 	
