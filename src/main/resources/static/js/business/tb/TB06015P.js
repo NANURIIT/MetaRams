@@ -1787,7 +1787,6 @@ function dataSetGrid_intrtInfo(intrtInfoList){
 		var formattedAplyStrtDt = formatDate(item.aplyStrtDt);              //적용시작일자 포맷
 		var formattedAplyEndDt = formatDate(item.aplyEndDt);                //적용종료일자 포맷
 
-		//alert("stdrIntrtKndCd: "+item.stdrIntrtKndCd);
 		
 		var newRow = {
 			"aplyStrtDt"        	: formattedAplyStrtDt,
