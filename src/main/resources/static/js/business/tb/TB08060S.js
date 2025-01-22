@@ -66,7 +66,7 @@ const TB08060Sjs = function () {
 				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
@@ -290,7 +290,7 @@ const TB08060Sjs = function () {
 				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
@@ -546,7 +546,7 @@ const TB08060Sjs = function () {
 				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
@@ -564,7 +564,7 @@ const TB08060Sjs = function () {
 				title: "펀드코드",
 				dataType: "string",
 				dataIndx: "ortnFndCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
@@ -828,7 +828,7 @@ const TB08060Sjs = function () {
 				title: "펀드코드",
 				dataType: "string",
 				dataIndx: "ortnFndCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
@@ -846,7 +846,7 @@ const TB08060Sjs = function () {
 				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }

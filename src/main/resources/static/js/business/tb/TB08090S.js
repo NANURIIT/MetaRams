@@ -53,7 +53,7 @@ const TB08090Sjs = (function () {
 				title: "Deal번호",
 				dataType: "string",
 				dataIndx: "dealNo",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "",
 				filter: { crules: [{ condition: 'range' }] },
@@ -71,7 +71,7 @@ const TB08090Sjs = (function () {
 				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "",
 				filter: { crules: [{ condition: 'range' }] }
