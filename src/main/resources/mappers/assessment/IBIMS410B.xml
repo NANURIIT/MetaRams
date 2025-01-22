@@ -426,7 +426,7 @@
 			, GUID						/* GUID                */
           FROM IBIMS410B 
          WHERE 1 = 1
-           AND TR_STAT_CD = '1'			/* 거래상태코드 1정상         */
+           AND TR_STAT_CD = '01'			/* 거래상태코드 1정상         */
            AND PRDT_CD    = #{prdtCd}
            AND EXC_SN     = #{excSn}
            AND TR_SN      = #{trSn}

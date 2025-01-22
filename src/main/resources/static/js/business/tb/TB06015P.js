@@ -1587,7 +1587,7 @@ function addRows_intrPlanGrid(rows){
 		var endDt = row["종료일"];
 		var aplyIrt = row["이자율(%)"];
 		var prarPrna = row["대상금액"];
-		var rdmpPrarIntr = row["이자액수"];
+		var rdmpPrarIntr = row["이자금액"];
 
 		var strtDate = new Date(strtDt);
 		var endDate = new Date(endDt);
@@ -1787,7 +1787,6 @@ function dataSetGrid_intrtInfo(intrtInfoList){
 		var formattedAplyStrtDt = formatDate(item.aplyStrtDt);              //적용시작일자 포맷
 		var formattedAplyEndDt = formatDate(item.aplyEndDt);                //적용종료일자 포맷
 
-		//alert("stdrIntrtKndCd: "+item.stdrIntrtKndCd);
 		
 		var newRow = {
 			"aplyStrtDt"        	: formattedAplyStrtDt,
@@ -1821,8 +1820,6 @@ function dataSet_intrCalcInfo(){
 	var intrCalcInfoLgth = $("#TB06015P_IntrCalc").pqGrid('option', 'dataModel.data').length;		//원리금계산정보 길이
 	var rdmpScdlLgth = $("#rdmpPlanGrid").pqGrid('option', 'dataModel.data').length;				//원금상환계획정보 길이
 	var intrScdlLgth = $("#intrPlanGrid").pqGrid('option', 'dataModel.data').length;				//이자상환계획정보 길이
-
-	//alert(intrCalcInfoLgth);
 
 	var earlyRpFee = 0;				//중도상환수수료
 	var prarPrna = 0;				//상환대상원금

@@ -380,7 +380,7 @@ const TB07150Sjs = (function () {
         dataType: "string",
         dataIndx: "stdrIntrtAplyDnum",
         halign: "center",
-        align: "center",
+        align: "right",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -517,7 +517,7 @@ const TB07150Sjs = (function () {
         dataType: "string",
         dataIndx: "stdrIntrtAplyDnum",
         halign: "center",
-        align: "center",
+        align: "right",
         filter: { crules: [{ condition: "range" }] },
       },
       {

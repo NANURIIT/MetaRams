@@ -814,7 +814,8 @@ const TB05030Sjs = (function () {
         title: "회차",
         dataType: "string",
         dataIndx: "cnsbSq",
-        align: "center",
+        halign: "center",
+        align: "right",
         filter: { crules: [{ condition: "range" }] },
       },
       {

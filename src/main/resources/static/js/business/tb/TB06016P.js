@@ -151,6 +151,20 @@ function TB06016P_pqGrid() {
 						}
 					}
 				}
+				, cellSave: function(event, ui) {
+					let dataIndx = ui.dataIndx;
+					let rowIndx = ui.rowIndx;
+					let rowData = $("#TB06016P_colModel").pqGrid("getRowData", { rowIndx: rowIndx });
+					
+					if (dataIndx === 'mdwyRdmpFeeRto') {
+						const grid = $("#TB06016P_colModel").pqGrid('instance');
+						rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+						var tempRowData = rowData.mdwyRdmpFeeRto;
+						
+						// 00.00
+						rowData.mdwyRdmpFeeRto = (Math.round(uncomma(tempRowData%100)*100)/100).toFixed(2);
+					}
+				}
 			}
 		];
 		setPqGrid(pqGridObjs);

@@ -52,7 +52,7 @@
 								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>Deal번호</label>
 								<div class="col-sm-4">
 									<div class="input-group">
-										<input type="text" class="form-control" id="TB06030S_ibDealNo">
+										<input type="text" class="form-control" id="TB06030S_ibDealNo" maxlength="17">
 										<span class="input-group-append">
 											<button type="button" id="" class="btn btn-default" onclick="callTB04011P('TB06030S');">
 												<i class="fa fa-search"></i>
@@ -66,7 +66,7 @@
 								<label class="col-sm-1 col-form-label text-right">종목코드</label>
 								<div class="col-sm-4">
 									<div class="input-group">
-										<input type="text" class="form-control" id="TB06030S_prdtCd">
+										<input type="text" class="form-control" id="TB06030S_prdtCd" maxlength="10">
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB06011P('TB06030S');">
 												<i class="fa fa-search"></i>
@@ -153,7 +153,7 @@
 										<div class="col-sm-12 form-group">
 											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목명</label>
 											<div class="col-sm-5 input-group">
-												<input type="text" class="form-control" id="TB06030S_res_prdtNm">
+												<input type="text" class="form-control" id="TB06030S_res_prdtNm" maxlength="300">
 											</div>
 											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목코드</label>
 											<div class="col-sm-2 input-group">
@@ -187,7 +187,8 @@
 											</div>
 											<label class="col-sm-1 col-form-label text-right">신용조회일</label>
 											<div class="col-sm-2 input-group date">
-												<input type="text" class="form-control" id="TB06030S_crdtInqDt" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												<input type="text" class="form-control" id="TB06030S_crdtInqDt" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 											</div>
 										</div>
 									</div>
@@ -235,7 +236,7 @@
 										<div class="col-sm-12 form-group">
 											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>펀드코드</label>
 											<div class="col-sm-2 input-group">
-												<input type="text" class="form-control" id="TB06030S_fndCd" style="width:30px;">
+												<input type="text" class="form-control" id="TB06030S_fndCd" style="width:30px;" maxlength="5">
 												<span class="input-group-append">
 													<button type="button" class="btn btn-default" onclick="callTB07022P('TB06030S')"><i class="fa fa-search"></i></button>
 												</span>
@@ -301,9 +302,7 @@
 										<div class="col-sm-12 form-group">
 											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목 승인금액</label>
 											<div class="col-sm-2 input-group">
-												<input type="text" class="form-control" id="TB06030S_rcgAmt" 
-												style="text-align:right"
-												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"> 
+												<input type="text" class="form-control" id="TB06030S_rcgAmt" style="text-align:right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="18"> 
 												<!-- onchange="inputNumberFormat2(this);"-->
 											</div>
 											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>통화코드</label>
@@ -347,26 +346,17 @@
 											</div>
 											<label class="col-sm-1 col-form-label text-right">발행일</label>
 											<div class="col-sm-2 input-group date">
-												<input type="text" class="form-control" id="TB06030S_isuDt" value="" 
-												placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-												onblur="this.value=formatDate(this.value.replaceAll('-',''));"
-												>
+												<input type="text" class="form-control" id="TB06030S_isuDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 											</div>
 											<label class="col-sm-1 col-form-label text-right">만기일</label>
 											<div class="col-sm-2 input-group date">
-												<input type="text" class="form-control" id="TB06030S_expDt" value="" 
-												placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-												onblur="this.value=formatDate(this.value.replaceAll('-',''));"
-												>
+												<input type="text" class="form-control" id="TB06030S_expDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 											</div>
 											<label class="col-sm-1 col-form-label text-right">상환청구가능일</label>
 											<div class="col-sm-2 input-group date">
-												<input type="text" class="form-control" id="TB06030S_rdmpClmPsblDt" value="" 
-												placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
-												onblur="this.value=formatDate(this.value.replaceAll('-',''));"
-												>
+												<input type="text" class="form-control" id="TB06030S_rdmpClmPsblDt" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 											</div>
 										</div>
@@ -376,9 +366,7 @@
 										<div class="col-sm-12 form-group">
 											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>총 발행주수</label>
 											<div class="col-sm-2 input-group">
-												<input type="text" class="form-control" id="TB06030S_totIssuQty"
-													style="text-align:right"
-													oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+												<input type="text" class="form-control" id="TB06030S_totIssuQty" style="text-align:right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="18">
 											</div>
 											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>당사역할</label>
 											<div class="col-sm-2 input-group">
@@ -415,7 +403,7 @@
 										<div class="col-sm-12 form-group">
 											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>담당자</label>
 											<div class="col-sm-2 input-group">
-												<input type="text" class="form-control" style="width:30px;" id="TB06030S_empNo">
+												<input type="text" class="form-control" style="width:30px;" id="TB06030S_empNo" maxlength="7">
 												<span class="input-group-append">
 													<button type="button" class="btn btn-default" onclick="callTB03022P('TB06030S')"><i class="fa fa-search"></i></button>
 												</span>
@@ -449,7 +437,7 @@
 											</div>
 											<label class="col-sm-1 col-form-label text-right">출자약정금액</label>
 											<div class="col-sm-2 input-group">
-												<input type="text" class="form-control text-right" id="TB06030S_fincCtrcAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+												<input type="text" class="form-control text-right" id="TB06030S_fincCtrcAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="18">
 											</div>
 											<label class="col-sm-1 col-form-label text-right text-nowrap">당사출자금액(이행)</label>
 											<div class="col-sm-2 input-group ">
@@ -470,7 +458,7 @@
 											</div>
 											<label class="col-sm-1 col-form-label text-right">출자이행금액</label>
 											<div class="col-sm-2 input-group ">
-												<input type="text" class="form-control text-right" id="TB06030S_fincFlflAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+												<input type="text" class="form-control text-right" id="TB06030S_fincFlflAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="18">
 											</div>
 											<label class="col-sm-1 col-form-label text-right">현재출자잔액</label>
 											<div class="col-sm-2 input-group ">
@@ -491,7 +479,7 @@
 											</div>
 											<label class="col-sm-1 col-form-label text-right text-nowrap">당사출자약정금액</label>
 											<div class="col-sm-2 input-group ">
-												<input type="text" class="form-control text-right" id="TB06030S_thcoFincCtrcAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+												<input type="text" class="form-control text-right" id="TB06030S_thcoFincCtrcAmt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="18">
 											</div>
 											<label class="col-sm-1 col-form-label text-right">관리보수잔액</label>
 											<div class="col-sm-2 input-group ">
@@ -515,7 +503,7 @@
 											</div>
 											<label class="col-sm-1 col-form-label text-right text-nowrap">출자증서번호</label>
 											<div class="col-sm-2 input-group ">
-												<input type="text" class="form-control" id="TB06030S_fincEdycNo">
+												<input type="text" class="form-control" id="TB06030S_fincEdycNo" maxlength="4">
 											</div>
 											<label class="col-sm-1 col-form-label text-right">금감원보고대상</label>
 											<div class="col-sm-0-5 input-group">

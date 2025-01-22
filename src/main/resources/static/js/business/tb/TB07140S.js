@@ -376,7 +376,7 @@ const TB07140Sjs = (function () {
         dataType: "string",
         dataIndx: "trSn",
         halign: "center",
-        align: "center",
+        align: "right",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -419,7 +419,7 @@ const TB07140Sjs = (function () {
         dataType: "string",
         dataIndx: "prdtCd",
         halign: "center",
-        align: "left",
+        align: "center",
         filter: { crules: [{ condition: "range" }] },
       },
       {

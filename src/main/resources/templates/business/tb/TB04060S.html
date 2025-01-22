@@ -33,7 +33,7 @@
 							<div class="form-group col-sm-12 mb-1">
 								<label class="col-sm-1 col-form-label text-right">Deal번호</label>
 								<div class="col-sm-3 input-group">
-									<input type="text" class="form-control" style="width: 5x;" id="TB04060S_ibDealNo">
+									<input type="text" class="form-control" style="width: 5x;" id="TB04060S_ibDealNo" maxlength="10">
 									<span class="input-group-append">
 										<button type="button" class="btn btn-default" onclick="callTB03021P('TB04060S');"><i class="fa fa-search"></i></button>
 									</span>
@@ -50,7 +50,7 @@
 								</div>
 								<label class="col-sm-1 col-form-label text-right">담당자</label>
 								<div class="col-sm-3 input-group">
-									<input type="text" class="form-control" style="width: 30px;" id="TB04060S_chrr_empNo">
+									<input type="text" class="form-control" style="width: 30px;" id="TB04060S_chrr_empNo" maxlength="7">
 									<span class="input-group-append">
 										<button type="button" class="btn btn-default" onclick="callTB03022P('TB04060S_chrr');"><i class="fa fa-search"></i></button>
 									</span>
@@ -62,7 +62,7 @@
 							<div class="form-group col-sm-12 mb-1">
 								<label class="col-sm-1 col-form-label text-right">종목코드</label>
 								<div class="col-sm-3 input-group">
-									<input type="text" class="form-control" style="width: 5x;" id="TB04060S_prdtCd">
+									<input type="text" class="form-control" style="width: 5x;" id="TB04060S_prdtCd" maxlength="10">
 									<span class="input-group-append">
 										<button type="button" class="btn btn-default" onclick="callTB06011P('TB04060S');"><i class="fa fa-search"></i></button>
 									</span>
@@ -70,7 +70,7 @@
 								</div>
 								<label class="col-sm-1 col-form-label text-right">거래상대방</label>
 								<div class="col-sm-3 input-group">
-									<input type="text" class="form-control" style="width: 30px;" id="TB04060S_bsnsRgstNo">
+									<input type="text" class="form-control" style="width: 30px;" id="TB04060S_bsnsRgstNo" maxlength="13">
 									<span class="input-group-append">
 										<button type="button" class="btn btn-default" onclick="callTB03061P('TB04060S')"><i class="fa fa-search"></i></button>
 									</span>
@@ -79,12 +79,12 @@
 								<label class="col-sm-1 control-label">등록일자</label>
 								<div class="col-sm-3 input-group date">
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB04060S_rgstDt" name="FromDate" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+										<input type="text" class="form-control" id="TB04060S_rgstDt" name="FromDate" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB04060S_rgstEndDt" name="ToDate" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+										<input type="text" class="form-control" id="TB04060S_rgstEndDt" name="ToDate" value="" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>

@@ -32,7 +32,8 @@ const TB09090Sjs = (function() {
 						dataType: "int",
 						dataIndx: "rownum",
 						width: "10%",
-						align: "center",
+						halign: "center",
+						align: "right",
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
 							let result
@@ -55,7 +56,8 @@ const TB09090Sjs = (function() {
 						dataType: "string",
 						dataIndx: "cmpNm",
 						width: "10%",
-						align: "center",
+						halign: "center",
+						align: "left",
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
 							let result
@@ -377,7 +379,7 @@ const TB09090Sjs = (function() {
 								dataIndx: "bssAsstLctpDcd",
 								width: "20%",
 								halign: "center",
-								align: "center",
+								align: "left",
 								filter: { crules: [{ condition: 'range' }] },
 								editor: {
 									type: "select",
@@ -396,7 +398,7 @@ const TB09090Sjs = (function() {
 								dataIndx: "rlesLctpZpcd",
 								width: "20%",
 								halign: "center",
-								align: "left",
+								align: "center",
 								filter: { crules: [{ condition: 'range' }] }
 							},
 							{
@@ -656,7 +658,7 @@ const TB09090Sjs = (function() {
 								dataIndx: "pybkRankDcd",
 								width: "20%",
 								halign: "center",
-								align: "center",
+								align: "right",
 								filter: { crules: [{ condition: 'range' }] },
 								editor: {
 									type: "select",

@@ -20,7 +20,7 @@ const TB07020Sjs = (function() {
 			title: "거래번호",
 			dataType: "string",
 			dataIndx: "trSn",
-			align: "center",
+			align: "right",
 			halign: "center",
 			width: "",
 			filter: { crules: [{ condition: 'range' }] }
@@ -37,8 +37,8 @@ const TB07020Sjs = (function() {
 		{
 			title: "운용펀드",
 			dataType: "string",
-			dataIndx: "fndCd",
-			align: "center",
+			dataIndx: "fndNm",
+			align: "left",
 			halign: "center",
 			width: "",
 			filter: { crules: [{ condition: 'range' }] }
@@ -47,7 +47,7 @@ const TB07020Sjs = (function() {
 			title: "종목코드",
 			dataType: "string",
 			dataIndx: "prdtCd",
-			align: "left",
+			align: "center",
 			halign: "center",
 			width: "",
 			filter: { crules: [{ condition: 'range' }] }
@@ -74,7 +74,7 @@ const TB07020Sjs = (function() {
 			title: "통화",
 			dataType: "string",
 			dataIndx: "trCrryCd",
-			align: "left",
+			align: "center",
 			halign: "center",
 			width: "",
 			filter: { crules: [{ condition: 'range' }] }
@@ -173,7 +173,7 @@ const TB07020Sjs = (function() {
 		{
 			title: "",
 			dataType: "string",
-			dataIndx: "fndNm",
+			dataIndx: "fndCd",
 			hidden: true
 		},
 		{
@@ -760,8 +760,8 @@ const TB07020Sjs = (function() {
 			// 	dealExcBlce = trAmt * -1 ;
 			// }
 			var krwTrslRt = trdeExrt;                                         // 원화환산율
-			var krwTrslExcAmt = (inputDcd=='1'?1:-1) * trslAmt;                                      // 원화환산실행금액
-			var krwTrslExcBlce = (inputDcd=='1'?1:-1) * trslAmt;                                     // 원화환산실행잔액
+			var krwTrslExcAmt = trslAmt;                                      // 원화환산실행금액
+			var krwTrslExcBlce = trslAmt;                                     // 원화환산실행잔액
 			// if ( Number(eprzCrdlCtrcAmt) == Number(krwTrslExcBlce)) {         // 매수가능금액
 			// 	krwTrslExcBlce = eprzCrdlCtrcAmt - trslAmt;
 			// }
@@ -1414,7 +1414,7 @@ const TB07020Sjs = (function() {
 		// alert(rowData.trQnt);
 		// alert(Number(rowData.trQnt.replaceAll(',','')));
 
-		$('#TB07020S_evlPflsAmt').val(addComma(((Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.avrUnpr.replaceAll(',','')))-(Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.trUnpr.replaceAll(',','')))).toFixed(2)));
+		$('#TB07020S_evlPflsAmt').val(addComma(((Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.avrUnpr.replaceAll(',','')))-(Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.trUnpr.replaceAll(',','')))).toFixed(0)));
 
 		//$('#TB07020S_tradPflsAmt').val(td.eq(32).text());
 		$('#TB07020S_eprzCrdlCtrcAmt').val(rowData.tradPflsAmt);
@@ -1585,7 +1585,7 @@ const TB07020Sjs = (function() {
 			$('#TB07020S_trAmt').val(addComma(Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_trUnpr').val().replaceAll(',', ''))));
 			if(Number($('#TB07020S_avrUnpr').val().replaceAll(',', '')) > 0 ) {
 				//$('#TB07020S_evlPflsAmt').val(addComma(Number(g_krwTrslExcAmt) - (Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_avrUnpr').val().replaceAll(',', '')))));
-				$('#TB07020S_evlPflsAmt').val(addComma(((Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_avrUnpr').val().replaceAll(',', '')))-(Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_trUnpr').val().replaceAll(',', '')))).toFixed(2)));
+				$('#TB07020S_evlPflsAmt').val(addComma(((Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_avrUnpr').val().replaceAll(',', '')))-(Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_trUnpr').val().replaceAll(',', '')))).toFixed(0)));
 			}
 		}
 		if( isNotEmpty($('#TB07020S_trQnt').val()) ) {

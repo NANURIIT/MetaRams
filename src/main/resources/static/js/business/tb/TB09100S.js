@@ -39,7 +39,7 @@ const TB09100Sjs = (function() {
 				title: "Deal번호",
 				dataType: "string",
 				dataIndx: "dealNo",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
@@ -48,7 +48,7 @@ const TB09100Sjs = (function() {
 				title: "Deal명",
 				dataType: "string",
 				dataIndx: "dealNm",
-				align: "center",
+				align: "left",
 				halign: "center",
 				width: "15%",
 				filter: { crules: [{ condition: "range" }] },
@@ -66,7 +66,7 @@ const TB09100Sjs = (function() {
 				title: "종목명",
 				dataType: "string",
 				dataIndx: "prdtNm",
-				align: "center",
+				align: "left",
 				halign: "center",
 				width: "15%",
 				filter: { crules: [{ condition: "range" }] },
@@ -194,7 +194,7 @@ const TB09100Sjs = (function() {
 				title: "담당자",
 				dataType: "string",
 				dataIndx: "chrrEmpnm",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "",
 				filter: { crules: [{ condition: "range" }] },
@@ -229,7 +229,7 @@ const TB09100Sjs = (function() {
 		//딜 손익현황 - 수익 항목 colM
 		let colM_revenue = [
 			{
-				title: "상품코드",
+				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
 				align: "center",
@@ -296,7 +296,7 @@ const TB09100Sjs = (function() {
 		//딜 손익현황 - 비용 항목 colM
 		let colM_cost = [
 			{
-				title: "상품코드",
+				title: "종목코드",
 				dataType: "string",
 				dataIndx: "",
 				align: "center",

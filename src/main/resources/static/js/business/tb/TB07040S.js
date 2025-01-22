@@ -20,7 +20,7 @@ const TB07040Sjs = (function () {
       title: "거래번호",
       dataType: "string",
       dataIndx: "trSn",
-      align: "center",
+      align: "right",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
@@ -37,8 +37,8 @@ const TB07040Sjs = (function () {
     {
       title: "운용펀드",
       dataType: "string",
-      dataIndx: "fndCd",
-      align: "center",
+      dataIndx: "fndNm",
+      align: "left",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
@@ -47,7 +47,7 @@ const TB07040Sjs = (function () {
       title: "종목코드",
       dataType: "string",
       dataIndx: "prdtCd",
-      align: "left",
+      align: "center",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
@@ -74,7 +74,7 @@ const TB07040Sjs = (function () {
       title: "통화",
       dataType: "string",
       dataIndx: "trCrryCd",
-      align: "left",
+      align: "center",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
@@ -169,7 +169,7 @@ const TB07040Sjs = (function () {
     {
       title: "",
       dataType: "string",
-      dataIndx: "fndNm",
+      dataIndx: "fndCd",
       hidden: true,
     },
     {
@@ -1989,7 +1989,7 @@ const TB07040Sjs = (function () {
 
     $("#TB07040S_avrUnpr").val(rowData.avrUnpr);
 
-    $('#TB07040S_tradPflsAmt').val(addComma(((Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.trUnpr.replaceAll(',','')))-(Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.avrUnpr.replaceAll(',','')))).toFixed(2)));
+    $('#TB07040S_tradPflsAmt').val(addComma(((Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.trUnpr.replaceAll(',','')))-(Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.avrUnpr.replaceAll(',','')))).toFixed(0)));
   }
 
   function checkParam(paramData, inputDcd, etprCrdtGrntTrKindCd) {
@@ -2241,7 +2241,7 @@ const TB07040Sjs = (function () {
                   Number($("#TB07040S_trUnpr").val().replaceAll(",", "")) -
                 Number($("#TB07040S_trQnt").val().replaceAll(",", "")) *
                   Number($("#TB07040S_avrUnpr").val().replaceAll(",", ""))
-              ).toFixed(2)
+              ).toFixed(0)
             )
           );
         }
