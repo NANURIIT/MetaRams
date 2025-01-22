@@ -3,12 +3,10 @@ package com.nanuri.rams.business.assessment.tb07.tb07100;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nanuri.rams.business.common.dto.IBIMS115BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS431BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS432BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS431BVO;
@@ -41,41 +39,35 @@ public class TB07100ServiceImpl implements TB07100Service {
 		return ibims432bMapper.selectIBIMS432B(param);
 	};
 	
-	// 결재요청
-	@Override
-	public int apvlRqst(IBIMS431BVO param){
-		return ibims431bMapper.apvlRqst(param);
-	};
-
-	// 지급품의 등록/변경
-	@Override
-	public int mergeIBIMS431B(IBIMS431BVO param){
-
-		int result = 0;
-		param.setHndEmpno(facade.getDetails().getEno());
-		if(param.getCnstNo()==""){
-			System.out.print("Service = insertIBIMS431B");
-			return ibims431bMapper.insertIBIMS431B(param);
-		}else{
-			System.out.print("Service = updateIBIMS431B");
-			return ibims431bMapper.updateIBIMS431B(param);
-		}
-	};
-
 	// 지급품의 기본 등록
 	@Override
 	public int insertIBIMS431B(IBIMS431BVO param){
 
+		int result = 0;
+
+		String cnstNo = ibims431bMapper.setCnstNo(param.getWrtnDt());
+		param.setCnstNo(cnstNo);
 		param.setHndEmpno(facade.getDetails().getEno());
-		return ibims431bMapper.insertIBIMS431B(param);
+		result += 1;
+
+		for(int i = 0; i < param.getCnstDetl().size(); i++){
+			
+			param.getCnstDetl().get(i).setWrtnDt(param.getWrtnDt());
+			param.getCnstDetl().get(i).setRslnBdcd(param.getRslnBdcd());
+			param.getCnstDetl().get(i).setCnstNo(cnstNo);
+
+			result += 1;
+		}
+
+		return result;
+
 	};
 	
 	// 지급품의 기본 변경
 	@Override
 	public int updateIBIMS431B(IBIMS431BVO param){
-
 		param.setHndEmpno(facade.getDetails().getEno());
-		return ibims431bMapper.updateIBIMS431B(param);
+		ibims431bMapper.updateIBIMS431B(param);
 	};
 
 	// 기본 삭제

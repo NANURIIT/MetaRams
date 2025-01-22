@@ -81,13 +81,10 @@
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<input type="text" class="form-control" id="TB07100S_dprtCd">
-										<span class="input-group-append">
-											<button type="button" class="btn btn-default"
-												onclick="callTB03022P('TB07100S');"><i
-													class="fa fa-search"></i></button>
-										</span>
-										<input type="text" class="form-control" id="TB07100S_dprtNm" readonly>
+										<select class="form-control" id="TB07100S_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="TB07100S_dprtCd" readonly="">
 									</div>
 								</div>
 							</div>
@@ -104,7 +101,7 @@
 										</select>
 									</div>
 								</div>
-								
+
 
 								<!-- 거래처 -->
 								<label class="col-sm-1 control-label">
@@ -126,7 +123,8 @@
 							<div class="col-sm-1-5 text-right">
 								<button class="btn btn-primary" onclick="TB07100Sjs.TB07100S_selectIBIMS431B();">
 									<i class="fa fa-search"></i>&nbsp;조회</button>
-								<button class="btn btn-default" type="button" onclick="TB07100Sjs.TB07100S_removeAll();">
+								<button class="btn btn-default" type="button"
+									onclick="TB07100Sjs.TB07100S_removeAll();">
 									<i class="fa fa-undo"></i>&nbsp;초기화
 								</button>
 							</div>
@@ -140,6 +138,7 @@
 							</div>
 							<div class="ibox-content">
 								<div id="TB07100S_grd_rlthPruf"></div>
+
 								<!-- <table class="table result table-bordered footable">
 									<colgroup>
 										<col>
@@ -434,17 +433,21 @@
 										<label class="col-sm-1">처리구분</label>
 										<div class="col-sm-3 input-group">
 											<div class="btn-group pd0">
-												<button id="btn-TB07100S_merge" class="btn btn-s toggleBtn1 btn-info" onclick="TB07100Sjs.TB07100S_insertBtn();">등록/변경</button>
-												<button id="btn-TB07100S_delete" class="btn btn-s toggleBtn2 btn-default" onclick="TB07100Sjs.TB07100S_cancelBtn();">삭제</button>
+												<button id="btn-TB07100S_merge" class="btn btn-s toggleBtn1 btn-info"
+													onclick="TB07100Sjs.TB07100S_insertBtn();">등록/변경</button>
+												<button id="btn-TB07100S_delete"
+													class="btn btn-s toggleBtn2 btn-default"
+													onclick="TB07100Sjs.TB07100S_cancelBtn();">삭제</button>
 											</div>
 											<span class="vr"> │ </span>
 											<div class="col-sm-5 input-group pd0">
-												<button class="btn btn-default" type="button" onclick="TB07100Sjs.TB07100S_resetInput();">
+												<button class="btn btn-default" type="button"
+													onclick="TB07100Sjs.TB07100S_resetInput();">
 													<i class="fa fa-undo"></i>&nbsp;등록초기화
 												</button>
 											</div>
 										</div>
-											
+
 									</div>
 								</div>
 
@@ -461,7 +464,7 @@
 															class="fa fa-calendar"></i></span>
 												</span>
 											</div>
-											
+
 											<label class="col-sm-1 control-label">
 												거래처
 											</label>
@@ -473,7 +476,8 @@
 															onclick="callTB03061P('TB07100S_2');"><i
 																class="fa fa-search"></i></button>
 													</span>
-													<input type="text" class="form-control" id="TB07100S_2_entpNm" readonly>
+													<input type="text" class="form-control" id="TB07100S_2_entpNm"
+														readonly>
 												</div>
 											</div>
 											<label class="col-sm-1">지급금액</label>
@@ -498,7 +502,8 @@
 											<label class="col-sm-1">품의번호</label>
 											<div class="col-sm-2">
 												<div class="input-group">
-													<input type="text" class="form-control" id="TB07100S_cnstNo" disabled>
+													<input type="text" class="form-control" id="TB07100S_cnstNo"
+														disabled>
 												</div>
 											</div>
 											<label class="col-sm-1">계좌번호</label>
@@ -506,7 +511,8 @@
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07100S_bano">
 													<span class="input-group-append">
-														<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+														<button type="button" class="btn btn-default" onclick=""><i
+																class="fa fa-search"></i></button>
 													</span>
 												</div>
 											</div>
@@ -544,7 +550,8 @@
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07100S_cdno">
 													<span class="input-group-append">
-														<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+														<button type="button" class="btn btn-default" onclick=""><i
+																class="fa fa-search"></i></button>
 													</span>
 												</div>
 											</div>
@@ -586,28 +593,21 @@
 											<label class="col-sm-1">작성자</label>
 											<div class="col-sm-2">
 												<div class="input-group">
-													<input type="text" class="form-control" id="TB07100S_2_empNo">
+													<input type="text" class="form-control" id="TB07100S_2_empNo" readonly>
 													<span class="input-group-append">
-														<button type="button" class="btn btn-default"
-															onclick="callTB03022P('TB07100S_2');"><i
-																class="fa fa-search"></i></button>
+														<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
 													</span>
-													<input type="text" class="form-control" id="TB07100S_2_empNm"
-														readonly="">
+													<input type="text" class="form-control" id="TB07100S_2_empNm" readonly>
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="row form-group form-inline text-right">
 										<div class="col-sm-12 form-group">
-												<label class="col-sm-1">작성일자(히든처리할것)</label>
-											<div class="col-sm-2">
-												<span class="input-group date">
-													<input type="text" class="form-control" value=""
-														id="TB07100S_wrtnDt" placeholder="YYYY-MM-DD" readonly>
-													<span class="input-group-addon"><i
-															class="fa fa-calendar"></i></span>
-												</span>
+											<!-- <label class="col-sm-1">작성일자(히든처리할것)</label> -->
+											<div class="col-sm-3">
+												<input type="text" class="form-control" value="" id="TB07100S_wrtnDt"
+													placeholder="YYYY-MM-DD" hidden>
 											</div>
 											<div class="col-sm-3 form-group pd0">
 												<label class="col-sm-4">편익제공</label>
@@ -639,35 +639,36 @@
 										</div>
 									</div>
 								</div>
-								</div>
-								<br>
+							</div>
+							<br>
 
-								<div class="tabs-container mt-2">
-									<ul class="nav nav-tabs" role="tablist" id="ramsTab">
-										<li><a class="nav-link" data-toggle="tab" href="#tab-1">상세</a></li>
-									</ul>
-									<div class="tab-content">
+							<div class="tabs-container mt-2">
+								<ul class="nav nav-tabs" role="tablist" id="ramsTab">
+									<li><a class="nav-link" data-toggle="tab" href="#tab-1">상세</a></li>
+								</ul>
+								<div class="tab-content">
 
-										<div role="tabpanel" id="tab-1" class="tab-pane active">
-											<div class="panel-body">
-												<div class="row">
-													<div class="col-sm-12">
-														<div class="ibox mb-0">
-															<div class="ibox-title">
-																<h5>▶&nbsp;상세</h5>
-																<div class="ibox-tools">
-																	<span class="mr-1">※적요에 쌍따옴표("")를 입력할 수 없습니다</span>
-																	<button class="btn btn-default btn-xs" type="button"
+									<div role="tabpanel" id="tab-1" class="tab-pane active">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="ibox mb-0">
+														<div class="ibox-title">
+															<h5>▶&nbsp;상세</h5>
+															<div class="ibox-tools">
+																<span class="mr-1">※적요에 쌍따옴표("")를 입력할 수 없습니다</span>
+																<button class="btn btn-default btn-xs" type="button"
 																	onclick="TB07100Sjs.addRow();">
-																		<i class="fa fa-plus"></i>&nbsp;행추가
-																	</button>
-																	<button class="btn btn-default btn-xs" onclick="TB07100Sjs.delRow();"><i
+																	<i class="fa fa-plus"></i>&nbsp;행추가
+																</button>
+																<button class="btn btn-default btn-xs"
+																	onclick="TB07100Sjs.delRow();"><i
 																		class="fa fa-minus"></i>&nbsp;행삭제</button>
-																</div>
 															</div>
-															<div class="ibox-content">
-																<div id="TB07100S_grd_thdtTrDtls"></div>
-																<!-- <table class="table result table-bordered footable">
+														</div>
+														<div class="ibox-content">
+															<div id="TB07100S_grd_thdtTrDtls"></div>
+															<!-- <table class="table result table-bordered footable">
 																<colgroup>
 																	<col>
 																	<col>
@@ -703,49 +704,42 @@
 																	</tr>
 																</tbody>
 															</table> -->
-															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div role="tabpanel" id="tab-2" class="tab-pane">
-											<div class="panel-body">
-												<div class="col-sm-12">
-												</div>
+									</div>
+									<div role="tabpanel" id="tab-2" class="tab-pane">
+										<div class="panel-body">
+											<div class="col-sm-12">
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="ibox form-inline">
-								<!-- 버튼영역 -->
-								<div class="col-sm-12 text-right pd0">
-									<!--<button class="btn btn-default" type="button" onclick=""><i
-											class="fa fa-road"></i>&nbsp;신구 계정과목 매핑</button>
-									<button class="btn btn-default" type="button" onclick=""><i
-											class="fa fa-file"></i>&nbsp;거래증빙및영수증</button>
-									<button class="btn btn-default" type="button" onclick=""><i
-											class="fa fa-save"></i>&nbsp;접대/기부 명세등록</button>
-									<button class="btn btn-default" type="button" onclick=""><i
-											class="fa fa-save"></i>&nbsp;편익제공등록</button>
-											<button class="btn btn-success" type="button" onclick="TB07100Sjs.getCnstNo();"><i
-												class="fa fa-check"></i>&nbsp;품의번호채번</button>-->
-									<button class="btn btn-success" type="button" onclick="TB07100Sjs.TB07100S_doExc();" id="TB07100S_excBtn"><i
-											class="fa fa-check"></i>&nbsp;저장</button>
-									<button class="btn btn-success" type="button" onclick="" id="TB07100S_request"><i
-										class="fa fa-check"></i>&nbsp;결재요청</button>
-										<button class="btn btn-success" id="TB07100S_apvl" style="display: none;"><i class="fa fa-check-square-o"></i>&nbsp;승인</button>
-										<button class="btn btn-danger" id="TB07100S_gbck" style="display: none;"><i class="fa fa-ban"></i>&nbsp;반려</button>
-								</div>
+						</div>
+						<div class="ibox form-inline">
+							<!-- 버튼영역 -->
+							<div class="col-sm-12 text-right pd0">
+								<button class="btn btn-success" type="button" onclick="TB07100Sjs.TB07100S_doExc();" id="TB07100S_excBtn"><i class="fa fa-check"></i>&nbsp;저장</button>
 							</div>
 						</div>
-						
-
+						<div class="ibox mb-0 mt-2">
+							<div class="text-right">
+								<button class="btn btn-info" id="TB07100S_apvlRqst" onclick=""><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
+								<button class="btn btn-danger" id="TB07100S_apvlCncl" onclick=""><i class="fa fa-undo"></i>&nbsp;회수</button>
+								<button class="btn btn-success" id="TB07100S_apvl" onclick=""><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
+								<button class="btn btn-danger" id="TB07100S_gbck" onclick=""><i class="fa fa-ban"></i>&nbsp;반려</button>
+							</div>
+						</div>
 					</div>
+
+
 				</div>
 			</div>
-		</div><!-- row -->
+		</div>
+	</div><!-- row -->
 	</div>
 </th:block>
 
