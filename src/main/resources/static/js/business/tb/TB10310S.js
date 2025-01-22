@@ -90,7 +90,7 @@ const TB10310Sjs = (function () {
       {
         title: "권한코드",
         halign: "center",
-        align: "left",
+        align: "center",
         dataType: "string",
         dataIndx: "athCd",
         editable: false,

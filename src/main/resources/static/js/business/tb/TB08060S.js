@@ -37,8 +37,11 @@ const TB08060Sjs = function () {
 		setGrid_TB08060S();
 
 		var today = getToday();
+		// console.log(today);
+		var monthOnly = today.substring(0, 7); 
 
-		$("#TB08060S_stdrDt").val(today);
+		$("#TB08060S_stdrDt").val(monthOnly); 
+
 		//alert("1");
 		//setGrid_TB07040S();
 
@@ -60,16 +63,16 @@ const TB08060Sjs = function () {
 		//선수이자 colModel
 		prepaidIntrCol = [
 			{
-				title: "상품코드",
+				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
 			},
 			{
-				title: "상품명",
+				title: "종목명",
 				dataType: "string",
 				dataIndx: "prdtNm",
 				align: "left",
@@ -284,10 +287,10 @@ const TB08060Sjs = function () {
 		//선수수료 colModel
 		prepaidFeeCol = [
 			{
-				title: "상품코드",
+				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
@@ -540,16 +543,16 @@ const TB08060Sjs = function () {
 		//미수이자 colModel
 		accruedIntrCol = [
 			{
-				title: "상품코드",
+				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
 			},
 			{
-				title: "상품명",
+				title: "종목명",
 				dataType: "string",
 				dataIndx: "prdtNm",
 				align: "left",
@@ -561,7 +564,7 @@ const TB08060Sjs = function () {
 				title: "펀드코드",
 				dataType: "string",
 				dataIndx: "ortnFndCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
@@ -825,7 +828,7 @@ const TB08060Sjs = function () {
 				title: "펀드코드",
 				dataType: "string",
 				dataIndx: "ortnFndCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
@@ -840,16 +843,16 @@ const TB08060Sjs = function () {
 				filter: { crules: [{ condition: 'range' }] }
 			},
 			{
-				title: "상품코드",
+				title: "종목코드",
 				dataType: "string",
 				dataIndx: "prdtCd",
-				align: "left",
+				align: "center",
 				halign: "center",
 				width: "180",
 				filter: { crules: [{ condition: 'range' }] }
 			},
 			{
-				title: "상품명",
+				title: "종목명",
 				dataType: "string",
 				dataIndx: "prdtNm",
 				align: "left",
@@ -1280,7 +1283,10 @@ const TB08060Sjs = function () {
 	function reset_TB08060S() {
 
 		var today = getToday();
-		$("#TB08060S_stdrDt").val(today);			//기준월 초기화
+		// console.log(today);
+		var monthOnly = today.substring(0, 7); 
+
+		$("#TB08060S_stdrDt").val(monthOnly); 
 
 		// $('#TB08060S_dprtCd').val(loginUsrDprtCd);	//관리부서코드
 		// $('#TB08060S_dprtNm').val(loginUsrDprtNm);	//관리부서명
@@ -1339,8 +1345,8 @@ const TB08060Sjs = function () {
 			var formattedBfmmAcmlErnAmt = bfmmAcmlErnAmt.includes(',') ? bfmmAcmlErnAmt.replaceAll(',', '') : bfmmAcmlErnAmt;
 
 			var param = {
-				"stdrYm": stdrDt.substring(0, 6),			//기준년월
-				"prdtCd": rowData.prdtCd,					//상품코드
+				"stdrYm": stdrDt.substring,			//기준년월
+				"prdtCd": rowData.prdtCd,					//종목코드
 				"rgstSn": rowData.rgstSn,					//등록일련번호 
 				"eprzCrdlStlaDcd": eprzCrdlStlaDcd,					//기업여신결산구분코드
 				"thmmAcmlErnAmt": formattedThmmAcmlErnAmt == '' ? 0 : formattedThmmAcmlErnAmt,			//당월누적수익금액

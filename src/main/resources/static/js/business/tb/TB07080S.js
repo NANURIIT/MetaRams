@@ -485,7 +485,7 @@ const TB07080Sjs = (function () {
         if (data[0] === undefined) {
           Swal.fire({
             icon: "warning",
-            text: "실행순번이 존재하지 않습니다!(멘트좀 고쳐주세요)",
+            text: "실행순번이 없는 종목입니다. 해당 종목의 실행순번을 업로드하고 다시 시도해주세요.",
             confirmButtonText: "확인",
           });
           TB07080S_inputReset();

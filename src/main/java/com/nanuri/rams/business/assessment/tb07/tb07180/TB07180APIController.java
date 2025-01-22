@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nanuri.rams.business.common.dto.IBIMS421BDTO;
+import com.nanuri.rams.business.common.vo.IBIMS421BVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ public class TB07180APIController {
 	private final TB07180Service tb07180Service;
 
 	@GetMapping(value = "/IBIMS421BSelect")
-	public List<IBIMS421BDTO> IBIMS421BSelect(IBIMS421BDTO param) {
+	public List<IBIMS421BVO> IBIMS421BSelect(IBIMS421BDTO param) {
 		return tb07180Service.IBIMS421BSelect(param);
 	}
 	

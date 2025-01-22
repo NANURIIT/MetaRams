@@ -56,7 +56,7 @@
              , NVL((
                 SELECT MAX(DPRT_NM)
                   FROM IBIMS003B
-                 WHERE BDCD = A.TR_DPT_CD
+                 WHERE DPRT_CD = A.TR_DPT_CD
                ), '') AS TR_DPT_NM
              , NVL(A.TRDE_EXRT, '') AS TRDE_EXRT                                    <!-- 매매환율 -->
              , NVL(A.TRSL_AMT, '') AS TRSL_AMT                                      <!-- 환산금액 -->

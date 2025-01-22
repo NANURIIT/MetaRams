@@ -97,7 +97,7 @@ public class TB07070ServiceImpl implements TB07070Service {
 
 			if (("10".equals(param.getEtprCrdtGrntTrKindCd()))
 					|| ("20".equals(param.getEtprCrdtGrntTrKindCd()))) { // 실행/상환인 경우
-
+				log.debug("case111");
 				IBIMS410BDTO in410Chkbdto = new IBIMS410BDTO();
 				in410Chkbdto.setPrdtCd(param.getPrdtCd());
 				in410Chkbdto.setExcSn(param.getExcSn());
@@ -114,7 +114,7 @@ public class TB07070ServiceImpl implements TB07070Service {
 					throw new Exception("######### ERROR 처리하려는 정정/취소건은 최종 거래가 아닙니다. >> 종목코드[" + param.getPrdtCd()
 							+ "] 실행일련번호[" + param.getExcSn() + "] 거래일련번호[" + param.getTrSn() + "]");
 				} else {
-
+					log.debug("여기오긴함??");
 					IBIMS402BDTO in402hbdto = new IBIMS402BDTO();
 					in402hbdto.setPrdtCd(param.getPrdtCd());
 					in402hbdto.setExcSn(param.getExcSn());
@@ -146,6 +146,8 @@ public class TB07070ServiceImpl implements TB07070Service {
 					}
 
 					// 최종거래내역조회
+					log.debug("410최신화 <<< 여긴 옴???");
+
 					IBIMS410BDTO in410bdto = new IBIMS410BDTO();
 					in410bdto.setPrdtCd(param.getPrdtCd());
 					in410bdto.setExcSn(param.getExcSn());
@@ -155,6 +157,10 @@ public class TB07070ServiceImpl implements TB07070Service {
 					out410bdto.setTrStatCd("11"); // 11취소원거래, 12취소거래
 					// 현재거래내역에 거래상태를 취소원거래로 변경
 					rtvValue = ibims410BMapper.updateChgSttsCd410B(out410bdto);
+					
+					log.debug("ibims410BMapper.updateChgSttsCd410B 실행결과");
+					log.debug("rtvValue::: " + rtvValue);
+
 					// 거래일련번호 채번
 					int iExTrSn = ibims410BMapper.getExTrSn(out410bdto);
 					out410bdto.setTrSn(iExTrSn);
@@ -163,6 +169,8 @@ public class TB07070ServiceImpl implements TB07070Service {
 					out410bdto.setEtprCrdtGrntTrKindCd(param.getEtprCrdtGrntTrKindCd());
 					// 취소거래내역 생성
 					rtvValue = ibims410BMapper.saveDlTrList(out410bdto);
+					log.debug("ibims410BMapper.saveDlTrList 실행결과");
+					log.debug("rtvValue::: " + rtvValue);
 
 					IBIMS403BVO in403bvo = new IBIMS403BVO();
 					in403bvo.setPrdtCd(param.getPrdtCd());
@@ -181,7 +189,7 @@ public class TB07070ServiceImpl implements TB07070Service {
 
 			} else if (("21".equals(param.getEtprCrdtGrntTrKindCd()))
 					|| ("22".equals(param.getEtprCrdtGrntTrKindCd()))) { // 수수료수납21/수수료지급22인 경우
-
+				log.debug("case222");
 				IBIMS348BVO in348bvo = new IBIMS348BVO();
 				in348bvo.setPrdtCd(param.getPrdtCd());
 				in348bvo.setTrSn(param.getTrSn());

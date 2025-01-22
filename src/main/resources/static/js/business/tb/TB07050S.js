@@ -1050,6 +1050,7 @@ const TB07050Sjs = (function () {
     // console.log(selVal);
 
     let prdtCd = $("#TB07050S_prdtCd").val(); // 종목코드
+    let excSn = $("#TB07050S_excSn").val();   //실행일련번호
     // prnaRdmpSch; // 원금상환스케줄
     // intrRdmpSch; // 이자상환스케줄
     // excSch; // 실행스케줄
@@ -1065,15 +1066,14 @@ const TB07050Sjs = (function () {
           excSch = "";
         }
 
-        //excSch.destroy();
         pqGrid("02");
         grdInf();
 
         if (!isEmpty(prdtCd)) {
           // resetMore();
 
-          srchExcSn(prdtCd);
-          //srch();
+          //srchExcSn(prdtCd);
+          srch();
         } else {
           $("#TB07050S_excSn").html("");
           $("#TB07050S_excSn").attr("disabled", true);
@@ -1098,8 +1098,8 @@ const TB07050Sjs = (function () {
         if (!isEmpty(prdtCd)) {
           // resetMore();
 
-          srchExcSn(prdtCd);
-          //srch();
+          //srchExcSn(prdtCd);
+          srch();
         } else {
           $("#TB07050S_excSn").html("");
           $("#TB07050S_excSn").attr("disabled", true);
@@ -1123,8 +1123,8 @@ const TB07050Sjs = (function () {
         if (!isEmpty(prdtCd)) {
           // resetMore();
 
-          srchExcSn(prdtCd);
-          //srch();
+          //srchExcSn(prdtCd);
+          srch();
         } else {
           $("#TB07050S_excSn").html("");
           $("#TB07050S_excSn").attr("disabled", true);

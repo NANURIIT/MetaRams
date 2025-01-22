@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.common.dto.IBIMS421BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS421BMapper;
+import com.nanuri.rams.business.common.vo.IBIMS421BVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class TB07180ServiceImpl implements TB07180Service {
 	private final AuthenticationFacade facade;
 
 	@Override
-	public List<IBIMS421BDTO> IBIMS421BSelect(IBIMS421BDTO param){		
+	public List<IBIMS421BVO> IBIMS421BSelect(IBIMS421BDTO param){		
 		return ibims421bMapper.IBIMS421BSelect(param);
 	};
 	

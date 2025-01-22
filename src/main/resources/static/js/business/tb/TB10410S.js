@@ -94,7 +94,7 @@ const TB10410Sjs = (function () {
       {
         title: "메뉴ID",
         halign: "center",
-        align: "left",
+        align: "center",
         dataType: "string",
         dataIndx: "menuId",
         editable: false,
@@ -111,7 +111,7 @@ const TB10410Sjs = (function () {
       },
       {
         title: "메뉴레벨",
-        align: "center",
+        align: "right",
         halign: "center",
         dataType: "string",
         dataIndx: "menuLvl",
@@ -120,7 +120,7 @@ const TB10410Sjs = (function () {
       },
       {
         title: "정렬번호",
-        align: "center",
+        align: "right",
         halign: "center",
         dataType: "string",
         dataIndx: "sortNo",
@@ -142,14 +142,14 @@ const TB10410Sjs = (function () {
       },
       {
         title: "메뉴명",
-        align: "center",
+        align: "left",
         halign: "center",
         dataType: "string",
         dataIndx: "menuNm",
       },
       {
         title: "타이틀명",
-        align: "center",
+        align: "left",
         halign: "center",
         dataType: "string",
         dataIndx: "shtnNm",
@@ -259,7 +259,7 @@ const TB10410Sjs = (function () {
       },
       {
         title: "메뉴레벨",
-        align: "center",
+        align: "right",
         halign: "center",
         dataType: "string",
         dataIndx: "menuLvl",
@@ -268,7 +268,7 @@ const TB10410Sjs = (function () {
       },
       {
         title: "정렬번호",
-        align: "center",
+        align: "right",
         halign: "center",
         dataType: "string",
         dataIndx: "sortNo",
@@ -285,14 +285,14 @@ const TB10410Sjs = (function () {
       },
       {
         title: "메뉴명",
-        align: "center",
+        align: "left",
         halign: "center",
         dataType: "string",
         dataIndx: "menuNm",
       },
       {
         title: "타이틀명",
-        align: "center",
+        align: "left",
         halign: "center",
         dataType: "string",
         dataIndx: "shtnNm",

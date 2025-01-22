@@ -257,7 +257,7 @@ var colPrdtCdList = [
 		dataType: "string",
 		dataIndx: "prgSttsNm",
 		halign: "center",
-		align: "left",
+		align: "center",
 		filter: { crules: [{ condition: 'range' }] },
 	},
 	{
@@ -273,7 +273,7 @@ var colPrdtCdList = [
 		dataType: "string",
 		dataIndx: "dprtNm",
 		halign: "center",
-		align: "left",
+		align: "center",
 		filter: { crules: [{ condition: 'range' }] },
 	},
 	{
@@ -281,7 +281,7 @@ var colPrdtCdList = [
 		dataType: "string",
 		dataIndx: "empNm2",
 		halign: "center",
-		align: "left",
+		align: "center",
 		filter: { crules: [{ condition: 'range' }] },
 	},
 	{
