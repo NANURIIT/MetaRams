@@ -10,6 +10,8 @@ const TB08036Sjs = (function () {
     convertDateFormat();
     rendorGrid();
     TB08036S_getUrlDealInfo();
+    TB08036S_setDatePicker("cnstStDt", "cnstEdDt", "cnstPrd");
+    TB08036S_setDatePicker("slStDt", "slEdDt", "slPrd");
   });
 
   // 그리드설정
@@ -466,6 +468,55 @@ const TB08036Sjs = (function () {
         $("#TB08036S_gridStepInfo").pqGrid("deleteRow", { rowIndx: i });
         i--;
       }
+    }
+  }
+
+  //기간계산
+
+  function TB08036S_setDatePicker(startId, endId, resultId) {
+    $(`#${startId}, #${endId}`).on("blur", function () {
+      calculatePeriod(startId, endId, resultId);
+    });
+    $(`#${startId}, #${endId}`).on("change", function () {
+      calculatePeriod(startId, endId, resultId);
+    });
+  }
+
+  function parseDate(dateString) {
+    const parts = dateString.split("-");
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  function calculatePeriod(startDt, endDt, resultPr) {
+    const startDateInput = $(`#${startDt}`).val();
+    const endDateInput = $(`#${endDt}`).val();
+    const resultInput = $(`#${resultPr}`);
+
+    if (startDateInput && endDateInput) {
+      // 입력값을 Date 객체로 변환
+      const startDate = parseDate(startDateInput);
+      const endDate = parseDate(endDateInput);
+
+      if (startDate > endDate) {
+        showErrorPopup("공사 시작일이 종료일보다 늦습니다.");
+        resultInput.val("-");
+        return;
+      }
+      if (isNaN(startDate) || isNaN(endDate)) {
+        return;
+      }
+
+      // 날짜 차이 계산
+      const diffTime = Math.abs(endDate - startDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      // 개월 및 일 계산
+      const months = Math.floor(diffDays / 30);
+      const days = diffDays % 30;
+
+      resultInput.val(`${months}개월 ${days}일`);
+    } else {
+      resultInput.val("-");
     }
   }
 
