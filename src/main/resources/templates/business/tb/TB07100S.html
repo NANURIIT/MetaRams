@@ -24,6 +24,14 @@
 </th:block>
 
 <th:block layout:fragment="customContent">
+	<style>
+		#TB07100S_grd_rlthPruf .ui-state-highlight, 
+		#TB07100S_grd_thdtTrDtls .ui-state-highlight {
+			font-weight: bold !important;
+			background: rgb(90, 171, 224) !important;
+			/* color: #fff !important; */
+		}
+    </style>
 	<!-- 지급품의서실물증빙 -->
 	<div class="wrapper wrapper-content animated fadeIn">
 		<div class="row">
@@ -434,10 +442,10 @@
 										<div class="col-sm-3 input-group">
 											<div class="btn-group pd0">
 												<button id="btn-TB07100S_merge" class="btn btn-s toggleBtn1 btn-info"
-													onclick="TB07100Sjs.TB07100S_insertBtn();">등록/변경</button>
+													onclick="TB07100Sjs.toggleBtnHandler('등록/변경');">등록/변경</button>
 												<button id="btn-TB07100S_delete"
 													class="btn btn-s toggleBtn2 btn-default"
-													onclick="TB07100Sjs.TB07100S_cancelBtn();">삭제</button>
+													onclick="TB07100Sjs.toggleBtnHandler('삭제');">삭제</button>
 											</div>
 											<span class="vr"> │ </span>
 											<div class="col-sm-5 input-group pd0">
@@ -491,7 +499,7 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<select class="form-control" id="TB07100S_acctPymtMthCd">
-														<option value="">전체</option>
+														<option value="">선택</option>
 													</select>
 												</div>
 											</div>
@@ -559,7 +567,7 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<select class="form-control" id="TB07100S_pchsDdcDcd">
-														<option value="">전체</option>
+														<option value="">선택</option>
 													</select>
 												</div>
 											</div>
@@ -572,7 +580,7 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<select class="form-control" id="TB07100S_prufKndDcd">
-														<option value="">전체</option>
+														<option value="">선택</option>
 													</select>
 												</div>
 											</div>
@@ -586,28 +594,28 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<select class="form-control" id="TB07100S_fndsLdgDcd">
-														<option value="">전체</option>
+														<option value="">선택</option>
 													</select>
 												</div>
 											</div>
 											<label class="col-sm-1">작성자</label>
 											<div class="col-sm-2">
 												<div class="input-group">
-													<input type="text" class="form-control" id="TB07100S_2_empNo" readonly>
+													<input type="text" class="form-control" id="TB07100S_rgstEmpno" readonly>
 													<span class="input-group-append">
 														<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
 													</span>
-													<input type="text" class="form-control" id="TB07100S_2_empNm" readonly>
+													<input type="text" class="form-control" id="TB07100S_rgstEmpnm" readonly>
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="row form-group form-inline text-right">
 										<div class="col-sm-12 form-group">
-											<!-- <label class="col-sm-1">작성일자(히든처리할것)</label> -->
 											<div class="col-sm-3">
-												<input type="text" class="form-control" value="" id="TB07100S_wrtnDt"
-													placeholder="YYYY-MM-DD" hidden>
+												<input type="hidden" class="form-control" value="" id="TB07100S_wrtnDt" >
+												<input type="hidden" class="form-control" value="" id="TB07100S_rslnBdcd" >
+												<input type="hidden" class="form-control" value="" id="TB07100S_decdSttsDcd" >
 											</div>
 											<div class="col-sm-3 form-group pd0">
 												<label class="col-sm-4">편익제공</label>
@@ -626,13 +634,12 @@
 											<label class="col-sm-1">승인자</label>
 											<div class="col-sm-2">
 												<div class="input-group">
-													<input type="text" class="form-control" id="TB07100S_3_empNo">
+													<input type="text" class="form-control" id="TB07100S_2_empNo">
 													<span class="input-group-append">
 														<button type="button" class="btn btn-default"
-															onclick="callTB03022P('TB07100S_3');"><i
-																class="fa fa-search"></i></button>
+															onclick="callTB03022P('TB07100S_2');"><i class="fa fa-search"></i></button>
 													</span>
-													<input type="text" class="form-control" id="TB07100S_3_empNm"
+													<input type="text" class="form-control" id="TB07100S_2_empNm"
 														readonly="">
 												</div>
 											</div>
@@ -640,9 +647,83 @@
 									</div>
 								</div>
 							</div>
+							<div class="ibox form-inline mt-2">
+								<!-- 버튼영역 -->
+								<div class="col-sm-12 text-right pd0">
+									<button class="btn btn-success" type="button" onclick="TB07100Sjs.TB07100S_doExc();" id="TB07100S_excBtn"><i class="fa fa-check"></i>&nbsp;실행</button>
+								</div>
+							</div>
+							<div class="ibox mb-0 mt-2">
+								<div class="text-right">
+									<button class="btn btn-info" id="TB07100S_apvlRqst" onclick=""><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
+									<button class="btn btn-danger" id="TB07100S_apvlCncl" onclick=""><i class="fa fa-undo"></i>&nbsp;회수</button>
+									<button class="btn btn-success" id="TB07100S_apvl" onclick=""><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
+									<button class="btn btn-danger" id="TB07100S_gbck" onclick=""><i class="fa fa-ban"></i>&nbsp;반려</button>
+								</div>
+							</div>
 							<br>
+							<div class="ibox mb-0">
+								<div class="ibox-title">
+									<h5>▶&nbsp;상세</h5>
+									<div class="ibox-tools">
+										<span class="mr-1">※적요에 쌍따옴표("")를 입력할 수 없습니다</span>
+										<button class="btn btn-default btn-xs" type="button"
+											onclick="TB07100Sjs.addRow();">
+											<i class="fa fa-plus"></i>&nbsp;행추가
+										</button>
+										<button class="btn btn-default btn-xs"
+											onclick="TB07100Sjs.delRow();"><i
+												class="fa fa-minus"></i>&nbsp;행삭제</button>
+									</div>
+								</div>
+								<div class="ibox-content">
+										<div id="TB07100S_grd_thdtTrDtls"></div>
+									<!-- <table class="table result table-bordered footable">
+										<colgroup>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+											<col>
+										</colgroup>
+										<thead>
+											<tr> 
+												<th>삭제</th>
+												<th>순번</th>
+												<th>계정과목명</th>
+												<th>차변금액</th>
+												<th>적요</th>
+												<th>차량등록코드</th>
+												<th>배부</th>
+												<th>펀드코드</th>
+											</tr>
+										</thead>
+										<tbody id="">
+											<tr class="text-center">
+												<td></td>
+												<td></td>
+												<td></td>
+												<td class="text-right"></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+										</tbody>
+									</table> -->
+								</div>
+							</div>
+							<div class="ibox form-inline mt-2">
+								<!-- 버튼영역 -->
+								<div class="col-sm-12 text-right pd0">
+									<button class="btn btn-success" type="button" onclick="TB07100Sjs.TB07100S_saveIBIMS432B()" id="TB07100S_excBtn"><i class="fa fa-save"></i>&nbsp;저장</button>
+								</div>
+							</div>
 
-							<div class="tabs-container mt-2">
+							<!-- <div class="tabs-container mt-2">
 								<ul class="nav nav-tabs" role="tablist" id="ramsTab">
 									<li><a class="nav-link" data-toggle="tab" href="#tab-1">상세</a></li>
 								</ul>
@@ -652,60 +733,7 @@
 										<div class="panel-body">
 											<div class="row">
 												<div class="col-sm-12">
-													<div class="ibox mb-0">
-														<div class="ibox-title">
-															<h5>▶&nbsp;상세</h5>
-															<div class="ibox-tools">
-																<span class="mr-1">※적요에 쌍따옴표("")를 입력할 수 없습니다</span>
-																<button class="btn btn-default btn-xs" type="button"
-																	onclick="TB07100Sjs.addRow();">
-																	<i class="fa fa-plus"></i>&nbsp;행추가
-																</button>
-																<button class="btn btn-default btn-xs"
-																	onclick="TB07100Sjs.delRow();"><i
-																		class="fa fa-minus"></i>&nbsp;행삭제</button>
-															</div>
-														</div>
-														<div class="ibox-content">
-															<div id="TB07100S_grd_thdtTrDtls"></div>
-															<!-- <table class="table result table-bordered footable">
-																<colgroup>
-																	<col>
-																	<col>
-																	<col>
-																	<col>
-																	<col>
-																	<col>
-																	<col>
-																	<col>
-																</colgroup>
-																<thead>
-																	<tr> 
-																		<th>삭제</th>
-																		<th>순번</th>
-																		<th>계정과목명</th>
-																		<th>차변금액</th>
-																		<th>적요</th>
-																		<th>차량등록코드</th>
-																		<th>배부</th>
-																		<th>펀드코드</th>
-																	</tr>
-																</thead>
-																<tbody id="">
-																	<tr class="text-center">
-																		<td></td>
-																		<td></td>
-																		<td></td>
-																		<td class="text-right"></td>
-																		<td></td>
-																		<td></td>
-																		<td></td>
-																		<td></td>
-																	</tr>
-																</tbody>
-															</table> -->
-														</div>
-													</div>
+													
 												</div>
 											</div>
 										</div>
@@ -717,22 +745,9 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 						</div>
-						<div class="ibox form-inline">
-							<!-- 버튼영역 -->
-							<div class="col-sm-12 text-right pd0">
-								<button class="btn btn-success" type="button" onclick="TB07100Sjs.TB07100S_doExc();" id="TB07100S_excBtn"><i class="fa fa-check"></i>&nbsp;저장</button>
-							</div>
-						</div>
-						<div class="ibox mb-0 mt-2">
-							<div class="text-right">
-								<button class="btn btn-info" id="TB07100S_apvlRqst" onclick=""><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
-								<button class="btn btn-danger" id="TB07100S_apvlCncl" onclick=""><i class="fa fa-undo"></i>&nbsp;회수</button>
-								<button class="btn btn-success" id="TB07100S_apvl" onclick=""><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
-								<button class="btn btn-danger" id="TB07100S_gbck" onclick=""><i class="fa fa-ban"></i>&nbsp;반려</button>
-							</div>
-						</div>
+						
 					</div>
 
 

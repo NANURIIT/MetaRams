@@ -28,11 +28,6 @@
              , A.PROJ_ID
              , A.CRRY_CD
              , A.EXRT
-             , A.HND_DETL_DTM
-             , A.HND_EMPNO
-             , A.HND_TMNL_NO
-             , A.HND_TR_ID
-             , A.GUID
           FROM IBIMS432B A
          WHERE 1=1
            AND A.WRTN_DT = #{wrtnDt}
@@ -162,7 +157,7 @@
          AND WRTN_DT = #{wrtnDt}
          AND RSLN_BDCD = #{rslnBdcd}
          AND CNST_NO = #{cnstNo}
-         AND STTM_DETL_SN = #{sttmDetlSn}
+         <!-- AND STTM_DETL_SN = #{sttmDetlSn} -->
     </delete>
 
 </mapper>
