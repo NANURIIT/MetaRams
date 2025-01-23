@@ -287,7 +287,7 @@ const TB08050Sjs = (function () {
         dataType: "string",
         dataIndx: "actsCd",
         halign: "center",
-        align: "left",
+        align: "center",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
 		editor: {
@@ -377,7 +377,7 @@ const TB08050Sjs = (function () {
         dataType: "string",
         dataIndx: "txtnTpDcd",
         halign: "center",
-        align: "left",
+        align: "center",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
@@ -420,7 +420,7 @@ const TB08050Sjs = (function () {
         dataType: "string",
         dataIndx: "rpsrNm",
         halign: "center",
-        align: "center",
+        align: "left",
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
       },

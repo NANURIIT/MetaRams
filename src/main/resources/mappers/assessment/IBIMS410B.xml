@@ -323,7 +323,7 @@
          AND (A.TR_DT &lt;= #{rsltnEndDt})
          </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(orgno)">
-         AND C.BDCD = #{orgno}
+         AND C.DPRT_CD = #{orgno}
          </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
          AND B.DEAL_NO = #{dealNo}
@@ -331,10 +331,22 @@
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
          AND A.PRDT_CD = #{prdtCd}
          </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trObjtBsnNo)">
-         AND B.TR_OTHR_DSCM_NO = #{trObjtBsnNo}
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtMdclCd)">
+         AND B.PRDT_MDCL_CD = #{prdtMdclCd}
          </if>
-       ORDER BY PRDT_CD, TR_SN DESC
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(etprCrdtGrntTrKindCd)">
+         AND A.ETPR_CRDT_GRNT_TR_KIND_CD = #{etprCrdtGrntTrKindCd}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trStatCd)">
+         AND A.TR_STAT_CD = #{trStatCd}
+         </if>
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trStfno)">
+         AND A.TR_STFNO = #{trStfno}
+         </if>
+         <!-- <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trObjtBsnNo)">
+         AND B.TR_OTHR_DSCM_NO = #{trObjtBsnNo}
+         </if> -->
+       ORDER BY DEAL_NO, PRDT_CD, TR_SN DESC
     </select>
 
 	 <select id="selectlastIBIMS410B" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS410BDTO">

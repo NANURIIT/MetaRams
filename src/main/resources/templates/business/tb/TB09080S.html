@@ -12,14 +12,14 @@
 	<script th:src="@{js/business/tb/TB09080S.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
 	<script th:src="@{js/business/tb/TB03022P.js}"></script>
-	<script th:src="@{js/business/tb/TB03061P.js}"></script>
+	<!-- <script th:src="@{js/business/tb/TB03061P.js}"></script> -->
 	<script th:src="@{js/business/tb/TB06011P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
-	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<!-- <th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block> -->
 	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
 </th:block>
 
@@ -48,35 +48,6 @@
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
-								<!--<label class="col-sm-1 control-label">
-									부서코드
-								</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-										<select class="form-control" id="TB09080S_dprtCd">
-											<option value="0">전체</option>
-											<option value="1"></option>
-										</select>
-										<input type="text" class="form-control" id="" readonly="">
-									</div>
-								</div>-->
-								<label class="col-sm-1 col-form-label text-right">관리부서</label>
-								<div class="col-sm-3 input-group">
-									<select class="form-control" id="TB09080S_dprtNm">
-										<option value="">전체</option>
-									</select>
-									<input type="text" class="form-control" id="TB09080S_dprtCd" readonly="">
-								</div>
-								<!-- <label class="col-sm-1 col-form-label text-right">담당자</label>
-								<div class="col-sm-3 input-group">
-									<input type="text" class="form-control" style="width: 30px;" id="TB09080S_chrr_empNo">
-									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick="callTB03022P('TB09080S_chrr');"><i class="fa fa-search"></i></button>
-									</span>
-									<input type="text" class="form-control" style="width: 70px;" id="TB09080S_chrr_empNm" readonly>
-								</div> -->
-							</div>
-							<div class="col-sm-10 form-group">
 								<!-- deal 번호 -->
 								<label class="col-sm-1 control-label">
 									Deal번호
@@ -103,18 +74,43 @@
 										<input type="text" class="form-control" id="TB09080S_prdtNm" readonly="">
 									</div>
 								</div>
-								<!-- 거래상대방 -->
-								<label class="col-sm-1 control-label">
-									거래상대방
-								</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-										<input type="text" class="form-control" id="TB09080S_ardyBzepNo">
-										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03061P('TB09080S');"><i class="fa fa-search"></i></button>
-										</span>
-										<input type="text" class="form-control" id="TB09080S_bzepName" readonly="">
-									</div>
+								
+							</div>
+							<div class="col-sm-10 form-group">
+								<label class="col-sm-1 col-form-label text-right">신용공여<br>중분류</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" id="TB09080S_P006">
+										<option value="">전체</option>
+									</select>
+								</div>
+								<label class="col-sm-2 col-form-label text-right">거래종류</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" id="TB09080S_P012">
+										<option value="">전체</option>
+									</select>
+								</div>
+								<label class="col-sm-2 col-form-label text-right">거래상태</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" id="TB09080S_E026">
+										<option value="">전체</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-10 form-group">
+								<label class="col-sm-1 col-form-label text-right">담당자</label>
+								<div class="col-sm-3 input-group">
+									<input type="text" class="form-control" style="width: 30px;" id="TB09080S_chrr_empNo">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callTB03022P('TB09080S_chrr');"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 70px;" id="TB09080S_chrr_empNm" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">관리부서</label>
+								<div class="col-sm-3 input-group">
+									<select class="form-control" id="TB09080S_dprtNm">
+										<option value="">전체</option>
+									</select>
+									<input type="text" class="form-control" id="TB09080S_dprtCd" readonly="">
 								</div>
 							</div>
 							<div class="col-sm-2 form-group mb-1">	

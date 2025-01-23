@@ -242,12 +242,12 @@ const TB03040Sjs = (function(){
       title: "진행상태",
       dataType: "string",
       dataIndx: "mtrPrgSttsDcdNm",
-      align: "center",
+      halign: "center",
+      align: "left",
     },
   ];
   
   return{
-
     //  함수
     ibSpecSearch : ibSpecSearch
   }
