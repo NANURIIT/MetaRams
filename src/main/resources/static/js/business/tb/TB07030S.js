@@ -207,33 +207,6 @@ const TB07030Sjs = (function () {
           header: true,
         },
       },
-      // {
-      //   dataIndx: "chk",
-      //   maxWidth: 36,
-      //   minWidth: 36,
-      //   type: 'checkBoxSelection',
-      //   cb: {
-      //       all: false,
-      //       header: true,
-      //       check: "YES",
-      //       uncheck: "NO"
-      //   },
-      //   render: function (ui) {                            
-      //       var cb = ui.column.cb,
-      //           cellData = ui.cellData,
-      //           checked = cb.check === cellData ? 'checked' : '',
-      //           // disabled = this.isEditableCell(ui) ? "" : "disabled",
-      //           text = cb.check === cellData ? 'TRUE' : (cb.uncheck === cellData ? 'FALSE' : '<i>unknown</i>');
-      //       return {
-      //           text: "<input type='checkbox' " + checked + " />" ,
-      //           // style: (disabled ? "background:lightgray" : "")
-      //       };
-      //   },
-      //   editor: false,
-      //   editable: function (ui) {
-      //       return !ui.rowData.disabled;
-      //   }
-      // },
       {
         title: "회차",
         dataType: "integer",

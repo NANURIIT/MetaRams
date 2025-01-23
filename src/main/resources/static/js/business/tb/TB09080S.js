@@ -12,6 +12,17 @@ const TB09080Sjs = (function () {
     $("#TB09080S_rsltnEndDt").val(getToday());
   });
 
+  function setLoginUsrInfo(){
+    var dprtCd = $("#userDprtCd").val();
+    var empNm = $("#userEmpNm").val();
+    var empNo = $("#userEno").val();
+
+    $("#TB09080S_dprtCd").val(dprtCd);
+    $("#TB09080S_dprtNm").val(dprtCd);
+    $("#TB09080S_chrr_empNo").val(empNo);
+    $("#TB09080S_chrr_empNm").val(empNm);
+  }
+
   function setGrid_TB09080S() {
     let colM_TB09080S = [
       {
@@ -20,7 +31,7 @@ const TB09080Sjs = (function () {
         dataIndx: "dealNo",
         align: "center",
         halign: "center",
-        width: "180",
+        width: "150",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -29,7 +40,7 @@ const TB09080Sjs = (function () {
         dataIndx: "dealNm",
         align: "left",
         halign: "center",
-        width: "250",
+        width: "150",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -38,7 +49,7 @@ const TB09080Sjs = (function () {
         dataIndx: "prdtCd",
         align: "center",
         halign: "center",
-        width: "250",
+        width: "130",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -47,7 +58,7 @@ const TB09080Sjs = (function () {
         dataIndx: "prdtNm",
         align: "left",
         halign: "center",
-        width: "250",
+        width: "180",
         filter: { crules: [{ condition: "range" }] },
       },
       {
@@ -121,6 +132,23 @@ const TB09080Sjs = (function () {
             ({ cdValue }) => cdValue == ui.cellData
           );
           return rtnValue ? rtnValue.cdName : ui.cellData;
+        },
+      },
+      {
+        title: "거래일자",
+        dataType: "date",
+        dataIndx: "trDt",
+        width: "120",
+        align: "center",
+        dateFormat: "yyyy-mm-dd",
+        filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          let cellData = ui.cellData;
+          if (!isEmpty(cellData) && cellData.length === 8) {
+            return formatDate(cellData);
+          } else {
+            return cellData;
+          }
         },
       },
       {
@@ -277,6 +305,10 @@ const TB09080Sjs = (function () {
     $("#TB09080S_dealDtlsGrid").pqGrid(obj);
     $("#TB09080S_dealDtlsGrid").pqGrid("refreshDataAndView");
     dealDtlsIns = $("#TB09080S_dealDtlsGrid").pqGrid("instance");
+
+    var freezeCols=dealDtlsIns.option( "freezeCols" );
+
+    dealDtlsIns.option( "freezeCols", 4 );
   }
 
   function getDealList() {
@@ -323,7 +355,11 @@ const TB09080Sjs = (function () {
         orgno: $("#TB09080S_dprtCd").val(),
         dealNo: $("#TB09080S_ibDealNo").val(),
         prdtCd: $("#TB09080S_prdtCd").val(),
-        bsnsRgstNo: $("#TB09080S_bsnsRgstNo").val(),
+        // bsnsRgstNo: $("#TB09080S_bsnsRgstNo").val(),
+        prdtMdclCd: $("#TB09080S_P006").val(),                //신용공여중분류코드
+        etprCrdtGrntTrKindCd: $("#TB09080S_P012").val(),      //기업신용공여거래종류코드
+        trStatCd: $("#TB09080S_E026").val(),                  //거래상태코드
+        trStfno: $("#TB09080S_chrr_empNo").val()              //처리자 직원번호
       }),
       dataType: "json",
       beforeSend: function (xhr) {
@@ -341,15 +377,22 @@ const TB09080Sjs = (function () {
   function reset() {
     $("#TB09080S_rsltnDt").val(getSomeDaysAgo(7));
     $("#TB09080S_rsltnEndDt").val(getToday());
-    $("#TB09080S_dprtCd").val("");
-    $("#TB09080S_dprtNm").val("");
+    // $("#TB09080S_dprtCd").val("");
+    // $("#TB09080S_dprtNm").val("");
     $("#TB09080S_ibDealNo").val("");
     $("#TB09080S_ibDealNm").val("");
     $("#TB09080S_prdtCd").val("");
     $("#TB09080S_prdtNm").val("");
-    $("#TB09080S_bsnsRgstNo").val("");
-    $("#TB09080S_entpRnm").val("");
+    // $("#TB09080S_bsnsRgstNo").val("");
+    //$("#TB09080S_entpRnm").val("");
+
+    $("#TB09080S_P006").val("");
+    $("#TB09080S_P012").val("");
+    $("#TB09080S_E026").val("");
+
     dealDtlsIns.setData("");
+
+    setLoginUsrInfo();
   }
 
   /*
@@ -366,7 +409,7 @@ const TB09080Sjs = (function () {
    * selectBox 부서코드 set
    */
   function fnSelectBox() {
-    selectBox = getSelectBoxList("TB09080S", "D010/P006/E026/R028", false);
+    selectBox = getSelectBoxList("TB09080S", "D010/P006/E026/R028/P012", false);
 
     prdtMdclCdList = selectBox.filter((item) => item.cmnsGrpCd === "P006");
     rvseCnclDvsnCdList = selectBox.filter((item) => item.cmnsGrpCd === "R028");
@@ -391,6 +434,8 @@ const TB09080Sjs = (function () {
     $("#TB09080S_dprtNm").on("change", function () {
       $("#TB09080S_dprtCd").val($("#TB09080S_dprtNm").val());
     });
+
+    setLoginUsrInfo();
   }
 
   return {
