@@ -757,8 +757,6 @@ const TB07120Sjs = (function () {
       decdSttsDcd: mode,                // 결재상태구분코드
     };
 
-    console.log(paramData);
-
     $.ajax({
       type: "POST",
       url: `/TB07120S/updateFndsCnstDecd`,
