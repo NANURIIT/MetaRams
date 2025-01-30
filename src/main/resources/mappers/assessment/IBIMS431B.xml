@@ -183,14 +183,14 @@
               , #{pchsDdcDcd}
               , #{rslnAmt}
               , #{splmValuTxa}
-              , #{cnclYn}
+              , NVL(#{cnclYn}, DEFAULT)
               , #{trId}
-              , #{bnftYn}
+              , NVL(#{bnftYn}, DEFAULT)
               , #{reltDcmNo}
               , #{reltFdtnCtns}
-              , #{elcPrufYn}
-              , #{entmAccXstcYn}
-              , #{cntrAccXstcYn}
+              , NVL(#{elcPrufYn}, DEFAULT)
+              , NVL(#{entmAccXstcYn}, DEFAULT)
+              , NVL(#{cntrAccXstcYn}, DEFAULT)
               , (
                  SELECT CD_VL_ID
                    FROM IBIMS002B
@@ -200,7 +200,7 @@
                  )
               , #{jobDecdNo}
               , #{cnclJobDecdNo}
-              , #{excalYn}
+              , NVL(#{excalYn}, DEFAULT)
               , #{fndsLdgDcd}
               , #{fndsLdgNo}
               , #{rgstSn}

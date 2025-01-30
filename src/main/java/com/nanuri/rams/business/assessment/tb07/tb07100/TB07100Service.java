@@ -30,5 +30,13 @@ public interface TB07100Service {
 
 	// 결재요청
 	public int apvlRqst(IBIMS431BVO param);
-	
+
+	// 승인취소
+	public int apvlRqstCncl(IBIMS431BVO param);
+
+	// 승인
+	public int apvl(IBIMS431BVO param);
+
+	// 반려
+	public int rjct(IBIMS431BVO param);	
 }

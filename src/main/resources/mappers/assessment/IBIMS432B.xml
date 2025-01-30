@@ -36,6 +36,15 @@
            ORDER BY A.STTM_DETL_SN
     </select>
 
+    <select id="chkCountIBIMS432B" parameterType="com.nanuri.rams.business.common.vo.IBIMS432BVO" resultType="int">
+      SELECT COUNT(STTM_DETL_SN)
+        FROM IBIMS432B
+       WHERE 1=1
+         AND WRTN_DT = #{wrtnDt}
+         AND RSLN_BDCD = #{rslnBdcd}
+         AND CNST_NO = #{cnstNo}
+    </select>
+
     <!-- 일련번호 채번 -->
     <select id="setSttmDetlSn">
       SELECT NVL(STTM_DETL_SN, 0) + 1

@@ -64,4 +64,22 @@ public class TB07100APIController {
 		return tb07100Service.apvlRqst(param);
 	}
 
+	// 승인취소
+	@PostMapping(value = "/apvlRqstCncl")
+	public int apvlRqstCncl(@RequestBody IBIMS431BVO param) {
+		return tb07100Service.apvlRqstCncl(param);
+	}
+
+	// 승인
+	@PostMapping(value = "/apvl")
+	public int apvl(@RequestBody IBIMS431BVO param) {
+		return tb07100Service.apvl(param);
+	}
+
+	// 반려
+	@PostMapping(value = "/rjct")
+	public int rjct(@RequestBody IBIMS431BVO param) {
+		return tb07100Service.rjct(param);
+	}
+
 }

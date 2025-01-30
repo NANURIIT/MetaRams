@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS232BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS432BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS231BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS232BMapper;
@@ -52,9 +54,8 @@ public class TB07100ServiceImpl implements TB07100Service {
 		String cnstNo = ibims431bMapper.setCnstNo(param.getWrtnDt());
 		param.setCnstNo(cnstNo);
 		param.setHndEmpno(facade.getDetails().getEno());
-		result += 1;
 
-		return result;
+		return ibims431bMapper.insertIBIMS431B(param);
 	};
 	
 	// 지급품의기본 변경
@@ -99,14 +100,73 @@ public class TB07100ServiceImpl implements TB07100Service {
 	public int apvlRqst (IBIMS431BVO param) {
 
 		int result = 0;
-		// ㅣㅆ발씨ㅣㅃ라리씨발
+
+		IBIMS432BVO vo432 = new IBIMS432BVO();
+		vo432.setWrtnDt(param.getWrtnDt());
+		vo432.setRslnBdcd(param.getRslnBdcd());
+		vo432.setCnstNo(param.getCnstNo());
+
+		int chk = ibims432bMapper.chkCountIBIMS432B(vo432);
+
+		if ( chk > 0 ) {
+			result = -7574;
+		}
+		else {
+			IBIMS231BDTO dto231 = new IBIMS231BDTO();
+
+			int decdSn = ibims231bMapper.getDecdSn();
+
+			String snFromTB07100 = param.getWrtnDt() + param.getRslnBdcd() + param.getCnstNo();
+
+			dto231.setDecdSn(decdSn);
+			dto231.setApvlRqstPEno(param.getRgstEmpno());
+			dto231.setDecdStepDcd("04");	// 승인요청
+			dto231.setDecdSttsDcd("1");		// 진행중
+			dto231.setDealNo(snFromTB07100);
+			dto231.setDecdJobDcd("TB07100S");
+			dto231.setScrnNo("TB07100S");
+			dto231.setLastDecdSq(1);
+			dto231.setHndEmpno(facade.getDetails().getEno());
+
+			ibims231bMapper.apvlRqst(dto231);
+
+			IBIMS232BDTO dto232 = new IBIMS232BDTO();
+
+			dto232.setDecdSn(decdSn);
+			dto232.setDecdSq(1);
+			dto232.setDecdSttsDcd("1");
+			dto232.setDcfcEno(param.getReltStfno());
+			dto232.setHndEmpno(facade.getDetails().getEno());
+
+			ibims232bMapper.apvlRqst(dto232);
+
+			result = 1;
+		}
 
 		return result;
 	}
 
 	// 승인취소
+	@Override
+	public int apvlRqstCncl(IBIMS431BVO param) {
+		int result = 0;
 
-	// 결재
+		return result;
+	}
+
+	// 승인
+	@Override
+	public int apvl(IBIMS431BVO param) {
+		int result = 0;
+
+		return result;
+	}
 
 	// 반려
+	@Override
+	public int rjct(IBIMS431BVO param) {
+		int result = 0;
+
+		return result;
+	}
 }
