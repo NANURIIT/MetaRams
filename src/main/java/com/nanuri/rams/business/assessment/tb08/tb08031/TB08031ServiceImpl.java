@@ -145,7 +145,85 @@ public class TB08031ServiceImpl implements TB08031Service {
 		ibims101bvo = ibims101bMapper.getBusiBssInfo101B(dealNo);
 
 		rtnObj.setIbims101bvo(ibims101bvo);
-		
+
+		long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+		//사업 기본정보 조회
+		if(sn > 0){
+			log.debug("sn있음~~~~");
+
+			rtnObj = ibims501BMapper.getBusiBssInfo501B(param);
+
+			if(rtnObj.getInvFnnMngmBusiDcd() != null){
+				switch( rtnObj.getInvFnnMngmBusiDcd() ) {
+					// 부동산
+					case "01":
+						rtnObj.setRlesInfo(ibims502BMapper.getRealEstateInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						break;
+					// 인프라
+					case "02":
+						rtnObj.setInfraInfo(ibims503BMapper.getInfraInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						break;
+					// M&A			
+					case "03":
+						rtnObj.setMaInfo(ibims504BMapper.getMaInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
+						rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
+						break;
+					// 국제투자	
+					case "04":
+						rtnObj.setInvstInfo(ibims505BMapper.getInvstInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						break;
+					// PEF/VC	
+					case "05":
+						rtnObj.setPefInfo(ibims506BMapper.getPefInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
+						rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
+						rtnObj.setInvstEprzInfo(ibims518Mapper.getInvstBzscalList(param.getDealNo()));
+						rtnObj.setAsstWrkngInfo(ibims515Mapper.selectAsstOrtnLst(param.getDealNo()));
+						break;
+					default : 
+						break;
+				}
+				rtnObj.setLoanInfo(ibims402Mapper.getloanInfo(param.getDealNo()));
+				rtnObj.setFundInfo(ibims402Mapper.getFundInfo(param.getDealNo()));
+			}else{
+				log.debug("rtnObj.getInvFnnMngmBusiDcd() 없음!!!!");
+			}
+
+		}else{
+			log.debug("sn없음~~~~");
+		}
+
 		return rtnObj;
 	}
 

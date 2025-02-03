@@ -27,7 +27,7 @@ public class IBIMS501BDTO {
 	
     private String         dealNo;               // 딜번호
     //private String         sq;                   // 일련번호(메타 변경 전)
-    private String         sn;                   // 일련번호
+    private long           sn;                   // 일련번호
     //private String         corpRgstNo;           // 법인등록번호(메타 변경 전)
     private String         crno;           // 법인등록번호
     private String         busiNm;               // 사업명
@@ -56,7 +56,8 @@ public class IBIMS501BDTO {
     private String         crryCd;              // 통화코드
     private BigDecimal     totPrcrAmt;           // 총조달금액
     private String         mainBondMtncCnts;     // 주요채권보전내용
-    private String         thcoMdtnYn;           // 당사주선여부
+    // private String         thcoMdtnYn;           // 당사주선여부
+    private String         thcoRlDcd;            //당사역할구분코드   
     private BigDecimal     thcoMdtnAmt;          // 당사주선금액
     //private BigDecimal     thcoPtcpAmt;          // 당사참여금액(메타 변경 전)
     private BigDecimal     thcoPtciAmt;          // 당사참여금액

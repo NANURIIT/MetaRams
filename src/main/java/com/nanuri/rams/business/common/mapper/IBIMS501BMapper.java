@@ -14,6 +14,10 @@ public interface IBIMS501BMapper {
 	
 	// 투자자산사업기본 등록
 	public int saveBusiBssInfo(IBIMS501BVO param);
+
+	public IBIMS501BVO getBusiBssInfo501B(IBIMS501BVO param);
+
+	public int getMaxSn501B(String dealNo);
 	
 	
 }

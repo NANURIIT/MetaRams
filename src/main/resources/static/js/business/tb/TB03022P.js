@@ -399,6 +399,10 @@ function setEmpNm(e) {
       $("#TB03040S_2_dprtNm").val(e.dprtCd);
       $("#TB03040S_2_dprtCd").val(e.dprtCd);
       break;
+    case "TB08031S_charge":
+        $("#TB08031S_D010").val(e.dprtCd);
+        // $("#TB09080S_dprtNm").val(e.dprtCd);
+        break;
     default:
       break;
   }

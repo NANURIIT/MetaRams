@@ -130,7 +130,7 @@
 									<select class="form-control col-sm-3" style="width:70px;" id="TB08031S_I027">
 										<option></option>
 									</select>
-									<input type="text" class="form-control text-right" style="width:30px;" id="TB08031S_prcrAmt">백만원
+									<input type="text" class="form-control text-right" style="width:30px;" id="TB08031S_prcrAmt">
 								</div>
 								<label class="col-sm-1 col-form-label">주요채권보전</label>
 								<div class="col-sm-3">
@@ -167,7 +167,7 @@
 								</div>
 								<label class="col-sm-1 col-form-label">기준금리</label>
 								<div class="col-sm-3 form-inline">
-									<select class="col-sm-3 form-control" id="TB08031S_B006">
+									<select class="col-sm-3 form-control" id="TB08031S_S003">
 										<option>선택</option>
 									</select>
 									<input type="text" class="col-sm-9 form-control text-right border-left-none" id="TB08031S_BitrKindCdInput">
@@ -179,7 +179,7 @@
 							</div>
 							<div class="form-group row mb-1">
 								<label class="col-sm-1 col-form-label">담당자</label>
-								<div class="col-sm-3">
+								<!-- <div class="col-sm-3">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB08031S_charge_empNm" name="">
 										<input type="hidden" class="form-control" id="TB08031S_charge_empNo" name="">
@@ -189,7 +189,16 @@
 											</button>
 										</span>
 									</div>
+								</div> -->
+
+								<div class="col-sm-3 input-group">
+									<input type="text" class="form-control" style="width:30px;" id="TB08031S_charge_empNo">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callTB03022P('TB08031S_charge')"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width:70px;" id="TB08031S_charge_empNm" readonly>
 								</div>
+
 								<label class="col-sm-1 col-form-label">업무팀</label>
 								<div class="col-sm-3">
 									<select class="col-sm-12 form-control" id="TB08031S_D010">
@@ -272,7 +281,18 @@
 														<div class="col-sm-3 input-group">
 															<select class="form-control" id="TB08031S_C014"></select>
 														</div>
-														<div class="col-sm-4"></div>
+														<!-- <div class="col-sm-4"></div> -->
+														<label class="col-sm-1 col-form-label">상환완료여부</label>
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rdmpCpltYnY" name="TB08031S_rdmpCpltYn">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rdmpCpltYnN" name="TB08031S_rdmpCpltYn" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
 													</div>
 													<!-- 2row -->
 													<div class="form-group col-sm-12 mb-1">
@@ -476,7 +496,7 @@
 															</div>
 														</div>
 														<div class="col-sm-2 text-left">
-															<button class="btn btn-default btn-xs">
+															<button class="btn btn-default btn-xs" disabled>
 																<i class="fa fa-arrow-right m-1"></i>| 관리조건
 															</button>
 														</div>
@@ -507,7 +527,7 @@
 															</div>
 														</div>
 														<div class="col-sm-2 text-left">
-															<button class="btn btn-default  btn-xs">
+															<button class="btn btn-default  btn-xs" disabled>
 																<i class="fa fa-arrow-right m-1"></i>| 주요(재무)약정사항
 															</button>
 														</div>
@@ -2488,8 +2508,8 @@
 							</div>
 						</div>
 					</div> -->
-					<div class="ibox form-inline">
-						<!-- 버튼영역 -->
+					<!-- <div class="ibox form-inline">
+
 						<div class="col-sm-6 text-left pd0">
 							<button class="btn btn-success mg-l5" type="button"><i class="fa fa-check"></i>&nbsp;첨부파일</button>
 						</div>
@@ -2497,7 +2517,7 @@
 							<button class="btn btn-warning" type="button" onclick="testAlert('검토를 중단하였습니다.')"><i class="fa fa-minus-square"></i>&nbsp;검토중단</button>
 							<button class="btn btn-success mg-l5" type="button" onclick="testAlert('상환을 완료하였습니다.')"><i class="fa fa-check"></i>&nbsp;상환완료</button>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<!-- 사업 상세정보 ed -->

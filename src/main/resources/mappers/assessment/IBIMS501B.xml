@@ -263,4 +263,43 @@
         , #{guid}                                     /* guid */
         )
 	</insert>
+
+  <select id="getBusiBssInfo501B" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS501BVO">
+    SELECT 	  A.DEAL_NO						                /*딜번호*/
+            , A.SN							                  /*일련번호*/
+            , A.INV_FNN_MNGM_BUSI_DCD 		        /*사업구분코드*/
+            , A.INV_FNN_MNGN_BUSI_DTL_DCD 	      /*사업구분 상세*/
+            , A.INV_FNN_MMNG_PRG_STTS_CD 	        /*진행상태코드*/
+            , A.CRRY_CD					  	              /*통화코드*/
+            , A.TOT_PRCR_AMT				              /*총조달금액*/
+            , A.MAIN_BOND_MTNC_CNTS			          /*주요채권보전내용*/
+            , A.IVTG_SHDN_RSN_CNTS			          /*검토중단사유내용*/
+            , A.THCO_RL_DCD					              /*당사역할구분코드*/
+            , A.THCO_MDTN_AMT				              /*당사주선금액*/
+            , A.THCO_PTCI_AMT				              /*당사참여금액*/
+            , A.INVST_RVN_RT_DCD			            /*투자수익금리구분코드*/
+            , A.FXN_INTRT					                /*고정금리*/
+            , A.STDR_INTRT_KND_CD			            /*기준금리종류코드*/
+            , A.STDR_INTRT					              /*기준금리*/
+            , A.ADD_INTRT 					              /*가산금리*/
+            , A.CHRR_EMPNO					              /*담당자 사원번호*/
+            , B.EMP_NM 						                /*담당자명*/
+            , B.DPRT_CD						                /*업무팀*/
+            , A.GOAL_ERN_RT 				              /*목표수익률*/
+            , A.BUSI_CNTS					                /*사업내용*/
+            , A.RM_EMPNO					                /*RM 사원번호*/
+        FROM IBIMS501B A 
+        JOIN IBIMS003B B
+        ON A.CHRR_EMPNO = B.EMPNO 
+        WHERE A.DEAL_NO = #{dealNo}
+        AND A.SN = #{sn}
+        AND A.DEL_YN = 'N'
+  </select>
+
+  <select id="getMaxSn501B" parameterType="string" resultType="int">
+    SELECT NVL(MAX(SN), 0)
+    FROM IBIMS501B
+    WHERE DEAL_NO = #{dealNo}
+  </select>
+
 </mapper>

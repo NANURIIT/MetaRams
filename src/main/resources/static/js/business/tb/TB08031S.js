@@ -30,7 +30,7 @@ const TB08031Sjs = (function () {
     item += "/" + "I021"; // 사업구분상세
     item += "/" + "T002"; // 당사주선구분
     item += "/" + "I033"; // 금리구분코드
-    item += "/" + "B006"; // 기준금리
+    item += "/" + "S003"; // 기준금리
     item += "/" + "D010"; // 업무팀
     item += "/" + "C014"; // 시행주체구분
     item += "/" + "B011"; // 사업지역
@@ -1293,13 +1293,13 @@ const TB08031Sjs = (function () {
           $("#TB08031S_invbnkAmnBzCd").val(data.invFnnMngmBusiDcd); // 사업구분
           $("#TB08031S_I021").val(data.invFnnMngnBusiDtlDcd); // 사업구분상세
           $("#TB08031S_I011").val(data.invFnnMmngPrgSttsCd); // 진행상태
-          $("#TB08031S_I027").val(data.crncyCd); // 총조달금액코드
+          $("#TB08031S_I027").val(data.crryCd); // 총조달금액코드
           $("#TB08031S_prcrAmt").val(data.totPrcrAmt); // 총조달금액
           $("#TB08031S_bondProt").val(data.mainBondMtncCnts); // 주요채권보전
           $("#TB08031S_rvwStRsn").val(data.ivtgShdnRsnCnts); // 검토중단사유
           $("#TB08031S_T002").val(data.thcoMdtnYn); // 당사주선구분
           $("#TB08031S_thcoRlAmt").val(data.thcoMdtnAmt); // 당사주선금액
-          $("#TB08031S_thcoPtnAmt").val(data.thcoPtcpAmt); // 당사참여금액
+          $("#TB08031S_thcoPtnAmt").val(data.thcoPtciAmt); // 당사참여금액
           //$('#TB08031S_I033').val();															// 금리구분코드
           $("#TB08031S_InvstRvnRtCcdInput").val(data.aplyIntrtCnts); // 금리구분
           //$('#TB08031S_B006').val();															// 기준금리코드
@@ -1330,7 +1330,7 @@ const TB08031Sjs = (function () {
             $("#TB08031S_B019").val(rlesList.eprzSclDcd); // 기업규모구분
             $("#TB08031S_fcltScal").val(rlesList.fcltSclWidhCtns); // 시설규모너비내용
             $("#TB08031S_resiEco").val(rlesList.resiEcoCtns); // 주거환경내용
-            $("#TB08031S_C010").val(rlesList.crdtRifcDvcDcd); // 신용보강장치구분코드
+            $("#TB08031S_C010").val(rlesList.crdtRifcDcd); // 신용보강장치구분코드
             //$('#TB08031S_crdtEhcmntAmt').val('256,850,000');									// 신용보강금액
             $("#TB08031S_crdtEhcmntCntnt").val(rlesList.crdtRifcDvcNm); // 신용보강장치명
             //$('#rles_datepicker1').val('2023-12-15');												// 상업운전일
@@ -3578,51 +3578,60 @@ const TB08031Sjs = (function () {
 
   // 딜 정보 저장
   function saveTabInfo() {
-    var dealNo = $("#TB08031S_ibDealNo").val();
-    var invFnnMngmBusiDcd = $("#TB08031S_invbnkAmnBzCd").val();
-    var invFnnMngnBusiDtlDcd = $("#TB08031S_I021").val();
-    var hndEmpno = $("#TB08031S_tab1_empno").val();
-    var busiNm = $("#TB08031S_bsnsNm").val();
-    var mgcoNm = $("#TB08031S_corpNm").val();
-    var invFnnMmngPrgSttsCd = $("#TB08031S_I011").val();
-    var crncyCd = $("#TB08031S_I027").val();
-    var totPrcrAmt = $("#TB08031S_prcrAmt").val();
-    var mainBondMtncCnts = $("#TB08031S_bondProt").val();
-    var ivtgShdnRsnCnts = $("#TB08031S_rvwStRsn").val();
-    var thcoMdtnAmt = $("#TB08031S_thcoRlAmt").val();
-    var thcoPtcpAmt = $("#TB08031S_thcoPtnAmt").val();
-    var aplyIntrtCnts = $("#TB08031S_BitrKindCdInput").val();
-    var chrrEmpno = $("#TB08031S_charge_empNo").val();
-    var goalErnRt = $("#TB08031S_tgtRvn").val();
-    var rmEmpno = $("#TB08031S_chargeRm").val();
-    var busiCnts = $("#bsnsCntnt").val();
-    var guasMrtgYn = $("input[name=TB08031S_rlesWarrMrtgYN]:checked").val();
+    
+    //사업 기본정보
+    var dealNo = $("#TB08031S_ibDealNo").val();                               //딜번호
+    var invFnnMngmBusiDcd = $("#TB08031S_invbnkAmnBzCd").val();               //사업구분
+    var invFnnMngnBusiDtlDcd = $("#TB08031S_I021").val();                     //사업구분 상세
+    // var hndEmpno = $("#TB08031S_tab1_empno").val();          
+    var chrrEmpno = $("#TB08031S_charge_empNo").val();                        //담당자 사원번호               
+    var busiNm = $("#TB08031S_bsnsNm").val();                                 //사업명
+    var mgcoNm = $("#TB08031S_corpNm").val();                                 //업체명                     
+    var invFnnMmngPrgSttsCd = $("#TB08031S_I011").val();                      //진행상태
+    var crryCd = $("#TB08031S_I027").val();                                   //통화코드
+    var totPrcrAmt = $("#TB08031S_prcrAmt").val();                            //총조달금액
+    var mainBondMtncCnts = $("#TB08031S_bondProt").val();                     //주요채권보전내용
+    var ivtgShdnRsnCnts = $("#TB08031S_rvwStRsn").val();                      //검토중단사유내용
+    var thcoMdtnAmt = $("#TB08031S_thcoRlAmt").val();                         //당사주선금액
+    var thcoPtciAmt = $("#TB08031S_thcoPtnAmt").val();                        //당사참여금액
+    var aplyIntrtCnts = $("#TB08031S_BitrKindCdInput").val();                 //적용금리내용
+    var goalErnRt = $("#TB08031S_tgtRvn").val();                              //목표수익율
+    var rmEmpno = $("#TB08031S_chargeRm").val();                              //RM사원번호
+    var busiCnts = $("#bsnsCntnt").val();                                     //사업내용
+    var thcoRlDcd = $("#TB08031S_T002").val();                                //당사역할구분 
+
+    //사업 상세정보 (사업정보)
+    var guasMrtgYn = $("input[name=TB08031S_rlesWarrMrtgYN]:checked").val();  //보증서 담보 여부
     var busiLcsiCpltYn = $(
       "input[name=TB08031S_rlesOwnPLcsiCpltYN]:checked"
-    ).val();
+    ).val();                                                                  //사업인/허가완료여부
     var landOwnrsEnsuYn = $(
       "input[name=TB08031S_rlesLandPchsCpltYN]:checked"
-    ).val();
+    ).val();                                                                  //토지소유권확보여부
     var fndsMngmTrgtYn = $(
       "input[name=TB08031S_rlesFndsMngmTrgtYN]:checked"
-    ).val();
-    var apvlYn = $("input[name=rlesUseAppYN]:checked").val();
-    var brwrSpcYn = $("input[name=rlesSpcYN]:checked").val();
-    var mngmCndFlflYn = $("input[name=rlesCondComplyYN]:checked").val();
-    var bondTrnsYn = $("input[name=rlesBondTrnYN]:checked").val();
-    var fnnrCtrcMttrTrgtYn = $("input[name=rlesCmmntMatYN]:checked").val();
-    var efceMbdyDcd = $("#TB08031S_C014").val();
-    var slltStrtDt = $("#TB08031S_slltPrarYm").val();
-    var bzplAddr = $("#TB08031S_busiArea").val();
-    var busiSiteSqms = $("#TB08031S_busiSiteSqms").val();
-    var busiTtlSqms = $("#TB08031S_Sqms").val();
-    var ttlSqms = $("#TB08031S_SqmsP").val();
-    var busiBldngLndrt = $("#TB08031S_far").val();
-    var eprzSclDcd = $("#TB08031S_far").val();
-    var fcltSclWidhCtns = $("#TB08031S_fcltScal").val();
-    var resiEcoCtns = $("#TB08031S_resiEco").val();
-    var crdtRifcDvcDcd = $("#TB08031S_C010").val();
-    var crdtRifcDvcNm = $("#TB08031S_crdtEhcmntCntnt").val();
+    ).val();                                                                  //자금관리대상여부
+    var rdmpCpltYn = $(
+      "input[name=TB08031S_rdmpCpltYn]:checked"
+    ).val();                                                                  //상환완료여부
+
+    var apvlYn = $("input[name=rlesUseAppYN]:checked").val();                 //사용승인여부
+    var brwrSpcYn = $("input[name=rlesSpcYN]:checked").val();                 //차주SPC여부
+    var mngmCndFlflYn = $("input[name=rlesCondComplyYN]:checked").val();      //관리조건이행여부
+    var bondTrnsYn = $("input[name=rlesBondTrnYN]:checked").val();            //채권이관여부
+    var fnnrCtrcMttrTrgtYn = $("input[name=rlesCmmntMatYN]:checked").val();   //재무약정사항대상여부
+    var efceMbdyDcd = $("#TB08031S_C014").val();                              //시행주체구분코드
+    var slltStrtDt = $("#TB08031S_slltPrarYm").val();                         //분양예정년월
+    var bzplAddr = $("#TB08031S_busiArea").val();                             //사업장주소
+    var busiSiteSqms = $("#TB08031S_busiSiteSqms").val();                     //사업부지면적
+    var busiTtlSqms = $("#TB08031S_Sqms").val();                              //사업연면적
+    var ttlSqms = $("#TB08031S_SqmsP").val();                                 //연면적
+    var busiBldngLndrt = $("#TB08031S_far").val();                            //사업건폐율
+    var eprzSclDcd = $("#TB08031S_far").val();                                //기업규모구분코드
+    var fcltSclWidhCtns = $("#TB08031S_fcltScal").val();                      //시설규모너비내용
+    var resiEcoCtns = $("#TB08031S_resiEco").val();                           //주거환경내용
+    var crdtRifcDcd = $("#TB08031S_C010").val();                              //신용보강장치구분코드
+    var crdtRifcDvcNm = $("#TB08031S_crdtEhcmntCntnt").val();                 //신용보강장치명
     var invFnnBusiWyDcd = $("#TB08031S_B013").val();
     var busiSclCntn = $("#TB08031S_bsnsScal").val();
     var busiLcsiDt = $("#TB08031S_bsnsLicYm").val();
@@ -3696,12 +3705,12 @@ const TB08031Sjs = (function () {
         mgcoNm: mgcoNm,
         invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
         invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
-        crncyCd: crncyCd,
+        crryCd: crryCd,
         totPrcrAmt: totPrcrAmt / 1,
         mainBondMtncCnts: mainBondMtncCnts,
         ivtgShdnRsnCnts: ivtgShdnRsnCnts,
         thcoMdtnAmt: thcoMdtnAmt / 1,
-        thcoPtcpAmt: thcoPtcpAmt / 1,
+        thcoPtciAmt: thcoPtciAmt / 1,
         aplyIntrtCnts: aplyIntrtCnts,
         chrrEmpno: chrrEmpno,
         goalErnRt: goalErnRt / 1,
@@ -3728,7 +3737,7 @@ const TB08031Sjs = (function () {
           eprzSclDcd: eprzSclDcd,
           fcltSclWidhCtns: fcltSclWidhCtns,
           resiEcoCtns: resiEcoCtns,
-          crdtRifcDvcDcd: crdtRifcDvcDcd,
+          crdtRifcDcd: crdtRifcDcd,
           crdtRifcDvcNm: crdtRifcDvcNm,
         },
         infraInfo: {
