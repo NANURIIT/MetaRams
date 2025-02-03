@@ -486,7 +486,7 @@ function callTB06011P(prefix, e) {
 	$('#modal-TB06011P').modal('show');
 	setTimeout(() => roadPrdtCdListGrid(), 300);
 	indexChangeHandler("TB06011P");
-	if (prefix == "TB07100S_grid") {
+	if (prefix == "TB07100S_grid" || prefix == "TB07110S_grid") {
 		prdtSn = e;
 	}
 }
@@ -868,9 +868,18 @@ function TB06011P_setPrdtInfo(e) {
 		TB07080Sjs.getExcSn(e.prdtCd);
 	}
 
-	if (prefix == 'TB07100S_grid') {
+	if (prefix === 'TB07100S_grid') {
 		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow", { rowIndx: prdtSn, row: { prdtCd: e.prdtCd } });
-		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow", { rowIndx: prdtSn, row: { fndCd: e.ortnFndCd } });
+		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow", { rowIndx: prdtSn, row: { nsFndCd: e.ortnFndCd } });
+	}
+
+	if (prefix === 'TB07110S_grid') {
+
+		console.log(e.prdtCd, e.ortnFndCd);
+		console.log("prdtSn");
+
+		$("#TB07110S_grd_basic").pqGrid("updateRow", { rowIndx: prdtSn, row: { prdtCd: e.prdtCd } });
+		$("#TB07110S_grd_basic").pqGrid("updateRow", { rowIndx: prdtSn, row: { nsFndCd: e.ortnFndCd } });
 	}
 
 	if (prefix === 'TB08040S') {

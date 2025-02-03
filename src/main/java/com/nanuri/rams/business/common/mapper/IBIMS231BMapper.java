@@ -59,4 +59,9 @@ public interface IBIMS231BMapper {
      */
     public int getLastDecdSq (int paramData);
 
+    /**
+     * 오늘의 할일
+     */
+    public List<IBIMS231BVO> todayWorks ( String param );
+
 }

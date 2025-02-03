@@ -72,6 +72,11 @@
            AND T1.RSLN_BDCD = SUBSTR(T2.DEAL_NO, 9, 11)
            AND T1.CNST_NO = SUBSTR(T2.DEAL_NO, 12, 21)
          WHERE 1=1
+           /* 지급품의_실물증빙, 지급품의_전자계산서 구분 */
+           AND T1.ELC_PRUF_YN = #{elcPrufYn}
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDecdCd)">
+           AND T1.JOB_DECD_CD = #{jobDecdCd}
+           </if>
            <if test="acctDt1 != null and acctDt1 != ''">
            AND T1.ACCT_DT &gt;&#61; #{acctDt1}
            </if>

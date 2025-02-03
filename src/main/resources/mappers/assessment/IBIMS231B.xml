@@ -106,6 +106,41 @@
            </if>
 	</select>
 
+  <select id="todayWorks" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS231BVO">
+    SELECT RQST_DTM                               /* 신청일시 */
+         , T3.EMP_NM AS APVL_RQST_P_NM            /* 요청자 */
+         , T3.DPRT_NM                             /* 요청부서 */
+         , CASE WHEN T1.DECD_JOB_DCD IN ( '04', '05' ) THEN '품의번호 ' || SUBSTR(DEAL_NO, 12, 22)
+                ELSE (
+                        SELECT MAX(DEAL_NM)
+                          FROM IBIMS101B
+                         WHERE 1=1
+                           AND DEAL_NO = T1.DEAL_NO
+                      )
+                 END AS DEAL_NM                   /* 내역( 보일수도 안보일수도 ) */
+         , (
+            SELECT CD_VL_NM
+              FROM IBIMS002B
+             WHERE 1=1
+               AND CMNS_CD_GRP = 'D005'
+               AND CD_VL_ID = T1.DECD_JOB_DCD
+           ) AS DECD_JOB_DCD                      /* 업무구분 */
+      FROM IBIMS231B T1
+INNER JOIN (
+            SELECT DECD_SN, MIN(DECD_SQ) 
+              FROM IBIMS232B
+             WHERE 1=1
+               AND DCFC_ENO = #{hndEmpno}
+               AND DECD_STTS_DCD = '1'
+             GROUP
+                BY DECD_SN, DECD_SQ
+            ) T2
+        ON T1.DECD_SN = T2.DECD_SN
+ LEFT JOIN IBIMS003B T3
+        ON T1.APVL_RQST_P_ENO = T3.EMPNO
+     WHERE 1=1
+  </select>
+
   <!-- 결재요청내역 확인 -->
   <select id="apvlListChk" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS003BVO">
       SELECT T2.EMPNO							/* 사원번호 */
@@ -266,8 +301,8 @@
       , #{apvlRqstPEno}
       , #{decdStepDcd}
       , #{decdSttsDcd}
-      , #{dealNo}
-      , #{prdtCd}
+      , NVL(#{dealNo}, '')
+      , NVL(#{prdtCd}, ' ')
       , (
          SELECT CD_VL_ID
            FROM IBIMS002B

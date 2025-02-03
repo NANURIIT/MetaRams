@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.common.dto.IBIMS100BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS003BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS100BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS231BMapper;
 import com.nanuri.rams.business.common.mapper.WorkFlowMapper;
 import com.nanuri.rams.business.common.vo.IBIMS100BVO;
 import com.nanuri.rams.business.common.vo.TB02010SVO;
 import com.nanuri.rams.business.common.vo.IBIMS100BVO.selectVO;
+import com.nanuri.rams.business.common.vo.IBIMS231BVO;
 import com.nanuri.rams.com.WF.WorkFlow;
 import com.nanuri.rams.com.dto.WorkFlowDTO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
@@ -28,6 +31,8 @@ public class TB02010ServiceImpl implements TB02010Service {
 	private final IBIMS100BMapper ibims100BMapper;
 
 	private final IBIMS003BMapper ibims003bMapper;
+
+	private final IBIMS231BMapper ibims231bMapper;
 
 	private final WorkFlowMapper workFlowMapper;
 	
@@ -112,4 +117,8 @@ public class TB02010ServiceImpl implements TB02010Service {
 		return rsltVO;
 	}
 
+	@Override
+	public List<IBIMS231BVO> myJob() {
+		return ibims231bMapper.todayWorks(facade.getDetails().getEno());
+	}
 }
