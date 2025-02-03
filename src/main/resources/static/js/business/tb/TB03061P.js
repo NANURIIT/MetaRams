@@ -454,6 +454,15 @@ function setArdyBzepInfo(rowData) {
 		case "TB04060S":
 			$('#TB04060S_bsnsRgstNo').val(ardyBzepNo);		// 기업체코드
 			$('#TB04060S_entpRnm').val(entpNm);			// 거래상대방(업체한글명)
+			
+			if(isNotEmpty(rgstDt)){
+				$(pagergstDt).val(rgstDt.substr(0,4) + '-' + rgstDt.substr(4,2) + '-' + rgstDt.substr(6,2));			// 등록일자시작
+				$('#TB04060S_rgstEndDt').val(getToday());
+			}else{
+				$(pagergstDt).val('');
+				$('#TB04060S_rgstEndDt').val('');
+			}
+			
 			break;
 		case "TB06013P":
 			$("#TB06013P_bsnsRgstNo").val(ardyBzepNo);
