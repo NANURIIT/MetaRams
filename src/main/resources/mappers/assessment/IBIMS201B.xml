@@ -1348,10 +1348,10 @@
                      ), '') 									AS CNSB_DCD      					/* 협의체구분코드 */
                  , NVL(A.PRDT_CD, '') 							AS PRDT_CD							/* 상품코드 */
                  , NVL(A.PRDT_NM, '')		 					AS PRDT_NM 							/* 상품명 */
-                 , NVL((SELECT MAX(B.ENTP_HNGL_NM)
-                             FROM IBIMS114B B
-                            WHERE B.BZNO = A.TR_OTHR_DSCM_NO)
-                            , '') 								AS ENTP_HNGL_NM 			 		/* 업체한글명 */	
+                 , NVL((SELECT B.ENTP_NM
+                             FROM IBIMS010B B
+                            WHERE B.ARDY_BZEP_NO = A.TR_OTHR_DSCM_NO)
+                            , '') 								AS ENTP_HNGL_NM 			 		/* 업체한글명 */
                  , A.PRDT_LCLS_CD																	/* 기업여신상품대분류코드 */
                  , NVL(s002b_1.CD_VL_NM , '') 					AS PRDT_LCLS_CD_NM  				/* 기업여신상품대분류코드명 */
                  , A.PRDT_MDCL_CD																	/* 기업여신상품중분류코드 */
