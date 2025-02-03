@@ -2070,7 +2070,7 @@ const TB04010Sjs = (function () {
     $("#assesmentReturn").prop("disabled", true); // 심사반송버튼
     //$("#gridDealListInfo").pqGrid("option", "dataModel.data", []);
     //$("#gridDealListInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
-    $("#tab-1 .btn-success").prop("disabled", false); // 저장버튼
+    $("#TB04010S_tab-1 .btn-success").prop("disabled", false); // 저장버튼
   }
 
   /**
@@ -2185,6 +2185,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_bsc_corpRgstNo").val(""); // 법인등록번호
     $("#TB04010S_crevAmt").val(""); // 기초자산 평가액(원)
     $("#TB04010S_tab3_sn").val(""); // 항목일련번호
+    $("#TB04010S_tab-3 .btn-success").prop("disabled", false); // 저장버튼
   }
 
   // 기초자산정보 저장
@@ -2424,6 +2425,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_cnc_entpRnm").val("");
     $("#TB04010S_lrgstShrhldrNm").val("");
     $("#TB04010S_tab4_sn").val("");
+    $("#TB04010S_tab-4 .btn-success").prop("disabled", false); // 저장버튼
   }
 
   // 거래상대방정보 저장
@@ -2645,6 +2647,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_ins_bsnsRgstNo").val("");
     $("#TB04010S_I012 option:eq(0)").prop("selected", true);
     $("#TB04010S_tab5_sn").val("");
+    $("#TB04010S_tab-5 .btn-success").prop("disabled", false); // 저장버튼
   }
 
   // 내부등급정보 저장
@@ -2981,6 +2984,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_R013 option:eq(0)").prop("selected", true); // 권리순위
     $("#TB04010S_mrtgRsnCnts").val(""); // 담보명
     $("#TB04010S_tab6_sn").val(""); // 항목일련번호
+    $("#TB04010S_tab-6 .btn-success").prop("disabled", false); // 저장버튼
   }
 
   // 담보정보 저장
@@ -3163,6 +3167,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_grteAmt").val("");
     $("#TB04010S_grteCtns").val("");
     $("#TB04010S_tab7_sn").val("");
+    $("#TB04010S_tab-7 .btn-success").prop("disabled", false); // 저장버튼
   }
 
   // 보증기관정보 저장
@@ -3342,6 +3347,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_tab8_sn").val(""); // 항목일련번호
     $("#TB04010S_dmgRprtnMxExtnt").val(""); // 손해배상최대범위
     $("#TB04010S_rspsb_bsnsRgstNo").val(""); // 실명확인번호
+    $("#TB04010S_tab-8 .btn-success").prop("disabled", false); // 저장버튼
   }
 
   // 책임준공기관정보 저장

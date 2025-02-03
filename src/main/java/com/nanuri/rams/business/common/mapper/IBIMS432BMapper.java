@@ -17,5 +17,7 @@ public interface IBIMS432BMapper {
     
     public int deleteIBIMS432B(IBIMS432BVO param);
 
+    public int chkCountIBIMS432B(IBIMS432BVO param);
+
 
 }

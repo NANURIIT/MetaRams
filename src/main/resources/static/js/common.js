@@ -1906,15 +1906,15 @@ function setInputboxFromPdata(ui, menuId) {
 /**
  * 단건 select data뿌리기
  * @param data	ajax 셀렉트 데이터
- * @param {String} menuId
+ * @param {String} tagId
  * @author {김건우}
  */
-function setInputDataFromSelectData(data, menuId) {
+function setInputDataFromSelectData(data, tagId) {
   const keys = Object.keys(data);
   for (let i = 0; i < keys.length; i++) {
     // 날짜 포맷
     if (keys[i].includes("Dt")) {
-      $(`#${menuId}_${keys[i]}`).val(formatDate(data[keys[i]]));
+      $(`#${tagId}_${keys[i]}`).val(formatDate(data[keys[i]]));
     }
     // 숫자 포맷
     else if (
@@ -1926,11 +1926,11 @@ function setInputDataFromSelectData(data, menuId) {
       keys[i].includes("Tmrd")
       //	조건 끝
     ) {
-      $(`#${menuId}_${keys[i]}`).val(comma(data[keys[i]]));
+      $(`#${tagId}_${keys[i]}`).val(comma(data[keys[i]]));
     }
     // 나머지
     else {
-      $(`#${menuId}_${keys[i]}`).val(data[keys[i]]);
+      $(`#${tagId}_${keys[i]}`).val(data[keys[i]]);
     }
   }
 }

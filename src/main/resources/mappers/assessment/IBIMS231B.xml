@@ -280,9 +280,9 @@
       , SYSDATE
       , #{rqstCnclDtm}
       , '00'
-      , #{excSeq}
-      , #{rqstSq}
-      , #{trSeq}
+      , NVL(#{excSeq}, 0)
+      , NVL(#{rqstSq}, 0)
+      , NVL(#{trSeq}, 0)
       , #{errCntn}
       , #{lastDecdSq}
       , SYSDATE

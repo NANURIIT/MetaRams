@@ -3,60 +3,74 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS431BMapper">
 
     <select id="selectIBIMS431B" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS431BVO">
-        SELECT T1.WRTN_DT	                    /* ┌작성일자 */
-             , T1.RSLN_BDCD	                  /* │결의부점코드 */
-             , T1.CNST_NO	                    /* └품의번호 */
-             , T1.ACCT_DT	                    /* 회계일자 */
-             , T1.BALT_DT	                    /* 기표일자 */
-             , T1.STTM_NO	                    /* 전표번호 */
-             , T1.STTM_BDCD	                  /* 전표부점코드 */
-             , T1.CNCL_BALT_DT	              /* 취소기표일자 */
-             , T1.CNCL_STTM_NO	              /* 취소전표번호 */
-             , T1.CNST_STTM_DCD	              /* 품의전표구분코드 */
-             , T1.PRUF_DT	                    /* 증빙일자 */
-             , T1.CRRY_CD	                    /* 통화코드 */
-             , T1.EXRT	                      /* 환율 */
-             , T1.RGST_EMPNO	                /* 등록사원번호 */
-             , T1.RELT_STFNO	                /* 승인자 */
-             , T1.ACCT_BCNC_CD	              /* 회계거래처코드 */
-             , T1.BCNC_NM	                    /* 거래처명 */
-             , T1.ACCT_PYMT_MTH_CD	          /* 회계지급방법코드 */
-             , T1.XTNL_ISTT_CD	              /* 외부기관코드 */
-             , T1.BANO	                      /* 은행계좌번호 */
-             , T1.BNK_ACHD_NM	                /* 은행예금주명 */
-             , T1.PYMT_PRAR_DT	              /* 지급예정일자 */
-             , T1.FNDS_ISTR_SN	              /* 자금지시일련번호 */
-             , T1.PRUF_KND_DCD	              /* 증빙종류구분코드 */
-             , T1.PCHS_DDC_DCD	              /* 매입공채구분코드 */
-             , T1.RSLN_AMT	                  /* 결의금액 */
-             , T1.SPLM_VALU_TXA	              /* 부가가치세액 */
-             , T1.CNCL_YN	                    /* 취소여부 */
-             , T1.TR_ID	                      /* 거래ID */
-             , T1.BNFT_YN	                    /* 편익여부 */
-             , T1.RELT_DCM_NO	                /* 관련문서번호 */
-             , T1.RELT_FDTN_CTNS	            /* 관련근거내용 */
-             , T1.ELC_PRUF_YN	                /* 전자증빙여부 */
-             , T1.ENTM_ACC_XSTC_YN	          /* 접대계정존재여부 */
-             , T1.CNTR_ACC_XSTC_YN	          /* 기부계정존재여부 */
-             , T1.JOB_DECD_CD	                /* 업무결재코드 */
-             , T1.JOB_DECD_NO	                /* 업무결재번호 */
-             , T1.CNCL_JOB_DECD_NO	          /* 취소업무결재번호 */
-             , T1.EXCAL_YN	                  /* 정산여부 */
-             , T1.FNDS_LDG_DCD	              /* 자금원장구분코드 */
-             , T1.FNDS_LDG_NO	                /* 자금원장번호 */
-             , T1.RGST_SN	                    /* 등록일련번호 */
-             , T1.ACTS_CD	                    /* 계정과목코드 */
-             , T1.EDMS_DCM_ID	                /* EDMS문서ID */
-             , T1.CDNO	                      /* 카드번호 */
-             , T1.APVL_NO	                    /* 카드승인번호 */
-             , T1.BDG_BUSI_CD	                /* 예산사업코드 */
-             , T1.FRCR_RSLN_AMT	              /* 외화결의금액 */
-             , T1.HND_DETL_DTM	              /* 조작상세일시 */
-             , T1.HND_EMPNO	                  /* 조작사원번호 */
-             , T1.HND_TMNL_NO	                /* 조작단말기번호 */
-             , T1.HND_TR_ID	                  /* 조작거래ID */
-             , T1.GUID	                      /* GUID */
+        SELECT T1.WRTN_DT	                                      /* ┌작성일자 */
+             , T1.RSLN_BDCD	                                    /* │결의부점코드 */
+             , T1.CNST_NO	                                      /* └품의번호 */
+             , T1.ACCT_DT	                                      /* 회계일자 */
+             , T1.BALT_DT	                                      /* 기표일자 */
+             , T1.STTM_NO	                                      /* 전표번호 */
+             , T1.STTM_BDCD	                                    /* 전표부점코드 */
+             , T1.CNCL_BALT_DT	                                /* 취소기표일자 */
+             , T1.CNCL_STTM_NO	                                /* 취소전표번호 */
+             , T1.CNST_STTM_DCD	                                /* 품의전표구분코드 */
+             , T1.PRUF_DT	                                      /* 증빙일자 */
+             , T1.CRRY_CD	                                      /* 통화코드 */
+             , T1.EXRT	                                        /* 환율 */
+             , T1.RGST_EMPNO	                                  /* 등록사원번호 */
+             , (
+                SELECT EMP_NM
+                  FROM IBIMS003B
+                 WHERE 1=1
+                   AND EMPNO = T1.RGST_EMPNO
+                ) AS RGST_EMPNM                                 /* 등록자명 */
+             , T1.RELT_STFNO	                                  /* 승인자 */
+             , (
+                SELECT EMP_NM
+                  FROM IBIMS003B
+                 WHERE 1=1
+                   AND EMPNO = T1.RELT_STFNO
+                ) AS RELT_STFNM 	                              /* 승인자명 */
+             , T1.ACCT_BCNC_CD	                                /* 회계거래처코드 */
+             , T1.BCNC_NM	                                      /* 거래처명 */
+             , T1.ACCT_PYMT_MTH_CD	                            /* 회계지급방법코드 */
+             , T1.XTNL_ISTT_CD	                                /* 외부기관코드 */
+             , T1.BANO	                                        /* 은행계좌번호 */
+             , T1.BNK_ACHD_NM	                                  /* 은행예금주명 */
+             , T1.PYMT_PRAR_DT	                                /* 지급예정일자 */
+             , T1.FNDS_ISTR_SN	                                /* 자금지시일련번호 */
+             , T1.PRUF_KND_DCD	                                /* 증빙종류구분코드 */
+             , T1.PCHS_DDC_DCD	                                /* 매입공채구분코드 */
+             , T1.RSLN_AMT	                                    /* 결의금액 */
+             , T1.SPLM_VALU_TXA	                                /* 부가가치세액 */
+             , T1.CNCL_YN	                                      /* 취소여부 */
+             , T1.TR_ID	                                        /* 거래ID */
+             , T1.BNFT_YN	                                      /* 편익여부 */
+             , T1.RELT_DCM_NO	                                  /* 관련문서번호 */
+             , T1.RELT_FDTN_CTNS	                              /* 관련근거내용 */
+             , T1.ELC_PRUF_YN	                                  /* 전자증빙여부 */
+             , T1.ENTM_ACC_XSTC_YN	                            /* 접대계정존재여부 */
+             , T1.CNTR_ACC_XSTC_YN	                            /* 기부계정존재여부 */
+             , T1.JOB_DECD_CD	                                  /* 업무결재코드 */
+             , T1.JOB_DECD_NO	                                  /* 업무결재번호 */
+             , T1.CNCL_JOB_DECD_NO	                            /* 취소업무결재번호 */
+             , T1.EXCAL_YN	                                    /* 정산여부 */
+             , T1.FNDS_LDG_DCD	                                /* 자금원장구분코드 */
+             , T1.FNDS_LDG_NO	                                  /* 자금원장번호 */
+             , T1.RGST_SN	                                      /* 등록일련번호 */
+             , T1.ACTS_CD	                                      /* 계정과목코드 */
+             , T1.EDMS_DCM_ID	                                  /* EDMS문서ID */
+             , T1.CDNO	                                        /* 카드번호 */
+             , T1.APVL_NO	                                      /* 카드승인번호 */
+             , T1.BDG_BUSI_CD	                                  /* 예산사업코드 */
+             , T1.FRCR_RSLN_AMT	                                /* 외화결의금액 */
+             , T1.HND_DETL_DTM	                                /* 조작상세일시 */
+             , T2.DECD_STEP_DCD                                 /* 결재단계구분코드 */
+             , NVL(T2.DECD_STTS_DCD, '0') AS DECD_STTS_DCD      /* 결재상태구분코드 */
           FROM IBIMS431B T1
+     LEFT JOIN IBIMS231B T2
+            ON T1.WRTN_DT = SUBSTR(T2.DEAL_NO, 1, 8)
+           AND T1.RSLN_BDCD = SUBSTR(T2.DEAL_NO, 9, 11)
+           AND T1.CNST_NO = SUBSTR(T2.DEAL_NO, 12, 21)
          WHERE 1=1
            <if test="acctDt1 != null and acctDt1 != ''">
            AND T1.ACCT_DT &gt;&#61; #{acctDt1}
@@ -76,11 +90,11 @@
     </select>
 
     <select id="setCnstNo" parameterType="String" resultType="String">
-      SELECT TO_CHAR(NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1)
+      SELECT TO_CHAR(NVL(MAX(temp.CNST_NO), SUBSTR(#{wrtnDt}, 1, 6) || '0000' ) + 1)
         FROM (
               SELECT CNST_NO
                 FROM IBIMS431B
-               WHERE WRTN_DT LIKE #{wrtnDt}||'%'
+               WHERE WRTN_DT LIKE #{wrtnDt} || '%'
               ) AS temp
     </select>
 
@@ -169,18 +183,24 @@
               , #{pchsDdcDcd}
               , #{rslnAmt}
               , #{splmValuTxa}
-              , #{cnclYn}
+              , NVL(#{cnclYn}, DEFAULT)
               , #{trId}
-              , #{bnftYn}
+              , NVL(#{bnftYn}, DEFAULT)
               , #{reltDcmNo}
               , #{reltFdtnCtns}
-              , #{elcPrufYn}
-              , #{entmAccXstcYn}
-              , #{cntrAccXstcYn}
-              , #{jobDecdCd}
+              , NVL(#{elcPrufYn}, DEFAULT)
+              , NVL(#{entmAccXstcYn}, DEFAULT)
+              , NVL(#{cntrAccXstcYn}, DEFAULT)
+              , (
+                 SELECT CD_VL_ID
+                   FROM IBIMS002B
+                  WHERE 1=1
+                    AND CMNS_CD_GRP = 'D005'
+                    AND RSLT_CD_VL = #{jobDecdCd}
+                 )
               , #{jobDecdNo}
               , #{cnclJobDecdNo}
-              , #{excalYn}
+              , NVL(#{excalYn}, DEFAULT)
               , #{fndsLdgDcd}
               , #{fndsLdgNo}
               , #{rgstSn}
@@ -295,7 +315,13 @@
              , CNTR_ACC_XSTC_YN = #{cntrAccXstcYn}
              </if>
              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDecdCd)">
-             , JOB_DECD_CD = #{jobDecdCd}
+             , JOB_DECD_CD = (
+                                SELECT CD_VL_ID
+                                  FROM IBIMS002B
+                                 WHERE 1=1
+                                   AND CMNS_CD_GRP = 'D005'
+                                   AND RSLT_CD_VL = #{jobDecdCd}
+                              )
              </if>
              <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDecdNo)">
              , JOB_DECD_NO = #{jobDecdNo}
