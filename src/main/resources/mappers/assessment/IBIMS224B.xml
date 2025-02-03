@@ -64,15 +64,23 @@
             ON A.DEAL_NO = B.DEAL_NO
            AND B.LAST_YN = 'Y'          
          WHERE 1=1
-          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
-           AND A.SN = (
-           			   SELECT MAX(SN)
-           			     FROM IBIMS224B
-           			    WHERE DEAL_NO LIKE '%' || #{dealNo} || '%'
-                      )
-        
-           AND A.DEAL_NO LIKE '%' || #{dealNo} || '%' 
-         </if>
+         <choose>   
+             <when test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+                 AND A.SN = (
+                     SELECT MAX(SN)
+                     FROM IBIMS224B
+                     WHERE DEAL_NO LIKE '%' || #{dealNo} || '%'
+                 )
+                 AND A.DEAL_NO LIKE '%' || #{dealNo} || '%'
+             </when>  
+             <otherwise>
+                 AND (A.SN, A.DEAL_NO) IN (
+                     SELECT MAX(SN), DEAL_NO
+                     FROM IBIMS224B
+                     GROUP BY DEAL_NO
+                 )
+             </otherwise>
+         </choose>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
            AND B.DEAL_NM LIKE '%' || #{dealNm} || '%' 
          </if>
