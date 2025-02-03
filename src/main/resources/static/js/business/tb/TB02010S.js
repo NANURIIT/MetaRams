@@ -133,13 +133,22 @@ const TB02010Sjs = (function(){
 				filter   : { crules: [{ condition: 'range' }] },
 			},
 			{ 	
-				title    : "내역", 
+				title    : "내역",
 				dataType : "string",
 				dataIndx : "dealNm",
-				halign	 : "center", 
-				align    : "left", 
+				halign	 : "center",
+				align    : "left",
 				filter   : { crules: [{ condition: 'range' }] },
 			},
+			{
+				/**
+				 * 결재번호를 이용하여 데이터 받고 그에 맞는 화면으로 이동 -> 조회
+				 */
+				title	 : "결재번호",
+				dataType : "string",
+				dataIndx : "decdSn",
+				hidden 	 : true,
+			}
 			// {
 			// 	dataType: "string",
 			// 	dataIndx: "wfId",
@@ -170,7 +179,7 @@ const TB02010Sjs = (function(){
 				, numberCell: { show: false }
 				, colModel: colM_TB02010S 	
 				, rowDblClick: function ( evt, ui ) {
-
+					justDoit(ui.rowData.decdSn);
 				}
 			},
 		]
@@ -181,6 +190,15 @@ const TB02010Sjs = (function(){
 
 		selInfo();
 
+	}
+
+	/**
+	 * 할일하러가기
+	 * @discription
+	 * 영어를 못해서 죄송합니다
+	 */
+	function justDoit (decdSn) {
+		// parmaData = 
 	}
 
 	// 오늘의할일 조회

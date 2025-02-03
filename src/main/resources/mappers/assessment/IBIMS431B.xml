@@ -68,9 +68,7 @@
              , NVL(T2.DECD_STTS_DCD, '0') AS DECD_STTS_DCD      /* 결재상태구분코드 */
           FROM IBIMS431B T1
      LEFT JOIN IBIMS231B T2
-            ON T1.WRTN_DT = SUBSTR(T2.DEAL_NO, 1, 8)
-           AND T1.RSLN_BDCD = SUBSTR(T2.DEAL_NO, 9, 11)
-           AND T1.CNST_NO = SUBSTR(T2.DEAL_NO, 12, 21)
+            ON T1.WRTN_DT || T1.RSLN_BDCD || T1.CNST_NO = T2.DEAL_NO
          WHERE 1=1
            /* 지급품의_실물증빙, 지급품의_전자계산서 구분 */
            AND T1.ELC_PRUF_YN = #{elcPrufYn}

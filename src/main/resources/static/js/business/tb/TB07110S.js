@@ -5,7 +5,7 @@ const TB07110Sjs = (function () {
   let TB07110S_tagStatuses = [];
   let queryMode = "insert";
   let grdSelect = {};
-	let selectBox;
+  let selectBox;
   let sttmDetlIndex;
 
   $(document).ready(function () {
@@ -41,7 +41,7 @@ const TB07110Sjs = (function () {
    * 확인이 된다면 콤보박스 세팅을 여기에 해주시길 바랍니다.
    * 감사합니다. 사랑합니다.
    */
-  function selectBoxSetting () {
+  function selectBoxSetting() {
 
     selectBox = getSelectBoxList("TB07100S",
       "/A017"
@@ -53,7 +53,8 @@ const TB07110Sjs = (function () {
       + "/P030"
       , false);
 
-    grdSelect.A017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A017' });	  // 회계계정과목코드
+    grdSelect.A017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A017' })
+                              .filter(item => item.cdValue >= 500);	                            // 회계계정과목코드
     grdSelect.A018 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A018' });	  // 회계지급방법코드
     grdSelect.F017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'F017' });    // 자금원장구분코드
     grdSelect.P029 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'P029' });    // 증빙종류구분코드
@@ -62,33 +63,33 @@ const TB07110Sjs = (function () {
     grdSelect.D006 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'D006'; });   // 결재상태구분코드
     grdSelect.D010 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'D010'; });   // 부서코드
 
-   // 회계지급방법코드 콤보박스 셋
-   let A018Tag = "";
-   for (let i = 0; i < grdSelect.A018.length; i++) {
-     A018Tag += `<option value="${grdSelect.A018[i].cdValue}">${grdSelect.A018[i].cdName}</option>`
-   }
-   $('#TB07110S_acctPymtMthCd').append(A018Tag);
+    // 회계지급방법코드 콤보박스 셋
+    let A018Tag = "";
+    for (let i = 0; i < grdSelect.A018.length; i++) {
+      A018Tag += `<option value="${grdSelect.A018[i].cdValue}">${grdSelect.A018[i].cdName}</option>`
+    }
+    $('#TB07110S_acctPymtMthCd').append(A018Tag);
 
-   // 자금원장구분코드 콤보박스 셋
-   let F017Tag = "";
-   for (let i = 0; i < grdSelect.F017.length; i++) {
-     F017Tag += `<option value="${grdSelect.F017[i].cdValue}">${grdSelect.F017[i].cdName}</option>`
-   }
-   $('#TB07110S_fndsLdgDcd').append(F017Tag);
+    // 자금원장구분코드 콤보박스 셋
+    let F017Tag = "";
+    for (let i = 0; i < grdSelect.F017.length; i++) {
+      F017Tag += `<option value="${grdSelect.F017[i].cdValue}">${grdSelect.F017[i].cdName}</option>`
+    }
+    $('#TB07110S_fndsLdgDcd').append(F017Tag);
 
-   // 증빙종류구분코드 콤보박스 셋
-   let P029Tag = "";
-   for (let i = 0; i < grdSelect.P029.length; i++) {
-     P029Tag += `<option value="${grdSelect.P029[i].cdValue}">${grdSelect.P029[i].cdName}</option>`
-   }
-   $('#TB07110S_prufKndDcd').append(P029Tag);
+    // 증빙종류구분코드 콤보박스 셋
+    let P029Tag = "";
+    for (let i = 0; i < grdSelect.P029.length; i++) {
+      P029Tag += `<option value="${grdSelect.P029[i].cdValue}">${grdSelect.P029[i].cdName}</option>`
+    }
+    $('#TB07110S_prufKndDcd').append(P029Tag);
 
-   // 매입공제구분코드 콤보박스 셋 
-   let P030Tag = "";
-   for (let i = 0; i < grdSelect.P030.length; i++) {
-     P030Tag += `<option value="${grdSelect.P030[i].cdValue}">${grdSelect.P030[i].cdName}</option>`
-   }
-   $('#TB07110S_pchsDdcDcd').append(P030Tag);
+    // 매입공제구분코드 콤보박스 셋 
+    let P030Tag = "";
+    for (let i = 0; i < grdSelect.P030.length; i++) {
+      P030Tag += `<option value="${grdSelect.P030[i].cdValue}">${grdSelect.P030[i].cdName}</option>`
+    }
+    $('#TB07110S_pchsDdcDcd').append(P030Tag);
 
     // 부서코드 콤보박스 셋
     let dprtOptionTag = "";
@@ -133,6 +134,9 @@ const TB07110Sjs = (function () {
     $("#TB07110S_grd_basic").pqGrid('instance').setData([]);
 
     resetInput();
+    
+    // 파일 그리드 초기화
+    $(`div[data-menuid="/TB07110S"] #UPLOAD_FileList`).html("");
   }
 
   /**
@@ -170,7 +174,7 @@ const TB07110Sjs = (function () {
     $(`#TB07110S_mergeForm input`).val('');
     $(`#TB07110S_mergeForm select`).val('');
     $(`#TB07110S_mergeForm input[id*='bnftYn']
-      ,#TB07110S_mergeForm input[id*='entmAccXstcYn']`).prop('checked',false);
+      ,#TB07110S_mergeForm input[id*='entmAccXstcYn']`).prop('checked', false);
 
     $(`#TB07110S_mergeForm input[id*='Amt']
       ,#TB07110S_mergeForm input[id*='Blce']
@@ -218,12 +222,13 @@ const TB07110Sjs = (function () {
    * 1. 담당자인 경우 - 결재요청, 승인취소 버튼 활성화
    * 2. 승인자인 경우 - 결재, 반려 버튼 활성화
    */
-  function apvlBtnHandler(decdSttsDcd) {
+  function apvlBtnHandler() {
 
     // 담당자, 승인자 체크
     const nowEmpno = $('#userEno').val()
     const stfno = $('#TB07110S_rgstEmpno').val()
     const dcfcEno = $('#TB07110S_2_empNo').val()
+    const decdSttsDcd = $('#TB07110S_decdSttsDcd').val()
 
     // 담당자인 경우
     if (nowEmpno === stfno) {
@@ -266,6 +271,34 @@ const TB07110Sjs = (function () {
       $('#TB07110S_delRow').hide();
       $('div[data-menuid="/TB07110S"] #UPLOAD_AddFile').hide();
       $('div[data-menuid="/TB07110S"] #UPLOAD_DelFiles').hide();
+    }
+
+    if (queryMode === "insert" && !$('#TB07110S_cnstNo').val()) {
+      $('#TB07110S_excBtn').prop('disabled', false)
+
+      $('#TB07110S_saveBtn').prop('disabled', true)
+      $('#TB07110S_addRow').prop('disabled', true)
+      $('#TB07110S_delRow').prop('disabled', true)
+      $('div[data-menuid="/TB07110S"] #UPLOAD_AddFile').prop('disabled', true)
+      $('div[data-menuid="/TB07110S"] #UPLOAD_DelFiles').prop('disabled', true)
+    }
+    else if (queryMode === "insert" && $('#TB07110S_cnstNo').val()) {
+      $('#TB07110S_excBtn').prop('disabled', false)
+
+      $('#TB07110S_saveBtn').prop('disabled', false)
+      $('#TB07110S_addRow').prop('disabled', false)
+      $('#TB07110S_delRow').prop('disabled', false)
+      $('div[data-menuid="/TB07110S"] #UPLOAD_AddFile').prop('disabled', false)
+      $('div[data-menuid="/TB07110S"] #UPLOAD_DelFiles').prop('disabled', false)
+    }
+    else if (queryMode === "delete" && !$('#TB07110S_cnstNo').val()) {
+      $('#TB07110S_excBtn').prop('disabled', true)
+
+      $('#TB07110S_saveBtn').prop('disabled', true)
+      $('#TB07110S_addRow').prop('disabled', true)
+      $('#TB07110S_delRow').prop('disabled', true)
+      $('div[data-menuid="/TB07110S"] #UPLOAD_AddFile').prop('disabled', true)
+      $('div[data-menuid="/TB07110S"] #UPLOAD_DelFiles').prop('disabled', true)
     }
 
     // 결재단계, 결재상태 확인
@@ -327,40 +360,12 @@ const TB07110Sjs = (function () {
     }
     // 승인취소된 내역은 조회 안됨
     // 조회가 되지 않은 상태
-    else if (decdSttsDcd === undefined) {
+    else if (!decdSttsDcd) {
       $('#TB07110S_apvlRqst').prop('disabled', true)
       $('#TB07110S_apvlCncl').prop('disabled', true)
       $('#TB07110S_apvl').prop('disabled', true)
       $('#TB07110S_gbck').prop('disabled', true)
       $('#TB07110S_excBtn').prop('disabled', false)
-
-      $('#TB07110S_saveBtn').prop('disabled', false)
-      $('#TB07110S_addRow').prop('disabled', false)
-      $('#TB07110S_delRow').prop('disabled', false)
-      $('div[data-menuid="/TB07110S"] #UPLOAD_AddFile').prop('disabled', false)
-      $('div[data-menuid="/TB07110S"] #UPLOAD_DelFiles').prop('disabled', false)
-    }
-
-    if (queryMode === "insert" && !$('#TB07110S_cnstNo').val()) {
-      $('#TB07110S_excBtn').prop('disabled', false)
-
-      $('#TB07110S_saveBtn').prop('disabled', true)
-      $('#TB07110S_addRow').prop('disabled', true)
-      $('#TB07110S_delRow').prop('disabled', true)
-      $('div[data-menuid="/TB07110S"] #UPLOAD_AddFile').prop('disabled', true)
-      $('div[data-menuid="/TB07110S"] #UPLOAD_DelFiles').prop('disabled', true)
-    }
-    else if (queryMode === "insert" && $('#TB07110S_cnstNo').val()) {
-      $('#TB07110S_excBtn').prop('disabled', false)
-
-      $('#TB07110S_saveBtn').prop('disabled', false)
-      $('#TB07110S_addRow').prop('disabled', false)
-      $('#TB07110S_delRow').prop('disabled', false)
-      $('div[data-menuid="/TB07110S"] #UPLOAD_AddFile').prop('disabled', false)
-      $('div[data-menuid="/TB07110S"] #UPLOAD_DelFiles').prop('disabled', false)
-    }
-    else if (queryMode === "delete" && !$('#TB07110S_cnstNo').val()) {
-      $('#TB07110S_excBtn').prop('disabled', true)
 
       $('#TB07110S_saveBtn').prop('disabled', true)
       $('#TB07110S_addRow').prop('disabled', true)
@@ -390,8 +395,8 @@ const TB07110Sjs = (function () {
           labelIndx: "cdName",
           options: grdSelect.D006,
         },
-        render: function ( ui ) {
-          return grdSelect.D006.find( idx => idx.cdValue == ui.cellData).cdName;
+        render: function (ui) {
+          return grdSelect.D006.find(idx => idx.cdValue == ui.cellData).cdName;
         }
       },
       {
@@ -401,7 +406,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: 'range' }] },
-        render: function ( ui ) {
+        render: function (ui) {
           return formatDate(ui.cellData);
         }
       },
@@ -412,7 +417,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: 'range' }] },
-        render: function ( ui ) {
+        render: function (ui) {
           return formatDate(ui.cellData);
         }
       }
@@ -459,8 +464,8 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: 'range' }] },
-        render: function ( ui ) {
-          return grdSelect.P029.find( opt => opt.cdValue === ui.cellData ) ? grdSelect.P029.find( opt => opt.cdValue === ui.cellData ).cdName : ui.cellData
+        render: function (ui) {
+          return grdSelect.P029.find(opt => opt.cdValue === ui.cellData) ? grdSelect.P029.find(opt => opt.cdValue === ui.cellData).cdName : ui.cellData
         }
       },
       {
@@ -470,8 +475,8 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: 'range' }] },
-        render: function ( ui ) {
-          return grdSelect.P030.find( opt => opt.cdValue === ui.cellData ) ? grdSelect.P030.find( opt => opt.cdValue === ui.cellData ).cdName : ui.cellData
+        render: function (ui) {
+          return grdSelect.P030.find(opt => opt.cdValue === ui.cellData) ? grdSelect.P030.find(opt => opt.cdValue === ui.cellData).cdName : ui.cellData
         }
       },
       {
@@ -499,8 +504,8 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: 'range' }] },
-        render: function ( ui ) {
-          return grdSelect.A018.find( opt => opt.cdValue === ui.cellData ) ? grdSelect.A018.find( opt => opt.cdValue === ui.cellData ).cdName : ui.cellData
+        render: function (ui) {
+          return grdSelect.A018.find(opt => opt.cdValue === ui.cellData) ? grdSelect.A018.find(opt => opt.cdValue === ui.cellData).cdName : ui.cellData
         }
       },
       {
@@ -630,7 +635,6 @@ const TB07110Sjs = (function () {
         dataIndx: "krwAmt1",
         halign: "center",
         align: "right",
-        // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
       },
       {
@@ -709,25 +713,32 @@ const TB07110Sjs = (function () {
         , id: 'TB07110S_grd_txbl'
         , colModel: col_txbl
         , rowClick: function (evt, ui) {
-          setInputDataFromSelectData( ui.rowData, "TB07110S_mergeForm #TB07110S");
+          setInputDataFromSelectData(ui.rowData, "TB07110S_mergeForm #TB07110S");
 
           $(`#TB07110S_2_ardyBzepNo`).val(ui.rowData['acctBcncCd']);
           $(`#TB07110S_2_entpNm`).val(ui.rowData['bcncNm']);
           $(`#TB07110S_2_empNm`).val(ui.rowData['reltStfnm']);
           $(`#TB07110S_2_empNo`).val(ui.rowData['reltStfno']);
-          
-          $(`#TB07110S_bnftYn`).prop('checked',ui.rowData['bnftYn'] == "Y");
-          $(`#TB07110S_entmAccXstcYn`).prop('checked',ui.rowData['entmAccXstcYn'] == "Y");
-                      
+
+          $(`#TB07110S_bnftYn`).prop('checked', ui.rowData['bnftYn'] == "Y");
+          $(`#TB07110S_entmAccXstcYn`).prop('checked', ui.rowData['entmAccXstcYn'] == "Y");
+
           const paramData = {
             wrtnDt: ui.rowData['wrtnDt']
             , rslnBdcd: ui.rowData['rslnBdcd']
             , cnstNo: ui.rowData['cnstNo']
           }
-          
-          apvlBtnHandler( ui.rowData.decdSttsDcd );
+
+          apvlBtnHandler();
 
           TB07110S_selectIBIMS432B(paramData);
+
+          /**
+           * 파일불러오기, 저장을 위한 키값 세팅
+           */
+          $(`div[data-menuid="/TB07110S"] #fileKey2`).val( ui.rowData['wrtnDt'] + ui.rowData['rslnBdcd'] + ui.rowData['cnstNo'] )
+          $('div[data-menuid="/TB07110S"] #key1').val("TB07110S")
+          getFileInfo($('div[data-menuid="/TB07110S"] #key1').val(), $('div[data-menuid="/TB07110S"] #fileKey2').val());
         }
         , selectionModel: { type: "row" }
       },
@@ -736,7 +747,7 @@ const TB07110Sjs = (function () {
         , maxHeight: 150
         , id: 'TB07110S_grd_basic'
         , colModel: col_basic
-        , rowClick: function ( evt, ui ) {
+        , rowClick: function (evt, ui) {
           if (sttmDetlIndex === ui.rowIndx) {
             sttmDetlIndex = undefined;
           }
@@ -753,21 +764,21 @@ const TB07110Sjs = (function () {
         //   }
         //   else {
         //     console.log(ui);
-            
+
         //   }
         // }
         , selectionModel: { type: "row" }
       },
     ]
-    
+
     setPqGrid(pqGridObjs);
-    
+
     // Grid instance
     txbl = $("#TB07110S_grd_txbl").pqGrid('instance');
     basic = $("#TB07110S_grd_basic").pqGrid('instance');
   }
 
-  function addRow(){
+  function addRow() {
     var gridData = $("#TB07110S_grd_basic").pqGrid("option", "dataModel.data");
     const newRow = {
       wrtnDt: $('#TB07110S_wrtnDt').val(),
@@ -782,7 +793,7 @@ const TB07110Sjs = (function () {
   }
 
 
-  function delRow(){
+  function delRow() {
     if (sttmDetlIndex === undefined) {
       Swal.fire({
         icon: 'warning'
@@ -836,7 +847,7 @@ const TB07110Sjs = (function () {
     });
   }
 
-  function TB07110S_selectIBIMS432B ( paramData ) {
+  function TB07110S_selectIBIMS432B(paramData) {
 
     $.ajax({
       type: "POST",
@@ -986,14 +997,14 @@ const TB07110Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if ( data > 0 ) {
+        if (data > 0) {
           Swal.fire({
-            icon: 'success'
+            icon: "success"
             , title: "Success!"
             , text: "결재요청이 되었습니다!"
           })
         }
-        else if ( data === -7574 ) {
+        else if (data === -7574) {
           Swal.fire({
             icon: 'warning'
             , title: "Warning!"
@@ -1007,6 +1018,7 @@ const TB07110Sjs = (function () {
             , text: "결재요청 실패!"
           })
         }
+        apvlBtnHandler();
       }, error: function () {
         Swal.fire({
           icon: 'error'
@@ -1021,7 +1033,7 @@ const TB07110Sjs = (function () {
   /**
    * 승인요청취소!
    */
-  function apvlRqstCncl () {
+  function apvlRqstCncl() {
 
     const paramData = {
       wrtnDt: unformatDate($("#TB07110S_wrtnDt").val())     // 작성일자
@@ -1034,12 +1046,12 @@ const TB07110Sjs = (function () {
 
     $.ajax({
       type: "POST",
-      url: "/TB07100S/apvlRqst",
+      url: "/TB07100S/apvlRqstCncl",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if ( data > 0 ) {
+        if (data > 0) {
           Swal.fire({
             icon: 'success'
             , title: "Success!"
@@ -1053,6 +1065,7 @@ const TB07110Sjs = (function () {
             , text: "승인요청취소 실패!"
           })
         }
+        apvlBtnHandler();
       }, error: function () {
         Swal.fire({
           icon: 'error'
@@ -1080,12 +1093,12 @@ const TB07110Sjs = (function () {
 
     $.ajax({
       type: "POST",
-      url: "/TB07100S/apvlRqst",
+      url: "/TB07100S/apvl",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if ( data > 0 ) {
+        if (data > 0) {
           Swal.fire({
             icon: 'success'
             , title: "Success!"
@@ -1099,6 +1112,7 @@ const TB07110Sjs = (function () {
             , text: "승인 실패!"
           })
         }
+        apvlBtnHandler();
       }, error: function () {
         Swal.fire({
           icon: 'error'
@@ -1126,12 +1140,12 @@ const TB07110Sjs = (function () {
 
     $.ajax({
       type: "POST",
-      url: "/TB07100S/apvlRqst",
+      url: "/TB07100S/rjct",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if ( data > 0 ) {
+        if (data > 0) {
           Swal.fire({
             icon: 'success'
             , title: "Success!"
@@ -1145,6 +1159,7 @@ const TB07110Sjs = (function () {
             , text: "반려 실패!"
           })
         }
+        apvlBtnHandler();
       }, error: function () {
         Swal.fire({
           icon: 'error'
@@ -1201,7 +1216,7 @@ const TB07110Sjs = (function () {
   /**
    * 행추가
    */
-  function addRow(){
+  function addRow() {
     var gridData = $("#TB07110S_grd_basic").pqGrid("option", "dataModel.data");
     const newRow = {
       wrtnDt: unformatDate($('#TB07110S_wrtnDt').val()),
@@ -1218,7 +1233,7 @@ const TB07110Sjs = (function () {
   /**
    * 행삭제
    */
-  function delRow(){
+  function delRow() {
     if (sttmDetlIndex === undefined) {
       Swal.fire({
         icon: 'warning'

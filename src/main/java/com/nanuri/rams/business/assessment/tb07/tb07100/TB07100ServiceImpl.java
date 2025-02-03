@@ -144,6 +144,7 @@ public class TB07100ServiceImpl implements TB07100Service {
 			dto231.setDecdStepDcd("04"); // 승인요청
 			dto231.setDecdSttsDcd("1");  // 진행중
 			dto231.setDealNo(snFromTB07100);
+			dto231.setPrdtCd("");
 			dto231.setDecdJobDcd(param.getScrnNo());
 			dto231.setScrnNo(param.getScrnNo());
 			dto231.setLastDecdSq(1);

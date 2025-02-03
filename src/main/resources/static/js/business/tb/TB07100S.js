@@ -70,7 +70,8 @@ const TB07100Sjs = (function () {
       + "/P030"
       , false);
 
-    grdSelect.A017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A017' });	  // 회계계정과목코드
+    grdSelect.A017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A017' })
+                              .filter(item => item.cdValue >= 500);	                            // 회계계정과목코드
     grdSelect.A018 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A018' });	  // 회계지급방법코드
     grdSelect.F017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'F017' });    // 자금원장구분코드
     grdSelect.P029 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'P029' });    // 증빙종류구분코드
@@ -239,12 +240,13 @@ const TB07100Sjs = (function () {
    * 1. 담당자인 경우 - 결재요청, 승인취소 버튼 활성화
    * 2. 승인자인 경우 - 결재, 반려 버튼 활성화
    */
-  function apvlBtnHandler(decdSttsDcd) {
+  function apvlBtnHandler() {
 
     // 담당자, 승인자 체크
     const nowEmpno = $('#userEno').val()
     const stfno = $('#TB07100S_rgstEmpno').val()
     const dcfcEno = $('#TB07100S_2_empNo').val()
+    const decdSttsDcd = $('#TB07100S_decdSttsDcd').val()
 
     // 담당자인 경우
     if (nowEmpno === stfno) {
@@ -281,6 +283,28 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').hide();
       $('#TB07100S_addRow').hide();
       $('#TB07100S_delRow').hide();
+    }
+
+    if (queryMode === "insert" && !$('#TB07100S_cnstNo').val()) {
+      $('#TB07100S_excBtn').prop('disabled', false)
+
+      $('#TB07100S_saveBtn').prop('disabled', true)
+      $('#TB07100S_addRow').prop('disabled', true)
+      $('#TB07100S_delRow').prop('disabled', true)
+    }
+    else if (queryMode === "insert" && $('#TB07100S_cnstNo').val()) {
+      $('#TB07100S_excBtn').prop('disabled', false)
+
+      $('#TB07100S_saveBtn').prop('disabled', false)
+      $('#TB07100S_addRow').prop('disabled', false)
+      $('#TB07100S_delRow').prop('disabled', false)
+    }
+    else if (queryMode === "delete" && !$('#TB07100S_cnstNo').val()) {
+      $('#TB07100S_excBtn').prop('disabled', true)
+
+      $('#TB07100S_saveBtn').prop('disabled', true)
+      $('#TB07100S_addRow').prop('disabled', true)
+      $('#TB07100S_delRow').prop('disabled', true)
     }
 
     // 결재단계, 결재상태 확인
@@ -334,7 +358,7 @@ const TB07100Sjs = (function () {
     }
     // 승인취소된 내역은 조회 안됨
     // 조회가 되지 않은 상태
-    else if (decdSttsDcd === undefined) {
+    else if (!decdSttsDcd) {
       $('#TB07100S_apvlRqst').prop('disabled', true)
       $('#TB07100S_apvlCncl').prop('disabled', true)
       $('#TB07100S_apvl').prop('disabled', true)
@@ -344,28 +368,6 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').prop('disabled', false)
       $('#TB07100S_addRow').prop('disabled', false)
       $('#TB07100S_delRow').prop('disabled', false)
-    }
-
-    if (queryMode === "insert" && !$('#TB07100S_cnstNo').val()) {
-      $('#TB07100S_excBtn').prop('disabled', false)
-
-      $('#TB07100S_saveBtn').prop('disabled', true)
-      $('#TB07100S_addRow').prop('disabled', true)
-      $('#TB07100S_delRow').prop('disabled', true)
-    }
-    else if (queryMode === "insert" && $('#TB07100S_cnstNo').val()) {
-      $('#TB07100S_excBtn').prop('disabled', false)
-
-      $('#TB07100S_saveBtn').prop('disabled', false)
-      $('#TB07100S_addRow').prop('disabled', false)
-      $('#TB07100S_delRow').prop('disabled', false)
-    }
-    else if (queryMode === "delete" && !$('#TB07100S_cnstNo').val()) {
-      $('#TB07100S_excBtn').prop('disabled', true)
-
-      $('#TB07100S_saveBtn').prop('disabled', true)
-      $('#TB07100S_addRow').prop('disabled', true)
-      $('#TB07100S_delRow').prop('disabled', true)
     }
 
   }
@@ -781,7 +783,7 @@ const TB07100Sjs = (function () {
             , cnstNo: ui.rowData['cnstNo']
           }
 
-          apvlBtnHandler(ui.rowData.decdSttsDcd);
+          apvlBtnHandler();
 
           TB07100S_selectIBIMS432B(paramData);
 
@@ -801,11 +803,11 @@ const TB07100Sjs = (function () {
             sttmDetlIndex = ui.rowIndx
           }
         }
-        , cellClick: function ( evt, ui ) {
-          if ( ui.dataIndx === "prdtCd" ) {
+        , cellClick: function (evt, ui) {
+          if (ui.dataIndx === "prdtCd") {
             ui.column.editable = false;
           }
-          else if ( ui.dataIndx === "nsFndCd" ) {
+          else if (ui.dataIndx === "nsFndCd") {
             ui.column.editable = false;
           }
         }
@@ -1083,6 +1085,7 @@ const TB07100Sjs = (function () {
             , text: "결재요청 실패!"
           })
         }
+        apvlBtnHandler();
       }, error: function () {
         Swal.fire({
           icon: 'error'
@@ -1109,7 +1112,7 @@ const TB07100Sjs = (function () {
 
     $.ajax({
       type: "POST",
-      url: "/TB07100S/apvlRqst",
+      url: "/TB07100S/apvlRqstCncl",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
@@ -1128,6 +1131,7 @@ const TB07100Sjs = (function () {
             , text: "승인요청취소 실패!"
           })
         }
+        apvlBtnHandler();
       }, error: function () {
         Swal.fire({
           icon: 'error'
@@ -1154,7 +1158,7 @@ const TB07100Sjs = (function () {
 
     $.ajax({
       type: "POST",
-      url: "/TB07100S/apvlRqst",
+      url: "/TB07100S/apvl",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
@@ -1173,6 +1177,7 @@ const TB07100Sjs = (function () {
             , text: "승인 실패!"
           })
         }
+        apvlBtnHandler();
       }, error: function () {
         Swal.fire({
           icon: 'error'
@@ -1199,7 +1204,7 @@ const TB07100Sjs = (function () {
 
     $.ajax({
       type: "POST",
-      url: "/TB07100S/apvlRqst",
+      url: "/TB07100S/rjct",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(paramData),
       dataType: "json",
@@ -1218,6 +1223,7 @@ const TB07100Sjs = (function () {
             , text: "반려 실패!"
           })
         }
+        apvlBtnHandler();
       }, error: function () {
         Swal.fire({
           icon: 'error'
