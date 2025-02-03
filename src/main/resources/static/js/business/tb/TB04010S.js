@@ -64,6 +64,7 @@ const TB04010Sjs = (function () {
 
     // url 정보 세팅은 마지막에 하도록 한다.
     getUrlDealInfo();
+    //$(".save").prop("disabled", true);
 
     $("#TB04010S_ibDealNo").focus();
     $("#assesmenttlClsf").hide(); // 승인확정 버튼 hide
@@ -590,6 +591,7 @@ const TB04010Sjs = (function () {
         data: dtoParam,
         dataType: "json",
         success: function (data) {
+          $(".save").attr("disabled", false);
           arrPqGridDealListInfo.setData(data);
           arrPqGridDealListInfo.option("rowDblClick", function (event, ui) {
             setTabContents(ui.rowData);
@@ -599,9 +601,8 @@ const TB04010Sjs = (function () {
             var sn = ui.rowData.sn || 0;
             var ownPEno = ui.rowData.ownPEno || ""; // 심사역사번
             compareAuth(ownPEno);
-            $(".save").prop("disabled", false);
-
-            var key2 = dealNo + mtrDcd + jdgmDcd + sn;
+            var key2 = dealNo + mtrDcd;
+            // + jdgmDcd + sn;
             getFileInfo("", key2);
             $('div[data-menuid="/TB04010S"] #UPLOAD_AddFile').attr(
               "disabled",
@@ -1895,7 +1896,7 @@ const TB04010Sjs = (function () {
       bsnsDprtEsgGrdCmmt: $("#TB04013P_bsnsDprtEsgGrdCmmt").val(), // 사업부서ESG등급의견
       inspctDprtEsgGrdDcd: $("#TB04013P_R005_2").val(), // 심사부서ESG등급구분코드
       inspctDprtEsgGrdCmmt: $("#TB04013P_inspctDprtEsgGrdCmmt").val(), // 심사부서ESG등급의견
-      TB04010S_invPrdMnum: $("#TB04010S_invPrdMnum").val(), // 투자기간개월수
+      invPrdMnum: $("#TB04010S_invPrdMnum").val(), // 투자기간개월수
       wrtExptDt: $("#TB04010S_tab1_datepicker1").val().replaceAll("-", ""), // 기표예정일자
       mtrtExptDt: $("#TB04010S_mtrtDt").val().replaceAll("-", ""), // 만기예정일자
       tlErnAmt: $("#tlErnAmt").val().replace(/,/g, ""), // 전체수익
@@ -1934,6 +1935,8 @@ const TB04010Sjs = (function () {
           confirmButtonText: "확인",
         }).then((result) => {
           $("#TB04010S_ibDealNo").val($("#TB04010S_selectedDealNo").val());
+          console.log("confirm::::::", paramData);
+
           getDealList();
           let dealNo =
             arrPqGridDealListInfo.pdata[arrPqGridDealListInfo.pdata.length];

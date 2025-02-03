@@ -17,32 +17,101 @@ const TB02010Sjs = (function(){
 	
 	function setPqGrid_TB02010S(){
 
+		// let colM_TB02010S = [
+		// 	{ 	
+		// 		title    : "요청일시", 
+		// 		dataType : "string",
+		// 		dataIndx : "aprvDttm",
+		// 		halign	 : "center", 
+		// 		align    : "center", 
+		// 		filter   : { crules: [{ condition: 'range' }] },
+		// 		render: function (ui) {
+
+		// 			var cellData = ui.cellData;
+		// 			var aprvDt = cellData.substring(0,8);
+
+		// 			if (aprvDt && aprvDt.length === 8) {
+		// 				var year = cellData.substring(0, 4);
+		// 				var month = cellData.substring(4, 6);
+		// 				var day = cellData.substring(6, 8);
+		// 				return year + "-" + month + "-" + day;
+		// 			}
+		// 			return cellData;
+		// 		}
+		// 	},
+		// 	{ 	
+		// 		title    : "요청부서", 
+		// 		dataType : "string",
+		// 		dataIndx : "rqsDpt",
+		// 		halign	 : "center", 
+		// 		align    : "center", 
+		// 		filter   : { crules: [{ condition: 'range' }] },
+		// 	},
+		// 	{ 	
+		// 		title    : "요청자", 
+		// 		dataType : "string",
+		// 		dataIndx : "aprvEmpNm",
+		// 		halign	 : "center", 
+		// 		align    : "center", 
+		// 		filter   : { crules: [{ condition: 'range' }] },
+		// 	},
+		// 	{ 	
+		// 		title    : "업무구분", 
+		// 		dataType : "string",
+		// 		dataIndx : "wfMapNm",
+		// 		halign	 : "center", 
+		// 		align    : "left", 
+		// 		filter   : { crules: [{ condition: 'range' }] },
+		// 	},
+		// 	{ 	
+		// 		title    : "내역", 
+		// 		dataType : "string",
+		// 		dataIndx : "jobCnts",
+		// 		halign	 : "center", 
+		// 		align    : "left", 
+		// 		filter   : { crules: [{ condition: 'range' }] },
+		// 	},
+		// 	// {
+		// 	// 	dataType: "string",
+		// 	// 	dataIndx: "wfId",
+		// 	// 	hidden: true
+		// 	// },
+		// 	// {
+		// 	// 	dataType: "string",
+		// 	// 	dataIndx: "wfMapId",
+		// 	// 	hidden: true
+		// 	// },
+		// 	// {
+		// 	// 	dataType: "string",
+		// 	// 	dataIndx: "wfMapNm",
+		// 	// 	hidden: true
+		// 	// },
+		// 	// {
+		// 	// 	dataType: "string",
+		// 	// 	dataIndx: "etc",
+		// 	// 	hidden: true
+		// 	// }
+		// ]
+
 		let colM_TB02010S = [
-			{ 	
-				title    : "요청일시", 
-				dataType : "string",
-				dataIndx : "aprvDttm",
-				halign	 : "center", 
-				align    : "center", 
-				filter   : { crules: [{ condition: 'range' }] },
+			
+			{
+				title: "요청일시",
+				dataType: "string",
+				dataIndx: "rqstDtm",
+				align: "center",
+				filter: { crules: [{ condition: "range" }] },
 				render: function (ui) {
-
-					var cellData = ui.cellData;
-					var aprvDt = cellData.substring(0,8);
-
-					if (aprvDt && aprvDt.length === 8) {
-						var year = cellData.substring(0, 4);
-						var month = cellData.substring(4, 6);
-						var day = cellData.substring(6, 8);
-						return year + "-" + month + "-" + day;
-					}
-					return cellData;
-				}
-			},
+				  if(ui.cellData){
+					let result = ui.cellData.replace('T', ' ').slice(0, 19);
+					return result;
+				  }
+				},
+			  },
 			{ 	
 				title    : "요청부서", 
 				dataType : "string",
-				dataIndx : "rqsDpt",
+				dataIndx : "dprtNm",
 				halign	 : "center", 
 				align    : "center", 
 				filter   : { crules: [{ condition: 'range' }] },
@@ -50,7 +119,7 @@ const TB02010Sjs = (function(){
 			{ 	
 				title    : "요청자", 
 				dataType : "string",
-				dataIndx : "aprvEmpNm",
+				dataIndx : "apvlRqstPNm",
 				halign	 : "center", 
 				align    : "center", 
 				filter   : { crules: [{ condition: 'range' }] },
@@ -58,39 +127,48 @@ const TB02010Sjs = (function(){
 			{ 	
 				title    : "업무구분", 
 				dataType : "string",
-				dataIndx : "wfMapNm",
+				dataIndx : "decdJobDcd",
 				halign	 : "center", 
-				align    : "left", 
+				align    : "center", 
 				filter   : { crules: [{ condition: 'range' }] },
 			},
 			{ 	
-				title    : "내역", 
+				title    : "내역",
 				dataType : "string",
-				dataIndx : "jobCnts",
-				halign	 : "center", 
-				align    : "left", 
+				dataIndx : "dealNm",
+				halign	 : "center",
+				align    : "left",
 				filter   : { crules: [{ condition: 'range' }] },
 			},
 			{
-				dataType: "string",
-				dataIndx: "wfId",
-				hidden: true
-			},
-			{
-				dataType: "string",
-				dataIndx: "wfMapId",
-				hidden: true
-			},
-			{
-				dataType: "string",
-				dataIndx: "wfMapNm",
-				hidden: true
-			},
-			{
-				dataType: "string",
-				dataIndx: "etc",
-				hidden: true
+				/**
+				 * 결재번호를 이용하여 데이터 받고 그에 맞는 화면으로 이동 -> 조회
+				 */
+				title	 : "결재번호",
+				dataType : "string",
+				dataIndx : "decdSn",
+				hidden 	 : true,
 			}
+			// {
+			// 	dataType: "string",
+			// 	dataIndx: "wfId",
+			// 	hidden: true
+			// },
+			// {
+			// 	dataType: "string",
+			// 	dataIndx: "wfMapId",
+			// 	hidden: true
+			// },
+			// {
+			// 	dataType: "string",
+			// 	dataIndx: "wfMapNm",
+			// 	hidden: true
+			// },
+			// {
+			// 	dataType: "string",
+			// 	dataIndx: "etc",
+			// 	hidden: true
+			// }
 		]
 
 		let pqGridObjs_TB02010S = [
@@ -100,7 +178,9 @@ const TB02010Sjs = (function(){
 				, id: 'wfGrid_TB02010S'
 				, numberCell: { show: false }
 				, colModel: colM_TB02010S 	
-				// , rowDblClick: moveToJobPage()	
+				, rowDblClick: function ( evt, ui ) {
+					justDoit(ui.rowData.decdSn);
+				}
 			},
 		]
 
@@ -112,49 +192,56 @@ const TB02010Sjs = (function(){
 
 	}
 
+	/**
+	 * 할일하러가기
+	 * @discription
+	 * 영어를 못해서 죄송합니다
+	 */
+	function justDoit (decdSn) {
+		// parmaData = 
+	}
+
 	// 오늘의할일 조회
 	function selInfo() {
-		
-
-		var empno = $('#userEno').val();
-
-		var param = {
-			empno
-		}
 
 		$.ajax({
-			type: "GET",
-			url: "/TB02010S/selInfo",
-			data: param,
-			dataType: "json",
+			type: "POST",
+			url: "/TB02010S/myJob",
 			beforeSend: function () {
 				$("#wfGrid_TB02010S").pqGrid("setData", []);
 				$("#wfGrid_TB02010S").pqGrid("option", "strNoRows", "조회 중입니다...");
 				$("#wfGrid_TB02010S").pqGrid("refreshDataAndView");
 			},
 			success: function(data) {
-				var workFlowList = data.workFlowList;
-				var wfCntList = data.wfCntList;
 
 				var $ulElement = $("#TB02010S_appvPrgrsCnt");
-				$ulElement.text(workFlowList.length + "건");
+
+				console.log(data);
+
+				if (!data || data === undefined) {
+					$ulElement.text( 0 + "건");
+				}
+				else if ( data.length > 0 ) {
+					$('#wfGrid_TB02010S').pqGrid('instance').setData(data);
+					$ulElement.text(data.length + "건");
+				}
+				// var workFlowList = data.workFlowList;
+				// var wfCntList = data.length;
+
 
 				$("#wfGrid_TB02010S").pqGrid("option", "strNoRows", "조회된 데이터가 없습니다.");
 
-				if(workFlowList.length > 0){
-					$("#wfGrid_TB02010S").pqGrid("setData", workFlowList);
+				// if(workFlowList.length > 0){
+				// 	$("#wfGrid_TB02010S").pqGrid("setData", workFlowList);
 
-					
+				// 	pqGridObj_TB02010S.option("rowDblClick", function(event, ui) {
+				// 		callPage(ui.rowData);
+				// 	});
+				// }
 
-					pqGridObj_TB02010S.option("rowDblClick", function(event, ui) {
-						moveToJobPage(ui.rowData);
-					});
-				}
-
-				if(wfCntList.length > 0){
-					
-					setWfCntList(wfCntList);
-				}
+				// if(wfCntList.length > 0){
+				// 	setWfCntList(wfCntList);
+				// }
 				
 			}
 			

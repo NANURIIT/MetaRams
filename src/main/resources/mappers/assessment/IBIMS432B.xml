@@ -46,8 +46,8 @@
     </select>
 
     <!-- 일련번호 채번 -->
-    <select id="setSttmDetlSn">
-      SELECT NVL(STTM_DETL_SN, 0) + 1
+    <select id="setSttmDetlSn" resultType="int">
+      SELECT NVL(MAX(STTM_DETL_SN), 0) + 1
         FROM IBIMS432B
     </select>
 
@@ -94,8 +94,8 @@
               , #{dbitCritDcd}
               , #{rptsActsCd}
               , #{actsCd}
-              , #{krwAmt}
-              , #{frcrAmt}
+              , NVL(#{krwAmt}, 0)
+              , NVL(#{frcrAmt}, 0)
               , #{bdgExcuBdcd}
               , #{bdgActsCd}
               , #{rvrsBdcd}
@@ -105,7 +105,7 @@
               , #{prufKndDcd}
               , #{prufDt}
               , #{ntsApvlNo}
-              , #{elcPrufYn}
+              , NVL(#{elcPrufYn}, 'N')
               , #{vhclRgstCd}
               , #{nsFndCd}
               , #{prdtCd}

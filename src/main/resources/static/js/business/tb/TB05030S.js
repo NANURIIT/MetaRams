@@ -2,6 +2,7 @@ const TB05030Sjs = (function () {
   let arrPqGridCaseInfo; // 안건정보
   let arrPqGridMmbrInfo; // 의결내용
   let arrPqGridIbDealInfo; // 협의결과
+  let TB05030S_ptfdAmt; //참여금액
   let aprvOppsDcd = [];
   let rsltnRsltCd = []; // R025 찬반구분코드?
   let setEditable = true; // 의결내용 그리드 내 editable 상태 관리해야 할 컬럼 "MMBRChk","atdcYn", "aprvOppsDcdNm", "opnnCtns"
@@ -15,6 +16,7 @@ const TB05030Sjs = (function () {
     loadRsltnRsltCd(); //의결코드
     tableFunction();
     compControl();
+
     // 이번년도
     let getYr = getToday().substring(0, 4);
     // 결의년도 이번년도로 세팅
@@ -22,6 +24,29 @@ const TB05030Sjs = (function () {
     getCNFRNCList();
     rendorGrid();
   });
+
+  document
+    .getElementById("TB05030S_rcgAmt")
+    .addEventListener("blur", function () {
+      const rcgAmtStr = document
+        .getElementById("TB05030S_rcgAmt")
+        .value.replace(/,/g, "");
+      const rcgAmt = parseFloat(rcgAmtStr);
+      const ptfdAmt = parseFloat(TB05030S_ptfdAmt);
+      console.log("입력값 (rcgAmt):", rcgAmt); // 숫자 형식으로 출력
+      console.log("ptfdAmt:", ptfdAmt); // 숫자 형식으로 출력
+      if (rcgAmt > ptfdAmt) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "승인금액은 참여금액을 초과할 수 없습니다.",
+          confirmButtonText: "확인",
+        });
+        const inputField = document.getElementById("TB05030S_rcgAmt");
+        inputField.value = ""; // 입력값 지우기
+        inputField.focus(); // 포커스 주기
+      }
+    });
 
   function TB05030S_setFileButtonEnabled(isEnabled) {
     // enabled가 true이면 버튼 활성화, false이면 비활성화
@@ -488,6 +513,7 @@ const TB05030Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridIbDealInfo.setData(data);
+        TB05030S_ptfdAmt = data[0].ptfdAmt;
 
         $("#TB05030S_R025").val(data[0].rsltnRsltCd).attr("selected", true);
         $("#TB05030S_invstCrncyCdNm").val(data[0].ptfdCrryCdNm);
@@ -915,7 +941,7 @@ const TB05030Sjs = (function () {
         maxWidth: 36,
         editable: setEditable,
         filter: { crules: [{ condition: "range" }] },
-        editor: false,
+        editor: true,
         type: "checkBoxSelection",
         cb: {
           all: true,
@@ -923,7 +949,7 @@ const TB05030Sjs = (function () {
           check: "Y",
           uncheck: "N",
         },
-        hidden: true,
+        //hidden: true,
       },
       {
         title: "참석자",

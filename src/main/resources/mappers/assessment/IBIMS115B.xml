@@ -217,6 +217,7 @@
     </select>
 
     <update id="confirmMMBRInfo" parameterType="map">
+      BEGIN
         <foreach collection="list" item="item">
         UPDATE IBIMS115B
            SET ATDC_YN       = #{item.atdcYn}
@@ -224,10 +225,11 @@
              , OPNN_CTNS     = #{item.opnnCtns}
              , OPNN_RGST_DT  = TO_CHAR(SYSDATE, 'YYYYMMDD')
          WHERE CNSB_DCD      = #{item.cnsbDcd}
-           AND CNSB_SQ       = #{item.cnsbSq}
+           AND CNSB_SQ       = TO_NUMBER(#{item.cnsbSq})
            AND RSLTN_YR      = #{item.rsltnYr}
            AND SN            = #{item.sn};
         </foreach>
+      END;
     </update>
 
     <update id="cancelMMBRInfo" parameterType="map">
@@ -238,9 +240,9 @@
             , OPNN_CTNS     = ''
             , OPNN_RGST_DT  = ''
         WHERE CNSB_DCD      = #{item.cnsbDcd}
-          AND CNSB_SQ       = #{item.cnsbSq}
+          AND CNSB_SQ       = TO_NUMBER(#{item.cnsbSq})
           AND RSLTN_YR      = #{item.rsltnYr}
-          AND SN            = #{item.sn};
+          AND SN            = #{item.sn}
         </foreach>
     </update>
 

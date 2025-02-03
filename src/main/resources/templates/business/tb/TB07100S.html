@@ -516,10 +516,6 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07100S_bano">
-													<span class="input-group-append">
-														<button type="button" class="btn btn-default" onclick=""><i
-																class="fa fa-search"></i></button>
-													</span>
 												</div>
 											</div>
 											<label class="col-sm-1">세액</label>
@@ -555,10 +551,6 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07100S_cdno">
-													<span class="input-group-append">
-														<button type="button" class="btn btn-default" onclick=""><i
-																class="fa fa-search"></i></button>
-													</span>
 												</div>
 											</div>
 											<label class="col-sm-1">매입공제</label>
@@ -653,10 +645,10 @@
 							</div>
 							<div class="ibox mb-0 mt-2">
 								<div class="text-right">
-									<button class="btn btn-info" id="TB07100S_apvlRqst" onclick=""><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
-									<button class="btn btn-danger" id="TB07100S_apvlCncl" onclick=""><i class="fa fa-undo"></i>&nbsp;회수</button>
-									<button class="btn btn-success" id="TB07100S_apvl" onclick=""><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
-									<button class="btn btn-danger" id="TB07100S_gbck" onclick=""><i class="fa fa-ban"></i>&nbsp;반려</button>
+									<button class="btn btn-info" id="TB07100S_apvlRqst" onclick="TB07100Sjs.TB07100S_apvlRqst();"><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
+									<button class="btn btn-danger" id="TB07100S_apvlCncl" onclick="TB07100Sjs.apvlRqstCncl();"><i class="fa fa-undo"></i>&nbsp;회수</button>
+									<button class="btn btn-success" id="TB07100S_apvl" onclick="TB07100Sjs.apvl();"><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
+									<button class="btn btn-danger" id="TB07100S_gbck" onclick="TB07100Sjs.rjct();"><i class="fa fa-ban"></i>&nbsp;반려</button>
 								</div>
 							</div>
 							<br>

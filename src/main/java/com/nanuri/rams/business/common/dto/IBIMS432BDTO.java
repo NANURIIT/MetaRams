@@ -18,7 +18,7 @@ public class IBIMS432BDTO {
     private String wrtnDt;                      //  작성일자
     private String rslnBdcd;                    //  결의부점코드
     private String cnstNo;                      //  품의번호
-    private BigDecimal sttmDetlSn;              //  전표상세일련번호
+    private int sttmDetlSn;                     //  전표상세일련번호
     private String dbitCritDcd;                 //  차변대변구분코드
     private String rptsActsCd;                  //  보고서계정과목코드
     private String actsCd;                      //  계정과목코드
