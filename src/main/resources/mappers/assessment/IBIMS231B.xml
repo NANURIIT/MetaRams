@@ -106,6 +106,53 @@
            </if>
 	</select>
 
+  <select id="todayWorks" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS231BVO">
+    SELECT RQST_DTM                               /* 신청일시 */
+         , T2.EMP_NM AS APVL_RQST_P_NM            /* 요청자 */
+         , T2.DPRT_NM                             /* 요청부서 */
+         , CASE WHEN T1.DECD_JOB_DCD IN ( '04', '05' ) THEN '품의번호 ' || SUBSTR(DEAL_NO, 12, 22)
+                ELSE (
+                        SELECT MAX(DEAL_NM)
+                          FROM IBIMS101B
+                         WHERE 1=1
+                           AND DEAL_NO = T1.DEAL_NO
+                      )
+                 END        AS DEAL_NM            /* 내역( 보일수도 안보일수도 ) */
+         , (
+            SELECT CD_VL_NM
+              FROM IBIMS002B
+             WHERE 1=1
+               AND CMNS_CD_GRP = 'D005'
+               AND CD_VL_ID = T1.DECD_JOB_DCD
+           )                AS DECD_JOB_DCD       /* 업무구분 */
+         , T1.DECD_SN       AS DECD_SN            /* 결재번호 */
+      FROM IBIMS231B T1
+ LEFT JOIN IBIMS003B T2
+        ON T1.APVL_RQST_P_ENO = T2.EMPNO
+     WHERE 1=1
+       AND (
+         /* 승인요청자가 접속한 경우 */
+         T1.APVL_RQST_P_ENO = #{hndEmpno}					
+         /* 결재자가 접속한 경우 */
+         OR T1.DECD_SN IN (
+               SELECT DECD_SN
+                 FROM IBIMS232B
+                WHERE 1=1
+                  AND DCFC_ENO = #{hndEmpno}		
+         )
+           /* 현재 접속자가 상급자중 부서장 이상인 경우도 검색 가능 */
+         OR (
+            8 &gt;= SUBSTR(T2.ATH_CD, 4)
+        AND T2.DPRT_CD = (
+                  SELECT DPRT_CD
+                    FROM IBIMS003B
+                  WHERE 1=1
+                    AND EMPNO = #{hndEmpno}
+                )
+          )
+       )
+  </select>
+
   <!-- 결재요청내역 확인 -->
   <select id="apvlListChk" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS003BVO">
       SELECT T2.EMPNO							/* 사원번호 */
@@ -166,7 +213,9 @@
       FROM IBIMS231B
      WHERE 1=1
        AND DEAL_NO = #{dealNo}
+       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
        AND PRDT_CD = #{prdtCd}
+       </if>
        AND DECD_JOB_DCD = (
                              SELECT CD_VL_ID
                                FROM IBIMS002B
@@ -266,8 +315,8 @@
       , #{apvlRqstPEno}
       , #{decdStepDcd}
       , #{decdSttsDcd}
-      , #{dealNo}
-      , #{prdtCd}
+      , NVL(#{dealNo}, '')
+      , NVL(#{prdtCd}, ' ')
       , (
          SELECT CD_VL_ID
            FROM IBIMS002B
@@ -280,9 +329,9 @@
       , SYSDATE
       , #{rqstCnclDtm}
       , '00'
-      , #{excSeq}
-      , #{rqstSq}
-      , #{trSeq}
+      , NVL(#{excSeq}, 0)
+      , NVL(#{rqstSq}, 0)
+      , NVL(#{trSeq}, 0)
       , #{errCntn}
       , #{lastDecdSq}
       , SYSDATE

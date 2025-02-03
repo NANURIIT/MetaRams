@@ -48,5 +48,8 @@ public class IBIMS101BVO extends IBIMS101BDTO {
     private String prgSttsNm; //진행상태명
     private String invPrdtLclsNm; //상품대분류명
     private String ctrcCclcDcd; //약정해지구분코드
-    
+
+    private BigDecimal excBlce; //사업 대출잔액
+    private String busiNm;      //사업명
+    private String crno;        //법인등록번호
 }

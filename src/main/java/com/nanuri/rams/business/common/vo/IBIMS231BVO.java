@@ -28,6 +28,8 @@ public class IBIMS231BVO extends IBIMS231BDTO {
 
     private String dcfcEno;         // 결재자사번
 
+    private String dprtNm;          // 부서명
+
     private List<IBIMS231BDTO> apvlList;
 
 }

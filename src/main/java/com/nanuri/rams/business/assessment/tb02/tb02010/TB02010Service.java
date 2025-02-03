@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.nanuri.rams.business.common.dto.IBIMS100BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS100BVO;
 import com.nanuri.rams.business.common.vo.IBIMS100BVO.selectVO;
+import com.nanuri.rams.business.common.vo.IBIMS231BVO;
 import com.nanuri.rams.business.common.vo.TB02010SVO;
 import com.nanuri.rams.com.dto.WorkFlowDTO;
 
@@ -34,5 +36,8 @@ public interface TB02010Service {
 
 	// WF 작업내용 조회
 	public TB02010SVO workFlowInq(WorkFlowDTO param);
+
+	// 
+	public List<IBIMS231BVO> myJob();
 
 }

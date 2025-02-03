@@ -1,7 +1,94 @@
 const TB08031Sjs = (function () {
-  let bsnsPartInfoInstance; //사업참가자정보 instance
+  let bsnsPartInfoInstance;         //사업참가자정보 instance
+  let bsnsForecastInstance;         //사업주요전망 instance
+  let bondProtInfoInstance;         //채권보전주요약정 instance
+  let cchInfoInstance;              //조견변경이력 instance
+  let stlnInfoInstance;             //대주단정보 instance
+  let ernInfoInstance;              //수익자정보 instance
+  let loanBanoInfoInstance;         //투자자산계좌(종목)정보 - 대출계좌 instance
+  let ernSctyInfoInstance;          //투자자산계좌(종목)정보 - 수익증권 instance
+  let udwrtPaiBzscalInfoInstance;   //인수대상 기업정보 instance
+  let busiInfoInstance;             //관련사업정보 instance
+  let admsAsstInfoInstance;         //편입자산정보 instance
+  let invstBzscalInstance;          //투자기업목록 instance
+  let asstWrkngInfoInstance;        //자산운용사정보 instance
+  
 
-  /* 사업참가자정보 colM */
+  /* 편집자산 정보 colM  todo: id없음....*/
+
+  $(document).ready(function () {
+    loadInvbnkAmnBzCd(); // 사업구분 정보
+    loadSelectBoxContents();
+
+  });
+
+  function loadSelectBoxContents() {
+    var item = "";
+    item += "I011"; // 진행상태
+    item += "/" + "I027"; // 통화코드
+    item += "/" + "C012"; // 신용등급
+    item += "/" + "I021"; // 사업구분상세
+    item += "/" + "T002"; // 당사주선구분
+    item += "/" + "I033"; // 금리구분코드
+    item += "/" + "B006"; // 기준금리
+    item += "/" + "D010"; // 업무팀
+    item += "/" + "C014"; // 시행주체구분
+    item += "/" + "B011"; // 사업지역
+    item += "/" + "B019"; // 기업규모구분
+    item += "/" + "C010"; // 신용보강
+    item += "/" + "P001"; // 참가자관계
+    item += "/" + "B007"; // 채권보전구분
+    item += "/" + "R021"; // 구분 (대주단, 수익자)
+    item += "/" + "B013"; // 사업방식
+    item += "/" + "B012"; // 사업수주구분
+    item += "/" + "U002"; // 상환방식
+    item += "/" + "U001"; // 인수사업구분
+    item += "/" + "I038"; // 투자유형
+    item += "/" + "T005"; // 대상자산구분
+    item += "/" + "L006"; // 리스종류
+    item += "/" + "F009"; // 펀드구분
+    item += "/" + "F010"; // 펀드유형상세
+
+    getSelectBoxList("TB08031S", item);
+
+    setGrid_TB08031S();
+  }
+
+  function setGridTimeOut(e) {
+
+    if(e === "bsnsPartInfo"){
+      setTimeout(() => bsnsPartInfoInstance.refresh(), 1);
+    }else if(e === "bsnsForecast"){
+      setTimeout(() => bsnsForecastInstance.refresh(), 1);
+    }else if(e === "bondProtInfo"){
+      setTimeout(() => bondProtInfoInstance.refresh(), 1);
+    }else if(e === "cchInfo"){
+      setTimeout(() => cchInfoInstance.refresh(), 1);
+    }else if(e === "stlnInfo"){
+      setTimeout(() => stlnInfoInstance.refresh(), 1);
+    }else if(e === "ernInfo"){
+      setTimeout(() => ernInfoInstance.refresh(), 1);
+    }else if(e === "loanBanoInfo"){
+      setTimeout(() => loanBanoInfoInstance.refresh(), 1);
+      setTimeout(() => ernSctyInfoInstance.refresh(), 1);
+    }else if(e === "udwrtPaiBzscalInfo"){
+      setTimeout(() => udwrtPaiBzscalInfoInstance.refresh(), 1);
+    }else if(e === "busiInfo"){
+      setTimeout(() => busiInfoInstance.refresh(), 1);
+    }else if(e === "admsAsstInfo"){
+      setTimeout(() => admsAsstInfoInstance.refresh(), 1);
+    }else if(e === "invstBzscalList"){
+      setTimeout(() => invstBzscalInstance.refresh(), 1);
+    }else if(e === "asstWrkngInfo"){
+      setTimeout(() => asstWrkngInfoInstance.refresh(), 1);
+    }
+    
+  }
+
+  //pqGrid setting...
+  function setGrid_TB08031S() {
+
+      /* 사업참가자정보 colM */
   let colM_bsnsPartInfo = [
     //체크박스
     {
@@ -82,93 +169,990 @@ const TB08031Sjs = (function () {
     },
   ];
 
-  /* 사업 일정정보 colM */
-  let colM_bsnsForecast = [];
+  /* 사업 주요전망 colM */
+  let colM_bsnsForecast = [
+    {
+      dataIndx: "isChked",
+      maxWidth: 60,
+      minWidth: 60,
+      align: "center",
+      resizable: false,
+      title: "선택",
+      type: "checkBoxSelection",
+      sortable: false,
+      editor: false,
+      dataType: "bool",
+      editable: "true",
+      cb: {
+        all: false,
+        header: false,
+      },
+    },
+    {
+      title: "NO",
+      dataType: "string",
+      dataIndx: "no",
+      align: "center",
+      halign: "center",
+      width: "",
+      maxWidth: 60,
+      minWidth: 60,
+      filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        return ui.rowIndx + 1;
+      },
+    },
+    {
+      title: "예정일자",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "이행일자",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "이행여부",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "주요일정내용",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    }
 
-  /* 채권보전 기본정보 colM */
-  let colM_bondProtInfo = [];
+  ];
+
+  /* 채권보전 주요약정 colM */
+  let colM_bondProtInfo = [
+    {
+      dataIndx: "isChked",
+      maxWidth: 60,
+      minWidth: 60,
+      align: "center",
+      resizable: false,
+      title: "선택",
+      type: "checkBoxSelection",
+      sortable: false,
+      editor: false,
+      dataType: "bool",
+      editable: "true",
+      cb: {
+        all: false,
+        header: false,
+      },
+    },
+    {
+      title: "NO",
+      dataType: "string",
+      dataIndx: "no",
+      align: "center",
+      halign: "center",
+      width: "",
+      maxWidth: 60,
+      minWidth: 60,
+      filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        return ui.rowIndx + 1;
+      },
+    },
+    {
+      title: "채권보전구분",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "이행여부",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "상세내용",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    }
+  ];
 
   /* 조건변경내역 colM */
-  let colM_cchInfo = [];
+  let colM_cchInfo = [
+    {
+      dataIndx: "isChked",
+      maxWidth: 60,
+      minWidth: 60,
+      align: "center",
+      resizable: false,
+      title: "선택",
+      type: "checkBoxSelection",
+      sortable: false,
+      editor: false,
+      dataType: "bool",
+      editable: "true",
+      cb: {
+        all: false,
+        header: false,
+      },
+    },
+    {
+      title: "NO",
+      dataType: "string",
+      dataIndx: "no",
+      align: "center",
+      halign: "center",
+      width: "",
+      maxWidth: 60,
+      minWidth: 60,
+      filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        return ui.rowIndx + 1;
+      },
+    },
+    {
+      title: "승인일자",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "승인문서번호",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "주요내용",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "취급자",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "취급자 개인번호",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "시행일자",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    }
+  ];
 
   /* 대주단정보 colM */
-  let colM_stlnInfo = [];
-
-  /* 대출계좌 colM */
-  let colM_loanBanoInfo = [];
-
-  /* 수익증권 colM */
-  let colM_ernSctyInfo = [];
-
-  /* 편집자산 정보 colM  todo: id없음....*/
-
-  $(document).ready(function () {
-    loadInvbnkAmnBzCd(); // 사업구분 정보
-    loadSelectBoxContents();
-
-    setGrid_TB08031S();
-  });
-
-  function loadSelectBoxContents() {
-    var item = "";
-    item += "I011"; // 진행상태
-    item += "/" + "I027"; // 통화코드
-    item += "/" + "C012"; // 신용등급
-    item += "/" + "I021"; // 사업구분상세
-    item += "/" + "T002"; // 당사주선구분
-    item += "/" + "I033"; // 금리구분코드
-    item += "/" + "B006"; // 기준금리
-    item += "/" + "D010"; // 업무팀
-    item += "/" + "C014"; // 시행주체구분
-    item += "/" + "B011"; // 사업지역
-    item += "/" + "B019"; // 기업규모구분
-    item += "/" + "C010"; // 신용보강
-    item += "/" + "P001"; // 참가자관계
-    item += "/" + "B007"; // 채권보전구분
-    item += "/" + "R021"; // 구분 (대주단, 수익자)
-    item += "/" + "B013"; // 사업방식
-    item += "/" + "B012"; // 사업수주구분
-    item += "/" + "U002"; // 상환방식
-    item += "/" + "U001"; // 인수사업구분
-    item += "/" + "I038"; // 투자유형
-    item += "/" + "T005"; // 대상자산구분
-    item += "/" + "L006"; // 리스종류
-    item += "/" + "F009"; // 펀드구분
-    item += "/" + "F010"; // 펀드유형상세
-
-    getSelectBoxList("TB08031S", item);
-  }
-
-  function setBsnsPartInfoGrid() {
-    setTimeout(() => bsnsPartInfoInstance.refresh(), 1);
-  }
-
-  //pqGrid setting...
-  function setGrid_TB08031S() {
-    /* 사업참가자정보 Grid Set... */
-    var bsnsPartInfoObj = {
-      height: 80,
-      maxHeight: 400,
-      showTitle: false,
-      showToolbar: false,
-      collapsible: false,
-      wrap: false,
-      hwrap: false,
-      numberCell: { show: false },
-      editable: false,
-      //toolbar: toolbar,
-      scrollModel: { autoFit: true },
-      colModel: colM_bsnsPartInfo,
-      strNoRows: "데이터가 없습니다.",
-      cellDblClick: function (event, ui) {
-        //더블클릭 이벤트
-        var rowData = ui.rowData;
-        alert(JSON.stringify(row));
+  let colM_stlnInfo = [
+    {
+      dataIndx: "isChked",
+      maxWidth: 60,
+      minWidth: 60,
+      align: "center",
+      resizable: false,
+      title: "선택",
+      type: "checkBoxSelection",
+      sortable: false,
+      editor: false,
+      dataType: "bool",
+      editable: "true",
+      cb: {
+        all: false,
+        header: false,
       },
-    };
+    },
+    {
+      title: "NO",
+      dataType: "string",
+      dataIndx: "no",
+      align: "center",
+      halign: "center",
+      width: "",
+      maxWidth: 60,
+      minWidth: 60,
+      filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        return ui.rowIndx + 1;
+      },
+    },
+    {
+      title: "구분",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "기관명",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "약정금액",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "참가비율(%)",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    }
+  ];
 
-    $("#TB08031S_bsnsPartInfo").pqGrid(bsnsPartInfoObj);
-    bsnsPartInfoInstance = $("#TB08031S_bsnsPartInfo").pqGrid("instance");
+  /* 수익자정보 colM */
+  let colM_ernInfo = [
+    {
+      dataIndx: "isChked",
+      maxWidth: 60,
+      minWidth: 60,
+      align: "center",
+      resizable: false,
+      title: "선택",
+      type: "checkBoxSelection",
+      sortable: false,
+      editor: false,
+      dataType: "bool",
+      editable: "true",
+      cb: {
+        all: false,
+        header: false,
+      },
+    },
+    {
+      title: "구분",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "기관명",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "약정금액",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "참가비율(%)",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    }
+  ];
+
+  /* 투자자산계좌(종목)정보 - 대출계좌 colM */
+  let colM_loanBanoInfo = [
+    {
+      title: "계좌번호",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "대출계정",
+      dataType: "string",
+      dataIndx: "",
+      align: "left",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "계좌상태",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "약정금액",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "대출금액",
+      dataType: "string",
+      dataIndx: "",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+  ];
+
+    /* 투자자산계좌(종목)정보 - 수익증권 colM */
+    let colM_ernSctyInfo = [
+      {
+        title: "종목코드",
+        dataType: "string",
+        dataIndx: "",
+        align: "left",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "종목명",
+        dataType: "string",
+        dataIndx: "",
+        align: "left",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "유가증권분류",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "펀드유형상세",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "액면(주수)",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "기말장부단가",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "취득액",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+    ];
+
+    /*인수대상 기업정보 colM*/
+    let colM_udwrtPaiBzscalInfo = [
+      {
+        dataIndx: "isChked",
+        maxWidth: 60,
+        minWidth: 60,
+        align: "center",
+        resizable: false,
+        title: "선택",
+        type: "checkBoxSelection",
+        sortable: false,
+        editor: false,
+        dataType: "bool",
+        editable: "true",
+        cb: {
+          all: false,
+          header: false,
+        },
+      },
+      {
+        title: "NO",
+        dataType: "string",
+        dataIndx: "no",
+        align: "center",
+        halign: "center",
+        width: "",
+        maxWidth: 60,
+        minWidth: 60,
+        filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          return ui.rowIndx + 1;
+        },
+      },
+      {
+        title: "사업자등록번호",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "기업명",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "총주식수",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "주식상장여부",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "경영권여부",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+    ]
+
+    /* 관련사업정보 colM */
+    let colM_busiInfo = [
+      {
+        dataIndx: "isChked",
+        maxWidth: 60,
+        minWidth: 60,
+        align: "center",
+        resizable: false,
+        title: "선택",
+        type: "checkBoxSelection",
+        sortable: false,
+        editor: false,
+        dataType: "bool",
+        editable: "true",
+        cb: {
+          all: false,
+          header: false,
+        },
+      },
+      {
+        title: "NO",
+        dataType: "string",
+        dataIndx: "no",
+        align: "center",
+        halign: "center",
+        width: "",
+        maxWidth: 60,
+        minWidth: 60,
+        filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          return ui.rowIndx + 1;
+        },
+      },
+      {
+        title: "사업관리번호",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "사업명",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "총조달금액",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "당사주선구분",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "당사참여금액",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+    ]
+
+    /* 편입자산정보 colM */
+    let colM_admsAsstInfo = [
+      {
+        dataIndx: "isChked",
+        maxWidth: 60,
+        minWidth: 60,
+        align: "center",
+        resizable: false,
+        title: "선택",
+        type: "checkBoxSelection",
+        sortable: false,
+        editor: false,
+        dataType: "bool",
+        editable: "true",
+        cb: {
+          all: false,
+          header: false,
+        },
+      },
+      {
+        title: "투자유형",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "편입금액",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "비중",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "편입자산명",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      }
+    ]
+
+    /* 투자기업목록 colM */
+    let colM_invstBzscalList = [
+      {
+        dataIndx: "isChked",
+        maxWidth: 60,
+        minWidth: 60,
+        align: "center",
+        resizable: false,
+        title: "선택",
+        type: "checkBoxSelection",
+        sortable: false,
+        editor: false,
+        dataType: "bool",
+        editable: "true",
+        cb: {
+          all: false,
+          header: false,
+        },
+      },
+      {
+        title: "NO",
+        dataType: "string",
+        dataIndx: "no",
+        align: "center",
+        halign: "center",
+        width: "",
+        maxWidth: 60,
+        minWidth: 60,
+        filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          return ui.rowIndx + 1;
+        },
+      },
+      {
+        title: "기준년월",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "펀드명",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "법인등록번호",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "거래상대방명",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "사업자번호",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "업종",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+    ]
+
+    /* 자산운용사정보 colM */
+    let colM_asstWrkngInfo = [
+      {
+        dataIndx: "isChked",
+        maxWidth: 60,
+        minWidth: 60,
+        align: "center",
+        resizable: false,
+        title: "선택",
+        type: "checkBoxSelection",
+        sortable: false,
+        editor: false,
+        dataType: "bool",
+        editable: "true",
+        cb: {
+          all: false,
+          header: false,
+        },
+      },
+      {
+        title: "NO",
+        dataType: "string",
+        dataIndx: "no",
+        align: "center",
+        halign: "center",
+        width: "",
+        maxWidth: 60,
+        minWidth: 60,
+        filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          return ui.rowIndx + 1;
+        },
+      },
+      {
+        title: "법인등록번호",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "사업자번호",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "운용사명",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "대표자명",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "설립일",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "임직원수",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "운용인력수",
+        dataType: "string",
+        dataIndx: "",
+        align: "center",
+        halign: "center",
+        width: "",
+        filter: { crules: [{ condition: "range" }] },
+      },
+    ]
+
+
+    let pqGridObjs = [
+      //사업참가자정보 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_bsnsPartInfo",
+        colModel: colM_bsnsPartInfo
+      },
+      //사업주요전망 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_bsnsForecast",
+        colModel: colM_bsnsForecast
+      },
+      //채권보전주요약정 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_bondProtInfo",
+        colModel: colM_bondProtInfo
+      },
+      //조건변경이력 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_cchInfo",
+        colModel: colM_cchInfo
+      },
+      //대주단정보 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_stlnInfo",
+        colModel: colM_stlnInfo
+      },
+      //수익자정보 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_ernInfo",
+        colModel: colM_ernInfo
+      },
+      //투자자산 계좌정보 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_loanBanoInfo",
+        colModel: colM_loanBanoInfo
+      },
+      //투자자산 종목정보 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_ernSctyInfo",
+        colModel: colM_ernSctyInfo
+      },
+      //인수대상 기업정보 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_udwrtPaiBzscalInfo",
+        colModel: colM_udwrtPaiBzscalInfo
+      },
+      //관련사업정보 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_busiInfo",
+        colModel: colM_busiInfo
+      },
+      //편입자산정보 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_admsAsstInfo",
+        colModel: colM_admsAsstInfo
+      },
+      //투자기업목록 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_invstBzscalList",
+        colModel: colM_invstBzscalList
+      },
+      //자산운용사정보 그리드
+      {
+        height: 80,
+        maxHeight: 300,
+        id: "TB08031S_asstWrkngInfo",
+        colModel: colM_asstWrkngInfo
+      },
+    ]
+
+    
+
+    setPqGrid(pqGridObjs);
+
+    bsnsPartInfoInstance       = $("#TB08031S_bsnsPartInfo").pqGrid("instance");
+    bsnsForecastInstance       = $("#TB08031S_bsnsForecast").pqGrid("instance");
+    bondProtInfoInstance       = $("#TB08031S_bondProtInfo").pqGrid("instance");
+    cchInfoInstance            = $("#TB08031S_cchInfo").pqGrid("instance");
+    stlnInfoInstance           = $("#TB08031S_stlnInfo").pqGrid("instance");
+    ernInfoInstance            = $("#TB08031S_ernInfo").pqGrid("instance");
+    loanBanoInfoInstance       = $("#TB08031S_loanBanoInfo").pqGrid("instance");
+    ernSctyInfoInstance        = $("#TB08031S_ernSctyInfo").pqGrid("instance");
+    udwrtPaiBzscalInfoInstance = $("#TB08031S_udwrtPaiBzscalInfo").pqGrid("instance");  
+    busiInfoInstance           = $("#TB08031S_busiInfo").pqGrid("instance");            
+    admsAsstInfoInstance       = $("#TB08031S_admsAsstInfo").pqGrid("instance");         
+    invstBzscalInstance        = $("#TB08031S_invstBzscalList").pqGrid("instance");         
+    asstWrkngInfoInstance      = $("#TB08031S_asstWrkngInfo").pqGrid("instance");       
+
   }
 
   // 사업구분 정보
@@ -204,8 +1188,16 @@ const TB08031Sjs = (function () {
   }
 
   $("#TB08031S_invbnkAmnBzCd").change(function () {
+
     tabCtrl("invbnkAmnBzCd");
+
+    if($("#TB08031S_invbnkAmnBzCd").val() === '03'){
+      udwrtPaiBzscalInfoInstance.refresh();
+    }
   });
+
+  //사업정보 딜조회
+
 
   // 사업정보 딜조회
   function srchBsnsInfo() {
@@ -221,7 +1213,40 @@ const TB08031Sjs = (function () {
       });
       return false;
     } else {
-      businessFunction();
+      // businessFunction();
+      businessFunction2();
+    }
+
+    function businessFunction2(){
+      var dtoParam = {
+        dealNo: dealNo,
+      };
+
+      $.ajax({
+        type: "GET",
+        url: "/TB08031S/getBusiBssInfo",
+        data: dtoParam,
+        dataType: "json",
+        success: function (data) {
+          var bssBscInfo = data.ibims101bvo;
+
+          /* 기본항목*/
+          // $("#TB08031S_ibDealNo").val(bssBscInfo.dealNo);         // 딜번호
+
+          var excBlce = bssBscInfo.excBlce == null ? 0 : addComma(bssBscInfo.excBlce);
+          var expDt = bssBscInfo.expDt == null ? '' : formatDate(bssBscInfo.expDt);
+          var rgstDt = bssBscInfo.rgstDt == null ? '' : formatDate(bssBscInfo.rgstDt);
+
+          $("#TB08031S_corpNo").val(bssBscInfo.crno);             // 법인등록번호
+          $("#TB08031S_corpNm").val(bssBscInfo.entpNm);           // 업체명
+          $("#TB08031S_bsnsNm").val(bssBscInfo.busiNm);           // 사업명
+          $('#TB08031S_C012').val(bssBscInfo.crdtGrdCd);					// 신용등급
+          $('#TB08031S_bsnsLoan').val(excBlce);				            // 사업대출잔액
+          $('#TB08031S_coValDt').val(expDt);						          // 평가유효기일
+          $('#TB08031S_fnMdfyDt').val(rgstDt);					          // 최종수정일자
+
+        }
+      });
     }
 
     function businessFunction() {
@@ -2129,6 +3154,8 @@ const TB08031Sjs = (function () {
           .eq(4)
           .children()
           .attr("class", "nav-link active");
+
+          // udwrtPaiBzscalInfoInstance.refresh();
         break;
       case "E":
         $("#TB08031S_invbnkAmnBzCd").val("05");
@@ -2177,350 +3204,17 @@ const TB08031Sjs = (function () {
     }
   }
 
-  /* 사업참가자정보 행추가 */
-  function addMenuRowBsnsPartInfo() {
-    // var temp = $('#TB08031S_bsnsPartInfo').find('tr:eq(0)').find('td:eq(0)').html();
+  function addMenuRow(gridId){
 
-    // if('데이터가 없습니다.' == temp || '' == temp) {
-    // 	$('#TB08031S_bsnsPartInfo').empty();
-    // }
-
-    // var html = '';
-    // var sq = $('#TB08031S_bsnsPartInfo').children('tr').last().children('td').eq(1).text() == null?1:Number(($('#TB08031S_bsnsPartInfo').children('tr').last().children('td').eq(1).text()))+1;
-
-    // html += '<tr ondblclick="setBsnsPartInfo(this);">';
-    // html += '<td class="text-center"><input type="checkbox" value="Y"></td>';
-    // html += '<td class="text-center">' + sq + '</td>';
-    // html += '<td style="display:none"></td>';
-    // html += '<td></td>';
-    // html += '<td></td>';
-    // html += '<td class="text-center"></td>';
-    // html += '<td class="text-center"></td>';
-    // html += '<td class="text-center"></td>';
-    // html += '</tr>';
-
-    var bfHeight = $("#TB08031S_bsnsPartInfo").pqGrid("option", "height"); //현재 그리드 높이
-    var afHeight = bfHeight; //그리드높이 ++
-
-    if (bfHeight < 500) {
-      //최대높이
-      afHeight = bfHeight + 20;
-    }
-
-    var rowLgth = $("#TB08031S_bsnsPartInfo").pqGrid(
-      "option",
-      "dataModel.data"
-    ).length;
-
-    var newRow = {
-      isChked: false,
-      no: rowLgth + 1,
-    };
-
-    $("#TB08031S_bsnsPartInfo").pqGrid("addRow", {
-      rowData: newRow,
-      checkEditable: false,
-    });
-    $("#TB08031S_bsnsPartInfo")
-      .pqGrid("option", "height", afHeight)
-      .pqGrid("refresh");
-
-    //$('#TB08031S_bsnsPartInfo').append(html);
+    $(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
   }
 
-  /* 사업참가자정보 행삭제 */
-  function delMenuRowBsnsPartInfo() {
-    var gridData = $("#TB08031S_bsnsPartInfo").pqGrid(
-      "option",
-      "dataModel.data"
-    );
-    var bfHeight = $("#TB08031S_bsnsPartInfo").pqGrid("option", "height"); //현재 그리드 높이
-    var afHeight = bfHeight; //그리드높이 --
+  function dltMenuRow(gridId){
 
-    var newData = gridData.filter(function (rowData) {
-      return !rowData.isChked;
-    });
+    var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
 
-    bsnsPartInfoInstance.option("dataModel.data", newData);
+    $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
 
-    if (bfHeight > 80) {
-      //min height
-      afHeight =
-        bfHeight -
-        40 *
-          ($("#TB08031S_bsnsPartInfo").pqGrid("option", "dataModel.data")
-            .length +
-            1);
-    }
-
-    $("#TB08031S_bsnsPartInfo")
-      .pqGrid("option", "height", afHeight)
-      .pqGrid("refresh");
-
-    bsnsPartInfoInstance.refreshDataAndView();
-  }
-
-  /* 사업주요전망 행추가 */
-  function addMenuRowBsnsForecast() {
-    var temp = $("#TB08031S_bsnsForecast")
-      .find("tr:eq(0)")
-      .find("td:eq(0)")
-      .html();
-
-    if ("데이터가 없습니다." == temp || "" == temp) {
-      $("#TB08031S_bsnsForecast").empty();
-    }
-
-    var html = "";
-    var sq =
-      $("#TB08031S_bsnsForecast")
-        .children("tr")
-        .last()
-        .children("td")
-        .eq(1)
-        .text() == null
-        ? 1
-        : Number(
-            $("#TB08031S_bsnsForecast")
-              .children("tr")
-              .last()
-              .children("td")
-              .eq(1)
-              .text()
-          ) + 1;
-
-    html += '<tr ondblclick="setBsnsForecast(this);">';
-    html += '<td class="text-center"><input type="checkbox" value="Y"></td>';
-    html += '<td class="text-center">' + sq + "</td>";
-    html += '<td class="text-center"></td>';
-    html += '<td class="text-center"></td>';
-    html += '<td class="text-center"></td>';
-    html += "<td></td>";
-    html += "</tr>";
-
-    $("#TB08031S_bsnsForecast").append(html);
-  }
-
-  /* 사업주요전망 행삭제 */
-  function delMenuRowBsnsForecast() {
-    var rowNum = 1;
-
-    $("#TB08031S_bsnsForecast tr").each(function () {
-      var checkYn = $(this).find("td:eq(0)").find("input").is(":checked");
-
-      if (checkYn) {
-        $(this).remove();
-      } else {
-        // 순번 재배치
-        $(this).find("td:eq(1)").text(rowNum);
-        rowNum++;
-      }
-    });
-  }
-
-  /* 채권보전주요약정 행추가 */
-  function addMenuRowBondProtInfo() {
-    var temp = $("#TB08031S_bondProtInfo")
-      .find("tr:eq(0)")
-      .find("td:eq(0)")
-      .html();
-
-    if ("데이터가 없습니다." == temp || "" == temp) {
-      $("#TB08031S_bondProtInfo").empty();
-    }
-
-    var html = "";
-    var sq =
-      $("#TB08031S_bondProtInfo")
-        .children("tr")
-        .last()
-        .children("td")
-        .eq(1)
-        .text() == null
-        ? 1
-        : Number(
-            $("#TB08031S_bondProtInfo")
-              .children("tr")
-              .last()
-              .children("td")
-              .eq(1)
-              .text()
-          ) + 1;
-
-    html += '<tr ondblclick="setBondProtInfo(this);">';
-    html += '<td class="text-center"><input type="checkbox" value="Y"></td>';
-    html += '<td class="text-center">' + sq + "</td>";
-    html += '<td style="display:none;"></td>';
-    html += "<td></td>";
-    html += '<td class="text-center"></td>';
-    html += "<td></td>";
-    html += "</tr>";
-
-    $("#TB08031S_bondProtInfo").append(html);
-  }
-
-  /* 채권보전주요약정 행삭제 */
-  function delMenuRowBondProtInfo() {
-    var rowNum = 1;
-
-    $("#TB08031S_bondProtInfo tr").each(function () {
-      var checkYn = $(this).find("td:eq(0)").find("input").is(":checked");
-
-      if (checkYn) {
-        $(this).remove();
-      } else {
-        // 순번 재배치
-        $(this).find("td:eq(1)").text(rowNum);
-        rowNum++;
-      }
-    });
-  }
-
-  /* 조건변경이력 행추가 */
-  function addMenuRowCchInfo() {
-    var temp = $("#TB08031S_cchInfo").find("tr:eq(0)").find("td:eq(0)").html();
-
-    if ("데이터가 없습니다." == temp || "" == temp) {
-      $("#TB08031S_cchInfo").empty();
-    }
-
-    var html = "";
-    var sq =
-      $("#TB08031S_cchInfo")
-        .children("tr")
-        .last()
-        .children("td")
-        .eq(1)
-        .text() == null
-        ? 1
-        : Number(
-            $("#TB08031S_cchInfo")
-              .children("tr")
-              .last()
-              .children("td")
-              .eq(1)
-              .text()
-          ) + 1;
-
-    html += '<tr ondblclick="setCchInfo(this);">';
-    html += '<td class="text-center"><input type="checkbox" value="Y"></td>';
-    html += '<td class="text-center">' + sq + "</td>";
-    html += '<td class="text-center"></td>';
-    html += '<td class="text-center"></td>';
-    html += "<td></td>";
-    html += '<td style="display:none;"></td>';
-    html += '<td class="text-center"></td>';
-    html += '<td class="text-center"></td>';
-    html += '<td class="text-center"></td>';
-    html += "</tr>";
-
-    $("#TB08031S_cchInfo").append(html);
-  }
-
-  /* 조건변경이력 행삭제 */
-  function delMenuRowCchInfo() {
-    var rowNum = 1;
-
-    $("#TB08031S_cchInfo tr").each(function () {
-      var checkYn = $(this).find("td:eq(0)").find("input").is(":checked");
-
-      if (checkYn) {
-        $(this).remove();
-      } else {
-        // 순번 재배치
-        $(this).find("td:eq(1)").text(rowNum);
-        rowNum++;
-      }
-    });
-  }
-
-  /* 대주단정보 행추가 */
-  function addMenuRowStlnInfo() {
-    var temp = $("#TB08031S_stlnInfo").find("tr:eq(0)").find("td:eq(0)").html();
-
-    if ("데이터가 없습니다." == temp || "" == temp) {
-      $("#TB08031S_stlnInfo").empty();
-    }
-
-    var html = "";
-    var sq =
-      $("#TB08031S_stlnInfo")
-        .children("tr")
-        .last()
-        .children("td")
-        .eq(1)
-        .text() == null
-        ? 1
-        : Number(
-            $("#TB08031S_stlnInfo")
-              .children("tr")
-              .last()
-              .children("td")
-              .eq(1)
-              .text()
-          ) + 1;
-
-    html += '<tr ondblclick="setStlnInfo(this);">';
-    html += '<td class="text-center"><input type="checkbox" value="Y"></td>';
-    html += '<td class="text-center">' + sq + "</td>";
-    html += '<td style="display:none;"></td>';
-    html += "<td></td>";
-    html += "<td></td>";
-    html += '<td class="text-rigth"></td>';
-    html += '<td class="text-rigth"></td>';
-    html += "</tr>";
-
-    $("#TB08031S_stlnInfo").append(html);
-  }
-
-  /* 대주단정보 행삭제 */
-  function delMenuRowStlnInfo() {
-    var rowNum = 1;
-
-    $("#TB08031S_stlnInfo tr").each(function () {
-      var checkYn = $(this).find("td:eq(0)").find("input").is(":checked");
-
-      if (checkYn) {
-        $(this).remove();
-      } else {
-        // 순번 재배치
-        $(this).find("td:eq(1)").text(rowNum);
-        rowNum++;
-      }
-    });
-  }
-
-  /* 수익자정보 행추가 */
-  function addMenuRowErnInfo() {
-    var temp = $("#TB08031S_ernInfo").find("tr:eq(0)").find("td:eq(0)").html();
-
-    if ("데이터가 없습니다." == temp || "" == temp) {
-      $("#TB08031S_ernInfo").empty();
-    }
-
-    var html = "";
-
-    html += '<tr ondblclick="setErnInfo(this);">';
-    html += '<td class="text-center"><input type="checkbox" value="Y"></td>';
-    html += '<td style="display: none">01</td>';
-    html += '<td class="text-left">자산운용사 (01)</td>';
-    html += '<td class="text-left"></td>';
-    html += '<td class="text-right"></td>';
-    html += '<td class="text-right"></td>';
-    html += "</tr>";
-
-    $("#TB08031S_ernInfo").append(html);
-  }
-
-  /* 수익자정보 행삭제 */
-  function delMenuRowErnInfo() {
-    $("#TB08031S_ernInfo tr").each(function () {
-      var checkYn = $(this).find("td:eq(0)").find("input").is(":checked");
-
-      if (checkYn) {
-        $(this).remove();
-      }
-    });
   }
 
   // 수익자정보 더블클릭 이벤트
@@ -2606,42 +3300,6 @@ const TB08031Sjs = (function () {
       });
     }
   });
-
-  /* 편입자산정보 행추가 */
-  function addMenuRowAdmsAsstInfo() {
-    var temp = $("#TB08031S_admsAsstInfo")
-      .find("tr:eq(0)")
-      .find("td:eq(0)")
-      .html();
-
-    if ("데이터가 없습니다." == temp || "" == temp) {
-      $("#TB08031S_admsAsstInfo").empty();
-    }
-
-    var html = "";
-
-    html += '<tr ondblclick="setAdmsAsstInfo(this);">';
-    html += '<td class="text-center"><input type="checkbox" value="Y"></td>';
-    html += '<td style="display: none">1</td>';
-    html += '<td class="text-left">대출 (1)</td>';
-    html += '<td class="text-right"></td>';
-    html += '<td class="text-right"></td>';
-    html += '<td class="text-left"></td>';
-    html += "</tr>";
-
-    $("#TB08031S_admsAsstInfo").append(html);
-  }
-
-  /* 편입자산정보 행삭제 */
-  function delMenuRowAdmsAsstInfo() {
-    $("#TB08031S_admsAsstInfo tr").each(function () {
-      var checkYn = $(this).find("td:eq(0)").find("input").is(":checked");
-
-      if (checkYn) {
-        $(this).remove();
-      }
-    });
-  }
 
   // 편입자산정보 더블클릭 이벤트
   function setAdmsAsstInfo(e) {
@@ -2733,74 +3391,6 @@ const TB08031Sjs = (function () {
       });
     }
   });
-
-  /* 투자기업목록 행추가 */
-  function addMenuRowInvstEprzInfo() {
-    var temp = $("#TB08031S_invstBzscalList")
-      .find("tr:eq(0)")
-      .find("td:eq(0)")
-      .html();
-
-    if ("데이터가 없습니다." == temp || "" == temp) {
-      $("#TB08031S_invstBzscalList").empty();
-    }
-
-    var html = "";
-    var sq =
-      $("#TB08031S_invstBzscalList")
-        .children("tr")
-        .last()
-        .children("td")
-        .eq(1)
-        .text() == null
-        ? 1
-        : Number(
-            $("#TB08031S_invstBzscalList")
-              .children("tr")
-              .last()
-              .children("td")
-              .eq(1)
-              .text()
-          ) + 1;
-
-    html += '<tr ondblclick="setInvstEprzInfo(this)">';
-    html += '<td class="text-center"><input type="checkbox" value="Y"></td>';
-    html += '<td class="text-center">' + sq + "</td>"; // NO
-    html += '<td class="text-center"></td>'; // 기준년월
-    html += '<td class="text-left"></td>'; //	펀드명
-    html += '<td class="text-center"></td>'; //	법인등록번호
-    html += '<td class="text-left"></td>'; //	거래상대방명
-    html += '<td class="text-center"></td>'; //	사업자번호
-    html += '<td class="text-left"></td>'; //	업종
-    html += '<td style="display:none;"></td>'; // 소속국가명
-    html += '<td style="display:none;"></td>'; // 펀드구분
-    html += '<td style="display:none;"></td>'; // 펀드유형상세
-    html += '<td style="display:none;"></td>'; // 취득일자
-    html += '<td style="display:none;"></td>'; // 취득가액
-    html += '<td style="display:none;"></td>'; // 장부가액
-    html += '<td style="display:none;"></td>'; // 평가금액
-    html += '<td style="display:none;"></td>'; // 순내부수익률
-    html += "</tr>";
-
-    $("#TB08031S_invstBzscalList").append(html);
-  }
-
-  /* 투자기업목록 행삭제 */
-  function delMenuRowInvstEprzInfo() {
-    var rowNum = 1;
-
-    $("#TB08031S_invstBzscalList tr").each(function () {
-      var checkYn = $(this).find("td:eq(0)").find("input").is(":checked");
-
-      if (checkYn) {
-        $(this).remove();
-      } else {
-        // 순번 재배치
-        $(this).find("td:eq(1)").text(rowNum);
-        rowNum++;
-      }
-    });
-  }
 
   /* 투자기업목록 더블클릭 이벤트 */
   function setInvstEprzInfo(e) {
@@ -3817,33 +4407,19 @@ const TB08031Sjs = (function () {
 
   return {
     srchBsnsInfo: srchBsnsInfo,
-    setBsnsPartInfoGrid: setBsnsPartInfoGrid,
-    addMenuRowBsnsPartInfo: addMenuRowBsnsPartInfo,
-    delMenuRowBsnsPartInfo: delMenuRowBsnsPartInfo,
+    setGridTimeOut: setGridTimeOut,
     bsnsPartInfoBtnSave: bsnsPartInfoBtnSave,
-    addMenuRowBsnsForecast: addMenuRowBsnsForecast,
-    delMenuRowBsnsForecast: delMenuRowBsnsForecast,
     bsnsForecastBtnSave: bsnsForecastBtnSave,
-    addMenuRowBondProtInfo: addMenuRowBondProtInfo,
-    delMenuRowBondProtInfo: delMenuRowBondProtInfo,
     bondProtInfoBtnSave: bondProtInfoBtnSave,
-    addMenuRowCchInfo: addMenuRowCchInfo,
-    delMenuRowCchInfo: delMenuRowCchInfo,
     cchInfoBtnSave: cchInfoBtnSave,
-    addMenuRowStlnInfo: addMenuRowStlnInfo,
-    delMenuRowStlnInfo: delMenuRowStlnInfo,
     stlnInfoBtnSave: stlnInfoBtnSave,
-    addMenuRowErnInfo: addMenuRowErnInfo,
-    delMenuRowErnInfo: delMenuRowErnInfo,
     delMenuRowReltDealInfo: delMenuRowReltDealInfo,
     reltBusiInfoBtnSave: reltBusiInfoBtnSave,
-    addMenuRowInvstEprzInfo: addMenuRowInvstEprzInfo,
-    delMenuRowInvstEprzInfo: delMenuRowInvstEprzInfo,
-    addMenuRowAdmsAsstInfo: addMenuRowAdmsAsstInfo,
-    delMenuRowAdmsAsstInfo: delMenuRowAdmsAsstInfo,
     admsAsstInfoBtnSave: admsAsstInfoBtnSave,
     saveTabInfo: saveTabInfo,
     ernInfoBtnSave: ernInfoBtnSave,
     getReltDealInfo: getReltDealInfo,
+    addMenuRow: addMenuRow,
+    dltMenuRow: dltMenuRow
   };
 })();

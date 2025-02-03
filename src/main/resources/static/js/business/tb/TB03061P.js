@@ -168,15 +168,15 @@ function TB03061P_inModalSrchMtr(popupId) {
  * 모달 팝업 show - 기업체 목록
  */
 function callTB03061P(prefix, rowIndx) {
-
-	rowInx = rowIndx;
-
 	$('#TB03061P_prefix').val(prefix);
 	TB03061P_pf = prefix;
 	$('#modal-TB03061P').modal('show');
 	indexChangeHandler("TB03061P");
 	setTimeout(() => TB03061P_roadBzepList(), 300);
 	// if (prefix == "TB06010S" || prefix == "grid_TB06010S") rowInx = e;
+	if ( rowIndx || rowIndx === 0 ) {
+		rowInx = rowIndx;
+	}
 }
 
 /**
@@ -311,7 +311,7 @@ function getArdyBzepInfoList() {
 				modalClose_TB03061P();
 			}
 			else {
-				callTB03061P($("#TB03061P_prefix").val());
+				callTB03061P($("#TB03061P_prefix").val(), rowInx);
 				setTimeout(() => {
 					$("#TB03061P_gridBzepList").pqGrid('instance').setData(data);
 				}, 400)
@@ -360,7 +360,7 @@ function setArdyBzepInfo(rowData) {
 	let clseDt = rowData.clseDt;
 
 	// console.log(ardyBzepNo);
-	// console.log(rowInx);
+	// alert(rowInx);
 
 	let prefix = $("#TB03061P_prefix").val(); 			// id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
 
@@ -391,6 +391,7 @@ function setArdyBzepInfo(rowData) {
 
 	switch (prefix) {
 		case "grid_TB06010S":
+			// alert(rowInx);
 			$("#TB06010S_itrRelrInfo").pqGrid("instance").pdata[rowInx].trOthrDscmNo = ardyBzepNo;
 			$("#TB06010S_itrRelrInfo").pqGrid("instance").pdata[rowInx].trOthrNm = entpNm;
 			$("#TB06010S_itrRelrInfo").pqGrid("instance").refresh();
@@ -453,6 +454,15 @@ function setArdyBzepInfo(rowData) {
 		case "TB04060S":
 			$('#TB04060S_bsnsRgstNo').val(ardyBzepNo);		// 기업체코드
 			$('#TB04060S_entpRnm').val(entpNm);			// 거래상대방(업체한글명)
+			
+			if(isNotEmpty(rgstDt)){
+				$(pagergstDt).val(rgstDt.substr(0,4) + '-' + rgstDt.substr(4,2) + '-' + rgstDt.substr(6,2));			// 등록일자시작
+				$('#TB04060S_rgstEndDt').val(getToday());
+			}else{
+				$(pagergstDt).val('');
+				$('#TB04060S_rgstEndDt').val('');
+			}
+			
 			break;
 		case "TB06013P":
 			$("#TB06013P_bsnsRgstNo").val(ardyBzepNo);

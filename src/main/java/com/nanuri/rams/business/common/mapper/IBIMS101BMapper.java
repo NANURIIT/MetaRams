@@ -39,5 +39,8 @@ public interface IBIMS101BMapper {
 	//워크플로우 종목정보 조회
 	public List<IBIMS101BVO> getWorkflowInfoList(IBIMS101BVO param);
 
+	//사업정보관리 기본항목 조회
+	public IBIMS101BVO getBusiBssInfo101B(String dealNo);
+
 
 }

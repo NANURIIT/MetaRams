@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nanuri.rams.business.common.dto.IBIMS003BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS100BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS100BVO;
+import com.nanuri.rams.business.common.vo.IBIMS231BVO;
 import com.nanuri.rams.business.common.vo.IBIMS100BVO.selectVO;
 import com.nanuri.rams.business.common.vo.TB02010SVO;
 import com.nanuri.rams.com.WF.WorkFlow;
@@ -17,6 +19,8 @@ import com.nanuri.rams.com.dto.WorkFlowDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Slf4j
 @RequestMapping("/TB02010S")
@@ -66,6 +70,15 @@ public class TB02010APIController {
 	public int deleteInfo(IBIMS100BDTO deleteInfo) {
 		return tb02010Service.deleteIBIMS100BInfo(deleteInfo);
 	}
+
+	/**
+	 * 오늘의 할일 2025-02-03 김건우
+	 */
+	@PostMapping("/myJob")
+	public List<IBIMS231BVO> myJob() {
+		return tb02010Service.myJob();
+	}
+	
 
 	// @GetMapping(value = "/atcCdInq")
 	// public IBIMS003BDTO

@@ -277,8 +277,12 @@ function setDealInfo(e) {
     addDealInfo(ibDealNo);
   }
 
+  if(prefix == "TB08031S"){
+    TB08031Sjs.srchBsnsInfo();
+  }
+
   if (prefix == "TB08031S_relt") {
-    getReltDealInfo(ibDealNo);
+    TB08031Sjs.getReltDealInfo(ibDealNo);
   }
   if (prefix == "TB08010S") {
     TB08010Sjs.getEamList();

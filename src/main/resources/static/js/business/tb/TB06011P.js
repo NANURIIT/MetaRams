@@ -32,15 +32,15 @@ function TB06011P_srchPrdt(menuId) {
 		 ********* 각 컬럼의 길이로 세팅을 하셔야해용 *********
 		 */
 		// ex) 종목코드 VARCHAR(10)
-		if(str === 10){
-			
+		if (str === 10) {
+
 			await srchEvent(this);
 
 			// $(this).focus();
 
 		}
 	})
-	
+
 	$(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*="callTB06011P"]:not([disabled])`).closest('span.input-group-append').prev("input[id*='_prdtCd']").on('keydown', async function (evt) {
 		// Enter에만 작동하는 이벤트
 		if (evt.keyCode === 13) {
@@ -53,20 +53,20 @@ function TB06011P_srchPrdt(menuId) {
 		}
 	})
 
-	async function srchEvent (selector) {
+	async function srchEvent(selector) {
 		// 사용한 인풋박스의 출처 페이지 가져오기
 		let prefix;
 		if ($(selector).attr('id') === $("#TB06011P_prdtCd").attr('id')) {
 			prefix = TB06011P_pf;
 		} else {
-	      	// 컬럼명 길이로 바꾸셔야 합니당  이유는 callTB06011P('TB04010S_srch') 이런식으로 되어있는게 있어서
+			// 컬럼명 길이로 바꾸셔야 합니당  이유는 callTB06011P('TB04010S_srch') 이런식으로 되어있는게 있어서
 			prefix = $(selector).attr('id').slice(0, $(selector).attr('id').length - 7);
 		}
-	
+
 		$(`input[id='${prefix}_prdtNm']`).val("");
-	
+
 		$('#TB06011P_prefix').val(prefix);
-	
+
 		// 인풋박스 밸류
 		let data = $(selector).val();
 		$('#TB06011P_prdtCd').val(data);
@@ -74,7 +74,7 @@ function TB06011P_srchPrdt(menuId) {
 		selectBoxSet_TB06011P();
 		loginUserSet_TB06011P();
 		await getPrdtCdList()
-			
+
 	}
 }
 
@@ -385,7 +385,7 @@ var colPrdtCdList = [
 		hidden: true,
 		filter: { crules: [{ condition: 'range' }] },
 	},
-	
+
 ];
 
 //그리드 호출
@@ -466,13 +466,13 @@ function keyDownEnter_TB06011P() {
  * 담당자번호 
  */
 
-$("#TB06011P_empNo").on('change', function(){
-		let tmpEmpNo="";
-		tmpEmpNo=$("#TB06011P_empNo").val();
-		if(tmpEmpNo.length != 7){
-			$("#TB06011P_empNm").val("");
-		}
-});	
+$("#TB06011P_empNo").on('change', function () {
+	let tmpEmpNo = "";
+	tmpEmpNo = $("#TB06011P_empNo").val();
+	if (tmpEmpNo.length != 7) {
+		$("#TB06011P_empNm").val("");
+	}
+});
 
 /**
  * show modal
@@ -486,7 +486,7 @@ function callTB06011P(prefix, e) {
 	$('#modal-TB06011P').modal('show');
 	setTimeout(() => roadPrdtCdListGrid(), 300);
 	indexChangeHandler("TB06011P");
-	if (prefix == "TB07100S_grid"){
+	if (prefix == "TB07100S_grid" || prefix == "TB07110S_grid") {
 		prdtSn = e;
 	}
 }
@@ -543,8 +543,8 @@ async function getPrdtCdList() {
 		"prdtCd": $('#TB06011P_prdtCd').val()
 		, "prdtNm": $('#TB06011P_prdtNm').val()
 		, "trDvsn": trDvsn
-		, "empNo" : $('#TB06011P_empNo').val()
-		, "dprtCd" : $('#TB06011P_dprtCd').val()
+		, "empNo": $('#TB06011P_empNo').val()
+		, "dprtCd": $('#TB06011P_dprtCd').val()
 	}
 
 	await $.ajax({
@@ -554,12 +554,12 @@ async function getPrdtCdList() {
 		data: JSON.stringify(param),
 		dataType: "json",
 		success: function (data) {
-			if($(`div[id='modal-TB06011P']`).css('display') === "none" && data.length === 1){
+			if ($(`div[id='modal-TB06011P']`).css('display') === "none" && data.length === 1) {
 				TB06011P_setPrdtInfo(data[0]);
 				modalClose_TB06011P();
 			}
 			else {
-				callTB06011P($('#TB06011P_prefix').val());
+				callTB06011P($('#TB06011P_prefix').val(), prdtSn);
 				setTimeout(() => $("#TB06011P_prdtCdList").pqGrid('instance').setData(data), 400);
 			}
 		}
@@ -681,7 +681,7 @@ function TB06011P_setPrdtInfo(e) {
 	var pageDealNm = '#' + $('#TB06011P_prefix').val() + '_ibDealNm';
 	var pageTotIssuShqt = '#' + $('#TB06011P_prefix').val() + '_totIssuShqt';
 	var pageTotIssuStkQnt = '#' + $('#TB06011P_prefix').val() + '_totIssuStkQnt';
-	
+
 	if (prefix == 'TB07020S_input' || prefix == 'TB07040S_input') {
 		pageTrCrryCd = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_I027';
 		pageStdrExrt = '#' + $('#TB06011P_prefix').val().replace('_input', '') + '_stdrExrt';
@@ -749,7 +749,7 @@ function TB06011P_setPrdtInfo(e) {
 	if (prefix != "TB09080S") {
 		$(pageDealNm).val(e.dealNm);
 	}
-	if (prefix == "TB06060S"||prefix == "TB06050S") {
+	if (prefix == "TB06060S" || prefix == "TB06050S") {
 		$(pageIbDealNo).val(e.dealNo);
 	}
 
@@ -868,9 +868,18 @@ function TB06011P_setPrdtInfo(e) {
 		TB07080Sjs.getExcSn(e.prdtCd);
 	}
 
-	if(prefix == 'TB07100S_grid'){
-		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow",{rowIndx: prdtSn, row: { prdtCd: e.prdtCd } });
-		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow",{rowIndx: prdtSn, row: { fndCd: e.ortnFndCd } });
+	if (prefix === 'TB07100S_grid') {
+		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow", { rowIndx: prdtSn, row: { prdtCd: e.prdtCd } });
+		$("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow", { rowIndx: prdtSn, row: { nsFndCd: e.ortnFndCd } });
+	}
+
+	if (prefix === 'TB07110S_grid') {
+
+		console.log(e.prdtCd, e.ortnFndCd);
+		console.log("prdtSn");
+
+		$("#TB07110S_grd_basic").pqGrid("updateRow", { rowIndx: prdtSn, row: { prdtCd: e.prdtCd } });
+		$("#TB07110S_grd_basic").pqGrid("updateRow", { rowIndx: prdtSn, row: { nsFndCd: e.ortnFndCd } });
 	}
 
 	if (prefix === 'TB08040S') {
@@ -880,7 +889,7 @@ function TB06011P_setPrdtInfo(e) {
 	if (prefix === 'TB08050S') {
 		TB08050Sjs.srch();
 	}
-	
+
 	if (prefix === 'TB07190S') {
 		$('#TB07190S_ibDealNo').val(e.dealNo);
 	}
@@ -896,25 +905,25 @@ function TB06011P_setPrdtInfo(e) {
 function selectBoxSet_TB06011P() {
 	selectBox = getSelectBoxList("TB06011P", "D010", false);
 	dprtList = selectBox.filter(function (item) {
-	  //부서코드 list
-	  return item.cmnsGrpCd === "D010";
+		//부서코드 list
+		return item.cmnsGrpCd === "D010";
 	});
-  
+
 	dprtList.forEach((item) => {
-	  $("#TB06011P_dprtNm").append(
-		$("<option>", {
-		  value: item.cdValue,
-		  text: `${item.cdName}`,
-		})
-	  );
+		$("#TB06011P_dprtNm").append(
+			$("<option>", {
+				value: item.cdValue,
+				text: `${item.cdName}`,
+			})
+		);
 	});
-  }
-  
-  /**
-   * 로그인 담당자,관리부서 세팅
-   */
-  
-  function loginUserSet_TB06011P(){
+}
+
+/**
+ * 로그인 담당자,관리부서 세팅
+ */
+
+function loginUserSet_TB06011P() {
 	empNo = $('#userEno').val();     //직원명
 	dprtCd = $('#userDprtCd').val(); //부서번호
 
@@ -922,14 +931,13 @@ function selectBoxSet_TB06011P() {
 	$("#TB06011P_empNo").val(empNo);
 	$("#TB06011P_dprtNm").val(dprtCd).prop("selected", true);
 	$("#TB06011P_dprtCd").val(dprtCd);
-  }
+}
 
-  /**
-   * 부서명 변경시
-   */
+/**
+ * 부서명 변경시
+ */
 
-  $("#TB06011P_dprtNm").on("change", function () {
-  var dprtCd = $(this).val();
-  $("#TB06011P_dprtCd").val(dprtCd);
-  }); 
-  
+$("#TB06011P_dprtNm").on("change", function () {
+	var dprtCd = $(this).val();
+	$("#TB06011P_dprtCd").val(dprtCd);
+});

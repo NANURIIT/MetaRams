@@ -15,4 +15,7 @@ import lombok.ToString;
 public class IBIMS501BVO extends IBIMS501BDTO {
 	private String empNm;		// 담당자사원명
 	private String crdtGrdCd;   // 신용등급코드	
+
+
+	private IBIMS101BVO ibims101bvo;
 }
