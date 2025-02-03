@@ -233,19 +233,19 @@
 									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-1">사업정보</a></li>
 									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-2">사업정보</a></li>
 									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-3">사업정보</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-4">사업정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-4" onclick="TB08031Sjs.setGridTimeOut(`udwrtPaiBzscalInfo`);">사업정보</a></li>
 									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-5">사업정보</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-6" onclick="TB08031Sjs.setBsnsPartInfoGrid();">사업참가자정보</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-7">사업주요전망</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-8">채권보전주요약정</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-9">조건변경이력</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-10">대주단정보</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-11">수익자정보</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-12">관련사업정보</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-13">투자기업목록</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-14">자산운용사정보</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-15">편입자산정보</a></li>
-									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-16">투자자산계좌(종목)정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-6" onclick="TB08031Sjs.setGridTimeOut(`bsnsPartInfo`);">사업참가자정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-7" onclick="TB08031Sjs.setGridTimeOut(`bsnsForecast`);">사업주요전망</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-8" onclick="TB08031Sjs.setGridTimeOut(`bondProtInfo`);">채권보전주요약정</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-9" onclick="TB08031Sjs.setGridTimeOut(`cchInfo`);">조건변경이력</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-10" onclick="TB08031Sjs.setGridTimeOut(`stlnInfo`);">대주단정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-11" onclick="TB08031Sjs.setGridTimeOut(`ernInfo`);">수익자정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-12" onclick="TB08031Sjs.setGridTimeOut(`busiInfo`);">관련사업정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-13" onclick="TB08031Sjs.setGridTimeOut(`invstBzscalList`);">투자기업목록</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-14" onclick="TB08031Sjs.setGridTimeOut(`asstWrkngInfo`);">자산운용사정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-15" onclick="TB08031Sjs.setGridTimeOut(`admsAsstInfo`);">편입자산정보</a></li>
+									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-16" onclick="TB08031Sjs.setGridTimeOut(`loanBanoInfo`);">투자자산계좌(종목)정보</a></li>
 									<li><a class="nav-link" data-toggle="tab" href="#TB08031S_tab-17">첨부파일정보</a></li>
 								</ul>
 								<div class="tab-content">
@@ -989,7 +989,7 @@
 														</div>
 													</div>
 													<div class="ibox-content">
-														<table class="table table-bordered table-hover result" id="">
+														<!-- <table class="table table-bordered table-hover result" id="">
 															<colgroup>
 																<col>
 																<col>
@@ -1021,7 +1021,8 @@
 																	<td></td>
 																</tr> 
 															</tbody>
-														</table>
+														</table> -->
+														<div id="TB08031S_udwrtPaiBzscalInfo"></div>
 													</div>
 												</div>
 											</div>
@@ -1340,7 +1341,7 @@
 															</div>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col style="width: 5%;">
 																	<col style="width: 8%;">
@@ -1369,7 +1370,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_bsnsForecast"></div>
 														</div>
 													</div>
 												</div>
@@ -1453,7 +1455,7 @@
 															</div>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col style="width: 5%;">
 																	<col style="width: 8%;">
@@ -1479,7 +1481,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_bondProtInfo"></div>
 														</div>
 													</div>
 												</div>
@@ -1556,7 +1559,7 @@
 															</div>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col style="width: 5%;">
 																	<col style="width: 8%;">
@@ -1591,7 +1594,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_cchInfo"></div>
 														</div>
 													</div>
 												</div>
@@ -1698,7 +1702,7 @@
 															</div>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col style="width: 5%;">
 																	<col style="width: 8%;">
@@ -1726,7 +1730,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_stlnInfo"></div>
 														</div>
 													</div>
 												</div>
@@ -1796,7 +1801,7 @@
 															</div>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col style="width: 5%;">
 																	<col style="width: 15%;">
@@ -1822,7 +1827,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_ernInfo"></div>
 														</div>
 													</div>
 												</div>
@@ -1891,7 +1897,7 @@
 															</div>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col style="width: 5%;">
 																	<col>
@@ -1914,7 +1920,8 @@
 																</thead>
 																<tbody id="TB08031S_busiInfo">
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_busiInfo"></div>
 														</div>
 													</div>
 												</div>
@@ -1952,7 +1959,7 @@
 															</div>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col style="width: 5%;">
 																	<col>
@@ -1987,7 +1994,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_invstBzscalList"></div>
 														</div>
 													</div>
 												</div>
@@ -2108,7 +2116,7 @@
 															</div>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col style="width: 5%;">
 																	<col>
@@ -2146,7 +2154,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_asstWrkngInfo"></div>
 														</div>
 													</div>
 												</div>
@@ -2184,7 +2193,7 @@
 															</div>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col style="width: 5%;">
 																	<col>
@@ -2210,7 +2219,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_admsAsstInfo"></div>
 														</div>
 													</div>
 												</div>
@@ -2267,7 +2277,7 @@
 															<h5>▶&nbsp;대출계좌</h5>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col>
 																	<col>
@@ -2278,10 +2288,10 @@
 																<thead>
 																	<tr>
 																		<th>계좌번호</th>
-																		<th>대출계정</th>
+																		<th>대출계정</th> -->
 																		<!-- <th>대출사업</th>
 																		<th>용도</th> -->
-																		<th>계좌상태</th>
+																		<!-- <th>계좌상태</th>
 																		<th>약정금액</th>
 																		<th>대출금액</th>
 																	</tr>
@@ -2295,7 +2305,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_loanBanoInfo"></div>
 														</div>
 													</div>
 												</div>
@@ -2305,7 +2316,7 @@
 															<h5>▶&nbsp;수익증권</h5>
 														</div>
 														<div class="ibox-content">
-															<table class="table table-bordered table-hover result" id="">
+															<!-- <table class="table table-bordered table-hover result" id="">
 																<colgroup>
 																	<col>
 																	<col>
@@ -2337,7 +2348,8 @@
 																		<td></td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
+															<div id="TB08031S_ernSctyInfo"></div>
 														</div>
 													</div>
 												</div>
