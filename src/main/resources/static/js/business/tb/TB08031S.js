@@ -1196,6 +1196,9 @@ const TB08031Sjs = (function () {
     }
   });
 
+  //사업정보 딜조회
+
+
   // 사업정보 딜조회
   function srchBsnsInfo() {
     var dealNo = $("#TB08031S_ibDealNo").val();
@@ -1210,7 +1213,40 @@ const TB08031Sjs = (function () {
       });
       return false;
     } else {
-      businessFunction();
+      // businessFunction();
+      businessFunction2();
+    }
+
+    function businessFunction2(){
+      var dtoParam = {
+        dealNo: dealNo,
+      };
+
+      $.ajax({
+        type: "GET",
+        url: "/TB08031S/getBusiBssInfo",
+        data: dtoParam,
+        dataType: "json",
+        success: function (data) {
+          var bssBscInfo = data.ibims101bvo;
+
+          /* 기본항목*/
+          // $("#TB08031S_ibDealNo").val(bssBscInfo.dealNo);         // 딜번호
+
+          var excBlce = bssBscInfo.excBlce == null ? 0 : addComma(bssBscInfo.excBlce);
+          var expDt = bssBscInfo.expDt == null ? '' : formatDate(bssBscInfo.expDt);
+          var rgstDt = bssBscInfo.rgstDt == null ? '' : formatDate(bssBscInfo.rgstDt);
+
+          $("#TB08031S_corpNo").val(bssBscInfo.crno);             // 법인등록번호
+          $("#TB08031S_corpNm").val(bssBscInfo.entpNm);           // 업체명
+          $("#TB08031S_bsnsNm").val(bssBscInfo.busiNm);           // 사업명
+          $('#TB08031S_C012').val(bssBscInfo.crdtGrdCd);					// 신용등급
+          $('#TB08031S_bsnsLoan').val(excBlce);				            // 사업대출잔액
+          $('#TB08031S_coValDt').val(expDt);						          // 평가유효기일
+          $('#TB08031S_fnMdfyDt').val(rgstDt);					          // 최종수정일자
+
+        }
+      });
     }
 
     function businessFunction() {

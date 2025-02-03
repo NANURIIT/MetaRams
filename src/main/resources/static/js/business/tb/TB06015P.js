@@ -963,7 +963,7 @@ function excSnSet(prdtCd){
 				
 			}else{
 				$('#TB06015P_seq').attr('disabled', true);
-				var msg = "실행순번이 없는 종목입니다.\n해당 종목의 실행순번을 업로드하고 다시 시도해주세요.";
+				var msg = "아직 실행되지 않은 종목입니다.\n대출계약 실행을 완료하고 다시 시도해주세요.";
 
 				option.text = msg;
 				openPopup(option);

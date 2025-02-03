@@ -5,7 +5,7 @@
 	<select id="getBusiBssInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS501BVO">
 	 SELECT A.DEAL_NO															              /*  딜번호 */
 			  , B.SN								                      			    /*  일련번호 */
-			  , D.CRNO AS CRNO                              /*  법인등록번호 */
+			  , D.CRNO AS CRNO                                      /*  법인등록번호 */
 			  , A.PRDT_NM AS  BUSI_NM                               /*  사업명 */
 			  , A.DMS_CRDT_GRD_DCD AS CRDT_GRD_CD                   /*  국내신용등급구분코드 */
 			  , B.FND_NM                                            /*  펀드명 */
@@ -32,7 +32,7 @@
 			  , B.CRRY_CD                                          /*  통화코드 */
 			  , B.TOT_PRCR_AMT                                      /*  총조달금액 */
 			  , B.MAIN_BOND_MTNC_CNTS                               /*  주요채권보전내용 */
-			  , B.THCO_MDTN_YN                                      /*  당사주선여부 */
+			  , B.THCO_RL_DCD                                      /*  당사주선여부 */
 			  , B.THCO_MDTN_AMT                                     /*  당사주선금액 */
 			  , B.THCO_PTCI_AMT                                     /*  당사참여금액 */
 			  , B.APLY_INTRT_CNTS                                   /*  적용금리내용 */
@@ -84,7 +84,7 @@
 	   FROM IBIMS201B A 
 	   LEFT OUTER JOIN IBIMS103B C 
        ON C.DEAL_NO = A.DEAL_NO
-			AND C.LAST_YN = '1'			
+			AND C.LAST_YN = 'Y'			
 	   LEFT OUTER JOIN IBIMS106B D 
        ON D.DEAL_NO = C.DEAL_NO 
 	    AND D.MTR_DCD   = C.MTR_DCD
@@ -100,7 +100,7 @@
 		  	          )    		     
 		WHERE 1=1
 		  AND A.DEAL_NO = #{dealNo}
-			AND A.LAST_YN = '1'		
+			AND A.LAST_YN = 'Y'		
 	    AND ROWNUM    = 1      
 	</select>
 	
@@ -135,7 +135,7 @@
          , CRRY_CD                                	/* 통화코드 */
          , TOT_PRCR_AMT                            	/* 총조달금액 */
          , MAIN_BOND_MTNC_CNTS                     	/* 주요채권보전내용 */
-         , THCO_MDTN_YN                            	/* 당사주선여부 */
+         , THCO_RL_DCD                            	/* 당사주선여부 */
          , THCO_MDTN_AMT                           	/* 당사주선금액 */
          , THCO_PTCI_AMT                           	/* 당사참여금액 */
          , APLY_INTRT_CNTS                         	/* 적용금리내용 */

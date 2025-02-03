@@ -546,7 +546,32 @@
      
     </select>
 
-   
+    <select id="getBusiBssInfo101B" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+      SELECT 	  A.DEAL_NO				/*딜번호*/
+              , A.SN 					  /*순번*/
+              , B.CRNO 				  /*법인등록번호*/
+              , B.ENTP_NM 			/*업체명*/
+              , (
+                SELECT MAX(PRDT_NM)
+                FROM IBIMS201B 
+                WHERE DEAL_NO = A.DEAL_NO 
+                AND LAST_YN = 'Y'
+              ) AS BUSI_NM 			  /*사업명*/
+              , A.CRDT_GRD_CD 		/*신용등급*/
+              , (
+                SELECT SUM(DEAL_EXC_BLCE)
+                FROM IBIMS402B 
+                WHERE DEAL_NO = #{dealNo}
+              )AS EXC_BLCE			/*사업 대출잔액*/
+              , A.EXP_DT 				/*만기일자*/
+              , A.RGST_DT				/*등록일자*/
+          FROM IBIMS101B A
+          JOIN IBIMS010B B 
+          ON B.ARDY_BZEP_NO = A.PTXT_TR_OTHR_DSCM_NO  
+          WHERE A.DEL_YN = 'N'
+          AND A.LAST_YN = 'Y'
+          AND A.DEAL_NO = #{dealNo}
+    </select>
 
     
 </mapper>

@@ -68,22 +68,23 @@
 								<div class="col-sm-3">
 									<input type="text" class="form-control" id="TB08031S_bsnsNm" readonly>
 								</div>
-								<label class="col-sm-1 col-form-label">신용평가모형</label>
+								<!-- <label class="col-sm-1 col-form-label">신용평가모형</label>
 								<div class="col-sm-3">
 									<select class="form-control" id="TB08031S_crdtAsmtModel" disabled>
 										<option>전체</option>
 									</select>
+								</div> -->
+								<label class="col-sm-1 col-form-label">사업 대출잔액</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control text-right" id="TB08031S_bsnsLoan" readonly>
 								</div>
 								<label class="col-sm-1 col-form-label">신용등급</label>
 								<div class="col-sm-2 text-left">
 									<select class="form-control" id="TB08031S_C012" disabled></select>
 								</div>
+								
 							</div>
 							<div class="form-group row">
-								<label class="col-sm-1 col-form-label">사업 대출잔액</label>
-								<div class="col-sm-3">
-									<input type="text" class="form-control text-right" id="TB08031S_bsnsLoan" readonly>
-								</div>
 								<label class="col-sm-1 col-form-label">평가유효기일</label>
 								<div class="col-sm-3">
 									<input type="text" class="form-control" id="TB08031S_coValDt" readonly>
@@ -113,13 +114,13 @@
 								<label class="col-sm-1 col-form-label">사업구분 상세</label>
 								<div class="col-sm-3">
 									<select class="col-sm-12 form-control" id="TB08031S_I021">
-										<option>전체</option>
+										<option>선택</option>
 									</select>
 								</div>
 								<label class="col-sm-1 col-form-label">진행상태</label>
 								<div class="col-sm-3">
 									<select class="col-sm-12 form-control" id="TB08031S_I011">
-										<option></option>
+										<option>선택</option>
 									</select>
 								</div>
 							</div>
@@ -144,7 +145,7 @@
 								<label class="col-sm-1 col-form-label">당사주선구분</label>
 								<div class="col-sm-3">
 									<select class="col-sm-12 form-control" id="TB08031S_T002">
-										<option></option>
+										<option>선택</option>
 									</select>
 								</div>
 								<label class="col-sm-1 col-form-label">당사주선금액</label>
@@ -160,14 +161,14 @@
 								<label class="col-sm-1 col-form-label">금리구분코드</label>
 								<div class="col-sm-3 form-inline">
 									<select class="col-sm-3 form-control" id="TB08031S_I033">
-										<option></option>
+										<option>선택</option>
 									</select>
 									<input type="text" class="col-sm-9 form-control border-left-none" id="TB08031S_InvstRvnRtCcdInput">
 								</div>
 								<label class="col-sm-1 col-form-label">기준금리</label>
 								<div class="col-sm-3 form-inline">
 									<select class="col-sm-3 form-control" id="TB08031S_B006">
-										<option></option>
+										<option>선택</option>
 									</select>
 									<input type="text" class="col-sm-9 form-control text-right border-left-none" id="TB08031S_BitrKindCdInput">
 								</div>
@@ -192,7 +193,7 @@
 								<label class="col-sm-1 col-form-label">업무팀</label>
 								<div class="col-sm-3">
 									<select class="col-sm-12 form-control" id="TB08031S_D010">
-										<option></option>
+										<option>선택</option>
 									</select>
 								</div>
 								<label class="col-sm-1 col-form-label">목표수익률(%)</label>
