@@ -891,7 +891,7 @@ const TB07110Sjs = (function () {
         url = "update"
       }
 
-      if ( $('#TB07100S_rgstEmpno').val() === $('#TB07100S_2_empNo').val()) {
+      if ( $('#TB07110S_rgstEmpno').val() === $('#TB07110S_2_empNo').val()) {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
@@ -899,7 +899,7 @@ const TB07110Sjs = (function () {
         })
         return;
       }
-      else if ( !$('#TB07100S_2_empNo').val() ) {
+      else if ( !$('#TB07110S_2_empNo').val() ) {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
