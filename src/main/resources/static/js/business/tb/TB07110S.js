@@ -890,6 +890,23 @@ const TB07110Sjs = (function () {
         text = "수정"
         url = "update"
       }
+
+      if ( $('#TB07100S_rgstEmpno').val() === $('#TB07100S_2_empNo').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `담당자와 승인자가 같습니다! 변경해주세요`,
+        })
+        return;
+      }
+      else if ( !$('#TB07100S_2_empNo').val() ) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `승인자를 입력해주세요!`,
+        })
+        return;
+      }
     }
     else if (queryMode === "delete") {
       text = "삭제"
@@ -988,6 +1005,23 @@ const TB07110Sjs = (function () {
       , rgstEmpno: $("#TB07110S_rgstEmpno").val()           // 작성자
       , reltStfno: $("#TB07110S_2_empNo").val()             // 승인자
       , scrnNo: "TB07110S"                                  // 화면명
+    }
+
+    if ( $('#TB07110S_rgstEmpno').val() === $('#TB07110S_2_empNo').val()) {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning!",
+        text: `담당자와 승인자가 같습니다! 변경해주세요`,
+      })
+      return;
+    }
+    else if ( !$('#TB07110S_2_empNo').val() ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning!",
+        text: `승인자를 입력해주세요!`,
+      })
+      return;
     }
 
     $.ajax({
