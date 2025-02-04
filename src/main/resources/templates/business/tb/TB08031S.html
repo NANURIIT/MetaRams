@@ -92,6 +92,7 @@
 								<label class="col-sm-1 col-form-label">최종수정일자</label>
 								<div class="col-sm-2 text-left">
 									<input type="text" class="form-control" id="TB08031S_fnMdfyDt" readonly>
+									<!-- <input type="text" class="form-control" id="TB08031S_sn" hidden="true"> -->
 								</div>
 							</div>
 						</div>
@@ -150,47 +151,35 @@
 								</div>
 								<label class="col-sm-1 col-form-label">당사주선금액</label>
 								<div class="col-sm-3">
-									<input type="text" class="form-control text-right" id="TB08031S_thcoRlAmt">
+									<input type="text" class="form-control text-right" id="TB08031S_thcoRlAmt" onkeyup="inputNumberFormater(this);" value="0">
 								</div>
 								<label class="col-sm-1 col-form-label">당사참여금액</label>
 								<div class="col-sm-3">
-									<input type="text" class="form-control text-right" id="TB08031S_thcoPtnAmt">
+									<input type="text" class="form-control text-right" id="TB08031S_thcoPtnAmt" onkeyup="inputNumberFormater(this);" value="0">
 								</div>
 							</div>
 							<div class="form-group row mb-1">
 								<label class="col-sm-1 col-form-label">금리구분코드</label>
 								<div class="col-sm-3 form-inline">
-									<select class="col-sm-3 form-control" id="TB08031S_I033">
+									<select class="col-sm-12 form-control" id="TB08031S_I033">
 										<option>선택</option>
 									</select>
-									<input type="text" class="col-sm-9 form-control border-left-none" id="TB08031S_InvstRvnRtCcdInput">
+									<!-- <input type="text" class="col-sm-9 form-control border-left-none" id="TB08031S_InvstRvnRtCcdInput"> -->
 								</div>
 								<label class="col-sm-1 col-form-label">기준금리</label>
 								<div class="col-sm-3 form-inline">
 									<select class="col-sm-3 form-control" id="TB08031S_S003">
 										<option>선택</option>
 									</select>
-									<input type="text" class="col-sm-9 form-control text-right border-left-none" id="TB08031S_BitrKindCdInput">
+									<input type="text" class="col-sm-9 form-control text-right border-left-none" id="TB08031S_BitrKindCdInput" onkeyup="inputNumberFormater(this);" value="0.00">
 								</div>
 								<label class="col-sm-1 col-form-label">가산금리(%)</label>
 								<div class="col-sm-3">
-									<input type="text" class="form-control text-right" id="TB08031S_preRt">
+									<input type="text" class="form-control text-right" id="TB08031S_preRt" onkeyup="inputNumberFormater(this);" value="0.00">
 								</div>
 							</div>
 							<div class="form-group row mb-1">
 								<label class="col-sm-1 col-form-label">담당자</label>
-								<!-- <div class="col-sm-3">
-									<div class="input-group">
-										<input type="text" class="form-control" id="TB08031S_charge_empNm" name="">
-										<input type="hidden" class="form-control" id="TB08031S_charge_empNo" name="">
-										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03022P('TB08031S_charge')">
-												<i class="fa fa-search"></i>
-											</button>
-										</span>
-									</div>
-								</div> -->
-
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" style="width:30px;" id="TB08031S_charge_empNo">
 									<span class="input-group-append">
@@ -207,7 +196,7 @@
 								</div>
 								<label class="col-sm-1 col-form-label">목표수익률(%)</label>
 								<div class="col-sm-3">
-									<input type="text" class="form-control text-right" id="TB08031S_tgtRvn">
+									<input type="text" class="form-control text-right" id="TB08031S_tgtRvn" onkeyup="inputNumberFormater(this);" value="0.00">
 								</div>
 							</div>
 							<div class="form-group row mb-1">
@@ -216,8 +205,15 @@
 									<textarea class="form-control" id="bsnsCntnt"></textarea>
 								</div>
 								<label class="col-sm-1 col-form-label">담당RM</label>
-								<div class="col-sm-3">
+								<!-- <div class="col-sm-3">
 									<input type="text" class="form-control" id="TB08031S_chargeRm">
+								</div> -->
+								<div class="col-sm-3 input-group">
+									<input type="text" class="form-control" style="width:30px;" id="TB08031S_rm_empNo">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="callTB03022P('TB08031S_rm')"><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width:70px;" id="TB08031S_rm_empNm" readonly>
 								</div>
 							</div>
 							<div class="row">

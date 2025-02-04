@@ -22,6 +22,20 @@ const TB08031Sjs = (function () {
 
   });
 
+
+  //담당자 초기값 지정
+  function setLoginUserAuth(){
+
+    var usrNm = $('#userEmpNm').val();
+    var usrEno = $('#userEno').val();
+    var usrDprtCd = $('#userDprtCd').val();
+
+    $('#TB08031S_charge_empNo').val(usrEno);
+    $('#TB08031S_charge_empNm').val(usrNm);
+    $('#TB08031S_D010').val(usrDprtCd);
+  }
+
+
   function loadSelectBoxContents() {
     var item = "";
     item += "I011"; // 진행상태
@@ -52,6 +66,8 @@ const TB08031Sjs = (function () {
     getSelectBoxList("TB08031S", item);
 
     setGrid_TB08031S();
+
+    setLoginUserAuth();
   }
 
   function setGridTimeOut(e) {
@@ -1153,6 +1169,8 @@ const TB08031Sjs = (function () {
     invstBzscalInstance        = $("#TB08031S_invstBzscalList").pqGrid("instance");         
     asstWrkngInfoInstance      = $("#TB08031S_asstWrkngInfo").pqGrid("instance");       
 
+
+    setLoginUserAuth();
   }
 
   // 사업구분 정보
@@ -3600,6 +3618,22 @@ const TB08031Sjs = (function () {
     var busiCnts = $("#bsnsCntnt").val();                                     //사업내용
     var thcoRlDcd = $("#TB08031S_T002").val();                                //당사역할구분 
 
+    //var brwrSpcYn = "";     //차주SPC여부
+    // var 
+
+    if(invFnnMngmBusiDcd === "01"){                         // 부동산
+
+    }else if(invFnnMngmBusiDcd === "02"){                   // 인프라
+
+    }else if(invFnnMngmBusiDcd === "03"){                   // M&A
+
+    }else if(invFnnMngmBusiDcd === "04"){                   // 국제투자
+
+    }else if(invFnnMngmBusiDcd === "05"){                   // PEF/VC
+
+    }
+
+
     //사업 상세정보 (사업정보) -부동산-
     var guasMrtgYn = $("input[name=TB08031S_rlesWarrMrtgYN]:checked").val();  //보증서 담보 여부
     var busiLcsiCpltYn = $(
@@ -3659,35 +3693,40 @@ const TB08031Sjs = (function () {
     //사업 상세정보 (사업정보) -M&A-
     var undwHglmWyDcd = $("#TB08031S_U002").val();                            //상환방식
     var hnvrBusiDcd = $("#TB08031S_U001").val();                              //인수사업구분
-    var brwrSpcYn = $("input[name=maEstateSpcYN]:checked").val();
-    var spnsrCtns = $("#TB08031S_spon").val();
-    var undwMrtgCtns = $("#TB08031S_mrtg").val();
-    var invFnnTrgtAsstDcd = $("#TB08031S_trgtAstsCcd").val();
-    var brwrNtnNm = $("#TB08031S_brwrNtnNm").val();
-    var totBusiCt = $("#TB08031S_totBusiAmt").val();
-    var prorRto = $("#TB08031S_prorRto").val();
-    var cerkRto = $("#TB08031S_cerkRto").val();
-    var bkbnRto = $("#TB08031S_bkbnRto").val();
-    var lesStrtDt = $("#TB08031S_lseStrtYm").val();
-    var lesEndDt = $("#TB08031S_lseEdYm").val();
-    var loanStrtDt = $("#TB08031S_loanStrtDt").val();
-    var loanEndDt = $("#TB08031S_loanEdYm").val();
-    var dvcTyCnts = $("#TB08031S_amSt").val();
-    var prdcCmpCnts = $("#TB08031S_proEprz").val();
-    var mnfYr = $("#TB08031S_proYr").val();
-    var invFnnLesKndDcd = $("#TB08031S_L006").val();
-    var lesMgcoNm = $("#TB08031S_lseMgco").val();
-    var lesUserCnts = $("#TB08031S_lseUser").val();
-    var brwrSpcYn = $("input[name=realEstateSpcYN]:checked").val();
-    var mngmCndFlflYn = $("input[name=realEstateCondComplyYN]:checked").val();
-    var bondTrnsYn = $("input[name=realEstateBondTrnYN]:checked").val();
+    var brwrSpcYn = $("input[name=maEstateSpcYN]:checked").val();             //차주 SPC 여부
+    var spnsrCtns = $("#TB08031S_spon").val();                                //스폰서
+    var undwMrtgCtns = $("#TB08031S_mrtg").val();                             //담보
+    // var invFnnTrgtAsstDcd = $("#TB08031S_trgtAstsCcd").val();
+
+
+    //사업 상세정보 (사업정보) -국제투자-
+    var brwrNtnNm = $("#TB08031S_brwrNtnNm").val();                           //차주국가명
+    var totBusiCt = $("#TB08031S_totBusiAmt").val();                          //총사업비
+    var prorRto = $("#TB08031S_prorRto").val();                               //선순위비율
+    var cerkRto = $("#TB08031S_cerkRto").val();                               //중순위비율
+    var bkbnRto = $("#TB08031S_bkbnRto").val();                               //후순위/Equity비율
+    var lesStrtDt = $("#TB08031S_lseStrtYm").val();                           //리스시작년월
+    var lesEndDt = $("#TB08031S_lseEdYm").val();                              //리스종료년월
+    var loanStrtDt = $("#TB08031S_loanStrtDt").val();                         //대출시작일자
+    var loanEndDt = $("#TB08031S_loanEdYm").val();                            //대출종료일자
+    var dvcTyCnts = $("#TB08031S_amSt").val();                                //기종/선종
+    var prdcCmpCnts = $("#TB08031S_proEprz").val();                           //제작사
+    var mnfYr = $("#TB08031S_proYr").val();                                   //제조년도
+    var invFnnLesKndDcd = $("#TB08031S_L006").val();                          //리스종류
+    var lesMgcoNm = $("#TB08031S_lseMgco").val();                             //리스운용사
+    var lesUserCnts = $("#TB08031S_lseUser").val();                           //리스이용자
+    var brwrSpcYn = $("input[name=realEstateSpcYN]:checked").val();           //차주 SPC 여부
+    var mngmCndFlflYn = $("input[name=realEstateCondComplyYN]:checked").val();//관리조건이행여부
+    var bondTrnsYn = $("input[name=realEstateBondTrnYN]:checked").val();      //채권이관여부
     var fnnrCtrcMttrTrgtYn = $(
       "input[name=realEstateCmmntMatYN]:checked"
-    ).val();
-    var invstStgyCtns = $("#TB08031S_invstGuidelines").val();
-    var mngmCndFlflYn = $("input[name=pefVcInvstMngYN]:checked").val();
-    var bondTrnsYn = $("input[name=TB08031S_pefVcBondTrnYN]:checked").val();
-    var chrgEmpno = $("#TB08031S_tab2_empNo").val();
+    ).val();                                                                  //주요(재무)약정사항
+
+    //사업 상세정보 (사업정보) -PEF/VC-
+    var invstStgyCtns = $("#TB08031S_invstGuidelines").val();                 //투자가이드라인
+    var mngmCndFlflYn = $("input[name=pefVcInvstMngYN]:checked").val();       //관리조건이행
+    var bondTrnsYn = $("input[name=TB08031S_pefVcBondTrnYN]:checked").val();  //채권이관여부
+    var chrgEmpno = $("#TB08031S_tab2_empNo").val();                          //담당자
 
     if (!isEmpty(dealNo)) {
       businessFunction();

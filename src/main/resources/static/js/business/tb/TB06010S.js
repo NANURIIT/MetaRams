@@ -2112,7 +2112,7 @@ const TB06010Sjs = (function(){
 		, tab5BtnSave : tab5BtnSave
 		, getIBIMS212BDTOInfo: getIBIMS212BDTOInfo
 		, getIBIMS208BDTOInfo: getIBIMS208BDTOInfo
-
+		, loginUserSet: loginUserSet
 		, setAtchFle: setAtchFle
 
 		// 변수
