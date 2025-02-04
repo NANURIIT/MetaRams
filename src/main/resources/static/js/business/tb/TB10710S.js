@@ -346,11 +346,11 @@ const TB10710Sjs = function () {
         let paramData = {
             prevDate: unformatDate(prevDate)
             , nextDate: unformatDate(nextDate)
-            , mngmOrgno: `%${$('#TB10710S_dprtCd').val()}%`
-            , actsCd: `%${$('#TB10710S_actsCd').val()}%`
-            , dealNo: `%${$('#TB10710S_ibDealNo').val()}%`
-            , ardyBzepNo: `%${$('#TB10710S_ardyBzepNo').val()}%`
-            , dudtMngmDtldJobKndCd: `%${$('#TB10710S_dudtMngmDtldJobKndCd').val()}%`
+            , mngmBdcd: $('#TB10710S_dprtCd').val()
+            , actsCd: $('#TB10710S_actsCd').val()
+            , dealNo: $('#TB10710S_ibDealNo').val()
+            , ardyBzepNo: $('#TB10710S_ardyBzepNo').val()
+            , dudtMngmDtldJobKndCd: $('#TB10710S_dudtMngmDtldJobKndCd').val()
         }
 
         $.ajax({
