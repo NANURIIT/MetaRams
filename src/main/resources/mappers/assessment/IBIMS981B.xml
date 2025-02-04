@@ -11,7 +11,7 @@
              , A.DUDT_DPCH_TP_DCD           /* 기일통보유형코드 */
              , A.CHRR_STFNO                 /* 담당자사원번호 */
              , A.SUB_CHRR_STFNO             /* 부담당자직원번호 */
-             , A.MNGM_BDCD                 /* 관리조직번호 */
+             , A.MNGM_BDCD                  /* 관리조직번호 */
              , A.RGST_DT                    /* 등록일자 */
              , A.ACTN_PRAR_DT               /* 조치예정일자 */
              , A.ACTN_DT                    /* 조치일자 */
@@ -23,7 +23,13 @@
              , A.HND_TMNL_NO                /* 조작단말기번호 */
              , A.HND_TR_ID                  /* 조작거래ID */
              , A.GUID                       /* GUID */
-             , B.DUDT_MNGM_DTLD_JOB_KND_CD  /* 업무종류코드 */
+             , (
+               SELECT CD_VL_NM
+                 FROM IBIMS002B
+                WHERE 1=1
+                  AND CMNS_CD_GRP = 'D017'
+                  AND CD_VL_ID = B.DUDT_MNGM_DTLD_JOB_KND_CD
+             ) AS DUDT_MNGM_DTLD_JOB_KND_CD /* 업무종류코드 */
              , C.ACTS_CD                    /* 계정과목코드 */
              , C.DEAL_NM                    /* 딜명 */
              , D.ENTP_NM                    /* 기업체 */
