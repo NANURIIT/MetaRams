@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import lombok.Getter;
 import lombok.Setter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +29,6 @@ public class IBIMS504BDTO {
     private String         hndTmnlNo;            // 조작단말기번호
     private String         hndTrId;              // 조작거래id
     private String         guid;                 // guid
+
+    private List<IBIMS517BDTO> udwrtPaiBzscalInfo;          //인수대상 기업정보
 }

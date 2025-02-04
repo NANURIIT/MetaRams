@@ -172,12 +172,12 @@ public class TB08031ServiceImpl implements TB08031Service {
 					// 인프라
 					case "02":
 						rtnObj.setInfraInfo(ibims503BMapper.getInfraInfo(param.getDealNo()));
-						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						// rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
+						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
 						break;
 					// M&A			
 					case "03":
@@ -247,11 +247,15 @@ public class TB08031ServiceImpl implements TB08031Service {
 				case "01":
 					log.debug("!!!부동산 사업정보 저장!!!");
 					param.getRlesInfo().setSn(sn);
+					param.getRlesInfo().setDelYn("N");
 					param.getRlesInfo().setHndEmpno(facade.getDetails().getEno());
 					return ibims502BMapper.saveDealInfo(param);
 				// 인프라
 				case "02":
+					log.debug("!!!인프라 사업정보 저장!!!");
+					param.getInfraInfo().setSn(sn);
 					param.getInfraInfo().setHndEmpno(facade.getDetails().getEno());
+					param.getInfraInfo().setDelYn("N");
 					return ibims503BMapper.saveInfInfo(param);
 				// M&A			
 				case "03":

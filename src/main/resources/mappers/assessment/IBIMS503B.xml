@@ -79,15 +79,7 @@
                )
         VALUES (
                  #{dealNo}                                   		       /* 딜번호 */
-               , (
-                 SELECT CASE WHEN A.SN = 0 THEN '0000000001'
-                             ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
-                   FROM (
-                    		  SELECT COUNT(SN)  AS SN
-                               , MAX(SN)    AS INCREMENT_SQ
-                             FROM IBIMS502B
-                        ) A
-       			     )                                       	  		       /* 일련번호 */
+               , #{infraInfo.sn}                                  	   /* 일련번호 */
                , #{infraInfo.invFnnBusiWyDcd}                          /* 투자금융사업방식구분코드 */
                , #{infraInfo.busiSclCntn}                              /* 사업규모내용 */
                , #{infraInfo.busiLcsiDt}                               /* 사업인허가일자 */
