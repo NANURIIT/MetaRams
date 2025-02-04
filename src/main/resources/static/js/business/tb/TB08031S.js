@@ -125,7 +125,7 @@ const TB08031Sjs = (function () {
     {
       title: "참가자관계",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "ptcnRelrDcd",
       align: "left",
       halign: "center",
       width: "",
@@ -134,7 +134,7 @@ const TB08031Sjs = (function () {
     {
       title: "업체명",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "entpNm",
       align: "left",
       halign: "center",
       width: "",
@@ -143,7 +143,7 @@ const TB08031Sjs = (function () {
     {
       title: "대표자명",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "rpsrNm",
       align: "center",
       halign: "center",
       width: "",
@@ -152,7 +152,7 @@ const TB08031Sjs = (function () {
     {
       title: "법인등록번호",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "crno",
       align: "center",
       halign: "center",
       width: "",
@@ -161,7 +161,7 @@ const TB08031Sjs = (function () {
     {
       title: "사업자등록번호",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "bzno",
       align: "center",
       halign: "center",
       width: "",
@@ -205,7 +205,7 @@ const TB08031Sjs = (function () {
     {
       title: "예정일자",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "prarDt",
       align: "left",
       halign: "center",
       width: "",
@@ -214,7 +214,7 @@ const TB08031Sjs = (function () {
     {
       title: "이행일자",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "flflDt",
       align: "left",
       halign: "center",
       width: "",
@@ -223,7 +223,7 @@ const TB08031Sjs = (function () {
     {
       title: "이행여부",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "flflYn",
       align: "center",
       halign: "center",
       width: "",
@@ -232,7 +232,7 @@ const TB08031Sjs = (function () {
     {
       title: "주요일정내용",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "mainScxCtns",
       align: "center",
       halign: "center",
       width: "",
@@ -277,7 +277,7 @@ const TB08031Sjs = (function () {
     {
       title: "채권보전구분",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "bondProtCcd",
       align: "left",
       halign: "center",
       width: "",
@@ -339,7 +339,7 @@ const TB08031Sjs = (function () {
     {
       title: "승인일자",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "apvlDt",
       align: "left",
       halign: "center",
       width: "",
@@ -348,7 +348,7 @@ const TB08031Sjs = (function () {
     {
       title: "승인문서번호",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "cndChngDcmNoCnts",
       align: "left",
       halign: "center",
       width: "",
@@ -357,7 +357,7 @@ const TB08031Sjs = (function () {
     {
       title: "주요내용",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "cndChngMainCnts",
       align: "center",
       halign: "center",
       width: "",
@@ -366,7 +366,7 @@ const TB08031Sjs = (function () {
     {
       title: "취급자",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "prcsrEmpnm",
       align: "center",
       halign: "center",
       width: "",
@@ -375,7 +375,7 @@ const TB08031Sjs = (function () {
     {
       title: "취급자 개인번호",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "prcsrTelNo",
       align: "center",
       halign: "center",
       width: "",
@@ -384,7 +384,7 @@ const TB08031Sjs = (function () {
     {
       title: "시행일자",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "crotDt",
       align: "center",
       halign: "center",
       width: "",
@@ -428,7 +428,7 @@ const TB08031Sjs = (function () {
     {
       title: "구분",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "rmOpntEprzDcd",    //rm상대기업 구분코드
       align: "left",
       halign: "center",
       width: "",
@@ -437,7 +437,7 @@ const TB08031Sjs = (function () {
     {
       title: "기관명",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "entpNm",
       align: "left",
       halign: "center",
       width: "",
@@ -446,7 +446,7 @@ const TB08031Sjs = (function () {
     {
       title: "약정금액",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "crdtProvLmtAmt",
       align: "center",
       halign: "center",
       width: "",
@@ -455,7 +455,7 @@ const TB08031Sjs = (function () {
     {
       title: "참가비율(%)",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "prtcRto",
       align: "center",
       halign: "center",
       width: "",
@@ -485,7 +485,7 @@ const TB08031Sjs = (function () {
     {
       title: "구분",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "rmOpntEprzDcd",
       align: "left",
       halign: "center",
       width: "",
@@ -494,7 +494,7 @@ const TB08031Sjs = (function () {
     {
       title: "기관명",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "entpNm",
       align: "left",
       halign: "center",
       width: "",
@@ -503,7 +503,7 @@ const TB08031Sjs = (function () {
     {
       title: "약정금액",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "crdtProvLmtAmt",
       align: "center",
       halign: "center",
       width: "",
@@ -512,7 +512,7 @@ const TB08031Sjs = (function () {
     {
       title: "참가비율(%)",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "prtcRto",
       align: "center",
       halign: "center",
       width: "",
@@ -3600,7 +3600,7 @@ const TB08031Sjs = (function () {
     var busiCnts = $("#bsnsCntnt").val();                                     //사업내용
     var thcoRlDcd = $("#TB08031S_T002").val();                                //당사역할구분 
 
-    //사업 상세정보 (사업정보)
+    //사업 상세정보 (사업정보) -부동산-
     var guasMrtgYn = $("input[name=TB08031S_rlesWarrMrtgYN]:checked").val();  //보증서 담보 여부
     var busiLcsiCpltYn = $(
       "input[name=TB08031S_rlesOwnPLcsiCpltYN]:checked"
@@ -3631,30 +3631,34 @@ const TB08031Sjs = (function () {
     var fcltSclWidhCtns = $("#TB08031S_fcltScal").val();                      //시설규모너비내용
     var resiEcoCtns = $("#TB08031S_resiEco").val();                           //주거환경내용
     var crdtRifcDcd = $("#TB08031S_C010").val();                              //신용보강장치구분코드
-    var crdtRifcDvcNm = $("#TB08031S_crdtEhcmntCntnt").val();                 //신용보강장치명
-    var invFnnBusiWyDcd = $("#TB08031S_B013").val();
-    var busiSclCntn = $("#TB08031S_bsnsScal").val();
-    var busiLcsiDt = $("#TB08031S_bsnsLicYm").val();
-    var cnfnDt = $("#TB08031S_cmplYm").val();
-    var mngtCmpNm = $("#TB08031S_leadAgency").val();
-    var cnrStrtDt = $("#TB08031S_conStYm").val();
-    var cnrEndDt = $("#TB08031S_conEndYm").val();
-    var oprtStrtDt = $("#TB08031S_opDurStYm").val();
-    var oprtEndDt = $("#TB08031S_opDurEndYm").val();
-    var bzplAddr = $("#TB08031S_bsnsLoc").val();
-    var lmtYn = $("input[name=infraSeLmtYN]:checked").val();
-    var invstAmt = $("#TB08031S_invstAmt").val();
-    var busiRvoDcd = $("#TB08031S_B012").val();
-    var slfCpta = $("#TB08031S_equity").val();
-    var prorLoanAmt = $("#TB08031S_priLoan").val();
-    var bkbnLoanAmt = $("#TB08031S_subLoan").val();
-    var apvlYn = $("input[name=infraUseApvlYN]:checked").val();
-    var brwrSpcYn = $("input[name=infraSpcYN]:checked").val();
-    var mngmCndFlflYn = $("input[name=condComplyYN]:checked").val();
-    var bondTrnsYn = $("input[name=infraBondTraYN]:checked").val();
-    var fnnrCtrcMttrTrgtYn = $("input[name=infraCmmntMatYN]:checked").val();
-    var undwHglmWyDcd = $("#TB08031S_U002").val();
-    var hnvrBusiDcd = $("#TB08031S_U001").val();
+    var crdtRifcDvcNm = $("#TB08031S_crdtEhcmntCntnt").val();                 //신용보강내용
+
+    //사업 상세정보 (사업정보) -인프라-
+    var invFnnBusiWyDcd = $("#TB08031S_B013").val();                          //사업방식
+    var busiSclCntn = $("#TB08031S_bsnsScal").val();                          //사업규모
+    var busiLcsiDt = $("#TB08031S_bsnsLicYm").val();                          //사업인허가년월
+    var cnfnDt = $("#TB08031S_cmplYm").val();                                 //준공(예정)년월
+    var mngtCmpNm = $("#TB08031S_leadAgency").val();                          //주무관청
+    var cnrStrtDt = $("#TB08031S_conStYm").val();                             //건설시작년월
+    var cnrEndDt = $("#TB08031S_conEndYm").val();                             //건설종료년월
+    var oprtStrtDt = $("#TB08031S_opDurStYm").val();                          //운영시작년월
+    var oprtEndDt = $("#TB08031S_opDurEndYm").val();                          //운영종료년월
+    var bzplAddr = $("#TB08031S_bsnsLoc").val();                              //사업장위치
+    var lmtYn = $("input[name=infraSeLmtYN]:checked").val();                  //SE한도대상여부
+    var invstAmt = $("#TB08031S_invstAmt").val();                             //총투자비
+    var busiRvoDcd = $("#TB08031S_B012").val();                               //사업수주구분
+    var slfCpta = $("#TB08031S_equity").val();                                //자기자본
+    var prorLoanAmt = $("#TB08031S_priLoan").val();                           //선순위대출
+    var bkbnLoanAmt = $("#TB08031S_subLoan").val();                           //후순위대출
+    var apvlYn = $("input[name=infraUseApvlYN]:checked").val();               //사용승인여부
+    var brwrSpcYn = $("input[name=infraSpcYN]:checked").val();                //차주SPC여부
+    var mngmCndFlflYn = $("input[name=condComplyYN]:checked").val();          //관리조건이행여부
+    var bondTrnsYn = $("input[name=infraBondTraYN]:checked").val();           //채권이관여부
+    var fnnrCtrcMttrTrgtYn = $("input[name=infraCmmntMatYN]:checked").val();  //주요(재무)약정사항
+    
+    //사업 상세정보 (사업정보) -M&A-
+    var undwHglmWyDcd = $("#TB08031S_U002").val();                            //상환방식
+    var hnvrBusiDcd = $("#TB08031S_U001").val();                              //인수사업구분
     var brwrSpcYn = $("input[name=maEstateSpcYN]:checked").val();
     var spnsrCtns = $("#TB08031S_spon").val();
     var undwMrtgCtns = $("#TB08031S_mrtg").val();
