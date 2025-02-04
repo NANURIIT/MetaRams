@@ -526,6 +526,7 @@ const TB06010Sjs = (function(){
 		$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", true);
 		
 		// setKRKRW('TB06010S');
+		chkDecdStep('TB06010S');
 	}
 
 	function loadSelectBoxContents() {

@@ -813,6 +813,7 @@
             AND T8.SCRN_NO = 'TB07120S'
             AND T8.EXC_SEQ = T1.EXC_SN
             AND T8.TR_SEQ = T1.TR_SN
+            AND T8.RQST_SQ = T7.ERLM_SEQ
       LEFT JOIN IBIMS232B T9 /* 딜결재담당자내역 */
              ON T8.DECD_SN = T9.DECD_SN
       LEFT JOIN IBIMS003B T10
