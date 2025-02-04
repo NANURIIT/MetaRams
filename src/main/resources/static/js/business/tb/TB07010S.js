@@ -495,6 +495,7 @@ const TB07010Sjs = (function () {
       let hndEmpno = $("#TB07010S_chrg_empNo").val(); // 담당자사번
       let empno = $("#TB07010S_empNo").val(); // 승인자사번
 
+
       // userEno
       // userEmpNm
       /* 수수료수납대장 */
@@ -915,6 +916,16 @@ const TB07010Sjs = (function () {
         sf(1, "warning", "최종지급금액은 음수일 수 없습니다.");
         return { isValid: false };
       }
+
+      let dealExcAmt = Number(uncomma($("#TB07010S_dealExcAmt").val()));
+      let expRdmpAmt = Number(uncomma($("#TB07010S_expRdmpAmt").val()));
+
+      if(expRdmpAmt > dealExcAmt){
+        sf(1, "warning", "실행금액보다 큰 만기상환금액이 입력되었습니다.");
+        return { isValid: false };
+      }
+
+
     }
 
     if (fValid === "3") {

@@ -2,6 +2,7 @@ package com.nanuri.rams.business.assessment.tb08.tb08031;
 
 
 
+import com.nanuri.rams.business.common.dto.IBIMS502BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS508BDTO;
 import com.nanuri.rams.business.common.vo.*;
 import org.springframework.stereotype.Service;
@@ -151,20 +152,22 @@ public class TB08031ServiceImpl implements TB08031Service {
 		//사업 기본정보 조회
 		if(sn > 0){
 			log.debug("sn있음~~~~");
-
+			param.setSn(sn);
 			rtnObj = ibims501BMapper.getBusiBssInfo501B(param);
+			rtnObj.setIbims101bvo(ibims101bvo);
 
 			if(rtnObj.getInvFnnMngmBusiDcd() != null){
+				log.debug("rtnObj.getInvFnnMngmBusiDcd() 있음!!!!");
 				switch( rtnObj.getInvFnnMngmBusiDcd() ) {
 					// 부동산
 					case "01":
-						rtnObj.setRlesInfo(ibims502BMapper.getRealEstateInfo(param.getDealNo()));
-						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						rtnObj.setRlesInfo(ibims502BMapper.getRealEstateInfo(param));
+						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						// rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
+						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
 						break;
 					// 인프라
 					case "02":
@@ -231,11 +234,19 @@ public class TB08031ServiceImpl implements TB08031Service {
 	
 	@Override
 	public int saveDealInfo(IBIMS501BVO param) {
+
+		int sn = ibims501BMapper.getNextSn501B(param.getDealNo());
+
 		param.setHndEmpno(facade.getDetails().getEno());
+		param.setDelYn("N");
+		param.setSn(sn);
+		
 		ibims501BMapper.saveBusiBssInfo(param);
 			switch( param.getInvFnnMngmBusiDcd() ) {
 				// 부동산
 				case "01":
+					log.debug("!!!부동산 사업정보 저장!!!");
+					param.getRlesInfo().setSn(sn);
 					param.getRlesInfo().setHndEmpno(facade.getDetails().getEno());
 					return ibims502BMapper.saveDealInfo(param);
 				// 인프라
@@ -268,6 +279,7 @@ public class TB08031ServiceImpl implements TB08031Service {
 					param.getRlesInfo().setHndEmpno(facade.getDetails().getEno());
 					return ibims502BMapper.saveDealInfo(param);
 			}
+		//return 0;
 	}
 
 	// 사업참가자정보 저장

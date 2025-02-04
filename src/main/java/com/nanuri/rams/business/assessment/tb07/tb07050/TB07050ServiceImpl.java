@@ -244,10 +244,12 @@ public class TB07050ServiceImpl implements TB07050Service {
 
         // List<IBIMS403BDTO> inDto = new ArrayList<>();            // List<IBIMS403BDTO> ArrayList 생성
         if ( "02".equals(scxDcd) ) {    // 원금상환스케줄
+
+            log.debug("여기오긴함?");
             for (TB07050SVO tb07050svo : rdmpPlanList) {
 
             String rowType = tb07050svo.getRowType();
-
+                log.debug("rowType::: " + rowType);
                 if ( "I".equals(rowType) ) {
                     log.debug(" \n 원금상환스케줄 rowType :::: [{}]", rowType);
                     //long excSn = ibims403bMp.getExcSn(prdtCd); // 신규 실행일련번호 채번

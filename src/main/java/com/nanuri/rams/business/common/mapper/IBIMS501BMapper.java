@@ -18,6 +18,8 @@ public interface IBIMS501BMapper {
 	public IBIMS501BVO getBusiBssInfo501B(IBIMS501BVO param);
 
 	public int getMaxSn501B(String dealNo);
+
+	public int getNextSn501B(String dealNo);
 	
 	
 }

@@ -131,7 +131,7 @@
 									<select class="form-control col-sm-3" style="width:70px;" id="TB08031S_I027">
 										<option></option>
 									</select>
-									<input type="text" class="form-control text-right" style="width:30px;" id="TB08031S_prcrAmt">
+									<input type="text" class="form-control text-right" style="width:30px;" id="TB08031S_prcrAmt" onkeyup="inputNumberFormater(this);" value="0">
 								</div>
 								<label class="col-sm-1 col-form-label">주요채권보전</label>
 								<div class="col-sm-3">
@@ -328,22 +328,29 @@
 													</div>
 													<!-- 3row -->
 													<div class="form-group col-sm-12 mb-1">
-														<label class="col-sm-1 col-form-label">착공(예정)년월</label>
-														<div class="col-sm-3 input-group">
-															<input type="text" class="form-control" id="TB08031S_csstPrarYm">
+														<label class="col-sm-1 col-form-label">착공(예정)일</label>
+														<div class="col-sm-3 input-group date">
+															<!-- <input type="text" class="form-control" id="TB08031S_csstPrarYm"> -->
+															<input type="text" class="form-control" id="TB08031S_csstPrarYm" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+															<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														</div>
-														<label class="col-sm-1 col-form-label">준공(예정)년월</label>
-														<div class="col-sm-3 input-group">
-															<input type="text" class="form-control" id="TB08031S_cnfnPrarYm">
+														
+														<label class="col-sm-1 col-form-label">준공(예정)일</label>
+														<div class="col-sm-3 input-group date">
+															<!-- <input type="text" class="form-control" id="TB08031S_cnfnPrarYm"> -->
+															<input type="text" class="form-control" id="TB08031S_cnfnPrarYm" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+															<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														</div>
-														<label class="col-sm-1 col-form-label">분양(예정)년월</label>
-														<div class="col-sm-3 input-group">
-															<input type="text" class="form-control" id="TB08031S_slltPrarYm"> <span
+														<label class="col-sm-1 col-form-label">분양(예정)일</label>
+														<div class="col-sm-3 input-group date">
+															<!-- <input type="text" class="form-control" id="TB08031S_slltPrarYm"> <span
 																class="input-group-append">
 																<button class="btn btn-default">
 																	<i class="fa fa-calendar"></i>
 																</button>
-															</span>
+															</span> -->
+															<input type="text" class="form-control" id="TB08031S_slltPrarYm" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+															<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														</div>
 													</div>
 													<!-- 4row -->
@@ -361,30 +368,30 @@
 													<div class="form-group col-sm-12 mb-1">
 														<label class="col-sm-1 col-form-label">사업부지면적(m²)</label>
 														<div class="col-sm-3 input-group">
-															<input type="text" class="form-control text-right" id="TB08031S_busiSiteSqms">
+															<input type="text" class="form-control text-right" id="TB08031S_busiSiteSqms" onkeyup="inputNumberFormater(this);" value="0">
 														</div>
 														<label class="col-sm-1 col-form-label">사업부지(평)</label>
 														<div class="col-sm-3 input-group">
-															<input type="text" class="form-control text-right" id="TB08031S_busiSiteAcre">
+															<input type="text" class="form-control text-right" id="TB08031S_busiSiteAcre" onkeyup="inputNumberFormater(this);" value="0">
 														</div>
 														<label class="col-sm-1 col-form-label">용적률(%)</label>
 														<div class="col-sm-3 input-group">
-															<input type="text" class="form-control text-right" id="TB08031S_arRt">
+															<input type="text" class="form-control text-right" id="TB08031S_arRt" onkeyup="inputNumberFormater(this);" value="0.00">
 														</div>
 													</div>
 													<!-- 6row -->
 													<div class="form-group col-sm-12 mb-1">
 														<label class="col-sm-1 col-form-label">연면적(m²)</label>
 														<div class="col-sm-3 input-group">
-															<input type="text" class="form-control text-right" id="TB08031S_Sqms">
+															<input type="text" class="form-control text-right" id="TB08031S_Sqms" onkeyup="inputNumberFormater(this);" value="0">
 														</div>
 														<label class="col-sm-1 col-form-label">연면적(평)</label>
 														<div class="col-sm-3 input-group">
-															<input type="text" class="form-control text-right" id="TB08031S_SqmsP">
+															<input type="text" class="form-control text-right" id="TB08031S_SqmsP" onkeyup="inputNumberFormater(this);" value="0">
 														</div>
 														<label class="col-sm-1 col-form-label">건폐율(%)</label>
 														<div class="col-sm-3 input-group">
-															<input type="text" class="form-control text-right" id="TB08031S_far">
+															<input type="text" class="form-control text-right" id="TB08031S_far" onkeyup="inputNumberFormater(this);" value="0.00">
 														</div>
 													</div>
 													<!-- 7row -->
@@ -408,10 +415,10 @@
 														<div class="col-sm-3 input-group">
 															<select class="form-control" id="TB08031S_C010"></select>
 														</div>
-														<label class="col-sm-1 col-form-label">신용보강금액</label>
+														<!-- <label class="col-sm-1 col-form-label">신용보강금액</label>
 														<div class="col-sm-3 input-group">
 															<input type="text" class="form-control text-right" id="TB08031S_crdtEhcmntAmt">
-														</div>
+														</div> -->
 														<label class="col-sm-1 col-form-label">신용보강내용</label>
 														<div class="col-sm-3 input-group">
 															<input type="text" class="form-control" id="TB08031S_crdtEhcmntCntnt">
@@ -419,7 +426,7 @@
 													</div>
 													<!-- 9row -->
 													<div class="form-group col-sm-12 mb-1">
-														<label class="col-sm-1 col-form-label">상업운전일</label>
+														<!-- <label class="col-sm-1 col-form-label">상업운전일</label>
 														<div class="col-sm-3 input-group">
 															<input type="text" class="form-control" id="rles_datepicker1">
 															<span class="input-group-append">
@@ -427,7 +434,7 @@
 																	<i class="fa fa-calendar"></i>
 																</button>
 															</span>
-														</div>
+														</div> -->
 														<label class="col-sm-1 col-form-label">사용승인여부</label>
 														<div class="col-sm-3 input-group input-h">
 															<div class="col-sm-2 input-group">
@@ -447,6 +454,21 @@
 															</div>
 															<div class="col-sm-2 input-group">
 																<input type="radio" value="N" id="TB08031S_rlesSpcN" name="rlesSpcYN" checked="true">
+																<label class="col-sm-5">N</label>
+															</div>
+														</div>
+														<label class="col-sm-1 col-form-label">관리조건이행</label>
+														<!-- <div class="col-sm-3 input-group">
+															<select class="form-control" id="TB08031S_rlesCondComply" disabled></select>
+														</div>
+														<label class="col-sm-1 col-form-label"></label> -->
+														<div class="col-sm-3 input-group input-h">
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="Y" id="TB08031S_rlesCondComplyY" name="rlesCondComplyYN">
+																<label class="col-sm-5">Y</label>
+															</div>
+															<div class="col-sm-2 input-group">
+																<input type="radio" value="N" id="TB08031S_rlesCondComplyN" name="rlesCondComplyYN" checked="true">
 																<label class="col-sm-5">N</label>
 															</div>
 														</div>
@@ -476,21 +498,7 @@
 													</div> -->
 													<!-- 11row -->
 													<div class="form-group col-sm-12 mb-1">
-														<label class="col-sm-1 col-form-label">관리조건이행</label>
-														<!-- <div class="col-sm-3 input-group">
-															<select class="form-control" id="TB08031S_rlesCondComply" disabled></select>
-														</div>
-														<label class="col-sm-1 col-form-label"></label> -->
-														<div class="col-sm-3 input-group input-h">
-															<div class="col-sm-2 input-group">
-																<input type="radio" value="Y" id="TB08031S_rlesCondComplyY" name="rlesCondComplyYN">
-																<label class="col-sm-5">Y</label>
-															</div>
-															<div class="col-sm-2 input-group">
-																<input type="radio" value="N" id="TB08031S_rlesCondComplyN" name="rlesCondComplyYN" checked="true">
-																<label class="col-sm-5">N</label>
-															</div>
-														</div>
+														
 														<label class="col-sm-1 col-form-label">채권이관여부</label>
 														<div class="col-sm-3 input-group input-h">
 															<div class="col-sm-2 input-group">
@@ -518,6 +526,7 @@
 															</button>
 														</div>
 														<div class="col-sm-1"></div> -->
+														</div>
 													</div>
 													<!-- 12row -->
 													<!-- <div class="form-group col-sm-12 mb-1">
@@ -2453,6 +2462,7 @@
 									<!-- 첨부파일정보 END -->
 									
 									
+								
 								</div>
 							</div>
 						</div>

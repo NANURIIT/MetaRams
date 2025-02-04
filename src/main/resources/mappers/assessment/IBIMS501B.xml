@@ -109,7 +109,7 @@
           (
            DEAL_NO                                 	/* 딜번호 */
          , SN                                      	/* 일련번호 */
-         , CRNO                            	/* 법인등록번호 */
+         , CRNO                            	        /* 법인등록번호 */
          , BUSI_NM                                 	/* 사업명 */
          , FND_NM                                  	/* 펀드명 */
          , INV_FNN_MNGM_BUSI_DCD                   	/* 투자금융관리사업구분코드 */
@@ -135,7 +135,7 @@
          , CRRY_CD                                	/* 통화코드 */
          , TOT_PRCR_AMT                            	/* 총조달금액 */
          , MAIN_BOND_MTNC_CNTS                     	/* 주요채권보전내용 */
-         , THCO_RL_DCD                            	/* 당사주선여부 */
+         , THCO_RL_DCD                            	/* 당사역할구분코드 */
          , THCO_MDTN_AMT                           	/* 당사주선금액 */
          , THCO_PTCI_AMT                           	/* 당사참여금액 */
          , APLY_INTRT_CNTS                         	/* 적용금리내용 */
@@ -182,16 +182,8 @@
           )
    VALUES (
           #{dealNo}                                   /* 딜번호 */
-        , (
-           SELECT CASE WHEN A.SN = 0 THEN '0000000001'
-                       ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
-             FROM (
-               		 SELECT COUNT(SN) AS SN
-                        , MAX(SN)   AS INCREMENT_SQ
-                     FROM IBIMS502B
-                  ) A  
-       		)                                         	/* 일련번호 */
-        , #{crno}                               /* 법인등록번호 */
+        , #{sn}                                      	/* 일련번호 */
+        , #{crno}                                     /* 법인등록번호 */
         , #{busiNm}                                   /* 사업명 */
         , #{fndNm}                                    /* 펀드명 */
         , #{invFnnMngmBusiDcd}                        /* 투자금융관리사업구분코드 */
@@ -214,10 +206,10 @@
         , #{invFnnOprtTyDcd}                          /* 투자금융운영형태구분코드 */
         , #{invFnnAsstClsfCd}                         /* 투자금융자산분류코드 */
         , #{ivtgShdnRsnCnts}                          /* 검토중단사유내용 */
-        , #{crncyCd}                                  /* 통화코드 */
+        , #{crryCd}                                  /* 통화코드 */
         , #{totPrcrAmt}                               /* 총조달금액 */
         , #{mainBondMtncCnts}                         /* 주요채권보전내용 */
-        , #{thcoMdtnYn}                               /* 당사주선여부 */
+        , #{thcoRlDcd}                                /* 당사주선여부 */
         , #{thcoMdtnAmt}                              /* 당사주선금액 */
         , #{thcoPtciAmt}                              /* 당사참여금액 */
         , #{aplyIntrtCnts}                            /* 적용금리내용 */
@@ -298,6 +290,12 @@
 
   <select id="getMaxSn501B" parameterType="string" resultType="int">
     SELECT NVL(MAX(SN), 0)
+    FROM IBIMS501B
+    WHERE DEAL_NO = #{dealNo}
+  </select>
+
+  <select id="getNextSn501B" parameterType="string" resultType="int">
+    SELECT NVL(MAX(SN)+1, 1)
     FROM IBIMS501B
     WHERE DEAL_NO = #{dealNo}
   </select>

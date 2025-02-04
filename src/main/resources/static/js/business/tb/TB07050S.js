@@ -1371,11 +1371,11 @@ const TB07050Sjs = (function () {
     // console.log("업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드");
     if (validation().prdtCd) {
 		
-	  grid.addRow();	
+      // grdID.addRow();	
 		
       $("#upload-file-input-TB07050S").click();
 	  
-	  grid.deleteRow({ rowIndx: 1 });
+      //grdID.deleteRow({ rowIndx: 1 });
     }
   });
 
@@ -1425,12 +1425,16 @@ const TB07050Sjs = (function () {
     rows.forEach(function (row) {
       let prarDt = row["상환예정일자"],
         prarPrna = row["상환예정원금"],
-        prcsCpltYn = row["처리완료여부"];
+        prcsCpltYn = row["처리완료여부"],
+        prcsDt = row["상환일자"],
+        prcsAmt = row["상환원금"];
 
       let newRow = {
         rowType: "I",
         prarDt: unformatDate(prarDt),
         prarPrna: prarPrna,
+        prcsDt: unformatDate(prcsDt),
+        prcsAmt: prcsAmt,
         prcsCpltYn: prcsCpltYn,
       };
       prnaRdmpSch.addRow({ rowData: newRow, checkEditable: false });

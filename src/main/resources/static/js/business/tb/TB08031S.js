@@ -64,10 +64,11 @@ const TB08031Sjs = (function () {
     item += "/" + "F010"; // 펀드유형상세
 
     getSelectBoxList("TB08031S", item);
-
+    
     setGrid_TB08031S();
 
     setLoginUserAuth();
+
   }
 
   function setGridTimeOut(e) {
@@ -1176,7 +1177,7 @@ const TB08031Sjs = (function () {
   // 사업구분 정보
   function loadInvbnkAmnBzCd() {
 
-    alert("?????");
+    // alert("?????");
     $.ajax({
       type: "GET",
       url: "/getSelectBoxCode/I020",
@@ -1251,6 +1252,8 @@ const TB08031Sjs = (function () {
         success: function (data) {
           var bssBscInfo = data.ibims101bvo;
 
+          console.log( "bssBscInfo:" + bssBscInfo);
+
           /* 기본항목*/
           // $("#TB08031S_ibDealNo").val(bssBscInfo.dealNo);         // 딜번호
 
@@ -1265,6 +1268,138 @@ const TB08031Sjs = (function () {
           $('#TB08031S_bsnsLoan').val(excBlce);				            // 사업대출잔액
           $('#TB08031S_coValDt').val(expDt);						          // 평가유효기일
           $('#TB08031S_fnMdfyDt').val(rgstDt);					          // 최종수정일자
+
+          if(data.invFnnMngmBusiDcd){       //사업구분코드 있는 경우
+
+            var invFnnMngmBusiDcd = data.invFnnMngmBusiDcd;
+            //사업기본정보 세팅
+            $("#TB08031S_invbnkAmnBzCd").val(data.invFnnMngmBusiDcd);           //사업구분코드
+            $("#TB08031S_I021").val(data.invFnnMngnBusiDtlDcd);                 //사업구분 상세
+            $("#TB08031S_I011").val(data.invFnnMmngPrgSttsCd);                  //진행상태코드
+            $("#TB08031S_I027").val(data.crryCd);                               //통화코드
+            $("#TB08031S_prcrAmt").val(data.totPrcrAmt);                        //총조달금액
+            $("#TB08031S_bondProt").val(data.mainBondMtncCnts);                 //주요채권보전내용
+            $("#TB08031S_rvwStRsn").val(data.ivtgShdnRsnCnts);                  //검토중단사유
+            $("#TB08031S_T002").val(data.thcoRlDcd);                            //당사역할구분
+            $("#TB08031S_thcoRlAmt").val(data.thcoMdtnAmt);                     //당사주선금액
+            $("#TB08031S_thcoPtnAmt").val(data.thcoPtciAmt);                    //당사참여금액
+            $("#TB08031S_I033").val(data.invstRvnRtDcd);                        //고정금리구분코드
+            $("#TB08031S_S003").val(data.stdrIntrtKndCd);                       //기준금리구분코드
+            $("#TB08031S_BitrKindCdInput").val(data.stdrIntrt);                 //기준금리
+            $("#TB08031S_preRt").val(data.addIntrt);                            //가산금리
+            $("#TB08031S_charge_empNo").val(data.chrrEmpno);                    //담당자사번
+            $("#TB08031S_charge_empNm").val(data.empNm);                        //담당자명
+            $("#TB08031S_D010").val(data.dprtCd);                               //업무팀
+            $("#TB08031S_tgtRvn").val(data.goalErnRt);                          //목표수익률
+            $("#bsnsCntnt").val(data.busiCnts);                                 //사업내용
+            $("#TB08031S_rm_empNo").val(data.rmEmpno);                          //담당RM사번
+            $("#TB08031S_rm_empNm").val(data.rmEmpNm);                          //담당RM명
+
+            if(invFnnMngmBusiDcd === "01"){           //부동산
+
+              var rlesInfo = data.rlesInfo;
+
+              var guasMrtgYn = rlesInfo.rlesInfo;                   //보증서담보여부
+              var busiLcsiCpltYn = rlesInfo.efceMbdyDcd;            //사업인허가완료여부
+              var landOwnrsEnsuYn = rlesInfo.landOwnrsEnsuYn;       //토지소유권확보여부
+              var fndsMngmTrgtYn = rlesInfo.fndsMngmTrgtYn;         //자금관리대상여부
+              var rdmpCpltYn = rlesInfo.rdmpCpltYn;                 //상환완료여부
+              var bondTrnsYn = rlesInfo.bondTrnsYn;                 // 채권이관여부
+              var mngmCndFlflYn = rlesInfo.mngmCndFlflYn;           // 관리조건이행여부
+              var fnnrCtrcMttrTrgtYn = rlesInfo.fnnrCtrcMttrTrgtYn; // 재무약정사항대상여부
+              var brwrSpcYn = rlesInfo.brwrSpcYn;                   //차주SCP여부
+              var apvlYn = rlesInfo.apvlYn;                         //승인여부
+
+              if(guasMrtgYn == "Y"){
+                $("#TB08031S_rlesWarrMrtgY").prop("checked", true);
+              }else{
+                $("#TB08031S_rlesWarrMrtgN").prop("checked", true);
+              }        
+              
+              if(busiLcsiCpltYn == "Y"){
+                $("#TB08031S_rlesOwnPLcsiCpltY").prop("checked", true);
+              }else{
+                $("#TB08031S_rlesOwnPLcsiCpltN").prop("checked", true);
+              } 
+
+              if(landOwnrsEnsuYn == "Y"){
+                $("#TB08031S_rlesLandPchsCpltY").prop("checked", true);
+              }else{
+                $("#TB08031S_rlesLandPchsCpltN").prop("checked", true);
+              } 
+
+              if(fndsMngmTrgtYn == "Y"){
+                $("#TB08031S_rlesFndsMngmTrgtY").prop("checked", true);
+              }else{
+                $("#TB08031S_rlesFndsMngmTrgtN").prop("checked", true);
+              } 
+
+              if(rdmpCpltYn == "Y"){
+                $("#TB08031S_rdmpCpltYnY").prop("checked", true);
+              }else{
+                $("#TB08031S_rdmpCpltYnN").prop("checked", true);
+              } 
+
+              if(bondTrnsYn == "Y"){
+                $("#TB08031S_rlesBondTrnY").prop("checked", true);
+              }else{
+                $("#TB08031S_rlesBondTrnN").prop("checked", true);
+              } 
+
+              if(mngmCndFlflYn == "Y"){
+                $("#TB08031S_rlesCondComplyY").prop("checked", true);
+              }else{
+                $("#TB08031S_rlesCondComplyN").prop("checked", true);
+              } 
+
+              if(fnnrCtrcMttrTrgtYn == "Y"){
+                $("#TB08031S_rlesCmmntMatY").prop("checked", true);
+              }else{
+                $("#TB08031S_rlesCmmntMatN").prop("checked", true);
+              } 
+              
+              if(brwrSpcYn == "Y"){
+                $("#TB08031S_rlesSpcY").prop("checked", true);
+              }else{
+                $("#TB08031S_rlesSpcN").prop("checked", true);
+              } 
+
+              if(apvlYn == "Y"){
+                $("#TB08031S_rlesUseAppY").prop("checked", true);
+              }else{
+                $("#TB08031S_rlesUseAppN").prop("checked", true);
+              } 
+
+              $("#TB08031S_C014").val(rlesInfo.efceMbdyDcd);              //시행주체구분코드
+              $("#TB08031S_csstPrarYm").val(rlesInfo.cnrStrtDt);          //공사시작일
+              $("#TB08031S_cnfnPrarYm").val(rlesInfo.cnrEndDt);           //공사종료일
+              $("#TB08031S_slltPrarYm").val(rlesInfo.slltStrtDt);         //분양시작일 
+              $("#TB08031S_busiArea").val(rlesInfo.bzplAddr);             //사업장주소
+              $("#TB08031S_B011").val(rlesInfo.bsnsAreaCd);               //사업지역코드
+              $("#TB08031S_busiSiteSqms").val(rlesInfo.busiSiteSqms);     //사업부지면적 
+              $("#TB08031S_busiSiteAcre").val(rlesInfo.siteSqms);         //사업부지면적(평) 
+              $("#TB08031S_arRt").val(rlesInfo.efceMbdyDcd);              //용적율 
+              $("#TB08031S_Sqms").val(rlesInfo.efceMbdyDcd);              //사업연면적
+              $("#TB08031S_SqmsP").val(rlesInfo.efceMbdyDcd);             //연면적
+              $("#TB08031S_far").val(rlesInfo.efceMbdyDcd);               //건폐율
+              $("#TB08031S_B019").val(rlesInfo.efceMbdyDcd);              //기업규모구분코드
+              $("#TB08031S_fcltScal").val(rlesInfo.efceMbdyDcd);          //시설규모
+              $("#TB08031S_resiEco").val(rlesInfo.efceMbdyDcd);           //주거환경
+              $("#TB08031S_C010").val(rlesInfo.efceMbdyDcd);              //신용보강구분코드
+              $("#TB08031S_crdtEhcmntCntnt").val(rlesInfo.efceMbdyDcd);   //신용보강내용
+              
+
+            }else if(invFnnMngmBusiDcd === "02"){     //인프라
+
+            }else if(invFnnMngmBusiDcd === "03"){     //M&A
+
+            }else if(invFnnMngmBusiDcd === "04"){     //국제투자
+
+            }else if(invFnnMngmBusiDcd === "05"){     //PEF/VC
+
+            }
+
+          }
 
         }
       });
@@ -3604,20 +3739,23 @@ const TB08031Sjs = (function () {
 
     //사업 기본정보
     var dealNo = $("#TB08031S_ibDealNo").val();                               //딜번호
+    var crno = $("#TB08031S_corpNo").val();                                   //법인등록번호
+    var busiNm = $("#TB08031S_bsnsNm").val();                                 //사업명
+    
     var invFnnMngmBusiDcd = $("#TB08031S_invbnkAmnBzCd").val();               //사업구분
     var invFnnMngnBusiDtlDcd = $("#TB08031S_I021").val();                     //사업구분 상세
     var invFnnMmngPrgSttsCd = $("#TB08031S_I011").val();                      //진행상태
     var crryCd = $("#TB08031S_I027").val();                                   //통화코드
-    var totPrcrAmt = $("#TB08031S_prcrAmt").val();                            //총조달금액
+    var totPrcrAmt = $("#TB08031S_prcrAmt").val().replaceAll(",", "");                            //총조달금액
     var mainBondMtncCnts = $("#TB08031S_bondProt").val();                     //주요채권보전내용
     var ivtgShdnRsnCnts = $("#TB08031S_rvwStRsn").val();                      //검토중단사유내용
     var thcoRlDcd = $("#TB08031S_T002").val();                                //당사역할구분
-    var thcoMdtnAmt = $("#TB08031S_thcoRlAmt").val();                         //당사주선금액
-    var thcoPtciAmt = $("#TB08031S_thcoPtnAmt").val();                        //당사참여금액
+    var thcoMdtnAmt = $("#TB08031S_thcoRlAmt").val().replaceAll(",", "");                         //당사주선금액
+    var thcoPtciAmt = $("#TB08031S_thcoPtnAmt").val().replaceAll(",", "");                        //당사참여금액
     var invstRvnRtDcd = $('#TB08031S_I033').val();                            //투자수익금리구분코드
     var stdrIntrtKndCd = $('#TB08031S_S003').val();                           //기준금리종류코드
-    var stdrIntrt = $("#TB08031S_BitrKindCdInput").val();                     //기준금리
-    var addIntrt = $('#TB08031S_preRt').val();                                //가산금리
+    var stdrIntrt = $("#TB08031S_BitrKindCdInput").val().replaceAll(",", "");                     //기준금리
+    var addIntrt = $('#TB08031S_preRt').val().replaceAll(",", "");                                //가산금리
     var chrrEmpno = $("#TB08031S_charge_empNo").val();                        //담당자 사원번호               
     var busiNm = $("#TB08031S_bsnsNm").val();                                 //사업명
     var mgcoNm = $("#TB08031S_corpNm").val();                                 //업체명                     
@@ -3642,18 +3780,18 @@ const TB08031Sjs = (function () {
       var fndsMngmTrgtYn = $(
         "input[name=TB08031S_rlesFndsMngmTrgtYN]:checked"
       ).val();                                                                  //자금관리대상여부
-      var cnrStrtDt = $("#TB08031S_csstPrarYm").val();                          //공사시작일자
-      var cnrEndDt = $("#TB08031S_cnfnPrarYm").val();                           //공사종료일자
-      var slltStrtDt = $("#TB08031S_slltPrarYm").val();                         //분양예정일자
+      var cnrStrtDt = $("#TB08031S_csstPrarYm").val().replaceAll("-", "");                          //공사시작일자
+      var cnrEndDt = $("#TB08031S_cnfnPrarYm").val().replaceAll("-", "");                           //공사종료일자
+      var slltStrtDt = $("#TB08031S_slltPrarYm").val().replaceAll("-", "");                         //분양예정일자
       var bzplAddr = $("#TB08031S_busiArea").val();                             //사업장주소 
       var bsnsAreaCd = $("#TB08031S_B011").val();                               //사업지역코드
-      var busiSiteSqms = $("#TB08031S_busiSiteSqms").val();                     //사업부지면적
-      var siteSqms = $("#TB08031S_busiSiteAcre").val();                         //사업부지(평)
-      var busiArRt = $('#TB08031S_arRt').val();                                 //사업부지용적율
-      var busiTtlSqms = $("#TB08031S_Sqms").val();                              //사업연면적
-      var ttlSqms = $("#TB08031S_SqmsP").val();                                 //연면적 
-      var busiBldngLndrt = $("#TB08031S_far").val();                            //사업건폐율
-      var eprzSclDcd = $("#TB08031S_far").val();                                //기업규모구분코드
+      var busiSiteSqms = $("#TB08031S_busiSiteSqms").val().replaceAll(",", "");                     //사업부지면적
+      var siteSqms = $("#TB08031S_busiSiteAcre").val().replaceAll(",", "");                         //사업부지(평)
+      var busiArRt = $('#TB08031S_arRt').val().replaceAll(",", "");                                 //사업부지용적율
+      var busiTtlSqms = $("#TB08031S_Sqms").val().replaceAll(",", "");                              //사업연면적
+      var ttlSqms = $("#TB08031S_SqmsP").val().replaceAll(",", "");                                 //연면적 
+      var busiBldngLndrt = $("#TB08031S_far").val().replaceAll(",", "");                            //사업건폐율
+      var eprzSclDcd = $("#TB08031S_B019").val();                               //기업규모구분코드
       var fcltSclWidhCtns = $("#TB08031S_fcltScal").val();                      //시설규모너비내용
       var resiEcoCtns = $("#TB08031S_resiEco").val();                           //주거환경내용
       var crdtRifcDcd = $("#TB08031S_C010").val();                              //신용보강장치구분코드
@@ -3672,7 +3810,55 @@ const TB08031Sjs = (function () {
       ).val();                                                                  //차주SCP여부
 
       paramData = {
-
+        dealNo: dealNo,
+        invFnnMngmBusiDcd: invFnnMngmBusiDcd,
+        invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
+        invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
+        crryCd: crryCd,
+        totPrcrAmt: totPrcrAmt,
+        mainBondMtncCnts: mainBondMtncCnts,
+        ivtgShdnRsnCnts: ivtgShdnRsnCnts,
+        thcoRlDcd: thcoRlDcd,
+        thcoMdtnAmt: thcoMdtnAmt,
+        thcoPtciAmt: thcoPtciAmt,
+        invstRvnRtDcd: invstRvnRtDcd,
+        stdrIntrtKndCd: stdrIntrtKndCd,
+        stdrIntrt: stdrIntrt,
+        addIntrt: addIntrt,
+        chrrEmpno: chrrEmpno,
+        busiNm: busiNm,
+        mgcoNm: mgcoNm,
+        goalErnRt: goalErnRt,
+        rmEmpno: rmEmpno,
+        busiCnts: busiCnts,
+        rlesInfo: {
+          guasMrtgYn: guasMrtgYn,
+          efceMbdyDcd: efceMbdyDcd,
+          rdmpCpltYn: rdmpCpltYn,
+          busiLcsiCpltYn: busiLcsiCpltYn,
+          landOwnrsEnsuYn: landOwnrsEnsuYn,
+          fndsMngmTrgtYn: fndsMngmTrgtYn,
+          cnrStrtDt: cnrStrtDt,
+          cnrEndDt: cnrEndDt,
+          slltStrtDt: slltStrtDt,
+          bzplAddr: bzplAddr,
+          bsnsAreaCd: bsnsAreaCd,
+          busiSiteSqms: busiSiteSqms,
+          siteSqms: siteSqms,
+          busiArRt: busiArRt,
+          busiTtlSqms: busiTtlSqms,
+          ttlSqms: ttlSqms,
+          busiBldngLndrt: busiBldngLndrt,
+          eprzSclDcd: eprzSclDcd,
+          fcltSclWidhCtns: fcltSclWidhCtns,
+          resiEcoCtns: resiEcoCtns,
+          crdtRifcDcd: crdtRifcDcd,
+          crdtRifcDvcNm: crdtRifcDvcNm,
+          mngmCndFlflYn: mngmCndFlflYn,
+          bondTrnsYn: bondTrnsYn,
+          fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
+          brwrSpcYn: brwrSpcYn
+        }
       }
 
     }else if(invFnnMngmBusiDcd === "02"){                   // 인프라
@@ -3770,8 +3956,8 @@ const TB08031Sjs = (function () {
     var busiLcsiDt = $("#TB08031S_bsnsLicYm").val();                          //사업인허가년월
     var cnfnDt = $("#TB08031S_cmplYm").val();                                 //준공(예정)년월
     var mngtCmpNm = $("#TB08031S_leadAgency").val();                          //주무관청
-    var cnrStrtDt = $("#TB08031S_conStYm").val();                             //건설시작년월
-    var cnrEndDt = $("#TB08031S_conEndYm").val();                             //건설종료년월
+    var cnrStrtDt = $("#TB08031S_conStYm").val().replaceAll("-", "");                             //건설시작년월
+    var cnrEndDt = $("#TB08031S_conEndYm").val().replaceAll("-", "");                             //건설종료년월
     var oprtStrtDt = $("#TB08031S_opDurStYm").val();                          //운영시작년월
     var oprtEndDt = $("#TB08031S_opDurEndYm").val();                          //운영종료년월
     var bzplAddr = $("#TB08031S_bsnsLoc").val();                              //사업장위치
@@ -3837,119 +4023,121 @@ const TB08031Sjs = (function () {
     }
 
     function businessFunction() {
-      var dtoParam = {
-        dealNo: dealNo,
-        //, "corpRgstNo": corpRgstNo
-        busiNm: busiNm,
-        invFnnMngmBusiDcd: invFnnMngmBusiDcd,
-        mgcoNm: mgcoNm,
-        invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
-        invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
-        crryCd: crryCd,
-        totPrcrAmt: totPrcrAmt / 1,
-        mainBondMtncCnts: mainBondMtncCnts,
-        ivtgShdnRsnCnts: ivtgShdnRsnCnts,
-        thcoMdtnAmt: thcoMdtnAmt / 1,
-        thcoPtciAmt: thcoPtciAmt / 1,
-        aplyIntrtCnts: aplyIntrtCnts,
-        chrrEmpno: chrrEmpno,
-        goalErnRt: goalErnRt / 1,
-        rmEmpno: rmEmpno,
-        busiCnts: busiCnts,
-        rlesInfo: {
-          hndEmpno: hndEmpno,
-          guasMrtgYn: guasMrtgYn,
-          busiLcsiCpltYn: busiLcsiCpltYn,
-          landOwnrsEnsuYn: landOwnrsEnsuYn,
-          fndsMngmTrgtYn: fndsMngmTrgtYn,
-          apvlYn: apvlYn,
-          brwrSpcYn: brwrSpcYn,
-          mngmCndFlflYn: mngmCndFlflYn,
-          bondTrnsYn: bondTrnsYn,
-          fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
-          efceMbdyDcd: efceMbdyDcd,
-          slltStrtDt: slltStrtDt.replaceAll("-", ""),
-          bzplAddr: bzplAddr,
-          busiSiteSqms: busiSiteSqms / 1,
-          busiTtlSqms: busiTtlSqms / 1,
-          ttlSqms: ttlSqms / 1,
-          busiBldngLndrt: busiBldngLndrt / 1,
-          eprzSclDcd: eprzSclDcd,
-          fcltSclWidhCtns: fcltSclWidhCtns,
-          resiEcoCtns: resiEcoCtns,
-          crdtRifcDcd: crdtRifcDcd,
-          crdtRifcDvcNm: crdtRifcDvcNm,
-        },
-        infraInfo: {
-          hndEmpno: hndEmpno,
-          invFnnBusiWyDcd: invFnnBusiWyDcd,
-          busiSclCntn: busiSclCntn,
-          busiLcsiDt: busiLcsiDt.replaceAll("-", ""),
-          cnfnDt: cnfnDt.replaceAll("-", ""),
-          mngtCmpNm: mngtCmpNm,
-          cnrStrtDt: cnrStrtDt.replaceAll("-", ""),
-          cnrEndDt: cnrEndDt.replaceAll("-", ""),
-          oprtStrtDt: oprtStrtDt.replaceAll("-", ""),
-          oprtEndDt: oprtEndDt.replaceAll("-", ""),
-          bzplAddr: bzplAddr,
-          lmtYn: lmtYn,
-          invstAmt: invstAmt / 1,
-          busiRvoDcd: busiRvoDcd,
-          slfCpta: slfCpta / 1,
-          prorLoanAmt: prorLoanAmt / 1,
-          bkbnLoanAmt: bkbnLoanAmt / 1,
-          apvlYn: apvlYn,
-          brwrSpcYn: brwrSpcYn,
-          mngmCndFlflYn: mngmCndFlflYn,
-          bondTrnsYn: bondTrnsYn,
-          fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
-        },
-        maInfo: {
-          hndEmpno: hndEmpno,
-          undwHglmWyDcd: undwHglmWyDcd,
-          hnvrBusiDcd: hnvrBusiDcd,
-          brwrSpcYn: brwrSpcYn,
-          spnsrCtns: spnsrCtns,
-          undwMrtgCtns: undwMrtgCtns,
-        },
-        invstInfo: {
-          hndEmpno: hndEmpno,
-          dealNo: dealNo,
-          invFnnTrgtAsstDcd: invFnnTrgtAsstDcd,
-          brwrNtnNm: brwrNtnNm,
-          totBusiCt: totBusiCt / 1,
-          prorRto: prorRto / 1,
-          cerkRto: cerkRto / 1,
-          bkbnRto: bkbnRto / 1,
-          lesStrtDt: lesStrtDt.replaceAll("-", ""),
-          lesEndDt: lesEndDt.replaceAll("-", ""),
-          loanStrtDt: loanStrtDt.replaceAll("-", ""),
-          loanEndDt: loanEndDt.replaceAll("-", ""),
-          dvcTyCnts: dvcTyCnts,
-          prdcCmpCnts: prdcCmpCnts,
-          mnfYr: mnfYr,
-          invFnnLesKndDcd: invFnnLesKndDcd,
-          lesMgcoNm: lesMgcoNm,
-          lesUserCnts: lesUserCnts,
-          brwrSpcYn: brwrSpcYn,
-          mngmCndFlflYn: mngmCndFlflYn,
-          bondTrnsYn: bondTrnsYn,
-          fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
-        },
-        pefInfo: {
-          hndEmpno: hndEmpno,
-          chrgEmpno: chrgEmpno,
-          invstStgyCtns: invstStgyCtns,
-          mngmCndFlflYn: mngmCndFlflYn,
-          bondTrnsYn: bondTrnsYn,
-        },
-      };
+      // var dtoParam = {
+      //   dealNo: dealNo,
+      //   //, "corpRgstNo": corpRgstNo
+      //   busiNm: busiNm,
+      //   invFnnMngmBusiDcd: invFnnMngmBusiDcd,
+      //   mgcoNm: mgcoNm,
+      //   invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
+      //   invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
+      //   crryCd: crryCd,
+      //   totPrcrAmt: totPrcrAmt / 1,
+      //   mainBondMtncCnts: mainBondMtncCnts,
+      //   ivtgShdnRsnCnts: ivtgShdnRsnCnts,
+      //   thcoMdtnAmt: thcoMdtnAmt / 1,
+      //   thcoPtciAmt: thcoPtciAmt / 1,
+      //   aplyIntrtCnts: aplyIntrtCnts,
+      //   chrrEmpno: chrrEmpno,
+      //   goalErnRt: goalErnRt / 1,
+      //   rmEmpno: rmEmpno,
+      //   busiCnts: busiCnts,
+      //   rlesInfo: {
+      //     hndEmpno: hndEmpno,
+      //     guasMrtgYn: guasMrtgYn,
+      //     busiLcsiCpltYn: busiLcsiCpltYn,
+      //     landOwnrsEnsuYn: landOwnrsEnsuYn,
+      //     fndsMngmTrgtYn: fndsMngmTrgtYn,
+      //     apvlYn: apvlYn,
+      //     brwrSpcYn: brwrSpcYn,
+      //     mngmCndFlflYn: mngmCndFlflYn,
+      //     bondTrnsYn: bondTrnsYn,
+      //     fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
+      //     efceMbdyDcd: efceMbdyDcd,
+      //     slltStrtDt: slltStrtDt.replaceAll("-", ""),
+      //     bzplAddr: bzplAddr,
+      //     busiSiteSqms: busiSiteSqms / 1,
+      //     busiTtlSqms: busiTtlSqms / 1,
+      //     ttlSqms: ttlSqms / 1,
+      //     busiBldngLndrt: busiBldngLndrt / 1,
+      //     eprzSclDcd: eprzSclDcd,
+      //     fcltSclWidhCtns: fcltSclWidhCtns,
+      //     resiEcoCtns: resiEcoCtns,
+      //     crdtRifcDcd: crdtRifcDcd,
+      //     crdtRifcDvcNm: crdtRifcDvcNm,
+      //   },
+      //   infraInfo: {
+      //     hndEmpno: hndEmpno,
+      //     invFnnBusiWyDcd: invFnnBusiWyDcd,
+      //     busiSclCntn: busiSclCntn,
+      //     busiLcsiDt: busiLcsiDt.replaceAll("-", ""),
+      //     cnfnDt: cnfnDt.replaceAll("-", ""),
+      //     mngtCmpNm: mngtCmpNm,
+      //     cnrStrtDt: cnrStrtDt.replaceAll("-", ""),
+      //     cnrEndDt: cnrEndDt.replaceAll("-", ""),
+      //     oprtStrtDt: oprtStrtDt.replaceAll("-", ""),
+      //     oprtEndDt: oprtEndDt.replaceAll("-", ""),
+      //     bzplAddr: bzplAddr,
+      //     lmtYn: lmtYn,
+      //     invstAmt: invstAmt / 1,
+      //     busiRvoDcd: busiRvoDcd,
+      //     slfCpta: slfCpta / 1,
+      //     prorLoanAmt: prorLoanAmt / 1,
+      //     bkbnLoanAmt: bkbnLoanAmt / 1,
+      //     apvlYn: apvlYn,
+      //     brwrSpcYn: brwrSpcYn,
+      //     mngmCndFlflYn: mngmCndFlflYn,
+      //     bondTrnsYn: bondTrnsYn,
+      //     fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
+      //   },
+      //   maInfo: {
+      //     hndEmpno: hndEmpno,
+      //     undwHglmWyDcd: undwHglmWyDcd,
+      //     hnvrBusiDcd: hnvrBusiDcd,
+      //     brwrSpcYn: brwrSpcYn,
+      //     spnsrCtns: spnsrCtns,
+      //     undwMrtgCtns: undwMrtgCtns,
+      //   },
+      //   invstInfo: {
+      //     hndEmpno: hndEmpno,
+      //     dealNo: dealNo,
+      //     invFnnTrgtAsstDcd: invFnnTrgtAsstDcd,
+      //     brwrNtnNm: brwrNtnNm,
+      //     totBusiCt: totBusiCt / 1,
+      //     prorRto: prorRto / 1,
+      //     cerkRto: cerkRto / 1,
+      //     bkbnRto: bkbnRto / 1,
+      //     lesStrtDt: lesStrtDt.replaceAll("-", ""),
+      //     lesEndDt: lesEndDt.replaceAll("-", ""),
+      //     loanStrtDt: loanStrtDt.replaceAll("-", ""),
+      //     loanEndDt: loanEndDt.replaceAll("-", ""),
+      //     dvcTyCnts: dvcTyCnts,
+      //     prdcCmpCnts: prdcCmpCnts,
+      //     mnfYr: mnfYr,
+      //     invFnnLesKndDcd: invFnnLesKndDcd,
+      //     lesMgcoNm: lesMgcoNm,
+      //     lesUserCnts: lesUserCnts,
+      //     brwrSpcYn: brwrSpcYn,
+      //     mngmCndFlflYn: mngmCndFlflYn,
+      //     bondTrnsYn: bondTrnsYn,
+      //     fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
+      //   },
+      //   pefInfo: {
+      //     hndEmpno: hndEmpno,
+      //     chrgEmpno: chrgEmpno,
+      //     invstStgyCtns: invstStgyCtns,
+      //     mngmCndFlflYn: mngmCndFlflYn,
+      //     bondTrnsYn: bondTrnsYn,
+      //   },
+      // };
+
+      var dtoParam = paramSett();
 
       $.ajax({
         type: "POST",
         url: "/TB08031S/saveDealInfo",
         data: JSON.stringify(dtoParam),
-        contentType: "application/json",
+        contentType: "application/json; charset=UTF-8",
         dataType: "json",
         success: function (data) {
           Swal.fire({

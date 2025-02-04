@@ -9,7 +9,7 @@ import com.nanuri.rams.business.common.vo.IBIMS502BVO;
 public interface IBIMS502BMapper {
 	
 	// 부동산사업기본 조회
-	public IBIMS502BVO getRealEstateInfo(String param);
+	public IBIMS502BVO getRealEstateInfo(IBIMS501BVO param);
 	
 	// 부동산사업기본 등록
 	public int saveDealInfo(IBIMS501BVO param);
