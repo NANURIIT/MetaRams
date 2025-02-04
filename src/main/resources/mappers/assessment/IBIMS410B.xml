@@ -849,14 +849,5 @@
             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trCrryCd)">
             AND T1.TR_CRRY_CD = #{trCrryCd} /* 통화구분 */
             </if>
-            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trSn)">
-            AND T1.TR_SN = #{trSn}
-            </if>
-            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(excSn)">
-            AND T1.EXC_SN = #{excSn}
-            </if>
-            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(erlmSeq)">
-            AND T7.ERLM_SEQ = #{erlmSeq}
-            </if>
     </select>
 </mapper>

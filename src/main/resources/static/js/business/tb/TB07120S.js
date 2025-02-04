@@ -697,10 +697,42 @@ const TB07120Sjs = (function () {
     if ( mode === "1" && decdSttsDcd === "3") {
       swalText = "재승인요청";
       paramDecdStepDcd = "02"; // 재승인요청
+      if ( $('#TB07120S_rqstStfno').val() === $('#TB07120S_dcfcEno').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `담당자와 승인자가 같습니다! 변경해주세요`,
+        })
+        return;
+      }
+      else if ( !$('#TB07120S_dcfcEno').val() ) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `승인자를 입력해주세요!`,
+        })
+        return;
+      }
     }
     else if ( mode === "1") {
       swalText = "승인요청";
       paramDecdStepDcd = "04"; // 승인요청
+      if ( $('#TB07120S_rqstStfno').val() === $('#TB07120S_dcfcEno').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `담당자와 승인자가 같습니다! 변경해주세요`,
+        })
+        return;
+      }
+      else if ( !$('#TB07120S_dcfcEno').val() ) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `승인자를 입력해주세요!`,
+        })
+        return;
+      }
     } 
     else if ( mode === "2") {
       swalText = "승인";
