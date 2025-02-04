@@ -42,6 +42,7 @@ public class IBIMS502BDTO {
     private String         mngmCndFlflYn;        // 관리조건이행여부
     private String         fnnrCtrcMttrTrgtYn;   // 재무약정사항대상여부
     private String         bzplAddr;             // 사업장주소
+    private String         bsnsAreaCd;           // 사업지역코드
     private String         rdmpCpltYn;           // 상환완료여부
     private String         delYn;                // 삭제여부
     private Date           hndDetlDtm;           // 조작상세일시

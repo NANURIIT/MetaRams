@@ -51,6 +51,13 @@ public class IBIMS501BDTO {
     private String         invAsstExpsrDcd;      // 투자자산익스포져구분코드
     private String         invFnnOprtTyDcd;      // 투자금융운영형태구분코드
     private String         invFnnAsstClsfCd;     // 투자금융자산분류코드
+
+    private String         invstRvnRtDcd;       //투자수익금리구분코드
+    private BigDecimal     fxnIntrt;            //고정금리
+    private String         stdrIntrtKndCd;      //기준금리종류코드
+    private BigDecimal     stdrIntrt;           //기준금리
+    private BigDecimal     addIntrt;            //가산금리
+
     private String         ivtgShdnRsnCnts;      // 검토중단사유내용
     //private String         crncyCd;              // 통화코드(메타 변경 전)
     private String         crryCd;              // 통화코드
