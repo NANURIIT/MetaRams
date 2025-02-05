@@ -161,7 +161,7 @@ const TB09010Sjs = (function () {
   });
 
   function chkUserAtc(){
-    // 담당직원정보
+
 		$.ajax({
 			type: "GET",
 			url: "/getUserAuth",
