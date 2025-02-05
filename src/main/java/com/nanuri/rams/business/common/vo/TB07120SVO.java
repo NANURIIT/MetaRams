@@ -27,6 +27,7 @@ public class TB07120SVO extends IBIMS410BDTO {
     private BigDecimal stdrExrt;                // 환율
     private BigDecimal eprzCrdlInvAmt;          // 투자금액
     
+    private String etprCrdtGrntTrKindCd;        // (거래종류코드) 업무구분코드
     private String depositWithdrawalCode;       // 입출금구분코드
 
     private String decdStepDcd;                 // 결재단계구분코드

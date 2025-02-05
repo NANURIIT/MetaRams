@@ -838,6 +838,9 @@
                    </when>
                </choose>
             </if>
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(etprCrdtGrntTrKindCd)">
+            AND T1.ETPR_CRDT_GRNT_TR_KIND_CD = #{etprCrdtGrntTrKindCd} /* (거래종류코드) 업무구분코드 */
+            </if>
             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
             AND T1.PRDT_CD = #{prdtCd} /* 종목코드 */
             </if>

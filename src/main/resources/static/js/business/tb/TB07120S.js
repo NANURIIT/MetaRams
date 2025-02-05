@@ -48,8 +48,9 @@ const TB07120Sjs = (function () {
       "/I027" + //  통화구분코드
       // "/D005" + //  업무구분코드
       "/D006" + //  결재상태코드
-      "/F008",  //  자금구분코드
-      false
+      "/F008" +  //  자금구분코드
+      "/P012"     // 업무구분코드
+      ,false
     );
 
     TB07120S_grdSelect.D010 = selectBox.filter(function (item) {
@@ -72,6 +73,10 @@ const TB07120Sjs = (function () {
     TB07120S_grdSelect.F008 = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "F008";
     });
+
+    TB07120S_grdSelect.P012 = selectBox.filter(function (item) {
+      return item.cmnsGrpCd === "P012";
+    });
   }
 
   function createOption() {
@@ -82,6 +87,7 @@ const TB07120Sjs = (function () {
     let D005html;
     let D006html;
     let F008html;
+    let P012html;
 
     TB07120S_grdSelect.D010.forEach((item) => {
       D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
@@ -100,9 +106,23 @@ const TB07120Sjs = (function () {
     TB07120S_grdSelect.F008.forEach((item) => {
       F008html += `<option value="${item.cdValue}">${item.cdName}</option>`;
     });
-    // TB07120S_grdSelect.D005.forEach((item) => {
-    //   D005html += `<option value="${item.cdValue}">${item.cdName}</option>`;
-    // });
+    TB07120S_grdSelect.P012.forEach((item) => {
+      if ( 
+        // 입금
+        item.cdValue === "20"
+        || item.cdValue === "21"
+        || item.cdValue === "82"
+        || item.cdValue === "83"
+        || item.cdValue === "85"
+        // 출금
+        || item.cdValue === "10"
+        || item.cdValue === "22"
+        || item.cdValue === "81"
+        || item.cdValue === "84"
+      ) {
+        P012html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+      }
+    });
 
     $("#TB07120S_dprtNm").append(D010html);
     // $('#TB07080S_ldgSttsCd').append(R031html);
@@ -111,7 +131,7 @@ const TB07120Sjs = (function () {
     // $('#TB07080S_ldgSttsCd').append(D015html);
     $("#TB07120S_consDecdStatCd, #TB07120S_decdSttsDcd").append(D006html);
     $("#TB07120S_fndsDvsnCd").append(F008html);
-    // $('#TB07120S_decdJobDcd').append(D005html);
+    $('#TB07120S_decdJobDcd').append(P012html);
 
     $('#TB07120S_decdSttsDcd').val('0')
 
@@ -219,6 +239,21 @@ const TB07120Sjs = (function () {
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "업무구분",
+      dataType: "string",
+      dataIndx: "etprCrdtGrntTrKindCd",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+      render: function(ui) {
+        const P012Data = TB07120S_grdSelect.P012; // D006 데이터를 활용
+        const cellData = ui.cellData;
+        const matchedItem = P012Data.find(item => item.cdValue === cellData);
+        return matchedItem ? matchedItem.cdName : cellData; // 데이터 매칭이 안되면 원본값 반환
+      }
     },
     /**
      * 2025-01-15 X건X
@@ -606,7 +641,7 @@ const TB07120Sjs = (function () {
         consDecdStatCd: $("#TB07120S_consDecdStatCd").val(),
         trCrryCd: $("#TB07120S_trCrryCd").val(),
         trObjtBsnNo: $("#TB07120S_ardyBzepNo").val(),
-        // , 업무구분: //아직 정해진게 없음
+        etprCrdtGrntTrKindCd: $("#TB07120S_decdJobDcd").val()   // (거래종류코드) 업무구분코드
       };
     }
     else {
@@ -619,21 +654,9 @@ const TB07120Sjs = (function () {
         consDecdStatCd: $("#TB07120S_consDecdStatCd").val(),
         trCrryCd: $("#TB07120S_trCrryCd").val(),
         trObjtBsnNo: $("#TB07120S_ardyBzepNo").val(),
-        // , 업무구분: //아직 정해진게 없음
+        etprCrdtGrntTrKindCd: $("#TB07120S_decdJobDcd").val()   // (거래종류코드) 업무구분코드
       };
     }
-
-    paramData = {
-      orgno: $("#TB07120S_dprtCd").val(),
-      prevDate: unformatDate(prevDate),
-      nextDate: unformatDate(nextDate),
-      depositWithdrawalCode: $("#TB07120S_depositWithdrawalCode").val(),
-      prdtCd: $("#TB07120S_prdtCd").val(),
-      consDecdStatCd: $("#TB07120S_consDecdStatCd").val(),
-      trCrryCd: $("#TB07120S_trCrryCd").val(),
-      trObjtBsnNo: $("#TB07120S_ardyBzepNo").val(),
-      // , 업무구분: //아직 정해진게 없음
-    };
 
     $.ajax({
       type: "POST",
