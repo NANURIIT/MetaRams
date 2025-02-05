@@ -5108,8 +5108,6 @@ const TB08031Sjs = (function () {
       $(prdId).val(monthDiffVal);
 
     }
-
-
   }
 
   return {
