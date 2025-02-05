@@ -1007,6 +1007,23 @@ function dateDiff(strDt, endDt) {
   return totalDays;
 }
 
+
+/**
+ * String 개월수 구하기 = (연도 차이 * 12) + 월 차이
+ * @param {String} strDt 시작일자 yyyyMMdd
+ * @param {String} endDt 종료일자 yyyyMMdd
+ * @return {int} totalMonths 개월수
+ */
+function monthDiff(strtDt, endDt) {
+  var start = new Date(strtDt.substring(0, 4), strtDt.substring(4, 6) - 1);
+  var end = new Date(endDt.substring(0, 4), endDt.substring(4, 6) - 1);
+
+  var yearDiff = end.getFullYear() - start.getFullYear();
+  var monthDiff = end.getMonth() - start.getMonth();
+
+  return yearDiff * 12 + monthDiff;
+}
+
 /**
  * 데이터 null 처리
  * @param {string}

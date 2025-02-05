@@ -5086,6 +5086,32 @@ const TB08031Sjs = (function () {
     }
   }
 
+  function monthDiff_TB08031S(btnId){
+
+    var strtDtId = "#TB08031S_" + btnId + "StrtDt";
+    var endDtId = "#TB08031S_" + btnId + "EndDt";
+    var prdId = "#TB08031S_" + btnId + "Prd";
+
+    if(isEmpty($(strtDtId).val()) || isEmpty($(endDtId).val())){
+
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "시작일자/종료일자를 입력해주세요.",
+        confirmButtonText: "확인",
+      });
+      return false;
+
+    }else{
+
+      var monthDiffVal = monthDiff($(strtDtId).val().replaceAll('-', ''), $(endDtId).val().replaceAll('-', ''));
+      $(prdId).val(monthDiffVal);
+
+    }
+
+
+  }
+
   return {
     loadInvbnkAmnBzCd: loadInvbnkAmnBzCd,
     srchBsnsInfo: srchBsnsInfo,
@@ -5102,6 +5128,7 @@ const TB08031Sjs = (function () {
     ernInfoBtnSave: ernInfoBtnSave,
     getReltDealInfo: getReltDealInfo,
     addMenuRow: addMenuRow,
-    dltMenuRow: dltMenuRow
+    dltMenuRow: dltMenuRow,
+    monthDiff_TB08031S: monthDiff_TB08031S
   };
 })();

@@ -1330,12 +1330,12 @@
 														<div class="form-group col-sm-12 mb-1">
 															<label class="col-sm-1 col-form-label">리스시작일자</label>
 															<div class="col-sm-3 input-group date">
-																<input type="text" class="form-control" id="TB08031S_lseStrtYm" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+																<input type="text" class="form-control" id="TB08031S_lseStrtDt" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
 																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 															</div>
 															<label class="col-sm-1 col-form-label">리스종료일자</label>
 															<div class="col-sm-3 input-group date">
-																<input type="text" class="form-control" id="TB08031S_lseEdYm" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+																<input type="text" class="form-control" id="TB08031S_lseEndDt" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
 																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 															</div>
 															<label class="col-sm-1 col-form-label">리스기간(개월)</label>
@@ -1343,7 +1343,8 @@
 																<input type="text" class="form-control text-right"
 																	id="TB08031S_lsePrd" readonly>
 																<button type="button"
-																	class="btn btn-default mg-l5">계산</button>
+																	class="btn btn-default mg-l5"
+																	onclick="TB08031Sjs.monthDiff_TB08031S(`lse`);">계산</button>
 															</div>
 														</div>
 														<!-- 5row -->
@@ -1355,7 +1356,7 @@
 															</div>
 															<label class="col-sm-1 col-form-label">대출종료일자</label>
 															<div class="col-sm-3 input-group date">
-																<input type="text" class="form-control" id="TB08031S_loanEdYm" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+																<input type="text" class="form-control" id="TB08031S_loanEndDt" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
 																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 															</div>
 															<label class="col-sm-1 col-form-label">대출기간(개월)</label>
@@ -1363,7 +1364,8 @@
 																<input type="text" class="form-control text-right"
 																	id="TB08031S_loanPrd" readonly>
 																<button type="button"
-																	class="btn btn-default mg-l5">계산</button>
+																	class="btn btn-default mg-l5"
+																	onclick="TB08031Sjs.monthDiff_TB08031S(`loan`);">계산</button>
 															</div>
 														</div>
 														<!-- 6row -->
