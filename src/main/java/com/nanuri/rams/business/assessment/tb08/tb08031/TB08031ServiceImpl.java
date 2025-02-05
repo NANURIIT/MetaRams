@@ -294,12 +294,17 @@ public class TB08031ServiceImpl implements TB08031Service {
 
 				// 국제투자	
 				case "04":
+					param.getInvstInfo().setSn(sn);
 					param.getInvstInfo().setHndEmpno(facade.getDetails().getEno());
-					if( null != ibims505BMapper.getInvstInfo(param.getDealNo()) ) {
-						return ibims505BMapper.updateInvstInfo(param.getInvstInfo());
-					} else {
-						return ibims505BMapper.saveInvstInfo(param);
-					}
+					param.getInvstInfo().setDelYn("N");
+
+					return ibims505BMapper.saveInvstInfo(param);
+
+					// if( null != ibims505BMapper.getInvstInfo(param.getDealNo()) ) {
+					// 	return ibims505BMapper.updateInvstInfo(param.getInvstInfo());
+					// } else {
+					// 	return ibims505BMapper.saveInvstInfo(param);
+					// }
 					
 				// PEF/VC	
 				case "05":

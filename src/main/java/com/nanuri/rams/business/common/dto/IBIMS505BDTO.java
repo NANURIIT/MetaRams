@@ -14,7 +14,7 @@ import lombok.Setter;
 public class IBIMS505BDTO {
     private String         dealNo;               // 딜번호
     //private String         sq;               	 // 일련번호(메타 변경 전)
-    private String         sn;               	 // 일련번호
+    private long         sn;               	     // 일련번호
     private String         invFnnTrgtAsstDcd;    // 투자금융대상자산구분코드
     private String         brwrNtnNm;            // 차주국가명
     private BigDecimal     totBusiCt;            // 총사업비용

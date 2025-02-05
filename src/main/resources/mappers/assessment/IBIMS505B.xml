@@ -83,15 +83,7 @@
                )
         VALUES (
                 #{dealNo}                                    /* 딜번호 */
-             , (
-                SELECT CASE WHEN A.SN = 0 THEN '0000000001'
-                            ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
-                  FROM (
-                   		  SELECT COUNT(SN)  AS SN
-                               , MAX(SN)    AS INCREMENT_SQ
-                            FROM IBIMS502B
-                       ) A
-       			)                                             /* 일련번호 */
+               , #{invstInfo.sn}                             /* 일련번호 */
                , #{invstInfo.invFnnTrgtAsstDcd}              /* 투자금융대상자산구분코드 */
                , #{invstInfo.brwrNtnNm}                      /* 차주국가명 */
                , #{invstInfo.totBusiCt}                      /* 총사업비용 */
@@ -117,7 +109,7 @@
                , #{invstInfo.mngmCndFlflYn}                  /* 관리조건이행여부 */
                , #{invstInfo.fnnrCtrcMttrTrgtYn}             /* 재무약정사항대상여부 */
                , #{invstInfo.delYn}                          /* 삭제여부 */
-               , SYSDATE                                	    /* 조작상세일시 */
+               , SYSDATE                                	   /* 조작상세일시 */
                , #{invstInfo.hndEmpno}                       /* 조작사원번호 */
                , #{invstInfo.hndTmnlNo}                      /* 조작단말기번호 */
                , #{invstInfo.hndTrId}                        /* 조작거래id */

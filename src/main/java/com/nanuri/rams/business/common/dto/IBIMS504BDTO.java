@@ -19,7 +19,7 @@ public class IBIMS504BDTO {
     private String         hnvrBusiDcd;          // 인수사업구분코드
     private String         lmtTrYn;              // 한도거래여부
     private String         brwrSpcYn;            // 차주SPC여부
-    //private String         busiCtns;             // 사업내용(메타 변경 전)
+    //private String         busiCtns;           // 사업내용(메타 변경 전)
     private String         busiCnts;             // 사업내용
     private String         undwMrtgCtns;         // 인수담보내용
     private String         spnsrCtns;            // 후원자내용

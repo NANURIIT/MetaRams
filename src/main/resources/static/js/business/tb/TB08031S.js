@@ -4082,6 +4082,7 @@ const TB08031Sjs = (function () {
         }
       }
       return paramData;
+
     }else if(invFnnMngmBusiDcd === "02"){                   // 인프라
 
       var invFnnBusiWyDcd = $("#TB08031S_B013").val();                            //사업방식
@@ -4155,6 +4156,7 @@ const TB08031Sjs = (function () {
         }
       }
       return paramData;
+
     }else if(invFnnMngmBusiDcd === "03"){                   // M&A
 
       var undwHglmWyDcd = $("#TB08031S_U002").val();                            //상환방식
@@ -4209,15 +4211,23 @@ const TB08031Sjs = (function () {
       return paramData;
     }else if(invFnnMngmBusiDcd === "04"){                   // 국제투자
 
+      var invFnnTrgtAsstDcd = $("#TB08031S_T005").val();                        //대상자산구분코드
       var brwrNtnNm = $("#TB08031S_brwrNtnNm").val();                           //차주국가명
       var totBusiCt = $("#TB08031S_totBusiAmt").val().replaceAll(',', '');      //총사업비
-      var prorRto = $("#TB08031S_prorRto").val();                               //선순위비율
-      var cerkRto = $("#TB08031S_cerkRto").val();                               //중순위비율
-      var bkbnRto = $("#TB08031S_bkbnRto").val();                               //후순위/Equity비율
-      var lesStrtDt = $("#TB08031S_lseStrtYm").val();                           //리스시작년월
-      var lesEndDt = $("#TB08031S_lseEdYm").val();                              //리스종료년월
-      var loanStrtDt = $("#TB08031S_loanStrtDt").val();                         //대출시작일자
-      var loanEndDt = $("#TB08031S_loanEdYm").val();                            //대출종료일자
+      var ntnNm = $("#TB08031S_hostCountry").val();                             //국가명
+      var guasDvsnCtns = $("#TB08031S_ensrYn");                                 //보증서구분내용
+
+      var prorRto = $("#TB08031S_prorRto").val().replaceAll(',', '');           //선순위비율
+      var cerkRto = $("#TB08031S_cerkRto").val().replaceAll(',', '');           //중순위비율
+      var bkbnRto = $("#TB08031S_bkbnRto").val().replaceAll(',', '');           //후순위/Equity비율
+      var lesStrtDt = $("#TB08031S_lseStrtDt").val().replaceAll('-', '');       //리스시작일자
+      var lesEndDt = $("#TB08031S_lseEndDt").val().replaceAll('-', '');         //리스종료일자
+      var loanStrtDt = $("#TB08031S_loanStrtDt").val().replaceAll('-', '');     //대출시작일자
+      var loanEndDt = $("#TB08031S_loanEndDt").val().replaceAll('-', '');       //대출종료일자
+
+      var mnum = $("#TB08031S_lsePrd").val();                                   //개월수
+      var loanMnum = $("#TB08031S_loanPrd").val();                              //대출기간개월수
+
       var dvcTyCnts = $("#TB08031S_amSt").val();                                //기종/선종
       var prdcCmpCnts = $("#TB08031S_proEprz").val();                           //제작사
       var mnfYr = $("#TB08031S_proYr").val();                                   //제조년도
@@ -4229,7 +4239,57 @@ const TB08031Sjs = (function () {
       var bondTrnsYn = $("input[name=realEstateBondTrnYN]:checked").val();      //채권이관여부
       var fnnrCtrcMttrTrgtYn = $(
         "input[name=realEstateCmmntMatYN]:checked"
-      ).val();   
+      ).val();                                                                  // 재무약정사항대상여부
+
+      paramData = {
+        dealNo: dealNo,
+        invFnnMngmBusiDcd: invFnnMngmBusiDcd,
+        invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
+        invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
+        crryCd: crryCd,
+        totPrcrAmt: totPrcrAmt,
+        mainBondMtncCnts: mainBondMtncCnts,
+        ivtgShdnRsnCnts: ivtgShdnRsnCnts,
+        thcoRlDcd: thcoRlDcd,
+        thcoMdtnAmt: thcoMdtnAmt,
+        thcoPtciAmt: thcoPtciAmt,
+        invstRvnRtDcd: invstRvnRtDcd,
+        stdrIntrtKndCd: stdrIntrtKndCd,
+        stdrIntrt: stdrIntrt,
+        addIntrt: addIntrt,
+        chrrEmpno: chrrEmpno,
+        busiNm: busiNm,
+        mgcoNm: mgcoNm,
+        goalErnRt: goalErnRt,
+        rmEmpno: rmEmpno,
+        busiCnts: busiCnts,
+        invstInfo: {
+          invFnnTrgtAsstDcd: invFnnTrgtAsstDcd,
+          brwrNtnNm: brwrNtnNm,
+          totBusiCt: totBusiCt,
+          ntnNm: ntnNm,
+          guasDvsnCtns: guasDvsnCtns,
+          prorRto: prorRto,
+          cerkRto: cerkRto,
+          bkbnRto: bkbnRto,
+          lesStrtDt: lesStrtDt,
+          lesEndDt: lesEndDt,
+          loanStrtDt: loanStrtDt,
+          loanEndDt: loanEndDt,
+          mnum: mnum,
+          loanMnum: loanMnum,
+          dvcTyCnts: dvcTyCnts,
+          prdcCmpCnts: prdcCmpCnts,
+          mnfYr: mnfYr,
+          invFnnLesKndDcd: invFnnLesKndDcd,
+          lesMgcoNm: lesMgcoNm,
+          lesUserCnts: lesUserCnts,
+          brwrSpcYn: brwrSpcYn,
+          mngmCndFlflYn: mngmCndFlflYn,
+          bondTrnsYn: bondTrnsYn,
+          fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn
+        }
+      }
 
       return paramData;
     }else if(invFnnMngmBusiDcd === "05"){                   // PEF/VC
@@ -4497,6 +4557,8 @@ const TB08031Sjs = (function () {
 
       var dtoParam = paramSett();
 
+      console.log(JSON.stringify(dtoParam));
+
       $.ajax({
         type: "POST",
         url: "/TB08031S/saveDealInfo",
@@ -4512,7 +4574,13 @@ const TB08031Sjs = (function () {
           });
         },
 
-        error: function () {
+        error: function (error, xhr, status) {
+          console.log(error);
+          console.log(xhr);
+          console.log(status);
+          
+
+
           Swal.fire({
             icon: "error",
             title: "Error!",
