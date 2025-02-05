@@ -9,7 +9,7 @@ import com.nanuri.rams.business.common.vo.IBIMS504BVO;
 public interface IBIMS504BMapper {
 	
 	// MA대출사업기본 조회
-	public IBIMS504BVO getMaInfo(String param);
+	public IBIMS504BVO getMaInfo(IBIMS501BVO param);
 	
 	// M&A 등록
 	public int saveMaInfo(IBIMS501BVO param);

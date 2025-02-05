@@ -14,7 +14,7 @@ import java.util.List;
 public class IBIMS504BDTO {
     private String         dealNo;               // 딜번호
     //private String         sq;               	 // 일련번호(메타 변경 전)
-    private String         sn;               	 // 일련번호
+    private long           sn;               	 // 일련번호
     private String         undwHglmWyDcd;        // 인수상한방식구분코드
     private String         hnvrBusiDcd;          // 인수사업구분코드
     private String         lmtTrYn;              // 한도거래여부

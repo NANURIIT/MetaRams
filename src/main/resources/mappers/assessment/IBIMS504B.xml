@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS504BMapper">
 	
-	<select id="getMaInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS504BVO">
+	<select id="getMaInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS504BVO">
 		SELECT DEAL_NO                                 /* 딜번호 */
          , SN						     		                   /* 일련번호 */
          , UNDW_HGLM_WY_DCD                        /* 인수상한방식구분코드 */
@@ -21,12 +21,9 @@
       FROM IBIMS504B
      WHERE 1=1
        AND DEAL_NO    = #{dealNo} 
-       AND SN					= (
-						             SELECT MAX(SN)
-						               FROM IBIMS504B
-						              WHERE DEAL_NO = #{dealNo}
-						            )                                      
-	</select>
+       AND SN					= #{sn}
+       AND DEL_YN     = 'N'
+  </select>
 	
 	<insert id="saveMaInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO">
         INSERT INTO IBIMS504B 
@@ -49,15 +46,7 @@
              )
       VALUES (
                #{dealNo}                                /* 딜번호 */
-             , (
-                SELECT CASE WHEN A.SN = 0 THEN '0000000001'
-                       ELSE LPAD(TO_NUMBER(A.INCREMENT_SQ) + 1, 10, '0') END
-                  FROM (
-                   		  SELECT COUNT(SN)  AS SN
-                             , MAX(SN)    AS INCREMENT_SQ
-                          FROM IBIMS502B
-                       ) A
-       			    )                                     /* 일련번호 */
+              , #{sn}                                 /* 일련번호 */
               , #{maInfo.undwHglmWyDcd}              	/* 인수상한방식구분코드 */
               , #{maInfo.hnvrBusiDcd}                	/* 인수사업구분코드 */
               , #{maInfo.lmtTrYn}                    	/* 한도거래여부 */

@@ -128,7 +128,7 @@ const TB08031Sjs = (function () {
     {
       title: "NO",
       dataType: "string",
-      dataIndx: "no",
+      dataIndx: "erlmSeq",
       align: "center",
       halign: "center",
       width: "",
@@ -208,7 +208,7 @@ const TB08031Sjs = (function () {
     {
       title: "NO",
       dataType: "string",
-      dataIndx: "no",
+      dataIndx: "erlmSeq",
       align: "center",
       halign: "center",
       width: "",
@@ -280,7 +280,7 @@ const TB08031Sjs = (function () {
     {
       title: "NO",
       dataType: "string",
-      dataIndx: "no",
+      dataIndx: "erlmSeq",
       align: "center",
       halign: "center",
       width: "",
@@ -342,7 +342,7 @@ const TB08031Sjs = (function () {
     {
       title: "NO",
       dataType: "string",
-      dataIndx: "no",
+      dataIndx: "erlmSeq",
       align: "center",
       halign: "center",
       width: "",
@@ -431,7 +431,7 @@ const TB08031Sjs = (function () {
     {
       title: "NO",
       dataType: "string",
-      dataIndx: "no",
+      dataIndx: "erlmSeq",
       align: "center",
       halign: "center",
       width: "",
@@ -675,7 +675,7 @@ const TB08031Sjs = (function () {
       {
         title: "NO",
         dataType: "string",
-        dataIndx: "no",
+        dataIndx: "erlmSeq",
         align: "center",
         halign: "center",
         width: "",
@@ -711,48 +711,52 @@ const TB08031Sjs = (function () {
         dataType: "string",
         dataIndx: "holdStkQnt",
         editable: true,
-        align: "center",
+        align: "right",
         halign: "center",
-        width: "",
+        format: "#,###",
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        // title: "주식상장여부",
-        // dataType: "string",
-        // dataIndx: "stkLstYn",
-        // editable: true,
-        // align: "center",
-        // halign: "center",
-        // width: "",
-        // filter: { crules: [{ condition: "range" }] },
         dataIndx: "stkLstYn",
-        // maxWidth: 60,
-        // minWidth: 60,
-        align: "center",
-        // resizable: false,
         title: "주식상장여부",
-        type: "checkBoxSelection",
-        sortable: false,
-        editor: false,
-        dataType: "bool",
-        editable: "true",
-        align: "center",
-        halign: "center",
-        width: "",
-        cb: {
-          all: false,
-          header: false,
-        },
-      },
-      {
-        title: "경영권여부",
         dataType: "string",
-        dataIndx: "mngRghEnsuYn",
         editable: true,
         align: "center",
         halign: "center",
         width: "",
-        filter: { crules: [{ condition: "range" }] },
+        editor: {
+            type: "select",
+            options: [
+                { value: "Y", label: "상장" },
+                { value: "N", label: "비상장" }
+            ],
+            valueIndx: "value", 
+            labelIndx: "label" 
+        },
+        render: function (ui) {
+          return ui.cellData === "Y" ? "상장" : "비상장";
+        }
+      },
+      {
+        dataIndx: "mngRghEnsuYn",
+        title: "경영권확보여부",
+        dataType: "string",
+        editable: true,
+        align: "center",
+        halign: "center",
+        width: "",
+        editor: {
+            type: "select",
+            options: [
+                { value: "Y", label: "확보" },
+                { value: "N", label: "미확보" }
+            ],
+            valueIndx: "value", 
+            labelIndx: "label" 
+        },
+        render: function (ui) {
+          return ui.cellData === "Y" ? "확보" : "미확보";
+        }
       },
     ]
 
@@ -778,7 +782,7 @@ const TB08031Sjs = (function () {
       {
         title: "NO",
         dataType: "string",
-        dataIndx: "no",
+        dataIndx: "erlmSeq",
         align: "center",
         halign: "center",
         width: "",
@@ -915,7 +919,7 @@ const TB08031Sjs = (function () {
       {
         title: "NO",
         dataType: "string",
-        dataIndx: "no",
+        dataIndx: "erlmSeq",
         align: "center",
         halign: "center",
         width: "",
@@ -1004,7 +1008,7 @@ const TB08031Sjs = (function () {
       {
         title: "NO",
         dataType: "string",
-        dataIndx: "no",
+        dataIndx: "erlmSeq",
         align: "center",
         halign: "center",
         width: "",
@@ -1275,7 +1279,7 @@ const TB08031Sjs = (function () {
         success: function (data) {
           var bssBscInfo = data.ibims101bvo;
 
-          console.log( "bssBscInfo:" + bssBscInfo);
+          // console.log( "bssBscInfo:" + bssBscInfo);
 
           /* 기본항목*/
           // $("#TB08031S_ibDealNo").val(bssBscInfo.dealNo);         // 딜번호
@@ -1535,6 +1539,55 @@ const TB08031Sjs = (function () {
 
 
             }else if(invFnnMngmBusiDcd === "03"){     //M&A
+              var tabPst = $("#TB08031S_ramsTab").children();
+              
+              tabPst.eq(0).hide();
+              tabPst.eq(1).hide();
+              tabPst.eq(2).hide();
+              tabPst.eq(3).show();
+              tabPst.eq(4).hide();
+              tabPst.eq(5).show();
+              tabPst.eq(6).show();
+              tabPst.eq(7).show();
+              tabPst.eq(8).show();
+              tabPst.eq(9).show();
+              tabPst.eq(10).show();
+              tabPst.eq(11).show();
+              tabPst.eq(12).hide();
+              tabPst.eq(13).hide();
+              tabPst.eq(14).show();
+
+              $(".tab-content")
+                .children(".tab-pane.active")
+                .attr("class", "tab-pane");
+              $(".tab-content").children().eq(3).attr("class", "tab-pane active");
+
+              $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+              $(".nav.nav-tabs")
+                .children()
+                .eq(3)
+                .children()
+                .attr("class", "nav-link active");
+                    
+              var maInfo = data.maInfo;
+              
+              var lmtTrYn = maInfo.lmtTrYn;       //한도거래여부
+              
+              if(lmtTrYn == "Y"){
+                $("#TB08031S_lmtTrY").prop("checked", true);
+              }else{
+                $("#TB08031S_lmtTrN").prop("checked", true);
+              } 
+
+              $("#TB08031S_U002").val(maInfo.undwHglmWyDcd);                            //상환방식
+              $("#TB08031S_U001").val(maInfo.hnvrBusiDcd);                              //인수사업구분
+              $("#TB08031S_spon").val(maInfo.spnsrCtns);                                //후원자내용
+              $("#TB08031S_mrtg").val(maInfo.undwMrtgCtns);                             //인수담보내용
+
+              var udwrtPaiBzscalInfo = data.udwrtPaiBzscalInfo;                         //인수대상 기업정보 
+
+              udwrtPaiBzscalInfoInstance.setData(udwrtPaiBzscalInfo);
+              
 
             }else if(invFnnMngmBusiDcd === "04"){     //국제투자
 
@@ -3509,15 +3562,36 @@ const TB08031Sjs = (function () {
   function addMenuRow(gridId){
     var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
 
-    $(gridId).pqGrid("addRow", { rowData: {no: gridLgth+1}, checkEditable: false });
+    $(gridId).pqGrid("addRow", { rowData: {erlmSeq: gridLgth+1}, checkEditable: false });
   }
 
-  function dltMenuRow(gridId){
+  function dltMenuRow(gridId, isThrAChk){
 
-    var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
+    if(isThrAChk){
 
-    $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
+      var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
+      var data =  $(gridId).pqGrid('option', 'dataModel.data');
 
+      let filteredIndexes = [];
+
+      data.forEach((item, index) => {
+        if (item.isChked) {
+          filteredIndexes.push(index);
+        }
+      });
+
+      filteredIndexes
+        .sort((a, b) => b - a)
+        .forEach((index) => {
+          $(gridId).pqGrid("deleteRow", {rowIndx: index});
+        });
+
+    }else{
+      var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
+
+      $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
+    }
+    
   }
 
   // 수익자정보 더블클릭 이벤트

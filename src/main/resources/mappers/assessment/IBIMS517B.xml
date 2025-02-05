@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS517BMapper">
+
+    <insert id="saveUdwrtPaiBzscalInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS517BDTO">
+        INSERT INTO IBIMS517B 
+          (
+              DEAL_NO                          /*딜번호*/
+            , SN                               /*일련번호*/
+            , ERLM_SEQ                         /*등록순번*/
+            , BZNO                             /*사업자등록번호*/
+            , EPRZ_NM                          /*기업체명*/
+            , HOLD_STK_QNT                     /*보유주식수*/
+            , STK_LST_YN                       /*주식상장여부*/
+            , MNG_RGH_ENSU_YN                  /*경영권리확보여부*/
+            , DEL_YN                           /*삭제여부*/
+            , HND_DETL_DTM                     /*조작상세일시*/
+            , HND_EMPNO                        /*조작사원번호*/
+            , HND_TMNL_NO                      /*조작단말기번호*/
+            , HND_TR_ID                        /*조작거래id*/
+            , GUID                             /*guid*/
+          )
+        VALUES (
+              #{dealNo}
+            , #{sn}
+            , #{erlmSeq}
+            , #{bzno}
+            , #{eprzNm}
+            , #{holdStkQnt}
+            , #{stkLstYn}
+            , #{mngRghEnsuYn}
+            , 'N'
+            , SYSDATE
+            , #{hndEmpno}
+            , #{hndTmnlNo}
+            , #{hndTrId}
+            , #{guid}
+        )
+    </insert>
+
+    <select id="getUdwrtPaiBzscalInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.dto.IBIMS517BDTO">
+        SELECT    DEAL_NO                          /*딜번호*/
+                , SN                               /*일련번호*/
+                , ERLM_SEQ                         /*등록순번*/
+                , BZNO                             /*사업자등록번호*/
+                , EPRZ_NM                          /*기업체명*/
+                , HOLD_STK_QNT                     /*보유주식수*/
+                , STK_LST_YN                       /*주식상장여부*/
+                , MNG_RGH_ENSU_YN                  /*경영권리확보여부*/
+                , DEL_YN                           /*삭제여부*/
+        FROM IBIMS517B
+        WHERE DEAL_NO = 'AG120250116110752'
+        AND SN = '3'
+        AND DEL_YN = 'N'
+    </select>
+
+
+
+</mapper>

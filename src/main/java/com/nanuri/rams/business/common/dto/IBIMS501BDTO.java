@@ -128,5 +128,6 @@ public class IBIMS501BDTO {
     private List<IBIMS512BVO>	admsAsstInfo;	 // 편입자산
     private List<IBIMS402BVO>	loanInfo;	 	 // 투자자산-대출계좌
     private List<IBIMS402BVO>	fundInfo;	 	 // 투자자산-수익증권
+    private List<IBIMS517BDTO>  udwrtPaiBzscalInfo;
 
 }

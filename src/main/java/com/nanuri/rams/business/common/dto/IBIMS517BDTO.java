@@ -12,6 +12,7 @@ public class IBIMS517BDTO {
 
     private String dealNo;              //딜번호
     private long sn;                    //일련번호
+    private long erlmSeq;               //등록순번  
     private String bzno;                //사업자등록번호
     private String eprzNm;              //기업체명
     private String holdStkQnt;          //보유주식수

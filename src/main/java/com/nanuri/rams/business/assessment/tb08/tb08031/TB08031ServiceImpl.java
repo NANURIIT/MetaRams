@@ -4,6 +4,7 @@ package com.nanuri.rams.business.assessment.tb08.tb08031;
 
 import com.nanuri.rams.business.common.dto.IBIMS502BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS508BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS517BDTO;
 import com.nanuri.rams.business.common.vo.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import com.nanuri.rams.business.common.mapper.IBIMS512BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS513BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS514BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS515BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS517BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS518BMapper;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
@@ -57,6 +59,7 @@ public class TB08031ServiceImpl implements TB08031Service {
 	private final IBIMS518BMapper ibims518Mapper;   
 	private final IBIMS515BMapper ibims515Mapper;	
 	private final IBIMS512BMapper ibims512Mapper;
+	private final IBIMS517BMapper ibims517Mapper;
 	private final IBIMS402BMapper ibims402Mapper;
 	
 	private  final AuthenticationFacade facade;
@@ -181,15 +184,17 @@ public class TB08031ServiceImpl implements TB08031Service {
 						break;
 					// M&A			
 					case "03":
-						rtnObj.setMaInfo(ibims504BMapper.getMaInfo(param.getDealNo()));
-						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
-						rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
-						rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
+						rtnObj.setMaInfo(ibims504BMapper.getMaInfo(param));
+						rtnObj.setUdwrtPaiBzscalInfo(ibims517Mapper.getUdwrtPaiBzscalInfo(param));
+						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						// rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
+						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						// rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
+						// rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
+						
 						break;
 					// 국제투자	
 					case "04":
@@ -259,8 +264,34 @@ public class TB08031ServiceImpl implements TB08031Service {
 					return ibims503BMapper.saveInfInfo(param);
 				// M&A			
 				case "03":
+					log.debug("!!!M&A 사업정보 저장!!!");
+
+					int saveUdwrtPaiBzscalInfoRslt = 0;
+
+					param.getMaInfo().setSn(sn);
 					param.getMaInfo().setHndEmpno(facade.getDetails().getEno());
+					param.getMaInfo().setDelYn("N");
+
+					List<IBIMS517BDTO> udwrtPaiBzscalInfo = param.getMaInfo().getUdwrtPaiBzscalInfo();		//인수대상 기업정보 리스트
+
+					if(udwrtPaiBzscalInfo.size() > 0){
+						for(int i=0; i < udwrtPaiBzscalInfo.size(); i++){
+							IBIMS517BDTO bzscalInfo = udwrtPaiBzscalInfo.get(i);
+							bzscalInfo.setDealNo(param.getDealNo());
+							bzscalInfo.setSn(sn);
+							bzscalInfo.setErlmSeq(i+1);
+							bzscalInfo.setHndEmpno(facade.getDetails().getEno());
+
+							saveUdwrtPaiBzscalInfoRslt = ibims517Mapper.saveUdwrtPaiBzscalInfo(bzscalInfo);
+						}
+
+						if(saveUdwrtPaiBzscalInfoRslt < 1){
+							log.debug("!!!인수대상 기업정보 INSERT ERROR!!!");
+						}
+					}
+					
 					return ibims504BMapper.saveMaInfo(param); 
+
 				// 국제투자	
 				case "04":
 					param.getInvstInfo().setHndEmpno(facade.getDetails().getEno());
