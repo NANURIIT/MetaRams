@@ -156,9 +156,27 @@ const TB09010Sjs = (function () {
     setKeyFunction_TB09010S();
     setRsltnDt();
     getSelectBoxList("TB09010S", "I010");
-
+    chkUserAtc();
     setGrid_TB09010S();
   });
+
+  function chkUserAtc(){
+    // 담당직원정보
+		$.ajax({
+			type: "GET",
+			url: "/getUserAuth",
+			dataType: "json",
+			success: function(data) {
+				var athCd = data.athCd;
+
+        if(athCd == "AG21" || athCd == "AG28"){
+          $('div[data-menuid="/TB09010S"] #assesmentRequest').attr("disabled", false);
+        }else{
+          $('div[data-menuid="/TB09010S"] #assesmentRequest').attr("disabled", true);
+        }
+			}
+		});
+  }
 
   function setGrid_TB09010S() {
     var obj = {
