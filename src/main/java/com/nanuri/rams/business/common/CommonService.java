@@ -86,6 +86,9 @@ public interface CommonService {
 	// 권한확인
 	public String chkAthCd(IBIMS007BVO param);
 
-	// 결재상태체크
-	public String chkDecdStep (IBIMS231BVO param);
+	// 결재자확인
+	public String chkDcfcEno (IBIMS231BVO param);
+
+	// 결재단계체크
+	public int chkDecdStep (IBIMS231BDTO param);
 }

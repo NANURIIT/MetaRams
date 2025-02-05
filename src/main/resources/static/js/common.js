@@ -10,9 +10,6 @@ function settingFunction() {
 
   setFileUploadEvent(url.split("/")[1]);
 
-  // 결재단계체크
-  chkDecdStep(url.split("/")[1]);
-
   /**
    * 모달 드래그 이벤트
    */
@@ -179,8 +176,8 @@ function ajaxCall(option) {
       //openPopup({type:"loding",show:false});
     },
   }).then(
-    $.type(option.success) === "function" ? option.success : function () {},
-    $.type(option.fail) === "function" ? option.fail : function () {}
+    $.type(option.success) === "function" ? option.success : function () { },
+    $.type(option.fail) === "function" ? option.fail : function () { }
   );
 }
 
@@ -1676,15 +1673,15 @@ function setPqGrid(pqGridObjs) {
       numCl = pqGridObj.numberCell || { show: false }, // numberCell ex:::{ show: false, width: 40, resizable: true, title: "" }
       showTt = pqGridObj.showTitle || false, // showTitle
       showTb = pqGridObj.showToolbar || false, // showToolbar
-      cllSv = pqGridObj.cellSave || function (event, ui) {}, // cellSave
+      cllSv = pqGridObj.cellSave || function (event, ui) { }, // cellSave
       edit = pqGridObj.editable || false,
       tlbar = pqGridObj.toolbar || {},
-      rowClick = pqGridObj.rowClick || function (event, ui) {},
+      rowClick = pqGridObj.rowClick || function (event, ui) { },
       selMd = pqGridObj.selectionModel || {}, // { type: 'row' }
-      cellbs = pqGridObj.cellBeforeSave || function (event, ui) {},
-      cellClick = pqGridObj.cellClick || function (event, ui) {},
-      rowSelect = pqGridObj.rowSelect || function (event, ui) {},
-      rowDblClick = pqGridObj.rowDblClick || function (event, ui) {};
+      cellbs = pqGridObj.cellBeforeSave || function (event, ui) { },
+      cellClick = pqGridObj.cellClick || function (event, ui) { },
+      rowSelect = pqGridObj.rowSelect || function (event, ui) { },
+      rowDblClick = pqGridObj.rowDblClick || function (event, ui) { };
 
     let strNoRows = " "; // 최초 생성 시 body msg
 
@@ -2151,7 +2148,7 @@ function resetPGgrids(menuid) {
   }
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) {}
+function autoSrchFromPQGrid(pqGridId, url, paramData) { }
 
 /**
  * 결재단계확인
@@ -2161,20 +2158,8 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) {}
  * 실행시키시면 됩니다.
  */
 function chkDecdStep(menuId) {
+
   let chrrNo = $(`#${menuId}_empNo`).val();
-
-  if (chrrNo === $("#userEno").val()) {
-    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-      "hidden",
-      false
-    );
-    $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-      "hidden",
-      true
-    );
-    return;
-  }
-
   let dealNo = $(`#${menuId}_ibDealNo`).val() || ""; // 딜번호
   let prdtCd = $(`#${menuId}_prdtCd`).val() || ""; // 상품코드
   let decdJobDcd = menuId; // 결재업무구분코드
@@ -2193,6 +2178,9 @@ function chkDecdStep(menuId) {
     trSeq: trSeq,
   };
 
+  /**
+   * 결재담당자인지 체크해보자
+   */
   $.ajax({
     type: "POST",
     url: `/chkDecdStep`,
@@ -2200,33 +2188,125 @@ function chkDecdStep(menuId) {
     data: JSON.stringify(paramData),
     dataType: "json",
     success: function (data) {
-      // 승인요청중이면 결재, 반려버튼 활성화
-      if (data.toString() === "1") {
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-          "hidden",
-          true
-        );
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-          "hidden",
-          false
-        );
+      /**
+       * 결재요청이 없거나, 결재테이블에 데이터가 존재하지만 결재진행중이 아니다!!
+       * 1. 반려가 되었거나 승인요청취소를 했다.
+       * 2. 승인요청자, 담당자 입장에서는 종목수정, 종목취소가 가능하다!
+       * 3. 결재자 입장에서는 결재, 반려가 불가능하다!
+       */
+      if ( data === -1 || data === 0 ) {
+        /**
+         * 담당자일 경우
+         * 1. 결재요청버튼 활성화.
+         * 2. 종목등록, 취소 활성화.
+         */
+        if ( chrrNo === $('#userEno').val()) {
+          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+            "hidden",
+            false
+          );
+          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+            "hidden",
+            true
+          );
+          // 결재진행중이 아니기에 종목등록, 삭제 가능
+          $(`#${menuId}_regPrdt`).prop("disabled", false);
+          $(`#${menuId}_delPrdt`).prop("disabled", false);
+        }
+        /**
+         * 승인자일 경우
+         * 1. 현재 결재진행중이 아니고 담당자가 아니기 때문에 모든버튼 비활성화
+         */
+        else {
+          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+            "hidden",
+            true
+          );
+          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+            "hidden",
+            true
+          );
+          // 담당자가 아니면 종목등록, 수정 불가능
+          $(`#${menuId}_regPrdt`).prop("disabled", true);
+          $(`#${menuId}_delPrdt`).prop("disabled", true);
+        }
       }
-      // 승인요청 진행중이나 담당자가 아니거나 결재자가 아니면 아무것도 뜨지않음
+      /**
+       * 결재진행중이다!
+       * 1. 현재 로그인한 사람이 승인자인지 결재자인지 확인해보자
+       */
       else {
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-          "hidden",
-          true
-        );
-        $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-          "hidden",
-          true
-        );
+        /**
+         * 담당자일 경우
+         * 1. 결재요청버튼 활성화. ( 재승인요청, 승인요청취소 )
+         * 2. 종목등록, 취소 "비"활성화.
+         */
+        if ( chrrNo === $('#userEno').val()) {
+          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+            "hidden",
+            false
+          );
+          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+            "hidden",
+            true
+          );
+          // 결재진행중이 아니기에 종목등록, 삭제 가능
+          $(`#${menuId}_regPrdt`).prop("disabled", true);
+          $(`#${menuId}_delPrdt`).prop("disabled", true);
+        }
+        /**
+         * 승인자일 경우
+         * 1. 현재 진행중인 결재의 순번을 확인하자.
+         */
+        else {
+          $.ajax({
+            type: "POST",
+            url: `/chkDcfcEno`,
+            contentType: "application/json; charset=UTF-8",
+            data: JSON.stringify(paramData),
+            dataType: "json",
+            success: function (data) {
+              // 승인요청중이면 결재, 반려버튼 활성화
+              if (data.toString() === "1") {
+                $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+                  "hidden",
+                  true
+                );
+                $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+                  "hidden",
+                  false
+                );
+                $(`#${menuId}_regPrdt`).prop("disabled", true)
+                $(`#${menuId}_delPrdt`).prop("disabled", true)
+              }
+              // 현재 이 담당자 순서가 아니거나, 담당자가 아닌듯하다
+              else {
+                $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
+                  "hidden",
+                  true
+                );
+                $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
+                  "hidden",
+                  true
+                );
+                $(`#${menuId}_regPrdt`).prop("disabled", false)
+                $(`#${menuId}_delPrdt`).prop("disabled", false)
+              }
+            },
+          });
+        }
       }
     },
+    error: function (request, status, error) {
+      console.log(request, status, error);
+    }
   });
+
+
+
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) {}
+function autoSrchFromPQGrid(pqGridId, url, paramData) { }
 
 /**
  * 컴포넌트포커스

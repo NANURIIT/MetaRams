@@ -25,6 +25,7 @@ $(document).ready(function () {
 // 승인자목록
 let TB06081P_apvlList = [];
 let TB06081P_dprtList;
+let TB06081P_status;
 
 /**
  * Modal Open
@@ -211,33 +212,29 @@ function TB06081P_srchApvlList() {
 /**
  * 결재요청 저장
  */
-function TB06081P_apvlRqst(decdSttsDcd) {
+function TB06081P_apvlRqst(decdStepDcd) {
 
-    let decdStepDcd;
+    let decdSttsDcd;
     let url;
     let text;
     
     // 재승인요청
     if(
-        decdSttsDcd === "1" 
-        && $("#apvlReqBtn").prop("disabled") === false
-        && $("#apvlReqCancelBtn").prop("disabled") === false
-        && $("#TB06081P_apvlRqstCntn").prop("disabled") === false
-        && $("#TB06081P_errCntn").prop("disabled") === false
+        decdStepDcd === "02" 
     ){
-        decdStepDcd = "02"
+        decdSttsDcd = "1"
         url = "updateApvlRqst"
         text = "재승인요청"
     }
     // 승인요청
-    else if (decdSttsDcd === "1") {
-        decdStepDcd = "04"
+    else if (decdStepDcd === "04") {
+        decdSttsDcd = "1"
         url = "apvlRqst"
         text = "승인요청"
     }
     // 승인요청취소
-    else if (decdSttsDcd === "4") {
-        decdStepDcd = "00"
+    else if (decdStepDcd === "00") {
+        decdSttsDcd = "4"
         url = "updateApvlRqst"
         text = "승인요청취소"
     }
@@ -254,7 +251,7 @@ function TB06081P_apvlRqst(decdSttsDcd) {
             , prdtCd: $('#TB06081P_prdtCd').val()               // 상품코드
             , decdJobDcd: $('#TB06081P_decdJobDcd').val()       // 결재업무구분코드
             , scrnNo: $('#TB06081P_scrnNo').val()               // 화면번호
-            , apvlRqstCntn: $('#TB06081P_apvlRqstCntn').val()   // 승인요청내용 
+            , apvlRqstCntn: $('#TB06081P_apvlRqstCntn').val()   // 승인요청내용
             , excSeq: $('#TB06081P_excSeq').val() || 0          // 실행순번
             , rqstSq: $('#TB06081P_rqstSq').val() || 0          // 신청순번
             , trSeq: $('#TB06081P_trSeq').val() || 0            // 거래순번
@@ -280,11 +277,6 @@ function TB06081P_apvlRqst(decdSttsDcd) {
                     icon: "success",
                     text: `${text} 되었습니다!`,
                 });
-                // 승인취소일경우 승인요청내용 초기화를 위해
-                if(decdSttsDcd === "4"){
-                    TB06081P_reset();
-                }
-
                 TB06081P_apvlListChk();
             }
             // 실패
@@ -322,17 +314,16 @@ function TB06081P_apvlListChk() {
         data: JSON.stringify(paramData),
         dataType: "json",
         success: function (data) {
-            // 성공
+            // 결재를 한 흔적이 있다...!!
             if (data.length > 0) {
                 TB06081P_apvlList = data;
+                TB06081P_setApvlList();
                 for(let i = 0; i < data.length; i++) {
-                    console.log("상태체크", data[i].decdSttsDcd);
                     if ( data[i].decdSttsDcd === "3" ) {
                         TB06081P_apvlReqStatusHandler("no");
                         break;
                     }
                     else if ( data[i].decdSttsDcd === "1" ) {
-                        $('button[onclick*="TB06081P_srchApvlList"]').prop('disabled', true);
                         TB06081P_apvlReqStatusHandler("ing");
                         break;
                     }
@@ -341,20 +332,16 @@ function TB06081P_apvlListChk() {
                         break;
                     }
                     else if ( data[i].decdSttsDcd === "2" ) {
-                        $('button[onclick*="TB06081P_srchApvlList"]').prop('disabled', true);
                         TB06081P_apvlReqStatusHandler("nothing");
                         break;
                     }
                 }
-                TB06081P_setApvlList();
-                // 결재진행중인 내용이면 승인자 그리드 사용불가
-                $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", true)
             }
-            // 실패
+            // 결재한적이 없는거 같은데요?
             else {
                 $("#modal-TB06081P .con-tb06081p tbody").html("");
                 // 결재요청사항 없음
-                TB06081P_apvlReqStatusHandler("nothing");
+                TB06081P_apvlReqStatusHandler("new");
             }
 
             // 결재상태체크 후 버튼컨트롤
@@ -370,41 +357,77 @@ function TB06081P_apvlListChk() {
  * @param {String} status 버튼상태 관리를 위한 상태
  * @description 
  * 결재요청중인 경우 status = "ing"
- * 결재요청내역이 없는 경우 status = "nothing"
- * 결재요청이 가능한 경우 status = "new"
+ * 승인상태인 경우status = "nothing"
  * 결재요청중인 경우 결재요청취소 버튼 활성화, 결재요청버튼 비활성화
  * 버튼 추가, 삭제시 버튼 상태 관리
  */
 function TB06081P_apvlReqStatusHandler(status) {
+
+    TB06081P_status = status;
+    console.log(status);
+    // 진행중
     if (status === "ing") {
-        $("#apvlReqBtn").prop("disabled", false)
-        $("#apvlReqCancelBtn").prop("disabled", false)
-        $("#TB06081P_apvlRqstCntn").prop("disabled", false)
-        $("#TB06081P_errCntn").prop("disabled", false)
+        $('button[onclick*="TB06081P_srchApvlList"]').prop("disabled", true);
+        $('#apvlReqBtn').off('click');
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", false);
+        $("#apvlReqBtn").prop("disabled", true);
+        $("#apvlReqCancelBtn").prop("disabled", false);
+        $("#TB06081P_apvlRqstCntn").prop("disabled", true);
+        $("#TB06081P_errCntn").prop("disabled", false);
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", true);
     }
+    // 승인완료
     else if (status === "nothing") {
+        $('button[onclick*="TB06081P_srchApvlList"]').prop("disabled", true);
+        $('#apvlReqBtn').off('click');
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", true);
         $("#apvlReqBtn").prop("disabled", true)
         $("#apvlReqCancelBtn").prop("disabled", true)
         $("#TB06081P_apvlRqstCntn").prop("disabled", true)
         $("#TB06081P_errCntn").prop("disabled", true)
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", true);
     }
-    else if (status === "new") {
-        $("#apvlReqBtn").prop("disabled", false)
-        $("#apvlReqCancelBtn").prop("disabled", true)
-        $("#TB06081P_apvlRqstCntn").prop("disabled", false)
-        $("#TB06081P_errCntn").prop("disabled", true)
-    }
+    // 반려
     else if (status === "no") {
-        $("#apvlReqBtn").prop("disabled", false)
-        $("#apvlReqCancelBtn").prop("disabled", false)
-        $("#TB06081P_apvlRqstCntn").prop("disabled", false)
-        $("#TB06081P_errCntn").prop("disabled", false)
+        $('button[onclick*="TB06081P_srchApvlList"]').prop("disabled", true);
+        $('#apvlReqBtn').off('click');
+        $('#apvlReqBtn').on('click', function () {
+            TB06081P_apvlRqst('02');
+        });
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", false);
+        $("#apvlReqBtn").prop("disabled", false);
+        $("#apvlReqCancelBtn").prop("disabled", true);
+        $("#TB06081P_apvlRqstCntn").prop("disabled", false);
+        $("#TB06081P_errCntn").prop("disabled", true);
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", true);
     }
+    // 승인요청취소
     else if (status === "apvlcc") {
+        $('button[onclick*="TB06081P_srchApvlList"]').prop("disabled", true);
+        $('#apvlReqBtn').off('click');
+        $('#apvlReqBtn').on('click', function () {
+            TB06081P_apvlRqst('02');
+        });
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", false);
         $("#apvlReqBtn").prop("disabled", false)
         $("#apvlReqCancelBtn").prop("disabled", true)
         $("#TB06081P_apvlRqstCntn").prop("disabled", false)
         $("#TB06081P_errCntn").prop("disabled", true)
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", true);
+    }
+    // 몰라 몰라 초기화는 해야해
+    else if (status === "new") {
+        $('button[onclick*="TB06081P_srchApvlList"]').prop("disabled", false);
+        $('#apvlReqBtn').off('click');
+        $('#apvlReqBtn').on('click', function () {
+            TB06081P_apvlRqst('04');
+        });
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", false);
+        $("#apvlReqBtn").prop("disabled", false);
+        $("#apvlReqCancelBtn").prop("disabled", true);
+        $("#TB06081P_apvlRqstCntn").prop("disabled", false);
+        $("#TB06081P_errCntn").prop("disabled", true);
+        $("#modal-TB06081P .con-tb06081p tbody button").prop("disabled", false);
     }
 }
 
@@ -431,7 +454,7 @@ function TB06081P_addApvlList(rowIdx) {
     TB06081P_setApvlList();
 
     // 결재자 추가시 버튼 활성화
-    TB06081P_apvlReqStatusHandler("new");
+    TB06081P_apvlReqStatusHandler(TB06081P_status);
 }
 
 /**
@@ -532,28 +555,6 @@ function TB06081P_setApvlList() {
 			</tr>
         `
     }
-
-    // for (let i = 0; i < apvlList.length; i++) {
-    //     if(apvlList[i].decdSttsDcd === '3'){
-    //         $("#apvlReqBtn").prop("disabled", false)
-    //         $("#apvlReqCancelBtn").prop("disabled", false)
-    //         $("#TB06081P_apvlRqstCntn").prop("disabled", false)
-    //         $("#TB06081P_errCntn").prop("disabled", false)
-    //         break;
-    //     }
-    //     else if(apvlList[i].decdSttsDcd != '1'){
-    //         $("#apvlReqBtn").prop("disabled", true)
-    //         $("#apvlReqCancelBtn").prop("disabled", true)
-    //         $("#TB06081P_apvlRqstCntn").prop("disabled", true)
-    //         $("#TB06081P_errCntn").prop("disabled", true)
-    //     }
-    //     else {
-    //         $("#apvlReqBtn").prop("disabled", false)
-    //         $("#apvlReqCancelBtn").prop("disabled", true)
-    //         $("#TB06081P_apvlRqstCntn").prop("disabled", false)
-    //         $("#TB06081P_errCntn").prop("disabled", true)
-    //     }
-    // }
 
     $("#modal-TB06081P .con-tb06081p tbody").html(html);
 }

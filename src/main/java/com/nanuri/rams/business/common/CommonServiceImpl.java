@@ -333,14 +333,14 @@ public class CommonServiceImpl implements CommonService {
 	};
 
 	/**
-	 * 결재단계체크
+	 * 결재자확인
 	 */
 	@Override
-	public String chkDecdStep (IBIMS231BVO param) {
+	public String chkDcfcEno (IBIMS231BVO param) {
 
 		param.setDcfcEno(facade.getDetails().getEno());
 
-		String result = ibims231bMapper.chkDecdStep(param);
+		String result = ibims231bMapper.chkDcfcEno(param);
 
 		// 딜번호 종목번호가 없는경우
 		if("".equals(param.getPrdtCd()) && "".equals(param.getDealNo())){
@@ -354,6 +354,17 @@ public class CommonServiceImpl implements CommonService {
 		else{
 			return result;
 		}
+	}
+
+	/**
+	 * 결재단계체크
+	 */
+	@Override
+	public int chkDecdStep (IBIMS231BDTO param) {
+
+		int result = ibims231bMapper.chkDecdStep(param);
+
+		return result;
 	}
 
 }

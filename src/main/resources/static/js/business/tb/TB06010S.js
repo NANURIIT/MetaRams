@@ -894,11 +894,11 @@ const TB06010Sjs = (function(){
 				$('#TB06010S_empNm').val(dealDetail.empNm);														// 담당자명
 				
 				if (isEmpty($('#TB06010S_res_prdtCd').val())) {
-					$('#regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
-					$('#delPrdt').attr('disabled', true); 
+					$('#TB06010S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
+					$('#TB06010S_delPrdt').attr('disabled', true); 
 				} else {
-					$('#delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
-					$('#regPrdt').attr('disabled', false); 
+					$('#TB06010S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
+					$('#TB06010S_regPrdt').attr('disabled', false); 
 
 
 					/******  딜공통 파일첨부 추가 ******/ 
@@ -913,10 +913,7 @@ const TB06010Sjs = (function(){
 					$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", false);
 					$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", false);
 				}
-				
-				// 결재상태확인
 				chkDecdStep("TB06010S");
-
 			}
 		});/* end of ajax*/
 			

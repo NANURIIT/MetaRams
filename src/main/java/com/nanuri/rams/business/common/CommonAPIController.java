@@ -284,11 +284,19 @@ public class CommonAPIController {
 	}
 
 	/**
+	 * 승인자확인
+	 */
+	@PostMapping(value = "/chkDcfcEno")
+	public String chkDcfcEno(@RequestBody IBIMS231BVO paramData) {
+		return commonService.chkDcfcEno(paramData);
+	}
+
+	/**
 	 * 결재단계체크
 	 */
 	@PostMapping(value = "/chkDecdStep")
-	public String chkDecdStep(@RequestBody IBIMS231BVO paramData) {
-		return commonService.chkDecdStep(paramData);
+	public int chkDecdStep(@RequestBody IBIMS231BDTO param) {
+		return commonService.chkDecdStep(param);
 	}
 
 }

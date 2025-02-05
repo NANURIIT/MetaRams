@@ -496,13 +496,22 @@ const TB07120Sjs = (function () {
       }
     }
 
+    chkDecd();
+
+  }
+
+  /**
+   * PQGrid 세팅
+   */
+
+  /**
+   * 결재상태에 따른 버튼 컨트롤
+   */
+  function chkDecd() {
     // 담당자, 승인자 체크
     const nowEmpno = $('#userEno').val()
     const stfno = $('#TB07120S_rqstStfno').val()
     const dcfcEno = $('#TB07120S_dcfcEno').val()
-
-    console.log( nowEmpno === dcfcEno );
-    
 
     // 담당자인 경우
     if ( nowEmpno === stfno ) {
@@ -531,7 +540,7 @@ const TB07120Sjs = (function () {
     
     // 결재단계, 결재상태 확인
     // 해당 사항이 없는경우
-    if (rowData.decdSttsDcd === "0") {
+    if ($('#TB07120S_decdSttsDcd').val() === "0") {
       $('#TB07120S_apvlRqst').prop('disabled', false)
       $('#TB07120S_apvlCncl').prop('disabled', true)
       $('#TB07120S_apvl').prop('disabled', true)
@@ -540,7 +549,7 @@ const TB07120Sjs = (function () {
       $('#TB07120S_dcfcBtn').prop('disabled', false)
     }
     // 결재 진행중인 경우
-    else if (rowData.decdSttsDcd === "1") {
+    else if ($('#TB07120S_decdSttsDcd').val() === "1") {
       $('#TB07120S_apvlRqst').prop('disabled', true)
       $('#TB07120S_apvlCncl').prop('disabled', false)
       $('#TB07120S_apvl').prop('disabled', false)
@@ -549,7 +558,7 @@ const TB07120Sjs = (function () {
       $('#TB07120S_dcfcBtn').prop('disabled', true)
     }
     // 승인된 경우
-    else if (rowData.decdSttsDcd === "2") {
+    else if ($('#TB07120S_decdSttsDcd').val() === "2") {
       $('#TB07120S_apvlRqst').prop('disabled', true)
       $('#TB07120S_apvlCncl').prop('disabled', true)
       $('#TB07120S_apvl').prop('disabled', true)
@@ -558,7 +567,7 @@ const TB07120Sjs = (function () {
       $('#TB07120S_dcfcBtn').prop('disabled', true)
     }
     // 반려된 경우 재승인요청,반려 가능
-    else if (rowData.decdSttsDcd === "3") {
+    else if ($('#TB07120S_decdSttsDcd').val() === "3") {
       $('#TB07120S_apvlRqst').prop('disabled', false)
       $('#TB07120S_apvlCncl').prop('disabled', false)
       $('#TB07120S_apvl').prop('disabled', true)
@@ -570,12 +579,7 @@ const TB07120Sjs = (function () {
     else {
 
     }
-
   }
-
-  /**
-   * PQGrid 세팅
-   */
 
   /*
    *  =====================SELECT모음=====================
