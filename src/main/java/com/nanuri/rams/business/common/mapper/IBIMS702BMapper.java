@@ -22,4 +22,7 @@ public interface IBIMS702BMapper {
     // 등록일련번호 구하기
     public int getRgstSn();
 
+    // 기준월 삭제
+    public int deleteCpcStdrYm (String param);
+
 }

@@ -69,6 +69,9 @@ public class TB09090ServiceImpl implements TB09090Service {
 	@Override
     public int insertIBIMS701B(IBIMS701BVO data) {
 		List<IBIMS701BDTO> list = data.getCpcList();
+
+		ibims701bMapper.deleteCpcStdrYm(facade.getDetails().getDprtCd());
+
 		int rgstSn = ibims701bMapper.getRgstSn();
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).setRgstSn(rgstSn + i);
@@ -83,6 +86,9 @@ public class TB09090ServiceImpl implements TB09090Service {
 	@Override
     public int insertIBIMS702B(IBIMS702BVO data) {
 		List<IBIMS702BDTO> list = data.getCpcList();
+
+		ibims702bMapper.deleteCpcStdrYm(facade.getDetails().getDprtCd());
+
 		int rgstSn = ibims702bMapper.getRgstSn();
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).setRgstSn(rgstSn + i);
@@ -97,6 +103,9 @@ public class TB09090ServiceImpl implements TB09090Service {
 	@Override
     public int insertIBIMS703B(IBIMS703BVO data) {
 		List<IBIMS703BDTO> list = data.getCpcList();
+
+		ibims703bMapper.deleteCpcStdrYm(facade.getDetails().getDprtCd());
+
 		int rgstSn = ibims703bMapper.getRgstSn();
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).setRgstSn(rgstSn + i);

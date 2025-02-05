@@ -6808,6 +6808,7 @@ const TB09090Sjs = (function() {
 		} else {
 			Swal.fire({
 				icon: 'warning'
+				, title: 'Warning!'
 				, text: "보고서 양식을 선택해주세요!"
 				, confirmButtonText: "확인"
 			});
@@ -6935,6 +6936,15 @@ const TB09090Sjs = (function() {
 			cpcList = $("#TB09090S_colCpc3").pqGrid('instance').getData();
 		}
 	
+		if (cpcList.length === 0) {
+			Swal.fire({
+				icon: 'warning'
+				, title: 'Warning!'
+				, text: "데이터를 입력해주세요!"
+				, confirmButtonText: "확인"
+			});
+			return;
+		}
 	
 		let param = {
 			cpcList
@@ -6947,7 +6957,7 @@ const TB09090Sjs = (function() {
 			data: JSON.stringify(param),
 			dataType: "json",
 			success: function (data) {
-				if (data === 1) {
+				if (data > 0) {
 					Swal.fire({
 						icon: 'success'
 						, title: "Success!"
@@ -6957,6 +6967,7 @@ const TB09090Sjs = (function() {
 				} else {
 					Swal.fire({
 						icon: 'warning'
+						, title: "Warning!"
 						, text: "등록실패"
 						, confirmButtonText: "확인"
 					});

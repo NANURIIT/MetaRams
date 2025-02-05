@@ -751,5 +751,12 @@
         FROM IBIMS701B
     </select>
 
+    <delete id="deleteCpcStdrYm" parameterType="string">
+      DELETE
+        FROM IBIMS701B
+       WHERE 1=1
+         AND STDR_YM = TO_CHAR(SYSDATE, 'YYYYMM')
+         AND DPRT_CD = #{dprtCd}
+    </delete>
 
 </mapper>
