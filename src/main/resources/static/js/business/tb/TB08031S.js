@@ -4209,7 +4209,27 @@ const TB08031Sjs = (function () {
       return paramData;
     }else if(invFnnMngmBusiDcd === "04"){                   // 국제투자
 
-      
+      var brwrNtnNm = $("#TB08031S_brwrNtnNm").val();                           //차주국가명
+      var totBusiCt = $("#TB08031S_totBusiAmt").val().replaceAll(',', '');      //총사업비
+      var prorRto = $("#TB08031S_prorRto").val();                               //선순위비율
+      var cerkRto = $("#TB08031S_cerkRto").val();                               //중순위비율
+      var bkbnRto = $("#TB08031S_bkbnRto").val();                               //후순위/Equity비율
+      var lesStrtDt = $("#TB08031S_lseStrtYm").val();                           //리스시작년월
+      var lesEndDt = $("#TB08031S_lseEdYm").val();                              //리스종료년월
+      var loanStrtDt = $("#TB08031S_loanStrtDt").val();                         //대출시작일자
+      var loanEndDt = $("#TB08031S_loanEdYm").val();                            //대출종료일자
+      var dvcTyCnts = $("#TB08031S_amSt").val();                                //기종/선종
+      var prdcCmpCnts = $("#TB08031S_proEprz").val();                           //제작사
+      var mnfYr = $("#TB08031S_proYr").val();                                   //제조년도
+      var invFnnLesKndDcd = $("#TB08031S_L006").val();                          //리스종류
+      var lesMgcoNm = $("#TB08031S_lseMgco").val();                             //리스운용사
+      var lesUserCnts = $("#TB08031S_lseUser").val();                           //리스이용자
+      var brwrSpcYn = $("input[name=realEstateSpcYN]:checked").val();           //차주 SPC 여부
+      var mngmCndFlflYn = $("input[name=realEstateCondComplyYN]:checked").val();//관리조건이행여부
+      var bondTrnsYn = $("input[name=realEstateBondTrnYN]:checked").val();      //채권이관여부
+      var fnnrCtrcMttrTrgtYn = $(
+        "input[name=realEstateCmmntMatYN]:checked"
+      ).val();   
 
       return paramData;
     }else if(invFnnMngmBusiDcd === "05"){                   // PEF/VC
