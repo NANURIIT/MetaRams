@@ -124,6 +124,10 @@ const TB08010Sjs = (function () {
 
   // 부실자산 사후관리 조회
   function getEamList() {
+    tab1BtnReset();
+    tab2EsttReset();
+    tab3LglReset();
+    tab4EfctReset();
     let dealNo = $("#TB08010S_ibDealNo").val();
 
     // 유효성검사
@@ -152,6 +156,10 @@ const TB08010Sjs = (function () {
           if (data.length > 0) {
             arrPqGridDealListInfo.setData(data);
             arrPqGridDealListInfo.option("rowDblClick", function (event, ui) {
+              tab1BtnReset();
+              tab2EsttReset();
+              tab3LglReset();
+              tab4EfctReset();
               setTabContents(ui.rowData);
             });
           }
