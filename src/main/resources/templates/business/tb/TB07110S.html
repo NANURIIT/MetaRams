@@ -14,6 +14,7 @@
 	<script th:src="@{js/business/tb/TB03022P.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
 	<script th:src="@{js/business/tb/TB06011P.js}"></script>
+	<script th:src="@{js/business/tb/TB07021P.js}"></script>
 	<script th:src="@{js/business/tb/TB07110S.js}"></script>
 </th:block>
 
@@ -21,6 +22,7 @@
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
 	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+	<th:block th:replace="business/tb/TB07021P :: TB07021P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -205,13 +207,13 @@
 														disabled>
 												</div>
 											</div>
-											<label class="col-sm-1">지급은행명</label>
-											<div class="col-sm-2">
-												<div class="input-group">
-													<select class="form-control" id="TB07110S_fnltNm">
-														<option value="">선택</option>
-													</select>
-												</div>
+											<label class="col-sm-1">지급은행</label>
+											<div class="col-sm-2 input-group">
+												<input type="text" class="form-control" id="TB07110S_fnltCd">
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" id="TB07110S_btnFnltCd" onclick="callTB07021P('TB07110S')"><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" id="TB07110S_fnltNm" readonly="">
 											</div>
 											<label class="col-sm-1">예금주명</label>
 											<div class="col-sm-2">
