@@ -4208,6 +4208,9 @@ const TB08031Sjs = (function () {
 
       return paramData;
     }else if(invFnnMngmBusiDcd === "04"){                   // 국제투자
+
+      
+
       return paramData;
     }else if(invFnnMngmBusiDcd === "05"){                   // PEF/VC
       return paramData;
