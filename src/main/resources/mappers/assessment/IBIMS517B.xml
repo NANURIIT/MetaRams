@@ -49,8 +49,8 @@
                 , MNG_RGH_ENSU_YN                  /*경영권리확보여부*/
                 , DEL_YN                           /*삭제여부*/
         FROM IBIMS517B
-        WHERE DEAL_NO = 'AG120250116110752'
-        AND SN = '3'
+        WHERE DEAL_NO = #{dealNo}
+        AND SN = #{sn}
         AND DEL_YN = 'N'
     </select>
 
