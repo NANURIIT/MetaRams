@@ -189,9 +189,8 @@ public class TB07120ServiceImpl implements TB07120Service {
 			dto452.setExcSeq(excSeq);
 			dto452.setTrSeq(trSeq);
 			dto452.setErlmSeq(rqstSq);
-			dto452.setRjctRsnCntn(rjctRsnCntn);
 			dto452.setHndEmpno(facade.getDetails().getEno());
-			ibims452bMapper.insertFndsCnstDecd(dto452);
+			ibims452bMapper.updateFndsCnstDecd(dto452);
 
 			result = 1;
 		}
@@ -270,7 +269,7 @@ public class TB07120ServiceImpl implements TB07120Service {
 			dto452.setErlmSeq(rqstSq);
 			dto452.setRjctRsnCntn(rjctRsnCntn);
 			dto452.setHndEmpno(facade.getDetails().getEno());
-			ibims452bMapper.insertFndsCnstDecd(dto452);
+			ibims452bMapper.updateFndsCnstDecd(dto452);
 
 			result = 1;
 		}

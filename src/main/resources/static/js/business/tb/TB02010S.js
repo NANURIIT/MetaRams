@@ -149,26 +149,6 @@ const TB02010Sjs = (function(){
 				dataIndx : "decdSn",
 				hidden 	 : true,
 			}
-			// {
-			// 	dataType: "string",
-			// 	dataIndx: "wfId",
-			// 	hidden: true
-			// },
-			// {
-			// 	dataType: "string",
-			// 	dataIndx: "wfMapId",
-			// 	hidden: true
-			// },
-			// {
-			// 	dataType: "string",
-			// 	dataIndx: "wfMapNm",
-			// 	hidden: true
-			// },
-			// {
-			// 	dataType: "string",
-			// 	dataIndx: "etc",
-			// 	hidden: true
-			// }
 		]
 
 		let pqGridObjs_TB02010S = [
@@ -179,7 +159,7 @@ const TB02010Sjs = (function(){
 				, numberCell: { show: false }
 				, colModel: colM_TB02010S 	
 				, rowDblClick: function ( evt, ui ) {
-					justDoit(ui.rowData.decdSn);
+					justWork(ui.rowData.decdSn);
 				}
 			},
 		]
@@ -197,8 +177,39 @@ const TB02010Sjs = (function(){
 	 * @discription
 	 * 영어를 못해서 죄송합니다
 	 */
-	function justDoit (decdSn) {
-		// parmaData = 
+	function justWork (decdSn) {
+
+		paramData = {
+			decdSn: decdSn
+		}
+
+		console.log(decdSn);
+		console.log(paramData);
+		
+
+		$.ajax({
+			type: "POST",
+			url: "/TB02010S/justWork",
+			contentType: "application/json; charset=UTF-8",
+      		data: JSON.stringify(paramData),
+			success: function(data) {
+				/**
+				 * DEAL_NO 딜번호(화면에 따라 딜번호가 아닌경우가 있음)
+				 * PRDT_CD 종목번호
+				 * SCRN_NO 화면번호
+				 * EXC_SEQ 실행일련번호
+				 * RQST_SQ 등록일련번호
+				 * TR_SEQ  거래일련번호
+				 */
+				sessionStorage.setItem("isFromApvl", true);
+				sessionStorage.setItem("wfDealNo", data.dealNo);
+				sessionStorage.setItem("wfPrdtCd", data.prdtCd);
+				sessionStorage.setItem("excSeq", data.excSeq);
+				sessionStorage.setItem("rqstSq", data.rqstSq);
+				sessionStorage.setItem("trSeq", data.trSeq);
+				callPage(data.scrnNo);
+			}
+		});
 	}
 
 	// 오늘의할일 조회

@@ -44,9 +44,9 @@ public interface IBIMS231BMapper {
     public int decdSn(IBIMS231BDTO paramData);
 
     /**
-     * 결재단계체크
+     * 결재승인자체크
      */
-    public String chkDecdStep (IBIMS231BVO param);
+    public String chkDcfcEno (IBIMS231BVO param);
 
     /**
      * 승인요청그리드 조회
@@ -64,4 +64,13 @@ public interface IBIMS231BMapper {
      */
     public List<IBIMS231BVO> todayWorks ( String param );
 
+    /**
+     * 결재단계체크
+     */
+    public int chkDecdStep ( IBIMS231BDTO param );
+
+    /**
+     * 일하러가는 화면명과 조회 키값
+     */
+    public IBIMS231BDTO justWork ( IBIMS231BDTO param );
 }

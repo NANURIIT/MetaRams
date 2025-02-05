@@ -37,7 +37,12 @@ public interface TB02010Service {
 	// WF 작업내용 조회
 	public TB02010SVO workFlowInq(WorkFlowDTO param);
 
-	// 
+	// 오늘의 할일 2025-02-03 김건우
 	public List<IBIMS231BVO> myJob();
+
+	/**
+     * 일하러가는 화면명과 조회 키값
+     */
+	public IBIMS231BDTO justWork ( IBIMS231BDTO param );
 
 }

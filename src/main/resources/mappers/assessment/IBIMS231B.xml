@@ -153,6 +153,18 @@
        )
   </select>
 
+  <select id="justWork" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS231BDTO">
+      SELECT DEAL_NO        /* 딜번호(화면에 따라 딜번호가 아닌경우가 있음) */
+           , PRDT_CD        /* 종목번호 */
+           , SCRN_NO        /* 화면번호 */
+           , EXC_SEQ        /* 실행일련번호 */
+           , RQST_SQ        /* 등록일련번호 */
+           , TR_SEQ         /* 거래일련번호 */
+        FROM IBIMS231B
+       WHERE 1=1
+         AND DECD_SN = #{decdSn}
+  </select>
+
   <!-- 결재요청내역 확인 -->
   <select id="apvlListChk" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS003BVO">
       SELECT T2.EMPNO							/* 사원번호 */
@@ -191,9 +203,6 @@
                  AND A.EXC_SEQ = #{excSeq}
                  AND A.RQST_SQ = #{rqstSq}
                  AND A.TR_SEQ = #{trSeq}
-                 AND A.RQST_CNCL_DTM IS NULL
-                 AND A.PRCS_RSLT_DCD = '00'
-                 AND A.DECD_STTS_DCD != '4'
               ) T1
    LEFT JOIN IBIMS003B T2
           ON T1.DCFC_ENO = T2.EMPNO
@@ -227,13 +236,10 @@
        AND EXC_SEQ = #{excSeq}
        AND RQST_SQ = #{rqstSq}
        AND TR_SEQ = #{trSeq}
-       AND RQST_CNCL_DTM IS NULL
-       AND PRCS_RSLT_DCD = '00'
-       AND DECD_STTS_DCD != '4'
   </select>
 
-  <!-- 결재단계체크 -->
-  <select id="chkDecdStep" parameterType="com.nanuri.rams.business.common.vo.IBIMS231BVO" resultType="String">
+  <!-- 결재승인자체크 -->
+  <select id="chkDcfcEno" parameterType="com.nanuri.rams.business.common.vo.IBIMS231BVO" resultType="String">
     		SELECT NVL(MAX(
                   CASE WHEN
                       (
@@ -261,11 +267,33 @@
     		   AND T1.EXC_SEQ = #{excSeq}
     		   AND T1.RQST_SQ = #{rqstSq}
     		   AND T1.TR_SEQ = #{trSeq}
-    		   AND T1.RQST_CNCL_DTM IS NULL
-    		   AND T1.PRCS_RSLT_DCD = '00'
            AND T2.DCFC_ENO = #{dcfcEno}
            /* 결재자이긴한데 현재 결재순서가 아닌경우 결재요청 버튼도 보여주면 안됨 */
 	</select>
+
+  <!-- 결재단계체크 -->
+  <select id="chkDecdStep" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="int">
+    SELECT NVL(
+                (
+                 SELECT T1.DECD_STTS_DCD
+  		             FROM IBIMS231B T1
+  		            WHERE 1=1
+  		              AND T1.DEAL_NO = #{dealNo}
+  		              AND T1.PRDT_CD = #{prdtCd}
+  		              AND T1.DECD_JOB_DCD = (
+  		              						  SELECT CD_VL_ID
+  		              						    FROM IBIMS002B
+  		              						   WHERE 1=1
+  		              						     AND CMNS_CD_GRP = 'D005'
+  		              						     AND RSLT_CD_VL = #{decdJobDcd}
+  		              						  )
+  		              AND T1.SCRN_NO = #{scrnNo}
+  		              AND T1.EXC_SEQ = #{excSeq}
+  		              AND T1.RQST_SQ = #{rqstSq}
+  		              AND T1.TR_SEQ = #{trSeq}
+                 ), -1) AS DECD_STTS_DCD
+      FROM DUAL
+  </select>
 
   <select id="getLastDecdSq" parameterType="int" resultType="int">
     SELECT LAST_DECD_SQ

@@ -532,16 +532,16 @@
 						</div>
 						<div class="ibox">
 							<div class="text-right">
-								<button class="btn btn-default" type="button" onclick="TB06010Sjs.managePrdtCd(0);" style="margin-left:2px; margin-right:2px;" id="regPrdt" disabled>종목 등록</button>
-								<button class="btn btn-default" type="button" onclick="TB06010Sjs.managePrdtCd(1);" style="margin-left:2px; margin-right:2px;" id="delPrdt" disabled>종목 삭제</button>
+								<button class="btn btn-default" type="button" onclick="TB06010Sjs.managePrdtCd(0);" style="margin-left:2px; margin-right:2px;" id="TB06010S_regPrdt" disabled>종목 등록</button>
+								<button class="btn btn-default" type="button" onclick="TB06010Sjs.managePrdtCd(1);" style="margin-left:2px; margin-right:2px;" id="TB06010S_delPrdt" disabled>종목 삭제</button>
 							</div>
 						</div>
 						<div class="ibox">
 							<!-- 여기에 버튼을! (임시) -->
 							<div class="text-right">
-								<button class="btn btn-info btn-xs" type="button" onclick="callTB06081P('TB06010S');"><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
-								<button class="btn btn-success btn-xs" type="button" onclick="callTB06082P('TB06010S', 'DECD');"><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
-								<button class="btn btn-danger btn-xs" type="button" onclick="callTB06082P('TB06010S', 'RJCT');"><i class="fa fa-undo"></i>&nbsp;반려</button>
+								<button class="btn btn-info" type="button" onclick="callTB06081P('TB06010S');" hidden><i class="fa fa-square-o"></i>&nbsp;결재요청</button>
+								<button class="btn btn-success" type="button" onclick="callTB06082P('TB06010S', 'DECD');" hidden><i class="fa fa-check-square-o"></i>&nbsp;결재</button>
+								<button class="btn btn-danger" type="button" onclick="callTB06082P('TB06010S', 'RJCT');" hidden><i class="fa fa-undo"></i>&nbsp;반려</button>
 							</div>
 						</div>
 					</div>

@@ -80,10 +80,11 @@ public class TB02010APIController {
 	}
 	
 
-	// @GetMapping(value = "/atcCdInq")
-	// public IBIMS003BDTO
-	
-
-	
-
+	/**
+	 * 일하러가는 화면명과 조회 키값
+	 */
+	@PostMapping("/justWork")
+	public IBIMS231BDTO justWork (@RequestBody IBIMS231BDTO param ) {
+		return tb02010Service.justWork(param);
+	}
 }
