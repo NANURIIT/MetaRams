@@ -963,7 +963,7 @@ const TB07100Sjs = (function () {
       , cdno: $('#TB07100S_cdno').val()                                               // 카드번호
       , apvlNo: $('#TB07100S_apvlNo').val()                                           // 카드승인번호
       , elcPrufYn: 'N'                                                                // 전자증빙여부
-      // , xtnlIsttCd: $('#TB07100S_xtnlIsttCd').val()                                   // 외부기관코드
+      , xtnlIsttCd: $('#TB07100S_fnltCd').val()                                   // 외부기관코드
       // , cnclYn: $('#TB07100S_cnclYn').val()                                           // 취소여부
       // , rgstSn: $('#TB07100S_rgstSn').val()                                           // 등록일련번호 - 채번일듯
       // , crryCd: $('#TB07100S_crryCd').val()                                           // 통화코드

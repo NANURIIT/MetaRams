@@ -932,6 +932,7 @@ const TB07110Sjs = (function () {
       , jobDecdCd: "TB07110S"                                                         // 업무결재코드
       , fndsLdgDcd: $('#TB07110S_fndsLdgDcd').val()                                   // 자금원장구분코드
       , elcPrufYn: 'Y'                                                                // 전자증빙여부
+      , xtnlIsttCd: $('#TB07110S_fnltCd').val()                                       // 외부기관코드
       // , prufDt: unformatDate($('#TB07110S_prufDt').val())                             // 증빙일자
       // , pymtPrarDt: unformatDate($('#TB07110S_pymtPrarDt').val())                     // 지급예정일자
       // , rslnAmt: $('#TB07110S_rslnAmt').val().replaceAll(",", "")                     // 결의금액
@@ -939,7 +940,6 @@ const TB07110Sjs = (function () {
       // , baltDt: unformatDate($('#TB07110S_baltDt').val())                             // 기표일자
       // , cdno: $('#TB07110S_cdno').val()                                               // 카드번호
       // , apvlNo: $('#TB07110S_apvlNo').val()                                           // 카드승인번호
-      // , xtnlIsttCd: $('#TB07110S_xtnlIsttCd').val()                                   // 외부기관코드
       // , cnclYn: $('#TB07110S_cnclYn').val()                                           // 취소여부
       // , rgstSn: $('#TB07110S_rgstSn').val()                                           // 등록일련번호 - 채번일듯
       // , crryCd: $('#TB07110S_crryCd').val()                                           // 통화코드

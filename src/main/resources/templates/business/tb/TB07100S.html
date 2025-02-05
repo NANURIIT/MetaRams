@@ -15,12 +15,14 @@
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
 	<script th:src="@{js/business/tb/TB03022P.js}"></script>
 	<script th:src="@{js/business/tb/TB06011P.js}"></script>
+	<script th:src="@{js/business/tb/TB07021P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+	<th:block th:replace="business/tb/TB07021P :: TB07021P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -107,8 +109,6 @@
 										</select>
 									</div>
 								</div>
-
-
 								<!-- 거래처 -->
 								<label class="col-sm-1 control-label">
 									거래처
@@ -470,21 +470,13 @@
 															class="fa fa-calendar"></i></span>
 												</span>
 											</div>
-
-											<label class="col-sm-1 control-label">
-												거래처
-											</label>
-											<div class="col-sm-2">
-												<div class="input-group">
-													<input type="text" class="form-control" id="TB07100S_2_ardyBzepNo">
-													<span class="input-group-append">
-														<button type="button" class="btn btn-default"
-															onclick="callTB03061P('TB07100S_2');"><i
-																class="fa fa-search"></i></button>
-													</span>
-													<input type="text" class="form-control" id="TB07100S_2_entpNm"
-														readonly>
-												</div>
+											<label class="col-sm-1">지급은행</label>	
+											<div class="col-sm-2 input-group">
+												<input type="text" class="form-control" id="TB07100S_fnltCd">
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" id="TB07100S_btnFnltCd" onclick="callTB07021P('TB07100S')"><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" id="TB07100S_fnltNm" readonly="">
 											</div>
 											<label class="col-sm-1">지급금액</label>
 											<div class="col-sm-2">
@@ -602,10 +594,23 @@
 									</div>
 									<div class="row form-group form-inline text-right">
 										<div class="col-sm-12 form-group">
-											<div class="col-sm-3">
-												<input type="hidden" class="form-control" value="" id="TB07100S_wrtnDt" >
-												<input type="hidden" class="form-control" value="" id="TB07100S_rslnBdcd" >
-												<input type="hidden" class="form-control" value="" id="TB07100S_decdSttsDcd" >
+											<input type="hidden" class="form-control" value="" id="TB07100S_wrtnDt" >
+											<input type="hidden" class="form-control" value="" id="TB07100S_rslnBdcd" >
+											<input type="hidden" class="form-control" value="" id="TB07100S_decdSttsDcd" >
+											<label class="col-sm-1 control-label">
+												거래처
+											</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07100S_2_ardyBzepNo">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default"
+															onclick="callTB03061P('TB07100S_2');"><i
+																class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" id="TB07100S_2_entpNm"
+														readonly>
+												</div>
 											</div>
 											<div class="col-sm-3 form-group pd0">
 												<label class="col-sm-4">편익제공</label>
