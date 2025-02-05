@@ -184,8 +184,8 @@
               , #{fndsIstrSn}
               , #{prufKndDcd}
               , #{pchsDdcDcd}
-              , #{rslnAmt}
-              , #{splmValuTxa}
+              , NVL(#{rslnAmt}, 0)
+              , NVL(#{splmValuTxa}, 0)
               , NVL(#{cnclYn}, 'N')
               , #{trId}
               , NVL(#{bnftYn}, 'N')

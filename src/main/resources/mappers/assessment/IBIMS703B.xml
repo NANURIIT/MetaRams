@@ -330,7 +330,7 @@
         )
         VALUES
         <foreach collection="list" item="item" separator=",">
-                (   #{item.stdrYm}
+                (   TO_CHAR(SYSDATE, 'YYYYMM')
                 ,   #{item.dprtCd}
                 ,   (
                         NVL(
