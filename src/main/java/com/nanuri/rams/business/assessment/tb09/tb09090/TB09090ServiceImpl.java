@@ -69,7 +69,16 @@ public class TB09090ServiceImpl implements TB09090Service {
 	@Override
     public int insertIBIMS701B(IBIMS701BVO data) {
 		List<IBIMS701BDTO> list = data.getCpcList();
-		log.debug("데이터 확인 :::", data);
+
+		ibims701bMapper.deleteCpcStdrYm(facade.getDetails().getDprtCd());
+
+		int rgstSn = ibims701bMapper.getRgstSn();
+		for (int i = 0; i < list.size(); i++) {
+			list.get(i).setRgstSn(rgstSn + i);
+			list.get(i).setHndEmpno(facade.getDetails().getEno());
+			list.get(i).setDprtCd(facade.getDetails().getDprtCd());
+			list.get(i).setDptNm(facade.getDetails().getDprtNm());
+		}
 		int result = ibims701bMapper.insertIBIMS701B(list);
 		return result;
 	}
@@ -77,7 +86,16 @@ public class TB09090ServiceImpl implements TB09090Service {
 	@Override
     public int insertIBIMS702B(IBIMS702BVO data) {
 		List<IBIMS702BDTO> list = data.getCpcList();
-		log.debug("데이터 확인 :::", data);
+
+		ibims702bMapper.deleteCpcStdrYm(facade.getDetails().getDprtCd());
+
+		int rgstSn = ibims702bMapper.getRgstSn();
+		for (int i = 0; i < list.size(); i++) {
+			list.get(i).setRgstSn(rgstSn + i);
+			list.get(i).setHndEmpno(facade.getDetails().getEno());
+			list.get(i).setDprtCd(facade.getDetails().getDprtCd());
+			list.get(i).setDptNm(facade.getDetails().getDprtNm());
+		}
 		int result = ibims702bMapper.insertIBIMS702B(list);
 		return result;
 	}
@@ -85,7 +103,16 @@ public class TB09090ServiceImpl implements TB09090Service {
 	@Override
     public int insertIBIMS703B(IBIMS703BVO data) {
 		List<IBIMS703BDTO> list = data.getCpcList();
-		log.debug("데이터 확인 :::", data);
+
+		ibims703bMapper.deleteCpcStdrYm(facade.getDetails().getDprtCd());
+
+		int rgstSn = ibims703bMapper.getRgstSn();
+		for (int i = 0; i < list.size(); i++) {
+			list.get(i).setRgstSn(rgstSn + i);
+			list.get(i).setHndEmpno(facade.getDetails().getEno());
+			list.get(i).setDprtCd(facade.getDetails().getDprtCd());
+			list.get(i).setDptNm(facade.getDetails().getDprtNm());
+		}
 		int result = ibims703bMapper.insertIBIMS703B(list);
 		return result;
 	}

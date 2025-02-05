@@ -15,7 +15,7 @@ public class IBIMS702BDTO {
 
     private String stdrYm;                           //  기준년월
     private String dprtCd;                           //  부서코드
-    private BigDecimal rgstSn;                       //  등록일련번호
+    private int rgstSn;                              //  등록일련번호
     private String rptsIemMngmNo;                    //  보고서항목관리번호
     private String cmpNm;                            //  회사명
     private String fssCmpCd;                         //  금융감독원회사코드
