@@ -93,10 +93,7 @@ const TB09090Sjs = (function() {
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
 							let result;
-							if (ui.cellData) {
-								result = getDateData(ui.cellData, "yyyymm", "-")
-							}
-							return result;
+							return result = ui.cellData.slice(0, 4) + "-" + ui.cellData.slice(4, 6);
 						}
 					}
 				]
@@ -2697,10 +2694,7 @@ const TB09090Sjs = (function() {
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
 							let result;
-							if (ui.cellData) {
-								result = getDateData(ui.cellData, "yyyymm", "-")
-							}
-							return result;
+							return result = ui.cellData.slice(0, 4) + "-" + ui.cellData.slice(4, 6);
 						}
 					}
 				]
@@ -5296,7 +5290,11 @@ const TB09090Sjs = (function() {
 						width: "10%",
 						align: "center",
 						editable: false,
-						filter: { crules: [{ condition: 'range' }] }
+						filter: { crules: [{ condition: 'range' }] },
+						render: function (ui) {
+							let result;
+							return result = ui.cellData.slice(0, 4) + "-" + ui.cellData.slice(4, 6);
+						}
 					}
 				]
 			},
@@ -6922,51 +6920,19 @@ const TB09090Sjs = (function() {
 	
 		let url;
 	
-		let stdrYm = $('#TB09090S_stdDt').val();
 		let cpcList
 	
 		if (mode = "01") {
 			url = "insertIBIMS701B"
 			cpcList = $("#TB09090S_colCpc1").pqGrid('instance').getData();
-			for (var i = 0; i < cpcList.length; i++) {
-				if (!cpcList[i].jobChrrNm) {
-					cpcList[i].jobChrrNm = $('#userEmpNm').val()
-				}
-				if (!cpcList[i].dprtCd) {
-					cpcList[i].dprtCd = $('#userDprtCd').val()
-				}
-				if (!cpcList[i].wrtnStdrDt) {
-					cpcList[i].wrtnStdrDt = stdrYm
-				}
-			}
-		} else if (mode = "02") {
+		} 
+		else if (mode = "02") {
 			url = "insertIBIMS702B"
 			cpcList = $("#TB09090S_colCpc2").pqGrid('instance').getData();
-			for (var i = 0; i < cpcList.length; i++) {
-				if (!cpcList[i].jobChrrNm) {
-					cpcList[i].jobChrrNm = $('#userEmpNm').val()
-				}
-				if (!cpcList[i].dprtCd) {
-					cpcList[i].dprtCd = $('#userDprtCd').val()
-				}
-				if (!cpcList[i].wrtnStdrDt) {
-					cpcList[i].wrtnStdrDt = stdrYm
-				}
-			}
-		} else if (mode = "03") {
+		} 
+		else if (mode = "03") {
 			url = "insertIBIMS703B"
 			cpcList = $("#TB09090S_colCpc3").pqGrid('instance').getData();
-			for (var i = 0; i < cpcList.length; i++) {
-				if (!cpcList[i].jobChrrNm) {
-					cpcList[i].jobChrrNm = $('#userEmpNm').val()
-				}
-				if (!cpcList[i].dprtCd) {
-					cpcList[i].dprtCd = $('#userDprtCd').val()
-				}
-				if (!cpcList[i].wrtnStdrDt) {
-					cpcList[i].wrtnStdrDt = stdrYm
-				}
-			}
 		}
 	
 	

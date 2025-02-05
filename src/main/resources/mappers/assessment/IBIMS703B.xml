@@ -332,17 +332,12 @@
         <foreach collection="list" item="item" separator=",">
                 (   TO_CHAR(SYSDATE, 'YYYYMM')
                 ,   #{item.dprtCd}
-                ,   (
-                        NVL(
-                                (SELECT MAX(A.RGST_SN) FROM IBIMS703B A) + 1
-                              , 0
-                              )
-                    )
+                ,   #{item.rgstSn}
                 ,   #{item.bssAsstMngmNo}
                 ,   #{item.rptsIemMngmNo}
                 ,   #{item.cmpNm}
                 ,   #{item.fssCmpCd}
-                ,   #{item.wrtnStdrDt}
+                ,   TO_CHAR(SYSDATE, 'YYYYMMDD')
                 ,   #{item.prdtNm}
                 ,   #{item.ctrtDt}
                 ,   #{item.expDt}
@@ -468,5 +463,10 @@
                 )
         </foreach>
     </insert>
+
+    <select id="getRgstSn" resultType="int">
+      SELECT NVL(MAX(RGST_SN), 0) + 1
+        FROM IBIMS703B
+    </select>
     
 </mapper>
