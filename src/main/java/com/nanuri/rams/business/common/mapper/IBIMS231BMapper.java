@@ -68,4 +68,9 @@ public interface IBIMS231BMapper {
      * 결재단계체크
      */
     public int chkDecdStep ( IBIMS231BDTO param );
+
+    /**
+     * 일하러가는 화면명과 조회 키값
+     */
+    public IBIMS231BDTO justWork ( IBIMS231BDTO param );
 }

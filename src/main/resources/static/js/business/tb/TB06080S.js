@@ -97,7 +97,7 @@ const TB06080Sjs = (function () {
               sessionStorage.setItem("rqstSq", ui.rowData.rqstSq);
               sessionStorage.setItem("trSeq", ui.rowData.trSeq);
               sessionStorage.setItem("decdStepDcd", ui.rowData.decdStepDcd);
-              callPage(ui.rowData.scrnNo)
+              callPage(ui.rowData.scrnNo);
             })
 
             // 해당 승인요청의 승인자 리스트

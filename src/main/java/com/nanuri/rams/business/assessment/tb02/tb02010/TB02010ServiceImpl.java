@@ -22,7 +22,9 @@ import com.nanuri.rams.com.dto.WorkFlowDTO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -117,8 +119,19 @@ public class TB02010ServiceImpl implements TB02010Service {
 		return rsltVO;
 	}
 
+	// 오늘의 할일 2025-02-03 김건우
 	@Override
 	public List<IBIMS231BVO> myJob() {
 		return ibims231bMapper.todayWorks(facade.getDetails().getEno());
 	}
+
+	/**
+     * 일하러가는 화면명과 조회 키값
+     */
+	@Override
+	public IBIMS231BDTO justWork ( IBIMS231BDTO param ) {
+		log.debug("int decdSn::::::::::::::" + param.getDecdSn());
+		return ibims231bMapper.justWork( param );
+	}
+
 }
