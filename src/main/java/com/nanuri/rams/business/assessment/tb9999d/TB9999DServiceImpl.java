@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
@@ -16,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@EnableScheduling
 public class TB9999DServiceImpl implements TB9999DService, Runnable {
 
     static boolean autoSave = false;
@@ -54,52 +57,53 @@ public class TB9999DServiceImpl implements TB9999DService, Runnable {
         return result;
     }
 
+    @Scheduled(cron = "0 5 10 * * ?")
     @Override
     public void run() {
 
         int master = ibims997bMapper.jobCount(date);
 
-        try {
+        log.debug("실행만체크 date값 체크:::::::::::::::::::" + date);
 
-            while (true) {
+        // try {
 
-                log.debug("##### 무 한 루 프 #####");
+        //     while (true) {
 
-                int nowData = ibims997bMapper.batchMonitering(date);
-                IBIMS997BDTO needUpdateData = ibims997bMapper.getJobId(date);
+        //         int nowData = ibims997bMapper.batchMonitering(date);
+        //         IBIMS997BDTO needUpdateData = ibims997bMapper.getJobId(date);
 
-                //  모든 배치가 끝난 상황
-                if (nowData == master) {
-                    isRunning = false;
-                    break;
-                } else if (needUpdateData == null) {
-                    Thread.sleep(5000);
-                    continue;
-                } else if ("6".equals(needUpdateData.getJobStatus())) {
-                    needUpdateData.setJobStatus("8");
-                    ibims997bMapper.jobStatusUpdate(needUpdateData);
-                    isRunning = false;
-                    break;
-                } else {
-                    // api 설정 해줘야함
-                    // 임시 주소
-                    String ip = "http://localhost:18092/";
-                    String batchUpdateUriString = ip + needUpdateData.getJobId() + "/insert";
-                    URI batchUpdateUri = URI.create(batchUpdateUriString);
+        //         //  모든 배치가 끝난 상황
+        //         if (nowData == master) {
+        //             isRunning = false;
+        //             break;
+        //         } else if (needUpdateData == null) {
+        //             Thread.sleep(5000);
+        //             continue;
+        //         } else if ("6".equals(needUpdateData.getJobStatus())) {
+        //             needUpdateData.setJobStatus("8");
+        //             ibims997bMapper.jobStatusUpdate(needUpdateData);
+        //             isRunning = false;
+        //             break;
+        //         } else {
+        //             // api 설정 해줘야함
+        //             // 임시 주소
+        //             String ip = "http://localhost:18092/";
+        //             String batchUpdateUriString = ip + needUpdateData.getJobId() + "/insert";
+        //             URI batchUpdateUri = URI.create(batchUpdateUriString);
 
-                    CountDownLatch latch = new CountDownLatch(1);
+        //             CountDownLatch latch = new CountDownLatch(1);
 
-                    // 배치 실행
-                    urlController.callApi(batchUpdateUri, needUpdateData, latch);
-                    latch.await(); // callApi 메서드가 완료될 때까지 대기
+        //             // 배치 실행
+        //             urlController.callApi(batchUpdateUri, needUpdateData, latch);
+        //             latch.await(); // callApi 메서드가 완료될 때까지 대기
 
-                }
-                Thread.sleep(5000);
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            log.error("Thread was interrupted", e);
-        }
+        //         }
+        //         Thread.sleep(5000);
+        //     }
+        // } catch (InterruptedException e) {
+        //     Thread.currentThread().interrupt();
+        //     log.error("Thread was interrupted", e);
+        // }
     }
 
     // private void autoSave() {
