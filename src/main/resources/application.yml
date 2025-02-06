@@ -23,9 +23,6 @@ logging:
 spring:
   application:
     name: NANURI IT Corp Risk Management System
-  batch:
-    jdbc:
-      initialize-schema: never
   datasource:
     # driver-class-name: com.tmax.tibero.jdbc.TbDriver
     url: jdbc:log4jdbc:tibero:thin:@172.30.1.32:8629:tibero
@@ -61,7 +58,4 @@ spring:
     multipart:
       maxFileSize: 1000MB
       maxRequestSize: 2000MB
-  sql:
-    init:
-      platform: oracle
 

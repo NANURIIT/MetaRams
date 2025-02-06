@@ -1,5 +1,4 @@
 plugins {
-	id 'com.google.cloud.tools.jib' version '3.1.1'
 	id 'java'
 	id 'org.springframework.boot' version '2.7.6'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
@@ -93,10 +92,6 @@ dependencies {
 	// Logback 의존성 추가
 	implementation 'ch.qos.logback:logback-classic:1.2.3'
 	implementation 'ch.qos.logback:logback-core:1.2.3'
-	
-	// batch 추가
-	implementation 'org.springframework.boot:spring-boot-starter-batch'
-	
 }
 
 tasks.named('test') {
