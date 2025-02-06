@@ -3173,6 +3173,7 @@ const TB08031Sjs = (function () {
     }
   });
 
+  
   // 사업주요전망 주요일정내용 수정시 실행
   $("#TB08031S_mainCntnt").change(function () {
     if ($("#TB08031S_bsnsForecast").find(".table-active").length > 0) {
