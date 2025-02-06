@@ -8,6 +8,7 @@ $(document).ready(function () {
   selectBoxSet_TB03021P();
   keyDownEnter_TB03021P();
   modalShowFunction_TB03021P();
+  reset_TB03021P();
 });
 
 //부서 셀렉트박스 세팅
@@ -188,14 +189,12 @@ async function getDealInfo() {
   var chrrEmpno = $("#TB03021P_empNo").val(); //담당자번호
   var dprtCd = $("#TB03021P_dprtCd").val(); //부서코드
 
-  // var rgstDt = $("#TB03021P_datepicker1").val().replaceAll("-", "");
-
   var dtoParam = {
     dealNo: dealNo,
     dealNm: dealNm,
     chrrEmpno: chrrEmpno,
     dprtCd: dprtCd,
-    //rgstDt: rgstDt,
+    scrnNo: $('#TB03021P_prefix').val()
   };
 
   await $.ajax({

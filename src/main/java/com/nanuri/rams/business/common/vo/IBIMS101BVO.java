@@ -52,4 +52,6 @@ public class IBIMS101BVO extends IBIMS101BDTO {
     private BigDecimal excBlce; //사업 대출잔액
     private String busiNm;      //사업명
     private String crno;        //법인등록번호
+
+    private String scrnNo;      // 화면번호!
 }

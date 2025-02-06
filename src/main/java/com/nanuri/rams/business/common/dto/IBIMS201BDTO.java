@@ -177,4 +177,5 @@ public class IBIMS201BDTO {
     
 
     private String trDvsn;
+    private String scrnNo;                          // 화면번호 (으윽..여기에 쓰기싫다)
 }

@@ -98,8 +98,8 @@
                 , THE_YEAR_ERN_AMT     /*  당해수익금액  */
                 , BALT_ERN_AMT         /*  기표수익금액  */
                 , INTR_ERN_AMT         /*  이자수익금액  */
-                , CRRY_CD             /*  통화코드  */
-                , CRRY_AMT            /*  통화금액  */
+                , CRRY_CD              /*  통화코드  */
+                , CRRY_AMT             /*  통화금액  */
                 , BALT_DT              /*  기표일자  */
                 , EXP_DT               /*  만기일자 */
                 , RGST_DT              /*  등록일자  */
@@ -353,28 +353,40 @@
              , s003b.DPRT_NM						  /*  부서코드명  */
              , s010b.ENTP_NM   					  /*  업체한글명  */
           FROM IBIMS101B s101b
-          LEFT JOIN IBIMS003B s003b
-               ON s101b.CHRR_EMPNO				= s003b.EMPNO
-          LEFT JOIN IBIMS010B s010b
-               ON s101b.PTXT_TR_OTHR_DSCM_NO	= s010b.ARDY_BZEP_NO
+     LEFT JOIN IBIMS003B s003b
+            ON s101b.CHRR_EMPNO				= s003b.EMPNO
+     LEFT JOIN IBIMS010B s010b
+            ON s101b.PTXT_TR_OTHR_DSCM_NO	= s010b.ARDY_BZEP_NO
          WHERE 1 = 1
-         AND s003b.DEL_YN = 'N'
+           AND s003b.DEL_YN = 'N'
            AND s101b.LAST_YN				= 'Y'
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND s101b.DEAL_NO             LIKE '%'|| #{dealNo} || '%'
-        </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
            AND s101b.DEAL_NM             LIKE '%'|| #{dealNm} || '%'
-        </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDt)">
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDt)">
            AND s101b.RGST_DT             <![CDATA[>=]]> #{rgstDt}
-        </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
            AND s003b.DPRT_CD             = #{dprtCd}
-        </if>
-        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
-           AND s101b.CHRR_EMPNO          = #{chrrEmpno}
-        </if>
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
+           AND (s101b.CHRR_EMPNO         = #{chrrEmpno}     /* 현재로그인한 사람 */
+            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(scrnNo)">
+              <if test="scrnNo == 'TB04010S'">
+                OR s101b.DEAL_NO IN (
+                                      SELECT DEAL_NO
+                                        FROM IBIMS103B
+                                       WHERE 1=1
+                                         AND LAST_YN = 'Y'
+                                         AND OWN_P_ENO = #{chrrEmpno}     /* 현재로그인한 사람 (화면에 따라 결재자여도 볼 수 있게 만듬!) */
+                                    )
+              </if>
+            </if>
+            )
+           </if>
          ORDER BY s101b.RGST_DT DESC
     </select>
     

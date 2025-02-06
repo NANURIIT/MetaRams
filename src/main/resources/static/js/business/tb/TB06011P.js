@@ -547,6 +547,14 @@ async function getPrdtCdList() {
 		, "dprtCd": $('#TB06011P_dprtCd').val()
 	}
 
+	if (
+		$('#TB06011P_prefix').val() === "TB06010S"
+		|| $('#TB06011P_prefix').val() === "TB06020S"
+		|| $('#TB06011P_prefix').val() === "TB06030S"
+	) {
+		param.scrnNo = $('#TB06011P_prefix').val();
+	}
+
 	await $.ajax({
 		type: "Post",
 		url: "/TB06011P/getPrdtCdList",
