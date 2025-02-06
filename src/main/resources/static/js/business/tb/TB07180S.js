@@ -24,6 +24,9 @@ const TB07180Sjs = (function() {
 		$("input").val("");
 		$("select").val("");
 		$('input[id*="Amt"], input[id*=Rt]').val(0);
+		
+		$('.btn-success').attr('disabled', false);
+		$('.btn-danger').attr('disabled', false);
 
 		if (typeof modalFeeKndCdList == "undefined") {
 		} else {
@@ -617,6 +620,8 @@ const TB07180Sjs = (function() {
 				}
 				modalFeeKndCdList.on("rowDblClick", function(event, ui) {
 					setFeeKndCd(ui.rowData);
+					$('.btn-success').attr('disabled', false);
+					$('.btn-danger').attr('disabled', false);
 				});
 			},
 		});
@@ -658,6 +663,8 @@ const TB07180Sjs = (function() {
 						confirmButtonText: '확인',
 					}).then(() => {
 						getFeeData(paramData.feeKndCd);
+						$('.btn-success').attr('disabled', true);
+						$('.btn-danger').attr('disabled', false);
 					});
 					result = 1;
 				} else {
@@ -788,6 +795,8 @@ const TB07180Sjs = (function() {
 						confirmButtonText: '확인',
 					}).then(() => {
 						getFeeData();
+						$('.btn-success').attr('disabled', false);
+						$('.btn-danger').attr('disabled', true);
 					});
 					result = 1;
 				} else {
@@ -808,6 +817,11 @@ const TB07180Sjs = (function() {
 		let fileName = "수수료종류관리.xlsx";
 		pq.saveAs(blob, fileName);
 	}
+	
+	function srchInfo(){
+		getFeeData();
+		resetInputData_TB07180S();
+	}
 
 	/*
 	 *  =====================DELETE모음=====================
@@ -819,7 +833,7 @@ const TB07180Sjs = (function() {
 		insertFeeData: insertFeeData,
 		deleteFeeData: deleteFeeData,
 		pqExportExcel: pqExportExcel,
-
+		srchInfo: srchInfo,
 	};
 
 	/*
