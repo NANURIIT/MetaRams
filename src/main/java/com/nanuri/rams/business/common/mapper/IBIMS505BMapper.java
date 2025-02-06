@@ -10,7 +10,7 @@ import com.nanuri.rams.business.common.vo.IBIMS505BVO;
 public interface IBIMS505BMapper {
 	
 	// 국제투자사업기본 조회
-	public IBIMS505BVO getInvstInfo(String param);
+	public IBIMS505BVO getInvstInfo(IBIMS501BVO param);
 	
 	// 국제투자사업기본 등록
 	public int saveInvstInfo(IBIMS501BVO param);

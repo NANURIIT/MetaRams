@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS505BMapper">
 
-	<select id="getInvstInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS505BVO">
+	<select id="getInvstInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS505BVO">
 	 SELECT DEAL_NO                                 /* 딜번호 */
          , SN				              		         /* 일련번호 */
          , INV_FNN_TRGT_ASST_DCD                   /* 투자금융대상자산구분코드 */
@@ -38,12 +38,9 @@
       FROM IBIMS505B
      WHERE 1=1
        AND DEAL_NO    = #{dealNo}
-       AND SN			 = (
-							    SELECT MAX(SN)
-							      FROM IBIMS505B
-							     WHERE DEAL_NO = #{dealNo}
-		 						)       
-	</select>
+       AND SN			 = #{sn}
+       AND DEL_YN  = 'N'
+  </select>
 	
 	<insert id="saveInvstInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO">
 		INSERT INTO IBIMS505B 

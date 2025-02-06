@@ -131,6 +131,11 @@
          , INV_ASST_EXPSR_DCD                      	/* 투자자산익스포져구분코드 */
          , INV_FNN_OPRT_TY_DCD                     	/* 투자금융운영형태구분코드 */
          , INV_FNN_ASST_CLSF_CD                    	/* 투자금융자산분류코드 */
+         , INVST_RVN_RT_DCD                         /*투자수익금리구분코드*/
+         , FXN_INTRT                                /*고정금리*/
+         , STDR_INTRT_KND_CD                        /*기준금리종류코드*/
+         , STDR_INTRT                               /*기준금리*/
+         , ADD_INTRT                                /*가산금리*/
          , IVTG_SHDN_RSN_CNTS                      	/* 검토중단사유내용 */
          , CRRY_CD                                	/* 통화코드 */
          , TOT_PRCR_AMT                            	/* 총조달금액 */
@@ -180,79 +185,84 @@
          , HND_TR_ID                               	/* 조작거래id */
          , GUID                                    	/* guid */
           )
-   VALUES (
-          #{dealNo}                                   /* 딜번호 */
-        , #{sn}                                      	/* 일련번호 */
-        , #{crno}                                     /* 법인등록번호 */
-        , #{busiNm}                                   /* 사업명 */
-        , #{fndNm}                                    /* 펀드명 */
-        , #{invFnnMngmBusiDcd}                        /* 투자금융관리사업구분코드 */
-        , #{invFnnMngnBusiDtlDcd}                     /* 투자금융관리사업세부구분코드 */
-        , #{invFnnPfBusiDcd}                          /* 투자금융PF사업구분코드 */
-        , #{invFnnMmngPrgSttsCd}                      /* 투자금융관리진행상태코드 */
-        , #{busiMngmDptTpDcd}                         /* 사업관리부서유형구분코드 */
-        , #{invFnnBusiWyDcd}                          /* 투자금융사업방식구분코드 */
-        , #{invFnnFixdFlctDcd}                        /* 투자금융고정변동구분코드 */
-        , #{invFnnTrgtDcd}                            /* 투자금융대상자구분코드 */
-        , #{hbrdRlesDcd}                              /* 국내외부동산구분코드 */
-        , #{invFnnBusiAreaDcd}                        /* 특수금융사업지역코드 */
-        , #{invFnnInvTyDcd}                           /* 투자금융투자유형코드 */
-        , #{invFnnInvStrucDcd}                        /* 투자금융투자구조코드 */
-        , #{invFnnInvWyDcd}                           /* 투자금융투자방식코드 */
-        , #{invAsstAreaLclsCd}                        /* 투자자산지역대분류코드 */
-        , #{invAsstAreaMdclCd}                        /* 투자자산지역중분류코드 */
-        , #{invAsstAreaSclsCd}                        /* 투자자산지역소분류코드 */
-        , #{invAsstExpsrDcd}                          /* 투자자산익스포져구분코드 */
-        , #{invFnnOprtTyDcd}                          /* 투자금융운영형태구분코드 */
-        , #{invFnnAsstClsfCd}                         /* 투자금융자산분류코드 */
-        , #{ivtgShdnRsnCnts}                          /* 검토중단사유내용 */
-        , #{crryCd}                                  /* 통화코드 */
-        , #{totPrcrAmt}                               /* 총조달금액 */
-        , #{mainBondMtncCnts}                         /* 주요채권보전내용 */
-        , #{thcoRlDcd}                                /* 당사주선여부 */
-        , #{thcoMdtnAmt}                              /* 당사주선금액 */
-        , #{thcoPtciAmt}                              /* 당사참여금액 */
-        , #{aplyIntrtCnts}                            /* 적용금리내용 */
-        , #{goalErnRt}                                /* 목표수익율 */
-        , #{feeRt}                                    /* 수수료율 */
-        , #{csrInvYn}                                 /* 사회책임기업투자여부 */
-        , #{blindYn}                                  /* 블라인드여부 */
-        , #{lqdzYn}                                   /* 유통화여부 */
-        , #{loanMdtnIsttNm}                           /* 대출주선기관명 */
-        , #{setInvSaupNm}                             /* 집합투자사업자명 */
-        , #{chrrEmpno}                                /* 담당자사원번호 */
-        , #{subiStarDt}                               /* 사업시작일자 */
-        , #{subiEndDt}                                /* 사업종료일자 */
-        , #{rmEmpno}                                  /* RM사원번호 */
-        , #{busiCnts}                                 /* 사업내용 */
-        , #{rgstDt}                                   /* 등록일자 */
-        , #{ctrcDt}                                   /* 약정일자 */
-        , #{expDt}                                    /* 만기일자 */
-        , #{invStgyDecdSn}                            /* 투자전략결재일련번호 */
-        , #{bfhIvtgDecdSn}                            /* 사전검토결재일련번호 */
-        , #{jdgmDecdSn}                               /* 심사결재일련번호 */
-        , #{ivtgPtfdCnts}                             /* 검토부의내용 */
-        , #{ivtgRsltCtns}                             /* 검토결과내용 */
-        , #{bfhIvtgCnts}                              /* 사전검토내용 */
-        , #{ivtgRsltRsltCtns}                         /* 사전검토결과내용 */
-        , #{jdgmOfrCnts}                              /* 심사의뢰내용 */
-        , #{jdgmAcptCnts}                             /* 심사접수내용 */
-        , #{jdgmRsltCnts}                             /* 심사결과내용 */
-        , #{bzno}                                     /* 사업자등록번호 */
-        , #{brwrNm}                                   /* 차주명 */
-        , #{mgcoNm}                                   /* 운용사명 */
-        , #{apvlDcmNoNm}                              /* 승인문서번호명 */
-        , #{alotFrqcNm}                               /* 배당주기내용 */
-        , #{syndLoanBlce}                             /* 신디케이트론잔액 */
-        , #{ltv}                                      /* LTV */
-        , #{valtMrtgRto}                              /* 유효담보비율 */
-        , #{rpsDelNo}                                 /* 대표딜번호 */
-        , #{delYn}                                    /* 삭제여부 */
-        , SYSDATE                                		  /* 조작상세일시 */
-        , #{hndEmpno}                                 /* 조작사원번호 */
-        , #{hndTmnlNo}                                /* 조작단말기번호 */
-        , #{hndTrId}                                  /* 조작거래id */
-        , #{guid}                                     /* guid */
+    VALUES (
+            #{dealNo}                                   /* 딜번호 */
+          , #{sn}                                      	/* 일련번호 */
+          , #{crno}                                     /* 법인등록번호 */
+          , #{busiNm}                                   /* 사업명 */
+          , #{fndNm}                                    /* 펀드명 */
+          , #{invFnnMngmBusiDcd}                        /* 투자금융관리사업구분코드 */
+          , #{invFnnMngnBusiDtlDcd}                     /* 투자금융관리사업세부구분코드 */
+          , #{invFnnPfBusiDcd}                          /* 투자금융PF사업구분코드 */
+          , #{invFnnMmngPrgSttsCd}                      /* 투자금융관리진행상태코드 */
+          , #{busiMngmDptTpDcd}                         /* 사업관리부서유형구분코드 */
+          , #{invFnnBusiWyDcd}                          /* 투자금융사업방식구분코드 */
+          , #{invFnnFixdFlctDcd}                        /* 투자금융고정변동구분코드 */
+          , #{invFnnTrgtDcd}                            /* 투자금융대상자구분코드 */
+          , #{hbrdRlesDcd}                              /* 국내외부동산구분코드 */
+          , #{invFnnBusiAreaDcd}                        /* 특수금융사업지역코드 */
+          , #{invFnnInvTyDcd}                           /* 투자금융투자유형코드 */
+          , #{invFnnInvStrucDcd}                        /* 투자금융투자구조코드 */
+          , #{invFnnInvWyDcd}                           /* 투자금융투자방식코드 */
+          , #{invAsstAreaLclsCd}                        /* 투자자산지역대분류코드 */
+          , #{invAsstAreaMdclCd}                        /* 투자자산지역중분류코드 */
+          , #{invAsstAreaSclsCd}                        /* 투자자산지역소분류코드 */
+          , #{invAsstExpsrDcd}                          /* 투자자산익스포져구분코드 */
+          , #{invFnnOprtTyDcd}                          /* 투자금융운영형태구분코드 */
+          , #{invFnnAsstClsfCd}                         /* 투자금융자산분류코드 */
+          , #{invstRvnRtDcd}                            /*투자수익금리구분코드*/
+          , #{fxnIntrt}                                 /*고정금리*/
+          , #{stdrIntrtKndCd}                           /*기준금리종류코드*/
+          , #{stdrIntrt}                                /*기준금리*/
+          , #{addIntrt}                                 /*가산금리*/
+          , #{ivtgShdnRsnCnts}                          /* 검토중단사유내용 */
+          , #{crryCd}                                   /* 통화코드 */
+          , #{totPrcrAmt}                               /* 총조달금액 */
+          , #{mainBondMtncCnts}                         /* 주요채권보전내용 */
+          , #{thcoRlDcd}                                /* 당사주선여부 */
+          , #{thcoMdtnAmt}                              /* 당사주선금액 */
+          , #{thcoPtciAmt}                              /* 당사참여금액 */
+          , #{aplyIntrtCnts}                            /* 적용금리내용 */
+          , #{goalErnRt}                                /* 목표수익율 */
+          , #{feeRt}                                    /* 수수료율 */
+          , #{csrInvYn}                                 /* 사회책임기업투자여부 */
+          , #{blindYn}                                  /* 블라인드여부 */
+          , #{lqdzYn}                                   /* 유통화여부 */
+          , #{loanMdtnIsttNm}                           /* 대출주선기관명 */
+          , #{setInvSaupNm}                             /* 집합투자사업자명 */
+          , #{chrrEmpno}                                /* 담당자사원번호 */
+          , #{subiStarDt}                               /* 사업시작일자 */
+          , #{subiEndDt}                                /* 사업종료일자 */
+          , #{rmEmpno}                                  /* RM사원번호 */
+          , #{busiCnts}                                 /* 사업내용 */
+          , #{rgstDt}                                   /* 등록일자 */
+          , #{ctrcDt}                                   /* 약정일자 */
+          , #{expDt}                                    /* 만기일자 */
+          , #{invStgyDecdSn}                            /* 투자전략결재일련번호 */
+          , #{bfhIvtgDecdSn}                            /* 사전검토결재일련번호 */
+          , #{jdgmDecdSn}                               /* 심사결재일련번호 */
+          , #{ivtgPtfdCnts}                             /* 검토부의내용 */
+          , #{ivtgRsltCtns}                             /* 검토결과내용 */
+          , #{bfhIvtgCnts}                              /* 사전검토내용 */
+          , #{ivtgRsltRsltCtns}                         /* 사전검토결과내용 */
+          , #{jdgmOfrCnts}                              /* 심사의뢰내용 */
+          , #{jdgmAcptCnts}                             /* 심사접수내용 */
+          , #{jdgmRsltCnts}                             /* 심사결과내용 */
+          , #{bzno}                                     /* 사업자등록번호 */
+          , #{brwrNm}                                   /* 차주명 */
+          , #{mgcoNm}                                   /* 운용사명 */
+          , #{apvlDcmNoNm}                              /* 승인문서번호명 */
+          , #{alotFrqcNm}                               /* 배당주기내용 */
+          , #{syndLoanBlce}                             /* 신디케이트론잔액 */
+          , #{ltv}                                      /* LTV */
+          , #{valtMrtgRto}                              /* 유효담보비율 */
+          , #{rpsDelNo}                                 /* 대표딜번호 */
+          , #{delYn}                                    /* 삭제여부 */
+          , SYSDATE                                		  /* 조작상세일시 */
+          , #{hndEmpno}                                 /* 조작사원번호 */
+          , #{hndTmnlNo}                                /* 조작단말기번호 */
+          , #{hndTrId}                                  /* 조작거래id */
+          , #{guid}                                     /* guid */
         )
 	</insert>
 
@@ -280,6 +290,11 @@
             , A.GOAL_ERN_RT 				              /*목표수익률*/
             , A.BUSI_CNTS					                /*사업내용*/
             , A.RM_EMPNO					                /*RM 사원번호*/
+            , (
+              SELECT EMP_NM
+              FROM IBIMS003B
+              WHERE EMPNO = RM_EMPNO
+            ) AS RM_EMP_NM                        /*RM담당자명*/
         FROM IBIMS501B A 
         JOIN IBIMS003B B
         ON A.CHRR_EMPNO = B.EMPNO 

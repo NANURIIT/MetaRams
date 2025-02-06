@@ -1590,13 +1590,141 @@ const TB08031Sjs = (function () {
               
 
             }else if(invFnnMngmBusiDcd === "04"){     //국제투자
+              var tabPst = $("#TB08031S_ramsTab").children();
+              tabPst.eq(0).hide();
+              tabPst.eq(1).hide();
+              tabPst.eq(2).hide();
+              tabPst.eq(3).hide();
+              tabPst.eq(4).show();
+              tabPst.eq(5).show();
+              tabPst.eq(6).show();
+              tabPst.eq(7).show();
+              tabPst.eq(8).show();
+              tabPst.eq(9).show();
+              tabPst.eq(10).hide();
+              tabPst.eq(11).hide();
+              tabPst.eq(12).hide();
+              tabPst.eq(13).hide();
+              tabPst.eq(14).hide();
 
+              $(".tab-content")
+                .children(".tab-pane.active")
+                .attr("class", "tab-pane");
+              $(".tab-content").children().eq(4).attr("class", "tab-pane active");
+
+              $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+              $(".nav.nav-tabs")
+                .children()
+                .eq(4)
+                .children()
+                .attr("class", "nav-link active");
+
+              var invstInfo = data.invstInfo;
+              
+              var brwrSpcYn = invstInfo.brwrSpcYn;                       //차주 SPC 여부
+              var mngmCndFlflYn = invstInfo.mngmCndFlflYn;               //관리조건이행여부
+              var bondTrnsYn = invstInfo.bondTrnsYn;                     //채권이관여부
+              var fnnrCtrcMttrTrgtYn = invstInfo.fnnrCtrcMttrTrgtYn;     // 재무약정사항대상여부
+
+              if(brwrSpcYn == "Y"){
+                $("#TB08031S_realEstateSpcY").prop("checked", true);
+              }else{
+                $("#TB08031S_realEstateSpcN").prop("checked", true);
+              } 
+
+              if(mngmCndFlflYn == "Y"){
+                $("#TB08031S_realEstateCondComplyY").prop("checked", true);
+              }else{
+                $("#TB08031S_realEstateCondComplyN").prop("checked", true);
+              } 
+
+              if(bondTrnsYn == "Y"){
+                $("#TB08031S_realEstateBondTrnY").prop("checked", true);
+              }else{
+                $("#TB08031S_realEstateBondTrnN").prop("checked", true);
+              } 
+
+              if(fnnrCtrcMttrTrgtYn == "Y"){
+                $("#TB08031S_realEstateCmmntMatY").prop("checked", true);
+              }else{
+                $("#TB08031S_realEstateCmmntMatN").prop("checked", true);
+              } 
+
+              $("#TB08031S_T005").val(invstInfo.invFnnTrgtAsstDcd);    //대상자산구분코드
+              $("#TB08031S_brwrNtnNm").val(invstInfo.brwrNtnNm);       //차주국가명
+              $("#TB08031S_totBusiAmt").val(invstInfo.totBusiCt);      //총사업비
+              $("#TB08031S_hostCountry").val(invstInfo.ntnNm);         //국가명
+              $("#TB08031S_ensrYn").val(invstInfo.guasDvsnCtns);       //보증서구분내용
+              $("#TB08031S_prorRto").val(invstInfo.prorRto);           //선순위비율
+              $("#TB08031S_cerkRto").val(invstInfo.cerkRto);           //중순위비율
+              $("#TB08031S_bkbnRto").val(invstInfo.bkbnRto);           //후순위/Equity비율
+              $("#TB08031S_lseStrtDt").val(formatDate(invstInfo.lesStrtDt));       //리스시작일자
+              $("#TB08031S_lseEndDt").val(formatDate(invstInfo.lesEndDt));         //리스종료일자
+              $("#TB08031S_loanStrtDt").val(formatDate(invstInfo.loanStrtDt));     //대출시작일자
+              $("#TB08031S_loanEndDt").val(formatDate(invstInfo.loanEndDt));       //대출종료일자
+              $("#TB08031S_lsePrd").val(invstInfo.mnum);               //개월수
+              $("#TB08031S_loanPrd").val(invstInfo.loanMnum);          //대출기간개월수
+              $("#TB08031S_amSt").val(invstInfo.dvcTyCnts);            //기종/선종
+              $("#TB08031S_proEprz").val(invstInfo.prdcCmpCnts);       //제작사
+              $("#TB08031S_proYr").val(invstInfo.mnfYr);               //제조년도
+              $("#TB08031S_L006").val(invstInfo.invFnnLesKndDcd);      //리스종류
+              $("#TB08031S_lseMgco").val(invstInfo.lesMgcoNm);         //리스운용사
+              $("#TB08031S_lseUser").val(invstInfo.lesUserCnts);       //리스이용자
+              
             }else if(invFnnMngmBusiDcd === "05"){     //PEF/VC
 
+              var tabPst = $("#TB08031S_ramsTab").children();
+
+              tabPst.eq(0).hide();
+              tabPst.eq(1).show();
+              tabPst.eq(2).hide();
+              tabPst.eq(3).hide();
+              tabPst.eq(4).hide();
+              tabPst.eq(5).show();
+              tabPst.eq(6).show();
+              tabPst.eq(7).show();
+              tabPst.eq(8).show();
+              tabPst.eq(9).hide();
+              tabPst.eq(10).show();
+              tabPst.eq(11).show();
+              tabPst.eq(12).show();
+              tabPst.eq(13).show();
+              tabPst.eq(14).show();
+
+              $(".tab-content")
+                .children(".tab-pane.active")
+                .attr("class", "tab-pane");
+              $(".tab-content").children().eq(1).attr("class", "tab-pane active");
+
+              $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+              $(".nav.nav-tabs")
+                .children()
+                .eq(1)
+                .children()
+                .attr("class", "nav-link active");
+
+              var pefInfo = data.pefInfo;
+              
+              var mngmCndFlflYn = pefInfo.mngmCndFlflYn;       //관리조건이행여부
+              var bondTrnsYn = pefInfo.bondTrnsYn;             //채권이관여부
+
+              if(mngmCndFlflYn == "Y"){
+                $("#TB08031S_pefVcInvstMngY").prop("checked", true);
+              }else{
+                $("#TB08031S_pefVcInvstMngN").prop("checked", true);
+              } 
+
+              if(bondTrnsYn == "Y"){
+                $("#TB08031S_pefVcBondTrnY").prop("checked", true);
+              }else{
+                $("#TB08031S_pefVcBondTrnN").prop("checked", true);
+              } 
+
+              $("#TB08031S_tab2_empNo").val(pefInfo.chrgEmpno);                      //담당자
+              $("#TB08031S_tab2_empNm").val(pefInfo.chrgEmpnm)                       //담당자명
+              $("#TB08031S_invstGuidelines").val(pefInfo.invstStgyCtns);             //투자가이드라인
             }
-
           }
-
         }
       });
     }
@@ -4032,6 +4160,7 @@ const TB08031Sjs = (function () {
 
       paramData = {
         dealNo: dealNo,
+        crno: crno,
         invFnnMngmBusiDcd: invFnnMngmBusiDcd,
         invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
         invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
@@ -4111,6 +4240,7 @@ const TB08031Sjs = (function () {
 
       paramData = {
         dealNo: dealNo,
+        crno: crno,
         invFnnMngmBusiDcd: invFnnMngmBusiDcd,
         invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
         invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
@@ -4178,6 +4308,7 @@ const TB08031Sjs = (function () {
 
       paramData = {
         dealNo: dealNo,
+        crno: crno,
         invFnnMngmBusiDcd: invFnnMngmBusiDcd,
         invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
         invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
@@ -4215,7 +4346,7 @@ const TB08031Sjs = (function () {
       var brwrNtnNm = $("#TB08031S_brwrNtnNm").val();                           //차주국가명
       var totBusiCt = $("#TB08031S_totBusiAmt").val().replaceAll(',', '');      //총사업비
       var ntnNm = $("#TB08031S_hostCountry").val();                             //국가명
-      var guasDvsnCtns = $("#TB08031S_ensrYn");                                 //보증서구분내용
+      var guasDvsnCtns = $("#TB08031S_ensrYn").val();                                 //보증서구분내용
 
       var prorRto = $("#TB08031S_prorRto").val().replaceAll(',', '');           //선순위비율
       var cerkRto = $("#TB08031S_cerkRto").val().replaceAll(',', '');           //중순위비율
@@ -4243,6 +4374,7 @@ const TB08031Sjs = (function () {
 
       paramData = {
         dealNo: dealNo,
+        crno: crno,
         invFnnMngmBusiDcd: invFnnMngmBusiDcd,
         invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
         invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
@@ -4293,6 +4425,43 @@ const TB08031Sjs = (function () {
 
       return paramData;
     }else if(invFnnMngmBusiDcd === "05"){                   // PEF/VC
+
+      var invstStgyCtns = $("#TB08031S_invstGuidelines").val();                 //투자가이드라인
+      var mngmCndFlflYn = $("input[name=pefVcInvstMngYN]:checked").val();       //관리조건이행
+      var bondTrnsYn = $("input[name=TB08031S_pefVcBondTrnYN]:checked").val();  //채권이관여부
+      var chrgEmpno = $("#TB08031S_tab2_empNo").val();                          //담당자
+
+      paramData = {
+        dealNo: dealNo,
+        crno: crno,
+        invFnnMngmBusiDcd: invFnnMngmBusiDcd,
+        invFnnMngnBusiDtlDcd: invFnnMngnBusiDtlDcd,
+        invFnnMmngPrgSttsCd: invFnnMmngPrgSttsCd,
+        crryCd: crryCd,
+        totPrcrAmt: totPrcrAmt,
+        mainBondMtncCnts: mainBondMtncCnts,
+        ivtgShdnRsnCnts: ivtgShdnRsnCnts,
+        thcoRlDcd: thcoRlDcd,
+        thcoMdtnAmt: thcoMdtnAmt,
+        thcoPtciAmt: thcoPtciAmt,
+        invstRvnRtDcd: invstRvnRtDcd,
+        stdrIntrtKndCd: stdrIntrtKndCd,
+        stdrIntrt: stdrIntrt,
+        addIntrt: addIntrt,
+        chrrEmpno: chrrEmpno,
+        busiNm: busiNm,
+        mgcoNm: mgcoNm,
+        goalErnRt: goalErnRt,
+        rmEmpno: rmEmpno,
+        busiCnts: busiCnts,
+        pefInfo: {
+          invstStgyCtns: invstStgyCtns,
+          mngmCndFlflYn: mngmCndFlflYn,
+          bondTrnsYn: bondTrnsYn,
+          chrgEmpno: chrgEmpno
+        }
+      }
+
       return paramData;
     }
     

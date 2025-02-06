@@ -198,26 +198,26 @@ public class TB08031ServiceImpl implements TB08031Service {
 						break;
 					// 국제투자	
 					case "04":
-						rtnObj.setInvstInfo(ibims505BMapper.getInvstInfo(param.getDealNo()));
-						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						rtnObj.setInvstInfo(ibims505BMapper.getInvstInfo(param));
+						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						// rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
+						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
 						break;
 					// PEF/VC	
 					case "05":
-						rtnObj.setPefInfo(ibims506BMapper.getPefInfo(param.getDealNo()));
-						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
-						rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
-						rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
-						rtnObj.setInvstEprzInfo(ibims518Mapper.getInvstBzscalList(param.getDealNo()));
-						rtnObj.setAsstWrkngInfo(ibims515Mapper.selectAsstOrtnLst(param.getDealNo()));
+						rtnObj.setPefInfo(ibims506BMapper.getPefInfo(param));
+						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						// rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
+						// rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
+						// rtnObj.setInvstEprzInfo(ibims518Mapper.getInvstBzscalList(param.getDealNo()));
+						// rtnObj.setAsstWrkngInfo(ibims515Mapper.selectAsstOrtnLst(param.getDealNo()));
 						break;
 					default : 
 						break;
@@ -308,13 +308,16 @@ public class TB08031ServiceImpl implements TB08031Service {
 					
 				// PEF/VC	
 				case "05":
+					param.getPefInfo().setSn(sn);
+					param.getPefInfo().setDelYn("N");
 					param.getPefInfo().setHndEmpno(facade.getDetails().getEno());
-					param.getPefInfo().setDealNo(param.getDealNo());					
-					if( null != ibims506BMapper.getPefInfo(param.getDealNo())) {
-						return ibims506BMapper.updatePefInfo(param.getPefInfo());
-					} else {
-						return ibims506BMapper.savePefInfo(param);
-					}
+					return ibims506BMapper.savePefInfo(param);
+					// param.getPefInfo().setDealNo(param.getDealNo());					
+					// if( null != ibims506BMapper.getPefInfo(param.getDealNo())) {
+					// 	return ibims506BMapper.updatePefInfo(param.getPefInfo());
+					// } else {
+					// 	return ibims506BMapper.savePefInfo(param);
+					// }
 				default :
 					param.getRlesInfo().setHndEmpno(facade.getDetails().getEno());
 					return ibims502BMapper.saveDealInfo(param);

@@ -646,7 +646,7 @@
 														<!-- 2row -->
 														<div class="form-group col-sm-12 mb-1">
 															<label class="col-sm-1 col-form-label">담당자</label>
-															<div class="col-sm-3 input-group">
+															<!-- <div class="col-sm-3 input-group">
 																<input type="text" class="form-control"
 																	style="width:30px;" id="TB08031S_tab2_empNm">
 																<input type="hidden" class="form-control"
@@ -656,8 +656,19 @@
 																		onclick="callTB03022P('TB08031S_tab2')"><i
 																			class="fa fa-search"></i></button>
 																</span>
+															</div> -->
+															<div class="col-sm-3 input-group">
+																<input type="text" class="form-control" style="width:30px;"
+																	id="TB08031S_tab2_empNo">
+																<span class="input-group-append">
+																	<button type="button" class="btn btn-default"
+																		onclick="callTB03022P('TB08031S_tab2')"><i
+																			class="fa fa-search"></i></button>
+																</span>
+																<input type="text" class="form-control" style="width:70px;"
+																	id="TB08031S_tab2_empNm" readonly>
 															</div>
-															<label class="col-sm-1 col-form-label">관리사무소</label>
+															<!-- <label class="col-sm-1 col-form-label">관리사무소</label>
 															<div class="col-sm-3 input-group">
 																<input type="text" class="form-control"
 																	style="width:30px;">
@@ -666,16 +677,16 @@
 																		onclick="callTB08032P('TB08031S_tab2');"><i
 																			class="fa fa-search"></i></button>
 																</span>
-															</div>
+															</div> -->
 														</div>
 														<!-- 3row -->
 														<div class="form-group col-sm-12 mb-1">
 															<label class="col-sm-1 col-form-label">관리조건이행</label>
-															<div class="col-sm-3 input-group">
+															<!-- <div class="col-sm-3 input-group">
 																<select class="form-control" id="TB08031S_pefVcInvstMng"
 																	disabled></select>
-															</div>
-															<label class="col-sm-1 col-form-label"></label>
+															</div> -->
+															<!-- <label class="col-sm-1 col-form-label"></label> -->
 															<div class="col-sm-3 input-group input-h">
 																<div class="col-sm-2 input-group">
 																	<input type="radio" value="Y"
@@ -690,14 +701,6 @@
 																	<label class="col-sm-5">N</label>
 																</div>
 															</div>
-															<div class="col-sm-2 text-left">
-																<button class="btn btn-default">
-																	<i class="fa fa-arrow-right m-1"></i>| 관리조건
-																</button>
-															</div>
-														</div>
-														<!-- 4row -->
-														<div class="form-group col-sm-12 mb-1">
 															<label class="col-sm-1 col-form-label">채권이관여부</label>
 															<div class="col-sm-3 input-group input-h">
 																<div class="col-sm-2 input-group">
@@ -713,9 +716,32 @@
 																	<label class="col-sm-5">N</label>
 																</div>
 															</div>
+															<!-- <div class="col-sm-2 text-left">
+																<button class="btn btn-default">
+																	<i class="fa fa-arrow-right m-1"></i>| 관리조건
+																</button>
+															</div> -->
 														</div>
+														<!-- 4row -->
+														<!-- <div class="form-group col-sm-12 mb-1">
+															<label class="col-sm-1 col-form-label">채권이관여부</label>
+															<div class="col-sm-3 input-group input-h">
+																<div class="col-sm-2 input-group">
+																	<input type="radio" value="Y"
+																		id="TB08031S_pefVcBondTrnY"
+																		name="TB08031S_pefVcBondTrnYN">
+																	<label class="col-sm-5">Y</label>
+																</div>
+																<div class="col-sm-2 input-group">
+																	<input type="radio" value="N"
+																		id="TB08031S_pefVcBondTrnN"
+																		name="TB08031S_pefVcBondTrnYN" checked="true">
+																	<label class="col-sm-5">N</label>
+																</div>
+															</div>
+														</div> -->
 														<!-- 5row -->
-														<div class="form-group col-sm-12 mb-1">
+														<!-- <div class="form-group col-sm-12 mb-1">
 															<label class="col-sm-1 col-form-label">업체담당연락처</label>
 															<div class="col-sm-3 input-group">
 																<input type="text" class="form-control"
@@ -723,7 +749,7 @@
 																	oninput="this.value = this.value.replace(/[^0-9]/g, '');"
 																	maxlength="11">
 															</div>
-														</div>
+														</div> -->
 													</div>
 												</div>
 											</div>

@@ -10,7 +10,7 @@ import com.nanuri.rams.business.common.vo.IBIMS506BVO;
 public interface IBIMS506BMapper {
 	
 	// PEF사업기본 조회
-	public IBIMS506BVO getPefInfo(String param);
+	public IBIMS506BVO getPefInfo(IBIMS501BVO param);
 	
 	// PEF사업기본 등록
 	public int savePefInfo(IBIMS501BVO param);

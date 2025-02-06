@@ -13,7 +13,7 @@ import lombok.Setter;
 public class IBIMS506BDTO {
     private String         dealNo;               // 딜번호
     //private String         sq;               	 // 일련번호(메타 변경 전)
-    private String         sn;               	 // 일련번호
+    private long           sn;               	 // 일련번호
     private String         invstStgyCtns;        // 투자전략내용
     private String         ctrcPclrCtns;         // 약정특이내용
     private String         busiPrgPclrCtns;      // 사업진행특이내용
