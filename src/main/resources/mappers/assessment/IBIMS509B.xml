@@ -3,16 +3,11 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS509BMapper">
 	
 	<!-- 채권보전주요약정 조회 -->
-	<select id="getBondProtInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS509BVO">
+	<select id="getBondProtInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS509BVO">
 		SELECT DEAL_NO                                 /* 딜번호 */
          , SN                                      /* 일련번호 */
+         , ERLM_SEQ                             
          , BOND_PROT_CCD                           /* 채권보전구분 */
-         , (
-         	  SELECT CD_VL_NM
-         	    FROM IBIMS002B
-         	   WHERE CMNS_CD_GRP = 'B007'
-         	   	 AND CD_VL_ID = BOND_PROT_CCD 
-           ) AS BOND_PROT_NM					             /* 채권보전구분명 */
          , MAIN_CTRC_MTTR_CNTS                     /* 주요약정사항내용 */
          , FNNR_CTRC_MTTR_TRGT_YN                  /* 재무약정사항대상여부 */
          , CTRC_DT                                 /* 약정일자 */
@@ -24,16 +19,19 @@
          , GUID                                    /* guid */
       FROM IBIMS509B
      WHERE 1=1
-       AND DEAL_NO = #{dealNo}                                 
+       AND DEAL_NO = #{dealNo}
+       AND SN      = #{sn}           
+       AND DEL_YN  = 'N'                      
 	</select>
 	
 	
 	<!-- 채권보전주요약정 저장 -->
-	<insert id="saveBondProtInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS509BVO">
+	<insert id="saveBondProtInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS509BVO2">
 		  INSERT INTO IBIMS509B 
                (
                   DEAL_NO                                 /* 딜번호 */
                 , SN                                      /* 일련번호 */
+                , ERLM_SEQ                    
                 , BOND_PROT_CCD                           /* 채권보전구분코드 */
                 , MAIN_CTRC_MTTR_CNTS                     /* 주요약정사항내용 */
                 , FNNR_CTRC_MTTR_TRGT_YN                  /* 재무약정사항대상여부 */
@@ -46,31 +44,37 @@
                 , GUID                                    /* guid */
                )
         VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
         	   (
-                 #{item.dealNo}                                 /* 딜번호 */
-               , #{index}+1                                     /* 일련번호 */
-               , #{item.bondProtCcd}                            /* 채권보전구분코드 */
-               , #{item.mainCtrcMttrCnts}                       /* 주요약정사항내용 */
-               , #{item.fnnrCtrcMttrTrgtYn}                     /* 재무약정사항대상여부 */
-               , #{item.ctrcDt}                                 /* 약정일자 */
-               , #{item.delYn}                                  /* 삭제여부 */
+                 #{dealNo}                                      /* 딜번호 */
+               , #{sn}                                          /* 일련번호 */
+               , (
+                    SELECT NVL(MAX(ERLM_SEQ), 0) + 1
+                    FROM IBIMS509B
+                    WHERE DEAL_NO = #{dealNo}
+                    AND SN = #{sn}
+                  )  
+               , #{bondProtCcd}                            /* 채권보전구분코드 */
+               , #{mainCtrcMttrCnts}                       /* 주요약정사항내용 */
+               , #{fnnrCtrcMttrTrgtYn}                     /* 재무약정사항대상여부 */
+               , #{ctrcDt}                                 /* 약정일자 */
+               , #{delYn}                                  /* 삭제여부 */
                , SYSDATE                             		   		  /* 조작상세일시 */
-               , #{item.hndEmpno}                               /* 조작사원번호 */
-               , #{item.hndTmnlNo}                              /* 조작단말기번호 */
-               , #{item.hndTrId}                                /* 조작거래id */
-               , #{item.guid}                                   /* guid */
+               , #{hndEmpno}                               /* 조작사원번호 */
+               , #{hndTmnlNo}                              /* 조작단말기번호 */
+               , #{hndTrId}                                /* 조작거래id */
+               , #{guid}                                   /* guid */
                )
-        </foreach> 
 	</insert>
 	
 	
 	<!-- 채권보전주요약정 삭제 -->
-	<delete id="delBondProtInfo" parameterType="string">
-		DELETE
-		  FROM IBIMS509B
-		 WHERE DEAL_NO = #{dealNo}
-	</delete>
+	<update id="delBondProtInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS509BVO2">
+		UPDATE IBIMS509B
+      SET DEL_YN = 'Y'
+    WHERE DEAL_NO = #{dealNo}
+      AND SN = #{sn}
+      AND ERLM_SEQ = #{erlmSeq}
+	</update>
 	
 	
 </mapper>

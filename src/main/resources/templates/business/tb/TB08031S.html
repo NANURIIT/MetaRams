@@ -1877,6 +1877,10 @@
 															<div class="ibox-title">
 																<h5>▶&nbsp;채권보전 상세</h5>
 															</div>
+															<div class="ibox-tools">
+																<input type="hidden" id="TB08031S_bondProtInfo_sn">
+																<input type="hidden" id="TB08031S_bondProtInfo_erlmSeq">
+															</div>
 															<div class="ibox-content">
 																<div class="col-sm-10 row">
 																	<div class="col-sm-5 text-right">
@@ -1931,10 +1935,18 @@
 													<div class="col-sm text-right mb-1">
 														<!-- <button class="btn btn-default" type="button" onclick="tab3BtnReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
 								<button class="btn btn-danger"  type="button" onclick="tab3BtnDelete();"><i class="fa fa-eraser"></i>&nbsp;삭제</button> -->
-														<button class="btn btn-success" type="button"
+														<!-- <button class="btn btn-success" type="button"
 															onclick="TB08031Sjs.bondProtInfoBtnSave();">
 															<i class="fa fa-save"></i>&nbsp;저장
+														</button> -->
+														<button class="btn btn-default" type="button" onclick="TB08031Sjs.gridInfoRst('bondProtInfoInstance');">
+															<i class="fa fa-undo"></i>&nbsp;초기화
+														</button>								
+														<button class="btn btn-success" type="button"
+															onclick="TB08031Sjs.bondProtInfoBtnSave(`save`);">
+															<i class="fa fa-save"></i>&nbsp;저장
 														</button>
+														<button class="btn btn-danger" onclick="TB08031Sjs.bondProtInfoBtnSave(`dlt`);"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
 													</div>
 												</div>
 											</div>

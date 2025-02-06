@@ -15,6 +15,7 @@ const TB08031Sjs = (function () {
 
   let selectBoxList_TB08031S;
   let p001List;
+  let b007List;
   
 
   /* 편집자산 정보 colM  todo: id없음....*/
@@ -69,7 +70,8 @@ const TB08031Sjs = (function () {
     selectBoxList_TB08031S = getSelectBoxList("TB08031S", item, false);
 
     p001List = selectBoxList_TB08031S.filter((item) => item.cmnsGrpCd === "P001");
-    
+    b007List = selectBoxList_TB08031S.filter((item) => item.cmnsGrpCd === "B007");
+
     setGrid_TB08031S();
 
     setLoginUserAuth();
@@ -124,14 +126,6 @@ const TB08031Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      // title: "참가자관계",
-      // dataType: "string",
-      // dataIndx: "ptcnRelrDcd",
-      // align: "left",
-      // halign: "center",
-      // width: "",
-      // filter: { crules: [{ condition: "range" }] },
-
       title: "참가자관계",
         dataType: "string",
         dataIndx: "ptcnRelrDcd",
@@ -294,21 +288,43 @@ const TB08031Sjs = (function () {
     },
     {
       title: "채권보전구분",
-      dataType: "string",
-      dataIndx: "bondProtCcd",
-      align: "center",
-      halign: "center",
-      width: "",
-      filter: { crules: [{ condition: "range" }] },
+        dataType: "string",
+        dataIndx: "bondProtCcd",
+        halign: "center",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          valueIndx: "cdValue",
+          labelIndx: "cdName",
+          options: b007List,
+        },
+        render: function (ui) {
+          // console.log("cellData ::: ", ui.cellData);
+          // console.log(P013);
+          let paiTypCd = b007List.find(({ cdValue }) => cdValue == ui.cellData);
+          return paiTypCd ? paiTypCd.cdName : ui.cellData;
+        },
     },
     {
+      dataIndx: "fnnrCtrcMttrTrgtYn",
       title: "이행여부",
       dataType: "string",
-      dataIndx: "fnnrCtrcMttrTrgtYn",
       align: "center",
       halign: "center",
       width: "",
-      filter: { crules: [{ condition: "range" }] },
+      editor: {
+          type: "select",
+          options: [
+              { value: "Y", label: "이행" },
+              { value: "N", label: "불이행" }
+          ],
+          valueIndx: "value", 
+          labelIndx: "label" 
+      },
+      render: function (ui) {
+        return ui.cellData === "Y" ? "이행" : "불이행";
+      }
     },
     {
       title: "상세내용",
@@ -1112,7 +1128,10 @@ const TB08031Sjs = (function () {
         height: 80,
         maxHeight: 300,
         id: "TB08031S_bondProtInfo",
-        colModel: colM_bondProtInfo
+        colModel: colM_bondProtInfo,
+        rowDblClick: function(evt, ui){
+          gridInfoSett(ui.rowData, "bondProtInfoInstance");
+        }
       },
       //조건변경이력 그리드
       {
@@ -1744,6 +1763,9 @@ const TB08031Sjs = (function () {
 
               var bsnsForecast = data.bsnsForecast;
               bsnsForecastInstance.setData(bsnsForecast);
+
+              var bondProtInfo = data.bondProtInfo;
+              bondProtInfoInstance.setData(bondProtInfo);
             }
           }
         }
@@ -1959,64 +1981,64 @@ const TB08031Sjs = (function () {
   }
 
   // 채권보전주요약정 채권보전구분 수정시 실행
-  $("#TB08031S_B007").change(function () {
-    if ($("#TB08031S_bondProtInfo").find(".table-active").length > 0) {
-      $("#TB08031S_bondProtInfo")
-        .find(".table-active")
-        .children()
-        .eq(2)
-        .text($(this).val());
-      $("#TB08031S_bondProtInfo")
-        .find(".table-active")
-        .children()
-        .eq(3)
-        .text($("#TB08031S_B007 option:selected").text());
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "채권보전구분을 선택해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // $("#TB08031S_B007").change(function () {
+  //   if ($("#TB08031S_bondProtInfo").find(".table-active").length > 0) {
+  //     $("#TB08031S_bondProtInfo")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(2)
+  //       .text($(this).val());
+  //     $("#TB08031S_bondProtInfo")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(3)
+  //       .text($("#TB08031S_B007 option:selected").text());
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "채권보전구분을 선택해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
   // 채권보전주요약정 이행여부 수정시 실행
-  $("input[name='TB08031S_bondPfrmYN']").click(function () {
-    if ($("#TB08031S_bondProtInfo").find(".table-active").length > 0) {
-      var newValue = $(this).val() == "Y" ? "Y" : "N";
-      $("#TB08031S_bondProtInfo")
-        .find(".table-active")
-        .children()
-        .eq(4)
-        .text(newValue);
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "이행여부를 선택해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // $("input[name='TB08031S_bondPfrmYN']").click(function () {
+  //   if ($("#TB08031S_bondProtInfo").find(".table-active").length > 0) {
+  //     var newValue = $(this).val() == "Y" ? "Y" : "N";
+  //     $("#TB08031S_bondProtInfo")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(4)
+  //       .text(newValue);
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "이행여부를 선택해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
   // 채권보전주요약정 상세내용 수정시 실행
-  $("#TB08031S_dtlsCntnt").change(function () {
-    if ($("#TB08031S_bondProtInfo").find(".table-active").length > 0) {
-      $("#TB08031S_bondProtInfo")
-        .find(".table-active")
-        .children()
-        .eq(5)
-        .text($(this).val());
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "상세내용을 입력해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // $("#TB08031S_dtlsCntnt").change(function () {
+  //   if ($("#TB08031S_bondProtInfo").find(".table-active").length > 0) {
+  //     $("#TB08031S_bondProtInfo")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(5)
+  //       .text($(this).val());
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "상세내용을 입력해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
   // 조건변경이력 더블클릭 이벤트
   function setCchInfo(e) {
@@ -2500,6 +2522,21 @@ const TB08031Sjs = (function () {
       }else{
         $("#TB08031S_pfrmN").prop("checked", true);
       }
+
+    }else if(instncNm === "bondProtInfoInstance"){//채권보전주요약정
+
+      $("#TB08031S_B007").val(rowData.bondProtCcd);                  // 채권보전구분
+      $("#TB08031S_dtlsCntnt").val(rowData.mainCtrcMttrCnts);        // 주요약정사항내용
+      $("#TB08031S_bondProtInfo_sn").val(rowData.sn);                //일련번호
+      $("#TB08031S_bondProtInfo_erlmSeq").val(rowData.erlmSeq);      //등록순번
+
+      var fnnrCtrcMttrTrgtYn = rowData.fnnrCtrcMttrTrgtYn;
+
+      if(fnnrCtrcMttrTrgtYn === "Y"){
+        $("#TB08031S_bondPfrmY").prop("checked", true);
+      }else{
+        $("#TB08031S_bondPfrmN").prop("checked", true);
+      }
     }
   }
 
@@ -2514,11 +2551,22 @@ const TB08031Sjs = (function () {
       $("#TB08031S_bsnsPartInfo_sn").val("");        //순번
       $("#TB08031S_bsnsPartInfo_erlmSeq").val("");   //등록순번
 
-    }else if(instncNm === "bsnsForecastInstance"){
+    }else if(instncNm === "bsnsForecastInstance"){//사업주요전망
       $("#TB08031S_exptDt").val("");                 //예정일자
       $("#TB08031S_pfrmDt").val("");                 //이행일자
       $("#TB08031S_pfrmN").prop("checked", true);    //이행여부
       $("#TB08031S_mainCntnt").val("");              //주요일정내용
+      $("#TB08031S_bsnsForecast_sn").val("");        //일련번호
+      $("#TB08031S_bsnsForecast_erlmSeq").val("");   //등록순번
+
+    }else if(instncNm === "bondProtInfoInstance"){//채권보전주요약정
+
+      $("#TB08031S_B007").val("");                      // 채권보전구분
+      $("#TB08031S_bondPfrmN").prop("checked", true);   // 재무약정사항대상여부
+      $("#TB08031S_dtlsCntnt").val("");                 // 주요약정사항내용
+      $("#TB08031S_bondProtInfo_sn").val("");           //일련번호
+      $("#TB08031S_bondProtInfo_erlmSeq").val("");      //등록순번
+
     }
   }
 
@@ -3769,43 +3817,75 @@ const TB08031Sjs = (function () {
     }
   }
 
-  // 채권보전주요약정 저장
-  function bondProtInfoBtnSave() {
-    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
-    var bondProtCcd = $("#TB08031S_B007").val(); // 채권보전구분
-    var fnnrCtrcMttrTrgtYn = $("input[name=TB08031S_bondPfrmYN]:checked").val(); // 이행여부
-    var mainCtrcMttrCnts = $("#TB08031S_mainCntnt").val(); // 상세내용
 
-    if (!isEmpty(dealNo)) {
-      businessFunction();
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "Deal번호를 조회해주세요.",
-        confirmButtonText: "확인",
-      });
+  // 채권보전주요약정 저장
+  function bondProtInfoBtnSave(mode) {
+    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+
+    if(mode === "save"){
+      if (!isEmpty(dealNo)) {
+        businessFunction(mode);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      }
+
+    }else if(mode === "dlt"){
+      var sn = $("#TB08031S_bondProtInfo_sn").val();              //일련번호
+      var erlmSeq = $("#TB08031S_bondProtInfo_erlmSeq").val();    //등록순번
+
+      if (isEmpty(dealNo)) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      } else if(isEmpty(sn) || isEmpty(erlmSeq)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "삭제할 채권보전 기본정보를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
+      }
     }
 
-    function businessFunction() {
-      var inputArr = [];
-      $.each($("#TB08031S_bondProtInfo tr"), function () {
-        var td = $(this).children();
+    
 
-        var dtoParam = {
-          bondProtCcd: td.eq(2).text(),
-          fnnrCtrcMttrTrgtYn: td.eq(4).text(),
-          mainCtrcMttrCnts: td.eq(5).text(),
-          dealNo: $("#TB08031S_ibDealNo").val(),
-        };
+    function businessFunction(mode) {
+      var param = {};
 
-        inputArr.push(dtoParam);
-      });
+      var dealNo = $("#TB08031S_ibDealNo").val();                                    // 딜번호
+      var bondProtCcd = $("#TB08031S_B007").val();                                   // 채권보전구분
+      var fnnrCtrcMttrTrgtYn = $("input[name=TB08031S_bondPfrmYN]:checked").val();   // 재무약정사항대상여부
+      var mainCtrcMttrCnts = $("#TB08031S_dtlsCntnt").val();                         // 주요약정사항내용
 
-      var param = {
-        dealNo: dealNo,
-        s509vo: inputArr,
-      };
+      var sn = $("#TB08031S_bondProtInfo_sn").val();              //일련번호
+      var erlmSeq = $("#TB08031S_bondProtInfo_erlmSeq").val();    //등록순번
+
+      if(mode === "save"){
+        param = {
+          dealNo:dealNo,
+          bondProtCcd: bondProtCcd,
+          fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
+          mainCtrcMttrCnts: mainCtrcMttrCnts,
+          mode: mode
+        }
+      }else if(mode === "dlt"){
+        param = {
+          dealNo:dealNo,
+          sn: sn,
+          erlmSeq: erlmSeq,
+          mode: mode
+        }
+      }
 
       $.ajax({
         type: "POST",
@@ -3830,6 +3910,7 @@ const TB08031Sjs = (function () {
           });
         },
       });
+     
     }
   }
 

@@ -211,7 +211,7 @@ public class TB08031ServiceImpl implements TB08031Service {
 						rtnObj.setPefInfo(ibims506BMapper.getPefInfo(param));
 						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param));
 						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param));
-						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param));
 						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
 						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
 						// rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
@@ -383,12 +383,24 @@ public class TB08031ServiceImpl implements TB08031Service {
 	// 채권보전주요약정 저장
 	@Override
 	public int saveBondProtInfo(IBIMS509BVO2 param) {
-		if( 0 == param.getS509vo().size() ) {
-			return ibims509Mapper.delBondProtInfo(param.getDealNo());
-		}else {
-			ibims509Mapper.delBondProtInfo(param.getDealNo());
-			return ibims509Mapper.saveBondProtInfo(param.getS509vo());
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims509Mapper.saveBondProtInfo(param);
+		}else if(mode.equals("dlt")){
+			rslt = ibims509Mapper.delBondProtInfo(param);
 		}
+
+		return rslt;
 	}
 
 	// 조건변경이력 저장
