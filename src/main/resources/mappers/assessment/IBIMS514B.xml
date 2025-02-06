@@ -3,9 +3,10 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS514BMapper">
 
 	<!-- 사업주요일정 조회 -->
-	<select id="getBsnsForecast" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS514BVO">
+	<select id="getBsnsForecast" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS514BVO">
 		SELECT DEAL_NO                                 /* 딜번호 */
          , SN                                      /* 일련번호 */
+         , ERLM_SEQ                                /* 등록순번 */
          , MAIN_SCX_CTNS                           /* 주요일정내용 */
          , PRAR_DT                                 /* 예정일자 */
          , FLFL_YN                                 /* 이행여부 */
@@ -18,15 +19,18 @@
          , GUID                                    /* guid */
       FROM IBIMS514B             
      WHERE 1=1
-       AND DEAL_NO                                 = #{dealNo}                                   
+       AND DEAL_NO                                 = #{dealNo}    
+       AND SN                                      = #{sn}
+       AND DEL_YN                                  = 'N'                               
 	</select>
 	
 	<!-- 사업주요일정 저장 -->
-	<insert id="saveBsnsForecast" parameterType="com.nanuri.rams.business.common.vo.IBIMS514BVO">
+	<insert id="saveBsnsForecast" parameterType="com.nanuri.rams.business.common.vo.IBIMS514BVO2">
 		  INSERT INTO IBIMS514B 
                (
                   DEAL_NO                                 /* 딜번호 */
                 , SN                                      /* 일련번호 */
+                , ERLM_SEQ                                /* 등록순번 */
                 , MAIN_SCX_CTNS                           /* 주요일정내용 */
                 , PRAR_DT                                 /* 예정일자 */
                 , FLFL_YN                                 /* 이행여부 */
@@ -39,29 +43,41 @@
                 , GUID                                    /* guid */
                )
         VALUES 
-        <foreach collection="list" item="item" index="index" separator=",">
         	   (
-                 #{item.dealNo}                                   /* 딜번호 */
-               , #{index}+1                                       /* 일련번호 */
-               , #{item.mainScxCtns}                              /* 주요일정내용 */
-               , #{item.prarDt}                                   /* 예정일자 */
-               , #{item.flflYn}                                   /* 이행여부 */
-               , #{item.flflDt}                                   /* 이행일자 */
-               , #{item.delYn}                                    /* 삭제여부 */
-               , SYSDATE                             				      /* 조작상세일시 */
-               , #{item.hndEmpno}                                 /* 조작사원번호 */
-               , #{item.hndTmnlNo}                                /* 조작단말기번호 */
-               , #{item.hndTrId}                                  /* 조작거래id */
-               , #{item.guid}                                     /* guid */
+                 #{dealNo}                                   /* 딜번호 */
+               , #{sn}                                       /* 일련번호 */
+               , (
+                    SELECT NVL(MAX(ERLM_SEQ), 0) + 1
+                    FROM IBIMS514B
+                    WHERE DEAL_NO = #{dealNo}
+                    AND SN = #{sn}
+                  )                                          /* 등록순번 */
+               , #{mainScxCtns}                              /* 주요일정내용 */
+               , #{prarDt}                                   /* 예정일자 */
+               , #{flflYn}                                   /* 이행여부 */
+               , #{flflDt}                                   /* 이행일자 */
+               , #{delYn}                                    /* 삭제여부 */
+               , SYSDATE                             				 /* 조작상세일시 */
+               , #{hndEmpno}                                 /* 조작사원번호 */
+               , #{hndTmnlNo}                                /* 조작단말기번호 */
+               , #{hndTrId}                                  /* 조작거래id */
+               , #{guid}                                     /* guid */
                )
-        </foreach>
 	</insert>
 	
 	<!-- 사업주요일정 삭제 -->
-	<delete id="delBsnsForecast" parameterType="string">
+	<!-- <delete id="delBsnsForecast" parameterType="string">
 		DELETE 
 		  FROM IBIMS514B
 		 WHERE DEAL_NO = #{dealNo} 
-	</delete>
+	</delete> -->
+
+  <update id="delBsnsForecast" parameterType="com.nanuri.rams.business.common.vo.IBIMS514BVO2">
+    UPDATE IBIMS514B
+      SET DEL_YN = 'Y'
+    WHERE DEAL_NO = #{dealNo}
+      AND SN = #{sn}
+      AND ERLM_SEQ = #{erlmSeq}
+  </update>
 
 </mapper>

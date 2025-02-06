@@ -12,6 +12,9 @@ const TB08031Sjs = (function () {
   let admsAsstInfoInstance;         //편입자산정보 instance
   let invstBzscalInstance;          //투자기업목록 instance
   let asstWrkngInfoInstance;        //자산운용사정보 instance
+
+  let selectBoxList_TB08031S;
+  let p001List;
   
 
   /* 편집자산 정보 colM  todo: id없음....*/
@@ -63,7 +66,9 @@ const TB08031Sjs = (function () {
     item += "/" + "F009"; // 펀드구분
     item += "/" + "F010"; // 펀드유형상세
 
-    getSelectBoxList("TB08031S", item);
+    selectBoxList_TB08031S = getSelectBoxList("TB08031S", item, false);
+
+    p001List = selectBoxList_TB08031S.filter((item) => item.cmnsGrpCd === "P001");
     
     setGrid_TB08031S();
 
@@ -107,24 +112,6 @@ const TB08031Sjs = (function () {
 
       /* 사업참가자정보 colM */
   let colM_bsnsPartInfo = [
-    //체크박스
-    {
-      dataIndx: "isChked",
-      maxWidth: 60,
-      minWidth: 60,
-      align: "center",
-      resizable: false,
-      title: "선택",
-      type: "checkBoxSelection",
-      sortable: false,
-      editor: false,
-      dataType: "bool",
-      editable: "true",
-      cb: {
-        all: false,
-        header: false,
-      },
-    },
     {
       title: "NO",
       dataType: "string",
@@ -135,18 +122,34 @@ const TB08031Sjs = (function () {
       maxWidth: 60,
       minWidth: 60,
       filter: { crules: [{ condition: "range" }] },
-      render: function (ui) {
-        return ui.rowIndx + 1;
-      },
     },
     {
+      // title: "참가자관계",
+      // dataType: "string",
+      // dataIndx: "ptcnRelrDcd",
+      // align: "left",
+      // halign: "center",
+      // width: "",
+      // filter: { crules: [{ condition: "range" }] },
+
       title: "참가자관계",
-      dataType: "string",
-      dataIndx: "ptcnRelrDcd",
-      align: "left",
-      halign: "center",
-      width: "",
-      filter: { crules: [{ condition: "range" }] },
+        dataType: "string",
+        dataIndx: "ptcnRelrDcd",
+        halign: "center",
+        align: "center",
+        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          valueIndx: "cdValue",
+          labelIndx: "cdName",
+          options: p001List,
+        },
+        render: function (ui) {
+          // console.log("cellData ::: ", ui.cellData);
+          // console.log(P013);
+          let paiTypCd = p001List.find(({ cdValue }) => cdValue == ui.cellData);
+          return paiTypCd ? paiTypCd.cdName : ui.cellData;
+        },
     },
     {
       title: "업체명",
@@ -170,7 +173,7 @@ const TB08031Sjs = (function () {
       title: "법인등록번호",
       dataType: "string",
       dataIndx: "crno",
-      align: "center",
+      align: "left",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
@@ -179,32 +182,20 @@ const TB08031Sjs = (function () {
       title: "사업자등록번호",
       dataType: "string",
       dataIndx: "bzno",
-      align: "center",
+      align: "left",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
     },
+    {
+      dataType: "string",
+      dataIndx: "sn",
+      hidden: true
+    }
   ];
 
   /* 사업 주요전망 colM */
   let colM_bsnsForecast = [
-    {
-      dataIndx: "isChked",
-      maxWidth: 60,
-      minWidth: 60,
-      align: "center",
-      resizable: false,
-      title: "선택",
-      type: "checkBoxSelection",
-      sortable: false,
-      editor: false,
-      dataType: "bool",
-      editable: "true",
-      cb: {
-        all: false,
-        header: false,
-      },
-    },
     {
       title: "NO",
       dataType: "string",
@@ -215,68 +206,98 @@ const TB08031Sjs = (function () {
       maxWidth: 60,
       minWidth: 60,
       filter: { crules: [{ condition: "range" }] },
-      render: function (ui) {
-        return ui.rowIndx + 1;
-      },
     },
     {
       title: "예정일자",
       dataType: "string",
       dataIndx: "prarDt",
-      align: "left",
+      align: "center",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        let cellData = ui.cellData;
+        if (!isEmpty(cellData) && cellData.length === 8) {
+          return formatDate(cellData);
+        } else {
+          return cellData;
+        }
+      },
     },
     {
       title: "이행일자",
       dataType: "string",
       dataIndx: "flflDt",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        let cellData = ui.cellData;
+        if (!isEmpty(cellData) && cellData.length === 8) {
+          return formatDate(cellData);
+        } else {
+          return cellData;
+        }
+      },
+
+    },
+    {
+      dataIndx: "flflYn",
+      title: "이행여부",
+      dataType: "string",
+      align: "center",
+      halign: "center",
+      width: "",
+      editor: {
+          type: "select",
+          options: [
+              { value: "Y", label: "이행" },
+              { value: "N", label: "불이행" }
+          ],
+          valueIndx: "value", 
+          labelIndx: "label" 
+      },
+      render: function (ui) {
+        return ui.cellData === "Y" ? "이행" : "불이행";
+      }
+    },
+    {
+      title: "주요일정내용",
+      dataType: "string",
+      dataIndx: "mainScxCtns",
       align: "left",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "이행여부",
       dataType: "string",
-      dataIndx: "flflYn",
-      align: "center",
-      halign: "center",
-      width: "",
-      filter: { crules: [{ condition: "range" }] },
-    },
-    {
-      title: "주요일정내용",
-      dataType: "string",
-      dataIndx: "mainScxCtns",
-      align: "center",
-      halign: "center",
-      width: "",
-      filter: { crules: [{ condition: "range" }] },
+      dataIndx: "sn",
+      hidden: true
     }
 
   ];
 
   /* 채권보전 주요약정 colM */
   let colM_bondProtInfo = [
-    {
-      dataIndx: "isChked",
-      maxWidth: 60,
-      minWidth: 60,
-      align: "center",
-      resizable: false,
-      title: "선택",
-      type: "checkBoxSelection",
-      sortable: false,
-      editor: false,
-      dataType: "bool",
-      editable: "true",
-      cb: {
-        all: false,
-        header: false,
-      },
-    },
+    // {
+    //   dataIndx: "isChked",
+    //   maxWidth: 60,
+    //   minWidth: 60,
+    //   align: "center",
+    //   resizable: false,
+    //   title: "선택",
+    //   type: "checkBoxSelection",
+    //   sortable: false,
+    //   editor: false,
+    //   dataType: "bool",
+    //   editable: "true",
+    //   cb: {
+    //     all: false,
+    //     header: false,
+    //   },
+    // },
     {
       title: "NO",
       dataType: "string",
@@ -322,23 +343,23 @@ const TB08031Sjs = (function () {
 
   /* 조건변경내역 colM */
   let colM_cchInfo = [
-    {
-      dataIndx: "isChked",
-      maxWidth: 60,
-      minWidth: 60,
-      align: "center",
-      resizable: false,
-      title: "선택",
-      type: "checkBoxSelection",
-      sortable: false,
-      editor: false,
-      dataType: "bool",
-      editable: "true",
-      cb: {
-        all: false,
-        header: false,
-      },
-    },
+    // {
+    //   dataIndx: "isChked",
+    //   maxWidth: 60,
+    //   minWidth: 60,
+    //   align: "center",
+    //   resizable: false,
+    //   title: "선택",
+    //   type: "checkBoxSelection",
+    //   sortable: false,
+    //   editor: false,
+    //   dataType: "bool",
+    //   editable: "true",
+    //   cb: {
+    //     all: false,
+    //     header: false,
+    //   },
+    // },
     {
       title: "NO",
       dataType: "string",
@@ -411,23 +432,23 @@ const TB08031Sjs = (function () {
 
   /* 대주단정보 colM */
   let colM_stlnInfo = [
-    {
-      dataIndx: "isChked",
-      maxWidth: 60,
-      minWidth: 60,
-      align: "center",
-      resizable: false,
-      title: "선택",
-      type: "checkBoxSelection",
-      sortable: false,
-      editor: false,
-      dataType: "bool",
-      editable: "true",
-      cb: {
-        all: false,
-        header: false,
-      },
-    },
+    // {
+    //   dataIndx: "isChked",
+    //   maxWidth: 60,
+    //   minWidth: 60,
+    //   align: "center",
+    //   resizable: false,
+    //   title: "선택",
+    //   type: "checkBoxSelection",
+    //   sortable: false,
+    //   editor: false,
+    //   dataType: "bool",
+    //   editable: "true",
+    //   cb: {
+    //     all: false,
+    //     header: false,
+    //   },
+    // },
     {
       title: "NO",
       dataType: "string",
@@ -482,23 +503,23 @@ const TB08031Sjs = (function () {
 
   /* 수익자정보 colM */
   let colM_ernInfo = [
-    {
-      dataIndx: "isChked",
-      maxWidth: 60,
-      minWidth: 60,
-      align: "center",
-      resizable: false,
-      title: "선택",
-      type: "checkBoxSelection",
-      sortable: false,
-      editor: false,
-      dataType: "bool",
-      editable: "true",
-      cb: {
-        all: false,
-        header: false,
-      },
-    },
+    // {
+    //   dataIndx: "isChked",
+    //   maxWidth: 60,
+    //   minWidth: 60,
+    //   align: "center",
+    //   resizable: false,
+    //   title: "선택",
+    //   type: "checkBoxSelection",
+    //   sortable: false,
+    //   editor: false,
+    //   dataType: "bool",
+    //   editable: "true",
+    //   cb: {
+    //     all: false,
+    //     header: false,
+    //   },
+    // },
     {
       title: "구분",
       dataType: "string",
@@ -762,23 +783,23 @@ const TB08031Sjs = (function () {
 
     /* 관련사업정보 colM */
     let colM_busiInfo = [
-      {
-        dataIndx: "isChked",
-        maxWidth: 60,
-        minWidth: 60,
-        align: "center",
-        resizable: false,
-        title: "선택",
-        type: "checkBoxSelection",
-        sortable: false,
-        editor: false,
-        dataType: "bool",
-        editable: "true",
-        cb: {
-          all: false,
-          header: false,
-        },
-      },
+      // {
+      //   dataIndx: "isChked",
+      //   maxWidth: 60,
+      //   minWidth: 60,
+      //   align: "center",
+      //   resizable: false,
+      //   title: "선택",
+      //   type: "checkBoxSelection",
+      //   sortable: false,
+      //   editor: false,
+      //   dataType: "bool",
+      //   editable: "true",
+      //   cb: {
+      //     all: false,
+      //     header: false,
+      //   },
+      // },
       {
         title: "NO",
         dataType: "string",
@@ -842,23 +863,23 @@ const TB08031Sjs = (function () {
 
     /* 편입자산정보 colM */
     let colM_admsAsstInfo = [
-      {
-        dataIndx: "isChked",
-        maxWidth: 60,
-        minWidth: 60,
-        align: "center",
-        resizable: false,
-        title: "선택",
-        type: "checkBoxSelection",
-        sortable: false,
-        editor: false,
-        dataType: "bool",
-        editable: "true",
-        cb: {
-          all: false,
-          header: false,
-        },
-      },
+      // {
+      //   dataIndx: "isChked",
+      //   maxWidth: 60,
+      //   minWidth: 60,
+      //   align: "center",
+      //   resizable: false,
+      //   title: "선택",
+      //   type: "checkBoxSelection",
+      //   sortable: false,
+      //   editor: false,
+      //   dataType: "bool",
+      //   editable: "true",
+      //   cb: {
+      //     all: false,
+      //     header: false,
+      //   },
+      // },
       {
         title: "투자유형",
         dataType: "string",
@@ -899,23 +920,23 @@ const TB08031Sjs = (function () {
 
     /* 투자기업목록 colM */
     let colM_invstBzscalList = [
-      {
-        dataIndx: "isChked",
-        maxWidth: 60,
-        minWidth: 60,
-        align: "center",
-        resizable: false,
-        title: "선택",
-        type: "checkBoxSelection",
-        sortable: false,
-        editor: false,
-        dataType: "bool",
-        editable: "true",
-        cb: {
-          all: false,
-          header: false,
-        },
-      },
+      // {
+      //   dataIndx: "isChked",
+      //   maxWidth: 60,
+      //   minWidth: 60,
+      //   align: "center",
+      //   resizable: false,
+      //   title: "선택",
+      //   type: "checkBoxSelection",
+      //   sortable: false,
+      //   editor: false,
+      //   dataType: "bool",
+      //   editable: "true",
+      //   cb: {
+      //     all: false,
+      //     header: false,
+      //   },
+      // },
       {
         title: "NO",
         dataType: "string",
@@ -988,23 +1009,23 @@ const TB08031Sjs = (function () {
 
     /* 자산운용사정보 colM */
     let colM_asstWrkngInfo = [
-      {
-        dataIndx: "isChked",
-        maxWidth: 60,
-        minWidth: 60,
-        align: "center",
-        resizable: false,
-        title: "선택",
-        type: "checkBoxSelection",
-        sortable: false,
-        editor: false,
-        dataType: "bool",
-        editable: "true",
-        cb: {
-          all: false,
-          header: false,
-        },
-      },
+      // {
+      //   dataIndx: "isChked",
+      //   maxWidth: 60,
+      //   minWidth: 60,
+      //   align: "center",
+      //   resizable: false,
+      //   title: "선택",
+      //   type: "checkBoxSelection",
+      //   sortable: false,
+      //   editor: false,
+      //   dataType: "bool",
+      //   editable: "true",
+      //   cb: {
+      //     all: false,
+      //     header: false,
+      //   },
+      // },
       {
         title: "NO",
         dataType: "string",
@@ -1091,14 +1112,20 @@ const TB08031Sjs = (function () {
         height: 80,
         maxHeight: 300,
         id: "TB08031S_bsnsPartInfo",
-        colModel: colM_bsnsPartInfo
+        colModel: colM_bsnsPartInfo,
+        rowDblClick: function(evt, ui){
+          gridInfoSett(ui.rowData, "bsnsPartInfoInstance");
+        }
       },
       //사업주요전망 그리드
       {
         height: 80,
         maxHeight: 300,
         id: "TB08031S_bsnsForecast",
-        colModel: colM_bsnsForecast
+        colModel: colM_bsnsForecast,
+        rowDblClick: function(evt, ui){
+          gridInfoSett(ui.rowData, "bsnsForecastInstance");
+        }
       },
       //채권보전주요약정 그리드
       {
@@ -1341,13 +1368,13 @@ const TB08031Sjs = (function () {
               tabPst.eq(14).hide();
               /* 기존에 선택된 TAB에서 active 요소 삭제 후 현재 SHOW 상태인 TAB MENU 중에서
                   첫번째 TAB PANEL에 active 요소 부여										*/
-              $(".tab-content")
+              $("div[data-menuid='/TB08031S'] .tab-content")
                 .children(".tab-pane.active")
                 .attr("class", "tab-pane");
-              $(".tab-content").children().eq(0).attr("class", "tab-pane active");
+              $("div[data-menuid='/TB08031S'] .tab-content").children().eq(0).attr("class", "tab-pane active");
       
-              $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-              $(".nav.nav-tabs")
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
                 .children()
                 .eq(0)
                 .children()
@@ -1366,6 +1393,12 @@ const TB08031Sjs = (function () {
               var fnnrCtrcMttrTrgtYn = rlesInfo.fnnrCtrcMttrTrgtYn; // 재무약정사항대상여부
               var brwrSpcYn = rlesInfo.brwrSpcYn;                   //차주SCP여부
               var apvlYn = rlesInfo.apvlYn;                         //승인여부
+
+              var bsnsPartInfo = data.BsnsPartInfo;
+              console.log(JSON.stringify(bsnsPartInfo));
+              
+
+              bsnsPartInfoInstance.setData(bsnsPartInfo);
 
               if(guasMrtgYn == "Y"){
                 $("#TB08031S_rlesWarrMrtgY").prop("checked", true);
@@ -1464,13 +1497,13 @@ const TB08031Sjs = (function () {
               tabPst.eq(13).hide();
               tabPst.eq(14).hide();
 
-              $(".tab-content")
+              $("div[data-menuid='/TB08031S'] .tab-content")
                 .children(".tab-pane.active")
                 .attr("class", "tab-pane");
-              $(".tab-content").children().eq(2).attr("class", "tab-pane active");
+              $("div[data-menuid='/TB08031S'] .tab-content").children().eq(2).attr("class", "tab-pane active");
 
-              $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-              $(".nav.nav-tabs")
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
                 .children()
                 .eq(2)
                 .children()
@@ -1557,13 +1590,13 @@ const TB08031Sjs = (function () {
               tabPst.eq(13).hide();
               tabPst.eq(14).show();
 
-              $(".tab-content")
+              $("div[data-menuid='/TB08031S'] .tab-content")
                 .children(".tab-pane.active")
                 .attr("class", "tab-pane");
-              $(".tab-content").children().eq(3).attr("class", "tab-pane active");
+              $("div[data-menuid='/TB08031S'] .tab-content").children().eq(3).attr("class", "tab-pane active");
 
-              $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-              $(".nav.nav-tabs")
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
                 .children()
                 .eq(3)
                 .children()
@@ -1607,13 +1640,13 @@ const TB08031Sjs = (function () {
               tabPst.eq(13).hide();
               tabPst.eq(14).hide();
 
-              $(".tab-content")
+              $("div[data-menuid='/TB08031S'] .tab-content")
                 .children(".tab-pane.active")
                 .attr("class", "tab-pane");
-              $(".tab-content").children().eq(4).attr("class", "tab-pane active");
+              $("div[data-menuid='/TB08031S'] .tab-content").children().eq(4).attr("class", "tab-pane active");
 
-              $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-              $(".nav.nav-tabs")
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
                 .children()
                 .eq(4)
                 .children()
@@ -1691,13 +1724,13 @@ const TB08031Sjs = (function () {
               tabPst.eq(13).show();
               tabPst.eq(14).show();
 
-              $(".tab-content")
+              $("div[data-menuid='/TB08031S'] .tab-content")
                 .children(".tab-pane.active")
                 .attr("class", "tab-pane");
-              $(".tab-content").children().eq(1).attr("class", "tab-pane active");
+              $("div[data-menuid='/TB08031S'] .tab-content").children().eq(1).attr("class", "tab-pane active");
 
-              $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-              $(".nav.nav-tabs")
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+              $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
                 .children()
                 .eq(1)
                 .children()
@@ -1707,6 +1740,7 @@ const TB08031Sjs = (function () {
               
               var mngmCndFlflYn = pefInfo.mngmCndFlflYn;       //관리조건이행여부
               var bondTrnsYn = pefInfo.bondTrnsYn;             //채권이관여부
+
 
               if(mngmCndFlflYn == "Y"){
                 $("#TB08031S_pefVcInvstMngY").prop("checked", true);
@@ -1723,1285 +1757,19 @@ const TB08031Sjs = (function () {
               $("#TB08031S_tab2_empNo").val(pefInfo.chrgEmpno);                      //담당자
               $("#TB08031S_tab2_empNm").val(pefInfo.chrgEmpnm)                       //담당자명
               $("#TB08031S_invstGuidelines").val(pefInfo.invstStgyCtns);             //투자가이드라인
+
+
+              var bsnsPartInfo = data.bsnsPartInfo;
+              bsnsPartInfoInstance.setData(bsnsPartInfo);
+
+              var bsnsForecast = data.bsnsForecast;
+              bsnsForecastInstance.setData(bsnsForecast);
             }
           }
         }
       });
     }
 
-    function businessFunction() {
-      var dtoParam = {
-        dealNo: dealNo,
-      };
-
-      $.ajax({
-        type: "GET",
-        url: "/TB08031S/getBusiBssInfo",
-        data: dtoParam,
-        dataType: "json",
-        success: function (data) {
-          console.log("확인해보자::::", JSON.stringify(data));
-
-          var rlesList = data.rlesInfo;
-          var infraList = data.infraInfo;
-          var maList = data.maInfo;
-          var invstList = data.invstInfo;
-          var pefList = data.pefInfo;
-          var bsnsPartInfo = data.bsnsPartInfo;
-          var bsnsForecast = data.bsnsForecast;
-          var bondProtInfo = data.bondProtInfo;
-          var cchInfo = data.cchInfo;
-          var stlnInfo = data.stlnInfo;
-          var ernInfo = data.ernInfo;
-          var busiInfo = data.busiInfo;
-          var admsAsstInfo = data.admsAsstInfo;
-          var invstEprzInfo = data.invstEprzInfo;
-          var html = "";
-
-          /* 기본항목*/
-          $("#TB08031S_ibDealNo").val(data.dealNo); // 딜번호
-          $("#TB08031S_corpNo").val(data.corpRgstNo); // 법인등록번호
-          $("#TB08031S_corpNm").val(data.mgcoNm); // 업체명
-          $("#TB08031S_bsnsNm").val(data.busiNm); // 사업명
-          //$('#TB08031S_crdtAsmtModel').val();													// 신용평가모형
-          //$('#TB08031S_C012').val();															// 신용등급
-          //$('#TB08031S_bsnsLoan').val();														// 사업대출잔액
-          //$('#TB08031S_coValDt').val();															// 평가유효기일
-          //$('#TB08031S_fnMdfyDt').val();														// 최종수정일자
-
-          /* 사업기본정보*/
-          $("#TB08031S_invbnkAmnBzCd").val(data.invFnnMngmBusiDcd); // 사업구분
-          $("#TB08031S_I021").val(data.invFnnMngnBusiDtlDcd); // 사업구분상세
-          $("#TB08031S_I011").val(data.invFnnMmngPrgSttsCd); // 진행상태
-          $("#TB08031S_I027").val(data.crryCd); // 총조달금액코드
-          $("#TB08031S_prcrAmt").val(data.totPrcrAmt); // 총조달금액
-          $("#TB08031S_bondProt").val(data.mainBondMtncCnts); // 주요채권보전
-          $("#TB08031S_rvwStRsn").val(data.ivtgShdnRsnCnts); // 검토중단사유
-          $("#TB08031S_T002").val(data.thcoMdtnYn); // 당사주선구분
-          $("#TB08031S_thcoRlAmt").val(data.thcoMdtnAmt); // 당사주선금액
-          $("#TB08031S_thcoPtnAmt").val(data.thcoPtciAmt); // 당사참여금액
-          //$('#TB08031S_I033').val();															// 금리구분코드
-          $("#TB08031S_InvstRvnRtCcdInput").val(data.aplyIntrtCnts); // 금리구분
-          //$('#TB08031S_B006').val();															// 기준금리코드
-          //$('#TB08031S_BitrKindCdInput').val();													// 기준금리
-          //$('#TB08031S_preRt').val();															// 가산금리
-          $("#TB08031S_charge_empNm").val(data.empNm); // 담당자
-          //$('#TB08031S_D010').val();															// 업무팀
-          $("#TB08031S_tgtRvn").val(data.goalErnRt); // 목표수익률
-          $("#bsnsCntnt").val(data.busiCnts); // 사업내용
-          $("#TB08031S_chargeRm").val(data.rmEmpno); // 담당RM
-
-          if (data.invFnnMngmBusiDcd == "01") {
-            /* 부동산 사업정보 */
-            $(":radio[name='TB08031S_rlesWarrMrtgYN']").radioSelect(
-              rlesList.guasMrtgYn
-            ); // 보증서담보여부
-            $("#TB08031S_C014").val(rlesList.efceMbdyDcd); // 시행주체구분
-            //$('#TB08031S_csstPrarYm').val();													// 착공(예정)년월
-            //$('#TB08031S_cnfnPrarYm').val('2025-01');											// 준공(예정)년월
-            $("#TB08031S_slltPrarYm").val(rlesList.slltStrtDt); // 분양(예정)년월
-            $("#TB08031S_busiArea").val(rlesList.bzplAddr); // 사업장위치
-            $("#TB08031S_busiSiteSqms").val(rlesList.busiSiteSqms); // 사업부지면적(m²)
-            //$('#TB08031S_busiSiteAcre').val('200');											// 사업부지(평)
-            //$('#TB08031S_arRt').val('85');													// 용적률
-            $("#TB08031S_Sqms").val(rlesList.ttlSqms); // 연면적
-            $("#TB08031S_SqmsP").val("250"); // 연면적(평)
-            $("#TB08031S_far").val(rlesList.busiBldngLndrt); // 사업건폐율
-            $("#TB08031S_B019").val(rlesList.eprzSclDcd); // 기업규모구분
-            $("#TB08031S_fcltScal").val(rlesList.fcltSclWidhCtns); // 시설규모너비내용
-            $("#TB08031S_resiEco").val(rlesList.resiEcoCtns); // 주거환경내용
-            $("#TB08031S_C010").val(rlesList.crdtRifcDcd); // 신용보강장치구분코드
-            //$('#TB08031S_crdtEhcmntAmt').val('256,850,000');									// 신용보강금액
-            $("#TB08031S_crdtEhcmntCntnt").val(rlesList.crdtRifcDvcNm); // 신용보강장치명
-            //$('#rles_datepicker1').val('2023-12-15');												// 상업운전일
-            //$('#TB08031S_rlesCondComply').val('');											// 관리조건이행
-
-            $(":radio[name='rlesCondComplyYN']").radioSelect(
-              rlesList.mngmCndFlflYn
-            ); // 관리조건이행여부
-            $(":radio[name='rlesBondTrnYN']").radioSelect(rlesList.bondTrnsYn); // 채권이관여부
-            $(":radio[name='rlesCmmntMatYN']").radioSelect(
-              rlesList.fnnrCtrcMttrTrgtYn
-            ); // 재무약정사항대상여부
-            //$('#TB08031S_rlesEmpPhNo').val('010-8577-1212');									// 업체담당연락처
-
-            // 사업참가자정보 조회
-            if (bsnsPartInfo.length > 0) {
-              $.each(bsnsPartInfo, function (key, value) {
-                html += '<tr ondblclick="setBsnsPartInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' +
-                  value.ptcnRelrDcd +
-                  "</td>"; // 참가자관계코드
-                html += "    <td>" + value.ptcnRelrDcdNm + "</td>"; // 참가자관계명
-                html += "    <td>" + value.entpNm + "</td>"; // 업체명
-                html += '    <td class="text-center">' + value.rpsrNm + "</td>"; // 대표자명
-                html +=
-                  '    <td class="text-center">' +
-                  checkBrnAcno(value.crno) +
-                  "</td>"; // 법인등록번호
-                html +=
-                  '    <td class="text-center">' +
-                  checkBrnAcno(value.bzno) +
-                  "</td>"; // 사업자등록번호
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="7" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bsnsPartInfo").html(html);
-
-            // 사업주요전망 조회
-            html = "";
-            if (bsnsForecast.length > 0) {
-              $.each(bsnsForecast, function (key, value) {
-                html += '<tr ondblclick="setBsnsForecast(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.prarDt) +
-                  "</td>"; // 예정일자
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.flflDt) +
-                  "</td>"; // 이행일자
-                html += '    <td class="text-center">' + value.flflYn + "</td>"; // 이행여부
-                html += "    <td>" + value.mainScxCtns + "</td>"; // 주요일정내용
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="6" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bsnsForecast").html(html);
-
-            // 채권보전주요약정 조회
-            html = "";
-            if (bondProtInfo.length > 0) {
-              $.each(bondProtInfo, function (key, value) {
-                html += '<tr ondblclick="setBondProtInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' +
-                  value.bondProtCcd +
-                  "</td>"; // 채권보전구분
-                html += "    <td>" + value.bondProtNm + "</td>"; // 채권보전구분명
-                html +=
-                  '    <td class="text-center">' +
-                  value.fnnrCtrcMttrTrgtYn +
-                  "</td>"; // 이행여부
-                html += "    <td>" + value.mainCtrcMttrCnts + "</td>"; // 상세내용
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bondProtInfo").html(html);
-
-            // 조건변경이력 조회
-            html = "";
-            if (cchInfo.length > 0) {
-              $.each(cchInfo, function (key, value) {
-                html += '<tr ondblclick="setCchInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.apvlDt) +
-                  "</td>"; // 승인일자
-                html +=
-                  '    <td class="text-center">' +
-                  value.cndChngDcmNoCnts +
-                  "</td>"; // 승인문서번호
-                html += "    <td>" + value.cndChngMainCnts + "</td>"; // 주요내용
-                html +=
-                  '    <td style="display:none;">' + value.prcsrEmpno + "</td>"; // 취급자
-                html +=
-                  '    <td class="text-center">' + value.prcsrEmpnm + "</td>"; // 취급자명
-                html +=
-                  '    <td class="text-center">' +
-                  formatPhoneNo(value.prcsrTelNo) +
-                  "</td>"; // 취급자개인번호
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.crotDt) +
-                  "</td>"; // 시행일자
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="8" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_cchInfo").html(html);
-
-            // 대주단정보 조회
-            html = "";
-            if (stlnInfo.length > 0) {
-              $.each(stlnInfo, function (key, value) {
-                html += '<tr ondblclick="setStlnInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' + value.ibStlnDcd + "</td>"; // 구분
-                html += "    <td>" + value.ibStlnNm + "</td>"; // 구분명
-                html += "    <td>" + value.entpNm + "</td>"; // 기관명
-                html +=
-                  '    <td class="text-right">' +
-                  commaStr(handleNullData(value.crdtProvLmtAmt)) +
-                  "</td>"; // 약정금액
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(value.prtcRto) +
-                  "</td>"; // 참가비율
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_stlnInfo").html(html);
-
-            // 수익자정보 조회
-            html = "";
-            if (ernInfo.length > 0) {
-              $.each(ernInfo, function (key, value) {
-                html += '<tr ondblclick="setErnInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html +=
-                  '    <td style="display:none;">' + value.ibStlnDcd + "</td>"; // 구분
-                html += "    <td>" + value.ibStlnNm + "</td>"; // 구분명
-                html += "    <td>" + value.entpNm + "</td>"; // 기관명
-                html +=
-                  '    <td class="text-right">' +
-                  commaStr(handleNullData(value.crdtProvLmtAmt)) +
-                  "</td>"; // 약정금액
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(value.prtcRto) +
-                  "</td>"; // 참가비율
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_ernInfo").html(html);
-          } else if (data.invFnnMngmBusiDcd == "02") {
-            /* 인프라 사업정보 */
-            $("#TB08031S_B013").val(infraList.invFnnBusiWyDcd); // 인프라 사업방식
-            $("#TB08031S_bsnsScal").val(infraList.busiSclCntn); // 사업규모
-            $("#TB08031S_bsnsLicYm").val(infraList.busiLcsiDt); // 사업인허가년월
-            $("#TB08031S_cmplYm").val(infraList.cnfnDt); // 준공예정년월
-            //$('#TB08031S_leadAgency').val('금융위원회');											// 주무관청
-            $("#TB08031S_conStYm").val(infraList.cnrStrtDt); // 건설시작년월
-            $("#TB08031S_conEndYm").val(infraList.cnrEndDt); // 건설종료년월
-            $("#TB08031S_opDurStYm").val(infraList.oprtStrtDt); // 운영시작일자
-            $("#TB08031S_opDurEndYm").val(infraList.oprtEndDt); // 운영종료일자
-            //$('#TB08031S_invstBsnsLoc').val('서울');											// 사업지역
-            $("#TB08031S_bsnsLoc").val(infraList.bzplAddr); // 사업장위치
-            $(":radio[name='infraSeLmtYN']").radioSelect(infraList.lmtYn); // 한도여부
-            $("#TB08031S_invstAmt").val(infraList.invstAmt); // 총투자비
-            $("#TB08031S_B012").val(infraList.busiRvoDcd); // 사업수주구분
-            $("#TB08031S_equity").val(infraList.slfCpta); // 자기자본금
-            //$('#infra_datepicker1').val('');													// 상업운전일
-            //$('#TB08031S_infraEmpPhNo').val('');												// 업체담당연락처
-            $("#TB08031S_priLoan").val(infraList.prorLoanAmt); // 선순위대출
-            $("#TB08031S_subLoan").val(infraList.bkbnLoanAmt); // 후순위대출
-            $(":radio[name='infraUseApvlYN']").radioSelect(infraList.apvlYn); // 승인여부
-            $("#TB08031S_subLoan").val(infraList.brwrSpcYn); // 차주SPC여부
-            $(":radio[name='infraSpcYN']").radioSelect(infraList.brwrSpcYn); // 차주SPC여부
-            //$('#TB08031S_tab3_empNm').val(infraList.brwrSpcYn);								// 담당자
-            //$('#TB08031S_tab3_empNm').val(infraList.brwrSpcYn);								// 관리사무소
-            $(":radio[name='condComplyYN']").radioSelect(
-              infraList.mngmCndFlflYn
-            ); // 관리조건이행여부
-            $(":radio[name='infraBondTraYN']").radioSelect(
-              infraList.bondTrnsYn
-            ); // 채권이관여부
-            $(":radio[name='infraCmmntMatYN']").radioSelect(
-              infraList.fnnrCtrcMttrTrgtYn
-            ); // 주요재무약정사항
-
-            // 사업참가자정보 조회
-            if (bsnsPartInfo.length > 0) {
-              $.each(bsnsPartInfo, function (key, value) {
-                html += '<tr ondblclick="setBsnsPartInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' +
-                  value.ptcnRelrDcd +
-                  "</td>"; // 참가자관계코드
-                html += "    <td>" + value.ptcnRelrDcdNm + "</td>"; // 참가자관계명
-                html += "    <td>" + value.entpNm + "</td>"; // 업체명
-                html += '    <td class="text-center">' + value.rpsrNm + "</td>"; // 대표자명
-                html +=
-                  '    <td class="text-center">' +
-                  checkBrnAcno(value.crno) +
-                  "</td>"; // 법인등록번호
-                html +=
-                  '    <td class="text-center">' +
-                  checkBrnAcno(value.bzno) +
-                  "</td>"; // 사업자등록번호
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="7" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bsnsPartInfo").html(html);
-
-            // 사업주요전망 조회
-            html = "";
-            if (bsnsForecast.length > 0) {
-              $.each(bsnsForecast, function (key, value) {
-                html += '<tr ondblclick="setBsnsForecast(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.prarDt) +
-                  "</td>"; // 예정일자
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.flflDt) +
-                  "</td>"; // 이행일자
-                html += '    <td class="text-center">' + value.flflYn + "</td>"; // 이행여부
-                html += "    <td>" + value.mainScxCtns + "</td>"; // 주요일정내용
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="6" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bsnsForecast").html(html);
-
-            // 채권보전주요약정 조회
-            html = "";
-            if (bondProtInfo.length > 0) {
-              $.each(bondProtInfo, function (key, value) {
-                html += '<tr ondblclick="setBondProtInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' +
-                  value.bondProtCcd +
-                  "</td>"; // 채권보전구분
-                html += "    <td>" + value.bondProtNm + "</td>"; // 채권보전구분명
-                html +=
-                  '    <td class="text-center">' +
-                  value.fnnrCtrcMttrTrgtYn +
-                  "</td>"; // 이행여부
-                html += "    <td>" + value.mainCtrcMttrCnts + "</td>"; // 상세내용
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bondProtInfo").html(html);
-
-            // 조건변경이력 조회
-            html = "";
-            if (cchInfo.length > 0) {
-              $.each(cchInfo, function (key, value) {
-                html += '<tr ondblclick="setCchInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.apvlDt) +
-                  "</td>"; // 승인일자
-                html +=
-                  '    <td class="text-center">' +
-                  value.cndChngDcmNoCnts +
-                  "</td>"; // 승인문서번호
-                html += "    <td>" + value.cndChngMainCnts + "</td>"; // 주요내용
-                html +=
-                  '    <td style="display:none;">' + value.prcsrEmpno + "</td>"; // 취급자
-                html +=
-                  '    <td class="text-center">' + value.prcsrEmpnm + "</td>"; // 취급자명
-                html +=
-                  '    <td class="text-center">' +
-                  formatPhoneNo(value.prcsrTelNo) +
-                  "</td>"; // 취급자개인번호
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.crotDt) +
-                  "</td>"; // 시행일자
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="8" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_cchInfo").html(html);
-
-            // 대주단정보 조회
-            html = "";
-            if (stlnInfo.length > 0) {
-              $.each(stlnInfo, function (key, value) {
-                html += '<tr ondblclick="setStlnInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' + value.ibStlnDcd + "</td>"; // 구분
-                html += "    <td>" + value.ibStlnNm + "</td>"; // 구분명
-                html += "    <td>" + value.entpNm + "</td>"; // 기관명
-                html +=
-                  '    <td class="text-right">' +
-                  commaStr(handleNullData(value.crdtProvLmtAmt)) +
-                  "</td>"; // 약정금액
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(value.prtcRto) +
-                  "</td>"; // 참가비율
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_stlnInfo").html(html);
-
-            // 수익자정보 조회
-            html = "";
-            if (ernInfo.length > 0) {
-              $.each(ernInfo, function (key, value) {
-                html += '<tr ondblclick="setErnInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html +=
-                  '    <td style="display:none;">' + value.ibStlnDcd + "</td>"; // 구분
-                html += "    <td>" + value.ibStlnNm + "</td>"; // 구분명
-                html += "    <td>" + value.entpNm + "</td>"; // 기관명
-                html +=
-                  '    <td class="text-right">' +
-                  commaStr(handleNullData(value.crdtProvLmtAmt)) +
-                  "</td>"; // 약정금액
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(value.prtcRto) +
-                  "</td>"; // 참가비율
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_ernInfo").html(html);
-          } else if (data.invFnnMngmBusiDcd == "03") {
-            /* M/A 사업정보 */
-            $("#TB08031S_U002").val(maList.undwHglmWyDcd); // 상환방식
-            $("#TB08031S_U001").val(maList.hnvrBusiDcd); // 인수사업구분
-            $(":radio[name='maEstateSpcYN']").radioSelect(maList.brwrSpcYn); // 차주 SPC 여부
-            $("#TB08031S_spon").val(maList.spnsrCtns); // 스폰서
-            $("#TB08031S_mrtg").val(maList.undwMrtgCtns); // 담보
-
-            // 사업참가자정보 조회
-            if (bsnsPartInfo.length > 0) {
-              $.each(bsnsPartInfo, function (key, value) {
-                html += '<tr ondblclick="setBsnsPartInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' +
-                  value.ptcnRelrDcd +
-                  "</td>"; // 참가자관계코드
-                html += "    <td>" + value.ptcnRelrDcdNm + "</td>"; // 참가자관계명
-                html += "    <td>" + value.entpNm + "</td>"; // 업체명
-                html += '    <td class="text-center">' + value.rpsrNm + "</td>"; // 대표자명
-                html +=
-                  '    <td class="text-center">' +
-                  checkBrnAcno(value.crno) +
-                  "</td>"; // 법인등록번호
-                html +=
-                  '    <td class="text-center">' +
-                  checkBrnAcno(value.bzno) +
-                  "</td>"; // 사업자등록번호
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="7" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bsnsPartInfo").html(html);
-
-            // 사업주요전망 조회
-            html = "";
-            if (bsnsForecast.length > 0) {
-              $.each(bsnsForecast, function (key, value) {
-                html += '<tr ondblclick="setBsnsForecast(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.prarDt) +
-                  "</td>"; // 예정일자
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.flflDt) +
-                  "</td>"; // 이행일자
-                html += '    <td class="text-center">' + value.flflYn + "</td>"; // 이행여부
-                html += "    <td>" + value.mainScxCtns + "</td>"; // 주요일정내용
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="6" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bsnsForecast").html(html);
-
-            // 채권보전주요약정 조회
-            html = "";
-            if (bondProtInfo.length > 0) {
-              $.each(bondProtInfo, function (key, value) {
-                html += '<tr ondblclick="setBondProtInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' +
-                  value.bondProtCcd +
-                  "</td>"; // 채권보전구분
-                html += "    <td>" + value.bondProtNm + "</td>"; // 채권보전구분명
-                html +=
-                  '    <td class="text-center">' +
-                  value.fnnrCtrcMttrTrgtYn +
-                  "</td>"; // 이행여부
-                html += "    <td>" + value.mainCtrcMttrCnts + "</td>"; // 상세내용
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bondProtInfo").html(html);
-
-            // 조건변경이력 조회
-            html = "";
-            if (cchInfo.length > 0) {
-              $.each(cchInfo, function (key, value) {
-                html += '<tr ondblclick="setCchInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.apvlDt) +
-                  "</td>"; // 승인일자
-                html +=
-                  '    <td class="text-center">' +
-                  value.cndChngDcmNoCnts +
-                  "</td>"; // 승인문서번호
-                html += "    <td>" + value.cndChngMainCnts + "</td>"; // 주요내용
-                html +=
-                  '    <td style="display:none;">' + value.prcsrEmpno + "</td>"; // 취급자
-                html +=
-                  '    <td class="text-center">' + value.prcsrEmpnm + "</td>"; // 취급자명
-                html +=
-                  '    <td class="text-center">' +
-                  formatPhoneNo(value.prcsrTelNo) +
-                  "</td>"; // 취급자개인번호
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.crotDt) +
-                  "</td>"; // 시행일자
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="8" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_cchInfo").html(html);
-
-            // 대주단정보 조회
-            html = "";
-            if (stlnInfo.length > 0) {
-              $.each(stlnInfo, function (key, value) {
-                html += '<tr ondblclick="setStlnInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' + value.ibStlnDcd + "</td>"; // 구분
-                html += "    <td>" + value.ibStlnNm + "</td>"; // 구분명
-                html += "    <td>" + value.entpNm + "</td>"; // 기관명
-                html +=
-                  '    <td class="text-right">' +
-                  commaStr(handleNullData(value.crdtProvLmtAmt)) +
-                  "</td>"; // 약정금액
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(value.prtcRto) +
-                  "</td>"; // 참가비율
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_stlnInfo").html(html);
-
-            // 수익자정보 조회
-            html = "";
-            if (ernInfo.length > 0) {
-              $.each(ernInfo, function (key, value) {
-                html += '<tr ondblclick="setErnInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html +=
-                  '    <td style="display:none;">' + value.ibStlnDcd + "</td>"; // 구분
-                html += "    <td>" + value.ibStlnNm + "</td>"; // 구분명
-                html += "    <td>" + value.entpNm + "</td>"; // 기관명
-                html +=
-                  '    <td class="text-right">' +
-                  commaStr(handleNullData(value.crdtProvLmtAmt)) +
-                  "</td>"; // 약정금액
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(value.prtcRto) +
-                  "</td>"; // 참가비율
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_ernInfo").html(html);
-
-            // 관련사업정보 조회
-            html = "";
-            if (busiInfo.length > 0) {
-              $.each(busiInfo, function (key, value) {
-                html += '<tr ondblclick="">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-left">' + value.sn + "</td>"; // 구분명
-                html +=
-                  '    <td class="text-left">' + value.reltDealNo + "</td>"; // 기관명
-                html += '    <td class="text-left">' + value.dealNm + "</td>";
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(addComma(value.allInvAmt)) +
-                  "</td>";
-                html += '    <td class="text-center">' + "Y" + "</td>";
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(addComma(value.thcoPtciAmt)) +
-                  "</td>";
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_busiInfo").html(html);
-
-            // 편입자산정보 조회
-            html = "";
-            if (admsAsstInfo.length > 0) {
-              $.each(admsAsstInfo, function (key, value) {
-                html += '<tr ondblclick="setAdmsAsstInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html +=
-                  '    <td style="display: none">' + value.ibInvTpCd + "</td>";
-                html +=
-                  '    <td class="text-left">' + value.ibInvTpNm + "</td>";
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(addComma(value.admsAsstAcbkAcqAmt)) +
-                  "</td>";
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(value.admsAsstGrntErnRt) +
-                  "</td>";
-                html +=
-                  '    <td class="text-left">' + value.admsAsstItmNm + "</td>";
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_admsAsstInfo").html(html);
-          } else if (data.invFnnMngmBusiDcd == "04") {
-            if (!isEmpty(invstList)) {
-              /* 국제투자 사업정보 */
-              $("#TB08031S_trgtAstsCcd").val(invstList.invFnnTrgtAsstDcd); // 투자금융대상자산구분코드
-              $("#TB08031S_brwrNtnNm").val(invstList.brwrNtnNm); // 차주국가명
-              $("#TB08031S_totBusiAmt").val(invstList.totBusiCt); // 총사업비용
-              $("#TB08031S_hostCountry").val(invstList.ntnNm); // 국가명
-              $("#TB08031S_ensrYn").val(invstList.guasDvsnCtns); // 보증서구분내용
-              $("#TB08031S_prorRto").val(invstList.prorRto); // 선순위비율
-              $("#TB08031S_cerkRto").val(invstList.cerkRto); // 중순위비율
-              $("#TB08031S_bkbnRto").val(invstList.bkbnRto); // 후순위비율
-              $("#TB08031S_lseStrtYm").val(invstList.lesStrtDt); // 리스시작일자
-              $("#TB08031S_lseEdYm").val(invstList.lesEndDt); // 리스종료일자
-              $("#TB08031S_lsePrd").val(invstList.mnum); // 리스기간
-              $("#TB08031S_loanPrd").val(invstList.mnum); // 대출기간
-              $("#TB08031S_loanStrtDt").val(invstList.loanStrtDt); // 대출시작일자
-              $("#TB08031S_loanEdYm").val(invstList.loanEndDt); // 대출종료일자
-              $("#TB08031S_amSt").val(invstList.dvcTyCnts); // 기종내용
-              $("#TB08031S_proEprz").val(invstList.prdcCmpCnts); // 제작회사내용
-              $("#TB08031S_proYr").val(invstList.mnfYr); // 제조년도
-              $("#TB08031S_L006").val(invstList.invFnnLesKndDcd); // 투자금융리스종류규분코드
-              $("#TB08031S_lseMgco").val(invstList.lesMgcoNm); // 리스운용사명
-              $("#TB08031S_lseUser").val(invstList.lesUserCnts); // 리스이용자내용
-              $(":radio[name='realEstateSpcYN']").radioSelect(
-                invstList.brwrSpcYn
-              ); // 차주SPC여부
-              $(":radio[name='realEstateCondComplyYN']").radioSelect(
-                invstList.mngmCndFlflYn
-              ); // 관리조건이행여부
-              $(":radio[name='realEstateBondTrnYN']").radioSelect(
-                invstList.bondTrnsYn
-              ); // 채권이관여부
-              $(":radio[name='realEstateCmmntMatYN']").radioSelect(
-                invstList.fnnrCtrcMttrTrgtYn
-              ); // 재무약정사항대상여부
-              // 사업참가자정보 조회
-              if (bsnsPartInfo.length > 0) {
-                $.each(bsnsPartInfo, function (key, value) {
-                  html += '<tr ondblclick="setBsnsPartInfo(this);">';
-                  html +=
-                    '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                  html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                  html +=
-                    '    <td style="display:none;">' +
-                    value.ptcnRelrDcd +
-                    "</td>"; // 참가자관계코드
-                  html += "    <td>" + value.ptcnRelrDcdNm + "</td>"; // 참가자관계명
-                  html += "    <td>" + value.entpNm + "</td>"; // 업체명
-                  html +=
-                    '    <td class="text-center">' + value.rpsrNm + "</td>"; // 대표자명
-                  html +=
-                    '    <td class="text-center">' +
-                    checkBrnAcno(value.crno) +
-                    "</td>"; // 법인등록번호
-                  html +=
-                    '    <td class="text-center">' +
-                    checkBrnAcno(value.bzno) +
-                    "</td>"; // 사업자등록번호
-                  html += "</tr>";
-                });
-              } else {
-                html += "<tr>";
-                html +=
-                  '<td colspan="7" style="text-align: center">데이터가 없습니다.</td>';
-                html += "</tr>";
-              }
-              $("#TB08031S_bsnsPartInfo").html(html);
-
-              // 사업주요전망 조회
-              html = "";
-              if (bsnsForecast.length > 0) {
-                $.each(bsnsForecast, function (key, value) {
-                  html += '<tr ondblclick="setBsnsForecast(this);">';
-                  html +=
-                    '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                  html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                  html +=
-                    '    <td class="text-center">' +
-                    formatDate(value.prarDt) +
-                    "</td>"; // 예정일자
-                  html +=
-                    '    <td class="text-center">' +
-                    formatDate(value.flflDt) +
-                    "</td>"; // 이행일자
-                  html +=
-                    '    <td class="text-center">' + value.flflYn + "</td>"; // 이행여부
-                  html += "    <td>" + value.mainScxCtns + "</td>"; // 주요일정내용
-                  html += "</tr>";
-                });
-              } else {
-                html += "<tr>";
-                html +=
-                  '<td colspan="6" style="text-align: center">데이터가 없습니다.</td>';
-                html += "</tr>";
-              }
-              $("#TB08031S_bsnsForecast").html(html);
-
-              // 채권보전주요약정 조회
-              html = "";
-              if (bondProtInfo.length > 0) {
-                $.each(bondProtInfo, function (key, value) {
-                  html += '<tr ondblclick="setBondProtInfo(this);">';
-                  html +=
-                    '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                  html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                  html +=
-                    '    <td style="display:none;">' +
-                    value.bondProtCcd +
-                    "</td>"; // 채권보전구분
-                  html += "    <td>" + value.bondProtNm + "</td>"; // 채권보전구분명
-                  html +=
-                    '    <td class="text-center">' +
-                    value.fnnrCtrcMttrTrgtYn +
-                    "</td>"; // 이행여부
-                  html += "    <td>" + value.mainCtrcMttrCnts + "</td>"; // 상세내용
-                  html += "</tr>";
-                });
-              } else {
-                html += "<tr>";
-                html +=
-                  '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-                html += "</tr>";
-              }
-              $("#TB08031S_bondProtInfo").html(html);
-
-              // 조건변경이력 조회
-              html = "";
-              if (cchInfo.length > 0) {
-                $.each(cchInfo, function (key, value) {
-                  html += '<tr ondblclick="setCchInfo(this);">';
-                  html +=
-                    '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                  html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                  html +=
-                    '    <td class="text-center">' +
-                    formatDate(value.apvlDt) +
-                    "</td>"; // 승인일자
-                  html +=
-                    '    <td class="text-center">' +
-                    value.cndChngDcmNoCnts +
-                    "</td>"; // 승인문서번호
-                  html += "    <td>" + value.cndChngMainCnts + "</td>"; // 주요내용
-                  html +=
-                    '    <td style="display:none;">' +
-                    value.prcsrEmpno +
-                    "</td>"; // 취급자
-                  html +=
-                    '    <td class="text-center">' + value.prcsrEmpnm + "</td>"; // 취급자명
-                  html +=
-                    '    <td class="text-center">' +
-                    formatPhoneNo(value.prcsrTelNo) +
-                    "</td>"; // 취급자개인번호
-                  html +=
-                    '    <td class="text-center">' +
-                    formatDate(value.crotDt) +
-                    "</td>"; // 시행일자
-                  html += "</tr>";
-                });
-              } else {
-                html += "<tr>";
-                html +=
-                  '<td colspan="8" style="text-align: center">데이터가 없습니다.</td>';
-                html += "</tr>";
-              }
-              $("#TB08031S_cchInfo").html(html);
-
-              // 대주단정보 조회
-              html = "";
-              if (stlnInfo.length > 0) {
-                $.each(stlnInfo, function (key, value) {
-                  html += '<tr ondblclick="setStlnInfo(this);">';
-                  html +=
-                    '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                  html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                  html +=
-                    '    <td style="display:none;">' +
-                    value.ibStlnDcd +
-                    "</td>"; // 구분
-                  html += "    <td>" + value.ibStlnNm + "</td>"; // 구분명
-                  html += "    <td>" + value.entpNm + "</td>"; // 기관명
-                  html +=
-                    '    <td class="text-right">' +
-                    commaStr(handleNullData(value.crdtProvLmtAmt)) +
-                    "</td>"; // 약정금액
-                  html +=
-                    '    <td class="text-right">' +
-                    handleNullData(value.prtcRto) +
-                    "</td>"; // 참가비율
-                  html += "</tr>";
-                });
-              } else {
-                html += "<tr>";
-                html +=
-                  '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-                html += "</tr>";
-              }
-              $("#TB08031S_stlnInfo").html(html);
-            }
-          } else {
-            /* PEF/VC 사업정보 */
-            if (!isEmpty(pefList)) {
-              $("#TB08031S_invstGuidelines").val(pefList.invstStgyCtns); // 투자전략내용
-
-              $("#TB08031S_tab2_empNo").val(pefList.chrgEmpno); // 담당자사번
-              $("#TB08031S_tab2_empNm").val(pefList.chrgEmpnm); // 담당자명
-              $(":radio[name='pefVcInvstMngYN']").radioSelect(
-                pefList.mngmCndFlflYn
-              ); // 관리조건이행여부
-              $(":radio[name='TB08031S_pefVcBondTrnYN']").radioSelect(
-                pefList.bondTrnsYn
-              ); // 채권이관여부
-            }
-
-            // 사업참가자정보
-            if (bsnsPartInfo.length > 0) {
-              $.each(bsnsPartInfo, function (key, value) {
-                html += '<tr ondblclick="setBsnsPartInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' +
-                  value.ptcnRelrDcd +
-                  "</td>"; // 참가자관계코드
-                html += "    <td>" + value.ptcnRelrDcdNm + "</td>"; // 참가자관계명
-                html += "    <td>" + value.entpNm + "</td>"; // 업체명
-                html += '    <td class="text-center">' + value.rpsrNm + "</td>"; // 대표자명
-                html +=
-                  '    <td class="text-center">' +
-                  checkBrnAcno(value.crno) +
-                  "</td>"; // 법인등록번호
-                html +=
-                  '    <td class="text-center">' +
-                  checkBrnAcno(value.bzno) +
-                  "</td>"; // 사업자등록번호
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="7" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bsnsPartInfo").html(html);
-
-            // 사업주요전망 조회
-            html = "";
-            if (bsnsForecast.length > 0) {
-              $.each(bsnsForecast, function (key, value) {
-                html += '<tr ondblclick="setBsnsForecast(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.prarDt) +
-                  "</td>"; // 예정일자
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.flflDt) +
-                  "</td>"; // 이행일자
-                html += '    <td class="text-center">' + value.flflYn + "</td>"; // 이행여부
-                html += "    <td>" + value.mainScxCtns + "</td>"; // 주요일정내용
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="6" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bsnsForecast").html(html);
-
-            // 채권보전주요약정 조회
-            html = "";
-            if (bondProtInfo.length > 0) {
-              $.each(bondProtInfo, function (key, value) {
-                html += '<tr ondblclick="setBondProtInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td style="display:none;">' +
-                  value.bondProtCcd +
-                  "</td>"; // 채권보전구분
-                html += "    <td>" + value.bondProtNm + "</td>"; // 채권보전구분명
-                html +=
-                  '    <td class="text-center">' +
-                  value.fnnrCtrcMttrTrgtYn +
-                  "</td>"; // 이행여부
-                html += "    <td>" + value.mainCtrcMttrCnts + "</td>"; // 상세내용
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_bondProtInfo").html(html);
-
-            /// 조건변경이력 조회
-            html = "";
-            if (cchInfo.length > 0) {
-              $.each(cchInfo, function (key, value) {
-                html += '<tr ondblclick="setCchInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.apvlDt) +
-                  "</td>"; // 승인일자
-                html +=
-                  '    <td class="text-center">' +
-                  value.cndChngDcmNoCnts +
-                  "</td>"; // 승인문서번호
-                html += "    <td>" + value.cndChngMainCnts + "</td>"; // 주요내용
-                html +=
-                  '    <td style="display:none;">' + value.prcsrEmpno + "</td>"; // 취급자
-                html +=
-                  '    <td class="text-center">' + value.prcsrEmpnm + "</td>"; // 취급자명
-                html +=
-                  '    <td class="text-center">' +
-                  formatPhoneNo(value.prcsrTelNo) +
-                  "</td>"; // 취급자개인번호
-                html +=
-                  '    <td class="text-center">' +
-                  formatDate(value.crotDt) +
-                  "</td>"; // 시행일자
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="8" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_cchInfo").html(html);
-
-            // 수익자정보 조회
-            html = "";
-            if (ernInfo.length > 0) {
-              $.each(ernInfo, function (key, value) {
-                html += '<tr ondblclick="setErnInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html +=
-                  '    <td style="display:none;">' + value.ibStlnDcd + "</td>"; // 구분
-                html += "    <td>" + value.ibStlnNm + "</td>"; // 구분명
-                html += "    <td>" + value.entpNm + "</td>"; // 기관명
-                html +=
-                  '    <td class="text-right">' +
-                  commaStr(handleNullData(value.crdtProvLmtAmt)) +
-                  "</td>"; // 약정금액
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(value.prtcRto) +
-                  "</td>"; // 참가비율
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_ernInfo").html(html);
-
-            // 관련사업정보 조회
-            html = "";
-            if (busiInfo.length > 0) {
-              $.each(busiInfo, function (key, value) {
-                html += '<tr ondblclick="">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '    <td class="text-left">' + value.sn + "</td>"; // 구분명
-                html +=
-                  '    <td class="text-left">' + value.reltDealNo + "</td>"; // 기관명
-                html += '    <td class="text-left">' + value.dealNm + "</td>";
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(addComma(value.allInvAmt)) +
-                  "</td>";
-                html += '    <td class="text-center">' + "Y" + "</td>";
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(addComma(value.thcoPtciAmt)) +
-                  "</td>";
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_busiInfo").html(html);
-
-            // 투자기업목록 조회
-            html = "";
-            if (invstEprzInfo.length > 0) {
-              $.each(invstEprzInfo, function (key, value) {
-                html += '<tr ondblclick="setInvstEprzInfo(this);">';
-                html +=
-                  '<td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html += '<td class="text-center">' + value.sn + "</td>"; // NO
-                html +=
-                  '<td class="text-center">' +
-                  formatDate(handleNullData(value.stdrYm)).slice(0, 7) +
-                  "</td>"; // 기준년월
-                html += '<td class="text-left">' + value.fndNm + "</td>"; //	펀드명
-                html +=
-                  '<td class="text-center">' +
-                  checkBrnAcno(handleNullData(value.crno)) +
-                  "</td>"; //	법인등록번호
-                html += '<td class="text-left">' + value.trOthrNm + "</td>"; //	거래상대방명
-                html +=
-                  '<td class="text-center">' +
-                  checkBrnAcno(handleNullData(value.bzno)) +
-                  "</td>"; //	사업자번호
-                html += '<td class="text-left">' + value.bztpNm + "</td>"; //	업종
-                html += '<td style="display:none;">' + value.ntnNm + "</td>"; // 소속국가명
-                html += '<td style="display:none;">' + value.fndDcd + "</td>"; // 펀드구분
-                html +=
-                  '<td style="display:none;">' + value.sctsFndTpDcd + "</td>"; // 펀드유형상세
-                html +=
-                  '<td style="display:none;">' +
-                  formatDate(handleNullData(value.pchsDt)) +
-                  "</td>"; // 취득일자
-                html +=
-                  '<td style="display:none;">' +
-                  addComma(handleNullData(value.dealAmt)) +
-                  "</td>"; // 취득가액
-                html +=
-                  '<td style="display:none;">' +
-                  addComma(handleNullData(value.bkpr)) +
-                  "</td>"; // 장부가액
-                html +=
-                  '<td style="display:none;">' +
-                  addComma(handleNullData(value.asesBal)) +
-                  "</td>"; // 평가금액
-                html +=
-                  '<td style="display:none;">' + value.intlErnRt + "</td>"; // 순내부수익률
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_invstBzscalList").html(html);
-
-            // 편입자산정보 조회
-            html = "";
-            if (admsAsstInfo.length > 0) {
-              $.each(admsAsstInfo, function (key, value) {
-                html += '<tr ondblclick="setAdmsAsstInfo(this);">';
-                html +=
-                  '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-                html +=
-                  '    <td style="display: none">' + value.ibInvTpCd + "</td>";
-                html +=
-                  '    <td class="text-left">' + value.ibInvTpNm + "</td>";
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(addComma(value.admsAsstAcbkAcqAmt)) +
-                  "</td>";
-                html +=
-                  '    <td class="text-right">' +
-                  handleNullData(value.admsAsstGrntErnRt) +
-                  "</td>";
-                html +=
-                  '    <td class="text-left">' + value.admsAsstItmNm + "</td>";
-                html += "</tr>";
-              });
-            } else {
-              html += "<tr>";
-              html +=
-                '<td colspan="5" style="text-align: center">데이터가 없습니다.</td>';
-              html += "</tr>";
-            }
-            $("#TB08031S_admsAsstInfo").html(html);
-          }
-
-          tabCtrl("invbnkAmnBzCd");
-        },
-        error: function (request, status, error) {
-          console.log(
-            "code:" +
-              request.status +
-              "\n" +
-              "message:" +
-              request.responseText +
-              "\n" +
-              "error:" +
-              error
-          );
-        },
-      });
-    }
-  }
-
-  // 사업참가자정보 더블클릭 이벤트
-  function setBsnsPartInfo(e) {
-    var tr = $(e);
-    var td = $(tr).children();
-
-    $("#TB08031S_bsnsPartInfo tr").removeClass("table-active");
-    tr.addClass("table-active");
-
-    $("#TB08031S_P001").val(td.eq(2).text()); // 참가자관계
-    $("#TB08031S_partCorpNm").val(td.eq(4).text()); // 업체명
-    $("#TB08031S_rprstPNm").val(td.eq(5).text()); // 대표자명
-    $("#TB08031S_dtlsCorpNo").val(td.eq(6).text()); // 법인등록번호
-    $("#TB08031S_bsnsRgstNo").val(td.eq(7).text()); // 사업자등록번호
   }
 
   // 사업참가자상세 참가자관계 수정시 실행
@@ -3027,170 +1795,170 @@ const TB08031Sjs = (function () {
     }
   });
 
-  // 사업참가자상세 업체명 수정시 실행
-  $("#TB08031S_partCorpNm").change(function () {
-    if ($("#TB08031S_bsnsPartInfo").find(".table-active").length > 0) {
-      $("#TB08031S_bsnsPartInfo")
-        .find(".table-active")
-        .children()
-        .eq(4)
-        .text($(this).val());
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "업체명을 입력해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // // 사업참가자상세 업체명 수정시 실행
+  // $("#TB08031S_partCorpNm").change(function () {
+  //   if ($("#TB08031S_bsnsPartInfo").find(".table-active").length > 0) {
+  //     $("#TB08031S_bsnsPartInfo")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(4)
+  //       .text($(this).val());
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "업체명을 입력해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
-  // 사업참가자상세 법인등록번호 수정시 실행
-  $("#TB08031S_dtlsCorpNo").change(function () {
-    if ($("#TB08031S_bsnsPartInfo").find(".table-active").length > 0) {
-      $("#TB08031S_bsnsPartInfo")
-        .find(".table-active")
-        .children()
-        .eq(6)
-        .text(checkBrnAcno($(this).val()));
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "법인등록번호를 입력해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // // 사업참가자상세 법인등록번호 수정시 실행
+  // $("#TB08031S_dtlsCorpNo").change(function () {
+  //   if ($("#TB08031S_bsnsPartInfo").find(".table-active").length > 0) {
+  //     $("#TB08031S_bsnsPartInfo")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(6)
+  //       .text(checkBrnAcno($(this).val()));
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "법인등록번호를 입력해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
   // 사업참가자상세 사업자등록번호 수정시 실행
-  $("#TB08031S_bsnsRgstNo").change(function () {
-    if ($("#TB08031S_bsnsPartInfo").find(".table-active").length > 0) {
-      $("#TB08031S_bsnsPartInfo")
-        .find(".table-active")
-        .children()
-        .eq(7)
-        .text(checkBrnAcno($(this).val()));
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "사업자등록번호를 입력해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // $("#TB08031S_bsnsRgstNo").change(function () {
+  //   if ($("#TB08031S_bsnsPartInfo").find(".table-active").length > 0) {
+  //     $("#TB08031S_bsnsPartInfo")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(7)
+  //       .text(checkBrnAcno($(this).val()));
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "사업자등록번호를 입력해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
   // 사업참가자상세 대표자명 수정시 실행
-  $("#TB08031S_rprstPNm").change(function () {
-    if ($("#TB08031S_bsnsPartInfo").find(".table-active").length > 0) {
-      $("#TB08031S_bsnsPartInfo")
-        .find(".table-active")
-        .children()
-        .eq(5)
-        .text($(this).val());
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "대표자명을 입력해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // $("#TB08031S_rprstPNm").change(function () {
+  //   if ($("#TB08031S_bsnsPartInfo").find(".table-active").length > 0) {
+  //     $("#TB08031S_bsnsPartInfo")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(5)
+  //       .text($(this).val());
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "대표자명을 입력해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
-  // 사업주요전망 더블클릭 이벤트
-  function setBsnsForecast(e) {
-    var tr = $(e);
-    var td = $(tr).children();
+  // // 사업주요전망 더블클릭 이벤트
+  // function setBsnsForecast(e) {
+  //   var tr = $(e);
+  //   var td = $(tr).children();
 
-    $("#TB08031S_bsnsForecast tr").removeClass("table-active");
-    tr.addClass("table-active");
+  //   $("#TB08031S_bsnsForecast tr").removeClass("table-active");
+  //   tr.addClass("table-active");
 
-    $("#TB08031S_exptDt").val(td.eq(2).text()); // 예정일자
-    $("#TB08031S_pfrmDt").val(td.eq(3).text()); // 이행일자
-    td.eq(4).text() == "Y"
-      ? $("#TB08031S_pfrmY").attr("checked", true)
-      : $("#TB08031S_pfrmN").attr("checked", true); // 이행여부
-    td.eq(4).text() == "N"
-      ? $("#TB08031S_pfrmN").attr("checked", true)
-      : $("#TB08031S_pfrmY").attr("checked", true); // 이행여부
-    $("#TB08031S_mainCntnt").val(td.eq(5).text()); // 주요일정내용
-  }
+  //   $("#TB08031S_exptDt").val(td.eq(2).text()); // 예정일자
+  //   $("#TB08031S_pfrmDt").val(td.eq(3).text()); // 이행일자
+  //   td.eq(4).text() == "Y"
+  //     ? $("#TB08031S_pfrmY").attr("checked", true)
+  //     : $("#TB08031S_pfrmN").attr("checked", true); // 이행여부
+  //   td.eq(4).text() == "N"
+  //     ? $("#TB08031S_pfrmN").attr("checked", true)
+  //     : $("#TB08031S_pfrmY").attr("checked", true); // 이행여부
+  //   $("#TB08031S_mainCntnt").val(td.eq(5).text()); // 주요일정내용
+  // }
 
-  // 사업주요전망 예정일자 수정시 실행
-  $("#TB08031S_exptDt").change(function () {
-    if ($("#TB08031S_bsnsForecast").find(".table-active").length > 0) {
-      $("#TB08031S_bsnsForecast")
-        .find(".table-active")
-        .children()
-        .eq(2)
-        .text($(this).val());
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "예정일자를 입력해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // // 사업주요전망 예정일자 수정시 실행
+  // $("#TB08031S_exptDt").change(function () {
+  //   if ($("#TB08031S_bsnsForecast").find(".table-active").length > 0) {
+  //     $("#TB08031S_bsnsForecast")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(2)
+  //       .text($(this).val());
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "예정일자를 입력해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
-  // 사업주요전망 이행일자 수정시 실행
-  $("#TB08031S_pfrmDt").change(function () {
-    if ($("#TB08031S_bsnsForecast").find(".table-active").length > 0) {
-      $("#TB08031S_bsnsForecast")
-        .find(".table-active")
-        .children()
-        .eq(3)
-        .text($(this).val());
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "이행일자를 입력해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // // 사업주요전망 이행일자 수정시 실행
+  // $("#TB08031S_pfrmDt").change(function () {
+  //   if ($("#TB08031S_bsnsForecast").find(".table-active").length > 0) {
+  //     $("#TB08031S_bsnsForecast")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(3)
+  //       .text($(this).val());
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "이행일자를 입력해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
-  // 사업주요전망 이행여부 수정시 실행
-  $("input[name='pfrmYN']").click(function () {
-    if ($("#TB08031S_bsnsForecast").find(".table-active").length > 0) {
-      var newValue = $(this).val() == "Y" ? "Y" : "N";
-      $("#TB08031S_bsnsForecast")
-        .find(".table-active")
-        .children()
-        .eq(4)
-        .text(newValue);
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "이행여부를 선택해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // // 사업주요전망 이행여부 수정시 실행
+  // $("input[name='pfrmYN']").click(function () {
+  //   if ($("#TB08031S_bsnsForecast").find(".table-active").length > 0) {
+  //     var newValue = $(this).val() == "Y" ? "Y" : "N";
+  //     $("#TB08031S_bsnsForecast")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(4)
+  //       .text(newValue);
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "이행여부를 선택해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
   
-  // 사업주요전망 주요일정내용 수정시 실행
-  $("#TB08031S_mainCntnt").change(function () {
-    if ($("#TB08031S_bsnsForecast").find(".table-active").length > 0) {
-      $("#TB08031S_bsnsForecast")
-        .find(".table-active")
-        .children()
-        .eq(5)
-        .text($(this).val());
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "주요일정내용을 입력해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-  });
+  // // 사업주요전망 주요일정내용 수정시 실행
+  // $("#TB08031S_mainCntnt").change(function () {
+  //   if ($("#TB08031S_bsnsForecast").find(".table-active").length > 0) {
+  //     $("#TB08031S_bsnsForecast")
+  //       .find(".table-active")
+  //       .children()
+  //       .eq(5)
+  //       .text($(this).val());
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: "주요일정내용을 입력해주세요.",
+  //       confirmButtonText: "확인",
+  //     });
+  //   }
+  // });
 
   // 채권보전주요약정 더블클릭 이벤트
   function setBondProtInfo(e) {
@@ -3537,13 +2305,13 @@ const TB08031Sjs = (function () {
         tabPst.eq(14).hide();
         /* 기존에 선택된 TAB에서 active 요소 삭제 후 현재 SHOW 상태인 TAB MENU 중에서
 						첫번째 TAB PANEL에 active 요소 부여										*/
-        $(".tab-content")
+        $("div[data-menuid='/TB08031S'] .tab-content")
           .children(".tab-pane.active")
           .attr("class", "tab-pane");
-        $(".tab-content").children().eq(0).attr("class", "tab-pane active");
+        $("div[data-menuid='/TB08031S'] .tab-content").children().eq(0).attr("class", "tab-pane active");
 
-        $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-        $(".nav.nav-tabs")
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
           .children()
           .eq(0)
           .children()
@@ -3567,13 +2335,13 @@ const TB08031Sjs = (function () {
         tabPst.eq(13).hide();
         tabPst.eq(14).hide();
 
-        $(".tab-content")
+        $("div[data-menuid='/TB08031S'] .tab-content")
           .children(".tab-pane.active")
           .attr("class", "tab-pane");
-        $(".tab-content").children().eq(2).attr("class", "tab-pane active");
+        $("div[data-menuid='/TB08031S'] .tab-content").children().eq(2).attr("class", "tab-pane active");
 
-        $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-        $(".nav.nav-tabs")
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
           .children()
           .eq(2)
           .children()
@@ -3597,13 +2365,13 @@ const TB08031Sjs = (function () {
         tabPst.eq(13).hide();
         tabPst.eq(14).show();
 
-        $(".tab-content")
+        $("div[data-menuid='/TB08031S'] .tab-content")
           .children(".tab-pane.active")
           .attr("class", "tab-pane");
-        $(".tab-content").children().eq(3).attr("class", "tab-pane active");
+        $("div[data-menuid='/TB08031S'] .tab-content").children().eq(3).attr("class", "tab-pane active");
 
-        $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-        $(".nav.nav-tabs")
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
           .children()
           .eq(3)
           .children()
@@ -3627,13 +2395,13 @@ const TB08031Sjs = (function () {
         tabPst.eq(13).hide();
         tabPst.eq(14).hide();
 
-        $(".tab-content")
+        $("div[data-menuid='/TB08031S'] .tab-content")
           .children(".tab-pane.active")
           .attr("class", "tab-pane");
-        $(".tab-content").children().eq(4).attr("class", "tab-pane active");
+        $("div[data-menuid='/TB08031S'] .tab-content").children().eq(4).attr("class", "tab-pane active");
 
-        $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-        $(".nav.nav-tabs")
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
           .children()
           .eq(4)
           .children()
@@ -3659,13 +2427,13 @@ const TB08031Sjs = (function () {
         tabPst.eq(13).show();
         tabPst.eq(14).show();
 
-        $(".tab-content")
+        $("div[data-menuid='/TB08031S'] .tab-content")
           .children(".tab-pane.active")
           .attr("class", "tab-pane");
-        $(".tab-content").children().eq(1).attr("class", "tab-pane active");
+        $("div[data-menuid='/TB08031S'] .tab-content").children().eq(1).attr("class", "tab-pane active");
 
-        $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-        $(".nav.nav-tabs")
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
           .children()
           .eq(1)
           .children()
@@ -3673,13 +2441,13 @@ const TB08031Sjs = (function () {
         break;
       default:
         tabPst.show();
-        $(".tab-content")
+        $("div[data-menuid='/TB08031S'] .tab-content")
           .children(".tab-pane.active")
           .attr("class", "tab-pane");
-        $(".tab-content").children().eq(0).attr("class", "tab-pane active");
+        $("div[data-menuid='/TB08031S'] .tab-content").children().eq(0).attr("class", "tab-pane active");
 
-        $(".nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
-        $(".nav.nav-tabs")
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs").find(".nav-link.active").attr("class", "nav-link");
+        $("div[data-menuid='/TB08031S'] .nav.nav-tabs")
           .children()
           .eq(0)
           .children()
@@ -3721,6 +2489,57 @@ const TB08031Sjs = (function () {
       $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
     }
     
+  }
+
+  function gridInfoSett(rowData, instncNm){
+    //console.log(JSON.stringify(rowData));
+
+    if(instncNm === "bsnsPartInfoInstance"){//사업참가자정보
+
+      $("#TB08031S_P001").val(rowData.ptcnRelrDcd);              //참가자관계구분코드
+      $("#TB08031S_partCorpNm").val(rowData.entpNm);             //업체명
+      $("#TB08031S_dtlsCorpNo").val(rowData.crno);               //법인등록번호
+      $("#TB08031S_bsnsRgstNo").val(rowData.bzno);               //사업자등록번호
+      $("#TB08031S_rprstPNm").val(rowData.rpsrNm);               //대표자명
+      $("#TB08031S_bsnsPartInfo_sn").val(rowData.sn);            //순번
+      $("#TB08031S_bsnsPartInfo_erlmSeq").val(rowData.erlmSeq);  //등록순번
+
+    }else if(instncNm === "bsnsForecastInstance"){//사업주요전망
+
+      $("#TB08031S_exptDt").val(formatDate(rowData.prarDt));                 //예정일자
+      $("#TB08031S_pfrmDt").val(formatDate(rowData.flflDt));                 //이행일자
+      $("#TB08031S_mainCntnt").val(rowData.mainScxCtns);         //주요일정내용
+
+      $("#TB08031S_bsnsForecast_sn").val(rowData.sn);            //순번
+      $("#TB08031S_bsnsForecast_erlmSeq").val(rowData.erlmSeq);  //등록순번
+
+      var flflYn = rowData.flflYn;
+
+      if(flflYn === "Y"){
+        $("#TB08031S_pfrmY").prop("checked", true);
+      }else{
+        $("#TB08031S_pfrmN").prop("checked", true);
+      }
+    }
+  }
+
+  function gridInfoRst(instncNm){
+
+    if(instncNm === "bsnsPartInfoInstance"){//사업참가자정보
+      $("#TB08031S_P001").val("");                   //참가자관계구분코드
+      $("#TB08031S_partCorpNm").val("");             //업체명
+      $("#TB08031S_dtlsCorpNo").val("");             //법인등록번호
+      $("#TB08031S_bsnsRgstNo").val("");             //사업자등록번호
+      $("#TB08031S_rprstPNm").val("");               //대표자명
+      $("#TB08031S_bsnsPartInfo_sn").val("");        //순번
+      $("#TB08031S_bsnsPartInfo_erlmSeq").val("");   //등록순번
+
+    }else if(instncNm === "bsnsForecastInstance"){
+      $("#TB08031S_exptDt").val("");                 //예정일자
+      $("#TB08031S_pfrmDt").val("");                 //이행일자
+      $("#TB08031S_pfrmN").prop("checked", true);    //이행여부
+      $("#TB08031S_mainCntnt").val("");              //주요일정내용
+    }
   }
 
   // 수익자정보 더블클릭 이벤트
@@ -4763,47 +3582,78 @@ const TB08031Sjs = (function () {
   }
 
   // 사업참가자정보 저장
-  function bsnsPartInfoBtnSave() {
-    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
-    var ptcnRelrDcd = $("#TB08031S_P001").val(); // 참가자관계
-    var entpNm = $("#TB08031S_partCorpNm").val(); // 업체명
-    var crno = $("#TB08031S_dtlsCorpNo").val(); // 법인등록번호
-    var bzno = $("#TB08031S_bsnsRgstNo").val(); // 사업자등록번호
-    var rpsrNm = $("#TB08031S_rprstPNm").val(); // 대표자명
+  function bsnsPartInfoBtnSave(mode) {
+    var dealNo = $("#TB08031S_ibDealNo").val();     // 딜번호
+    var sn = $("#TB08031S_bsnsPartInfo_sn").val();              //일련번호
+    var erlmSeq = $("#TB08031S_bsnsPartInfo_erlmSeq").val();    //등록순번
 
-    if (!isEmpty(dealNo)) {
-      businessFunction();
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "Deal번호를 조회해주세요.",
-        confirmButtonText: "확인",
-      });
+    if(mode === "save"){
+      if (!isEmpty(dealNo)) {
+        businessFunction(mode);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      }
+
+    }else if(mode === "dlt"){
+      if (isEmpty(dealNo)) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      } else if(isEmpty(sn) || isEmpty(erlmSeq)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "삭제할 사업참가자정보를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
+      }
     }
 
-    function businessFunction() {
-      var inputArr = [];
-      $.each($("#TB08031S_bsnsPartInfo tr"), function () {
-        var td = $(this).children();
+   
 
-        var dtoParam = {
-          ptcnRelrDcd: td.eq(2).text(),
-          dealNo: $("#TB08031S_ibDealNo").val(),
-          entpNm: td.eq(4).text(),
-          crno: td.eq(6).text().replaceAll("-", ""),
-          bzno: td.eq(7).text().replaceAll("-", ""),
-          rpsrNm: td.eq(5).text(),
+    function businessFunction(mode) {
+
+      var param = {};
+
+      var dealNo = $("#TB08031S_ibDealNo").val();     // 딜번호
+      var ptcnRelrDcd = $("#TB08031S_P001").val();    // 참가자관계
+      var entpNm = $("#TB08031S_partCorpNm").val();   // 업체명
+      var crno = $("#TB08031S_dtlsCorpNo").val();     // 법인등록번호
+      var bzno = $("#TB08031S_bsnsRgstNo").val();     // 사업자등록번호
+      var rpsrNm = $("#TB08031S_rprstPNm").val();     // 대표자명
+
+      var sn = $("#TB08031S_bsnsPartInfo_sn").val();              //일련번호
+      var erlmSeq = $("#TB08031S_bsnsPartInfo_erlmSeq").val();    //등록순번
+
+      if(mode === "save"){
+        param = {
+          dealNo: dealNo,
+          ptcnRelrDcd: ptcnRelrDcd,
+          entpNm: entpNm,
+          crno: crno,
+          bzno: bzno,
+          rpsrNm: rpsrNm,
+          mode: "save"
         };
-
-        inputArr.push(dtoParam);
-      });
-
-      var param = {
-        dealNo: dealNo,
-        s511vo: inputArr,
-      };
-
+      }else if(mode === "dlt"){
+        param = {
+          dealNo: dealNo,
+          sn: sn,
+          erlmSeq: erlmSeq,
+          mode: "dlt"
+        };
+      }
+      
       $.ajax({
         type: "POST",
         url: "/TB08031S/saveBsnsPartInfo",
@@ -4831,45 +3681,85 @@ const TB08031Sjs = (function () {
     }
   }
 
-  // 사업주요전망 저장
-  function bsnsForecastBtnSave() {
-    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
-    var prarDt = $("#TB08031S_exptDt").val(); // 예정일자
-    var flflDt = $("#TB08031S_pfrmDt").val(); // 이행일자
-    var flflYn = $("input[name=pfrmYN]:checked").val(); // 이행여부
-    var mainScxCtns = $("#TB08031S_mainCntnt").val(); // 주요일정내용
 
-    if (!isEmpty(dealNo)) {
-      businessFunction();
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "Deal번호를 조회해주세요.",
-        confirmButtonText: "확인",
-      });
+
+  // 사업주요전망 저장
+  function bsnsForecastBtnSave(mode) {
+    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+
+    if(mode === "save"){
+
+      if (!isEmpty(dealNo)) {
+        businessFunction(mode);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      }
+
+    }else if(mode === "dlt"){
+      var sn = $("#TB08031S_bsnsForecast_sn").val();              //일련번호
+      var erlmSeq = $("#TB08031S_bsnsForecast_erlmSeq").val();    //등록순번
+
+      if (isEmpty(dealNo)) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      } else if(isEmpty(sn) || isEmpty(erlmSeq)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "삭제할 일정정보를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
+      }
+
     }
 
-    function businessFunction() {
-      var inputArr = [];
-      $.each($("#TB08031S_bsnsForecast tr"), function () {
-        var td = $(this).children();
+    
 
-        var dtoParam = {
-          prarDt: td.eq(2).text().replaceAll("-", ""),
-          flflDt: td.eq(3).text().replaceAll("-", ""),
-          flflYn: td.eq(4).text(),
-          mainScxCtns: td.eq(5).text(),
-          dealNo: $("#TB08031S_ibDealNo").val(),
-        };
+    function businessFunction(mode) {
+     
+      var param = {};
 
-        inputArr.push(dtoParam);
-      });
+      var dealNo = $("#TB08031S_ibDealNo").val();                               // 딜번호
+      var prarDt = $("#TB08031S_exptDt").val().replaceAll('-', '');             // 예정일자
+      var flflYn = $("input[name=pfrmYN]:checked").val();                       // 이행여부
+      var flflDt = $("#TB08031S_pfrmDt").val().replaceAll('-', '');             // 이행일자
+      var mainScxCtns = $("#TB08031S_mainCntnt").val();                         // 주요내용
 
-      var param = {
-        dealNo: dealNo,
-        s514vo: inputArr,
-      };
+      var sn = $("#TB08031S_bsnsForecast_sn").val();              //일련번호
+      var erlmSeq = $("#TB08031S_bsnsForecast_erlmSeq").val();    //등록순번
+
+      if(mode === "save"){
+
+        param = {
+          dealNo:dealNo,
+          prarDt: prarDt,
+          flflYn: flflYn,
+          flflDt: flflDt,
+          mainScxCtns: mainScxCtns,
+          mode: mode
+        }
+  
+      }else if(mode === "dlt"){
+       
+        param = {
+          dealNo:dealNo,
+          sn: sn,
+          erlmSeq: erlmSeq,
+          mode: mode
+        }
+  
+      }
 
       $.ajax({
         type: "POST",
@@ -4895,6 +3785,7 @@ const TB08031Sjs = (function () {
           });
         },
       });
+     
     }
   }
 
@@ -5385,6 +4276,7 @@ const TB08031Sjs = (function () {
     getReltDealInfo: getReltDealInfo,
     addMenuRow: addMenuRow,
     dltMenuRow: dltMenuRow,
-    monthDiff_TB08031S: monthDiff_TB08031S
+    monthDiff_TB08031S: monthDiff_TB08031S,
+    gridInfoRst: gridInfoRst,
   };
 })();

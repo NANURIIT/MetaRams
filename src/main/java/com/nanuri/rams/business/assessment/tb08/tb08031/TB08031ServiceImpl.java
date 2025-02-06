@@ -165,7 +165,7 @@ public class TB08031ServiceImpl implements TB08031Service {
 					// 부동산
 					case "01":
 						rtnObj.setRlesInfo(ibims502BMapper.getRealEstateInfo(param));
-						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param));
 						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
 						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
 						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
@@ -209,8 +209,8 @@ public class TB08031ServiceImpl implements TB08031Service {
 					// PEF/VC	
 					case "05":
 						rtnObj.setPefInfo(ibims506BMapper.getPefInfo(param));
-						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param));
 						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
 						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
 						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
@@ -328,23 +328,56 @@ public class TB08031ServiceImpl implements TB08031Service {
 	// 사업참가자정보 저장
 	@Override
 	public int saveBsnsPartInfo(IBIMS511BVO2 param) {
-		if( 0 == param.getS511vo().size()) {
-			 return ibims511Mapper.delBsnsPartInfo(param.getDealNo());
-		}else {
-			ibims511Mapper.delBsnsPartInfo(param.getDealNo());
-			return ibims511Mapper.saveBsnsPartInfo(param.getS511vo()); 
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims511Mapper.saveBsnsPartInfo(param);
+		}else if(mode.equals("dlt")){
+
+			rslt = ibims511Mapper.delBsnsPartInfo(param);
 		}
+
+		return rslt;
 	}
 
 	// 사업주요전망 저장
 	@Override
 	public int saveBsnsForecast(IBIMS514BVO2 param) {
-		if( 0 == param.getS514vo().size()) {
-			return ibims514Mapper.delBsnsForecast(param.getDealNo()); 
-		}else {
-			ibims514Mapper.delBsnsForecast(param.getDealNo());
-			return ibims514Mapper.saveBsnsForecast(param.getS514vo());
+		String mode = param.getMode();
+		int rslt = 0;
+
+		// if( 0 == param.getS514vo().size()) {
+		// 	return ibims514Mapper.delBsnsForecast(param.getDealNo()); 
+		// }else {
+		// 	ibims514Mapper.delBsnsForecast(param.getDealNo());
+		// 	return ibims514Mapper.saveBsnsForecast(param.getS514vo());
+		// }
+
+		if(mode.equals("save")){
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims514Mapper.saveBsnsForecast(param);
+
+		}else if(mode.equals("dlt")){
+			rslt = ibims514Mapper.delBsnsForecast(param);
 		}
+
+		return rslt;
 	}
 
 	// 채권보전주요약정 저장
