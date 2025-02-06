@@ -281,23 +281,6 @@ const TB08031Sjs = (function () {
 
   /* 채권보전 주요약정 colM */
   let colM_bondProtInfo = [
-    // {
-    //   dataIndx: "isChked",
-    //   maxWidth: 60,
-    //   minWidth: 60,
-    //   align: "center",
-    //   resizable: false,
-    //   title: "선택",
-    //   type: "checkBoxSelection",
-    //   sortable: false,
-    //   editor: false,
-    //   dataType: "bool",
-    //   editable: "true",
-    //   cb: {
-    //     all: false,
-    //     header: false,
-    //   },
-    // },
     {
       title: "NO",
       dataType: "string",
@@ -308,15 +291,12 @@ const TB08031Sjs = (function () {
       maxWidth: 60,
       minWidth: 60,
       filter: { crules: [{ condition: "range" }] },
-      render: function (ui) {
-        return ui.rowIndx + 1;
-      },
     },
     {
       title: "채권보전구분",
       dataType: "string",
       dataIndx: "bondProtCcd",
-      align: "left",
+      align: "center",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
@@ -324,8 +304,8 @@ const TB08031Sjs = (function () {
     {
       title: "이행여부",
       dataType: "string",
-      dataIndx: "",
-      align: "left",
+      dataIndx: "fnnrCtrcMttrTrgtYn",
+      align: "center",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
@@ -333,8 +313,8 @@ const TB08031Sjs = (function () {
     {
       title: "상세내용",
       dataType: "string",
-      dataIndx: "",
-      align: "center",
+      dataIndx: "mainCtrcMttrCnts",
+      align: "left",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
