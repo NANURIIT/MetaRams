@@ -47,6 +47,12 @@ public class TB06020ServiceImpl implements TB06020Service {
 
 	  //if((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
 		if(param.getRegDvsn().equals("I")) {
+			
+			// 새로운 종목코드 채번
+			String newPrdtCd = ibims201bMapper.getPrdtCdSq(param.getPageDcd());
+
+			// 종목코드 셋
+			param.setPrdtCd(newPrdtCd);
 			param.setHndEmpno(empNo);
 			//param.setPrdtCd(ibims201bMapper.getPrdtCdSq(param.getPageDcd()));
 			IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
