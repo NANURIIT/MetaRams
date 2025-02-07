@@ -180,7 +180,6 @@ const TB10010Sjs = (function () {
       dataIndx: "cdVlNm",
       align: "left",
       halign: "center",
-      width: "26%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -221,7 +220,6 @@ const TB10010Sjs = (function () {
       align: "center",
       halign: "center",
       editable: false,
-      width: "10%",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         return formatDate(ui.cellData);
@@ -234,7 +232,6 @@ const TB10010Sjs = (function () {
       align: "center",
       editable: false,
       halign: "center",
-      width: "7%",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -243,7 +240,6 @@ const TB10010Sjs = (function () {
       dataIndx: "hndDetlDtm",
       align: "center",
       halign: "center",
-      width: "10%",
       editable: false,
       filter: { crules: [{ condition: "range" }] },
     },
@@ -253,7 +249,6 @@ const TB10010Sjs = (function () {
       dataIndx: "hndEmpnm",
       align: "center",
       halign: "center",
-      width: "7%",
       editable: false,
       filter: { crules: [{ condition: "range" }] },
     },
