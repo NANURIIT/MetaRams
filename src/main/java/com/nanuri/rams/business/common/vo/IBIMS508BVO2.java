@@ -11,8 +11,10 @@ import java.util.List;
 /* 
 투자자산관련사업내역 Table.IBIMS508B VO2
 */
-public class IBIMS508BVO2 {
+public class IBIMS508BVO2 extends IBIMS508BDTO{
     private String dealNo;
     private List<IBIMS508BVO> s508vo;
+
+    private String mode;
 
 }

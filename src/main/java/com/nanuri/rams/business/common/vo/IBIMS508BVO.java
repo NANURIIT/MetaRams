@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 */
 public class IBIMS508BVO extends IBIMS508BDTO{
     private String dealNm;
+    private String thcoRlDcd;
     private BigDecimal allInvAmt;
     private BigDecimal thcoPtciAmt;
 }
