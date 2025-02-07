@@ -547,6 +547,7 @@ const TB10210Sjs = (function () {
             icon: 'success'
             , title: '성공!'
           })
+          getAuthCode(searchParam);
         }
         // 데이터 없을시 확인가능한 alert 실행
         else if (data === -7574) {
@@ -559,9 +560,6 @@ const TB10210Sjs = (function () {
       error: function (response) {
 
       },
-      beforeSend: function() {
-        getAuthCode(searchParam);
-      }
     });
 
 
@@ -601,13 +599,11 @@ const TB10210Sjs = (function () {
             , title: '성공!'
           })
         }
+        getAuthCodeMenu(setAthCd);
       },
       error: function (response) {
 
       },
-      beforeSend: function() {
-        getAuthCodeMenu(setAthCd);
-      }
     });
 
 
