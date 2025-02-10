@@ -217,7 +217,7 @@ public class TB08031ServiceImpl implements TB08031Service {
 						rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param));
 						// rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
 						rtnObj.setInvstEprzInfo(ibims518Mapper.getInvstBzscalList(param));
-						// rtnObj.setAsstWrkngInfo(ibims515Mapper.selectAsstOrtnLst(param.getDealNo()));
+						rtnObj.setAsstWrkngInfo(ibims515Mapper.selectAsstOrtnLst(param));
 						break;
 					default : 
 						break;
@@ -563,19 +563,40 @@ public class TB08031ServiceImpl implements TB08031Service {
 	// 자산운용사정보 저장
 	@Override
 	public int saveAsstOrtnInfo(IBIMS515BVO2 param) {
-		if( 0 == param.getS515vo().size()) {
-			return ibims515Mapper.delAsstOrtnInfo(param.getDealNo()); 
-		}else {
-			ibims515Mapper.delAsstOrtnInfo(param.getDealNo());
-			/* 사용자 사번 넣기 */
-			List<IBIMS515BVO> inputParam = new ArrayList<>();
+		// if( 0 == param.getS515vo().size()) {
+		// 	return ibims515Mapper.delAsstOrtnInfo(param.getDealNo()); 
+		// }else {
+		// 	ibims515Mapper.delAsstOrtnInfo(param.getDealNo());
+		// 	/* 사용자 사번 넣기 */
+		// 	List<IBIMS515BVO> inputParam = new ArrayList<>();
 
-			for( IBIMS515BVO tmpData : param.getS515vo() ){
-				tmpData.setHndEmpno(facade.getDetails().getEno());
-				inputParam.add(tmpData);
-			}			
-			return ibims515Mapper.saveAsstOrtnInfo(inputParam);
+		// 	for( IBIMS515BVO tmpData : param.getS515vo() ){
+		// 		tmpData.setHndEmpno(facade.getDetails().getEno());
+		// 		inputParam.add(tmpData);
+		// 	}			
+		// 	return ibims515Mapper.saveAsstOrtnInfo(inputParam);
+		// }
+
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims515Mapper.saveAsstOrtnInfo(param);
+
+		}else if(mode.equals("dlt")){
+			rslt = ibims515Mapper.delAsstOrtnInfo(param);
 		}
+
+		return rslt;
 	}
 
 }

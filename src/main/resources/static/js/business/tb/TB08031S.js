@@ -1080,28 +1080,11 @@ const TB08031Sjs = (function () {
 
     /* 자산운용사정보 colM */
     let colM_asstWrkngInfo = [
-      // {
-      //   dataIndx: "isChked",
-      //   maxWidth: 60,
-      //   minWidth: 60,
-      //   align: "center",
-      //   resizable: false,
-      //   title: "선택",
-      //   type: "checkBoxSelection",
-      //   sortable: false,
-      //   editor: false,
-      //   dataType: "bool",
-      //   editable: "true",
-      //   cb: {
-      //     all: false,
-      //     header: false,
-      //   },
-      // },
       {
         title: "NO",
         dataType: "string",
         dataIndx: "erlmSeq",
-        align: "center",
+        align: "right",
         halign: "center",
         width: "",
         maxWidth: 60,
@@ -1112,9 +1095,9 @@ const TB08031Sjs = (function () {
         },
       },
       {
-        title: "법인등록번호",
+        title: "운용사관리번호",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "mgcoMngmNo",
         align: "center",
         halign: "center",
         width: "",
@@ -1123,7 +1106,7 @@ const TB08031Sjs = (function () {
       {
         title: "사업자번호",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "rnbn",
         align: "center",
         halign: "center",
         width: "",
@@ -1132,47 +1115,62 @@ const TB08031Sjs = (function () {
       {
         title: "운용사명",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "entpNm",
+        align: "left",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
       },
-      {
-        title: "대표자명",
-        dataType: "string",
-        dataIndx: "",
-        align: "center",
-        halign: "center",
-        width: "",
-        filter: { crules: [{ condition: "range" }] },
-      },
+      // {
+      //   title: "대표자명",
+      //   dataType: "string",
+      //   dataIndx: "",
+      //   align: "center",
+      //   halign: "center",
+      //   width: "",
+      //   filter: { crules: [{ condition: "range" }] },
+      // },
       {
         title: "설립일",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "estDt",
         align: "center",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          let cellData = ui.cellData;
+          if (!isEmpty(cellData) && cellData.length === 8) {
+            return formatDate(cellData);
+          } else {
+            return cellData;
+          }
+        },
       },
       {
         title: "임직원수",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "stffNum",
+        align: "right",
         halign: "center",
         width: "",
+        format: "#,###",
         filter: { crules: [{ condition: "range" }] },
       },
       {
         title: "운용인력수",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "oprtHnfNum",
+        align: "right",
         halign: "center",
         width: "",
+        format: "#,###",
         filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        dataType: "string",
+        dataIndx: "sn",
+        hidden: true
       },
     ]
 
@@ -1291,7 +1289,10 @@ const TB08031Sjs = (function () {
         height: 80,
         maxHeight: 300,
         id: "TB08031S_asstWrkngInfo",
-        colModel: colM_asstWrkngInfo
+        colModel: colM_asstWrkngInfo,
+        rowDblClick: function(evt, ui){
+          gridInfoSett(ui.rowData, "asstWrkngInfoInstance");
+        }
       },
     ]
 
@@ -1914,6 +1915,8 @@ const TB08031Sjs = (function () {
               var invstEprzInfo = data.invstEprzInfo;
               invstBzscalInstance.setData(invstEprzInfo);
 
+              var asstWrkngInfo = data.asstWrkngInfo;
+              asstWrkngInfoInstance.setData(asstWrkngInfo);
 
             }
           }
@@ -2279,6 +2282,19 @@ const TB08031Sjs = (function () {
       $("#TB08031S_coAmt").val(comma(rowData.asesBal));                   //평가금액
       $("#TB08031S_insRvn").val(rowData.intlErnRt);                       //순내부수익률
 
+    }else if(instncNm === "asstWrkngInfoInstance"){//자산운용사정보
+
+      $("#TB08031S_asstWrkngInfo_sn").val(rowData.sn);              //일련번호
+      $("#TB08031S_asstWrkngInfo_erlmSeq").val(rowData.erlmSeq);    //등록순번
+
+      $("#TB08031S_asstWrkngInfo_ardyBzepNo").val(rowData.mgcoMngmNo);      //기업체번호
+      $("#TB08031S_asstWrkngInfo_bzepName").val(rowData.entpNm);            //기업체명
+      $("#TB08031S_asstWrkngInfo_crno").val(rowData.crno);                  //법인등록번호
+      $("#TB08031S_asstWrkngInfo_rnbn").val(rowData.rnbn);                  //사업자번호
+      $("#TB08031S_asstWrkngInfo_estDt").val(formatDate(rowData.estDt));                //설립일
+      $("#TB08031S_asstWrkngInfo_stffNum").val(comma(rowData.stffNum));            //임직원수
+      $("#TB08031S_asstWrkngInfo_oprtHnfNum").val(comma(rowData.oprtHnfNum));      //운용인력수
+
     }
   }
 
@@ -2372,6 +2388,19 @@ const TB08031Sjs = (function () {
       $("#TB08031S_acbkAmt").val("0");                    //장부가액
       $("#TB08031S_coAmt").val("0");                      //평가금액
       $("#TB08031S_insRvn").val("0.00");                  //순내부수익률
+
+    }else if(instncNm === "asstWrkngInfoInstance"){//자산운용사정보
+
+      $("#TB08031S_asstWrkngInfo_sn").val("");              //일련번호
+      $("#TB08031S_asstWrkngInfo_erlmSeq").val("");    //등록순번
+
+      $("#TB08031S_asstWrkngInfo_ardyBzepNo").val("");      //기업체번호
+      $("#TB08031S_asstWrkngInfo_bzepName").val("");            //기업체명
+      $("#TB08031S_asstWrkngInfo_crno").val("");                  //법인등록번호
+      $("#TB08031S_asstWrkngInfo_rnbn").val("");                  //사업자번호
+      $("#TB08031S_asstWrkngInfo_estDt").val("");                //설립일
+      $("#TB08031S_asstWrkngInfo_stffNum").val("0");            //임직원수
+      $("#TB08031S_asstWrkngInfo_oprtHnfNum").val("0");      //운용인력수
 
     }
   }
@@ -4019,6 +4048,99 @@ const TB08031Sjs = (function () {
     }
   }
 
+
+  /* 자산운용사정보 저장 */
+  function asstWrkngInfoBtnSave(mode) {
+    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+
+    if(mode === "save"){
+      if (!isEmpty(dealNo)) {
+        businessFunction(mode);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      }
+
+    }else if(mode === "dlt"){
+      var sn = $("#TB08031S_asstWrkngInfo_sn").val();              //일련번호
+      var erlmSeq = $("#TB08031S_asstWrkngInfo_erlmSeq").val();    //등록순번
+
+      if (isEmpty(dealNo)) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      } else if(isEmpty(sn) || isEmpty(erlmSeq)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "삭제할 자산운용사 정보를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
+      }
+  }
+
+    function businessFunction(mode) {
+
+      var param = {};
+
+      var dealNo = $("#TB08031S_ibDealNo").val();                  // 딜번호
+      var sn = $("#TB08031S_asstWrkngInfo_sn").val();              //일련번호
+      var erlmSeq = $("#TB08031S_asstWrkngInfo_erlmSeq").val();    //등록순번
+
+      var mgcoMngmNo = $("#TB08031S_asstWrkngInfo_ardyBzepNo").val();                        //운용사관리번호 (== 기업체코드)
+
+      if(mode === "save"){
+        param = {
+          dealNo:dealNo,
+          mgcoMngmNo: mgcoMngmNo,
+          mode: mode
+        }
+      }else if(mode === "dlt"){
+        param = {
+          dealNo:dealNo,
+          sn: sn,
+          erlmSeq: erlmSeq,
+          mode: mode
+        }
+      }
+
+
+      $.ajax({
+        type: "POST",
+        url: "/TB08031S/saveAsstOrtnInfo",
+        data: JSON.stringify(param),
+        contentType: "application/json",
+        dataType: "json",
+        success: function (data) {
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "자산운용사정보를 저장하였습니다.",
+            confirmButtonText: "확인",
+          });
+        },
+        error: function () {
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "자산운용사정보를 저장하는데 실패하였습니다.",
+            confirmButtonText: "확인",
+          });
+        },
+      });
+    }
+  }
+
+
   function monthDiff_TB08031S(btnId){
 
     var strtDtId = "#TB08031S_" + btnId + "StrtDt";
@@ -4056,6 +4178,7 @@ const TB08031Sjs = (function () {
     reltBusiInfoBtnSave: reltBusiInfoBtnSave,
     admsAsstInfoBtnSave: admsAsstInfoBtnSave,
     invstEprzInfoBtnSave: invstEprzInfoBtnSave,
+    asstWrkngInfoBtnSave: asstWrkngInfoBtnSave,
     saveTabInfo: saveTabInfo,
     ernInfoBtnSave: ernInfoBtnSave,
     getReltDealInfo: getReltDealInfo,

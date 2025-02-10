@@ -1,5 +1,7 @@
 package com.nanuri.rams.business.common.vo;
 
+import java.math.BigDecimal;
+
 import com.nanuri.rams.business.common.dto.IBIMS501BDTO;
 
 import lombok.Getter;

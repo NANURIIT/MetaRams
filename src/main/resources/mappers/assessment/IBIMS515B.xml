@@ -3,55 +3,74 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS515BMapper">
 
 	<!-- 사업주요일정 조회 -->
-	<select id="selectAsstOrtnLst" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS515BVO">
-		SELECT DEAL_NO			/* 딜번호 */
-			 	 , SN						/* 일련번호 */
-			 	 , MGCO_MNGM_NO	/* 운용사관리번호 */
-			 	 , DEL_YN				/* 삭제여부 */
-			 	 , HND_DETL_DTM	/* 조작상세일시 */
-			 	 , HND_EMPNO		/* 조작사원번호 */
-			 	 , HND_TMNL_NO	/* 조작단말기번호 */
-			 	 , HND_TR_ID		/* 조작거래id */
-			 	 , GUID					/* guid */
-		  FROM IBIMS515B	/* 투자사후운용사관리내역 */
-		 WHERE DEAL_NO = #{dealNo}	                                   
+	<select id="selectAsstOrtnLst" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS515BVO">
+		SELECT    A.DEAL_NO			/* 딜번호 */
+				, A.SN				/* 일련번호 */
+				, A.ERLM_SEQ 		/* 등록순번 */
+				, A.MGCO_MNGM_NO	/* 운용사관리번호 */
+				, A.DEL_YN			/* 삭제여부 */
+				, A.HND_DETL_DTM	/* 조작상세일시 */
+				, A.HND_EMPNO		/* 조작사원번호 */
+				, A.HND_TMNL_NO		/* 조작단말기번호 */
+				, A.HND_TR_ID		/* 조작거래id */
+				, A.GUID			/* guid */
+				, B.CRNO			/* 법인등록번호 */
+				, B.ENTP_NM			/* 업체명 */
+				, B.RNBN			/* 사업자등록번호 */
+				, B.EST_DT			/* 설립일자 */
+				, B.STFF_NUM		/* 임직원수 */
+				, B.OPRT_HNF_NUM 	/* 운용인력수 */
+		FROM IBIMS515B A	/* 투자사후운용사관리내역 */
+		JOIN IBIMS010B B 
+		ON B.ARDY_BZEP_NO = A.MGCO_MNGM_NO
+		WHERE DEAL_NO = #{dealNo}	
+		AND SN = #{sn}
+		AND DEL_YN = 'N'                                 
 	</select>
 	
 	<!-- 사업주요일정 저장 -->
-	<insert id="saveAsstOrtnInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS515BVO">
+	<insert id="saveAsstOrtnInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS515BVO2">
 			INSERT INTO IBIMS515B	/* 투자사후운용사관리내역 */
-									(
-									  DEAL_NO				/* 딜번호 */
-									, SN						/* 일련번호 */
-									, MGCO_MNGM_NO	/* 운용사관리번호 */
-									, DEL_YN				/* 삭제여부 */
-									, HND_DETL_DTM	/* 조작상세일시 */
-									, HND_EMPNO			/* 조작사원번호 */
-									, HND_TMNL_NO		/* 조작단말기번호 */
-									, HND_TR_ID			/* 조작거래id */
-									, GUID					/* guid */
-									)
-					VALUES
-      					  <foreach collection="list" item="item" index="index" separator=",">
-      						(
-									  #{item.dealNo}			/* 딜번호         */ 
-									, #{item.sn}					/* 일련번호       */
-									, #{item.mgcoMngmNo}	/* 운용사관리번호  */
-									, #{item.delYn}				/* 삭제여부       */
-									, #{item.hndDetlDtm}	/* 조작상세일시    */
-									, #{item.hndEmpno}		/* 조작사원번호    */
-									, #{item.hndTmnlNo}		/* 조작단말기번호  */
-									, #{item.hndTrId}			/* 조작거래id     */
-									, #{item.guid}				/* guid          */
-      					  )
-        </foreach>
+				(
+					  DEAL_NO				/* 딜번호 */
+					, SN					/* 일련번호 */
+					, ERLM_SEQ				/* 등록순번 */
+					, MGCO_MNGM_NO			/* 운용사관리번호 */
+					, DEL_YN				/* 삭제여부 */
+					, HND_DETL_DTM			/* 조작상세일시 */
+					, HND_EMPNO				/* 조작사원번호 */
+					, HND_TMNL_NO			/* 조작단말기번호 */
+					, HND_TR_ID				/* 조작거래id */
+					, GUID					/* guid */
+				)
+			VALUES
+				(
+					  #{dealNo}				/* 딜번호         */ 
+					, #{sn}					/* 일련번호       */
+					, (
+                    SELECT NVL(MAX(ERLM_SEQ), 0) + 1
+                    FROM IBIMS515B
+                    WHERE DEAL_NO = #{dealNo}
+                    AND SN = #{sn}
+                  ) 
+					, #{mgcoMngmNo}			/* 운용사관리번호  */
+					, #{delYn}				/* 삭제여부       */
+					, SYSDATE				/* 조작상세일시    */
+					, #{hndEmpno}			/* 조작사원번호    */
+					, #{hndTmnlNo}			/* 조작단말기번호  */
+					, #{hndTrId}			/* 조작거래id     */
+					, #{guid}				/* guid          */
+				)
+
 	</insert>
 	
 	<!-- 사업주요일정 삭제 -->
-	<delete id="delAsstOrtnInfo" parameterType="string">
-		DELETE 
-		  FROM IBIMS515B
-		 WHERE DEAL_NO = #{dealNo} 
-	</delete>
+	<update id="delAsstOrtnInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS515BVO2">
+		UPDATE IBIMS515B
+		SET DEL_YN = 'Y'
+		WHERE DEAL_NO = #{dealNo}
+		AND SN = #{sn}
+		AND ERLM_SEQ = #{erlmSeq}
+	</update>
 
 </mapper>
