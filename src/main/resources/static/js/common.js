@@ -2335,3 +2335,14 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) { }
 function idFocus(id) {
   $("#" + id).focus();
 }
+
+/**
+ * 컴포넌트클리어
+ * @param {String} 컴포넌트Id.
+ * @discription
+ * 컴포넌트의 값을 초기화한다
+ * ex) idClear('TB06040S_ctrtDt');
+ */
+function idClear(id) {
+  $("#" + id).val('');
+}

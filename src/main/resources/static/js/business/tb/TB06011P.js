@@ -547,6 +547,14 @@ async function getPrdtCdList() {
 		, "dprtCd": $('#TB06011P_dprtCd').val()
 	}
 
+	if (
+		$('#TB06011P_prefix').val() === "TB06010S"
+		|| $('#TB06011P_prefix').val() === "TB06020S"
+		|| $('#TB06011P_prefix').val() === "TB06030S"
+	) {
+		param.scrnNo = $('#TB06011P_prefix').val();
+	}
+
 	await $.ajax({
 		type: "Post",
 		url: "/TB06011P/getPrdtCdList",
@@ -818,6 +826,11 @@ function TB06011P_setPrdtInfo(e) {
 		$('#TB04060S_ibDealNm').val(e.dealNm);
 		$('#TB04060S_prdtCd').val(e.prdtCd);
 		$('#TB04060S_prdtNm').val(e.prdtNm);
+	}
+
+	// SPPI충족여부
+	if (prefix === 'TB06050S') {
+		TB06050Sjs.getSPPIData();
 	}
 
 	/* 0726 add 대출계약 실행 */

@@ -48,7 +48,7 @@ public class TB07100APIController {
 
 	// 지급품의기본 삭제
 	@PostMapping(value = "/deleteIBIMS431B")
-	public int deleteIBIMS431B(IBIMS431BVO param) {
+	public int deleteIBIMS431B(@RequestBody IBIMS431BVO param) {
 		return tb07100Service.deleteIBIMS431B(param);
 	}
 

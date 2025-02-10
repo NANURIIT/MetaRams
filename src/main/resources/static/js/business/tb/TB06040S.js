@@ -16,9 +16,59 @@ const TB06040Sjs = (function() {
       /*  $('input').on('focus', function() {
             $(this).select();
         });*/
+		
+		inputValidationCheck();
     });
 	
+	// 입력창 값체크
+	function inputValidationCheck(){
+		dtValidationCheck('TB06040S_ctrcDt');		// 약정정보 - 약정일자 값체크
+		dtValidationCheck('TB06040S_ctrcExpDt');	// 약정정보 - 약정만기일자 값체크
+		dtValidationCheck('TB06040S_cancelDt');		// 약정정보 - 해지일자 값체크
+	}
 	
+	function dtValidationCheck(id){
+		
+		$('#' + id).change(function() {
+			$('#' + id).val(formatDate(unformatDate($('#' + id).val())));
+			
+			var ctrcDt		= $('#TB06040S_ctrcDt').val().replaceAll('-', '');		// 약정일자
+			var ctrcExpDt	= $('#TB06040S_ctrcExpDt').val().replaceAll('-', '');	// 약정만기일자
+			var cancelDt	= $('#TB06040S_cancelDt').val().replaceAll('-', '');	// 해지일자
+
+			if (isNotEmpty(ctrcDt)) {
+				if (isNotEmpty(ctrcExpDt)) {
+					if (Number(ctrcDt) > Number(ctrcExpDt)) {
+						Swal.fire({
+							title: '',
+							icon: 'error',
+							text: '약정만기일자가 약정일자 이전입니다.',
+							confirmButtonText: '확인',
+						}).then(() => {
+							idClear('TB06040S_ctrcExpDt');
+							idFocus('TB06040S_ctrcExpDt');
+						});
+						return;
+					}
+				}
+
+				if (isNotEmpty(cancelDt)) {
+					if (Number(ctrcDt) > Number(cancelDt)) {
+						Swal.fire({
+							title: '',
+							icon: 'error',
+							text: '해지일자가 약정일자 이전입니다.',
+							confirmButtonText: '확인',
+						}).then(() => {
+							idClear('TB06040S_cancelDt');
+							idFocus('TB06040S_cancelDt');
+						});
+						return;
+					}
+				}
+			}
+		});
+	}
 	
 	function defaultNumberFormat_TB06040S(){		
 		$("input[id*='Amt'], input[id*='Mnum']").val("0");
@@ -135,6 +185,52 @@ const TB06040Sjs = (function() {
                     $('#TB06040S_E005').val(data.eprzCrdlCclcRsnCd);
                     $('#TB06040S_cancelDt').val(formatDate(data.cclcDt));
                     $('#TB06040S_cancelRsnCntn').val(data.cclcRsnCtns);
+					
+					if(data.ctrcCclcDcd == null){
+						$('#TB06040S_ctrcDt').prop('disabled', false);			// 약정일자
+						$('#TB06040S_ctrcExpDt').prop('disabled', false);		// 약정만기일자
+						$('#TB06040S_eprzCrdlCtrcAmt').prop('disabled', false);	// 약정금액
+						
+						$('#TB06040S_empNo').prop('disabled', false);			// 담당자
+						$('#TB06040S_empNo').prop('disabled', false);			// 담당자버튼
+						
+						$('#TB06040S_E005').prop('disabled', true);				// 해지사유코드
+						$('#TB06040S_cancelDt').prop('disabled', true);			// 해지일자
+						$('#TB06040S_cancelRsnCntn').prop('disabled', true);	// 해지사유내용
+						
+						$('#btnCtrc').prop('disabled', false);					// 약정버튼
+						$('#btnCclc').prop('disabled', true);					// 해지버튼
+					}else if(data.ctrcCclcDcd == '1'){
+						$('#TB06040S_ctrcDt').prop('disabled', false);			// 약정일자
+						$('#TB06040S_ctrcExpDt').prop('disabled', false);		// 약정만기일자
+						$('#TB06040S_eprzCrdlCtrcAmt').prop('disabled', false);	// 약정금액
+
+						$('#TB06040S_empNo').prop('disabled', false);			// 담당자
+						$('#TB06040S_empNo').prop('disabled', false);			// 담당자버튼
+
+						$('#TB06040S_E005').prop('disabled', false);			// 해지사유코드
+						$('#TB06040S_cancelDt').prop('disabled', false);		// 해지일자
+						$('#TB06040S_cancelRsnCntn').prop('disabled', false);	// 해지사유내용
+
+						$('#btnCtrc').prop('disabled', false);					// 약정버튼
+						$('#btnCclc').prop('disabled', false);					// 해지버튼
+					}else if(data.ctrcCclcDcd == '2'){
+						$('#TB06040S_ctrcDt').prop('disabled', true);			// 약정일자
+						$('#TB06040S_ctrcExpDt').prop('disabled', true);		// 약정만기일자
+						$('#TB06040S_eprzCrdlCtrcAmt').prop('disabled', true);	// 약정금액
+
+						$('#TB06040S_empNo').prop('disabled', true);			// 담당자
+						$('#TB06040S_empNo').prop('disabled', true);			// 담당자버튼
+
+						$('#TB06040S_E005').prop('disabled', false);			// 해지사유코드
+						$('#TB06040S_cancelDt').prop('disabled', false);		// 해지일자
+						$('#TB06040S_cancelRsnCntn').prop('disabled', false);	// 해지사유내용
+
+						$('#btnCtrc').prop('disabled', true);					// 약정버튼
+						$('#btnCclc').prop('disabled', false);					// 해지버튼
+					}
+					
+					
 
 
                     // if ( data.ctrcCclcDcd === '2' ) {

@@ -285,7 +285,7 @@ const TB06020Sjs = (function(){
 			
 		}*/
 		
-		$('#TB06020S_res_prdtCd').prop('readonly',false);
+		//$('#TB06020S_res_prdtCd').prop('readonly',false); //종목코드
 		$('#TB06020S_registApvlCnd').attr('disabled', true);
 		$('#TB06020S_registMrtgCnnc').attr('disabled', true);
 		$('#TB06020S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
@@ -381,10 +381,10 @@ const TB06020Sjs = (function(){
 				if( isEmpty(dealDetail.prdtCd) ) {
 					$('#TB06020S_prdtCd').val(dealDetail.prdtCd);	
 					$('#TB06020S_res_prdtNm').val(dealDetail.mtrNm);	// 안건명
-					$('#TB06020S_res_prdtCd').prop('readonly',false);
+					//$('#TB06020S_res_prdtCd').prop('readonly',false);
 				} else {
 					$('#TB06020S_res_prdtNm').val(dealDetail.prdtNm);// 종목명
-					$('#TB06020S_res_prdtCd').prop('readonly',true);											
+					//$('#TB06020S_res_prdtCd').prop('readonly',true);											
 				}				
 				$('#TB06020S_lstCCaseCcd').val(dealDetail.mtrDcd);
 				$('#TB06020S_riskInspctCcd').val(dealDetail.jdgmDcd);
@@ -474,7 +474,7 @@ const TB06020Sjs = (function(){
 				if (isEmpty($('#TB06020S_res_prdtCd').val())) {
 					$('#TB06020S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
 					$('#TB06020S_delPrdt').attr('disabled', true); 
-					$('#TB06020S_res_prdtCd').prop('readonly',false);
+					//$('#TB06020S_res_prdtCd').prop('readonly',false);
 					$('#TB06020S_registApvlCnd').attr('disabled', true);
 					$('#TB06020S_registMrtgCnnc').attr('disabled', true);
 					//$('#UPLOAD_AddFile').attr('disabled', true);
@@ -485,7 +485,7 @@ const TB06020Sjs = (function(){
 				} else {
 					$('#TB06020S_regPrdt').attr('disabled', false); 
 					$('#TB06020S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
-					$('#TB06020S_res_prdtCd').prop('readonly',true);
+					//$('#TB06020S_res_prdtCd').prop('readonly',true);
 					$('#TB06020S_registApvlCnd').attr('disabled', false);
 					$('#TB06020S_registMrtgCnnc').attr('disabled', false);
 					//$('#UPLOAD_AddFile').attr('disabled', false);
@@ -568,11 +568,16 @@ const TB06020Sjs = (function(){
 		}
 		
 		var paramData = makeParam(pageDcd, param);
-		
+		/*
 		if( isEmpty($('#TB06020S_ibDealNo').val()) || isEmpty($('#TB06020S_res_prdtCd').val()) ){
 			return false;
 		}
-		
+		*/
+
+		if (isEmpty($('#TB06020S_ibDealNo').val())) {
+			return false;
+		}
+				
 		$.ajax({
 			type: "POST",
 			url: "/TB06020S/regPrdtCd",
@@ -599,7 +604,7 @@ const TB06020Sjs = (function(){
 						confirmButtonText: '확인',
 					}).then((result) => {
 									if (result.isConfirmed) {
-										$('#TB06020S_res_prdtCd').focus();
+										//$('#TB06020S_res_prdtCd').focus();
 									}	
 					});
 				} else {
@@ -626,13 +631,13 @@ const TB06020Sjs = (function(){
 			openPopup(option);
 			return false;
 		}
-		
+		/*
 		if (isEmpty($('#TB06020S_res_prdtCd').val())) {
 			option.text = "종목코드를 입력해주세요.";
 			openPopup(option);
 			return false;
 		}
-		
+		*/
 		if (!isEmpty($('#TB06020S_res_prdtCd').val())) {
 			let regExp = new RegExp(/^[A-Z0-9]+$/);
 			var firStr = $('#TB06020S_res_prdtCd').val().substr(0,1);
@@ -816,7 +821,7 @@ const TB06020Sjs = (function(){
 		var paramData = {
 			  "pageDcd" : pageDcd
 			, "prdtCd": $('#TB06020S_res_prdtCd').val()									// 상품코드
-			, "regDvsn" : ($('#TB06020S_res_prdtCd').attr("readonly")=="readonly") ? "U" : "I" // U:수정, I:등록
+			, "regDvsn" : ($('#TB06020S_res_prdtCd').val()=="") ? "I" : "U"				// U:수정, I:등록
 			, "lastYn": 'Y'																// 최종여부
 			, "prdtNm": $('#TB06020S_res_prdtNm').val()									// 상품명
 			, "prdtDsc": $('#TB06020S_prdtDsc').val()									// 상품설명

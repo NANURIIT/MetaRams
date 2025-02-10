@@ -356,6 +356,7 @@ const TB10310Sjs = (function () {
             , title: '저장실패!'
           })
         }
+        selectAthCdListFromMenu(prevParam);
       },
       // 업데이트 에러시
       error: function (response) {
@@ -364,9 +365,6 @@ const TB10310Sjs = (function () {
           , title: '저장실패!@!!!!@!@!!!!'
         })
       },
-      beforeSend: function() {
-        selectAthCdListFromMenu(prevParam);
-      }
     });
 
 

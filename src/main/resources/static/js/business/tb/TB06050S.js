@@ -2,6 +2,7 @@ const TB06050Sjs = (function() {
 
     $(document).ready(function () {
 
+        $("#TB06050S_sppiSfcYn").val("미검토");
         setRadioGroup();
 
     });
@@ -205,6 +206,7 @@ const TB06050Sjs = (function() {
         $("input[type='radio']").prop("checked", false);
         $("select").val("");
         setRadioGroup();
+        $("#TB06050S_sppiSfcYn").val("미검토");
     }
 
     function judgeSppiSfcYn(){
