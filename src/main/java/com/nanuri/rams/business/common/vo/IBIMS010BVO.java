@@ -43,7 +43,7 @@ public class IBIMS010BVO {
 
 	@Getter
 	@Setter
-	public static class ArdyBzepListVO {
+	public static class ArdyBzepListVO extends IBIMS010BDTO {
 		
 		private List<ArdyBzepVO> ardyBzepListVO;	/* 기업체번호 존재유무 우선, D:삭제*/
 
