@@ -359,6 +359,10 @@ function setArdyBzepInfo(rowData) {
 	let clseDvsnCd = rowData.clseDvsnCd;
 	let clseDt = rowData.clseDt;
 
+	let oprtHnfNum = rowData.oprtHnfNum;
+	let stffNum = rowData.stffNum;
+	let estDt = rowData.estDt;
+
 	// console.log(ardyBzepNo);
 	// alert(rowInx);
 
@@ -490,6 +494,13 @@ function setArdyBzepInfo(rowData) {
 		case "TB06019P_srch":
 			//기업체정보 등록에서 조회
 			getArdyBzepInfo();
+			break;
+		case "TB08031S_asstWrkngInfo":
+
+			$('#TB08031S_asstWrkngInfo_estDt').val(formatDate(estDt));			// 설립일
+			$('#TB08031S_asstWrkngInfo_stffNum').val(comma(stffNum));			// 임직원수
+			$('#TB08031S_asstWrkngInfo_oprtHnfNum').val(comma(oprtHnfNum));		// 운용인력수
+
 			break;
 		default:
 			break;

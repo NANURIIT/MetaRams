@@ -441,7 +441,6 @@ const TB08031Sjs = (function () {
       dataIndx: "sn",
       hidden: true
     }
-
   ];
 
   /* 대주단정보 colM */
@@ -507,6 +506,11 @@ const TB08031Sjs = (function () {
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      dataType: "string",
+      dataIndx: "sn",
+      hidden: true
     }
   ];
 
@@ -560,6 +564,11 @@ const TB08031Sjs = (function () {
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      dataType: "string",
+      dataIndx: "sn",
+      hidden: true
     }
   ];
 
@@ -716,7 +725,7 @@ const TB08031Sjs = (function () {
         title: "사업자등록번호",
         dataType: "string",
         dataIndx: "bzno",
-        editable: true,
+        // editable: true,
         align: "center",
         halign: "center",
         width: "",
@@ -726,7 +735,7 @@ const TB08031Sjs = (function () {
         title: "기업명",
         dataType: "string",
         dataIndx: "eprzNm",
-        editable: true,
+        // editable: true,
         align: "center",
         halign: "center",
         width: "",
@@ -736,7 +745,7 @@ const TB08031Sjs = (function () {
         title: "총주식수",
         dataType: "string",
         dataIndx: "holdStkQnt",
-        editable: true,
+        // editable: true,
         align: "right",
         halign: "center",
         format: "#,###",
@@ -746,7 +755,7 @@ const TB08031Sjs = (function () {
         dataIndx: "stkLstYn",
         title: "주식상장여부",
         dataType: "string",
-        editable: true,
+        // editable: true,
         align: "center",
         halign: "center",
         width: "",
@@ -767,7 +776,7 @@ const TB08031Sjs = (function () {
         dataIndx: "mngRghEnsuYn",
         title: "경영권확보여부",
         dataType: "string",
-        editable: true,
+        // editable: true,
         align: "center",
         halign: "center",
         width: "",
@@ -788,36 +797,36 @@ const TB08031Sjs = (function () {
 
     /* 관련사업정보 colM */
     let colM_busiInfo = [
-      {
-        dataIndx: "isChked",
-        maxWidth: 60,
-        minWidth: 60,
-        align: "center",
-        resizable: false,
-        title: "선택",
-        type: "checkBoxSelection",
-        sortable: false,
-        editor: false,
-        dataType: "bool",
-        editable: "true",
-        cb: {
-          all: false,
-          header: false,
-        },
-      },
+      // {
+      //   dataIndx: "isChked",
+      //   maxWidth: 60,
+      //   minWidth: 60,
+      //   align: "center",
+      //   resizable: false,
+      //   title: "선택",
+      //   type: "checkBoxSelection",
+      //   sortable: false,
+      //   editor: false,
+      //   dataType: "bool",
+      //   editable: "true",
+      //   cb: {
+      //     all: false,
+      //     header: false,
+      //   },
+      // },
       {
         title: "NO",
         dataType: "string",
         dataIndx: "erlmSeq",
-        align: "center",
+        align: "right",
         halign: "center",
         width: "",
         maxWidth: 60,
         minWidth: 60,
         filter: { crules: [{ condition: "range" }] },
-        render: function (ui) {
-          return ui.rowIndx + 1;
-        },
+        // render: function (ui) {
+        //   return ui.rowIndx + 1;
+        // },
       },
       {
         title: "사업관리번호",
@@ -832,7 +841,7 @@ const TB08031Sjs = (function () {
         title: "사업명",
         dataType: "string",
         dataIndx: "dealNm",
-        align: "center",
+        align: "left",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
@@ -841,29 +850,48 @@ const TB08031Sjs = (function () {
         title: "총조달금액",
         dataType: "string",
         dataIndx: "allInvAmt",
-        align: "center",
+        align: "right",
         halign: "center",
+        format: "#,###",
         width: "",
         filter: { crules: [{ condition: "range" }] },
       },
       {
-        title: "당사주선구분",
+        title: "당사참여확정여부",
         dataType: "string",
         dataIndx: "thcoRlDcd",
         align: "center",
         halign: "center",
         width: "",
-        filter: { crules: [{ condition: "range" }] },
+        // filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          options: [
+              { value: "Y", label: "확정" },
+              { value: "N", label: "미확정" }
+          ],
+          valueIndx: "value", 
+          labelIndx: "label" 
+      },
+      render: function (ui) {
+        return ui.cellData === "Y" ? "확정" : "미확정";
+      }
       },
       {
         title: "당사참여금액",
         dataType: "string",
         dataIndx: "thcoPtciAmt",
-        align: "center",
+        align: "right",
         halign: "center",
+        format: "#,###",
         width: "",
         filter: { crules: [{ condition: "range" }] },
       },
+      {
+        dataType: "string",
+        dataIndx: "sn",
+        hidden: true
+      }
     ]
 
     /* 편입자산정보 colM */
@@ -920,56 +948,49 @@ const TB08031Sjs = (function () {
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        dataType: "string",
+        dataIndx: "sn",
+        hidden: true
       }
     ]
 
     /* 투자기업목록 colM */
     let colM_invstBzscalList = [
-      // {
-      //   dataIndx: "isChked",
-      //   maxWidth: 60,
-      //   minWidth: 60,
-      //   align: "center",
-      //   resizable: false,
-      //   title: "선택",
-      //   type: "checkBoxSelection",
-      //   sortable: false,
-      //   editor: false,
-      //   dataType: "bool",
-      //   editable: "true",
-      //   cb: {
-      //     all: false,
-      //     header: false,
-      //   },
-      // },
       {
         title: "NO",
         dataType: "string",
         dataIndx: "erlmSeq",
-        align: "center",
+        align: "right",
         halign: "center",
         width: "",
         maxWidth: 60,
         minWidth: 60,
         filter: { crules: [{ condition: "range" }] },
-        render: function (ui) {
-          return ui.rowIndx + 1;
-        },
       },
       {
         title: "기준년월",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "stdrYm",
         align: "center",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
+        render: function (ui) {
+          let cellData = ui.cellData;
+          if (!isEmpty(cellData) && cellData.length === 6) {
+            return cellData.replace(/^(\d{4})(\d{2})$/, "$1-$2");
+          } else {
+            return cellData;
+          }
+        },
       },
       {
         title: "펀드명",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "fndNm",
+        align: "left",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
@@ -977,8 +998,8 @@ const TB08031Sjs = (function () {
       {
         title: "법인등록번호",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "crno",
+        align: "left",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
@@ -986,8 +1007,8 @@ const TB08031Sjs = (function () {
       {
         title: "거래상대방명",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "trOthrNm",
+        align: "left",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
@@ -995,8 +1016,8 @@ const TB08031Sjs = (function () {
       {
         title: "사업자번호",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "bzno",
+        align: "left",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
@@ -1004,11 +1025,56 @@ const TB08031Sjs = (function () {
       {
         title: "업종",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "bztpNm",
+        align: "left",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        dataType: "string",
+        dataIndx: "sn",
+        hidden: true
+      },
+      {
+        dataType: "string",
+        dataIndx: "ntnNm",
+        hidden: true
+      },
+      {
+        dataType: "string",
+        dataIndx: "fndDcd",
+        hidden: true
+      },
+      {
+        dataType: "string",
+        dataIndx: "sctsFndTpDcd",
+        hidden: true
+      },
+      {
+        dataType: "string",
+        dataIndx: "pchsDt",
+        hidden: true
+      },
+      {
+        dataType: "string",
+        dataIndx: "dealAmt",
+        hidden: true
+      },
+      {
+        dataType: "string",
+        dataIndx: "bkpr",
+        hidden: true
+      },
+      {
+        dataType: "string",
+        dataIndx: "asesBal",
+        hidden: true
+      },
+      {
+        dataType: "string",
+        dataIndx: "intlErnRt",
+        hidden: true
       },
     ]
 
@@ -1198,7 +1264,10 @@ const TB08031Sjs = (function () {
         height: 80,
         maxHeight: 300,
         id: "TB08031S_busiInfo",
-        colModel: colM_busiInfo
+        colModel: colM_busiInfo,
+        rowDblClick: function(evt, ui){
+          gridInfoSett(ui.rowData, "busiInfoInstance");
+        }
       },
       //편입자산정보 그리드
       {
@@ -1212,7 +1281,10 @@ const TB08031Sjs = (function () {
         height: 80,
         maxHeight: 300,
         id: "TB08031S_invstBzscalList",
-        colModel: colM_invstBzscalList
+        colModel: colM_invstBzscalList,
+        rowDblClick: function(evt, ui){
+          gridInfoSett(ui.rowData, "invstBzscalInstance");
+        }
       },
       //자산운용사정보 그리드
       {
@@ -1836,6 +1908,13 @@ const TB08031Sjs = (function () {
               var ernInfo = data.ernInfo;
               ernInfoInstance.setData(ernInfo);
 
+              var busiInfo = data.busiInfo;
+              busiInfoInstance.setData(busiInfo);
+
+              var invstEprzInfo = data.invstEprzInfo;
+              invstBzscalInstance.setData(invstEprzInfo);
+
+
             }
           }
         }
@@ -2160,6 +2239,46 @@ const TB08031Sjs = (function () {
       $("#TB08031S_ernAgrAmt").val(comma(rowData.crdtProvLmtAmt));      //약정금액
       $("#TB08031S_ernPartRt").val(rowData.prtcRto);             //참가비율
 
+    }else if(instncNm === "busiInfoInstance"){//관련사업정보
+
+      $("#TB08031S_busiInfo_sn").val(rowData.sn);                   //일련번호
+      $("#TB08031S_busiInfo_erlmSeq").val(rowData.erlmSeq);         //등록순번
+
+      $("#TB08031S_relt_ibDealNo").val(rowData.reltDealNo);         //Deal번호
+      $("#TB08031S_relt_ibDealNm").val(rowData.dealNm);             //Deal명
+      $("#TB08031S_busiPrcrAmt").val(comma(rowData.allInvAmt));     //총조달금액
+      $("#TB08031S_busiPtnAmt").val(comma(rowData.thcoPtciAmt));    //당사참여금액
+
+      var thcoPtciAmtDcsnYn = rowData.thcoPtciAmtDcsnYn;            // 당사참여확정여부
+
+      if(thcoPtciAmtDcsnYn === "Y"){
+        $("#TB08031S_thcoPtciAmtDcsnY").prop("checked", true);
+      }else{
+        $("#TB08031S_thcoPtciAmtDcsnN").prop("checked", true);
+      }
+
+    }else if(instncNm === "invstBzscalInstance"){//투자기업목록
+
+      $("#TB08031S_invstBzscal_sn").val(rowData.sn);              //일련번호
+      $("#TB08031S_invstBzscal_erlmSeq").val(rowData.erlmSeq);    //등록순번
+
+      var stdrYm = rowData.stdrYm;
+
+      $("#TB08031S_fndNm").val(rowData.fndNm);                            //펀드명
+      $("#TB08031S_bsnmNo").val(rowData.bzno);                            //사업자등록번호
+      $("#TB08031S_bcncNm").val(rowData.trOthrNm);                        //거래상대방명
+      $("#TB08031S_invstBzscalCorpNo").val(rowData.crno);                 //법인등록번호
+      $("#TB08031S_indTypNm").val(rowData.bztpNm);                        //업종
+      $("#TB08031S_blgtCntyNm").val(rowData.ntnNm);                       //소속국가명
+      $("#TB08031S_bitrYm").val(stdrYm.replace(/^(\d{4})(\d{2})$/, "$1-$2"));                      //기준년월
+      $("#TB08031S_F009").val(rowData.fndDcd);                            //펀드구분
+      $("#TB08031S_F010").val(rowData.sctsFndTpDcd);                      //펀드유형상세
+      $("#invstBzscal_datepicker1").val(formatDate(rowData.pchsDt));      //취득일자
+      $("#TB08031S_acqstAmt").val(comma(rowData.dealAmt));                //취득가액
+      $("#TB08031S_acbkAmt").val(comma(rowData.bkpr));                    //장부가액
+      $("#TB08031S_coAmt").val(comma(rowData.asesBal));                   //평가금액
+      $("#TB08031S_insRvn").val(rowData.intlErnRt);                       //순내부수익률
+
     }
   }
 
@@ -2223,98 +2342,40 @@ const TB08031Sjs = (function () {
       $("#TB08031S_ernAgrAmt").val("0");                //약정금액
       $("#TB08031S_ernPartRt").val("0");                //참가비율
 
+    }else if(instncNm === "busiInfoInstance"){//관련사업정보
+
+      $("#TB08031S_busiInfo_sn").val("");                //일련번호
+      $("#TB08031S_busiInfo_erlmSeq").val("");           //등록순번
+
+      $("#TB08031S_relt_ibDealNo").val("");              //Deal번호
+      $("#TB08031S_relt_ibDealNm").val("");              //Deal명
+      $("#TB08031S_busiPrcrAmt").val("0");               //총조달금액
+      $("#TB08031S_busiPtnAmt").val("0");                //당사참여금액
+      $("#TB08031S_thcoPtciAmtDcsnN").prop("checked", true);   // 당사참여확정여부
+
+    }else if(instncNm === "invstBzscalInstance"){//투자기업목록
+
+      $("#TB08031S_invstBzscal_sn").val("");              //일련번호
+      $("#TB08031S_invstBzscal_erlmSeq").val("");         //등록순번
+
+      $("#TB08031S_fndNm").val("");                       //펀드명
+      $("#TB08031S_bsnmNo").val("");                      //사업자등록번호
+      $("#TB08031S_bcncNm").val("");                      //거래상대방명
+      $("#TB08031S_invstBzscalCorpNo").val("");           //법인등록번호
+      $("#TB08031S_indTypNm").val("");                    //업종
+      $("#TB08031S_blgtCntyNm").val("");                  //소속국가명
+      $("#TB08031S_bitrYm").val("");                      //기준년월
+      $("#TB08031S_F009").val("");                        //펀드구분
+      $("#TB08031S_F010").val("");                        //펀드유형상세
+      $("#invstBzscal_datepicker1").val("");              //취득일자
+      $("#TB08031S_acqstAmt").val("0");                   //취득가액
+      $("#TB08031S_acbkAmt").val("0");                    //장부가액
+      $("#TB08031S_coAmt").val("0");                      //평가금액
+      $("#TB08031S_insRvn").val("0.00");                  //순내부수익률
+
     }
   }
 
-
-  /* 투자기업목록 저장 */
-  function invstEprzInfoBtnSave() {
-    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
-
-    if (!isEmpty(dealNo)) {
-      businessFunction();
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "Deal번호를 조회해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
-
-    function businessFunction() {
-      var inputArr = [];
-      $.each($("#TB08031S_invstBzscalList tr"), function () {
-        var td = $(this).children();
-
-        var stdrYm = $(td).eq(2).text().replaceAll("-", ""); // 기준년월
-        var sn = $(td).eq(1).text(); // 일련번호
-        var fndNm = $(td).eq(3).text(); // 펀드명
-        var crno = $(td).eq(4).text().replaceAll("-", ""); // 법인등록번호
-        var trOthrNm = $(td).eq(5).text(); // 거래상대방명
-        var bzno = $(td).eq(6).text().replaceAll("-", ""); // 사업자등록번호
-        var bztpNm = $(td).eq(7).text(); // 업종명
-        var ntnNm = $(td).eq(8).text(); // 국가명
-        var fndDcd = $(td).eq(9).text(); // 펀드구분코드
-        var sctsFndTpDcd = $(td).eq(10).text(); // 유가증권펀드유형상세코드
-        var pchsDt = $(td).eq(11).text().replaceAll("-", ""); // 매입일자
-        var dealAmt = $(td).eq(12).text().replaceAll(",", ""); // 취득가액
-        var bkpr = $(td).eq(13).text().replaceAll(",", ""); // 장부가액
-        var asesBal = $(td).eq(14).text().replaceAll(",", ""); // 평가잔액
-        var intlErnRt = $(td).eq(15).text(); // 순내부수익율
-
-        var dtoParam = {
-          dealNo: dealNo, // 딜번호
-          stdrYm: stdrYm, // 기준년월
-          sn: sn, // 일련번호
-          fndNm: fndNm, // 펀드명
-          crno: crno, // 법인등록번호
-          trOthrNm: trOthrNm, // 거래상대방명
-          bzno: bzno, // 사업자등록번호
-          bztpNm: bztpNm, // 업종명
-          ntnNm: ntnNm, // 국가명
-          fndDcd: fndDcd, // 펀드구분코드
-          sctsFndTpDcd: sctsFndTpDcd, // 유가증권펀드유형
-          pchsDt: pchsDt, // 매입일자
-          dealAmt: dealAmt, // 취득가액
-          bkpr: bkpr, // 장부가액
-          asesBal: asesBal, // 평가잔액
-          intlErnRt: intlErnRt, // 순내부수익율
-        };
-
-        inputArr.push(dtoParam);
-      });
-
-      var param = {
-        dealNo: dealNo,
-        s518vo: inputArr,
-      };
-
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveInvstEprzInfo",
-        data: JSON.stringify(param),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "투자기업정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "투자기업정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
-    }
-  }
 
   //parameter 세팅 (너무 길어서 따로 뺌)
   function paramSett(){
@@ -3581,50 +3642,82 @@ const TB08031Sjs = (function () {
   }
 
   // 관련사업정보 저장
-  function reltBusiInfoBtnSave() {
+  function reltBusiInfoBtnSave(mode) {
     var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
 
-    if (!isEmpty(dealNo)) {
-      businessFunction();
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "Deal번호를 조회해주세요.",
-        confirmButtonText: "확인",
-      });
+    if(mode === "save"){
+      if (!isEmpty(dealNo)) {
+        businessFunction(mode);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      }
+
+    }else if(mode === "dlt"){
+      var sn = $("#TB08031S_busiInfo_sn").val();              //일련번호
+      var erlmSeq = $("#TB08031S_busiInfo_erlmSeq").val();    //등록순번
+
+      if (isEmpty(dealNo)) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Deal번호를 조회해주세요.",
+          confirmButtonText: "확인",
+        });
+      } else if(isEmpty(sn) || isEmpty(erlmSeq)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "삭제할 관련사업 정보를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
+      }
     }
 
-    function businessFunction() {
-      var inputArr = [];
-      $.each($("#TB08031S_busiInfo tr"), function () {
-        var td = $(this).children();
 
-        var dtoParam = {
-          dealNo: dealNo,
-          sn: td.eq(1).text(),
-          reltDealNo: td.eq(2).text(),
-        };
+    function businessFunction(mode) {
 
-        inputArr.push(dtoParam);
-      });
+      var param = {};
 
-      var paramData = {
-        dealNo: dealNo,
-        s508vo: inputArr,
-      };
+      var dealNo = $("#TB08031S_ibDealNo").val();             // 딜번호
+      var sn = $("#TB08031S_busiInfo_sn").val();              //일련번호
+      var erlmSeq = $("#TB08031S_busiInfo_erlmSeq").val();    //등록순번
+
+      var reltDealNo = $("#TB08031S_relt_ibDealNo").val();    //관련딜번호
+
+      if(mode === "save"){
+        param = {
+          dealNo:dealNo,
+          reltDealNo: reltDealNo,
+          mode: mode
+        }
+      }else if(mode === "dlt"){
+        param = {
+          dealNo:dealNo,
+          sn: sn,
+          erlmSeq: erlmSeq,
+          mode: mode
+        }
+      }
+      
 
       $.ajax({
         type: "POST",
         url: "/TB08031S/saveReltBusiInfo",
-        data: JSON.stringify(paramData),
+        data: JSON.stringify(param),
         contentType: "application/json",
         dataType: "json",
         success: function (data) {
           Swal.fire({
             icon: "success",
             title: "Success!",
-            text: "사업참가자정보를 저장하였습니다.",
+            text: "관련사업 정보를 저장하였습니다.",
             confirmButtonText: "확인",
           });
         },
@@ -3633,13 +3726,177 @@ const TB08031Sjs = (function () {
           Swal.fire({
             icon: "error",
             title: "Error!",
-            text: "사업참가자정보를 저장하는데 실패하였습니다.",
+            text: "관련사업 정보를 저장하는데 실패하였습니다.",
             confirmButtonText: "확인",
           });
         },
       });
     }
   }
+
+    /* 투자기업목록 저장 */
+    function invstEprzInfoBtnSave(mode) {
+      var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+
+      if(mode === "save"){
+        if (!isEmpty(dealNo)) {
+          businessFunction(mode);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "Deal번호를 조회해주세요.",
+            confirmButtonText: "확인",
+          });
+        }
+
+      }else if(mode === "dlt"){
+        var sn = $("#TB08031S_invstBzscal_sn").val();              //일련번호
+        var erlmSeq = $("#TB08031S_invstBzscal_erlmSeq").val();    //등록순번
+
+        if (isEmpty(dealNo)) {
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "Deal번호를 조회해주세요.",
+            confirmButtonText: "확인",
+          });
+        } else if(isEmpty(sn) || isEmpty(erlmSeq)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "삭제할 투자기업 목록을 선택해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else{
+          businessFunction(mode);
+        }
+    }
+  
+      function businessFunction(mode) {
+        // var inputArr = [];
+        // $.each($("#TB08031S_invstBzscalList tr"), function () {
+        //   var td = $(this).children();
+  
+        //   var stdrYm = $(td).eq(2).text().replaceAll("-", ""); // 기준년월
+        //   var sn = $(td).eq(1).text(); // 일련번호
+        //   var fndNm = $(td).eq(3).text(); // 펀드명
+        //   var crno = $(td).eq(4).text().replaceAll("-", ""); // 법인등록번호
+        //   var trOthrNm = $(td).eq(5).text(); // 거래상대방명
+        //   var bzno = $(td).eq(6).text().replaceAll("-", ""); // 사업자등록번호
+        //   var bztpNm = $(td).eq(7).text(); // 업종명
+        //   var ntnNm = $(td).eq(8).text(); // 국가명
+        //   var fndDcd = $(td).eq(9).text(); // 펀드구분코드
+        //   var sctsFndTpDcd = $(td).eq(10).text(); // 유가증권펀드유형상세코드
+        //   var pchsDt = $(td).eq(11).text().replaceAll("-", ""); // 매입일자
+        //   var dealAmt = $(td).eq(12).text().replaceAll(",", ""); // 취득가액
+        //   var bkpr = $(td).eq(13).text().replaceAll(",", ""); // 장부가액
+        //   var asesBal = $(td).eq(14).text().replaceAll(",", ""); // 평가잔액
+        //   var intlErnRt = $(td).eq(15).text(); // 순내부수익율
+  
+        //   var dtoParam = {
+        //     dealNo: dealNo, // 딜번호
+        //     stdrYm: stdrYm, // 기준년월
+        //     sn: sn, // 일련번호
+        //     fndNm: fndNm, // 펀드명
+        //     crno: crno, // 법인등록번호
+        //     trOthrNm: trOthrNm, // 거래상대방명
+        //     bzno: bzno, // 사업자등록번호
+        //     bztpNm: bztpNm, // 업종명
+        //     ntnNm: ntnNm, // 국가명
+        //     fndDcd: fndDcd, // 펀드구분코드
+        //     sctsFndTpDcd: sctsFndTpDcd, // 유가증권펀드유형
+        //     pchsDt: pchsDt, // 매입일자
+        //     dealAmt: dealAmt, // 취득가액
+        //     bkpr: bkpr, // 장부가액
+        //     asesBal: asesBal, // 평가잔액
+        //     intlErnRt: intlErnRt, // 순내부수익율
+        //   };
+  
+        //   inputArr.push(dtoParam);
+        // });
+  
+        // var param = {
+        //   dealNo: dealNo,
+        //   s518vo: inputArr,
+        // };
+        
+        var param = {};
+
+        var dealNo = $("#TB08031S_ibDealNo").val();                // 딜번호
+        var sn = $("#TB08031S_invstBzscal_sn").val();              //일련번호
+        var erlmSeq = $("#TB08031S_invstBzscal_erlmSeq").val();    //등록순번
+
+        var fndNm = $("#TB08031S_fndNm").val();                        //펀드명
+        var bzno = $("#TB08031S_bsnmNo").val();                        //사업자등록번호
+        var trOthrNm = $("#TB08031S_bcncNm").val();                    //거래상대방명
+        var crno = $("#TB08031S_invstBzscalCorpNo").val();             //법인등록번호
+        var bztpNm = $("#TB08031S_indTypNm").val();                    //업종
+        var ntnNm = $("#TB08031S_blgtCntyNm").val();                   //소속국가명
+        var stdrYm = $("#TB08031S_bitrYm").val().replaceAll('-', '');  //기준년월
+        var fndDcd = $("#TB08031S_F009").val();                        //펀드구분
+        var sctsFndTpDcd = $("#TB08031S_F010").val();                                 //펀드유형상세
+        var pchsDt = $("#invstBzscal_datepicker1").val().replaceAll('-', '');         //취득일자
+        var dealAmt = $("#TB08031S_acqstAmt").val().replaceAll(',', '');              //취득가액
+        var bkpr = $("#TB08031S_acbkAmt").val().replaceAll(',', '');                  //장부가액
+        var asesBal = $("#TB08031S_coAmt").val().replaceAll(',', '');                 //평가금액
+        var intlErnRt = $("#TB08031S_insRvn").val().replaceAll(',', '');              //순내부수익률
+
+        if(mode === "save"){
+          param = {
+            dealNo:dealNo,
+            fndNm: fndNm,
+            bzno: bzno,
+            trOthrNm: trOthrNm,
+            crno: crno,
+            bztpNm: bztpNm,
+            ntnNm: ntnNm,
+            stdrYm: stdrYm,
+            fndDcd: fndDcd,
+            sctsFndTpDcd: sctsFndTpDcd,
+            pchsDt: pchsDt,
+            dealAmt: dealAmt,
+            bkpr: bkpr,
+            asesBal: asesBal,
+            intlErnRt: intlErnRt,
+            mode: mode
+          }
+        }else if(mode === "dlt"){
+          param = {
+            dealNo:dealNo,
+            sn: sn,
+            erlmSeq: erlmSeq,
+            stdrYm: stdrYm,
+            mode: mode
+          }
+        }
+
+
+        $.ajax({
+          type: "POST",
+          url: "/TB08031S/saveInvstEprzInfo",
+          data: JSON.stringify(param),
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "투자기업정보를 저장하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+          error: function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "투자기업정보를 저장하는데 실패하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+        });
+      }
+    }
 
   // 관련사업정보 가져오기
   function getReltDealInfo(dealNo) {
@@ -3655,42 +3912,29 @@ const TB08031Sjs = (function () {
       dataType: "json",
       success: function (data) {
 
-        var busiInfo = data.enoPList;
+        // var busiInfo = data.enoPList;
 
-        if(busiInfo.length > 0){
-          busiInfoInstance.setData(busiInfo);
+        // if(busiInfo.length > 0){
+        //   busiInfoInstance.setData(busiInfo);
+        // }else{
+
+        // }
+
+        $("#TB08031S_busiPrcrAmt").val(comma(data.allInvAmt));       //총투자금액
+        $("#TB08031S_busiPtnAmt").val(comma(data.thcoPtciAmt));      //당사참여금액
+
+        var thcoPtciAmtDcsnYn = data.thcoPtciAmtDcsnYn;       //당사참여확정여부 
+
+        // console.log(thcoPtciAmtDcsnYn);
+        // console.log(data.allInvAmt);
+        // console.log(data.thcoPtciAmt);
+        
+        if(thcoPtciAmtDcsnYn === "Y"){
+          $("#TB08031S_thcoPtciAmtDcsnY").prop("checked", true);
         }else{
-
+          $("#TB08031S_thcoPtciAmtDcsnYn").prop("checked", true);
         }
 
-        
-        // console.log(JSON.stringify(data));
-        // var sn = isEmpty(
-        //   $("#TB08031S_busiInfo tr").last().children().eq(1).text()
-        // )
-        //   ? 1
-        //   : Number($("#TB08031S_busiInfo tr").last().children().eq(1).text()) +
-        //     1;
-
-        // var html = "";
-        // html += '<tr ondblclick="">';
-        // html +=
-        //   '    <td style="vertical-align: middle;"><input type="checkbox"></td>';
-        // html += '    <td class="text-center">' + sn + "</td>"; // NO
-        // html += '    <td class="text-left">' + data.dealNo + "</td>"; // 사업관리번호
-        // html += '    <td class="text-left">' + data.dealNm + "</td>"; // 사업명
-        // html +=
-        //   '    <td class="text-right">' +
-        //   addComma(handleNullData(data.allInvAmt)) +
-        //   "</td>"; // 총조달금액
-        // html += '    <td class="text-center">' + "Y" + "</td>"; // 당사주선여부
-        // html +=
-        //   '    <td class="text-right">' +
-        //   addComma(handleNullData(data.thcoPtciAmt)) +
-        //   "</td>"; // 당사참여금액
-        // html += "</tr>";
-
-        // $("#TB08031S_busiInfo").append(html);
       },
       error: function () {},
     });
@@ -3811,6 +4055,7 @@ const TB08031Sjs = (function () {
     delMenuRowReltDealInfo: delMenuRowReltDealInfo,
     reltBusiInfoBtnSave: reltBusiInfoBtnSave,
     admsAsstInfoBtnSave: admsAsstInfoBtnSave,
+    invstEprzInfoBtnSave: invstEprzInfoBtnSave,
     saveTabInfo: saveTabInfo,
     ernInfoBtnSave: ernInfoBtnSave,
     getReltDealInfo: getReltDealInfo,

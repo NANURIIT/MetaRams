@@ -214,9 +214,9 @@ public class TB08031ServiceImpl implements TB08031Service {
 						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param));
 						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param));
 						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
-						// rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
+						rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param));
 						// rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
-						// rtnObj.setInvstEprzInfo(ibims518Mapper.getInvstBzscalList(param.getDealNo()));
+						rtnObj.setInvstEprzInfo(ibims518Mapper.getInvstBzscalList(param));
 						// rtnObj.setAsstWrkngInfo(ibims515Mapper.selectAsstOrtnLst(param.getDealNo()));
 						break;
 					default : 
@@ -466,19 +466,40 @@ public class TB08031ServiceImpl implements TB08031Service {
 	// 관련사업정보 저장
 	@Override
 	public int saveReltBusiInfo(IBIMS508BVO2 param) {
-		if( 0 == param.getS508vo().size() ) {
-			return ibims508Mapper.delBusiInfo(param.getDealNo());
-		} else {
-			ibims508Mapper.delBusiInfo(param.getDealNo());
-			/* 사용자 사번 넣기 */
-			List<IBIMS508BVO> inputParam = new ArrayList<>();
+		// if( 0 == param.getS508vo().size() ) {
+		// 	return ibims508Mapper.delBusiInfo(param.getDealNo());
+		// } else {
+		// 	ibims508Mapper.delBusiInfo(param.getDealNo());
+		// 	/* 사용자 사번 넣기 */
+		// 	List<IBIMS508BVO> inputParam = new ArrayList<>();
 
-			for( IBIMS508BVO tmpData : param.getS508vo() ){
-				tmpData.setHndEmpno(facade.getDetails().getEno());
-				inputParam.add(tmpData);
-			}
-			return ibims508Mapper.saveBusiInfo(inputParam);
+		// 	for( IBIMS508BVO tmpData : param.getS508vo() ){
+		// 		tmpData.setHndEmpno(facade.getDetails().getEno());
+		// 		inputParam.add(tmpData);
+		// 	}
+		// 	return ibims508Mapper.saveBusiInfo(inputParam);
+		// }
+
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims508Mapper.saveBusiInfo(param);
+
+		}else if(mode.equals("dlt")){
+			rslt = ibims508Mapper.delBusiInfo(param);
 		}
+
+		return rslt;
 	}
 
 	// 관련사업정보 저장
@@ -499,22 +520,43 @@ public class TB08031ServiceImpl implements TB08031Service {
 		}
 	}
 
-	// 관련사업정보 저장
+	// 투자기업목록 저장
 	@Override
 	public int saveInvstEprzInfo(IBIMS518BVO2 param) {
-		if( 0 == param.getS518vo().size() ) {
-			return ibims518Mapper.delInvstEprzInfo(param.getDealNo());
-		} else {
-			ibims518Mapper.delInvstEprzInfo(param.getDealNo());
-			/* 사용자 사번 넣기 */
-			List<IBIMS518BVO> inputParam = new ArrayList<>();
+		// if( 0 == param.getS518vo().size() ) {
+		// 	return ibims518Mapper.delInvstEprzInfo(param.getDealNo());
+		// } else {
+		// 	ibims518Mapper.delInvstEprzInfo(param.getDealNo());
+		// 	/* 사용자 사번 넣기 */
+		// 	List<IBIMS518BVO> inputParam = new ArrayList<>();
 
-			for( IBIMS518BVO tmpData : param.getS518vo() ){
-				tmpData.setHndEmpno(facade.getDetails().getEno());
-				inputParam.add(tmpData);
-			}
-			return ibims518Mapper.saveInvstEprzInfo(inputParam);
+		// 	for( IBIMS518BVO tmpData : param.getS518vo() ){
+		// 		tmpData.setHndEmpno(facade.getDetails().getEno());
+		// 		inputParam.add(tmpData);
+		// 	}
+		// 	return ibims518Mapper.saveInvstEprzInfo(inputParam);
+		// }
+
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims518Mapper.saveInvstEprzInfo(param);
+
+		}else if(mode.equals("dlt")){
+			rslt = ibims518Mapper.delInvstEprzInfo(param);
 		}
+
+		return rslt;
 	}
 
 	

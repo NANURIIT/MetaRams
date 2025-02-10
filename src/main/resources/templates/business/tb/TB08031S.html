@@ -2453,23 +2453,32 @@
 																			<div class="col-sm-3">
 																				<input type="text"
 																					class="form-control text-right"
-																					id="TB08031S_ernAgrAmt"
+																					id="TB08031S_busiPrcrAmt"
 																					oninput="this.value = this.value.replace(/[^0-9]/g, '');"
 																					onkeyup="inputNumberFormater(this);" value="0">
 																			</div>
 																		</div>
 																		<div class="form-group row mb-1">
-																			<label class="col-sm-1 col-form-label">당사주선구분</label>
-																				<div class="col-sm-3">
-																					<select class="col-sm-12 form-control" id="TB08031S_T002_2">
-																						<option>선택</option>
-																					</select>
+																			<label class="col-sm-1 col-form-label">당사참여확정여부</label>
+																			<div class="col-sm-3 input-group input-h">
+																				<div class="col-sm-2 input-group">
+																					<input type="radio" value="Y"
+																						id="TB08031S_thcoPtciAmtDcsnY"
+																						name="TB08031S_thcoPtciAmtDcsnYn">
+																					<label class="col-sm-5">Y</label>
 																				</div>
+																				<div class="col-sm-2 input-group">
+																					<input type="radio" value="N"
+																						id="TB08031S_thcoPtciAmtDcsnN"
+																						name="TB08031S_thcoPtciAmtDcsnYn" checked="true">
+																					<label class="col-sm-5">N</label>
+																				</div>
+																			</div>
 																			<label class="col-sm-1 col-form-label">당사참여금액</label>
 																			<div class="col-sm-3">
 																				<input type="text"
 																					class="form-control text-right"
-																					id="TB08031S_ernAgrAmt"
+																					id="TB08031S_busiPtnAmt"
 																					oninput="this.value = this.value.replace(/[^0-9]/g, '');"
 																					onkeyup="inputNumberFormater(this);" value="0">
 																			</div>
@@ -2483,10 +2492,18 @@
 												<div class="form-group row">
 													<!-- button -->
 													<div class="col-sm text-right mb-1">
-														<button class="btn btn-success" type="button"
+														<!-- <button class="btn btn-success" type="button"
 															onclick="TB08031Sjs.reltBusiInfoBtnSave();">
 															<i class="fa fa-save"></i>&nbsp;저장
+														</button> -->
+														<button class="btn btn-default" type="button" onclick="TB08031Sjs.gridInfoRst('busiInfoInstance');">
+															<i class="fa fa-undo"></i>&nbsp;초기화
+														</button>								
+														<button class="btn btn-success" type="button"
+															onclick="TB08031Sjs.reltBusiInfoBtnSave(`save`);">
+															<i class="fa fa-save"></i>&nbsp;저장
 														</button>
+														<button class="btn btn-danger" onclick="TB08031Sjs.reltBusiInfoBtnSave(`dlt`);"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
 													</div>
 												</div>
 											</div>
@@ -2561,6 +2578,10 @@
 															<div class="ibox-title">
 																<h5>▶&nbsp;기본정보</h5>
 															</div>
+															<div class="ibox-tools">
+																<input type="hidden" id="TB08031S_invstBzscal_sn">
+																<input type="hidden" id="TB08031S_invstBzscal_erlmSeq">
+															</div>
 															<div id="invstEprzInfo" class="ibox-content text-right">
 																<div class="form-group row mb-1">
 																	<label class="col-sm-1 col-form-label">펀드명</label>
@@ -2601,9 +2622,17 @@
 																			id="TB08031S_blgtCntyNm" oninput="">
 																	</div>
 																	<label class="col-sm-1 col-form-label">기준년월</label>
-																	<div class="col-sm-3">
+																	<!-- <div class="col-sm-3">
 																		<input type="text" class="form-control"
 																			id="TB08031S_bitrYm" oninput="">
+																	</div> -->
+																	<div class="col-sm-3 input-group month">
+																		<input type="text" class="form-control"
+																			id="TB08031S_bitrYm" value=""
+																			placeholder="yyyy-mm-dd"
+																			oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+																		<span class="input-group-addon"><i
+																				class="fa fa-calendar"></i></span>
 																	</div>
 																</div>
 																<div class="form-group row mb-1">
@@ -2611,7 +2640,7 @@
 																	<div class="col-sm-3">
 																		<select class="col-sm-12 form-control"
 																			id="TB08031S_F009">
-																			<option></option>
+																			<option value="">선택</option>
 																		</select>
 																	</div>
 																	<label
@@ -2619,7 +2648,7 @@
 																	<div class="col-sm-3">
 																		<select class="col-sm-12 form-control"
 																			id="TB08031S_F010">
-																			<option></option>
+																			<option value="">선택</option>
 																		</select>
 																	</div>
 																	<label class="col-sm-1 col-form-label">취득일자</label>
@@ -2634,31 +2663,47 @@
 																</div>
 																<div class="form-group row mb-1">
 																	<label class="col-sm-1 col-form-label">취득가액</label>
-																	<div class="col-sm-3">
+																	<!-- <div class="col-sm-3">
 																		<input type="text"
 																			class="form-control text-right"
 																			id="TB08031S_acqstAmt" oninput="">
+																	</div> -->
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control text-right" id="TB08031S_acqstAmt"
+																			onkeyup="inputNumberFormater(this);" value="0">
 																	</div>
 																	<label class="col-sm-1 col-form-label">장부가액</label>
-																	<div class="col-sm-3">
+																	<!-- <div class="col-sm-3">
 																		<input type="text"
 																			class="form-control text-right"
 																			id="TB08031S_acbkAmt" oninput="">
+																	</div> -->
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control text-right" id="TB08031S_acbkAmt"
+																			onkeyup="inputNumberFormater(this);" value="0">
 																	</div>
 																</div>
 																<div class="form-group row mb-1">
 																	<label class="col-sm-1 col-form-label">평가금액</label>
-																	<div class="col-sm-3">
+																	<!-- <div class="col-sm-3">
 																		<input type="text"
 																			class="form-control text-right"
 																			id="TB08031S_coAmt" oninput="">
+																	</div> -->
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control text-right" id="TB08031S_coAmt"
+																			onkeyup="inputNumberFormater(this);" value="0">
 																	</div>
 																	<label
 																		class="col-sm-1 col-form-label">순내부수익률</label>
-																	<div class="col-sm-3">
+																	<!-- <div class="col-sm-3">
 																		<input type="text"
 																			class="form-control text-right"
 																			id="TB08031S_insRvn" oninput="">
+																	</div> -->
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control text-right" id="TB08031S_insRvn"
+																			onkeyup="inputNumberFormater(this);" value="0.00">
 																	</div>
 																</div>
 															</div>
@@ -2668,10 +2713,19 @@
 												<div class="form-group row">
 													<!-- button -->
 													<div class="col-sm text-right mb-1">
-														<button class="btn btn-success" type="button"
+														<!-- <button class="btn btn-success" type="button"
 															onclick="invstEprzInfoBtnSave();">
 															<i class="fa fa-save"></i>&nbsp;저장
+														</button> -->
+
+														<button class="btn btn-default" type="button" onclick="TB08031Sjs.gridInfoRst('invstBzscalInstance');">
+															<i class="fa fa-undo"></i>&nbsp;초기화
+														</button>								
+														<button class="btn btn-success" type="button"
+															onclick="TB08031Sjs.invstEprzInfoBtnSave(`save`);">
+															<i class="fa fa-save"></i>&nbsp;저장
 														</button>
+														<button class="btn btn-danger" onclick="TB08031Sjs.invstEprzInfoBtnSave(`dlt`);"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
 													</div>
 												</div>
 											</div>
@@ -2686,19 +2740,19 @@
 														<div class="ibox">
 															<div class="ibox-title">
 																<h5>▶&nbsp;자산운용사 정보</h5>
-																<div class="ibox-tools">
+																<!-- <div class="ibox-tools">
 																	<button class="btn btn-default btn-xs">
 																		<i class="fa fa-arrow-right m-1"></i>| 자산운용사연결
 																	</button>
-																	<!-- <button class="btn btn-default btn-xs" type="button"
+																	<button class="btn btn-default btn-xs" type="button"
 																		onclick="addMenuRow('#TB08031S_asstWrkngInfo');">
 																		<i class="fa fa-plus"></i>&nbsp;행추가
 																	</button>
 																	<button class="btn btn-default btn-xs" type="button"
 																		onclick="">
 																		<i class="fa fa-minus"></i>&nbsp;행삭제
-																	</button> -->
-																</div>
+																	</button>
+																</div> -->
 															</div>
 															<div class="ibox-content">
 																<!-- <table class="table table-bordered table-hover result" id="">
@@ -2741,6 +2795,82 @@
 																</tbody>
 															</table> -->
 																<div id="TB08031S_asstWrkngInfo"></div>
+															</div>
+														</div>
+													</div>
+													<div class="col-sm-12">
+														<div class="ibox">
+															<div class="ibox-title">
+																<h5>▶&nbsp;기본정보</h5>
+															</div>
+															<div class="ibox-tools">
+																<input type="hidden" id="TB08031S_asstWrkngInfo_sn">
+																<input type="hidden" id="TB08031S_asstWrkngInfo_erlmSeq">
+															</div>
+															<div id="invstEprzInfo" class="ibox-content text-right">
+																<div class="form-group row mb-1">
+																	<label class="col-sm-1 col-form-label">기업체번호</label>
+																	<div class="col-sm-3">
+																		<div class="input-group">
+																			<input type="text" class="form-control" id="TB08031S_asstWrkngInfo_ardyBzepNo" maxlength="13">
+																			<span class="input-group-append">
+																				<button type="button" class="btn btn-default" onclick="callTB03061P('TB08031S_asstWrkngInfo')"><i class="fa fa-search"></i></button>
+																			</span>
+																			<input type="text" class="form-control" id="TB08031S_asstWrkngInfo_bzepName" readonly>
+																		</div>
+																	</div>
+																	<label
+																		class="col-sm-1 col-form-label">법인등록번호</label>
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control"
+																			id="TB08031S_asstWrkngInfo_crno" oninput="">
+																	</div>
+																	<label
+																		class="col-sm-1 col-form-label">사업자번호</label>
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control"
+																			id="TB08031S_asstWrkngInfo_rnbn" oninput="">
+																	</div>
+																</div>
+																<div class="form-group row mb-1">
+																	<!-- <label
+																		class="col-sm-1 col-form-label">운용사명</label>
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control"
+																			id="TB08031S_asstWrkngInfo" oninput="">
+																	</div> -->
+																	<!-- <label class="col-sm-1 col-form-label">대표자명</label>
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control"
+																			id="TB08031S_asstWrkngInfo" oninput="">
+																	</div> -->
+																	<label class="col-sm-1 col-form-label">설립일</label>
+																	<!-- <div class="col-sm-3">
+																		<input type="text" class="form-control"
+																			id="TB08031S_asstWrkngInfo_estDt">
+																	</div> -->
+																	<div class="col-sm-3 input-group date">
+																		<input type="text" class="form-control"
+																			id="TB08031S_asstWrkngInfo_estDt" value=""
+																			placeholder="yyyy-mm-dd"
+																			oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+																		<span class="input-group-addon"><i
+																				class="fa fa-calendar"></i></span>
+																	</div>
+																	<label class="col-sm-1 col-form-label">임직원수</label>
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control"
+																			id="TB08031S_asstWrkngInfo_stffNum">
+																	</div>
+																	<label class="col-sm-1 col-form-label">운용인력수</label>
+																	<div class="col-sm-3">
+																		<input type="text" class="form-control"
+																			id="TB08031S_asstWrkngInfo_oprtHnfNum">
+																	</div>
+																</div>
+																<!-- <div class="form-group row mb-1">
+																	
+																</div> -->
 															</div>
 														</div>
 													</div>

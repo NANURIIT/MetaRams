@@ -17,4 +17,5 @@ public class IBIMS508BVO extends IBIMS508BDTO{
     private String thcoRlDcd;
     private BigDecimal allInvAmt;
     private BigDecimal thcoPtciAmt;
+    private String thcoPtciAmtDcsnYn; // 당사참여금액확정여부
 }

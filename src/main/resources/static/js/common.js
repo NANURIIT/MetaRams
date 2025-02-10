@@ -1361,6 +1361,24 @@ function getSelectBoxList(prefix, item, async = true) {
             $("#TB08031S_I051_1").append(html);
             $("#TB08031S_I051_2").append(html);
           }
+
+          if(value.cmnsGrpCd == "T002"){
+
+            var html = "";
+            html +=
+              '<option value="' +
+              value.cdValue +
+              '">' +
+              value.cdName +
+              " (" +
+              value.cdValue +
+              ")" +
+              "</option>";
+
+            // $("#TB08031S_T002").append(html);
+            $("#TB08031S_T002_2").append(html);
+
+          }
         }
 
         if (prefix == "TB05010S") {
