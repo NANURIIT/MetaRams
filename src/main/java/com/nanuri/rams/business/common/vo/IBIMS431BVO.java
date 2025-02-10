@@ -24,6 +24,8 @@ public class IBIMS431BVO extends IBIMS431BDTO {
     private String decdStepDcd;             // 결재단계구분코드
     private String decdSttsDcd;             // 결재상태구분코드
     private String scrnNo;                  // 화면번호
+    private String xtnlIsttNm;              // 은행명
+
 
     private List<IBIMS432BDTO> cnstDetl;
     
