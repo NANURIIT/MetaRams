@@ -3478,7 +3478,7 @@ const TB08031Sjs = (function () {
     }
   }
 
-  // 수악자정보 저장
+  // 수익자정보 저장
   function ernInfoBtnSave(mode) {
     var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
 
