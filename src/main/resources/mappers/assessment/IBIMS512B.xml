@@ -3,27 +3,27 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS512BMapper">
 
 	<!-- 편입자산정보 조회 -->
-	<select id="getAdmsAsstInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS512BVO">
-        SELECT INV_FNN_INV_TY_DCD
-             , (
-                SELECT CD_VL_NM
-                  FROM IBIMS002B
-                 WHERE CMNS_CD_GRP = 'I038'
-                   AND CD_VL_ID    = INV_FNN_INV_TY_DCD
-              ) AS IB_INV_TP_NM
-            , ADMS_ASST_ACBK_ACQ_AMT
-            , ADMS_ASST_GRNT_ERN_RT
-            , ADMS_ASST_ITM_NM
+	<select id="getAdmsAsstInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS512BVO">
+        SELECT  DEAL_NO
+              , SN
+              , ERLM_SEQ
+              , INV_FNN_INV_TY_DCD
+              , ADMS_ASST_ACBK_ACQ_AMT
+              , ADMS_ASST_GRNT_ERN_RT
+              , ADMS_ASST_ITM_NM
          FROM IBIMS512B
-        WHERE DEAL_NO = #{dealNo}
+        WHERE DEAL_NO                               = #{dealNo}    
+        AND SN                                      = #{sn}
+        AND DEL_YN                                  = 'N'    
 	</select>
 	
 <!-- 편입자산정보 저장 -->
-	<insert id="saveAdmsAsstInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS512BVO">
+	<insert id="saveAdmsAsstInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS512BVO2">
 		INSERT INTO IBIMS512B
                (
                   DEAL_NO                                 /* 딜번호 */
                 , SN                                      /* 일련번호 */
+                , ERLM_SEQ                                /* 등록순번 */
                 , ADMS_ASST_ITM_NM                        /* 편입자산종목명 */
                 , ADMS_ASST_GRNT_ERN_RT                   /* 편입자산보장수익율 */
                 , INV_FNN_INV_TY_DCD                            /* 투자금융투자유형코드 */
@@ -36,29 +36,35 @@
                 , GUID                                    /* guid */
               )
         VALUES 
-		<foreach collection="list" item="item" index="index" separator=",">
 			        (
-			          #{item.dealNo}                           /* 딜번호 */
-              , #{index}+1                               /* 일련번호 */
-              , #{item.admsAsstItmNm}                    /* 편입자산종목명 */
-              , #{item.admsAsstGrntErnRt}                /* 편입자산보장수익율 */
-              , #{item.invFnnInvTyDcd}                        /* 투자금융투자유형코드 */
-              , #{item.admsAsstAcbkAcqAmt}               /* 편입자산장부취득금액 */
-              , '0'                                      /* 삭제여부 */
+			          #{dealNo}                           /* 딜번호 */
+              , #{sn}                               /* 일련번호 */
+              , (
+                    SELECT NVL(MAX(ERLM_SEQ), 0) + 1
+                    FROM IBIMS512B
+                    WHERE DEAL_NO = #{dealNo}
+                    AND SN = #{sn}
+              )                                          /* 등록순번 */
+              , #{admsAsstItmNm}                    /* 편입자산종목명 */
+              , #{admsAsstGrntErnRt}                /* 편입자산보장수익율 */
+              , #{invFnnInvTyDcd}                        /* 투자금융투자유형코드 */
+              , #{admsAsstAcbkAcqAmt}               /* 편입자산장부취득금액 */
+              , #{delYn}                                      /* 삭제여부 */
               , SYSDATE                           		   /* 조작상세일시 */
-              , #{item.hndEmpno}                         /* 조작사원번호 */
-              , #{item.hndTmnlNo}                        /* 조작단말기번호 */
-              , #{item.hndTrId}                          /* 조작거래id */
-              , #{item.guid}                             /* guid */
+              , #{hndEmpno}                         /* 조작사원번호 */
+              , #{hndTmnlNo}                        /* 조작단말기번호 */
+              , #{hndTrId}                          /* 조작거래id */
+              , #{guid}                             /* guid */
               )
-		</foreach>  
 	</insert>
 
     <!-- 편입자산정보 삭제 -->
-    <delete id="delAdmsAsstInfo" parameterType="string">
-        DELETE
-         FROM IBIMS512B
+    <update id="delAdmsAsstInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS512BVO2">
+        UPDATE IBIMS512B
+          SET DEL_YN = 'Y'
         WHERE DEAL_NO = #{dealNo}
-    </delete>
+          AND SN = #{sn}
+          AND ERLM_SEQ = #{erlmSeq}
+    </update>
 
 </mapper>

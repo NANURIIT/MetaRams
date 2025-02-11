@@ -2957,20 +2957,26 @@
 															<div class="ibox-title">
 																<h5>▶&nbsp;편입자산 관리</h5>
 															</div>
+															<div class="ibox-tools">
+																<input type="hidden" id="TB08031S_admsAsstInfo_sn">
+																<input type="hidden" id="TB08031S_admsAsstInfo_erlmSeq">
+															</div>
 															<div class="ibox-content text-right">
 																<div class="form-group row mb-1">
 																	<label class="col-sm-1 col-form-label">투자유형</label>
 																	<div class="col-sm-3">
 																		<select class="col-sm-12 form-control"
 																			id="TB08031S_I038">
+																			<option value="">선택</option>
 																		</select>
 																	</div>
-																	<label class="col-sm-1 col-form-label">비중</label>
+																	<label class="col-sm-1 col-form-label">수익율</label>
 																	<div class="col-sm-3">
 																		<input type="text"
 																			class="form-control text-right"
 																			id="TB08031S_invstWeight"
-																			oninput="this.value = this.value.replace(/[^0-9.]/g, '');">
+																			oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
+																			onkeyup="inputNumberFormater(this);"  value="0.00">
 																	</div>
 																</div>
 																<div class="form-group row mb-1">
@@ -2980,7 +2986,9 @@
 																			class="form-control text-right"
 																			id="TB08031S_admsAmt"
 																			oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
-																			onchange="inputNumberFormat2(this);">
+																			onkeyup="inputNumberFormater(this);" value="0">
+																		<!-- <input type="text" class="form-control text-right" id="TB08031S_insRvn"
+																			onkeyup="inputNumberFormater(this);" value="0.00"> -->
 																	</div>
 																	<label class="col-sm-1 col-form-label">편입자산명</label>
 																	<div class="col-sm-3">
@@ -2995,10 +3003,18 @@
 												<div class="form-group row">
 													<!-- button -->
 													<div class="col-sm text-right mb-1">
-														<button class="btn btn-success" type="button"
+														<!-- <button class="btn btn-success" type="button"
 															onclick="TB08031Sjs.admsAsstInfoBtnSave();">
 															<i class="fa fa-save"></i>&nbsp;저장
+														</button> -->
+														<button class="btn btn-default" type="button" onclick="TB08031Sjs.gridInfoRst('admsAsstInfoInstance');">
+															<i class="fa fa-undo"></i>&nbsp;초기화
+														</button>								
+														<button class="btn btn-success" type="button"
+															onclick="TB08031Sjs.admsAsstInfoBtnSave(`save`);">
+															<i class="fa fa-save"></i>&nbsp;저장
 														</button>
+														<button class="btn btn-danger" onclick="TB08031Sjs.admsAsstInfoBtnSave(`dlt`);"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
 													</div>
 												</div>
 											</div>

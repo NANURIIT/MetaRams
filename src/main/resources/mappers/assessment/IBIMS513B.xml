@@ -3,16 +3,11 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS513BMapper">
 
 	<!-- 대주단정보 조회 -->
-	<select id="getStlnInfo" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS513BVO">
+	<select id="getStlnInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS513BVO">
 		SELECT DEAL_NO                                 /* 딜번호 */
          , IB_STLN_DCD                             /* 투자금융대주구분코드 */
-         , (
-         	  SELECT CD_VL_NM
-				      FROM IBIMS002B
-			       WHERE CMNS_CD_GRP = 'R021'
-			         AND CD_VL_ID = IB_STLN_DCD
-           ) AS IB_STLN_NM                         /* 투자금융대주구분코드명 */
          , SN                                      /* 일련번호 */
+         , ERLM_SEQ                                /* 등록순번 */
          , RM_OPNT_EPRZ_DCD                        /* RM상대기업구분코드 */
          , ENTP_NM                                 /* 업체명 */
          , CRDT_PROV_LMT_AMT                       /* 신용공여한도금액 */
@@ -27,6 +22,8 @@
      WHERE 1=1
        AND DEAL_NO                                 = #{dealNo}
 	     AND STLN_ERN_DCD                            = '1'
+       AND SN                                      = #{sn}
+       AND DEL_YN                                  = 'N'
 		 ORDER 
         BY SN
 	</select>
@@ -36,6 +33,7 @@
 		SELECT DEAL_NO                                 /* 딜번호 */
          , IB_STLN_DCD                             /* 투자금융대주구분코드 */
          , SN                                      /* 일련번호 */
+         , ERLM_SEQ                                /* 등록순번 */
          , RM_OPNT_EPRZ_DCD                        /* RM상대기업구분코드 */
          , ENTP_NM                                 /* 업체명 */
          , CRDT_PROV_LMT_AMT                       /* 신용공여한도금액 */

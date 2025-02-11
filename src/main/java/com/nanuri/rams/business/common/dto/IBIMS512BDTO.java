@@ -14,7 +14,8 @@ import lombok.Setter;
 public class IBIMS512BDTO {
 
     private String         dealNo;                                   // 딜번호
-    private BigDecimal     sn;                                       // 일련번호
+    private long           sn;                                       // 일련번호
+    private long           erlmSeq;                                  // 등록순번
     private String         admsAsstItmNm;                            // 편입자산종목명
     private BigDecimal     admsAsstGrntErnRt;                        // 편입자산보장수익율
     private String         invFnnInvTyDcd;                           // 투자금융투자유형코드
