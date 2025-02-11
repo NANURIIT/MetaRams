@@ -89,7 +89,7 @@
 		    AND i402b.EXC_SN = 1
 		    AND i402b.PRDT_CD = i401b.PRDT_CD 
 		    AND i401b.PRDT_LCLS_CD IN ('10', '11', '16', '30')
-		    AND   i201b.PRDT_CD = i401b.PRDT_CD 
+		    AND i201b.PRDT_CD = i401b.PRDT_CD 
 		    AND i201b.LAST_YN = 'Y'
     </select>
     
