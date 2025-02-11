@@ -17,6 +17,7 @@ public class IBIMS501BVO extends IBIMS501BDTO {
 	private String crdtGrdCd;   // 신용등급코드	
 	private String dprtCd;		//업무팀
 	private String rmEmpNm;		//담당RM명
+	private String thcoPtciAmtDcsnYn;
 
 
 	private IBIMS101BVO ibims101bvo;

@@ -10,6 +10,10 @@ const TB07100Sjs = (function () {
 
   $(document).ready(function () {
 
+    // 탭상태 기본세팅
+    $(`div[data-menuid="/TB07100S"] #tab-1`).show();
+    $(`div[data-menuid="/TB07100S"] #tab-2`).hide();
+
     // 결재관련버튼 기본세팅
     $('#TB07100S_apvlRqst').hide()
     $('#TB07100S_apvlCncl').hide()
@@ -49,6 +53,25 @@ const TB07100Sjs = (function () {
     apvlBtnHandler();
 
   });
+
+  /**
+   * 하단탭 컨트롤러
+   * @param {String} tabNo 탭번호
+   */
+  function tabController ( tabNo ) {
+
+    if (tabNo === 1) {
+      // 귀찮은 관계로 하드코딩
+      $(`div[data-menuid="/TB07100S"] #tab-1`).show();
+      $(`div[data-menuid="/TB07100S"] #tab-2`).hide();
+    }
+    else if (tabNo === 2) {
+      // 귀찮은 관계로 하드코딩
+      $(`div[data-menuid="/TB07100S"] #tab-1`).hide();
+      $(`div[data-menuid="/TB07100S"] #tab-2`).show();
+    }
+
+  }
 
   /**
    * 화면콤보박스 세팅
@@ -259,6 +282,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').show();
       $('#TB07100S_addRow').show();
       $('#TB07100S_delRow').show();
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').show();
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').show();
     }
     // 승인자인 경우
     else if (nowEmpno === dcfcEno) {
@@ -271,6 +296,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').hide();
       $('#TB07100S_addRow').hide();
       $('#TB07100S_delRow').hide();
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').hide();
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').hide();
     }
     // 해당사항이 없는경우 Default
     else {
@@ -283,6 +310,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').hide();
       $('#TB07100S_addRow').hide();
       $('#TB07100S_delRow').hide();
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').hide();
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').hide();
     }
 
     if (queryMode === "insert" && !$('#TB07100S_cnstNo').val()) {
@@ -291,6 +320,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').prop('disabled', true)
       $('#TB07100S_addRow').prop('disabled', true)
       $('#TB07100S_delRow').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').prop('disabled', true)
     }
     else if (queryMode === "insert" && $('#TB07100S_cnstNo').val()) {
       $('#TB07100S_excBtn').prop('disabled', false)
@@ -298,6 +329,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').prop('disabled', false)
       $('#TB07100S_addRow').prop('disabled', false)
       $('#TB07100S_delRow').prop('disabled', false)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').prop('disabled', false)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').prop('disabled', false)
     }
     else if (queryMode === "delete" && !$('#TB07100S_cnstNo').val()) {
       $('#TB07100S_excBtn').prop('disabled', true)
@@ -305,6 +338,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').prop('disabled', true)
       $('#TB07100S_addRow').prop('disabled', true)
       $('#TB07100S_delRow').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').prop('disabled', true)
     }
 
     // 결재단계, 결재상태 확인
@@ -319,6 +354,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').prop('disabled', false)
       $('#TB07100S_addRow').prop('disabled', false)
       $('#TB07100S_delRow').prop('disabled', false)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').prop('disabled', false)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').prop('disabled', false)
     }
     // 결재 진행중인 경우
     else if (decdSttsDcd === "1") {
@@ -331,6 +368,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').prop('disabled', true)
       $('#TB07100S_addRow').prop('disabled', true)
       $('#TB07100S_delRow').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').prop('disabled', true)
     }
     // 승인된 경우
     else if (decdSttsDcd === "2") {
@@ -343,6 +382,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').prop('disabled', true)
       $('#TB07100S_addRow').prop('disabled', true)
       $('#TB07100S_delRow').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').prop('disabled', true)
     }
     // 지급품의의 경우 반려된 경우 재승인요청,반려 불가능
     else if (decdSttsDcd === "3") {
@@ -355,6 +396,8 @@ const TB07100Sjs = (function () {
       $('#TB07100S_saveBtn').prop('disabled', true)
       $('#TB07100S_addRow').prop('disabled', true)
       $('#TB07100S_delRow').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').prop('disabled', true)
     }
     // 승인취소된 내역은 조회 안됨
     // 조회가 되지 않은 상태
@@ -365,9 +408,11 @@ const TB07100Sjs = (function () {
       $('#TB07100S_gbck').prop('disabled', true)
       $('#TB07100S_excBtn').prop('disabled', false)
 
-      $('#TB07100S_saveBtn').prop('disabled', false)
-      $('#TB07100S_addRow').prop('disabled', false)
-      $('#TB07100S_delRow').prop('disabled', false)
+      $('#TB07100S_saveBtn').prop('disabled', true)
+      $('#TB07100S_addRow').prop('disabled', true)
+      $('#TB07100S_delRow').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_AddFile').prop('disabled', true)
+      $('div[data-menuid="/TB07100S"] #UPLOAD_DelFiles').prop('disabled', true)
     }
 
   }
@@ -593,6 +638,18 @@ const TB07100Sjs = (function () {
         dataIndx: "reltFdtnCtns",
         hidden: true,
       },
+      {
+        title: "은행코드",
+        dataType: "string",
+        dataIndx: "xtnlIsttCd",
+        hidden: true,
+      },
+      {
+        title: "은행명",
+        dataType: "string",
+        dataIndx: "xtnlIsttNm",
+        hidden: true,
+      },
     ];
 
     let col_basic = [
@@ -773,6 +830,8 @@ const TB07100Sjs = (function () {
           $(`#TB07100S_splmValuTxa`).val(addComma(ui.rowData['splmValuTxa']));
           $(`#TB07100S_2_empNm`).val(ui.rowData['reltStfnm']);
           $(`#TB07100S_2_empNo`).val(ui.rowData['reltStfno']);
+          $(`#TB07100S_fnltCd`).val(ui.rowData['xtnlIsttCd']);
+          $(`#TB07100S_fnltNm`).val(ui.rowData['xtnlIsttNm']);
 
           $(`#TB07100S_bnftYn`).prop('checked', ui.rowData['bnftYn'] == "Y");
           $(`#TB07100S_entmAccXstcYn`).prop('checked', ui.rowData['entmAccXstcYn'] == "Y");
@@ -786,6 +845,13 @@ const TB07100Sjs = (function () {
           apvlBtnHandler();
 
           TB07100S_selectIBIMS432B(paramData);
+
+          /**
+           * 파일불러오기, 저장을 위한 키값 세팅
+           */
+          $(`div[data-menuid="/TB07100S"] #fileKey2`).val( ui.rowData['wrtnDt'] + ui.rowData['rslnBdcd'] + ui.rowData['cnstNo'] )
+          $('div[data-menuid="/TB07100S"] #key1').val("TB07100S")
+          getFileInfo($('div[data-menuid="/TB07100S"] #key1').val(), $('div[data-menuid="/TB07100S"] #fileKey2').val());
 
         }
         , selectionModel: { type: "row" }
@@ -1316,5 +1382,6 @@ const TB07100Sjs = (function () {
     addRow: addRow,
     delRow: delRow,
     toggleBtnHandler: toggleBtnHandler,
+    tabController: tabController,
   };
 })();

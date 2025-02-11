@@ -12,7 +12,8 @@ import lombok.Setter;
 */
 public class IBIMS509BDTO {
     private String         dealNo;                                   // 딜번호
-    private int            sn;                                       // 일련번호
+    private long           sn;                                       // 일련번호
+    private long           erlmSeq;
     private String         bondProtCcd;                              // 채권보전구분
     private String         mainCtrcMttrCnts;                         // 주요약정사항내용
     private String         fnnrCtrcMttrTrgtYn;                       // 재무약정사항대상여부

@@ -3,10 +3,11 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS518BMapper">
 
 	<!-- 투자기업정보 조회 -->
-	<select id="getInvstBzscalList" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS518BVO">
+	<select id="getInvstBzscalList" parameterType="com.nanuri.rams.business.common.vo.IBIMS501BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS518BVO">
         SELECT DEAL_NO                        /* 딜번호 */
              , STDR_YM                        /* 기준년월 */
              , SN                             /* 일련번호 */
+             , ERLM_SEQ                       /* 등록순번 */
              , FND_NM                         /* 펀드명 */
              , CRNO                           /* 법인등록번호 */
              , TR_OTHR_NM                     /* 거래상대방명 */
@@ -20,17 +21,20 @@
              , BKPR                           /* 장부가액 */
              , ASES_BAL                       /* 평가잔액 */
              , INTL_ERN_RT                    /* 순내부수익율 */
-          FROM IBIMS518B
-         WHERE DEAL_NO = #{dealNo}
+        FROM IBIMS518B
+        WHERE DEAL_NO = #{dealNo}
+            AND SN = #{sn}
+            AND DEL_YN = 'N'
 	</select>
 	
 	<!-- 투자기업정보 저장 -->
-	<insert id="saveInvstEprzInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS518BVO">
+	<insert id="saveInvstEprzInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS518BVO2">
 		INSERT INTO IBIMS518B
                (
                   DEAL_NO                     /* 딜번호 */
                 , STDR_YM                     /* 기준년월 */
                 , SN                          /* 일련번호 */
+                , ERLM_SEQ                    /* 등록순번 */
                 , FND_NM                      /* 펀드명 */
                 , CRNO                        /* 법인등록번호 */
                 , TR_OTHR_NM                  /* 거래상대방명 */
@@ -49,36 +53,43 @@
                 , HND_EMPNO                   /* 조작사원번호 */
                )
         VALUES 
-		<foreach collection="list" item="item" index="index" separator=",">
 			   (
-				 #{item.dealNo}               /* 딜번호 */
-               , #{item.stdrYm}               /* 기준년월 */
-               , #{item.sn}                   /* 일련번호 */
-               , #{item.fndNm}                /* 펀드명 */
-               , #{item.crno}                 /* 법인등록번호 */
-               , #{item.trOthrNm}             /* 거래상대방명 */
-               , #{item.bzno}                 /* 사업자등록번호 */
-               , #{item.bztpNm}               /* 업종명 */
-               , #{item.ntnNm}                /* 국가명 */
-               , #{item.fndDcd}               /* 펀드구분코드 */
-               , #{item.sctsFndTpDcd}         /* 유가증권펀드유형상세코드 */
-               , #{item.pchsDt}               /* 매입일자 */
-               , #{item.dealAmt}              /* 취득가액 */
-			   , #{item.bkpr}                 /* 장부가액 */
-			   , #{item.asesBal}              /* 평가잔액 */
-			   , #{item.intlErnRt}            /* 순내부수익율 */
-			   , '0'                          /* 삭제여부 */
-			   , SYSDATE                      /* 조작상세일시 */
-			   , #{item.hndEmpno}             /* 조작사원번호 */
+				 #{dealNo}               /* 딜번호 */
+               , #{stdrYm}               /* 기준년월 */
+               , #{sn}                   /* 일련번호 */
+               , (
+                    SELECT NVL(MAX(ERLM_SEQ), 0) + 1
+                    FROM IBIMS518B
+                    WHERE DEAL_NO = #{dealNo}
+                    AND SN = #{sn}
+                  )                      /* 등록순번 */
+               , #{fndNm}                /* 펀드명 */
+               , #{crno}                 /* 법인등록번호 */
+               , #{trOthrNm}             /* 거래상대방명 */
+               , #{bzno}                 /* 사업자등록번호 */
+               , #{bztpNm}               /* 업종명 */
+               , #{ntnNm}                /* 국가명 */
+               , #{fndDcd}               /* 펀드구분코드 */
+               , #{sctsFndTpDcd}         /* 유가증권펀드유형상세코드 */
+               , #{pchsDt}               /* 매입일자 */
+               , #{dealAmt}              /* 취득가액 */
+			   , #{bkpr}                 /* 장부가액 */
+			   , #{asesBal}              /* 평가잔액 */
+			   , #{intlErnRt}            /* 순내부수익율 */
+			   , #{delYn}                /* 삭제여부 */
+			   , SYSDATE                 /* 조작상세일시 */
+			   , #{hndEmpno}             /* 조작사원번호 */
                )
-		</foreach>  
 	</insert>
 
     <!-- 투자기업정보 삭제 -->
-    <delete id="delInvstEprzInfo" parameterType="string">
-        DELETE
-         FROM IBIMS518B
+    <update id="delInvstEprzInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS518BVO2">
+        UPDATE IBIMS518B
+            SET DEL_YN = 'Y'
         WHERE DEAL_NO = #{dealNo}
-    </delete>
+            AND SN = #{sn}
+            AND ERLM_SEQ = #{erlmSeq}
+            AND STDR_YM = #{stdrYm}
+    </update>
 
 </mapper>

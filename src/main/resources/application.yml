@@ -63,7 +63,4 @@ spring:
     multipart:
       maxFileSize: 1000MB
       maxRequestSize: 2000MB
-  sql:
-    init:
-      platform: oracle
 

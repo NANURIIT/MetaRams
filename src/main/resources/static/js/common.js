@@ -1345,7 +1345,7 @@ function getSelectBoxList(prefix, item, async = true) {
         }
 
         if (prefix == "TB08031S") {
-          if (value.cmnsGrpCd == "R021") {
+          if (value.cmnsGrpCd == "I051") {
             // 대주단정보, 수익자정보 구분코드
             var html = "";
             html +=
@@ -1358,8 +1358,26 @@ function getSelectBoxList(prefix, item, async = true) {
               ")" +
               "</option>";
 
-            $("#TB08031S_R021_1").append(html);
-            $("#TB08031S_R021_2").append(html);
+            $("#TB08031S_I051_1").append(html);
+            $("#TB08031S_I051_2").append(html);
+          }
+
+          if(value.cmnsGrpCd == "T002"){
+
+            var html = "";
+            html +=
+              '<option value="' +
+              value.cdValue +
+              '">' +
+              value.cdName +
+              " (" +
+              value.cdValue +
+              ")" +
+              "</option>";
+
+            // $("#TB08031S_T002").append(html);
+            $("#TB08031S_T002_2").append(html);
+
           }
         }
 

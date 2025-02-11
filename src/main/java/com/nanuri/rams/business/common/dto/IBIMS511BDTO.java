@@ -12,7 +12,8 @@ import lombok.Setter;
 */
 public class IBIMS511BDTO {
     private String         dealNo;                                   // 딜번호
-    private int            sn;                                       // 일련번호
+    private long            sn;                                       // 일련번호
+    private long           erlmSeq;                                  // 등록일련번호
     private String         ptcnRelrDcd;                              // 참가자관계구분코드
     private String         entpNm;                                   // 업체명
     private String         rpsrNm;                                   // 대표자명

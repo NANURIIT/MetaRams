@@ -165,33 +165,33 @@ public class TB08031ServiceImpl implements TB08031Service {
 					// 부동산
 					case "01":
 						rtnObj.setRlesInfo(ibims502BMapper.getRealEstateInfo(param));
-						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param));
 						// rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
 						break;
 					// 인프라
 					case "02":
 						rtnObj.setInfraInfo(ibims503BMapper.getInfraInfo(param.getDealNo()));
-						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param));
 						// rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
 						break;
 					// M&A			
 					case "03":
 						rtnObj.setMaInfo(ibims504BMapper.getMaInfo(param));
 						rtnObj.setUdwrtPaiBzscalInfo(ibims517Mapper.getUdwrtPaiBzscalInfo(param));
-						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param));
 						// rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
 						// rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
 						// rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
 						
@@ -199,24 +199,24 @@ public class TB08031ServiceImpl implements TB08031Service {
 					// 국제투자	
 					case "04":
 						rtnObj.setInvstInfo(ibims505BMapper.getInvstInfo(param));
-						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param));
 						// rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
 						break;
 					// PEF/VC	
 					case "05":
 						rtnObj.setPefInfo(ibims506BMapper.getPefInfo(param));
-						// rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-						// rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-						// rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-						// rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-						// rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
-						// rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
+						rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param));
+						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param));
+						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param));
+						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param));
+						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
+						rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param));
 						// rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
-						// rtnObj.setInvstEprzInfo(ibims518Mapper.getInvstBzscalList(param.getDealNo()));
+						rtnObj.setInvstEprzInfo(ibims518Mapper.getInvstBzscalList(param));
 						// rtnObj.setAsstWrkngInfo(ibims515Mapper.selectAsstOrtnLst(param.getDealNo()));
 						break;
 					default : 
@@ -328,45 +328,103 @@ public class TB08031ServiceImpl implements TB08031Service {
 	// 사업참가자정보 저장
 	@Override
 	public int saveBsnsPartInfo(IBIMS511BVO2 param) {
-		if( 0 == param.getS511vo().size()) {
-			 return ibims511Mapper.delBsnsPartInfo(param.getDealNo());
-		}else {
-			ibims511Mapper.delBsnsPartInfo(param.getDealNo());
-			return ibims511Mapper.saveBsnsPartInfo(param.getS511vo()); 
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims511Mapper.saveBsnsPartInfo(param);
+		}else if(mode.equals("dlt")){
+
+			rslt = ibims511Mapper.delBsnsPartInfo(param);
 		}
+
+		return rslt;
 	}
 
 	// 사업주요전망 저장
 	@Override
 	public int saveBsnsForecast(IBIMS514BVO2 param) {
-		if( 0 == param.getS514vo().size()) {
-			return ibims514Mapper.delBsnsForecast(param.getDealNo()); 
-		}else {
-			ibims514Mapper.delBsnsForecast(param.getDealNo());
-			return ibims514Mapper.saveBsnsForecast(param.getS514vo());
+		String mode = param.getMode();
+		int rslt = 0;
+
+		// if( 0 == param.getS514vo().size()) {
+		// 	return ibims514Mapper.delBsnsForecast(param.getDealNo()); 
+		// }else {
+		// 	ibims514Mapper.delBsnsForecast(param.getDealNo());
+		// 	return ibims514Mapper.saveBsnsForecast(param.getS514vo());
+		// }
+
+		if(mode.equals("save")){
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims514Mapper.saveBsnsForecast(param);
+
+		}else if(mode.equals("dlt")){
+			rslt = ibims514Mapper.delBsnsForecast(param);
 		}
+
+		return rslt;
 	}
 
 	// 채권보전주요약정 저장
 	@Override
 	public int saveBondProtInfo(IBIMS509BVO2 param) {
-		if( 0 == param.getS509vo().size() ) {
-			return ibims509Mapper.delBondProtInfo(param.getDealNo());
-		}else {
-			ibims509Mapper.delBondProtInfo(param.getDealNo());
-			return ibims509Mapper.saveBondProtInfo(param.getS509vo());
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims509Mapper.saveBondProtInfo(param);
+		}else if(mode.equals("dlt")){
+			rslt = ibims509Mapper.delBondProtInfo(param);
 		}
+
+		return rslt;
 	}
 
 	// 조건변경이력 저장
 	@Override
 	public int saveCchInfo(IBIMS510BVO2 param) {
-		if( 0 == param.getS510vo().size() ) {
-			return ibims510Mapper.delCchInfo(param.getDealNo());	
-		} else {
-			ibims510Mapper.delCchInfo(param.getDealNo());
-			return ibims510Mapper.saveCchInfo(param.getS510vo());
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims510Mapper.saveCchInfo(param);
+		}else if(mode.equals("dlt")){
+			rslt = ibims510Mapper.delCchInfo(param);
 		}
+
+		return rslt;
+
 	}
 
 	// 대주단정보 저장
@@ -383,30 +441,65 @@ public class TB08031ServiceImpl implements TB08031Service {
 	// 수익자정보 저장
 	@Override
 	public int saveErnInfo(IBIMS513BVO2 param) {
-		if( 0 == param.getS513vo().size() ) {
-			return ibims513Mapper.delErnInfo(param.getDealNo());
-		} else {
-			ibims513Mapper.delErnInfo(param.getDealNo());
-			return ibims513Mapper.saveErnInfo(param.getS513vo());
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims513Mapper.saveErnInfo(param);
+
+		}else if(mode.equals("dlt")){
+			rslt = ibims513Mapper.delErnInfo(param);
 		}
+
+		return rslt;
 	}
 
 	// 관련사업정보 저장
 	@Override
 	public int saveReltBusiInfo(IBIMS508BVO2 param) {
-		if( 0 == param.getS508vo().size() ) {
-			return ibims508Mapper.delBusiInfo(param.getDealNo());
-		} else {
-			ibims508Mapper.delBusiInfo(param.getDealNo());
-			/* 사용자 사번 넣기 */
-			List<IBIMS508BVO> inputParam = new ArrayList<>();
+		// if( 0 == param.getS508vo().size() ) {
+		// 	return ibims508Mapper.delBusiInfo(param.getDealNo());
+		// } else {
+		// 	ibims508Mapper.delBusiInfo(param.getDealNo());
+		// 	/* 사용자 사번 넣기 */
+		// 	List<IBIMS508BVO> inputParam = new ArrayList<>();
 
-			for( IBIMS508BVO tmpData : param.getS508vo() ){
-				tmpData.setHndEmpno(facade.getDetails().getEno());
-				inputParam.add(tmpData);
-			}
-			return ibims508Mapper.saveBusiInfo(inputParam);
+		// 	for( IBIMS508BVO tmpData : param.getS508vo() ){
+		// 		tmpData.setHndEmpno(facade.getDetails().getEno());
+		// 		inputParam.add(tmpData);
+		// 	}
+		// 	return ibims508Mapper.saveBusiInfo(inputParam);
+		// }
+
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims508Mapper.saveBusiInfo(param);
+
+		}else if(mode.equals("dlt")){
+			rslt = ibims508Mapper.delBusiInfo(param);
 		}
+
+		return rslt;
 	}
 
 	// 관련사업정보 저장
@@ -427,22 +520,43 @@ public class TB08031ServiceImpl implements TB08031Service {
 		}
 	}
 
-	// 관련사업정보 저장
+	// 투자기업목록 저장
 	@Override
 	public int saveInvstEprzInfo(IBIMS518BVO2 param) {
-		if( 0 == param.getS518vo().size() ) {
-			return ibims518Mapper.delInvstEprzInfo(param.getDealNo());
-		} else {
-			ibims518Mapper.delInvstEprzInfo(param.getDealNo());
-			/* 사용자 사번 넣기 */
-			List<IBIMS518BVO> inputParam = new ArrayList<>();
+		// if( 0 == param.getS518vo().size() ) {
+		// 	return ibims518Mapper.delInvstEprzInfo(param.getDealNo());
+		// } else {
+		// 	ibims518Mapper.delInvstEprzInfo(param.getDealNo());
+		// 	/* 사용자 사번 넣기 */
+		// 	List<IBIMS518BVO> inputParam = new ArrayList<>();
 
-			for( IBIMS518BVO tmpData : param.getS518vo() ){
-				tmpData.setHndEmpno(facade.getDetails().getEno());
-				inputParam.add(tmpData);
-			}
-			return ibims518Mapper.saveInvstEprzInfo(inputParam);
+		// 	for( IBIMS518BVO tmpData : param.getS518vo() ){
+		// 		tmpData.setHndEmpno(facade.getDetails().getEno());
+		// 		inputParam.add(tmpData);
+		// 	}
+		// 	return ibims518Mapper.saveInvstEprzInfo(inputParam);
+		// }
+
+		String mode = param.getMode();
+		int rslt = 0;
+
+		if(mode.equals("save")){
+
+			String dealNo = param.getDealNo();
+
+			long sn = ibims501BMapper.getMaxSn501B(dealNo);
+
+			param.setSn(sn);
+			param.setDelYn("N");
+			param.setHndEmpno(facade.getDetails().getEno());
+
+			rslt = ibims518Mapper.saveInvstEprzInfo(param);
+
+		}else if(mode.equals("dlt")){
+			rslt = ibims518Mapper.delInvstEprzInfo(param);
 		}
+
+		return rslt;
 	}
 
 	

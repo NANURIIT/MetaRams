@@ -12,7 +12,8 @@ import lombok.Setter;
 */
 public class IBIMS510BDTO {
     private String         dealNo;                                   // 딜번호
-    private int            sn;                                       // 일련번호
+    private long            sn;                                      // 일련번호
+    private long           erlmSeq;                                  // 등록순번
     private String         apvlDt;                                   // 승인일자
     private String         crotDt;                                   // 시행일자
     private String         cndChngMainCnts;                          // 조건변경주요내용

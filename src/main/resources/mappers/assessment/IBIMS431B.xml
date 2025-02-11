@@ -34,6 +34,12 @@
              , T1.BCNC_NM	                                      /* 거래처명 */
              , T1.ACCT_PYMT_MTH_CD	                            /* 회계지급방법코드 */
              , T1.XTNL_ISTT_CD	                                /* 외부기관코드 */
+             , (
+              SELECT FNLT_NM
+                FROM IBIMS992B
+               WHERE 1=1
+                 AND FNLT_CD = T1.XTNL_ISTT_CD
+             ) AS XTNL_ISTT_NM                                  /* 은행명 */
              , T1.BANO	                                        /* 은행계좌번호 */
              , T1.BNK_ACHD_NM	                                  /* 은행예금주명 */
              , T1.PYMT_PRAR_DT	                                /* 지급예정일자 */

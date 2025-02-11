@@ -15,7 +15,8 @@ public class IBIMS518BDTO {
 
     private String         dealNo;                                   // 딜번호
     private String         stdrYm;                                   // 기준년월
-    private BigDecimal     sn;                                       // 일련번호
+    private long           sn;                                       // 일련번호
+    private long           erlmSeq;                                  // 등록순번
     private String         fndNm;                                    // 펀드명
     private String         crno;                                     // 법인등록번호
     private String         trOthrNm;                                 // 거래상대방명

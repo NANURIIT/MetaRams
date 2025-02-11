@@ -828,6 +828,11 @@ function TB06011P_setPrdtInfo(e) {
 		$('#TB04060S_prdtNm').val(e.prdtNm);
 	}
 
+	// SPPI충족여부
+	if (prefix === 'TB06050S') {
+		TB06050Sjs.getSPPIData();
+	}
+
 	/* 0726 add 대출계약 실행 */
 	if (prefix === 'TB07010S') {
 		let numPrgSttsCd = Number(e.prgSttsCd);

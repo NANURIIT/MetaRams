@@ -68,7 +68,7 @@ public class TB07100ServiceImpl implements TB07100Service {
 	// 지급품의기본 삭제
 	@Override
 	public int deleteIBIMS431B(IBIMS431BVO param) {
-
+		
 		IBIMS432BVO vo432 = new IBIMS432BVO();
 		vo432.setWrtnDt(param.getWrtnDt());
 		vo432.setRslnBdcd(param.getRslnBdcd());

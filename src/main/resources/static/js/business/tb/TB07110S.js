@@ -10,11 +10,15 @@ const TB07110Sjs = (function () {
 
   $(document).ready(function () {
 
+    // 탭상태 기본세팅
+    $(`div[data-menuid="/TB07110S"] #tab-1`).show();
+    $(`div[data-menuid="/TB07110S"] #tab-2`).hide();
+
     // 결재관련버튼 기본세팅
-    $('#TB07100S_apvlRqst').hide();
-    $('#TB07100S_apvlCncl').hide();
-    $('#TB07100S_apvl').hide();
-    $('#TB07100S_gbck').hide();
+    $('#TB07110S_apvlRqst').hide();
+    $('#TB07110S_apvlCncl').hide();
+    $('#TB07110S_apvl').hide();
+    $('#TB07110S_gbck').hide();
 
     // 콤보박스 세팅
     selectBoxSetting();
@@ -32,6 +36,25 @@ const TB07110Sjs = (function () {
     apvlBtnHandler();
 
   });
+
+  /**
+   * 하단탭 컨트롤러
+   * @param {String} tabNo 탭번호
+   */
+  function tabController ( tabNo ) {
+
+    if (tabNo === 1) {
+      // 귀찮은 관계로 하드코딩
+      $(`div[data-menuid="/TB07110S"] #tab-1`).show();
+      $(`div[data-menuid="/TB07110S"] #tab-2`).hide();
+    }
+    else if (tabNo === 2) {
+      // 귀찮은 관계로 하드코딩
+      $(`div[data-menuid="/TB07110S"] #tab-1`).hide();
+      $(`div[data-menuid="/TB07110S"] #tab-2`).show();
+    }
+
+  }
 
   /**
    * 화면콤보박스 세팅
@@ -100,6 +123,25 @@ const TB07110Sjs = (function () {
     $('#TB07110S_dprtNm').on('change', function () {
       $('#TB07110S_dprtCd').val($(this).val())
     })
+
+  }
+
+  /**
+   * 하단탭 컨트롤러
+   * @param {String} tabNo 탭번호
+   */
+  function tabController ( tabNo ) {
+
+    if (tabNo === 1) {
+      // 귀찮은 관계로 하드코딩
+      $(`div[data-menuid="/TB07110S"] #tab-1`).show();
+      $(`div[data-menuid="/TB07110S"] #tab-2`).hide();
+    }
+    else if (tabNo === 2) {
+      // 귀찮은 관계로 하드코딩
+      $(`div[data-menuid="/TB07110S"] #tab-1`).hide();
+      $(`div[data-menuid="/TB07110S"] #tab-2`).show();
+    }
 
   }
 
@@ -598,6 +640,18 @@ const TB07110Sjs = (function () {
         dataIndx: "reltFdtnCtns",
         hidden: true,
       },
+      {
+        title: "은행코드",
+        dataType: "string",
+        dataIndx: "xtnlIsttCd",
+        hidden: true,
+      },
+      {
+        title: "은행명",
+        dataType: "string",
+        dataIndx: "xtnlIsttNm",
+        hidden: true,
+      },
     ];
 
     let col_basic = [
@@ -715,6 +769,8 @@ const TB07110Sjs = (function () {
         , rowClick: function (evt, ui) {
           setInputDataFromSelectData(ui.rowData, "TB07110S_mergeForm #TB07110S");
 
+          $(`TB07100S_fnltCd`).val(ui.rowData['xtnlIsttCd']);
+          $(`TB07100S_fnltNm`).val(ui.rowData['']);
           $(`#TB07110S_2_ardyBzepNo`).val(ui.rowData['acctBcncCd']);
           $(`#TB07110S_2_entpNm`).val(ui.rowData['bcncNm']);
           $(`#TB07110S_2_empNm`).val(ui.rowData['reltStfnm']);
@@ -1307,5 +1363,6 @@ const TB07110Sjs = (function () {
     resetInput: resetInput,
     toggleBtnHandler: toggleBtnHandler,
     saveIBIMS432B: saveIBIMS432B,
+    tabController: tabController,
   };
 })();
