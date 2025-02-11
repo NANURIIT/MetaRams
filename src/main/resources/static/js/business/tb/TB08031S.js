@@ -587,7 +587,7 @@ const TB08031Sjs = (function () {
   /* 투자자산계좌(종목)정보 - 대출계좌 colM */
   let colM_loanBanoInfo = [
     {
-      title: "계좌번호",
+      title: "종목코드",
       dataType: "string",
       dataIndx: "",
       align: "left",
@@ -596,7 +596,7 @@ const TB08031Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "대출계정",
+      title: "종목명",
       dataType: "string",
       dataIndx: "",
       align: "left",
@@ -605,7 +605,7 @@ const TB08031Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "계좌상태",
+      title: "진행상태",
       dataType: "string",
       dataIndx: "",
       align: "center",

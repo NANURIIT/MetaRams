@@ -22,16 +22,16 @@ const TB07160Sjs = (function () {
     rtnSel = getSelectBoxList(
       "TB07160S",
       "P009/" + // 진행상태코드 			       PRG_STTS_CD
-        "E020/" + // 기업여신원리금상환구분코드	    EPRZ_CRDL_PAI_RDMP_DCD
-        "I005/" + // 기업여신개별한도구분코드		INDV_LMT_DCD
-        "H001/" + // 휴일처리구분코드			   HLDY_PRCS_DCD
-        "E011/" + // 기업여신이자선후취구분코드	    EPRZ_CRDL_INTR_BNAO_DCD
-        "E013/" + // 기업여신이자일수계산방법코드	EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD
-        "A005/" + // 계정코드                     ACT_CD
-        "D002/" + // 기업여신전결권한구분코드       DCRB_ATH_DCD
-        "R023/" + // 기업여신신청종류코드	       RQS_KND_CD
-        "D010/" + // 부서코드                     DPRT_CD
-        "S003/", // 기준금리종류코드              STDR_INTRT_KND_CD
+      "E020/" + // 기업여신원리금상환구분코드	    EPRZ_CRDL_PAI_RDMP_DCD
+      "I005/" + // 기업여신개별한도구분코드		INDV_LMT_DCD
+      "H001/" + // 휴일처리구분코드			   HLDY_PRCS_DCD
+      "E011/" + // 기업여신이자선후취구분코드	    EPRZ_CRDL_INTR_BNAO_DCD
+      "E013/" + // 기업여신이자일수계산방법코드	EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD
+      "A005/" + // 계정코드                     ACT_CD
+      "D002/" + // 기업여신전결권한구분코드       DCRB_ATH_DCD
+      "R023/" + // 기업여신신청종류코드	       RQS_KND_CD
+      "D010/" + // 부서코드                     DPRT_CD
+      "S003/", // 기준금리종류코드              STDR_INTRT_KND_CD
       false
     );
 
