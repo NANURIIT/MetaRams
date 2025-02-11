@@ -28,12 +28,10 @@ public class ScheduleTask {
 	Job REGIST_BATCH_SCHEDULE;
     */
     
-    /*
     //업무개시 배치
     @Autowired
     @Qualifier("DAILY_WORK_START_BATCH") 
 	Job DAILY_WORK_START_BATCH;
-    */
     
     /*
     @Autowired
@@ -72,7 +70,6 @@ public class ScheduleTask {
 	}
 	*/
     
-    /*
 	//DAILY_WORK_START_BATCH 일일업무개시배치 1일 1회	08:00
     @Scheduled(cron="0 0/2 * * * *", zone="Asia/Seoul")
     //@Scheduled(cron="0 0 8 * * *", zone="Asia/Seoul")
@@ -84,13 +81,13 @@ public class ScheduleTask {
 		JobParameter param = new JobParameter(System.currentTimeMillis());
 		Map<String,JobParameter> parameters = new HashMap<String,JobParameter>();
 		parameters.put("requestDate", param);
+		
 		jobLauncher.run(DAILY_WORK_START_BATCH, new JobParameters(parameters));
 		
 		log.info( "################################################################################" );
 		log.info( "DAILY_WORK_START_BATCH ==> END");
 		log.info( "################################################################################" );
 	}
-	*/
 	
 	
 }

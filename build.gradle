@@ -96,6 +96,7 @@ dependencies {
 	
 	// batch 추가
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
+	implementation 'org.springframework.batch:spring-batch-core:4.3.7'
 	
 }
 
