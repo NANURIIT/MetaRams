@@ -32,7 +32,6 @@
             )   V
 	</select>
 
-
     <select id="getloanInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
    	  SELECT
 			 A.BRKG_ACNO
