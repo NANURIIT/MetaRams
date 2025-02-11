@@ -222,8 +222,7 @@ public class TB08031ServiceImpl implements TB08031Service {
 					default : 
 						break;
 				}
-				rtnObj.setLoanInfo(ibims402Mapper.getloanInfo(param.getDealNo()));
-				rtnObj.setFundInfo(ibims402Mapper.getFundInfo(param.getDealNo()));
+				
 			}else{
 				log.debug("rtnObj.getInvFnnMngmBusiDcd() 없음!!!!");
 			}
@@ -231,6 +230,9 @@ public class TB08031ServiceImpl implements TB08031Service {
 		}else{
 			log.debug("sn없음~~~~");
 		}
+
+		rtnObj.setLoanInfo(ibims402Mapper.getloanInfo(param.getDealNo()));
+		rtnObj.setFundInfo(ibims402Mapper.getFundInfo(param.getDealNo()));
 
 		return rtnObj;
 	}

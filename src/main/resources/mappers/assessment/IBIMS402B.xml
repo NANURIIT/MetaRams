@@ -85,7 +85,7 @@
 		   FROM IBIMS402B i402b      /* 실행기본 */
 		      , IBIMS401B i401b /* 약정기본 */
         	  , IBIMS201B i201b 
-		  WHERE i402b.DEAL_NO = #{dealNo}
+		  WHERE i201b.DEAL_NO = #{dealNo}
 		    AND i402b.EXC_SN = 1
 		    AND i402b.PRDT_CD = i401b.PRDT_CD 
 		    AND i401b.PRDT_LCLS_CD IN ('10', '11', '16', '30')

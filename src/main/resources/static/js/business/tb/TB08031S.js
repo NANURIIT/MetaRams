@@ -18,6 +18,7 @@ const TB08031Sjs = (function () {
   let b007List;
   let i051List;
   let i038List;
+  let e016List;
   
 
   /* 편집자산 정보 colM  todo: id없음....*/
@@ -68,6 +69,7 @@ const TB08031Sjs = (function () {
     item += "/" + "L006"; // 리스종류
     item += "/" + "F009"; // 펀드구분
     item += "/" + "F010"; // 펀드유형상세
+    item += "/" + "E016";
 
     selectBoxList_TB08031S = getSelectBoxList("TB08031S", item, false);
 
@@ -75,6 +77,7 @@ const TB08031Sjs = (function () {
     b007List = selectBoxList_TB08031S.filter((item) => item.cmnsGrpCd === "B007");
     i051List = selectBoxList_TB08031S.filter((item) => item.cmnsGrpCd === "I051");
     i038List = selectBoxList_TB08031S.filter((item) => item.cmnsGrpCd === "I038");
+    e016List = selectBoxList_TB08031S.filter((item) => item.cmnsGrpCd === "E016");
 
     setGrid_TB08031S();
 
@@ -584,13 +587,13 @@ const TB08031Sjs = (function () {
     }
   ];
 
-  /* 투자자산계좌(종목)정보 - 대출계좌 colM */
+  /* 투자자산계좌(종목)정보 - 기업여신 colM */
   let colM_loanBanoInfo = [
     {
       title: "종목코드",
       dataType: "string",
-      dataIndx: "",
-      align: "left",
+      dataIndx: "prdtCd",
+      align: "center",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
@@ -598,7 +601,7 @@ const TB08031Sjs = (function () {
     {
       title: "종목명",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "prdtNm",
       align: "left",
       halign: "center",
       width: "",
@@ -607,29 +610,43 @@ const TB08031Sjs = (function () {
     {
       title: "진행상태",
       dataType: "string",
-      dataIndx: "",
+      dataIndx: "eprzCrdlLdgSttsCd",
       align: "center",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+      editor: {
+        type: "select",
+        valueIndx: "cdValue",
+        labelIndx: "cdName",
+        options: e016List,
+      },
+      render: function (ui) {
+        // console.log("cellData ::: ", ui.cellData);
+        // console.log(P013);
+        let paiTypCd = e016List.find(({ cdValue }) => cdValue == ui.cellData);
+        return paiTypCd ? paiTypCd.cdName : ui.cellData;
+      },
     },
     {
       title: "약정금액",
       dataType: "string",
-      dataIndx: "",
-      align: "center",
+      dataIndx: "eprzCrdlCtrcAmt",
+      align: "right",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+      format: "#,###"
     },
     {
       title: "대출금액",
       dataType: "string",
-      dataIndx: "",
-      align: "center",
+      dataIndx: "dealExcAmt",
+      align: "right",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
+      format: "#,###"
     },
   ];
 
@@ -638,8 +655,8 @@ const TB08031Sjs = (function () {
       {
         title: "종목코드",
         dataType: "string",
-        dataIndx: "",
-        align: "left",
+        dataIndx: "prdtCd",
+        align: "center",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
@@ -647,7 +664,7 @@ const TB08031Sjs = (function () {
       {
         title: "종목명",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "prdtNm",
         align: "left",
         halign: "center",
         width: "",
@@ -656,7 +673,7 @@ const TB08031Sjs = (function () {
       {
         title: "유가증권분류",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "prdtClsfCd",
         align: "center",
         halign: "center",
         width: "",
@@ -665,7 +682,7 @@ const TB08031Sjs = (function () {
       {
         title: "펀드유형상세",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "ortnFndCd",
         align: "center",
         halign: "center",
         width: "",
@@ -674,29 +691,32 @@ const TB08031Sjs = (function () {
       {
         title: "액면(주수)",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "buyShqt",
+        align: "rigth",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
+        format: "#,###"
       },
       {
         title: "기말장부단가",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "acbkAmt",
+        align: "rigth",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
+        format: "#,###"
       },
       {
         title: "취득액",
         dataType: "string",
-        dataIndx: "",
-        align: "center",
+        dataIndx: "avrUnpr",
+        align: "rigth",
         halign: "center",
         width: "",
         filter: { crules: [{ condition: "range" }] },
+        format: "#,###"
       },
     ];
 
@@ -1416,9 +1436,9 @@ const TB08031Sjs = (function () {
           /* 기본항목*/
           // $("#TB08031S_ibDealNo").val(bssBscInfo.dealNo);         // 딜번호
 
-          var excBlce = bssBscInfo.excBlce == null ? 0 : addComma(bssBscInfo.excBlce);
-          var expDt = bssBscInfo.expDt == null ? '' : formatDate(bssBscInfo.expDt);
-          var rgstDt = bssBscInfo.rgstDt == null ? '' : formatDate(bssBscInfo.rgstDt);
+          var excBlce = isEmpty(bssBscInfo.excBlce) ? 0 : addComma(bssBscInfo.excBlce);
+          var expDt = isEmpty(bssBscInfo.expDt) ? '' : formatDate(bssBscInfo.expDt);
+          var rgstDt = isEmpty(bssBscInfo.rgstDt) ? '' : formatDate(bssBscInfo.rgstDt);
 
           $("#TB08031S_corpNo").val(bssBscInfo.crno);             // 법인등록번호
           $("#TB08031S_corpNm").val(bssBscInfo.entpNm);           // 업체명
@@ -1427,6 +1447,14 @@ const TB08031Sjs = (function () {
           $('#TB08031S_bsnsLoan').val(excBlce);				            // 사업대출잔액
           $('#TB08031S_coValDt').val(expDt);						          // 평가유효기일
           $('#TB08031S_fnMdfyDt').val(rgstDt);					          // 최종수정일자
+
+          var loanInfo = data.loanInfo;
+          loanBanoInfoInstance.setData(loanInfo);                 //투자자산종목 정보
+
+          var fundInfo = data.fundInfo;
+          ernSctyInfoInstance.setData(fundInfo);                  //투자자산 정보
+
+          console.log(JSON.stringify(fundInfo));
 
           if(data.invFnnMngmBusiDcd){       //사업구분코드 있는 경우
 
