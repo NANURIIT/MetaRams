@@ -503,6 +503,15 @@ const TB07100Sjs = (function () {
         }
       },
       {
+        title: "지급금액",
+        dataType: "string",
+        dataIndx: "rslnAmt",
+        halign: "center",
+        align: "right",
+        format: "#,###",
+        filter: { crules: [{ condition: 'range' }] },
+      },
+      {
         title: "세액",
         dataType: "string",
         dataIndx: "splmValuTxa",
@@ -621,12 +630,6 @@ const TB07100Sjs = (function () {
         hidden: true,
       },
       {
-        title: "지급금액",
-        dataType: "string",
-        dataIndx: "rslnAmt",
-        hidden: true,
-      },
-      {
         title: "출금원장",
         dataType: "string",
         dataIndx: "fndsLdgDcd",
@@ -648,6 +651,12 @@ const TB07100Sjs = (function () {
         title: "은행명",
         dataType: "string",
         dataIndx: "xtnlIsttNm",
+        hidden: true,
+      },
+      {
+        title: "예금주명",
+        dataType: "string",
+        dataIndx: "bnkAchdNm",
         hidden: true,
       },
     ];
@@ -825,13 +834,13 @@ const TB07100Sjs = (function () {
         , rowClick: function (evt, ui) {
           setInputDataFromSelectData(ui.rowData, "TB07100S_mergeForm #TB07100S");
 
+          $(`#TB07100S_fnltCd`).val(ui.rowData['xtnlIsttCd']);
+          $(`#TB07100S_fnltNm`).val(ui.rowData['xtnlIsttNm']);
           $(`#TB07100S_2_ardyBzepNo`).val(ui.rowData['acctBcncCd']);
           $(`#TB07100S_2_entpNm`).val(ui.rowData['bcncNm']);
           $(`#TB07100S_splmValuTxa`).val(addComma(ui.rowData['splmValuTxa']));
           $(`#TB07100S_2_empNm`).val(ui.rowData['reltStfnm']);
           $(`#TB07100S_2_empNo`).val(ui.rowData['reltStfno']);
-          $(`#TB07100S_fnltCd`).val(ui.rowData['xtnlIsttCd']);
-          $(`#TB07100S_fnltNm`).val(ui.rowData['xtnlIsttNm']);
 
           $(`#TB07100S_bnftYn`).prop('checked', ui.rowData['bnftYn'] == "Y");
           $(`#TB07100S_entmAccXstcYn`).prop('checked', ui.rowData['entmAccXstcYn'] == "Y");
@@ -1029,12 +1038,13 @@ const TB07100Sjs = (function () {
       , cdno: $('#TB07100S_cdno').val()                                               // 카드번호
       , apvlNo: $('#TB07100S_apvlNo').val()                                           // 카드승인번호
       , elcPrufYn: 'N'                                                                // 전자증빙여부
-      , xtnlIsttCd: $('#TB07100S_fnltCd').val()                                   // 외부기관코드
+      , xtnlIsttCd: $('#TB07100S_fnltCd').val()                                       // 외부기관코드
+      , bnkAchdNm: $('#TB07100S_bnkAchdNm').val()                                     // 은행예금주명
+      , fndsLdgDcd: $('#TB07100S_fndsLdgDcd').val()                                   // 자금원장구분코드
       // , cnclYn: $('#TB07100S_cnclYn').val()                                           // 취소여부
       // , rgstSn: $('#TB07100S_rgstSn').val()                                           // 등록일련번호 - 채번일듯
       // , crryCd: $('#TB07100S_crryCd').val()                                           // 통화코드
       // , exrt: $('#TB07100S_exrt').val()                                               // 환율
-      // , bnkAchdNm: $('#TB07100S_bnkAchdNm').val()                                     // 은행예금주명
       // , trId: $('#TB07100S_trId').val()                                               // 거래ID
       // , reltDcmNo: $('#TB07100S_reltDcmNo').val()                                     // 관련문서번호
       // , cntrAccXstcYn: $('#TB07100S_cntrAccXstcYn').val()                             // 기부계정존재여부
@@ -1047,7 +1057,6 @@ const TB07100Sjs = (function () {
       // , cnclSttmNo: $('#TB07100S_cnclSttmNo').val()                                   // 취소전표번호
       // , cnstSttmDcd: $('#TB07100S_cnstSttmDcd').val()                                 // 품의전표구분코드
       // , excalYn: $('#TB07100S_excalYn').val()                                         // 정산여부
-      // , fndsLdgDcd: $('#TB07100S_fndsLdgDcd').val()                                   // 자금원장구분코드
       // , fndsLdgNo: $('#TB07100S_fndsLdgNo').val()                                     // 자금원장번호
       // , actsCd: $('#TB07100S_actsCd').val()                                           // 계정과목코드 - 서비스에서 지정할듯
       // , edmsDcmId: $('#TB07100S_edmsDcmId').val()                                     // EDMS문서ID
