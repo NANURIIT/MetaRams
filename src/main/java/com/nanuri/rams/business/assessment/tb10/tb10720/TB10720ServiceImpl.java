@@ -1,9 +1,19 @@
 package com.nanuri.rams.business.assessment.tb10.tb10720;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
 
 import org.slf4j.Logger;
-import org.springframework.beans.BeanUtils;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameter;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +27,19 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class TB10720ServiceImpl implements TB10720Service {
+	
+	@Autowired
+	private TaskScheduler taskScheduler;
+	private Map<String, ScheduledFuture<?>> scheduledtasks = new ConcurrentHashMap<>();
+	
+	@Autowired 
+	JobLauncher jobLauncher;
+	
+	@Autowired   
+	@Qualifier("DAILY_WORK_START_BATCH") 
+	Job DAILY_WORK_START_BATCH;
 	
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(this.getClass());
 	private final IBIMS998BMapper ibims998bmp;
@@ -37,6 +57,7 @@ public class TB10720ServiceImpl implements TB10720Service {
 
 	// 마감관리 개시/마감 실행
 	@Override
+	@Transactional
 	public int updateTB10720S(IBIMS998BVO input) {
 		logger.debug("++++++++ RUN MAPPER : updateTB10720S ++++++++");
 		logger.debug("input.jobOpngYn : " + input.getJobOpngYn());
@@ -62,6 +83,29 @@ public class TB10720ServiceImpl implements TB10720Service {
 			excCnt = ibims998bmp.closeTB10720S(dto);
 		}
 		return excCnt;
+	}
+
+	@Override
+	public void startBatchScheduler() {
+		ScheduledFuture<?> task = taskScheduler.scheduleAtFixedRate(() ->
+		     log.info("test-ing...",Thread.currentThread().getName()),2000);
+		
+		scheduledtasks.put("DAILY_WORK_START_BATCH", task);
+	}
+
+	@Override
+	public void stopBatchScheduler() {
+		log.info("DAILY_WORK_START_BATCH 종료합니다..");
+		
+		scheduledtasks.get("DAILY_WORK_START_BATCH").cancel(true);
+	}
+
+	@Override
+	public void runBatchJob() throws Exception {
+		JobParameter param = new JobParameter(System.currentTimeMillis());
+		Map<String,JobParameter> parameters = new HashMap<String,JobParameter>();
+		parameters.put("requestDate", param);
+		jobLauncher.run(DAILY_WORK_START_BATCH, new JobParameters(parameters));
 	}
 	
 }
