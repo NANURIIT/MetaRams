@@ -10,6 +10,22 @@ const TB07110Sjs = (function () {
 
   $(document).ready(function () {
 
+    $(`div[data-menuid='/TB07110S'] input[id*='Amt']
+      , div[data-menuid='/TB07110S'] input[id*='Blce']
+      , div[data-menuid='/TB07110S'] input[id*='Exrt']
+      , div[data-menuid='/TB07110S'] input[id*='Mnum']
+      , div[data-menuid='/TB07110S'] input[id*='Tmrd']
+      , div[data-menuid='/TB07110S'] input[id*='tx']
+      , div[data-menuid='/TB07110S'] input[id='TB07110S_splmValuTxa']`).val('0');
+
+    // 숫자인풋박스 포맷
+    selectorNumberFormater(
+      $(`div[data-menuid='/TB07110S'] input[id*='Amt']
+        , div[data-menuid='/TB07110S'] input[id*='Blce']
+        , div[data-menuid='/TB07110S'] input[id*='Rt']
+        , div[data-menuid='/TB07110S'] input[id='TB07110S_splmValuTxa']`)
+    );
+
     // 탭상태 기본세팅
     $(`div[data-menuid="/TB07110S"] #tab-1`).show();
     $(`div[data-menuid="/TB07110S"] #tab-2`).hide();
@@ -482,9 +498,9 @@ const TB07110Sjs = (function () {
         filter: { crules: [{ condition: 'range' }] },
       },
       {
-        title: "합계금액",
+        title: "지급금액",
         dataType: "integer",
-        dataIndx: "",
+        dataIndx: "rslnAmt",
         halign: "center",
         align: "right",
         format: "#,###",
@@ -623,12 +639,6 @@ const TB07110Sjs = (function () {
         hidden: true,
       },
       {
-        title: "지급금액",
-        dataType: "string",
-        dataIndx: "rslnAmt",
-        hidden: true,
-      },
-      {
         title: "출금원장",
         dataType: "string",
         dataIndx: "fndsLdgDcd",
@@ -650,6 +660,12 @@ const TB07110Sjs = (function () {
         title: "은행명",
         dataType: "string",
         dataIndx: "xtnlIsttNm",
+        hidden: true,
+      },
+      {
+        title: "예금주명",
+        dataType: "string",
+        dataIndx: "bnkAchdNm",
         hidden: true,
       },
     ];
@@ -769,9 +785,10 @@ const TB07110Sjs = (function () {
         , rowClick: function (evt, ui) {
           setInputDataFromSelectData(ui.rowData, "TB07110S_mergeForm #TB07110S");
 
-          $(`TB07100S_fnltCd`).val(ui.rowData['xtnlIsttCd']);
-          $(`TB07100S_fnltNm`).val(ui.rowData['']);
+          $(`#TB07110S_fnltCd`).val(ui.rowData['xtnlIsttCd']);
+          $(`#TB07110S_fnltNm`).val(ui.rowData['xtnlIsttNm']);
           $(`#TB07110S_2_ardyBzepNo`).val(ui.rowData['acctBcncCd']);
+          $(`#TB07110S_splmValuTxa`).val(addComma(ui.rowData['splmValuTxa']));
           $(`#TB07110S_2_entpNm`).val(ui.rowData['bcncNm']);
           $(`#TB07110S_2_empNm`).val(ui.rowData['reltStfnm']);
           $(`#TB07110S_2_empNo`).val(ui.rowData['reltStfno']);
@@ -989,10 +1006,11 @@ const TB07110Sjs = (function () {
       , fndsLdgDcd: $('#TB07110S_fndsLdgDcd').val()                                   // 자금원장구분코드
       , elcPrufYn: 'Y'                                                                // 전자증빙여부
       , xtnlIsttCd: $('#TB07110S_fnltCd').val()                                       // 외부기관코드
-      // , prufDt: unformatDate($('#TB07110S_prufDt').val())                             // 증빙일자
-      // , pymtPrarDt: unformatDate($('#TB07110S_pymtPrarDt').val())                     // 지급예정일자
-      // , rslnAmt: $('#TB07110S_rslnAmt').val().replaceAll(",", "")                     // 결의금액
-      // , splmValuTxa: $('#TB07110S_splmValuTxa').val().replaceAll(",", "")             // 부가가치세액
+      , prufDt: unformatDate($('#TB07110S_prufDt').val())                             // 증빙일자
+      , pymtPrarDt: unformatDate($('#TB07110S_pymtPrarDt').val())                     // 지급예정일자
+      , rslnAmt: $('#TB07110S_rslnAmt').val().replaceAll(",", "")                     // 결의금액
+      , splmValuTxa: $('#TB07110S_splmValuTxa').val().replaceAll(",", "")             // 부가가치세액
+      , bnkAchdNm: $('#TB07110S_bnkAchdNm').val()                                     // 은행예금주명
       // , baltDt: unformatDate($('#TB07110S_baltDt').val())                             // 기표일자
       // , cdno: $('#TB07110S_cdno').val()                                               // 카드번호
       // , apvlNo: $('#TB07110S_apvlNo').val()                                           // 카드승인번호
@@ -1000,7 +1018,6 @@ const TB07110Sjs = (function () {
       // , rgstSn: $('#TB07110S_rgstSn').val()                                           // 등록일련번호 - 채번일듯
       // , crryCd: $('#TB07110S_crryCd').val()                                           // 통화코드
       // , exrt: $('#TB07110S_exrt').val()                                               // 환율
-      // , bnkAchdNm: $('#TB07110S_bnkAchdNm').val()                                     // 은행예금주명
       // , trId: $('#TB07110S_trId').val()                                               // 거래ID
       // , reltDcmNo: $('#TB07110S_reltDcmNo').val()                                     // 관련문서번호
       // , cntrAccXstcYn: $('#TB07110S_cntrAccXstcYn').val()                             // 기부계정존재여부

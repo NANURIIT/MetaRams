@@ -155,11 +155,9 @@
 								<div id="ibims431bdto">
 									<div class="row form-group form-inline text-right">
 										<div class="col-sm-12 form-group">
-											
 											<input type="hidden" class="form-control" value="" id="TB07110S_wrtnDt">
 											<input type="hidden" class="form-control" value="" id="TB07110S_rslnBdcd">
 											<input type="hidden" class="form-control" value="" id="TB07110S_decdSttsDcd">
-
 											<label class="col-sm-1">회계일자</label>
 											<div class="col-sm-2">
 												<span class="input-group date">
@@ -169,29 +167,24 @@
 															class="fa fa-calendar"></i></span>
 												</span>
 											</div>
-											<label class="col-sm-1">거래처</label>
-											<div class="col-sm-2">
-												<div class="input-group">
-													<input type="text" class="form-control" id="TB07110S_2_ardyBzepNo">
-													<span class="input-group-append">
-														<button type="button" class="btn btn-default"
-															onclick="callTB03061P('TB07110S_2');"><i
-																class="fa fa-search"></i></button>
-													</span>
-													<input type="text" class="form-control" id="TB07110S_2_entpNm"
-														readonly="">
-												</div>
-											</div>
 											<label class="col-sm-1">실명확인번호</label>
 											<div class="col-sm-2">
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07110S_asdf8">
 												</div>
 											</div>
-											<label class="col-sm-1">매입공제</label>
+											<label class="col-sm-1">자금원장</label>
 											<div class="col-sm-2">
 												<div class="input-group">
-													<select class="form-control" id="TB07110S_pchsDdcDcd">
+													<select class="form-control" id="TB07110S_fndsLdgDcd">
+														<option value="">전체</option>
+													</select>
+												</div>
+											</div>
+											<label class="col-sm-1">지급방법</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB07110S_acctPymtMthCd">
 														<option value="">전체</option>
 													</select>
 												</div>
@@ -207,6 +200,19 @@
 														disabled>
 												</div>
 											</div>
+											<div class="col-sm-3 form-group pd0">
+												<label class="col-sm-4">편익제공</label>
+												<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+												<label class="col-sm-3">접대부여부</label>
+												<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+											</div>
+											<label class="col-sm-1">지급금액</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control text-right"
+														id="TB07110S_rslnAmt">
+												</div>
+											</div>
 											<label class="col-sm-1">지급은행</label>
 											<div class="col-sm-2 input-group">
 												<input type="text" class="form-control" id="TB07110S_fnltCd">
@@ -215,29 +221,18 @@
 												</span>
 												<input type="text" class="form-control" id="TB07110S_fnltNm" readonly="">
 											</div>
-											<label class="col-sm-1">예금주명</label>
-											<div class="col-sm-2">
-												<div class="input-group">
-													<input type="text" class="form-control" id="TB07110S_achdNm">
-												</div>
-											</div>
 										</div>
 									</div>
 									<div class="row form-group form-inline text-right">
 										<div class="col-sm-12 form-group">
-											<label class="col-sm-1">자금원장</label>
+											<label class="col-sm-1">증빙일자</label>
 											<div class="col-sm-2">
-												<div class="input-group">
-													<select class="form-control" id="TB07110S_fndsLdgDcd">
-														<option value="">전체</option>
-													</select>
-												</div>
-											</div>
-											<label class="col-sm-1">계좌번호</label>
-											<div class="col-sm-2">
-												<div class="input-group">
-													<input type="text" class="form-control" id="TB07110S_bano">
-												</div>
+												<span class="input-group date">
+													<input type="text" class="form-control" value=""
+														id="TB07110S_prufDt" placeholder="YYYY-MM-DD">
+													<span class="input-group-addon"><i
+															class="fa fa-calendar"></i></span>
+												</span>
 											</div>
 											<label class="col-sm-1">관련근거</label>
 											<div class="col-sm-2">
@@ -245,6 +240,79 @@
 													<input type="text" class="form-control" id="TB07110S_reltFdtnCtns">
 												</div>
 											</div>
+											<label class="col-sm-1">세액</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control text-right"
+														id="TB07110S_splmValuTxa">
+												</div>
+											</div>
+											<label class="col-sm-1">지급계좌</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07110S_bano">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row form-group form-inline text-right">
+										<div class="col-sm-12 form-group">
+											<label class="col-sm-1">증빙종류</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB07110S_prufKndDcd">
+														<option value="">선택</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-3"></div>
+											<label class="col-sm-1">매입공제</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<select class="form-control" id="TB07110S_pchsDdcDcd">
+														<option value="">선택</option>
+													</select>
+												</div>
+											</div>
+											<label class="col-sm-1">예금주명</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07110S_bnkAchdNm">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row form-group form-inline text-right">
+										<div class="col-sm-12 form-group">
+											<label class="col-sm-1">거래처</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07110S_2_ardyBzepNo">
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default"
+															onclick="callTB03061P('TB07110S_2');"><i
+																class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" id="TB07110S_2_entpNm"
+														readonly="">
+												</div>
+											</div>
+											<div class="col-sm-6"></div>
+											<label class="col-sm-1">지급예정일자</label>
+											<div class="col-sm-2">
+												<span class="input-group date">
+													<input type="text" class="form-control" value=""
+														id="TB07110S_pymtPrarDt" placeholder="YYYY-MM-DD">
+													<span class="input-group-addon"><i
+															class="fa fa-calendar"></i></span>
+												</span>
+											</div>
+										</div>
+									</div>
+									<br/>
+									<div class="row form-group form-inline text-right">
+										<div class="col-sm-12 form-group">
+											<div class="col-sm-9"></div>
 											<label class="col-sm-1">작성자</label>
 											<div class="col-sm-2">
 												<div class="input-group">
@@ -262,21 +330,7 @@
 									</div>
 									<div class="row form-group form-inline text-right">
 										<div class="col-sm-12 form-group">
-											<label class="col-sm-1">지급방법</label>
-											<div class="col-sm-2">
-												<div class="input-group">
-													<select class="form-control" id="TB07110S_acctPymtMthCd">
-														<option value="">전체</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-3 form-group pd0">
-												<label class="col-sm-4">편익제공</label>
-												<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
-												<label class="col-sm-3">접대부여부</label>
-												<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
-											</div>
-											<div class="col-sm-3"></div>
+											<div class="col-sm-9"></div>
 											<label class="col-sm-1">승인자</label>
 											<div class="col-sm-2">
 												<div class="input-group">
@@ -290,13 +344,11 @@
 														disabled>
 												</div>
 											</div>
-											<!-- <label class="col-sm-1">증빙첨부</label>
-											<span class="col-sm-2 text-left">
-												<button class="btn btn-default"><i
-														class="fa fa-upload m-1"></i>파일첨부</button>
-											</span> -->
 										</div>
 									</div>
+
+
+									
 								</div>
 							</div>
 							<div class="ibox form-inline mt-2">

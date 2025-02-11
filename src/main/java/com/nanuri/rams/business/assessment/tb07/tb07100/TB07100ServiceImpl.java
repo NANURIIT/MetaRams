@@ -49,8 +49,6 @@ public class TB07100ServiceImpl implements TB07100Service {
 	// 지급품의기본 등록
 	@Override
 	public int insertIBIMS431B(IBIMS431BVO param) {
-		int result = 0;
-
 		String cnstNo = ibims431bMapper.setCnstNo(param.getWrtnDt());
 		param.setCnstNo(cnstNo);
 		param.setHndEmpno(facade.getDetails().getEno());
