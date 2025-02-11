@@ -640,6 +640,18 @@ const TB07110Sjs = (function () {
         dataIndx: "reltFdtnCtns",
         hidden: true,
       },
+      {
+        title: "은행코드",
+        dataType: "string",
+        dataIndx: "xtnlIsttCd",
+        hidden: true,
+      },
+      {
+        title: "은행명",
+        dataType: "string",
+        dataIndx: "xtnlIsttNm",
+        hidden: true,
+      },
     ];
 
     let col_basic = [
@@ -757,6 +769,8 @@ const TB07110Sjs = (function () {
         , rowClick: function (evt, ui) {
           setInputDataFromSelectData(ui.rowData, "TB07110S_mergeForm #TB07110S");
 
+          $(`TB07100S_fnltCd`).val(ui.rowData['xtnlIsttCd']);
+          $(`TB07100S_fnltNm`).val(ui.rowData['']);
           $(`#TB07110S_2_ardyBzepNo`).val(ui.rowData['acctBcncCd']);
           $(`#TB07110S_2_entpNm`).val(ui.rowData['bcncNm']);
           $(`#TB07110S_2_empNm`).val(ui.rowData['reltStfnm']);
