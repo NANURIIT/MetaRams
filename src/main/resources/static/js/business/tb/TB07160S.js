@@ -185,21 +185,13 @@ const TB07160Sjs = (function () {
           $("#TB07160S_trrcDt2").val(formatDate(data.trrcDt));
         }
 
-        // $("#TB07160S_trrcDt1").val(data.trrcDt);
-        // $("#TB07160S_trrcDt2").val(data.trrcDt);
-        // $("#TB07160S_apvlAmt").val(comma(data.apvlAmt));             //승인금액
         $("#TB07160S_bfEmpNo").val(data.chrrEmpno);                     //수관 담당자(정) 사원번호
         $("#TB07160S_bfEmpNm").val(data.chrrEmpnm);                     //수관 담당자(정) 이름
         $("#TB07160S_bfDprtCd").val(data.dprtCd);
         $("#TB07160S_bfDprtNm").val(data.dprtCd);
-        // $("#TB07160S_bfSubEmpNo").val(data.subChrrEmpno);               //수관 담당자(부) 사원번호
-        // $("#TB07160S_bfSubEmpNm").val(data.subChrrEmpnm);               //수관 담당자(부) 이름
 
         $("#TB07160S_trrcAmt").val(comma(data.dealExcBlce));
 
-        // console.log("dprtCd:::" + data.dprtCd);
-        // console.log("dprtNm:::" + data.dprtNm);
-        // console.log("prgSttsCd::: " + data.prgSttsCd);
       },
     });
   }
