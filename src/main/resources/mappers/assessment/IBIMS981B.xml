@@ -4,8 +4,8 @@
 
     <select id="selectIBIMS981B" parameterType="com.nanuri.rams.business.common.vo.IBIMS981BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS981BVO">
         SELECT ROWNUM
+             , A.ERLM_SEQ                   /* 등록순번 */
              , A.DUDT_MNGM_NO               /* 기일관리번호 */
-             , A.ERLM_SEQ                   /* 입금순번 */
              , A.DEAL_NO                    /* 딜번호 */
              , A.PRDT_CD                    /* 상품코드 */
              , A.DUDT_DPCH_TP_DCD           /* 기일통보유형코드 */
@@ -39,13 +39,13 @@
             ON A.DUDT_MNGM_NO = B.DUDT_MNGM_NO
      LEFT JOIN IBIMS201B C
             ON A.PRDT_CD = C.PRDT_CD
+           AND C.LAST_YN = 'Y'
      LEFT JOIN IBIMS010B D
             ON C.TR_OTHR_DSCM_NO = D.ARDY_BZEP_NO
      LEFT JOIN IBIMS002B E
             ON A.MNGM_BDCD = E.CD_VL_ID
            AND E.CMNS_CD_GRP = 'D010'
          WHERE 1=1
-           AND C.LAST_YN = 'Y'
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prevDate)">
            AND A.ACTN_PRAR_DT &gt; #{prevDate}
            </if>
@@ -64,7 +64,6 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(actsCd)">
            AND C.ACTS_CD LIKE #{actsCd}
            </if>
-          
     </select>
 
     <insert id="batchInsertIBIMS981B">
@@ -78,7 +77,7 @@
                      , D.DUDT_DPCH_TP_DCD								 AS DUDT_DPCH_TP_DCD	     /* 통보 */
                      , D.CHRR_STFNO                                                         AS CHRR_STFNO            /* 담당자사원번호 */
                      , D.SUB_CHRR_STFNO                                                     AS SUB_CHRR_STFNO        /* 부담당자직원번호 */
-                     , D.MNGM_BDCD                                                          AS MNGM_BDCD            /* 관리조직번호 */
+                     , D.MNGM_BDCD                                                          AS MNGM_BDCD             /* 관리조직번호 */
                      , T.BZ_DD                                                              AS RGST_DT               /* 등록일자 */
                      , T.PRAR_DT                                                            AS ACTN_PRAR_DT          /* 조치예정일자 */
                      , T.PRCS_DT                                                            AS ACTN_DT               /* 조치일자 */
@@ -108,10 +107,11 @@
                   ) T
              LEFT JOIN IBIMS201B C
                     ON T.PRDT_CD = C.PRDT_CD
+                   AND C.LAST_YN = 'Y'
              LEFT JOIN IBIMS980B D
                     ON T.DUDT_MNGM_NO = D.DUDT_MNGM_NO       
                  WHERE 1=1
-                   AND T.DUDT_MNGM_NO != ''
+                   AND T.DUDT_MNGM_NO != ' '
             )
        ]]>
     </insert>

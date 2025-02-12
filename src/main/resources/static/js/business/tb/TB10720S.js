@@ -193,29 +193,7 @@ const TB10720Sjs = function () {
         }
     }
 	
-	function startBatchScheduler(){
-		$.ajax({
-			type: "POST",
-			url: "/TB10720S/startBatchScheduler",
-			contentType: "application/json; charset=UTF-8",
-			success: function(data) {
-				console.log('success');
-				console.log(data);
-			},
-		});
-	}
 	
-	function stopBatchScheduler(){
-		$.ajax({
-			type: "POST",
-			url: "/TB10720S/stopBatchScheduler",
-			contentType: "application/json; charset=UTF-8",
-			success: function(data) {
-				console.log('success');
-				console.log(data);
-			},
-		});
-	}
 	
 	function runBatchJob(){
 		$.ajax({
@@ -233,8 +211,6 @@ const TB10720Sjs = function () {
         selectTB10720S: selectTB10720S      // 조회
         , reset: reset                      // 초기화
         , updateTB10720S: updateTB10720S    // 실행
-		, startBatchScheduler: startBatchScheduler
-		, stopBatchScheduler: stopBatchScheduler
 		, runBatchJob: runBatchJob
     }
 

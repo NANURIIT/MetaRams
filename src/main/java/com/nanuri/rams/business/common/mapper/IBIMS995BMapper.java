@@ -1,5 +1,6 @@
 package com.nanuri.rams.business.common.mapper;
 
+import com.nanuri.rams.business.batch.job.entity.BatchMasterVo;
 import com.nanuri.rams.business.common.dto.IBIMS995BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS995BVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,5 +19,7 @@ public interface IBIMS995BMapper {
 	public int updateIBIMS995B(IBIMS995BDTO param);
 
 	public int deleteIBIMS995B(IBIMS995BDTO param);
+	
+	public List<BatchMasterVo> selectBatchMaster();
 
 }

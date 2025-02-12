@@ -22,6 +22,8 @@
                 WHEN JOB_TYPE = '2' THEN 'Command' 
                 ELSE ''
             END AS JOB_TYPE_NAME                   /* JOB TYPE NAME*/
+         , EXEC_FRQC								/* 실행주기 */
+         , EXEC_TM									/* 실행시간 */
       FROM IBIMS995B
      WHERE 1=1
 		   AND JOB_ID LIKE '%' || #{jobId} || '%'
@@ -95,4 +97,24 @@
           FROM IBIMS995B
          WHERE JOB_ID = #{jobId}
     </delete>
+    
+    <select id="selectBatchMaster" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
+	SELECT JOB_ID        /* 작업 ID                      */
+	     , JOB_NAME      /* 작업 이름                    */
+	     , JOB_TYPE      /* 작업 유형 (1: DUMMY, 2: COMMAND) */
+	     , OBJECT_NAME   /* 소스 전체 이름               */
+	     , ARGUMENT      /* 프로그램에 전달될 인자       */
+	     , CONFIRM_YN    /* 작업 승인 여부 ('N' 기본값)  */
+	     , DESCRIPTION   /* 작업 설명                    */
+	     , REGISTER_DAY  /* 최초 등록일                  */
+	     , LAST_UPDATE_DAY /* 최종 수정일                */
+	     , HND_DETL_DTM  /* 조작 상세 일시 (TIMESTAMP)   */
+	     , HND_EMPNO     /* 조작 사원번호                */
+	     , HND_TMNL_NO  /* 조작 단말기 번호             */
+	     , HND_TR_ID     /* 조작 거래 ID                 */
+	     , GUID          /* GUID (고유 식별자)           */
+	     , EXEC_FRQC     /* 실행 빈도                    */
+	     , EXEC_TM       /* 실행 시간                    */
+	  FROM IBIMS995B;
+  	</select>
 </mapper>
