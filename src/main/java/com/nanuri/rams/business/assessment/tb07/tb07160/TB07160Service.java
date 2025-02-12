@@ -8,4 +8,6 @@ public interface TB07160Service {
     
     public TB07160SVO getTrrcInf(TB07160SVO param);
 
+    public int trrcRgst(TB07160SVO param);
+
 }

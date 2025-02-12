@@ -30,7 +30,7 @@ public class TB07160SVO {
     private BigDecimal    krwTrslExcBlce;          // 원화환산실행잔액
     private String        paiRdmpDcd;              // 원리금상환구분코드
     private int           prnaDfrPrdMnum;          // 원금거치기간개월수
-    // private String        indvLmtDcd;              // 기업여신개별한도구분코드
+    // private String        indvLmtDcd;           // 기업여신개별한도구분코드
     private String        eprzCrdlIndvLmtDcd;      // 기업여신 개별한도 구분코드
 
     //이수관정보
@@ -38,7 +38,8 @@ public class TB07160SVO {
     private String        prgSttsCd;               // 진행상태코드
     private String        rqsKndCd;                // 기업여신신청종류코드
     private String        dcrbAthDcd;              // 기업여신전결권한구분코드
-    // private BigDecimal    apvlAmt;                 // 기업여신승인금액
+    // private BigDecimal    apvlAmt;              // 기업여신승인금액
+    private int           intrRdmpFrqcMnum;        // 이자상환주기개월수
     private BigDecimal    eprzCrdlApvlAmt;         // 기업여신 승인금액
     private String        trrcDt;                  // 이수관일자
     private String        mngmBdcd;                // 관리부점코드     
@@ -46,5 +47,8 @@ public class TB07160SVO {
     private String        subChrrEmpno;            // 서브담당자사원번호
     private String        chrrEmpnm;               // 담당자명
     private String        subChrrEmpnm;            // 서브담당자명
+
+    private String        dprtCd;
+    private String        dprtNm;
 
 }
