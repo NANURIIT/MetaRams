@@ -648,28 +648,29 @@
 
     <!--상환대상내역 조회-->
     <select id="rdmpTrgtDtlsInq" parameterType="com.nanuri.rams.business.common.vo.TB09070SVO" resultType="com.nanuri.rams.business.common.vo.TB09070SVO$RdmpTrgtDtlsVO">
-      SELECT    A.PRAR_PRNA                     AS PRAR_PRNA                         /*상환예정원금*/
-              , A.RDMP_PRAR_INTR                AS RDMP_PRAR_INTR            /*상환예정이자*/          
-              , A.PMNT_PRAR_AMT 				AS PMNT_PRAR_AMT		   /*납부예정금액*/		
+      SELECT    A.PRAR_PRNA                     AS PRAR_PRNA          /*상환예정원금*/
+              , A.RDMP_PRAR_INTR                AS RDMP_PRAR_INTR     /*상환예정이자*/          
+              , A.PMNT_PRAR_AMT 				AS PMNT_PRAR_AMT		          /*납부예정금액*/		
               , CASE WHEN LENGTH(A.PRAR_DT)=8 
 				THEN TO_CHAR(TO_DATE(A.PRAR_DT, 'YYYYMMDD'), 'YYYY-MM-DD') 
-				ELSE '' END AS PRAR_DT     /*예정일자*/     
-              , B.ACTS_CD 						/*계정과목코드*/
-              , B.MNGM_BDCD 					/*관리부점코드*/
-              , C.ORTN_FND_CD 				/*운용펀드코드*/
+				ELSE '' END AS PRAR_DT                                        /*예정일자*/     
+              , B.ACTS_CD 						                                /*계정과목코드*/
+              , B.MNGM_BDCD 					                                /*관리부점코드*/
+              , C.ORTN_FND_CD 				                                /*운용펀드코드*/
               , (SELECT fnd.FND_NM
                 FROM IBIMS993B fnd
                 WHERE fnd.FND_CD = C.ORTN_FND_CD) AS FND_NM 					/*운용펀드명*/
-              , C.TR_CRRY_CD 					/*통화코드*/
-              , C.DEAL_NO 						/*딜번호*/
-              , C.DEAL_NM             /*딜명*/
-              , C.PRDT_NM 						/*상품명*/
-              , D.TR_OBJT_BSN_NO 			/*거래대상기업체번호*/
-        FROM ( SELECT 
-        		A.PRAR_DT, A.PRDT_CD, A.EXC_SN
-        	  , SUM(COALESCE(A.PRAR_PRNA, 0))                        AS PRAR_PRNA                        
-              , SUM(COALESCE(A.RDMP_PRAR_INTR, 0))                  AS RDMP_PRAR_INTR                     
-              , (SUM(COALESCE(A.PRAR_PRNA, 0)) + SUM(COALESCE(A.RDMP_PRAR_INTR, 0))) AS PMNT_PRAR_AMT	      
+              , C.TR_CRRY_CD 					                                /*통화코드*/
+              , C.DEAL_NO 						                                /*딜번호*/
+              , C.DEAL_NM                                             /*딜명*/
+              , C.PRDT_NM 						                                /*상품명*/
+              , D.TR_OBJT_BSN_NO 			                                /*거래대상기업체번호*/
+        FROM ( SELECT A.PRAR_DT
+                    , A.PRDT_CD
+                    , A.EXC_SN
+        	          , SUM(COALESCE(A.PRAR_PRNA, 0))                                        AS PRAR_PRNA                        
+                    , SUM(COALESCE(A.RDMP_PRAR_INTR, 0))                                   AS RDMP_PRAR_INTR                     
+                    , (SUM(COALESCE(A.PRAR_PRNA, 0)) + SUM(COALESCE(A.RDMP_PRAR_INTR, 0))) AS PMNT_PRAR_AMT	      
         	FROM IBIMS403B A 
         	 GROUP BY A.PRAR_DT, A.PRDT_CD, A.EXC_SN
         	) A

@@ -47,7 +47,7 @@
     </insert>
 
     <delete id="delete">
-        DELETE FROM IBIMS999B /* 딜일별잔액 */
+        DELETE FROM IBIMS999B /* 영업일 */
 		          WHERE 1=1
     </delete>
 
