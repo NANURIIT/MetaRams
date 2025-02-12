@@ -41,4 +41,10 @@ public class TB10610APIController {
     public int updateConfirm(@RequestBody IBIMS997BVO input) {
         return tb10610svc.updateConfirm(input);
     }
+    
+    // 배치 스케줄러 실행
+    @PostMapping("/killtask")
+    public boolean killtask() {
+    	return tb10610svc.killtask();
+    }
 }

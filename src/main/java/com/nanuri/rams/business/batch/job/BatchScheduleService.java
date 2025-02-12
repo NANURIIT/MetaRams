@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RegistBatchSchedule {
+public class BatchScheduleService {
 
 	private final IBIMS995BMapper ibims995BMapper;
 	private final IBIMS997BMapper ibims997bMapper;
@@ -52,6 +52,10 @@ public class RegistBatchSchedule {
 		// update running
 		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, "3");	//3:Running
 		log.info("TEST BATCH TB9000B. PARAM : " + jobId);
+		
+		for(int i = 0; i < 100000; i++) {
+			log.info("batch cancel test " + i);
+		}
 	}
 
 }
