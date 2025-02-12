@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.nanuri.rams.business.batch.job.RegistBatchSchedule;
 import com.nanuri.rams.business.batch.job.entity.BatchMasterVo;
+import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,8 @@ public class ScheduleTask {
 
     @Autowired 
     JobLauncher jobLauncher;
+    
+    private final IBIMS997BMapper ibims997bMapper;
     
     private volatile boolean batchRunning = false; // 개발용 임시중지
     //private volatile boolean batchRunning = true;
@@ -99,7 +102,7 @@ public class ScheduleTask {
         log.info("Scheduling batch job: {} with cron: {}", jobId, cronExpression);
 
         //Job등록할 task를 만든다
-        Runnable task = () -> registBatchSchedule.executeBatch(jobId);
+        Runnable task = () -> registBatchSchedule.executeBatch(batch);
 
         if (!scheduledTasks.containsKey(jobId)) {
             ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
@@ -110,7 +113,9 @@ public class ScheduleTask {
             // 스케줄러에 Job을 등록
             scheduledTasks.put(jobId, future);
             
-            //스케줄러마스터 IBIMS997B에 insert 해야하는지?
+            //insert notrunning 
+            batch.setJobStatus("1");	//1:Not Running
+            ibims997bMapper.mergeBatchNotRunning(batch);
         }
     }
 

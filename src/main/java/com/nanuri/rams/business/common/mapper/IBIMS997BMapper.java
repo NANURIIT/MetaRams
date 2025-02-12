@@ -1,10 +1,13 @@
 package com.nanuri.rams.business.common.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.nanuri.rams.business.batch.job.entity.BatchMasterVo;
 import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS997BVO;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
 
 @Mapper
 public interface IBIMS997BMapper {
@@ -39,4 +42,8 @@ public interface IBIMS997BMapper {
 
 	// 배치 스케줄러 모니터링 Count
 	public int count997(IBIMS997BDTO input);
+
+	public void mergeBatchNotRunning(BatchMasterVo batch);
+
+	public void updateJobStatus(@Param("curDate") String curDate, @Param("jobId") String jobId, @Param("jobStatus") String jobStatus);
 }

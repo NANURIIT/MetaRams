@@ -15,11 +15,11 @@ const TB10610Sjs = (function () {
    * SelectBox
    *******************************************************************/
   function selectBox() {
-    getSlcBx = getSelectBoxList("TB10610S", "X001", false); // 작업상태코드
+    getSlcBx = getSelectBoxList("TB10610S", "J002", false); // 작업상태코드
 
-    objSlc.X001 = getSlcBx.filter((it) => it.cmnsGrpCd === "X001");
+    objSlc.J002 = getSlcBx.filter((it) => it.cmnsGrpCd === "J002");
 
-    objSlc.X001.forEach((item) => {
+    objSlc.J002.forEach((item) => {
       $("#TB10610S_jobSts").append(
         $("<option>", {
           value: item.cdValue,
@@ -28,7 +28,7 @@ const TB10610Sjs = (function () {
       );
     });
 
-    objSlc.X001.filter((it) =>
+    objSlc.J002.filter((it) =>
       ["4", "5", "6", "7"].includes(it.cdValue)
     ).forEach((item) => {
       $("#TB10610S_exc_jobSts").append(
