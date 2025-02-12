@@ -277,15 +277,15 @@ const TB09080Sjs = (function () {
         width: "200",
         filter: { crules: [{ condition: "range" }] },
       },
-      {
-        title: "청구순번",
-        dataType: "string",
-        dataIndx: "clmSeq",
-        align: "right",
-        halign: "center",
-        width: "80",
-        filter: { crules: [{ condition: "range" }] },
-      },
+      // {
+      //   title: "청구순번",
+      //   dataType: "string",
+      //   dataIndx: "clmSeq",
+      //   align: "right",
+      //   halign: "center",
+      //   width: "80",
+      //   filter: { crules: [{ condition: "range" }] },
+      // },
     ];
 
     var obj = {
