@@ -25,4 +25,7 @@ public class IBIMS995BDTO {
     private String         hndTmnlNo;                              // 조작단말기번호
     private String         hndTrId;                                // 조작거래ID
     private String         guid;                                   // GUID
+    
+    private String         execFrqc;                               // 실행주기
+    private String         execTm;                                 // 실행시간
 }

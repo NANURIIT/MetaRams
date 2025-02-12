@@ -86,21 +86,6 @@ public class TB10720ServiceImpl implements TB10720Service {
 	}
 
 	@Override
-	public void startBatchScheduler() {
-		ScheduledFuture<?> task = taskScheduler.scheduleAtFixedRate(() ->
-		     log.info("test-ing...",Thread.currentThread().getName()),2000);
-		
-		scheduledtasks.put("DAILY_WORK_START_BATCH", task);
-	}
-
-	@Override
-	public void stopBatchScheduler() {
-		log.info("DAILY_WORK_START_BATCH 종료합니다..");
-		
-		scheduledtasks.get("DAILY_WORK_START_BATCH").cancel(true);
-	}
-
-	@Override
 	public void runBatchJob() throws Exception {
 		JobParameter param = new JobParameter(System.currentTimeMillis());
 		Map<String,JobParameter> parameters = new HashMap<String,JobParameter>();

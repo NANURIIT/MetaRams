@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.batch.ScheduleTask;
 import com.nanuri.rams.business.common.dto.IBIMS995BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS995BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
@@ -32,6 +33,8 @@ public class TB10510ServiceImpl implements TB10510Service {
 
 	/* 로그인 사용자 정보 */
 	private final AuthenticationFacade facade;
+	
+	private final ScheduleTask scheduleTask;
 
 	// 배치 스케줄러 관리 조회
 	@Override
@@ -166,4 +169,21 @@ public class TB10510ServiceImpl implements TB10510Service {
 
 		return result;
 	}
+	
+	@Override
+	public boolean isBatchScheduler() {
+		return scheduleTask.isBatchScheduler();
+	}
+	
+	@Override
+	public boolean startBatchScheduler() {
+		return scheduleTask.startBatchScheduling();
+	}
+
+	@Override
+	public boolean stopBatchScheduler() {
+		return scheduleTask.stopBatchScheduling();
+	}
+
+	
 }

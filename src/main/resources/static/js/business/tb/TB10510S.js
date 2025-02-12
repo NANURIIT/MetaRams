@@ -7,10 +7,12 @@ const TB10510Sjs = (function () {
     let cClkStat;
 
     $(document).ready(function () {
-        selectBox()
-        pqGrid()
-
-        $('#TB10510S_curDate').val(getToday())
+        selectBox();
+        pqGrid();
+		
+        $('#TB10510S_curDate').val(getToday());
+		
+		isBatchScheduler();
     });
 
     /*******************************************************************
@@ -136,6 +138,25 @@ const TB10510Sjs = (function () {
                 // width    : '10%',
                 filter: { crules: [{ condition: 'range' }] },
             },
+			{
+				title: "실행 주기",
+				dataType: "string",
+				dataIndx: "execFrqc",
+				halign: "center",
+				align: "center",
+				// width    : '10%',
+				filter: { crules: [{ condition: 'range' }] },
+			},
+			{
+				title: "실행 시간",
+				dataType: "string",
+				dataIndx: "execTm",
+				halign: "center",
+				align: "center",
+				// width    : '10%',
+				filter: { crules: [{ condition: 'range' }] },
+			},
+						
         ];
 
         let pqGridObjs = [
@@ -247,6 +268,9 @@ const TB10510Sjs = (function () {
                                 $('#TB10510S_rgst_arg').val(rd.argument)
                                 $('#TB10510S_rgst_cfm').val(rd.confirmYn)
                                 $('#TB10510S_rgst_dscrp').val(rd.description)
+								
+								$('#TB10510S_execFrqc').val(rd.execFrqc)
+								$('#TB10510S_execTm').val(rd.execTm)
 
                                 rd.rowType = 'M'
 
@@ -361,6 +385,11 @@ const TB10510Sjs = (function () {
 
     // 실행
     function excBatch() {
+		
+		alert('데몬실행 하지않고 자동실행중..');
+		
+		return;
+		
         let curDate = unformatDate($('#TB10510S_curDate').val())
 
         console.log(curDate);
@@ -511,6 +540,51 @@ const TB10510Sjs = (function () {
             return;
         }
     }
+	
+	function isBatchScheduler() {
+		$.ajax({
+			type: "POST",
+			url: "/TB10510S/isBatchScheduler",
+			contentType: "application/json; charset=UTF-8",
+			success: function(data) {
+				chgBtn_TB10510S_isRunning(data);
+			},
+		});
+	}
+	
+	function startBatchScheduler() {
+		$.ajax({
+			type: "POST",
+			url: "/TB10510S/startBatchScheduler",
+			contentType: "application/json; charset=UTF-8",
+			success: function(data) {
+				chgBtn_TB10510S_isRunning(data);
+			},
+		});
+	}
+
+	function stopBatchScheduler() {
+		$.ajax({
+			type: "POST",
+			url: "/TB10510S/stopBatchScheduler",
+			contentType: "application/json; charset=UTF-8",
+			success: function(data) {
+				chgBtn_TB10510S_isRunning(data);
+			},
+		});
+	}
+	
+	function chgBtn_TB10510S_isRunning(data) {
+		if (data) {
+			$('#TB10510S_isRunning').removeClass("btn-danger");
+			$('#TB10510S_isRunning').addClass("btn-success");
+			$('#TB10510S_isRunning').text("기동중");
+		} else {
+			$('#TB10510S_isRunning').removeClass("btn-success");
+			$('#TB10510S_isRunning').addClass("btn-danger");
+			$('#TB10510S_isRunning').text("기동중지");
+		}
+	}
 
 
     ///////////////////////////////// TEST 중
@@ -540,6 +614,10 @@ const TB10510Sjs = (function () {
         $('#TB10510S_rgst_arg').val('')
         $('#TB10510S_rgst_cfm').val('0')
         $('#TB10510S_rgst_dscrp').val('')
+		
+		$('#TB10510S_execFrqc').val('')
+		$('#TB10510S_execTm').val('')
+		
         rd = {}
     }
 
@@ -567,5 +645,8 @@ const TB10510Sjs = (function () {
         , delBatch : delBatch
         , rgstBatch : rgstBatch
         , excBatch : excBatch
+		, isBatchScheduler : isBatchScheduler
+		, startBatchScheduler : startBatchScheduler
+		, stopBatchScheduler : stopBatchScheduler
     }
 })();

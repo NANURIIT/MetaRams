@@ -33,6 +33,13 @@
 									</div>
 									<!-- 버튼영역 -->
 									<div class="col-sm-6 text-right">
+											<button class="btn btn-success" type="button" id="TB10510S_isRunning">기동중</button>
+										<!-- <div class="col-sm-6"> -->
+											<button class="btn btn-success" type="button" onclick="TB10510Sjs.startBatchScheduler();"><i class="fa fa-check"></i>&nbsp;스케줄러실행</button>
+										<!-- </div> -->
+										<!-- <div class="col-sm-6"> -->
+											<button class="btn btn-success" type="button" onclick="TB10510Sjs.stopBatchScheduler();"><i class="fa fa-check"></i>&nbsp;스케줄러중지</button>
+										<!-- </div> -->
 										<button class="btn btn-primary" type="button" onclick="TB10510Sjs.inqBatch();"><i class="fa fa-search"></i>&nbsp;조회</button>
 									</div>
 								</div>
@@ -42,51 +49,12 @@
 							<!-- 조회내역영역 -->
 							<div class="pd0 mb-3" style="min-height: 300px; max-height: 720px">
 								<div id="TB10720S_grd_batSch"></div>
-								<!-- <table class="table result table-bordered footable" data-page-size="20" data-paging="true" data-sort="false">
-									<colgroup>
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-									</colgroup>
-									<thead>
-										<tr>
-											<th><input type="checkbox" id=""></th>
-											<th>순번</th>
-											<th>배치JOB ID</th>
-											<th>type</th>
-											<th>배치명</th>
-											<th>Argument</th>
-											<th>confirm Y/N</th>
-											<th>등록일/수정일</th>
-											<th>작업설명</th>
-										</tr>
-									</thead>
-									<tbody id="">
-									</tbody>
-									<tfoot>
-										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-									</tfoot>
-								</table> -->
 							</div>
 							<hr class="mb-3">
 							<!-- 조회내역 등록/수정 -->
 							<div class="form-group form-inline row mb-0">
 								<div class="form-group row col-sm-9 pr-5" style="border-right: 1px solid #ccc;">
+									<!-- 상세정보영역 -->
 									<label class="col-sm-1-5 col-form-label  mb-1">배치 JOB ID</label>
 									<div class="col-sm-2 input-group  mb-1">
 										<input type="text" class="form-control" id="TB10510S_rgst_jobId">
@@ -101,20 +69,22 @@
 											<option value="">선택</option>
 										</select>
 									</div>
+									<!-- 버튼영역 -->
 									<div class="col-sm-1-5 input-group"></div>
-									<label class="col-sm-1-5 col-form-label">ARGUMENT</label>
-									<div class="col-sm-2 input-group">
+									<!-- 상세정보영역 -->
+									<label class="col-sm-1-5 col-form-label mb-1">ARGUMENT</label>
+									<div class="col-sm-2 input-group mb-1">
 										<input type="text" class="form-control" id="TB10510S_rgst_arg">
 									</div>
-									<label class="col-sm-1-5 col-form-label text-nowrap">CONFIRM JOB Y/N</label>
-									<div class="col-sm-2 input-group">
+									<label class="col-sm-1-5 col-form-label text-nowrap mb-1">CONFIRM JOB Y/N</label>
+									<div class="col-sm-2 input-group mb-1">
 										<select class="form-control" id="TB10510S_rgst_cfm">
 											<option value="0" selected>해당없음</option>
 											<option value="1">Y</option>
 										</select>
 									</div>
-									<label class="col-sm-1-5 col-form-label">작업 설명</label>
-									<div class="col-sm-2 input-group">
+									<label class="col-sm-1-5 col-form-label mb-1">작업 설명</label>
+									<div class="col-sm-2 input-group mb-1">
 										<input type="text" class="form-control" id="TB10510S_rgst_dscrp">
 									</div>
 									<!-- 버튼영역 -->
@@ -122,8 +92,22 @@
 										<button class="btn btn-default" type="button" onclick="TB10510Sjs.delBatch();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
 										<button class="btn btn-success" type="button" onclick="TB10510Sjs.rgstBatch();"><i class="fa fa-save"></i>&nbsp;저장</button>
 									</div>
+									<!-- 상세정보영역 -->
+									<label class="col-sm-1-5 col-form-label  mb-1">실행 주기</label>
+									<div class="col-sm-2 input-group  mb-1">
+										<input type="text" class="form-control" id="TB10510S_execFrqc">
+									</div>
+									<label class="col-sm-1-5 col-form-label mb-1">실행 시간</label>
+									<div class="col-sm-2 input-group mb-1">
+										<input type="text" class="form-control" id=TB10510S_execTm>
+									</div>
+									<label class="col-sm-1-5 col-form-label mb-1"></label>
+									<div class="col-sm-2 input-group mb-1">
+									</div>
+									<!-- 버튼영역 -->
+									<div class="col-sm-1-5 input-group"></div>
 								</div>
-								<div class="form-group row col-sm-3" style="margin-top: 32px;">
+								<div class="form-group row col-sm-3">
 									<label class="col-sm-2-5 col-form-label">기준 일자</label>
 									<div class="col-sm-6 input-group date">
 										<input type="text" class="form-control" id="TB10510S_curDate" value="" placeholder="YYYY-MM-DD"> 
