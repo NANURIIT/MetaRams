@@ -489,15 +489,6 @@ const TB07110Sjs = (function () {
         filter: { crules: [{ condition: 'range' }] },
       },
       {
-        title: "사업자번호",
-        dataType: "string",
-        dataIndx: "",
-        halign: "center",
-        align: "left",
-        // width    : '10%',
-        filter: { crules: [{ condition: 'range' }] },
-      },
-      {
         title: "지급금액",
         dataType: "integer",
         dataIndx: "rslnAmt",
@@ -543,15 +534,6 @@ const TB07110Sjs = (function () {
         dataIndx: "bcncNm",
         halign: "center",
         align: "left",
-        // width    : '10%',
-        filter: { crules: [{ condition: 'range' }] },
-      },
-      {
-        title: "실명확인번호",
-        dataType: "string",
-        dataIndx: "",
-        halign: "center",
-        align: "center",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
       },
@@ -702,9 +684,10 @@ const TB07110Sjs = (function () {
       {
         title: "차변금액",
         dataType: "string",
-        dataIndx: "krwAmt1",
+        dataIndx: "krwAmt",
         halign: "center",
         align: "right",
+        editable: true,
         filter: { crules: [{ condition: 'range' }] },
       },
       {
@@ -1069,6 +1052,10 @@ const TB07110Sjs = (function () {
     });
   }
 
+  /**
+   * 승인
+   * @returns 
+   */
   function apvlRqst() {
 
     const paramData = {
@@ -1110,6 +1097,7 @@ const TB07110Sjs = (function () {
             , title: "Success!"
             , text: "결재요청이 되었습니다!"
           })
+          $('#TB07100S_decdSttsDcd').val('04');
         }
         else if (data === -7574) {
           Swal.fire({
@@ -1164,6 +1152,7 @@ const TB07110Sjs = (function () {
             , title: "Success!"
             , text: "승인요청취소 되었습니다!"
           })
+          $('#TB07100S_decdSttsDcd').val('00');
         }
         else {
           Swal.fire({
@@ -1211,6 +1200,7 @@ const TB07110Sjs = (function () {
             , title: "Success!"
             , text: "승인 되었습니다!"
           })
+          $('#TB07100S_decdSttsDcd').val('05');
         }
         else {
           Swal.fire({
@@ -1258,6 +1248,7 @@ const TB07110Sjs = (function () {
             , title: "Success!"
             , text: "반려 되었습니다!"
           })
+          $('#TB07100S_decdSttsDcd').val('00');
         }
         else {
           Swal.fire({
