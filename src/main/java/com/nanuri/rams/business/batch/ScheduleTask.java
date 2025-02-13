@@ -13,7 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
-import com.nanuri.rams.business.batch.job.RegistBatchSchedule;
+import com.nanuri.rams.business.batch.job.BatchScheduleService;
 import com.nanuri.rams.business.batch.job.entity.BatchMasterVo;
 import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
 
@@ -33,7 +33,7 @@ public class ScheduleTask {
     private volatile boolean batchRunning = false; // 개발용 임시중지
     //private volatile boolean batchRunning = true;
     
-    private final RegistBatchSchedule registBatchSchedule; 
+    private final BatchScheduleService batchScheduleService; 
     private final Map<String, ScheduledFuture<?>> scheduledTasks = new ConcurrentHashMap<>();
     
     public boolean isBatchScheduler() {
@@ -65,7 +65,7 @@ public class ScheduleTask {
     
     //TODO: 동적스케줄링
     @Scheduled(cron="0 0/1 * * * *", zone="Asia/Seoul") //TEST
-	public void registBatchSchedule() throws Exception{
+	public void batchScheduleService() throws Exception{
     	
     	if (!batchRunning) {
             log.info("Batch execution is stopped.");
@@ -78,7 +78,7 @@ public class ScheduleTask {
 		log.info( "REGIST_BATCH_SCHEDULE ==> START");
 		log.info( "################################################################################" );
 		
-		List<BatchMasterVo> batchList = registBatchSchedule.getList();
+		List<BatchMasterVo> batchList = batchScheduleService.getList();
 		
 		// 기존 스케줄 중지 및 초기화
         scheduledTasks.values().forEach(future -> future.cancel(false));
@@ -102,7 +102,7 @@ public class ScheduleTask {
         log.info("Scheduling batch job: {} with cron: {}", jobId, cronExpression);
 
         //Job등록할 task를 만든다
-        Runnable task = () -> registBatchSchedule.executeBatch(batch);
+        Runnable task = () -> batchScheduleService.executeBatch(batch);
 
         if (!scheduledTasks.containsKey(jobId)) {
             ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
@@ -126,6 +126,16 @@ public class ScheduleTask {
 
 	    return String.format("30 %d %d * * *", minute, hour); //test
 	    //return String.format("0 %d %d * * *", minute, hour);
+	}
+	
+	public boolean stopBatch(String jobId) {
+	    if (scheduledTasks.containsKey(jobId)) {
+	        scheduledTasks.get(jobId).cancel(false); // 배치 중지
+	        scheduledTasks.remove(jobId);
+	        log.info("Batch {} has been stopped.", jobId);
+	        return true;
+	    }
+	    return false; // 실행 중인 배치가 없음
 	}
 
 	

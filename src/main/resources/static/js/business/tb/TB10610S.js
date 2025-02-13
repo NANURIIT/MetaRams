@@ -667,11 +667,23 @@ const TB10610Sjs = (function () {
   //     }
   // })
 
+	function killtask() {
+		$.ajax({
+			type: "POST",
+			url: "/TB10610S/killtask",
+			contentType: "application/json; charset=UTF-8",
+			success: function(data) {
+				console.log(data);
+			},
+		});
+	}
+
   return {
     inqBatch: inqBatch,
     reset: reset,
     resetBatch: resetBatch,
     excBatch: excBatch,
     updateConfirm: updateConfirm,
+	killtask:killtask,
   };
 })();

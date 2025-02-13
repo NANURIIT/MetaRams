@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.batch.ScheduleTask;
 import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS999BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS997BVO;
@@ -26,6 +27,8 @@ public class TB10610ServiceImpl implements TB10610Service {
 
 	/* 로그인 사용자 정보 */
 	private final AuthenticationFacade facade;
+	
+	private final ScheduleTask scheduleTask;
 
 	// 배치 스케줄러 모니터링 조회
 	@Override
@@ -103,5 +106,10 @@ public class TB10610ServiceImpl implements TB10610Service {
 		result = ibims997bmp.updateConfirm(input);
 
 		return result;
+	}
+
+	@Override
+	public boolean killtask() {
+		return scheduleTask.stopBatch("TB9000B");
 	};
 }
