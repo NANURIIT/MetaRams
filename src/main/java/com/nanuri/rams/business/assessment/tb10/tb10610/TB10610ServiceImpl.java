@@ -28,7 +28,7 @@ public class TB10610ServiceImpl implements TB10610Service {
 
 	/* 로그인 사용자 정보 */
 	private final AuthenticationFacade facade;
-	
+
 	@Autowired
 	private final ScheduleTask scheduleTask;
 
@@ -36,34 +36,32 @@ public class TB10610ServiceImpl implements TB10610Service {
 	@Override
 	public IBIMS997BVO inqBatch(IBIMS997BVO input) {
 		IBIMS997BVO out997bvo = new IBIMS997BVO();
-		
+
 		List<IBIMS997BVO> ibims997bvo = ibims997bmp.selectIBIMS997B(input);
-		
+
 		out997bvo.setBatSchM(ibims997bvo);
 
 		return out997bvo;
 	};
 
-
-
 	// 배치 스케줄러 모니터링 실행
 	@Override
-    public int excBatch(IBIMS997BVO input) {
+	public int excBatch(IBIMS997BVO input) {
 
 		int result = 0;
-		
-		// 현재 날짜와 시간 가져오기
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        // 원하는 포맷 지정 (HH:mm:ss.SSS)
-        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        // 포맷에 맞춰서 날짜를 문자열로 변환
-        String formattedTime = currentDateTime.format(timeFormat);
 
-		if(!input.getArgument().isEmpty()){
+		// 현재 날짜와 시간 가져오기
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		// 원하는 포맷 지정 (HH:mm:ss.SSS)
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+		// 포맷에 맞춰서 날짜를 문자열로 변환
+		String formattedTime = currentDateTime.format(timeFormat);
+
+		if (!input.getArgument().isEmpty()) {
 			ibims999bMapper.delete();
 			ibims999bMapper.insert(input.getArgument());
 		}
-		
+
 		input.setHndEmpno(facade.getDetails().getEno());
 		input.setHndTmnlNo("");
 		input.setHndTrId("");
@@ -71,12 +69,35 @@ public class TB10610ServiceImpl implements TB10610Service {
 
 		result = ibims997bmp.batchCmdUpdate(input);
 
+		String jobId = input.getJobId();
+		String curDate = input.getCurDate();
+		String cmdDce = input.getBatchCmdDcd();
+
+		switch (cmdDce) {
+			// [2] Forced-OK
+			case "2":
+				scheduleTask.forcedOk(curDate, jobId);
+				break;
+
+			// [3] (Re)Run
+			case "3":
+				break;
+
+			// [4] Kill
+			case "4":
+				break;
+
+			// [5] Brake
+			case "5":
+				break;
+		}
+
 		return result;
 	};
 
 	// 배치 스케줄러 모니터링 초기화
 	@Override
-    public int resetBatch(IBIMS997BVO input) {
+	public int resetBatch(IBIMS997BVO input) {
 		int result = 0;
 
 		List<IBIMS997BVO> inList = input.getBatSchM();
@@ -89,7 +110,7 @@ public class TB10610ServiceImpl implements TB10610Service {
 			in997bvo.setHndTmnlNo("");
 			in997bvo.setHndTrId("");
 			in997bvo.setGuid("");
-			
+
 			result = ibims997bmp.resetBatch(in997bvo);
 		}
 
@@ -97,7 +118,7 @@ public class TB10610ServiceImpl implements TB10610Service {
 	};
 
 	// 배치 스케줄러 모니터링 confirm 수정
-    public int updateConfirm(IBIMS997BVO input) {
+	public int updateConfirm(IBIMS997BVO input) {
 		int result = 0;
 
 		input.setHndEmpno(facade.getDetails().getEno());
