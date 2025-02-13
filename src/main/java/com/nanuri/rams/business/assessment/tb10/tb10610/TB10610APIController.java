@@ -42,8 +42,8 @@ public class TB10610APIController {
         return tb10610svc.updateConfirm(input);
     }
     
-    // 배치 스케줄러 실행
-    @PostMapping("/killtask")
+    // Forced-OK
+    @PostMapping("/forcedOktask")
     public boolean killtask() {
     	return tb10610svc.killtask();
     }
