@@ -1440,6 +1440,9 @@ const TB08031Sjs = (function () {
           var expDt = isEmpty(bssBscInfo.expDt) ? '' : formatDate(bssBscInfo.expDt);
           var rgstDt = isEmpty(bssBscInfo.rgstDt) ? '' : formatDate(bssBscInfo.rgstDt);
 
+          console.log("sn:::" + data.sn);
+          $("#TB08031S_sn").val(data.sn);
+
           $("#TB08031S_corpNo").val(bssBscInfo.crno);             // 법인등록번호
           $("#TB08031S_corpNm").val(bssBscInfo.entpNm);           // 업체명
           $("#TB08031S_bsnsNm").val(bssBscInfo.busiNm);           // 사업명
@@ -1454,7 +1457,7 @@ const TB08031Sjs = (function () {
           var fundInfo = data.fundInfo;
           ernSctyInfoInstance.setData(fundInfo);                  //투자자산 정보
 
-          console.log(JSON.stringify(fundInfo));
+          // console.log(JSON.stringify(fundInfo));
 
           if(data.invFnnMngmBusiDcd){       //사업구분코드 있는 경우
 
@@ -2494,6 +2497,106 @@ const TB08031Sjs = (function () {
       $("#TB08031S_admsAmt").val("0");                      //편입자산장부취득금액
       $("#TB08031S_admsAsstNm").val("");                    //편입자산종목명
 
+    }else if(instncNm === "All"){
+
+      $("#TB08031S_P001").val("");                   //참가자관계구분코드
+      $("#TB08031S_partCorpNm").val("");             //업체명
+      $("#TB08031S_dtlsCorpNo").val("");             //법인등록번호
+      $("#TB08031S_bsnsRgstNo").val("");             //사업자등록번호
+      $("#TB08031S_rprstPNm").val("");               //대표자명
+      $("#TB08031S_bsnsPartInfo_sn").val("");        //순번
+      $("#TB08031S_bsnsPartInfo_erlmSeq").val("");   //등록순번
+
+      $("#TB08031S_exptDt").val("");                 //예정일자
+      $("#TB08031S_pfrmDt").val("");                 //이행일자
+      $("#TB08031S_pfrmN").prop("checked", true);    //이행여부
+      $("#TB08031S_mainCntnt").val("");              //주요일정내용
+      $("#TB08031S_bsnsForecast_sn").val("");        //일련번호
+      $("#TB08031S_bsnsForecast_erlmSeq").val("");   //등록순번
+
+
+      $("#TB08031S_B007").val("");                      // 채권보전구분
+      $("#TB08031S_bondPfrmN").prop("checked", true);   // 재무약정사항대상여부
+      $("#TB08031S_dtlsCntnt").val("");                 // 주요약정사항내용
+      $("#TB08031S_bondProtInfo_sn").val("");           //일련번호
+      $("#TB08031S_bondProtInfo_erlmSeq").val("");      //등록순번
+
+
+      $("#TB08031S_cchInfo_sn").val("");              //일련번호
+      $("#TB08031S_cchInfo_erlmSeq").val("");         //등록순번
+
+      $("#TB08031S_cndtMainCntnt").val("");           //조건변경 주요내용
+      $("#TB08031S_cch_empNo").val("");               //취급자 사번
+      $("#TB08031S_cch_empNm").val("");               //취급자명
+      $("#TB08031S_handlerID").val("");               //취급자 개인번호
+      $("#TB08031S_rcgDt").val("");                   //승인일자
+      $("#TB08031S_cmplDt").val("");                  //시행일자
+      $("#TB08031S_rcgDocNo").val("");                //조건변경문번호내용
+
+      $("#TB08031S_stlnInfo_sn").val("");              //일련번호
+      $("#TB08031S_stlnInfo_erlmSeq").val("");         //등록순번
+
+      $("#TB08031S_I051_1").val("");                   //구분
+      $("#TB08031S_mCorpNm").val("");                  //기관명
+      $("#TB08031S_mAgrAmt").val("0");                 //약정금액
+      $("#TB08031S_mPartRt").val("0");                 //참가비율
+
+
+      $("#TB08031S_ernInfo_sn").val("");                //일련번호
+      $("#TB08031S_ernInfo_erlmSeq").val("");           //등록순번
+
+      $("#TB08031S_I051_2").val("");                    //구분
+      $("#TB08031S_ernCorpNm").val("");                 //기관명
+      $("#TB08031S_ernAgrAmt").val("0");                //약정금액
+      $("#TB08031S_ernPartRt").val("0");                //참가비율
+
+
+      $("#TB08031S_busiInfo_sn").val("");                //일련번호
+      $("#TB08031S_busiInfo_erlmSeq").val("");           //등록순번
+
+      $("#TB08031S_relt_ibDealNo").val("");              //Deal번호
+      $("#TB08031S_relt_ibDealNm").val("");              //Deal명
+      $("#TB08031S_busiPrcrAmt").val("0");               //총조달금액
+      $("#TB08031S_busiPtnAmt").val("0");                //당사참여금액
+      $("#TB08031S_thcoPtciAmtDcsnN").prop("checked", true);   // 당사참여확정여부
+
+      $("#TB08031S_invstBzscal_sn").val("");              //일련번호
+      $("#TB08031S_invstBzscal_erlmSeq").val("");         //등록순번
+
+      $("#TB08031S_fndNm").val("");                       //펀드명
+      $("#TB08031S_bsnmNo").val("");                      //사업자등록번호
+      $("#TB08031S_bcncNm").val("");                      //거래상대방명
+      $("#TB08031S_invstBzscalCorpNo").val("");           //법인등록번호
+      $("#TB08031S_indTypNm").val("");                    //업종
+      $("#TB08031S_blgtCntyNm").val("");                  //소속국가명
+      $("#TB08031S_bitrYm").val("");                      //기준년월
+      $("#TB08031S_F009").val("");                        //펀드구분
+      $("#TB08031S_F010").val("");                        //펀드유형상세
+      $("#invstBzscal_datepicker1").val("");              //취득일자
+      $("#TB08031S_acqstAmt").val("0");                   //취득가액
+      $("#TB08031S_acbkAmt").val("0");                    //장부가액
+      $("#TB08031S_coAmt").val("0");                      //평가금액
+      $("#TB08031S_insRvn").val("0.00");                  //순내부수익률
+
+      $("#TB08031S_asstWrkngInfo_sn").val("");              //일련번호
+      $("#TB08031S_asstWrkngInfo_erlmSeq").val("");         //등록순번
+
+      $("#TB08031S_asstWrkngInfo_ardyBzepNo").val("");      //기업체번호
+      $("#TB08031S_asstWrkngInfo_bzepName").val("");        //기업체명
+      $("#TB08031S_asstWrkngInfo_crno").val("");            //법인등록번호
+      $("#TB08031S_asstWrkngInfo_rnbn").val("");            //사업자번호
+      $("#TB08031S_asstWrkngInfo_estDt").val("");           //설립일
+      $("#TB08031S_asstWrkngInfo_stffNum").val("0");        //임직원수
+      $("#TB08031S_asstWrkngInfo_oprtHnfNum").val("0");     //운용인력수
+
+
+      $("#TB08031S_admsAsstInfo_sn").val("");               //일련번호
+      $("#TB08031S_admsAsstInfo_erlmSeq").val("");          //등록순번
+
+      $("#TB08031S_I038").val("");                          //투자금융투자유형코드
+      $("#TB08031S_invstWeight").val("0");                  //편입자산보장수익율
+      $("#TB08031S_admsAmt").val("0");                      //편입자산장부취득금액
+      $("#TB08031S_admsAsstNm").val("");                    //편입자산종목명
 
     }
   }
@@ -2947,19 +3050,38 @@ const TB08031Sjs = (function () {
   // 사업참가자정보 저장
   function bsnsPartInfoBtnSave(mode) {
     var dealNo = $("#TB08031S_ibDealNo").val();     // 딜번호
+    var dealSn = $("#TB08031S_sn").val();           // 딜 일련번호
     var sn = $("#TB08031S_bsnsPartInfo_sn").val();              //일련번호
     var erlmSeq = $("#TB08031S_bsnsPartInfo_erlmSeq").val();    //등록순번
 
     if(mode === "save"){
-      if (!isEmpty(dealNo)) {
-        businessFunction(mode);
-      } else {
+      // if (!isEmpty(dealNo)) {
+      //   businessFunction(mode);
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error!",
+      //     text: "Deal번호를 조회해주세요.",
+      //     confirmButtonText: "확인",
+      //   });
+      // }
+
+      if(dealSn === "0" || isEmpty(dealSn)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(dealNo)){
         Swal.fire({
           icon: "error",
           title: "Error!",
           text: "Deal번호를 조회해주세요.",
           confirmButtonText: "확인",
         });
+      }else{
+        businessFunction(mode);
       }
 
     }else if(mode === "dlt"){
@@ -2982,7 +3104,6 @@ const TB08031Sjs = (function () {
       }
     }
 
-   
 
     function businessFunction(mode) {
 
@@ -3030,8 +3151,10 @@ const TB08031Sjs = (function () {
             text: "사업참가자정보를 저장하였습니다.",
             confirmButtonText: "확인",
           });
-        },
+          gridInfoRst("bsnsPartInfoInstance");
+          srchBsnsInfo();
 
+        },
         error: function () {
           Swal.fire({
             icon: "error",
@@ -3044,23 +3167,39 @@ const TB08031Sjs = (function () {
     }
   }
 
-
-
   // 사업주요전망 저장
   function bsnsForecastBtnSave(mode) {
     var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+    var dealSn = $("#TB08031S_sn").val();
 
     if(mode === "save"){
 
-      if (!isEmpty(dealNo)) {
-        businessFunction(mode);
-      } else {
+      // if (!isEmpty(dealNo)) {
+      //   businessFunction(mode);
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error!",
+      //     text: "Deal번호를 조회해주세요.",
+      //     confirmButtonText: "확인",
+      //   });
+      // }
+      if(isEmpty(dealNo)){
         Swal.fire({
           icon: "error",
           title: "Error!",
           text: "Deal번호를 조회해주세요.",
           confirmButtonText: "확인",
         });
+      }else if(dealSn === "0" || isEmpty(dealSn)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
       }
 
     }else if(mode === "dlt"){
@@ -3102,53 +3241,87 @@ const TB08031Sjs = (function () {
       var sn = $("#TB08031S_bsnsForecast_sn").val();              //일련번호
       var erlmSeq = $("#TB08031S_bsnsForecast_erlmSeq").val();    //등록순번
 
-      if(mode === "save"){
+      if(isEmpty(prarDt)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "예정일자를 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(flflDt)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "이행일자를 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(!$(`input[name=pfrmYN]:checked`).length){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "이행여부를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(mainScxCtns)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "주요일정내용을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        var msg;
 
-        param = {
-          dealNo:dealNo,
-          prarDt: prarDt,
-          flflYn: flflYn,
-          flflDt: flflDt,
-          mainScxCtns: mainScxCtns,
-          mode: mode
+        if(mode === "save"){
+          msg = "저장";
+          param = {
+            dealNo:dealNo,
+            prarDt: prarDt,
+            flflYn: flflYn,
+            flflDt: flflDt,
+            mainScxCtns: mainScxCtns,
+            mode: mode
+          }
+    
+        }else if(mode === "dlt"){
+          msg = "삭제";
+          param = {
+            dealNo:dealNo,
+            sn: sn,
+            erlmSeq: erlmSeq,
+            mode: mode
+          }
+    
         }
   
-      }else if(mode === "dlt"){
-       
-        param = {
-          dealNo:dealNo,
-          sn: sn,
-          erlmSeq: erlmSeq,
-          mode: mode
-        }
+        $.ajax({
+          type: "POST",
+          url: "/TB08031S/saveBsnsForecast",
+          data: JSON.stringify(param),
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "일정정보를 " + msg + "하였습니다.",
+              confirmButtonText: "확인",
+            });
+
+            gridInfoRst("bsnsForecastInstance");
+            srchBsnsInfo();
+          },
   
+          error: function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "일정정보를 " + msg + "하는데 실패하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+        });
       }
-
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveBsnsForecast",
-        data: JSON.stringify(param),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "사업참가자정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "사업참가자정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
-     
     }
   }
 
@@ -3156,17 +3329,36 @@ const TB08031Sjs = (function () {
   // 채권보전주요약정 저장
   function bondProtInfoBtnSave(mode) {
     var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+    var dealSn = $("#TB08031S_sn").val();       // 딜 일련번호
 
     if(mode === "save"){
-      if (!isEmpty(dealNo)) {
-        businessFunction(mode);
-      } else {
+      // if (!isEmpty(dealNo)) {
+      //   businessFunction(mode);
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error!",
+      //     text: "Deal번호를 조회해주세요.",
+      //     confirmButtonText: "확인",
+      //   });
+      // }
+
+      if(isEmpty(dealNo)){
         Swal.fire({
           icon: "error",
           title: "Error!",
           text: "Deal번호를 조회해주세요.",
           confirmButtonText: "확인",
         });
+      }else if(dealSn === "0" || isEmpty(dealSn)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
       }
 
     }else if(mode === "dlt"){
@@ -3205,64 +3397,115 @@ const TB08031Sjs = (function () {
       var sn = $("#TB08031S_bondProtInfo_sn").val();              //일련번호
       var erlmSeq = $("#TB08031S_bondProtInfo_erlmSeq").val();    //등록순번
 
-      if(mode === "save"){
-        param = {
-          dealNo:dealNo,
-          bondProtCcd: bondProtCcd,
-          fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
-          mainCtrcMttrCnts: mainCtrcMttrCnts,
-          mode: mode
-        }
-      }else if(mode === "dlt"){
-        param = {
-          dealNo:dealNo,
-          sn: sn,
-          erlmSeq: erlmSeq,
-          mode: mode
-        }
-      }
+      if(isEmpty(bondProtCcd)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "채권보전구분을 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(!$(`input[name=TB08031S_bondPfrmYN]:checked`).length){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "이행여부를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(mainCtrcMttrCnts)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "상세내용을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
 
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveBondProtInfo",
-        data: JSON.stringify(param),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "채권보전주요약정을 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "채권보전주요약정을 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
-     
+        var msg;
+
+        if(mode === "save"){
+          msg = "저장";
+          
+          param = {
+            dealNo:dealNo,
+            bondProtCcd: bondProtCcd,
+            fnnrCtrcMttrTrgtYn: fnnrCtrcMttrTrgtYn,
+            mainCtrcMttrCnts: mainCtrcMttrCnts,
+            mode: mode
+          }
+        }else if(mode === "dlt"){
+          msg = "삭제";
+
+          param = {
+            dealNo:dealNo,
+            sn: sn,
+            erlmSeq: erlmSeq,
+            mode: mode
+          }
+        }
+  
+        $.ajax({
+          type: "POST",
+          url: "/TB08031S/saveBondProtInfo",
+          data: JSON.stringify(param),
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "채권보전주요약정을 " + msg + "하였습니다.",
+              confirmButtonText: "확인",
+            });
+            gridInfoRst("bondProtInfoInstance");
+            srchBsnsInfo();
+          },
+          error: function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "채권보전주요약정을 " + msg + "하는데 실패하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+        });
+      }
+      
     }
   }
 
   // 조건변경이력 저장
   function cchInfoBtnSave(mode) {
     var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+    var dealSn = $("#TB08031S_sn").val();       // 딜 일련번호
 
     if(mode === "save"){
-      if (!isEmpty(dealNo)) {
-        businessFunction(mode);
-      } else {
+      // if (!isEmpty(dealNo)) {
+      //   businessFunction(mode);
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error!",
+      //     text: "Deal번호를 조회해주세요.",
+      //     confirmButtonText: "확인",
+      //   });
+      // }
+
+      if(isEmpty(dealNo)){
         Swal.fire({
           icon: "error",
           title: "Error!",
           text: "Deal번호를 조회해주세요.",
           confirmButtonText: "확인",
         });
+      }else if(dealSn === "0" || isEmpty(dealSn)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
       }
 
     }else if(mode === "dlt"){
@@ -3304,67 +3547,138 @@ const TB08031Sjs = (function () {
       var crotDt = $("#TB08031S_cmplDt").val().replaceAll('-', '');                //시행일자
       var cndChngDcmNoCnts = $("#TB08031S_rcgDocNo").val();    //조건변경문번호내용
 
+      if(isEmpty(cndChngMainCnts)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "주요내용을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(apvlDt)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "승인일자를 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(crotDt)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "시행일자를 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(prcsrTelNo)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "취급자 개인번호를 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(prcsrEmpno)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "취급자를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(cndChngDcmNoCnts)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "승인문서번호를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        var msg;
 
-      if(mode === "save"){
-        param = {
-          dealNo:dealNo,
-          cndChngMainCnts: cndChngMainCnts,
-          prcsrEmpno: prcsrEmpno,
-          prcsrTelNo: prcsrTelNo,
-          apvlDt: apvlDt,
-          crotDt: crotDt,
-          cndChngDcmNoCnts: cndChngDcmNoCnts,
-          mode: mode
+        if(mode === "save"){
+          msg = "저장";
+
+          param = {
+            dealNo:dealNo,
+            cndChngMainCnts: cndChngMainCnts,
+            prcsrEmpno: prcsrEmpno,
+            prcsrTelNo: prcsrTelNo,
+            apvlDt: apvlDt,
+            crotDt: crotDt,
+            cndChngDcmNoCnts: cndChngDcmNoCnts,
+            mode: mode
+          }
+        }else if(mode === "dlt"){
+          msg = "삭제";
+
+          param = {
+            dealNo:dealNo,
+            sn: sn,
+            erlmSeq: erlmSeq,
+            mode: mode
+          }
         }
-      }else if(mode === "dlt"){
-        param = {
-          dealNo:dealNo,
-          sn: sn,
-          erlmSeq: erlmSeq,
-          mode: mode
-        }
+  
+        $.ajax({
+          type: "POST",
+          url: "/TB08031S/saveCchInfo",
+          data: JSON.stringify(param),
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "조건변경이력을 " + msg + "하였습니다.",
+              confirmButtonText: "확인",
+            });
+
+            gridInfoRst("cchInfoInstance");
+            srchBsnsInfo();
+          },
+          error: function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "조건변경이력을 " + msg + "하는데 실패하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+        });
       }
-
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveCchInfo",
-        data: JSON.stringify(param),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "조건변경이력을 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "조건변경이력을 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
     }
   }
 
   // 대주단정보 저장
   function stlnInfoBtnSave(mode) {
     var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+    var dealSn = $("#TB08031S_sn").val();       // 딜 일련번호
 
     if(mode === "save"){
-      if (!isEmpty(dealNo)) {
-        businessFunction(mode);
-      } else {
+      // if (!isEmpty(dealNo)) {
+      //   businessFunction(mode);
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error!",
+      //     text: "Deal번호를 조회해주세요.",
+      //     confirmButtonText: "확인",
+      //   });
+      // }
+
+      if(isEmpty(dealNo)){
         Swal.fire({
           icon: "error",
           title: "Error!",
           text: "Deal번호를 조회해주세요.",
           confirmButtonText: "확인",
         });
+      }else if(dealSn === "0" || isEmpty(dealSn)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
       }
 
     }else if(mode === "dlt"){
@@ -3403,67 +3717,124 @@ const TB08031Sjs = (function () {
       var crdtProvLmtAmt = $("#TB08031S_mAgrAmt").val().replaceAll(',', '');  //신용공여한도금액 === 약정금액
       var prtcRto = $("#TB08031S_mPartRt").val().replaceAll(',', '');         //참가바율
 
+      if(isEmpty(ibStlnDcd)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "대주구분을 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(entpNm)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "기관명을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(crdtProvLmtAmt)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "약정금액을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(prtcRto)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "참가비율을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        var msg;
 
-      if(mode === "save"){
-        param = {
-          dealNo:dealNo,
-          ibStlnDcd: ibStlnDcd,
-          stlnErnDcd: stlnErnDcd,
-          entpNm: entpNm,
-          crdtProvLmtAmt: crdtProvLmtAmt,
-          prtcRto: prtcRto,
-          mode: mode
+        if(mode === "save"){
+          msg = "저장";
+
+          param = {
+            dealNo:dealNo,
+            ibStlnDcd: ibStlnDcd,
+            stlnErnDcd: stlnErnDcd,
+            entpNm: entpNm,
+            crdtProvLmtAmt: crdtProvLmtAmt,
+            prtcRto: prtcRto,
+            mode: mode
+          }
+        }else if(mode === "dlt"){
+          msg = "삭제";
+
+          param = {
+            dealNo:dealNo,
+            sn: sn,
+            erlmSeq: erlmSeq,
+            stlnErnDcd: stlnErnDcd,
+            mode: mode
+          }
         }
-      }else if(mode === "dlt"){
-        param = {
-          dealNo:dealNo,
-          sn: sn,
-          erlmSeq: erlmSeq,
-          stlnErnDcd: stlnErnDcd,
-          mode: mode
-        }
+  
+        $.ajax({
+          type: "POST",
+          url: "/TB08031S/saveStlnInfo",
+          data: JSON.stringify(param),
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "대주단정보를 " + msg + "하였습니다.",
+              confirmButtonText: "확인",
+            });
+
+            gridInfoRst("stlnInfoInstance");
+            srchBsnsInfo();
+          },
+          error: function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "대주단정보를 " + msg + "하는데 실패하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+        });
       }
-
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveStlnInfo",
-        data: JSON.stringify(param),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "대주단정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "대주단정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
     }
   }
 
   // 수익자정보 저장
   function ernInfoBtnSave(mode) {
     var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+    var dealSn = $("#TB08031S_sn").val();       // 딜 일련번호
 
     if(mode === "save"){
-      if (!isEmpty(dealNo)) {
-        businessFunction(mode);
-      } else {
+      // if (!isEmpty(dealNo)) {
+      //   businessFunction(mode);
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error!",
+      //     text: "Deal번호를 조회해주세요.",
+      //     confirmButtonText: "확인",
+      //   });
+      // }
+
+      if(isEmpty(dealNo)){
         Swal.fire({
           icon: "error",
           title: "Error!",
           text: "Deal번호를 조회해주세요.",
           confirmButtonText: "확인",
         });
+      }else if(dealSn === "0" || isEmpty(dealSn)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
       }
 
     }else if(mode === "dlt"){
@@ -3503,69 +3874,116 @@ const TB08031Sjs = (function () {
       var crdtProvLmtAmt = $("#TB08031S_ernAgrAmt").val().replaceAll(',', '');  //신용공여한도금액 === 약정금액
       var prtcRto = $("#TB08031S_ernPartRt").val().replaceAll(',', '');         //참가바율
 
+      if(isEmpty(ibStlnDcd)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "대주구분을 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(entpNm)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "기관명을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(crdtProvLmtAmt)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "약정금액을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(prtcRto)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "참가비율을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        var msg;
 
-      if(mode === "save"){
-        param = {
-          dealNo:dealNo,
-          ibStlnDcd: ibStlnDcd,
-          stlnErnDcd: stlnErnDcd,
-          entpNm: entpNm,
-          crdtProvLmtAmt: crdtProvLmtAmt,
-          prtcRto: prtcRto,
-          mode: mode
+        if(mode === "save"){
+          msg = "저장";
+
+          param = {
+            dealNo:dealNo,
+            ibStlnDcd: ibStlnDcd,
+            stlnErnDcd: stlnErnDcd,
+            entpNm: entpNm,
+            crdtProvLmtAmt: crdtProvLmtAmt,
+            prtcRto: prtcRto,
+            mode: mode
+          }
+        }else if(mode === "dlt"){
+          msg = "삭제";
+
+          param = {
+            dealNo:dealNo,
+            sn: sn,
+            erlmSeq: erlmSeq,
+            stlnErnDcd: stlnErnDcd,
+            mode: mode
+          }
         }
-      }else if(mode === "dlt"){
-        param = {
-          dealNo:dealNo,
-          sn: sn,
-          erlmSeq: erlmSeq,
-          stlnErnDcd: stlnErnDcd,
-          mode: mode
-        }
+  
+        console.log(JSON.stringify(param));
+  
+        $.ajax({
+          type: "POST",
+          url: "/TB08031S/saveErnInfo",
+          data: JSON.stringify(param),
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "수익자정보를 " + msg +  "하였습니다.",
+              confirmButtonText: "확인",
+            });
+
+            gridInfoRst("ernInfoInstance");
+            srchBsnsInfo();
+          },
+          error: function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "수익자정보를 " + msg + "하는데 실패하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+        });
       }
-
-      console.log(JSON.stringify(param));
-
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveErnInfo",
-        data: JSON.stringify(param),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "수익자정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "수익자정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
     }
   }
 
   // 관련사업정보 저장
   function reltBusiInfoBtnSave(mode) {
-    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+    var dealNo = $("#TB08031S_ibDealNo").val();       // 딜번호
+    var dealSn = $("#TB08031S_sn").val();             // 일련번호
 
     if(mode === "save"){
-      if (!isEmpty(dealNo)) {
-        businessFunction(mode);
-      } else {
+
+      if(sn === "0" || isEmpty(dealSn)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(dealNo)){
         Swal.fire({
           icon: "error",
           title: "Error!",
           text: "Deal번호를 조회해주세요.",
           confirmButtonText: "확인",
         });
+      }else{
+        businessFunction(mode);
       }
 
     }else if(mode === "dlt"){
@@ -3591,7 +4009,6 @@ const TB08031Sjs = (function () {
       }
     }
 
-
     function businessFunction(mode) {
 
       var param = {};
@@ -3602,63 +4019,100 @@ const TB08031Sjs = (function () {
 
       var reltDealNo = $("#TB08031S_relt_ibDealNo").val();    //관련딜번호
 
-      if(mode === "save"){
-        param = {
-          dealNo:dealNo,
-          reltDealNo: reltDealNo,
-          mode: mode
+      if(isEmpty(reltDealNo)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "관련사업 Deal번호를 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        var msg;
+
+        if(mode === "save"){
+          msg = "저장"
+
+          param = {
+            dealNo:dealNo,
+            reltDealNo: reltDealNo,
+            mode: mode
+          }
+        }else if(mode === "dlt"){
+          msg = "삭제"
+
+          param = {
+            dealNo:dealNo,
+            sn: sn,
+            erlmSeq: erlmSeq,
+            mode: mode
+          }
         }
-      }else if(mode === "dlt"){
-        param = {
-          dealNo:dealNo,
-          sn: sn,
-          erlmSeq: erlmSeq,
-          mode: mode
-        }
+        
+  
+        $.ajax({
+          type: "POST",
+          url: "/TB08031S/saveReltBusiInfo",
+          data: JSON.stringify(param),
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "관련사업 정보를 " + msg + "하였습니다.",
+              confirmButtonText: "확인",
+            });
+
+            gridInfoRst("busiInfoInstance");
+            srchBsnsInfo();
+          },
+  
+          error: function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "관련사업 정보를 " + msg + "하는데 실패하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+        });
       }
       
-
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveReltBusiInfo",
-        data: JSON.stringify(param),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "관련사업 정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "관련사업 정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
     }
   }
 
     /* 투자기업목록 저장 */
     function invstEprzInfoBtnSave(mode) {
-      var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+      var dealNo = $("#TB08031S_ibDealNo").val();       // 딜번호
+      var dealSn = $("#TB08031S_sn").val();             // 일련번호
 
       if(mode === "save"){
-        if (!isEmpty(dealNo)) {
-          businessFunction(mode);
-        } else {
+        // if (!isEmpty(dealNo)) {
+        //   businessFunction(mode);
+        // } else {
+        //   Swal.fire({
+        //     icon: "error",
+        //     title: "Error!",
+        //     text: "Deal번호를 조회해주세요.",
+        //     confirmButtonText: "확인",
+        //   });
+        // }
+        if(isEmpty(dealNo)){
           Swal.fire({
             icon: "error",
             title: "Error!",
             text: "Deal번호를 조회해주세요.",
             confirmButtonText: "확인",
           });
+        }else if(dealSn === "0" || isEmpty(dealSn)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+            confirmButtonText: "확인",
+          });
+        }else{
+          businessFunction(mode);
         }
 
       }else if(mode === "dlt"){
@@ -3685,53 +4139,7 @@ const TB08031Sjs = (function () {
     }
   
       function businessFunction(mode) {
-        // var inputArr = [];
-        // $.each($("#TB08031S_invstBzscalList tr"), function () {
-        //   var td = $(this).children();
-  
-        //   var stdrYm = $(td).eq(2).text().replaceAll("-", ""); // 기준년월
-        //   var sn = $(td).eq(1).text(); // 일련번호
-        //   var fndNm = $(td).eq(3).text(); // 펀드명
-        //   var crno = $(td).eq(4).text().replaceAll("-", ""); // 법인등록번호
-        //   var trOthrNm = $(td).eq(5).text(); // 거래상대방명
-        //   var bzno = $(td).eq(6).text().replaceAll("-", ""); // 사업자등록번호
-        //   var bztpNm = $(td).eq(7).text(); // 업종명
-        //   var ntnNm = $(td).eq(8).text(); // 국가명
-        //   var fndDcd = $(td).eq(9).text(); // 펀드구분코드
-        //   var sctsFndTpDcd = $(td).eq(10).text(); // 유가증권펀드유형상세코드
-        //   var pchsDt = $(td).eq(11).text().replaceAll("-", ""); // 매입일자
-        //   var dealAmt = $(td).eq(12).text().replaceAll(",", ""); // 취득가액
-        //   var bkpr = $(td).eq(13).text().replaceAll(",", ""); // 장부가액
-        //   var asesBal = $(td).eq(14).text().replaceAll(",", ""); // 평가잔액
-        //   var intlErnRt = $(td).eq(15).text(); // 순내부수익율
-  
-        //   var dtoParam = {
-        //     dealNo: dealNo, // 딜번호
-        //     stdrYm: stdrYm, // 기준년월
-        //     sn: sn, // 일련번호
-        //     fndNm: fndNm, // 펀드명
-        //     crno: crno, // 법인등록번호
-        //     trOthrNm: trOthrNm, // 거래상대방명
-        //     bzno: bzno, // 사업자등록번호
-        //     bztpNm: bztpNm, // 업종명
-        //     ntnNm: ntnNm, // 국가명
-        //     fndDcd: fndDcd, // 펀드구분코드
-        //     sctsFndTpDcd: sctsFndTpDcd, // 유가증권펀드유형
-        //     pchsDt: pchsDt, // 매입일자
-        //     dealAmt: dealAmt, // 취득가액
-        //     bkpr: bkpr, // 장부가액
-        //     asesBal: asesBal, // 평가잔액
-        //     intlErnRt: intlErnRt, // 순내부수익율
-        //   };
-  
-        //   inputArr.push(dtoParam);
-        // });
-  
-        // var param = {
-        //   dealNo: dealNo,
-        //   s518vo: inputArr,
-        // };
-        
+
         var param = {};
 
         var dealNo = $("#TB08031S_ibDealNo").val();                // 딜번호
@@ -3753,59 +4161,175 @@ const TB08031Sjs = (function () {
         var asesBal = $("#TB08031S_coAmt").val().replaceAll(',', '');                 //평가금액
         var intlErnRt = $("#TB08031S_insRvn").val().replaceAll(',', '');              //순내부수익률
 
-        if(mode === "save"){
-          param = {
-            dealNo:dealNo,
-            fndNm: fndNm,
-            bzno: bzno,
-            trOthrNm: trOthrNm,
-            crno: crno,
-            bztpNm: bztpNm,
-            ntnNm: ntnNm,
-            stdrYm: stdrYm,
-            fndDcd: fndDcd,
-            sctsFndTpDcd: sctsFndTpDcd,
-            pchsDt: pchsDt,
-            dealAmt: dealAmt,
-            bkpr: bkpr,
-            asesBal: asesBal,
-            intlErnRt: intlErnRt,
-            mode: mode
+        if(isEmpty(fndNm)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "펀드명을 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(bzno)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "사업자등록번호를 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(trOthrNm)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "거래상대방명을 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(crno)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "법인등록번호를 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(bztpNm)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "업종을 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(ntnNm)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "소속국가명을 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(stdrYm)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "기준년월 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(bztpNm)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "업종을 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(fndDcd)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "펀드구분을 선택해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(sctsFndTpDcd)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "펀드유형을 선택해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(pchsDt)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "취득일자를 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(dealAmt)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "취득가액을 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(bkpr)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "장부가액을 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(asesBal)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "평가금액을 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else if(isEmpty(intlErnRt)){
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "순내부수익률을 입력해주세요.",
+            confirmButtonText: "확인",
+          });
+        }else{
+          var msg;
+
+          if(mode === "save"){
+            msg = "저장";
+
+            param = {
+              dealNo:dealNo,
+              fndNm: fndNm,
+              bzno: bzno,
+              trOthrNm: trOthrNm,
+              crno: crno,
+              bztpNm: bztpNm,
+              ntnNm: ntnNm,
+              stdrYm: stdrYm,
+              fndDcd: fndDcd,
+              sctsFndTpDcd: sctsFndTpDcd,
+              pchsDt: pchsDt,
+              dealAmt: dealAmt,
+              bkpr: bkpr,
+              asesBal: asesBal,
+              intlErnRt: intlErnRt,
+              mode: mode
+            }
+          }else if(mode === "dlt"){
+            msg = "삭제";
+
+            param = {
+              dealNo:dealNo,
+              sn: sn,
+              erlmSeq: erlmSeq,
+              stdrYm: stdrYm,
+              mode: mode
+            }
           }
-        }else if(mode === "dlt"){
-          param = {
-            dealNo:dealNo,
-            sn: sn,
-            erlmSeq: erlmSeq,
-            stdrYm: stdrYm,
-            mode: mode
-          }
+  
+  
+          $.ajax({
+            type: "POST",
+            url: "/TB08031S/saveInvstEprzInfo",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+              Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: "투자기업정보를 " + msg + "하였습니다.",
+                confirmButtonText: "확인",
+              });
+
+              gridInfoRst("invstBzscalInstance");
+              srchBsnsInfo();
+            },
+            error: function () {
+              Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text: "투자기업정보를 " + msg + "하는데 실패하였습니다.",
+                confirmButtonText: "확인",
+              });
+            },
+          });
         }
-
-
-        $.ajax({
-          type: "POST",
-          url: "/TB08031S/saveInvstEprzInfo",
-          data: JSON.stringify(param),
-          contentType: "application/json",
-          dataType: "json",
-          success: function (data) {
-            Swal.fire({
-              icon: "success",
-              title: "Success!",
-              text: "투자기업정보를 저장하였습니다.",
-              confirmButtonText: "확인",
-            });
-          },
-          error: function () {
-            Swal.fire({
-              icon: "error",
-              title: "Error!",
-              text: "투자기업정보를 저장하는데 실패하였습니다.",
-              confirmButtonText: "확인",
-            });
-          },
-        });
       }
     }
 
@@ -3870,18 +4394,36 @@ const TB08031Sjs = (function () {
 
   // 편입자산정보 저장
   function admsAsstInfoBtnSave(mode) {
-    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+    var dealNo = $("#TB08031S_ibDealNo").val();       // 딜번호
+    var dealSn = $("#TB08031S_sn").val();             // 일련번호
 
     if(mode === "save"){
-      if (!isEmpty(dealNo)) {
-        businessFunction(mode);
-      } else {
+      // if (!isEmpty(dealNo)) {
+      //   businessFunction(mode);
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error!",
+      //     text: "Deal번호를 조회해주세요.",
+      //     confirmButtonText: "확인",
+      //   });
+      // }
+      if(sn === "0" || isEmpty(dealSn)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(dealNo)){
         Swal.fire({
           icon: "error",
           title: "Error!",
           text: "Deal번호를 조회해주세요.",
           confirmButtonText: "확인",
         });
+      }else{
+        businessFunction(mode);
       }
 
     }else if(mode === "dlt"){
@@ -3919,67 +4461,116 @@ const TB08031Sjs = (function () {
       var admsAsstAcbkAcqAmt = $("#TB08031S_admsAmt").val().replaceAll(',', '');      //편입자산장부취득금액
       var admsAsstItmNm = $("#TB08031S_admsAsstNm").val();        //편입자산종목명
 
-      if(mode === "save"){
-        param = {
-          dealNo:dealNo,
-          invFnnInvTyDcd: invFnnInvTyDcd,
-          admsAsstGrntErnRt: admsAsstGrntErnRt,
-          admsAsstAcbkAcqAmt: admsAsstAcbkAcqAmt,
-          admsAsstItmNm: admsAsstItmNm,
-          mode: mode
+      if(isEmpty(invFnnInvTyDcd)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "투자유형을 선택해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(admsAsstGrntErnRt)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "수익율 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(admsAsstAcbkAcqAmt)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "편입금액을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else if(isEmpty(admsAsstItmNm)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "편입자산명을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        var msg;
+
+        if(mode === "save"){
+          msg = "저장";
+
+          param = {
+            dealNo:dealNo,
+            invFnnInvTyDcd: invFnnInvTyDcd,
+            admsAsstGrntErnRt: admsAsstGrntErnRt,
+            admsAsstAcbkAcqAmt: admsAsstAcbkAcqAmt,
+            admsAsstItmNm: admsAsstItmNm,
+            mode: mode
+          }
+        }else if(mode === "dlt"){
+          msg = "삭제";
+
+          param = {
+            dealNo:dealNo,
+            sn: sn,
+            erlmSeq: erlmSeq,
+            mode: mode
+          }
         }
-      }else if(mode === "dlt"){
-        param = {
-          dealNo:dealNo,
-          sn: sn,
-          erlmSeq: erlmSeq,
-          mode: mode
-        }
+  
+        // console.log(JSON.stringify(param));
+  
+        $.ajax({
+          type: "POST",
+          url: "/TB08031S/saveAdmsAsstInfo",
+          data: JSON.stringify(param),
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "편입자산 정보를 "+msg+"하였습니다.",
+              confirmButtonText: "확인",
+            });
+
+            gridInfoRst("admsAsstInfoInstance");
+            srchBsnsInfo();
+          },
+          error: function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "편입자산 정보를 "+msg+"하는데 실패하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+        });
       }
 
-      console.log(JSON.stringify(param));
-
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveAdmsAsstInfo",
-        data: JSON.stringify(param),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "수익자정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "수익자정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
     }
   }
 
 
   /* 자산운용사정보 저장 */
   function asstWrkngInfoBtnSave(mode) {
-    var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+    var dealNo = $("#TB08031S_ibDealNo").val();       // 딜번호
+    var dealSn = $("#TB08031S_sn").val();             // 일련번호
 
     if(mode === "save"){
-      if (!isEmpty(dealNo)) {
-        businessFunction(mode);
-      } else {
+
+      if(isEmpty(dealNo)){
         Swal.fire({
           icon: "error",
           title: "Error!",
           text: "Deal번호를 조회해주세요.",
           confirmButtonText: "확인",
         });
+      }else if(dealSn === "0" || isEmpty(dealSn)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업 기본정보가 등록되지 않았습니다. 사업기본정보 등록 후 다시 시도해주세요",
+          confirmButtonText: "확인",
+        });
+      }else{
+        businessFunction(mode);
       }
 
     }else if(mode === "dlt"){
@@ -4015,45 +4606,62 @@ const TB08031Sjs = (function () {
 
       var mgcoMngmNo = $("#TB08031S_asstWrkngInfo_ardyBzepNo").val();                        //운용사관리번호 (== 기업체코드)
 
-      if(mode === "save"){
-        param = {
-          dealNo:dealNo,
-          mgcoMngmNo: mgcoMngmNo,
-          mode: mode
+      if(isEmpty(mgcoMngmNo)){
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "기업체번호를 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+      }else{
+        var msg;
+
+        if(mode === "save"){
+          msg = "저장";
+
+          param = {
+            dealNo:dealNo,
+            mgcoMngmNo: mgcoMngmNo,
+            mode: mode
+          }
+        }else if(mode === "dlt"){
+          msg = "삭제";
+
+          param = {
+            dealNo:dealNo,
+            sn: sn,
+            erlmSeq: erlmSeq,
+            mode: mode
+          }
         }
-      }else if(mode === "dlt"){
-        param = {
-          dealNo:dealNo,
-          sn: sn,
-          erlmSeq: erlmSeq,
-          mode: mode
-        }
+
+        $.ajax({
+          type: "POST",
+          url: "/TB08031S/saveAsstOrtnInfo",
+          data: JSON.stringify(param),
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "자산운용사정보를 "+msg+"하였습니다.",
+              confirmButtonText: "확인",
+            });
+
+            gridInfoRst("asstWrkngInfoInstance");
+            srchBsnsInfo();
+          },
+          error: function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "자산운용사정보를 "+msg+"하는데 실패하였습니다.",
+              confirmButtonText: "확인",
+            });
+          },
+        });
       }
-
-
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveAsstOrtnInfo",
-        data: JSON.stringify(param),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "자산운용사정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "자산운용사정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
     }
   }
 
