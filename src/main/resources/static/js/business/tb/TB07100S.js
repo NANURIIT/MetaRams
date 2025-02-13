@@ -131,6 +131,12 @@ const TB07100Sjs = (function () {
     }
     $('#TB07100S_pchsDdcDcd').append(P030Tag);
 
+    let D006Tag = "";
+    for (let i = 0; i < grdSelect.P030.length; i++) {
+      D006Tag += `<option value="${grdSelect.D006[i].cdValue}">${grdSelect.D006[i].cdName}</option>`
+    }
+    $('#TB07100S_jobDecdCd').append(D006Tag);
+
     // 부서코드 콤보박스 셋
     let dprtOptionTag = "";
     for (let i = 0; i < grdSelect.D010.length; i++) {
@@ -709,7 +715,7 @@ const TB07100Sjs = (function () {
       {
         title: "차변금액",
         dataType: "interger",
-        dataIndx: "krwAmt1",
+        dataIndx: "krwAmt",
         halign: "center",
         align: "right",
         // width    : '10%',
@@ -733,7 +739,7 @@ const TB07100Sjs = (function () {
         align: "right",
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
-        editable: true,
+        editable: false,
         render: function (ui) {
           let cellData = ui.cellData;
           if (cellData !== null && cellData !== undefined) {
@@ -1181,6 +1187,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "결재요청이 되었습니다!"
           })
+          $('#TB07100S_decdSttsDcd').val('04');
         }
         else if (data === -7574) {
           Swal.fire({
@@ -1234,6 +1241,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "승인요청취소 되었습니다!"
           })
+          $('#TB07100S_decdSttsDcd').val('00');
         }
         else {
           Swal.fire({
@@ -1280,6 +1288,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "승인 되었습니다!"
           })
+          $('#TB07100S_decdSttsDcd').val('05');
         }
         else {
           Swal.fire({
@@ -1326,6 +1335,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "반려 되었습니다!"
           })
+          $('#TB07100S_decdSttsDcd').val('00');
         }
         else {
           Swal.fire({
@@ -1355,8 +1365,7 @@ const TB07100Sjs = (function () {
       rslnBdcd: $('#TB07100S_rslnBdcd').val(),
       cnstNo: $('#TB07100S_cnstNo').val(),
       actsCd: "",
-      krwAmt1: '0',
-      krwAmt2: '0',
+      krwAmt: '0',
       prufKndDcd: $('#TB07100S_prufKndDcd').val(),
       elcPrufYn: "N",
     };

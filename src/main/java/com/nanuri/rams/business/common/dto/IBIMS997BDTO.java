@@ -27,6 +27,7 @@ public class IBIMS997BDTO {
     private String         startTime;                              // 현재 작업의 시작시간
     private String         endTime;                                // 현재 작업의 종료시간
     private String         jobStatus;                              // 작업의 상태
+    private String         batchCmdDcd;                            // 배치명령유형코드
     private Date           hndDetlDtm;                             // 조작상세일시
     private String         hndEmpno;                               // 조작사원번호
     private String         hndTmnlNo;                              // 조작단말기번호

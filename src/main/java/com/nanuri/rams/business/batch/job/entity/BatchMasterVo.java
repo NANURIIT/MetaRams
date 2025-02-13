@@ -7,14 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 public class BatchMasterVo {
 
@@ -67,33 +65,17 @@ public class BatchMasterVo {
 	@Column(name = "EXEC_TM", length = 5, nullable = false, columnDefinition = "varchar(5) COMMENT '실행시간'")
 	private String execTm;
 
-	public BatchMasterVo(String jobId, String jobName, String jobType, String objectName, String argument,
-			String confirmYn, String description, String registerDay, String lastUpdateDay, Timestamp hndDetlDtm,
-			String hndEmpNo, String hndTmnlNo, String hndTrId, String guid, String execFrqc, String execTm) {
-		this.jobId = jobId;
-		this.jobName = jobName;
-		this.jobType = jobType;
-		this.objectName = objectName;
-		this.argument = argument;
-		this.confirmYn = confirmYn;
-		this.description = description;
-		this.registerDay = registerDay;
-		this.lastUpdateDay = lastUpdateDay;
-		this.hndDetlDtm = hndDetlDtm;
-		this.hndEmpNo = hndEmpNo;
-		this.hndTmnlNo = hndTmnlNo;
-		this.hndTrId = hndTrId;
-		this.guid = guid;
-		this.execFrqc = execFrqc;
-		this.execTm = execTm;
-	}
-
-	public static BatchMasterVo of(String jobId, String jobName, String jobType, String objectName, String argument,
-			String confirmYn, String description, String registerDay, String lastUpdateDay, String hdwrClsgYn, 
-			Timestamp hndDetlDtm, String hndEmpNo, String hndTmnlNo, String hndTrId, String guid, String execFrqc,
-			String execTm) {
-		return new BatchMasterVo(jobId, jobName, jobType, objectName, argument, confirmYn, description, registerDay,
-				lastUpdateDay, hndDetlDtm, hndEmpNo, hndTmnlNo, hndTrId, guid, execFrqc, execTm);
-	}
+	private String curDate;			//당일일자
+	private int preJobCount;		//선행 JOB 개수
+	private int confirmJobCount;	//CONFIRM JOB 개수
+	private int childPid;			//CHILD 프로세스 PID
+	private int runCount;			//프로그램 수행 횟수
+	private String firstStartTime;	//최초 기동시간
+	private String startTime;		//현재 작업 시작시간
+	private String endTime;			//현재 작업 종료시간
+	private String jobStatus;		//작업 상태
+	private String batchCmdDcd;		//배치 명령 유형 코드
+	
+	
 
 }

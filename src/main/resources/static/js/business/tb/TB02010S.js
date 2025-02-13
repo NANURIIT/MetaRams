@@ -129,7 +129,15 @@ const TB02010Sjs = (function(){
 				dataType : "string",
 				dataIndx : "decdJobDcd",
 				halign	 : "center", 
-				align    : "center", 
+				align    : "left", 
+				filter   : { crules: [{ condition: 'range' }] },
+			},
+			{ 	
+				title    : "결재진행상태",
+				dataType : "string",
+				dataIndx : "decdSttsDcd",
+				halign	 : "center",
+				align    : "center",
 				filter   : { crules: [{ condition: 'range' }] },
 			},
 			{ 	
