@@ -19,10 +19,13 @@
                 <label class="col-sm-1 control-label">코드구분</label>
                 <select class="col-sm-2 form-control m-b" id="commonCodeInfo"></select>
                 <label class="col-sm-1 control-label">코드설명</label>
-                <input class="col-sm-2 form-control m-b" id="commonCodeGrpExpl"></input>
+                <input type="text" class="col-sm-2 form-control m-b" id="commonCodeGrpExpl"></input>
                 <div class="col-sm-6 text-right">
                   <button class="btn btn-primary" type="button" id="commonCodeSearch">
                     <i class="fa fa-search"></i>&nbsp;조회
+                  </button>
+                  <button class="btn btn-default" type="button" onclick="resetInputValue($(`div[data-menuid='/TB10010S']`)); resetPGgrids('TB10010S');">
+                    <i class="fa fa-undo"></i>&nbsp;초기화
                   </button>
                 </div>
               </div>
