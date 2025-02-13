@@ -588,7 +588,7 @@ const TB06030Sjs = (function(){
 				/******  딜공통 파일첨부 추가 ******/ 
 
 				// 결재상태확인
-				chkDecdStep('TB06020S');
+				chkDecdStep('TB06030S');
 
 			},
 			error : function(request,  error ){
