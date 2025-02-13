@@ -1,5 +1,6 @@
 package com.nanuri.rams.business.assessment.tb10.tb10010;
 
+import com.nanuri.rams.business.common.dto.IBIMS001BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS001BVO;
 import com.nanuri.rams.business.common.vo.IBIMS002BVO;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Slf4j
 @RequestMapping("/TB10010S")
@@ -23,9 +27,9 @@ public class TB10010APIController {
 	}
 	
 	// 그룹코드정보 리스트 가져오기
-	@GetMapping(value = "/groupCodeInfoList")
-	public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp) throws ParseException {
-		return service.getGroupCodeInfoList(cmnsCdGrp);
+	@PostMapping(value = "/groupCodeInfoList")
+	public List<IBIMS001BVO> getGroupCodeInfoList(@RequestBody IBIMS001BDTO paramData) throws ParseException {
+		return service.getGroupCodeInfoList(paramData);
 	}
 
 	@GetMapping(value = "/groupCodeInfo")

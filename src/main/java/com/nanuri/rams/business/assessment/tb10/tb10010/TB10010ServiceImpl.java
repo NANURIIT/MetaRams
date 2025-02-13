@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.ParseException;
 import java.util.List;
@@ -33,8 +34,8 @@ public class TB10010ServiceImpl implements TB10010Service {
     }
 	
     @Override
-    public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp) throws ParseException {
-    	List<IBIMS001BVO> dtoList = ibims001BMapper.getGroupCodeInfoList(cmnsCdGrp);
+    public List<IBIMS001BVO> getGroupCodeInfoList(IBIMS001BDTO paramData) throws ParseException {
+    	List<IBIMS001BVO> dtoList = ibims001BMapper.getGroupCodeInfoList(paramData);
     	return dtoList;
     }
     

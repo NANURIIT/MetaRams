@@ -431,13 +431,16 @@ const TB10010Sjs = (function () {
   var getGroupCodeInfoList = function (cmnsCdGrp) {
     let _url = "/TB10010S/groupCodeInfoList";
 
-    if (cmnsCdGrp) {
-      _url += "?cmnsCdGrp=" + cmnsCdGrp;
+    paramData = {
+      cmnsCdGrp: cmnsCdGrp
+      , cmnsCdGrpExpl: $('#commonCodeGrpExpl').val()
     }
 
     $.ajax({
       url: _url,
-      method: "GET",
+      method: "post",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(paramData),
       dataType: "json",
     }).done(function (groupCodeInfoList) {
       if (groupCodeInfoList.length > 0) {

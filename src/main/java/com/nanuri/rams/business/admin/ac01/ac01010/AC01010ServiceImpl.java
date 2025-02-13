@@ -32,11 +32,11 @@ public class AC01010ServiceImpl implements AC01010Service {
         return ibims001BMapper.getCommonCodeName();
     }
 	
-    @Override
-    public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp) throws ParseException {
-    	List<IBIMS001BVO> dtoList = ibims001BMapper.getGroupCodeInfoList(cmnsCdGrp);
-    	return dtoList;
-    }
+    // @Override
+    // public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp) throws ParseException {
+    // 	List<IBIMS001BVO> dtoList = ibims001BMapper.getGroupCodeInfoList(cmnsCdGrp);
+    // 	return dtoList;
+    // }
     
     @Override
     public List<IBIMS002BVO> getCodeInfoList(String cmnsCdGrp) throws ParseException {
