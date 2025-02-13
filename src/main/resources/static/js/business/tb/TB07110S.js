@@ -702,7 +702,7 @@ const TB07110Sjs = (function () {
       {
         title: "차량등록",
         dataType: "string",
-        dataIndx: "차량등록",
+        dataIndx: "vhclRgstCd",
         halign: "center",
         align: "right",
         editable: true,

@@ -19,49 +19,47 @@ import com.nanuri.rams.com.security.AuthenticationFacade;
 @Slf4j
 public class TB9020ServiceImpl implements TB9020Service {
 
-    private final IBIMS820BMapper ibims8202bMapper;
+    private final IBIMS820BMapper ibims820bMapper;
     private final IBIMS997BMapper ibims997bMapper;
 
     @Autowired
-	private AuthenticationFacade facade;
+    private AuthenticationFacade facade;
 
     @Override
     public int insert(IBIMS997BDTO param) {
-        
+
         int result = 0;
 
         IBIMS997BDTO data = ibims997bMapper.daemonCheckData("TB9020B");
 
-        if(data == null){
-            return result;
+        try {
+            data.setJobStatus("3");
+            ibims997bMapper.updateIBIMS997B(data);
+
+            int delete;
+            int insert;
+            String stdrDt = data.getCurDate();
+
+            // 삭제
+            delete = ibims820bMapper.deleteTB9020B(stdrDt);
+            // 입력
+            insert = ibims820bMapper.insertTB9020B(stdrDt);
+
+            // 체크
+            if (delete >= 0 && insert >= 0) {
+                data.setJobStatus("4"); // complete
+                ibims997bMapper.subPreJobCount(data);
+            } else {
+                data.setJobStatus("5"); // error
+            }
+            // 배치업데이트
+            result = ibims997bMapper.batchUpdate(data);
         }
 
-        data.setJobStatus("1");
-        ibims997bMapper.updateIBIMS997B(data);
-
-        int confirmJobCount = data.getConfirmJobCount(); 
-        if(confirmJobCount >= 1){
-            result = 0;
-            return result;
+        catch (Exception e) {
+            data.setJobStatus("5");
+            result = ibims997bMapper.batchUpdate(data);
         }
-        int delete;
-        int insert;
-        String stdrDt = data.getCurDate();
-
-        //  삭제
-        delete = ibims8202bMapper.deleteTB9020B(stdrDt);
-        //  입력
-        insert = ibims8202bMapper.insertTB9020B(stdrDt);
-
-        //  체크
-        if(delete >= 0 && insert >= 0 ){
-            data.setJobStatus("2"); // complete
-        }else {
-            data.setJobStatus("3"); // error
-        }
-        ibims997bMapper.subPreJobCount(data);
-        //  배치업데이트
-        result = ibims997bMapper.batchUpdate(data);
 
         return result;
     };

@@ -58,16 +58,13 @@ public class TB10610ServiceImpl implements TB10610Service {
 			ibims999bMapper.delete();
 			ibims999bMapper.insert(input.getArgument());
 		}
-		// input.setStartTime(formattedTime);
+		
 		input.setHndEmpno(facade.getDetails().getEno());
 		input.setHndTmnlNo("");
 		input.setHndTrId("");
 		input.setGuid("");
 
-		if ("5".equals(input.getJobStatus())) {
-			ibims997bmp.subPreJobCount(input);
-		}
-		result = ibims997bmp.jobStatusUpdate(input);
+		result = ibims997bmp.batchCmdUpdate(input);
 
 		return result;
 	};

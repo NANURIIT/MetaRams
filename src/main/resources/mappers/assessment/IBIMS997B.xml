@@ -17,15 +17,7 @@
              , START_TIME                              /* 시작시간 */
              , END_TIME                                /* 종료시간 */
              , JOB_STATUS                              /* 작업상태 */
-             , CASE WHEN JOB_STATUS = '1' THEN 'Not Running'
-		            WHEN JOB_STATUS = '2' THEN 'Waitting'
-		            WHEN JOB_STATUS = '3' THEN 'Running'
-		            WHEN JOB_STATUS = '4' THEN 'Complete'
-		            WHEN JOB_STATUS = '5' THEN 'Error'
-		            WHEN JOB_STATUS = '6' THEN 'Terminate'
-		            WHEN JOB_STATUS = '7' THEN 'Terminated'
-                    ELSE ''
-                     END AS JOB_STATUS_NM              /* 작업상태명 */
+             , BATCH_CMD_DCD                           /* 배치명령유형코드 */
              , HND_DETL_DTM                            /* 조작상세일시 */
              , HND_EMPNO                               /* 조작사원번호 */
              , HND_TMNL_NO                             /* 조작단말기번호 */
@@ -247,6 +239,29 @@
                                             )
                                            )                /* 작업상태 */
               , HND_DETL_DTM       = SYSDATE                  /* 조작상세일시 */
+              , HND_EMPNO          = #{hndEmpno}            /* 조작사원번호 */
+              , HND_TMNL_NO        = #{hndTmnlNo}           /* 조작단말기번호 */
+              , HND_TR_ID          = #{hndTrId}             /* 조작거래ID */
+              , GUID               = #{guid}                /* GUID */
+          WHERE 1=1
+            AND CUR_DATE           = #{curDate}
+            AND JOB_ID             = #{jobId}
+    </update>
+
+    <!-- 배치명령 업데이트 (수동) -->
+    <update id="batchCmdUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
+         UPDATE IBIMS997B
+            SET START_TIME         = ''                     /* 시작시간 */
+              , END_TIME           = ''                     /* 종료시간 */
+              , ARGUMENT           = NVL(NULLIF(#{argument}, ''),
+                                             (SELECT ARGUMENT 
+                                                FROM IBIMS997B 
+                                               WHERE 1=1 
+                                                 AND CUR_DATE = #{curDate} 
+                                                 AND JOB_ID = #{jobId})
+                                           )                /* ARGUMENT */
+              , BATCH_CMD_DCD      = #{batchCmdDcd}         /* 배치명령유형코드 */
+              , HND_DETL_DTM       = SYSDATE                /* 조작상세일시 */
               , HND_EMPNO          = #{hndEmpno}            /* 조작사원번호 */
               , HND_TMNL_NO        = #{hndTmnlNo}           /* 조작단말기번호 */
               , HND_TR_ID          = #{hndTrId}             /* 조작거래ID */

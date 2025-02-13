@@ -30,6 +30,8 @@ public interface IBIMS997BMapper {
 
 	public int jobStatusUpdate(IBIMS997BDTO param);
 
+	public int batchCmdUpdate(IBIMS997BDTO param);
+
 	public int deleteIBIMS997B(IBIMS997BDTO param);
 
 	public int batchUpdate(IBIMS997BDTO param);
