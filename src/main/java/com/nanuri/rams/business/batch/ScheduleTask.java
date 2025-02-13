@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 
 import org.springframework.batch.core.launch.JobLauncher;
@@ -33,7 +34,8 @@ public class ScheduleTask {
     private volatile boolean batchRunning = false; // 개발용 임시중지
     //private volatile boolean batchRunning = true;
     
-    private final BatchScheduleService batchScheduleService; 
+    @Autowired
+    private BatchScheduleService batchScheduleService; 
     private final Map<String, ScheduledFuture<?>> scheduledTasks = new ConcurrentHashMap<>();
     
     public boolean isBatchScheduler() {
@@ -113,7 +115,7 @@ public class ScheduleTask {
             // 스케줄러에 Job을 등록
             scheduledTasks.put(jobId, future);
             
-            //insert notrunning 
+            //merge notrunning 
             batch.setJobStatus("1");	//1:Not Running
             ibims997bMapper.mergeBatchNotRunning(batch);
         }
@@ -124,21 +126,84 @@ public class ScheduleTask {
 	    int hour = Integer.parseInt(parts[0]); 
 	    int minute = Integer.parseInt(parts[1]); 
 
-	    return String.format("30 %d %d * * *", minute, hour); //test
+	    return String.format("10 %d %d * * *", minute, hour); //test
 	    //return String.format("0 %d %d * * *", minute, hour);
 	}
 	
-	public boolean stopBatch(String jobId) {
-	    if (scheduledTasks.containsKey(jobId)) {
-	        scheduledTasks.get(jobId).cancel(false); // 배치 중지
-	        scheduledTasks.remove(jobId);
-	        log.info("Batch {} has been stopped.", jobId);
-	        return true;
+	public boolean startBatch(String curDate,String jobId) {
+	    log.info("▶️ Batch {} 시작 요청됨!", jobId);
+
+	    // 배치 목록 조회 후 jobId에 해당하는 배치 실행
+	    List<BatchMasterVo> batchList = batchScheduleService.getList();
+	    for (BatchMasterVo batch : batchList) {
+	        if (batch.getJobId().equals(jobId)) {
+	        	
+	        	//merge notrunning 
+	            batch.setJobStatus("1");	//1:Not Running
+	            ibims997bMapper.mergeBatchNotRunning(batch);
+	        	
+	        	//쓰레드 없이 즉시실행
+	        	batchScheduleService.executeBatch(batch);
+	            
+	            log.info("✅ Batch {} 실행 완료!", jobId);
+	            return true;
+	        }
 	    }
-	    return false; // 실행 중인 배치가 없음
+
+	    log.warn("⚠️ '{}'에 해당하는 배치를 찾을 수 없음", jobId);
+	    return false;
+	}
+	
+	public boolean stopBatch(String curDate, String jobId) {
+		// update Terminate
+		ibims997bMapper.updateJobStatus(curDate, jobId, "6"); // 6:Terminate
+		log.info("🔴 Batch 중지 요청: {}", jobId);
+
+	    // 1. 예약된 배치 스케줄 취소
+	    if (scheduledTasks.containsKey(jobId)) {
+	        scheduledTasks.get(jobId).cancel(false);
+	        scheduledTasks.remove(jobId);
+	        log.info("✅ 스케줄링된 배치 '{}' 중지 완료", jobId);
+	    } else {
+	        log.warn("⚠️ '{}'에 대한 예약된 배치 작업을 찾을 수 없음", jobId);
+	    }
+
+	    // 2. 실행 중인 배치 확인 및 강제 종료
+	    Future<?> future = batchScheduleService.getBatchExecutionTasks().get(jobId);
+	    if (future != null) {
+	        boolean canceled = future.cancel(true);
+	        batchScheduleService.getBatchExecutionTasks().remove(jobId);
+	        if (canceled) {
+	        	// update Terminated
+	    		ibims997bMapper.updateJobStatus(curDate, jobId, "7"); // 7:Terminated
+	            log.info("✅ 실행 중인 배치 '{}' 중지 완료", jobId);
+	            return true;
+	        } else {
+	            log.warn("⚠️ '{}' 실행 중이지만 중단할 수 없음", jobId);
+	        }
+	    } else {
+	        log.warn("⚠️ '{}' 실행 중이지 않아 중단할 수 없음", jobId);
+	    }
+
+	    return false;
+	}
+	
+	public boolean restartBatch(String curDate, String jobId) {
+	    log.info("🔄 Batch {} 재시작 요청됨!", jobId);
+
+	    // 실행 중인 배치 중지
+	    stopBatch(curDate, jobId);
+
+	    // 새로운 배치 실행
+	    return startBatch(curDate, jobId);
 	}
 
-	
+	public void forcedOk(String curDate, String jobId) {
+		// Not Running, Error 인거 태스크 삭제해야하나 고민중
+		
+		// update Complete
+		ibims997bMapper.updateJobStatus(curDate, jobId, "4"); // 4:Complete
+	}
     
     /*
 	//DAILY_WORK_START_BATCH 일일업무개시배치 1일 1회	08:00

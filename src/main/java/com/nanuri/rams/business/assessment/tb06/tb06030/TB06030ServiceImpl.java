@@ -52,12 +52,13 @@ public class TB06030ServiceImpl implements TB06030Service {
 
 		//if (StringUtil.isAllWhitespace(param.getPrdtCd())) {						// 없으면 등록
 		if(param.getRegDvsn().equals("I")) {
-			
+			/*
 			// 새로운 종목코드 채번
 			String newPrdtCd = ibims201bMapper.getPrdtCdSq(param.getPageDcd());
 
 			// 종목코드 셋
 			param.setPrdtCd(newPrdtCd);
+			*/
 			param.setHndEmpno(empNo);
 //			List<IBIMS201BDTO> lstS201bDTO = ibims201bMapper.selectIBIMS201B(param);
 //
