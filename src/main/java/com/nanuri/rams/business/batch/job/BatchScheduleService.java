@@ -80,7 +80,7 @@ public class BatchScheduleService {
 		//아래 Job 로직
 
 	    	/*
-	    	// 실행로직
+	    	// 테스트로직
 	        for (int i = 0; i < 100000; i++) {
 	            if (Thread.currentThread().isInterrupted()) { // 실행 중지 감지
 	                log.info("🔴 Batch {} 강제 종료됨!", jobId);
@@ -92,8 +92,13 @@ public class BatchScheduleService {
 	        */
 		
 		
-		//batchExecutionTasks.remove(jobId);
+		
+		
+		// 중간에 오류나면 Error
+		// ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, "5"); // 5:Error
 		// 끝나고 update Complete
+		// update Complete
+		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, "4"); // 4:Complete
 	}
 
 }
