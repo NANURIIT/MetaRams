@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class TB10610ServiceImpl implements TB10610Service {
 	/* 로그인 사용자 정보 */
 	private final AuthenticationFacade facade;
 	
+	@Autowired
 	private final ScheduleTask scheduleTask;
 
 	// 배치 스케줄러 모니터링 조회
@@ -110,6 +112,6 @@ public class TB10610ServiceImpl implements TB10610Service {
 
 	@Override
 	public boolean killtask() {
-		return scheduleTask.stopBatch("TB9000B");
+		return scheduleTask.stopBatch("20250213", "TB9000B");
 	};
 }
