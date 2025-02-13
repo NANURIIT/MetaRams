@@ -138,6 +138,8 @@ public class ScheduleTask {
 	    for (BatchMasterVo batch : batchList) {
 	        if (batch.getJobId().equals(jobId)) {
 	        	
+	        	batch.setCurDate(curDate);
+	        	
 	        	//merge notrunning 
 	            batch.setJobStatus("1");	//1:Not Running
 	            ibims997bMapper.mergeBatchNotRunning(batch);
@@ -200,6 +202,14 @@ public class ScheduleTask {
 
 	public void forcedOk(String curDate, String jobId) {
 		// Not Running, Error 인거 태스크 삭제해야하나 고민중
+		// 1. 예약된 배치 스케줄 취소
+	    if (scheduledTasks.containsKey(jobId)) {
+	        scheduledTasks.get(jobId).cancel(false);
+	        scheduledTasks.remove(jobId);
+	        log.info("✅ 스케줄링된 배치 '{}' Forced-OK 완료", jobId);
+	    } else {
+	        log.warn("⚠️ '{}'에 대한 예약된 배치 작업을 찾을 수 없음", jobId);
+	    }
 		
 		// update Complete
 		ibims997bMapper.updateJobStatus(curDate, jobId, "4"); // 4:Complete
