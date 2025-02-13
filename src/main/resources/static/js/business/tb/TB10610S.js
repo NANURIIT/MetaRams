@@ -348,6 +348,8 @@ const TB10610Sjs = (function () {
     // Not Running, Error 인경우 Forced-OK 가능
     // Complete, Error인경우 Rerun 가능
     // Running 인 경우 Kill 가능
+
+    $('input[name="TB10610S_batchCmdDcd"]').prop('checked', false);
     
     // Not Running
     if ( jobStatus === "1" ) {
