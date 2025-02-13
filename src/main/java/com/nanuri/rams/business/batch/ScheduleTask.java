@@ -137,11 +137,13 @@ public class ScheduleTask {
 	    List<BatchMasterVo> batchList = batchScheduleService.getList();
 	    for (BatchMasterVo batch : batchList) {
 	        if (batch.getJobId().equals(jobId)) {
-	            batchScheduleService.executeBatch(batch);
-	            
-	            //merge notrunning 
+	        	
+	        	//merge notrunning 
 	            batch.setJobStatus("1");	//1:Not Running
 	            ibims997bMapper.mergeBatchNotRunning(batch);
+	        	
+	        	//쓰레드 없이 즉시실행
+	        	batchScheduleService.executeBatch(batch);
 	            
 	            log.info("✅ Batch {} 실행 완료!", jobId);
 	            return true;
