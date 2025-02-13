@@ -503,7 +503,7 @@
     	                   WHERE 1=1
     	                     AND JOB_ID = #{jobId}
 		                 )
-		   AND CUR_DATE = #{curDate}	 
+		   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD')) 
     </select>
     
 
