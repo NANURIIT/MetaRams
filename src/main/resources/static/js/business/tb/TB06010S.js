@@ -907,7 +907,6 @@ const TB06010Sjs = (function(){
 					$('#TB06010S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
 					$('#TB06010S_regPrdt').attr('disabled', false); 
 
-
 					/******  딜공통 파일첨부 추가 ******/ 
 					// $('#key1').val(ibDealNo+'-'+prdtCd);
 
