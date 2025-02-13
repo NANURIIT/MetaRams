@@ -3,6 +3,7 @@ package com.nanuri.rams.business.common.mapper;
 import com.nanuri.rams.business.common.dto.IBIMS996BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS996BVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
