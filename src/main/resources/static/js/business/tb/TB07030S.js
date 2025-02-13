@@ -449,8 +449,8 @@ const TB07030Sjs = (function () {
         colModel: colRdmpTrgt,
       },
       {
-        height: 325,
-        maxHeight: 325,
+        height: 375,
+        maxHeight: 375,
         id: "grdRdmpTrgtDtl",
         colModel: colRdmpTrgtDtl,
         toolbar: toolbar,

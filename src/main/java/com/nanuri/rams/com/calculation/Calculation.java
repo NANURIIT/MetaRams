@@ -1930,7 +1930,8 @@ public class Calculation {
 					overduePrnaCalcRslt.setEndDt(baseDt);			//연체종료일 todo: 빈값으로 둬도 되는지 확인
 					overduePrnaCalcRslt.setPrarDt("");
 					overduePrnaCalcRslt.setAplyIrt(new BigDecimal(ovduIntrRt));
-					overduePrnaCalcRslt.setRdmpPrarIntr(ovduIntr);	//연체이자
+					// overduePrnaCalcRslt.setRdmpPrarIntr(ovduIntr);	//연체이자
+					overduePrnaCalcRslt.setRdmpPrarIntr(process_down(inCalcDTO.getIntrSnnoPrcsDcd(), ovduIntr));//연체이자
 					overduePrnaCalcRslt.setPrarPrna(prarPrna);
 					overduePrnaCalcRslt.setBfBalance(prarPrna);		//대상금액
 					ovduList.add(overduePrnaCalcRslt);
@@ -2258,6 +2259,8 @@ public class Calculation {
 		totalTrgtAmt = totalIntr.add(totalOvduIntr).add(totalTrgtAmt).add(totalPrna).add(totalMdwyRdmpFee).add(totlaMrdpPrca);
 
 		//log.debug("totlaMrdpPrca::: " + totlaMrdpPrca);
+
+		log.debug("intrSnnoPrcsDcd ::::" + intrSnnoPrcsDcd);
 
 		totalCalcDTO.setTotalIntr(process_down(intrSnnoPrcsDcd, totalIntr));						//정상이자 합계 set
 		totalCalcDTO.setTotalIntrOvduIntr(process_down(intrSnnoPrcsDcd, totalIntrOvduIntr));		//이자연체이자 합계 set
