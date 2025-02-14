@@ -2260,7 +2260,7 @@ public class Calculation {
 
 		//log.debug("totlaMrdpPrca::: " + totlaMrdpPrca);
 
-		log.debug("intrSnnoPrcsDcd ::::" + intrSnnoPrcsDcd);
+		// log.debug("intrSnnoPrcsDcd ::::" + intrSnnoPrcsDcd);
 
 		totalCalcDTO.setTotalIntr(process_down(intrSnnoPrcsDcd, totalIntr));						//정상이자 합계 set
 		totalCalcDTO.setTotalIntrOvduIntr(process_down(intrSnnoPrcsDcd, totalIntrOvduIntr));		//이자연체이자 합계 set

@@ -668,10 +668,10 @@ public class TB07030ServiceImpl implements TB07030Service {
 			ibims402bvo.setIntrOvduDt(DateUtil.dayAdd(nxt402bvo.getNxtIntrPymDt(), 1));     /*  이자연체일자  */
 			ibims402bvo.setLastRdmpTmrd(iLastRdmpTmrd);     				/*  최종상환회차  */
 
-			if("2".equals(ibims401bvo.getEprzCrdlIndvLmtDcd())) {
+			// if("2".equals(ibims401bvo.getEprzCrdlIndvLmtDcd())) {
 				ibims402bvo.setDealExcBlce(ibims402bvo.getDealExcBlce().subtract(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca())));  /*  딜실행잔액  */
 				ibims402bvo.setKrwTrslExcBlce(ibims402bvo.getKrwTrslExcBlce().subtract(paramData.getRdmpTrgtPrna().add(paramData.getDealMrdpPrca()).multiply(ibims402bvo.getKrwTrslRt())));     /*  원화환산실행잔액  */
-			}
+			//}
 			rtnValue = ibims402BMapper.uptExcInfo(ibims402bvo);			// 딜실행기본
 			rtnValue = ibims402HMapper.insertIBIMS402H(ibims402bvo);	// 딜실행기본이력 생성
 
