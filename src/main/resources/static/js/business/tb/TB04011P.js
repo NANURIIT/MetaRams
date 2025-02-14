@@ -22,10 +22,13 @@ function registerInputEvents_TB04011P(selector, inputLength) {
     .on("input", async function () {
       const currentInput = $(this);
 
-      const result = $(this).attr('id').slice(0, $(this).attr('id').length - 2) + 'Nm';
+      const result =
+        $(this)
+          .attr("id")
+          .slice(0, $(this).attr("id").length - 2) + "Nm";
 
       $(`#${result}`).val("");
-      
+
       if (currentInput.val().length === inputLength) {
         await srchEvent_TB04011P(currentInput);
       }
@@ -167,8 +170,7 @@ $("#modal-TB04011P").on("hide.bs.modal", function () {
  * deal 번호 조회 ajax
  */
 async function getMtrInfo_TB04011P() {
-
-	let result;
+  let result;
 
   var ibDealNo = $("#TB04011P_ibDealNo").val();
   var ibDealNm = $("#TB04011P_ibDealNm").val();
@@ -190,17 +192,19 @@ async function getMtrInfo_TB04011P() {
       data: dtoParam,
       dataType: "json",
       success: function (data) {
-        if($(`div[id='modal-TB04011P']`).css('display') === "none" && data.length === 1){
+        if (
+          $(`div[id='modal-TB04011P']`).css("display") === "none" &&
+          data.length === 1
+        ) {
           setMtrInfo_TB04011P(data[0]);
-				  modalClose_TB04011P();
-				  result = false
-        }
-        else {
+          modalClose_TB04011P();
+          result = false;
+        } else {
           callTB04011P($("#TB04011P_prefix").val());
           setTimeout(function () {
             dataSetMrtGrid(data);
           }, 400);
-				result = true
+          result = true;
         }
       },
     });
@@ -208,7 +212,7 @@ async function getMtrInfo_TB04011P() {
     console.error("AJAX 호출 중 오류 발생:", error);
   }
 
-	return result
+  return result;
 }
 
 function dataSetMrtGrid(data) {
@@ -338,7 +342,11 @@ function setMtrInfo_TB04011P(e) {
       dprtNm: e.dprtNm,
       chrgPEno: e.chrgPEno,
       chrgPEnm: e.chrgPNm,
+      ownPEno: e.ownPEno,
+      ownPNm: e.ownPNm,
     };
+    console.log("confirmdata:::::", newRow);
+
     $("#gridCaseList").pqGrid("addRow", {
       rowData: newRow,
       checkEditable: false,

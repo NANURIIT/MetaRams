@@ -1374,7 +1374,7 @@ const TB05010Sjs = (function () {
     {
       title: "심사역",
       dataType: "string",
-      dataIndx: "ownPEnm",
+      dataIndx: "ownPNm",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
     },
