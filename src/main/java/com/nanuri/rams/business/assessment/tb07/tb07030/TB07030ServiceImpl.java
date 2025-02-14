@@ -154,6 +154,9 @@ public class TB07030ServiceImpl implements TB07030Service {
 
 					}else if(item.getPaiTypCd().equals("2")){
 
+						log.debug("bfBalance::::::::" + item.getBfBalance());
+						log.debug("prarPrna::::::" + item.getPrarPrna());
+
 						setItem.setPmntAmt(item.getRdmpPrarIntr());
 						setItem.setTrgtAmt(item.getPrarPrna());
 
