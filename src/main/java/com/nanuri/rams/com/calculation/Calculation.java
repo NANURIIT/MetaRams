@@ -1390,7 +1390,7 @@ public class Calculation {
 							returnDTO.setRdmpTmrd((i+1)+"");
 							returnDTO.setPrarDt(paramDTO.getPrarDt());
 							returnDTO.setPrarPrna(paramDTO.getPrarPrna());
-							returnDTO.setBfBalance(bfBalance);
+							returnDTO.setBfBalance(bfBalance.add(paramDTO.getPrarPrna()));
 							returnDTO.setStrtDt(strtDt);
 							returnDTO.setEndDt(endDt);
 							returnDTO.setPrcsDnum(prcsDnum);
@@ -1491,7 +1491,7 @@ public class Calculation {
 						returnDTO.setRdmpTmrd((i+1)+"");
 						returnDTO.setPrarDt(paramDTO.getPrarDt());
 						returnDTO.setPrarPrna(paramDTO.getPrarPrna());
-						returnDTO.setBfBalance(bfBalance);
+						returnDTO.setBfBalance(bfBalance.add(paramDTO.getPrarPrna()));
 						returnDTO.setStrtDt(strtDt);
 						returnDTO.setEndDt(endDt);
 						returnDTO.setPrcsDnum(prcsDnum);

@@ -334,7 +334,6 @@ public class TB07030ServiceImpl implements TB07030Service {
 		log.debug("\nparam403Lst ::: {}", param403Lst);
 		log.debug("\nparam403DtlLst ::: {}", param403DtlLst);
 
-		// 태안 이자계산모듈이 완성되면 아래 상환등록 내용을 수정예정 (적용 후 주석제거 예정) 2024.07.14
 		int iExTrsn = 0;
 		for(int i=0;i<param403Lst.size();i++) {
 
