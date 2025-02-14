@@ -375,7 +375,18 @@
 		        , JOB_TYPE         = #{jobType}        /* JOB TYPE */
 		        , OBJECT_NAME      = #{objectName}     /* SOURCE FULL NAME */
 		        , ARGUMENT         = #{argument}       /* 프로그램 ARGUMENT */
-		        , PRE_JOB_COUNT    = #{preJobCount}    /* 선행 JOB 개수 */
+		        , PRE_JOB_COUNT    = (SELECT COUNT(*) 
+		                                FROM IBIMS996B P 
+		                               WHERE P.JOB_ID = #{jobId}) 
+		                             - 
+		                             (SELECT COUNT(*) 
+		                                FROM IBIMS997B J 
+		                               WHERE J.CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
+		                                 AND J.JOB_ID = #{jobId} 
+		                                 AND J.JOB_STATUS = (SELECT CD_VL_ID 
+		                                                       FROM IBIMS002B 
+		                                                      WHERE CMNS_CD_GRP = 'J002' 
+		                                                        AND CD_VL_NM = 'Complete'))	/* 선행 JOB 개수 */
 		        , CONFIRM_JOB_COUNT = #{confirmJobCount} /* CONFIRM JOB 개수 */
 		        , CHILD_PID        = #{childPid}       /* CHILD 프로세스 PID */
 		        , RUN_COUNT        = #{runCount}       /* 프로그램 수행 횟수 */
@@ -391,48 +402,59 @@
 		        , GUID             = #{guid}           /* GUID */
 		WHEN NOT MATCHED THEN 
 		    INSERT (
-		          CUR_DATE         /* 당일일자 */
-		        , JOB_ID          /* JOB ID */
-		        , JOB_NAME        /* JOB NAME */
-		        , JOB_TYPE        /* JOB TYPE */
-		        , OBJECT_NAME     /* SOURCE FULL NAME */
-		        , ARGUMENT        /* 프로그램 ARGUMENT */
-		        , PRE_JOB_COUNT   /* 선행 JOB 개수 */
+		          CUR_DATE          /* 당일일자 */
+		        , JOB_ID            /* JOB ID */
+		        , JOB_NAME          /* JOB NAME */
+		        , JOB_TYPE          /* JOB TYPE */
+		        , OBJECT_NAME       /* SOURCE FULL NAME */
+		        , ARGUMENT          /* 프로그램 ARGUMENT */
+		        , PRE_JOB_COUNT     /* 선행 JOB 개수 */
 		        , CONFIRM_JOB_COUNT /* CONFIRM JOB 개수 */
-		        , CHILD_PID       /* CHILD 프로세스 PID */
-		        , RUN_COUNT       /* 프로그램 수행 횟수 */
-		        , FIRST_START_TIME /* 최초 기동시간 */
-		        , START_TIME      /* 현재 작업 시작시간 */
-		        , END_TIME        /* 현재 작업 종료시간 */
-		        , JOB_STATUS      /* 작업 상태 */
-		        , BATCH_CMD_DCD   /* 배치 명령 유형 코드 */
-		        , HND_DETL_DTM    /* 조작상세일시 (TIMESTAMP) */
-		        , HND_EMPNO       /* 조작 사원번호 */
-		        , HND_TMNL_NO    /* 조작 단말기번호 */
-		        , HND_TR_ID       /* 조작 거래 ID */
-		        , GUID            /* GUID */
+		        , CHILD_PID         /* CHILD 프로세스 PID */
+		        , RUN_COUNT         /* 프로그램 수행 횟수 */
+		        , FIRST_START_TIME  /* 최초 기동시간 */
+		        , START_TIME        /* 현재 작업 시작시간 */
+		        , END_TIME          /* 현재 작업 종료시간 */
+		        , JOB_STATUS        /* 작업 상태 */
+		        , BATCH_CMD_DCD     /* 배치 명령 유형 코드 */
+		        , HND_DETL_DTM      /* 조작상세일시 (TIMESTAMP) */
+		        , HND_EMPNO         /* 조작 사원번호 */
+		        , HND_TMNL_NO       /* 조작 단말기번호 */
+		        , HND_TR_ID         /* 조작 거래 ID */
+		        , GUID              /* GUID */
 		    ) VALUES (
 		          NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD')) /* 당일일자 */
-		        , #{jobId}          /* JOB ID */
-		        , #{jobName}        /* JOB NAME */
-		        , #{jobType}        /* JOB TYPE */
-		        , #{objectName}     /* SOURCE FULL NAME */
-		        , #{argument}       /* 프로그램 ARGUMENT */
-		        , #{preJobCount}    /* 선행 JOB 개수 */
-		        , #{confirmJobCount} /* CONFIRM JOB 개수 */
-		        , #{childPid}       /* CHILD 프로세스 PID */
-		        , #{runCount}       /* 프로그램 수행 횟수 */
-		        , #{firstStartTime} /* 최초 기동시간 */
-		        , #{startTime}      /* 현재 작업 시작시간 */
-		        , #{endTime}        /* 현재 작업 종료시간 */
-		        , #{jobStatus}      /* 작업 상태 */
-		        , #{batchCmdDcd}    /* 배치 명령 유형 코드 */
-		        , SYSDATE           /* 현재 시스템 시간 */
-		        , 'BATCH'           /* 조작 사원번호 */
-		        , #{hndTmnlNo}      /* 조작 단말기 번호 */
-		        , #{hndTrId}        /* 조작 거래 ID */
-		        , #{guid}           /* GUID */
-		    );
+		        , #{jobId}              /* JOB ID */
+		        , #{jobName}            /* JOB NAME */
+		        , #{jobType}            /* JOB TYPE */
+		        , #{objectName}         /* SOURCE FULL NAME */
+		        , #{argument}           /* 프로그램 ARGUMENT */
+		        , ((SELECT COUNT(*) 
+                      FROM IBIMS996B P 
+                     WHERE P.JOB_ID = #{jobId}) 
+				  - 
+                   (SELECT COUNT(*) 
+                      FROM IBIMS997B J 
+                     WHERE J.CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
+                       AND J.JOB_ID = #{jobId} 
+                       AND J.JOB_STATUS = (SELECT CD_VL_ID 
+					                         FROM IBIMS002B 
+					                        WHERE CMNS_CD_GRP = 'J002' 
+					                          AND CD_VL_NM = 'Complete')))	/* 선행 JOB 개수 */
+		        , #{confirmJobCount}    /* CONFIRM JOB 개수 */
+		        , #{childPid}           /* CHILD 프로세스 PID */
+		        , #{runCount}           /* 프로그램 수행 횟수 */
+		        , #{firstStartTime}     /* 최초 기동시간 */
+		        , #{startTime}          /* 현재 작업 시작시간 */
+		        , #{endTime}            /* 현재 작업 종료시간 */
+		        , #{jobStatus}          /* 작업 상태 */
+		        , #{batchCmdDcd}        /* 배치 명령 유형 코드 */
+		        , SYSDATE               /* 현재 시스템 시간 */
+		        , 'BATCH'               /* 조작 사원번호 */
+		        , #{hndTmnlNo}          /* 조작 단말기 번호 */
+		        , #{hndTrId}            /* 조작 거래 ID */
+		        , #{guid}               /* GUID */
+		    )
     </insert>
     
     <update id="updateJobStatus" parameterType="map">
@@ -442,6 +464,47 @@
     	   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
     	   AND JOB_ID = #{jobId}
     </update>
+    
+    <select id="selectJobScheduler" parameterType="map" resultType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
+		SELECT CUR_DATE             /* 당일일자                    */
+		     , JOB_ID               /* JOB ID                      */
+		     , JOB_NAME             /* JOB NAME                    */
+		     , JOB_TYPE             /* JOB TYPE (1: DUMMY, 2: COMMAND) */
+		     , OBJECT_NAME          /* SOURCE FULL NAME            */
+		     , ARGUMENT             /* 프로그램에 전달될 ARGUMENT */
+		     , PRE_JOB_COUNT        /* 업무프로그램에 전달될 선행JOB 건수 */
+		     , CONFIRM_JOB_COUNT    /* 업무프로그램에 전달될 CONFIRM JOB 건수 */
+		     , CHILD_PID            /* CHILD 프로세스 업무프로그램의 PID */
+		     , RUN_COUNT            /* 프로그램이 수행된 횟수      */
+		     , FIRST_START_TIME     /* 최초 기동시간              */
+		     , START_TIME           /* 현재 작업의 시작시간        */
+		     , END_TIME             /* 현재 작업의 종료시간        */
+		     , JOB_STATUS           /* 작업의 상태                 */
+		     , BATCH_CMD_DCD        /* 배치명령유형코드            */
+		     , HND_DETL_DTM         /* 조작상세일시 (TIMESTAMP)   */
+		     , HND_EMPNO            /* 조작 사원번호              */
+		     , HND_TMNL_NO          /* 조작 단말기번호            */
+		     , HND_TR_ID            /* 조작 거래 ID               */
+		     , GUID                 /* GUID                        */
+		  FROM IBIMS997B
+		 WHERE 1=1
+		   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
+		   AND JOB_ID   = #{jobId}
+    </select>
+    
+    <select id="selectListPreBatch" parameterType="map" resultType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
+		SELECT JOB_ID
+		     , JOB_STATUS
+		  FROM IBIMS997B
+		 WHERE 1=1
+		   AND JOB_ID IN (
+		                  SELECT PRE_JOB_ID
+    	                    FROM IBIMS996B
+    	                   WHERE 1=1
+    	                     AND JOB_ID = #{jobId}
+		                 )
+		   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD')) 
+    </select>
     
 
 </mapper>

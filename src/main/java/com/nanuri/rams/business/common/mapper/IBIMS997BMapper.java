@@ -48,4 +48,9 @@ public interface IBIMS997BMapper {
 	public void mergeBatchNotRunning(BatchMasterVo batch);
 
 	public void updateJobStatus(@Param("curDate") String curDate, @Param("jobId") String jobId, @Param("jobStatus") String jobStatus);
+	
+	public IBIMS997BDTO selectJobScheduler(@Param("curDate") String curDate, @Param("jobId") String jobId);
+
+	public List<IBIMS997BDTO> selectListPreBatch(@Param("curDate") String curDate, @Param("jobId") String jobId);
+	
 }

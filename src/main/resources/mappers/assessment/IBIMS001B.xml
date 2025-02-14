@@ -14,7 +14,7 @@
     </select>
 
     <!--  그룹코드 호출  -->
-	  <select id="getGroupCodeInfoList" resultType="com.nanuri.rams.business.common.vo.IBIMS001BVO" parameterType="String">
+	  <select id="getGroupCodeInfoList" resultType="com.nanuri.rams.business.common.vo.IBIMS001BVO" parameterType="com.nanuri.rams.business.common.dto.IBIMS001BDTO">
         SELECT A.CMNS_CD_GRP                                              	/* 공통코드그룹 */
              , NVL(A.CMNS_CD_NM, '-') 			  AS CMNS_CD_NM				          /* 공통코드명 */            
              , NVL(A.CMNS_CD_CLSF, '-')			  AS CMNS_CD_CLSF				        /* 공통코드구분 */           
@@ -44,8 +44,11 @@
          WHERE 1=1
            AND DEL_YN = 'N'
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrp)">
-           AND CMNS_CD_GRP                             = #{cmnsCdGrp}
-          </if>
+           AND CMNS_CD_GRP = #{cmnsCdGrp}
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrpExpl)">
+           AND CMNS_CD_GRP_EXPL LIKE '%' || #{cmnsCdGrpExpl} || '%'
+           </if>
          ORDER
             BY A.CMNS_CD_GRP ASC
 	  </select>

@@ -23,7 +23,7 @@ public interface AC01010Service {
 	 * @return
 	 * @throws ParseException
 	 */
-	public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp) throws ParseException;
+	// public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp) throws ParseException;
 
 	/**
 	 * 코드정보 가져오기

@@ -29,11 +29,11 @@ public class AC01010APIController {
 		return service.getCommonCodeName();
 	}
 	
-	// 그룹코드정보 리스트 가져오기
-	@GetMapping(value = "/groupCodeInfoList")
-	public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp) throws ParseException {
-		return service.getGroupCodeInfoList(cmnsCdGrp);
-	}
+	// // 그룹코드정보 리스트 가져오기
+	// @GetMapping(value = "/groupCodeInfoList")
+	// public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp) throws ParseException {
+	// 	return service.getGroupCodeInfoList(cmnsCdGrp);
+	// }
 
 	@GetMapping(value = "/groupCodeInfo")
 	public List<IBIMS002BVO> getGroupCodeInfo(String cmnsCdGrp) throws ParseException {

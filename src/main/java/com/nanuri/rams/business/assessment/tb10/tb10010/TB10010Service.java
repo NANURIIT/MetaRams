@@ -1,5 +1,6 @@
 package com.nanuri.rams.business.assessment.tb10.tb10010;
 
+import com.nanuri.rams.business.common.dto.IBIMS001BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS001BVO;
 import com.nanuri.rams.business.common.vo.IBIMS002BVO;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public interface TB10010Service {
 	 * @return
 	 * @throws ParseException
 	 */
-	public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp) throws ParseException;
+	public List<IBIMS001BVO> getGroupCodeInfoList(IBIMS001BDTO paramData) throws ParseException;
 
 	/**
 	 * 코드정보 가져오기

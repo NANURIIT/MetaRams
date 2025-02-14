@@ -467,6 +467,7 @@ const TB10610Sjs = (function () {
                 }
               },
             });
+            inqBatch();
           });
         }
       });

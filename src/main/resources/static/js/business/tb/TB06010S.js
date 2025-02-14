@@ -30,8 +30,6 @@ const TB06010Sjs = (function(){
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		pqGrid();
 
-		resetSearchRequiment();
-		
 		loginUserSet();
 
 		$('#TB06010S_E022').on('change', function() {
@@ -526,7 +524,7 @@ const TB06010Sjs = (function(){
 		$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", true);
 		loginUserSet();
 		// setKRKRW('TB06010S');
-		// chkDecdStep('TB06010S');
+		chkDecdStep('TB06010S');
 	}
 
 	function loadSelectBoxContents() {
@@ -919,7 +917,7 @@ const TB06010Sjs = (function(){
 					$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", false);
 					$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", false);
 				}
-				// chkDecdStep("TB06010S");
+				chkDecdStep("TB06010S");
 			}
 		});/* end of ajax*/
 			
