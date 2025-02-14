@@ -66,7 +66,7 @@ public class ScheduleTask {
     */
     
     //TODO: 동적스케줄링
-    @Scheduled(cron="0 0/1 * * * *", zone="Asia/Seoul") //TEST
+    @Scheduled(cron="0 0/28 * * * *", zone="Asia/Seoul") //TEST
 	public void batchScheduleService() throws Exception{
     	
     	if (!batchRunning) {
@@ -126,7 +126,7 @@ public class ScheduleTask {
 	    int hour = Integer.parseInt(parts[0]); 
 	    int minute = Integer.parseInt(parts[1]); 
 
-	    return String.format("10 %d %d * * *", minute, hour); //test
+	    return String.format("20 %d %d * * *", minute, hour); //test
 	    //return String.format("0 %d %d * * *", minute, hour);
 	}
 	
@@ -213,6 +213,14 @@ public class ScheduleTask {
 		
 		// update Complete
 		ibims997bMapper.updateJobStatus(curDate, jobId, "4"); // 4:Complete
+	}
+	
+	public void brakeBatch(String curDate, String jobId) {
+		// Not Running 에서 왔을때는 정지시켜야함
+		stopBatch(curDate, jobId);
+		
+		// update Stop
+		ibims997bMapper.updateJobStatus(curDate, jobId, "8"); // 8:Stop
 	}
     
     /*

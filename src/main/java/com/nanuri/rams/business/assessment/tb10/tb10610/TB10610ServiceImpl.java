@@ -81,14 +81,17 @@ public class TB10610ServiceImpl implements TB10610Service {
 
 			// [3] (Re)Run
 			case "3":
+				scheduleTask.restartBatch(curDate, jobId);
 				break;
 
 			// [4] Kill
 			case "4":
+				scheduleTask.stopBatch(curDate, jobId);
 				break;
 
 			// [5] Brake
 			case "5":
+				scheduleTask.brakeBatch(curDate, jobId);
 				break;
 		}
 
@@ -130,9 +133,4 @@ public class TB10610ServiceImpl implements TB10610Service {
 
 		return result;
 	}
-
-	@Override
-	public boolean killtask() {
-		return scheduleTask.stopBatch("20250213", "TB9000B");
-	};
 }

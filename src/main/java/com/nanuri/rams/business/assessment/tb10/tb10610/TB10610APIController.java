@@ -41,10 +41,4 @@ public class TB10610APIController {
     public int updateConfirm(@RequestBody IBIMS997BVO input) {
         return tb10610svc.updateConfirm(input);
     }
-    
-    // Forced-OK
-    @PostMapping("/forcedOktask")
-    public boolean killtask() {
-    	return tb10610svc.killtask();
-    }
 }
