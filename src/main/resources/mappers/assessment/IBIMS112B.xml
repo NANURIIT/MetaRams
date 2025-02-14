@@ -77,7 +77,7 @@
                  SELECT EMP_NM
                    FROM IBIMS003B
                   WHERE EMPNO = B.OWN_P_ENO
-               ) AS OWN_P_ENM
+               ) AS OWN_P_NM
           FROM IBIMS112B A
     LEFT OUTER JOIN IBIMS103B B
             ON A.DEAL_NO  = B.DEAL_NO
@@ -137,7 +137,7 @@
                 SELECT EMP_NM
                   FROM IBIMS003B
                  WHERE EMPNO = B.OWN_P_ENO
-               ) || ' (' || B.OWN_P_ENO || ')' AS OWN_P_ENM
+               ) || ' (' || B.OWN_P_ENO || ')' AS OWN_P_NM
              , B.MTR_PRG_STTS_DCD                                               /* 안건진행상태구분코드 */
              , (
                 SELECT CD_VL_NM
@@ -283,7 +283,7 @@
              	FROM IBIMS003B B
              	WHERE 1=1
              	AND B.EMPNO=IBIMS103B.OWN_P_ENO
-             	)						AS OWN_P_ENM
+             	)						AS OWN_P_NM
           FROM (SELECT 
 		  					CNSB_DCD
 							,CNSB_SQ

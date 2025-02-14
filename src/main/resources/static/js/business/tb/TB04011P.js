@@ -345,7 +345,6 @@ function setMtrInfo_TB04011P(e) {
       ownPEno: e.ownPEno,
       ownPNm: e.ownPNm,
     };
-    console.log("confirmdata:::::", newRow);
 
     $("#gridCaseList").pqGrid("addRow", {
       rowData: newRow,

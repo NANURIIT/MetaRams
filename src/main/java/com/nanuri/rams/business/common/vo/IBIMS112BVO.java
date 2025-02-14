@@ -13,7 +13,7 @@ public class IBIMS112BVO extends IBIMS112BDTO {
         private String chrgPEno;
         private String chrgPEnm;
         private String ownPEno;
-        private String ownPEnm;
+        private String ownPNm;
         private String mtrNm;
         private String dprtCd;
         private String dprtNm;
