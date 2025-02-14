@@ -45,4 +45,22 @@ public class TB10510APIController {
         return tb10510svc.delBatch(input);
     }
     
+    // 배치 스케줄러 상태확인
+    @PostMapping("/isBatchScheduler")
+    public boolean isBatchScheduler() {
+    	return tb10510svc.isBatchScheduler();
+    }
+    
+    // 배치 스케줄러 실행
+    @PostMapping("/startBatchScheduler")
+    public boolean startBatchScheduler() {
+    	return tb10510svc.startBatchScheduler();
+    }
+    
+    // 배치 스케줄러 중지
+    @PostMapping("/stopBatchScheduler")
+    public boolean stopBatchScheduler() {
+    	return tb10510svc.stopBatchScheduler();
+    }
+    
 }

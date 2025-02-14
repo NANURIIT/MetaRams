@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS982BMapper">
+
+    <select id="getParameter" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS982BDTO">
+        SELECT ERLM_SEQ             /* 등록순번 */
+             , PRMT_ID              /* 파라미터ID */
+             , PRMT_CTNS            /* 파라미터내용 */
+             , DEL_YN               /* 삭제여부 */
+             , HND_DETL_DTM         /* 조작상세일시 */
+             , HND_EMPNO            /* 조작사원번호 */
+          FROM IBIMS982B
+         WHERE 1=1
+           AND DUDT_MNGM_NO = #{dudtMngmNo}
+    </select>
+
+</mapper>

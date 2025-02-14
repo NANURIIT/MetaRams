@@ -30,18 +30,6 @@ public class TB10720APIController {
         return tb10720svc.updateTB10720S(input);
     }
     
-    // 배치 스케줄러 실행
-    @PostMapping("/startBatchScheduler")
-    public void startBatchScheduler() {
-        tb10720svc.startBatchScheduler();
-    }
-    
-    // 배치 스케줄러 중지
-    @PostMapping("/stopBatchScheduler")
-    public void stopBatchScheduler() {
-        tb10720svc.stopBatchScheduler();
-    }
-    
     // 일일업무개시 잡 실행
     @PostMapping("/runBatchJob")
     public void runBatchJob() throws Exception {

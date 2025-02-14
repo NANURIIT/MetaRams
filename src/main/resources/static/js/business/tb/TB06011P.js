@@ -523,7 +523,7 @@ async function getPrdtCdList() {
 		trDvsn = 'L'
 	}
 
-	if ($('#TB06011P_prefix').val() == "TB06010S" || $('#TB06011P_prefix').val() == "TB07060S") {
+	if ($('#TB06011P_prefix').val() == "TB06010S" || $('#TB06011P_prefix').val() == "TB07060S" || $('#TB06011P_prefix').val() == "TB07160S") {
 		trDvsn = 'S'
 	}
 

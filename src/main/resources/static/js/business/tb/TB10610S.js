@@ -15,11 +15,12 @@ const TB10610Sjs = (function () {
    * SelectBox
    *******************************************************************/
   function selectBox() {
-    getSlcBx = getSelectBoxList("TB10610S", "X001", false); // 작업상태코드
+    getSlcBx = getSelectBoxList("TB10610S", "J002" + "/B027", false); // 작업상태코드
 
-    objSlc.X001 = getSlcBx.filter((it) => it.cmnsGrpCd === "X001");
+    objSlc.J002 = getSlcBx.filter((it) => it.cmnsGrpCd === "J002"); // 작업상태코드
+    objSlc.B027 = getSlcBx.filter((it) => it.cmnsGrpCd === "B027"); // 배치명령코드
 
-    objSlc.X001.forEach((item) => {
+    objSlc.J002.forEach((item) => {
       $("#TB10610S_jobSts").append(
         $("<option>", {
           value: item.cdValue,
@@ -28,15 +29,18 @@ const TB10610Sjs = (function () {
       );
     });
 
-    objSlc.X001.filter((it) =>
-      ["4", "5", "6", "7"].includes(it.cdValue)
-    ).forEach((item) => {
-      $("#TB10610S_exc_jobSts").append(
-        $("<option>", {
-          value: item.cdValue,
-          text: `[${item.cdValue}] ${item.cdName}`,
-        })
-      );
+    objSlc.B027.forEach((item) => {
+      if( item.cdValue != "1" ) {
+        // option은 배치명령이 없어야함
+        $("#TB10610S_batchCmdDcd_input").append(
+          `
+            <span class="input-group">
+              <input type="radio" value="${item.cdValue}" id="" name="TB10610S_batchCmdDcd">
+              <label class="col-sm-5 text-nowrap font-weight-normal">[${item.cdValue}] ${item.cdName}</label>
+            </span>
+          `
+        );
+      }
     });
   }
 
@@ -133,11 +137,28 @@ const TB10610Sjs = (function () {
       {
         title: "작업상태",
         dataType: "string",
-        dataIndx: "jobStatusNm",
+        dataIndx: "jobStatus",
         halign: "center",
         align: "center",
         // width    : '10%',
         filter: { crules: [{ condition: "range" }] },
+        render: function(ui) {
+          let fSel = objSlc.J002.find(({ cdValue }) => cdValue == ui.cellData);
+          return fSel ? fSel.cdName : ui.cellData;
+        }
+      },
+      {
+        title: "배치명령유형",
+        dataType: "string",
+        dataIndx: "batchCmdDcd",
+        halign: "center",
+        align: "center",
+        // width    : '10%',
+        filter: { crules: [{ condition: "range" }] },
+        render: function(ui) {
+          let fSel = objSlc.B027.find(({ cdValue }) => cdValue == ui.cellData);
+          return fSel ? fSel.cdName : ui.cellData;
+        }
       },
       {
         title: "실행 횟수",
@@ -247,6 +268,8 @@ const TB10610Sjs = (function () {
               }
               argument = argument;
 
+              radioBtnController(jobStatus)
+
               tempObj.confirmJobCount = confirmJobCount;
 
               console.log("confirmJobCount ::: ", confirmJobCount);
@@ -284,7 +307,8 @@ const TB10610Sjs = (function () {
               // $('#TB10610S_exc_jobSts').prop('disabled', false)
               $("#btnConfTxt").text("확인");
               $("#btnConfirm").prop("disabled", false);
-              $('input[name="TB10610S_exc_jobSts"]').prop("checked", false);
+              $('input[name="TB10610S_batchCmdDcd"]').prop("disabled", false);
+              $('input[name="TB10610S_batchCmdDcd"]').prop("checked", false);
               // $('#btnExc').prop('disabled', false)
               tempObj = {};
             }
@@ -300,33 +324,99 @@ const TB10610Sjs = (function () {
     });
   }
 
+  /**
+   * 현재배치 작업상태에 따라서 가능한 배치명령컨트롤
+   * @param { String } jobStatus 작업상태
+   */
+  function radioBtnController ( jobStatus ) {
+    // |J002      |배치작업상태      |JOB_STATUS     |1        |1       |Not Running |1        |Not Running |
+    // |J002      |배치작업상태      |JOB_STATUS     |1        |2       |Waitting    |2        |Waitting    |
+    // |J002      |배치작업상태      |JOB_STATUS     |1        |3       |Running     |3        |Running     |
+    // |J002      |배치작업상태      |JOB_STATUS     |1        |4       |Complete    |4        |Complete    |
+    // |J002      |배치작업상태      |JOB_STATUS     |1        |5       |Error       |5        |Error       |
+    // |J002      |배치작업상태      |JOB_STATUS     |1        |6       |Terminate   |6        |Terminate   |
+    // |J002      |배치작업상태      |JOB_STATUS     |1        |7       |Terminated  |7        |Terminated  |
+    // |J002      |배치작업상태      |JOB_STATUS     |1        |8       |Stop        |8        |Stop        |
+
+    // |B027      |배치명령유형코드    |BATCH_CMD_DCD  |1        |1       |Batch       |1        |Batch       |
+    // |B027      |배치명령유형코드    |BATCH_CMD_DCD  |1        |2       |Forced-OK   |2        |Forced-OK   |
+    // |B027      |배치명령유형코드    |BATCH_CMD_DCD  |1        |3       |(Re)Run     |3        |(Re)Run     |
+    // |B027      |배치명령유형코드    |BATCH_CMD_DCD  |1        |4       |Kill        |4        |Kill        |
+    // |B027      |배치명령유형코드    |BATCH_CMD_DCD  |1        |5       |Brake       |5        |Brake       |
+    
+    // Not Running, Complete, Error 인 경우 Brake 가능
+    // Not Running, Error 인경우 Forced-OK 가능
+    // Complete, Error인경우 Rerun 가능
+    // Running 인 경우 Kill 가능
+
+    $('input[name="TB10610S_batchCmdDcd"]').prop('checked', false);
+    
+    // Not Running
+    if ( jobStatus === "1" ) {
+      $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+    }
+    // Waitting
+    else if ( jobStatus === "2" ) {
+
+    }
+    // Running
+    else if ( jobStatus === "3" ) {
+      $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
+      $('input[name="TB10610S_batchCmdDcd"][value="4"]').prop('disabled', false);
+    }
+    // Complete
+    else if ( jobStatus === "4" ) {
+      $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+    }
+    // Error
+    else if ( jobStatus === "5" ) {
+      $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+    }
+    // 배치프로세스 자체가 종료된 상태
+    // Terminate
+    else if ( jobStatus === "6" ) {
+
+    }
+    // Terminated
+    else if ( jobStatus === "7" ) {
+
+    }
+    // Stop
+    else if ( jobStatus === "8" ) {
+
+    }
+  }
+
   // 실행
   function excBatch() {
     let jobId = $("#TB10610S_exc_jobId").val();
     let curDate = unformatDate($("#TB10610S_exc_curDate").val());
-    let jobStatus = $('input[name="TB10610S_exc_jobSts"]:checked').val();
-    let jobSts_txt = $(
-      `input[value=${jobStatus}][name="TB10610S_exc_jobSts"]:checked`
-    )
-      .next("label")
-      .text();
+    let batchCmdDcd = $('input[name="TB10610S_batchCmdDcd"]:checked').val();
+    let batchCmdTxt = $('input[name="TB10610S_batchCmdDcd"]:checked').next('label').text();
     let confirmJobCount = $("#TB10610S_exc_cfm").val();
     let argument = $("#TB10610S_exc_argument").val();
 
     let obj = {
       jobId,
       jobName: $("#TB10610S_exc_jobName").val(),
-      jobStatus,
+      batchCmdDcd,
       curDate,
       confirmJobCount,
       argument,
     };
 
     if (jobId && curDate) {
-      if (!jobStatus) {
+      if (!batchCmdDcd) {
         Swal.fire({
           icon: "warning",
-          text: `작업상태를 확인해주세요.`,
+          text: `배치명령을 확인해주세요.`,
           confirmButtonText: "확인",
         });
         return;
@@ -336,11 +426,11 @@ const TB10610Sjs = (function () {
         icon: "question",
         title: "변경사항을 확인해주세요",
         html: `
-                        <div style="display: flex; justify-content: space-around;">
-                            <div>ARGUMENT:${argument}</div>
-                            <div>작업상태:${jobSts_txt}</div>
-                        </div>
-                    `,
+                <div style="display: flex; justify-content: space-around;">
+                    <div>ARGUMENT:${argument}</div>
+                    <div>명령유형:${batchCmdTxt}</div>
+                </div>
+              `,
         confirmButtonText: "확인",
         denyButtonText: "아니오",
         showDenyButton: true,
@@ -377,6 +467,7 @@ const TB10610Sjs = (function () {
                 }
               },
             });
+            inqBatch();
           });
         }
       });

@@ -1,16 +1,11 @@
 package com.nanuri.rams.business.assessment.tb90.tb9000;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,16 +15,13 @@ import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS402BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS810BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
-import com.nanuri.rams.business.common.vo.IBIMS403BVO;
 import com.nanuri.rams.business.common.vo.IBIMS810BVO;
 import com.nanuri.rams.business.common.vo.TB06015SVO;
-import com.nanuri.rams.business.common.vo.TB07030SVO;
 import com.nanuri.rams.com.calculation.Calculation;
 import com.nanuri.rams.com.dto.CalculationDTO;
 import com.nanuri.rams.com.dto.CalculationResultDTO;
 import com.nanuri.rams.com.dto.CalculationSumDTO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
-import com.nanuri.rams.com.utils.DateUtil;
 
 @Service
 @Transactional
@@ -46,79 +38,94 @@ public class TB9000ServiceImpl implements TB9000Service {
     private final IBIMS402BMapper ibims402bMapper;
 
     @Autowired
-	private AuthenticationFacade facade;
+    private AuthenticationFacade facade;
 
     @Override
     public int insertIBIMS810B(IBIMS997BDTO param) {
-        
+
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |1 |Batch       |1 |Batch       |
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |2 |Forced-OK   |2 |Forced-OK   |
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |3 |(Re)Run     |3 |(Re)Run     |
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |4 |Kill        |4 |Kill        |
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |5 |Brake       |5 |Brake       |
+
+        // |J002 |배치작업상태     |JOB_STATUS    |1 |1 |Not Running |1 |Not Running |
+        // |J002 |배치작업상태     |JOB_STATUS    |1 |2 |Waitting    |2 |Waitting    |
+        // |J002 |배치작업상태     |JOB_STATUS    |1 |3 |Running     |3 |Running     |
+        // |J002 |배치작업상태     |JOB_STATUS    |1 |4 |Complete    |4 |Complete    |
+        // |J002 |배치작업상태     |JOB_STATUS    |1 |5 |Error       |5 |Error       |
+        // |J002 |배치작업상태     |JOB_STATUS    |1 |6 |Terminate   |6 |Terminate   |
+        // |J002 |배치작업상태     |JOB_STATUS    |1 |7 |Terminated  |7 |Terminated  |
+        // |J002 |배치작업상태     |JOB_STATUS    |1 |8 |Stop        |8 |Stop        |
+
         int result = 0;
 
         IBIMS997BDTO data = ibims997bMapper.daemonCheckData("TB9000B");
 
-        if(data == null){
-            return result;
+        try {
+            // Running으로 변경
+            data.setJobStatus("3");
+            ibims997bMapper.updateIBIMS997B(data);
+
+            // Batch업무시작
+            IBIMS810BDTO ibims810bdto = new IBIMS810BDTO();
+
+            ibims810bdto.setStdrDt(data.getCurDate());
+
+            List<IBIMS810BDTO> select = ibims810bMapper.selectIBIMS810B(ibims810bdto);
+
+            // 이자 계산 시물레이션
+            // 태안씨가 만든 이자계산시뮬레이션 돌려야함
+            CalculationDTO calcDto = new CalculationDTO();
+            CalculationSumDTO calcSumDto = new CalculationSumDTO();
+            for (int i = 0; i < select.size(); i++) {
+                TB06015SVO inSvo = new TB06015SVO();
+
+                String prdtCd = select.get(i).getPrdtCd();
+                long excSn = select.get(i).getExcSn();
+                String stdrDt = select.get(i).getStdrDt();
+
+                inSvo.setPrdtCd(prdtCd);
+                inSvo.setExcSn(excSn);
+                inSvo.setStdrDt(stdrDt);
+
+                List<CalculationResultDTO> outCalc = new ArrayList<>();
+                outCalc = calculation.setIntrCalcSimulation(inSvo);
+                TB06015SVO getDtlInf = ibims402bMapper.getDetailInfo(inSvo);
+                String intrSnnoPrcsDcd = getDtlInf.getIntrSnnoPrcsDcd();
+                calcDto.setIntrSnnoPrcsDcd(intrSnnoPrcsDcd);
+
+                calcSumDto = calculation.totalCalculation(calcDto, outCalc);
+                select.get(i).setNrmlIntr(calcSumDto.getTotalIntr()); // 정상이자합계
+                select.get(i).setIntrAmtOvduIntr(calcSumDto.getTotalIntrOvduIntr()); // 이자연체이자 합계
+            } // end of for
+
+            IBIMS810BVO ibims810bvo = new IBIMS810BVO();
+
+            ibims810bvo.setIbims810bdtoList(select);
+
+            // 삭제
+            int delete = ibims810bMapper.deleteIBIMS810B(data.getCurDate());
+
+            // 입력
+            int insert = ibims810bMapper.insertIBIMS810B(ibims810bvo);
+
+            // 체크
+            if (delete >= 0 && insert >= 0) {
+                data.setJobStatus("4"); // complete
+                ibims997bMapper.subPreJobCount(data);
+            } else {
+                data.setJobStatus("5"); // error
+            }
+
+            // 배치업데이트
+            result = ibims997bMapper.batchUpdate(data);
         }
-
-        data.setJobStatus("1");
-        ibims997bMapper.updateIBIMS997B(data);
-        
-        int confirmJobCount = data.getConfirmJobCount(); 
-        if(confirmJobCount >= 1){
-            result = 0;
-            return result;
+        // 실패시 error 업데이트
+        catch (Exception e) {
+            data.setJobStatus("5");
+            result = ibims997bMapper.batchUpdate(data);
         }
-
-        IBIMS810BDTO ibims810bdto = new IBIMS810BDTO();
-
-        ibims810bdto.setStdrDt(data.getCurDate());
-
-        List<IBIMS810BDTO> select = ibims810bMapper.selectIBIMS810B(ibims810bdto);
-
-        // 이자 계산 시물레이션
-        // 태안씨가 만든 이자계산시뮬레이션 돌려야함
-        CalculationDTO calcDto = new CalculationDTO();
-        CalculationSumDTO calcSumDto = new CalculationSumDTO();
-        for (int i = 0; i < select.size(); i++) {
-            TB06015SVO inSvo = new TB06015SVO();
-
-            String prdtCd = select.get(i).getPrdtCd();
-            long excSn = select.get(i).getExcSn();
-            String stdrDt = select.get(i).getStdrDt();
-
-            inSvo.setPrdtCd(prdtCd);
-            inSvo.setExcSn(excSn);
-            inSvo.setStdrDt(stdrDt);
-
-            List<CalculationResultDTO> outCalc = new ArrayList<>();
-            outCalc = calculation.setIntrCalcSimulation(inSvo);
-            TB06015SVO getDtlInf = ibims402bMapper.getDetailInfo(inSvo);
-            String intrSnnoPrcsDcd = getDtlInf.getIntrSnnoPrcsDcd();
-            calcDto.setIntrSnnoPrcsDcd(intrSnnoPrcsDcd);
-
-            calcSumDto = calculation.totalCalculation(calcDto, outCalc);
-            select.get(i).setNrmlIntr(calcSumDto.getTotalIntr());                           //정상이자합계
-            select.get(i).setIntrAmtOvduIntr(calcSumDto.getTotalIntrOvduIntr());            //이자연체이자 합계
-        } // end of for
-
-        IBIMS810BVO ibims810bvo = new IBIMS810BVO();
-
-        ibims810bvo.setIbims810bdtoList(select);
-
-        // 삭제
-        int delete = ibims810bMapper.deleteIBIMS810B(data.getCurDate());
-
-        // 입력
-        int insert = ibims810bMapper.insertIBIMS810B(ibims810bvo);
-
-        // 체크
-        if(delete >= 0 && insert >= 0 ){
-            data.setJobStatus("2"); // complete
-        }else {
-            data.setJobStatus("3"); // error
-        }
-        ibims997bMapper.subPreJobCount(data);
-        //  배치업데이트
-        result = ibims997bMapper.batchUpdate(data);
 
         return result;
     }

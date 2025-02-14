@@ -1626,8 +1626,8 @@
                , A.PAI_RDMP_DCD                                      /* 원리금상환구분코드 */
                , A.PRNA_RDMP_FRQC_MNUM                               /* 원금상환주기개월수 */
                , A.DEAL_NO                                           /* 딜번호 */
-               , A.MTR_DCD                                      /* 부수안건구분코드 */
-               , A.JDGM_DCD                                    /* 심사구분코드 */
+               , A.MTR_DCD                                          /* 부수안건구분코드 */
+               , A.JDGM_DCD                                         /* 심사구분코드 */
                , A.INTR_BNAO_DCD                                     /* 이자선후취구분코드 */
                , A.INTR_RDMP_FRQC_MNUM                               /* 이자상환주기개월수 */
                , C.CTRC_CCLC_DCD                                     /* 약정해지구분코드 */
@@ -1738,6 +1738,7 @@
                   , B.TRRC_DT 							                      /*이수관일자*/
                   , B.MNGM_BDCD 						                      /*관리부점코드*/
                   , B.CHRR_EMPNO 						                      /*담당자사원번호*/
+                  , B.INTR_RDMP_FRQC_MNUM                         /*이자상환주기개월수*/
                   , (
                       SELECT EMP_NM 
                       FROM IBIMS003B 
@@ -1749,6 +1750,17 @@
                       FROM IBIMS003B 
                       WHERE EMPNO = B.SUB_CHRR_EMPNO
                   ) AS SUB_CHRR_EMPNM                             /*서브담당자명*/
+                  , (
+                    SELECT DPRT_CD
+                    FROM IBIMS003B 
+                    WHERE EMPNO = B.CHRR_EMPNO
+                  ) AS DPRT_CD
+                  , (
+                    SELECT DPRT_NM
+                    FROM IBIMS003B 
+                    WHERE EMPNO = B.CHRR_EMPNO
+                  ) AS DPRT_NM
+                  , B.TRRC_DT
               FROM IBIMS201B A
               INNER JOIN IBIMS401B B
                 ON B.PRDT_CD = A.PRDT_CD 

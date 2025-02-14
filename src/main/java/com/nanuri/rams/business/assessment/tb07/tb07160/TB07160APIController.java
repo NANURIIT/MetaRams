@@ -22,4 +22,9 @@ public class TB07160APIController {
     public TB07160SVO getTrrcInf(@RequestBody TB07160SVO param){
         return tb07160Service.getTrrcInf(param);
     }
+
+    @PostMapping(value = "/trrcRgst")
+    public int trrcRgst(@RequestBody TB07160SVO param){
+        return tb07160Service.trrcRgst(param);
+    }
 }

@@ -1195,7 +1195,8 @@ public class Calculation {
 				earlyRpCalcList = mdwyRdmpFeeCalc(calcDto, prnaCalcList);
 
 				prnaCalcList2.addAll(prnaCalcList);
-				intrCalcList2 = intrCalc(calcDto, prnaCalcList2, intrScdlList);
+				// intrCalcList2 = intrCalc(calcDto, prnaCalcList2, intrScdlList);
+				intrCalcList2 = listTypeSett(calcDto, intrScdlList);
 
 				// log.debug("\n prnaCalcList2 ::: {}", prnaCalcList2);
 				// log.debug("\n intrCalcList2 ::: {}", intrCalcList2);
@@ -1203,7 +1204,8 @@ public class Calculation {
 
 			prnaCalcList = listTypeSett(calcDto, prnaScdlList);
 
-			intrCalcList = intrCalc(calcDto, prnaCalcList, intrScdlList);
+			//intrCalcList = intrCalc(calcDto, prnaCalcList, intrScdlList);
+			intrCalcList = listTypeSett(calcDto, intrScdlList);
 
 			log.debug("intrCalcList ::: {} ", intrCalcList);
 
@@ -1411,13 +1413,14 @@ public class Calculation {
 
 				}else{														//이자상환계획정보
 
-					int prcsDnum = DateUtil.dateDiff(paramDTO.getStrtDt(), paramDTO.getEndDt());
+					int prcsDnum = DateUtil.dateDiff(paramDTO.getStrtDt(), paramDTO.getEndDt()) + 1;
 					
 					returnDTO.setPaiTypCd("2");	//2: 정상이자
 					returnDTO.setScxDcd("04");		//04: 이자상환 스케줄
 					returnDTO.setRdmpTmrd(IBIMS403BDTOList.get(i).getRdmpTmrd());
 					returnDTO.setPrarDt(paramDTO.getPrarDt());
-					returnDTO.setPrarPrna(paramDTO.getPrarPrna());
+					returnDTO.setPrarPrna(paramDTO.getTrgtAmt());
+					returnDTO.setBfBalance(paramDTO.getTrgtAmt());
 					returnDTO.setStrtDt(paramDTO.getStrtDt());
 					returnDTO.setEndDt(paramDTO.getEndDt());
 					returnDTO.setRdmpPrarIntr(paramDTO.getRdmpPrarIntr());
@@ -1930,7 +1933,8 @@ public class Calculation {
 					overduePrnaCalcRslt.setEndDt(baseDt);			//연체종료일 todo: 빈값으로 둬도 되는지 확인
 					overduePrnaCalcRslt.setPrarDt("");
 					overduePrnaCalcRslt.setAplyIrt(new BigDecimal(ovduIntrRt));
-					overduePrnaCalcRslt.setRdmpPrarIntr(ovduIntr);	//연체이자
+					// overduePrnaCalcRslt.setRdmpPrarIntr(ovduIntr);	//연체이자
+					overduePrnaCalcRslt.setRdmpPrarIntr(process_down(inCalcDTO.getIntrSnnoPrcsDcd(), ovduIntr));//연체이자
 					overduePrnaCalcRslt.setPrarPrna(prarPrna);
 					overduePrnaCalcRslt.setBfBalance(prarPrna);		//대상금액
 					ovduList.add(overduePrnaCalcRslt);
@@ -2258,6 +2262,8 @@ public class Calculation {
 		totalTrgtAmt = totalIntr.add(totalOvduIntr).add(totalTrgtAmt).add(totalPrna).add(totalMdwyRdmpFee).add(totlaMrdpPrca);
 
 		//log.debug("totlaMrdpPrca::: " + totlaMrdpPrca);
+
+		// log.debug("intrSnnoPrcsDcd ::::" + intrSnnoPrcsDcd);
 
 		totalCalcDTO.setTotalIntr(process_down(intrSnnoPrcsDcd, totalIntr));						//정상이자 합계 set
 		totalCalcDTO.setTotalIntrOvduIntr(process_down(intrSnnoPrcsDcd, totalIntrOvduIntr));		//이자연체이자 합계 set

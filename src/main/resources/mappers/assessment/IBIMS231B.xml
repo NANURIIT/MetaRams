@@ -125,6 +125,13 @@
                AND CMNS_CD_GRP = 'D005'
                AND CD_VL_ID = T1.DECD_JOB_DCD
            )                AS DECD_JOB_DCD       /* 업무구분 */
+         , (
+            SELECT CD_VL_NM
+              FROM IBIMS002B
+             WHERE 1=1
+               AND CMNS_CD_GRP = 'D006'
+               AND CD_VL_ID = T1.DECD_STTS_DCD
+           )                AS DECD_STTS_DCD      /* 결재진행상태코드 */ 
          , T1.DECD_SN       AS DECD_SN            /* 결재번호 */
       FROM IBIMS231B T1
  LEFT JOIN IBIMS003B T2
@@ -140,7 +147,7 @@
                 WHERE 1=1
                   AND DCFC_ENO = #{hndEmpno}		
          )
-           /* 현재 접속자가 상급자중 부서장 이상인 경우도 검색 가능 */
+         /* 현재 접속자가 상급자중 부서장 이상인 경우도 검색 가능 */
          OR (
             8 &gt;= SUBSTR(T2.ATH_CD, 4)
         AND T2.DPRT_CD = (

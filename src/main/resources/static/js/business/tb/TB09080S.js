@@ -268,24 +268,24 @@ const TB09080Sjs = (function () {
         width: "250",
         filter: { crules: [{ condition: "range" }] },
       },
-      {
-        title: "진행상태코드",
-        dataType: "string",
-        dataIndx: "prgSttsNm",
-        align: "center",
-        halign: "center",
-        width: "200",
-        filter: { crules: [{ condition: "range" }] },
-      },
-      {
-        title: "청구순번",
-        dataType: "string",
-        dataIndx: "clmSeq",
-        align: "right",
-        halign: "center",
-        width: "80",
-        filter: { crules: [{ condition: "range" }] },
-      },
+      // {
+      //   title: "진행상태코드",
+      //   dataType: "string",
+      //   dataIndx: "prgSttsNm",
+      //   align: "center",
+      //   halign: "center",
+      //   width: "200",
+      //   filter: { crules: [{ condition: "range" }] },
+      // },
+      // {
+      //   title: "청구순번",
+      //   dataType: "string",
+      //   dataIndx: "clmSeq",
+      //   align: "right",
+      //   halign: "center",
+      //   width: "80",
+      //   filter: { crules: [{ condition: "range" }] },
+      // },
     ];
 
     var obj = {

@@ -194,6 +194,7 @@
 												<div class="col-sm-8 input-group">
 													<input type="text" class="form-control text-right" value="0" id="TB07030S_rdmpTrgtPrna" oninput="inputNumberFormat(this);" readonly>
 													<input type="text" class="form-control text-right mg-l5" value="0" id="TB07030S_KRW_rdmpTrgtPrna" readonly>
+													<input type="hidden" id="TB07030S_orgRdmpTrgtPrna">
 												</div>
 											</div>
 										</div>
@@ -204,6 +205,7 @@
 												<div class="col-sm-8 input-group">
 													<input type="text" class="form-control text-right" id="TB07030S_nrmlIntrAmt" value="0" oninput="inputNumberFormat(this); calculator('rdmpTrgtTotAmt');" readonly>
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_nrmlIntrAmt" value="0" readonly>
+													<input type="hidden" id="TB07030S_orgNrmlIntrAmt">
 												</div>
 											</div>
 										</div>
@@ -214,6 +216,7 @@
 												<div class="col-sm-8 input-group">
 													<input type="text" class="form-control text-right" id="TB07030S_crdtGrntOvduIntAmt" value="0" oninput="inputNumberFormat(this); calculator('rdmpTrgtTotAmt');" readonly>
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_crdtGrntOvduIntAmt" value="0" readonly>
+													<input type="hidden" id="TB07030S_orgCrdtGrntOvduIntAmt">
 												</div>
 											</div>
 										</div>
@@ -224,6 +227,7 @@
 												<div class="col-sm-8 input-group">
 													<input type="text" class="form-control text-right" id="TB07030S_dealMrdpPrca" value="0" oninput="inputNumberFormat(this)" readonly>
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_dealMrdpPrca" value="0" readonly>
+													<input type="hidden" id="TB07030S_orgDealMrdpPrca">
 												</div>
 											</div>
 										</div>
@@ -234,6 +238,7 @@
 												<div class="col-sm-8 input-group">
 													<input type="text" class="form-control text-right" id="TB07030S_mrdpFeeAmt" value="0" oninput="inputNumberFormat(this)" readonly>
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_mrdpFeeAmt" value="0" readonly >
+													<input type="hidden" id="TB07030S_orgMrdpFeeAmt">
 												</div>
 											</div>
 										</div>
@@ -265,6 +270,17 @@
 													<input type="text" class="form-control text-right" id="TB07030S_rdmpPrnaSmmAmt" readonly>
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_rdmpPrnaSmmAmt" readonly>
 												</div>
+											</div>
+										</div>
+										<!-- row8 -->
+										<div class="row form-group form-inline text-left mb-1">
+											<div class="col-sm-12 text-left">
+												* 실행별 상환대상금액은 납부예정금액 기준으로 계산됩니다.
+											</div>
+										</div>
+										<div class="row form-group form-inline text-left mb-1">
+											<div class="col-sm-12 text-left">
+												* 상환대상총금액 = 상환대상원금+정상이자+연체이자+중도상환원금+수수료-미수이자 
 											</div>
 										</div>
 									</div>

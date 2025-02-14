@@ -33,7 +33,7 @@
 	</select>
 
     <select id="getloanInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
-   	  SELECT
+   	  <!-- SELECT
 			 A.BRKG_ACNO
 		   , A.ACTS_CD            
            , A.ACTS_NM            
@@ -55,7 +55,22 @@
 			 AND i401b.PRDT_LCLS_CD IN ('90', '91')
 			 ) A
 		 WHERE 1=1
-		 AND ROWNUM =1
+		 AND ROWNUM =1 -->
+      SELECT  
+          A.DEAL_NO,  /* 계약번호 */
+          A.PRDT_CD,  /* 종목코드 */
+          A.PRDT_NM,  /* 종목명 */
+          MAX(B.EPRZ_CRDL_LDG_STTS_CD) AS EPRZ_CRDL_LDG_STTS_CD,  /* 원장상태코드 */
+          SUM(C.DEAL_EXC_AMT) AS DEAL_EXC_AMT,  /* 딜 실행 금액 */
+          MAX(B.EPRZ_CRDL_CTRC_AMT) AS EPRZ_CRDL_CTRC_AMT,  /* 약정금액 */
+          MAX(B.EPRZ_CRDL_APVL_AMT) AS EPRZ_CRDL_APVL_AMT
+      FROM IBIMS201B A  
+      JOIN IBIMS401B B ON B.PRDT_CD = A.PRDT_CD  
+      JOIN IBIMS402B C ON C.PRDT_CD = B.PRDT_CD  
+      WHERE A.DEAL_NO = #{dealNo} 
+      AND B.PRDT_LCLS_CD IN ('90', '91')
+      GROUP BY A.DEAL_NO, A.PRDT_CD, A.PRDT_NM
+      ORDER BY A.PRDT_CD 
     </select>
     
     <select id="getFundInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS402BVO">
@@ -70,11 +85,11 @@
 		   FROM IBIMS402B i402b      /* 실행기본 */
 		      , IBIMS401B i401b /* 약정기본 */
         	  , IBIMS201B i201b 
-		  WHERE i402b.DEAL_NO = #{dealNo}
+		  WHERE i201b.DEAL_NO = #{dealNo}
 		    AND i402b.EXC_SN = 1
 		    AND i402b.PRDT_CD = i401b.PRDT_CD 
 		    AND i401b.PRDT_LCLS_CD IN ('10', '11', '16', '30')
-		    AND   i201b.PRDT_CD = i401b.PRDT_CD 
+		    AND i201b.PRDT_CD = i401b.PRDT_CD 
 		    AND i201b.LAST_YN = 'Y'
     </select>
     

@@ -30,8 +30,6 @@ const TB06010Sjs = (function(){
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		pqGrid();
 
-		resetSearchRequiment();
-		
 		loginUserSet();
 
 		$('#TB06010S_E022').on('change', function() {
@@ -521,10 +519,10 @@ const TB06010Sjs = (function(){
 		$('#TB06010S_mtrNm').val('');
 		$('#TB06010S_prdtCd').val('');
 		$('#TB06010S_prdtNm').val('');
-
+		$('#TB06010S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
 		$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", true);
 		$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", true);
-		
+		loginUserSet();
 		// setKRKRW('TB06010S');
 		chkDecdStep('TB06010S');
 	}
@@ -888,10 +886,17 @@ const TB06010Sjs = (function(){
 				$(":radio[name='TB06010S_sdnTrgtYn']").radioSelect(dealDetail.sdnTrgtYn);						// 셀다운대상여부
 				
 				$('#TB06010S_cnnc_prdtCd').val(dealDetail.cnncPrdtCd);											// 연결종목코드
-				$('#TB06010S_dprtCd').val(dealDetail.dprtCd);													// 담당부서코드
-				$('#TB06010S_dprtNm').val(dealDetail.dprtNm);													// 담당부서명
-				$('#TB06010S_empNo').val(dealDetail.chrrEmpno);													// 담당자코드
-				$('#TB06010S_empNm').val(dealDetail.empNm);														// 담당자명
+
+				if(isEmpty(dealDetail.chrrEmpno)){
+					loginUserSet();
+				}else{
+					$('#TB06010S_dprtCd').val(dealDetail.dprtCd);													// 담당부서코드
+					$('#TB06010S_dprtNm').val(dealDetail.dprtNm);													// 담당부서명
+					$('#TB06010S_empNo').val(dealDetail.chrrEmpno);													// 담당자코드
+					$('#TB06010S_empNm').val(dealDetail.empNm);														// 담당자명
+				}
+
+				
 				
 				if (isEmpty($('#TB06010S_res_prdtCd').val())) {
 					$('#TB06010S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
@@ -899,7 +904,6 @@ const TB06010Sjs = (function(){
 				} else {
 					$('#TB06010S_delPrdt').attr('disabled', false); // 값이 있으면 delPrdt 활성화
 					$('#TB06010S_regPrdt').attr('disabled', false); 
-
 
 					/******  딜공통 파일첨부 추가 ******/ 
 					// $('#key1').val(ibDealNo+'-'+prdtCd);

@@ -4,7 +4,7 @@ const TB10710Sjs = function () {
         pqGrid();
         fnSelectBox();
         $("#selectDate_1").val(getCurrentDate())
-        $("#selectDate_2").val(getLastDateOfCurrentMonth())
+        $("#selectDate_2").val(getCurrentDate())
         $('#disabledView').find('input').prop('disabled', true);
         // createOption();
     });
@@ -18,16 +18,6 @@ const TB10710Sjs = function () {
         return year + '-' + month + '-' + day; // YYYY-MM-DD 형식으로 반환
     }
 
-    function getLastDateOfCurrentMonth() {
-        var today = new Date();
-        var year = today.getFullYear();
-        var month = today.getMonth() + 1; // 1월은 0부터 시작하므로 +1
-
-        // month + 1월의 0번째 날짜는 month 월의 마지막 날을 반환함
-        var lastDay = new Date(year, month, 0).getDate();
-
-        return year + '-' + ('0' + month).slice(-2) + '-' + ('0' + lastDay).slice(-2);
-    }
     /*
      *  =====================PQGRID=====================
      */
@@ -145,7 +135,7 @@ const TB10710Sjs = function () {
             , {
                 title: "기업체",
                 dataType: "string",
-                dataIndx: "bzepName",
+                dataIndx: "entpNm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] }
@@ -157,6 +147,12 @@ const TB10710Sjs = function () {
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] }
+            },
+            {
+                title: "기일관리번호",
+                dataType: "string",
+                dataIndx: "dudtMngmNo",
+                hidden: true
             }
         ]
 
@@ -164,7 +160,7 @@ const TB10710Sjs = function () {
             {
                 title: "파라미터ID",
                 dataType: "string",
-                dataIndx: "aplyStrtDt",
+                dataIndx: "prmtId",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] }
@@ -172,7 +168,7 @@ const TB10710Sjs = function () {
             , {
                 title: "파라미터내용",
                 dataType: "string",
-                dataIndx: "aplyStrtDt",
+                dataIndx: "prmtCtns",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] }
@@ -236,13 +232,10 @@ const TB10710Sjs = function () {
                 , colModel: TB10710S_colModelData(1)
                 , scrollModel: { autoFit: true }
                 , editable: false
-                // , rowClick: function (event, ui) {
-                //     if(TB10710S_rowData === ui.rowData){
-                //         TB10710S_rowData = dummyData;
-                //     }else {
-                //         TB10710S_rowData = ui.rowData;
-                //     }
-                // }
+                , rowClick: function (event, ui) {
+                    console.log(ui.rowData.dudtMngmNo);
+                    getParameter(ui.rowData.dudtMngmNo);
+                }
                 , selectionModel: { type: 'row' }
             }
             , {
@@ -288,27 +281,34 @@ const TB10710Sjs = function () {
     function fnSelectBox() {
         let selectBox = getSelectBoxList(
             "TB10710S",
-            "D010",   //부서코드
+            "D010"      //부서코드
+            + "/D017",  //기일관리세부업무종류코드
             false
         );
 
-        let TB07120S_grdSelect
-
-        TB07120S_grdSelect = selectBox.filter(function (item) {
+        const D010 = selectBox.filter(function (item) {
             return item.cmnsGrpCd === "D010";
         })
 
-        let D010html;
+        const D017 = selectBox.filter(function (item) {
+            return item.cmnsGrpCd === "D017";
+        })
 
-        TB07120S_grdSelect.forEach((item) => {
+        let D010html;
+        let D017html;
+
+        D010.forEach((item) => {
             D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
         });
-
         $("#TB10710S_dprtNm").append(D010html);
-
         $('#TB10710S_dprtNm').on('change', function () {
             $('#TB10710S_dprtCd').val($('#TB10710S_dprtNm').val())
         })
+
+        D017.forEach((item) => {
+            D017html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+        });
+        $("#TB10710S_dudtMngmDtldJobKndCd").append(D017html);
 
     }
 
@@ -383,7 +383,44 @@ const TB10710Sjs = function () {
             }
         });
 
+    }
+    
+    /**
+     * 해당 내역 파라미터 조회
+     * @param {String} dudtMngmNo 기일관리번호
+     */
+    function getParameter( dudtMngmNo ) {
 
+        let paramData = dudtMngmNo
+
+        $.ajax({
+            type: "POST",
+            url: `/TB10710S/getParameter`,
+            contentType: "application/json; charset=UTF-8",
+            data: paramData,
+            dataType: "json",
+            success: function (data) {
+                if (data.length > 0) {
+                    let detail = $('#TB10710S_colModel2').pqGrid('instance')
+                    detail.setData(data);
+                    detail.getData();
+                } else {
+                    Swal.fire({
+                        icon: 'warning'
+                        , text: "조회된 정보가 없습니다!"
+                        , confirmButtonText: "확인"
+                    });
+                    TB10710S_resetPqGrid("TB10710S_colModel2");
+                }
+            }, error: function () {
+                Swal.fire({
+                    icon: 'error'
+                    , title: "Error!"
+                    , text: "정보 조회에 실패하였습니다."
+                    , confirmButtonText: "확인"
+                });
+            }
+        });
 
     }
 

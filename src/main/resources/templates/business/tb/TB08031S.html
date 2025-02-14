@@ -95,7 +95,7 @@
 								<label class="col-sm-1 col-form-label">최종수정일자</label>
 								<div class="col-sm-2 text-left">
 									<input type="text" class="form-control" id="TB08031S_fnMdfyDt" readonly>
-									<!-- <input type="text" class="form-control" id="TB08031S_sn" hidden="true"> -->
+									<input type="hidden" id="TB08031S_sn">
 								</div>
 							</div>
 						</div>
@@ -118,13 +118,13 @@
 								<label class="col-sm-1 col-form-label">사업구분 상세</label>
 								<div class="col-sm-3">
 									<select class="col-sm-12 form-control" id="TB08031S_I021">
-										<option>선택</option>
+										<option value="">선택</option>
 									</select>
 								</div>
 								<label class="col-sm-1 col-form-label">진행상태</label>
 								<div class="col-sm-3">
 									<select class="col-sm-12 form-control" id="TB08031S_I011">
-										<option>선택</option>
+										<option value="">선택</option>
 									</select>
 								</div>
 							</div>
@@ -149,7 +149,7 @@
 								<label class="col-sm-1 col-form-label">당사주선구분</label>
 								<div class="col-sm-3">
 									<select class="col-sm-12 form-control" id="TB08031S_T002">
-										<option>선택</option>
+										<option value="">선택</option>
 									</select>
 								</div>
 								<label class="col-sm-1 col-form-label">당사주선금액</label>
@@ -167,14 +167,14 @@
 								<label class="col-sm-1 col-form-label">금리구분코드</label>
 								<div class="col-sm-3 form-inline">
 									<select class="col-sm-12 form-control" id="TB08031S_I033">
-										<option>선택</option>
+										<option value="">선택</option>
 									</select>
 									<!-- <input type="text" class="col-sm-9 form-control border-left-none" id="TB08031S_InvstRvnRtCcdInput"> -->
 								</div>
 								<label class="col-sm-1 col-form-label">기준금리</label>
 								<div class="col-sm-3 form-inline">
 									<select class="col-sm-3 form-control" id="TB08031S_S003">
-										<option>선택</option>
+										<option value="">선택</option>
 									</select>
 									<input type="text" class="col-sm-9 form-control text-right border-left-none"
 										id="TB08031S_BitrKindCdInput" onkeyup="inputNumberFormater(this);" value="0.00">
@@ -202,7 +202,7 @@
 								<label class="col-sm-1 col-form-label">업무팀</label>
 								<div class="col-sm-3">
 									<select class="col-sm-12 form-control" id="TB08031S_D010">
-										<option>선택</option>
+										<option value="">선택</option>
 									</select>
 								</div>
 								<label class="col-sm-1 col-form-label">목표수익률(%)</label>
@@ -3028,7 +3028,7 @@
 													<div class="col-sm-12">
 														<div class="ibox">
 															<div class="ibox-title">
-																<h5>▶&nbsp;대출계좌</h5>
+																<h5>▶&nbsp;기업여신</h5>
 															</div>
 															<div class="ibox-content">
 																<!-- <table class="table table-bordered table-hover result" id="">
@@ -3067,7 +3067,7 @@
 													<div class="col-sm-12">
 														<div class="ibox">
 															<div class="ibox-title">
-																<h5>▶&nbsp;수익증권</h5>
+																<h5>▶&nbsp;투자자산</h5>
 															</div>
 															<div class="ibox-content">
 																<!-- <table class="table table-bordered table-hover result" id="">

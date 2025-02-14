@@ -19,4 +19,12 @@ public interface TB10510Service {
 
 	// 배치 스케줄러 관리 삭제
 	public int delBatch(IBIMS995BVO input);
+	
+	// 배치 스케줄러 실행
+	public boolean startBatchScheduler();
+
+	//배치 스케줄러 중지
+	public boolean stopBatchScheduler();
+
+	public boolean isBatchScheduler();
 }

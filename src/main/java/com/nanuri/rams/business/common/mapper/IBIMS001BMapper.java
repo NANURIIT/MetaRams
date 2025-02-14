@@ -14,7 +14,7 @@ public interface IBIMS001BMapper {
 	
 	public List<IBIMS001BVO> getCommonCodeName();							
 	
-	public List<IBIMS001BVO> getGroupCodeInfoList(String cmnsCdGrp); 								// 그룹코드정보 리스트 가져오기
+	public List<IBIMS001BVO> getGroupCodeInfoList(IBIMS001BDTO param); 								// 그룹코드정보 리스트 가져오기
 
 	public Optional<IBIMS001BVO> getGroupCodeInfo(String cmnsCdGrp);
 

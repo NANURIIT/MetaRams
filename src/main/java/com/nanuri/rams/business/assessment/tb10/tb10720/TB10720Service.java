@@ -13,10 +13,6 @@ public interface TB10720Service {
     // 마감관리 개시/마감 실행
     public int updateTB10720S(IBIMS998BVO input);
 
-	public void startBatchScheduler();
-
-	public void stopBatchScheduler();
-
 	public void runBatchJob() throws Exception ;
     
 }

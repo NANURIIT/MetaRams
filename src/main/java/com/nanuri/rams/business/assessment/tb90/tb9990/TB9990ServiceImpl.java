@@ -32,43 +32,40 @@ public class TB9990ServiceImpl implements TB9990Service {
 
         IBIMS997BDTO data = ibims997bMapper.daemonCheckData("TB9990B");
 
-        if (data == null) {
-            return result;
+        try {
+            data.setJobStatus("3");
+            ibims997bMapper.updateIBIMS997B(data);
+
+            String selectResult;
+            String select = ibims999bMapper.selectDD1AF();
+            selectResult = select;
+
+            if (selectResult == null || selectResult.equals("")) {
+                result = -1;
+                return result;
+            }
+
+            // 삭제
+            int delete = ibims999bMapper.delete();
+
+            // 입력
+            int insert = ibims999bMapper.insert(selectResult);
+
+            // 체크
+            if (delete >= 0 && insert >= 0) {
+                data.setJobStatus("4"); // complete
+                ibims997bMapper.subPreJobCount(data);
+            } else {
+                data.setJobStatus("5"); // error
+            }
+            // 배치업데이트
+            result = ibims997bMapper.batchUpdate(data);
         }
 
-        data.setJobStatus("1");
-        ibims997bMapper.updateIBIMS997B(data);
-
-        int confirmJobCount = data.getConfirmJobCount();
-        if (confirmJobCount >= 1) {
-            result = 0;
-            return result;
+        catch (Exception e) {
+            data.setJobStatus("5"); // error
+            result = ibims997bMapper.batchUpdate(data);
         }
-
-        String selectResult;
-        String select = ibims999bMapper.selectDD1AF();
-        selectResult = select;
-
-        if (selectResult == null || selectResult.equals("")) {
-            result = -1;
-            return result;
-        }
-
-        // 삭제
-        int delete = ibims999bMapper.delete();
-
-        // 입력
-        int insert = ibims999bMapper.insert(selectResult);
-
-        // 체크
-        if (delete >= 0 && insert >= 0) {
-            data.setJobStatus("2"); // complete
-        } else {
-            data.setJobStatus("3"); // error
-        }
-        ibims997bMapper.subPreJobCount(data);
-        // 배치업데이트
-        result = ibims997bMapper.batchUpdate(data);
 
         return result;
     }
