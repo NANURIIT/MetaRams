@@ -382,7 +382,12 @@
 		                             (SELECT COUNT(*) 
 		                                FROM IBIMS997B J 
 		                               WHERE J.CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
-		                                 AND J.JOB_ID = #{jobId} 
+		                                 AND J.JOB_ID IN (
+					                                      SELECT PRE_JOB_ID
+					                                        FROM IBIMS996B
+					                                       WHERE 1=1
+					                                         AND JOB_ID = #{jobId}
+					                                     )
 		                                 AND J.JOB_STATUS = (SELECT CD_VL_ID 
 		                                                       FROM IBIMS002B 
 		                                                      WHERE CMNS_CD_GRP = 'J002' 
@@ -436,7 +441,12 @@
                    (SELECT COUNT(*) 
                       FROM IBIMS997B J 
                      WHERE J.CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
-                       AND J.JOB_ID = #{jobId} 
+                       AND J.JOB_ID IN (
+                                        SELECT PRE_JOB_ID
+                                          FROM IBIMS996B
+                                         WHERE 1=1
+                                           AND JOB_ID = #{jobId}
+                                       )
                        AND J.JOB_STATUS = (SELECT CD_VL_ID 
 					                         FROM IBIMS002B 
 					                        WHERE CMNS_CD_GRP = 'J002' 

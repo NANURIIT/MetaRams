@@ -92,7 +92,8 @@ public class BatchScheduleService {
         // 선행배치중에 STOP 상태 있는지 확인
         for(IBIMS997BDTO preBatch : preList) {
         	if("8".equals(preBatch.getJobStatus())  ) {
-        		log.info("PRE BATCH JOB_STATUS STOP. JOB_ID : " + jobId + "PRE_BATCH_ID : " + preBatch.getJobId());
+        		log.info("선행배치 STOP 상태. Job 실행대기");
+        		log.info("PRE BATCH JOB_STATUS STOP. JOB_ID : " + jobId + " PRE_BATCH_ID : " + preBatch.getJobId());
         		return;
         	}
         }

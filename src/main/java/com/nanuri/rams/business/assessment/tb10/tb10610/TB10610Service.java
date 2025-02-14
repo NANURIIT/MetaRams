@@ -18,6 +18,4 @@ public interface TB10610Service {
 
 	// 배치 스케줄러 모니터링 confirm 수정
     public int updateConfirm(IBIMS997BVO input);
-
-	public boolean killtask();
 }
