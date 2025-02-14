@@ -220,7 +220,6 @@ public class TB07030ServiceImpl implements TB07030Service {
 				calcSumDto.setTotlaMrdpPrca(sumDto.getTotlaMrdpPrca());
 			}
 
-
 		}//end of for
 
 		ibims403lst.sort(Comparator.comparing(IBIMS403BVO::getTrgtAmt, Comparator.reverseOrder()).thenComparing(IBIMS403BVO::getStrtDt)
