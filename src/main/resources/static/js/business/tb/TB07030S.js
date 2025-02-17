@@ -621,26 +621,26 @@ const TB07030Sjs = (function () {
   function save() {
     fValid = 1;
 
-    let rkfrDt = uncomma($("#TB07030S_prarDt").val()); // 기산일자
-    let aplcExchR = $("#TB07030S_aplcExchR").val(); // 적용환율
-    let rdmpTrgtPrna = uncomma($("#TB07030S_rdmpTrgtPrna").val()); // 상환대상원금
-    let nrmlIntAmt = uncomma($("#TB07030S_nrmlIntrAmt").val()); // 정상이자
-    let crdtGrntOvduIntAmt = uncomma($("#TB07030S_crdtGrntOvduIntAmt").val()); // 연체이자
-    let dealMrdpPrca = uncomma($("#TB07030S_dealMrdpPrca").val()); // 중도상환원금
-    let mrdpFeeAmt = uncomma($("#TB07030S_mrdpFeeAmt").val()); // 중도상환수수료
-    let rcvbIntrSmmAmt = uncomma($("#TB07030S_rcvbIntrSmmAmt").val()); // 미수이자합계
-    let exmptSmmAmt = uncomma($("#TB07030S_exmptSmmAmt").val()); // 면제금액합계
-    let rdmpPrnaSmmAmt = uncomma($("#TB07030S_rdmpPrnaSmmAmt").val()); // 상환대상총금액
-    let trCrryCd = $("#TB07030S_I027").val(); // 통화구분
-    let rctmLgdNm = $("#TB07030S_rctmLgdNm").val(); // 입금원장명
-    let rclmDvsnCd = $("#TB07030S_R006").val(); // 회수구분
-    let bcncNm = $("#TB07030S_bcncNm").val(); // 거래처명
-    let intlEchmYn = $("input[name=intlEchmYn]:checked").val(); // 내부환전여부
-    let ovrsFwdgYn = $("input[name=ovrsFwdgYn]:checked").val(); // 해외송금여부
-    let apvlStfno = $("#TB07030S_empNo").val(); // 승인직원번호
-    let dealCashAmt = uncomma($("#TB07030S_dealCashAmt").val()); // 현금입금
-    let dealAltnAmt = uncomma($("#TB07030S_dealAltnAmt").val()); // 은행입금
-    let acptPtclSmtlAmt = uncomma($("#TB07030S_acptPtclSmtlAmt").val()); // 수납내역합계
+    let rkfrDt = uncomma($("#TB07030S_prarDt").val());                          // 기산일자
+    let aplcExchR = $("#TB07030S_aplcExchR").val();                             // 적용환율
+    let rdmpTrgtPrna = uncomma($("#TB07030S_rdmpTrgtPrna").val());              // 상환대상원금
+    let nrmlIntAmt = uncomma($("#TB07030S_nrmlIntrAmt").val());                 // 정상이자
+    let crdtGrntOvduIntAmt = uncomma($("#TB07030S_crdtGrntOvduIntAmt").val());  // 연체이자
+    let dealMrdpPrca = uncomma($("#TB07030S_dealMrdpPrca").val());              // 중도상환원금
+    let mrdpFeeAmt = uncomma($("#TB07030S_mrdpFeeAmt").val());                  // 중도상환수수료
+    let rcvbIntrSmmAmt = uncomma($("#TB07030S_rcvbIntrSmmAmt").val());          // 미수이자합계
+    let exmptSmmAmt = uncomma($("#TB07030S_exmptSmmAmt").val());                // 면제금액합계
+    let rdmpPrnaSmmAmt = uncomma($("#TB07030S_rdmpPrnaSmmAmt").val());          // 상환대상총금액
+    let trCrryCd = $("#TB07030S_I027").val();                                   // 통화구분
+    let rctmLgdNm = $("#TB07030S_rctmLgdNm").val();                             // 입금원장명
+    let rclmDvsnCd = $("#TB07030S_R006").val();                                 // 회수구분
+    let bcncNm = $("#TB07030S_bcncNm").val();                                   // 거래처명
+    let intlEchmYn = $("input[name=intlEchmYn]:checked").val();                 // 내부환전여부
+    let ovrsFwdgYn = $("input[name=ovrsFwdgYn]:checked").val();                 // 해외송금여부
+    let apvlStfno = $("#TB07030S_empNo").val();                                 // 승인직원번호
+    let dealCashAmt = uncomma($("#TB07030S_dealCashAmt").val());                // 현금입금
+    let dealAltnAmt = uncomma($("#TB07030S_dealAltnAmt").val());                // 은행입금
+    let acptPtclSmtlAmt = uncomma($("#TB07030S_acptPtclSmtlAmt").val());        // 수납내역합계
 
     // 체크된 상환대상내역에서 처리완료여부, 처리일시 추가
     let bfAddList = grdRdmpTrgtDtl.getData();
@@ -655,7 +655,7 @@ const TB07030Sjs = (function () {
         if(item.paiTypCd === "2"){  //정상이자
           item.prcsIntrAmt = item.pmntPrarAmt;
         }else{                      //원금/중도상환원금/중도상환수수료.... todo:: 정상이자 외 연체금도 이자로 들어가야 하는지?
-            item.prcsAmt = item.pmntPrarAmt;
+          item.prcsAmt = item.pmntPrarAmt;
         }
 
         addList.push(item);
