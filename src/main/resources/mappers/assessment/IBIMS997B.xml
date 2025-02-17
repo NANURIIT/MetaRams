@@ -499,6 +499,26 @@
 		   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD')) 
     </select>
     
+    <update id="updateBatchCmdDcd" parameterType="map">
+    	UPDATE IBIMS997B
+    	   SET BATCH_CMD_DCD = #{batchCmdDcd}
+    	 WHERE 1=1
+    	   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
+    	   AND JOB_ID = #{jobId}
+    </update>
+    
+    <select id="getBatchScheduleStatus" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
+    	SELECT i995b.JOB_ID             /* 배치JOB MASTER의 JOB ID */
+		     , i995b.CONFIRM_YN         /* 배치JOB MASTER의 CONFIRM 작업 유무 */
+		     , i997b.CUR_DATE           /* 배치JOB 스케줄러의 당일일자 */
+		     , i997b.JOB_STATUS         /* 배치JOB 스케줄러의 작업 상태 */
+		  FROM IBIMS995B i995b              /* 배치JOB MASTER 테이블 */
+		  LEFT JOIN IBIMS997B i997b         /* 배치JOB 스케줄러 테이블 */
+		    ON i995b.JOB_ID = i997b.JOB_ID
+		 WHERE 1=1
+		   AND i997b.CUR_DATE = #{date} /* 당일일자 */
+	</select>
+    
 
 </mapper>
     
