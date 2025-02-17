@@ -17,6 +17,8 @@ public class IBIMS995BDTO {
     private String         objectName;                             // SOURCE FULL NAME
     private String         argument;                               // ARGUMENT 프로그램에 전달될 ARGUMENT
     private String         confirmYn;                              // CONFIRM_YN CONFIRM 작업 유무 DEFAULT 'N'
+    private String         jobRunTypeDcd;                          // 작업실행방법구분코드
+    private String         jobRunStrtTime;                         // JOB 시작조건시각
     private String         description;                            // 작업 설명
     private String         registerDay;                            // 최초 등록일
     private String         lastUpdateDay;                          // 최종 수정일
@@ -26,6 +28,4 @@ public class IBIMS995BDTO {
     private String         hndTrId;                                // 조작거래ID
     private String         guid;                                   // GUID
     
-    private String         execFrqc;                               // 실행주기
-    private String         execTm;                                 // 실행시간
 }

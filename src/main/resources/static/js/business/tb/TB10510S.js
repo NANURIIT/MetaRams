@@ -19,11 +19,21 @@ const TB10510Sjs = (function () {
      * SelectBox
      *******************************************************************/
     function selectBox() {
-        getSlcBx = getSelectBoxList('TB10510S', 'X002', false);    // 작업상태코드
+        getSlcBx = getSelectBoxList('TB10510S', 'J004' + '/J003', false);    // 작업상태코드
 
-        objSlc.X002 = getSlcBx.filter(it => it.cmnsGrpCd === 'X002');
+        objSlc.J003 = getSlcBx.filter(it => it.cmnsGrpCd === 'J003');
+        objSlc.J004 = getSlcBx.filter(it => it.cmnsGrpCd === 'J004');
 
-        objSlc.X002.forEach(item => {
+        objSlc.J003.forEach(item => {
+            $('#TB10510S_jobRunTypeDcd').append(
+                $('<option>', {
+                    value: item.cdValue,
+                    text: `[${item.cdValue}] ${item.cdName}`
+                })
+            );
+        });
+
+        objSlc.J004.forEach(item => {
             $('#TB10510S_rgst_jobType').append(
                 $('<option>', {
                     value: item.cdValue,
@@ -31,6 +41,13 @@ const TB10510Sjs = (function () {
                 })
             );
         });
+    }
+
+    function clockpickerCtrl () {
+        $('#TB10510S_jobRunStrtTime').on('input', function () {
+            const val = $(this).val()
+            // if
+        })
     }
 
     /*******************************************************************
@@ -73,10 +90,10 @@ const TB10510Sjs = (function () {
                     type: "select",
                     valueIndx: "cdValue",
                     labelIndx: "cdName",
-                    options: objSlc.X002
+                    options: objSlc.J004
                 },
                 render: function (ui) {
-                    let fSel = objSlc.X002.find(({ cdValue }) => cdValue == ui.cellData);
+                    let fSel = objSlc.J004.find(({ cdValue }) => cdValue == ui.cellData);
                     return fSel ? fSel.cdName : ui.cellData;
                 },
             },
