@@ -222,6 +222,7 @@ const TB07030Sjs = (function () {
         dataIndx: "paiTypCd",
         halign: "center",
         align: "left",
+        width: "10%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
