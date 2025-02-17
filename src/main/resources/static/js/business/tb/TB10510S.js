@@ -141,7 +141,7 @@ const TB10510Sjs = (function () {
 			{
 				title: "실행 주기",
 				dataType: "string",
-				dataIndx: "execFrqc",
+				dataIndx: "jobRunTypeDcd",
 				halign: "center",
 				align: "center",
 				// width    : '10%',
@@ -150,7 +150,7 @@ const TB10510Sjs = (function () {
 			{
 				title: "실행 시간",
 				dataType: "string",
-				dataIndx: "execTm",
+				dataIndx: "jobRunStrtTime",
 				halign: "center",
 				align: "center",
 				// width    : '10%',
@@ -274,8 +274,8 @@ const TB10510Sjs = (function () {
                                 $('#TB10510S_rgst_cfm').val(rd.confirmYn)
                                 $('#TB10510S_rgst_dscrp').val(rd.description)
 								
-								$('#TB10510S_execFrqc').val(rd.execFrqc)
-								$('#TB10510S_execTm').val(rd.execTm)
+								$('#TB10510S_jobRunTypeDcd').val(rd.jobRunTypeDcd)
+								$('#TB10510S_jobRunStrtTime').val(rd.jobRunStrtTime)
 
                                 rd.rowType = 'M'
 
@@ -627,8 +627,8 @@ const TB10510Sjs = (function () {
         $('#TB10510S_rgst_cfm').val('0')
         $('#TB10510S_rgst_dscrp').val('')
 		
-		$('#TB10510S_execFrqc').val('')
-		$('#TB10510S_execTm').val('')
+		$('#TB10510S_jobRunTypeDcd').val('')
+		$('#TB10510S_jobRunStrtTime').val('')
 		
         rd = {}
     }
