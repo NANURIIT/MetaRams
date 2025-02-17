@@ -26,5 +26,8 @@ public interface TB10510Service {
 	//배치 스케줄러 중지
 	public boolean stopBatchScheduler();
 
+	// 배치 스케줄러 상태확인
 	public boolean isBatchScheduler();
+
+	public void batchExecuteService(IBIMS995BVO input);
 }

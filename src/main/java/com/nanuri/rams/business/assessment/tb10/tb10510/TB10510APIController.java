@@ -34,9 +34,15 @@ public class TB10510APIController {
     }
     
     // 배치 스케줄러 관리 실행
-    @PostMapping("/excBatch")
+    /*@PostMapping("/excBatch")
     public int excBatch(@RequestBody IBIMS995BVO input){
         return tb10510svc.excBatch(input);
+    }*/
+
+    // 배치 스케줄러 관리 실행
+    @PostMapping("/excBatch")
+    public void excBatch(@RequestBody IBIMS995BVO input){
+    	tb10510svc.batchExecuteService(input);
     }
 
     // 배치 스케줄러 관리 삭제

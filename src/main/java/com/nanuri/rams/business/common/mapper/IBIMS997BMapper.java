@@ -54,5 +54,7 @@ public interface IBIMS997BMapper {
 	public List<IBIMS997BDTO> selectListPreBatch(@Param("curDate") String curDate, @Param("jobId") String jobId);
 
 	public void updateBatchCmdDcd(@Param("curDate") String curDate, @Param("jobId") String jobId, @Param("batchCmdDcd") String batchCmdDcd);
+
+	public void deleteBatchSchedule(BatchMasterVo data);
 	
 }

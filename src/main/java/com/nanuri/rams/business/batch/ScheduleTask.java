@@ -1,5 +1,7 @@
 package com.nanuri.rams.business.batch;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -65,36 +67,61 @@ public class ScheduleTask {
 	Job DAILY_WORK_END_BATCH;
     */
     
-	public void batchExecuteService(String date) throws Exception{
+	public void batchExecuteService(String date) {
     	
 		log.info( "################################################################################" );
-		log.info( "REGIST_BATCH_SCHEDULE ==> START");
+		log.info( "BATCH_EXECUTE_SERVICE ==> START");
 		log.info( "################################################################################" );
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Calendar c1 = Calendar.getInstance();
+		String strToday = sdf.format(c1.getTime());
 		
 		List<BatchMasterVo> batchList = batchScheduleService.getBatchScheduleStatus(date);
 		
-		
-		
-		
-		
-		
-		// 기존 스케줄 중지 및 초기화
-        scheduledTasks.values().forEach(future -> future.cancel(false));
-        scheduledTasks.clear();
-		
-        for (BatchMasterVo data : batchList) {
-            if (!scheduledTasks.containsKey(data.getJobId())) {
-                scheduleBatch(data); // 새로운 배치만 추가
-            }
-        }
+		// 오늘날짜인지 확인
+		if(strToday.equals(date)) { // 오늘날짜이면 실행까지 해야함	
+			for (BatchMasterVo data : batchList) {
+				String jobId = data.getJobId();
+				
+				// Not Running 상태인 Job만
+				if("1".equals(data.getJobStatus()) || (data.getJobStatus() == null && data.getCurDate() == null)) {
+					// 1. 예약된 배치 스케줄 취소
+					stopBatch(data.getCurDate(), jobId);
+				    
+				    // 2. 배치 스케줄러 데이터 삭제
+				    ibims997bMapper.deleteBatchSchedule(data);
+				    
+				    // 3. 배치메인의 ConfirmJob 확인
+				    if("Y".equals(data.getConfirmYn())) {
+				    	// 4. 배치 스케줄러 추가
+				    	scheduleBatch(data);
+				    }
+				}
+			}
+			
+		}else {	// 아니면 스케줄러 DB만 추가
+			for (BatchMasterVo data : batchList) {
+				stopBatch(data.getCurDate(), data.getJobId());
+				
+				// 배치 스케줄러 데이터 삭제
+				ibims997bMapper.deleteBatchSchedule(data);
+				
+				if("Y".equals(data.getConfirmYn())) {
+					// merge notrunning 데이터 추가
+					data.setJobStatus("1");	//1:Not Running
+		            ibims997bMapper.mergeBatchNotRunning(data);
+				}
+			}
+		}
 		
 		log.info( "################################################################################" );
-		log.info( "REGIST_BATCH_SCHEDULE ==> END");
+		log.info( "BATCH_EXECUTE_SERVICE ==> END");
 		log.info( "################################################################################" );
 	}
     
     //TODO: 동적스케줄링
-    @Scheduled(cron="0 0/28 * * * *", zone="Asia/Seoul") //TEST
+    @Scheduled(cron="0 0 2 * * *", zone="Asia/Seoul") //TEST
 	public void batchScheduleService() throws Exception{
     	
     	if (!batchRunning) {

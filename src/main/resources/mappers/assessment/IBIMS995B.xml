@@ -117,4 +117,23 @@
 	     , EXEC_TM       /* 실행 시간                    */
 	  FROM IBIMS995B;
   	</select>
+  	
+  	<select id="getBatchScheduleStatus" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
+    	SELECT A.JOB_ID             /* 배치JOB MASTER의 JOB ID */
+    	     , A.JOB_NAME
+    	     , A.JOB_TYPE
+    	     , A.OBJECT_NAME
+    	     , A.ARGUMENT
+		     , A.CONFIRM_YN         /* 배치JOB MASTER의 CONFIRM 작업 유무 */
+		     , A.EXEC_TM            /* 배치JOB MASTER의 실행시간 */
+		     , B.CUR_DATE           /* 배치JOB 스케줄러의 당일일자 */
+		     , B.JOB_STATUS         /* 배치JOB 스케줄러의 작업 상태 */
+		  FROM IBIMS995B A              /* 배치JOB MASTER 테이블 */
+		  LEFT JOIN IBIMS997B B         /* 배치JOB 스케줄러 테이블 */
+		    ON 1=1
+		   AND A.JOB_ID = B.JOB_ID
+		   AND B.CUR_DATE = #{date} /* 당일일자 */
+		 WHERE 1=1
+	</select>
+  	
 </mapper>

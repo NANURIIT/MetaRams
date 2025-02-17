@@ -129,7 +129,7 @@ public class BatchScheduleService {
 		// 끝나고 update Complete
 		// update Complete
 		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, "4"); // 4:Complete
-		ibims997bMapper.updateBatchCmdDcd(batch.getCurDate(), jobId, "Batch");	// 정상종료인경우만
+		ibims997bMapper.updateBatchCmdDcd(batch.getCurDate(), jobId, "1");	// 정상종료인경우만
 	}
 
 	

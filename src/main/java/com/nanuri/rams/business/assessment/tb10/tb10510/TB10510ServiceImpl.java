@@ -180,6 +180,14 @@ public class TB10510ServiceImpl implements TB10510Service {
 	public boolean stopBatchScheduler() {
 		return scheduleTask.stopBatchScheduling();
 	}
+	
+	@Override
+	public void batchExecuteService(IBIMS995BVO input) {
+		
+		String date = input.getCurDate();
+		
+		scheduleTask.batchExecuteService(date);
+	}
 
 	
 }
