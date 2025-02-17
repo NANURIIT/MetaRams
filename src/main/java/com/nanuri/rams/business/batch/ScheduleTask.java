@@ -65,6 +65,34 @@ public class ScheduleTask {
 	Job DAILY_WORK_END_BATCH;
     */
     
+	public void batchExecuteService(String date) throws Exception{
+    	
+		log.info( "################################################################################" );
+		log.info( "REGIST_BATCH_SCHEDULE ==> START");
+		log.info( "################################################################################" );
+		
+		List<BatchMasterVo> batchList = batchScheduleService.getBatchScheduleStatus(date);
+		
+		
+		
+		
+		
+		
+		// 기존 스케줄 중지 및 초기화
+        scheduledTasks.values().forEach(future -> future.cancel(false));
+        scheduledTasks.clear();
+		
+        for (BatchMasterVo data : batchList) {
+            if (!scheduledTasks.containsKey(data.getJobId())) {
+                scheduleBatch(data); // 새로운 배치만 추가
+            }
+        }
+		
+		log.info( "################################################################################" );
+		log.info( "REGIST_BATCH_SCHEDULE ==> END");
+		log.info( "################################################################################" );
+	}
+    
     //TODO: 동적스케줄링
     @Scheduled(cron="0 0/28 * * * *", zone="Asia/Seoul") //TEST
 	public void batchScheduleService() throws Exception{

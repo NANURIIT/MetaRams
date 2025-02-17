@@ -11,8 +11,6 @@ import com.nanuri.rams.business.common.dto.IBIMS437BDTO;
 @Service
 public interface TB09060Service {
 
-    public int insert(IBIMS997BDTO param);
-    
     //연체내역조회기본
     public List<IBIMS436BVO> getOvduDtls(IBIMS436BVO param);
     

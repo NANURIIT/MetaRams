@@ -9,6 +9,7 @@ const TB10610Sjs = (function () {
     pqGrid();
     $("#TB10610S_exc_argument").prop("disabled", true);
     $("#TB10610S_curDate").val(getToday());
+    $("#btnExc").prop("disabled", true);
   });
 
   /*******************************************************************
@@ -172,22 +173,11 @@ const TB10610Sjs = (function () {
       {
         title: "CONFIRM 상태",
         dataType: "string",
-        dataIndx: "confirmJobCount",
+        dataIndx: "confirmYn",
         halign: "center",
         align: "center",
         // width    : '10%',
         filter: { crules: [{ condition: "range" }] },
-        render: function (ui) {
-          let cellData = ui.cellData;
-          if (cellData === 0) {
-            return "확인";
-          } else if (cellData === 1) {
-            return "확인대기";
-          } else if (cellData === -1) {
-            return "-";
-          }
-          return cellData;
-        },
       },
     ];
 
@@ -245,22 +235,17 @@ const TB10610Sjs = (function () {
               let jobName = rd.jobName;
               let curDate = rd.curDate;
               let jobStatus = rd.jobStatus;
-              let confirmJobCount = rd.confirmJobCount;
+              let confirmYn = rd.confirmYn;
               let argument = rd.argument;
 
               $("#TB10610S_exc_jobId").val(jobId);
               $("#TB10610S_exc_jobName").val(jobName);
               // $('#TB10610S_exc_jobSts').val(jobStatus)
-              //console.log(typeof confirmJobCount);
-              //console.log('confirmJobCount ::: ', confirmJobCount);
+              //console.log(typeof confirmYn);
+              //console.log('confirmYn ::: ', confirmYn);
 
-              $("#TB10610S_exc_cfm").val(confirmJobCount);
-              if (confirmJobCount === 1) {
-                $("#btnExc").prop("disabled", true);
-              } else {
-                // $('#TB10610S_exc_cfm').val(confirmJobCount)
-                $("#btnExc").prop("disabled", false);
-              }
+              $("#TB10610S_exc_cfm").val(confirmYn);
+              $("#btnExc").prop("disabled", false);
               $("#TB10610S_exc_curDate").val(formatDate(curDate));
               $("#TB10610S_exc_argument").prop("disabled", true);
               if (rd.jobId === "TB9990B") {
@@ -270,9 +255,9 @@ const TB10610Sjs = (function () {
 
               radioBtnController(jobStatus)
 
-              tempObj.confirmJobCount = confirmJobCount;
+              tempObj.confirmYn = confirmYn;
 
-              console.log("confirmJobCount ::: ", confirmJobCount);
+              console.log("confirmYn ::: ", confirmYn);
 
               /*
                *  이렇게하면 밸류가 7로 지정됩니다...
@@ -287,17 +272,6 @@ const TB10610Sjs = (function () {
                 true
               );
 
-              // confirm text 변경
-              if (confirmJobCount === -1) {
-                $("#btnConfTxt").text("확인");
-                $("#btnConfirm").prop("disabled", true);
-              } else if (confirmJobCount === 1) {
-                $("#btnConfTxt").text("확인");
-                $("#btnConfirm").prop("disabled", false);
-              } else {
-                $("#btnConfTxt").text("확인");
-                $("#btnConfirm").prop("disabled", true);
-              }
             } else {
               $("#TB10610S_exc_curDate").val("");
               $("#TB10610S_exc_jobId").val("");
@@ -309,10 +283,14 @@ const TB10610Sjs = (function () {
               $("#btnConfirm").prop("disabled", false);
               $('input[name="TB10610S_batchCmdDcd"]').prop("disabled", false);
               $('input[name="TB10610S_batchCmdDcd"]').prop("checked", false);
-              // $('#btnExc').prop('disabled', false)
+              $('#btnExc').prop('disabled', true)
               tempObj = {};
             }
           });
+
+          // batSchM.on("rowUnSelect", function (evt, ui) {
+          //     $("#btnExc").prop("disabled", true);
+          // });
         } else {
           Swal.fire({
             icon: "warning",
@@ -400,7 +378,7 @@ const TB10610Sjs = (function () {
     let curDate = unformatDate($("#TB10610S_exc_curDate").val());
     let batchCmdDcd = $('input[name="TB10610S_batchCmdDcd"]:checked').val();
     let batchCmdTxt = $('input[name="TB10610S_batchCmdDcd"]:checked').next('label').text();
-    let confirmJobCount = $("#TB10610S_exc_cfm").val();
+    let confirmYn = $("#TB10610S_exc_cfm").val();
     let argument = $("#TB10610S_exc_argument").val();
 
     let obj = {
@@ -408,7 +386,7 @@ const TB10610Sjs = (function () {
       jobName: $("#TB10610S_exc_jobName").val(),
       batchCmdDcd,
       curDate,
-      confirmJobCount,
+      confirmYn,
       argument,
     };
 
@@ -485,19 +463,19 @@ const TB10610Sjs = (function () {
   function updateConfirm() {
     let jobId = $("#TB10610S_exc_jobId").val();
     let curDate = unformatDate($("#TB10610S_curDate").val());
-    let confirmJobCount;
+    let confirmYn;
     let btnConfTxt = $("#btnConfTxt").text();
 
     if (btnConfTxt === "확인대기") {
-      confirmJobCount = 1;
+      confirmYn = 1;
     } else if (btnConfTxt === "확인") {
-      confirmJobCount = 0;
+      confirmYn = 0;
     }
 
     let obj = {
       jobId,
       curDate,
-      confirmJobCount,
+      confirmYn,
     };
 
     if (jobId && curDate) {
@@ -653,7 +631,7 @@ const TB10610Sjs = (function () {
     $("#TB10610S_exc_cfm").val("");
     $("#TB10610S_exc_argument").val("");
 
-    $("#btnExc").prop("disabled", false);
+    $("#btnExc").prop("disabled", true);
     $("#btnConfirm").prop("disabled", false);
   }
 

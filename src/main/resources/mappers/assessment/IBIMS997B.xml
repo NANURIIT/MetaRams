@@ -10,7 +10,7 @@
              , OBJECT_NAME                             /* SOURCE FULL NAME */
              , ARGUMENT                                /* ARGUMENT */
              , PRE_JOB_COUNT                           /* 선행JOB건수 */
-             , CONFIRM_JOB_COUNT                       /* CONFIRM JOB 건수 */
+             , CONFIRM_YN                       /* CONFIRM JOB 건수 */
              , CHILD_PID                               /* 프로그램 PID */
              , RUN_COUNT                               /* 실행횟수 */
              , FIRST_START_TIME                        /* 최초 시작시간 */
@@ -54,7 +54,7 @@
            , OBJECT_NAME
            , ARGUMENT
            , PRE_JOB_COUNT
-           , CONFIRM_JOB_COUNT
+           , CONFIRM_YN
            , CHILD_PID
            , RUN_COUNT
            , FIRST_START_TIME
@@ -74,7 +74,7 @@
 			                      FROM IBIMS999B
                         ))
          AND PRE_JOB_COUNT <![CDATA[ < ]]> 1
-         AND CONFIRM_JOB_COUNT <![CDATA[ < ]]> 1
+         AND CONFIRM_YN <![CDATA[ < ]]> 1
          AND ROWNUM = 1;
     
     </select>
@@ -98,7 +98,7 @@
            , OBJECT_NAME
            , ARGUMENT
            , PRE_JOB_COUNT
-           , CONFIRM_JOB_COUNT
+           , CONFIRM_YN
            , CHILD_PID
            , RUN_COUNT
            , FIRST_START_TIME
@@ -130,7 +130,7 @@
                 , OBJECT_NAME                             /* SOURCE FULL NAME */
                 , ARGUMENT                                /* ARGUMENT */
                 , PRE_JOB_COUNT                           /* 선행JOB건수 */
-                , CONFIRM_JOB_COUNT                       /* CONFIRM JOB 건수 */
+                , CONFIRM_YN                       /* CONFIRM JOB 건수 */
                 , CHILD_PID                               /* 프로그램 PID */
                 , RUN_COUNT                               /* 실행횟수 */
                 , FIRST_START_TIME                        /* 최초 시작시간 */
@@ -155,7 +155,7 @@
                      FROM IBIMS996B
                     WHERE JOB_ID = #{jobId}
                   )                                       /* 선행JOB건수 */
-                , #{confirmJobCount}                      /* CONFIRM JOB 건수 */
+                , #{confirmYn}                            /* CONFIRM JOB 건수 */
                 , #{childPid}                             /* 프로그램 PID */
                 , #{runCount}                             /* 실행횟수 */
                 , #{firstStartTime}                       /* 최초 시작시간 */
@@ -176,13 +176,9 @@
             SET CUR_DATE           = #{curDate}            /* 당일일자 */
               , JOB_ID             = #{jobId}              /* JOB ID */
               , JOB_NAME           = #{jobName}            /* JOB NAME */
-              <!-- , JOB_TYPE           = #{jobType}          /* JOB TYPE */ -->
               , OBJECT_NAME        = #{objectName}         /* SOURCE FULL NAME */
-              <!-- , ARGUMENT           = #{argument}         /* ARGUMENT */ -->
               , PRE_JOB_COUNT      = #{preJobCount}        /* 선행JOB건수 */
-              <!-- , CONFIRM_JOB_COUNT  = #{confirmJobCount}    /* CONFIRM JOB 건수 */ -->
               , CHILD_PID          = #{childPid}           /* 프로그램 PID */
-              <!-- , RUN_COUNT          = #{runCount}           /* 실행횟수 */ -->
               , FIRST_START_TIME   = NVL(
                                             (
                                              SELECT NULLIF(FIRST_START_TIME, '')
@@ -221,9 +217,7 @@
     <!-- 배치 작업상태 업데이트 -->
     <update id="jobStatusUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
          UPDATE IBIMS997B
-            SET START_TIME         = ''                     /* 시작시간 */
-              , END_TIME           = ''                     /* 종료시간 */
-              , ARGUMENT           = NVL(NULLIF(#{argument}, ''),
+            SET ARGUMENT           = NVL(NULLIF(#{argument}, ''),
                                              (SELECT ARGUMENT 
                                                 FROM IBIMS997B 
                                                WHERE 1=1 
@@ -315,19 +309,12 @@
             SET START_TIME         = #{startTime}           /* 시작시간 */
               , END_TIME           = #{endTime}             /* 종료시간 */
               , JOB_STATUS         = #{jobStatus}           /* 작업상태 */
-              , PRE_JOB_COUNT         = (
+              , PRE_JOB_COUNT      = (
                                        SELECT COUNT(JOB_ID)
                                          FROM IBIMS996B
                                         WHERE JOB_ID = #{jobId}
                                      )                      /* PRE_JOB_COUNT 건수 */
-              , CONFIRM_JOB_COUNT  = (
-                                        SELECT CASE 
-                                               WHEN CONFIRM_YN = 'N' THEN -1
-                                               ELSE 1
-                                                END AS CONFIRM_YN
-                                          FROM IBIMS995B
-                                         WHERE JOB_ID = #{jobId}
-                                     )
+              , CONFIRM_YN         = #{confirmYn}           /* CONFIRM_YN */
               , HND_DETL_DTM       = SYSDATE                /* 조작상세일시 */
               , HND_EMPNO          = #{hndEmpno}            /* 조작사원번호 */
               , HND_TMNL_NO        = #{hndTmnlNo}           /* 조작단말기번호 */
@@ -341,7 +328,7 @@
      <!-- 배치JOB 스케줄러 모니터링 Confirm 수정 -->
     <update id="updateConfirm" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
          UPDATE IBIMS997B
-            SET CONFIRM_JOB_COUNT  = #{confirmJobCount}     /* CONFIRM JOB 건수 */
+            SET CONFIRM_YN         = #{confirmYn}           /* CONFIRM JOB 건수 */
               , HND_DETL_DTM       = SYSDATE                /* 조작상세일시 */
               , HND_EMPNO          = #{hndEmpno}            /* 조작사원번호 */
               , HND_TMNL_NO        = #{hndTmnlNo}           /* 조작단말기번호 */
@@ -392,7 +379,6 @@
 		                                                       FROM IBIMS002B 
 		                                                      WHERE CMNS_CD_GRP = 'J002' 
 		                                                        AND CD_VL_NM = 'Complete'))	/* 선행 JOB 개수 */
-		        , CONFIRM_JOB_COUNT = #{confirmJobCount} /* CONFIRM JOB 개수 */
 		        , CHILD_PID        = #{childPid}       /* CHILD 프로세스 PID */
 		        , RUN_COUNT        = #{runCount}       /* 프로그램 수행 횟수 */
 		        , FIRST_START_TIME = #{firstStartTime} /* 최초 기동시간 */
@@ -414,7 +400,6 @@
 		        , OBJECT_NAME       /* SOURCE FULL NAME */
 		        , ARGUMENT          /* 프로그램 ARGUMENT */
 		        , PRE_JOB_COUNT     /* 선행 JOB 개수 */
-		        , CONFIRM_JOB_COUNT /* CONFIRM JOB 개수 */
 		        , CHILD_PID         /* CHILD 프로세스 PID */
 		        , RUN_COUNT         /* 프로그램 수행 횟수 */
 		        , FIRST_START_TIME  /* 최초 기동시간 */
@@ -451,7 +436,6 @@
 					                         FROM IBIMS002B 
 					                        WHERE CMNS_CD_GRP = 'J002' 
 					                          AND CD_VL_NM = 'Complete')))	/* 선행 JOB 개수 */
-		        , #{confirmJobCount}    /* CONFIRM JOB 개수 */
 		        , #{childPid}           /* CHILD 프로세스 PID */
 		        , #{runCount}           /* 프로그램 수행 횟수 */
 		        , #{firstStartTime}     /* 최초 기동시간 */
@@ -483,7 +467,6 @@
 		     , OBJECT_NAME          /* SOURCE FULL NAME            */
 		     , ARGUMENT             /* 프로그램에 전달될 ARGUMENT */
 		     , PRE_JOB_COUNT        /* 업무프로그램에 전달될 선행JOB 건수 */
-		     , CONFIRM_JOB_COUNT    /* 업무프로그램에 전달될 CONFIRM JOB 건수 */
 		     , CHILD_PID            /* CHILD 프로세스 업무프로그램의 PID */
 		     , RUN_COUNT            /* 프로그램이 수행된 횟수      */
 		     , FIRST_START_TIME     /* 최초 기동시간              */
@@ -515,6 +498,26 @@
 		                 )
 		   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD')) 
     </select>
+    
+    <update id="updateBatchCmdDcd" parameterType="map">
+    	UPDATE IBIMS997B
+    	   SET BATCH_CMD_DCD = #{batchCmdDcd}
+    	 WHERE 1=1
+    	   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
+    	   AND JOB_ID = #{jobId}
+    </update>
+    
+    <select id="getBatchScheduleStatus" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
+    	SELECT i995b.JOB_ID             /* 배치JOB MASTER의 JOB ID */
+		     , i995b.CONFIRM_YN         /* 배치JOB MASTER의 CONFIRM 작업 유무 */
+		     , i997b.CUR_DATE           /* 배치JOB 스케줄러의 당일일자 */
+		     , i997b.JOB_STATUS         /* 배치JOB 스케줄러의 작업 상태 */
+		  FROM IBIMS995B i995b              /* 배치JOB MASTER 테이블 */
+		  LEFT JOIN IBIMS997B i997b         /* 배치JOB 스케줄러 테이블 */
+		    ON i995b.JOB_ID = i997b.JOB_ID
+		 WHERE 1=1
+		   AND i997b.CUR_DATE = #{date} /* 당일일자 */
+	</select>
     
 
 </mapper>
