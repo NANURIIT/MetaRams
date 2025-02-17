@@ -10,5 +10,8 @@ public interface IBIMS991BMapper {
 	// 기준일자조회
 	public IBIMS991BVO getBsnDt(String paramData);
 
+	// 상환예정일 휴일적용
+	public String getPrarDt(String stdrDt);
+
 	
 }

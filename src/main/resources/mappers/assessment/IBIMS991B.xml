@@ -27,5 +27,25 @@
 		WHERE 1=1
 		AND STDR_DT = #{stdrDt}
 	]]>
-    </select>       
+    </select>      
+
+	<select id="getPrarDt" parameterType="String" resultType="String">
+		SELECT 
+ 			A.DD1AF_BZ_DD   AS DD1AF_BZ_DD
+        FROM (
+        			SELECT STDR_DT AS BZ_DD
+                   , LAG(STDR_DT, 1) OVER (ORDER BY STDR_DT DESC) AS DD1AF_BZ_DD
+                FROM IBIMS991B 
+               WHERE 1=1
+                 AND HOLIDAY = '0'
+             ) A
+       WHERE 1=1
+         AND A.BZ_DD = (
+            SELECT MAX(STDR_DT)
+              FROM IBIMS991B
+              WHERE 1=1
+                AND HOLIDAY = '0'
+                AND STDR_DT <![CDATA[ <= ]]> '22000615'
+          )
+	</select>
 </mapper>

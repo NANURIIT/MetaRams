@@ -219,7 +219,13 @@ public class Calculation {
 			// input dto data setting
 			prnaCalcRstDTO.setScxDcd("02");
 			prnaCalcRstDTO.setRdmpTmrd(Integer.toString(i+1));
-			prnaCalcRstDTO.setPrarDt(DateUtil.dayAdd(itm.getEndDt(),1));
+
+			String stdrDt = DateUtil.dayAdd(itm.getEndDt(),1);
+			String prarDt = ibims991BMapper.getPrarDt(stdrDt);
+
+			//prnaCalcRstDTO.setPrarDt(DateUtil.dayAdd(itm.getEndDt(),1));
+
+			prnaCalcRstDTO.setPrarDt(prarDt);
 			prnaCalcRstDTO.setBfBalance(bfBalance);
 			if("02".equals(inCalcDTO.getPaiRdmpDcd())) {
 				prnaCalcRstDTO.setPrarPrna(process_down(inCalcDTO.getIntrSnnoPrcsDcd(), MonthlyPaymentTotal.subtract(monthlySubInterest)));
@@ -410,7 +416,13 @@ public class Calculation {
 			// input dto data setting
 			intrCalcRstDTO.setScxDcd("04");
 			intrCalcRstDTO.setRdmpTmrd(Integer.toString(i+1));
-			intrCalcRstDTO.setPrarDt(DateUtil.dayAdd(item.getEndDt(),1));
+
+			String stdrDt = DateUtil.dayAdd(item.getEndDt(),1);
+			String prarDt = ibims991BMapper.getPrarDt(stdrDt);
+
+			//intrCalcRstDTO.setPrarDt(DateUtil.dayAdd(item.getEndDt(),1));
+
+			intrCalcRstDTO.setPrarDt(prarDt);
 			intrCalcRstDTO.setPrarPrna(bfBalance);
 			intrCalcRstDTO.setBfBalance(bfBalance);										
 			intrCalcRstDTO.setStrtDt(item.getStrtDt());
@@ -1811,7 +1823,13 @@ public class Calculation {
 			intrCalcRstDTO.setPaiTypCd("2");
 			intrCalcRstDTO.setScxDcd("04");
 			intrCalcRstDTO.setRdmpTmrd(Integer.toString(item.getSeq()));
-			intrCalcRstDTO.setPrarDt(DateUtil.dayAdd(item.getEndDt(),1));
+
+			String stdrDt = DateUtil.dayAdd(item.getEndDt(),1);
+			String prarDt = ibims991BMapper.getPrarDt(stdrDt);
+
+			//intrCalcRstDTO.setPrarDt(DateUtil.dayAdd(item.getEndDt(),1));
+			intrCalcRstDTO.setPrarDt(prarDt);
+			
 			intrCalcRstDTO.setPrarPrna(bfBalance);										
 			intrCalcRstDTO.setStrtDt(item.getStrtDt());
 			intrCalcRstDTO.setEndDt(item.getEndDt());
