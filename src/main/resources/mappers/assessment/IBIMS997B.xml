@@ -379,6 +379,7 @@
 		                                                       FROM IBIMS002B 
 		                                                      WHERE CMNS_CD_GRP = 'J002' 
 		                                                        AND CD_VL_NM = 'Complete'))	/* 선행 JOB 개수 */
+		        , CONFIRM_YN       = #{confirmYn}      /* CONFIRM_YN */
 		        , CHILD_PID        = #{childPid}       /* CHILD 프로세스 PID */
 		        , RUN_COUNT        = #{runCount}       /* 프로그램 수행 횟수 */
 		        , FIRST_START_TIME = #{firstStartTime} /* 최초 기동시간 */
@@ -400,6 +401,7 @@
 		        , OBJECT_NAME       /* SOURCE FULL NAME */
 		        , ARGUMENT          /* 프로그램 ARGUMENT */
 		        , PRE_JOB_COUNT     /* 선행 JOB 개수 */
+		        , CONFIRM_YN        /* CONFIRM_YN */
 		        , CHILD_PID         /* CHILD 프로세스 PID */
 		        , RUN_COUNT         /* 프로그램 수행 횟수 */
 		        , FIRST_START_TIME  /* 최초 기동시간 */
@@ -436,6 +438,7 @@
 					                         FROM IBIMS002B 
 					                        WHERE CMNS_CD_GRP = 'J002' 
 					                          AND CD_VL_NM = 'Complete')))	/* 선행 JOB 개수 */
+		        , #{confirmYn}          /* CONFIRM_YN */
 		        , #{childPid}           /* CHILD 프로세스 PID */
 		        , #{runCount}           /* 프로그램 수행 횟수 */
 		        , #{firstStartTime}     /* 최초 기동시간 */
@@ -467,6 +470,7 @@
 		     , OBJECT_NAME          /* SOURCE FULL NAME            */
 		     , ARGUMENT             /* 프로그램에 전달될 ARGUMENT */
 		     , PRE_JOB_COUNT        /* 업무프로그램에 전달될 선행JOB 건수 */
+		     , CONFIRM_YN           /* CONFIRM_YN */
 		     , CHILD_PID            /* CHILD 프로세스 업무프로그램의 PID */
 		     , RUN_COUNT            /* 프로그램이 수행된 횟수      */
 		     , FIRST_START_TIME     /* 최초 기동시간              */
@@ -498,6 +502,21 @@
 		                 )
 		   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD')) 
     </select>
+    
+    <update id="updateBatchCmdDcd" parameterType="map">
+    	UPDATE IBIMS997B
+    	   SET BATCH_CMD_DCD = #{batchCmdDcd}
+    	 WHERE 1=1
+    	   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
+    	   AND JOB_ID = #{jobId}
+    </update>
+    
+	<delete id="deleteBatchSchedule" parameterType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
+		DELETE IBIMS997B
+		 WHERE 1=1
+		   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
+    	   AND JOB_ID = #{jobId}
+	</delete>
     
 
 </mapper>

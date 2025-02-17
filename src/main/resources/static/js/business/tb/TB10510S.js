@@ -401,10 +401,6 @@ const TB10510Sjs = (function () {
     // 실행
     function excBatch() {
 		
-		alert('데몬실행 하지않고 자동실행중..');
-		
-		return;
-		
         let curDate = unformatDate($('#TB10510S_curDate').val())
 
         console.log(curDate);
@@ -423,7 +419,8 @@ const TB10510Sjs = (function () {
         });
 
         let obj = {
-            excBat: grdData
+            excBat: grdData,
+			curDate : curDate,
         }
         console.log('obj 실행 전 ::::', obj);
 

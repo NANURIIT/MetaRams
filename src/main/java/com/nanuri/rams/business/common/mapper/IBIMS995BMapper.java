@@ -22,4 +22,6 @@ public interface IBIMS995BMapper {
 	
 	public List<BatchMasterVo> selectBatchMaster();
 
+	public List<BatchMasterVo> getBatchScheduleStatus(String date);
+
 }

@@ -34,6 +34,10 @@ public class BatchScheduleService {
 		return ibims995bMapper.selectBatchMaster();
 	}
 	
+	public List<BatchMasterVo> getBatchScheduleStatus(String date) {
+		return ibims995bMapper.getBatchScheduleStatus(date);
+	}
+	
 	public Map<String, Future<?>> getBatchExecutionTasks() {
 	    return batchExecutionTasks;
 	}
@@ -125,7 +129,9 @@ public class BatchScheduleService {
 		// 끝나고 update Complete
 		// update Complete
 		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, "4"); // 4:Complete
-        
+		ibims997bMapper.updateBatchCmdDcd(batch.getCurDate(), jobId, "1");	// 정상종료인경우만
 	}
+
+	
 
 }
