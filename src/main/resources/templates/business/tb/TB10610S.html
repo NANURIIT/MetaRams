@@ -106,7 +106,7 @@
 						<hr class="mb-3">
 						<!-- 배치실행 내역 상태 수정/실행 영역 -->
 						<div class="form-group form-inline row mb-0">
-							<div class="form-group row col-sm-9 pr-5" style="border-right: 1px solid #ccc;">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-1-5 col-form-label mb-1">기준일자</label>
 								<div class="col-sm-2 input-group mb-1 date">
 									<input type="text" class="form-control" id="TB10610S_exc_curDate" value="" placeholder="YYYY-MM-DD" disabled> 
@@ -122,7 +122,7 @@
 								</div>		
 								<div class="col-sm-1-5 input-group"></div>
 							</div>	
-							<div class="form-group row col-sm-9 pr-5" style="border-right: 1px solid #ccc;">	
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-1-5 col-form-label">ARGUMENT</label>
 								<div class="col-sm-2 input-group">
 									<input type="text" class="form-control" id="TB10610S_exc_argument">
@@ -151,10 +151,6 @@
 									<button class="btn btn-success" type="button" id="btnExc" onclick="TB10610Sjs.excBatch();"><i class="fa fa-check"></i>&nbsp;실행</button>
 								</div>		
 							</div>		
-							<div class="form-group row col-sm-2">
-								<label class="col-sm-6 col-form-label text-nowrap">CONFIRM 상태</label>
-								<button class="btn btn-success" type="button" id="btnConfirm" onclick="TB10610Sjs.updateConfirm();"><i class="fa fa-check"></i>&nbsp;<span id="btnConfTxt">확인</span></button>
-							</div>
 						</div>
 					</div>
 				</div>	

@@ -36,8 +36,8 @@ public class TB9050ServiceImpl implements TB9050Service {
             data.setJobStatus("3");
             ibims997bMapper.updateIBIMS997B(data);
 
-            int confirmJobCount = data.getConfirmJobCount();
-            if (confirmJobCount >= 1) {
+            int preJobCount = data.getPreJobCount();
+            if (preJobCount >= 1) {
                 result = 0;
                 return result;
             }

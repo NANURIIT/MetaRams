@@ -20,7 +20,7 @@ public class IBIMS997BDTO {
     private String         objectName;                             // SOURCE FULL NAME
     private String         argument;                               // 프로그램에 전달될 ARGUMENT
     private int            preJobCount;                            // 업무프로그램에 전달될 선행JOB 건수
-    private int            confirmJobCount;                        // 업무프로그램에 전달될 CONFIRM JOB 건수
+    private String         confirmYn;                              // 업무프로그램에 전달될 CONFIRM JOB 건수
     private int            childPid;                               // CHILD프로세스 즉 업무프로그램의 PID
     private int            runCount;                               // 프로그램이 수행된 횟수
     private String         firstStartTime;                         // 최초 기동시간
