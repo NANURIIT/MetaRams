@@ -22,6 +22,17 @@
 		  AND JOB_NAME LIKE #{jobName} || '%'
   	</select>
 
+    <select id="inqPreJob" parameterType="com.nanuri.rams.business.common.dto.IBIMS996BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS996BDTO">
+      SELECT PRE_JOB_ID                          /* 선행 JOB ID */
+           , JOB_ID                              /* JOB ID */
+           , PRE_JOB_NAME                        /* 선행 JOB NAME */
+           , REGISTER_DAY                        /* 최초 등록일 */
+           , LAST_UPDATE_DAY                     /* 최종 수정일 */
+        FROM IBIMS996B
+       WHERE 1=1
+         AND JOB_ID = #{jobId}
+    </select>
+
     <select id="getPreJobId" parameterType="string" resultType="string">
       SELECT JOB_ID                                  /* JOB ID */
         FROM IBIMS996B
@@ -33,32 +44,33 @@
     <insert id="insertIBIMS996B" parameterType="com.nanuri.rams.business.common.dto.IBIMS996BDTO">
         INSERT INTO IBIMS996B
               (
-                  JOB_ID                           /* 선행 JOB ID */
-                , PRE_JOB_NAME                     /* 선행 JOB NAME */
-                , JOB_ID                           /* JOB ID */
-                , JOB_NAME                         /* JOB NAME */
-                , DESCRIPTION                      /* 작업 설명 */
-                , REGISTER_DAY                     /* 최초 등록일 */
-                , LAST_UPDATE_DAY                  /* 최종 수정일 */
-                , HND_DETL_DTM                     /* 조작상세일시 */
-                , HND_EMPNO                        /* 조작사원번호 */
-                , HND_TMNL_NO                      /* 조작단말기번호 */
-                , HND_TR_ID                        /* 조작거래ID */
-                , GUID                             /* GUID */
+                  JOB_ID                                                /* 선행 JOB ID */
+                , PRE_JOB_NAME                                          /* 선행 JOB NAME */
+                , JOB_ID                                                /* JOB ID */
+                , JOB_NAME                                              /* JOB NAME */
+                , DESCRIPTION                                           /* 작업 설명 */
+                , REGISTER_DAY                                          /* 최초 등록일 */
+                , LAST_UPDATE_DAY                                       /* 최종 수정일 */
+                , HND_DETL_DTM                                          /* 조작상세일시 */
+                , HND_EMPNO                                             /* 조작사원번호 */
+                , HND_TMNL_NO                                           /* 조작단말기번호 */
+                , HND_TR_ID                                             /* 조작거래ID */
+                , GUID                                                  /* GUID */
               )
-          SELECT
-                  #{jobId}                         /* 선행 JOB ID */
-                , #{preJobName}                    /* 선행 JOB NAME */
-                , #{jobId}                         /* JOB ID */
-                , #{jobName}                       /* JOB NAME */
-                , #{description}                   /* 작업 설명 */
-                , #{registerDay}                   /* 최초 등록일 */
-                , #{lastUpdateDay}                 /* 최종 수정일 */
-                , SYSDATE                          /* 조작상세일시 */
-                , #{hndEmpno}                      /* 조작사원번호 */
-                , #{hndTmnlNo}                     /* 조작단말기번호 */
-                , #{hndTrId}                       /* 조작거래ID */
-                , #{guid}                          /* GUID */
+          VALUES (
+                  #{jobId}                                              /* 선행 JOB ID */
+                , #{preJobName}                                         /* 선행 JOB NAME */
+                , #{jobId}                                              /* JOB ID */
+                , #{jobName}                                            /* JOB NAME */
+                , #{description}                                        /* 작업 설명 */
+                , NVL(#{registerDay}, TO_CHAR(SYSDATE, 'YYYYMMDD'))     /* 최초 등록일 */
+                , NVL(#{lastUpdateDay}, TO_CHAR(SYSDATE, 'YYYYMMDD'))   /* 최종 수정일 */
+                , SYSDATE                                               /* 조작상세일시 */
+                , #{hndEmpno}                                           /* 조작사원번호 */
+                , #{hndTmnlNo}                                          /* 조작단말기번호 */
+                , #{hndTrId}                                            /* 조작거래ID */
+                , #{guid}                                               /* GUID */
+          )
     </insert>
 
     <!-- 배치JOB 선행JOB관리 수정  -->

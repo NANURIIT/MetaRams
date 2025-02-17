@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.batch.ScheduleTask;
 import com.nanuri.rams.business.common.dto.IBIMS995BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS996BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS995BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS996BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS995BVO;
 import com.nanuri.rams.business.common.vo.IBIMS997BVO;
@@ -27,6 +29,9 @@ public class TB10510ServiceImpl implements TB10510Service {
 
 	/* 배치JOB MASTER */
 	private final IBIMS995BMapper ibims995bmp;
+
+	/* 선행배치JOB */
+	private final IBIMS996BMapper ibims996bmp;
 
 	/* 배치JOB 스케줄러 */
 	private final IBIMS997BMapper ibims997bmp;
@@ -51,6 +56,14 @@ public class TB10510ServiceImpl implements TB10510Service {
 		out995bvo.setBatSch(ibims995bvo);
 
 		return out995bvo;
+	};
+
+	/**
+	 * 선행 job 조회
+	 */
+	@Override
+	public List<IBIMS996BDTO> inqPreJob ( String param ) {
+		return ibims996bmp.inqPreJob(param);
 	};
 
 	// 배치 스케줄러 관리 등록

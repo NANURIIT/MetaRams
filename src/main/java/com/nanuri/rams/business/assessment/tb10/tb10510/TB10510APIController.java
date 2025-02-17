@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nanuri.rams.business.common.dto.IBIMS995BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS996BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS995BVO;
 
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,16 @@ public class TB10510APIController {
     @PostMapping("/stopBatchScheduler")
     public boolean stopBatchScheduler() {
     	return tb10510svc.stopBatchScheduler();
+    }
+
+    /**
+     * 선행 job 조회
+     * @param param
+     * @return
+     */
+    @PostMapping("/inqPreJob")
+    public List<IBIMS996BDTO> inqPreJob (@RequestBody String param ) {
+    	return tb10510svc.inqPreJob(param);
     }
     
 }

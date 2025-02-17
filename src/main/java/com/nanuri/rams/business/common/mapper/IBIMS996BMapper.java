@@ -19,4 +19,12 @@ public interface IBIMS996BMapper {
 	public int updateIBIMS996B(IBIMS996BDTO param);
 
 	public int deleteIBIMS996B(IBIMS996BDTO param);
+
+	/**
+	 * 선행 job 리스트
+	 * @param param
+	 * @return
+	 */	
+	public List<IBIMS996BDTO> inqPreJob( String param );
+
 }

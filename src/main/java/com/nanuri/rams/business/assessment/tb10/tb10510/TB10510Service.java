@@ -1,8 +1,11 @@
 package com.nanuri.rams.business.assessment.tb10.tb10510;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.nanuri.rams.business.common.dto.IBIMS995BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS996BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS995BVO;
 
 @Service
@@ -27,4 +30,11 @@ public interface TB10510Service {
 	public boolean stopBatchScheduler();
 
 	public boolean isBatchScheduler();
+
+	/**
+	 * 선행 job 조회
+	 * @param param
+	 * @return
+	 */
+	public List<IBIMS996BDTO> inqPreJob ( String param );
 }

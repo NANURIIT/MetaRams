@@ -37,7 +37,7 @@ const TB10510Sjs = (function () {
      * PQGrid
      *******************************************************************/
     function pqGrid() {
-        // 실행금리정보
+        // 배치스케줄러
         let col_batSch = [
             //체크박스
             // { dataIndx: "chk", maxWidth: 36, minWidth: 36, align: "center", resizable: false,
@@ -159,49 +159,70 @@ const TB10510Sjs = (function () {
 						
         ];
 
+        let col_batPreJob = [
+            {
+                title: "선행 JOB ID",
+                dataType: "string",
+                dataIndx: "preJobId",
+                halign: "center",
+                align: "center",
+                filter: { crules: [{ condition: 'range' }] },
+            },
+            {
+                title: "선행 JOB NAME",
+                dataType: "string",
+                dataIndx: "preJobName",
+                halign: "center",
+                align: "center",
+                filter: { crules: [{ condition: 'range' }] },
+            },
+            {
+                title: "최초등록일",
+                dataType: "string",
+                dataIndx: "registerDay",
+                halign: "center",
+                align: "center",
+                filter: { crules: [{ condition: 'range' }] },
+            },
+            {
+                title: "최종수정일",
+                dataType: "string",
+                dataIndx: "lastUpdateDay",
+                halign: "center",
+                align: "center",
+                filter: { crules: [{ condition: 'range' }] },
+            },
+            {
+                title: "JOB ID",
+                dataType: "string",
+                dataIndx: "jobId",
+                halign: "center",
+                align: "center",
+                filter: { crules: [{ condition: 'range' }] },
+                hidden: true,
+            },
+        ]
+
         let pqGridObjs = [
             {
                 height: 400
                 , maxHeight: 400
-                , id: 'TB10720S_grd_batSch'
+                , id: 'TB10510S_grd_batSch'
                 , colModel: col_batSch
                 , numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>순번</p>" }
                 , selectionModel: { type: 'row' }
-                //   , scrollModel : { autoFit: false }
-                //   , cellClick: function (event, ui) {
-                //         //삭제버튼 인덱스 찾기
-                //         let targetDataIndx = "chk";
-                //         let dltInx = col_batSch.findIndex(col => col.dataIndx === targetDataIndx);
-
-                //         let sel = batSch.SelectRow()
-
-                //         if ( ui.colIndx === dltInx && getSel.length > 0 ){
-                //             // let getSel = sel.getSelection()
-                //             // getSel[0].rowData.rowType = ''
-                //             // getSel[0].rowData.pq_rowselect = false
-
-                //             sel.removeAll();
-                //         }
-
-                //         // console.log(event);
-
-                //         // $('input').prop('checked', false);
-                //         // console.log('event::::::::::::::::', event);
-                //         // console.log('ui::::::::::::::::', ui);
-                //         // console.log('type::::::::', ui.column.editor.type);
-                //         // if(!ui.column || !ui.column.editor || !ui.column.editor.type){
-                //         //     return;
-                //         // }
-                //         // if(ui.column.editor.type !== undefined){
-                //         //     // $('input').prop('checked', false);
-                //         // }
-                //         // ui.column.evt.target.checked = false;
-                //     },
+            },
+            {
+                height: 150
+                , maxHeight: 150
+                , id: 'TB10510S_grd_batPreJob'
+                , colModel: col_batPreJob
+                , selectionModel: { type: 'row' }
             },
         ]
         setPqGrid(pqGridObjs);
         // Grid instance
-        batSch = $("#TB10720S_grd_batSch").pqGrid('instance');
+        batSch = $("#TB10510S_grd_batSch").pqGrid('instance');
 
     }
 
@@ -224,20 +245,16 @@ const TB10510Sjs = (function () {
             data: JSON.stringify(obj),
             dataType: "json",
             beforeSend: function (xhr) {
-                // $('#btnExc').prop('disabled', false)
                 $('#TB10510S_rgst_jobId').prop('disabled', false)
                 batSch.setData([])
                 reset()
             },
             success: function (data) {
-                // console.log(data);
-                // chkEvt();
                 batSch.setData(data.batSch)
 
                 if (data && data.batSch.length > 0) {
                     batSch.setData(data.batSch)
 
-                    // let chkData = data.batSch.filter(val => val.chk === true)
                     // 그리드 rowSelect 이벤트
                     batSch.on('rowSelect', function (evt, ui) {
 
@@ -245,20 +262,8 @@ const TB10510Sjs = (function () {
                         let sel = batSch.SelectRow()
                         getSel = sel.getSelection()
 
-                        //console.log(evt);
-
-
-                        // $(ui.$tr).find()
-
-                        // console.log('ui.addList ::: ', ul);
-                        // console.log('getSel ::: ', getSel);
-                        // console.log('getSel.length ::: ', getSel.length);
-
                         if (getSel.length > 0) {
-                            // console.log('ul[0].rowData.pq_rowselect ::: ', ul[0].rowData.pq_rowselect);
-
                             if (ul[0].rowData.pq_rowselect) {
-                                // console.log('탔어?');
                                 rd = ul[0].rowData
 
                                 $('#TB10510S_rgst_jobId').val(rd.jobId)
@@ -274,12 +279,9 @@ const TB10510Sjs = (function () {
 
                                 rd.rowType = 'M'
 
-                                // console.log('추가된 rd ::: ',rd);
-
-                                // $('#btnExc').prop('disabled', true)
+                                inqPreJob();
                             }
                         } else {
-                            // $('#btnExc').prop('disabled', false)
                             $('#TB10510S_rgst_jobId').prop('disabled', false)
                             reset()
                         }
@@ -296,14 +298,27 @@ const TB10510Sjs = (function () {
         });
     }
 
+    function inqPreJob() {
+
+        let jobId = $('#TB10510S_rgst_jobId').val()
+
+        $.ajax({
+            type: "POST",
+            url: "/TB10510S/inqPreJob",
+            contentType: "application/json; charset=UTF-8",
+            data: jobId,
+            success: function (data) {
+                $('#TB10510S_grd_batPreJob').pqGrid('instance').setData(data);
+            },
+        });
+    }
+
     // 입력
     function rgstBatch() {
         let obj = {}
         let sts = rd.rowType
         let gd = batSch.getData()
         let jobId = $('#TB10510S_rgst_jobId').val()
-
-        // console.log("상태확인 ::: ", sts);
 
         if (!sts) {
             for (let i = 0; i < gd.length; i++) {
