@@ -20,6 +20,11 @@ public interface IBIMS999BMapper {
 
     public String getFormattedBzDd();
 
+    /**
+     * 기준일자의 영업일 구하기
+     * @param 
+     * @return
+     */
     public IBIMS999BDTO getBzDd(String param);
     
 }

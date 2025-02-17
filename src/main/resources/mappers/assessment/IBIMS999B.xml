@@ -23,26 +23,16 @@
 
     <!-- 기준일자의 영업일 찾기 -->
     <select id="getBzDd" parameterType="string" resultType="com.nanuri.rams.business.common.dto.IBIMS999BDTO">
-      SELECT A.BZ_DD         AS BZ_DD
-           , A.DD1AG_BZ_DD   AS DD1AG_BZ_DD
-           , A.DD2AG_BZ_DD   AS DD2AG_BZ_DD
-           , A.DD3AG_BZ_DD   AS DD3AG_BZ_DD
-           , A.DD1AF_BZ_DD   AS DD1AF_BZ_DD
-           , A.DD2AF_BZ_DD   AS DD2AF_BZ_DD
-           , A.DD3AF_BZ_DD   AS DD3AF_BZ_DD
-        FROM (SELECT STDR_DT AS BZ_DD
-                   , LEAD(STDR_DT, 1) OVER (ORDER BY STDR_DT DESC) AS DD1AG_BZ_DD
-                   , LEAD(STDR_DT, 2) OVER (ORDER BY STDR_DT DESC) AS DD2AG_BZ_DD
-                   , LEAD(STDR_DT, 3) OVER (ORDER BY STDR_DT DESC) AS DD3AG_BZ_DD
-                   , LAG(STDR_DT, 1) OVER (ORDER BY STDR_DT DESC) AS DD1AF_BZ_DD
-                   , LAG(STDR_DT, 2) OVER (ORDER BY STDR_DT DESC) AS DD2AF_BZ_DD
-                   , LAG(STDR_DT, 3) OVER (ORDER BY STDR_DT DESC) AS DD3AF_BZ_DD
-                FROM IBIMS991B 
-               WHERE 1=1
-                 AND HOLIDAY = '0'
-             ) A
+      SELECT BZ_DD         AS BZ_DD
+           , DD1AG_BZ_DD   AS DD1AG_BZ_DD
+           , DD2AG_BZ_DD   AS DD2AG_BZ_DD
+           , DD3AG_BZ_DD   AS DD3AG_BZ_DD
+           , DD1AF_BZ_DD   AS DD1AF_BZ_DD
+           , DD2AF_BZ_DD   AS DD2AF_BZ_DD
+           , DD3AF_BZ_DD   AS DD3AF_BZ_DD
+        FROM IBIMS999B
        WHERE 1=1
-         AND A.BZ_DD = (
+         AND BZ_DD = (
             SELECT MAX(STDR_DT)
               FROM IBIMS991B
               WHERE 1=1
@@ -82,7 +72,7 @@
     </delete>
 
     <select id="getFormattedBzDd" resultType="string">
-      SELECT TO_CHAR(TO_DATE(MAX(BZ_DD)), 'YYYY-MM-DD') 
+      SELECT TO_CHAR(TO_DATE(MAX(BZ_DD)), 'YYYY-MM-DD')
         FROM IBIMS999B
     </select>
 
