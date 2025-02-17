@@ -59,11 +59,11 @@ public class BatchMasterVo {
 	@Column(name = "GUID", length = 29, nullable = true, columnDefinition = "varchar(29) COMMENT 'GUID'")
 	private String guid;
 
-	@Column(name = "EXEC_FRQC", length = 10, nullable = false, columnDefinition = "varchar(10) COMMENT '실행주기'")
-	private String execFrqc;
+	@Column(name = "JOB_RUN_TYPE_DCD", length = 1, nullable = false, columnDefinition = "varchar(1) COMMENT '작업실행방법구분코드'")
+	private String jobRunTypeDcd;
 
-	@Column(name = "EXEC_TM", length = 5, nullable = false, columnDefinition = "varchar(5) COMMENT '실행시간'")
-	private String execTm;
+	@Column(name = "JOB_RUN_START_TIME", length = 6, nullable = false, columnDefinition = "varchar(6) COMMENT '실행시간'")
+	private String jobRunStartTime;
 
 	private String curDate;			//당일일자
 	private int preJobCount;		//선행 JOB 개수
