@@ -79,7 +79,7 @@
 									<label class="col-sm-1-5 col-form-label text-nowrap mb-1">CONFIRM JOB Y/N</label>
 									<div class="col-sm-2 input-group mb-1">
 										<select class="form-control" id="TB10510S_rgst_cfm">
-											<option selected>선택</option>
+											<option value="" selected>선택</option>
 											<option value="Y">Y</option>
 											<option value="N">N</option>
 										</select>
@@ -95,11 +95,18 @@
 									<!-- 상세정보영역 -->
 									<label class="col-sm-1-5 col-form-label  mb-1">실행 주기</label>
 									<div class="col-sm-2 input-group  mb-1">
-										<input type="text" class="form-control" id="TB10510S_jobRunTypeDcd">
+										<select class="form-control" id="TB10510S_jobRunTypeDcd">
+											<option value="" selected>선택</option>
+										</select>
 									</div>
 									<label class="col-sm-1-5 col-form-label mb-1">실행 시간</label>
 									<div class="col-sm-2 input-group mb-1">
-										<input type="text" class="form-control" id="TB10510S_jobRunStrtTime">
+										<div class="input-group clockpicker" data-autoclose="true" data-default="00:00:00" data-placement="bottom" data-align="left" data-twelvehour="false">
+											<input type="text" class="form-control" value="" id="TB10510S_jobRunStrtTime">
+											<span class="input-group-addon">
+												<span class="fa fa-clock-o"></span>
+											</span>
+										</div>
 									</div>
 									<label class="col-sm-1-5 col-form-label mb-1"></label>
 									<div class="col-sm-2 input-group mb-1">

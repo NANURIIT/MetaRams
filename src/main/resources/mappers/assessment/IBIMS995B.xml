@@ -4,27 +4,19 @@
 
   <!-- 배치JOB MASTER 조회  -->
 	<select id="selectIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS995BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS995BVO">
-    SELECT JOB_ID                                  /* JOB ID */
-         , JOB_NAME                                /* JOB NAME */
-         , JOB_TYPE                                /* JOB TYPE */
-         , OBJECT_NAME                             /* SOURCE FULL NAME */
-         , ARGUMENT                                /* ARGUMENT */
-         , NVL(CONFIRM_YN,'N') AS CONFIRM_YN    /* CONFIRM_YN */
-         , DESCRIPTION                             /* 작업 설명 */
-         , REGISTER_DAY                            /* 최초 등록일 */
-         , NVL(LAST_UPDATE_DAY,REGISTER_DAY) AS LAST_UPDATE_DAY /* 최종 수정일 */
-         , HND_DETL_DTM                            /* 조작상세일시 */
-         , HND_EMPNO                               /* 조작사원번호 */
-         , HND_TMNL_NO                             /* 조작단말기번호 */
-         , HND_TR_ID                               /* 조작거래ID */
-         , GUID                                    /* GUID */
-         , CASE WHEN JOB_TYPE = '1' THEN 'Dummy' 
-                WHEN JOB_TYPE = '2' THEN 'Command' 
-                ELSE ''
-            END AS JOB_TYPE_NAME                   /* JOB TYPE NAME*/
-         , EXEC_FRQC								/* 실행주기 */
-         , EXEC_TM									/* 실행시간 */
-      FROM IBIMS995B
+    SELECT T1.JOB_ID                                                    /* JOB ID */
+         , T1.JOB_NAME                                                  /* JOB NAME */
+         , T1.JOB_TYPE                                                  /* JOB TYPE */
+         , T1.OBJECT_NAME                                               /* SOURCE FULL NAME */
+         , T1.ARGUMENT                                                  /* ARGUMENT */
+         , NVL(T1.CONFIRM_YN,'N') AS CONFIRM_YN                         /* CONFIRM_YN */
+         , T1.DESCRIPTION                                               /* 작업 설명 */
+         , T1.REGISTER_DAY                                              /* 최초 등록일 */
+         , NVL(T1.LAST_UPDATE_DAY, T1.REGISTER_DAY) AS LAST_UPDATE_DAY  /* 최종 수정일 */
+         , T1.JOB_TYPE                                                  /* JOB TYPE */
+         , T1.JOB_RUN_TYPE_DCD                                          /* 작업실행방법구분코드 */
+         , T1.JOB_RUN_STRT_TIME                                         /* JOB 시작조건시각 */
+      FROM IBIMS995B T1
      WHERE 1=1
 		   AND JOB_ID LIKE '%' || #{jobId} || '%'
 		   AND JOB_NAME LIKE '%' || #{jobName} || '%'
@@ -40,6 +32,8 @@
                 , OBJECT_NAME                      /* SOURCE FULL NAME */
                 , ARGUMENT                         /* ARGUMENT */
                 , CONFIRM_YN                       /* CONFIRM_YN */
+                , JOB_RUN_TYPE_DCD                 /* 작업실행방법구분코드 */
+                , JOB_RUN_STRT_TIME                /* JOB 시작조건시각 */
                 , DESCRIPTION                      /* 작업 설명 */
                 , REGISTER_DAY                     /* 최초 등록일 */
                 , LAST_UPDATE_DAY                  /* 최종 수정일 */
@@ -56,9 +50,11 @@
                 , #{objectName}                    /* SOURCE FULL NAME */
                 , #{argument}                      /* ARGUMENT */
                 , #{confirmYn}                     /* CONFIRM_YN */
+                , #{jobRunTypeDcd}                 /* 작업실행방법구분코드 */
+                , #{jobRunStrtTime}                /* JOB 시작조건시각 */
                 , #{description}                   /* 작업 설명 */
-                , #{registerDay}                   /* 최초 등록일 */
-                , #{lastUpdateDay}                 /* 최종 수정일 */
+                , TO_CHAR(SYSDATE, 'YYYYMMDD')     /* 최초 등록일 */
+                , TO_CHAR(SYSDATE, 'YYYYMMDD')     /* 최종 수정일 */
                 , SYSDATE                          /* 조작상세일시 */
                 , #{hndEmpno}                      /* 조작사원번호 */
                 , #{hndTmnlNo}                     /* 조작단말기번호 */
@@ -69,71 +65,68 @@
     <!-- 배치JOB MASTER 수정  -->
     <update id="updateIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS995BDTO">
        UPDATE IBIMS995B
-          SET JOB_ID          = #{jobId}                         /* JOB ID */
-            , JOB_NAME        = #{jobName}                       /* JOB NAME */
-            , JOB_TYPE        = #{jobType}                       /* JOB TYPE */
-            , OBJECT_NAME     = #{objectName}                    /* SOURCE FULL NAME */
-            , ARGUMENT        = #{argument}                      /* ARGUMENT */
-            , CONFIRM_YN      = #{confirmYn}                     /* CONFIRM_YN */
-            , DESCRIPTION     = #{description}                   /* 작업 설명 */
-            , REGISTER_DAY    = (
-                                 SELECT REGISTER_DAY 
-                                   FROM IBIMS995B 
-                                  WHERE JOB_ID = #{jobId}
-                                )                                /* 최초 등록일 */
-            , LAST_UPDATE_DAY = #{lastUpdateDay}                 /* 최종 수정일 */
-            , HND_DETL_DTM    = SYSDATE                          /* 조작상세일시 */
-            , HND_EMPNO       = #{hndEmpno}                      /* 조작사원번호 */
-            , HND_TMNL_NO     = #{hndTmnlNo}                     /* 조작단말기번호 */
-            , HND_TR_ID       = #{hndTrId}                       /* 조작거래ID */
-            , GUID            = #{guid}                          /* GUID */
-         WHERE 1=1
-          AND JOB_ID          = #{jobId}
+          SET JOB_ID            = #{jobId}                         /* JOB ID */
+            , JOB_NAME          = #{jobName}                       /* JOB NAME */
+            , JOB_TYPE          = #{jobType}                       /* JOB TYPE */
+            , OBJECT_NAME       = #{objectName}                    /* SOURCE FULL NAME */
+            , ARGUMENT          = #{argument}                      /* ARGUMENT */
+            , CONFIRM_YN        = #{confirmYn}                     /* CONFIRM_YN */
+            , JOB_RUN_TYPE_DCD  = #{jobRunTypeDcd}                 /* 작업실행방법구분코드 */
+            , JOB_RUN_STRT_TIME = #{jobRunStrtTime}                /* JOB 시작조건시각 */
+            , DESCRIPTION       = #{description}                   /* 작업 설명 */
+            , LAST_UPDATE_DAY   = #{lastUpdateDay}                 /* 최종 수정일 */
+            , HND_DETL_DTM      = SYSDATE                          /* 조작상세일시 */
+            , HND_EMPNO         = #{hndEmpno}                      /* 조작사원번호 */
+            , HND_TMNL_NO       = #{hndTmnlNo}                     /* 조작단말기번호 */
+            , HND_TR_ID         = #{hndTrId}                       /* 조작거래ID */
+            , GUID              = #{guid}                          /* GUID */
+        WHERE 1=1
+          AND JOB_ID            = #{jobId}
     </update>
 
     <!-- 배치JOB MASTER 삭제  -->
-    <delete id="deleteIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS405BDTO">
+    <delete id="deleteIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS995BDTO">
         DELETE
           FROM IBIMS995B
          WHERE JOB_ID = #{jobId}
     </delete>
     
     <select id="selectBatchMaster" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
-	SELECT JOB_ID        /* 작업 ID                      */
-	     , JOB_NAME      /* 작업 이름                    */
-	     , JOB_TYPE      /* 작업 유형 (1: DUMMY, 2: COMMAND) */
-	     , OBJECT_NAME   /* 소스 전체 이름               */
-	     , ARGUMENT      /* 프로그램에 전달될 인자       */
-	     , CONFIRM_YN    /* 작업 승인 여부 ('N' 기본값)  */
-	     , JOB_RUN_TYPE_DCD     /* 실행 빈도                    */
-	     , JOB_RUN_STRT_TIME    /* 실행 시간                    */
-	     , DESCRIPTION   /* 작업 설명                    */
-	     , REGISTER_DAY  /* 최초 등록일                  */
-	     , LAST_UPDATE_DAY /* 최종 수정일                */
-	     , HND_DETL_DTM  /* 조작 상세 일시 (TIMESTAMP)   */
-	     , HND_EMPNO     /* 조작 사원번호                */
-	     , HND_TMNL_NO   /* 조작 단말기 번호             */
-	     , HND_TR_ID     /* 조작 거래 ID                 */
-	     , GUID          /* GUID (고유 식별자)           */
-	  FROM IBIMS995B;
+      SELECT JOB_ID                 /* 작업 ID                      */
+          , JOB_NAME                /* 작업 이름                    */
+          , JOB_TYPE                /* 작업 유형 (1: DUMMY, 2: COMMAND) */
+          , OBJECT_NAME             /* 소스 전체 이름               */
+          , ARGUMENT                /* 프로그램에 전달될 인자       */
+          , CONFIRM_YN              /* 작업 승인 여부 ('N' 기본값)  */
+          , JOB_RUN_TYPE_DCD        /* 실행 빈도                    */
+          , JOB_RUN_STRT_TIME       /* 실행 시간                    */
+          , DESCRIPTION             /* 작업 설명                    */
+          , REGISTER_DAY            /* 최초 등록일                  */
+          , LAST_UPDATE_DAY         /* 최종 수정일                */
+          , HND_DETL_DTM            /* 조작 상세 일시 (TIMESTAMP)   */
+          , HND_EMPNO               /* 조작 사원번호                */
+          , HND_TMNL_NO             /* 조작 단말기 번호             */
+          , HND_TR_ID               /* 조작 거래 ID                 */
+          , GUID                    /* GUID (고유 식별자)           */
+        FROM IBIMS995B;
   	</select>
   	
   	<select id="getBatchScheduleStatus" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
-    	SELECT A.JOB_ID             /* 배치JOB MASTER의 JOB ID */
-    	     , A.JOB_NAME
-    	     , A.JOB_TYPE
-    	     , A.OBJECT_NAME
-    	     , A.ARGUMENT
-		     , A.CONFIRM_YN         /* 배치JOB MASTER의 CONFIRM 작업 유무 */
-		     , A.JOB_RUN_STRT_TIME  /* 배치JOB MASTER의 실행시간 */
-		     , B.CUR_DATE           /* 배치JOB 스케줄러의 당일일자 */
-		     , B.JOB_STATUS         /* 배치JOB 스케줄러의 작업 상태 */
-		  FROM IBIMS995B A              /* 배치JOB MASTER 테이블 */
-		  LEFT JOIN IBIMS997B B         /* 배치JOB 스케줄러 테이블 */
-		    ON 1=1
-		   AND A.JOB_ID = B.JOB_ID
-		   AND B.CUR_DATE = #{date} /* 당일일자 */
-		 WHERE 1=1
-	</select>
+      	SELECT A.JOB_ID                 /* 배치JOB MASTER의 JOB ID */
+      	     , A.JOB_NAME
+      	     , A.JOB_TYPE
+      	     , A.OBJECT_NAME
+      	     , A.ARGUMENT
+	    	     , A.CONFIRM_YN             /* 배치JOB MASTER의 CONFIRM 작업 유무 */
+	    	     , A.JOB_RUN_STRT_TIME      /* 배치JOB MASTER의 실행시간 */
+	    	     , B.CUR_DATE               /* 배치JOB 스케줄러의 당일일자 */
+	    	     , B.JOB_STATUS             /* 배치JOB 스케줄러의 작업 상태 */
+	    	  FROM IBIMS995B A              /* 배치JOB MASTER 테이블 */
+	   LEFT JOIN IBIMS997B B              /* 배치JOB 스케줄러 테이블 */
+	    	    ON 1=1
+	    	   AND A.JOB_ID = B.JOB_ID
+	    	   AND B.CUR_DATE = #{date} /* 당일일자 */
+	    	 WHERE 1=1
+	  </select>
   	
 </mapper>

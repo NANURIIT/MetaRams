@@ -35,9 +35,9 @@
          AND BZ_DD = (
             SELECT MAX(STDR_DT)
               FROM IBIMS991B
-              WHERE 1=1
-                AND HOLIDAY = '0'
-                AND STDR_DT <![CDATA[ <= ]]> #{stdrDt}
+             WHERE 1=1
+               AND HOLIDAY = '0'
+               AND STDR_DT <![CDATA[ <= ]]> #{stdrDt}
           )
     </select>
 
