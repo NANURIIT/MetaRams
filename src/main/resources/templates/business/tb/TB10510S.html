@@ -110,8 +110,8 @@
 										<div class="ibox-title">
 											<h5>▶ 선행 JOB 목록</h5>
 											<div class="ibox-tools">		                       		
-												<button class="btn btn-default btn-xs" type="button" onclick="pqGridAddNewRow($('#TB10510S_grd_batPreJob'));"><i class="fa fa-plus"></i>&nbsp;행추가</button>
-												<button class="btn btn-default btn-xs" type="button" onclick="pqGridDeleteRow($('#TB10510S_grd_batPreJob'), TB10510Sjs.setRowIndx(), 'select');"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+												<button class="btn btn-default btn-xs" type="button" id="TB10510S_addPreJob" onclick="pqGridAddNewRow($('#TB10510S_grd_batPreJob'));" disabled><i class="fa fa-plus"></i>&nbsp;행추가</button>
+												<button class="btn btn-default btn-xs" type="button" id="TB10510S_delPreJob" onclick="pqGridDeleteRow($('#TB10510S_grd_batPreJob'), TB10510Sjs.setRowIndx(), 'select');" disabled><i class="fa fa-minus"></i>&nbsp;행삭제</button>
 											</div>
 										</div>
 										<div class="ibox-content">

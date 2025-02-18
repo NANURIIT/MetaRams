@@ -18,7 +18,7 @@ public interface IBIMS996BMapper {
 
 	public int updateIBIMS996B(IBIMS996BDTO param);
 
-	public int deleteIBIMS996B(IBIMS996BDTO param);
+	public int deleteIBIMS996B(String param);
 
 	/**
 	 * 선행 job 리스트
@@ -26,5 +26,10 @@ public interface IBIMS996BMapper {
 	 * @return
 	 */	
 	public List<IBIMS996BDTO> inqPreJob( String param );
+
+	/**
+	 * 선행 JOB 유무 확인
+	 */
+	public int cntPreJob (IBIMS996BDTO param);
 
 }

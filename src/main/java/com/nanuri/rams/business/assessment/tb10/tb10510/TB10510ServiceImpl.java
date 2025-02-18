@@ -69,6 +69,7 @@ public class TB10510ServiceImpl implements TB10510Service {
 	// 배치 스케줄러 관리 등록
 	@Override
     public int rgstBatch(IBIMS995BVO input) {
+
 		int result = 0;
 	
 		// "M" Update else Insert
@@ -84,6 +85,18 @@ public class TB10510ServiceImpl implements TB10510Service {
 			input.setHndEmpno(facade.getDetails().getEno()); // 조작사원번호
 	
 			result = ibims995bmp.insertIBIMS995B(input);
+		}
+
+		List<IBIMS996BDTO> preJobList = input.getPreJobList();
+
+		ibims996bmp.deleteIBIMS996B(input.getJobId());
+
+		for (int i = 0; i < preJobList.size(); i++) {
+
+			preJobList.get(i).setJobId(input.getJobId());
+			preJobList.get(i).setHndEmpno(facade.getDetails().getEno());
+			
+			ibims996bmp.insertIBIMS996B(preJobList.get(i));
 		}
 		
 		return result;
