@@ -74,30 +74,14 @@ public class TB10510ServiceImpl implements TB10510Service {
 		// "M" Update else Insert
 		String rowType = input.getRowType();
 
-		// 현재 날짜 가져오기
-        LocalDate currentDate = LocalDate.now();
-        // 원하는 포맷 지정 (yyyyMMdd)
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        // 포맷에 맞춰서 날짜를 문자열로 변환
-        String formattedDate = currentDate.format(formatter);
-
 		log.debug("rowType ::: {}" ,rowType);
 
 		if ( "M".equals(rowType) ) {
-			input.setLastUpdateDay(formattedDate);			 // 최종수정일
 			input.setHndEmpno(facade.getDetails().getEno()); // 조작사원번호
-			input.setHndTmnlNo("");			 	 // 조작단말기번호
-			input.setHndTrId("");				     // 조작거래ID
-			input.setGuid("");							 // GUID
 
 			result = ibims995bmp.updateIBIMS995B(input);
 		} else {
-			input.setRegisterDay(formattedDate);			 // 최초등록일
-			input.setLastUpdateDay(formattedDate);			 // 최종수정일
 			input.setHndEmpno(facade.getDetails().getEno()); // 조작사원번호
-			input.setHndTmnlNo("");			 	 // 조작단말기번호
-			input.setHndTrId("");				     // 조작거래ID
-			input.setGuid("");							 // GUID
 	
 			result = ibims995bmp.insertIBIMS995B(input);
 		}
