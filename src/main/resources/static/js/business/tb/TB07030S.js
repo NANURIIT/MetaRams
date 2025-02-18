@@ -464,6 +464,14 @@ const TB07030Sjs = (function () {
     grdRdmpTrgt = $("#grdRdmpTrgt").pqGrid("instance");
     grdRdmpTrgtDtl = $("#grdRdmpTrgtDtl").pqGrid("instance");
 
+    // formulas는 값이 고정되버려서 못 씀...
+    // $("#grdRdmpTrgtDtl").pqGrid("option", "formulas", [
+    //     ['pmntPrarAmt', function (rd) { return rd.pmntAmt - rd.exmptAmt; }]
+    //   ]
+    // );
+
+
+
   }
 
   /********************************************************************
@@ -838,7 +846,7 @@ const TB07030Sjs = (function () {
 
             let chk = ele.chk;
 
-            console.log("chk:::" + chk);
+            //console.log("chk:::" + chk);
 
             if(chk){
               let paiTypCd = ele.paiTypCd;//원리금유형코드
