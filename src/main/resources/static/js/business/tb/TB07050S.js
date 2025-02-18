@@ -276,6 +276,40 @@ const TB07050Sjs = (function () {
         },
       },
       {
+        title: "납부예정일",
+        dataType: "string",
+        dataIndx: "prarDt",
+        halign: "center",
+        align: "center",
+        width: "10%",
+        editable: true,
+        filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "textbox",
+          init: function (ui) {
+            // let cellData = ui.cellData;
+            let $inp = ui.$cell.find("input");
+            $inp.attr("placeholder", "YYYY-MM-DD");
+            $inp.on("input", function () {
+              //console.log(this.value.length)
+              if (this.value.length === 8) {
+                formatDate(this.value);
+              } else {
+                this.value;
+              }
+            });
+          },
+        },
+        render: function (ui) {
+          let cellData = ui.cellData;
+          if (!isEmpty(cellData) && cellData.length === 8) {
+            return formatDate(cellData);
+          } else {
+            return cellData;
+          }
+        },
+      },
+      {
         title: "이자율(%)",
         dataType: "string",
         dataIndx: "aplyIrt",
