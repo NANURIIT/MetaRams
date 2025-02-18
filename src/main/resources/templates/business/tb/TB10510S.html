@@ -53,31 +53,30 @@
 							<hr class="mb-3">
 							<!-- 조회내역 등록/수정 -->
 							<div class="form-group form-inline row mb-0">
-								<div class="form-group row col-sm-9 pr-4 pl-4" style="border-right: 1px solid #ccc;">
+								<div class="form-group row col-sm-9 pr-4 pl-5" style="border-right: 1px solid #ccc;">
 									<!-- 상세정보영역 -->
 									<label class="col-sm-1-5 col-form-label  mb-1">배치 JOB ID</label>
-									<div class="col-sm-2 input-group  mb-1">
+									<div class="col-sm-2-5 input-group  mb-1">
 										<input type="text" class="form-control" id="TB10510S_rgst_jobId">
 									</div>
 									<label class="col-sm-1-5 col-form-label mb-1">배치명</label>
-									<div class="col-sm-2 input-group mb-1">
+									<div class="col-sm-2-5 input-group mb-1">
 										<input type="text" class="form-control" id="TB10510S_rgst_jobName">
 									</div>
 									<label class="col-sm-1-5 col-form-label mb-1">배치 TYPE</label>
-									<div class="col-sm-2 input-group mb-1">
+									<div class="col-sm-2-5 input-group mb-1">
 										<select class="form-control" id="TB10510S_rgst_jobType">
 											<option value="">선택</option>
 										</select>
 									</div>
-									<!-- 버튼영역 -->
-									<div class="col-sm-1-5 input-group"></div>
+									
 									<!-- 상세정보영역 -->
 									<label class="col-sm-1-5 col-form-label mb-1">ARGUMENT</label>
-									<div class="col-sm-2 input-group mb-1">
+									<div class="col-sm-2-5 input-group mb-1">
 										<input type="text" class="form-control" id="TB10510S_rgst_arg">
 									</div>
 									<label class="col-sm-1-5 col-form-label text-nowrap mb-1">CONFIRM JOB Y/N</label>
-									<div class="col-sm-2 input-group mb-1">
+									<div class="col-sm-2-5 input-group mb-1">
 										<select class="form-control" id="TB10510S_rgst_cfm">
 											<option value="" selected>선택</option>
 											<option value="Y">Y</option>
@@ -85,22 +84,19 @@
 										</select>
 									</div>
 									<label class="col-sm-1-5 col-form-label mb-1">작업 설명</label>
-									<div class="col-sm-2 input-group mb-1">
+									<div class="col-sm-2-5 input-group mb-1">
 										<input type="text" class="form-control" id="TB10510S_rgst_dscrp">
 									</div>
-									<!-- 버튼영역 -->
-									<div class="col-sm-1-5">
-										
-									</div>
+									
 									<!-- 상세정보영역 -->
 									<label class="col-sm-1-5 col-form-label  mb-1">실행 주기</label>
-									<div class="col-sm-2 input-group  mb-1">
+									<div class="col-sm-2-5 input-group  mb-1">
 										<select class="form-control" id="TB10510S_jobRunTypeDcd">
 											<option value="" selected>선택</option>
 										</select>
 									</div>
 									<label class="col-sm-1-5 col-form-label mb-1">실행 시간</label>
-									<div class="col-sm-2 input-group mb-1">
+									<div class="col-sm-2-5 input-group mb-1">
 										<div class="input-group clockpicker" data-autoclose="true" data-default="00:00:00" data-placement="bottom" data-align="left" data-twelvehour="false">
 											<input type="text" class="form-control" value="" id="TB10510S_jobRunStrtTime">
 											<span class="input-group-addon">
@@ -108,16 +104,24 @@
 											</span>
 										</div>
 									</div>
-									<label class="col-sm-1-5 col-form-label mb-1"></label>
-									<div class="col-sm-2 input-group mb-1">
-									</div>
+
 									<!-- 버튼영역 -->
-									<div class="col-sm-1-5 text-right pd-0">
+									<div class="ibox col-sm-12 pd-0 mt-3">
+										<div class="ibox-title">
+											<h5>▶ 선행 JOB 목록</h5>
+											<div class="ibox-tools">		                       		
+												<button class="btn btn-default btn-xs" type="button" onclick="pqGridAddNewRow($('#TB10510S_grd_batPreJob'));"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+												<button class="btn btn-default btn-xs" type="button" onclick="pqGridDeleteRow($('#TB10510S_grd_batPreJob'), TB10510Sjs.setRowIndx(), 'select');"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+											</div>
+										</div>
+										<div class="ibox-content">
+											<div id="TB10510S_grd_batPreJob"></div>
+										</div>
+									</div>
+
+									<div class="col-sm-12 text-right pd-0 mt-1">
 										<button class="btn btn-default" type="button" onclick="TB10510Sjs.delBatch();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
 										<button class="btn btn-success" type="button" onclick="TB10510Sjs.rgstBatch();"><i class="fa fa-save"></i>&nbsp;저장</button>
-									</div>
-									<div class="col-sm-12 pd-0 mt-3">
-										<div id="TB10510S_grd_batPreJob"></div>
 									</div>
 								</div>
 								<div class="form-group row col-sm-3">
