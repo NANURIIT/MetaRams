@@ -370,7 +370,6 @@ public class TB07030ServiceImpl implements TB07030Service {
 						}else{
 							rtnValue = ibims403BMapper.saveIBIMS403B(param403DtlLst.get(v));		// 여신스케줄기본
 						}
-
 						
 						//exmptAmt = exmptAmt.add(in403Dtlbvo.getExmptAmt()==null?BigDecimal.ZERO:in403Dtlbvo.getExmptAmt());
 
