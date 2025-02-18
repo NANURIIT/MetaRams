@@ -360,12 +360,18 @@ public class TB07030ServiceImpl implements TB07030Service {
 
 				IBIMS406BVO in406BVO = new IBIMS406BVO();
 
-				if(in403Dtlbvo.getPaiTypCd().compareTo("9") < 0) {
+				if(in403Dtlbvo.getPaiTypCd().compareTo("9") < 0) {//중도상환 x
+
 					if((in403bdto.getPrdtCd().equals(in403Dtlbvo.getPrdtCd()))
 					&& (in403bdto.getExcSn() == in403Dtlbvo.getExcSn())) {
 
-						rtnValue = ibims403BMapper.saveIBIMS403B(param403DtlLst.get(v));		// 여신스케줄기본
+						if(in403Dtlbvo.getPaiTypCd().equals("4") || in403Dtlbvo.getPaiTypCd().equals("5")){		//연체이자
 
+						}else{
+							rtnValue = ibims403BMapper.saveIBIMS403B(param403DtlLst.get(v));		// 여신스케줄기본
+						}
+
+						
 						//exmptAmt = exmptAmt.add(in403Dtlbvo.getExmptAmt()==null?BigDecimal.ZERO:in403Dtlbvo.getExmptAmt());
 
 						if(("1".equals(in403Dtlbvo.getPaiTypCd()))
