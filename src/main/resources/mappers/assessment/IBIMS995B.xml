@@ -15,7 +15,9 @@
          , NVL(T1.LAST_UPDATE_DAY, T1.REGISTER_DAY) AS LAST_UPDATE_DAY  /* 최종 수정일 */
          , T1.JOB_TYPE                                                  /* JOB TYPE */
          , T1.JOB_RUN_TYPE_DCD                                          /* 작업실행방법구분코드 */
-         , T1.JOB_RUN_STRT_TIME                                         /* JOB 시작조건시각 */
+         , (SUBSTR(T1.JOB_RUN_STRT_TIME, 1, 2) 
+         || ':' || SUBSTR(T1.JOB_RUN_STRT_TIME, 3, 4)
+         || ':' || SUBSTR(T1.JOB_RUN_STRT_TIME, 5, 6)) AS JOB_RUN_STRT_TIME  /* JOB 시작조건시각 */
       FROM IBIMS995B T1
      WHERE 1=1
 		   AND JOB_ID LIKE '%' || #{jobId} || '%'
@@ -65,8 +67,7 @@
     <!-- 배치JOB MASTER 수정  -->
     <update id="updateIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS995BDTO">
        UPDATE IBIMS995B
-          SET JOB_ID            = #{jobId}                         /* JOB ID */
-            , JOB_NAME          = #{jobName}                       /* JOB NAME */
+          SET JOB_NAME          = #{jobName}                       /* JOB NAME */
             , JOB_TYPE          = #{jobType}                       /* JOB TYPE */
             , OBJECT_NAME       = #{objectName}                    /* SOURCE FULL NAME */
             , ARGUMENT          = #{argument}                      /* ARGUMENT */
@@ -74,7 +75,7 @@
             , JOB_RUN_TYPE_DCD  = #{jobRunTypeDcd}                 /* 작업실행방법구분코드 */
             , JOB_RUN_STRT_TIME = #{jobRunStrtTime}                /* JOB 시작조건시각 */
             , DESCRIPTION       = #{description}                   /* 작업 설명 */
-            , LAST_UPDATE_DAY   = #{lastUpdateDay}                 /* 최종 수정일 */
+            , LAST_UPDATE_DAY   = TO_CHAR(SYSDATE, 'YYYYMMDD')     /* 최종 수정일 */
             , HND_DETL_DTM      = SYSDATE                          /* 조작상세일시 */
             , HND_EMPNO         = #{hndEmpno}                      /* 조작사원번호 */
             , HND_TMNL_NO       = #{hndTmnlNo}                     /* 조작단말기번호 */

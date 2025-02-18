@@ -5,6 +5,7 @@ const TB10510Sjs = (function () {
     let objSlc = {}     // select obj
     let rd = {}         // rowData
     let cClkStat;
+    let TB10510S_grd_batPreJob_rowIndx;
 
     $(document).ready(function () {
         selectBox();
@@ -13,6 +14,7 @@ const TB10510Sjs = (function () {
         $('#TB10510S_curDate').val(getToday());
 		
 		isBatchScheduler();
+        clockpickerCtrl();
     });
 
     /*******************************************************************
@@ -44,9 +46,13 @@ const TB10510Sjs = (function () {
     }
 
     function clockpickerCtrl () {
-        $('#TB10510S_jobRunStrtTime').on('input', function () {
+        $('#TB10510S_jobRunStrtTime').on('change', function () {
+            console.log("??");
+            
             const val = $(this).val()
-            // if
+            if (val.length === 5) {
+                $(this).val(val + ":00");
+            }
         })
     }
 
@@ -183,6 +189,7 @@ const TB10510Sjs = (function () {
                 dataIndx: "preJobId",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: 'range' }] },
             },
             {
@@ -191,6 +198,7 @@ const TB10510Sjs = (function () {
                 dataIndx: "preJobName",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: 'range' }] },
             },
             {
@@ -200,6 +208,9 @@ const TB10510Sjs = (function () {
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] },
+                render: function (ui) {
+                    return ui.cellData.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")
+                },
             },
             {
                 title: "최종수정일",
@@ -208,6 +219,9 @@ const TB10510Sjs = (function () {
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] },
+                render: function (ui) {
+                    return ui.cellData.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")
+                },
             },
             {
                 title: "JOB ID",
@@ -235,6 +249,17 @@ const TB10510Sjs = (function () {
                 , id: 'TB10510S_grd_batPreJob'
                 , colModel: col_batPreJob
                 , selectionModel: { type: 'row' }
+                , rowSelect: function(evt, ui) {
+                    const row = $('#TB10510S_grd_batPreJob').pqGrid('instance').SelectRow().getSelection()
+                    if (row.length > 0) {
+                        TB10510S_grd_batPreJob_rowIndx = row[0].rowIndx
+                        console.log(TB10510S_grd_batPreJob_rowIndx);
+                    }
+                    else {
+                        TB10510S_grd_batPreJob_rowIndx = undefined;
+                        console.log(TB10510S_grd_batPreJob_rowIndx);
+                    }
+                }
             },
         ]
         setPqGrid(pqGridObjs);
@@ -243,6 +268,9 @@ const TB10510Sjs = (function () {
 
     }
 
+    function setRowIndx () {
+        return TB10510S_grd_batPreJob_rowIndx;
+    }
 
 
     /*******************************************************************
@@ -292,7 +320,7 @@ const TB10510Sjs = (function () {
                                 $('#TB10510S_rgst_dscrp').val(rd.description)
 								
 								$('#TB10510S_jobRunTypeDcd').val(rd.jobRunTypeDcd)
-								$('#TB10510S_jobRunStrtTime').val(rd.jobRunStrtTime)
+								$('#TB10510S_jobRunStrtTime').val(rd.jobRunStrtTime.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3"))
 
                                 rd.rowType = 'M'
 
@@ -360,6 +388,8 @@ const TB10510Sjs = (function () {
                 argument: $('#TB10510S_rgst_arg').val(),
                 confirmYn: $('#TB10510S_rgst_cfm').val(),
                 description: $('#TB10510S_rgst_dscrp').val(),
+                jobRunTypeDcd: $('#TB10510S_jobRunTypeDcd').val(),
+                jobRunStrtTime: $('#TB10510S_jobRunStrtTime').val().replace(":", ""),
             }
         } else {
             obj = {
@@ -370,7 +400,9 @@ const TB10510Sjs = (function () {
                 argument: $('#TB10510S_rgst_arg').val(),
                 confirmYn: $('#TB10510S_rgst_cfm').val(),
                 description: $('#TB10510S_rgst_dscrp').val(),
-                rowType: rd.rowType
+                jobRunTypeDcd: $('#TB10510S_jobRunTypeDcd').val(),
+                jobRunStrtTime: $('#TB10510S_jobRunStrtTime').val().replace(":", ""),
+                rowType: rd.rowType,
             }
         }
 
@@ -390,6 +422,7 @@ const TB10510Sjs = (function () {
                     if (data > 0) {
                         Swal.fire({
                             icon: 'success'
+                            , title: 'Success!'
                             , text: "입력이 완료됐습니다."
                             , confirmButtonText: "확인"
                         }).then((result) => {
@@ -401,7 +434,7 @@ const TB10510Sjs = (function () {
                             , text: "입력에 실패하였습니다."
                             , confirmButtonText: "확인"
                         });
-                        return
+                        return;
                     }
                 },
             });
@@ -641,7 +674,7 @@ const TB10510Sjs = (function () {
         $('#TB10510S_rgst_jobName').val('')
         $('#TB10510S_rgst_jobType').val('')
         $('#TB10510S_rgst_arg').val('')
-        $('#TB10510S_rgst_cfm').val('0')
+        $('#TB10510S_rgst_cfm').val('')
         $('#TB10510S_rgst_dscrp').val('')
 		
 		$('#TB10510S_jobRunTypeDcd').val('')
@@ -677,5 +710,6 @@ const TB10510Sjs = (function () {
 		, isBatchScheduler : isBatchScheduler
 		, startBatchScheduler : startBatchScheduler
 		, stopBatchScheduler : stopBatchScheduler
+        , setRowIndx: setRowIndx
     }
 })();

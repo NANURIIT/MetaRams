@@ -2065,18 +2065,36 @@ function pqGridAddNewRow(colModelSelector) {
  * PQGRID 줄삭제
  * @param {selector} colModelSelector
  * @param {ui.rowIndx} rowIndx
+ * @param {String} mode {로우인덱스를 사용하고싶은경우 'select' 입력 }
  * @author {김건우}
  */
-function pqGridDeleteRow(colModelSelector, rowIndx) {
-  let idx = rowIndx;
+function pqGridDeleteRow(colModelSelector, rowIndx, mode) {
 
-  if (!rowIndx) {
+  console.log(rowIndx + "행삭제");
+
+  let idx = rowIndx;
+  
+  if (mode === 'select') {
+    if (!rowIndx && rowIndx != 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Warning!',
+        text: '삭제할 행을 선택해주세요!',
+      })
+    }
+    else {
+      colModelSelector.pqGrid("deleteRow", {
+        rowIndx: idx,
+      });
+    }
+  }
+  else {
     idx = colModelSelector.pqGrid("instance").pdata.length - 1;
+    colModelSelector.pqGrid("deleteRow", {
+      rowIndx: idx,
+    });
   }
 
-  colModelSelector.pqGrid("deleteRow", {
-    rowIndx: idx,
-  });
 }
 
 /**
