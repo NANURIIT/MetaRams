@@ -10,9 +10,15 @@
          AND STDR_DT = #{stdrDt};
     </select>
 
-    <select id="selectDD1AF" resultType="string">
-      SELECT DD1AF_BZ_DD
-        FROM IBIMS999B;
+    <select id="selectDD1AF" parameterType="string" resultType="string">
+      SELECT MAX(DD1AF_BZ_DD)
+        FROM IBIMS999B
+       WHERE 1=1
+         AND BZ_DD = NVL(#{bzDd}, (
+                                    SELECT MAX(BZ_DD)
+                                      FROM IBIMS999B
+                                     WHERE 1=1
+                                  ))
     </select>
 
     <!-- 현재 영업일 -->
@@ -62,7 +68,7 @@
                         AND HOLIDAY = '0'
                     ) A
               WHERE 1=1
-                AND A.BZ_DD = #{bzDd}
+                AND A.BZ_DD = #{stdrDt}
     </insert>
 
     <delete id="delete" parameterType="String">

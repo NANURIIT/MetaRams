@@ -337,7 +337,9 @@ const TB10610Sjs = (function () {
     }
     // Waitting
     else if ( jobStatus === "2" ) {
-
+      $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
     }
     // Running
     else if ( jobStatus === "3" ) {
@@ -364,11 +366,16 @@ const TB10610Sjs = (function () {
     }
     // Terminated
     else if ( jobStatus === "7" ) {
-
+      $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
     }
     // Stop
     else if ( jobStatus === "8" ) {
-
+      $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="4"]').prop('disabled', false);
     }
   }
 

@@ -66,8 +66,7 @@
            </if>
     </select>
 
-    <insert id="batchInsertIBIMS981B">
-       <![CDATA[
+    <insert id="batchInsertIBIMS981B" parameterType="string">
         INSERT INTO IBIMS981B
             (
                 SELECT T.DUDT_MNGM_NO                                                       AS DUDT_MNGM_NO          /* 기일관리번호 */
@@ -85,7 +84,7 @@
                      , 'N'                                                                  AS DPCH_YN               /* 통보여부 */
                      , 'N'                                                                  AS DEL_YN                /* 삭제여부 */
                      , SYSDATE                                                              AS HND_DETL_DTM          /* 조작상세일시 */
-                     , ''                                                                   AS HND_EMPNO             /* 조작사원번호 */
+                     , #{hndEmpno}                                                          AS HND_EMPNO             /* 조작사원번호 */
                      , ''                                                                   AS HND_TMNL_NO           /* 조작단말기번호 */
                      , ''                                                                   AS HND_TR_ID             /* 조작거래ID */
                      , ''                                                                   AS GUID                  /* GUID */
@@ -95,10 +94,10 @@
                   	     , A.PRCS_DT
                   	     , A.PRCS_CPLT_YN
                   	     , CASE 
-                             WHEN PRAR_DT < B.BZ_DD AND PRCS_CPLT_YN != 'Y' THEN '0501' 
+                             WHEN PRAR_DT <![CDATA[ < ]]> B.BZ_DD AND PRCS_CPLT_YN != 'Y' THEN '0501' 
                              WHEN PRAR_DT = B.DD1AF_BZ_DD AND PRCS_CPLT_YN != 'Y' THEN '0502'
                              WHEN PRAR_DT = B.DD3AF_BZ_DD AND PRCS_CPLT_YN != 'Y' THEN '0503'
-                             WHEN PRAR_DT < B.BZ_DD AND PRCS_CPLT_YN = 'Y' THEN '0504'
+                             WHEN PRAR_DT <![CDATA[ < ]]> B.BZ_DD AND PRCS_CPLT_YN = 'Y' THEN '0504'
                             ELSE ''
                              END AS DUDT_MNGM_NO 
                           , B.BZ_DD
@@ -113,16 +112,12 @@
                  WHERE 1=1
                    AND T.DUDT_MNGM_NO != ' '
             )
-       ]]>
     </insert>
 
-    <delete id="batchDeleteIBIMS981B">
+    <delete id="batchDeleteIBIMS981B" parameterType="string">
         DELETE FROM IBIMS981B
          WHERE 1=1
-           AND RGST_DT = (
-                            SELECT BZ_DD
-                              FROM IBIMS999B
-                         )
+           AND RGST_DT = #{stdrDt}
     </delete>
 
 </mapper>

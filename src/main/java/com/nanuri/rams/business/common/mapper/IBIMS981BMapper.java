@@ -10,8 +10,8 @@ public interface IBIMS981BMapper {
     
     public List<IBIMS981BVO> selectIBIMS981B(IBIMS981BVO param);
 
-    public int batchInsertIBIMS981B();
+    public int batchInsertIBIMS981B(String hndEmpno);
 
-    public int batchDeleteIBIMS981B();
+    public int batchDeleteIBIMS981B(String stdrDt);
 
 }

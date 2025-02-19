@@ -188,7 +188,7 @@
     <!-- 1. 해당기준년월 결산내역 삭제 -->
     <delete id="deleteTB9020B" parameterType="string">
         DELETE FROM IBIMS820B                       /* 기업여신월별결산내역 */
-         WHERE STDR_YM = #{stdrDt}      /* 기준년월 */
+         WHERE STDR_YM = SUBSTR(#{stdrDt},1,6)      /* 기준년월 */
            AND EPRZ_CRDL_STLA_DCD = '1'             /* 기업여신결산구분코드 1-미수이자   */
     </delete>
          
@@ -196,11 +196,11 @@
 
     <insert id="insertTB9020B" parameterType="string">
         INSERT INTO IBIMS820B  /* 기업여신월별결산내역 */
-             SELECT   #{stdrDt}      AS STDR_YM                   /* 기준년월            */             
+             SELECT   SUBSTR(#{stdrDt},1,6)      AS STDR_YM                   /* 기준년월            */             
                     , A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                     , ((SELECT NVL(MAX(X.RGST_SN), 0)
                           FROM IBIMS820B X  /* 기업여신월별결산내역 */
-                         WHERE X.STDR_YM = #{stdrDt}
+                         WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                            AND X.PRDT_CD = A.PRDT_CD
                       ) + ROWNUM)                AS RGST_SN                   /* 등록일련번호         */
                     , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
@@ -241,7 +241,7 @@
                 AND A.PRDT_CD = B.PRDT_CD 
                 AND A.PRDT_LCLS_CD = '90'                       /* 기업여신상품대분류코드 90-대출 */ 
                 AND B.LDG_STTS_CD = '1'                         /* 원장상태코드 1-정상*/
-                AND B.STDR_YM	= #{stdrDt}           /* 기준년월 */
+                AND B.STDR_YM	= SUBSTR(#{stdrDt},1,6)           /* 기준년월 */
                 AND B.DEAL_EXC_BLCE &gt; 0                      /* 실행잔액 */
               ORDER BY B.PRDT_CD, B.EXC_SN 
     </insert>
@@ -250,18 +250,18 @@
     <!-- 1. 해당기준년월 결산내역 삭제 -->
     <delete id="deleteTB9030B" parameterType="string">
         DELETE FROM IBIMS820B	                    /* 기업여신월별결산내역 */
-         WHERE STDR_YM	= #{stdrDt}     /* 기준년월 */
+         WHERE STDR_YM	= SUBSTR(#{stdrDt},1,6)     /* 기준년월 */
            AND EPRZ_CRDL_STLA_DCD   = '2'           /* 기업여신결산구분코드 2-선수이자  */
     </delete>
 
     <!-- 2. 당월인식대상 선수이자내역 조회 및 등록 -->
     <insert id="insertTB9030B" parameterType="string">
         INSERT INTO IBIMS820B  /* 기업여신월별결산내역 */
-             SELECT #{stdrDt}                   AS STDR_YM                   /* 기준년월            */             
+             SELECT SUBSTR(#{stdrDt},1,6)                   AS STDR_YM                   /* 기준년월            */             
                     , Y.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                     , ((SELECT NVL(MAX(X.RGST_SN), 0)
                           FROM IBIMS820B X  /* 기업여신월별결산내역 */
-                         WHERE X.STDR_YM = #{stdrDt}
+                         WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                            AND X.PRDT_CD = Y.PRDT_CD
                       ) + ROWNUM)              AS RGST_SN                   /* 등록일련번호         */
                     , Y.BDCD                     AS BDCD                      /* 부서코드            */
@@ -323,7 +323,7 @@
                            , IBIMS811B B             /* 딜월별잔액 */
                            , IBIMS410B C             /* 딜거래내역 */
                            , IBIMS406B D             /* 여신이자계산내역 */
-                           , (SELECT stdrDt || '01'                                                       AS MN_TFDY      /* 월초일 */
+                           , (SELECT SUBSTR(#{stdrDt},1,6) || '01'                                                       AS MN_TFDY      /* 월초일 */
                                    , TO_CHAR(LAST_DAY(TO_DATE(#{stdrDt}, 'YYYYMMDD')), 'YYYYMMDD')                          AS MN_LSTD      /* 월말일 */
                                    , TO_CHAR(LAST_DAY(ADD_MONTHS(TO_DATE(#{stdrDt}, 'YYYYMMDD'), -1)), 'YYYYMMDD')          AS BFMN_LSTD    /* 전월말일 */
                                 FROM DUAL
@@ -335,7 +335,7 @@
                          AND A.PRDT_LCLS_CD = '90'     /* 기업여신상품대분류코드 90-대출 */ 
                          AND A.INTR_BNAO_DCD	= '1'              /* 이자선후취구분코드 1-선취 */
                          AND B.LDG_STTS_CD = '1'                 /* 원장상태코드 1-정상*/
-                         AND B.STDR_YM	= #{stdrDt}  /* 기준년월 */
+                         AND B.STDR_YM	= SUBSTR(#{stdrDt},1,6)  /* 기준년월 */
                          AND B.PRDT_CD  = C.PRDT_CD 
                          AND B.EXC_SN   = C.EXC_SN
                          AND (C.TR_STAT_CD	= '1' /* 거래상태코드 1-정상 */
@@ -357,7 +357,7 @@
     <!-- 1. 해당기준년월 결산내역 삭제 -->
     <delete id="deleteTB9040B" parameterType="string">
         DELETE FROM IBIMS820B                       /* 기업여신월별결산내역 */
-         WHERE STDR_YM	= #{stdrDt}     /* 기준년월 */
+         WHERE STDR_YM	= SUBSTR(#{stdrDt},1,6)     /* 기준년월 */
            AND EPRZ_CRDL_STLA_DCD   = '3'           /* 기업여신결산구분코드 3-선수수수료  */
     </delete>
 
@@ -365,11 +365,11 @@
     <!-- 2. 당월 이연인식대상 수수료수납내역 조회 및 등록 -->
     <insert id="insertTB9040B" parameterType="String">
         INSERT INTO IBIMS820B  /* 기업여신월별결산내역 */
-             SELECT  #{stdrDt}      AS STDR_YM                   /* 기준년월            */             
+             SELECT  SUBSTR(#{stdrDt},1,6)      AS STDR_YM                   /* 기준년월            */             
                    , Y.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                    , ((SELECT NVL(MAX(X.RGST_SN), 0)
                         FROM IBIMS820B X  /* 기업여신월별결산내역 */
-                        WHERE X.STDR_YM = #{stdrDt}
+                        WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                           AND X.PRDT_CD = Y.PRDT_CD
                      ) + ROWNUM)              AS RGST_SN                   /* 등록일련번호         */
                    , Y.BDCD                     AS BDCD                      /* 부서코드            */
@@ -431,7 +431,7 @@
                                , IBIMS811B B             /* 딜월별잔액 */
                                , IBIMS410B C             /* 딜거래내역 */
                                , IBIMS420B D             /* 딜수수료수납내역 */
-                               , (SELECT #{stdrDt} || '01'                                                       AS MN_TFDY      /* 월초일 */
+                               , (SELECT SUBSTR(#{stdrDt},1,6) || '01'                                                       AS MN_TFDY      /* 월초일 */
                                       , TO_CHAR(LAST_DAY(TO_DATE(#{stdrDt}, 'YYYYMMDD')), 'YYYYMMDD')                          AS MN_LSTD      /* 월말일 */
                                       , TO_CHAR(LAST_DAY(ADD_MONTHS(TO_DATE(#{stdrDt}, 'YYYYMMDD'), -1)), 'YYYYMMDD')          AS BFMN_LSTD    /* 전월말일 */
                                     FROM DUAL
@@ -441,7 +441,7 @@
                             AND A.PRDT_CD = E.PRDT_CD 
                             AND A.PRDT_CD = B.PRDT_CD 
                             AND B.LDG_STTS_CD = '1'                 /* 원장상태코드 1-정상*/
-                            AND B.STDR_YM	= #{stdrDt}  /* 기준년월 */
+                            AND B.STDR_YM	= SUBSTR(#{stdrDt},1,6)  /* 기준년월 */
                             AND B.PRDT_CD  = C.PRDT_CD 
                             AND B.EXC_SN   = C.EXC_SN 
                             AND (C.TR_STAT_CD	= '1' /* 거래상태코드 1-정상 */
@@ -461,18 +461,18 @@
     <!-- 1. 해당기준년월 결산내역 삭제 -->
     <delete id="deleteTB9050B" parameterType="string">
         DELETE FROM IBIMS820B                   /* 기업여신월별결산내역 */
-         WHERE STDR_YM = #{stdrDt}  /* 기준년월 */
+         WHERE STDR_YM = SUBSTR(#{stdrDt},1,6)  /* 기준년월 */
            AND EPRZ_CRDL_STLA_DCD = '4'         /* 기업여신결산구분코드 4-평가손상  */
     </delete>
 
     <!-- 2. 당월 종목별 익스포져 조회 및 등록 -->
     <insert id="insertTB9050B" parameterType="string">
         INSERT INTO IBIMS820B  /* 기업여신월별결산내역 */
-             SELECT   #{stdrDt}      AS STDR_YM                   /* 기준년월            */             
+             SELECT   SUBSTR(#{stdrDt},1,6)      AS STDR_YM                   /* 기준년월            */             
                     , A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                     , ((SELECT NVL(MAX(X.RGST_SN), 0)
                           FROM IBIMS820B X  /* 기업여신월별결산내역 */
-                         WHERE X.STDR_YM = #{stdrDt}
+                         WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                            AND X.PRDT_CD = A.PRDT_CD
                      ) + ROWNUM)               AS RGST_SN                   /* 등록일련번호         */
                     , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
@@ -512,7 +512,7 @@
                 AND A.LAST_YN = 'Y' 
                 AND A.PRDT_CD = B.PRDT_CD  
                 AND B.LDG_STTS_CD = '1'                   /* 원장상태코드 1-정상*/
-                AND B.STDR_YM	= #{stdrDt}   /* 기준년월 */
+                AND B.STDR_YM	= SUBSTR(#{stdrDt},1,6)   /* 기준년월 */
                 AND B.DEAL_EXC_BLCE &gt; 0                /* 실행잔액 */
               ORDER BY B.PRDT_CD, B.EXC_SN 
     </insert>
