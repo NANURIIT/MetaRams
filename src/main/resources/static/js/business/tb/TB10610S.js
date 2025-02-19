@@ -334,23 +334,40 @@ const TB10610Sjs = (function () {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
       $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
       $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+
+      $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="4"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
     }
     // Waitting
     else if ( jobStatus === "2" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
       $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
       $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+
+      $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="4"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
     }
     // Running
     else if ( jobStatus === "3" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
       $('input[name="TB10610S_batchCmdDcd"][value="4"]').prop('disabled', false);
+
+      $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
     }
     // Complete
     else if ( jobStatus === "4" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
       $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
       $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+
+      $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="4"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
     }
     // Error
     else if ( jobStatus === "5" ) {
@@ -358,6 +375,9 @@ const TB10610Sjs = (function () {
       $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
       $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
       $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+
+      $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="4"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
     }
     // 배치프로세스 자체가 종료된 상태
     // Terminate
@@ -369,6 +389,10 @@ const TB10610Sjs = (function () {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
       $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
       $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
+
+      $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="4"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
     }
     // Stop
     else if ( jobStatus === "8" ) {
@@ -376,6 +400,9 @@ const TB10610Sjs = (function () {
       $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
       $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
       $('input[name="TB10610S_batchCmdDcd"][value="4"]').prop('disabled', false);
+
+      $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
     }
   }
 
