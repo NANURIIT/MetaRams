@@ -667,6 +667,8 @@ const TB10610Sjs = (function () {
 
     $("#btnExc").prop("disabled", true);
     $("#btnConfirm").prop("disabled", false);
+    $('input[name="TB10610S_batchCmdDcd"]').next().css({ color: "" });
+    $('input[name="TB10610S_batchCmdDcd"]').prop("disabled", false);
   }
 
   // confirm 상태 이벤트

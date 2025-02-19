@@ -5,185 +5,198 @@
     <!--월말결산 선수이자 조회-->
     <select id="getPrepaidIntrList" resultType="com.nanuri.rams.business.common.vo.TB08060SVO" parameterType="com.nanuri.rams.business.common.vo.TB08060SVO">
         SELECT A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
-                ,A.PRDT_NM                  AS PRDT_NM                   /* 상품명             */
-                ,A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
-                ,A.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드         */ 
-                ,F.EXC_SN                   AS EXC_SN                    /* 실행일련번호         */
-                ,F.TR_SN                    AS TR_SN                     /* 거래일련번호 : 거래순번 */
-                ,F.SN                       AS SN                        /* 일련번호            */
-                ,F.RGST_SN                  AS RGST_SN                   /* 등록일련번호 */
-                ,C.TR_DT                    AS TR_DT                     /* 수취일자 */						
-                ,D.INTR_CALC_STRT_DT        AS INTR_CALC_STRT_DT         /* 이자계산시작일자 */
-                ,D.INTR_CALC_END_DT         AS INTR_CALC_END_DT          /* 이자계산종료일자 */				
-                ,B.EXP_DT                   AS EXP_DT                		 /* 만기일자 */
-                ,F.INTR_CLC_DNUM            AS INTR_CLC_DNUM             /* 총이자일수          */		  
-                ,F.THMM_DNUM                AS THMM_DNUM                 /* 당월일수 : 경과이자일수  */
-                ,F.EPRZ_CRDL_TRGT_AMT       AS EPRZ_CRDL_TRGT_AMT        /* 기업여신대상금액 : 선수금액  */
-                ,F.THMM_ACML_ERN_AMT        AS THMM_ACML_ERN_AMT         /* 당월누적수익금액 : 경과누적금액 */
-                ,(CASE WHEN (F.STTM_NO IS NULL OR F.STTM_NO = '') THEN 'N'
-                        ELSE 'Y'
-                        END)                 AS ACCT_YN                   /* 회계반영여부        */
-                ,F.RSTR_PRCS_YN             AS RSTR_PRCS_YN              /* 환원처리여부        */ 
-        FROM IBIMS201B A 			      /* 딜승인기본 */
-            ,IBIMS811B	B             /* 딜월별잔액 */
-            ,IBIMS410B	C             /* 딜거래내역 */
-            ,IBIMS406B	D             /* 여신이자계산내역 */
-            ,IBIMS401B	E             /* 여신기본  */ 
-            ,IBIMS820B F			        /* 기업여신월별결산내역 */
-        WHERE 1 = 1
-        AND A.LAST_YN      = 'Y'
-        AND A.PRDT_CD      = B.PRDT_CD 
-        AND B.STDR_YM	    = #{stdrDt}  /* 기준년월 */
-        AND B.PRDT_CD      = C.PRDT_CD 
-        AND B.EXC_SN       = C.EXC_SN 
-        AND C.PRDT_CD      = D.PRDT_CD 
-        AND C.TR_SN        = D.TR_SN   
-        AND C.EXC_SN       = D.EXC_SN  
-        AND B.PRDT_CD      = E.PRDT_CD 
-        AND D.PRDT_CD      = F.PRDT_CD 
-        AND D.EXC_SN       = F.EXC_SN 			   
-        AND D.TR_SN        = F.TR_SN   
-        AND D.INT_CALC_SEQ = F.SN   
-        AND F.STDR_YM	    = #{stdrDt}  /* 기준년월 */ 
-        AND F.EPRZ_CRDL_STLA_DCD = '2'              /* 기업여신결산구분코드 2-선수이자  */
+             , A.PRDT_NM                  AS PRDT_NM                   /* 상품명             */
+             , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
+             , A.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드         */ 
+             , F.EXC_SN                   AS EXC_SN                    /* 실행일련번호         */
+             , F.TR_SN                    AS TR_SN                     /* 거래일련번호 : 거래순번 */
+             , F.SN                       AS SN                        /* 일련번호            */
+             , F.RGST_SN                  AS RGST_SN                   /* 등록일련번호 */
+             , C.TR_DT                    AS TR_DT                     /* 수취일자 */						
+             , D.INTR_CALC_STRT_DT        AS INTR_CALC_STRT_DT         /* 이자계산시작일자 */
+             , D.INTR_CALC_END_DT         AS INTR_CALC_END_DT          /* 이자계산종료일자 */				
+             , B.EXP_DT                   AS EXP_DT                		 /* 만기일자 */
+             , F.INTR_CLC_DNUM            AS INTR_CLC_DNUM             /* 총이자일수          */		  
+             , F.THMM_DNUM                AS THMM_DNUM                 /* 당월일수 : 경과이자일수  */
+             , F.EPRZ_CRDL_TRGT_AMT       AS EPRZ_CRDL_TRGT_AMT        /* 기업여신대상금액 : 선수금액  */
+             , F.THMM_ACML_ERN_AMT        AS THMM_ACML_ERN_AMT         /* 당월누적수익금액 : 경과누적금액 */
+             , (CASE WHEN (F.STTM_NO IS NULL OR F.STTM_NO = '') THEN 'N'
+                     ELSE 'Y'
+                     END)                 AS ACCT_YN                   /* 회계반영여부        */
+             , F.RSTR_PRCS_YN             AS RSTR_PRCS_YN              /* 환원처리여부        */ 
+          FROM IBIMS201B A 			       /* 딜승인기본 */
+             , IBIMS811B B             /* 딜월별잔액 */
+             , IBIMS410B C             /* 딜거래내역 */
+             , IBIMS406B D             /* 여신이자계산내역 */
+             , IBIMS401B E             /* 여신기본  */ 
+             , IBIMS820B F			       /* 기업여신월별결산내역 */
+         WHERE 1 = 1
+           AND A.LAST_YN      = 'Y'
+           AND A.PRDT_CD      = B.PRDT_CD 
+           AND B.STDR_YM	     = F.STDR_YM  /* 기준년월 */
+           AND B.PRDT_CD      = C.PRDT_CD 
+           AND B.EXC_SN       = C.EXC_SN 
+           AND C.PRDT_CD      = D.PRDT_CD 
+           AND C.TR_SN        = D.TR_SN   
+           AND C.EXC_SN       = D.EXC_SN  
+           AND B.PRDT_CD      = E.PRDT_CD 
+           AND D.PRDT_CD      = F.PRDT_CD 
+           AND D.EXC_SN       = F.EXC_SN 			   
+           AND D.TR_SN        = F.TR_SN   
+           AND D.INT_CALC_SEQ = F.SN   
+           AND B.STDR_YM	     = #{stdrDt}  /* 기준년월 */
+           AND F.EPRZ_CRDL_STLA_DCD = '2'              /* 기업여신결산구분코드 2-선수이자  */
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ortnFndCd)">
+           AND A.ORTN_FND_CD = #{ortnFndCd}
+           </if>
         ORDER BY B.PRDT_CD, B.EXC_SN 
     </select>
 
     <!--월말결산 선수수료 조회-->
     <select id="getPrepaidFeeList" resultType="com.nanuri.rams.business.common.vo.TB08060SVO" parameterType="com.nanuri.rams.business.common.vo.TB08060SVO">
         SELECT A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
-                ,A.PRDT_NM                  AS PRDT_NM                   /* 상품명             */
-                ,A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
-                ,A.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드         */ 
-                ,F.EXC_SN                   AS EXC_SN                    /* 실행일련번호         */
-                ,F.TR_SN                    AS TR_SN                     /* 거래일련번호 : 거래순번 */
-                ,F.SN                       AS SN                        /* 일련번호            */
-                ,F.RGST_SN                  AS RGST_SN                   /* 등록일련번호 */
-                ,C.TR_DT                    AS TR_DT                     /* 수취일자 */						
-                ,D.EPRZ_CRDL_FEE_KND_CD     AS EPRZ_CRDL_FEE_KND_CD      /* 수수료종류코드 */
-                ,D.FNNR_RCOG_STRT_DT        AS FNNR_RCOG_STRT_DT         /* 안분시작일자 */
-                ,D.FNNR_RCOG_END_DT         AS FNNR_RCOG_END_DT          /* 안분종료일자 */				
-                ,B.EXP_DT                   AS EXP_DT                		 /* 만기일자 */
-                ,F.INTR_CLC_DNUM            AS INTR_CLC_DNUM             /* 총이자일수          */		  
-                ,F.THMM_DNUM                AS THMM_DNUM                 /* 당월일수 : 경과이자일수  */
-                ,F.EPRZ_CRDL_TRGT_AMT       AS EPRZ_CRDL_TRGT_AMT        /* 기업여신대상금액 : 선수금액  */
-                ,F.THMM_ACML_ERN_AMT        AS THMM_ACML_ERN_AMT         /* 당월누적수익금액 : 경과누적금액 */
-                ,(CASE WHEN (F.STTM_NO IS NULL OR F.STTM_NO = '') THEN 'N'
-                        ELSE 'Y'
-                        END)                 AS ACCT_YN                   /* 회계반영여부        */
-                ,F.RSTR_PRCS_YN             AS RSTR_PRCS_YN              /* 환원처리여부        */ 
-        FROM IBIMS201B A 			      /* 딜승인기본 */
-            ,IBIMS811B	B             /* 딜월별잔액 */
-            ,IBIMS410B	C             /* 딜거래내역 */
-            ,IBIMS420B	D             /* 딜수수료수납내역 */
-            ,IBIMS401B	E             /* 여신기본  */ 
-            ,IBIMS820B F			        /* 기업여신월별결산내역 */
-        WHERE 1 = 1
-        AND A.LAST_YN      = 'Y'
-        AND A.PRDT_CD      = B.PRDT_CD 
-        AND B.STDR_YM	    = #{stdrDt}  /* 기준년월 */
-        AND B.PRDT_CD      = C.PRDT_CD 
-        AND B.EXC_SN       = C.EXC_SN 
-        AND C.PRDT_CD      = D.PRDT_CD 
-        AND C.TR_SN        = D.TR_SN   
-        AND C.EXC_SN       = D.EXC_SN  
-        AND B.PRDT_CD      = E.PRDT_CD 
-        AND D.PRDT_CD      = F.PRDT_CD 
-        AND D.EXC_SN       = F.EXC_SN 			   
-        AND D.TR_SN        = F.TR_SN    
-        AND D.FEE_SN       = F.SN
-        AND F.STDR_YM	    = #{stdrDt}  /* 기준년월 */ 
-        AND F.EPRZ_CRDL_STLA_DCD = '3'              /* 기업여신결산구분코드 3-선수수수료  */
+             , A.PRDT_NM                  AS PRDT_NM                   /* 상품명             */
+             , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
+             , A.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드         */ 
+             , F.EXC_SN                   AS EXC_SN                    /* 실행일련번호         */
+             , F.TR_SN                    AS TR_SN                     /* 거래일련번호 : 거래순번 */
+             , F.SN                       AS SN                        /* 일련번호            */
+             , F.RGST_SN                  AS RGST_SN                   /* 등록일련번호 */
+             , C.TR_DT                    AS TR_DT                     /* 수취일자 */						
+             , D.EPRZ_CRDL_FEE_KND_CD     AS EPRZ_CRDL_FEE_KND_CD      /* 수수료종류코드 */
+             , D.FNNR_RCOG_STRT_DT        AS FNNR_RCOG_STRT_DT         /* 안분시작일자 */
+             , D.FNNR_RCOG_END_DT         AS FNNR_RCOG_END_DT          /* 안분종료일자 */				
+             , B.EXP_DT                   AS EXP_DT                		 /* 만기일자 */
+             , F.INTR_CLC_DNUM            AS INTR_CLC_DNUM             /* 총이자일수          */		  
+             , F.THMM_DNUM                AS THMM_DNUM                 /* 당월일수 : 경과이자일수  */
+             , F.EPRZ_CRDL_TRGT_AMT       AS EPRZ_CRDL_TRGT_AMT        /* 기업여신대상금액 : 선수금액  */
+             , F.THMM_ACML_ERN_AMT        AS THMM_ACML_ERN_AMT         /* 당월누적수익금액 : 경과누적금액 */
+             , (CASE WHEN (F.STTM_NO IS NULL OR F.STTM_NO = '') THEN 'N'
+                     ELSE 'Y'
+                     END)                 AS ACCT_YN                   /* 회계반영여부        */
+             , F.RSTR_PRCS_YN             AS RSTR_PRCS_YN              /* 환원처리여부        */ 
+          FROM IBIMS201B A 			      /* 딜승인기본 */
+             , IBIMS811B B             /* 딜월별잔액 */
+             , IBIMS410B C             /* 딜거래내역 */
+             , IBIMS420B D             /* 딜수수료수납내역 */
+             , IBIMS401B E             /* 여신기본  */ 
+             , IBIMS820B F			        /* 기업여신월별결산내역 */
+         WHERE 1 = 1
+           AND A.LAST_YN      = 'Y'
+           AND A.PRDT_CD      = B.PRDT_CD 
+           AND B.STDR_YM	    = F.STDR_YM  /* 기준년월 */
+           AND B.PRDT_CD      = C.PRDT_CD 
+           AND B.EXC_SN       = C.EXC_SN 
+           AND C.PRDT_CD      = D.PRDT_CD 
+           AND C.TR_SN        = D.TR_SN   
+           AND C.EXC_SN       = D.EXC_SN  
+           AND B.PRDT_CD      = E.PRDT_CD 
+           AND D.PRDT_CD      = F.PRDT_CD 
+           AND D.EXC_SN       = F.EXC_SN 			   
+           AND D.TR_SN        = F.TR_SN    
+           AND D.FEE_SN       = F.SN
+           AND B.STDR_YM	    = #{stdrDt}  /* 기준년월 */ 
+           AND F.EPRZ_CRDL_STLA_DCD = '3'              /* 기업여신결산구분코드 3-선수수수료  */
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ortnFndCd)">
+           AND A.ORTN_FND_CD = #{ortnFndCd}
+           </if>
         ORDER BY B.PRDT_CD, B.EXC_SN 
 
     </select>
 
     <!--월말결산 미수이자 조회-->
     <select id="getAccruedIntrList" resultType="com.nanuri.rams.business.common.vo.TB08060SVO" parameterType="com.nanuri.rams.business.common.vo.TB08060SVO">
-        SELECT DISTINCT A.PRDT_CD                  AS PRDT_CD                   /* 상품코드           */   
-            ,C.PRDT_NM                  AS PRDT_NM                   /* 상품명            */
-            ,C.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드        */
-            , (
-            	SELECT FND_NM
-            	FROM IBIMS993B fnd
-            	WHERE fnd.FND_CD = C.ORTN_FND_CD
-            )							              AS ORTN_FND_NM               /*운용펀드명*/ 
-            ,A.EXC_SN                   AS EXC_SN                    /* 실행일련번호        */ 
-            ,A.RGST_SN                  AS RGST_SN                   /* 등록일련번호 */
-            ,A.THMM_ACML_ERN_AMT        AS THMM_ACML_ERN_AMT         /* 당월누적수익금액     */
-            ,A.THMM_ERN_AMT             AS THMM_ERN_AMT              /* 당월수익금액        */ 
-            ,(CASE WHEN (A.STTM_NO IS NULL OR A.STTM_NO = '') THEN 'N'
-                ELSE 'Y'
-                END)                 AS ACCT_YN                   /* 회계반영여부        */
-            ,A.RSTR_PRCS_YN             AS RSTR_PRCS_YN              /* 환원처리여부        */ 
-        FROM IBIMS820B A			        /* 기업여신월별결산내역 */
-            ,IBIMS811B	B             /* 딜월별잔액 */
-            ,IBIMS201B C 			      /* 딜승인기본 */
+        SELECT DISTINCT A.PRDT_CD         AS PRDT_CD                   /* 상품코드           */   
+             , C.PRDT_NM                  AS PRDT_NM                   /* 상품명            */
+             , C.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드        */
+             , (
+             	  SELECT FND_NM
+             	    FROM IBIMS993B fnd
+             	   WHERE fnd.FND_CD = C.ORTN_FND_CD
+               ) 							            AS ORTN_FND_NM               /*운용펀드명*/ 
+             , A.EXC_SN                   AS EXC_SN                    /* 실행일련번호        */ 
+             , A.RGST_SN                  AS RGST_SN                   /* 등록일련번호 */
+             , A.THMM_ACML_ERN_AMT        AS THMM_ACML_ERN_AMT         /* 당월누적수익금액     */
+             , A.THMM_ERN_AMT             AS THMM_ERN_AMT              /* 당월수익금액        */ 
+             , (CASE WHEN (A.STTM_NO IS NULL OR A.STTM_NO = '') THEN 'N'
+                     ELSE 'Y'
+                     END)                 AS ACCT_YN                   /* 회계반영여부        */
+             , A.RSTR_PRCS_YN             AS RSTR_PRCS_YN              /* 환원처리여부        */ 
+          FROM IBIMS820B A /* 기업여신월별결산내역 */
+             , IBIMS811B B /* 딜월별잔액 */
+             , IBIMS201B C /* 딜승인기본 */
         WHERE 1 = 1
-        AND A.PRDT_CD  = B.PRDT_CD 
-        AND A.PRDT_CD  = C.PRDT_CD 
-        AND C.LAST_YN = 'Y'
-        AND A.STDR_YM	= #{stdrDt}  /* 기준년월 */ 
-        AND A.EPRZ_CRDL_STLA_DCD = '1'          /* 기업여신결산구분코드 1-미수이자  */
+          AND A.PRDT_CD  = B.PRDT_CD 
+          AND A.PRDT_CD  = C.PRDT_CD 
+          AND C.LAST_YN = 'Y'
+          AND A.STDR_YM	= #{stdrDt}  /* 기준년월 */ 
+          AND A.EPRZ_CRDL_STLA_DCD = '1'          /* 기업여신결산구분코드 1-미수이자  */
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ortnFndCd)">
+          AND C.ORTN_FND_CD = #{ortnFndCd}
+          </if>
         ORDER BY A.PRDT_CD, A.EXC_SN 
     </select>
 
     <!--월말결산 평가손상 조회-->
     <select id="getImprmtList" resultType="com.nanuri.rams.business.common.vo.TB08060SVO" parameterType="com.nanuri.rams.business.common.vo.TB08060SVO">
         SELECT A.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
-                ,A.PRDT_NM                  AS PRDT_NM                   /* 상품명             */
-                ,A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
-                ,A.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드         */
-                , (
-                    SELECT FND_NM
-                    FROM IBIMS993B fnd
-                    WHERE fnd.FND_CD = A.ORTN_FND_CD
-                  )							            AS ORTN_FND_NM               /*운용펀드명*/  
-                ,F.EXC_SN                   AS EXC_SN                    /* 실행일련번호         */ 
-                ,F.RGST_SN                  AS RGST_SN                   /* 등록일련번호 */
-                ,B.KRW_TRSL_EXC_AMT         AS KRW_TRSL_EXC_AMT          /* 원화환산실행금액 : 대출금액 */
-                ,B.KRW_TRSL_EXC_BLCE        AS KRW_TRSL_EXC_BLCE         /* 원화환산실행잔액 : 대출잔액 */
-                ,F.BFMM_ACML_ERN_AMT        AS BFMM_ACML_ERN_AMT         /* 전월누적수익금액 : 평가금액  */
-                ,F.THMM_ACML_ERN_AMT        AS THMM_ACML_ERN_AMT         /* 당월누적수익금액 : 평가손익금액 */
-                ,(CASE WHEN (F.STTM_NO IS NULL OR F.STTM_NO = '') THEN 'N'
-                        ELSE 'Y'
-                        END)                 AS ACCT_YN                   /* 회계반영여부        */
-                ,F.RSTR_PRCS_YN             AS RSTR_PRCS_YN              /* 환원처리여부        */ 
-        FROM IBIMS201B A 			      /* 딜승인기본 */
-            ,IBIMS811B	B             /* 딜월별잔액 */ 
-            ,IBIMS401B	E             /* 여신기본  */ 
-            ,IBIMS820B F			        /* 기업여신월별결산내역 */
-        WHERE 1 = 1
-        AND A.LAST_YN      = 'Y'
-        AND A.PRDT_CD      = B.PRDT_CD 
-        AND B.STDR_YM	    = #{stdrDt}  /* 기준년월 */ 
-        AND B.PRDT_CD      = E.PRDT_CD 
-        AND B.PRDT_CD      = F.PRDT_CD 
-        AND B.EXC_SN       = F.EXC_SN 		 
-        AND F.STDR_YM	    = #{stdrDt}  /* 기준년월 */ 
-        AND F.EPRZ_CRDL_STLA_DCD = '4'              /* 기업여신결산구분코드 4-평가손상 */
-        ORDER BY B.PRDT_CD, B.EXC_SN 
-
+             , A.PRDT_NM                  AS PRDT_NM                   /* 상품명             */
+             , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
+             , A.ORTN_FND_CD	            AS ORTN_FND_CD               /* 운용펀드코드         */
+             , (
+                SELECT FND_NM
+                  FROM IBIMS993B fnd
+                 WHERE fnd.FND_CD = A.ORTN_FND_CD
+               )							            AS ORTN_FND_NM               /*운용펀드명*/  
+             , F.EXC_SN                   AS EXC_SN                    /* 실행일련번호         */ 
+             , F.RGST_SN                  AS RGST_SN                   /* 등록일련번호 */
+             , B.KRW_TRSL_EXC_AMT         AS KRW_TRSL_EXC_AMT          /* 원화환산실행금액 : 대출금액 */
+             , B.KRW_TRSL_EXC_BLCE        AS KRW_TRSL_EXC_BLCE         /* 원화환산실행잔액 : 대출잔액 */
+             , F.BFMM_ACML_ERN_AMT        AS BFMM_ACML_ERN_AMT         /* 전월누적수익금액 : 평가금액  */
+             , F.THMM_ACML_ERN_AMT        AS THMM_ACML_ERN_AMT         /* 당월누적수익금액 : 평가손익금액 */
+             , (CASE WHEN (F.STTM_NO IS NULL OR F.STTM_NO = '') THEN 'N'
+                     ELSE 'Y'
+                     END)                 AS ACCT_YN                   /* 회계반영여부        */
+             , F.RSTR_PRCS_YN             AS RSTR_PRCS_YN              /* 환원처리여부        */ 
+          FROM IBIMS201B A 			       /* 딜승인기본 */
+             , IBIMS811B B             /* 딜월별잔액 */ 
+             , IBIMS401B E             /* 여신기본  */ 
+             , IBIMS820B F			       /* 기업여신월별결산내역 */
+         WHERE 1 = 1
+           AND A.LAST_YN      = 'Y'
+           AND A.PRDT_CD      = B.PRDT_CD 
+           AND B.STDR_YM	    = F.STDR_YM  /* 기준년월 */ 
+           AND B.PRDT_CD      = E.PRDT_CD 
+           AND B.PRDT_CD      = F.PRDT_CD 
+           AND B.EXC_SN       = F.EXC_SN 		 
+           AND B.STDR_YM	    = #{stdrDt}  /* 기준년월 */ 
+           AND F.EPRZ_CRDL_STLA_DCD = '4'              /* 기업여신결산구분코드 4-평가손상 */
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ortnFndCd)">
+           AND A.ORTN_FND_CD = #{ortnFndCd}
+           </if>
+         ORDER BY B.PRDT_CD, B.EXC_SN 
     </select>
 
     <update id="updateSettlement" parameterType="java.util.List">
         <foreach collection="list" item="item" separator=";">
             UPDATE IBIMS820B
-            SET THMM_ACML_ERN_AMT   = #{item.thmmAcmlErnAmt}             /* 당월누적수익금액 */ 
-                <if test='item.eprzCrdlStlaDcd == "4"'>
-                  , BFMM_ACML_ERN_AMT = #{item.bfmmAcmlErnAmt}         /* 전월누적수익금액 */
-                </if>
-            WHERE STDR_YM 			    = #{item.stdrYm}                     /* 기준년월 */ 
-            AND PRDT_CD 		        = #{item.prdtCd}                     /* 상품코드 */ 
-            AND RGST_SN 		        = #{item.rgstSn}                     /* 등록일련번호 */ 
-            AND EPRZ_CRDL_STLA_DCD 	= #{item.eprzCrdlStlaDcd}            /* 기업여신결산구분코드 */ 
-            AND HND_DETL_DTM        = SYSDATE                            /* 조작상세일시 */
-            AND HND_EMPNO = ''                                           /* 조작사원번호 */ 
-            AND HND_TMNL_NO = ''                                         /* 조작단말기번호 */
-            AND HND_TR_ID = ''                                           /* 조작거래ID */
-            AND GUID = ''                                                /* GUID */
+               SET THMM_ACML_ERN_AMT  = #{item.thmmAcmlErnAmt}             /* 당월누적수익금액 */ 
+                   <if test='item.eprzCrdlStlaDcd == "4"'>
+                 , BFMM_ACML_ERN_AMT = #{item.bfmmAcmlErnAmt}         /* 전월누적수익금액 */
+                   </if>
+            WHERE STDR_YM 			      = #{item.stdrYm}                     /* 기준년월 */ 
+              AND PRDT_CD 		        = #{item.prdtCd}                     /* 상품코드 */ 
+              AND RGST_SN 		        = #{item.rgstSn}                     /* 등록일련번호 */ 
+              AND EPRZ_CRDL_STLA_DCD 	= #{item.eprzCrdlStlaDcd}            /* 기업여신결산구분코드 */ 
+              AND HND_DETL_DTM        = SYSDATE                            /* 조작상세일시 */
+              AND HND_EMPNO = ''                                           /* 조작사원번호 */ 
+              AND HND_TMNL_NO = ''                                         /* 조작단말기번호 */
+              AND HND_TR_ID = ''                                           /* 조작거래ID */
+              AND GUID = ''                                                /* GUID */
         </foreach>
     </update>
+
+    <!-- 배치 -->
     <!-- TB9020B	미수이자결산내역생성 -->
     <!-- 1. 해당기준년월 결산내역 삭제 -->
     <delete id="deleteTB9020B" parameterType="string">
@@ -257,13 +270,13 @@
     <!-- 2. 당월인식대상 선수이자내역 조회 및 등록 -->
     <insert id="insertTB9030B" parameterType="string">
         INSERT INTO IBIMS820B  /* 기업여신월별결산내역 */
-             SELECT SUBSTR(#{stdrDt},1,6)                   AS STDR_YM                   /* 기준년월            */             
+             SELECT SUBSTR(#{stdrDt},1,6)        AS STDR_YM                   /* 기준년월            */             
                     , Y.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                     , ((SELECT NVL(MAX(X.RGST_SN), 0)
                           FROM IBIMS820B X  /* 기업여신월별결산내역 */
                          WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                            AND X.PRDT_CD = Y.PRDT_CD
-                      ) + ROWNUM)              AS RGST_SN                   /* 등록일련번호         */
+                      ) + ROWNUM)                AS RGST_SN                   /* 등록일련번호         */
                     , Y.BDCD                     AS BDCD                      /* 부서코드            */
                     , ''                         AS ACCT_SYNS_CD              /* 회계적용코드         */
                     , ''                         AS STTM_NO                   /* 전표번호            */
@@ -332,13 +345,13 @@
                          AND A.LAST_YN = 'Y'
                          AND A.PRDT_CD = E.PRDT_CD 
                          AND A.PRDT_CD = B.PRDT_CD 
-                         AND A.PRDT_LCLS_CD = '90'     /* 기업여신상품대분류코드 90-대출 */ 
+                         AND A.PRDT_LCLS_CD = '90'               /* 기업여신상품대분류코드 90-대출 */ 
                          AND A.INTR_BNAO_DCD	= '1'              /* 이자선후취구분코드 1-선취 */
                          AND B.LDG_STTS_CD = '1'                 /* 원장상태코드 1-정상*/
                          AND B.STDR_YM	= SUBSTR(#{stdrDt},1,6)  /* 기준년월 */
                          AND B.PRDT_CD  = C.PRDT_CD 
                          AND B.EXC_SN   = C.EXC_SN
-                         AND (C.TR_STAT_CD	= '1' /* 거래상태코드 1-정상 */
+                         AND (C.TR_STAT_CD	= '01' /* 거래상태코드 1-정상 */
                           OR NVL(E.CCLC_DT, '20000101') BETWEEN F.MN_TFDY AND F.MN_LSTD) /* 해지일자가 해당월인 대상 */
                          AND C.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10','20')  /* 거래종류코드 : 실행,상환 */
                          AND C.TR_INT_AMT	&gt; 0 /* 거래이자금액 */
@@ -444,7 +457,7 @@
                             AND B.STDR_YM	= SUBSTR(#{stdrDt},1,6)  /* 기준년월 */
                             AND B.PRDT_CD  = C.PRDT_CD 
                             AND B.EXC_SN   = C.EXC_SN 
-                            AND (C.TR_STAT_CD	= '1' /* 거래상태코드 1-정상 */
+                            AND (C.TR_STAT_CD	= '01' /* 거래상태코드 1-정상 */
                              OR NVL(E.CCLC_DT, '20000101') BETWEEN F.MN_TFDY AND F.MN_LSTD) /* 해지일자가 해당월인 대상 */
                             AND C.TR_FEE_AMT	&gt; 0   /* 거래수수료금액 */
                             AND C.PRDT_CD = D.PRDT_CD 
@@ -474,7 +487,7 @@
                           FROM IBIMS820B X  /* 기업여신월별결산내역 */
                          WHERE X.STDR_YM = SUBSTR(#{stdrDt},1,6)
                            AND X.PRDT_CD = A.PRDT_CD
-                     ) + ROWNUM)               AS RGST_SN                   /* 등록일련번호         */
+                     ) + ROWNUM)               AS RGST_SN                     /* 등록일련번호         */
                     , A.MNGM_BDCD                AS BDCD                      /* 부서코드            */
                     , ''                         AS ACCT_SYNS_CD              /* 회계적용코드         */
                     , ''                         AS STTM_NO                   /* 전표번호            */
