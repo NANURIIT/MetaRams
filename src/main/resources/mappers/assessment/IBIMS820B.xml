@@ -257,7 +257,7 @@
     <!-- 2. 당월인식대상 선수이자내역 조회 및 등록 -->
     <insert id="insertTB9030B" parameterType="string">
         INSERT INTO IBIMS820B  /* 기업여신월별결산내역 */
-             SELECT  #{stdrDt}       AS STDR_YM                   /* 기준년월            */             
+             SELECT #{stdrDt}                   AS STDR_YM                   /* 기준년월            */             
                     , Y.PRDT_CD                  AS PRDT_CD                   /* 상품코드            */   
                     , ((SELECT NVL(MAX(X.RGST_SN), 0)
                           FROM IBIMS820B X  /* 기업여신월별결산내역 */

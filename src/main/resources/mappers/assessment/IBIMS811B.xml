@@ -63,6 +63,8 @@
 				, HND_TR_ID
 				, GUID
 		FROM IBIMS402B
+		WHERE 1=1
+		  AND PRDT_CD LIKE '%A'
 	</select>
  	
 	<insert id="insertIBIMS811B" parameterType="com.nanuri.rams.business.common.vo.IBIMS810BVO">
