@@ -57,11 +57,6 @@ public class TB10610ServiceImpl implements TB10610Service {
 		// 포맷에 맞춰서 날짜를 문자열로 변환
 		String formattedTime = currentDateTime.format(timeFormat);
 
-		if (!input.getArgument().isEmpty()) {
-			ibims999bMapper.delete();
-			ibims999bMapper.insert(input.getArgument());
-		}
-
 		input.setHndEmpno(facade.getDetails().getEno());
 		input.setHndTmnlNo("");
 		input.setHndTrId("");

@@ -32,26 +32,23 @@ public class TB9040ServiceImpl implements TB9040Service {
 
         IBIMS997BDTO data = ibims997bMapper.daemonCheckData("TB9040B");
 
-        try {
-            data.setJobStatus("3");
-            ibims997bMapper.updateIBIMS997B(data);
+        // Running
+        data.setJobStatus("3");
+        ibims997bMapper.updateIBIMS997B(data);
 
-            int delete;
-            int insert;
+        try {
+
             String stdrDt = data.getCurDate();
 
             // 삭제
-            delete = ibims8202bMapper.deleteTB9040B(stdrDt);
+            ibims8202bMapper.deleteTB9040B(stdrDt);
             // 입력
-            insert = ibims8202bMapper.insertTB9040B(stdrDt);
+            ibims8202bMapper.insertTB9040B(stdrDt);
 
             // 체크
-            if (delete >= 0 && insert >= 0) {
-                data.setJobStatus("4"); // complete
-                ibims997bMapper.subPreJobCount(data);
-            } else {
-                data.setJobStatus("5"); // error
-            }
+            data.setJobStatus("4"); // complete
+            ibims997bMapper.subPreJobCount(data);
+
             // 배치업데이트
             result = ibims997bMapper.batchUpdate(data);
         }

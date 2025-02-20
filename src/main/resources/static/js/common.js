@@ -2055,6 +2055,8 @@ function pqGridAddNewRow(colModelSelector) {
     row.push(title);
   }
 
+  console.log(newRow);
+
   colModelSelector.pqGrid("addRow", {
     rowData: newRow,
     checkEditable: false,

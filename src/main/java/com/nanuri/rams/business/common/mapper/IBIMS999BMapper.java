@@ -12,11 +12,11 @@ public interface IBIMS999BMapper {
 
     public String bzDdVl(String param);
 
-    public String selectDD1AF();
+    public String selectDD1AF(String stdrDt);
 
-    public int insert(String param);
+    public int insert(String dd1AfBzDd);
 
-    public int delete();
+    public int delete(String dd1AfBzDd);
 
     public String getFormattedBzDd();
 

@@ -40,23 +40,29 @@ public class TB9060ServiceImpl implements TB9060Service {
 
         IBIMS997BDTO data = ibims997bMapper.daemonCheckData("TB9060B");
 
+        data.setJobStatus("3");
+        ibims997bMapper.updateIBIMS997B(data);
+
         try {
-            data.setJobStatus("3");
-            ibims997bMapper.updateIBIMS997B(data);
+
+            String stdrDt = data.getCurDate();
 
             // 삭제
-            int delete = ibims981bMapper.batchDeleteIBIMS981B();
+            ibims981bMapper.batchDeleteIBIMS981B(stdrDt);
+
+            String hndEmpno = data.getHndEmpno();
+
+            // if (data.getBatchCmdDcd() != "1") {
+            //     hndEmpno = facade.getDetails().getEno();
+            // }
 
             // 입력
-            int insert = ibims981bMapper.batchInsertIBIMS981B();
+            ibims981bMapper.batchInsertIBIMS981B(hndEmpno);
 
             // 체크
-            if (delete >= 0 && insert >= 0) {
-                data.setJobStatus("4"); // complete
-                ibims997bMapper.subPreJobCount(data);
-            } else {
-                data.setJobStatus("5"); // error
-            }
+            data.setJobStatus("4"); // complete
+            ibims997bMapper.subPreJobCount(data);
+
             // 배치업데이트
             result = ibims997bMapper.batchUpdate(data);
         }

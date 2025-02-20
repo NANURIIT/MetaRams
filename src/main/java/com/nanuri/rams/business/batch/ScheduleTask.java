@@ -120,8 +120,7 @@ public class ScheduleTask {
 		log.info( "################################################################################" );
 	}
     
-    //TODO: 동적스케줄링
-    @Scheduled(cron="0 0 2 * * *", zone="Asia/Seoul") //TEST
+    @Scheduled(cron="0 27 16 * * *", zone="Asia/Seoul") //TEST
 	public void batchScheduleService() throws Exception{
     	
     	if (!batchRunning) {
@@ -154,7 +153,7 @@ public class ScheduleTask {
     
     private void scheduleBatch(BatchMasterVo batch) {
     	String jobId = batch.getJobId();
-        String cronExpression = tmToCron(batch.getJobRunStartTime());
+        String cronExpression = tmToCron(batch.getJobRunStrtTime());
 
         log.info("Scheduling batch job: {} with cron: {}", jobId, cronExpression);
 
@@ -176,8 +175,8 @@ public class ScheduleTask {
         }
     }
 
-	private String tmToCron(String jobRunStartTime) {
-		String input = jobRunStartTime; // 6글자 문자열
+	private String tmToCron(String jobRunStrtTime) {
+		String input = jobRunStrtTime; // 6글자 문자열
         int chunkSize = 2;              // 2글자씩 나누기
         
         if(input.length() != 6) {

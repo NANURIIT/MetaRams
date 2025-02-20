@@ -62,8 +62,8 @@ public class BatchMasterVo {
 	@Column(name = "JOB_RUN_TYPE_DCD", length = 1, nullable = false, columnDefinition = "varchar(1) COMMENT '작업실행방법구분코드'")
 	private String jobRunTypeDcd;
 
-	@Column(name = "JOB_RUN_START_TIME", length = 6, nullable = false, columnDefinition = "varchar(6) COMMENT '실행시간'")
-	private String jobRunStartTime;
+	@Column(name = "JOB_RUN_STRT_TIME", length = 6, nullable = false, columnDefinition = "varchar(6) COMMENT '실행시간'")
+	private String jobRunStrtTime;
 
 	private String curDate;			//당일일자
 	private int preJobCount;		//선행 JOB 개수

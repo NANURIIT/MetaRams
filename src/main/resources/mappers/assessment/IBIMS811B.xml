@@ -63,6 +63,8 @@
 				, HND_TR_ID
 				, GUID
 		FROM IBIMS402B
+		WHERE 1=1
+		  AND PRDT_CD LIKE 'A%'
 	</select>
  	
 	<insert id="insertIBIMS811B" parameterType="com.nanuri.rams.business.common.vo.IBIMS810BVO">
@@ -193,7 +195,7 @@
 	</insert>
 
     <delete id="deleteIBIMS811B" parameterType="String">
-		DELETE FROM IBIMS811B /* 딜일별잔액 */
+		DELETE FROM IBIMS811B /* 딜월별잔액 */
 		 WHERE 1=1
 		   AND STDR_YM = SUBSTR(#{stdrDt},1,6)
 	</delete>

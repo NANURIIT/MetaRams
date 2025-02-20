@@ -15,9 +15,7 @@
          , NVL(T1.LAST_UPDATE_DAY, T1.REGISTER_DAY) AS LAST_UPDATE_DAY  /* 최종 수정일 */
          , T1.JOB_TYPE                                                  /* JOB TYPE */
          , T1.JOB_RUN_TYPE_DCD                                          /* 작업실행방법구분코드 */
-         , (SUBSTR(T1.JOB_RUN_STRT_TIME, 1, 2) 
-         || ':' || SUBSTR(T1.JOB_RUN_STRT_TIME, 3, 4)
-         || ':' || SUBSTR(T1.JOB_RUN_STRT_TIME, 5, 6)) AS JOB_RUN_STRT_TIME  /* JOB 시작조건시각 */
+         , T1.JOB_RUN_STRT_TIME                                         /* JOB 시작조건시각 */
       FROM IBIMS995B T1
      WHERE 1=1
 		   AND JOB_ID LIKE '%' || #{jobId} || '%'

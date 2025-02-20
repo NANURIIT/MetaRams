@@ -3,6 +3,7 @@ package com.nanuri.rams.business.common.vo;
 import java.util.List;
 
 import com.nanuri.rams.business.common.dto.IBIMS995BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS996BDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,4 +22,6 @@ public class IBIMS995BVO extends IBIMS995BDTO {
     List<IBIMS995BVO> batSch;
 
     List<IBIMS995BVO> excBat;
+
+    List<IBIMS996BDTO> preJobList;
 }

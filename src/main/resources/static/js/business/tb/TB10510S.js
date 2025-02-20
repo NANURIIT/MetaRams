@@ -178,6 +178,9 @@ const TB10510Sjs = (function () {
 				align: "center",
 				// width    : '10%',
 				filter: { crules: [{ condition: 'range' }] },
+                render: function (ui) {
+                    return ui.cellData.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3")
+                },
 			},
 						
         ];
@@ -209,7 +212,14 @@ const TB10510Sjs = (function () {
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] },
                 render: function (ui) {
-                    return ui.cellData.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")
+                    let result;
+                    if (!ui.cellData) {
+                        result = ui.cellData;
+                    }
+                    else if (ui.cellData.length === 8) {
+                        result = ui.cellData.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")
+                    }
+                    return result
                 },
             },
             {
@@ -220,7 +230,14 @@ const TB10510Sjs = (function () {
                 align: "center",
                 filter: { crules: [{ condition: 'range' }] },
                 render: function (ui) {
-                    return ui.cellData.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")
+                    let result;
+                    if (!ui.cellData) {
+                        result = ui.cellData;
+                    }
+                    else if (ui.cellData.length === 8) {
+                        result = ui.cellData.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")
+                    }
+                    return result
                 },
             },
             {
@@ -322,6 +339,9 @@ const TB10510Sjs = (function () {
 								$('#TB10510S_jobRunTypeDcd').val(rd.jobRunTypeDcd)
 								$('#TB10510S_jobRunStrtTime').val(rd.jobRunStrtTime.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3"))
 
+                                $('#TB10510S_addPreJob').prop('disabled', false)
+                                $('#TB10510S_delPreJob').prop('disabled', false)
+
                                 rd.rowType = 'M'
 
                                 inqPreJob();
@@ -389,7 +409,8 @@ const TB10510Sjs = (function () {
                 confirmYn: $('#TB10510S_rgst_cfm').val(),
                 description: $('#TB10510S_rgst_dscrp').val(),
                 jobRunTypeDcd: $('#TB10510S_jobRunTypeDcd').val(),
-                jobRunStrtTime: $('#TB10510S_jobRunStrtTime').val().replace(":", ""),
+                jobRunStrtTime: $('#TB10510S_jobRunStrtTime').val().replaceAll(":", ""),
+                preJobList: $('#TB10510S_grd_batPreJob').pqGrid('instance').pdata,
             }
         } else {
             obj = {
@@ -401,11 +422,14 @@ const TB10510Sjs = (function () {
                 confirmYn: $('#TB10510S_rgst_cfm').val(),
                 description: $('#TB10510S_rgst_dscrp').val(),
                 jobRunTypeDcd: $('#TB10510S_jobRunTypeDcd').val(),
-                jobRunStrtTime: $('#TB10510S_jobRunStrtTime').val().replace(":", ""),
+                jobRunStrtTime: $('#TB10510S_jobRunStrtTime').val().replaceAll(":", ""),
                 rowType: rd.rowType,
+                preJobList: $('#TB10510S_grd_batPreJob').pqGrid('instance').pdata,
             }
         }
 
+        console.log(obj.jobRunStrtTime);
+        
         // console.log('입력 ::: {}', obj)
         if (jobId) {
             $.ajax({
@@ -426,7 +450,8 @@ const TB10510Sjs = (function () {
                             , text: "입력이 완료됐습니다."
                             , confirmButtonText: "확인"
                         }).then((result) => {
-                            inqBatch()
+                            reset();
+                            inqBatch();
                         });
                     } else {
                         Swal.fire({
@@ -531,7 +556,7 @@ const TB10510Sjs = (function () {
                             });
                         }
                     }
-                })
+                });
             });
 
         } else {
@@ -648,7 +673,6 @@ const TB10510Sjs = (function () {
 		}
 	}
 
-
     ///////////////////////////////// TEST 중
     // $('#pq-head-cell-u0-0-0-right input[type="checkbox"]').on('click', function() {
     //     console.log('Checkbox 클릭됨!');
@@ -679,7 +703,11 @@ const TB10510Sjs = (function () {
 		
 		$('#TB10510S_jobRunTypeDcd').val('')
 		$('#TB10510S_jobRunStrtTime').val('')
+
+        $('#TB10510S_addPreJob').prop('disabled', true)
+        $('#TB10510S_delPreJob').prop('disabled', true)
 		
+        $('#TB10510S_grd_batPreJob').pqGrid('instance').setData([])
         rd = {}
     }
 
