@@ -235,7 +235,7 @@ const TB07010Sjs = (function () {
             $("#TB07010S_ptxtTrOthrDscmNo").val(
               isEmpty(data.ptxtTrOthrDscmNo)
                 ? ""
-                : checkBrnAcno(data.ptxtTrOthrDscmNo)
+                : data.ptxtTrOthrDscmNo
             ); // 거래상대방
             $("#TB07010S_ptxtTrOthrDscmNm").val(data.ptxtTrOthrDscmNm);   // 거래상대방명
             $("#TB07010S_prdtLclsCd").val(data.prdtLclsCd);               // 상품대분류
