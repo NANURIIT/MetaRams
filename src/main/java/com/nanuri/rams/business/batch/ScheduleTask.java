@@ -229,6 +229,7 @@ public class ScheduleTask {
 	public boolean stopBatch(String curDate, String jobId) {
 		// update Terminate
 		ibims997bMapper.updateJobStatus(curDate, jobId, "6"); // 6:Terminate
+		ibims997bMapper.updateBatchCmdDcd(curDate, jobId, "4"); // 4.Kill
 		log.info("🔴 Batch 중지 요청: {}", jobId);
 
 	    // 1. 예약된 배치 스케줄 취소
@@ -267,7 +268,9 @@ public class ScheduleTask {
 	    stopBatch(curDate, jobId);
 
 	    // 새로운 배치 실행
-	    return startBatch(curDate, jobId);
+	    boolean result = startBatch(curDate, jobId);
+	    ibims997bMapper.updateBatchCmdDcd(curDate, jobId, "3"); // 3.(Re)Run
+	    return result;
 	}
 
 	public void forcedOk(String curDate, String jobId) {
@@ -283,6 +286,7 @@ public class ScheduleTask {
 		
 		// update Complete
 		ibims997bMapper.updateJobStatus(curDate, jobId, "4"); // 4:Complete
+		ibims997bMapper.updateBatchCmdDcd(curDate, jobId, "2"); // 2.Forced-OK
 	}
 	
 	public void brakeBatch(String curDate, String jobId) {
@@ -291,6 +295,7 @@ public class ScheduleTask {
 		
 		// update Stop
 		ibims997bMapper.updateJobStatus(curDate, jobId, "8"); // 8:Stop
+		ibims997bMapper.updateBatchCmdDcd(curDate, jobId, "5"); // 5.Brake
 	}
     
     /*
