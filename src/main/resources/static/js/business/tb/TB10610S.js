@@ -10,6 +10,7 @@ const TB10610Sjs = (function () {
     $("#TB10610S_exc_argument").prop("disabled", true);
     $("#TB10610S_curDate").val(getToday());
     $("#btnExc").prop("disabled", true);
+    radioBtnController("");
   });
 
   /*******************************************************************
@@ -284,6 +285,7 @@ const TB10610Sjs = (function () {
               $('input[name="TB10610S_batchCmdDcd"]').prop("disabled", false);
               $('input[name="TB10610S_batchCmdDcd"]').prop("checked", false);
               $('#btnExc').prop('disabled', true)
+              radioBtnController("");
               tempObj = {};
             }
           });
@@ -332,8 +334,8 @@ const TB10610Sjs = (function () {
     // Not Running
     if ( jobStatus === "1" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
-      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
-      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false).next().css({ color : "" });
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false).next().css({ color : "" });
 
       $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
       $('input[name="TB10610S_batchCmdDcd"][value="3"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
@@ -342,8 +344,8 @@ const TB10610Sjs = (function () {
     // Waitting
     else if ( jobStatus === "2" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
-      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
-      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false).next().css({ color : "" });
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false).next().css({ color : "" });
 
       $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
       $('input[name="TB10610S_batchCmdDcd"][value="3"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
@@ -352,7 +354,7 @@ const TB10610Sjs = (function () {
     // Running
     else if ( jobStatus === "3" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
-      $('input[name="TB10610S_batchCmdDcd"][value="4"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="4"]').prop('disabled', false).next().css({ color : "" });
 
       $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
       $('input[name="TB10610S_batchCmdDcd"][value="2"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
@@ -362,8 +364,8 @@ const TB10610Sjs = (function () {
     // Complete
     else if ( jobStatus === "4" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
-      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
-      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false).next().css({ color : "" });
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false).next().css({ color : "" });
 
       $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
       $('input[name="TB10610S_batchCmdDcd"][value="2"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
@@ -372,9 +374,9 @@ const TB10610Sjs = (function () {
     // Error
     else if ( jobStatus === "5" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
-      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
-      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
-      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false).next().css({ color : "" });
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false).next().css({ color : "" });
+      $('input[name="TB10610S_batchCmdDcd"][value="5"]').prop('disabled', false).next().css({ color : "" });
 
       $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
       $('input[name="TB10610S_batchCmdDcd"][value="4"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
@@ -387,8 +389,8 @@ const TB10610Sjs = (function () {
     // Terminated
     else if ( jobStatus === "7" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
-      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
-      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false).next().css({ color : "" });
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false).next().css({ color : "" });
 
       $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
       $('input[name="TB10610S_batchCmdDcd"][value="4"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
@@ -397,12 +399,18 @@ const TB10610Sjs = (function () {
     // Stop
     else if ( jobStatus === "8" ) {
       $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
-      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false);
-      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false);
-      $('input[name="TB10610S_batchCmdDcd"][value="4"]').prop('disabled', false);
+      $('input[name="TB10610S_batchCmdDcd"][value="2"]').prop('disabled', false).next().css({ color : "" });
+      $('input[name="TB10610S_batchCmdDcd"][value="3"]').prop('disabled', false).next().css({ color : "" });
+      $('input[name="TB10610S_batchCmdDcd"][value="4"]').prop('disabled', false).next().css({ color : "" });
 
       $('input[name="TB10610S_batchCmdDcd"][value="1"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
       $('input[name="TB10610S_batchCmdDcd"][value="5"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+    }
+
+    else {
+      $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
+      $('input[name="TB10610S_batchCmdDcd"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      // $('input[name="TB10610S_batchCmdDcd"][value="5"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
     }
   }
 
@@ -667,8 +675,7 @@ const TB10610Sjs = (function () {
 
     $("#btnExc").prop("disabled", true);
     $("#btnConfirm").prop("disabled", false);
-    $('input[name="TB10610S_batchCmdDcd"]').next().css({ color: "" });
-    $('input[name="TB10610S_batchCmdDcd"]').prop("disabled", false);
+    radioBtnController("");
   }
 
   // confirm 상태 이벤트
