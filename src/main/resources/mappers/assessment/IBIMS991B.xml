@@ -45,7 +45,7 @@
               FROM IBIMS991B
               WHERE 1=1
                 AND HOLIDAY = '0'
-                AND STDR_DT <![CDATA[ <= ]]> '22000615'
+                AND STDR_DT <![CDATA[ <= ]]> #{stdrDt}
           )
 	</select>
 </mapper>
