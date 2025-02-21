@@ -30,35 +30,27 @@ public class TB9020ServiceImpl implements TB9020Service {
 
         int result = 0;
 
-        IBIMS997BDTO data = ibims997bMapper.daemonCheckData("TB9020B");
-
         try {
-            data.setJobStatus("3");
-            ibims997bMapper.updateIBIMS997B(data);
-
-            int delete;
-            int insert;
-            String stdrDt = data.getCurDate();
+            // 업무시작시간 업데이트
+            param.setHndEmpno("BATCH");
+            ibims997bMapper.updateIBIMS997B(param);
+            
+            String stdrDt = param.getCurDate();
 
             // 삭제
-            delete = ibims820bMapper.deleteTB9020B(stdrDt);
+            ibims820bMapper.deleteTB9020B(stdrDt);
             // 입력
-            insert = ibims820bMapper.insertTB9020B(stdrDt);
+            ibims820bMapper.insertTB9020B(stdrDt);
 
-            // 체크
-            if (delete >= 0 && insert >= 0) {
-                data.setJobStatus("4"); // complete
-                ibims997bMapper.subPreJobCount(data);
-            } else {
-                data.setJobStatus("5"); // error
-            }
+            param.setJobStatus("4"); // complete
+            
             // 배치업데이트
-            result = ibims997bMapper.batchUpdate(data);
+            result = ibims997bMapper.batchUpdate(param);
         }
 
         catch (Exception e) {
-            data.setJobStatus("5");
-            result = ibims997bMapper.batchUpdate(data);
+            param.setJobStatus("5");
+            result = ibims997bMapper.batchUpdate(param);
         }
 
         return result;

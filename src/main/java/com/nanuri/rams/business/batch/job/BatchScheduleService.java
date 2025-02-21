@@ -134,6 +134,8 @@ public class BatchScheduleService {
 
 		updateData.setBatchCmdDcd("1");
 
+		log.debug("updateData::::::::::: {}", updateData);
+
 		// 배치 실행
 		urlController.callApi(batchUpdateUri, updateData, latch);
 		///////////////////////////////////////////////////////////////////////

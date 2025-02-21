@@ -19,7 +19,7 @@ public class TB9050APIController {
     private final TB9050Service tb9050Service;
 
     @PostMapping(value = "/insert")
-    public int insert(IBIMS997BDTO param) {
+    public int insert(@RequestBody IBIMS997BDTO param) {
         return tb9050Service.insert(param);
     }
 
