@@ -76,7 +76,6 @@
          AND PRE_JOB_COUNT <![CDATA[ < ]]> 1
          AND CONFIRM_YN = 'Y'
          AND ROWNUM = 1;
-    
     </select>
 
     <select id="jobCount" parameterType="string" resultType="int">
@@ -173,13 +172,7 @@
     <!-- 배치JOB 스케줄러 수정  -->
     <update id="updateIBIMS997B" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
          UPDATE IBIMS997B
-            SET CUR_DATE           = #{curDate}            /* 당일일자 */
-              , JOB_ID             = #{jobId}              /* JOB ID */
-              , JOB_NAME           = #{jobName}            /* JOB NAME */
-              , OBJECT_NAME        = #{objectName}         /* SOURCE FULL NAME */
-              , PRE_JOB_COUNT      = #{preJobCount}        /* 선행JOB건수 */
-              , CHILD_PID          = #{childPid}           /* 프로그램 PID */
-              , FIRST_START_TIME   = NVL(
+            SET FIRST_START_TIME   = NVL(
                                             (
                                              SELECT NULLIF(FIRST_START_TIME, '')
                                                FROM IBIMS997B
@@ -195,16 +188,7 @@
                                                 AND CUR_DATE = #{curDate}
                                             )
                                            )                /* 시작시간 */
-              , END_TIME           = NVL(#{endTime}, '') /* 종료시간 */
-              , JOB_STATUS         = NVL(#{jobStatus}, 
-                                            (
-                                             SELECT JOB_STATUS
-                                               FROM IBIMS997B
-                                              WHERE JOB_ID = #{jobId}
-                                                AND CUR_DATE = #{curDate}
-                                            )
-                                           )                /* 작업상태 */
-              , HND_DETL_DTM       = SYSDATE                  /* 조작상세일시 */
+              , HND_DETL_DTM       = SYSDATE                /* 조작상세일시 */
               , HND_EMPNO          = #{hndEmpno}            /* 조작사원번호 */
               , HND_TMNL_NO        = #{hndTmnlNo}           /* 조작단말기번호 */
               , HND_TR_ID          = #{hndTrId}             /* 조작거래ID */

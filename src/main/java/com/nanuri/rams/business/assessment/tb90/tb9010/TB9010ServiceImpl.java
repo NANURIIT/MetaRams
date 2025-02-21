@@ -46,16 +46,14 @@ public class TB9010ServiceImpl implements TB9010Service {
 
         int result = 0;
 
-        IBIMS997BDTO data = ibims997bMapper.daemonCheckData("TB9010B");
-
         try {
-            // Running으로 업데이트
-            data.setJobStatus("3");
-            ibims997bMapper.updateIBIMS997B(data);
-
+            // 업무시작시간 업데이트
+            param.setHndEmpno("BATCH");
+            ibims997bMapper.updateIBIMS997B(param);
+            
             IBIMS810BDTO ibims810bdto = new IBIMS810BDTO();
 
-            ibims810bdto.setStdrDt(data.getCurDate());
+            ibims810bdto.setStdrDt(param.getCurDate());
 
             // 810테이블에 입력값 셀렉트
             List<IBIMS810BDTO> select = ibims811bMapper.selectIBIMS811B(ibims810bdto);
@@ -69,7 +67,7 @@ public class TB9010ServiceImpl implements TB9010Service {
 
                 String prdtCd = select.get(i).getPrdtCd();
                 long excSn = select.get(i).getExcSn();
-                String stdrDt = data.getCurDate();
+                String stdrDt = param.getCurDate();
 
                 inSvo.setPrdtCd(prdtCd);
                 inSvo.setExcSn(excSn);
@@ -102,23 +100,23 @@ public class TB9010ServiceImpl implements TB9010Service {
             ibims810bvo.setIbims810bdtoList(select);
 
             // 삭제
-            ibims811bMapper.deleteIBIMS811B(data.getCurDate());
+            ibims811bMapper.deleteIBIMS811B(param.getCurDate());
 
             // 입력
             if ( ibims810bvo.getIbims810bdtoList().size() > 0 ) {
                 ibims811bMapper.insertIBIMS811B(ibims810bvo);
             }
 
-            data.setJobStatus("4"); // complete
-            ibims997bMapper.subPreJobCount(data);
+            param.setJobStatus("4"); // complete
+            ibims997bMapper.subPreJobCount(param);
 
             // 배치업데이트
-            result = ibims997bMapper.batchUpdate(data);
+            result = ibims997bMapper.batchUpdate(param);
         }
         // 실패시 error업데이트
         catch (Exception e) {
-            data.setJobStatus("5");
-            result = ibims997bMapper.batchUpdate(data);
+            param.setJobStatus("5");
+            result = ibims997bMapper.batchUpdate(param);
         }
 
         return result;
