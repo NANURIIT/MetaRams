@@ -105,23 +105,26 @@ public class TB9000ServiceImpl implements TB9000Service {
             ibims810bvo.setIbims810bdtoList(select);
 
             // 삭제
-            ibims810bMapper.deleteIBIMS810B(data.getCurDate());
+            int delete = ibims810bMapper.deleteIBIMS810B(data.getCurDate());
 
             // 입력
-            if ( ibims810bvo.getIbims810bdtoList().size() > 0 ) {
-                ibims810bMapper.insertIBIMS810B(ibims810bvo);
+            int insert = ibims810bMapper.insertIBIMS810B(ibims810bvo);
+
+            // 체크
+            if (delete >= 0 && insert >= 0) {
+                data.setJobStatus("4"); // complete
+                ibims997bMapper.subPreJobCount(data);
+            } else {
+                data.setJobStatus("5"); // error
             }
 
-            data.setJobStatus("4"); // complete
-            ibims997bMapper.subPreJobCount(data);
-
             // 배치업데이트
-            ibims997bMapper.batchUpdate(data);
+            result = ibims997bMapper.batchUpdate(data);
         }
         // 실패시 error 업데이트
         catch (Exception e) {
             data.setJobStatus("5");
-            ibims997bMapper.batchUpdate(data);
+            result = ibims997bMapper.batchUpdate(data);
         }
 
         return result;
