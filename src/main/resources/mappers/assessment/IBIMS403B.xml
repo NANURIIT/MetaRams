@@ -4,29 +4,29 @@
 
     <select id="selectIBIMS403BList" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
            SELECT
-                  PRDT_CD                                 <!-- /*상품코드 */ -->
-                , EXC_SN                                  <!-- /*실행일련번호 */ -->
-                , #{trSn} AS HGRK_TR_SN                   <!-- /*사거래일련번호 */ -->
-                , TR_SN                                   <!-- /*거래일련번호 */ -->
-                , SCX_DCD                                 <!-- /*일정구분코드 */ -->
-                , RDMP_TMRD                               <!-- /*상환회차 */ -->
-                , PRAR_DT                                 <!-- /*예정일자 */ -->
-                , PRAR_PRNA                               <!-- /*예정원금 */ -->
-                , STRT_DT                                 <!-- /*시작일자 */ -->
-                , END_DT                                  <!-- /*종료일자 */ -->
-                , RDMP_PRAR_INTR                          <!-- /*상환예정이자 */ -->
-                , PRCS_CPLT_YN                            <!-- /*처리완료여부 */ -->
-                , PRCS_DT                                 <!-- /*처리일자 */ -->
-                , PRCS_AMT                                <!-- /*처리금액 */ -->
-                , PRCS_INTR_AMT                           <!-- /*처리이자금액 */ -->
-                , APLY_IRT                                <!-- /*적용이율 */ -->
-                , OVDU_INTR_RT                            <!-- /*연체이자율 */ -->
-                , TRCH_DCD                                <!-- /*트렌치구분코드 */ -->
-                , HND_DETL_DTM                            <!-- /*조작상세일시 */ -->
-                , HND_EMPNO                               <!-- /*조작사원번호 */ -->
-                , HND_TMNL_NO                             <!-- /*조작단말기번호 */ -->
-                , HND_TR_ID                               <!-- /*조작거래id */ -->
-                , GUID                                    <!-- /*guid */ -->
+                  PRDT_CD                                 /*상품코드 */
+                , EXC_SN                                  /*실행일련번호 */
+                , #{trSn} AS HGRK_TR_SN                   /*사거래일련번호 */
+                , TR_SN                                   /*거래일련번호 */
+                , SCX_DCD                                 /*일정구분코드 */
+                , RDMP_TMRD                               /*상환회차 */
+                , PRAR_DT                                 /*예정일자 */
+                , PRAR_PRNA                               /*예정원금 */
+                , STRT_DT                                 /*시작일자 */
+                , END_DT                                  /*종료일자 */
+                , RDMP_PRAR_INTR                          /*상환예정이자 */
+                , PRCS_CPLT_YN                            /*처리완료여부 */
+                , PRCS_DT                                 /*처리일자 */
+                , PRCS_AMT                                /*처리금액 */
+                , PRCS_INTR_AMT                           /*처리이자금액 */
+                , APLY_IRT                                /*적용이율 */
+                , OVDU_INTR_RT                            /*연체이자율 */
+                , TRCH_DCD                                /*트렌치구분코드 */
+                , HND_DETL_DTM                            /*조작상세일시 */
+                , HND_EMPNO                               /*조작사원번호 */
+                , HND_TMNL_NO                             /*조작단말기번호 */
+                , HND_TR_ID                               /*조작거래id */
+                , GUID                                    /*guid */
              FROM IBIMS403B
             WHERE PRDT_CD = #{prdtCd}        /* 상품코드 */
               AND EXC_SN  = #{excSn}         /* 실행일련번호 */
@@ -39,60 +39,60 @@
 		   AND A.PRDT_CD =  #{prdtCd} /*  'A000000001' */
     </select>
     
-    <!-- /*여신스케쥴기본등록 */  -->
+    <!-- 여신스케쥴기본등록  -->
     <insert id="saveRdmpInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
         INSERT INTO IBIMS403B
                (
-                  PRDT_CD                                 <!-- /*상품코드 */ -->
-                , EXC_SN                                  <!-- /*실행일련번호 */ -->
-                , SCX_DCD                                 <!-- /*일정구분코드 */ -->
-                , RDMP_TMRD                               <!-- /*상환회차 */ -->
-                , PRAR_DT                                 <!-- /*예정일자 */ -->
+                  PRDT_CD                                 /*상품코드 */
+                , EXC_SN                                  /*실행일련번호 */ 
+                , SCX_DCD                                 /*일정구분코드 */ 
+                , RDMP_TMRD                               /*상환회차 */ 
+                , PRAR_DT                                 /*예정일자 */ 
                 , TRGT_AMT                                /*대상금액*/
-                , PRAR_PRNA                               <!-- /*예정원금 */ -->
-                , STRT_DT                                 <!-- /*시작일자 */ -->
-                , END_DT                                  <!-- /*종료일자 */ -->
-                , RDMP_PRAR_INTR                          <!-- /*상환예정이자 */ -->
-                , PRCS_CPLT_YN                            <!-- /*처리완료여부 */ -->
-                , PRCS_DT                                 <!-- /*처리일자 */ -->
-                , PRCS_AMT                                <!-- /*처리금액 */ -->
-                , PRCS_INTR_AMT                           <!-- /*처리이자금액 */ -->
-                , APLY_IRT                                <!-- /*적용이율 */ -->
-                , OVDU_INTR_RT                            <!-- /*연체이자율 */ -->
-                , TRCH_DCD                                <!-- /*트렌치구분코드 */ -->
-                , TR_SN                                   <!-- /*거래일련번호 */ -->
-                , HND_DETL_DTM                            <!-- /*조작상세일시 */ -->
-                , HND_EMPNO                               <!-- /*조작사원번호 */ -->
-                , HND_TMNL_NO                             <!-- /*조작단말기번호 */ -->
-                , HND_TR_ID                               <!-- /*조작거래id */ -->
-                , GUID                                    <!-- /*guid */ -->
+                , PRAR_PRNA                               /*예정원금 */ 
+                , STRT_DT                                 /*시작일자 */ 
+                , END_DT                                  /*종료일자 */ 
+                , RDMP_PRAR_INTR                          /*상환예정이자 */ 
+                , PRCS_CPLT_YN                            /*처리완료여부 */
+                , PRCS_DT                                 /*처리일자 */ 
+                , PRCS_AMT                                /*처리금액 */ 
+                , PRCS_INTR_AMT                           /*처리이자금액 */ 
+                , APLY_IRT                                /*적용이율 */ 
+                , OVDU_INTR_RT                            /*연체이자율 */
+                , TRCH_DCD                                /*트렌치구분코드 */
+                , TR_SN                                   /*거래일련번호 */
+                , HND_DETL_DTM                            /*조작상세일시 */
+                , HND_EMPNO                               /*조작사원번호 */
+                , HND_TMNL_NO                             /*조작단말기번호 */
+                , HND_TR_ID                               /*조작거래id */
+                , GUID                                    /*guid */
                )
         VALUES
         <foreach collection="list" item="item" separator=",">
                (
                  #{item.prdtCd}                           /*상품코드 */ 
                , #{item.excSn}                            /*실행일련번호 */ 
-               , #{item.scxDcd}                           <!-- /*일정구분코드 */ -->
-               , #{item.rdmpTmrd}                         <!-- /*상환회차 */ -->
-               , #{item.prarDt}                           <!-- /*예정일자 */ -->
+               , #{item.scxDcd}                           /*일정구분코드 */
+               , #{item.rdmpTmrd}                         /*상환회차 */
+               , #{item.prarDt}                           /*예정일자 */
                , #{item.trgtAmt}                          /*대상금액*/
-               , #{item.prarPrna}                         <!-- /*예정원금 */ -->
-               , #{item.strtDt}                           <!-- /*시작일자 */ -->
-               , #{item.endDt}                            <!-- /*종료일자 */ -->
-               , #{item.rdmpPrarIntr}                     <!-- /*상환예정이자 */ -->
-               , #{item.prcsCpltYn}                       <!-- /*처리완료여부 */ -->
-               , #{item.prcsDt}                           <!-- /*처리일자 */ -->
-               , #{item.prcsAmt}                          <!-- /*처리금액 */ -->
-               , #{item.prcsIntrAmt}                      <!-- /*처리이자금액 */ -->
-               , #{item.aplyIrt}                          <!-- /*적용이율 */ -->
-               , #{item.ovduIntrRt}                       <!-- /*연체이자율 */ -->
-               , #{item.trchDcd}                          <!-- /*트렌치구분코드 */ -->
-               , #{item.trSn}                             <!-- /*거래일련번호 */ -->
-               , SYSDATE                                    <!-- /*조작상세일시 */ -->
-               , #{item.hndEmpno}                         <!-- /*조작사원번호 */ -->
-               , #{item.hndTmnlNo}                        <!-- /*조작단말기번호 */ -->
-               , #{item.hndTrId}                          <!-- /*조작거래id */ -->
-               , #{item.guid}                             <!-- /*guid */ -->
+               , #{item.prarPrna}                         /*예정원금 */
+               , #{item.strtDt}                           /*시작일자 */
+               , #{item.endDt}                            /*종료일자 */
+               , #{item.rdmpPrarIntr}                     /*상환예정이자 */
+               , #{item.prcsCpltYn}                       /*처리완료여부 */
+               , #{item.prcsDt}                           /*처리일자 */
+               , #{item.prcsAmt}                          /*처리금액 */
+               , #{item.prcsIntrAmt}                      /*처리이자금액 */
+               , #{item.aplyIrt}                          /*적용이율 */
+               , #{item.ovduIntrRt}                       /*연체이자율 */
+               , #{item.trchDcd}                          /*트렌치구분코드 */
+               , #{item.trSn}                             /*거래일련번호 */
+               , SYSDATE                                    /*조작상세일시 */
+               , #{item.hndEmpno}                         /*조작사원번호 */
+               , #{item.hndTmnlNo}                        /*조작단말기번호 */
+               , #{item.hndTrId}                          /*조작거래id */
+               , #{item.guid}                             /*guid */
                )
         </foreach>
     </insert>
@@ -103,13 +103,13 @@
 		     , A.PRAR_DT  			/* 상환예정일자 */
 		     , C.EXP_DT             /* 만기일자 */
 		     , C.DEAL_EXC_BLCE      /* 실행잔액 */
-		     , NVL(A.PRAR_PRNA-A.PRCS_AMT, 0) AS PRAR_PRNA          /* 상환원금 */
-		     , NVL(A.RDMP_PRAR_INTR, 0)       AS RDMP_PRAR_INTR     /* 상환이자 */
-             , 0 AS DEAL_MRDP_PRCA  /* 딜중도상환원금 */                      
-             , 0 AS MRDP_FEE_AMT    /* 중도상환수수료금액 */                   
-             , 0 AS RCVB_INTR_AMT   /* 미수이자금액 */       
-             , 'N' AS EARLY_REPAY_YN 	    /* 중도상환여부 */
-             , NVL(D.MDWY_RDMP_FEE_RTO, 0) AS MDWY_RDMP_FEE_RTO  /* 중도상환수수료비율 */
+		     , NVL(A.PRAR_PRNA-A.PRCS_AMT, 0) AS PRAR_PRNA            /* 상환원금 */
+		     , NVL(A.RDMP_PRAR_INTR, 0)       AS RDMP_PRAR_INTR       /* 상환이자 */
+              , 0 AS DEAL_MRDP_PRCA                               /* 딜중도상환원금 */                      
+              , 0 AS MRDP_FEE_AMT                                 /* 중도상환수수료금액 */                   
+             , NVL(C.RCVB_INTR_AMT, 0) AS RCVB_INTR_AMT           /* 미수이자금액 */       
+             , 'N' AS EARLY_REPAY_YN 	                            /* 중도상환여부 */
+             , NVL(D.MDWY_RDMP_FEE_RTO, 0) AS MDWY_RDMP_FEE_RTO   /* 중도상환수수료비율 */
 		  FROM IBIMS401B B       /* 여신기본 */
              , IBIMS402B C  /* 실행기본 */
              , (
@@ -387,11 +387,12 @@
     </update>
 
 
-     <!-- /*TB06015P */ 원금상환 계획 정보 조회 -->
+     <!-- TB06015P 원금상환 계획 정보 조회 -->
      <select id='getRdmpSchedule' parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
           SELECT A.PRDT_CD                /* 종목코드 */
                , A.RDMP_TMRD              /* 상환회차 */
                , A.PRAR_DT                /* 예정일자 */
+               , A.TRGT_AMT               /* 대상금액 */
                , A.PRAR_PRNA              /* 예정원금 */
                , A.STRT_DT                /* 시작일자 */
                , A.END_DT                 /* 종료일자 */
@@ -409,7 +410,7 @@
            ORDER BY STRT_DT ASC
      </select>
 
-     <!-- /*TB06015P */ 이자상환 계획 정보 조회 -->
+     <!-- TB06015P  이자상환 계획 정보 조회 -->
      <select id='getIntrSchedule' parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
           SELECT A.PRDT_CD                /* 종목코드 */
                , A.RDMP_TMRD              /* 상환회차 */
@@ -432,7 +433,7 @@
            ORDER BY STRT_DT ASC
      </select>
 
-     <!-- /*TB07050S */ 실행스케줄 조회 -->
+     <!-- TB07050S  실행스케줄 조회 -->
      <select id='getExcSchedule' parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
           SELECT PRDT_CD                /* 종목코드 */
                , RDMP_TMRD              /* 상환회차 */
@@ -447,7 +448,7 @@
            ORDER BY PRAR_DT DESC
      </select>
 
-     <!-- /*여신스케쥴기본등록 */  -->
+     <!-- 여신스케쥴기본등록   -->
      <insert id="insertCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
         INSERT INTO IBIMS403B
                (
@@ -503,7 +504,7 @@
                )
      </insert>
 
-     <!-- /*원리금 */ 스케줄관리 업데이트 -->
+     <!-- 원리금  스케줄관리 업데이트 -->
      <update  id="updateCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
           UPDATE IBIMS403B
              SET PRAR_DT           = #{prarDt}                     /* 예정일자 */
@@ -527,7 +528,7 @@
              AND RDMP_TMRD         = #{rdmpTmrd}                   /* 상환회차 */
      </update>
 
-     <!-- /*원리금 */ 스케줄관리 실행일련번호 조회 -->
+     <!-- 원리금  스케줄관리 실행일련번호 조회 -->
      <select id="srchExcSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="java.util.HashMap">
           SELECT DISTINCT(EXC_SN)              /* 실행일련번호 */
             FROM IBIMS403B
@@ -539,7 +540,7 @@
               BY EXC_SN DESC
      </select>
 
-     <!-- /*원리금 */ 스케줄관리 삭제 -->
+     <!-- 원리금  스케줄관리 삭제 -->
      <delete  id="deleteCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
           DELETE 
             FROM IBIMS403B
@@ -550,7 +551,7 @@
      </delete>
 
 
-     <!-- /*원리금 */ 스케줄관리 삭제 -->
+     <!-- 원리금  스케줄관리 삭제 -->
      <delete  id="deleteIBIMS403B" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
           DELETE 
             FROM IBIMS403B
@@ -558,7 +559,7 @@
              AND EXC_SN    = #{excSn}      /* 실행일련번호 */
      </delete>
      
-     <!-- /*원리금 */ 스케줄관리 회차 채번 -->
+     <!-- 원리금  스케줄관리 회차 채번 -->
      <select id="getPaiSchTmrd" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="String">
         SELECT TO_CHAR(MAX(TO_NUMBER(NVL(RDMP_TMRD, 0))) + 1 ) AS rdmpTmrd /* 상환회차 */
           FROM IBIMS403B
@@ -567,7 +568,7 @@
            AND EXC_SN  = #{excSn}      /* 실행일련번호 */
      </select>
 
-     <!-- /*실행 */ 스케줄관리 실행일련번호 채번 -->
+     <!-- 실행  스케줄관리 실행일련번호 채번 -->
      <select id="getExcSchExcSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="long">
         SELECT NVL(MAX(NVL(IFNULL(EXC_SN, 0), 0)), 0) + 1 AS EXC_SN
           FROM IBIMS403B

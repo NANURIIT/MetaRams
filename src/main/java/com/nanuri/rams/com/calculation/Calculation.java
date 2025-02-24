@@ -226,7 +226,7 @@ public class Calculation {
 			//prnaCalcRstDTO.setPrarDt(DateUtil.dayAdd(itm.getEndDt(),1));
 
 			prnaCalcRstDTO.setPrarDt(prarDt);
-			prnaCalcRstDTO.setBfBalance(bfBalance);
+			
 			if("02".equals(inCalcDTO.getPaiRdmpDcd())) {
 				prnaCalcRstDTO.setPrarPrna(process_down(inCalcDTO.getIntrSnnoPrcsDcd(), MonthlyPaymentTotal.subtract(monthlySubInterest)));
 				prnaCalcRstDTO.setPrarRdmpAmt(MonthlyPaymentTotal);	// 원리금균등만..
@@ -239,6 +239,8 @@ public class Calculation {
 			prnaCalcRstDTO.setStrtDt(itm.getStrtDt());
 			prnaCalcRstDTO.setEndDt(itm.getEndDt());
 			prnaCalcRstDTO.setAplyIrt(new BigDecimal(dIntrt));
+
+			//prnaCalcRstDTO.setBfBalance(process_down(inCalcDTO.getIntrSnnoPrcsDcd(), bfBalance));
 			
 			// 납입원금누계
 			loanBalanceTotal = loanBalanceTotal.add(MonthlyPaymentTotal.subtract(monthlySubInterest));				
@@ -250,6 +252,29 @@ public class Calculation {
 
 			prnaCalcRstDTOList.add(prnaCalcRstDTO);
 		} // for end
+
+		for(int i=0; i < prnaCalcRstDTOList.size(); i++){
+
+			CalculationResultDTO prnaCalcRsltDTO = prnaCalcRstDTOList.get(i);
+
+			BigDecimal PrarPrnaAmt = BigDecimal.ZERO;
+
+			for(int v = 0 ; v < prnaCalcRstDTOList.size() ; v++) {
+				
+				CalculationResultDTO prnaItem = prnaCalcRstDTOList.get(v);
+				
+				if(prnaCalcRsltDTO.getEndDt().compareTo(prnaItem.getEndDt()) > 0) {
+					PrarPrnaAmt = PrarPrnaAmt.add(prnaItem.getPrarPrna());	// 예정언금
+				} else {
+					break;
+				}
+			}
+
+			bfBalance = inCalcDTO.getDealExcAmt().subtract(PrarPrnaAmt);
+
+			prnaCalcRsltDTO.setBfBalance(process_down(inCalcDTO.getIntrSnnoPrcsDcd(), bfBalance));
+
+		}
 	
 		return prnaCalcRstDTOList;
 		
@@ -1352,21 +1377,26 @@ public class Calculation {
 			CalculationResultDTO returnDTO = new CalculationResultDTO();
 			
 			IBIMS403BDTO paramDTO = IBIMS403BDTOList.get(i);
+
+			if(paramDTO.getRdmpPrarIntr() == null){
+				if(i==0){	//첫회차
+					//if(paramDTO.getPrcsCpltYn() == null || "N".equals(paramDTO.getPrcsCpltYn())){
+						log.debug("첫회차는 대출잔액 가감 X");
+					// }else{
+					// 	bfBalance = bfBalance.subtract(paramDTO.getPrarPrna());
+					// }
+					
+				}else{
+					bfBalance = bfBalance.subtract(paramDTO.getPrarPrna());
+				}
+			}
+			
 			
 
 			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().isEmpty() || "N".equals(paramDTO.getPrcsCpltYn())){
 				if(paramDTO.getRdmpPrarIntr() == null){		//원금상환계획정보
 
-					if(i==0){	//첫회차
-						if(paramDTO.getPrcsCpltYn() == null || "N".equals(paramDTO.getPrcsCpltYn())){
-							log.debug("첫회차는 대출잔액 가감 X");
-						}else{
-							bfBalance = bfBalance.subtract(paramDTO.getPrarPrna());
-						}
-						
-					}else{
-						bfBalance = bfBalance.subtract(paramDTO.getPrarPrna());
-					}
+					
 					
 
 					String stdrDt = inCalcDTO.getStdrDt(); 	//기준일자
@@ -1402,12 +1432,14 @@ public class Calculation {
 							returnDTO.setRdmpTmrd((i+1)+"");
 							returnDTO.setPrarDt(paramDTO.getPrarDt());
 							returnDTO.setPrarPrna(paramDTO.getPrarPrna());
-							returnDTO.setBfBalance(bfBalance.add(paramDTO.getPrarPrna()));
+							returnDTO.setBfBalance(paramDTO.getTrgtAmt());
 							returnDTO.setStrtDt(strtDt);
 							returnDTO.setEndDt(endDt);
 							returnDTO.setPrcsDnum(prcsDnum);
 		
 							log.debug("원금상환 예정일자: "+ returnDTO.getPrarDt());
+							log.debug("trgtAmt::: " + paramDTO.getTrgtAmt());
+							log.debug("returnDto.BfBalance::: " + returnDTO.getBfBalance());
 
 							returnList.add(returnDTO);
 
@@ -1474,6 +1506,10 @@ public class Calculation {
 			
 			IBIMS403BDTO paramDTO = ibims403List.get(i);
 
+			if(i > 0 && paramDTO.getRdmpPrarIntr() == null){
+				bfBalance = bfBalance.subtract(paramDTO.getPrarPrna());
+			}
+
 			if(paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().equals("N")){//미처리
 				
 				if(paramDTO.getRdmpPrarIntr() == null){		//원금상환계획정보
@@ -1490,7 +1526,7 @@ public class Calculation {
 						endDt = DateUtil.dayAdd(paramDTO.getPrarDt(), -1);
 
 					}else{
-						bfBalance = bfBalance.subtract(paramDTO.getPrarPrna());
+						
 						strtDt = ibims403List.get(i-1).getPrarDt();
 						endDt = DateUtil.dayAdd(paramDTO.getPrarDt(), -1);
 					}
@@ -1503,7 +1539,7 @@ public class Calculation {
 						returnDTO.setRdmpTmrd((i+1)+"");
 						returnDTO.setPrarDt(paramDTO.getPrarDt());
 						returnDTO.setPrarPrna(paramDTO.getPrarPrna());
-						returnDTO.setBfBalance(bfBalance.add(paramDTO.getPrarPrna()));
+						returnDTO.setBfBalance(paramDTO.getTrgtAmt());
 						returnDTO.setStrtDt(strtDt);
 						returnDTO.setEndDt(endDt);
 						returnDTO.setPrcsDnum(prcsDnum);

@@ -298,6 +298,7 @@ public class TB07010ServiceImpl implements TB07010Service {
 				prna403BDTO.setScxDcd(prnaitem.getScxDcd());			// 일정구분
 				prna403BDTO.setRdmpTmrd(prnaitem.getRdmpTmrd());    	// 상환회차
 				prna403BDTO.setPrarDt(prnaitem.getPrarDt());        	// 예정일자
+				prna403BDTO.setTrgtAmt(prnaitem.getBfBalance());		// 대상금액
 				prna403BDTO.setPrarPrna(prnaitem.getPrarPrna());    	// 예정원금
 				prna403BDTO.setStrtDt(prnaitem.getStrtDt());    		// 시작일자
 				prna403BDTO.setEndDt(prnaitem.getEndDt());    			// 종료일자
