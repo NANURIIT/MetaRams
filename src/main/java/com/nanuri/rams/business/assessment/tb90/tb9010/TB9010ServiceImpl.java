@@ -42,9 +42,9 @@ public class TB9010ServiceImpl implements TB9010Service {
     private AuthenticationFacade facade;
 
     @Override
-    public int insert(IBIMS997BDTO param) {
+    public String insert(IBIMS997BDTO param) {
 
-        int result = 0;
+        String result = "5";
 
         try {
             // 업무시작시간 업데이트
@@ -107,16 +107,12 @@ public class TB9010ServiceImpl implements TB9010Service {
                 ibims811bMapper.insertIBIMS811B(ibims810bvo);
             }
 
-            param.setJobStatus("4"); // complete
-            ibims997bMapper.subPreJobCount(param);
-
             // 배치업데이트
-            result = ibims997bMapper.batchUpdate(param);
+            result = "4";
         }
         // 실패시 error업데이트
         catch (Exception e) {
-            param.setJobStatus("5");
-            result = ibims997bMapper.batchUpdate(param);
+            result = "5";
         }
 
         return result;

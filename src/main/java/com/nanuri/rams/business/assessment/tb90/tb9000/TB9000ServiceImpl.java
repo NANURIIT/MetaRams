@@ -41,7 +41,7 @@ public class TB9000ServiceImpl implements TB9000Service {
     private AuthenticationFacade facade;
 
     @Override
-    public int insertIBIMS810B(IBIMS997BDTO param) {
+    public String insertIBIMS810B(IBIMS997BDTO param) {
 
         // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |1 |Batch       |1 |Batch       |
         // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |2 |Forced-OK   |2 |Forced-OK   |
@@ -58,7 +58,7 @@ public class TB9000ServiceImpl implements TB9000Service {
         // |J002 |배치작업상태     |JOB_STATUS    |1 |7 |Terminated  |7 |Terminated  |
         // |J002 |배치작업상태     |JOB_STATUS    |1 |8 |Stop        |8 |Stop        |
 
-        int result = 0;
+        String result = "5";
 
 
         // UPDATE IBIMS997B
@@ -152,17 +152,11 @@ public class TB9000ServiceImpl implements TB9000Service {
                 ibims810bMapper.insertIBIMS810B(ibims810bvo);
             }
 
-            // 체크
-            param.setJobStatus("4"); // complete
-            ibims997bMapper.subPreJobCount(param);
-
-            // 배치업데이트
-            result = ibims997bMapper.batchUpdate(param);
+            result = "4";
         }
         // 실패시 error 업데이트
         catch (Exception e) {
-            param.setJobStatus("5");
-            result = ibims997bMapper.batchUpdate(param);
+            result = "5";
         }
 
         return result;

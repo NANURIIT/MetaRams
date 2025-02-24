@@ -169,6 +169,10 @@ const TB10510Sjs = (function () {
 				align: "center",
 				// width    : '10%',
 				filter: { crules: [{ condition: 'range' }] },
+                render: function (ui) {
+                    let fSel = objSlc.J003.find(({ cdValue }) => cdValue == ui.cellData);
+                    return fSel ? fSel.cdName : ui.cellData;
+                },
 			},
 			{
 				title: "실행 시간",
@@ -346,10 +350,15 @@ const TB10510Sjs = (function () {
 
                                 inqPreJob();
                             }
-                        } else {
-                            $('#TB10510S_rgst_jobId').prop('disabled', false)
-                            reset()
                         }
+                        /**
+                         * 2025-02-21 김건우
+                         * 회의때 삭제요청 
+                         */
+                        // else {
+                        //     $('#TB10510S_rgst_jobId').prop('disabled', false)
+                        //     reset()
+                        // }
 
                     })
                 } else {

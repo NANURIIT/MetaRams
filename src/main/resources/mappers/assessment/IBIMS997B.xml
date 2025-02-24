@@ -68,11 +68,13 @@
            , GUID
         FROM IBIMS997B
        WHERE 1=1
-         AND JOB_STATUS IN (0, 3, 5, 6, 7)
-         AND CUR_DATE = NVL(NULLIF(#{curDate}, ''),(
+         AND JOB_STATUS IN (2)
+         AND CUR_DATE = (
                           SELECT MAX(BZ_DD)
 			                      FROM IBIMS999B
-                        ))
+                           WHERE 1=1
+                             AND BZ_DD <![CDATA[ <= ]]> #{curDate}
+                        )
          AND PRE_JOB_COUNT <![CDATA[ < ]]> 1
          AND CONFIRM_YN = 'Y'
          AND ROWNUM = 1;
