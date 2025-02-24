@@ -228,7 +228,6 @@ public class TB07030ServiceImpl implements TB07030Service {
 		ibims403lst = sort403lst(ibims403lst);
 
 
-
 		TB07030SVO tb07030svo = new TB07030SVO();
 
 		tb07030svo.setIbims403DtlLst(ibims403lst);
