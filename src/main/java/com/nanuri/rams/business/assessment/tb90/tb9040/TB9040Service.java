@@ -8,8 +8,6 @@ import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 @Service
 public interface TB9040Service {
     
-    public int insert(IBIMS997BDTO param);
-    // public int select(@RequestBody int data);
-    // public int delete(@RequestBody int data);
+    public String insert(IBIMS997BDTO param);
     
 }

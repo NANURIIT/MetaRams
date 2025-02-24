@@ -9,6 +9,6 @@ import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 @Service
 public interface TB9990Service {
 
-    public int insert(IBIMS997BDTO param);
+    public String insert(IBIMS997BDTO param);
     
 }

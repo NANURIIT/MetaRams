@@ -171,15 +171,19 @@ const TB10610Sjs = (function () {
         // width    : '10%',
         filter: { crules: [{ condition: "range" }] },
       },
-      {
-        title: "CONFIRM 상태",
-        dataType: "string",
-        dataIndx: "confirmYn",
-        halign: "center",
-        align: "center",
-        // width    : '10%',
-        filter: { crules: [{ condition: "range" }] },
-      },
+      /**
+       * 2025-02-21 김건우
+       * 회의때 삭제하래요
+       */
+      // {
+      //   title: "CONFIRM 상태",
+      //   dataType: "string",
+      //   dataIndx: "confirmYn",
+      //   halign: "center",
+      //   align: "center",
+      //   // width    : '10%',
+      //   filter: { crules: [{ condition: "range" }] },
+      // },
     ];
 
     let pqGridObjs = [

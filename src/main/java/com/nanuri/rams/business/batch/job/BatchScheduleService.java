@@ -1,18 +1,15 @@
 package com.nanuri.rams.business.batch.job;
 
 import java.util.List;
-import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import com.nanuri.rams.business.assessment.tb90.tb9000.TB9000ServiceImpl;
-import com.nanuri.rams.business.assessment.tb9999d.URLController;
+import com.nanuri.rams.business.batch.CallBatchMethod;
 import com.nanuri.rams.business.batch.job.entity.BatchMasterVo;
 import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS995BMapper;
@@ -28,12 +25,10 @@ public class BatchScheduleService {
 
 	private final IBIMS995BMapper ibims995bMapper;
 	private final IBIMS997BMapper ibims997bMapper;
-
+	
 	private final Map<String, Future<?>> batchExecutionTasks = new ConcurrentHashMap<>();
 
-	private final URLController urlController;
-
-	private final TB9000ServiceImpl tb9000ServiceImpl;
+	private final CallBatchMethod callBatchMethod;
 
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
@@ -121,24 +116,17 @@ public class BatchScheduleService {
 		log.info("BATCH RUNNING. JOB_ID : " + jobId);
 
 		// 아래 Job 로직
+		///////////////////////////////////////////////////////////////////////
+
+		ibims997bdto.setBatchCmdDcd("1");
+
+		String status = callBatchMethod.callMethod(jobId, ibims997bdto);
+
+		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, status); // 결과
 		
 		///////////////////////////////////////////////////////////////////////
-		// 임시 주소
-		String ip = "http://localhost:18092/";
-		String batchUpdateUriString = ip + jobId + "/insert";
-		URI batchUpdateUri = URI.create(batchUpdateUriString);
 
-		CountDownLatch latch = new CountDownLatch(1);
-
-		IBIMS997BDTO updateData = ibims997bMapper.getJobId(batch.getCurDate());
-
-		updateData.setBatchCmdDcd("1");
-
-		log.debug("updateData::::::::::: {}", updateData);
-
-		// 배치 실행
-		urlController.callApi(batchUpdateUri, updateData, latch);
-		///////////////////////////////////////////////////////////////////////
+		// 
 
 		// 테스트로직
 		// for (int i = 0; i < 10000; i++) {

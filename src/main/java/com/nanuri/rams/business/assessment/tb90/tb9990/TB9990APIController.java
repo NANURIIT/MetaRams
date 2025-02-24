@@ -28,28 +28,8 @@ public class TB9990APIController {
         private final TB9990Service tb9990Service;
 
         @PostMapping(value = "/insert")
-        public int insert(@RequestBody IBIMS997BDTO param) {
+        public String insert(@RequestBody IBIMS997BDTO param) {
                 return tb9990Service.insert(param);
         }
-
-        // @Scheduled(cron = "0 0 00 * * ?")
-        // public void 임시 () {
-
-        //         LocalDate today = LocalDate.now();
-        //         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        //         String formattedDate = today.format(formatter);
-                
-        //         String dd1af = ibims999bMapper.selectDD1AF();
-
-        //         if ( ibims999bMapper.bzDdVl(formattedDate) == null ) {
-        //                 return;
-        //         }
-
-        //         // 삭제
-        //         ibims999bMapper.delete();
-
-        //         // 입력
-        //         ibims999bMapper.insert(dd1af);
-        // }
 
 }

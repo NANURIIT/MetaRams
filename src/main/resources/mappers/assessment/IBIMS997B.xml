@@ -10,7 +10,7 @@
              , OBJECT_NAME                             /* SOURCE FULL NAME */
              , ARGUMENT                                /* ARGUMENT */
              , PRE_JOB_COUNT                           /* 선행JOB건수 */
-             , CONFIRM_YN                       /* CONFIRM JOB 건수 */
+             , CONFIRM_YN                              /* CONFIRM JOB 건수 */
              , CHILD_PID                               /* 프로그램 PID */
              , RUN_COUNT                               /* 실행횟수 */
              , FIRST_START_TIME                        /* 최초 시작시간 */
@@ -68,11 +68,13 @@
            , GUID
         FROM IBIMS997B
        WHERE 1=1
-         AND JOB_STATUS IN (0, 3, 5, 6, 7)
-         AND CUR_DATE = NVL(NULLIF(#{curDate}, ''),(
+         AND JOB_STATUS IN (2)
+         AND CUR_DATE = (
                           SELECT MAX(BZ_DD)
 			                      FROM IBIMS999B
-                        ))
+                           WHERE 1=1
+                             AND BZ_DD <![CDATA[ <= ]]> #{curDate}
+                        )
          AND PRE_JOB_COUNT <![CDATA[ < ]]> 1
          AND CONFIRM_YN = 'Y'
          AND ROWNUM = 1;
@@ -178,9 +180,9 @@
                                                FROM IBIMS997B
                                               WHERE JOB_ID = #{jobId}
                                                 AND CUR_DATE = #{curDate}
-                                            ), TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss')
+                                            ), TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
                                            )            /* 최초 시작시간 */
-              , START_TIME         = NVL(TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss'), 
+              , START_TIME         = NVL(TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'), 
                                             (
                                              SELECT NULLIF(START_TIME, '')
                                                FROM IBIMS997B
@@ -260,8 +262,7 @@
     <!-- 배치 상태 업데이트 -->
     <update id="batchUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
       UPDATE IBIMS997B
-         SET JOB_STATUS = #{jobStatus} /* 4:Complete, 5:Error */
-           , END_TIME = TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss')
+         SET END_TIME = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
            , RUN_COUNT = (SELECT (A.RUN_COUNT + 1)
                             FROM IBIMS997B A
                            WHERE A.CUR_DATE = #{curDate}

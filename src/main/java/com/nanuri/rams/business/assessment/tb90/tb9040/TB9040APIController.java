@@ -19,17 +19,8 @@ public class TB9040APIController {
     private final TB9040Service tb9040Service;
     
     @PostMapping(value = "/insert")
-    public int insert(@RequestBody IBIMS997BDTO param) {
+    public String insert(@RequestBody IBIMS997BDTO param) {
         return tb9040Service.insert(param);
     }
-    
-    // @PostMapping(value = "/select")
-    // public int select(@RequestBody int data) {
-    //     return tb9040Service.select(data);
-    // }
-
-    // @PostMapping(value = "/delete")
-    // public int delete(@RequestBody int data) {
-    //     return tb9040Service.delete(data);
-    // }
+   
 }

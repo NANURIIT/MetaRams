@@ -120,9 +120,9 @@ public class ScheduleTask {
 		log.info( "################################################################################" );
 	}
     
-    @Scheduled(cron="0 27 16 * * *", zone="Asia/Seoul") //TEST
+    @Scheduled(cron="0 52 15 * * *", zone="Asia/Seoul") //TEST
 	public void batchScheduleService() throws Exception{
-    	
+
     	if (!batchRunning) {
             log.info("Batch execution is stopped.");
             return;
