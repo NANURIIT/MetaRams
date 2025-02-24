@@ -262,8 +262,7 @@
     <!-- 배치 상태 업데이트 -->
     <update id="batchUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
       UPDATE IBIMS997B
-         SET JOB_STATUS = #{jobStatus} /* 4:Complete, 5:Error */
-           , END_TIME = TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss')
+         SET END_TIME = TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss')
            , RUN_COUNT = (SELECT (A.RUN_COUNT + 1)
                             FROM IBIMS997B A
                            WHERE A.CUR_DATE = #{curDate}

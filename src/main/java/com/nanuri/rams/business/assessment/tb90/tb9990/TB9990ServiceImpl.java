@@ -44,6 +44,9 @@ public class TB9990ServiceImpl implements TB9990Service {
             // 입력
             ibims999bMapper.insert(dd1AfBzDd);
 
+            ibims997bMapper.batchUpdate(param);
+            ibims997bMapper.subPreJobCount(param);
+
             result = "4";
         }
 

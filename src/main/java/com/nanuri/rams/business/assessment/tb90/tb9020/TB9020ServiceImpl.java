@@ -42,6 +42,9 @@ public class TB9020ServiceImpl implements TB9020Service {
             // 입력
             ibims820bMapper.insertTB9020B(stdrDt);
 
+            ibims997bMapper.batchUpdate(param);
+            ibims997bMapper.subPreJobCount(param);
+
             result = "4";
         }
 

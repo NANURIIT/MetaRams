@@ -57,6 +57,9 @@ public class TB9060ServiceImpl implements TB9060Service {
             // 입력
             ibims981bMapper.batchInsertIBIMS981B(hndEmpno);
 
+            ibims997bMapper.batchUpdate(param);
+            ibims997bMapper.subPreJobCount(param);
+
             result = "4";
         }
 

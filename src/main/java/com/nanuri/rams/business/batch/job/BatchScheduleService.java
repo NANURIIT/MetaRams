@@ -120,11 +120,7 @@ public class BatchScheduleService {
 
 		ibims997bdto.setBatchCmdDcd("1");
 
-		log.info("###########확인용기병##########");
-
 		String status = callBatchMethod.callMethod(jobId, ibims997bdto);
-
-		log.info("###########확인Dragon##########" + status);
 
 		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, status); // 결과
 		

@@ -26,14 +26,13 @@ public class CallBatchMethod {
 
         try {
             
-            String drt = jobId.substring(0, 6);
+            String path = "tb" + jobId.substring(2, 6);
+            String className = jobId.substring(0, 6) + "APIController";
+    
+            Object instance = context.getBean(Class.forName("com.nanuri.rams.business.assessment.tb90." + path + "." + className));
 
-            String className = drt + "APIController";
-    
-            Object instance = context.getBean(Class.forName("com.nanuri.rams.business.assessment.tb90." + drt + "." + className));
-    
             Method method = instance.getClass().getDeclaredMethod("insert", IBIMS997BDTO.class);
-    
+
             Object result = method.invoke(instance, jobInstance);
 
             // 성공시 Complete

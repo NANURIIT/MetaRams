@@ -60,48 +60,6 @@ public class TB9000ServiceImpl implements TB9000Service {
 
         String result = "5";
 
-
-        // UPDATE IBIMS997B
-        //     SET CUR_DATE           = #{curDate}            /* 당일일자 */
-        //       , JOB_ID             = #{jobId}              /* JOB ID */
-        //       , JOB_NAME           = #{jobName}            /* JOB NAME */
-        //       , OBJECT_NAME        = #{objectName}         /* SOURCE FULL NAME */
-        //       , PRE_JOB_COUNT      = #{preJobCount}        /* 선행JOB건수 */
-        //       , CHILD_PID          = #{childPid}           /* 프로그램 PID */
-        //       , FIRST_START_TIME   = NVL(
-        //                                     (
-        //                                      SELECT NULLIF(FIRST_START_TIME, '')
-        //                                        FROM IBIMS997B
-        //                                       WHERE JOB_ID = #{jobId}
-        //                                         AND CUR_DATE = #{curDate}
-        //                                     ), TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss')
-        //                                    )            /* 최초 시작시간 */
-        //       , START_TIME         = NVL(TO_CHAR(SYSDATE, 'YYYYMMDDhh24mmss'), 
-        //                                     (
-        //                                      SELECT NULLIF(START_TIME, '')
-        //                                        FROM IBIMS997B
-        //                                       WHERE JOB_ID = #{jobId}
-        //                                         AND CUR_DATE = #{curDate}
-        //                                     )
-        //                                    )                /* 시작시간 */
-        //       , END_TIME           = NVL(#{endTime}, '') /* 종료시간 */
-        //       , JOB_STATUS         = NVL(#{jobStatus}, 
-        //                                     (
-        //                                      SELECT JOB_STATUS
-        //                                        FROM IBIMS997B
-        //                                       WHERE JOB_ID = #{jobId}
-        //                                         AND CUR_DATE = #{curDate}
-        //                                     )
-        //                                    )                /* 작업상태 */
-        //       , HND_DETL_DTM       = SYSDATE                  /* 조작상세일시 */
-        //       , HND_EMPNO          = #{hndEmpno}            /* 조작사원번호 */
-        //       , HND_TMNL_NO        = #{hndTmnlNo}           /* 조작단말기번호 */
-        //       , HND_TR_ID          = #{hndTrId}             /* 조작거래ID */
-        //       , GUID               = #{guid}                /* GUID */
-        //   WHERE 1=1
-        //     AND CUR_DATE           = #{curDate}
-        //     AND JOB_ID             = #{jobId}
-
         try {
             // 업무시작시간 업데이트
             param.setHndEmpno("BATCH");
@@ -151,6 +109,9 @@ public class TB9000ServiceImpl implements TB9000Service {
             if ( ibims810bvo.getIbims810bdtoList().size() > 0 ) {
                 ibims810bMapper.insertIBIMS810B(ibims810bvo);
             }
+
+            ibims997bMapper.batchUpdate(param);
+            ibims997bMapper.subPreJobCount(param);
 
             result = "4";
         }

@@ -107,6 +107,9 @@ public class TB9010ServiceImpl implements TB9010Service {
                 ibims811bMapper.insertIBIMS811B(ibims810bvo);
             }
 
+            ibims997bMapper.batchUpdate(param);
+            ibims997bMapper.subPreJobCount(param);
+
             // 배치업데이트
             result = "4";
         }
