@@ -59,79 +59,74 @@ public class TB9000ServiceImpl implements TB9000Service {
         // |J002 |배치작업상태     |JOB_STATUS    |1 |8 |Stop        |8 |Stop        |
 
         String result = "5";
-        
-        for ( int i = 0; i < 100000; i++ ) {
-            log.info("무한");
 
-            try {
-                Thread.sleep(5000); // 1초 동안 스레드를 일시 정지
-            } catch (InterruptedException e) {
-                log.error("스레드 중단 예외 발생", e);
-                // 필요한 경우 스레드를 안전하게 종료할 수 있는 코드 추가
-                break; // 스레드가 중단되면 반복문을 탈출
+        try {
+
+            // 업무시작시간 업데이트
+            param.setHndEmpno("BATCH");
+            ibims997bMapper.updateIBIMS997B(param);
+
+            // Batch업무시작
+            IBIMS810BDTO ibims810bdto = new IBIMS810BDTO();
+
+            ibims810bdto.setStdrDt(param.getCurDate());
+
+            List<IBIMS810BDTO> select = ibims810bMapper.selectIBIMS810B(ibims810bdto);
+
+            // 이자 계산 시물레이션
+            // 태안씨가 만든 이자계산시뮬레이션 돌려야함
+            CalculationDTO calcDto = new CalculationDTO();
+            CalculationSumDTO calcSumDto = new CalculationSumDTO();
+            for (int i = 0; i < select.size(); i++) {
+                TB06015SVO inSvo = new TB06015SVO();
+
+                String prdtCd = select.get(i).getPrdtCd();
+                long excSn = select.get(i).getExcSn();
+                String stdrDt = select.get(i).getStdrDt();
+
+                inSvo.setPrdtCd(prdtCd);
+                inSvo.setExcSn(excSn);
+                inSvo.setStdrDt(stdrDt);
+
+                List<CalculationResultDTO> outCalc = new ArrayList<>();
+                outCalc = calculation.setIntrCalcSimulation(inSvo);
+                TB06015SVO getDtlInf = ibims402bMapper.getDetailInfo(inSvo);
+                String intrSnnoPrcsDcd = getDtlInf.getIntrSnnoPrcsDcd();
+                calcDto.setIntrSnnoPrcsDcd(intrSnnoPrcsDcd);
+
+                calcSumDto = calculation.totalCalculation(calcDto, outCalc);
+                select.get(i).setNrmlIntr(calcSumDto.getTotalIntr()); // 정상이자합계
+                select.get(i).setIntrAmtOvduIntr(calcSumDto.getTotalIntrOvduIntr()); // 이자연체이자 합계
+            } // end of for
+
+            IBIMS810BVO ibims810bvo = new IBIMS810BVO();
+
+            ibims810bvo.setIbims810bdtoList(select);
+
+            // 삭제
+            ibims810bMapper.deleteIBIMS810B(param.getCurDate());
+
+            // 입력
+            if ( ibims810bvo.getIbims810bdtoList().size() > 0 ) {
+                ibims810bMapper.insertIBIMS810B(ibims810bvo);
+            }
+
+            ibims997bMapper.batchUpdate(param);
+            ibims997bMapper.subPreJobCount(param);
+
+            result = "4";
+        }
+        // 실패시 error 업데이트
+        catch (Exception e) {
+            if (e instanceof InterruptedException) {
+                log.info("스레드 중단 오류 발생!!");
+                result = "7";
+            }
+            else {
+                log.info("배치중 오류 발생!!");
+                result = "5";
             }
         }
-
-        // try {
-
-        //     // 업무시작시간 업데이트
-        //     param.setHndEmpno("BATCH");
-        //     ibims997bMapper.updateIBIMS997B(param);
-
-        //     // Batch업무시작
-        //     IBIMS810BDTO ibims810bdto = new IBIMS810BDTO();
-
-        //     ibims810bdto.setStdrDt(param.getCurDate());
-
-        //     List<IBIMS810BDTO> select = ibims810bMapper.selectIBIMS810B(ibims810bdto);
-
-        //     // 이자 계산 시물레이션
-        //     // 태안씨가 만든 이자계산시뮬레이션 돌려야함
-        //     CalculationDTO calcDto = new CalculationDTO();
-        //     CalculationSumDTO calcSumDto = new CalculationSumDTO();
-        //     for (int i = 0; i < select.size(); i++) {
-        //         TB06015SVO inSvo = new TB06015SVO();
-
-        //         String prdtCd = select.get(i).getPrdtCd();
-        //         long excSn = select.get(i).getExcSn();
-        //         String stdrDt = select.get(i).getStdrDt();
-
-        //         inSvo.setPrdtCd(prdtCd);
-        //         inSvo.setExcSn(excSn);
-        //         inSvo.setStdrDt(stdrDt);
-
-        //         List<CalculationResultDTO> outCalc = new ArrayList<>();
-        //         outCalc = calculation.setIntrCalcSimulation(inSvo);
-        //         TB06015SVO getDtlInf = ibims402bMapper.getDetailInfo(inSvo);
-        //         String intrSnnoPrcsDcd = getDtlInf.getIntrSnnoPrcsDcd();
-        //         calcDto.setIntrSnnoPrcsDcd(intrSnnoPrcsDcd);
-
-        //         calcSumDto = calculation.totalCalculation(calcDto, outCalc);
-        //         select.get(i).setNrmlIntr(calcSumDto.getTotalIntr()); // 정상이자합계
-        //         select.get(i).setIntrAmtOvduIntr(calcSumDto.getTotalIntrOvduIntr()); // 이자연체이자 합계
-        //     } // end of for
-
-        //     IBIMS810BVO ibims810bvo = new IBIMS810BVO();
-
-        //     ibims810bvo.setIbims810bdtoList(select);
-
-        //     // 삭제
-        //     ibims810bMapper.deleteIBIMS810B(param.getCurDate());
-
-        //     // 입력
-        //     if ( ibims810bvo.getIbims810bdtoList().size() > 0 ) {
-        //         ibims810bMapper.insertIBIMS810B(ibims810bvo);
-        //     }
-
-        //     ibims997bMapper.batchUpdate(param);
-        //     ibims997bMapper.subPreJobCount(param);
-
-        //     result = "4";
-        // }
-        // // 실패시 error 업데이트
-        // catch (Exception e) {
-        //     result = "5";
-        // }
 
         return result;
     }

@@ -115,7 +115,14 @@ public class TB9010ServiceImpl implements TB9010Service {
         }
         // 실패시 error업데이트
         catch (Exception e) {
-            result = "5";
+            if (e instanceof InterruptedException) {
+                log.info("스레드 중단 오류 발생!!");
+                result = "7";
+            }
+            else {
+                log.info("배치중 오류 발생!!");
+                result = "5";
+            }
         }
 
         return result;
