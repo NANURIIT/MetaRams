@@ -15,6 +15,7 @@ const TB10510Sjs = (function () {
 		
 		isBatchScheduler();
         clockpickerCtrl();
+        reset();
     });
 
     /*******************************************************************
@@ -311,7 +312,6 @@ const TB10510Sjs = (function () {
             data: JSON.stringify(obj),
             dataType: "json",
             beforeSend: function (xhr) {
-                $('#TB10510S_rgst_jobId').prop('disabled', false)
                 batSch.setData([])
                 reset()
             },
@@ -344,7 +344,9 @@ const TB10510Sjs = (function () {
 								$('#TB10510S_jobRunStrtTime').val(rd.jobRunStrtTime.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3"))
 
                                 $('#TB10510S_addPreJob').prop('disabled', false)
-                                $('#TB10510S_delPreJob').prop('disabled', false)
+                                $('#TB10510S_delPreJob').prop('disabled', false);
+
+                                $('#TB10510S_delJob').prop('disabled', false);
 
                                 rd.rowType = 'M'
 
@@ -703,7 +705,7 @@ const TB10510Sjs = (function () {
      * 초기화
      *******************************************************************/
     function reset() {
-        $('#TB10510S_rgst_jobId').val('')
+        $('#TB10510S_rgst_jobId').val('').prop('disabled', false);
         $('#TB10510S_rgst_jobName').val('')
         $('#TB10510S_rgst_jobType').val('')
         $('#TB10510S_rgst_arg').val('')
@@ -715,6 +717,8 @@ const TB10510Sjs = (function () {
 
         $('#TB10510S_addPreJob').prop('disabled', true)
         $('#TB10510S_delPreJob').prop('disabled', true)
+
+        $('#TB10510S_delJob').prop('disabled', true)
 		
         $('#TB10510S_grd_batPreJob').pqGrid('instance').setData([])
         rd = {}
@@ -748,5 +752,6 @@ const TB10510Sjs = (function () {
 		, startBatchScheduler : startBatchScheduler
 		, stopBatchScheduler : stopBatchScheduler
         , setRowIndx: setRowIndx
+        , reset: reset
     }
 })();
