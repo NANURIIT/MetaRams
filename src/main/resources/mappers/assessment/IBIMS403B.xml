@@ -648,47 +648,44 @@
 
     <!--상환대상내역 조회-->
     <select id="rdmpTrgtDtlsInq" parameterType="com.nanuri.rams.business.common.vo.TB09070SVO" resultType="com.nanuri.rams.business.common.vo.TB09070SVO$RdmpTrgtDtlsVO">
-      SELECT A.PRAR_PRNA                     AS PRAR_PRNA         /*상환예정원금*/
-           , A.RDMP_PRAR_INTR                AS RDMP_PRAR_INTR    /*상환예정이자*/          
-           , A.PMNT_PRAR_AMT 				AS PMNT_PRAR_AMT		          /*납부예정금액*/		
-           , CASE WHEN LENGTH(A.PRAR_DT)=8 
-				          THEN TO_CHAR(TO_DATE(A.PRAR_DT, 'YYYYMMDD'), 'YYYY-MM-DD') 
-				          ELSE '' END AS PRAR_DT                          /*예정일자*/     
-           , B.ACTS_CD 						                                /*계정과목코드*/
-           , B.MNGM_BDCD 					                                /*관리부점코드*/
-           , C.ORTN_FND_CD 				                                /*운용펀드코드*/
-           , (SELECT fnd.FND_NM
-                FROM IBIMS993B fnd
-               WHERE fnd.FND_CD = C.ORTN_FND_CD) AS FND_NM 				/*운용펀드명*/
-           , C.TR_CRRY_CD 					                              /*통화코드*/
-           , C.DEAL_NO 						                                /*딜번호*/
-           , C.DEAL_NM                                            /*딜명*/
-           , C.PRDT_NM 						                                /*상품명*/
-           , (
-             SELECT ENTP_NM
-               FROM IBIMS010B
-              WHERE 1=1
-                AND ARDY_BZEP_NO = B.PTXT_TR_OTHR_DSCM_NO
-            ) AS TR_OBJT_BSN_NO			                              /*거래대상기업체번호*/
-        FROM ( SELECT A.PRAR_DT
-                    , A.PRDT_CD
-                    , A.EXC_SN
-        	          , SUM(COALESCE(A.PRAR_PRNA, 0))                                        AS PRAR_PRNA                        
-                    , SUM(COALESCE(A.RDMP_PRAR_INTR, 0))                                   AS RDMP_PRAR_INTR                     
-                    , (SUM(COALESCE(A.PRAR_PRNA, 0)) + SUM(COALESCE(A.RDMP_PRAR_INTR, 0))) AS PMNT_PRAR_AMT	      
-        	       FROM IBIMS403B A
-        	      GROUP
-                   BY A.PRAR_DT, A.PRDT_CD, A.EXC_SN
-        	 ) A
-        	 , IBIMS401B B 
-           , IBIMS201B C
-           , IBIMS410B D
-        WHERE 1=1
-          AND D.PRDT_CD = A.PRDT_CD 
-          AND D.EXC_SN = A.EXC_SN 
-          AND C.PRDT_CD = A.PRDT_CD 
-          AND C.LAST_YN = 'Y'
-          AND B.PRDT_CD = A.PRDT_CD
+      SELECT DISTINCT   A.PRAR_PRNA                     /*상환예정원금*/
+                      , A.RDMP_PRAR_INTR                /*상환예정이자*/      
+                      , A.PMNT_PRAR_AMT                 /*납부예정금액*/		
+                      , CASE WHEN LENGTH(A.PRAR_DT)=8 
+                        THEN TO_CHAR(TO_DATE(A.PRAR_DT, 'YYYYMMDD'), 'YYYY-MM-DD') 
+                        ELSE '' 
+                        END AS PRAR_DT                  /*예정일자*/   
+                      , B.ACTS_CD                       /*계정과목코드*/
+                      , B.MNGM_BDCD                     /*관리부점코드*/
+                      , C.ORTN_FND_CD                   /*운용펀드코드*/
+                      , ( SELECT fnd.FND_NM 
+                        FROM IBIMS993B fnd 
+                        WHERE fnd.FND_CD = C.ORTN_FND_CD) 
+                        AS FND_NM                       /*운용펀드명*/
+                      , C.TR_CRRY_CD                    /*통화코드*/
+                      , C.DEAL_NO                       /*딜번호*/
+                      , C.DEAL_NM                       /*딜명*/
+                      , A.PRDT_CD                       /*종목코드*/
+                      , A.EXC_SN                        /*실행일련번호*/
+                      , C.PRDT_NM                       /*종목명*/
+                      , (SELECT ENTP_NM 
+                        FROM IBIMS010B 
+                        WHERE ARDY_BZEP_NO = B.PTXT_TR_OTHR_DSCM_NO) 
+                        AS TR_OBJT_BSN_NO               /*거래대상기업체번호*/
+                      , '0' AS ovduIntr
+                      , '0' AS rcvbIntr
+                      , '0' AS totalFee     /*todo: 연체, 미수이자, 수수료총금액 배치 완료 후 쿼리 수정해야함*/
+          FROM (SELECT A.PRAR_DT, A.PRDT_CD, A.EXC_SN, A.PRCS_CPLT_YN, 
+                      SUM(COALESCE(A.PRAR_PRNA, 0)) AS PRAR_PRNA,
+                      SUM(COALESCE(A.RDMP_PRAR_INTR, 0)) AS RDMP_PRAR_INTR,
+                      (SUM(COALESCE(A.PRAR_PRNA, 0)) + SUM(COALESCE(A.RDMP_PRAR_INTR, 0))) AS PMNT_PRAR_AMT
+                FROM IBIMS403B A
+                WHERE (A.PRCS_CPLT_YN &lt;&gt; 'Y' OR A.PRCS_CPLT_YN IS NULL)
+                GROUP BY A.PRAR_DT, A.PRDT_CD, A.EXC_SN, A.PRCS_CPLT_YN) A
+          JOIN IBIMS401B B ON B.PRDT_CD = A.PRDT_CD
+          JOIN IBIMS201B C ON C.PRDT_CD = A.PRDT_CD AND C.LAST_YN = 'Y'
+          JOIN IBIMS410B D ON D.PRDT_CD = A.PRDT_CD
+          WHERE 1=1		
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
           AND B.MNGM_BDCD = #{mngmBdcd}
           </if>
@@ -697,6 +694,9 @@
           </if>
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
           AND C.DEAL_NO = #{dealNo}
+          </if>
+          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
+          AND A.PRDT_CD = #{prdtCd}
           </if>
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trObjtBsnNo)">
           AND D.TR_OBJT_BSN_NO = #{trObjtBsnNo}
@@ -707,7 +707,7 @@
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
           AND A.PRAR_DT &lt;= #{toDt} 
           </if>
-
+          ORDER BY PRAR_DT, C.DEAL_NO, A.PRDT_CD, A.EXC_SN 
     </select>
 
     <!--중도상환 발생 시 새로운 스케줄 생성-->

@@ -56,6 +56,42 @@ const TB09070Sjs = (function () {
         filter: { crules: [{ condition: "range" }] },
       },
       {
+        title: "Deal명",
+        dataType: "string",
+        dataIndx: "dealNm",
+        align: "left",
+        halign: "center",
+        width: "180",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "종목코드",
+        dataType: "string",
+        dataIndx: "prdtCd",
+        align: "center",
+        halign: "center",
+        width: "130",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "종목명",
+        dataType: "string",
+        dataIndx: "prdtNm",
+        align: "left",
+        halign: "center",
+        width: "180",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
+        title: "실행순번",
+        dataType: "string",
+        dataIndx: "excSn",
+        align: "right",
+        halign: "center",
+        width: "80",
+        filter: { crules: [{ condition: "range" }] },
+      },
+      {
         title: "기업체",
         dataType: "string",
         dataIndx: "trObjtBsnNo",
@@ -177,7 +213,7 @@ const TB09070Sjs = (function () {
       {
         title: "수수료총금액",
         dataType: "string",
-        dataIndx: "fee",
+        dataIndx: "totalFee",
         align: "right",
         halign: "center",
         width: "150",
@@ -240,11 +276,14 @@ const TB09070Sjs = (function () {
       // scrollModel: { autoFit: true },
       colModel: colM_TB09070S,
       strNoRows: "",
+      // footer: true
     };
 
     $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid(obj);
     $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("refreshDataAndView");
     rdmpTrgtDtlsIns = $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("instance");
+
+    rdmpTrgtDtlsIns.option( "freezeCols", 5 );
   }
 
   $("#TB09070S_dprtNm").on("change", function () {
@@ -272,15 +311,17 @@ const TB09070Sjs = (function () {
     //}
 
     function businessFunction() {
-      var mngmBdcd = $("#TB09070S_dprtCd").val(); //관리부점코드
-      var actsCd = $("#TB09070S_A005").val(); //계정과목코드
-      var dealNo = $("#TB09070S_ibDealNo").val(); //딜번호
-      var trObjtBsnNo = $("#TB09070S_ardyBzepNo").val(); //기업체번호
+      var mngmBdcd = $("#TB09070S_dprtCd").val();         //관리부점코드
+      var actsCd = $("#TB09070S_A005").val();             //계정과목코드
+      var dealNo = $("#TB09070S_ibDealNo").val();         //딜번호
+      var prdtCd = $("#TB09070S_prdtCd").val();           //종목코드
+      var trObjtBsnNo = $("#TB09070S_ardyBzepNo").val();  //기업체번호
 
       var param = {
         mngmBdcd: mngmBdcd,
         actsCd: actsCd,
         dealNo: dealNo,
+        prdtCd: prdtCd,
         trObjtBsnNo: trObjtBsnNo,
         fromDt: fromDt.replaceAll("-", ""),
         toDt: toDt.replaceAll("-", ""),
@@ -325,6 +366,11 @@ const TB09070Sjs = (function () {
     }
 
     $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("setData", data);
+
+    // var summaryData = calculateSummary(rdmpTrgtDtlsIns);
+    // rdmpTrgtDtlsIns.option('footerModel', {
+    //   data: summaryData
+    // });
   }
 
   //초기화
@@ -332,13 +378,15 @@ const TB09070Sjs = (function () {
     $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("option", "strNoRows", "");
     $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("setData", []);
 
-    $("#TB09070S_dprtNm").val(""); //관리부점명
-    $("#TB09070S_dprtCd").val(""); //관리부점코드
-    $("#TB09070S_A005").val(""); //계정과목코드
-    $("#TB09070S_ibDealNo").val(""); //딜번호
-    $("#TB09070S_ardyBzepNo").val(""); //기업체번호
-    $("#TB09070S_ibDealNm").val(""); //딜명
-    $("#TB09070S_bzepName").val(""); //기업체명
+    $("#TB09070S_dprtNm").val("");      //관리부점명
+    $("#TB09070S_dprtCd").val("");      //관리부점코드
+    $("#TB09070S_A005").val("");        //계정과목코드
+    $("#TB09070S_ibDealNo").val("");    //딜번호
+    $("#TB09070S_ardyBzepNo").val("");  //기업체번호
+    $("#TB09070S_ibDealNm").val("");    //딜명
+    $("#TB09070S_bzepName").val("");    //기업체명
+    $("#TB09070S_prdtCd").val("");      //종목코드
+    $("#TB09070S_prdtNm").val("");      //종목명
 
     $("#TB09070S_fromDt").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
     $("#TB09070S_toDt").val(getToday()); //조회종료일
@@ -349,6 +397,39 @@ const TB09070Sjs = (function () {
     let fileName = "상환대상내역_" + getToday() + ".xlsx";
 
     pq.saveAs(blob, fileName);
+  }
+
+  function calculateSummary( grid ) {
+    var data = grid.option('dataModel.data'),
+        agg = pq.aggregate,
+        prarPrna = data.map(function (rd) {
+            return rd.prarPrna;
+        }),
+        rdmpPrarIntr = data.map(function (rd) {
+            return rd.rdmpPrarIntr;
+        }),
+        ovduIntr = data.map(function (rd) {
+          return rd.ovduIntr;
+        }),
+        rcvbIntr = data.map(function (rd) {
+          return rd.rcvbIntr;
+        }),
+        pmntPrarAmt = data.map(function (rd) {
+          return rd.pmntPrarAmt;
+        }),
+        totalFee = data.map(function (rd) {
+          return rd.totalFee;
+        }),
+        totalData = { prdtNm: "합계:", 
+                      prarPrna: agg.sum(prarPrna), 
+                      rdmpPrarIntr: agg.sum(rdmpPrarIntr),
+                      ovduIntr: agg.sum(ovduIntr),
+                      rcvbIntr: agg.sum(rcvbIntr),
+                      pmntPrarAmt: agg.sum(pmntPrarAmt),
+                      totalFee: agg.sum(totalFee)
+                    };
+
+    return [totalData]; // total만 반환
   }
 
   return {

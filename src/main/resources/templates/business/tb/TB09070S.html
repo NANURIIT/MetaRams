@@ -12,11 +12,13 @@
 	<script th:src="@{js/business/tb/TB09070S.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+	<script th:src="@{js/business/tb/TB06011P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -90,6 +92,19 @@
 													class="fa fa-search"></i></button>
 										</span>
 										<input type="text" class="form-control" id="TB09070S_ibDealNm" readonly>
+									</div>
+								</div>
+								<!--종목-->
+								<label class="col-sm-1 control-label">
+									종목코드
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB09070S_prdtCd">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB09070S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB09070S_prdtNm" readonly>
 									</div>
 								</div>
 								<!-- 기업체 -->

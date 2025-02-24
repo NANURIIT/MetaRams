@@ -21,6 +21,7 @@ public class TB09070SVO {
     private String mngmBdcd;        //관리부점코드
     private String actsCd;          //계정과목코드
     private String dealNo;          //딜번호
+    private String prdtCd;          //종목코드
     private String trObjtBsnNo;     //거래상대방 기업체번호
 
     @NoArgsConstructor
@@ -37,10 +38,16 @@ public class TB09070SVO {
         private String      actsCd;          //계정과목코드
         private String      dealNo;          //딜번호
         private String      dealNm;          //딜명
+        private String      prdtCd;
+        private long        excSn;
         private String      trObjtBsnNo;     //거래상대방 기업체번호
         private String      prdtNm;          //상품명
         private String      ortnFndCd;       //운용펀드코드
         private String      fndNm;           //펀드명
         private String      trCrryCd;        //통화코드
+
+        private BigDecimal  ovduIntr;        //연체이자
+        private BigDecimal  rcvbIntr;        //미수이자
+        private BigDecimal  totalFee;        //수수료총금액
     }
 }

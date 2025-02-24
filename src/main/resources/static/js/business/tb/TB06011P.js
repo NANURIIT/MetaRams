@@ -783,7 +783,7 @@ function TB06011P_setPrdtInfo(e) {
 		}
 	}
 
-	if (prefix == 'TB09080S') {
+	if (prefix == 'TB09080S' || prefix == 'TB09070S') {
 		$(`#${prefix}_ibDealNo`).val(ibDealNo);
 		$(`#${prefix}_ibDealNm`).val(ibDealNm);
 	}
