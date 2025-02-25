@@ -33,7 +33,7 @@ public class ScheduleTask {
     
     private final IBIMS997BMapper ibims997bMapper;
     
-    private volatile boolean batchRunning = false; // 개발용 임시중지
+    private volatile boolean batchRunning = true; // 개발용 임시중지
     //private volatile boolean batchRunning = true;
     
     @Autowired
@@ -120,7 +120,7 @@ public class ScheduleTask {
 		log.info( "################################################################################" );
 	}
     
-    @Scheduled(cron="0 25 16 * * *", zone="Asia/Seoul") //TEST
+    @Scheduled(cron="0 0 2 * * *", zone="Asia/Seoul") //TEST
 	public void batchScheduleService() throws Exception{
 
     	if (!batchRunning) {
