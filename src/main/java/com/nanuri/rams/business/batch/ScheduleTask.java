@@ -290,6 +290,10 @@ public class ScheduleTask {
 		// update Complete
 		ibims997bMapper.updateJobStatus(curDate, jobId, "4"); // 4:Complete
 		ibims997bMapper.updateBatchCmdDcd(curDate, jobId, "2"); // 2.Forced-OK
+		ibims997bMapper.updatePreJobCount(curDate, jobId); // JobID를 선행으로 하는 Job의 PRE_JOB_COUNT 수정 
+		
+		// 후행 배치의 PRE_JOB_COUNT 를 제거
+		
 	}
 	
 	public void brakeBatch(String curDate, String jobId) {

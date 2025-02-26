@@ -506,6 +506,15 @@
     	   AND JOB_ID = #{jobId}
 	</delete>
     
+    <update id="updatePreJobCount" parameterType="map">
+    	UPDATE RAMS2.IBIMS997B
+		   SET PRE_JOB_COUNT = 0
+		 WHERE 1=1
+		   AND JOB_ID IN (SELECT JOB_ID
+		                    FROM RAMS2.IBIMS996B 
+		                   WHERE PRE_JOB_ID = #{jobId}) 
+		   AND CUR_DATE = #{curDate}
+    </update>
 
 </mapper>
     
