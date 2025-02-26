@@ -31,9 +31,12 @@
 									<div class="col-sm-2 input-group">
 										<input type="text" class="form-control" id="TB10510S_jobName" value="">
 									</div>
+									<label class="col-sm-1 col-form-label">실행상태</label>
+									<div class="col-sm-2 input-group">
+										<input type="text" class="form-control" id="TB10510S_isRunning" value="" readonly>
+									</div>
 									<!-- 버튼영역 -->
-									<div class="col-sm-6 text-right">
-											<button class="btn btn-success" type="button" id="TB10510S_isRunning">기동중</button>
+									<div class="col-sm-3 text-right">
 										<!-- <div class="col-sm-6"> -->
 											<button class="btn btn-success" type="button" onclick="TB10510Sjs.startBatchScheduler();"><i class="fa fa-check"></i>&nbsp;스케줄러실행</button>
 										<!-- </div> -->
@@ -140,9 +143,9 @@
 							</div>
 							<hr class="mb-3 mt-3">
 							<div class="col-sm-12 reference_box pl-5">
-								※ JOB TYPE : [1] DUMMY : 비어있는 배치를 처리시 Dummy로, CONFIRM JOB과 유사한 형태, [2] COMMAND : 소스타입으로 일반적인 배치<br>
+								※ JOB TYPE : [1] DUMMY : 비어있는 배치를 처리시 Dummy로, [2] COMMAND : 소스타입으로 일반적인 배치<br>
 								※ ARGUMENT : 배치실행시 프로그램에 전달될 ARGUMENT<br>
-								※ CONFIRM JOB Y/N : [0] 해당없음 : 일반적인 배치로 확인대기 필요 없음, [1] Y : CONFIRM JOB 배치로 수행전 확인처리가 필요
+								※ CONFIRM JOB Y/N : 배치 스케줄러 실행 여부
 							</div>	
 						</div>	
 					</div> 
