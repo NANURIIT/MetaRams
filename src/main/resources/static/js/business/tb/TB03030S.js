@@ -281,7 +281,7 @@ const TB03030Sjs = (function(){
 					let corpRgstNo2 = cellData.substring(6, 13);
 					return `${corpRgstNo1}-${corpRgstNo2}`.trim();
 				}
-				return cellData; 
+				return cellData;
 			} 
 		},
 		{ 	
