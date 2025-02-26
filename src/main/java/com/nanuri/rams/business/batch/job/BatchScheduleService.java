@@ -68,8 +68,7 @@ public class BatchScheduleService {
 
 		for (BatchMasterVo temp : list) {
 			if (temp.getJobId().equals(jobId)) {
-				// update Waiting
-				ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, "2"); // 2:Waiting
+				
 
 				// 실행할 때 비동기 방식으로 실행하고 Future 저장
 				Future<?> future = taskExecutor.submit(() -> {
@@ -110,10 +109,13 @@ public class BatchScheduleService {
 			log.info(jobId + " - 선행배치" + ibims997bdto.getPreJobCount() + "개 남아있음 배치 대기상태.");
 			return;
 		}
+		
+		// update Waiting
+		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, "2"); // 2:Waiting
 
 		// update Running
-		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, "3"); // 3:Running
-		log.info("BATCH RUNNING. JOB_ID : " + jobId);
+		//ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, "3"); // 3:Running
+		//log.info("BATCH RUNNING. JOB_ID : " + jobId);
 
 		// 아래 Job 로직
 		///////////////////////////////////////////////////////////////////////
@@ -125,6 +127,17 @@ public class BatchScheduleService {
 		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, status); // 결과
 		
 		///////////////////////////////////////////////////////////////////////
+		
+		//실행시간이 지나고 실행되지 않은 후행 배치가 있는지 확인
+		List<BatchMasterVo> lstBatch = ibims997bMapper.getFollwedBatch(batch);
+		
+		//실행시간이 지나고 실행되지 않은 후행 배치가 있으면 호출해줌
+		if(lstBatch.size() > 0) {
+			for(BatchMasterVo bat : lstBatch) {
+				executeBatch(bat);
+			}
+		}
+		
 		/*
 		// BATCH_CMD_CDC 가 null 인 경우(수동명령 아닌 경우) && 정상종료 된 경우
 		if (null == ibims997bdto.getBatchCmdDcd() && "4".equals(status)) {
