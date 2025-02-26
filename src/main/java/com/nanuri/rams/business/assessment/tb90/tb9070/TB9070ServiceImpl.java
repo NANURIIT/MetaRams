@@ -1,4 +1,4 @@
-package com.nanuri.rams.business.assessment.tb90.tb0970;
+package com.nanuri.rams.business.assessment.tb90.tb9070;
 
 import com.nanuri.rams.business.common.mapper.IBIMS436BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS436BVO;

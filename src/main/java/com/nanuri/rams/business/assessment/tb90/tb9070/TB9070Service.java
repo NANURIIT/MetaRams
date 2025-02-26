@@ -1,4 +1,4 @@
-package com.nanuri.rams.business.assessment.tb90.tb0970;
+package com.nanuri.rams.business.assessment.tb90.tb9070;
 
 import java.util.List;
 

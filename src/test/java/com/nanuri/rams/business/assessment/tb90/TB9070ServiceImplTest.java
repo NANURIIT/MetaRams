@@ -1,6 +1,6 @@
 package com.nanuri.rams.business.assessment.tb90;
 
-import com.nanuri.rams.business.assessment.tb90.tb0970.TB9070Service;
+import com.nanuri.rams.business.assessment.tb90.tb9070.TB9070Service;
 import com.nanuri.rams.business.common.vo.IBIMS436BVO;
 
 import lombok.extern.slf4j.Slf4j;
