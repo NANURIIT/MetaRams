@@ -276,7 +276,10 @@
 
     <update id="subPreJobCount" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
       UPDATE IBIMS997B
-         SET PRE_JOB_COUNT = (PRE_JOB_COUNT - 1)
+         SET PRE_JOB_COUNT = CASE 
+                             WHEN PRE_JOB_COUNT &gt; 0 THEN PRE_JOB_COUNT - 1 
+                             ELSE 0 
+                              END
        WHERE CUR_DATE = NVL(NULLIF(#{curDate}, ''),(
                           SELECT MAX(BZ_DD)
 			                      FROM IBIMS999B
@@ -503,6 +506,15 @@
     	   AND JOB_ID = #{jobId}
 	</delete>
     
+    <update id="updatePreJobCount" parameterType="map">
+    	UPDATE RAMS2.IBIMS997B
+		   SET PRE_JOB_COUNT = 0
+		 WHERE 1=1
+		   AND JOB_ID IN (SELECT JOB_ID
+		                    FROM RAMS2.IBIMS996B 
+		                   WHERE PRE_JOB_ID = #{jobId}) 
+		   AND CUR_DATE = #{curDate}
+    </update>
 
 </mapper>
     

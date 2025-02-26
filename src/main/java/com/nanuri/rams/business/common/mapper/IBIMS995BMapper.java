@@ -20,7 +20,7 @@ public interface IBIMS995BMapper {
 
 	public int deleteIBIMS995B(IBIMS995BDTO param);
 	
-	public List<BatchMasterVo> selectBatchMaster();
+	public List<BatchMasterVo> selectBatchMaster(String curDate);
 
 	public List<BatchMasterVo> getBatchScheduleStatus(String date);
 

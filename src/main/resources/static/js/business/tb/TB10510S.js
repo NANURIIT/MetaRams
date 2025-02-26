@@ -674,13 +674,9 @@ const TB10510Sjs = (function () {
 	
 	function chgBtn_TB10510S_isRunning(data) {
 		if (data) {
-			$('#TB10510S_isRunning').removeClass("btn-danger");
-			$('#TB10510S_isRunning').addClass("btn-success");
-			$('#TB10510S_isRunning').text("기동중");
+			$('#TB10510S_isRunning').val("Running");
 		} else {
-			$('#TB10510S_isRunning').removeClass("btn-success");
-			$('#TB10510S_isRunning').addClass("btn-danger");
-			$('#TB10510S_isRunning').text("기동중지");
+			$('#TB10510S_isRunning').val("Stop");
 		}
 	}
 
