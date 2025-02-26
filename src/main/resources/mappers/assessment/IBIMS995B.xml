@@ -43,23 +43,23 @@
                 , HND_TR_ID                        /* 조작거래ID */
                 , GUID                             /* GUID */
               )
-          SELECT
-                  #{jobId}                         /* JOB ID */
-                , #{jobName}                       /* JOB NAME */
-                , #{jobType}                       /* JOB TYPE */
-                , #{objectName}                    /* SOURCE FULL NAME */
-                , #{argument}                      /* ARGUMENT */
-                , #{confirmYn}                     /* CONFIRM_YN */
-                , #{jobRunTypeDcd}                 /* 작업실행방법구분코드 */
-                , #{jobRunStrtTime}                /* JOB 시작조건시각 */
-                , #{description}                   /* 작업 설명 */
-                , TO_CHAR(SYSDATE, 'YYYYMMDD')     /* 최초 등록일 */
-                , TO_CHAR(SYSDATE, 'YYYYMMDD')     /* 최종 수정일 */
-                , SYSDATE                          /* 조작상세일시 */
-                , #{hndEmpno}                      /* 조작사원번호 */
-                , #{hndTmnlNo}                     /* 조작단말기번호 */
-                , #{hndTrId}                       /* 조작거래ID */
-                , #{guid}                          /* GUID */
+          SELECT #{jobId}                          /* JOB ID */
+               , #{jobName}                        /* JOB NAME */
+               , #{jobType}                        /* JOB TYPE */
+               , #{objectName}                     /* SOURCE FULL NAME */
+               , #{argument}                       /* ARGUMENT */
+               , #{confirmYn}                      /* CONFIRM_YN */
+               , #{jobRunTypeDcd}                  /* 작업실행방법구분코드 */
+               , #{jobRunStrtTime}                 /* JOB 시작조건시각 */
+               , #{description}                    /* 작업 설명 */
+               , TO_CHAR(SYSDATE, 'YYYYMMDD')      /* 최초 등록일 */
+               , TO_CHAR(SYSDATE, 'YYYYMMDD')      /* 최종 수정일 */
+               , SYSDATE                           /* 조작상세일시 */
+               , #{hndEmpno}                       /* 조작사원번호 */
+               , #{hndTmnlNo}                      /* 조작단말기번호 */
+               , #{hndTrId}                        /* 조작거래ID */
+               , #{guid}                           /* GUID */
+            FROM DUAL
     </insert>
 
     <!-- 배치JOB MASTER 수정  -->
