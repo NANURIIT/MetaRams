@@ -11,10 +11,8 @@ public class TB9070APIController {
 
     private final TB9070Service tb9070Service;
 
-
-    // ✅ 2. 실행 메서드 호출 API (POST 요청)
     @PostMapping("/execute")
-    public ResponseEntity<String> executeService() {
+    public ResponseEntity<String> insert() {
         tb9070Service.insertOvduList();
         return ResponseEntity.ok("TB9070 서비스 실행 완료!");
     }
