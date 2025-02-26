@@ -25,7 +25,7 @@ const TB07010Sjs = (function () {
      */
     getSelect = getSelectBoxList(
       "TB07010S",
-      "E010/S003/E020/E011/F008/I017/F006/R023/I027",
+      "E010/S003/E020/E011/F008/I017/F006/R023/I027/A005",
       false
     );
 
@@ -231,6 +231,8 @@ const TB07010Sjs = (function () {
             let dealExcBlce = data.dealExcBlce; // 대출잔액
             let loanablAmt; // 대출가능금액
             let crryCd = data.crryCd; // 통화코드
+
+            $("#TB07010S_A005").val(data.actsCd);                         //계정과목코드
 
             $("#TB07010S_ptxtTrOthrDscmNo").val(
               isEmpty(data.ptxtTrOthrDscmNo)

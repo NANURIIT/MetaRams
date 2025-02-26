@@ -652,6 +652,7 @@
             , A.PRDT_CLSF_CD                                           /* 기업여신상품소분류코드 */
             , A.EPRZ_CRDL_CTRC_AMT                                               /* 기업여신약정금액 */
             , A.CRRY_CD                                                          /* 통화코드 */
+            , A.ACTS_CD                                                          /* 계정과목코드 */
             , A.EPRZ_CRDL_INDV_LMT_DCD                                           /* 기업여신개별한도구분코드 */
             , A.CTRC_DT                                                          /* 약정일자 */
             , A.CTRC_EXP_DT                                                      /* 약정만기일자 */

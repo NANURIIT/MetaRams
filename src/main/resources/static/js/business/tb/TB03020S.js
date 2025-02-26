@@ -1213,6 +1213,22 @@ const TB03020Sjs = (function(){
 	/* ***********************************그리드 컬럼******************************** */
 	let colEnopList = [
 		{ 	
+			title    : "삭제",
+			editable : true, 
+			editor: { type: 'checkbox'},
+			dataType : "checkbox",
+			dataIndx : "delYn",
+			align    : "center",  
+			type: 'checkbox',
+			editType : 'checkbox',
+			cb: {
+				all: true,
+				header: true,
+				check: "Y",
+				uncheck: "N"
+			}
+		},
+		{ 	
 			title    : "부서코드", 
 			dataType : "string", 
 			dataIndx : "dprtCd", 
@@ -1258,23 +1274,8 @@ const TB03020Sjs = (function(){
 				else if(!cellData) return '0%' ;
 				else return `${cellData}%`;
 			}
-		},
-		{ 	
-			title    : "삭제",
-			editable : true, 
-			editor: { type: 'checkbox'},
-			dataType : "checkbox",
-			dataIndx : "delYn",
-			align    : "center",  
-			type: 'checkbox',
-			editType : 'checkbox',
-			cb: {
-				all: true,
-				header: true,
-				check: "Y",
-				uncheck: "N"
-			}
 		}
+		
 	];
 
 	return{

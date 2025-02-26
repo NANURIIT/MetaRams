@@ -64,6 +64,7 @@ const TB07150Sjs = (function () {
         "A007/" + // A007 적용일수구분코드				APLY_DNUM_DCD
         "I013/" + // I013 금리변동주기코드				INTRT_CNGE_FRQC_CD
         "R023/" + // R023 기업여신신청종류코드			RQS_KND_CD
+        "A005/" + // A005 계정과목코드             ACTS_CD
         "E013", // E013 기업여신이자일수계산방법코드	 EPRZ_CRDL_INTR_DNUM_CLC_MTH_CD
       false
     );
@@ -686,8 +687,8 @@ const TB07150Sjs = (function () {
         $("#TB07150S_mngmBdnm").val(data.mngmBdnm); //관리부서명
         $("#TB07150S_prdtClsfCd").val(data.prdtClsfCd); //상품분류코드
         $("#TB07150S_prdtClsfNm").val(data.prdtClsfNm); //상품분류명
-        $("#TB07150S_actsCd").val(""); //계정과목코드
-        $("#TB07150S_actsNm").val(""); //계정과목명
+        $("#TB07150S_A005").val(data.actsCd); //계정과목코드
+        // $("#TB07150S_actsNm").val(""); //계정과목명
         $("#TB07150S_eprzCrdlCtrcAmt").val(commaStr(data.eprzCrdlCtrcAmt)); //약정금액
         $("#TB07150S_ctrcDt").val(formatDate(data.ctrcDt)); //대출일자
         $("#TB07150S_ctrcExpDt").val(formatDate(data.ctrcExpDt)); //만기일자
@@ -874,6 +875,7 @@ const TB07150Sjs = (function () {
     $("#TB07150S_E013").val("");
     $("#TB07150S_H001_2").val("");
     $("#TB07150S_E013_2").val("");
+    $("#TB07150S_A005").val("");
 
     $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
     $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명

@@ -48,6 +48,7 @@ const TB07060Sjs = (function () {
         "/E026" + // 기업여신거래상태코드 EPRZ_CRDL_TR_STTS_CD
         "/S003" + // 기준금리종류코드 STDR_INTRT_KND_CD
         "/I013" + // 금리변동주기코드 INTRT_CNGE_FRQC_CD
+        "/A005" + // 계정과목코드
         "/A007", // 적용일수구분코드 APLY_DNUM_DCD
       false
     );
@@ -942,6 +943,7 @@ const TB07060Sjs = (function () {
             $("#TB07060S_ctrcAmt").val(commaNull(data.eprzCrdlCtrcAmt)); // 약정금액
             $("#TB07060S_dealExcBlce").val(commaNull(data.dealExcBlce)); // 대출/채무보증잔액
             $("#TB07060S_I027_1").val(data.crryCd); // 통화코드
+            $("#TB07060S_A005").val(data.actsCd);   //계정과목코드
             $("#TB07060S_E010").val(data.eprzCrdlIndvLmtDcd); // 한도구분
             /* ROW4 */
             $("#TB07060S_ctrcDt").val(formatDate(data.ctrcDt)); // 약정일자

@@ -565,6 +565,7 @@ const TB06010Sjs = (function(){
 		item += '/' + 'I042';			// 이해관계자형태코드
 		item += '/' + 'I019';			// 이자단수법구분
 		item += '/' + 'R023';			// 신청종류코드
+		item += '/' + 'A005';			// 계정과목코드
 		
 		
 		getSelectBoxList('TB06010S', item);
@@ -867,8 +868,8 @@ const TB06010Sjs = (function(){
 				$("#TB06010S_sppiSfcYn").val(dealDetail.sppiSfcYn).prop("selected", true);						// SPPI만족여부
 				
 				$('#TB06010S_O002').val(dealDetail.offrSrvcDcd).prop("selected", true);							// 제공용역구분코드
-				$('#TB06010S_actsCd').val(dealDetail.actsCd);													// 계정과목코드
-				
+				//$('#TB06010S_actsCd').val(dealDetail.actsCd);													// 계정과목코드
+				$('#TB06010S_A005').val(dealDetail.actsCd);														// 계정과목코드
 				$(":radio[name='TB06010S_rgstCbndYn']").radioSelect(dealDetail.rgstCbndYn);						// 등록사채여부
 				
 				/** 금융조건 정보 */
@@ -1403,12 +1404,13 @@ const TB06010Sjs = (function(){
 			, "ibPrdtClsfCd": $('#TB06010S_I002').val()									// ib상품분류코드
 			//, "ibPrdtIflwPathDcd": ''            										// ib상품유입경로구분코드
 			, "ibPrdtPefDcd": $('#TB06010S_I004').val()                      			// ib상품pef구분코드
-			, "actsCd": $('#TB06010S_actsCd').val()										// 계정과목코드
+			//, "actsCd": $('#TB06010S_actsCd').val()										// 계정과목코드
+			, "actsCd": $('#TB06010S_A005').val()										// 계정과목코드
 			//, "dcrbAthDcd": dcrbAthDcd                          						// 기업여신전결권한구분코드
 			//, "acctJobCd": acctJobCd                            						// 회계업무코드
 			//, "acctUnJobCd": acctUnJobCd                        						// 회계단위업무코드
 			//, "acctTrCd": acctTrCd                              						// 회계거래코드
-			, "eprzCrdlApvlAmt": replaceAll($('#TB06010S_rcgAmt').val(), ',', '') / 1			// 종목승인금액
+			, "eprzCrdlApvlAmt": replaceAll($('#TB06010S_rcgAmt').val(), ',', '') / 1	// 종목승인금액
 			//, "ctrtAmt": ctrtAmt                                						// 기업여신계약금액
 			//, "invAmt": 0.0								        					// 투자금액
 			//, "intrRcvnMthCd": intrRcvnMthCd                    						// 기업여신이자수취방법코드

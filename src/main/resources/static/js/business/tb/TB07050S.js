@@ -23,7 +23,7 @@ const TB07050Sjs = (function () {
      * R023 - RQS_KND_CD 기업여신신청종류코드
      * eprzCrdlIntrBnaoDcd
      */
-    getSelectBoxList("TB07050S", "E020/R023/I015/I005/S003/I027/E021/E011");
+    getSelectBoxList("TB07050S", "E020/R023/I015/I005/S003/I027/E021/E011/E010/A005");
     pqGrid("02"); // 그리드 생성
     grdInf();
   }
@@ -903,12 +903,14 @@ const TB07050Sjs = (function () {
         dataType: "json",
         success: function (data) {
           // console.log(data);
+          console.log("계정과목코드:::" + data.eprzCrdlIndvLmtDcd);
+
           $("#TB07050S_trOthrDscmNo").val(checkBrnAcno(data.trOthrDscmNo)); // 거래상대방번호
           $("#TB07050S_trOthrDscmNm").val(data.trOthrDscmNm); // 거래상대방명
           $("#TB07050S_E021").val(data.prdtClsfCd); // 기준금리종류코드
           $("#TB07050S_apvlAmt").val(data.apvlAmt ? comma(data.apvlAmt) : 0); // 기업여신승인금액
-          $("#TB07050S_I005").val(data.indvLmtDcd); // 기업여신개별한도구분코드
-          $("#TB07050S_actsCd").val(data.actsCd); // 대출과목 ? 계정과목코드
+          $("#TB07050S_E010").val(data.eprzCrdlIndvLmtDcd); // 기업여신개별한도구분코드
+          $("#TB07050S_A005").val(data.actsCd); // 대출과목 ? 계정과목코드
           $("#TB07050S_prnaRdmpFrqcMnum").val(data.prnaRdmpFrqcMnum); // 원금상환주기개월수
           $("#TB07050S_intrRdmpFrqcMnum").val(data.intrRdmpFrqcMnum); // 이자상환주기개월수
           $("#TB07050S_R023").val(data.rqsKndCd); // 기업여신신청종류코드

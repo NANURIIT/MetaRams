@@ -26,6 +26,7 @@ public class TB06040SVO extends IBIMS401BDTO {
 	private String stdrIntrtKndCd;
 	private String intrtCngeFrqcMnum;
 	private String indvLmtDcd;
+	private String eprzCrdlIndvLmtDcd;
 	private String paiRdmpDcd;
 	private String intrBnaoDcd;
 	private String chrrEmpNm;

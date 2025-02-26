@@ -1,6 +1,8 @@
 const TB09070Sjs = (function () {
   let selectBox;
   let dprtList = {};
+
+  let actsList;
   $(document).ready(function () {
     //selectBox()
     selectBoxSet_TB09070S();
@@ -25,6 +27,11 @@ const TB09070Sjs = (function () {
     crryCdList = selectBox.filter(function (item) {
       //통화코드 list
       return item.cmnsGrpCd === "I027";
+    });
+
+    actsList = selectBox.filter(function (item) {
+      //계정과목코드 list
+      return item.cmnsGrpCd === "A005";
     });
 
     dprtList.forEach((item) => {
@@ -249,7 +256,19 @@ const TB09070Sjs = (function () {
         align: "left",
         halign: "center",
         width: "100",
-        filter: { crules: [{ condition: "range" }] },
+        //filter: { crules: [{ condition: "range" }] },
+        editor: {
+          type: "select",
+          valueIndx: "cdValue",
+          labelIndx: "cdName",
+          options: actsList,
+        },
+        render: function (ui) {
+          // console.log("cellData ::: ", ui.cellData);
+          // console.log(P013);
+          let paiTypCd = actsList.find(({ cdValue }) => cdValue == ui.cellData);
+          return paiTypCd ? paiTypCd.cdName : ui.cellData;
+        },
       },
     ];
 

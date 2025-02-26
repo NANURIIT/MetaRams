@@ -75,7 +75,8 @@ public class TB07050ServiceImpl implements TB07050Service {
         ret.setRqsKndCd(out201b.getRqsKndCd());                          // 기업여신신청종류코드
         ret.setPrdtClsfCd(out201b.getPrdtClsfCd());                      // 기준금리종류코드
         ret.setApvlAmt(out201b.getApvlAmt());                            // 기업여신승인금액
-        ret.setIndvLmtDcd(out201b.getIndvLmtDcd());                      // 기업여신개별한도구분코드
+        ret.setEprzCrdlIndvLmtDcd(out201b.getEprzCrdlIndvLmtDcd());      // 기업여신개별한도구분코드
+        ret.setActsCd(out201b.getActsCd());                              // 계정과목코드
         ret.setPrnaRdmpFrqcMnum(out201b.getPrnaRdmpFrqcMnum());          // 원금상환주기개월수
         ret.setIntrRdmpFrqcMnum(out201b.getIntrRdmpFrqcMnum());          // 이자상환주기개월수
         ret.setStdrIntrtKndCd(out201b.getStdrIntrtKndCd());              // 기준금리종류코드

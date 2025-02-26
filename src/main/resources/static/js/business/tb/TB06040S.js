@@ -8,7 +8,7 @@ const TB06040Sjs = (function() {
 
     $(document).ready(function() {
         authInf();
-        getSelectBoxList('TB06040S', 'R023/S003/I005/E020/E011/E005/I011');
+        getSelectBoxList('TB06040S', 'R023/S003/I005/E020/E011/E005/I011/A005');
         resetDd();
 		defaultNumberFormat_TB06040S();
         getDealInfoFromWF();
@@ -146,7 +146,7 @@ const TB06040Sjs = (function() {
                     $('#TB06040S_R023').val(data.rqsKndCd);
                     $('#TB06040S_prdtClsfCd').val(data.prdtClsfCd);
                     $('#TB06040S_prdtClsfCdNm').val(data.prdtClsfCdNm);
-                    $('#TB06040S_actsCd').val(data.actsCd);
+                    $('#TB06040S_A005').val(data.actsCd);
                     $('#TB06040S_apvlDt').val(isEmpty(data.apvlDt)?'':formatDate(data.apvlDt));
                     $('#TB06040S_trCrryCd').val(data.trCrryCd);
                     $('#TB06040S_trCrryCdNm').val(data.trCrryCdNm);
@@ -448,8 +448,8 @@ const TB06040Sjs = (function() {
 
         $('#TB06040S_I005').val('');                // 한도구분코드
         $('#TB06040S_R023').val('');                // 신청종류코드
-        $('#TB06040S_actsCd').val('');              // 계정과목코드
-        $('#TB06040S_actsCd2').val('');             // 계정과목코드2
+        $('#TB06040S_A005').val('');              // 계정과목코드
+        // $('#TB06040S_actsCd2').val('');             // 계정과목코드2
         $('#TB06040S_thcoPtciAmt').val('0');        // 당사참여금액
 
         $('#TB06040S_E020').val('');                // 상환방법/개월
