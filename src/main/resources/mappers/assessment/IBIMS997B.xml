@@ -515,6 +515,19 @@
 		                   WHERE PRE_JOB_ID = #{jobId}) 
 		   AND CUR_DATE = #{curDate}
     </update>
+    
+    <select id="mergeBatchNotRunning" parameterType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
+    	SELECT A.JOB_ID
+		     , B.CUR_DATE
+		  FROM RAMS2.IBIMS995B A
+		     , RAMS2.IBIMS997B B
+		 WHERE 1=1
+		   AND A.JOB_ID = B.JOB_ID(+)
+		   AND B.CUR_DATE = #{curDate}
+		   AND A.JOB_RUN_STRT_TIME <![CDATA[<]]> TO_CHAR(SYSDATE, 'HH24MISS')
+		   AND B.JOB_STATUS = '1'
+		   AND B.JOB_ID IN (SELECT JOB_ID FROM RAMS2.IBIMS996B WHERE PRE_JOB_ID = #{jobId})
+    </select>
 
 </mapper>
     

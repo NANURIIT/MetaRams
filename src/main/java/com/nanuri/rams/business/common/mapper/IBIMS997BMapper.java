@@ -58,5 +58,7 @@ public interface IBIMS997BMapper {
 	public void deleteBatchSchedule(BatchMasterVo data);
 
 	public void updatePreJobCount(@Param("curDate") String curDate, @Param("jobId") String jobId);
+
+	public List<BatchMasterVo> getFollwedBatch(BatchMasterVo batch);
 	
 }
