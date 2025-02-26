@@ -33,8 +33,8 @@ public class BatchScheduleService {
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
 
-	public List<BatchMasterVo> getList() {
-		return ibims995bMapper.selectBatchMaster();
+	public List<BatchMasterVo> getList(String curDate) {
+		return ibims995bMapper.selectBatchMaster(curDate);
 	}
 
 	public List<BatchMasterVo> getBatchScheduleStatus(String date) {
@@ -64,7 +64,7 @@ public class BatchScheduleService {
 			return;
 		}
 
-		List<BatchMasterVo> list = getList();
+		List<BatchMasterVo> list = getList(null);
 
 		for (BatchMasterVo temp : list) {
 			if (temp.getJobId().equals(jobId)) {
@@ -125,8 +125,13 @@ public class BatchScheduleService {
 		ibims997bMapper.updateJobStatus(batch.getCurDate(), jobId, status); // 결과
 		
 		///////////////////////////////////////////////////////////////////////
-
-		// 
+		/*
+		// BATCH_CMD_CDC 가 null 인 경우(수동명령 아닌 경우) && 정상종료 된 경우
+		if (null == ibims997bdto.getBatchCmdDcd() && "4".equals(status)) {
+			ibims997bMapper.updateBatchCmdDcd(batch.getCurDate(), jobId, "1"); // 1:Batch
+		}
+		*/
+		///////////////////////////////////////////////////////////////////////
 
 		// 테스트로직
 		// for (int i = 0; i < 10000; i++) {

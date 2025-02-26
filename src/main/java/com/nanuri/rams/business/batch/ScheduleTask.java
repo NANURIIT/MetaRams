@@ -134,7 +134,7 @@ public class ScheduleTask {
 		log.info( "REGIST_BATCH_SCHEDULE ==> START");
 		log.info( "################################################################################" );
 		
-		List<BatchMasterVo> batchList = batchScheduleService.getList();
+		List<BatchMasterVo> batchList = batchScheduleService.getList(null);
 		
 		// 기존 스케줄 중지 및 초기화
         scheduledTasks.values().forEach(future -> future.cancel(false));
@@ -143,6 +143,9 @@ public class ScheduleTask {
         for (BatchMasterVo data : batchList) {
             if (!scheduledTasks.containsKey(data.getJobId())) {
                 scheduleBatch(data); // 새로운 배치만 추가
+                
+                // 배치 스케줄러 최초실행시 명령 유형 등록
+                ibims997bMapper.updateBatchCmdDcd(null, data.getJobId(), "1"); // 1:Batch
             }
         }
 		
@@ -204,7 +207,7 @@ public class ScheduleTask {
 	    log.info("▶️ Batch {} 시작 요청됨!", jobId);
 
 	    // 배치 목록 조회 후 jobId에 해당하는 배치 실행
-	    List<BatchMasterVo> batchList = batchScheduleService.getList();
+	    List<BatchMasterVo> batchList = batchScheduleService.getList(curDate);
 	    for (BatchMasterVo batch : batchList) {
 	        if (batch.getJobId().equals(jobId)) {
 	        	
