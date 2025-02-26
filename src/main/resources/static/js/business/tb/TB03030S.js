@@ -278,7 +278,7 @@ const TB03030Sjs = (function(){
 				let cellData = ui.cellData;
 				if (cellData && cellData.length !== 0) {
 					let corpRgstNo1 = cellData.substring(0, 6);
-					let corpRgstNo2 = cellData.substring(7, 12);
+					let corpRgstNo2 = cellData.substring(6, 13);
 					return `${corpRgstNo1}-${corpRgstNo2}`.trim();
 				}
 				return cellData; 
@@ -294,8 +294,8 @@ const TB03030Sjs = (function(){
 				let cellData = ui.cellData;
 				if (cellData.length >= 10) {
 					let bsnsRgstNo1 = cellData.substring(0, 3);
-					let bsnsRgstNo2 = cellData.substring(4, 7);
-					let bsnsRgstNo3 = cellData.substring(8, cellData.length);
+					let bsnsRgstNo2 = cellData.substring(3, 6);
+					let bsnsRgstNo3 = cellData.substring(6, 10);
 					return `${bsnsRgstNo1}-${bsnsRgstNo2}-${bsnsRgstNo3}`.trim();
 				} else {
 					return cellData;
