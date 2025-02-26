@@ -17,7 +17,8 @@ public class IBIMS436BDTO {
 
     private String afctMngmNo;                 //  사후관리번호
     private String dealNo;                     //  딜번호
-    private BigDecimal excSeq;                 //  실행순번
+    private String prdtCd;                     //  종목코드
+    private long excSn;                         //  실행순번
     private String ovduSttsCd;                 //  연체상태코드
     private BigDecimal crdlBlceAmt;            //  여신잔액금액
     private String frsPrnaOvduOcrncDt;         //  최초원금연체발생일자
