@@ -516,7 +516,7 @@
 		   AND CUR_DATE = #{curDate}
     </update>
     
-    <select id="mergeBatchNotRunning" parameterType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
+    <select id="getFollwedBatch" parameterType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
     	SELECT A.JOB_ID
 		     , B.CUR_DATE
 		  FROM RAMS2.IBIMS995B A
