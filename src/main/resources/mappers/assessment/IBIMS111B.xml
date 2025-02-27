@@ -149,7 +149,7 @@
            , CD1.CD_VL_NM AS CNSB_NM
            , NVL(B.MTR_PRG_STTS_DCD, A.JDGM_RSLT_DCD) AS JDGM_RSLT_DCD
            , A.JDGM_RSLT_RGST_DT
-           , A.JDGM_RSLT_CTNS
+           , B.ETC_CNDT_CTNS                          AS JDGM_RSLT_CTNS
            , B002B.CD_VL_NM AS JDGM_RSLT_DCD_NM
         FROM IBIMS111B A
    LEFT JOIN IBIMS112B B
