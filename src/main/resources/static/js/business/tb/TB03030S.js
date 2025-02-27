@@ -288,7 +288,7 @@ const TB03030Sjs = (function(){
 			title    : "사업자등록번호", 
 			dataType : "string",
 			dataIndx : "bsnsRgstNo",
-			align    : "center",  
+			align    : "center",
 			filter   : { crules: [{ condition: 'range' }] },
 			render   : function (ui) {
 				let cellData = ui.cellData;

@@ -222,7 +222,7 @@ const TB07030Sjs = (function () {
         dataIndx: "paiTypCd",
         halign: "center",
         align: "left",
-        width: "10%",
+        // width: "10%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -350,19 +350,7 @@ const TB07030Sjs = (function () {
         align: "right",
         format: "#,###",
         filter: { crules: [{ condition: "range" }] },
-        editable: true,
-        // editor: {
-        // 	type: 'textbox',
-        // 	init: function (ui) {
-        // 		var $input = ui.$cell.find("input");
-        // 		let tot = 0;
-        // 		$input.on("input", function () {
-        // 			let numVal = Number(this.value)
-        // 			tot += numVal;
-        // 			$('#TB07030S_exmptSmmAmt').val(tot)
-        // 		});
-        // 	}
-        // }
+        editable: true
       },
       {
         title: "상환예정이자=처리이자금액",

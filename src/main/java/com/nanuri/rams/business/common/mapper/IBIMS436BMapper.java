@@ -1,19 +1,50 @@
 package com.nanuri.rams.business.common.mapper;
 
-import java.util.List;
-import java.util.Map;
+import com.nanuri.rams.business.common.vo.IBIMS436BVO;
+import com.nanuri.rams.business.common.vo.IBIMS810BVO;
 
 import org.apache.ibatis.annotations.Mapper;
-
-import com.nanuri.rams.business.common.dto.IBIMS436BDTO;
-import com.nanuri.rams.business.common.vo.IBIMS436BVO;
+import java.util.List;
 
 @Mapper
 public interface IBIMS436BMapper {
 
-    //연체내역조회기본
-    public List<IBIMS436BVO> getOvduDtls(IBIMS436BVO param);
+   /**
+     * 딜일별잔액(IBIMS810B)에서 연체내역 조회
+     * @param param IBIMS436BVO (기준일자 및 조회 조건 포함)
+     * @return 연체 내역 리스트 (810 테이블에서 가져온 데이터)
+     */
+    List<IBIMS810BVO> getOvduList(IBIMS810BVO param);
 
-    //연체확정여부저장
-    public int saveDcsn(IBIMS436BVO param);
+
+    /**
+     * 연체 확정 여부 업데이트
+     * @param param IBIMS436BVO
+     * @return 업데이트된 행 수
+     */
+    int saveDcsn(IBIMS436BVO param);
+
+    /**
+     * 딜일별잔액에서 연체내역 조회
+     * @param param IBIMS810BVO
+     * @return 연체 내역 리스트
+     */
+    List<IBIMS436BVO> getOvduDtls(IBIMS436BVO param);
+
+    /**
+     * 기존 연체 데이터 조회
+     * @param param IBIMS436BVO
+     * @return 연체 내역 리스트
+     */
+    List<IBIMS436BVO> getResistedOvduList(IBIMS436BVO param);
+
+     /**
+     * 연체 데이터를 다건 등록 (배치 인서트)
+     * @param ovduList 연체 내역 리스트
+     * @return 삽입된 행 수
+     */
+    int batchInsert(List<IBIMS436BVO> items);
+
+
+   
 }

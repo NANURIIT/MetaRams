@@ -144,40 +144,30 @@
     </delete>
 
     <!-- 워크플로우조회 -->
-    <select id="getWorkflowDetail" parameterType="com.nanuri.rams.business.common.vo.IBIMS111BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS111BVO">
-      SELECT
-      		   A.CNSB_DCD
-      		  ,CD1.CD_VL_NM AS CNSB_NM
-      	    ,A.JDGM_RSLT_DCD
-      	    ,A.JDGM_RSLT_RGST_DT
-      	    ,A.JDGM_RSLT_CTNS
-            ,B002B.CD_VL_NM AS JDGM_RSLT_DCD_NM 
-        FROM IBIMS111B A 
-  INNER JOIN (
-      SELECT   
-      	     CNSB_DCD
-      	     ,RSLTN_YR
-      	     ,CNSB_SQ
-      	     ,ROW_NUMBER() OVER(PARTITION BY CNSB_DCD,RSLTN_YR,CNSB_SQ ORDER BY RGST_DT DESC) AS NO
-      	FROM IBIMS112B  
-       WHERE DEAL_NO = #{dealNo}
-      	 AND MTR_DCD = #{mtrDcd}
-      ) B
+  <select id="getWorkflowDetail" parameterType="com.nanuri.rams.business.common.vo.IBIMS111BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS111BVO">
+      SELECT A.CNSB_DCD
+           , CD1.CD_VL_NM AS CNSB_NM
+           , NVL(B.MTR_PRG_STTS_DCD, A.JDGM_RSLT_DCD) AS JDGM_RSLT_DCD
+           , A.JDGM_RSLT_RGST_DT
+           , A.JDGM_RSLT_CTNS
+           , B002B.CD_VL_NM AS JDGM_RSLT_DCD_NM
+        FROM IBIMS111B A
+   LEFT JOIN IBIMS112B B
           ON A.CNSB_DCD    = B.CNSB_DCD
-      	 AND A.RSLTN_YR    = B.RSLTN_YR
-      	 AND A.SN          = B.CNSB_SQ
+         AND A.RSLTN_YR    = B.RSLTN_YR
+         AND A.SN          = B.CNSB_SQ
    LEFT JOIN (
-        SELECT CD_VL_ID,CD_VL_NM 
-          FROM IBIMS002B A 
+        SELECT CD_VL_ID,CD_VL_NM
+          FROM IBIMS002B A
          WHERE CMNS_CD_GRP = 'R016'
         ) CD1
           ON A.CNSB_DCD = CD1.CD_VL_ID
-   LEFT JOIN IBIMS002B B002B 
-          ON A.JDGM_RSLT_DCD = B002B.CD_VL_ID 
+   LEFT JOIN IBIMS002B B002B
+          ON NVL(B.MTR_PRG_STTS_DCD, A.JDGM_RSLT_DCD) = B002B.CD_VL_ID
          AND B002B.CMNS_CD_GRP = 'I011'
-       WHERE B.NO = 1
-         AND ROWNUM = 1
-       ORDER BY JDGM_RSLT_RGST_DT DESC
-    </select>
+       WHERE 1=1
+       	 AND B.DEAL_NO = #{dealNo}
+         AND B.MTR_DCD = #{mtrDcd}
+  </select>
 
 </mapper>
