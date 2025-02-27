@@ -75,29 +75,23 @@
 	
 	
 	<select id="getEntpInfoByNm" parameterType="com.nanuri.rams.business.common.dto.IBIMS102BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS102BDTO">
-		SELECT A.ENTP_NM                             						    AS ENTP_HNGL_NM			/* 업체명 */
-		     , NVL (A.CRNO , '') 										        AS CORP_RGST_NO  		/* 법인등록번호 */
-		     , NVL (A.RNBN , '') 										        AS BSNS_RGST_NO   		/* 사업자등록번호 */
-		     , NVL (MAX(C.DPRT_NM), '')           							    AS CHRG_DPRT_NM  		/* 담당부서 */ 
-		     , NVL (MAX(C.EMP_NM), '')                						    AS CHRG_P_NM   			/* 담당자명 */ 
-		     , COUNT(DISTINCT B.CHRR_EMPNO)   									AS ENO_CNT  			/* 담당자건수 */
-		     , NVL (MAX(B.CSTM_NM), '')                  					    AS CSTM_NM  			/* 고객명 */ 
-		     , COUNT(DISTINCT B.CSTM_NM)      									AS CUST_CNT 			/* 고객건수 */ 
-		     , COUNT(DISTINCT RM_SQ)          									AS RM_COUNT      		/* RM활동건수 */ 
-		     , A.ARDY_BZEP_NO													AS ENTP_CD				/* 업체코드 */ 
-		  FROM IBIMS010B A 
-		       LEFT OUTER JOIN IBIMS102B B
-		                    ON UPPER(B.ENTP_CD) = UPPER(A.ARDY_BZEP_NO)
-		       LEFT OUTER JOIN IBIMS003B C  
-		                    ON C.EMPNO  = B.CHRR_EMPNO
-		 WHERE 1 = 1
-		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(entpCd)">
-           AND A.ARDY_BZEP_NO = #{entpCd}
-		 </if>
-		   AND UPPER(A.ENTP_NM) LIKE '%'|| UPPER(#{entpHnglNm}) || '%'
-			 AND C.DEL_YN = 'N'
-		 GROUP BY A.ENTP_NM , A.CRNO,A.RNBN, A.ARDY_BZEP_NO
-		 ORDER BY A.ARDY_BZEP_NO 
+		SELECT T2.ENTP_NM                   AS ENTP_HNGL_NM			/* 업체명 */
+			 , NVL (T2.CRNO , '') 			AS CORP_RGST_NO  		/* 법인등록번호 */
+			 , NVL (T2.RNBN , '') 			AS BSNS_RGST_NO   		/* 사업자등록번호 */
+			 , T1.ENO_CNT          			AS RM_COUNT      		/* RM활동건수 */
+			 , T1.ENTP_CD					AS ENTP_CD				/* 기업체코드 */
+		  FROM (
+				SELECT ENTP_CD 
+					 , COUNT(ENTP_CD) AS ENO_CNT
+				  FROM IBIMS102B
+				 WHERE 1=1
+				 GROUP
+					BY ENTP_CD
+			) T1
+	 LEFT JOIN IBIMS010B T2
+			ON T1.ENTP_CD = T2.ARDY_BZEP_NO
+		 WHERE 1=1
+		   AND UPPER(T2.ENTP_NM) LIKE '%'|| UPPER(#{entpHnglNm}) || '%'
 	</select>
 		
 	<select id="selCorpNm" parameterType="string" resultType="map">
