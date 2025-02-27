@@ -1,7 +1,9 @@
 package com.nanuri.rams.business.assessment.tb90.tb9070;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
+
+import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -12,8 +14,7 @@ public class TB9070APIController {
     private final TB9070Service tb9070Service;
 
     @PostMapping("/execute")
-    public ResponseEntity<String> insert() {
-        tb9070Service.insertOvduList();
-        return ResponseEntity.ok("TB9070 서비스 실행 완료!");
-    }
+    public String insert(@RequestBody IBIMS997BDTO param) {        
+        return tb9070Service.insert(param);
+     }
 }
