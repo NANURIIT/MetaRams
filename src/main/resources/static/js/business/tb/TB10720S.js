@@ -196,15 +196,31 @@ const TB10720Sjs = function () {
 	
 	
 	function runBatchJob(){
-		$.ajax({
-			type: "POST",
-			url: "/TB10720S/runBatchJob",
-			contentType: "application/json; charset=UTF-8",
-			success: function(data) {
-				console.log('success');
-				console.log(data);
-			},
-		});
+		
+		var value = $('input:radio[name="TB10720S_radio"]:checked').val();
+		
+		if(value == "open"){
+			$.ajax({
+				type: "POST",
+				url: "/TB10720S/daliyWorkStart",
+				contentType: "application/json; charset=UTF-8",
+				success: function(data) {
+					console.log('success');
+					console.log(data);
+				},
+			});	
+		}else{
+			$.ajax({
+				type: "POST",
+				url: "/TB10720S/daliyWorkEnd",
+				contentType: "application/json; charset=UTF-8",
+				success: function(data) {
+					console.log('success');
+					console.log(data);
+				},
+			});
+		}
+		
 	}
 
     return {

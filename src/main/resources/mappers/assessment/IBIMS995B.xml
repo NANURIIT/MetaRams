@@ -109,6 +109,7 @@
           , A.GUID                    /* GUID (고유 식별자)           */
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(curDate)">
           , B.RUN_COUNT
+          , B.CUR_DATE
           </if>
         FROM IBIMS995B A
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(curDate)">
