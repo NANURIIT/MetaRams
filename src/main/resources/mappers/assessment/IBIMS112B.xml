@@ -235,6 +235,17 @@
            AND A.SN       = #{sn}
     </select>
 
+  <update id="updateMtrPrgSttsDcd" parameterType="com.nanuri.rams.business.common.dto.IBIMS112BDTO">
+      UPDATE IBIMS112B
+         SET MTR_PRG_STTS_DCD = #{mtrPrgSttsDcd}
+       WHERE 1=1
+         AND CNSB_DCD = #{cnsbDcd}
+         AND CNSB_SQ  = #{cnsbSq}
+         AND RSLTN_YR = #{rsltnYr}
+  </update>
+
+
+
     <update id="updateCNFRNCInfo" parameterType="map">
         UPDATE IBIMS112B
            SET SDN_CNDT_F       = #{sdnCndtF}

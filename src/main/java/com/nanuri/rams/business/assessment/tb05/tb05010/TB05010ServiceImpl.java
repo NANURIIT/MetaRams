@@ -168,6 +168,16 @@ public class TB05010ServiceImpl implements TB05010Service {
 		// 협의체 회차정보 진행상태 업데이트 IBIMS111B
 		ibims111BMapper.updatePrgSttsDcd(paramData);
 
+		IBIMS112BDTO dto112 = new IBIMS112BDTO();
+
+		dto112.setCnsbDcd(paramData.getCnsbDcd());
+		dto112.setCnsbSq(paramData.getSn());
+		dto112.setRsltnYr(paramData.getRsltnYr());
+		dto112.setMtrPrgSttsDcd(paramData.getJdgmRsltDcd());
+
+		// 안건내용 진행상태 업데이트
+		ibims112BMapper.updateMtrPrgSttsDcd(dto112);
+
 		// 안건정보 진행상태 업데이트 IBIMS103B
 		List<Map<String, Object>> dealParam = new ArrayList<>();
 

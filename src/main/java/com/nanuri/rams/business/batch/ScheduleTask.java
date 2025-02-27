@@ -33,7 +33,7 @@ public class ScheduleTask {
     
     private final IBIMS997BMapper ibims997bMapper;
     
-    private volatile boolean batchRunning = true; // 개발용 임시중지
+    private volatile boolean batchRunning = false; // 개발용 임시중지
     //private volatile boolean batchRunning = true;
     
     @Autowired

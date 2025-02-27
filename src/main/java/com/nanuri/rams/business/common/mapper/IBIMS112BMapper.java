@@ -27,4 +27,6 @@ public interface IBIMS112BMapper {
 
 	IBIMS112BVO getAppvCndt(IBIMS112BDTO param);
 
+    public int updateMtrPrgSttsDcd (IBIMS112BDTO param);
+
 }
