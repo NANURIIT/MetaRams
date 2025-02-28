@@ -1336,7 +1336,6 @@ const TB08060Sjs = function () {
 			// console.log("thmmAcmlErnAmt:::" + rowData.thmmAcmlErnAmt);
 			// console.log("bfmmAcmlErnAmt:::" + rowData.bfmmAcmlErnAmt);
 			//console.log("thmmAcmlErnAmt:::" + rowData.thmmAcmlErnAmt);
-
 			var bfmmAcmlErnAmt = String(handleNullData(rowData.bfmmAcmlErnAmt));
 			var thmmAcmlErnAmt = String(handleNullData(rowData.thmmAcmlErnAmt));
 
