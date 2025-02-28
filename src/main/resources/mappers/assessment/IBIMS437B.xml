@@ -4,7 +4,10 @@
 
     <select id="getOvduDailyDtls" parameterType="com.nanuri.rams.business.common.dto.IBIMS437BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS437BDTO">
 	SELECT A.AFCT_MNGM_NO                 /* 사후관리번호 */
-	     , A.OVDU_SEQ                     /* 연체순번  */
+			, A.DEAL_NO												/* 딜번호	*/
+			, A.PRDT_CD												/* 종목코드 */
+			, A.EXC_SN 												/* 실행순번 */
+	    , A.OVDU_SEQ                     /* 연체순번  */
 		  , A.OVDU_OCRNC_DT                 /* 연체발생일 */
 		  , A.CRDL_BLCE_AMT                /* 여신잔액금액 */
 		  , A.RDMP_PRNA                    /* 상환원금액 */
@@ -12,9 +15,65 @@
 		  , A.OVDU_PRNA_AMT                /* 연체원금액 */
 		  , A.OVDU_INTR_AMT                 /* 연체이자금액 */
 	  FROM IBIMS437B A                     /* 연체내역 */
+		JOIN IBIMS436B B
+		  ON A.AFCT_MNGM_NO = B.AFCT_MNGM_NO
+		 AND A.DEAL_NO = B.DEAL_NO
+		 AND A.PRDT_CD = B.PRDT_CD
+		 AND A.EXC_SN = B.EXC_SN
 	 WHERE 1=1
-      AND A.AFCT_MNGM_NO = #{afctMngmNo}
-	   AND A.EXC_SEQ     = #{excSeq}
-	   AND A.DEAL_NO      = #{dealNo}
+      <if test="prdtCd != '' and prdtCd != null">
+         AND A.PRDT_CD = #{prdtCd}
+      </if>
+      <if test="excSn != -1 and excSn != null">
+      AND A.EXC_SN = #{excSn}
+      </if>  
+      AND A.OVDU_OCRNC_DT <![CDATA[>=]]> #{startDt}
+      AND A.OVDU_OCRNC_DT <![CDATA[<=]]> #{endDt}
+			AND B.DCSN_YN = 'Y'            
 	</select>
+
+<insert id="insertOvduDailyDtls" parameterType="com.nanuri.rams.business.common.dto.IBIMS437BDTO">
+    INSERT INTO IBIMS437B (
+        AFCT_MNGM_NO,     /** 사후관리번호 */
+        PRDT_CD,          /** 상품코드 */
+        EXC_SN,           /** 실행일련번호 */
+        DEAL_NO,          /** 계약번호 */
+        OVDU_SEQ,         /** 연체순번 */
+        OVDU_OCRNC_DT,    /** 연체발생일자 */
+        CRDL_BLCE_AMT,    /** 여신잔액금액 */
+        RDMP_PRNA,       /** 상환원금 */
+        RDMP_INTR_AMT,    /** 상환이자 */
+        OVDU_PRNA_AMT,   /** 연체원금금액 */
+        OVDU_INTR_AMT,    /** 연체이자금액 */
+        DEL_YN,           /** 삭제여부 */
+        HND_DETL_DTM,     /** 조작상세일시 */
+        HND_EMPNO,        /** 조작사원번호 */
+        HND_TMNL_NO,      /** 조작단말기번호 */
+        HND_TR_ID,        /** 조작거래ID */
+        GUID              /** GUID */
+    ) VALUES (
+        #{afctMngmNo},    /** 사후관리번호 */
+        #{prdtCd},        /** 상품코드 */
+        #{excSn},         /** 실행일련번호 */
+        #{dealNo},        /** 계약번호 */
+         (SELECT COALESCE(MAX(OVDU_SEQ), 0) + 1 FROM IBIMS437B
+         WHERE AFCT_MNGM_NO = #{afctMngmNo}
+           AND PRDT_CD = #{prdtCd}
+           AND DEAL_NO = #{dealNo}),       /** 연체순번 */
+        #{ovduOcrncDt},   /** 연체발생일자 */
+        #{crdlBlceAmt},   /** 여신잔액금액 */
+        #{rdmpPrna},     /** 상환원금 */
+        #{rdmpIntrAmt},   /** 상환이자 */
+        #{ovduPrnaAmt},  /** 연체원금금액 */
+        #{ovduIntrAmt},   /** 연체이자금액 */
+        #{delYn},         /** 삭제여부 */
+        SYSDATE,   				/** 조작상세일시 */
+        #{hndEmpno},      /** 조작사원번호 */
+        #{hndTmnlNo},     /** 조작단말기번호 */
+        #{hndTrId},       /** 조작거래ID */
+        #{guid}           /** GUID */
+    );
+</insert>
+
+
 </mapper>

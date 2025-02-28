@@ -1,31 +1,32 @@
-const TB09060Sjs = function () {
+const TB09060Sjs = (function () {
   let grid1Ins;
   let grid2Ins;
+  let selectedRowData = {};
 
   $(document).ready(function () {
     //loadSelectBoxContents();
     fnSelectBox();
     setGrid_TB09060S();
-	loadUserAuth();
-	
+    loadUserAuth();
+
     $("#TB09060S_startDt").val(getSomeDaysAgo(7));
     $("#TB09060S_endDt").val(getToday());
   });
-  
+
   // 담당직원정보
-  	function loadUserAuth() {
-  		$.ajax({
-  			type: "GET",
-  			url: "/getUserAuth",
-  			dataType: "json",
-  			success: function(data) {
-  				$("#TB09060S_dprtNm").val(data.dprtCd).prop("selected", true);
-  				$("#TB09060S_dprtCd").val(data.dprtCd);
-  				$("#TB09060S_chrr_empNo").val(data.eno);
-  				$("#TB09060S_chrr_empNm").val(data.empNm);
-  			},
-  		});
-  	}
+  function loadUserAuth() {
+    $.ajax({
+      type: "GET",
+      url: "/getUserAuth",
+      dataType: "json",
+      success: function (data) {
+        $("#TB09060S_dprtNm").val(data.dprtCd).prop("selected", true);
+        $("#TB09060S_dprtCd").val(data.dprtCd);
+        $("#TB09060S_chrr_empNo").val(data.eno);
+        $("#TB09060S_chrr_empNm").val(data.empNm);
+      },
+    });
+  }
 
   let colM_Grid1 = [
     {
@@ -41,9 +42,9 @@ const TB09060Sjs = function () {
       title: "사후관리번호",
       dataType: "string",
       dataIndx: "afctMngmNo",
-      align: "right",
+      align: "rigcenterht",
       halign: "center",
-      width: "110",
+      width: "180",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -59,15 +60,24 @@ const TB09060Sjs = function () {
       title: "Deal명",
       dataType: "string",
       dataIndx: "dealNm",
+      align: "left",
+      halign: "center",
+      width: "260",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "종목코드",
+      dataType: "string",
+      dataIndx: "prdtCd",
       align: "center",
       halign: "center",
-      width: "250",
+      width: "200",
       filter: { crules: [{ condition: "range" }] },
     },
     {
       title: "실행순번",
       dataType: "string",
-      dataIndx: "excSeq",
+      dataIndx: "excSn",
       align: "right",
       halign: "center",
       width: "80",
@@ -97,7 +107,7 @@ const TB09060Sjs = function () {
       dataIndx: "dprtNm",
       align: "center",
       halign: "center",
-      width: "60",
+      width: "100",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -106,7 +116,7 @@ const TB09060Sjs = function () {
       dataIndx: "crdlBlceAmt",
       align: "right",
       halign: "center",
-      width: "100",
+      width: "160",
       filter: { crules: [{ condition: "range" }] },
       format: "#,###",
     },
@@ -116,7 +126,7 @@ const TB09060Sjs = function () {
       dataIndx: "ovduPrnaAmt",
       align: "right",
       halign: "center",
-      width: "100",
+      width: "160",
       filter: { crules: [{ condition: "range" }] },
       format: "#,###",
     },
@@ -126,7 +136,7 @@ const TB09060Sjs = function () {
       dataIndx: "ovduIntrAmt",
       align: "right",
       halign: "center",
-      width: "120",
+      width: "160",
       filter: { crules: [{ condition: "range" }] },
       format: "#,###",
     },
@@ -160,7 +170,7 @@ const TB09060Sjs = function () {
       dataIndx: "prcaOvduAcmlDnum",
       align: "right",
       halign: "center",
-      width: "150",
+      width: "80",
       filter: { crules: [{ condition: "range" }] },
       format: "#,###",
     },
@@ -170,7 +180,7 @@ const TB09060Sjs = function () {
       dataIndx: "intOvduAcmlDnum",
       align: "right",
       halign: "center",
-      width: "150",
+      width: "80",
       filter: { crules: [{ condition: "range" }] },
       format: "#,###",
     },
@@ -180,7 +190,7 @@ const TB09060Sjs = function () {
       dataIndx: "lastIntrRdmpDt",
       align: "center",
       halign: "center",
-      width: "120",
+      width: "160",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         return formatDate(ui.cellData);
@@ -192,7 +202,7 @@ const TB09060Sjs = function () {
       dataIndx: "ovduRlseDt",
       align: "center",
       halign: "center",
-      width: "100",
+      width: "160",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         return formatDate(ui.cellData);
@@ -202,10 +212,46 @@ const TB09060Sjs = function () {
 
   let colM_Grid2 = [
     {
+      title: "사후관리번호",
+      dataType: "string",
+      dataIndx: "afctMngmNo",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "Deal번호",
+      dataType: "string",
+      dataIndx: "dealNo",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "종목코드",
+      dataType: "string",
+      dataIndx: "prdtCd",
+      align: "center",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "실행순번",
+      dataType: "string",
+      dataIndx: "excSn",
+      align: "right",
+      halign: "center",
+      width: "",
+      filter: { crules: [{ condition: "range" }] },
+    },
+    {
       title: "연체순번",
       dataType: "string",
       dataIndx: "ovduSeq",
-      align: "center",
+      align: "right",
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
@@ -241,6 +287,9 @@ const TB09060Sjs = function () {
       width: "",
       filter: { crules: [{ condition: "range" }] },
       format: "#,###",
+      render: function (ui) {
+        return ui.cellData == null ? 0 : ui.cellData; // 값이 없으면 0 반환
+      },
     },
     {
       title: "상환이자금액",
@@ -251,6 +300,9 @@ const TB09060Sjs = function () {
       width: "",
       filter: { crules: [{ condition: "range" }] },
       format: "#,###",
+      render: function (ui) {
+        return ui.cellData == null ? 0 : ui.cellData; // 값이 없으면 0 반환
+      },
     },
     {
       title: "연체원금액",
@@ -274,9 +326,56 @@ const TB09060Sjs = function () {
     },
   ];
 
+  function srchExcSn(e) {
+    let prdtCd = e;
+    let obj = {};
+
+    if (!isEmpty(prdtCd)) {
+      // console.log(prdtCd);
+      $("#TB09060S_excSn").attr("disabled", false);
+    }
+
+    obj = {
+      prdtCd,
+    };
+
+    $.ajax({
+      type: "POST",
+      url: "/TB07060S/srchExcSn",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(obj),
+      dataType: "json",
+      success: function (data) {
+        // console.log(data);
+        //$('#btnSrch').attr('disabled', false);
+        $("#TB09060S_excSn").html("");
+        let html = "";
+        //console.log("data 유무: ::: ", data);
+
+        if (data && data.length > 0) {
+          // console.log(data.length);
+          html += '<option value="">전체</option>';
+          data.forEach((item) => {
+            // console.log(item.EXC_SN)
+            html +=
+              '<option value="' +
+              item.EXC_SN +
+              '">' +
+              item.EXC_SN +
+              "</option>";
+          });
+          $("#TB09060S_excSn").append(html);
+        } else {
+          $("#TB09060S_excSn").attr("disabled", true);
+          return;
+        }
+      },
+    });
+  }
+
   function setGrid_TB09060S() {
     var gridObj1 = {
-      height: 200,
+      height: 300,
       maxHeight: 200,
       showTitle: false,
       showToolbar: false,
@@ -293,22 +392,29 @@ const TB09060Sjs = function () {
         var rowData = ui.rowData;
         //console.log(rowData);
         setConfirmArea(rowData);
-        getList2(rowData);
+        //getList2(rowData);
       },
       cellClick: function (event, ui) {
         //클릭시 선택한 열 볼드처리
         $("#TB09060S_grid1 .pq-grid-row").css("font-weight", "");
         //var row = $("#TB09060S_grid1").pqGrid("getRow", { rowIndx: ui.rowIndx});
-        $("#pq-body-row-u0-" + ui.rowIndx + "-right").css("font-weight", "bold");
+        $("#pq-body-row-u0-" + ui.rowIndx + "-right").css(
+          "font-weight",
+          "bold"
+        );
       },
     };
 
     $("#TB09060S_grid1").pqGrid(gridObj1);
     $("#TB09060S_grid1").pqGrid("refreshDataAndView");
     grid1Ins = $("#TB09060S_grid1").pqGrid("instance");
+    // 그리드컬럼고정
+    dealDtlsIns = $("#TB09060S_grid1").pqGrid("instance");
+    var freezeCols = dealDtlsIns.option("freezeCols");
+    dealDtlsIns.option("freezeCols", 4);
 
     var gridObj2 = {
-      height: 200,
+      height: 300,
       maxHeight: 200,
       showTitle: false,
       showToolbar: false,
@@ -335,27 +441,40 @@ const TB09060Sjs = function () {
   }
 
   function getList1() {
-    var dealNo = $("#TB09060S_ibDealNo").val();
-    var excSeq = $("#TB09060S_excSeq").val();
-    if(excSeq == ""){
-      console.log("순번 공백");
-      excSeq = -1;
+    var prdtCd = $("#TB09060S_prdtCd").val();
+    var excSn = $("#TB09060S_excSn").val().trim();
+    excSn = excSn === "" ? -1 : parseInt(excSn, 10);
+    var startDt = replaceAll($("#TB09060S_startDt").val(), "-", "") || "";
+    var endDt = replaceAll($("#TB09060S_endDt").val(), "-", "") || "";
+
+    // 시작일자 또는 종료일자가 없을 경우 경고창
+    if (!startDt || !endDt) {
+      Swal.fire({
+        icon: "warning",
+        title: "경고!",
+        text: "시작일자와 종료일자를 입력해주세요.",
+        confirmButtonText: "확인",
+      });
+      return;
     }
-    var startDt =
-      replaceAll($("#TB09060S_startDt").val(), "-", "") == null
-        ? ""
-        : replaceAll($("#TB09060S_startDt").val(), "-", "");
-    var endDt =
-      replaceAll($("#TB09060S_endDt").val(), "-", "") == null
-        ? ""
-        : replaceAll($("#TB09060S_endDt").val(), "-", "");
+
+    // 시작일이 종료일보다 클 경우 경고창 띄우기
+    if (parseInt(startDt) > parseInt(endDt)) {
+      Swal.fire({
+        icon: "error",
+        title: "경고!",
+        text: "시작일자는 종료일자보다 클 수 없습니다.",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
 
     var dprtCd = $("#TB09060S_dprtCd").val();
     var ovduRlseYnCd = $("#TB09060S_ovduRlseYnCd").val();
 
     const paramData = {
-      dealNo: dealNo,
-      excSeq: excSeq,
+      prdtCd: prdtCd,
+      excSn: excSn,
       startDt: startDt,
       endDt: endDt,
       dprtCd: dprtCd,
@@ -369,30 +488,23 @@ const TB09060Sjs = function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if (data) {
-          grid1Ins.setData(data);
-        } else {
-          Swal.fire({
-            icon: "warning",
-            title: "warning!",
-            text: "조회된 정보가 없습니다.",
-            confirmButtonText: "확인",
-          }).then((result) => { });
-        }
-        console.log(data);
+        grid1Ins.setData(data);
+        getList2(paramData);
       },
       error: function (e) {
         Swal.fire({
           icon: "error",
-          title: "warning!",
-          text: "조회된 정보가 없습니다.",
+          title: "error!",
+          text: "데이터 조회 중 오류가 발생했습니다.",
           confirmButtonText: "확인",
-        }).then((result) => { });
+        });
       },
     });
   }
 
   function setConfirmArea(rowData) {
+    selectedRowData = rowData;
+
     if (rowData.dcsnYn == "Y") {
       $("#TB09060S_dcsnYn").prop("checked", true);
     } else {
@@ -402,14 +514,16 @@ const TB09060Sjs = function () {
     $("#TB09060S_afctMngmNo2").val(rowData.afctMngmNo);
     $("#TB09060S_dealNo").val(rowData.dealNo);
     $("#TB09060S_dealNm").val(rowData.dealNm);
-    $("#TB09060S_excSeq2").val(rowData.excSeq);
+    $("#TB09060S_excSn2").val(rowData.excSn);
+    $("#TB09060S_prdtCd2").val(rowData.prdtCd);
   }
 
-  function getList2(rowData) {
+  function getList2(data) {
     const paramData = {
-      dealNo: rowData.dealNo,
-      excSeq: rowData.excSeq,
-      afctMngmNo: rowData.afctMngmNo,
+      prdtCd: data.prdtCd,
+      excSn: data.excSn,
+      startDt: data.startDt,
+      endDt: data.endDt,
     };
 
     $.ajax({
@@ -419,17 +533,7 @@ const TB09060Sjs = function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if (data) {
-          grid2Ins.setData(data);
-        } else {
-          Swal.fire({
-            icon: "warning",
-            title: "warning!",
-            text: "조회된 정보가 없습니다.",
-            confirmButtonText: "확인",
-          }).then((result) => { });
-        }
-        console.log(data);
+        grid2Ins.setData(data);
       },
       error: function (e) {
         Swal.fire({
@@ -437,7 +541,7 @@ const TB09060Sjs = function () {
           title: "warning!",
           text: "조회된 정보가 없습니다.",
           confirmButtonText: "확인",
-        }).then((result) => { });
+        }).then((result) => {});
       },
     });
   }
@@ -449,7 +553,7 @@ const TB09060Sjs = function () {
         title: "warning!",
         text: "먼저 확정할 연체내역을 선택해주세요.",
         confirmButtonText: "확인",
-      }).then((result) => { });
+      }).then((result) => {});
     } else {
       Swal.fire({
         icon: "warning",
@@ -463,16 +567,25 @@ const TB09060Sjs = function () {
   }
 
   function saveDcsnAjax() {
-    var dcsnYn = $("#TB09060S_dcsnYn").prop("checked") ? "Y" : "N";
+    var dcsnYn = "Y";
+
+    // 🔹 최초 원금 연체 발생일자와 최초 이자 연체 발생일자 중 빠른 값 선택
+    var earliestDate = getEarlierDate(
+      selectedRowData.frsPrnaOvduOcrncDt,
+      selectedRowData.frsIntrOvduOcrncDt
+    );
 
     const paramData = {
       dcsnYn: dcsnYn,
-      afctMngmNo: $("#TB09060S_afctMngmNo2").val(),
-      dealNo: $("#TB09060S_dealNo").val(),
-      excSeq: $("#TB09060S_excSeq2").val(),
+      afctMngmNo: selectedRowData.afctMngmNo, // 사후관리번호
+      dealNo: selectedRowData.dealNo, // 딜번호
+      excSn: selectedRowData.excSn, // 실행순번
+      prdtCd: selectedRowData.prdtCd, // 종목코드
+      ovduOcrncDt: earliestDate, // 연체발생일자
+      crdlBlceAmt: selectedRowData.crdlBlceAmt, // 여신잔액금액
+      ovduPrnaAmt: selectedRowData.ovduPrnaAmt, // 연체원금금액
+      ovduIntrAmt: selectedRowData.ovduIntrAmt, // 연체이자금액
     };
-
-    console.log(paramData);
 
     $.ajax({
       type: "POST",
@@ -496,7 +609,7 @@ const TB09060Sjs = function () {
             title: "warning!",
             text: "확정 여부를 저장하지 못했습니다.",
             confirmButtonText: "확인",
-          }).then((result) => { });
+          }).then((result) => {});
         }
         console.log(data);
       },
@@ -507,7 +620,7 @@ const TB09060Sjs = function () {
           title: "error!",
           text: "확정 여부를 저장하지 못했습니다.",
           confirmButtonText: "확인",
-        }).then((result) => { });
+        }).then((result) => {});
       },
     });
   }
@@ -526,33 +639,39 @@ const TB09060Sjs = function () {
   function fnSelectBox() {
     let selectBox = getSelectBoxList(
       "TB09060S",
-        "D010",   //부서코드
+      "D010", //부서코드
       false
     );
 
-    let TB07120S_grdSelect
+    let TB07120S_grdSelect;
 
     TB07120S_grdSelect = selectBox.filter(function (item) {
       return item.cmnsGrpCd === "D010";
-    })
+    });
 
     let D010html;
-    
+
     TB07120S_grdSelect.forEach((item) => {
       D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
     });
 
     $("#TB09060S_dprtNm").append(D010html);
 
-    $('#TB09060S_dprtNm').on('change', function(){
-      $('#TB09060S_dprtCd').val($('#TB09060S_dprtNm').val())
-    })
-    
+    $("#TB09060S_dprtNm").on("change", function () {
+      $("#TB09060S_dprtCd").val($("#TB09060S_dprtNm").val());
+    });
+  }
+
+  // 두 날짜 중 빠른 날짜 반환 (yyyyMMdd 형식)
+  function getEarlierDate(date1, date2) {
+    if (!date1) return date2; // date1이 없으면 date2 반환
+    if (!date2) return date1; // date2가 없으면 date1 반환
+    return date1 < date2 ? date1 : date2; // 문자열 비교 (yyyyMMdd)
   }
 
   return {
-    getList1: getList1
-    ,saveDcsn: saveDcsn
-  }
-
-}();
+    getList1: getList1,
+    saveDcsn: saveDcsn,
+    srchExcSn: srchExcSn,
+  };
+})();
