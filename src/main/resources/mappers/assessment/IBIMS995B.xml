@@ -5,6 +5,7 @@
   <!-- 배치JOB MASTER 조회  -->
 	<select id="selectIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS995BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS995BVO">
     SELECT T1.JOB_ID                                                    /* JOB ID */
+         , T1.STDR_DT                                                   /* 기준일자 */
          , T1.JOB_NAME                                                  /* JOB NAME */
          , T1.JOB_TYPE                                                  /* JOB TYPE */
          , T1.OBJECT_NAME                                               /* SOURCE FULL NAME */
@@ -27,6 +28,7 @@
         INSERT INTO IBIMS995B
               (
                   JOB_ID                           /* JOB ID */
+                , STDR_DT                          /* 기준일자 */
                 , JOB_NAME                         /* JOB NAME */
                 , JOB_TYPE                         /* JOB TYPE */
                 , OBJECT_NAME                      /* SOURCE FULL NAME */
@@ -44,6 +46,7 @@
                 , GUID                             /* GUID */
               )
           SELECT #{jobId}                          /* JOB ID */
+               , #{stdrDt}                         /* 기준일자 */
                , #{jobName}                        /* JOB NAME */
                , #{jobType}                        /* JOB TYPE */
                , #{objectName}                     /* SOURCE FULL NAME */
@@ -66,6 +69,7 @@
     <update id="updateIBIMS995B" parameterType="com.nanuri.rams.business.common.dto.IBIMS995BDTO">
        UPDATE IBIMS995B
           SET JOB_NAME          = #{jobName}                       /* JOB NAME */
+            , STDR_DT           = #{stdrDt}                        /* 기준일자 */
             , JOB_TYPE          = #{jobType}                       /* JOB TYPE */
             , OBJECT_NAME       = #{objectName}                    /* SOURCE FULL NAME */
             , ARGUMENT          = #{argument}                      /* ARGUMENT */
@@ -91,39 +95,41 @@
     </delete>
     
     <select id="selectBatchMaster" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
-      SELECT A.JOB_ID                 /* 작업 ID                      */
-          , A.JOB_NAME                /* 작업 이름                    */
-          , A.JOB_TYPE                /* 작업 유형 (1: DUMMY, 2: COMMAND) */
-          , A.OBJECT_NAME             /* 소스 전체 이름               */
-          , A.ARGUMENT                /* 프로그램에 전달될 인자       */
-          , A.CONFIRM_YN              /* 작업 승인 여부 ('N' 기본값)  */
-          , A.JOB_RUN_TYPE_DCD        /* 실행 빈도                    */
-          , A.JOB_RUN_STRT_TIME       /* 실행 시간                    */
-          , A.DESCRIPTION             /* 작업 설명                    */
-          , A.REGISTER_DAY            /* 최초 등록일                  */
-          , A.LAST_UPDATE_DAY         /* 최종 수정일                */
-          , A.HND_DETL_DTM            /* 조작 상세 일시 (TIMESTAMP)   */
-          , A.HND_EMPNO               /* 조작 사원번호                */
-          , A.HND_TMNL_NO             /* 조작 단말기 번호             */
-          , A.HND_TR_ID               /* 조작 거래 ID                 */
-          , A.GUID                    /* GUID (고유 식별자)           */
-          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(curDate)">
-          , B.RUN_COUNT
-          , B.CUR_DATE
-          </if>
+      SELECT A.JOB_ID                  /* 작업 ID                      */
+           , A.STDR_DT                 /* 기준일자                     */
+           , A.JOB_NAME                /* 작업 이름                    */
+           , A.JOB_TYPE                /* 작업 유형 (1: DUMMY, 2: COMMAND) */
+           , A.OBJECT_NAME             /* 소스 전체 이름               */
+           , A.ARGUMENT                /* 프로그램에 전달될 인자       */
+           , A.CONFIRM_YN              /* 작업 승인 여부 ('N' 기본값)  */
+           , A.JOB_RUN_TYPE_DCD        /* 실행 빈도                    */
+           , A.JOB_RUN_STRT_TIME       /* 실행 시간                    */
+           , A.DESCRIPTION             /* 작업 설명                    */
+           , A.REGISTER_DAY            /* 최초 등록일                  */
+           , A.LAST_UPDATE_DAY         /* 최종 수정일                */
+           , A.HND_DETL_DTM            /* 조작 상세 일시 (TIMESTAMP)   */
+           , A.HND_EMPNO               /* 조작 사원번호                */
+           , A.HND_TMNL_NO             /* 조작 단말기 번호             */
+           , A.HND_TR_ID               /* 조작 거래 ID                 */
+           , A.GUID                    /* GUID (고유 식별자)           */
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(curDate)">
+           , B.RUN_COUNT
+           , B.CUR_DATE
+           </if>
         FROM IBIMS995B A
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(curDate)">
            , IBIMS997B B
           </if>
        WHERE 1=1
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(curDate)">
-         AND A.JOB_ID = B.JOB_ID(+)
-         AND B.CUR_DATE = #{curDate} 
+          AND A.JOB_ID = B.JOB_ID(+)
+          AND B.CUR_DATE = #{curDate}
           </if>
   	</select>
   	
   	<select id="getBatchScheduleStatus" resultType="com.nanuri.rams.business.batch.job.entity.BatchMasterVo">
       	SELECT A.JOB_ID                 /* 배치JOB MASTER의 JOB ID */
+             , A.STDR_DT
       	     , A.JOB_NAME
       	     , A.JOB_TYPE
       	     , A.OBJECT_NAME
