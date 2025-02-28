@@ -42,4 +42,10 @@ public class IBIMS820BDTO {
     private String      hdwtInpYn;                  //수기입력여부
     private String      dcsnYn;                     //확정여부
 
+    private Date           hndDetlDtm;                             // 조작상세일시
+    private String         hndEmpno;                               // 조작사원번호
+    private String         hndTmnlNo;                              // 조작단말기번호
+    private String         hndTrId;                                // 조작거래id
+    private String         guid;                                   // guid
+
 }

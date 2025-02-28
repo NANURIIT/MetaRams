@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Comparator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.common.dto.IBIMS820BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS820BMapper;
 import com.nanuri.rams.business.common.vo.TB08060SVO;
+import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,9 @@ import lombok.extern.slf4j.Slf4j;
 public class TB08060ServiceImpl implements TB08060Service {
 
     private final IBIMS820BMapper ibims820bMapper;
+
+    @Autowired
+	private AuthenticationFacade facade;
 
     //월말결산 조회
     @Override
@@ -76,22 +81,24 @@ public class TB08060ServiceImpl implements TB08060Service {
     //월말결산 업데이트
     @Override
     public int saveSettlement(List<IBIMS820BDTO> paramList){
-        //log.debug("<<<<<<<<<<<saveSettlement parameter check>>>>>>>>>>>");
-        //log.debug("\nparamList{}:::", paramList);
+        // log.debug("<<<<<<<<<<<saveSettlement parameter check>>>>>>>>>>>");
+        // log.debug("\nparamList{}:::", paramList);
 
         //List<IBIMS820BDTO> updParamList = new ArrayList<>();
 
-        // for(int i = 0; i < paramList.size(); i++){
-        //     IBIMS820BDTO param = paramList.get(i);
-        //     //IBIMS820BDTO updParam = new IBIMS820BDTO();
+        for(int i = 0; i < paramList.size(); i++){
+            IBIMS820BDTO param = paramList.get(i);
+            //IBIMS820BDTO updParam = new IBIMS820BDTO();
 
-        //     log.debug("param.getThmmAcmlErnAmt ::: " + param.getThmmAcmlErnAmt());
-        //     log.debug("param.getBfmmAcmlErnAmt ::: " + param.getBfmmAcmlErnAmt());
-        //     log.debug("param.getStdrYm ::: " + param.getStdrYm());
-        //     log.debug("param.getPrdtCd ::: " + param.getPrdtCd());
-        //     log.debug("param.getRgstSn ::: " + param.getRgstSn());
-        //     log.debug("param.getEprzCrdlStlaDcd ::: " + param.getEprzCrdlStlaDcd());
-        // }
+            // log.debug("param.getThmmAcmlErnAmt ::: " + param.getThmmAcmlErnAmt());
+            // log.debug("param.getBfmmAcmlErnAmt ::: " + param.getBfmmAcmlErnAmt());
+            // log.debug("param.getStdrYm ::: " + param.getStdrYm());
+            // log.debug("param.getPrdtCd ::: " + param.getPrdtCd());
+            // log.debug("param.getRgstSn ::: " + param.getRgstSn());
+            // log.debug("param.getEprzCrdlStlaDcd ::: " + param.getEprzCrdlStlaDcd());
+
+            param.setHndEmpno(facade.getDetails().getEno());
+        }
 
         int result = ibims820bMapper.updateSettlement(paramList);
 
