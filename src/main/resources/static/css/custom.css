@@ -486,12 +486,12 @@ hr{ margin-top: 0.5rem;
 
 /* 토스트 2025-02-28 김건우 */
 .con-toast {
-	opacity: 0;
+	/* opacity: 0; */
 	/* visibility: hidden; */
 	position: fixed;
 	/* color: white; */
 	background-color: white;
-	bottom: -30px;
+	bottom: -50px;
 	right: 30px;
 	padding: 10px 15px;
 	border-radius: 10px;

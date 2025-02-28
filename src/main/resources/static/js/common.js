@@ -2405,7 +2405,7 @@ function showToast ( status, dataLength, code ) {
     }
     // 코드가 없을시 기본 텍스트
     else {
-      $('#toast-text-aria').html(`<span class="fa fa-thumbs-up toast-success"></span> ${dataLength}건의 데이터가 조회되었습니다!`)
+      $('#toast-text-aria').html(`✅ ${dataLength}건의 데이터가 조회되었습니다!`)
     }
   }
   // 
@@ -2431,7 +2431,7 @@ function showToast ( status, dataLength, code ) {
   // 2초뒤 제거
   setTimeout(() => {
     $('#toastPlacement').css({
-      'bottom': '-30px'
+      'bottom': '-50px'
     , 'opacity': '0'
     })
   }, 3000)
