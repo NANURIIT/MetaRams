@@ -416,6 +416,13 @@ const TB10610Sjs = (function () {
       $('input[name="TB10610S_batchCmdDcd"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
       // $('input[name="TB10610S_batchCmdDcd"][value="5"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
     }
+
+    // 기준일자가 오늘이 아닐경우
+    if ( $('#TB10610S_curDate').val() != $('#bzDdDisplay span:first').html() ) {
+      $('input[name="TB10610S_batchCmdDcd"]').prop('disabled', true);
+      $('input[name="TB10610S_batchCmdDcd"]').next().css({ color : "rgba(118, 118, 118, 0.3)" });
+      $('#btnExc').prop('disabled', true);
+    }
   }
 
   // 실행

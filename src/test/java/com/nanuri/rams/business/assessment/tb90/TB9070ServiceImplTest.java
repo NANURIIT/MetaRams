@@ -1,6 +1,7 @@
 package com.nanuri.rams.business.assessment.tb90;
 
 import com.nanuri.rams.business.assessment.tb90.tb9070.TB9070Service;
+import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS436BVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,10 @@ public class TB9070ServiceImplTest {
     public void testServiceExecution() {        
         System.out.println("📌 [테스트 시작] TB9070Service 실행 테스트");
         
+        IBIMS997BDTO param = new IBIMS997BDTO();       
         // 서비스 실행
-        tb9070Service.insertOvduList();       
-
+         tb9070Service.insert(param);   
+             
         System.out.println("✅ [테스트 완료] TB9070Service 실행 성공!");
     }
 }

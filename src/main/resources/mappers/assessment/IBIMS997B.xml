@@ -280,7 +280,8 @@
                              WHEN PRE_JOB_COUNT &gt; 0 THEN PRE_JOB_COUNT - 1 
                              ELSE 0 
                               END
-       WHERE CUR_DATE = NVL(NULLIF(#{curDate}, ''),(
+       WHERE 1=1
+         AND CUR_DATE = NVL(NULLIF(#{curDate}, ''),(
                           SELECT MAX(BZ_DD)
 			                      FROM IBIMS999B
                         ))

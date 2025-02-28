@@ -1,9 +1,9 @@
 package com.nanuri.rams.business.assessment.tb90.tb9070;
 
-import java.util.List;
-
-import com.nanuri.rams.business.common.vo.IBIMS436BVO;
+import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 
 public interface TB9070Service {  
-    public List<IBIMS436BVO> insertOvduList();
-}
+
+    public String insert(IBIMS997BDTO param);
+    
+};

@@ -141,5 +141,109 @@
 					#{guid}                              /* GUID */
 				);
     </update>
+    
+    <insert id="dailyWorkStart" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
+    	MERGE INTO IBIMS998B 
+		USING DUAL 
+		   ON (STDR_DT = #{curDate})
+		 WHEN MATCHED THEN
+		      UPDATE SET
+		             JOB_OPNG_DTIME = SYSDATE,
+		             OPNG_STFNO     = 'BATCH',
+		             OPNG_ORGNO     = 'BATCH',
+		             HDWR_OPNG_YN   = 'N',
+		             HND_DETL_DTM   = SYSDATE
+		             <!-- 
+		             HDWR_OPNG_YN   = 'N',
+		             HND_EMPNO      = NVL(#{hndEnpno}, 'BATCH')  
+		             -->
+		 WHEN NOT MATCHED THEN
+		      INSERT (
+		             STDR_DT,
+		             JOB_OPNG_DTIME,
+		             JOB_CLSG_DTIME,
+		             CLSG_DVSN_CD,
+		             OPNG_STFNO,
+		             OPNG_ORGNO,
+		             HDWR_OPNG_YN,
+		             CLSG_STFNO,
+		             CLSG_ORGNO,
+		             HDWR_CLSG_YN,
+		             HND_DETL_DTM,
+		             HND_EMPNO,
+		             HND_TMNL_NO,
+		             HND_TR_ID,
+		             GUID
+		             )
+		      VALUES (
+		             #{curDate},
+		             SYSDATE,
+		             NULL,
+		             NULL,
+		             'BATCH',
+		             'BATCH',
+		             'N',
+		             NULL,
+		             NULL,
+		             NULL,
+		             SYSDATE,
+		             'BATCH', <!-- NVL(#{hndEnpno}, 'BATCH'), -->
+		             'BATCH',
+		             'BATCH',
+		             'BATCH'
+		             )
+    </insert>
+    
+    <insert id="dailyWorkEnd" parameterType="com.nanuri.rams.business.common.dto.IBIMS997BDTO">
+    	MERGE INTO IBIMS998B 
+		USING DUAL 
+		   ON (STDR_DT = #{curDate})
+		 WHEN MATCHED THEN
+		      UPDATE SET
+		             JOB_CLSG_DTIME = SYSDATE,
+		             CLSG_STFNO     = 'BATCH',
+		             CLSG_ORGNO     = 'BATCH',
+		             HDWR_CLSG_YN   = 'N',
+		             HND_DETL_DTM   = SYSDATE
+		             <!-- 
+		             HDWR_OPNG_YN   = 'N',
+		             HND_EMPNO      = NVL(#{hndEnpno}, 'BATCH')  
+		             -->
+		 WHEN NOT MATCHED THEN
+		      INSERT (
+		             STDR_DT,
+		             JOB_OPNG_DTIME,
+		             JOB_CLSG_DTIME,
+		             CLSG_DVSN_CD,
+		             OPNG_STFNO,
+		             OPNG_ORGNO,
+		             HDWR_OPNG_YN,
+		             CLSG_STFNO,
+		             CLSG_ORGNO,
+		             HDWR_CLSG_YN,
+		             HND_DETL_DTM,
+		             HND_EMPNO,
+		             HND_TMNL_NO,
+		             HND_TR_ID,
+		             GUID
+		             )
+		      VALUES (
+		             #{curDate},
+		             NULL,
+		             SYSDATE,
+		             NULL,
+		             NULL,
+		             NULL,
+		             NULL,
+		             'BATCH',
+		             'BATCH',
+		             'N',
+		             SYSDATE,
+		             'BATCH', <!-- NVL(#{hndEnpno}, 'BATCH'), -->
+		             'BATCH',
+		             'BATCH',
+		             'BATCH'
+		             )
+    </insert>
 
 </mapper>

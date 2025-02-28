@@ -17,11 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class TB9090APIController {
 
-        private final TB9090Service tb9060Service;
+	private final TB9090Service tb9090Service;
 
-        @PostMapping(value = "/insert")
-        public String insert(@RequestBody IBIMS997BDTO param) {
-                return tb9060Service.insert(param);
-        }
+	@PostMapping(value = "/insert")
+	public String insert(@RequestBody IBIMS997BDTO param) {
+		return tb9090Service.insert(param);
+	}
         
 }
