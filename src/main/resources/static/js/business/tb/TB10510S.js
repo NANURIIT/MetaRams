@@ -329,6 +329,9 @@ const TB10510Sjs = (function () {
                 reset()
             },
             success: function (data) {
+
+                showToast('success', data.batSch.length);
+
                 batSch.setData(data.batSch)
 
                 if (data && data.batSch.length > 0) {
