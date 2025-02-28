@@ -1,7 +1,5 @@
 package com.nanuri.rams.business.assessment.tb90.tb9090;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.nanuri.rams.business.common.dto.IBIMS997BDTO;

@@ -1,23 +1,22 @@
 package com.nanuri.rams.business.assessment.tb10.tb10720;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledFuture;
+import java.util.List;
 
 import org.slf4j.Logger;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.assessment.tb90.tb9080.TB9080Service;
+import com.nanuri.rams.business.assessment.tb90.tb9090.TB9090Service;
+import com.nanuri.rams.business.batch.job.entity.BatchMasterVo;
+import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS998BDTO;
+import com.nanuri.rams.business.common.mapper.IBIMS995BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS998BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS998BVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
@@ -30,17 +29,18 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TB10720ServiceImpl implements TB10720Service {
 	
+	public final String JOB_ID_WORK_START = "TB9080B";
+	public final String JOB_ID_WORK_END = "TB9090B";
+	
 	@Autowired
-	private TaskScheduler taskScheduler;
-	private Map<String, ScheduledFuture<?>> scheduledtasks = new ConcurrentHashMap<>();
+	private final TB9080Service tb9080Service;
 	
-	@Autowired 
-	JobLauncher jobLauncher;
+	@Autowired
+	private final TB9090Service tb9090Service;
 	
-	@Autowired   
-	@Qualifier("DAILY_WORK_START_BATCH") 
-	Job DAILY_WORK_START_BATCH;
-	
+	private final IBIMS995BMapper ibims995bMapper;
+	private final IBIMS997BMapper ibims997bMapper;
+		
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(this.getClass());
 	private final IBIMS998BMapper ibims998bmp;
 	private final AuthenticationFacade facade;
@@ -86,11 +86,65 @@ public class TB10720ServiceImpl implements TB10720Service {
 	}
 
 	@Override
-	public void runBatchJob() throws Exception {
-		JobParameter param = new JobParameter(System.currentTimeMillis());
-		Map<String,JobParameter> parameters = new HashMap<String,JobParameter>();
-		parameters.put("requestDate", param);
-		jobLauncher.run(DAILY_WORK_START_BATCH, new JobParameters(parameters));
+	public void daliyWorkStart() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
+		Calendar c1 = Calendar.getInstance();
+		String strToday = sdf.format(c1.getTime()); 
+		
+		List<BatchMasterVo> lstBatch = ibims995bMapper.selectBatchMaster(strToday);
+		
+		for(BatchMasterVo batch : lstBatch) {
+			if(JOB_ID_WORK_START.equals(batch.getJobId())) {
+				
+				ibims997bMapper.updateBatchCmdDcd(batch.getCurDate(), JOB_ID_WORK_START, "3"); // 3:(Re)Run
+				
+				IBIMS997BDTO ibims997bDTO = new IBIMS997BDTO();
+				
+				ibims997bDTO.setJobId(batch.getJobId());
+				ibims997bDTO.setCurDate(batch.getCurDate());
+				ibims997bDTO.setHndEmpno(batch.getHndEmpNo());
+				ibims997bDTO.setHndTmnlNo(batch.getHndTmnlNo());
+				ibims997bDTO.setHndTrId(batch.getHndTrId());
+				ibims997bDTO.setGuid(batch.getGuid());
+				
+				String result = tb9080Service.insert(ibims997bDTO);
+				
+				ibims997bMapper.updateJobStatus(batch.getCurDate(), JOB_ID_WORK_START, result); // 결과
+			}
+		}
+		
+	}
+	
+	@Override
+	public void daliyWorkEnd() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
+		Calendar c1 = Calendar.getInstance();
+		String strToday = sdf.format(c1.getTime()); 
+		
+		List<BatchMasterVo> lstBatch = ibims995bMapper.selectBatchMaster(strToday);
+		
+		for(BatchMasterVo batch : lstBatch) {
+			if(JOB_ID_WORK_END.equals(batch.getJobId())) {
+				
+				ibims997bMapper.updateBatchCmdDcd(batch.getCurDate(), JOB_ID_WORK_END, "3"); // 3:(Re)Run
+				
+				IBIMS997BDTO ibims997bDTO = new IBIMS997BDTO();
+				
+				ibims997bDTO.setJobId(batch.getJobId());
+				ibims997bDTO.setCurDate(batch.getCurDate());
+				ibims997bDTO.setHndEmpno(batch.getHndEmpNo());
+				ibims997bDTO.setHndTmnlNo(batch.getHndTmnlNo());
+				ibims997bDTO.setHndTrId(batch.getHndTrId());
+				ibims997bDTO.setGuid(batch.getGuid());
+				
+				String result = tb9090Service.insert(ibims997bDTO);
+				
+				ibims997bMapper.updateJobStatus(batch.getCurDate(), JOB_ID_WORK_END, result); // 결과
+			}
+		}
+		
 	}
 	
 }

@@ -233,8 +233,9 @@
     </update>
 
     <update id="cancelMMBRInfo" parameterType="map">
-        <foreach collection="list" item="item">
-        UPDATE IBIMS115B
+      BEGIN
+      <foreach collection="list" item="item">
+       UPDATE IBIMS115B
           SET ATDC_YN       = 'N'
             , APRV_OPPS_DCD = ''
             , OPNN_CTNS     = ''
@@ -242,8 +243,9 @@
         WHERE CNSB_DCD      = #{item.cnsbDcd}
           AND CNSB_SQ       = TO_NUMBER(#{item.cnsbSq})
           AND RSLTN_YR      = #{item.rsltnYr}
-          AND SN            = #{item.sn}
-        </foreach>
+          AND SN            = #{item.sn};
+      </foreach>
+      END;
     </update>
 
 

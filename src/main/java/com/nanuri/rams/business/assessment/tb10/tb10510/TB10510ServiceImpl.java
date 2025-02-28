@@ -49,8 +49,6 @@ public class TB10510ServiceImpl implements TB10510Service {
 		String id = input.getJobId();
 		String name = input.getJobName();
 
-		log.debug("\nid ::::: {}", id);
-		log.debug("\nname ::::: {}", name);
 		List<IBIMS995BVO> ibims995bvo = ibims995bmp.selectIBIMS995B(input);
 		
 		out995bvo.setBatSch(ibims995bvo);

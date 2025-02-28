@@ -2384,3 +2384,56 @@ function idFocus(id) {
 function idClear(id) {
   $("#" + id).val('');
 }
+
+/**
+ * 
+ * @param { String } status 
+ * @param { Number } dataLength 
+ * @param { String } code 특정화면
+ */
+function showToast ( status, dataLength, code ) {
+
+  // 성공적인 조회시
+  if ( status === 'success' ) {
+    // $('#toastPlacement').css({
+    //   'background-color': 'rgb(0, 255, 0)'
+    // })
+
+    // 코드가 존재하면 코드에 맞는 텍스트 출력
+    if ( code ) {
+  
+    }
+    // 코드가 없을시 기본 텍스트
+    else {
+      $('#toast-text-aria').html(`✅ ${dataLength}건의 데이터가 조회되었습니다!`)
+    }
+  }
+  // 
+  else if ( status === 'warning' ) {
+    // $('#toastPlacement').css({
+    //   'background-color': 'rgb(225, 225, 25)'
+    // })
+
+  }
+  // 에러시
+  else if ( status === 'error' ){
+    // $('#toastPlacement').css({
+    //   'background-color': 'red'
+    // })
+
+  }
+
+  $('#toastPlacement').css({
+    'bottom': '30px'
+    , 'opacity': '1'
+  })
+
+  // 2초뒤 제거
+  setTimeout(() => {
+    $('#toastPlacement').css({
+      'bottom': '-50px'
+    , 'opacity': '0'
+    })
+  }, 3000)
+
+}

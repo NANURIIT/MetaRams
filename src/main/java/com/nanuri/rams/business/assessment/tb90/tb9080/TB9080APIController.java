@@ -10,18 +10,17 @@ import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
 @Slf4j
 @RequestMapping("/TB9080B")
 @RequiredArgsConstructor
 @RestController
 public class TB9080APIController {
 
-        private final TB9080Service tb9060Service;
+	private final TB9080Service tb9080Service;
 
-        @PostMapping(value = "/insert")
-        public String insert(@RequestBody IBIMS997BDTO param) {
-                return tb9060Service.insert(param);
-        }
-        
+	@PostMapping(value = "/insert")
+	public String insert(@RequestBody IBIMS997BDTO param) {
+		return tb9080Service.insert(param);
+	}
+
 }

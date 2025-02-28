@@ -10,10 +10,10 @@ const TB10510Sjs = (function () {
     $(document).ready(function () {
         selectBox();
         pqGrid();
-		
+
         $('#TB10510S_curDate').val(getToday());
-		
-		isBatchScheduler();
+
+        isBatchScheduler();
         clockpickerCtrl();
         reset();
     });
@@ -46,10 +46,10 @@ const TB10510Sjs = (function () {
         });
     }
 
-    function clockpickerCtrl () {
+    function clockpickerCtrl() {
         $('#TB10510S_jobRunStrtTime').on('change', function () {
             console.log("??");
-            
+
             const val = $(this).val()
             if (val.length === 5) {
                 $(this).val(val + ":00");
@@ -103,6 +103,19 @@ const TB10510Sjs = (function () {
                     let fSel = objSlc.J004.find(({ cdValue }) => cdValue == ui.cellData);
                     return fSel ? fSel.cdName : ui.cellData;
                 },
+            },
+            {
+                title: "기준일자",
+                dataType: "string",
+                dataIndx: "stdrDt",
+                halign: "center",
+                align: "center",
+                // width    : '10%',
+                filter: { crules: [{ condition: 'range' }] },
+                render: function (ui) {
+                    let cellData = ui.cellData;
+                    return formatDate(cellData);
+                }
             },
             {
                 title: "배치명",
@@ -162,32 +175,32 @@ const TB10510Sjs = (function () {
                 // width    : '10%',
                 filter: { crules: [{ condition: 'range' }] },
             },
-			{
-				title: "실행 주기",
-				dataType: "string",
-				dataIndx: "jobRunTypeDcd",
-				halign: "center",
-				align: "center",
-				// width    : '10%',
-				filter: { crules: [{ condition: 'range' }] },
+            {
+                title: "실행 주기",
+                dataType: "string",
+                dataIndx: "jobRunTypeDcd",
+                halign: "center",
+                align: "center",
+                // width    : '10%',
+                filter: { crules: [{ condition: 'range' }] },
                 render: function (ui) {
                     let fSel = objSlc.J003.find(({ cdValue }) => cdValue == ui.cellData);
                     return fSel ? fSel.cdName : ui.cellData;
                 },
-			},
-			{
-				title: "실행 시간",
-				dataType: "string",
-				dataIndx: "jobRunStrtTime",
-				halign: "center",
-				align: "center",
-				// width    : '10%',
-				filter: { crules: [{ condition: 'range' }] },
+            },
+            {
+                title: "실행 시간",
+                dataType: "string",
+                dataIndx: "jobRunStrtTime",
+                halign: "center",
+                align: "center",
+                // width    : '10%',
+                filter: { crules: [{ condition: 'range' }] },
                 render: function (ui) {
                     return ui.cellData.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3")
                 },
-			},
-						
+            },
+
         ];
 
         let col_batPreJob = [
@@ -271,7 +284,7 @@ const TB10510Sjs = (function () {
                 , id: 'TB10510S_grd_batPreJob'
                 , colModel: col_batPreJob
                 , selectionModel: { type: 'row' }
-                , rowSelect: function(evt, ui) {
+                , rowSelect: function (evt, ui) {
                     const row = $('#TB10510S_grd_batPreJob').pqGrid('instance').SelectRow().getSelection()
                     if (row.length > 0) {
                         TB10510S_grd_batPreJob_rowIndx = row[0].rowIndx
@@ -290,7 +303,7 @@ const TB10510Sjs = (function () {
 
     }
 
-    function setRowIndx () {
+    function setRowIndx() {
         return TB10510S_grd_batPreJob_rowIndx;
     }
 
@@ -316,6 +329,9 @@ const TB10510Sjs = (function () {
                 reset()
             },
             success: function (data) {
+
+                showToast('success', data.batSch.length);
+
                 batSch.setData(data.batSch)
 
                 if (data && data.batSch.length > 0) {
@@ -339,9 +355,10 @@ const TB10510Sjs = (function () {
                                 $('#TB10510S_rgst_arg').val(rd.argument)
                                 $('#TB10510S_rgst_cfm').val(rd.confirmYn)
                                 $('#TB10510S_rgst_dscrp').val(rd.description)
-								
-								$('#TB10510S_jobRunTypeDcd').val(rd.jobRunTypeDcd)
-								$('#TB10510S_jobRunStrtTime').val(rd.jobRunStrtTime.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3"))
+                                $('#TB10510S_stdrDt').val(rd.stdrDt.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"))
+
+                                $('#TB10510S_jobRunTypeDcd').val(rd.jobRunTypeDcd)
+                                $('#TB10510S_jobRunStrtTime').val(rd.jobRunStrtTime.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3"))
 
                                 $('#TB10510S_addPreJob').prop('disabled', false)
                                 $('#TB10510S_delPreJob').prop('disabled', false);
@@ -404,15 +421,26 @@ const TB10510Sjs = (function () {
                 if (grdJobId === jobId) {
                     Swal.fire({
                         icon: 'warning'
+                        , title: 'Warning'
                         , text: "중복된 JOB ID가 존재합니다."
                         , confirmButtonText: "확인"
                     })
                     return
                 }
+                else if (Number($('#TB10510S_stdrDt').val().replaceAll('-', '')) <= Number($('#bzDdDisplay span:first').html().replaceAll('-', ''))) {
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: 'Warning'
+                        , text: "기준일자는 과거로 입력 할 수 없습니다."
+                        , confirmButtonText: "확인"
+                    })
+                    return;
+                }
             }
 
             obj = {
                 jobId,
+                stdrDt: $('#TB10510S_stdrDt').val().replaceAll("-", ""),
                 jobName: $('#TB10510S_rgst_jobName').val(),
                 jobType: $('#TB10510S_rgst_jobType').val(),
                 objectName: $('#TB10510S_rgst_jobId').val(),
@@ -424,8 +452,23 @@ const TB10510Sjs = (function () {
                 preJobList: $('#TB10510S_grd_batPreJob').pqGrid('instance').pdata,
             }
         } else {
+
+            if (rd.stdrDt === $('#TB10510S_stdrDt').val().replaceAll("-", "")) {
+                // 그냥 지나가주세요!
+            }
+            else if (Number($('#TB10510S_stdrDt').val().replaceAll('-', '')) < Number($('#bzDdDisplay span:first').html().replaceAll('-', ''))) {
+                Swal.fire({
+                    icon: 'warning'
+                    , title: 'Warning'
+                    , text: "기준일자는 과거로 입력 할 수 없습니다."
+                    , confirmButtonText: "확인"
+                })
+                return;
+            }
+
             obj = {
                 jobId: $('#TB10510S_rgst_jobId').val(),
+                stdrDt: $('#TB10510S_stdrDt').val().replaceAll("-", ""),
                 jobName: $('#TB10510S_rgst_jobName').val(),
                 jobType: $('#TB10510S_rgst_jobType').val(),
                 objectName: $('#TB10510S_rgst_jobId').val(),
@@ -439,9 +482,6 @@ const TB10510Sjs = (function () {
             }
         }
 
-        console.log(obj.jobRunStrtTime);
-        
-        // console.log('입력 ::: {}', obj)
         if (jobId) {
             $.ajax({
                 type: "POST",
@@ -467,6 +507,7 @@ const TB10510Sjs = (function () {
                     } else {
                         Swal.fire({
                             icon: 'error'
+                            , title: 'Error!'
                             , text: "입력에 실패하였습니다."
                             , confirmButtonText: "확인"
                         });
@@ -477,6 +518,7 @@ const TB10510Sjs = (function () {
         } else {
             Swal.fire({
                 icon: 'warning'
+                , title: 'Warning!'
                 , text: "JOB ID를 입력해주세요."
                 , confirmButtonText: "확인"
             });
@@ -486,7 +528,7 @@ const TB10510Sjs = (function () {
 
     // 실행
     function excBatch() {
-		
+
         let curDate = unformatDate($('#TB10510S_curDate').val())
 
         console.log(curDate);
@@ -506,7 +548,7 @@ const TB10510Sjs = (function () {
 
         let obj = {
             excBat: grdData,
-			curDate : curDate,
+            curDate: curDate,
         }
         console.log('obj 실행 전 ::::', obj);
 
@@ -638,47 +680,47 @@ const TB10510Sjs = (function () {
             return;
         }
     }
-	
-	function isBatchScheduler() {
-		$.ajax({
-			type: "POST",
-			url: "/TB10510S/isBatchScheduler",
-			contentType: "application/json; charset=UTF-8",
-			success: function(data) {
-				chgBtn_TB10510S_isRunning(data);
-			},
-		});
-	}
-	
-	function startBatchScheduler() {
-		$.ajax({
-			type: "POST",
-			url: "/TB10510S/startBatchScheduler",
-			contentType: "application/json; charset=UTF-8",
-			success: function(data) {
-				chgBtn_TB10510S_isRunning(data);
-			},
-		});
-	}
 
-	function stopBatchScheduler() {
-		$.ajax({
-			type: "POST",
-			url: "/TB10510S/stopBatchScheduler",
-			contentType: "application/json; charset=UTF-8",
-			success: function(data) {
-				chgBtn_TB10510S_isRunning(data);
-			},
-		});
-	}
-	
-	function chgBtn_TB10510S_isRunning(data) {
-		if (data) {
-			$('#TB10510S_isRunning').val("Running");
-		} else {
-			$('#TB10510S_isRunning').val("Stop");
-		}
-	}
+    function isBatchScheduler() {
+        $.ajax({
+            type: "POST",
+            url: "/TB10510S/isBatchScheduler",
+            contentType: "application/json; charset=UTF-8",
+            success: function (data) {
+                chgBtn_TB10510S_isRunning(data);
+            },
+        });
+    }
+
+    function startBatchScheduler() {
+        $.ajax({
+            type: "POST",
+            url: "/TB10510S/startBatchScheduler",
+            contentType: "application/json; charset=UTF-8",
+            success: function (data) {
+                chgBtn_TB10510S_isRunning(data);
+            },
+        });
+    }
+
+    function stopBatchScheduler() {
+        $.ajax({
+            type: "POST",
+            url: "/TB10510S/stopBatchScheduler",
+            contentType: "application/json; charset=UTF-8",
+            success: function (data) {
+                chgBtn_TB10510S_isRunning(data);
+            },
+        });
+    }
+
+    function chgBtn_TB10510S_isRunning(data) {
+        if (data) {
+            $('#TB10510S_isRunning').val("Running");
+        } else {
+            $('#TB10510S_isRunning').val("Stop");
+        }
+    }
 
     ///////////////////////////////// TEST 중
     // $('#pq-head-cell-u0-0-0-right input[type="checkbox"]').on('click', function() {
@@ -707,15 +749,15 @@ const TB10510Sjs = (function () {
         $('#TB10510S_rgst_arg').val('')
         $('#TB10510S_rgst_cfm').val('')
         $('#TB10510S_rgst_dscrp').val('')
-		
-		$('#TB10510S_jobRunTypeDcd').val('')
-		$('#TB10510S_jobRunStrtTime').val('')
+
+        $('#TB10510S_jobRunTypeDcd').val('')
+        $('#TB10510S_jobRunStrtTime').val('')
 
         $('#TB10510S_addPreJob').prop('disabled', true)
         $('#TB10510S_delPreJob').prop('disabled', true)
 
         $('#TB10510S_delJob').prop('disabled', true)
-		
+
         $('#TB10510S_grd_batPreJob').pqGrid('instance').setData([])
         rd = {}
     }
@@ -740,13 +782,13 @@ const TB10510Sjs = (function () {
     }
 
     return {
-        inqBatch : inqBatch
-        , delBatch : delBatch
-        , rgstBatch : rgstBatch
-        , excBatch : excBatch
-		, isBatchScheduler : isBatchScheduler
-		, startBatchScheduler : startBatchScheduler
-		, stopBatchScheduler : stopBatchScheduler
+        inqBatch: inqBatch
+        , delBatch: delBatch
+        , rgstBatch: rgstBatch
+        , excBatch: excBatch
+        , isBatchScheduler: isBatchScheduler
+        , startBatchScheduler: startBatchScheduler
+        , stopBatchScheduler: stopBatchScheduler
         , setRowIndx: setRowIndx
         , reset: reset
     }

@@ -483,3 +483,28 @@ hr{ margin-top: 0.5rem;
 .arrow_area div{position: absolute; bottom: 0; width: 100%;}
 .arrow_area i{ font-size: 18px; opacity: 0.8;}
 .arrow_area div p{ font-weight: bold;}
+
+/* 토스트 2025-02-28 김건우 */
+.con-toast {
+	/* opacity: 0; */
+	/* visibility: hidden; */
+	position: fixed;
+	/* color: white; */
+	background-color: white;
+	bottom: -50px;
+	right: 30px;
+	padding: 10px 15px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px grey;
+	z-index: 5000;
+	transition: all ease 0.5s;
+}
+
+.con-toast .toast-text-aria {
+	font-size: large;
+	font-weight: 500;
+}
+
+.con-toast .toast-text-aria .toast-success {
+	color: greenyellow;
+}
