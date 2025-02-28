@@ -50,10 +50,10 @@
              A.FRS_PRNA_OVDU_OCRNC_DT <![CDATA[<=]]> #{endDt}
              OR A.FRS_INTR_OVDU_OCRNC_DT <![CDATA[<=]]> #{endDt}
          )     
-        <if test="ovduRlseYnCd == 1">
+        <if test="ovduRlseYnCd == 2">
            AND A.OVDU_STTS_CD <![CDATA[>=]]> 1
         </if>
-        <if test="ovduRlseYnCd == 2">
+        <if test="ovduRlseYnCd == 1">
            AND A.OVDU_STTS_CD = 0
         </if>
         <if test="dprtCd != '' and dprtCd != null">
