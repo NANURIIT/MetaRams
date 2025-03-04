@@ -17,6 +17,7 @@
          , T1.JOB_TYPE                                                  /* JOB TYPE */
          , T1.JOB_RUN_TYPE_DCD                                          /* 작업실행방법구분코드 */
          , T1.JOB_RUN_STRT_TIME                                         /* JOB 시작조건시각 */
+         , T1.STDR_DT                                                   /* 기준일자 */
       FROM IBIMS995B T1
      WHERE 1=1
 		   AND JOB_ID LIKE '%' || #{jobId} || '%'
