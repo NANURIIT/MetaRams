@@ -133,7 +133,12 @@ public class TB07010ServiceImpl implements TB07010Service {
 
 		prm.setPrdtCd(paramData.getPrdtCd());
 
-		rtnObj.setExcFee(ibims348BMapper.selectFeeScxInfoList(prm));
+		// ?
+		List<IBIMS348BVO> list348vo = ibims348BMapper.selectFeeScxInfoList(prm);
+
+		if ( list348vo.size() > 0 ) {
+			rtnObj.setExcFee(list348vo);
+		}
 
 		return rtnObj;
 	}

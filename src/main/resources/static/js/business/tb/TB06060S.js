@@ -216,8 +216,14 @@ const TB06060Sjs = (function(){
 
     function getWorkflowList(){
 
-        if($('#TB06060S_ibDealNo').val()=="" && $('#TB06060S_prdtCd').val()==""){
-            console.log("필수입력항목!!!");
+        if(!$('#TB06060S_ibDealNo').val()){
+            
+            Swal.fire({
+                icon: 'warning'
+                , title: 'Warning!'
+                , text: '딜번호를 입력해주세요!'
+            })
+
             return 0;
         }
 

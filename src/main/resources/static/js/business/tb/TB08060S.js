@@ -1336,7 +1336,6 @@ const TB08060Sjs = function () {
 			// console.log("thmmAcmlErnAmt:::" + rowData.thmmAcmlErnAmt);
 			// console.log("bfmmAcmlErnAmt:::" + rowData.bfmmAcmlErnAmt);
 			//console.log("thmmAcmlErnAmt:::" + rowData.thmmAcmlErnAmt);
-
 			var bfmmAcmlErnAmt = String(handleNullData(rowData.bfmmAcmlErnAmt));
 			var thmmAcmlErnAmt = String(handleNullData(rowData.thmmAcmlErnAmt));
 
@@ -1345,7 +1344,7 @@ const TB08060Sjs = function () {
 			var formattedBfmmAcmlErnAmt = bfmmAcmlErnAmt.includes(',') ? bfmmAcmlErnAmt.replaceAll(',', '') : bfmmAcmlErnAmt;
 
 			var param = {
-				"stdrYm": stdrDt.substring,			//기준년월
+				"stdrYm": stdrDt,							//기준년월
 				"prdtCd": rowData.prdtCd,					//종목코드
 				"rgstSn": rowData.rgstSn,					//등록일련번호 
 				"eprzCrdlStlaDcd": eprzCrdlStlaDcd,					//기업여신결산구분코드
@@ -1378,6 +1377,14 @@ const TB08060Sjs = function () {
 			},
 			error: function (request, status, error) {
 				console.log(request + "\n", status, "\n", error, "\n");
+
+				var option = {}
+				option.title = "Error";
+				option.type = "error";
+				option.text = "월말결산 정보를 저장하는데 실패했습니다.";
+				openPopup(option);
+				return false;
+
 			}
 		});
 	}

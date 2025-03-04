@@ -11,6 +11,7 @@ import lombok.Setter;
  배치JOB MASTER Table.IBIMS995B DTO
 */
 public class IBIMS995BDTO {
+    
     private String         jobId;                                  // JOB ID
     private String         stdrDt;                                 // 기준일자
     private String         jobName;                                // JOB NAME

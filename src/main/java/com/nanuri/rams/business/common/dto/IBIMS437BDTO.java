@@ -6,7 +6,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.apache.poi.hpsf.GUID;
 
 @Getter
 @Setter
@@ -16,9 +15,10 @@ import org.apache.poi.hpsf.GUID;
 public class IBIMS437BDTO {
 
     private String afctMngmNo;          //  사후관리번호
-    private BigDecimal excSeq;          //  실행순번
+    private long excSn;                   //  실행순번
+    private String prdtCd;               // 종목코드
     private String dealNo;              //  딜번호
-    private BigDecimal ovduSeq;         //  연체순번
+    private long ovduSeq;         //  연체순번
     private String ovduOcrncDt;         //  연체발생일자
     private BigDecimal crdlBlceAmt;     //  여신잔액금액
     private BigDecimal rdmpPrna;        //  상환원금
@@ -32,4 +32,7 @@ public class IBIMS437BDTO {
     private String hndTrId;             //  조작거래ID
     private String guid;                //  GUID
 
+    private String          startDt;
+    private String          endDt;
+    
 }

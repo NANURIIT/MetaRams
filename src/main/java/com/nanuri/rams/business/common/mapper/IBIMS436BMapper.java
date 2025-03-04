@@ -43,8 +43,7 @@ public interface IBIMS436BMapper {
      * @param ovduList 연체 내역 리스트
      * @return 삽입된 행 수
      */
-    int batchInsert(List<IBIMS436BVO> items);
-
+    int batchInsert(IBIMS810BVO param);
 
    
 }

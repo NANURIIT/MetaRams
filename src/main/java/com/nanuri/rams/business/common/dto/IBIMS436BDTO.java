@@ -38,4 +38,6 @@ public class IBIMS436BDTO {
     private String hndTrId;                    //  조작거래ID
     private String guid;                       //  GUID
 
+    private String ovduOcrncDt;
+
 }

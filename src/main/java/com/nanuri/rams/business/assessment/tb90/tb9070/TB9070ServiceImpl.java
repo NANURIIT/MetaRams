@@ -2,6 +2,7 @@ package com.nanuri.rams.business.assessment.tb90.tb9070;
 
 import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS436BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS436BVO;
 import com.nanuri.rams.business.common.vo.IBIMS810BVO;
 
@@ -22,32 +23,32 @@ import java.util.List;
 public class TB9070ServiceImpl implements TB9070Service {
 
     private final IBIMS436BMapper ibims436BMapper;
+    private final IBIMS997BMapper ibims997bMapper;
 
     @Override
     public String insert(IBIMS997BDTO param) {
-        String returnVal = "5";
 
+        // 배치시작일자
+        param.setHndEmpno("BATCH");
+        ibims997bMapper.updateIBIMS997B(param);
+        
+        String returnVal = "5";
+        
+        //일별연체내역생성 서비스 시작
+        
         try {
+            // 일별잔액테이블에서 연체내역 조회
             IBIMS810BVO ibims810bvo = new IBIMS810BVO();
             List<IBIMS810BVO> resultList = ibims436BMapper.getOvduList(ibims810bvo);
-            List<IBIMS436BVO> mergeList = new ArrayList<>();
 
-            if (resultList != null) {
+            if (resultList != null && !resultList.isEmpty()) {  
                 for (IBIMS810BVO result : resultList) {
-                    IBIMS436BVO converted = new IBIMS436BVO();
-                    converted.setDealNo(result.getDealNo());
-                    converted.setPrdtCd(result.getPrdtCd());
-                    converted.setExcSn(result.getExcSn());
-                    mergeList.add(converted);
+                    int affectedRows = ibims436BMapper.batchInsert(result);  /** 적용된 행 개수 반환 */
+                    System.out.println("적용된 행 수: " + affectedRows);
                 }
-            }
+            } 
 
-            log.info("[DEBUG] MERGE 대상 건수: {}", mergeList.size());
-
-            if (!mergeList.isEmpty()) {
-                ibims436BMapper.batchInsert(mergeList); // MERGE 실행
-            }
-
+      
             // complete
             returnVal = "4";
 
@@ -62,6 +63,10 @@ public class TB9070ServiceImpl implements TB9070Service {
                 returnVal = "5";
             }
         }
+        
+        //배치종료시간
+        ibims997bMapper.batchUpdate(param);
+        ibims997bMapper.subPreJobCount(param);
 
         return returnVal;
     }

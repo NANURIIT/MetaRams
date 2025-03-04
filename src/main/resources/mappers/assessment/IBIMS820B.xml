@@ -178,22 +178,24 @@
     </select>
 
     <update id="updateSettlement" parameterType="java.util.List">
-        <foreach collection="list" item="item" separator=";">
+        BEGIN
+        <foreach collection="list" item="item">
             UPDATE IBIMS820B
                SET THMM_ACML_ERN_AMT  = #{item.thmmAcmlErnAmt}             /* 당월누적수익금액 */ 
-                   <if test='item.eprzCrdlStlaDcd == "4"'>
-                 , BFMM_ACML_ERN_AMT = #{item.bfmmAcmlErnAmt}         /* 전월누적수익금액 */
-                   </if>
+                  , HND_DETL_DTM        = SYSDATE                            /* 조작상세일시 */
+                  , HND_EMPNO           = #{item.hndEmpno}                   /* 조작사원번호 */ 
+                  , HND_TMNL_NO         = ''                                 /* 조작단말기번호 */
+                  , HND_TR_ID           = ''                                 /* 조작거래ID */
+                  , GUID                = ''                                 /* GUID */
+                  <if test='item.eprzCrdlStlaDcd == "4"'>
+                  , BFMM_ACML_ERN_AMT = #{item.bfmmAcmlErnAmt}              /* 전월누적수익금액 */
+                  </if>
             WHERE STDR_YM 			      = #{item.stdrYm}                     /* 기준년월 */ 
               AND PRDT_CD 		        = #{item.prdtCd}                     /* 상품코드 */ 
               AND RGST_SN 		        = #{item.rgstSn}                     /* 등록일련번호 */ 
-              AND EPRZ_CRDL_STLA_DCD 	= #{item.eprzCrdlStlaDcd}            /* 기업여신결산구분코드 */ 
-              AND HND_DETL_DTM        = SYSDATE                            /* 조작상세일시 */
-              AND HND_EMPNO = ''                                           /* 조작사원번호 */ 
-              AND HND_TMNL_NO = ''                                         /* 조작단말기번호 */
-              AND HND_TR_ID = ''                                           /* 조작거래ID */
-              AND GUID = ''                                                /* GUID */
+              AND EPRZ_CRDL_STLA_DCD 	= #{item.eprzCrdlStlaDcd};           /* 기업여신결산구분코드 */ 
         </foreach>
+        END;
     </update>
 
     <!-- 배치 -->
