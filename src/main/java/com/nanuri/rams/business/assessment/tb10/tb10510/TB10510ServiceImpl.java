@@ -1,5 +1,6 @@
 package com.nanuri.rams.business.assessment.tb10.tb10510;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -196,7 +197,12 @@ public class TB10510ServiceImpl implements TB10510Service {
 		
 		String date = input.getCurDate();
 		
-		scheduleTask.batchExecuteService(date);
+		try {
+			scheduleTask.batchExecuteService(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	

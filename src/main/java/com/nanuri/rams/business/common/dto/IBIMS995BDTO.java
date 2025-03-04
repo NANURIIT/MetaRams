@@ -12,6 +12,7 @@ import lombok.Setter;
 */
 public class IBIMS995BDTO {
     private String         jobId;                                  // JOB ID
+    private String         stdrDt;                                 // 기준일자
     private String         jobName;                                // JOB NAME
     private String         jobType;                                // JOB TYPE SOURCE TYPE 을 나타냄(1 : DUMMY, 2 : COMMAND)
     private String         objectName;                             // SOURCE FULL NAME

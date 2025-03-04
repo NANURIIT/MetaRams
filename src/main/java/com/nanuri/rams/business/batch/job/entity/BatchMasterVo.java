@@ -19,6 +19,9 @@ public class BatchMasterVo {
 	@Id
 	@Column(name = "JOB_ID", length = 20, nullable = false, columnDefinition = "varchar(20) NOT NULL COMMENT 'JOB_ID'")
 	private String jobId;
+	
+	@Column(name = "STDR_DT", length = 8, nullable = false, columnDefinition = "varchar(8) NOT NULL COMMENT 'STDR_DT'")
+	private String stdrDt;
 
 	@Column(name = "JOB_NAME", length = 40, nullable = false, columnDefinition = "timestamp(40) COMMENT 'JOB_NAME'")
 	private String jobName;
