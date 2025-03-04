@@ -121,6 +121,11 @@
            , IBIMS997B B
           </if>
        WHERE 1=1
+          AND A.STDR_DT <![CDATA[ <= ]]> (
+                                           SELECT MAX(BZ_DD)
+                                             FROM IBIMS999B
+                                            WHERE 1=1
+                                         )
           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(curDate)">
           AND A.JOB_ID = B.JOB_ID(+)
           AND B.CUR_DATE = #{curDate}

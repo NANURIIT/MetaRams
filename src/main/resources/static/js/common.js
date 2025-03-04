@@ -2395,10 +2395,6 @@ function showToast ( status, dataLength, code ) {
 
   // 성공적인 조회시
   if ( status === 'success' ) {
-    // $('#toastPlacement').css({
-    //   'background-color': 'rgb(0, 255, 0)'
-    // })
-
     // 코드가 존재하면 코드에 맞는 텍스트 출력
     if ( code ) {
   
@@ -2410,19 +2406,14 @@ function showToast ( status, dataLength, code ) {
   }
   // 
   else if ( status === 'warning' ) {
-    // $('#toastPlacement').css({
-    //   'background-color': 'rgb(225, 225, 25)'
-    // })
 
   }
   // 에러시
   else if ( status === 'error' ){
-    // $('#toastPlacement').css({
-    //   'background-color': 'red'
-    // })
 
   }
 
+  // 토스트 ON
   $('#toastPlacement').css({
     'bottom': '30px'
     , 'opacity': '1'
