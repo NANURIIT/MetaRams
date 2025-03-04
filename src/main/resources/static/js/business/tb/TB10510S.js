@@ -199,8 +199,7 @@ const TB10510Sjs = (function () {
                 render: function (ui) {
                     return ui.cellData.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3")
                 },
-            },
-
+			},
         ];
 
         let col_batPreJob = [
@@ -364,6 +363,8 @@ const TB10510Sjs = (function () {
                                 $('#TB10510S_delPreJob').prop('disabled', false);
 
                                 $('#TB10510S_delJob').prop('disabled', false);
+								
+								$('#TB10510S_stdrDt').val(formatDate(rd.stdrDt));
 
                                 rd.rowType = 'M'
 
@@ -450,6 +451,7 @@ const TB10510Sjs = (function () {
                 jobRunTypeDcd: $('#TB10510S_jobRunTypeDcd').val(),
                 jobRunStrtTime: $('#TB10510S_jobRunStrtTime').val().replaceAll(":", ""),
                 preJobList: $('#TB10510S_grd_batPreJob').pqGrid('instance').pdata,
+				stdrDt: $('#TB10510S_stdrDt').val(),
             }
         } else {
 
@@ -479,6 +481,7 @@ const TB10510Sjs = (function () {
                 jobRunStrtTime: $('#TB10510S_jobRunStrtTime').val().replaceAll(":", ""),
                 rowType: rd.rowType,
                 preJobList: $('#TB10510S_grd_batPreJob').pqGrid('instance').pdata,
+				stdrDt: $('#TB10510S_stdrDt').val(),
             }
         }
 
@@ -759,6 +762,9 @@ const TB10510Sjs = (function () {
         $('#TB10510S_delJob').prop('disabled', true)
 
         $('#TB10510S_grd_batPreJob').pqGrid('instance').setData([])
+		
+		$('#TB10510S_stdrDt').val('')
+		
         rd = {}
     }
 

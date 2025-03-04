@@ -1,7 +1,9 @@
 package com.nanuri.rams.business.batch;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -67,7 +69,7 @@ public class ScheduleTask {
 	Job DAILY_WORK_END_BATCH;
     */
     
-	public void batchExecuteService(String date) {
+	public void batchExecuteService(String date) throws ParseException {
     	
 		log.info( "################################################################################" );
 		log.info( "BATCH_EXECUTE_SERVICE ==> START");
@@ -92,8 +94,11 @@ public class ScheduleTask {
 				    // 2. 배치 스케줄러 데이터 삭제
 				    ibims997bMapper.deleteBatchSchedule(data);
 				    
+				    Date dt1 = sdf.parse(strToday);
+				    Date dt2 = sdf.parse(data.getStdrDt());
+				    
 				    // 3. 배치메인의 ConfirmJob 확인
-				    if("Y".equals(data.getConfirmYn())) {
+				    if("Y".equals(data.getConfirmYn()) && dt1.compareTo(dt2) >= 0) {
 				    	// 4. 배치 스케줄러 추가
 				    	scheduleBatch(data);
 				    }
@@ -107,7 +112,10 @@ public class ScheduleTask {
 				// 배치 스케줄러 데이터 삭제
 				ibims997bMapper.deleteBatchSchedule(data);
 				
-				if("Y".equals(data.getConfirmYn())) {
+				Date dt1 = sdf.parse(strToday);
+			    Date dt2 = sdf.parse(data.getStdrDt());
+				
+			    if("Y".equals(data.getConfirmYn()) && dt1.compareTo(dt2) >= 0 ) {
 					// merge notrunning 데이터 추가
 					data.setJobStatus("1");	//1:Not Running
 		            ibims997bMapper.mergeBatchNotRunning(data);
@@ -141,7 +149,15 @@ public class ScheduleTask {
         scheduledTasks.clear();
 		
         for (BatchMasterVo data : batchList) {
-            if (!scheduledTasks.containsKey(data.getJobId())) {
+        	
+        	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    		Calendar c1 = Calendar.getInstance();
+    		String strToday = sdf.format(c1.getTime());
+        	
+        	Date dt1 = sdf.parse(strToday);
+		    Date dt2 = sdf.parse(data.getStdrDt());
+        	
+            if (!scheduledTasks.containsKey(data.getJobId()) && "Y".equals(data.getConfirmYn()) && dt1.compareTo(dt2) >= 0 ) {
                 scheduleBatch(data); // 새로운 배치만 추가
                 
                 // 배치 스케줄러 최초실행시 명령 유형 등록
