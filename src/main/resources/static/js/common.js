@@ -2389,7 +2389,7 @@ function idClear(id) {
  * 
  * @param { String } status 
  * @param { Number } dataLength 
- * @param { String } code 특정화면
+ * @param { String } code 특정화면 or 구분코드
  */
 function showToast ( status, dataLength, code ) {
 
