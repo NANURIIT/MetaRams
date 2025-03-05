@@ -138,7 +138,7 @@ const TB04060Sjs = (function() {
 					var value = parseFloat(ui.cellData);
 
 					if(value === NaN || value === null || value == ''){
-						return '';
+						return 0;
 					}else{
 						var formattedValue = value.toLocaleString('ko-KR', {
 							minimumFractionDigits: 0,
@@ -166,7 +166,7 @@ const TB04060Sjs = (function() {
 					var value = parseFloat(ui.cellData);
 
 					if(value === NaN || value === null || value == ''){
-						return '';
+						return 0;
 					}else{
 						var formattedValue = value.toLocaleString('ko-KR', {
 							minimumFractionDigits: 0,
@@ -194,7 +194,7 @@ const TB04060Sjs = (function() {
 					var value = parseFloat(ui.cellData);
 
 					if(value === NaN || value === null || value == ''){
-						return '';
+						return 0;
 					}else{
 						var formattedValue = value.toLocaleString('ko-KR', {
 							minimumFractionDigits: 0,
@@ -224,7 +224,7 @@ const TB04060Sjs = (function() {
 					var value = parseFloat(ui.cellData);
 
 					if(value === NaN || value === null || value == ''){
-						return '';
+						return 0;
 					}else{
 						var formattedValue = value.toLocaleString('ko-KR', {
 							minimumFractionDigits: 0,
@@ -253,7 +253,7 @@ const TB04060Sjs = (function() {
 					var value = parseFloat(ui.cellData);
 
 					if(value === NaN || value === null || value == ''){
-						return '';
+						return 0;
 					}else{
 						var formattedValue = value.toLocaleString('ko-KR', {
 							minimumFractionDigits: 0,

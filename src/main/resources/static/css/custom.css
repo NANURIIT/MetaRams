@@ -419,8 +419,10 @@ hr{ margin-top: 0.5rem;
     /* white-space: nowrap; opacity: 0.7;  */
 }
 
-.top-tabs-container .top-nav-tabs > li > button{font-weight: bold; opacity: 0.7;}
-
+.top-tabs-container .top-nav-tabs > li > button {
+	font-weight: bold; 
+	opacity: 0.7;
+}
 .top-tabs-container .top-nav-tabs > li.main-tab > button,
 .top-tabs-container .top-nav-tabs > li > button.active,
 /* .top-tabs-container .top-nav-tabs > li > button:hover, */
@@ -486,7 +488,7 @@ hr{ margin-top: 0.5rem;
 
 /* 토스트 2025-02-28 김건우 */
 .con-toast {
-	/* opacity: 0; */
+	opacity: 0;
 	/* visibility: hidden; */
 	position: fixed;
 	/* color: white; */

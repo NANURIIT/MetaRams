@@ -199,8 +199,7 @@ const TB10510Sjs = (function () {
                 render: function (ui) {
                     return ui.cellData.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3")
                 },
-            },
-
+			},
         ];
 
         let col_batPreJob = [
@@ -759,6 +758,9 @@ const TB10510Sjs = (function () {
         $('#TB10510S_delJob').prop('disabled', true)
 
         $('#TB10510S_grd_batPreJob').pqGrid('instance').setData([])
+		
+		$('#TB10510S_stdrDt').val('')
+		
         rd = {}
     }
 
