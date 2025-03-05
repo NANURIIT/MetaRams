@@ -490,6 +490,17 @@ const TB09060Sjs = (function () {
       success: function (data) {
         grid1Ins.setData(data);
         getList2(paramData);
+        if (
+          grid1Ins.getData().length === 0 &&
+          grid2Ins.getData().length === 0
+        ) {
+          Swal.fire({
+            icon: "warning",
+            title: "warning!",
+            text: "조회된 정보가 없습니다.",
+            confirmButtonText: "확인",
+          });
+        }
       },
       error: function (e) {
         Swal.fire({
