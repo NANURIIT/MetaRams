@@ -109,6 +109,16 @@ const TB09010Sjs = (function () {
           width: "",
           align: "center",
           filter: { crules: [{ condition: "range" }] },
+          render: function (ui) {
+            var cellData = ui.cellData;
+            if (cellData && cellData.length === 8) {
+              var year = cellData.substring(0, 4);
+              var month = cellData.substring(4, 6);
+              var day = cellData.substring(6, 8);
+              return year + "-" + month + "-" + day;
+            }
+            return cellData;
+          },
         },
         {
           title: "심사부서장",
@@ -117,6 +127,16 @@ const TB09010Sjs = (function () {
           width: "",
           align: "center",
           filter: { crules: [{ condition: "range" }] },
+          render: function (ui) {
+            var cellData = ui.cellData;
+            if (cellData && cellData.length === 8) {
+              var year = cellData.substring(0, 4);
+              var month = cellData.substring(4, 6);
+              var day = cellData.substring(6, 8);
+              return year + "-" + month + "-" + day;
+            }
+            return cellData;
+          },
         },
       ],
     },
