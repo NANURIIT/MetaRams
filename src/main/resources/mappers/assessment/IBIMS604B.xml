@@ -7,15 +7,14 @@
          	 , A.ENTP_NM							AS ENTP_NM										/* 업체명 */
          	 , A.RPRST_P_HNGL_NM					AS RPRST_P_HNGL_NM								/* 대표자한글명 */
          	 , A.CRNO								AS CRNO											/* 법인등록번호 */
-         	 , LTRIM(
-						NULLIF(CASE WHEN A.GRD_DWN_CNT1 = 0 THEN '' ELSE 'G-CRS등급 하락' END, '') || ' ' ||
-						NULLIF(CASE WHEN A.GRD_DWN_CNT2 = 0 THEN '' ELSE '신평사등급 하락' END, '') || ' ' ||
-						NULLIF(CASE WHEN A.ARRS_INFO_CNT = 0 THEN '' ELSE '연체정보 등록' END, '') || ' ' ||
-						NULLIF(CASE WHEN A.FNCL_INFO_CNT1 = 0 THEN '' ELSE '완전자본잠식' END, '') || ' ' ||
-						NULLIF(CASE WHEN A.FNCL_INFO_CNT2 = 0 THEN '' ELSE '감사의견 한정' END, '') || ' ' ||
-						NULLIF(CASE WHEN A.CLS_QTT_CNT = 0 THEN '' ELSE '휴폐업' END, ''),
-						' '  
-					) 								AS CRDT_ACDNT_OCRNC_DTLS						/* 신용사건발생일상세 */
+         	 , (
+        	 	 	CASE WHEN A.GRD_DWN_CNT1		= 0 THEN '' ELSE 'G-CRS등급 하락 '  END	||		 /* 등급하락건수1 */
+        	 	 	CASE WHEN A.GRD_DWN_CNT2		= 0 THEN '' ELSE '신평사등급 하락 '	END	||		 /* 등급하락건수2 */
+        	 	 	CASE WHEN A.ARRS_INFO_CNT		= 0 THEN '' ELSE '연체정보 등록'	END	||		 /* 연체정보건수 */
+        	 	 	CASE WHEN A.FNCL_INFO_CNT1	= 0 THEN '' ELSE '완전자본잠식'			END	||		 /* 재무정보건수1 */
+        	 	 	CASE WHEN A.FNCL_INFO_CNT2	= 0 THEN '' ELSE '감사의견 한정'		END	||		 /* 재무정보건수2 */
+        	 	 	CASE WHEN A.CLS_QTT_CNT			= 0 THEN '' ELSE '휴폐업'			END			/* 휴폐업건수 */
+         	   )									AS CRDT_ACDNT_OCRNC_DTLS						/* 신용사건발생일상세 */
          	 , A.DEAL_NO							AS DEAL_NO										/* 딜번호 */
          	 , A.JDGM_DCD							AS JDGM_DCD										/* 심사구분코드 */
          	 , A.MTR_DCD							AS MTR_DCD										/* 부수안건구분코드 */
