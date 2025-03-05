@@ -73,8 +73,6 @@ public class TB9000ServiceImpl implements TB9000Service {
 
             List<IBIMS810BDTO> select = ibims810bMapper.selectIBIMS810B(ibims810bdto);
 
-            // 이자 계산 시물레이션
-            // 태안씨가 만든 이자계산시뮬레이션 돌려야함
             CalculationDTO calcDto = new CalculationDTO();
             CalculationSumDTO calcSumDto = new CalculationSumDTO();
             for (int i = 0; i < select.size(); i++) {

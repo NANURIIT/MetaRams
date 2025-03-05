@@ -280,6 +280,7 @@ const TB09010Sjs = (function () {
         dataType: "json",
         beforeSend: function () {
           //$("#TB09010S_DealList").pqGrid("setData", []);
+
           $("#TB09010S_DealList").pqGrid(
             "option",
             "strNoRows",
@@ -287,7 +288,9 @@ const TB09010Sjs = (function () {
           );
         },
         success: function (data) {
-          console.log(data);
+
+          console.log(JSON.stringify(data));
+          //console.log(data);
           if (data.length > 0) {
             $("#TB09010S_DealList").pqGrid(
               "option",
