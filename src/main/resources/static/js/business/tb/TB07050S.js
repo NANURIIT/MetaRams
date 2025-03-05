@@ -26,13 +26,6 @@ const TB07050Sjs = (function () {
     getSelectBoxList("TB07050S", "E020/R023/I015/I005/S003/I027/E021/E011/E010/A005");
     pqGrid("02"); // 그리드 생성
     grdInf();
-
-    $('input[name=TB07050S_scxDcd]').on('click', function(){
-      
-      console.log( $(this).val() );
-      
-      srchExcSn($('#TB07050S_prdtCd').val())
-    })
   }
 
   function pqGrid(f) {
@@ -1087,7 +1080,7 @@ const TB07050Sjs = (function () {
   // }
 
   // 스케줄선택 ::: 02. 원금상환스케줄 04. 이자상환스케줄 01. 실행스케줄
-  $('input[name="TB07050S_scxDcd"]').on("change", function () {
+  $('input[name="TB07050S_scxDcd"]').on("input", function () {
     const selVal = $(this).val(); // 일정구분코드
     scxDcd = $(this).val(); // 일정구분코드 selectVal binding
     // console.log(selVal);
@@ -1115,7 +1108,7 @@ const TB07050Sjs = (function () {
         if (!isEmpty(prdtCd)) {
           // resetMore();
 
-          //srchExcSn(prdtCd);
+          srchExcSn(prdtCd);
           srch();
         } else {
           $("#TB07050S_excSn").html("");
@@ -1141,7 +1134,7 @@ const TB07050Sjs = (function () {
         if (!isEmpty(prdtCd)) {
           // resetMore();
 
-          //srchExcSn(prdtCd);
+          srchExcSn(prdtCd);
           srch();
         } else {
           $("#TB07050S_excSn").html("");
@@ -1166,7 +1159,7 @@ const TB07050Sjs = (function () {
         if (!isEmpty(prdtCd)) {
           // resetMore();
 
-          //srchExcSn(prdtCd);
+          srchExcSn(prdtCd);
           srch();
         } else {
           $("#TB07050S_excSn").html("");
