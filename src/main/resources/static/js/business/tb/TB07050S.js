@@ -26,6 +26,13 @@ const TB07050Sjs = (function () {
     getSelectBoxList("TB07050S", "E020/R023/I015/I005/S003/I027/E021/E011/E010/A005");
     pqGrid("02"); // 그리드 생성
     grdInf();
+
+    $('input[name=TB07050S_scxDcd]').on('click', function(){
+      
+      console.log( $(this).val() );
+      
+      srchExcSn($('#TB07050S_prdtCd').val())
+    })
   }
 
   function pqGrid(f) {
