@@ -37,18 +37,16 @@ public class TB9070ServiceImpl implements TB9070Service {
         //일별연체내역생성 서비스 시작
         
         try {
-            // 일별잔액테이블에서 연체내역 조회
             IBIMS810BVO ibims810bvo = new IBIMS810BVO();
             List<IBIMS810BVO> resultList = ibims436BMapper.getOvduList(ibims810bvo);
-
+        
             if (resultList != null && !resultList.isEmpty()) {  
                 for (IBIMS810BVO result : resultList) {
-                    int affectedRows = ibims436BMapper.batchInsert(result);  /** 적용된 행 개수 반환 */
+                    // MERGE 문 실행
+                    int affectedRows = ibims436BMapper.batchInsert(result);  
                     System.out.println("적용된 행 수: " + affectedRows);
                 }
-            } 
-
-      
+            }
             // complete
             returnVal = "4";
 

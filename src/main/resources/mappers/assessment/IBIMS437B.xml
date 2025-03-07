@@ -20,16 +20,9 @@
 		 AND A.DEAL_NO = B.DEAL_NO
 		 AND A.PRDT_CD = B.PRDT_CD
 		 AND A.EXC_SN = B.EXC_SN
-	 WHERE 1=1
-      <if test="prdtCd != '' and prdtCd != null">
-         AND A.PRDT_CD = #{prdtCd}
-      </if>
-      <if test="excSn != -1 and excSn != null">
-      AND A.EXC_SN = #{excSn}
-      </if>  
-      AND A.OVDU_OCRNC_DT <![CDATA[>=]]> #{startDt}
-      AND A.OVDU_OCRNC_DT <![CDATA[<=]]> #{endDt}
-			AND B.DCSN_YN = 'Y'            
+	 WHERE 1=1     
+			AND B.DCSN_YN = 'Y' 
+      AND B.OVDU_RLSE_DT IS NULL         
 	</select>
 
 <insert id="insertOvduDailyDtls" parameterType="com.nanuri.rams.business.common.dto.IBIMS437BDTO">
