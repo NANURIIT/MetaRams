@@ -201,7 +201,25 @@
                    , (SELECT NVL(MAX(AFCT_MNGM_NO), ' ') FROM IBIMS436B) AS AFCT_MNGM_NO
                    , LPAD(ROWNUM, 3, '0') AS TNUM
                 FROM IBIMS810B C /* 딜일별잔액 */
-               WHERE C.STDR_DT = TO_CHAR(SYSDATE,'YYYYMMDD')                                
+               WHERE C.STDR_DT = TO_CHAR(
+                      SELECT BZ_DD         AS BZ_DD
+           , DD1AG_BZ_DD   AS DD1AG_BZ_DD
+           , DD2AG_BZ_DD   AS DD2AG_BZ_DD
+           , DD3AG_BZ_DD   AS DD3AG_BZ_DD
+           , DD1AF_BZ_DD   AS DD1AF_BZ_DD
+           , DD2AF_BZ_DD   AS DD2AF_BZ_DD
+           , DD3AF_BZ_DD   AS DD3AF_BZ_DD
+        FROM IBIMS999B
+       WHERE 1=1
+         AND BZ_DD = (
+            SELECT MAX(STDR_DT)
+              FROM IBIMS991B
+             WHERE 1=1
+               AND HOLIDAY = '0'
+               AND STDR_DT <![CDATA[ <= ]]> #{stdrDt})
+                 AND C.DEAL_NO IS NOT NULL 
+                 AND C.PRDT_CD IS NOT NULL
+                 AND C.EXC_SN IS NOT NULL                                                                
                ) S
          ON (
                 T.DEAL_NO = S.DEAL_NO
