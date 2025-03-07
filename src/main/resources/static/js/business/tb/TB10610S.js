@@ -223,9 +223,6 @@ const TB10610Sjs = (function () {
         reset();
       },
       success: function (data) {
-        console.log(data);
-        console.log(data.batSchM.length);
-
         if (data && data.batSchM.length > 0) {
           batSchM.setData(data.batSchM);
 
@@ -234,7 +231,6 @@ const TB10610Sjs = (function () {
             let al = ui.addList;
 
             if (al.length > 0) {
-              console.log("rowSelect ::: ", ui);
               let rd = al[0].rowData;
               let jobId = rd.jobId;
               let jobName = rd.jobName;
@@ -246,8 +242,6 @@ const TB10610Sjs = (function () {
               $("#TB10610S_exc_jobId").val(jobId);
               $("#TB10610S_exc_jobName").val(jobName);
               // $('#TB10610S_exc_jobSts').val(jobStatus)
-              //console.log(typeof confirmYn);
-              //console.log('confirmYn ::: ', confirmYn);
 
               $("#TB10610S_exc_cfm").val(confirmYn);
               $("#btnExc").prop("disabled", false);
@@ -258,11 +252,9 @@ const TB10610Sjs = (function () {
               }
               argument = argument;
 
-              radioBtnController(jobStatus)
+              radioBtnController(jobStatus);
 
               tempObj.confirmYn = confirmYn;
-
-              console.log("confirmYn ::: ", confirmYn);
 
               /*
                *  이렇게하면 밸류가 7로 지정됩니다...
@@ -575,13 +567,7 @@ const TB10610Sjs = (function () {
       batSchM: getBatSchM,
     };
     let curDate = "";
-
-    // let curDate = getBatSchM.forEach(val => {
-    //    return val.curDate
-    // });
-
-    // console.log('초기화 :::: ', getBatSchM);
-    // console.log('초기화 :::: ', curDate);
+  
     if (getBatSchM.length > 0) {
       Swal.fire({
         icon: "warning",
@@ -631,37 +617,6 @@ const TB10610Sjs = (function () {
     }
   }
 
-  function daemonStart() {
-    let pqData = $("#grd_batSchM").pqGrid("instance");
-    let curDate = pqData.pdata[0].curDate;
-
-    console.log("오긴하셨습니다");
-    console.log(curDate);
-
-    $.ajax({
-      type: "POST",
-      url: "/TB9999D/start",
-      contentType: "application/json; charset=UTF-8",
-      data: curDate,
-      success: function (data) {
-        if (data === "") {
-          Swal.fire({
-            icon: "success",
-            title: "배치 스케쥴러 시작",
-          });
-        } else if (data === "=") {
-          inqBatch();
-          return;
-        } else {
-          Swal.fire({
-            icon: "warning",
-            title: `${data} 배치 스케쥴러 진행중...`,
-          });
-        }
-      },
-    });
-  }
-
   /*******************************************************************
    * Validation
    *******************************************************************/
@@ -688,19 +643,6 @@ const TB10610Sjs = (function () {
     $("#btnConfirm").prop("disabled", false);
     radioBtnController("");
   }
-
-  // confirm 상태 이벤트
-  // $('#TB10610S_exc_cfm').on('change', function() {
-  //     let $val = $(this).val()
-  //     console.log(typeof $val);
-
-  //     if ( $val ) {
-  //         $('#TB10610S_exc_jobSts').prop('disabled', false)
-  //     } else {
-  //         // $('#TB10610S_exc_jobSts option:selected').val(0)
-  //         $('#TB10610S_exc_jobSts').prop('disabled', true)
-  //     }
-  // })
 
   return {
     inqBatch: inqBatch,
