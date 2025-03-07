@@ -315,35 +315,39 @@ const TB05010Sjs = (function () {
   // 초기화버튼 - 협의체 전결협의체, 회차별로 조회 후 신규 회차 추가 시 사용
   function btnReset() {
     //▶기본정보의 진행상태가 ""이 아닐 때만 실행
-    if ($("#TB05010S_inspctPrgrsStCd2").val() != "") {
-      // 버튼 활성화/비활성화
-      $("#saveButton").attr("disabled", false);
-      $("#confirmButton").attr("disabled", true);
-      $("#cancleButton").attr("disabled", true);
+    //if ($("#TB05010S_inspctPrgrsStCd2").val() != "") {
+    // 버튼 활성화/비활성화
+    $("#saveButton").attr("disabled", false);
+    $("#confirmButton").attr("disabled", true);
+    $("#cancleButton").attr("disabled", true);
 
-      //협의체 기본정보 초기화 및 셋팅
-      // $("#TB05010S_inspctCnfrncSqcSq2").val(
-      //   Number($("#TB05010S_inspctCnfrncSqcSq2").val()) + 1
-      // );
-      $("#TB05010S_rsltnDt2").val("");
-      $("#TB05010S_rsltnTm2").val("");
-      $("#TB05010S_inspctPrgrsStCd2").val("");
+    //협의체 기본정보 초기화 및 셋팅
+    // $("#TB05010S_inspctCnfrncSqcSq2").val(
+    //   Number($("#TB05010S_inspctCnfrncSqcSq2").val()) + 1
+    // );
+    $("#TB05010S_rsltnDt2").val("");
+    $("#TB05010S_rsltnTm2").val("");
+    $("#TB05010S_inspctPrgrsStCd2").val("");
 
-      $("#TB05010_fileList").html("");
-      //  $('#TB05010S_MMBRList').html('');
-      $("#TB05010S_CASEList").html("");
-      $("#gridCnfrncList").pqGrid("option", "dataModel.data", []);
-      $("#gridCnfrncList").pqGrid("refreshDataAndView"); // pqgrid 초기화
-      $("#gridCaseList").pqGrid("option", "dataModel.data", []);
-      $("#gridCaseList").pqGrid("refreshDataAndView"); // pqgrid 초기화
-      $("#gridMmbrList").pqGrid("option", "dataModel.data", []);
-      $("#gridMmbrList").pqGrid("refreshDataAndView"); // pqgrid 초기화
-    } else {
-      // 버튼 활성화/비활성화
-      $("#saveButton").attr("disabled", false);
-      $("#confirmButton").attr("disabled", true);
-      $("#cancleButton").attr("disabled", true);
-    }
+    $("#TB05010_fileList").html("");
+    $("#TB05010S_MMBRList").html("");
+    $("#TB05010S_CASEList").html("");
+    $("#gridCnfrncList").pqGrid("option", "dataModel.data", []);
+    $("#gridCnfrncList").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("#gridCaseList").pqGrid("option", "dataModel.data", []);
+    $("#gridCaseList").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("#gridMmbrList").pqGrid("option", "dataModel.data", []);
+    $("#gridMmbrList").pqGrid("refreshDataAndView"); // pqgrid 초기화
+
+    $("#saveButton").attr("disabled", true);
+    $("#confirmButton").attr("disabled", true);
+    $("#cancleButton").attr("disabled", true);
+    // } else {
+    //   // 버튼 활성화/비활성화
+    //   $("#saveButton").attr("disabled", false);
+    //   $("#confirmButton").attr("disabled", true);
+    //   $("#cancleButton").attr("disabled", true);
+    // }
     $("#addCnfrncInfo").prop("disabled", false);
     $("#delCnfrncInfo").prop("disabled", false);
     $("#approveAlert").prop("disabled", false);
