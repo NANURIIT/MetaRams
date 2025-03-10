@@ -42,7 +42,7 @@ const TB09060Sjs = (function () {
       title: "사후관리번호",
       dataType: "string",
       dataIndx: "afctMngmNo",
-      align: "rigcenterht",
+      align: "center",
       halign: "center",
       width: "180",
       filter: { crules: [{ condition: "range" }] },
@@ -171,8 +171,9 @@ const TB09060Sjs = (function () {
       align: "right",
       halign: "center",
       width: "80",
-      filter: { crules: [{ condition: "range" }] },
-      format: "#,###",
+      render: function (ui) {
+        return ui.cellData === null ? "-" : ui.cellData.toLocaleString() + "일";
+      },
     },
     {
       title: "이자연체누적일수",
@@ -182,7 +183,21 @@ const TB09060Sjs = (function () {
       halign: "center",
       width: "80",
       filter: { crules: [{ condition: "range" }] },
-      format: "#,###",
+      render: function (ui) {
+        return ui.cellData === null ? "-" : ui.cellData.toLocaleString() + "일";
+      },
+    },
+    {
+      title: "최종원금상환일",
+      dataType: "string",
+      dataIndx: "lastPrnaRdmpDt",
+      align: "center",
+      halign: "center",
+      width: "160",
+      filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        return formatDate(ui.cellData);
+      },
     },
     {
       title: "최종이자상환일",
@@ -490,6 +505,17 @@ const TB09060Sjs = (function () {
       success: function (data) {
         grid1Ins.setData(data);
         getList2(paramData);
+        if (
+          grid1Ins.getData().length === 0 &&
+          grid2Ins.getData().length === 0
+        ) {
+          Swal.fire({
+            icon: "warning",
+            title: "warning!",
+            text: "조회된 정보가 없습니다.",
+            confirmButtonText: "확인",
+          });
+        }
       },
       error: function (e) {
         Swal.fire({

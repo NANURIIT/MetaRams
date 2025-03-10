@@ -22,6 +22,7 @@
              , A.FRS_INTR_OVDU_OCRNC_DT    /* 최초이자연체발생일 */
              , A.PRCA_OVDU_ACML_DNUM       /* 원금연체누적일수 */
              , A.INT_OVDU_ACML_DNUM        /* 이자연체누적일수 */
+             , A.LAST_PRNA_RDMP_DT         /* 최종원금상환일 */
              , A.LAST_INTR_RDMP_DT         /* 최종이자상환일 */
              , A.OVDU_RLSE_DT              /* 연체해제일 */
              , C.BDCD                   /* 거래조직번호 */
@@ -32,7 +33,7 @@
           , IBIMS003B C 
          WHERE 1=1
          AND C.DEL_YN = 'N'
-         AND A.DCSN_YN = 'N'         
+         <!-- AND A.DCSN_YN = 'N'          -->
          AND A.DEAL_NO = B.DEAL_NO(+) 
          AND B.LAST_YN(+) = 'Y' 
          AND B.CHRR_EMPNO = C.EMPNO(+) 
@@ -51,15 +52,14 @@
              OR A.FRS_INTR_OVDU_OCRNC_DT <![CDATA[<=]]> #{endDt}
          )     
         <if test="ovduRlseYnCd == 2">
-           AND A.OVDU_STTS_CD <![CDATA[>=]]> 1
+           AND A.OVDU_RLSE_DT IS NOT NULL
         </if>
         <if test="ovduRlseYnCd == 1">
-           AND A.OVDU_STTS_CD = 0
+           AND A.OVDU_RLSE_DT IS NULL
         </if>
         <if test="dprtCd != '' and dprtCd != null">
            AND C.DPRT_CD = #{dprtCd}
         </if>
-
     </select>
 
     <update id="saveDcsn" parameterType="com.nanuri.rams.business.common.vo.IBIMS436BVO">
@@ -73,22 +73,25 @@
 
    <!-- 딜일별잔액에서 연체내역 조회 -->
    <select id="getOvduList" parameterType="com.nanuri.rams.business.common.vo.IBIMS810BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS810BVO">
-      SELECT 
-              STDR_DT          /* 기준일자 */
-            , DEAL_NO          /* 딜번호 */
-            , PRDT_CD         /* 종목코드 */
-            , EXC_SN          /* 실행일련번호 */
-            , LDG_STTS_CD     /* 원장상태코드 */
-            , DEAL_EXC_AMT    /* 딜실행잔액 */
-            , PRNA_OVDU_DT    /* 원금연체일자 */
-            , INTR_OVDU_DT    /* 이자연체일자 */
-            , OVDU_PRNA       /* 연체원금 */
-            , INTR_AMT_OVDU_INTR /* 연체이자금액 */
-         FROM IBIMS810B
-        WHERE STDR_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')
-          AND (OVDU_PRNA != 0
-               OR INTR_AMT_OVDU_INTR != 0) /* 연체인 경우 만 가져오기 */
-
+    SELECT 
+              STDR_DT                /* 기준일자 */
+            , DEAL_NO               /* 딜번호 */
+            , PRDT_CD              /* 종목코드 */
+            , EXC_SN               /* 실행일련번호 */
+            , LDG_STTS_CD          /* 원장상태코드 */
+            , DEAL_EXC_AMT         /* 딜실행잔액 */
+            , PRNA_OVDU_DT         /* 원금연체일자 */
+            , INTR_OVDU_DT         /* 이자연체일자 */
+            , OVDU_PRNA            /* 연체원금 */
+            , INTR_AMT_OVDU_INTR   /* 연체이자금액 */
+      FROM IBIMS810B
+      WHERE STDR_DT = (SELECT TO_CHAR(MAX(BZ_DD))
+                       FROM IBIMS999B)
+        AND (OVDU_PRNA != 0
+             OR INTR_AMT_OVDU_INTR != 0)
+        AND STDR_DT IS NOT NULL
+        AND DEAL_NO IS NOT NULL
+        AND EXC_SN IS NOT NULL
    </select>
 
    <!-- 기존 연체데이터 조회 -->
@@ -187,30 +190,29 @@
 
 <update id="batchInsert"  parameterType="com.nanuri.rams.business.common.vo.IBIMS810BVO">  
         MERGE INTO IBIMS436B T
-        USING ( 
-			      SELECT 
-                     C.DEAL_NO            /* 딜번호 */
-                   , C.PRDT_CD            /* 종목코드 */
-                   , C.EXC_SN             /* 실행일련번호 */
-                   , C.LDG_STTS_CD        /* 연체상태코드 */ 
-                   , C.DEAL_EXC_BLCE      /* 딜실행잔액 */
-                   , C.PRNA_OVDU_DT       /*원금연체일자*/
-                   , C.INTR_OVDU_DT       /*이자연체일자*/
-                   , C.OVDU_PRNA          /*연체원금*/
-                   , C.INTR_AMT_OVDU_INTR /*이자금액연체이자*/
-                   , (SELECT NVL(MAX(AFCT_MNGM_NO), ' ') FROM IBIMS436B) AS AFCT_MNGM_NO
-                   , LPAD(ROWNUM, 3, '0') AS TNUM
-                FROM IBIMS810B C /* 딜일별잔액 */
-               WHERE C.STDR_DT = TO_CHAR(SYSDATE,'YYYYMMDD')                                
-               ) S
-         ON (
-                T.DEAL_NO = S.DEAL_NO
-            AND T.PRDT_CD = S.PRDT_CD
-            AND T.EXC_SN = S.EXC_SN
-               )    
+USING ( 
+    SELECT 
+        #{dealNo} as DEAL_NO            /* 딜번호 */
+        , #{prdtCd} as PRDT_CD         /* 종목코드 */
+        , #{excSn} as EXC_SN          /* 실행일련번호 */
+        , #{ldgSttsCd} as LDG_STTS_CD     /* 연체상태코드 */ 
+        , #{dealExcAmt} as DEAL_EXC_AMT   /* 딜실행잔액 */
+        , CASE WHEN #{ovduPrna} = 0 THEN NULL ELSE #{prnaOvduDt} END as PRNA_OVDU_DT    /* 연체원금이 0이면 NULL */
+        , CASE WHEN #{intrAmtOvduIntr} = 0 THEN NULL ELSE #{intrOvduDt} END as INTR_OVDU_DT    /* 연체이자가 0이면 NULL */
+        , #{ovduPrna} as OVDU_PRNA       /* 연체원금 */      
+        , #{intrAmtOvduIntr} as INTR_AMT_OVDU_INTR  /* 이자금액연체이자 */
+        , (SELECT NVL(MAX(AFCT_MNGM_NO), ' ') FROM IBIMS436B) AS AFCT_MNGM_NO
+        , LPAD(ROWNUM, 3, '0') AS TNUM
+    FROM DUAL
+) S
+ON (
+    T.DEAL_NO = S.DEAL_NO
+    AND T.PRDT_CD = S.PRDT_CD
+    AND T.EXC_SN = S.EXC_SN
+)        
         WHEN MATCHED THEN 
             UPDATE 
-               SET CRDL_BLCE_AMT             = S.DEAL_EXC_BLCE,          /* 여신잔액금액 */
+               SET CRDL_BLCE_AMT             = S.DEAL_EXC_AMT,          /* 여신잔액금액 */
                    FRS_PRNA_OVDU_OCRNC_DT    = S.PRNA_OVDU_DT,           /* 최초원금연체발생일자 */
                    FRS_INTR_OVDU_OCRNC_DT    = S.INTR_OVDU_DT,           /* 최초이자연체발생일자 */
                    PRCA_OVDU_ACML_DNUM       = TO_NUMBER(SYSDATE - TO_DATE(S.PRNA_OVDU_DT, 'YYYYMMDD')), /* 원금연체누적일수 */
@@ -248,7 +250,7 @@
                 S.PRDT_CD,                      /* 종목코드 */
                 S.EXC_SN,                       /* 실행순번 */
                 '0',                           /* 연체상태코드 */
-                S.DEAL_EXC_BLCE,                /* 여신잔액금액 */
+                S.DEAL_EXC_AMT,                /* 여신잔액금액 */
                 S.PRNA_OVDU_DT,                 /* 최초원금연체발생일자 */
                 S.INTR_OVDU_DT,                 /* 최초이자연체발생일자 */
                 1,                              /* 원금연체누적일수 */

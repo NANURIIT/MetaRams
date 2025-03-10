@@ -15,5 +15,10 @@ public class IBIMS810BVO extends IBIMS810BDTO {
 
     private List<IBIMS810BDTO> ibims810bdtoList;
     private CalculationSumDTO totalDTO;
+
+    private String dealNo;        // 딜번호
+    private String prdtCd;        // 종목코드
+    private long excSn;         // 실행일련번호
+    
     
 }
