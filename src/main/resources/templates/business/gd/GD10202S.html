@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/gd/GD10202S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 자금품의 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content i-filter" id="con-srch">
+						<div class="form-group row form-inline">
+							<div class="col-sm-10 form-group mb-1">
+								<!-- 부서코드 -->
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>관리부서
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="_dprtCd" readonly>
+									</div>
+								</div>
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>신청일자
+								</label>
+								<div class="col-sm-3 input-group">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="" name="" value=""
+											placeholder="YYYY-MM-DD">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<span class="input-group-addon border-none"> ~ </span>
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="" name="" value=""
+											placeholder="YYYY-MM-DD">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-10 form-group mb-1">
+								<!-- 기업체팝업 -->
+								<label class="col-sm-1 control-label">
+									SPC
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="GD10202S_">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03061P('GD10202S');"><i
+													class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="GD10202S_" readonly="">
+									</div>
+								</div>
+								<!-- 승인상태 -->
+								<label class="col-sm-1 control-label">
+									신청상태
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="">
+										</select>
+									</div>
+								</div>
+							</div>
+							<!-- 버튼영역 -->
+							<div class="col-sm-1-5 text-right">
+								<button class="btn btn-primary" onclick="">
+									<i class="fa fa-search"></i>&nbsp;조회</button>
+								<button class="btn btn-default" type="button" onclick="">
+									<i class="fa fa-undo"></i>&nbsp;초기화
+								</button>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content">
+						<!-- 부속서류목록 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 승인내역조회</h5>
+							</div>
+							<div class="ibox-content">
+								<!-- 승인내역조회 그리드 -->
+								<div id="GD10202S_spcDesdGrid"></div>
+							</div>
+						</div>
+
+						<div class="ibox">
+							<!-- 승인자 그리드 -->
+							<div class="ibox-title">
+								<h5>▶ 승인상세</h5>
+							</div>
+							<div class="ibox-content">
+								<div class="row">
+									<div class="col-sm-4">
+										<div id="GD10202S_spcApvlRqstGrid"></div>
+									</div>
+									<div class="col-sm-8">
+										<div id="GD10202S_spcRjctGrid"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>
