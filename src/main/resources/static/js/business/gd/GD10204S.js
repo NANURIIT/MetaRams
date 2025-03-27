@@ -162,7 +162,22 @@ const GD10204Sjs = (function () {
         setPqGrid(pqGridObjs);
     }
 
-    return {
 
+    //그리드 행 추가
+    function addRows_GD10204S(gridId){
+        $(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
+    }
+
+    //그리드 행 삭제
+    function dltRows_GD10204S(gridId){
+        var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
+
+        $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
+    }
+
+
+    return {
+        addRows_GD10204S: addRows_GD10204S,
+        dltRows_GD10204S: dltRows_GD10204S
     };
 })();

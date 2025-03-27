@@ -251,8 +251,8 @@ const GD10201Sjs = (function () {
 
         let pqGridObjs = [
             {
-                height: 200,
-                maxHeight: 200,
+                height: 100,
+                maxHeight: 100,
                 id: "GD10201S_wrkRqst",
                 colModel: GD10201S_col_wrkRqst,
                 scrollModel: { autoFit: true },
@@ -260,8 +260,8 @@ const GD10201Sjs = (function () {
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
             {
-                height: 200,
-                maxHeight: 200,
+                height: 100,
+                maxHeight: 100,
                 id: "GD10201S_pblHis",
                 colModel: GD10201S_col_pblHis,
                 scrollModel: { autoFit: true },
@@ -269,8 +269,8 @@ const GD10201Sjs = (function () {
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
             {
-                height: 200,
-                maxHeight: 200,
+                height: 100,
+                maxHeight: 100,
                 id: "GD10201S_dpstRqst",
                 colModel: GD10201S_col_dpstRqst,
                 scrollModel: { autoFit: true },
@@ -278,8 +278,8 @@ const GD10201Sjs = (function () {
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
             {
-                height: 200,
-                maxHeight: 200,
+                height: 100,
+                maxHeight: 100,
                 id: "GD10201S_wthdrwlRqst",
                 colModel: GD10201S_col_wthdrwlRqst,
                 scrollModel: { autoFit: true },
@@ -291,9 +291,22 @@ const GD10201Sjs = (function () {
         setPqGrid(pqGridObjs);
     }
 
+    //그리드 행 추가
+    function addRows_GD10201S(gridId){
+        $(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
+    }
+
+    //그리드 행 삭제
+    function dltRows_GD10201S(gridId){
+        var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
+
+        $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
+    }
+
     
 
     return {
-
+        addRows_GD10201S: addRows_GD10201S,
+        dltRows_GD10201S: dltRows_GD10201S
     };
 })();
