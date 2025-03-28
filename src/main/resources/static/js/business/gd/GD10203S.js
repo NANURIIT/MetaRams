@@ -1,5 +1,8 @@
 const GD10203Sjs = (function () {
     $(document).ready(function () {
+        // 조회조건 Default Set
+        $("#GD10203S_fromMm").val(addMonth(getToday(), -1).slice(0, 7));
+        $("#GD10203S_toMm").val(getToday().slice(0, 7));
         setGridOptions();
     });
 
@@ -16,6 +19,8 @@ const GD10203Sjs = (function () {
     }
 
     function pqGridColModel() {
+
+        console.log("???");
 
         const spcBlceGrid = [
             {
@@ -70,103 +75,6 @@ const GD10203Sjs = (function () {
                     },
                     {
                         title: "전월말 잔고",
-                        dataType: "string",
-                        dataIndx: "",
-                        halign: "center",
-                        align: "right",
-                        width: "10%",
-                        format: "#,###",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                ],
-            },
-            /**
-             * 출금항목
-             */
-            {
-                title: "출금항목",
-                align: "center",
-                colModel: [
-                    {
-                        title: "출금합계",
-                        dataType: "string",
-                        dataIndx: "amt",
-                        halign: "center",
-                        align: "right",
-                        width: "10%",
-                        format: "#,###",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                    {
-                        title: "유동화증권 상환",
-                        dataType: "string",
-                        dataIndx: "",
-                        halign: "center",
-                        align: "right",
-                        width: "10%",
-                        format: "#,###",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                    {
-                        title: "대출 실행/추가입출",
-                        dataType: "string",
-                        dataIndx: "",
-                        halign: "center",
-                        align: "right",
-                        width: "10%",
-                        format: "#,###",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                    {
-                        title: "ABB/ABL 원리금",
-                        dataType: "string",
-                        dataIndx: "",
-                        halign: "center",
-                        align: "right",
-                        width: "10%",
-                        format: "#,###",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                    {
-                        title: "셀다운 비용",
-                        dataType: "string",
-                        dataIndx: "",
-                        halign: "center",
-                        align: "right",
-                        width: "10%",
-                        format: "#,###",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                    {
-                        title: "원진세 합계",
-                        dataType: "string",
-                        dataIndx: "",
-                        halign: "center",
-                        align: "right",
-                        width: "10%",
-                        format: "#,###",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                    {
-                        title: "후순위대여 상환",
-                        dataType: "string",
-                        dataIndx: "",
-                        halign: "center",
-                        align: "right",
-                        width: "10%",
-                        format: "#,###",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                    {
-                        title: "자금은행목적 계좌",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -264,6 +172,103 @@ const GD10203Sjs = (function () {
                     },
                     {
                         title: "자금운용 목적 계좌좌수",
+                        dataType: "string",
+                        dataIndx: "",
+                        halign: "center",
+                        align: "right",
+                        width: "10%",
+                        format: "#,###",
+                        filter: { crules: [{ condition: "range" }] },
+                        summary: { type: "sum" },
+                    },
+                ],
+            },
+            /**
+             * 출금항목
+             */
+            {
+                title: "출금항목",
+                align: "center",
+                colModel: [
+                    {
+                        title: "출금합계",
+                        dataType: "string",
+                        dataIndx: "amt",
+                        halign: "center",
+                        align: "right",
+                        width: "10%",
+                        format: "#,###",
+                        filter: { crules: [{ condition: "range" }] },
+                        summary: { type: "sum" },
+                    },
+                    {
+                        title: "유동화증권 상환",
+                        dataType: "string",
+                        dataIndx: "",
+                        halign: "center",
+                        align: "right",
+                        width: "10%",
+                        format: "#,###",
+                        filter: { crules: [{ condition: "range" }] },
+                        summary: { type: "sum" },
+                    },
+                    {
+                        title: "대출 실행/추가입출",
+                        dataType: "string",
+                        dataIndx: "",
+                        halign: "center",
+                        align: "right",
+                        width: "10%",
+                        format: "#,###",
+                        filter: { crules: [{ condition: "range" }] },
+                        summary: { type: "sum" },
+                    },
+                    {
+                        title: "ABB/ABL 원리금",
+                        dataType: "string",
+                        dataIndx: "",
+                        halign: "center",
+                        align: "right",
+                        width: "10%",
+                        format: "#,###",
+                        filter: { crules: [{ condition: "range" }] },
+                        summary: { type: "sum" },
+                    },
+                    {
+                        title: "셀다운 비용",
+                        dataType: "string",
+                        dataIndx: "",
+                        halign: "center",
+                        align: "right",
+                        width: "10%",
+                        format: "#,###",
+                        filter: { crules: [{ condition: "range" }] },
+                        summary: { type: "sum" },
+                    },
+                    {
+                        title: "원진세 합계",
+                        dataType: "string",
+                        dataIndx: "",
+                        halign: "center",
+                        align: "right",
+                        width: "10%",
+                        format: "#,###",
+                        filter: { crules: [{ condition: "range" }] },
+                        summary: { type: "sum" },
+                    },
+                    {
+                        title: "후순위대여 상환",
+                        dataType: "string",
+                        dataIndx: "",
+                        halign: "center",
+                        align: "right",
+                        width: "10%",
+                        format: "#,###",
+                        filter: { crules: [{ condition: "range" }] },
+                        summary: { type: "sum" },
+                    },
+                    {
+                        title: "자금은행목적 계좌",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",

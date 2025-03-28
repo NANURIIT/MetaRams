@@ -29,9 +29,39 @@
 					<div class="ibox-content i-filter" id="con-srch">
 						<div class="form-group row form-inline">
 							<div class="col-sm-10 form-group mb-1">
+								<!-- 조회기간 -->
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>조회기간
+								</label>
+								<div class="col-sm-3 input-group">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="GD10203S_fromMm" name="" value=""
+											placeholder="YYYY-MM">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<span class="input-group-addon border-none"> ~ </span>
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="GD10203S_toMm" name="" value=""
+											placeholder="YYYY-MM">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
+								<!-- SPC(기업체팝업) -->
+								<label class="col-sm-1 control-label">SPC</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB03020S_corpRgstNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03061P('GD10203S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB03020S_entpRnm" readonly="">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-10 form-group mb-1">
 								<!-- 부서코드 -->
 								<label class="col-sm-1 control-label">
-									<span class="req"></span>관리부서
+									<span class="req"></span>관리부점
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
@@ -39,38 +69,6 @@
 											<option value="">전체</option>
 										</select>
 										<input type="text" class="form-control" id="_dprtCd" readonly>
-									</div>
-								</div>
-								<label class="col-sm-1 control-label">
-									<span class="req"></span>신청일자
-								</label>
-								<div class="col-sm-3 input-group">
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="" name="" value=""
-											placeholder="YYYY-MM-DD">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-									<span class="input-group-addon border-none"> ~ </span>
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="" name="" value=""
-											placeholder="YYYY-MM-DD">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-10 form-group mb-1">
-								<!-- 기업체팝업 -->
-								<label class="col-sm-1 control-label">
-									SPC
-								</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-										<input type="text" class="form-control" id="GD10203S_">
-										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03061P('GD10203S');"><i
-													class="fa fa-search"></i></button>
-										</span>
-										<input type="text" class="form-control" id="GD10203S_" readonly="">
 									</div>
 								</div>
 								<!-- 승인상태 -->
