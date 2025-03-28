@@ -10,7 +10,7 @@
 	<script th:src="@{js/tabs.js}"></script>
 	<script th:src="@{js/common.js}"></script>
 	<script th:src="@{js/fileUpload.js}"></script>
-    <script th:src="@{js/business/gd/GD10201S.js}"></script>
+    <script th:src="@{js/business/tb/TB07200S.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -56,12 +56,12 @@
                                 <label class="col-sm-1 control-label">신청일자</label>
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="GD10201S_fromDate" name="" value="">
+										<input type="text" class="form-control" id="TB07200S_fromDate" name="" value="">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="GD10201S_toDate" name="" value="">
+										<input type="text" class="form-control" id="TB07200S_toDate" name="" value="">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
@@ -87,12 +87,12 @@
 								</div>
                                 <div class="ibox-tools">
                                     <button class="btn btn-success btn-xs" type="button" onclick="">&nbsp;복사</button>
-									<button class="btn btn-default btn-xs" type="button" onclick="GD10201Sjs.addRows_GD10201S(`#GD10201S_wrkRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
-									<button class="btn btn-default btn-xs" type="button" onclick="GD10201Sjs.dltRows_GD10201S(`#GD10201S_wrkRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.addRows_TB07200S(`#TB07200S_wrkRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.dltRows_TB07200S(`#TB07200S_wrkRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
 								</div>
 							</div>
 							<div class="ibox-content">
-								<div id="GD10201S_wrkRqst"></div>
+								<div id="TB07200S_wrkRqst"></div>
 							</div>
 						</div>
                         <div class="row">
@@ -105,12 +105,12 @@
                                         </div>
                                         <div class="ibox-tools">
                                             <input type="checkbox">해당없음&nbsp;</input>
-                                            <button class="btn btn-default btn-xs" type="button" onclick="GD10201Sjs.addRows_GD10201S(`#GD10201S_pblHis`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
-                                            <button class="btn btn-default btn-xs" type="button" onclick="GD10201Sjs.dltRows_GD10201S(`#GD10201S_pblHis`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+                                            <button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.addRows_TB07200S(`#TB07200S_pblHis`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+                                            <button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.dltRows_TB07200S(`#TB07200S_pblHis`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <div id="GD10201S_pblHis"></div>
+                                        <div id="TB07200S_pblHis"></div>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                                                 <form id="upload-file-form">
                                                     <input type="hidden" id="fileKey1" name="fileKey1">
                                                     <input type="hidden" id="fileKey2" name="fileKey2" value="*">
-                                                    <input type="hidden" class="form-control" id="key1" value="GD10201S">
+                                                    <input type="hidden" class="form-control" id="key1" value="TB07200S">
                                                     <button class="btn btn-default btn-xs" type="button"
                                                         id="UPLOAD_AddFile" disabled><i
                                                             class="fa fa-upload"></i>&nbsp;파일추가</button>
@@ -169,12 +169,12 @@
 									<h5>▶ 입금요청</h5>
 								</div>
                                 <div class="ibox-tools">
-                                    <button class="btn btn-default btn-xs" type="button" onclick="GD10201Sjs.addRows_GD10201S(`#GD10201S_dpstRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
-                                    <button class="btn btn-default btn-xs" type="button" onclick="GD10201Sjs.dltRows_GD10201S(`#GD10201S_dpstRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+                                    <button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.addRows_TB07200S(`#TB07200S_dpstRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+                                    <button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.dltRows_TB07200S(`#TB07200S_dpstRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
                                 </div>
 							</div>
 							<div class="ibox-content">
-								<div id="GD10201S_dpstRqst"></div>
+								<div id="TB07200S_dpstRqst"></div>
 							</div>
                         </div>	
                         <!--출금요청-->
@@ -185,12 +185,12 @@
 								</div>
                                 <div class="ibox-tools">
                                     <button class="btn btn-success btn-xs" type="button" onclick="">&nbsp;계좌확인</button>
-									<button class="btn btn-default btn-xs" type="button" onclick="GD10201Sjs.addRows_GD10201S(`#GD10201S_wthdrwlRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
-									<button class="btn btn-default btn-xs" type="button" onclick="GD10201Sjs.dltRows_GD10201S(`#GD10201S_wthdrwlRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.addRows_TB07200S(`#TB07200S_wthdrwlRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.dltRows_TB07200S(`#TB07200S_wthdrwlRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
 								</div>
 							</div>
 							<div class="ibox-content">
-								<div id="GD10201S_wthdrwlRqst"></div>
+								<div id="TB07200S_wthdrwlRqst"></div>
 							</div>
                         </div>	
                         <!--버튼영역-->

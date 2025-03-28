@@ -1404,7 +1404,7 @@ const TB06010Sjs = (function(){
 			, "ibPrdtClsfCd": $('#TB06010S_I002').val()									// ib상품분류코드
 			//, "ibPrdtIflwPathDcd": ''            										// ib상품유입경로구분코드
 			, "ibPrdtPefDcd": $('#TB06010S_I004').val()                      			// ib상품pef구분코드
-			//, "actsCd": $('#TB06010S_actsCd').val()										// 계정과목코드
+			//, "actsCd": $('#TB06010S_actsCd').val()									// 계정과목코드
 			, "actsCd": $('#TB06010S_A005').val()										// 계정과목코드
 			//, "dcrbAthDcd": dcrbAthDcd                          						// 기업여신전결권한구분코드
 			//, "acctJobCd": acctJobCd                            						// 회계업무코드

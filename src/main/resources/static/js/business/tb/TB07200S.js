@@ -1,9 +1,9 @@
-const GD10201Sjs = (function () {
+const TB07200Sjs = (function () {
 
     $(document).ready(function () {
 
-        $("#GD10201S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
-        $("#GD10201S_toDate").val(getToday()); //조회종료일
+        $("#TB07200S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
+        $("#TB07200S_toDate").val(getToday()); //조회종료일
 
         gridSett();
 
@@ -12,7 +12,7 @@ const GD10201Sjs = (function () {
     function gridSett(){
 
         //업무지시요청 그리드 colModel
-        let GD10201S_col_wrkRqst = [
+        let TB07200S_col_wrkRqst = [
             {
                 title: "SPC",
                 dataType: "string",
@@ -80,7 +80,7 @@ const GD10201Sjs = (function () {
         ]
 
         //유동화증권 발행(예정) 내역 그리드 colModel
-        let GD10201S_col_pblHis = [
+        let TB07200S_col_pblHis = [
             {
                 title: "회차",
                 dataType: "string",
@@ -124,7 +124,7 @@ const GD10201Sjs = (function () {
         ]
 
         //입금요청 그리드 colModel
-        let GD10201S_col_dpstRqst = [
+        let TB07200S_col_dpstRqst = [
             {
                 title: "거래일자",
                 dataType: "string",
@@ -184,7 +184,7 @@ const GD10201Sjs = (function () {
         ]
 
         //출금요청 그리드 colModel
-        let GD10201S_col_wthdrwlRqst = [
+        let TB07200S_col_wthdrwlRqst = [
             {
                 title: "거래일자",
                 dataType: "string",
@@ -243,18 +243,18 @@ const GD10201Sjs = (function () {
             }
         ]
 
-        showPqGrid(GD10201S_col_wrkRqst, GD10201S_col_pblHis, GD10201S_col_dpstRqst, GD10201S_col_wthdrwlRqst);
+        showPqGrid(TB07200S_col_wrkRqst, TB07200S_col_pblHis, TB07200S_col_dpstRqst, TB07200S_col_wthdrwlRqst);
 
     }
 
-    function showPqGrid(GD10201S_col_wrkRqst, GD10201S_col_pblHis, GD10201S_col_dpstRqst, GD10201S_col_wthdrwlRqst){
+    function showPqGrid(TB07200S_col_wrkRqst, TB07200S_col_pblHis, TB07200S_col_dpstRqst, TB07200S_col_wthdrwlRqst){
 
         let pqGridObjs = [
             {
                 height: 100,
                 maxHeight: 100,
-                id: "GD10201S_wrkRqst",
-                colModel: GD10201S_col_wrkRqst,
+                id: "TB07200S_wrkRqst",
+                colModel: TB07200S_col_wrkRqst,
                 scrollModel: { autoFit: true },
                 editable: false,
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
@@ -262,8 +262,8 @@ const GD10201Sjs = (function () {
             {
                 height: 100,
                 maxHeight: 100,
-                id: "GD10201S_pblHis",
-                colModel: GD10201S_col_pblHis,
+                id: "TB07200S_pblHis",
+                colModel: TB07200S_col_pblHis,
                 scrollModel: { autoFit: true },
                 editable: false,
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
@@ -271,8 +271,8 @@ const GD10201Sjs = (function () {
             {
                 height: 100,
                 maxHeight: 100,
-                id: "GD10201S_dpstRqst",
-                colModel: GD10201S_col_dpstRqst,
+                id: "TB07200S_dpstRqst",
+                colModel: TB07200S_col_dpstRqst,
                 scrollModel: { autoFit: true },
                 editable: false,
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
@@ -280,8 +280,8 @@ const GD10201Sjs = (function () {
             {
                 height: 100,
                 maxHeight: 100,
-                id: "GD10201S_wthdrwlRqst",
-                colModel: GD10201S_col_wthdrwlRqst,
+                id: "TB07200S_wthdrwlRqst",
+                colModel: TB07200S_col_wthdrwlRqst,
                 scrollModel: { autoFit: true },
                 editable: false,
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
@@ -292,12 +292,12 @@ const GD10201Sjs = (function () {
     }
 
     //그리드 행 추가
-    function addRows_GD10201S(gridId){
+    function addRows_TB07200S(gridId){
         $(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
     }
 
     //그리드 행 삭제
-    function dltRows_GD10201S(gridId){
+    function dltRows_TB07200S(gridId){
         var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
 
         $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
@@ -306,7 +306,7 @@ const GD10201Sjs = (function () {
     
 
     return {
-        addRows_GD10201S: addRows_GD10201S,
-        dltRows_GD10201S: dltRows_GD10201S
+        addRows_TB07200S: addRows_TB07200S,
+        dltRows_TB07200S: dltRows_TB07200S
     };
 })();

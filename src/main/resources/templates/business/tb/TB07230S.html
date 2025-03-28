@@ -10,7 +10,7 @@
 	<script th:src="@{js/tabs.js}"></script>
 	<script th:src="@{js/common.js}"></script>
 	<script th:src="@{js/fileUpload.js}"></script>
-    <script th:src="@{js/business/gd/GD10204S.js}"></script>
+    <script th:src="@{js/business/tb/TB07230S.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -39,12 +39,12 @@
                                 <label class="col-sm-1 control-label">조회기간</label>
                                 <div class="col-sm-3 input-group">
                                     <div class="col-sm-5 input-group date px-0">
-                                        <input type="text" class="form-control" id="GD10204S_fromDate" name="" value="">
+                                        <input type="text" class="form-control" id="TB07230S_fromDate" name="" value="">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
                                     <span class="input-group-addon border-none"> ~ </span>
                                     <div class="col-sm-5 input-group date px-0">
-                                        <input type="text" class="form-control" id="GD10204S_toDate" name="" value="">
+                                        <input type="text" class="form-control" id="TB07230S_toDate" name="" value="">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
                                 </div>
@@ -83,12 +83,12 @@
 									<h5>▶ SPC별 거래내역</h5>
 								</div>
                                 <div class="ibox-tools">
-									<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-plus"></i>&nbsp;행추가</button>
-									<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07230Sjs.addRows_TB07230S(`#TB07230S_trsctHis`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07230Sjs.dltRows_TB07230S(`#TB07230S_trsctHis`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
 								</div>
 							</div>
 							<div class="ibox-content">
-								<div id="GD10204S_trsctHis"></div>
+								<div id="TB07230S_trsctHis"></div>
 							</div>
 						</div>
                         <div class="ibox form-inline">

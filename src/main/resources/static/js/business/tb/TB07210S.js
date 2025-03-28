@@ -1,4 +1,4 @@
-const GD10202Sjs = (function () {
+const TB07210Sjs = (function () {
     $(document).ready(function () {
         setGridOptions();
     });
@@ -210,21 +210,21 @@ const GD10202Sjs = (function () {
             {
                 height: 270
                 , maxHeight: 270
-                , id: 'GD10202S_spcDesdGrid'
+                , id: 'TB07210S_spcDesdGrid'
                 , colModel: pqGridColModel(1)
                 , editable: false
             },
             {
                 height: 270
                 , maxHeight: 270
-                , id: 'GD10202S_spcApvlRqstGrid'
+                , id: 'TB07210S_spcApvlRqstGrid'
                 , colModel: pqGridColModel(2)
                 , editable: false
             },
             {
                 height: 270
                 , maxHeight: 270
-                , id: 'GD10202S_spcRjctGrid'
+                , id: 'TB07210S_spcRjctGrid'
                 , colModel: pqGridColModel(3)
                 , editable: false
             },
