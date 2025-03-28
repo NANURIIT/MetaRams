@@ -604,6 +604,7 @@ const TB10410Sjs = (function () {
             , title: '조회된 정보가 없습니다!'
           })
           grid.setData([]);
+          hgrkGroupMenuDbData = [];
         }
       },
       error: function (response) {
