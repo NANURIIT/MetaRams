@@ -1,4 +1,4 @@
-const GD10204Sjs = (function () {
+const TB07230Sjs = (function () {
 
     $(document).ready(function () {
 
@@ -151,7 +151,7 @@ const GD10204Sjs = (function () {
             {
                 height: 500,
                 maxHeight: 500,
-                id: "GD10204S_trsctHis",
+                id: "TB07230S_trsctHis",
                 colModel: GD10201S_col_trsctHis,
                 scrollModel: { autoFit: true },
                 editable: false,
@@ -164,12 +164,12 @@ const GD10204Sjs = (function () {
 
 
     //그리드 행 추가
-    function addRows_GD10204S(gridId){
+    function addRows_TB07230S(gridId){
         $(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
     }
 
     //그리드 행 삭제
-    function dltRows_GD10204S(gridId){
+    function dltRows_TB07230S(gridId){
         var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
 
         $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
@@ -177,7 +177,7 @@ const GD10204Sjs = (function () {
 
 
     return {
-        addRows_GD10204S: addRows_GD10204S,
-        dltRows_GD10204S: dltRows_GD10204S
+        addRows_TB07230S: addRows_TB07230S,
+        dltRows_TB07230S: dltRows_TB07230S
     };
 })();
