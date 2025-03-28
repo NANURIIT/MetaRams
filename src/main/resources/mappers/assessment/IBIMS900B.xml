@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS901BMapper">
 
+    <!-- 자금집행 업무리스트 -->
+    <!-- 승인내역조회 -->
     <select id="selectSpcList">
         SELECT ARDY_BZEP_NO
              , FINC_EXCU_RQS_SN
@@ -18,6 +20,29 @@
              , HND_EMPNO
           FROM IBIMS900B
          WHERE 1=1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
+           AND ARDY_BZEP_NO = #{ardyBzepNo}         /* SPC */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           AND DPRT_CD = #{dprtCd}                  /* 관리부점 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ibCtrtNm)">
+           AND IB_CTRT_NM = #{ibCtrtNm}             /* 계약명 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(asstMngmAcno)">
+           AND ASST_MNGM_ACNO = #{asstMngmAcno}     /* 자산관리계좌 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(menuId)">
+           AND ARDY_BZEP_NO = #{ardyBzepNo}         /* 신청일자 PREV(수정해서사용) */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(menuId)">
+           AND ARDY_BZEP_NO = #{ardyBzepNo}         /* 신청일자 NEXT(수정해서사용) */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prgSttsCd)">
+           AND PRG_STTS_CD = #{prgSttsCd}           /* 신청상태 */
+           </if>
     </select>
+
+    
 
 </mapper>
