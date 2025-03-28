@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+    <script th:src="@{js/business/tb/TB07200S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+
+</th:block>
+
+<th:block layout:fragment="customContent">
+    <!-- SPC 자금집행 업무지시 요청 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox ">
+                    <!-- 조회 조건 -->
+					<div class="ibox-content mb-2">
+                        <div class="row form-group form-inline text-right">
+                            <div class="col-sm-10 form-group  mb-1">
+                                <label class="col-sm-1 col-form-label text-right">SPC</label>
+                                <div class="col-sm-3 input-group">
+									<input type="text" class="form-control" style="width: 30px;" id="GD10201_ardyBzepNo">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 70px;" id="GD10201_entpNm" readonly>
+								</div>
+                                <label class="col-sm-1 col-form-label text-right">계약명</label>
+                                <div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="" id="">
+                                </div>
+                                <label class="col-sm-1 col-form-label text-right">자산관리계좌</label>
+                                <div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="" id="">
+                                </div>
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <label class="col-sm-1 col-form-label text-right">관리부점</label>
+								<div class="col-sm-3 input-group">
+									<input type="text" class="form-control" style="width: 30px;" id="GD10201_dprtCd">
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+									</span>
+									<input type="text" class="form-control" style="width: 70px;" id="GD10201_dprtNm" readonly>
+								</div>
+                                <label class="col-sm-1 control-label">신청일자</label>
+								<div class="col-sm-3 input-group">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB07200S_fromDate" name="" value="">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<span class="input-group-addon border-none"> ~ </span>
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB07200S_toDate" name="" value="">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
+                            </div>
+                            <!-- 버튼영역 -->
+                            <div class="col-sm-2 form-group mb-1">	
+                                <div class="col-sm-12 text-right">
+                                    <button class="btn btn-primary" onclick="">
+                                        <i class="fa fa-search"></i>&nbsp;조회</button>
+                                    <button class="btn btn-default" type="button" onclick="">
+                                        <i class="fa fa-undo"></i>&nbsp;초기화
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content" style="min-height: 800px">
+                        <!--자금집행업무지시요청 목록-->
+                        <div class="ibox">
+							<div class="ibox-title">
+								<div>
+									<h5>▶ 자금집행업무지시요청 목록</h5>
+								</div>
+                                <div class="ibox-tools">
+                                    <button class="btn btn-success btn-xs" type="button" onclick="">&nbsp;복사</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.addRows_TB07200S(`#TB07200S_wrkRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.dltRows_TB07200S(`#TB07200S_wrkRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<div id="TB07200S_wrkRqst"></div>
+							</div>
+						</div>
+                        <div class="row">
+                            <!--유동화증권 발행(예정) 내역-->
+                            <div class="col-lg-6">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <div>
+                                            <h5>▶&nbsp;유동화증권 발행(예정) 내역</h5>
+                                        </div>
+                                        <div class="ibox-tools">
+                                            <input type="checkbox">해당없음&nbsp;</input>
+                                            <button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.addRows_TB07200S(`#TB07200S_pblHis`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+                                            <button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.dltRows_TB07200S(`#TB07200S_pblHis`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div id="TB07200S_pblHis"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <h5>▶ 관련자료</h5>
+                                        <div class="ibox-tools">
+                                            <div th:fragment="file" id="file-upload">
+                                                <form id="upload-file-form">
+                                                    <input type="hidden" id="fileKey1" name="fileKey1">
+                                                    <input type="hidden" id="fileKey2" name="fileKey2" value="*">
+                                                    <input type="hidden" class="form-control" id="key1" value="TB07200S">
+                                                    <button class="btn btn-default btn-xs" type="button"
+                                                        id="UPLOAD_AddFile" disabled><i
+                                                            class="fa fa-upload"></i>&nbsp;파일추가</button>
+                                                    <button class="btn btn-default btn-xs" type="button"
+                                                        id="UPLOAD_DelFiles" disabled><i
+                                                            class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+                                                    <div style="display: none">
+                                                        <input type="file" class="custom-file-input"
+                                                            id="deal-upload-input" name="uploadfile" accept="*">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-bordered">
+                                            <colgroup>
+                                                <col style="width: 5%;">
+                                                <col style="width: 20%;">
+                                                <col style="width: 50%;">
+                                                <col style="width: 40%;">
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>일련번호</th>
+                                                    <th>파일명</th>
+                                                    <th>등록일자</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="UPLOAD_FileList">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!--입금요청-->
+                        <div class="ibox">
+                            <div class="ibox-title">
+								<div>
+									<h5>▶ 입금요청</h5>
+								</div>
+                                <div class="ibox-tools">
+                                    <button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.addRows_TB07200S(`#TB07200S_dpstRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+                                    <button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.dltRows_TB07200S(`#TB07200S_dpstRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+                                </div>
+							</div>
+							<div class="ibox-content">
+								<div id="TB07200S_dpstRqst"></div>
+							</div>
+                        </div>	
+                        <!--출금요청-->
+                        <div class="ibox">
+                            <div class="ibox-title">
+								<div>
+									<h5>▶ 출금요청</h5>
+								</div>
+                                <div class="ibox-tools">
+                                    <button class="btn btn-success btn-xs" type="button" onclick="">&nbsp;계좌확인</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.addRows_TB07200S(`#TB07200S_wthdrwlRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.dltRows_TB07200S(`#TB07200S_wthdrwlRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<div id="TB07200S_wthdrwlRqst"></div>
+							</div>
+                        </div>	
+                        <!--버튼영역-->
+                        <div class="ibox form-inline">
+							<div class="col-sm-6 text-left pd0">
+							</div>
+							<div class="col-sm-6 text-right pd0">
+								<button class="btn btn-success mg-l5" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;저장</button>
+								<button class="btn btn-info mg-l5" type="button" onclick=""><i class="fa fa-square-o"></i>&nbsp;승인요청</button>
+							</div>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</html>
