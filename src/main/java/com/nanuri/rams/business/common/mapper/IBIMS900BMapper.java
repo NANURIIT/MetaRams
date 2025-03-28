@@ -1,0 +1,12 @@
+package com.nanuri.rams.business.common.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface IBIMS900BMapper {
+
+    
+
+}

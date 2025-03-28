@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS901BMapper">
+
+    <select id="selectSpcList">
+        SELECT ARDY_BZEP_NO
+             , FINC_EXCU_RQS_SN
+             , FINC_EXCU_RQS_DT
+             , IB_CTRT_NM
+             , ISTT_CD
+             , ASST_MNGM_ACNO
+             , DPRT_CD
+             , RM_CTNS
+             , PRG_STTS_CD
+             , LQDZ_SCTY_ISU_YN
+             , DECD_SN
+             , HND_DETL_DTM
+             , HND_EMPNO
+          FROM IBIMS900B
+         WHERE 1=1
+    </select>
+
+</mapper>
