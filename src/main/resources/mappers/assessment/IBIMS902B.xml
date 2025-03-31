@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS902BMapper">
+
+    <!-- 입금요청, 출금요청 -->
+    <!-- SPC별 거래내역 조회 -->
+    <select id="지정바람" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS902BVO">
+        SELECT TR_DT
+             , ARDY_BZEP_NO
+             , FINC_EXCU_RQS_SN
+             , TR_SN
+             , RNDR_DCD
+             , SPC_DEP_ITEM_KND_CD
+             , SPC_WDR_ITEM_KND_CD
+             , SYNS_TEXT
+             , TR_OTHR_DSCM_NO
+             , RNDR_AMT
+             , RNDR_BLCE
+             , ISTT_CD
+             , ACNO
+             , RMRK
+             , HND_DETL_DTM
+             , HND_EMPNO
+             , PRG_STTS_CD      /* 진행상태코드 (확정용?) */
+             , DECD_STEP_DCD    /* 결재단계구분코드 (뭐가 필요한지 모르겠어서 둘다 넣음) */
+             , DECD_STTS_DCD    /* 결재상태구분코드 (뭐가 필요한지 모르겠어서 둘다 넣음) */
+             , DPRT_CD          /* 관리부점코드 */
+          FROM IBIMS902B T1
+     LEFT JOIN IBIMS900B T2
+            ON T2.ARDY_BZEP_NO = T1.ARDY_BZEP_NO
+           AND T2.FINC_EXCU_RQS_SN = T1.FINC_EXCU_RQS_SN
+     LEFT JOIN IBIMS231B T3
+            ON T3.DECD_SN = T1.DECD_SN
+         WHERE 1=1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rndrDcd)">
+           AND RNDR_DCD = #{rndrDcd}                    /* 입출금구분코드 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
+           AND ARDY_BZEP_NO = #{ardyBzepNo}             /* SPC */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsSn)">
+           AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}      /* 자금집행신청일련번호 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(acno)">
+           AND ACNO = #{acno}                           /* 자산관리계좌번호 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           AND DPRT_CD = #{dprtCd}                      /* 관리부점코드 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(COL)">
+           AND COL = #{COL}         /* 신청일자 PREV(수정해서사용) */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(COL)">
+           AND COL = #{COL}         /* 신청일자 NEXT(수정해서사용) */
+           </if>
+    </select>
+
+</mapper>
