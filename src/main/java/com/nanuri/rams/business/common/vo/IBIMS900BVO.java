@@ -11,5 +11,6 @@ public class IBIMS900BVO extends IBIMS900BDTO {
 
     private String fincExcuRqsDt1;
     private String fincExcuRqsDt2;
+    private String decdSttsDcd;
     
 }
