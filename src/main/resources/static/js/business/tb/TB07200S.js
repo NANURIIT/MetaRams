@@ -1,5 +1,8 @@
 const TB07200Sjs = (function () {
 
+    let selectBox;
+    let dprtList;
+
     $(document).ready(function () {
 
         $("#TB07200S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
@@ -10,6 +13,25 @@ const TB07200Sjs = (function () {
     });
 
     function gridSett(){
+
+        selectBox = getSelectBoxList("TB09080S", "D010", false);
+
+        dprtList = selectBox.filter(function (item) {
+            return item.cmnsGrpCd === "D010";
+        });
+
+        let dprtHtml;
+
+        dprtList.forEach((item) => {
+            dprtHtml += `<option value="${item.cdValue}">${item.cdName}</option>`;
+        });
+    
+        $("#TB07200S_dprtNm").append(dprtHtml);
+    
+        $("#TB07200S_dprtNm").on("change", function () {
+        $("#TB07200S_dprtCd").val($("#TB07200S_dprtNm").val());
+        });
+
 
         //업무지시요청 그리드 colModel
         let TB07200S_col_wrkRqst = [
@@ -152,10 +174,22 @@ const TB07200Sjs = (function () {
             {
                 title: "거래상대방",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "trOthrNm",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
+            },
+            {
+                title	: "",
+                dataType: "string",
+                dataIndx: "",
+                halign	: "center",
+                align	: "center",
+                width   : "1%",
+                render: function (ui) {
+                        let rowData = ui.rowData;
+                        return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03061P('TB07200S_dpstRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                    }
             },
             {
                 title: "금액",
@@ -180,7 +214,13 @@ const TB07200Sjs = (function () {
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
-            }
+            },
+            {
+                dataType: "string",
+                dataIndx: "trOthrDscmNo",
+                align: "center",
+                hidden: true,
+            },
         ]
 
         //출금요청 그리드 colModel
@@ -212,10 +252,22 @@ const TB07200Sjs = (function () {
             {
                 title: "거래상대방",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "trOthrNm",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
+            },
+            {
+                title	: "",
+                dataType: "string",
+                dataIndx: "",
+                halign	: "center",
+                align	: "center",
+                width   : "1%",
+                render: function (ui) {
+                        let rowData = ui.rowData;
+                        return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03061P('TB07200S_wthdrwlRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                    }
             },
             {
                 title: "금액",
@@ -240,7 +292,13 @@ const TB07200Sjs = (function () {
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
-            }
+            },
+            {
+                dataType: "string",
+                dataIndx: "trOthrDscmNo",
+                align: "center",
+                hidden: true,
+            },
         ]
 
         showPqGrid(TB07200S_col_wrkRqst, TB07200S_col_pblHis, TB07200S_col_dpstRqst, TB07200S_col_wthdrwlRqst);
