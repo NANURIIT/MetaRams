@@ -514,6 +514,12 @@ function setArdyBzepInfo(rowData) {
 			$("#TB07200S_wthdrwlRqst").pqGrid("instance").pdata[rowInx].trOthrNm = entpNm;
 			$("#TB07200S_wthdrwlRqst").pqGrid("instance").refresh();
 			break;
+		case "TB07200S_wrkRqst":
+
+			$("#TB07200S_wrkRqst").pqGrid("instance").pdata[rowInx].ardyBzepNo = ardyBzepNo;
+			$("#TB07200S_wrkRqst").pqGrid("instance").pdata[rowInx].entpNm = entpNm;
+			$("#TB07200S_wrkRqst").pqGrid("instance").refresh();
+			break;
 		default:
 			break;
 	}
