@@ -34,13 +34,13 @@
 									<span class="req"></span>조회기간
 								</label>
 								<div class="col-sm-3 input-group">
-									<div class="col-sm-5 input-group date px-0">
+									<div class="col-sm-5 input-group month px-0">
 										<input type="text" class="form-control" id="GD10203S_fromMm" name="" value=""
 											placeholder="YYYY-MM">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
-									<div class="col-sm-5 input-group date px-0">
+									<div class="col-sm-5 input-group month px-0">
 										<input type="text" class="form-control" id="GD10203S_toMm" name="" value=""
 											placeholder="YYYY-MM">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -50,11 +50,11 @@
 								<label class="col-sm-1 control-label">SPC</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<input type="text" class="form-control" id="TB03020S_corpRgstNo">
+										<input type="text" class="form-control" id="GD10203S_ardyBzepNo">
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB03061P('GD10203S');"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB03020S_entpRnm" readonly="">
+										<input type="text" class="form-control" id="GD10203S_" readonly="">
 									</div>
 								</div>
 							</div>
@@ -65,30 +65,38 @@
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<select class="form-control" id="_dprtNm">
+										<select class="form-control" id="GD10203S_dprtNm">
 											<option value="">전체</option>
 										</select>
-										<input type="text" class="form-control" id="_dprtCd" readonly>
+										<input type="text" class="form-control" id="GD10203S_dprtCd" readonly>
 									</div>
 								</div>
 								<!-- 승인상태 -->
 								<label class="col-sm-1 control-label">
 									신청상태
 								</label>
-								<div class="col-sm-3">
+								<!-- <div class="col-sm-3">
 									<div class="input-group">
 										<select class="form-control" id="">
 										</select>
 									</div>
+								</div> -->
+								<div class="col-sm-3 input-group">
+									<select class="form-control" id="TB05030S_etcCndtF">
+										<option value="990">전체</option>
+										<option value="010">신청</option>
+										<option value="030">승인중</option>
+										<option value="090">승인완료</option>
+									</select>
 								</div>
 							</div>
 							<!-- 버튼영역 -->
 							<div class="col-sm-1-5 text-right">
-								<button class="btn btn-primary" onclick="GD10203Sjs.test();">
+								<button class="btn btn-primary" onclick="GD10203Sjs.retrieveBalanceInfoList();">
 									<i class="fa fa-search"></i>&nbsp;조회</button>
-								<button class="btn btn-default" type="button" onclick="">
-									<i class="fa fa-undo"></i>&nbsp;초기화
-								</button>
+								<!-- <button class="btn btn-default" type="button" onclick="">
+									<i class="fa fa-undo"></i>&nbsp;초기화</button> -->
+								<button class="btn btn-default" type="button" onclick="GD10203Sjs.rmReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
 							</div>
 						</div>
 					</div>

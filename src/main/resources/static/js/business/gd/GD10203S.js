@@ -1,12 +1,84 @@
 const GD10203Sjs = (function () {
     $(document).ready(function () {
         // 조회조건 Default Set
-        $("#GD10203S_fromMm").val(addMonth(getToday(), -1).slice(0, 7));
-        $("#GD10203S_toMm").val(getToday().slice(0, 7));
+        setMonthInput();
+        sltctBoxSet();
+        
         setGridOptions();
     });
 
-    function test() {
+    function setMonthInput() {
+        // 1개월전 ~ 현재월 디폴트 세팅
+        $("#GD10203S_fromMm").val(addMonth(getToday(), -1).slice(0, 7));
+        $("#GD10203S_toMm").val(getToday().slice(0, 7));
+      }
+
+    //selectBox 세팅
+    function sltctBoxSet(){
+        let selectBox = getSelectBoxList(
+            "GD10203S",
+            "D010",   //부서코드
+            false
+        );
+
+        let GD10203S_dprtSelect;
+
+        GD10203S_dprtSelect = selectBox.filter(function(item) {
+            return item.cmnsGrpCd === "D010";
+        })
+
+        let D010html;
+
+        GD10203S_dprtSelect.forEach((item) => {
+            D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+        });
+
+        $("#GD10203S_dprtNm").append(D010html);
+
+        $('#GD10203S_dprtNm').on('change', function() {
+            $('#GD10203S_dprtCd').val($('#GD10203S_dprtNm').val())
+        });
+
+        setFormElementsStateByUserRole();
+    }
+
+    	// 화면 초기화
+	const rmReset = (() => {
+		let fmIputLngth = document.querySelectorAll("input").length;
+		console.log("fmIputLngth : ", fmIputLngth)
+		for (let i = 0; i < fmIputLngth; i++) {
+			document.querySelectorAll("input")[i].value = "";
+		}
+        setMonthInput();
+		 GD10203S_clearAllGrid();
+		// TB03030S_setFileButtonEnabled(false);
+	});
+
+	function GD10203S_clearAllGrid(){
+		$("#GD10203S_spcBlceGrid").pqGrid("option", "dataModel.data", []);
+		$("#GD10203S_spcBlceGrid").pqGrid("refreshDataAndView");		
+	}
+
+    //부서명 변경시 부서번호 클리어
+    $("#userDprtNm").on('input', function(){
+        $('#userDprtCd').val("");  
+    });
+    
+    /**
+     * 로그인한 사용자의 권한에 따라 담당자번호 ,부서번호 비활성화 상태 조정
+     * 권한 조건은 미정이며,
+     * 현재는 로그인한 사원의 정보가 설정된 후, 관련 필드를 비활성화 상태로 설정
+     */
+    function setFormElementsStateByUserRole(){
+        let dprtCd = $('#userDprtCd').val();
+        let dprtNm = $('#userDprtNm').val();
+        
+        //로그인한 사원 정보 세팅 
+        $('#GD10203S_dprtCd').val(dprtCd);
+        $('#GD10203S_dprtNm').val(dprtCd);
+    }
+    
+    function retrieveBalanceInfoList() {
         let testJson = {
             amt: "100000"
         }
@@ -19,9 +91,6 @@ const GD10203Sjs = (function () {
     }
 
     function pqGridColModel() {
-
-        console.log("???");
-
         const spcBlceGrid = [
             {
                 title: "",
@@ -64,16 +133,6 @@ const GD10203Sjs = (function () {
                         summary: { type: "sum" },
                     },
                     {
-                        title: "DEAL명",
-                        dataType: "string",
-                        dataIndx: "",
-                        halign: "center",
-                        align: "left",
-                        width: "10%",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                    {
                         title: "전월말 잔고",
                         dataType: "string",
                         dataIndx: "",
@@ -94,7 +153,7 @@ const GD10203Sjs = (function () {
                 align: "center",
                 colModel: [
                     {
-                        title: "입금합계",
+                        title: "입금 합계",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -171,7 +230,18 @@ const GD10203Sjs = (function () {
                         summary: { type: "sum" },
                     },
                     {
-                        title: "자금운용 목적 계좌좌수",
+                        title: "자금운용 목적 계좌 회수",
+                        dataType: "string",
+                        dataIndx: "",
+                        halign: "center",
+                        align: "right",
+                        width: "10%",
+                        format: "#,###",
+                        filter: { crules: [{ condition: "range" }] },
+                        summary: { type: "sum" },
+                    },
+                    {
+                        title: "기타",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -191,7 +261,7 @@ const GD10203Sjs = (function () {
                 align: "center",
                 colModel: [
                     {
-                        title: "출금합계",
+                        title: "출금 합계",
                         dataType: "string",
                         dataIndx: "amt",
                         halign: "center",
@@ -213,7 +283,7 @@ const GD10203Sjs = (function () {
                         summary: { type: "sum" },
                     },
                     {
-                        title: "대출 실행/추가입출",
+                        title: "대출 실행/추가 인출",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -235,18 +305,7 @@ const GD10203Sjs = (function () {
                         summary: { type: "sum" },
                     },
                     {
-                        title: "셀다운 비용",
-                        dataType: "string",
-                        dataIndx: "",
-                        halign: "center",
-                        align: "right",
-                        width: "10%",
-                        format: "#,###",
-                        filter: { crules: [{ condition: "range" }] },
-                        summary: { type: "sum" },
-                    },
-                    {
-                        title: "원진세 합계",
+                        title: "원진세 납부",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -268,7 +327,7 @@ const GD10203Sjs = (function () {
                         summary: { type: "sum" },
                     },
                     {
-                        title: "자금은행목적 계좌",
+                        title: "자금운용 목적 계좌",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -310,7 +369,7 @@ const GD10203Sjs = (function () {
                         summary: { type: "sum" },
                     },
                     {
-                        title: "회계강사수수료",
+                        title: "회계감사수수료",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -343,7 +402,7 @@ const GD10203Sjs = (function () {
                         summary: { type: "sum" },
                     },
                     {
-                        title: "설립정산수수료",
+                        title: "설립청산수수료",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -396,7 +455,7 @@ const GD10203Sjs = (function () {
                         summary: { type: "sum" },
                     },
                     {
-                        title: "인수 수수료",
+                        title: "인수수수료",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -407,7 +466,7 @@ const GD10203Sjs = (function () {
                         summary: { type: "sum" },
                     },
                     {
-                        title: "이관/주선수수료",
+                        title: "주관/주선수수료",
                         dataType: "string",
                         dataIndx: "",
                         halign: "center",
@@ -450,6 +509,7 @@ const GD10203Sjs = (function () {
                         filter: { crules: [{ condition: "range" }] },
                         summary: { type: "sum" },
                     },
+                    /*
                     {
                         title: "촥정일",
                         dataType: "string",
@@ -472,6 +532,7 @@ const GD10203Sjs = (function () {
                         filter: { crules: [{ condition: "range" }] },
                         summary: { type: "sum" },
                     },
+                    */
                 ],
             },
         ]
@@ -498,9 +559,9 @@ const GD10203Sjs = (function () {
 
     return {
         // 조회
-
+		retrieveBalanceInfoList : retrieveBalanceInfoList
         // 초기화
-        test: test,
+		, rmReset : rmReset
 
     };
 })();
