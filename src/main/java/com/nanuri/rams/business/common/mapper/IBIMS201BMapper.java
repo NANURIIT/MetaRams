@@ -54,4 +54,9 @@ public interface IBIMS201BMapper {
 	public int setLastYnN(IBIMS201BVO param);
 	public int cndChng201B(IBIMS201BVO param);
 
+	/**
+	 * 진행상태변경
+	 */
+	public int sttsUpdate(IBIMS201BDTO param);
+
 }

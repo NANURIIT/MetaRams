@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS232BDTO;
+import com.nanuri.rams.business.common.mapper.IBIMS201BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS231BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS232BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS231BVO;
@@ -26,6 +28,7 @@ public class TB06082ServiceImpl implements TB06082Service {
 
 	private final IBIMS231BMapper ibims231bMapper;
 	private final IBIMS232BMapper ibims232bMapper;
+	private final IBIMS201BMapper ibims201bMapper;
 
 	@Override
     public int decdUpdate(IBIMS231BVO paramData){
@@ -79,6 +82,13 @@ public class TB06082ServiceImpl implements TB06082Service {
 			// 처리결과구분코드 정상
 			dto231.setPrcsRsltDcd("01");
 			ibims231bMapper.updateDecd(dto231);
+
+			if ("TB06010S".equals(paramData.getScrnNo()) || "TB06020S".equals(paramData.getScrnNo()) || "TB06030S".equals(paramData.getScrnNo())) {
+				IBIMS201BDTO dto201 = new IBIMS201BDTO();
+				dto201.setPrdtCd(paramData.getPrdtCd());
+				dto201.setPrgSttsCd("403");		// 승인정보부의합의완료
+				ibims201bMapper.sttsUpdate(dto201);
+			}
 		}
 		
 		if("3".equals(dto232.getDecdSttsDcd())){

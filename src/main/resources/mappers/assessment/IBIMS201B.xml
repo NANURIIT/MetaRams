@@ -2104,4 +2104,12 @@
           WHERE PRDT_CD = #{prdtCd}
           AND SN = #{sn}
         </insert>
+
+
+  <update id="sttsUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS201BDTO">
+    UPDATE IBIMS201B
+       SET PRG_STTS_CD = #{prgSttsCd}
+     WHERE 1=1
+       AND PRDT_CD = #{prdtCd}
+  </update>
 </mapper>
