@@ -4,7 +4,7 @@
 
     <!-- 자금집행 업무리스트 -->
     <!-- 승인내역조회 -->
-    <select id="selectSpcList" parameterType="com.nanuri.rams.business.common.dto.IBIMS900BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
+    <select id="selectSpcList" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
         SELECT T1.ARDY_BZEP_NO
              , T1.FINC_EXCU_RQS_SN
              , T1.FINC_EXCU_RQS_DT
@@ -24,6 +24,7 @@
              , T2.RQST_DTM                          /* 신청일시 */
              , T3.RNDR_IN_AMT                       /* 입금합계 */
              , T3.RNDR_OUT_AMT                      /* 출금합계 */
+             , T3.TR_DT                             /* 거래일자 */
           FROM IBIMS900B T1
      LEFT JOIN IBIMS231B T2
             ON T2.DECD_SN = T1.DECD_SN
@@ -32,6 +33,7 @@
                      , FINC_EXCU_RQS_SN
                      , SUM(CASE WHEN RNDR_DCD = '입금' THEN RNDR_AMT ELSE 0 END) AS RNDR_IN_AMT     /* 입금합계 */
                      , SUM(CASE WHEN RNDR_DCD = '출금' THEN RNDR_AMT ELSE 0 END) AS RNDR_OUT_AMT    /* 출금합계 */
+                     , MAX(TR_DT)                                                AS TR_DT           /* 거래일자(임시) */
                   FROM IBIMS902B
                  WHERE 1=1
                    AND ARDY_BZEP_NO = #{ardyBzepNo}
@@ -42,28 +44,34 @@
            AND T3.FINC_EXCU_RQS_SN = T1.FINC_EXCU_RQS_SN
          WHERE 1=1
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
-           AND ARDY_BZEP_NO = #{ardyBzepNo}         /* SPC */
+           AND T1.ARDY_BZEP_NO = #{ardyBzepNo}         /* SPC */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-           AND DPRT_CD = #{dprtCd}                  /* 관리부점 */
+           AND T1.DPRT_CD = #{dprtCd}                  /* 관리부점 */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ibCtrtNm)">
-           AND IB_CTRT_NM = #{ibCtrtNm}             /* 계약명 */
+           AND T1.IB_CTRT_NM = #{ibCtrtNm}             /* 계약명 */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(asstMngmAcno)">
-           AND ASST_MNGM_ACNO = #{asstMngmAcno}     /* 자산관리계좌 */
+           AND T1.ASST_MNGM_ACNO = #{asstMngmAcno}     /* 자산관리계좌 */
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(menuId)">
-           AND ARDY_BZEP_NO = #{ardyBzepNo}         /* 신청일자 PREV(수정해서사용) */
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsDt1)">
+           AND T1.FINC_EXCU_RQS_DT = #{fincExcuRqsDt1}         /* 신청일자 PREV(수정해서사용) */
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(menuId)">
-           AND ARDY_BZEP_NO = #{ardyBzepNo}         /* 신청일자 NEXT(수정해서사용) */
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsDt2)">
+           AND T1.FINC_EXCU_RQS_DT = #{fincExcuRqsDt2}         /* 신청일자 NEXT(수정해서사용) */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prgSttsCd)">
-           AND PRG_STTS_CD = #{prgSttsCd}           /* 신청상태 */
+           AND T1.PRG_STTS_CD = #{prgSttsCd}           /* 신청상태 */
            </if>
     </select>
 
+    <select id="spcDetailApvlList">
     
+    </select>
+
+    <select id="spcDetailRjctList">
+
+    </select>
 
 </mapper>
