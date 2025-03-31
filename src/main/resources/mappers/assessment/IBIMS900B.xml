@@ -88,10 +88,10 @@
            AND T1.ASST_MNGM_ACNO = #{asstMngmAcno}     /* 자산관리계좌 */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsDt1)">
-           AND T1.FINC_EXCU_RQS_DT = #{fincExcuRqsDt1} /* 신청일자 PREV(수정해서사용) */
+           AND T1.FINC_EXCU_RQS_DT &gt; #{fincExcuRqsDt1} /* 신청일자 PREV(수정해서사용) */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsDt2)">
-           AND T1.FINC_EXCU_RQS_DT = #{fincExcuRqsDt2} /* 신청일자 NEXT(수정해서사용) */
+           AND T1.FINC_EXCU_RQS_DT &lt; #{fincExcuRqsDt2} /* 신청일자 NEXT(수정해서사용) */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(decdSttsDcd)">
            AND T2.DECD_STTS_DCD = ' '                  /* 결재상태 */
@@ -101,7 +101,24 @@
            </if>
     </select>
 
-    <select id="spcDecdDetail">
-    
+    <select id="spcDecdDetail" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS232BVO">
+      SELECT DECD_SQ
+           , DECD_STTS_DCD
+           , DCFC_ENO
+           , DECD_DTM
+           , RJCT_RSN_CNTN
+        FROM IBIMS232B
+       WHERE 1=1
+         AND DECD_SN = (
+            SELECT DECD_SN
+              FROM IBIMS231B
+             WHERE 1=1
+               AND DEAL_NO = #{fincExcuRqsSn}
+               AND PRDT_CD = ''
+               AND DECD_JOB_DCD = '07'
+               AND EXC_SEQ = 0
+               AND RQST_SQ = 0
+               AND TR_SEQ = 0
+         )
     </select>
 </mapper>

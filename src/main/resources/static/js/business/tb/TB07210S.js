@@ -146,6 +146,14 @@ const TB07210Sjs = (function () {
 
         const spcDecdDetail = [
             {
+                title: "결재순번",
+                dataType: "string",
+                dataIndx: "decdSn",
+                halign: "center",
+                align: "right",
+                filter: { crules: [{ condition: "range" }] },
+            },
+            {
                 title: "결재상태코드",
                 dataType: "string",
                 dataIndx: "decdSttsDcd",
@@ -186,6 +194,11 @@ const TB07210Sjs = (function () {
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
             },
+            {
+                title: "자금집행신청일련번호",
+                dataType: "string",
+                dataIndx: "fincExcuRqsSn",
+            }
         ]
 
         if (num === 1) {
@@ -206,6 +219,10 @@ const TB07210Sjs = (function () {
                 , id: 'TB07210S_spcDecdGrid'
                 , colModel: pqGridColModel(1)
                 , editable: false
+                , rowClick: function (evt, ui) {
+                    spcDecdDetail(ui.rowData.fincExcuRqsSn);
+                }
+                , selectionModel: { type: "row" },
             },
             {
                 height: 270
@@ -219,6 +236,10 @@ const TB07210Sjs = (function () {
         setPqGrid(pqGridObjs);
     }
 
+
+    /**
+     * 조회
+     */
     function inq() {
 
         /**
@@ -231,12 +252,10 @@ const TB07210Sjs = (function () {
         let paramData = {
             dprtCd: $('#TB07210S_dprtCd').val(),
             ardyBzepNo: $('#TB07210S_ardyBzepNo').val(),
-            fincExcuRqsDt1: $('#TB07210S_fincExcuRqsDt1').val() ? $('TB07210S_fincExcuRqsDt1').val().replaceAll("-", "") : "",
-            fincExcuRqsDt2: $('#TB07210S_fincExcuRqsDt2').val() ? $('TB07210S_fincExcuRqsDt2').val().replaceAll("-", "") : "",
+            fincExcuRqsDt1: $('#TB07210S_fincExcuRqsDt1').val() ? $('#TB07210S_fincExcuRqsDt1').val().replaceAll("-", "") : "",
+            fincExcuRqsDt2: $('#TB07210S_fincExcuRqsDt2').val() ? $('#TB07210S_fincExcuRqsDt2').val().replaceAll("-", "") : "",
             decdSttsDcd: $('#TB07210S_decdSttsDcd').val(),
         }
-
-        console.log(paramData);
 
         $.ajax({
             method: "POST",
@@ -266,6 +285,46 @@ const TB07210Sjs = (function () {
                 })
             },
         });
+    }
+
+    function spcDecdDetail (fincExcuRqsSn) {
+
+        /**
+         * @param { String } fincExcuRqsSn 자금집행신청일련번호
+         */
+        let paramData = {
+            fincExcuRqsSn: fincExcuRqsSn
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "/TB07210S/spcDecdDetail",
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data: JSON.stringify(paramData),
+            success: function (data) {
+                console.log(data);
+                
+                if (data.length > 0) {
+                    $('#TB07210S_spcDecdDetail').pqGrid('instance').setData(data);
+                }
+                else {
+                    $('#TB07210S_spcDecdDetail').pqGrid('instance').setData([]);
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: '조회된 정보가 없습니다!'
+                    })
+                }
+            },
+            error: function (response) {
+                // 에러남 ㅋㅋ
+                Swal.fire({
+                    icon: 'error'
+                    , title: '조회된 정보가 없습니다!'
+                })
+            },
+        });
+
     }
 
 
