@@ -1,23 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS901BMapper">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS900BMapper">
 
-    <select id="selectSpcList">
-        SELECT ARDY_BZEP_NO
-             , FINC_EXCU_RQS_SN
-             , FINC_EXCU_RQS_DT
-             , IB_CTRT_NM
-             , ISTT_CD
-             , ASST_MNGM_ACNO
-             , DPRT_CD
-             , RM_CTNS
-             , PRG_STTS_CD
-             , LQDZ_SCTY_ISU_YN
-             , DECD_SN
-             , HND_DETL_DTM
-             , HND_EMPNO
-          FROM IBIMS900B
+    <!-- 자금집행 업무리스트 -->
+    <!-- 승인내역조회 -->
+    <select id="selectSpcList" parameterType="com.nanuri.rams.business.common.dto.IBIMS900BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
+        SELECT T1.ARDY_BZEP_NO
+             , T1.FINC_EXCU_RQS_SN
+             , T1.FINC_EXCU_RQS_DT
+             , T1.IB_CTRT_NM
+             , T1.ISTT_CD
+             , T1.ASST_MNGM_ACNO
+             , T1.DPRT_CD
+             , T1.RM_CTNS
+             , T1.PRG_STTS_CD
+             , T1.LQDZ_SCTY_ISU_YN
+             , T1.DECD_SN
+             , T1.HND_DETL_DTM
+             , T1.HND_EMPNO
+             , T2.APVL_RQST_P_ENO                   /* 요청자사번 */
+             , T2.DECD_STEP_DCD                     /* 결재단계구분코드 */
+             , T2.DECD_STTS_DCD                     /* 결재상태구분코드 */
+             , T2.RQST_DTM                          /* 신청일시 */
+             , T3.RNDR_IN_AMT                       /* 입금합계 */
+             , T3.RNDR_OUT_AMT                      /* 출금합계 */
+          FROM IBIMS900B T1
+     LEFT JOIN IBIMS231B T2
+            ON T2.DECD_SN = T1.DECD_SN
+     LEFT JOIN (
+                SELECT ARDY_BZEP_NO
+                     , FINC_EXCU_RQS_SN
+                     , SUM(CASE WHEN RNDR_DCD = '입금' THEN RNDR_AMT ELSE 0 END) AS RNDR_IN_AMT     /* 입금합계 */
+                     , SUM(CASE WHEN RNDR_DCD = '출금' THEN RNDR_AMT ELSE 0 END) AS RNDR_OUT_AMT    /* 출금합계 */
+                  FROM IBIMS902B
+                 WHERE 1=1
+                   AND ARDY_BZEP_NO = #{ardyBzepNo}
+                 GROUP
+                    BY ARDY_BZEP_NO, FINC_EXCU_RQS_SN
+             ) T3
+            ON T3.ARDY_BZEP_NO = T1.ARDY_BZEP_NO
+           AND T3.FINC_EXCU_RQS_SN = T1.FINC_EXCU_RQS_SN
          WHERE 1=1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
+           AND ARDY_BZEP_NO = #{ardyBzepNo}         /* SPC */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           AND DPRT_CD = #{dprtCd}                  /* 관리부점 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ibCtrtNm)">
+           AND IB_CTRT_NM = #{ibCtrtNm}             /* 계약명 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(asstMngmAcno)">
+           AND ASST_MNGM_ACNO = #{asstMngmAcno}     /* 자산관리계좌 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(menuId)">
+           AND ARDY_BZEP_NO = #{ardyBzepNo}         /* 신청일자 PREV(수정해서사용) */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(menuId)">
+           AND ARDY_BZEP_NO = #{ardyBzepNo}         /* 신청일자 NEXT(수정해서사용) */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prgSttsCd)">
+           AND PRG_STTS_CD = #{prgSttsCd}           /* 신청상태 */
+           </if>
     </select>
+
+    
 
 </mapper>
