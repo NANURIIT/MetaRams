@@ -35,10 +35,10 @@
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<select class="form-control" id="_dprtNm">
+										<select class="form-control" id="TB07210S_dprtNm">
 											<option value="">전체</option>
 										</select>
-										<input type="text" class="form-control" id="_dprtCd" readonly>
+										<input type="text" class="form-control" id="TB07210S_dprtCd" readonly>
 									</div>
 								</div>
 								<label class="col-sm-1 control-label">
@@ -46,13 +46,13 @@
 								</label>
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="" name="" value=""
+										<input type="text" class="form-control" id="TB07210S_fincExcuRqsDt1" name="" value=""
 											placeholder="YYYY-MM-DD">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="" name="" value=""
+										<input type="text" class="form-control" id="TB07210S_fincExcuRqsDt2" name="" value=""
 											placeholder="YYYY-MM-DD">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
@@ -65,28 +65,29 @@
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<input type="text" class="form-control" id="TB07210S_">
+										<input type="text" class="form-control" id="TB07210S_ardyBzepNo">
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB03061P('TB07210S');"><i
 													class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB07210S_" readonly="">
+										<input type="text" class="form-control" id="TB07210S_ardyBzepNm" readonly="">
 									</div>
 								</div>
 								<!-- 승인상태 -->
 								<label class="col-sm-1 control-label">
-									신청상태
+									결재상태
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<select class="form-control" id="">
+										<select class="form-control" id="TB07210S_decdSttsDcd">
+											<option value="">전체</option>
 										</select>
 									</div>
 								</div>
 							</div>
 							<!-- 버튼영역 -->
 							<div class="col-sm-1-5 text-right">
-								<button class="btn btn-primary" onclick="">
+								<button class="btn btn-primary" onclick="TB07210Sjs.inq()">
 									<i class="fa fa-search"></i>&nbsp;조회</button>
 								<button class="btn btn-default" type="button" onclick="">
 									<i class="fa fa-undo"></i>&nbsp;초기화
@@ -103,7 +104,7 @@
 							</div>
 							<div class="ibox-content">
 								<!-- 승인내역조회 그리드 -->
-								<div id="TB07210S_spcDesdGrid"></div>
+								<div id="TB07210S_spcDecdGrid"></div>
 							</div>
 						</div>
 
@@ -113,14 +114,7 @@
 								<h5>▶ 승인상세</h5>
 							</div>
 							<div class="ibox-content">
-								<div class="row">
-									<div class="col-sm-4">
-										<div id="TB07210S_spcApvlRqstGrid"></div>
-									</div>
-									<div class="col-sm-8">
-										<div id="TB07210S_spcRjctGrid"></div>
-									</div>
-								</div>
+								<div id="TB07210S_spcDecdDetail"></div>
 							</div>
 						</div>
 					</div>

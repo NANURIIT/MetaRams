@@ -1,11 +1,42 @@
 const TB07210Sjs = (function () {
+
+    // 콤보박스용 전역변수
+    let grdSelect = {};
+    let selectBox;
+
     $(document).ready(function () {
+        selectBoxSetting();
         setGridOptions();
     });
 
-    function inq() {
+    function selectBoxSetting() {
 
-    }
+        selectBox = getSelectBoxList("TB07210S",
+          "/D006"           // 결재상태구분코드
+          + "/D010"         // 부서코드
+          , false);
+    
+        grdSelect.D006 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'D006' })             // 결재상태구분코드
+        grdSelect.D010 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'D010' });            // 부서코드
+
+        // 진행상태구분코드 콤보박스 셋
+        let decdSttsDcdOptionTag = "";
+        for (let i = 0; i < grdSelect.D006.length; i++) {
+            decdSttsDcdOptionTag += `<option value="${grdSelect.D006[i].cdValue}">${grdSelect.D006[i].cdName}</option>`
+        }
+        $('#TB07210S_decdSttsDcd').append(decdSttsDcdOptionTag)
+        
+        // 부서코드 콤보박스 셋
+        let dprtOptionTag = "";
+        for (let i = 0; i < grdSelect.D010.length; i++) {
+          dprtOptionTag += `<option value="${grdSelect.D010[i].cdValue}">${grdSelect.D010[i].cdName}</option>`
+        }
+        $('#TB07210S_dprtNm').append(dprtOptionTag)
+        $('#TB07210S_dprtNm').on('change', function () {
+          $('#TB07210S_dprtCd').val($(this).val())
+        })
+    
+      }
 
     function pqGridColModel(num) {
 
@@ -14,11 +45,11 @@ const TB07210Sjs = (function () {
         //     , { "N": "N" }
         // ]
 
-        const spcDesdGrid = [
+        const spcDecdGrid = [
             {
                 title: "신청일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "fincExcuRqsDt",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -29,7 +60,7 @@ const TB07210Sjs = (function () {
             {
                 title: "관리부점",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "dprtCd",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -37,7 +68,7 @@ const TB07210Sjs = (function () {
             {
                 title: "SPC명",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "ardyBzepNo",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
@@ -45,7 +76,7 @@ const TB07210Sjs = (function () {
             {
                 title: "거래일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "trDt",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -56,7 +87,7 @@ const TB07210Sjs = (function () {
             {
                 title: "출금계좌번호",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "asstMngmAcno",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
@@ -64,7 +95,7 @@ const TB07210Sjs = (function () {
             {
                 title: "입금합계",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "rndrInAmt",
                 halign: "center",
                 align: "right",
                 format: "#,###",
@@ -73,7 +104,7 @@ const TB07210Sjs = (function () {
             {
                 title: "출금합계",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "rndrOutAmt",
                 halign: "center",
                 align: "right",
                 format: "#,###",
@@ -82,7 +113,7 @@ const TB07210Sjs = (function () {
             {
                 title: "유동화증권 발행여부",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "lqdzSctyIsuYn",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -90,7 +121,7 @@ const TB07210Sjs = (function () {
             {
                 title: "신청자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "apvlRqstPEno",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -98,85 +129,58 @@ const TB07210Sjs = (function () {
             {
                 title: "신청일시",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "rqstDtm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "승인구분",
+                title: "결재구분",
                 dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-        ]
-
-        const spcApvlRqstGrid = [
-            {
-                title: "승인코드",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "승인명",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "승인자",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "승인일시",
-                dataType: "string",
-                dataIndx: "",
+                dataIndx: "prgSttsCd",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
         ]
 
-        const spcRjctGrid = [
+        const spcDecdDetail = [
             {
-                title: "승인코드",
+                title: "결재순번",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "decdSn",
+                halign: "center",
+                align: "right",
+                filter: { crules: [{ condition: "range" }] },
+            },
+            {
+                title: "결재상태코드",
+                dataType: "string",
+                dataIndx: "decdSttsDcd",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "승인명",
+                title: "결재상태명",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "decdSttsNm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "취소자",
+                title: "결재자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "dcfcEnm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "취소일시",
+                title: "처리일시",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "decdDtm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -184,22 +188,24 @@ const TB07210Sjs = (function () {
             {
                 title: "취소사유",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "rjctRsnCntn",
                 width: "30%",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
             },
+            {
+                title: "자금집행신청일련번호",
+                dataType: "string",
+                dataIndx: "fincExcuRqsSn",
+            }
         ]
 
         if (num === 1) {
-            return spcDesdGrid
+            return spcDecdGrid
         }
         else if (num === 2) {
-            return spcApvlRqstGrid
-        }
-        else if (num === 3) {
-            return spcRjctGrid
+            return spcDecdDetail
         }
     }
 
@@ -210,22 +216,19 @@ const TB07210Sjs = (function () {
             {
                 height: 270
                 , maxHeight: 270
-                , id: 'TB07210S_spcDesdGrid'
+                , id: 'TB07210S_spcDecdGrid'
                 , colModel: pqGridColModel(1)
                 , editable: false
+                , rowClick: function (evt, ui) {
+                    spcDecdDetail(ui.rowData.fincExcuRqsSn);
+                }
+                , selectionModel: { type: "row" },
             },
             {
                 height: 270
                 , maxHeight: 270
-                , id: 'TB07210S_spcApvlRqstGrid'
+                , id: 'TB07210S_spcDecdDetail'
                 , colModel: pqGridColModel(2)
-                , editable: false
-            },
-            {
-                height: 270
-                , maxHeight: 270
-                , id: 'TB07210S_spcRjctGrid'
-                , colModel: pqGridColModel(3)
                 , editable: false
             },
         ];
@@ -233,9 +236,101 @@ const TB07210Sjs = (function () {
         setPqGrid(pqGridObjs);
     }
 
+
+    /**
+     * 조회
+     */
+    function inq() {
+
+        /**
+         * @param { String } dprtCd 관리부서
+         * @param { String } ardyBzepNo SPC
+         * @param { String } fincExcuRqsDt1 신청일자1
+         * @param { String } fincExcuRqsDt2 신청일자2
+         * @param { String } prgSttsCd 진행상태코드(신청상태)
+         */
+        let paramData = {
+            dprtCd: $('#TB07210S_dprtCd').val(),
+            ardyBzepNo: $('#TB07210S_ardyBzepNo').val(),
+            fincExcuRqsDt1: $('#TB07210S_fincExcuRqsDt1').val() ? $('#TB07210S_fincExcuRqsDt1').val().replaceAll("-", "") : "",
+            fincExcuRqsDt2: $('#TB07210S_fincExcuRqsDt2').val() ? $('#TB07210S_fincExcuRqsDt2').val().replaceAll("-", "") : "",
+            decdSttsDcd: $('#TB07210S_decdSttsDcd').val(),
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "/TB07210S/selectSpcList",
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data: JSON.stringify(paramData),
+            success: function (data) {
+                console.log(data);
+                
+                if (data.length > 0) {
+                    $('#TB07210S_spcDecdGrid').pqGrid('instance').setData(data);
+                }
+                else {
+                    $('#TB07210S_spcDecdGrid').pqGrid('instance').setData([]);
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: '조회된 정보가 없습니다!'
+                    })
+                }
+            },
+            error: function (response) {
+                // 에러남 ㅋㅋ
+                Swal.fire({
+                    icon: 'error'
+                    , title: '조회된 정보가 없습니다!'
+                })
+            },
+        });
+    }
+
+    function spcDecdDetail (fincExcuRqsSn) {
+
+        /**
+         * @param { String } fincExcuRqsSn 자금집행신청일련번호
+         */
+        let paramData = {
+            fincExcuRqsSn: fincExcuRqsSn
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "/TB07210S/spcDecdDetail",
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data: JSON.stringify(paramData),
+            success: function (data) {
+                console.log(data);
+                
+                if (data.length > 0) {
+                    $('#TB07210S_spcDecdDetail').pqGrid('instance').setData(data);
+                }
+                else {
+                    $('#TB07210S_spcDecdDetail').pqGrid('instance').setData([]);
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: '조회된 정보가 없습니다!'
+                    })
+                }
+            },
+            error: function (response) {
+                // 에러남 ㅋㅋ
+                Swal.fire({
+                    icon: 'error'
+                    , title: '조회된 정보가 없습니다!'
+                })
+            },
+        });
+
+    }
+
+
     return {
         // 조회
-
+        inq: inq
         // 초기화
 
     };

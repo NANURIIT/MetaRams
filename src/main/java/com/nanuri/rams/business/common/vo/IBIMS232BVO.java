@@ -17,4 +17,7 @@ public class IBIMS232BVO extends IBIMS232BDTO {
     private String dcfcEnm;          // 결재자명
     private String decdSttsNm;      // 결재상태구분코드
 
+    private List<IBIMS232BDTO> apvlList;
+    private List<IBIMS232BDTO> rjctList;
+
 }
