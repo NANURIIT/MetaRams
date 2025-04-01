@@ -58,6 +58,9 @@ const TB07090Sjs = (function () {
     loadUserAuth(); //로그인유저정보
     selectBoxSet_TB07090S();
     getDealInfoFromWF();
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB07090S_fromDate","TB07090S_toDate");
   });
 
   function loadUserAuth() {

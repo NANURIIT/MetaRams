@@ -225,6 +225,9 @@ const TB04040Sjs = (function () {
     $("#TB04040S_toDate").val(getToday());
 
     setGrid_TB04040S();
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB04040S_fromDate","TB04040S_toDate");
   });
 
   // 유효성 검사용 날짜패턴

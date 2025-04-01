@@ -19,6 +19,9 @@ const TB07190Sjs = (function () {
 	loginUserSet_TB07190S();
   	getDealInfoFromWF();
 	pqGrid_TB07190S();
+
+  //기간검색 유효성 검사 함수
+  chkValFromToDt("TB07190S_strYmd","TB07190S_endYmd");
   });
 
    /*
