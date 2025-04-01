@@ -1,4 +1,4 @@
-const TB07230Sjs = (function() {
+const TB07230Sjs = (function() { 
 
 	$(document).ready(function() {
 
@@ -12,7 +12,7 @@ const TB07230Sjs = (function() {
 		chkValFromToDt("TB07230S_fromDate","TB07230S_toDate");
 
 	});
-
+ 
 	function setMonthInput() {
 		// 1개월전 ~ 현재날짜 디폴트 세팅
 		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
