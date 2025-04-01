@@ -74,4 +74,108 @@
 
     </select>
 
+
+    <!-- 승인내역조회 -->
+    <select id="selectBalanceInfoList" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
+        SELECT SUBSTR(A.TR_DT, 0, 6)                                                               AS TR_MM           -- 거래일자 기준으로 쿼리구현 신청일자 기준일경우 수정해야함
+            , A.DPRT_CD                                                                            AS DPRT_CD         -- 관리부서코드
+            , (SELECT CD_VL_NM FROM IBIMS002B WHERE CMNS_CD_GRP = 'D010' AND CD_VL_ID = A.DPRT_CD) AS DPRT_NM         -- 관리부서명
+            , ( SELECT ENTP_NM FROM IBIMS010B WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO)                 AS SPC_NM          -- SPC명
+            , MAX(A.BFMM_RNDR_BLCE)                                                                AS BFMM_RNDR_BLCE  -- 전월말잔액
+            , MAX(A.THMM_RNDR_BLCE)                                                                AS THMM_RNDR_BLCE  -- 당월말잔액
+            , SUM(CASE WHEN A.RNDR_DCD = '1'                          THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_TOT 	  -- 입금합계
+            , SUM(CASE WHEN A.RNDR_DCD = '1' AND A.ITEM_KND_CD = '02' THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_02	    -- 유동화증권 인수대금(입금)
+            , SUM(CASE WHEN A.RNDR_DCD = '1' AND A.ITEM_KND_CD = '01' THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_01	    -- 기초자산 원리금(입금)
+            , SUM(CASE WHEN A.RNDR_DCD = '1' AND A.ITEM_KND_CD = '06' THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_06	    -- 취급수수료(입금)
+            , SUM(CASE WHEN A.RNDR_DCD = '1' AND A.ITEM_KND_CD = '03' THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_03	    -- 원천세 환급(입금)
+            , SUM(CASE WHEN A.RNDR_DCD = '1' AND A.ITEM_KND_CD = '04' THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_04	    -- 후순위대여 입금(입금)	 
+            , SUM(CASE WHEN A.RNDR_DCD = '1' AND A.ITEM_KND_CD = '05' THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_05	    -- 기초자산 매각대금(입금)     
+            , SUM(CASE WHEN A.RNDR_DCD = '1' AND A.ITEM_KND_CD = '07' THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_07	    -- 자금운용 목적 계좌 회수(입금)
+            , SUM(CASE WHEN A.RNDR_DCD = '1' AND A.ITEM_KND_CD = '99' THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_99      -- 기타(입금)	 
+            , SUM(CASE WHEN A.RNDR_DCD = '2'                          THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_TOT	    -- 출금합계
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '01' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_01	    -- 유동화증권 상환(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '08' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_08	    -- 대출 실행/추가 인출(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '05' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_05	    -- ABB/ABL 원리금(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '06' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_06	    -- 원천세 납부(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '07' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_07	    -- 후순위대여 상환(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '17' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_17      -- 자금운용 목적 계좌(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '10' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_10	    -- 법무법인수수료(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '11' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_11	    -- 업무위탁수수료(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '12' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_12	    -- 회계감사수수료(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '13' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_13	    -- 신용평가수수료(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '14' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_14	    -- 대리금융수수료(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '15' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_15	    -- 설립청산수수료(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '02' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_02	    -- 확약수수료(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '03' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_03	    -- 자산관리수수료(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '04' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_04	    -- 인수수수료(출금)     
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '09' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_09	    -- 주관/주선수수료(출금)
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '16' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_16	    -- 취급수수료(출금)     
+            , SUM(CASE WHEN A.RNDR_DCD = '2' AND A.ITEM_KND_CD = '99' THEN A.RNDR_AMT ELSE 0 END)  AS WDR_AMT_99      -- 기타(출금)
+          FROM (
+                SELECT T1.ARDY_BZEP_NO
+                      , T1.FINC_EXCU_RQS_SN
+                      , T2.TR_DT
+                      , T1.DPRT_CD
+                      , T2.RNDR_AMT
+                      , T2.RNDR_DCD
+                      , T5.DECD_STEP_DCD
+                      , T5.DECD_STTS_DCD
+                      , DECODE(T2.RNDR_DCD, '1', T2.SPC_DEP_ITEM_KND_CD, T2.SPC_WDR_ITEM_KND_CD) AS ITEM_KND_CD -- 1:입금, 2:출금
+                      , T3.RNDR_BLCE AS BFMM_RNDR_BLCE -- 전월말잔액
+                      , T4.RNDR_BLCE AS THMM_RNDR_BLCE -- 당월말잔액
+                  FROM IBIMS900B T1
+                      , IBIMS902B T2
+                      , (
+                          SELECT TR_DT
+                              , ARDY_BZEP_NO
+                              , FINC_EXCU_RQS_SN
+                              , RNDR_BLCE
+                            FROM IBIMS902B
+                          WHERE 1=1
+                            AND TR_DT = ( 
+                                          SELECT MAX(TR_DT)
+                                            FROM IBIMS902B
+                                            WHERE TR_DT <![CDATA[ <= ]]> TO_CHAR(LAST_DAY(ADD_MONTHS(SYSDATE, -1)), 'YYYYMMDD')
+                                        )
+                        ) T3 -- 전월
+                        , (
+                          SELECT TR_DT
+                              , ARDY_BZEP_NO
+                              , FINC_EXCU_RQS_SN
+                              , RNDR_BLCE
+                            FROM IBIMS902B
+                          WHERE 1=1
+                            AND TR_DT = ( 
+                                          SELECT MAX(TR_DT)
+                                            FROM IBIMS902B
+                                            WHERE TR_DT <![CDATA[ <= ]]> TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
+                                        )
+                        ) T4 -- 당월
+                      , IBIMS231B T5
+                  WHERE 1=1
+                    AND T1.ARDY_BZEP_NO                    = T2.ARDY_BZEP_NO
+                    AND T1.FINC_EXCU_RQS_SN                = T2.FINC_EXCU_RQS_SN
+                    AND T1.ARDY_BZEP_NO                    = T3.ARDY_BZEP_NO(+)
+                    AND T1.FINC_EXCU_RQS_SN                = T3.FINC_EXCU_RQS_SN(+)
+                    AND T1.ARDY_BZEP_NO                    = T4.ARDY_BZEP_NO(+)
+                    AND T1.FINC_EXCU_RQS_SN                = T4.FINC_EXCU_RQS_SN(+)
+                    AND lpad(T1.FINC_EXCU_RQS_SN , 5, '0') = T5.DEAL_NO(+)
+                    AND T2.TR_DT                           BETWEEN #{fromMm} AND #{toMm}   -- (조회조건)조회기간
+                    <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
+                    AND T1.ARDY_BZEP_NO                    = #{ardyBzepNo}         /* SPC */
+                    </if>
+                    <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+                    AND T1.DPRT_CD                         = #{dprtCd}                     -- (조회조건)관리부점
+                    </if>
+                    <if test='!"999".equals(decdSttsDcd)'>
+		                AND T5.DECD_STTS_DCD                   = #{decdSttsDcd}                -- (조회조건)결재상태
+                    </if>
+              ) A
+        WHERE 1=1
+        GROUP BY
+              SUBSTR(A.TR_DT, 0, 6)
+            , A.DPRT_CD
+            , A.ARDY_BZEP_NO
+            , A.DPRT_CD
+    </select>
 </mapper>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB07220S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 자금품의 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content i-filter" id="con-srch">
+						<div class="form-group row form-inline">
+							<div class="col-sm-10 form-group mb-1">
+								<!-- 조회기간 -->
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>조회기간
+								</label>
+								<div class="col-sm-3 input-group">
+									<div class="col-sm-5 input-group month px-0">
+										<input type="text" class="form-control" id="TB07220S_fromMm" name="" value=""
+											placeholder="YYYY-MM">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<span class="input-group-addon border-none"> ~ </span>
+									<div class="col-sm-5 input-group month px-0">
+										<input type="text" class="form-control" id="TB07220S_toMm" name=""
+											placeholder="YYYY-MM">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
+								<!-- SPC(기업체팝업) -->
+								<label class="col-sm-1 control-label">SPC</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB07220S_ardyBzepNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03061P('TB07220S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB07220S_ardyBzepNm" readonly="">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-10 form-group mb-1">
+								<!-- 부서코드 -->
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>관리부점
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB07220S_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="TB07220S_dprtCd" readonly>
+									</div>
+								</div>
+								<!-- 승인상태 -->
+								<label class="col-sm-1 control-label">
+									신청상태
+								</label>
+								<!-- <div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="">
+										</select>
+									</div>
+								</div> -->
+								<div class="col-sm-3 input-group">
+									<select class="form-control" id="TB07220S_decdSttsDcd">
+										<option value="999">전체</option>
+										<option value="010">신청</option>
+										<option value="030">승인중</option>
+										<option value="090">승인완료</option>
+									</select>
+								</div>
+							</div>
+							<!-- 버튼영역 -->
+							<div class="col-sm-1-5 text-right">
+								<button class="btn btn-primary" onclick="TB07220Sjs.selectBalanceInfoList();">
+									<i class="fa fa-search"></i>&nbsp;조회</button>
+								<!-- <button class="btn btn-default" type="button" onclick="">
+									<i class="fa fa-undo"></i>&nbsp;초기화</button> -->
+								<button class="btn btn-default" type="button" onclick="TB07220Sjs.rmReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+							</div>
+						</div>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content" style="min-height: 650px;">
+                        <!-- SPC잔고내역 그리드 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ SPC잔고내역</h5>
+							</div>
+							<div class="ibox-content">
+								<div id="TB07220S_spcBlceGrid"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>
