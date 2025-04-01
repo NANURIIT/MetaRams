@@ -2429,47 +2429,61 @@ function showToast ( status, dataLength, code ) {
 
 }
 
-function chkValFromToDt(dt1, dt2){
+/**
+ * 기간검색 유효성 검사
+ * @param { String }  id1     // 시작일자 컴포넌트
+ * @param { String }  id2     // 종료일자 컴포넌트
+ * @param { boolean } pattern // default true
+ */
+function chkValFromToDt(id1, id2, pattern = true){
 	
-	var idFromDate = "#" + dt1;
-	var idToDate   = "#" + dt2;
+	var idFromDate = "#" + id1;
+	var idToDate   = "#" + id2;
 	var fromDate   = "";
 	var toDate     = "";
 	
 	$(idFromDate).change(function() {
 		fromDate   = $(idFromDate).val();
 		toDate     = $(idToDate).val();
-		chkValFromToDtVal(fromDate, toDate);
+		chkValFromToDtVal(fromDate, toDate, pattern);
 	});
 	
 	$(idToDate).change(function() {
 		fromDate   = $(idFromDate).val();
 		toDate     = $(idToDate).val();
-		chkValFromToDtVal(fromDate, toDate);
+		chkValFromToDtVal(fromDate, toDate, pattern);
 	});
-	
 }
 
-// 기간검색 유효성 검사
 /**
- * @param { String } fromDate // 시작일자
- * @param { String } toDate   // 종료일자
+ * 기간검색 유효성 검사 내용
+ * @param { String }  fromDate // 시작일자
+ * @param { String }  toDate   // 종료일자
+ * @param { boolean } pattern  // default true
  */
-function chkValFromToDtVal(fromDate, toDate) {
+function chkValFromToDtVal(fromDate, toDate, pattern = true) {
 	// 유효성 검사용 날짜패턴
-	var pattern = /(^\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-	let msgError = "";
+	var regExpYmd = /(^\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+	var regExpYm  = /(^\d{4})-(0[1-9]|1[0-2])$/;
+	var regExp    = "";
+	var msgError  = "";
+	
+	if(pattern){
+		regExp = regExpYmd;
+	}else{
+		regExp = regExpYm;
+	}
 
 	if (isEmpty(fromDate)) {
 		msgError = "필수 입력값(조회시작일자)을 입력해주세요.";
 		alertPopup();
-	} else if (!pattern.test(fromDate)) {
+	} else if (!regExp.test(fromDate)) {
 		msgError = "필수 입력값(조회시작일자)을 확인해주세요.";
 		alertPopup();
 	} else if (isEmpty(toDate)) {
 		msgError = "필수 입력값(조회종료일자)을 입력해주세요.";
 		alertPopup();
-	} else if (!pattern.test(toDate)) {
+	} else if (!regExp.test(toDate)) {
 		msgError = "필수 입력값(조회종료일자)을 확인해주세요.";
 		alertPopup();
 	} else if (fromDate > toDate) {
