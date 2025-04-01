@@ -53,6 +53,14 @@
 			  , T1.TR_SN
     </select>
 
+	<select id="짜다맘">
+		SELECT TR_DT
+			 , SPC_DEP_ITEM_KND_CD
+		 WHERE 1=1
+		   AND RNDR_DCD = '1'	/* 입금 */
+		   AND 
+	</select>
+
 	<select id="getSn" parameterType="String">
 		SELECT NVL(TR_SN, 0) + 1
 		  FROM IBIMS900B
