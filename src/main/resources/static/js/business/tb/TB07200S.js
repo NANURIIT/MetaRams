@@ -69,7 +69,7 @@ const TB07200Sjs = (function () {
             {
                 title: "신청일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "fincExcuRqsDt",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -77,7 +77,7 @@ const TB07200Sjs = (function () {
             {
                 title: "신청번호",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "fincExcuRqsSn",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
@@ -154,7 +154,7 @@ const TB07200Sjs = (function () {
             {
                 title: "회차",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "lqdzSctyIsuTmrd",
                 halign: "center",
                 align: "right",
                 filter: { crules: [{ condition: "range" }] },
@@ -162,23 +162,25 @@ const TB07200Sjs = (function () {
             {
                 title: "발행일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isuDt",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "만기일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "expDt",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "일수",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "dnum",
                 halign: "center",
                 align: "right",
                 filter: { crules: [{ condition: "range" }] },
@@ -186,9 +188,10 @@ const TB07200Sjs = (function () {
             {
                 title: "발행금액(원)",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isuAmt",
                 halign: "center",
                 align: "right",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             }
         ]
@@ -198,25 +201,28 @@ const TB07200Sjs = (function () {
             {
                 title: "거래일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "trDt",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "입금항목",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "spcDepItemKndCd",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "적요",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "synsText",
                 halign: "center",
                 align: "left",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
@@ -242,30 +248,50 @@ const TB07200Sjs = (function () {
             {
                 title: "금액",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "rndrAmt",
                 halign: "center",
                 align: "right",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "은행",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isttNm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "계좌번호",
+                title	: "",
                 dataType: "string",
                 dataIndx: "",
+                halign	: "center",
+                align	: "center",
+                width   : "1%",
+                render: function (ui) {
+                    let rowData = ui.rowData;
+                    return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB07021P('TB07200S_dpstRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                }
+            },
+            {
+                title: "계좌번호",
+                dataType: "string",
+                dataIndx: "acno",
                 halign: "center",
                 align: "left",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 dataType: "string",
                 dataIndx: "trOthrDscmNo",
+                align: "center",
+                hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "isttCd",
                 align: "center",
                 hidden: true,
             },
@@ -276,25 +302,28 @@ const TB07200Sjs = (function () {
             {
                 title: "거래일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "trDt",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "입금항목",
+                title: "출금항목",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "spcWdrItemKndCd",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "적요",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "synsText",
                 halign: "center",
                 align: "left",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
@@ -320,30 +349,50 @@ const TB07200Sjs = (function () {
             {
                 title: "금액",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "rndrAmt",
                 halign: "center",
                 align: "right",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "은행",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isttNm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "계좌번호",
+                title	: "",
                 dataType: "string",
                 dataIndx: "",
+                halign	: "center",
+                align	: "center",
+                width   : "1%",
+                render: function (ui) {
+                    let rowData = ui.rowData;
+                    return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB07021P('TB07200S_wthdrwlRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                }
+            },
+            {
+                title: "계좌번호",
+                dataType: "string",
+                dataIndx: "acno",
                 halign: "center",
                 align: "left",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 dataType: "string",
                 dataIndx: "trOthrDscmNo",
+                align: "center",
+                hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "isttCd",
                 align: "center",
                 hidden: true,
             },
@@ -412,9 +461,15 @@ const TB07200Sjs = (function () {
     function TB07200S_onChangeHandler() {
         $("#TB07200S_pblHisChk").on("change", function () {
             if ($(this).is(':checked')) {
-                console.log('체크박스가 체크');
+                // console.log('체크박스가 체크');
+                $("#TB07200S_pblHis").pqGrid("setData", []);
+                $("#pblHisPlsBtn").attr("disabled", true);
+                $("#pblHisMnsBtn").attr("disabled", true);
+
             } else {
-                console.log('체크박스가 해제');
+                // console.log('체크박스가 해제');
+                $("#pblHisPlsBtn").attr("disabled", false);
+                $("#pblHisMnsBtn").attr("disabled", false);
             }
         });
     }
