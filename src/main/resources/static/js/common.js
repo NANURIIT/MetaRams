@@ -2428,3 +2428,62 @@ function showToast ( status, dataLength, code ) {
   }, 3000)
 
 }
+
+function chkValFromToDt(dt1, dt2){
+	
+	var idFromDate = "#" + dt1;
+	var idToDate   = "#" + dt2;
+	var fromDate   = "";
+	var toDate     = "";
+	
+	$(idFromDate).change(function() {
+		fromDate   = $(idFromDate).val();
+		toDate     = $(idToDate).val();
+		chkValFromToDtVal(fromDate, toDate);
+	});
+	
+	$(idToDate).change(function() {
+		fromDate   = $(idFromDate).val();
+		toDate     = $(idToDate).val();
+		chkValFromToDtVal(fromDate, toDate);
+	});
+	
+}
+
+// 기간검색 유효성 검사
+/**
+ * @param { String } fromDate // 시작일자
+ * @param { String } toDate   // 종료일자
+ */
+function chkValFromToDtVal(fromDate, toDate) {
+	// 유효성 검사용 날짜패턴
+	var pattern = /(^\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+	let msgError = "";
+
+	if (isEmpty(fromDate)) {
+		msgError = "필수 입력값(조회시작일자)을 입력해주세요.";
+		alertPopup();
+	} else if (!pattern.test(fromDate)) {
+		msgError = "필수 입력값(조회시작일자)을 확인해주세요.";
+		alertPopup();
+	} else if (isEmpty(toDate)) {
+		msgError = "필수 입력값(조회종료일자)을 입력해주세요.";
+		alertPopup();
+	} else if (!pattern.test(toDate)) {
+		msgError = "필수 입력값(조회종료일자)을 확인해주세요.";
+		alertPopup();
+	} else if (fromDate > toDate) {
+		msgError = "조회시작일자가 조회종료일자보다 큽니다.";
+		alertPopup();
+	}
+
+	function alertPopup() {
+		Swal.fire({
+			icon: "error",
+			title: "Error!",
+			text: msgError,
+			confirmButtonText: "확인",
+		});
+	}
+}
+

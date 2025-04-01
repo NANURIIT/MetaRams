@@ -1,30 +1,67 @@
 const TB07200Sjs = (function () {
 
+    let selectBox;
+    let dprtList;
+
     $(document).ready(function () {
 
         $("#TB07200S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
         $("#TB07200S_toDate").val(getToday()); //조회종료일
 
+        
         gridSett();
+        TB07200S_onChangeHandler();
 
     });
 
     function gridSett(){
+
+        selectBox = getSelectBoxList("TB09080S", "D010", false);
+
+        dprtList = selectBox.filter(function (item) {
+            return item.cmnsGrpCd === "D010";
+        });
+
+        let dprtHtml;
+
+        dprtList.forEach((item) => {
+            dprtHtml += `<option value="${item.cdValue}">${item.cdName}</option>`;
+        });
+    
+        $("#TB07200S_dprtNm").append(dprtHtml);
+    
+        $("#TB07200S_dprtNm").on("change", function () {
+        $("#TB07200S_dprtCd").val($("#TB07200S_dprtNm").val());
+        });
+
 
         //업무지시요청 그리드 colModel
         let TB07200S_col_wrkRqst = [
             {
                 title: "SPC",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "ardyBzepNo",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "SPC명",
+                title	: "",
                 dataType: "string",
                 dataIndx: "",
+                halign	: "center",
+                align	: "center",
+                width   : "1%",
+                editable: false,
+                render: function (ui) {
+                    let rowData = ui.rowData;
+                    return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03061P('TB07200S_wrkRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                }
+            },
+            {
+                title: "SPC명",
+                dataType: "string",
+                dataIndx: "entpNm",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
@@ -32,7 +69,7 @@ const TB07200Sjs = (function () {
             {
                 title: "신청일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "fincExcuRqsDt",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -40,7 +77,7 @@ const TB07200Sjs = (function () {
             {
                 title: "신청번호",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "fincExcuRqsSn",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
@@ -48,7 +85,8 @@ const TB07200Sjs = (function () {
             {
                 title: "계약명",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "ibCtrtNm",
+                editable: true,
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
@@ -56,26 +94,58 @@ const TB07200Sjs = (function () {
             {
                 title: "자산관리계좌",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "asstMngmAcno",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "관리부점",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "dprtCd",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
+                editor: {
+                    type: "select",
+                    valueIndx: "cdValue",
+                    labelIndx: "cdName",
+                    options: dprtList,
+                },
+                render: function (ui) {
+                // console.log("cellData ::: ", ui.cellData);
+                // console.log(P013);
+                let dprtCd = dprtList.find(({ cdValue }) => cdValue == ui.cellData);
+                return dprtCd ? dprtCd.cdName : ui.cellData;
+                },
             },
             {
                 title: "비고(이견)",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "rmCtns",
                 halign: "center",
                 align: "left",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
+            },
+            {
+                title: "",
+                align: "center",
+                halign: "center",
+                dataType: "string",
+                editable: false,
+                width: "5%",
+                render: function (ui) {
+                    if (ui.cellData === "new") {
+                        return "";
+                    } else {
+                        return (
+                        `<button class='ui-button ui-corner-all ui-widget' name='detail_btn' onclick=""><i class='fa fa-arrow-down'></i>&nbsp;상세</button>`
+                        );
+                    }
+                },
             },
         ]
 
@@ -84,7 +154,7 @@ const TB07200Sjs = (function () {
             {
                 title: "회차",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "lqdzSctyIsuTmrd",
                 halign: "center",
                 align: "right",
                 filter: { crules: [{ condition: "range" }] },
@@ -92,23 +162,25 @@ const TB07200Sjs = (function () {
             {
                 title: "발행일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isuDt",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "만기일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "expDt",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "일수",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "dnum",
                 halign: "center",
                 align: "right",
                 filter: { crules: [{ condition: "range" }] },
@@ -116,9 +188,10 @@ const TB07200Sjs = (function () {
             {
                 title: "발행금액(원)",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isuAmt",
                 halign: "center",
                 align: "right",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             }
         ]
@@ -128,59 +201,100 @@ const TB07200Sjs = (function () {
             {
                 title: "거래일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "trDt",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "입금항목",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "spcDepItemKndCd",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "적요",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "synsText",
                 halign: "center",
                 align: "left",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "거래상대방",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "trOthrNm",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "금액",
+                title	: "",
                 dataType: "string",
                 dataIndx: "",
+                halign	: "center",
+                align	: "center",
+                width   : "1%",
+                render: function (ui) {
+                    let rowData = ui.rowData;
+                    return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03061P('TB07200S_dpstRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                }
+            },
+            {
+                title: "금액",
+                dataType: "string",
+                dataIndx: "rndrAmt",
                 halign: "center",
                 align: "right",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "은행",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isttNm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "계좌번호",
+                title	: "",
                 dataType: "string",
                 dataIndx: "",
+                halign	: "center",
+                align	: "center",
+                width   : "1%",
+                render: function (ui) {
+                    let rowData = ui.rowData;
+                    return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB07021P('TB07200S_dpstRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                }
+            },
+            {
+                title: "계좌번호",
+                dataType: "string",
+                dataIndx: "acno",
                 halign: "center",
                 align: "left",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
-            }
+            },
+            {
+                dataType: "string",
+                dataIndx: "trOthrDscmNo",
+                align: "center",
+                hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "isttCd",
+                align: "center",
+                hidden: true,
+            },
         ]
 
         //출금요청 그리드 colModel
@@ -188,59 +302,100 @@ const TB07200Sjs = (function () {
             {
                 title: "거래일자",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "trDt",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "입금항목",
+                title: "출금항목",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "spcWdrItemKndCd",
                 halign: "center",
                 align: "center",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "적요",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "synsText",
                 halign: "center",
                 align: "left",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "거래상대방",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "trOthrNm",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "금액",
+                title	: "",
                 dataType: "string",
                 dataIndx: "",
+                halign	: "center",
+                align	: "center",
+                width   : "1%",
+                render: function (ui) {
+                    let rowData = ui.rowData;
+                    return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03061P('TB07200S_wthdrwlRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                }
+            },
+            {
+                title: "금액",
+                dataType: "string",
+                dataIndx: "rndrAmt",
                 halign: "center",
                 align: "right",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
             {
                 title: "은행",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isttNm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "계좌번호",
+                title	: "",
                 dataType: "string",
                 dataIndx: "",
+                halign	: "center",
+                align	: "center",
+                width   : "1%",
+                render: function (ui) {
+                    let rowData = ui.rowData;
+                    return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB07021P('TB07200S_wthdrwlRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                }
+            },
+            {
+                title: "계좌번호",
+                dataType: "string",
+                dataIndx: "acno",
                 halign: "center",
                 align: "left",
+                editable: true,
                 filter: { crules: [{ condition: "range" }] },
-            }
+            },
+            {
+                dataType: "string",
+                dataIndx: "trOthrDscmNo",
+                align: "center",
+                hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "isttCd",
+                align: "center",
+                hidden: true,
+            },
         ]
 
         showPqGrid(TB07200S_col_wrkRqst, TB07200S_col_pblHis, TB07200S_col_dpstRqst, TB07200S_col_wthdrwlRqst);
@@ -303,7 +458,21 @@ const TB07200Sjs = (function () {
         $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
     }
 
-    
+    function TB07200S_onChangeHandler() {
+        $("#TB07200S_pblHisChk").on("change", function () {
+            if ($(this).is(':checked')) {
+                // console.log('체크박스가 체크');
+                $("#TB07200S_pblHis").pqGrid("setData", []);
+                $("#pblHisPlsBtn").attr("disabled", true);
+                $("#pblHisMnsBtn").attr("disabled", true);
+
+            } else {
+                // console.log('체크박스가 해제');
+                $("#pblHisPlsBtn").attr("disabled", false);
+                $("#pblHisMnsBtn").attr("disabled", false);
+            }
+        });
+    }
 
     return {
         addRows_TB07200S: addRows_TB07200S,

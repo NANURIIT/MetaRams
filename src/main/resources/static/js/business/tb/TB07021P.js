@@ -4,6 +4,8 @@ let TB07021P_gridState = 1;				//그리드 상태 (0:: 열림 1:: 닫힘)
 let TB07021P_srchCnt = 0;
 let TB07021P_onchangehandler = "on";	// on off
 
+let rowInx_TB07021P;
+
 //그리드 최하단 페이지모델
 var pageModel_Fnlt = {
 
@@ -135,7 +137,7 @@ function keyDownEnter_TB07021P() {
 /**
  * show modal 
  */
-function callTB07021P(prefix) {
+function callTB07021P(prefix, rowIndx) {
 
 	TB07021P_pf = prefix;
 
@@ -144,6 +146,10 @@ function callTB07021P(prefix) {
 	indexChangeHandler("TB07021P");
 
 	setTimeout(() => showFnltGrid(), 300);					//그리드 호출
+
+	if ( rowIndx || rowIndx === 0 ) {
+		rowInx_TB07021P = rowIndx;
+	}
 
 }
 
@@ -201,6 +207,23 @@ function setFnltInfo(e) {
 
 	$(pageFnltCd).val(e.fnltCd);
 	$(pagefnltNm).val(e.fnltNm);
+
+	switch (TB07021P_pf) {
+		case "TB07200S_dpstRqst":
+
+			$("#TB07200S_dpstRqst").pqGrid("instance").pdata[rowInx_TB07021P].isttCd = e.fnltCd;
+			$("#TB07200S_dpstRqst").pqGrid("instance").pdata[rowInx_TB07021P].isttNm = e.fnltNm;
+			$("#TB07200S_dpstRqst").pqGrid("instance").refresh();
+			break;
+		case "TB07200S_wthdrwlRqst":
+
+			$("#TB07200S_wthdrwlRqst").pqGrid("instance").pdata[rowInx_TB07021P].isttCd = e.fnltCd;
+			$("#TB07200S_wthdrwlRqst").pqGrid("instance").pdata[rowInx_TB07021P].isttNm = e.fnltNm;
+			$("#TB07200S_wthdrwlRqst").pqGrid("instance").refresh();
+			break;
+		default:
+			break;
+	}
 
 
 	modalClose_TB07021P();

@@ -20,11 +20,15 @@
 		                                                  AS RCVE_P           -- 수령자
 		      , T2.DPRT_CD                                AS DPRT_NM          -- **************관리부점 변경예정
 		      , T2.RM_CTNS                                AS RM_CTNS          -- 비고
+		      , DECODE(T3.DECD_STTS_DCD, '2', 'Y', '')    AS ASSN_YN          -- 승인여부
 		   FROM IBIMS902B T1
 		      , IBIMS900B T2
+		      , IBIMS231B T3
 		  WHERE 1=1
 		    AND T2.ARDY_BZEP_NO     = T1.ARDY_BZEP_NO
 		    AND T2.FINC_EXCU_RQS_SN = T1.FINC_EXCU_RQS_SN
+		    AND TO_CHAR(T2.FINC_EXCU_RQS_SN) = T3.DEAL_NO(+)
+		    AND T3.DECD_STTS_DCD    = '2'	-- 임시 승인된것만 조회
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDate) and @com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDate)">
             AND T1.TR_DT            BETWEEN #{fromDate} AND #{toDate}
            </if>
@@ -34,13 +38,13 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(fromDate) and @com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDate)">
             AND T1.TR_DT            <![CDATA[<=]]> #{toDate}
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(ardyBzepNo)">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
             AND T2.ARDY_BZEP_NO     = #{ardyBzepNo}
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(asstMngmAcno)">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(asstMngmAcno)">
             AND T2.ASST_MNGM_ACNO   = #{asstMngmAcno}
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(dprtCd)">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
             AND T2.DPRT_CD          = #{dprtCd}
            </if>
 		  ORDER BY

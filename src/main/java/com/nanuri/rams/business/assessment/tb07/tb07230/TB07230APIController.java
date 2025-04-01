@@ -28,5 +28,4 @@ public class TB07230APIController {
 	public List<IBIMS902BVO> selectTB07230S(IBIMS902BVO param) {
 		return TB07230Service.selectTB07230S(param);
 	}
-
 }
