@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS900BMapper">
 
-    <!-- 자금집행 업무리스트 -->
-    <!-- 승인내역조회 -->
+    <!-- 업무지시요청 -->
     <select id="selectSpcList" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
         SELECT T1.ARDY_BZEP_NO
              , T1.FINC_EXCU_RQS_SN
@@ -13,9 +12,42 @@
              , T1.ASST_MNGM_ACNO
              , T1.DPRT_CD
              , T1.RM_CTNS
-             , T1.PRG_STTS_CD
              , T1.LQDZ_SCTY_ISU_YN
-             , T1.DECD_SN
+             , T1.HND_DETL_DTM
+             , T1.HND_EMPNO
+          FROM IBIMS900B T1
+         WHERE 1=1
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
+           AND T1.ARDY_BZEP_NO = #{ardyBzepNo}         /* SPC */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           AND T1.DPRT_CD = #{dprtCd}                  /* 관리부점 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ibCtrtNm)">
+           AND T1.IB_CTRT_NM = #{ibCtrtNm}             /* 계약명 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(asstMngmAcno)">
+           AND T1.ASST_MNGM_ACNO = #{asstMngmAcno}     /* 자산관리계좌 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDate)">
+           AND T1.FINC_EXCU_RQS_DT &gt; #{fromDate} /* 신청일자 PREV(수정해서사용) */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDate)">
+           AND T1.FINC_EXCU_RQS_DT &lt; #{toDate} /* 신청일자 NEXT(수정해서사용) */
+           </if>
+    </select>
+
+    <!-- 승인내역조회 -->
+    <select id="selectSpcDecdList" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
+        SELECT T1.ARDY_BZEP_NO
+             , T1.FINC_EXCU_RQS_SN
+             , T1.FINC_EXCU_RQS_DT
+             , T1.IB_CTRT_NM
+             , T1.ISTT_CD
+             , T1.ASST_MNGM_ACNO
+             , T1.DPRT_CD
+             , T1.RM_CTNS
+             , T1.LQDZ_SCTY_ISU_YN
              , T1.HND_DETL_DTM
              , T1.HND_EMPNO
              , T2.APVL_RQST_P_ENO                   /* 요청자사번 */
@@ -27,7 +59,7 @@
              , T3.TR_DT                             /* 거래일자 */
           FROM IBIMS900B T1
      LEFT JOIN IBIMS231B T2
-            ON T2.DECD_SN = T1.DECD_SN
+            ON T2.DEAL_NO = TO_CHAR(T1.FINC_EXCU_RQS_SN)
      LEFT JOIN (
                 SELECT ARDY_BZEP_NO
                      , FINC_EXCU_RQS_SN
@@ -56,18 +88,38 @@
            AND T1.ASST_MNGM_ACNO = #{asstMngmAcno}     /* 자산관리계좌 */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsDt1)">
-           AND T1.FINC_EXCU_RQS_DT = #{fincExcuRqsDt1}         /* 신청일자 PREV(수정해서사용) */
+           AND T1.FINC_EXCU_RQS_DT &gt; #{fincExcuRqsDt1} /* 신청일자 PREV(수정해서사용) */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsDt2)">
-           AND T1.FINC_EXCU_RQS_DT = #{fincExcuRqsDt2}         /* 신청일자 NEXT(수정해서사용) */
+           AND T1.FINC_EXCU_RQS_DT &lt; #{fincExcuRqsDt2} /* 신청일자 NEXT(수정해서사용) */
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prgSttsCd)">
-           AND T1.PRG_STTS_CD = #{prgSttsCd}           /* 신청상태 */
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(decdSttsDcd)">
+           AND T2.DECD_STTS_DCD = ' '                  /* 결재상태 */
+           </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdSttsDcd)">
+           AND T2.DECD_STTS_DCD = #{decdSttsDcd}       /* 결재상태 */
            </if>
     </select>
 
-    <select id="spcDetailApvlList">
-    
+    <select id="spcDecdDetail" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS232BVO">
+      SELECT DECD_SQ
+           , DECD_STTS_DCD
+           , DCFC_ENO
+           , DECD_DTM
+           , RJCT_RSN_CNTN
+        FROM IBIMS232B
+       WHERE 1=1
+         AND DECD_SN = (
+            SELECT DECD_SN
+              FROM IBIMS231B
+             WHERE 1=1
+               AND DEAL_NO = #{fincExcuRqsSn}
+               AND PRDT_CD = ''
+               AND DECD_JOB_DCD = '07'
+               AND EXC_SEQ = 0
+               AND RQST_SQ = 0
+               AND TR_SEQ = 0
+         )
     </select>
 
     <select id="spcDetailRjctList">

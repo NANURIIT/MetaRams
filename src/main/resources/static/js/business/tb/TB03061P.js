@@ -502,6 +502,24 @@ function setArdyBzepInfo(rowData) {
 			$('#TB08031S_asstWrkngInfo_oprtHnfNum').val(comma(oprtHnfNum));		// 운용인력수
 
 			break;
+		case "TB07200S_dpstRqst":
+
+			$("#TB07200S_dpstRqst").pqGrid("instance").pdata[rowInx].trOthrDscmNo = ardyBzepNo;
+			$("#TB07200S_dpstRqst").pqGrid("instance").pdata[rowInx].trOthrNm = entpNm;
+			$("#TB07200S_dpstRqst").pqGrid("instance").refresh();
+			break;
+		case "TB07200S_wthdrwlRqst":
+
+			$("#TB07200S_wthdrwlRqst").pqGrid("instance").pdata[rowInx].trOthrDscmNo = ardyBzepNo;
+			$("#TB07200S_wthdrwlRqst").pqGrid("instance").pdata[rowInx].trOthrNm = entpNm;
+			$("#TB07200S_wthdrwlRqst").pqGrid("instance").refresh();
+			break;
+		case "TB07200S_wrkRqst":
+
+			$("#TB07200S_wrkRqst").pqGrid("instance").pdata[rowInx].ardyBzepNo = ardyBzepNo;
+			$("#TB07200S_wrkRqst").pqGrid("instance").pdata[rowInx].entpNm = entpNm;
+			$("#TB07200S_wrkRqst").pqGrid("instance").refresh();
+			break;
 		default:
 			break;
 	}

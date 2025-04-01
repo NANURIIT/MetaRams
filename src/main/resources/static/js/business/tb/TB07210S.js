@@ -12,20 +12,19 @@ const TB07210Sjs = (function () {
     function selectBoxSetting() {
 
         selectBox = getSelectBoxList("TB07210S",
-          "/P009"           // 진행상태구분코드
+          "/D006"           // 결재상태구분코드
           + "/D010"         // 부서코드
           , false);
     
-        grdSelect.P009 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'P009' })             // 진행상태구분코드
-                                  .filter(item => ['000', '010', '040', '090'].includes(item.cdValue))      // 신청중, 신청완료, 반려, 승인완료, (요청취소없음)
+        grdSelect.D006 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'D006' })             // 결재상태구분코드
         grdSelect.D010 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'D010' });            // 부서코드
 
         // 진행상태구분코드 콤보박스 셋
-        let prgSttsCdOptionTag = "";
-        for (let i = 0; i < grdSelect.P009.length; i++) {
-            prgSttsCdOptionTag += `<option value="${grdSelect.P009[i].cdValue}">${grdSelect.P009[i].cdName}</option>`
+        let decdSttsDcdOptionTag = "";
+        for (let i = 0; i < grdSelect.D006.length; i++) {
+            decdSttsDcdOptionTag += `<option value="${grdSelect.D006[i].cdValue}">${grdSelect.D006[i].cdName}</option>`
         }
-        $('#TB07210S_prgSttsCd').append(prgSttsCdOptionTag)
+        $('#TB07210S_decdSttsDcd').append(decdSttsDcdOptionTag)
         
         // 부서코드 콤보박스 셋
         let dprtOptionTag = "";
@@ -46,7 +45,7 @@ const TB07210Sjs = (function () {
         //     , { "N": "N" }
         // ]
 
-        const spcDesdGrid = [
+        const spcDecdGrid = [
             {
                 title: "신청일자",
                 dataType: "string",
@@ -136,7 +135,7 @@ const TB07210Sjs = (function () {
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "승인구분",
+                title: "결재구분",
                 dataType: "string",
                 dataIndx: "prgSttsCd",
                 halign: "center",
@@ -145,9 +144,17 @@ const TB07210Sjs = (function () {
             },
         ]
 
-        const spcApvlRqstGrid = [
+        const spcDecdDetail = [
             {
-                title: "승인코드",
+                title: "결재순번",
+                dataType: "string",
+                dataIndx: "decdSn",
+                halign: "center",
+                align: "right",
+                filter: { crules: [{ condition: "range" }] },
+            },
+            {
+                title: "결재상태코드",
                 dataType: "string",
                 dataIndx: "decdSttsDcd",
                 halign: "center",
@@ -155,7 +162,7 @@ const TB07210Sjs = (function () {
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "승인명",
+                title: "결재상태명",
                 dataType: "string",
                 dataIndx: "decdSttsNm",
                 halign: "center",
@@ -163,7 +170,7 @@ const TB07210Sjs = (function () {
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "승인자",
+                title: "결재자",
                 dataType: "string",
                 dataIndx: "dcfcEnm",
                 halign: "center",
@@ -171,42 +178,7 @@ const TB07210Sjs = (function () {
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "승인일시",
-                dataType: "string",
-                dataIndx: "decdDtm",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-        ]
-
-        const spcRjctGrid = [
-            {
-                title: "승인코드",
-                dataType: "string",
-                dataIndx: "decdSttsDcd",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "승인명",
-                dataType: "string",
-                dataIndx: "decdSttsNm",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "취소자",
-                dataType: "string",
-                dataIndx: "dcfcEnm",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "취소일시",
+                title: "처리일시",
                 dataType: "string",
                 dataIndx: "decdDtm",
                 halign: "center",
@@ -222,16 +194,18 @@ const TB07210Sjs = (function () {
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
             },
+            {
+                title: "자금집행신청일련번호",
+                dataType: "string",
+                dataIndx: "fincExcuRqsSn",
+            }
         ]
 
         if (num === 1) {
-            return spcDesdGrid
+            return spcDecdGrid
         }
         else if (num === 2) {
-            return spcApvlRqstGrid
-        }
-        else if (num === 3) {
-            return spcRjctGrid
+            return spcDecdDetail
         }
     }
 
@@ -242,22 +216,19 @@ const TB07210Sjs = (function () {
             {
                 height: 270
                 , maxHeight: 270
-                , id: 'TB07210S_spcDesdGrid'
+                , id: 'TB07210S_spcDecdGrid'
                 , colModel: pqGridColModel(1)
                 , editable: false
+                , rowClick: function (evt, ui) {
+                    spcDecdDetail(ui.rowData.fincExcuRqsSn);
+                }
+                , selectionModel: { type: "row" },
             },
             {
                 height: 270
                 , maxHeight: 270
-                , id: 'TB07210S_spcApvlRqstGrid'
+                , id: 'TB07210S_spcDecdDetail'
                 , colModel: pqGridColModel(2)
-                , editable: false
-            },
-            {
-                height: 270
-                , maxHeight: 270
-                , id: 'TB07210S_spcRjctGrid'
-                , colModel: pqGridColModel(3)
                 , editable: false
             },
         ];
@@ -265,6 +236,10 @@ const TB07210Sjs = (function () {
         setPqGrid(pqGridObjs);
     }
 
+
+    /**
+     * 조회
+     */
     function inq() {
 
         /**
@@ -275,11 +250,11 @@ const TB07210Sjs = (function () {
          * @param { String } prgSttsCd 진행상태코드(신청상태)
          */
         let paramData = {
-            dprtCd: $('TB07120S_dprtCd').val(),
-            ardyBzepNo: $('TB07120S_ardyBzepNo').val(),
-            fincExcuRqsDt1: $('TB07120S_fincExcuRqsDt1').val() ? $('TB07120S_fincExcuRqsDt1').val().replaceAll("-", "") : "",
-            fincExcuRqsDt2: $('TB07120S_fincExcuRqsDt2').val() ? $('TB07120S_fincExcuRqsDt2').val().replaceAll("-", "") : "",
-            prgSttsCd: $('TB07120S_prgSttsCd').val(),
+            dprtCd: $('#TB07210S_dprtCd').val(),
+            ardyBzepNo: $('#TB07210S_ardyBzepNo').val(),
+            fincExcuRqsDt1: $('#TB07210S_fincExcuRqsDt1').val() ? $('#TB07210S_fincExcuRqsDt1').val().replaceAll("-", "") : "",
+            fincExcuRqsDt2: $('#TB07210S_fincExcuRqsDt2').val() ? $('#TB07210S_fincExcuRqsDt2').val().replaceAll("-", "") : "",
+            decdSttsDcd: $('#TB07210S_decdSttsDcd').val(),
         }
 
         $.ajax({
@@ -289,11 +264,13 @@ const TB07210Sjs = (function () {
             dataType: "json",
             data: JSON.stringify(paramData),
             success: function (data) {
-                if (data > 0) {
-                    $('TB07210S_spcDesdGrid').pqGrid('instance').setData(data);
+                console.log(data);
+                
+                if (data.length > 0) {
+                    $('#TB07210S_spcDecdGrid').pqGrid('instance').setData(data);
                 }
                 else {
-                    $('TB07210S_spcDesdGrid').pqGrid('instance').setData([]);
+                    $('#TB07210S_spcDecdGrid').pqGrid('instance').setData([]);
                     Swal.fire({
                         icon: 'warning'
                         , title: '조회된 정보가 없습니다!'
@@ -308,6 +285,46 @@ const TB07210Sjs = (function () {
                 })
             },
         });
+    }
+
+    function spcDecdDetail (fincExcuRqsSn) {
+
+        /**
+         * @param { String } fincExcuRqsSn 자금집행신청일련번호
+         */
+        let paramData = {
+            fincExcuRqsSn: fincExcuRqsSn
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "/TB07210S/spcDecdDetail",
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data: JSON.stringify(paramData),
+            success: function (data) {
+                console.log(data);
+                
+                if (data.length > 0) {
+                    $('#TB07210S_spcDecdDetail').pqGrid('instance').setData(data);
+                }
+                else {
+                    $('#TB07210S_spcDecdDetail').pqGrid('instance').setData([]);
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: '조회된 정보가 없습니다!'
+                    })
+                }
+            },
+            error: function (response) {
+                // 에러남 ㅋㅋ
+                Swal.fire({
+                    icon: 'error'
+                    , title: '조회된 정보가 없습니다!'
+                })
+            },
+        });
+
     }
 
 

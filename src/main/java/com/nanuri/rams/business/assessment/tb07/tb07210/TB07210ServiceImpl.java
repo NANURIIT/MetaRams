@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nanuri.rams.business.common.mapper.IBIMS420BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS900BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS232BVO;
-import com.nanuri.rams.business.common.vo.IBIMS420BVO;
 import com.nanuri.rams.business.common.vo.IBIMS900BVO;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,7 @@ public class TB07210ServiceImpl implements TB07210Service {
 
 	@Override
 	public List<IBIMS900BVO> selectSpcList(IBIMS900BVO param){
-		return ibims900bMapper.selectSpcList(param);
+		return ibims900bMapper.selectSpcDecdList(param);
 	}
 
 	@Override

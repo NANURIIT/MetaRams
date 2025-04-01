@@ -75,12 +75,12 @@
 								</div>
 								<!-- 승인상태 -->
 								<label class="col-sm-1 control-label">
-									신청상태
+									결재상태
 								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
-										<select class="form-control" id="TB07210S_prgSttsCd">
-											<option>전체</option>
+										<select class="form-control" id="TB07210S_decdSttsDcd">
+											<option value="">전체</option>
 										</select>
 									</div>
 								</div>
@@ -104,7 +104,7 @@
 							</div>
 							<div class="ibox-content">
 								<!-- 승인내역조회 그리드 -->
-								<div id="TB07210S_spcDesdGrid"></div>
+								<div id="TB07210S_spcDecdGrid"></div>
 							</div>
 						</div>
 
@@ -114,14 +114,7 @@
 								<h5>▶ 승인상세</h5>
 							</div>
 							<div class="ibox-content">
-								<div class="row">
-									<div class="col-sm-4">
-										<div id="TB07210S_spcApvlRqstGrid"></div>
-									</div>
-									<div class="col-sm-8">
-										<div id="TB07210S_spcRjctGrid"></div>
-									</div>
-								</div>
+								<div id="TB07210S_spcDecdDetail"></div>
 							</div>
 						</div>
 					</div>

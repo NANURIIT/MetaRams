@@ -14,7 +14,7 @@
 </th:block>
 
 <th:block layout:fragment="modalpopup">
-
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>	<!-- 기업체목록 -->
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -25,16 +25,16 @@
                 <div class="ibox ">
                     <!-- 조회 조건 -->
 					<div class="ibox-content mb-2">
-                        <!--row 1-->
                         <div class="row form-group form-inline text-right">
+                        	<!--row 1-->
                             <div class="col-sm-10 form-group  mb-1">
                                 <label class="col-sm-1 col-form-label text-right">SPC</label>
                                 <div class="col-sm-3 input-group">
-                                    <input type="text" class="form-control" style="width: 30px;" id="GD10201_ardyBzepNo">
+                                    <input type="text" class="form-control" style="width: 30px;" id="TB07230S_ardyBzepNo">
                                     <span class="input-group-append">
-                                        <button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
+                                        <button type="button" class="btn btn-default" onclick="callTB03061P('TB07230S');"><i class="fa fa-search"></i></button>
                                     </span>
-                                    <input type="text" class="form-control" style="width: 70px;" id="GD10201_entpNm" readonly>
+                                    <input type="text" class="form-control" style="width: 70px;" id="TB07230S_entpNm" readonly>
                                 </div>
                                 <label class="col-sm-1 control-label">조회기간</label>
                                 <div class="col-sm-3 input-group">
@@ -49,27 +49,32 @@
                                     </div>
                                 </div>
                                 <label class="col-sm-1 col-form-label text-right">관리부점</label>
-                                <div class="col-sm-3 input-group">
-                                    <input type="text" class="form-control" style="width: 30px;" id="GD10201_dprtCd">
-                                    <span class="input-group-append">
-                                        <button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
-                                    </span>
-                                    <input type="text" class="form-control" style="width: 70px;" id="GD10201_dprtNm" readonly>
-                                </div>
-                                
+                                <div class="col-sm-3">
+									<div class="input-group">
+										<select class="form-control" id="TB07230S_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="TB07230S_dprtCd" readonly>
+									</div>
+								</div>
                             </div>
+                            <!-- row 1 버튼영역 -->
+                            <div class="col-sm-2 form-group mb-1">
+                            </div>
+                            <!--row 2-->
                             <div class="col-sm-10 form-group">
                                 <label class="col-sm-1 col-form-label text-right">자산관리계좌</label>
-                                <div class="col-sm-2 input-group">
-                                    <input type="text" class="form-control" style="" id="">
+                                <div class="col-sm-3 input-group">
+                                    <input type="text" class="form-control" id="TB07230S_asstMngmAcno">
                                 </div>
                             </div>
-                            <!-- 버튼영역 -->
+                            <!-- row 2 버튼영역 -->
                             <div class="col-sm-2 form-group mb-1">	
                                 <div class="col-sm-12 text-right">
-                                    <button class="btn btn-primary" onclick="">
-                                        <i class="fa fa-search"></i>&nbsp;조회</button>
-                                    <button class="btn btn-default" type="button" onclick="">
+                                    <button class="btn btn-primary" onclick="TB07230Sjs.selectTB07230S();">
+                                        <i class="fa fa-search"></i>&nbsp;조회
+                                    </button>
+                                    <button class="btn btn-default" type="button" onclick="TB07230Sjs.resetSearch();">
                                         <i class="fa fa-undo"></i>&nbsp;초기화
                                     </button>
                                 </div>
@@ -82,22 +87,27 @@
 								<div>
 									<h5>▶ SPC별 거래내역</h5>
 								</div>
+								<!-- 
                                 <div class="ibox-tools">
 									<button class="btn btn-default btn-xs" type="button" onclick="TB07230Sjs.addRows_TB07230S(`#TB07230S_trsctHis`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
 									<button class="btn btn-default btn-xs" type="button" onclick="TB07230Sjs.dltRows_TB07230S(`#TB07230S_trsctHis`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
 								</div>
+								 -->
 							</div>
 							<div class="ibox-content">
 								<div id="TB07230S_trsctHis"></div>
 							</div>
 						</div>
                         <div class="ibox form-inline">
+                        	<!-- 
                             <div class="col-sm-6 text-left pd0">
                             </div>
                             <div class="col-sm-6 text-right pd0">
+                                <button class="btn btn-success mg-l5" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;저장</button>
                                 <button class="btn btn-success mg-l5" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;거래내역승인</button>
                                 <button class="btn btn-success mg-l5" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;거래내역확정</button>
                             </div>
+                             -->
                         </div>
                     </div>
                     
