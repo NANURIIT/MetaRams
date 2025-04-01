@@ -77,6 +77,60 @@ const TB07200Sjs = (function () {
         $("#TB07200S_dprtCd").val($("#TB07200S_dprtNm").val());
         });
 
+        var dateEditor_pblHis = function(ui) {
+			var $inp = ui.$cell.find("input");
+			
+			$inp.datepicker({
+					todayBtn: "linked",
+					autoclose: true,
+					format: "yyyy-mm-dd",
+					keyboardNavigation: false,
+				    forceParse: false,
+				    calendarWeeks: false,
+					language: "ko",
+			}).on("changeDate", function(e) {
+				$( "#TB07200S_pblHis" ).pqGrid( "setSelection", { rowIndx: ui.rowIndx, dataIndx: ui.dataIndx });
+				$( "#TB07200S_pblHis" ).pqGrid( "setSelection", null);
+			});
+			
+		}
+
+        var dateEditor_dpstRqst = function(ui) {
+			var $inp = ui.$cell.find("input");
+			
+			$inp.datepicker({
+					todayBtn: "linked",
+					autoclose: true,
+					format: "yyyy-mm-dd",
+					keyboardNavigation: false,
+				    forceParse: false,
+				    calendarWeeks: false,
+					language: "ko",
+			}).on("changeDate", function(e) {
+				$( "#TB07200S_dpstRqst" ).pqGrid( "setSelection", { rowIndx: ui.rowIndx, dataIndx: ui.dataIndx });
+				$( "#TB07200S_dpstRqst" ).pqGrid( "setSelection", null);
+			});
+			
+		}
+
+        var dateEditor_wthdrwlRqst = function(ui) {
+			var $inp = ui.$cell.find("input");
+			
+			$inp.datepicker({
+					todayBtn: "linked",
+					autoclose: true,
+					format: "yyyy-mm-dd",
+					keyboardNavigation: false,
+				    forceParse: false,
+				    calendarWeeks: false,
+					language: "ko",
+			}).on("changeDate", function(e) {
+				$( "#TB07200S_wthdrwlRqst" ).pqGrid( "setSelection", { rowIndx: ui.rowIndx, dataIndx: ui.dataIndx });
+				$( "#TB07200S_wthdrwlRqst" ).pqGrid( "setSelection", null);
+			});
+			
+		}
+
 
         //업무지시요청 그리드 colModel
         let TB07200S_col_wrkRqst = [
@@ -203,23 +257,55 @@ const TB07200Sjs = (function () {
                 filter: { crules: [{ condition: "range" }] },
             },
             {
-                title: "발행일자",
-                dataType: "string",
-                dataIndx: "isuDt",
-                halign: "center",
-                align: "center",
-                editable: true,
-                filter: { crules: [{ condition: "range" }] },
-            },
+				title: "발행일자",
+				dataType: "date",
+				format: "yyyy-mm-dd",
+				dataIndx: "isuDt",
+				halign: "center",
+				align: "center",
+				editor: {
+					type: "textbox",
+					init: dateEditor_pblHis,
+				},
+				validations: [{ type: 'regexp', value: '^([0-9]{4}-[0-9]{2}-[0-9]{2})|([0-9]{8})$', msg: 'Not in yyyy-mm-dd format' }],
+				//validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
+				editable: true,
+				render: function(ui) {
+					let cellData = replaceAll(ui.cellData, '-', '');
+					if (!isEmpty(cellData) && cellData.length === 8) {
+						return formatDate(cellData);
+					} else if (!isEmpty(cellData) && cellData.length > 8) {
+						return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
+					} else {
+						return cellData;
+					}
+				}
+			},
             {
-                title: "만기일자",
-                dataType: "string",
-                dataIndx: "expDt",
-                halign: "center",
-                align: "center",
-                editable: true,
-                filter: { crules: [{ condition: "range" }] },
-            },
+				title: "만기일자",
+				dataType: "date",
+				format: "yyyy-mm-dd",
+				dataIndx: "expDt",
+				halign: "center",
+				align: "center",
+				editor: {
+					type: "textbox",
+					init: dateEditor_pblHis,
+				},
+				validations: [{ type: 'regexp', value: '^([0-9]{4}-[0-9]{2}-[0-9]{2})|([0-9]{8})$', msg: 'Not in yyyy-mm-dd format' }],
+				//validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
+				editable: true,
+				render: function(ui) {
+					let cellData = replaceAll(ui.cellData, '-', '');
+					if (!isEmpty(cellData) && cellData.length === 8) {
+						return formatDate(cellData);
+					} else if (!isEmpty(cellData) && cellData.length > 8) {
+						return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
+					} else {
+						return cellData;
+					}
+				}
+			},
             {
                 title: "일수",
                 dataType: "string",
@@ -230,10 +316,11 @@ const TB07200Sjs = (function () {
             },
             {
                 title: "발행금액(원)",
-                dataType: "string",
+                dataType: "integer",
                 dataIndx: "isuAmt",
                 halign: "center",
                 align: "right",
+                format: "#,###",
                 editable: true,
                 filter: { crules: [{ condition: "range" }] },
             }
@@ -442,6 +529,17 @@ const TB07200Sjs = (function () {
         ]
 
         showPqGrid(TB07200S_col_wrkRqst, TB07200S_col_pblHis, TB07200S_col_dpstRqst, TB07200S_col_wthdrwlRqst);
+
+        //유동화증권 발행(예정) 내역 일수 계산
+        $("#TB07200S_pblHis").pqGrid("option", "formulas", [
+                ['dnum', function (rd) {
+                        // console.log("일수계산 시작일::: " + rd.isuDt)
+                        // console.log("일수계산 종료일::: " + rd.expDt)
+                        return  dateDiff(rd.isuDt, rd.expDt);
+                    }
+                ]
+            ]
+        );
 
     }
 

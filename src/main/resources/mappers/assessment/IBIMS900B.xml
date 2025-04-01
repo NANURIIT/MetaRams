@@ -5,6 +5,11 @@
     <!-- 업무지시요청 -->
     <select id="selectSpcList" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
         SELECT T1.ARDY_BZEP_NO
+             , (
+                SELECT ENTP_NM
+                FROM IBIMS010B E
+                WHERE E.ARDY_BZEP_NO = T1.ARDY_BZEP_NO
+             ) AS ENTP_NM
              , T1.FINC_EXCU_RQS_SN
              , T1.FINC_EXCU_RQS_DT
              , T1.IB_CTRT_NM
