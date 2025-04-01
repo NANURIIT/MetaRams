@@ -207,7 +207,6 @@ const TB07230Sjs = (function() {
 				colModel: TB07230S_col_trsctHis,
 				scrollModel: { autoFit: true },
 				editable: false,
-				strNoRows: "데이터가 없습니다.",
 				numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
 			}
 		]
@@ -243,10 +242,19 @@ const TB07230Sjs = (function() {
 			data: paramData,
 			dataType: "json",
 			success: function(data) {
+				console.log("success");
+				console.log(data);
 				if (data.length > 0) {
 					$("#TB07230S_trsctHis").pqGrid("setData", data);
 					$("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
 				} else {
+					
+					var obj = {
+					     // all your other grid settings
+					     strNoRows : '데이터가 없습니다.'
+					}
+					
+					$("#TB07230S_trsctHis").pqGrid(obj);
 					$("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
 				}
 			},
