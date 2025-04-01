@@ -14,6 +14,22 @@ const TB07200Sjs = (function () {
 
     });
 
+    function test() {
+        let paramData = {
+            ardyBzepNo: $('#TB07200S_ardyBzepNo').val(),
+            ibCtrtNm: $("#TB07200S_ibCtrtNm").val(),
+            asstMngmAcno: $("#TB07200S_asstMngmAcno").val(),
+            dprtNm: $("#TB07200S_dprtNm").val(),
+            dprtCd: $("#TB07200S_dprtCd").val(),
+            fromDate: $("#TB07200S_fromDate").val(),
+            toDate: $("#TB07200S_toDate").val(),
+            
+        }
+
+        console.log(paramData);
+        
+    }
+
     function gridSett(){
 
         selectBox = getSelectBoxList("TB09080S", "D010", false);
@@ -476,6 +492,7 @@ const TB07200Sjs = (function () {
 
     return {
         addRows_TB07200S: addRows_TB07200S,
-        dltRows_TB07200S: dltRows_TB07200S
+        dltRows_TB07200S: dltRows_TB07200S,
+        test: test
     };
 })();
