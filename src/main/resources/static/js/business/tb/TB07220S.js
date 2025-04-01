@@ -40,7 +40,7 @@ const TB07220Sjs = (function () {
         });
 
         setFormElementsStateByUserRole();
-    }
+    } 
 
     	// 화면 초기화
 	const rmReset = (() => {
