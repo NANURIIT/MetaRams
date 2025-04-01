@@ -1,4 +1,4 @@
-const TB07230Sjs = (function() {
+const TB07230Sjs = (function() { 
 
 	$(document).ready(function() {
 
