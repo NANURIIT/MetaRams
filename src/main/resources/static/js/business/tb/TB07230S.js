@@ -1,21 +1,21 @@
-const TB07230Sjs = (function () {
+const TB07230Sjs = (function() {
 
-    $(document).ready(function () {
-		
+	$(document).ready(function() {
+
 		setMonthInput();
 
 		sltctBoxSet();
-		
-        gridSett();
 
-    });
-	
+		gridSett();
+
+	});
+
 	function setMonthInput() {
 		// 1개월전 ~ 현재날짜 디폴트 세팅
 		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
 		$("#TB07230S_toDate").val(getToday()); //조회종료일
 	}
-	
+
 	//selectBox 세팅
 	function sltctBoxSet() {
 		let selectBox = getSelectBoxList(
@@ -45,178 +45,7 @@ const TB07230Sjs = (function () {
 		setFormElementsStateByUserRole();
 	}
 
-    function gridSett(){
-
-        //거래내역 그리드 colModel
-        let TB07230S_col_trsctHis = [
-			/*
-            //체크박스
-            {
-                dataIndx: "chk",
-                maxWidth: 36,
-                minWidth: 36,
-                align: "center",
-                resizable: false,
-                title: "",
-                menuIcon: false,
-                type: "checkBoxSelection",
-                cls: "ui-state-default",
-                sortable: false,
-                editor: false,
-                dataType: "bool",
-                editable: "true",
-                cb: {
-                all: false,
-                header: true,
-                },
-            },*/
-			/*
-            {
-                title: "승인",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-			*/
-			/*
-            {
-                title: "확정",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-			*/
-            {
-                title: "거래일자",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "SPC명",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "left",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "자산관리계좌번호",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "left",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "구분",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "항목",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "적요",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "금액",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "right",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "잔고",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "right",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "수정인",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "관리부점",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "center",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "비고",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "left",
-                filter: { crules: [{ condition: "range" }] },
-            },
-            {
-                title: "정렬순서",
-                dataType: "string",
-                dataIndx: "",
-                halign: "center",
-                align: "left",
-                filter: { crules: [{ condition: "range" }] },
-            },
-        ]
-
-        let pqGridObjs = [
-            {
-                height: 500,
-                maxHeight: 500,
-                id: "TB07230S_trsctHis",
-                colModel: TB07230S_col_trsctHis,
-                scrollModel: { autoFit: true },
-                editable: false,
-				strNoRows: "데이터가 없습니다.",
-                numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
-            }
-        ]
-
-        setPqGrid(pqGridObjs);
-    }
-
-
-    //그리드 행 추가
-    function addRows_TB07230S(gridId){
-        $(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
-    }
-
-    //그리드 행 삭제
-    function dltRows_TB07230S(gridId){
-        var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
-
-        $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
-    }
-	
+	// 관리부서 세팅
 	function setFormElementsStateByUserRole() {
 		let dprtCd = $('#userDprtCd').val();
 		//let dprtNm = $('#userDprtNm').val();
@@ -225,8 +54,181 @@ const TB07230Sjs = (function () {
 		$('#TB07230S_dprtCd').val(dprtCd);
 		$('#TB07230S_dprtNm').val(dprtCd);
 	}
-	
-	function selectTB07230S(){
+
+	// 거래내역 그리드 세팅
+	function gridSett() {
+
+		//거래내역 그리드 colModel
+		let TB07230S_col_trsctHis = [
+			/*
+			//체크박스
+			{
+				dataIndx: "chk",
+				maxWidth: 36,
+				minWidth: 36,
+				align: "center",
+				resizable: false,
+				title: "",
+				menuIcon: false,
+				type: "checkBoxSelection",
+				cls: "ui-state-default",
+				sortable: false,
+				editor: false,
+				dataType: "bool",
+				editable: "true",
+				cb: {
+				all: false,
+				header: true,
+				},
+			},*/
+			/*
+			{
+				title: "승인",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "center",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			*/
+			/*
+			{
+				title: "확정",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "center",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			*/
+			{
+				title: "거래일자",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "center",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "SPC명",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "left",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "자산관리계좌번호",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "left",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "구분",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "center",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "항목",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "center",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "적요",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "center",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "금액",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "right",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "잔고",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "right",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "수정인",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "center",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "관리부점",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "center",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "비고",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "left",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "정렬순서",
+				dataType: "string",
+				dataIndx: "",
+				halign: "center",
+				align: "left",
+				filter: { crules: [{ condition: "range" }] },
+			},
+		]
+
+		let pqGridObjs = [
+			{
+				height: 500,
+				maxHeight: 500,
+				id: "TB07230S_trsctHis",
+				colModel: TB07230S_col_trsctHis,
+				scrollModel: { autoFit: true },
+				editable: false,
+				strNoRows: "데이터가 없습니다.",
+				numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
+			}
+		]
+
+		setPqGrid(pqGridObjs);
+	}
+
+	//그리드 행 추가
+	function addRows_TB07230S(gridId) {
+		$(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
+	}
+
+	//그리드 행 삭제
+	function dltRows_TB07230S(gridId) {
+		var gridLgth = $(gridId).pqGrid('option', 'dataModel.data').length;
+
+		$(gridId).pqGrid("deleteRow", { rowIndx: gridLgth - 1 });
+	}
+
+	// 조회버튼
+	function selectTB07230S() {
 		var paramData = {
 			ardyBzepNo: $("#TB07230S_ardyBzepNo").val(),			// spc 기업체 코드
 			fromDate: unformatDate($('#TB07230S_fromDate').val()),	// 조회기간 시작
@@ -234,7 +236,7 @@ const TB07230Sjs = (function () {
 			dprtCd: $('#TB07230S_dprtCd').val(),					// 관리부점
 			asstMngmAcno: $('#TB07230S_asstMngmAcno').val(),		// 자산관리계좌번호
 		};
-		
+
 		$.ajax({
 			type: "GET",
 			url: '/TB07230S/selectTB07230S',
@@ -242,10 +244,10 @@ const TB07230Sjs = (function () {
 			dataType: "json",
 			success: function(data) {
 				if (data.length > 0) {
-				  $("#TB07230S_trsctHis").pqGrid("setData", data);
-				  $("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
+					$("#TB07230S_trsctHis").pqGrid("setData", data);
+					$("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
 				} else {
-				  $("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
+					$("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
 				}
 			},
 			error: function() {
@@ -258,10 +260,25 @@ const TB07230Sjs = (function () {
 			},
 		});
 	}
+	
+	// 초기화버튼
+	function resetSearch() {
+		$('#TB07230S_ardyBzepNo').val('');	// spc 기업체번호
+		$('#TB07230S_entpNm').val('');	// spc 기업체명
+		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1));	//조회시작일
+		$("#TB07230S_toDate").val(getToday());	//조회종료일
+		
+		setFormElementsStateByUserRole();	// 관리부점
+		
+		$('#TB07230S_asstMngmAcno').val('');	// 자산관리계좌
+		
+		$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
+	};
 
-    return {
-        addRows_TB07230S: addRows_TB07230S,
-        dltRows_TB07230S: dltRows_TB07230S,
+	return {
+		addRows_TB07230S: addRows_TB07230S,
+		dltRows_TB07230S: dltRows_TB07230S,
 		selectTB07230S: selectTB07230S,
-    };
+		resetSearch: resetSearch,
+	};
 })();

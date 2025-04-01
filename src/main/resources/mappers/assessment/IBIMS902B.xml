@@ -34,13 +34,13 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(fromDate) and @com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDate)">
             AND T1.TR_DT            <![CDATA[<=]]> #{toDate}
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(ardyBzepNo)">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
             AND T2.ARDY_BZEP_NO     = #{ardyBzepNo}
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(asstMngmAcno)">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(asstMngmAcno)">
             AND T2.ASST_MNGM_ACNO   = #{asstMngmAcno}
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(dprtCd)">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
             AND T2.DPRT_CD          = #{dprtCd}
            </if>
 		  ORDER BY
