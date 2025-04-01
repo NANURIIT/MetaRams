@@ -21,6 +21,7 @@ public class TB07220ServiceImpl implements TB07220Service {
 
 	@Override
 	public List<IBIMS900BVO> selectBalanceInfoList(IBIMS900BVO param){
+		log.debug("dfdd");
 		return ibims900bMapper.selectBalanceInfoList(param);
 	}
 
