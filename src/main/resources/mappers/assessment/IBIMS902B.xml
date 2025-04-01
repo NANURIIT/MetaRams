@@ -49,4 +49,79 @@
 			  , T1.TR_SN
     </select>
 
+	<select id="getSn" parameterType="String">
+		SELECT NVL(TR_SN, 0) + 1
+		  FROM IBIMS900B
+		 WHERE 1=1
+		   AND TR_DT = #{trDt}
+		   AND ARDY_BZEP_NO = #{ardyBzepNo}
+		   AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+	</select>
+
+	<insert id="insertRndrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		INSERT INTO IBIMS902B (
+			TR_DT
+		  , ARDY_BZEP_NO
+		  , FINC_EXCU_RQS_SN
+		  , TR_SN
+		  , RNDR_DCD
+		  , SPC_DEP_ITEM_KND_CD
+		  , SPC_WDR_ITEM_KND_CD
+		  , SYNS_TEXT
+		  , TR_OTHR_DSCM_NO
+		  , RNDR_AMT
+		  , RNDR_BLCE
+		  , ISTT_CD
+		  , ACNO
+		  , RMRK
+		  , HND_DETL_DTM
+		  , HND_EMPNO
+		  , HND_TMNL_NO
+		  , HND_TR_ID
+		  , GUID
+		) 
+		VALUES (
+			#{trDt}
+		  , #{ardyBzepNo}
+		  , #{fincExcuRqsSn}
+		  , #{trSn}
+		  , #{rndrDcd}
+		  , #{spcDepItemKndCd}
+		  , #{spcWdrItemKndCd}
+		  , #{synsText}
+		  , #{trOthrDscmNo}
+		  , #{rndrAmt}
+		  , #{rndrBlce}
+		  , #{isttCd}
+		  , #{acno}
+		  , #{rmrk}
+		  , #{hndDetlDtm}
+		  , #{hndEmpno}
+		  , #{hndTmnlNo}
+		  , #{hndTrId}
+		  , #{guid}
+		)
+	</insert>
+
+	<update id="updateRndrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		UPDATE IBIMS902B
+		   SET RNDR_DCD
+			 , SPC_DEP_ITEM_KND_CD
+			 , SPC_WDR_ITEM_KND_CD
+			 , SYNS_TEXT
+			 , TR_OTHR_DSCM_NO
+			 , RNDR_AMT
+			 , RNDR_BLCE
+			 , ISTT_CD
+			 , ACNO
+			 , RMRK
+			 , HND_DETL_DTM
+			 , HND_EMPNO
+		 WHERE 1=1
+		   AND ARDY_BZEP_NO = #{ardyBzepNo}
+		   AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		   AND TR_DT = #{trDt}
+		   AND TR_SN = #{trSn}
+	</update>
+
 </mapper>
