@@ -38,7 +38,7 @@ const TB07220Sjs = (function () {
         $('#TB07220S_dprtNm').on('change', function() {
             $('#TB07220S_dprtCd').val($('#TB07220S_dprtNm').val())
         });
-
+ 
         setFormElementsStateByUserRole();
     } 
 
