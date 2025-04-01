@@ -13,4 +13,6 @@ public interface TB07200Service {
 
     public List<IBIMS900BVO> selectSpcList(IBIMS900BVO param);
 
+    public IBIMS900BVO spcDetail (IBIMS900BDTO param);
+
 } 

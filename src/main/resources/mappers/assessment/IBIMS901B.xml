@@ -3,7 +3,7 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS901BMapper">
 
     <!-- 유동화증권 발행(예정)내역 -->
-    <select id="지정바람" parameterType="com.nanuri.rams.business.common.dto.IBIMS901BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS901BDTO">
+    <select id="pblHisList" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS901BDTO">
         SELECT ARDY_BZEP_NO
              , LQDZ_SCTY_ISU_TMRD
              , ISU_DT
@@ -14,9 +14,6 @@
           FROM IBIMS901B
          WHERE 1=1
            AND ARDY_BZEP_NO = #{ardyBzepNo}             /* SPC */
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(lqdzSctyIsuTmrd)">
-           AND LQDZ_SCTY_ISU_TMRD = #{lqdzSctyIsuTmrd}  /* 유동화증권발행회차 */
-           </if>
     </select>
 
     
