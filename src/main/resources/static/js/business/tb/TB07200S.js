@@ -14,21 +14,48 @@ const TB07200Sjs = (function () {
 
     });
 
-    function test() {
+    function selectSpcList() {
         let paramData = {
             ardyBzepNo: $('#TB07200S_ardyBzepNo').val(),
             ibCtrtNm: $("#TB07200S_ibCtrtNm").val(),
             asstMngmAcno: $("#TB07200S_asstMngmAcno").val(),
-            dprtNm: $("#TB07200S_dprtNm").val(),
             dprtCd: $("#TB07200S_dprtCd").val(),
-            fromDate: $("#TB07200S_fromDate").val(),
-            toDate: $("#TB07200S_toDate").val(),
-            
+            fromDate: unformatDate($("#TB07200S_fromDate").val()),
+            toDate: unformatDate($("#TB07200S_toDate").val()),
         }
 
-        console.log(paramData);
-        
+        $.ajax({
+            type: "POST",
+            url: `/TB07200S/selectSpcList`,
+            contentType: "application/json; charset=UTF-8",
+            data: JSON.stringify(paramData),
+            success: function (data) {
+              console.log("서버통신성공");
+              console.log(data)
+              $('#TB07200S_wrkRqst').pqGrid('instance').setData(data);
+              // $('# 피큐그리드 아이디값').pqGrid('instance').setData(통신으로 받은 데이터);
+            },
+          })
     }
+
+    function spcDetail () {
+        // let paramData = {
+
+        // }
+
+        // $.ajax({
+        //     type: "POST",
+        //     url: `/TB07200S/selectSpcList`,
+        //     contentType: "application/json; charset=UTF-8",
+        //     data: JSON.stringify(paramData),
+        //     success: function (data) {
+        //       console.log("서버통신성공");
+        //       console.log(data)
+        //       $('#TB07200S_wrkRqst').pqGrid('instance').setData(data);
+        //       // $('# 피큐그리드 아이디값').pqGrid('instance').setData(통신으로 받은 데이터);
+        //     },
+        // })
+    } 
 
     function gridSett(){
 
@@ -493,6 +520,6 @@ const TB07200Sjs = (function () {
     return {
         addRows_TB07200S: addRows_TB07200S,
         dltRows_TB07200S: dltRows_TB07200S,
-        test: test
+        selectSpcList: selectSpcList
     };
 })();

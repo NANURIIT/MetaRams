@@ -22,5 +22,7 @@ public class IBIMS900BVO extends IBIMS900BDTO {
     private BigDecimal rndrInAmt;   // 입금합계
     private BigDecimal rndrOutAmt;  // 출금합계
     private String trDt;            // 거래일자
+    private String fromDate;            // 거래일자
+    private String toDate;            // 거래일자
     
 }
