@@ -329,14 +329,30 @@ const TB07200Sjs = (function () {
         //입금요청 그리드 colModel
         let TB07200S_col_dpstRqst = [
             {
-                title: "거래일자",
-                dataType: "string",
-                dataIndx: "trDt",
-                halign: "center",
-                align: "center",
-                editable: true,
-                filter: { crules: [{ condition: "range" }] },
-            },
+				title: "거래일자",
+				dataType: "date",
+				format: "yyyy-mm-dd",
+				dataIndx: "trDt",
+				halign: "center",
+				align: "center",
+				editor: {
+					type: "textbox",
+					init: dateEditor_dpstRqst,
+				},
+				validations: [{ type: 'regexp', value: '^([0-9]{4}-[0-9]{2}-[0-9]{2})|([0-9]{8})$', msg: 'Not in yyyy-mm-dd format' }],
+				//validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
+				editable: true,
+				render: function(ui) {
+					let cellData = replaceAll(ui.cellData, '-', '');
+					if (!isEmpty(cellData) && cellData.length === 8) {
+						return formatDate(cellData);
+					} else if (!isEmpty(cellData) && cellData.length > 8) {
+						return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
+					} else {
+						return cellData;
+					}
+				}
+			},
             {
                 title: "입금항목",
                 dataType: "string",
@@ -377,10 +393,11 @@ const TB07200Sjs = (function () {
             },
             {
                 title: "금액",
-                dataType: "string",
+                dataType: "integer",
                 dataIndx: "rndrAmt",
                 halign: "center",
                 align: "right",
+                format: "#,###",
                 editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
