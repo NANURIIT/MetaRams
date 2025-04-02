@@ -331,6 +331,50 @@ function setMtrInfo_TB04011P(e) {
   }
 
   if (prefix == "TB05010S") {
+
+    // 그리드데이터 체크
+    const chkGrid = () => {
+      let grid = $("#gridCaseList").pqGrid('instance').pdata;
+      console.log(grid);
+      console.log(e.sn);
+      for (let i = 0; i < grid.length; i++) {
+        console.log(grid[i].dealSn);
+        if (grid[i].dealSn == e.sn && grid[i].dealNo == e.dealNo) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // 안건중복체크
+    if (chkGrid()) {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning",
+        text: "중복된 안건입니다!",
+      })
+      return;
+    }
+
+    // 심사진행중
+    if (e.mtrPrgSttsDcd != "208" && e.mtrPrgSttsDcd.substr(0, 1) === "2") {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning",
+        text: "승인되지않은 안건입니다!",
+      })
+      return;
+    }
+    // 협의진행중
+    else if (e.mtrPrgSttsDcd.substr(0, 1) === "3") {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning",
+        text: "이미 협의가 된 안건입니다!",
+      })
+      return;
+    }
+
     let newRow = {
       dealNo: ibDealNo,
       mtrDcd: lstCCaseCcd,
@@ -344,6 +388,7 @@ function setMtrInfo_TB04011P(e) {
       chrgPEnm: e.chrgPNm,
       ownPEno: e.ownPEno,
       ownPNm: e.ownPNm,
+      dealSn: e.sn
     };
 
     $("#gridCaseList").pqGrid("addRow", {
@@ -454,7 +499,7 @@ let colMtrInfo = [
   },
   {
     title: "Deal생성일자",
-    dataType: "date",
+    dataType: "string",
     dataIndx: "rgstDt",
     halign: "center",
     align: "center",
