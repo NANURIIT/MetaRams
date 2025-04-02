@@ -9,7 +9,7 @@ const TB07230Sjs = (function() {
 		gridSett();
 
 		//기간검색 유효성 검사 함수
-		chkValFromToDt("TB07230S_fromDate","TB07230S_toDate
+		chkValFromToDt("TB07230S_fromDate","TB07230S_toDate");
 	});
  
 	function setMonthInput() {
