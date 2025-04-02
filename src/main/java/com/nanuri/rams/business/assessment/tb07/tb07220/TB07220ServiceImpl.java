@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TB07220ServiceImpl implements TB07220Service {
 
-	private final IBIMS900BMapper ibims900bMapper;
+	private final IBIMS900BMapper ibims900bMapper; 
 
 	@Override
 	public List<IBIMS900BVO> selectBalanceInfoList(IBIMS900BVO param){
