@@ -339,7 +339,7 @@ function setMtrInfo_TB04011P(e) {
       console.log(e.sn);
       for (let i = 0; i < grid.length; i++) {
         console.log(grid[i].dealSn);
-        if (grid[i].dealSn == e.sn && grid[i].dealNo == e.dealNo) {
+        if (grid[i].dealSn == e.sn && grid[i].dealNo == e.dealNo && grid[i].mtrDcd == e.mtrDcd && grid[i].jdgmDcd == e.jdgmDcd) {
           return true;
         }
       }
