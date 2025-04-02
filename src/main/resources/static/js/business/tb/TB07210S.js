@@ -7,6 +7,9 @@ const TB07210Sjs = (function () {
     $(document).ready(function () {
         selectBoxSetting();
         setGridOptions();
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB07210S_fincExcuRqsDt1","TB07210S_fincExcuRqsDt2");
     });
 
     function selectBoxSetting() {

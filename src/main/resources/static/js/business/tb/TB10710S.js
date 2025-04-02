@@ -7,6 +7,9 @@ const TB10710Sjs = function () {
         $("#selectDate_2").val(getCurrentDate())
         $('#disabledView').find('input').prop('disabled', true);
         // createOption();
+
+        //기간검색 유효성 검사 함수
+        chkValFromToDt("selectDate_1","selectDate_2");
     });
 
     function getCurrentDate() {

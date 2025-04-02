@@ -1,4 +1,4 @@
-const TB07230Sjs = (function() {
+const TB07230Sjs = (function() { 
 
 	$(document).ready(function() {
 
@@ -8,14 +8,17 @@ const TB07230Sjs = (function() {
 
 		gridSett();
 
-	});
+		//기간검색 유효성 검사 함수
+		chkValFromToDt("TB07230S_fromDate","TB07230S_toDate");
 
+	});
+ 
 	function setMonthInput() {
 		// 1개월전 ~ 현재날짜 디폴트 세팅
 		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
 		$("#TB07230S_toDate").val(getToday()); //조회종료일
 		
-		chkValFromToDt("TB07230S_fromDate", "TB07230S_toDate");
+		
 	}
 
 	//selectBox 세팅

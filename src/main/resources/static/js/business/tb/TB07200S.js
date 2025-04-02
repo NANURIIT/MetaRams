@@ -12,6 +12,9 @@ const TB07200Sjs = (function () {
         gridSett();
         TB07200S_onChangeHandler();
 
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB07200S_fromDate","TB07200S_toDate");
+
     });
 
     function selectSpcList() {

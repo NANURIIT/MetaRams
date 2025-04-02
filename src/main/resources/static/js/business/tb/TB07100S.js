@@ -52,6 +52,9 @@ const TB07100Sjs = (function () {
     // 사용자 확인 후 버튼상태 컨트롤
     apvlBtnHandler();
 
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB07100S_acctDt1","TB07100S_acctDt2");
+
   });
 
   /**

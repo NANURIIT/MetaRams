@@ -19,6 +19,9 @@ const TB08040Sjs = (function() {
 		selectBoxSet_TB08040S(); //부서 셀렉트박스 세팅
 		loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
 		getDealInfoFromWF();
+
+		//기간검색 유효성 검사 함수
+		chkValFromToDt("TB08040S_strPrarDt","TB08040S_endPrarDt");
 	});
 
 	/**

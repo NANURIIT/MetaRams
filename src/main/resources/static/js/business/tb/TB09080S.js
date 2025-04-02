@@ -10,6 +10,9 @@ const TB09080Sjs = (function () {
 
     $("#TB09080S_rsltnDt").val(getSomeDaysAgo(7));
     $("#TB09080S_rsltnEndDt").val(getToday());
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB09080S_rsltnDt","TB09080S_rsltnEndDt");
   });
 
   function setLoginUsrInfo(){

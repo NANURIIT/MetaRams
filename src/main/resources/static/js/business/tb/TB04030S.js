@@ -6,6 +6,9 @@ const TB04030Sjs = (function () {
     loadSelectBoxContents();
     setDateInput();
     setArrPqGridObj();
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB04030S_fromDate","TB04030S_toDate");
   });
 
   /* 그리드설정 */

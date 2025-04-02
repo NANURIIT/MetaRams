@@ -31,6 +31,9 @@ const TB04020Sjs = (function () {
     };
     $("#gridCheckDealList").pqGrid(obj);
     pqGridObjDealList = $("#gridCheckDealList").pqGrid("instance");
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB04020S_fromDate","TB04020S_toDate");
   });
 
   function setDateInput() {

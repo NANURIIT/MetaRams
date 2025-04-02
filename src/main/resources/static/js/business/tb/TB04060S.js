@@ -382,6 +382,10 @@ const TB04060Sjs = (function() {
 		fnSelectBox();
 		loadSelectBoxContents();
 		setGrid_TB04060S();
+
+		//기간검색 유효성 검사 함수
+		chkValFromToDt("TB04060S_rgstDt","TB04060S_rgstEndDt");
+		chkValFromToDt("TB04060S_apvlDt","TB04060S_apvlEndDt");
 	});
 
 	function setGrid_TB04060S(){
