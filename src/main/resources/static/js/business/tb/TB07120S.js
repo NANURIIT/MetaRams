@@ -9,6 +9,9 @@ const TB07120Sjs = (function () {
     createOption();
     setInput();
     getDealInfoFromWF();
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB07120S_selectDate1","TB07120S_selectDate2");
   });
 
   /**

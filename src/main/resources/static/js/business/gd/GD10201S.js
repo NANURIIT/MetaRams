@@ -7,6 +7,9 @@ const GD10201Sjs = (function () {
 
         gridSett();
 
+        //기간검색 유효성 검사 함수
+        chkValFromToDt("GD10201S_fromDate","GD10201S_toDate");
+
     });
 
     function gridSett(){

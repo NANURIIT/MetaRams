@@ -9,6 +9,9 @@ const TB08050Sjs = (function () {
 
   $(document).ready(function () {
     onload();
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB08050S_strPrarDt","TB08050S_endPrarDt");
   });
 
   function onload() {

@@ -2493,8 +2493,8 @@ function chkValFromToDtVal(fromDate, toDate, pattern = true) {
 
 	function alertPopup() {
 		Swal.fire({
-			icon: "error",
-			title: "Error!",
+			icon: "warning",
+			title: "Warning!",
 			text: msgError,
 			confirmButtonText: "확인",
 		});

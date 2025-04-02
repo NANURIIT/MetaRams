@@ -8,6 +8,9 @@ const TB09100Sjs = (function() {
 
 		$("#TB09100S_fromDate").val(getSomeDaysAgo(7));
 		$("#TB09100S_toDate").val(getToday());
+
+		//기간검색 유효성 검사 함수
+		chkValFromToDt("TB09100S_fromDate","TB09100S_toDate");
 	});
 
 	// 담당직원정보

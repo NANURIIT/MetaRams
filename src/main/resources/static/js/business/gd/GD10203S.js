@@ -5,6 +5,9 @@ const GD10203Sjs = (function () {
         sltctBoxSet();
         
         setGridOptions();
+
+        //기간검색 유효성 검사 함수
+        chkValFromToDt("GD10203S_fromMm","GD10203S_toMm",false);
     });
 
     function setMonthInput() {

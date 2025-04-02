@@ -489,7 +489,7 @@
 		SELECT s103b.DEAL_NO 					AS DEAL_NO								/* 딜번호 */
 			 , s101b.DEAL_NM  					AS DEAL_NM								/* 딜명  */
 		     , s103b.MTR_DCD 					AS MTR_DCD								/* 안건구분코드 */
-				 , s103b.SN								AS SN											/* 일련번호 */
+			 , s103b.SN							AS SN									/* 일련번호 */
 		     , s002b_1.CD_VL_NM 				AS MTR_DCD_NM 	                        /* 안건구분코드명 */
 		     , s103b.JDGM_DCD 					AS JDGM_DCD								/* 심사구분코드 */
 		     , s002b_2.CD_VL_NM 				AS JDGM_DCD_NM							/* 심사구분코드명 */

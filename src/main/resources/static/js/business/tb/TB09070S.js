@@ -9,6 +9,9 @@ const TB09070Sjs = (function () {
     //$('#TB10510S_curDate').val(getToday())
     $("#TB09070S_fromDt").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
     $("#TB09070S_toDt").val(getToday()); //조회종료일
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB09070S_fromDt","TB09070S_toDt");
   });
 
   function selectBoxSet_TB09070S() {

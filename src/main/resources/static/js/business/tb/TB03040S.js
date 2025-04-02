@@ -20,6 +20,9 @@ const TB03040Sjs = (function(){
     ];
     setPqGrid(arrPqGridObj);
     pqGridObjEnopList = $("#TB03040S_gridDealList").pqGrid("instance");
+
+    //기간검색 유효성 검사 함수
+    chkValFromToDt("TB03040S_fromDate","TB03040S_toDate");
   });
 
   //selectBox 세팅
