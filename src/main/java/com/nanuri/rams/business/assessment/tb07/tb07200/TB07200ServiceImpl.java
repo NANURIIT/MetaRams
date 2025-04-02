@@ -2,15 +2,22 @@ package com.nanuri.rams.business.assessment.tb07.tb07200;
 
 
 import java.util.List;
+import java.util.ArrayList;
+import java.math.BigDecimal;
+
+import java.util.Comparator;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.common.dto.IBIMS900BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS901BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS902BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS900BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS901BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS902BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS900BVO;
+import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Slf4j
 public class TB07200ServiceImpl implements TB07200Service {
+
+    private final AuthenticationFacade facade;
 
     private final IBIMS900BMapper ibims900bMapper;
     private final IBIMS901BMapper ibims901bMapper;
@@ -40,6 +49,108 @@ public class TB07200ServiceImpl implements TB07200Service {
         vo.setWthdrwlRqstList(null);     // 출금요청내역
 
         return vo;
+    }
+
+    @Override
+    public int spcSave(IBIMS900BVO param){
+        int rslt = 0;//반환값 (0:: 에러 1:: 성공)
+
+        List<IBIMS901BDTO> pblHisList = param.getPblHisList();              // 유동화증권방행내역
+        List<IBIMS902BDTO> dpstRqstList = param.getDpstRqstList();          // 입금요청내역
+        List<IBIMS902BDTO> wthdrwlRqstList = param.getWthdrwlRqstList();    // 출금요청내역
+
+        /*디버깅용 로그 */
+        log.debug("!!!!![spcSave] parameter check!!!!!");
+        log.debug("[spcSave] ardyBzepNo::: " + param.getArdyBzepNo());
+        log.debug("[spcSave] fincExcuRqsDt::: " + param.getFincExcuRqsDt());
+        log.debug("[spcSave] ibCtrtNm::: " + param.getIbCtrtNm());
+        log.debug("[spcSave] asstMngmAcno::: " + param.getAsstMngmAcno());
+        log.debug("[spcSave] dprtCd::: " + param.getDprtCd());
+        log.debug("[spcSave] rmCtns::: " + param.getRmCtns());
+
+        log.debug("[spcSave] pblHisList.length::: " + pblHisList.size());
+        log.debug("[spcSave] dpstRqstList.length::: " + dpstRqstList.size());
+        log.debug("[spcSave] wthdrwlRqstList.length::: " + wthdrwlRqstList.size());
+
+        //유동화증권발행여부 세팅
+        if(pblHisList.size() < 1){
+            param.setLqdzSctyIsuYn("N");
+        }else{
+            param.setLqdzSctyIsuYn("Y");
+        }
+
+        param.setHndEmpno(facade.getDetails().getEno());        //조작사원번호
+
+        // int wrkRqstSaveRslt = ibims900bMapper.spcWrkRqstSave(param);
+
+        // if(wrkRqstSaveRslt < 1){
+        //     log.debug("[spcSave] SQL Error>>>>wrkRqstSaveRslt<<<<");
+        //     rslt = 0;
+        // }else{
+        //     log.debug("[spcSave] SQL Success>>>>wrkRqstSaveRslt<<<<");
+        //     rslt = 1;
+        // }
+
+        if(pblHisList.size() > 0){              //유동화증권 발행내역
+            log.debug("[spcSave] 유동화증권 발행내역 존재");
+
+            for(IBIMS901BDTO pblHisDTO: pblHisList){
+                pblHisDTO.setArdyBzepNo(param.getArdyBzepNo());         //기업체번호
+                pblHisDTO.setHndEmpno(facade.getDetails().getEno());    //조작사원번호
+            }
+
+        }
+
+        if(dpstRqstList.size() > 0 || wthdrwlRqstList.size() > 0){
+            log.debug("[spcSave] 입금/출금요청 내역 존재");
+
+            List<IBIMS902BDTO> ibims902List = new ArrayList<IBIMS902BDTO>();
+            BigDecimal rndrBlce = BigDecimal.ZERO;  //입출금잔액
+
+            if(dpstRqstList.size() > 0){            //입금요청 내역
+                log.debug("[spcSave] 입금요청 내역 존재");
+    
+                for(IBIMS902BDTO dpstRqstDTO: dpstRqstList){
+                    dpstRqstDTO.setArdyBzepNo(param.getArdyBzepNo());       //기업체번호
+                    dpstRqstDTO.setRndrDcd("1");                    //입출금구분코드 (1: 입금   2: 출금)
+                    dpstRqstDTO.setHndEmpno(facade.getDetails().getEno());
+                    ibims902List.add(dpstRqstDTO);
+                }
+            }else{
+                log.debug("[spcSave] 입금요청 내역 없음");
+            }
+    
+            if(wthdrwlRqstList.size() > 0){         //출금요청 내역
+                log.debug("[spcSave] 출금요청 내역 존재");
+                
+                for(IBIMS902BDTO wthdrwlRqstDTO: wthdrwlRqstList){
+                    wthdrwlRqstDTO.setArdyBzepNo(param.getArdyBzepNo());    // 기업체번호
+                    wthdrwlRqstDTO.setRndrDcd("2");                 //입출금구분코드 (1: 입금   2: 출금)
+                    wthdrwlRqstDTO.setHndEmpno(facade.getDetails().getEno());
+                    ibims902List.add(wthdrwlRqstDTO);
+                }
+            }else{
+                log.debug("[spcSave] 출금요청 내역 없음");
+            }
+
+            ibims902List.sort(Comparator
+                        .comparing(IBIMS902BDTO::getTrDt)         // 거래일자 기준 정렬
+                        .thenComparing(IBIMS902BDTO::getRndrDcd)  // 입출금구분코드 기준 정렬
+            );
+
+            // log.debug("ibims902List ::: {}", ibims902List);
+            for(IBIMS902BDTO dpstRqstDTO: dpstRqstList){
+                
+            }
+
+
+        }else{
+            log.debug("[spcSave] 입금/출금요청 내역 없음");
+        }
+
+       
+
+        return rslt;
     }
     
 }
