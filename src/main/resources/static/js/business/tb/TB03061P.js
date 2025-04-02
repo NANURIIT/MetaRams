@@ -68,6 +68,8 @@ function TB03061P_srchMtr(menuId) {
 		// ex) 종목코드 VARCHAR(10)
 		if (str === 13) {
 			await srchEvent(this);
+		}else{
+			resetArdyBzepInfo(this);
 		}
 	});
 
@@ -520,11 +522,46 @@ function setArdyBzepInfo(rowData) {
 			$("#TB07200S_wrkRqst").pqGrid("instance").pdata[rowInx].entpNm = entpNm;
 			$("#TB07200S_wrkRqst").pqGrid("instance").refresh();
 			break;
+		case "TB07230S":
+			TB07230Sjs.selectSpcList();
+			break;	
+			
 		default:
 			break;
 	}
 	modalClose_TB03061P();
 }
+
+function resetArdyBzepInfo(selector){
+	
+	// 사용한 인풋박스의 출처 페이지 가져오기
+	let prefix;
+	if ($(selector).attr("id") === $("#TB03061P_ardyBzepNo").attr("id")) {
+		prefix = TB03061P_pf;
+
+	} else {
+		// 컬럼명 길이로 바꾸셔야 합니당
+		const prefixId = $(selector).attr("id")
+		let _index = 0;
+		for (let i = 0; i < prefixId.length; i++) {
+			if (prefixId[i] === "_") {
+				_index = i;
+			} else {
+				continue;
+			}
+		}
+		prefix = $(selector).attr("id").slice(0, _index);
+	}
+	
+	switch(prefix){
+		case "TB07230S":
+			$('#TB07230S_fincExcuRqsSn').html("");
+			break;
+		default:
+			break;	
+	}
+}
+
 /** ************************************그리드 컬럼********************************** **/
 
 let colModalBzepList = [

@@ -8,6 +8,8 @@ const TB07230Sjs = (function() {
 
 		gridSett();
 
+		//기간검색 유효성 검사 함수
+		chkValFromToDt("TB07230S_fromDate","TB07230S_toDate");
 	});
  
 	function setMonthInput() {
@@ -15,7 +17,7 @@ const TB07230Sjs = (function() {
 		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
 		$("#TB07230S_toDate").val(getToday()); //조회종료일
 		
-		chkValFromToDt("TB07230S_fromDate", "TB07230S_toDate");
+		
 	}
 
 	//selectBox 세팅
@@ -284,11 +286,55 @@ const TB07230Sjs = (function() {
 		
 		$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
 	};
+	
+	// spc 기업체번호 변경 function
+	function selectSpcList() {
+
+		console.log("val[" + $("#TB07230S_ardyBzepNo").val() + "]");
+
+		if (isEmpty($("#TB07230S_ardyBzepNo").val())) {
+			return false;
+		}
+
+		var paramData = {
+			ardyBzepNo: $("#TB07230S_ardyBzepNo").val(),			// spc 기업체 코드
+		};
+
+		$.ajax({
+			type: "GET",
+			url: '/TB07230S/selectSpcList',
+			data: paramData,
+			dataType: "json",
+			success: function(data) {
+				
+				var html = "";
+				
+				if(data.length > 0){
+					data.forEach(function(obj){
+						html += "<option value=" + obj.fincExcuRqsSn + ">" + obj.fincExcuRqsSn +"</option>"
+					})
+					
+					$('#TB07230S_fincExcuRqsSn').html(html);
+				}else{
+					$('#TB07230S_fincExcuRqsSn').html(html);
+				}
+			},
+			error: function() {
+				Swal.fire({
+					icon: "error",
+					title: "Error!",
+					text: "정보 조회에 실패하였습니다.",
+					confirmButtonText: "확인",
+				});
+			},
+		});
+	}
 
 	return {
 		addRows_TB07230S: addRows_TB07230S,
 		dltRows_TB07230S: dltRows_TB07230S,
 		selectTB07230S: selectTB07230S,
 		resetSearch: resetSearch,
+		selectSpcList: selectSpcList,
 	};
 })();
