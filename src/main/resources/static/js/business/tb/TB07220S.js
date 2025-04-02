@@ -49,8 +49,8 @@ const TB07220Sjs = (function () {
         // SPC 초기화
         $("#TB07220S_ardyBzepNo").val("");
         $("#TB07220S_ardyBzepNm").val("");
-        // 신청상태 초기화
-        $("#TB07220S_decdSttsDcd").val("999"); //진행상태
+        // 신청상태 초기화[삭제]
+        //$("#TB07220S_decdSttsDcd").val("999"); //진행상태
         // 관리부점 초기화
         setFormElementsStateByUserRole();
         // 그리드 초기화
@@ -132,7 +132,7 @@ const TB07220Sjs = (function () {
                 toMm:           $('#TB07220S_toMm').val() ? $('#TB07220S_toMm').val().replaceAll("-", "") : "",
                 ardyBzepNo:     $('#TB07220S_ardyBzepNo').val(),
                 dprtCd:         $('#TB07220S_dprtCd').val(),
-                decdSttsDcd:    $('#TB07220S_decdSttsDcd').val(),
+                /*decdSttsDcd:    $('#TB07220S_decdSttsDcd').val(),*/
             }
             
             $.ajax({
@@ -217,6 +217,9 @@ const TB07220Sjs = (function () {
                         format: "#,###",
                         filter: { crules: [{ condition: "range" }] },
                         summary: { type: "sum" },
+						render: function (ui) {
+                            return ui.cellData ? ui.cellData : 0;
+                        },
                     },
                 ],
             },
@@ -365,7 +368,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "출금 합계",
                         dataType: "string",
-                        dataIndx: "amt",
+                        dataIndx: "wdrAmtTot",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -379,7 +382,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "유동화증권 상환",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt01",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -393,7 +396,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "대출 실행/추가 인출",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt08",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -407,7 +410,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "ABB/ABL 원리금",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt05",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -421,7 +424,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "원진세 납부",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt06",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -435,7 +438,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "후순위대여 상환",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt07",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -449,7 +452,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "자금운용 목적 계좌",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt17",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -472,7 +475,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "법무법인수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt10",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -486,7 +489,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "업무위탁수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt11",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -500,7 +503,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "회계감사수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt12",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -514,7 +517,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "신용평가수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt13",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -528,7 +531,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "대리금융수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt14",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -542,7 +545,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "설립청산수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt15",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -553,7 +556,7 @@ const TB07220Sjs = (function () {
                             return ui.cellData ? ui.cellData : 0;
                         },
                     },
-                    {
+                    /*{
                         title: "발행등록수수료",
                         dataType: "string",
                         dataIndx: "",
@@ -566,7 +569,7 @@ const TB07220Sjs = (function () {
                         render: function (ui) {
                             return ui.cellData ? ui.cellData : 0;
                         },
-                    },
+                    },*/
                 ],
             },
             /**
@@ -579,7 +582,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "보증수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt02",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -593,7 +596,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "자산관리수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt03",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -607,7 +610,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "인수수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt04",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -621,7 +624,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "주관/주선수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt09",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -635,7 +638,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "취급수수료",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt16",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -649,7 +652,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "기타",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "wdrAmt99",
                         halign: "center",
                         align: "right",
                         width: "10%",
@@ -663,7 +666,7 @@ const TB07220Sjs = (function () {
                     {
                         title: "당월말잔고",
                         dataType: "string",
-                        dataIndx: "",
+                        dataIndx: "thmmRndrBlce",
                         halign: "center",
                         align: "right",
                         width: "10%",
