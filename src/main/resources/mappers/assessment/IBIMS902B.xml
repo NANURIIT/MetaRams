@@ -162,7 +162,31 @@
 		   AND TR_SN = #{trSn}
 	</update>
 
-	<delete id="deleteRndrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+	<!-- 화면에서 삭제된 입출금내역조회 -->
+	<select id="deletedRndrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		SELECT TR_DT
+			 , ARDY_BZEP_NO
+			 , FINC_EXCU_RQS_SN
+			 , TR_SN
+		 WHERE 1=1
+		   AND ARDY_BZEP_NO IN (
+				<foreach item="item" collection="list" separator=",">
+				#{item.ardyBzepNo}
+				</foreach>
+		   )
+		   AND FINC_EXCU_RQS_SN IN (
+				<foreach item="item" collection="list" separator=",">
+				#{item.fincExcuRqsSn}
+				</foreach>
+		   )
+		   AND NOT (
+          <foreach item="item" collection="list" separator="OR">
+              (TR_DT = #{item.trDt} AND TR_SN = #{item.trSn})
+          </foreach>
+      )
+	</select>
+
+	<delete id="deleteRndr" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
 		DELETE IBIMS902B
 		 WHERE 1=1
 		   AND ARDY_BZEP_NO = #{ardyBzepNo}

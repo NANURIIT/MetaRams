@@ -27,8 +27,13 @@ public interface IBIMS902BMapper {
     public int updateRndrBlce (IBIMS902BDTO param);
 
     /**
+     * 화면에서 삭제된 입출금내역조회
+     */
+    public List<IBIMS902BDTO> deletedRndrList (List<IBIMS902BDTO> param);
+
+    /**
      * 입출금요청내역삭제
      */
-    public int deleteRndrList (IBIMS902BDTO param);
+    public int deleteRndr (IBIMS902BDTO param);
 
 }
