@@ -11,4 +11,6 @@ public interface TB07230Service {
 
 	public List<IBIMS902BVO> selectTB07230S(IBIMS902BVO param);
 
+	public int saveTB07230S(IBIMS902BVO param);
+
 }

@@ -16,4 +16,21 @@ public interface IBIMS901BMapper {
      */
     public List<IBIMS901BDTO> pblHisList (String param);
 
+    /**
+     * 삭제해야할 유동화증권 발행(예정)내역
+     * @param param
+     * @return
+     */
+    public List<IBIMS901BDTO> deletedPblHisList (List<IBIMS901BDTO> param);
+
+    /**
+     * 유동화증권 발행내역 삭제
+     * @param param
+     * @return
+     */
+    public int deletePblHis (IBIMS901BDTO param);
+    
+    public int pblHisSave(IBIMS901BDTO param);
+    public int pblHisUpdate(IBIMS901BDTO param);
+
 }

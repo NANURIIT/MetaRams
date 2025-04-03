@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nanuri.rams.business.assessment.tb06.tb06082.decdJob.TB07200SJob;
 import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS231BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS232BDTO;
@@ -29,6 +30,7 @@ public class TB06082ServiceImpl implements TB06082Service {
 	private final IBIMS231BMapper ibims231bMapper;
 	private final IBIMS232BMapper ibims232bMapper;
 	private final IBIMS201BMapper ibims201bMapper;
+	private final TB07200SJob tb07200sJob;
 
 	@Override
     public int decdUpdate(IBIMS231BVO paramData){
@@ -83,11 +85,17 @@ public class TB06082ServiceImpl implements TB06082Service {
 			dto231.setPrcsRsltDcd("01");
 			ibims231bMapper.updateDecd(dto231);
 
+			// 대출채권/채무보증, 집합투자증권, 주식(출자포함)/채권 정보등록 화면
 			if ("TB06010S".equals(paramData.getScrnNo()) || "TB06020S".equals(paramData.getScrnNo()) || "TB06030S".equals(paramData.getScrnNo())) {
 				IBIMS201BDTO dto201 = new IBIMS201BDTO();
 				dto201.setPrdtCd(paramData.getPrdtCd());
 				dto201.setPrgSttsCd("403");		// 승인정보부의합의완료
 				ibims201bMapper.sttsUpdate(dto201);
+			}
+
+			// SPC 자금집행 업무지시요청 화면
+			else if ( "TB07200S".equals(paramData.getScrnNo()) ) {
+				tb07200sJob.updateRndrBlce(paramData.getDealNo());
 			}
 		}
 		

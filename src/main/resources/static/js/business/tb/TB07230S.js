@@ -1,4 +1,6 @@
-const TB07230Sjs = (function() { 
+const TB07230Sjs = (function() {
+
+	var popupOption = {};
 
 	$(document).ready(function() {
 
@@ -9,9 +11,9 @@ const TB07230Sjs = (function() {
 		gridSett();
 
 		//기간검색 유효성 검사 함수
-		chkValFromToDt("TB07230S_fromDate","TB07230S_toDate");
+		chkValFromToDt("TB07230S_fromDate", "TB07230S_toDate");
 	});
- 
+
 	function setMonthInput() {
 		// 1개월전 ~ 현재날짜 디폴트 세팅
 		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
@@ -106,15 +108,18 @@ const TB07230Sjs = (function() {
 			{
 				title: "거래일자",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "trDt",
 				halign: "center",
 				align: "center",
 				filter: { crules: [{ condition: "range" }] },
+				render: function(ui) {
+					return ui.cellData.substring(0, 4) + "-" + ui.cellData.substring(4, 6) + "-" + ui.cellData.substring(6, 8);
+				},
 			},
 			{
 				title: "SPC명",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "spcNm",
 				halign: "center",
 				align: "left",
 				filter: { crules: [{ condition: "range" }] },
@@ -122,7 +127,7 @@ const TB07230Sjs = (function() {
 			{
 				title: "자산관리계좌번호",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "isttNmAsstMngmAcno",
 				halign: "center",
 				align: "left",
 				filter: { crules: [{ condition: "range" }] },
@@ -130,7 +135,7 @@ const TB07230Sjs = (function() {
 			{
 				title: "구분",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "rndrNm",
 				halign: "center",
 				align: "center",
 				filter: { crules: [{ condition: "range" }] },
@@ -138,7 +143,7 @@ const TB07230Sjs = (function() {
 			{
 				title: "항목",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "spcItemKndNm",
 				halign: "center",
 				align: "center",
 				filter: { crules: [{ condition: "range" }] },
@@ -146,7 +151,7 @@ const TB07230Sjs = (function() {
 			{
 				title: "적요",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "synsText",
 				halign: "center",
 				align: "center",
 				filter: { crules: [{ condition: "range" }] },
@@ -154,23 +159,25 @@ const TB07230Sjs = (function() {
 			{
 				title: "금액",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "rndrAmt",
 				halign: "center",
 				align: "right",
+				format: "#,###",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
 				title: "잔고",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "rndrBlce",
 				halign: "center",
 				align: "right",
+				format: "#,###",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
 				title: "수정인",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "rcveP",
 				halign: "center",
 				align: "center",
 				filter: { crules: [{ condition: "range" }] },
@@ -178,7 +185,7 @@ const TB07230Sjs = (function() {
 			{
 				title: "관리부점",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "dprtNm",
 				halign: "center",
 				align: "center",
 				filter: { crules: [{ condition: "range" }] },
@@ -186,7 +193,7 @@ const TB07230Sjs = (function() {
 			{
 				title: "비고",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "rmCtns",
 				halign: "center",
 				align: "left",
 				filter: { crules: [{ condition: "range" }] },
@@ -194,9 +201,9 @@ const TB07230Sjs = (function() {
 			{
 				title: "정렬순서",
 				dataType: "string",
-				dataIndx: "",
+				dataIndx: "sortNo",
 				halign: "center",
-				align: "left",
+				align: "right",
 				filter: { crules: [{ condition: "range" }] },
 			},
 		]
@@ -216,79 +223,10 @@ const TB07230Sjs = (function() {
 		setPqGrid(pqGridObjs);
 	}
 
-	//그리드 행 추가
-	function addRows_TB07230S(gridId) {
-		$(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
-	}
-
-	//그리드 행 삭제
-	function dltRows_TB07230S(gridId) {
-		var gridLgth = $(gridId).pqGrid('option', 'dataModel.data').length;
-
-		$(gridId).pqGrid("deleteRow", { rowIndx: gridLgth - 1 });
-	}
-
-	// 조회버튼
-	function selectTB07230S() {
-		var paramData = {
-			ardyBzepNo: $("#TB07230S_ardyBzepNo").val(),			// spc 기업체 코드
-			fromDate: unformatDate($('#TB07230S_fromDate').val()),	// 조회기간 시작
-			toDate: unformatDate($('#TB07230S_toDate').val()),		// 조회기간 종료
-			dprtCd: $('#TB07230S_dprtCd').val(),					// 관리부점
-			asstMngmAcno: $('#TB07230S_asstMngmAcno').val(),		// 자산관리계좌번호
-		};
-
-		$.ajax({
-			type: "GET",
-			url: '/TB07230S/selectTB07230S',
-			data: paramData,
-			dataType: "json",
-			success: function(data) {
-				console.log("success");
-				console.log(data);
-				if (data.length > 0) {
-					$("#TB07230S_trsctHis").pqGrid("setData", data);
-					$("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
-				} else {
-					
-					var obj = {
-					     // all your other grid settings
-					     strNoRows : '데이터가 없습니다.'
-					}
-					
-					$("#TB07230S_trsctHis").pqGrid(obj);
-					$("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
-				}
-			},
-			error: function() {
-				Swal.fire({
-					icon: "error",
-					title: "Error!",
-					text: "정보 조회에 실패하였습니다.",
-					confirmButtonText: "확인",
-				});
-			},
-		});
-	}
-	
-	// 초기화버튼
-	function resetSearch() {
-		$('#TB07230S_ardyBzepNo').val('');	// spc 기업체번호
-		$('#TB07230S_entpNm').val('');	// spc 기업체명
-		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1));	//조회시작일
-		$("#TB07230S_toDate").val(getToday());	//조회종료일
-		
-		setFormElementsStateByUserRole();	// 관리부점
-		
-		$('#TB07230S_asstMngmAcno').val('');	// 자산관리계좌
-		
-		$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
-	};
-	
 	// spc 기업체번호 변경 function
 	function selectSpcList() {
 
-		console.log("val[" + $("#TB07230S_ardyBzepNo").val() + "]");
+		//console.log("val[" + $("#TB07230S_ardyBzepNo").val() + "]");
 
 		if (isEmpty($("#TB07230S_ardyBzepNo").val())) {
 			return false;
@@ -304,35 +242,150 @@ const TB07230Sjs = (function() {
 			data: paramData,
 			dataType: "json",
 			success: function(data) {
-				
+
 				var html = "";
-				
-				if(data.length > 0){
-					data.forEach(function(obj){
-						html += "<option value=" + obj.fincExcuRqsSn + ">" + obj.fincExcuRqsSn +"</option>"
+
+				if (data.length > 0) {
+					data.forEach(function(obj) {
+						html += "<option value=" + obj.fincExcuRqsSn + ">" + obj.fincExcuRqsSn + "</option>"
 					})
-					
+
 					$('#TB07230S_fincExcuRqsSn').html(html);
-				}else{
+				} else {
 					$('#TB07230S_fincExcuRqsSn').html(html);
 				}
 			},
 			error: function() {
-				Swal.fire({
-					icon: "error",
-					title: "Error!",
-					text: "정보 조회에 실패하였습니다.",
-					confirmButtonText: "확인",
-				});
+				popupOption.type = "error";
+				popupOption.title = "Error!";
+				popupOption.text = "정보 조회에 실패하였습니다.";
+				openPopup(popupOption);
+			},
+		});
+	}
+
+	//그리드 행 추가
+	function addRows_TB07230S(gridId) {
+		$(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
+	}
+
+	//그리드 행 삭제
+	function dltRows_TB07230S(gridId) {
+		var gridLgth = $(gridId).pqGrid('option', 'dataModel.data').length;
+
+		$(gridId).pqGrid("deleteRow", { rowIndx: gridLgth - 1 });
+	}
+
+	// 조회버튼
+	function selectTB07230S() {
+		popupOption.type = "error";
+		popupOption.title = "Error!";
+
+		// spc 기업체 코드
+		if (isEmpty($("#TB07230S_ardyBzepNo").val())) {
+			popupOption.text = "SPC 기업체 코드 정보는 필수입니다.";
+			openPopup(popupOption);
+
+			return false;
+		}
+
+		// 자금집행신청일련번호
+		if (isEmpty($("#TB07230S_fincExcuRqsSn").val())) {
+			popupOption.text = "SPC 기업체 정보 조회 후 자금집행신청일련번호를 선택해주세요.";
+			openPopup(popupOption);
+			return false;
+		}
+
+		var paramData = {
+			ardyBzepNo: $("#TB07230S_ardyBzepNo").val(),			// spc 기업체 코드
+			fromDate: unformatDate($('#TB07230S_fromDate').val()),	// 조회기간 시작
+			toDate: unformatDate($('#TB07230S_toDate').val()),		// 조회기간 종료
+			dprtCd: $('#TB07230S_dprtCd').val(),					// 관리부점
+			asstMngmAcno: $('#TB07230S_asstMngmAcno').val(),		// 자산관리계좌번호
+			fincExcuRqsSn: $('#TB07230S_fincExcuRqsSn').val(),		// 자금집행신청일련번호
+		};
+
+		$.ajax({
+			type: "GET",
+			url: '/TB07230S/selectTB07230S',
+			data: paramData,
+			dataType: "json",
+			success: function(data) {
+				//console.log("success");
+				//console.log(data);
+				if (data.length > 0) {
+					$("#TB07230S_trsctHis").pqGrid("setData", data);
+					$("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
+				} else {
+
+					var obj = {
+						// all your other grid settings
+						strNoRows: '데이터가 없습니다.'
+					}
+
+					$("#TB07230S_trsctHis").pqGrid(obj);
+					$("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
+				}
+			},
+			error: function() {
+				popupOption.text = "정보 조회에 실패하였습니다.";
+				openPopup(popupOption);
+			},
+		});
+	}
+
+	// 초기화버튼
+	function resetSearch() {
+		$('#TB07230S_ardyBzepNo').val('');	// spc 기업체번호
+		$('#TB07230S_entpNm').val('');	// spc 기업체명
+		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1));	//조회시작일
+		$("#TB07230S_toDate").val(getToday());	//조회종료일
+
+		setFormElementsStateByUserRole();	// 관리부점
+
+		$('#TB07230S_asstMngmAcno').val('');	// 자산관리계좌
+
+		$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
+	};
+
+	// 저장버튼
+	function saveTB07230S(){
+		var grid = $("#TB07230S_trsctHis").pqGrid( "pageData" );
+		
+		var paramData = {
+			lst902bdto: grid,
+		}
+		
+		console.log(paramData);
+		return false; // param 확인용
+		
+		$.ajax({
+			type: "POST",
+			url: "/TB07230S/saveTB07230S",
+			data: JSON.stringify(paramData),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function() {
+				popupOption.type = "success";
+				popupOption.title = "Success!";
+				popupOption.text = "저장 완료하였습니다.";
+				openPopup(popupOption);
+			},
+			error: function() {
+				popupOption.type = "error";
+				popupOption.title = "Error!";
+				popupOption.text = "저장 실패하였습니다.";
+				openPopup(popupOption);
 			},
 		});
 	}
 
 	return {
+		selectSpcList: selectSpcList,
 		addRows_TB07230S: addRows_TB07230S,
 		dltRows_TB07230S: dltRows_TB07230S,
 		selectTB07230S: selectTB07230S,
 		resetSearch: resetSearch,
-		selectSpcList: selectSpcList,
+		saveTB07230S: saveTB07230S,
 	};
 })();

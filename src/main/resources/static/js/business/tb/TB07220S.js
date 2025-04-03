@@ -147,11 +147,13 @@ const TB07220Sjs = (function () {
                         $('#TB07220S_spcBlceGrid').pqGrid('instance').setData(data);
                     }
                     else {
-                        $('#TB07220S_spcBlceGrid').pqGrid('instance').setData([]);
-                        Swal.fire({
-                            icon: 'warning'
-                            , title: '조회된 정보가 없습니다!'
-                        })
+						var obj = {
+						     // all your other grid settings
+						     strNoRows : '데이터가 없습니다.'
+						}
+						
+						$("#TB07220S_spcBlceGrid").pqGrid(obj);
+						$("#TB07220S_spcBlceGrid").pqGrid("refreshDataAndView");
                     }
                 },
                 error: function (response) {

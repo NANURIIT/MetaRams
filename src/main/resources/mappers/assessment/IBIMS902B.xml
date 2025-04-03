@@ -10,8 +10,9 @@
 		                                                  AS SPC_NM           -- SPC명
 		      , T2.ISTT_CD                                AS ISTT_NM          -- **************은행명 변경예정
 		      , T2.ASST_MNGM_ACNO                         AS ASST_MNGM_ACNO   -- 자산관리계좌번호
+		      , T2.ISTT_CD || ' ' || T2.ASST_MNGM_ACNO    AS ISTT_NM_ASST_MNGM_ACNO -- 은행명 자산관리계좌번호
 		      , DECODE(T1.RNDR_DCD, '1', '입금', '출금')  AS RNDR_NM          -- 입출금구분
-		      , (SELECT CD_VL_NM FROM IBIMS002B WHERE CMNS_CD_GRP = DECODE(T1.RNDR_DCD, '1', '입금공통코드', '출금공통코드') AND CD_VL_ID = DECODE(T1.RNDR_DCD, '1', T1.SPC_DEP_ITEM_KND_CD, T1.SPC_WDR_ITEM_KND_CD))
+		      , (SELECT CD_VL_NM FROM IBIMS002B WHERE CMNS_CD_GRP = DECODE(T1.RNDR_DCD, '1', 'S010', 'S011') AND CD_VL_ID = DECODE(T1.RNDR_DCD, '1', T1.SPC_DEP_ITEM_KND_CD, T1.SPC_WDR_ITEM_KND_CD))
 		                                                  AS SPC_ITEM_KND_NM  -- 항목
 		      , T1.SYNS_TEXT                              AS SYNS_TEXT        -- 적요
 		      , T1.RNDR_AMT                               AS RNDR_AMT         -- 금액
@@ -21,14 +22,16 @@
 		      , T2.DPRT_CD                                AS DPRT_NM          -- **************관리부점 변경예정
 		      , T2.RM_CTNS                                AS RM_CTNS          -- 비고
 		      , DECODE(T3.DECD_STTS_DCD, '2', 'Y', '')    AS ASSN_YN          -- 승인여부
+		      , T1.SORT_NO                                AS SORT_NO          -- 정렬순서
 		   FROM IBIMS902B T1
 		      , IBIMS900B T2
 		      , IBIMS231B T3
 		  WHERE 1=1
 		    AND T2.ARDY_BZEP_NO     = T1.ARDY_BZEP_NO
 		    AND T2.FINC_EXCU_RQS_SN = T1.FINC_EXCU_RQS_SN
-		    AND TO_CHAR(T2.FINC_EXCU_RQS_SN) = T3.DEAL_NO(+)
+		    AND LPAD(TO_CHAR(T2.FINC_EXCU_RQS_SN), 5, '0') = T3.DEAL_NO(+)
 		    AND T3.DECD_STTS_DCD    = '2'	-- 임시 승인된것만 조회
+		    AND T3.SCRN_NO          = 'TB07200S'
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDate) and @com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDate)">
             AND T1.TR_DT            BETWEEN #{fromDate} AND #{toDate}
            </if>
@@ -47,19 +50,14 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
             AND T2.DPRT_CD          = #{dprtCd}
            </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsSn)">
+            AND T2.FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+           </if>
 		  ORDER BY
 		        T1.TR_DT
 		      , T1.FINC_EXCU_RQS_SN
 			  , T1.TR_SN
     </select>
-
-	<select id="짜다맘">
-		SELECT TR_DT
-			 , SPC_DEP_ITEM_KND_CD
-		 WHERE 1=1
-		   AND RNDR_DCD = '1'	/* 입금 */
-		   AND 
-	</select>
 
 	<select id="getSn" parameterType="String">
 		SELECT NVL(TR_SN, 0) + 1
@@ -115,25 +113,251 @@
 		)
 	</insert>
 
-	<update id="updateRndrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
-		UPDATE IBIMS902B
-		   SET RNDR_DCD
+	<select id="calcBlceList" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		SELECT TR_DT
+			 , ARDY_BZEP_NO
+			 , FINC_EXCU_RQS_SN
+			 , TR_SN
+			 , RNDR_DCD
 			 , SPC_DEP_ITEM_KND_CD
 			 , SPC_WDR_ITEM_KND_CD
 			 , SYNS_TEXT
 			 , TR_OTHR_DSCM_NO
 			 , RNDR_AMT
-			 , RNDR_BLCE
+			 , SUM(CASE WHEN RNDR_DCD = 1 THEN RNDR_AMT
+			 			WHEN RNDR_DCD = 2 THEN -RNDR_AMT
+			 			ELSE 0 END)
+			  OVER(
+			 			ORDER 
+						   BY TR_DT
+						    , RNDR_DCD 
+			 			ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+			   ) AS RNDR_BLCE
 			 , ISTT_CD
 			 , ACNO
+			 , SORT_NO
 			 , RMRK
-			 , HND_DETL_DTM
-			 , HND_EMPNO
+		  FROM IBIMS902B
+		 WHERE 1=1
+		   AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		 ORDER 
+			BY TR_DT
+			 , RNDR_DCD;
+	</select>
+
+	<update id="updateRndrBlce">
+		UPDATE IBIMS902B
+		   SET RNDR_BLCE = #{rndrBlce}
+		   	 , HND_DETL_DTM = SYSDATE
+			 , HND_EMPNO = #{hndEmpno}
 		 WHERE 1=1
 		   AND ARDY_BZEP_NO = #{ardyBzepNo}
 		   AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
 		   AND TR_DT = #{trDt}
 		   AND TR_SN = #{trSn}
 	</update>
+
+	<!-- 화면에서 삭제된 입출금내역조회 -->
+	<select id="deletedRndrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		SELECT TR_DT
+			 , ARDY_BZEP_NO
+			 , FINC_EXCU_RQS_SN
+			 , TR_SN
+		 WHERE 1=1
+		   AND ARDY_BZEP_NO IN (
+				<foreach item="item" collection="list" separator=",">
+				#{item.ardyBzepNo}
+				</foreach>
+		   )
+		   AND FINC_EXCU_RQS_SN IN (
+				<foreach item="item" collection="list" separator=",">
+				#{item.fincExcuRqsSn}
+				</foreach>
+		   )
+		   AND NOT (
+          <foreach item="item" collection="list" separator="OR">
+              (TR_DT = #{item.trDt} AND TR_SN = #{item.trSn})
+          </foreach>
+      )
+	</select>
+
+	<delete id="deleteRndr" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		DELETE IBIMS902B
+		 WHERE 1=1
+		   AND ARDY_BZEP_NO = #{ardyBzepNo}
+		   AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		   AND TR_DT = #{trDt}
+		   AND TR_SN = #{trSn}
+	</delete>
+	
+	<insert id="saveTB07230S" parameterType="com.nanuri.rams.business.common.vo.IBIMS902BVO">
+		MERGE INTO IBIMS902B T1
+		USING (
+		 SELECT TR_DT
+		     , ARDY_BZEP_NO
+		     , FINC_EXCU_RQS_SN
+		     , TR_SN
+		     , RNDR_DCD
+		     , SPC_DEP_ITEM_KND_CD
+		     , SPC_WDR_ITEM_KND_CD
+		     , SYNS_TEXT
+		     , TR_OTHR_DSCM_NO
+		     , RNDR_AMT
+		     , SUM(CASE WHEN RNDR_DCD = 1 THEN RNDR_AMT
+		                WHEN RNDR_DCD = 2 THEN -RNDR_AMT
+		                ELSE 0 END)
+		       OVER (
+		             PARTITION BY 
+		                       ARDY_BZEP_NO, FINC_EXCU_RQS_SN
+		                  ORDER BY
+		                        SORT_NO 
+		                   ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+		          ) AS RNDR_BLCE
+		     , ISTT_CD
+		     , ACNO
+		     , SORT_NO
+		     , RMRK
+		  FROM IBIMS902B
+		 WHERE 1=1
+		   AND ARDY_BZEP_NO     = #{ardyBzepNo}
+		   AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		 ORDER BY
+		       ARDY_BZEP_NO
+		     , FINC_EXCU_RQS_SN
+		    , SORT_NO
+		    ) UPDATE_LIST
+		ON (T1.TR_DT = UPDATE_LIST.TR_DT
+		   AND T1.ARDY_BZEP_NO = UPDATE_LIST.ARDY_BZEP_NO
+		   AND T1.FINC_EXCU_RQS_SN = UPDATE_LIST.FINC_EXCU_RQS_SN
+		   AND T1.TR_SN = UPDATE_LIST.TR_SN)
+		WHEN MATCHED THEN
+		UPDATE SET T1.RNDR_BLCE = UPDATE_LIST.RNDR_BLCE
+	</insert>
+
+	<!--TB07200S - 입금/출금 요청 목록 저장-->
+	<insert id="rndrRqstSave" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		<selectKey keyProperty="lqdzSctyIsuTmrd" resultType="int" order="BEFORE">
+            SELECT NVL(MAX(TR_SN),0)+1  		
+            FROM IBIMS902B	
+            WHERE ARDY_BZEP_NO = #{ardyBzepNo}
+			AND TR_DT = #{trDt}
+			AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}				
+        </selectKey>
+		INSERT INTO IBIMS902B (
+			  TR_DT							/* 거래일자 */
+			, ARDY_BZEP_NO					/* 기업체번호 */
+			, FINC_EXCU_RQS_SN				/* 자금집행신청일련번호 */
+			, TR_SN							/* 거래일련번호 */
+			, RNDR_DCD						/* 입출금구분코드 */
+			, SPC_DEP_ITEM_KND_CD			/* SPC입금항목종류코드 */
+			, SPC_WDR_ITEM_KND_CD			/* SPC출금항목종류코드 */
+			, SYNS_TEXT						/* 적요내용 */
+			, TR_OTHR_DSCM_NO				/* 거래상대방기업체번호 */
+			, RNDR_AMT						/* 입출금금액 */
+			, RNDR_BLCE						/* 입출금잔액 */
+			, ISTT_CD						/* 기관코드 */
+			, ACNO							/* 계좌번호 */
+			, RMRK							/* 비고 */
+			, HND_DETL_DTM					/* 조작상세일시 */
+			, HND_EMPNO						/* 조작사원번호 */
+			, HND_TMNL_NO					/* 조작단말기번호 */
+			, HND_TR_ID						/* 조작거래ID */
+			, GUID							/* GUID */
+		) VALUES (
+			  #{trDt}
+			, #{ardyBzepNo}
+			, #{fincExcuRqsSn}
+			, #{trSn}
+			, #{rndrDcd}
+			, #{spcDepItemKndCd}
+			, #{spcWdrItemKndCd}
+			, #{synsText}
+			, #{trOthrDscmNo}
+			, #{rndrAmt}
+			, #{rndrBlce}
+			, #{isttCd}
+			, #{acno}
+			, #{rmrk}
+			, SYSDATE
+			, #{hndEmpno}
+			, #{hndTmnlNo}
+			, #{hndTrId}
+			, #{guid}
+		)
+	</insert>
+
+	<!--TB07200S - 입금/출금 요청 목록 수정-->
+	<update id="rndrRqstUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		UPDATE IBIMS902B
+		SET   SPC_DEP_ITEM_KND_CD = #{spcDepItemKndCd}
+			, SPC_WDR_ITEM_KND_CD = #{spcWdrItemKndCd}
+			, SYNS_TEXT = #{synsText}
+			, TR_OTHR_DSCM_NO = #{trOthrDscmNo}
+			, RNDR_AMT = #{rndrAmt}
+			, ISTT_CD = #{isttCd}
+			, ACNO = #{acno}
+			, RMRK = #{rmrk}
+			, HND_DETL_DTM = SYSDATE
+			, HND_EMPNO = #{hndEmpno}
+		WHERE 1=1
+		AND ARDY_BZEP_NO = #{ardyBzepNo}
+		AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		AND TR_DT = #{trDt}
+		AND TR_SN = #{trSn}
+	</update>
+
+	<!--TB07200S - 입금요청내역 조회-->
+	<select id="getDpstRqstList" parameterType="com.nanuri.rams.business.common.dto.IBIMS900BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS900BDTO">
+		SELECT A.TR_DT						/* 거래일자 */
+			, A.ARDY_BZEP_NO				/* 기업체번호 */
+			, A.FINC_EXCU_RQS_SN			/* 자금집행신청일련번호 */
+			, A.TR_SN						/* 거래일련번호 */
+			, A.RNDR_DCD					/* 입출금구분코드 */
+			, A.SPC_DEP_ITEM_KND_CD			/* SPC입금항목종류코드 */
+			, A.SPC_WDR_ITEM_KND_CD			/* SPC출금항목종류코드 */
+			, A.SYNS_TEXT					/* 적요내용 */
+			, A.TR_OTHR_DSCM_NO				/* 거래상대방기업체번호 */
+			, (
+				SELECT ENTP_NM 
+				FROM IBIMS010B
+				WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO
+			) AS TR_OTHR_NM					/*거래상대방명*/
+			, A.RNDR_AMT					/* 입출금금액 */
+			, A.ISTT_CD						/* 기관코드 */
+			, A.ACNO						/* 계좌번호 */
+			, A.RMRK						/* 비고 */
+		FROM IBIMS900B A 
+		WHERE 1=1
+		AND ARDY_BZEP_NO = #{ardyBzepNo}
+		AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		AND RNDR_DCD = '1'
+	</select>
+
+	<!--TB07200S - 출금요청내역 조회-->
+	<select id="getWthdrwlRqstList" parameterType="com.nanuri.rams.business.common.dto.IBIMS900BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS900BDTO">
+		SELECT A.TR_DT						/* 거래일자 */
+			, A.ARDY_BZEP_NO				/* 기업체번호 */
+			, A.FINC_EXCU_RQS_SN			/* 자금집행신청일련번호 */
+			, A.TR_SN						/* 거래일련번호 */
+			, A.RNDR_DCD					/* 입출금구분코드 */
+			, A.SPC_DEP_ITEM_KND_CD			/* SPC입금항목종류코드 */
+			, A.SPC_WDR_ITEM_KND_CD			/* SPC출금항목종류코드 */
+			, A.SYNS_TEXT					/* 적요내용 */
+			, A.TR_OTHR_DSCM_NO				/* 거래상대방기업체번호 */
+			, (
+				SELECT ENTP_NM 
+				FROM IBIMS010B
+				WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO
+			) AS TR_OTHR_NM					/*거래상대방명*/
+			, A.RNDR_AMT					/* 입출금금액 */
+			, A.ISTT_CD						/* 기관코드 */
+			, A.ACNO						/* 계좌번호 */
+			, A.RMRK						/* 비고 */
+		FROM IBIMS900B A 
+		WHERE 1=1
+		AND ARDY_BZEP_NO = #{ardyBzepNo}
+		AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		AND RNDR_DCD = '2'
+	</select>
 
 </mapper>

@@ -329,7 +329,7 @@ const TB10510Sjs = (function () {
             },
             success: function (data) {
 
-                showToast('success', data.batSch.length);
+                // showToast('success', data.batSch.length);
 
                 batSch.setData(data.batSch)
 

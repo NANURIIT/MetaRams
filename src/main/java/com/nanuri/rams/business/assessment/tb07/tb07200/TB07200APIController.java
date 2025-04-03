@@ -30,5 +30,10 @@ public class TB07200APIController {
     public IBIMS900BVO spcDetail (@RequestBody IBIMS900BDTO param) {
         return tb07200Service.spcDetail(param);
     }
+
+    @PostMapping("/spcSave")
+    public int spcSave(@RequestBody IBIMS900BVO param) {
+        return tb07200Service.spcSave(param);
+    }
     
 }

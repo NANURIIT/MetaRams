@@ -28,7 +28,7 @@
                         <div class="row form-group form-inline text-right">
                         	<!--row 1-->
                             <div class="col-sm-10 form-group  mb-1">
-                                <label class="col-sm-1 col-form-label text-right">SPC</label>
+                                <label class="col-sm-1 col-form-label text-right"><span class="req"></span>SPC</label>
                                 <div class="col-sm-3 input-group">
                                     <input type="text" class="form-control" style="width: 30px;" id="TB07230S_ardyBzepNo">
                                     <span class="input-group-append">
@@ -86,8 +86,11 @@
                     <div class="ibox-content" style="min-height: 800px">
                         <div class="ibox">
 							<div class="ibox-title">
-								<div>
-									<h5>▶ SPC별 거래내역</h5>
+								<h5>▶ SPC별 거래내역</h5>
+                                <div class="ibox-tools">
+									<button class="btn btn-success btn-xs" type="button" onclick="TB07230Sjs.saveTB07230S();">
+										<i class="fa fa-save"></i>&nbsp;저장
+									</button>
 								</div>
 								<!-- 
                                 <div class="ibox-tools">

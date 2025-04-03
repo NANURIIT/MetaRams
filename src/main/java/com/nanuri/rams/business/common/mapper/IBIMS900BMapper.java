@@ -18,4 +18,13 @@ public interface IBIMS900BMapper {
 
     public List<IBIMS900BVO> selectBalanceInfoList(IBIMS900BVO param);
 
+    //자금집행업무지시요청 목록 저장
+    public int spcWrkRqstSave(IBIMS900BVO param);
+
+    //자금집행신청일련번호 채번
+    public int getNxtFincExcuRqsSn();
+
+    //자금집행업무지시요청 목록 수정
+    public int spcWrkRqstUpdate(IBIMS900BVO param);
+
 }
