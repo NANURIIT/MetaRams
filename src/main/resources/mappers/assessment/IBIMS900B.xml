@@ -202,33 +202,33 @@
 	     , T1.SPC_NM         -- SPC명
 	     , T2.BFMM_RNDR_BLCE -- 전월말잔액
 	     , T2.THMM_RNDR_BLCE -- 당월말잔액
-	     , T1.DEP_AMT_TOT	-- 입금합계
-	     , T1.DEP_AMT_02	    -- 유동화증권 인수대금(입금)
-	     , T1.DEP_AMT_01	    -- 기초자산 원리금(입금)
-	     , T1.DEP_AMT_06	    -- 취급수수료(입금)
-	     , T1.DEP_AMT_03	    -- 원천세 환급(입금)
-	     , T1.DEP_AMT_04	    -- 후순위대여 입금(입금)	 
-	     , T1.DEP_AMT_05	    -- 기초자산 매각대금(입금)     
-	     , T1.DEP_AMT_07	    -- 자금운용 목적 계좌 회수(입금)
+	     , T1.DEP_AMT_TOT    -- 입금합계
+	     , T1.DEP_AMT_02     -- 유동화증권 인수대금(입금)
+	     , T1.DEP_AMT_01     -- 기초자산 원리금(입금)
+	     , T1.DEP_AMT_06     -- 취급수수료(입금)
+	     , T1.DEP_AMT_03     -- 원천세 환급(입금)
+	     , T1.DEP_AMT_04     -- 후순위대여 입금(입금)	 
+	     , T1.DEP_AMT_05     -- 기초자산 매각대금(입금)     
+	     , T1.DEP_AMT_07     -- 자금운용 목적 계좌 회수(입금)
 	     , T1.DEP_AMT_99     -- 기타(입금)	 
 	     , T1.WDR_AMT_TOT    -- 출금합계
-	     , T1.WDR_AMT_01	    -- 유동화증권 상환(출금)
-	     , T1.WDR_AMT_08	    -- 대출 실행/추가 인출(출금)
-	     , T1.WDR_AMT_05	    -- ABB/ABL 원리금(출금)
-	     , T1.WDR_AMT_06	    -- 원천세 납부(출금)
-	     , T1.WDR_AMT_07	    -- 후순위대여 상환(출금)
+	     , T1.WDR_AMT_01     -- 유동화증권 상환(출금)
+	     , T1.WDR_AMT_08     -- 대출 실행/추가 인출(출금)
+	     , T1.WDR_AMT_05     -- ABB/ABL 원리금(출금)
+	     , T1.WDR_AMT_06     -- 원천세 납부(출금)
+	     , T1.WDR_AMT_07     -- 후순위대여 상환(출금)
 	     , T1.WDR_AMT_17     -- 자금운용 목적 계좌(출금)
-	     , T1.WDR_AMT_10	    -- 법무법인수수료(출금)
-	     , T1.WDR_AMT_11	    -- 업무위탁수수료(출금)
-	     , T1.WDR_AMT_12	    -- 회계감사수수료(출금)
-	     , T1.WDR_AMT_13	    -- 신용평가수수료(출금)
-	     , T1.WDR_AMT_14	    -- 대리금융수수료(출금)
-	     , T1.WDR_AMT_15	    -- 설립청산수수료(출금)
-	     , T1.WDR_AMT_02	    -- 확약수수료(출금)
-	     , T1.WDR_AMT_03	    -- 자산관리수수료(출금)
-	     , T1.WDR_AMT_04	    -- 인수수수료(출금)     
-	     , T1.WDR_AMT_09	    -- 주관/주선수수료(출금)
-	     , T1.WDR_AMT_16	    -- 취급수수료(출금)     
+	     , T1.WDR_AMT_10     -- 법무법인수수료(출금)
+	     , T1.WDR_AMT_11     -- 업무위탁수수료(출금)
+	     , T1.WDR_AMT_12     -- 회계감사수수료(출금)
+	     , T1.WDR_AMT_13     -- 신용평가수수료(출금)
+	     , T1.WDR_AMT_14     -- 대리금융수수료(출금)
+	     , T1.WDR_AMT_15     -- 설립청산수수료(출금)
+	     , T1.WDR_AMT_02     -- 확약수수료(출금)
+	     , T1.WDR_AMT_03     -- 자산관리수수료(출금)
+	     , T1.WDR_AMT_04     -- 인수수수료(출금)     
+	     , T1.WDR_AMT_09     -- 주관/주선수수료(출금)
+	     , T1.WDR_AMT_16     -- 취급수수료(출금)     
 	     , T1.WDR_AMT_99     -- 기타(출금)
 	  FROM (
 	         SELECT SUBSTR(A.TR_DT, 0, 6)                                                                AS TR_MM       -- 거래년월
@@ -280,8 +280,9 @@
 	                   WHERE 1=1
 	                     AND T1.ARDY_BZEP_NO                    = T2.ARDY_BZEP_NO
 	                     AND T1.FINC_EXCU_RQS_SN                = T2.FINC_EXCU_RQS_SN
-	                     --AND LPAD(T1.FINC_EXCU_RQS_SN , 5, '0') = T3.DEAL_NO -- 현재 결재 구조가 결재시 PK정보를 가져가서 처리한다함(자금집행신청일련번호를 IBIMS231B 테이블 딜번호에 넣기로 함) 
-	                     --AND T3.SCRN_NO                         = 'TB07200S' -- 딜번호와 함께 입력 스크린넘버가 'TB07200S'로 입력됨
+	                     AND LPAD(T1.FINC_EXCU_RQS_SN , 5, '0') = T3.DEAL_NO -- 현재 결재 구조가 결재시 PK정보를 가져가서 처리한다함(자금집행신청일련번호를 IBIMS231B 테이블 딜번호에 넣기로 함) 
+	                     AND T3.DECD_STTS_DCD                   = '2' -- 결재상태구분코드[0:요청전, 1:진행중, 2:결재완료, 3:반려, 4:요청취소]
+	                     AND T3.SCRN_NO                         = 'TB07200S' -- 딜번호와 함께 입력 스크린넘버가 'TB07200S'로 입력됨
 	                     AND T2.TR_DT                           BETWEEN TO_CHAR(TO_DATE(#{fromMm}, 'YYYYMM'), 'YYYYMMDD') 
 	                                                                AND TO_CHAR(LAST_DAY(TO_DATE(#{toMm}, 'YYYYMM')), 'YYYYMMDD')   -- (조회조건)조회기간
 	               ) A
@@ -294,23 +295,32 @@
 	       ) T1
 		 , (
 	         WITH LAST_DT_INFO AS  ( -- 각 월의 마지막 거래일
-	                                 SELECT MAX(TR_DT)            AS TR_DT
-	                                      , MAX(ARDY_BZEP_NO)     AS ARDY_BZEP_NO
-	                                      , MAX(FINC_EXCU_RQS_SN) AS FINC_EXCU_RQS_SN
-	                                      , MAX(TR_SN)            AS TR_SN
-	                                      , SUBSTR(TR_DT, 1, 6)   AS TR_MM
-	                                   FROM IBIMS902B
-	                                  WHERE TR_DT BETWEEN TO_CHAR(TO_DATE(#{fromMm}, 'YYYYMM'), 'YYYYMMDD')
-	                                                 AND TO_CHAR(LAST_DAY(TO_DATE(#{toMm}, 'YYYYMM')), 'YYYYMMDD')
-	                                 GROUP BY SUBSTR(TR_DT, 1, 6)
+	                                 SELECT SUBSTR(A.TR_DT, 1, 6)   AS TR_MM
+	                                      , A.ARDY_BZEP_NO          AS ARDY_BZEP_NO
+	                                      , FINC_EXCU_RQS_SN        AS FINC_EXCU_RQS_SN
+	                                      , MAX(A.TR_DT)            AS TR_DT
+	                                      , MAX(A.TR_SN)            AS TR_SN	                                      
+	                                   FROM IBIMS902B A
+	                                      , IBIMS231B B
+	                                  WHERE 1=1
+	                                    AND LPAD(A.FINC_EXCU_RQS_SN , 5, '0') = B.DEAL_NO -- 현재 결재 구조가 결재시 PK정보를 가져가서 처리한다함(자금집행신청일련번호를 IBIMS231B 테이블 딜번호에 넣기로 함) 
+	                                    AND B.DECD_STTS_DCD                   = '2' -- 결재상태구분코드[0:요청전, 1:진행중, 2:결재완료, 3:반려, 4:요청취소]
+	                                    AND B.SCRN_NO                         = 'TB07200S' -- 딜번호와 함께 입력 스크린넘버가 'TB07200S'로 입력됨
+	                                    AND A.TR_DT                           BETWEEN TO_CHAR(TO_DATE(#{fromMm}, 'YYYYMM'), 'YYYYMMDD')
+	                                                                              AND TO_CHAR(LAST_DAY(TO_DATE(#{toMm}, 'YYYYMM')), 'YYYYMMDD')
+	                                  GROUP BY
+	                                        SUBSTR(A.TR_DT, 1, 6)
+	                                      , A.ARDY_BZEP_NO
+	                                      , A.FINC_EXCU_RQS_SN
 	                               )
 	            , PRE_BLCE_INFO AS ( -- 전월 잔액
 	                                 SELECT A.TR_MM
 	                                      , B.RNDR_BLCE
 	                                 FROM LAST_DT_INFO A
-	         						   , IBIMS902B    B
-	                                WHERE SUBSTR(B.TR_DT, 1, 6) = TO_CHAR(ADD_MONTHS(TO_DATE(A.TR_MM, 'YYYYMM'), -1), 'YYYYMM')
-	                                 AND (B.TR_DT, B.ARDY_BZEP_NO, B.FINC_EXCU_RQS_SN, B.TR_SN) IN  (SELECT MAX(TR_DT), MAX(ARDY_BZEP_NO), MAX(FINC_EXCU_RQS_SN), MAX(TR_SN)
+	         						    , IBIMS902B    B
+	                                WHERE 1=1
+	                                  AND SUBSTR(B.TR_DT, 1, 6) = TO_CHAR(ADD_MONTHS(TO_DATE(A.TR_MM, 'YYYYMM'), -1), 'YYYYMM')
+	                                  AND (B.TR_DT, B.ARDY_BZEP_NO, B.FINC_EXCU_RQS_SN, B.TR_SN) IN  (SELECT MAX(TR_DT), MAX(ARDY_BZEP_NO), MAX(FINC_EXCU_RQS_SN), MAX(TR_SN)
 	                                                                                                   FROM IBIMS902B 
 	                                                                                                  WHERE 1=1
 	         																						   AND SUBSTR(TR_DT, 1, 6) = TO_CHAR(ADD_MONTHS(TO_DATE(A.TR_MM, 'YYYYMM'), -1), 'YYYYMM')
@@ -321,7 +331,7 @@
 	              , A.RNDR_BLCE AS THMM_RNDR_BLCE  -- 당월잔액
 	           FROM IBIMS902B     A
 	              , LAST_DT_INFO  B
-	         	 , PRE_BLCE_INFO C
+	         	  , PRE_BLCE_INFO C
 	          WHERE 1=1
 	            AND A.TR_DT            = B.TR_DT
 	            AND A.ARDY_BZEP_NO     = B.ARDY_BZEP_NO
@@ -330,7 +340,7 @@
 	            AND B.TR_MM            = C.TR_MM(+)
 		   ) T2
 	 WHERE 1=1
-	   AND T1.TR_MM = T2.TR_MM
+	   AND T1.TR_MM = T2.TR_MM(+)
 	   AND T1.TR_MM BETWEEN #{fromMm} AND #{toMm}
 	  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
 	  AND T1.ARDY_BZEP_NO                    = #{ardyBzepNo}         /* SPC */
