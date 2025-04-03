@@ -75,7 +75,10 @@ const TB07200Sjs = (function () {
                 contentType: "application/json; charset=UTF-8",
                 data: JSON.stringify(paramData),
                 success: function (data) {
-                    console.log("서버통신성공");
+                    //console.log("서버통신성공");
+                    $("TB07200S_empNo").val(data.hndEmpno);
+                    $("TB07200S_ibDealNo").val(data.fincExcuRqsSn);
+                    chkDecdStep("TB07200S");
                 },
             })
         }

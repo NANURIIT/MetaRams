@@ -29,5 +29,8 @@ public interface IBIMS901BMapper {
      * @return
      */
     public int deletePblHis (IBIMS901BDTO param);
+    
+    public int pblHisSave(IBIMS901BDTO param);
+    public int pblHisUpdate(IBIMS901BDTO param);
 
 }

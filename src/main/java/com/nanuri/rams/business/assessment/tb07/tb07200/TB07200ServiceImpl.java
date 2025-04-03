@@ -102,10 +102,10 @@ public class TB07200ServiceImpl implements TB07200Service {
             int wrkRqstSaveRslt = ibims900bMapper.spcWrkRqstSave(param);
 
             if(wrkRqstSaveRslt < 1){
-                log.debug("[spcSave] SQL Error>>>>wrkRqstSaveRslt<<<<");
+                log.debug("[spcSave] SQL Error>>>>spcWrkRqstSave<<<<");
                 rslt = 0;
             }else{
-                log.debug("[spcSave] SQL Success>>>>wrkRqstSaveRslt<<<<");
+                log.debug("[spcSave] SQL Success>>>>spcWrkRqstSave<<<<");
                 rslt = 1;
             }
 
@@ -114,6 +114,16 @@ public class TB07200ServiceImpl implements TB07200Service {
             //todo: update문 들어가야함...
             fincExcuRqsSn = param.getFincExcuRqsSn();
             param.setHndEmpno(facade.getDetails().getEno());        //조작사원번호
+
+            int wrkRqstUpdateRslt = ibims900bMapper.spcWrkRqstUpdate(param);
+
+            if(wrkRqstUpdateRslt < 1){
+                log.debug("[spcSave] SQL Error>>>>spcWrkRqstUpdate<<<<");
+                rslt = 0;
+            }else{
+                log.debug("[spcSave] SQL Success>>>>spcWrkRqstUpdate<<<<");
+                rslt = 1;
+            }
 
             //유동화증권발행여부 세팅       <<< 얘도 다시 세팅해줘야하는지 아닌지 확실하지 않음
             // if(pblHisList.size() < 1){
@@ -149,10 +159,28 @@ public class TB07200ServiceImpl implements TB07200Service {
                 if(pblHisDTO.getLqdzSctyIsuTmrd() == 0){//유동화증권발행회차 없음 === 신규
                     log.debug("[spcSave] IBIMS901B INSERT!!!!!!");
                     //INSERT문 들어가야함
+                    int pblHisSaveRslt = ibims901bMapper.pblHisSave(pblHisDTO);
+
+                    if(pblHisSaveRslt < 1){
+                        log.debug("[spcSave] SQL Error>>>>pblHisSave<<<<");
+                        rslt = 0;
+                    }else{
+                        log.debug("[spcSave] SQL Success>>>>pblHisSave<<<<");
+                        rslt = 1;
+                    }
                     
                 }else{//유동화증권발행회차 있음 === 수정
                     log.debug("[spcSave] IBIMS901B UPDATE!!!!!!");
                     //UPDATE문 들어가야함
+                    int pblHisUpdateRslt = ibims901bMapper.pblHisUpdate(pblHisDTO);
+
+                    if(pblHisUpdateRslt < 1){
+                        log.debug("[spcSave] SQL Error>>>>pblHisUpdate<<<<");
+                        rslt = 0;
+                    }else{
+                        log.debug("[spcSave] SQL Success>>>>pblHisUpdate<<<<");
+                        rslt = 1;
+                    }
                 }
             }
 
