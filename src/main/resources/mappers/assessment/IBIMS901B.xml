@@ -16,6 +16,33 @@
            AND ARDY_BZEP_NO = #{ardyBzepNo}             /* SPC */
     </select>
 
+    <!-- 삭제해야할 유동화증권 발행(예정)내역 -->
+    <select id="deletedPblHisList" parameterType="com.nanuri.rams.business.common.dto.IBIMS901BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS901BDTO">
+        SELECT ARDY_BZEP_NO
+             , LQDZ_SCTY_ISU_TMRD
+          FROM IBIMS901B
+         WHERE 1=1
+           AND ARDY_BZEP_NO IN (
+            <foreach item="item" collection="list" separator=",">
+              #{item.ardyBzepNo}
+            </foreach>
+           )
+           AND LQDZ_SCTY_ISU_TMRD NOT IN (
+            <foreach item="item" collection="list" separator=",">
+              #{item.lqdzSctyIsuTmrd}
+            </foreach>
+           )
+    </select>
+
+    <!-- 유동화증권 발행내역 삭제 -->
+    <delete id="deletePblHis" parameterType="com.nanuri.rams.business.common.dto.IBIMS901BDTO">
+        DELETE IBIMS901B
+         WHERE 1=1
+           AND ARDY_BZEP_NO = #{ardyBzepNo}
+           AND LQDZ_SCTY_ISU_TMRD = #{lqdzSctyIsuTmrd}
+    </delete>
+
+    
     <!--유동화증권 발행 내역 저장-->
     <insert id="pblHisSave" parameterType="com.nanuri.rams.business.common.dto.IBIMS901BDTO">
         <selectKey keyProperty="lqdzSctyIsuTmrd" resultType="int" order="BEFORE">

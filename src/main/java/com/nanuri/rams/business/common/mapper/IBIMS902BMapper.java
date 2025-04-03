@@ -11,6 +11,12 @@ import com.nanuri.rams.business.common.vo.IBIMS902BVO;
 @Mapper
 public interface IBIMS902BMapper {
 
+	/**
+	 * SPC별 거래내역 조회
+	 * 
+	 * @param IBIMS902BVO
+	 * @return List<IBIMS902BVO>
+	 */
     public List<IBIMS902BVO> selectTB07230S(IBIMS902BVO param);
 
     /**
@@ -28,9 +34,24 @@ public interface IBIMS902BMapper {
     public int updateRndrBlce (IBIMS902BDTO param);
 
     /**
+     * 화면에서 삭제된 입출금내역조회
+     */
+    public List<IBIMS902BDTO> deletedRndrList (List<IBIMS902BDTO> param);
+
+    /**
      * 입출금요청내역삭제
      */
+    public int deleteRndr (IBIMS902BDTO param);
+    
     public int deleteRndrList (IBIMS902BDTO param);
+    
+    /**
+	 * SPC별 거래내역 저장
+	 * 
+	 * @param IBIMS902BVO
+	 * @return int
+	 */
+    public int saveTB07230S(IBIMS902BVO param);
 
     /**
      * TB07200S - 입출금요청내역 저장

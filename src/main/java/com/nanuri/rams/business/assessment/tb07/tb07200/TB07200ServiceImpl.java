@@ -140,6 +140,15 @@ public class TB07200ServiceImpl implements TB07200Service {
             
 
         }
+
+        /**
+         * 자금집행내역확인 삭제
+         * 
+         * 1. 리스트로 받아야함
+         * 2. 삭제
+         */
+        
+
         /* 자금집행업무지시요청 목록 END */
 
 
@@ -183,6 +192,18 @@ public class TB07200ServiceImpl implements TB07200Service {
         }else{
             log.debug("[spcSave] 유동화증권 발행내역 없음");
         }
+        /**
+         * 유동화증권 발행내역 삭제
+         * 
+         * 1. 현재 신규,수정내용 포함된 그리드리스트 셋
+         * 2. PK + 그리드리스트에 포함된 내역은 제외 후 조회
+         * 3. 삭제
+         */
+        List<IBIMS901BDTO> deletedPblHisList = ibims901bMapper.deletedPblHisList(pblHisList);
+        for (int i = 0; i < deletedPblHisList.size(); i++) {
+            ibims901bMapper.deletePblHis(deletedPblHisList.get(i));
+        }
+
         /* 유동화증권 발행내역 END */
 
         /* 입금요청/출금요청 START  */
@@ -259,6 +280,23 @@ public class TB07200ServiceImpl implements TB07200Service {
         }else{
             log.debug("[spcSave] 입금/출금요청 내역 없음");
         }
+        /**
+         * 입출금내역 삭제
+         * 
+         * 1. 현재 신규,수정내용 포함된 그리드리스트 셋
+         * 2. PK + 그리드리스트에 포함된 내역은 제외 후 조회
+         * 3. 삭제
+         */
+        List<IBIMS902BDTO> notInRndrList = new ArrayList<IBIMS902BDTO>();
+        notInRndrList.addAll(dpstRqstList);
+        notInRndrList.addAll(wthdrwlRqstList);
+
+        List<IBIMS902BDTO> deletedRndrList = ibims902bMapper.deletedRndrList(notInRndrList);
+        for (int i = 0; i < deletedRndrList.size(); i++) {
+            ibims902bMapper.deleteRndr(deletedRndrList.get(i));
+        }
+
+
         /* 입금요청/출금요청 END */
 
         return rslt;

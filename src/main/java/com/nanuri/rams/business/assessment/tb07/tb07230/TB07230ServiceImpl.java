@@ -24,4 +24,9 @@ public class TB07230ServiceImpl implements TB07230Service {
 		return ibims902bMapper.selectTB07230S(param);
 	}
 
+	@Override
+	public int saveTB07230S(IBIMS902BVO param) {
+		return ibims902bMapper.saveTB07230S(param);
+	}
+
 }
