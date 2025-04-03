@@ -1,4 +1,6 @@
 const TB07230Sjs = (function() { 
+	
+	var popupOption = {};
 
 	$(document).ready(function() {
 
@@ -230,26 +232,21 @@ const TB07230Sjs = (function() {
 
 	// 조회버튼
 	function selectTB07230S() {
+		popupOption.type = "error";
+		popupOption.title = "Error!";
 		
 		// spc 기업체 코드
 		if(isEmpty($("#TB07230S_ardyBzepNo").val())){
-			Swal.fire({
-				icon: 'error'
-				, title: "Error!"
-				, text: "SPC 기업체 코드 정보는 필수입니다."
-				, confirmButtonText: "확인"
-			});
+			popupOption.text  = "SPC 기업체 코드 정보는 필수입니다.";  
+			openPopup(popupOption);
+			
 			return false;
 		}
 		
 		// 자금집행신청일련번호
 		if (isEmpty($("#TB07230S_fincExcuRqsSn").val())) {
-			Swal.fire({
-				icon: 'error'
-				, title: "Error!"
-				, text: "SPC 기업체 정보 조회 후 자금집행신청일련번호를 선택해주세요."
-				, confirmButtonText: "확인"
-			});
+			popupOption.text = "SPC 기업체 정보 조회 후 자금집행신청일련번호를 선택해주세요.";
+			openPopup(popupOption);
 			return false;
 		}
 		
@@ -285,12 +282,8 @@ const TB07230Sjs = (function() {
 				}
 			},
 			error: function() {
-				Swal.fire({
-					icon: "error",
-					title: "Error!",
-					text: "정보 조회에 실패하였습니다.",
-					confirmButtonText: "확인",
-				});
+				popupOption.text = "정보 조회에 실패하였습니다.";
+				openPopup(popupOption);
 			},
 		});
 	}
@@ -342,12 +335,10 @@ const TB07230Sjs = (function() {
 				}
 			},
 			error: function() {
-				Swal.fire({
-					icon: "error",
-					title: "Error!",
-					text: "정보 조회에 실패하였습니다.",
-					confirmButtonText: "확인",
-				});
+				popupOption.type = "error";
+				popupOption.title = "Error!";
+				popupOption.text = "정보 조회에 실패하였습니다.";
+				openPopup(popupOption);
 			},
 		});
 	}
