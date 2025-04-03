@@ -42,6 +42,10 @@ public class TB07200ServiceImpl implements TB07200Service {
     @Override
     public IBIMS900BVO spcDetail (IBIMS900BDTO param){
 
+        log.debug("!!!!![spcDetail] parameter check!!!!!");
+        log.debug("[spcDetail] ardyBzepNo::: " + param.getArdyBzepNo());
+        log.debug("[spcDetail] fincExcuRqsDt::: " + param.getFincExcuRqsSn());
+
         IBIMS900BVO vo = new IBIMS900BVO();
 
         vo.setPblHisList(ibims901bMapper.pblHisList(param.getArdyBzepNo()));               // 유동화증권발행내역
@@ -59,10 +63,14 @@ public class TB07200ServiceImpl implements TB07200Service {
         List<IBIMS902BDTO> dpstRqstList = param.getDpstRqstList();          // 입금요청내역
         List<IBIMS902BDTO> wthdrwlRqstList = param.getWthdrwlRqstList();    // 출금요청내역
 
+        String ardyBzepNo = param.getArdyBzepNo();       //기업체번호
+        long fincExcuRqsSn = 0;                          //자금집행신청일련번호
+
         /*디버깅용 로그 */
         log.debug("!!!!![spcSave] parameter check!!!!!");
         log.debug("[spcSave] ardyBzepNo::: " + param.getArdyBzepNo());
         log.debug("[spcSave] fincExcuRqsDt::: " + param.getFincExcuRqsDt());
+        log.debug("[spcSave] fincExcuRqsSn::: " + param.getFincExcuRqsSn());
         log.debug("[spcSave] ibCtrtNm::: " + param.getIbCtrtNm());
         log.debug("[spcSave] asstMngmAcno::: " + param.getAsstMngmAcno());
         log.debug("[spcSave] dprtCd::: " + param.getDprtCd());
@@ -72,35 +80,79 @@ public class TB07200ServiceImpl implements TB07200Service {
         log.debug("[spcSave] dpstRqstList.length::: " + dpstRqstList.size());
         log.debug("[spcSave] wthdrwlRqstList.length::: " + wthdrwlRqstList.size());
 
-        //유동화증권발행여부 세팅
-        if(pblHisList.size() < 1){
-            param.setLqdzSctyIsuYn("N");
-        }else{
-            param.setLqdzSctyIsuYn("Y");
+        
+        /* 자금집행업무지시요청 목록 START */
+        if(param.getFincExcuRqsSn() == 0){//자금집행신청일련번호 없음 === 신규
+            log.debug("[spcSave] IBIMS900B INSERT!!!!!!");
+
+            //유동화증권발행여부 세팅
+            if(pblHisList.size() < 1){
+                param.setLqdzSctyIsuYn("N");
+            }else{
+                param.setLqdzSctyIsuYn("Y");
+            }
+
+            param.setHndEmpno(facade.getDetails().getEno());        //조작사원번호
+
+            fincExcuRqsSn = ibims900bMapper.getNxtFincExcuRqsSn();
+            log.debug("[spcSave] nxtFincExcuRqsSn ::: " + fincExcuRqsSn);
+
+            param.setFincExcuRqsSn(fincExcuRqsSn);
+
+            int wrkRqstSaveRslt = ibims900bMapper.spcWrkRqstSave(param);
+
+            if(wrkRqstSaveRslt < 1){
+                log.debug("[spcSave] SQL Error>>>>wrkRqstSaveRslt<<<<");
+                rslt = 0;
+            }else{
+                log.debug("[spcSave] SQL Success>>>>wrkRqstSaveRslt<<<<");
+                rslt = 1;
+            }
+
+        }else{//자금집행신청일련번호 존재 === 수정
+            log.debug("[spcSave] IBIMS900B UPDATE!!!!!!");
+            //todo: update문 들어가야함...
+            fincExcuRqsSn = param.getFincExcuRqsSn();
+            param.setHndEmpno(facade.getDetails().getEno());        //조작사원번호
+
+            //유동화증권발행여부 세팅       <<< 얘도 다시 세팅해줘야하는지 아닌지 확실하지 않음
+            // if(pblHisList.size() < 1){
+            //     param.setLqdzSctyIsuYn("N");
+            // }else{
+            //     param.setLqdzSctyIsuYn("Y");
+            // }
+
+            
+
         }
+        /* 자금집행업무지시요청 목록 END */
 
-        param.setHndEmpno(facade.getDetails().getEno());        //조작사원번호
 
-        // int wrkRqstSaveRslt = ibims900bMapper.spcWrkRqstSave(param);
-
-        // if(wrkRqstSaveRslt < 1){
-        //     log.debug("[spcSave] SQL Error>>>>wrkRqstSaveRslt<<<<");
-        //     rslt = 0;
-        // }else{
-        //     log.debug("[spcSave] SQL Success>>>>wrkRqstSaveRslt<<<<");
-        //     rslt = 1;
-        // }
-
+        /* 유동화증권 발행내역 START */
         if(pblHisList.size() > 0){              //유동화증권 발행내역
             log.debug("[spcSave] 유동화증권 발행내역 존재");
 
             for(IBIMS901BDTO pblHisDTO: pblHisList){
+
                 pblHisDTO.setArdyBzepNo(param.getArdyBzepNo());         //기업체번호
                 pblHisDTO.setHndEmpno(facade.getDetails().getEno());    //조작사원번호
+                
+                if(pblHisDTO.getLqdzSctyIsuTmrd() == 0){//유동화증권발행회차 없음 === 신규
+                    log.debug("[spcSave] IBIMS901B INSERT!!!!!!");
+                    //INSERT문 들어가야함
+                    
+                }else{//유동화증권발행회차 있음 === 수정
+                    log.debug("[spcSave] IBIMS901B UPDATE!!!!!!");
+                    //UPDATE문 들어가야함
+                }
             }
 
+        }else{
+            log.debug("[spcSave] 유동화증권 발행내역 없음");
         }
+        /* 유동화증권 발행내역 END */
 
+        /* 입금요청/출금요청 START  */
         if(dpstRqstList.size() > 0 || wthdrwlRqstList.size() > 0){
             log.debug("[spcSave] 입금/출금요청 내역 존재");
 
@@ -147,8 +199,7 @@ public class TB07200ServiceImpl implements TB07200Service {
         }else{
             log.debug("[spcSave] 입금/출금요청 내역 없음");
         }
-
-       
+        /* 입금요청/출금요청 END */
 
         return rslt;
     }

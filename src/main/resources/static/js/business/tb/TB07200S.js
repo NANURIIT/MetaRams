@@ -53,25 +53,33 @@ const TB07200Sjs = (function () {
 
         slctdRow = e;
 
-        // console.log("slctdRow::: " + JSON.stringify(slctdRow));
+        //console.log("slctdRow::: " + JSON.stringify(slctdRow));
+        var wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: slctdRow } ); 
 
+        var ardyBzepNo = wrkRqstData.ardyBzepNo;                //기업체번호           
+        var fincExcuRqsSn = wrkRqstData.fincExcuRqsSn;          //신청번호
 
-        // let paramData = {
+        if(isEmpty(fincExcuRqsSn)){     //신규항목
+            console.log("신규항목 <<< ajax 안탐");
+        }else{
+            console.log("기존항목 <<< ajax 탐");
 
-        // }
-
-        // $.ajax({
-        //     type: "POST",
-        //     url: `/TB07200S/selectSpcList`,
-        //     contentType: "application/json; charset=UTF-8",
-        //     data: JSON.stringify(paramData),
-        //     success: function (data) {
-        //       console.log("서버통신성공");
-        //       console.log(data)
-        //       $('#TB07200S_wrkRqst').pqGrid('instance').setData(data);
-        //       // $('# 피큐그리드 아이디값').pqGrid('instance').setData(통신으로 받은 데이터);
-        //     },
-        // })
+            let paramData = {
+                ardyBzepNo: ardyBzepNo,
+                fincExcuRqsSn: fincExcuRqsSn
+            }
+    
+            $.ajax({
+                type: "POST",
+                url: `/TB07200S/spcDetail`,
+                contentType: "application/json; charset=UTF-8",
+                data: JSON.stringify(paramData),
+                success: function (data) {
+                    console.log("서버통신성공");
+                },
+            })
+        }
+        
     } 
 
     function gridSett(){
@@ -402,7 +410,19 @@ const TB07200Sjs = (function () {
                 format: "#,###",
                 editable: true,
                 filter: { crules: [{ condition: "range" }] },
-            }
+            },
+            {
+                dataType: "string",
+                dataIndx: "lqdzSctyIsuTmrd",            //유동화증권발행회차
+                align: "center",
+                hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "ardyBzepNo",                 //기업체번호
+                align: "center",
+                hidden: true,
+            },
         ]
 
         //입금요청 그리드 colModel
@@ -553,6 +573,18 @@ const TB07200Sjs = (function () {
                 align: "center",
                 hidden: true,
             },
+            {
+                dataType: "string",
+                dataIndx: "ardyBzepNo",            //기업체번호
+                align: "center",
+                hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "fincExcuRqsSn",         //자금집행신청일련번호
+                align: "center",
+                hidden: true,
+            }
         ]
 
         //출금요청 그리드 colModel
@@ -703,6 +735,18 @@ const TB07200Sjs = (function () {
                 align: "center",
                 hidden: true,
             },
+            {
+                dataType: "string",
+                dataIndx: "ardyBzepNo",            //기업체번호
+                align: "center",
+                hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "fincExcuRqsSn",         //자금집행신청일련번호
+                align: "center",
+                hidden: true,
+            }
         ]
 
         showPqGrid(TB07200S_col_wrkRqst, TB07200S_col_pblHis, TB07200S_col_dpstRqst, TB07200S_col_wthdrwlRqst);
@@ -794,7 +838,11 @@ const TB07200Sjs = (function () {
                 var validRslt = spcValidation(wrkRqstData, "wrkRqst");
     
                 if(validRslt === 1){
-                    $(gridId).pqGrid("addRow", { rowData: {}, checkEditable: false });
+                    $(gridId).pqGrid("addRow", { 
+                        rowData: {
+
+                        }, checkEditable: false 
+                    });
                 }else{
                     return false;
                 }
@@ -807,21 +855,43 @@ const TB07200Sjs = (function () {
 
     //그리드 행 삭제
     function dltRows_TB07200S(gridId){
-        var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
+        let gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
+		let gridData = $(gridId).pqGrid("option", "dataModel.data");
 
-        // $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
+		let checkedRows = [];
+		for (let i = 0; i < gridLgth; i++) {
+			let rowData = gridData[i];
+			if (rowData.chk === true) {	
+				checkedRows.push(rowData);
+			}
+		}
 
-        if(gridId === "TB07200S_wrkRqst"){      //자금집행업무지시요청 목록 <<< 하위 입금요청/출금요청 그리드도 삭제
+		if (checkedRows && checkedRows.length > 0) {
+			checkedRows.forEach(function(row) {
+				$(gridId).pqGrid('deleteRow', { rowIndx: row.pq_ri});
+			});
+		}
+		if(checkedRows.length <= 0){
+			Swal.fire({
+				icon                : 'error'
+				, title             : "Error!"
+				, text              : "삭제할 행을 체크해주세요."
+				, confirmButtonText : "확인"
+			});
+			return false;
+		}
 
-            for(var i=0; i < gridLgth; i++){
+        //todo:: 하위 그리드도 다 삭제 해야함...
+        // if(gridId === "TB07200S_wrkRqst"){      //자금집행업무지시요청 목록 <<< 하위 입금요청/출금요청 그리드도 삭제
+
+        //     for(var i=0; i < gridLgth; i++){
 
                 
+        //     }
 
-            }
+        // }else{
 
-        }else{
-
-        }
+        // }
 
     }
 

@@ -127,12 +127,17 @@
          )
     </select>
 
+    <select id="getNxtFincExcuRqsSn" resultType="int">
+      SELECT NVL(MAX(FINC_EXCU_RQS_SN),0)+1  		
+      FROM IBIMS900B		
+    </select>
+
     <!-- 자금집행업무지시요청 목록 저장 -->
     <insert id="spcWrkRqstSave" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
-      <selectKey keyProperty="fincExcuRqsSn" resultType="int" order="BEFORE">
+      <!-- <selectKey keyProperty="fincExcuRqsSn" resultType="int" order="BEFORE">
         SELECT NVL(MAX(FINC_EXCU_RQS_SN),0)+1  		
         FROM IBIMS900B					
-      </selectKey>
+      </selectKey> -->
         INSERT INTO IBIMS900B
             ( 
                 ARDY_BZEP_NO                /*기업체번호*/

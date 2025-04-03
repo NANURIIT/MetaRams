@@ -20,4 +20,6 @@ public interface IBIMS900BMapper {
 
     public int spcWrkRqstSave(IBIMS900BVO param);
 
+    public int getNxtFincExcuRqsSn();
+
 }
