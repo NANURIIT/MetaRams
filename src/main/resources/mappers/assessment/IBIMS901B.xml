@@ -16,6 +16,51 @@
            AND ARDY_BZEP_NO = #{ardyBzepNo}             /* SPC */
     </select>
 
-    
+    <!--유동화증권 발행 내역 저장-->
+    <insert id="pblHisSave" parameterType="com.nanuri.rams.business.common.dto.IBIMS901BDTO">
+        <selectKey keyProperty="lqdzSctyIsuTmrd" resultType="int" order="BEFORE">
+            SELECT NVL(MAX(LQDZ_SCTY_ISU_TMRD),0)+1  		
+            FROM IBIMS901B	
+            WHERE ARDY_BZEP_NO = #{ardyBzepNo}				
+        </selectKey>
+        INSERT INTO IBIMS901B
+            ( 
+                  ARDY_BZEP_NO                  /*기업체번호*/
+                , LQDZ_SCTY_ISU_TMRD            /* 유동화증권발행회차 */
+                , ISU_DT                        /* 발행일자 */
+                , EXP_DT                        /* 만기일자 */
+                , ISU_AMT                       /* 발행금액 */
+                , HND_DETL_DTM                  /* 조작상세일시 */
+                , HND_EMPNO                     /* 조작사원번호 */
+                , HND_TMNL_NO                   /* 조작단말기번호 */
+                , HND_TR_ID                     /* 조작거래ID */
+                , GUID                          /* GUID */
+            )
+        VALUES (
+                  #{ardyBzepNo}
+                , #{lqdzSctyIsuTmrd}
+                , #{isuDt}
+                , #{expDt}
+                , #{isuAmt}
+                , SYSDATE
+                , #{hndEmpno}
+                , ''
+                , ''
+                , ''
+        )
+    </insert>
+
+    <!--유동화증권 발행 내역 수정-->
+    <update id="pblHisUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS901BDTO">
+        UPDATE IBIMS901B
+            SET ISU_DT = #{isuDt}
+                , EXP_DT = #{expDt}
+                , ISU_AMT = #{isuAmt}
+                , HND_DETL_DTM = SYSDATE
+                , HND_EMPNO = #{hndEmpno}
+        WHERE 1=1
+            AND ARDY_BZEP_NO = #{ardyBzepNo}
+            AND LQDZ_SCTY_ISU_TMRD = #{lqdzSctyIsuTmrd}
+    </update>
 
 </mapper>

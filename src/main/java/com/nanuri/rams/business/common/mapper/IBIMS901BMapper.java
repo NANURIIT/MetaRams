@@ -16,4 +16,7 @@ public interface IBIMS901BMapper {
      */
     public List<IBIMS901BDTO> pblHisList (String param);
 
+    public int pblHisSave(IBIMS901BDTO param);
+    public int pblHisUpdate(IBIMS901BDTO param);
+
 }

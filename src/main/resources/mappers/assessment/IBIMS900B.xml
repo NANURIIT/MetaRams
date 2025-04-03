@@ -173,6 +173,23 @@
             )
     </insert>
 
+    <!--자금집행업무지시요청 목록 수정-->
+    <update id="spcWrkRqstUpdate" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
+      UPDATE IBIMS900B
+        SET FINC_EXCU_RQS_DT = #{fincExcuRqsDt}
+          , IB_CTRT_NM = #{ibCtrtNm}
+          , ISTT_CD = #{isttCd}
+          , ASST_MNGM_ACNO = #{asstMngmAcno}
+          , DPRT_CD = #{dprtCd}
+          , RM_CTNS = #{rmCtns}
+          <!-- , LQDZ_SCTY_ISU_YN = #{lqdzSctyIsuYn} -->   <!--todo:: 유동화증권발행여부 수정 가능한지 확인 필요-->
+          , HND_DETL_DTM = SYSDATE
+          , HND_EMPNO = #{hndEmpno}
+      WHERE 1=1
+        AND ARDY_BZEP_NO = #{ardyBzepNo}
+        AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+    </update>
+
     <select id="spcDetailRjctList">
 
     </select>
