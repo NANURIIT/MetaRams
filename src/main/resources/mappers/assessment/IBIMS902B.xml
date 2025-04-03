@@ -118,20 +118,43 @@
 		)
 	</insert>
 
-	<update id="updateRndrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
-		UPDATE IBIMS902B
-		   SET RNDR_DCD
+	<select id="calcBlceList" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		SELECT TR_DT
+			 , ARDY_BZEP_NO
+			 , FINC_EXCU_RQS_SN
+			 , TR_SN
+			 , RNDR_DCD
 			 , SPC_DEP_ITEM_KND_CD
 			 , SPC_WDR_ITEM_KND_CD
 			 , SYNS_TEXT
 			 , TR_OTHR_DSCM_NO
 			 , RNDR_AMT
-			 , RNDR_BLCE
+			 , SUM(CASE WHEN RNDR_DCD = 1 THEN RNDR_AMT
+			 			WHEN RNDR_DCD = 2 THEN -RNDR_AMT
+			 			ELSE 0 END)
+			  OVER(
+			 			ORDER 
+						   BY TR_DT
+						    , RNDR_DCD 
+			 			ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+			   ) AS RNDR_BLCE
 			 , ISTT_CD
 			 , ACNO
+			 , SORT_NO
 			 , RMRK
-			 , HND_DETL_DTM
-			 , HND_EMPNO
+		  FROM IBIMS902B
+		 WHERE 1=1
+		   AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		 ORDER 
+			BY TR_DT
+			 , RNDR_DCD;
+	</select>
+
+	<update id="updateRndrBlce">
+		UPDATE IBIMS902B
+		   SET RNDR_BLCE = #{rndrBlce}
+		   	 , HND_DETL_DTM = SYSDATE
+			 , HND_EMPNO = #{hndEmpno}
 		 WHERE 1=1
 		   AND ARDY_BZEP_NO = #{ardyBzepNo}
 		   AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
