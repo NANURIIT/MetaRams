@@ -162,4 +162,13 @@
 		   AND TR_SN = #{trSn}
 	</update>
 
+	<delete id="deleteRndrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		DELETE IBIMS902B
+		 WHERE 1=1
+		   AND ARDY_BZEP_NO = #{ardyBzepNo}
+		   AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		   AND TR_DT = #{trDt}
+		   AND TR_SN = #{trSn}
+	</delete>
+
 </mapper>
