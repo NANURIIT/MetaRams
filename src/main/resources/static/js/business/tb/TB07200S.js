@@ -6,6 +6,11 @@ const TB07200Sjs = (function () {
     let wdrList;        //출금항목구분코드
     let slctdRow;
 
+    let dltWrkRqstList;         //삭제 자금집행업무지시요청 목록
+    let dltPblHis;              //삭제 유동화증권 발행(예정) 내역 목록
+    let dltDpstRqstList;        //삭제 입금요청 목록
+    let dltWthdrwlRqst;         //삭제 출금요청 목록
+
     $(document).ready(function () {
 
         $("#TB07200S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
@@ -159,6 +164,26 @@ const TB07200Sjs = (function () {
         //업무지시요청 그리드 colModel
         let TB07200S_col_wrkRqst = [
             {
+                dataIndx: "chk",
+                maxWidth: 36,
+                minWidth: 36,
+                align: "center",
+                resizable: false,
+                title: "",
+                menuIcon: false,
+                type: "checkBoxSelection",
+                cls: "ui-state-default",
+                sortable: false,
+                editor: false,
+                dataType: "bool",
+                width: "6%",
+                editable: "true",
+                cb: {
+                    all: false,
+                    header: true,
+                },
+            },
+            {
                 title: "SPC",
                 dataType: "string",
                 dataIndx: "ardyBzepNo",
@@ -283,6 +308,26 @@ const TB07200Sjs = (function () {
         //유동화증권 발행(예정) 내역 그리드 colModel
         let TB07200S_col_pblHis = [
             {
+                dataIndx: "chk",
+                maxWidth: 36,
+                minWidth: 36,
+                align: "center",
+                resizable: false,
+                title: "",
+                menuIcon: false,
+                type: "checkBoxSelection",
+                cls: "ui-state-default",
+                sortable: false,
+                editor: false,
+                dataType: "bool",
+                width: "6%",
+                editable: "true",
+                cb: {
+                    all: false,
+                    header: true,
+                },
+            },
+            {
                 title: "회차",
                 dataType: "string",
                 dataIndx: "lqdzSctyIsuTmrd",
@@ -362,6 +407,26 @@ const TB07200Sjs = (function () {
 
         //입금요청 그리드 colModel
         let TB07200S_col_dpstRqst = [
+            {
+                dataIndx: "chk",
+                maxWidth: 36,
+                minWidth: 36,
+                align: "center",
+                resizable: false,
+                title: "",
+                menuIcon: false,
+                type: "checkBoxSelection",
+                cls: "ui-state-default",
+                sortable: false,
+                editor: false,
+                dataType: "bool",
+                width: "6%",
+                editable: "true",
+                cb: {
+                    all: false,
+                    header: true,
+                },
+            },
             {
 				title: "거래일자",
 				dataType: "date",
@@ -492,6 +557,26 @@ const TB07200Sjs = (function () {
 
         //출금요청 그리드 colModel
         let TB07200S_col_wthdrwlRqst = [
+            {
+                dataIndx: "chk",
+                maxWidth: 36,
+                minWidth: 36,
+                align: "center",
+                resizable: false,
+                title: "",
+                menuIcon: false,
+                type: "checkBoxSelection",
+                cls: "ui-state-default",
+                sortable: false,
+                editor: false,
+                dataType: "bool",
+                width: "6%",
+                editable: "true",
+                cb: {
+                    all: false,
+                    header: true,
+                },
+            },
             {
 				title: "거래일자",
 				dataType: "date",
@@ -724,7 +809,20 @@ const TB07200Sjs = (function () {
     function dltRows_TB07200S(gridId){
         var gridLgth =  $(gridId).pqGrid('option', 'dataModel.data').length;
 
-        $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
+        // $(gridId).pqGrid("deleteRow", {rowIndx: gridLgth-1});
+
+        if(gridId === "TB07200S_wrkRqst"){      //자금집행업무지시요청 목록 <<< 하위 입금요청/출금요청 그리드도 삭제
+
+            for(var i=0; i < gridLgth; i++){
+
+                
+
+            }
+
+        }else{
+
+        }
+
     }
 
     function TB07200S_onChangeHandler() {
