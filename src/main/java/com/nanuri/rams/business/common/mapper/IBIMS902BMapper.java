@@ -26,4 +26,9 @@ public interface IBIMS902BMapper {
      */
     public int updateRndrBlce (IBIMS902BDTO param);
 
+    /**
+     * 입출금요청내역삭제
+     */
+    public int deleteRndrList (IBIMS902BDTO param);
+
 }
