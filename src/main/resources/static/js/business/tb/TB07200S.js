@@ -75,7 +75,6 @@ const TB07200Sjs = (function () {
                 contentType: "application/json; charset=UTF-8",
                 data: JSON.stringify(paramData),
                 success: function (data) {
-                    //console.log("서버통신성공");
 
                     var pblHisList = data.pblHisList;               //유동화증권방행내역
                     var dpstRqstList = data.dpstRqstList;           //입금요청내역
