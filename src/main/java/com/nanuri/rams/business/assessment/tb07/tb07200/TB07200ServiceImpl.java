@@ -49,8 +49,13 @@ public class TB07200ServiceImpl implements TB07200Service {
         IBIMS900BVO vo = new IBIMS900BVO();
 
         vo.setPblHisList(ibims901bMapper.pblHisList(param.getArdyBzepNo()));               // 유동화증권발행내역
-        vo.setDpstRqstList(null);           // 입금요청내역
-        vo.setWthdrwlRqstList(null);     // 출금요청내역
+
+        IBIMS900BVO srchParam = new IBIMS900BVO();
+        srchParam.setArdyBzepNo(param.getArdyBzepNo());
+        srchParam.setFincExcuRqsSn(param.getFincExcuRqsSn());
+
+        vo.setDpstRqstList(ibims902bMapper.getDpstRqstList(srchParam));           // 입금요청내역
+        vo.setWthdrwlRqstList(ibims902bMapper.getWthdrwlRqstList(srchParam));     // 출금요청내역
 
         return vo;
     }
@@ -192,6 +197,7 @@ public class TB07200ServiceImpl implements TB07200Service {
     
                 for(IBIMS902BDTO dpstRqstDTO: dpstRqstList){
                     dpstRqstDTO.setArdyBzepNo(param.getArdyBzepNo());       //기업체번호
+                    dpstRqstDTO.setFincExcuRqsSn(fincExcuRqsSn);            //자금집행신청일련번호
                     dpstRqstDTO.setRndrDcd("1");                    //입출금구분코드 (1: 입금   2: 출금)
                     dpstRqstDTO.setHndEmpno(facade.getDetails().getEno());
                     ibims902List.add(dpstRqstDTO);
@@ -205,6 +211,7 @@ public class TB07200ServiceImpl implements TB07200Service {
                 
                 for(IBIMS902BDTO wthdrwlRqstDTO: wthdrwlRqstList){
                     wthdrwlRqstDTO.setArdyBzepNo(param.getArdyBzepNo());    // 기업체번호
+                    wthdrwlRqstDTO.setFincExcuRqsSn(fincExcuRqsSn);         //자금집행신청일련번호
                     wthdrwlRqstDTO.setRndrDcd("2");                 //입출금구분코드 (1: 입금   2: 출금)
                     wthdrwlRqstDTO.setHndEmpno(facade.getDetails().getEno());
                     ibims902List.add(wthdrwlRqstDTO);
@@ -220,6 +227,31 @@ public class TB07200ServiceImpl implements TB07200Service {
 
             // log.debug("ibims902List ::: {}", ibims902List);
             for(IBIMS902BDTO dpstRqstDTO: dpstRqstList){
+
+                if(dpstRqstDTO.getTrSn() == 0){         //거래일련번호 == 0 : 신규
+
+                    int rndrRqstSaveRslt = ibims902bMapper.rndrRqstSave(dpstRqstDTO);
+
+                    if(rndrRqstSaveRslt < 1){
+                        log.debug("[spcSave] SQL Error>>>>rndrRqstSave<<<<");
+                        rslt = 0;
+                    }else{
+                        log.debug("[spcSave] SQL Success>>>>rndrRqstSave<<<<");
+                        rslt = 1;
+                    }
+
+                }else{//거래일련번호 != 0 : 수정
+
+                    int rndrRqstUpdateRslt = ibims902bMapper.rndrRqstUpdate(dpstRqstDTO);
+
+                    if(rndrRqstUpdateRslt < 1){
+                        log.debug("[spcSave] SQL Error>>>>rndrRqstUpdate<<<<");
+                        rslt = 0;
+                    }else{
+                        log.debug("[spcSave] SQL Success>>>>rndrRqstUpdate<<<<");
+                        rslt = 1;
+                    }
+                }
                 
             }
 

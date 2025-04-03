@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.nanuri.rams.business.common.dto.IBIMS902BDTO;
+import com.nanuri.rams.business.common.vo.IBIMS900BVO;
 import com.nanuri.rams.business.common.vo.IBIMS902BVO;
 
 @Mapper
@@ -30,5 +31,25 @@ public interface IBIMS902BMapper {
      * 입출금요청내역삭제
      */
     public int deleteRndrList (IBIMS902BDTO param);
+
+    /**
+     * TB07200S - 입출금요청내역 저장
+     */
+    public int rndrRqstSave(IBIMS902BDTO param);
+
+    /**
+     * TB07200S - 입출금요청내역 수정
+     */
+    public int rndrRqstUpdate(IBIMS902BDTO param);
+
+    /**
+     * TB07200S - 입금요청내역 조회
+     */
+    public List<IBIMS902BDTO> getDpstRqstList(IBIMS900BVO param);
+
+    /**
+     * TB07200S - 출금요청내역 조회
+     */
+    public List<IBIMS902BDTO> getWthdrwlRqstList(IBIMS900BVO param);
 
 }

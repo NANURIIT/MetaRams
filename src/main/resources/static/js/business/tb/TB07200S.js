@@ -76,8 +76,17 @@ const TB07200Sjs = (function () {
                 data: JSON.stringify(paramData),
                 success: function (data) {
                     //console.log("서버통신성공");
-                    $("TB07200S_empNo").val(data.hndEmpno);
-                    $("TB07200S_ibDealNo").val(data.fincExcuRqsSn);
+
+                    var pblHisList = data.pblHisList;               //유동화증권방행내역
+                    var dpstRqstList = data.dpstRqstList;           //입금요청내역
+                    var wthdrwlRqstList = data.wthdrwlRqstList;     //출금요청내역
+
+                    $('#TB07200S_pblHis').pqGrid('instance').setData(pblHisList);
+                    $('#TB07200S_dpstRqst').pqGrid('instance').setData(dpstRqstList);
+                    $('#TB07200S_wthdrwlRqst').pqGrid('instance').setData(wthdrwlRqstList);
+
+                    $("TB07200S_empNo").val(wrkRqstData.hndEmpno);
+                    $("TB07200S_ibDealNo").val(wrkRqstData.fincExcuRqsSn);
                     chkDecdStep("TB07200S");
                 },
             })
@@ -414,12 +423,12 @@ const TB07200Sjs = (function () {
                 editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
-            {
-                dataType: "string",
-                dataIndx: "lqdzSctyIsuTmrd",            //유동화증권발행회차
-                align: "center",
-                hidden: true,
-            },
+            // {
+            //     dataType: "string",
+            //     dataIndx: "lqdzSctyIsuTmrd",            //유동화증권발행회차
+            //     align: "center",
+            //     hidden: true,
+            // },
             {
                 dataType: "string",
                 dataIndx: "ardyBzepNo",                 //기업체번호
@@ -587,6 +596,12 @@ const TB07200Sjs = (function () {
                 dataIndx: "fincExcuRqsSn",         //자금집행신청일련번호
                 align: "center",
                 hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "trSn",                  //거래일련번호
+                align: "center",
+                hidden: true,
             }
         ]
 
@@ -747,6 +762,12 @@ const TB07200Sjs = (function () {
             {
                 dataType: "string",
                 dataIndx: "fincExcuRqsSn",         //자금집행신청일련번호
+                align: "center",
+                hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "trSn",                  //거래일련번호
                 align: "center",
                 hidden: true,
             }

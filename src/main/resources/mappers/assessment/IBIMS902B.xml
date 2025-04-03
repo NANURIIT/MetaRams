@@ -56,14 +56,6 @@
 			  , T1.TR_SN
     </select>
 
-	<select id="짜다맘">
-		SELECT TR_DT
-			 , SPC_DEP_ITEM_KND_CD
-		 WHERE 1=1
-		   AND RNDR_DCD = '1'	/* 입금 */
-		   AND 
-	</select>
-
 	<select id="getSn" parameterType="String">
 		SELECT NVL(TR_SN, 0) + 1
 		  FROM IBIMS900B
@@ -170,5 +162,131 @@
 		   AND TR_DT = #{trDt}
 		   AND TR_SN = #{trSn}
 	</delete>
+
+	<!--TB07200S - 입금/출금 요청 목록 저장-->
+	<insert id="rndrRqstSave" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		<selectKey keyProperty="lqdzSctyIsuTmrd" resultType="int" order="BEFORE">
+            SELECT NVL(MAX(TR_SN),0)+1  		
+            FROM IBIMS902B	
+            WHERE ARDY_BZEP_NO = #{ardyBzepNo}
+			AND TR_DT = #{trDt}
+			AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}				
+        </selectKey>
+		INSERT INTO IBIMS902B (
+			  TR_DT							/* 거래일자 */
+			, ARDY_BZEP_NO					/* 기업체번호 */
+			, FINC_EXCU_RQS_SN				/* 자금집행신청일련번호 */
+			, TR_SN							/* 거래일련번호 */
+			, RNDR_DCD						/* 입출금구분코드 */
+			, SPC_DEP_ITEM_KND_CD			/* SPC입금항목종류코드 */
+			, SPC_WDR_ITEM_KND_CD			/* SPC출금항목종류코드 */
+			, SYNS_TEXT						/* 적요내용 */
+			, TR_OTHR_DSCM_NO				/* 거래상대방기업체번호 */
+			, RNDR_AMT						/* 입출금금액 */
+			, RNDR_BLCE						/* 입출금잔액 */
+			, ISTT_CD						/* 기관코드 */
+			, ACNO							/* 계좌번호 */
+			, RMRK							/* 비고 */
+			, HND_DETL_DTM					/* 조작상세일시 */
+			, HND_EMPNO						/* 조작사원번호 */
+			, HND_TMNL_NO					/* 조작단말기번호 */
+			, HND_TR_ID						/* 조작거래ID */
+			, GUID							/* GUID */
+		) VALUES (
+			  #{trDt}
+			, #{ardyBzepNo}
+			, #{fincExcuRqsSn}
+			, #{trSn}
+			, #{rndrDcd}
+			, #{spcDepItemKndCd}
+			, #{spcWdrItemKndCd}
+			, #{synsText}
+			, #{trOthrDscmNo}
+			, #{rndrAmt}
+			, #{rndrBlce}
+			, #{isttCd}
+			, #{acno}
+			, #{rmrk}
+			, SYSDATE
+			, #{hndEmpno}
+			, #{hndTmnlNo}
+			, #{hndTrId}
+			, #{guid}
+		)
+	</insert>
+
+	<!--TB07200S - 입금/출금 요청 목록 수정-->
+	<update id="rndrRqstUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
+		UPDATE IBIMS902B
+		SET   SPC_DEP_ITEM_KND_CD = #{spcDepItemKndCd}
+			, SPC_WDR_ITEM_KND_CD = #{spcWdrItemKndCd}
+			, SYNS_TEXT = #{synsText}
+			, TR_OTHR_DSCM_NO = #{trOthrDscmNo}
+			, RNDR_AMT = #{rndrAmt}
+			, ISTT_CD = #{isttCd}
+			, ACNO = #{acno}
+			, RMRK = #{rmrk}
+			, HND_DETL_DTM = SYSDATE
+			, HND_EMPNO = #{hndEmpno}
+		WHERE 1=1
+		AND ARDY_BZEP_NO = #{ardyBzepNo}
+		AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		AND TR_DT = #{trDt}
+		AND TR_SN = #{trSn}
+	</update>
+
+	<!--TB07200S - 입금요청내역 조회-->
+	<select id="getDpstRqstList" parameterType="com.nanuri.rams.business.common.dto.IBIMS900BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS900BDTO">
+		SELECT A.TR_DT						/* 거래일자 */
+			, A.ARDY_BZEP_NO				/* 기업체번호 */
+			, A.FINC_EXCU_RQS_SN			/* 자금집행신청일련번호 */
+			, A.TR_SN						/* 거래일련번호 */
+			, A.RNDR_DCD					/* 입출금구분코드 */
+			, A.SPC_DEP_ITEM_KND_CD			/* SPC입금항목종류코드 */
+			, A.SPC_WDR_ITEM_KND_CD			/* SPC출금항목종류코드 */
+			, A.SYNS_TEXT					/* 적요내용 */
+			, A.TR_OTHR_DSCM_NO				/* 거래상대방기업체번호 */
+			, (
+				SELECT ENTP_NM 
+				FROM IBIMS010B
+				WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO
+			) AS TR_OTHR_NM					/*거래상대방명*/
+			, A.RNDR_AMT					/* 입출금금액 */
+			, A.ISTT_CD						/* 기관코드 */
+			, A.ACNO						/* 계좌번호 */
+			, A.RMRK						/* 비고 */
+		FROM IBIMS900B A 
+		WHERE 1=1
+		AND ARDY_BZEP_NO = #{ardyBzepNo}
+		AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		AND RNDR_DCD = '1'
+	</select>
+
+	<!--TB07200S - 출금요청내역 조회-->
+	<select id="getWthdrwlRqstList" parameterType="com.nanuri.rams.business.common.dto.IBIMS900BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS900BDTO">
+		SELECT A.TR_DT						/* 거래일자 */
+			, A.ARDY_BZEP_NO				/* 기업체번호 */
+			, A.FINC_EXCU_RQS_SN			/* 자금집행신청일련번호 */
+			, A.TR_SN						/* 거래일련번호 */
+			, A.RNDR_DCD					/* 입출금구분코드 */
+			, A.SPC_DEP_ITEM_KND_CD			/* SPC입금항목종류코드 */
+			, A.SPC_WDR_ITEM_KND_CD			/* SPC출금항목종류코드 */
+			, A.SYNS_TEXT					/* 적요내용 */
+			, A.TR_OTHR_DSCM_NO				/* 거래상대방기업체번호 */
+			, (
+				SELECT ENTP_NM 
+				FROM IBIMS010B
+				WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO
+			) AS TR_OTHR_NM					/*거래상대방명*/
+			, A.RNDR_AMT					/* 입출금금액 */
+			, A.ISTT_CD						/* 기관코드 */
+			, A.ACNO						/* 계좌번호 */
+			, A.RMRK						/* 비고 */
+		FROM IBIMS900B A 
+		WHERE 1=1
+		AND ARDY_BZEP_NO = #{ardyBzepNo}
+		AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		AND RNDR_DCD = '2'
+	</select>
 
 </mapper>

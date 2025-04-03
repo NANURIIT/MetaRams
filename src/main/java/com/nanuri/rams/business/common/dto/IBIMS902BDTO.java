@@ -33,4 +33,6 @@ public class IBIMS902BDTO {
 	private String hndTmnlNo;                   /* 조작단말기번호 */
 	private String hndTrId;                     /* 조작거래ID */
 	private String guid;                        /* GUID */
+
+    private String trOthrNm;                    /* 거래상대방명 */
 }
