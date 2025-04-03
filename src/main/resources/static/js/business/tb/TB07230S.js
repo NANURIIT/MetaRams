@@ -230,12 +230,36 @@ const TB07230Sjs = (function() {
 
 	// 조회버튼
 	function selectTB07230S() {
+		
+		// spc 기업체 코드
+		if(isEmpty($("#TB07230S_ardyBzepNo").val())){
+			Swal.fire({
+				icon: 'error'
+				, title: "Error!"
+				, text: "SPC 기업체 코드 정보는 필수입니다."
+				, confirmButtonText: "확인"
+			});
+			return false;
+		}
+		
+		// 자금집행신청일련번호
+		if (isEmpty($("#TB07230S_fincExcuRqsSn").val())) {
+			Swal.fire({
+				icon: 'error'
+				, title: "Error!"
+				, text: "SPC 기업체 정보 조회 후 자금집행신청일련번호를 선택해주세요."
+				, confirmButtonText: "확인"
+			});
+			return false;
+		}
+		
 		var paramData = {
 			ardyBzepNo: $("#TB07230S_ardyBzepNo").val(),			// spc 기업체 코드
 			fromDate: unformatDate($('#TB07230S_fromDate').val()),	// 조회기간 시작
 			toDate: unformatDate($('#TB07230S_toDate').val()),		// 조회기간 종료
 			dprtCd: $('#TB07230S_dprtCd').val(),					// 관리부점
 			asstMngmAcno: $('#TB07230S_asstMngmAcno').val(),		// 자산관리계좌번호
+			fincExcuRqsSn: $('#TB07230S_fincExcuRqsSn').val(),		// 자금집행신청일련번호
 		};
 
 		$.ajax({

@@ -14,5 +14,4 @@ public class IBIMS902BVO extends IBIMS902BDTO{
 	private String dprtCd;
 	private String asstMngmAcno;
 	private String assnYn;
-	
 }
