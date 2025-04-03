@@ -1,4 +1,6 @@
 const TB07230Sjs = (function() { 
+	
+	var popupOption = {};
 
 	$(document).ready(function() {
 
@@ -10,15 +12,12 @@ const TB07230Sjs = (function() {
 
 		//기간검색 유효성 검사 함수
 		chkValFromToDt("TB07230S_fromDate","TB07230S_toDate");
-
 	});
  
 	function setMonthInput() {
 		// 1개월전 ~ 현재날짜 디폴트 세팅
 		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
 		$("#TB07230S_toDate").val(getToday()); //조회종료일
-		
-		
 	}
 
 	//selectBox 세팅
@@ -233,12 +232,31 @@ const TB07230Sjs = (function() {
 
 	// 조회버튼
 	function selectTB07230S() {
+		popupOption.type = "error";
+		popupOption.title = "Error!";
+		
+		// spc 기업체 코드
+		if(isEmpty($("#TB07230S_ardyBzepNo").val())){
+			popupOption.text  = "SPC 기업체 코드 정보는 필수입니다.";  
+			openPopup(popupOption);
+			
+			return false;
+		}
+		
+		// 자금집행신청일련번호
+		if (isEmpty($("#TB07230S_fincExcuRqsSn").val())) {
+			popupOption.text = "SPC 기업체 정보 조회 후 자금집행신청일련번호를 선택해주세요.";
+			openPopup(popupOption);
+			return false;
+		}
+		
 		var paramData = {
 			ardyBzepNo: $("#TB07230S_ardyBzepNo").val(),			// spc 기업체 코드
 			fromDate: unformatDate($('#TB07230S_fromDate').val()),	// 조회기간 시작
 			toDate: unformatDate($('#TB07230S_toDate').val()),		// 조회기간 종료
 			dprtCd: $('#TB07230S_dprtCd').val(),					// 관리부점
 			asstMngmAcno: $('#TB07230S_asstMngmAcno').val(),		// 자산관리계좌번호
+			fincExcuRqsSn: $('#TB07230S_fincExcuRqsSn').val(),		// 자금집행신청일련번호
 		};
 
 		$.ajax({
@@ -264,12 +282,8 @@ const TB07230Sjs = (function() {
 				}
 			},
 			error: function() {
-				Swal.fire({
-					icon: "error",
-					title: "Error!",
-					text: "정보 조회에 실패하였습니다.",
-					confirmButtonText: "확인",
-				});
+				popupOption.text = "정보 조회에 실패하였습니다.";
+				openPopup(popupOption);
 			},
 		});
 	}
@@ -287,11 +301,53 @@ const TB07230Sjs = (function() {
 		
 		$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
 	};
+	
+	// spc 기업체번호 변경 function
+	function selectSpcList() {
+
+		console.log("val[" + $("#TB07230S_ardyBzepNo").val() + "]");
+
+		if (isEmpty($("#TB07230S_ardyBzepNo").val())) {
+			return false;
+		}
+
+		var paramData = {
+			ardyBzepNo: $("#TB07230S_ardyBzepNo").val(),			// spc 기업체 코드
+		};
+
+		$.ajax({
+			type: "GET",
+			url: '/TB07230S/selectSpcList',
+			data: paramData,
+			dataType: "json",
+			success: function(data) {
+				
+				var html = "";
+				
+				if(data.length > 0){
+					data.forEach(function(obj){
+						html += "<option value=" + obj.fincExcuRqsSn + ">" + obj.fincExcuRqsSn +"</option>"
+					})
+					
+					$('#TB07230S_fincExcuRqsSn').html(html);
+				}else{
+					$('#TB07230S_fincExcuRqsSn').html(html);
+				}
+			},
+			error: function() {
+				popupOption.type = "error";
+				popupOption.title = "Error!";
+				popupOption.text = "정보 조회에 실패하였습니다.";
+				openPopup(popupOption);
+			},
+		});
+	}
 
 	return {
 		addRows_TB07230S: addRows_TB07230S,
 		dltRows_TB07230S: dltRows_TB07230S,
 		selectTB07230S: selectTB07230S,
 		resetSearch: resetSearch,
+		selectSpcList: selectSpcList,
 	};
 })();

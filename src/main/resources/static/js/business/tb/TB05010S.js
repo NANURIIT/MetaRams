@@ -99,7 +99,7 @@ const TB05010Sjs = (function () {
   function mmbrList() {
     $.ajax({
       type: "GET",
-      url: "/getSelectBoxCode/C003",
+      url: "/getSelectBoxCode/C002",
       async: false,
       dataType: "json",
       success: function (data) {
@@ -1381,6 +1381,11 @@ const TB05010Sjs = (function () {
       dataIndx: "ownPNm",
       align: "center",
       filter: { crules: [{ condition: "range" }] },
+    },
+    {
+      title: "안건일련번호",
+      dataIndx: "dealSn",
+      hidden: true,
     },
   ];
 

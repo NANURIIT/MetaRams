@@ -47,6 +47,9 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
             AND T2.DPRT_CD          = #{dprtCd}
            </if>
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsSn)">
+            AND T2.FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+           </if>
 		  ORDER BY
 		        T1.TR_DT
 		      , T1.FINC_EXCU_RQS_SN

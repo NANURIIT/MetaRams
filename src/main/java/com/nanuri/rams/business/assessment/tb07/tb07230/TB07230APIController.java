@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nanuri.rams.business.assessment.tb07.tb07200.TB07200Service;
+import com.nanuri.rams.business.common.vo.IBIMS900BVO;
 import com.nanuri.rams.business.common.vo.IBIMS902BVO;
 
 import lombok.RequiredArgsConstructor;
@@ -17,15 +19,26 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class TB07230APIController {
 
-	private final TB07230Service TB07230Service;
+	private final TB07230Service tb07230Service;
+	private final TB07200Service tb07200Service;
 
 	/**
-	 * 승인내역조회
-	 * @param param
-	 * @return
+	 * SPC별 거래내역 조회
+	 * @param IBIMS902BVO
+	 * @return List<IBIMS902BVO>
 	 */
 	@GetMapping("/selectTB07230S")
 	public List<IBIMS902BVO> selectTB07230S(IBIMS902BVO param) {
-		return TB07230Service.selectTB07230S(param);
+		return tb07230Service.selectTB07230S(param);
+	}
+	
+	/**
+	 * 자금집행업무지시요청 목록 번호 조회
+	 * @param IBIMS900BVO
+	 * @return List<IBIMS900BVO>
+	 */
+	@GetMapping("/selectSpcList")
+	public List<IBIMS900BVO> selectSpcList(IBIMS900BVO param) {
+		return tb07200Service.selectSpcList(param);
 	}
 }
