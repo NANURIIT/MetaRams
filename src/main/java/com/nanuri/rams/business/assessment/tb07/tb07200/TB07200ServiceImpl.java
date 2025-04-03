@@ -84,7 +84,6 @@ public class TB07200ServiceImpl implements TB07200Service {
         log.debug("[spcSave] pblHisList.length::: " + pblHisList.size());
         log.debug("[spcSave] dpstRqstList.length::: " + dpstRqstList.size());
         log.debug("[spcSave] wthdrwlRqstList.length::: " + wthdrwlRqstList.size());
-
         
         /* 자금집행업무지시요청 목록 START */
         if(param.getFincExcuRqsSn() == 0){//자금집행신청일련번호 없음 === 신규
