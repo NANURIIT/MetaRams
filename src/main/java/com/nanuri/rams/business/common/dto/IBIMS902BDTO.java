@@ -27,6 +27,7 @@ public class IBIMS902BDTO {
     private BigDecimal rndrBlce;                /* 입출금잔액 */
     private String isttCd;                      /* 기관코드 */
     private String acno;                        /* 계좌번호 */
+    private String sortNo;                      /* 정렬순서 */
     private String rmrk;                        /* 비고 */
     private Date hndDetlDtm;                    /* 조작상세일시 */
 	private String hndEmpno;                    /* 조작사원번호 */
