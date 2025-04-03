@@ -15,4 +15,6 @@ public interface TB07200Service {
 
     public IBIMS900BVO spcDetail (IBIMS900BDTO param);
 
+    public int spcSave(IBIMS900BVO param);
+
 } 

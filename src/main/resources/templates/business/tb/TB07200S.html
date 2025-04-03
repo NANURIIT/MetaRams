@@ -21,6 +21,24 @@
 </th:block>
 
 <th:block layout:fragment="customContent">
+    <style>	
+        .pq-grid .pq-editor-focus
+        {
+            outline:none;
+            border:1px solid #bbb;    
+            border-radius:6px;
+            background-image: linear-gradient(#e6e6e6, #fefefe);
+    
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e6e6e6', endColorstr='#fefefe'); 
+            background: -webkit-gradient(linear, left top, left bottom, from(#e6e6e6), to(#fefefe)); 
+            background: -moz-linear-gradient(top,  #e6e6e6,  #fefefe); /* for firefox 3.6+ */	        
+        }
+        div.pq-grid
+        {
+            overflow:visible;
+        } 
+    </style>
+
     <!-- SPC 자금집행 업무지시 요청 -->
 	<div class="wrapper wrapper-content animated fadeIn">
         <div class="row">
@@ -78,9 +96,9 @@
                             <!-- 버튼영역 -->
                             <div class="col-sm-2 form-group mb-1">
                                 <div class="col-sm-12 text-right">
-                                    <button class="btn btn-primary" onclick="TB07200Sjs.selectSpcList()">
+                                    <button class="btn btn-primary" onclick="TB07200Sjs.selectSpcList();">
                                         <i class="fa fa-search"></i>&nbsp;조회</button>
-                                    <button class="btn btn-default" type="button" onclick="">
+                                    <button class="btn btn-default" type="button" onclick="TB07200Sjs.reset_TB07200S();">
                                         <i class="fa fa-undo"></i>&nbsp;초기화
                                     </button>
                                 </div>
@@ -207,7 +225,7 @@
 							<div class="col-sm-6 text-left pd0">
 							</div>
 							<div class="col-sm-6 text-right pd0">
-								<button class="btn btn-success mg-l5" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;저장</button>
+								<button class="btn btn-success mg-l5" type="button" onclick="TB07200Sjs.spcSave();"><i class="fa fa-save"></i>&nbsp;저장</button>
 								<button class="btn btn-info mg-l5" type="button" onclick=""><i class="fa fa-square-o"></i>&nbsp;승인요청</button>
 							</div>
 						</div>

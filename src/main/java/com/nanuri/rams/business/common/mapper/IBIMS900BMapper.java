@@ -18,4 +18,6 @@ public interface IBIMS900BMapper {
 
     public List<IBIMS900BVO> selectBalanceInfoList(IBIMS900BVO param);
 
+    public int spcWrkRqstSave(IBIMS900BVO param);
+
 }

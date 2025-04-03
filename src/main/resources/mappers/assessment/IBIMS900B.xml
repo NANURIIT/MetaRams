@@ -5,6 +5,11 @@
     <!-- 업무지시요청 -->
     <select id="selectSpcList" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
         SELECT T1.ARDY_BZEP_NO
+             , (
+                SELECT ENTP_NM
+                FROM IBIMS010B E
+                WHERE E.ARDY_BZEP_NO = T1.ARDY_BZEP_NO
+             ) AS ENTP_NM
              , T1.FINC_EXCU_RQS_SN
              , T1.FINC_EXCU_RQS_DT
              , T1.IB_CTRT_NM
@@ -121,6 +126,47 @@
                AND TR_SEQ = 0
          )
     </select>
+
+    <!-- 자금집행업무지시요청 목록 저장 -->
+    <insert id="spcWrkRqstSave" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
+      <selectKey keyProperty="fincExcuRqsSn" resultType="int" order="BEFORE">
+        SELECT NVL(MAX(FINC_EXCU_RQS_SN),0)+1  		
+        FROM IBIMS900B					
+      </selectKey>
+        INSERT INTO IBIMS900B
+            ( 
+                ARDY_BZEP_NO                /*기업체번호*/
+              , FINC_EXCU_RQS_SN            /*자금집행신청일련번호*/
+              , FINC_EXCU_RQS_DT            /*자금집행신청일자*/
+              , IB_CTRT_NM                  /*IB계약명*/
+              , ISTT_CD                     /*기관코드*/
+              , ASST_MNGM_ACNO              /*자산관리계좌번호*/
+              , DPRT_CD                     /*부서코드*/
+              , RM_CTNS                     /*비고내용*/
+              , LQDZ_SCTY_ISU_YN            /*유동화증권발행여부*/
+              , HND_DETL_DTM                /*조작상세일시*/
+              , HND_EMPNO                   /*조작사원번호*/
+              , HND_TMNL_NO                 /*조작단말기번호*/
+              , HND_TR_ID                   /*조작거래ID*/
+              , GUID                        /*GUID*/
+            )
+        VALUES (
+                #{ardyBzepNo}
+              , #{fincExcuRqsSn}
+              , #{fincExcuRqsDt}
+              , #{ibCtrtNm}
+              , #{isttCd}
+              , #{asstMngmAcno}
+              , #{dprtCd}
+              , #{rmCtns}
+              , #{lqdzSctyIsuYn}
+              , SYSDATE
+              , #{hndEmpno}
+              , ''
+              , ''
+              , ''
+            )
+    </insert>
 
     <select id="spcDetailRjctList">
 
