@@ -351,7 +351,7 @@
       , #{decdStepDcd}
       , #{decdSttsDcd}
       , NVL(#{dealNo}, '')
-      , NVL(#{prdtCd}, ' ')
+      , NVL(#{prdtCd}, '')
       , (
          SELECT CD_VL_ID
            FROM IBIMS002B

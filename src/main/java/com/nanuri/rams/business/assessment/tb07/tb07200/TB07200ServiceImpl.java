@@ -17,6 +17,7 @@ import com.nanuri.rams.business.common.mapper.IBIMS900BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS901BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS902BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS900BVO;
+import com.nanuri.rams.business.common.vo.IBIMS902BVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
@@ -65,8 +66,12 @@ public class TB07200ServiceImpl implements TB07200Service {
         int rslt = 0;//반환값 (0:: 에러 1:: 성공)
 
         List<IBIMS901BDTO> pblHisList = param.getPblHisList();              // 유동화증권방행내역
-        List<IBIMS902BDTO> dpstRqstList = param.getDpstRqstList();          // 입금요청내역
-        List<IBIMS902BDTO> wthdrwlRqstList = param.getWthdrwlRqstList();    // 출금요청내역
+        List<IBIMS902BVO> dpstRqstList = param.getDpstRqstList();          // 입금요청내역
+        List<IBIMS902BVO> wthdrwlRqstList = param.getWthdrwlRqstList();    // 출금요청내역
+
+        List<IBIMS900BDTO> dltWrkRqstList = param.getDltWrkRqstList();      // 삭제용 자금집행
+        List<IBIMS901BDTO> dltPblHis = param.getDltPblHis();                // 삭제용 유동화발행증권
+        List<IBIMS902BDTO> dltRnDrList = param.getDltRnDrList();            // 삭제용 입출금;
 
         String ardyBzepNo = param.getArdyBzepNo();       //기업체번호
         long fincExcuRqsSn = 0;                          //자금집행신청일련번호
@@ -113,7 +118,9 @@ public class TB07200ServiceImpl implements TB07200Service {
                 rslt = 1;
             }
 
-        }else{//자금집행신청일련번호 존재 === 수정
+        }
+        
+        else{//자금집행신청일련번호 존재 === 수정
             log.debug("[spcSave] IBIMS900B UPDATE!!!!!!");
             //todo: update문 들어가야함...
             fincExcuRqsSn = param.getFincExcuRqsSn();
@@ -139,15 +146,6 @@ public class TB07200ServiceImpl implements TB07200Service {
             
 
         }
-
-        /**
-         * 자금집행내역확인 삭제
-         * 
-         * 1. 리스트로 받아야함
-         * 2. 삭제
-         */
-        
-
         /* 자금집행업무지시요청 목록 END */
 
 
@@ -191,21 +189,6 @@ public class TB07200ServiceImpl implements TB07200Service {
         }else{
             log.debug("[spcSave] 유동화증권 발행내역 없음");
         }
-        /**
-         * 유동화증권 발행내역 삭제
-         * 
-         * 1. 현재 신규,수정내용 포함된 그리드리스트 셋
-         * 2. PK + 그리드리스트에 포함된 내역은 제외 후 조회
-         * 3. 삭제
-         */
-
-        // 리스트가 존재할 경우 삭제내역 조회
-        if (pblHisList.size() != 0) {
-            List<IBIMS901BDTO> deletedPblHisList = ibims901bMapper.deletedPblHisList(pblHisList);
-            for (int i = 0; i < deletedPblHisList.size(); i++) {
-                ibims901bMapper.deletePblHis(deletedPblHisList.get(i));
-            }
-        }
         /* 유동화증권 발행내역 END */
 
         /* 입금요청/출금요청 START  */
@@ -248,12 +231,12 @@ public class TB07200ServiceImpl implements TB07200Service {
                         .thenComparing(IBIMS902BDTO::getRndrDcd)  // 입출금구분코드 기준 정렬
             );
 
-            // log.debug("ibims902List ::: {}", ibims902List);
-            for(IBIMS902BDTO dpstRqstDTO: dpstRqstList){
+            for(IBIMS902BDTO rndrRqstDTO: ibims902List){
 
-                if(dpstRqstDTO.getTrSn() == 0){         //거래일련번호 == 0 : 신규
+                //거래일련번호 == 0 : 신규
+                if(rndrRqstDTO.getTrSn() == 0){         
 
-                    int rndrRqstSaveRslt = ibims902bMapper.rndrRqstSave(dpstRqstDTO);
+                    int rndrRqstSaveRslt = ibims902bMapper.rndrRqstSave(rndrRqstDTO);
 
                     if(rndrRqstSaveRslt < 1){
                         log.debug("[spcSave] SQL Error>>>>rndrRqstSave<<<<");
@@ -263,9 +246,11 @@ public class TB07200ServiceImpl implements TB07200Service {
                         rslt = 1;
                     }
 
-                }else{//거래일련번호 != 0 : 수정
+                }
+                //거래일련번호 != 0 : 수정
+                else{
 
-                    int rndrRqstUpdateRslt = ibims902bMapper.rndrRqstUpdate(dpstRqstDTO);
+                    int rndrRqstUpdateRslt = ibims902bMapper.rndrRqstUpdate(rndrRqstDTO);
 
                     if(rndrRqstUpdateRslt < 1){
                         log.debug("[spcSave] SQL Error>>>>rndrRqstUpdate<<<<");
@@ -277,30 +262,36 @@ public class TB07200ServiceImpl implements TB07200Service {
                 }
                 
             }
-
-
-        }else{
+        }
+        
+        else{
             log.debug("[spcSave] 입금/출금요청 내역 없음");
         }
+        /* 입금요청/출금요청 END */
+
+        /**
+         * 자금집행내역확인 삭제
+         * 
+         * 1. 리스트로 받아야함
+         * 2. 삭제
+         */
+        for (int i = 0; i < dltWrkRqstList.size(); i++) {
+            ibims900bMapper.dltWrkRqst(dltWrkRqstList.get(i));
+        }
+
+        /**
+         * 유동화증권 발행내역 삭제
+         */
+        for (int i = 0; i < dltPblHis.size(); i++) {
+            ibims901bMapper.deletePblHis(dltPblHis.get(i));
+        }
+
         /**
          * 입출금내역 삭제
-         * 
-         * 1. 현재 신규,수정내용 포함된 그리드리스트 셋
-         * 2. PK + 그리드리스트에 포함된 내역은 제외 후 조회
-         * 3. 삭제
          */
-        List<IBIMS902BDTO> notInRndrList = new ArrayList<IBIMS902BDTO>();
-        notInRndrList.addAll(dpstRqstList);
-        notInRndrList.addAll(wthdrwlRqstList);
-
-        // 리스트가 존재할 경우 삭제내역 조회
-        if (notInRndrList.size() != 0) {
-            List<IBIMS902BDTO> deletedRndrList = ibims902bMapper.deletedRndrList(notInRndrList);
-            for (int i = 0; i < deletedRndrList.size(); i++) {
-                ibims902bMapper.deleteRndr(deletedRndrList.get(i));
-            }
+        for (int i = 0; i < dltRnDrList.size(); i++) {
+            ibims902bMapper.deleteRndr(dltRnDrList.get(i));
         }
-        /* 입금요청/출금요청 END */
 
         return rslt;
     }

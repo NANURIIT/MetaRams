@@ -46,8 +46,9 @@ public class TB07230APIController {
 		return tb07200Service.selectSpcList(param);
 	}
 
-	@PostMapping(value = "/saveTB07230S")
-	public int saveTB07230S(@RequestBody IBIMS902BVO paramData) {
-		return tb07230Service.saveTB07230S(paramData);
+	@PostMapping(value = "/saveRecalculateBalance")
+	public int saveRecalculateBalance(@RequestBody IBIMS902BVO paramData) {
+		log.debug("=============================== Control");
+		return tb07230Service.saveRecalculateBalance(paramData);
 	}
 }

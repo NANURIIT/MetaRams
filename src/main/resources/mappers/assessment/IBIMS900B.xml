@@ -198,6 +198,8 @@
     <!-- 승인내역조회 -->
     <select id="selectBalanceInfoList" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
 	SELECT T1.TR_MM          -- 거래년월
+	     , T1.ARDY_BZEP_NO   -- SPC코드
+	     , T1.DPRT_CD        -- 관리부서코드
 	     , T1.DPRT_NM        -- 관리부서명
 	     , T1.SPC_NM         -- SPC명
 	     , T2.BFMM_RNDR_BLCE -- 전월말잔액
@@ -234,7 +236,7 @@
 	         SELECT SUBSTR(A.TR_DT, 0, 6)                                                                AS TR_MM       -- 거래년월
 	              , A.DPRT_CD                                                                            AS DPRT_CD     -- 관리부서코드
 	              , (SELECT CD_VL_NM FROM IBIMS002B WHERE CMNS_CD_GRP = 'D010' AND CD_VL_ID = A.DPRT_CD) AS DPRT_NM     -- 관리부서명
-	              , A.ARDY_BZEP_NO                                                                       AS SPC_CD      -- SPC 코드
+	              , A.ARDY_BZEP_NO                                                                       AS ARDY_BZEP_NO-- SPC 코드
 	              , ( SELECT ENTP_NM FROM IBIMS010B WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO)                 AS SPC_NM      -- SPC명
 	              , SUM(CASE WHEN A.RNDR_DCD = '1'                          THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_TOT -- 입금합계
 	              , SUM(CASE WHEN A.RNDR_DCD = '1' AND A.ITEM_KND_CD = '02' THEN A.RNDR_AMT ELSE 0 END)  AS DEP_AMT_02  -- 유동화증권 인수대금(입금)
@@ -349,4 +351,13 @@
 	  AND T1.DPRT_CD                         = #{dprtCd}                     -- (조회조건)관리부점
 	  </if>
     </select>
+
+
+  <delete id="dltWrkRqst" parameterType="com.nanuri.rams.business.common.dto.IBIMS900BDTO">
+    DELETE IBIMS900B
+     WHERE 1=1
+       AND ARDY_BZEP_NO = #{ardyBzepNo}
+       AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+  </delete>
+    
 </mapper>

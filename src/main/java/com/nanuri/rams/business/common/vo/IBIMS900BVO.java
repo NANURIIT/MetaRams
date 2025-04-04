@@ -30,8 +30,13 @@ public class IBIMS900BVO extends IBIMS900BDTO {
     private String toDate;          // 거래일자
 
     private List<IBIMS901BDTO> pblHisList;          // 유동화증권방행내역
-    private List<IBIMS902BDTO> dpstRqstList;        // 입금요청내역
-    private List<IBIMS902BDTO> wthdrwlRqstList;     // 출금요청내역
+    private List<IBIMS902BVO> dpstRqstList;        // 입금요청내역
+    private List<IBIMS902BVO> wthdrwlRqstList;     // 출금요청내역
+
+    // 삭제용
+    private List<IBIMS900BDTO> dltWrkRqstList;
+    private List<IBIMS901BDTO> dltPblHis;
+    private List<IBIMS902BDTO> dltRnDrList;
     
     // 잔고현황 In
     private String fromMm;              /* 조회시작년월 */
