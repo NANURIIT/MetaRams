@@ -20,4 +20,6 @@ public class IBIMS232BVO extends IBIMS232BDTO {
     private List<IBIMS232BDTO> apvlList;
     private List<IBIMS232BDTO> rjctList;
 
+    private String fincExcuRqsSn;
+
 }

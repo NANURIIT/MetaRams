@@ -29,7 +29,8 @@
 		  WHERE 1=1
 		    AND T2.ARDY_BZEP_NO     = T1.ARDY_BZEP_NO
 		    AND T2.FINC_EXCU_RQS_SN = T1.FINC_EXCU_RQS_SN
-		    AND LPAD(TO_CHAR(T2.FINC_EXCU_RQS_SN), 5, '0') = T3.DEAL_NO(+)
+		    /* AND LPAD(TO_CHAR(T2.FINC_EXCU_RQS_SN), 5, '0') = T3.DEAL_NO(+) */
+		    AND T2.FINC_EXCU_RQS_SN = T3.DEAL_NO(+)
 		    AND T3.DECD_STTS_DCD    = '2'	-- 임시 승인된것만 조회
 		    AND T3.SCRN_NO          = 'TB07200S'
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDate) and @com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDate)">
