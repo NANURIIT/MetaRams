@@ -1012,6 +1012,7 @@ const TB07200Sjs = (function () {
                 let dpstRqstList = $("#TB07200S_dpstRqst").pqGrid("getData");           // 입금요청내역
                 let wthdrwlRqstList = $("#TB07200S_wthdrwlRqst").pqGrid("getData");     // 출금요청내역
 
+<<<<<<< HEAD
                 let paramData = {
                     ardyBzepNo: wrkRqstData.ardyBzepNo,                                 // 기업체번호 (=== SPC)
                     fincExcuRqsDt: (wrkRqstData.fincExcuRqsDt).replaceAll('-', ''),     // 자금집행신청일자
@@ -1019,6 +1020,16 @@ const TB07200Sjs = (function () {
                     asstMngmAcno: wrkRqstData.asstMngmAcno,                             // 자산관리계좌번호
                     dprtCd: wrkRqstData.dprtCd,                                         // 관리부점코드
                     rmCtns: isEmpty(wrkRqstData.rmCtns) ? "" : wrkRqstData.rmCtns,      // 비고내용
+=======
+                var paramData = {
+                    ardyBzepNo: wrkRqstData.ardyBzepNo,                             //기업체번호 (=== SPC)
+                    fincExcuRqsDt: (wrkRqstData.fincExcuRqsDt).replaceAll('-', ''), //자금집행신청일자
+                    fincExcuRqsSn: wrkRqstData.fincExcuRqsSn,                       //자금집행신청일련번호
+                    ibCtrtNm: wrkRqstData.ibCtrtNm,                                 //IB계약명
+                    asstMngmAcno: wrkRqstData.asstMngmAcno,                         //자산관리계좌번호
+                    dprtCd: wrkRqstData.dprtCd,                                     //관리부점코드
+                    rmCtns: isEmpty(wrkRqstData.rmCtns) ? "" : wrkRqstData.rmCtns,  //비고내용
+>>>>>>> 52b6633e1b1c98fc8b229d73a722947cd7b8a57c
                     pblHisList: pblHisList,
                     dpstRqstList: dpstRqstList,
                     wthdrwlRqstList: wthdrwlRqstList
