@@ -160,6 +160,7 @@ const TB07230Sjs = (function() {
 				dataIndx: "isttNmAsstMngmAcno",
 				halign: "center",
 				align: "left",
+				width: "15%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
