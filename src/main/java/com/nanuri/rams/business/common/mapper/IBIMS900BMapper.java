@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.nanuri.rams.business.common.dto.IBIMS900BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS232BVO;
 import com.nanuri.rams.business.common.vo.IBIMS900BVO;
 
@@ -26,5 +27,8 @@ public interface IBIMS900BMapper {
 
     //자금집행업무지시요청 목록 수정
     public int spcWrkRqstUpdate(IBIMS900BVO param);
+
+    // 자금집행업무지시요청 삭제 (단건)
+    public int dltWrkRqst (IBIMS900BDTO param);
 
 }

@@ -66,11 +66,11 @@ public interface IBIMS902BMapper {
     /**
      * TB07200S - 입금요청내역 조회
      */
-    public List<IBIMS902BDTO> getDpstRqstList(IBIMS900BVO param);
+    public List<IBIMS902BVO> getDpstRqstList(IBIMS900BVO param);
 
     /**
      * TB07200S - 출금요청내역 조회
      */
-    public List<IBIMS902BDTO> getWthdrwlRqstList(IBIMS900BVO param);
+    public List<IBIMS902BVO> getWthdrwlRqstList(IBIMS900BVO param);
 
 }

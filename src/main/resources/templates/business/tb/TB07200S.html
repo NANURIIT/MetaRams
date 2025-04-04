@@ -12,11 +12,15 @@
 	<script th:src="@{js/fileUpload.js}"></script>
     <script th:src="@{js/business/tb/TB07200S.js}"></script>
     <script th:src="@{js/business/tb/TB03061P.js}"></script>
+    <script th:src="@{js/business/tb/TB06081P.js}"></script>
+    <script th:src="@{js/business/tb/TB06082P.js}"></script>
     <script th:src="@{js/business/tb/TB07021P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
     <th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+    <th:block th:replace="business/tb/TB06081P :: TB06081P"></th:block>
+    <th:block th:replace="business/tb/TB06082P :: TB06082P"></th:block>
     <th:block th:replace="business/tb/TB07021P :: TB07021P"></th:block>
 </th:block>
 

@@ -111,6 +111,8 @@ function settingFunction() {
     autoclose: true,
     language: "ko",
   });
+  $(".input-group.date").find("input").inputmask("9999-99-99");
+
   $(".input-group.month").datepicker({
     format: "yyyy-mm",
     keyboardNavigation: false,
@@ -121,7 +123,10 @@ function settingFunction() {
     minViewMode: "months",
     startView: "months",
   });
-  $(".input-group.clockpicker").clockpicker({});
+  $(".input-group.month").find("input").inputmask("9999-99");
+
+  $(".input-group.clockpicker").clockpicker({})
+  $(".input-group.clockpicker").find("input").inputmask("99:99");
 }
 
 /**
@@ -1362,7 +1367,7 @@ function getSelectBoxList(prefix, item, async = true) {
             $("#TB08031S_I051_2").append(html);
           }
 
-          if(value.cmnsGrpCd == "T002"){
+          if (value.cmnsGrpCd == "T002") {
 
             var html = "";
             html +=
@@ -2075,7 +2080,7 @@ function pqGridDeleteRow(colModelSelector, rowIndx, mode) {
   console.log(rowIndx + "행삭제");
 
   let idx = rowIndx;
-  
+
   if (mode === 'select') {
     if (!rowIndx && rowIndx != 0) {
       Swal.fire({
@@ -2249,13 +2254,13 @@ function chkDecdStep(menuId) {
        * 2. 승인요청자, 담당자 입장에서는 종목수정, 종목취소가 가능하다!
        * 3. 결재자 입장에서는 결재, 반려가 불가능하다!
        */
-      if ( data === -1 || data === 0 ) {
+      if (data === -1 || data === 0) {
         /**
          * 담당자일 경우
          * 1. 결재요청버튼 활성화.
          * 2. 종목등록, 취소 활성화.
          */
-        if ( chrrNo === $('#userEno').val()) {
+        if (chrrNo === $('#userEno').val()) {
           $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
             "hidden",
             false
@@ -2296,7 +2301,7 @@ function chkDecdStep(menuId) {
          * 1. 결재요청버튼 활성화. ( 재승인요청, 승인요청취소 )
          * 2. 종목등록, 취소 "비"활성화.
          */
-        if ( chrrNo === $('#userEno').val()) {
+        if (chrrNo === $('#userEno').val()) {
           $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
             "hidden",
             false
@@ -2391,13 +2396,13 @@ function idClear(id) {
  * @param { Number } dataLength 
  * @param { String } code 특정화면 or 구분코드
  */
-function showToast ( status, dataLength, code ) {
+function showToast(status, dataLength, code) {
 
   // 성공적인 조회시
-  if ( status === 'success' ) {
+  if (status === 'success') {
     // 코드가 존재하면 코드에 맞는 텍스트 출력
-    if ( code ) {
-  
+    if (code) {
+
     }
     // 코드가 없을시 기본 텍스트
     else {
@@ -2405,11 +2410,11 @@ function showToast ( status, dataLength, code ) {
     }
   }
   // 
-  else if ( status === 'warning' ) {
+  else if (status === 'warning') {
 
   }
   // 에러시
-  else if ( status === 'error' ){
+  else if (status === 'error') {
 
   }
 
@@ -2423,7 +2428,7 @@ function showToast ( status, dataLength, code ) {
   setTimeout(() => {
     $('#toastPlacement').css({
       'bottom': '-50px'
-    , 'opacity': '0'
+      , 'opacity': '0'
     })
   }, 3000)
 
@@ -2435,24 +2440,32 @@ function showToast ( status, dataLength, code ) {
  * @param { String }  id2     // 종료일자 컴포넌트
  * @param { boolean } pattern // default true
  */
-function chkValFromToDt(id1, id2, pattern = true){
-	
-	var idFromDate = "#" + id1;
-	var idToDate   = "#" + id2;
-	var fromDate   = "";
-	var toDate     = "";
-	
-	$(idFromDate).change(function() {
-		fromDate   = $(idFromDate).val();
-		toDate     = $(idToDate).val();
-		chkValFromToDtVal(fromDate, toDate, pattern);
-	});
-	
-	$(idToDate).change(function() {
-		fromDate   = $(idFromDate).val();
-		toDate     = $(idToDate).val();
-		chkValFromToDtVal(fromDate, toDate, pattern);
-	});
+function chkValFromToDt(id1, id2, pattern = true) {
+
+  var idFromDate = "#" + id1;
+  var idToDate = "#" + id2;
+  var fromDate = "";
+  var toDate = "";
+
+  $(idFromDate)
+    // .click(function () {
+    //   $(this).blur();
+    // })
+    .change(function () {
+      fromDate = $(idFromDate).val();
+      toDate = $(idToDate).val();
+      chkValFromToDtVal(fromDate, toDate, pattern);
+    });
+
+  $(idToDate)
+    // .click(function () {
+    //   $(this).blur();
+    // })
+    .change(function () {
+      fromDate = $(idFromDate).val();
+      toDate = $(idToDate).val();
+      chkValFromToDtVal(fromDate, toDate, pattern);
+    });
 }
 
 /**
@@ -2462,42 +2475,42 @@ function chkValFromToDt(id1, id2, pattern = true){
  * @param { boolean } pattern  // default true
  */
 function chkValFromToDtVal(fromDate, toDate, pattern = true) {
-	// 유효성 검사용 날짜패턴
-	var regExpYmd = /(^\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-	var regExpYm  = /(^\d{4})-(0[1-9]|1[0-2])$/;
-	var regExp    = "";
-	var msgError  = "";
-	
-	if(pattern){
-		regExp = regExpYmd;
-	}else{
-		regExp = regExpYm;
-	}
+  // 유효성 검사용 날짜패턴
+  var regExpYmd = /(^\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+  var regExpYm = /(^\d{4})-(0[1-9]|1[0-2])$/;
+  var regExp = "";
+  var msgError = "";
 
-	if (isEmpty(fromDate)) {
-		msgError = "필수 입력값(조회시작일자)을 입력해주세요.";
-		alertPopup();
-	} else if (!regExp.test(fromDate)) {
-		msgError = "필수 입력값(조회시작일자)을 확인해주세요.";
-		alertPopup();
-	} else if (isEmpty(toDate)) {
-		msgError = "필수 입력값(조회종료일자)을 입력해주세요.";
-		alertPopup();
-	} else if (!regExp.test(toDate)) {
-		msgError = "필수 입력값(조회종료일자)을 확인해주세요.";
-		alertPopup();
-	} else if (fromDate > toDate) {
-		msgError = "조회시작일자가 조회종료일자보다 큽니다.";
-		alertPopup();
-	}
+  if (pattern) {
+    regExp = regExpYmd;
+  } else {
+    regExp = regExpYm;
+  }
 
-	function alertPopup() {
-		Swal.fire({
-			icon: "warning",
-			title: "Warning!",
-			text: msgError,
-			confirmButtonText: "확인",
-		});
-	}
+  if (isEmpty(fromDate)) {
+    msgError = "필수 입력값(조회시작일자)을 입력해주세요.";
+    alertPopup();
+  } else if (!regExp.test(fromDate)) {
+    msgError = "필수 입력값(조회시작일자)을 확인해주세요.";
+    alertPopup();
+  } else if (isEmpty(toDate)) {
+    msgError = "필수 입력값(조회종료일자)을 입력해주세요.";
+    alertPopup();
+  } else if (!regExp.test(toDate)) {
+    msgError = "필수 입력값(조회종료일자)을 확인해주세요.";
+    alertPopup();
+  } else if (fromDate > toDate) {
+    msgError = "조회시작일자가 조회종료일자보다 큽니다.";
+    alertPopup();
+  }
+
+  function alertPopup() {
+    Swal.fire({
+      icon: "warning",
+      title: "Warning!",
+      text: msgError,
+      confirmButtonText: "확인",
+    });
+  }
 }
 
