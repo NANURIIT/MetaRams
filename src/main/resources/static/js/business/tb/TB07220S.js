@@ -9,7 +9,28 @@ const TB07220Sjs = (function () {
         sltctBoxSet();
         
         setGridOptions();
+
+		TB07220S_onChangeHandler();
     });
+
+	function TB07220S_onChangeHandler() {
+		$("#TB07220S_fromMm").on("change", function () {
+			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
+        });
+
+		$("#TB07220S_toMm").on("change", function () {
+			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
+        });
+
+        $("#TB07220S_ardyBzepNm").on("change", function () {
+			alsert("");
+			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
+        });
+
+		$("#TB07220S_dprtNm").on("change", function () {
+			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
+        });
+    }
 
     function setMonthInput() {
         // 1개월전 ~ 현재월 디폴트 세팅
