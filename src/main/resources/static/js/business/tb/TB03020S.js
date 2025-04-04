@@ -4,6 +4,7 @@ const TB03020Sjs = (function(){
 
 	let wfId_TB03020S;
 	let pqGridObjEnopList;
+	let option={};
 
 	$(document).ready(function() {
 
@@ -78,14 +79,24 @@ const TB03020Sjs = (function(){
 	function getBscDealDetail() { 
 
 		if( isEmpty($('#TB03020S_ibDealNo').val()) ){
-			Swal.fire({
-				icon              : 'error'
-				, title             : "Error!"
-				, text              : "Deal 번호를 입력해주세요."
-				, confirmButtonText : "확인"
-			}).then(() => {
+			option.type='error'
+			option.title='Error!'
+			option.text='Deal 번호를 입력해주세요.'
+			option.confirmButtonText='확인'
+			option.callback = () => {
 				$('#TB03020S_ibDealNo').focus();
-			});
+			}
+			openPopup(option);
+			
+
+			// Swal.fire({
+			// 	icon              : 'error'
+			// 	, title             : "Error!"
+			// 	, text              : "Deal 번호를 입력해주세요."
+			// 	, confirmButtonText : "확인"
+			// }).then(() => {
+			// 	$('#TB03020S_ibDealNo').focus();
+			// });
 		}else{
 			businessFunction();
 		}
