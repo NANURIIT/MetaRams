@@ -12,7 +12,37 @@ const TB07230Sjs = (function() {
 
 		//기간검색 유효성 검사 함수
 		chkValFromToDt("TB07230S_fromDate", "TB07230S_toDate");
+		
+		TB07230S_onChangeHandler();
 	});
+	
+	
+    function TB07230S_onChangeHandler() {
+        $("#TB07230S_ardyBzepNo").on("change", function () {
+			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
+        });
+
+		$("#TB07230S_fincExcuRqsSn").on("change", function () {
+			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
+        });
+
+		$("#TB07230S_fromDate").on("change", function () {
+			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
+        });
+
+		$("#TB07230S_toDate").on("change", function () {
+			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
+        });
+
+		$("#TB07230S_dprtNm").on("change", function () {
+			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
+        });
+	
+		$("#TB07230S_asstMngmAcno").on("change", function () {
+			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
+        });
+    }
+
 
 	function setMonthInput() {
 		// 1개월전 ~ 현재날짜 디폴트 세팅
@@ -363,14 +393,13 @@ const TB07230Sjs = (function() {
 		
 		var paramData = {
 			lst902bdto: grid,
+			ardyBzepNo: $('#TB07230S_ardyBzepNo').val(),
+			fincExcuRqsSn: $('#TB07230S_fincExcuRqsSn').val()
 		}
-		
-		console.log(paramData);
-		return false; // param 확인용
 		
 		$.ajax({
 			type: "POST",
-			url: "/TB07230S/saveTB07230S",
+			url: "/TB07230S/saveRecalculateBalance",
 			data: JSON.stringify(paramData),
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
@@ -379,6 +408,8 @@ const TB07230Sjs = (function() {
 				popupOption.title = "Success!";
 				popupOption.text = "저장 완료하였습니다.";
 				openPopup(popupOption);
+				
+				selectTB07230S();
 			},
 			error: function() {
 				popupOption.type = "error";
