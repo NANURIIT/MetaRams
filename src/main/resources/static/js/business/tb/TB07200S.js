@@ -1,30 +1,32 @@
 const TB07200Sjs = (function () {
 
     let selectBox;
-    let dprtList;       //부서코드
-    let depList;        //입금항목구분코드   
-    let wdrList;        //출금항목구분코드
-    let slctdRow;
+    let dprtList;       // 부서코드
+    let depList;        // 입금항목구분코드   
+    let wdrList;        // 출금항목구분코드
+    let slctdRow;       // 자금집행업무지시요청 목록 그리드(마스터그리드) 선택된 행
 
-    let dltWrkRqstList;         //삭제 자금집행업무지시요청 목록
-    let dltPblHis;              //삭제 유동화증권 발행(예정) 내역 목록
-    let dltDpstRqstList;        //삭제 입금요청 목록
-    let dltWthdrwlRqst;         //삭제 출금요청 목록
+    let dltWrkRqstList;         // 삭제 자금집행업무지시요청 목록
+    let dltPblHis;              // 삭제 유동화증권 발행(예정) 내역 목록
+    let dltRnDrList;            // 삭제 입출금요청 목록
 
     $(document).ready(function () {
 
         $("#TB07200S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
         $("#TB07200S_toDate").val(getToday()); //조회종료일
-
         
         gridSett();
         TB07200S_onChangeHandler();
 
-    //기간검색 유효성 검사 함수
-    chkValFromToDt("TB07200S_fromDate","TB07200S_toDate");
-
+        //기간검색 유효성 검사 함수
+        chkValFromToDt("TB07200S_fromDate","TB07200S_toDate");
     });
 
+    /**
+     * 자금집행업무지시요청 목록 조회
+     * @description
+     * 첫번째 그리드
+     */
     function selectSpcList() {
         let paramData = {
             ardyBzepNo: $('#TB07200S_ardyBzepNo').val(),
@@ -41,29 +43,52 @@ const TB07200Sjs = (function () {
             contentType: "application/json; charset=UTF-8",
             data: JSON.stringify(paramData),
             success: function (data) {
-              console.log("서버통신성공");
-              console.log(data)
-              $('#TB07200S_wrkRqst').pqGrid('instance').setData(data);
-              // $('# 피큐그리드 아이디값').pqGrid('instance').setData(통신으로 받은 데이터);
+                if (data.length > 0) {
+                    $('#TB07200S_wrkRqst').pqGrid('instance').setData(data);
+                }
+                else {
+                    $('#TB07200S_wrkRqst').pqGrid('instance').setData([]);
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Warning!",
+                        text: "조회된 내용이 없습니다!",
+                    })
+                }
             },
           })
     }
-
+    
+    /**
+     * 상세버튼클릭시 실행
+     * 유동화증권 발행(예정)내역
+     * 입금요청
+     * 출금요청
+     * 조회
+     * @param {*} e 
+     */
     function spcDetail (e) {
 
         slctdRow = e;
 
         //console.log("slctdRow::: " + JSON.stringify(slctdRow));
-        var wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: slctdRow } ); 
+        let wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: slctdRow } ); 
 
-        var ardyBzepNo = wrkRqstData.ardyBzepNo;                //기업체번호           
-        var fincExcuRqsSn = wrkRqstData.fincExcuRqsSn;          //신청번호
+        let ardyBzepNo = wrkRqstData.ardyBzepNo;                //기업체번호           
+        let fincExcuRqsSn = wrkRqstData.fincExcuRqsSn;          //신청번호
 
-        if(isEmpty(fincExcuRqsSn)){     //신규항목
-            console.log("신규항목 <<< ajax 안탐");
-        }else{
-            console.log("기존항목 <<< ajax 탐");
-
+        // 신규항목 상세버튼 클릭시
+        if(isEmpty(fincExcuRqsSn)){     
+            Swal.fire({
+                icon: "warning",
+                title: "Warning!",
+                text: "저장된 정보만 조회가능합니다!",
+            })
+        }
+        // 이미 존재하는 항목 상세버튼 클릭시
+        else{
+            
+            // 기업체번호
+            // 자금집행신청일련번호
             let paramData = {
                 ardyBzepNo: ardyBzepNo,
                 fincExcuRqsSn: fincExcuRqsSn
@@ -76,16 +101,36 @@ const TB07200Sjs = (function () {
                 data: JSON.stringify(paramData),
                 success: function (data) {
 
-                    var pblHisList = data.pblHisList;               //유동화증권방행내역
-                    var dpstRqstList = data.dpstRqstList;           //입금요청내역
-                    var wthdrwlRqstList = data.wthdrwlRqstList;     //출금요청내역
+                    const pblHisList = data.pblHisList;               //유동화증권방행내역
+                    const dpstRqstList = data.dpstRqstList;           //입금요청내역
+                    const wthdrwlRqstList = data.wthdrwlRqstList;     //출금요청내역
 
-                    $('#TB07200S_pblHis').pqGrid('instance').setData(pblHisList);
-                    $('#TB07200S_dpstRqst').pqGrid('instance').setData(dpstRqstList);
-                    $('#TB07200S_wthdrwlRqst').pqGrid('instance').setData(wthdrwlRqstList);
+                    if (
+                        pblHisList.length
+                        && dpstRqstList.length
+                        && wthdrwlRqstList.length
+                    ) {
+                        $('#TB07200S_pblHis').pqGrid('instance').setData(pblHisList);
+                        $('#TB07200S_dpstRqst').pqGrid('instance').setData(dpstRqstList);
+                        $('#TB07200S_wthdrwlRqst').pqGrid('instance').setData(wthdrwlRqstList);
+    
+                        $("TB07200S_empNo").val(wrkRqstData.hndEmpno);
+                        $("TB07200S_ibDealNo").val(wrkRqstData.fincExcuRqsSn);
+                    }
+                    else {
+                        $('#TB07200S_pblHis').pqGrid('instance').setData([]);
+                        $('#TB07200S_dpstRqst').pqGrid('instance').setData([]);
+                        $('#TB07200S_wthdrwlRqst').pqGrid('instance').setData([]);
+                        
+                        $("TB07200S_empNo").val(wrkRqstData.hndEmpno);
+                        $("TB07200S_ibDealNo").val(wrkRqstData.fincExcuRqsSn);
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Warning!",
+                            text: "조회된 내용이 없습니다!",
+                        })
+                    }
 
-                    $("TB07200S_empNo").val(wrkRqstData.hndEmpno);
-                    $("TB07200S_ibDealNo").val(wrkRqstData.fincExcuRqsSn);
                     chkDecdStep("TB07200S");
                 },
             })
@@ -93,12 +138,15 @@ const TB07200Sjs = (function () {
         
     } 
 
+    /**
+     * 공통코드 가져오기
+     * 
+     * @param
+     * D010 부서코드
+     * S010 SPC입금항목구분코드
+     * S011 SPC출금항목구분코드
+     */
     function gridSett(){
-        /* 공통코드 가져오기
-         * D010 부서코드
-         * S010 SPC입금항목구분코드
-         * S011 SPC출금항목구분코드
-         */
         selectBox = getSelectBoxList("TB09080S", "D010/S010/S011", false);
 
         dprtList = selectBox.filter(function (item) {
@@ -125,8 +173,8 @@ const TB07200Sjs = (function () {
         $("#TB07200S_dprtCd").val($("#TB07200S_dprtNm").val());
         });
 
-        var dateEditor_pblHis = function(ui) {
-			var $inp = ui.$cell.find("input");
+        let dateEditor_pblHis = function(ui) {
+			let $inp = ui.$cell.find("input");
 			
 			$inp.datepicker({
 					todayBtn: "linked",
@@ -143,8 +191,8 @@ const TB07200Sjs = (function () {
 			
 		}
 
-        var dateEditor_dpstRqst = function(ui) {
-			var $inp = ui.$cell.find("input");
+        let dateEditor_dpstRqst = function(ui) {
+			let $inp = ui.$cell.find("input");
 			
 			$inp.datepicker({
 					todayBtn: "linked",
@@ -161,8 +209,8 @@ const TB07200Sjs = (function () {
 			
 		}
 
-        var dateEditor_wthdrwlRqst = function(ui) {
-			var $inp = ui.$cell.find("input");
+        let dateEditor_wthdrwlRqst = function(ui) {
+			let $inp = ui.$cell.find("input");
 			
 			$inp.datepicker({
 					todayBtn: "linked",
@@ -843,13 +891,13 @@ const TB07200Sjs = (function () {
             });
         }else{
 
-            var wrkRqstLgth = $("#TB07200S_wrkRqst").pqGrid('option', 'dataModel.data').length;//자금집행업무지시요총 목록 그리드 행 갯수
+            let wrkRqstLgth = $("#TB07200S_wrkRqst").pqGrid('option', 'dataModel.data').length;//자금집행업무지시요총 목록 그리드 행 갯수
 
             if(wrkRqstLgth < 1){              // 한건도 없는 경우
     
                 Swal.fire({
-                    icon: 'error'
-                    , title: "Error!"
+                    icon: 'warning'
+                    , title: "Warning!"
                     , text: "자금집행업무지시요청 목록이 존재하지 않습니다."
                     , confirmButtonText: "확인"
                 });
@@ -857,8 +905,8 @@ const TB07200Sjs = (function () {
             }else{
 
                 console.log("slctdRow::: " + slctdRow);
-                var wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: slctdRow } ); 
-                var validRslt = spcValidation(wrkRqstData, "wrkRqst");
+                let wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: slctdRow } ); 
+                let validRslt = spcValidation(wrkRqstData, "wrkRqst");
     
                 if(validRslt === 1){
                     $(gridId).pqGrid("addRow", { 
@@ -896,8 +944,8 @@ const TB07200Sjs = (function () {
 		}
 		if(checkedRows.length <= 0){
 			Swal.fire({
-				icon                : 'error'
-				, title             : "Error!"
+				icon                : 'warning'
+				, title             : "Warning!"
 				, text              : "삭제할 행을 체크해주세요."
 				, confirmButtonText : "확인"
 			});
@@ -907,7 +955,7 @@ const TB07200Sjs = (function () {
         //todo:: 하위 그리드도 다 삭제 해야함...
         // if(gridId === "TB07200S_wrkRqst"){      //자금집행업무지시요청 목록 <<< 하위 입금요청/출금요청 그리드도 삭제
 
-        //     for(var i=0; i < gridLgth; i++){
+        //     for(let i=0; i < gridLgth; i++){
 
                 
         //     }
@@ -934,41 +982,43 @@ const TB07200Sjs = (function () {
         });
     }
 
-    //SPC 저장
+    /**
+     * 수정된 전체 그리드 저장
+     * 신규목록, 수정목록, 삭제목록
+     * @returns 
+     */
     function spcSave(){
 
-        var wrkRqstLgth = $("#TB07200S_wrkRqst").pqGrid('option', 'dataModel.data').length;//자금집행업무지시요총 목록 그리드 행 갯수
+        let wrkRqstLgth = $("#TB07200S_wrkRqst").pqGrid('option', 'dataModel.data').length;//자금집행업무지시요총 목록 그리드 행 갯수
 
-        if(wrkRqstLgth < 1){              // 한건도 없는 경우
-
+        // 자금집행업무지시요청 목록이 length === 0 인 경우
+        if(wrkRqstLgth < 1){
             Swal.fire({
-                icon: 'error'
-                , title: "Error!"
+                icon: 'warning'
+                , title: "Warning!"
                 , text: "자금집행업무지시요청 목록이 존재하지 않습니다."
-                , confirmButtonText: "확인"
             });
+        }
+        // 자금집행업무지시요청 목록이 존재할 경우
+        else{
 
-        }else{
+            const wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: slctdRow } ); 
 
-            console.log("slctdRow::: " + slctdRow);
-            var wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: slctdRow } ); 
-
-            var validRslt = spcValidation(wrkRqstData, "wrkRqst");
+            let validRslt = spcValidation(wrkRqstData, "wrkRqst");
 
             if(validRslt === 1){
 
-                //console.log("필수값 입력!");
-                var pblHisList = $("#TB07200S_pblHis").pqGrid("getData");               //유동화증권방행내역
-                var dpstRqstList = $("#TB07200S_dpstRqst").pqGrid("getData");           //입금요청내역
-                var wthdrwlRqstList = $("#TB07200S_wthdrwlRqst").pqGrid("getData");     //출금요청내역
+                let pblHisList = $("#TB07200S_pblHis").pqGrid("getData");               // 유동화증권방행내역
+                let dpstRqstList = $("#TB07200S_dpstRqst").pqGrid("getData");           // 입금요청내역
+                let wthdrwlRqstList = $("#TB07200S_wthdrwlRqst").pqGrid("getData");     // 출금요청내역
 
-                var paramData = {
-                    ardyBzepNo: wrkRqstData.ardyBzepNo,                             //기업체번호 (=== SPC)
-                    fincExcuRqsDt: (wrkRqstData.fincExcuRqsDt).replaceAll('-', ''), //자금집행신청일자
-                    ibCtrtNm: wrkRqstData.ibCtrtNm,                                 //IB계약명
-                    asstMngmAcno: wrkRqstData.asstMngmAcno,                         //자산관리계좌번호
-                    dprtCd: wrkRqstData.dprtCd,                                     //관리부점코드
-                    rmCtns: isEmpty(wrkRqstData.rmCtns) ? "" : wrkRqstData.rmCtns,  //비고내용
+                let paramData = {
+                    ardyBzepNo: wrkRqstData.ardyBzepNo,                                 // 기업체번호 (=== SPC)
+                    fincExcuRqsDt: (wrkRqstData.fincExcuRqsDt).replaceAll('-', ''),     // 자금집행신청일자
+                    ibCtrtNm: wrkRqstData.ibCtrtNm,                                     // IB계약명
+                    asstMngmAcno: wrkRqstData.asstMngmAcno,                             // 자산관리계좌번호
+                    dprtCd: wrkRqstData.dprtCd,                                         // 관리부점코드
+                    rmCtns: isEmpty(wrkRqstData.rmCtns) ? "" : wrkRqstData.rmCtns,      // 비고내용
                     pblHisList: pblHisList,
                     dpstRqstList: dpstRqstList,
                     wthdrwlRqstList: wthdrwlRqstList
@@ -984,9 +1034,9 @@ const TB07200Sjs = (function () {
                     },
                 })
 
-            }else{
-
-                //console.log("필수값 없음!");
+            }
+            // 나머지
+            else{
                 return false;
             }
 
@@ -994,26 +1044,30 @@ const TB07200Sjs = (function () {
 
     }
 
-    //그리드 필수값 체크
+    /**
+     * 그리드 유효성체크
+     * @param { Object } gridData 그리드콜모델데이타
+     * @param { String } gridNm 그리드ID
+     * @returns 
+     */
     function spcValidation(gridData, gridNm){
 
         if(isEmpty(slctdRow) || slctdRow === undefined){
-
             Swal.fire({
-                icon: 'error'
-                , title: "Error!"
+                icon: 'warning'
+                , title: "Warning!"
                 , text: "자금집행업무지시요청 목록이 선택되지 않았습니다."
                 , confirmButtonText: "확인"
             });
-
             return 0;
 
-        }else{
+        }
+        else{
             if(gridNm === "wrkRqst"){           //자금집행업무지시요청 목록
 
-                var ardyBzepNo = gridData.ardyBzepNo;       //기업체번호 (==SPC)
-                var ibCtrtNm = gridData.ibCtrtNm;           //계약명
-                var asstMngmAcno = gridData.asstMngmAcno;   //자산관리계좌
+                let ardyBzepNo = gridData.ardyBzepNo;       //기업체번호 (==SPC)
+                let ibCtrtNm = gridData.ibCtrtNm;           //계약명
+                let asstMngmAcno = gridData.asstMngmAcno;   //자산관리계좌
     
                 console.log(ardyBzepNo);
                 console.log(ibCtrtNm);
@@ -1023,8 +1077,8 @@ const TB07200Sjs = (function () {
                 if(isEmpty(ardyBzepNo)){        //기업체번호 미입력
     
                     Swal.fire({
-                        icon: 'error'
-                        , title: "Error!"
+                        icon: 'warning'
+                        , title: "Warning!"
                         , text: "[자금집행업무지시요청 목록] SPC를 선택해주세요."
                         , confirmButtonText: "확인"
                     });
@@ -1034,8 +1088,8 @@ const TB07200Sjs = (function () {
                 }else if(isEmpty(ibCtrtNm)){    //계약명 미입력
     
                     Swal.fire({
-                        icon: 'error'
-                        , title: "Error!"
+                        icon: 'warning'
+                        , title: "Warning!"
                         , text: "[자금집행업무지시요청 목록] 계약명을 입력해주세요."
                         , confirmButtonText: "확인"
                     });
@@ -1045,8 +1099,8 @@ const TB07200Sjs = (function () {
                 }else if(isEmpty(asstMngmAcno)){//자산관리계좌 미입력
     
                     Swal.fire({
-                        icon: 'error'
-                        , title: "Error!"
+                        icon: 'warning'
+                        , title: "Warning!"
                         , text: "[자금집행업무지시요청 목록] 자산관리계좌를 입력해주세요."
                         , confirmButtonText: "확인"
                     });
