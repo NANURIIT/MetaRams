@@ -2470,9 +2470,9 @@ function chkValFromToDt(id1, id2, pattern = true) {
 
 /**
  * 기간검색 유효성 검사 내용
- * @param { String }  fromDate // 시작일자
- * @param { String }  toDate   // 종료일자
- * @param { boolean } pattern  // default true
+ * @param { String }  idFromDate // 시작일자 컴포넌트
+ * @param { String }  idToDate   // 종료일자 컴포넌트
+ * @param { boolean } pattern    // default true
  */
 function chkValFromToDtVal(fromDate, toDate, pattern = true) {
   // 유효성 검사용 날짜패턴
