@@ -46,12 +46,14 @@ public interface IBIMS902BMapper {
     public int deleteRndrList (IBIMS902BDTO param);
     
     /**
-	 * SPC별 거래내역 저장
-	 * 
-	 * @param IBIMS902BVO
-	 * @return int
+	 * SPC별 거래내역 저장 - 거래내역수정
 	 */
-    public int saveTB07230S(IBIMS902BVO param);
+    public int updateTransaction(IBIMS902BDTO param);
+    
+    /**
+	 * SPC별 거래내역 저장 - 잔액재계산(정렬순서sort기준)
+	 */
+    public int saveRecalculateBalance(IBIMS902BDTO param);
 
     /**
      * TB07200S - 입출금요청내역 저장
