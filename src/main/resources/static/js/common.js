@@ -2439,34 +2439,35 @@ function chkValFromToDt(id1, id2, pattern = true){
 	
 	var idFromDate = "#" + id1;
 	var idToDate   = "#" + id2;
-	var fromDate   = "";
-	var toDate     = "";
 	
 	$(idFromDate).change(function() {
-		fromDate   = $(idFromDate).val();
-		toDate     = $(idToDate).val();
-		chkValFromToDtVal(fromDate, toDate, pattern);
+		chkValFromToDtVal(idFromDate, idToDate, pattern);
 	});
 	
 	$(idToDate).change(function() {
-		fromDate   = $(idFromDate).val();
-		toDate     = $(idToDate).val();
-		chkValFromToDtVal(fromDate, toDate, pattern);
+		chkValFromToDtVal(idFromDate, idToDate, pattern);
 	});
 }
 
 /**
  * 기간검색 유효성 검사 내용
- * @param { String }  fromDate // 시작일자
- * @param { String }  toDate   // 종료일자
- * @param { boolean } pattern  // default true
+ * @param { String }  idFromDate // 시작일자 컴포넌트
+ * @param { String }  idToDate   // 종료일자 컴포넌트
+ * @param { boolean } pattern    // default true
  */
-function chkValFromToDtVal(fromDate, toDate, pattern = true) {
+function chkValFromToDtVal(idFromDate, idToDate, pattern = true) {
+	
+	var fromDate   = $(idFromDate).val();
+	var toDate     = $(idToDate).val();
+	
 	// 유효성 검사용 날짜패턴
 	var regExpYmd = /(^\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
 	var regExpYm  = /(^\d{4})-(0[1-9]|1[0-2])$/;
 	var regExp    = "";
-	var msgError  = "";
+	
+	var option = {};
+	option.type = "warning";
+	option.title = "Warning!";
 	
 	if(pattern){
 		regExp = regExpYmd;
@@ -2475,29 +2476,25 @@ function chkValFromToDtVal(fromDate, toDate, pattern = true) {
 	}
 
 	if (isEmpty(fromDate)) {
-		msgError = "필수 입력값(조회시작일자)을 입력해주세요.";
-		alertPopup();
+		option.text = "필수 입력값(조회시작일자)을 입력해주세요.";
+		openPopup(option);
 	} else if (!regExp.test(fromDate)) {
-		msgError = "필수 입력값(조회시작일자)을 확인해주세요.";
-		alertPopup();
+		option.text = "필수 입력값(조회시작일자)을 확인해주세요.";
+		openPopup(option);
 	} else if (isEmpty(toDate)) {
-		msgError = "필수 입력값(조회종료일자)을 입력해주세요.";
-		alertPopup();
+		option.text = "필수 입력값(조회종료일자)을 입력해주세요.";
+		openPopup(option);
 	} else if (!regExp.test(toDate)) {
-		msgError = "필수 입력값(조회종료일자)을 확인해주세요.";
-		alertPopup();
+		option.text = "필수 입력값(조회종료일자)을 확인해주세요.";
+		openPopup(option);
 	} else if (fromDate > toDate) {
-		msgError = "조회시작일자가 조회종료일자보다 큽니다.";
-		alertPopup();
-	}
-
-	function alertPopup() {
-		Swal.fire({
-			icon: "warning",
-			title: "Warning!",
-			text: msgError,
-			confirmButtonText: "확인",
-		});
+		option.text = "조회시작일자가 조회종료일자보다 큽니다.";
+		option.callback = cf(idFromDate, idToDate);
+		openPopup(option);
+		
+		function cf(idFromDate, idToDate) {
+			$(idToDate).val($(idFromDate).val());
+		};
 	}
 }
 

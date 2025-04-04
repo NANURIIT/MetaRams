@@ -84,7 +84,6 @@ public class TB07200ServiceImpl implements TB07200Service {
         log.debug("[spcSave] pblHisList.length::: " + pblHisList.size());
         log.debug("[spcSave] dpstRqstList.length::: " + dpstRqstList.size());
         log.debug("[spcSave] wthdrwlRqstList.length::: " + wthdrwlRqstList.size());
-
         
         /* 자금집행업무지시요청 목록 START */
         if(param.getFincExcuRqsSn() == 0){//자금집행신청일련번호 없음 === 신규
@@ -199,11 +198,14 @@ public class TB07200ServiceImpl implements TB07200Service {
          * 2. PK + 그리드리스트에 포함된 내역은 제외 후 조회
          * 3. 삭제
          */
-        List<IBIMS901BDTO> deletedPblHisList = ibims901bMapper.deletedPblHisList(pblHisList);
-        for (int i = 0; i < deletedPblHisList.size(); i++) {
-            ibims901bMapper.deletePblHis(deletedPblHisList.get(i));
-        }
 
+        // 리스트가 존재할 경우 삭제내역 조회
+        if (pblHisList.size() != 0) {
+            List<IBIMS901BDTO> deletedPblHisList = ibims901bMapper.deletedPblHisList(pblHisList);
+            for (int i = 0; i < deletedPblHisList.size(); i++) {
+                ibims901bMapper.deletePblHis(deletedPblHisList.get(i));
+            }
+        }
         /* 유동화증권 발행내역 END */
 
         /* 입금요청/출금요청 START  */
@@ -291,12 +293,13 @@ public class TB07200ServiceImpl implements TB07200Service {
         notInRndrList.addAll(dpstRqstList);
         notInRndrList.addAll(wthdrwlRqstList);
 
-        List<IBIMS902BDTO> deletedRndrList = ibims902bMapper.deletedRndrList(notInRndrList);
-        for (int i = 0; i < deletedRndrList.size(); i++) {
-            ibims902bMapper.deleteRndr(deletedRndrList.get(i));
+        // 리스트가 존재할 경우 삭제내역 조회
+        if (notInRndrList.size() != 0) {
+            List<IBIMS902BDTO> deletedRndrList = ibims902bMapper.deletedRndrList(notInRndrList);
+            for (int i = 0; i < deletedRndrList.size(); i++) {
+                ibims902bMapper.deleteRndr(deletedRndrList.get(i));
+            }
         }
-
-
         /* 입금요청/출금요청 END */
 
         return rslt;

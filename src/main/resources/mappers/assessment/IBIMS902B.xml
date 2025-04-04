@@ -326,11 +326,11 @@
 			, A.ISTT_CD						/* 기관코드 */
 			, A.ACNO						/* 계좌번호 */
 			, A.RMRK						/* 비고 */
-		FROM IBIMS900B A 
+		FROM IBIMS902B A 
 		WHERE 1=1
-		AND ARDY_BZEP_NO = #{ardyBzepNo}
-		AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
-		AND RNDR_DCD = '1'
+		AND A.ARDY_BZEP_NO = #{ardyBzepNo}
+		AND A.FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		AND A.RNDR_DCD = '1'
 	</select>
 
 	<!--TB07200S - 출금요청내역 조회-->
@@ -353,11 +353,11 @@
 			, A.ISTT_CD						/* 기관코드 */
 			, A.ACNO						/* 계좌번호 */
 			, A.RMRK						/* 비고 */
-		FROM IBIMS900B A 
+		FROM IBIMS902B A 
 		WHERE 1=1
-		AND ARDY_BZEP_NO = #{ardyBzepNo}
-		AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
-		AND RNDR_DCD = '2'
+		AND A.ARDY_BZEP_NO = #{ardyBzepNo}
+		AND A.FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
+		AND A.RNDR_DCD = '2'
 	</select>
 
 </mapper>
