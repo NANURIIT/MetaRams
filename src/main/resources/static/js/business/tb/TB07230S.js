@@ -330,7 +330,8 @@ const TB07230Sjs = (function() {
 						// all your other grid settings
 						strNoRows: '데이터가 없습니다.'
 					}
-
+					
+					$("#TB07230S_trsctHis").pqGrid("setData", []);
 					$("#TB07230S_trsctHis").pqGrid(obj);
 					$("#TB07230S_trsctHis").pqGrid("refreshDataAndView");
 				}
