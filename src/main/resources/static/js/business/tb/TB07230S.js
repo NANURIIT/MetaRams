@@ -164,6 +164,10 @@ const TB07230Sjs = (function() {
 				align: "right",
 				format: "#,###",
 				filter: { crules: [{ condition: "range" }] },
+				editable: true,
+				style: {
+					background: '#fff',
+				},
 			},
 			{
 				title: "잔고",
@@ -205,6 +209,10 @@ const TB07230Sjs = (function() {
 				halign: "center",
 				align: "right",
 				filter: { crules: [{ condition: "range" }] },
+				editable: true,
+				style:{
+					background:'#fff',	
+				},
 			},
 		]
 
