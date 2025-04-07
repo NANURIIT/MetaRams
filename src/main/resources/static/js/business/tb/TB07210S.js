@@ -5,12 +5,33 @@ const TB07210Sjs = (function () {
     let selectBox;
 
     $(document).ready(function () {
+
+        $("#TB07210S_dprtNm").on("input", function () { resetPGgrids("TB07210S") })
+        $("#TB07210S_dprtCd").on("input", function () { resetPGgrids("TB07210S") })
+        $("#TB07210S_ardyBzepNo").on("input", function () { resetPGgrids("TB07210S") })
+        $("#TB07210S_ardyBzepNm").on("input", function () { resetPGgrids("TB07210S") })
+        $("#TB07210S_decdSttsDcd").on("input", function () { resetPGgrids("TB07210S") })
+        $("#TB07210S_fincExcuRqsDt1").on("input", function () { resetPGgrids("TB07210S") })
+        $("#TB07210S_fincExcuRqsDt2").on("input", function () { resetPGgrids("TB07210S") })
+        
         selectBoxSetting();
         setGridOptions();
-
-    //기간검색 유효성 검사 함수
-    chkValFromToDt("TB07210S_fincExcuRqsDt1","TB07210S_fincExcuRqsDt2");
+        
+        reset();
+        //기간검색 유효성 검사 함수
+        chkValFromToDt("TB07210S_fincExcuRqsDt1","TB07210S_fincExcuRqsDt2");
     });
+
+    function reset () {
+        $("#TB07210S_dprtNm").val($("#userDprtCd").val());
+        $("#TB07210S_dprtCd").val($("#userDprtCd").val());
+        $("#TB07210S_ardyBzepNo").val("");
+        $("#TB07210S_ardyBzepNm").val("");
+        $("#TB07210S_decdSttsDcd").val("");
+        $("#TB07210S_fincExcuRqsDt1").val("");
+        $("#TB07210S_fincExcuRqsDt2").val("");
+        resetPGgrids("TB07210S");
+    }
 
     function selectBoxSetting() {
 
@@ -260,6 +281,8 @@ const TB07210Sjs = (function () {
             decdSttsDcd: $('#TB07210S_decdSttsDcd').val(),
         }
 
+        $('#TB07210S_spcDecdDetail').pqGrid('instance').setData([]);
+
         $.ajax({
             method: "POST",
             url: "/TB07210S/selectSpcList",
@@ -333,8 +356,8 @@ const TB07210Sjs = (function () {
 
     return {
         // 조회
-        inq: inq
-        // 초기화
-
+        inq: inq,
+        // 초기화 (공통함수 사용)
+        reset: reset,
     };
 })();
