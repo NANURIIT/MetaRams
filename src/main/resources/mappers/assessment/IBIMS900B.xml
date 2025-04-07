@@ -209,7 +209,7 @@
 
     <!-- 승인내역조회 -->
     <select id="selectBalanceInfoList" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
-	SELECT T1.TR_MM          -- 거래년월
+    SELECT T1.TR_MM          -- 거래년월
 	     , T1.ARDY_BZEP_NO   -- SPC코드
 	     , T1.DPRT_CD        -- 관리부서코드
 	     , T1.DPRT_NM        -- 관리부서명
@@ -295,7 +295,7 @@
 	                     AND T1.ARDY_BZEP_NO                    = T2.ARDY_BZEP_NO
 	                     AND T1.FINC_EXCU_RQS_SN                = T2.FINC_EXCU_RQS_SN
 	                     /* AND LPAD(T1.FINC_EXCU_RQS_SN , 5, '0') = T3.DEAL_NO -- 현재 결재 구조가 결재시 PK정보를 가져가서 처리한다함(자금집행신청일련번호를 IBIMS231B 테이블 딜번호에 넣기로 함) */
-                       AND T1.FINC_EXCU_RQS_SN                = T3.DEAL_NO
+                         AND T1.FINC_EXCU_RQS_SN                = T3.DEAL_NO
 	                     AND T3.DECD_STTS_DCD                   = '2' -- 결재상태구분코드[0:요청전, 1:진행중, 2:결재완료, 3:반려, 4:요청취소]
 	                     AND T3.SCRN_NO                         = 'TB07200S' -- 딜번호와 함께 입력 스크린넘버가 'TB07200S'로 입력됨
 	                     AND T2.TR_DT                           BETWEEN TO_CHAR(TO_DATE(#{fromMm}, 'YYYYMM'), 'YYYYMMDD') 
@@ -306,57 +306,64 @@
 	                SUBSTR(A.TR_DT, 0, 6)
 	              , A.DPRT_CD
 	              , A.ARDY_BZEP_NO
-	              , A.DPRT_CD
 	       ) T1
 		 , (
-	         WITH LAST_DT_INFO AS  ( -- 각 월의 마지막 거래일
-	                                 SELECT SUBSTR(A.TR_DT, 1, 6)   AS TR_MM
-	                                      , A.ARDY_BZEP_NO          AS ARDY_BZEP_NO
-	                                      , FINC_EXCU_RQS_SN        AS FINC_EXCU_RQS_SN
-	                                      , MAX(A.TR_DT)            AS TR_DT
-	                                      , MAX(A.TR_SN)            AS TR_SN	                                      
-	                                   FROM IBIMS902B A
-	                                      , IBIMS231B B
-	                                  WHERE 1=1
-	                                    /* AND LPAD(A.FINC_EXCU_RQS_SN , 5, '0') = B.DEAL_NO -- 현재 결재 구조가 결재시 PK정보를 가져가서 처리한다함(자금집행신청일련번호를 IBIMS231B 테이블 딜번호에 넣기로 함) */
-                                      AND A.FINC_EXCU_RQS_SN                = B.DEAL_NO
-	                                    AND B.DECD_STTS_DCD                   = '2' -- 결재상태구분코드[0:요청전, 1:진행중, 2:결재완료, 3:반려, 4:요청취소]
-	                                    AND B.SCRN_NO                         = 'TB07200S' -- 딜번호와 함께 입력 스크린넘버가 'TB07200S'로 입력됨
-	                                    AND A.TR_DT                           BETWEEN TO_CHAR(TO_DATE(#{fromMm}, 'YYYYMM'), 'YYYYMMDD')
-	                                                                              AND TO_CHAR(LAST_DAY(TO_DATE(#{toMm}, 'YYYYMM')), 'YYYYMMDD')
-	                                  GROUP BY
-	                                        SUBSTR(A.TR_DT, 1, 6)
-	                                      , A.ARDY_BZEP_NO
-	                                      , A.FINC_EXCU_RQS_SN
-	                               )
-	            , PRE_BLCE_INFO AS ( -- 전월 잔액
-	                                 SELECT A.TR_MM
-	                                      , B.RNDR_BLCE
-	                                 FROM LAST_DT_INFO A
-	         						    , IBIMS902B    B
-	                                WHERE 1=1
-	                                  AND SUBSTR(B.TR_DT, 1, 6) = TO_CHAR(ADD_MONTHS(TO_DATE(A.TR_MM, 'YYYYMM'), -1), 'YYYYMM')
-	                                  AND (B.TR_DT, B.ARDY_BZEP_NO, B.FINC_EXCU_RQS_SN, B.TR_SN) IN  (SELECT MAX(TR_DT), MAX(ARDY_BZEP_NO), MAX(FINC_EXCU_RQS_SN), MAX(TR_SN)
-	                                                                                                   FROM IBIMS902B 
-	                                                                                                  WHERE 1=1
-	         																						   AND SUBSTR(TR_DT, 1, 6) = TO_CHAR(ADD_MONTHS(TO_DATE(A.TR_MM, 'YYYYMM'), -1), 'YYYYMM')
-	                                                                                                ) -- 전월 마지막 거래일
-	                               )
-	         SELECT B.TR_MM     AS TR_MM           -- 당월
-	              , C.RNDR_BLCE AS BFMM_RNDR_BLCE  -- 전월잔액
-	              , A.RNDR_BLCE AS THMM_RNDR_BLCE  -- 당월잔액
-	           FROM IBIMS902B     A
-	              , LAST_DT_INFO  B
-	         	  , PRE_BLCE_INFO C
-	          WHERE 1=1
-	            AND A.TR_DT            = B.TR_DT
-	            AND A.ARDY_BZEP_NO     = B.ARDY_BZEP_NO
-	            AND A.FINC_EXCU_RQS_SN = B.FINC_EXCU_RQS_SN
-	            AND A.TR_SN            = B.TR_SN
-	            AND B.TR_MM            = C.TR_MM(+)
+             WITH MONTH_RANGE AS (
+                 SELECT  ADD_MONTHS(TO_DATE(#{fromMm}, 'YYYYMM'), LEVEL - 1) AS MONTH_START
+                   FROM  DUAL
+                 CONNECT BY LEVEL <![CDATA[<=]]> MONTHS_BETWEEN(TO_DATE(#{toMm}, 'YYYYMM'), TO_DATE(#{fromMm}, 'YYYYMM')) + 1
+             ),
+             MONTH_BOUNDS AS (
+                 SELECT  MONTH_START                              AS MONTH_START
+                      ,  LAST_DAY(MONTH_START)                    AS MONTH_END
+                      ,  LAST_DAY(ADD_MONTHS(MONTH_START, -1))    AS PREV_MONTH_END
+                   FROM  MONTH_RANGE
+             ),
+             BLCE_INFO AS (
+                 SELECT  T2.TR_DT
+                      ,  T1.DPRT_CD
+                      ,  T2.ARDY_BZEP_NO
+             --         ,  T2.FINC_EXCU_RQS_SN  -- 일련번호 추후 그룹핑해야할수도 있음
+                      ,  CASE 
+                            WHEN T2.RNDR_DCD = '1' THEN T2.RNDR_AMT
+                            WHEN T2.RNDR_DCD = '2' THEN -T2.RNDR_AMT
+                            ELSE 0
+                        END                                       AS AMOUNT
+                   FROM  IBIMS900B T1
+                      ,  IBIMS902B T2
+                      ,  IBIMS231B T3
+                  WHERE  T1.ARDY_BZEP_NO     = T2.ARDY_BZEP_NO
+                    AND  T1.FINC_EXCU_RQS_SN = T2.FINC_EXCU_RQS_SN
+                    AND  T1.FINC_EXCU_RQS_SN = T3.DEAL_NO
+                    AND  T3.DECD_STTS_DCD    = '2'
+                    AND  T3.SCRN_NO          = 'TB07200S'
+             )
+             SELECT  TO_CHAR(MB.MONTH_END, 'YYYYMM')                                               AS TR_MM              -- 기준월
+                  ,  BLCE_INFO.DPRT_CD                                                             AS DPRT_CD            -- 부서코드
+                  ,  BLCE_INFO.ARDY_BZEP_NO                                                        AS ARDY_BZEP_NO       -- 사업장번호
+             --     ,  BLCE_INFO.FINC_EXCU_RQS_SN                                                    AS FINC_EXCU_RQS_SN   -- 자금집행요청일련번호(일련번호 추후 그룹핑해야할수도 있음)
+                  ,  NVL(SUM(CASE WHEN BLCE_INFO.TR_DT <![CDATA[<=]]> MB.PREV_MONTH_END 
+                                  THEN BLCE_INFO.AMOUNT ELSE 0 END), 0)                            AS BFMM_RNDR_BLCE     -- 전월말잔액
+                  ,  NVL(SUM(CASE WHEN BLCE_INFO.TR_DT <![CDATA[<=]]> MB.MONTH_END 
+                                  THEN BLCE_INFO.AMOUNT ELSE 0 END), 0)                            AS THMM_RNDR_BLCE     -- 당월말잔액
+               FROM  MONTH_BOUNDS MB
+                  ,  BLCE_INFO
+              WHERE  BLCE_INFO.TR_DT(+) <![CDATA[<=]]> MB.MONTH_END
+              GROUP BY 
+                     TO_CHAR(MB.MONTH_END, 'YYYYMM')
+                   , MB.MONTH_END
+                   , BLCE_INFO.DPRT_CD
+                   , BLCE_INFO.ARDY_BZEP_NO
+             --      , BLCE_INFO.FINC_EXCU_RQS_SN'-- 일련번호 추후 그룹핑해야할수도 있음
+              ORDER BY 
+                     MB.MONTH_END
+                   , BLCE_INFO.DPRT_CD
+                   , BLCE_INFO.ARDY_BZEP_NO
 		   ) T2
 	 WHERE 1=1
-	   AND T1.TR_MM = T2.TR_MM(+)
+	   AND T1.TR_MM        = T2.TR_MM(+)
+	   AND T1.ARDY_BZEP_NO = T2.ARDY_BZEP_NO(+)
+	   AND T1.DPRT_CD      = T2.DPRT_CD(+)
 	   AND T1.TR_MM BETWEEN #{fromMm} AND #{toMm}
 	  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
 	  AND T1.ARDY_BZEP_NO                    = #{ardyBzepNo}         /* SPC */
@@ -364,6 +371,10 @@
 	  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
 	  AND T1.DPRT_CD                         = #{dprtCd}                     -- (조회조건)관리부점
 	  </if>
+	 ORDER BY
+	       T1.TR_MM
+	     , T1.DPRT_NM        -- 관리부서명
+	     , T1.SPC_NM         -- SPC명
     </select>
 
 
