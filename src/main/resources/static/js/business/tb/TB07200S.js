@@ -154,6 +154,8 @@ const TB07200Sjs = (function () {
 
         wrkRqstSlctdRow = e;
 
+        highlightRow(e);
+
         let wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: wrkRqstSlctdRow });
 
         let ardyBzepNo = wrkRqstData.ardyBzepNo;                //기업체번호           
@@ -216,6 +218,18 @@ const TB07200Sjs = (function () {
             })
         }
 
+    }
+
+    /**
+     * 상세 버튼 클릭 시 하이라이트
+     */
+    function highlightRow(rowIndex) {
+        var grid = $("#TB07200S_wrkRqst").pqGrid("instance");
+
+        $("#TB07200S_wrkRqst .pq-grid-row").removeClass("ui-state-highlight");
+
+        var $tr = grid.getRow({ rowIndx: rowIndex });
+        $tr.addClass("ui-state-highlight");
     }
 
     /**
@@ -350,7 +364,26 @@ const TB07200Sjs = (function () {
                 editable: false,
                 render: function (ui) {
                     let rowData = ui.rowData;
-                    return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03061P('TB07200S_wrkRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                    let isDisabled = !isEmpty(rowData.fincExcuRqsSn) ? "disabled" : "";
+
+                    console.log("isDisabled ::: " + isDisabled)
+
+                    return `<button class='ui-button ui-corner-all ui-widget' id="wrkRqstPopBtn" onclick="callTB03061P('TB07200S_wrkRqst', ${rowData.pq_ri});" ${isDisabled}><i class='fa fa-search'></i></button>`.trim();
+                    // let rowData = ui.rowData;
+                    // let disabled = rowData.fincExcuRqsSn ? "disabled" : "";
+
+                    // let html = `
+                    //     <button 
+                    //         class="ui-button ui-corner-all ui-widget" 
+                    //         onclick="callTB03061P('TB07200S_wrkRqst', ${rowData.pq_ri});" 
+                    //         ${disabled}
+                    //     >
+                    //         <i class='fa fa-search'></i>
+                    //     </button>
+                    // `;
+
+                    // return html.trim(); 
+
                 }
             },
             {
@@ -598,7 +631,10 @@ const TB07200Sjs = (function () {
                 },
                 validations: [{ type: 'regexp', value: '^([0-9]{4}-[0-9]{2}-[0-9]{2})|([0-9]{8})$', msg: 'Not in yyyy-mm-dd format' }],
                 //validations:[ {type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg : 'Not in yyyy-mm-dd format'}],
-                editable: true,
+                editable: function(ui) {
+                    // console.log("isTrue??" + ui.rowData.trSn);
+                    return isEmpty(ui.rowData.trSn);
+                },
                 render: function (ui) {
                     let cellData = replaceAll(ui.cellData, '-', '');
                     if (!isEmpty(cellData) && cellData.length === 8) {
@@ -765,7 +801,10 @@ const TB07200Sjs = (function () {
                     init: dateEditor_wthdrwlRqst,
                 },
                 validations: [{ type: 'regexp', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', msg: 'Not in yyyy-mm-dd format' }],
-                editable: true,
+                editable: function(ui) {
+                    // console.log("isTrue??" + ui.rowData.trSn);
+                    return isEmpty(ui.rowData.trSn);
+                },
                 render: function (ui) {
                     let cellData = replaceAll(ui.cellData, '-', '');
                     if (!isEmpty(cellData) && cellData.length === 8) {
