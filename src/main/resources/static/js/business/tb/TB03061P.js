@@ -68,7 +68,7 @@ function TB03061P_srchMtr(menuId) {
 		// ex) 종목코드 VARCHAR(10)
 		if (str === 13) {
 			await srchEvent(this);
-		}else{
+		} else {
 			resetArdyBzepInfo(this);
 		}
 	});
@@ -176,7 +176,7 @@ function callTB03061P(prefix, rowIndx) {
 	indexChangeHandler("TB03061P");
 	setTimeout(() => TB03061P_roadBzepList(), 300);
 	// if (prefix == "TB06010S" || prefix == "grid_TB06010S") rowInx = e;
-	if ( rowIndx || rowIndx === 0 ) {
+	if (rowIndx || rowIndx === 0) {
 		rowInx = rowIndx;
 	}
 }
@@ -460,15 +460,15 @@ function setArdyBzepInfo(rowData) {
 		case "TB04060S":
 			$('#TB04060S_bsnsRgstNo').val(ardyBzepNo);		// 기업체코드
 			$('#TB04060S_entpRnm').val(entpNm);			// 거래상대방(업체한글명)
-			
-			if(isNotEmpty(rgstDt)){
-				$(pagergstDt).val(rgstDt.substr(0,4) + '-' + rgstDt.substr(4,2) + '-' + rgstDt.substr(6,2));			// 등록일자시작
+
+			if (isNotEmpty(rgstDt)) {
+				$(pagergstDt).val(rgstDt.substr(0, 4) + '-' + rgstDt.substr(4, 2) + '-' + rgstDt.substr(6, 2));			// 등록일자시작
 				$('#TB04060S_rgstEndDt').val(getToday());
-			}else{
+			} else {
 				$(pagergstDt).val('');
 				$('#TB04060S_rgstEndDt').val('');
 			}
-			
+
 			break;
 		case "TB06013P":
 			$("#TB06013P_bsnsRgstNo").val(ardyBzepNo);
@@ -522,18 +522,29 @@ function setArdyBzepInfo(rowData) {
 			$("#TB07200S_wrkRqst").pqGrid("instance").pdata[rowInx].entpNm = entpNm;
 			$("#TB07200S_wrkRqst").pqGrid("instance").refresh();
 			break;
+		case "TB07200S":
+			if (!rowInx) {
+				resetPGgrids(prefix);
+			}
+			break;
+		case "TB07210S":
+			resetPGgrids(prefix);
+			break;
+		case "TB07220S":
+			resetPGgrids(prefix);
+			break;
 		case "TB07230S":
+			resetPGgrids(prefix);
 			TB07230Sjs.selectSpcList();
-			break;	
-			
+			break;
 		default:
 			break;
 	}
 	modalClose_TB03061P();
 }
 
-function resetArdyBzepInfo(selector){
-	
+function resetArdyBzepInfo(selector) {
+
 	// 사용한 인풋박스의 출처 페이지 가져오기
 	let prefix;
 	if ($(selector).attr("id") === $("#TB03061P_ardyBzepNo").attr("id")) {
@@ -552,13 +563,13 @@ function resetArdyBzepInfo(selector){
 		}
 		prefix = $(selector).attr("id").slice(0, _index);
 	}
-	
-	switch(prefix){
+
+	switch (prefix) {
 		case "TB07230S":
 			$('#TB07230S_fincExcuRqsSn').html("");
 			break;
 		default:
-			break;	
+			break;
 	}
 }
 

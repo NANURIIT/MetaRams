@@ -2448,9 +2448,6 @@ function chkValFromToDt(id1, id2, pattern = true) {
   var toDate = "";
 
   $(idFromDate)
-    // .click(function () {
-    //   $(this).blur();
-    // })
     .change(function () {
       fromDate = $(idFromDate).val();
       toDate = $(idToDate).val();
@@ -2458,9 +2455,6 @@ function chkValFromToDt(id1, id2, pattern = true) {
     });
 
   $(idToDate)
-    // .click(function () {
-    //   $(this).blur();
-    // })
     .change(function () {
       fromDate = $(idFromDate).val();
       toDate = $(idToDate).val();
@@ -2513,4 +2507,3 @@ function chkValFromToDtVal(fromDate, toDate, pattern = true) {
     });
   }
 }
-
