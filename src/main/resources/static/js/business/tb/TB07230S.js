@@ -18,29 +18,12 @@ const TB07230Sjs = (function() {
 	
 	
     function TB07230S_onChangeHandler() {
-        $("#TB07230S_ardyBzepNo").on("change", function () {
-			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
-        });
-
-		$("#TB07230S_fincExcuRqsSn").on("change", function () {
-			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
-        });
-
-		$("#TB07230S_fromDate").on("change", function () {
-			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
-        });
-
-		$("#TB07230S_toDate").on("change", function () {
-			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
-        });
-
-		$("#TB07230S_dprtNm").on("change", function () {
-			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
-        });
-	
-		$("#TB07230S_asstMngmAcno").on("change", function () {
-			$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
-        });
+		$("#TB07230S_ardyBzepNo").on("input", function () { resetPGgrids("TB07230S") })
+        $("#TB07230S_fincExcuRqsSn").on("input", function () { resetPGgrids("TB07230S") })
+        $("#TB07230S_fromDate").on("input", function () { resetPGgrids("TB07230S") })
+        $("#TB07230S_toDate").on("input", function () { resetPGgrids("TB07230S") })
+        $("#TB07230S_dprtNm").on("input", function () { resetPGgrids("TB07230S") })
+		$("#TB07230S_asstMngmAcno").on("input", function () { resetPGgrids("TB07230S") })
     }
 
 
@@ -380,12 +363,13 @@ const TB07230Sjs = (function() {
 		$('#TB07230S_entpNm').val('');	// spc 기업체명
 		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1));	//조회시작일
 		$("#TB07230S_toDate").val(getToday());	//조회종료일
-
+		$('#TB07230S_fincExcuRqsSn').html("");
 		setFormElementsStateByUserRole();	// 관리부점
 
 		$('#TB07230S_asstMngmAcno').val('');	// 자산관리계좌
 
 		$("#TB07230S_trsctHis").pqGrid("setData", []);	// spc별 거래내역 그리드
+		
 	};
 
 	// 저장버튼

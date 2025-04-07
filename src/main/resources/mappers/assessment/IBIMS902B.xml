@@ -62,7 +62,7 @@
 		  ORDER BY
 		        T1.TR_DT
 		      , T1.FINC_EXCU_RQS_SN
-			  , T1.TR_SN
+			  , T1.SORT_NO
     </select>
 
 	<select id="getSn" parameterType="String">

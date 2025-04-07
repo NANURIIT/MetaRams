@@ -14,22 +14,11 @@ const TB07220Sjs = (function () {
     });
 
 	function TB07220S_onChangeHandler() {
-		$("#TB07220S_fromMm").on("change", function () {
-			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
-        });
-
-		$("#TB07220S_toMm").on("change", function () {
-			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
-        });
-
-        $("#TB07220S_ardyBzepNm").on("change", function () {
-			alsert("");
-			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
-        });
-
-		$("#TB07220S_dprtNm").on("change", function () {
-			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
-        });
+		$("#TB07220S_fromMm").on("input", function () { resetPGgrids("TB07220S") })
+        $("#TB07220S_toMm").on("input", function () { resetPGgrids("TB07220S") })
+        $("#TB07220S_ardyBzepNo").on("input", function () { resetPGgrids("TB07220S") })
+        $("#TB07210S_ardyBzepNm").on("input", function () { resetPGgrids("TB07220S") })
+        $("#TB07220S_dprtNm").on("input", function () { resetPGgrids("TB07220S") })
     }
 
     function setMonthInput() {
