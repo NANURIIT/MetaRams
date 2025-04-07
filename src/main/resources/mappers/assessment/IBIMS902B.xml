@@ -339,7 +339,7 @@
 			 , (
 			 	SELECT ENTP_NM 
 			 	  FROM IBIMS010B
-			 	 WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO
+			 	 WHERE ARDY_BZEP_NO = A.TR_OTHR_DSCM_NO
 			 ) AS TR_OTHR_NM				/*거래상대방명*/
 			 , A.RNDR_AMT					/* 입출금금액 */
 			 , A.ISTT_CD					/* 기관코드 */
@@ -372,7 +372,7 @@
 			 , (
 			 	SELECT ENTP_NM 
 			 	  FROM IBIMS010B
-			 	 WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO
+			 	 WHERE ARDY_BZEP_NO = A.TR_OTHR_DSCM_NO
 			 ) AS TR_OTHR_NM				/*거래상대방명*/
 			 , A.RNDR_AMT					/* 입출금금액 */
 			 , A.ISTT_CD					/* 기관코드 */

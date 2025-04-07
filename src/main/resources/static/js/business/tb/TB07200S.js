@@ -23,6 +23,29 @@ const TB07200Sjs = (function () {
     });
 
     /**
+     * 조회조건 변경 시 그리드 초기화
+     */
+    function onChangeSrchCn(){
+
+        let srchCns = ['TB07200S_ardyBzepNo', 'TB07200S_entpNm', 'TB07200S_fromDate', 'TB07200S_toDate']
+
+        let inptCns = ['TB07200S_ibCtrtNm', 'TB07200S_asstMngmAcno']
+
+        srchCns.forEach(srchCn => {
+            $('#' + srchCn).on('change', function() {
+                resetGrid_TB07200S();
+            });
+        });
+
+        inptCns.forEach(inptCn => {
+            $('#' + inptCn).on('input', function() {
+                resetGrid_TB07200S(); 
+            });
+        });
+
+    }
+
+    /**
      * 자금집행업무지시요청 목록 조회
      * @description
      * 첫번째 그리드
@@ -64,6 +87,59 @@ const TB07200Sjs = (function () {
                 dltRnDrList = [];
             },
         })
+    }
+
+    /**
+     * 자금집행업무지시요청 목록 조회(재조회용)
+     * @description
+     * 첫번째 그리드
+     */
+    function selectSpcList_P() {
+        return new Promise((resolve, reject) => {
+            let paramData = {
+                ardyBzepNo: $('#TB07200S_ardyBzepNo').val(),
+                ibCtrtNm: $("#TB07200S_ibCtrtNm").val(),
+                asstMngmAcno: $("#TB07200S_asstMngmAcno").val(),
+                dprtCd: $("#TB07200S_dprtCd").val(),
+                fromDate: unformatDate($("#TB07200S_fromDate").val()),
+                toDate: unformatDate($("#TB07200S_toDate").val()),
+            };
+    
+            $.ajax({
+                type: "POST",
+                url: `/TB07200S/selectSpcList`,
+                contentType: "application/json; charset=UTF-8",
+                data: JSON.stringify(paramData),
+                success: function (data) {
+                    if (data.length > 0) {
+                        $('#TB07200S_wrkRqst').pqGrid('instance').setData(data);
+                    } else {
+                        $('#TB07200S_wrkRqst').pqGrid('instance').setData([]);
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Warning!",
+                            text: "조회된 내용이 없습니다!",
+                        });
+                    }
+    
+                    // 유동화발행, 입금내역, 출금내역 초기화
+                    $('#TB07200S_pblHis').pqGrid('instance').setData([]);
+                    $('#TB07200S_dpstRqst').pqGrid('instance').setData([]);
+                    $('#TB07200S_wthdrwlRqst').pqGrid('instance').setData([]);
+    
+                    // 삭제 리스트 초기화
+                    dltWrkRqstList = [];
+                    dltPblHis = [];
+                    dltRnDrList = [];
+    
+                    resolve(data); 
+                },
+                error: function (xhr, status, error) {
+                    console.error('Failed to fetch list:', error);
+                    reject(error); 
+                }
+            });
+        });
     }
 
     /**
@@ -174,6 +250,8 @@ const TB07200Sjs = (function () {
         $("#TB07200S_dprtNm").append(dprtHtml);
 
         $("#TB07200S_dprtNm").on("change", function () {
+            resetGrid_TB07200S();
+
             $("#TB07200S_dprtCd").val($("#TB07200S_dprtNm").val());
         });
 
@@ -1006,6 +1084,8 @@ const TB07200Sjs = (function () {
                 $("#pblHisMnsBtn").attr("disabled", false);
             }
         });
+
+        onChangeSrchCn();
     }
 
     /**
@@ -1085,6 +1165,15 @@ const TB07200Sjs = (function () {
                         dltWrkRqstList = [];
                         dltPblHis = [];
                         dltRnDrList = [];
+
+                        selectSpcList_P()
+                            .then(() => {
+                                spcDetail(wrkRqstSlctdRow);
+                            })
+                            .catch(err => {
+                                console.error('????');
+                            });
+
                     },
                     error: function () {
                         Swal.fire({
@@ -1100,9 +1189,7 @@ const TB07200Sjs = (function () {
             else {
                 return false;
             }
-
         }
-
     }
 
     /**
@@ -1194,6 +1281,23 @@ const TB07200Sjs = (function () {
         $("#TB07200S_dprtCd").val("");                  //관리부점코드
         $("#TB07200S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
         $("#TB07200S_toDate").val(getToday());                              //조회종료일
+
+        $("#TB07200S_wrkRqst").pqGrid('instance').setData([]);              //자금집행업무지시요청 목록
+        $("#TB07200S_pblHis").pqGrid('instance').setData([]);               //유동화증권 발행내역
+        $("#TB07200S_dpstRqst").pqGrid('instance').setData([]);             //입금요청 내역
+        $("#TB07200S_wthdrwlRqst").pqGrid('instance').setData([]);          //출금요청 내역
+
+        wrkRqstSlctdRow = null;
+
+        // 삭제 리스트 초기화
+        dltWrkRqstList = [];
+        dltPblHis = [];
+        dltRnDrList = [];
+
+    }
+
+    //화면 초기화 (조회조건 제외)
+    function resetGrid_TB07200S(){
 
         $("#TB07200S_wrkRqst").pqGrid('instance').setData([]);              //자금집행업무지시요청 목록
         $("#TB07200S_pblHis").pqGrid('instance').setData([]);               //유동화증권 발행내역

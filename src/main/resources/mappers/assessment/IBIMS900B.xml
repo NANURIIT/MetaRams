@@ -29,7 +29,7 @@
            AND T1.DPRT_CD = #{dprtCd}                  /* 관리부점 */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ibCtrtNm)">
-           AND T1.IB_CTRT_NM = #{ibCtrtNm}             /* 계약명 */
+           AND T1.IB_CTRT_NM LIKE '%' || #{ibCtrtNm} || '%'             /* 계약명 */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(asstMngmAcno)">
            AND T1.ASST_MNGM_ACNO = #{asstMngmAcno}     /* 자산관리계좌 */
