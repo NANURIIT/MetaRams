@@ -262,6 +262,7 @@ function reset_TB03061P() {
  * 모달 hide
  */
 function modalClose_TB03061P() {
+	rowInx = "";
 	$('#modal-TB03061P').modal('hide');
 }
 
