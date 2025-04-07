@@ -7,6 +7,9 @@ $(document).ready(function() {
 	selectorNumberFormater(
 		      $("input[id*='Amt'], input[id*='Num']")
 		);
+	$("#TB06019P_rnbn").inputmask('999-99-99999');
+	$("#TB06019P_crno").inputmask('999999-9999999');
+
 });
 
 
@@ -277,6 +280,47 @@ function getArdyBzepInfo() {
 
 //저장
 function saveArdyBzepInfo() {
+	
+	/**
+	 * validate
+	 * @param {String} 사업자등록번호
+	 * @param {String} 법인등록번호
+	 * @param {String} 사업장구분
+	 * @param {String} 업체명
+	 */
+	if ( !$('#TB06019P_bzplDvsnCd').val() ) {
+		Swal.fire({
+			icon: "warning"
+			, title: "Warning!"
+			, text: "사업장구분을 선택해주세요!"
+		})
+		return;
+	}
+	else if ( !$('#TB06019P_entpNm').val() ) {
+		Swal.fire({
+			icon: "warning"
+			, title: "Warning!"
+			, text: "업체명을 입력해주세요!"
+		})
+		return;
+	}
+	else if ( !$('#TB06019P_rnbn').val() || $('#TB06019P_rnbn').length < 12 ) {
+		Swal.fire({
+			icon: "warning"
+			, title: "Warning!"
+			, text: "사업자등록번호를 확인해주세요! (10자리)"
+		})
+		return;
+	}
+	else if ( !$('#TB06019P_crno').val() || $('#TB06019P_rnbn').length < 14 ) {
+		Swal.fire({
+			icon: "warning"
+			, title: "Warning!"
+			, text: "법인등록번호를 확인해주세요! (13자리)"
+		})
+		return;
+	}
+
 	if (validate('save')) 
 		{
 			Swal.fire({

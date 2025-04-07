@@ -44,17 +44,13 @@
 									<label class="col-sm-1 control-label">Deal번호</label>
 									<div class="col-sm-4">
 										<div class="input-group">
-											<!-- <input type="text" class="form-control" id="selectedMngDealNo"
-												oninput="mngDealNoInput(this);"> -->
 											<input type="hidden" class="form-control" id="selectedDealSq">
 											<input type="text" class="form-control" id="TB03020S_ibDealNo">
-											<!-- <input type="hidden" class="form-control" id="key1"> -->
 											<span class="input-group-append">
 												<button type="button" class="btn btn-default"
 													onclick="callTB03021P('TB03020S');"><i
 														class="fa fa-search"></i></button>
 											</span>
-											<!-- <input type="text" class="form-control" id="selectedMngDealNm" readonly> -->
 											<input type="text" class="form-control" id="TB03020S_ibDealNm" readonly>
 										</div>
 									</div>
@@ -158,32 +154,18 @@
 											<div class="col-sm-12 input-group text-right">
 												<label class="col-sm-1 control-label"><span
 														class="req"></span>Deal내용</label>
-												<div class="col-sm-11">
+												<div class="col-sm-5">
 													<div class="input-group">
-														<textarea rows="2" class="form-control"
+														<textarea rows="1" class="form-control"
 															id="TB03020S_dealCntnt"></textarea>
 													</div>
 												</div>
-											</div>
-										</div>
-										<!-- row4 -->
-										<div class="row form-group form-inline text-right">
-											<div class="col-sm-12 form-group text-right">
-												<!-- <label class="col-sm-1 control-label">은행지점</label>
-												<div class="col-sm-2">
-													<div class="input-group">
-														<input type="text" class="form-control" id="TB03020S_bnkBd">
-													</div>
-												</div> -->
+
 												<label class="col-sm-1 control-label">투자국가</label>
 												<div class="col-sm-2">
 													<div class="input-group">
-														<!-- <select class="form-control" id="TB03020S_C006">
-															<option value="">선택</option>
-														</select> -->
 														<input type="text" class="form-control" list="TB03020S_C006" id="TB03020S_C006_srch"/>
 														<datalist id ="TB03020S_C006">
-															<!-- <option value="">선택</option> -->
 														</datalist>
 													</div>
 
@@ -192,16 +174,7 @@
 												<div class="col-sm-2 input-group">
 													<input type="text" class="form-control" id="TB03020S_invstCty">
 												</div>
-												<!--
-												<label class="col-sm-1 control-label mb-1">진행현황</label>
-												<div class="col-sm-2 mb-1">
-													<div class="input-group">
-														<select class="form-control" id="TB03020S_I011" disabled>
-															<option value=""></option>
-														</select>
-													</div>
-												</div>
-												-->
+
 											</div>
 										</div>
 									</div>
@@ -374,7 +347,7 @@
 												<div class="col-sm-2">
 													<div class="input-group date">
 														<input type="text" class="form-control" id="wrtDt"
-															placeholder="yyyy-mm-dd"
+															placeholder="YYYY-MM-DD"
 															oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
 															maxlength="10"><span class="input-group-addon"><i
 																class="fa fa-calendar"></i></span>
@@ -384,7 +357,7 @@
 												<div class="col-sm-2">
 													<div class="input-group date">
 														<input type="text" class="form-control" id="mtrtDt"
-															placeholder="yyyy-mm-dd"
+															placeholder="YYYY-MM-DD"
 															oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
 															maxlength="10"><span class="input-group-addon"><i
 																class="fa fa-calendar"></i></span>
@@ -465,14 +438,11 @@
 														<option value="2">N</option>
 													</select>
 												</div>
-											</div>
-										</div>
-										<div class="form-group form-inline row">
-											<div class="col-sm-12 input-group text-right">
+												<div class="col-sm-3"></div>
 												<label class="col-sm-1 control-label">비고</label>
-												<div class="col-sm-11">
+												<div class="col-sm-5">
 													<div class="input-group">
-														<textarea rows="2" class="form-control"
+														<textarea rows="1" class="form-control"
 															id="TB03020S_etcCntn"></textarea>
 													</div>
 												</div>
