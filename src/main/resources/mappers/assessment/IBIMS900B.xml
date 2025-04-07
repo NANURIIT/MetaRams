@@ -73,7 +73,9 @@
                      , MAX(TR_DT)                                                AS TR_DT           /* 거래일자(임시) */
                   FROM IBIMS902B
                  WHERE 1=1
+                   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ardyBzepNo)">
                    AND ARDY_BZEP_NO = #{ardyBzepNo}
+                   </if>
                  GROUP
                     BY ARDY_BZEP_NO, FINC_EXCU_RQS_SN
              ) T3
@@ -98,28 +100,38 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fincExcuRqsDt2)">
            AND T1.FINC_EXCU_RQS_DT &lt; #{fincExcuRqsDt2} /* 신청일자 NEXT(수정해서사용) */
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@empty(decdSttsDcd)">
-           AND T2.DECD_STTS_DCD = ' '                  /* 결재상태 */
-           </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdSttsDcd)">
            AND T2.DECD_STTS_DCD = #{decdSttsDcd}       /* 결재상태 */
            </if>
     </select>
 
-    <select id="spcDecdDetail" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS232BVO">
-      SELECT DECD_SQ
-           , DECD_STTS_DCD
-           , DCFC_ENO
-           , DECD_DTM
-           , RJCT_RSN_CNTN
-        FROM IBIMS232B
+    <select id="spcDecdDetail" parameterType="com.nanuri.rams.business.common.vo.IBIMS232BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS232BVO">
+      SELECT T1.DECD_SQ
+           , T1.DECD_STTS_DCD
+           , (
+            SELECT CD_VL_NM
+              FROM IBIMS002B
+             WHERE 1=1
+               AND CMNS_CD_GRP = 'D006'
+               AND CD_VL_ID = T1.DECD_STTS_DCD
+           )                          AS decdSttsNm
+           , (
+            SELECT EMP_NM
+              FROM IBIMS003B
+             WHERE 1=1
+               AND EMPNO = T1.DCFC_ENO
+           )                          AS dcfcEnm
+           , T1.DECD_DTM              AS decdDtm
+           , T1.RJCT_RSN_CNTN
+           , #{fincExcuRqsSn}         AS fincExcuRqsSn
+        FROM IBIMS232B T1
        WHERE 1=1
          AND DECD_SN = (
             SELECT DECD_SN
               FROM IBIMS231B
              WHERE 1=1
                AND DEAL_NO = #{fincExcuRqsSn}
-               AND PRDT_CD = ''
+               AND PRDT_CD = ' '
                AND DECD_JOB_DCD = '07'
                AND EXC_SEQ = 0
                AND RQST_SQ = 0
@@ -282,7 +294,8 @@
 	                   WHERE 1=1
 	                     AND T1.ARDY_BZEP_NO                    = T2.ARDY_BZEP_NO
 	                     AND T1.FINC_EXCU_RQS_SN                = T2.FINC_EXCU_RQS_SN
-	                     AND LPAD(T1.FINC_EXCU_RQS_SN , 5, '0') = T3.DEAL_NO -- 현재 결재 구조가 결재시 PK정보를 가져가서 처리한다함(자금집행신청일련번호를 IBIMS231B 테이블 딜번호에 넣기로 함) 
+	                     /* AND LPAD(T1.FINC_EXCU_RQS_SN , 5, '0') = T3.DEAL_NO -- 현재 결재 구조가 결재시 PK정보를 가져가서 처리한다함(자금집행신청일련번호를 IBIMS231B 테이블 딜번호에 넣기로 함) */
+                       AND T1.FINC_EXCU_RQS_SN                = T3.DEAL_NO
 	                     AND T3.DECD_STTS_DCD                   = '2' -- 결재상태구분코드[0:요청전, 1:진행중, 2:결재완료, 3:반려, 4:요청취소]
 	                     AND T3.SCRN_NO                         = 'TB07200S' -- 딜번호와 함께 입력 스크린넘버가 'TB07200S'로 입력됨
 	                     AND T2.TR_DT                           BETWEEN TO_CHAR(TO_DATE(#{fromMm}, 'YYYYMM'), 'YYYYMMDD') 
@@ -305,7 +318,8 @@
 	                                   FROM IBIMS902B A
 	                                      , IBIMS231B B
 	                                  WHERE 1=1
-	                                    AND LPAD(A.FINC_EXCU_RQS_SN , 5, '0') = B.DEAL_NO -- 현재 결재 구조가 결재시 PK정보를 가져가서 처리한다함(자금집행신청일련번호를 IBIMS231B 테이블 딜번호에 넣기로 함) 
+	                                    /* AND LPAD(A.FINC_EXCU_RQS_SN , 5, '0') = B.DEAL_NO -- 현재 결재 구조가 결재시 PK정보를 가져가서 처리한다함(자금집행신청일련번호를 IBIMS231B 테이블 딜번호에 넣기로 함) */
+                                      AND A.FINC_EXCU_RQS_SN                = B.DEAL_NO
 	                                    AND B.DECD_STTS_DCD                   = '2' -- 결재상태구분코드[0:요청전, 1:진행중, 2:결재완료, 3:반려, 4:요청취소]
 	                                    AND B.SCRN_NO                         = 'TB07200S' -- 딜번호와 함께 입력 스크린넘버가 'TB07200S'로 입력됨
 	                                    AND A.TR_DT                           BETWEEN TO_CHAR(TO_DATE(#{fromMm}, 'YYYYMM'), 'YYYYMMDD')

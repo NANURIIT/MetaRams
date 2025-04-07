@@ -26,7 +26,7 @@ public class TB07210ServiceImpl implements TB07210Service {
 	}
 
 	@Override
-	public IBIMS232BVO spcDecdDetail(IBIMS232BVO param){
+	public List<IBIMS232BVO> spcDecdDetail(IBIMS232BVO param){
 		return ibims900bMapper.spcDecdDetail(param);
 	}
 

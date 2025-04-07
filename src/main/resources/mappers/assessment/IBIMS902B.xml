@@ -11,9 +11,10 @@
               , T1.TR_SN                                  AS TR_SN
 		      , ( SELECT ENTP_NM FROM IBIMS010B WHERE ARDY_BZEP_NO = T2.ARDY_BZEP_NO)                
 		                                                  AS SPC_NM           -- SPC명
-		      , T2.ISTT_CD                                AS ISTT_NM          -- **************은행명 변경예정
+		      , (  SELECT FNLT_NM FROM IBIMS992B WHERE FNLT_CD = T2.ISTT_CD )  || ' ' || T2.ASST_MNGM_ACNO
+		                                                  AS ISTT_NM_ASST_MNGM_ACNO          -- 은행명 자산관리계좌번호
+			 
 		      , T2.ASST_MNGM_ACNO                         AS ASST_MNGM_ACNO   -- 자산관리계좌번호
-		      , T2.ISTT_CD || ' ' || T2.ASST_MNGM_ACNO    AS ISTT_NM_ASST_MNGM_ACNO -- 은행명 자산관리계좌번호
 		      , DECODE(T1.RNDR_DCD, '1', '입금', '출금')  AS RNDR_NM          -- 입출금구분
 		      , (SELECT CD_VL_NM FROM IBIMS002B WHERE CMNS_CD_GRP = DECODE(T1.RNDR_DCD, '1', 'S010', 'S011') AND CD_VL_ID = DECODE(T1.RNDR_DCD, '1', T1.SPC_DEP_ITEM_KND_CD, T1.SPC_WDR_ITEM_KND_CD))
 		                                                  AS SPC_ITEM_KND_NM  -- 항목
@@ -22,7 +23,8 @@
 		      , T1.RNDR_BLCE                              AS RNDR_BLCE        -- 잔고
 		      , ( SELECT ENTP_NM FROM IBIMS010B WHERE ARDY_BZEP_NO = T1.TR_OTHR_DSCM_NO)
 		                                                  AS RCVE_P           -- 수령자
-		      , T2.DPRT_CD                                AS DPRT_NM          -- **************관리부점 변경예정
+		      , (SELECT CD_VL_NM FROM IBIMS002B WHERE CMNS_CD_GRP = 'D010' AND CD_VL_ID = T2.DPRT_CD)
+		                                                  AS DPRT_NM          -- 관리부서명
 		      , T2.RM_CTNS                                AS RM_CTNS          -- 비고
 		      , DECODE(T3.DECD_STTS_DCD, '2', 'Y', '')    AS ASSN_YN          -- 승인여부
 		      , T1.SORT_NO                                AS SORT_NO          -- 정렬순서
@@ -32,7 +34,8 @@
 		  WHERE 1=1
 		    AND T2.ARDY_BZEP_NO     = T1.ARDY_BZEP_NO
 		    AND T2.FINC_EXCU_RQS_SN = T1.FINC_EXCU_RQS_SN
-		    AND LPAD(TO_CHAR(T2.FINC_EXCU_RQS_SN), 5, '0') = T3.DEAL_NO(+)
+		    /* AND LPAD(TO_CHAR(T2.FINC_EXCU_RQS_SN), 5, '0') = T3.DEAL_NO(+) */
+		    AND T2.FINC_EXCU_RQS_SN = T3.DEAL_NO(+)
 		    AND T3.DECD_STTS_DCD    = '2'	-- 임시 승인된것만 조회
 		    AND T3.SCRN_NO          = 'TB07200S'
 		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDate) and @com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDate)">

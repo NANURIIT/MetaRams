@@ -38,7 +38,7 @@ public class TB07210APIController {
 	 * @return
 	 */
 	@PostMapping(value = "/spcDecdDetail")
-	public IBIMS232BVO spcDecdDetail(@RequestBody IBIMS232BVO param) {
+	public List<IBIMS232BVO> spcDecdDetail(@RequestBody IBIMS232BVO param) {
 		return tb07210Service.spcDecdDetail(param);
 	}
 

@@ -198,7 +198,7 @@
                   ON A.DECD_SN = B.DECD_SN
                WHERE 1=1
                  AND A.DEAL_NO = #{dealNo}
-                 AND A.PRDT_CD = #{prdtCd}
+                 AND A.PRDT_CD = NVL(#{prdtCd}, ' ')
                  AND A.DECD_JOB_DCD = (
                                         SELECT CD_VL_ID
                                           FROM IBIMS002B
@@ -262,7 +262,7 @@
     	 		  ON T1.DECD_SN = T2.DECD_SN
     		 WHERE 1=1
     		   AND T1.DEAL_NO = #{dealNo}
-    		   AND T1.PRDT_CD = #{prdtCd}
+    		   AND T1.PRDT_CD = NVL(#{prdtCd}, ' ')
     		   AND T1.DECD_JOB_DCD = (
     		   						  SELECT CD_VL_ID
     		   						    FROM IBIMS002B
@@ -286,7 +286,7 @@
   		             FROM IBIMS231B T1
   		            WHERE 1=1
   		              AND T1.DEAL_NO = #{dealNo}
-  		              AND T1.PRDT_CD = #{prdtCd}
+  		              AND T1.PRDT_CD = NVL(#{prdtCd}, ' ')
   		              AND T1.DECD_JOB_DCD = (
   		              						  SELECT CD_VL_ID
   		              						    FROM IBIMS002B
@@ -351,7 +351,7 @@
       , #{decdStepDcd}
       , #{decdSttsDcd}
       , NVL(#{dealNo}, '')
-      , NVL(#{prdtCd}, '')
+      , NVL(#{prdtCd}, ' ')
       , (
          SELECT CD_VL_ID
            FROM IBIMS002B

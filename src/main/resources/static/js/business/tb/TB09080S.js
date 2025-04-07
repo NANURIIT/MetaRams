@@ -358,7 +358,7 @@ const TB09080Sjs = (function () {
         orgno: $("#TB09080S_dprtCd").val(),
         dealNo: $("#TB09080S_ibDealNo").val(),
         prdtCd: $("#TB09080S_prdtCd").val(),
-        // bsnsRgstNo: $("#TB09080S_bsnsRgstNo").val(),
+        // bsnsRgstNo: $("#TB09080S_bsnsRgstNo").val(),`
         prdtMdclCd: $("#TB09080S_P006").val(),                //신용공여중분류코드
         etprCrdtGrntTrKindCd: $("#TB09080S_P012").val(),      //기업신용공여거래종류코드
         trStatCd: $("#TB09080S_E026").val(),                  //거래상태코드

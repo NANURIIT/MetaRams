@@ -151,7 +151,7 @@ const TB07210Sjs = (function () {
             {
                 title: "결재순번",
                 dataType: "string",
-                dataIndx: "decdSn",
+                dataIndx: "decdSq",
                 halign: "center",
                 align: "right",
                 filter: { crules: [{ condition: "range" }] },
