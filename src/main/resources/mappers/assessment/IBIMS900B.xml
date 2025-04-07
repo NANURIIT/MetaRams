@@ -55,13 +55,13 @@
              , T1.LQDZ_SCTY_ISU_YN
              , T1.HND_DETL_DTM
              , T1.HND_EMPNO
-             , T2.APVL_RQST_P_ENO                   /* 요청자사번 */
-             , T2.DECD_STEP_DCD                     /* 결재단계구분코드 */
-             , T2.DECD_STTS_DCD                     /* 결재상태구분코드 */
-             , T2.RQST_DTM                          /* 신청일시 */
-             , T3.RNDR_IN_AMT                       /* 입금합계 */
-             , T3.RNDR_OUT_AMT                      /* 출금합계 */
-             , T3.TR_DT                             /* 거래일자 */
+             , T2.APVL_RQST_P_ENO                             /* 요청자사번 */
+             , T2.DECD_STEP_DCD                               /* 결재단계구분코드 */
+             , NVL(T2.DECD_STTS_DCD, '0') AS DECD_STTS_DCD    /* 결재상태구분코드 */
+             , T2.RQST_DTM                                    /* 신청일시 */
+             , T3.RNDR_IN_AMT                                 /* 입금합계 */
+             , T3.RNDR_OUT_AMT                                /* 출금합계 */
+             , T3.TR_DT                                       /* 거래일자 */
           FROM IBIMS900B T1
      LEFT JOIN IBIMS231B T2
             ON T2.DEAL_NO = TO_CHAR(T1.FINC_EXCU_RQS_SN)
@@ -101,7 +101,7 @@
            AND T1.FINC_EXCU_RQS_DT &lt; #{fincExcuRqsDt2} /* 신청일자 NEXT(수정해서사용) */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdSttsDcd)">
-           AND T2.DECD_STTS_DCD = #{decdSttsDcd}       /* 결재상태 */
+           AND NVL(T2.DECD_STTS_DCD, '0') = #{decdSttsDcd}       /* 결재상태 */
            </if>
     </select>
 
