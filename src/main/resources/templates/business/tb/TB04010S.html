@@ -289,7 +289,8 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label">적용환율</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control text-right" id="aplyExrt" oninput="inputOnlyNumberFormat(this); restrictDecimalDigits(this, 4);" maxlength="19">
+																<input type="text" class="form-control text-right" id="aplyExrt" onblur="formatPerInput(this)"									
+																maxlength="19">
 															</div>
 														</div>
 														<div class="form-group row">
@@ -751,8 +752,8 @@
 															</div>															
 															<label class="col-sm-1 col-form-label">적용환율</label>
 															<div class="col-sm-2">
-																<input type="text" class="form-control text-right" id="TB04010S_aplyExrt" oninput="inputOnlyNumberFormat(this); restrictDecimalDigits(this, 4);" maxlength="19">
-															</div>
+																<input type="text" class="form-control text-right" id="TB04010S_aplyExrt" onblur="TB04010Sjs.formatPerInput(this);" maxlength="19">
+															</div> 
 															<label class="col-sm-1 col-form-label">기초자산 평가액(원)</label>
 															<div class="col-sm-2">
 																<input type="text" class="form-control text-right" id="TB04010S_crevAmt"  readonly="readonly" maxlength="24">
@@ -1070,7 +1071,7 @@
 															</div>
 															<label class="col-sm-1 col-form-label">적용환율</label>
 															<div class="col-sm-3">
-																<input type="text" class="form-control text-right" id="TB04010S_tab6_aplyExrt" value="" maxlength="19" oninput="inputOnlyNumberFormat(this); restrictDecimalDigits(this, 4);">
+																<input type="text" class="form-control text-right" id="TB04010S_tab6_aplyExrt" value="" maxlength="19"  onblur="TB04010Sjs.formatPerInput(this);">
 															</div>
 														</div>
 														<div class="form-group row">
