@@ -14,6 +14,11 @@
              , T1.FINC_EXCU_RQS_DT
              , T1.IB_CTRT_NM
              , T1.ISTT_CD
+             , (
+                SELECT FNLT_NM
+                FROM IBIMS992B B 
+                WHERE B.FNLT_CD = T1.ISTT_CD
+             ) AS ISTT_NM
              , T1.ASST_MNGM_ACNO
              , T1.DPRT_CD
              , T1.RM_CTNS

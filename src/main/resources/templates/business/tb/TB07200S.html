@@ -65,6 +65,34 @@
 					<div class="ibox-content mb-2">
                         <div class="row form-group form-inline text-right">
                             <div class="col-sm-10 form-group  mb-1">
+                                <label class="col-sm-1 control-label">신청일자</label>
+								<div class="col-sm-3 input-group">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB07200S_fromDate" name="" value="">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<span class="input-group-addon border-none"> ~ </span>
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB07200S_toDate" name="" value="">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
+                                <label class="col-sm-1 control-label">
+									결재상태
+								</label>
+								<div class="col-sm-2">
+									<div class="input-group">
+										<select class="form-control" id="TB07200S_D006">
+											<option value="">전체</option>
+										</select>
+									</div>
+								</div>
+                                <!-- <label class="col-sm-1 col-form-label text-right">자산관리계좌</label>
+                                <div class="col-sm-2 input-group">
+									<input type="text" class="form-control" style="" id="TB07200S_asstMngmAcno">
+                                </div> -->
+                            </div>
+                            <div class="col-sm-10 form-group">
                                 <label class="col-sm-1 col-form-label text-right">SPC</label>
                                 <div class="col-sm-3 input-group">
 									<input type="text" class="form-control" style="width: 30px;" id="TB07200S_ardyBzepNo">
@@ -77,37 +105,12 @@
                                 <div class="col-sm-2 input-group">
 									<input type="text" class="form-control" style="" id="TB07200S_ibCtrtNm">
                                 </div>
-                                <label class="col-sm-1 col-form-label text-right">자산관리계좌</label>
-                                <div class="col-sm-2 input-group">
-									<input type="text" class="form-control" style="" id="TB07200S_asstMngmAcno">
-                                </div>
-                            </div>
-                            <div class="col-sm-10 form-group">
                                 <label class="col-sm-1 col-form-label text-right">관리부점</label>
-								<!-- <div class="col-sm-3 input-group">
-									<input type="text" class="form-control" style="width: 30px;" id="GD10201_dprtCd">
-									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick=""><i class="fa fa-search"></i></button>
-									</span>
-									<input type="text" class="form-control" style="width: 70px;" id="GD10201_dprtNm" readonly>
-								</div> -->
                                 <div class="col-sm-3 input-group">
 									<select class="form-control" id="TB07200S_dprtNm">
 										<option value="">전체</option>
 									</select>
 									<input type="text" class="form-control" id="TB07200S_dprtCd" readonly="">
-								</div>
-                                <label class="col-sm-1 control-label">신청일자</label>
-								<div class="col-sm-3 input-group">
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB07200S_fromDate" name="" value="">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-									<span class="input-group-addon border-none"> ~ </span>
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB07200S_toDate" name="" value="">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
 								</div>
                             </div>
                             <!-- 버튼영역 -->
@@ -228,7 +231,7 @@
 									<h5>▶ 출금요청</h5>
 								</div>
                                 <div class="ibox-tools">
-                                    <button class="btn btn-success btn-xs" type="button" onclick="">&nbsp;계좌확인</button>
+                                    <!-- <button class="btn btn-success btn-xs" type="button" onclick="">&nbsp;계좌확인</button> -->
 									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.addRows_TB07200S(`#TB07200S_wthdrwlRqst`)"><i class="fa fa-plus"></i>&nbsp;행추가</button>
 									<button class="btn btn-default btn-xs" type="button" onclick="TB07200Sjs.dltRows_TB07200S(`#TB07200S_wthdrwlRqst`)"><i class="fa fa-minus"></i>&nbsp;행삭제</button>
 								</div>

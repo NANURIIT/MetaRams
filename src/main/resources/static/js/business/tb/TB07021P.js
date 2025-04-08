@@ -221,6 +221,12 @@ function setFnltInfo(e) {
 			$("#TB07200S_wthdrwlRqst").pqGrid("instance").pdata[rowInx_TB07021P].isttNm = e.fnltNm;
 			$("#TB07200S_wthdrwlRqst").pqGrid("instance").refresh();
 			break;
+		case "TB07200S_wrkRqst":
+
+			$("#TB07200S_wrkRqst").pqGrid("instance").pdata[rowInx_TB07021P].isttCd = e.fnltCd;
+			$("#TB07200S_wrkRqst").pqGrid("instance").pdata[rowInx_TB07021P].isttNm = e.fnltNm;
+			$("#TB07200S_wrkRqst").pqGrid("instance").refresh();
+			break;
 		default:
 			break;
 	}
