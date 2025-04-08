@@ -22,32 +22,25 @@ const TB03030Sjs = (function(){
 		/** RM대상그리드 **/
 		let arrPqGridObj = [
 			{
-			  height    : 179
-			, maxHeight : 179
-			, id        : 'gridRmEntpInfo'
-			, colModel  : colRmEntpInfo
+				height    : 175
+				, maxHeight : 175
+				, id        : 'gridRmEntpInfo'
+				, colModel  : colRmEntpInfo
+				, selectionModel: { type: 'row' }
 			},
 			{
-			  height    : 179
-			, maxHeight : 179
-			, id        : 'gridRmInfo'
-			, colModel  : colRmInfo
+				height    : 175
+				, maxHeight : 175
+				, id        : 'gridRmInfo'
+				, colModel  : colRmInfo
+				, selectionModel: { type: 'row' }
 			},
-			{
-			  height    : 145
-			, maxHeight : 145
-			, id        : 'gridRmFileInfo'
-			, colModel  : colRmFileInfo
-			}
-	
-			
 		]
+
 		setPqGrid(arrPqGridObj);
-	
 	
 		arrPqGridRmEntpInfo = $("#gridRmEntpInfo").pqGrid('instance');
 		arrPqGridRmInfo = $("#gridRmInfo").pqGrid('instance');
-		arrPqGridRmFileInfo = $("#gridRmFileInfo").pqGrid('instance');
 	}
 	
 	// 화면 초기화
@@ -67,11 +60,8 @@ const TB03030Sjs = (function(){
 		$("#gridRmEntpInfo").pqGrid("refreshDataAndView");
 		$("#gridRmInfo").pqGrid("option", "dataModel.data", []);
 		$("#gridRmInfo").pqGrid("refreshDataAndView");
-		$("#gridRmFileInfo").pqGrid("option", "dataModel.data", []);
-		$("#gridRmFileInfo").pqGrid("refreshDataAndView");
 
 		$('#UPLOAD_FileList').empty();                    //관련자료
-		
 	}
 	
 	// RM대상 조회
@@ -95,10 +85,25 @@ const TB03030Sjs = (function(){
 				data: dtoParam,
 				dataType: "json",
 				success: function(data) {
-					arrPqGridRmEntpInfo.setData(data);
-					arrPqGridRmEntpInfo.option("rowDblClick", function(event, ui) {
-						setRmInfo(ui.rowData); // RM활동이력 조회
-					});
+
+					// 조회된 내역 리스트 수 체크
+					if (data.length > 0) {
+						arrPqGridRmEntpInfo.setData(data);
+						arrPqGridRmEntpInfo.option("rowClick", function(event, ui) {
+							TB03030S_setFileButtonEnabled(false);
+							$('#UPLOAD_FileList').empty();                    //관련자료
+							setRmInfo(ui.rowData); // RM활동이력 조회
+						});
+					}
+					else {
+						arrPqGridRmEntpInfo.setData([]);
+						Swal.fire({
+							icon: "warning"
+							, title: "Warning!"
+							, text: "조회된 정보가 없습니다!"
+						})
+					}
+
 				}
 			});
 	
@@ -135,67 +140,38 @@ const TB03030Sjs = (function(){
 				data: dtoParam,
 				dataType: "json",
 				success: function(data) {
-					arrPqGridRmInfo.setData(data);
-					arrPqGridRmInfo.option("rowDblClick", function(event, ui) {
-						setFileInfo(ui.rowData);
-					});
-					arrPqGridRmInfo.option("rowClick", function(event, ui) {
-						TB03030S_setFileButtonEnabled(true);
-						/******  딜공통 파일첨부 추가 ******/ 
-						let key2 = `${ui.rowData.entpCd}|${ui.rowData.rmSq}`;
-						let cnt2 = getFileInfo($('#key1').val(),key2);
-						// 파일 추가/삭제에 대한 이벤트 리스너 추가
-						// addFileChangeListener(ui.rowData);
-						/******  딜공통 파일첨부 추가 ******/ 
-					});
-					
+
+					// 조회된 내역 리스트 수 체크
+					if (data.length > 0) {
+						arrPqGridRmInfo.setData(data);
+						arrPqGridRmInfo.option("rowClick", function(event, ui) {
+							setFileInfo(ui.rowData);
+
+							TB03030S_setFileButtonEnabled(true);
+							/******  딜공통 파일첨부 추가 ******/ 
+							let key2 = `${ui.rowData.entpCd}|${ui.rowData.rmSq}`;
+							getFileInfo($('#key1').val(),key2);
+							/******  딜공통 파일첨부 추가 ******/ 
+						});
+					}
+					else {
+						arrPqGridRmInfo.setData([]);
+						Swal.fire({
+							icon: "warning"
+							, title: "Warning!"
+							, text: "조회된 정보가 없습니다!"
+						})
+					}
 				}
 			});
 			
 			
 		}
-
-		// 파일 추가/삭제 시 변화를 감지하고 재조회하는 함수
-		// function addFileChangeListener(rowData) {
-		// 	const targetNode = document.getElementById('UPLOAD_FileList');
-		// 	const gridFileCount = $('#UPLOAD_FileList tr').length;//UPLOAD_FileList에서 파일 건수 구하기
-
-		// 	if (!targetNode) {
-		// 		console.warn('파일 목록 테이블이 없습니다.');
-		// 		return;
-		// 	}
-	
-		// 	// MutationObserver 설정 (자식 추가/삭제 감시)
-		// 	const observer = new MutationObserver(function(mutationsList) {
-		// 		for (const mutation of mutationsList) {
-		// 			if (mutation.type === 'childList') {
-		// 				console.log('파일 추가/삭제 감지됨!');
-		// 				// 파일 건수 비교 후 재조회
-		// 				let currentFileCount = rowData.fileCnt; // 현재 파일 건수
-		// 				console.log("currentFileCount : ",currentFileCount)
-		// 				console.log("gridFileCount : ",gridFileCount)
-		// 				// 파일 건수가 다를 경우에만 재조회
-		// 				if (currentFileCount !== gridFileCount) {
-		// 					console.log('파일 건수가 달라서 재조회합니다.');
-		// 					businessFunction(rowData); // 재조회
-		// 				} else {
-		// 					console.log('파일 건수가 동일하여 재조회하지 않습니다.');
-		// 				}
-		// 			}
-		// 		}
-		// 	});
-	
-		// 	// 감시 시작
-		// 	observer.observe(targetNode, { childList: true, subtree: true });
-		// 	console.log('파일 목록 감시 시작!');
-		// }
-	
 	}
 	
 	// 모달팝업 show
 	function setFileInfo(rowData) {	
 		
-	//	$('#prefix_TB03031P').val(e);
 		$('#modal-TB03031P').modal('show');
 		
 		let entpCd = rowData.entpCd;
@@ -394,59 +370,6 @@ const TB03030Sjs = (function(){
 		}
 	];
 	
-	let colRmFileInfo = [
-		{ 	
-			title    : "선택", 
-			dataType : "", 
-			dataIndx : "", 
-			align    : "",
-			hidden: true,
-			filter   : { crules: [{ condition: 'range' }] }, 
-		},
-		{ 	
-			title    : "처리구분", 
-			dataType : "",
-			dataIndx : "", 
-			align    : "", 
-			filter   : { crules: [{ condition: 'range' }] },
-		},
-		{ 	
-			title    : "일련번호", 
-			dataType : "", 
-			dataIndx : "",
-			align    : "", 
-			filter   : { crules: [{ condition: 'range' }] }
-		},
-		{ 	
-			title    : "전송상세일시", 
-			dataType : "",
-			dataIndx : "",
-			align    : "",  
-			filter   : { crules: [{ condition: 'range' }] }
-		},
-		{ 	
-			title    : "파일구분", 
-			dataType : "", 
-			dataIndx : "", 
-			align    : "", 
-			filter   : { crules: [{ condition: 'range' }] }
-		},
-		{ 	
-			title    : "파일명", 
-			dataType : "",
-			dataIndx : "",
-			align    : "",  
-			filter   : { crules: [{ condition: 'range' }] }
-		},
-		{ 	
-			title    : "다운로드", 
-			dataType : "",
-			dataIndx : "",
-			align    : "" ,  
-			filter   : { crules: [{ condition: 'range' }] }
-		}
-	];
-
 	return {
 		getEntpInfo : getEntpInfo
 		, rmReset : rmReset
