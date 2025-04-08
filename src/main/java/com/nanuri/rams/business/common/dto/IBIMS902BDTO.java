@@ -18,6 +18,7 @@ public class IBIMS902BDTO {
     private String ardyBzepNo;                  /* 기업체번호 */
     private long fincExcuRqsSn;                 /* 자금집행신청일련번호 */
     private long trSn;                          /* 거래일련번호 */
+    private String trTm;                        /* 거래시간 */
     private String rndrDcd;                     /* 입출금구분코드 */
     private String spcDepItemKndCd;             /* SPC입금항목종류코드 */
     private String spcWdrItemKndCd;             /* SPC출금항목종류코드 */

@@ -59,6 +59,8 @@ const TB06010Sjs = (function(){
 
 			}
 		});
+
+		resetSearchRequiment();
 		
 		getDealInfoFromWF();
 

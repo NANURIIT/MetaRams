@@ -304,7 +304,7 @@ function saveArdyBzepInfo() {
 		})
 		return;
 	}
-	else if ( !$('#TB06019P_rnbn').val() || $('#TB06019P_rnbn').length < 12 ) {
+	else if ( !$('#TB06019P_rnbn').val() || $('#TB06019P_rnbn').val().length < 12 ) {
 		Swal.fire({
 			icon: "warning"
 			, title: "Warning!"
@@ -312,7 +312,7 @@ function saveArdyBzepInfo() {
 		})
 		return;
 	}
-	else if ( !$('#TB06019P_crno').val() || $('#TB06019P_rnbn').length < 14 ) {
+	else if ( !$('#TB06019P_crno').val() || $('#TB06019P_rnbn').val().length < 14 ) {
 		Swal.fire({
 			icon: "warning"
 			, title: "Warning!"

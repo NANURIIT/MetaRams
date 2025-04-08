@@ -241,7 +241,7 @@ const TB07200Sjs = (function () {
      * S011 SPC출금항목구분코드
      */
     function gridSett() {
-        selectBox = getSelectBoxList("TB09080S", "D010/S010/S011", false);
+        selectBox = getSelectBoxList("TB07200S", "D010/S010/S011/D006", false);
 
         dprtList = selectBox.filter(function (item) {
             return item.cmnsGrpCd === "D010";
@@ -305,6 +305,23 @@ const TB07200Sjs = (function () {
 
         }
 
+        let timeEditor_dpstRqst = function (ui) {
+            let $inp = ui.$cell.find("input");
+
+            $inp.clockpicker({
+                autoclose: true,
+                afterDone: function () {
+                    $("#TB07200S_dpstRqst").pqGrid("setSelection", { rowIndx: ui.rowIndx, dataIndx: ui.dataIndx });
+                    $("#TB07200S_dpstRqst").pqGrid("setSelection", null);
+                },
+                format: "HH:mm:ss",
+                keyboardNavigation: false,
+                forceParse: false,
+                language: "ko",
+            });
+
+        }
+
         let dateEditor_wthdrwlRqst = function (ui) {
             let $inp = ui.$cell.find("input");
 
@@ -319,6 +336,23 @@ const TB07200Sjs = (function () {
             }).on("changeDate", function (e) {
                 $("#TB07200S_wthdrwlRqst").pqGrid("setSelection", { rowIndx: ui.rowIndx, dataIndx: ui.dataIndx });
                 $("#TB07200S_wthdrwlRqst").pqGrid("setSelection", null);
+            });
+
+        }
+
+        let timeEditor_wthdrwlRqst = function (ui) {
+            let $inp = ui.$cell.find("input");
+
+            $inp.clockpicker({
+                autoclose: true,
+                afterDone: function () {
+                    $("#TB07200S_wthdrwlRqst").pqGrid("setSelection", { rowIndx: ui.rowIndx, dataIndx: ui.dataIndx });
+                    $("#TB07200S_wthdrwlRqst").pqGrid("setSelection", null);
+                },
+                format: "HH:mm:ss",
+                keyboardNavigation: false,
+                forceParse: false,
+                language: "ko",
             });
 
         }
@@ -415,8 +449,17 @@ const TB07200Sjs = (function () {
                 dataType: "string",
                 dataIndx: "fincExcuRqsSn",
                 halign: "center",
-                align: "left",
+                align: "center",
                 filter: { crules: [{ condition: "range" }] },
+                render: function (ui) {
+                    let sn = ui.cellData;
+                    let dt = ui.rowData.fincExcuRqsDt;
+            
+                    if (!sn || !dt) return sn;
+            
+                    let paddedSn = String(sn).padStart(3, "0");
+                    return `${dt}-${paddedSn}`;
+                }
             },
             {
                 title: "계약명",
@@ -426,6 +469,26 @@ const TB07200Sjs = (function () {
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
+            },
+            {
+                title: "은행",
+                dataType: "string",
+                dataIndx: "isttNm",
+                halign: "center",
+                align: "center",
+                filter: { crules: [{ condition: "range" }] },
+            },
+            {
+                title: "",
+                dataType: "string",
+                dataIndx: "",
+                halign: "center",
+                align: "center",
+                width: "1%",
+                render: function (ui) {
+                    let rowData = ui.rowData;
+                    return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB07021P('TB07200S_wrkRqst', ${rowData.pq_ri});"><i class='fa fa-search'></i></button>`.trim();
+                }
             },
             {
                 title: "자산관리계좌",
@@ -488,6 +551,12 @@ const TB07200Sjs = (function () {
             {
                 title: "등록사원번호",
                 dataIndx: "hndEmpno",
+                hidden: true,
+            },
+            {
+                dataType: "string",
+                dataIndx: "isttCd",         //기관코드
+                align: "center",
                 hidden: true,
             },
         ]
@@ -642,6 +711,41 @@ const TB07200Sjs = (function () {
                     } else if (!isEmpty(cellData) && cellData.length > 8) {
                         return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
                     } else {
+                        return cellData;
+                    }
+                }
+            },
+            {
+                title: "거래시간",
+                dataType: "string",
+                format: "HH:mm:ss",
+                dataIndx: "trTm",
+                halign: "center",
+                align: "center",
+                editable: true,
+                editor: {
+                    type: "textbox",
+                    init: timeEditor_dpstRqst,
+                },
+                render: function (ui) {
+
+                    let cellData = replaceAll(ui.cellData, ':', '');
+
+                    if(!isEmpty(cellData) && cellData.length <= 6){
+
+                        let hour = cellData.substring(0, 2);
+                        let min = cellData.substring(2, 4);
+
+                        return hour + ':' + min;
+
+                    }else if(!isEmpty(cellData) && cellData.length > 6){
+
+                        let hour = cellData.slice(0, 6).substring(0, 2);
+                        let min = cellData.slice(0, 6).substring(2, 4);
+
+                        return hour + ':' + min;
+
+                    }else{
                         return cellData;
                     }
                 }
@@ -812,6 +916,41 @@ const TB07200Sjs = (function () {
                     } else if (!isEmpty(cellData) && cellData.length > 8) {
                         return formatDate(cellData.slice(0, 8));  // 최대 자리수 초과 시 잘라내기
                     } else {
+                        return cellData;
+                    }
+                }
+            },
+            {
+                title: "거래시간",
+                dataType: "string",
+                format: "HH:mm:ss",
+                dataIndx: "trTm",
+                halign: "center",
+                align: "center",
+                editable: true,
+                editor: {
+                    type: "textbox",
+                    init: timeEditor_wthdrwlRqst,
+                },
+                render: function (ui) {
+
+                    let cellData = replaceAll(ui.cellData, ':', '');
+
+                    if(!isEmpty(cellData) && cellData.length <= 6){
+
+                        let hour = cellData.substring(0, 2);
+                        let min = cellData.substring(2, 4);
+
+                        return hour + ':' + min;
+
+                    }else if(!isEmpty(cellData) && cellData.length > 6){
+
+                        let hour = cellData.slice(0, 6).substring(0, 2);
+                        let min = cellData.slice(0, 6).substring(2, 4);
+
+                        return hour + ':' + min;
+
+                    }else{
                         return cellData;
                     }
                 }
@@ -1166,10 +1305,12 @@ const TB07200Sjs = (function () {
                 // 입금요청목록
                 for (let i = 0; i < dpstRqstList.length; i++) {
                     dpstRqstList[i].trDt = unformatDate(dpstRqstList[i].trDt);          // 거래일자
+                    dpstRqstList[i].trTm = unformatTime_TB07200S(dpstRqstList[i].trTm); // 거래시간
                 }
                 // 출금요청목록
                 for (let i = 0; i < wthdrwlRqstList.length; i++) {
-                    wthdrwlRqstList[i].trDt = unformatDate(wthdrwlRqstList[i].trDt);    // 거래일자
+                    wthdrwlRqstList[i].trDt = unformatDate(wthdrwlRqstList[i].trDt);            // 거래일자
+                    wthdrwlRqstList[i].trTm = unformatTime_TB07200S(wthdrwlRqstList[i].trTm);   //거래시간
                 }
                 /***************************   날짜포맷 END  ************************/
 
@@ -1178,6 +1319,7 @@ const TB07200Sjs = (function () {
                     fincExcuRqsDt: (wrkRqstData.fincExcuRqsDt).replaceAll('-', ''),     // 자금집행신청일자
                     fincExcuRqsSn: wrkRqstData.fincExcuRqsSn,                           // 자금집행신청일련번호
                     ibCtrtNm: wrkRqstData.ibCtrtNm,                                     // IB계약명
+                    isttCd: wrkRqstData.isttCd,                                         // 기관코드
                     asstMngmAcno: wrkRqstData.asstMngmAcno,                             // 자산관리계좌번호
                     dprtCd: wrkRqstData.dprtCd,                                         // 관리부점코드
                     rmCtns: wrkRqstData.rmCtns,                                         // 비고내용
@@ -1349,6 +1491,26 @@ const TB07200Sjs = (function () {
         dltWrkRqstList = [];
         dltPblHis = [];
         dltRnDrList = [];
+
+    }
+
+    /**
+     * time 포맷 변경 (':' 제거)
+     * @param {string} 포맷된 문자열 (HH:mm:ss || HH:mm)
+     * @returns {string} str 원 문자열 (HHmm)
+     */
+    function unformatTime_TB07200S(tmValue){
+
+        if (!tmValue) return "";
+
+        let parts = tmValue.split(":");
+
+        let hour = parts[0] || "00";
+        let minute = parts[1] || "00";
+        //let second = parts[2] || "00"; 
+
+        // return hour.padStart(2, "0") + minute.padStart(2, "0") + second.padStart(2, "0");
+        return hour.padStart(2, "0") + minute.padStart(2, "0");
 
     }
 
