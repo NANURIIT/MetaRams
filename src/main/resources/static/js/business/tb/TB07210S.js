@@ -20,6 +20,8 @@ const TB07210Sjs = (function () {
         reset();
         //기간검색 유효성 검사 함수
         chkValFromToDt("TB07210S_fincExcuRqsDt1","TB07210S_fincExcuRqsDt2");
+        $("#TB07210S_fincExcuRqsDt1").val(addMonth(getToday(), -1));
+        $("#TB07210S_fincExcuRqsDt2").val(getToday());
     });
 
     function reset () {
