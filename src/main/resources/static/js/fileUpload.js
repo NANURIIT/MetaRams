@@ -161,8 +161,8 @@ function setFileUploadEvent(menuId) {
       dataType: "json",
       success: function (result) {
         openPopup({
-          type: "warning",
-          title: "Success",
+          type: "info",
+          title: "Info!",
           text: "파일을 삭제 하였습니다.",
         });
 

@@ -16,6 +16,14 @@ const TB06080Sjs = (function () {
   
 
   $(document).ready(function () {
+
+    $("#TB06080S_rspl_empNo").on('input', function () { resetData() })
+    $("#TB06080S_rspl_empNm").on('input', function () { resetData() })
+    $("#TB06080S_rqst_empNo").on('input', function () { resetData() })
+    $("#TB06080S_rqst_empNm").on('input', function () { resetData() })
+    $("select[name='TB06080S_decdStepDcd']").on('input', function () { resetData() })
+
+
     // 공통 코드 불러오기
     fnSelectBox();
 
@@ -29,6 +37,12 @@ const TB06080Sjs = (function () {
     renderGrid(colApvlList, "gridApvlList");
     renderGrid(colGbckList, "gridGbckList");
   });
+
+  function resetData () {
+    resetInputValue($(`#TB06080S_resultInputs`));
+    resetPGgrids('TB06080S');
+    $('#TB06080S_apvlPage').off('click');
+  }
 
   // 그리드 렌더링함수
   function renderGrid(colId, gridId) {
@@ -176,7 +190,6 @@ const TB06080Sjs = (function () {
       d016Html += `<option value="${item.cdValue}">${item.cdName} (${item.cdValue})</option>`;
     });
     $('select[name="TB06080S_decdStepDcd"]').append(d016Html);
-    console.log(d016Html);
     
     //  처리결과구분코드
     let p028Html = "";
@@ -452,5 +465,6 @@ const TB06080Sjs = (function () {
      * 사용 할 함수 정의
      */
     inqTB06080S: inqTB06080S,
+    resetData: resetData,
   };
 })();
