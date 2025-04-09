@@ -513,7 +513,10 @@ const TB06010Sjs = (function(){
 	function resetSearchRequiment() {
 		
 
-		resetInputValue($('div[data-menuid="/TB06010S"]'))
+		resetInputValue($('div[data-menuid="/TB06010S"]'));
+
+		maskRt("#TB06010S_fxnIntrt, #TB06010S_addIntrt, #TB06010S_ovduIntrRt");
+
 		$('#TB06010S_ibDealNo').val('');
 		$('#TB06010S_riskInspctCcdNm').val('');
 		$('#TB06010S_riskInspctCcd').val('');

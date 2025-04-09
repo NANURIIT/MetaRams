@@ -258,6 +258,14 @@ const TB06020Sjs = (function(){
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
 		
 		resetInputValue($('div[data-menuid="/TB06020S"]'));
+
+		maskRt("#TB06020S_sdwnRto");
+
+		$('#TB06020S_crdtInqDt').val('');
+		$('#TB06020S_stupDt').val('');
+		$('#TB06020S_trustEdDt').val('');
+		$('#TB06020S_rpchPsblDt').val('');
+		$('#TB06020S_sdwnTlmtDt').val('');
 		
 		$('#TB06020S_ibDealNo').val('');
 		$('#TB06020S_riskInspctCcdNm').val('');
