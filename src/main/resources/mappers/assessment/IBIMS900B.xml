@@ -47,7 +47,7 @@
            </if>
     </select>
 
-    <!-- 승인내역조회 -->
+    <!-- 잔고현황조회 -->
     <select id="selectSpcDecdList" parameterType="com.nanuri.rams.business.common.vo.IBIMS900BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS900BVO">
         SELECT T1.ARDY_BZEP_NO
              , T1.FINC_EXCU_RQS_SN
