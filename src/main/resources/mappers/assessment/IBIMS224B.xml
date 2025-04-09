@@ -84,8 +84,8 @@
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
            AND B.DEAL_NM LIKE '%' || #{dealNm} || '%' 
          </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-           AND A.DPRT_CD = #{dprtCd}
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdDptDcd)">
+           AND A.DPRT_CD = #{decdDptDcd}
          </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(issLtrDcd)">
            AND A.ISS_LTR_DCD = #{issLtrDcd} 

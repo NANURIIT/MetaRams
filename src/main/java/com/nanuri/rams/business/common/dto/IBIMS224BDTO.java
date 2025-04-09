@@ -20,6 +20,7 @@ public class IBIMS224BDTO {
     private String         empNo;                                  // 사원번호
     private String         empNm;                                  // 사원이름
     private String         dprtCd;                                 // 부서코드
+    private String         decdDptDcd;                             // 부서코드
     private String         fndNm;                                  // 펀드명
     private String         prdtCd;                                 // 상품코드
     private String         ibPrdtClsfCd;                           // ib상품분류코드
