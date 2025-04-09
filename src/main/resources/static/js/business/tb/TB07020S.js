@@ -305,7 +305,6 @@ const TB07020Sjs = (function() {
 			strNoRows : '데이터가 없습니다.',
 			cellClick: function(event, ui) {
 				var rowData = ui.rowData;
-
 				getBuyDetail(rowData);
 			}
 		}
@@ -348,8 +347,6 @@ const TB07020Sjs = (function() {
 			loginUsrNm = data.empNm;
 			loginUsrDprtCd = data.dprtCd;
 			loginUsrDprtNm = data.dprtNm;
-
-
 
 			},
 			error : function(request,status,error) {
@@ -482,8 +479,8 @@ const TB07020Sjs = (function() {
 		if (strVal ==='등록') {
 			if ( isNotEmpty(trSn)) {
 				Swal.fire({
-								icon              : 'error'
-								, title             : "[매수거래] 등록 Error!"
+								icon              : 'warning'
+								, title             : "[매수거래] 등록 Warning!!"
 								, text              : "[매수거래] 등록은 거래번호를 미입력 하셔야 합니다."
 								, confirmButtonText : "확인"
 							});
@@ -496,8 +493,8 @@ const TB07020Sjs = (function() {
 				var stringValidTrQnt = addComma(validTrQnt);
 
 				Swal.fire({
-					icon              : 'error'
-					, title             : "[매수거래] 등록 Error!"
+					icon              : 'warning'
+					, title             : "[매수거래] 등록 Warning!!"
 					, text              : "[매수거래] 최대입력가능수량은 " + stringValidTrQnt + " 입니다."
 					, confirmButtonText : "확인"
 				});
@@ -507,8 +504,8 @@ const TB07020Sjs = (function() {
 		else {
 			if ( isEmpty(trSn)) {
 				Swal.fire({
-								icon              : 'error'
-								, title             : "[매수거래] 취소 Error!"
+								icon              : 'warning'
+								, title             : "[매수거래] 취소 Warning!!"
 								, text              : "[매수거래] 취소할 거래번호를 선택해주세요."
 								, confirmButtonText : "확인"
 							});
@@ -539,8 +536,8 @@ const TB07020Sjs = (function() {
 						var paramData = makeParam();
 					}else{
 						Swal.fire({
-							icon              : 'error'
-							, title             : "[매수거래] 취소 Error!"
+							icon              : 'warning'
+							, title             : "[매수거래] 취소 Warning!!"
 							, text              : "[매수거래] 취소 거래정보를 선택해주세요."
 							, confirmButtonText : "확인"
 						});
@@ -571,9 +568,7 @@ const TB07020Sjs = (function() {
 				url: "/TB07020S/getTrSn",
 				data: paramData2,
 				dataType: "json",
-				//contentType: "application/json; charset=UTF-8",
 				success: function(data) {
-					//alert(JSON.stringify(data));
 					var result = data;
 					trSn = data;
 					bessniseFunction(trSn, inputDcd);
@@ -1222,7 +1217,7 @@ const TB07020Sjs = (function() {
 		 * 
 		 * 보니까 이거 먼저 쓰시고 안되는 부분 조금씩 수정하시면 될듯요
 		 */
-		resetInputValue($('div[data-menuid="/TB07020S"]'));
+		// resetInputValue($('div[data-menuid="/TB07020S"]'));
 
 		/* 검색조건 */
 		//$('#TB07020S_rsltnDt').val('');
@@ -1263,6 +1258,8 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_krwTrslExcBlce').val('0');
 		$('#TB07020S_avrUnpr').val('0');
 
+		resetInputValue($('div[data-menuid="/TB07020S"]'));
+
 		$('#TB07020S_dprtCd').val(loginUsrDprtCd);
 		$('#TB07020S_dprtNm').val(loginUsrDprtNm);
 
@@ -1291,19 +1288,19 @@ const TB07020Sjs = (function() {
 		/* 검색조건 */
 
 		/* 상세정보 */
-		$('#TB07020S_trQnt').val('');
+		$('#TB07020S_trQnt').val('0');
 		$('#TB07020S_trDt').val('');
 		$('#TB07020S_trSn').val('');
-		$('#TB07020S_trUnpr').val('');
+		$('#TB07020S_trUnpr').val('0');
 		$('#TB07020S_trAmt').val('0');
 		// $('#TB07020S_dprtCd').val('');
 		// $('#TB07020S_dprtNm').val('');
-		$('#TB07020S_trdeExrt').val('');
+		$('#TB07020S_trdeExrt').val('1.0');
 		$('#TB07020S_fnltCd').val('');
 		$('#TB07020S_fnltNm').val('');
 		$('#TB07020S_fndCd').val('');
 		$('#TB07020S_fndNm').val('');
-		$('#TB07020S_trslAmt').val('');
+		$('#TB07020S_trslAmt').val('0');
 		$('#TB07020S_stlAcno').val('');
 		$('#TB07020S_input_prdtCd').val('');
 		$('#TB07020S_input_prdtNm').val('');
@@ -1315,7 +1312,7 @@ const TB07020Sjs = (function() {
 		//$('#TB07020S_trtx').val('');
 		$('#TB07020S_ibPrdtTrDcd').val('1');
 		$('#TB07020S_rfnDt').val('');
-		$('#TB07020S_stdrExrt').val('0');
+		$('#TB07020S_stdrExrt').val('1.0');
 		$('#TB07020S_wholIssuShqt').val('0');
 		$('#TB07020S_hldgShqt').val('0');
 		$('#TB07020S_qotaRt').val('0');
@@ -1429,8 +1426,8 @@ const TB07020Sjs = (function() {
 
 	function checkParam(paramData, inputDcd) {
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 
 		// 유효성검사
 		if (inputDcd == '1') { // 등록
@@ -1506,8 +1503,8 @@ const TB07020Sjs = (function() {
 				//option.html = "거래금액(환산금액)이 약정금액을 초과하였습니다.<br> (초과금액:" + addComma(overAmt) + ")";
 				//option.text = "거래금액(환산금액)이 약정금액을 초과하였습니다. \n(초과금액: ${addComma(Math.abs(overAmt))});
 				Swal.fire({
-							icon              : 'error'
-							, title             : "Error!"
+							icon              : 'warning'
+							, title             : "Warning!!"
 							, html              : "거래금액(환산금액)이 약정금액을 초과하였습니다.<br> (초과금액:" + addComma(Math.abs(overAmt)) + ")"
 							, confirmButtonText : "확인"
 						});
