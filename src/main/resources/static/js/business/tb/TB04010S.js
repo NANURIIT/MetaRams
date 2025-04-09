@@ -3,6 +3,7 @@ const TB04010Sjs = (function () {
   var mdvdCd = [];
   var sdvdCd = [];
   var sameYn = [];
+  var dblclickYn = "0";
 
   // 안건구조-> 딜정보 그리드
   let arrPqGridDealListInfo;
@@ -150,27 +151,32 @@ const TB04010Sjs = (function () {
   //  * @param {selectMtrDcd} : 선택된 부수안건코드
   //  * @param {selectJdgmDcd} : 선택된 리스크심사구분코드
   //  */
-  // const chkDupMtrDcd = (selectMtrDcd, selectJdgmDcd) => {
-  // 	let insrtDealNo = $("#TB04010S_selectedDealNo").val();					// 현재 조회한 dealNo
-  // 	let insrtMtrDcd = $("#TB04010S_L007 option:selected").val();		// 현재 선택된 부수안건코드
-  // 	let insrtJdgmDcd = $("#TB04010S_R014 option:selected").val();		// 현재 선택된 신규/재부의코드
-  // 	for (let i = 0; i < arrPqGridDealListInfo.pdata.length; i++) {
-  // 		let dealNo = arrPqGridDealListInfo.pdata[i].dealNo;		// 조회된 dealNo
-  // 		let mtrDcd = arrPqGridDealListInfo.pdata[i].mtrDcd;		// 조회된 deal 안에 있는 부수안건코드
-  // 		let jdgmDcd = arrPqGridDealListInfo.pdata[i].jdgmDcd;	// 조회된 deal 안에 있는 신규/재부의코드
-  // 		if (insrtDealNo === dealNo && insrtMtrDcd === mtrDcd && insrtJdgmDcd === jdgmDcd) {
-  // 			Swal.fire({
-  // 				icon: 'error'
-  // 				, title: "error"
-  // 				, text: "해당 딜에 선택된 부수안건 및 신규/재부의 정보가 존재합니다."
-  // 				, confirmButtonText: "확인"
-  // 			});
-  // 			$("#TB04010S_L007").focus();
-  // 			return false ;
-  // 		}
-  // 	}
-  // 	return true;
-  // }
+  const chkDupMtrDcd = (selectMtrDcd, selectJdgmDcd) => {
+    let insrtDealNo = $("#TB04010S_selectedDealNo").val(); // 현재 조회한 dealNo
+    let insrtMtrDcd = $("#TB04010S_L007 option:selected").val(); // 현재 선택된 부수안건코드
+    let insrtJdgmDcd = $("#TB04010S_R014 option:selected").val(); // 현재 선택된 신규/재부의코드
+    for (let i = 0; i < arrPqGridDealListInfo.pdata.length; i++) {
+      let dealNo = arrPqGridDealListInfo.pdata[i].dealNo; // 조회된 dealNo
+      let mtrDcd = arrPqGridDealListInfo.pdata[i].mtrDcd; // 조회된 deal 안에 있는 부수안건코드
+      let jdgmDcd = arrPqGridDealListInfo.pdata[i].jdgmDcd; // 조회된 deal 안에 있는 신규/재부의코드
+      if (
+        insrtDealNo === dealNo &&
+        insrtMtrDcd === mtrDcd &&
+        insrtJdgmDcd === jdgmDcd &&
+        dblclickYn === "0"
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "error",
+          text: "해당 딜에 선택된 부수안건 및 신규/재부의 정보가 존재합니다.",
+          confirmButtonText: "확인",
+        });
+        $("#TB04010S_L007").focus();
+        return false;
+      }
+    }
+    return true;
+  };
 
   /**
    * 20240715 대표님지시
@@ -441,6 +447,40 @@ const TB04010Sjs = (function () {
     });
   }
 
+  // %포멧 확인
+  function formatPerInput(element) {
+    let value = element.value;
+
+    //숫자와 소수점만 허용
+    value = value.replace(/[^0-9.]/g, "");
+
+    // 소수점 두 자리까지만 허용
+    if (value.includes(".")) {
+      let parts = value.split(".");
+      parts[1] = parts[1].substring(0, 2); // 소수점 두 자리로 제한
+      value = parts.join(".");
+    }
+
+    if (parseFloat(value) > 100.0) {
+      showErrorPopup("입력값은 100을 넘을 수 없습니다");
+      element.value = "";
+      element.focus();
+      return;
+    }
+
+    // 값이 있고 소수점이 없는 경우 .00 추가
+    if (value && !value.includes(".")) {
+      value = parseFloat(value).toFixed(2);
+    }
+
+    if (!value) {
+      value = "";
+    }
+
+    element.value = value;
+  }
+  window.formatPerInput = formatPerInput;
+
   // 버튼 function
   function assesmentRequest(mtrPrgSttsDcd) {
     var dealNo = $("#TB04010S_selectedDealNo").val(); // deal번호
@@ -591,9 +631,19 @@ const TB04010Sjs = (function () {
         data: dtoParam,
         dataType: "json",
         success: function (data) {
+          if (!data || data.length === 0) {
+            Swal.fire({
+              icon: "warning",
+              title: "warning!",
+              text: "등록된 안건정보가 없습니다.",
+              confirmButtonText: "확인",
+            });
+            return;
+          }
           $(".save").attr("disabled", false);
           arrPqGridDealListInfo.setData(data);
           arrPqGridDealListInfo.option("rowDblClick", function (event, ui) {
+            dblclickYn = "1";
             setTabContents(ui.rowData);
             var dealNo = ui.rowData.dealNo || "";
             var mtrDcd = ui.rowData.mtrDcd || "";
@@ -1744,7 +1794,7 @@ const TB04010Sjs = (function () {
       return false;
     }
 
-    if (isEmpty($("#crryAmt").val())) {
+    if (isEmpty($("#crryAmt").val()) || $("#crryAmt").val() === "0") {
       option.text = "부의금액을 입력해주세요.";
       openPopup(option);
       return false;
@@ -1774,7 +1824,10 @@ const TB04010Sjs = (function () {
     // 	return false;
     // }
 
-    if (isEmpty($("#TB04010S_invPrdMnum").val())) {
+    if (
+      isEmpty($("#TB04010S_invPrdMnum").val()) ||
+      $("TB04010S_invPrdMnum").val() === "0"
+    ) {
       option.text = "투자기간개월수를 입력해주세요.";
       openPopup(option);
       return false;
@@ -1827,10 +1880,24 @@ const TB04010Sjs = (function () {
       openPopup(option);
       return false;
     }
+
+    // 숫자형 값 그대로 가져옴
+    var tlErnAmt = +$("#tlErnAmt").val();
+    var rcvblErnAmt = +$("#rcvblErnAmt").val();
+    var wrtErnAmt = +$("#wrtErnAmt").val();
+
+    // 검증 로직
+    if (rcvblErnAmt + wrtErnAmt > tlErnAmt) {
+      option.text =
+        "수수료수익과 투자수익의 합계가 전체수익금액을 초과할 수 없습니다.";
+      openPopup(option);
+      return false;
+    }
+
     let selectMtrDcd = $("#TB04010S_L007 option:selected").val();
     let selectJdgmDcd = $("#TB04010S_R014 option:selected").val();
     // 중복된 부수안건, 신규/재부의정보 체크
-    //if (!chkDupMtrDcd(selectMtrDcd, selectJdgmDcd)) return ;
+    if (!chkDupMtrDcd(selectMtrDcd, selectJdgmDcd)) return;
 
     let bscAstsInptExptF; // 기초자산입력예정여부
     if ($("#bscAstsInptExptF").is(":checked")) {
@@ -1935,7 +2002,6 @@ const TB04010Sjs = (function () {
           confirmButtonText: "확인",
         }).then((result) => {
           $("#TB04010S_ibDealNo").val($("#TB04010S_selectedDealNo").val());
-          console.log("confirm::::::", paramData);
 
           getDealList();
           let dealNo =
@@ -1987,6 +2053,7 @@ const TB04010Sjs = (function () {
 
   // tab1 안건구조 초기화
   function tab1reset() {
+    dblclickYn = "0";
     //$("#TB04010S_selectedDealNo").val(""); // 딜번호초기화
     $("#mtrPrgSttsDcd").val(""); // 심사진행상태코드 초기화
     $("#mtrNm").val(""); // 부수안건명 초기화
@@ -2382,7 +2449,7 @@ const TB04010Sjs = (function () {
 
     if (isEmpty(dealNo)) {
       Swal.fire({
-        icon: "errowarningr",
+        icon: "warning",
         title: "warning!",
         text: "선택된 안건이 없습니다.",
         confirmButtonText: "확인",
@@ -4472,5 +4539,6 @@ const TB04010Sjs = (function () {
     tab8BtnSave: tab8BtnSave,
     setMtrtDt: setMtrtDt,
     getUrlDealInfo: getUrlDealInfo,
+    formatPerInput: formatPerInput,
   };
 })();

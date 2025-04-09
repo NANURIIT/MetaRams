@@ -33,7 +33,7 @@ const TB04020Sjs = (function () {
     pqGridObjDealList = $("#gridCheckDealList").pqGrid("instance");
 
     //기간검색 유효성 검사 함수
-    chkValFromToDt("TB04020S_fromDate","TB04020S_toDate");
+    chkValFromToDt("TB04020S_fromDate", "TB04020S_toDate");
   });
 
   function setDateInput() {
@@ -716,6 +716,7 @@ const TB04020Sjs = (function () {
       align: "center",
       width: "120",
       filter: { crules: [{ condition: "range" }] },
+      hidden: true, // 114 테이블 참조 중이나 해당 테이블 관리하고 있지 않아 숨김
     },
     {
       title: "신용등급구분코드",

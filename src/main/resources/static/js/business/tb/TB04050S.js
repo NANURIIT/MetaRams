@@ -94,7 +94,7 @@ const TB04050Sjs = (function () {
     setGrid_TB04050S();
 
     getUrlDealInfo();
-    changeCheckCd();
+    //changeCheckCd();
   });
 
   // 세션으로 받앗을때
@@ -253,16 +253,16 @@ const TB04050Sjs = (function () {
             $("#TB04050S_empNo").val(data.empNo); // 담당자 사번
             $("#TB04050S_dprtCd").val(data.dprtCd); // 담당부서코드
             $("#TB04050S_ivtgRqstCtns").val(data.ivtgRqstCtns); // 검토요청내용
-            if ($("#TB04050S_issSttsCd3").is(":checked")) {
-              $("input[name='TB04050S_issLtrYN']").prop("disabled", true);
-              $("#TB04050S_issDt").prop("disabled", true);
-            }
+            // if ($("#TB04050S_issSttsCd3").is(":checked")) {
+            //   $("input[name='TB04050S_issLtrYN']").prop("disabled", true);
+            //   $("#TB04050S_issDt").prop("disabled", true);
+            // }
           } else {
             var today = new Date();
             var formattedDate = today.toISOString().slice(0, 10);
 
-            $("#TB04050S_issSttsCd2").prop("disabled", true);
-            $("#TB04050S_issSttsCd3").prop("disabled", true);
+            //$("#TB04050S_issSttsCd2").prop("disabled", true);
+            //$("#TB04050S_issSttsCd3").prop("disabled", true);
             $("#TB04050S_I027_1").val("KRW"); // 발급통화코드
             $("#TB04050S_issDt").val(formattedDate); // 오늘날짜세팅
             $("#TB04050S_empNm").val(data.empNm); // 담당자이름
@@ -440,6 +440,7 @@ const TB04050Sjs = (function () {
             text: "요청정보를 저장하였습니다.",
             confirmButtonText: "확인",
           });
+          getDealInfo_TB04050S(dealNo);
         },
         error: function () {
           Swal.fire({
@@ -453,6 +454,24 @@ const TB04050Sjs = (function () {
     }
   }
 
+  // 빈값체크
+  function isEmptyValue(id) {
+    var value = $("#" + id).val();
+    if (value == null || String(value).trim() === "") {
+      resetAllData();
+      return true;
+    }
+    return false;
+  }
+
+  function resetAllData() {
+    $("input").val("");
+    $("textarea").val("");
+    $("select").each(function () {
+      $(this).prop("selectedIndex", 0);
+    });
+  }
+
   return {
     /**
      * 사용 할 함수 정의
@@ -460,5 +479,7 @@ const TB04050Sjs = (function () {
     saveLoi: saveLoi,
     getLoiDetail: getLoiDetail, //TB03021P에서 사용
     getDealInfo_TB04050S: getDealInfo_TB04050S, //TB03021P에서 사용
+    resetAllData: resetAllData,
+    isEmptyValue: isEmptyValue,
   };
 })();
