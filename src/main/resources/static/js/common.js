@@ -1725,7 +1725,7 @@ function setPqGrid(pqGridObjs) {
       rowSelect = pqGridObj.rowSelect || function (event, ui) { },
       rowDblClick = pqGridObj.rowDblClick || function (event, ui) { };
 
-    let strNoRows = " "; // 최초 생성 시 body msg
+    let strNoRows = "데이터가 없습니다."; // 최초 생성 시 body msg
 
     var obj = {
       height: height,
