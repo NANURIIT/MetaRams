@@ -658,7 +658,7 @@
               ,PRNA_OVDU_DT        = #{prnaOvduDt}                                              /* 원금연체일자 */
               ,INTR_OVDU_DT        = #{intrOvduDt}                                              /* 이자연체일자 */
               ,TOT_RDMP_TMRD       = #{totRdmpTmrd}                                             /* 총상환회차 */
-              ,LAST_RDMP_TMRD      = #{lastRdmpTmrd}                                            /* 최종상환회차 */
+              ,LAST_RDMP_TMRD      = #{lastRdmpTmrd}                                            /* 최종상환회차 */ 
               ,DEAL_ISTM_BLCE      = NVL(DEAL_ISTM_BLCE,0) + NVL(#{dealIstmBlce},0)       /* 딜할부잔액 */
               ,DEAL_EQL_RDMP_AMT   = NVL(DEAL_EQL_RDMP_AMT,0) + NVL(#{dealEqlRdmpAmt},0)  /* 딜균등상환금액 */
               ,ISTM_DTM_RDMP_AMT   = NVL(ISTM_DTM_RDMP_AMT,0) + NVL(#{istmDtmRdmpAmt},0)  /* 할부일시상환금액 */
@@ -669,7 +669,8 @@
               ,GRTE_ISTT_NM        = #{grteIsttNm}                                              /* 보증기관명 */
               ,BUY_SHQT            = NVL(BUY_SHQT,0) + NVL(#{buyShqt},0)                  /* 매수좌수 */
               ,SLL_SHQT            = NVL(SLL_SHQT,0) + NVL(#{sllShqt},0)                  /* 매도좌수 */
-              ,AVR_UNPR            = (NVL(KRW_TRSL_EXC_AMT,0) + NVL(#{krwTrslExcAmt},0)) / ((NVL(BUY_SHQT,0) + NVL(#{buyShqt},0)) + (NVL(SLL_SHQT,0) + NVL(#{sllShqt},0)))   /* 평균단가 */
+              ,AVR_UNPR            = CASE WHEN ((NVL(BUY_SHQT,0) + NVL(#{buyShqt},0)) + (NVL(SLL_SHQT,0) + NVL(#{sllShqt},0))) = 0 THEN 1
+                                          ELSE ( NVL(KRW_TRSL_EXC_AMT,0) + NVL(#{krwTrslExcAmt},0)) / ((NVL(BUY_SHQT,0) + NVL(#{buyShqt},0)) + (NVL(SLL_SHQT,0) + NVL(#{sllShqt},0)) )   /* 평균단가 */
               ,BRKG_ACNO           = #{brkgAcno}                                                /* 위탁계좌번호 */
               ,RCTM_ISTT_CD        = #{rctmIsttCd}                                              /* 입금기관코드 */
               ,ACHD_NM             = #{achdNm}                                                  /* 예금주명 */

@@ -14,22 +14,11 @@ const TB07220Sjs = (function () {
     });
 
 	function TB07220S_onChangeHandler() {
-		$("#TB07220S_fromMm").on("change", function () {
-			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
-        });
-
-		$("#TB07220S_toMm").on("change", function () {
-			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
-        });
-
-        $("#TB07220S_ardyBzepNm").on("change", function () {
-			alsert("");
-			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
-        });
-
-		$("#TB07220S_dprtNm").on("change", function () {
-			$("#TB07220S_spcBlceGrid").pqGrid("setData", []);	// 부서별 SPC 잔고현황 그리드
-        });
+		$("#TB07220S_fromMm").on("input", function () { resetPGgrids("TB07220S") })
+        $("#TB07220S_toMm").on("input", function () { resetPGgrids("TB07220S") })
+        $("#TB07220S_ardyBzepNo").on("input", function () { resetPGgrids("TB07220S") })
+        $("#TB07210S_ardyBzepNm").on("input", function () { resetPGgrids("TB07220S") })
+        $("#TB07220S_dprtNm").on("input", function () { resetPGgrids("TB07220S") })
     }
 
     function setMonthInput() {
@@ -191,13 +180,13 @@ const TB07220Sjs = (function () {
 								totWdrAmt08: acc.totWdrAmt08 + (parseFloat(cur.wdrAmt08) || 0),
 								totWdrAmt09: acc.totWdrAmt09 + (parseFloat(cur.wdrAmt09) || 0),
 								totWdrAmt10: acc.totWdrAmt10 + (parseFloat(cur.wdrAmt10) || 0),
-								totWdrAmt11: acc.totWdrAmt11 + (parseFloat(cur.wdrAmt17) || 0),
-								totWdrAmt12: acc.totWdrAmt12 + (parseFloat(cur.wdrAmt11) || 0),
-								totWdrAmt13: acc.totWdrAmt13 + (parseFloat(cur.wdrAmt12) || 0),
-								totWdrAmt14: acc.totWdrAmt14 + (parseFloat(cur.wdrAmt13) || 0),
-								totWdrAmt15: acc.totWdrAmt15 + (parseFloat(cur.wdrAmt14) || 0),
-								totWdrAmt16: acc.totWdrAmt16 + (parseFloat(cur.wdrAmt15) || 0),
-								totWdrAmt17: acc.totWdrAmt17 + (parseFloat(cur.wdrAmt16) || 0),
+								totWdrAmt11: acc.totWdrAmt11 + (parseFloat(cur.wdrAmt11) || 0),
+								totWdrAmt12: acc.totWdrAmt12 + (parseFloat(cur.wdrAmt12) || 0),
+								totWdrAmt13: acc.totWdrAmt13 + (parseFloat(cur.wdrAmt13) || 0),
+								totWdrAmt14: acc.totWdrAmt14 + (parseFloat(cur.wdrAmt14) || 0),
+								totWdrAmt15: acc.totWdrAmt15 + (parseFloat(cur.wdrAmt15) || 0),
+								totWdrAmt16: acc.totWdrAmt16 + (parseFloat(cur.wdrAmt16) || 0),
+								totWdrAmt17: acc.totWdrAmt17 + (parseFloat(cur.wdrAmt17) || 0),
 								totWdrAmt99: acc.totWdrAmt99 + (parseFloat(cur.wdrAmt99) || 0)
 			                };
 			            }, 
@@ -264,7 +253,7 @@ const TB07220Sjs = (function () {
 							wdrAmt03: totals.totWdrAmt03,
 							wdrAmt04: totals.totWdrAmt04,
 							wdrAmt09: totals.totWdrAmt09,
-							wdrAmt16: totals.totWdrAmt16,
+							wdrAmt16: totals.totWdrAmt16, 
 							wdrAmt99: totals.totWdrAmt99,
 							thmmRndrBlce: totals.totThmmRndrBlce,
 			            });

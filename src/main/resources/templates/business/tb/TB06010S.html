@@ -195,7 +195,8 @@
 								</div>
 								<label class="col-sm-1 col-form-label text-right">종목설명</label>
 								<div class="col-sm-5 input-group">
-									<textarea class="form-control" rows="2" cols="" id="TB06010S_prdtDsc"></textarea>
+									<!-- <textarea class="form-control" rows="2" cols="" id="TB06010S_prdtDsc"></textarea> -->
+									<input type="text" class="form-control" id="TB06010S_prdtDsc">
 								</div>
 							</div>
 						</div>
@@ -453,7 +454,7 @@
 												<option value="1">실행 후 X개월</option>
 												<option value="2">약정 후 X개월</option>
 											</select>
-											<input type="text" class="form-control text-right" style="width:30px;" id="TB06010S_ctrcPrdMnum" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+											<input type="text" class="form-control text-right" style="width:30px;" id="TB06010S_ctrcPrdMnum" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3);">
 											개월
 										</div>
 									</div>
@@ -586,7 +587,7 @@
 													<div class="col-sm-12 form-group">
 														<label class="col-sm-4 col-form-label text-right">상환주기</label>
 														<div class="col-sm-8 input-group">
-															<input type="text" class="form-control text-right" id="TB06010S_prnaRdmpFrqcMnum" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">개월
+															<input type="text" class="form-control text-right" id="TB06010S_prnaRdmpFrqcMnum" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);">개월
 														</div>
 													</div>
 												</div>
@@ -595,7 +596,7 @@
 													<div class="col-sm-12 form-group">
 														<label class="col-sm-4 col-form-label text-right">거치기간</label>
 														<div class="col-sm-8 input-group">
-															<input type="text" class="form-control text-right" id="TB06010S_prnaDfrPrdMnum" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">개월
+															<input type="text" class="form-control text-right" id="TB06010S_prnaDfrPrdMnum" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);">개월
 														</div>
 													</div>
 												</div>
@@ -667,19 +668,19 @@
 																<div class="col-sm-8 text-left input-group">
 																	<select class="form-control" id="TB06010S_S003">
 																	</select>
-																	<input type="text" class="form-control text-right" id="TB06010S_fxnIntrt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">%
+																	<input type="text" class="form-control text-right" id="TB06010S_fxnIntrt">%
 																</div>
 															</div>
 															<div class="col-sm-4 form-group">
 																<label class="col-sm-4 col-form-label text-right">변동주기</label>
 																<div class="col-sm-8 text-left input-group">
-																	<input type="text" class="form-control text-right" id="TB06010S_intrCngeFrqcMnum" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">개월
+																	<input type="text" class="form-control text-right" id="TB06010S_intrCngeFrqcMnum" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);">개월
 																</div>
 															</div>
 															<div class="col-sm-4 form-group">
 																<label class="col-sm-4 col-form-label text-right">가산금리</label>
 																<div class="col-sm-8 text-left input-group">
-																	<input type="text" class="form-control text-right" id="TB06010S_addIntrt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">%
+																	<input type="text" class="form-control text-right" id="TB06010S_addIntrt">%
 																</div>
 															</div>
 														</div>
@@ -702,7 +703,7 @@
 															<div class="col-sm-4 form-group">
 																<label class="col-sm-4 col-form-label text-right">연체이자율</label>
 																<div class="col-sm-8 text-left input-group">
-																	<input type="text" class="form-control text-right" id="TB06010S_ovduIntrRt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">%
+																	<input type="text" class="form-control text-right" id="TB06010S_ovduIntrRt">%
 																</div>
 															</div>
 														</div>
@@ -718,7 +719,7 @@
 															<div class="col-sm-4 form-group">
 																<label class="col-sm-4 col-form-label text-right">이자상환주기</label>
 																<div class="col-sm-8 text-left input-group">
-																	<input type="text" class="form-control text-right" name="TB06010S_intrRdmpFrqcMnum" id="TB06010S_intrRdmpFrqcMnum" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">개월
+																	<input type="text" class="form-control text-right" name="TB06010S_intrRdmpFrqcMnum" id="TB06010S_intrRdmpFrqcMnum" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);">개월
 																</div>
 															</div>
 															<div class="col-sm-4 form-group">

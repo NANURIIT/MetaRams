@@ -62,7 +62,7 @@
 		  ORDER BY
 		        T1.TR_DT
 		      , T1.FINC_EXCU_RQS_SN
-			  , T1.TR_SN
+			  , T1.SORT_NO
     </select>
 
 	<select id="getSn" parameterType="String">
@@ -267,6 +267,7 @@
 			, ARDY_BZEP_NO					/* 기업체번호 */
 			, FINC_EXCU_RQS_SN				/* 자금집행신청일련번호 */
 			, TR_SN							/* 거래일련번호 */
+			, TR_TM 						/* 거래시간 */
 			, RNDR_DCD						/* 입출금구분코드 */
 			, SPC_DEP_ITEM_KND_CD			/* SPC입금항목종류코드 */
 			, SPC_WDR_ITEM_KND_CD			/* SPC출금항목종류코드 */
@@ -287,6 +288,7 @@
 			, #{ardyBzepNo}
 			, #{fincExcuRqsSn}
 			, #{trSn}
+			, #{trTm}
 			, #{rndrDcd}
 			, #{spcDepItemKndCd}
 			, #{spcWdrItemKndCd}
@@ -308,7 +310,8 @@
 	<!--TB07200S - 입금/출금 요청 목록 수정-->
 	<update id="rndrRqstUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
 		UPDATE IBIMS902B
-		   SET SPC_DEP_ITEM_KND_CD = #{spcDepItemKndCd}
+		   SET TR_TM = #{trTm}
+			 , SPC_DEP_ITEM_KND_CD = #{spcDepItemKndCd}
 			 , SPC_WDR_ITEM_KND_CD = #{spcWdrItemKndCd}
 			 , SYNS_TEXT = #{synsText}
 			 , TR_OTHR_DSCM_NO = #{trOthrDscmNo}
@@ -331,6 +334,7 @@
 			 , A.ARDY_BZEP_NO				/* 기업체번호 */
 			 , A.FINC_EXCU_RQS_SN			/* 자금집행신청일련번호 */
 			 , A.TR_SN						/* 거래일련번호 */
+			 , A.TR_TM 						/* 거래시간 */
 			 , A.RNDR_DCD					/* 입출금구분코드 */
 			 , A.SPC_DEP_ITEM_KND_CD		/* SPC입금항목종류코드 */
 			 , A.SPC_WDR_ITEM_KND_CD		/* SPC출금항목종류코드 */
@@ -339,7 +343,7 @@
 			 , (
 			 	SELECT ENTP_NM 
 			 	  FROM IBIMS010B
-			 	 WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO
+			 	 WHERE ARDY_BZEP_NO = A.TR_OTHR_DSCM_NO
 			 ) AS TR_OTHR_NM				/*거래상대방명*/
 			 , A.RNDR_AMT					/* 입출금금액 */
 			 , A.ISTT_CD					/* 기관코드 */
@@ -372,7 +376,7 @@
 			 , (
 			 	SELECT ENTP_NM 
 			 	  FROM IBIMS010B
-			 	 WHERE ARDY_BZEP_NO = A.ARDY_BZEP_NO
+			 	 WHERE ARDY_BZEP_NO = A.TR_OTHR_DSCM_NO
 			 ) AS TR_OTHR_NM				/*거래상대방명*/
 			 , A.RNDR_AMT					/* 입출금금액 */
 			 , A.ISTT_CD					/* 기관코드 */

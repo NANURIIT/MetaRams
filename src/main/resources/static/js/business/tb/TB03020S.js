@@ -79,11 +79,20 @@ const TB03020Sjs = (function(){
 	function getBscDealDetail() { 
 
 		if( isEmpty($('#TB03020S_ibDealNo').val()) ){
+<<<<<<< HEAD
 			option.type='error'
 			option.title='Error!'
 			option.text='Deal 번호를 입력해주세요.'
 			option.confirmButtonText='확인'
 			option.callback = () => {
+=======
+			Swal.fire({
+				icon              : 'warning'
+				, title             : "Warning!"
+				, text              : "Deal 번호를 입력해주세요."
+				, confirmButtonText : "확인"
+			}).then(() => {
+>>>>>>> develop
 				$('#TB03020S_ibDealNo').focus();
 			}
 			openPopup(option);
@@ -311,7 +320,10 @@ const TB03020Sjs = (function(){
 			document.querySelectorAll("input")[i].value = "";
 			
 		}
-		//componentCtrl();
+
+		$(
+			"input[id*='Scl'], input[id*='Amt'], input[id*='Ern']"
+		).val("0");
 
 	}
 
@@ -447,23 +459,6 @@ const TB03020Sjs = (function(){
 		});
 	}
 
-	// Deal 일련번호
-	/*
-	function loadDealSnList(dealNo) {
-		let param = {
-			"dealNo" : dealNo
-		}
-		$.ajax({
-			type: "GET",
-			url: "/getDealSnHis",
-			data: param,
-			dataType: "json",
-			success: function(data) {
-				console.log(data);
-			}
-		});
-	}
-	*/
 	/**
 	 * 투자상품 대분류코드 로드
 	 */
@@ -829,96 +824,12 @@ const TB03020Sjs = (function(){
 			input.focus();
 			emptyParameter(msg);
 			return false;
-		}
-
-	/*	// 참여규모
-		if(isEmpty($('#TB03020S_ptctScl').val())) {
-			msg = '참여규모';
-			input = $('#TB03020S_ptctScl');
-			input.focus();
-			emptyParameter(msg);
-			return false;
-		}
-		
-		// 전체수익
-		if(isEmpty($('#TB03020S_allErn').val())) {
-			msg = '전체수익';
-			input = $('#TB03020S_allErn');
-			input.focus();
-			emptyParameter(msg);
-			return false;
-		}
-		
-		// 당해수익
-		if(isEmpty($('#TB03020S_thyrErn').val())) {
-			msg = '당해수익';
-			input = $('#TB03020S_thyrErn');
-			input.focus();
-			emptyParameter(msg);
-			return false;
-		}
-		
-		// 기표수익
-		if(isEmpty($('#TB03020S_wrtErn').val())) {
-			msg = '기표수익';
-			input = $('#TB03020S_wrtErn');
-			input.focus();
-			emptyParameter(msg);
-			return false;
-		}
-		
-		// On-going
-		if(isEmpty($('#TB03020S_intrErn').val())) {
-			msg = 'On-going';
-			input = $('#TB03020S_intrErn');
-			input.focus();
-			emptyParameter(msg);
-			return false;
-		}
-
-		// 기표일자
-		if(isEmpty($('#wrtDt').val())) {
-			msg = '기표일자';
-			input = $('#wrtDt');
-			input.focus();
-			emptyParameter(msg);
-			return false;
-		}
-		
-		// 만기일자
-		if(isEmpty($('#mtrtDt').val())) {
-			msg = '만기일자';
-			input = $('#mtrtDt');
-			input.focus();
-			emptyParameter(msg);
-			return false;
-		}
-
-		// 현지법인협업
-		if(isEmpty($('#TB03020S_ovrsCorpCoprtnCd').val())) {
-			msg = '현지법인협업';
-			input = $('#TB03020S_ovrsCorpCoprtnCd');
-			input.focus();
-			emptyParameter(msg);
-			return false;
-		}
-		let bsnssData = pqGridObjEnopList.pdata;
-		if (bsnssData.length > 0) {
-			for (let i = 0; i < bsnssData.length; i++) {
-				if (isEmpty(bsnssData[i].cntrt)) 
-				{	
-					msg = '공동관리자/협업부서의 공헌도';
-					emptyParameter(msg);
-					return false;
-				}
-			}
-		}*/
-			
+		}			
 		
 		function emptyParameter(msg) {
 			Swal.fire({
-				icon: 'error'
-				, title: "Error!"
+				icon: 'warning'
+				, title: "Warning!"
 				, text: msg + "을(를) 입력해주세요."
 				, confirmButtonText: "확인"
 			})

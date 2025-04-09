@@ -19,6 +19,8 @@ public class IBIMS900BVO extends IBIMS900BDTO {
     private String fincExcuRqsDt2;
     private String decdStepDcd;     // 결재단계구분코드
 
+    private String isttNm;          // 기관명(==은행명)
+
     private String entpNm;          // 기업체명(==SPC명)
 
     private String apvlRqstPEno;    // 요청자사번

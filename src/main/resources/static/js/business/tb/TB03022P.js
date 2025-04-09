@@ -366,6 +366,12 @@ function setEmpNm(e) {
     case "TB06011P":
       $("#TB06011P_dprtNm").val(e.dprtCd).prop("selected", true);
       break;
+    case "TB06080S_rqst":
+      TB06080Sjs.resetData();
+      break;
+    case "TB06080S_rspl":
+      TB06080Sjs.resetData();
+      break;
     case "TB04011P":
       $("#TB04011P_dprtNm").val(e.dprtCd).prop("selected", true);
       break;

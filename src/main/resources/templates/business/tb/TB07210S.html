@@ -28,23 +28,12 @@
 					<!-- 조회조건영역 -->
 					<div class="ibox-content i-filter" id="con-srch">
 						<div class="form-group row form-inline">
-							<div class="col-sm-10 form-group mb-1">
-								<!-- 부서코드 -->
+							<div class="col-sm-12 form-group mb-1">
+								<!-- 신청일자 -->
 								<label class="col-sm-1 control-label">
-									<span class="req"></span>관리부서
+									신청일자
 								</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-										<select class="form-control" id="TB07210S_dprtNm">
-											<option value="">전체</option>
-										</select>
-										<input type="text" class="form-control" id="TB07210S_dprtCd" readonly>
-									</div>
-								</div>
-								<label class="col-sm-1 control-label">
-									<span class="req"></span>신청일자
-								</label>
-								<div class="col-sm-3 input-group">
+								<div class="col-sm-2-5 input-group">
 									<div class="col-sm-5 input-group date px-0">
 										<input type="text" class="form-control" id="TB07210S_fincExcuRqsDt1" name="" value=""
 											placeholder="YYYY-MM-DD">
@@ -57,13 +46,12 @@
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
-							</div>
-							<div class="col-sm-10 form-group mb-1">
+
 								<!-- 기업체팝업 -->
-								<label class="col-sm-1 control-label">
+								<label class="col-sm-0-5 control-label">
 									SPC
 								</label>
-								<div class="col-sm-3">
+								<div class="col-sm-2">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07210S_ardyBzepNo">
 										<span class="input-group-append">
@@ -73,25 +61,40 @@
 										<input type="text" class="form-control" id="TB07210S_ardyBzepNm" readonly="">
 									</div>
 								</div>
-								<!-- 승인상태 -->
+
+								<!-- 부서코드 -->
+								<label class="col-sm-1 control-label">
+									관리부서
+								</label>
+								<div class="col-sm-1-5">
+									<div class="input-group">
+										<select class="form-control" id="TB07210S_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="TB07210S_dprtCd" readonly>
+									</div>
+								</div>
+
+								<!-- 결재상태 -->
 								<label class="col-sm-1 control-label">
 									결재상태
 								</label>
-								<div class="col-sm-3">
+								<div class="col-sm-1">
 									<div class="input-group">
 										<select class="form-control" id="TB07210S_decdSttsDcd">
 											<option value="">전체</option>
 										</select>
 									</div>
 								</div>
-							</div>
-							<!-- 버튼영역 -->
-							<div class="col-sm-1-5 text-right">
-								<button class="btn btn-primary" onclick="TB07210Sjs.inq()">
-									<i class="fa fa-search"></i>&nbsp;조회</button>
-								<button class="btn btn-default" type="button" onclick="">
-									<i class="fa fa-undo"></i>&nbsp;초기화
-								</button>
+
+								<!-- 버튼영역 -->
+								<div class="col-sm-1-5 text-right">
+									<button class="btn btn-primary" onclick="TB07210Sjs.inq()">
+										<i class="fa fa-search"></i>&nbsp;조회</button>
+									<button class="btn btn-default" type="button" onclick="TB07210Sjs.reset()">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>

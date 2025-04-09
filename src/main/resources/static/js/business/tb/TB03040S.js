@@ -2,10 +2,17 @@ const TB03040Sjs = (function(){
   let pqGridObjEnopList;
 
   $(document).ready(function () {
-    //setFormElementsStateByUserRole();
+
+    $('#TB03040S_fromDate').on('input', function () { resetPGgrids("TB03040S"); })
+    $('#TB03040S_toDate').on('input', function () { resetPGgrids("TB03040S"); })
+    $('#TB03040S_ibDealNo').on('input', function () { resetPGgrids("TB03040S"); })
+    $('#TB03040S_ibDealNm').on('input', function () { resetPGgrids("TB03040S"); })
+    $('#TB03040S_1_empNo').on('input', function () { resetPGgrids("TB03040S"); })
+    $('#TB03040S_1_empNm').on('input', function () { resetPGgrids("TB03040S"); })
+    $('#TB03040S_2_dprtNm').on('input', function () { resetPGgrids("TB03040S"); })
+    $('#TB03040S_2_dprtCd').on('input', function () { resetPGgrids("TB03040S"); })
 
     sltctBoxSet();
-    // $(".table").footable();
 
     // 1개월전 ~ 오늘일자 디폴트 세팅
     $("#TB03040S_fromDate").val(addMonth(getToday(), -1));
@@ -135,6 +142,21 @@ const TB03040Sjs = (function(){
     }
   }
 
+  /**
+   * reset
+   */
+  function reset () {
+    $('#TB03040S_fromDate').val("")
+    $('#TB03040S_toDate').val("")
+    $('#TB03040S_ibDealNo').val("")
+    $('#TB03040S_ibDealNm').val("")
+    $('#TB03040S_1_empNo').val("")
+    $('#TB03040S_1_empNm').val("")
+    $('#TB03040S_2_dprtNm').val("")
+    $('#TB03040S_2_dprtCd').val("")
+    resetPGgrids("TB03040S")
+  }
+
   //담당자명 변경시 담당자번호 클리어
   $("#TB03040S_1_empNm").on('input', function(){
     $('#TB03040S_1_empNo').val("");  
@@ -252,7 +274,8 @@ const TB03040Sjs = (function(){
   
   return{
     //  함수
-    ibSpecSearch : ibSpecSearch
+    ibSpecSearch : ibSpecSearch,
+    reset: reset,
   }
 })();
 
