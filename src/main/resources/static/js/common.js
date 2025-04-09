@@ -2512,7 +2512,7 @@ function chkValFromToDtVal(fromDate, toDate, pattern = true) {
 
 /**
  * 환율 포맷 함수
- * @param selector 
+ * @param { String } selector ex) "#TB07020S_trdeExrt, ..."
  * @author 김건우
  */
 function maskExrt ( selector ) {
