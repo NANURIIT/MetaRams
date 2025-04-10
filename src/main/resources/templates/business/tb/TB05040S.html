@@ -33,12 +33,15 @@
 										<input type="text" class="form-control" id="TB05040S_ibDealNm" readonly>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-sm-5">
 									<input type="hidden" id="TB05040S_riskInspctCcd">
 									<input type="hidden" id="TB05040S_lstCCaseCcd">
 								</div>
-								<div class="col-sm-1">
+								<div class="col-sm-2">
 									<button class="btn btn-primary" type="button" onclick="TB05040Sjs.getDealList();"><i class="fa fa-search"></i>조회</button>
+									<button class="btn btn-default" onclick="TB05040Sjs.btnReset();"><i class="fa fa-undo"></i>
+									</i>&nbsp;초기화
+								</button>
 								</div>
 							</div>
 						</div>
@@ -80,7 +83,8 @@
 								</div>
 							</div>
 							<!-- 부의일정 -->
-							<div class="col-lg-4">
+							 <!-- TO-DO: 데이터입력화면이 없고 일자데이터 특정이 어려워 추후 협의 필요 -->
+							<!-- <div class="col-lg-4">
 								<div class="ibox">
 									<div class="ibox-title">
 										<h5>▶ 부의일정</h5>
@@ -106,7 +110,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<!-- 취소사유 -->
 							<!-- <div class="col-lg-6">
 								<div class="ibox">
@@ -177,37 +181,44 @@
 								</div>
 							</div>-->
 							<!-- 결의일자 -->
-							<div class="col-lg-4">
+							<div class="col-lg-8">
 								<div class="ibox">
 									<div class="ibox-title">
 										<h5>▶ 결의일자</h5>
 									</div>
 									<div class="ibox-content text-right">
-										<div class="form-group row mb-1">
-											<label class="col-sm-4 col-form-label">결의일</label>
-											<div class="col-sm-8 input-group date">
-												<input type="text" class="form-control" id="TB05040S_rsltnDt" placeholder="yyyy-mm-dd" readonly><span
-													class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										<div class="row me-2">
+											<div class="col-lg-6">
+												<div class="form-group row mb-1">
+													<label class="col-sm-4 col-form-label">결의일</label>
+												<div class="col-sm-7 input-group date">
+													<input type="text" class="form-control" id="TB05040S_rsltnDt" placeholder="yyyy-MM-dd" disabled><span
+														class="input-group-addon"><i class="fa fa-calendar"></i></span>
+												</div>
 											</div>
-										</div>
-										<div class="form-group row">
-											<label class="col-sm-4 col-form-label">결의 협의체</label>
-											<div class="col-sm-8">
-												<select class="form-control" name="account" id="TB05040S_inspctCnfrncCcd" disabled>
-													<option value=""></option>
-												</select>
+											<div class="form-group row">
+												<label class="col-sm-4 col-form-label">회차 정보</label>
+												<div class="col-sm-7"><input type="text" class="form-control text-right" id="TB05040S_inspctCnfrncSqcSq"
+														readonly>
+													</div>
+												</div>
 											</div>
-										</div>
-										<div class="form-group row">
-											<label class="col-sm-4 col-form-label">회차 정보</label>
-											<div class="col-sm-8"><input type="text" class="form-control text-right" id="TB05040S_inspctCnfrncSqcSq"
-													readonly></div>
-										</div>
-										<div class="form-group row">
-											<label class="col-sm-4 col-form-label">순서 정보</label>
-											<div class="col-sm-8"><input type="text" class="form-control text-right" id="TB05040S_rnkNo" readonly>
+											<div class="col-lg-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">결의 협의체</label>
+													<div class="col-sm-7">
+														<select class="form-control" name="account" id="TB05040S_inspctCnfrncCcd" disabled>
+															<option value=""></option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">순서 정보</label>
+													<div class="col-sm-7"><input type="text" class="form-control text-right" id="TB05040S_rnkNo" readonly>
+													</div>
+												</div>
 											</div>
-										</div>
+										</div>										
 									</div>
 								</div>
 							</div>
