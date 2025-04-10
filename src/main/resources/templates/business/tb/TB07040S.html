@@ -98,14 +98,11 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1 col-form-label text-right">거래번호</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_trSn"
-												value="" readonly>
+											<input type="text" class="form-control text-right" id="TB07040S_trSn" value="" readonly>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">수량</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_trQnt"
-												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormater(this), TB07040Sjs.calcTrAmt(), TB07040Sjs.calcTrslAmt(), TB07040Sjs.setHoldPrpsDcd();">
+											<input type="text" class="form-control text-right" id="TB07040S_trQnt" onkeyup="TB07040Sjs.calcTrAmt(), TB07040Sjs.calcTrslAmt(), TB07040Sjs.setHoldPrpsDcd();">
 										</div>
 										<label class="col-sm-1">지분율</label>
 										<div class="col-sm-3 text-left input-group">
@@ -124,15 +121,12 @@
 										</div>
 										<label class="col-sm-1">거래단가</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_trUnpr"
-												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormater(this), TB07040Sjs.calcTrAmt(), TB07040Sjs.calcTrslAmt();">
+											<input type="text" class="form-control text-right" id="TB07040S_trUnpr" onkeyup="TB07040Sjs.calcTrAmt(), TB07040Sjs.calcTrslAmt();">
 										</div>
 										<label class="col-sm-1">평균단가</label>
 										<div class="col-sm-3 text-left input-group">
 											<input type="text" class="form-control text-right" id="TB07040S_avrUnpr"
-												value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormater(this);" readonly>
+												value="" readonly>
 										</div>
 									</div>
 								</div>
@@ -154,16 +148,11 @@
 										</div>
 										<label class="col-sm-1">거래금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_trAmt"
-												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormater(this), TB07040Sjs.calcTrAmt();" readonly>
+											<input type="text" class="form-control text-right" id="TB07040S_trAmt" onkeyup="TB07040Sjs.calcTrAmt();" readonly>
 										</div>
 										<label class="col-sm-1">선급법인세</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right"
-												id="TB07040S_prfdCorpIntx"
-												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormater(this);">
+											<input type="text" class="form-control text-right" id="TB07040S_prfdCorpIntx" >
 										</div>
 										<!--<label class="col-sm-1">증권보관</label>
 											<div class="col-sm-3 input-group">
@@ -191,15 +180,11 @@
 										</div>
 										<label class="col-sm-1">매매환율</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_trdeExrt"
-												oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
-												onkeyup="TB07040Sjs.calcTrslAmt();">
+											<input type="text" class="form-control text-right" id="TB07040S_trdeExrt" onkeyup="TB07040Sjs.calcTrslAmt();">
 										</div>
 										<label class="col-sm-1">거래세</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_trtx"
-												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormater(this);" readonly>
+											<input type="text" class="form-control text-right" id="TB07040S_trtx" readonly>
 										</div>
 									</div>
 								</div>
@@ -269,9 +254,7 @@
 										<label class="col-sm-1">전체발행수량</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right"
-												id="TB07040S_wholIssuShqt" value=""
-												oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormater(this);" readonly>
+												id="TB07040S_wholIssuShqt" value="" readonly>
 										</div>
 										<label class="col-sm-1">기준환율</label>
 										<div class="col-sm-3 input-group">
@@ -304,15 +287,11 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1">보유수량</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_hldgShqt"
-												value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormater(this);" readonly>
+											<input type="text" class="form-control text-right" id="TB07040S_hldgShqt" readonly>
 										</div>
 										<label class="col-sm-1">매매손익금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07040S_tradPflsAmt"
-												value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-												onkeyup="inputNumberFormater(this);" readonly>
+											<input type="text" class="form-control text-right" id="TB07040S_tradPflsAmt" readonly>
 										</div>
 										<label class="col-sm-1"></label>
 										<div class="col-sm-3 text-left input-group">

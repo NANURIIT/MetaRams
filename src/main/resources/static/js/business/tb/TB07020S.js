@@ -114,9 +114,9 @@ const TB07020Sjs = (function() {
 			dataIndx: "trdeExrt",
 			align: "right",
 			halign: "center",
+			format: "#,##0.0",
 			width: "",
 			filter: { crules: [{ condition: 'range' }] },
-
 		},
 		{
 			title: "환산금액",
@@ -1346,7 +1346,6 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_trQnt').val(rowData.trQnt);
 		$('#TB07020S_trUnpr').val(rowData.trUnpr);
 		$('#TB07020S_trAmt').val(rowData.trAmt);
-		$('#TB07020S_trdeExrt').val(rowData.trdeExrt);
 		$('#TB07020S_trslAmt').val(rowData.trslAmt);
 		$('#TB07020S_dprtCd').val(rowData.trDptCd);
 		$('#TB07020S_dprtNm').val(rowData.trDptNm);
@@ -1360,7 +1359,21 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_I027').val(rowData.trCrryCd);
 		//$('#TB07020S_trtx').val(td.eq(19).text());
 		$('#TB07020S_rfnDt').val(rowData.rfnDt);
-		$('#TB07020S_stdrExrt').val(rowData.stdrExrt);
+
+		if (!Number.isInteger(rowData.trdeExrt)) {
+			$('#TB07020S_stdrExrt').val(rowData.trdeExrt + ".0");
+		}
+		else {
+			$('#TB07020S_stdrExrt').val(rowData.trdeExrt);
+		}
+
+		if (!Number.isInteger(rowData.stdrExrt)) {
+			$('#TB07020S_stdrExrt').val(rowData.stdrExrt + ".0");
+		}
+		else {
+			$('#TB07020S_stdrExrt').val(rowData.stdrExrt);
+		}
+
 		$('#TB07020S_excSn').val(rowData.excSn);
 		$('#TB07020S_wholIssuShqt').val(rowData.wholIssuShqt);
 		$('#TB07020S_hldgShqt').val(rowData.hldgShqt);
