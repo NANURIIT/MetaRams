@@ -275,14 +275,13 @@ const TB07040Sjs = (function () {
     loadUserAuth(); // 담당자 정보 조회
     dateInputSet();
     setGrid_TB07040S();
-    resetInputValue($('div[data-menuid="/TB07040S"]'));
-
-    getDealInfoFromWF();
-
     $('#TB07040S_srchForm').find('input').on('input', function () {
       inputClear();
       resetPGgrids("TB07040S");
-    })
+    });
+    maskExrt("#TB07040S_trdeExrt, #TB07040S_stdrExrt");
+    getDealInfoFromWF();
+    compClear();
   });
 
   function dateInputSet() {
@@ -963,12 +962,9 @@ const TB07040Sjs = (function () {
         trdeExrt: trdeExrt / 1,
         trslAmt: trslAmt / 1,
         prfdCorpIntx: prfdCorpIntx / 1,
-        //,'wholIssuShqt'       : (wholIssuShqt         /1)
-        //,'hldgShqt'           : (hldgShqt             /1)
         qotaRt: qotaRt / 1,
         evlPflsAmt: evlPflsAmt / 1,
         tradPflsAmt: tradPflsAmt / 1,
-        //,'hndDetlDtm'         : hndDetlDtm
         hndEmpno: hndEmpno,
         hndTmnlNo: hndTmnlNo,
         hndTrId: hndTrId,
@@ -1795,8 +1791,9 @@ const TB07040Sjs = (function () {
   // 검색조건 및 선택된 테이블 정보 초기화
   function compClear() {
 
-    resetInputValue($('div[data-menuid="/TB07040S"]'));
-
+    $('#TB07040S_srchForm').find('input').val("");
+    dateInputSet();
+    loadUserAuth();
     inputClear();
 
     g_qotaRt = 0;
@@ -2308,6 +2305,8 @@ const TB07040Sjs = (function () {
 
   function btnCancel() {
 
+    inputClear();
+
     $("#TB07040S_trQnt").attr("readonly", true);
     $("#TB07040S_trUnpr").attr("readonly", true);
     $("#TB07040S_trdeExrt").attr("readonly", true);
@@ -2332,7 +2331,6 @@ const TB07040Sjs = (function () {
     if (isNotEmpty(g_qotaRt)) {
       $("#TB07040S_qotaRt").val(g_qotaRt);
     }
-    //$('#TB07040S_H002').attr('disabled', true);
   }
 
   function getPrdtInfo() {

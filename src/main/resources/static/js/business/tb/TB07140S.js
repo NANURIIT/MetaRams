@@ -16,9 +16,20 @@ const TB07140Sjs = (function () {
 
     // common.js 함수
     selectorNumberFormater(
-      $(`div[data-menuid='/TB07140S'] input[id*='Amt']
-       , div[data-menuid='/TB07140S'] input[id*='Blce']
-       , div[data-menuid='/TB07140S'] input[id*='Rt']`)
+      $(
+        `
+          #TB07140S_fincCngeAmt
+          , #TB07140S_payErnAmt
+          , #TB07140S_stlAmt
+          , #TB07140S_intx
+          , #TB07140S_lotx
+          , #TB07140S_trslFincCngeAmt
+          , #TB07140S_trslPayErnAmt
+          , #TB07140S_trslPayErnAmt
+          , #TB07140S_trslStlAmt
+          , #TB07140S_trtx
+        `
+      )
     );
 
     // 처음 인풋 상태 체크
@@ -61,6 +72,7 @@ const TB07140Sjs = (function () {
     $('#TB07140S_intx').val("0");                 //소득세
     $('#TB07140S_trtx').val("0");                 //거래세
     $('#TB07140S_lotx').val("0");                 //지방세
+
 
     const fincPrcsDcdMapping = {
       "01": () => {
@@ -164,7 +176,12 @@ const TB07140Sjs = (function () {
    *  등록
    */
   const insertBtn = () => {
+
+    $("#TB07140S_trSn").val("");
+
     setFirstStatus();
+    setDprtData();
+    
     fincInputHandler();
     if (!$('#TB07140S_trSn').val()) {
       mode = "insert";
@@ -199,6 +216,15 @@ const TB07140Sjs = (function () {
 
     // common.js 함수
     resetInputValue($('div[data-menuid="/TB07140S"]'));
+
+    $(
+      `
+        #TB07140S_intx
+        , #TB07140S_lotx
+        , #TB07140S_trtx
+      `
+    ).val(0)
+
     $("#TB07140S_trCrryCd").val("KRW");
 
     TB07140S_resetPqGrid();

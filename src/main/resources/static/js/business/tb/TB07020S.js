@@ -279,12 +279,30 @@ const TB07020Sjs = (function() {
 		loadUserAuth(); // 담당자 정보 조회
 
 		setGrid_TB07020S();
-		/**
-		 * 인풋박스 초기화 공통
-		 * common.js
-		 */
-		resetInputValue($('div[data-menuid="/TB07020S"]'));
 
+		$('#TB07020S_srchForm').find('input').on('input', function () {
+			inputClear();
+			resetPGgrids("TB07020S");
+		});
+
+		selectorNumberFormater(
+			$(
+				`
+					#TB07020S_wholIssuShqt
+					, #TB07020S_wholIssuShqt
+					, #TB07020S_trQnt
+					, #TB07020S_trUnpr
+					, #TB07020S_trAmt
+					, #TB07020S_trslAmt
+					, #TB07020S_evlPflsAmt
+					, #TB07020S_eprzCrdlCtrcAmt
+					, #TB07020S_krwTrslExcBlce
+				`
+			)
+		)
+
+		maskExrt("#TB07020S_trdeExrt, #TB07020S_stdrExrt");
+		compClear();
 
 		getDealInfoFromWF();
 	});
@@ -1186,79 +1204,25 @@ const TB07020Sjs = (function() {
 		});
 	}
 
-	// function updateDealHs(prdtCd){
-
-	// 	new Promise(function(resolve, reject){
-	// 		$.ajax({
-	// 			type: "POST",
-	// 			url: "/TB07020S/insertIBIMS402HTr",
-	// 			data: paramData,
-	// 			dataType: "json",
-	// 			//contentType: "application/json; charset=UTF-8",
-	// 			success: function(data) {
-	// 				getBuyList();
-	// 				resolve(data); //통신 성공하면 resolve()
-	// 			},
-	// 			error: function(error) {
-	// 				reject();  //통신 실패하면 reject()
-	// 			}
-	// 		})
-	// 	})
-
-	// }
-
 	// 검색조건 및 선택된 테이블 정보 초기화
 	function compClear() {
 
-		/**
-		 * 손대기 귀찮아서 그냥 제가 만든 공통 한번 더 실행하겠습니다 태안씨 화이팅
-		 * 인풋박스 초기화 공통
-		 * 출처 common.js
-		 * 
-		 * 보니까 이거 먼저 쓰시고 안되는 부분 조금씩 수정하시면 될듯요
-		 */
-		// resetInputValue($('div[data-menuid="/TB07020S"]'));
-
 		/* 검색조건 */
-		//$('#TB07020S_rsltnDt').val('');
-		$('#TB07020S_srch_prdtCd').val('');
-		$('#TB07020S_srch_prdtNm').val('');
-		$('#TB07020S_srch_fndCd').val('');
+		resetInputValue($('div[data-menuid="/TB07020S"]'));
 
 		/* 상세정보 */
-		$('#TB07020S_trQnt').val('');
-		$('#TB07020S_trDt').val('');
-		$('#TB07020S_trSn').val('');
-		$('#TB07020S_trUnpr').val('');
-		$('#TB07020S_trAmt').val('0');
-		// $('#TB07020S_dprtCd').val('');
-		// $('#TB07020S_dprtNm').val('');
-		$('#TB07020S_trdeExrt').val('');
-		$('#TB07020S_fnltCd').val('');
-		$('#TB07020S_fnltNm').val('');
-		$('#TB07020S_fndCd').val('');
-		$('#TB07020S_fndNm').val('');
-		$('#TB07020S_trslAmt').val('');
-		$('#TB07020S_stlAcno').val('');
-		$('#TB07020S_input_prdtCd').val('');
-		$('#TB07020S_input_prdtNm').val('');
-		$('#TB07020S_prfdCorpIntx').val('0');
-		// $('#TB07020S_empNo').val('');
-		// $('#TB07020S_empNm').val('');
 		$('#TB07020S_H002').val("0");
 		$('#TB07020S_I027').val('KRW');
-		//$('#TB07020S_trtx').val('');
 		$('#TB07020S_ibPrdtTrDcd').val('1');
 		$('#TB07020S_rfnDt').val('');
-		$('#TB07020S_stdrExrt').val('0');
+		$('#TB07020S_stdrExrt').val('1.0');
+		$('#TB07020S_trdeExrt').val('1.0');
 		$('#TB07020S_wholIssuShqt').val('0');
 		$('#TB07020S_hldgShqt').val('0');
 		$('#TB07020S_qotaRt').val('0');
 		$('#TB07020S_eprzCrdlCtrcAmt').val('0');
 		$('#TB07020S_krwTrslExcBlce').val('0');
 		$('#TB07020S_avrUnpr').val('0');
-
-		resetInputValue($('div[data-menuid="/TB07020S"]'));
 
 		$('#TB07020S_dprtCd').val(loginUsrDprtCd);
 		$('#TB07020S_dprtNm').val(loginUsrDprtNm);
@@ -1293,8 +1257,6 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_trSn').val('');
 		$('#TB07020S_trUnpr').val('0');
 		$('#TB07020S_trAmt').val('0');
-		// $('#TB07020S_dprtCd').val('');
-		// $('#TB07020S_dprtNm').val('');
 		$('#TB07020S_trdeExrt').val('1.0');
 		$('#TB07020S_fnltCd').val('');
 		$('#TB07020S_fnltNm').val('');
@@ -1305,11 +1267,8 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_input_prdtCd').val('');
 		$('#TB07020S_input_prdtNm').val('');
 		$('#TB07020S_prfdCorpIntx').val('0');
-		// $('#TB07020S_empNo').val('');
-		// $('#TB07020S_empNm').val('');
 		$('#TB07020S_H002').val("0");
 		$('#TB07020S_I027').val('KRW');
-		//$('#TB07020S_trtx').val('');
 		$('#TB07020S_ibPrdtTrDcd').val('1');
 		$('#TB07020S_rfnDt').val('');
 		$('#TB07020S_stdrExrt').val('1.0');
@@ -1633,9 +1592,10 @@ const TB07020Sjs = (function() {
 	}
 
 	function btnAdd() {
-		$('#TB07020S_trQnt').val('');
-		$('#TB07020S_trUnpr').val('');
-		$('#TB07020S_trAmt').val('');
+		$('#TB07140S_trSn').val("");
+		$('#TB07020S_trQnt').val('0');
+		$('#TB07020S_trUnpr').val('0');
+		$('#TB07020S_trAmt').val('0');
 		$('#TB07020S_trslAmt').val('0');
 		//$('#TB07020S_qotaRt').val('');ㄴㄹㅇㄹ
 		$('#TB07020S_trQnt').attr('readonly', false);
@@ -1665,6 +1625,9 @@ const TB07020Sjs = (function() {
 	}
 
 	function btnCancel() {
+
+		inputClear();
+
 		$('#TB07020S_trQnt').attr('readonly', true);
 		$('#TB07020S_trUnpr').attr('readonly', true);
 		$('#TB07020S_trdeExrt').attr('readonly', true);
@@ -1672,7 +1635,6 @@ const TB07020Sjs = (function() {
 		$('#TB07020S_fndCd').attr('readonly', true);
 		$('#TB07020S_input_prdtCd').attr('readonly', true);
 		$('#TB07020S_H002').attr('readonly', true);
-		//$('#TB07020S_qotaRt').attr('readonly', true);
 		$('#TB07020S_fnltCd').attr('readonly', true);
 		$('#TB07020S_stlAcno').attr('readonly', true);
 		$('#TB07020S_empNo').attr('readonly', true);
