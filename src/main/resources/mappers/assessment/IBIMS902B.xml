@@ -198,7 +198,7 @@
 	
 	<update id="updateTransaction" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
 		UPDATE IBIMS902B
-		   SET TR_TM        	= #{trTm}
+		   SET TR_TM        	= TRIM(REPLACE(#{trTm}, ':', '')) 
 		     , RNDR_AMT        	= #{rndrAmt}
 		   	 , HND_DETL_DTM     = SYSDATE
 			 , HND_EMPNO        = #{hndEmpno}

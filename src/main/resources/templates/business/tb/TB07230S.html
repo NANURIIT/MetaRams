@@ -28,17 +28,7 @@
                         <div class="row form-group form-inline text-right">
                         	<!--row 1-->
                             <div class="col-sm-10 form-group  mb-1">
-                                <label class="col-sm-1 col-form-label text-right"><span class="req"></span>SPC</label>
-                                <div class="col-sm-3 input-group">
-                                    <input type="text" class="form-control" style="width: 30px;" id="TB07230S_ardyBzepNo">
-                                    <span class="input-group-append">
-                                        <button type="button" class="btn btn-default" onclick="callTB03061P('TB07230S');"><i class="fa fa-search"></i></button>
-                                    </span>
-                                    <input type="text" class="form-control" style="width: 70px;" id="TB07230S_entpNm" readonly>
-                                    <select class="form-control" id="TB07230S_fincExcuRqsSn">
-                                    </select>
-                                </div>
-                                <label class="col-sm-1 control-label">조회기간</label>
+                            	<label class="col-sm-1 control-label">신청일자</label>
                                 <div class="col-sm-3 input-group">
                                     <div class="col-sm-5 input-group date px-0">
                                         <input type="text" class="form-control" id="TB07230S_fromDate" name="" value="">
@@ -50,24 +40,30 @@
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
                                 </div>
-                                <label class="col-sm-1 col-form-label text-right">관리부점</label>
-                                <div class="col-sm-3">
-									<div class="input-group">
-										<select class="form-control" id="TB07230S_dprtNm">
-											<option value="">전체</option>
-										</select>
-										<input type="text" class="form-control" id="TB07230S_dprtCd" readonly>
-									</div>
-								</div>
+                                <label class="col-sm-1 col-form-label text-right"><span class="req"></span>SPC</label>
+                                <div class="col-sm-3 input-group">
+                                    <input type="text" class="form-control" style="width: 30px;" id="TB07230S_ardyBzepNo">
+                                    <span class="input-group-append">
+                                        <button type="button" class="btn btn-default" onclick="callTB03061P('TB07230S');"><i class="fa fa-search"></i></button>
+                                    </span>
+                                    <input type="text" class="form-control" style="width: 70px;" id="TB07230S_entpNm" readonly>
+                                    <!-- <select class="form-control" id="TB07230S_fincExcuRqsSn">
+                                    </select> -->
+                                </div>      
                             </div>
                             <!-- row 1 버튼영역 -->
                             <div class="col-sm-2 form-group mb-1">
                             </div>
                             <!--row 2-->
                             <div class="col-sm-10 form-group">
-                                <label class="col-sm-1 col-form-label text-right">자산관리계좌</label>
+                                <label class="col-sm-1 col-form-label text-right">관리부점</label>
                                 <div class="col-sm-3 input-group">
-                                    <input type="text" class="form-control" id="TB07230S_asstMngmAcno">
+                                    <div class="input-group">
+										<select class="form-control" id="TB07230S_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" id="TB07230S_dprtCd" readonly>
+									</div>
                                 </div>
                             </div>
                             <!-- row 2 버튼영역 -->
