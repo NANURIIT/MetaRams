@@ -37,6 +37,13 @@ const TB07100Sjs = (function () {
         , div[data-menuid='/TB07100S'] input[id='TB07100S_splmValuTxa']`)
     );
 
+    $('#TB07100S_searchForm').find('input, select').on('input', function () {
+      TB07100S_resetInput();
+      $("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
+      $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').setData([]);
+    })
+
+
     // 콤보박스 세팅
     selectBoxSetting();
 
