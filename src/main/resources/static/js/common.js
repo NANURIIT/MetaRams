@@ -456,6 +456,8 @@ function selectorNumberFormater(selector) {
 
     deleteType = 0;
   });
+
+  selector.val(0);
 }
 
 /**
@@ -1723,7 +1725,7 @@ function setPqGrid(pqGridObjs) {
       rowSelect = pqGridObj.rowSelect || function (event, ui) { },
       rowDblClick = pqGridObj.rowDblClick || function (event, ui) { };
 
-    let strNoRows = " "; // 최초 생성 시 body msg
+    let strNoRows = "데이터가 없습니다."; // 최초 생성 시 body msg
 
     var obj = {
       height: height,
@@ -2506,4 +2508,30 @@ function chkValFromToDtVal(fromDate, toDate, pattern = true) {
       confirmButtonText: "확인",
     });
   }
+}
+
+/**
+ * 환율 포맷 함수
+ * @param { String } selector ex) "#TB07020S_trdeExrt, ..."
+ * @author 김건우
+ */
+function maskExrt ( selector ) {
+  Inputmask({
+    regex: "^[0-9]{0,3}(\\.[0-9]{0,4})?$",
+  }).mask(selector);
+  
+  $(selector).val("1.0");
+}
+
+/**
+ * 비율, 금리, 이자율 등등.. 포맷 함수
+ * @param { String } selector ex) "#TB06010S_addIntrt, ..."
+ * @author 김건우
+ */
+function maskRt ( selector ) {
+  Inputmask({
+    regex: "^[0-9]{0,3}(\\.[0-9]{0,2})?$",
+  }).mask(selector);
+  
+  $(selector).val("0");
 }

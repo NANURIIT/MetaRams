@@ -275,9 +275,13 @@ const TB07040Sjs = (function () {
     loadUserAuth(); // 담당자 정보 조회
     dateInputSet();
     setGrid_TB07040S();
-    resetInputValue($('div[data-menuid="/TB07040S"]'));
-
+    $('#TB07040S_srchForm').find('input').on('input', function () {
+      inputClear();
+      resetPGgrids("TB07040S");
+    });
+    maskExrt("#TB07040S_trdeExrt, #TB07040S_stdrExrt");
     getDealInfoFromWF();
+    compClear();
   });
 
   function dateInputSet() {
@@ -387,18 +391,12 @@ const TB07040Sjs = (function () {
   });
 
   function getSellList() {
-    /*
-	if(isEmpty($('#TB07040S_srch_prdtCd').val())){
-		return false;
-	}
-	*/
+
     var trDt = $("#TB07040S_rsltnDt").val().replaceAll("-", "");
     var prdtCd = $("#TB07040S_srch_prdtCd").val();
     var ibPrdtTrDcd = $("#TB07040S_ibPrdtTrDcd").val();
     var nsFndCd = $('#TB07040S_srch_fndCd').val();
-    //var etprCrdtGrntTrKindCd = $('#TB07040S_ibPrdtTrDcd').val();
 
-    //alert(ibPrdtTrDcd);
     if (ibPrdtTrDcd === "1") {
       var etprCrdtGrntTrKindCd = "81"; //매수
     } else {
@@ -419,9 +417,7 @@ const TB07040Sjs = (function () {
       dataType: "json",
       beforeSend: function () {
         $("#TB07040S_tableList").pqGrid("setData", []);
-        //compClear();
         inputClear();
-
         $("#TB07040S_tableList").pqGrid(
           "option",
           "strNoRows",
@@ -433,7 +429,6 @@ const TB07040Sjs = (function () {
           var newData = [];
 
           data.forEach(function (item) {
-            //var trCls = "매도";
 
             var etprCrdtGrntTrKindCd = item.etprCrdtGrntTrKindCd;
             var trCls = "";
@@ -519,6 +514,11 @@ const TB07040Sjs = (function () {
             "데이터가 없습니다."
           );
           $("#TB07040S_tableList").pqGrid("refreshDataAndView");
+          Swal.fire({
+            icon: "warning"
+            , title: "Warning!"
+            , text: "조회된 내역이 없습니다!"
+          })
         }
       },
     });
@@ -538,8 +538,8 @@ const TB07040Sjs = (function () {
       if (strVal === "등록") {
         if (isNotEmpty(trSn)) {
           Swal.fire({
-            icon: "error",
-            title: "[매도거래] 등록 Error!",
+            icon: "warning",
+            title: "[매도거래] 등록 Warning!",
             text: "[매도거래] 등록은 거래번호를 미입력 하셔야 합니다.",
             confirmButtonText: "확인",
           });
@@ -550,8 +550,8 @@ const TB07040Sjs = (function () {
           var stringValidTrQnt = $('#TB07040S_hldgShqt').val();
 
           Swal.fire({
-            icon: "error",
-            title: "[매도거래] 등록 Error!",
+            icon: "warning",
+            title: "[매도거래] 등록 Warning!",
             text: "[매도거래] 최대입력가능수량은 " + stringValidTrQnt + " 입니다.",
             confirmButtonText: "확인",
           });
@@ -560,8 +560,8 @@ const TB07040Sjs = (function () {
       } else {
         if (isEmpty(trSn)) {
           Swal.fire({
-            icon: "error",
-            title: "[매도거래] 취소 Error!",
+            icon: "warning",
+            title: "[매도거래] 취소 Warning!",
             text: "[매도거래] 취소할 거래번호를 선택해주세요.",
             confirmButtonText: "확인",
           });
@@ -594,8 +594,8 @@ const TB07040Sjs = (function () {
               var paramData = makeParam();
             } else {
               Swal.fire({
-                icon: "error",
-                title: "[매도거래] 취소 Error!",
+                icon: "warning",
+                title: "[매도거래] 취소 Warning!",
                 text: "[매도거래] 취소 거래정보를 선택해주세요.",
                 confirmButtonText: "확인",
               });
@@ -610,8 +610,8 @@ const TB07040Sjs = (function () {
       if (strVal === "등록") {
         if (isNotEmpty(trSn)) {
           Swal.fire({
-            icon: "error",
-            title: "[배당금] 등록 Error!",
+            icon: "warning",
+            title: "[배당금] 등록 Warning!",
             text: "[배당금] 등록은 거래번호를 미입력 하셔야 합니다.",
             confirmButtonText: "확인",
           });
@@ -620,8 +620,8 @@ const TB07040Sjs = (function () {
       } else {
         if (isEmpty(trSn)) {
           Swal.fire({
-            icon: "error",
-            title: "[배당금] 취소 Error!",
+            icon: "warning",
+            title: "[배당금] 취소 Warning!",
             text: "[배당금] 취소할 거래번호를 선택해주세요.",
             confirmButtonText: "확인",
           });
@@ -654,8 +654,8 @@ const TB07040Sjs = (function () {
               var paramData = makeParam_forDividends();
             } else {
               Swal.fire({
-                icon: "error",
-                title: "[배당금] 취소 Error!",
+                icon: "warning",
+                title: "[배당금] 취소 Warning!",
                 text: "[배당금] 취소 거래정보를 선택해주세요.",
                 confirmButtonText: "확인",
               });
@@ -962,12 +962,9 @@ const TB07040Sjs = (function () {
         trdeExrt: trdeExrt / 1,
         trslAmt: trslAmt / 1,
         prfdCorpIntx: prfdCorpIntx / 1,
-        //,'wholIssuShqt'       : (wholIssuShqt         /1)
-        //,'hldgShqt'           : (hldgShqt             /1)
         qotaRt: qotaRt / 1,
         evlPflsAmt: evlPflsAmt / 1,
         tradPflsAmt: tradPflsAmt / 1,
-        //,'hndDetlDtm'         : hndDetlDtm
         hndEmpno: hndEmpno,
         hndTmnlNo: hndTmnlNo,
         hndTrId: hndTrId,
@@ -1793,63 +1790,16 @@ const TB07040Sjs = (function () {
 
   // 검색조건 및 선택된 테이블 정보 초기화
   function compClear() {
-    /* 검색조건 */
-    //$("#TB07040S_rsltnDt").val("");
-    // $('#TB07040S_srch_prdtCd').val('');
-    // $('#TB07040S_srch_prdtNm').val('');
 
-    resetInputValue($('div[data-menuid="/TB07040S"]'));
-
-    $('#TB07040S_srch_fndCd').val("");
-    $('#TB07040S_srch_fndNm').val("");
-    $("#TB07040S_trQnt").val("0");
-    $("#TB07040S_trDt").val("");
-    $("#TB07040S_trSn").val("");
-    $("#TB07040S_trUnpr").val("0");
-    $("#TB07040S_trAmt").val('0');
-    $("#TB07040S_dprtCd").val("");
-    $("#TB07040S_dprtNm").val("");
-    // $("#TB07040S_trdeExrt").val("");
-    $("#TB07040S_fnltCd").val("");
-    $("#TB07040S_fnltNm").val("");
-    $("#TB07040S_fndCd").val("");
-    $("#TB07040S_fndNm").val("");
-    $("#TB07040S_trslAmt").val("0");
-    $("#TB07040S_stlAcno").val("");
-    $("#TB07040S_input_prdtCd").val("");
-    $("#TB07040S_input_prdtNm").val("");
-    $("#TB07040S_prfdCorpIntx").val("0");
-    // $('#TB07040S_empNo').val('');
-    // $('#TB07040S_empNm').val('');
-    //$('#TB07040S_H002').val('0');
-    $("#TB07040S_I027").val("KRW");
-    //$('#TB07040S_input_trCrryCd').val('KRW');
-    // $("#TB07040S_trtx").val("");
-    $("#TB07040S_ibPrdtTrDcd").val("82");
-    $("#TB07040S_rfnDt").val("");
-    $("#TB07040S_stdrExrt").val("0");
-    $("#TB07040S_wholIssuShqt").val("0");
-    $("#TB07040S_hldgShqt").val("0");
-    $("#TB07040S_qotaRt").val("0");
-    $("#TB07040S_evlPflsAmt").val("0");
-    $("#TB07040S_tradPflsAmt").val("0");
-    $("#TB07040S_H002").val("0");
-    $("#TB07040S_avrUnpr").val("0");
-
-    $("#TB07040S_dprtCd").val(loginUsrDprtCd);
-    $("#TB07040S_dprtNm").val(loginUsrDprtNm);
-
-    $("#TB07040S_empNo").val(loginUsrId);
-    $("#TB07040S_empNm").val(loginUsrNm);
-
-    $("#TB07040S_H002").val("0");
+    $('#TB07040S_srchForm').find('input').val("");
+    dateInputSet();
+    loadUserAuth();
+    inputClear();
 
     g_qotaRt = 0;
-    //g_holdPrpsDcd ='0';
     g_sllPosShqt = 0;
     g_krwTrslExcAmt = 0;
     // 선택된 row 초기화
-    //$('#TB07040S_tableList tr').removeClass('table-active');
     $("#TB07040S_tableList").pqGrid("setData", []);
 
     let toggleBtn1 = document.querySelector("div[data-menuid='/TB07040S'] .toggleBtn1");
@@ -1859,34 +1809,30 @@ const TB07040Sjs = (function () {
   //조회 시 입력값 초기화
   function inputClear(){
 
-    $('#TB07040S_srch_fndCd').val("");
-    $('#TB07040S_srch_fndNm').val("");
-    $("#TB07040S_trQnt").val("");
+    console.log("인풋클리어 실행");
+    
+    $("#TB07040S_trQnt").val("0");
     $("#TB07040S_trDt").val("");
     $("#TB07040S_trSn").val("");
-    $("#TB07040S_trUnpr").val("");
-    $("#TB07040S_trAmt").val("0");
-    $("#TB07040S_dprtCd").val("");
-    $("#TB07040S_dprtNm").val("");
-    $("#TB07040S_trdeExrt").val("");
+    $("#TB07040S_trUnpr").val(0);
+    $("#TB07040S_trAmt").val(0);
+    $("#TB07040S_trdeExrt").val("1.0");
     $("#TB07040S_fnltCd").val("");
     $("#TB07040S_fnltNm").val("");
     $("#TB07040S_fndCd").val("");
     $("#TB07040S_fndNm").val("");
-    $("#TB07040S_trslAmt").val("0");
+    $("#TB07040S_trslAmt").val(0);
     $("#TB07040S_stlAcno").val("");
     $("#TB07040S_input_prdtCd").val("");
     $("#TB07040S_input_prdtNm").val("");
-    $("#TB07040S_prfdCorpIntx").val("0");
-    // $('#TB07040S_empNo').val('');
-    // $('#TB07040S_empNm').val('');
-    //$('#TB07040S_H002').val('0');
     $("#TB07040S_I027").val("KRW");
-    //$('#TB07040S_input_trCrryCd').val('KRW');
-    $("#TB07040S_trtx").val("");
+
+    $("#TB07040S_prfdCorpIntx").val("0");   // 선급법인세
+    $("#TB07040S_trtx").val(0);           // 거래세
+    
     $("#TB07040S_ibPrdtTrDcd").val("82");
     $("#TB07040S_rfnDt").val("");
-    $("#TB07040S_stdrExrt").val("0");
+    $("#TB07040S_stdrExrt").val("1.0");
     $("#TB07040S_wholIssuShqt").val("0");
     $("#TB07040S_hldgShqt").val("0");
     $("#TB07040S_qotaRt").val("0");
@@ -1994,8 +1940,8 @@ const TB07040Sjs = (function () {
 
   function checkParam(paramData, inputDcd, etprCrdtGrntTrKindCd) {
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning!";
+    option.type = "warning";
 
     // 유효성검사
     if (etprCrdtGrntTrKindCd == "82") {
@@ -2086,8 +2032,8 @@ const TB07040Sjs = (function () {
         if (Number(g_sllPosShqt) - Number(paramData.trQnt) < 0) {
           var overTrQnt = Number(g_sllPosShqt) - Number(paramData.trQnt);
           Swal.fire({
-            icon: "error",
-            title: "Error!",
+            icon: "warning",
+            title: "Warning!",
             html:
               "거래좌수가 보유좌수를 초과하였습니다.<br> (초과좌수:" +
               addComma(Math.abs(overTrQnt)) +
@@ -2232,6 +2178,7 @@ const TB07040Sjs = (function () {
               Number($("#TB07040S_trUnpr").val().replaceAll(",", ""))
           )
         );
+        
         if (Number($("#TB07040S_avrUnpr").val().replaceAll(",", "")) > 0) {
           
           $("#TB07040S_tradPflsAmt").val(
@@ -2330,16 +2277,13 @@ const TB07040Sjs = (function () {
   }
 
   function btnAdd() {
-    //compClear();
 
-    $("#TB07040S_trQnt").val("");
-    $("#TB07040S_trUnpr").val("");
-    $("#TB07040S_trAmt").val("");
+    $("#TB07040S_trQnt").val("0");
+    $("#TB07040S_trUnpr").val("0");
+    $("#TB07040S_trAmt").val("0");
     $("#TB07040S_trslAmt").val("0");
     $("#TB07040S_trtx").val("0");
-    //$('#TB07040S_qotaRt').val('');
     $("#TB07040S_ibPrdtTrDcd").attr("disabled", false);
-    //$("#TB07040S_H002").attr('disabled', false);
     $("#TB07040S_trQnt").attr("readonly", false);
     $("#TB07040S_trUnpr").attr("readonly", false);
     $("#TB07040S_trdeExrt").attr("readonly", false);
@@ -2347,30 +2291,21 @@ const TB07040Sjs = (function () {
     $("#TB07040S_fndCd").attr("readonly", false);
     $("#TB07040S_input_prdtCd").attr("readonly", false);
     $("#TB07040S_H002").attr("disabled", false);
-    //$('#TB07040S_qotaRt').attr('readonly', false);
     $("#TB07040S_fnltCd").attr("readonly", false);
     $("#TB07040S_stlAcno").attr("readonly", false);
     $("#TB07040S_empNo").attr("readonly", false);
     $("#TB07040S_prfdCorpIntx").attr("readonly", false);
-    //$('#TB07040S_trtx').attr('readonly', false);
     $("#TB07040S_btnDprtCd").attr("disabled", false);
     $("#TB07040S_btnFnd").attr("disabled", false);
     $("#TB07040S_btnPrdtCd").attr("disabled", false);
     $("#TB07040S_btnFnltCd").attr("disabled", false);
     $("#TB07040S_btnEmpNo").attr("disabled", false);
 
-    //$('#TB07040S_H002').attr('disabled', false);
-    // if (isNotEmpty(g_holdPrpsDcd)) {
-    // 	$('#TB07040S_H002').val(g_holdPrpsDcd);
-    // }
-
-    // if (isNotEmpty(g_qotaRt)) {
-    // 	$('#TB07040S_qotaRt').val(g_qotaRt);
-    // }
   }
 
   function btnCancel() {
-    //compClear();
+
+    inputClear();
 
     $("#TB07040S_trQnt").attr("readonly", true);
     $("#TB07040S_trUnpr").attr("readonly", true);
@@ -2379,13 +2314,10 @@ const TB07040Sjs = (function () {
     $("#TB07040S_fndCd").attr("readonly", true);
     $("#TB07040S_input_prdtCd").attr("readonly", true);
     $("#TB07040S_H002").attr("disabled", true);
-    //$('#TB07040S_H002').attr('readonly', true);
-    //$('#TB07040S_qotaRt').attr('readonly', true);
     $("#TB07040S_fnltCd").attr("readonly", true);
     $("#TB07040S_stlAcno").attr("readonly", true);
     $("#TB07040S_empNo").attr("readonly", true);
     $("#TB07040S_prfdCorpIntx").attr("readonly", true);
-    //$('#TB07040S_trtx').attr('readonly', true);
     $("#TB07040S_btnDprtCd").attr("disabled", true);
     $("#TB07040S_btnFnd").attr("disabled", true);
     $("#TB07040S_btnPrdtCd").attr("disabled", true);
@@ -2399,7 +2331,6 @@ const TB07040Sjs = (function () {
     if (isNotEmpty(g_qotaRt)) {
       $("#TB07040S_qotaRt").val(g_qotaRt);
     }
-    //$('#TB07040S_H002').attr('disabled', true);
   }
 
   function getPrdtInfo() {

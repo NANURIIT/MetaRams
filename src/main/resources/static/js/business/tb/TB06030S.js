@@ -302,6 +302,9 @@ const TB06030Sjs = (function(){
 		console.log("resetSearchRequiment_TB06030S 실행~~~~");
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
 		resetInputValue($('div[data-menuid="/TB06030S"]'));
+
+		maskRt("#TB06030S_sdwnRto");
+
 		$('#TB06030S_ibDealNo').val('');
 		$('#TB06030S_riskInspctCcdNm').val('');
 		$('#TB06030S_riskInspctCcd').val('');
@@ -312,6 +315,17 @@ const TB06030Sjs = (function(){
 		$('#TB06030S_prdtNm').val('');
 		$('#TB06030S_mtrNm').val('');		
 		$('#TB06030S_apvlDt').val('');
+
+		$('#TB06030S_fondDt').val('');
+		$('#TB06030S_keepExprDt').val('');
+		$('#TB06030S_invExprDt').val('');
+
+
+		$('#TB06030S_crdtInqDt').val('');
+		$('#TB06030S_isuDt').val('');
+		$('#TB06030S_expDt').val('');
+		$('#TB06030S_rdmpClmPsblDt').val('');
+		$('#TB06030S_sdwnTlmtDt').val('');
 		
 		$('#TB06030S_frxcHdgeYn_N').prop('checked',true);
 		$('#TB06030S_lstYn_N').prop('checked',true);

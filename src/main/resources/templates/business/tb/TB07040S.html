@@ -29,13 +29,12 @@
 				<div class="ibox">
 					<div class="ibox-content i-filter">
 						<!-- row1 -->
-						<div class="row form-group form-inline text-right">
+						<div class="row form-group form-inline text-right" id="TB07040S_srchForm">
 							<div class="col-sm-12 form-group">
 								<label class="col-sm-1 col-form-label text-right">거래일자</label>
 								<div class="col-sm-2 input-group">
 									<span class="input-group date">
-										<input type="text" class="form-control" value="" id="TB07040S_rsltnDt"
-											oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
+										<input type="text" class="form-control" value="" id="TB07040S_rsltnDt" placeholder="YYYY-MM-DD"/>
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</span>
 								</div>
@@ -259,7 +258,7 @@
 										</div>
 										<label class="col-sm-1">결제계좌</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" id="TB07040S_stlAcno">
+											<input type="text" class="form-control" id="TB07040S_stlAcno" maxlength="20">
 										</div>
 									</div>
 								</div>
