@@ -19,7 +19,7 @@ const TB07230Sjs = (function() {
 	
     function TB07230S_onChangeHandler() {
 		$("#TB07230S_ardyBzepNo").on("input", function () { resetPGgrids("TB07230S") })
-        $("#TB07230S_fincExcuRqsSn").on("input", function () { resetPGgrids("TB07230S") })
+        /*$("#TB07230S_fincExcuRqsSn").on("input", function () { resetPGgrids("TB07230S") })*/
         $("#TB07230S_fromDate").on("input", function () { resetPGgrids("TB07230S") })
         $("#TB07230S_toDate").on("input", function () { resetPGgrids("TB07230S") })
         $("#TB07230S_dprtNm").on("input", function () { resetPGgrids("TB07230S") })
@@ -74,6 +74,22 @@ const TB07230Sjs = (function() {
 
 	// 거래내역 그리드 세팅
 	function gridSett() {
+		let timeEditor_dpstRqst = function (ui) {
+            let $inp = ui.$cell.find("input");
+
+            $inp.clockpicker({
+                autoclose: true,
+                afterDone: function () {
+                    $("#TB07230S_trsctHis").pqGrid("setSelection", { rowIndx: ui.rowIndx, dataIndx: ui.dataIndx });
+                    $("#TB07230S_trsctHis").pqGrid("setSelection", null);
+                },
+                format: "HH:mm:ss",
+                keyboardNavigation: false,
+                forceParse: false,
+                language: "ko",
+            });
+
+        }
 
 		//거래내역 그리드 colModel
 		let TB07230S_col_trsctHis = [
@@ -130,20 +146,77 @@ const TB07230Sjs = (function() {
 				},
 			},
 			{
+                title: "거래시간",
+                dataType: "string",
+                format: "HH:mm:ss",
+                dataIndx: "trTm",
+                halign: "center",
+                align: "center",
+                editable: true,
+				style:{
+					background:'#fff',	
+				},
+                editor: {
+                    type: "textbox",
+                    init: timeEditor_dpstRqst,
+                },
+                render: function (ui) {
+
+                    let cellData = replaceAll(ui.cellData, ':', '');
+
+                    if(!isEmpty(cellData) && cellData.length <= 6){
+
+                        let hour = cellData.substring(0, 2);
+                        let min = cellData.substring(2, 4);
+
+                        return hour + ':' + min;
+
+                    }else if(!isEmpty(cellData) && cellData.length > 6){
+
+                        let hour = cellData.slice(0, 6).substring(0, 2);
+                        let min = cellData.slice(0, 6).substring(2, 4);
+
+                        return hour + ':' + min;
+
+                    }else{
+                        return cellData;
+                    }
+                }
+            },
+			{
 				title: "SPC명",
 				dataType: "string",
 				dataIndx: "spcNm",
 				halign: "center",
 				align: "left",
+				width: "10%",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "수령인",
+				dataType: "string",
+				dataIndx: "rcveP",
+				halign: "center",
+				align: "center",
+				width: "10%",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "은행",
+				dataType: "string",
+				dataIndx: "isttNm",
+				halign: "center",
+				align: "center",
+				width: "6%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
 				title: "자산관리계좌번호",
 				dataType: "string",
-				dataIndx: "isttNmAsstMngmAcno",
+				dataIndx: "asstMngmAcno",
 				halign: "center",
 				align: "left",
-				width: "15%",
+				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -160,6 +233,7 @@ const TB07230Sjs = (function() {
 				dataIndx: "spcItemKndNm",
 				halign: "center",
 				align: "center",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -193,14 +267,6 @@ const TB07230Sjs = (function() {
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
-				title: "수정인",
-				dataType: "string",
-				dataIndx: "rcveP",
-				halign: "center",
-				align: "center",
-				filter: { crules: [{ condition: "range" }] },
-			},
-			{
 				title: "관리부점",
 				dataType: "string",
 				dataIndx: "dprtNm",
@@ -222,11 +288,8 @@ const TB07230Sjs = (function() {
 				dataIndx: "sortNo",
 				halign: "center",
 				align: "right",
+				width: "5%",
 				filter: { crules: [{ condition: "range" }] },
-				editable: true,
-				style:{
-					background:'#fff',	
-				},
 			},
 		]
 
@@ -246,7 +309,7 @@ const TB07230Sjs = (function() {
 	}
 
 	// spc 기업체번호 변경 function
-	function selectSpcList() {
+	/*function selectSpcList() {
 
 		//console.log("val[" + $("#TB07230S_ardyBzepNo").val() + "]");
 
@@ -284,7 +347,7 @@ const TB07230Sjs = (function() {
 				openPopup(popupOption);
 			},
 		});
-	}
+	}*/
 
 	//그리드 행 추가
 	function addRows_TB07230S(gridId) {
@@ -312,11 +375,11 @@ const TB07230Sjs = (function() {
 		}
 
 		// 자금집행신청일련번호
-		if (isEmpty($("#TB07230S_fincExcuRqsSn").val())) {
+		/*if (isEmpty($("#TB07230S_fincExcuRqsSn").val())) {
 			popupOption.text = "SPC 기업체 정보 조회 후 자금집행신청일련번호를 선택해주세요.";
 			openPopup(popupOption);
 			return false;
-		}
+		}*/
 
 		var paramData = {
 			ardyBzepNo: $("#TB07230S_ardyBzepNo").val(),			// spc 기업체 코드
@@ -324,7 +387,7 @@ const TB07230Sjs = (function() {
 			toDate: unformatDate($('#TB07230S_toDate').val()),		// 조회기간 종료
 			dprtCd: $('#TB07230S_dprtCd').val(),					// 관리부점
 			asstMngmAcno: $('#TB07230S_asstMngmAcno').val(),		// 자산관리계좌번호
-			fincExcuRqsSn: $('#TB07230S_fincExcuRqsSn').val(),		// 자금집행신청일련번호
+			/*fincExcuRqsSn: $('#TB07230S_fincExcuRqsSn').val(),		// 자금집행신청일련번호*/
 		};
 
 		$.ajax({
@@ -363,7 +426,7 @@ const TB07230Sjs = (function() {
 		$('#TB07230S_entpNm').val('');	// spc 기업체명
 		$("#TB07230S_fromDate").val(newAddMonth(new Date(getToday()), -1));	//조회시작일
 		$("#TB07230S_toDate").val(getToday());	//조회종료일
-		$('#TB07230S_fincExcuRqsSn').html("");
+		/*$('#TB07230S_fincExcuRqsSn').html("");*/
 		setFormElementsStateByUserRole();	// 관리부점
 
 		$('#TB07230S_asstMngmAcno').val('');	// 자산관리계좌
@@ -379,7 +442,7 @@ const TB07230Sjs = (function() {
 		var paramData = {
 			lst902bdto: grid,
 			ardyBzepNo: $('#TB07230S_ardyBzepNo').val(),
-			fincExcuRqsSn: $('#TB07230S_fincExcuRqsSn').val()
+			/*fincExcuRqsSn: $('#TB07230S_fincExcuRqsSn').val()*/
 		}
 		
 		$.ajax({
@@ -406,7 +469,7 @@ const TB07230Sjs = (function() {
 	}
 
 	return {
-		selectSpcList: selectSpcList,
+		/*selectSpcList: selectSpcList,*/
 		addRows_TB07230S: addRows_TB07230S,
 		dltRows_TB07230S: dltRows_TB07230S,
 		selectTB07230S: selectTB07230S,

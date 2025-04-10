@@ -4,6 +4,8 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 
+import org.bouncycastle.jcajce.provider.asymmetric.dsa.DSASigner.stdDSA;
+
 @Getter
 /*
  * 협의체 현황 및 결과조회 화면 VO
@@ -37,4 +39,5 @@ public class TB05030SVO {
         private String dprtNm;
         private String chrgPEnm;
         private String ownPEnm;
+        private String ownPNm;
 }

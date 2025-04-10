@@ -113,6 +113,7 @@ const TB07040Sjs = (function () {
       align: "right",
       halign: "center",
       width: "",
+			format: "#,##0.0",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -271,6 +272,24 @@ const TB07040Sjs = (function () {
   ];
 
   $(document).ready(function () {
+
+    selectorNumberFormater(
+      $(
+        `
+          #TB07040S_wholIssuShqt
+          , #TB07040S_hldgShqt
+          , #TB07040S_trQnt
+          , #TB07040S_trUnpr
+          , #TB07040S_trAmt
+          , #TB07040S_trslAmt
+          , #TB07040S_tradPflsAmt
+          , #TB07040S_avrUnpr
+          , #TB07040S_prfdCorpIntx
+          , #TB07040S_trtx
+        `
+      )
+    )
+
     loadSelectBoxContents();
     loadUserAuth(); // 담당자 정보 조회
     dateInputSet();
@@ -1902,7 +1921,6 @@ const TB07040Sjs = (function () {
     $("#TB07040S_trQnt").val(rowData.trQnt);
     $("#TB07040S_trUnpr").val(rowData.trUnpr);
     $("#TB07040S_trAmt").val(rowData.trAmt);
-    $("#TB07040S_trdeExrt").val(rowData.trdeExrt);
     $("#TB07040S_trslAmt").val(rowData.trslAmt);
     $("#TB07040S_dprtCd").val(rowData.trDptCd);
     $("#TB07040S_dprtNm").val(rowData.trDptNm);
@@ -1917,7 +1935,20 @@ const TB07040Sjs = (function () {
     //$('#TB07040S_input_trCrryCd').val(td.eq(7).text());
     $("#TB07040S_trtx").val(rowData.trtx);
     $("#TB07040S_rfnDt").val(rowData.rfnDt);
-    $("#TB07040S_stdrExrt").val(rowData.stdrExrt);
+
+    if (Number.isInteger(Number(rowData.trdeExrt))) {
+			$('#TB07040S_trdeExrt').val(rowData.trdeExrt.toString() + ".0");
+		}
+		else {
+			$('#TB07040S_trdeExrt').val(rowData.trdeExrt);
+		}
+
+		if (Number.isInteger(Number(rowData.stdrExrt))) {
+			$('#TB07040S_stdrExrt').val(rowData.stdrExrt.toString() + ".0");
+		}
+		else {
+			$('#TB07040S_stdrExrt').val(rowData.stdrExrt);
+		}
     $("#TB07040S_excSn").val(rowData.excSn);
     $("#TB07040S_wholIssuShqt").val(rowData.wholIssuShqt);
     $("#TB07040S_hldgShqt").val(rowData.hldgShqt);
@@ -2388,5 +2419,6 @@ const TB07040Sjs = (function () {
     calcTrslAmt: calcTrslAmt,
     setHoldPrpsDcd: setHoldPrpsDcd,
     getDealInfoFromWF : getDealInfoFromWF,
+    inputClear: inputClear,
   };
 })();

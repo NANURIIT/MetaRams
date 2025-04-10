@@ -78,15 +78,15 @@
 				<div class="ibox">
 					<div class="ibox-content" style="min-height: 800px">
 						<div class="ibox">
-							<div class="ibox-content" style="border:0px;">
+							<div class="ibox-content" style="border:0px;" id="TB07140S_dataForm">
 								<!-- row1 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1">처리구분</label>
 										<div class="col-sm-3 input-group">
 											<div class="btn-group col-sm-6 pd0" role="group" aria-label="">
-												<button class="btn btn-s toggleBtn1 btn-info" onclick="TB07140Sjs.insertBtn();">등록</button>
-												<button class="btn btn-s toggleBtn2 btn-default" onclick="TB07140Sjs.cancelBtn();">취소</button>
+												<button id="TB07140S_insertBtn" class="btn btn-s toggleBtn1 btn-info" onclick="TB07140Sjs.insertBtn();">등록</button>
+												<button id="TB07140S_cancelBtn" class="btn btn-s toggleBtn2 btn-default" onclick="TB07140Sjs.cancelBtn();">취소</button>
 											</div>
 										</div>
 									</div>
@@ -276,61 +276,7 @@
 								</div>
 
 								<div class="tableFixHeader2">
-									<table class="table result table-bordered footable">
-										<div id="TB07140S_colModel"></div>
-										<!-- <colgroup>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-										</colgroup>
-										<thead>
-											<tr> 
-												<th>거래일자</th>
-												<th>거래번호</th>
-												<th>거래구분</th>
-												<th>운용펀드</th>
-												<th>종목코드</th>
-												<th>보유목적</th>
-												<th>통화</th>
-												<th>출자변동금액</th>
-												<th>보수/수익</th>
-												<th>결제금액</th>
-												<th>매매환율</th>
-												<th>출자변동환산금액</th>
-												<th>환산보수/수익</th>
-												<th>환산결제금액</th>
-											</tr>
-										</thead>
-										<tbody id="TB07140S_">
-											<tr class="text-center">
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-											</tr>
-										</tbody> -->
-									</table>
+									<div id="TB07140S_colModel"></div>
 								</div>
 								<div class="row" style="margin-bottom: 10px;">
 									<div class="col-sm-12 text-right">

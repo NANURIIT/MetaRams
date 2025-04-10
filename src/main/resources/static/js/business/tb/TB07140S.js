@@ -32,6 +32,11 @@ const TB07140Sjs = (function () {
       )
     );
 
+    $('#TB07140S_srchForm').find('input').on('input', function () {
+      inputClear();
+      TB07140S_resetPqGrid();
+    });
+
     // 처음 인풋 상태 체크
     getFirstStatus();
 
@@ -194,6 +199,9 @@ const TB07140Sjs = (function () {
    *  취소
    */
   const cancelBtn = () => {
+
+    inputClear();
+
     $("div[data-menuid='/TB07140S'] .toggleBtn1").addClass("btn-default").removeClass("btn-info");
     $("div[data-menuid='/TB07140S'] .toggleBtn2").addClass("btn-info").removeClass("btn-default");
     $("div[data-menuid='/TB07140S'] .ibox-content .ibox-content input").prop("readonly", true);
@@ -202,20 +210,30 @@ const TB07140Sjs = (function () {
     $("div[data-menuid='/TB07140S'] .ibox-content .ibox-content .btn.btn-default").prop("disabled", true);
     $("div[data-menuid='/TB07140S'] .toggleBtn1").prop("disabled", false);
 
-    // common.js 함수
-    resetInputValue($('div[data-menuid="/TB07140S"]'));
-
     mode = "delete";
 
   };
 
   /*
-   *  전체 초기화
+   * 전체 초기화
    */
   const removeAll = () => {
 
+    resetInputValue($('#TB07140S_srchForm'));
+
+    inputClear();
+
     // common.js 함수
-    resetInputValue($('div[data-menuid="/TB07140S"]'));
+    $('#TB07140S_insertBtn').click();
+
+    TB07140S_resetPqGrid();
+    
+  };
+
+
+  function inputClear(){
+
+    resetInputValue($('#TB07140S_dataForm'));
 
     $(
       `
@@ -225,30 +243,9 @@ const TB07140Sjs = (function () {
       `
     ).val(0)
 
+    $('#TB07140S_trdeExrt, #TB07140S_stdrExrt').val("1.0")
+
     $("#TB07140S_trCrryCd").val("KRW");
-
-    TB07140S_resetPqGrid();
-
-    setDprtData();
-  };
-
-
-  function inputClear(){
-
-    var srchFndCd = $('#TB07140S_srch_fndCd').val();
-    var srchFndNm = $('#TB07140S_srch_fndNm').val();
-    var srchPrdtCd = $('#TB07140S_srch_prdtCd').val();
-    var srchPrdtNm = $('#TB07140S_srch_prdtNm').val();
-
-    resetInputValue($('div[data-menuid="/TB07140S"]'));
-
-    $('#TB07140S_srch_fndCd').val(srchFndCd);
-    $('#TB07140S_srch_fndNm').val(srchFndNm);
-    $('#TB07140S_srch_prdtCd').val(srchPrdtCd);
-    $('#TB07140S_srch_prdtNm').val(srchPrdtNm);
-    $("#TB07140S_trCrryCd").val("KRW");
-
-    TB07140S_resetPqGrid();
 
     setDprtData();
 
@@ -522,7 +519,7 @@ const TB07140Sjs = (function () {
         halign: "center",
         align: "right",
         filter: { crules: [{ condition: "range" }] },
-        format: "#,###",
+        format: "#,##0.0",
       },
       {
         title: "환산출자변동금액",
@@ -790,15 +787,7 @@ const TB07140Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       beforeSend: function () {
-        //$("#TB07040S_tableList").pqGrid("setData", []);
-        //compClear();
         inputClear();
-
-        // $("#TB07140S_colModel").pqGrid(
-        //   "option",
-        //   "strNoRows",
-        //   "조회 중입니다..."
-        // );
       },
       success: function (data) {
         if (data) {
@@ -822,115 +811,6 @@ const TB07140Sjs = (function () {
     }
     return result;
   }
-
-  /*
-   *  SELECT 실행순번
-   */
-  // function getExcSn(prdtCd) {
-  //     $.ajax({
-  //         type: "POST",
-  //         url: "/TB07140S/getExcSnTB07140S",
-  //         contentType: "application/json; charset=UTF-8",
-  //         data: prdtCd,
-  //         dataType: "json",
-  //         success: function (data) {
-  //             let html = '<option value="">전체</option>';
-  //             if (data.length > 0) {
-  //                 //let html
-  //                 data.forEach(item => {
-  //                     html += '<option value="' + item + '">' + item + '</option>';
-  //                 });
-  //                 $('#TB07140S_excSn').html(html);
-  //             }
-  //         }, error: function () {
-
-  //         }
-  //     });
-  // }
-
-  /*
-   *  SELECT 실행금리정보
-   */
-  // function getIntrtData() {
-
-  //     let result;
-
-  //     let prdtCd = $('#TB07140S_prdtCd').val();
-  //     let excSn = $('#TB07140S_excSn').val();
-
-  //     let paramData;
-  //     paramData = {
-  //         prdtCd: prdtCd
-  //         , excSn: excSn
-  //     }
-
-  //     $.ajax({
-  //         type: "POST",
-  //         url: "/TB07140S/getIntrtData",
-  //         contentType: "application/json; charset=UTF-8",
-  //         data: JSON.stringify(paramData),
-  //         dataType: "json",
-  //         success: function (data) {
-  //             if (data.length > 0) {
-  //                 TB07140S_pqGridLength = data.length
-  //                 let detail = $('#TB07140S_colModel').pqGrid('instance')
-  //                 detail.setData(data);
-  //                 detail.getData();
-  //             } else {
-  //                 result = 2
-  //             }
-  //         }, error: function () {
-  //             result = 0
-  //         }
-  //     });
-
-  //     return result
-  // }
-
-  /*
-   *  SELECT TB07140S
-   */
-  // function selectTB07140S() {
-  //     let excResult;
-  //     let intrtResult;
-  //     excResult = getExcData();   // 데이터값이 나온 함수
-  //     intrtResult = getIntrtData();
-
-  //     if (!$('#TB07140S_prdtCd').val()) {
-  //         Swal.fire({
-  //             icon: 'warning'
-  //             , text: "종목코드를 입력해주세요!"
-  //             , confirmButtonText: "확인"
-  //         });
-  //         return;
-  //     } else if (!$('#TB07140S_prdtNm').val()) {
-  //         Swal.fire({
-  //             icon: 'warning'
-  //             , text: "상품명을 입력해주세요!"
-  //             , confirmButtonText: "확인"
-  //         });
-  //         return;
-  //     } else if (!$('#TB07140S_excSn').val()) {
-  //         Swal.fire({
-  //             icon: 'warning'
-  //             , text: "실행순번을 지정해주세요!"
-  //             , confirmButtonText: "확인"
-  //         });
-  //         return;
-  //     } else if (excResult === 2 || intrtResult === 2) {
-  //         Swal.fire({
-  //             icon: 'warning'
-  //             , text: "조회된 데이터가 없습니다"
-  //             , confirmButtonText: "확인"
-  //         });
-  //     } else if (excResult === 0 && intrtResult === 0) {
-  //         Swal.fire({
-  //             icon: 'error'
-  //             , text: "정보조회 실패!"
-  //             , confirmButtonText: "확인"
-  //         });
-  //     }
-  // }
 
   /*
    *  =====================SELECT모음=====================
@@ -1033,8 +913,7 @@ const TB07140Sjs = (function () {
     if ( $('div[data-menuid="/TB07140S"] .btn.btn-s.btn-info').text() === '취소' ) {
 			$('#TB07140S_trSn').val(rowData.trSn);
 		}
-		else
-		{
+		else {
 			$('#TB07140S_trSn').val('');
 		}
 
@@ -1055,14 +934,32 @@ const TB07140Sjs = (function () {
     $('#TB07140S_bfRsvPayDcd').val(rowData.bfRsvPayDcd);                    //전금/지준구분코드
     $('#TB07140S_prdtCd').val(rowData.prdtCd);                              //종목코드
     $('#TB07140S_prdtNm').val(rowData.prdtNm);                              //종목명
-    $('#TB07140S_trdeExrt').val(rowData.trdeExrt);                          //매매환율
+
+    
+    console.log(rowData.trdeExrt);
+    console.log(Number.isInteger(rowData.trdeExrt));
+    //매매환율
+    if (Number.isInteger(Number(rowData.trdeExrt))) {
+			$('#TB07140S_trdeExrt').val(rowData.trdeExrt.toString() + ".0");
+		}
+		else {
+			$('#TB07140S_trdeExrt').val(rowData.trdeExrt);
+		}
+
+    //기준환율
+		if (Number.isInteger(Number(rowData.stdrExrt))) {
+			$('#TB07140S_stdrExrt').val(rowData.stdrExrt.toString() + ".0");
+		}
+		else {
+			$('#TB07140S_stdrExrt').val(rowData.stdrExrt);
+		}
+
     $('#TB07140S_fnltCd').val(rowData.stlXtnlIsttCd);                       //결제은행코드
     $('#TB07140S_fnltNm').val(rowData.fnltNm);                              //결제은행명
     $('#TB07140S_holdPrpsDcd').val(rowData.holdPrpsDcd);                    //보유목적
     $('#TB07140S_trCrryCd').val(rowData.trCrryCd);                          //통화코드
     $('#TB07140S_stlAcno').val(rowData.stlAcno);                            //결제계좌번호
     $('#TB07140S_fincPayCntn').val(rowData.fincPayCntn);                    //비고
-    $('#TB07140S_stdrExrt').val(rowData.stdrExrt);                          //기준환율
     $('#TB07140S_empNo').val(rowData.rqsEmpno);                             //담당자사번
     $('#TB07140S_empNm').val(rowData.rqsEmpnm);                             //담당자명
 
@@ -1140,125 +1037,7 @@ const TB07140Sjs = (function () {
       });
     }
 
-    // getFincList();
   }
-
-  /*
-   *  UPDATE 실행금리정보
-   */
-  // function updateIntrtData() {
-  //   let result;
-
-  //   let prdtCd = $("#TB07140S_prdtCd").val();
-  //   let excSn = $("#TB07140S_excSn").val();
-  //   let intrtList = $("#TB07140S_colModel").pqGrid("instance").getData();
-
-  //   let insertList = [];
-  //   let updateList = [];
-
-  //   for (let i = 0; i < intrtList.length; i++) {
-  //     const item = intrtList[i];
-  //     if (!item.rgstSn && item.rgstSn === undefined) {
-  //       insertList.push(item);
-  //     } else {
-  //       updateList.push(item);
-  //     }
-  //   }
-
-  //   let insertParamData = {
-  //     prdtCd: prdtCd,
-  //     excSn: excSn,
-  //     intrtList: insertList,
-  //   };
-  //   let updateParamData = {
-  //     prdtCd: prdtCd,
-  //     excSn: excSn,
-  //     intrtList: updateList,
-  //   };
-  //   console.log(updateParamData);
-  //   if (insertList.length > 0) {
-  //     $.ajax({
-  //       method: "POST",
-  //       url: "/TB07140S/insertIntrtData",
-  //       contentType: "application/json; charset=UTF-8",
-  //       data: JSON.stringify(insertParamData),
-  //       dataType: "json",
-  //       success: function (data) {
-  //         if (data) {
-  //           result = data;
-  //         }
-  //       },
-  //       error: function () {
-  //         result = -1;
-  //       },
-  //     });
-  //   }
-
-  //   if (updateList.length > 0) {
-  //     $.ajax({
-  //       method: "POST",
-  //       url: "/TB07140S/updateIntrtData",
-  //       contentType: "application/json; charset=UTF-8",
-  //       data: JSON.stringify(updateParamData),
-  //       dataType: "json",
-  //       success: function (data) {
-  //         if (data) {
-  //           result = data;
-  //         }
-  //       },
-  //       error: function () {
-  //         result = -1;
-  //       },
-  //     });
-  //   }
-  //   return result;
-  // }
-
-  /*
-   *  UPDATE TB07140S
-   */
-  // async function updateTB07140S() {
-  //   let excResult;
-  //   let intrtResult;
-  //   excResult = await updateExcData(); // 데이터값이 나온 함수
-  //   intrtResult = await updateIntrtData();
-  //   if (!$("#TB07140S_prdtCd").val()) {
-  //     Swal.fire({
-  //       icon: "warning",
-  //       text: "종목코드를 입력해주세요!",
-  //       confirmButtonText: "확인",
-  //     });
-  //     return;
-  //   } else if (!$("#TB07140S_prdtNm").val()) {
-  //     Swal.fire({
-  //       icon: "warning",
-  //       text: "상품명을 입력해주세요!",
-  //       confirmButtonText: "확인",
-  //     });
-  //     return;
-  //   } else if (!$("#TB07140S_excSn").val()) {
-  //     Swal.fire({
-  //       icon: "warning",
-  //       text: "실행순번을 지정해주세요!",
-  //       confirmButtonText: "확인",
-  //     });
-  //     return;
-  //   } else if (excResult === -1 || intrtResult === -1) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       text: "저장실패!",
-  //       confirmButtonText: "확인",
-  //     });
-  //     return;
-  //   } else {
-  //     Swal.fire({
-  //       icon: "success",
-  //       text: "저장성공!",
-  //       confirmButtonText: "확인",
-  //     });
-  //   }
-  //   selectTB07140S();
-  // }
 
   /*
    *  =====================UPDATE모음=====================
@@ -1269,33 +1048,6 @@ const TB07140Sjs = (function () {
    */
 
   function deleteFinc() {
-    // paramData = {
-    //   prdtCd: $(`#TB07140S_prdtCd`).val(),
-    //   trSn: $(`#TB07140S_trSn`).val(),
-    //   excSn: $(`#TB07140S_excSn`).val(),
-    //   trDt: $(`#TB07140S_trDt`).val(),
-    //   etprCrdtGrntTrKindCd: $(`#TB07140S_etprCrdtGrntTrKindCd`).val(),
-    //   nsFndCd: $(`#TB07140S_nsFndCd`).val(),
-    //   synsCd: $(`#TB07140S_synsCd`).val(),
-    //   holdPrpsDcd: $(`#TB07140S_holdPrpsDcd`).val(),
-    //   fincPrcsDcd: $(`#TB07140S_fincPrcsDcd`).val(),
-    //   trDptCd: $(`#TB07140S_dprtCd`).val(),
-    //   fincCngeAmt: $(`#TB07140S_fincCngeAmt`).val(),
-    //   payErnAmt: $(`#TB07140S_payErnAmt`).val(),
-    //   stlAmt: $(`#TB07140S_stlAmt`).val(),
-    //   trdeExrt: $(`#TB07140S_trdeExrt`).val(),
-    //   trslFincCngeAmt: $(`#TB07140S_trslFincCngeAmt`).val(),
-    //   trslPayErnAmt: $(`#TB07140S_trslPayErnAmt`).val(),
-    //   trslStlAmt: $(`#TB07140S_trslStlAmt`).val(),
-    //   trtx: $(`#TB07140S_trtx`).val(),
-    //   intx: $(`#TB07140S_intx`).val(),
-    //   lotx: $(`#TB07140S_lotx`).val(),
-    //   bfRsvPayDcd: $(`#TB07140S_bfRsvPayDcd`).val(),
-    //   stlXtnlIsttCd: $(`#TB07140S_stlXtnlIsttCd`).val(),
-    //   stlAcno: $(`#TB07140S_stlAcno`).val(),
-    //   fincPayCntn: $(`#TB07140S_fincPayCntn`).val(),
-    //   reFincPossYn: $(`#TB07140S_reFincPossYn`).val(),
-    // };
 
     let result;
 
@@ -1411,52 +1163,6 @@ const TB07140Sjs = (function () {
 
   }
 
-  // function makeParam(){
-
-  // }
-
-  // async function deleteIBIMS404B() {
-  //   let prdtCd = $("#TB07140S_prdtCd").val();
-  //   let excSn = $("#TB07140S_excSn").val();
-  //   let rgstSn = TB07140S_rowData.rgstSn;
-
-  //   paramData = {
-  //     prdtCd,
-  //     excSn,
-  //     rgstSn,
-  //   };
-  //   await $.ajax({
-  //     method: "POST",
-  //     url: "/TB07140S/deleteIBIMS404B",
-  //     contentType: "application/json; charset=UTF-8",
-  //     data: JSON.stringify(paramData),
-  //     dataType: "json",
-  //     success: function (data) {
-  //       if (data) {
-  //         Swal.fire({
-  //           icon: "success",
-  //           text: "삭제성공!",
-  //           confirmButtonText: "확인",
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           icon: "warning",
-  //           text: "삭제실패!",
-  //           confirmButtonText: "확인",
-  //         });
-  //       }
-  //     },
-  //     error: function () {
-  //       Swal.fire({
-  //         icon: "error",
-  //         text: "에러!",
-  //         confirmButtonText: "확인",
-  //       });
-  //     },
-  //   });
-  //   await selectTB07140S();
-  // }
-
   /*
    *  =====================DELETE모음=====================
    */
@@ -1468,5 +1174,6 @@ const TB07140Sjs = (function () {
     pqExportExcel: pqExportExcel,
     calcTrslAmt : calcTrslAmt,
     excFinc: excFinc,
+    inputClear: inputClear,
   };
 })();

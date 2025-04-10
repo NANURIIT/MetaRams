@@ -227,7 +227,7 @@ const TB04040Sjs = (function () {
     setGrid_TB04040S();
 
     //기간검색 유효성 검사 함수
-    chkValFromToDt("TB04040S_fromDate","TB04040S_toDate");
+    chkValFromToDt("TB04040S_fromDate", "TB04040S_toDate");
   });
 
   // 유효성 검사용 날짜패턴
@@ -290,6 +290,8 @@ const TB04040Sjs = (function () {
         strtDt: strtDt.replaceAll("-", ""),
         endDt: endDt.replaceAll("-", ""),
       };
+
+      console.log("confrim:::::::::", dtoParam);
 
       $.ajax({
         type: "GET",

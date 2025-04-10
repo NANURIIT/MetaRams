@@ -178,8 +178,8 @@ const TB04050Sjs = (function () {
   function getLoiDetail() {
     if (isEmpty($("#TB04050S_ibDealNo").val())) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "warning!",
         text: "Deal 번호를 입력해주세요.",
         confirmButtonText: "확인",
       });
@@ -250,7 +250,7 @@ const TB04050Sjs = (function () {
             $("#TB04050S_rclmDt").val(formatDate(data.rclmDt)); // 회수일자
             $("#TB04050S_empNm").val(data.empNm); // 담당자이름
             $("#TB04050S_dprtNm").val(data.dprtNm); // 담당자부서
-            $("#TB04050S_empNo").val(data.empNo); // 담당자 사번
+            $("#TB04050S_empNo").val(data.chrrEmpno); // 담당자 사번
             $("#TB04050S_dprtCd").val(data.dprtCd); // 담당부서코드
             $("#TB04050S_ivtgRqstCtns").val(data.ivtgRqstCtns); // 검토요청내용
             // if ($("#TB04050S_issSttsCd3").is(":checked")) {
@@ -398,8 +398,8 @@ const TB04050Sjs = (function () {
       registLoi();
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "warning!",
         text: "Deal번호를 조회해주세요.",
         confirmButtonText: "확인",
       });
@@ -440,6 +440,8 @@ const TB04050Sjs = (function () {
             text: "요청정보를 저장하였습니다.",
             confirmButtonText: "확인",
           });
+          console.log("confirm::::::", dtoParam);
+
           getDealInfo_TB04050S(dealNo);
         },
         error: function () {
@@ -465,11 +467,28 @@ const TB04050Sjs = (function () {
   }
 
   function resetAllData() {
-    $("input").val("");
+    $("#TB04050S_issDt").val("");
+    $("#TB04050S_rclmDt").val("");
+    $("#TB04050S_smit").val("");
+    $("#TB04050S_valtDt").val("");
+    $("#TB04050S_issAmt").val("");
+    $("#TB04050S_smit").val("");
     $("textarea").val("");
     $("select").each(function () {
+      $(this).prop("selectedIndex", 2);
+    });
+    $(":radio[name='TB04050S_issLtrYN'][value='1']")
+      .prop("checked", true)
+      .trigger("change");
+    $(":radio[name='TB04050S_issSttsCd'][value='1']")
+      .prop("checked", true)
+      .trigger("change");
+    $(".dealInfoBox select").each(function () {
       $(this).prop("selectedIndex", 0);
     });
+    $(".dealInfoBox input[type='text']").val("");
+
+    loadUserAuth();
   }
 
   return {

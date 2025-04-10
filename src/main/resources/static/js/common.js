@@ -457,6 +457,8 @@ function selectorNumberFormater(selector) {
     deleteType = 0;
   });
 
+  selector.attr('max-length', 20)
+
   selector.val(0);
 }
 

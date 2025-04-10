@@ -536,7 +536,6 @@ function setArdyBzepInfo(rowData) {
 			break;
 		case "TB07230S":
 			resetPGgrids(prefix);
-			TB07230Sjs.selectSpcList();
 			break;
 		default:
 			break;
