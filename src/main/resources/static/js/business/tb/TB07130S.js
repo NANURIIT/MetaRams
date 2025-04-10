@@ -250,8 +250,8 @@ const TB07130Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
+        let detail = $("#grd_acctDtls").pqGrid("instance");
         if (data.length > 0) {
-          let detail = $("#grd_acctDtls").pqGrid("instance");
           detail.setData(data);
           detail.getData();
           console.log(data);
@@ -261,6 +261,7 @@ const TB07130Sjs = (function () {
             text: "조회된 데이터가 없습니다.",
             confirmButtonText: "확인",
           });
+          detail.setData([]);
         }
       },
       error: function () {
@@ -283,16 +284,18 @@ const TB07130Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
+        let detail = $("#grd_thdtTrDtls").pqGrid("instance");
         if (data.length > 0) {
-          let detail = $("#grd_thdtTrDtls").pqGrid("instance");
           detail.setData(data);
           detail.getData();
-        } else {
+        } 
+        else {
           Swal.fire({
             icon: "warning",
             text: "조회된 데이터가 없습니다.",
             confirmButtonText: "확인",
           });
+          detail.setData([]);
         }
       },
       error: function () {
@@ -339,6 +342,7 @@ const TB07130Sjs = (function () {
   /*******************************************************************
    * Validation
    *******************************************************************/
+  $("#TB07130S_stdrDt, #TB07130S_actsCd, #TB07130S_dprtNm").on('input', function () { resetPGgrids("TB07130S"); })
 
   /*******************************************************************
    * Event
