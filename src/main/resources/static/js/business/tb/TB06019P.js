@@ -312,7 +312,7 @@ function saveArdyBzepInfo() {
 		})
 		return;
 	}
-	else if ( !$('#TB06019P_crno').val() || $('#TB06019P_rnbn').val().length < 14 ) {
+	else if ( !$('#TB06019P_crno').val() || $('#TB06019P_crno').val().length < 14 ) {
 		Swal.fire({
 			icon: "warning"
 			, title: "Warning!"

@@ -1936,15 +1936,15 @@ const TB07040Sjs = (function () {
     $("#TB07040S_trtx").val(rowData.trtx);
     $("#TB07040S_rfnDt").val(rowData.rfnDt);
 
-    if (!Number.isInteger(rowData.trdeExrt)) {
-			$('#TB07040S_trdeExrt').val(rowData.trdeExrt + ".0");
+    if (Number.isInteger(Number(rowData.trdeExrt))) {
+			$('#TB07040S_trdeExrt').val(rowData.trdeExrt.toString() + ".0");
 		}
 		else {
 			$('#TB07040S_trdeExrt').val(rowData.trdeExrt);
 		}
 
-		if (!Number.isInteger(rowData.stdrExrt)) {
-			$('#TB07040S_stdrExrt').val(rowData.stdrExrt + ".0");
+		if (Number.isInteger(Number(rowData.stdrExrt))) {
+			$('#TB07040S_stdrExrt').val(rowData.stdrExrt.toString() + ".0");
 		}
 		else {
 			$('#TB07040S_stdrExrt').val(rowData.stdrExrt);
@@ -2419,5 +2419,6 @@ const TB07040Sjs = (function () {
     calcTrslAmt: calcTrslAmt,
     setHoldPrpsDcd: setHoldPrpsDcd,
     getDealInfoFromWF : getDealInfoFromWF,
+    inputClear: inputClear,
   };
 })();

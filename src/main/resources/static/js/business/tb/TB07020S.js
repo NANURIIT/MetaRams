@@ -1,4 +1,4 @@
-const TB07020Sjs = (function() {
+const TB07020Sjs = (function () {
 
 	let loginUsrId = '';
 	let loginUsrNm = '';
@@ -14,7 +14,7 @@ const TB07020Sjs = (function() {
 			align: "center",
 			halign: "center",
 			width: "",
-			filter: { crules: [{ condition: 'range' }] } ,
+			filter: { crules: [{ condition: 'range' }] },
 		},
 		{
 			title: "거래번호",
@@ -274,7 +274,7 @@ const TB07020Sjs = (function() {
 		}
 	]
 
-	$(document).ready(function() {
+	$(document).ready(function () {
 		loadSelectBoxContents();
 		loadUserAuth(); // 담당자 정보 조회
 
@@ -307,7 +307,7 @@ const TB07020Sjs = (function() {
 		getDealInfoFromWF();
 	});
 
-	function setGrid_TB07020S(){
+	function setGrid_TB07020S() {
 		var obj = {
 			height: 180,
 			maxHeight: 180,
@@ -317,11 +317,11 @@ const TB07020Sjs = (function() {
 			editable: false,
 			wrap: false,
 			hwrap: false,
-			numberCell: { show: false},
+			numberCell: { show: false },
 			scrollModel: { autoFit: true },
 			colModel: colM_TB07020S,
-			strNoRows : '데이터가 없습니다.',
-			cellClick: function(event, ui) {
+			strNoRows: '데이터가 없습니다.',
+			cellClick: function (event, ui) {
 				var rowData = ui.rowData;
 				getBuyDetail(rowData);
 			}
@@ -350,42 +350,42 @@ const TB07020Sjs = (function() {
 
 	function loadUserAuth() {
 		$.ajax({
-		type: "GET",
-		url: "/getUserAuth",
-		dataType: "json",
-		success: function(data) {
-			loginUserId = data.eno;
-			$('#TB07020S_dprtCd').val(data.dprtCd);
-			$('#TB07020S_dprtNm').val(data.dprtNm);
+			type: "GET",
+			url: "/getUserAuth",
+			dataType: "json",
+			success: function (data) {
+				loginUserId = data.eno;
+				$('#TB07020S_dprtCd').val(data.dprtCd);
+				$('#TB07020S_dprtNm').val(data.dprtNm);
 
-			$('#TB07020S_empNo').val(data.eno);
-			$('#TB07020S_empNm').val(data.empNm);
+				$('#TB07020S_empNo').val(data.eno);
+				$('#TB07020S_empNm').val(data.empNm);
 
-			loginUsrId = data.eno;
-			loginUsrNm = data.empNm;
-			loginUsrDprtCd = data.dprtCd;
-			loginUsrDprtNm = data.dprtNm;
+				loginUsrId = data.eno;
+				loginUsrNm = data.empNm;
+				loginUsrDprtCd = data.dprtCd;
+				loginUsrDprtNm = data.dprtNm;
 
 			},
-			error : function(request,status,error) {
-				console.log(request+"\n",status,"\n",error, "\n")
+			error: function (request, status, error) {
+				console.log(request + "\n", status, "\n", error, "\n")
 			}
 		});
 	}
 
 	function getEprzCrdlCtrcAmt(prdtCd) {
 		$.ajax({
-		type: "POST",
-		url: "/TB07020S/getEprzCrdlCtrcAmt",
-		data: prdtCd,
-		dataType: "json",
-		contentType: "application/json; charset=UTF-8",
-		success: function(data) {
-			g_eprzCrdlCtrcAmt = data;
-			//alert(data);
+			type: "POST",
+			url: "/TB07020S/getEprzCrdlCtrcAmt",
+			data: prdtCd,
+			dataType: "json",
+			contentType: "application/json; charset=UTF-8",
+			success: function (data) {
+				g_eprzCrdlCtrcAmt = data;
+				//alert(data);
 			},
-			error : function(request,status,error) {
-				console.log(request+"\n",status,"\n",error, "\n")
+			error: function (request, status, error) {
+				console.log(request + "\n", status, "\n", error, "\n")
 			}
 		});
 	}
@@ -406,10 +406,10 @@ const TB07020Sjs = (function() {
 			var etprCrdtGrntTrKindCd = '82'; //매도
 		}
 		var paramData = {
-			'trDt' : trDt
-			, 'prdtCd' : prdtCd
-			, 'etprCrdtGrntTrKindCd' : etprCrdtGrntTrKindCd
-			, 'nsFndCd'	: nsFndCd
+			'trDt': trDt
+			, 'prdtCd': prdtCd
+			, 'etprCrdtGrntTrKindCd': etprCrdtGrntTrKindCd
+			, 'nsFndCd': nsFndCd
 		};
 
 		$.ajax({
@@ -417,58 +417,58 @@ const TB07020Sjs = (function() {
 			url: "/TB07020S/getBuyList",
 			data: paramData,
 			dataType: "json",
-			beforeSend: function(){
+			beforeSend: function () {
 				$("#TB07020S_tableList").pqGrid("setData", []);
 				//compClear();
 				inputClear();
 				$("#TB07020S_tableList").pqGrid("option", "strNoRows", "조회 중입니다...");
 			},
-			success: function(data) {
+			success: function (data) {
 
 				if (data.length > 0) {
 					var newData = [];
 
-					data.forEach(function(item){
+					data.forEach(function (item) {
 						var trCls = "매수";
 
 						var newRow = {
-							"trDt"				: formatDate(item.trDt),
-							"trSn"				: item.trSn,
-							"trCls"				: trCls,
-							"fndCd"				: item.fndCd,
-							"prdtCd"			: item.prdtCd,
-							"prdtNm"			: item.prdtNm,
-							"holdPrpsDcdNm"		: item.holdPrpsDcdNm,
-							"trCrryCd"			: item.trCrryCd,
-							"trQnt"				: isEmpty(item.trQnt) ? '' : addComma(item.trQnt),
-							"trUnpr"			: isEmpty(item.trUnpr) ? '' : addComma(item.trUnpr),
-							"trAmt"				: isEmpty(item.trAmt)?'':addComma(item.trAmt),
-							"trdeExrt"			: isEmpty(item.trdeExrt)?'':addComma(item.trdeExrt),
-							"trslAmt"			: isEmpty(item.trslAmt)?'':addComma(item.trslAmt),
-							"trDptCd"			: item.trDptCd,
-							"trDptNm"			: item.trDptNm,
-							"prfdCorpIntx"		: isEmpty(item.prfdCorpIntx)?'':addComma(item.prfdCorpIntx),
-							"rqsEmpno"			: item.rqsEmpno,
-							"rqsEmpNm"			: item.rqsEmpNm,
-							"holdPrpsDcd"		: item.holdPrpsDcd,
-							"trtx"				: isEmpty(item.trtx)?'':addComma(item.trtx),
-							"fndNm"				: item.fndNm,
-							"fnltCd"			: item.fnltCd,
-							"fnltNm"			: item.fnltNm,
-							"etprCrdtGrntTrKindCd"	: item.etprCrdtGrntTrKindCd,
-							"stlAcno"			: item.stlAcno,
-							"rfnDt"				: formatDate(item.rfnDt),
-							"stdrExrt"			: isEmpty(item.stdrExrt)?'0.00':addComma(item.stdrExrt),
-							"excSn"				: isEmpty(item.excSn)?'':addComma(item.excSn),
-							"wholIssuShqt"		: isEmpty(item.wholIssuShqt)?'0':addComma(item.wholIssuShqt),
-							"hldgShqt"			: isEmpty(item.hldgShqt)?'0':addComma(item.hldgShqt),
-							"qotaRt"			: isEmpty(item.qotaRt)?'0.00':addComma(Number(item.qotaRt).toFixed(8)),
-							"evlPflsAmt"		: isEmpty(item.evlPflsAmt)?'0':addComma(item.evlPflsAmt),
-							"tradPflsAmt"		: isEmpty(item.tradPflsAmt)?'0':addComma(item.tradPflsAmt),
-							"eprzCrdlCtrcAmt"	: isEmpty(item.eprzCrdlCtrcAmt)?'':addComma(item.eprzCrdlCtrcAmt),
-							"krwTrslExcBlce"	: isEmpty(item.krwTrslExcBlce)?'0':addComma(item.krwTrslExcBlce),
-							"krwTrslExcAmt"		: isEmpty(item.krwTrslExcAmt)?'0':addComma(item.krwTrslExcAmt),
-							"avrUnpr"			: isEmpty(item.avrUnpr)?'0':addComma(item.avrUnpr)
+							"trDt": formatDate(item.trDt),
+							"trSn": item.trSn,
+							"trCls": trCls,
+							"fndCd": item.fndCd,
+							"prdtCd": item.prdtCd,
+							"prdtNm": item.prdtNm,
+							"holdPrpsDcdNm": item.holdPrpsDcdNm,
+							"trCrryCd": item.trCrryCd,
+							"trQnt": isEmpty(item.trQnt) ? '' : addComma(item.trQnt),
+							"trUnpr": isEmpty(item.trUnpr) ? '' : addComma(item.trUnpr),
+							"trAmt": isEmpty(item.trAmt) ? '' : addComma(item.trAmt),
+							"trdeExrt": isEmpty(item.trdeExrt) ? '' : addComma(item.trdeExrt),
+							"trslAmt": isEmpty(item.trslAmt) ? '' : addComma(item.trslAmt),
+							"trDptCd": item.trDptCd,
+							"trDptNm": item.trDptNm,
+							"prfdCorpIntx": isEmpty(item.prfdCorpIntx) ? '' : addComma(item.prfdCorpIntx),
+							"rqsEmpno": item.rqsEmpno,
+							"rqsEmpNm": item.rqsEmpNm,
+							"holdPrpsDcd": item.holdPrpsDcd,
+							"trtx": isEmpty(item.trtx) ? '' : addComma(item.trtx),
+							"fndNm": item.fndNm,
+							"fnltCd": item.fnltCd,
+							"fnltNm": item.fnltNm,
+							"etprCrdtGrntTrKindCd": item.etprCrdtGrntTrKindCd,
+							"stlAcno": item.stlAcno,
+							"rfnDt": formatDate(item.rfnDt),
+							"stdrExrt": isEmpty(item.stdrExrt) ? '0.00' : addComma(item.stdrExrt),
+							"excSn": isEmpty(item.excSn) ? '' : addComma(item.excSn),
+							"wholIssuShqt": isEmpty(item.wholIssuShqt) ? '0' : addComma(item.wholIssuShqt),
+							"hldgShqt": isEmpty(item.hldgShqt) ? '0' : addComma(item.hldgShqt),
+							"qotaRt": isEmpty(item.qotaRt) ? '0.00' : addComma(Number(item.qotaRt).toFixed(8)),
+							"evlPflsAmt": isEmpty(item.evlPflsAmt) ? '0' : addComma(item.evlPflsAmt),
+							"tradPflsAmt": isEmpty(item.tradPflsAmt) ? '0' : addComma(item.tradPflsAmt),
+							"eprzCrdlCtrcAmt": isEmpty(item.eprzCrdlCtrcAmt) ? '' : addComma(item.eprzCrdlCtrcAmt),
+							"krwTrslExcBlce": isEmpty(item.krwTrslExcBlce) ? '0' : addComma(item.krwTrslExcBlce),
+							"krwTrslExcAmt": isEmpty(item.krwTrslExcAmt) ? '0' : addComma(item.krwTrslExcAmt),
+							"avrUnpr": isEmpty(item.avrUnpr) ? '0' : addComma(item.avrUnpr)
 
 						}
 
@@ -494,70 +494,70 @@ const TB07020Sjs = (function() {
 
 		//alert(strVal);
 
-		if (strVal ==='등록') {
-			if ( isNotEmpty(trSn)) {
+		if (strVal === '등록') {
+			if (isNotEmpty(trSn)) {
 				Swal.fire({
-								icon              : 'warning'
-								, title             : "[매수거래] 등록 Warning!!"
-								, text              : "[매수거래] 등록은 거래번호를 미입력 하셔야 합니다."
-								, confirmButtonText : "확인"
-							});
+					icon: 'warning'
+					, title: "[매수거래] 등록 Warning!!"
+					, text: "[매수거래] 등록은 거래번호를 미입력 하셔야 합니다."
+					, confirmButtonText: "확인"
+				});
 				return false;
 			}
 
-			if(parseFloat($('#TB07020S_trQnt').val().replaceAll(',', '')) > (parseFloat($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))-parseFloat($('#TB07020S_hldgShqt').val().replaceAll(',', '')))){
-				
-				var validTrQnt = parseFloat($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))-parseFloat($('#TB07020S_hldgShqt').val().replaceAll(',', ''));
+			if (parseFloat($('#TB07020S_trQnt').val().replaceAll(',', '')) > (parseFloat($('#TB07020S_wholIssuShqt').val().replaceAll(',', '')) - parseFloat($('#TB07020S_hldgShqt').val().replaceAll(',', '')))) {
+
+				var validTrQnt = parseFloat($('#TB07020S_wholIssuShqt').val().replaceAll(',', '')) - parseFloat($('#TB07020S_hldgShqt').val().replaceAll(',', ''));
 				var stringValidTrQnt = addComma(validTrQnt);
 
 				Swal.fire({
-					icon              : 'warning'
-					, title             : "[매수거래] 등록 Warning!!"
-					, text              : "[매수거래] 최대입력가능수량은 " + stringValidTrQnt + " 입니다."
-					, confirmButtonText : "확인"
+					icon: 'warning'
+					, title: "[매수거래] 등록 Warning!!"
+					, text: "[매수거래] 최대입력가능수량은 " + stringValidTrQnt + " 입니다."
+					, confirmButtonText: "확인"
 				});
 				return false;
 			}
 		}
 		else {
-			if ( isEmpty(trSn)) {
+			if (isEmpty(trSn)) {
 				Swal.fire({
-								icon              : 'warning'
-								, title             : "[매수거래] 취소 Warning!!"
-								, text              : "[매수거래] 취소할 거래번호를 선택해주세요."
-								, confirmButtonText : "확인"
-							});
+					icon: 'warning'
+					, title: "[매수거래] 취소 Warning!!"
+					, text: "[매수거래] 취소할 거래번호를 선택해주세요."
+					, confirmButtonText: "확인"
+				});
 				return false;
 			}
 		}
 
 		Swal.fire({
 			icon: 'warning'
-		,title: '[매수거래] ' + strVal + (strVal=='취소'?'거래 : ':'') + (strVal=='취소'?trSn:'')
-		,text : (strVal=='등록'?'등록을':'취소를') + ' 실행하시겠습니까?'
-		,showCancelButton: true
-		,confirmButtonColor: '#3085d6'
-		,cancelButtonColor: '#d33'
-		,confirmButtonText: '확인'
-		,cancelButtonText: '취소'
+			, title: '[매수거래] ' + strVal + (strVal == '취소' ? '거래 : ' : '') + (strVal == '취소' ? trSn : '')
+			, text: (strVal == '등록' ? '등록을' : '취소를') + ' 실행하시겠습니까?'
+			, showCancelButton: true
+			, confirmButtonColor: '#3085d6'
+			, cancelButtonColor: '#d33'
+			, confirmButtonText: '확인'
+			, cancelButtonText: '취소'
 		}).then((result) => {
 			if (result.isConfirmed) {
 				//callTran();
-				if($('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '등록' ) {
+				if ($('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '등록') {
 					g_eprzCrdlCtrcAmt = $('#TB07020S_eprzCrdlCtrcAmt').val().replaceAll(',', '');
 					g_krwTrslExcBlce = $('#TB07020S_krwTrslExcBlce').val().replaceAll(',', '');
 					//g_krwTrslExcAmt = $('#TB07020S_krwTrslExcAmt').val().replaceAll(',', '');
 					var paramData = makeParam();
-				}else{
+				} else {
 
-					if ( !isEmpty(trSn)) {
+					if (!isEmpty(trSn)) {
 						var paramData = makeParam();
-					}else{
+					} else {
 						Swal.fire({
-							icon              : 'warning'
-							, title             : "[매수거래] 취소 Warning!!"
-							, text              : "[매수거래] 취소 거래정보를 선택해주세요."
-							, confirmButtonText : "확인"
+							icon: 'warning'
+							, title: "[매수거래] 취소 Warning!!"
+							, text: "[매수거래] 취소 거래정보를 선택해주세요."
+							, confirmButtonText: "확인"
 						});
 					}
 				}
@@ -570,15 +570,15 @@ const TB07020Sjs = (function() {
 	function makeParam() {
 		var inputDcd; // 입력구분 : 1:등록, 2:취소
 		// 등록시 일련번호 채번
-		if($('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '등록' ) {
+		if ($('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '등록') {
 			// 거래번호 조회
 			//trSn ='';
 			inputDcd = '1';
 			var prdtCd = $('#TB07020S_input_prdtCd').val();  // 상품코드
 			var excSn = '1';                                 // 실행일련번호
 			var paramData2 = {
-				'prdtCd' : prdtCd
-				, 'excSn' : excSn
+				'prdtCd': prdtCd
+				, 'excSn': excSn
 			};
 
 			$.ajax({
@@ -586,16 +586,16 @@ const TB07020Sjs = (function() {
 				url: "/TB07020S/getTrSn",
 				data: paramData2,
 				dataType: "json",
-				success: function(data) {
+				success: function (data) {
 					var result = data;
 					trSn = data;
 					bessniseFunction(trSn, inputDcd);
 				},
-				error : function(request,status,error) {
-					console.log(request+"\n",status,"\n",error, "\n")
+				error: function (request, status, error) {
+					console.log(request + "\n", status, "\n", error, "\n")
 				}
 			});
-		}else { //취소시
+		} else { //취소시
 			inputDcd = '2';
 			trSn = $('#TB07020S_trSn').val();                                // 거래일련번호
 			bessniseFunction(trSn, inputDcd);
@@ -617,24 +617,24 @@ const TB07020Sjs = (function() {
 			var holdPrpsDcd = $('#TB07020S_H002').val();                     // 보유목적구분코드
 			var ippDcd;                                                      // 입출구분코드
 			var trQnt = Number($('#TB07020S_trQnt').val().replaceAll(',', ''));      // 거래수량
-				trQnt = (inputDcd=='1'?1:-1) * trQnt;
+			trQnt = (inputDcd == '1' ? 1 : -1) * trQnt;
 			var trUnpr = Number($('#TB07020S_trUnpr').val().replaceAll(',', ''));    // 거래단가
-				//trUnpr = (inputDcd=='1'?1:-1) * trUnpr;
+			//trUnpr = (inputDcd=='1'?1:-1) * trUnpr;
 			var trAmt = Number($('#TB07020S_trAmt').val().replaceAll(',', ''));      // 거래금액
-				trAmt = (inputDcd=='1'?1:-1) * trAmt;
+			trAmt = (inputDcd == '1' ? 1 : -1) * trAmt;
 			//var trtx = $('#TB07020S_trtx').val().replaceAll(',', '');      // 거래세
-			var trtx   = 0; 												 // 거래세
-			var fee    = 0; 											     // 수수료
+			var trtx = 0; 												 // 거래세
+			var fee = 0; 											     // 수수료
 			var fee = Number($('#TB07020S_trslAmt').val().replaceAll(',', '')) * g_feeRt * g_isttRt; // 수수료
-				fee = (inputDcd=='1'?1:-1) * fee;
+			fee = (inputDcd == '1' ? 1 : -1) * fee;
 			var lTrAmt = Number($('#TB07020S_trslAmt').val().replaceAll(',', ''));    // 거래금액 정산금액계산용
 			var lTrtx = 0;                                                    // 거래세 정산금액계산용
 			var lFee = Number(lTrAmt * g_feeRt * g_isttRt);                           // 수수료 정산금액계산용
 			var excalAmt = lTrAmt;                         // 정산금액
-				excalAmt = (inputDcd=='1'?1:-1) * excalAmt;
+			excalAmt = (inputDcd == '1' ? 1 : -1) * excalAmt;
 			var trdeExrt = Number($('#TB07020S_trdeExrt').val().replaceAll(',', ''));// 매매환율
 			var trslAmt = Number($('#TB07020S_trslAmt').val().replaceAll(',', ''));  // 환산금액
-				trslAmt = (inputDcd=='1'?1:-1) * trslAmt;
+			trslAmt = (inputDcd == '1' ? 1 : -1) * trslAmt;
 			var date = new Date();
 			var trDt = getFormatDate(date); 								 // 거래일자
 			var stlDt; 														 // 결제일자
@@ -644,12 +644,12 @@ const TB07020Sjs = (function() {
 			var sctyAcno = 0;                                                // 증권계좌번호
 			var fndsIstrSn = 0;                                              // 자금지시일련번호
 			var rqsEmpno = $('#TB07020S_empNo').val();                       // 신청사원번호
-			var apvlYn = (inputDcd=='1'?'Y':'N');                            // 승인여부
-			var cnclYn = (inputDcd=='1'?'N':'Y');                            // 취소여부
+			var apvlYn = (inputDcd == '1' ? 'Y' : 'N');                            // 승인여부
+			var cnclYn = (inputDcd == '1' ? 'N' : 'Y');                            // 취소여부
 			//var rfnDt = $('#TB07020S_rfnDt').val().replaceAll('-', '');    // 배당일자 //환불일자
 			var rfnDt = '';                                                  // 배당일자
-			var alctQnt  = 0;                                                // 배정수량
-			var rfnAmt  = 0;                                                 // 환불금액
+			var alctQnt = 0;                                                // 배정수량
+			var rfnAmt = 0;                                                 // 환불금액
 			var rfnGoldKrwFndsIstrSn = 0;                                    // 환불금원화자금지시일련번호
 			var sttmNo = 0;                                                  // 전표번호
 			var rfnSttmNo = 0;                                               // 환불전표번호
@@ -678,10 +678,10 @@ const TB07020Sjs = (function() {
 			//var trSn                       ;                                // 거래일련번호
 			//var excSn                      ;                                // 실행일련번호
 			//var trDt                       ;                                // 거래일자
-			var trStatCd = (inputDcd=='1'?'01':'12');                         // 거래상태코드 01:정상,11:취소원거래,12:취소거래
+			var trStatCd = (inputDcd == '1' ? '01' : '12');                         // 거래상태코드 01:정상,11:취소원거래,12:취소거래
 			//var etprCrdtGrntTrKindCd       ;                                // 거래종류코드
-			var dealTrAmt = (inputDcd=='1'?1:-1) * trAmt;                                            // 딜거래금액
-			var dealTrPrca = (inputDcd=='1'?1:-1) * trAmt;                                           // 딜거래원금
+			var dealTrAmt = (inputDcd == '1' ? 1 : -1) * trAmt;                                            // 딜거래금액
+			var dealTrPrca = (inputDcd == '1' ? 1 : -1) * trAmt;                                           // 딜거래원금
 			var trIntAmt = 0;                                                 // 거래이자금액
 			var dealRdptObjtPrca = 0;                                         // 딜상환대상원금
 			var dealMrdpPrca = 0;                                             // 딜중도상환원금
@@ -692,28 +692,28 @@ const TB07020Sjs = (function() {
 			var trFeeAmt = lFee;                                              // 거래수수료금액
 			var costAmt = lTrtx;                                              // 비용금액
 			var trCrcyCd = $('#TB07020S_I027').val();                         // 거래통화코드
-			var wcrcTrslRt = trdeExrt ;                                       // 원화환산율
+			var wcrcTrslRt = trdeExrt;                                       // 원화환산율
 			var wcrcTrslTrPrca = trslAmt;                                     // 원화환산거래원금
 			var wcrcTrslTrIntAmt = 0;                                         // 원화환산거래이자금액
 			var wcrcTrslTrFeeAmt = lFee;                                      // 원화환산거래수수료금액
 			var wcrcTrslCostAmt = lTrtx;                                      // 원화환산비용금액
 			var actgAfrsCd = '10';                                            // 회계업무코드
-			var actgUnitAfrsCd = etprCrdtGrntTrKindCd ;                       // 회계단위업무코드
+			var actgUnitAfrsCd = etprCrdtGrntTrKindCd;                       // 회계단위업무코드
 			var actgTrCd = inputDcd;                                          // 회계거래코드
 			var actgErlmSeq = trSn;                                           // 회계등록순번
 			var rkfrDt = trDt;                                                // 기산일자
 			var fndsDvsnCd;                                                   // 자금구분코드
 			var rctmIsttCd = stlXtnlIsttCd;                                   // 입금기관코드
-			var rctmBano   = stlAcno;                                         // 입금은행계좌번호
+			var rctmBano = stlAcno;                                         // 입금은행계좌번호
 			var dpowName;                                                     // 예금주명
-			var hdwrPrcsYn ='N';                                              // 수기처리여부
+			var hdwrPrcsYn = 'N';                                              // 수기처리여부
 			var acptPtclSmtlAmt = 0;                                          // 수납내역합계금액
 			var dealAltnAmt = 0;                                              // 딜대체금액
 			var dealCashAmt = 0;                                              // 딜현금금액
 			var dealBkchAmt = 0;                                              // 딜자기앞수표금액
 			var dealCkblAmt = 0;                                              // 딜타점권금액
-			var billPoutYn ='N';                                              // 계산서출력여부
-			var trbkPoutYn ='N';                                              // 거래장출력여부
+			var billPoutYn = 'N';                                              // 계산서출력여부
+			var trbkPoutYn = 'N';                                              // 거래장출력여부
 			var rclmDvsnCd;                                                   // 회수구분코드
 			var pucrIntAltnAmt = 0;                                           // 환출이자대체금액
 			var pucrIntRctmAmt = 0;                                           // 환출이자입금금액
@@ -721,7 +721,7 @@ const TB07020Sjs = (function() {
 			var imptStmpAmt = 0;                                              // 수입인지금액
 			var feeTotAmt = 0;                                                // 수수료총금액
 			var rvseCnclDvsnCd;                                               // 정정취소구분코드
-			var rvseCnclRsonText =' ';                                        // 정정취소사유내용
+			var rvseCnclRsonText = ' ';                                        // 정정취소사유내용
 			var rvseCnclTrSeq = 0;                                            // 정정취소거래순번
 			var trAfLoanRmnd = 0;                                             // 거래이후대출잔액
 			var rdptTmod = 0;                                                 // 상환회차
@@ -732,8 +732,8 @@ const TB07020Sjs = (function() {
 			var trStfno = $('#TB07020S_empNo').val();                         // 거래직원번호
 			var dcfcStfno = 0;                                                // 결재자직원번호
 			var clmSeq = 0;                                                   // 청구순번
-			var actgSynsCd ='10';                                             // 회계적요코드
-			var synsText = (inputDcd=='1'?'기타투자매수':'기타투자매수취소'); // 적요내용
+			var actgSynsCd = '10';                                             // 회계적요코드
+			var synsText = (inputDcd == '1' ? '기타투자매수' : '기타투자매수취소'); // 적요내용
 			var taxBillEvdcErlmDt;                                            // 세금계산서증빙등록일자
 			var taxBillEvdcErlmSeq = 0;                                       // 세금계산서증빙등록순번
 			var taxBillPrcsSeq = 0;                                           // 세금계산서처리순번
@@ -747,25 +747,25 @@ const TB07020Sjs = (function() {
 			var dfrmFeeClmObjtAmt = 0;                                        // 지급수수료청구대상금액
 			var mrdpFeeAmt = 0;                                               // 중도상환수수료금액
 			var chckIssuIsttName;                                             // 수표발행기관명
-			var mrdpYn ='N';                                                  // 중도상환여부
+			var mrdpYn = 'N';                                                  // 중도상환여부
 			var rctmDt;                                                       // 입금일자
 			var trObjtBsnNo = 0;                                              // 거래대상기업체번호
 			var noprErngEtcAmt = 0;                                           // 영업외수익기타금액
 			var noprCostEtcAmt = 0;                                           // 영업외비용기타금액
-			var rcvbRstrYn ='N';                                              // 미수환원여부
-			var rcvbYn ='N';                                                  // 미수여부
+			var rcvbRstrYn = 'N';                                              // 미수환원여부
+			var rcvbYn = 'N';                                                  // 미수여부
 
 			// IBIMS402B	딜실행기본;
 			// var prdtCd                     ;                               // 상품코드
 			// var excSn                      ;                               // 실행일련번호
-			var ldgSttsCd = (inputDcd=='1'?'1':'2');                          // 원장상태코드
+			var ldgSttsCd = (inputDcd == '1' ? '1' : '2');                          // 원장상태코드
 			var crryCd = trCrcyCd;                                            // 통화코드
 			var excDt = trDt;                                                 // 실행일자
 			var expDt = rfnDt;                                                // 만기일자
 			var eprzCrdlCtrcAmt = $('#TB07020S_eprzCrdlCtrcAmt').val().replaceAll(',', ''); // 약정금액
 			var krwTrslExcBlce = $('#TB07020S_krwTrslExcBlce').val().replaceAll(',', ''); // 매수가능금액
-			var dealExcAmt = (inputDcd=='1'?1:-1) * trAmt;                                           // 딜실행금액
-			var dealExcBlce = (inputDcd=='1'?1:-1) * trAmt;                                        // 딜실행잔액
+			var dealExcAmt = (inputDcd == '1' ? 1 : -1) * trAmt;                                           // 딜실행금액
+			var dealExcBlce = (inputDcd == '1' ? 1 : -1) * trAmt;                                        // 딜실행잔액
 			// if ( Number(eprzCrdlCtrcAmt) == Number(krwTrslExcBlce)) {
 			// 	dealExcBlce = eprzCrdlCtrcAmt - trAmt;
 			// }
@@ -816,194 +816,194 @@ const TB07020Sjs = (function() {
 
 			// IBIMS402H	딜실행기본이력 rgstSn; //등록일련번호만 추가 상동
 			paramData_405B = {
-				'prdtCd' : prdtCd
-				,'trSn'  : (trSn /1)
-				,'excSn' : (excSn /1)
-				,'etprCrdtGrntTrKindCd' : etprCrdtGrntTrKindCd
-				,'nsFndCd'              : nsFndCd
-				,'synsCd'               : synsCd
-				,'holdPrpsDcd'          : holdPrpsDcd
-				,'ippDcd'               : ippDcd
-				,'trQnt'                : (trQnt                /1)
-				,'trUnpr'               : (trUnpr               /1)
-				,'trAmt'                : (trAmt                /1)
-				,'trtx'                 : (trtx                 /1)
-				,'fee'                  : (fee                  /1)
-				,'excalAmt'             : (excalAmt             /1)
-				,'trDt'                 : trDt
-				,'stlDt'                : stlDt
-				,'opntNsFndCd'          : opntNsFndCd
-				,'opntTrSn'             : (opntTrSn             /1)
-				,'xtnlIsttCd'           : xtnlIsttCd
-				,'sctyAcno'             : (sctyAcno             /1)
-				,'fndsIstrSn'           : (fndsIstrSn           /1)
-				,'rqsEmpno'             : rqsEmpno
-				,'apvlYn'               : apvlYn
-				,'cnclYn'               : cnclYn
-				,'rfnDt'                : rfnDt
-				,'alctQnt'              : (alctQnt              /1)
-				,'rfnAmt'               : (rfnAmt               /1)
-				,'rfnGoldKrwFndsIstrSn' : (rfnGoldKrwFndsIstrSn /1)
-				,'sttmNo'               : (sttmNo               /1)
-				,'rfnSttmNo'            : (rfnSttmNo            /1)
-				,'rfnCnclYn'            : rfnCnclYn
-				,'stlAcno'              : (stlAcno              /1)
-				,'stlXtnlIsttCd'        : stlXtnlIsttCd
-				,'lstDt'                : lstDt
-				,'bntpSpacYn'           : bntpSpacYn
-				,'trDptCd'              : trDptCd
-				,'trdeExrt'             : (trdeExrt             /1)
-				,'trslAmt'              : (trslAmt              /1)
-				,'prfdCorpIntx'         : (prfdCorpIntx         /1)
-				,'wholIssuShqt'         : (wholIssuShqt         /1)
+				'prdtCd': prdtCd
+				, 'trSn': (trSn / 1)
+				, 'excSn': (excSn / 1)
+				, 'etprCrdtGrntTrKindCd': etprCrdtGrntTrKindCd
+				, 'nsFndCd': nsFndCd
+				, 'synsCd': synsCd
+				, 'holdPrpsDcd': holdPrpsDcd
+				, 'ippDcd': ippDcd
+				, 'trQnt': (trQnt / 1)
+				, 'trUnpr': (trUnpr / 1)
+				, 'trAmt': (trAmt / 1)
+				, 'trtx': (trtx / 1)
+				, 'fee': (fee / 1)
+				, 'excalAmt': (excalAmt / 1)
+				, 'trDt': trDt
+				, 'stlDt': stlDt
+				, 'opntNsFndCd': opntNsFndCd
+				, 'opntTrSn': (opntTrSn / 1)
+				, 'xtnlIsttCd': xtnlIsttCd
+				, 'sctyAcno': (sctyAcno / 1)
+				, 'fndsIstrSn': (fndsIstrSn / 1)
+				, 'rqsEmpno': rqsEmpno
+				, 'apvlYn': apvlYn
+				, 'cnclYn': cnclYn
+				, 'rfnDt': rfnDt
+				, 'alctQnt': (alctQnt / 1)
+				, 'rfnAmt': (rfnAmt / 1)
+				, 'rfnGoldKrwFndsIstrSn': (rfnGoldKrwFndsIstrSn / 1)
+				, 'sttmNo': (sttmNo / 1)
+				, 'rfnSttmNo': (rfnSttmNo / 1)
+				, 'rfnCnclYn': rfnCnclYn
+				, 'stlAcno': (stlAcno / 1)
+				, 'stlXtnlIsttCd': stlXtnlIsttCd
+				, 'lstDt': lstDt
+				, 'bntpSpacYn': bntpSpacYn
+				, 'trDptCd': trDptCd
+				, 'trdeExrt': (trdeExrt / 1)
+				, 'trslAmt': (trslAmt / 1)
+				, 'prfdCorpIntx': (prfdCorpIntx / 1)
+				, 'wholIssuShqt': (wholIssuShqt / 1)
 				//,'hldgShqt'             : (hldgShqt             /1)
-				,'qotaRt'               : (qotaRt               /1)
-				,'evlPflsAmt'          : (evlPflsAmt          /1)
-				,'tradPflsAmt'          : (tradPflsAmt          /1)
+				, 'qotaRt': (qotaRt / 1)
+				, 'evlPflsAmt': (evlPflsAmt / 1)
+				, 'tradPflsAmt': (tradPflsAmt / 1)
 				//,'hndDetlDtm'           : hndDetlDtm
-				,'hndEmpno'             : hndEmpno
-				,'hndTmnlNo'            : hndTmnlNo
-				,'hndTrId'              : hndTrId
-				,'guid'                 : guid
+				, 'hndEmpno': hndEmpno
+				, 'hndTmnlNo': hndTmnlNo
+				, 'hndTrId': hndTrId
+				, 'guid': guid
 			};
 
 			paramData_410B = {
-				'prdtCd' : prdtCd
-				,'trSn'                : (trSn /1)
-				,'excSn'               : (inputDcd=='1'?1:2)
-				,'trDt'                : trDt
-				,'trStatCd'            : trStatCd
-				,'etprCrdtGrntTrKindCd': etprCrdtGrntTrKindCd
-				,'dealTrAmt'           : (dealTrAmt            /1)
-				,'dealTrPrca'          : (dealTrPrca           /1)
-				,'trIntAmt'            : (trIntAmt             /1)
-				,'dealRdptObjtPrca'    : (dealRdptObjtPrca     /1)
-				,'dealMrdpPrca'        : (dealMrdpPrca         /1)
-				,'nrmlIntAmt'          : (nrmlIntAmt           /1)
-				,'crdtGrntOvduIntAmt'  : (crdtGrntOvduIntAmt   /1)
-				,'crdtGrntRcvbIntAmt'  : (crdtGrntRcvbIntAmt   /1)
-				,'pucrIntAmt'          : (pucrIntAmt           /1)
-				,'trFeeAmt'            : (trFeeAmt             /1)
-				,'costAmt'             : (costAmt              /1)
-				,'trCrryCd'            : trCrcyCd
-				,'wcrcTrslRt'          : (wcrcTrslRt           /1)
-				,'wcrcTrslTrPrca'      : (wcrcTrslTrPrca       /1)
-				,'wcrcTrslTrIntAmt'    : (wcrcTrslTrIntAmt     /1)
-				,'wcrcTrslTrFeeAmt'    : (wcrcTrslTrFeeAmt     /1)
-				,'wcrcTrslCostAmt'     : (wcrcTrslCostAmt      /1)
-				,'actgAfrsCd'          : actgAfrsCd
-				,'actgUnitAfrsCd'      : actgUnitAfrsCd
-				,'actgTrCd'            : actgTrCd
-				,'actgErlmSeq'         : (actgErlmSeq          /1)
-				,'rkfrDt'              : rkfrDt
-				,'fndsDvsnCd'          : fndsDvsnCd
-				,'rctmIsttCd'          : rctmIsttCd
-				,'rctmBano'            : (rctmBano /1)
-				,'dpowName'            : (dpowName             /1)
-				,'hdwrPrcsYn'          : hdwrPrcsYn
-				,'acptPtclSmtlAmt'     : (acptPtclSmtlAmt      /1)
-				,'dealAltnAmt'         : (dealAltnAmt          /1)
-				,'dealCashAmt'         : (dealCashAmt          /1)
-				,'dealBkchAmt'         : (dealBkchAmt          /1)
-				,'dealCkblAmt'         : (dealCkblAmt          /1)
-				,'billPoutYn'          : billPoutYn
-				,'trbkPoutYn'          : trbkPoutYn
-				,'rclmDvsnCd'          : rclmDvsnCd
-				,'pucrIntAltnAmt'      : (pucrIntAltnAmt       /1)
-				,'pucrIntRctmAmt'      : (pucrIntRctmAmt       /1)
-				,'clcnFeeAmt'          : (clcnFeeAmt           /1)
-				,'imptStmpAmt'         : (imptStmpAmt          /1)
-				,'feeTotAmt'           : (feeTotAmt            /1)
-				,'rvseCnclDvsnCd'      : rvseCnclDvsnCd
-				,'rvseCnclRsonText'    : rvseCnclRsonText
-				,'rvseCnclTrSeq'       : (rvseCnclTrSeq        /1)
-				,'trAfLoanRmnd'        : (trAfLoanRmnd         /1)
-				,'rdptTmod'            : (rdptTmod             /1)
-				,'dealPxdfPrca'        : (dealPxdfPrca         /1)
-				,'pxdfIntAmt'          : (pxdfIntAmt           /1)
-				,'pxdfEtcAmt'          : (pxdfEtcAmt           /1)
-				,'orgno'               : (orgno                /1)
-				,'trStfno'             : trStfno             
-				,'dcfcStfno'           : (dcfcStfno            /1)
-				,'clmSeq'              : (clmSeq               /1)
-				,'actgSynsCd'          : actgSynsCd
-				,'synsText'            : synsText
-				,'taxBillEvdcErlmDt'   : taxBillEvdcErlmDt
-				,'taxBillEvdcErlmSeq'  : (taxBillEvdcErlmSeq   /1)
-				,'taxBillPrcsSeq'      : (taxBillPrcsSeq       /1)
-				,'billEvdcErlmDt'      : billEvdcErlmDt
-				,'billEvdcErlmSeq'     : (billEvdcErlmSeq      /1)
-				,'billPrcsSeq'         : (billPrcsSeq          /1)
-				,'vat'                 : (vat                  /1)
-				,'issuBillEvdcErlmDt'  : issuBillEvdcErlmDt
-				,'issuBillPrcsSeq'     : (issuBillPrcsSeq      /1)
-				,'dfrmFeePrcaEclsYn'   : dfrmFeePrcaEclsYn
-				,'dfrmFeeClmObjtAmt'   : (dfrmFeeClmObjtAmt    /1)
-				,'mrdpFeeAmt'          : (mrdpFeeAmt           /1)
-				,'chckIssuIsttName'    : chckIssuIsttName
-				,'mrdpYn'              : mrdpYn
-				,'rctmDt'              : rctmDt
-				,'trObjtBsnNo'         : (trObjtBsnNo          /1)
-				,'noprErngEtcAmt'      : (noprErngEtcAmt       /1)
-				,'noprCostEtcAmt'      : (noprCostEtcAmt       /1)
-				,'rcvbRstrYn'          : rcvbRstrYn
-				,'rcvbYn'              : rcvbYn
+				'prdtCd': prdtCd
+				, 'trSn': (trSn / 1)
+				, 'excSn': (inputDcd == '1' ? 1 : 2)
+				, 'trDt': trDt
+				, 'trStatCd': trStatCd
+				, 'etprCrdtGrntTrKindCd': etprCrdtGrntTrKindCd
+				, 'dealTrAmt': (dealTrAmt / 1)
+				, 'dealTrPrca': (dealTrPrca / 1)
+				, 'trIntAmt': (trIntAmt / 1)
+				, 'dealRdptObjtPrca': (dealRdptObjtPrca / 1)
+				, 'dealMrdpPrca': (dealMrdpPrca / 1)
+				, 'nrmlIntAmt': (nrmlIntAmt / 1)
+				, 'crdtGrntOvduIntAmt': (crdtGrntOvduIntAmt / 1)
+				, 'crdtGrntRcvbIntAmt': (crdtGrntRcvbIntAmt / 1)
+				, 'pucrIntAmt': (pucrIntAmt / 1)
+				, 'trFeeAmt': (trFeeAmt / 1)
+				, 'costAmt': (costAmt / 1)
+				, 'trCrryCd': trCrcyCd
+				, 'wcrcTrslRt': (wcrcTrslRt / 1)
+				, 'wcrcTrslTrPrca': (wcrcTrslTrPrca / 1)
+				, 'wcrcTrslTrIntAmt': (wcrcTrslTrIntAmt / 1)
+				, 'wcrcTrslTrFeeAmt': (wcrcTrslTrFeeAmt / 1)
+				, 'wcrcTrslCostAmt': (wcrcTrslCostAmt / 1)
+				, 'actgAfrsCd': actgAfrsCd
+				, 'actgUnitAfrsCd': actgUnitAfrsCd
+				, 'actgTrCd': actgTrCd
+				, 'actgErlmSeq': (actgErlmSeq / 1)
+				, 'rkfrDt': rkfrDt
+				, 'fndsDvsnCd': fndsDvsnCd
+				, 'rctmIsttCd': rctmIsttCd
+				, 'rctmBano': (rctmBano / 1)
+				, 'dpowName': (dpowName / 1)
+				, 'hdwrPrcsYn': hdwrPrcsYn
+				, 'acptPtclSmtlAmt': (acptPtclSmtlAmt / 1)
+				, 'dealAltnAmt': (dealAltnAmt / 1)
+				, 'dealCashAmt': (dealCashAmt / 1)
+				, 'dealBkchAmt': (dealBkchAmt / 1)
+				, 'dealCkblAmt': (dealCkblAmt / 1)
+				, 'billPoutYn': billPoutYn
+				, 'trbkPoutYn': trbkPoutYn
+				, 'rclmDvsnCd': rclmDvsnCd
+				, 'pucrIntAltnAmt': (pucrIntAltnAmt / 1)
+				, 'pucrIntRctmAmt': (pucrIntRctmAmt / 1)
+				, 'clcnFeeAmt': (clcnFeeAmt / 1)
+				, 'imptStmpAmt': (imptStmpAmt / 1)
+				, 'feeTotAmt': (feeTotAmt / 1)
+				, 'rvseCnclDvsnCd': rvseCnclDvsnCd
+				, 'rvseCnclRsonText': rvseCnclRsonText
+				, 'rvseCnclTrSeq': (rvseCnclTrSeq / 1)
+				, 'trAfLoanRmnd': (trAfLoanRmnd / 1)
+				, 'rdptTmod': (rdptTmod / 1)
+				, 'dealPxdfPrca': (dealPxdfPrca / 1)
+				, 'pxdfIntAmt': (pxdfIntAmt / 1)
+				, 'pxdfEtcAmt': (pxdfEtcAmt / 1)
+				, 'orgno': (orgno / 1)
+				, 'trStfno': trStfno
+				, 'dcfcStfno': (dcfcStfno / 1)
+				, 'clmSeq': (clmSeq / 1)
+				, 'actgSynsCd': actgSynsCd
+				, 'synsText': synsText
+				, 'taxBillEvdcErlmDt': taxBillEvdcErlmDt
+				, 'taxBillEvdcErlmSeq': (taxBillEvdcErlmSeq / 1)
+				, 'taxBillPrcsSeq': (taxBillPrcsSeq / 1)
+				, 'billEvdcErlmDt': billEvdcErlmDt
+				, 'billEvdcErlmSeq': (billEvdcErlmSeq / 1)
+				, 'billPrcsSeq': (billPrcsSeq / 1)
+				, 'vat': (vat / 1)
+				, 'issuBillEvdcErlmDt': issuBillEvdcErlmDt
+				, 'issuBillPrcsSeq': (issuBillPrcsSeq / 1)
+				, 'dfrmFeePrcaEclsYn': dfrmFeePrcaEclsYn
+				, 'dfrmFeeClmObjtAmt': (dfrmFeeClmObjtAmt / 1)
+				, 'mrdpFeeAmt': (mrdpFeeAmt / 1)
+				, 'chckIssuIsttName': chckIssuIsttName
+				, 'mrdpYn': mrdpYn
+				, 'rctmDt': rctmDt
+				, 'trObjtBsnNo': (trObjtBsnNo / 1)
+				, 'noprErngEtcAmt': (noprErngEtcAmt / 1)
+				, 'noprCostEtcAmt': (noprCostEtcAmt / 1)
+				, 'rcvbRstrYn': rcvbRstrYn
+				, 'rcvbYn': rcvbYn
 				//,'hndDetlDtm'          : hndDetlDtm
-				,'hndEmpno'            : hndEmpno
-				,'hndTmnlNo'           : hndTmnlNo
-				,'hndTrId'             : hndTrId
-				,'guid'                : guid
+				, 'hndEmpno': hndEmpno
+				, 'hndTmnlNo': hndTmnlNo
+				, 'hndTrId': hndTrId
+				, 'guid': guid
 			};
 
 			paramData_402BH = {
-				'prdtCd' : prdtCd
-				,'excSn'           : (excSn             /1)
-				,'ldgSttsCd'       : ldgSttsCd
-				,'crryCd'          : crryCd
-				,'excDt'           : excDt
-				,'expDt'           : expDt
-				,'dealExcAmt'      : (dealExcAmt        /1)
-				,'dealExcBlce'     : (dealExcBlce       /1)
-				,'krwTrslRt'       : (krwTrslRt         /1)
-				,'krwTrslExcAmt'   : (krwTrslExcAmt     /1)
-				,'krwTrslExcBlce'  : (krwTrslExcBlce    /1)
-				,'prnaDfrPrdMnum'  : (prnaDfrPrdMnum    /1)
-				,'dfrExpMnum'        : dfrExpMnum
-				,'lastPrnaRdmpDt'  : lastPrnaRdmpDt
-				,'lastIntrClcDt'   : lastIntrClcDt
-				,'nxtRdmpPrarDt'   : nxtRdmpPrarDt
-				,'nxtIntrPymDt'    : nxtIntrPymDt
-				,'intrRdmpFrqcMnum': (intrRdmpFrqcMnum  /1)
-				,'intrPymDtCd'     : intrPymDtCd
-				,'prnaRdmpFrqcMnum': (prnaRdmpFrqcMnum  /1)
-				,'prnaOvduDt'      : prnaOvduDt
-				,'intrOvduDt'      : intrOvduDt
-				,'totRdmpTmrd'     : (totRdmpTmrd       /1)
-				,'lastRdmpTmrd'    : (lastRdmpTmrd      /1)
-				,'dealIstmBlce'    : (dealIstmBlce      /1)
-				,'dealEqlRdmpAmt'  : (dealEqlRdmpAmt    /1)
-				,'istmDtmRdmpAmt'  : (istmDtmRdmpAmt    /1)
-				,'rcvbIntrAmt'     : (rcvbIntrAmt       /1)
-				,'grteDcd'         : grteDcd
-				,'pymtGrteRfrNo'   : (pymtGrteRfrNo     /1)
-				,'grteIsttCd'      : grteIsttCd
-				,'grteIsttNm'      : grteIsttNm
-				,'buyShqt'         : (buyShqt           /1)
-				,'sllShqt'         : (sllShqt           /1)
-				,'avrUnpr'         : (avrUnpr           /1)
-				,'brkgAcno'        : (brkgAcno          /1)
-				,'rctmIsttCd'      : rctmIsttCd
-				,'achdNm'          : achdNm
-				,'pymtGrteScctCtns': pymtGrteScctCtns
-				,'acbkAmt'         : (acbkAmt           /1)
-				,'dealNo'          : (dealNo            /1)
-				,'mtrDcd'          : mtrDcd
-				,'jdgmDcd'         : jdgmDcd
+				'prdtCd': prdtCd
+				, 'excSn': (excSn / 1)
+				, 'ldgSttsCd': ldgSttsCd
+				, 'crryCd': crryCd
+				, 'excDt': excDt
+				, 'expDt': expDt
+				, 'dealExcAmt': (dealExcAmt / 1)
+				, 'dealExcBlce': (dealExcBlce / 1)
+				, 'krwTrslRt': (krwTrslRt / 1)
+				, 'krwTrslExcAmt': (krwTrslExcAmt / 1)
+				, 'krwTrslExcBlce': (krwTrslExcBlce / 1)
+				, 'prnaDfrPrdMnum': (prnaDfrPrdMnum / 1)
+				, 'dfrExpMnum': dfrExpMnum
+				, 'lastPrnaRdmpDt': lastPrnaRdmpDt
+				, 'lastIntrClcDt': lastIntrClcDt
+				, 'nxtRdmpPrarDt': nxtRdmpPrarDt
+				, 'nxtIntrPymDt': nxtIntrPymDt
+				, 'intrRdmpFrqcMnum': (intrRdmpFrqcMnum / 1)
+				, 'intrPymDtCd': intrPymDtCd
+				, 'prnaRdmpFrqcMnum': (prnaRdmpFrqcMnum / 1)
+				, 'prnaOvduDt': prnaOvduDt
+				, 'intrOvduDt': intrOvduDt
+				, 'totRdmpTmrd': (totRdmpTmrd / 1)
+				, 'lastRdmpTmrd': (lastRdmpTmrd / 1)
+				, 'dealIstmBlce': (dealIstmBlce / 1)
+				, 'dealEqlRdmpAmt': (dealEqlRdmpAmt / 1)
+				, 'istmDtmRdmpAmt': (istmDtmRdmpAmt / 1)
+				, 'rcvbIntrAmt': (rcvbIntrAmt / 1)
+				, 'grteDcd': grteDcd
+				, 'pymtGrteRfrNo': (pymtGrteRfrNo / 1)
+				, 'grteIsttCd': grteIsttCd
+				, 'grteIsttNm': grteIsttNm
+				, 'buyShqt': (buyShqt / 1)
+				, 'sllShqt': (sllShqt / 1)
+				, 'avrUnpr': (avrUnpr / 1)
+				, 'brkgAcno': (brkgAcno / 1)
+				, 'rctmIsttCd': rctmIsttCd
+				, 'achdNm': achdNm
+				, 'pymtGrteScctCtns': pymtGrteScctCtns
+				, 'acbkAmt': (acbkAmt / 1)
+				, 'dealNo': (dealNo / 1)
+				, 'mtrDcd': mtrDcd
+				, 'jdgmDcd': jdgmDcd
 				//,'hndDetlDtm'      : hndDetlDtm
-				,'hndEmpno'        : hndEmpno
-				,'hndTmnlNo'       : hndTmnlNo
-				,'hndTrId'         : hndTrId
-				,'guid'            : guid
+				, 'hndEmpno': hndEmpno
+				, 'hndTmnlNo': hndTmnlNo
+				, 'hndTrId': hndTrId
+				, 'guid': guid
 			};
 
 			if (!checkParam(paramData_405B, inputDcd)) {
@@ -1011,8 +1011,8 @@ const TB07020Sjs = (function() {
 			}
 
 			if (String(inputDcd) === '1') {
-					//console.log
-					Promise.resolve()
+				//console.log
+				Promise.resolve()
 					.then(instBuyList(paramData_405B))
 					.then(instDlTrList(paramData_410B))
 					.then(chkExcInfo(prdtCd, paramData_402BH))
@@ -1028,90 +1028,90 @@ const TB07020Sjs = (function() {
 					.catch(e => {
 						Swal.fire({
 							icon: 'error'
-							,title: "Error!"
-							,text: (inputDcd=='1'?'[매수거래] 등록오류!!!':'[매수거래] 취소오류!!!')
-							,confirmButtonText: "확인"
+							, title: "Error!"
+							, text: (inputDcd == '1' ? '[매수거래] 등록오류!!!' : '[매수거래] 취소오류!!!')
+							, confirmButtonText: "확인"
 						});
 					})
 					.finally(() => {
-						getBuyList(); 
+						getBuyList();
 					});
 			}
 			else {
 				Promise.resolve()
-				.then(cancelBuyList(paramData_405B))
-				.then(instDlTrList(paramData_410B))
-				.then(chkExcInfo(prdtCd, paramData_402BH))
-				//.then(insertIBIMS402HTr(paramData_402BH))
-				.then(() => {
-					Swal.fire({
-						icon: 'success',
-						title: inputDcd == '1' ? '[매수거래] 등록' : '[매수거래] 취소',
-						text: inputDcd == '1' ? '[매수거래] 등록이 실행되었습니다.' : '[매수거래] 취소가 완료되었습니다.',
-						confirmButtonText: "확인",
+					.then(cancelBuyList(paramData_405B))
+					.then(instDlTrList(paramData_410B))
+					.then(chkExcInfo(prdtCd, paramData_402BH))
+					//.then(insertIBIMS402HTr(paramData_402BH))
+					.then(() => {
+						Swal.fire({
+							icon: 'success',
+							title: inputDcd == '1' ? '[매수거래] 등록' : '[매수거래] 취소',
+							text: inputDcd == '1' ? '[매수거래] 등록이 실행되었습니다.' : '[매수거래] 취소가 완료되었습니다.',
+							confirmButtonText: "확인",
+						});
+					})
+					.catch(e => {
+						Swal.fire({
+							icon: 'error'
+							, title: "Error!"
+							, text: (inputDcd == '1' ? '[매수거래] 등록오류!!!' : '[매수거래] 취소오류!!!')
+							, confirmButtonText: "확인"
+						});
+					})
+					.finally(() => {
+						getBuyList();
 					});
-				})
-				.catch(e => {
-					Swal.fire({
-						icon: 'error'
-						,title: "Error!"
-						,text: (inputDcd=='1'?'[매수거래] 등록오류!!!':'[매수거래] 취소오류!!!')
-						,confirmButtonText: "확인"
-					});
-				})
-				.finally(() => {
-					getBuyList(); 
-				});
 			}
 		}
 	}
 
 	function chkExcInfo(prdtCd, paramData) {
 		// alert("333 chkExcInfo: "+JSON.stringify(paramData));
-		return new Promise(function(resolve, reject) {
+		return new Promise(function (resolve, reject) {
 			$.ajax({
 				type: "POST",
 				url: "/TB07020S/chkExcInfo",
 				data: prdtCd,
 				dataType: "text",
 				contentType: "application/json; charset=UTF-8",
-				success: function(data) {
+				success: function (data) {
 					//alert(data);
 					var result = data;
-					if(isEmpty(result)) {
+					if (isEmpty(result)) {
 						// alert("444 chkExcInfo: "+JSON.stringify(paramData));
-						return new Promise(function(resolve, reject) {
+						return new Promise(function (resolve, reject) {
 							$.ajax({
 								type: "POST",
 								url: "/TB07020S/saveExcInfoNoKey",
 								data: paramData,
 								dataType: "json",
 								//contentType: "application/json; charset=UTF-8",
-								success: function(data) {
+								success: function (data) {
 									insertIBIMS402HTr(paramData_402BH);
 									resolve(data); //통신 성공하면 resolve()
 								},
-								error : function(request,status,error) {
-									console.log(request+"\n",status,"\n",error, "\n")
+								error: function (request, status, error) {
+									console.log(request + "\n", status, "\n", error, "\n")
 									reject();  //통신 실패하면 reject()
 								}
 							});
 						});
 					} else {
 						// alert("555 chkExcInfo: "+JSON.stringify(paramData));
-						return new Promise(function(resolve, reject) {
+						return new Promise(function (resolve, reject) {
 							$.ajax({
 								type: "POST",
 								url: "/TB07020S/uptExcInfoTr",
 								data: paramData,
 								dataType: "json",
 								//contentType: "application/json; charset=UTF-8",
-								success: function(data) {
+								success: function (data) {
 									insertIBIMS402HTr(paramData_402BH);
 									resolve(data); //통신 성공하면 resolve()
 								},
-								error : function(request,status,error) {
-									console.log(request+"\n",status,"\n",error, "\n")
+								error: function (request, status, error) {
+									console.log(request + "\n", status, "\n", error, "\n")
 									reject();  //통신 실패하면 reject()
 								}
 							});
@@ -1119,7 +1119,7 @@ const TB07020Sjs = (function() {
 					}
 					resolve(data); //통신 성공하면 resolve()
 				},
-				error : function (e) {
+				error: function (e) {
 					console.log("data error !! :: " + e);
 					reject();  //통신 실패하면 reject()
 				}
@@ -1129,17 +1129,17 @@ const TB07020Sjs = (function() {
 
 	function instBuyList(paramData) {
 		// alert("111 instBuyList: "+ JSON.stringify(paramData));
-		new Promise(function(resolve, reject) {
+		new Promise(function (resolve, reject) {
 			$.ajax({
 				type: "POST",
 				url: "/TB07020S/saveBuyInfo",
 				data: paramData,
 				dataType: "json",
 				//contentType: "application/json; charset=UTF-8",
-				success: function(data) {
+				success: function (data) {
 					resolve(data); //통신 성공하면 resolve()
 				},
-				error: function(error) {
+				error: function (error) {
 					reject();  //통신 실패하면 reject()
 				}
 			});
@@ -1148,36 +1148,36 @@ const TB07020Sjs = (function() {
 
 	function instDlTrList(paramData) {
 		// alert("222 instDlTrList: "+JSON.stringify(paramData));
-		new Promise(function(resolve, reject) {
+		new Promise(function (resolve, reject) {
 			$.ajax({
 				type: "POST"
-			,url: "/TB07020S/saveDlTrList"
-			,data: paramData
-			,dataType: "json"
-			//,contentType: "application/json; charset=UTF-8"
-			,success: function(data) {
+				, url: "/TB07020S/saveDlTrList"
+				, data: paramData
+				, dataType: "json"
+				//,contentType: "application/json; charset=UTF-8"
+				, success: function (data) {
 					resolve(data); //통신 성공하면 resolve()
-			}
-			,error: function(error) {
+				}
+				, error: function (error) {
 					reject();  //통신 실패하면 reject()
-			}
+				}
 			});
 		});
 	}
 
 	function cancelBuyList(paramData) {
 		//alert("instBuyList: "+ JSON.stringify(paramData));
-		return new Promise(function(resolve, reject) {
+		return new Promise(function (resolve, reject) {
 			$.ajax({
 				type: "POST",
 				url: "/TB07020S/cancelBuyInfo",
 				data: paramData,
 				dataType: "json",
 				//contentType: "application/json; charset=UTF-8",
-				success: function(data) {
+				success: function (data) {
 					resolve(data); //통신 성공하면 resolve()
 				},
-				error: function(error) {
+				error: function (error) {
 					reject();  //통신 실패하면 reject()
 				}
 			});
@@ -1186,18 +1186,18 @@ const TB07020Sjs = (function() {
 
 	function insertIBIMS402HTr(paramData) {
 		// alert("666 insertIBIMS402HTr: "+ JSON.stringify(paramData));
-		new Promise(function(resolve, reject) {
+		new Promise(function (resolve, reject) {
 			$.ajax({
 				type: "POST",
 				url: "/TB07020S/insertIBIMS402HTr",
 				data: paramData,
 				dataType: "json",
 				//contentType: "application/json; charset=UTF-8",
-				success: function(data) {
+				success: function (data) {
 					getBuyList();
 					resolve(data); //통신 성공하면 resolve()
 				},
-				error: function(error) {
+				error: function (error) {
 					reject();  //통신 실패하면 reject()
 				}
 			});
@@ -1248,7 +1248,7 @@ const TB07020Sjs = (function() {
 
 
 	//조회 시 입력값 초기화
-	function inputClear(){
+	function inputClear() {
 		/* 검색조건 */
 
 		/* 상세정보 */
@@ -1309,7 +1309,7 @@ const TB07020Sjs = (function() {
 		// 클릭한 행에 active 클래스 추가
 		//$(e).addClass('table-active');
 
-		if ( $('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '등록' ) {
+		if ($('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '등록') {
 			toggleBtn2.click();
 			$('#TB07020S_trSn').val('');
 		}
@@ -1320,11 +1320,10 @@ const TB07020Sjs = (function() {
 
 		$('#TB07020S_trDt').val(rowData.trDt);
 
-		if ( $('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '취소' ) {
+		if ($('div[data-menuid="/TB07020S"] .btn.btn-s.btn-info').text() === '취소') {
 			$('#TB07020S_trSn').val(rowData.trSn);
 		}
-		else
-		{
+		else {
 			$('#TB07020S_trSn').val('');
 		}
 
@@ -1360,15 +1359,15 @@ const TB07020Sjs = (function() {
 		//$('#TB07020S_trtx').val(td.eq(19).text());
 		$('#TB07020S_rfnDt').val(rowData.rfnDt);
 
-		if (!Number.isInteger(rowData.trdeExrt)) {
-			$('#TB07020S_stdrExrt').val(rowData.trdeExrt + ".0");
+		if (Number.isInteger(Number(rowData.trdeExrt))) {
+			$('#TB07020S_stdrExrt').val(rowData.trdeExrt.toString() + ".0");
 		}
 		else {
 			$('#TB07020S_stdrExrt').val(rowData.trdeExrt);
 		}
 
-		if (!Number.isInteger(rowData.stdrExrt)) {
-			$('#TB07020S_stdrExrt').val(rowData.stdrExrt + ".0");
+		if (Number.isInteger(Number(rowData.stdrExrt))) {
+			$('#TB07020S_stdrExrt').val(rowData.stdrExrt.toString() + ".0");
 		}
 		else {
 			$('#TB07020S_stdrExrt').val(rowData.stdrExrt);
@@ -1383,7 +1382,7 @@ const TB07020Sjs = (function() {
 		// alert(rowData.trQnt);
 		// alert(Number(rowData.trQnt.replaceAll(',','')));
 
-		$('#TB07020S_evlPflsAmt').val(addComma(((Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.avrUnpr.replaceAll(',','')))-(Number(rowData.trQnt.replaceAll(',','')) * Number(rowData.trUnpr.replaceAll(',','')))).toFixed(0)));
+		$('#TB07020S_evlPflsAmt').val(addComma(((Number(rowData.trQnt.replaceAll(',', '')) * Number(rowData.avrUnpr.replaceAll(',', ''))) - (Number(rowData.trQnt.replaceAll(',', '')) * Number(rowData.trUnpr.replaceAll(',', '')))).toFixed(0)));
 
 		//$('#TB07020S_tradPflsAmt').val(td.eq(32).text());
 		$('#TB07020S_eprzCrdlCtrcAmt').val(rowData.tradPflsAmt);
@@ -1456,13 +1455,13 @@ const TB07020Sjs = (function() {
 				return false;
 			}
 			// 환산금액 기업여신약정금액
-			if (isEmpty(g_eprzCrdlCtrcAmt) || g_eprzCrdlCtrcAmt ==0) {
+			if (isEmpty(g_eprzCrdlCtrcAmt) || g_eprzCrdlCtrcAmt == 0) {
 				option.text = "해당종목의 약정을 확인하여 주십시오.";
 				openPopup(option);
 				return false;
 			}
 			// 매수가능금액
-			if (isEmpty(g_krwTrslExcBlce) || g_krwTrslExcBlce ==0) {
+			if (isEmpty(g_krwTrslExcBlce) || g_krwTrslExcBlce == 0) {
 				option.text = "매수가능금액을 확인하여 주십시오.";
 				openPopup(option);
 				return false;
@@ -1470,16 +1469,16 @@ const TB07020Sjs = (function() {
 
 			//console.log("g_eprzCrdlCtrcAmt" + g_eprzCrdlCtrcAmt);
 			// 환산금액 기업여신약정금액
-			if (Number(g_krwTrslExcBlce) - Number(paramData.excalAmt) < 0 ) {
+			if (Number(g_krwTrslExcBlce) - Number(paramData.excalAmt) < 0) {
 				var overAmt = Number(g_krwTrslExcBlce) - Number(paramData.excalAmt);
 				//option.html = "거래금액(환산금액)이 약정금액을 초과하였습니다.<br> (초과금액:" + addComma(overAmt) + ")";
 				//option.text = "거래금액(환산금액)이 약정금액을 초과하였습니다. \n(초과금액: ${addComma(Math.abs(overAmt))});
 				Swal.fire({
-							icon              : 'warning'
-							, title             : "Warning!!"
-							, html              : "거래금액(환산금액)이 약정금액을 초과하였습니다.<br> (초과금액:" + addComma(Math.abs(overAmt)) + ")"
-							, confirmButtonText : "확인"
-						});
+					icon: 'warning'
+					, title: "Warning!!"
+					, html: "거래금액(환산금액)이 약정금액을 초과하였습니다.<br> (초과금액:" + addComma(Math.abs(overAmt)) + ")"
+					, confirmButtonText: "확인"
+				});
 				//openPopup(option);
 				return false;
 			}
@@ -1549,20 +1548,20 @@ const TB07020Sjs = (function() {
 
 	// 거래금액 계산
 	function calcTrAmt() {
-		if( isNotEmpty($('#TB07020S_trQnt').val()
-		&&  isNotEmpty($('#TB07020S_trUnpr').val())) ) {
+		if (isNotEmpty($('#TB07020S_trQnt').val()
+			&& isNotEmpty($('#TB07020S_trUnpr').val()))) {
 			$('#TB07020S_trAmt').val(addComma(Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_trUnpr').val().replaceAll(',', ''))));
-			if(Number($('#TB07020S_avrUnpr').val().replaceAll(',', '')) > 0 ) {
+			if (Number($('#TB07020S_avrUnpr').val().replaceAll(',', '')) > 0) {
 				//$('#TB07020S_evlPflsAmt').val(addComma(Number(g_krwTrslExcAmt) - (Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_avrUnpr').val().replaceAll(',', '')))));
-				$('#TB07020S_evlPflsAmt').val(addComma(((Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_avrUnpr').val().replaceAll(',', '')))-(Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_trUnpr').val().replaceAll(',', '')))).toFixed(0)));
+				$('#TB07020S_evlPflsAmt').val(addComma(((Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_avrUnpr').val().replaceAll(',', ''))) - (Number($('#TB07020S_trQnt').val().replaceAll(',', '')) * Number($('#TB07020S_trUnpr').val().replaceAll(',', '')))).toFixed(0)));
 			}
 		}
-		if( isNotEmpty($('#TB07020S_trQnt').val()) ) {
+		if (isNotEmpty($('#TB07020S_trQnt').val())) {
 			var qotaRt = (((Number($('#TB07020S_hldgShqt').val().replaceAll(',', '')) + Number($('#TB07020S_trQnt').val().replaceAll(',', ''))) / Number($('#TB07020S_wholIssuShqt').val().replaceAll(',', ''))) * 100).toFixed(2);
 
-			if(!isFinite(qotaRt)){
+			if (!isFinite(qotaRt)) {
 				$('#TB07020S_qotaRt').val("0");
-			}else{
+			} else {
 				$('#TB07020S_qotaRt').val(qotaRt);
 			}
 
@@ -1579,15 +1578,15 @@ const TB07020Sjs = (function() {
 
 	// 환산금액 계산
 	function calcTrslAmt() {
-		if( isNotEmpty($('#TB07020S_trAmt').val()
-		&&  isNotEmpty($('#TB07020S_trdeExrt').val())) ) {
+		if (isNotEmpty($('#TB07020S_trAmt').val()
+			&& isNotEmpty($('#TB07020S_trdeExrt').val()))) {
 			$('#TB07020S_trslAmt').val(addComma(Number($('#TB07020S_trAmt').val().replaceAll(',', '')) * Number($('#TB07020S_trdeExrt').val().replaceAll(',', ''))));
 		}
 	}
 
 	// 보유좌수
 	function calcHldgShqt() {
-		if( isNotEmpty($('#TB07020S_trQnt').val())) {
+		if (isNotEmpty($('#TB07020S_trQnt').val())) {
 			$('#TB07020S_hldgShqt').val(addComma(Number($('#TB07020S_trQnt').val().replaceAll(',', '')) + Number($('#TB07020S_hldgShqt').val().replaceAll(',', ''))));
 		}
 	}
@@ -1601,7 +1600,7 @@ const TB07020Sjs = (function() {
 		month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
 		var day = date.getDate();                   //d
 		day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
-		return  year + '' + month + '' + day;       //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
+		return year + '' + month + '' + day;       //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
 	}
 
 	function btnAdd() {
@@ -1671,22 +1670,22 @@ const TB07020Sjs = (function() {
 	}
 
 	function setHoldPrpsDcd() {
-		if( isNotEmpty($('#TB07020S_qotaRt').val())) {
-			if(Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) != 0 ) {
+		if (isNotEmpty($('#TB07020S_qotaRt').val())) {
+			if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) != 0) {
 				if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) < 30) {
 					$('#TB07020S_H002').val('1');
-				}else 
-				if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) >= 30 && Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) < 50) {
-					$('#TB07020S_H002').val('6');
-				}else 
-				if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) >= 50) {
-					$('#TB07020S_H002').val('7');
-				}
-				else {
-					if (isNotEmpty(g_holdPrpsDcd)) {
-						$('#TB07020S_H002').val(g_holdPrpsDcd);
-					}
-				}
+				} else
+					if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) >= 30 && Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) < 50) {
+						$('#TB07020S_H002').val('6');
+					} else
+						if (Number($('#TB07020S_qotaRt').val().replaceAll(',', '')) >= 50) {
+							$('#TB07020S_H002').val('7');
+						}
+						else {
+							if (isNotEmpty(g_holdPrpsDcd)) {
+								$('#TB07020S_H002').val(g_holdPrpsDcd);
+							}
+						}
 			} else {
 				if (isNotEmpty(g_holdPrpsDcd)) {
 					$('#TB07020S_H002').val(g_holdPrpsDcd);
@@ -1716,7 +1715,7 @@ const TB07020Sjs = (function() {
 	/**
 	 * 엑셀저장 PQGrid ExcelExport
 	 */
-	 function saveExcelFile() {
+	function saveExcelFile() {
 		let blob = $('#TB07020S_tableList').pqGrid('instance').exportExcel({});
 		let fileName;
 		fileName = "테스트 그만하고 집에 보내줘요.xlsx";
@@ -1724,15 +1723,15 @@ const TB07020Sjs = (function() {
 	}
 
 	function getDealInfoFromWF() {
-		
-		if(sessionStorage.getItem("isFromWF")){
+
+		if (sessionStorage.getItem("isFromWF")) {
 			console.log("WF세션 있음");
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
 			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07020S_srch_prdtCd").val(prdtCd);
 			$("#TB07020S_srch_prdtNm").val(prdtNm);
 			getBuyList();
-		}else{
+		} else {
 			console.log("WF세션 비었음");
 		}
 		sessionStorage.clear();
@@ -1742,17 +1741,17 @@ const TB07020Sjs = (function() {
 		/**
 		 * 사용 할 함수 정의
 		 */
-		getBuyList : getBuyList
-	,	compClear : compClear
-    ,   btnAdd : btnAdd
-	,	btnCancel : btnCancel
-	,	setHoldPrpsDcd : setHoldPrpsDcd
-	,	calcTrslAmt : calcTrslAmt
-	,	showAlert : showAlert
-	,	calcTrAmt : calcTrAmt
-	,	saveExcelFile : saveExcelFile 	// 엑셀 저장 함수
-	, getDealInfoFromWF : getDealInfoFromWF
-	// , trQntValid: trQntValid
+		getBuyList: getBuyList
+		, compClear: compClear
+		, btnAdd: btnAdd
+		, btnCancel: btnCancel
+		, setHoldPrpsDcd: setHoldPrpsDcd
+		, calcTrslAmt: calcTrslAmt
+		, showAlert: showAlert
+		, calcTrAmt: calcTrAmt
+		, saveExcelFile: saveExcelFile 	// 엑셀 저장 함수
+		, getDealInfoFromWF: getDealInfoFromWF
+		, inputClear: inputClear
 	}
 
 })();

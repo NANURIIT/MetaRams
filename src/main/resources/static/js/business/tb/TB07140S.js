@@ -519,7 +519,7 @@ const TB07140Sjs = (function () {
         halign: "center",
         align: "right",
         filter: { crules: [{ condition: "range" }] },
-        format: "#,###",
+        format: "#,##0.0",
       },
       {
         title: "환산출자변동금액",
@@ -913,8 +913,7 @@ const TB07140Sjs = (function () {
     if ( $('div[data-menuid="/TB07140S"] .btn.btn-s.btn-info').text() === '취소' ) {
 			$('#TB07140S_trSn').val(rowData.trSn);
 		}
-		else
-		{
+		else {
 			$('#TB07140S_trSn').val('');
 		}
 
@@ -936,17 +935,20 @@ const TB07140Sjs = (function () {
     $('#TB07140S_prdtCd').val(rowData.prdtCd);                              //종목코드
     $('#TB07140S_prdtNm').val(rowData.prdtNm);                              //종목명
 
+    
+    console.log(rowData.trdeExrt);
+    console.log(Number.isInteger(rowData.trdeExrt));
     //매매환율
-    if (!Number.isInteger(rowData.trdeExrt)) {
-			$('#TB07140S_trdeExrt').val(rowData.trdeExrt + ".0");
+    if (Number.isInteger(Number(rowData.trdeExrt))) {
+			$('#TB07140S_trdeExrt').val(rowData.trdeExrt.toString() + ".0");
 		}
 		else {
 			$('#TB07140S_trdeExrt').val(rowData.trdeExrt);
 		}
 
     //기준환율
-		if (!Number.isInteger(rowData.stdrExrt)) {
-			$('#TB07140S_stdrExrt').val(rowData.stdrExrt + ".0");
+		if (Number.isInteger(Number(rowData.stdrExrt))) {
+			$('#TB07140S_stdrExrt').val(rowData.stdrExrt.toString() + ".0");
 		}
 		else {
 			$('#TB07140S_stdrExrt').val(rowData.stdrExrt);
@@ -1172,5 +1174,6 @@ const TB07140Sjs = (function () {
     pqExportExcel: pqExportExcel,
     calcTrslAmt : calcTrslAmt,
     excFinc: excFinc,
+    inputClear: inputClear,
   };
 })();
