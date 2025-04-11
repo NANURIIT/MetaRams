@@ -376,23 +376,30 @@ function uncomma(str) {
  * 	@author {김건우}
  */
 function selectorNumberFormater(selector) {
+
+  selector.on("keypress", function (e) {
+    const char = String.fromCharCode(e.which);
+
+    // 정규표현식: 한글 또는 영어일 경우
+    if (/[a-zA-Z]/.test(char)) {
+      e.preventDefault(); // 입력 막기
+    }
+  });
+
   let deleteType;
   selector.on("keydown", function (event) {
     if (event.keyCode === 8) {
-      console.log("백스페이스");
       deleteType = 8; // 백스페이스
     } else if (event.keyCode === 46) {
-      console.log("딜리트");
       deleteType = 46; // 딜리트
     }
   });
+
   selector.on("input", function (event) {
     const $this = $(this);
     let str = $this.val();
     // 마지막에 입력된 문자의 인덱스 찾기
     let cursorIndex = $this.prop("selectionEnd");
-
-    console.log(str.slice(-1));
 
     //  마지막에 입력한 데이터 빼기
     let chk = str.split(".");
