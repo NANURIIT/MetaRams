@@ -387,7 +387,12 @@ function selectorNumberFormater(selector) {
   });
 
   let deleteType;
+  let prevVal;
+
   selector.on("keydown", function (event) {
+
+    prevVal = $(this).val()
+
     if (event.keyCode === 8) {
       deleteType = 8; // 백스페이스
     } else if (event.keyCode === 46) {
@@ -464,6 +469,12 @@ function selectorNumberFormater(selector) {
     deleteType = 0;
   });
 
+  selector.on('keyup', function () {
+    if (/[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]/.test($(this).val())) {
+      $(this).val(prevVal)
+    }
+  })
+
   selector.attr("max-length", 20);
 
   selector.val(0);
@@ -508,10 +519,7 @@ function limitInputLength ( setData, menuId ) {
   for (let i = 0; i < keys.length; i++) {
 
     let id = keys[i];
-
-    if ( id.indexOf('_') !== -1 ) {
-      id = toCamelCase(id);
-    }
+    id = toCamelCase(id);    
 
     let prevVal;
 
@@ -2561,5 +2569,9 @@ function maskRt(selector) {
  * @author 김건우
  */
 function toCamelCase(str) {
-	return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+	if (/_/.test(str) || /^[A-Z0-9_]+$/.test(str)) {
+    return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (match, chr) => chr.toUpperCase());
+  }else {
+    return str;
+  }
 }

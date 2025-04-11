@@ -69,24 +69,6 @@ public class TB03030ServiceImpl implements TB03030Service {
 			
 			return ibims102bMapper.updateHistory(registInfo);
 		}
-		
-		
-		
-		// 업체신규등록
-		/*
-		if (entpCd == "") {		
-			ibims114bmapper.registCorpInfo(registInfo);
-			return rac03bMapper.registRmInfo(registInfo);
-		} 
-		// 기존에 있던 업체 rm 활동추가시 IBIMS102B 테이블에만 적재
-		else if (entpCd != "") {
-			ibims114bmapper.updateCorpInfo(registInfo);
-			return rac03bMapper.registRmInfo(registInfo);
-		} 
-		// 기존업체에 있는 RM활동 수정
-		else {
-			return rac03bMapper.updateHistory(registInfo);
-		} */
 	}
 	
 	// RM활동조회

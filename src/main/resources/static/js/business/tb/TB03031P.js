@@ -24,6 +24,10 @@ $(document).ready(function () {
 		startView: "months",
 	});
 	$(".input-group.clockpicker").clockpicker({});
+
+	$("#TB03031P_rm_bsnsRgstNo").inputmask('999-99-99999');
+	$("#TB03031P_rm_corpRgstNo").inputmask('999999-9999999');
+	$("#TB03031P_cstmPhNo").inputmask('99999999999');
 });
 
 /**
