@@ -13,6 +13,33 @@ $(document).ready(function() {
 	$("#TB06019P_rnbn").inputmask('999-99-99999');
 	$("#TB06019P_crno").inputmask('999999-9999999');
 
+	// maxlength 지정 함수
+	let colums = {
+		// 기본정보
+		ENTP_NM : 200					//	업체명
+		, ENG_BZPL_NAME : 200			//	영문사업자명
+		, CRNO : 14						//	법인등록번호
+		, NICEI_BZEP_CD : 6				//	나이스신용평가 업체코드
+		, ZPCD : 6						//	우편번호
+		, BTNO : 4						//	전화국번호
+		, ATNO : 4						//	전화지역번호
+		, STNO : 4						//	전화일련번호
+		, FAX_ATNO : 4					//	Fax지역번호
+		, FAX_STNO : 4					//	Fax일련번호
+		, KOR_BZPL_ADDR : 200			//	한글사업장주소
+		, ENG_BZPL_ADDR : 200			// 영문사업장주소
+
+		// 세부정보
+		, bucoName : 80					//	업태명
+		, STFF_NUM : 5					//	임직원수
+		, CTM_BIC_NAME : 60				//	CTM은행인식코드명
+		, OPRT_HNF_NUM : 5				//	운용인력수
+		, RDM_TR_OPPN_NO : 20			// RDM거래상대방번호
+		, LEI_CD : 20					// LEI코드
+		, SWIFT_BANK_DSCM_CD : 11		//	SWIFT은행식별코드
+	}
+	limitInputLength(colums,"TB06019P");
+
 });
 
 
