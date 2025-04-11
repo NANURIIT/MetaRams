@@ -7,6 +7,9 @@ $(document).ready(function() {
 	selectorNumberFormater(
 		      $("input[id*='Amt'], input[id*='Num']")
 		);
+
+	maskRt("#TB06019P_fnafHltySrnmRt");
+	$("#TB06019P_fnafHltySrnmRt").val("0.00")
 	$("#TB06019P_rnbn").inputmask('999-99-99999');
 	$("#TB06019P_crno").inputmask('999999-9999999');
 
@@ -312,7 +315,7 @@ function saveArdyBzepInfo() {
 		})
 		return;
 	}
-	else if ( !$('#TB06019P_crno').val() || $('#TB06019P_rnbn').val().length < 14 ) {
+	else if ( !$('#TB06019P_crno').val() || $('#TB06019P_crno').val().length < 14 ) {
 		Swal.fire({
 			icon: "warning"
 			, title: "Warning!"

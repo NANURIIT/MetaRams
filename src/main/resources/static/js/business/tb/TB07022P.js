@@ -280,6 +280,16 @@ function setFndInfo(e) {
 	
 	$(pageFndCd).val(e.fndCd);
 	$(pageFndNm).val(e.fndNm);
+
+	if ( TB07022P_pf === "TB07140S_srch") {
+		TB07140Sjs.inputClear();
+	}
+	else if ( TB07022P_pf === "TB07040S_srch") {
+		TB07040Sjs.inputClear();
+	}
+	else if ( TB07022P_pf === "TB07020S_srch") {
+		TB07020Sjs.inputClear();
+	}
 	
 	modalClose_TB07022P();
 }
