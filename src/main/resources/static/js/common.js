@@ -507,24 +507,23 @@ function limitInputLength ( setData, menuId ) {
 
   for (let i = 0; i < keys.length; i++) {
 
-    console.log(`#${menuId}_${toCamelCase(keys[i])}`);
+    let id = keys[i];
+
+    if ( id.indexOf('_') !== -1 ) {
+      id = toCamelCase(id);
+    }
 
     let prevVal;
 
-    $(`#${menuId}_${toCamelCase(keys[i])}`).on('keydown', function (e) {
-
+    $(`#${menuId}_${id}`).on('keydown', function (e) {
       prevVal = $(this).val()
-      
     })
 
-    $(`#${menuId}_${toCamelCase(keys[i])}`).on('input', function () {
-
+    $(`#${menuId}_${id}`).on('input', function () {
       const byte = new TextEncoder().encode($(this).val()).length
-      
       if ( byte > setData[keys[i]] ) {
         $(this).val(prevVal);
       }
-      
     })
 
   }

@@ -82,10 +82,13 @@ const TB03020Sjs = (function () {
 		urlSetDealInfo();
 
 		let columns = {
-			DEAL_NM: 200
-			, LST_MKT: 30
+			dealNm: 200
+			, dealCntnt: 200
+			, invstCty: 30
+			, irls: 30
+			, lstMkt: 30
+			, etcCntn: 200
 		}
-
 		limitInputLength(columns, "TB03020S");
 	});
 
