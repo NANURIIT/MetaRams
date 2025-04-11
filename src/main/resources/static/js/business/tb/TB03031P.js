@@ -28,6 +28,19 @@ $(document).ready(function () {
 	$("#TB03031P_rm_bsnsRgstNo").inputmask('999-99-99999');
 	$("#TB03031P_rm_corpRgstNo").inputmask('999999-9999999');
 	$("#TB03031P_cstmPhNo").inputmask('99999999999');
+
+	let columns = {
+		cstmNm: 200
+		, metTitl: 200
+		, metPrps: 200
+		, metCntnt: 2000
+	}
+	limitInputLength(columns, "TB03031S");
+
+	$('#TB03031P_rm_entpRnm').on('input', function () {
+		$('#TB03031P_rm_entpCd').val("");
+	})
+
 });
 
 /**
