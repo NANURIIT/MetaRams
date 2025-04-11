@@ -329,9 +329,11 @@ public class TB07030ServiceImpl implements TB07030Service {
 		List<IBIMS403BVO> param403DtlLst = paramData.getIbims403DtlLst();
 		List<IBIMS403BVO> param403RscdLst = paramData.getIbims403RscdlList();
 
-		log.debug("\nparam403RscdLst ::: {}", param403RscdLst);
-		log.debug("\nparam403Lst ::: {}", param403Lst);
-		log.debug("\nparam403DtlLst ::: {}", param403DtlLst);
+		log.debug("\n[saveRdpm]crdtGrntOvduIntAmt ::: " + paramData.getCrdtGrntOvduIntAmt());
+
+		log.debug("\n[saveRdpm]param403RscdLst ::: {}", param403RscdLst);
+		log.debug("\n[saveRdpm]param403Lst ::: {}", param403Lst);
+		log.debug("\n[saveRdpm]param403DtlLst ::: {}", param403DtlLst);
 
 		int iExTrsn = 0;
 		for(int i=0;i<param403Lst.size();i++) {
@@ -365,6 +367,8 @@ public class TB07030ServiceImpl implements TB07030Service {
 					&& (in403bdto.getExcSn() == in403Dtlbvo.getExcSn())) {
 
 						if(in403Dtlbvo.getPaiTypCd().equals("4") || in403Dtlbvo.getPaiTypCd().equals("5")){		//연체이자
+
+							// BigDecimal crdtGrntOvduIntAmt = paramData.getCrdtGrntOvduIntAmt();		//연체이자
 
 						}else{
 							rtnValue = ibims403BMapper.saveIBIMS403B(param403DtlLst.get(v));		// 여신스케줄기본
@@ -515,7 +519,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 			ibims410bdto.setCrdtGrntOvduIntAmt((paramData.getCrdtGrntOvduIntAmt()==null)?BigDecimal.ZERO:paramData.getCrdtGrntOvduIntAmt());/* 신용공여연체이자금액 */
 			ibims410bdto.setCrdtGrntRcvbIntAmt((paramData.getRcvbIntrSmmAmt()==null)?BigDecimal.ZERO:paramData.getRcvbIntrSmmAmt()); 		/* 신용공여미수이자금액 */
 //			ibims410bdto.setPucrIntAmt(ibims403Lst.get(i).getPucrIntAmt()); /* 환출이자금액 */
-			ibims410bdto.setTrFeeAmt(mrdpFeeAmtSum); /* 거래수수료금액 */
+			ibims410bdto.setTrFeeAmt(mrdpFeeAmtSum); /* 거래수수료금액 */	
 //			ibims410bdto.setCostAmt(ibims403Lst.get(i).getCostAmt()); /* 비용금액 */
 			ibims410bdto.setTrCrryCd(paramData.getCrryCd()); /* 거래통화코드 */
 			ibims410bdto.setKrwTrslRt(paramData.getAplcExchR()); /* 원화환산율 == 적용환율 */
