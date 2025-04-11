@@ -58,8 +58,17 @@ public class TB03020ServiceImpl implements TB03020Service {
 
 	@Override
 	public IBIMS101BVO getBscDealDetail(IBIMS101BDTO dealInfo) {
-		IBIMS101BVO returnVal = ibims101BMapper.getBscDealDetail(dealInfo);
+
+		IBIMS101BVO returnVal = new IBIMS101BVO();
+
+		if (ibims101BMapper.getBscDealDetail(dealInfo) == null) {
+			return returnVal;
+		}
+		else {
+			returnVal = ibims101BMapper.getBscDealDetail(dealInfo);
+		}
 		returnVal.setEnoPList(ibims116BMapper.getEnoPList(dealInfo.getDealNo()));
+		
 		return returnVal;
 	}
 

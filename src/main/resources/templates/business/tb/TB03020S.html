@@ -76,7 +76,7 @@
 					</div>
 
 					<!-- 조회내용 -->
-					<div class="ibox-content">
+					<div class="ibox-content" id="TB03020S_dataForm">
 						<!-- Deal 기본정보 -->
 						<div class="row">
 							<div class="col-sm-12">
@@ -92,23 +92,9 @@
 														class="req"></span>Deal명</label>
 												<div class="col-sm-5">
 													<div class="input-group">
-														<input type="text" class="form-control" id="TB03020S_dealNm">
+														<input type="text" class="form-control" id="TB03020S_dealNm" maxlength="200">
 													</div>
 												</div>
-												<!-- <label class="col-sm-1 col-form-label text-right"><span class="req"></span>협업유형</label>
-												<div class="col-sm-2 input-group">
-													<select class="form-control" id="TB03020S_C008">
-														<option value="">선택</option>
-													</select>
-												</div>
-												<label class="col-sm-1 control-label"><span class="req"></span>BOOK</label>
-												<div class="col-sm-2">
-													<div class="input-group">
-														<select class="form-control" id="TB03020S_B008">
-															<option value="">선택</option>
-														</select>
-													</div>
-												</div> -->
 											</div>
 										</div>
 										<!-- row2 -->
@@ -156,8 +142,7 @@
 														class="req"></span>Deal내용</label>
 												<div class="col-sm-5">
 													<div class="input-group">
-														<textarea rows="1" class="form-control"
-															id="TB03020S_dealCntnt"></textarea>
+														<textarea rows="1" class="form-control" id="TB03020S_dealCntnt" maxlength="200"></textarea>
 													</div>
 												</div>
 
@@ -172,7 +157,7 @@
 												</div>
 												<label class="col-sm-1 col-form-label text-right">투자도시</label>
 												<div class="col-sm-2 input-group">
-													<input type="text" class="form-control" id="TB03020S_invstCty">
+													<input type="text" class="form-control" id="TB03020S_invstCty" maxlength="30">
 												</div>
 
 											</div>
@@ -227,7 +212,7 @@
 											<div class="col-sm-12 form-group">
 												<label class="col-sm-1 col-form-label text-right">계열</label>
 												<div class="col-sm-2 input-group">
-													<input type="text" class="form-control" id="TB03020S_irls">
+													<input type="text" class="form-control" id="TB03020S_irls" maxlength="30">
 												</div>
 												<label class="col-sm-1 col-form-label text-right">신용등급</label>
 												<div class="col-sm-2 input-group">
@@ -237,7 +222,7 @@
 												</div>
 												<label class="col-sm-1 col-form-label text-right">상장시장</label>
 												<div class="col-sm-2 input-group">
-													<input type="text" class="form-control" id="TB03020S_lstMkt">
+													<input type="text" class="form-control" id="TB03020S_lstMkt" maxlength="30">
 												</div>
 											</div>
 										</div>
@@ -418,9 +403,7 @@
 												<label class="col-sm-1 control-label">LTV</label>
 												<div class="col-sm-2">
 													<div class="input-group">
-														<input type="text" class="form-control text-right"
-															id="TB03020S_ltv"
-															oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">&nbsp;%
+														<input type="text" class="form-control text-right" id="TB03020S_ltv"/>&nbsp;%
 													</div>
 												</div>
 											</div>
@@ -440,8 +423,7 @@
 												<label class="col-sm-1 control-label">비고</label>
 												<div class="col-sm-5">
 													<div class="input-group">
-														<textarea rows="1" class="form-control"
-															id="TB03020S_etcCntn"></textarea>
+														<textarea rows="1" class="form-control" id="TB03020S_etcCntn" maxlength="200"></textarea>
 													</div>
 												</div>
 											</div>
