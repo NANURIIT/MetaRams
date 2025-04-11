@@ -484,7 +484,7 @@ const TB04050Sjs = (function () {
       .prop("checked", true)
       .trigger("change");
     $(".dealInfoBox select").each(function () {
-      $(this).prop("selectedIndex", 0);
+      $(this).prop("selectedIndex", 1);
     });
     $(".dealInfoBox input[type='text']").val("");
 

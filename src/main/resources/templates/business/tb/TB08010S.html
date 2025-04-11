@@ -46,8 +46,8 @@
 						<div class="form-group form-inline row">
 							<div class="col-sm-12 input-group text-right">
 								<label class="col-sm-1 col-form-label">Deal번호</label>
-								<div class="col-sm-4">
-									<div class="input-group">
+								<div class="col-sm-9">
+									<div class="col-sm-6 input-group">
 										<input type="text" class="form-control" id="TB08010S_ibDealNo"> 
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB03021P('TB08010S');"><i class="fa fa-search"></i></button>
@@ -55,8 +55,11 @@
 										<input type="text" class="form-control" id="TB08010S_ibDealNm" style="width:160px;" disabled>
 									</div>
 								</div>
-								<div class="col-sm-3 text-left">
+								<div class="col-sm-2 text-right">
 									<button class="btn btn-primary" type="button" onclick="TB08010Sjs.getEamList();"><i class="fa fa-search"></i>&nbsp;조회</button>
+									<button class="btn btn-default" onclick="TB08010Sjs.resetBtnClick();"><i class="fa fa-undo"></i>
+									</i>&nbsp;초기화
+								</button>
 								</div>
 							</div>
 						</div>
@@ -332,12 +335,12 @@
 												<div class="form-group row mb-1">
 													<label class="col-sm-1 col-form-label">시효기산일</label>
 													<span class="col-sm-2 input-group date"> 
-														<input type="text" class="form-control" name="start" value="" id="Efct_Dp_Strt" placeholder="yyyy-mm-dd"oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+														<input type="text" class="form-control" name="start" value="" id="Efct_Dp_Strt" placeholder="yyyy-MM-dd"oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</span> 
 													<label class="col-sm-1 col-form-label">시효만료일</label>
 													<span  class="col-sm-2 input-group date">
-														<input type="text" class="form-control" name="end" value="" id="Efct_Dp_End" placeholder="yyyy-mm-dd" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+														<input type="text" class="form-control" name="end" value="" id="Efct_Dp_End" placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</span>
 												</div>

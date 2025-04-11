@@ -53,6 +53,14 @@ const TB07110Sjs = (function () {
 
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB07110S_startDt","TB07110S_endDt");
+    
+    // maxlength 지정 함수
+    let colums = {
+      reltFdtnCtns : 4000   //  관련근거
+      , bano : 64           //  지급계좌
+      , bnkAchdNm : 200     //  예금주명
+    }
+    limitInputLength(colums,"TB07110S");
 
   });
 

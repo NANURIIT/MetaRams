@@ -24,7 +24,7 @@
 						<div class="ibox-content text-right">
 							<div class="form-group row mb-1">
 								<label class="col-sm-1 col-form-label">Deal번호</label>
-								<div class="col-sm-5">
+								<div class="col-sm-4">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB04040S_ibDealNo">
 										<span class="input-group-append">
@@ -33,20 +33,6 @@
 										<input type="text" class="form-control" id="TB04040S_ibDealNm" readonly="">
 									</div>
 								</div>								
-								<label class="col-sm-1 col-form-label">발급일자</label>
-								<div class="col-sm-5 input-group">
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB04040S_fromDate" name="FromDate" value="">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-									<span class="input-group-addon border-none"> ~ </span>
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB04040S_toDate" name="ToDate" value="">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row">
 								<label class="col-sm-1 col-form-label">발급서류</label>
 								<div class="col-sm-2">
 									<select class="form-control" id="TB04040S_I043">
@@ -59,10 +45,27 @@
 										<option value="">전체</option>
 									</select>
 								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-1 col-form-label">발급일자</label>
+								<div class="col-sm-5 input-group">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB04040S_fromDate" name="FromDate" value="">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<span class="input-group-addon border-none"> ~ </span>
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB04040S_toDate" name="ToDate" value="">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
 								<div class="col-sm-6 pr-3 text-right">
 									<button class="btn btn-primary" onclick="TB04040Sjs.srchIssDtlsList();">
 										<i class="fa fa-search"></i>&nbsp;조회
 									</button>
+									<button class="btn btn-default" onclick="TB04040Sjs.btnReset();"><i class="fa fa-undo"></i>
+									</i>&nbsp;초기화
+								</button>
 								</div>
 							</div>
 						</div>

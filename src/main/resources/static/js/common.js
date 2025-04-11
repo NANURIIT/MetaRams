@@ -125,7 +125,7 @@ function settingFunction() {
   });
   $(".input-group.month").find("input").inputmask("9999-99");
 
-  $(".input-group.clockpicker").clockpicker({})
+  $(".input-group.clockpicker").clockpicker({});
   $(".input-group.clockpicker").find("input").inputmask("99:99");
 }
 
@@ -181,8 +181,8 @@ function ajaxCall(option) {
       //openPopup({type:"loding",show:false});
     },
   }).then(
-    $.type(option.success) === "function" ? option.success : function () { },
-    $.type(option.fail) === "function" ? option.fail : function () { }
+    $.type(option.success) === "function" ? option.success : function () {},
+    $.type(option.fail) === "function" ? option.fail : function () {}
   );
 }
 
@@ -376,23 +376,35 @@ function uncomma(str) {
  * 	@author {김건우}
  */
 function selectorNumberFormater(selector) {
+
+  selector.on("keypress", function (e) {
+    const char = String.fromCharCode(e.which);
+
+    // 정규표현식: 한글 또는 영어일 경우
+    if (/[a-zA-Z]/.test(char)) {
+      e.preventDefault(); // 입력 막기
+    }
+  });
+
   let deleteType;
+  let prevVal;
+
   selector.on("keydown", function (event) {
+
+    prevVal = $(this).val()
+
     if (event.keyCode === 8) {
-      console.log("백스페이스");
       deleteType = 8; // 백스페이스
     } else if (event.keyCode === 46) {
-      console.log("딜리트");
       deleteType = 46; // 딜리트
     }
   });
+
   selector.on("input", function (event) {
     const $this = $(this);
     let str = $this.val();
     // 마지막에 입력된 문자의 인덱스 찾기
     let cursorIndex = $this.prop("selectionEnd");
-
-    console.log(str.slice(-1));
 
     //  마지막에 입력한 데이터 빼기
     let chk = str.split(".");
@@ -457,7 +469,13 @@ function selectorNumberFormater(selector) {
     deleteType = 0;
   });
 
-  selector.attr('max-length', 20)
+  selector.on('keyup', function () {
+    if (/[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]/.test($(this).val())) {
+      $(this).val(prevVal)
+    }
+  })
+
+  selector.attr("max-length", 20);
 
   selector.val(0);
 }
@@ -480,6 +498,42 @@ function checkByteLimit(element, maxLength) {
       break;
     }
     byteLength += charByte;
+  }
+}
+
+/**
+ * 길이제한 함수
+ * @param { Object } setData 
+ * @param { String } menuId
+ * @author { 김건우 }
+ * @description
+ * ex)
+ * const obj = {
+ *  name: length
+ * }
+ */
+function limitInputLength ( setData, menuId ) {
+
+  const keys = Object.keys(setData);
+
+  for (let i = 0; i < keys.length; i++) {
+
+    let id = keys[i];
+    id = toCamelCase(id);    
+
+    let prevVal;
+
+    $(`#${menuId}_${id}`).on('keydown', function (e) {
+      prevVal = $(this).val()
+    })
+
+    $(`#${menuId}_${id}`).on('input', function () {
+      const byte = new TextEncoder().encode($(this).val()).length
+      if ( byte > setData[keys[i]] ) {
+        $(this).val(prevVal);
+      }
+    })
+
   }
 }
 
@@ -1016,7 +1070,6 @@ function dateDiff(strDt, endDt) {
   return totalDays;
 }
 
-
 /**
  * String 개월수 구하기 = (연도 차이 * 12) + 월 차이
  * @param {String} strDt 시작일자 yyyyMMdd
@@ -1372,7 +1425,6 @@ function getSelectBoxList(prefix, item, async = true) {
           }
 
           if (value.cmnsGrpCd == "T002") {
-
             var html = "";
             html +=
               '<option value="' +
@@ -1386,7 +1438,6 @@ function getSelectBoxList(prefix, item, async = true) {
 
             // $("#TB08031S_T002").append(html);
             $("#TB08031S_T002_2").append(html);
-
           }
         }
 
@@ -1717,15 +1768,15 @@ function setPqGrid(pqGridObjs) {
       numCl = pqGridObj.numberCell || { show: false }, // numberCell ex:::{ show: false, width: 40, resizable: true, title: "" }
       showTt = pqGridObj.showTitle || false, // showTitle
       showTb = pqGridObj.showToolbar || false, // showToolbar
-      cllSv = pqGridObj.cellSave || function (event, ui) { }, // cellSave
+      cllSv = pqGridObj.cellSave || function (event, ui) {}, // cellSave
       edit = pqGridObj.editable || false,
       tlbar = pqGridObj.toolbar || {},
-      rowClick = pqGridObj.rowClick || function (event, ui) { },
+      rowClick = pqGridObj.rowClick || function (event, ui) {},
       selMd = pqGridObj.selectionModel || {}, // { type: 'row' }
-      cellbs = pqGridObj.cellBeforeSave || function (event, ui) { },
-      cellClick = pqGridObj.cellClick || function (event, ui) { },
-      rowSelect = pqGridObj.rowSelect || function (event, ui) { },
-      rowDblClick = pqGridObj.rowDblClick || function (event, ui) { };
+      cellbs = pqGridObj.cellBeforeSave || function (event, ui) {},
+      cellClick = pqGridObj.cellClick || function (event, ui) {},
+      rowSelect = pqGridObj.rowSelect || function (event, ui) {},
+      rowDblClick = pqGridObj.rowDblClick || function (event, ui) {};
 
     let strNoRows = "데이터가 없습니다."; // 최초 생성 시 body msg
 
@@ -2080,32 +2131,28 @@ function pqGridAddNewRow(colModelSelector) {
  * @author {김건우}
  */
 function pqGridDeleteRow(colModelSelector, rowIndx, mode) {
-
   console.log(rowIndx + "행삭제");
 
   let idx = rowIndx;
 
-  if (mode === 'select') {
+  if (mode === "select") {
     if (!rowIndx && rowIndx != 0) {
       Swal.fire({
-        icon: 'warning',
-        title: 'Warning!',
-        text: '삭제할 행을 선택해주세요!',
-      })
-    }
-    else {
+        icon: "warning",
+        title: "Warning!",
+        text: "삭제할 행을 선택해주세요!",
+      });
+    } else {
       colModelSelector.pqGrid("deleteRow", {
         rowIndx: idx,
       });
     }
-  }
-  else {
+  } else {
     idx = colModelSelector.pqGrid("instance").pdata.length - 1;
     colModelSelector.pqGrid("deleteRow", {
       rowIndx: idx,
     });
   }
-
 }
 
 /**
@@ -2212,7 +2259,7 @@ function resetPGgrids(menuid) {
   }
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) { }
+function autoSrchFromPQGrid(pqGridId, url, paramData) {}
 
 /**
  * 결재단계확인
@@ -2222,7 +2269,6 @@ function autoSrchFromPQGrid(pqGridId, url, paramData) { }
  * 실행시키시면 됩니다.
  */
 function chkDecdStep(menuId) {
-
   let chrrNo = $(`#${menuId}_empNo`).val();
   let dealNo = $(`#${menuId}_ibDealNo`).val() || ""; // 딜번호
   let prdtCd = $(`#${menuId}_prdtCd`).val() || ""; // 상품코드
@@ -2264,65 +2310,56 @@ function chkDecdStep(menuId) {
          * 1. 결재요청버튼 활성화.
          * 2. 종목등록, 취소 활성화.
          */
-        if (chrrNo === $('#userEno').val()) {
-          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-            "hidden",
-            false
-          );
-          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-            "hidden",
-            true
-          );
+        if (chrrNo === $("#userEno").val()) {
+          $(
+            `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+          ).prop("hidden", false);
+          $(
+            `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+          ).prop("hidden", true);
           // 결재진행중이 아니기에 종목등록, 삭제 가능
           $(`#${menuId}_regPrdt`).prop("disabled", false);
           $(`#${menuId}_delPrdt`).prop("disabled", false);
-        }
-        /**
-         * 승인자일 경우
-         * 1. 현재 결재진행중이 아니고 담당자가 아니기 때문에 모든버튼 비활성화
-         */
-        else {
-          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-            "hidden",
-            true
-          );
-          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-            "hidden",
-            true
-          );
+        } else {
+          /**
+           * 승인자일 경우
+           * 1. 현재 결재진행중이 아니고 담당자가 아니기 때문에 모든버튼 비활성화
+           */
+          $(
+            `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+          ).prop("hidden", true);
+          $(
+            `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+          ).prop("hidden", true);
           // 담당자가 아니면 종목등록, 수정 불가능
           $(`#${menuId}_regPrdt`).prop("disabled", true);
           $(`#${menuId}_delPrdt`).prop("disabled", true);
         }
-      }
-      /**
-       * 결재진행중이다!
-       * 1. 현재 로그인한 사람이 승인자인지 결재자인지 확인해보자
-       */
-      else {
+      } else {
+        /**
+         * 결재진행중이다!
+         * 1. 현재 로그인한 사람이 승인자인지 결재자인지 확인해보자
+         */
         /**
          * 담당자일 경우
          * 1. 결재요청버튼 활성화. ( 재승인요청, 승인요청취소 )
          * 2. 종목등록, 취소 "비"활성화.
          */
-        if (chrrNo === $('#userEno').val()) {
-          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-            "hidden",
-            false
-          );
-          $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-            "hidden",
-            true
-          );
+        if (chrrNo === $("#userEno").val()) {
+          $(
+            `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+          ).prop("hidden", false);
+          $(
+            `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+          ).prop("hidden", true);
           // 결재진행중이 아니기에 종목등록, 삭제 가능
           $(`#${menuId}_regPrdt`).prop("disabled", true);
           $(`#${menuId}_delPrdt`).prop("disabled", true);
-        }
-        /**
-         * 승인자일 경우
-         * 1. 현재 진행중인 결재의 순번을 확인하자.
-         */
-        else {
+        } else {
+          /**
+           * 승인자일 경우
+           * 1. 현재 진행중인 결재의 순번을 확인하자.
+           */
           $.ajax({
             type: "POST",
             url: `/chkDcfcEno`,
@@ -2332,29 +2369,25 @@ function chkDecdStep(menuId) {
             success: function (data) {
               // 승인요청중이면 결재, 반려버튼 활성화
               if (data.toString() === "1") {
-                $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-                  "hidden",
-                  true
-                );
-                $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-                  "hidden",
-                  false
-                );
-                $(`#${menuId}_regPrdt`).prop("disabled", true)
-                $(`#${menuId}_delPrdt`).prop("disabled", true)
+                $(
+                  `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+                ).prop("hidden", true);
+                $(
+                  `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+                ).prop("hidden", false);
+                $(`#${menuId}_regPrdt`).prop("disabled", true);
+                $(`#${menuId}_delPrdt`).prop("disabled", true);
               }
               // 현재 이 담당자 순서가 아니거나, 담당자가 아닌듯하다
               else {
-                $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`).prop(
-                  "hidden",
-                  true
-                );
-                $(`div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`).prop(
-                  "hidden",
-                  true
-                );
-                $(`#${menuId}_regPrdt`).prop("disabled", false)
-                $(`#${menuId}_delPrdt`).prop("disabled", false)
+                $(
+                  `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+                ).prop("hidden", true);
+                $(
+                  `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+                ).prop("hidden", true);
+                $(`#${menuId}_regPrdt`).prop("disabled", false);
+                $(`#${menuId}_delPrdt`).prop("disabled", false);
               }
             },
           });
@@ -2363,14 +2396,11 @@ function chkDecdStep(menuId) {
     },
     error: function (request, status, error) {
       console.log(request, status, error);
-    }
+    },
   });
-
-
-
 }
 
-function autoSrchFromPQGrid(pqGridId, url, paramData) { }
+function autoSrchFromPQGrid(pqGridId, url, paramData) {}
 
 /**
  * 컴포넌트포커스
@@ -2391,51 +2421,48 @@ function idFocus(id) {
  * ex) idClear('TB06040S_ctrtDt');
  */
 function idClear(id) {
-  $("#" + id).val('');
+  $("#" + id).val("");
 }
 
 /**
- * 
- * @param { String } status 
- * @param { Number } dataLength 
+ *
+ * @param { String } status
+ * @param { Number } dataLength
  * @param { String } code 특정화면 or 구분코드
  */
 function showToast(status, dataLength, code) {
-
   // 성공적인 조회시
-  if (status === 'success') {
+  if (status === "success") {
     // 코드가 존재하면 코드에 맞는 텍스트 출력
     if (code) {
-
     }
     // 코드가 없을시 기본 텍스트
     else {
-      $('#toast-text-aria').html(`✅ ${dataLength}건의 데이터가 조회되었습니다!`)
+      $("#toast-text-aria").html(
+        `✅ ${dataLength}건의 데이터가 조회되었습니다!`
+      );
     }
   }
-  // 
-  else if (status === 'warning') {
-
+  //
+  else if (status === "warning") {
   }
   // 에러시
-  else if (status === 'error') {
-
+  else if (status === "error") {
   }
 
   // 토스트 ON
-  $('#toastPlacement').css({
-    'bottom': '30px'
-    , 'opacity': '1'
-  })
+  $("#toastPlacement").css({
+    bottom: "30px",
+    opacity: "1",
+  });
 
   // 2초뒤 제거
   setTimeout(() => {
-    $('#toastPlacement').css({
-      'bottom': '-50px'
-      , 'opacity': '0'
-    })
-  }, 3000)
-
+    $("#toastPlacement").css({
+      bottom: "-50px",
+      opacity: "0",
+    });
+  }, 3000);
 }
 
 /**
@@ -2445,25 +2472,22 @@ function showToast(status, dataLength, code) {
  * @param { boolean } pattern // default true
  */
 function chkValFromToDt(id1, id2, pattern = true) {
-
   var idFromDate = "#" + id1;
   var idToDate = "#" + id2;
   var fromDate = "";
   var toDate = "";
 
-  $(idFromDate)
-    .change(function () {
-      fromDate = $(idFromDate).val();
-      toDate = $(idToDate).val();
-      chkValFromToDtVal(fromDate, toDate, pattern);
-    });
+  $(idFromDate).change(function () {
+    fromDate = $(idFromDate).val();
+    toDate = $(idToDate).val();
+    chkValFromToDtVal(fromDate, toDate, pattern);
+  });
 
-  $(idToDate)
-    .change(function () {
-      fromDate = $(idFromDate).val();
-      toDate = $(idToDate).val();
-      chkValFromToDtVal(fromDate, toDate, pattern);
-    });
+  $(idToDate).change(function () {
+    fromDate = $(idFromDate).val();
+    toDate = $(idToDate).val();
+    chkValFromToDtVal(fromDate, toDate, pattern);
+  });
 }
 
 /**
@@ -2517,11 +2541,11 @@ function chkValFromToDtVal(fromDate, toDate, pattern = true) {
  * @param { String } selector ex) "#TB07020S_trdeExrt, ..."
  * @author 김건우
  */
-function maskExrt ( selector ) {
+function maskExrt(selector) {
   Inputmask({
     regex: "^[0-9]{0,3}(\\.[0-9]{0,4})?$",
   }).mask(selector);
-  
+
   $(selector).val("1.0");
 }
 
@@ -2530,10 +2554,24 @@ function maskExrt ( selector ) {
  * @param { String } selector ex) "#TB06010S_addIntrt, ..."
  * @author 김건우
  */
-function maskRt ( selector ) {
+function maskRt(selector) {
   Inputmask({
     regex: "^[0-9]{0,3}(\\.[0-9]{0,2})?$",
   }).mask(selector);
-  
+
   $(selector).val("0");
+}
+
+
+/**
+ * 카멜케이스(Caeml-Case) 변환
+ * @param { String } str 
+ * @author 김건우
+ */
+function toCamelCase(str) {
+	if (/_/.test(str) || /^[A-Z0-9_]+$/.test(str)) {
+    return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (match, chr) => chr.toUpperCase());
+  }else {
+    return str;
+  }
 }

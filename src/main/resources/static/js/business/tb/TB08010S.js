@@ -114,6 +114,14 @@ const TB08010Sjs = (function () {
     $("#TB08010S_ibDealNm").val("");
     $("#TB08010S_ibDealList").pqGrid("option", "dataModel.data", []);
     $("#TB08010S_ibDealList").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("#TB08010S_eamDetail").pqGrid("option", "dataModel.data", []);
+    $("#TB08010S_eamDetail").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("#Estt_List").pqGrid("option", "dataModel.data", []);
+    $("#Estt_List").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("#Lgl_List").pqGrid("option", "dataModel.data", []);
+    $("#Lgl_List").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("#Efct_List").pqGrid("option", "dataModel.data", []);
+    $("#Efct_List").pqGrid("refreshDataAndView"); // pqgrid 초기화
     tab1BtnReset();
     tab2EsttReset();
     tab3LglReset();
@@ -1900,5 +1908,6 @@ const TB08010Sjs = (function () {
     tab4EfctReset: tab4EfctReset,
     tab4EfctDelete: tab4EfctDelete,
     tab4EfctSave: tab4EfctSave,
+    resetBtnClick: resetBtnClick,
   };
 })();

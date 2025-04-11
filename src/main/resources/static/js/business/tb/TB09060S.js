@@ -13,7 +13,7 @@ const TB09060Sjs = (function () {
     $("#TB09060S_endDt").val(getToday());
 
     //기간검색 유효성 검사 함수
-    chkValFromToDt("TB09060S_startDt","TB09060S_endDt");
+    chkValFromToDt("TB09060S_startDt", "TB09060S_endDt");
   });
 
   // 담당직원정보
@@ -173,7 +173,7 @@ const TB09060Sjs = (function () {
       dataIndx: "prcaOvduAcmlDnum",
       align: "right",
       halign: "center",
-      width: "80",
+      width: "140",
       render: function (ui) {
         return ui.cellData === null ? "-" : ui.cellData.toLocaleString() + "일";
       },
@@ -184,7 +184,7 @@ const TB09060Sjs = (function () {
       dataIndx: "intOvduAcmlDnum",
       align: "right",
       halign: "center",
-      width: "80",
+      width: "140",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         return ui.cellData === null ? "-" : ui.cellData.toLocaleString() + "일";
@@ -508,17 +508,6 @@ const TB09060Sjs = (function () {
       success: function (data) {
         grid1Ins.setData(data);
         getList2(paramData);
-        if (
-          grid1Ins.getData().length === 0 &&
-          grid2Ins.getData().length === 0
-        ) {
-          Swal.fire({
-            icon: "warning",
-            title: "warning!",
-            text: "조회된 정보가 없습니다.",
-            confirmButtonText: "확인",
-          });
-        }
       },
       error: function (e) {
         Swal.fire({
@@ -563,16 +552,23 @@ const TB09060Sjs = (function () {
       dataType: "json",
       success: function (data) {
         grid2Ins.setData(data);
-      },
-      error: function (e) {
-        Swal.fire({
-          icon: "error",
-          title: "warning!",
-          text: "조회된 정보가 없습니다.",
-          confirmButtonText: "확인",
-        }).then((result) => {});
+        gridDataCheck();
       },
     });
+  }
+
+  function gridDataCheck() {
+    const grid1Data = grid1Ins.getData().length;
+    const grid2Data = grid2Ins.getData().length;
+
+    if (grid1Data === 0 && grid2Data === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "warning!",
+        text: "조회된 정보가 없습니다.",
+        confirmButtonText: "확인",
+      });
+    }
   }
 
   function saveDcsn() {
@@ -702,5 +698,6 @@ const TB09060Sjs = (function () {
     getList1: getList1,
     saveDcsn: saveDcsn,
     srchExcSn: srchExcSn,
+    gridDataCheck: gridDataCheck,
   };
 })();

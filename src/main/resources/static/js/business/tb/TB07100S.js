@@ -62,6 +62,16 @@ const TB07100Sjs = (function () {
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB07100S_acctDt1","TB07100S_acctDt2");
 
+    // maxlength 지정 함수
+    let colums = {
+      CDNO : 64                 //  카드번호
+    , APVL_NO : 24              //  카드승인번호
+    , BANO : 64                 //  지급계좌
+    , RELT_FDTN_CTNS : 4000     //  관련근거
+    , BNK_ACHD_NM : 200         //  예금주명
+    }
+    limitInputLength(colums,"TB07100S");
+
   });
 
   /**

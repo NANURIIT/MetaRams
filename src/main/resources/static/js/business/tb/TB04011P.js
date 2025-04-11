@@ -331,20 +331,24 @@ function setMtrInfo_TB04011P(e) {
   }
 
   if (prefix == "TB05010S") {
-
     // 그리드데이터 체크
     const chkGrid = () => {
-      let grid = $("#gridCaseList").pqGrid('instance').pdata;
+      let grid = $("#gridCaseList").pqGrid("instance").pdata;
       console.log(grid);
       console.log(e.sn);
       for (let i = 0; i < grid.length; i++) {
         console.log(grid[i].dealSn);
-        if (grid[i].dealSn == e.sn && grid[i].dealNo == e.dealNo && grid[i].mtrDcd == e.mtrDcd && grid[i].jdgmDcd == e.jdgmDcd) {
+        if (
+          grid[i].dealSn == e.sn &&
+          grid[i].dealNo == e.dealNo &&
+          grid[i].mtrDcd == e.mtrDcd &&
+          grid[i].jdgmDcd == e.jdgmDcd
+        ) {
           return true;
         }
       }
       return false;
-    }
+    };
 
     // 안건중복체크
     if (chkGrid()) {
@@ -352,17 +356,18 @@ function setMtrInfo_TB04011P(e) {
         icon: "warning",
         title: "Warning",
         text: "중복된 안건입니다!",
-      })
+      });
       return;
     }
 
-    // 심사진행중
-    if (e.mtrPrgSttsDcd != "208" && e.mtrPrgSttsDcd.substr(0, 1) === "2") {
+    // 심사진행상태가 "심사부안건승인"상태일것
+    if (e.mtrPrgSttsDcd != "208") {
+      // if (e.mtrPrgSttsDcd != "208" && e.mtrPrgSttsDcd.substr(0, 1) === "2") {
       Swal.fire({
         icon: "warning",
         title: "Warning",
         text: "승인되지않은 안건입니다!",
-      })
+      });
       return;
     }
     // 협의진행중
@@ -371,7 +376,7 @@ function setMtrInfo_TB04011P(e) {
         icon: "warning",
         title: "Warning",
         text: "이미 협의가 된 안건입니다!",
-      })
+      });
       return;
     }
 
@@ -388,7 +393,7 @@ function setMtrInfo_TB04011P(e) {
       chrgPEnm: e.chrgPNm,
       ownPEno: e.ownPEno,
       ownPNm: e.ownPNm,
-      dealSn: e.sn
+      dealSn: e.sn,
     };
 
     $("#gridCaseList").pqGrid("addRow", {

@@ -291,8 +291,6 @@ const TB04040Sjs = (function () {
         endDt: endDt.replaceAll("-", ""),
       };
 
-      console.log("confrim:::::::::", dtoParam);
-
       $.ajax({
         type: "GET",
         url: "/TB04040S/getLoiIssDtls",
@@ -331,10 +329,23 @@ const TB04040Sjs = (function () {
     callPage("TB04050S");
   }
 
+  function btnReset() {
+    $("#TB04040S_ibDealNo").val("");
+    $("#TB04040S_ibDealNm").val("");
+    $("#TB04040S_fromDate").val(addMonth(getToday(), -1));
+    $("#TB04040S_toDate").val(getToday());
+    $("#TB04040_getIssDtls").pqGrid("option", "dataModel.data", []);
+    $("#TB04040_getIssDtls").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("select").each(function () {
+      $(this).find("option:eq(0)").prop("selected", true).change();
+    });
+  }
+
   return {
     /**
      * 사용 할 함수 정의
      */
     srchIssDtlsList: srchIssDtlsList,
+    btnReset: btnReset,
   };
 })();
