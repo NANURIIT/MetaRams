@@ -25,6 +25,14 @@ const TB07170Sjs = (function () {
 
     selectBoxSet_TB07170S();
     getDealInfoFromWF();
+
+    $('#TB07170S_dprtNm').val($('#userDprtCd').val())
+    $('#TB07170S_dprtCd').val($('#userDprtCd').val())
+
+    $('#TB07170S_srchForm').find('input, select').on('input', function () {
+      $("#TB07170S_colModel").pqGrid("setData", []);
+    })
+
   });
 
   function selectBoxSet_TB07170S() {
@@ -253,58 +261,6 @@ const TB07170Sjs = (function () {
     setPqGrid(pqGridObjs);
     colModel = $("#TB07170S_colModel").pqGrid("instance");
   }
-  //else {
-  //colModel.setData([]);
-  //}
-  //};
-
-  // function TB07170S_addNewRow() {
-  // 	let row = ["순번", "적용개월수(이내)", "중도상환수수율(%)", "구분", "일련번호"]
-  // 	let newRow = {
-  // 		num: row["순번"]
-  // 		, aplyMnum: row["적용개월수(이내)"]
-  // 		, mdwyRdmpFeeRto: row["중도상환수수율(%)"]
-  // 		, queryType: row["구분"]
-  // 		, feeSn: row["일련번호"]
-  // 	};
-  // 	$("#TB07170S_colModel").pqGrid("addRow", { rowData: newRow, checkEditable: false });
-  // 	$("#TB07170S_colModel").pqGrid("refreshDataAndView");
-  // }
-
-  // function TB07170S_deleteRow() {
-  // 	let getLength = $("#TB07170S_colModel").pqGrid("instance").pdata.length;
-  //     if(TB07170S_rowData != TB07170S_dummyData && TB07170S_pqGridLength < getLength && !TB07170S_rowData.feeSn){
-  //         $("#TB07170S_colModel").pqGrid("deleteRow", { rowData: TB07170S_rowData, checkEditable: false });
-  //         TB07170S_rowData = TB07170S_dummyData;
-  //     } else if (TB07170S_rowData === TB07170S_dummyData && TB07170S_pqGridLength < getLength) {
-  //         $("#TB07170S_colModel").pqGrid("deleteRow", { rowData: TB07170S_rowData, checkEditable: false });
-  //         TB07170S_rowData = TB07170S_dummyData;
-  //     } else if (TB07170S_rowData === TB07170S_dummyData && TB07170S_pqGridLength === getLength) {
-  //         Swal.fire({
-  //             icon: 'warning'
-  //             , text: "삭제하실 행을 선택해주세요"
-  //             , confirmButtonText: "확인"
-  //         });
-  //         TB07170S_rowData = TB07170S_dummyData;
-  //     } else if (TB07170S_rowData != TB07170S_dummyData) {
-  //         Swal.fire({
-  //             icon: "warning"
-  //             , text: "정말 삭제하시겠습니까?"
-  //             , confirmButtonText: "확인"
-  //             , denyButtonText: "아니오"
-  //             , showDenyButton: true
-  //         }). then((result) =>  {
-  //             if (result.isConfirmed) {
-  //                 deleteIBIMS204B();
-  //                 TB07170S_rowData = TB07170S_dummyData;
-  //                 return;
-  //             } else if (result.isDenied) {
-  //                 TB07170S_rowData = TB07170S_dummyData;
-  //                 return;
-  //             }
-  //         })
-  //     }
-  // }
 
   function inq() {
     var rctmDt = $("#TB07170S_rctmDt").val(); //입금일자
@@ -335,8 +291,8 @@ const TB07170Sjs = (function () {
       success: function (data) {
         if (data.length < 1) {
           var option = {};
-          option.title = "Error";
-          option.type = "error";
+          option.title = "Warning!";
+          option.type = "warning";
 
           option.text = "조회된 데이터가 없습니다.";
           openPopup(option);
