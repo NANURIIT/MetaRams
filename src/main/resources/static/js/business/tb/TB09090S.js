@@ -8527,14 +8527,6 @@ const TB09090Sjs = (function() {
 	// 	// 그리드 업데이트
 	// 	grid.refresh();
 	// }
-	
-	
-	/*
-	 *	카멜케이스(Caeml-Case) 변환
-	 */
-	function toCamelCase(str) {
-		return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
-	}
 
 	return {
 		/**

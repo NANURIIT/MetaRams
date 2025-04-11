@@ -54,6 +54,8 @@ const TB03020Sjs = (function () {
 			
 			$("#UPLOAD_FileList").html("");
 
+			
+
 		})
 
 		maskRt("#TB03020S_ltv");
@@ -78,6 +80,13 @@ const TB03020Sjs = (function () {
 		TB03020S_selectOption();
 
 		urlSetDealInfo();
+
+		let columns = {
+			DEAL_NM: 200
+			, LST_MKT: 30
+		}
+
+		limitInputLength(columns, "TB03020S");
 	});
 
 	// function TB03020S_settingFrst(){

@@ -484,15 +484,49 @@ function checkByteLimit(element, maxLength) {
     let charByte = charCode > 127 ? 2 : 1; // 한글은 2바이트, 영문은 1바이트
     if (byteLength + charByte > maxLength) {
       element.value = text.slice(0, i); // 초과한 부분은 잘라냄
-      Swal.fire({
-        icon: "warning",
-        title: "warning!",
-        text: maxLength + "Byte를 초과하여 입력할 수 없습니다.",
-        confirmButtonText: "확인",
-      });
       break;
     }
     byteLength += charByte;
+  }
+}
+
+/**
+ * 길이제한 함수
+ * @param { Object } setData 
+ * @param { String } menuId
+ * @author { 김건우 }
+ * @description
+ * ex)
+ * const obj = {
+ *  name: length
+ * }
+ */
+function limitInputLength ( setData, menuId ) {
+
+  const keys = Object.keys(setData);
+
+  for (let i = 0; i < keys.length; i++) {
+
+    console.log(`#${menuId}_${toCamelCase(keys[i])}`);
+
+    let prevVal;
+
+    $(`#${menuId}_${toCamelCase(keys[i])}`).on('keydown', function (e) {
+
+      prevVal = $(this).val()
+      
+    })
+
+    $(`#${menuId}_${toCamelCase(keys[i])}`).on('input', function () {
+
+      const byte = new TextEncoder().encode($(this).val()).length
+      
+      if ( byte > setData[keys[i]] ) {
+        $(this).val(prevVal);
+      }
+      
+    })
+
   }
 }
 
@@ -2519,4 +2553,14 @@ function maskRt(selector) {
   }).mask(selector);
 
   $(selector).val("0");
+}
+
+
+/**
+ * 카멜케이스(Caeml-Case) 변환
+ * @param { String } str 
+ * @author 김건우
+ */
+function toCamelCase(str) {
+	return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
 }
