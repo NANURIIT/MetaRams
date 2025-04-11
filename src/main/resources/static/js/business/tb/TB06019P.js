@@ -7,6 +7,9 @@ $(document).ready(function() {
 	selectorNumberFormater(
 		      $("input[id*='Amt'], input[id*='Num']")
 		);
+
+	maskRt("#TB06019P_fnafHltySrnmRt");
+	$("#TB06019P_fnafHltySrnmRt").val("0.00")
 	$("#TB06019P_rnbn").inputmask('999-99-99999');
 	$("#TB06019P_crno").inputmask('999999-9999999');
 
