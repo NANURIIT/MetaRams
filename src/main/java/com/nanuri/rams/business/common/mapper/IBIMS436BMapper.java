@@ -45,5 +45,18 @@ public interface IBIMS436BMapper {
      */
     int batchInsert(IBIMS810BVO param);
 
-   
+    /**
+     * 연체기본내역(원금/이자) 조회 (TB07030 상환)
+     * @param param 연체기본 IBIMS436B
+     * @return 연체기본내역
+     */
+    public List<IBIMS436BVO> getPrnaOvduBscList(IBIMS436BVO param);//원금연체
+    public List<IBIMS436BVO> getIntrOvduBscList(IBIMS436BVO param);//이자연체
+
+    /**
+     * 연체기본내역 플래그 변경
+     * @param param 연체기본 IBIMS436B
+     * @return 
+     */
+    public int ovduSttsCdFlagCng(IBIMS436BVO param);
 }

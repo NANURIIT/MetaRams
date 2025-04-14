@@ -10,6 +10,11 @@ const TB07120Sjs = (function () {
     setInput();
     getDealInfoFromWF();
 
+    // 조회조건 수정시 초기화
+    $("#TB07120S_conSrch").find('input, select').on('input', function () {
+      resetDataForm();
+    })
+    
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB07120S_selectDate1","TB07120S_selectDate2");
   });
@@ -23,6 +28,10 @@ const TB07120Sjs = (function () {
     $("#TB07120S2_empNo").prop("readonly", false);
     $("#TB07120S_dcfcEno").prop("readonly", false);
     $("#TB07120S_dcfcBtn").prop("disabled", false);
+    $("#TB07120S_selectDate1").val(getSomeDaysAgo(7));
+    $("#TB07120S_selectDate2").val(getToday());
+    $("#TB07120S_dprtCd").val($("#userDprtCd").val());
+    $("#TB07120S_dprtNm").val($("#userDprtCd").val());
 
     $('#TB07120S_apvlRqst').hide();
     $('#TB07120S_apvlCncl').hide();
@@ -31,12 +40,32 @@ const TB07120Sjs = (function () {
   }
 
   /**
-   * 검색 조건 초기화
+   * 전체 초기화
    */
   function srchReset_TB07120S() {
-    $("#con-srch input").val("");
-    $("#con-srch select").val("");
+    $("#TB07120S_conSrch input").val("");
+    $("#TB07120S_conSrch select").val("");
+    $("#TB07120S_selectDate1").val(getSomeDaysAgo(7));
+    $("#TB07120S_selectDate2").val(getToday());
+    $("#TB07120S_dprtCd").val($("#userDprtCd").val());
+    $("#TB07120S_dprtNm").val($("#userDprtCd").val());
+    resetDataForm();
   }
+
+  // 조회내용 초기화
+  function resetDataForm () {
+    $("#ibims452b input").val("");
+
+    chkDecd();
+
+    // 파일 그리드
+    $(`div[data-menuid="/TB07120S"] #UPLOAD_FileList`).html("");
+
+    // pq그리드
+    resetPGgrids("TB07120S");
+  }
+
+  
 
   /**
    * selectBox 공통코드 set
@@ -674,6 +703,7 @@ const TB07120Sjs = (function () {
         } else {
           Swal.fire({
             icon: "warning",
+            title : "Warning!",
             text: "조회내역이 없습니다!",
           });
           grid.option("strNoRows", "조회된 데이터가 없습니다.");

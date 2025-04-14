@@ -389,7 +389,7 @@ const TB08040Sjs = (function() {
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 				editable: true,
-				editor: { type: 'input', attr: 'maxlength = "200"',},
+				editor: { type:'textarea', attr: 'maxlength = 200'},
 			},
 			{
 				title: "수수료",

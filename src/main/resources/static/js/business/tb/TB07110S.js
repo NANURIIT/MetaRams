@@ -923,12 +923,13 @@ const TB07110Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if (data) {
+        if (data.length > 0) {
           //let gridList = $("#TB07110S_grd_rlthPruf").pqGrid("instance");
           let gridList = $("#TB07110S_grd_txbl").pqGrid("instance");
           gridList.setData(data);
           gridList.getData();
-        } else {
+        }
+        else {
           Swal.fire({
             icon: "warning"
             , title: "Warning!"
