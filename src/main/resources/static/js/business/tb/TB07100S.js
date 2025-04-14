@@ -41,6 +41,8 @@ const TB07100Sjs = (function () {
       TB07100S_resetInput();
       $("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
       $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').setData([]);
+      // 파일 그리드 초기화
+      $(`div[data-menuid="/TB07100S"] #UPLOAD_FileList`).html("");
     })
 
 
@@ -60,17 +62,17 @@ const TB07100Sjs = (function () {
     apvlBtnHandler();
 
     //기간검색 유효성 검사 함수
-    chkValFromToDt("TB07100S_acctDt1","TB07100S_acctDt2");
+    chkValFromToDt("TB07100S_acctDt1", "TB07100S_acctDt2");
 
     // maxlength 지정 함수
     let colums = {
-      CDNO : 64                 //  카드번호
-    , APVL_NO : 24              //  카드승인번호
-    , BANO : 64                 //  지급계좌
-    , RELT_FDTN_CTNS : 4000     //  관련근거
-    , BNK_ACHD_NM : 200         //  예금주명
+      CDNO: 64                 //  카드번호
+      , APVL_NO: 24              //  카드승인번호
+      , BANO: 64                 //  지급계좌
+      , RELT_FDTN_CTNS: 4000     //  관련근거
+      , BNK_ACHD_NM: 200         //  예금주명
     }
-    limitInputLength(colums,"TB07100S");
+    limitInputLength(colums, "TB07100S");
 
   });
 
@@ -78,7 +80,7 @@ const TB07100Sjs = (function () {
    * 하단탭 컨트롤러
    * @param {String} tabNo 탭번호
    */
-  function tabController ( tabNo ) {
+  function tabController(tabNo) {
 
     if (tabNo === 1) {
       // 귀찮은 관계로 하드코딩
@@ -114,7 +116,7 @@ const TB07100Sjs = (function () {
       , false);
 
     grdSelect.A017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A017' })
-                              .filter(item => item.cdValue >= 500);	                            // 회계계정과목코드
+      .filter(item => item.cdValue >= 500);	                            // 회계계정과목코드
     grdSelect.A018 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A018' });	  // 회계지급방법코드
     grdSelect.F017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'F017' });    // 자금원장구분코드
     grdSelect.P029 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'P029' });    // 증빙종류구분코드
@@ -152,7 +154,7 @@ const TB07100Sjs = (function () {
     $('#TB07100S_pchsDdcDcd').append(P030Tag);
 
     let D006Tag = "";
-    for (let i = 0; i < grdSelect.P030.length; i++) {
+    for (let i = 0; i < grdSelect.D006.length; i++) {
       D006Tag += `<option value="${grdSelect.D006[i].cdValue}">${grdSelect.D006[i].cdName}</option>`
     }
     $('#TB07100S_jobDecdCd').append(D006Tag);
@@ -238,6 +240,7 @@ const TB07100Sjs = (function () {
     $('#TB07100S_dprtNm').val($('#userDprtCd').val());
     $('#TB07100S_rgstEmpno').val($('#userEno').val());
     $('#TB07100S_rgstEmpnm').val($('#userEmpNm').val());
+    $('#TB07100S_acctDt').val(getToday());
   }
 
   /**
@@ -250,6 +253,8 @@ const TB07100Sjs = (function () {
     $('#TB07100S_dprtNm').val("");
     $(`#TB07100S_mergeForm input`).val('');
 
+    setDfaultValue();
+
     $("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
     $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').setData([]);
 
@@ -261,6 +266,7 @@ const TB07100Sjs = (function () {
    */
   const TB07100S_resetInput = () => {
     $(`#TB07100S_mergeForm input`).val('');
+    $(`#TB07100S_mergeForm select`).val('');
     $(`#TB07100S_mergeForm input[id*='bnftYn']
       ,#TB07100S_mergeForm input[id*='entmAccXstcYn']`).prop('checked', false);
 
@@ -272,10 +278,14 @@ const TB07100Sjs = (function () {
       ,#TB07100S_mergeForm input[id*='splmValuTxa']
       ,#TB07100S_mergeForm #TB07100S_trtx`).val('0');
 
+    $('#TB07100S_acctDt').val(getToday());
+
     $("#TB07100S_wrtnDt").val(unformatDate(getToday()));
     $("#TB07100S_rslnBdcd").val($('#userDprtCd').val());
     $('#TB07100S_rgstEmpno').val($('#userEno').val());
     $('#TB07100S_rgstEmpnm').val($('#userEmpNm').val());
+
+    toggleBtnHandler('등록/변경');
 
     apvlBtnHandler();
   }
@@ -884,7 +894,7 @@ const TB07100Sjs = (function () {
           /**
            * 파일불러오기, 저장을 위한 키값 세팅
            */
-          $(`div[data-menuid="/TB07100S"] #fileKey2`).val( ui.rowData['wrtnDt'] + ui.rowData['rslnBdcd'] + ui.rowData['cnstNo'] )
+          $(`div[data-menuid="/TB07100S"] #fileKey2`).val(ui.rowData['wrtnDt'] + ui.rowData['rslnBdcd'] + ui.rowData['cnstNo'])
           $('div[data-menuid="/TB07100S"] #key1').val("TB07100S")
           getFileInfo($('div[data-menuid="/TB07100S"] #key1').val(), $('div[data-menuid="/TB07100S"] #fileKey2').val());
 
@@ -950,16 +960,24 @@ const TB07100Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if (data) {
+        if (data.length > 0) {
           let gridList = $("#TB07100S_grd_rlthPruf").pqGrid('instance');
           gridList.setData(data);
           gridList.getData();
         }
         else {
-
+          Swal.fire({
+            icon: "warning"
+            , title: "Warning!"
+            , text: "조회된 내역이 없습니다!"
+          })
         }
       }, error: function () {
-
+        Swal.fire({
+          icon: "error"
+          , title: "Error!"
+          , text: "조회 실패!"
+        })
       }
     });
   }
@@ -1016,7 +1034,7 @@ const TB07100Sjs = (function () {
         url = "update"
       }
 
-      if ( $('#TB07100S_rgstEmpno').val() === $('#TB07100S_2_empNo').val()) {
+      if ($('#TB07100S_rgstEmpno').val() === $('#TB07100S_2_empNo').val()) {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
@@ -1024,7 +1042,7 @@ const TB07100Sjs = (function () {
         })
         return;
       }
-      else if ( !$('#TB07100S_2_empNo').val() ) {
+      else if (!$('#TB07100S_2_empNo').val()) {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
@@ -1038,7 +1056,7 @@ const TB07100Sjs = (function () {
       url = "delete"
     }
 
-    
+
 
     const paramData = {
       wrtnDt: unformatDate($('#TB07100S_wrtnDt').val())                               // 작성일자
@@ -1102,6 +1120,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: `${text} 완료.`
           })
+          TB07100S_resetInput();
           TB07100S_selectIBIMS431B();
         }
         else {
@@ -1177,7 +1196,7 @@ const TB07100Sjs = (function () {
       , scrnNo: "TB07100S"                                  // 화면명
     }
 
-    if ( $('#TB07100S_rgstEmpno').val() === $('#TB07100S_2_empNo').val()) {
+    if ($('#TB07100S_rgstEmpno').val() === $('#TB07100S_2_empNo').val()) {
       Swal.fire({
         icon: "warning",
         title: "Warning!",
@@ -1185,7 +1204,7 @@ const TB07100Sjs = (function () {
       })
       return;
     }
-    else if ( !$('#TB07100S_2_empNo').val() ) {
+    else if (!$('#TB07100S_2_empNo').val()) {
       Swal.fire({
         icon: "warning",
         title: "Warning!",
