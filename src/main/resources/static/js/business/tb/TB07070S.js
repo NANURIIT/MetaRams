@@ -341,7 +341,7 @@ const TB07070Sjs = (function () {
         dataType: "json",
         beforeSend: function (xhr) {
           excRdmpCncl.setData([]);
-          $("#btnSave").prop("disabled", false);
+          $("#TB07070S_btnSave").prop("disabled", false);
         },
         success: function (data) {
           console.log(data);
@@ -355,12 +355,12 @@ const TB07070Sjs = (function () {
               if (al.length > 0) {
                 let trSts = al[0].rowData.trStatCd;
                 if (trSts !== "01") {
-                  $("#btnSave").prop("disabled", true);
+                  $("#TB07070S_btnSave").prop("disabled", true);
                 } else {
-                  $("#btnSave").prop("disabled", false);
+                  $("#TB07070S_btnSave").prop("disabled", false);
                 }
               } else {
-                $("#btnSave").prop("disabled", false);
+                $("#TB07070S_btnSave").prop("disabled", false);
               }
             });
           } else {
@@ -379,10 +379,10 @@ const TB07070Sjs = (function () {
   }
 
   // 이후 거래 존재여부 확인
-  $("#btnSave").on("click", function () {
+  $("#TB07070S_btnSave").on("click", function () {
+    console.log('asdasdasdasdasd')
     // console.log('excRdmpCncl ::: ',excRdmpCncl);
     // console.log('excRdmpCncl.getData ::: ', excRdmpCncl.getData());
-
     fValid = 2;
 
     let selGrd = excRdmpCncl.getData();
@@ -426,9 +426,10 @@ const TB07070Sjs = (function () {
     }
   });
 
-  // 저장
+  // 저장(취소)
   function save(p) {
     fValid = 1;
+    console.log(1)
 
     let obj = {
       // prdtCd : $('#TB07070S_prdtCd').val(), 			  // 상품코드

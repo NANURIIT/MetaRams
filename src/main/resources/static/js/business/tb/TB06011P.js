@@ -977,6 +977,7 @@ function TB06011P_setPrdtInfo(e) {
   }
 
   if (prefix === "TB07070S") {
+    resetPGgrids(prefix)
     // TB07070Sjs.srch()
   }
 

@@ -237,7 +237,7 @@ const TB07010Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         beforeSend: function (xhr) {
-          // $('#btnSave').prop('disabled', false)
+          // $('#TB07010S_btnSave').prop('disabled', false)
           //console.log(xhr);
           resetExc();
           $("#TB07010S_loanablAmt").val("");
@@ -385,7 +385,7 @@ const TB07010Sjs = (function () {
             obj.eprzCrdlApvlAmt = data.eprzCrdlApvlAmt; // 승인금액
             // console.log('obj 보내기 전 ::: ', obj);
 
-            ctrlComp("btnSave", obj); // 실행버튼 컨트롤러
+            ctrlComp("TB07010S_btnSave", obj); // 실행버튼 컨트롤러
 
             /**
              * PQGrid options
@@ -423,7 +423,7 @@ const TB07010Sjs = (function () {
               $('#TB07010S_prdtNm').val(tempObj.prdtNm)
 
               tempObj = {};
-              // $('#btnSave').prop('disabled', true)
+              // $('#TB07010S_btnSave').prop('disabled', true)
             });
             return;
           }
@@ -619,6 +619,8 @@ const TB07010Sjs = (function () {
           feeSn = ""; // 일련번호
           prarDt = ""; // 수취일자 == 수납일자
           $("#TB07010S_feeAmt").val(""); // 수수료 금액
+
+          srch();
         },
         error: function () {
           sf(1, "error", `실행정보 저장에 실패하였습니다.`, "Error!");
@@ -736,14 +738,14 @@ const TB07010Sjs = (function () {
         });
         break;
 
-      case "btnSave":
-        // console.log("btnSave ::: ", obj);
+      case "TB07010S_btnSave":
+        // console.log("TB07010S_btnSave ::: ", obj);
 
         // 버튼 컨트롤
         if (obj.eprzCrdlIndvLmtDcd === "1" && obj.loanablAmt <= 0) {
           // 개별(분할실행) (1)
           // console.log('개별(분할실행) (1)');
-          $("#btnSave").prop("disabled", true);
+          $("#TB07010S_btnSave").prop("disabled", true);
           obj = {};
           // console.log('개별(분할실행) (1) ::: obj', obj);
         } else if (
@@ -754,15 +756,15 @@ const TB07010Sjs = (function () {
           // console.log('한도 (2)');
           // console.log('타니');
 
-          $("#btnSave").prop("disabled", true);
+          $("#TB07010S_btnSave").prop("disabled", true);
           obj = {};
         } else if (obj.eprzCrdlIndvLmtDcd === "3" && obj.loanablAmt <= 0) {
           // 개별(일괄실행) (3)
           // console.log('개별(일괄실행) (3)');
-          $("#btnSave").prop("disabled", true);
+          $("#TB07010S_btnSave").prop("disabled", true);
           obj = {};
         } else {
-          $("#btnSave").prop("disabled", false);
+          $("#TB07010S_btnSave").prop("disabled", false);
           obj = {};
         }
         break;
@@ -1039,7 +1041,7 @@ const TB07010Sjs = (function () {
     feeRciv.setData([]);
 
     // 실행버튼 활성화
-    $("#btnSave").prop("disabled", false);
+    $("#TB07010S_btnSave").prop("disabled", false);
 
     $("#TB07010S_fnltCd").prop("disabled", false);
     $("#TB07010S_brkgAcno").prop("disabled", false);
@@ -1324,15 +1326,15 @@ const TB07010Sjs = (function () {
   // 버튼 컨트롤
   // if ( eprzCrdlIndvLmtDcd === '1' && loanablAmt <= 0 ) { // 개별(분할실행) (1)
   // 	console.log('개별(분할실행) (1)');
-  // 	$('#btnSave').prop("disabled", true);
+  // 	$('#TB07010S_btnSave').prop("disabled", true);
   // } else if ( eprzCrdlIndvLmtDcd === '2' ) { // 한도 (2)
   // 	console.log('한도 (2)');
-  // 	$('#btnSave').prop("disabled", false);
+  // 	$('#TB07010S_btnSave').prop("disabled", false);
   // } else if ( eprzCrdlIndvLmtDcd === '3' && loanablAmt <= 0 ) { // 개별(일괄실행) (3)
   // 	console.log('개별(일괄실행) (3)');
-  // 	$('#btnSave').prop("disabled", true);
+  // 	$('#TB07010S_btnSave').prop("disabled", true);
   // } else {
-  // 	$('#btnSave').prop("disabled", false);
+  // 	$('#TB07010S_btnSave').prop("disabled", false);
   // }
 
   function calcAcbkAmt(){
