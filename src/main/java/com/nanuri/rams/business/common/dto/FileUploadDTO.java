@@ -14,6 +14,7 @@ public class FileUploadDTO {
 	private String fileKey1;			// fileKey1
 	private String fileKey2;		    // fileKey2
 	private int    atchFleSn;		/* 첨부파일일련번호 */
+    private String atchFleDcd;      /* 첨부파일구분코드 */
     private String svFilePathNm;	/* 서버파일경로명 */
     private String svFileNm;		/* 서버파일명 */
     private String svFileExpnsnNm;	/* 서버파일확장자명 */

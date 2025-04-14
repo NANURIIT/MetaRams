@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="FileUploadPopup">
+	<!-- modal -->
+	<div id="modal-FileUploadPopup" class="modal fade" role="dialog" aria-labelledby="lb-TB03021P" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">Deal번호 조회</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB03021P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="TB03021P_prefix" id="TB03021P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox mb-0">
+								<!-- 조회조건영역 -->
+				    			<div class="ibox-content i-filter text-right">
+				    				<form method="get">
+				    					<div class="form-group row">
+				    						<label class="col-sm-1 col-form-label">Deal번호</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB03021P_ibDealNo"></div>
+				                        	<label class="col-sm-1 col-form-label">Deal명</label>
+				                            <div class="col-sm-3"><input type="text" class="form-control" id="TB03021P_ibDealNm"></div>
+										</div>	
+										<div class="form-group row">
+											<label class="col-sm-1 col-form-label text-right">담당자번호</label>
+										    <div class="col-sm-3 input-group">
+												<input type="text" class="form-control" style="width:30px;" id="TB03021P_empNo">
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" onclick="callTB03022P('TB03021P')"><i class="fa fa-search"></i></button>
+												</span>
+												<input type="text" class="form-control" style="width:70px;" id="TB03021P_empNm" readonly>
+											</div>
+											<label class="col-sm-1 col-form-label text-right">부서명</label>
+											<div class="col-sm-3">
+												<div class="input-group">
+													<select class="form-control" id="TB03021P_dprtNm">
+														<option value="">전체</option>
+													</select>
+													<input type="text" class="form-control" id="TB03021P_dprtCd" readonly>
+												</div>
+											</div>
+											
+											<!-- <label class="col-sm-1 col-form-label text-nowrap" id="labelDscDt">Deal등록일자</label>
+			                            	<span class="col-sm-2 input-group date" id="spanDstDt">
+		                                    	<input type="text" class="form-control" id="TB03021P_datepicker1" value="" ><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		                                	</span> -->
+				                        	<!-- <div class="col-sm-5" id="divSpan"></div> -->
+											<div class="col-sm-4 text-right">
+				                        		<button type="button" class="btn btn-primary mr-2" onclick="getDealInfo();" ><i class="fa fa-search"></i>&nbsp;조회</button>
+				                        	</div>	
+										</div>	
+				    				</form>
+				    			</div>
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+				    				<div id="gridDealInfo"></div>
+				    			</div>
+							</div>
+							<!-- ibox -->
+						</div>
+					</div>
+				</div>
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>
