@@ -23,7 +23,6 @@ const TB07120Sjs = (function () {
     $("#TB07120S2_empNo").prop("readonly", false);
     $("#TB07120S_dcfcEno").prop("readonly", false);
     $("#TB07120S_dcfcBtn").prop("disabled", false);
-    // $(".TB07120S_isForeignTransfer").prop("disabled", true);
 
     $('#TB07120S_apvlRqst').hide();
     $('#TB07120S_apvlCncl').hide();
