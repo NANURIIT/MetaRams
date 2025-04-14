@@ -114,7 +114,7 @@ function callTB03022P(prefix, e) {
   $("#modal-TB03022P").modal("show");
   indexChangeHandler("TB03022P");
 
-  if (prefix == "TB05010S_mmbrTrgt" || prefix == "TB05010S_mmbrAngt"){
+  if (prefix == "TB05010S_mmbrTrgt" || prefix == "TB05010S_mmbrAngt") {
     mmbrSn = e;
   }
 
@@ -240,14 +240,14 @@ async function getEmpList() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      if($(`div[id='modal-TB03022P']`).css('display') === "none" && data.length === 1){
-				setEmpNm(data[0]);
-				modalClose_TB03022P();
-			}
-			else {
-				callTB03022P($('#TB03022P_prefix').val(), mmbrSn);
-				setTimeout(() => dataEmpSetGrid(data), 400)
-			}
+      if ($(`div[id='modal-TB03022P']`).css('display') === "none" && data.length === 1) {
+        setEmpNm(data[0]);
+        modalClose_TB03022P();
+      }
+      else {
+        callTB03022P($('#TB03022P_prefix').val(), mmbrSn);
+        setTimeout(() => dataEmpSetGrid(data), 400)
+      }
     },
   });
 }
@@ -313,7 +313,7 @@ function setEmpNm(e) {
       break;
     case "TB05010S_mmbrTrgt":
       // 특정 행의 데이터 수정
-      if ( arrPqGridMmbrInfo.length > 0 && arrPqGridMmbrInfo[mmbrSn] ) {
+      if (arrPqGridMmbrInfo.length > 0 && arrPqGridMmbrInfo[mmbrSn]) {
         arrPqGridMmbrInfo[mmbrSn].atdcTrgtEmpnm = empNm; // 버튼을 누른 행의 atdcTrgtEmpnm(위원명_화면) 값 변경
         arrPqGridMmbrInfo[mmbrSn].atdcTrgtEmpno = empNo; // 버튼을 누른 행의 atdcTrgtEmpno(위원코드) 값 변경
       }
@@ -324,7 +324,7 @@ function setEmpNm(e) {
       break;
     case "TB05010S_mmbrAngt":
       // 특정 행의 데이터 수정
-      if ( arrPqGridMmbrInfo.length > 0 && arrPqGridMmbrInfo[mmbrSn] ) {
+      if (arrPqGridMmbrInfo.length > 0 && arrPqGridMmbrInfo[mmbrSn]) {
         arrPqGridMmbrInfo[mmbrSn].atdcAngtEmpnm = empNm; // 버튼을 누른 행의 atdcTrgtEmpnm(대리참석위원_화면) 값 변경
         arrPqGridMmbrInfo[mmbrSn].atdcAngtEmpno = empNo; // 버튼을 누른 행의 atdcTrgtEmpno(대리참석위원_코드) 값 변경
       }
@@ -406,9 +406,12 @@ function setEmpNm(e) {
       $("#TB03040S_2_dprtCd").val(e.dprtCd);
       break;
     case "TB08031S_charge":
-        $("#TB08031S_D010").val(e.dprtCd);
-        // $("#TB09080S_dprtNm").val(e.dprtCd);
-        break;
+      $("#TB08031S_D010").val(e.dprtCd);
+      // $("#TB09080S_dprtNm").val(e.dprtCd);
+      break;
+    case "TB09080S":
+      resetPGgrids("TB09080S");
+      break;
     default:
       break;
   }

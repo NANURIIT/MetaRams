@@ -846,6 +846,7 @@ function TB06011P_setPrdtInfo(e) {
   if (prefix == "TB09080S" || prefix == "TB09070S") {
     $(`#${prefix}_ibDealNo`).val(ibDealNo);
     $(`#${prefix}_ibDealNm`).val(ibDealNm);
+    resetPGgrids(prefix)
   }
 
   if (prefix == "TB09100S") {
@@ -855,6 +856,15 @@ function TB06011P_setPrdtInfo(e) {
 
   if (prefix == "TB06015P") {
     excSnSet(e.prdtCd);
+  }
+
+  if (prefix == "TB07120S") {
+    TB07120Sjs.resetDataForm();
+  }
+  
+  if (prefix == "TB07140S") {
+    $("#TB07140S_dataForm").val("");
+    resetPGgrids("TB07140S");
   }
 
   /* 0723 add */

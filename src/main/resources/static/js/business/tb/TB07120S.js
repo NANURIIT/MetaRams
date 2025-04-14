@@ -889,5 +889,6 @@ const TB07120Sjs = (function () {
     updateFndsCnstDecd: updateFndsCnstDecd,
     srchReset_TB07120S: srchReset_TB07120S,
     getDealInfoFromWF: getDealInfoFromWF,
+    resetDataForm: resetDataForm,
   };
 })();

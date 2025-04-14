@@ -537,6 +537,20 @@ function setArdyBzepInfo(rowData) {
 		case "TB07230S":
 			resetPGgrids(prefix);
 			break;
+		case "TB09070S":
+			resetPGgrids(prefix);
+			break;
+		case "TB07120S":
+			$("#ibims452b input").val("");
+
+			// chkDecd();
+		
+			// 파일 그리드
+			$(`div[data-menuid="/TB07120S"] #UPLOAD_FileList`).html("");
+		
+			// pq그리드
+			resetPGgrids("TB07120S");
+			break;
 		default:
 			break;
 	}

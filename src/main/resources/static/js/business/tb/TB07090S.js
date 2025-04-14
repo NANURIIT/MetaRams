@@ -51,16 +51,19 @@ const TB07090Sjs = (function () {
     */
 
   $(document).ready(function () {
-    $("#TB07090S_rctmDt").val(getToday()); //입금일자
-    $("#TB07090S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
-    $("#TB07090S_toDate").val(getToday()); //조회종료일
-
     loadUserAuth(); //로그인유저정보
     selectBoxSet_TB07090S();
     getDealInfoFromWF();
+    resetAll(); 
 
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB07090S_fromDate","TB07090S_toDate");
+
+    // 조회조건 수정시 초기화
+    $("#TB07090S_conSrch").find('input, select').on('input', function () {
+      resetPGgrids("TB07090S")
+    })
+    
   });
 
   function loadUserAuth() {
@@ -1457,8 +1460,13 @@ const TB07090Sjs = (function () {
    * 초기화
    * ㄱㄱㅇ
    */
-  function resetAll() {
+  function resetAll () {
     resetInputValue($("div[data-menuid='/TB07090S']"));
+    $("#TB07090S_rctmDt").val(getToday()); //입금일자
+    $("#TB07090S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
+    $("#TB07090S_toDate").val(getToday()); //조회종료일
+    $("#TB07090S_dprtNm").val($("#userDprtCd").val());
+    $("#TB07090S_dprtCd").val($("#userDprtCd").val());
     resetPGgrids("TB07090S");
   }
 

@@ -330,6 +330,10 @@ function setMtrInfo_TB04011P(e) {
     $(pageMtrNm).val(mtrNm);
   }
 
+  if (prefix == "TB07090S") {
+    resetPGgrids("TB07090S");
+  }
+
   if (prefix == "TB05010S") {
     // 그리드데이터 체크
     const chkGrid = () => {

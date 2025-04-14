@@ -289,6 +289,9 @@ function setDealInfo(e) {
   if (prefix == "TB08036S") {
     TB08036Sjs.getDealInfoTB08036S();
   }
+  if (prefix == "TB09070S" || prefix == "TB09080S") {
+    resetPGgrids(prefix)
+  }
 
   modalClose_TB03021P();
 }

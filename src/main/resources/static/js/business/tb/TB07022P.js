@@ -283,6 +283,8 @@ function setFndInfo(e) {
 
 	if ( TB07022P_pf === "TB07140S_srch") {
 		TB07140Sjs.inputClear();
+		$("#TB07140S_dataForm").val("");
+		resetPGgrids("TB07140S");
 	}
 	else if ( TB07022P_pf === "TB07040S_srch") {
 		TB07040Sjs.inputClear();
