@@ -960,7 +960,7 @@ const TB07100Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if (data) {
+        if (data.length > 0) {
           let gridList = $("#TB07100S_grd_rlthPruf").pqGrid('instance');
           gridList.setData(data);
           gridList.getData();
