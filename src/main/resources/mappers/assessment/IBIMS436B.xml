@@ -218,7 +218,15 @@ ON (
                    PRCA_OVDU_ACML_DNUM       = TO_NUMBER(SYSDATE - TO_DATE(S.PRNA_OVDU_DT, 'YYYYMMDD')), /* 원금연체누적일수 */
                    INT_OVDU_ACML_DNUM        = TO_NUMBER(SYSDATE - TO_DATE(S.INTR_OVDU_DT, 'YYYYMMDD')), /* 이자연체누적일수 */
                    OVDU_PRNA_AMT             = S.OVDU_PRNA,              /* 연체원금금액 */
-                   OVDU_INTR_AMT             = S.INTR_AMT_OVDU_INTR,     /* 연체이자금액 */                 
+                   OVDU_INTR_AMT             = S.INTR_AMT_OVDU_INTR,     /* 연체이자금액 */
+                   LAST_PRNA_RDMP_DT		 = (SELECT A.LAST_PRNA_RDMP_DT
+                   						 		  FROM RAMS2.IBIMS402B A             									  
+            									 WHERE A.PRDT_CD = S.PRDT_CD 
+            									   AND A.EXC_SN = S.EXC_SN), /* 최종원금상환일자 */
+            	   LAST_PRNA_RDMP_DT		 = (SELECT A.LAST_INTR_CLC_DT
+                   						 		  FROM RAMS2.IBIMS402B A             									  
+            									 WHERE A.PRDT_CD = S.PRDT_CD 
+            									   AND A.EXC_SN = S.EXC_SN), /* 최종이자상환일자 */	           
                    HND_DETL_DTM              = SYSDATE                   /* 조작상세일시 */
         WHEN NOT MATCHED THEN 
             INSERT (
@@ -249,7 +257,7 @@ ON (
                 S.DEAL_NO,                      /* 딜번호 */
                 S.PRDT_CD,                      /* 종목코드 */
                 S.EXC_SN,                       /* 실행순번 */
-                '0',                           /* 연체상태코드 */
+                '01',                           /* 연체상태코드 */
                 S.DEAL_EXC_AMT,                /* 여신잔액금액 */
                 S.PRNA_OVDU_DT,                 /* 최초원금연체발생일자 */
                 S.INTR_OVDU_DT,                 /* 최초이자연체발생일자 */
