@@ -3,13 +3,17 @@ const TB10710Sjs = function () {
     $(document).ready(function () {
         pqGrid();
         fnSelectBox();
-        $("#selectDate_1").val(getCurrentDate())
-        $("#selectDate_2").val(getCurrentDate())
+        resetAll();
         $('#disabledView').find('input').prop('disabled', true);
         // createOption();
 
         //기간검색 유효성 검사 함수
         chkValFromToDt("selectDate_1","selectDate_2");
+
+        // 조회조건 수정시 초기화
+        $("#TB10710S_conSrch").find('input, select').on('input', function () {
+            resetPGgrids("TB10710S")
+        })
     });
 
     function getCurrentDate() {
@@ -236,7 +240,6 @@ const TB10710Sjs = function () {
                 , scrollModel: { autoFit: true }
                 , editable: false
                 , rowClick: function (event, ui) {
-                    console.log(ui.rowData.dudtMngmNo);
                     getParameter(ui.rowData.dudtMngmNo);
                 }
                 , selectionModel: { type: 'row' }
@@ -327,6 +330,23 @@ const TB10710Sjs = function () {
         $(`#${id}`).pqGrid('refreshDataAndView');
     }
 
+    /**
+     * 전체 초기화
+     */
+    function resetAll (){
+        // 조회조건 초기화
+        $("#TB10710S_conSrch").val("");
+        $("#TB10710S_dprtNm").val($("#userDprtCd").val());
+        $("#TB10710S_dprtCd").val($("#userDprtCd").val());
+        $("#selectDate_1").val(getCurrentDate())
+        $("#selectDate_2").val(getSomeDaysAgo(-7))
+
+        // 모든 pq그리드 초기화
+        resetPGgrids("TB10710S");
+
+    }
+
+
     /*
      *  =====================PQGRID=====================
      */
@@ -363,7 +383,6 @@ const TB10710Sjs = function () {
             data: JSON.stringify(paramData),
             dataType: "json",
             success: function (data) {
-                console.log(data);
                 if (data.length > 0) {
                     let detail = $('#TB10710S_colModel1').pqGrid('instance')
                     detail.setData(data);
@@ -371,6 +390,7 @@ const TB10710Sjs = function () {
                 } else {
                     Swal.fire({
                         icon: 'warning'
+                        , title: 'Warning!'
                         , text: "조회된 정보가 없습니다!"
                         , confirmButtonText: "확인"
                     });
@@ -410,6 +430,7 @@ const TB10710Sjs = function () {
                 } else {
                     Swal.fire({
                         icon: 'warning'
+                        , title: 'warning!'
                         , text: "조회된 정보가 없습니다!"
                         , confirmButtonText: "확인"
                     });
@@ -433,5 +454,6 @@ const TB10710Sjs = function () {
 
     return {
         select: select      //  조회
+        ,resetAll: resetAll
     }
 }();
