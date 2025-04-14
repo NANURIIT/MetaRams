@@ -90,8 +90,8 @@ const TB03040Sjs = (function(){
 
     function alertPopup() {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: msgError,
         confirmButtonText: "확인",
       });
@@ -146,14 +146,14 @@ const TB03040Sjs = (function(){
    * reset
    */
   function reset () {
-    $('#TB03040S_fromDate').val("")
-    $('#TB03040S_toDate').val("")
+    $("#TB03040S_fromDate").val(addMonth(getToday(), -1));
+    $("#TB03040S_toDate").val(getToday());
     $('#TB03040S_ibDealNo').val("")
     $('#TB03040S_ibDealNm').val("")
-    $('#TB03040S_1_empNo').val("")
-    $('#TB03040S_1_empNm').val("")
-    $('#TB03040S_2_dprtNm').val("")
-    $('#TB03040S_2_dprtCd').val("")
+    $('#TB03040S_1_empNo').val($('#userEno').val())
+    $('#TB03040S_1_empNm').val($('#userEmpNm').val())
+    $('#TB03040S_2_dprtNm').val($('#userDprtCd').val())
+    $('#TB03040S_2_dprtCd').val($('#userDprtCd').val())
     resetPGgrids("TB03040S")
   }
 
