@@ -859,8 +859,30 @@ function TB06011P_setPrdtInfo(e) {
 
   /* 0723 add */
   if (prefix === "TB07050S") {
-    TB07050Sjs.srchExcSn(e.prdtCd);
-    TB07050Sjs.srch();
+    console.log('진행상태 ::: ', e.prgSttsCd)
+    let numPrgSttsCd = Number(e.prgSttsCd);
+    if (numPrgSttsCd == 502) {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning!",
+        text: "약정 해지 된 상태입니다.",
+        confirmButtonText: "확인",
+      });
+
+      resetAll('TB07050S', TB07050Sjs.resetMore());
+      resetPGgrids("TB07050S")
+      $('#btnPlus').prop('disabled', true)
+      $('#btnMinus').prop('disabled', true)
+      $('#btnSave').prop('disabled', true)
+      $('#TB07050S_prdtCd').val(e.prdtCd)
+      $('#TB07050S_prdtNm').val(e.prdtNm)
+    } else {
+      $('#btnPlus').prop('disabled', false)
+      $('#btnMinus').prop('disabled', false)
+      $('#btnSave').prop('disabled', false)
+      TB07050Sjs.srchExcSn(e.prdtCd);
+      TB07050Sjs.srch();
+    }
   }
 
   if (prefix === "TB07150S") {

@@ -239,14 +239,14 @@
 								<div style="display: none;">
 									<input type="file" class="custom-file-input" id="upload-file-input-TB07050S" name="uploadfile" accept="*">
 								</div>
-								<button class="btn btn-default" onclick="TB07050Sjs.gridEvt('p')"><i class="fa fa-plus"></i></button>
-								<button class="btn btn-default" onclick="TB07050Sjs.gridEvt('m')"><i class="fa fa-minus"></i></button>
+								<button class="btn btn-default" id="btnPlus" onclick="TB07050Sjs.gridEvt('p')"><i class="fa fa-plus"></i></button>
+								<button class="btn btn-default" id="btnMinus" onclick="TB07050Sjs.gridEvt('m')"><i class="fa fa-minus"></i></button>
 							</div>
 						</div>
 						<div class="ibox form-inline">
 							<!-- 버튼영역 -->
 							<div class="col-sm-12 text-right pd0">
-								<button class="btn btn-success mg-l5" type="button" onclick="TB07050Sjs.save();"><i class="fa fa-save"></i>&nbsp;실행</button>
+								<button class="btn btn-success mg-l5" type="button" id="btnSave" onclick="TB07050Sjs.save();"><i class="fa fa-save"></i>&nbsp;실행</button>
 							</div>
 						</div>
 					</div>
