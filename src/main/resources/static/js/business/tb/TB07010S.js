@@ -9,9 +9,30 @@ const TB07010Sjs = (function () {
   let prarDt; // 수취일자 == 수납일자
   let fValid; // 조회 == 0  저장 == 1
   let F006; // 수수료인식구분코드
+  let tempObj = {} // 임시종목코드, 명명
 
   $(document).ready(function () {
     authInf();
+
+    selectorNumberFormater($(`
+                              #TB07010S_dealExcAmt,     
+                              #TB07010S_expRdmpAmt,
+                              #TB07010S_krwTrslExcAmt,
+                              #TB07010S_krwTrslIntAmt,
+                              #TB07010S_feeAmt,
+                              #TB07010S_acbkAmt,
+                              #TB07010S_prcsIntrAmt
+                            `));
+                            // 실행금액
+                            // 만기상환금액
+                            // 원화환산실행금액
+                            // 원화환산이자금액
+                            // 수수료
+                            // 최종지급금액
+                            // 선취이자
+
+    maskExrt($(`#TB07010S_krwTrslRt`)) // 적용환율                        
+
     /**
      * 기업여신개별한도구분코드 E010
      * 기준금리종류코드 S003
@@ -36,9 +57,9 @@ const TB07010Sjs = (function () {
     setBscVal();
     resetDd();
 
-    $("input").on("focus", function () {
-      $(this).select();
-    });
+    // $("input").on("focus", function () {
+    //   $(this).select();
+    // });
     
     getDealInfoFromWF();
   });
@@ -216,13 +237,16 @@ const TB07010Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         beforeSend: function (xhr) {
+          // $('#btnSave').prop('disabled', false)
           //console.log(xhr);
           resetExc();
           $("#TB07010S_loanablAmt").val("");
         },
         success: function (data) {
-          // console.log("data ::: ", data);
-          if (data) {
+          console.log("data ::: ", data);
+          if (data.prdtCd) {
+            // console.log(1);
+            
             /* 기업여신정보 */
             let obj = {};
             let eprzCrdlIndvLmtDcd = data.eprzCrdlIndvLmtDcd; // 기업여신개별한도구분코드
@@ -316,14 +340,14 @@ const TB07010Sjs = (function () {
             let totIntrt = data.totIntrt; // 총금리
 
             // 기업여신정보
-            $("#TB07010S_stdrIntr_loan").val(stdrIntrt.toFixed(2)); // 기준
-            $("#TB07010S_addIntr_loan").val(addIntrt.toFixed(2)); // 가산
-            $("#TB07010S_totIntr_loan").val(totIntrt.toFixed(2)); // 총금리
+            $("#TB07010S_stdrIntr_loan").val(stdrIntrt ? stdrIntrt.toFixed(2) : 0); // 기준
+            $("#TB07010S_addIntr_loan").val(addIntrt ? addIntrt.toFixed(2) : 0); // 가산
+            $("#TB07010S_totIntr_loan").val(totIntrt ? totIntrt.toFixed(2) : 0); // 총금리
             //console.log("기업여신정보 ::: total", totIntrt.toFixed(2));
             // 실행정보
-            $("#TB07010S_stdrIntr_exe").val(stdrIntrt.toFixed(2)); // 기준
-            $("#TB07010S_excAddIntrt_exe").val(addIntrt.toFixed(2)); // 가산
-            $("#TB07010S_totIntr_exe").val(totIntrt.toFixed(2)); // 총금리
+            $("#TB07010S_stdrIntr_exe").val(stdrIntrt ? stdrIntrt.toFixed(2) : 0); // 기준
+            $("#TB07010S_excAddIntrt_exe").val(addIntrt ? addIntrt.toFixed(2) : 0); // 가산
+            $("#TB07010S_totIntr_exe").val(totIntrt ? totIntrt.toFixed(2) : 0); // 총금리
             //console.log("실행정보 ::: total ",totIntrt.toFixed(2));
             // [기업여신정보] 기준 + 가산 = 총금리
             if (stdrIntrt != null) {
@@ -368,34 +392,48 @@ const TB07010Sjs = (function () {
              */
             // 처리완료여부 'N'인 것만
             // let filterData = data.excFee.filter(item => item.prcsCpltYn === 'N');
-            feeRciv.setData(data.excFee);
-            feeRciv.option("cellDblClick", function (event, ui) {
-              let rowData = ui.rowData;
-              $("#TB07010S_feeAmt").val(addComma(rowData.feeAmt));
-              prcsCpltYn = "Y"; // 처리완료여부
-              feeSn = rowData.feeSn; // 수수료일련번호
-              prarDt = rowData.prarDt; // 수납일자 == 수취일자
-
-              let feeAmt = Number(uncomma($("#TB07010S_feeAmt").val()));
-              let acbkAmt = Number(uncomma($("#TB07010S_acbkAmt").val()));
-
-              let tot = acbkAmt + feeAmt;
-
-              $("#TB07010S_acbkAmt").val(comma(tot));
-
-              calAcbkAmt();
-            });
+            if (data.excFee) {
+              feeRciv.setData(data.excFee);
+              feeRciv.option("cellDblClick", function (event, ui) {
+                let rowData = ui.rowData;
+                $("#TB07010S_feeAmt").val(addComma(rowData.feeAmt));
+                prcsCpltYn = "Y"; // 처리완료여부
+                feeSn = rowData.feeSn; // 수수료일련번호
+                prarDt = rowData.prarDt; // 수납일자 == 수취일자
+  
+                let feeAmt = Number(uncomma($("#TB07010S_feeAmt").val()));
+                let acbkAmt = Number(uncomma($("#TB07010S_acbkAmt").val()));
+  
+                let tot = acbkAmt + feeAmt;
+  
+                $("#TB07010S_acbkAmt").val(comma(tot));
+  
+                calAcbkAmt();
+              });
+            }
           } else {
-            sf(1, "warning", `조회된 데이터가 없습니다.`);
+            // sf(1, "warning", `실행 조건이 맞지 않습니다.`, "Warning!");
+            sf(1, "warning", `조회된 데이터가 없습니다.`, "Warning!", () => {
+              tempObj.prdtCd = $('#TB07010S_prdtCd').val()
+              tempObj.prdtNm = $('#TB07010S_prdtNm').val()
+              
+              TB07010Sjs.reset();
+
+              $('#TB07010S_prdtCd').val(tempObj.prdtCd)
+              $('#TB07010S_prdtNm').val(tempObj.prdtNm)
+
+              tempObj = {};
+              // $('#btnSave').prop('disabled', true)
+            });
             return;
           }
         },
         error: function (result) {
-          sf(1, "error", `조회에 실패하였습니다.`);
+          sf(1, "error", `조회에 실패하였습니다.`, "Error!");
           return;
         },
       });
-    } else {
+    } else {  
       return;
     }
   }
@@ -435,7 +473,7 @@ const TB07010Sjs = (function () {
           calAcbkAmt();
         },
         error: function () {
-          sf(1, "error", `이자조회에 실패하였습니다.`);
+          sf(1, "error", `이자조회에 실패하였습니다.`, "Error!");
           return;
         },
       });
@@ -576,14 +614,14 @@ const TB07010Sjs = (function () {
         data: JSON.stringify(ibims401bDto),
         dataType: "json",
         success: function () {
-          sf(1, "success", `실행정보 저장이 완료되었습니다.`);
+          sf(1, "success", `실행정보 저장이 완료되었습니다.`, "Success!");
           prcsCpltYn = ""; // 처리완료여부
           feeSn = ""; // 일련번호
           prarDt = ""; // 수취일자 == 수납일자
           $("#TB07010S_feeAmt").val(""); // 수수료 금액
         },
         error: function () {
-          sf(1, "error", `실행정보 저장에 실패하였습니다.`);
+          sf(1, "error", `실행정보 저장에 실패하였습니다.`, "Error!");
           return false;
         },
       });
@@ -826,12 +864,14 @@ const TB07010Sjs = (function () {
     let krwTrslRt = $("#TB07010S_krwTrslRt").val(); // 적용환율
     // krwTrslExcAmt, // 원화환산실행금액
     let num_dealExcAmt = Number(dealExcAmt);
+    let num_krwTrslRt = Number(krwTrslRt);
 
-    // console.log(num_dealExcAmt);
+    // console.log("실행금액 ::: ",typeof num_dealExcAmt);
+    // console.log("적용환율 ::: ",typeof num_krwTrslRt);
 
-    if (num_dealExcAmt) {
-      let tot = num_dealExcAmt * krwTrslRt;
-
+    if (num_dealExcAmt >= 0) {
+      let tot = num_dealExcAmt * num_krwTrslRt;
+      // console.log("원환환산실행금액 ::: ", tot)
       $("#TB07010S_krwTrslExcAmt").val(comma(tot));
     }
   }
@@ -865,7 +905,10 @@ const TB07010Sjs = (function () {
     // 종목코드
     let prdtCd = $("#TB07010S_prdtCd").val();
     if (!prdtCd) {
-      sf(1, "warning", `종목코드를 입력해주세요.`);
+      sf(1, "warning", `종목코드를 입력해주세요.`, "Warning!");
+      if(prdtCd.length <= 0) {
+        TB07010Sjs.reset();
+      }
       return { isValid: false };
     }
 
@@ -873,14 +916,14 @@ const TB07010Sjs = (function () {
       // 실행일자
       let execDt = $("#TB07010S_execDt").val();
       if (!execDt) {
-        sf(1, "warning", `실행일자를 입력해주세요.`);
+        sf(1, "warning", `실행일자를 입력해주세요.`, "Warning!");
         return { isValid: false };
       }
 
       // 만기일자
       let expDt = $("#TB07010S_expDt").val();
       if (!expDt) {
-        sf(1, "warning", `만기일자를 입력해주세요.`);
+        sf(1, "warning", `만기일자를 입력해주세요.`, "Warning!");
         return { isValid: false };
       }
       let numExecDt = Number(new Date(execDt));
@@ -888,7 +931,7 @@ const TB07010Sjs = (function () {
 
       // 실행일자 > 만기일자
       if (numExecDt >= numExpDt) {
-        sf(1, "warning", `실행일자는 만기일자보다 이후일 수 없습니다.`);
+        sf(1, "warning", `실행일자는 만기일자보다 이후일 수 없습니다.`, "Warning!");
         return { isValid: false };
       }
 
@@ -900,7 +943,8 @@ const TB07010Sjs = (function () {
         sf(
           1,
           "warning",
-          `[기업여신정보]약정만기일보다<br>[실행정보]만기일자가 이후일 수 없습니다.`
+          `[기업여신정보]약정만기일보다<br>[실행정보]만기일자가 이후일 수 없습니다.`,
+          "Warning!"
         );
         return { isValid: false };
       }
@@ -908,14 +952,14 @@ const TB07010Sjs = (function () {
       // 상환지정일 TB07010S_I017
       let intrPymDtCd = $("#TB07010S_I017").val();
       if (!intrPymDtCd) {
-        sf(1, "warning", "상환지정일을 선택해주세요.");
+        sf(1, "warning", "상환지정일을 선택해주세요.", "Warning!");
         return { isValid: false };
       }
 
       // 최종지급금액
       let acbkAmt = $("#TB07010S_acbkAmt").val();
       if (acbkAmt < 0) {
-        sf(1, "warning", "최종지급금액은 음수일 수 없습니다.");
+        sf(1, "warning", "최종지급금액은 음수일 수 없습니다.", "Warning!");
         return { isValid: false };
       }
 
@@ -923,29 +967,27 @@ const TB07010Sjs = (function () {
       let expRdmpAmt = Number(uncomma($("#TB07010S_expRdmpAmt").val()));
 
       if(expRdmpAmt > dealExcAmt){
-        sf(1, "warning", "실행금액보다 큰 만기상환금액이 입력되었습니다.");
+        sf(1, "warning", "실행금액보다 큰 만기상환금액이 입력되었습니다.", "Warning!");
         return { isValid: false };
       }
-
-
     }
 
     if (fValid === "3") {
       let dealExcAmt = $("#TB07010S_dealExcAmt").val();
       if (!dealExcAmt || dealExcAmt <= 0) {
-        sf(1, "warning", "실행금액을 입력해주세요.");
+        sf(1, "warning", "실행금액을 입력해주세요.", "Warning!");
         return { isValid: false };
       }
 
       let execDt = $("#TB07010S_execDt").val();
       if (!execDt) {
-        sf(1, "warning", "실행일자를 입력해주세요.");
+        sf(1, "warning", "실행일자를 입력해주세요.", "Warning!");
         return { isValid: false };
       }
 
       let intrPymDtCd = $("#TB07010S_I017").val();
       if (!intrPymDtCd) {
-        sf(1, "warning", "상환지정일을 선택해주세요.");
+        sf(1, "warning", "상환지정일을 선택해주세요.", "Warning!");
         return { isValid: false };
       }
     }
@@ -1049,12 +1091,21 @@ const TB07010Sjs = (function () {
     // 은행부실점명
   }
 
+  // 적용환율 default
+  $('#TB07010S_krwTrslRt').on("keyup", (e) => {
+    let krwTrslRt = $('#TB07010S_krwTrslRt').val()
+    if (!krwTrslRt) {
+      $('#TB07010S_krwTrslRt').val("1.0")
+    }
+  })
+
   // swal.fire
-  function sf(flag, icon, html, callback = () => {}) {
+  function sf(flag, icon, html, title="", callback = () => {}) {
     if (flag === 1) {
       Swal.fire({
         icon: `${icon}`,
         html: `${html}`,
+        title: `${title}`,
         confirmButtonText: "확인",
       }).then(callback);
     }
@@ -1063,6 +1114,7 @@ const TB07010Sjs = (function () {
       Swal.fire({
         icon: `${icon}`,
         html: `${html}를(을) 확인해주세요.`,
+        title: `${title}`,
         confirmButtonText: "확인",
       }).then(callback);
     }

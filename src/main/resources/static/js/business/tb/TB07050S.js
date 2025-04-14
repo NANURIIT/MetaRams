@@ -902,6 +902,12 @@ const TB07050Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         success: function (data) {
+          if (!data.prdtCd) {
+            sf(1, "warning", `조회된 데이터가 없습니다.`, "Warning!", () => {
+              resetAll('TB07050S', TB07050Sjs.resetMore());
+            });
+            return;
+          }
           // console.log(data);
           console.log("계정과목코드:::" + data.eprzCrdlIndvLmtDcd);
 
@@ -942,6 +948,12 @@ const TB07050Sjs = (function () {
             grdInf();
             excSchLen = excSch.getData().length;
           }
+        },
+        error: function (result) {
+          sf(1, "warning", `조회조건이 맞지 않습니다.`, "Warning!", () => {
+            resetAll('TB07050S', TB07050Sjs.resetMore());
+          });
+          return;
         },
       });
     } else {
@@ -1013,11 +1025,11 @@ const TB07050Sjs = (function () {
 
           if (ele.rowType !== "D") {
             if (!ele.prarDt) {
-              sf(1, "warning", "예정일자를 입력해주세요.");
+              sf(1, "warning", "예정일자를 입력해주세요.", "Warning!");
               return;
             }
             if (!ele.prarPrna) {
-              sf(1, "warning", "예정원금을 입력해주세요.");
+              sf(1, "warning", "예정원금을 입력해주세요.", "Warning!");
               return;
             }
           }
@@ -1031,7 +1043,7 @@ const TB07050Sjs = (function () {
       }
 
       if (saveGrid.length === 0) {
-        sf(1, "warning", "실행 할 정보가 없거나 체크박스를 확인해주세요.");
+        sf(1, "warning", "실행 할 정보가 없거나 체크박스를 확인해주세요.", "Warning!");
         return;
       }
       // console.log(obj);
@@ -1044,7 +1056,7 @@ const TB07050Sjs = (function () {
         dataType: "json",
         success: function (data) {
           if (data > 0) {
-            sf(1, "success", "실행이 완료됐습니다.", (result) => {
+            sf(1, "success", "실행이 완료됐습니다.", "Success!" ,(result) => {
               if (result.isConfirmed) {
                 srchExcSn(validation().prdtCd);
                 srch();
@@ -1052,7 +1064,7 @@ const TB07050Sjs = (function () {
               }
             });
           } else {
-            sf(1, "error", "실행에 실패하였습니다.");
+            sf(1, "error", "실행에 실패하였습니다.", "Error!");
           }
         },
       });
@@ -1065,7 +1077,9 @@ const TB07050Sjs = (function () {
   function validation() {
     let prdtCd = $("#TB07050S_prdtCd").val(); // 종목코드
     if (isEmpty(prdtCd)) {
-      sf(1, "warning", "종목코드를 입력해주세요.");
+      sf(1, "warning", "종목코드를 입력해주세요.", "Warning!", () => {
+        resetAll('TB07050S', TB07050Sjs.resetMore());
+      });
       return { isValid: false };
     }
 
@@ -1531,11 +1545,12 @@ const TB07050Sjs = (function () {
   });
 
   // swal.fire
-  function sf(flag, icon, html, callback = () => {}) {
+  function sf(flag, icon, html, title="", callback = () => {}) {
     if (flag === 1) {
       Swal.fire({
         icon: `${icon}`,
         html: `${html}`,
+        title: `${title}`,
         confirmButtonText: "확인",
       }).then(callback);
     }
@@ -1544,6 +1559,7 @@ const TB07050Sjs = (function () {
       Swal.fire({
         icon: `${icon}`,
         html: `${html}를(을) 확인해주세요.`,
+        title: `${title}`,
         confirmButtonText: "확인",
       }).then(callback);
     }

@@ -895,19 +895,37 @@ function TB06011P_setPrdtInfo(e) {
 
   /* 0726 add 대출계약 실행 */
   if (prefix === "TB07010S") {
+    
+    $(pageeprzCrdlApvlAmt).val(0); // 승인금액액
     let numPrgSttsCd = Number(e.prgSttsCd);
 
     if (numPrgSttsCd < 501) {
       Swal.fire({
         icon: "warning",
+        title: "Warning!",
         text: "진행상태를 확인해주세요.",
         confirmButtonText: "확인",
       });
-      $("#TB07010S_prdtCd").val("");
-      $("#TB07010S_prdtNm").val("");
+      // $("#TB07010S_prdtCd").val("");
+      // $("#TB07010S_prdtNm").val("");
       // resetAll('TB07010S');
       TB07010Sjs.reset();
-      TB07010Sjs.feeRciv.setData([]);
+      resetPGgrids("TB07010S")
+      $('#TB07010S_prdtCd').val(e.prdtCd)
+      $('#TB07010S_prdtNm').val(e.prdtNm)
+      //TB07010Sjs.feeRciv.setData([]);
+    } else if (numPrgSttsCd == 502) {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning!",
+        text: "약정 해지 된 상태입니다.",
+        confirmButtonText: "확인",
+      });
+      TB07010Sjs.reset()
+      resetPGgrids("TB07010S")
+      $('#btnSave').prop('disabled', true)
+      $('#TB07010S_prdtCd').val(e.prdtCd)
+      $('#TB07010S_prdtNm').val(e.prdtNm)
     } else {
       TB07010Sjs.srch();
     }
@@ -979,6 +997,10 @@ function TB06011P_setPrdtInfo(e) {
 
   if (prefix === "TB07190S") {
     $("#TB07190S_ibDealNo").val(e.dealNo);
+  }
+
+  if (prefix === 'TB07160S') {
+    TB07160Sjs.srch_TB07160S()
   }
 
   modalClose_TB06011P();

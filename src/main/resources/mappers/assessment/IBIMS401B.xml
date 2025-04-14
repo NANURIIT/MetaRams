@@ -639,8 +639,8 @@
     </insert>
     <!-- 여신원장조회 -->
     <select id="selectCrdlLdg" parameterType="com.nanuri.rams.business.common.dto.IBIMS401BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS401BVO">
-       SELECT 
-              A.PTXT_TR_OTHR_DSCM_NO                                             /* 거래상대방식별번호 */
+       SELECT A.PRDT_CD
+            , A.PTXT_TR_OTHR_DSCM_NO                                             /* 거래상대방식별번호 */
             , NVL((
                       SELECT MAX(ENTP_NM)
                         FROM IBIMS010B
@@ -712,9 +712,9 @@
                  WHERE PRDT_CD = #{prdtCd}
                    AND LDG_STTS_CD = '1'
               ) AS DEAL_EXC_AMT													                          /* 실행금액 */ 
-         FROM  IBIMS401B A  
-    	     , IBIMS201B B
-  		WHERE A.PRDT_CD = #{prdtCd}    	     
+         FROM IBIMS401B A  
+    	      , IBIMS201B B
+  		  WHERE A.PRDT_CD = #{prdtCd}    	     
           AND A.PRDT_CD = B.PRDT_CD(+)
           AND B.LAST_YN(+) = 'Y'
     </select>

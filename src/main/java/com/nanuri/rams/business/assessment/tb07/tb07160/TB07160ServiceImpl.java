@@ -28,7 +28,15 @@ public class TB07160ServiceImpl implements TB07160Service{
     @Override
     public TB07160SVO getTrrcInf(TB07160SVO param){
         //log.debug("paramCheck!!!!!");
-        return ibims201bMapper.getTrrcInf(param.getPrdtCd());
+        TB07160SVO outTB07160svo = new TB07160SVO();
+        
+        outTB07160svo = ibims201bMapper.getTrrcInf(param.getPrdtCd()); 
+
+        if ( outTB07160svo == null ) {
+            return new TB07160SVO();
+        }
+        
+        return outTB07160svo;
     }
 
     @Override

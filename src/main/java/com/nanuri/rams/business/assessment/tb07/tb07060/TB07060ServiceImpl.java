@@ -66,8 +66,12 @@ public class TB07060ServiceImpl implements TB07060Service {
 		if ( "1".equals(srchF) ) {
 			// 여신원장조회
 			IBIMS401BVO crdlLdg = ibims401BMapper.selectCrdlLdg(input);
+			log.debug(" 여신원장조회 내역 ::: {}", crdlLdg);
 			
-			log.debug("crdlLdg ::: {}", crdlLdg);
+			if (crdlLdg == null) {
+				log.debug(" 여신원장 조회된 내역이 없습니다 ::: {}", crdlLdg);
+				return resObj;
+			}
 	
 			resObj.setPrdtCd(crdlLdg.getPrdtCd()); // 종목코드
 			resObj.setEprzCrdlLdgSttsCd(crdlLdg.getEprzCrdlLdgSttsCd()); // 기업여신원장상태코드
@@ -155,7 +159,7 @@ public class TB07060ServiceImpl implements TB07060Service {
 			resObj.setGuid(crdlLdg.getGuid());// guid
 	
 			resObj.setPrgSttsCd(crdlLdg.getPrgSttsCd()); // 진행상태
-			log.debug("adsadasfasf::::{}", crdlLdg.getPrgSttsCd());
+			log.debug(" 진행상태 ::: {} ", crdlLdg.getPrgSttsCd());
 			// 약정기본
 			IBIMS402BVO ibims402bvo = new IBIMS402BVO();
 			ibims402bvo.setPrdtCd(prdtCd);
@@ -167,7 +171,7 @@ public class TB07060ServiceImpl implements TB07060Service {
 			IBIMS410BDTO ibims410bDto = new IBIMS410BDTO();
 			ibims410bDto.setPrdtCd(prdtCd);
 			ibims410bDto.setExcSn(excSn);
-			log.debug("\ndlTr ::: {}", excSn);
+			log.debug(" 딜거래내역 실행일련번호 ::: {} ", excSn);
 			List<IBIMS410BVO> dlTrList = ibims410bMapper.getDlTrList(ibims410bDto);
 			resObj.setTrDtls(dlTrList);
 		} else {

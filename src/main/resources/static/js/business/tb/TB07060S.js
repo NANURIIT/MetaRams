@@ -897,7 +897,7 @@ const TB07060Sjs = (function () {
           $("#TB07060S_excSn").attr("disabled", true);
           $("#btnSrch").attr("disabled", true);
 
-          sf(1, "warning", "조회된 실행일련번호가 없습니다.");
+          sf(1, "warning", "조회된 실행일련번호가 없습니다.", "Warning!");
           return;
         }
       },
@@ -924,8 +924,8 @@ const TB07060Sjs = (function () {
           bfReset();
         },
         success: function (data) {
-          // console.log(data);
-          if (data) {
+        // console.log(data);
+          if (data.prdtCd) {
             // console.log(data.prgSttsCd);
             /* TODO: IBIMS401B에 있는 모든 항목을 가져오게 해놨는데 아직 없는 데이터가 많아서 추후 확인 및 수정 필요 */
             /* ROW1 */
@@ -987,7 +987,7 @@ const TB07060Sjs = (function () {
             $("#TB07060S_eprzCrdlOrtnFndNm").val(data.eprzCrdlOrtnFndNm); // 펀드명
             $("#TB07060S_dwnPfmc").val(); // 셀다운실적
             $("#TB07060S_apvlAmt").val(
-              commaNull(data.eprzCrdlApvlAmt.toFixed(2))
+              commaNull(data.eprzCrdlApvlAmt ? data.eprzCrdlApvlAmt.toFixed(2) : 0)
             ); // 승인금액
             $("#TB07060S_rdmpPfmc").val(commaNull(data.dealTrPrca)); // 상환실적
             /* ROW10 */
@@ -1106,13 +1106,13 @@ const TB07060Sjs = (function () {
               }
             });
           } else {
-            sf(1, "warning", "조회된 정보가 없습니다.");
+            sf(1, "warning", "조회된 정보가 없습니다.", "Warning!");
           }
         },
         error: function (result) {
           const res = JSON.stringify(result);
           // console.log(res);
-          sf(1, "warning", "조회에 실패하였습니다.");
+          sf(1, "warning", "조회에 실패하였습니다.", "Warning!");
         },
       });
     }
@@ -1253,7 +1253,7 @@ const TB07060Sjs = (function () {
     let excSn = $("#TB07060S_excSn").val(); // 실행일련번호
 
     if (!prdtCd) {
-      sf(1, "warning", "종목코드를 입력해주세요.");
+      sf(1, "warning", "종목코드를 입력해주세요.", "Warning!");
       return { isValid: false };
     }
 
@@ -1425,11 +1425,12 @@ const TB07060Sjs = (function () {
   }
 
   // swal.fire
-  function sf(flag, icon, html, callback = () => {}) {
+  function sf(flag, icon, html, title="", callback = () => {}) {
     if (flag === 1) {
       Swal.fire({
         icon: `${icon}`,
         html: `${html}`,
+        title: `${title}`,
         confirmButtonText: "확인",
       }).then(callback);
     }
@@ -1438,6 +1439,7 @@ const TB07060Sjs = (function () {
       Swal.fire({
         icon: `${icon}`,
         html: `${html}를(을) 확인해주세요.`,
+        title: `${title}`,
         confirmButtonText: "확인",
       }).then(callback);
     }

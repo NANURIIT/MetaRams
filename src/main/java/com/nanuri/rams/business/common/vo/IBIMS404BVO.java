@@ -16,5 +16,5 @@ public class IBIMS404BVO extends IBIMS404BDTO {
 	private String stdrIntrtKndCdNm;
 	private String aplyDnumDcdNm;
 	private String intrtCngeFrqcCdNm;
-	private String intrtList;
+	private List<IBIMS404BVO> intrtList;
 }
