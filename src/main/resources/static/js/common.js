@@ -376,7 +376,6 @@ function uncomma(str) {
  * 	@author {김건우}
  */
 function selectorNumberFormater(selector) {
-
   selector.on("keypress", function (e) {
     const char = String.fromCharCode(e.which);
 
@@ -390,8 +389,7 @@ function selectorNumberFormater(selector) {
   let prevVal;
 
   selector.on("keydown", function (event) {
-
-    prevVal = $(this).val()
+    prevVal = $(this).val();
 
     if (event.keyCode === 8) {
       deleteType = 8; // 백스페이스
@@ -469,11 +467,11 @@ function selectorNumberFormater(selector) {
     deleteType = 0;
   });
 
-  selector.on('keyup', function () {
+  selector.on("keyup", function () {
     if (/[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]/.test($(this).val())) {
-      $(this).val(prevVal)
+      $(this).val(prevVal);
     }
-  })
+  });
 
   selector.attr("max-length", 20);
 
@@ -503,7 +501,7 @@ function checkByteLimit(element, maxLength) {
 
 /**
  * 길이제한 함수
- * @param { Object } setData 
+ * @param { Object } setData
  * @param { String } menuId
  * @author { 김건우 }
  * @description
@@ -512,28 +510,32 @@ function checkByteLimit(element, maxLength) {
  *  name: length
  * }
  */
-function limitInputLength ( setData, menuId ) {
-
+function limitInputLength(setData, menuId) {
   const keys = Object.keys(setData);
 
   for (let i = 0; i < keys.length; i++) {
-
     let id = keys[i];
-    id = toCamelCase(id);    
+    let scrn;
+    id = toCamelCase(id);
+
+    if (!menuId) {
+      scrn = "";
+    } else {
+      scrn = menuId + "_";
+    }
 
     let prevVal;
 
-    $(`#${menuId}_${id}`).on('keydown', function (e) {
-      prevVal = $(this).val()
-    })
+    $(`#${scrn}${id}`).on("keydown", function (e) {
+      prevVal = $(this).val();
+    });
 
-    $(`#${menuId}_${id}`).on('input', function () {
-      const byte = new TextEncoder().encode($(this).val()).length
-      if ( byte > setData[keys[i]] ) {
+    $(`#${scrn}${id}`).on("input", function () {
+      const byte = new TextEncoder().encode($(this).val()).length;
+      if (byte > setData[keys[i]]) {
         $(this).val(prevVal);
       }
-    })
-
+    });
   }
 }
 
@@ -2562,16 +2564,17 @@ function maskRt(selector) {
   $(selector).val("0");
 }
 
-
 /**
  * 카멜케이스(Caeml-Case) 변환
- * @param { String } str 
+ * @param { String } str
  * @author 김건우
  */
 function toCamelCase(str) {
-	if (/_/.test(str) || /^[A-Z0-9_]+$/.test(str)) {
-    return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (match, chr) => chr.toUpperCase());
-  }else {
+  if (/_/.test(str) || /^[A-Z0-9_]+$/.test(str)) {
+    return str
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9]+(.)/g, (match, chr) => chr.toUpperCase());
+  } else {
     return str;
   }
 }

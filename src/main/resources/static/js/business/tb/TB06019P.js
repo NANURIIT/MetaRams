@@ -543,9 +543,9 @@ function validate (gb)
 {
 	function emptyParameter(msg) {
 		Swal.fire({
-			icon: 'error'
-			, title: "Error!"
-			, text: msg + "을(를) 입력해주세요."
+			icon: 'warning'
+			, title: "Warning!"
+			, text: msg + "을(를) 입력해주세요!"
 			, confirmButtonText: "확인"
 		})
 
@@ -594,19 +594,6 @@ function validate (gb)
 				emptyParameter(msg);
 				return false;
 			}
-			if (!isEmpty($("#TB06019P_fnafHltySrnmRt").val())) {
-				let regExp = new RegExp(/^([0-9]{2,3}\.[0-9]{0,2})?$/g);
-				if (!regExp.test(($("#TB06019P_fnafHltySrnmRt").val())) && $("#TB06019P_fnafHltySrnmRt").val()!='0.00') {
-					Swal.fire({
-						icon: 'error'
-						, title: "Error!"
-						, text: "재무건전성 비율은 000.00 형식으로 작성해주세요.;"
-						, confirmButtonText: "확인"
-				});
-					return false;
-				}
-			}
-			
 			return true;
 		case "delete":
 			if (isEmpty($("#TB06019P_getArdyBzepNo").val())) {

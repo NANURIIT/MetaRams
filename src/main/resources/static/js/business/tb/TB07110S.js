@@ -26,6 +26,14 @@ const TB07110Sjs = (function () {
         , div[data-menuid='/TB07110S'] input[id='TB07110S_splmValuTxa']`)
     );
 
+    $('#TB07110S_searchForm').find('input, select').on('input', function () {
+      resetInput();
+      $("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
+      $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').setData([]);
+      // 파일 그리드 초기화
+      $(`div[data-menuid="/TB07110S"] #UPLOAD_FileList`).html("");
+    })
+
     // 탭상태 기본세팅
     $(`div[data-menuid="/TB07110S"] #tab-1`).show();
     $(`div[data-menuid="/TB07110S"] #tab-2`).hide();
@@ -52,15 +60,15 @@ const TB07110Sjs = (function () {
     apvlBtnHandler();
 
     //기간검색 유효성 검사 함수
-    chkValFromToDt("TB07110S_startDt","TB07110S_endDt");
-    
+    chkValFromToDt("TB07110S_startDt", "TB07110S_endDt");
+
     // maxlength 지정 함수
     let colums = {
-      reltFdtnCtns : 4000   //  관련근거
-      , bano : 64           //  지급계좌
-      , bnkAchdNm : 200     //  예금주명
+      reltFdtnCtns: 4000   //  관련근거
+      , bano: 64           //  지급계좌
+      , bnkAchdNm: 200     //  예금주명
     }
-    limitInputLength(colums,"TB07110S");
+    limitInputLength(colums, "TB07110S");
 
   });
 
@@ -68,7 +76,7 @@ const TB07110Sjs = (function () {
    * 하단탭 컨트롤러
    * @param {String} tabNo 탭번호
    */
-  function tabController ( tabNo ) {
+  function tabController(tabNo) {
 
     if (tabNo === 1) {
       // 귀찮은 관계로 하드코딩
@@ -104,7 +112,7 @@ const TB07110Sjs = (function () {
       , false);
 
     grdSelect.A017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A017' })
-                              .filter(item => item.cdValue >= 500);	                            // 회계계정과목코드
+      .filter(item => item.cdValue >= 500);	                            // 회계계정과목코드
     grdSelect.A018 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'A018' });	  // 회계지급방법코드
     grdSelect.F017 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'F017' });    // 자금원장구분코드
     grdSelect.P029 = selectBox.filter(function (item) { return item.cmnsGrpCd === 'P029' });    // 증빙종류구분코드
@@ -141,6 +149,12 @@ const TB07110Sjs = (function () {
     }
     $('#TB07110S_pchsDdcDcd').append(P030Tag);
 
+    let D006Tag = "";
+    for (let i = 0; i < grdSelect.D006.length; i++) {
+      D006Tag += `<option value="${grdSelect.D006[i].cdValue}">${grdSelect.D006[i].cdName}</option>`
+    }
+    $('#TB07110S_jobDecdCd').append(D006Tag);
+
     // 부서코드 콤보박스 셋
     let dprtOptionTag = "";
     for (let i = 0; i < grdSelect.D010.length; i++) {
@@ -157,7 +171,7 @@ const TB07110Sjs = (function () {
    * 하단탭 컨트롤러
    * @param {String} tabNo 탭번호
    */
-  function tabController ( tabNo ) {
+  function tabController(tabNo) {
 
     if (tabNo === 1) {
       // 귀찮은 관계로 하드코딩
@@ -188,6 +202,7 @@ const TB07110Sjs = (function () {
     $('#TB07110S_dprtNm').val($('#userDprtCd').val());
     $('#TB07110S_rgstEmpno').val($('#userEno').val());
     $('#TB07110S_rgstEmpnm').val($('#userEmpNm').val());
+    $('#TB07110S_acctDt').val(getToday());
   }
 
   /**
@@ -202,8 +217,10 @@ const TB07110Sjs = (function () {
     $("#TB07110S_grd_txbl").pqGrid('instance').setData([]);
     $("#TB07110S_grd_basic").pqGrid('instance').setData([]);
 
+    setDfaultValue();
+
     resetInput();
-    
+
     // 파일 그리드 초기화
     $(`div[data-menuid="/TB07110S"] #UPLOAD_FileList`).html("");
   }
@@ -253,10 +270,14 @@ const TB07110Sjs = (function () {
       ,#TB07110S_mergeForm input[id*='splmValuTxa']
       ,#TB07110S_mergeForm #TB07110S_trtx`).val('0');
 
+    $('#TB07110S_acctDt').val(getToday());
+
     $("#TB07110S_wrtnDt").val(unformatDate(getToday()));
     $("#TB07110S_rslnBdcd").val($('#userDprtCd').val());
     $('#TB07110S_rgstEmpno').val($('#userEno').val());
     $('#TB07110S_rgstEmpnm').val($('#userEmpNm').val());
+
+    toggleBtnHandler('등록/변경');
 
     apvlBtnHandler();
   }
@@ -803,7 +824,7 @@ const TB07110Sjs = (function () {
           /**
            * 파일불러오기, 저장을 위한 키값 세팅
            */
-          $(`div[data-menuid="/TB07110S"] #fileKey2`).val( ui.rowData['wrtnDt'] + ui.rowData['rslnBdcd'] + ui.rowData['cnstNo'] )
+          $(`div[data-menuid="/TB07110S"] #fileKey2`).val(ui.rowData['wrtnDt'] + ui.rowData['rslnBdcd'] + ui.rowData['cnstNo'])
           $('div[data-menuid="/TB07110S"] #key1').val("TB07110S")
           getFileInfo($('div[data-menuid="/TB07110S"] #key1').val(), $('div[data-menuid="/TB07110S"] #fileKey2').val());
         }
@@ -902,15 +923,27 @@ const TB07110Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if (data) {
+        if (data.length > 0) {
           //let gridList = $("#TB07110S_grd_rlthPruf").pqGrid("instance");
           let gridList = $("#TB07110S_grd_txbl").pqGrid("instance");
           gridList.setData(data);
           gridList.getData();
-        } else {
+        }
+        else {
+          Swal.fire({
+            icon: "warning"
+            , title: "Warning!"
+            , text: "조회된 내역이 없습니다!"
+          })
         }
       },
-      error: function () { },
+      error: function () {
+        Swal.fire({
+          icon: "error"
+          , title: "Error!"
+          , text: "조회 실패!"
+        })
+      },
     });
   }
 
@@ -958,7 +991,7 @@ const TB07110Sjs = (function () {
         url = "update"
       }
 
-      if ( $('#TB07110S_rgstEmpno').val() === $('#TB07110S_2_empNo').val()) {
+      if ($('#TB07110S_rgstEmpno').val() === $('#TB07110S_2_empNo').val()) {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
@@ -966,7 +999,7 @@ const TB07110Sjs = (function () {
         })
         return;
       }
-      else if ( !$('#TB07110S_2_empNo').val() ) {
+      else if (!$('#TB07110S_2_empNo').val()) {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
@@ -1043,6 +1076,7 @@ const TB07110Sjs = (function () {
             , title: "Success!"
             , text: `${text} 완료.`
           })
+          resetInput();
           TB07100S_selectIBIMS431B();
         }
         else {
@@ -1078,7 +1112,7 @@ const TB07110Sjs = (function () {
       , scrnNo: "TB07110S"                                  // 화면명
     }
 
-    if ( $('#TB07110S_rgstEmpno').val() === $('#TB07110S_2_empNo').val()) {
+    if ($('#TB07110S_rgstEmpno').val() === $('#TB07110S_2_empNo').val()) {
       Swal.fire({
         icon: "warning",
         title: "Warning!",
@@ -1086,7 +1120,7 @@ const TB07110Sjs = (function () {
       })
       return;
     }
-    else if ( !$('#TB07110S_2_empNo').val() ) {
+    else if (!$('#TB07110S_2_empNo').val()) {
       Swal.fire({
         icon: "warning",
         title: "Warning!",

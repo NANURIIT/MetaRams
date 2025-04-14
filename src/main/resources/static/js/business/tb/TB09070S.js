@@ -11,8 +11,15 @@ const TB09070Sjs = (function () {
     $("#TB09070S_toDt").val(getToday()); //조회종료일
 
     //기간검색 유효성 검사 함수
-    chkValFromToDt("TB09070S_fromDt","TB09070S_toDt");
-  });
+    chkValFromToDt("TB09070S_fromDt", "TB09070S_toDt");
+
+    reset_TB09070S();
+
+    // 조회조건 수정시 그리드 초기화
+    $("#TB09070S_SearchForm").find('input, select').on('input', function () {
+      $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("setData", [])
+    })
+  })
 
   function selectBoxSet_TB09070S() {
     var cdList =
@@ -305,7 +312,7 @@ const TB09070Sjs = (function () {
     $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("refreshDataAndView");
     rdmpTrgtDtlsIns = $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("instance");
 
-    rdmpTrgtDtlsIns.option( "freezeCols", 5 );
+    rdmpTrgtDtlsIns.option("freezeCols", 5);
   }
 
   $("#TB09070S_dprtNm").on("change", function () {
@@ -380,8 +387,8 @@ const TB09070Sjs = (function () {
   function setData_TB09070S(data) {
     if (data.length < 1) {
       var option = {};
-      option.title = "Error";
-      option.type = "error";
+      option.title = "Warning!";
+      option.type = "warning";
 
       option.text = "조회된 데이터가 없습니다.";
       openPopup(option);
@@ -400,8 +407,8 @@ const TB09070Sjs = (function () {
     $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("option", "strNoRows", "");
     $("#TB09070S_rdmpTrgtDtlsGrid").pqGrid("setData", []);
 
-    $("#TB09070S_dprtNm").val("");      //관리부점명
-    $("#TB09070S_dprtCd").val("");      //관리부점코드
+    $("#TB09070S_dprtNm").val($('#userDprtCd').val());      //관리부점명
+    $("#TB09070S_dprtCd").val($('#userDprtCd').val());      //관리부점코드
     $("#TB09070S_A005").val("");        //계정과목코드
     $("#TB09070S_ibDealNo").val("");    //딜번호
     $("#TB09070S_ardyBzepNo").val("");  //기업체번호
@@ -421,35 +428,36 @@ const TB09070Sjs = (function () {
     pq.saveAs(blob, fileName);
   }
 
-  function calculateSummary( grid ) {
+  function calculateSummary(grid) {
     var data = grid.option('dataModel.data'),
-        agg = pq.aggregate,
-        prarPrna = data.map(function (rd) {
-            return rd.prarPrna;
-        }),
-        rdmpPrarIntr = data.map(function (rd) {
-            return rd.rdmpPrarIntr;
-        }),
-        ovduIntr = data.map(function (rd) {
-          return rd.ovduIntr;
-        }),
-        rcvbIntr = data.map(function (rd) {
-          return rd.rcvbIntr;
-        }),
-        pmntPrarAmt = data.map(function (rd) {
-          return rd.pmntPrarAmt;
-        }),
-        totalFee = data.map(function (rd) {
-          return rd.totalFee;
-        }),
-        totalData = { prdtNm: "합계:", 
-                      prarPrna: agg.sum(prarPrna), 
-                      rdmpPrarIntr: agg.sum(rdmpPrarIntr),
-                      ovduIntr: agg.sum(ovduIntr),
-                      rcvbIntr: agg.sum(rcvbIntr),
-                      pmntPrarAmt: agg.sum(pmntPrarAmt),
-                      totalFee: agg.sum(totalFee)
-                    };
+      agg = pq.aggregate,
+      prarPrna = data.map(function (rd) {
+        return rd.prarPrna;
+      }),
+      rdmpPrarIntr = data.map(function (rd) {
+        return rd.rdmpPrarIntr;
+      }),
+      ovduIntr = data.map(function (rd) {
+        return rd.ovduIntr;
+      }),
+      rcvbIntr = data.map(function (rd) {
+        return rd.rcvbIntr;
+      }),
+      pmntPrarAmt = data.map(function (rd) {
+        return rd.pmntPrarAmt;
+      }),
+      totalFee = data.map(function (rd) {
+        return rd.totalFee;
+      }),
+      totalData = {
+        prdtNm: "합계:",
+        prarPrna: agg.sum(prarPrna),
+        rdmpPrarIntr: agg.sum(rdmpPrarIntr),
+        ovduIntr: agg.sum(ovduIntr),
+        rcvbIntr: agg.sum(rcvbIntr),
+        pmntPrarAmt: agg.sum(pmntPrarAmt),
+        totalFee: agg.sum(totalFee)
+      };
 
     return [totalData]; // total만 반환
   }
@@ -460,4 +468,3 @@ const TB09070Sjs = (function () {
     pqExportExcel: pqExportExcel,
   };
 })();
-

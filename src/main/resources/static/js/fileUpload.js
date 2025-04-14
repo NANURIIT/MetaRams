@@ -25,8 +25,10 @@ function setFileUploadEvent(menuId) {
    * 파일추가 버튼 클릭
    */
   $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_AddFile").click(function () {
+    alert("!!!!")
+
     let mode = "s";
-    $(`div[data-menuid="/${menuId}"]` + " #deal-upload-input").click();
+    // $(`div[data-menuid="/${menuId}"]` + " #deal-upload-input").click();
   });
 
   /**
@@ -57,12 +59,6 @@ function setFileUploadEvent(menuId) {
     $(`div[data-menuid="/${menuId}"] #key1`)
       .attr("name", "key1")
       .val(menuId);
-
-    // GUID는 서비스에서 자체생성한단다
-    // if (isEmpty($(`div[data-menuid="/${menuId}"]` + ` #fileKey1`).val())) {
-    //   console.log("GUID 미생성");
-    //   return;
-    // }
 
     $.ajax({
       url: `/FileUpload/uploadCmFile`,
