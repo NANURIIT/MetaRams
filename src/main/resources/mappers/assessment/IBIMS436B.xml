@@ -266,4 +266,78 @@ ON (
                 ' '                             /* GUID */
             )
    </update>
+
+    <!--연체기본내역(원금) 조회 (TB07030 상환)-->
+    <select id="getPrnaOvduBscList" parameterType="com.nanuri.rams.business.common.vo.IBIMS436BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS436BVO">
+        SELECT 
+            AFCT_MNGM_NO                        /*사후관리번호*/
+            , DEAL_NO                           /*딜번호*/
+            , PRDT_CD                           /*종목코드*/
+            , EXC_SN                            /*실행일련번호*/
+            , OVDU_STTS_CD                      /*연체상태코드*/
+            , CRDL_BLCE_AMT                     /*여신잔액금액*/
+            , FRS_PRNA_OVDU_OCRNC_DT            /*최초원금연체발생일자*/
+            , FRS_INTR_OVDU_OCRNC_DT            /*최초이자연체발생일자*/
+            , PRCA_OVDU_ACML_DNUM               /*원금연체누적일수*/
+            , INT_OVDU_ACML_DNUM                /*이자연체누적일수*/
+            , OVDU_PRNA_AMT                     /*연체원금금액*/
+            , OVDU_INTR_AMT                     /*연체이자금액*/
+            , LAST_PRNA_RDMP_DT                 /*최종원금상환일자*/
+            , LAST_INTR_RDMP_DT                 /*최종이자상환일자*/
+            , OVDU_RLSE_DT                      /*연체해제일자*/
+            , DCSN_YN                           /*확정여부*/
+            , DEL_YN                            /*삭제여부*/
+        FROM IBIMS436B 
+        WHERE 1=1
+        AND PRDT_CD = #{prdtCd}
+        AND EXC_SN = #{excSn}
+        AND OVDU_INTR_AMT = 0
+        AND OVDU_STTS_CD = '01'                 
+        AND OVDU_RLSE_DT IS NULL 
+        AND DEL_YN = 'N'
+    </select>
+
+    <!--연체기본내역(이자) 조회 (TB07030 상환)-->
+    <select id="getIntrOvduBscList" parameterType="com.nanuri.rams.business.common.vo.IBIMS436BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS436BVO">
+        SELECT 
+            AFCT_MNGM_NO                        /*사후관리번호*/
+            , DEAL_NO                           /*딜번호*/
+            , PRDT_CD                           /*종목코드*/
+            , EXC_SN                            /*실행일련번호*/
+            , OVDU_STTS_CD                      /*연체상태코드*/
+            , CRDL_BLCE_AMT                     /*여신잔액금액*/
+            , FRS_PRNA_OVDU_OCRNC_DT            /*최초원금연체발생일자*/
+            , FRS_INTR_OVDU_OCRNC_DT            /*최초이자연체발생일자*/
+            , PRCA_OVDU_ACML_DNUM               /*원금연체누적일수*/
+            , INT_OVDU_ACML_DNUM                /*이자연체누적일수*/
+            , OVDU_PRNA_AMT                     /*연체원금금액*/
+            , OVDU_INTR_AMT                     /*연체이자금액*/
+            , LAST_PRNA_RDMP_DT                 /*최종원금상환일자*/
+            , LAST_INTR_RDMP_DT                 /*최종이자상환일자*/
+            , OVDU_RLSE_DT                      /*연체해제일자*/
+            , DCSN_YN                           /*확정여부*/
+            , DEL_YN                            /*삭제여부*/
+        FROM IBIMS436B 
+        WHERE 1=1
+        AND PRDT_CD = #{prdtCd}
+        AND EXC_SN = #{excSn}
+        AND OVDU_PRNA_AMT = 0
+        AND OVDU_STTS_CD = '01'                 
+        AND OVDU_RLSE_DT IS NULL 
+        AND DEL_YN = 'N'
+    </select>
+
+    <!--연체기본 플래그 변경-->
+    <update id="ovduSttsCdFlagCng" parameterType="com.nanuri.rams.business.common.vo.IBIMS436BVO">
+        UPDATE IBIMS436B
+            SET OVDU_STTS_CD = '02'
+                , OVDU_RLSE_DT = #{ovduRlseDt}
+        WHERE 1=1
+            AND AFCT_MNGM_NO = #{afctMngmNo}
+            AND DEAL_NO = #{dealNo}
+            AND PRDT_CD = #{prdtCd}
+            AND EXC_SN = #{excSn}
+    </update>
+
+
 </mapper>

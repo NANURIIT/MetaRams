@@ -22,11 +22,13 @@ import com.nanuri.rams.business.common.mapper.IBIMS403BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS403HMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS406BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS410BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS436BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS994BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS401BVO;
 import com.nanuri.rams.business.common.vo.IBIMS402BVO;
 import com.nanuri.rams.business.common.vo.IBIMS403BVO;
 import com.nanuri.rams.business.common.vo.IBIMS406BVO;
+import com.nanuri.rams.business.common.vo.IBIMS436BVO;
 import com.nanuri.rams.business.common.vo.TB06015OVO;
 import com.nanuri.rams.business.common.vo.TB06015SVO;
 import com.nanuri.rams.business.common.vo.TB07030SVO;
@@ -68,7 +70,8 @@ public class TB07030ServiceImpl implements TB07030Service {
 	private final IBIMS410BMapper ibims410BMapper;
 	/* 이자계산내역 */
 	private final IBIMS406BMapper ibims406BMapper;
-
+	/* 연체기본 */
+	private final IBIMS436BMapper ibims436BMapper;
 	/* 사용자정보 */
 	private final AuthenticationFacade facade;
 
@@ -319,6 +322,11 @@ public class TB07030ServiceImpl implements TB07030Service {
 	@Override
 	public int saveRdpm(TB07030SVO paramData) {
 
+		BigDecimal ovduPrnaAmt = BigDecimal.ZERO;			//연체원금금액
+		BigDecimal ovduIntrAmt = BigDecimal.ZERO;			//연체이자금액
+
+		List<IBIMS436BVO> ovduParamList = new ArrayList<>();
+
 		int rtnValue = 0;
 		int iLastRdmpTmrd = 0;
 		String prnaOvduDt = "";
@@ -366,12 +374,27 @@ public class TB07030ServiceImpl implements TB07030Service {
 					if((in403bdto.getPrdtCd().equals(in403Dtlbvo.getPrdtCd()))
 					&& (in403bdto.getExcSn() == in403Dtlbvo.getExcSn())) {
 
-						if(in403Dtlbvo.getPaiTypCd().equals("4") || in403Dtlbvo.getPaiTypCd().equals("5")){		//연체이자
+						if(in403Dtlbvo.getPaiTypCd().equals("4") || in403Dtlbvo.getPaiTypCd().equals("5")){	//연체스케줄
 
-							// BigDecimal crdtGrntOvduIntAmt = paramData.getCrdtGrntOvduIntAmt();		//연체이자
+							IBIMS436BVO ovduParamVo = new IBIMS436BVO();
+							ovduParamVo.setPrdtCd(in403Dtlbvo.getPrdtCd());				//종목코드
+							ovduParamVo.setExcSn(in403Dtlbvo.getExcSn());				//실행순번
+							ovduParamVo.setOvduRlseDt(in403Dtlbvo.getPrcsDt());			//처리일자(==연체해제일자)
+
+							if(in403Dtlbvo.getPaiTypCd().equals("4")){//연체이자 (이자)
+
+								ovduParamVo.setOvduIntrAmt(in403Dtlbvo.getPmntPrarAmt());	//연체이자금액
+
+							}else if(in403Dtlbvo.getPaiTypCd().equals("5")){//연체이자(원금)
+	
+								ovduParamVo.setOvduPrnaAmt(in403Dtlbvo.getPmntPrarAmt());	//연체원금금액
+	
+							}
+
+							ovduParamList.add(ovduParamVo);
 
 						}else{
-							rtnValue = ibims403BMapper.saveIBIMS403B(param403DtlLst.get(v));		// 여신스케줄기본
+							rtnValue = ibims403BMapper.saveIBIMS403B(param403DtlLst.get(v));		//여신스케줄기본
 						}
 						
 						//exmptAmt = exmptAmt.add(in403Dtlbvo.getExmptAmt()==null?BigDecimal.ZERO:in403Dtlbvo.getExmptAmt());
@@ -686,9 +709,126 @@ public class TB07030ServiceImpl implements TB07030Service {
 
 		}
 
+		// //연체기본 상환여부 플래그 변경
+		rtnValue = ovduRealese(ovduParamList);
+
 		return rtnValue;
 		//return 0;
 	}
 
+	/**
+	 * 연체기본 상환여부 플래그 변경
+	 * @param ovduParamList			//LIST <IBIMS436BVO>
+	 */
+	private int ovduRealese(List<IBIMS436BVO> ovduParamList){
+
+		List <IBIMS436BVO> groupList = new ArrayList<>();
+		int rslt = 0;
+
+		//prdtCd, excSn 기준으로 ovduPrnaAmt, ovduIntrAmt 합계 구하기 start
+		for (IBIMS436BVO current : ovduParamList) {
+			boolean isGrouped = false;
+	
+			for (IBIMS436BVO result : groupList) {
+				if (result.getPrdtCd().equals(current.getPrdtCd()) &&
+					result.getExcSn() == current.getExcSn()) {
+	
+					result.setOvduPrnaAmt(result.getOvduPrnaAmt().add(current.getOvduPrnaAmt()));
+					result.setOvduIntrAmt(result.getOvduIntrAmt().add(current.getOvduIntrAmt()));
+	
+					isGrouped = true;
+					break;
+				}
+			}
+	
+			if (!isGrouped) {
+				IBIMS436BVO newItem = new IBIMS436BVO();
+				newItem.setPrdtCd(current.getPrdtCd());
+				newItem.setExcSn(current.getExcSn());
+				newItem.setOvduPrnaAmt(current.getOvduPrnaAmt());
+				newItem.setOvduIntrAmt(current.getOvduIntrAmt());
+	
+				groupList.add(newItem);
+			}
+		}
+		//end
+
+		//상환여부 플래그 변경 start
+		for(int i=0; i<groupList.size(); i++){
+			IBIMS436BVO groupVo = groupList.get(i);
+
+			BigDecimal totalOvduPrnaAmt = BigDecimal.ZERO;		//연체원금금액합계
+			BigDecimal totalOvduIntrAmt = BigDecimal.ZERO;		//연체이자금액합계
+
+			log.debug("[ovduRealese] groupVo.prdtCd ::: " + groupVo.getPrdtCd());
+			log.debug("[ovduRealese] groupVo.excSn ::: " + groupVo.getExcSn());
+
+			List<IBIMS436BVO> prnaOvduBscList = ibims436BMapper.getPrnaOvduBscList(groupVo);//원금연체내역
+			List<IBIMS436BVO> intrOvduBscList = ibims436BMapper.getIntrOvduBscList(groupVo);//이자연체내역 
+
+			//원금연체내역 플래그 변경 start
+			if(prnaOvduBscList.size() > 0){
+
+				for(int j = 0; j < prnaOvduBscList.size(); j++){
+					log.debug("[ovduRealese] 원금연체내역 플래그 변경 start");
+	
+					IBIMS436BVO prnaOvduBscVo = prnaOvduBscList.get(j);
+					BigDecimal ovduPrnaAmt = prnaOvduBscVo.getOvduPrnaAmt();//원금연체금액
+	
+					totalOvduPrnaAmt = totalOvduPrnaAmt.add(ovduPrnaAmt);
+	
+					if(groupVo.getOvduPrnaAmt().compareTo(totalOvduPrnaAmt) > 0){//상환연체원금금액 > 연체원금금액
+						log.debug("[ovduRealese] 상환연체원금금액 > 연체원금금액 ::: 원금 상환 플래그 변경중...");
+						rslt = ibims436BMapper.ovduSttsCdFlagCng(prnaOvduBscVo);
+	
+					}else{//상환연체원금금액 <= 연체원금금액
+						log.debug("[ovduRealese] 상환연체원금금액 <= 연체원금금액 ::: 상환 플래그 변경 종료");
+						break;
+					}
+	
+				}
+
+			}else{
+				log.debug("[ovduRealese] 원금연체내역 없음!!!!");
+				log.debug("[ovduRealese] prdtCd::: " + groupVo.getPrdtCd());
+				log.debug("[ovduRealese] excSn::: " + groupVo.getExcSn());
+			}
+			//원금연체내역 플래그 변경 end
+
+			//이자연체내역 플래그 변경 start
+			if(intrOvduBscList.size() > 0){
+
+				for(int k = 0; k < intrOvduBscList.size(); k++){
+					log.debug("[ovduRealese] 이자연체내역 플래그 변경 start");
+
+					IBIMS436BVO intrOvduBscVo = intrOvduBscList.get(k);
+					BigDecimal intrOvduAmt = intrOvduBscVo.getOvduIntrAmt();//이자연체금액
+
+					totalOvduIntrAmt = totalOvduIntrAmt.add(intrOvduAmt);
+
+					if(groupVo.getOvduIntrAmt().compareTo(totalOvduIntrAmt) > 0){//상환연체이자금액 > 연체이자금액
+						log.debug("[ovduRealese] 상환연체이자금액 > 연체이자금액 ::: 이자 상환 플래그 변경중...");
+						rslt = ibims436BMapper.ovduSttsCdFlagCng(intrOvduBscVo);
+	
+					}else{//상환연체이자금액 <= 연체이자금액
+						log.debug("[ovduRealese] 상환연체이자금액 <= 연체이자금액 ::: 상환 플래그 변경 종료");
+						break;
+					}
+
+				}
+
+			}else{
+				log.debug("[ovduRealese] 이자연체내역 없음!!!!");
+				log.debug("[ovduRealese] prdtCd::: " + groupVo.getPrdtCd());
+				log.debug("[ovduRealese] excSn::: " + groupVo.getExcSn());
+			}
+			//이자연체내역 플래그 변경 end
+
+		}
+		//상환여부 플래그 변경 end
+
+		return rslt;
+
+	}
 
 }

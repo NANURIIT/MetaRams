@@ -22,6 +22,8 @@ public class IBIMS436BVO extends IBIMS436BDTO {
     private String          endDt;
     private String          ovduSttsNm;
     private String          bdcd; //부점코드
+
+    private String          paiTypCd;			    // 원리금유형코드      
     
     private List<IBIMS436BVO> OvduDtls;
 }
