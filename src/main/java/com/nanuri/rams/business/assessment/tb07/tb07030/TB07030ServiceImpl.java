@@ -710,7 +710,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 		}
 
 		// //연체기본 상환여부 플래그 변경
-		int ovduRealeseRslt = ovduRealese(ovduParamList);
+		//int ovduRealeseRslt = ovduRealese(ovduParamList);
 
 		return rtnValue;
 		//return 0;

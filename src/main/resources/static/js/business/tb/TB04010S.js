@@ -4,6 +4,7 @@ const TB04010Sjs = (function () {
   var sdvdCd = [];
   var sameYn = [];
   var dblclickYn = "0";
+  let rowIndx;
 
   // 안건구조-> 딜정보 그리드
   let arrPqGridDealListInfo;
@@ -21,6 +22,15 @@ const TB04010Sjs = (function () {
   let arrPqGridEnsrInfo;
   // 책임준공 그리드
   let arrPqGridCmplInfo;
+
+  // // 글자수체크
+  // let columns = {
+  //   MTR_NM: 300, // 안건명
+  //   MTR_ABBR_NM: 100, // 약어명
+  //   MAIN_INVST_TRGT_NM: 100, // 주요투자대상
+  //   BUSI_DPT_OPNN: 1000, // 사업부의견
+  //   JDGM_DPT_OPNN: 1000, // 심사부의견
+  // };
 
   // 필터링 이벤트
   function filterSelectBox(obj, childObj) {
@@ -71,6 +81,22 @@ const TB04010Sjs = (function () {
     $("#assesmenttlClsf").hide(); // 승인확정 버튼 hide
 
     btnReset();
+
+    // 글자수체크
+    let columns = {
+      ibDealNm: 300, // 안건명
+      MTR_ABBR_NM: 100, // 약어명
+      MAIN_INVST_TRGT_NM: 100, // 주요투자대상
+    };
+
+    limitInputLength(columns);
+
+    let columns2 = {
+      busiDptOpnn: 1000, // 사업부의견
+      jdgmDptOpnn: 1000, // 심사부의견
+    };
+
+    limitInputLength(columns2, "TB04010S");
   });
 
   // 그리드 렌더링함수
@@ -240,7 +266,6 @@ const TB04010Sjs = (function () {
     if (isNotEmpty(dealNo)) {
       $("#TB04010S_ibDealNo").val(dealNo);
       $("#TB04010S_ibDealNm").val(dealNm);
-
       getDealList();
     }
 
@@ -462,7 +487,12 @@ const TB04010Sjs = (function () {
     }
 
     if (parseFloat(value) > 100.0) {
-      showErrorPopup("입력값은 100을 넘을 수 없습니다");
+      openPopup({
+        type: "warning",
+        title: "warning!",
+        text: `입력값은 100 을 넘을 수 없습니다`,
+        focusCancel: true,
+      });
       element.value = "";
       element.focus();
       return;
@@ -613,6 +643,8 @@ const TB04010Sjs = (function () {
 
     function businessFunction() {
       // 탭 초기화 후 조회 로직 실행
+      $("#gridDealListInfo").pqGrid("option", "dataModel.data", []);
+      $("#gridDealListInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
       tab1reset();
       tab2BtnReset();
       tab3BtnReset();
@@ -642,7 +674,10 @@ const TB04010Sjs = (function () {
           }
           $(".save").attr("disabled", false);
           arrPqGridDealListInfo.setData(data);
+          if (rowIndx != "") {
+          }
           arrPqGridDealListInfo.option("rowDblClick", function (event, ui) {
+            rowIndx = ui.rowIndx;
             dblclickYn = "1";
             setTabContents(ui.rowData);
             var dealNo = ui.rowData.dealNo || "";
@@ -827,8 +862,8 @@ const TB04010Sjs = (function () {
         $(":radio[name='TB04010S_ensrF']").radioSelect(dealDetail.ensrYn); // 보증
         $("#TB04010S_R026").val(dealDetail.rspsbCmplDcd).prop("selected", true); // 책임준공
 
-        $("#TB04010S_bsnsDprtCmmtRmrk1").val(dealDetail.busiDptOpnn); // 사업부의견
-        $("#TB04010S_inspctDprtCmmtRmrk2").val(dealDetail.jdgmDptOpnn); // 심사부의견
+        $("#TB04010S_busiDptOpnn").val(dealDetail.busiDptOpnn); // 사업부의견
+        $("#TB04010S_jdgmDptOpnn").val(dealDetail.jdgmDptOpnn); // 심사부의견
 
         //$('#TB04010S_C008').val(dealDetail.coprtnTypCd);										// 협업유형
         $("#TB04010S_entpRnm").val(dealDetail.entpNm); // 업체명
@@ -911,6 +946,9 @@ const TB04010Sjs = (function () {
           $("#tab-7 .btn").prop("disabled", true);
           $("#tab-8 .btn").prop("disabled", true);
           $(".save").prop("disabled", true);
+          $(".delete").prop("disabled", true);
+          $("#UPLOAD_AddFile").prop("disabled", true);
+          $("#UPLOAD_DelFiles").prop("disabled", true);
         } else {
           $("#tab-1 .btn-success").prop("disabled", false);
           $("#tab-2 .btn").prop("disabled", false);
@@ -921,6 +959,9 @@ const TB04010Sjs = (function () {
           $("#tab-7 .btn").prop("disabled", false);
           $("#tab-8 .btn").prop("disabled", false);
           $(".save").prop("disabled", false);
+          $(".delete").prop("disabled", false);
+          $("#UPLOAD_AddFile").prop("disabled", false);
+          $("#UPLOAD_DelFiles").prop("disabled", false);
         }
 
         if (
@@ -938,6 +979,9 @@ const TB04010Sjs = (function () {
           $("#tab-7 .btn").prop("disabled", false);
           $("#tab-8 .btn").prop("disabled", false);
           $(".save").prop("disabled", false);
+          $(".delete").prop("disabled", false);
+          $("#UPLOAD_AddFile").prop("disabled", false);
+          $("#UPLOAD_DelFiles").prop("disabled", false);
         }
 
         // 심사요청 버튼 활성
@@ -951,6 +995,9 @@ const TB04010Sjs = (function () {
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
             $(".save").prop("disabled", false);
+            $(".delete").prop("disabled", false);
+            $("#UPLOAD_AddFile").prop("disabled", false);
+            $("#UPLOAD_DelFiles").prop("disabled", false);
             break;
           case 203:
             $("#assesmentDelete").prop("disabled", false); // 삭제버튼 활성화
@@ -959,6 +1006,9 @@ const TB04010Sjs = (function () {
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
             $(".save").prop("disabled", false);
+            $(".delete").prop("disabled", false);
+            $("#UPLOAD_AddFile").prop("disabled", false);
+            $("#UPLOAD_DelFiles").prop("disabled", false);
             break;
           case 206:
             $("#assesmentRequest").prop("disabled", false);
@@ -970,6 +1020,9 @@ const TB04010Sjs = (function () {
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
             $(".save").prop("disabled", true);
+            $(".delete").prop("disabled", false);
+            $("#UPLOAD_AddFile").prop("disabled", false);
+            $("#UPLOAD_DelFiles").prop("disabled", false);
             break;
 
           // 심사요청취소 활성화
@@ -983,6 +1036,9 @@ const TB04010Sjs = (function () {
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
             $(".save").prop("disabled", true);
+            $(".delete").prop("disabled", true);
+            $("#UPLOAD_AddFile").prop("disabled", true);
+            $("#UPLOAD_DelFiles").prop("disabled", true);
             break;
 
           // 승인, 반송, 보류 활성화
@@ -1001,6 +1057,9 @@ const TB04010Sjs = (function () {
             $("#cncCmpnyInptExptF").prop("disabled", false); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", false); // 내부등급 입력예정여부 disabled false
             $(".save").prop("disabled", true);
+            $(".delete").prop("disabled", true);
+            $("#UPLOAD_AddFile").prop("disabled", true);
+            $("#UPLOAD_DelFiles").prop("disabled", true);
             break;
           case 208:
             $("#assesmentRequest").prop("disabled", true);
@@ -1013,6 +1072,9 @@ const TB04010Sjs = (function () {
             $("#cncCmpnyInptExptF").prop("disabled", true); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", true); // 내부등급 입력예정여부 disabled false
             $(".save").prop("disabled", true);
+            $(".delete").prop("disabled", true);
+            $("#UPLOAD_AddFile").prop("disabled", true);
+            $("#UPLOAD_DelFiles").prop("disabled", true);
           case 309:
             $("#assesmenttlClsf").prop("disabled", true);
             $("#assesmentDelete").prop("disabled", true); // 삭제버튼 비활성화
@@ -1020,6 +1082,9 @@ const TB04010Sjs = (function () {
             $("#cncCmpnyInptExptF").prop("disabled", true); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", true); // 내부등급 입력예정여부 disabled false
             $(".save").prop("disabled", true);
+            $(".delete").prop("disabled", true);
+            $("#UPLOAD_AddFile").prop("disabled", true);
+            $("#UPLOAD_DelFiles").prop("disabled", true);
             break;
           default:
             $("#assesmentRequest").prop("disabled", true);
@@ -1031,6 +1096,9 @@ const TB04010Sjs = (function () {
             $("#cncCmpnyInptExptF").prop("disabled", true); // 거래상대방 입력예정여부 disabled false
             $("#insGrdInptExptF").prop("disabled", true); // 내부등급 입력예정여부 disabled false
             $(".save").prop("disabled", true);
+            $(".delete").prop("disabled", true);
+            $("#UPLOAD_AddFile").prop("disabled", true);
+            $("#UPLOAD_DelFiles").prop("disabled", true);
             break;
         }
       },
@@ -1728,7 +1796,6 @@ const TB04010Sjs = (function () {
   function tab1save() {
     // 날짜체크 정규식
     var pattern = /(^\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-
     var option = {};
     option.title = "Warning";
     option.type = "warning";
@@ -1976,8 +2043,8 @@ const TB04010Sjs = (function () {
       bzno: $("#TB04010S_bsnsRgstNo").val().replaceAll("-", ""), // 사업자등록번호
       corpNo: $("#TB04010S_corpRgstNo").val().replaceAll("-", ""), // 법인번호
       //, "coprtnTypCd": $('#TB04010S_C008').val()                        			// 협업유형코드
-      busiDptOpnn: $("#TB04010S_bsnsDprtCmmtRmrk1").val(), // 사업부서의견
-      jdgmDptOpnn: $("#TB04010S_inspctDprtCmmtRmrk2").val(), // 심사부서의견
+      busiDptOpnn: $("#TB04010S_busiDptOpnn").val(), // 사업부서의견
+      jdgmDptOpnn: $("#TB04010S_jdgmDptOpnn").val(), // 심사부서의견
       cnsbMtgNo: "", // 협의체회의번호(협의체구분코드_결의년도_일련번호)
       bscAstsInptExptF: bscAstsInptExptF, // 기초자산입력예정여부
       cncCmpnyInptExptF: cncCmpnyInptExptF, // 거래상대방입력예정여부
@@ -2002,8 +2069,7 @@ const TB04010Sjs = (function () {
           confirmButtonText: "확인",
         }).then((result) => {
           $("#TB04010S_ibDealNo").val($("#TB04010S_selectedDealNo").val());
-
-          getDealList();
+          //getDealList();
           let dealNo =
             arrPqGridDealListInfo.pdata[arrPqGridDealListInfo.pdata.length];
         });
@@ -2130,8 +2196,8 @@ const TB04010Sjs = (function () {
 
     //$("#TB04010S_C008 option:eq(0)").prop("selected", true).change();				// 협업유형
 
-    $("#TB04010S_bsnsDprtCmmtRmrk1").val(""); // 사업부의견
-    $("#TB04010S_inspctDprtCmmtRmrk2").val(""); // 심사부의견
+    $("#TB04010S_busiDptOpnn").val(""); // 사업부의견
+    $("#TB04010S_jdgmDptOpnn").val(""); // 심사부의견
 
     $("#assesmentRequest").prop("disabled", true); // 심사요청버튼
     $("#assesmentRequestCancel").prop("disabled", true); // 심사요청취소버튼
@@ -2141,6 +2207,9 @@ const TB04010Sjs = (function () {
     //$("#gridDealListInfo").pqGrid("option", "dataModel.data", []);
     //$("#gridDealListInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
     $("#TB04010S_tab-1 .btn-success").prop("disabled", false); // 저장버튼
+    $(".delete").prop("disabled", false);
+    $("#UPLOAD_AddFile").prop("disabled", false);
+    $("#UPLOAD_DelFiles").prop("disabled", false);
   }
 
   /**
@@ -4540,5 +4609,6 @@ const TB04010Sjs = (function () {
     setMtrtDt: setMtrtDt,
     getUrlDealInfo: getUrlDealInfo,
     formatPerInput: formatPerInput,
+    limitInputLength: limitInputLength,
   };
 })();

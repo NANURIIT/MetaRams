@@ -611,6 +611,11 @@ const TB05030Sjs = (function () {
 
             $("#TB05030S_cnfrncNtmCndtlCntnt").val("");
             $("#TB05030S_rsltCntnt").val("");
+
+            $("#saveMmbrConfirm").prop("disabled", false);
+            $("#btnConfirmDeal").prop("disabled", false);
+            $("#btnCancelDeal").prop("disabled", true);
+
             searchCNFRNC();
           });
         },
@@ -772,18 +777,18 @@ const TB05030Sjs = (function () {
           $("#gridMmbrInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
           $("#gridIbDealInfo").pqGrid("option", "dataModel.data", []);
           $("#gridIbDealInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
-
           $("#TB05030S_R025 option:eq(0)").prop("selected", true);
           $("#TB05030S_invstCrncyCdNm").val("");
           $("#TB05030S_rcgAmt").val("");
           $("#TB05030S_sdnCndtF option:eq(0)").prop("selected", true);
           $("#TB05030S_etcCndtF option:eq(0)").prop("selected", true);
-
           $("#TB05030S_cnfrncNtmCndtlCntnt").val("");
           $("#TB05030S_rsltCntnt").val("");
+
           searchCNFRNC();
-          getMMBRInfo(paramData);
-          getIBDEALInfo(paramData);
+
+          //getMMBRInfo(paramData);
+          // getIBDEALInfo(paramData);
         });
       },
     });

@@ -54,4 +54,6 @@ public class IBIMS101BVO extends IBIMS101BDTO {
     private String crno;        //법인등록번호
 
     private String scrnNo;      // 화면번호!
+
+    private String decdSttsDcd;  // 결재상태구분코드
 }

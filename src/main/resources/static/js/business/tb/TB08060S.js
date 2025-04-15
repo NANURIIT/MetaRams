@@ -46,8 +46,9 @@ const TB08060Sjs = function () {
 			resetPGgrids("TB08060S");
 		})
 
-		// alert("1");
-		// setGrid_TB07040S();
+		fnSelectBox();
+
+		reset_TB08060S();
 
 	});
 
@@ -1300,23 +1301,15 @@ const TB08060Sjs = function () {
 
 		$("#TB08060S_stdrDt").val(monthOnly); 
 
-		// $('#TB08060S_dprtCd').val(loginUsrDprtCd);	//관리부서코드
-		// $('#TB08060S_dprtNm').val(loginUsrDprtNm);	//관리부서명
-
-		$('#TB08060S_dprtCd').val('');	//관리부서코드
-		$('#TB08060S_dprtNm').val('');	//관리부서명
+		$('#TB08060S_dprtCd').val($("#userDprtCd").val());	//관리부서코드
+		$('#TB08060S_dprtNm').val($("#userDprtCd").val());	//관리부서명
 
 		$("#TB08060S_fndCd").val('');				//펀드코드
 		$("#TB08060S_fndNm").val('');				//펀드명
 
 		$('#TB08060S_E038').prop('selectedIndex', 0);			//결산구분 초기화
 
-		//$('#TB08060S_F004').prop('selectedIndex', 0);					//수수료구분 초기화
-
-		$("#TB08060S_settlementGrid").pqGrid('setData', []);
-		var colM_TB08060S = accruedIntrCol;
-		settlementObj.option("colModel", colM_TB08060S);
-		$("#TB08060S_settlementGrid").pqGrid("refreshDataAndView");		//그리드 초기화
+		resetPGgrids("TB08060S");	// 그리드 초기화
 
 	}
 
@@ -1399,6 +1392,36 @@ const TB08060Sjs = function () {
 
 			}
 		});
+	}
+
+	/**
+	 * selectBox 부서코드 set
+	 */
+	function fnSelectBox() {
+		let selectBox = getSelectBoxList(
+			"TB08060S",
+			"D010",   //부서코드
+			false
+		);
+
+		let TB08060S_dprtSelect;
+
+		TB08060S_dprtSelect = selectBox.filter(function(item) {
+			return item.cmnsGrpCd === "D010";
+		})
+
+		let D010html;
+
+		TB08060S_dprtSelect.forEach((item) => {
+			D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
+		});
+
+		$("#TB08060S_dprtCd").append(D010html);
+
+		$('#TB08060S_dprtCd').on('change', function() {
+			$('#TB08060S_dprtNm').val($('#TB08060S_dprtCd').val())
+		});
+
 	}
 
 	return {

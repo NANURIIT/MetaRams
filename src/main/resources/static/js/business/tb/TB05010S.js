@@ -1206,8 +1206,29 @@ const TB05010Sjs = (function () {
           confirmButtonText: "확인",
         }).then((result) => {
           //location.reload();
-          $("#confirmButton").attr("disabled", true);
-          $("#cancleButton").attr("disabled", false);
+          if (statusCode === 303) {
+            $("#addCnfrncInfo").attr("disabled", false);
+            $("#delCnfrncInfo").attr("disabled", false);
+            $("#TB05010S_rsltnDt2").attr("disabled", false);
+            $("#TB05010S_rsltnTm2").attr("disabled", false);
+            $("#TB05010S_inspctCnfrncSqcSq2").attr("disabled", false);
+            $("#addRowBtn").attr("disabled", false);
+            $("#delRowBtn").attr("disabled", false);
+            $("#confirmButton").attr("disabled", false);
+            $("#saveButton").attr("disabled", false);
+            $("#cancleButton").attr("disabled", true);
+          } else {
+            $("#addCnfrncInfo").attr("disabled", true);
+            $("#delCnfrncInfo").attr("disabled", true);
+            $("#TB05010S_rsltnDt2").attr("disabled", true);
+            $("#TB05010S_rsltnTm2").attr("disabled", true);
+            $("#TB05010S_inspctCnfrncSqcSq2").attr("disabled", true);
+            $("#addRowBtn").attr("disabled", true);
+            $("#delRowBtn").attr("disabled", true);
+            $("#confirmButton").attr("disabled", true);
+            $("#saveButton").attr("disabled", true);
+            $("#cancleButton").attr("disabled", false);
+          }
         });
       },
       error: function () {},

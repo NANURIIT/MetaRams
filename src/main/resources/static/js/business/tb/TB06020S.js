@@ -19,6 +19,12 @@ const TB06020Sjs = (function(){
 		resetSearchRequiment_TB06020S();
 		loginUserSet();
 		getDealInfoFromWF();
+
+		let columns = {
+			res_prdtNm: 300
+			, res_prdtCd: 32
+		}
+		limitInputLength(columns, "TB06020S");
 	});
 	
 	function loginUserSet(){

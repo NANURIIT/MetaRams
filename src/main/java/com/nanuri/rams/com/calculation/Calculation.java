@@ -2403,6 +2403,10 @@ public class Calculation {
 				bfBalance = item.getBfBalance();
 				log.debug("대상금액: " + bfBalance);
 
+				// if(bfBalance == null){			//null들어오는 경우 다 막아야함 (어디서 null이 들어가는지 확인 필요::: IBIMS403 TRGT_AMT컬럼)
+				// 	bfBalance = BigDecimal.ZERO;
+				// }
+
 				//금리구간조회
 				List<IBIMS404BVO> out404bf = inCalcDTO.getIntrtInfoList();
 				List<IBIMS404BVO> out404 = new ArrayList<>();

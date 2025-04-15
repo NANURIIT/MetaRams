@@ -852,6 +852,7 @@ function TB06011P_setPrdtInfo(e) {
   if (prefix == "TB09100S") {
     $(`#${prefix}_ibDealNo`).val(ibDealNo);
     $(`#${prefix}_ibDealNm`).val(ibDealNm);
+    resetPGgrids(prefix)
   }
 
   if (prefix == "TB06015P") {
