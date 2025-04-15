@@ -175,13 +175,19 @@ public class TB07070ServiceImpl implements TB07070Service {
 					IBIMS403BVO in403bvo = new IBIMS403BVO();
 					in403bvo.setPrdtCd(param.getPrdtCd());
 					in403bvo.setExcSn(param.getExcSn());
+					in403bvo.setHndEmpno(facade.getDetails().getEno());
 					in403bvo.setHgrkTrSn(oldTrSn);
-					List<IBIMS403BDTO> out403BList = ibims403HMapper.selectIBIMS403H(in403bvo); // 이전 거래일련번호에 해당하는
-																								// 여신스케쥴리스트 조회
-					if (out403BList == null) {
-						rtvValue = ibims403BMapper.deleteIBIMS403B(in403bvo); // 종목+실행일련 대상 스케쥴 전체삭제
+					// List<IBIMS403BDTO> out403BList = ibims403HMapper.selectIBIMS403H(in403bvo); // 이전 거래일련번호에 해당하는
+					// 																			// 여신스케쥴리스트 조회
+					List<IBIMS403BDTO> out403BList = ibims403BMapper.getBfScdhl(in403bvo);
+
+					log.debug("out403BList::: {} ", out403BList);
+
+					if (out403BList.size() <= 0) {
+						//rtvValue = ibims403BMapper.deleteIBIMS403B(in403bvo); // 종목+실행일련 대상 스케쥴 전체삭제
 					} else {
-						rtvValue = ibims403BMapper.deleteIBIMS403B(in403bvo); // 종목+실행일련 대상 스케쥴 전체삭제
+						//rtvValue = ibims403BMapper.deleteIBIMS403B(in403bvo); // 종목+실행일련 대상 스케쥴 전체삭제
+						rtvValue = ibims403BMapper.deleteBfIBIMS403B(in403bvo);
 						rtvValue = ibims403BMapper.saveRdmpInfo(out403BList); // 여신스케쥴저장
 					}
 					rtvValue = ibims403HMapper.deleteIBIMS403H(in403bvo); // 여신스케쥴이력 삭제

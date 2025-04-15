@@ -71,4 +71,7 @@ public interface IBIMS403BMapper {
 
 	//중도상환 시 스케줄 재생성
 	public int rgstNewScdl(IBIMS403BVO param);
+
+	public List<IBIMS403BDTO> getBfScdhl(IBIMS403BVO param);
+	public int deleteBfIBIMS403B(IBIMS403BVO param);
 }
