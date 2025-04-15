@@ -40,16 +40,13 @@ const TB08060Sjs = function () {
 		// console.log(today);
 		var monthOnly = today.substring(0, 7); 
 
-		$("#TB08060S_stdrDt").val(monthOnly); 
+		$("#TB08060S_stdrDt").val(monthOnly);
 
-		//alert("1");
-		//setGrid_TB07040S();
-		fnSelectBox();
-
-		// 조회조건 수정시 초기화
-		$("#TB08060S_conSrch").find('input, select').on('input', function () {
-			resetPGgrids("TB08060S")
+		$('#TB08060S_srchForm').find('input, select').on('input', function() {
+			resetPGgrids("TB08060S");
 		})
+
+		fnSelectBox();
 
 		reset_TB08060S();
 
@@ -1277,6 +1274,14 @@ const TB08060Sjs = function () {
 
 					$("#TB08060S_settlementGrid").pqGrid("setData", data);
 
+				}
+				else {
+					$("#TB08060S_settlementGrid").pqGrid("setData", []);
+					Swal.fire({
+						icon: 'warning'
+						, title: 'Warning!'
+						, text: '조회된 내역이 없습니다!'
+					})
 				}
 
 			},
