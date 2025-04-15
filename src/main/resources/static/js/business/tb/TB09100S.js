@@ -6,11 +6,18 @@ const TB09100Sjs = (function() {
 		setGrid_TB09100S();
 		loadUserAuth();
 
-		$("#TB09100S_fromDate").val(getSomeDaysAgo(7));
-		$("#TB09100S_toDate").val(getToday());
+		// $("#TB09100S_fromDate").val(getSomeDaysAgo(7));
+		// $("#TB09100S_toDate").val(getToday());
+
+		reset_TB09110S();
 
 		//기간검색 유효성 검사 함수
 		chkValFromToDt("TB09100S_fromDate","TB09100S_toDate");
+
+		// 조회조건 수정시 초기화
+		$("#TB09100S_conSrch").find('input, select').on('input', function () {
+			resetPGgrids("TB09100S")
+		})
 	});
 
 	// 담당직원정보
@@ -370,10 +377,10 @@ const TB09100Sjs = (function() {
 		$("#TB09110S_cost").pqGrid("setData", []);
 
 		/* 검색조건 초기화 */
-		$("#TB09100S_dprtCd").val(""); //관리부서코드
-		$("#TB09100S_dprtNm").val(""); //관리부서명
-		$("#TB09100S_chrr_empNo").val(""); //담당자 사번
-		$("#TB09100S_chrr_empNm").val(""); //담당자명
+		$("#TB09100S_dprtCd").val($("#userDprtCd").val()); //관리부서코드
+		$("#TB09100S_dprtNm").val($("#userDprtCd").val()); //관리부서명
+		$("#TB09100S_chrr_empNo").val($("#userEno").val()); //담당자 사번
+		$("#TB09100S_chrr_empNm").val($("#userEmpNm").val()); //담당자명
 		$("#TB09100S_ibDealNo").val(""); //Deal 번호
 		$("#TB09100S_ibDealNm").val(""); //Deal 명
 		$("#TB09100S_prdtCd").val(""); //종목코드
@@ -429,6 +436,14 @@ const TB09100Sjs = (function() {
 
 				if (data.length > 0) {
 					$("#TB09110S_exposureStatus").pqGrid("setData", data);
+				}
+				else {
+					$("#TB09110S_revenue").pqGrid("setData", []);
+					Swal.fire({
+						icon: 'warning'
+						, title: 'Warning!'
+						, text: '조회된 내역이 없습니다!'
+					})
 				}
 			},
 			error: function(request, status, error) {
@@ -510,15 +525,15 @@ const TB09100Sjs = (function() {
 			false
 		);
 
-		let TB07120S_grdSelect
+		let TB09100S_grdSelect
 
-		TB07120S_grdSelect = selectBox.filter(function(item) {
+		TB09100S_grdSelect = selectBox.filter(function(item) {
 			return item.cmnsGrpCd === "D010";
 		})
 
 		let D010html;
 
-		TB07120S_grdSelect.forEach((item) => {
+		TB09100S_grdSelect.forEach((item) => {
 			D010html += `<option value="${item.cdValue}">${item.cdName}</option>`;
 		});
 

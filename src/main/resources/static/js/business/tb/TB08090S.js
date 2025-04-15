@@ -11,6 +11,11 @@ const TB08090Sjs = (function () {
 		loadUserAuth(); // 담당자 정보 조회
 		getColmSlctBox();
 
+		// 조회조건 수정시 초기화
+		$("#TB08090_stdrDt").on('input', function () {
+			resetPGgrids("TB08090S")
+		})
+
 	});
 
 	function loadUserAuth() {
@@ -337,8 +342,8 @@ const TB08090Sjs = (function () {
 		if (stdrDt == '') {
 
 			var option = {}
-			option.title = "Error";
-			option.type = "error";
+			option.title = "Warning!";
+			option.type = "warning";
 			option.text = "기준일자 입력 후 다시 시도해주세요.";
 			openPopup(option);
 			return false;

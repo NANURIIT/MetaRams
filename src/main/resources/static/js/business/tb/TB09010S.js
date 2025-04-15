@@ -174,10 +174,16 @@ const TB09010Sjs = (function () {
 
   $(document).ready(function () {
     setKeyFunction_TB09010S();
-    setRsltnDt();
+    // setRsltnDt();
     getSelectBoxList("TB09010S", "I010");
     chkUserAtc();
     setGrid_TB09010S();
+    resetAll();
+
+    // 조회조건 수정시 초기화
+    $("#TB09010S_conSrch").find('input, select').on('input', function () {
+      resetContents()
+    })
   });
 
   function chkUserAtc(){
@@ -317,6 +323,7 @@ const TB09010Sjs = (function () {
               "strNoRows",
               "데이터가 없습니다."
             );
+            
             $("#TB09010S_DealList").pqGrid("setData", data);
             $("#TB09010S_DealList").pqGrid("refreshDataAndView");
           } else {
@@ -325,6 +332,12 @@ const TB09010Sjs = (function () {
               "strNoRows",
               "데이터가 없습니다."
             );
+            // console.log("AlertTest");        
+              Swal.fire({
+                icon: "warning",
+                title: "Waring!",
+                text: "데이터가 없습니다!",
+              });
             $("#TB09010S_DealList").pqGrid("refreshDataAndView");
           }
         },
@@ -378,10 +391,10 @@ const TB09010Sjs = (function () {
       if (!isEmpty(dealNo)) {
         businessFunction();
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error!",
-          text: "Deal을 선택해주세요.",
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Deal을 선택해주세요.",
           confirmButtonText: "확인",
         });
       }
@@ -431,8 +444,41 @@ const TB09010Sjs = (function () {
       });
     }
   }
+
+  /**
+   * 내용 초기화
+   */
+  function resetContents() {
+    // 입력사항 초기화
+    $("#TB09010S_selectedIbDealNo").val("");
+    $("#TB09010S_selectedIbDealNm").val("");
+    $("#TB09010S_selectedEmpNm").val("");
+    $("#TB09010S_exmntRsltCntnt").val("");
+    
+    // 그리드 초기화
+    resetPGgrids("TB09010S");
+  }
+
+  /**
+   * 전체 초기화
+   */
+  function resetAll() {
+    // 금일 날짜로 초기화
+    setRsltnDt();
+
+    // 조회조건 초기화
+    $('#TB09010S_I010').val("");
+    $('#TB09010S_empNo').val("");
+    $('#TB09010S_empNm').val("");
+
+    // 내용 초기화
+    resetContents();
+  }
+
   return {
     checkDealSearch: checkDealSearch,
     saveDealExmnt: saveDealExmnt,
+    resetContents: resetContents,
+    resetAll: resetAll,
   };
 })();
