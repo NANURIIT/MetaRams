@@ -109,6 +109,10 @@ const TB10110Sjs = (function () {
 
     //그리드 세팅
     setGrid_TB10110S();
+
+    $('#TB10110S_srchForm').find('input, select').on('input', function () {
+      resetPGgrids('TB10110S');
+    })
   });
 
   /*******************************************************************
