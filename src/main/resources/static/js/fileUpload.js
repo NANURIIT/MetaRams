@@ -288,8 +288,6 @@ function selectFile(action, result, paramMenuid) {
    */
 function makeFilList(html, result) {
 
-  console.log(result);
-  
   var html = "";
   let encUri = downloadURI(
     result.svFilePathNm,
