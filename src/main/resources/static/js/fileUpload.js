@@ -25,10 +25,8 @@ function setFileUploadEvent(menuId) {
    * 파일추가 버튼 클릭
    */
   $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_AddFile").click(function () {
-    alert("!!!!")
-
+    callFileUploadPopup();
     let mode = "s";
-    // $(`div[data-menuid="/${menuId}"]` + " #deal-upload-input").click();
   });
 
   /**
@@ -97,6 +95,7 @@ function setFileUploadEvent(menuId) {
           $(`div[data-menuid="/${menuId}"]` + " #delFile").attr("disabled", false);
           $(`div[data-menuid="/${menuId}"]` + " #filePath").attr("href", encUri);
         } else {
+          result.atchFleDcd = fileUp_atchFleDcd.find(item => item.cdValue === result.atchFleDcd).cdName
           callbackFile(action, result);
         }
       },
@@ -288,6 +287,9 @@ function selectFile(action, result, paramMenuid) {
    * 파일목록 Table 생성
    */
 function makeFilList(html, result) {
+
+  console.log(result);
+  
   var html = "";
   let encUri = downloadURI(
     result.svFilePathNm,
@@ -298,8 +300,7 @@ function makeFilList(html, result) {
   html += '    <td><input type="checkbox" id="' + result.atchFleSn + '">';
   html += "    </td>";
   html += `    <td style='display: none;' data-fileKey='${result.fileKey1}'></td>`;
-  // html += "    <td>" + result.fileKey2 + "</td>";
-  // html += "    <td>" + result.atchFleSn + "</td>";
+  html += "    <td style='text-align: center;'>" + result.atchFleDcd + "</td>";
   html += '    <td><a href="' + encUri + '">' + result.orgFileNm + "</a></td>";
   html += "    <td style='text-align: center;'>" + formatDate(result.rgstDt) + "</td>";
   html += "</tr>";

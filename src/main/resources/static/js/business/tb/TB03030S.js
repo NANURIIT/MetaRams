@@ -12,10 +12,6 @@ const TB03030Sjs = (function(){
 	});
 
 	function TB03030S_setFileButtonEnabled(isEnabled) {
-
-		console.log("작동했습니다.");
-		
-
 		// enabled가 true이면 버튼 활성화, false이면 비활성화
 		$("#UPLOAD_AddFile").prop("disabled", !isEnabled);  
 		$("#UPLOAD_DelFiles").prop("disabled", !isEnabled);
