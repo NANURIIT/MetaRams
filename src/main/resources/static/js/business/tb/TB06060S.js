@@ -142,7 +142,7 @@ const TB06060Sjs = (function () {
       halign: "center",
       width: "",
       filter: { crules: [{ condition: "range" }] },
-      fidden: true,
+      hidden: true,
     },
   ];
 
@@ -266,6 +266,7 @@ const TB06060Sjs = (function () {
             $(".flow-status p").removeClass("-check");
             $(".flow-status div").html(waitHtml);
           } else {
+            TB06060S_moveTab(data[0].prdtCd);
             setFlow(getFlowLevel(data[0]));
             showDetailData(data[0], true);
           }
@@ -383,6 +384,38 @@ const TB06060Sjs = (function () {
       var indexNm = "[name = flow0" + i + "]";
       $(indexNm + " p").addClass("-check");
       $(indexNm + " div").html(registHtml);
+    }
+  }
+
+  function TB06060S_moveTab(code) {
+    var prdtCode = code.charAt(0);
+
+    if (prdtCode == "A") {
+      // 첫 번째 탭 활성화
+      $("#ramsTab .nav-link").removeClass("active");
+      $("#ramsTab .nav-link").addClass("disabled");
+      $('#ramsTab .nav-link[href="#tab-1"]')
+        .removeClass("disabled")
+        .addClass("active");
+      // 첫 번째 탭의 콘텐츠도 보여지도록 처리
+      $(".tab-pane").removeClass("active show");
+      $("#tab-1").addClass("active show");
+    } else if (prdtCode == "B") {
+      $("#ramsTab .nav-link").removeClass("active");
+      $("#ramsTab .nav-link").addClass("disabled");
+      $('#ramsTab .nav-link[href="#tab-2"]')
+        .removeClass("disabled")
+        .addClass("active");
+      $(".tab-pane").removeClass("active show");
+      $("#tab-2").addClass("active show");
+    } else if (prdtCode == "C") {
+      $("#ramsTab .nav-link").removeClass("active");
+      $("#ramsTab .nav-link").addClass("disabled");
+      $('#ramsTab .nav-link[href="#tab-3"]')
+        .removeClass("disabled")
+        .addClass("active");
+      $(".tab-pane").removeClass("active show");
+      $("#tab-3").addClass("active show");
     }
   }
 
