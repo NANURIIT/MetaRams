@@ -415,6 +415,12 @@ function setEmpNm(e) {
     case "TB09010S":
       TB09010Sjs.resetContents();
       break;
+    case "TB09100S_chrr":
+      resetPGgrids("TB09100S");
+      $("#TB09100S_dprtNm").val(e.dprtCd);
+      $("#TB09100S_dprtCd").val(e.dprtCd);
+      break;
+
     default:
       break;
   }
