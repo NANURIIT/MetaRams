@@ -67,57 +67,62 @@ public class TB07050ServiceImpl implements TB07050Service {
         log.debug("excSn ::: {}", excSn);
 
         // 약정정보
-        TB06040SVO out201b = ibims201bMp.searchIBInfo(prdtCd);
-        ret.setPrdtCd(out201b.getPrdtCd());                              // 종목코드
-        ret.setTrOthrDscmNo(out201b.getTrOthrDscmNo());                  // 거래상대방번호
-        ret.setTrOthrDscmNm(out201b.getTrOthrDscmNm());                  // 거래상대방명
-        ret.setPaiRdmpDcd(out201b.getPaiRdmpDcd());                      // 원리금상환구분코드
-        ret.setRqsKndCd(out201b.getRqsKndCd());                          // 기업여신신청종류코드
-        ret.setPrdtClsfCd(out201b.getPrdtClsfCd());                      // 기준금리종류코드
-        ret.setApvlAmt(out201b.getApvlAmt());                            // 기업여신승인금액
-        ret.setEprzCrdlIndvLmtDcd(out201b.getEprzCrdlIndvLmtDcd());      // 기업여신개별한도구분코드
-        ret.setActsCd(out201b.getActsCd());                              // 계정과목코드
-        ret.setPrnaRdmpFrqcMnum(out201b.getPrnaRdmpFrqcMnum());          // 원금상환주기개월수
-        ret.setIntrRdmpFrqcMnum(out201b.getIntrRdmpFrqcMnum());          // 이자상환주기개월수
-        ret.setStdrIntrtKndCd(out201b.getStdrIntrtKndCd());              // 기준금리종류코드
-        ret.setTrCrryCd(out201b.getTrCrryCd());                          // 통화코드
-        ret.setStdrIntrt(out201b.getStdrIntrt());                        // 기준금리
-        ret.setAddIntrt(out201b.getAddIntrt());                          // 가산금리
-        ret.setIntrBnaoDcd(out201b.getIntrBnaoDcd());                    // 이자선후취구분코드
-        ret.setCtrcDt(out201b.getCtrcDt());                              // 약정일자
-        ret.setCtrcExpDt(out201b.getCtrcExpDt());                        // 약정만기일자
-        ret.setEprzCrdlCtrcAmt(out201b.getEprzCrdlCtrcAmt());            // 기업여신약정금액
-        ret.setRgstDt(out201b.getRgstDt());                              // 등록일자
+        try {
+            TB06040SVO out201b = ibims201bMp.searchIBInfo(prdtCd);
 
-        TB06015SVO inTb06015svo = new TB06015SVO();
-        inTb06015svo.setPrdtCd(prdtCd);
-        inTb06015svo.setExcSn(excSn);
+            ret.setPrdtCd(out201b.getPrdtCd());                              // 종목코드
+            ret.setTrOthrDscmNo(out201b.getTrOthrDscmNo());                  // 거래상대방번호
+            ret.setTrOthrDscmNm(out201b.getTrOthrDscmNm());                  // 거래상대방명
+            ret.setPaiRdmpDcd(out201b.getPaiRdmpDcd());                      // 원리금상환구분코드
+            ret.setRqsKndCd(out201b.getRqsKndCd());                          // 기업여신신청종류코드
+            ret.setPrdtClsfCd(out201b.getPrdtClsfCd());                      // 기준금리종류코드
+            ret.setApvlAmt(out201b.getApvlAmt());                            // 기업여신승인금액
+            ret.setEprzCrdlIndvLmtDcd(out201b.getEprzCrdlIndvLmtDcd());      // 기업여신개별한도구분코드
+            ret.setActsCd(out201b.getActsCd());                              // 계정과목코드
+            ret.setPrnaRdmpFrqcMnum(out201b.getPrnaRdmpFrqcMnum());          // 원금상환주기개월수
+            ret.setIntrRdmpFrqcMnum(out201b.getIntrRdmpFrqcMnum());          // 이자상환주기개월수
+            ret.setStdrIntrtKndCd(out201b.getStdrIntrtKndCd());              // 기준금리종류코드
+            ret.setTrCrryCd(out201b.getTrCrryCd());                          // 통화코드
+            ret.setStdrIntrt(out201b.getStdrIntrt());                        // 기준금리
+            ret.setAddIntrt(out201b.getAddIntrt());                          // 가산금리
+            ret.setIntrBnaoDcd(out201b.getIntrBnaoDcd());                    // 이자선후취구분코드
+            ret.setCtrcDt(out201b.getCtrcDt());                              // 약정일자
+            ret.setCtrcExpDt(out201b.getCtrcExpDt());                        // 약정만기일자
+            ret.setEprzCrdlCtrcAmt(out201b.getEprzCrdlCtrcAmt());            // 기업여신약정금액
+            ret.setRgstDt(out201b.getRgstDt());                              // 등록일자
 
+            TB06015SVO inTb06015svo = new TB06015SVO();
+            inTb06015svo.setPrdtCd(prdtCd);
+            inTb06015svo.setExcSn(excSn);
 
-        if ( "02".equals(scxDcd) ) { // 원금상환스케줄
-            List<IBIMS403BDTO> rdmpSch = ibims403bMp.getRdmpSchedule(inTb06015svo);
+            if ( "02".equals(scxDcd) ) { // 원금상환스케줄
+                List<IBIMS403BDTO> rdmpSch = ibims403bMp.getRdmpSchedule(inTb06015svo);
 
-            for (IBIMS403BDTO ibims403bdto : rdmpSch) {
-                ibims403bdto.setScxDcd("02"); // 일정구분코드
-                retList.add(ibims403bdto);
-            };
-            ret.setRdmpPlanList(retList);
-        } else if ( "04".equals(scxDcd) ) { // 이자상환스케줄
+                for (IBIMS403BDTO ibims403bdto : rdmpSch) {
+                    ibims403bdto.setScxDcd("02"); // 일정구분코드
+                    retList.add(ibims403bdto);
+                };
+                ret.setRdmpPlanList(retList);
+            } else if ( "04".equals(scxDcd) ) { // 이자상환스케줄
 
-            //List<CalculationResultDTO> rsltList = calculationSett(input);
+                //List<CalculationResultDTO> rsltList = calculationSett(input);
 
-            //log.debug("rsltList {}" , rsltList);
-            List<IBIMS403BDTO> intrRdmpSch = ibims403bMp.getIntrSchedule(inTb06015svo);
-            log.debug("intrRdmpSch ::: {}", intrRdmpSch);
-            for (IBIMS403BDTO ibims403bdto : intrRdmpSch) {
-                ibims403bdto.setScxDcd("04"); // 일정구분코드
-                retList.add(ibims403bdto);
-            };
-            ret.setIntrtPlanList(intrRdmpSch);
-        } else if ( "01".equals(scxDcd) ) {
-            List<IBIMS403BDTO> excSch = ibims403bMp.getExcSchedule(inTb06015svo);
+                //log.debug("rsltList {}" , rsltList);
+                List<IBIMS403BDTO> intrRdmpSch = ibims403bMp.getIntrSchedule(inTb06015svo);
+                log.debug("intrRdmpSch ::: {}", intrRdmpSch);
+                for (IBIMS403BDTO ibims403bdto : intrRdmpSch) {
+                    ibims403bdto.setScxDcd("04"); // 일정구분코드
+                    retList.add(ibims403bdto);
+                };
+                ret.setIntrtPlanList(intrRdmpSch);
+            } else if ( "01".equals(scxDcd) ) {
+                List<IBIMS403BDTO> excSch = ibims403bMp.getExcSchedule(inTb06015svo);
 
-            ret.setExcSchList(excSch);
+                ret.setExcSchList(excSch);
+            }
+
+        } catch (Exception e) {
+            log.debug("종목코드 내역이 존재하지 않습니다.", e);
         }
 
         return ret;

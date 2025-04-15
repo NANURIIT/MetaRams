@@ -430,14 +430,16 @@ const TB07080Sjs = (function () {
     ) {
       Swal.fire({
         icon: "warning",
-        text: "삭제하실 행을 선택해주세요",
+        title: "Warning!",
+        text: "삭제하실 행을 선택해주세요.",
         confirmButtonText: "확인",
       });
       TB07080S_rowData = dummyData;
     } else if (TB07080S_rowData != dummyData) {
       Swal.fire({
         icon: "warning",
-        text: "데이터가 삭제됩니다",
+        title: "Warning!",
+        text: "데이터가 삭제됩니다.",
         confirmButtonText: "확인",
         denyButtonText: "아니오",
         showDenyButton: true,
@@ -485,7 +487,8 @@ const TB07080Sjs = (function () {
         if (data[0] === undefined) {
           Swal.fire({
             icon: "warning",
-            text: "실행순번이 없는 종목입니다. 해당 종목의 실행순번을 업로드하고 다시 시도해주세요.",
+            title: "Warning!",
+            html: `실행순번이 없는 종목입니다.<br>해당 종목의 실행순번을 업로드하고 다시 시도해주세요.`,
             confirmButtonText: "확인",
           });
           TB07080S_inputReset();
@@ -701,14 +704,16 @@ const TB07080Sjs = (function () {
     if (!$("#TB07080S_prdtCd").val()) {
       Swal.fire({
         icon: "warning",
-        text: "종목코드를 입력해주세요!",
+        title: "Warning!",
+        text: "종목코드를 입력해주세요.",
         confirmButtonText: "확인",
       });
       return;
     } else if (!$("#TB07080S_excSn").val()) {
       Swal.fire({
         icon: "warning",
-        text: "실행순번을 지정해주세요!",
+        title: "Warning!",
+        text: "실행순번을 지정해주세요.",
         confirmButtonText: "확인",
       });
       return;
@@ -720,6 +725,7 @@ const TB07080Sjs = (function () {
     if (excResult === 2 || intrtResult === 2) {
       Swal.fire({
         icon: "warning",
+        title: "Warning!",
         text: "조회된 데이터가 없습니다",
         confirmButtonText: "확인",
       });
@@ -727,7 +733,8 @@ const TB07080Sjs = (function () {
     } else if (excResult === 0 && intrtResult === 0) {
       Swal.fire({
         icon: "error",
-        text: "정보조회 실패!",
+        title: "Error!",
+        text: "조회에 실패하였습니다.",
         confirmButtonText: "확인",
       });
       TB07080S_inputReset();
@@ -912,6 +919,7 @@ const TB07080Sjs = (function () {
     if (!$("#TB07080S_prdtCd").val()) {
       Swal.fire({
         icon: "warning",
+        title: "Warning!",
         text: "종목코드를 입력해주세요!",
         confirmButtonText: "확인",
       });
@@ -919,6 +927,7 @@ const TB07080Sjs = (function () {
     } else if (!$("#TB07080S_prdtNm").val()) {
       Swal.fire({
         icon: "warning",
+        title: "Warning!",
         text: "상품명을 입력해주세요!",
         confirmButtonText: "확인",
       });
@@ -926,6 +935,7 @@ const TB07080Sjs = (function () {
     } else if (!$("#TB07080S_excSn").val()) {
       Swal.fire({
         icon: "warning",
+        title: "Warning!",
         text: "실행순번을 지정해주세요!",
         confirmButtonText: "확인",
       });
@@ -933,14 +943,16 @@ const TB07080Sjs = (function () {
     } else if (excResult === -1 || intrtResult === -1) {
       Swal.fire({
         icon: "error",
-        text: "저장실패!",
+        title: "Error!",
+        text: "저장에 실패하였습니다.",
         confirmButtonText: "확인",
       });
       return;
     } else {
       Swal.fire({
         icon: "success",
-        text: "저장성공!",
+        title: "Success!",
+        text: "저장이 완료됐습니다.",
         confirmButtonText: "확인",
       });
     }
@@ -975,13 +987,15 @@ const TB07080Sjs = (function () {
         if (data) {
           Swal.fire({
             icon: "success",
-            text: "삭제성공!",
+            title: "Success!",
+            text: "삭제가 완료됐습니다.",
             confirmButtonText: "확인",
           });
         } else {
           Swal.fire({
             icon: "warning",
-            text: "삭제실패!",
+            title: "Warning!",
+            text: "삭제에 실패하였습니다.",
             confirmButtonText: "확인",
           });
         }
@@ -989,7 +1003,8 @@ const TB07080Sjs = (function () {
       error: function () {
         Swal.fire({
           icon: "error",
-          text: "에러!",
+          title: "Error!",
+          text: "오류가 발생하였습니다.",
           confirmButtonText: "확인",
         });
       },

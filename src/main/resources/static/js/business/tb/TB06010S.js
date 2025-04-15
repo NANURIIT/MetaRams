@@ -527,6 +527,8 @@ const TB06010Sjs = (function(){
 		$('#TB06010S_prdtCd').val('');
 		$('#TB06010S_prdtNm').val('');
 		$('#TB06010S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
+		$('#TB06010S_delPrdt').attr('disabled', true); 
+
 		$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", true);
 		$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", true);
 		loginUserSet();

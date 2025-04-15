@@ -766,4 +766,40 @@
                , #{guid}                                  /*guid */
               )
     </insert>
+
+    <select id="getBfScdhl" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+      SELECT 
+          PRDT_CD,
+          EXC_SN,
+          SCX_DCD,
+          RDMP_TMRD,
+          PRAR_DT,
+          TRGT_AMT,
+          PRAR_PRNA,
+          STRT_DT,
+          END_DT,
+          RDMP_PRAR_INTR,
+          'N' AS PRCS_CPLT_YN,
+          NULL AS PRCS_DT,
+          NULL AS PRCS_AMT,
+          NULL AS PRCS_INTR_AMT,
+          ACTS_CD,
+          APLY_IRT,
+          OVDU_INTR_RT,
+          TRCH_DCD,
+          TR_SN,
+          #{hndEmpno} AS HND_EMPNO
+      FROM IBIMS403B 
+      WHERE PRDT_CD = #{prdtCd}
+      AND EXC_SN = #{excSn}
+      AND TR_SN = #{hgrkTrSn}
+    </select>
+
+    <delete  id="deleteBfIBIMS403B" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
+          DELETE 
+            FROM IBIMS403B
+           WHERE PRDT_CD   = #{prdtCd}     /* 종목코드 */
+             AND EXC_SN    = #{excSn}      /* 실행일련번호 */
+             AND TR_SN     = #{hgrkTrSn}
+     </delete>
 </mapper>

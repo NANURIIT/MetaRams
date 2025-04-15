@@ -29,7 +29,7 @@
 						<!-- row1 -->
 						<div class="row form-group form-inline text-right">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right">종목코드</label>
+								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목코드</label>
 								<div class="col-sm-5">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07010S_prdtCd">
@@ -224,7 +224,7 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">실행금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07010S_dealExcAmt" value="0" onkeyup="inputNumberFormat(this), TB07010Sjs.calAcbkAmt(), TB07010Sjs.calKrwTrsl();">
+											<input type="text" class="form-control text-right" id="TB07010S_dealExcAmt" value="0" onkeyup="TB07010Sjs.calAcbkAmt(), TB07010Sjs.calKrwTrsl();">
 										</div>
 										<label class="col-sm-1 col-form-label text-right">이체방법</label>
 										<div class="col-sm-3 input-group">
@@ -244,7 +244,7 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">만기상환금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07010S_expRdmpAmt" value="0" oninput="inputNumberFormat(this);">
+											<input type="text" class="form-control text-right" id="TB07010S_expRdmpAmt" value="0">
 										</div>
 										<label class="col-sm-1 col-form-label text-right">금융기관</label>
 										<div class="col-sm-3 input-group">
@@ -278,7 +278,7 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">계좌번호</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-left" id="TB07010S_brkgAcno" oninput="inputOnlyNumberFormat(this);" maxlength="14">
+											<input type="text" class="form-control text-left" id="TB07010S_brkgAcno" oninput="inputOnlyNumberFormat(this);" maxlength="14" placeholder="(-) 없이 입력해주세요.">
 										</div>
 									</div>
 								</div>
@@ -294,7 +294,7 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">원화환산실행금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07010S_krwTrslExcAmt" value="0" oninput="inputNumberFormat(this);">
+											<input type="text" class="form-control text-right" id="TB07010S_krwTrslExcAmt" value="0">
 										</div>
 										<label class="col-sm-1 col-form-label text-right">은행부실점명</label>
 										<div class="col-sm-3 input-group">
@@ -319,7 +319,7 @@
 										</div>
 										<label class="col-sm-1 col-form-label text-right">원화환산이자금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07010S_krwTrslIntAmt" value="0" oninput="inputNumberFormat(this);">
+											<input type="text" class="form-control text-right" id="TB07010S_krwTrslIntAmt" value="0">
 										</div>
 										<label class="col-sm-1 col-form-label text-right">예금주</label>
 										<div class="col-sm-3 input-group">
@@ -333,12 +333,12 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1 col-form-label text-right">선취이자</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07010S_prcsIntrAmt" value="0" oninput="inputNumberFormat(this); TB07010Sjs.calAcbkAmt();" disabled>
+											<input type="text" class="form-control text-right" id="TB07010S_prcsIntrAmt" value="0" oninput="TB07010Sjs.calAcbkAmt();" disabled>
 											<button type="button" class="btn btn-default mg-l5" id="btnIntr" onclick="TB07010Sjs.inqIntr();" disabled>이자조회</button>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">수수료</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07010S_feeAmt" value="0" oninput="inputNumberFormat(this); TB07010Sjs.calAcbkAmt(); TB07010Sjs.feeReset();">
+											<input type="text" class="form-control text-right" id="TB07010S_feeAmt" value="0" oninput="TB07010Sjs.calAcbkAmt(); TB07010Sjs.feeReset();">
 										</div>
 										<label class="col-sm-1 col-form-label text-right">담당자</label>
 										<div class="col-sm-3 input-group">
@@ -406,7 +406,7 @@
 											<label class="col-sm-5 col-form-label">※ 실행일자 이전 수수료수납 대상만 조회됩니다. (수납완료건은 제외)</label>
 										</div>
 										<div class="text-right" style="padding-right:5px;">
-											<button class="btn btn-success" type="button" id="btnSave" onclick="TB07010Sjs.save();"><i class="fa fa-check"></i>&nbsp;실행</button>
+											<button class="btn btn-success" type="button" id="TB07010S_btnSave" onclick="TB07010Sjs.save();"><i class="fa fa-check"></i>&nbsp;실행</button>
 										</div>
 			                        </div>
 			                    </div>

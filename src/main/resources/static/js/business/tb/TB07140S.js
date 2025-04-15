@@ -790,25 +790,30 @@ const TB07140Sjs = (function () {
         inputClear();
       },
       success: function (data) {
-        if (data) {
+        if (data.length > 0) {
           let gridList = $("#TB07140S_colModel").pqGrid("instance");
           gridList.setData(data);
           gridList.getData();
-        } else {
+        } 
+        else {
           result = -1;
+          Swal.fire({
+            icon: "warning"
+            , title: 'Warning!'
+            , text: "조회된 내역이 없습니다!"
+          });
         }
       },
       error: function () {
         result = -2;
+        Swal.fire({
+          icon: "error"
+          , title: "Error!"
+          , text: "오류 발생!"
+        });
       },
     });
-
-    if (result < 0) {
-      Swal.fire({
-        icon: result === -1 ? "warning" : result === -2 ? "error" : "",
-        text: "정보가 없습니다!",
-      });
-    }
+    
     return result;
   }
 

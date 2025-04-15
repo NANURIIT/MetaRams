@@ -4,6 +4,7 @@ const TB07150Sjs = (function () {
   let intrtInf_2;
   let initVal = {}; // 초기값
   let fltObj = {}; // filter selectBox
+  let _tempObj = {}; // 종목코드 임시로 저장
 
   $(document).ready(function () {
     getSels(); // selectBox
@@ -635,8 +636,8 @@ const TB07150Sjs = (function () {
           $("#TB07150S_excSn").attr("disabled", true);
 
           var option = {};
-          option.title = "Error";
-          option.type = "error";
+          option.title = "Warning!";
+          option.type = "warning";
 
           var msg =
             "실행순번이 없는 종목입니다. 해당 종목의 실행순번을 업로드하고 다시 시도해주세요.";
@@ -657,8 +658,8 @@ const TB07150Sjs = (function () {
 
     if (isEmpty(prdtCd)) {
       var option = {};
-      option.title = "Error";
-      option.type = "error";
+      option.title = "Warning!";
+      option.type = "warning";
 
       option.text = "종목코드를 입력한 후 다시 시도해주세요.";
       openPopup(option);
@@ -676,8 +677,25 @@ const TB07150Sjs = (function () {
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(param),
       dataType: "json",
+      beforeSend: function (xhr) {
+        _tempObj.prdtCd = $('#TB07150S_prdtCd').val()
+        _tempObj.prdtNm = $('#TB07150S_prdtNm').val()
+        reset();
+        $('#TB07150S_prdtCd').val(_tempObj.prdtCd)
+        $('#TB07150S_prdtNm').val(_tempObj.prdtNm)
+        _tempObj = {}
+      },
       success: function (data) {
-        //console.log(JSON.stringify(data));
+        console.log("getCndChngLdgInf 이후  ::: ", data);
+        if ( !data.prdtCd ) {
+          Swal.fire({
+            icon: 'warning'
+            , title: "Warning!"
+            , text: "조회된 내역이 없습니다."
+            , confirmButtonText: "확인"
+          });
+          return;
+        }
 
         // 변경 전 원장정보
         $("#TB07150S_trOthrDscmNo").val(data.trOthrDscmNo); //거래상대식별번호
@@ -750,8 +768,8 @@ const TB07150Sjs = (function () {
     //조건변경
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning!";
+    option.type = "warning";
 
     var rqsKndCd = $("#TB07150S_R023_1").val(); //신청종류
     var prdtCd = $("#TB07150S_prdtCd").val(); //종목코드
@@ -861,8 +879,8 @@ const TB07150Sjs = (function () {
   function reset() {
     $(`input[id^="TB07150S"]`).each((index, element) => {
       const $this = $(element);
-      console.log($this);
-      console.log(initVal[$this.attr("id")]);
+      // console.log($this);
+      // console.log(initVal[$this.attr("id")]);
 
       $this.val(initVal[$this.attr("id")]);
     });
@@ -891,6 +909,11 @@ const TB07150Sjs = (function () {
     $("#TB07150S_E011_2").prop("disabled", true); //이자선후취구분
     $("#TB07150S_E013_2").prop("disabled", true); //이자계산방법
     $("#TB07150S_ovduIntrRt_chng").prop("disabled", true); //연체이자율
+
+    $('#TB07150S_E020')[0].selectedIndex = 0; // 상환방법
+    $('#TB07150S_I005')[0].selectedIndex = 0; // 한도/개별
+    $('#TB07150S_I005_2')[0].selectedIndex = 0; // 한도/개별
+    $('#TB07150S_E011')[0].selectedIndex = 0; // 이자선후급구분
 
     $("#trOthrSrchBtn").prop("disabled", true);
 

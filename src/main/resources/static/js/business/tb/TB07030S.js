@@ -14,6 +14,8 @@ const TB07030Sjs = (function () {
   });
 
   function onload() {
+    inpMsk() // inputmask
+
     $("#TB07030S_prarDt").val(getToday());
     /********************************************************************
      * R006 회수구분코드 RCLM_DCD
@@ -30,9 +32,9 @@ const TB07030Sjs = (function () {
     pqGrid();
     resetDd();
 
-    $("input").on("focus", function () {
-      $(this).select();
-    });
+    // $("input").on("focus", function () {
+    //   $(this).select();
+    // });
 
     getDealInfoFromWF();
   }
@@ -503,7 +505,7 @@ const TB07030Sjs = (function () {
           if (data.length > 0) {
             grdRdmpTrgt.setData(data);
           } else {
-            sf(1, "warning", `조회된 내역이 없습니다.`);
+            sf(1, "warning", `조회된 내역이 없습니다.`, "Warning!");
             grdRdmpTrgt.setData([]);
             grdRdmpTrgt.refreshDataAndView();
           }
@@ -703,7 +705,7 @@ const TB07030Sjs = (function () {
         success: function (data) {
           console.log(data);
           if (data > 0) {
-            sf(1, "success", `상환이 완료됐습니다.`, (result) => {
+            sf(1, "success", `상환이 완료됐습니다.`, "Success!", (result) => {
               if (result.isConfirmed) {
                 srch();
               }
@@ -718,7 +720,7 @@ const TB07030Sjs = (function () {
             //     }
             // });
           } else {
-            sf(1, "error", `상환에 실패하였습니다.`);
+            sf(1, "error", `상환에 실패하였습니다.`, "Error!");
             return;
           }
         },
@@ -751,12 +753,12 @@ const TB07030Sjs = (function () {
     let prarDt = unformatDate($("#TB07030S_prarDt").val()); // 상환일자
 
     if (!prdtCd) {
-      sf(1, "warning", "종목코드를 입력해주세요.");
+      sf(1, "warning", "종목코드를 입력해주세요.", "Warning!");
       return { isValid: false };
     }
 
     if (!prarDt) {
-      sf(1, "warning", "상환일자를 입력해주세요.");
+      sf(1, "warning", "상환일자를 입력해주세요.", "Warning!");
       return { isValid: false };
     }
 
@@ -770,7 +772,7 @@ const TB07030Sjs = (function () {
       // console.log("val ::::: ", obj)
       // console.log(chkVal);
       if (chkVal) {
-        sf(1, "warning", `상환 항목이 비어있습니다.<br>확인해주세요.`);
+        sf(1, "warning", `상환 항목이 비어있습니다.<br>확인해주세요.`, "Warning!");
         return { isValid: false };
       }
     }
@@ -783,7 +785,7 @@ const TB07030Sjs = (function () {
       const hasCheckedItem = data.some((item) => item.chk);
 
       if (!hasCheckedItem) {
-        sf(1, "warning", `상환대상내역에 선택된 항목이 없습니다.`);
+        sf(1, "warning", `상환대상내역에 선택된 항목이 없습니다.`, "Warning!");
         return { isValid: false };
       }
     }
@@ -979,7 +981,9 @@ const TB07030Sjs = (function () {
         // } else {
         // 	tot = parseFloat(tot.toPrecision(15));  // 지수 표기법을 방지하고, 필요 시 소수점 자릿수를 줄임
         // }
-
+        console.log("dealCashAmt ::: ", dealCashAmt)
+        console.log("dealAltnAmt ::: ", dealAltnAmt)
+        console.log("tot ::: ", tot) 
         $("#TB07030S_acptPtclSmtlAmt").val(comma(tot)); // 수납내역합계
         break;
 
@@ -1095,15 +1099,12 @@ const TB07030Sjs = (function () {
          */
         let _rdmpTrgtPrna = Number(uncomma($("#TB07030S_rdmpTrgtPrna").val())); // 상환대상원금
         let _nrmlIntrAmt = Number(uncomma($("#TB07030S_nrmlIntrAmt").val())); // 정상이자
-        let _crdtGrntOvduIntAmt = Number(
-          uncomma($("#TB07030S_crdtGrntOvduIntAmt").val())
-        ); // 연체이자
+        let _crdtGrntOvduIntAmt = Number(uncomma($("#TB07030S_crdtGrntOvduIntAmt").val())); // 연체이자
         let _dealMrdpPrca = Number(uncomma($("#TB07030S_dealMrdpPrca").val())); // 중도상환원금
         let _mrdpFeeAmt = Number(uncomma($("#TB07030S_mrdpFeeAmt").val())); // 중도상환수수료
         let _exmptSmmAmt = Number(uncomma($("#TB07030S_exmptSmmAmt").val())); // 면제금액합계
-        let _rdmpPrnaSmmAmt = Number(
-          uncomma($("#TB07030S_rdmpPrnaSmmAmt").val())
-        ); // 상환대상총금액
+        let _rdmpPrnaSmmAmt = Number(uncomma($("#TB07030S_rdmpPrnaSmmAmt").val())); // 상환대상총금액
+        let _rcvbIntrSmmAmt = Number(uncomma($('#TB07030S_rcvbIntrSmmAmt').val())); // 미수이자
 
         let obj = {
           _rdmpTrgtPrna,
@@ -1113,34 +1114,41 @@ const TB07030Sjs = (function () {
           _mrdpFeeAmt,
           _exmptSmmAmt,
           _rdmpPrnaSmmAmt,
+          _rcvbIntrSmmAmt,
         };
-
-        if (isNaN(aplcExchR)) {
+        
+        if (isNaN(aplcExchR)) { // 고시환율
           aplcExchR = $("#TB07030S_aplcExchR").val("1.00");
 
           Object.keys(obj).forEach((key) => {
             obj[key] *= stdrExrt;
             // console.log(obj[key]);
           });
-          $("#TB07030S_KRW_rdmpTrgtPrna").val(
-            comma(Math.round(obj._rdmpTrgtPrna))
-          ); // 상환대상원금
-          $("#TB07030S_KRW_nrmlIntrAmt").val(
-            comma(Math.round(obj._nrmlIntrAmt))
-          ); // 정상이자
-          $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(
-            comma(Math.round(obj._crdtGrntOvduIntAmt))
-          ); // 연체이자
-          $("#TB07030S_KRW_dealMrdpPrca").val(
-            comma(Math.round(obj._dealMrdpPrca))
-          ); // 중도상환원금
-          $("#TB07030S_KRW_mrdpFeeAmt").val(comma(Math.round(obj._mrdpFeeAmt))); // 중도상환수수료
-          $("#TB07030S_KRW_exmptSmmAmt").val(
-            comma(Math.round(obj._exmptSmmAmt))
-          ); // 면제금액합계
-          $("#TB07030S_KRW_rdmpPrnaSmmAmt").val(
-            comma(Math.round(obj._rdmpPrnaSmmAmt))
-          ); // 상환대상총금액
+          setExch(obj);
+          // $("#TB07030S_KRW_rdmpTrgtPrna").val(        // 상환대상원금
+          //   comma(Math.round(obj._rdmpTrgtPrna))
+          // ); 
+          // $("#TB07030S_KRW_nrmlIntrAmt").val(         // 정상이자
+          //   comma(Math.round(obj._nrmlIntrAmt))
+          // ); 
+          // $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(  // 연체이자
+          //   comma(Math.round(obj._crdtGrntOvduIntAmt))
+          // ); 
+          // $("#TB07030S_KRW_dealMrdpPrca").val(        // 중도상환원금
+          //   comma(Math.round(obj._dealMrdpPrca))
+          // );
+          // $("#TB07030S_KRW_mrdpFeeAmt").val(          // 중도상환수수료
+          //   comma(Math.round(obj._mrdpFeeAmt))
+          // );
+          // $("#TB07030S_KRW_exmptSmmAmt").val(         // 면제금액합계
+          //   comma(Math.round(obj._exmptSmmAmt))
+          // );
+          // $("#TB07030S_KRW_rdmpPrnaSmmAmt").val(      // 상환대상총금액
+          //   comma(Math.round(obj._rdmpPrnaSmmAmt))
+          // );
+          // $('#TB07030S_KRW_rcvbIntrSmmAmt').val(          // 미수이자
+          //   comma(Math.round(obj._rcvbIntrSmmAmt))
+          // ); 
           // $('#TB07030S_KRW_rdmpTrgtPrna').val(comma(0)); // 상환대상원금
           // $('#TB07030S_KRW_nrmlIntrAmt').val(comma(0)); // 정상이자
           // $('#TB07030S_KRW_crdtGrntOvduIntAmt').val(0); // 연체이자
@@ -1148,36 +1156,45 @@ const TB07030Sjs = (function () {
           // $('#TB07030S_KRW_mrdpFeeAmt').val(comma(0)); // 중도상환수수료
           // $('#TB07030S_KRW_exmptSmmAmt').val(comma(0)); // 면제금액합계
           // $('#TB07030S_KRW_rdmpPrnaSmmAmt').val(comma(0)); // 상환대상총금액
-        } else {
+        } else {  // 적용환율
           Object.keys(obj).forEach((key) => {
             obj[key] *= aplcExchR;
             // console.log(obj[key]);
           });
-          $("#TB07030S_KRW_rdmpTrgtPrna").val(
-            comma(Math.round(obj._rdmpTrgtPrna))
-          ); // 상환대상원금
-          $("#TB07030S_KRW_nrmlIntrAmt").val(
-            comma(Math.round(obj._nrmlIntrAmt))
-          ); // 정상이자
-          $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(
-            comma(Math.round(obj._crdtGrntOvduIntAmt))
-          ); // 연체이자
-          $("#TB07030S_KRW_dealMrdpPrca").val(
-            comma(Math.round(obj._dealMrdpPrca))
-          ); // 중도상환원금
-          $("#TB07030S_KRW_mrdpFeeAmt").val(comma(Math.round(obj._mrdpFeeAmt))); // 중도상환수수료
-          $("#TB07030S_KRW_exmptSmmAmt").val(
-            comma(Math.round(obj._exmptSmmAmt))
-          ); // 면제금액합계
-          $("#TB07030S_KRW_rdmpPrnaSmmAmt").val(
-            comma(Math.round(obj._rdmpPrnaSmmAmt))
-          ); // 상환대상총금액
+          setExch(obj);
         }
-        // 미수이자*
         break;
       default:
         break;
     }
+  }
+
+  // 실행별상환대상금액 [원화환산금액]
+  function setExch(obj) {
+    $("#TB07030S_KRW_rdmpTrgtPrna").val(        // 상환대상원금
+      comma(Math.round(obj._rdmpTrgtPrna))
+    );
+    $("#TB07030S_KRW_nrmlIntrAmt").val(         // 정상이자
+      comma(Math.round(obj._nrmlIntrAmt))
+    );
+    $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(  // 연체이자
+      comma(Math.round(obj._crdtGrntOvduIntAmt))
+    );
+    $("#TB07030S_KRW_dealMrdpPrca").val(        // 중도상환원금
+      comma(Math.round(obj._dealMrdpPrca))
+    );
+    $("#TB07030S_KRW_mrdpFeeAmt").val(          // 중도상환수수료
+      comma(Math.round(obj._mrdpFeeAmt))
+    );
+    $("#TB07030S_KRW_exmptSmmAmt").val(         // 면제금액합계
+      comma(Math.round(obj._exmptSmmAmt))
+    );
+    $("#TB07030S_KRW_rdmpPrnaSmmAmt").val(      // 상환대상총금액
+      comma(Math.round(obj._rdmpPrnaSmmAmt))
+    );
+    $('#TB07030S_KRW_rcvbIntrSmmAmt').val(      // 미수이자
+      comma(Math.round(obj._rcvbIntrSmmAmt))
+    ); 
   }
 
   /********************************************************************
@@ -1300,11 +1317,12 @@ const TB07030Sjs = (function () {
   }
 
   // swal.fire
-  function sf(flag, icon, html, callback = () => {}) {
+  function sf(flag, icon, html, title = "", callback = () => {}) {
     if (flag === 1) {
       Swal.fire({
         icon: `${icon}`,
         html: `${html}`,
+        title: `${title}`,
         confirmButtonText: "확인",
       }).then(callback);
     }
@@ -1313,9 +1331,44 @@ const TB07030Sjs = (function () {
       Swal.fire({
         icon: `${icon}`,
         html: `${html}를(을) 확인해주세요.`,
+        title: `${title}`,
         confirmButtonText: "확인",
       }).then(callback);
     }
+  }
+
+  // inputmask
+  function inpMsk() {
+    /********************************************************************
+     * 상환대상원금 TB07030S_rdmpTrgtPrna
+     * 상환대상원금(원화환산금액) TB07030S_KRW_rdmpTrgtPrna
+     * 정상이자 TB07030S_nrmlIntrAmt
+     * 정상이자(원화환산금액) TB07030S_KRW_nrmlIntrAmt
+     * 연체이자 TB07030S_crdtGrntOvduIntAmt
+     * 연체이자(원화환산금액) TB07030S_KRW_crdtGrntOvduIntAmt
+     * 미수이자 TB07030S_rcvbIntrSmmAmt
+     * 미수이자(원화환산금액) TB07030S_KRW_rcvbIntrSmmAmt
+     * 면제금액합계 TB07030S_exmptSmmAmt
+     * 면제금액합계(원화환산금액) TB07030S_KRW_exmptSmmAmt
+     * 현금입금 TB07030S_dealCashAmt
+     * 은행입금 TB07030S_dealAltnAmt
+     * 수납내역합계 TB07030S_acptPtclSmtlAmt
+     *******************************************************************/
+    selectorNumberFormater($(`
+      #TB07030S_rdmpTrgtPrna,
+      #TB07030S_KRW_rdmpTrgtPrna,
+      #TB07030S_nrmlIntrAmt,
+      #TB07030S_KRW_nrmlIntrAmt,
+      #TB07030S_crdtGrntOvduIntAmt,
+      #TB07030S_KRW_crdtGrntOvduIntAmt,
+      #TB07030S_rcvbIntrSmmAmt,
+      #TB07030S_KRW_rcvbIntrSmmAmt,
+      #TB07030S_exmptSmmAmt,
+      #TB07030S_KRW_exmptSmmAmt,
+      #TB07030S_dealCashAmt,
+      #TB07030S_dealAltnAmt,
+      #TB07030S_acptPtclSmtlAmt
+    `));
   }
 
   /*******************************************************************

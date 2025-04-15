@@ -121,11 +121,14 @@ public class TB07010ServiceImpl implements TB07010Service {
 	@Override
 	public IBIMS401BVO getDetailInfo(IBIMS401BVO paramData) {
 
-		IBIMS401BVO rtnObj;
+		IBIMS401BVO rtnObj = new IBIMS401BVO();
 
 		/* 여신기본 조회 */
 		rtnObj = ibims401BMapper.getIBIMS401BInfo(paramData);
 
+		if (rtnObj == null) {
+			return rtnObj = new IBIMS401BVO();
+		}
 		/* 여신실행기본 조회 */
 		//rtnObj.setExcInfo(ibims402BMapper.getEprzCrdlExcInfo(paramData.getPrdtCd()));
 		/* 수수료수납내역 */

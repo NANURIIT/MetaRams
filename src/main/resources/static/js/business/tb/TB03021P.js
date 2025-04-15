@@ -264,9 +264,9 @@ function setDealInfo(e) {
     TB05040Sjs.getDealList();
   }
 
-  // if (prefix == "TB03040S") {
-  //   TB03040Sjs.ibSpecSearch();
-  // }
+  if (prefix == "TB03040S") {
+    resetPGgrids("TB03040S");
+  }
 
   if (prefix == "TB04020S") {
     TB04020Sjs.checkDealSearch();
@@ -288,6 +288,9 @@ function setDealInfo(e) {
   }
   if (prefix == "TB08036S") {
     TB08036Sjs.getDealInfoTB08036S();
+  }
+  if (prefix == "TB09070S" || prefix == "TB09080S") {
+    resetPGgrids(prefix)
   }
 
   modalClose_TB03021P();

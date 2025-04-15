@@ -54,7 +54,7 @@ public class TB07080APIController {
 	}
 
     @PostMapping(value = "/updateIntrtData")
-	public int updateListIBIMS404B(@RequestBody List<IBIMS404BDTO> paramData) {
+	public int updateListIBIMS404B(@RequestBody IBIMS404BVO paramData) {
 		return tb07080service.updateListIBIMS404B(paramData);
 	}
 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/business/tb/FileUploadPopup.js}"></script>
+</th:block>
+
+<th:block th:fragment="FileUploadPopup">
+	<!-- modal -->
+	<div id="modal-FileUploadPopup" class="modal fade" role="dialog" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">첨부파일구분코드 선택</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB03021P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<div class="row form-group form-inline text-right">
+						<label class="control-label col-sm-5">
+							첨부파일구분코드
+						</label>
+						<div class="input-group col-sm-7">
+							<select class="form-control" id="FileUp_atchFleDcd">
+								<option value="">선택</option>
+							</select>
+						</div>
+						<div class="col-sm-12 text-right mt-2">
+							<button class="btn btn-success" onclick="atchFleDcdChk();">
+								<i class="fa fa-search"></i>&nbsp;실행
+							</button>
+						</div>
+					</div>
+				</div>
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>

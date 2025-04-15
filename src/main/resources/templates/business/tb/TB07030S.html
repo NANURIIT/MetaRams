@@ -24,7 +24,7 @@
 						<!-- row1 -->
 						<div class="row form-group form-inline text-right mb-1">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right">종목코드</label>
+								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목코드</label>
 								<div class="col-sm-3">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07030S_prdtCd">
@@ -52,7 +52,7 @@
 						<!-- row2 -->
 						<div class="row form-group form-inline text-right mb-2">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right">기산일자(상환일자)</label>
+								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>기산일자<br>(상환일자)</label>
 								<div class="col-sm-3">
 									<span class="input-group date">
 										<input type="text" class="form-control" value="" id="TB07030S_prarDt"
@@ -192,7 +192,7 @@
 											<div class="col-sm-12 form-group">
 												<label class="col-sm-4">상환대상원금</label>
 												<div class="col-sm-8 input-group">
-													<input type="text" class="form-control text-right" value="0" id="TB07030S_rdmpTrgtPrna" oninput="inputNumberFormat(this);" readonly>
+													<input type="text" class="form-control text-right" value="0" id="TB07030S_rdmpTrgtPrna" readonly>
 													<input type="text" class="form-control text-right mg-l5" value="0" id="TB07030S_KRW_rdmpTrgtPrna" readonly>
 													<input type="hidden" id="TB07030S_orgRdmpTrgtPrna">
 												</div>
@@ -203,7 +203,7 @@
 											<div class="col-sm-12 form-group">
 												<label class="col-sm-4">정상이자</label>
 												<div class="col-sm-8 input-group">
-													<input type="text" class="form-control text-right" id="TB07030S_nrmlIntrAmt" value="0" oninput="inputNumberFormat(this); calculator('rdmpTrgtTotAmt');" readonly>
+													<input type="text" class="form-control text-right" id="TB07030S_nrmlIntrAmt" value="0" oninput="calculator('rdmpTrgtTotAmt');" readonly>
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_nrmlIntrAmt" value="0" readonly>
 													<input type="hidden" id="TB07030S_orgNrmlIntrAmt">
 												</div>
@@ -214,7 +214,7 @@
 											<div class="col-sm-12 form-group">
 												<label class="col-sm-4">연체이자</label>
 												<div class="col-sm-8 input-group">
-													<input type="text" class="form-control text-right" id="TB07030S_crdtGrntOvduIntAmt" value="0" oninput="inputNumberFormat(this); calculator('rdmpTrgtTotAmt');" readonly>
+													<input type="text" class="form-control text-right" id="TB07030S_crdtGrntOvduIntAmt" value="0" oninput="calculator('rdmpTrgtTotAmt');" readonly>
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_crdtGrntOvduIntAmt" value="0" readonly>
 													<input type="hidden" id="TB07030S_orgCrdtGrntOvduIntAmt">
 												</div>
@@ -225,7 +225,7 @@
 											<div class="col-sm-12 form-group">
 												<label class="col-sm-4">중도상환원금</label>
 												<div class="col-sm-8 input-group">
-													<input type="text" class="form-control text-right" id="TB07030S_dealMrdpPrca" value="0" oninput="inputNumberFormat(this)" readonly>
+													<input type="text" class="form-control text-right" id="TB07030S_dealMrdpPrca" value="0" readonly>
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_dealMrdpPrca" value="0" readonly>
 													<input type="hidden" id="TB07030S_orgDealMrdpPrca">
 												</div>
@@ -236,7 +236,7 @@
 											<div class="col-sm-12 form-group">
 												<label class="col-sm-4">중도상환수수료</label>
 												<div class="col-sm-8 input-group">
-													<input type="text" class="form-control text-right" id="TB07030S_mrdpFeeAmt" value="0" oninput="inputNumberFormat(this)" readonly>
+													<input type="text" class="form-control text-right" id="TB07030S_mrdpFeeAmt" value="0" readonly>
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_mrdpFeeAmt" value="0" readonly >
 													<input type="hidden" id="TB07030S_orgMrdpFeeAmt">
 												</div>
@@ -247,7 +247,7 @@
 											<div class="col-sm-12 form-group">
 												<label class="col-sm-4">미수이자합계</label>
 												<div class="col-sm-8 input-group">
-													<input type="text" class="form-control text-right" id="TB07030S_rcvbIntrSmmAmt" value="0" oninput="inputNumberFormat(this)">
+													<input type="text" class="form-control text-right" id="TB07030S_rcvbIntrSmmAmt" value="0" oninput="TB07030Sjs.calculator('rdmpPrnaSmmAmt'); TB07030Sjs.calculator('aplcExchR');">
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_rcvbIntrSmmAmt" value="0">
 												</div>
 											</div>
@@ -257,7 +257,7 @@
 											<div class="col-sm-12 form-group">
 												<label class="col-sm-4">면제금액합계</label>
 												<div class="col-sm-8 input-group">
-													<input type="text" class="form-control text-right" id="TB07030S_exmptSmmAmt" value="0" oninput="inputNumberFormat(this)">
+													<input type="text" class="form-control text-right" id="TB07030S_exmptSmmAmt" value="0" oninput="TB07030Sjs.calculator('aplcExchR');">
 													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_exmptSmmAmt" value="0">
 												</div>
 											</div>
@@ -267,8 +267,8 @@
 											<div class="col-sm-12 form-group">
 												<label class="col-sm-4">상환대상총금액</label>
 												<div class="col-sm-8 input-group">
-													<input type="text" class="form-control text-right" id="TB07030S_rdmpPrnaSmmAmt" readonly>
-													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_rdmpPrnaSmmAmt" readonly>
+													<input type="text" class="form-control text-right" id="TB07030S_rdmpPrnaSmmAmt" value="0" readonly>
+													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_rdmpPrnaSmmAmt" value="0" readonly>
 												</div>
 											</div>
 										</div>
@@ -331,7 +331,7 @@
 										</div> -->
 										<label class="col-sm-1 col-form-label text-right">현금입금</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07030S_dealCashAmt" value="0" oninput="inputNumberFormat(this); TB07030Sjs.calculator('acptPtclSmtlAmt');">
+											<input type="text" class="form-control text-right" id="TB07030S_dealCashAmt" value="0" onkeyup="TB07030Sjs.calculator('acptPtclSmtlAmt');">
 										</div>
 									</div>
 								</div>
@@ -359,7 +359,7 @@
 										</div> -->
 										<label class="col-sm-1 col-form-label text-right">은행입금</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07030S_dealAltnAmt" value="0" oninput="inputNumberFormat(this); TB07030Sjs.calculator('acptPtclSmtlAmt');">
+											<input type="text" class="form-control text-right" id="TB07030S_dealAltnAmt" value="0" onkeyup="TB07030Sjs.calculator('acptPtclSmtlAmt');">
 										</div>
 									</div>
 								</div>
@@ -397,7 +397,7 @@
 										</div> -->
 										<label class="col-sm-1 col-form-label text-right">수납내역합계</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07030S_acptPtclSmtlAmt" value="0" oninput="inputNumberFormat(this)">
+											<input type="text" class="form-control text-right" id="TB07030S_acptPtclSmtlAmt" value="0">
 										</div>
 									</div>
 								</div>

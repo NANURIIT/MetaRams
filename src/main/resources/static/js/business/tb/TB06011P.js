@@ -436,7 +436,7 @@ $(document).ready(function () {
 });
 
 /**
-	문서로드시 세팅
+  문서로드시 세팅
  */
 function TB06011P_docRdySettings() {
   TB06011P_modalShowFunction();
@@ -846,6 +846,7 @@ function TB06011P_setPrdtInfo(e) {
   if (prefix == "TB09080S" || prefix == "TB09070S") {
     $(`#${prefix}_ibDealNo`).val(ibDealNo);
     $(`#${prefix}_ibDealNm`).val(ibDealNm);
+    resetPGgrids(prefix)
   }
 
   if (prefix == "TB09100S") {
@@ -857,10 +858,41 @@ function TB06011P_setPrdtInfo(e) {
     excSnSet(e.prdtCd);
   }
 
+  if (prefix == "TB07120S") {
+    TB07120Sjs.resetDataForm();
+  }
+
+  if (prefix == "TB07140S") {
+    $("#TB07140S_dataForm").val("");
+    resetPGgrids("TB07140S");
+  }
+
   /* 0723 add */
   if (prefix === "TB07050S") {
-    TB07050Sjs.srchExcSn(e.prdtCd);
-    TB07050Sjs.srch();
+    console.log('진행상태 ::: ', e.prgSttsCd)
+    let numPrgSttsCd = Number(e.prgSttsCd);
+    if (numPrgSttsCd == 502) {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning!",
+        text: "약정 해지 된 상태입니다.",
+        confirmButtonText: "확인",
+      });
+
+      resetAll('TB07050S', TB07050Sjs.resetMore());
+      resetPGgrids("TB07050S")
+      $('#btnPlus').prop('disabled', true)
+      $('#btnMinus').prop('disabled', true)
+      $('#btnSave').prop('disabled', true)
+      $('#TB07050S_prdtCd').val(e.prdtCd)
+      $('#TB07050S_prdtNm').val(e.prdtNm)
+    } else {
+      $('#btnPlus').prop('disabled', false)
+      $('#btnMinus').prop('disabled', false)
+      $('#btnSave').prop('disabled', false)
+      TB07050Sjs.srchExcSn(e.prdtCd);
+      TB07050Sjs.srch();
+    }
   }
 
   if (prefix === "TB07150S") {
@@ -895,19 +927,37 @@ function TB06011P_setPrdtInfo(e) {
 
   /* 0726 add 대출계약 실행 */
   if (prefix === "TB07010S") {
+
+    $(pageeprzCrdlApvlAmt).val(0); // 승인금액액
     let numPrgSttsCd = Number(e.prgSttsCd);
 
     if (numPrgSttsCd < 501) {
       Swal.fire({
         icon: "warning",
+        title: "Warning!",
         text: "진행상태를 확인해주세요.",
         confirmButtonText: "확인",
       });
-      $("#TB07010S_prdtCd").val("");
-      $("#TB07010S_prdtNm").val("");
+      // $("#TB07010S_prdtCd").val("");
+      // $("#TB07010S_prdtNm").val("");
       // resetAll('TB07010S');
       TB07010Sjs.reset();
-      TB07010Sjs.feeRciv.setData([]);
+      resetPGgrids("TB07010S")
+      $('#TB07010S_prdtCd').val(e.prdtCd)
+      $('#TB07010S_prdtNm').val(e.prdtNm)
+      //TB07010Sjs.feeRciv.setData([]);
+    } else if (numPrgSttsCd == 502) {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning!",
+        text: "약정 해지 된 상태입니다.",
+        confirmButtonText: "확인",
+      });
+      TB07010Sjs.reset()
+      resetPGgrids("TB07010S")
+      $('#btnSave').prop('disabled', true)
+      $('#TB07010S_prdtCd').val(e.prdtCd)
+      $('#TB07010S_prdtNm').val(e.prdtNm)
     } else {
       TB07010Sjs.srch();
     }
@@ -937,6 +987,7 @@ function TB06011P_setPrdtInfo(e) {
   }
 
   if (prefix === "TB07070S") {
+    resetPGgrids(prefix)
     // TB07070Sjs.srch()
   }
 
@@ -969,6 +1020,18 @@ function TB06011P_setPrdtInfo(e) {
     });
   }
 
+  if (prefix === "TB07020S_srch") {
+    TB07020Sjs.inputClear();
+  }
+
+  if (prefix === "TB07040S_srch") {
+    TB07040Sjs.inputClear();
+  }
+
+  if (prefix === "TB07140S_srch") {
+    TB07140Sjs.inputClear();
+  }
+
   if (prefix === "TB08040S") {
     TB08040Sjs.srch();
   }
@@ -979,6 +1042,10 @@ function TB06011P_setPrdtInfo(e) {
 
   if (prefix === "TB07190S") {
     $("#TB07190S_ibDealNo").val(e.dealNo);
+  }
+
+  if (prefix === 'TB07160S') {
+    TB07160Sjs.srch_TB07160S()
   }
 
   modalClose_TB06011P();

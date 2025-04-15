@@ -27,11 +27,8 @@ const TB07110Sjs = (function () {
     );
 
     $('#TB07110S_searchForm').find('input, select').on('input', function () {
+      $("#TB07110S_grd_txbl").pqGrid('instance').setData([]);
       resetInput();
-      $("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
-      $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').setData([]);
-      // 파일 그리드 초기화
-      $(`div[data-menuid="/TB07110S"] #UPLOAD_FileList`).html("");
     })
 
     // 탭상태 기본세팅
@@ -215,14 +212,12 @@ const TB07110Sjs = (function () {
     $('#TB07110S_dprtNm').val("");
 
     $("#TB07110S_grd_txbl").pqGrid('instance').setData([]);
-    $("#TB07110S_grd_basic").pqGrid('instance').setData([]);
 
     setDfaultValue();
 
     resetInput();
 
     // 파일 그리드 초기화
-    $(`div[data-menuid="/TB07110S"] #UPLOAD_FileList`).html("");
   }
 
   /**
@@ -278,6 +273,10 @@ const TB07110Sjs = (function () {
     $('#TB07110S_rgstEmpnm').val($('#userEmpNm').val());
 
     toggleBtnHandler('등록/변경');
+
+    $("#TB07110S_grd_basic").pqGrid('instance').setData([]);
+    // 파일 그리드 초기화
+    $(`div[data-menuid="/TB07110S"] #UPLOAD_FileList`).html("");
 
     apvlBtnHandler();
   }
@@ -910,10 +909,11 @@ const TB07110Sjs = (function () {
       // wrtnDt: $("#TB07110S_wrtnDt").val()                  //  회계기간
       rslnBdcd: $("#TB07110S_dprtCd").val()                   //  부서코드  rslnBdcd
       , actsCd: $("#TB07110S_actsCd").val()                   //  계정과목
-      , bcncNm: $("#TB07110S_bcncNm").val()                   //  거래처명
+      , bcncNm: $("#TB07110S_bzepName").val()                 //  거래처명
       , acctDt1: $("#TB07110S_startDt").val().replaceAll('-', '')
       , acctDt2: $("#TB07110S_endDt").val().replaceAll('-', '')
       , elcPrufYn: 'Y'                                        // 전자증빙여부
+      , 
     };
 
     $.ajax({
@@ -1413,7 +1413,6 @@ const TB07110Sjs = (function () {
     rjct: rjct,
     addRow: addRow,
     delRow: delRow,
-    resetInput: resetInput,
     toggleBtnHandler: toggleBtnHandler,
     saveIBIMS432B: saveIBIMS432B,
     tabController: tabController,

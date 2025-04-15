@@ -2,50 +2,23 @@ package com.nanuri.rams.business.assessment.tb07.tb07150;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.List;
-
+import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS201BMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS203BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS346BMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS348BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS401BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS401HMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS402BMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS402HMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS403BMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS403HMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS404BMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS406BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS410BMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS420BMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS991BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS201BVO;
 import com.nanuri.rams.business.common.vo.IBIMS401BVO;
 import com.nanuri.rams.business.common.vo.TB07150SVO;
-import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS346BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS401BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
-import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
-import com.nanuri.rams.com.acctPrcs.EtprCrdtGrntAcctProc;
-import com.nanuri.rams.com.calculation.Calculation;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
@@ -89,7 +62,9 @@ public class TB07150ServiceImpl implements TB07150Service {
 		
 		/* 변경전원장정보 */
 		rtnObj = ibims201BMapper.getCndChngBfInf(paramData.getPrdtCd());
-
+		if (rtnObj == null) {
+			return new TB07150SVO();
+		}
 		/* 변경전금리정보 */
 		//rtnObj.setChngBf346BList(ibims346BMapper.selectIBIMS346BListInfo(paramData.getPrdtCd()));
 		rtnObj.setChngBf404BList(ibims404BMapper.getIBIMS404ListInfo(paramData));

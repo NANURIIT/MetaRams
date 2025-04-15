@@ -5,17 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import com.nanuri.rams.business.common.dto.IBIMS402BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
+import com.nanuri.rams.business.common.mapper.IBIMS402BMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS404BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS402BVO;
 import com.nanuri.rams.business.common.vo.IBIMS404BVO;
 import com.nanuri.rams.business.common.vo.TB06015SVO;
-import com.nanuri.rams.business.common.mapper.IBIMS402BMapper;
-import com.nanuri.rams.business.common.mapper.IBIMS404BMapper;
 import com.nanuri.rams.com.security.AuthenticationFacade;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
@@ -78,13 +79,14 @@ public class TB07080ServiceImpl implements TB07080Service {
 	};
 
 	@Override
-	public int updateListIBIMS404B(List<IBIMS404BDTO> paramData){
+	public int updateListIBIMS404B(IBIMS404BVO paramData){
 
 		int result = 0;
+		List<IBIMS404BVO> inList = paramData.getIntrtList();
 
-		for(int i = 0; i < paramData.size(); i++){
-			paramData.get(i).setHndEmpno(facade.getDetails().getEno());
-			ibims404bMapper.updateListIBIMS404B(paramData.get(i));
+		for(int i = 0; i < inList.size(); i++){
+			inList.get(i).setHndEmpno(facade.getDetails().getEno());
+			ibims404bMapper.updateListIBIMS404B(inList.get(i));
 			result += 1;
 		}
 

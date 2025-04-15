@@ -11,6 +11,10 @@ const TB09080Sjs = (function () {
     $("#TB09080S_rsltnDt").val(getSomeDaysAgo(7));
     $("#TB09080S_rsltnEndDt").val(getToday());
 
+    $('#TB09080S_srchForm').find('input, select').on('input', function () {
+      dealDtlsIns.setData("");
+    })
+
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB09080S_rsltnDt","TB09080S_rsltnEndDt");
   });
@@ -372,7 +376,17 @@ const TB09080Sjs = (function () {
         console.log(data);
         console.log(data.trDtls);
         //trDtls.setData(data.trDtls); // 딜거래내역
-        dealDtlsIns.setData(data.trDtls);
+        if (data.length > 0) {
+          dealDtlsIns.setData(data.trDtls);
+        }
+        else {
+          Swal.fire({
+            icon: "warning"
+            , title: "Warning!"
+            , text: "조회된 내역이 없습니다!"
+          })
+          dealDtlsIns.setData([]);
+        }
       },
     });
   }

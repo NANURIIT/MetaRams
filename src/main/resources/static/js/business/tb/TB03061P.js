@@ -482,6 +482,16 @@ function setArdyBzepInfo(rowData) {
 			$("#TB06010S_bsc_entpRnm").val(entpNm);
 			$("#TB06010S_bsc_bsnsRgstNo").val(rnbn);
 			break;
+		case "TB07100S":
+			// 조회조건 변경시 초기화
+			$("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
+			TB07100Sjs.TB07100S_resetInput();
+			break;
+		case "TB07110S":
+			// 조회조건 변경시 초기화
+      		$("#TB07110S_grd_txbl").pqGrid('instance').setData([]);
+			TB07110Sjs.resetInput();
+			break;
 		case "TB07150S":
 			$('#TB07150S_trOthrDscmNo_chng').val(ardyBzepNo);		// 사업자등록번호
 			$('#TB07150S_trOthrDscmNm_chng').val(entpNm);			// 거래상대방(업체한글명)
@@ -536,6 +546,12 @@ function setArdyBzepInfo(rowData) {
 			break;
 		case "TB07230S":
 			resetPGgrids(prefix);
+			break;
+		case "TB09070S":
+			resetPGgrids(prefix);
+			break;
+		case "TB07120S":
+			TB07120Sjs.resetDataForm();
 			break;
 		default:
 			break;

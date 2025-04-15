@@ -48,6 +48,7 @@ public class FileUploadAPIController {
 			@RequestParam("uploadfile") MultipartFile uploadfile
 			, @RequestParam(value = "fileKey2", required = false) String fileKey2
 			, @RequestParam(value = "key1", required = false) String key1
+			, @RequestParam(value = "atchFleDcd", required = false) String atchFleDcd
 			) {
 
 		/*
@@ -67,6 +68,7 @@ public class FileUploadAPIController {
 
 		dto.setFileKey1(fileKey1.toString());
 		dto.setFileKey2(fileKey2);
+		dto.setAtchFleDcd(atchFleDcd);
 		dto.setSvFilePathNm(fileInfo.getServerPath());
 		dto.setSvFileNm(fileInfo.getSaveName());
 		String[] arrExpn = fileInfo.getOriginalName().split("\\.");
