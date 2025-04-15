@@ -436,7 +436,7 @@ $(document).ready(function () {
 });
 
 /**
-	문서로드시 세팅
+  문서로드시 세팅
  */
 function TB06011P_docRdySettings() {
   TB06011P_modalShowFunction();
@@ -861,7 +861,7 @@ function TB06011P_setPrdtInfo(e) {
   if (prefix == "TB07120S") {
     TB07120Sjs.resetDataForm();
   }
-  
+
   if (prefix == "TB07140S") {
     $("#TB07140S_dataForm").val("");
     resetPGgrids("TB07140S");
@@ -927,7 +927,7 @@ function TB06011P_setPrdtInfo(e) {
 
   /* 0726 add 대출계약 실행 */
   if (prefix === "TB07010S") {
-    
+
     $(pageeprzCrdlApvlAmt).val(0); // 승인금액액
     let numPrgSttsCd = Number(e.prgSttsCd);
 
@@ -1018,6 +1018,18 @@ function TB06011P_setPrdtInfo(e) {
       rowIndx: prdtSn,
       row: { nsFndCd: e.ortnFndCd },
     });
+  }
+
+  if (prefix === "TB07020S_srch") {
+    TB07020Sjs.inputClear();
+  }
+
+  if (prefix === "TB07040S_srch") {
+    TB07040Sjs.inputClear();
+  }
+
+  if (prefix === "TB07140S_srch") {
+    TB07140Sjs.inputClear();
   }
 
   if (prefix === "TB08040S") {

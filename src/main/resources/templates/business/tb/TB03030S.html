@@ -10,8 +10,7 @@
 	<script th:src="@{js/business/tb/TB03023P.js}"></script>
 	<script th:src="@{js/business/tb/TB03022P.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
-	<!-- <script th:src="@{js/business/popup/AS03210P.js}"></script> -->
-	<!-- <script th:src="@{js/business/popup/AC01120P.js}"></script> -->
+	<script th:src="@{js/business/tb/FileUploadPopup.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -19,8 +18,7 @@
 	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
-	<!-- <th:block th:replace="business/popup/AS03210P :: AS03210P"></th:block> -->
-	<!-- <th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block> -->
+	<th:block th:replace="business/tb/FileUploadPopup :: FileUploadPopup"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -122,12 +120,14 @@
 								<table class="table table-bordered">
 									<colgroup>
 										<col style="width: 5%;">
-										<col style="width: 75%;">
+										<col style="width: 15%;">
+										<col style="width: 65%;">
 										<col style="width: 20%;">
 									</colgroup>
 									<thead>
 										<tr>
 											<th></th>
+											<th>첨부파일구분</th>
 											<th>파일명</th>
 											<th>등록일자</th>
 										</tr>

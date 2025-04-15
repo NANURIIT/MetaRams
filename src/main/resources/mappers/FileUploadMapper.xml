@@ -62,7 +62,13 @@
     	SELECT FILE_KEY1					/* 키1 */
     	     , FILE_KEY2					/* 키2 */
     	     , ATCH_FLE_SN					/* 첨부파일일련번호 */
-			 , ATCH_FLE_DCD                 /* 첨부파일구분코드 */
+			 , (
+				SELECT CD_VL_NM
+				  FROM IBIMS002B
+				 WHERE 1=1
+				   AND CMNS_CD_GRP = 'A014'
+				   AND CD_VL_ID = ATCH_FLE_DCD
+			 ) AS atchFleDcd                /* 첨부파일구분코드 */
     	     , SV_FILE_PATH_NM				/* 서버파일경로명 */
     	     , SV_FILE_NM		    		/* 서버파일명 */
     	     , ORG_FILE_NM					/* 원본파일명 */

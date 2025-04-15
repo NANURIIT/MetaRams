@@ -38,11 +38,8 @@ const TB07100Sjs = (function () {
     );
 
     $('#TB07100S_searchForm').find('input, select').on('input', function () {
-      TB07100S_resetInput();
       $("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
-      $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').setData([]);
-      // 파일 그리드 초기화
-      $(`div[data-menuid="/TB07100S"] #UPLOAD_FileList`).html("");
+      TB07100S_resetInput();
     })
 
 
@@ -252,11 +249,11 @@ const TB07100Sjs = (function () {
     $('#TB07100S_dprtCd').val("");
     $('#TB07100S_dprtNm').val("");
     $(`#TB07100S_mergeForm input`).val('');
+    $('#TB07100S_jobDecdCd').val("");
 
     setDfaultValue();
 
     $("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
-    $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').setData([]);
 
     TB07100S_resetInput();
   }
@@ -284,6 +281,9 @@ const TB07100Sjs = (function () {
     $("#TB07100S_rslnBdcd").val($('#userDprtCd').val());
     $('#TB07100S_rgstEmpno').val($('#userEno').val());
     $('#TB07100S_rgstEmpnm').val($('#userEmpNm').val());
+
+    $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').setData([]);
+    $('div[data-menuId="/TB07100S"] #UPLOAD_FileList').html("");
 
     toggleBtnHandler('등록/변경');
 

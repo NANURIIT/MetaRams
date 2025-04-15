@@ -81,19 +81,19 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDecdCd)">
            AND T1.JOB_DECD_CD = #{jobDecdCd}
            </if>
-           <if test="acctDt1 != null and acctDt1 != ''">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(acctDt1)">
            AND T1.ACCT_DT &gt;&#61; #{acctDt1}
            </if>
-           <if test="acctDt2 != null and acctDt2 != ''">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(acctDt2)">
            AND T1.ACCT_DT &lt;&#61; #{acctDt2}
            </if>
-           <if test="rslnBdcd != null and rslnBdcd != ''">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rslnBdcd)">
            AND T1.RSLN_BDCD = #{rslnBdcd}
            </if>
-           <if test="bcncNm != null and bcncNm != ''">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(bcncNm)">
            AND T1.BCNC_NM = #{bcncNm}
            </if>
-           <if test="actsCd != null and actsCd != ''">
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(actsCd)">
            AND T1.ACTS_CD = #{actsCd}
            </if>
     </select>

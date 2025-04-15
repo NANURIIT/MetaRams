@@ -26,7 +26,6 @@ const TB08031Sjs = (function () {
   $(document).ready(function () {
     loadInvbnkAmnBzCd(); // 사업구분 정보
     loadSelectBoxContents();
-
   });
 
 

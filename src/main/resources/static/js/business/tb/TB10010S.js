@@ -1,4 +1,11 @@
 const TB10010Sjs = (function () {
+
+  $(document).ready(function () {
+    $("#TB10010S_srchForm").find('input, select').on('input', function () {
+      resetPGgrids("TB10010S")
+    })
+  });
+
   var codeId = "";
 
   /**

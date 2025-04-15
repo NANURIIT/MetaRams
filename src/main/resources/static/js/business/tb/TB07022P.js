@@ -281,9 +281,11 @@ function setFndInfo(e) {
 	$(pageFndCd).val(e.fndCd);
 	$(pageFndNm).val(e.fndNm);
 
+	/**
+	 * 각 화면에서 조회조건 변경시 초기화
+	 */
 	if ( TB07022P_pf === "TB07140S_srch") {
 		TB07140Sjs.inputClear();
-		$("#TB07140S_dataForm").val("");
 		resetPGgrids("TB07140S");
 	}
 	else if ( TB07022P_pf === "TB07040S_srch") {
