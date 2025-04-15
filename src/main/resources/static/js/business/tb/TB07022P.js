@@ -288,12 +288,19 @@ function setFndInfo(e) {
 		TB07140Sjs.inputClear();
 		resetPGgrids("TB07140S");
 	}
-	else if ( TB07022P_pf === "TB07040S_srch") {
+	
+	if ( TB07022P_pf === "TB07040S_srch") {
 		TB07040Sjs.inputClear();
 	}
-	else if ( TB07022P_pf === "TB07020S_srch") {
+	
+	if ( TB07022P_pf === "TB07020S_srch") {
 		TB07020Sjs.inputClear();
 	}
+	
+	if ( TB07022P_pf === "TB08060S" ) {
+		resetPGgrids("TB08060S");
+	}
+
 	
 	modalClose_TB07022P();
 }
