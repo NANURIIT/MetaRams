@@ -585,30 +585,20 @@ const TB07030Sjs = (function () {
           // console.log(JSON.stringify(data.ibims403DtlLst));       
           // console.log(ibims403RscdlList);
 
-          $("#TB07030S_rdmpTrgtPrna").val(comma(data.totalDTO.totalPrna)); // 원금합계
-          $("#TB07030S_nrmlIntrAmt").val(comma(data.totalDTO.totalIntr)); // 정상이자합계
-          $("#TB07030S_crdtGrntOvduIntAmt").val(
-            comma(data.totalDTO.totalOvduIntr)
-          ); // 연체이자합계
-          $("#TB07030S_dealMrdpPrca").val(comma(data.totalDTO.totlaMrdpPrca)); // 중도상환원금
-          $("#TB07030S_mrdpFeeAmt").val(comma(data.totalDTO.totalMdwyRdmpFee)); // 중도상환수수료합계
-          // 미수이자합계
-          // 면제금액합계
-          $("#TB07030S_rdmpPrnaSmmAmt").val(comma(data.totalDTO.totalTrgtAmt)); // 상환대상총금액
+          // 실행별상환대상금액
+          calculator_CalcTotAmt(data.ibims403DtlLst);
 
-          calculator("aplcExchR");
-          // data.totalDTO.totalIntr // 정상이자합계
-          // data.totalDTO.totalOvduIntr // 연체이자합계
-          // data.totalDTO.totlaMrdpPrca // 중도상환원금
-          // data.totalDTO.totalMdwyRdmpFee // 중도상환수수료합계
-          // data.totalDTO.totalTrgtAmt // 상환대상총금액
+          // 이벤트 입히기
+          grdRdmpTrgtDtl.on("check", function (evt, ui) {
+            calculator_CalcTotAmt(data.ibims403DtlLst);
+            // console.log(JSON.stringify(data));
+          });
+  
+          grdRdmpTrgtDtl.on("editorEnd", function (evt, ui) {
+            calculator_CalcTotAmt(data.ibims403DtlLst);
+          });
 
-          // calculator('dmp_mfa', chkGrdRdmpTrgt());  // 중도상환원금합계, 중도상환수수료
-          // calculator('rdmpTrgtPrna', data);		 // 상환대상원금 : 원금
-          // calculator('paiTypCd', data);			 // 이자유형코드별 합계 : 정상이자, 연체이자
-          calculator("calcTotAmt", data.ibims403DtlLst); 
-          // calculator('rdmpPrnaSmmAmt');			 // 상환대상총금액
-          // calculator('acptPtclSmtlAmt');			 // 수납내역합계
+          calculator("aplcExchR"); // 원화환산금액
         },
       });
     } else {
@@ -710,15 +700,6 @@ const TB07030Sjs = (function () {
                 srch();
               }
             });
-            // Swal.fire({
-            // 	icon: 'success'
-            // 	, text: "상환이 완료됐습니다."
-            // 	, confirmButtonText: "확인"
-            // }).then(result => {
-            //     if (result.isConfirmed) {
-            //         srch();
-            //     }
-            // });
           } else {
             sf(1, "error", `상환에 실패하였습니다.`, "Error!");
             return;
@@ -751,6 +732,8 @@ const TB07030Sjs = (function () {
     let prdtCd = $("#TB07030S_prdtCd").val(); // 종목코드
     let eprzCrdlPaiRdmpDcd = $("#TB07030S_E020").val(); // 기업여신원리금상환구분코드
     let prarDt = unformatDate($("#TB07030S_prarDt").val()); // 상환일자
+    let acptPtclSmtlAmt = Number(uncomma($('#TB07030S_acptPtclSmtlAmt').val())); // 수납내역합계
+    let rdmpPrnaSmmAmt = Number(uncomma($('#TB07030S_rdmpPrnaSmmAmt').val())); // 상환대상총금액
 
     if (!prdtCd) {
       sf(1, "warning", "종목코드를 입력해주세요.", "Warning!");
@@ -773,6 +756,12 @@ const TB07030Sjs = (function () {
       // console.log(chkVal);
       if (chkVal) {
         sf(1, "warning", `상환 항목이 비어있습니다.<br>확인해주세요.`, "Warning!");
+        return { isValid: false };
+      }
+      console.log('수납내역합계 ::: ', acptPtclSmtlAmt)
+      console.log('상환대상총금액 ::: ', rdmpPrnaSmmAmt)
+      if ( acptPtclSmtlAmt == 0 || acptPtclSmtlAmt != rdmpPrnaSmmAmt ) {
+        sf(1, "warning", "상환대상총금액과 수납내역합계가 상이합니다.", "Warning!");
         return { isValid: false };
       }
     }
@@ -799,24 +788,7 @@ const TB07030Sjs = (function () {
     return returnObj;
   }
 
-  /**
-   * 고시환율코드 로드 *현재미사용
-   */
-  // function getExchr() {
-  // 	let exchr = $('#TB07030S_I027').val();
-
-  //     $.ajax({
-  //         type: "POST",
-  //         url: "/TB07030S/getExchR",
-  // 		contentType: "application/json; charset=UTF-8",
-  // 		data: exchr,
-  //         dataType: "json",
-  //         success: function(data) {
-  // 			$('#TB07030S_stdrExrt').val(data.stdrExrt);
-  //         }
-  //     });
-  // };
-
+// 실행별상환대상금액 check 계산
   function calculator_CalcTotAmt(p = {}){
           let totRdmpPrna = 0;          //납부예정 상환대상원금 합계
           let totRdmpIntr = 0;          //납부예정 납부예정이자 합계
@@ -831,6 +803,7 @@ const TB07030Sjs = (function () {
           let orgOvduIntr = 0;          //납부대상 연체이자 합계
           let orgMrdpPrca = 0;          //납부대상 중도상환원금 합계
           let orgMrdpFee  = 0;          //납부대상 중도상환수수료 합계
+          console.log('calculator_CalcTotAmt ::: ', p)
 
           p.forEach((ele) => {
 
@@ -901,9 +874,6 @@ const TB07030Sjs = (function () {
               //   totMrdpFee -= ele.pmntPrarAmt;
               // }
             }
-
-            
-            
           });
 
           $("#TB07030S_exmptSmmAmt").val(comma(totExmptAmt));         
@@ -936,6 +906,7 @@ const TB07030Sjs = (function () {
 
   // 실행별상환대상금액
   function calculator(f, p = {}) {
+    let arr = grdRdmpTrgtDtl.getData(); // 상환대상상세내역
     let tot = 0;
     let amt = 0;
     let paiTypCd;
@@ -951,19 +922,8 @@ const TB07030Sjs = (function () {
 
     switch (f) {
       case "rdmpPrnaSmmAmt": // [상환대상총금액] = 연체이자 + 정상이자 + 상환대상원금 + 중도상환원금 + 중도상환수수료 - 미수이자 - 면제금액
-        tot =
-          // rdmpTrgtPrna +
-          // nrmlIntrAmt +
-          // crdtGrntOvduIntAmt +
-          // dealMrdpPrca +
-          // mrdpFeeAmt;
-          rdmpTrgtPrna +
-          nrmlIntrAmt +
-          crdtGrntOvduIntAmt +
-          dealMrdpPrca +
-          mrdpFeeAmt -
-          rcvbIntrSmmAmt -
-          exmptSmmAmt;
+        tot = rdmpTrgtPrna + nrmlIntrAmt + crdtGrntOvduIntAmt 
+            + dealMrdpPrca + mrdpFeeAmt - rcvbIntrSmmAmt - exmptSmmAmt;
 
         $("#TB07030S_rdmpPrnaSmmAmt").val(comma(tot));     // 상환대상총금액
         $("#TB07030S_KRW_rdmpPrnaSmmAmt").val(comma(tot)); // [원화]상환대상총금액
@@ -987,85 +947,83 @@ const TB07030Sjs = (function () {
         $("#TB07030S_acptPtclSmtlAmt").val(comma(tot)); // 수납내역합계
         break;
 
-      case "dmp_mfa": // [중도상환원금] dealMrdpPrca, [중도상환수수료] mrdpFeeAmt
-        let sumDmp = 0;
-        let sumMfa = 0;
+      // case "dmp_mfa": // [중도상환원금] dealMrdpPrca, [중도상환수수료] mrdpFeeAmt
+      //   let sumDmp = 0;
+      //   let sumMfa = 0;
+      //   // console.log(" chkGrdRdmpTrgt() ::: ", chkGrdRdmpTrgt());
+      //   let arr1 = chkGrdRdmpTrgt();
+      //   for (let i = 0; i < arr.length; i++) {
+      //     const ele = arr1[i];
+      //     // console.log("ele ::: ", ele);
+      //     let dealMrdpPrca = Number(ele.dealMrdpPrca);
+      //     // console.log(typeof dealMrdpPrca);
+      //     let mrdpFeeAmt = Number(ele.mrdpFeeAmt);
+      //     sumDmp += dealMrdpPrca;
+      //     sumMfa += mrdpFeeAmt;
 
-        console.log(" chkGrdRdmpTrgt() ::: ", chkGrdRdmpTrgt());
+      //     // console.log("dealMrdpPrca ::: ", dealMrdpPrca);
+      //     // console.log("mrdpFeeAmt ::: ", mrdpFeeAmt);
+      //   }
+      //   // console.log(typeof sumDmp);
+      //   $("#TB07030S_dealMrdpPrca").val(comma(sumDmp)); // 중도상환원금
+      //   $("#TB07030S_mrdpFeeAmt").val(comma(sumMfa)); // 중도상환수수료
 
-        for (let i = 0; i < p.length; i++) {
-          const ele = p[i];
-          console.log("ele ::: ", ele);
-          let dealMrdpPrca = Number(ele.dealMrdpPrca);
-          console.log(typeof dealMrdpPrca);
-          let mrdpFeeAmt = Number(ele.mrdpFeeAmt);
-          sumDmp += dealMrdpPrca;
-          sumMfa += mrdpFeeAmt;
+      //   $("#TB07030S_KRW_dealMrdpPrca").val(comma(sumDmp)); // [원화]중도상환원금
+      //   $("#TB07030S_KRW_mrdpFeeAmt").val(comma(sumMfa)); // [원화]중도상환수수료
+      //   break;
 
-          console.log("dealMrdpPrca ::: ", dealMrdpPrca);
-          console.log("mrdpFeeAmt ::: ", mrdpFeeAmt);
-        }
-        console.log(typeof sumDmp);
-        $("#TB07030S_dealMrdpPrca").val(comma(sumDmp)); // 중도상환원금
-        $("#TB07030S_mrdpFeeAmt").val(comma(sumMfa)); // 중도상환수수료
+      // case "paiTypCd": // 이자유형코드별 합계 : 2.정상이자, 4.연체이자
+      //   let totCgoia = 0;
+      //   let totNia = 0;
 
-        $("#TB07030S_KRW_dealMrdpPrca").val(comma(sumDmp)); // [원화]중도상환원금
-        $("#TB07030S_KRW_mrdpFeeAmt").val(comma(sumMfa)); // [원화]중도상환수수료
-        break;
+      //   for (let i = 0; i < p.length; i++) {
+      //     const ele = p[i];
+      //     paiTypCd = ele.paiTypCd;
+      //     amt = ele.pmntAmt;
 
-      case "paiTypCd": // 이자유형코드별 합계 : 2.정상이자, 4.연체이자
-        let totCgoia = 0;
-        let totNia = 0;
+      //     if (paiTypCd === "4" || paiTypCd === "5") {
+      //       // 4: 납부이자연체금액
+      //       totCgoia += amt;
+      //     }
+      //   }
+      //   $("#TB07030S_crdtGrntOvduIntAmt").val(comma(Math.round(totCgoia))); // 연체이자합계
+      //   $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(comma(Math.round(totCgoia))); // [원화]연체이자합계
 
-        for (let i = 0; i < p.length; i++) {
-          const ele = p[i];
-          paiTypCd = ele.paiTypCd;
-          amt = ele.pmntAmt;
+      //   for (let i = 0; i < p.length; i++) {
+      //     const ele = p[i];
+      //     paiTypCd = ele.paiTypCd;
+      //     amt = ele.pmntAmt;
 
-          if (paiTypCd === "4" || paiTypCd === "5") {
-            // 4: 납부이자연체금액
-            totCgoia += amt;
-          }
-        }
-        $("#TB07030S_crdtGrntOvduIntAmt").val(comma(Math.round(totCgoia))); // 연체이자합계
-        $("#TB07030S_KRW_crdtGrntOvduIntAmt").val(comma(Math.round(totCgoia))); // [원화]연체이자합계
+      //     if (paiTypCd === "2") {
+      //       // 2: 정상이자
+      //       totNia += amt;
+      //     }
+      //   }
+      //   $("#TB07030S_nrmlIntrAmt").val(comma(Math.round(totNia))); // 정상이자합계
+      //   $("#TB07030S_KRW_nrmlIntrAmt").val(comma(Math.round(totNia))); // [원화]정상이자합계
 
-        for (let i = 0; i < p.length; i++) {
-          const ele = p[i];
-          paiTypCd = ele.paiTypCd;
-          amt = ele.pmntAmt;
+      //   break;
 
-          if (paiTypCd === "2") {
-            // 2: 정상이자
-            totNia += amt;
-          }
-        }
-        $("#TB07030S_nrmlIntrAmt").val(comma(Math.round(totNia))); // 정상이자합계
-        $("#TB07030S_KRW_nrmlIntrAmt").val(comma(Math.round(totNia))); // [원화]정상이자합계
+      // case "rdmpTrgtPrna": // 상환대상원금
+      //   let sum = 0;
+      //   for (let i = 0; i < p.length; i++) {
+      //     const ele = p[i];
+      //     paiTypCd = ele.paiTypCd;
+      //     amt = ele.pmntAmt;
 
-        break;
-
-      case "rdmpTrgtPrna": // 상환대상원금
-        let sum = 0;
-        for (let i = 0; i < p.length; i++) {
-          const ele = p[i];
-          paiTypCd = ele.paiTypCd;
-          amt = ele.pmntAmt;
-
-          if (paiTypCd === "1") {
-            // 1: 원금
-            sum += amt;
-          }
-        }
-        $("#TB07030S_rdmpTrgtPrna").val(comma(Math.round(sum)));
-        $("#TB07030S_KRW_rdmpTrgtPrna").val(comma(Math.round(sum)));
-        break;
+      //     if (paiTypCd === "1") {
+      //       // 1: 원금
+      //       sum += amt;
+      //     }
+      //   }
+      //   $("#TB07030S_rdmpTrgtPrna").val(comma(Math.round(sum)));
+      //   $("#TB07030S_KRW_rdmpTrgtPrna").val(comma(Math.round(sum)));
+      //   break;
 
       case "exmptAmt": // 면제금액합계
         grdRdmpTrgtDtl.on("editorEnd", function (evt, ui) {
-
           let tot = 0;
-          p.forEach((ele) => {
+          arr.forEach((ele) => {
             let exmptAmt = ele.exmptAmt;
             tot += exmptAmt;
           });
@@ -1076,20 +1034,15 @@ const TB07030Sjs = (function () {
         break;
 
       //20250113추가
-      case "calcTotAmt":      //납부예정금액 합계
-
-        grdRdmpTrgtDtl.on("check", function (evt, ui) {
-    
-          calculator_CalcTotAmt(p);
-          // console.log(JSON.stringify(data));
-        });
-
-        grdRdmpTrgtDtl.on("editorEnd", function (evt, ui) {
-          
-          calculator_CalcTotAmt(p);
-          
-        });
-        break;
+      // case "calcTotAmt":      //납부예정금액 합계
+      //   grdRdmpTrgtDtl.on("check", function (evt, ui) {
+      //     calculator_CalcTotAmt(p);
+      //     // console.log(JSON.stringify(data));
+      //   });
+      //   grdRdmpTrgtDtl.on("editorEnd", function (evt, ui) {
+      //     calculator_CalcTotAmt(p);
+      //   });
+      //   break;
 
       case "aplcExchR": // 적용환율
         let aplcExchR = parseFloat($("#TB07030S_aplcExchR").val()); // 적용환율
@@ -1211,7 +1164,7 @@ const TB07030Sjs = (function () {
       const $this = $(this);
       const id = $this.attr("id");
 
-      if (id.includes("I027")) {
+      if (id && id.includes("I027")) {
         // 'I027'이 포함    된 select 요소의 경우, value를 'KRW'로 설정
         $this.val("KRW");
       } else {
@@ -1284,8 +1237,8 @@ const TB07030Sjs = (function () {
       .each(function () {
         const $this = $(this);
         const id = $this.attr("id");
-        if (id.includes("I027")) {
-          // 'I027'이 포함    된 select 요소의 경우, value를 'KRW'로 설정
+        if (id && id.includes("I027")) {
+          // 'I027'이 포함된 select 요소의 경우, value를 'KRW'로 설정
           $this.val("KRW");
         } else {
           // 나머지 select 요소의 경우, 첫 번째 옵션을 선택
@@ -1504,3 +1457,26 @@ const TB07030Sjs = (function () {
     getDealInfoFromWF : getDealInfoFromWF,
   };
 })();
+
+
+
+/*********************************************************************
+ * Trash
+ *********************************************************************/
+  /**
+   * 고시환율코드 로드 *현재미사용
+   */
+  // function getExchr() {
+  // 	let exchr = $('#TB07030S_I027').val();
+
+  //     $.ajax({
+  //         type: "POST",
+  //         url: "/TB07030S/getExchR",
+  // 		contentType: "application/json; charset=UTF-8",
+  // 		data: exchr,
+  //         dataType: "json",
+  //         success: function(data) {
+  // 			$('#TB07030S_stdrExrt').val(data.stdrExrt);
+  //         }
+  //     });
+  // };

@@ -382,6 +382,7 @@ const TB08040Sjs = (function() {
 			},
 			{
 				title: "대표자(주주)",
+				type: "input",
 				dataType: "string",
 				dataIndx: "rpsrNm",
 				halign: "center",
@@ -389,7 +390,20 @@ const TB08040Sjs = (function() {
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 				editable: true,
-				editor: { type:'textarea', attr: 'maxlength = 200'},
+				render: function(ui) {
+					//console.log(new TextEncoder().encode(ui.cellData).length);
+					// console.log(ui.cellData);
+					// let result = validData( ui.cellData, 10, 4)
+					// console.log('결과과가ㅏ:  : : ',result)
+					// return ui.cellData = result;
+					// if (new TextEncoder().encode(ui.cellData).length <= 5) {
+					// 	return ui.rowData.rpsrNm
+					// } else {
+					// 	ui.cellData = validData( ui.cellData, 5 )
+					// 	ui.formatVal = ui.cellData
+					// 	return ui.rowData.rpsrNm = ui.cellData
+					// }
+				},
 			},
 			{
 				title: "수수료",
@@ -416,7 +430,7 @@ const TB08040Sjs = (function() {
 							return formattedValue;
 						},
 						editable: true,
-						editor: { type: 'input', attr: 'maxlength = "18"', oninput: "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"},
+						//editor: { type: 'input', attr: 'maxlength = "18"', oninput: "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"},
 					},
 					{
 						title: "대상내용(계산식)",
@@ -1059,17 +1073,16 @@ const TB08040Sjs = (function() {
 		let chkSchList;
 		let feeSchList;
 
-
 		saveGrid = addGrd(feeSch);
 		feeSchList = saveGrid;
 		//console.log("저장리스트" + feeSchList.length); //U+I+D
 		chkSchList = saveGrid.filter((item) => item.rowType !== null);
 		chkSchList = chkSchList.filter((item) => item.rowType !== "D");
 		//console.log("체크리스트" + chkSchList.length);//U+I
-		saveGrid = [];
+		saveGrid = []; // saveGrid 변수 초기화
 
 		if (feeSchList.length === 0) {
-			sf(1, "warning", "저장 할 정보가 없습니다.");
+			sf(1, "warning", "저장 할 정보가 없습니다.", "Warning!");
 			return;
 		}
 
@@ -1135,6 +1148,7 @@ const TB08040Sjs = (function() {
 			if (!strPrarDt && endPrarDt) {
 				Swal.fire({
 					icon: "warning",
+					title: "Warning!",
 					text: "예정 시작일을 입력해주세요.",
 					confirmButtonText: "확인",
 				});
@@ -1143,6 +1157,7 @@ const TB08040Sjs = (function() {
 			if (strPrarDt && !endPrarDt) {
 				Swal.fire({
 					icon: "warning",
+					title: "Warning!",
 					text: "예정 종료일을 입력해주세요.",
 					confirmButtonText: "확인",
 				});
@@ -1152,6 +1167,7 @@ const TB08040Sjs = (function() {
 				if (strPrarDt > endPrarDt) {
 					Swal.fire({
 						icon: "warning",
+						title: "Warning!",
 						text: "입력하신 예정일 조회기간이 타당하지 않습니다. ",
 						confirmButtonText: "확인",
 					});
@@ -1305,11 +1321,16 @@ const TB08040Sjs = (function() {
 					let filteredIndexes = [];
 
 					data.forEach((item, index) => {
+						console.log('item ::: ', item)
+						console.log('item.chk ::: ', item.chk)
+
 						if (item.chk) {
-							if (item.rowType !== "I" && item.rowType !== "D" && item.rowType !== null) {
-								item.rowType = "D";
-								delGrid.push(item);
-							}
+							// if (item.rowType !== "I" && item.rowType !== "D" && item.rowType !== null) {
+							// 	item.rowType = "D";
+							// 	delGrid.push(item);
+							// }
+							item.rowType = "D";
+							delGrid.push(item);
 							filteredIndexes.push(index);
 						}
 					});
@@ -1321,7 +1342,6 @@ const TB08040Sjs = (function() {
 						});
 					//console.log("지우고 난 후의 index ::: ", feeSch.getData());
 				}
-				//console.log("삭제시saveGrid" + delGrid.length);
 
 				break;
 			default:
@@ -1395,11 +1415,12 @@ const TB08040Sjs = (function() {
 
 
 	// swal.fire
-	function sf(flag, icon, text, callback = () => { }) {
+	function sf(flag, icon, text, title="", callback = () => { }) {
 		if (flag === 1) {
 			Swal.fire({
 				icon: `${icon}`,
 				html: `${text}`,
+				title: `${title}`,
 				confirmButtonText: "확인",
 			}).then(callback);
 		}
@@ -1407,6 +1428,7 @@ const TB08040Sjs = (function() {
 		if (flag === 2) {
 			Swal.fire({
 				icon: `${icon}`,
+				title: `${title}`,
 				html: `${text}를(을) 확인해주세요.`,
 				confirmButtonText: "확인",
 			}).then(callback);
