@@ -466,6 +466,11 @@ const TB09010Sjs = (function () {
     // 금일 날짜로 초기화
     setRsltnDt();
 
+    // 조회조건 초기화
+    $('#TB09010S_I010').val("");
+    $('#TB09010S_empNo').val("");
+    $('#TB09010S_empNm').val("");
+
     // 내용 초기화
     resetContents();
   }

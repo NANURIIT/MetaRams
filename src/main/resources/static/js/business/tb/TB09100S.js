@@ -437,6 +437,14 @@ const TB09100Sjs = (function() {
 				if (data.length > 0) {
 					$("#TB09110S_exposureStatus").pqGrid("setData", data);
 				}
+				else {
+					$("#TB09110S_revenue").pqGrid("setData", []);
+					Swal.fire({
+						icon: 'warning'
+						, title: 'Warning!'
+						, text: '조회된 내역이 없습니다!'
+					})
+				}
 			},
 			error: function(request, status, error) {
 				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
