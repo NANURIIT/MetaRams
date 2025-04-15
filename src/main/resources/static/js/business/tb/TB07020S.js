@@ -478,7 +478,13 @@ const TB07020Sjs = (function () {
 					$("#TB07020S_tableList").pqGrid("option", "strNoRows", "데이터가 없습니다.");
 					$("#TB07020S_tableList").pqGrid("setData", newData);
 					$("#TB07020S_tableList").pqGrid("refreshDataAndView");
-				} else {
+				}
+				else {
+					Swal.fire({
+						icon: "warning"
+						, title: "Warning!"
+						, text: "조회된 내역이 없습니다!"
+					})
 					$("#TB07020S_tableList").pqGrid("option", "strNoRows", "데이터가 없습니다.");
 					$("#TB07020S_tableList").pqGrid("refreshDataAndView");
 				}

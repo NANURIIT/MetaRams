@@ -996,8 +996,8 @@ const TB07090Sjs = (function () {
           dptrDtlsList.length < 1
         ) {
           var option = {};
-          option.title = "Error";
-          option.type = "error";
+          option.title = "Warning";
+          option.type = "warning!";
 
           option.text = "조회된 데이터가 없습니다.";
           openPopup(option);

@@ -38,12 +38,15 @@ const TB06080Sjs = (function () {
     renderGrid(colGbckList, "gridGbckList");
   });
 
+  /**
+   * 데이터내역 초기화
+   */
   function resetData () {
     resetInputValue($(`#TB06080S_resultInputs`));
     resetPGgrids('TB06080S');
     $('#TB06080S_apvlPage').off('click');
   }
-
+  
   // 그리드 렌더링함수
   function renderGrid(colId, gridId) {
     let pqGridObj = [
