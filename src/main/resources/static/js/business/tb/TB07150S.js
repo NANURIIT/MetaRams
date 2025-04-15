@@ -920,13 +920,20 @@ const TB07150Sjs = (function () {
     $("#TB07150S_plsBtn").prop("disabled", true);             
     $("#TB07150S_mnsBtn").prop("disabled", true);
 
-    $("#TB07150S_excSn").attr("disabled", true);
-    $('#TB07150S_excSn').empty();
+    
 
     $("#grd_intrtInf_1").pqGrid("option", "strNoRows", "");
     $("#grd_intrtInf_1").pqGrid("setData", []);
     $("#grd_intrtInf_2").pqGrid("option", "strNoRows", "");
     $("#grd_intrtInf_2").pqGrid("setData", []);
+  }
+
+
+  function resetSrchCon(){
+    $("#TB07150S_excSn").attr("disabled", true);
+    $('#TB07150S_excSn').empty();
+
+    reset();
   }
 
   /*******************************************************************
@@ -968,6 +975,7 @@ const TB07150Sjs = (function () {
   return {
     srch: srch,
     reset: reset,
+    resetSrchCon: resetSrchCon,
     cndChng: cndChng,
     srchExcSn_TB07150S: srchExcSn_TB07150S,
     addRow_grdIntrtInf2: addRow_grdIntrtInf2,
