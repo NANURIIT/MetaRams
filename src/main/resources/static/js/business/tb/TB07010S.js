@@ -443,6 +443,7 @@ const TB07010Sjs = (function () {
     fValid = "3";
 
     if (validation().isValid) {
+      
       let obj = {
         prdtCd: validation().prdtCd, // 종목코드
         eprzCrdlIntrBnaoDcd: $("#TB07010S_E011").val(), // 이자선후취구분코드
@@ -486,6 +487,7 @@ const TB07010Sjs = (function () {
 
     if (validation().isValid) {
       let prdtCd = validation().prdtCd; // 종목코드
+
       /* 기업여신정보 */
       let ptxtTrOthrDscmNo = $("#TB07010S_ptxtTrOthrDscmNo")
         .val()
@@ -615,11 +617,18 @@ const TB07010Sjs = (function () {
         dataType: "json",
         success: function () {
           sf(1, "success", `실행정보 저장이 완료되었습니다.`, "Success!");
+
+          /**
+           * 초기화
+           */
           prcsCpltYn = ""; // 처리완료여부
-          feeSn = ""; // 일련번호
-          prarDt = ""; // 수취일자 == 수납일자
+          feeSn = "";      // 일련번호
+          prarDt = "";     // 수취일자 == 수납일자
           $("#TB07010S_feeAmt").val(""); // 수수료 금액
 
+          /**
+           * 재조회
+           */
           srch();
         },
         error: function () {
@@ -914,7 +923,9 @@ const TB07010Sjs = (function () {
       return { isValid: false };
     }
 
-    if (fValid === "2") {
+    let dealExcAmt = $("#TB07010S_dealExcAmt").val(); // 실행금액
+
+    if (fValid === "2") { // 저장
       // 실행일자
       let execDt = $("#TB07010S_execDt").val();
       if (!execDt) {
@@ -967,15 +978,19 @@ const TB07010Sjs = (function () {
 
       let dealExcAmt = Number(uncomma($("#TB07010S_dealExcAmt").val()));
       let expRdmpAmt = Number(uncomma($("#TB07010S_expRdmpAmt").val()));
-
       if(expRdmpAmt > dealExcAmt){
         sf(1, "warning", "실행금액보다 큰 만기상환금액이 입력되었습니다.", "Warning!");
         return { isValid: false };
       }
+
+      // 실행금액
+      if (!dealExcAmt || dealExcAmt <= 0) {
+        sf(1, "warning", "실행금액을 입력해주세요.", "Warning!");
+        return { isValid: false };
+      }
     }
 
-    if (fValid === "3") {
-      let dealExcAmt = $("#TB07010S_dealExcAmt").val();
+    if (fValid === "3") { // 이자조회
       if (!dealExcAmt || dealExcAmt <= 0) {
         sf(1, "warning", "실행금액을 입력해주세요.", "Warning!");
         return { isValid: false };
