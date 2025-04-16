@@ -20,7 +20,7 @@ const TB06020Sjs = (function(){
 		
 		getDealInfoFromWF();
 
-
+		$('#TB06020S_res_prdtCd').inputmask("B999999999");
 
 		let columns = {
 			res_prdtNm: 300

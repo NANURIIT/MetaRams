@@ -18,6 +18,8 @@ const TB06030Sjs = (function(){
 		//초기화버튼
 		resetSearchRequiment_TB06030S();
 		getDealInfoFromWF();
+
+		$('#TB06030S_res_prdtCd').inputmask("C999999999");
 	});
 
 	function loginUserSet(){
