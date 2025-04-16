@@ -17,7 +17,6 @@ const TB06030Sjs = (function(){
 		inputNumberChangeFunction_TB06030S();
 		//초기화버튼
 		resetSearchRequiment_TB06030S();
-		loginUserSet();
 		getDealInfoFromWF();
 	});
 
@@ -344,6 +343,7 @@ const TB06030Sjs = (function(){
 		$('#TB06030S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
 		$('#TB06030S_delPrdt').attr('disabled', true); 
 				
+		loginUserSet();
 		
 		//$('#UPLOAD_AddFile').attr('disabled', true);
 		//$('#UPLOAD_DelFiles').attr('disabled', true);
@@ -356,6 +356,8 @@ const TB06030Sjs = (function(){
 		$('#fileKey2').val(key2);				
 		$('#key1').val("TB06030S");		
 		getFileInfo($('#key1').val(),key2);
+
+		chkDecdStep('TB06030S');
 	}
 
 	function getDealList() {
