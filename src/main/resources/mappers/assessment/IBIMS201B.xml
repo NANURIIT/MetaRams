@@ -1391,7 +1391,7 @@
                  , NVL(A.EPRZ_CRDL_APVL_AMT , 0)  				    AS EPRZ_CRDL_APVL_AMT 			/* 종목승인금액 */
                  , NVL(D.APVL_DT , '') 							          AS APVL_DT  						    /* 승인일자 */
                  , NVL(A.ACTS_CD  , '') 						          AS ACTS_CD  	  				    /* 계정과목코드 */
-                 , NVL(A.PRG_STTS_CD  , '') 					        AS PRG_STTS_CD  					  /* 진행상태코드 */
+                 , NVL(s103b.MTR_PRG_STTS_DCD  , '') 					        AS PRG_STTS_CD  					  /* 진행상태코드 */
                  , (SELECT MAX(EMP_NM)
                       FROM IBIMS003B s003b
                      WHERE EMPNO = A.CHRR_EMPNO) 				      AS CHRR_EMPNM	  		   			/* 담당자사원번호 */

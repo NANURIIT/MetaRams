@@ -628,6 +628,7 @@ const TB04010Sjs = (function () {
 
   // deal List 가져오기
   function getDealList() {
+    btnStateReset();
     let ibDealNo = $("#TB04010S_ibDealNo").val();
 
     var option = {};
@@ -681,6 +682,7 @@ const TB04010Sjs = (function () {
           if (rowIndx != "") {
           }
           arrPqGridDealListInfo.option("rowDblClick", function (event, ui) {
+            btnStateReset();
             rowIndx = ui.rowIndx;
             dblclickYn = "1";
             setTabContents(ui.rowData);
@@ -1107,6 +1109,28 @@ const TB04010Sjs = (function () {
         }
       },
     }); /* end of ajax*/
+  }
+
+  // 버튼상태 초기화
+  function btnStateReset() {
+    $("#btnLine").prop("class", "col-sm-5 text-right px-3");
+    $("#assesmentRequest").show(); // 심사요청 버튼 show
+    $("#assesmentRequestCancel").show(); // 심사요청취소	버튼 show
+    $("#assesmentApprove").show(); // 심사승인 버튼 show
+    $("#assesmentReturn").show(); // 심사반송 버튼 show
+    $("#assesmenttlClsf").hide(); // 승인확정 버튼 hide
+    $("#assesmentRequest").prop("disabled", true);
+    $("#assesmentRequestCancel").prop("disabled", true);
+    $("#assesmentRequestHold").prop("disabled", true);
+    $("#assesmentApprove").prop("disabled", true);
+    $("#assesmentReturn").prop("disabled", true);
+    $("#bscAstsInptExptF").prop("disabled", true); // 기초자산 입력예정여부 disabled false
+    $("#cncCmpnyInptExptF").prop("disabled", true); // 거래상대방 입력예정여부 disabled false
+    $("#insGrdInptExptF").prop("disabled", true); // 내부등급 입력예정여부 disabled false
+    $(".save").prop("disabled", true);
+    $(".delete").prop("disabled", true);
+    $("#UPLOAD_AddFile").prop("disabled", true);
+    $("#UPLOAD_DelFiles").prop("disabled", true);
   }
 
   //로그인사원이 심사역인지 확인
@@ -1808,7 +1832,7 @@ const TB04010Sjs = (function () {
     if (isEmpty($("#TB04010S_selectedDealNo").val())) {
       option.text = "Deal정보 조회 후 다시 시도해주세요.";
       openPopup(option);
-      return false;
+      return;
     }
 
     if (isEmpty($("#TB04010S_L007").val())) {
@@ -2077,6 +2101,21 @@ const TB04010Sjs = (function () {
           let dealNo =
             arrPqGridDealListInfo.pdata[arrPqGridDealListInfo.pdata.length];
         });
+        // // 초기화
+        // btnReset();
+        // 조회
+        getDealList();
+        // 상세조회
+        setTabContents({
+          dealNo: $("#TB04010S_ibDealNo").val(),
+          mtrDcd: $("#TB04010S_L007").val(),
+          jdgmDcd: "201",
+        });
+        getDealDetailInfo(
+          $("#TB04010S_ibDealNo").val(), // 딜번호
+          $("#TB04010S_L007").val(), // 부수안건구분코드
+          "201" // 심사상태구분코드
+        );
       },
       error: function () {
         Swal.fire({
@@ -2119,6 +2158,7 @@ const TB04010Sjs = (function () {
     tab8BtnReset();
     $('#ramsTab a[href="#tab-1"]').tab("show");
     $("#TB04010S_L007").focus();
+    btnStateReset();
   }
 
   // tab1 안건구조 초기화
