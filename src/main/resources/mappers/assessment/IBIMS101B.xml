@@ -507,8 +507,7 @@
 	      	AND A.PRDT_CD = C.PRDT_CD(+)
 	      	AND A.TR_OTHR_DSCM_NO = D.ARDY_BZEP_NO(+)
 	      	AND A.PRDT_CD = E.PRDT_CD(+)
-          AND A.PRDT_CD = F.PRDT_CD
-          AND F.DECD_JOB_DCD IN ('01','02','03')		   
+          AND A.PRDT_CD = F.PRDT_CD   
         )     
         SELECT 
 	        A.DEAL_NO

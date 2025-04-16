@@ -396,10 +396,15 @@ function setEmpNm(e) {
     case "TB08050S":
       $("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
       break;
+    case "TB07160S":
+      $('#TB07160S_rcjsDprtNm').val(e.dprtCd)
+      $('#TB07160S_rcjsDprtCd').val(e.dprtCd)
+      break;
     case "TB10110S":
       $("#TB10110S_dprtNm").val(e.dprtCd);
       $('#TB10110S_athCd').find(`option`).css('display', 'inline');
       $('#TB10110S_athCd').find('option').not(`option[value*=${e.dprtCd}]`).css('display', 'none');
+      resetPGgrids('TB10110S');
       break;
     case "TB03040S_1":
       $("#TB03040S_2_dprtNm").val(e.dprtCd);
@@ -415,6 +420,12 @@ function setEmpNm(e) {
     case "TB09010S":
       TB09010Sjs.resetContents();
       break;
+    case "TB09100S_chrr":
+      resetPGgrids("TB09100S");
+      $("#TB09100S_dprtNm").val(e.dprtCd);
+      $("#TB09100S_dprtCd").val(e.dprtCd);
+      break;
+
     default:
       break;
   }
