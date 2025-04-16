@@ -227,7 +227,7 @@ const TB06040Sjs = (function() {
 						$('#TB06040S_cancelRsnCntn').prop('disabled', false);	// 해지사유내용
 
 						$('#btnCtrc').prop('disabled', true);					// 약정버튼
-						$('#btnCclc').prop('disabled', false);					// 해지버튼
+						$('#btnCclc').prop('disabled', true);					// 해지버튼
 					}
 					
 					
