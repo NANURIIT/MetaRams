@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.common.dto.IBIMS403BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
+import com.nanuri.rams.business.common.mapper.IBIMS204BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS401BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS402BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS402HMapper;
@@ -54,8 +55,10 @@ public class TB07030ServiceImpl implements TB07030Service {
  	private Calculation calculation;
  	@Autowired
  	private EtprCrdtGrntAcctProc acctProc;
+	/* 딜승인중도상환수수료설정기본 */
+	private final IBIMS204BMapper ibims204bMapper;
 	/* 약정기본 */
-	private final  IBIMS401BMapper ibims401BMapper;
+	private final IBIMS401BMapper ibims401BMapper;
 	/* 딜실행기본 */
 	private final IBIMS402BMapper ibims402BMapper;
 	/* 딜실행이력 */
@@ -95,6 +98,17 @@ public class TB07030ServiceImpl implements TB07030Service {
 		List<IBIMS403BVO> ibims403lst = new ArrayList<IBIMS403BVO>();
 		List<IBIMS403BVO> ibims403RscdlList = new ArrayList<IBIMS403BVO>();
 		List<IBIMS403BVO> param403lst = paramData.getIbims403Lst();
+
+		String prdtCd = paramData.getPrdtCd(); // 종목코드
+		log.debug("종목코드 ::: {}", prdtCd);
+
+		int res204B = ibims204bMapper.countMdwyRdmpFee(prdtCd);
+
+		if (res204B == 0) {
+			TB07030SVO resMdwyRdmpFee = new TB07030SVO();
+			resMdwyRdmpFee.setCntMdwyRdmpFee(res204B);
+			return resMdwyRdmpFee;
+		}
 
 		for(int i = 0; i < param403lst.size(); i++) {
 
@@ -327,6 +341,8 @@ public class TB07030ServiceImpl implements TB07030Service {
 
 		List<IBIMS436BVO> ovduParamList = new ArrayList<>();
 
+		String prdtCd = paramData.getPrdtCd(); // 종목코드
+
 		int rtnValue = 0;
 		int iLastRdmpTmrd = 0;
 		String prnaOvduDt = "";
@@ -342,6 +358,14 @@ public class TB07030ServiceImpl implements TB07030Service {
 		log.debug("\n[saveRdpm]param403RscdLst ::: {}", param403RscdLst);
 		log.debug("\n[saveRdpm]param403Lst ::: {}", param403Lst);
 		log.debug("\n[saveRdpm]param403DtlLst ::: {}", param403DtlLst);
+
+		log.debug("종목코드 ::: {}", prdtCd);
+
+		int res204B = ibims204bMapper.countMdwyRdmpFee(prdtCd);
+
+		if (res204B == 0) {
+			return res204B;	
+		}
 
 		int iExTrsn = 0;
 		for(int i=0;i<param403Lst.size();i++) {

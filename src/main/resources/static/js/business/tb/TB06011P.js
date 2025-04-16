@@ -880,20 +880,26 @@ function TB06011P_setPrdtInfo(e) {
         confirmButtonText: "확인",
       })
 
-      // resetAll('TB07050S', TB07050Sjs.resetMore());
+      //resetAll('TB07050S', TB07050Sjs.resetMore());
       resetPGgrids("TB07050S")
       // $('#TB07050S_btnSrch').prop('disabled', true)
       $('#TB07050S_btnPlus').prop('disabled', true)
       $('#TB07050S_btnMinus').prop('disabled', true)
       $('#TB07050S_btnSave').prop('disabled', true)
+      $('#TB07050S_excSn').prop('disabled', true)
+      $('#TB07050S_excSn').val('')
 
       $('#TB07050S_prdtCd').val(e.prdtCd)
       $('#TB07050S_prdtNm').val(e.prdtNm)
+      TB07050Sjs.srch();
     } else {
       // $('#TB07050S_btnSrch').prop('disabled', false)
       $('#TB07050S_btnPlus').prop('disabled', false)
       $('#TB07050S_btnMinus').prop('disabled', false)
       $('#TB07050S_btnSave').prop('disabled', false)
+      // $('#TB07050S_scxDcd1').prop('disabled', false)
+      // $('#TB07050S_scxDcd2').prop('disabled', false)
+      // $('#TB07050S_scxDcd3').prop('disabled', false)
       TB07050Sjs.srchExcSn(e.prdtCd);
       TB07050Sjs.srch();
     }

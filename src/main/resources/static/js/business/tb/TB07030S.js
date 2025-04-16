@@ -574,6 +574,11 @@ const TB07030Sjs = (function () {
         },
         success: function (data) {
           //console.log(data)
+          console.log(!!data.cntMdwyRdmpFee)
+          if (!data.cntMdwyRdmpFee) {
+            sf(1, "warning", `중도상환수수료 설정 내역이 존재하지 않습니다.`, "Warning!");
+            return;
+          }
 
           data.ibims403DtlLst.forEach(item => {
             item.chk = true;
@@ -730,6 +735,7 @@ const TB07030Sjs = (function () {
    *******************************************************************/
   function validation(obj = {}) {
     let prdtCd = $("#TB07030S_prdtCd").val(); // 종목코드
+    let valGrd = grdRdmpTrgtDtl.getData().length;
     let eprzCrdlPaiRdmpDcd = $("#TB07030S_E020").val(); // 기업여신원리금상환구분코드
     let prarDt = unformatDate($("#TB07030S_prarDt").val()); // 상환일자
     let acptPtclSmtlAmt = Number(uncomma($('#TB07030S_acptPtclSmtlAmt').val())); // 수납내역합계
@@ -760,7 +766,12 @@ const TB07030Sjs = (function () {
       }
       console.log('수납내역합계 ::: ', acptPtclSmtlAmt)
       console.log('상환대상총금액 ::: ', rdmpPrnaSmmAmt)
-      if ( acptPtclSmtlAmt == 0 || acptPtclSmtlAmt != rdmpPrnaSmmAmt ) {
+
+      if ( !valGrd ) {
+        sf(1, "warning", "상환대상상세내역이 없어 상환을 할 수 없습니다.", "Warning!");
+        return { isValid: false };
+      }
+      if ( acptPtclSmtlAmt != rdmpPrnaSmmAmt ) {
         sf(1, "warning", "상환대상총금액과 수납내역합계가 상이합니다.", "Warning!");
         return { isValid: false };
       }

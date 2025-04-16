@@ -9,7 +9,6 @@ const TB08050Sjs = (function () {
 
   $(document).ready(function () {
     onload();
-
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB08050S_strPrarDt","TB08050S_endPrarDt");
   });
@@ -915,16 +914,34 @@ const TB08050Sjs = (function () {
   function validation() {
     let prdtCd = $("#TB08050S_prdtCd").val(); // 종목코드
 
-    if (isEmpty(prdtCd)) {
+    if ( !prdtCd || prdtCd.length != 10 ) {
       Swal.fire({
         icon: "warning",
         text: "종목코드를 입력해주세요.",
+        title: "Warning!",
+        confirmButtonText: "확인",
+      });
+
+      return { isValid: false };
+    }
+
+    let vals = $(`#TB08050S_F008, #TB08050S_rkfrDt, #TB08050S_feeRcivAmt, #TB08050S_prufIsuDt, #TB08050S_rctmDt`)
+                  .map(function(){return $(this).val().trim()}).get();
+    let bValid = vals.some(val => val == '')
+    console.log(vals)
+    console.log(bValid);
+    if (bValid) {
+      Swal.fire({
+        icon: "warning",
+        html: `입력되지 않은 값이 존재합니다.`,
+        title: "Warning!",
         confirmButtonText: "확인",
       });
       return { isValid: false };
     }
 
     return { isValid: true, prdtCd };
+
   }
 
   $("#TB08050S_D006").change(function () {
@@ -988,37 +1005,33 @@ const TB08050Sjs = (function () {
 
   function resetMore() {
     prlnFee = "";	
-	$("#TB08050S_feeSn").val(""); // 수수료일련번호
-	$("#TB08050S_feeRcivDt").val(dateNull("")); // 수취일자 ? 수납일자
-	$("#TB08050S_F004").prop("selectedIndex", 0); // 기업여신수수료종류코드
-	$("#TB08050S_eprzCrdlFeeStdrAmt").val(0); // 기업여신수수료기준금액
-	$("#TB08050S_feeRt").val(0); // 수수료율
-	$("#TB08050S_feeAmt").val(0); // 수수료금액
-	$("#TB08050S_feeTrgtCtns").val(""); // 수수료대상내용
-	$("#TB08050S_actsCd").val(""); // 계정과목코드
-	$(
-	  `input[name="TB08050S_feeTxtnYn"][value="N"]`
-	).prop("checked", true); // 수수료과세여부
-	$("#TB08050S_F006").prop("selectedIndex", 0); // 기업여신수수료인식구분코드
-	$("#TB08050S_fnnrRcogStrtDt").val(dateNull("")); // 인식시작일자
-	$("#TB08050S_fnnrRcogEndDt").val(dateNull("")); // 인식종료일자
-	$("#TB08050S_F008").prop("selectedIndex", 0); // 자금구분코드
-	$("#TB08050S_tempTot").val(0); //합계금액
-    $("#TB08050S_aplcExchR").val("1.00"); // 적용환율
-	$("#TB08050S_aplcExchR").prop("disabled",true);
-	
-	$("#TB08050S_I027").val("KRW"); // 적용환율
-	$("#TB08050S_E027").prop("selectedIndex", 0); // 기업여신과세유형코드
-	$("#TB08050S_feeRcivAmt").val(0); // 수수료수납금액구분코드
-	$("#TB08050S_wcrcTrslTrFeeAmt").val(0); // 원화환산거래수수료금액
-	$("#TB08050S_prufIsuDt").val(dateNull("")); // 증빙발행일자
-	$("#TB08050S_splmTxa").val(0); // 부가세액
-	$("#TB08050S_rctmDt").val(dateNull("")); // 입금일자
-	$(
-	  `input[name="TB08050S_prcsCpltYn"][value="N"]`
-	).prop("checked", true); // 수납완료여부
-	$("#TB08050S_rkfrDt").val(dateNull("")); // 회계일자 ? 기산일자
-	$("#TB08050S_prcsTm").val(""); //처리시간
+    $("#TB08050S_feeSn").val(""); // 수수료일련번호
+    $("#TB08050S_feeRcivDt").val(dateNull("")); // 수취일자 ? 수납일자
+    $("#TB08050S_F004").prop("selectedIndex", 0); // 기업여신수수료종류코드
+    $("#TB08050S_eprzCrdlFeeStdrAmt").val(0); // 기업여신수수료기준금액
+    $("#TB08050S_feeRt").val(0); // 수수료율
+    $("#TB08050S_feeAmt").val(0); // 수수료금액
+    $("#TB08050S_feeTrgtCtns").val(""); // 수수료대상내용
+    $("#TB08050S_actsCd").val(""); // 계정과목코드
+    $(`input[name="TB08050S_feeTxtnYn"][value="N"]`).prop("checked", true); // 수수료과세여부
+    $("#TB08050S_F006").prop("selectedIndex", 0); // 기업여신수수료인식구분코드
+    $("#TB08050S_fnnrRcogStrtDt").val(dateNull("")); // 인식시작일자
+    $("#TB08050S_fnnrRcogEndDt").val(dateNull("")); // 인식종료일자
+    $("#TB08050S_F008").prop("selectedIndex", 0); // 자금구분코드
+    $("#TB08050S_tempTot").val(0); //합계금액
+      $("#TB08050S_aplcExchR").val("1.00"); // 적용환율
+    $("#TB08050S_aplcExchR").prop("disabled",true);
+    
+    $("#TB08050S_I027").val("KRW"); // 적용환율
+    $("#TB08050S_E027").prop("selectedIndex", 0); // 기업여신과세유형코드
+    $("#TB08050S_feeRcivAmt").val(0); // 수수료수납금액구분코드
+    $("#TB08050S_wcrcTrslTrFeeAmt").val(0); // 원화환산거래수수료금액
+    $("#TB08050S_prufIsuDt").val(dateNull("")); // 증빙발행일자
+    $("#TB08050S_splmTxa").val(0); // 부가세액
+    $("#TB08050S_rctmDt").val(dateNull("")); // 입금일자
+    $(`input[name="TB08050S_prcsCpltYn"][value="N"]`).prop("checked", true); // 수납완료여부
+    $("#TB08050S_rkfrDt").val(dateNull("")); // 회계일자 ? 기산일자
+    $("#TB08050S_prcsTm").val(""); //처리시간
   }
 
 
@@ -1038,13 +1051,13 @@ const TB08050Sjs = (function () {
 	}
 
   return {
-	init_TB08050S :init_TB08050S,
-    srch: srch,
+	  init_TB08050S : init_TB08050S,
+    srch : srch,
     reBdin_TB08050S: reBdin_TB08050S,
     resetMore: resetMore,
     calulator: calulator,
     save: save,
     getDealInfoFromWF: getDealInfoFromWF,
-	inputNumberChangeFunction_TB08050S:inputNumberChangeFunction_TB08050S,
+	  inputNumberChangeFunction_TB08050S:inputNumberChangeFunction_TB08050S,
   };
 })();
