@@ -310,8 +310,17 @@ const TB06040Sjs = (function() {
             if ( f === '1' ) {
                 /* 약정 */
                 console.log("약정");
-                let ctrcCclcDcd = '1';
 
+                if(stdrIntrt === null || stdrIntrt === '0'){
+                    Swal.fire({
+                        icon              : 'warning'
+                    , text              : "금리정보가 등록되어있지 않습니다."
+                    , confirmButtonText : "확인"
+                    });
+                    return false;
+                }
+
+                let ctrcCclcDcd = '1';
 
                 paramData = {
                     dealNo,
