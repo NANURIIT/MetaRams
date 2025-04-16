@@ -268,7 +268,6 @@ const TB03040Sjs = (function(){
       dataType: "string",
       dataIndx: "mtrPrgSttsDcdNm",
       halign: "center",
-      align: "left",
     },
   ];
   

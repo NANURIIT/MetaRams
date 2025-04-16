@@ -1160,7 +1160,7 @@ const TB07100Sjs = (function () {
           Swal.fire({
             icon: 'success'
             , title: "Success!"
-            , text: "저장 성공!~"
+            , text: "저장 성공!"
           })
         }
         else {
@@ -1226,7 +1226,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "결재요청이 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('04');
+          $('#TB07100S_decdSttsDcd').val('1');
         }
         else if (data === -7574) {
           Swal.fire({
@@ -1280,7 +1280,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "승인요청취소 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('00');
+          $('#TB07100S_decdSttsDcd').val('4');
         }
         else {
           Swal.fire({
@@ -1327,7 +1327,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "승인 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('05');
+          $('#TB07100S_decdSttsDcd').val('2');
         }
         else {
           Swal.fire({
@@ -1374,7 +1374,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "반려 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('00');
+          $('#TB07100S_decdSttsDcd').val('3');
         }
         else {
           Swal.fire({
