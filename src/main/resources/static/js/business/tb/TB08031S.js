@@ -26,6 +26,123 @@ const TB08031Sjs = (function () {
   $(document).ready(function () {
     loadInvbnkAmnBzCd(); // 사업구분 정보
     loadSelectBoxContents();
+
+    /**
+     * maxlength 지정
+     */
+    let columns = {
+      // 사업 기본정보
+      bondProt: 2 // 주요채권보전
+      , rvwStRsn: 200 // 검토중단사유내용
+      , bsnsCntnt: 1500 // 사업내용
+
+      // 사업 상세정보
+      // 사업정보
+      , busiArea: 300 // 사업장위치
+      , fcltScal: 50 // 시설규모
+      , resiEco: 300 // 주거환경
+      , crdtEhcmntCntnt: 100 // 신용보관내용
+      , bsnsScal: 150 // 사업규모
+      , leadAgency: 1// 주무관청
+      , bzplAddr: 1// 사업장위치
+      , spon: 1// 스폰서
+      , mrtg: 1 // 담보
+      , brwrNtnNm: 100 // 차주국가명
+      , hostCountry: 100 // 소재국
+      , ensrYn: 100 // 보증여부/보증기관
+      , amSt: 100 // 기종/선종
+      , proEprz: 100 // 제작사
+      , proYr: 4 // 제조년도
+      , lseMgco: 150 // 리스운용사
+      , lseUser: 150 // 리스이용자
+      , invstGuidelines: 1500 // 투자가이드라인
+
+      // 사업참가자정보
+      , partCorpNm: 200 // 업체명
+      , dtlsCorpNo: 13 // 법인등록번호
+      , bsnsRgstNo: 10 // 사업자등록번호
+      , rprstPNm: 200 // 대표자명
+
+      // 사업주요전망
+      , mainCntnt: 4000 // 주요일정내용
+
+      // 채권보전주요약정
+      , dtlsCntnt: 4000 // 상세내용
+
+      // 조건변경이력
+      , cndtMainCntnt: 2000 // 주요내용
+      , handlerID: 100 // 취급자개인번호
+      , rcgDocNo: 100 // 승인문서번호
+
+      // 대주단정보
+      , mCorpNm: 200 // 기관명
+
+      // 수익자정보
+      , ernCorpNm: 200 // 기관명
+
+      // 투자기업목록
+      , fndNm: 200 // 펀드명
+      , bsnmNo: 100 // 사업자등록번호
+      , bcncNm: 300 // 거래상대방명
+      , invstBzscalCorpNo: 13 // 법인등록번호
+      , indTypNm: 100 // 업종명
+      , blgtCntyNm: 100 // 소속국가명
+
+      // 자산운용사정보
+      , asstWrkngInfo_crno: 13 // 법인등록번호
+      , asstWrkngInfo_rnbn: 10 // 사업자번호
+      // 임직원수
+      // 운용인력수
+
+      // 편입자산정보
+      , admsAsstNm: 100 // 편입자산명
+    }
+    limitInputLength(columns,"TB08031S");
+
+    selectorNumberFormater(
+      $(
+        `
+          #TB08031S_prcrAmt
+          , #TB08031S_thcoRlAmt
+          , #TB08031S_thcoPtnAmt
+          , #TB08031S_BitrKindCdInput
+          , #TB08031S_busiSiteSqms
+          , #TB08031S_busiSiteAcre
+          , #TB08031S_Sqms
+          , #TB08031S_SqmsP
+          , #TB08031S_invstAmt
+          , #TB08031S_equity
+          , #TB08031S_priLoan
+          , #TB08031S_subLoan
+          , #TB08031S_cerkRto
+          , #TB08031S_mAgrAmt
+          , #TB08031S_ernAgrAmt
+          , #TB08031S_busiPrcrAmt
+          , #TB08031S_busiPtnAmt
+          , #TB08031S_acqstAmt
+          , #TB08031S_coAmt
+          , #TB08031S_admsAmt
+        `
+      )
+    );
+
+    maskRt(
+      `
+        #TB08031S_BitrKindCdInput
+        , #TB08031S_preRt
+        , #TB08031S_tgtRvn
+        , #TB08031S_arRt
+        , #TB08031S_far
+        , #TB08031S_prorRto
+        , #TB08031S_cerkRto
+        , #TB08031S_bkbnRto
+        , #TB08031S_mPartRt
+        , #TB08031S_ernPartRt
+        , #TB08031S_invstWeight
+        , #TB08031S_insRvn
+      `
+    )
+
   });
 
 
