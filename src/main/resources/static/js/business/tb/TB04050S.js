@@ -95,6 +95,13 @@ const TB04050Sjs = (function () {
 
     getUrlDealInfo();
     //changeCheckCd();
+
+    let columns = {
+      smit: 100, //제출처
+      ivtgRqstCtns: 100, //발급요청내용
+    };
+
+    limitInputLength(columns, "TB04050S");
   });
 
   // 세션으로 받앗을때

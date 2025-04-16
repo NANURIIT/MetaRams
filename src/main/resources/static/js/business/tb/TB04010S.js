@@ -85,15 +85,19 @@ const TB04010Sjs = (function () {
     // 글자수체크
     let columns = {
       ibDealNm: 300, // 안건명
-      MTR_ABBR_NM: 100, // 약어명
-      MAIN_INVST_TRGT_NM: 100, // 주요투자대상
+      ibDealSnmNm: 100, // 약어명
     };
 
     limitInputLength(columns);
 
     let columns2 = {
+      mainInvstTrgtNm: 100, // 주요투자대상
       busiDptOpnn: 1000, // 사업부의견
       jdgmDptOpnn: 1000, // 심사부의견
+      bscAstsCnts: 200, // 기초자산내용
+      lrgstShrhldrNm: 100, // 최대주주명
+      mrtgRsnCnts: 100, // 담보명
+      grteCtns: 200, // 보증내용
     };
 
     limitInputLength(columns2, "TB04010S");
