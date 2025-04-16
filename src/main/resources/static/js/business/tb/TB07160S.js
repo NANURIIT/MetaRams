@@ -127,6 +127,8 @@ const TB07160Sjs = (function () {
       var param = {
         prdtCd: validation().prdtCd,
       };
+
+      $('#TB07160S_rcjsData').find('input, select').val("");
   
       $.ajax({
         type: "POST",
@@ -261,13 +263,15 @@ const TB07160Sjs = (function () {
               text: "이수관처리에 실패하였습니다.",
               confirmButtonText: "확인",
             });
-          }else{
+          }
+          else{
             Swal.fire({
               icon: "success",
               title: "Success!",
               text: "이수관처리를 완료하였습니다.",
               confirmButtonText: "확인",
             });
+            srch_TB07160S();
           }
           
         },

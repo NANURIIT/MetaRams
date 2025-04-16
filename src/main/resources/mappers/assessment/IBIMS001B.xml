@@ -48,6 +48,8 @@
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrpExpl)">
            AND CMNS_CD_GRP_EXPL LIKE '%' || #{cmnsCdGrpExpl} || '%'
+            OR CMNS_CD_GRP LIKE '%' || #{cmnsCdGrpExpl} || '%'
+            OR CMNS_CD_NM LIKE '%' || #{cmnsCdGrpExpl} || '%'
            </if>
          ORDER
             BY A.CMNS_CD_GRP ASC

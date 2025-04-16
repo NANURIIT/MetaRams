@@ -23,8 +23,9 @@
           FROM IBIMS005B A
          WHERE 1=1
            AND A.SCRN_APLY_SHP_CD = 'M'
-           AND A.MENU_NM LIKE '%' || #{menuNm} || '%'                             /* 메뉴명 */
            AND (MENU_LVL = 1 OR (MENU_LVL &gt; 1 AND HGRK_MENU_ID IS NOT NULL))
+           AND A.MENU_NM LIKE '%' || #{menuNm} || '%'                             /* 메뉴명 */
+            <!-- OR A.MENU_ID LIKE '%' || #{menuNm} || '%' -->
          ORDER BY A.MENU_ID, A.HGRK_MENU_ID
     </select>
 
