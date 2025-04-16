@@ -16,6 +16,8 @@ const TB10510Sjs = (function () {
         isBatchScheduler();
         clockpickerCtrl();
         reset();
+
+        $('#TB10510S_jobRunStrtTime').inputmask('99:99:99');
     });
 
     /*******************************************************************
@@ -47,14 +49,17 @@ const TB10510Sjs = (function () {
     }
 
     function clockpickerCtrl() {
-        $('#TB10510S_jobRunStrtTime').on('change', function () {
-            console.log("??");
-
-            const val = $(this).val()
-            if (val.length === 5) {
-                $(this).val(val + ":00");
+        $('#TB10510S_jobRunStrtTime').clockpicker({
+            autoclose: true,
+            twelvehour: false,  // 24시간 형식으로
+            afterDone: function() {
+                let time = $('#TB10510S_jobRunStrtTime').val();
+                // "10:00" 형태일 경우 "10:00:00"으로 변환
+                if (time.length === 5) {
+                    $('#clockpicker').val(time + ':00');
+                }
             }
-        })
+        });
     }
 
     /*******************************************************************
