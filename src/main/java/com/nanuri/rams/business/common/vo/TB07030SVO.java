@@ -67,4 +67,6 @@ public class TB07030SVO  {
 	
 	// 실행별상환대상금액 합계
 	private CalculationSumDTO totalDTO;
+
+	private int cntMdwyRdmpFee; // 중도상환수수료 존재여부
 }

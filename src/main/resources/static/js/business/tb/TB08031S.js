@@ -43,10 +43,10 @@ const TB08031Sjs = (function () {
       , resiEco: 300 // 주거환경
       , crdtEhcmntCntnt: 100 // 신용보관내용
       , bsnsScal: 150 // 사업규모
-      , leadAgency: 1// 주무관청
-      , bzplAddr: 1// 사업장위치
-      , spon: 1// 스폰서
-      , mrtg: 1 // 담보
+      , leadAgency: 250// 주무관청
+      , bzplAddr: 300// 사업장위치
+      , spon: 1000// 스폰서
+      , mrtg: 1000 // 담보
       , brwrNtnNm: 100 // 차주국가명
       , hostCountry: 100 // 소재국
       , ensrYn: 100 // 보증여부/보증기관
@@ -88,16 +88,22 @@ const TB08031Sjs = (function () {
       , indTypNm: 100 // 업종명
       , blgtCntyNm: 100 // 소속국가명
 
-      // 자산운용사정보
-      , asstWrkngInfo_crno: 13 // 법인등록번호
-      , asstWrkngInfo_rnbn: 10 // 사업자번호
-      // 임직원수
-      // 운용인력수
-
       // 편입자산정보
       , admsAsstNm: 100 // 편입자산명
     }
     limitInputLength(columns,"TB08031S");
+
+    let columns2 = {
+      // 자산운용사정보
+      ardyBzepNo: 13
+      , crno: 13 // 법인등록번호
+      , rnbn: 10 // 사업자번호
+      , oprtHnfNum: 4 // 운용인력수
+      , stffNum: 4 // 직원수
+    }
+
+    limitInputLength(columns2,"TB08031S_asstWrkngInfo");
+
 
     selectorNumberFormater(
       $(
