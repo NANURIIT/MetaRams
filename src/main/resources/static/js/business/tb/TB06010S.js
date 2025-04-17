@@ -783,7 +783,7 @@ const TB06010Sjs = (function(){
 			error : function(request,  error ){
 				Swal.fire({
 					title: '안건 조회 확인',
-					icon: 'error',
+					icon: 'warning',
 					text: '대출채권/채무보증 정보등록이 가능한 안건이 아닙니다.',
 					confirmButtonText: '확인',
 				}).then(() => {
@@ -992,6 +992,13 @@ const TB06010Sjs = (function(){
 		
 		var prdtCd = $('#TB06010S_res_prdtCd').val();
 
+		var prnaRdmpFrqcMnum = $('#TB06010S_prnaRdmpFrqcMnum').val();		//원금상환주기개월수
+		var aictStdrIntrtKndCd = $('#TB06010S_S003').val();					//변동기준금리코드
+		var fxnIntrt = $('#TB06010S_fxnIntrt').val();						//고정금리
+		var intrCngeFrqcMnum = $('#TB06010S_intrCngeFrqcMnum').val();		//금리변동주기개월수
+		var intrRdmpFrqcMnum = $('#TB06010S_intrRdmpFrqcMnum').val()		//이자상환주기
+		var ovduIntrRt = $('#TB06010S_ovduIntrRt').val();					//연체이자율
+
 		if (isEmpty(prdtCd)) {
 			
 			Swal.fire({
@@ -1004,6 +1011,17 @@ const TB06010Sjs = (function(){
 			});
 		
 			return false;
+		}else if(prnaRdmpFrqcMnum === '0' || isEmpty(prnaRdmpFrqcMnum)){
+			Swal.fire({
+				icon: 'warning'
+				, title: "Warning!"
+				, text: '상환주기를 입력해주세요.'
+				, confirmButtonText: "확인"
+			}).then((result) => {
+				//location.reload();
+			});
+		}else if(aictStdrIntrtKndCd){
+
 		}
 		
 		var paramData = {
