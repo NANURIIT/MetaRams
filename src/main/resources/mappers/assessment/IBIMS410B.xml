@@ -848,7 +848,7 @@
             AND NVL(T8.DECD_STTS_DCD, '0') = #{consDecdStatCd} /* 결재상태 */
             </if>
             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trObjtBsnNo)">
-            AND T1.TR_OBJT_BSN_NO = #{trObjtBsnNo} /* 거래처번호 */
+            AND T5.TR_OTHR_DSCM_NO = #{trObjtBsnNo} /* 거래처번호 */
             </if>
             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trCrryCd)">
             AND T1.TR_CRRY_CD = #{trCrryCd} /* 통화구분 */
