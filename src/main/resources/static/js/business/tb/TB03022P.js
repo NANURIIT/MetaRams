@@ -20,14 +20,18 @@ $(document).ready(function () {
  * 입력 이벤트 등록 함수
  */
 function TB03022P_srch(menuId) {
-  $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03022P']:not([disabled])`)
+  $(
+    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03022P']:not([disabled])`
+  )
     .closest("span.input-group-append")
     .prev("input[type='text']:not([readonly])")
     .on("input", async function () {
-
       const currentInput = $(this);
 
-      const result = $(this).attr("id").slice(0, $(this).attr("id").length - 2) + "Nm";
+      const result =
+        $(this)
+          .attr("id")
+          .slice(0, $(this).attr("id").length - 2) + "Nm";
 
       $(`#${result}`).val("");
 
@@ -36,7 +40,9 @@ function TB03022P_srch(menuId) {
       }
     });
 
-  $(`div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03022P']:not([disabled])`)
+  $(
+    `div[data-menuid="${menuId}"] span.input-group-append > button[onclick*='callTB03022P']:not([disabled])`
+  )
     .closest("span.input-group-append")
     .prev("input[type='text']:not([readonly])")
     .on("keydown", async function (evt) {
@@ -63,19 +69,23 @@ function TB03022P_srch(menuId) {
 
 /**
  * 팝업내 사원번호조회팝업 이벤트
- * @param { String } popupId 
+ * @param { String } popupId
  * @author 김건우
  */
 function TB03022P_inModalSrch(popupId) {
-  $(`#modal-${popupId} span.input-group-append > button[onclick*='callTB03022P']:not([disabled])`)
+  $(
+    `#modal-${popupId} span.input-group-append > button[onclick*='callTB03022P']:not([disabled])`
+  )
     .closest("span.input-group-append")
     .prev("input[type='text']:not([readonly])")
     .off("input")
     .on("input", async function () {
-
       const currentInput = $(this);
 
-      const result = $(this).attr("id").slice(0, $(this).attr("id").length - 2) + "Nm";
+      const result =
+        $(this)
+          .attr("id")
+          .slice(0, $(this).attr("id").length - 2) + "Nm";
 
       $(`#${result}`).val("");
 
@@ -97,7 +107,6 @@ function TB03022P_inModalSrch(popupId) {
   }
 }
 
-
 function TB03022P_clearInput(inputId) {
   $(`input[id='${inputId}']`).val("");
 }
@@ -107,7 +116,6 @@ function TB03022P_clearInput(inputId) {
  * @param {string} prefix 결과전달 ID의 prefix
  */
 function callTB03022P(prefix, e) {
-
   TB03022P_pf = prefix;
   setTimeout(() => roadListGrid(), 300);
   $("#TB03022P_prefix").val(prefix);
@@ -219,7 +227,6 @@ function keyDownEnter_TB03022P() {
  * ajax 통신(조회)
  */
 async function getEmpList() {
-
   var empNm = $("#TB03022P_empNm").val();
   var empno = $("#TB03022P_empno").val();
   var dprtCd = $("#TB03022P_dprtCd").val();
@@ -240,13 +247,15 @@ async function getEmpList() {
     data: dtoParam,
     dataType: "json",
     success: function (data) {
-      if ($(`div[id='modal-TB03022P']`).css('display') === "none" && data.length === 1) {
+      if (
+        $(`div[id='modal-TB03022P']`).css("display") === "none" &&
+        data.length === 1
+      ) {
         setEmpNm(data[0]);
         modalClose_TB03022P();
-      }
-      else {
-        callTB03022P($('#TB03022P_prefix').val(), mmbrSn);
-        setTimeout(() => dataEmpSetGrid(data), 400)
+      } else {
+        callTB03022P($("#TB03022P_prefix").val(), mmbrSn);
+        setTimeout(() => dataEmpSetGrid(data), 400);
       }
     },
   });
@@ -289,7 +298,10 @@ function setEmpNm(e) {
   $(pageAthCd).val(athCd);
 
   // 그리드(위원정보) 데이터 가져오기
-  const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid("option", "dataModel.data"); // 20241122 오류나서 바꿨습니다
+  const arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid(
+    "option",
+    "dataModel.data"
+  ); // 20241122 오류나서 바꿨습니다
 
   // 공동
   switch (prefix) {
@@ -397,14 +409,17 @@ function setEmpNm(e) {
       $("#TB08050S_dprtNm").val(e.dprtCd).prop("selected", true);
       break;
     case "TB07160S":
-      $('#TB07160S_rcjsDprtNm').val(e.dprtCd)
-      $('#TB07160S_rcjsDprtCd').val(e.dprtCd)
+      $("#TB07160S_rcjsDprtNm").val(e.dprtCd);
+      $("#TB07160S_rcjsDprtCd").val(e.dprtCd);
       break;
     case "TB10110S":
       $("#TB10110S_dprtNm").val(e.dprtCd);
-      $('#TB10110S_athCd').find(`option`).css('display', 'inline');
-      $('#TB10110S_athCd').find('option').not(`option[value*=${e.dprtCd}]`).css('display', 'none');
-      resetPGgrids('TB10110S');
+      $("#TB10110S_athCd").find(`option`).css("display", "inline");
+      $("#TB10110S_athCd")
+        .find("option")
+        .not(`option[value*=${e.dprtCd}]`)
+        .css("display", "none");
+      resetPGgrids("TB10110S");
       break;
     case "TB03040S_1":
       $("#TB03040S_2_dprtNm").val(e.dprtCd);
@@ -424,6 +439,9 @@ function setEmpNm(e) {
       resetPGgrids("TB09100S");
       $("#TB09100S_dprtNm").val(e.dprtCd);
       $("#TB09100S_dprtCd").val(e.dprtCd);
+      break;
+    case "TB04060S":
+      TB04060Sjs.TB04060S_resetGrid();
       break;
 
     default:
@@ -483,6 +501,6 @@ let colEmpInfo = [
     title: "권한코드",
     dataType: "string",
     dataIndx: "athCd",
-    hidden: true
+    hidden: true,
   },
 ];

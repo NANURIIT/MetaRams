@@ -34,4 +34,8 @@ public interface IBIMS115BMapper {
     int confirmMMBRInfo(List<Map<String, Object>> paramData);
     // 협의체 현황 및 결과조회 의결내용 취소
     int cancelMMBRInfo(List<Map<String, Object>> paramData);
+   
+   // 회차확인
+   IBIMS115BVO sqCheck(IBIMS115BDTO paramData);
+
 }

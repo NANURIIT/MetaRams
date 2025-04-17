@@ -79,7 +79,19 @@ public class TB05010ServiceImpl implements TB05010Service {
 
 	// 협의정보 - 안건정보 추가
 	@Override
-	public IBIMS103BVO getDealDetail(IBIMS103BDTO paramData) { return ibims103BMapper.selectOne103B(paramData); }
+	public IBIMS103BVO getDealDetail(IBIMS103BDTO paramData) { 
+		
+		return ibims103BMapper.selectOne103B(paramData);
+	
+	}
+
+	// 회차확인
+	@Override
+	public IBIMS115BVO sqCheck(IBIMS115BDTO paramData) {				
+
+    return ibims115BMapper.sqCheck(paramData);
+		
+	}
 
 	// 임시저장 - 기본정보, 안건정보, 위원정보
 	@Override
@@ -110,6 +122,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 				enoInfo.setJdgmDcd(paramData.getDealList().get(j).getJdgmDcd());
 
 				enoList.add(enoInfo);
+
 			}
 		}
 
@@ -126,6 +139,7 @@ public class TB05010ServiceImpl implements TB05010Service {
 		ibims115BMapper.delete115B(paramData);
 		// 위원정보 저장 IBIMS115B
 		ibims115BMapper.insert115B(enoList);
+
 
 		// 안건정보 진행상태 업데이트 IBIMS103B
 		for (IBIMS112BDTO item : paramData.getDealList()) {

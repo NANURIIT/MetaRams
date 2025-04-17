@@ -20,6 +20,10 @@ const TB05010Sjs = (function () {
    * 회차 변경이벤트
    */
   function chngInspctCnfrncSqc() {
+    let cnsbSq = $("#TB05010S_inspctCnfrncSqcSq2").val();
+    let rsltnYr = $("#TB05010S_stdYr").val();
+    let cnsbDcd = $("#TB05010S_R016").val();
+
     $("#TB05010S_rsltnDt2").val(getToday());
     $("#TB05010S_rsltnTm2").val("");
     $("#TB05010S_inspctPrgrsStCd2").val("");
@@ -34,6 +38,47 @@ const TB05010Sjs = (function () {
     // $("#gridMmbrList").pqGrid("refreshDataAndView"); // 위원정보 pqgrid 초기화
     $("#gridCaseList").pqGrid("option", "dataModel.data", []);
     $("#gridCaseList").pqGrid("refreshDataAndView"); // pqgrid 초기화
+
+    sqCheck(cnsbSq, rsltnYr, cnsbDcd);
+  }
+
+  function sqCheck(cnsbSq, rsltnYr, cnsbDcd) {
+    var paramData = {
+      cnsbSq: cnsbSq,
+      rsltnYr: rsltnYr,
+      cnsbDcd: cnsbDcd,
+    };
+
+    $.ajax({
+      type: "GET",
+      url: "/TB05010S/sqCheck",
+      data: paramData,
+      dataType: "json",
+      success: function (data) {
+        //console.log("confirm::::::::::", data);
+        if (data.dupYn == "N" && data.gapYn == "N") {
+          //console.log("가능");
+        } else if (data.dupYn == "Y" && data.gapYn == "N") {
+          //console.log("이미 등록된 회차 존재");
+          $("#TB05010S_inspctCnfrncSqcSq2").val("").focus();
+          Swal.fire({
+            icon: "warning",
+            title: "warning!",
+            text: "이미 등록된 회차가 존재합니다.",
+            confirmButtonText: "확인",
+          });
+        } else if (data.dupYn == "N" && data.gapYn == "Y") {
+          //console.log("결번 존재");
+          $("#TB05010S_inspctCnfrncSqcSq2").val("").focus();
+          Swal.fire({
+            icon: "warning",
+            title: "warning!",
+            text: "결번인 회차가 존재합니다.",
+            confirmButtonText: "확인",
+          });
+        }
+      },
+    });
   }
 
   function mmbrDelRow() {
@@ -57,8 +102,8 @@ const TB05010Sjs = (function () {
     }
     if (checkedRows.length <= 0) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "warning!",
         text: "삭제할 위원정보 행을 체크해주세요.",
         confirmButtonText: "확인",
       });
@@ -322,12 +367,13 @@ const TB05010Sjs = (function () {
     $("#cancleButton").attr("disabled", true);
 
     //협의체 기본정보 초기화 및 셋팅
-    // $("#TB05010S_inspctCnfrncSqcSq2").val(
+    //$("#TB05010S_inspctCnfrncSqcSq2").val();
     //   Number($("#TB05010S_inspctCnfrncSqcSq2").val()) + 1
     // );
     $("#TB05010S_rsltnDt2").val("");
     $("#TB05010S_rsltnTm2").val("");
     $("#TB05010S_inspctPrgrsStCd2").val("");
+    $("#TB05010S_inspctCnfrncSqcSq2").val("");
 
     $("#TB05010_fileList").html("");
     $("#TB05010S_MMBRList").html("");
@@ -1029,19 +1075,19 @@ const TB05010Sjs = (function () {
     let CnfrncList = arrPqGridCnfrncList.pdata; //// 협의체 결의 및 목록
     var inspctCnfrncSqcSq2 = $("#TB05010S_inspctCnfrncSqcSq2").val();
 
-    for (let i = 0; i < CnfrncList.length; i++) {
-      if (CnfrncList[i].sn == $("#TB05010S_inspctCnfrncSqcSq2").val()) {
-        console.log(`CnfrncList[i].sn : ${CnfrncList[i].sn}`);
-        Swal.fire({
-          icon: "error",
-          title: "Error!",
-          text: "해당 전결협의체에 중복된 협의체 회차정보가 존재합니다.",
-          confirmButtonText: "확인",
-        });
-        $("#TB05010S_inspctCnfrncSqcSq2").focus();
-        return; // 알림 후 함수 종료
-      }
-    }
+    // for (let i = 0; i < CnfrncList.length; i++) {
+    //   if (CnfrncList[i].sn == $("#TB05010S_inspctCnfrncSqcSq2").val()) {
+    //     console.log(`CnfrncList[i].sn : ${CnfrncList[i].sn}`);
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Error!",
+    //       text: "해당 전결협의체에 중복된 협의체 회차정보가 존재합니다.",
+    //       confirmButtonText: "확인",
+    //     });
+    //     $("#TB05010S_inspctCnfrncSqcSq2").focus();
+    //     return; // 알림 후 함수 종료
+    //   }
+    // }
 
     if (!isEmpty(inspctCnfrncSqcSq2)) {
       if (MMBRListCount != 0 && CASEListCount != 0) {
@@ -1234,6 +1280,7 @@ const TB05010Sjs = (function () {
       error: function () {},
     });
   }
+
   /* ***********************************그리드 컬럼******************************** */
 
   // 협의체 결의 및 목록 탭 그리드

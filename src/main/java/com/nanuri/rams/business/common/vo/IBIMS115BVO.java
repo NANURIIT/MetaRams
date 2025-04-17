@@ -11,4 +11,7 @@ public class IBIMS115BVO extends IBIMS115BDTO {
     private String         atdcTrgtEmpnm;                          // 참석대상사원명
     private String         atdcAngtEmpnm;                          // 참석대리인사원명
     private String         aprvOppsDcdNm;                          // 찬반구분코드명
+    private String         dupYn;                                  // 중복여부
+    private String         gapYn;                                  // 결번여부
+    
 }
