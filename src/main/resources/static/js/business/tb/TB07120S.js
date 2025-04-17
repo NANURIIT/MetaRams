@@ -10,6 +10,10 @@ const TB07120Sjs = (function () {
     setInput();
     getDealInfoFromWF();
 
+    $('#TB07120S_dcfcEno').on('change', function () {
+      chkDecd();
+    })
+
     // 조회조건 수정시 초기화
     $("#TB07120S_conSrch").find('input, select').on('input', function () {
       resetDataForm();
@@ -631,6 +635,7 @@ const TB07120Sjs = (function () {
       $('#TB07120S_gbck').prop('disabled', true)
       $('#TB07120S_dcfcEno').prop('disabled', true)
       $('#TB07120S_dcfcBtn').prop('disabled', true)
+      $('#TB07120S_rjctRsnCntn').prop('disabled', true)
     }
     // 반려된 경우 재승인요청,반려 가능
     else if ($('#TB07120S_decdSttsDcd').val() === "3") {
@@ -640,6 +645,7 @@ const TB07120Sjs = (function () {
       $('#TB07120S_gbck').prop('disabled', true)
       $('#TB07120S_dcfcEno').prop('disabled', true)
       $('#TB07120S_dcfcBtn').prop('disabled', true)
+      $('#TB07120S_rjctRsnCntn').prop('disabled', true)
     }
     // 승인취소된 내역은 조회 안됨
     else {
@@ -858,7 +864,9 @@ const TB07120Sjs = (function () {
           icon: "success",
           text: `${swalText} 성공`,
         })
+        $('#TB07120S_decdSttsDcd').val(mode)
         get07120sList();
+        chkDecd();
       },
       error: function () {
         Swal.fire({

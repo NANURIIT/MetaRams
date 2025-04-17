@@ -530,7 +530,7 @@ const TB06020Sjs = (function(){
 			error : function(request,  error ){
 				Swal.fire({
 					title: '안건 조회 확인',
-					icon: 'error',
+					icon: 'warning',
 					text: '집합투자증권 정보등록이 가능한 안건이 아닙니다.',
 					confirmButtonText: '확인',
 				}).then(() => {
@@ -614,7 +614,7 @@ const TB06020Sjs = (function(){
 				} else if(data == -1) {					
 					Swal.fire({
 						title: '종목등록 에러',
-						icon: 'error',
+						icon: 'warning',
 						text : '동일한 종목코드가 존재합니다. 종목코드를 확인해주세요',
 						confirmButtonText: '확인',
 					}).then((result) => {
