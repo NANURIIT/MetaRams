@@ -1020,8 +1020,52 @@ const TB06010Sjs = (function(){
 			}).then((result) => {
 				//location.reload();
 			});
-		}else if(aictStdrIntrtKndCd){
 
+			return false;
+		}else if(isEmpty(fxnIntrt) || fxnIntrt === '0'){
+			Swal.fire({
+				icon: 'warning'
+				, title: "Warning!"
+				, text: '기준금리를 입력해주세요.'
+				, confirmButtonText: "확인"
+			}).then((result) => {
+				//location.reload();
+			});
+
+			return false;
+		}else if(aictStdrIntrtKndCd != '0' && (isEmpty(intrCngeFrqcMnum) || intrCngeFrqcMnum === '0')){
+			Swal.fire({
+				icon: 'warning'
+				, title: "Warning!"
+				, text: '변동주기를 입력해주세요.'
+				, confirmButtonText: "확인"
+			}).then((result) => {
+				//location.reload();
+			});
+
+			return false;
+		}else if(isEmpty(intrRdmpFrqcMnum) || intrRdmpFrqcMnum === '0'){
+			Swal.fire({
+				icon: 'warning'
+				, title: "Warning!"
+				, text: '이자상환주기를 입력해주세요.'
+				, confirmButtonText: "확인"
+			}).then((result) => {
+				//location.reload();
+			});
+
+			return false;
+		}else if(isEmpty(ovduIntrRt) || ovduIntrRt === '0'){
+			Swal.fire({
+				icon: 'warning'
+				, title: "Warning!"
+				, text: '연체이자율을 입력해주세요.'
+				, confirmButtonText: "확인"
+			}).then((result) => {
+				//location.reload();
+			});
+
+			return false;
 		}
 		
 		var paramData = {
