@@ -441,7 +441,7 @@ const TB08040Sjs = (function() {
 						align: "left",
 						width: "10%",
 						editable: true,
-						editor: { type: 'input', attr: 'maxlength = "500"',},
+						//editor: { type: 'input', attr: 'maxlength = "500"',},
 					},
 					{
 						title: "율(%)",
@@ -502,14 +502,14 @@ const TB08040Sjs = (function() {
 						align: "right",
 						width: "10%",
 						editable: true,
-						// render: function(ui) {
-						// 	var value = parseFloat(ui.cellData);
-						// 	var formattedValue = value.toLocaleString('ko-KR', {
-						// 		minimumFractionDigits: 0,
-						// 		maximumFractionDigits: 2
-						// 	});
-						// 	return formattedValue;
-						// },
+						render: function(ui) {
+							var value = parseFloat(ui.cellData);
+							var formattedValue = value.toLocaleString('ko-KR', {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2
+							});
+							return formattedValue;
+						},
 					},
 				],
 			},
@@ -793,6 +793,7 @@ const TB08040Sjs = (function() {
 					let dataIndx = ui.dataIndx;
 					let rowIndx = ui.rowIndx;
 					let rowData = feeSch.getRowData({ rowIndx });
+					let rd = ui.rowData;
 					let obj = {}
 
 					if (dataIndx === 'feeKndCd') {
@@ -801,12 +802,12 @@ const TB08040Sjs = (function() {
 						console.log(ui);
 						rowData = ui.rowData
 						// console.log(rowData);
-						var tempRowData = rowData.feeKndCd;
+						var tempRowData = rd.feeKndCd;
 						var selectedIndex = selectBox2.findIndex(option => option.feeKndCd === tempRowData);
 						if (selectedIndex !== -1) {
 							// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
-							rowData.actsCd = selectBox2[selectedIndex].actsCd;
-							rowData.actName = selectBox2[selectedIndex].actName;
+							rd.actsCd = selectBox2[selectedIndex].actsCd;
+							rd.actName = selectBox2[selectedIndex].actName;
 							
 							var paramData = {
 								"feeKndCd": tempRowData,
@@ -856,39 +857,39 @@ const TB08040Sjs = (function() {
 					}
 
 					if (dataIndx === 'feeStdrAmt' || dataIndx === 'feeRt') {
-						const grid = $("#grd_feeSch").pqGrid('instance');
-						const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
-
+						//const grid = $("#grd_feeSch").pqGrid('instance');
+						//const rowData = grid.getRowData({ rowIndx: ui.rowIndx });
 						//console.log("feeStdrAmt" + rowData.feeStdrAmt);
 						//console.log("feeRt" + rowData.feeRt);
 
-						var feeRcknDcd = rowData.feeRcknDcd;
-						var feeStdrAmt = rowData.feeStdrAmt;
-						var feeRt = rowData.feeRt;
-						var feeHgstAmt = rowData.feeHgstAmt;
-						var feeLwstAmt = rowData.feeLwstAmt;
-
+						var feeRcknDcd = rd.feeRcknDcd;
+						var feeStdrAmt = rd.feeStdrAmt;
+						var feeRt = rd.feeRt;
+						var feeHgstAmt = rd.feeHgstAmt; // 수수료최고금액
+						var feeLwstAmt = rd.feeLwstAmt; // 수수료최저금액
+						//feeAmt 수수료금액
 						if (feeRcknDcd == '02') {
+							// console.log(rd)
 							if (feeStdrAmt >= 0 && feeRt >= 0) {
 								// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
-								rowData.feeAmt = feeStdrAmt * (feeRt / 100);
+								rd.feeAmt = feeStdrAmt * (feeRt / 100);
 								
-								if(rowData.feeAmt > feeHgstAmt){
-									rowData.feeAmt = feeHgstAmt;
-								}else if(rowData.feeAmt < feeLwstAmt){
-									rowData.feeAmt = feeLwstAmt;
+								if(rd.feeAmt > feeHgstAmt){
+									rd.feeAmt = feeHgstAmt;
+								}else if(rd.feeAmt < feeLwstAmt){
+									rd.feeAmt = feeLwstAmt;
 								}
 							}
 						} else {
-							if (rowData.feeAmt > feeHgstAmt) {
-								rowData.feeAmt = feeHgstAmt;
-							} else if (rowData.feeAmt < feeLwstAmt) {
-								rowData.feeAmt = feeLwstAmt;
+							if (rd.feeAmt > feeHgstAmt) {
+								rd.feeAmt = feeHgstAmt;
+							} else if (rd.feeAmt < feeLwstAmt) {
+								rd.feeAmt = feeLwstAmt;
 							}
 						}
 						
-						if (rowData.rowType !== "I") {
-							rowData.rowType = "U";
+						if (rd.rowType !== "I") {
+							rd.rowType = "U";
 						}
 
 						// maxlength
@@ -899,7 +900,7 @@ const TB08040Sjs = (function() {
 						numLength(obj)
 						
 						// UI에 반영
-						grid.refreshRow({ rowIndx: ui.rowIndx });
+						//grid.refreshRow({ rowIndx: ui.rowIndx });
 					}
 					
 					if (dataIndx === 'feeAmt') {
