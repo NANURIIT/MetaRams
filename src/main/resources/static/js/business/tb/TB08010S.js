@@ -18,6 +18,12 @@ const TB08010Sjs = (function () {
 
     // url 정보 세팅은 마지막에 하도록 한다.
     getUrlDealInfo();
+
+    let columns = {
+      evntAftrMngCntnt: 4000, // 사후관리내용
+    };
+
+    limitInputLength(columns, "TB08010S");
   });
 
   // URL 히든 Deal번호

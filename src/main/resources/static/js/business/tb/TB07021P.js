@@ -158,7 +158,7 @@ function callTB07021P(prefix, rowIndx) {
  */
 function modalClose_TB07021P() {
 	clearTB07021P();
-	if (typeof fnltPgGrid != "undefined") fnltPgGrid.setData([]);
+	// if (typeof fnltPgGrid != "undefined") fnltPgGrid.setData([]);
 	$('#modal-TB07021P').modal('hide');
 
 };

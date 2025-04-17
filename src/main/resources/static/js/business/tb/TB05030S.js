@@ -23,6 +23,13 @@ const TB05030Sjs = (function () {
     $("#TB05030S_stdYr").val(getYr);
     getCNFRNCList();
     rendorGrid();
+
+    let columns = {
+      cnfrncNtmCndtlCntnt: 3000, // 부의조건
+      rsltCntnt: 3000, // 결의의견
+    };
+
+    limitInputLength(columns, "TB05030S");
   });
 
   document

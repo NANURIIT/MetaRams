@@ -10,7 +10,7 @@
              , A.DBIT_CRIT_DCD
              , A.RPTS_ACTS_CD
              , A.ACTS_CD
-             , A.KRW_AMT
+             , NVL(A.KRW_AMT, 0)        AS krwAmt
              , A.FRCR_AMT
              , A.BDG_EXCU_BDCD
              , A.BDG_ACTS_CD
@@ -33,7 +33,8 @@
            AND A.WRTN_DT = #{wrtnDt}
            AND A.RSLN_BDCD = #{rslnBdcd}
            AND A.CNST_NO = #{cnstNo}
-           ORDER BY A.STTM_DETL_SN
+         ORDER 
+            BY A.STTM_DETL_SN
     </select>
 
     <select id="chkCountIBIMS432B" parameterType="com.nanuri.rams.business.common.vo.IBIMS432BVO" resultType="int">

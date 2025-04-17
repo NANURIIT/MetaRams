@@ -1,11 +1,12 @@
 const TB08050Sjs = (function () {
   let feeDtls; // 수수료내역
-  let fValid; // 0.조회 1.저장 2.Grid Check
   let selectBox;
   let selectBox1;
   let selectBox2;
   let grdSelect = {}; //
   let prlnFee; // 이연수수료
+  let _f = 0; // validation)) 0. 조회 1. 저장
+  let _tmpPrdtCd = {}; // 종목코드 초기화 안하기 위한 객체
 
   $(document).ready(function () {
     onload();
@@ -233,7 +234,7 @@ const TB08050Sjs = (function () {
             return cellData;
           }
         },
-		hidden: true,
+        hidden: true,
       },
 	  /*
       {
@@ -705,12 +706,19 @@ const TB08050Sjs = (function () {
   // 조회 버튼
   function srch() {
     if (validation().isValid) {
+      _tmpPrdtCd.prdtCd = validation().prdtCd
+      _tmpPrdtCd.prdtNm = $('#TB08050S_prdtNm').val()
+      _tmpPrdtCd.empNo = $('#TB08050S_empNo').val()
+      _tmpPrdtCd.empNm = $('#TB08050S_empNm').val()
+      _tmpPrdtCd.dprtNm = $('#TB08050S_dprtNm').val()
+      _tmpPrdtCd.dprtCd = $('#TB08050S_dprtCd').val()
+      
       let obj = {
         "prdtCd": validation().prdtCd,
-		"strPrarDt" : $("#TB08050S_strPrarDt").val().replaceAll("-", ""),
-		"endPrarDt": $("#TB08050S_endPrarDt").val().replaceAll("-", ""), 
-		"empNo": $("#TB08050S_empNo").val(),
-		"dprtCd":$("#TB08050S_dprtCd").val(),
+        "strPrarDt" : $("#TB08050S_strPrarDt").val().replaceAll("-", ""),
+        "endPrarDt": $("#TB08050S_endPrarDt").val().replaceAll("-", ""), 
+        "empNo": $("#TB08050S_empNo").val(),
+        "dprtCd":$("#TB08050S_dprtCd").val(),
       };
 
       $.ajax({
@@ -720,7 +728,7 @@ const TB08050Sjs = (function () {
         dataType: "json",
         beforeSend: function (xhr) {
           feeDtls.setData([]);
-		  resetMore();
+		      resetMore();
         },
         success: function (data) {
           console.log(data);
@@ -734,24 +742,22 @@ const TB08050Sjs = (function () {
 
               $("#TB08050S_feeSn").val(rd.feeSn); // 수수료일련번호
               //$("#TB08050S_feeRcivDt").val(dateNull(rd.feeRcivDt)); // 수취일자 ? 수납일자
-			  $("#TB08050S_feeRcivDt").val(dateNull(rd.feeRcivDt)); // 수취일자 ? 수납일자
+			        $("#TB08050S_feeRcivDt").val(dateNull(rd.feeRcivDt)); // 수취일자 ? 수납일자
 
-			  $("#TB08050S_F004").val(rd.feeKndCd); // 기업여신수수료종류코드
+			        $("#TB08050S_F004").val(rd.feeKndCd); // 기업여신수수료종류코드
               if(!isEmpty(rd.feeStdrAmt)) $("#TB08050S_eprzCrdlFeeStdrAmt").val(commaNull(rd.feeStdrAmt)); // 기업여신수수료기준금액
               if(!isEmpty(rd.feeRt)) $("#TB08050S_feeRt").val(rd.feeRt); // 수수료율
               if(!isEmpty(rd.feeAmt)) $("#TB08050S_feeAmt").val(rd.feeAmt); // 수수료금액
               $("#TB08050S_feeTrgtCtns").val(rd.feeTrgtCtns); // 수수료대상내용
               $("#TB08050S_actsCd").val(rd.actsCd); // 계정과목코드
-			  let actsRow = selectBox2.find(
-			       ({ actsCd }) => actsCd == rd.actsCd
-			  );
+			        let actsRow = selectBox2.find(({ actsCd }) => actsCd == rd.actsCd);
 			  
-			  $("#TB08050S_actName").val((actsRow ? actsRow.actName :"")); // 계정과목코드
+			        $("#TB08050S_actName").val((actsRow ? actsRow.actName :"")); // 계정과목코드
               //$(
               //  `input[name="TB08050S_feeTxtnYn"][value="${rd.feeTxtnYn}"]`
               //).prop("checked", true); // 수수료과세여부
 			  
-			  rd.feeTxtnYn=="Y" ? $("#TB08050S_feeTxtnYn_Y").prop("checked", true): $("#TB08050S_feeTxtnYn_N").prop("checked", true);
+			        rd.feeTxtnYn=="Y" ? $("#TB08050S_feeTxtnYn_Y").prop("checked", true): $("#TB08050S_feeTxtnYn_N").prop("checked", true);
 			  
               $("#TB08050S_F006").val(rd.feeRcogDcd); // 기업여신수수료인식구분코드
               $("#TB08050S_fnnrRcogStrtDt").val(dateNull(rd.fnnrRcogStrtDt)); // 인식시작일자
@@ -759,12 +765,12 @@ const TB08050Sjs = (function () {
               $("#TB08050S_F008").val(rd.fndsDvsnCd); // 자금구분코드
               if (rd.crryCd === "KRW") {
                 $("#TB08050S_aplcExchR").val("1.00"); // 적용환율
-				$("#TB08050S_aplcExchR").prop("disabled",true);
-              }else{
-				$("#TB08050S_aplcExchR").val(""); // 적용환율
-				$("#TB08050S_aplcExchR").prop("disabled",false);
-			  }
-			  $("#TB08050S_entpNm").val(rd.entpNm);
+				        $("#TB08050S_aplcExchR").prop("disabled",true);
+              } else {
+                $("#TB08050S_aplcExchR").val(""); // 적용환율
+                $("#TB08050S_aplcExchR").prop("disabled",false);
+              }
+			         $("#TB08050S_entpNm").val(rd.entpNm);
               $("#TB08050S_I027").val(rd.crryCd); // 적용환율
               $("#TB08050S_E027").val(rd.txtnTpDcd); // 기업여신과세유형코드
               $("#TB08050S_feeRcivAmt").val(commaNull(rd.feeRcivAmt)); // 수수료수납금액구분코드
@@ -776,7 +782,7 @@ const TB08050Sjs = (function () {
               //  `input[name="TB08050S_prcsCpltYn"][value="${rd.prcsCpltYn}"]`
               //).prop("checked", true); // 수납완료여부
 			  
-			  rd.prcsCpltYn=="Y" ? $("#TB08050S_prcsCpltYn_Y").prop("checked", true): $("#TB08050S_prcsCpltYn_N").prop("checked", true);
+			        rd.prcsCpltYn=="Y" ? $("#TB08050S_prcsCpltYn_Y").prop("checked", true): $("#TB08050S_prcsCpltYn_N").prop("checked", true);
 			  
               $("#TB08050S_prcsEmpno").val(rd.prcsEmpno); // 처리사원번호
               $("#TB08050S_prcsTm").val(rd.hndDetlDtmStr); // 처리시간
@@ -805,6 +811,15 @@ const TB08050Sjs = (function () {
             resetAll("TB08050S", ["grd_feeDtls"]);
             $("#TB08050S_feeTrgtCtns").val("");
             prlnFee = "";
+
+            $('#TB08050S_prdtCd').val(_tmpPrdtCd.prdtCd)
+            $('#TB08050S_prdtNm').val(_tmpPrdtCd.prdtNm)
+            $('#TB08050S_empNo').val(_tmpPrdtCd.empNo)
+            $('#TB08050S_empNm').val(_tmpPrdtCd.empNm)
+            $('#TB08050S_dprtNm').val(_tmpPrdtCd.dprtNm)
+            $('#TB08050S_dprtCd').val(_tmpPrdtCd.dprtCd)
+
+            _tmpPrdtCd = {}
           }
         },
       });
@@ -813,6 +828,7 @@ const TB08050Sjs = (function () {
 
   // 저장버튼
   function save() {
+    _f = 1;
     if (validation().isValid) {
 
       let feeSn = $("#TB08050S_feeSn").val(); // 수수료일련번호
@@ -896,12 +912,11 @@ const TB08050Sjs = (function () {
               icon: "success",
               text: "수수료수납처리가 등록됐습니다.",
               confirmButtonText: "확인",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                srch();
-                prlnFee = "";
-              }
-            });
+            })
+
+            srch(); // 재조회 
+            prlnFee = ""; // 이연수수료 초기화
+            _f = 0; // validation 구분 초기화
           }
         },
       });
@@ -924,20 +939,22 @@ const TB08050Sjs = (function () {
 
       return { isValid: false };
     }
-
-    let vals = $(`#TB08050S_F008, #TB08050S_rkfrDt, #TB08050S_feeRcivAmt, #TB08050S_prufIsuDt, #TB08050S_rctmDt`)
-                  .map(function(){return $(this).val().trim()}).get();
-    let bValid = vals.some(val => val == '')
-    console.log(vals)
-    console.log(bValid);
-    if (bValid) {
-      Swal.fire({
-        icon: "warning",
-        html: `입력되지 않은 값이 존재합니다.`,
-        title: "Warning!",
-        confirmButtonText: "확인",
-      });
-      return { isValid: false };
+    
+    if ( _f == 1 ) {
+      let vals = $(`#TB08050S_F008, #TB08050S_rkfrDt, #TB08050S_feeRcivAmt, #TB08050S_prufIsuDt, #TB08050S_rctmDt`)
+                    .map(function(){return $(this).val().trim()}).get();
+      let bValid = vals.some(val => val == '')
+      console.log(vals)
+      console.log(bValid);
+      if (bValid) {
+        Swal.fire({
+          icon: "warning",
+          html: `입력되지 않은 값이 존재합니다.`,
+          title: "Warning!",
+          confirmButtonText: "확인",
+        });
+        return { isValid: false };
+      }
     }
 
     return { isValid: true, prdtCd };

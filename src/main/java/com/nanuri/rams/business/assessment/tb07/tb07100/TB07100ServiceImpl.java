@@ -66,13 +66,11 @@ public class TB07100ServiceImpl implements TB07100Service {
 	// 지급품의기본 삭제
 	@Override
 	public int deleteIBIMS431B(IBIMS431BVO param) {
-		
-		IBIMS432BVO vo432 = new IBIMS432BVO();
-		vo432.setWrtnDt(param.getWrtnDt());
-		vo432.setRslnBdcd(param.getRslnBdcd());
-		vo432.setCnstNo(param.getCnstNo());
-		ibims432bMapper.deleteIBIMS432B(vo432);
-		return ibims431bMapper.deleteIBIMS431B(param);
+
+		param.setCnclYn("Y");
+		param.setHndEmpno(facade.getDetails().getEno());
+
+		return ibims431bMapper.updateIBIMS431B(param);
 
 	};
 
@@ -175,12 +173,14 @@ public class TB07100ServiceImpl implements TB07100Service {
 		vo432.setWrtnDt(param.getWrtnDt());
 		vo432.setRslnBdcd(param.getRslnBdcd());
 		vo432.setCnstNo(param.getCnstNo());
+		param.setCnclYn("Y");
+		param.setHndEmpno(facade.getDetails().getEno());
 
 		// 승인요청취소시 지급품의서는 삭제
 		// 품의기본
-		ibims431bMapper.deleteIBIMS431B(param);
+		ibims431bMapper.updateIBIMS431B(param);
 		// 품의상세
-		ibims432bMapper.deleteIBIMS432B(vo432);
+		// ibims432bMapper.deleteIBIMS432B(vo432);
 
 		IBIMS231BDTO dto231 = new IBIMS231BDTO();
 		
