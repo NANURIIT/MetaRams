@@ -1005,20 +1005,35 @@ function TB06011P_setPrdtInfo(e) {
   }
 
   if (prefix === "TB07100S_grid") {
+    const rowId = $("#TB07100S_grd_thdtTrDtls")
+      .find(`div[role=row][aria-rowIndex=${prdtSn + 1}]`)
+      .attr("id")
+      .split("-");
+    $("#TB07100S_grd_thdtTrDtls").pqGrid("instance").pdata[prdtSn].prdtCd =
+      e.prdtCd;
+    $("#TB07100S_grd_thdtTrDtls").pqGrid("instance").pdata[prdtSn].nsFndCd =
+      e.ortnFndCd;
     $("#TB07100S_grd_thdtTrDtls")
-      .find(`#pq-body-cell-u6-${prdtSn}-10-right div`)
+      .find(`#pq-body-cell-${rowId[3]}-${prdtSn}-10-right div`)
       .html(e.prdtCd);
     $("#TB07100S_grd_thdtTrDtls")
-      .find(`#pq-body-cell-u6-${prdtSn}-12-right div`)
+      .find(`#pq-body-cell-${rowId[3]}-${prdtSn}-12-right div`)
       .html(e.ortnFndCd);
   }
 
   if (prefix === "TB07110S_grid") {
+    const rowId = $("#TB07110S_grd_basic")
+      .find(`div[role=row][aria-rowIndex=${prdtSn + 1}]`)
+      .attr("id")
+      .split("-");
+    $("#TB07110S_grd_basic").pqGrid("instance").pdata[prdtSn].prdtCd = e.prdtCd;
+    $("#TB07110S_grd_basic").pqGrid("instance").pdata[prdtSn].nsFndCd =
+      e.ortnFndCd;
     $("#TB07110S_grd_basic")
-      .find(`#pq-body-cell-u6-${prdtSn}-10-right div`)
+      .find(`#pq-body-cell-${rowId[3]}-${prdtSn}-6-right div`)
       .html(e.prdtCd);
     $("#TB07110S_grd_basic")
-      .find(`#pq-body-cell-u6-${prdtSn}-12-right div`)
+      .find(`#pq-body-cell-${rowId[3]}-${prdtSn}-8-right div`)
       .html(e.ortnFndCd);
   }
 

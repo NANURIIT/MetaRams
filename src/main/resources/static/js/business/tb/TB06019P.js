@@ -3,7 +3,6 @@ $(document).ready(function() {
 	getSlctBox();
 	checkBoxChangeFunction();
 	defaultNumberFormat();
-	inputNumberChangeFunction();
 	selectorNumberFormater(
 		      $("input[id*='Amt'], input[id*='Num']")
 		);
@@ -133,28 +132,6 @@ $("#TB06019P_srch_ardyBzepNo").on("propertychange change paste input", function(
 		getArdyBzepInfo();
 	}
 });
-
-/**
- * 재무건정성비율 변경이벤트
- */
-function inputNumberChangeFunction(){
-	$("#TB06019P_fnafHltySrnmRt").on('change',function(){
-		var formatNum="000.00";
-		if($("#TB06019P_fnafHltySrnmRt").val() > 999.99 ){
-			Swal.fire({
-					icon: 'error'
-					, title: "Error!"
-					, text: "재무건전성 비율은 000.00 형식으로 작성해주세요.;"
-					, confirmButtonText: "확인"
-					})
-			$("#TB06019P_fnafHltySrnmRt").val('');
-			$("#TB06019P_fnafHltySrnmRt").focus();		
-			return false;		
-		}
-		formatNum=(Math.round($("#TB06019P_fnafHltySrnmRt").val()*100)/100).toFixed(2);
-		$("#TB06019P_fnafHltySrnmRt").val(formatNum);
-	});
-}
 
 /**
  * spc여부 변경이벤트
