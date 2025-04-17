@@ -382,7 +382,19 @@ const TB04060Sjs = (function () {
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB04060S_rgstDt", "TB04060S_rgstEndDt");
     chkValFromToDt("TB04060S_apvlDt", "TB04060S_apvlEndDt");
+
+    // 조회조건 재 설정 시 초기화
+    $("#TB04060S_srchForm")
+      .find("input, select")
+      .on("input", function () {
+        TB04060S_resetGrid();
+      });
   });
+
+  function TB04060S_resetGrid() {
+    $("#TB04060S_ibDealList").pqGrid("option", "dataModel.data", []);
+    $("#TB04060S_ibDealList").pqGrid("refreshDataAndView"); // pqgrid 초기화
+  }
 
   function setGrid_TB04060S() {
     // pqGridObjIbDealList = [
@@ -557,8 +569,6 @@ const TB04060Sjs = (function () {
 
           if (setList.length > 0) {
             $.each(setList, function (key, value) {
-              console.log("confirm::::::::::", value);
-
               //alert(value.sumRcgAmt);
 
               var prgStts =

@@ -367,12 +367,13 @@ const TB05010Sjs = (function () {
     $("#cancleButton").attr("disabled", true);
 
     //협의체 기본정보 초기화 및 셋팅
-    $("#TB05010S_inspctCnfrncSqcSq2").val();
+    //$("#TB05010S_inspctCnfrncSqcSq2").val();
     //   Number($("#TB05010S_inspctCnfrncSqcSq2").val()) + 1
     // );
     $("#TB05010S_rsltnDt2").val("");
     $("#TB05010S_rsltnTm2").val("");
     $("#TB05010S_inspctPrgrsStCd2").val("");
+    $("#TB05010S_inspctCnfrncSqcSq2").val("");
 
     $("#TB05010_fileList").html("");
     $("#TB05010S_MMBRList").html("");

@@ -148,6 +148,16 @@ const TB06060Sjs = (function () {
 
   $(document).ready(function () {
     setGrid_TB06060S();
+
+    // $("#TB06060S_ibDealNo").on("input", function () {
+    //   console.log("1");
+    //   getWorkflowList();
+
+    // });
+    // $("#TB06060S_prdtNm").on("input", function () {
+
+    //   getWorkflowList();
+    // });
   });
 
   function setGrid_TB06060S() {
@@ -253,7 +263,7 @@ const TB06060Sjs = (function () {
       dataType: "json",
       success: function (data) {
         if (data) {
-          console.log("confirm1:::::::::::::::::", data);
+          // console.log("confirm1:::::::::::::::::", data);
 
           prdtInfoGridIns.setData(data);
           if (data.length == 0) {
@@ -324,7 +334,6 @@ const TB06060Sjs = (function () {
       dataType: "json",
       success: function (data) {
         if (data) {
-          console.log("confirm2::::::::::::::::::", data);
           $("#TB06060S_cnsbNm").val(data.cnsbNm);
           $("#TB06060S_jdgmRsltDcd").val(data.jdgmRsltDcdNm);
           $("#TB06060S_jdgmRsltRgstDt").val(formatDate(data.jdgmRsltRgstDt));

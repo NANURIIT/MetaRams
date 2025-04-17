@@ -1354,7 +1354,10 @@
 
         <!-- 사업명세조회 -->
         <select id="checkDealSearch" parameterType="com.nanuri.rams.business.common.vo.IBIMS201BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS201BVO">
-	          SELECT A.DEAL_NO 									                AS DEAL_NO 							    /* 딜번호 */
+	    SELECT *     
+        FROM
+            (
+              SELECT A.DEAL_NO 									                AS DEAL_NO 							    /* 딜번호 */
                  , NVL(C.RGST_DT, '') 							          AS RGST_DT 							    /* 등록일자 */
                  , NVL(
                           (SELECT CD_VL_NM
@@ -1444,54 +1447,56 @@
                AND s002b_4.CMNS_CD_GRP	= 'I002'
 			   LEFT JOIN IBIMS401B i401b 
 			          ON i401b.PRDT_CD = A.PRDT_CD
-             WHERE 1 = 1
-               AND A.LAST_YN = 'Y'
-               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
-               AND A.DEAL_NO LIKE '%' || #{dealNo} || '%'
-               </if>
-               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
-               AND A.PRDT_CD LIKE '%' || #{prdtCd} || '%'
-               </if>
-               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtLclsCd)">
-               AND A.PRDT_LCLS_CD LIKE '%' || #{prdtLclsCd} || '%'
-               </if>
-               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtMdclCd)">
-               AND A.PRDT_MDCL_CD LIKE '%' || #{prdtMdclCd} || '%'
-               </if>
-               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtClsfCd)">
-               AND A.PRDT_CLSF_CD LIKE '%' || #{prdtClsfCd} || '%'
+             WHERE A.LAST_YN = 'Y' 
+               AND E.DEL_YN = 'N'
+                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trOthrDscmNo)">
+               AND A.TR_OTHR_DSCM_NO LIKE '%' || #{trOthrDscmNo} || '%'
+               </if>  
+               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
+               AND A.MNGM_BDCD LIKE '%' || #{mngmBdcd} || '%'
+               </if> 
+               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
+               AND A.CHRR_EMPNO LIKE '%' || #{chrrEmpno} || '%'
                </if>
                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(ibPrdtClsfCd)">
                AND A.IB_PRDT_CLSF_CD LIKE '%' || #{ibPrdtClsfCd} || '%'
                </if>
+               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtClsfCd)">
+               AND A.PRDT_CLSF_CD LIKE '%' || #{prdtClsfCd} || '%'
+               </if>
+               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtMdclCd)">
+               AND A.PRDT_MDCL_CD LIKE '%' || #{prdtMdclCd} || '%'
+               </if>
+               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtLclsCd)">
+               AND A.PRDT_LCLS_CD LIKE '%' || #{prdtLclsCd} || '%'
+               </if>
+                )
+             WHERE 1 = 1              
+               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+               AND DEAL_NO LIKE '%' || #{dealNo} || '%'
+               </if>
+               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
+               AND PRDT_CD LIKE '%' || #{prdtCd} || '%'
+               </if>
                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cnsbDcd)">
-               AND D.CNSB_DCD LIKE '%' || #{cnsbDcd} || '%'
+               AND CNSB_DCD LIKE '%' || #{cnsbDcd} || '%'
                </if>
                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prgSttsCd)">
-               AND A.PRG_STTS_CD LIKE '%' || #{prgSttsCd} || '%'
-               </if>
-               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
-               AND A.CHRR_EMPNO LIKE '%' || #{chrrEmpno} || '%'
-               </if>
-               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
-               AND A.MNGM_BDCD LIKE '%' || #{mngmBdcd} || '%'
-               </if>            
-               <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trOthrDscmNo)">
-               AND A.TR_OTHR_DSCM_NO LIKE '%' || #{trOthrDscmNo} || '%'
+               AND PRG_STTS_CD LIKE '%' || #{prgSttsCd} || '%'
                </if>
                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDt)">
-               AND C.RGST_DT <![CDATA[>=]]> #{rgstDt}
+               AND RGST_DT <![CDATA[>=]]> #{rgstDt}
                </if>
                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstEndDt)">
-               AND C.RGST_DT <![CDATA[<=]]> #{rgstEndDt}
+               AND RGST_DT <![CDATA[<=]]> #{rgstEndDt}
                </if>
                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(apvlDt)">
-               AND D.APVL_DT <![CDATA[>=]]> #{apvlDt}
+               AND APVL_DT <![CDATA[>=]]> #{apvlDt}
                </if>
                <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(apvlEndDt)">
-               AND D.APVL_DT <![CDATA[<=]]> #{apvlEndDt}
+               AND APVL_DT <![CDATA[<=]]> #{apvlEndDt}
                </if>
-               AND E.DEL_YN = 'N'
+               
         </select>
 
 

@@ -846,13 +846,13 @@ function TB06011P_setPrdtInfo(e) {
   if (prefix == "TB09080S" || prefix == "TB09070S") {
     $(`#${prefix}_ibDealNo`).val(ibDealNo);
     $(`#${prefix}_ibDealNm`).val(ibDealNm);
-    resetPGgrids(prefix)
+    resetPGgrids(prefix);
   }
 
   if (prefix == "TB09100S") {
     $(`#${prefix}_ibDealNo`).val(ibDealNo);
     $(`#${prefix}_ibDealNm`).val(ibDealNm);
-    resetPGgrids(prefix)
+    resetPGgrids(prefix);
   }
 
   if (prefix == "TB06015P") {
@@ -870,7 +870,7 @@ function TB06011P_setPrdtInfo(e) {
 
   /* 0723 add */
   if (prefix === "TB07050S") {
-    console.log('진행상태 ::: ', e.prgSttsCd)
+    console.log("진행상태 ::: ", e.prgSttsCd);
     let numPrgSttsCd = Number(e.prgSttsCd);
     if (numPrgSttsCd == 502) {
       Swal.fire({
@@ -878,25 +878,25 @@ function TB06011P_setPrdtInfo(e) {
         title: "Warning!",
         text: "약정 해지 된 상태입니다.",
         confirmButtonText: "확인",
-      })
+      });
 
       //resetAll('TB07050S', TB07050Sjs.resetMore());
-      resetPGgrids("TB07050S")
+      resetPGgrids("TB07050S");
       // $('#TB07050S_btnSrch').prop('disabled', true)
-      $('#TB07050S_btnPlus').prop('disabled', true)
-      $('#TB07050S_btnMinus').prop('disabled', true)
-      $('#TB07050S_btnSave').prop('disabled', true)
-      $('#TB07050S_excSn').prop('disabled', true)
-      $('#TB07050S_excSn').val('')
+      $("#TB07050S_btnPlus").prop("disabled", true);
+      $("#TB07050S_btnMinus").prop("disabled", true);
+      $("#TB07050S_btnSave").prop("disabled", true);
+      $("#TB07050S_excSn").prop("disabled", true);
+      $("#TB07050S_excSn").val("");
 
-      $('#TB07050S_prdtCd').val(e.prdtCd)
-      $('#TB07050S_prdtNm').val(e.prdtNm)
+      $("#TB07050S_prdtCd").val(e.prdtCd);
+      $("#TB07050S_prdtNm").val(e.prdtNm);
       TB07050Sjs.srch();
     } else {
       // $('#TB07050S_btnSrch').prop('disabled', false)
-      $('#TB07050S_btnPlus').prop('disabled', false)
-      $('#TB07050S_btnMinus').prop('disabled', false)
-      $('#TB07050S_btnSave').prop('disabled', false)
+      $("#TB07050S_btnPlus").prop("disabled", false);
+      $("#TB07050S_btnMinus").prop("disabled", false);
+      $("#TB07050S_btnSave").prop("disabled", false);
       // $('#TB07050S_scxDcd1').prop('disabled', false)
       // $('#TB07050S_scxDcd2').prop('disabled', false)
       // $('#TB07050S_scxDcd3').prop('disabled', false)
@@ -937,7 +937,6 @@ function TB06011P_setPrdtInfo(e) {
 
   /* 0726 add 대출계약 실행 */
   if (prefix === "TB07010S") {
-
     $(pageeprzCrdlApvlAmt).val(0); // 승인금액액
     let numPrgSttsCd = Number(e.prgSttsCd);
 
@@ -952,9 +951,9 @@ function TB06011P_setPrdtInfo(e) {
       // $("#TB07010S_prdtNm").val("");
       // resetAll('TB07010S');
       TB07010Sjs.reset();
-      resetPGgrids("TB07010S")
-      $('#TB07010S_prdtCd').val(e.prdtCd)
-      $('#TB07010S_prdtNm').val(e.prdtNm)
+      resetPGgrids("TB07010S");
+      $("#TB07010S_prdtCd").val(e.prdtCd);
+      $("#TB07010S_prdtNm").val(e.prdtNm);
       //TB07010Sjs.feeRciv.setData([]);
     } else if (numPrgSttsCd == 502) {
       Swal.fire({
@@ -963,11 +962,11 @@ function TB06011P_setPrdtInfo(e) {
         text: "약정 해지 된 상태입니다.",
         confirmButtonText: "확인",
       });
-      TB07010Sjs.reset()
-      resetPGgrids("TB07010S")
-      $('#btnSave').prop('disabled', true)
-      $('#TB07010S_prdtCd').val(e.prdtCd)
-      $('#TB07010S_prdtNm').val(e.prdtNm)
+      TB07010Sjs.reset();
+      resetPGgrids("TB07010S");
+      $("#btnSave").prop("disabled", true);
+      $("#TB07010S_prdtCd").val(e.prdtCd);
+      $("#TB07010S_prdtNm").val(e.prdtNm);
     } else {
       TB07010Sjs.srch();
     }
@@ -997,7 +996,7 @@ function TB06011P_setPrdtInfo(e) {
   }
 
   if (prefix === "TB07070S") {
-    resetPGgrids(prefix)
+    resetPGgrids(prefix);
     // TB07070Sjs.srch()
   }
 
@@ -1006,13 +1005,21 @@ function TB06011P_setPrdtInfo(e) {
   }
 
   if (prefix === "TB07100S_grid") {
-    $("#TB07100S_grd_thdtTrDtls").find(`#pq-body-cell-u6-${prdtSn}-10-right div`).html(e.prdtCd);
-    $("#TB07100S_grd_thdtTrDtls").find(`#pq-body-cell-u6-${prdtSn}-12-right div`).html(e.ortnFndCd);
+    $("#TB07100S_grd_thdtTrDtls")
+      .find(`#pq-body-cell-u6-${prdtSn}-10-right div`)
+      .html(e.prdtCd);
+    $("#TB07100S_grd_thdtTrDtls")
+      .find(`#pq-body-cell-u6-${prdtSn}-12-right div`)
+      .html(e.ortnFndCd);
   }
 
   if (prefix === "TB07110S_grid") {
-    $("#TB07110S_grd_basic").find(`#pq-body-cell-u6-${prdtSn}-10-right div`).html(e.prdtCd);
-    $("#TB07110S_grd_basic").find(`#pq-body-cell-u6-${prdtSn}-12-right div`).html(e.ortnFndCd);
+    $("#TB07110S_grd_basic")
+      .find(`#pq-body-cell-u6-${prdtSn}-10-right div`)
+      .html(e.prdtCd);
+    $("#TB07110S_grd_basic")
+      .find(`#pq-body-cell-u6-${prdtSn}-12-right div`)
+      .html(e.ortnFndCd);
   }
 
   if (prefix === "TB07020S_srch") {
@@ -1039,8 +1046,12 @@ function TB06011P_setPrdtInfo(e) {
     $("#TB07190S_ibDealNo").val(e.dealNo);
   }
 
-  if (prefix === 'TB07160S') {
-    TB07160Sjs.srch_TB07160S()
+  if (prefix === "TB07160S") {
+    TB07160Sjs.srch_TB07160S();
+  }
+
+  if (prefix == "TB06060S") {
+    TB06060Sjs.getWorkflowList();
   }
 
   modalClose_TB06011P();

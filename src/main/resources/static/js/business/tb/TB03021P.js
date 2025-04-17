@@ -194,7 +194,7 @@ async function getDealInfo() {
     dealNm: dealNm,
     chrrEmpno: chrrEmpno,
     dprtCd: dprtCd,
-    scrnNo: $('#TB03021P_prefix').val()
+    scrnNo: $("#TB03021P_prefix").val(),
   };
 
   await $.ajax({
@@ -276,7 +276,7 @@ function setDealInfo(e) {
     addDealInfo(ibDealNo);
   }
 
-  if(prefix == "TB08031S"){
+  if (prefix == "TB08031S") {
     TB08031Sjs.srchBsnsInfo();
   }
 
@@ -290,10 +290,22 @@ function setDealInfo(e) {
     TB08036Sjs.getDealInfoTB08036S();
   }
   if (prefix == "TB09070S" || prefix == "TB09080S") {
-    resetPGgrids(prefix)
+    resetPGgrids(prefix);
   }
   if (prefix == "TB09100S") {
-    resetPGgrids(prefix)
+    resetPGgrids(prefix);
+  }
+
+  if (prefix == "TB06060S") {
+    TB06060Sjs.getWorkflowList();
+  }
+
+  if (prefix == "TB04020S") {
+    TB04020Sjs.checkDealSearch();
+  }
+
+  if (prefix == "TB04040S") {
+    TB04040Sjs.srchIssDtlsList();
   }
 
   modalClose_TB03021P();
