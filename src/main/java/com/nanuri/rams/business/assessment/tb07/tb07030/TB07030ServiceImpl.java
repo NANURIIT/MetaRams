@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.common.dto.IBIMS403BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
+import com.nanuri.rams.business.common.mapper.IBIMS204BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS401BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS402BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS402HMapper;
@@ -54,8 +55,10 @@ public class TB07030ServiceImpl implements TB07030Service {
  	private Calculation calculation;
  	@Autowired
  	private EtprCrdtGrntAcctProc acctProc;
+	/* 딜승인중도상환수수료설정기본 */
+	private final IBIMS204BMapper ibims204bMapper;
 	/* 약정기본 */
-	private final  IBIMS401BMapper ibims401BMapper;
+	private final IBIMS401BMapper ibims401BMapper;
 	/* 딜실행기본 */
 	private final IBIMS402BMapper ibims402BMapper;
 	/* 딜실행이력 */
@@ -95,6 +98,18 @@ public class TB07030ServiceImpl implements TB07030Service {
 		List<IBIMS403BVO> ibims403lst = new ArrayList<IBIMS403BVO>();
 		List<IBIMS403BVO> ibims403RscdlList = new ArrayList<IBIMS403BVO>();
 		List<IBIMS403BVO> param403lst = paramData.getIbims403Lst();
+
+		String prdtCd = paramData.getPrdtCd(); // 종목코드
+		log.debug("종목코드 ::: {}", prdtCd);
+
+		int res204B = ibims204bMapper.countMdwyRdmpFee(prdtCd);
+		log.debug("중도상환수수료 설정 여부 ::: {}", res204B);
+		if (res204B == 0) {
+			TB07030SVO resMdwyRdmpFee = new TB07030SVO();
+			resMdwyRdmpFee.setCntMdwyRdmpFee(res204B);
+			log.debug("뭐냐 ::: ", resMdwyRdmpFee);
+			return resMdwyRdmpFee;
+		}
 
 		for(int i = 0; i < param403lst.size(); i++) {
 
@@ -236,6 +251,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 		tb07030svo.setIbims403DtlLst(ibims403lst);
 		tb07030svo.setIbims403RscdlList(ibims403RscdlList);
 		tb07030svo.setTotalDTO(calcSumDto);
+		tb07030svo.setCntMdwyRdmpFee(res204B); // 중도상환수수료 설정 여부
 
 		// log.debug("\n ibims403lst ::: {}", ibims403lst);
 		// log.debug("\n ibims403RscdlList ::: {}", ibims403RscdlList);
@@ -326,6 +342,8 @@ public class TB07030ServiceImpl implements TB07030Service {
 		BigDecimal ovduIntrAmt = BigDecimal.ZERO;			//연체이자금액
 
 		List<IBIMS436BVO> ovduParamList = new ArrayList<>();
+
+		String prdtCd = paramData.getPrdtCd(); // 종목코드
 
 		int rtnValue = 0;
 		int iLastRdmpTmrd = 0;

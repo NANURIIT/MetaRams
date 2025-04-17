@@ -17,8 +17,9 @@ const TB06030Sjs = (function(){
 		inputNumberChangeFunction_TB06030S();
 		//초기화버튼
 		resetSearchRequiment_TB06030S();
-		loginUserSet();
 		getDealInfoFromWF();
+
+		$('#TB06030S_res_prdtCd').inputmask("C999999999");
 	});
 
 	function loginUserSet(){
@@ -285,8 +286,9 @@ const TB06030Sjs = (function(){
 				//$('#TB06030S_fincDiv').css("display","block");
 				if(isEmpty($('#TB06030S_res_prdtCd').val())){
 					Swal.fire({
-						title: '종목코드를 입력해주세요.',
-						icon: 'error',
+						text: '종목코드를 입력해주세요.',
+						title: 'Warning!',
+						icon: 'warning',
 						confirmButtonText: '확인',
 					});
 					$("#TB06030S_fincYn").prop('checked',false);
@@ -344,6 +346,7 @@ const TB06030Sjs = (function(){
 		$('#TB06030S_regPrdt').attr('disabled', false); // 값이 없으면 regPrdt 활성화
 		$('#TB06030S_delPrdt').attr('disabled', true); 
 				
+		loginUserSet();
 		
 		//$('#UPLOAD_AddFile').attr('disabled', true);
 		//$('#UPLOAD_DelFiles').attr('disabled', true);
@@ -356,6 +359,8 @@ const TB06030Sjs = (function(){
 		$('#fileKey2').val(key2);				
 		$('#key1').val("TB06030S");		
 		getFileInfo($('#key1').val(),key2);
+
+		chkDecdStep('TB06030S');
 	}
 
 	function getDealList() {
@@ -376,6 +381,8 @@ const TB06030Sjs = (function(){
 		var option = {}
 		var trDvsn ="F"; //주식/채권		
 		option.text = "";
+		option.title = "Warning!"
+		option.tpye = "warning"
 		if (isEmpty(ibDealNo) && isEmpty(prdtCd)) {
 			option.text = "Deal 정보 또는 종목코드 정보를 조회해주세요.";
 			openPopup(option);
@@ -406,7 +413,7 @@ const TB06030Sjs = (function(){
 				if(psblRsltnYn=="N"){
 					Swal.fire({
 						title: '안건 조회 확인',
-						icon: 'error',
+						icon: 'warning',
 						text: '심사진행상태 완료되지 않았습니다.',
 						confirmButtonText: '확인',
 					}).then(() => {
@@ -747,11 +754,9 @@ const TB06030Sjs = (function(){
 				
 		
 		if( isEmpty($('#TB06030S_ibDealNo').val()) ){
-			console.log("딜번호 누락");
 			return false;
 		}
 		if( isEmpty($('#TB06030S_res_prdtCd').val()) ){
-			console.log("종목코드 누락");
 			/* Swal.fire({
 				title: '종목코드를 입력해주세요.',
 				icon: 'error',
@@ -779,8 +784,8 @@ const TB06030Sjs = (function(){
 
 	function checkParam() {
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 		
 		// 유효성검사
 		if (isEmpty($('#TB06030S_ibDealNm').val())) {
@@ -1131,8 +1136,8 @@ const TB06030Sjs = (function(){
 		var prdtCd = $('#TB06030S_res_prdtCd').val();
 		
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 		
 		// 유효성검사
 		if (isEmpty($('#TB06030S_res_prdtCd').val())) {
@@ -1235,8 +1240,8 @@ const TB06030Sjs = (function(){
 
 	function saveAppvCndt() {
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 
 		// 유효성검사
 		if (isEmpty($('#TB06030S_ibDealNo').val())) {

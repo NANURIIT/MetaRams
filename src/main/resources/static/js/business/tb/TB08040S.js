@@ -390,20 +390,6 @@ const TB08040Sjs = (function() {
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 				editable: true,
-				render: function(ui) {
-					//console.log(new TextEncoder().encode(ui.cellData).length);
-					// console.log(ui.cellData);
-					// let result = validData( ui.cellData, 10, 4)
-					// console.log('결과과가ㅏ:  : : ',result)
-					// return ui.cellData = result;
-					// if (new TextEncoder().encode(ui.cellData).length <= 5) {
-					// 	return ui.rowData.rpsrNm
-					// } else {
-					// 	ui.cellData = validData( ui.cellData, 5 )
-					// 	ui.formatVal = ui.cellData
-					// 	return ui.rowData.rpsrNm = ui.cellData
-					// }
-				},
 			},
 			{
 				title: "수수료",
@@ -500,17 +486,15 @@ const TB08040Sjs = (function() {
 						halign: "center",
 						align: "right",
 						width: "10%",
-						//          format: "#,###.00",
 						editable: true,
-						render: function(ui) {
-							var value = parseFloat(ui.cellData);
-							var formattedValue = value.toLocaleString('ko-KR', {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2
-							});
-							return formattedValue;
-						},
-						editor: { type: 'input', attr: 'maxlength = "24"', oninput: "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"},
+						// render: function(ui) {
+						// 	var value = parseFloat(ui.cellData);
+						// 	var formattedValue = value.toLocaleString('ko-KR', {
+						// 		minimumFractionDigits: 0,
+						// 		maximumFractionDigits: 2
+						// 	});
+						// 	return formattedValue;
+						// },
 					},
 				],
 			},
@@ -794,10 +778,11 @@ const TB08040Sjs = (function() {
 					let dataIndx = ui.dataIndx;
 					let rowIndx = ui.rowIndx;
 					let rowData = feeSch.getRowData({ rowIndx });
+					let obj = {}
 
 					if (dataIndx === 'feeKndCd') {
 						const grid = $("#grd_feeSch").pqGrid('instance');
-						rowData = grid.getRowData({ rowIndx: ui.rowIndx });
+						rowData = grid.getRowData({ rowInx: ui.rowIndx });
 						var tempRowData = rowData.feeKndCd;
 						var selectedIndex = selectBox2.findIndex(option => option.feeKndCd === tempRowData);
 						if (selectedIndex !== -1) {
@@ -851,6 +836,19 @@ const TB08040Sjs = (function() {
 							//grid.refreshRow({ rowIndx: ui.rowIndx });
 						}
 					}
+					
+					
+
+					// if (dataIndx === 'feeAmt') { // 수수료금액
+					// 	obj.ui = ui
+					// 	obj.dataIndx = 'feeAmt'
+					// 	obj.length = 18
+
+					// 	numLength(obj)
+					// }
+
+
+
 
 					if (dataIndx === 'feeStdrAmt' || dataIndx === 'feeRt') {
 						const grid = $("#grd_feeSch").pqGrid('instance');
@@ -887,6 +885,13 @@ const TB08040Sjs = (function() {
 						if (rowData.rowType !== "I") {
 							rowData.rowType = "U";
 						}
+
+						// maxlength
+						obj.ui = ui
+						obj.dataIndx = 'feeStdrAmt'
+						obj.length = 18
+
+						numLength(obj)
 						
 						// UI에 반영
 						grid.refreshRow({ rowIndx: ui.rowIndx });
@@ -904,6 +909,13 @@ const TB08040Sjs = (function() {
 								rowData.feeAmt = feeLwstAmt;
 							}
 						}
+
+						// max length
+						obj.ui = ui
+						obj.dataIndx = 'feeAmt'
+						obj.length = 18
+
+						numLength(obj)
 					}
 
 					if (rowData.rowType !== "I") {
@@ -914,6 +926,7 @@ const TB08040Sjs = (function() {
 						// UI에 반영
 						grid.refreshRow({ rowIndx: ui.rowIndx });
 					}
+
 
 				},
 				/* cellClick: function (evt, ui) {
@@ -1450,6 +1463,35 @@ const TB08040Sjs = (function() {
 		sessionStorage.clear();
 	}
 
+	/**
+	 * 그리드 셀 글자 제한(length)
+	 * @param {*} obj 
+	 * @returns {*}
+	 */
+	function numLength(obj) {
+		console.log(obj)
+		let ui = obj.ui // grid ui
+		let dataIndx = obj.dataIndx // 'feeAmt'
+		console.log(dataIndx)
+		console.log(ui.rowData[dataIndx])
+		let len = obj.length // 제한길이
+		let str = ui.rowData[dataIndx]
+
+		console.log(typeof str);
+		if (!str || isNaN(str)) {
+			console.log('왜 여기타노 -.-')
+			return ui.rowData[dataIndx] = 0 
+		}
+
+		if (ui.value.length >= len) {
+			//str = String(str)
+			// console.log('변해랏', typeof str);
+			return ui.rowData[dataIndx] = str.slice(0, len)
+		}
+
+		return ui.rowData[dataIndx] = Number(str)
+	}
+
 	return {
 		feeSch: feeSch
 		, grdSelect: grdSelect
@@ -1468,6 +1510,7 @@ const TB08040Sjs = (function() {
 		, loginUserSet_TB08040S: loginUserSet_TB08040S
 		, selectBoxSet_TB08040S: selectBoxSet_TB08040S
 		, init_TB08040S: init_TB08040S
-		, getDealInfoFromWF: getDealInfoFromWF,
+		, getDealInfoFromWF: getDealInfoFromWF
+		, numLength : numLength
 	};
 })();

@@ -17,8 +17,10 @@ const TB06020Sjs = (function(){
 		inputNumberChangeFunction_TB06020S();
 		//초기화버튼
 		resetSearchRequiment_TB06020S();
-		loginUserSet();
+		
 		getDealInfoFromWF();
+
+		$('#TB06020S_res_prdtCd').inputmask("B999999999");
 
 		let columns = {
 			res_prdtNm: 300
@@ -298,6 +300,8 @@ const TB06020Sjs = (function(){
 			$("#page-TB06020S :input:eq("+i+")").val("");
 			
 		}*/
+
+		loginUserSet();
 		
 		$('#TB06020S_res_prdtCd').prop('readonly',false);
 		$('#TB06020S_registApvlCnd').attr('disabled', true);
@@ -316,6 +320,8 @@ const TB06020Sjs = (function(){
 		$('#fileKey2').val(key2);				
 		$('#key1').val("TB06020S");		
 		getFileInfo($('#key1').val(),key2);
+
+		chkDecdStep('TB06020S');
 	}
 
 
@@ -378,7 +384,7 @@ const TB06020Sjs = (function(){
 				if(psblRsltnYn=="N"){
 					Swal.fire({
 						title: '안건 조회 확인',
-						icon: 'error',
+						icon: 'warning',
 						text: '심사진행상태 완료되지 않았습니다.',
 						confirmButtonText: '확인',
 					}).then(() => {
@@ -631,8 +637,8 @@ const TB06020Sjs = (function(){
 
 	function checkParam() {
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 
 		// 유효성검사
 		if (isEmpty($('#TB06020S_ibDealNm').val())) {
@@ -917,8 +923,8 @@ const TB06020Sjs = (function(){
 		var prdtCd = $('#TB06020S_res_prdtCd').val();
 		
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 		
 		// 유효성검사
 		if (isEmpty($('#TB06020S_res_prdtCd').val())) {
@@ -1021,8 +1027,8 @@ const TB06020Sjs = (function(){
 
 	function saveAppvCndt() {
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 
 		// 유효성검사
 		if (isEmpty($('#TB06020S_ibDealNo').val())) {

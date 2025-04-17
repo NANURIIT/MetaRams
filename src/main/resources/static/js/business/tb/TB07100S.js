@@ -751,15 +751,7 @@ const TB07100Sjs = (function () {
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
         editable: true,
-        render: function (ui) {
-          let cellData = ui.cellData;
-          if (cellData !== null && cellData !== undefined) {
-            let result = cellData.replace(/^0+/, "");
-            if (result === "") result = "0";
-            return commaStr(result);
-          }
-          return cellData;
-        }
+        format: "#,###",
       }
       , {
         title: "대변금액",
@@ -770,15 +762,7 @@ const TB07100Sjs = (function () {
         // width    : '10%',
         filter: { crules: [{ condition: 'range' }] },
         editable: false,
-        render: function (ui) {
-          let cellData = ui.cellData;
-          if (cellData !== null && cellData !== undefined) {
-            let result = cellData.replace(/^0+/, "");
-            if (result === "") result = "0";
-            return commaStr(result);
-          }
-          return cellData;
-        }
+        format: "#,###",
       },
       {
         title: "적요",
@@ -821,7 +805,7 @@ const TB07100Sjs = (function () {
         editable: true,
       },
       {
-        title: "", dataType: "", dataIndx: "", align: "center", halign: "center", minWidth: 36, maxWidth: 36,
+        title: "", dataType: "", dataIndx: "btn", align: "center", halign: "center", minWidth: 36, maxWidth: 36,
         render: function (ui) {
           let rowIndx = ui.rowIndx;
           return `<button id='TB07100S_editableCtrler' class='ui-button ui-corner-all ui-widget' onclick="callTB06011P('TB07100S_grid',${rowIndx});"><i class='fa fa-search'></i></button>`
@@ -923,7 +907,7 @@ const TB07100Sjs = (function () {
           }
         }
         , selectionModel: { type: "row" }
-      },
+      }
     ]
     setPqGrid(pqGridObjs);
     // Grid instance
@@ -960,8 +944,8 @@ const TB07100Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
+        let gridList = $("#TB07100S_grd_rlthPruf").pqGrid('instance');
         if (data.length > 0) {
-          let gridList = $("#TB07100S_grd_rlthPruf").pqGrid('instance');
           gridList.setData(data);
           gridList.getData();
         }
@@ -971,6 +955,7 @@ const TB07100Sjs = (function () {
             , title: "Warning!"
             , text: "조회된 내역이 없습니다!"
           })
+          gridList.setData([]);
         }
       }, error: function () {
         Swal.fire({
@@ -996,13 +981,21 @@ const TB07100Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if (data) {
+        if (data.length > 0) {
           let gridList = $("#TB07100S_grd_thdtTrDtls").pqGrid('instance');
+
+          console.log("??뭐임??");
+          console.log(data);
+          
           gridList.setData(data);
           gridList.getData();
         }
         else {
-
+          Swal.fire({
+            icon: 'warning'
+            , title: 'Warning!'
+            , text: '상세정보가 없습니다!'
+          })
         }
       }, error: function () {
 
@@ -1160,7 +1153,7 @@ const TB07100Sjs = (function () {
           Swal.fire({
             icon: 'success'
             , title: "Success!"
-            , text: "저장 성공!~"
+            , text: "저장 성공!"
           })
         }
         else {
@@ -1226,7 +1219,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "결재요청이 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('04');
+          $('#TB07100S_decdSttsDcd').val('1');
         }
         else if (data === -7574) {
           Swal.fire({
@@ -1280,7 +1273,8 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "승인요청취소 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('00');
+          $("#TB07100S_grd_rlthPruf").pqGrid('instance').setData([]);
+          TB07100S_resetInput();
         }
         else {
           Swal.fire({
@@ -1289,7 +1283,6 @@ const TB07100Sjs = (function () {
             , text: "승인요청취소 실패!"
           })
         }
-        apvlBtnHandler();
       }, error: function () {
         Swal.fire({
           icon: 'error'
@@ -1327,7 +1320,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "승인 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('05');
+          $('#TB07100S_decdSttsDcd').val('2');
         }
         else {
           Swal.fire({
@@ -1374,7 +1367,7 @@ const TB07100Sjs = (function () {
             , title: "Success!"
             , text: "반려 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('00');
+          $('#TB07100S_decdSttsDcd').val('3');
         }
         else {
           Swal.fire({

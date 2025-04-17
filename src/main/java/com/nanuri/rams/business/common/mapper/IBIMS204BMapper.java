@@ -25,5 +25,8 @@ public interface IBIMS204BMapper {
     public int deleteIBIMS204B(IBIMS204BVO data);
 
     public BigDecimal getMdwyRdmpFeeRto(CalculationDTO calcDTO);
+
+    // 중도상환수수료 건수
+    public int countMdwyRdmpFee(String input);
     
 }

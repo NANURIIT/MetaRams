@@ -30,8 +30,6 @@ const TB06010Sjs = (function(){
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		pqGrid();
 
-		loginUserSet();
-
 		$('#TB06010S_E022').on('change', function() {
 			// alert($('#TB06010S_E022').val());
 			var prdtLclsCd = $('#TB06010S_E022').val(); //투자상품 대분류 코드
@@ -81,8 +79,8 @@ const TB06010Sjs = (function(){
 	}
 
 	var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 		
 	function pqGrid() {
 		
@@ -800,7 +798,7 @@ const TB06010Sjs = (function(){
 				if(psblRsltnYn=="N"){
 					Swal.fire({
 						title: '안건 조회 확인',
-						icon: 'error',
+						icon: 'warning',
 						text: '심사진행상태 완료되지 않았습니다.',
 						confirmButtonText: '확인',
 					}).then(() => {
@@ -997,8 +995,8 @@ const TB06010Sjs = (function(){
 		if (isEmpty(prdtCd)) {
 			
 			Swal.fire({
-				icon: 'error'
-				, title: "Error!"
+				icon: 'warning'
+				, title: "Warning!"
 				, text: '종목코드 정보가 없습니다.'
 				, confirmButtonText: "확인"
 			}).then((result) => {
@@ -1132,9 +1130,9 @@ const TB06010Sjs = (function(){
 					});
 				} else {
 					Swal.fire({
-						title: '종목정보를 등록하는데 실패하였습니다.',
-						//text: "대출이 실행됩니다.",
-						icon: 'error',
+						text: '종목정보를 등록하는데 실패하였습니다.',
+						title: "Warning!",
+						icon: 'warning',
 						confirmButtonText: '확인',
 					});
 				}
@@ -1148,8 +1146,8 @@ const TB06010Sjs = (function(){
 		var prdtCd = $('#TB06010S_res_prdtCd').val();
 		
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 		
 		// 유효성검사
 		if (isEmpty($('#TB06010S_res_prdtCd').val())) {
@@ -1214,8 +1212,8 @@ const TB06010Sjs = (function(){
 
 	function checkParam() {
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 
 		// 유효성검사
 		if (isEmpty($('#TB06010S_res_prdtNm').val())) {
@@ -1568,8 +1566,8 @@ const TB06010Sjs = (function(){
 
 	function saveAppvCndt() {
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 
 		// 유효성검사
 		if (isEmpty($('#TB06010S_ibDealNo').val())) {
@@ -1732,8 +1730,8 @@ const TB06010Sjs = (function(){
 		
 		if (isEmpty($('#TB06010S_res_prdtCd').val())) {
 			Swal.fire({
-				icon: 'error',
-				title: "Error!",
+				icon: 'warning',
+				title: "Warning!",
 				text: '종목코드를 조회해주세요.',
 				confirmButtonText: "확인"
 			});
@@ -1907,8 +1905,8 @@ const TB06010Sjs = (function(){
 	function tab5BtnSave() {
 		if ( isEmpty($("#TB06010S_res_prdtCd").val()) ) {
 			Swal.fire({
-				icon: 'error'
-				, title: "Error!"
+				icon: 'warning'
+				, title: "Warning!"
 				, text: "안건구조 등록 및 조회 이후 진행바랍니다."
 				, confirmButtonText: "확인"
 			});
@@ -1928,8 +1926,8 @@ const TB06010Sjs = (function(){
 		var bssAsstMngmNo	= $('#TB06010S_tab5_bssAsstMngmNo').val();						// 일련번호
 
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 
 		if (isEmpty(prdtCd)) {
 			option.text = "종목정보가 없습니다.";
@@ -2010,8 +2008,8 @@ const TB06010Sjs = (function(){
 		
 
 		var option = {}
-		option.title = "Error";
-		option.type = "error";
+		option.title = "Warning!";
+		option.type = "warning";
 
 		if (bssAsstMngmNo == 0) {
 			option.text = "기초자산정보를 선택해주세요.";

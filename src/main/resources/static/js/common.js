@@ -590,12 +590,13 @@ function inputNumberFormat(obj) {
 }
 
 function addComma(value) {
-  return value
-    .toString()
-    .replace(
-      /(\..*)$|(\d)(?=(\d{3})+(?!\d))/g,
-      (digit, fract) => fract || digit + ","
-    );
+  if (!value) {
+    return value;
+  }
+
+  const strVal = value.toString();
+
+  return strVal.replace(/(\..*)$|(\d)(?=(\d{3})+(?!\d))/g, (digit, fract) => fract || digit + ",");
 }
 
 function inputNumberFormat2(obj) {
@@ -2185,12 +2186,15 @@ function needRunFn(menuId) {
 
   if (menuId === "TB06010S") {
     // TB06010Sjs.loginUserSet();
+    TB06010Sjs.resetSearchRequiment();
     TB06010Sjs.getDealInfoFromWF();
   }
   if (menuId === "TB06020S") {
+    TB06020Sjs.resetSearchRequiment_TB06020S();
     TB06020Sjs.getDealInfoFromWF();
   }
   if (menuId === "TB06030S") {
+    TB06030Sjs.resetSearchRequiment_TB06030S();
     TB06030Sjs.getDealInfoFromWF();
   }
   if (menuId === "TB06040S") {

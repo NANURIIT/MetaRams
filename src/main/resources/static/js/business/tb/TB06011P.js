@@ -880,20 +880,26 @@ function TB06011P_setPrdtInfo(e) {
         confirmButtonText: "확인",
       })
 
-      // resetAll('TB07050S', TB07050Sjs.resetMore());
+      //resetAll('TB07050S', TB07050Sjs.resetMore());
       resetPGgrids("TB07050S")
       // $('#TB07050S_btnSrch').prop('disabled', true)
       $('#TB07050S_btnPlus').prop('disabled', true)
       $('#TB07050S_btnMinus').prop('disabled', true)
       $('#TB07050S_btnSave').prop('disabled', true)
+      $('#TB07050S_excSn').prop('disabled', true)
+      $('#TB07050S_excSn').val('')
 
       $('#TB07050S_prdtCd').val(e.prdtCd)
       $('#TB07050S_prdtNm').val(e.prdtNm)
+      TB07050Sjs.srch();
     } else {
       // $('#TB07050S_btnSrch').prop('disabled', false)
       $('#TB07050S_btnPlus').prop('disabled', false)
       $('#TB07050S_btnMinus').prop('disabled', false)
       $('#TB07050S_btnSave').prop('disabled', false)
+      // $('#TB07050S_scxDcd1').prop('disabled', false)
+      // $('#TB07050S_scxDcd2').prop('disabled', false)
+      // $('#TB07050S_scxDcd3').prop('disabled', false)
       TB07050Sjs.srchExcSn(e.prdtCd);
       TB07050Sjs.srch();
     }
@@ -1000,28 +1006,13 @@ function TB06011P_setPrdtInfo(e) {
   }
 
   if (prefix === "TB07100S_grid") {
-    $("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow", {
-      rowIndx: prdtSn,
-      row: { prdtCd: e.prdtCd },
-    });
-    $("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow", {
-      rowIndx: prdtSn,
-      row: { nsFndCd: e.ortnFndCd },
-    });
+    $("#TB07100S_grd_thdtTrDtls").find(`#pq-body-cell-u6-${prdtSn}-10-right div`).html(e.prdtCd);
+    $("#TB07100S_grd_thdtTrDtls").find(`#pq-body-cell-u6-${prdtSn}-12-right div`).html(e.ortnFndCd);
   }
 
   if (prefix === "TB07110S_grid") {
-    console.log(e.prdtCd, e.ortnFndCd);
-    console.log("prdtSn");
-
-    $("#TB07110S_grd_basic").pqGrid("updateRow", {
-      rowIndx: prdtSn,
-      row: { prdtCd: e.prdtCd },
-    });
-    $("#TB07110S_grd_basic").pqGrid("updateRow", {
-      rowIndx: prdtSn,
-      row: { nsFndCd: e.ortnFndCd },
-    });
+    $("#TB07110S_grd_basic").find(`#pq-body-cell-u6-${prdtSn}-10-right div`).html(e.prdtCd);
+    $("#TB07110S_grd_basic").find(`#pq-body-cell-u6-${prdtSn}-12-right div`).html(e.ortnFndCd);
   }
 
   if (prefix === "TB07020S_srch") {

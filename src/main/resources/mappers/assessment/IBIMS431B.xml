@@ -76,6 +76,7 @@
      LEFT JOIN IBIMS231B T2
             ON T1.WRTN_DT || T1.RSLN_BDCD || T1.CNST_NO = T2.DEAL_NO
          WHERE 1=1
+           AND T1.CNCL_YN = 'N'
            /* 지급품의_실물증빙, 지급품의_전자계산서 구분 */
            AND T1.ELC_PRUF_YN = #{elcPrufYn}
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDecdCd)">
@@ -99,11 +100,11 @@
     </select>
 
     <select id="setCnstNo" parameterType="String" resultType="String">
-      SELECT TO_CHAR(NVL(MAX(temp.CNST_NO), SUBSTR(#{wrtnDt}, 1, 6) || '0000' ) + 1)
+      SELECT TO_CHAR(NVL(MAX(temp.CNST_NO) + 1, SUBSTR(#{wrtnDt}, 1, 6) || '0001' ))
         FROM (
               SELECT CNST_NO
                 FROM IBIMS431B
-               WHERE WRTN_DT LIKE #{wrtnDt} || '%'
+               WHERE WRTN_DT LIKE SUBSTR(#{wrtnDt}, 1, 6) || '%'
               ) AS temp
     </select>
 
@@ -402,15 +403,5 @@
            AND RSLN_BDCD = #{rslnBdcd}
            AND CNST_NO = #{cnstNo}
     </delete>
-
-    <select id="getCnstNo" parameterType="com.nanuri.rams.business.common.vo.IBIMS431BVO" resultType = "String">
-
-     SELECT NVL(MAX(temp.CNST_NO), #{wrtnYm}||'0000') + 1
-                    FROM (
-                      SELECT CNST_NO
-                        FROM IBIMS431B
-                       WHERE WRTN_DT LIKE #{wrtnDt}||'%'
-                ) AS temp
-    </select>
 
 </mapper>

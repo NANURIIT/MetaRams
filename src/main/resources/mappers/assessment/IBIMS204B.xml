@@ -111,4 +111,10 @@
     FROM DUAL;
     </select>
 
+    <select id="countMdwyRdmpFee" resultType="int">
+       SELECT COUNT(*) AS cntMdwyRdmpFee
+         FROM IBIMS204B
+        WHERE PRDT_CD = #{prdtCd};
+    </select>
+
 </mapper>
