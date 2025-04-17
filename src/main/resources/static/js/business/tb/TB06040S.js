@@ -311,10 +311,10 @@ const TB06040Sjs = (function() {
                 /* 약정 */
                 console.log("약정");
 
-                if(stdrIntrt === null || stdrIntrt === '0'){
+                if(prdtCd.startsWith('A') &&(stdrIntrt === null || stdrIntrt === '0')){
                     Swal.fire({
                         icon              : 'warning'
-                    , text              : "금리정보가 등록되어있지 않습니다."
+                    , text              : "대출계약 금리정보가 등록되어있지 않습니다."
                     , confirmButtonText : "확인"
                     });
                     return false;

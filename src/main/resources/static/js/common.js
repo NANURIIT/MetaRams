@@ -2284,126 +2284,137 @@ function chkDecdStep(menuId) {
   let rqstSq = $(`#${menuId}_rqstSq`).val() || 0; // 신청순번
   let trSeq = $(`#${menuId}_trSeq`).val() || 0; // 거래순번
 
-  let paramData = {
-    dealNo: dealNo,
-    prdtCd: prdtCd,
-    decdJobDcd: decdJobDcd,
-    scrnNo: scrnNo,
-    excSeq: excSeq,
-    rqstSq: rqstSq,
-    trSeq: trSeq,
-  };
-
   /**
-   * 결재담당자인지 체크해보자
+   * @author {김태안}
+   * 승인정보관리 화면 3개 종목코드 없을 시 (종목코드 등록 전) 종목 등록 버튼 활성화
    */
-  $.ajax({
-    type: "POST",
-    url: `/chkDecdStep`,
-    contentType: "application/json; charset=UTF-8",
-    data: JSON.stringify(paramData),
-    dataType: "json",
-    success: function (data) {
-      /**
-       * 결재요청이 없거나, 결재테이블에 데이터가 존재하지만 결재진행중이 아니다!!
-       * 1. 반려가 되었거나 승인요청취소를 했다.
-       * 2. 승인요청자, 담당자 입장에서는 종목수정, 종목취소가 가능하다!
-       * 3. 결재자 입장에서는 결재, 반려가 불가능하다!
-       */
-      if (data === -1 || data === 0) {
+  if((scrnNo === 'TB06010S' || scrnNo === 'TB06020S' || scrnNo === 'TB06030S') && (prdtCd === "" || prdtCd === null)){
+    $(`#${menuId}_regPrdt`).prop("disabled", false);
+    $(`#${menuId}_delPrdt`).prop("disabled", true);
+  }else{
+    let paramData = {
+      dealNo: dealNo,
+      prdtCd: prdtCd,
+      decdJobDcd: decdJobDcd,
+      scrnNo: scrnNo,
+      excSeq: excSeq,
+      rqstSq: rqstSq,
+      trSeq: trSeq,
+    };
+  
+    /**
+     * 결재담당자인지 체크해보자
+     */
+    $.ajax({
+      type: "POST",
+      url: `/chkDecdStep`,
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(paramData),
+      dataType: "json",
+      success: function (data) {
         /**
-         * 담당자일 경우
-         * 1. 결재요청버튼 활성화.
-         * 2. 종목등록, 취소 활성화.
+         * 결재요청이 없거나, 결재테이블에 데이터가 존재하지만 결재진행중이 아니다!!
+         * 1. 반려가 되었거나 승인요청취소를 했다.
+         * 2. 승인요청자, 담당자 입장에서는 종목수정, 종목취소가 가능하다!
+         * 3. 결재자 입장에서는 결재, 반려가 불가능하다!
          */
-        if (chrrNo === $("#userEno").val()) {
-          $(
-            `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
-          ).prop("hidden", false);
-          $(
-            `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
-          ).prop("hidden", true);
-          // 결재진행중이 아니기에 종목등록, 삭제 가능
-          $(`#${menuId}_regPrdt`).prop("disabled", false);
-          $(`#${menuId}_delPrdt`).prop("disabled", false);
+        if (data === -1 || data === 0) {
+          /**
+           * 담당자일 경우
+           * 1. 결재요청버튼 활성화.
+           * 2. 종목등록, 취소 활성화.
+           */
+          if (chrrNo === $("#userEno").val()) {
+            $(
+              `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+            ).prop("hidden", false);
+            $(
+              `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+            ).prop("hidden", true);
+            // 결재진행중이 아니기에 종목등록, 삭제 가능
+            $(`#${menuId}_regPrdt`).prop("disabled", false);
+            $(`#${menuId}_delPrdt`).prop("disabled", false);
+          } else {
+            /**
+             * 승인자일 경우
+             * 1. 현재 결재진행중이 아니고 담당자가 아니기 때문에 모든버튼 비활성화
+             */
+            $(
+              `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+            ).prop("hidden", true);
+            $(
+              `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+            ).prop("hidden", true);
+            // 담당자가 아니면 종목등록, 수정 불가능
+            $(`#${menuId}_regPrdt`).prop("disabled", true);
+            $(`#${menuId}_delPrdt`).prop("disabled", true);
+          }
         } else {
           /**
-           * 승인자일 경우
-           * 1. 현재 결재진행중이 아니고 담당자가 아니기 때문에 모든버튼 비활성화
+           * 결재진행중이다!
+           * 1. 현재 로그인한 사람이 승인자인지 결재자인지 확인해보자
            */
-          $(
-            `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
-          ).prop("hidden", true);
-          $(
-            `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
-          ).prop("hidden", true);
-          // 담당자가 아니면 종목등록, 수정 불가능
-          $(`#${menuId}_regPrdt`).prop("disabled", true);
-          $(`#${menuId}_delPrdt`).prop("disabled", true);
-        }
-      } else {
-        /**
-         * 결재진행중이다!
-         * 1. 현재 로그인한 사람이 승인자인지 결재자인지 확인해보자
-         */
-        /**
-         * 담당자일 경우
-         * 1. 결재요청버튼 활성화. ( 재승인요청, 승인요청취소 )
-         * 2. 종목등록, 취소 "비"활성화.
-         */
-        if (chrrNo === $("#userEno").val()) {
-          $(
-            `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
-          ).prop("hidden", false);
-          $(
-            `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
-          ).prop("hidden", true);
-          // 결재진행중이 아니기에 종목등록, 삭제 가능
-          $(`#${menuId}_regPrdt`).prop("disabled", true);
-          $(`#${menuId}_delPrdt`).prop("disabled", true);
-        } else {
           /**
-           * 승인자일 경우
-           * 1. 현재 진행중인 결재의 순번을 확인하자.
+           * 담당자일 경우
+           * 1. 결재요청버튼 활성화. ( 재승인요청, 승인요청취소 )
+           * 2. 종목등록, 취소 "비"활성화.
            */
-          $.ajax({
-            type: "POST",
-            url: `/chkDcfcEno`,
-            contentType: "application/json; charset=UTF-8",
-            data: JSON.stringify(paramData),
-            dataType: "json",
-            success: function (data) {
-              // 승인요청중이면 결재, 반려버튼 활성화
-              if (data.toString() === "1") {
-                $(
-                  `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
-                ).prop("hidden", true);
-                $(
-                  `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
-                ).prop("hidden", false);
-                $(`#${menuId}_regPrdt`).prop("disabled", true);
-                $(`#${menuId}_delPrdt`).prop("disabled", true);
-              }
-              // 현재 이 담당자 순서가 아니거나, 담당자가 아닌듯하다
-              else {
-                $(
-                  `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
-                ).prop("hidden", true);
-                $(
-                  `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
-                ).prop("hidden", true);
-                $(`#${menuId}_regPrdt`).prop("disabled", false);
-                $(`#${menuId}_delPrdt`).prop("disabled", false);
-              }
-            },
-          });
+          if (chrrNo === $("#userEno").val()) {
+            $(
+              `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+            ).prop("hidden", false);
+            $(
+              `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+            ).prop("hidden", true);
+            // 결재진행중이 아니기에 종목등록, 삭제 가능
+            $(`#${menuId}_regPrdt`).prop("disabled", true);
+            $(`#${menuId}_delPrdt`).prop("disabled", true);
+          } else {
+            /**
+             * 승인자일 경우
+             * 1. 현재 진행중인 결재의 순번을 확인하자.
+             */
+            $.ajax({
+              type: "POST",
+              url: `/chkDcfcEno`,
+              contentType: "application/json; charset=UTF-8",
+              data: JSON.stringify(paramData),
+              dataType: "json",
+              success: function (data) {
+                // 승인요청중이면 결재, 반려버튼 활성화
+                if (data.toString() === "1") {
+                  $(
+                    `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+                  ).prop("hidden", true);
+                  $(
+                    `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+                  ).prop("hidden", false);
+                  $(`#${menuId}_regPrdt`).prop("disabled", true);
+                  $(`#${menuId}_delPrdt`).prop("disabled", true);
+                }
+                // 현재 이 담당자 순서가 아니거나, 담당자가 아닌듯하다
+                else {
+                  $(
+                    `div[data-menuid="/${menuId}"] button[onclick*="callTB06081P"]`
+                  ).prop("hidden", true);
+                  $(
+                    `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
+                  ).prop("hidden", true);
+                  $(`#${menuId}_regPrdt`).prop("disabled", false);
+                  $(`#${menuId}_delPrdt`).prop("disabled", false);
+                }
+              },
+            });
+          }
         }
-      }
-    },
-    error: function (request, status, error) {
-      console.log(request, status, error);
-    },
-  });
+      },
+      error: function (request, status, error) {
+        console.log(request, status, error);
+      },
+    });
+  }
+
+  
 }
 
 function autoSrchFromPQGrid(pqGridId, url, paramData) {}
