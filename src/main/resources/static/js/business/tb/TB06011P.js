@@ -1000,28 +1000,13 @@ function TB06011P_setPrdtInfo(e) {
   }
 
   if (prefix === "TB07100S_grid") {
-    $("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow", {
-      rowIndx: prdtSn,
-      row: { prdtCd: e.prdtCd },
-    });
-    $("#TB07100S_grd_thdtTrDtls").pqGrid("updateRow", {
-      rowIndx: prdtSn,
-      row: { nsFndCd: e.ortnFndCd },
-    });
+    $("#TB07100S_grd_thdtTrDtls").find(`#pq-body-cell-u6-${prdtSn}-10-right div`).html(e.prdtCd);
+    $("#TB07100S_grd_thdtTrDtls").find(`#pq-body-cell-u6-${prdtSn}-12-right div`).html(e.ortnFndCd);
   }
 
   if (prefix === "TB07110S_grid") {
-    console.log(e.prdtCd, e.ortnFndCd);
-    console.log("prdtSn");
-
-    $("#TB07110S_grd_basic").pqGrid("updateRow", {
-      rowIndx: prdtSn,
-      row: { prdtCd: e.prdtCd },
-    });
-    $("#TB07110S_grd_basic").pqGrid("updateRow", {
-      rowIndx: prdtSn,
-      row: { nsFndCd: e.ortnFndCd },
-    });
+    $("#TB07110S_grd_basic").find(`#pq-body-cell-u6-${prdtSn}-10-right div`).html(e.prdtCd);
+    $("#TB07110S_grd_basic").find(`#pq-body-cell-u6-${prdtSn}-12-right div`).html(e.ortnFndCd);
   }
 
   if (prefix === "TB07020S_srch") {
