@@ -1,6 +1,7 @@
 package com.nanuri.rams.business.assessment.tb05.tb05010;
 
 import java.util.List;
+import java.util.Map;
 
 import com.nanuri.rams.business.common.dto.IBIMS103BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS111BDTO;
@@ -38,5 +39,8 @@ public interface TB05010Service {
 
 	// 준비확정 or 준비취소
 	public int changeCNFRNCStatus( IBIMS111BDTO paramData);
+
+	// 회차확인
+	public IBIMS115BVO sqCheck(IBIMS115BDTO paramData);
 
 }

@@ -248,5 +248,38 @@
       END;
     </update>
 
+    <!-- 회차 입력 확인 -->
+    <select id="sqCheck" parameterType="com.nanuri.rams.business.common.dto.IBIMS115BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS115BVO">
+       SELECT
+         CASE
+             WHEN EXISTS (
+                 SELECT 1
+                 FROM IBIMS111B
+                 WHERE 1=1
+                   AND SN = #{cnsbSq}
+                   AND CNSB_DCD = #{cnsbDcd}
+                   AND RSLTN_YR = #{rsltnYr}
+             )
+             THEN 'Y' ELSE 'N'
+         END AS DUP_YN,
+         CASE
+             WHEN EXISTS (
+                 SELECT 1
+                 FROM (
+                     SELECT ROWNUM AS RM
+                     FROM ALL_OBJECTS
+                     WHERE ROWNUM <![CDATA[<]]> #{cnsbSq}
+                 ) S,
+                      IBIMS111B B
+                 WHERE S.RM = B.SN(+)
+                   AND B.CNSB_DCD(+) = #{cnsbDcd}
+                   AND B.RSLTN_YR(+) = #{rsltnYr}
+                   AND B.SN IS NULL
+             )
+             THEN 'Y' ELSE 'N'
+         END AS GAP_YN
+     FROM DUAL
+    </select>
+
 
 </mapper>

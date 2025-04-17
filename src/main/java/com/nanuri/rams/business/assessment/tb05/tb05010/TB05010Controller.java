@@ -69,5 +69,10 @@ public class TB05010Controller {
 	@PostMapping(value = "/changeCNFRNCStatus")
 	public int changeCNFRNCStatus(@RequestBody IBIMS111BDTO paramData) { return tb05010Service.changeCNFRNCStatus(paramData); }
 	
+	// 협의정보 - 기본정보 검색
+	@GetMapping(value = "/sqCheck")
+	public IBIMS115BVO sqCheck(IBIMS115BDTO paramData) {
+		return tb05010Service.sqCheck(paramData);
+	}
 	
 }
