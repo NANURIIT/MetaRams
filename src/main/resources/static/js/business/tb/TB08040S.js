@@ -287,19 +287,19 @@ const TB08040Sjs = (function() {
 				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
-				editor: {
-					type: "select",
-					valueIndx: "cdValue",
-					labelIndx: "cdName",
-					options: grdSelect.F006,
-				},
+				// editor: {
+				// 	type: "select",
+				// 	valueIndx: "cdValue",
+				// 	labelIndx: "cdName",
+				// 	options: grdSelect.F006,
+				// },
 				render: function(ui) {
 					let fSel = grdSelect.F006.find(
 						({ cdValue }) => cdValue == ui.cellData
 					);
 					return fSel ? fSel.cdName : ui.cellData;
 				},
-				editable: true,
+				editable: false,
 			},
 			{
 				title: "수수료산정구분",
@@ -854,19 +854,6 @@ const TB08040Sjs = (function() {
 							//grid.refreshRow({ rowIndx: ui.rowIndx });
 						}
 					}
-					
-					
-
-					// if (dataIndx === 'feeAmt') { // 수수료금액
-					// 	obj.ui = ui
-					// 	obj.dataIndx = 'feeAmt'
-					// 	obj.length = 18
-
-					// 	numLength(obj)
-					// }
-
-
-
 
 					if (dataIndx === 'feeStdrAmt' || dataIndx === 'feeRt') {
 						const grid = $("#grd_feeSch").pqGrid('instance');
