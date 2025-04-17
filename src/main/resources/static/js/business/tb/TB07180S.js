@@ -253,14 +253,24 @@ const TB07180Sjs = (function() {
 					return fSel ? fSel.cdName : ui.cellData;
 				},
 			},
+			// {
+			// 	title: "계정과목",
+			// 	dataType: "string",
+			// 	dataIndx: "actName", //  ACT_CD A005
+			// 	halign: "center",
+			// 	align: "center",
+			// 	width: "10%",
+			// 	filter: { crules: [{ condition: "range" }] },
+			// },
 			{
 				title: "계정과목",
 				dataType: "string",
-				dataIndx: "actName", //  ACT_CD A005
+				dataIndx: "actsCd", //  ACT_CD A005
 				halign: "center",
 				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
+				// req ::: actsNm, res ::: actsCd
 			},
 			{
 				title: "등록상태",
@@ -582,7 +592,6 @@ const TB07180Sjs = (function() {
 		if (arg == undefined || arg == null) {
 			feeNameKeyIn = $("#TB07180S_feeNm_keyIn").val();
 		}
-
 		var paramData = {
 			"feeName": feeNameKeyIn
 		}
@@ -595,6 +604,8 @@ const TB07180Sjs = (function() {
 			data: paramData,
 			dataType: "json",
 			success: function(data) {
+				console.log(data);
+				
 				if (data.length > 0) {
 					var rowSeq;
 					rowSeq = data.length - 1;
@@ -686,7 +697,12 @@ const TB07180Sjs = (function() {
 		switch (mode) {
 			case "I":
 				// 유효성검사
-				if (isEmpty($('#TB07180S_actCd').val())) {
+				// if (isEmpty($('#TB07180S_actCd').val())) {
+				// 	option.text = "계정과목을 입력해주세요";
+				// 	openPopup(option);
+				// 	return false;
+				// }
+				if (isEmpty($('#TB07180S_actsNm').val())) {
 					option.text = "계정과목을 입력해주세요";
 					openPopup(option);
 					return false;
@@ -724,6 +740,8 @@ const TB07180Sjs = (function() {
 	function makeParam() {
 		var actCdTxt = $('#TB07180S_actCd').val();
 		var actCdVal = TB07180S_dataListVal(actCdTxt);
+		let actsNm = $('#TB07180S_actsNm').val() // 계정과목 직접입력으로 변경
+		// req ::: actsNm, res ::: actsCd
 
 		var paramData = {
 			"feeKndCd": $('#TB07180S_feeKndCd').val()
@@ -737,6 +755,7 @@ const TB07180Sjs = (function() {
 			, "acctJobCd": $('#TB07180S_acctJobCd').val()
 			, "acctUnJobCd": $('#TB07180S_acctUnJobCd').val()
 			, "acctTrCd": $('#TB07180S_acctTrCd').val()
+			, actsNm : actsNm	// 계정과목 직접입력으로 변경
 		}
 		return paramData;
 	}
@@ -745,10 +764,11 @@ const TB07180Sjs = (function() {
 	 * dblclick event function
 	 */
 	function setFeeKndCd(e) {
-		var actCdTxt = TB07180S_dataListBnd(e.actsCd);
+		//var actCdTxt = TB07180S_dataListBnd(e.actsCd);
 
 		$('#TB07180S_feeKndCd').val(e.feeKndCd);
-		$('#TB07180S_actCd').val(actCdTxt);
+		// $('#TB07180S_actCd').val(actCdTxt);
+		$('#TB07180S_actsNm').val(e.actsCd);
 		$('#TB07180S_feeNm').val(e.feeName);
 		$('#TB07180S_feeRcogDcd').val(e.feeRcogDcd);
 		$('#TB07180S_feeRcknDcd').val(e.feeRcknDcd);

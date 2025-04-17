@@ -34,4 +34,5 @@ public class IBIMS421BDTO {
     private String guid;                    //  GUID    varchar(29)
     private BigDecimal dealDvdnAmt;         //  딜배당금액  decimal(18,3)
 
+    private String actsNm;                  // 계정과목 요건 변경으로 인한 추가 
 } 

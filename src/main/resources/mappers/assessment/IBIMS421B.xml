@@ -134,7 +134,8 @@
     	ON ( FEE_KND_CD =  #{feeKndCd} )
     	WHEN MATCHED THEN
     	UPDATE SET
-    		   ACTS_CD = #{actsCd}
+    		   <!-- ACTS_CD = #{actsCd} --> 
+           ACTS_CD = #{actsNm} <!-- 계정과목명 요건 변경으로 인해 컬럼 추가-->
     		 , ACT_NAME= (SELECT L.CD_VL_NM
 							FROM IBIMS002B L
 							WHERE 1=1
@@ -156,7 +157,7 @@
              , HND_TR_ID = #{hndTrId}
              , GUID = #{guid}
 		WHEN NOT MATCHED THEN
-		INSERT 
+		INSERT  
     		 (
                 FEE_KND_CD
               , ACTS_CD
@@ -185,7 +186,8 @@
                            ) +1
                          , 2, '0'
                     )
-              , #{actsCd}
+              <!-- , #{actsCd} -->
+              , #{actsNm}
               , '1'
               , #{feeName}
               , #{feeRcogDcd}

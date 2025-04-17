@@ -255,10 +255,19 @@ const TB08040Sjs = (function() {
 				},
 				editable: true,
 			},
+			// {
+			// 	title: "계정과목명",
+			// 	dataType: "string",
+			// 	dataIndx: "actName",
+			// 	halign: "center",
+			// 	align: "center",
+			// 	width: "10%",
+			// 	filter: { crules: [{ condition: "range" }] },
+			// },
 			{
 				title: "계정과목명",
 				dataType: "string",
-				dataIndx: "actName",
+				dataIndx: "actsCd",
 				halign: "center",
 				align: "center",
 				width: "10%",
@@ -278,13 +287,19 @@ const TB08040Sjs = (function() {
 				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
+				editor: {
+					type: "select",
+					valueIndx: "cdValue",
+					labelIndx: "cdName",
+					options: grdSelect.F006,
+				},
 				render: function(ui) {
 					let fSel = grdSelect.F006.find(
 						({ cdValue }) => cdValue == ui.cellData
 					);
 					return fSel ? fSel.cdName : ui.cellData;
 				},
-				editable: false,
+				editable: true,
 			},
 			{
 				title: "수수료산정구분",
@@ -782,7 +797,10 @@ const TB08040Sjs = (function() {
 
 					if (dataIndx === 'feeKndCd') {
 						const grid = $("#grd_feeSch").pqGrid('instance');
-						rowData = grid.getRowData({ rowInx: ui.rowIndx });
+						//rowData = grid.getRowData({ rowInx: ui.rowIndx });
+						console.log(ui);
+						rowData = ui.rowData
+						// console.log(rowData);
 						var tempRowData = rowData.feeKndCd;
 						var selectedIndex = selectBox2.findIndex(option => option.feeKndCd === tempRowData);
 						if (selectedIndex !== -1) {
