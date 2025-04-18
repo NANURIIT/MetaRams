@@ -175,4 +175,12 @@
         </foreach>
     </update>
 
+    <update id="updtUseYn" parameterType="com.nanuri.rams.business.common.dto.IBIMS002BDTO">
+      UPDATE IBIMS002B 
+      SET USE_YN = 'N',
+          HND_DETL_DTM = SYSDATE,
+          HND_EMPNO = #{hndEmpno}
+      WHERE CMNS_CD_GRP = #{cmnsCdGrp}
+    </update>
+
 </mapper>

@@ -67,7 +67,23 @@ public class TB10010ServiceImpl implements TB10010Service {
 
         for(int i = 0; i < updateList.size(); i++){
             updateList.get(i).setHndEmpno(facade.getDetails().getEno());
+
+            // 001테이블 그룹코드정보 업데이트
             ibims001BMapper.registGroupCodeInfo(updateList.get(i));
+
+            // useYn 체크, "N"이면 002테이블 사용여부 변경
+            if ( "N".equals(updateList.get(i).getUseYn()) ) {
+                // parameterType=IBIMS002BDTO라서 변수 세팅하기 위한 설정
+                IBIMS002BDTO ibims002bdto = new IBIMS002BDTO();
+
+                // HndEmpno,CmnsCdGrp 값 받아옴. 
+                ibims002bdto.setHndEmpno(facade.getDetails().getEno());   
+                ibims002bdto.setCmnsCdGrp(updateList.get(i).getCmnsCdGrp());
+                
+                // 002에 사용여부 업데이트
+                ibims002BMapper.updtUseYn(ibims002bdto);
+            }
+
             cnt += 1;
         }
 
