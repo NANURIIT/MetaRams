@@ -750,8 +750,8 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(rgstDtEnd)">
            AND s101b.RGST_DT <![CDATA[<=]]> #{rgstDtEnd}
            </if>
-           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dbcd)">
-           AND s003b_1.BDCD = #{dbcd}
+           <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+           AND s003b_1.DPRT_CD = #{dprtCd}
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(crryCd)">
            AND s101b.CRRY_CD = #{crryCd}
