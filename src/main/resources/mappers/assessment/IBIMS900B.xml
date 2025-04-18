@@ -40,10 +40,10 @@
            AND T1.ASST_MNGM_ACNO = #{asstMngmAcno}     /* 자산관리계좌 */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDate)">
-           AND T1.FINC_EXCU_RQS_DT &gt; #{fromDate} /* 신청일자 PREV(수정해서사용) */
+           AND T1.FINC_EXCU_RQS_DT &gt;= #{fromDate} /* 신청일자 PREV(수정해서사용) */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDate)">
-           AND T1.FINC_EXCU_RQS_DT &lt; #{toDate} /* 신청일자 NEXT(수정해서사용) */
+           AND T1.FINC_EXCU_RQS_DT &lt;= #{toDate} /* 신청일자 NEXT(수정해서사용) */
            </if>
     </select>
 

@@ -1138,12 +1138,46 @@ const TB07200Sjs = (function () {
 
         // 자금집행업무지시요청 목록 그리드 조건
         if (gridId === "#TB07200S_wrkRqst") {
-            $(gridId).pqGrid("addRow", {
-                rowData: {
-                    fincExcuRqsDt: getToday(),
-                    dprtCd: $("#userDprtCd").val()
-                }, checkEditable: false
-            });
+
+            var gridLength = $(gridId).pqGrid('option', 'dataModel.data').length;
+            var newRowExist = false;
+
+            if(gridLength <= 0){
+                //console.log("신규 행 없음(최초 추가");
+            }else{
+                for(var i = 0; i < gridLength; i++){
+                    var rowData = $(gridId).pqGrid("getRowData", { rowIndx: i } );
+                    var fincExcuRqsSn = rowData.fincExcuRqsSn;
+    
+                    //console.log("fincExcuRqsSn::: " + fincExcuRqsSn);
+    
+                    if(isEmpty(fincExcuRqsSn) || fincExcuRqsSn === undefined){
+                        //console.log("신규 행 존재");
+                        newRowExist = true;
+                        break;
+                    }else{
+                        //console.log("신규 행 없음");
+                    }
+                }
+            }
+            
+            if(!newRowExist){
+                $(gridId).pqGrid("addRow", {
+                    rowData: {
+                        fincExcuRqsDt: getToday(),
+                        dprtCd: $("#userDprtCd").val()
+                    }, checkEditable: false
+                });
+            }else{
+                Swal.fire({
+                    icon: "warning",
+                    title: "Warning!",
+                    text: "자금집행업무지시요청 목록에는 한 행만 추가 가능합니다.",
+                })
+                return;
+            }
+
+            
         }
 
         // 유동화증권발행내역, 입출금요청 그리드 조건
