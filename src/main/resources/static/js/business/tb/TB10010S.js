@@ -97,10 +97,10 @@ const TB10010Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
+      title: "사용여부",
       dataIndx: "useYn",
       align: "center",
       halign: "center",
-      title: "사용여부",
       width: "7%",
       editable: "true",
       editor: {
@@ -209,12 +209,55 @@ const TB10010Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
+      title: "사용여부",
       dataIndx: "useYn",
       align: "center",
       halign: "center",
-      title: "사용여부",
       width: "7%",
-      editable: "true",
+      editable: function(ui){
+        var isCanUse = false; 
+
+        // if (clickDetailButton.grpUseYn === 'N') {
+        //   isCanUse = true;
+        // } 오답
+        var rowData = ui.rowData;             
+        var dtlCmnsCdGrp = rowData.cmnsCdGrp;      //그룹코드(상세코드)
+        var useYn = rowData.useYn;            //사용여부(상세코드)
+
+        var grpCdListLgth = $("#groupCodeListTable").pqGrid('option', 'dataModel.data').length;    //그룹코드 그리드 길이(행 개수)
+        
+        
+        
+        for(var i = 0; i < grpCdListLgth;  i++){
+          // console.log("여기임?");
+
+          var grpCdRowData = $("#groupCodeListTable").pqGrid("getRowData", { rowIndx: i } );      //그룹코드 i번째 행 데이터
+          //그룹코드(그룹코드) : grpCdRowData.cmnsCdGrp
+          let grpCmnsCdGrp = grpCdRowData.cmnsCdGrp;
+          //사용여부(그룹코드) : grpCdRowData.useYn
+          let grpUseYn = grpCdRowData.useYn;
+          
+          //1. 그룹코드(상세코드) == 그룹코드(그룹코드) ?
+          if (dtlCmnsCdGrp === grpCmnsCdGrp) {
+            //2. 사용여부(그룹코드) == 'Y' or 'N' 
+            if (grpUseYn === 'Y') {
+              isCanUse = true
+            }
+            else {
+              isCanUse = false
+            }
+          }
+          
+          
+          //그룹코드의 하위 상세코드들의 사용여부는 그룹코드의 사용여부가 N일시 Y가 될 수 없음.
+          //로그에 그룹코드의 사용여부가 나와야함.
+          
+        
+        }
+
+        console.log("useYn::: " + useYn);
+        return isCanUse;
+      },
       editor: {
         type: "select",
         options: Yn
@@ -380,11 +423,17 @@ const TB10010Sjs = (function () {
    */
   function clickDetailButton() {
     $(document).on("click", "button[name='detail_btn']", function () {
-      var rowIndex = $(this).data("row-indx");
+      var rowIndex = $(this).data("row-indx");        //몇번쨰 줄인지?
+
+      // console.log(rowIndex);
 
       var rowData = groupCdListTbObj.getRowData({ rowIndx: rowIndex });
 
       codeId = rowData.cmnsCdGrp;
+
+      var grpUseYn = rowData.useYn;
+      // console.log("useYn::: "+ grpUseYn);
+
       getGroupCodeInfo(codeId);
     });
   }
@@ -571,6 +620,19 @@ const TB10010Sjs = (function () {
           })
           return;
         }
+      // 사용여부
+      // if (clickDetailButton().) {
+      //   if (useYn === 'Y') {
+
+      //     console.log("grpUseYn :: ", grpUseYn);
+          
+      //     Swal.fire({
+      //       icon: 'warning'
+      //       , text: "사용여부를 확인해주세요."
+      //     })
+      //   }
+      // }
+
         // 유효성 체크 통과시 리스트 추가
         else {
           insertList.push(pqgridList[i]);
@@ -595,6 +657,7 @@ const TB10010Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
+        
         Swal.fire({
           icon: "success",
           title: "상세코드 등록이 완료되었습니다.",
@@ -611,6 +674,8 @@ const TB10010Sjs = (function () {
       },
     });
   }
+
+  
 
   /*******************************************************************
    *** 하단 그리드 event
@@ -629,6 +694,9 @@ const TB10010Sjs = (function () {
       dataType: "json",
     }).done(function (codeInfoList) {
       if (codeInfoList.length > 0) {
+
+        //case 1
+
         $('#codeListTable').pqGrid('instance').setData(codeInfoList);
       } else {
         Swal.fire({

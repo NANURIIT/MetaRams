@@ -272,12 +272,12 @@ const TB07110Sjs = (function () {
     $('#TB07110S_rgstEmpno').val($('#userEno').val());
     $('#TB07110S_rgstEmpnm').val($('#userEmpNm').val());
 
-    toggleBtnHandler('등록/변경');
 
     $("#TB07110S_grd_basic").pqGrid('instance').setData([]);
     // 파일 그리드 초기화
     $(`div[data-menuid="/TB07110S"] #UPLOAD_FileList`).html("");
 
+    
     apvlBtnHandler();
   }
 
@@ -841,19 +841,17 @@ const TB07110Sjs = (function () {
           else {
             sttmDetlIndex = ui.rowIndx
           }
+          
         }
-        // , cellClick: function ( evt, ui ) {
-        //   if ( ui.dataIndx === "prdtCd" ) {
-        //     ui.column.editable = false;
-        //   }
-        //   else if ( ui.dataIndx === "nsFndCd" ) {
-        //     ui.column.editable = false;
-        //   }
-        //   else {
-        //     console.log(ui);
-
-        //   }
-        // }
+        , cellClick: function ( evt, ui ) {
+          if ( ui.dataIndx === "prdtCd" ) {
+            ui.column.editable = false;
+          }
+          else if ( ui.dataIndx === "nsFndCd" ) {
+            ui.column.editable = false;
+          }
+          
+        }
         , selectionModel: { type: "row" }
       },
     ]
@@ -923,9 +921,8 @@ const TB07110Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
+        let gridList = $("#TB07110S_grd_txbl").pqGrid("instance");
         if (data.length > 0) {
-          //let gridList = $("#TB07110S_grd_rlthPruf").pqGrid("instance");
-          let gridList = $("#TB07110S_grd_txbl").pqGrid("instance");
           gridList.setData(data);
           gridList.getData();
         }
@@ -935,7 +932,9 @@ const TB07110Sjs = (function () {
             , title: "Warning!"
             , text: "조회된 내역이 없습니다!"
           })
+          gridList.setData([]);
         }
+        resetInput();
       },
       error: function () {
         Swal.fire({
@@ -956,11 +955,18 @@ const TB07110Sjs = (function () {
       data: JSON.stringify(paramData),
       dataType: "json",
       success: function (data) {
-        if (data) {
+        if (data.length > 0) {
           let gridList = $("#TB07110S_grd_basic").pqGrid("instance");
+          
           gridList.setData(data);
           gridList.getData();
         } else {
+          console.log("상세정보 체크!");
+          Swal.fire({
+            icon: 'warning'
+            , title: 'Warning!'
+            , text: '상세정보가 없습니다!'
+          })
 
         }
       },
@@ -1077,7 +1083,7 @@ const TB07110Sjs = (function () {
             , text: `${text} 완료.`
           })
           resetInput();
-          TB07100S_selectIBIMS431B();
+          TB07110S_selectIBIMS431B();
         }
         else {
           Swal.fire({
@@ -1098,7 +1104,7 @@ const TB07110Sjs = (function () {
   }
 
   /**
-   * 승인
+   * 결재요청
    * @returns 
    */
   function apvlRqst() {
@@ -1142,7 +1148,7 @@ const TB07110Sjs = (function () {
             , title: "Success!"
             , text: "결재요청이 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('04');
+          $('#TB07110S_decdSttsDcd').val('1');
         }
         else if (data === -7574) {
           Swal.fire({
@@ -1162,7 +1168,7 @@ const TB07110Sjs = (function () {
       }, error: function () {
         Swal.fire({
           icon: 'error'
-          , title: "Success!"
+          , title: "Error!"
           , text: "결재요청 실패!"
           , confirmButtonText: "확인"
         })
@@ -1197,7 +1203,7 @@ const TB07110Sjs = (function () {
             , title: "Success!"
             , text: "승인요청취소 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('00');
+          $('#TB07110S_decdSttsDcd').val('4');
         }
         else {
           Swal.fire({
@@ -1206,7 +1212,8 @@ const TB07110Sjs = (function () {
             , text: "승인요청취소 실패!"
           })
         }
-        apvlBtnHandler();
+        TB07110S_selectIBIMS431B();
+
       }, error: function () {
         Swal.fire({
           icon: 'error'
@@ -1245,7 +1252,7 @@ const TB07110Sjs = (function () {
             , title: "Success!"
             , text: "승인 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('05');
+          $('#TB07110S_decdSttsDcd').val('2');
         }
         else {
           Swal.fire({
@@ -1293,7 +1300,7 @@ const TB07110Sjs = (function () {
             , title: "Success!"
             , text: "반려 되었습니다!"
           })
-          $('#TB07100S_decdSttsDcd').val('00');
+          $('#TB07110S_decdSttsDcd').val('3');
         }
         else {
           Swal.fire({
@@ -1334,7 +1341,7 @@ const TB07110Sjs = (function () {
           Swal.fire({
             icon: 'success'
             , title: "Success!"
-            , text: "저장 성공!~"
+            , text: "저장 성공!"
           })
         }
         else {
@@ -1344,6 +1351,14 @@ const TB07110Sjs = (function () {
             , text: "저장 실패!"
           })
         }
+        // 
+        let reSrchParamData = {
+          wrtnDt: $("#TB07110S_wrtnDt").val().replaceAll('-', "")
+          , rslnBdcd: $("#TB07110S_rslnBdcd").val()
+          , cnstNo: $("#TB07110S_cnstNo").val()
+        }
+        TB07110S_selectIBIMS432B(reSrchParamData);
+
       }, error: function () {
         Swal.fire({
           icon: 'error'

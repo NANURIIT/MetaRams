@@ -34,5 +34,7 @@ public interface IBIMS002BMapper {
 	public int deleteCodeInfo(@Param(value = "cmnsCdGrp") String cmnsCdGrp, 
 								@Param(value = "hndEmpno") String hndEmpno,
 								@Param(value = "cdVlIds") List<String> cdVlIds);
+
+	public int updtUseYn(IBIMS002BDTO paramData);	// 사용여부 변경시 바뀌는 행 갯수		
 	
 }
