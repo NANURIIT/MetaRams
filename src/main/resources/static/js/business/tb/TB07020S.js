@@ -1,3 +1,9 @@
+/**
+ * 기타투자 매수관리
+ * 
+ * 1. 
+ */
+
 const TB07020Sjs = (function () {
 
 	let loginUsrId = '';
@@ -1462,7 +1468,7 @@ const TB07020Sjs = (function () {
 			}
 			// 환산금액 기업여신약정금액
 			if (isEmpty(g_eprzCrdlCtrcAmt) || g_eprzCrdlCtrcAmt == 0) {
-				option.text = "해당종목의 약정을 확인하여 주십시오.";
+				option.text = "해당종목의 약정금액이 부족합니다.";
 				openPopup(option);
 				return false;
 			}

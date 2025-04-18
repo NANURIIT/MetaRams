@@ -62,7 +62,13 @@
              , T1.HND_EMPNO
              , T2.APVL_RQST_P_ENO                             /* 요청자사번 */
              , T2.DECD_STEP_DCD                               /* 결재단계구분코드 */
-             , NVL(T2.DECD_STTS_DCD, '0') AS DECD_STTS_DCD    /* 결재상태구분코드 */
+             , (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE 1=1
+                   AND CMNS_CD_GRP = 'D006'
+                   AND CD_VL_ID = NVL(T2.DECD_STTS_DCD, '0')
+              ) AS DECD_STTS_DCD                              /* 결재상태구분코드 */
              , T2.RQST_DTM                                    /* 신청일시 */
              , T3.RNDR_IN_AMT                                 /* 입금합계 */
              , T3.RNDR_OUT_AMT                                /* 출금합계 */

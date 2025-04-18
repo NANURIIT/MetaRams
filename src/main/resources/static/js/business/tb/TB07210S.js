@@ -163,7 +163,7 @@ const TB07210Sjs = (function () {
             {
                 title: "결재구분",
                 dataType: "string",
-                dataIndx: "prgSttsCd",
+                dataIndx: "decdSttsDcd",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -186,6 +186,7 @@ const TB07210Sjs = (function () {
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
+                hidden: true,
             },
             {
                 title: "결재상태명",
