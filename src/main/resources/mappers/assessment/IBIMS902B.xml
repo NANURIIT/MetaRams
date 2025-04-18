@@ -295,7 +295,7 @@
 			, #{ardyBzepNo}
 			, #{fincExcuRqsSn}
 			, #{trSn}
-			, #{trTm}
+			, TRIM(SUBSTR(REPLACE(#{trTm}, ':', ''), 0, 4))
 			, #{rndrDcd}
 			, #{spcDepItemKndCd}
 			, #{spcWdrItemKndCd}
@@ -317,7 +317,7 @@
 	<!--TB07200S - 입금/출금 요청 목록 수정-->
 	<update id="rndrRqstUpdate" parameterType="com.nanuri.rams.business.common.dto.IBIMS902BDTO">
 		UPDATE IBIMS902B
-		   SET TR_TM = #{trTm}
+		   SET TR_TM = TRIM(SUBSTR(REPLACE(#{trTm}, ':', ''), 0, 4))
 			 , SPC_DEP_ITEM_KND_CD = #{spcDepItemKndCd}
 			 , SPC_WDR_ITEM_KND_CD = #{spcWdrItemKndCd}
 			 , SYNS_TEXT = #{synsText}
