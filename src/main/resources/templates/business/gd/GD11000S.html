@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/ramsLayout}">
+<th:block layout:fragment="script">
+  <script th:src="@{js/common.js}"></script>
+  <script th:src="@{js/business/gd/GD11000S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+  <!-- 공통코드관리 -->
+  <div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+      <!-- 조회영역 -->
+      <div class="col-lg-12">
+        <div class="ibox">
+          <div class="ibox-content i-filter" id="GD90000S__srchForm">
+            <div class="row form-group form-inline text-right">
+              <div class="col-sm-12 input-group">
+                <label class="col-sm-1 control-label">코드구분</label>
+                <select class="col-sm-2 form-control m-b" id="GD90000S_commonCodeInfo"></select>
+                <label class="col-sm-1 control-label">코드설명</label>
+                <input type="text" class="col-sm-2 form-control m-b" id="GD90000S_commonCodeGrpExpl"></input>
+                <div class="col-sm-6 text-right">
+                  <button class="btn btn-primary" type="button" id="GD90000S_commonCodeSearch">
+                    <i class="fa fa-search"></i>&nbsp;조회
+                  </button>
+                  <button class="btn btn-default" type="button" onclick="">
+                    <i class="fa fa-undo"></i>&nbsp;초기화
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 조회결과 -->
+          <div class="ibox-content">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>▶ 그룹코드</h5>
+                </div>
+                <div class="ibox-content">
+                <div id="GD90000S_groupCodeListTable"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+
+</html>
