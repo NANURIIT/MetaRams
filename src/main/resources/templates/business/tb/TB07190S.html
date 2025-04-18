@@ -29,7 +29,7 @@
 				<div class="ibox">
 					<!-- 조회조건영역 -->
 					<div class="ibox-content i-filter">
-						<div class="form-group row form-inline">
+						<div class="form-group row form-inline" id="TB07190S_srchForm">
 							<div class="col-sm-10 form-group mb-1">
 								<!-- deal 번호 -->
 								<label class="col-sm-1 control-label">Deal번호</label>
@@ -57,7 +57,7 @@
 								<label class="col-sm-1 control-label text-nowrap">조회기간</label>
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB07190S_strYmd" name="" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
+										<input type="text" class="form-control" id="TB07190S_strYmd" name="" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '');" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
@@ -67,62 +67,65 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-10 form-group mb-1">
-								<!-- 기업체번호 -->
-								<label class="col-sm-1 control-label">거래상대방</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-										<input type="text" class="form-control" id="TB07190S_ardyBzepNo" maxlength="13">
-										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03061P('TB07190S')"><i class="fa fa-search"></i></button>
-										</span>
-										<input type="text" class="form-control" id="TB07190S_bzepName" readonly>
+							<div class="col-sm-12 form-group">
+								<div class="col-sm-10 form-group mb-1">
+									<!-- 기업체번호 -->
+									<label class="col-sm-1 control-label">거래상대방</label>
+									<div class="col-sm-3">
+										<div class="input-group">
+											<input type="text" class="form-control" id="TB07190S_ardyBzepNo" maxlength="13">
+											<span class="input-group-append">
+												<button type="button" class="btn btn-default" onclick="callTB03061P('TB07190S')"><i class="fa fa-search"></i></button>
+											</span>
+											<input type="text" class="form-control" id="TB07190S_bzepName" readonly>
+										</div>
+									</div>
+									<!-- 수수료종류 -->
+									<label class="col-sm-1 control-label">수수료종류</label>
+									<div class="col-sm-3 input-group">
+										<select class="form-control" id="TB07190S_etprCrdtGrntTrKindCd" style="display: none">
+											<option value="">전체</option>
+										</select> 
+										<select class="form-control" id="TB07190S_feeKndCd">
+											<option value="">전체</option>
+										</select>
+									</div>
+									<!-- 거래상태 -->
+									<label class="col-sm-1 control-label">거래상태</label>
+									<div class="col-sm-3 input-group">
+										<select class="form-control" id="TB07190S_trStatCd">
+											<option value="">전체</option>
+										</select>
 									</div>
 								</div>
-								<!-- 수수료종류 -->
-								<label class="col-sm-1 control-label">수수료종류</label>
-								<div class="col-sm-3 input-group">
-									<select class="form-control" id="TB07190S_etprCrdtGrntTrKindCd" style="display: none">
-										<option value="">전체</option>
-									</select> 
-									<select class="form-control" id="TB07190S_feeKndCd">
-										<option value="">전체</option>
-									</select>
-								</div>
-								<!-- 거래상태 -->
-								<label class="col-sm-1 control-label">거래상태</label>
-								<div class="col-sm-3 input-group">
-									<select class="form-control" id="TB07190S_trStatCd">
-										<option value="">전체</option>
-									</select>
-								</div>
+								<!-- <div class="col-sm-2 form-group mb-1"> -->
+									<!-- 버튼영역 -->
+									<div class="col-sm-2 text-right">
+										<button class="btn btn-primary" onclick="TB07190Sjs.getData();"><i class="fa fa-search"></i>&nbsp;조회</button>
+										<button class="btn btn-default" type="button" onclick="TB07190Sjs.resetInputData_TB07190S();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+									</div>
+								<!-- </div> -->
 							</div>
 							<div class="col-sm-10 form-group mb-1">
 								<!-- 계정과목 -->
-								<label class="col-sm-1 control-label">계정과목</label>
+								<!-- 공통코드로 들어가다 직접 입력하도록 요구사항 변경 -->
+								<label class="col-sm-1 control-label" hidden>계정과목</label>
 								<div class="col-sm-3 input-group">
-									<select class="form-control" id="TB07190S_actsCd">
+									<select class="form-control" id="TB07190S_actsCd" hidden>
 										<option value="">전체</option>
 									</select>
 								</div>
 								<!-- 부서코드 -->
-								<label class="col-sm-1 control-label">부서코드</label>
-								<div class="col-sm-3">
+								<!-- <label class="col-sm-1 control-label">부서코드</label> -->
+								<!-- <div class="col-sm-3">
 									<div class="input-group">
 										<select class="form-control" id="TB07190S_dprtNm">
 											<option value="">전체</option>
 										</select>
 										<input type="text" class="form-control" id="TB07190S_dprtCd" readonly>
 									</div>
-								</div>
-							</div>
-							<div class="col-sm-2 form-group mb-1">
-								<!-- 버튼영역 -->
-								<div class="col-sm-12 text-right">
-									<button class="btn btn-primary" onclick="TB07190Sjs.getData();"><i class="fa fa-search"></i>&nbsp;조회</button>
-									<button class="btn btn-default" type="button" onclick="TB07190Sjs.resetInputData_TB07190S();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
-								</div>
-							</div>
+								</div> -->
+							</div>							
 						</div>
 					</div>
 					<!-- 조회결과 -->

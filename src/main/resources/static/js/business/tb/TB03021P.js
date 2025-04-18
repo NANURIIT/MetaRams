@@ -308,6 +308,10 @@ function setDealInfo(e) {
     TB04040Sjs.srchIssDtlsList();
   }
 
+  if (prefix == "TB07190S") {
+    TB07190Sjs.getData();
+  }
+
   modalClose_TB03021P();
 }
 
