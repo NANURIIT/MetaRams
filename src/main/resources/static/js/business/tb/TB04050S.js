@@ -102,6 +102,14 @@ const TB04050Sjs = (function () {
     };
 
     limitInputLength(columns, "TB04050S");
+
+    selectorNumberFormater(
+      $(
+        `
+          #TB04050S_issAmt
+        `
+      )
+    )
   });
 
   // 세션으로 받앗을때

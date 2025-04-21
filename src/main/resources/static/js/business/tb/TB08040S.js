@@ -19,10 +19,17 @@ const TB08040Sjs = (function() {
 		selectBoxSet_TB08040S(); //부서 셀렉트박스 세팅
 		loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
 		getDealInfoFromWF();
-
+		
 		//기간검색 유효성 검사 함수
 		chkValFromToDt("TB08040S_strPrarDt","TB08040S_endPrarDt");
+		setDateInput();
 	});
+
+	function setDateInput() {
+    // 1개월전 ~ 오늘일자 디폴트 세팅
+    $("#TB08040S_strPrarDt").val(addMonth(getToday(), -1));
+    $("#TB08040S_endPrarDt").val(getToday());    
+  }
 
 	/**
 	 * 초기화 버튼
@@ -32,6 +39,7 @@ const TB08040Sjs = (function() {
 		loginUserSet_TB08040S(); //로그인 담당자,관리부서 세팅
 		saveGrid = [];
 		delGrid = [];
+		setDateInput();
 	}
 
 	/*

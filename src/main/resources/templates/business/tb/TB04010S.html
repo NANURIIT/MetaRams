@@ -16,6 +16,7 @@
 	<script th:src="@{js/business/tb/TB03022P.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
+	<script th:src="@{js/business/tb/FileUploadPopup.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -27,6 +28,7 @@
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<th:block th:replace="business/tb/FileUploadPopup :: FileUploadPopup"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -269,7 +271,7 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label"><span class="req"></span>부의금액</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control text-right" id="crryAmt" maxlength="24">
+																<input type="text" class="form-control text-right" id="crryAmt">
 															</div>
 														</div>
 														<div class="form-group row">
@@ -289,8 +291,8 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label">적용환율</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control text-right" id="aplyExrt" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  onblur="formatPerInput(this)"									
-																maxlength="19">
+																<input type="text" class="form-control text-right" id="aplyExrt" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  onblur="formatPerInput(this)"							
+																>
 															</div>
 														</div>
 														<div class="form-group row">
@@ -465,19 +467,19 @@
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label"><span class="req"></span>전체수익</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control text-right" id="tlErnAmt" maxlength="24">
+																<input type="text" class="form-control text-right" id="tlErnAmt">
 															</div>
 														</div>
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label"><span class="req"></span>수수료수익</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control text-right" id="rcvblErnAmt" maxlength="24">
+																<input type="text" class="form-control text-right" id="rcvblErnAmt">
 															</div>
 														</div>
 														<div class="form-group row">
 															<label class="col-sm-4 col-form-label"><span class="req"></span>투자수익</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control text-right" id="wrtErnAmt" maxlength="24">
+																<input type="text" class="form-control text-right" id="wrtErnAmt">
 															</div>
 														</div>
 													</div>
@@ -745,7 +747,7 @@
 															</div>	
 															<label class="col-sm-1 col-form-label"><span class="req"></span>기초자산 평가액<br>(통화금액)</label>
 															<div class="col-sm-2">
-																<input type="text" class="form-control text-right" id="TB04010S_crryAmt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onkeyup="inputNumberFormater(this);" maxlength="24">
+																<input type="text" class="form-control text-right" id="TB04010S_crryAmt">
 															</div>															
 															<label class="col-sm-1 col-form-label">적용환율</label>
 															<div class="col-sm-2">
@@ -1052,7 +1054,7 @@
 															</div>
 															<label class="col-sm-1 col-form-label">담보평가액(통화금액)</label>
 															<div class="col-sm-3">
-																<input type="text" class="form-control text-right" id="mrtgcrryAmt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onkeyup="inputNumberFormater(this);" maxlength="24">
+																<input type="text" class="form-control text-right" id="mrtgcrryAmt">
 															</div>
 														</div>
 														<div class="form-group row">
@@ -1074,7 +1076,7 @@
 														<div class="form-group row">
 															<label class="col-sm-1 offset-sm-8 col-form-label">담보평가액(원)</label>
 															<div class="col-sm-3">
-																<input type="text" class="form-control text-right" id="mrtgEvlAmt" readonly="readonly" onkeyup="inputNumberFormater(this);" maxlength="24">
+																<input type="text" class="form-control text-right" id="mrtgEvlAmt" readonly="readonly">
 															</div>
 														</div>
 													</div>
@@ -1122,7 +1124,7 @@
 															</div>
 															<label class="col-sm-1 col-form-label"><span class="req"></span>보증금액</label>
 															<div class="col-sm-2">
-																<input type="text" class="form-control text-right" id="TB04010S_grteAmt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onkeyup="inputNumberFormater(this);" maxlength="24">
+																<input type="text" class="form-control text-right" id="TB04010S_grteAmt">
 															</div>
 															<label class="col-sm-1 col-form-label"><span class="req"></span>보증내용</label>
 															<div class="col-sm-5">
@@ -1219,7 +1221,7 @@
 															</div>
 															<label class="col-sm-1 col-form-label"><span class="req"></span>손해배상 최대범위</label>
 								                <div class="col-sm-3">
-								                	<input type="text" class="form-control text-right" id="TB04010S_dmgRprtnMxExtnt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onkeyup="inputNumberFormater(this);" maxlength="24">
+								                	<input type="text" class="form-control text-right" id="TB04010S_dmgRprtnMxExtnt">
 								                </div>																			
 																<label class="col-sm-1 col-form-label">법인번호</label>
 																<div class="col-sm-3">

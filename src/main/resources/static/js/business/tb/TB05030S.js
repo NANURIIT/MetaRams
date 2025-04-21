@@ -30,30 +30,41 @@ const TB05030Sjs = (function () {
     };
 
     limitInputLength(columns, "TB05030S");
+
+    selectorNumberFormater(
+      $('#TB05030S_rcgAmt')
+    )
+
+    chkAmt();
   });
 
-  document
-    .getElementById("TB05030S_rcgAmt")
-    .addEventListener("blur", function () {
-      const rcgAmtStr = document
-        .getElementById("TB05030S_rcgAmt")
-        .value.replace(/,/g, "");
-      const rcgAmt = parseFloat(rcgAmtStr);
-      const ptfdAmt = parseFloat(TB05030S_ptfdAmt);
-      console.log("입력값 (rcgAmt):", rcgAmt); // 숫자 형식으로 출력
-      console.log("ptfdAmt:", ptfdAmt); // 숫자 형식으로 출력
-      if (rcgAmt > ptfdAmt) {
+  function chkAmt () {
+    
+    $('#TB05030S_rcgAmt').on('keydown', function (event) {
+      if (!TB05030S_ptfdAmt) {
         Swal.fire({
-          icon: "error",
-          title: "Error!",
-          text: "승인금액은 참여금액을 초과할 수 없습니다.",
+          icon: "warning",
+          title: "Warning!",
+          text: "협의결과를 조회해 주세요!",
           confirmButtonText: "확인",
         });
-        const inputField = document.getElementById("TB05030S_rcgAmt");
-        inputField.value = ""; // 입력값 지우기
-        inputField.focus(); // 포커스 주기
       }
-    });
+      $(this).val(0);
+    })
+
+    $('#TB05030S_rcgAmt').on('change', function (event) {
+      if ( $(this).val() > TB05030S_ptfdAmt) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: "승인금액은 참여금액을 초과할 수 없습니다!",
+          confirmButtonText: "확인",
+        });
+        $(this).val(TB05030S_ptfdAmt)
+        $(this).focus()
+      }
+    })
+  }
 
   function TB05030S_setFileButtonEnabled(isEnabled) {
     // enabled가 true이면 버튼 활성화, false이면 비활성화
@@ -309,8 +320,8 @@ const TB05030Sjs = (function () {
 
     if (isEmpty(cnsbDcd)) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "결의협의체 정보를 확인해주세요",
         confirmButtonText: "확인",
       });
@@ -319,8 +330,8 @@ const TB05030Sjs = (function () {
 
     if (isEmpty(rsltnYr)) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "결의년도 정보를 확인해주세요",
         confirmButtonText: "확인",
       });
@@ -363,6 +374,11 @@ const TB05030Sjs = (function () {
           arrPqGridCaseInfo.option("strNoRows", "조회된 데이터가 없습니다.");
           arrPqGridMmbrInfo.option("strNoRows", "조회된 데이터가 없습니다.");
           arrPqGridIbDealInfo.option("strNoRows", "조회된 데이터가 없습니다.");
+          Swal.fire({
+            icon: 'warning'
+            , title: 'Warning!'
+            , text: '조회된 데이터가 없습니다!'
+          });
         } else {
           arrPqGridCaseInfo.setData(data);
           arrPqGridCaseInfo.option("rowDblClick", function (event, ui) {
@@ -629,8 +645,8 @@ const TB05030Sjs = (function () {
       });
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "선택된 의결 내용이 없습니다.",
         confirmButtonText: "확인",
       });
@@ -677,8 +693,8 @@ const TB05030Sjs = (function () {
           isEmpty(arrPqGridMmbrInfo.pdata[i].opnnCtns)
         ) {
           Swal.fire({
-            icon: "error",
-            title: "Error!",
+            icon: "warning",
+            title: "Warning!",
             text: "의결내용이 전부 입력되지 않았습니다.",
             confirmButtonText: "확인",
           });
@@ -692,8 +708,8 @@ const TB05030Sjs = (function () {
 
       if (isEmpty(mtrPrgSttsDcd)) {
         Swal.fire({
-          icon: "error",
-          title: "Error!",
+          icon: "warning",
+          title: "Warning!",
           text: "결의결과 내용을 학인해주세요.",
           confirmButtonText: "확인",
         });
@@ -701,8 +717,8 @@ const TB05030Sjs = (function () {
       }
       if (isEmpty(apvlAmt) || Number(apvlAmt) <= 0) {
         Swal.fire({
-          icon: "error",
-          title: "Error!",
+          icon: "warning",
+          title: "Warning!",
           text: "승인금액 내용을 학인해주세요.",
           confirmButtonText: "확인",
         });
@@ -710,8 +726,8 @@ const TB05030Sjs = (function () {
       }
       if (isEmpty(sdnCndtF)) {
         Swal.fire({
-          icon: "error",
-          title: "Error!",
+          icon: "warning",
+          title: "Warning!",
           text: "셀다운 조건 내용을 학인해주세요.",
           confirmButtonText: "확인",
         });
@@ -719,8 +735,8 @@ const TB05030Sjs = (function () {
       }
       if (isEmpty(etcCndtF)) {
         Swal.fire({
-          icon: "error",
-          title: "Error!",
+          icon: "warning",
+          title: "Warning!",
           text: "기타 조건 내용을 학인해주세요.",
           confirmButtonText: "확인",
         });
@@ -728,8 +744,8 @@ const TB05030Sjs = (function () {
       }
       if (isEmpty(sdnCndtCtns)) {
         Swal.fire({
-          icon: "error",
-          title: "Error!",
+          icon: "warning",
+          title: "Warning!",
           text: "부의 조건 내용을 학인해주세요.",
           confirmButtonText: "확인",
         });
@@ -737,8 +753,8 @@ const TB05030Sjs = (function () {
       }
       if (isEmpty(etcCndtCtns)) {
         Swal.fire({
-          icon: "error",
-          title: "Error!",
+          icon: "warning",
+          title: "Warning!",
           text: "결의의견 내용을 학인해주세요.",
           confirmButtonText: "확인",
         });
@@ -805,11 +821,11 @@ const TB05030Sjs = (function () {
    * 화면 초기화
    */
   function TB05030S_clearAllGrid() {
-    $("#TB05030S_R025").val(""); //결의결과
-    $("#TB05030S_invstCrncyCdNm").val(""); //승인금액
+    $("#TB05030S_R025").val("1"); //결의결과
+    $("#TB05030S_invstCrncyCdNm").val(0); //승인금액
     $("#TB05030S_rcgAmt").val("");
-    $("#TB05030S_sdnCndtF").val(""); //승인조건 (셀다운)
-    $("#TB05030S_etcCndtF").val(""); //승인조건 (기타)
+    $("#TB05030S_sdnCndtF").val("Y"); //승인조건 (셀다운)
+    $("#TB05030S_etcCndtF").val("Y"); //승인조건 (기타)
     $("#TB05030S_cnfrncNtmCndtlCntnt").val(""); //부의조건
     $("#TB05030S_rsltCntnt").val(""); //결의의견
 

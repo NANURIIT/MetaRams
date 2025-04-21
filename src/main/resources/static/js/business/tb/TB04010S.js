@@ -86,6 +86,10 @@ const TB04010Sjs = (function () {
           , #tlErnAmt
           , #rcvblErnAmt
           , #wrtErnAmt
+          , #TB04010S_grteAmt
+          , #TB04010S_crryAmt
+          , #mrtgcrryAmt
+          , #TB04010S_dmgRprtnMxExtnt
         `
       )
     )
@@ -609,7 +613,7 @@ const TB04010Sjs = (function () {
         jdgmDcd: jdgmDcd,
         mtrPrgSttsDcd: mtrPrgSttsDcd,
       };
-
+  
       $.ajax({
         type: "POST",
         url: "/TB04010S/assesmentRequest",
@@ -2233,7 +2237,7 @@ const TB04010Sjs = (function () {
     $("#TB04013P_R005_2 option:eq(0)").prop("selected", true); // ESG리스크심사 심사담당부서
     $("#TB04013P_inspctDprtEsgGrdCmmt").val(""); // ESG리스크심사 심사담당부서 기타 특이사항
 
-    $("#TB04010S_invPrdMnum").val(""); // 투자기간(개월)
+    $("#TB04010S_invPrdMnum").val("0"); // 투자기간(개월)
     $("#TB04010S_tab1_datepicker1").val(""); // 기표일(예정)
     $("#TB04010S_mtrtDt").val(""); // 만기일
 
@@ -2374,9 +2378,9 @@ const TB04010Sjs = (function () {
     $("#TB04010S_B010 option:eq(0)").prop("selected", true); // 기초자산종류코드
     $('#TB04010S_I027_2 option[value="KRW"]').prop("selected", true); // 부의기준통화
     $("#TB04010S_bscAstsCnts").val(""); // 기초자산내용
-    $("#TB04010S_crryAmt").val(""); // 기초자산 평가액(통화금액)
+    $("#TB04010S_crryAmt").val("0"); // 기초자산 평가액(통화금액)
     $("#TB04010S_bsc_bsnsRgstNo").val(""); // 실명번호
-    $("#TB04010S_aplyExrt").val("1"); // 적용환율
+    $("#TB04010S_aplyExrt").val("1.0"); // 적용환율
     $("#TB04010S_bsc_entpRnm").val(""); // 법인명
     $("#TB04010S_bsc_corpRgstNo").val(""); // 법인등록번호
     $("#TB04010S_crevAmt").val(""); // 기초자산 평가액(원)
@@ -3175,8 +3179,8 @@ const TB04010Sjs = (function () {
     $("#TB04010S_mrtgDtlsCcd option:eq(0)").prop("selected", true); // 담보상세
     $('#TB04010S_I027_3 option[value="KRW"]').prop("selected", true); // 부의기준통화
     $("#mrtgcrryAmt").val("0"); // 담보평가액(통화금액)
-    $("#TB04010S_tab6_aplyExrt").val("1"); // 적용환율
-    $("#mrtgEvlAmt").val(0); // 담보평가액(원)
+    $("#TB04010S_tab6_aplyExrt").val("1.0"); // 적용환율
+    $("#mrtgEvlAmt").val("0"); // 담보평가액(원)
     $("#TB04010S_R013 option:eq(0)").prop("selected", true); // 권리순위
     $("#TB04010S_mrtgRsnCnts").val(""); // 담보명
     $("#TB04010S_tab6_sn").val(""); // 항목일련번호
@@ -3360,7 +3364,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_ensr_corpRgstNo").val("");
     $("#TB04010S_ensr_bsnsRgstNo").val("");
     $("#TB04010S_ensr_entpRnm").val("");
-    $("#TB04010S_grteAmt").val("");
+    $("#TB04010S_grteAmt").val("0");
     $("#TB04010S_grteCtns").val("");
     $("#TB04010S_tab7_sn").val("");
     $("#TB04010S_tab-7 .btn-success").prop("disabled", false); // 저장버튼
@@ -3541,7 +3545,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_cmplExptDt").val(""); // 준공예정일자
     $("#TB04010S_rspsb_entpRnm").val(""); // 한글법인명
     $("#TB04010S_tab8_sn").val(""); // 항목일련번호
-    $("#TB04010S_dmgRprtnMxExtnt").val(""); // 손해배상최대범위
+    $("#TB04010S_dmgRprtnMxExtnt").val("0"); // 손해배상최대범위
     $("#TB04010S_rspsb_bsnsRgstNo").val(""); // 실명확인번호
     $("#TB04010S_tab-8 .btn-success").prop("disabled", false); // 저장버튼
   }

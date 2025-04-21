@@ -12,15 +12,31 @@ const TB08050Sjs = (function () {
     onload();
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB08050S_strPrarDt","TB08050S_endPrarDt");
+    setDateInput();
   });
 
   function onload() {
     selBox_TB08050S(); // 셀렉트박스
     pqGrid_TB08050S(); // 그리드 생성
-	loginUserSet_TB08050S(); //로그인담당자 세팅
+	  loginUserSet_TB08050S(); //로그인담당자 세팅
     reBdin_TB08050S();
     getDealInfoFromWF();
-	inputNumberChangeFunction_TB08050S();
+	  inputNumberChangeFunction_TB08050S();
+
+    selectorNumberFormater(
+      $(
+        `
+          #TB08050S_feeRcivAmt
+          , #TB08050S_splmTxa 
+        `
+      )
+    )
+  }
+
+  function setDateInput() {
+    // 1개월전 ~ 오늘일자 디폴트 세팅
+    $("#TB08050S_strPrarDt").val(addMonth(getToday(), -1));
+    $("#TB08050S_endPrarDt").val(getToday());    
   }
   
   /**

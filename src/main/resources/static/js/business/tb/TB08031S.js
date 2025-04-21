@@ -2116,6 +2116,10 @@ const TB08031Sjs = (function () {
 
             }
           }
+          $('div[data-menuid="/TB08031S"] #UPLOAD_AddFile').attr("disabled", false);
+					$('div[data-menuid="/TB08031S"] #UPLOAD_DelFiles').attr("disabled", false);
+          $('#fileKey2').val('TB03020S' + '|' + data.dealNo);
+          getFileInfo($('#key1').val(), $('#fileKey2').val());
         }
       });
     }
@@ -4491,6 +4495,8 @@ const TB08031Sjs = (function () {
         }else{
           $("#TB08031S_thcoPtciAmtDcsnYn").prop("checked", true);
         }
+
+
 
       },
       error: function () {},

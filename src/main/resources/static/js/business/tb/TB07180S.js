@@ -16,7 +16,14 @@ const TB07180Sjs = (function() {
 		createSelectTag_TB07180S();
 		pqGrid_TB07180S();
 		inputNumberChangeFunction_TB07180S();
-
+		selectorNumberFormater(
+      $(
+        `
+          #TB07180S_feeLwstAmt
+					, #TB07180S_feeHgstAmt
+        `
+      )
+    )
 	});
 
 	//초기화버튼

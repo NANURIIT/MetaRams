@@ -8,7 +8,7 @@ const TB10710Sjs = function () {
         // createOption();
 
         //기간검색 유효성 검사 함수
-        chkValFromToDt("selectDate_1","selectDate_2");
+        chkValFromToDt("selectDate_1", "selectDate_2");
 
         // 조회조건 수정시 초기화
         $("#TB10710S_conSrch").find('input, select').on('input', function () {
@@ -333,9 +333,9 @@ const TB10710Sjs = function () {
     /**
      * 전체 초기화
      */
-    function resetAll (){
+    function resetAll() {
         // 조회조건 초기화
-        $("#TB10710S_conSrch").val("");
+        $("#TB10710S_conSrch").find('input, select').val("")
         $("#TB10710S_dprtNm").val($("#userDprtCd").val());
         $("#TB10710S_dprtCd").val($("#userDprtCd").val());
         $("#selectDate_1").val(getCurrentDate())
@@ -382,7 +382,18 @@ const TB10710Sjs = function () {
             contentType: "application/json; charset=UTF-8",
             data: JSON.stringify(paramData),
             dataType: "json",
+            beforeSend: function () {
+                Swal.fire({
+                    icon: 'info',
+                    title: '조회중입니다...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
             success: function (data) {
+                Swal.close();
                 if (data.length > 0) {
                     let detail = $('#TB10710S_colModel1').pqGrid('instance')
                     detail.setData(data);
@@ -407,12 +418,12 @@ const TB10710Sjs = function () {
         });
 
     }
-    
+
     /**
      * 해당 내역 파라미터 조회
      * @param {String} dudtMngmNo 기일관리번호
      */
-    function getParameter( dudtMngmNo ) {
+    function getParameter(dudtMngmNo) {
 
         let paramData = dudtMngmNo
 
@@ -454,6 +465,6 @@ const TB10710Sjs = function () {
 
     return {
         select: select      //  조회
-        ,resetAll: resetAll
+        , resetAll: resetAll
     }
 }();
