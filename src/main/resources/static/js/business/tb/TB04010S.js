@@ -73,14 +73,22 @@ const TB04010Sjs = (function () {
 
     rendorGrid();
 
-    // url 정보 세팅은 마지막에 하도록 한다.
-    getUrlDealInfo();
     //$(".save").prop("disabled", true);
 
     $("#TB04010S_ibDealNo").focus();
     $("#assesmenttlClsf").hide(); // 승인확정 버튼 hide
 
-    btnReset();
+    selectorNumberFormater(
+      $(
+        `
+          #crryAmt
+          , #crryAmtWn
+          , #tlErnAmt
+          , #rcvblErnAmt
+          , #wrtErnAmt
+        `
+      )
+    )
 
     // 글자수체크
     let columns = {
@@ -101,6 +109,11 @@ const TB04010Sjs = (function () {
     };
 
     limitInputLength(columns2, "TB04010S");
+
+    btnReset();
+
+    // url 정보 세팅은 마지막에 하도록 한다.
+    getUrlDealInfo();
   });
 
   // 그리드 렌더링함수
@@ -2188,10 +2201,10 @@ const TB04010Sjs = (function () {
     $("#TB04010S_mainInvstTrgtNm").val(""); // 주요투자대상
 
     $("#TB04010S_I027 option[value='KRW']").prop("selected", true).change(); // 부의기준통화
-    $("#crryAmt").val(""); // 부의금액
+    $("#crryAmt").val(0); // 부의금액
     $("#TB04010S_C006 option[value='KR']").prop("selected", true).change(); // 투자국가
-    $("#aplyExrt").val("1"); // 적용환율
-    $("#crryAmtWn").val(""); // 부의금액(원)
+    $("#aplyExrt").val("1.0"); // 적용환율
+    $("#crryAmtWn").val(0); // 부의금액(원)
 
     $("#TB04010S_I006 option:eq(0)").prop("selected", true).change(); // 고위험산업
     $("#TB04010S_C001 option:eq(0)").prop("selected", true).change(); // 업무구분
@@ -2224,9 +2237,9 @@ const TB04010Sjs = (function () {
     $("#TB04010S_tab1_datepicker1").val(""); // 기표일(예정)
     $("#TB04010S_mtrtDt").val(""); // 만기일
 
-    $("#tlErnAmt").val(""); // 전체수익
-    $("#rcvblErnAmt").val(""); // 수수료수익
-    $("#wrtErnAmt").val(""); // 투자수익
+    $("#tlErnAmt").val(0); // 전체수익
+    $("#rcvblErnAmt").val(0); // 수수료수익
+    $("#wrtErnAmt").val(0); // 투자수익
 
     $(':radio[name="TB04010S_mrtgOfrF"][value="N"]').prop("checked", true); // 담보
     $(':radio[name="TB04010S_ensrF"][value="N"]').prop("checked", true); // 보증
