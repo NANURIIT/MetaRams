@@ -25,7 +25,7 @@ public class IBIMS402BVO extends IBIMS402BDTO {
     private String         ortnFndCd;   // 펀드유형상세
     private String         eprzCrdlLdgSttsCd;  // 원장상태코드
 	private BigDecimal     buyShqt; 		// 매수좌수 
-	private BigDecimal     acbkAmt; 		// 장부금액
+//	private BigDecimal     acbkAmt; 		// 장부금액(DTO중복선언)
 	private BigDecimal     avrUnpr; 		// 평균단가
 	
 }
