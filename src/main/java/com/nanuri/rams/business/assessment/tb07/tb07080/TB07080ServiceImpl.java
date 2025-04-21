@@ -72,6 +72,8 @@ public class TB07080ServiceImpl implements TB07080Service {
 		for (IBIMS404BDTO item : intrtList) {
 			item.setPrdtCd(prdtCd);
 			item.setExcSn(excSn);
+			item.setAplyStrtDt(item.getAplyStrtDt().replaceAll("-", "").trim());
+			item.setAplyEndDt(item.getAplyEndDt().replaceAll("-", "").trim());
 			item.setHndEmpno(facade.getDetails().getEno());
 			item.setHndTmnlNo("");
 			item.setHndTrId("");
@@ -99,6 +101,8 @@ public class TB07080ServiceImpl implements TB07080Service {
 			inList.get(i).setHndEmpno(facade.getDetails().getEno());
 			inList.get(i).setPrdtCd(prdtCd);
 			inList.get(i).setExcSn(excSn);
+			inList.get(i).setAplyStrtDt(inList.get(i).getAplyStrtDt().replaceAll("-", "").trim());
+			inList.get(i).setAplyEndDt(inList.get(i).getAplyEndDt().replaceAll("-", "").trim());
 			ibims404bMapper.updateListIBIMS404B(inList.get(i));
 			result += 1;
 		}
