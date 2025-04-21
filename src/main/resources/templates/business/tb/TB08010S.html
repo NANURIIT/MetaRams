@@ -10,11 +10,13 @@
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
 	<script th:src="@{js/business/tb/TB04011P.js}"></script>
 	<script th:src="@{js/business/tb/TB08010S.js}"></script>
+	<script th:src="@{js/business/tb/FileUploadPopup.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
 	<th:block th:replace="business/tb/TB04011P :: TB04011P"></th:block>
+	<th:block th:replace="business/tb/FileUploadPopup :: FileUploadPopup"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -135,6 +137,7 @@
 												  <input type="hidden" id="fileKey1" name="fileKey1">
 													<input type="hidden" id="fileKey2" name="fileKey2" value="*">
 													<input type="hidden" id="key1" name="key1" value="*">
+													<input type="hidden" id="atchFleDcd" name="atchFleDcd">
 													<!-- 화면명을 넘김-->
 													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile"><i class="fa fa-upload"></i>&nbsp;파일추가</button>
 													<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles"><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
@@ -148,13 +151,15 @@
 									<div class="ibox-content">
 										<table class="table table-bordered">
 											<colgroup>
-												<col style="width: 10%;">
-												<col style="width: 50%;">
-												<col style="width: 30%;">
+												<col style="width: 5%;">
+												<col style="width: 15%;">
+												<col style="width: 65%;">
+												<col style="width: 20%;">
 											</colgroup>
 											<thead>
 												<tr>
-													<th>선택</th>													
+													<th></th>
+													<th>첨부파일구분</th>
 													<th>파일명</th>
 													<th>등록일자</th>
 												</tr>
