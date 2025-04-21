@@ -71,7 +71,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 				ibims346bdto.setPrdtCd(paramData.getPrdtCd());
 				ibims346bdto.setAplyStrtDt(paramData.getCtrcDt());					/* 적용시작일자 */
 				//ibims346bdto.setAplyEndDt(paramData.getCtrcExpDt());				/* 적용종료일자 */
-				ibims346bdto.setAplyEndDt("25001231");								/* 적용종료일자 2024.08.04 임대표님 MAX EndDt로 설정변경 요청 */
+				ibims346bdto.setAplyEndDt("25001231");					/* 적용종료일자 2024.08.04 임대표님 MAX EndDt로 설정변경 요청 */
 				ibims346bdto.setStdrIntrtKndCd(paramData.getStdrIntrtKndCd());   	/* 기준금리종류코드 */
 				ibims346bdto.setFxnIntrt(paramData.getStdrIntrt());					/* 기준금리 */
 				ibims346bdto.setAddIntrt(paramData.getAddIntrt());					/* 가산금리 */

@@ -18,6 +18,8 @@ const TB06040Sjs = (function() {
         });*/
 		
 		inputValidationCheck();
+
+        maskRt("#TB06040S_stdrClrt, #TB06040S_addClrt, #TB06040S_totClrt");
     });
 	
 	// 입력창 값체크
@@ -292,7 +294,6 @@ const TB06040Sjs = (function() {
             let mtrDcd = $('#TB06040S_selectedNmcpMtrDcd').val();
             let jdgmDcd = $('#TB06040S_selectedLstCCaseDcd').val();
             let stdrIntrtKndCd  = $('#TB06040S_S003').val();
-            // ???????????????????????????????????????????????????????
 
             /* 약정정보 */
             let prdtCd = $('#TB06040S_prdtCd').val();                               // 종목코드
@@ -314,7 +315,7 @@ const TB06040Sjs = (function() {
                 if(prdtCd.startsWith('A') &&(stdrIntrt === null || stdrIntrt === '0')){
                     Swal.fire({
                         icon              : 'warning'
-                    , text              : "대출계약 금리정보가 등록되어있지 않습니다."
+                    , text              : "기준금리를 입력해주세요."
                     , confirmButtonText : "확인"
                     });
                     return false;
@@ -820,6 +821,7 @@ const TB06040Sjs = (function() {
 	,	srch : srch
 	,	reset : reset
     ,   btnCtr : btnCtr
+    ,   calInsRate: calInsRate
     ,   getDealInfoFromWF : getDealInfoFromWF
 	}
 

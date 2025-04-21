@@ -31,7 +31,8 @@ const TB07010Sjs = (function () {
                             // 최종지급금액
                             // 선취이자
 
-    maskExrt($(`#TB07010S_krwTrslRt`)) // 적용환율                        
+    maskExrt($(`#TB07010S_krwTrslRt`)) // 적용환율    
+    maskRt("#TB07010S_stdrIntr_exe, #TB07010S_excAddIntrt_exe, #TB07010S_totIntr_exe");                    
 
     /**
      * 기업여신개별한도구분코드 E010
@@ -509,16 +510,16 @@ const TB07010Sjs = (function () {
       let intrRdmpFrqcMnum = $("#TB07010S_intrMnum").val();
       let stdrIntrt = $("#TB07010S_stdrIntr_loan").val();
       let addIntrt = $("#TB07010S_addIntr_loan").val();
-      let totIntrt = $("#TB07010S_totIntr_loan").val();
+      //let totIntrt = $("#TB07010S_totIntr_loan").val();
 
       /* 실행정보 */
       let excDt = unformatDate($("#TB07010S_execDt").val()); // 실행일자
       let expDt = unformatDate($("#TB07010S_expDt").val()); // 만기일자
       let dfrExpMnum = unformatDate($("#TB07010S_dfrExpMnum").val()); // 거치만기일자
       let intrPymDtCd = $("#TB07010S_I017").val(); // 상환지정일 == 이자납입일자코드
-      //let stdrIntr = $('#TB07010S_stdrIntr_exe').val();				 // 기준
+      //let stdrIntrt = $('#TB07010S_stdrIntr_exe').val();				 // 기준
       let excAddIntrt = $("#TB07010S_excAddIntrt_exe").val(); // 가산
-      //let totIntr = $('#TB07010S_totIntr_exe').val();				 // 총금리
+      let totIntrt = $('#TB07010S_totIntr_exe').val();				 // 총금리
       let prcsIntrAmt = uncomma($("#TB07010S_prcsIntrAmt").val()); // 처리이자금액 == 선취이자
       let dealExcAmt = uncomma($("#TB07010S_dealExcAmt").val()); // 딜실행금액 == 실행금액
       let expRdmpAmt = uncomma($("#TB07010S_expRdmpAmt").val()); // 딜실행잔액 == 만기상환금액
@@ -562,7 +563,9 @@ const TB07010Sjs = (function () {
         expDt,
         dfrExpMnum,
         intrPymDtCd,
+        // stdrIntr,
         excAddIntrt,
+        //totIntr,
         prcsIntrAmt,
         dealExcAmt,
         expRdmpAmt,
@@ -923,6 +926,7 @@ const TB07010Sjs = (function () {
       return { isValid: false };
     }
 
+
     let dealExcAmt = $("#TB07010S_dealExcAmt").val(); // 실행금액
 
     if (fValid === "2") { // 저장
@@ -959,6 +963,13 @@ const TB07010Sjs = (function () {
           `[기업여신정보]약정만기일보다<br>[실행정보]만기일자가 이후일 수 없습니다.`,
           "Warning!"
         );
+        return { isValid: false };
+      }
+
+      let stdrIntr = $("#TB07010S_stdrIntr_exe").val();
+    
+      if((stdrIntr === "0" || stdrIntr === "0.0" || stdrIntr === "0.00") || isEmpty(stdrIntr) || stdrIntr === null){
+        sf(1, "warning", `기준금리를 입력해주세요.`, "Warning!");
         return { isValid: false };
       }
 
@@ -1402,6 +1413,7 @@ const TB07010Sjs = (function () {
     ldgMovePage: ldgMovePage,
     calAcbkAmt: calAcbkAmt,
     calKrwTrsl: calKrwTrsl,
+    calInsRate: calInsRate,
     feeReset: feeReset,
     getDealInfoFromWF : getDealInfoFromWF 
 

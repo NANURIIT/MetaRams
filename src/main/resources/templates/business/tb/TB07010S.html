@@ -313,9 +313,9 @@
 										</div> -->
 										<label class="col-sm-1 col-form-label text-right">기준/가산/총금리</label>
 										<div class="col-sm-3 input-group px-1">
-											<input type="text" class="form-control text-right mg-lr6" style="width:30px;" id="TB07010S_stdrIntr_exe" value="0" oninput="inputOnlyNumberFormat(this); restrictDecimalDigits(this, 4);" maxlength="6" disabled>
-											<input type="text" class="form-control text-right mg-lr6" style="width:30px;" id="TB07010S_excAddIntrt_exe" value="0" oninput="inputOnlyNumberFormat(this); restrictDecimalDigits(this, 4); calInsRate();" maxlength="6" disabled>
-											<input type="text" class="form-control text-right mg-lr6" style="width:30px;" id="TB07010S_totIntr_exe" value="0" oninput="inputOnlyNumberFormat(this); restrictDecimalDigits(this, 4);" maxlength="6" disabled>
+											<input type="text" class="form-control text-right mg-lr6" style="width:30px;" id="TB07010S_stdrIntr_exe" value="0" disabled>
+											<input type="text" class="form-control text-right mg-lr6" style="width:30px;" id="TB07010S_excAddIntrt_exe" oninput="TB07010Sjs.calInsRate();" value="0">
+											<input type="text" class="form-control text-right mg-lr6" style="width:30px;" id="TB07010S_totIntr_exe" value="0" disabled>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">원화환산이자금액</label>
 										<div class="col-sm-3 input-group">
