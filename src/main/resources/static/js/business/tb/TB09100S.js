@@ -385,7 +385,7 @@ const TB09100Sjs = (function() {
 		$("#TB09100S_ibDealNm").val(""); //Deal 명
 		$("#TB09100S_prdtCd").val(""); //종목코드
 		$("#TB09100S_prdtNm").val(""); //종목명
-		$("#TB09100S_fromDate").val(getSomeDaysAgo(7));
+		$("#TB09100S_fromDate").val(addMonth(getToday(), -1));
 		$("#TB09100S_toDate").val(getToday());
 	}
 
