@@ -254,7 +254,7 @@
     AND A.EXC_SN = #{excSn}
 	</select>
 
-	<update id="updateListIBIMS404B">
+	<update id="updateListIBIMS404B" parameterType="com.nanuri.rams.business.common.vo.IBIMS404BVO">
 			UPDATE IBIMS404B													/* 여신실행금리기본 */	
 			   SET   APLY_STRT_DT = #{aplyStrtDt} 							/* 적용시작일자 */
 				   , APLY_END_DT = #{aplyEndDt} 							/* 적용종료일자 */

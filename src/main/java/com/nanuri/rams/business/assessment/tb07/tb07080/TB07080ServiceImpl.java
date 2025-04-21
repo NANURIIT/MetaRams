@@ -60,11 +60,18 @@ public class TB07080ServiceImpl implements TB07080Service {
 
 	@Override
 	public int insertListIBIMS404B(TB06015SVO paramData){
+		String prdtCd = "";
+		long excSn = 0;
+		prdtCd = paramData.getPrdtCd();
+		excSn = paramData.getExcSn();
+		
 		int result = 0;
 
 		List<IBIMS404BDTO> intrtList = paramData.getIntrtList();
 
 		for (IBIMS404BDTO item : intrtList) {
+			item.setPrdtCd(prdtCd);
+			item.setExcSn(excSn);
 			item.setHndEmpno(facade.getDetails().getEno());
 			item.setHndTmnlNo("");
 			item.setHndTrId("");
@@ -80,12 +87,18 @@ public class TB07080ServiceImpl implements TB07080Service {
 
 	@Override
 	public int updateListIBIMS404B(IBIMS404BVO paramData){
+		String prdtCd = "";
+		long excSn = 0;
+		prdtCd = paramData.getPrdtCd();
+		excSn = paramData.getExcSn();
 
 		int result = 0;
 		List<IBIMS404BVO> inList = paramData.getIntrtList();
 
 		for(int i = 0; i < inList.size(); i++){
 			inList.get(i).setHndEmpno(facade.getDetails().getEno());
+			inList.get(i).setPrdtCd(prdtCd);
+			inList.get(i).setExcSn(excSn);
 			ibims404bMapper.updateListIBIMS404B(inList.get(i));
 			result += 1;
 		}
