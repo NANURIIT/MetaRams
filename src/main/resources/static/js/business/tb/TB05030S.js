@@ -36,6 +36,10 @@ const TB05030Sjs = (function () {
     )
 
     chkAmt();
+
+    $('#TB05030S_srchForm').find('input, select').on('input', function () {
+      TB05030S_clearAllGrid();
+    })
   });
 
   function chkAmt () {
