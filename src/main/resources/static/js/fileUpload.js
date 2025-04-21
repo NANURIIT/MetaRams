@@ -19,27 +19,28 @@ function setFileUploadEvent(menuId) {
 
     // 추출한 파일명 삽입
     $(this).siblings(".upload-name").val(filename);
-  });
+});
 
   /**
    * 파일추가 버튼 클릭
+   * common.js에서 뿌려주기~
    */
-  $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_AddFile").click(function () {
-    callFileUploadPopup();
-    let mode = "s";
-  });
+  // $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_AddFile").click(function () {
+  //   callFileUploadPopup();
+  //   let mode = "s";
+  // });
 
   /**
    * 파일 추가 후 event
    */
-  $(`div[data-menuid="/${menuId}"]` + " #deal-upload-input").change(function () {
-    if ($(this).val() === "") {
-      // 아무것도 안하기
-    } else {
-      let mode = "m";
-      callCmFileUpload(mode);
-    }
-  });
+  // $(`div[data-menuid="/${menuId}"]` + " #deal-upload-input").change(function () {
+  //   if ($(this).val() === "") {
+  //     // 아무것도 안하기
+  //   } else {
+  //     let mode = "m";
+  //     callCmFileUpload(mode);
+  //   }
+  // });
 
   /**
    * 파일업로드 비동기 통신함수
@@ -114,23 +115,23 @@ function setFileUploadEvent(menuId) {
   /**
    * 파일삭제 버튼 클릭
    */
-  $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_DelFiles").click(function () {
-    let mode = "d";
+  // $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_DelFiles").click(function () {
+  //   let mode = "d";
 
-    let _arr = new Array();
-    let _tr = $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_FileList").children();
+  //   let _arr = new Array();
+  //   let _tr = $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_FileList").children();
 
-    for (let i = 0; i < _tr.length; i++) {
-      if ($(_tr[i]).find("td:eq(0)").find('input').prop('checked') === true) {
-        let delKey = $(_tr[i]).find("td:eq(1)").attr('data-filekey');
-        _arr.push(delKey);
-      }
-    }
+  //   for (let i = 0; i < _tr.length; i++) {
+  //     if ($(_tr[i]).find("td:eq(0)").find('input').prop('checked') === true) {
+  //       let delKey = $(_tr[i]).find("td:eq(1)").attr('data-filekey');
+  //       _arr.push(delKey);
+  //     }
+  //   }
 
-    if (_arr.length != 0) {
-      deleteCmFiles(mode, _arr);
-    }
-  });
+  //   if (_arr.length != 0) {
+  //     deleteCmFiles(mode, _arr);
+  //   }
+  // });
 
   /**
    * 파일삭제 삭제 처리

@@ -11,6 +11,45 @@ function settingFunction() {
   setFileUploadEvent(url.split("/")[1]);
 
   /**
+   * 파일업로드 관련 이벤트 뿌리기
+   */
+  
+  // 파일추가버튼 클릭 이벤트(첨부파일구분코드 등록)
+  $(`div[data-menuid="/${url.split("/")[1]}"]` + " #UPLOAD_AddFile").click(function () {
+    callFileUploadPopup();
+    let mode = "s";
+  });
+
+  // 파일업로드 이벤트
+  $(`div[data-menuid="/${url.split("/")[1]}"]` + " #deal-upload-input").change(function () {
+    if ($(this).val() === "") {
+      // 아무것도 안하기
+    } else {
+      let mode = "m";
+      callCmFileUpload(mode);
+    }
+  });
+
+  // 파일삭제 이벤트
+  $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_DelFiles").click(function () {
+    let mode = "d";
+
+    let _arr = new Array();
+    let _tr = $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_FileList").children();
+
+    for (let i = 0; i < _tr.length; i++) {
+      if ($(_tr[i]).find("td:eq(0)").find('input').prop('checked') === true) {
+        let delKey = $(_tr[i]).find("td:eq(1)").attr('data-filekey');
+        _arr.push(delKey);
+      }
+    }
+
+    if (_arr.length != 0) {
+      deleteCmFiles(mode, _arr);
+    }
+  });
+
+  /**
    * 모달 드래그 이벤트
    */
   $(`.modal-header.metis-modal-header:not([data-event])`).on(
@@ -2246,6 +2285,9 @@ function needRunFn(menuId) {
   }
   if (menuId === "TB08050S") {
     TB08050Sjs.getDealInfoFromWF();
+  }
+  if (menuId === "TB10510S") {
+    TB10510Sjs.clockpickerCtrl();
   }
 }
 
