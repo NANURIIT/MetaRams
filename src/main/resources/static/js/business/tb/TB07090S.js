@@ -54,16 +54,16 @@ const TB07090Sjs = (function () {
     loadUserAuth(); //로그인유저정보
     selectBoxSet_TB07090S();
     getDealInfoFromWF();
-    resetAll(); 
+    resetAll();
 
     //기간검색 유효성 검사 함수
-    chkValFromToDt("TB07090S_fromDate","TB07090S_toDate");
+    chkValFromToDt("TB07090S_fromDate", "TB07090S_toDate");
 
     // 조회조건 수정시 초기화
     $("#TB07090S_conSrch").find('input, select').on('input', function () {
       resetPGgrids("TB07090S")
     })
-    
+
   });
 
   function loadUserAuth() {
@@ -364,7 +364,7 @@ const TB07090Sjs = (function () {
         align: "center",
         width: "165",
         editable: true,
-        render: function ( ui ) {
+        render: function (ui) {
           return formatDate(ui.cellData);
         }
       },
@@ -861,8 +861,6 @@ const TB07090Sjs = (function () {
           } else {
             colModel2_rowIndx = ui.rowIndx;
             selected_dptrRgstDtl = ui.rowData;
-            console.log(selected_dptrRgstDtl);
-
           }
         },
         selectionModel: { type: "row" },
@@ -884,6 +882,54 @@ const TB07090Sjs = (function () {
           }
         },
         selectionModel: { type: "row" },
+        // 날짜선택 테스트 시작
+        editorBegin: function (event, ui) {
+
+          if (ui.column.dataIndx === 'isuDt') {
+
+            editorData = $(ui.$editor).val()
+
+            $(ui.$editor).datepicker({
+              todayBtn: "linked",
+              autoclose: true,
+              format: "yyyy-mm-dd",
+              keyboardNavigation: false,
+              forceParse: false,
+              calendarWeeks: false,
+              language: "ko",
+            }).on("show", function (e) {
+              isDatePickerOpen = true;
+            }).on("hide", function (e) {
+              isDatePickerOpen = false;
+              $("#TB07200S_pblHis").pqGrid("instance").refresh();
+            })
+
+            $(ui.$editor).on('focus', function () {
+              $(".datepicker").find('td').on('pointerdown', function () {
+                let date = new Date(Number($(this).attr('data-date')))
+                editorData = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0') + String(date.getDate()).padStart(2, '0')
+              });
+            })
+
+            $(ui.$editor).on('input', function () {
+              editorData = $(this).val()
+            })
+
+            $(ui.$editor).inputmask('99999999');
+          }
+          // else if ( ui.column.dataIndx === 'expDt' ) {
+          //     console.log(ui);
+          // }
+        },
+        editorEnd: function (event, ui) {
+          $("#TB07200S_pblHis").pqGrid("instance").pdata[ui.rowIndx].isuDt = editorData
+          $("#TB07200S_pblHis").pqGrid("instance").refresh();
+          if (isDatePickerOpen) {
+            return false;
+          }
+          return true;
+        },
+        // 날짜선택 테스트 끝
       },
     ];
     setPqGrid(pqGridObjs);
@@ -923,16 +969,6 @@ const TB07090Sjs = (function () {
     var option = {};
     option.title = "Warning";
     option.type = "warn";
-
-    // if(isEmpty(rctmDt)){
-    //     option.text = "입금일자를 입력하고 다시 시도해주세요.";
-    // 	openPopup(option);
-    // 	return false;
-
-    // }else if(isEmpty(fromDt) || isEmpty(toDt) ){
-    //     option.text = "상환예정일자를 입력하고 다시 시도해주세요.";
-    // 	openPopup(option);
-    // 	return false;
 
     // }else{
     businessFunction(rctmDt);
@@ -996,8 +1032,8 @@ const TB07090Sjs = (function () {
           dptrDtlsList.length < 1
         ) {
           var option = {};
-          option.title = "Warning";
-          option.type = "warning!";
+          option.title = "Warning!";
+          option.type = "warning";
 
           option.text = "조회된 데이터가 없습니다.";
           openPopup(option);
@@ -1376,10 +1412,9 @@ const TB07090Sjs = (function () {
       dataType: "json",
       success: function (data) {
         if (data > 0) {
-          console.log("성★공★");
           swal.fire({
             icon: "success"
-            , text: "성★공★"
+            , text: "저장성공!"
           })
           search_TB07090S();
         }
@@ -1438,10 +1473,9 @@ const TB07090Sjs = (function () {
       dataType: "json",
       success: function (data) {
         if (data > 0) {
-          console.log("성★공★");
           swal.fire({
             icon: "success"
-            , text: "성★공★"
+            , text: "저장성공!"
           })
           search_TB07090S();
         }
@@ -1460,7 +1494,7 @@ const TB07090Sjs = (function () {
    * 초기화
    * ㄱㄱㅇ
    */
-  function resetAll () {
+  function resetAll() {
     resetInputValue($("div[data-menuid='/TB07090S']"));
     $("#TB07090S_rctmDt").val(getToday()); //입금일자
     $("#TB07090S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
