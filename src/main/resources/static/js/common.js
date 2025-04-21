@@ -2339,8 +2339,8 @@ function chkDecdStep(menuId) {
               `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
             ).prop("hidden", true);
             // 결재진행중이 아니기에 종목등록, 삭제 가능
-            $(`#${menuId}_regPrdt`).prop("disabled", false);
-            $(`#${menuId}_delPrdt`).prop("disabled", false);
+            // $(`#${menuId}_regPrdt`).prop("disabled", false);
+            // $(`#${menuId}_delPrdt`).prop("disabled", false);
           } else {
             /**
              * 승인자일 경우
@@ -2353,8 +2353,8 @@ function chkDecdStep(menuId) {
               `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
             ).prop("hidden", true);
             // 담당자가 아니면 종목등록, 수정 불가능
-            $(`#${menuId}_regPrdt`).prop("disabled", true);
-            $(`#${menuId}_delPrdt`).prop("disabled", true);
+            // $(`#${menuId}_regPrdt`).prop("disabled", true);
+            // $(`#${menuId}_delPrdt`).prop("disabled", true);
           }
         } else {
           /**
@@ -2374,8 +2374,8 @@ function chkDecdStep(menuId) {
               `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
             ).prop("hidden", true);
             // 결재진행중이 아니기에 종목등록, 삭제 가능
-            $(`#${menuId}_regPrdt`).prop("disabled", true);
-            $(`#${menuId}_delPrdt`).prop("disabled", true);
+            // $(`#${menuId}_regPrdt`).prop("disabled", true);
+            // $(`#${menuId}_delPrdt`).prop("disabled", true);
           } else {
             /**
              * 승인자일 경우
@@ -2396,8 +2396,8 @@ function chkDecdStep(menuId) {
                   $(
                     `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
                   ).prop("hidden", false);
-                  $(`#${menuId}_regPrdt`).prop("disabled", true);
-                  $(`#${menuId}_delPrdt`).prop("disabled", true);
+                  // $(`#${menuId}_regPrdt`).prop("disabled", true);
+                  // $(`#${menuId}_delPrdt`).prop("disabled", true);
                 }
                 // 현재 이 담당자 순서가 아니거나, 담당자가 아닌듯하다
                 else {
@@ -2407,8 +2407,8 @@ function chkDecdStep(menuId) {
                   $(
                     `div[data-menuid="/${menuId}"] button[onclick*="callTB06082P"]`
                   ).prop("hidden", true);
-                  $(`#${menuId}_regPrdt`).prop("disabled", false);
-                  $(`#${menuId}_delPrdt`).prop("disabled", false);
+                  // $(`#${menuId}_regPrdt`).prop("disabled", false);
+                  // $(`#${menuId}_delPrdt`).prop("disabled", false);
                 }
               },
             });

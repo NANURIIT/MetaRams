@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+
+</th:block>
+
+
+
+<th:block layout:fragment="customContent">
+	<!-- IB투자자산 모니터링 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2">
+						<div class="row">
+							<div class="col-lg-12 text-right mb-1">
+								<button id="" class="btn btn-primary" onclick=""><i
+										class="fa fa-search"></i>&nbsp;조회</button>&nbsp;
+								<button id="" class="btn btn-secondary" onclick="">&nbsp;다음&nbsp;</button>&nbsp;
+								<button id="" class="btn btn-default" onclick=""><i
+										class="fa fa-undo"></i>&nbsp;초기화</button>&nbsp;
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-1">
+								<label class="col-sm-9 col-form-label text-right ">결산월</label>
+								<input type="checkbox">
+							</div>
+							<label class="col-form-label text-right ">기준일자</label>
+							<span class="col-sm-2 input-group date pr-5">
+								<input type="text" class="form-control" id="" name="FromDate" value=""
+									oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+							</span>
+							<label class="col-sm-1 col-form-label text-right ">DSC번호</label>
+							<div class="col-sm-2 px-0">
+								<div class="input-group">
+									<input type="text" class="form-control" id="">
+									<span class="input-group-append">
+										<button type="button" id="" class="btn btn-default" onclick=""><i
+												class="fa fa-search"></i></button>
+									</span>
+								</div>
+							</div>
+							<label class="col-sm-1 col-form-label text-right ">종목코드</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+									<input type="text" class="form-control" id="">
+									<span class="input-group-append">
+										<button type="button" id="" class="btn btn-default" onclick=""><i
+												class="fa fa-search"></i></button>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-1">
+							<label class="col-sm-1 col-form-label text-center ml-1">상품분류(대)</label>
+							<select class="col-sm-2 form-control mr-5 ">
+								<option>전체</option>
+							</select>
+							<label class="col-sm-1 col-form-label text-right ">상품분류(중)</label>
+							<select class="col-sm-2 form-control ">
+								<option>전체</option>
+							</select>
+							<label class="col-sm-1 col-form-label text-right ">관리부서</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+									<input type="text" class="form-control" id="">
+									<span class="input-group-append">
+										<button type="button" id="" class="btn btn-default" onclick=""><i
+												class="fa fa-search"></i></button>
+									</span>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content">
+						<div class="tableFixHeader2 h-default">
+							<table class="table result table-bordered " style="width: 150%">
+								<thead class="text-center">
+									<tr>
+										<th rowspan="2">DSC NO</th>
+										<th rowspan="2">안건명</th>
+										<th rowspan="2">종목코드</th>
+										<th rowspan="2">종목명</th>
+										<th rowspan="2">딜구분명(섹터)</th>
+										<th rowspan="2">자산소재</th>
+										<th rowspan="2">PF</th>
+										<th rowspan="2">브릿지</th>
+										<th rowspan="2">셀다운기한일자</th>
+										<th rowspan="2">IB투자북구분명</th>
+										<th colspan="3">익스퍼저(IB DEAL 추진보고 기준)</th>
+										<th rowspan="2">NCR(%)</th>
+										<th colspan="3">위험액</th>
+										<th rowspan="2">RWA(%)</th>
+										<th rowspan="2">RWA금액</th>
+										<th rowspan="2">배당/이자</th>
+										<th rowspan="2">수익성(%)</th>
+										<th rowspan="2">비용</th>
+										<th colspan="2">미매각자산</th>
+										<th rowspan="2">상품분류(대)</th>
+										<th rowspan="2">상품분류(중)</th>
+										<th rowspan="2">관리부서명</th>
+									</tr>
+									<tr>
+										<th>셀다운목적</th>
+										<th>보유목적</th>
+										<th>합계</th>
+										<th>셀다운목적</th>
+										<th>보유목적</th>
+										<th>합계</th>
+										<th>미매각구분</th>
+										<th>집계기준잔액</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>DADVI2101001</td>
+										<td>맥쿼리 블라인드 6호 펀드(MKOF 제6호) LP투자의 건</td>
+										<td>217620</td>
+										<td>이앤에프</td>
+										<td>투자1</td>
+										<td>이앤에프제2호사모투자합자회사</td>
+										<td>E&F 블라인드</td>
+										<td></td>
+										<td>2023-09-30</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td>192</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>DREIA1912055</td>
+										<td>마이애미 폰텐블루호텔 메자닌 투자의 건</td>
+										<td>203530</td>
+										<td>DebtStrategy</td>
+										<td>투자3</td>
+										<td>DebtStrategy전문투자형사모부동산투자합자회사</td>
+										<td>DebtStrategy</td>
+										<td></td>
+										<td>2023-8-25</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td>221</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="row ml-1 mt-1 ">
+							<div class="col-sm-10 border pt-1">
+								<div class="row">
+									<label class="col-sm-1 col-form-label text-right ">종목코드</label>
+									<input type="text" class="col-sm-1 form-control" style="border-right: none;">
+									<input type="text" class="col-sm-2 form-control">
+									<label class="col-sm-1 col-form-label text-right ">NCR(%)</label>
+									<input type="text" class="col-sm-1 form-control" style="border-right: none;">
+									<input type="text" class="col-sm-1 form-control">
+									<label class="col-sm-1 col-form-label text-right ">RWA(%)</label>
+									<input type="text" class="col-sm-1 form-control" style="border-right: none;">
+									<input type="text" class="col-sm-1 form-control">
+									<div class="col-sm-2 text-right">
+										<button class="btn btn-default">조회</button>
+										<button class="btn btn-default" onclick="">수정</button>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-2 text-right mt-1">
+								<button class="btn btn-warning btn"><i
+										class="fa fa-file-excel-o"></i>&nbsp;Excel</button>&nbsp;
+							</div>
+
+						</div>
+					</div>
+				</div><!-- ibox -->
+			</div>
+
+		</div><!-- row -->
+	</div>
+</th:block>
+
+</html>
