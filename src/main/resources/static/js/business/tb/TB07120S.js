@@ -32,7 +32,7 @@ const TB07120Sjs = (function () {
     $("#TB07120S2_empNo").prop("readonly", false);
     $("#TB07120S_dcfcEno").prop("readonly", false);
     $("#TB07120S_dcfcBtn").prop("disabled", false);
-    $("#TB07120S_selectDate1").val(getSomeDaysAgo(7));
+    $("#TB07120S_selectDate1").val(newAddMonth(new Date(getToday()), -1));
     $("#TB07120S_selectDate2").val(getToday());
     $("#TB07120S_dprtCd").val($("#userDprtCd").val());
     $("#TB07120S_dprtNm").val($("#userDprtCd").val());
@@ -49,7 +49,7 @@ const TB07120Sjs = (function () {
   function srchReset_TB07120S() {
     $("#TB07120S_conSrch input").val("");
     $("#TB07120S_conSrch select").val("");
-    $("#TB07120S_selectDate1").val(getSomeDaysAgo(7));
+    $("#TB07120S_selectDate1").val(newAddMonth(new Date(getToday()), -1));
     $("#TB07120S_selectDate2").val(getToday());
     $("#TB07120S_dprtCd").val($("#userDprtCd").val());
     $("#TB07120S_dprtNm").val($("#userDprtCd").val());

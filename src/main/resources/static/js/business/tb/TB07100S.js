@@ -230,7 +230,7 @@ const TB07100Sjs = (function () {
    * @param rgstEmpno   // 작성자
    */
   function setDfaultValue() {
-    $("#TB07100S_acctDt1").val(getSomeDaysAgo(7));
+    $("#TB07100S_acctDt1").val(newAddMonth(new Date(getToday()), -1));
     $("#TB07100S_acctDt2").val(getToday());
     $("#TB07100S_wrtnDt").val(getToday());
     $('#TB07100S_dprtCd').val($('#userDprtCd').val());

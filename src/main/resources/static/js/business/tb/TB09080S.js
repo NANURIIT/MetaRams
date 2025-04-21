@@ -8,7 +8,7 @@ const TB09080Sjs = (function () {
   $(document).ready(function () {
     fnSelectBox();
 
-    $("#TB09080S_rsltnDt").val(getSomeDaysAgo(7));
+    $("#TB09080S_rsltnDt").val(newAddMonth(new Date(getToday()), -1));
     $("#TB09080S_rsltnEndDt").val(getToday());
 
     $('#TB09080S_srchForm').find('input, select').on('input', function () {
@@ -392,7 +392,7 @@ const TB09080Sjs = (function () {
   }
 
   function reset() {
-    $("#TB09080S_rsltnDt").val(getSomeDaysAgo(7));
+    $("#TB09080S_rsltnDt").val(newAddMonth(new Date(getToday()), -1));
     $("#TB09080S_rsltnEndDt").val(getToday());
     // $("#TB09080S_dprtCd").val("");
     // $("#TB09080S_dprtNm").val("");

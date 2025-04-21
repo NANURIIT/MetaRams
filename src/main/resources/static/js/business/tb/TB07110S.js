@@ -192,7 +192,7 @@ const TB07110Sjs = (function () {
    * @param reltStfno   // 승인자
    */
   function setDfaultValue() {
-    $("#TB07110S_startDt").val(getSomeDaysAgo(7));
+    $("#TB07110S_startDt").val(newAddMonth(new Date(getToday()), -1));
     $("#TB07110S_endDt").val(getToday());
     $("#TB07110S_wrtnDt").val(getToday());
     $('#TB07110S_dprtCd').val($('#userDprtCd').val());
