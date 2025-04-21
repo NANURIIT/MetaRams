@@ -9,6 +9,10 @@ const TB04030Sjs = (function () {
 
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB04030S_fromDate","TB04030S_toDate");
+
+    $('#TB04030S_srchForm').find('input, select').on('input', function () {
+      pqGridObjDealList.setData([]);
+    })
   });
 
   /* 그리드설정 */
@@ -102,10 +106,15 @@ const TB04030Sjs = (function () {
         data: dtoParam,
         dataType: "json",
         success: function (data) {
-          pqGridObjDealList.setData(data);
-          pqGridObjDealList.option("rowDblClick", function (event, ui) {
-            movePage(ui.rowData);
-          });
+          if (data.length > 0) {
+            pqGridObjDealList.setData(data);
+            pqGridObjDealList.option("rowDblClick", function (event, ui) {
+              movePage(ui.rowData);
+            });
+          }
+          else {
+            pqGridObjDealList.setData([]);
+          }
         },
       });
     }

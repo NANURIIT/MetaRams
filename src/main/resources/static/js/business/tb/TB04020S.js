@@ -34,6 +34,10 @@ const TB04020Sjs = (function () {
 
     //기간검색 유효성 검사 함수
     chkValFromToDt("TB04020S_fromDate", "TB04020S_toDate");
+
+    $('#TB04020S_srchForm').find('input, select').on('input', function () {
+      reset_dataForm();
+    })
   });
 
   function setDateInput() {
@@ -46,8 +50,8 @@ const TB04020Sjs = (function () {
   // 알람창 팝업
   function alertPopup(t) {
     Swal.fire({
-      icon: "error",
-      title: "Error!",
+      icon: "warning",
+      title: "Warning!",
       text: t,
       confirmButtonText: "확인",
     });
@@ -114,10 +118,24 @@ const TB04020Sjs = (function () {
         data: dtoParam,
         dataType: "json",
         success: function (data) {
-          pqGridObjDealList.setData(data);
-          pqGridObjDealList.option("rowDblClick", function (event, ui) {
-            setDealDetails(ui.rowData);
-          });
+
+          reset_dataForm();
+
+          if (data.length > 0) {
+            pqGridObjDealList.setData(data);
+            pqGridObjDealList.option("rowDblClick", function (event, ui) {
+              setDealDetails(ui.rowData);
+            });
+          }
+          else {
+            Swal.fire({
+              icon: "warning",
+              title: "Warning!",
+              text: "조회된 내역이 없습니다!",
+              confirmButtonText: "확인",
+            });
+            pqGridObjDealList.setData([]);
+          }
         },
       });
     }
@@ -209,8 +227,8 @@ const TB04020Sjs = (function () {
     };
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning!";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "안건 정보를 조회해주세요.";
@@ -274,8 +292,8 @@ const TB04020Sjs = (function () {
 
       if (empNmValue === detailChrgPNoValue) {
         Swal.fire({
-          icon: "error",
-          title: "Error!",
+          icon: "warning",
+          title: "Warning!",
           text: "담당자와 심사역이 동일할 수 없습니다.",
           confirmButtonText: "확인",
         }).then(function () {
@@ -310,8 +328,8 @@ const TB04020Sjs = (function () {
     };
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning!";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "안건 정보를 조회해주세요.";
@@ -349,6 +367,7 @@ const TB04020Sjs = (function () {
     }
   }
 
+  // 전체초기화
   function reset_TB04020S() {
     setDateInput();
     $("#TB04020S_D010").val(""); //심사부서
@@ -356,6 +375,18 @@ const TB04020Sjs = (function () {
     $("#TB04020S_ibDealNo").val(""); // 딜번호
     $("#TB04020S_ibDealNm").val(""); // 딜번호
     $("#TB04020S_I011").val(""); //안건진행상태
+    pqGridObjDealList.setData([]);
+    $("#dealInfBox input").val(""); //딜정보
+    $("#chrgInfoBox input").val(""); //거래담당
+    $("#TB04020S_empNo").val(""); //심사역
+    $("#TB04020S_empNm").val(""); //심사역
+    $("#TB04020S_I008").val(""); //전결협의체
+    $(".btn-success").prop("disabled", false);
+    $(".btn-danger").prop("disabled", false);
+  }
+
+  // 조회데이터 초기화
+  function reset_dataForm () {
     pqGridObjDealList.setData([]);
     $("#dealInfBox input").val(""); //딜정보
     $("#chrgInfoBox input").val(""); //거래담당

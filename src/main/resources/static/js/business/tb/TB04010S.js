@@ -196,8 +196,8 @@ const TB04010Sjs = (function () {
         dblclickYn === "0"
       ) {
         Swal.fire({
-          icon: "error",
-          title: "error",
+          icon: "warning",
+          title: "Warning!",
           text: "해당 딜에 선택된 부수안건 및 신규/재부의 정보가 존재합니다.",
           confirmButtonText: "확인",
         });
@@ -527,8 +527,8 @@ const TB04010Sjs = (function () {
 
     if (isEmpty(dealNo)) {
       openPopup({
-        type: "error",
-        title: "Error!",
+        type: "warning",
+        title: "Warning!",
         text: errorText,
         focusCancel: true,
       });
@@ -541,8 +541,8 @@ const TB04010Sjs = (function () {
       let cmCmpy = arrPqGridCncCmpnyInfo.pdata;
       if (cmCmpy.length === 0) {
         openPopup({
-          type: "error",
-          title: "Error!",
+          type: "warning",
+          title: "Warning!",
           text: `거래상대방을 입력해주세요`,
           focusCancel: true,
         });
@@ -564,8 +564,8 @@ const TB04010Sjs = (function () {
         cmCmpyCrpShpDcd.indexOf("09") === -1
       ) {
         openPopup({
-          type: "error",
-          title: "Error!",
+          type: "warning",
+          title: "Warning!",
           text: `거래상대방 차주를 입력해주세요`,
           focusCancel: true,
         });
@@ -2381,8 +2381,8 @@ const TB04010Sjs = (function () {
       !$("#TB04010S_R014").prop("disabled")
     ) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "안건구조 등록 및 조회 이후 진행바랍니다.",
         confirmButtonText: "확인",
       });
@@ -2879,8 +2879,8 @@ const TB04010Sjs = (function () {
       .replace(/[^0-9]/g, ""); // 실명번호
 
     var option = {};
-    option.title = "Error";
-    option.type = "error";
+    option.title = "Warning!";
+    option.type = "warning";
 
     if (isEmpty(dealNo)) {
       option.text = "Deal 정보를 조회해주세요.";
@@ -3363,8 +3363,8 @@ const TB04010Sjs = (function () {
       !$("#TB04010S_R014").prop("disabled")
     ) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "안건구조 등록 및 조회 이후 진행바랍니다.",
         confirmButtonText: "확인",
       });
