@@ -35,7 +35,7 @@ const TB05030Sjs = (function () {
       $('#TB05030S_rcgAmt')
     )
 
-    chkAmt();
+    //chkAmt();
 
     $('#TB05030S_srchForm').find('input, select').on('input', function () {
       TB05030S_clearAllGrid();
