@@ -45,7 +45,7 @@
 					<div id="TB07180S_colModel1"></div>
 					<div class="ibox-content">
 						<div class="ibox">
-							<div class="ibox-content mb-5" id="feeData">
+							<div class="ibox-content" id="feeData">
 								<!-- row1 -->
 								<div class="row form-group form-inline text-right mb-1 mt-1">
 									<div class="col-sm-12 form-group">
@@ -118,18 +118,16 @@
 									</div>
 								</div>
 							</div>
+						</div>						
+						<div class="ibox form-inline">
+							<!-- 버튼영역 -->
+							<div class="col-sm-12 text-right pd0">
+								<button class="btn btn-default" type="button" onclick="TB07180Sjs.resetInputData_TB07180S();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+								<button class="btn btn-success" onclick="TB07180Sjs.insertFeeData();"><i class="fa fa-save"></i>&nbsp;저장</button>
+								<button class="btn btn-danger" onclick="TB07180Sjs.deleteFeeData();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
+							</div>							
 						</div>
 					</div>
-					
-					<div class="ibox form-inline">
-						<!-- 버튼영역 -->
-						<div class="col-sm-12 text-right pd0">
-							<button class="btn btn-default" type="button" onclick="TB07180Sjs.resetInputData_TB07180S();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
-							<button class="btn btn-success" onclick="TB07180Sjs.insertFeeData();"><i class="fa fa-save"></i>&nbsp;저장</button>
-							<button class="btn btn-danger" onclick="TB07180Sjs.deleteFeeData();"><i class="fa fa-eraser"></i>&nbsp;삭제</button>
-						</div>
-					</div>
-					
 				</div>
 			</div>
 		</div><!-- row -->

@@ -8,7 +8,7 @@
 function settingFunction() {
   const url = window.location.pathname;
 
-  setFileUploadEvent(url.split("/")[1]);
+  setFileUploadEvent(url.split("/")[1]); 
 
   /**
    * 모달 드래그 이벤트
@@ -1779,7 +1779,9 @@ function setPqGrid(pqGridObjs) {
       cellbs = pqGridObj.cellBeforeSave || function (event, ui) {},
       cellClick = pqGridObj.cellClick || function (event, ui) {},
       rowSelect = pqGridObj.rowSelect || function (event, ui) {},
-      rowDblClick = pqGridObj.rowDblClick || function (event, ui) {};
+      rowDblClick = pqGridObj.rowDblClick || function (event, ui) {},
+      editorBegin = pqGridObj.editorBegin || function (event, ui) {},
+      editorEnd = pqGridObj.editorEnd || function (event, ui) {};
 
     let strNoRows = "데이터가 없습니다."; // 최초 생성 시 body msg
 
@@ -1806,6 +1808,8 @@ function setPqGrid(pqGridObjs) {
       cellClick: cellClick,
       rowSelect: rowSelect,
       rowDblClick: rowDblClick,
+      editorBegin: editorBegin,
+      editorEnd: editorEnd,
       // clipboard: { on: true }, // 클립보드 복사 활성화
       // selectionModel: { type: "cell" } // 셀 선택 활성화
       // selectionModel: { type: 'cell' }, // 셀 단위 선택 활성화
@@ -2242,6 +2246,9 @@ function needRunFn(menuId) {
   }
   if (menuId === "TB08050S") {
     TB08050Sjs.getDealInfoFromWF();
+  }
+  if (menuId === "TB10510S") {
+    TB10510Sjs.clockpickerCtrl();
   }
 }
 

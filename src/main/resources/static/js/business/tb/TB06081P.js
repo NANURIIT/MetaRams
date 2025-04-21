@@ -364,7 +364,6 @@ function TB06081P_apvlListChk() {
 function TB06081P_apvlReqStatusHandler(status) {
 
     TB06081P_status = status;
-    console.log(status);
     // 진행중
     if (status === "ing") {
         $('button[onclick*="TB06081P_srchApvlList"]').prop("disabled", true);

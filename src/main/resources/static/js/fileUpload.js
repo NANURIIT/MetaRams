@@ -19,10 +19,11 @@ function setFileUploadEvent(menuId) {
 
     // 추출한 파일명 삽입
     $(this).siblings(".upload-name").val(filename);
-  });
+});
 
   /**
    * 파일추가 버튼 클릭
+   * common.js에서 뿌려주기~
    */
   $(`div[data-menuid="/${menuId}"]` + " #UPLOAD_AddFile").click(function () {
     callFileUploadPopup();
