@@ -12,6 +12,7 @@ const TB08036Sjs = (function () {
     TB08036S_getUrlDealInfo();
     TB08036S_setDatePicker("cnstStDt", "cnstEdDt", "cnstPrd");
     TB08036S_setDatePicker("slStDt", "slEdDt", "slPrd");
+    btnResetTB08036S()
   });
 
   // 그리드설정
@@ -258,8 +259,8 @@ const TB08036Sjs = (function () {
   // 에러메시지
   function showErrorPopup(message) {
     openPopup({
-      type: "error",
-      title: "Error!",
+      type: "warning",
+      title: "Warning!",
       text: message,
     });
   }
@@ -775,7 +776,7 @@ const TB08036Sjs = (function () {
     $("#slPrd").val("");
 
     // 사업기본정보
-    $("#unitNum").val("");
+    $("#unitNum").val("0");
     $("#TB08036S_C010").val("");
     $("#TB08036S_I012_1").val("");
     $("#TB08036S_I012_2").val("");
@@ -783,9 +784,9 @@ const TB08036Sjs = (function () {
 
     // 진행 관리
     $("#TB08036S_B014_01").val("");
-    $("#estmPrgsRt").val("");
-    $("#pfmcPrgsRt").val("");
-    $("#mgtnRt").val("");
+    $("#estmPrgsRt").val("0");
+    $("#pfmcPrgsRt").val("0");
+    $("#mgtnRt").val("0");
 
     // 분양수입/공사비 점검의견
     $("#TB08036S_I050").val("");
