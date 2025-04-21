@@ -602,13 +602,13 @@ const TB03020Sjs = (function () {
 				success: function (data) {
 
 					$('#TB03020S_ibDealNo').val(data);
+					$('#TB03020S_ibDealNm').val($('#TB03020S_dealNm').val());
 					Swal.fire({
 						icon: 'success'
 						, title: "Success!"
 						, text: "딜 정보를 저장하는데 성공하였습니다."
 						, confirmButtonText: "확인"
 					}).then((data) => {
-
 						getBscDealDetail();
 					});
 				},
