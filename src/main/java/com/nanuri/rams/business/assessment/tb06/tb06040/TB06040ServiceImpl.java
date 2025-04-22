@@ -61,7 +61,7 @@ public class TB06040ServiceImpl implements TB06040Service {
 		if( "1".equals(paramData.getCtrcCclcDcd()) ) {
 
 			if(("90".equals(ibims201bdto.getPrdtLclsCd()))
-			 ||("91".equals(ibims201bdto.getPrdtLclsCd()))) {
+			 ) {
 
 				IBIMS202BDTO in202bdto = new IBIMS202BDTO();
 				in202bdto.setPrdtCd(paramData.getPrdtCd());
