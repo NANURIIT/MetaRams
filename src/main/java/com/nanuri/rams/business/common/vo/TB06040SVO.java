@@ -18,6 +18,7 @@ public class TB06040SVO extends IBIMS401BDTO {
 	private String rqsKndCd;
 	private String apvlAmt;
 	private String prdtClsfCd;
+	private String prdtLclsCd;                      //  기업여신상품대분류코드
 	private String prdtClsfCdNm;
 	private String actsCd;
 	private String apvlDt;

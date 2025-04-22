@@ -164,6 +164,8 @@ const TB06040Sjs = (function() {
                     $('#TB06040S_selectedNmcpMtrDcd').val(data.mtrDcd);
                     $('#TB06040S_selectedLstCCaseDcd').val(data.jdgmDcd);
 
+                    $('#TB06040S_prdtLclsCd').val(data.prdtLclsCd);
+
                     /* 240617 약정정보 */
                     $('#TB06040S_ctrcDt').val(formatDate(data.ctrcDt));
                     $('#TB06040S_ctrcExpDt').val(formatDate(data.ctrcExpDt));
@@ -312,11 +314,22 @@ const TB06040Sjs = (function() {
                 /* 약정 */
                 console.log("약정");
 
-                if(prdtCd.startsWith('A') &&(stdrIntrt === null || stdrIntrt === '0')){
+                // if(prdtCd.startsWith('A') &&(stdrIntrt === null || stdrIntrt === '0')){
+                //     Swal.fire({
+                //         icon              : 'warning'
+                //     , text              : "기준금리를 입력해주세요."
+                //     , confirmButtonText : "확인"
+                //     });
+                //     return false;
+                // }
+
+                var prdtLclsCd = $('#TB06040S_prdtLclsCd').val();                   // 기업여신 대분류코드 
+
+                if(prdtCd.startsWith('A') && prdtLclsCd === '90' && (stdrIntrt === null || stdrIntrt === '0')){//기업여신 대분류코드 90:: 대출채권 91:: 채무보증 
                     Swal.fire({
-                        icon              : 'warning'
-                    , text              : "기준금리를 입력해주세요."
-                    , confirmButtonText : "확인"
+                        icon                : 'warning'
+                        , text              : "기준금리를 입력해주세요."
+                        , confirmButtonText : "확인"
                     });
                     return false;
                 }
