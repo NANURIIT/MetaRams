@@ -1618,6 +1618,7 @@
                  ) AS TR_OTHR_DSCM_NM
                , A.RQS_KND_CD                                        /* 기업여신신청종류코드 */
                , A.PRDT_CLSF_CD                                      /* 상품분류코드 */
+               , A.PRDT_LCLS_CD										                   /* 상품대분류코드 */
                , (
                   SELECT CD_VL_NM
                     FROM IBIMS002B

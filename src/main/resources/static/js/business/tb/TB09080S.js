@@ -376,7 +376,9 @@ const TB09080Sjs = (function () {
         console.log(data);
         console.log(data.trDtls);
         //trDtls.setData(data.trDtls); // 딜거래내역
-        if (data.length > 0) {
+        var trDtls = data.trDtls;
+
+        if (trDtls.length > 0) {
           dealDtlsIns.setData(data.trDtls);
         }
         else {

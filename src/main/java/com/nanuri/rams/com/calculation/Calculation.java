@@ -948,10 +948,12 @@ public class Calculation {
 		String rtnValue = "";
 		IBIMS991BVO out991 = ibims991BMapper.getBsnDt(basDt);
 
+		String isHoliDay = out991.getHoliday();
+
 		log.debug("basDt: "+ basDt);
 		log.debug("!!!!!!!!!!!!!");
 		
-		if("01".equals(inCalcDTO.getIntrClcEndDeDcd())) {	// 이자계산종료일구분 01휴일처리구분적용, 02휴일포함
+		if("01".equals(inCalcDTO.getIntrClcEndDeDcd()) && "1".equals(isHoliDay)) {	// 이자계산종료일구분 01휴일처리구분적용, 02휴일포함
 
 			if("01".equals(inCalcDTO.getHldyPrcsDcd())) {	// 휴일처리구분 01직후 02직전
 				rtnValue = out991.getAfDt();
@@ -1225,18 +1227,20 @@ public class Calculation {
 
 				prnaCalcList = listTypeSett2(calcDto, prnaScdlList);
 
-				//log.debug("\n prnaCalcList ::: {}", prnaCalcList);
+				//log.debug("\n first prnaCalcList ::: {}", prnaCalcList);
 
 				//earlyRpCalcList = earlyRpnaCalc(calcDto, prnaCalcList);
 
 				earlyRpCalcList = mdwyRdmpFeeCalc(calcDto, prnaCalcList);
+
+				//log.debug("\n earlyRpCalcList ::: {}", earlyRpCalcList);
 
 				prnaCalcList2.addAll(prnaCalcList);
 				// intrCalcList2 = intrCalc(calcDto, prnaCalcList2, intrScdlList);
 				intrCalcList2 = listTypeSett(calcDto, intrScdlList);
 
 				// log.debug("\n prnaCalcList2 ::: {}", prnaCalcList2);
-				// log.debug("\n intrCalcList2 ::: {}", intrCalcList2);
+				//log.debug("\n intrCalcList2 ::: {}", intrCalcList2);
 			}
 
 			prnaCalcList = listTypeSett(calcDto, prnaScdlList);
@@ -1298,10 +1302,16 @@ public class Calculation {
 
 			outList.addAll(earlyIntrList);
 
-			earlyRpList = rescheduling(calcDto, earlyRpCalcList, earlyIntrList, prnaCalcList2, intrCalcList2, intrCalcList);
-			//log.debug("\ncalculation.earlyRpList ::: {}", earlyRpList);
+			if(earlyIntrList.size() > 0){
+				earlyRpList = rescheduling(calcDto, earlyRpCalcList, earlyIntrList, prnaCalcList2, intrCalcList2, intrCalcList);
+				//log.debug("\ncalculation.earlyRpList ::: {}", earlyRpList);
 
-			outList.addAll(earlyRpList);
+				outList.addAll(earlyRpList);
+			}else{
+				log.debug("earlyIntrList is Empty!!!");
+			}
+
+			
 
 		}else if(calcDto.getLastIntrClcDt() != null && calcDto.getLastIntrClcDt().compareTo(calcDto.getStdrDt()) <= 0){
 			log.debug("2번시나리오~~~");
@@ -2454,6 +2464,9 @@ public class Calculation {
 					if(strtDt.substring(0, 4).equals(stdrDt.substring(0, 4))) {
 					
 						ddCnt = DateUtil.dateDiff(strtDt, getBasDt(inCalcDTO, stdrDt))+1; // 일수계산
+						log.debug("getBasDtRslt::: " + getBasDt(inCalcDTO, stdrDt));
+						log.debug("[case1]일수(ddCnt): " + ddCnt + ", 시작일: " + strtDt + ", 기준일: " + stdrDt);
+
 						ddCntContent = ("".equals(ddCntContent.trim()))?ddCntContent.concat(String.valueOf(ddCnt)):ddCntContent.concat(" &#47; "+String.valueOf(ddCnt));
 						actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
 						// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
@@ -2465,6 +2478,7 @@ public class Calculation {
 							
 						strLstDt = strtDt.substring(0, 4)+"1231"; //lastDate(strtDt);
 						ddCnt = DateUtil.dateDiff(strtDt, strLstDt)+1; 
+						log.debug("[case2]일수(ddCnt): " + ddCnt + ", 시작일: " + strtDt + ", 기준일: " + stdrDt);
 						ddCntContent = ("".equals(ddCntContent.trim()))?ddCntContent.concat(String.valueOf(ddCnt)):ddCntContent.concat(" &#47; "+String.valueOf(ddCnt));
 						
 						actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
