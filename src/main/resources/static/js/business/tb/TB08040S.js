@@ -60,6 +60,7 @@ const TB08040Sjs = (function() {
 				})
 			);
 		});
+
 	}
 
 	/**
@@ -295,19 +296,19 @@ const TB08040Sjs = (function() {
 				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
-				// editor: {
-				// 	type: "select",
-				// 	valueIndx: "cdValue",
-				// 	labelIndx: "cdName",
-				// 	options: grdSelect.F006,
-				// },
+				editor: {
+					type: "select",
+					valueIndx: "cdValue",
+					labelIndx: "cdName",
+					options: grdSelect.F006,
+				},
 				render: function(ui) {
 					let fSel = grdSelect.F006.find(
 						({ cdValue }) => cdValue == ui.cellData
 					);
 					return fSel ? fSel.cdName : ui.cellData;
 				},
-				editable: false,
+				editable: true,
 			},
 			{
 				title: "수수료산정구분",
@@ -317,13 +318,21 @@ const TB08040Sjs = (function() {
 				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
+				// editor: {
+				// 	type: "select",
+				// 	valueIndx: "cdValue",
+				// 	labelIndx: "cdName",
+				// 	options: grdSelect.F015,//grdSelect.F004,
+				// },
 				render: function(ui) {
+					console.log(ui.cellData);					
 					let fSel = grdSelect.F015.find(
 						({ cdValue }) => cdValue == ui.cellData
 					);
 					return fSel ? fSel.cdName : ui.cellData;
 				},
 				editable: false,
+				hidden: true,
 			},
 			{
 				title: "수수료과세여부",
@@ -881,6 +890,7 @@ const TB08040Sjs = (function() {
 							if (feeStdrAmt >= 0 && feeRt >= 0) {
 								// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
 								rd.feeAmt = feeStdrAmt * (feeRt / 100);
+								rd.feeTrgtCtns = "*"
 								
 								if(rd.feeAmt > feeHgstAmt){
 									rd.feeAmt = feeHgstAmt;
@@ -1128,7 +1138,7 @@ const TB08040Sjs = (function() {
 				beforeSend: function(xhr) {
 					var inPrdtCd = $('#TB08040S_prdtCd').val();
 					var inPrdtNm = $('#TB08040S_prdtNm').val();
-					init_TB08040S();
+					//init_TB08040S();
 					$('#TB08040S_prdtCd').val(inPrdtCd);
 					$('#TB08040S_prdtNm').val(inPrdtNm);
 				},
@@ -1146,7 +1156,7 @@ const TB08040Sjs = (function() {
 				error: function(result) {
 					Swal.fire({
 						icon: "error",
-						text: `수수료스케줄정보 저장에 실패하였습니다.\n${result}`,
+						text: `수수료스케줄정보 저장에 실패하였습니다.`,
 						confirmButtonText: "확인",
 					});
 				},
@@ -1225,10 +1235,13 @@ const TB08040Sjs = (function() {
 					return { isValid: false };
 				}
 				if (!ele.txtnTpDcd
-					//&& (ele.feeTxtnYn=="1") //과세여부Y
+					&& (ele.feeTxtnYn=="1") //과세여부Y
 				) {
 					sf(2, "warning", `[과세유형구분코드]`);
 					return { isValid: false };
+				}
+				if (!ele.txtnTpDcd) {
+					ele.txtnTpDcd = " "
 				}
 				if (!ele.crryCd) {
 					sf(2, "warning", `[통화코드]`);
@@ -1236,7 +1249,7 @@ const TB08040Sjs = (function() {
 				}
 				if (!ele.rpsrNm
 					&& (ele.txtnTpDcd == "1" || ele.txtnTpDcd == "2") //과세유형구분코드가 세금계산서나 계산서일 경우
-					// && (ele.feeTxtnYn=="1") //과세여부Y
+					 //&& (ele.feeTxtnYn=="1") //과세여부Y
 				) {
 					sf(2, "warning", `[대표자(주주)]`);
 					return { isValid: false };
@@ -1492,8 +1505,7 @@ const TB08040Sjs = (function() {
 		let str = ui.rowData[dataIndx]
 
 		console.log(typeof str);
-		if (!str || isNaN(str)) {
-			console.log('왜 여기타노 -.-')
+		if (!str || isNaN(str)) {			
 			return ui.rowData[dataIndx] = 0 
 		}
 
