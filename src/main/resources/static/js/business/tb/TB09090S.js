@@ -33,7 +33,7 @@ const TB09090Sjs = (function() {
 						dataIndx: "rownum",
 						width: "10%",
 						halign: "center",
-						align: "right",
+						align: "center",
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
 							let result
@@ -92,6 +92,9 @@ const TB09090Sjs = (function() {
 						editable: false,
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
+							if (!ui.cellData) {
+								return;
+							}
 							let result;
 							return result = ui.cellData.slice(0, 4) + "-" + ui.cellData.slice(4, 6);
 						}
@@ -2659,7 +2662,8 @@ const TB09090Sjs = (function() {
 						dataType: "string",
 						dataIndx: "cmpNm",
 						width: "10%",
-						align: "center",
+						halign: "center",
+						align: "left",
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
 							let result
@@ -2693,6 +2697,9 @@ const TB09090Sjs = (function() {
 						editable: false,
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
+							if (!ui.cellData) {
+								return;
+							}
 							let result;
 							return result = ui.cellData.slice(0, 4) + "-" + ui.cellData.slice(4, 6);
 						}
@@ -5258,7 +5265,8 @@ const TB09090Sjs = (function() {
 						dataType: "string",
 						dataIndx: "cmpNm",
 						width: "10%",
-						align: "center",
+						halign: "center",
+						align: "left",
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
 							let result
@@ -5292,6 +5300,9 @@ const TB09090Sjs = (function() {
 						editable: false,
 						filter: { crules: [{ condition: 'range' }] },
 						render: function (ui) {
+							if (!ui.cellData) {
+								return;
+							}
 							let result;
 							return result = ui.cellData.slice(0, 4) + "-" + ui.cellData.slice(4, 6);
 						}

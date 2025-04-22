@@ -39,6 +39,8 @@ $(document).ready(function() {
 	}
 	limitInputLength(colums,"TB06019P");
 
+	$("#TB06019P_spcYn").trigger('click')
+
 });
 
 
