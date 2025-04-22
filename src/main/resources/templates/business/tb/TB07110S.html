@@ -166,12 +166,6 @@
 															class="fa fa-calendar"></i></span>
 												</span>
 											</div>
-											<div class="col-sm-3 form-group pd0">
-												<label class="col-sm-4">편익제공</label>
-												<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
-												<label class="col-sm-3">접대부여부</label>
-												<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
-											</div>
 											<label class="col-sm-1">자금원장</label>
 											<div class="col-sm-2">
 												<div class="input-group">
@@ -188,6 +182,12 @@
 													</select>
 												</div>
 											</div>
+											<div class="col-sm-3 form-group pd0">
+												<label class="col-sm-4">편익제공</label>
+												<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+												<label class="col-sm-3">접대부여부</label>
+												<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+											</div>
 										</div>
 									</div>
 									<div class="row form-group form-inline text-right">
@@ -197,12 +197,6 @@
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07110S_cnstNo"
 														disabled>
-												</div>
-											</div>
-											<label class="col-sm-1">관련근거</label>
-											<div class="col-sm-2">
-												<div class="input-group">
-													<input type="text" class="form-control" id="TB07110S_reltFdtnCtns">
 												</div>
 											</div>
 											<label class="col-sm-1">지급금액</label>
@@ -220,6 +214,7 @@
 												</span>
 												<input type="text" class="form-control" id="TB07110S_fnltNm" readonly="">
 											</div>
+											<div class="col-sm-3"></div>
 										</div>
 									</div>
 									<div class="row form-group form-inline text-right">
@@ -233,7 +228,6 @@
 															class="fa fa-calendar"></i></span>
 												</span>
 											</div>
-											<div class="col-sm-3"></div>
 											<label class="col-sm-1">세액</label>
 											<div class="col-sm-2">
 												<div class="input-group">
@@ -259,7 +253,6 @@
 													</select>
 												</div>
 											</div>
-											<div class="col-sm-3"></div>
 											<label class="col-sm-1">매입공제</label>
 											<div class="col-sm-2">
 												<div class="input-group">
@@ -272,6 +265,19 @@
 											<div class="col-sm-2">
 												<div class="input-group">
 													<input type="text" class="form-control" id="TB07110S_bnkAchdNm">
+												</div>
+											</div>
+											<label class="col-sm-1">작성자</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07110S_rgstEmpno"
+														disabled>
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick=""><i
+																class="fa fa-search"></i></button>
+													</span>
+													<input type="text" class="form-control" id="TB07110S_rgstEmpnm"
+														disabled>
 												</div>
 											</div>
 										</div>
@@ -291,7 +297,12 @@
 														readonly="">
 												</div>
 											</div>
-											<div class="col-sm-6"></div>
+											<label class="col-sm-1">관련근거</label>
+											<div class="col-sm-2">
+												<div class="input-group">
+													<input type="text" class="form-control" id="TB07110S_reltFdtnCtns">
+												</div>
+											</div>
 											<label class="col-sm-1">지급예정일자</label>
 											<div class="col-sm-2">
 												<span class="input-group date">
@@ -301,30 +312,6 @@
 															class="fa fa-calendar"></i></span>
 												</span>
 											</div>
-										</div>
-									</div>
-									<br/>
-									<div class="row form-group form-inline text-right">
-										<div class="col-sm-12 form-group">
-											<div class="col-sm-9"></div>
-											<label class="col-sm-1">작성자</label>
-											<div class="col-sm-2">
-												<div class="input-group">
-													<input type="text" class="form-control" id="TB07110S_rgstEmpno"
-														disabled>
-													<span class="input-group-append">
-														<button type="button" class="btn btn-default" onclick=""><i
-																class="fa fa-search"></i></button>
-													</span>
-													<input type="text" class="form-control" id="TB07110S_rgstEmpnm"
-														disabled>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row form-group form-inline text-right">
-										<div class="col-sm-12 form-group">
-											<div class="col-sm-9"></div>
 											<label class="col-sm-1">승인자</label>
 											<div class="col-sm-2">
 												<div class="input-group">
@@ -340,20 +327,11 @@
 											</div>
 										</div>
 									</div>
-
-
-									
 								</div>
 							</div>
 							<div class="ibox form-inline mt-2">
 								<!-- 버튼영역 -->
 								<div class="col-sm-12 text-right pd0">
-									<button class="btn btn-success" type="button" onclick="TB07110Sjs.doExc();"
-										id="TB07110S_excBtn"><i class="fa fa-check"></i>&nbsp;실행</button>
-								</div>
-							</div>
-							<div class="ibox mb-0 mt-2">
-								<div class="text-right">
 									<button class="btn btn-info" id="TB07110S_apvlRqst"
 										onclick="TB07110Sjs.apvlRqst();"><i
 											class="fa fa-square-o"></i>&nbsp;결재요청</button>
@@ -363,12 +341,10 @@
 											class="fa fa-check-square-o"></i>&nbsp;결재</button>
 									<button class="btn btn-danger" id="TB07110S_gbck" onclick="TB07110Sjs.rjct();"><i
 											class="fa fa-ban"></i>&nbsp;반려</button>
+									<button class="btn btn-success" type="button" onclick="TB07110Sjs.doExc();"
+										id="TB07110S_excBtn"><i class="fa fa-check"></i>&nbsp;실행</button>
 								</div>
 							</div>
-
-
-							<br>
-
 							<div class="tabs-container mt-2">
 								<ul class="nav nav-tabs" role="tablist" id="TB07110S_ramsTab">
 									<li onclick="TB07110Sjs.tabController(1)"><a class="nav-link" data-toggle="tab" id="TB07110S_tab1" href="#tab-1">상세</a></li>
@@ -397,7 +373,7 @@
 														<div class="ibox-content">
 															<div id="TB07110S_grd_basic"></div>
 														</div>
-														<div class="ibox form-inline mt-3">
+														<div class="ibox form-inline mt-2">
 															<!-- 버튼영역 -->
 															<div class="col-sm-12 text-right pd0">
 																<button class="btn btn-success" type="button" onclick="TB07110Sjs.saveIBIMS432B()" id="TB07110S_saveBtn"><i class="fa fa-save"></i>&nbsp;저장</button>
