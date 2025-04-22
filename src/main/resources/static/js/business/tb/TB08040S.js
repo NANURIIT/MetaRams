@@ -462,20 +462,21 @@ const TB08040Sjs = (function() {
 					},
 					{
 						title: "율(%)",
-						dataType: "string",
+						dataType: "integer",
 						dataIndx: "feeRt",
 						halign: "center",
 						align: "right",
 						width: "10%",
-						render: function(ui) {
-							var value = parseFloat(ui.cellData);
-							var formattedValue = value.toLocaleString('ko-KR', {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 7
-							});
-							return formattedValue;
-						},
-						editable: false,
+						format: "#,###.00",
+						// render: function(ui) {
+						// 	var value = parseFloat(ui.cellData);
+						// 	var formattedValue = value.toLocaleString('ko-KR', {
+						// 		minimumFractionDigits: 0,
+						// 		maximumFractionDigits: 7
+						// 	});
+						// 	return formattedValue;
+						// },
+						editable: true,
 		  			},
 					{
 						title: "수수료최저금액",
@@ -493,6 +494,7 @@ const TB08040Sjs = (function() {
 							return formattedValue;
 						},
 						editable: false,
+						hidden:true,
 					},
 					{
 						title: "수수료최고금액",
@@ -510,6 +512,7 @@ const TB08040Sjs = (function() {
 							return formattedValue;
 						},
 						editable: false,
+						hidden:true,
 					},
 					{
 						title: "수수료금액",
