@@ -418,11 +418,11 @@ const TB07050Sjs = (function () {
       // 	filter     : { crules: [{ condition: 'range' }] }
       // },
       {
-        title: "상환일자",
+        title: "실행일자",
         dataType: "string",
         dataIndx: "prarDt",
         align: "center",
-        // width: "10%",
+         width: "25%",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
         editor: {
@@ -451,13 +451,13 @@ const TB07050Sjs = (function () {
         },
       },
       {
-        title: "상환원금",
+        title: "실행금액",
         dataType: "integer",
         dataIndx: "prarPrna",
         halign: "center",
         align: "right",
         format: "#,###",
-        // width: "15%",
+         width: "25%",
         editable: true,
         filter: { crules: [{ condition: "range" }] },
       },
@@ -726,8 +726,8 @@ const TB07050Sjs = (function () {
                   // }
 
                   return {
-                    상환일자: formatDate(row.prarDt),
-                    상환원금: row.prarPrna,
+                    실행일자: formatDate(row.prarDt),
+                    실행금액: row.prarPrna,
                   };
                 });
 
