@@ -438,6 +438,9 @@ const TB07150Sjs = (function () {
           valueIndx: "cdValue",
           labelIndx: "cdName",
           options: fltObj.S003,
+          init: function (ui) {
+          	initSelectAutoOpen(ui, fltObj.S003.length);
+          }
         },
         render: function (ui) {
           let fSel = fltObj.S003.find(({ cdValue }) => cdValue == ui.cellData);
@@ -472,6 +475,9 @@ const TB07150Sjs = (function () {
           valueIndx: "cdValue",
           labelIndx: "cdName",
           options: fltObj.I013,
+          init: function (ui) {
+          	initSelectAutoOpen(ui, fltObj.I013.length);
+          }
         },
         render: function (ui) {
           let fSel = fltObj.I013.find(({ cdValue }) => cdValue == ui.cellData);
@@ -508,6 +514,9 @@ const TB07150Sjs = (function () {
           valueIndx: "cdValue",
           labelIndx: "cdName",
           options: fltObj.A007,
+          init: function (ui) {
+          	initSelectAutoOpen(ui, fltObj.A007.length);
+          }
         },
         render: function (ui) {
           let fSel = fltObj.A007.find(({ cdValue }) => cdValue == ui.cellData);

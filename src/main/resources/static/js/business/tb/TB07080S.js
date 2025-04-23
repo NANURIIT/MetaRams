@@ -279,6 +279,9 @@ const TB07080Sjs = (function() {
 					valueIndx: "cdValue",
 					labelIndx: "cdName",
 					options: grdSelect.S003,
+					init: function (ui) {
+			        	initSelectAutoOpen(ui, grdSelect.S003.length);
+			        }
 				},
 				render: function(ui) {
 					let fSel = grdSelect.S003.find(
@@ -315,6 +318,9 @@ const TB07080Sjs = (function() {
 					valueIndx: "cdValue",
 					labelIndx: "cdName",
 					options: grdSelect.I013,
+					init: function (ui) {
+			        	initSelectAutoOpen(ui, grdSelect.I013.length);
+			        }
 				},
 				render: function(ui) {
 					let fSel = grdSelect.I013.find(
@@ -343,6 +349,9 @@ const TB07080Sjs = (function() {
 					valueIndx: "cdValue",
 					labelIndx: "cdName",
 					options: grdSelect.A007,
+					init: function (ui) {
+			        	initSelectAutoOpen(ui, grdSelect.A007.length);
+			        }
 				},
 				render: function(ui) {
 					let fSel = grdSelect.A007.find(
