@@ -415,6 +415,9 @@ const TB07090Sjs = (function () {
           valueIndx: "cdValue",
           labelIndx: "cdName",
           options: fndsDcdList,
+          init: function (ui) {
+            initSelectAutoOpen(ui, fndsDcdList.length);
+          }
         },
         render: function (ui) {
           var options = fndsDcdList;

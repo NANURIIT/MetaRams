@@ -1810,6 +1810,9 @@ function setPqGrid(pqGridObjs) {
       rowDblClick: rowDblClick,
       editorBegin: editorBegin,
       editorEnd: editorEnd,
+      editModel: {
+        clicksToEdit: 1
+      }
       // clipboard: { on: true }, // 클립보드 복사 활성화
       // selectionModel: { type: "cell" } // 셀 선택 활성화
       // selectionModel: { type: 'cell' }, // 셀 단위 선택 활성화
@@ -2599,4 +2602,43 @@ function toCamelCase(str) {
   } else {
     return str;
   }
+
+}
+
+/**
+   * pqgrid 셀렉트박스 원클릭 옵션
+   * @param { Object } ui : 셀렉트박스 박힌 셀 ui
+   * @param { int } optionsLength : 그리드 옵션 개수
+   * @author 태안 
+   * 
+   */
+function initSelectAutoOpen(ui, optionsLength) {
+  setTimeout(function () {
+    const $select = $(ui.$cell).find("select");
+    $select.focus();
+    
+    const nativeSelect = $select.get(0);
+    if (nativeSelect) {
+      const mousedown = new MouseEvent("mousedown", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+      nativeSelect.dispatchEvent(mousedown);
+
+      const mouseup = new MouseEvent("mouseup", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+      nativeSelect.dispatchEvent(mouseup);
+
+      nativeSelect.size = optionsLength > 5 ? 5 : optionsLength;
+
+      $select.on("change", function () {
+        nativeSelect.size = 0;
+        $(nativeSelect).blur();
+      });
+    }
+  }, 50);
 }
