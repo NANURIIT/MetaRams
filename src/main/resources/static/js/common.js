@@ -2615,10 +2615,38 @@ function toCamelCase(str) {
 function initSelectAutoOpen(ui, optionsLength) {
   setTimeout(function () {
     const $select = $(ui.$cell).find("select");
-    $select.focus();
     
+    // $(ui.$cell).css({
+    //   "overflow": "visible",
+    //   "position": "relative"
+    // });
+    // $(ui.$cell).closest(".pq-grid-row").css("overflow", "visible");
+
+    $select.focus();
+
     const nativeSelect = $select.get(0);
     if (nativeSelect) {
+
+      // const cellOffset = $(ui.$cell).offset();
+      // const windowHeight = $(window).height();
+
+      // const spaceBelow = windowHeight - cellOffset.top;
+      // const openUpward = spaceBelow < 200;
+
+      // if (openUpward) {
+      //   $(nativeSelect).css({
+      //     position: "absolute",
+      //     bottom: "100%",
+      //     top: "auto"
+      //   });
+      // } else {
+      //   $(nativeSelect).css({
+      //     position: "absolute",
+      //     top: "100%",
+      //     bottom: "auto"
+      //   });
+      // }
+
       const mousedown = new MouseEvent("mousedown", {
         bubbles: true,
         cancelable: true,
@@ -2642,3 +2670,5 @@ function initSelectAutoOpen(ui, optionsLength) {
     }
   }, 50);
 }
+
+
