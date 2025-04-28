@@ -5,7 +5,7 @@ const TB10010Sjs = (function () {
       resetPGgrids("TB10010S")
     })
   });
-
+  let groupCdListTbObj;
   var codeId = "";
 
   /**

@@ -2671,4 +2671,45 @@ function initSelectAutoOpen(ui, optionsLength) {
   }, 50);
 }
 
+/**
+ * 피큐그리드 이용시 사용할 객체
+ * @author 김건우
+ */
+let pqGridParams = {};
 
+/**
+ * 피큐그리드 행 선택 (현재 어떤행에 대한 작업인지 표시용)
+ * @param { Number } rowIndx 
+ * @param { String } pqGridId 
+ * @param { Function } inqFn 
+ * @author 김건우
+ * @description
+ * pqGridParams[pqGridId + "_prevRowIndx"] 이전 로우인덱스 필요하신분 사용하시면 됩니다.
+ */
+function pqGridSelectHandler ( rowIndx, pqGridId, inqFn ) {
+
+  // 로우인덱스가 존재하거나 재조회를 했을시 초기화가 안된점 고려
+  if ( pqGridParams[pqGridId + "_prevRowIndx"] && $(`#${pqGridId}`).pqGrid('instance').pdata.length >= pqGridParams[pqGridId + "_prevRowIndx"] + 1 ) {
+    $(`#${pqGridId}`).pqGrid('removeClass', { cls: 'custom-pq-select', rowIndx: pqGridParams[pqGridId + "_prevRowIndx"] });
+  }
+  $(`#${pqGridId}`).pqGrid('addClass', { cls: 'custom-pq-select', rowIndx: rowIndx });
+
+  pqGridParams[pqGridId + "_prevRowIndx"] = rowIndx;
+
+  inqFn();
+}
+
+/**
+ * 피큐그리드 삭제대상 표시
+ * @param { List } rowIndices 
+ * @param { String } pqGridId 
+ * @author 김건우
+ */
+function pqGridSetDelListHandler ( rowIndices, pqGridId ) {
+
+  for (let i = 0; i < rowIndices.length; i++ ) {
+    $(`#${pqGridId}`).pqGrid('addClass', { cls: 'custom-pq-delete', rowIndx: rowIndices[i] });
+  }
+
+  return;
+}

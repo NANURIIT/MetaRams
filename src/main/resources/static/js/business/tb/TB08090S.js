@@ -16,6 +16,8 @@ const TB08090Sjs = (function () {
 			resetPGgrids("TB08090S")
 		})
 
+		$("#TB08090_stdrDt").val(getToday());
+
 	});
 
 	function loadUserAuth() {

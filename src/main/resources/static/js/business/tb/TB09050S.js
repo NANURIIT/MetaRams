@@ -4,6 +4,7 @@ const TB09050Sjs = (function () {
     // $('#disabledView').find('input').prop('disabled', true);
     // fnSelectBox();
     // createOption();
+    $("#TB09050S_stdDt").val(getToday());
   });
 
   /*

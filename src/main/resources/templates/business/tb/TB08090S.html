@@ -14,26 +14,27 @@
 			<div class="col-lg-12">
 				<div class="ibox ">
 					<!-- 조회조건영역 -->
-					<div class="ibox-content text-right i-filter">
-						<form method="get">
+					<div class="ibox-content">
+						<!-- <form method="get"> -->
 							<div class="form-group form-inline row mb-0">
-								<label class="col-sm-1 control-label">
-									<span class="req"></span>기준일자
-								</label>
-								<div class="col-sm-4 input-group date">
-									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB08090_stdrDt" name="FromDate" value="" placeholder="yyyy-mm-dd" maxlength="10" oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<div class="col-sm-12 form-group">
+									<label class="col-sm-1 control-label">
+										<span class="req"></span>기준일자
+									</label>
+									<div class="col-sm-2 input-group">
+										<span class="input-group date">
+											<input type="text" class="form-control" id="TB08090_stdrDt" name="FromDate" value="" placeholder="YYYY-MM-DD" maxlength="10" oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</span>
+									</div>
+									<div class="col-sm-9 text-right">
+										<button class="btn btn-primary" type="button" onclick="TB08090Sjs.getAsstSnnGrdList();">
+											<i class="fa fa-search"></i>&nbsp;조회
+										</button>
 									</div>
 								</div>
-								<div class="col-sm-6 text-right">
-									<button class="btn btn-primary" type="button" onclick="TB08090Sjs.getAsstSnnGrdList();">
-										<i class="fa fa-search"></i>&nbsp;조회
-									</button>
-								</div>
-								<div class="col-sm-7"></div>
 							</div>
-						</form>
+						<!-- </form> -->
 					</div>
 					
 					<!-- 조회결과 -->

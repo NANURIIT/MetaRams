@@ -449,7 +449,7 @@ const TB10210Sjs = (function () {
   function clickDetailButton(rowIndx) {
 
     $('#authCodeTable').pqGrid('removeClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: prevRowIndx });
-    $('#authCodeTable').pqGrid('addClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: rowIndx});
+    $('#authCodeTable').pqGrid('addClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: rowIndx });
 
     prevRowIndx = rowIndx;
       let rowData = authCdTbObj.getRowData({ rowIndx: rowIndx });
