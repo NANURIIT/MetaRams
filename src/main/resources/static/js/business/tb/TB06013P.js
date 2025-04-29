@@ -545,6 +545,9 @@ function showGrid_TB06013P(colM) {
     scrollModel: { autoFit: true },
     colModel: colM,
     strNoRows: '데이터가 없습니다.',
+    rowClick: function (evt, ui) {
+      pqGridSelectHandler(ui.rowIndx, "TB06013P_snrtInfoList");
+    },
     //dataModel: {data: data}
 	cellSave: function (event, ui){
         let dataIndx = ui.dataIndx;
