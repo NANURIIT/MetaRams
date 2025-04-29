@@ -160,6 +160,11 @@ const TB06060Sjs = (function () {
     // });
   });
 
+  function setDetails(rowData){
+    setFlow(getFlowLevel(rowData));
+    showDetailData(rowData, true);
+  }
+
   function setGrid_TB06060S() {
     var obj = {
       height: 160,
@@ -174,22 +179,26 @@ const TB06060Sjs = (function () {
       scrollModel: { autoFit: true },
       colModel: colM_TB06060S,
       strNoRows: "조회된 데이터가 없습니다.",
-      cellDblClick: function (event, ui) {
-        var rowData = ui.rowData;
+      rowClick: function (event, ui) {
 
-        setFlow(getFlowLevel(rowData));
-        showDetailData(rowData, true);
+        // setFlow(getFlowLevel(rowData));
+        // showDetailData(rowData, true);
+        pqGridSelectHandler(ui.rowIndx, "TB06060S_prdtInfoGrid", setDetails(ui.rowData));
+
       },
-      cellClick: function (event, ui) {
-        //클릭시 선택한 열 볼드처리
-        //console.log(ui.rowData)
-        $("#TB06060S_prdtInfoGrid .pq-grid-row").css("font-weight", "");
-        //var row = $("#TB09060S_grid1").pqGrid("getRow", { rowIndx: ui.rowIndx});
-        $("#pq-body-row-u0-" + ui.rowIndx + "-right").css(
-          "font-weight",
-          "bold"
-        );
-      },
+      editModel: {
+        clicksToEdit: 1
+      }
+      // cellClick: function (event, ui) {
+      //   //클릭시 선택한 열 볼드처리
+      //   //console.log(ui.rowData)
+      //   $("#TB06060S_prdtInfoGrid .pq-grid-row").css("font-weight", "");
+      //   //var row = $("#TB09060S_grid1").pqGrid("getRow", { rowIndx: ui.rowIndx});
+      //   $("#pq-body-row-u0-" + ui.rowIndx + "-right").css(
+      //     "font-weight",
+      //     "bold"
+      //   );
+      // },
     };
 
     $("#TB06060S_prdtInfoGrid").pqGrid(obj);
