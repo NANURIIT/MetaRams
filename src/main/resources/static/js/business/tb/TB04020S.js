@@ -123,7 +123,8 @@ const TB04020Sjs = (function () {
 
           if (data.length > 0) {
             pqGridObjDealList.setData(data);
-            pqGridObjDealList.option("rowDblClick", function (event, ui) {
+            pqGridObjDealList.option("rowClick", function (event, ui) {
+              pqGridSelectHandler( ui.rowIndx, "gridCheckDealList" );
               setDealDetails(ui.rowData);
             });
           }

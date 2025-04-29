@@ -515,6 +515,11 @@ hr{ margin-top: 0.5rem;
 .custom-pq-select {
 	font-weight: 300 !important;
 	background: rgba(90, 171, 224, 0.5) !important;
+	transition: background ease 0.5s;
+}
+
+.pq-grid-row {
+	transition: background ease 0.5s;
 }
 
 .custom-pq-delete {
