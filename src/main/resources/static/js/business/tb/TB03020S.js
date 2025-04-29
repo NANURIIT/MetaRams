@@ -422,8 +422,8 @@ const TB03020Sjs = (function () {
 		}
 		if (checkedRows.length <= 0) {
 			Swal.fire({
-				icon: 'error'
-				, title: "Error!"
+				icon: 'warning'
+				, title: "Warning!"
 				, text: "삭제할 공동영업관리자 행을 체크해주세요."
 				, confirmButtonText: "확인"
 			});
@@ -909,8 +909,8 @@ const TB03020Sjs = (function () {
 
 		if (isEmpty($('#TB03020S_pynt_empNm').val())) {
 			Swal.fire({
-				icon: 'error'
-				, title: "Error!"
+				icon: 'warning'
+				, title: "Warning!"
 				, text: "결재자를 등록해주세요."
 				, confirmButtonText: "확인"
 			});

@@ -2674,6 +2674,18 @@ function pqGridSelectHandler ( rowIndx, pqGridId, inqFn ) {
 }
 
 /**
+ * 피큐그리드 행선택된거 지우개
+ * @param { String } pqGridId 
+ * @author 김건우
+ */
+function pqGridSelectRemover ( pqGridId ) {
+  if ( pqGridParams[pqGridId + "_prevRowIndx"] !== undefined && $(`#${pqGridId}`).pqGrid('instance').pdata.length >= pqGridParams[pqGridId + "_prevRowIndx"] + 1 ) {
+    $(`#${pqGridId}`).pqGrid('removeClass', { cls: 'custom-pq-select', rowIndx: pqGridParams[pqGridId + "_prevRowIndx"] });
+  }
+  pqGridParams[pqGridId + "_prevRowIndx"] = undefined;
+}
+
+/**
  * 피큐그리드 삭제대상 표시
  * @param { List } rowIndices 
  * @param { String } pqGridId 
