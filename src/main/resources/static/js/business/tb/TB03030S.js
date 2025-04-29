@@ -1,5 +1,3 @@
-
-
 const TB03030Sjs = (function(){
 	let arrPqGridRmEntpInfo;
 	let arrPqGridRmInfo;
@@ -90,6 +88,7 @@ const TB03030Sjs = (function(){
 					if (data.length > 0) {
 						arrPqGridRmEntpInfo.setData(data);
 						arrPqGridRmEntpInfo.option("rowClick", function(event, ui) {
+							pqGridSelectHandler( ui.rowIndx ,"gridRmEntpInfo" );
 							TB03030S_setFileButtonEnabled(false);
 							$('#UPLOAD_FileList').empty();                    //관련자료
 							setRmInfo(ui.rowData); // RM활동이력 조회

@@ -2689,7 +2689,7 @@ let pqGridParams = {};
 function pqGridSelectHandler ( rowIndx, pqGridId, inqFn ) {
 
   // 로우인덱스가 존재하거나 재조회를 했을시 초기화가 안된점 고려
-  if ( pqGridParams[pqGridId + "_prevRowIndx"] && $(`#${pqGridId}`).pqGrid('instance').pdata.length >= pqGridParams[pqGridId + "_prevRowIndx"] + 1 ) {
+  if ( pqGridParams[pqGridId + "_prevRowIndx"] !== undefined && $(`#${pqGridId}`).pqGrid('instance').pdata.length >= pqGridParams[pqGridId + "_prevRowIndx"] + 1 ) {
     $(`#${pqGridId}`).pqGrid('removeClass', { cls: 'custom-pq-select', rowIndx: pqGridParams[pqGridId + "_prevRowIndx"] });
   }
   $(`#${pqGridId}`).pqGrid('addClass', { cls: 'custom-pq-select', rowIndx: rowIndx });
