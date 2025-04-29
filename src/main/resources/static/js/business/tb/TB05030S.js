@@ -385,7 +385,8 @@ const TB05030Sjs = (function () {
           });
         } else {
           arrPqGridCaseInfo.setData(data);
-          arrPqGridCaseInfo.option("rowDblClick", function (event, ui) {
+          arrPqGridCaseInfo.option("rowClick", function (event, ui) {
+            pqGridSelectHandler( ui.rowIndx, "gridCaseInfo" );
             TB05030S_setFileButtonEnabled(true);
             let key2 = `${ui.rowData.cnsbDcd}|${ui.rowData.cnsbSq}|${ui.rowData.rsltnYr}|${ui.rowData.sn}`;
             getFileInfo($("#key1").val(), key2);

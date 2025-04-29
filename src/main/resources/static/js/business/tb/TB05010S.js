@@ -5,15 +5,15 @@ const TB05010Sjs = (function () {
   let arrPqGridCnfrncList; // 협의체 결의 및 목록
   let arrPqGridMmbrInfo; // 위원정보
   let arrPqGridCaseList; // 안건정보
+  let mmbrDcd;
 
   $(document).ready(function () {
-    touchSpin(); // 결의년도 좌우 가산
-    //tableFunction(); // 테이블 이벤트등록
     mmbrList(); // 협의체 위원구분 가져오기
-    rendorGrid();
+    touchSpin(); // 결의년도 좌우 가산
     // 결의년도 당해년도로 default 세팅..
     let year = getToday().substring(0, 4);
     $("#TB05010S_stdYr").val(year);
+    rendorGrid();
   });
 
   /**
@@ -132,8 +132,8 @@ const TB05010Sjs = (function () {
     }
     if (checkedRows.length <= 0) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "삭제할 안건정보 행을 체크해주세요.",
         confirmButtonText: "확인",
       });
@@ -148,143 +148,7 @@ const TB05010Sjs = (function () {
       async: false,
       dataType: "json",
       success: function (data) {
-        let colMmbrList = [
-          {
-            title: "",
-            dataType: "string",
-            dataIndx: "chkYn",
-            halign: "center",
-            align: "center",
-            minWidth: 35,
-            maxWidth: 35,
-            editable: true,
-            filter: { crules: [{ condition: "range" }] },
-            editor: false,
-            type: "checkBoxSelection",
-            cb: {
-              all: true,
-              header: true,
-              check: "Y",
-              uncheck: "N",
-            },
-          },
-          {
-            title: "위원구분",
-            dataType: "string",
-            dataIndx: "atdcTrgtDcd",
-            halign: "center",
-            align: "center",
-            // width : "20%",
-            editable: true,
-            filter: { crules: [{ condition: "range" }] },
-            editor: {
-              type: "select",
-              valueIndx: "CD_VL_ID",
-              labelIndx: "CD_VL_NM",
-              options: data,
-            },
-            render: function (ui) {
-              var options = data;
-              var option = options.find((opt) => opt.CD_VL_ID == ui.cellData);
-              return option ? option.CD_VL_NM : ui.cellData;
-            },
-          },
-          {
-            title: "위원",
-            dataType: "",
-            dataIndx: "",
-            align: "center",
-            // width : "35%",
-            filter: { crules: [{ condition: "range" }] },
-            colModel: [
-              {
-                title: "위원번호",
-                dataType: "string",
-                dataIndx: "atdcTrgtEmpno",
-                align: "center",
-                halign: "center",
-                hidden: true,
-              },
-              {
-                title: "위원명",
-                dataType: "string",
-                dataIndx: "atdcTrgtEmpnm",
-                align: "center",
-                halign: "center",
-              },
-              {
-                title: "",
-                dataType: "",
-                dataIndx: "",
-                align: "center",
-                halign: "center",
-                minWidth: 36,
-                maxWidth: 36,
-                render: function (ui) {
-                  let rowData = ui.rowData;
-                  return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrTrgt', ${ui.rowIndx});"><i class='fa fa-search'></i></button>`;
-                },
-              },
-            ],
-          },
-          {
-            title: "대리참석위원",
-            dataType: "string",
-            dataIndx: "",
-            // width : "35%",
-            align: "center",
-            filter: { crules: [{ condition: "range" }] },
-            colModel: [
-              {
-                title: "대리참석위원번호",
-                dataType: "string",
-                dataIndx: "atdcAngtEmpno",
-                align: "center",
-                halign: "center",
-                hidden: true,
-              },
-              {
-                title: "대리참석위원",
-                dataType: "string",
-                dataIndx: "atdcAngtEmpnm",
-                align: "center",
-                halign: "center",
-              },
-              {
-                title: "",
-                dataType: "",
-                dataIndx: "",
-                align: "center",
-                halign: "center",
-                minWidth: 36,
-                maxWidth: 36,
-                render: function (ui) {
-                  let rowData = ui.rowData;
-                  return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrAngt', ${ui.rowIndx});"><i class='fa fa-search'></i></button>`.trim();
-                },
-              },
-            ],
-          },
-        ];
-
-        // 위원정보
-        let obj = {
-          height: 200,
-          maxHeight: 200,
-          showTitle: false,
-          showToolbar: false,
-          collapsible: false,
-          wrap: false,
-          hwrap: false,
-          numberCell: { show: false },
-          editable: false,
-          //toolbar: toolbar,
-          scrollModel: { autoFit: true },
-          colModel: colMmbrList,
-          strNoRows: "데이터가 없습니다.",
-        };
-        $("#gridMmbrList").pqGrid(obj);
-        arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid("instance");
+        mmbrDcd = data;
       },
     });
   }
@@ -307,11 +171,21 @@ const TB05010Sjs = (function () {
         id: "gridCaseList",
         colModel: colCaseList,
       },
+      // 위원정보
+      {
+        height: 200,
+        maxHeight: 200,
+        id: "gridMmbrList",
+        editable: false,
+        colModel: colMmbrList,
+      }
     ];
     setPqGrid(arrPqGridObj);
 
     arrPqGridCnfrncList = $("#gridCnfrncList").pqGrid("instance");
     arrPqGridCaseList = $("#gridCaseList").pqGrid("instance");
+    arrPqGridMmbrInfo = $("#gridMmbrList").pqGrid("instance");
+
   }
   /**
    * 전결협의체 변경이벤트
@@ -415,8 +289,8 @@ const TB05010Sjs = (function () {
     MMBRCount = 0;
     if (inspctCnfrncCcd === "") {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "전결협의체 정보를 확인해주세요",
         confirmButtonText: "확인",
       });
@@ -435,7 +309,8 @@ const TB05010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridCnfrncList.setData(data);
-        arrPqGridCnfrncList.option("rowDblClick", function (event, ui) {
+        arrPqGridCnfrncList.option("rowClick", function (event, ui) {
+          pqGridSelectHandler(ui.rowIndx, "gridCnfrncList");
           getCNFRNCInfo(ui.rowData);
         });
       },
@@ -457,8 +332,8 @@ const TB05010Sjs = (function () {
       businessFunction();
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "전결협의체 정보를 확인해주세요",
         confirmButtonText: "확인",
       });
@@ -569,109 +444,6 @@ const TB05010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridMmbrInfo.setData(data);
-        //var MMBRInfo = data;
-
-        //  if (MMBRInfo.length > 0) {
-        //    // 있을경우
-        //    var html = "";
-        //    $.each(MMBRInfo, function (key, MMBR) {
-        //      html += "<tr>";
-        //      // td chkbox
-        //      html +=
-        //        '<td style="vertical-align: middle;"><input type="checkbox" class="MMBRChk" id="MMBR_chkbox_' +
-        //        (MMBRCount + 1) +
-        //        '"></td>';
-
-        //      // td selectbox
-        //      html +=
-        //        '<td><select class="form-control" id="CMMTT_MMBR_CCD_' +
-        //        (MMBRCount + 1) +
-        //        '">';
-        //      if (selectbox.length > 0) {
-        //        $.each(selectbox, function (key, value) {
-        //          if (MMBR.atdcTrgtDcd == value.CD_VL_ID) {
-        //            html +=
-        //              '<option value="' +
-        //              value.CD_VL_ID +
-        //              '" selected>' +
-        //              value.CD_VL_NM +
-        //              " (" +
-        //              value.CD_VL_ID +
-        //              ") " +
-        //              "</option>";
-        //          } else {
-        //            html +=
-        //              '<option value="' +
-        //              value.CD_VL_ID +
-        //              '">' +
-        //              value.CD_VL_NM +
-        //              " (" +
-        //              value.CD_VL_ID +
-        //              ") " +
-        //              "</option>";
-        //          }
-        //        });
-        //      }
-        //      html += "</select></td>";
-
-        //      // td inputbox
-        //      html += "<td>";
-        //      html += '<div class="input-group">';
-        //      html +=
-        //        '<input type="text" class="form-control" id="ATDNC_' +
-        //        (MMBRCount + 1) +
-        //        '_empNm" readonly value="' +
-        //        MMBR.atdcTrgtEmpnm +
-        //        '">';
-        //      html +=
-        //        '<input type="hidden" id="ATDNC_' +
-        //        (MMBRCount + 1) +
-        //        '_empNo" value="' +
-        //        MMBR.atdcTrgtEmpno +
-        //        '">';
-        //      html += '<span class="input-group-append">';
-        //      html +=
-        //        '<button type="button" class="btn btn-default" onclick="callTB03022P(\'ATDNC_' +
-        //        (MMBRCount + 1) +
-        //        "')\">";
-        //      html += '<i class="fa fa-search"></i>';
-        //      html += "</button>";
-        //      html += "</span>";
-        //      html += "</div>";
-        //      html += "</td>";
-
-        //      //td inputbox
-        //      html += "<td>";
-        //      html += '<div class="input-group">';
-        //      html +=
-        //        '<input type="text" class="form-control" id="ATDNC_PRXY_' +
-        //        (MMBRCount + 1) +
-        //        '_empNm" readonly value="' +
-        //        MMBR.atdcAngtEmpnm +
-        //        '">';
-        //      html +=
-        //        '<input type="hidden" id="ATDNC_PRXY_' +
-        //        (MMBRCount + 1) +
-        //        '_empNo" value="' +
-        //        MMBR.atdcAngtEmpno +
-        //        '">';
-        //      html += '<span class="input-group-append">';
-        //      html +=
-        //        '<button type="button" class="btn btn-default" onclick="callTB03022P(\'ATDNC_PRXY_' +
-        //        (MMBRCount + 1) +
-        //        "')\">";
-        //      html += '<i class="fa fa-search"></i>';
-        //      html += "</button>";
-        //      html += "</span>";
-        //      html += "</div>";
-        //      html += "</td>";
-
-        //      html += "</tr>";
-
-        //      MMBRCount++;
-        //    });
-        //    $("#TB05010S_MMBRList").append(html);
-        //  }
       },
       error: function () {
         // 없을경우
@@ -688,74 +460,6 @@ const TB05010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridCaseList.setData(data);
-        // 안건정보가 있을때
-        //   var dealList = data;
-        //   if (dealList.length > 0) {
-        //     // 있을경우
-        //     var html = "";
-        //     $.each(dealList, function (key, value) {
-        //       html += "<tr>";
-        //       // chkbox
-        //       html += '<td style="vertical-align: middle;">';
-        //       html += '<input type="checkbox" class="CASEChk">';
-        //       html += "</td>";
-        //       // ibDealNo
-        //       html += '<td style="display:none;">' + value.dealNo;
-        //       html += "</td>";
-        //       // 순서정보
-        //       html += "<td>" + value.sn;
-        //       html += "</td>";
-        //       // 안건명
-        //       html += "<td>" + value.mtrNm;
-        //       html += "</td>";
-        //       // 신규/재부의정보
-        //       html += '<td style="display:none;">' + value.jdgmDcd;
-        //       html += "</td>";
-        //       html += "<td>" + value.jdgmDcdNm;
-        //       html += "</td>";
-        //       // 안건순번
-        //       html += '<td style="display:none;">' + value.mtrDcd;
-        //       html += "</td>";
-        //       html += "<td>" + value.mtrDcdNm;
-        //       html += "</td>";
-        //       // 부서명
-        //       html += '<td style="display:none;">' + value.dprtCd;
-        //       html += "</td>";
-        //       html += "<td>" + value.dprtNm;
-        //       html += "</td>";
-        //       // 직원명
-        //       html += '<td style="display:none;">' + value.chrgPEno;
-        //       html += "</td>";
-        //       html += "<td>" + value.chrgPEnm;
-        //       html += "</td>";
-        //       // 심사역
-        //       html += '<td style="display:none;">' + value.ownPEno;
-        //       html += "</td>";
-        //       html += "<td>" + value.ownPEnm;
-        //       html += "</td>";
-
-        //       // btn updown
-        //       /*html += '<td>';
-        //                 html += '<button type="button" id="" class="btn btn-default btn-xs">';
-        //                 html += '<i class="fa fa-caret-up"></i>';
-        //                 html += '</button>';
-        //                 html += '<button type="button" id="" class="btn btn-default btn-xs">';
-        //                 html += '<i class="fa fa-caret-down"></i>';
-        //                 html += '</button>';
-        //                 html += '</td>';*/
-
-        //       html += "</tr>";
-
-        //       var dtoParam = {
-        //         fileIbDealNo: value.ibDealNo,
-        //         fileRiskInspctCcd: value.riskInspctCcd,
-        //         fileLstCCaseCcd: value.lstCCaseCcd,
-        //       };
-        //       //fileInfo(dtoParam);
-
-        //       $("#TB05010S_CASEList").html(html);
-        //     });
-        //   }
       },
       error: function () {
         // 안건정보가 없을때
@@ -838,80 +542,6 @@ const TB05010Sjs = (function () {
     });
   }
 
-  // 테이블 이벤트등록
-  // function tableFunction() {
-  //   MMBRChk(); // 위원정보 테이블 체크박스 이벤트 설정
-  //   CASEChk(); // 안건정보 테이블 체크박스 이벤트 설정
-  //   // TODO: 안건정보 업다운 버튼시 순서변경 이벤트
-  // }
-
-  // // 위원정보 테이블 체크박스 이벤트 설정
-  // function MMBRChk() {
-  //   $("#MMBRChk").change(function () {
-  //     if ($("#MMBRChk").is(":checked")) {
-  //       $(".MMBRChk").prop("checked", true);
-  //     } else {
-  //       $(".MMBRChk").prop("checked", false);
-  //     }
-  //   });
-  // }
-
-  // // 안건정보 테이블 체크박스 이벤트 설정
-  // function CASEChk() {
-  //   $("#CASEChk").change(function () {
-  //     if ($("#CASEChk").is(":checked")) {
-  //       $(".CASEChk").prop("checked", true);
-  //     } else {
-  //       $(".CASEChk").prop("checked", false);
-  //     }
-  //   });
-  // }
-
-  // 테이블 행삭제 버튼기능
-  // function delTableRow(tableId) {
-  //   var tableIdCheckBox = "#" + tableId + " input:checkbox:checked";
-  //   var text = "";
-
-  //   if (tableId == "TB05010S_MMBRList") {
-  //     text = "위원정보 체크박스를 확인해주세요.";
-  //   } else if (tableId == "TB05010S_CASEList") {
-  //     text = "안건정보 체크박스를 확인해주세요.";
-  //   } else {
-  //     text = "체크박스를 확인해주세요.";
-  //   }
-
-  //   // tr 체크된 갯수 확인
-  //   var checkboxes = $(tableIdCheckBox);
-
-  //   if (checkboxes.length > 0) {
-  //     businessFunction();
-  //   } else {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Error!",
-  //       text: text,
-  //       confirmButtonText: "확인",
-  //     });
-  //   }
-
-  //   function businessFunction() {
-  //     MMBRCount -= checkboxes.length;
-  //     checkboxes.each(function (i) {
-  //       var tr = checkboxes.parent().parent();
-  //       var td = $(tr).children();
-  //       var ibDealNo = td.eq(1).text();
-  //       var riskInspctCcd = td.eq(4).text();
-  //       var lstCCaseCcd = td.eq(6).text();
-
-  //       if (tableId == "TB05010S_CASEList") {
-  //         deleteFileInfo(ibDealNo, riskInspctCcd, lstCCaseCcd);
-  //       }
-
-  //       tr.remove();
-  //     });
-  //   }
-  // }
-
   function deleteFileInfo(ibDealNo, riskInspctCcd, lstCCaseCcd) {
     if ($("#CASEChk").is(":checked")) {
       $("#TB05010_fileList").empty();
@@ -934,160 +564,12 @@ const TB05010Sjs = (function () {
     }
   }
 
-  // 안건정보 추가 - AS02020P 에서 전달받음
-  // function addDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd) {
-  //   var count = 0;
-
-  //   var paramData = {
-  //     dealNo: ibDealNo,
-  //     jdgmDcd: riskInspctCcd,
-  //     mtrDcd: lstCCaseCcd,
-  //   };
-
-  //   if ($("#TB05010S_CASEList").length > 0) {
-  //     $("#TB05010S_CASEList tr").each(function (index, item) {
-  //       var dealNo = $(item).children().eq(1).text();
-  //       var jdgmDcd = $(item).children().eq(4).text();
-  //       var mtrDcd = $(item).children().eq(6).text();
-
-  //       if (
-  //         ibDealNo == dealNo &&
-  //         riskInspctCcd == jdgmDcd &&
-  //         lstCCaseCcd == mtrDcd
-  //       ) {
-  //         Swal.fire({
-  //           icon: "error",
-  //           title: "Error!",
-  //           text: "이미 등록된 안건입니다.",
-  //           confirmButtonText: "확인",
-  //         });
-  //         count++;
-  //       }
-  //     });
-  //   }
-
-  //   if (count === 0) {
-  //     $.ajax({
-  //       type: "GET",
-  //       url: "/TB05010S/getDealDetail",
-  //       data: paramData,
-  //       dataType: "json",
-  //       success: function (data) {
-  //         businessFunction();
-
-  //         /*
-  //                 if (data.inspctPrgrsStCd == 310 || data.inspctPrgrsStCd == 330) {
-  //                     businessFunction();
-  //                 } else {
-  //                     Swal.fire({
-  //                         icon: 'error'
-  //                         , title: "Error!"
-  //                         , text: '협의체 부의 등록 상태가 아닙니다.'
-  //                         , confirmButtonText: "확인"
-  //                     });
-  //                 }
-  //                 */
-
-  //         function businessFunction() {
-  //           var trLength = $("#TB05010S_CASEList tr").length;
-
-  //           html = "";
-  //           html += "<tr>";
-  //           // chkbox
-  //           html += "<td>";
-  //           html += '<input type="checkbox" class="CASEChk">';
-  //           html += "</td>";
-
-  //           // ibDealNo
-  //           html += '<td style="display:none;">' + data.dealNo;
-  //           html += "</td>";
-
-  //           // rnkNo
-  //           html += "<td>" + (trLength + 1);
-  //           html += "</td>";
-
-  //           // ibDealNm
-  //           html += "<td>" + data.mtrNm;
-  //           html += "</td>";
-
-  //           // riskInspctCcd
-  //           html += '<td style="display:none">' + data.jdgmDcd;
-  //           html += "</td>";
-  //           html += "<td>" + data.jdgmDcdNm;
-  //           html += "</td>";
-
-  //           // lstCCaseCcd
-  //           html += '<td style="display:none">' + data.mtrDcd;
-  //           html += "</td>";
-  //           html += "<td>" + data.mtrDcdNm;
-  //           html += "</td>";
-
-  //           // dprtNm
-  //           html += '<td style="display:none">' + data.dprtCd;
-  //           html += "</td>";
-  //           html += "<td>" + data.dprtNm;
-  //           html += "</td>";
-
-  //           // chrgPEno
-  //           html += '<td style="display:none">' + data.chrgPEno;
-  //           html += "</td>";
-  //           html += "<td>" + data.chrgPNm;
-  //           html += "</td>";
-
-  //           // ownPEno
-  //           html += '<td style="display:none">' + data.ownPEno;
-  //           html += "</td>";
-  //           html += "<td>" + data.ownPNm;
-  //           html += "</td>";
-
-  //           // btn updown
-  //           html += "<td>";
-  //           html += '<button type="button" id="" class="btn btn-default btn-xs">';
-  //           html += '<i class="fa fa-caret-up"></i>';
-  //           html += "</button>";
-  //           html += '<button type="button" id="" class="btn btn-default btn-xs">';
-  //           html += '<i class="fa fa-caret-down"></i>';
-  //           html += "</button>";
-  //           html += "</td>";
-
-  //           html += "</tr>";
-
-  //           $("#TB05010S_CASEList").append(html);
-
-  //           var dtoParam = {
-  //             fileIbDealNo: data.ibDealNo,
-  //             fileRiskInspctCcd: data.riskInspctCcd,
-  //             fileLstCCaseCcd: data.lstCCaseCcd,
-  //           };
-
-  //           //fileInfo(dtoParam);
-  //         }
-  //       },
-  //     });
-  //   } else {
-  //   }
-  // }
-
   // TB05010S 임시저장버튼
   function tempSave() {
     var MMBRListCount = arrPqGridMmbrInfo.pdata.length;
     var CASEListCount = arrPqGridCaseList.pdata.length;
     let CnfrncList = arrPqGridCnfrncList.pdata; //// 협의체 결의 및 목록
     var inspctCnfrncSqcSq2 = $("#TB05010S_inspctCnfrncSqcSq2").val();
-
-    // for (let i = 0; i < CnfrncList.length; i++) {
-    //   if (CnfrncList[i].sn == $("#TB05010S_inspctCnfrncSqcSq2").val()) {
-    //     console.log(`CnfrncList[i].sn : ${CnfrncList[i].sn}`);
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "Error!",
-    //       text: "해당 전결협의체에 중복된 협의체 회차정보가 존재합니다.",
-    //       confirmButtonText: "확인",
-    //     });
-    //     $("#TB05010S_inspctCnfrncSqcSq2").focus();
-    //     return; // 알림 후 함수 종료
-    //   }
-    // }
 
     if (!isEmpty(inspctCnfrncSqcSq2)) {
       if (MMBRListCount != 0 && CASEListCount != 0) {
@@ -1111,8 +593,8 @@ const TB05010Sjs = (function () {
       }
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "회차정보를 확인하세요.",
         confirmButtonText: "확인",
       });
@@ -1277,7 +759,7 @@ const TB05010Sjs = (function () {
           }
         });
       },
-      error: function () {},
+      error: function () { },
     });
   }
 
@@ -1454,6 +936,127 @@ const TB05010Sjs = (function () {
       title: "안건일련번호",
       dataIndx: "dealSn",
       hidden: true,
+    },
+  ];
+
+  let colMmbrList = [
+    {
+      title: "",
+      dataType: "string",
+      dataIndx: "chkYn",
+      halign: "center",
+      align: "center",
+      minWidth: 35,
+      maxWidth: 35,
+      editable: true,
+      filter: { crules: [{ condition: "range" }] },
+      editor: false,
+      type: "checkBoxSelection",
+      cb: {
+        all: true,
+        header: true,
+        check: "Y",
+        uncheck: "N",
+      },
+    },
+    {
+      title: "위원구분",
+      dataType: "string",
+      dataIndx: "atdcTrgtDcd",
+      halign: "center",
+      align: "center",
+      // width : "20%",
+      editable: true,
+      filter: { crules: [{ condition: "range" }] },
+      editor: {
+        type: "select",
+        valueIndx: "cdValue",
+        labelIndx: "cdName",
+        options: function () {
+          return mmbrDcd
+        },
+      },
+      render: function (ui) {
+        var options = mmbrDcd;
+        var option = options.find((opt) => opt.CD_VL_ID == ui.cellData);
+        return option ? option.CD_VL_NM : ui.cellData;
+      },
+    },
+    {
+      title: "위원",
+      dataType: "",
+      dataIndx: "",
+      align: "center",
+      // width : "35%",
+      filter: { crules: [{ condition: "range" }] },
+      colModel: [
+        {
+          title: "위원번호",
+          dataType: "string",
+          dataIndx: "atdcTrgtEmpno",
+          align: "center",
+          halign: "center",
+          hidden: true,
+        },
+        {
+          title: "위원명",
+          dataType: "string",
+          dataIndx: "atdcTrgtEmpnm",
+          align: "center",
+          halign: "center",
+        },
+        {
+          title: "",
+          dataType: "",
+          dataIndx: "",
+          align: "center",
+          halign: "center",
+          minWidth: 36,
+          maxWidth: 36,
+          render: function (ui) {
+            let rowData = ui.rowData;
+            return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrTrgt', ${ui.rowIndx});"><i class='fa fa-search'></i></button>`;
+          },
+        },
+      ],
+    },
+    {
+      title: "대리참석위원",
+      dataType: "string",
+      dataIndx: "",
+      // width : "35%",
+      align: "center",
+      filter: { crules: [{ condition: "range" }] },
+      colModel: [
+        {
+          title: "대리참석위원번호",
+          dataType: "string",
+          dataIndx: "atdcAngtEmpno",
+          align: "center",
+          halign: "center",
+          hidden: true,
+        },
+        {
+          title: "대리참석위원",
+          dataType: "string",
+          dataIndx: "atdcAngtEmpnm",
+          align: "center",
+          halign: "center",
+        },
+        {
+          title: "",
+          dataType: "",
+          dataIndx: "",
+          align: "center",
+          halign: "center",
+          minWidth: 36,
+          maxWidth: 36,
+          render: function (ui) {
+            let rowData = ui.rowData;
+            return `<button class='ui-button ui-corner-all ui-widget' onclick="callTB03022P('TB05010S_mmbrAngt', ${ui.rowIndx});"><i class='fa fa-search'></i></button>`.trim();
+          },
+        },
+      ],
     },
   ];
 

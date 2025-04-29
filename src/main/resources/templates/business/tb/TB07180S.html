@@ -41,79 +41,82 @@
 							</div>
 						</div>
 					</div>
-					<!-- 일별연체내역 -->
-					<div id="TB07180S_colModel1"></div>
+
 					<div class="ibox-content">
 						<div class="ibox">
-							<div class="ibox-content" id="feeData">
-								<!-- row1 -->
-								<div class="row form-group form-inline text-right mb-1 mt-1">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">수수료종류코드</label>
-										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB07180S_feeKndCd" readonly></input>
-										</div>
-										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>계정과목</label>
-										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB07180S_actsNm">
-											<!-- <input type="text" class="form-control"  list="TB07180S_A005"  id="TB07180S_actCd" maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"> -->
-											<datalist id ="TB07180S_A005"></datalist>
-										</div>
-										<label class="col-sm-1 col-form-label text-right"><span class="req"></span>수수료명</label>
-										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB07180S_feeNm" maxlength="60"></input>
-										</div>
-										<label class="col-sm-1 col-form-label text-right">수수료인식구분</label>
-										<div class="col-sm-2 input-group">
-											<select class="form-control" id="TB07180S_feeRcogDcd">
-												<option value="">선택</option>
-											</select>
-										</div>										
-									</div>
-								</div>
-								
-								<!-- row2 -->
-								<div class="row form-group form-inline text-right mb-1">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">수수료산정구분</label>
-										<div class="col-sm-2 input-group">
-											<select class="form-control" id="TB07180S_feeRcknDcd">
-												<option value="">선택</option>
-											</select>
-										</div>
-										<label class="col-sm-1 col-form-label text-right">수수료율</label>
-										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control text-right" id="TB07180S_feeRt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="15"></input>
-										</div>
-										<label class="col-sm-1 col-form-label text-right">수수료최저금액</label>
-										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control text-right" id="TB07180S_feeLwstAmt"></input>
-										</div>
-										<label class="col-sm-1 col-form-label text-right">수수료최고금액</label>
-										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control text-right" id="TB07180S_feeHgstAmt"></input>
+							<div class="ibox-content">
+								<div id="TB07180S_colModel1"></div>
+
+								<div class="mt-3" id="feeData">
+									<!-- row1 -->
+									<div class="row form-group form-inline text-right mb-1 mt-1">
+										<div class="col-sm-12 form-group">
+											<label class="col-sm-1 col-form-label text-right">수수료종류코드</label>
+											<div class="col-sm-2 input-group">
+												<input type="text" class="form-control" id="TB07180S_feeKndCd" readonly></input>
+											</div>
+											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>계정과목</label>
+											<div class="col-sm-2 input-group">
+												<input type="text" class="form-control" id="TB07180S_actsNm">
+												<!-- <input type="text" class="form-control"  list="TB07180S_A005"  id="TB07180S_actCd" maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"> -->
+												<datalist id ="TB07180S_A005"></datalist>
+											</div>
+											<label class="col-sm-1 col-form-label text-right"><span class="req"></span>수수료명</label>
+											<div class="col-sm-2 input-group">
+												<input type="text" class="form-control" id="TB07180S_feeNm" maxlength="60"></input>
+											</div>
+											<label class="col-sm-1 col-form-label text-right">수수료인식구분</label>
+											<div class="col-sm-2 input-group">
+												<select class="form-control" id="TB07180S_feeRcogDcd">
+													<option value="">선택</option>
+												</select>
+											</div>										
 										</div>
 									</div>
-								</div>
-								
-								<!-- row3 -->
-								<div class="row form-group form-inline text-right mb-1">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">회계업무코드</label>
-										<div class="col-sm-2 input-group">
-											<select class="form-control" id="TB07180S_acctJobCd">
-												<option value="">선택</option>
-											</select>
+									
+									<!-- row2 -->
+									<div class="row form-group form-inline text-right mb-1">
+										<div class="col-sm-12 form-group">
+											<label class="col-sm-1 col-form-label text-right">수수료산정구분</label>
+											<div class="col-sm-2 input-group">
+												<select class="form-control" id="TB07180S_feeRcknDcd">
+													<option value="">선택</option>
+												</select>
+											</div>
+											<label class="col-sm-1 col-form-label text-right">수수료율</label>
+											<div class="col-sm-2 input-group">
+												<input type="text" class="form-control text-right" id="TB07180S_feeRt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="15"></input>
+											</div>
+											<label class="col-sm-1 col-form-label text-right">수수료최저금액</label>
+											<div class="col-sm-2 input-group">
+												<input type="text" class="form-control text-right" id="TB07180S_feeLwstAmt"></input>
+											</div>
+											<label class="col-sm-1 col-form-label text-right">수수료최고금액</label>
+											<div class="col-sm-2 input-group">
+												<input type="text" class="form-control text-right" id="TB07180S_feeHgstAmt"></input>
+											</div>
 										</div>
-										<label class="col-sm-1 col-form-label text-right">회계단위업무코드</label>
-										<div class="col-sm-2 input-group">
-											<select class="form-control" id="TB07180S_acctUnJobCd">
-												<option value="">선택</option>
-											</select>
-										</div>
-										<label class="col-sm-1 col-form-label text-right">회계거래코드</label>
-										<div class="col-sm-2 input-group">
-											<input type="text" class="form-control" id="TB07180S_acctTrCd" maxlength="2">
+									</div>
+									
+									<!-- row3 -->
+									<div class="row form-group form-inline text-right mb-1">
+										<div class="col-sm-12 form-group">
+											<label class="col-sm-1 col-form-label text-right">회계업무코드</label>
+											<div class="col-sm-2 input-group">
+												<select class="form-control" id="TB07180S_acctJobCd">
+													<option value="">선택</option>
+												</select>
+											</div>
+											<label class="col-sm-1 col-form-label text-right">회계단위업무코드</label>
+											<div class="col-sm-2 input-group">
+												<select class="form-control" id="TB07180S_acctUnJobCd">
+													<option value="">선택</option>
+												</select>
+											</div>
+											<label class="col-sm-1 col-form-label text-right">회계거래코드</label>
+											<div class="col-sm-2 input-group">
+												<input type="text" class="form-control" id="TB07180S_acctTrCd" maxlength="2">
+											</div>
 										</div>
 									</div>
 								</div>

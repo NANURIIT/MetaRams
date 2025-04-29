@@ -396,6 +396,24 @@ const TB07150Sjs = (function () {
     // 하단 금리정보
     let col_intrtInf_2 = [
       {
+        title: "삭제",
+        dataType: "checkbox",
+        dataIndx: "delYn",
+        align: "center",
+        minWidth: 36,
+            maxWidth: 36,
+        type: "checkBoxSelection",
+        editable: true,
+        editor: false,
+        filter: { crules: [{ condition: "range" }] },
+        cb: {
+          all: true,
+          header: true,
+          check: "Y",
+          uncheck: "N",
+        },
+      },
+      {
         title: "시작일자",
         dataType: "string",
         dataIndx: "aplyStrtDt",
