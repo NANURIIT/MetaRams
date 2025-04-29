@@ -35,6 +35,8 @@ const TB07180Sjs = (function() {
 		$('div[data-menuid="/TB07180S"] .btn-success').attr('disabled', false);
 		$('div[data-menuid="/TB07180S"] .btn-danger').attr('disabled', false);
 
+		pqGridSelectRemover( "TB07180S_colModel1" );
+
 		if (typeof modalFeeKndCdList == "undefined") {
 		} else {
 			// modalFeeKndCdList.setData([]);
@@ -636,7 +638,8 @@ const TB07180Sjs = (function() {
 						setFeeKndCd([]);
 					}
 				}
-				modalFeeKndCdList.on("rowDblClick", function(event, ui) {
+				modalFeeKndCdList.on("rowClick", function(event, ui) {
+					pqGridSelectHandler( ui.rowIndx, "TB07180S_colModel1");
 					setFeeKndCd(ui.rowData);
 					$('div[data-menuid="/TB07180S"] .btn-success').attr('disabled', false);
 					$('div[data-menuid="/TB07180S"] .btn-danger').attr('disabled', false);
