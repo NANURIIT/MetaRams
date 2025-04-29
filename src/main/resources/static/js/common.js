@@ -2668,7 +2668,9 @@ function pqGridSelectHandler ( rowIndx, pqGridId, inqFn ) {
 
   pqGridParams[pqGridId + "_prevRowIndx"] = rowIndx;
 
-  inqFn();
+  if (inqFn) {
+  	inqFn();
+  }
 }
 
 /**
