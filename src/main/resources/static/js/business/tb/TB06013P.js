@@ -391,11 +391,31 @@ async function setColM_TB06013P() {
     //   width: "",
     //   filter: { crules: [{ condition: 'range' }] } 
     // },
+    //체크박스
+    {
+      dataIndx: "chk",
+      maxWidth: 36,
+      minWidth: 36,
+      align: "center",
+      resizable: false,
+      title: "",
+      menuIcon: false,
+      type: "checkBoxSelection",
+      cls: "ui-state-default",
+      sortable: false,
+      editor: false,
+      dataType: "bool",
+      editable: "true",
+      cb: {
+        all: false,
+        header: true,
+      },
+    },
     {
       title: "선순위종류",
       dataType: "string",
       dataIndx: "prfdRankKndCd",
-      align: "right",
+      align: "center",
       halign: "center",
       editable: true,
       width: "",
@@ -436,7 +456,7 @@ async function setColM_TB06013P() {
       title: "선순위통화",
       dataType: "string",
       dataIndx: "prfdRankCrryCd",
-      align: "right",
+      align: "center",
       halign: "center",
       editable: true,
       width: "",
@@ -455,43 +475,45 @@ async function setColM_TB06013P() {
     },
     {
       title: "선순위금액",
-      dataType: "string",
+      dataType: "integer",
       dataIndx: "prfdRankAmt",
       align: "right",
       halign: "center",
       editable: true,
+      format: "#,###",
       width: "",
       filter: { crules: [{ condition: 'range' }] },
-      render: function (ui) {
-        var value = parseFloat(ui.cellData);
+      // render: function (ui) {
+      //   var value = parseFloat(ui.cellData);
 
-        var formattedValue = value.toLocaleString('ko-KR', {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2
-        });
+      //   var formattedValue = value.toLocaleString('ko-KR', {
+      //     minimumFractionDigits: 0,
+      //     maximumFractionDigits: 2
+      //   });
 
-        return formattedValue;
-      }
+      //   return formattedValue;
+      // }
     },
     {
       title: "선순위원화환산액",
-      dataType: "string",
+      dataType: "integer",
       dataIndx: "krwTrslPrfdRankAmt",
       align: "right",
       halign: "center",
       editable: true,
+      format: "#,###",
       width: "",
       filter: { crules: [{ condition: 'range' }] },
-      render: function (ui) {
-        var value = parseFloat(ui.cellData);
+      // render: function (ui) {
+      //   var value = parseFloat(ui.cellData);
 
-        var formattedValue = value.toLocaleString('ko-KR', {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2
-        });
+      //   var formattedValue = value.toLocaleString('ko-KR', {
+      //     minimumFractionDigits: 0,
+      //     maximumFractionDigits: 2
+      //   });
 
-        return formattedValue;
-      }
+      //   return formattedValue;
+      // }
     }
   ]
 
@@ -516,6 +538,9 @@ function showGrid_TB06013P(colM) {
     hwrap: false,
     numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>순번</p>" },
     editable: true,
+    editModel: {
+      clicksToEdit: 1
+    },
     //toolbar: toolbar,
     scrollModel: { autoFit: true },
     colModel: colM,
@@ -660,8 +685,8 @@ function addRow_TB06013P() {
     "prfdRankKndCd": '1',
     "seq": '',
     "prfdRankCrryCd": 'KRW',
-    "prfdRankAmt": 0,
-    "krwTrslPrfdRankAmt": 0
+    // "prfdRankAmt": 0,
+    // "krwTrslPrfdRankAmt": 0
   }
 
   $("#TB06013P_snrtInfoList").pqGrid("addRow", { rowData: rowData, checkEditable: false });
