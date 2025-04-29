@@ -24,14 +24,12 @@ const TB03030Sjs = (function(){
 				, maxHeight : 175
 				, id        : 'gridRmEntpInfo'
 				, colModel  : colRmEntpInfo
-				, selectionModel: { type: 'row' }
 			},
 			{
 				height    : 175
 				, maxHeight : 175
 				, id        : 'gridRmInfo'
 				, colModel  : colRmInfo
-				, selectionModel: { type: 'row' }
 			},
 		]
 
@@ -144,6 +142,7 @@ const TB03030Sjs = (function(){
 					if (data.length > 0) {
 						arrPqGridRmInfo.setData(data);
 						arrPqGridRmInfo.option("rowClick", function(event, ui) {
+							pqGridSelectHandler( ui.rowIndx, "gridRmInfo" );
 							setFileInfo(ui.rowData);
 
 							TB03030S_setFileButtonEnabled(true);
