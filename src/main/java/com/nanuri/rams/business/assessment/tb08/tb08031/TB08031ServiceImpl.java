@@ -158,10 +158,11 @@ public class TB08031ServiceImpl implements TB08031Service {
 			param.setSn(sn);
 			rtnObj = ibims501BMapper.getBusiBssInfo501B(param);
 			rtnObj.setIbims101bvo(ibims101bvo);
-
-			if(rtnObj.getInvFnnMngmBusiDcd() != null){
-				log.debug("rtnObj.getInvFnnMngmBusiDcd() 있음!!!!");
-				switch( rtnObj.getInvFnnMngmBusiDcd() ) {
+			
+			if(param.getInvFnnMngmBusiDcd() != null){
+				rtnObj.setInvFnnMngmBusiDcd(param.getInvFnnMngmBusiDcd());
+				log.debug("param.getInvFnnMngmBusiDcd() 있음!!!!");
+				switch( param.getInvFnnMngmBusiDcd() ) {
 					// 부동산
 					case "01":
 						rtnObj.setRlesInfo(ibims502BMapper.getRealEstateInfo(param));
@@ -169,7 +170,7 @@ public class TB08031ServiceImpl implements TB08031Service {
 						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param));
 						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param));
 						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param));
-						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
+						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param));
 						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
 						break;
 					// 인프라
@@ -179,7 +180,7 @@ public class TB08031ServiceImpl implements TB08031Service {
 						rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param));
 						rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param));
 						rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param));
-						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
+						rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param));
 						rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param));
 						break;
 					// M&A			

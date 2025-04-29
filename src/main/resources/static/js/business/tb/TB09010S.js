@@ -221,7 +221,8 @@ const TB09010Sjs = (function () {
       //toolbar: toolbar_TB09010,
       colModel: colM_TB09010S,
       strNoRows: "조회된 데이터가 없습니다.",
-      cellDblClick: function (event, ui) {
+      rowClick: function (event, ui) {
+		pqGridSelectHandler ( ui.rowIndx, "TB09010S_DealList" );
         var rowData = ui.rowData;
 
         setDealInfo(rowData);

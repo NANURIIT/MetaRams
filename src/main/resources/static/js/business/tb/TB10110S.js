@@ -135,12 +135,12 @@ const TB10110Sjs = (function () {
       scrollModel: { autoFit: true },
       colModel: colModel_TB10110S,
       strNoRows: "조회된 데이터가 없습니다.",
-      cellClick: function (event, ui) {
+      /*cellClick: function (event, ui) {
         var rowData = ui.rowData;
 
         //alert(JSON.stringify(rowData));
         selectRgthUser(rowData);
-      },
+      },*/
     };
 
     $("#TB10110S_userList").pqGrid(obj_TB10110S);
@@ -187,6 +187,11 @@ const TB10110Sjs = (function () {
         // $('#TB10110S_tbodyUserList').html(a);
         // rebuildUserManageTable(data);
         userListObj.setData(data);
+		userListObj.option("rowClick", function (event, ui) {
+		  pqGridSelectHandler ( ui.rowIndx, "TB10110S_userList" );
+			var rowData = ui.rowData;
+    		selectRgthUser(rowData);
+        });
       },
     });
   };
