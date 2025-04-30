@@ -131,8 +131,8 @@ const TB07150Sjs = (function () {
   $("#TB07150S_R023_1").on("change", function () {
     var ctgry = $(this).val();
 
+    //한도변경
     if (ctgry == "02") {
-      //한도변경
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", true); //만기일자
@@ -152,8 +152,9 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", true);             
       $("#TB07150S_mnsBtn").prop("disabled", true);
-    } else if (ctgry == "03") {
-      //기한변경
+    } 
+    //기한변경
+    else if (ctgry == "03") {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", false); //만기일자
@@ -173,8 +174,9 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", true);             
       $("#TB07150S_mnsBtn").prop("disabled", true);
-    } else if (ctgry == "31") {
-      //기한연장 + 금리변경
+    } 
+    //기한연장 + 금리변경
+    else if (ctgry == "31") {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", false); //만기일자
@@ -194,8 +196,9 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", true);             
       $("#TB07150S_mnsBtn").prop("disabled", true);
-    } else if (ctgry == "04") {
-      //금리변경
+    } 
+    //금리변경
+    else if (ctgry == "04") {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", true); //만기일자
@@ -215,8 +218,9 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", false);             
       $("#TB07150S_mnsBtn").prop("disabled", false);
-    } else if (ctgry == "06") {
-      //차주변경
+    } 
+    //차주변경
+    else if (ctgry == "06") {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", false); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", false); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", true); //만기일자
@@ -236,7 +240,8 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", true);             
       $("#TB07150S_mnsBtn").prop("disabled", true);
-    } else {
+    } 
+    else {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", true); //만기일자
@@ -456,9 +461,6 @@ const TB07150Sjs = (function () {
           valueIndx: "cdValue",
           labelIndx: "cdName",
           options: fltObj.S003,
-          init: function (ui) {
-          	initSelectAutoOpen(ui, fltObj.S003.length);
-          }
         },
         render: function (ui) {
           let fSel = fltObj.S003.find(({ cdValue }) => cdValue == ui.cellData);
@@ -493,9 +495,6 @@ const TB07150Sjs = (function () {
           valueIndx: "cdValue",
           labelIndx: "cdName",
           options: fltObj.I013,
-          init: function (ui) {
-          	initSelectAutoOpen(ui, fltObj.I013.length);
-          }
         },
         render: function (ui) {
           let fSel = fltObj.I013.find(({ cdValue }) => cdValue == ui.cellData);
@@ -532,9 +531,6 @@ const TB07150Sjs = (function () {
           valueIndx: "cdValue",
           labelIndx: "cdName",
           options: fltObj.A007,
-          init: function (ui) {
-          	initSelectAutoOpen(ui, fltObj.A007.length);
-          }
         },
         render: function (ui) {
           let fSel = fltObj.A007.find(({ cdValue }) => cdValue == ui.cellData);
@@ -612,14 +608,13 @@ const TB07150Sjs = (function () {
 
   //변경 후 금리정보 행삭제
   function dltRow_grdIntrtInf2(){
-  
-    
-    var gridLgth =  $("#grd_intrtInf_2").pqGrid('option', 'dataModel.data').length;
-  
-    $("#grd_intrtInf_2").pqGrid("deleteRow", {rowIndx: gridLgth-1});
-  
-  
-    // $("#intrtInfoTable").pqGrid("setData", []);
+    let gridData = $("#grd_intrtInf_2").pqGrid('instance').pdata;
+
+    for ( let i = gridData.length - 1; i >= 0; i-- ) {
+      if ( gridData[i]["delYn"] === "Y" ) {
+        $("#grd_intrtInf_2").pqGrid("deleteRow", { rowIndx: i });
+      }
+    }
   }
 
   /*******************************************************************
