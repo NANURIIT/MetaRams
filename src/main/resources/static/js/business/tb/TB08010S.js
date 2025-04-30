@@ -24,6 +24,24 @@ const TB08010Sjs = (function () {
     };
 
     limitInputLength(columns, "TB08010S");
+
+    // 조회조건 수정시 초기화
+    $("#TB08010S_ibDealNo").on('input', function () {
+      $("#TB08010S_ibDealList").pqGrid("option", "dataModel.data", []);
+      $("#TB08010S_ibDealList").pqGrid("refreshDataAndView"); // pqgrid 초기화
+      $("#TB08010S_eamDetail").pqGrid("option", "dataModel.data", []);
+      $("#TB08010S_eamDetail").pqGrid("refreshDataAndView"); // pqgrid 초기화
+      $("#Estt_List").pqGrid("option", "dataModel.data", []);
+      $("#Estt_List").pqGrid("refreshDataAndView"); // pqgrid 초기화
+      $("#Lgl_List").pqGrid("option", "dataModel.data", []);
+      $("#Lgl_List").pqGrid("refreshDataAndView"); // pqgrid 초기화
+      $("#Efct_List").pqGrid("option", "dataModel.data", []);
+      $("#Efct_List").pqGrid("refreshDataAndView"); // pqgrid 초기화
+      tab1BtnReset();
+      tab2EsttReset();
+      tab3LglReset();
+      tab4EfctReset();
+    })
   });
 
   // URL 히든 Deal번호
@@ -39,10 +57,10 @@ const TB08010Sjs = (function () {
       getEamList();
 
       /*setTab1(dealNo);
-			setTab2(dealNo);
-			setTab3(dealNo);
-			setTab4(dealNo);
-			setTab5(dealNo);*/
+      setTab2(dealNo);
+      setTab3(dealNo);
+      setTab4(dealNo);
+      setTab5(dealNo);*/
     }
   }
   /**
@@ -149,8 +167,8 @@ const TB08010Sjs = (function () {
       businessFunction();
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "Deal번호를 입력해 주세요.",
         confirmButtonText: "확인",
       });
