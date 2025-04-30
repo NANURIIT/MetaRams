@@ -1174,19 +1174,21 @@ const TB03020Sjs = (function () {
 	let colEnopList = [
 		{
 			title: "삭제",
-			editable: true,
-			editor: { type: 'checkbox' },
 			dataType: "checkbox",
 			dataIndx: "delYn",
 			align: "center",
-			type: 'checkbox',
-			editType: 'checkbox',
+			minWidth: 36,
+      		maxWidth: 36,
+			type: "checkBoxSelection",
+			editable: true,
+			editor: false,
+			filter: { crules: [{ condition: "range" }] },
 			cb: {
 				all: true,
 				header: true,
 				check: "Y",
-				uncheck: "N"
-			}
+				uncheck: "N",
+			},
 		},
 		{
 			title: "부서코드",

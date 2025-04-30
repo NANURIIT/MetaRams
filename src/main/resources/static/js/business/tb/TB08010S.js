@@ -187,7 +187,8 @@ const TB08010Sjs = (function () {
         success: function (data) {
           if (data.length > 0) {
             arrPqGridDealListInfo.setData(data);
-            arrPqGridDealListInfo.option("rowDblClick", function (event, ui) {
+            arrPqGridDealListInfo.option("rowClick", function (event, ui) {
+			  pqGridSelectHandler ( ui.rowIndx, "TB08010S_ibDealList" );
               tab1BtnReset();
               tab2EsttReset();
               tab3LglReset();
@@ -307,7 +308,8 @@ const TB08010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridEamDetailInfo.setData(data);
-        arrPqGridEamDetailInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridEamDetailInfo.option("rowClick", function (event, ui) {
+	      pqGridSelectHandler ( ui.rowIndx, "TB08010S_eamDetail" );
           setEamInfoDetail(ui.rowData);
         });
         // var html = '';
@@ -510,7 +512,8 @@ const TB08010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridEsttDetailInfo.setData(data);
-        arrPqGridEsttDetailInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridEsttDetailInfo.option("rowClick", function (event, ui) {
+		  pqGridSelectHandler ( ui.rowIndx, "Estt_List" );
           setEsttDetail(ui.rowData);
         });
         // var html = '';
@@ -776,7 +779,8 @@ const TB08010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridLglDetailInfo.setData(data);
-        arrPqGridLglDetailInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridLglDetailInfo.option("rowClick", function (event, ui) {
+		  pqGridSelectHandler ( ui.rowIndx, "Lgl_List" );
           setLglDetail(ui.rowData);
         });
         // var html = '';
@@ -992,7 +996,8 @@ const TB08010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridEfctDetailInfo.setData(data);
-        arrPqGridEfctDetailInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridEfctDetailInfo.option("rowClick", function (event, ui) {
+		  pqGridSelectHandler ( ui.rowIndx, "Efct_List" );
           setEfctDetail(ui.rowData);
         });
 
@@ -1195,7 +1200,7 @@ const TB08010Sjs = (function () {
   // 		dataType: "json",
   // 		success: function(data) {
   // 			arrPqGridCnctDetailInfo.setData(data);
-  // 			arrPqGridCnctDetailInfo.option("rowDblClick", function(event, ui) {
+  // 			arrPqGridCnctDetailInfo.option("rowClick", function(event, ui) {
   // 				setCnctDetail(ui.rowData);
   // 			});
 

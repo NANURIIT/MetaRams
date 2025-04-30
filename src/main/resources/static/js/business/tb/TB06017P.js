@@ -237,8 +237,8 @@ function roadMrtgInfoListGrid() {
 			scrollModel: { autoFit: true },
 			colModel: colMrtgInfoList,
 			strNoRows: '데이터가 없습니다.',
-			rowDblClick: function(event, ui) {
-				setMrtgInfo(ui.rowData);
+			rowClick: function (event, ui) {
+				pqGridSelectHandler(ui.rowIndx, "TB06017P_mrtgInfoList", setMrtgInfo(ui.rowData));
 			}
 		};
 		

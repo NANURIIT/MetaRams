@@ -1336,7 +1336,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_bsnsPartInfo",
         colModel: colM_bsnsPartInfo,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_bsnsPartInfo" );
           gridInfoSett(ui.rowData, "bsnsPartInfoInstance");
         }
       },
@@ -1346,7 +1347,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_bsnsForecast",
         colModel: colM_bsnsForecast,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_bsnsForecast" );
           gridInfoSett(ui.rowData, "bsnsForecastInstance");
         }
       },
@@ -1356,7 +1358,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_bondProtInfo",
         colModel: colM_bondProtInfo,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_bondProtInfo" );
           gridInfoSett(ui.rowData, "bondProtInfoInstance");
         }
       },
@@ -1366,7 +1369,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_cchInfo",
         colModel: colM_cchInfo,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_cchInfo" );
           gridInfoSett(ui.rowData, "cchInfoInstance");
         }
       },
@@ -1376,7 +1380,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_stlnInfo",
         colModel: colM_stlnInfo,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_stlnInfo" );
           gridInfoSett(ui.rowData, "stlnInfoInstance");
         }
       },
@@ -1386,7 +1391,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_ernInfo",
         colModel: colM_ernInfo,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_ernInfo" );
           gridInfoSett(ui.rowData, "ernInfoInstance");
         }
       },
@@ -1417,7 +1423,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_busiInfo",
         colModel: colM_busiInfo,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_busiInfo" );
           gridInfoSett(ui.rowData, "busiInfoInstance");
         }
       },
@@ -1427,7 +1434,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_admsAsstInfo",
         colModel: colM_admsAsstInfo,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_admsAsstInfo" );
           gridInfoSett(ui.rowData, "admsAsstInfoInstance");
         }
       },
@@ -1437,7 +1445,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_invstBzscalList",
         colModel: colM_invstBzscalList,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_invstBzscalList" );
           gridInfoSett(ui.rowData, "invstBzscalInstance");
         }
       },
@@ -1447,7 +1456,8 @@ const TB08031Sjs = (function () {
         maxHeight: 300,
         id: "TB08031S_asstWrkngInfo",
         colModel: colM_asstWrkngInfo,
-        rowDblClick: function(evt, ui){
+        rowClick: function(evt, ui){
+		  pqGridSelectHandler ( ui.rowIndx, "TB08031S_asstWrkngInfo" );
           gridInfoSett(ui.rowData, "asstWrkngInfoInstance");
         }
       },
@@ -1525,12 +1535,13 @@ const TB08031Sjs = (function () {
   // 사업정보 딜조회
   function srchBsnsInfo() {
     var dealNo = $("#TB08031S_ibDealNo").val();
+	var invbnkAmnBzCd = $("#TB08031S_invbnkAmnBzCd").val();
 
     // 유효성검사
     if (isEmpty(dealNo)) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        icon: "warning",
+        title: "Warning!",
         text: "Deal번호를 입력해주세요.",
         confirmButtonText: "확인",
       });
@@ -1542,7 +1553,8 @@ const TB08031Sjs = (function () {
 
     function businessFunction2(){
       var dtoParam = {
-        dealNo: dealNo,
+        dealNo: dealNo,		
+		invFnnMngmBusiDcd: invbnkAmnBzCd,
       };
 
       $.ajax({
@@ -1580,6 +1592,8 @@ const TB08031Sjs = (function () {
           ernSctyInfoInstance.setData(fundInfo);                  //투자자산 정보
 
           // console.log(JSON.stringify(fundInfo));
+
+		  console.log("asdfasdfasdfasd", data.invFnnMngmBusiDcd)
 
           if(data.invFnnMngmBusiDcd){       //사업구분코드 있는 경우
 
@@ -1750,7 +1764,8 @@ const TB08031Sjs = (function () {
               ernInfoInstance.setData(ernInfo);
 
 
-            }else if(invFnnMngmBusiDcd === "02"){     //인프라
+            }
+			else if(invFnnMngmBusiDcd === "02"){     //인프라
               var tabPst = $("#TB08031S_ramsTab").children();
               tabPst.eq(0).hide();
               tabPst.eq(1).hide();
@@ -1860,7 +1875,8 @@ const TB08031Sjs = (function () {
               ernInfoInstance.setData(ernInfo);
 
 
-            }else if(invFnnMngmBusiDcd === "03"){     //M&A
+            }
+			else if(invFnnMngmBusiDcd === "03"){     //M&A
               var tabPst = $("#TB08031S_ramsTab").children();
               
               tabPst.eq(0).hide();
@@ -1934,7 +1950,8 @@ const TB08031Sjs = (function () {
               admsAsstInfoInstance.setData(admsAsstInfo);
               
 
-            }else if(invFnnMngmBusiDcd === "04"){     //국제투자
+            }
+			else if(invFnnMngmBusiDcd === "04"){     //국제투자
               var tabPst = $("#TB08031S_ramsTab").children();
               tabPst.eq(0).hide();
               tabPst.eq(1).hide();
@@ -2032,7 +2049,8 @@ const TB08031Sjs = (function () {
               stlnInfoInstance.setData(stlnInfo);
               
               
-            }else if(invFnnMngmBusiDcd === "05"){     //PEF/VC
+            }
+			else if(invFnnMngmBusiDcd === "05"){     //PEF/VC
 
               var tabPst = $("#TB08031S_ramsTab").children();
 
@@ -2116,6 +2134,7 @@ const TB08031Sjs = (function () {
 
             }
           }
+
           $('div[data-menuid="/TB08031S"] #UPLOAD_AddFile').attr("disabled", false);
 					$('div[data-menuid="/TB08031S"] #UPLOAD_DelFiles').attr("disabled", false);
           $('#fileKey2').val('TB03020S' + '|' + data.dealNo);
@@ -3119,59 +3138,64 @@ const TB08031Sjs = (function () {
 
   // 딜 정보 저장
   function saveTabInfo() {
-    
-    //사업 기본정보
-    var dealNo = $("#TB08031S_ibDealNo").val();                               //딜번호
-    
-    if (!isEmpty(dealNo)) {
-      businessFunction();
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "Deal번호를 조회해주세요.",
-        confirmButtonText: "확인",
-      });
-    }
+  var dealNo = $("#TB08031S_ibDealNo").val(); // 딜번호
+  var bsnsNm = $("#TB08031S_bsnsNm").val();   // 사업명
 
-    function businessFunction() {
-
-      var dtoParam = paramSett();
-
-      console.log(JSON.stringify(dtoParam));
-
-      $.ajax({
-        type: "POST",
-        url: "/TB08031S/saveDealInfo",
-        data: JSON.stringify(dtoParam),
-        contentType: "application/json; charset=UTF-8",
-        dataType: "json",
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "문서정보를 저장하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-
-        error: function (error, xhr, status) {
-          console.log(error);
-          console.log(xhr);
-          console.log(status);
-          
-
-
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "사업정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
-      });
-    }
+  if (isEmpty(dealNo)) {
+    Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: "Deal번호를 조회해주세요.",
+      confirmButtonText: "확인",
+    });
+    return false; // 여기서 끊어야 함
   }
+
+  if (isEmpty(bsnsNm)) {
+    Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: "[사업명]를 확인해주세요.",
+      confirmButtonText: "확인",
+    });
+    return false; // 여기서 끊어야 함
+  }
+
+  // 딜번호와 사업명이 모두 있을 때만 businessFunction() 호출
+  businessFunction();
+
+  function businessFunction() {
+    var dtoParam = paramSett();
+    console.log(JSON.stringify(dtoParam));
+
+    $.ajax({
+      type: "POST",
+      url: "/TB08031S/saveDealInfo",
+      data: JSON.stringify(dtoParam),
+      contentType: "application/json; charset=UTF-8",
+      dataType: "json",
+      success: function (data) {
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "문서정보를 저장하였습니다.",
+          confirmButtonText: "확인",
+        });
+      },
+      error: function (error, xhr, status) {
+        console.log(error);
+        console.log(xhr);
+        console.log(status);
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "사업정보를 저장하는데 실패하였습니다.",
+          confirmButtonText: "확인",
+        });
+      },
+    });
+  }
+}
 
   // 사업참가자정보 저장
   function bsnsPartInfoBtnSave(mode) {
