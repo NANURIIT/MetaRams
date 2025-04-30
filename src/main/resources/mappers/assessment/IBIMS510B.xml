@@ -59,7 +59,7 @@
             , #{sn}                               /* 일련번호 */
             , (
                 SELECT NVL(MAX(ERLM_SEQ), 0) + 1
-                FROM IBIMS509B
+                FROM IBIMS510B
                 WHERE DEAL_NO = #{dealNo}
                 AND SN = #{sn}
               )  

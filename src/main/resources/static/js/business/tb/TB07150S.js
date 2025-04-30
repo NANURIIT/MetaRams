@@ -571,13 +571,13 @@ const TB07150Sjs = (function () {
     let obj = [
       {
         height: 100,
-        maxHeight: 100,
+        maxHeight: 400,
         id: "grd_intrtInf_1",
         colModel: col_intrtInf_1,
       },
       {
         height: 100,
-        maxHeight: 100,
+        maxHeight: 400,
         editable: function () {
           var isEditable = false;
           if (

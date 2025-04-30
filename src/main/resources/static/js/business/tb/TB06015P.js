@@ -205,6 +205,26 @@ var colModel_prnaScd = [
 	// 	width: "20%", 
 	// 	filter: { crules: [{ condition: 'range' }] } 
 	// },
+	{
+		dataIndx: "chk",
+		maxWidth: 36,
+		minWidth: 36,
+		align: "center",
+		resizable: false,
+		title: "",
+		menuIcon: false,
+		type: "checkBoxSelection",
+		cls: "ui-state-default",
+		sortable: false,
+		editor: false,
+		dataType: "bool",
+		width: "6%",
+		editable: "true",
+		cb: {
+			all: false,
+			header: true,
+		},
+	},
 	{ 
 		title: "상환예정일자", 
 		editable: true,
@@ -294,6 +314,26 @@ let rdmpCol = [
 	// 	halign: "center", 
 	// 	width: "20%", 
 	// 	filter: { crules: [{ condition: 'range' }] } 
+	// },
+	// {
+	// 	dataIndx: "chk",
+	// 	maxWidth: 36,
+	// 	minWidth: 36,
+	// 	align: "center",
+	// 	resizable: false,
+	// 	title: "",
+	// 	menuIcon: false,
+	// 	type: "checkBoxSelection",
+	// 	cls: "ui-state-default",
+	// 	sortable: false,
+	// 	editor: false,
+	// 	dataType: "bool",
+	// 	width: "6%",
+	// 	editable: "true",
+	// 	cb: {
+	// 		all: false,
+	// 		header: true,
+	// 	},
 	// },
 	{ 
 		title: "시작일", 
@@ -413,6 +453,26 @@ let rdmpCol = [
 ]
 
 let intrCol = [
+	{
+		dataIndx: "chk",
+		maxWidth: 36,
+		minWidth: 36,
+		align: "center",
+		resizable: false,
+		title: "",
+		menuIcon: false,
+		type: "checkBoxSelection",
+		cls: "ui-state-default",
+		sortable: false,
+		editor: false,
+		dataType: "bool",
+		width: "6%",
+		editable: "true",
+		cb: {
+			all: false,
+			header: true,
+		},
+	},
 	{ 
 		title: "시작일", 
 		editable: true,
@@ -593,7 +653,7 @@ var toolbar_intr = {
 		{
 			type: 'button',
 			cls: 'btn btn-default btn-xs',
-			label: '<i class="fa fa-plus"></i>',
+			label: '<i class="fa fa-plus">행추가</i>',
 			listener: function() {
 				var rowData = {
 					"prcsCpltYn": "N"
@@ -605,16 +665,36 @@ var toolbar_intr = {
 		{
 			type: 'button',
 			cls: 'btn btn-default btn-xs',
-			label: '<i class="fa fa-minus"></i>',
+			label: '<i class="fa fa-minus">행삭제</i>',
 			listener: function() {
 
-				var gridLgth =  $("#intrPlanGrid").pqGrid('option', 'dataModel.data').length;
+				var gridLgth = $("#intrPlanGrid").pqGrid('option', 'dataModel.data').length;
+				var gridData = $("#intrPlanGrid").pqGrid("option", "dataModel.data");
 
-				$("#intrPlanGrid").pqGrid("deleteRow", {rowIndx: gridLgth-1});
+				let checkedRows = [];
+				for (let i = 0; i < gridLgth; i++) {
+					let rowData = gridData[i];
+					if (rowData.chk === true) {
+						checkedRows.push(rowData);
+					}
+				}
 
-				// $("#intrPlanGrid").pqGrid("setData", []);
-				$("#intrPlanGrid").pqGrid("refreshDataAndView");
+				if (checkedRows && checkedRows.length > 0) {
 
+					checkedRows.forEach(function (row) {
+						$("#intrPlanGrid").pqGrid('deleteRow', { rowIndx: row.pq_ri });
+					});
+
+				}
+				if (checkedRows.length <= 0) {
+					Swal.fire({
+						icon: 'warning'
+						, title: "Warning!"
+						, text: "삭제할 행을 체크해주세요."
+						, confirmButtonText: "확인"
+					});
+					return false;
+				}
 			}
 		}
 		
@@ -648,7 +728,7 @@ var toolbar_rdmp = {
 		{
 			type: 'button',
 			cls: 'btn btn-default btn-xs',
-			label: '<i class="fa fa-plus"></i>',
+			label: '<i class="fa fa-plus">행추가</i>',
 			listener: function() {
 
 				var rowData = {
@@ -662,14 +742,35 @@ var toolbar_rdmp = {
 		{
 			type: 'button',
 			cls: 'btn btn-default btn-xs',
-			label: '<i class="fa fa-minus"></i>',
+			label: '<i class="fa fa-minus">행삭제</i>',
 			listener: function() {
-				var gridLgth =  $("#rdmpPlanGrid").pqGrid('option', 'dataModel.data').length;
+				var gridLgth = $("#rdmpPlanGrid").pqGrid('option', 'dataModel.data').length;
+				var gridData = $("#rdmpPlanGrid").pqGrid("option", "dataModel.data");
 
-				$("#rdmpPlanGrid").pqGrid("deleteRow", {rowIndx: gridLgth-1});
+				let checkedRows = [];
+				for (let i = 0; i < gridLgth; i++) {
+					let rowData = gridData[i];
+					if (rowData.chk === true) {
+						checkedRows.push(rowData);
+					}
+				}
 
-				//$("#rdmpPlanGrid").pqGrid("setData", []);
-				$("#rdmpPlanGrid").pqGrid("refreshDataAndView");
+				if (checkedRows && checkedRows.length > 0) {
+
+					checkedRows.forEach(function (row) {
+						$("#rdmpPlanGrid").pqGrid('deleteRow', { rowIndx: row.pq_ri });
+					});
+
+				}
+				if (checkedRows.length <= 0) {
+					Swal.fire({
+						icon: 'warning'
+						, title: "Warning!"
+						, text: "삭제할 행을 체크해주세요."
+						, confirmButtonText: "확인"
+					});
+					return false;
+				}
 			}
 		}
 	]
@@ -715,6 +816,26 @@ function sltBoxSet_pqGrid(){
 function setIntrInfoGrid(){
 	//colM (금리정보)
 	var colModel_intrtInfo = [
+		{
+			dataIndx: "chk",
+			maxWidth: 36,
+			minWidth: 36,
+			align: "center",
+			resizable: false,
+			title: "",
+			menuIcon: false,
+			type: "checkBoxSelection",
+			cls: "ui-state-default",
+			sortable: false,
+			editor: false,
+			dataType: "bool",
+			width: "6%",
+			editable: "true",
+			cb: {
+				all: false,
+				header: true,
+			},
+		},
 		{ 	
 			title: "적용시작일자", 
 			editable: true,
@@ -989,7 +1110,13 @@ function showGrid(){
 		//toolbar: toolbar,
 		scrollModel: { autoFit: true },
 		colModel: colModel_rateCalcSimul,
-		strNoRows: '데이터가 없습니다.'
+		strNoRows: '데이터가 없습니다.',
+		rowClick: function (evt, ui) {
+			pqGridSelectHandler(ui.rowIndx, "TB06015P_IntrCalc");
+		},
+		editModel: {
+			clicksToEdit: 1
+		}
 		//pageModel: pageModel
 	};
 
@@ -1015,7 +1142,13 @@ function showGrid_intrtInfo(colModel_intrtInfo){
 		//toolbar: toolbar,
 		// scrollModel: { autoFit: true },
 		colModel: colModel_intrtInfo,
-		strNoRows: '데이터가 없습니다.'
+		strNoRows: '데이터가 없습니다.',
+		rowClick: function (evt, ui) {
+			pqGridSelectHandler(ui.rowIndx, "intrtInfoTable");
+		},
+		editModel: {
+			clicksToEdit: 1
+		}
 		//dataModel: {data: data}
 	};
 
@@ -1038,7 +1171,13 @@ function showGrid_rdmp(){
 		toolbar: toolbar_rdmp,
 		scrollModel: { autoFit: true },
 		colModel: colModel_prnaScd,
-		strNoRows: '데이터가 없습니다.'
+		strNoRows: '데이터가 없습니다.',
+		rowClick: function (evt, ui) {
+			pqGridSelectHandler(ui.rowIndx, "rdmpPlanGrid");
+		},
+		editModel: {
+			clicksToEdit: 1
+		}
 		//pageModel: pageModel
 	};
 
@@ -1061,7 +1200,13 @@ function showGrid_intr(){
 		toolbar: toolbar_intr,
 		//scrollModel: { autoFit: true },
 		colModel: intrCol,
-		strNoRows: '데이터가 없습니다.'
+		strNoRows: '데이터가 없습니다.',
+		rowClick: function (evt, ui) {
+			pqGridSelectHandler(ui.rowIndx, "intrPlanGrid");
+		},
+		editModel: {
+			clicksToEdit: 1
+		}
 		//pageModel: pageModel
 	};
 
@@ -1126,11 +1271,33 @@ function dltRow_intrtInfoTable(){
 
 	
 	var gridLgth =  $("#intrtInfoTable").pqGrid('option', 'dataModel.data').length;
+	var gridData = $("#intrtInfoTable").pqGrid("option", "dataModel.data");
 
-	$("#intrtInfoTable").pqGrid("deleteRow", {rowIndx: gridLgth-1});
+	let checkedRows = [];
+	for (let i = 0; i < gridLgth; i++) {
+		let rowData = gridData[i];
+		if (rowData.chk === true) {
+			checkedRows.push(rowData);
+		}
+	}
 
+	if (checkedRows && checkedRows.length > 0) {
 
-	// $("#intrtInfoTable").pqGrid("setData", []);
+		checkedRows.forEach(function (row) {
+			$("#intrtInfoTable").pqGrid('deleteRow', { rowIndx: row.pq_ri });
+		});
+
+	}
+	if (checkedRows.length <= 0) {
+		Swal.fire({
+			icon: 'warning'
+			, title: "Warning!"
+			, text: "삭제할 행을 체크해주세요."
+			, confirmButtonText: "확인"
+		});
+		return false;
+	}
+
 }
 
 

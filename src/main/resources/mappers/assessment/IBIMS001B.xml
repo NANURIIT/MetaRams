@@ -171,5 +171,26 @@
                , #{guid}                                   <!-- GUID -->
                )
     </insert>
+
+    <!-- GD11000S 조회 코드 -->
+    <select id="getGrpCdInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS001BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS001BDTO"> 
+      SELECT  CMNS_CD_GRP                           /* 공통코드그룹 */                               
+            , CMNS_CD_NM                            /* 공통코드명 */
+            , CMNS_CD_GRP_EXPL                      /* 공통코드그룹설명 */
+            , CD_LNGTH                              /* 코드길이 */
+            , USE_YN                                /* 사용여부 */
+            , RGST_DT                               /* 등록일자 */
+            , HND_DETL_DTM                          /* 조작상세일시 */
+            , HND_EMPNO                             /* 조작사원번호 */
+      FROM  IBIMS001B
+      WHERE 1=1
+      <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrp)">
+        AND CMNS_CD_GRP = #{cmnsCdGrp}
+      </if>
+      <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrpExpl)">
+        AND CMNS_CD_GRP_EXPL LIKE '%' || #{cmnsCdGrpExpl} || '%'
+      </if>
+    </select>
+
     
 </mapper>

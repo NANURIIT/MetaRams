@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.nanuri.rams.business.common.dto.IBIMS001BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS002BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS001BVO;
+import com.nanuri.rams.business.common.vo.IBIMS002BVO;
 
 @Mapper
 public interface IBIMS001BMapper {
@@ -32,5 +34,8 @@ public interface IBIMS001BMapper {
 	 * @return
 	 */
 	public String makeCmnsCdGrp(IBIMS001BDTO paramData);
+
+	// GD11000S 그룹코드
+	public List<IBIMS001BDTO> getGrpCdInfo(IBIMS001BDTO paramData);
 
 }
