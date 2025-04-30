@@ -229,7 +229,7 @@ const TB07200Sjs = (function () {
         $("#TB07200S_wrkRqst .pq-grid-row").removeClass("ui-state-highlight");
 
         var $tr = grid.getRow({ rowIndx: rowIndex });
-        $tr.addClass("ui-state-highlight");
+        //$tr.addClass("ui-state-highlight");
     }
 
     /**
@@ -391,7 +391,7 @@ const TB07200Sjs = (function () {
             {
                 title: "",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "ardyBzepNoPop",
                 halign: "center",
                 align: "center",
                 width: "1%",
@@ -481,7 +481,7 @@ const TB07200Sjs = (function () {
             {
                 title: "",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isttNoPop",
                 halign: "center",
                 align: "center",
                 width: "1%",
@@ -529,7 +529,7 @@ const TB07200Sjs = (function () {
                 editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
-            {
+            /*{
                 title: "",
                 align: "center",
                 halign: "center",
@@ -547,7 +547,7 @@ const TB07200Sjs = (function () {
                         );
                     }
                 },
-            },
+            },*/
             {
                 title: "등록사원번호",
                 dataIndx: "hndEmpno",
@@ -1099,6 +1099,12 @@ const TB07200Sjs = (function () {
                 colModel: TB07200S_col_wrkRqst,
                 scrollModel: { autoFit: true },
                 editable: false,
+				cellClick: function(evt, ui) {
+					if ((ui.column.dataIndx != "chk" || ui.column.dataIndx != "ardyBzepNoPop" || ui.column.dataIndx != "isttNoPop") && ui.rowData.fincExcuRqsSn != undefined) {
+						pqGridSelectHandler ( ui.rowIndx, "TB07200S_wrkRqst" );
+						spcDetail(ui.rowData.pq_ri);
+					}
+				},
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
             {
@@ -1108,6 +1114,11 @@ const TB07200Sjs = (function () {
                 colModel: TB07200S_col_pblHis,
                 scrollModel: { autoFit: true },
                 editable: false,
+				cellClick: function (evt, ui) {
+					if (ui.column.dataIndx != "chk") {
+						pqGridSelectHandler ( ui.rowIndx, "TB07200S_pblHis" );
+					}
+                },
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
             {
@@ -1117,6 +1128,11 @@ const TB07200Sjs = (function () {
                 colModel: TB07200S_col_dpstRqst,
                 scrollModel: { autoFit: true },
                 editable: false,
+				cellClick: function (evt, ui) {
+					if (ui.column.dataIndx != "chk") {
+						pqGridSelectHandler ( ui.rowIndx, "TB07200S_dpstRqst" );
+					}
+                },
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
             {
@@ -1126,6 +1142,11 @@ const TB07200Sjs = (function () {
                 colModel: TB07200S_col_wthdrwlRqst,
                 scrollModel: { autoFit: true },
                 editable: false,
+				cellClick: function (evt, ui) {
+					if (ui.column.dataIndx != "chk") {
+						pqGridSelectHandler ( ui.rowIndx, "TB07200S_wthdrwlRqst" );
+					}
+                },
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
         ]
