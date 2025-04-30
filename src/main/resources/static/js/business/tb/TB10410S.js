@@ -169,24 +169,16 @@ const TB10410Sjs = (function() {
 				dataIndx: "urlClsfCd",
 				width: "7%",
 			},
-			/*{
+			{
 			  title: "하위메뉴",
 			  align: "center",
 			  halign: "center",
 			  dataType: "string",
 			  dataIndx: "inqBtn",
 			  editable: false,
+			  hidden: true, 
 			  width: "5%",
-			  render: function (ui) {
-				if (ui.cellData === "new") {
-				  return "";
-				} else {
-				  return (
-					`<button class='ui-button ui-corner-all ui-widget' name='detail_btn' onclick="TB10410Sjs.hgrkGroupMenuInq('${ui.rowData.menuId}', '${ui.rowIndx}')"><i class='fa fa-arrow-down'></i>&nbsp;상세</button>`
-				  );
-				}
-			  },
-			},*/
+			},
 			{
 				title: "처리일시",
 				dataType: "string",

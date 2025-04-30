@@ -129,27 +129,16 @@ const TB10010Sjs = (function() {
 				options: Yn
 			},
 		},
-		/*{
+		{
 		  title: "코드관리",
 		  align: "center",
 		  halign: "center",
 		  editable: false,
 		  dataType: "string",
 		  dataIndx: "cdListDltBtn",
+		  hidden: true,
 		  width: "7%",
-		  render: function (ui) {
-			if (!ui.cellData) {
-			  return (
-				"<button class='ui-button ui-corner-all ui-widget' name='detail_btn' data-row-indx='" +
-				ui.rowIndx +
-				"'><i class='fa fa-arrow-down'></i>&nbsp;상세</button>"
-			  );
-			}
-			else {
-			  return "";
-			}
-		  },
-		},*/
+		},
 		{
 			title: "등록일",
 			dataType: "string",
@@ -797,10 +786,10 @@ const TB10010Sjs = (function() {
 
 				$('#codeListTable').pqGrid('instance').setData(codeInfoList);
 			} else {
-				Swal.fire({
+				/*Swal.fire({
 					icon: "warning"
 				  , text: "조회된 데이터가 없습니다."
-				})
+				})*/ 
 				$('#codeListTable').pqGrid('instance').setData([]);
 			}
 		});
