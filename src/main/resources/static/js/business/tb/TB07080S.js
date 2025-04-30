@@ -6,6 +6,8 @@ const TB07080Sjs = (function() {
 	let selectBox;
 	let grdSelect = {};
 
+	let dltList = [];
+
 	$(document).ready(function() {
 		$(
 			"input[id*='Amt'], input[id*='Blce'], input[id*='Rt'], input[id*='Mnum'], input[id*='Tmrd']"
@@ -214,6 +216,26 @@ const TB07080Sjs = (function() {
 
 		const TB07080S_colModel = [
 			{
+				dataIndx: "chk",
+				maxWidth: 36,
+				minWidth: 36,
+				align: "center",
+				resizable: false,
+				title: "",
+				menuIcon: false,
+				type: "checkBoxSelection",
+				cls: "ui-state-default",
+				sortable: false,
+				editor: false,
+				dataType: "bool",
+				width: "6%",
+				editable: "true",
+				cb: {
+					all: false,
+					header: true,
+				}
+			},
+			{
 				title: "queryType",
 				dataType: "string",
 				dataIndx: "queryType",
@@ -368,6 +390,12 @@ const TB07080Sjs = (function() {
 				align: "right",
 				filter: { crules: [{ condition: "range" }] },
 			},
+			{
+				title: "rgstSn",
+				dataType: "string",
+				dataIndx: "rgstSn",
+				hidden: true,
+			},
 		];
 
 		return TB07080S_colModel;
@@ -442,56 +470,85 @@ const TB07080Sjs = (function() {
 	 *  PQGRID 줄삭제
 	 */
 	function TB07080S_deleteRow() {
-		let getLength = $("#TB07080S_colModel").pqGrid("instance").pdata.length;
+		// let getLength = $("#TB07080S_colModel").pqGrid("instance").pdata.length;
 
-		if (
-			TB07080S_rowData != dummyData &&
-			TB07080S_pqGridLength < getLength &&
-			!TB07080S_rowData.excSn
-		) {
-			$("#TB07080S_colModel").pqGrid("deleteRow", {
-				rowData: TB07080S_rowData,
-				checkEditable: false,
+		// if (
+		// 	TB07080S_rowData != dummyData &&
+		// 	TB07080S_pqGridLength < getLength &&
+		// 	!TB07080S_rowData.excSn
+		// ) {
+		// 	$("#TB07080S_colModel").pqGrid("deleteRow", {
+		// 		rowData: TB07080S_rowData,
+		// 		checkEditable: false,
+		// 	});
+		// 	TB07080S_rowData = dummyData;
+		// } else if (
+		// 	TB07080S_rowData === dummyData &&
+		// 	TB07080S_pqGridLength < getLength
+		// ) {
+		// 	$("#TB07080S_colModel").pqGrid("deleteRow", {
+		// 		rowData: TB07080S_rowData,
+		// 		checkEditable: false,
+		// 	});
+		// 	TB07080S_rowData = dummyData;
+		// } else if (
+		// 	TB07080S_rowData === dummyData &&
+		// 	TB07080S_pqGridLength === getLength
+		// ) {
+		// 	Swal.fire({
+		// 		icon: "warning",
+		// 		title: "Warning!",
+		// 		text: "삭제하실 행을 선택해주세요.",
+		// 		confirmButtonText: "확인",
+		// 	});
+		// 	TB07080S_rowData = dummyData;
+		// } else if (TB07080S_rowData != dummyData) {
+		// 	Swal.fire({
+		// 		icon: "warning",
+		// 		title: "Warning!",
+		// 		text: "데이터가 삭제됩니다.",
+		// 		confirmButtonText: "확인",
+		// 		denyButtonText: "아니오",
+		// 		showDenyButton: true,
+		// 	}).then((result) => {
+		// 		if (result.isConfirmed) {
+		// 			deleteIBIMS404B();
+		// 			TB07080S_rowData = dummyData;
+		// 			return;
+		// 		} else if (result.isDenied) {
+		// 			TB07080S_rowData = dummyData;
+		// 			return;
+		// 		}
+		// 	});
+		// }
+
+		var gridLgth = $("#TB07080S_colModel").pqGrid('option', 'dataModel.data').length;
+		var gridData = $("#TB07080S_colModel").pqGrid("option", "dataModel.data");
+
+		let checkedRows = [];
+		for (let i = 0; i < gridLgth; i++) {
+			let rowData = gridData[i];
+			if (rowData.chk === true) {
+				checkedRows.push(rowData);
+			}
+		}
+
+		if (checkedRows && checkedRows.length > 0) {
+
+			checkedRows.forEach(function (row) {
+				dltList.push(row);
+				$("#TB07080S_colModel").pqGrid('deleteRow', { rowIndx: row.pq_ri });
 			});
-			TB07080S_rowData = dummyData;
-		} else if (
-			TB07080S_rowData === dummyData &&
-			TB07080S_pqGridLength < getLength
-		) {
-			$("#TB07080S_colModel").pqGrid("deleteRow", {
-				rowData: TB07080S_rowData,
-				checkEditable: false,
-			});
-			TB07080S_rowData = dummyData;
-		} else if (
-			TB07080S_rowData === dummyData &&
-			TB07080S_pqGridLength === getLength
-		) {
+
+		}
+		if (checkedRows.length <= 0) {
 			Swal.fire({
-				icon: "warning",
-				title: "Warning!",
-				text: "삭제하실 행을 선택해주세요.",
-				confirmButtonText: "확인",
+				icon: 'warning'
+				, title: "Warning!"
+				, text: "삭제할 행을 체크해주세요."
+				, confirmButtonText: "확인"
 			});
-			TB07080S_rowData = dummyData;
-		} else if (TB07080S_rowData != dummyData) {
-			Swal.fire({
-				icon: "warning",
-				title: "Warning!",
-				text: "데이터가 삭제됩니다.",
-				confirmButtonText: "확인",
-				denyButtonText: "아니오",
-				showDenyButton: true,
-			}).then((result) => {
-				if (result.isConfirmed) {
-					deleteIBIMS404B();
-					TB07080S_rowData = dummyData;
-					return;
-				} else if (result.isDenied) {
-					TB07080S_rowData = dummyData;
-					return;
-				}
-			});
+			return false;
 		}
 	}
 
@@ -892,6 +949,7 @@ const TB07080Sjs = (function() {
 
 		let insertParamData = [];
 		let updateParamData = [];
+		let dltParamData = [];
 
 		for (let i = 0; i < intrtList.length; i++) {
 			const item = intrtList[i];
@@ -916,6 +974,14 @@ const TB07080Sjs = (function() {
 				excSn: excSn,
 				intrtList: updateList,
 			};
+		}
+
+		if(dltList.length > 0){
+			dltParamData = {
+				prdtCd: prdtCd,
+				excSn: excSn,
+				intrtList: dltList
+			}
 		}
 
 		if (insertList.length > 0) {
@@ -953,8 +1019,111 @@ const TB07080Sjs = (function() {
 				},
 			});
 		}
+
+		if(dltList.length > 0){
+			$.ajax({
+				type: "POST",
+				url: "/TB07080S/deleteIBIMS404B",
+				contentType: "application/json; charset=UTF-8",
+				data: JSON.stringify(dltParamData),
+				dataType: "json",
+				success: function(data) {
+					if (data) {
+						result = data;
+
+						dltList = [];//삭제리스트 초기화
+					}
+				},
+				error: function() {
+					result = -1;
+				},
+			});
+		}
+
 		return result;
 	}
+
+	/*
+	 *  delete 실행금리정보
+	 */
+	// function deleteIntrtData() {
+	// 	let result;
+
+	// 	let prdtCd = $("#TB07080S_prdtCd").val();
+	// 	let excSn = $("#TB07080S_excSn").val();
+
+	// 	let intrtList = $("#TB07080S_colModel").pqGrid("instance").getData();
+
+	// 	let insertList = [];
+	// 	let updateList = [];
+
+	// 	let insertParamData = [];
+	// 	let updateParamData = [];
+
+	// 	for (let i = 0; i < intrtList.length; i++) {
+	// 		const item = intrtList[i];
+	// 		if ("" == item.rgstSn || undefined == item.rgstSn) {
+	// 			insertList.push(item);
+	// 		} else {
+	// 			updateList.push(item);
+	// 		}
+	// 	}
+
+	// 	if (insertList.length > 0) {
+	// 		insertParamData = {
+	// 			prdtCd: prdtCd,
+	// 			excSn: excSn,
+	// 			intrtList: insertList,
+	// 		};
+	// 	}
+
+	// 	if (updateList.length > 0) {
+	// 		updateParamData = {
+	// 			prdtCd: prdtCd,
+	// 			excSn: excSn,
+	// 			intrtList: updateList,
+	// 		};
+	// 	}
+
+	// 	if (insertList.length > 0) {
+	// 		$.ajax({
+	// 			type: "POST",
+	// 			url: "/TB07080S/insertIntrtData",
+	// 			contentType: "application/json; charset=UTF-8",
+	// 			data: JSON.stringify(insertParamData),
+	// 			dataType: "json",
+	// 			success: function(data) {
+	// 				if (data) {
+	// 					result = data;
+	// 				}
+	// 			},
+	// 			error: function() {
+	// 				result = -1;
+	// 			},
+	// 		});
+	// 	}
+
+	// 	if (updateList.length > 0) {
+	// 		$.ajax({
+	// 			type: "POST",
+	// 			url: "/TB07080S/updateIntrtData",
+	// 			contentType: "application/json; charset=UTF-8",
+	// 			data: JSON.stringify(updateParamData),
+	// 			dataType: "json",
+	// 			success: function(data) {
+	// 				if (data) {
+	// 					result = data;
+	// 				}
+	// 			},
+	// 			error: function() {
+	// 				result = -1;
+	// 			},
+	// 		});
+	// 	}
+	// 	return result;
+	// }
+
+
 
 	/*
 	 *  UPDATE TB07080S
@@ -964,6 +1133,12 @@ const TB07080Sjs = (function() {
 		let intrtResult;
 		excResult = await updateExcData(); // 데이터값이 나온 함수
 		intrtResult = await updateIntrtData();
+		// dltResult = 1;
+		// //console.log("dltList.size::::" + dltList.length)
+		// if(dltList.length > 0){
+		// 	dltResult = await deleteIntrtData();
+		// }
+
 		if (!$("#TB07080S_prdtCd").val()) {
 			Swal.fire({
 				icon: "warning",

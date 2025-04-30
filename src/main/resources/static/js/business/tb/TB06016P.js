@@ -1,6 +1,7 @@
 let TB06016P_rowIndx;
 let TB06016P_pqGridLength = 0;
 let TB06016P_rowData = {};
+let deleteMdwyRdmpFeeRtoList = [];
 const dummyData = TB06016P_rowData;
 
 /**
@@ -229,38 +230,6 @@ function TB06016P_addNewRow() {
 
 
 function TB06016P_deleteRow() {
-	// let getLength = $("#TB06016P_colModel").pqGrid("instance").pdata.length;
-    // if(TB06016P_rowData != dummyData && TB06016P_pqGridLength < getLength && !TB06016P_rowData.feeSn){
-    //     $("#TB06016P_colModel").pqGrid("deleteRow", { rowData: TB06016P_rowData, checkEditable: false });
-    //     TB06016P_rowData = dummyData;
-    // } else if (TB06016P_rowData === dummyData && TB06016P_pqGridLength < getLength) {
-    //     $("#TB06016P_colModel").pqGrid("deleteRow", { rowData: TB06016P_rowData, checkEditable: false });
-    //     TB06016P_rowData = dummyData;
-    // } else if (TB06016P_rowData === dummyData && TB06016P_pqGridLength === getLength) {
-    //     Swal.fire({
-    //         icon: 'warning'
-    //         , text: "삭제하실 행을 선택해주세요"
-    //         , confirmButtonText: "확인"
-    //     });
-    //     TB06016P_rowData = dummyData;
-    // } else if (TB06016P_rowData != dummyData) {
-    //     Swal.fire({
-    //         icon: "warning"
-    //         , text: "정말 삭제하시겠습니까?"
-    //         , confirmButtonText: "확인"
-    //         , denyButtonText: "아니오"
-    //         , showDenyButton: true
-    //     }). then((result) =>  {
-    //         if (result.isConfirmed) {
-    //             deleteIBIMS204B();
-    //             TB06016P_rowData = dummyData;
-    //             return;
-    //         } else if (result.isDenied) {
-    //             TB06016P_rowData = dummyData;
-    //             return;
-    //         }
-    //     })
-    // }
 
 	let gridLgth = $("#TB06016P_colModel").pqGrid("instance").pdata.length;
 	let gridData = $("#TB06016P_colModel").pqGrid("option", "dataModel.data");
@@ -276,28 +245,8 @@ function TB06016P_deleteRow() {
 	if (checkedRows && checkedRows.length > 0) {
 
 		checkedRows.forEach(function (row) {
-
-			// if(row != dummyData){
-			// 	Swal.fire({
-			// 		icon: "warning"
-			// 		, text: "정말 삭제하시겠습니까?"
-			// 		, confirmButtonText: "확인"
-			// 		, denyButtonText: "아니오"
-			// 		, showDenyButton: true
-			// 	}). then((result) =>  {
-			// 		if (result.isConfirmed) {
-			// 			deleteIBIMS204B();
-			// 			TB06016P_rowData = dummyData;
-			// 			return;
-			// 		} else if (result.isDenied) {
-			// 			TB06016P_rowData = dummyData;
-			// 			return;
-			// 		}
-			// 	})
-			// }else{
-				$("#TB06016P_colModel").pqGrid('deleteRow', { rowIndx: row.pq_ri });
-				TB06016P_rowData = dummyData;
-			//}
+			deleteMdwyRdmpFeeRtoList.push(row);
+			$("#TB06016P_colModel").pqGrid('deleteRow', { rowIndx: row.pq_ri });
 		});
 
 	}
@@ -345,9 +294,14 @@ async function TB06016P_saveData() {
 		prdtCd: getPrdtCd
 		, mdwyRdmpFeeRtoList: updateMdwyRdmpFeeRtoList
 	};
+	let deleteParamData = {
+		prdtCd: getPrdtCd
+		, mdwyRdmpFeeRtoList: deleteMdwyRdmpFeeRtoList
+	}
 
-	let insertResult
-	let updateResult
+	let insertResult;
+	let updateResult;
+	let deleteResult;
 
 	if (insertMdwyRdmpFeeRtoList.length > 0) {
 		await $.ajax({
@@ -383,17 +337,36 @@ async function TB06016P_saveData() {
 		updateResult = 0;
 	}
 
+	if (deleteMdwyRdmpFeeRtoList.length > 0) {
+		await $.ajax({
+			type: "POST",
+			url: "/TB06016P/deleteMdwyRdmpFeeRto",
+			contentType: "application/json; charset=UTF-8",
+			data: JSON.stringify(deleteParamData),
+			dataType: "json",
+			success: function (data) {
+				deleteResult = 0;
+
+				deleteMdwyRdmpFeeRtoList = [];
+			}, error: function () {
+				deleteResult = -1
+			}
+		});
+	} else {
+		deleteResult = 0;
+	}
+
 	// 초기화
-	if (insertResult === 0 && updateResult === 0) {
+	if (insertResult === 0 && updateResult === 0 && deleteResult === 0) {
 		Swal.fire({
 			icon: 'success'
-			, text: "저장성공"
+			, text: "중도상환수수료 저장에 성공하였습니다."
 			, confirmButtonText: "확인"
 		});
 	} else {
 		Swal.fire({
 			icon: 'warning'
-			, text: "저장실패"
+			, text: "중도상환수수료 저장에 실패하였습니다."
 			, confirmButtonText: "확인"
 		});
 	}
