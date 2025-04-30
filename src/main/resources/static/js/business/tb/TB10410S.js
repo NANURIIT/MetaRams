@@ -144,7 +144,26 @@ const TB10410Sjs = (function() {
 					type: "select",
 					valueIndx: "value",
 					labelIndx: "value",
-					options: hgrkSelectBox
+					options: hgrkSelectBox,
+					init: function ( ui ) {
+						console.log(ui);
+						$(ui.$editor).on('change', function () {
+							
+							
+							
+							console.log($(this).val())
+							
+							if (!$(this).val()) {
+								$("#TB10410S_hgrkMenuColModel").pqGrid('instance').pdata[ui.rowIndx].menuLvl = 1;
+								$("#TB10410S_hgrkMenuColModel").pqGrid('instance').refresh();
+							}
+							else {
+								let menuLvl = hgrkSelectBox.find( opt => opt.value === $(this).val()).menuLvl;
+								$("#TB10410S_hgrkMenuColModel").pqGrid('instance').pdata[ui.rowIndx].menuLvl = menuLvl + 1;
+								$("#TB10410S_hgrkMenuColModel").pqGrid('instance').refresh();
+							}
+						})
+					}
 				},
 			},
 			{
@@ -406,7 +425,7 @@ const TB10410Sjs = (function() {
 						ui.column.editable = false;
 					}
 					
-					if(ui.column.dataIndx != "chk"){
+					if(ui.column.dataIndx != "chk" && (!isEmpty(ui.rowData.hndDetlDtm) && ui.rowData.hndDetlDtm !== undefined)){
 						pqGridSelectHandler(ui.rowIndx, "TB10410S_hgrkMenuColModel");
 						hgrkGroupMenuInq(ui.rowData.menuId, ui.rowIndx);
 					}
@@ -656,10 +675,10 @@ const TB10410Sjs = (function() {
 				}
 				// 데이터 없을시 확인가능한 alert 실행
 				else {
-					Swal.fire({
+					/*Swal.fire({
 						icon: 'warning'
 						, title: '조회된 정보가 없습니다!'
-					})
+					})*/
 					grid.setData([]);
 					hgrkGroupMenuDbData = [];
 				}
