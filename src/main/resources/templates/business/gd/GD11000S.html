@@ -13,18 +13,18 @@
       <!-- 조회영역 -->
       <div class="col-lg-12">
         <div class="ibox">
-          <div class="ibox-content i-filter" id="GD90000S__srchForm">
+          <div class="ibox-content i-filter" id="GD11000S__srchForm">
             <div class="row form-group form-inline text-right">
               <div class="col-sm-12 input-group">
                 <label class="col-sm-1 control-label">코드구분</label>
-                <select class="col-sm-2 form-control m-b" id="GD90000S_commonCodeInfo"></select>
+                <select class="col-sm-2 form-control m-b" id="GD11000S_commonCodeInfo"></select>
                 <label class="col-sm-1 control-label">코드설명</label>
-                <input type="text" class="col-sm-2 form-control m-b" id="GD90000S_commonCodeGrpExpl"></input>
+                <input type="text" class="col-sm-2 form-control m-b" id="GD11000S_commonCodeGrpExpl"></input>
                 <div class="col-sm-6 text-right">
-                  <button class="btn btn-primary" type="button" id="GD90000S_commonCodeSearch">
+                  <button class="btn btn-primary" type="button" id="GD11000S_commonCodeSearch">
                     <i class="fa fa-search"></i>&nbsp;조회
                   </button>
-                  <button class="btn btn-default" type="button" onclick="">
+                  <button class="btn btn-default" type="button" onclick="GD11000Sjs.resetAll()">
                     <i class="fa fa-undo"></i>&nbsp;초기화
                   </button>
                 </div>
@@ -32,13 +32,29 @@
             </div>
           </div>
           <!-- 조회결과 -->
+          <!-- 그룹코드 -->
           <div class="ibox-content">
             <div class="ibox">
-                <div class="ibox-title">
-                    <h5>▶ 그룹코드</h5>
+              <div class="ibox-title">
+                <h5>▶ 그룹코드</h5>
+              </div>
+              <div class="ibox-content">
+                <div id="GD11000S_groupCodeListTable"></div>
+              </div>
+            </div>
+            <!-- 추가코드 -->
+            <div class="ibox">
+              <div class="ibox-title">
+                <h5>▶ 추가코드</h5>
+                <!-- 커스텀으로 제작된 정렬. ibox안에서만 사용 가능 -->
+                <div class="ibox-tools">                                
+                  <button class="btn btn-success btn-xs" type="button" onclick="GD11000Sjs.GD11000S_saveCd();">
+                    <i class="fa fa-save"></i>&nbsp;저장
+                  </button>
                 </div>
-                <div class="ibox-content">
-                <div id="GD90000S_groupCodeListTable"></div>
+              </div>
+              <div class="ibox-content">
+                <div id="GD11000S_addCodeListTable"></div>
               </div>
             </div>
           </div>

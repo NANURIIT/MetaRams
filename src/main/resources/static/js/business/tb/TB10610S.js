@@ -192,7 +192,7 @@ const TB10610Sjs = (function () {
         maxHeight: 400,
         id: "grd_batSchM",
         colModel: col_batSchM,
-        selectionModel: { type: "row" },
+        /*selectionModel: { type: "row" },*/
         //   , scrollModel : { autoFit: false }
       },
     ];
@@ -227,11 +227,13 @@ const TB10610Sjs = (function () {
           batSchM.setData(data.batSchM);
 
           // pqgrid_rowselect
-          batSchM.on("rowSelect", function (evt, ui) {
+          batSchM.on("rowClick", function (evt, ui) {
             let al = ui.addList;
+			pqGridSelectHandler ( ui.rowIndx, "grd_batSchM" );
 
             if (al.length > 0) {
-              let rd = al[0].rowData;
+              /*let rd = al[0].rowData;*/
+			  let rd = batSchM.pdata[ui.rowIndx]
               let jobId = rd.jobId;
               let jobName = rd.jobName;
               let curDate = rd.curDate;

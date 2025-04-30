@@ -128,7 +128,8 @@ public class TB07150ServiceImpl implements TB07150Service {
 			// }
 			// int trDtlsRslt = 0;
 
-		}else if(rqsKndCd.equals("03")){			// 03: 기한변경
+		}
+		else if(rqsKndCd.equals("03")){			// 03: 기한변경
 
 			log.debug("#######기한변경#######");
 
@@ -150,7 +151,8 @@ public class TB07150ServiceImpl implements TB07150Service {
 				result = 1;
 			}
 
-		}else if(rqsKndCd.equals("31")){			// 31: 기한연장 + 금리변경
+		}
+		else if(rqsKndCd.equals("31")){			// 31: 기한연장 + 금리변경
 
 			log.debug("#######기한연장 + 금리변경#######");
 
@@ -165,10 +167,12 @@ public class TB07150ServiceImpl implements TB07150Service {
 			if(tlmtChngRslt < 1){
 				log.debug("!!!기한변경 오류!!!");
 				result = 1;
-			}else if(hRslt < 1){
+			}
+			else if(hRslt < 1){
 				log.debug("!!!약정이력테이블 오류!!!");
 				result = 1;
-			}else{
+			}
+			else{
 
 				List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();		//변경금리정보
 
@@ -187,7 +191,8 @@ public class TB07150ServiceImpl implements TB07150Service {
 				if(dltChngBf404Blist < 1){
 					log.debug("!!!!!변경전 금리정보 삭제 오류!!!!!");
 					result = 1;
-				}else{
+				}
+				else{
 
 					int insrt404BListRslt = ibims404BMapper.insertChng404BList(cndChng404BList);
 
@@ -200,7 +205,8 @@ public class TB07150ServiceImpl implements TB07150Service {
 			}
 			
 			
-		}else if(rqsKndCd.equals("04")){			// 04: 금리변경
+		}
+		else if(rqsKndCd.equals("04")){			// 04: 금리변경
 
 			log.debug("#######금리변경#######");
 
@@ -226,7 +232,8 @@ public class TB07150ServiceImpl implements TB07150Service {
 			if(dltChngBf404Blist < 1){
 				log.debug("!!!!!변경전 금리정보 삭제 오류!!!!!");
 				result = 1;
-			}else{
+			}
+			else{
 
 				int insrt404BListRslt = ibims404BMapper.insertChng404BList(cndChng404BList);
 

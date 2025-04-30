@@ -64,7 +64,8 @@ const TB10310Sjs = (function () {
         dataIndx: "menuId",
         editable: false,
       },
-      {
+      /* 버튼 조회가 아닌 클릭 이벤트로 변경
+		{
         title: "하위메뉴",
         align: "center",
         halign: "center",
@@ -80,7 +81,7 @@ const TB10310Sjs = (function () {
             );
           }
         },
-      },
+      },*/
     ]
 
     /**
@@ -248,6 +249,15 @@ const TB10310Sjs = (function () {
         if (data.length > 0) {
           grid.setData(data);
           grid.getData();
+
+		  // 그리드 rowSelect 이벤트
+          grid.on('rowClick', function (evt, ui) {
+	
+			pqGridSelectHandler ( ui.rowIndx, "TB10310S_GroupCodeColModel" );
+			rd = grid.pdata[ui.rowIndx]
+            rd.rowType = 'M'
+			selectAthCdListFromMenu(rd.menuId, rd);
+          })
         }
         // 데이터 없을시 확인가능한 alert 실행
         else {
