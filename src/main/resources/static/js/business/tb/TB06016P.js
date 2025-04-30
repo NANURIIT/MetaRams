@@ -411,4 +411,5 @@ async function deleteIBIMS204B() {
         }
     });
     TB06016P_getMdwyRdmpFeeRto();
+	
 }
