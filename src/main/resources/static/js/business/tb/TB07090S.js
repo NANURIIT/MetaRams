@@ -1088,6 +1088,7 @@ const TB07090Sjs = (function () {
     else if (selected_dptrRgstDtl && !selected_dptrRgstDtl.hndDetlDtm) {
       swal.fire({
         icon: "warning"
+        , title: "Warning!"
         , text: "등록된 입금증등록내역을 선택해주세요."
       })
       return;
@@ -1225,6 +1226,7 @@ const TB07090Sjs = (function () {
         if (data != 0) {
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "이미 매핑된 내역입니다!"
           })
           return;
@@ -1233,6 +1235,7 @@ const TB07090Sjs = (function () {
         else if (!chkRctmDtlsMapping()) {
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "이미 매핑된 내역입니다!"
           })
           return;
@@ -1242,6 +1245,7 @@ const TB07090Sjs = (function () {
           // 스왈파이아 매핑불가능 
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "입금금액이 부족합니다!"
           })
           return;
@@ -1291,6 +1295,7 @@ const TB07090Sjs = (function () {
       else {
         swal.fire({
           icon: "warning"
+            , title: "Warning!"
           , text: "매핑이 된 내역을 지우고 입금증등록내역을 삭제해주세요!"
         })
         return;
@@ -1378,6 +1383,7 @@ const TB07090Sjs = (function () {
         if (data > 0) {
           swal.fire({
             icon: "success"
+            , title: "Success!"
             , text: "저장성공!"
           })
           search_TB07090S();
@@ -1385,6 +1391,7 @@ const TB07090Sjs = (function () {
         else {
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "저장실패!"
           })
         }
