@@ -162,7 +162,7 @@ const TB10410Sjs = (function () {
         dataIndx: "urlClsfCd",
         width: "7%",
       },
-      {
+      /*{
         title: "하위메뉴",
         align: "center",
         halign: "center",
@@ -179,7 +179,7 @@ const TB10410Sjs = (function () {
             );
           }
         },
-      },
+      },*/
       {
         title: "처리일시",
         dataType: "string",
@@ -400,7 +400,11 @@ const TB10410Sjs = (function () {
             ui.column.editable = false;
           }
         }
-        , cellSave: function (event, ui) {
+        , rowClick: function (evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "TB10410S_hgrkMenuColModel" );
+			hgrkGroupMenuInq(ui.rowData.menuId, ui.rowIndx);
+        },
+        /*, cellSave: function (event, ui) {
           if(ui.rowData.menuId === ui.rowData.hgrkMenuId){
             Swal.fire({
               icon: 'warning'
@@ -418,7 +422,7 @@ const TB10410Sjs = (function () {
             ui.rowData.menuLvl = selectedItem.menuLvl + 1;
             $("#TB10410S_hgrkMenuColModel").pqGrid("refreshDataAndView");
           }
-        }
+        }*/
       },
       {
         height: 270
@@ -436,6 +440,9 @@ const TB10410Sjs = (function () {
             ui.column.editable = false;
           }
         }
+		, rowClick: function (evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "TB10410S_menuColModel" );
+        },
       },
     ];
 

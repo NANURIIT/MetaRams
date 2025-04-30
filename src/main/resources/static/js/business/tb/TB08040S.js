@@ -956,6 +956,9 @@ const TB08040Sjs = (function() {
 
 
 				},
+			    rowClick: function (evt, ui) {
+				  pqGridSelectHandler ( ui.rowIndx, "grd_feeSch" );
+			    },
 				/* cellClick: function (evt, ui) {
 				   if (!ui.column || !ui.column.editor || !ui.column.editor.type) {
 					 return;
@@ -1172,7 +1175,7 @@ const TB08040Sjs = (function() {
 	 *******************************************************************/
 	function validation_TB08040S(arr = []) {
 		let prdtCd = $("#TB08040S_prdtCd").val(); // 종목코드
-
+		
 		if (!prdtCd) {
 			Swal.fire({
 				icon: "warning",

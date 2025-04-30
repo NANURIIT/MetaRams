@@ -2462,7 +2462,6 @@ const TB08031Sjs = (function () {
       $("#TB08031S_ernPartRt").val(rowData.prtcRto);             //참가비율
 
     }else if(instncNm === "busiInfoInstance"){//관련사업정보
-
       $("#TB08031S_busiInfo_sn").val(rowData.sn);                   //일련번호
       $("#TB08031S_busiInfo_erlmSeq").val(rowData.erlmSeq);         //등록순번
 
@@ -2478,7 +2477,6 @@ const TB08031Sjs = (function () {
       }else{
         $("#TB08031S_thcoPtciAmtDcsnN").prop("checked", true);
       }
-
     }else if(instncNm === "invstBzscalInstance"){//투자기업목록
 
       $("#TB08031S_invstBzscal_sn").val(rowData.sn);              //일련번호

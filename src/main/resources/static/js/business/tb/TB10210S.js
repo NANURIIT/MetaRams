@@ -72,7 +72,7 @@ const TB10210Sjs = (function () {
       width: "",
       filter: { crules: [{ condition: "range" }] },
     },
-    {
+    /*{
       title: "메뉴관리",
       align: "center",
       halign: "center",
@@ -89,7 +89,7 @@ const TB10210Sjs = (function () {
           );
         }
       },
-    },
+    },*/
     {
       title: "등록일자",
       dataType: "string",
@@ -360,6 +360,10 @@ const TB10210Sjs = (function () {
           ui.column.editable = false;
         }
       }
+	  , rowClick: function (evt, ui) {
+		pqGridSelectHandler ( ui.rowIndx, "authCodeTable" );
+		clickDetailButton(ui.rowIndx);
+	  },
     };
 
     $("#authCodeTable").pqGrid(obj_authCdTb);
@@ -383,6 +387,9 @@ const TB10210Sjs = (function () {
       scrollModel: { autoFit: true },
       colModel: colModel_authCdMenuTb,
       strNoRows: "조회된 데이터가 없습니다."
+	  , rowClick: function (evt, ui) {
+		pqGridSelectHandler ( ui.rowIndx, "authCodeMenuTable" );
+	  },
     };
 
     $("#authCodeMenuTable").pqGrid(obj_authCdMenuTb);

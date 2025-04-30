@@ -751,9 +751,10 @@ const TB08050Sjs = (function () {
           if (data.length > 0) {
             feeDtls.setData(data);
 
-            feeDtls.on("rowDblClick", function (event, ui) {
+            feeDtls.on("rowClick", function (event, ui) {
               console.log(event);
               console.log(ui.rowData);
+			  pqGridSelectHandler ( ui.rowIndx, "grd_feeDtls" );
               const rd = ui.rowData;
 
               $("#TB08050S_feeSn").val(rd.feeSn); // 수수료일련번호
