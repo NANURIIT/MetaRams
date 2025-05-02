@@ -362,7 +362,7 @@ const TB07090Sjs = (function () {
         dataIndx: "delYn",
         align: "center",
         minWidth: 36,
-            maxWidth: 36,
+        maxWidth: 36,
         type: "checkBoxSelection",
         editable: true,
         editor: false,
@@ -433,9 +433,6 @@ const TB07090Sjs = (function () {
           valueIndx: "cdValue",
           labelIndx: "cdName",
           options: fndsDcdList,
-          init: function (ui) {
-            initSelectAutoOpen(ui, fndsDcdList.length);
-          }
         },
         render: function (ui) {
           var options = fndsDcdList;
@@ -452,16 +449,6 @@ const TB07090Sjs = (function () {
         align: "right",
         width: "165",
         filter: { crules: [{ condition: "range" }] },
-        editor: {
-          type: "textbox",
-          init: function (ui) {
-            var $inp = ui.$cell.find("input");
-            $inp.on("input", function () {
-              this.value = this.value.replace(/[^0-9]/g, "");
-              inputNumberFormat(this);
-            });
-          },
-        },
         // render: function (ui) {
         //   var cellData = ui.cellData;
         //   if (cellData == null || cellData == "") {
@@ -588,7 +575,7 @@ const TB07090Sjs = (function () {
         dataIndx: "delYn",
         align: "center",
         minWidth: 36,
-            maxWidth: 36,
+        maxWidth: 36,
         type: "checkBoxSelection",
         editable: true,
         editor: false,
@@ -688,12 +675,7 @@ const TB07090Sjs = (function () {
           }
 
           if (Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number(colModel3_dealRctmAmt) + Number(ui.cellData)) {
-            $('#TB07090S_colModel3').pqGrid("instance").updateRow({
-              rowIndx: ui.rowIndx,
-              row: {
-                beforeDealRctmAmt: Number(ui.cellData)
-              }
-            })
+            $('#TB07090S_colModel3').pqGrid("instance").pdata[ui.rowIndx].beforeDealRctmAmt = Number(ui.cellData)
           }
         }
       },
@@ -828,7 +810,7 @@ const TB07090Sjs = (function () {
         editable: false,
         rowClick: function (evt, ui) {
           selected_rdmpPrarDtl = ui.rowData;
-          pqGridSelectHandler( ui.rowIndx, "TB07090S_colModel1");
+          pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel1");
         },
       },
       {
@@ -856,11 +838,16 @@ const TB07090Sjs = (function () {
           else if (!ui.rowData.hndDetlDtm && ui.column.dataIndx === "rctmDt") {
             ui.column.editable = true;
           }
-        },
-        rowClick: function (event, ui) {
-          colModel2_rowIndx = ui.rowIndx;
-          selected_dptrRgstDtl = ui.rowData;
-          pqGridSelectHandler( ui.rowIndx, "TB07090S_colModel2");
+
+          // 클릭시 조회
+          if (ui.column.dataIndx === "delYn") {
+
+          }
+          else {
+            colModel2_rowIndx = ui.rowIndx;
+            selected_dptrRgstDtl = ui.rowData;
+            pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel2");
+          }
         },
       },
       {
@@ -870,8 +857,13 @@ const TB07090Sjs = (function () {
         colModel: col3,
         scrollModel: { autoFit: true },
         editable: true,
-        rowClick: function (event, ui) {
-          pqGridSelectHandler( ui.rowIndx, "TB07090S_colModel3");
+        cellClick: function (event, ui) {
+          if (ui.column.dataIndx === "delYn") {
+
+          }
+          else {
+            pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel3");
+          }
         },
         // // 날짜선택 테스트 시작
         // editorBegin: function (event, ui) {
@@ -1258,12 +1250,8 @@ const TB07090Sjs = (function () {
           });
 
           // 모든 검사를 마친 친구들은 매핑해준다
-          $('#TB07090S_colModel2').pqGrid("instance").updateRow({
-            rowIndx: selected_dptrRgstDtl.pq_ri,
-            row: {
-              pmntPrarAmt: Number(selected_dptrRgstDtl.pmntPrarAmt) + Number(newRow["pmntPrarAmt"])
-            }
-          });
+          $('#TB07090S_colModel2').pqGrid("instance").pdata[selected_dptrRgstDtl.pq_ri].pmntPrarAmt = Number(selected_dptrRgstDtl.pmntPrarAmt) + Number(newRow["pmntPrarAmt"]);
+          $('#TB07090S_colModel2').pqGrid("instance").refresh();
 
         }
       },
@@ -1281,63 +1269,79 @@ const TB07090Sjs = (function () {
     let rowIndx;
 
     if (colModelSelector.attr('id') === 'TB07090S_colModel2') {
-      if (selected_dptrRgstDtl.pmntPrarAmt === 0) {
-        rowIndx = colModel2_rowIndx
-        // 삭제용 리스트 추가
-        rctmDtlsRgstDeleteList.push(
-          $('#TB07090S_colModel2').pqGrid('instance').pdata[colModel2_rowIndx]
-        )
-      }
-      else if (selected_dptrRgstDtl.rgstSeq === undefined) {
-        // 그냥 지우기
-        rowIndx = colModel2_rowIndx
-      }
-      else {
-        swal.fire({
-          icon: "warning"
-            , title: "Warning!"
-          , text: "매핑이 된 내역을 지우고 입금증등록내역을 삭제해주세요!"
-        })
-        return;
-      }
-    }
-    else if (colModelSelector.attr('id') === 'TB07090S_colModel3') {
 
-      rowIndx = colModel3_rowIndx
+      let gridData = colModelSelector.pqGrid('instance').pdata;
 
-      let updateIndx;
+      let cnt = 0;
 
-      const rctmDtlsMappingGridData = $('#TB07090S_colModel2').pqGrid('instance').pdata
-
-      for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
-        if ($('#TB07090S_colModel2').pqGrid('instance').pdata[i].rctmDt === TB07090S_rowData.rctmDt
-          && $('#TB07090S_colModel2').pqGrid('instance').pdata[i].rgstSeq === Number(TB07090S_rowData.rgstSeq)
-        ) {
-          updateIndx = i;
-          break;
+      for (let i = gridData.length - 1; i >= 0; i--) {
+        if ( gridData[i].delYn === "Y" ) {
+          if (gridData[i].pmntPrarAmt != 0 && gridData[i].pmntPrarAmt != undefined) {
+            // 납부예정금액이 있는 경우는 삭제 안함
+            cnt += 1;
+          }
+          else if (!gridData[i].rgstSeq) {
+            // 저장되지 않은 내용은 그리드에서만 삭제
+            colModelSelector.pqGrid("deleteRow", { rowIndx: i });
+          }
+          else {
+            // 삭제용 리스트 추가
+            rctmDtlsRgstDeleteList.push(
+              colModelSelector.pqGrid('instance').pdata[i]
+            )
+            // 행에서 삭제
+            colModelSelector.pqGrid("deleteRow", { rowIndx: i });
+          }
         }
       }
 
-      // 입금증등록내역 업데이트
-      $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt = Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number($('#TB07090S_colModel3').pqGrid("instance").pdata[rowIndx].dealRctmAmt)
+      if (cnt > 0) {
+        Swal.fire({
+          icon: "warning"
+          , title: "Warning!"
+          , text: "입금내역매핑이 되어있는 경우는 입금내역매핑을 지우고 삭제해주세요!"
+        })
+      }
 
-      // 삭제용 리스트 추가
-      rctmDtlsMappingDeleteList.push(
-        $('#TB07090S_colModel3').pqGrid('instance').pdata[colModel3_rowIndx]
-      )
     }
+    else if (colModelSelector.attr('id') === 'TB07090S_colModel3') {
 
-    colModelSelector.pqGrid("deleteRow", {
-      rowIndx: rowIndx,
-    });
+      const rctmDtlsMappingGridData = $('#TB07090S_colModel2').pqGrid('instance').pdata
 
+      let gridData = colModelSelector.pqGrid('instance').pdata;
 
-    if (colModelSelector.attr('id') === 'TB07090S_colModel2') {
-      colModel2_rowIndx = null
-    } else if (colModelSelector.attr('id') === 'TB07090S_colModel3') {
-      colModel3_rowIndx = null
+      let cnt = 0;
+
+      for (let i = gridData.length - 1; i >= 0; i--) {
+        if ( gridData[i].delYn === "Y" ) {
+
+          for (let j = 0; j < rctmDtlsMappingGridData.length; j++) {
+            if (
+              colModelSelector.pqGrid('instance').pdata[i].rctmDt === rctmDtlsMappingGridData[j].rctmDt
+              && colModelSelector.pqGrid('instance').pdata[i].rgstSeq === rctmDtlsMappingGridData[j].rgstSeq
+            ) {
+              // 입금증등록내역 업데이트
+              $('#TB07090S_colModel2').pqGrid("instance").pdata[j].pmntPrarAmt = Number($('#TB07090S_colModel2').pqGrid("instance").pdata[j].pmntPrarAmt) - Number($('#TB07090S_colModel3').pqGrid("instance").pdata[i].dealRctmAmt)
+              $('#TB07090S_colModel2').pqGrid("instance").refresh();
+            }
+          }
+
+          if (!gridData[i].hndDetlDtm) {
+            // 저장되지 않은 내용은 그리드에서만 삭제
+            colModelSelector.pqGrid("deleteRow", { rowIndx: i });
+          }
+          else {
+            // 삭제용 리스트 추가
+            rctmDtlsMappingDeleteList.push(
+              colModelSelector.pqGrid('instance').pdata[i]
+            )
+            // 행에서 삭제
+            colModelSelector.pqGrid("deleteRow", { rowIndx: i });
+          }
+
+        }
+      }
     }
-
   }
 
   /**
@@ -1396,6 +1400,13 @@ const TB07090Sjs = (function () {
           })
         }
       },
+      error: function () {
+        Swal.fire({
+          icon: "error"
+          , title: "Error!"
+          , text: "저장실패!"
+        })
+      }
     });
     rctmDtlsRgstDeleteList = [];
   }
@@ -1446,6 +1457,7 @@ const TB07090Sjs = (function () {
         if (data > 0) {
           swal.fire({
             icon: "success"
+            , title: "Success!"
             , text: "저장성공!"
           })
           search_TB07090S();
@@ -1453,10 +1465,18 @@ const TB07090Sjs = (function () {
         else {
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "저장실패!"
           })
         }
       },
+      error: function () {
+        Swal.fire({
+          icon: "error"
+          , title: "Error!"
+          , text: "저장실패!"
+        })
+      }
     });
     rctmDtlsMappingDeleteList = [];
   }

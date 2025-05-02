@@ -45,14 +45,6 @@ public class TB07090ServiceImpl implements TB07090Service {
     @Override
     public TB07090SVO getDprtDtlsInfo(IBIMS430BVO param) {
 
-        log.debug("param check <TB07090ServiceImpl>");
-        log.debug("param.rctmDt::: " + param.getRctmDt());
-        // log.debug("param.paiRdmpDcd::: " + param.getPaiRdmpDcd());
-        log.debug("param.dealNo::: " + param.getDealNo());
-        log.debug("param.dprtCd::: " + param.getDprtCd());
-        log.debug("param.fromDt::: " + param.getFromDt());
-        log.debug("param.toDt::: " + param.getToDt());
-
         TB07090SVO rsltVO = new TB07090SVO();
 
         // 상환예정내역 조회
