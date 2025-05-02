@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+
 @Slf4j
 @RequestMapping("/GD11000S")
 @RequiredArgsConstructor
@@ -25,6 +26,14 @@ public class GD11000APIController {
 
         return service.getCommonCodeName();
     }
+
+    // 계산기
+    @GetMapping(value = "/listCalculator")
+    public int listCalculator() {
+        
+        return service.listCalculator();
+    }
+    
 
     // // 그룹코드정보 리스트 가져오기
     // @PostMapping(value = "/groupCodeInfoList")

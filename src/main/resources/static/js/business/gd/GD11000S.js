@@ -458,9 +458,34 @@ const GD11000Sjs = (function(){
         resetPGgrids("GD11000S");
     }
 
+
+    // 계산기
+    function listCalculator() {
+        $.ajax({
+            url: "/GD11000S/listCalculator",
+            method: "get",
+            contentType: "application/json; charset=UTF-8",
+            // data: JSON.stringify(),
+            dataType: "json",
+            success: function(data) {
+                console.log("ArrayList 체크 ::: " + data);
+                
+            },
+            error: function () {
+                
+            }
+        })
+
+    }
+
+
+
+
+
     return {
         resetAll: resetAll,
-        GD11000S_saveCd: GD11000S_saveCd
+        GD11000S_saveCd: GD11000S_saveCd,
+        listCalculator: listCalculator
     };
 
 })();
