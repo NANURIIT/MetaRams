@@ -300,6 +300,9 @@ const TB07230Sjs = (function() {
 				id: "TB07230S_trsctHis",
 				colModel: TB07230S_col_trsctHis,
 				scrollModel: { autoFit: true },
+				rowClick: function (evt, ui) {
+					pqGridSelectHandler ( ui.rowIndx, "TB07230S_trsctHis" );
+                },
 				editable: false,
 				numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
 			}

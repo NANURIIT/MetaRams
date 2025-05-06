@@ -207,7 +207,10 @@ const TB10310Sjs = (function () {
           width: 60,
           resizable: true,
           title: "<p class='text-center'>순번</p>",
-        }
+        },
+		cellClick: function(evt, ui) {
+			pqGridSelectHandler(ui.rowIndx, "TB10310S_athCodeColModel");
+		},
       },
     ];
 

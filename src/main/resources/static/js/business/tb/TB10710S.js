@@ -383,6 +383,7 @@ const TB10710Sjs = function () {
             data: JSON.stringify(paramData),
             dataType: "json",
             beforeSend: function () {
+                resetPGgrids("TB10710S");
                 Swal.fire({
                     icon: 'info',
                     title: '조회중입니다...',
@@ -426,6 +427,9 @@ const TB10710Sjs = function () {
     function getParameter(dudtMngmNo) {
 
         let paramData = dudtMngmNo
+
+        TB10710S_resetPqGrid("TB10710S_colModel2");
+        TB10710S_resetPqGrid("TB10710S_colModel3");
 
         $.ajax({
             type: "POST",

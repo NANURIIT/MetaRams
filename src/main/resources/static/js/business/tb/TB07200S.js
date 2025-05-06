@@ -163,12 +163,12 @@ const TB07200Sjs = (function () {
 
         // 신규항목 상세버튼 클릭시
         if (isEmpty(fincExcuRqsSn)) {
-            Swal.fire({
+           /* Swal.fire({
                 icon: "warning",
                 title: "Warning!",
                 text: "저장된 정보만 조회가능합니다!",
             })
-            return;
+            return;*/
         }
         // 이미 존재하는 항목 상세버튼 클릭시
         else {
@@ -229,7 +229,7 @@ const TB07200Sjs = (function () {
         $("#TB07200S_wrkRqst .pq-grid-row").removeClass("ui-state-highlight");
 
         var $tr = grid.getRow({ rowIndx: rowIndex });
-        $tr.addClass("ui-state-highlight");
+        //$tr.addClass("ui-state-highlight");
     }
 
     /**
@@ -391,7 +391,7 @@ const TB07200Sjs = (function () {
             {
                 title: "",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "ardyBzepNoPop",
                 halign: "center",
                 align: "center",
                 width: "1%",
@@ -481,7 +481,7 @@ const TB07200Sjs = (function () {
             {
                 title: "",
                 dataType: "string",
-                dataIndx: "",
+                dataIndx: "isttNoPop",
                 halign: "center",
                 align: "center",
                 width: "1%",
@@ -529,7 +529,7 @@ const TB07200Sjs = (function () {
                 editable: true,
                 filter: { crules: [{ condition: "range" }] },
             },
-            {
+            /*{
                 title: "",
                 align: "center",
                 halign: "center",
@@ -547,7 +547,7 @@ const TB07200Sjs = (function () {
                         );
                     }
                 },
-            },
+            },*/
             {
                 title: "등록사원번호",
                 dataIndx: "hndEmpno",
@@ -1099,6 +1099,12 @@ const TB07200Sjs = (function () {
                 colModel: TB07200S_col_wrkRqst,
                 scrollModel: { autoFit: true },
                 editable: false,
+				cellClick: function(evt, ui) {
+					if ((ui.column.dataIndx != "chk" || ui.column.dataIndx != "ardyBzepNoPop" || ui.column.dataIndx != "isttNoPop") && ui.rowData.fincExcuRqsSn != undefined) {
+						pqGridSelectHandler ( ui.rowIndx, "TB07200S_wrkRqst" );
+						spcDetail(ui.rowData.pq_ri);
+					}
+				},
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
             {
@@ -1108,6 +1114,11 @@ const TB07200Sjs = (function () {
                 colModel: TB07200S_col_pblHis,
                 scrollModel: { autoFit: true },
                 editable: false,
+				cellClick: function (evt, ui) {
+					if (ui.column.dataIndx != "chk") {
+						pqGridSelectHandler ( ui.rowIndx, "TB07200S_pblHis" );
+					}
+                },
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
             {
@@ -1117,6 +1128,11 @@ const TB07200Sjs = (function () {
                 colModel: TB07200S_col_dpstRqst,
                 scrollModel: { autoFit: true },
                 editable: false,
+				cellClick: function (evt, ui) {
+					if (ui.column.dataIndx != "chk") {
+						pqGridSelectHandler ( ui.rowIndx, "TB07200S_dpstRqst" );
+					}
+                },
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
             {
@@ -1126,6 +1142,11 @@ const TB07200Sjs = (function () {
                 colModel: TB07200S_col_wthdrwlRqst,
                 scrollModel: { autoFit: true },
                 editable: false,
+				cellClick: function (evt, ui) {
+					if (ui.column.dataIndx != "chk") {
+						pqGridSelectHandler ( ui.rowIndx, "TB07200S_wthdrwlRqst" );
+					}
+                },
                 numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>No</p>" }
             },
         ]
@@ -1164,10 +1185,13 @@ const TB07200Sjs = (function () {
             if(!newRowExist){
                 $(gridId).pqGrid("addRow", {
                     rowData: {
+						chk: true,
                         fincExcuRqsDt: getToday(),
                         dprtCd: $("#userDprtCd").val()
                     }, checkEditable: false
                 });
+				pqGridSelectHandler ( gridLength, "TB07200S_wrkRqst" );
+				spcDetail(gridLength);
             }else{
                 Swal.fire({
                     icon: "warning",
@@ -1321,9 +1345,8 @@ const TB07200Sjs = (function () {
         else {
 
             const wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: wrkRqstSlctdRow });
-
+			
             let validRslt = spcValidation(wrkRqstData, "wrkRqst");
-
             if (validRslt === 1) {
 
                 let pblHisList = $("#TB07200S_pblHis").pqGrid("getData");               // 유동화증권방행내역
