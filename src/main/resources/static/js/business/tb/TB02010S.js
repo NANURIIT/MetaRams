@@ -168,7 +168,10 @@ const TB02010Sjs = (function(){
 				, colModel: colM_TB02010S 	
 				, rowDblClick: function ( evt, ui ) {
 					justWork(ui.rowData.decdSn);
-				}
+				},
+				rowClick: function(evt, ui) {
+					pqGridSelectHandler ( ui.rowIndx, "wfGrid_TB02010S" );
+				},
 			},
 		]
 
