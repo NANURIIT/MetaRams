@@ -56,6 +56,12 @@ const TB06080Sjs = (function () {
         id: gridId,
         colModel: colId,
         scrollModel: { autofit: false },
+        editModel: {
+          clicksToEdit: 1
+        },
+        rowClick: function (evt, ui) {
+          pqGridSelectHandler(ui.rowIndx, gridId);
+        },
       },
     ];
     setPqGrid(pqGridObj);

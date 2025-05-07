@@ -114,6 +114,9 @@ const TB05030Sjs = (function () {
         maxHeight: 80,
         id: "gridIbDealInfo",
         colModel: selectColModel(3),
+		rowClick: function(evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "gridIbDealInfo" );
+		},
       },
     ];
 
@@ -385,7 +388,8 @@ const TB05030Sjs = (function () {
           });
         } else {
           arrPqGridCaseInfo.setData(data);
-          arrPqGridCaseInfo.option("rowDblClick", function (event, ui) {
+          arrPqGridCaseInfo.option("rowClick", function (event, ui) {
+            pqGridSelectHandler( ui.rowIndx, "gridCaseInfo" );
             TB05030S_setFileButtonEnabled(true);
             let key2 = `${ui.rowData.cnsbDcd}|${ui.rowData.cnsbSq}|${ui.rowData.rsltnYr}|${ui.rowData.sn}`;
             getFileInfo($("#key1").val(), key2);
@@ -456,6 +460,9 @@ const TB05030Sjs = (function () {
         maxHeight: 150,
         id: "gridMmbrInfo",
         colModel: selectColModel(2),
+		rowClick: function(evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "gridMmbrInfo" );
+		},
       },
     ]);
 
@@ -832,11 +839,15 @@ const TB05030Sjs = (function () {
     $("#TB05030S_etcCndtF").val("Y"); //승인조건 (기타)
     $("#TB05030S_cnfrncNtmCndtlCntnt").val(""); //부의조건
     $("#TB05030S_rsltCntnt").val(""); //결의의견
-
+	
     arrPqGridCaseInfo.option("dataModel.data", []); // 안건정보 그리드
     arrPqGridMmbrInfo.option("dataModel.data", []); // 의결내용 그리드
     arrPqGridIbDealInfo.option("dataModel.data", []); // 협의결과 그리드
-
+	
+	$("#gridCaseInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
+	$("#gridMmbrInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
+	$("#gridIbDealInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
+	
     $("#UPLOAD_FileList").empty(); //관련자료
   }
 

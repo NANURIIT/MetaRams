@@ -247,6 +247,7 @@ const TB07210Sjs = (function () {
                 , colModel: pqGridColModel(1)
                 , editable: false
                 , rowClick: function (evt, ui) {
+					pqGridSelectHandler ( ui.rowIndx, "TB07210S_spcDecdGrid" );
                     spcDecdDetail(ui.rowData.fincExcuRqsSn);
                 }
                 , selectionModel: { type: "row" },
@@ -257,6 +258,9 @@ const TB07210Sjs = (function () {
                 , id: 'TB07210S_spcDecdDetail'
                 , colModel: pqGridColModel(2)
                 , editable: false
+				, rowClick: function (evt, ui) {
+					pqGridSelectHandler ( ui.rowIndx, "TB07210S_spcDecdDetail" );
+                }
             },
         ];
 

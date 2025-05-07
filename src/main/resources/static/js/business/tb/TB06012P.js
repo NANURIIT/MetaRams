@@ -30,6 +30,9 @@ function callTB06012P(prefix) {
       editable: false,
       scrollModel: { autoFit: true },
       strNoRows: "데이터가 없습니다.",
+      rowClick: function (evt, ui) {
+        pqGridSelectHandler(ui.rowIndx, "gridAppvCndtList");
+      }
     };
 	    
 	if(typeof modalAppvCndtList == "undefined") {    
@@ -451,8 +454,9 @@ function selectIBIMS208B() {
 			setAppvCndt([]);
 		}	
 	  }
-      modalAppvCndtList.on("rowDblClick", function (event, ui) {
-        setAppvCndt(ui.rowData);
+      modalAppvCndtList.on("rowClick", function (event, ui) {
+        //setAppvCndt(ui.rowData);
+        pqGridSelectHandler(ui.rowIndx, "gridAppvCndtList", setAppvCndt(ui.rowData));
       });
     },
   }); /* end of ajax*/

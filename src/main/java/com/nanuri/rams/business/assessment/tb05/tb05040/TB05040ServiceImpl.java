@@ -41,7 +41,17 @@ public class TB05040ServiceImpl implements TB05040Service {
 
 	// Deal 상세조회
 	@Override
-	public TB05040SVO getDealDetail(IBIMS103BDTO paramData) { return ibims103BMapper.getDealDetail(paramData); }
+	public TB05040SVO getDealDetail(IBIMS103BDTO paramData) { 
+		TB05040SVO vo = new TB05040SVO();
+
+		vo = ibims103BMapper.getDealDetail(paramData);
+		
+		if (vo == null) {
+			return vo = new TB05040SVO();
+		}
+		
+		return vo;
+	}
 
 
 }

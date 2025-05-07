@@ -256,6 +256,9 @@ const TB07170Sjs = (function () {
         editable: false,
         scrollModel: { autoFit: false },
         selectionModel: { type: "row" },
+		rowClick: function(evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "TB07170S_colModel" );
+		},
       },
     ];
     setPqGrid(pqGridObjs);

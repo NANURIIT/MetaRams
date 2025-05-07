@@ -636,7 +636,8 @@ const TB08036Sjs = (function () {
     }
 
     arrPqGridInspctRmrkInfo.setData(data);
-    arrPqGridInspctRmrkInfo.option("rowDblClick", function (event, ui) {
+    arrPqGridInspctRmrkInfo.option("rowClick", function (event, ui) {
+	  pqGridSelectHandler ( ui.rowIndx, "TB08036S_inspctRmrk" );
       setInspctRmrkItem(ui.rowData);
     });
   }
@@ -658,7 +659,8 @@ const TB08036Sjs = (function () {
     }
 
     arrPqGridEtcInfo.setData(data);
-    arrPqGridEtcInfo.option("rowDblClick", function (event, ui) {
+    arrPqGridEtcInfo.option("rowClick", function (event, ui) {
+	  pqGridSelectHandler ( ui.rowIndx, "TB08036S_etcList" );
       setEtcItem(ui.rowData);
     });
   }

@@ -54,6 +54,19 @@ public class TB06016ServiceImpl implements TB06016Service {
 	@Override
     public int deleteIBIMS204B(IBIMS204BVO data) {
 		int result = ibims204bMapper.deleteIBIMS204B(data);
+
+		List<IBIMS204BDTO> mdwyRdmpFeeRtoList = data.getMdwyRdmpFeeRtoList();
+
+		for(int i=0; i < mdwyRdmpFeeRtoList.size(); i++){
+			IBIMS204BDTO mdwyRdmpFeeRtoDTO = mdwyRdmpFeeRtoList.get(i);
+
+			IBIMS204BVO parameter = new IBIMS204BVO();
+			parameter.setPrdtCd(data.getPrdtCd());
+			parameter.setFeeSn(mdwyRdmpFeeRtoDTO.getFeeSn());
+
+			result = ibims204bMapper.deleteIBIMS204B(parameter);
+		}
+
 		return result;
 	}
 

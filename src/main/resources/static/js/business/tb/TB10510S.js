@@ -286,15 +286,16 @@ const TB10510Sjs = (function () {
                 , id: 'TB10510S_grd_batSch'
                 , colModel: col_batSch
                 , numberCell: { show: true, width: 40, resizable: true, title: "<p class='text-center'>순번</p>" }
-                , selectionModel: { type: 'row' }
+                /*, selectionModel: { type: 'row' }*/
             },
             {
                 height: 150
                 , maxHeight: 150
                 , id: 'TB10510S_grd_batPreJob'
                 , colModel: col_batPreJob
-                , selectionModel: { type: 'row' }
-                , rowSelect: function (evt, ui) {
+                /*, selectionModel: { type: 'row' }*/
+                , rowClick: function (evt, ui) {
+					pqGridSelectHandler ( ui.rowIndx, "TB10510S_grd_batPreJob" );
                     const row = $('#TB10510S_grd_batPreJob').pqGrid('instance').SelectRow().getSelection()
                     if (row.length > 0) {
                         TB10510S_grd_batPreJob_rowIndx = row[0].rowIndx
@@ -348,38 +349,35 @@ const TB10510Sjs = (function () {
                     batSch.setData(data.batSch)
 
                     // 그리드 rowSelect 이벤트
-                    batSch.on('rowSelect', function (evt, ui) {
-
+                    batSch.on('rowClick', function (evt, ui) {
+			
                         let ul = ui.addList
-                        let sel = batSch.SelectRow()
-                        getSel = sel.getSelection()
+                        /*let sel = batSch.SelectRow()
+                        getSel = sel.getSelection()*/
+						pqGridSelectHandler ( ui.rowIndx, "TB10510S_grd_batSch" );
+						
+                        rd = batSch.pdata[ui.rowIndx]
 
-                        if (getSel.length > 0) {
-                            if (ul[0].rowData.pq_rowselect) {
-                                rd = ul[0].rowData
+                        $('#TB10510S_rgst_jobId').val(rd.jobId)
+                        $('#TB10510S_rgst_jobId').prop('disabled', true)
+                        $('#TB10510S_rgst_jobName').val(rd.jobName)
+                        $('#TB10510S_rgst_jobType').val(rd.jobType)
+                        $('#TB10510S_rgst_arg').val(rd.argument)
+                        $('#TB10510S_rgst_cfm').val(rd.confirmYn)
+                        $('#TB10510S_rgst_dscrp').val(rd.description)
+                        $('#TB10510S_stdrDt').val(rd.stdrDt.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"))
 
-                                $('#TB10510S_rgst_jobId').val(rd.jobId)
-                                $('#TB10510S_rgst_jobId').prop('disabled', true)
-                                $('#TB10510S_rgst_jobName').val(rd.jobName)
-                                $('#TB10510S_rgst_jobType').val(rd.jobType)
-                                $('#TB10510S_rgst_arg').val(rd.argument)
-                                $('#TB10510S_rgst_cfm').val(rd.confirmYn)
-                                $('#TB10510S_rgst_dscrp').val(rd.description)
-                                $('#TB10510S_stdrDt').val(rd.stdrDt.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"))
+                        $('#TB10510S_jobRunTypeDcd').val(rd.jobRunTypeDcd)
+                        $('#TB10510S_jobRunStrtTime').val(rd.jobRunStrtTime.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3"))
 
-                                $('#TB10510S_jobRunTypeDcd').val(rd.jobRunTypeDcd)
-                                $('#TB10510S_jobRunStrtTime').val(rd.jobRunStrtTime.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3"))
+                        $('#TB10510S_addPreJob').prop('disabled', false)
+                        $('#TB10510S_delPreJob').prop('disabled', false);
 
-                                $('#TB10510S_addPreJob').prop('disabled', false)
-                                $('#TB10510S_delPreJob').prop('disabled', false);
+                        $('#TB10510S_delJob').prop('disabled', false);
 
-                                $('#TB10510S_delJob').prop('disabled', false);
+                        rd.rowType = 'M'
 
-                                rd.rowType = 'M'
-
-                                inqPreJob();
-                            }
-                        }
+                        inqPreJob();
                         /**
                          * 2025-02-21 김건우
                          * 회의때 삭제요청 

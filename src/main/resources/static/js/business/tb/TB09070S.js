@@ -305,6 +305,9 @@ const TB09070Sjs = (function () {
       // scrollModel: { autoFit: true },
       colModel: colM_TB09070S,
       strNoRows: "",
+	  rowClick: function (event, ui) {
+	    pqGridSelectHandler(ui.rowIndx, "TB09070S_rdmpTrgtDtlsGrid");		
+	  },
       // footer: true
     };
 

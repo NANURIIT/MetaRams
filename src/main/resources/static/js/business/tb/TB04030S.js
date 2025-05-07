@@ -111,6 +111,9 @@ const TB04030Sjs = (function () {
             pqGridObjDealList.option("rowDblClick", function (event, ui) {
               movePage(ui.rowData);
             });
+		  	pqGridObjDealList.option("rowClick", function (event, ui) {
+            	pqGridSelectHandler ( ui.rowIndx, "TB04030S_gridDealList" );
+          	});
           }
           else {
             pqGridObjDealList.setData([]);

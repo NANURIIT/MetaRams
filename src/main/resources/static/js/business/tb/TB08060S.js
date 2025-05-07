@@ -1029,6 +1029,10 @@ const TB08060Sjs = function () {
 			scrollModel: { autoFit: false },
 			colModel: accruedIntrCol,
 			strNoRows: '조회된 데이터가 없습니다.',
+			rowClick: function (event, ui) {
+				pqGridSelectHandler(ui.rowIndx, "TB08060S_settlementGrid");
+		
+			},
 			cellSave: function (evt, ui) {
 
 				if (ui.dataIndx === 'krwTrslExcBlce' || ui.dataIndx === 'bfmmAcmlErnAmt') {

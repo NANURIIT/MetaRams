@@ -120,6 +120,9 @@ const TB03020Sjs = (function () {
 				, maxHeight: 100
 				, id: 'gridEnoPList'
 				, colModel: colEnopList
+				,rowClick: function(evt, ui) {
+					pqGridSelectHandler ( ui.rowIndx, "gridEnoPList" );
+				},
 			}
 		]
 		setPqGrid(arrPqGridObj);
@@ -422,8 +425,8 @@ const TB03020Sjs = (function () {
 		}
 		if (checkedRows.length <= 0) {
 			Swal.fire({
-				icon: 'error'
-				, title: "Error!"
+				icon: 'warning'
+				, title: "Warning!"
 				, text: "삭제할 공동영업관리자 행을 체크해주세요."
 				, confirmButtonText: "확인"
 			});
@@ -909,8 +912,8 @@ const TB03020Sjs = (function () {
 
 		if (isEmpty($('#TB03020S_pynt_empNm').val())) {
 			Swal.fire({
-				icon: 'error'
-				, title: "Error!"
+				icon: 'warning'
+				, title: "Warning!"
 				, text: "결재자를 등록해주세요."
 				, confirmButtonText: "확인"
 			});
@@ -1174,19 +1177,21 @@ const TB03020Sjs = (function () {
 	let colEnopList = [
 		{
 			title: "삭제",
-			editable: true,
-			editor: { type: 'checkbox' },
 			dataType: "checkbox",
 			dataIndx: "delYn",
 			align: "center",
-			type: 'checkbox',
-			editType: 'checkbox',
+			minWidth: 36,
+      		maxWidth: 36,
+			type: "checkBoxSelection",
+			editable: true,
+			editor: false,
+			filter: { crules: [{ condition: "range" }] },
 			cb: {
 				all: true,
 				header: true,
 				check: "Y",
-				uncheck: "N"
-			}
+				uncheck: "N",
+			},
 		},
 		{
 			title: "부서코드",

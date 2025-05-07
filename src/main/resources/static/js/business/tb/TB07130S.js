@@ -205,10 +205,10 @@ const TB07130Sjs = (function () {
           resizable: true,
           title: "<p class='text-center'>No</p>",
         },
-        rowDblClick: function (event, ui) {
-          $('#grd_acctDtls').pqGrid('removeClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: prevRowIndx });
-          $('#grd_acctDtls').pqGrid('addClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: ui.rowIndx});
-          prevRowIndx = ui.rowIndx;
+        rowClick: function (event, ui) {
+  
+          pqGridSelectHandler( ui.rowIndx, "grd_acctDtls" );
+
           thdtTrDtlsGetData(ui.rowData);
         },
         //   , scrollModel : { autoFit: false }

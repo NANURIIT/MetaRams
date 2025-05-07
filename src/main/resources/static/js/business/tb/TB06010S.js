@@ -338,7 +338,7 @@ const TB06010Sjs = (function(){
 			dataType : "string", 
 			dataIndx : "bssAsstKndCdNm", 
 			halign	 : "center",
-			align    : "left",
+			align    : "center",
 			filter   : { crules: [{ condition: 'range' }] } ,
 		},
 		{ 	
@@ -408,7 +408,7 @@ const TB06010Sjs = (function(){
 			dataType : "string", 
 			dataIndx : "invstCrryCdNm",
 			halign	 : "center", 
-			align    : "left", 
+			align    : "center", 
 			filter   : { crules: [{ condition: 'range' }] },
 		},
 		{ 	
@@ -468,12 +468,18 @@ const TB06010Sjs = (function(){
 				, id: 'TB06010S_itrRelrInfo'
 				, numberCell: { show: false }
 				, colModel: colItrRelrInfo 		// 이해관계자
+				, rowClick: function (evt, ui) {
+					pqGridSelectHandler(ui.rowIndx, "TB06010S_itrRelrInfo");
+				  }
 			},
 			{
 				height: 120
 				, maxHeight: 120
 				, id: 'TB06010S_lstMrtgInfo' 	// 담보/보증정보
 				, colModel: colLstMrtgInfo
+				, rowClick: function (evt, ui) {
+					pqGridSelectHandler(ui.rowIndx, "TB06010S_lstMrtgInfo");
+				  }
 			},
 			{
 				height: 120
@@ -486,6 +492,9 @@ const TB06010Sjs = (function(){
 				, maxHeight: 120
 				, id: 'TB06010S_assetInfo'		// (보증)기초자산
 				, colModel: colAssetInfo
+				, rowClick: function (evt, ui) {
+					pqGridSelectHandler(ui.rowIndx, "TB06010S_assetInfo");
+				}
 			}
 		];
 
@@ -1930,8 +1939,10 @@ const TB06010Sjs = (function(){
 			dataType: "json",
 			success: function(data) {
 				arrPqGridAssetInfo.setData(data);
-				arrPqGridAssetInfo.option("rowDblClick", function(event, ui) {
-					assetInfoDetails(ui.rowData);
+				arrPqGridAssetInfo.option("rowClick", function(event, ui) {
+					//assetInfoDetails(ui.rowData);
+					pqGridSelectHandler(ui.rowIndx, "TB06010S_assetInfo", assetInfoDetails(ui.rowData));
+
 				});		
 			}
 		});

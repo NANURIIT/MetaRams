@@ -112,7 +112,37 @@ public class TB07080ServiceImpl implements TB07080Service {
 
 	@Override
     public int deleteIBIMS404B(TB06015SVO paramData){
-		int result = ibims404bMapper.deleteIBIMS404B(paramData);
+		//int result = ibims404bMapper.deleteIBIMS404B(paramData);
+		int result = 0;
+
+		log.debug("[deleteIBIMS404B] param check!!!!");
+		log.debug("prdtCd::: " + paramData.getPrdtCd());
+		log.debug("excSn::: " + paramData.getExcSn());
+
+		List<IBIMS404BDTO> intrtList = paramData.getIntrtList();
+
+		for(int i = 0; i < intrtList.size(); i++){
+			IBIMS404BDTO intrtDto = intrtList.get(i);
+
+			TB06015SVO paramVO = new TB06015SVO();
+
+			paramVO.setPrdtCd(paramData.getPrdtCd());
+			paramVO.setExcSn(paramData.getExcSn());
+			paramVO.setRgstSn(intrtDto.getRgstSn());
+
+			int dltRslt = ibims404bMapper.deleteIBIMS404B(paramVO);
+
+			if(dltRslt > 0){
+				log.debug("delete success!!");
+				result ++;
+			}else{
+				log.debug("delete failed!!");
+				return -1;
+			}
+
+			// log.debug(i + "st rgstSn::: " + intrtDto.getRgstSn());
+		}
+
 		return result;
 	};
 

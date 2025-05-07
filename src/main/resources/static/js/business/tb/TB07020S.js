@@ -327,10 +327,20 @@ const TB07020Sjs = (function () {
 			scrollModel: { autoFit: true },
 			colModel: colM_TB07020S,
 			strNoRows: '데이터가 없습니다.',
-			cellClick: function (event, ui) {
-				var rowData = ui.rowData;
-				getBuyDetail(rowData);
-			}
+			editModel: {
+				clicksToEdit: 1
+			},
+			rowClick: function (event, ui) {
+
+				// setFlow(getFlowLevel(rowData));
+				// showDetailData(rowData, true);
+				pqGridSelectHandler(ui.rowIndx, "TB07020S_tableList", getBuyDetail(ui.rowData));
+		
+			},
+			// cellClick: function (event, ui) {
+			// 	var rowData = ui.rowData;
+			// 	getBuyDetail(rowData);
+			// }
 		}
 
 		$('#TB07020S_tableList').pqGrid(obj);

@@ -128,7 +128,7 @@ public class ScheduleTask {
 		log.info( "################################################################################" );
 	}
     
-    @Scheduled(cron="0 0 23 * * *", zone="Asia/Seoul")
+    @Scheduled(cron="0 0 20 * * *", zone="Asia/Seoul")
 	public void batchScheduleService() throws Exception{
 
     	if (!batchRunning) {

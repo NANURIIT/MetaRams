@@ -834,7 +834,10 @@ const TB07220Sjs = (function () {
                 , colModel: pqGridColModel()
                 , editable: false
                 , scrollModel: { autoFit: false }
-                , summaryRow: true,
+                , summaryRow: true
+				, rowClick: function (evt, ui) {
+					pqGridSelectHandler ( ui.rowIndx, "TB07220S_spcBlceGrid" );
+                },
 				loadComplete: function () {
 	                this.refreshSummary();
 	            },

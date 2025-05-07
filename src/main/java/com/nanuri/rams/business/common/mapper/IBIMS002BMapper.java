@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.nanuri.rams.business.common.dto.IBIMS001BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS002BDTO;
+import com.nanuri.rams.business.common.vo.GD11000SVO;
 import com.nanuri.rams.business.common.vo.IBIMS001BVO;
 import com.nanuri.rams.business.common.vo.IBIMS002BVO;
 
@@ -37,4 +39,10 @@ public interface IBIMS002BMapper {
 
 	public int updtUseYn(IBIMS002BDTO paramData);	// 사용여부 변경시 바뀌는 행 갯수		
 	
+	// GD11000S 추가코드
+	public List<IBIMS002BVO> getAddCdInfo(IBIMS001BDTO paramData);
+
+	// GD11000S 저장, update라서 int로 
+	public int saveCodeInfo(IBIMS002BVO param);
+
 }

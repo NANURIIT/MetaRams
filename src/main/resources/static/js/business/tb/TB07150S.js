@@ -131,8 +131,8 @@ const TB07150Sjs = (function () {
   $("#TB07150S_R023_1").on("change", function () {
     var ctgry = $(this).val();
 
+    //한도변경
     if (ctgry == "02") {
-      //한도변경
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", true); //만기일자
@@ -152,8 +152,9 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", true);             
       $("#TB07150S_mnsBtn").prop("disabled", true);
-    } else if (ctgry == "03") {
-      //기한변경
+    } 
+    //기한변경
+    else if (ctgry == "03") {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", false); //만기일자
@@ -173,8 +174,9 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", true);             
       $("#TB07150S_mnsBtn").prop("disabled", true);
-    } else if (ctgry == "31") {
-      //기한연장 + 금리변경
+    } 
+    //기한연장 + 금리변경
+    else if (ctgry == "31") {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", false); //만기일자
@@ -194,8 +196,9 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", true);             
       $("#TB07150S_mnsBtn").prop("disabled", true);
-    } else if (ctgry == "04") {
-      //금리변경
+    } 
+    //금리변경
+    else if (ctgry == "04") {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", true); //만기일자
@@ -215,8 +218,9 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", false);             
       $("#TB07150S_mnsBtn").prop("disabled", false);
-    } else if (ctgry == "06") {
-      //차주변경
+    } 
+    //차주변경
+    else if (ctgry == "06") {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", false); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", false); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", true); //만기일자
@@ -236,7 +240,8 @@ const TB07150Sjs = (function () {
 
       $("#TB07150S_plsBtn").prop("disabled", true);             
       $("#TB07150S_mnsBtn").prop("disabled", true);
-    } else {
+    } 
+    else {
       $("#TB07150S_trOthrDscmNo_chng").prop("disabled", true); //거래상대방번호
       $("#TB07150S_trOthrDscmNm_chng").prop("disabled", true); //거래상대방명
       $("#TB07150S_ctrcExpDt_chng").prop("disabled", true); //만기일자
@@ -396,6 +401,24 @@ const TB07150Sjs = (function () {
     // 하단 금리정보
     let col_intrtInf_2 = [
       {
+        title: "삭제",
+        dataType: "checkbox",
+        dataIndx: "delYn",
+        align: "center",
+        minWidth: 36,
+            maxWidth: 36,
+        type: "checkBoxSelection",
+        editable: true,
+        editor: false,
+        filter: { crules: [{ condition: "range" }] },
+        cb: {
+          all: true,
+          header: true,
+          check: "Y",
+          uncheck: "N",
+        },
+      },
+      {
         title: "시작일자",
         dataType: "string",
         dataIndx: "aplyStrtDt",
@@ -548,13 +571,13 @@ const TB07150Sjs = (function () {
     let obj = [
       {
         height: 100,
-        maxHeight: 100,
+        maxHeight: 400,
         id: "grd_intrtInf_1",
         colModel: col_intrtInf_1,
       },
       {
         height: 100,
-        maxHeight: 100,
+        maxHeight: 400,
         editable: function () {
           var isEditable = false;
           if (
@@ -585,14 +608,13 @@ const TB07150Sjs = (function () {
 
   //변경 후 금리정보 행삭제
   function dltRow_grdIntrtInf2(){
-  
-    
-    var gridLgth =  $("#grd_intrtInf_2").pqGrid('option', 'dataModel.data').length;
-  
-    $("#grd_intrtInf_2").pqGrid("deleteRow", {rowIndx: gridLgth-1});
-  
-  
-    // $("#intrtInfoTable").pqGrid("setData", []);
+    let gridData = $("#grd_intrtInf_2").pqGrid('instance').pdata;
+
+    for ( let i = gridData.length - 1; i >= 0; i-- ) {
+      if ( gridData[i]["delYn"] === "Y" ) {
+        $("#grd_intrtInf_2").pqGrid("deleteRow", { rowIndx: i });
+      }
+    }
   }
 
   /*******************************************************************

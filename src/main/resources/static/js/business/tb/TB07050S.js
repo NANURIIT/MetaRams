@@ -533,6 +533,9 @@ const TB07050Sjs = (function () {
               resizable: true,
               title: "<p class='text-center'>순번</p>",
             },
+            rowClick: function (evt, ui) {
+              pqGridSelectHandler(ui.rowIndx, "prnaRdmpSchGrid");
+            },
             cellSave: function (event, ui) {
               // 수정된 행에 rowType 추가
               let rowIndx = ui.rowIndx,
@@ -641,6 +644,9 @@ const TB07050Sjs = (function () {
               width: 40,
               resizable: true,
               title: "<p class='text-center'>순번</p>",
+            },
+            rowClick: function (evt, ui) {
+              pqGridSelectHandler(ui.rowIndx, "intrRdmpSchGrid");
             },
             cellSave: function (event, ui) {
               // 수정된 행에 rowType 추가
@@ -760,6 +766,9 @@ const TB07050Sjs = (function () {
               width: 40,
               resizable: true,
               title: "<p class='text-center'>순번</p>",
+            },
+            rowClick: function (evt, ui) {
+              pqGridSelectHandler(ui.rowIndx, "excSchGrid");
             },
             cellSave: function (event, ui) {
               // 수정된 행에 rowType 추가

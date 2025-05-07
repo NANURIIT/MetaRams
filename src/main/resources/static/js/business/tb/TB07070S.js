@@ -308,7 +308,10 @@ const TB07070Sjs = (function () {
         id: "grd_07070",
         colModel: col07070,
         scrollModel: { autoFit: false },
-        selectionModel: { type: "row" },
+        // selectionModel: { type: "row" },
+        rowClick: function (evt, ui) {
+          pqGridSelectHandler(ui.rowIndx, "grd_07070");
+        },
       },
     ];
 

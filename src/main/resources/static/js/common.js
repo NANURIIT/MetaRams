@@ -1810,6 +1810,9 @@ function setPqGrid(pqGridObjs) {
       rowDblClick: rowDblClick,
       editorBegin: editorBegin,
       editorEnd: editorEnd,
+      editModel: {
+        clicksToEdit: 1
+      }
       // clipboard: { on: true }, // 클립보드 복사 활성화
       // selectionModel: { type: "cell" } // 셀 선택 활성화
       // selectionModel: { type: 'cell' }, // 셀 단위 선택 활성화
@@ -2599,4 +2602,128 @@ function toCamelCase(str) {
   } else {
     return str;
   }
+
+}
+
+/**
+   * pqgrid 셀렉트박스 원클릭 옵션
+   * @param { Object } ui : 셀렉트박스 박힌 셀 ui
+   * @param { int } optionsLength : 그리드 옵션 개수
+   * @author 태안 
+   * 
+   */
+function initSelectAutoOpen(ui, optionsLength) {
+  setTimeout(function () {
+    const $select = $(ui.$cell).find("select");
+    
+    // $(ui.$cell).css({
+    //   "overflow": "visible",
+    //   "position": "relative"
+    // });
+    // $(ui.$cell).closest(".pq-grid-row").css("overflow", "visible");
+
+    $select.focus();
+
+    const nativeSelect = $select.get(0);
+    if (nativeSelect) {
+
+      // const cellOffset = $(ui.$cell).offset();
+      // const windowHeight = $(window).height();
+
+      // const spaceBelow = windowHeight - cellOffset.top;
+      // const openUpward = spaceBelow < 200;
+
+      // if (openUpward) {
+      //   $(nativeSelect).css({
+      //     position: "absolute",
+      //     bottom: "100%",
+      //     top: "auto"
+      //   });
+      // } else {
+      //   $(nativeSelect).css({
+      //     position: "absolute",
+      //     top: "100%",
+      //     bottom: "auto"
+      //   });
+      // }
+
+      const mousedown = new MouseEvent("mousedown", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+      nativeSelect.dispatchEvent(mousedown);
+
+      const mouseup = new MouseEvent("mouseup", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+      nativeSelect.dispatchEvent(mouseup);
+
+      nativeSelect.size = optionsLength > 5 ? 5 : optionsLength;
+
+      $select.on("change", function () {
+        nativeSelect.size = 0;
+        $(nativeSelect).blur();
+      });
+    }
+  }, 50);
+}
+
+/**
+ * 피큐그리드 이용시 사용할 객체
+ * @author 김건우
+ */
+let pqGridParams = {};
+
+/**
+ * 피큐그리드 행 선택 (현재 어떤행에 대한 작업인지 표시용)
+ * @param { Number } rowIndx 
+ * @param { String } pqGridId 
+ * @param { Function } inqFn 
+ * @author 김건우
+ * @description
+ * pqGridParams[pqGridId + "_prevRowIndx"] 이전 로우인덱스 필요하신분 사용하시면 됩니다.
+ */
+function pqGridSelectHandler ( rowIndx, pqGridId, inqFn ) {
+
+  // 로우인덱스가 존재하거나 재조회를 했을시 초기화가 안된점 고려
+  if ( pqGridParams[pqGridId + "_prevRowIndx"] !== undefined && $(`#${pqGridId}`).pqGrid('instance').pdata.length >= pqGridParams[pqGridId + "_prevRowIndx"] + 1 ) {
+    $(`#${pqGridId}`).pqGrid('removeClass', { cls: 'custom-pq-select', rowIndx: pqGridParams[pqGridId + "_prevRowIndx"] });
+  }
+  $(`#${pqGridId}`).pqGrid('addClass', { cls: 'custom-pq-select', rowIndx: rowIndx });
+
+  pqGridParams[pqGridId + "_prevRowIndx"] = rowIndx;
+
+  if (inqFn) {
+  	inqFn();
+  }
+}
+
+/**
+ * 피큐그리드 행선택된거 지우개
+ * @param { String } pqGridId 
+ * @author 김건우
+ */
+function pqGridSelectRemover ( pqGridId ) {
+  if ( pqGridParams[pqGridId + "_prevRowIndx"] !== undefined && $(`#${pqGridId}`).pqGrid('instance').pdata.length >= pqGridParams[pqGridId + "_prevRowIndx"] + 1 ) {
+    $(`#${pqGridId}`).pqGrid('removeClass', { cls: 'custom-pq-select', rowIndx: pqGridParams[pqGridId + "_prevRowIndx"] });
+  }
+  pqGridParams[pqGridId + "_prevRowIndx"] = undefined;
+}
+
+/**
+ * 피큐그리드 삭제대상 표시
+ * @param { List } rowIndices 
+ * @param { String } pqGridId 
+ * @author 김건우
+ */
+function pqGridSetDelListHandler ( rowIndices, pqGridId ) {
+
+  for (let i = 0; i < rowIndices.length; i++ ) {
+    $(`#${pqGridId}`).pqGrid('addClass', { cls: 'custom-pq-delete', rowIndx: rowIndices[i] });
+  }
+
+  return;
 }

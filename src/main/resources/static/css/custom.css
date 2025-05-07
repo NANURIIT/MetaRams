@@ -510,3 +510,19 @@ hr{ margin-top: 0.5rem;
 .con-toast .toast-text-aria .toast-success {
 	color: greenyellow;
 }
+
+/* 피큐그리드 커스텀 css */
+.custom-pq-select {
+	font-weight: 300 !important;
+	background: rgba(90, 171, 224, 0.5) !important;
+	transition: background ease 0.5s;
+}
+
+.pq-grid-row {
+	transition: background ease 0.5s;
+}
+
+.custom-pq-delete {
+	font-weight: 300 !important;
+	background: rgb(255, 122, 122) !important;
+}

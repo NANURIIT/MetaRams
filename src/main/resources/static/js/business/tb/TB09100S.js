@@ -225,9 +225,9 @@ const TB09100Sjs = (function() {
 			scrollModel: { autoFit: true },
 			colModel: colM_exposureStatus,
 			strNoRows: "데이터가 없습니다.",
-			cellDblClick: function(event, ui) {
+			rowClick: function(event, ui) {
+				pqGridSelectHandler ( ui.rowIndx, "TB09110S_exposureStatus" );	
 				var rowData = ui.rowData;
-
 				getFeeIntTrList(rowData);
 			},
 		};
@@ -498,6 +498,9 @@ const TB09100Sjs = (function() {
 
 				if (data.length > 0) {
 					$("#TB09110S_revenue").pqGrid("setData", data);
+					$("#TB09110S_revenue").pqGrid("instance").option("rowClick", function (event, ui) {
+						pqGridSelectHandler ( ui.rowIndx, "TB09110S_revenue" );
+			        });
 				}
 			},
 			error: function(request, status, error) {

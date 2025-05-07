@@ -183,4 +183,46 @@
       WHERE CMNS_CD_GRP = #{cmnsCdGrp}
     </update>
 
+    <!-- GD11000S 추가코드 조회 -->
+    <select id = "getAddCdInfo" parameterType = "com.nanuri.rams.business.common.dto.IBIMS001BDTO" resultType = "com.nanuri.rams.business.common.vo.IBIMS002BVO">
+      SELECT A.CMNS_CD_GRP                            /* 공통코드그룹 */                               
+            , A.CD_VL_ID                              /* 코드값ID */
+            , A.CD_VL_NM                              /* 코드값명 */
+            , A.RSLT_CD_VL                            /* 변환후코드ID */
+            , A.RGST_DT                               /* 등록일자 */
+            , A.RGST_EMPNO                            /* 등록사원번호 */
+            , A.CD_SQ                                 /* 코드일련번호 */
+            , A.USE_YN                                /* 사용여부 */
+            , A.DEL_YN                                /* 삭제여부 */
+            , A.HND_EMPNO       					            /* 조작사원번호 */
+            , B.EMP_NM         AS "hndEmpnm"            /* 사원명 */
+       FROM IBIMS002B A 
+       LEFT JOIN IBIMS003B B
+         ON A.HND_EMPNO = B.EMPNO
+       LEFT JOIN IBIMS001B C 
+  		 ON C.CMNS_CD_GRP = A.CMNS_CD_GRP
+      WHERE 1=1
+      <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrp)">
+        AND A.CMNS_CD_GRP = #{cmnsCdGrp}
+      </if>
+      <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(cmnsCdGrpExpl)">
+        AND C.CMNS_CD_GRP_EXPL LIKE '%' || #{cmnsCdGrpExpl} || '%'
+      </if>
+      ORDER
+ 		     BY A.RGST_DT
+
+    </select>
+
+
+    <!-- GD11000S 코드값명, 사용여부, 삭제여부 업데이트 코드 -->
+    <update id="saveCodeInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS002BVO">  /* parameterType은 GD11000SVO에서, resultType은 update여서 int라 생략 */
+      UPDATE IBIMS002B                                                                        /* 업데이트할 테이블 */
+         SET CD_VL_NM = #{cdVlNm}                                                             /* 컬럼 : 코드값명을 업데이트 */
+           , USE_YN = #{useYn}                                                                /* 사용여부 업데이트 */
+           , DEL_YN = #{delYn}                                                                /* 삭제여부 업데이트 */
+       WHERE 1=1 
+         AND CMNS_CD_GRP = #{cmnsCdGrp}                                                       /* PK값인 그룹코드가 같을때 */
+         AND CD_VL_ID = #{cdVlId}                                                             /* PK값인 코드ID가 같을때 */
+    </update>
+
 </mapper>

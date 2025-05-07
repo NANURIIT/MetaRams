@@ -227,75 +227,6 @@ const TB07090Sjs = (function () {
           return option ? option.cdValue : ui.cellData;
         },
       },
-      // , {
-      //     title: "원금",
-      //     dataType: "string",
-      //     dataIndx: "prarPrna",
-      //     halign: "center",
-      //     align: "center",
-      //     filter: { crules: [{ condition: 'range' }] },
-      //     render: function (ui) {
-
-      // 		var cellData = ui.cellData;
-      // 		if(cellData == null || cellData == ''){
-      // 			cellData = 0;
-      // 		}
-      // 		var value = parseFloat(cellData);
-
-      // 		var formattedValue = value.toLocaleString('ko-KR', {
-      // 			minimumFractionDigits: 0,
-      // 			maximumFractionDigits: 2
-      // 		});
-
-      // 		return formattedValue;
-      // 	}
-      // }
-      // , {
-      //     title: "이자",
-      //     dataType: "string",
-      //     dataIndx: "rdmpPrarIntr",
-      //     halign: "center",
-      //     align: "center",
-      //     filter: { crules: [{ condition: 'range' }] },
-      //     render: function (ui) {
-
-      // 		var cellData = ui.cellData;
-      // 		if(cellData == null || cellData == ''){
-      // 			cellData = 0;
-      // 		}
-      // 		var value = parseFloat(cellData);
-
-      // 		var formattedValue = value.toLocaleString('ko-KR', {
-      // 			minimumFractionDigits: 0,
-      // 			maximumFractionDigits: 2
-      // 		});
-
-      // 		return formattedValue;
-      // 	}
-      // }
-      // , {
-      //     title: "수수료",
-      //     dataType: "string",
-      //     dataIndx: "fee",
-      //     halign: "center",
-      //     align: "center",
-      //     filter: { crules: [{ condition: 'range' }] },
-      //     render: function (ui) {
-
-      // 		var cellData = ui.cellData;
-      // 		if(cellData == null || cellData == ''){
-      // 			cellData = 0;
-      // 		}
-      // 		var value = parseFloat(cellData);
-
-      // 		var formattedValue = value.toLocaleString('ko-KR', {
-      // 			minimumFractionDigits: 0,
-      // 			maximumFractionDigits: 2
-      // 		});
-
-      // 		return formattedValue;
-      // 	}
-      // }
       {
         title: "납부예정금액",
         dataType: "integer",
@@ -304,20 +235,11 @@ const TB07090Sjs = (function () {
         halign: "center",
         align: "right",
         filter: { crules: [{ condition: "range" }] },
-        // render: function (ui) {
-        //   var cellData = ui.cellData;
-        //   if (cellData == null || cellData == "") {
-        //     cellData = 0;
-        //   }
-        //   var value = parseFloat(cellData);
-
-        //   var formattedValue = value.toLocaleString("ko-KR", {
-        //     minimumFractionDigits: 0,
-        //     maximumFractionDigits: 2,
-        //   });
-
-        //   return formattedValue;
-        // },
+      },
+      {
+        title: "상환회차",
+        dataIndx: "rdmpTmrd",
+        hidden: true
       },
     ];
 
@@ -356,6 +278,24 @@ const TB07090Sjs = (function () {
       // 		return cellData;
       // 	}
       // }
+      {
+        title: "삭제",
+        dataType: "checkbox",
+        dataIndx: "delYn",
+        align: "center",
+        minWidth: 36,
+        maxWidth: 36,
+        type: "checkBoxSelection",
+        editable: true,
+        editor: false,
+        filter: { crules: [{ condition: "range" }] },
+        cb: {
+          all: true,
+          header: true,
+          check: "Y",
+          uncheck: "N",
+        },
+      },
       {
         title: "입금일자",
         dataType: "string",
@@ -431,16 +371,6 @@ const TB07090Sjs = (function () {
         align: "right",
         width: "165",
         filter: { crules: [{ condition: "range" }] },
-        editor: {
-          type: "textbox",
-          init: function (ui) {
-            var $inp = ui.$cell.find("input");
-            $inp.on("input", function () {
-              this.value = this.value.replace(/[^0-9]/g, "");
-              inputNumberFormat(this);
-            });
-          },
-        },
         // render: function (ui) {
         //   var cellData = ui.cellData;
         //   if (cellData == null || cellData == "") {
@@ -471,26 +401,6 @@ const TB07090Sjs = (function () {
         align: "right",
         width: "165",
         filter: { crules: [{ condition: "range" }] },
-        // render: function (ui) {
-        //   var cellData = ui.cellData;
-        //   if (cellData == null || cellData == "") {
-        //     cellData = 0;
-        //   }
-        //   var value = "";
-
-        //   if (String(cellData).includes(",")) {
-        //     value = parseInt(cellData.replaceAll(",", ""), 10);
-        //   } else {
-        //     value = parseInt(cellData, 10);
-        //   }
-
-        //   var formattedValue = value.toLocaleString("ko-KR", {
-        //     minimumFractionDigits: 0,
-        //     maximumFractionDigits: 0,
-        //   });
-
-        //   return formattedValue;
-        // },
       },
       {
         title: "이체기관",
@@ -508,8 +418,6 @@ const TB07090Sjs = (function () {
         },
         render: function (ui) {
           var options = fnltList;
-          // console.log("stdrIntrtKndCdList{}", stdrIntrtKndCdList);
-          // console.log("options{}", options);
           var option = options.find((opt) => opt.fnltCd == ui.cellData);
           return option ? option.fnltNm : ui.cellData;
         },
@@ -584,6 +492,24 @@ const TB07090Sjs = (function () {
     // IBIMS431B 
     let TB07090S_colModel3 = [
       {
+        title: "삭제",
+        dataType: "checkbox",
+        dataIndx: "delYn",
+        align: "center",
+        minWidth: 36,
+        maxWidth: 36,
+        type: "checkBoxSelection",
+        editable: true,
+        editor: false,
+        filter: { crules: [{ condition: "range" }] },
+        cb: {
+          all: true,
+          header: true,
+          check: "Y",
+          uncheck: "N",
+        },
+      },
+      {
         title: "Deal번호",
         editable: false,
         dataType: "string",
@@ -654,31 +580,6 @@ const TB07090Sjs = (function () {
         halign: "center",
         align: "right",
         filter: { crules: [{ condition: "range" }] },
-        // 데이터 변경시 입금증등록내역 - 납부예정금액 변경 실패했음 헬프 2025-01-08
-        render: function (ui) {
-          // pqgrid값을 바꿨을때 입금증등록내역에 납부예정금액이 얼마가 되는지 보여주기
-          const rctmDtlsMappingGridData = $('#TB07090S_colModel2').pqGrid("instance").pdata;
-
-          let updateIndx;
-
-          for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
-            if (rctmDtlsMappingGridData[i].rctmDt === ui.rowData.rctmDt
-              && rctmDtlsMappingGridData[i].rgstSeq === Number(ui.rowData.rgstSeq)
-            ) {
-              updateIndx = i;
-              break;
-            }
-          }
-
-          if (Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number(colModel3_dealRctmAmt) + Number(ui.cellData)) {
-            $('#TB07090S_colModel3').pqGrid("instance").updateRow({
-              rowIndx: ui.rowIndx,
-              row: {
-                beforeDealRctmAmt: Number(ui.cellData)
-              }
-            })
-          }
-        }
       },
       // {
       //   title: "변경전입금금액",
@@ -810,18 +711,9 @@ const TB07090Sjs = (function () {
         scrollModel: { autoFit: true },
         editable: false,
         rowClick: function (evt, ui) {
-          // const grid = this;
-          //const $grid = $(grid);
-          if (selected_rdmpPrarDtl === ui.rowData) {
-            selected_rdmpPrarDtl = null;
-            //$grid.pqGrid("setSelection", null);
-            //$("#rowSelect_pre").html('');
-          } else {
-            selected_rdmpPrarDtl = ui.rowData;
-            //console.log('Selected Row Data:', selected_rdmpPrarDtl);
-          }
+          selected_rdmpPrarDtl = ui.rowData;
+          pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel1");
         },
-        selectionModel: { type: "row" },
       },
       {
         height: 200,
@@ -848,22 +740,31 @@ const TB07090Sjs = (function () {
           else if (!ui.rowData.hndDetlDtm && ui.column.dataIndx === "rctmDt") {
             ui.column.editable = true;
           }
-        },
-        rowClick: function (event, ui) {
-          if (TB07090S_rowData === ui.rowData) {
-            TB07090S_rowData = TB07090S_dummyData;
-          } else {
-            TB07090S_rowData = ui.rowData;
+
+          // 클릭시 조회
+          if (ui.column.dataIndx === "delYn") {
+
           }
-          if (selected_dptrRgstDtl === ui.rowData) {
-            colModel2_rowIndx = null;
-            selected_dptrRgstDtl = null;
-          } else {
+          else {
             colModel2_rowIndx = ui.rowIndx;
             selected_dptrRgstDtl = ui.rowData;
+            pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel2");
           }
         },
-        selectionModel: { type: "row" },
+        cellSave: function (evt, ui) {
+          if (ui.dataIndx === "dealRctmAmt") {
+            // 입금금액 설정 validation
+            if (ui.rowData.pmntPrarAmt > ui.newVal) {
+              Swal.fire({
+                icon: 'warning'
+                , title: 'Warning!'
+                , text: '입금금액을 납부예정금액보다 낮게 설정하실 수 없습니다!'
+              })
+              $('#TB07090S_colModel2').pqGrid('instance').pdata[ui.rowIndx].dealRctmAmt = ui.oldVal;
+              $('#TB07090S_colModel2').pqGrid('instance').refresh();
+            }
+          }
+        }
       },
       {
         height: 200,
@@ -872,64 +773,98 @@ const TB07090Sjs = (function () {
         colModel: col3,
         scrollModel: { autoFit: true },
         editable: true,
-        rowClick: function (event, ui) {
-          if (TB07090S_rowData === ui.rowData) {
-            colModel3_rowIndx = null;
-            TB07090S_rowData = TB07090S_dummyData;
-          } else {
-            colModel3_rowIndx = ui.rowIndx;
-            TB07090S_rowData = ui.rowData;
+        cellClick: function (event, ui) {
+          if (ui.column.dataIndx === "delYn") {
+
+          }
+          else {
+            pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel3");
           }
         },
-        selectionModel: { type: "row" },
-        // 날짜선택 테스트 시작
-        editorBegin: function (event, ui) {
+        cellSave: function (evt, ui) {
+          if (ui.dataIndx === "dealRctmAmt") {
+            // pqgrid값을 바꿨을때 입금증등록내역에 납부예정금액이 얼마가 되는지 보여주기
+            const rctmDtlsMappingGridData = $('#TB07090S_colModel2').pqGrid("instance").pdata;
 
-          if (ui.column.dataIndx === 'isuDt') {
+            let updateIndx;
 
-            editorData = $(ui.$editor).val()
+            for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
+              if (rctmDtlsMappingGridData[i].rctmDt === ui.rowData.rctmDt
+                && rctmDtlsMappingGridData[i].rgstSeq === Number(ui.rowData.rgstSeq)
+              ) {
+                updateIndx = i;
+                break;
+              }
+            }
 
-            $(ui.$editor).datepicker({
-              todayBtn: "linked",
-              autoclose: true,
-              format: "yyyy-mm-dd",
-              keyboardNavigation: false,
-              forceParse: false,
-              calendarWeeks: false,
-              language: "ko",
-            }).on("show", function (e) {
-              isDatePickerOpen = true;
-            }).on("hide", function (e) {
-              isDatePickerOpen = false;
-              $("#TB07200S_pblHis").pqGrid("instance").refresh();
-            })
+            let prevPrarAmt = $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt;
 
-            $(ui.$editor).on('focus', function () {
-              $(".datepicker").find('td').on('pointerdown', function () {
-                let date = new Date(Number($(this).attr('data-date')))
-                editorData = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0') + String(date.getDate()).padStart(2, '0')
-              });
-            })
+            $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt = Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number(ui.oldVal) + Number(ui.newVal);
 
-            $(ui.$editor).on('input', function () {
-              editorData = $(this).val()
-            })
+            if ($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt > $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].dealRctmAmt) {
+              $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt = prevPrarAmt;
+              Swal.fire({
+                icon: "warning"
+                , title: "Warning!"
+                , text: "납부예정금액은 입금금액보다 적어야합니다!"
+              })
+              $('#TB07090S_colModel3').pqGrid('instance').pdata[ui.rowIndx].dealRctmAmt = ui.oldVal
+              $('#TB07090S_colModel3').pqGrid("instance").refresh();
+            }
+            else {
+              $('#TB07090S_colModel2').pqGrid("instance").refresh();
+            }
 
-            $(ui.$editor).inputmask('99999999');
           }
-          // else if ( ui.column.dataIndx === 'expDt' ) {
-          //     console.log(ui);
-          // }
-        },
-        editorEnd: function (event, ui) {
-          $("#TB07200S_pblHis").pqGrid("instance").pdata[ui.rowIndx].isuDt = editorData
-          $("#TB07200S_pblHis").pqGrid("instance").refresh();
-          if (isDatePickerOpen) {
-            return false;
-          }
-          return true;
-        },
-        // 날짜선택 테스트 끝
+        }
+        // // 날짜선택 테스트 시작
+        // editorBegin: function (event, ui) {
+
+        //   if (ui.column.dataIndx === 'isuDt') {
+
+        //     editorData = $(ui.$editor).val()
+
+        //     $(ui.$editor).datepicker({
+        //       todayBtn: "linked",
+        //       autoclose: true,
+        //       format: "yyyy-mm-dd",
+        //       keyboardNavigation: false,
+        //       forceParse: false,
+        //       calendarWeeks: false,
+        //       language: "ko",
+        //     }).on("show", function (e) {
+        //       isDatePickerOpen = true;
+        //     }).on("hide", function (e) {
+        //       isDatePickerOpen = false;
+        //       $("#TB07200S_pblHis").pqGrid("instance").refresh();
+        //     })
+
+        //     $(ui.$editor).on('focus', function () {
+        //       $(".datepicker").find('td').on('pointerdown', function () {
+        //         let date = new Date(Number($(this).attr('data-date')))
+        //         editorData = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0') + String(date.getDate()).padStart(2, '0')
+        //       });
+        //     })
+
+        //     $(ui.$editor).on('input', function () {
+        //       editorData = $(this).val()
+        //     })
+
+        //     $(ui.$editor).inputmask('99999999');
+        //   }
+        //   // else if ( ui.column.dataIndx === 'expDt' ) {
+        //   //     console.log(ui);
+        //   // }
+        // },
+        // editorEnd: function (event, ui) {
+        //   $("#TB07200S_pblHis").pqGrid("instance").pdata[ui.rowIndx].isuDt = editorData
+        //   $("#TB07200S_pblHis").pqGrid("instance").refresh();
+        //   if (isDatePickerOpen) {
+        //     return false;
+        //   }
+        //   return true;
+        // },
+        // // 날짜선택 테스트 끝
       },
     ];
     setPqGrid(pqGridObjs);
@@ -1080,7 +1015,7 @@ const TB07090Sjs = (function () {
     // 3. 선택 다했으면 행을 추가해주는데 데이터를 같이 넣어주면 됨
     // 4. 그 뒤 저장을 누르면 됨
     // 6. 집에 가고싶다
-    if (selected_rdmpPrarDtl === null) {
+    if (!selected_rdmpPrarDtl) {
       swal.fire({
         icon: "warning"
         , text: "상환예정내역을 선택해주세요."
@@ -1097,17 +1032,11 @@ const TB07090Sjs = (function () {
     else if (selected_dptrRgstDtl && !selected_dptrRgstDtl.hndDetlDtm) {
       swal.fire({
         icon: "warning"
+        , title: "Warning!"
         , text: "등록된 입금증등록내역을 선택해주세요."
       })
       return;
     }
-
-    // console.log(selected_rdmpPrarDtl.dealNo)
-    // console.log(selected_rdmpPrarDtl.mngmBdcd)
-    // console.log(selected_dptrRgstDtl.rctmDt)
-    // console.log(selected_rdmpPrarDtl.scxDcd)
-    // console.log(selected_dptrRgstDtl.dealRctmAmt)
-    // console.log(selected_dptrRgstDtl.rgstSeq)
 
     let row = [];
     let newRow = {};
@@ -1144,6 +1073,9 @@ const TB07090Sjs = (function () {
           break;
         case "rdptObjtDvsnCd":
           newRow[dataIndx] = selected_rdmpPrarDtl.scxDcd;
+          break;
+        case "rdmpTmrd":
+          newRow[dataIndx] = selected_dptrRgstDtl.rdmpTmrd;
           break;
         case "excsPymtPrcsDvsnCd":
           newRow[dataIndx] = ""; // 구분코드는 현재 존재하지 않아서 사용하지 않음!
@@ -1204,26 +1136,31 @@ const TB07090Sjs = (function () {
     const rctmDtlsMappingGridData = $('#TB07090S_colModel3').pqGrid('instance').pdata
 
     const chkRctmDtlsMapping = () => {
-      let result = true;
+      console.log("화면체크시작")
+      let result = false;
       for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
+        
+        console.log(rctmDtlsMappingGridData[i].rdmpTmrd);
+        console.log(selected_rdmpPrarDtl.rdmpTmrd);
+        
         if (
           /* 딜번호! */
-          rctmDtlsMappingGridData[i].dealNo === selected_rdmpPrarDtl.dealNo
+          rctmDtlsMappingGridData[i].dealNo == selected_rdmpPrarDtl.dealNo
           /* 종목코드! */
-          && rctmDtlsMappingGridData[i].prdtCd === selected_rdmpPrarDtl.prdtCd
+          && rctmDtlsMappingGridData[i].prdtCd == selected_rdmpPrarDtl.prdtCd
           /* 실행일련번호! */
-          && Number(rctmDtlsMappingGridData[i].excSn) === Number(selected_rdmpPrarDtl.excSn)
+          && Number(rctmDtlsMappingGridData[i].excSn) == Number(selected_rdmpPrarDtl.excSn)
           /* 거래일련번호! */
-          && Number(rctmDtlsMappingGridData[i].trSn) === Number(selected_rdmpPrarDtl.trSn)
+          && Number(rctmDtlsMappingGridData[i].trSn) == Number(selected_rdmpPrarDtl.trSn)
           /* 수수료일련번호! */
-          && Number(rctmDtlsMappingGridData[i].feeSn) === Number(selected_rdmpPrarDtl.feeSn)
+          && Number(rctmDtlsMappingGridData[i].feeSn) == Number(selected_rdmpPrarDtl.feeSn)
           /* 상환회차! */
-          && Number(rctmDtlsMappingGridData[i].rdmpTmrd) === Number(selected_rdmpPrarDtl.rdmpTmrd)
+          && Number(rctmDtlsMappingGridData[i].rdmpTmrd) == Number(selected_rdmpPrarDtl.rdmpTmrd)
           /* 상환형태?구분코드! */
-          && rctmDtlsMappingGridData[i].rdptObjtDvsnCd === selected_rdmpPrarDtl.scxDcd
+          && rctmDtlsMappingGridData[i].rdptObjtDvsnCd == selected_rdmpPrarDtl.scxDcd
         ) {
           // 화면내 매핑된 정보가 있다면 false
-          result = false;
+          result = true;
           break;
         }
       }
@@ -1241,23 +1178,26 @@ const TB07090Sjs = (function () {
         if (data != 0) {
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "이미 매핑된 내역입니다!"
           })
           return;
         }
         // 이미 입금내역매핑이 있는 경우 (화면체크)
-        else if (!chkRctmDtlsMapping()) {
+        else if (chkRctmDtlsMapping()) {
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "이미 매핑된 내역입니다!"
           })
           return;
         }
         // 납부예정금액이 입금금액보다 커지는 경우 매핑 불가
         else if (Number(selected_dptrRgstDtl.dealRctmAmt) < Number(selected_dptrRgstDtl.pmntPrarAmt) + Number(newRow["pmntPrarAmt"])) {
-          // 스왈파이아 매핑불가능 
+          // 스왈파이아 매핑불가능
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "입금금액이 부족합니다!"
           })
           return;
@@ -1270,12 +1210,8 @@ const TB07090Sjs = (function () {
           });
 
           // 모든 검사를 마친 친구들은 매핑해준다
-          $('#TB07090S_colModel2').pqGrid("instance").updateRow({
-            rowIndx: selected_dptrRgstDtl.pq_ri,
-            row: {
-              pmntPrarAmt: Number(selected_dptrRgstDtl.pmntPrarAmt) + Number(newRow["pmntPrarAmt"])
-            }
-          });
+          $('#TB07090S_colModel2').pqGrid("instance").pdata[selected_dptrRgstDtl.pq_ri].pmntPrarAmt = Number(selected_dptrRgstDtl.pmntPrarAmt) + Number(newRow["pmntPrarAmt"]);
+          $('#TB07090S_colModel2').pqGrid("instance").refresh();
 
         }
       },
@@ -1293,82 +1229,79 @@ const TB07090Sjs = (function () {
     let rowIndx;
 
     if (colModelSelector.attr('id') === 'TB07090S_colModel2') {
-      if (colModel2_rowIndx === "" || colModel2_rowIndx === null) {
-        swal.fire({
-          icon: 'warning'
-          , text: "선택하고 지웁시다."
-        })
-        return;
+
+      let gridData = colModelSelector.pqGrid('instance').pdata;
+
+      let cnt = 0;
+
+      for (let i = gridData.length - 1; i >= 0; i--) {
+        if (gridData[i].delYn === "Y") {
+          if (gridData[i].pmntPrarAmt != 0 && gridData[i].pmntPrarAmt != undefined) {
+            // 납부예정금액이 있는 경우는 삭제 안함
+            cnt += 1;
+          }
+          else if (!gridData[i].rgstSeq) {
+            // 저장되지 않은 내용은 그리드에서만 삭제
+            colModelSelector.pqGrid("deleteRow", { rowIndx: i });
+          }
+          else {
+            // 삭제용 리스트 추가
+            rctmDtlsRgstDeleteList.push(
+              colModelSelector.pqGrid('instance').pdata[i]
+            )
+            // 행에서 삭제
+            colModelSelector.pqGrid("deleteRow", { rowIndx: i });
+          }
+        }
       }
-      else if (selected_dptrRgstDtl.pmntPrarAmt === 0) {
-        rowIndx = colModel2_rowIndx
-        // 삭제용 리스트 추가
-        rctmDtlsRgstDeleteList.push(
-          $('#TB07090S_colModel2').pqGrid('instance').pdata[colModel2_rowIndx]
-        )
-      }
-      else if (selected_dptrRgstDtl.rgstSeq === undefined) {
-        // 그냥 지우기
-        rowIndx = colModel2_rowIndx
-      }
-      else {
-        swal.fire({
+
+      if (cnt > 0) {
+        Swal.fire({
           icon: "warning"
-          , text: "매핑이 된 내역을 지우고 입금증등록내역을 삭제해주세요!"
+          , title: "Warning!"
+          , text: "입금내역매핑이 되어있는 경우는 입금내역매핑을 지우고 삭제해주세요!"
         })
-        return;
       }
+
     }
     else if (colModelSelector.attr('id') === 'TB07090S_colModel3') {
 
-      if (colModel3_rowIndx === "" || colModel3_rowIndx === null) {
-        swal.fire({
-          icon: 'warning'
-          , text: "선택하고 지웁시다."
-        })
-        return;
-      }
-
-      rowIndx = colModel3_rowIndx
-
-      let updateIndx;
-
       const rctmDtlsMappingGridData = $('#TB07090S_colModel2').pqGrid('instance').pdata
 
-      for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
-        if (rctmDtlsMappingGridData[i].rctmDt === TB07090S_rowData.rctmDt
-          && rctmDtlsMappingGridData[i].rgstSeq === Number(TB07090S_rowData.rgstSeq)
-        ) {
-          updateIndx = i;
-          break;
+      let gridData = colModelSelector.pqGrid('instance').pdata;
+
+      let cnt = 0;
+
+      for (let i = gridData.length - 1; i >= 0; i--) {
+        if (gridData[i].delYn === "Y") {
+
+          for (let j = 0; j < rctmDtlsMappingGridData.length; j++) {
+            if (
+              colModelSelector.pqGrid('instance').pdata[i].rctmDt == rctmDtlsMappingGridData[j].rctmDt
+              && colModelSelector.pqGrid('instance').pdata[i].rgstSeq == rctmDtlsMappingGridData[j].rgstSeq
+            ) {
+              // 입금증등록내역 업데이트
+              $('#TB07090S_colModel2').pqGrid("instance").pdata[j].pmntPrarAmt = Number($('#TB07090S_colModel2').pqGrid("instance").pdata[j].pmntPrarAmt) - Number($('#TB07090S_colModel3').pqGrid("instance").pdata[i].dealRctmAmt)
+              $('#TB07090S_colModel2').pqGrid("instance").refresh();
+            }
+          }
+
+          if (!gridData[i].hndDetlDtm) {
+            // 저장되지 않은 내용은 그리드에서만 삭제
+            colModelSelector.pqGrid("deleteRow", { rowIndx: i });
+          }
+          else {
+            // 삭제용 리스트 추가
+            rctmDtlsMappingDeleteList.push(
+              colModelSelector.pqGrid('instance').pdata[i]
+            )
+            // 행에서 삭제
+            colModelSelector.pqGrid("deleteRow", { rowIndx: i });
+          }
+
         }
       }
-
-      // 입금증등록내역 업데이트
-      $('#TB07090S_colModel2').pqGrid("instance").updateRow({
-        rowIndx: updateIndx,
-        row: {
-          pmntPrarAmt: Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number($('#TB07090S_colModel3').pqGrid("instance").pdata[rowIndx].pmntPrarAmt)
-        }
-      });
-
-      // 삭제용 리스트 추가
-      rctmDtlsMappingDeleteList.push(
-        $('#TB07090S_colModel3').pqGrid('instance').pdata[colModel3_rowIndx]
-      )
     }
-
-    colModelSelector.pqGrid("deleteRow", {
-      rowIndx: rowIndx,
-    });
-
-
-    if (colModelSelector.attr('id') === 'TB07090S_colModel2') {
-      colModel2_rowIndx = null
-    } else if (colModelSelector.attr('id') === 'TB07090S_colModel3') {
-      colModel3_rowIndx = null
-    }
-
   }
 
   /**
@@ -1414,6 +1347,7 @@ const TB07090Sjs = (function () {
         if (data > 0) {
           swal.fire({
             icon: "success"
+            , title: "Success!"
             , text: "저장성공!"
           })
           search_TB07090S();
@@ -1421,10 +1355,18 @@ const TB07090Sjs = (function () {
         else {
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "저장실패!"
           })
         }
       },
+      error: function () {
+        Swal.fire({
+          icon: "error"
+          , title: "Error!"
+          , text: "저장실패!"
+        })
+      }
     });
     rctmDtlsRgstDeleteList = [];
   }
@@ -1475,6 +1417,7 @@ const TB07090Sjs = (function () {
         if (data > 0) {
           swal.fire({
             icon: "success"
+            , title: "Success!"
             , text: "저장성공!"
           })
           search_TB07090S();
@@ -1482,10 +1425,18 @@ const TB07090Sjs = (function () {
         else {
           swal.fire({
             icon: "warning"
+            , title: "Warning!"
             , text: "저장실패!"
           })
         }
       },
+      error: function () {
+        Swal.fire({
+          icon: "error"
+          , title: "Error!"
+          , text: "저장실패!"
+        })
+      }
     });
     rctmDtlsMappingDeleteList = [];
   }
@@ -1503,573 +1454,6 @@ const TB07090Sjs = (function () {
     $("#TB07090S_dprtCd").val($("#userDprtCd").val());
     resetPGgrids("TB07090S");
   }
-
-  /**
-   * 태안씨 버전
-   * 태안씨 버전
-   * 태안씨 버전
-   * 태안씨 버전
-   * 태안씨 버전
-   * 태안씨 버전
-   */
-  /*
-   *  ====================PQGRID변환====================
-   */
-
-  // /*
-  //  *  PQGRID 줄추가
-  //  */
-  // function TB07090S_addNewRow(colModelId) {
-  //   //console.log(JSON.stringify(selected_rdmpPrarDtl));
-
-  //   var option = {};
-  //   option.title = "Error";
-  //   option.type = "error";
-
-  //   if (colModelId == "TB07090S_colModel2") {
-  //     //입금증등록내역 행 추가
-
-  //     if (!isEmpty(selected_rdmpPrarDtl)) {
-  //       if ($("#" + colModelId).pqGrid("option", "dataModel.data").length > 0) {
-  //         var isExist = false;
-
-  //         for (
-  //           var i = 0;
-  //           i < $("#" + colModelId).pqGrid("option", "dataModel.data").length;
-  //           i++
-  //         ) {
-  //           var rowData = $("#" + colModelId).pqGrid("getRowData", {
-  //             rowIndx: i,
-  //           });
-
-  //           var bfDealNo = rowData.dealNo;
-  //           //var bfPrarDt = rowData.prarDt;
-  //           var bfRctmAmt = rowData.pmntPrarAmt;
-
-  //           // alert("pmntPrarAmt::: " + pmntPrarAmt);
-  //           // alert("pmntPrarAmt:::" + selected_rdmpPrarDtl.pmntPrarAmt);
-
-  //           if (
-  //             bfDealNo === selected_rdmpPrarDtl.dealNo &&
-  //             Number(bfRctmAmt) === Number(selected_rdmpPrarDtl.pmntPrarAmt)
-  //           ) {
-  //             option.text = "이미 선택되었던 상환예정내역입니다.";
-  //             openPopup(option);
-  //             isExist = true;
-  //             return false;
-  //           }
-  //         }
-
-  //         if (!isExist) {
-  //           var newRow = {
-  //             dealNo: selected_rdmpPrarDtl.dealNo,
-  //             //prarDt          : selected_rdmpPrarDtl.prarDt,
-  //             mngmBdcd: selected_rdmpPrarDtl.mngmBdcd,
-  //             pmntPrarAmt: selected_rdmpPrarDtl.pmntPrarAmt,
-  //           };
-
-  //           $("#" + colModelId).pqGrid("addRow", {
-  //             rowData: newRow,
-  //             checkEditable: false,
-  //           });
-  //           $("#" + colModelId).pqGrid("refreshDataAndView");
-  //         }
-  //       } else {
-  //         var newRow = {
-  //           dealNo: selected_rdmpPrarDtl.dealNo,
-  //           //prarDt          : selected_rdmpPrarDtl.prarDt,
-  //           mngmBdcd: selected_rdmpPrarDtl.mngmBdcd,
-  //           pmntPrarAmt: selected_rdmpPrarDtl.pmntPrarAmt,
-  //         };
-
-  //         $("#" + colModelId).pqGrid("addRow", {
-  //           rowData: newRow,
-  //           checkEditable: false,
-  //         });
-  //         $("#" + colModelId).pqGrid("refreshDataAndView");
-  //       }
-  //     } else {
-  //       option.text = "상환예정내역을 선택하고 다시 시도해주세요.";
-  //       openPopup(option);
-  //       return false;
-  //     }
-  //   } else {
-  //     //입금내역매핑 행 추가
-
-  //     if (isEmpty(selected_rdmpPrarDtl)) {
-  //       option.text = "상환예정내역을 선택하고 다시 시도해주세요.";
-  //       openPopup(option);
-  //       return false;
-  //     } else if (isEmpty(selected_dptrRgstDtl)) {
-  //       option.text = "입금증등록내역을 선택하고 다시 시도해주세요.";
-  //       openPopup(option);
-  //       return false;
-  //     } else if (isEmpty(selected_dptrRgstDtl.rgstSeq)) {
-  //       option.text = "입금내역 등록 후 다시 시도해주세요.";
-  //       openPopup(option);
-  //       return false;
-  //     } else if (
-  //       selected_rdmpPrarDtl.dealNo != selected_dptrRgstDtl.dealNo ||
-  //       selected_rdmpPrarDtl.pmntPrarAmt != selected_dptrRgstDtl.pmntPrarAmt
-  //     ) {
-  //       option.text = "상환예정내역과 입금증등록내역이 일치하지 않습니다.";
-  //       openPopup(option);
-  //       return false;
-  //     } else {
-  //       if ($("#" + colModelId).pqGrid("option", "dataModel.data").length > 0) {
-  //         var isExist = false;
-
-  //         for (
-  //           var i = 0;
-  //           i < $("#" + colModelId).pqGrid("option", "dataModel.data").length;
-  //           i++
-  //         ) {
-  //           var rowData = $("#" + colModelId).pqGrid("getRowData", {
-  //             rowIndx: i,
-  //           });
-
-  //           var bfDealNo = rowData.dealNo;
-  //           //var bfPrarDt = rowData.prarDt;
-  //           var bfRctmAmt = rowData.rctmDt;
-
-  //           // alert("pmntPrarAmt::: " + pmntPrarAmt);
-  //           // alert("pmntPrarAmt:::" + selected_rdmpPrarDtl.pmntPrarAmt);
-
-  //           if (
-  //             bfDealNo === selected_dptrRgstDtl.dealNo &&
-  //             Number(bfRctmAmt) === Number(selected_dptrRgstDtl.rctmDt)
-  //           ) {
-  //             option.text = "이미 선택되었던 입금증등록내역입니다.";
-  //             openPopup(option);
-  //             isExist = true;
-  //             return false;
-  //           }
-  //         }
-
-  //         if (!isExist) {
-  //           var newRow = {
-  //             dealNo: selected_dptrRgstDtl.dealNo,
-  //             mngmBdcd: selected_dptrRgstDtl.mngmBdcd,
-  //             rctmDt: selected_dptrRgstDtl.rctmDt,
-  //             rdptObjtDvsnCd: selected_rdmpPrarDtl.scxDcd,
-  //             dealRctmAmt: selected_dptrRgstDtl.dealRctmAmt,
-  //             rgstSeq: selected_dptrRgstDtl.rgstSeq,
-  //           };
-
-  //           $("#" + colModelId).pqGrid("addRow", {
-  //             rowData: newRow,
-  //             checkEditable: false,
-  //           });
-  //           $("#" + colModelId).pqGrid("refreshDataAndView");
-  //         }
-  //       } else {
-  //         var newRow = {
-  //           dealNo: selected_dptrRgstDtl.dealNo,
-  //           mngmBdcd: selected_dptrRgstDtl.mngmBdcd,
-  //           rctmDt: selected_dptrRgstDtl.rctmDt,
-  //           rdptObjtDvsnCd: selected_rdmpPrarDtl.scxDcd,
-  //           dealRctmAmt: selected_dptrRgstDtl.dealRctmAmt,
-  //           rgstSeq: selected_dptrRgstDtl.rgstSeq,
-  //         };
-
-  //         $("#" + colModelId).pqGrid("addRow", {
-  //           rowData: newRow,
-  //           checkEditable: false,
-  //         });
-  //         $("#" + colModelId).pqGrid("refreshDataAndView");
-  //       }
-  //     }
-  //   }
-  // }
-
-  // /*
-  //  *  PQGRID 줄삭제
-  //  */
-  // function TB07090S_deleteRow(colModelId, yourFunction) {
-  //   let getLength =
-  //     colModelIdSelector(colModelId).pqGrid("instance").pdata.length;
-  //   let colModel = colModelIdSelector(colModelId);
-
-  //   if (
-  //     TB07090S_rowData != TB07090S_dummyData &&
-  //     TB07090S_pqGridLength < getLength &&
-  //     !TB07090S_rowData.excSn
-  //   ) {
-  //     colModel.pqGrid("deleteRow", {
-  //       rowData: TB07090S_rowData,
-  //       checkEditable: false,
-  //     });
-  //     TB07090S_rowData = TB07090S_dummyData;
-  //   } else if (
-  //     TB07090S_rowData === TB07090S_dummyData &&
-  //     TB07090S_pqGridLength < getLength
-  //   ) {
-  //     colModel.pqGrid("deleteRow", {
-  //       rowData: TB07090S_rowData,
-  //       checkEditable: false,
-  //     });
-  //     TB07090S_rowData = TB07090S_dummyData;
-  //   } else if (
-  //     TB07090S_rowData === TB07090S_dummyData &&
-  //     TB07090S_pqGridLength === getLength
-  //   ) {
-  //     if (TB07090S_pqGridLength === 0) {
-  //       Swal.fire({
-  //         icon: "warning",
-  //         text: "삭제할 데이터가 없습니다",
-  //         confirmButtonText: "확인",
-  //       });
-  //     } else {
-  //       Swal.fire({
-  //         icon: "warning",
-  //         text: "삭제하실 행을 선택해주세요",
-  //         confirmButtonText: "확인",
-  //       });
-  //     }
-  //   } else if (TB07090S_rowData != TB07090S_dummyData) {
-  //     Swal.fire({
-  //       icon: "warning",
-  //       text: "정말 삭제하시겠습니까?",
-  //       confirmButtonText: "확인",
-  //       denyButtonText: "아니오",
-  //       showDenyButton: true,
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         yourFunction();
-  //         TB07090S_rowData = TB07090S_dummyData;
-  //         return;
-  //       } else if (result.isDenied) {
-  //         TB07090S_rowData = TB07090S_dummyData;
-  //         return;
-  //       }
-  //     });
-  //   }
-  // }
-
-  // /*
-  //  *  PQGRID 초기화
-  //  */
-  // function TB07090S_resetPqGrid(colModelId) {
-  //   colModelIdSelector(colModelId).pqGrid("option", "dataModel.data", []);
-  //   colModelIdSelector(colModelId).pqGrid("refreshDataAndView");
-  // }
-
-  // /*
-  //  *  PQGRID 아이디 선택
-  //  */
-  // const colModelIdSelector = (colModelId) => {
-  //   return $(`#${colModelId}`);
-  // };
-  // /*
-  //  *  =====================PQGRID=====================
-  //  */
-
-  // function search_TB07090S() {
-  //   var rctmDt = $("#TB07090S_rctmDt").val(); //입금일자
-  //   //var fromDt      = $('#TB07090S_fromDate').val();            //상환예정일자 (조회 시작일)
-  //   //var toDt        = $('#TB07090S_toDate').val();              //상환예정일자 (조회 종료일)
-
-  //   var option = {};
-  //   option.title = "Error";
-  //   option.type = "error";
-
-  //   // if(isEmpty(rctmDt)){
-  //   //     option.text = "입금일자를 입력하고 다시 시도해주세요.";
-  //   // 	openPopup(option);
-  //   // 	return false;
-
-  //   // }else if(isEmpty(fromDt) || isEmpty(toDt) ){
-  //   //     option.text = "상환예정일자를 입력하고 다시 시도해주세요.";
-  //   // 	openPopup(option);
-  //   // 	return false;
-
-  //   // }else{
-  //   businessFunction(rctmDt);
-  //   //}
-
-  //   function businessFunction(rctmDt) {
-  //     //var paiRdmpDcd  = $('#TB07090S_E020').val();             //상환구분코드
-  //     var dealNo = $("#TB07090S_ibDealNo").val(); //딜번호
-  //     var dprtCd = $("#TB07090S_dprtCd").val(); //관리부서코드
-  //     var fromDt = $("#TB07090S_fromDate").val(); //상환예정일자 (조회 시작일)
-  //     var toDt = $("#TB07090S_toDate").val(); //상환예정일자 (조회 종료일)
-
-  //     var param = {
-  //       rctmDt: rctmDt.replaceAll("-", ""),
-  //       //paiRdmpDcd  : paiRdmpDcd,
-  //       dealNo: dealNo,
-  //       dprtCd: dprtCd,
-  //       fromDt: fromDt.replaceAll("-", ""),
-  //       toDt: toDt.replaceAll("-", ""),
-  //     };
-
-  //     inq(param);
-  //   }
-  // }
-
-  // //조회
-  // function inq(param) {
-  //   $.ajax({
-  //     type: "POST",
-  //     url: "/TB07090S/getDprtDtlsInfo",
-  //     contentType: "application/json; charset=UTF-8",
-  //     data: JSON.stringify(param),
-  //     dataType: "json",
-  //     beforeSend: function () {
-  //       $("#TB07090S_colModel1").pqGrid(
-  //         "option",
-  //         "strNoRows",
-  //         "조회 중입니다..."
-  //       );
-  //       $("#TB07090S_colModel2").pqGrid(
-  //         "option",
-  //         "strNoRows",
-  //         "조회 중입니다..."
-  //       );
-  //       $("#TB07090S_colModel3").pqGrid(
-  //         "option",
-  //         "strNoRows",
-  //         "조회 중입니다..."
-  //       );
-  //     },
-  //     success: function (data) {
-  //       // alert(JSON.stringify(data));
-
-  //       var rdmpPrarDtlsList = data.rdmpPrarDtlsList;
-  //       var rctmDtlsList = data.rctmDtlsList;
-  //       var dptrDtlsList = data.dprtDtlsList;
-
-  //       if (
-  //         rdmpPrarDtlsList.length < 1 &&
-  //         rctmDtlsList.length < 1 &&
-  //         dptrDtlsList.length < 1
-  //       ) {
-  //         var option = {};
-  //         option.title = "Error";
-  //         option.type = "error";
-
-  //         option.text = "조회된 데이터가 없습니다.";
-  //         openPopup(option);
-  //       }
-
-  //       // setGrid_TB07090S(rdmpPrarDtlsList, "TB07090S_colModel1");
-  //       // setGrid_TB07090S(rctmDtlsList, "TB07090S_colModel2");
-  //       // setGrid_TB07090S(dptrDtlsList, "TB07090S_colModel3");
-
-  //       var options = [
-  //         {
-  //           gridNm: "TB07090S_colModel1",
-  //           data: rdmpPrarDtlsList,
-  //         },
-  //         {
-  //           gridNm: "TB07090S_colModel2",
-  //           data: rctmDtlsList,
-  //         },
-  //         {
-  //           gridNm: "TB07090S_colModel3",
-  //           data: dptrDtlsList,
-  //         },
-  //       ];
-
-  //       pqGridSetData(options);
-  //     },
-  //   });
-  // }
-
-  // function setGrid_TB07090S(list, gridNm) {
-  //   var data = list;
-
-  //   if (data.length < 1) {
-  //     $("#" + gridNm).pqGrid(
-  //       "option",
-  //       "strNoRows",
-  //       "조회된 데이터가 없습니다."
-  //     );
-  //     $("#" + gridNm).pqGrid("setData", []);
-  //   } else {
-  //     $("#" + gridNm).pqGrid("setData", data);
-  //   }
-  // }
-
-  // //입금내역등록
-  // function rctmDtlsRgst() {
-  //   var gridLgth = $("#TB07090S_colModel2").pqGrid(
-  //     "option",
-  //     "dataModel.data"
-  //   ).length;
-  //   var paramCheck = false;
-
-  //   var paramList = [];
-
-  //   for (var i = 0; i < gridLgth; i++) {
-  //     var rowData = $("#TB07090S_colModel2").pqGrid("getRowData", {
-  //       rowIndx: i,
-  //     });
-
-  //     if (isEmpty(rowData.rgstSeq)) {
-  //       var dealNo = rowData.dealNo; //딜번호
-  //       //var prarDt = rowData.prarDt;                //상환예정일
-  //       var rctmDt = rowData.rctmDt; //입금일자
-  //       //var erlmSeq = i;                           //등록순번
-  //       var mngmBdcd = rowData.mngmBdcd; //관리부서코드
-  //       var fndsDvsnCd = rowData.fndsDvsnCd; //자금구분코드
-  //       var pmntPrarAmt = rowData.pmntPrarAmt; //입금금액(납부예정금액)
-  //       var aplcAmt = rowData.dealRctmAmt; //적용금액(실제입금금액)
-  //       var fnltCd = rowData.reltIsttCd; //기관(은행)
-  //       var bano = rowData.reltBano; //계좌번호
-  //       var dptrNm = rowData.dptrNm; //입금자명
-  //       var dprtCd = loginUsrDprtCd; //등록부서(로그인 사용자 부서)
-  //       var empNm = loginUsrId; //등록자(로그인 사용자 ID)
-  //       var rgstDtm = getCurrentDateTime(); //등록일시 (현재시간)
-
-  //       //alert(aplcAmt);
-  //       var reltIsttNm = fnltList.find((opt) => opt.fnltCd == fnltCd).fnltNm;
-
-  //       //alert(JSON.stringify(reltIsttNm));
-
-  //       var formattedAplcAmt = aplcAmt.includes(",")
-  //         ? aplcAmt.replaceAll(",", "")
-  //         : aplcAmt;
-
-  //       var dealExcsPymtAmt = 0; //초과납입금액
-
-  //       if (pmntPrarAmt < formattedAplcAmt) {
-  //         dealExcsPymtAmt = formattedAplcAmt - pmntPrarAmt;
-  //       }
-
-  //       var paramData = {
-  //         dealNo: dealNo, //딜번호
-  //         rctmDt: rctmDt, //입금일자
-  //         mngmBdcd: mngmBdcd, //관리부점코드
-  //         fndsDvsnCd: fndsDvsnCd, //자금구분코드
-  //         pmntPrarAmt: pmntPrarAmt, //납부예정금액
-  //         dealRctmAmt: formattedAplcAmt, //입금금액
-  //         dealExcsPymtAmt: dealExcsPymtAmt, //초과납입금액
-  //         reltIsttCd: fnltCd, //관련기관코드
-  //         reltIsttNm: reltIsttNm, //관련기관명
-  //         reltBano: bano, //관련은행계좌번호
-  //         dptrNm: dptrNm, //입금자명
-  //         rgstEmpno: empNm, //등록사원번호
-  //         rgstBdcd: dprtCd, //등록부점코드
-  //         rgstDtm: rgstDtm, //등록일시
-  //       };
-
-  //       paramList.push(paramData);
-  //     }
-  //   }
-
-  //   $.ajax({
-  //     type: "POST",
-  //     url: "/TB07090S/rctmDtlsRgst",
-  //     contentType: "application/json; charset=UTF-8",
-  //     data: JSON.stringify(paramList),
-  //     dataType: "json",
-  //     success: function (data) {
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Success!",
-  //         text: "입금내역등록이 완료되었습니다.",
-  //         confirmButtonText: "확인",
-  //       });
-
-  //       var rgstSeq = data;
-  //       var rgstDt = rgstDtm.split(" ")[0].replaceAll("-", "");
-
-  //       reInq(rgstDt);
-  //     },
-  //   });
-  // }
-
-  // //매핑내역등록
-  // function rctmDtlsMapping() {
-  //   var gridLgth = $("#TB07090S_colModel3").pqGrid(
-  //     "option",
-  //     "dataModel.data"
-  //   ).length;
-
-  //   var paramList = [];
-
-  //   for (var i = 0; i < gridLgth; i++) {
-  //     var rowData = $("#TB07090S_colModel3").pqGrid("getRowData", {
-  //       rowIndx: i,
-  //     });
-
-  //     var dealNo = rowData.dealNo; //딜번호
-  //     var mngmBdcd = rowData.mngmBdcd; //관리부서
-  //     var rctmDt = rowData.rctmDt; //입금일자
-  //     var rdptObjtDvsnCd = rowData.rdptObjtDvsnCd; //상환대상구분
-  //     var dealRctmAmt = rowData.dealRctmAmt; //입금금액
-  //     var excsPymtPrcsText = rowData.excsPymtPrcsText; //초과납입처리내용
-  //     var rgstSeq = rowData.rgstSeq; //등록순번
-
-  //     var paramData = {
-  //       dealNo: dealNo,
-  //       rctmDt: rctmDt,
-  //       mngmBdcd: mngmBdcd,
-  //       rdptObjtDvsnCd: rdptObjtDvsnCd,
-  //       dealRctmAmt: dealRctmAmt,
-  //       excsPymtPrcsText: excsPymtPrcsText,
-  //       rgstSeq: rgstSeq,
-  //     };
-
-  //     paramList.push(paramData);
-  //   }
-
-  //   //alert(JSON.stringify(paramList));
-  //   $.ajax({
-  //     type: "POST",
-  //     url: "/TB07090S/rctmDtlsMapping",
-  //     contentType: "application/json; charset=UTF-8",
-  //     data: JSON.stringify(paramList),
-  //     dataType: "json",
-  //     success: function (data) {
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Success!",
-  //         text: "입금내역매핑이 완료되었습니다.",
-  //         confirmButtonText: "확인",
-  //       });
-
-  //       // // var rgstSeq = data;
-  //       // var rgstDt = rgstDtm.split(" ")[0].replaceAll('-', '');
-
-  //       // reInq(rgstDt);
-  //     },
-  //   });
-  // }
-
-  // //재조회
-  // function reInq(rgstDt) {
-  //   var dealNo = $("#TB07090S_ibDealNo").val(); //딜번호
-  //   var dprtCd = $("#TB07090S_dprtCd").val(); //관리부서코드
-  //   var fromDt = $("#TB07090S_fromDate").val(); //상환예정일자 (조회 시작일)
-  //   var toDt = $("#TB07090S_toDate").val(); //상환예정일자 (조회 종료일)
-
-  //   var param = {
-  //     rgstDt: rgstDt,
-  //     dealNo: dealNo,
-  //     dprtCd: dprtCd,
-  //     fromDt: fromDt.replaceAll("-", ""),
-  //     toDt: toDt.replaceAll("-", ""),
-  //   };
-
-  //   inq(param);
-  // }
-
-  // //현재 일시 구하기
-  // function getCurrentDateTime() {
-  //   var currentDate = new Date();
-
-  //   var year = currentDate.getFullYear();
-  //   var month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  //   var day = String(currentDate.getDate()).padStart(2, "0");
-
-  //   var hours = String(currentDate.getHours()).padStart(2, "0");
-  //   var minutes = String(currentDate.getMinutes()).padStart(2, "0");
-  //   var seconds = String(currentDate.getSeconds()).padStart(2, "0");
-
-  //   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  // }
 
   function getDealInfoFromWF() {
 

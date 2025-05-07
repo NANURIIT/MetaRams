@@ -638,7 +638,10 @@ const TB07140Sjs = (function () {
         colModel: TB07140S_colModelData(),
         scrollModel: { autoFit: true },
         editable: false,
-        cellClick: function(event, ui) {
+        rowClick: function(event, ui) {
+
+          pqGridSelectHandler( ui.rowIndx, "TB07140S_colModel" );
+
           var rowData = ui.rowData;
   
           getFincDetail(rowData);

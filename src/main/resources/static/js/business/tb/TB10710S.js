@@ -241,6 +241,7 @@ const TB10710Sjs = function () {
                 , editable: false
                 , rowClick: function (event, ui) {
                     getParameter(ui.rowData.dudtMngmNo);
+					pqGridSelectHandler(ui.rowIndx, "TB10710S_colModel1");
                 }
                 , selectionModel: { type: 'row' }
             }
@@ -258,6 +259,9 @@ const TB10710Sjs = function () {
                 //         TB10710S_rowData = ui.rowData;
                 //     }
                 // }
+                , rowClick: function (event, ui) {
+					pqGridSelectHandler(ui.rowIndx, "TB10710S_colModel2");
+                }
                 , selectionModel: { type: 'row' }
             }
             , {
@@ -274,6 +278,9 @@ const TB10710Sjs = function () {
                 //         TB10710S_rowData = ui.rowData;
                 //     }
                 // }
+                , rowClick: function (event, ui) {
+					pqGridSelectHandler(ui.rowIndx, "TB10710S_colModel3");
+                }
                 , selectionModel: { type: 'row' }
             }
         ];
@@ -383,6 +390,7 @@ const TB10710Sjs = function () {
             data: JSON.stringify(paramData),
             dataType: "json",
             beforeSend: function () {
+                resetPGgrids("TB10710S");
                 Swal.fire({
                     icon: 'info',
                     title: '조회중입니다...',
@@ -426,6 +434,9 @@ const TB10710Sjs = function () {
     function getParameter(dudtMngmNo) {
 
         let paramData = dudtMngmNo
+
+        TB10710S_resetPqGrid("TB10710S_colModel2");
+        TB10710S_resetPqGrid("TB10710S_colModel3");
 
         $.ajax({
             type: "POST",

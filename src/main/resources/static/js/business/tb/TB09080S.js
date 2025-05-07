@@ -307,6 +307,9 @@ const TB09080Sjs = (function () {
       //scrollModel: { autoFit: true },
       colModel: colM_TB09080S,
       strNoRows: "조회된 데이터가 없습니다.",
+	  rowClick: function (event, ui) {
+	    pqGridSelectHandler(ui.rowIndx, "TB09080S_dealDtlsGrid");		
+	  },
     };
 
     $("#TB09080S_dealDtlsGrid").pqGrid(obj);

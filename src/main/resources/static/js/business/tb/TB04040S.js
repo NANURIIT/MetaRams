@@ -310,6 +310,9 @@ const TB04040Sjs = (function () {
             pqGridObjIssDtls.option("rowDblClick", function (event, ui) {
               issMovePage(ui.rowData);
             });
+		  	pqGridObjIssDtls.option("rowClick", function (event, ui) {
+            	pqGridSelectHandler ( ui.rowIndx, "TB04040_getIssDtls" );
+          	});
           } else {
             pqGridObjIssDtls.option("strNoRows", "조회된 데이터가 없습니다.");
             pqGridObjIssDtls.refreshDataAndView();

@@ -1,5 +1,3 @@
-
-
 const TB03030Sjs = (function(){
 	let arrPqGridRmEntpInfo;
 	let arrPqGridRmInfo;
@@ -26,14 +24,12 @@ const TB03030Sjs = (function(){
 				, maxHeight : 175
 				, id        : 'gridRmEntpInfo'
 				, colModel  : colRmEntpInfo
-				, selectionModel: { type: 'row' }
 			},
 			{
 				height    : 175
 				, maxHeight : 175
 				, id        : 'gridRmInfo'
 				, colModel  : colRmInfo
-				, selectionModel: { type: 'row' }
 			},
 		]
 
@@ -90,6 +86,7 @@ const TB03030Sjs = (function(){
 					if (data.length > 0) {
 						arrPqGridRmEntpInfo.setData(data);
 						arrPqGridRmEntpInfo.option("rowClick", function(event, ui) {
+							pqGridSelectHandler( ui.rowIndx ,"gridRmEntpInfo" );
 							TB03030S_setFileButtonEnabled(false);
 							$('#UPLOAD_FileList').empty();                    //관련자료
 							setRmInfo(ui.rowData); // RM활동이력 조회
@@ -145,6 +142,7 @@ const TB03030Sjs = (function(){
 					if (data.length > 0) {
 						arrPqGridRmInfo.setData(data);
 						arrPqGridRmInfo.option("rowClick", function(event, ui) {
+							pqGridSelectHandler( ui.rowIndx, "gridRmInfo" );
 							setFileInfo(ui.rowData);
 
 							TB03030S_setFileButtonEnabled(true);

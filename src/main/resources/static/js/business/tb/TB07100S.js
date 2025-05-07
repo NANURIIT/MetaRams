@@ -287,6 +287,8 @@ const TB07100Sjs = (function () {
 
     toggleBtnHandler('등록/변경');
 
+    pqGridSelectRemover("TB07100S_grd_rlthPruf");
+
     apvlBtnHandler();
   }
 
@@ -714,6 +716,24 @@ const TB07100Sjs = (function () {
         hidden: true
       },
       {
+        title: "삭제",
+        dataType: "checkbox",
+        dataIndx: "delYn",
+        align: "center",
+        minWidth: 36,
+            maxWidth: 36,
+        type: "checkBoxSelection",
+        editable: true,
+        editor: false,
+        filter: { crules: [{ condition: "range" }] },
+        cb: {
+          all: true,
+          header: true,
+          check: "Y",
+          uncheck: "N",
+        },
+      },
+      {
         title: "순번",
         dataType: "string",
         dataIndx: "sttmDetlSn",
@@ -852,6 +872,9 @@ const TB07100Sjs = (function () {
         , id: 'TB07100S_grd_rlthPruf'
         , colModel: col_rlthPruf
         , rowClick: function (evt, ui) {
+
+          pqGridSelectHandler( ui.rowIndx, "TB07100S_grd_rlthPruf" );
+
           setInputDataFromSelectData(ui.rowData, "TB07100S_mergeForm #TB07100S");
 
           $(`#TB07100S_fnltCd`).val(ui.rowData['xtnlIsttCd']);
@@ -883,21 +906,12 @@ const TB07100Sjs = (function () {
           getFileInfo($('div[data-menuid="/TB07100S"] #key1').val(), $('div[data-menuid="/TB07100S"] #fileKey2').val());
 
         }
-        , selectionModel: { type: "row" }
       },
       {
         height: 150
         , maxHeight: 150
         , id: 'TB07100S_grd_thdtTrDtls'
         , colModel: col_basic
-        , rowClick: function (evt, ui) {
-          if (sttmDetlIndex === ui.rowIndx) {
-            sttmDetlIndex = undefined;
-          }
-          else {
-            sttmDetlIndex = ui.rowIndx
-          }
-        }
         , cellClick: function (evt, ui) {
           if (ui.dataIndx === "prdtCd") {
             ui.column.editable = false;
@@ -906,7 +920,6 @@ const TB07100Sjs = (function () {
             ui.column.editable = false;
           }
         }
-        , selectionModel: { type: "row" }
       }
     ]
     setPqGrid(pqGridObjs);
@@ -1406,16 +1419,12 @@ const TB07100Sjs = (function () {
 
 
   function delRow() {
-    if (sttmDetlIndex === undefined) {
-      Swal.fire({
-        icon: 'warning'
-        , title: 'Warning'
-        , text: '삭제 할 행을 선택해주세요!'
-      })
-    }
-    else {
-      $("#TB07100S_grd_thdtTrDtls").pqGrid("deleteRow", { rowIndx: sttmDetlIndex });
-      sttmDetlIndex = undefined;
+    let gridData = $("#TB07100S_grd_thdtTrDtls").pqGrid('instance').pdata;
+
+    for ( let i = gridData.length - 1; i >= 0; i-- ) {
+      if ( gridData[i].delYn === "Y" ) {
+        $("#TB07100S_grd_thdtTrDtls").pqGrid("deleteRow", { rowIndx: i });
+      }
     }
   }
 

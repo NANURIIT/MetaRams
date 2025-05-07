@@ -698,7 +698,8 @@ const TB04010Sjs = (function () {
           arrPqGridDealListInfo.setData(data);
           if (rowIndx != "") {
           }
-          arrPqGridDealListInfo.option("rowDblClick", function (event, ui) {
+          arrPqGridDealListInfo.option("rowClick", function (event, ui) {
+            pqGridSelectHandler( ui.rowIndx, "gridDealListInfo" );
             btnStateReset();
             rowIndx = ui.rowIndx;
             dblclickYn = "1";
@@ -1265,7 +1266,8 @@ const TB04010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridAssetInfo.setData(data);
-        arrPqGridAssetInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridAssetInfo.option("rowClick", function (event, ui) {
+          pqGridSelectHandler( ui.rowIndx, "gridAssetInfo" );
           assetInfoDetails(ui.rowData);
         });
       },
@@ -1318,7 +1320,8 @@ const TB04010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridCncCmpnyInfo.setData(data);
-        arrPqGridCncCmpnyInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridCncCmpnyInfo.option("rowClick", function (event, ui) {
+          pqGridSelectHandler( ui.rowIndx, "gridCncCmpnyInfo" );
           relatedCompanyInfoDetails(ui.rowData);
         });
       },
@@ -1364,7 +1367,8 @@ const TB04010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridInsGrdInfo.setData(data);
-        arrPqGridInsGrdInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridInsGrdInfo.option("rowClick", function (event, ui) {
+          pqGridSelectHandler( ui.rowIndx, "gridInsGrdInfo" );
           getInsGrdInfoDetails(ui.rowData);
         });
       },
@@ -1462,7 +1466,8 @@ const TB04010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridMrtgInfo.setData(data);
-        arrPqGridMrtgInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridMrtgInfo.option("rowClick", function (event, ui) {
+          pqGridSelectHandler( ui.rowIndx, "gridMrtgInfo" );
           getMrtgInfoDetails(ui.rowData);
         });
       },
@@ -1518,7 +1523,8 @@ const TB04010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridEnsrInfo.setData(data);
-        arrPqGridEnsrInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridEnsrInfo.option("rowClick", function (event, ui) {
+          pqGridSelectHandler( ui.rowIndx, "gridEnsrInfo" );
           getEnsrInfoDetails(ui.rowData);
         });
       },
@@ -1567,7 +1573,8 @@ const TB04010Sjs = (function () {
       dataType: "json",
       success: function (data) {
         arrPqGridCmplInfo.setData(data);
-        arrPqGridCmplInfo.option("rowDblClick", function (event, ui) {
+        arrPqGridCmplInfo.option("rowClick", function (event, ui) {
+          pqGridSelectHandler( ui.rowIndx, "gridCmplInfo" );
           getCmplInfoDetails(ui.rowData);
         });
       },
@@ -2386,6 +2393,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_crevAmt").val(""); // 기초자산 평가액(원)
     $("#TB04010S_tab3_sn").val(""); // 항목일련번호
     $("#TB04010S_tab-3 .btn-success").prop("disabled", false); // 저장버튼
+    pqGridSelectRemover("gridAssetInfo");
   }
 
   // 기초자산정보 저장
@@ -2626,6 +2634,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_lrgstShrhldrNm").val("");
     $("#TB04010S_tab4_sn").val("");
     $("#TB04010S_tab-4 .btn-success").prop("disabled", false); // 저장버튼
+    pqGridSelectRemover("gridCncCmpnyInfo");
   }
 
   // 거래상대방정보 저장
@@ -2848,6 +2857,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_I012 option:eq(0)").prop("selected", true);
     $("#TB04010S_tab5_sn").val("");
     $("#TB04010S_tab-5 .btn-success").prop("disabled", false); // 저장버튼
+    pqGridSelectRemover("gridInsGrdInfo");
   }
 
   // 내부등급정보 저장
@@ -3185,6 +3195,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_mrtgRsnCnts").val(""); // 담보명
     $("#TB04010S_tab6_sn").val(""); // 항목일련번호
     $("#TB04010S_tab-6 .btn-success").prop("disabled", false); // 저장버튼
+    pqGridSelectRemover("gridMrtgInfo");
   }
 
   // 담보정보 저장
@@ -3368,6 +3379,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_grteCtns").val("");
     $("#TB04010S_tab7_sn").val("");
     $("#TB04010S_tab-7 .btn-success").prop("disabled", false); // 저장버튼
+    pqGridSelectRemover("gridEnsrInfo");
   }
 
   // 보증기관정보 저장
@@ -3548,6 +3560,7 @@ const TB04010Sjs = (function () {
     $("#TB04010S_dmgRprtnMxExtnt").val("0"); // 손해배상최대범위
     $("#TB04010S_rspsb_bsnsRgstNo").val(""); // 실명확인번호
     $("#TB04010S_tab-8 .btn-success").prop("disabled", false); // 저장버튼
+    pqGridSelectRemover("gridCmplInfo");
   }
 
   // 책임준공기관정보 저장

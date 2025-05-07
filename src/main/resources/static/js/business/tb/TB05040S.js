@@ -209,7 +209,8 @@ const TB05040Sjs = (function () {
         success: function (data) {
           arrPqGridDealList.option("strNoRows", "조회된 데이터가 없습니다.");
           arrPqGridDealList.setData(data);
-          arrPqGridDealList.option("rowDblClick", function (event, ui) {
+          arrPqGridDealList.option("rowClick", function (event, ui) {
+            pqGridSelectHandler( ui.rowIndx, "gridIbDealList" );
             setCouncilInfo(ui.rowData);
           });
         },
@@ -268,6 +269,7 @@ const TB05040Sjs = (function () {
 
   /* 20240621 결의년도 추가 */
   function dealInfo(e) {
+
     var dealNo = e.dealNo; // ibDeal번호
     var jdgmDcd = e.jdgmDcd; // 리스크심사구분코드
     var mtrDcd = e.mtrDcd; // 부수안건구분코드번호
@@ -286,6 +288,16 @@ const TB05040Sjs = (function () {
       data: dtoParam,
       dataType: "json",
       success: function (data) {
+
+        if ( data.cnsbDcd ) {
+          Swal.fire({
+            icon: 'info'
+            , title: 'Info!'
+            , text: '협의가 진행되지 않은 안건입니다!'
+          })
+          return;
+        }
+
         var dealInfo = data;
         /**
          * 결의협의체 조건

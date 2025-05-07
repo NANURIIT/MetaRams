@@ -167,7 +167,6 @@
          AND WRTN_DT = #{wrtnDt}
          AND RSLN_BDCD = #{rslnBdcd}
          AND CNST_NO = #{cnstNo}
-         <!-- AND STTM_DETL_SN = #{sttmDetlSn} -->
     </delete>
 
 </mapper>

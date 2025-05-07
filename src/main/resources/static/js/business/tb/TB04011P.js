@@ -364,9 +364,11 @@ function setMtrInfo_TB04011P(e) {
       return;
     }
 
+    console.log(e.mtrPrgSttsDcd.substr(0, 1));
+    console.log(e.mtrPrgSttsDcd);
+    
     // 심사진행상태가 "심사부안건승인"상태일것
-    if (e.mtrPrgSttsDcd != "208") {
-      // if (e.mtrPrgSttsDcd != "208" && e.mtrPrgSttsDcd.substr(0, 1) === "2") {
+    if (e.mtrPrgSttsDcd.substr(0, 1) === "2" && e.mtrPrgSttsDcd != "208") {
       Swal.fire({
         icon: "warning",
         title: "Warning",
@@ -375,7 +377,7 @@ function setMtrInfo_TB04011P(e) {
       return;
     }
     // 협의진행중
-    else if (e.mtrPrgSttsDcd.substr(0, 1) === "3") {
+    else if ( e.mtrPrgSttsDcd.substr(0, 1) >= "3") {
       Swal.fire({
         icon: "warning",
         title: "Warning",

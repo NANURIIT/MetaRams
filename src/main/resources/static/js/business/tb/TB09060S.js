@@ -405,14 +405,15 @@ const TB09060Sjs = (function () {
       //scrollModel: { autoFit: true },
       colModel: colM_Grid1,
       strNoRows: "조회된 데이터가 없습니다.",
-      cellDblClick: function (event, ui) {
+      rowClick: function (event, ui) {
+		pqGridSelectHandler ( ui.rowIndx, "TB09060S_grid1" );	
         //더블클릭시 확정 영역 input 채우고 일별연체내역 출력
         var rowData = ui.rowData;
         //console.log(rowData);
         setConfirmArea(rowData);
         //getList2(rowData);
       },
-      cellClick: function (event, ui) {
+      /*cellClick: function (event, ui) {
         //클릭시 선택한 열 볼드처리
         $("#TB09060S_grid1 .pq-grid-row").css("font-weight", "");
         //var row = $("#TB09060S_grid1").pqGrid("getRow", { rowIndx: ui.rowIndx});
@@ -420,7 +421,7 @@ const TB09060Sjs = (function () {
           "font-weight",
           "bold"
         );
-      },
+      },*/
     };
 
     $("#TB09060S_grid1").pqGrid(gridObj1);

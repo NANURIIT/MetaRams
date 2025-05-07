@@ -404,7 +404,7 @@
 		        , HND_TR_ID         /* 조작 거래 ID */
 		        , GUID              /* GUID */
 		    ) VALUES (
-		          NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD')) /* 당일일자 */
+		          TO_CHAR(SYSDATE,'YYYYMMDD') /* 당일일자 */
 		        , #{jobId}              /* JOB ID */
 		        , #{jobName}            /* JOB NAME */
 		        , #{jobType}            /* JOB TYPE */
@@ -447,7 +447,7 @@
     	UPDATE IBIMS997B
     	   SET JOB_STATUS = #{jobStatus}
     	 WHERE 1=1
-    	   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
+    	   AND CUR_DATE = TO_CHAR(SYSDATE,'YYYYMMDD')
     	   AND JOB_ID = #{jobId}
     </update>
     
@@ -474,7 +474,7 @@
 		     , GUID                 /* GUID                        */
 		  FROM IBIMS997B
 		 WHERE 1=1
-		   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD'))
+		   AND CUR_DATE = TO_CHAR(SYSDATE,'YYYYMMDD')
 		   AND JOB_ID   = #{jobId}
     </select>
     
@@ -489,7 +489,7 @@
     	                   WHERE 1=1
     	                     AND JOB_ID = #{jobId}
 		                 )
-		   AND CUR_DATE = NVL(#{curDate}, TO_CHAR(SYSDATE,'YYYYMMDD')) 
+		   AND CUR_DATE = TO_CHAR(SYSDATE,'YYYYMMDD')
     </select>
     
     <update id="updateBatchCmdDcd" parameterType="map">

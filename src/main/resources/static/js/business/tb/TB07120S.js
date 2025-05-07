@@ -497,13 +497,9 @@ const TB07120Sjs = (function () {
       scrollModel: { autoFit: true },
       colModel: colM_Grid1,
       strNoRows: "",
-      rowDblClick: function (evt, ui) {
+      rowClick: function (evt, ui) {
         // 선택된 줄 명확하게 보여주기 위한 이벤트
-        let gridlength = $('#TB07120S_grid1').pqGrid('instance').pdata.length
-        for( let i = 0; i < gridlength; i++ ){
-          $('#TB07120S_grid1').pqGrid('removeClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: i });
-        }
-        $('#TB07120S_grid1').pqGrid('addClass', { cls: 'pq-state-select ui-state-highlight', rowIndx: ui.rowIndx });
+        pqGridSelectHandler( ui.rowIndx, "TB07120S_grid1" )
 
         // let consDecdStatCd = ui.rowData.consDecdStatCd;
         setIbims452b(ui.rowData);
