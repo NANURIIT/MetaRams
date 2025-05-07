@@ -576,7 +576,8 @@
 			 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)">
  		   AND s103b.CHRR_EMPNO LIKE '%' || #{chrrEmpno} || '%'
  		   </if>		 
-		 ORDER BY s103b.SN
+		 ORDER BY s103b.DEAL_NO
+		 				, s103b.SN
     </select>
     
     <!-- 딜심사기본변경  -->

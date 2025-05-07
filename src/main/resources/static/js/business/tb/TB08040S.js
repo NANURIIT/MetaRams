@@ -11,8 +11,6 @@ const TB08040Sjs = (function() {
 	let fValid = -1; // 0 : 조회, 1 : 저장
 
 
-
-
 	$(document).ready(function() {
 		selBox_TB08040S(); // 셀렉트박스
 		pqGrid_TB08040S(); // PqGrid 생성
@@ -325,7 +323,7 @@ const TB08040Sjs = (function() {
 				// 	options: grdSelect.F015,//grdSelect.F004,
 				// },
 				render: function(ui) {
-					console.log(ui.cellData);					
+					//console.log(ui.cellData);					
 					let fSel = grdSelect.F015.find(
 						({ cdValue }) => cdValue == ui.cellData
 					);
@@ -527,7 +525,7 @@ const TB08040Sjs = (function() {
 							var formattedValue = value.toLocaleString('ko-KR', {
 								minimumFractionDigits: 0,
 								maximumFractionDigits: 2
-							});
+							});	
 							return formattedValue;
 						},
 					},
@@ -818,10 +816,8 @@ const TB08040Sjs = (function() {
 
 					if (dataIndx === 'feeKndCd') {
 						const grid = $("#grd_feeSch").pqGrid('instance');
-						//rowData = grid.getRowData({ rowInx: ui.rowIndx });
-						console.log(ui);
-						rowData = ui.rowData
-						// console.log(rowData);
+						//rowData = grid.getRowData({ rowInx: ui.rowIndx });						
+						rowData = ui.rowData						
 						var tempRowData = rd.feeKndCd;
 						var selectedIndex = selectBox2.findIndex(option => option.feeKndCd === tempRowData);
 						if (selectedIndex !== -1) {
@@ -841,8 +837,7 @@ const TB08040Sjs = (function() {
 								dataType: "json",
 								success: function(data) {
 									if (data.length == 1) {
-										data = data[0];
-										console.log(data);
+										data = data[0];										
 										ui.rowData['feeRcogDcd'] = data.feeRcogDcd;
 										ui.rowData['feeRcknDcd'] = data.feeRcknDcd;
 										ui.rowData['feeRt'] = data.feeRt;
@@ -882,30 +877,38 @@ const TB08040Sjs = (function() {
 						//console.log("feeStdrAmt" + rowData.feeStdrAmt);
 						//console.log("feeRt" + rowData.feeRt);
 
-						var feeRcknDcd = rd.feeRcknDcd;
-						var feeStdrAmt = rd.feeStdrAmt;
-						var feeRt = rd.feeRt;
+						var feeRcknDcd = rd.feeRcknDcd; // 수수료산정구분
+						var feeStdrAmt = rd.feeStdrAmt; //대상금액
+						var feeRt = rd.feeRt; //율
 						var feeHgstAmt = rd.feeHgstAmt; // 수수료최고금액
 						var feeLwstAmt = rd.feeLwstAmt; // 수수료최저금액
 						//feeAmt 수수료금액
 						if (feeRcknDcd == '02') {
-							// console.log(rd)
-							if (feeStdrAmt >= 0 && feeRt >= 0) {
+							// 요율 인 경우
+							if (feeStdrAmt > 0 && feeRt > 0) {								
 								// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
-								rd.feeAmt = feeStdrAmt * (feeRt / 100);
+								rd.feeAmt = (feeStdrAmt * feeRt) / 100;
 								rd.feeTrgtCtns = "*"
-								
 								if(rd.feeAmt > feeHgstAmt){
 									rd.feeAmt = feeHgstAmt;
 								}else if(rd.feeAmt < feeLwstAmt){
 									rd.feeAmt = feeLwstAmt;
 								}
+							} else if(feeStdrAmt == 0 || feeRt == 0){
+								rd.feeAmt = 0;
 							}
-						} else {
+						} 
+						else {
+
+
+
 							if (rd.feeAmt > feeHgstAmt) {
-								rd.feeAmt = feeHgstAmt;
-							} else if (rd.feeAmt < feeLwstAmt) {
-								rd.feeAmt = feeLwstAmt;
+								$('#grd_feeSch').pqGrid('instance').pdata[ui.rowIndx].feeAmt = feeHgstAmt;
+								// rd.feeAmt = feeHgstAmt;
+							}
+							 else if (rd.feeAmt < feeLwstAmt) {
+								$('#grd_feeSch').pqGrid('instance').pdata[ui.rowIndx].feeAmt = feeLwstAmt;
+								// rd.feeAmt = feeLwstAmt;
 							}
 						}
 						
@@ -929,10 +932,14 @@ const TB08040Sjs = (function() {
 						var feeHgstAmt = rowData.feeHgstAmt;
 						var feeLwstAmt = rowData.feeLwstAmt;
 						
-						if (feeRcknDcd != '02') {
-							if (rowData.feeAmt > feeHgstAmt) {
+						if (feeRcknDcd != '02') {							
+							if (feeHgstAmt === 0) {
+								return;
+							}
+							else if (rowData.feeAmt > feeHgstAmt) {
 								rowData.feeAmt = feeHgstAmt;
-							} else if (rowData.feeAmt < feeLwstAmt) {
+							} 
+							else if (rowData.feeAmt < feeLwstAmt) {
 								rowData.feeAmt = feeLwstAmt;
 							}
 						}
@@ -951,25 +958,25 @@ const TB08040Sjs = (function() {
 						rowData.rowType = "U"; // rowData 객체의 rowType을 직접 "M"으로 설정
 						// rowType이 "I"인 경우 그대로 유지
 						// UI에 반영
-						grid.refreshRow({ rowIndx: ui.rowIndx });
+						// grid.refreshRow({ rowIndx: ui.rowIndx });
 					}
-
-
 				},
 			    rowClick: function (evt, ui) {
 				  pqGridSelectHandler ( ui.rowIndx, "grd_feeSch" );
 			    },
-				/* cellClick: function (evt, ui) {
+				cellClick: function (evt, ui) {
+
+					if ( ui.rowData.feeRcknDcd === '02' && ui.dataIndx === "feeAmt" ) {
+						ui.column.editable = false
+					}
+					else {
+						ui.column.editable = true
+					}
+
 				   if (!ui.column || !ui.column.editor || !ui.column.editor.type) {
 					 return;
-				   }
-				   if (ui.column.editor.type === "select") {
-					 let $tag = $(ui.$td[0]);
-					 $tag.trigger("dblclick");
-				 	
-				 	
-				   }
-				 },*/
+				   }				
+				 },
 			},
 		];
 		setPqGrid(pqGridObjs);
