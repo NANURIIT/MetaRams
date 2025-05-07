@@ -163,12 +163,12 @@ const TB07200Sjs = (function () {
 
         // 신규항목 상세버튼 클릭시
         if (isEmpty(fincExcuRqsSn)) {
-            Swal.fire({
+           /* Swal.fire({
                 icon: "warning",
                 title: "Warning!",
                 text: "저장된 정보만 조회가능합니다!",
             })
-            return;
+            return;*/
         }
         // 이미 존재하는 항목 상세버튼 클릭시
         else {
@@ -1185,10 +1185,13 @@ const TB07200Sjs = (function () {
             if(!newRowExist){
                 $(gridId).pqGrid("addRow", {
                     rowData: {
+						chk: true,
                         fincExcuRqsDt: getToday(),
                         dprtCd: $("#userDprtCd").val()
                     }, checkEditable: false
                 });
+				pqGridSelectHandler ( gridLength, "TB07200S_wrkRqst" );
+				spcDetail(gridLength);
             }else{
                 Swal.fire({
                     icon: "warning",
@@ -1342,9 +1345,8 @@ const TB07200Sjs = (function () {
         else {
 
             const wrkRqstData = $("#TB07200S_wrkRqst").pqGrid("getRowData", { rowIndx: wrkRqstSlctdRow });
-
+			
             let validRslt = spcValidation(wrkRqstData, "wrkRqst");
-
             if (validRslt === 1) {
 
                 let pblHisList = $("#TB07200S_pblHis").pqGrid("getData");               // 유동화증권방행내역

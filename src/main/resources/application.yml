@@ -66,4 +66,5 @@ spring:
   sql:
     init:
       platform: oracle
-
+file:
+  upload-path: /data/upload
