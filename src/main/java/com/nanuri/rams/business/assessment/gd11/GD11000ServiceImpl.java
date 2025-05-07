@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -69,6 +70,46 @@ public class GD11000ServiceImpl implements GD11000Service {
     // List<IBIMS002BVO> addDtoList = ibims002BMapper.getAddCdInfo(paramData);
     // return addDtoList;
     // }
+    
+
+    // 계산기
+    @Override
+    public int listCalculator() {
+
+        int frstRslt = frstExam();
+        int scndRslt = scndExam();
+
+        return frstRslt + scndRslt;
+
+    }
+
+    public int frstExam(){
+
+        int [] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int result = 0;
+
+        
+        for (int i = 0; i < numbers.length; i++) {
+            //result += numbers[i];
+            result += numbers[i];
+        }
+         
+        log.debug("[listCalculator]result ::: "+ result);
+        return result; 
+    }
+
+    public int scndExam(){
+        int result = 0;
+
+        HashMap<String, Integer> numbers = new HashMap<>();
+        for (int i = 1; i <= 10; i++) {
+            numbers.put("number" + i, i);
+            // result += numbers.get()
+        }
+
+        log.debug("numbers ::: " + numbers);
+        return result;
+    }
 
     // ajax 한번에 태워서 통합조회
     @Override

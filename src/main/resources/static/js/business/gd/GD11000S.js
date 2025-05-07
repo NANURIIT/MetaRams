@@ -419,6 +419,32 @@ const GD11000Sjs = (function(){
     // 통합 코드조회
     function getCodeInfo (cmnsCdGrp) {
 
+        let test = {
+            $bottom: ""
+            , hi: function ( amt ) {
+                return "test" + String(amt);
+            }
+        }
+
+        let instance = $('#GD11000S_groupCodeListTable').pqGrid('instance');
+
+        instance.$bottom;
+
+        $($('#GD11000S_groupCodeListTable').pqGrid('instance').$header).prev('div').find('')
+        
+        .css({
+            "background-color": "red !important;"
+        })
+        // $('#GD11000S_groupCodeListTable').pqGrid('instance').refresh();
+
+        console.log(
+            $('#GD11000S_groupCodeListTable').pqGrid('instance')
+        );
+        
+        // console.log(test.hi( test.amt ));
+        // console.log(test.amt);
+        
+
         let paramData = {
             cmnsCdGrp: cmnsCdGrp,
             cmnsCdGrpExpl: $("#GD11000S_commonCodeGrpExpl").val()
@@ -458,9 +484,34 @@ const GD11000Sjs = (function(){
         resetPGgrids("GD11000S");
     }
 
+
+    // 계산기
+    function listCalculator() {
+        $.ajax({
+            url: "/GD11000S/listCalculator",
+            method: "get",
+            contentType: "application/json; charset=UTF-8",
+            // data: JSON.stringify(),
+            dataType: "json",
+            success: function(data) {
+                console.log("ArrayList 체크 ::: " + data);
+                
+            },
+            error: function () {
+                
+            }
+        })
+
+    }
+
+
+
+
+
     return {
         resetAll: resetAll,
-        GD11000S_saveCd: GD11000S_saveCd
+        GD11000S_saveCd: GD11000S_saveCd,
+        listCalculator: listCalculator
     };
 
 })();

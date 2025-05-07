@@ -120,6 +120,9 @@ const TB03020Sjs = (function () {
 				, maxHeight: 100
 				, id: 'gridEnoPList'
 				, colModel: colEnopList
+				,rowClick: function(evt, ui) {
+					pqGridSelectHandler ( ui.rowIndx, "gridEnoPList" );
+				},
 			}
 		]
 		setPqGrid(arrPqGridObj);

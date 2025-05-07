@@ -39,4 +39,7 @@ public interface GD11000Service {
     // 저장
     public int saveCodeInfo(GD11000SVO param);
     // 돌려야될 로직이 없다?! >> 임플에 작성해야지..
+
+    // 계산기
+    public int listCalculator();
 }
