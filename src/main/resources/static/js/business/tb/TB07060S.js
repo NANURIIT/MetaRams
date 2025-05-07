@@ -814,6 +814,9 @@ const TB07060Sjs = (function () {
         colModel: col_trDtls,
         scrollModel: { autoFit: false },
         selectionModel: { type: "row" },
+		rowClick: function(evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "grd_trDtls" );
+		},
       },
       {
         height: 150,
@@ -821,6 +824,9 @@ const TB07060Sjs = (function () {
         id: "grd_intrTrDtls",
         colModel: col_intrTrDtls,
         scrollModel: { autoFit: false },
+		rowClick: function(evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "grd_intrTrDtls" );
+		},
       },
       {
         height: 150,
@@ -828,12 +834,18 @@ const TB07060Sjs = (function () {
         id: "grd_feeRcivDtls",
         colModel: col_feeRcivDtls,
         scrollModel: { autoFit: false },
+		rowClick: function(evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "grd_feeRcivDtls" );
+		},
       },
       {
         height: 150,
         maxHeight: 150,
         id: "grd_excIntrtInf",
         colModel: col_excIntrtInf,
+		rowClick: function(evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "grd_excIntrtInf" );
+		},
         //   , scrollModel : { autoFit: false }
       },
     ];

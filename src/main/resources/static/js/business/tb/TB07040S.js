@@ -333,7 +333,7 @@ const TB07040Sjs = (function () {
 
 				// setFlow(getFlowLevel(rowData));
 				// showDetailData(rowData, true);
-				pqGridSelectHandler(ui.rowIndx, "TB07020S_tableList", getSellDetail(ui.rowData));
+				pqGridSelectHandler(ui.rowIndx, "TB07040S_tableList", getSellDetail(ui.rowData));
 		
 			},
       // cellClick: function (event, ui) {
