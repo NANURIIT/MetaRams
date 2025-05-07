@@ -1398,16 +1398,13 @@ const TB07110Sjs = (function () {
    * 행삭제
    */
   function delRow() {
-    if (sttmDetlIndex === undefined) {
-      Swal.fire({
-        icon: 'warning'
-        , title: 'Warning'
-        , text: '삭제 할 행을 선택해주세요!'
-      })
-    }
-    else {
-      $("#TB07110S_grd_basic").pqGrid("deleteRow", { rowIndx: sttmDetlIndex });
-      sttmDetlIndex = undefined;
+
+    let gridData = $("#TB07110S_grd_basic").pqGrid('instance').pdata;
+
+    for ( let i = gridData.length - 1; i >= 0; i-- ) {
+      if ( gridData[i].delYn === "Y" ) {
+        $("#TB07110S_grd_basic").pqGrid("deleteRow", { rowIndx: i });
+      }
     }
   }
 

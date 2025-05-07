@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,9 +20,6 @@ import com.nanuri.rams.com.exception.FileException;
 @Component
 public class FileUtil {
 
-	 @Value("${file.upload-path}")
-	 private String uploadPath;
-	 
     /** 오늘 날짜 */
     private final String today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
@@ -80,12 +76,7 @@ public class FileUtil {
             final String extension = FilenameUtils.getExtension(file.getOriginalFilename());
             final String saveName = getRandomString() + "." + extension;
 
-            File filePath = new File(uploadPath).getAbsoluteFile();  // 절대경로 보정
-            if (!filePath.exists()) {
-            	filePath.mkdirs();
-            }
-            
-            File target = new File(filePath, saveName);
+            File target = new File(uploadPath, saveName);
             file.transferTo(target);
 
             attach.setServerPath(uploadPath);
@@ -125,31 +116,22 @@ public class FileUtil {
      * @return String uploadPath
      */
     private String makePath() {
-//        String uploadPath = "";
-//        File dir = null;
-//        String osName = System.getProperty("os.name").toLowerCase();
-//
-//        if (osName.contains("windows")) {
-//            dir = new File(windowsPath);
-//            uploadPath = windowsPath;
-//        } else if (osName.contains("mac")) {
-//            dir = new File(macPath);
-//            uploadPath = macPath;
-//        } else {
-//            dir = new File(linuxPath);
-//            uploadPath = linuxPath;
-//        }
-//
-//        if (dir.exists() == false) {
-//            dir.mkdirs();
-//        }
-    	
-    	System.out.println("uploadPath::" + uploadPath);
-    	File dir = new File(uploadPath);
-    	
-    	System.out.println("dir::" + dir);
-    	
-        if (!dir.exists()) {
+        String uploadPath = "";
+        File dir = null;
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        if (osName.contains("windows")) {
+            dir = new File(windowsPath);
+            uploadPath = windowsPath;
+        } else if (osName.contains("mac")) {
+            dir = new File(macPath);
+            uploadPath = macPath;
+        } else {
+            dir = new File(linuxPath);
+            uploadPath = linuxPath;
+        }
+
+        if (dir.exists() == false) {
             dir.mkdirs();
         }
         return uploadPath;
