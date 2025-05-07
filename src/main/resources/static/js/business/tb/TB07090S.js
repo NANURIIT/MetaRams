@@ -1317,8 +1317,8 @@ const TB07090Sjs = (function () {
 
           for (let j = 0; j < rctmDtlsMappingGridData.length; j++) {
             if (
-              colModelSelector.pqGrid('instance').pdata[i].rctmDt === rctmDtlsMappingGridData[j].rctmDt
-              && colModelSelector.pqGrid('instance').pdata[i].rgstSeq === rctmDtlsMappingGridData[j].rgstSeq
+              colModelSelector.pqGrid('instance').pdata[i].rctmDt == rctmDtlsMappingGridData[j].rctmDt
+              && colModelSelector.pqGrid('instance').pdata[i].rgstSeq == rctmDtlsMappingGridData[j].rgstSeq
             ) {
               // 입금증등록내역 업데이트
               $('#TB07090S_colModel2').pqGrid("instance").pdata[j].pmntPrarAmt = Number($('#TB07090S_colModel2').pqGrid("instance").pdata[j].pmntPrarAmt) - Number($('#TB07090S_colModel3').pqGrid("instance").pdata[i].dealRctmAmt)
