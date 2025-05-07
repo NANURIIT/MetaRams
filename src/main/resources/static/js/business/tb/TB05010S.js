@@ -170,6 +170,9 @@ const TB05010Sjs = (function () {
         maxHeight: 200,
         id: "gridCaseList",
         colModel: colCaseList,
+		rowClick: function(evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "gridCaseList" );
+		},
       },
       // 위원정보
       {
@@ -178,6 +181,9 @@ const TB05010Sjs = (function () {
         id: "gridMmbrList",
         editable: false,
         colModel: colMmbrList,
+		rowClick: function(evt, ui) {
+			pqGridSelectHandler ( ui.rowIndx, "gridMmbrList" );
+		},
       }
     ];
     setPqGrid(arrPqGridObj);
