@@ -322,6 +322,10 @@ const TB08090Sjs = (function () {
 			toolbar: toolbar_TB08090S,
 			colModel: colM_TB08090S,
 			strNoRows: '조회된 데이터가 없습니다.',
+			rowClick: function (event, ui) {
+				pqGridSelectHandler(ui.rowIndx, "TB08090S_gridList");
+		
+			},
 			// pageModel: pageModel_TB04060S
 		}
 
