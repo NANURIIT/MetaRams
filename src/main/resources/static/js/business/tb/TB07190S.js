@@ -835,6 +835,10 @@ const TB07190Sjs = (function () {
         colModel: TB07190S_colModelData(),
         scrollModel: { autoFit: false },
         editable: false,
+		rowClick: function (event, ui) {
+			pqGridSelectHandler(ui.rowIndx, "TB07190S_colModel1");
+	
+		},
         // , rowClick: function (event, ui) {
         //     if (TB07190S_rowData === ui.rowData) {
         //         TB07190S_rowData = TB07190S_dummyData;
