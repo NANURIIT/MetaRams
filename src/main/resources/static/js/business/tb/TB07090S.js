@@ -1179,43 +1179,10 @@ const TB07090Sjs = (function () {
 
     // 이미 입금내역매핑이 있는 경우 (화면체크)
     console.log("화면체크시작")
-    console.log("colModel3 뭘 받아오지?? :: ", rctmDtlsMappingGridData);
-    
-    
-    
     
     let result = false;
 
     for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
-
-      // // 딜번호
-      // console.log("colmodel3 딜번호 : ", rctmDtlsMappingGridData[i].dealNo);
-      // console.log("colmodel1 딜번호 : ", selected_rdmpPrarDtl.dealNo);
-
-      // // 종목코드
-      // console.log("colmodel3 종목코드 : ", rctmDtlsMappingGridData[i].prdtCd);
-      // console.log("colmodel1 종목코드 : ", selected_rdmpPrarDtl.prdtCd);
-
-      // // 실행일련번호
-      // console.log("colmodel3 실행일련번호 : ", rctmDtlsMappingGridData[i].excSn);
-      // console.log("colmodel1 실행일련번호 : ", selected_rdmpPrarDtl.excSn);
-
-      // 일정구분코드
-      console.log("colmodel3 일정구분코드 : ", rctmDtlsMappingGridData[i].rdptObjtDvsnCd);
-      console.log("colmodel1 일정구분코드 : ", selected_rdmpPrarDtl.scxDcd);
-
-      // 상환회차
-      console.log("colmodel3 상환회차 : ", rctmDtlsMappingGridData[i].rdmpTmrd);
-      console.log("colmodel1 상환회차 : ", selected_rdmpPrarDtl.rdmpTmrd);
-
-      // // 거래일련번호
-      // console.log("colmodel3 거래일련번호 : ", rctmDtlsMappingGridData[i].trSn);
-      // console.log("colmodel1 거래일련번호 : ", selected_rdmpPrarDtl.trSn);
-
-      // 수수료일련번호
-      console.log("colmodel3 수수료일련번호 : ", rctmDtlsMappingGridData[i].feeSn);
-      console.log("colmodel1 수수료일련번호 : ", selected_rdmpPrarDtl.feeSn);
-
 
       if (
         /* 딜번호! */

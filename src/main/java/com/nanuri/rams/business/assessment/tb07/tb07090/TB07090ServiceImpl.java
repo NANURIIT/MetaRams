@@ -48,10 +48,7 @@ public class TB07090ServiceImpl implements TB07090Service {
 
         TB07090SVO rsltVO = new TB07090SVO();
 
-        IBIMS403BDTO dto403 = new IBIMS403BDTO();
-
-        dto403.set
-
+        
         // 상환예정내역 조회
         List<IBIMS403BVO> rdmpPrarDtlsList = ibims403bMapper.getRdmpPrarDtls(param);
         // 입금내역등록증 조회
