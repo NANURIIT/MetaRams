@@ -589,7 +589,7 @@
            , TT1.EXC_SN             AS EXC_SN               /* 실행일련번호 */
            , TT1.TR_SN              AS TR_SN                /* 거래일련번호 */
            , TT1.RDMP_TMRD          AS RDMP_TMRD            /* 상환회차 */
-           , ''                     AS FEE_SN               /* 수수료일련번호 */
+           , 0                      AS FEE_SN               /* 수수료일련번호 */
            , TT2.MNGM_BDCD 			                            /* 관리부서 */
            , TT1.SCX_DCD 				                            /* 상환구분 */
            , TT2.TR_CRRY_CD 			                          /* 통화코드 */

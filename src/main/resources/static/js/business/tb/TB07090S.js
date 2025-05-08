@@ -241,6 +241,21 @@ const TB07090Sjs = (function () {
         dataIndx: "rdmpTmrd",
         hidden: true
       },
+      {
+        title: "수수료일련번호",
+        dataIndx: "feeSn",
+        hidden: true
+      },
+      {
+        title: "실행일련번호",
+        dataIndx: "excSn",
+        hidden: true
+      },
+      {
+        title: "실행일련번호",
+        dataIndx: "trSn",
+        hidden: true
+      },
     ];
 
     // IBIMS435B
@@ -614,11 +629,11 @@ const TB07090Sjs = (function () {
         hidden: true
       },
       {
-        dataIndx: "rdmpTmrd",
+        dataIndx: "rdmpTmrd",   // 상환회차
         hidden: true
       },
       {
-        dataIndx: "feeSn",
+        dataIndx: "feeSn",    // 수수료일련번호
         hidden: true
       },
       {
@@ -751,6 +766,11 @@ const TB07090Sjs = (function () {
             pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel2");
           }
         },
+        /**
+         * 납부예정금액이 입금금액보다 크면 안됨.
+         * 1. 알럿 띄우기
+         * 2. 수정 전의 입금금액으로 pqGrid값 수정 
+         */
         cellSave: function (evt, ui) {
           if (ui.dataIndx === "dealRctmAmt") {
             // 입금금액 설정 validation
@@ -781,6 +801,7 @@ const TB07090Sjs = (function () {
             pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel3");
           }
         },
+
         cellSave: function (evt, ui) {
           if (ui.dataIndx === "dealRctmAmt") {
             // pqgrid값을 바꿨을때 입금증등록내역에 납부예정금액이 얼마가 되는지 보여주기
@@ -788,6 +809,7 @@ const TB07090Sjs = (function () {
 
             let updateIndx;
 
+            // PK값인 입금일자, 등록순번을 체크.
             for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
               if (rctmDtlsMappingGridData[i].rctmDt === ui.rowData.rctmDt
                 && rctmDtlsMappingGridData[i].rgstSeq === Number(ui.rowData.rgstSeq)
@@ -797,10 +819,16 @@ const TB07090Sjs = (function () {
               }
             }
 
+            // 수정 전의 납부예정금액 저장
             let prevPrarAmt = $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt;
+
+            // 납부예정금액 = 납부예정금액 - 
+            console.log("ui.oldVal :: ", ui.oldVal);
+            console.log("ui.newVal :: ", ui.newVal);
 
             $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt = Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number(ui.oldVal) + Number(ui.newVal);
 
+            // 납부예정금액이 입금금액보다 크면 안됨
             if ($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt > $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].dealRctmAmt) {
               $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt = prevPrarAmt;
               Swal.fire({
@@ -961,6 +989,11 @@ const TB07090Sjs = (function () {
         var rctmDtlsList = data.rctmDtlsList;
         var dptrDtlsList = data.dprtDtlsList;
 
+        console.log(rdmpPrarDtlsList, "상환예정내역");
+        console.log(rctmDtlsList, "입금내역");
+        console.log(dptrDtlsList, "입금증매핑내역");
+        
+
         if (
           rdmpPrarDtlsList.length < 1 &&
           rctmDtlsList.length < 1 &&
@@ -1007,8 +1040,12 @@ const TB07090Sjs = (function () {
 
   /**
    * 입금내역매핑 추가용
+   * 행추가하기 전에도 중복체크해야됨
    */
   function TB07090S_addRow() {
+
+    console.log($('#TB07090S_colModel3').pqGrid('instance').pdata);
+
     // 체크해야할 부분
     // 1. 상환예정내역 선택했는지?
     // 2. 저장된 입금증등록내역 선택했는지?
@@ -1071,11 +1108,15 @@ const TB07090Sjs = (function () {
         case "trSn":
           newRow[dataIndx] = selected_rdmpPrarDtl.trSn;
           break;
-        case "rdptObjtDvsnCd":
+        case "feeSn":
+          newRow[dataIndx] = selected_rdmpPrarDtl.feeSn;
+          break;
+        case "rdptObjtDvsnCd":  // 일정구분코드
           newRow[dataIndx] = selected_rdmpPrarDtl.scxDcd;
           break;
+        // 상환회차
         case "rdmpTmrd":
-          newRow[dataIndx] = selected_dptrRgstDtl.rdmpTmrd;
+          newRow[dataIndx] = selected_rdmpPrarDtl.rdmpTmrd;
           break;
         case "excsPymtPrcsDvsnCd":
           newRow[dataIndx] = ""; // 구분코드는 현재 존재하지 않아서 사용하지 않음!
@@ -1131,40 +1172,82 @@ const TB07090Sjs = (function () {
       , feeSn: selected_rdmpPrarDtl.feeSn
       , rdmpTmrd: selected_rdmpPrarDtl.rdmpTmrd
       , rdptObjtDvsnCd: selected_rdmpPrarDtl.scxDcd
+
     }
 
     const rctmDtlsMappingGridData = $('#TB07090S_colModel3').pqGrid('instance').pdata
 
-    const chkRctmDtlsMapping = () => {
-      console.log("화면체크시작")
-      let result = false;
-      for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
-        
-        console.log(rctmDtlsMappingGridData[i].rdmpTmrd);
-        console.log(selected_rdmpPrarDtl.rdmpTmrd);
-        
-        if (
-          /* 딜번호! */
-          rctmDtlsMappingGridData[i].dealNo == selected_rdmpPrarDtl.dealNo
-          /* 종목코드! */
-          && rctmDtlsMappingGridData[i].prdtCd == selected_rdmpPrarDtl.prdtCd
-          /* 실행일련번호! */
-          && Number(rctmDtlsMappingGridData[i].excSn) == Number(selected_rdmpPrarDtl.excSn)
-          /* 거래일련번호! */
-          && Number(rctmDtlsMappingGridData[i].trSn) == Number(selected_rdmpPrarDtl.trSn)
-          /* 수수료일련번호! */
-          && Number(rctmDtlsMappingGridData[i].feeSn) == Number(selected_rdmpPrarDtl.feeSn)
-          /* 상환회차! */
-          && Number(rctmDtlsMappingGridData[i].rdmpTmrd) == Number(selected_rdmpPrarDtl.rdmpTmrd)
-          /* 상환형태?구분코드! */
-          && rctmDtlsMappingGridData[i].rdptObjtDvsnCd == selected_rdmpPrarDtl.scxDcd
-        ) {
-          // 화면내 매핑된 정보가 있다면 false
-          result = true;
-          break;
-        }
+    // 이미 입금내역매핑이 있는 경우 (화면체크)
+    console.log("화면체크시작")
+    console.log("colModel3 뭘 받아오지?? :: ", rctmDtlsMappingGridData);
+    
+    
+    
+    
+    let result = false;
+
+    for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
+
+      // // 딜번호
+      // console.log("colmodel3 딜번호 : ", rctmDtlsMappingGridData[i].dealNo);
+      // console.log("colmodel1 딜번호 : ", selected_rdmpPrarDtl.dealNo);
+
+      // // 종목코드
+      // console.log("colmodel3 종목코드 : ", rctmDtlsMappingGridData[i].prdtCd);
+      // console.log("colmodel1 종목코드 : ", selected_rdmpPrarDtl.prdtCd);
+
+      // // 실행일련번호
+      // console.log("colmodel3 실행일련번호 : ", rctmDtlsMappingGridData[i].excSn);
+      // console.log("colmodel1 실행일련번호 : ", selected_rdmpPrarDtl.excSn);
+
+      // 일정구분코드
+      console.log("colmodel3 일정구분코드 : ", rctmDtlsMappingGridData[i].rdptObjtDvsnCd);
+      console.log("colmodel1 일정구분코드 : ", selected_rdmpPrarDtl.scxDcd);
+
+      // 상환회차
+      console.log("colmodel3 상환회차 : ", rctmDtlsMappingGridData[i].rdmpTmrd);
+      console.log("colmodel1 상환회차 : ", selected_rdmpPrarDtl.rdmpTmrd);
+
+      // // 거래일련번호
+      // console.log("colmodel3 거래일련번호 : ", rctmDtlsMappingGridData[i].trSn);
+      // console.log("colmodel1 거래일련번호 : ", selected_rdmpPrarDtl.trSn);
+
+      // 수수료일련번호
+      console.log("colmodel3 수수료일련번호 : ", rctmDtlsMappingGridData[i].feeSn);
+      console.log("colmodel1 수수료일련번호 : ", selected_rdmpPrarDtl.feeSn);
+
+
+      if (
+        /* 딜번호! */
+        rctmDtlsMappingGridData[i].dealNo == selected_rdmpPrarDtl.dealNo
+        /* 종목코드! */
+        && rctmDtlsMappingGridData[i].prdtCd == selected_rdmpPrarDtl.prdtCd
+        /* 실행일련번호! */
+        && Number(rctmDtlsMappingGridData[i].excSn) == Number(selected_rdmpPrarDtl.excSn)
+        /* 일정구분코드! */
+        && rctmDtlsMappingGridData[i].rdptObjtDvsnCd == selected_rdmpPrarDtl.scxDcd
+        /* 상환회차! */
+        && Number(rctmDtlsMappingGridData[i].rdmpTmrd) == Number(selected_rdmpPrarDtl.rdmpTmrd)
+        /* 거래일련번호! */
+        && Number(rctmDtlsMappingGridData[i].trSn) == Number(selected_rdmpPrarDtl.trSn)
+        /* 수수료일련번호! */
+        && Number(rctmDtlsMappingGridData[i].feeSn) == Number(selected_rdmpPrarDtl.feeSn)
+      ) {
+        console.log("??");
+
+        // 화면내 매핑된 정보가 있다면 false
+        result = true;
+        break;
       }
-      return result;
+    }
+
+    if (result) {
+      swal.fire({
+        icon: "warning"
+        , title: "Warning!"
+        , text: "이미 매핑된 내역입니다!"
+      })
+      return;
     }
 
     $.ajax({
@@ -1176,15 +1259,6 @@ const TB07090Sjs = (function () {
       success: function (data) {
         // 이미 입금내역매핑이 있는 경우 (DB체크)
         if (data != 0) {
-          swal.fire({
-            icon: "warning"
-            , title: "Warning!"
-            , text: "이미 매핑된 내역입니다!"
-          })
-          return;
-        }
-        // 이미 입금내역매핑이 있는 경우 (화면체크)
-        else if (chkRctmDtlsMapping()) {
           swal.fire({
             icon: "warning"
             , title: "Warning!"

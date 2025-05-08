@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.math.BigDecimal;
 
+import com.nanuri.rams.business.common.dto.IBIMS403BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS430BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS435BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS992BDTO;
@@ -46,6 +47,10 @@ public class TB07090ServiceImpl implements TB07090Service {
     public TB07090SVO getDprtDtlsInfo(IBIMS430BVO param) {
 
         TB07090SVO rsltVO = new TB07090SVO();
+
+        IBIMS403BDTO dto403 = new IBIMS403BDTO();
+
+        dto403.set
 
         // 상환예정내역 조회
         List<IBIMS403BVO> rdmpPrarDtlsList = ibims403bMapper.getRdmpPrarDtls(param);

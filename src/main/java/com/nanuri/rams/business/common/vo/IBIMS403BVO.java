@@ -31,6 +31,8 @@ public class IBIMS403BVO extends IBIMS403BDTO {
 
 	private BigDecimal pmntPrarAmt;		//납부예정금액
 	private BigDecimal fee;				//수수료
+	private long feeSn;					// 수수료일련번호
+	private String rdmpTmrd;			// 상환회차
 	private String dealNo;				//딜번호
 	private String trCrryCd;			//통화코드
 	private String mngmBdcd;			//관리부서코드
