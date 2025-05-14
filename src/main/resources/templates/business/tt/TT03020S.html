@@ -3,7 +3,6 @@
     layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
-    <script th:src="@{js/common.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -12,52 +11,357 @@
 <th:block layout:fragment="customContent">
     <div class="wrapper wrapper-content animated fadeIn">
         <div class="row">
-            <!-- <div class="col-lg-12"> -->
+            <div class="col-lg-12">
                 <!-- 조회조건 -->
                 <!-- ibox -->
-                <!-- <div class="ibox"> -->
-                    <!-- <div class="ibox-content i-filter">
+                <div class="ibox">
+                    <div class="ibox-content i-filter">
                         <div class="ibox mb-0">
                             <div class="form-group form-inline">
-                              
+
                                 <div class="col-sm-12 input-group">
-                                    <label class="col-sm-1 control-label">Deal번호</label> -->
+                                    <label class="col-sm-1 control-label">Deal번호</label>
                                     <!-- 검색 -->
-                                    <!-- <div class="col-sm-4">
-                                        <div class="input-group"> -->
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
                                             <!--  -->
-                                            <!-- <input type="text" class="form-control" id="TT03020S.ibDealNo">
+                                            <input type="text" class="form-control" id="TT03020S_ibDealNo">
                                             <span class="input-group-append">
                                                 <button type="button" class="btn btn-default" onclick="">
                                                     <i class="fa fa-search"></i></button>
                                             </span>
-                                            <input type="text" class="form-control" id="TT03020S.ibDealNm" readonly>
+                                            <input type="text" class="form-control" id="TT03020S_ibDealNm" readonly>
                                         </div>
-                                    </div> -->
+                                    </div>
                                     <!-- 조회 & 초기화 -->
-                                     <!-- <div class="col-sm text-right">
+                                    <div class="col-sm text-right">
                                         <button class="btn btn-primary" onclick="">
                                             <i class="fa fa-search">조회</i></button>
                                         <button class="btn btn-default" onclick="">
                                             <i class="fa fa-undo">초기화</i></button>
-                                     </div>
-
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
-
-                    </div> -->
+                    </div>
                     <!-- 조회내용 -->
-                     <!-- <div class="ibox-content" id="">
-                        
-                     </div> -->
+                    <div class="ibox-content" id="">
+                        <!-- 기본정보 -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <h5>▶ 기본정보</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <!-- row 1 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <div class="col-sm-12 input-group">
+                                                <label class="col-sm-1 control-label">
+                                                    <span class="req"></span>Deal명</label>
+                                                <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- row 2 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <div class="col-sm-12 form-group">
+                                                <label class="col-sm-1 col-form-label">
+                                                    <span class="req"></span>투자상품대분류</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <select class="form-control" id="" disabled></select>
+                                                    <span class="input-group-append">
+                                                        <button type="button" class="btn btn-default" onclick="">
+                                                            <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    <span class="req"></span>투자상품중분류</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <select class="form-control" id="" disabled></select>
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    <span class="req"></span>투자상품소분류</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <select class="form-control" id="" disabled></select>
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    <span class="req"></span>상품상세</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <select class="form-control" id=""></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- row 3 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <div class="col-lg-12 form-group">
+                                                <label class="col-sm-1">
+                                                    <span class="req"></span>Deal내용</label>
+                                                <div class="col-sm-5 input-group">
+                                                    <input class="form-control" type="text" id="">
+                                                </div>
+                                                <label class="col-sm-1 control-label">투자국가</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <input class="form-control" type="text" list="" id="">
+                                                    <datalist id=""></datalist>
+                                                </div>
+                                                <label class="col-sm-1 control-label">투자도시</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <input class="form-control" type="text" id="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 업체정보 -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <h5>▶ 업체정보</h5>
+                                        <button class="btn btn-default" type="button" onclick="닫히는함수">
+                                            <i class="fa fa-arrow-up"></i>
+                                        </button>
+                                        <button class="btn btn-default" type="button" onclick="">
+                                            <i class="fa fa-">기업체등록</i>
+                                        </button>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <!-- row 1 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <div class="col-sm-12 input-group">
+                                                <label class="col-sm-1 col-form-label">
+                                                    <span class="req"></span>거래상대방</label>
+                                                </label>
+                                                <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="">
+                                                        <span class="input-group-append">
+                                                            <button type="button" class="btn btn-default" onclick="">
+                                                                <i class="fa fa-search"></i></button>
+                                                        </span>
+                                                        <input type="text" class="form-control" id="TT03020S.ibDealNm"
+                                                            readonly>
+                                                    </div>
+                                                </div>
+                                                <label class="col-sm-1 control-label">기업규모</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <select class="form-control" id=""></select>
+                                                </div>
+                                                <label class="col-sm-1 control-label">업종</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <select class="form-control" id=""></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- row 2 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <div class="col-sm-12 input-group">
+                                                <label class="col-sm-1 control-label">계열</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <input class="form-control" type="text" id="">
+                                                </div>
+                                                <label class="col-sm-1 control-label">신용등급</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <select class="form-control" id=""></select>
+                                                </div>
+                                                <label class="col-sm-1 control-label">상장시장</label>
+                                                <div class="col-sm-2 input-group">
+                                                    <input class="form-control" type="text" id="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 수익정보 -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <h5>▶ 수익정보</h5>
+                                        <button class="btn btn-default" type="button" onclick="닫히는함수">
+                                            <i class="fa fa-arrow-up"></i>
+                                        </button>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <!-- row 1 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <label class="col-sm-1 control-label">Deal규모</label>
+                                            <div class="col-sm-2 input-group input-h">
+                                                <div class="col-sm-4 input-group">
+                                                    <input type="radio" value="0" name="" id="">확정
+                                                </div>
+                                                <div class="col-sm-4 input-group">
+                                                    <input type="radio" value="0" name="" id="">미정
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                <span class="req"></span>Deal규모
+                                            </label>
+                                            <div class="col-sm-2 input-group">
+                                                <input class="form-control" type="text" id="">백만원
+                                            </div>
+                                            <label class="col-sm-1 control-label">참여규모</label>
+                                            <div class="col-sm-2 input-group input-h">
+                                                <div class="col-sm-4 input-group">
+                                                    <input type="radio" value="0" name="" id="">확정
+                                                </div>
+                                                <div class="col-sm-4 input-group">
+                                                    <input type="radio" value="0" name="" id="">미정
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-1 control-label">참여규모</label>
+                                            <div class="col-sm-2 input-group">
+                                                <input class="form-control" type="text" id="">백만원
+                                            </div>
+                                        </div>
+                                        <!-- row 2 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <label class="col-sm-1 control-label">전체수익</label>
+                                            <div class="col-sm-2 input-group">
+                                                <input class="form-control" type="text" id="">백만원
+                                            </div>
+                                            <label class="col-sm-1 control-label">당해수익</label>
+                                            <div class="col-sm-2 input-group">
+                                                <input class="form-control" type="text" id="">백만원
+                                            </div>
+                                            <label class="col-sm-1 control-label">기표수익</label>
+                                            <div class="col-sm-2 input-group">
+                                                <input class="form-control" type="text" id="">백만원
+                                            </div>
+                                            <label class="col-sm-1 control-label">On-going</label>
+                                            <div class="col-sm-2 input-group">
+                                                <input class="form-control" type="text" id="">백만원
+                                            </div>
+                                        </div>
+                                        <!-- row 3 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <label class="col-sm-1 control-label">기표일자</label>
+                                            <div class="col-sm-2 input-group date">
+                                                <input class="form-control" type="text" id="" placeholder="YYYY-MM-DD">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                            <label class="col-sm-1 control-label">만기일자</label>
+                                            <div class="col-sm-2 input-group date">
+                                                <input class="form-control" type="text" id="" placeholder="YYYY-MM-DD">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                            <label class="col-sm-1 control-label">통화코드</label>
+                                            <div class="col-sm-2 input-group">
+                                                <select class="form-control" id=""></select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">통화금액</label>
+                                            <div class="col-sm-2 input-group">
+                                                <input class="form-control" type="text" id="">백만원
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 기타정보 -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <h5>▶ 기타정보</h5>
+                                    </div>
+                                    <div class="ibox-content text-right">
+                                        <!-- row 1 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <label class="col-sm-1 control-label">시공사 기업체번호</label>
+                                            <div class="col-sm-5 input-group">
+                                                <input class="form-control" type="text" id="">
+                                                <span class="input-group-append">
+                                                    <button class="btn btn-default" type="button" onclick="">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
+                                                <input class="form-control" type="text" id="" readonly>
+                                            </div>
+                                            <label class="col-sm-1 control-label">신용보강여부</label>
+                                            <div class="col-sm-2 input-group">
+                                                <select class="form-control" id=""></select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">LTV</label>
+                                            <div class="col-sm-2 input-group">
+                                                <input class="form-control" type="text" id="">%
+                                            </div>
+                                        </div>
+                                        <!-- row 2 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <label class="col-sm-1 control-label">현지법인협업</label>
+                                            <div class="col-sm-2 input-group">
+                                                <select class="form-control" id=""></select>
+                                            </div>
+                                            <div class="col-sm-3"></div>
+                                            <label class="col-sm-1 control-label">비고</label>
+                                            <div class="col-sm-5 input-group">
+                                                <input class="form-control" type="text" name="" id="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 직원정보 -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <h5>▶ 직원정보</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <!-- row 1 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <label class="col-sm-1 control-label">
+                                                <span class="req"></span>담당자
+                                            </label>
+                                            <div class="col-sm-5 input-group">
+                                                <input class="form-control" type="text" id="">
+                                                <span class="input-group-append">
+                                                    <button class="btn btn-default" type="button" onclick="">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
+                                                <input class="form-control" type="text" id="" readonly>
+                                            </div>
+                                            <label class="col-sm-1 control-label">담당부서</label>
+                                            <div class="col-sm-5 input-group" readonly>
+                                                <input class="form-control" type="text" id="" readonly>
+                                                <input class="form-control" type="text" id="" readonly>
+                                            </div>
+                                        </div>
+                                        <!-- row 2 -->
+                                        <div class="row form-group form-inline mb-1">
+                                            <button class="btn btn-default" type="button">
+                                                <i class="fa fa-save">저장</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
-                <!-- </div> -->
+                </div>
 
-            <!-- </div> -->
+            </div>
 
         </div>
 
