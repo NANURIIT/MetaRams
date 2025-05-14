@@ -3,6 +3,7 @@ const TT03040Sjs = (function() {
 
 	$(document).ready(function() {
 		pqGrid();
+		searchBtn();
 	});
 
 	function pqGrid() {
@@ -80,26 +81,15 @@ const TT03040Sjs = (function() {
 			},
 		];
 
-		let pqGridObjs = [];
-		pqGridObjs = [
+		let pqGridObjs = [
 			{
 				height: 500,
 				maxHeight: 500,
 				id: "TT03040S_grid",
 				colModel: col_grdTemp,
-				scrollModel: { autoFit: false },
-				selectionModel: { type: 'cell' },
-				create: function(evt, ui) {
-					this.widget().pqTooltip();
-				},
-				editModel: {
-					saveKey: $.ui.keyCode.ENTER,
-					keyUpDown: false,
-					cellBorderWidth: 0
-				},
-				numberCell: { show: false },
 			}
 		];
+		
 		setPqGrid(pqGridObjs);
 		grdTemp = $("#TT03040S_grid").pqGrid("instance");
 	}
@@ -109,17 +99,19 @@ const TT03040Sjs = (function() {
 		let createEndDate = $("#TT03040SCreateEedDate").val().replace("-", "")
 		let dealNumbeer = $("#TT03040SDealNo").val()
 
+		let paramData = {
+			createStartDate: createStartDate,
+			createEndDate: createEndDate,
+			dealNumbeer: dealNumbeer,
+		}
+
 		$.ajax({
-			uri: "TB03040S/ibSpecSearch",
-			method: "GET",
+			uri: "/TB03040S/ibSpecSearch",
+			method: "get",
 			dataType: "json",
-			data: {
-				createStartDate,
-				createEndDate,
-				dealNumbeer
-			},
+			data: JSON.stringify(paramData),
 			success: function(res) {
-				consol.log(res)
+				console.log(res)
 			}
 		})
 	}
