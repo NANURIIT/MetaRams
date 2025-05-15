@@ -3,9 +3,26 @@
     layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
+   <script th:src="@{js/common.js}"></script>
+	<!-- <script th:src="@{js/fileUpload.js}"></script> -->
+	<script th:src="@{js/business/tt/TT03020S.js}"></script>
+	<script th:src="@{js/business/popup/AC01140P.js}"></script>
+	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+	<script th:src="@{js/business/tb/TB03023P.js}"></script>
+	<script th:src="@{js/business/tb/TB06019P.js}"></script>
+	<script th:src="@{js/business/tb/TB03061P.js}"></script>
+	<!-- <script th:src="@{js/business/tb/FileUploadPopup.js}"></script> -->
 </th:block>
 
 <th:block layout:fragment="modalpopup">
+    <th:block th:replace="business/popup/AC01140P :: AC01140P"></th:block>
+	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
+	<th:block th:replace="business/tb/TB03023P :: TB03023P"></th:block>
+	<th:block th:replace="business/tb/TB06019P :: TB06019P"></th:block>
+	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
+	<!-- <th:block th:replace="business/tb/FileUploadPopup :: FileUploadPopup"></th:block> -->
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -27,15 +44,19 @@
                                             <!--  -->
                                             <input type="text" class="form-control" id="TT03020S_ibDealNo">
                                             <span class="input-group-append">
-                                                <button type="button" class="btn btn-default" onclick="">
+                                                <button type="button" class="btn btn-default" onclick="callTB03021P('TT03020S');">
                                                     <i class="fa fa-search"></i></button>
                                             </span>
                                             <input type="text" class="form-control" id="TT03020S_ibDealNm" readonly>
                                         </div>
                                     </div>
+                                    <label class="col-sm-1 control-label">일련번호</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="TT03020S_sn"></select>
+                                    </div>
                                     <!-- 조회 & 초기화 -->
                                     <div class="col-sm text-right">
-                                        <button class="btn btn-primary" onclick="">
+                                        <button class="btn btn-primary" onclick="TT03020Sjs.getDealDetail();">
                                             <i class="fa fa-search">조회</i></button>
                                         <button class="btn btn-default" onclick="">
                                             <i class="fa fa-undo">초기화</i></button>
@@ -61,7 +82,7 @@
                                                     <span class="req"></span>Deal명</label>
                                                 <div class="col-sm-5">
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" id="">
+                                                        <input type="text" class="form-control" id="TT03020S_dealNm">
                                                     </div>
                                                 </div>
                                             </div>
@@ -72,9 +93,9 @@
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>투자상품대분류</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="" disabled></select>
+                                                    <select class="form-control" id="TT03020S_investLrgCd" disabled></select>
                                                     <span class="input-group-append">
-                                                        <button type="button" class="btn btn-default" onclick="">
+                                                        <button type="button" class="btn btn-default" onclick="callAC01140P('TT03020S');">
                                                             <i class="fa fa-search"></i>
                                                         </button>
                                                     </span>
@@ -82,12 +103,12 @@
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>투자상품중분류</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="" disabled></select>
+                                                    <select class="form-control" id="TT03020S_investMdmCd" disabled></select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>투자상품소분류</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="" disabled></select>
+                                                    <select class="form-control" id="TT03020S_investSmlCd" disabled></select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>상품상세</label>
@@ -102,7 +123,7 @@
                                                 <label class="col-sm-1">
                                                     <span class="req"></span>Deal내용</label>
                                                 <div class="col-sm-5 input-group">
-                                                    <input class="form-control" type="text" id="">
+                                                    <input class="form-control" type="text" id="TT03020S_dealDtl">
                                                 </div>
                                                 <label class="col-sm-1 control-label">투자국가</label>
                                                 <div class="col-sm-2 input-group">
@@ -111,7 +132,7 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">투자도시</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <input class="form-control" type="text" id="">
+                                                    <input class="form-control" type="text" id="TT03020S_investCty">
                                                 </div>
                                             </div>
                                         </div>
@@ -141,12 +162,12 @@
                                                 </label>
                                                 <div class="col-sm-5">
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" id="">
+                                                        <input type="text" class="form-control" id="TT03020S_trdNo">
                                                         <span class="input-group-append">
-                                                            <button type="button" class="btn btn-default" onclick="">
+                                                            <button type="button" class="btn btn-default" onclick="callTB03061P('TT03020S');">
                                                                 <i class="fa fa-search"></i></button>
                                                         </span>
-                                                        <input type="text" class="form-control" id="TT03020S.ibDealNm"
+                                                        <input type="text" class="form-control" id="TT03020S_trdNm"
                                                             readonly>
                                                     </div>
                                                 </div>
@@ -165,7 +186,7 @@
                                             <div class="col-sm-12 input-group">
                                                 <label class="col-sm-1 control-label">계열</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <input class="form-control" type="text" id="">
+                                                    <input class="form-control" type="text" id="TT03020S_irls">
                                                 </div>
                                                 <label class="col-sm-1 control-label">신용등급</label>
                                                 <div class="col-sm-2 input-group">
@@ -173,7 +194,7 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">상장시장</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <input class="form-control" type="text" id="">
+                                                    <input class="form-control" type="text" id="TT03020S_lstMkt">
                                                 </div>
                                             </div>
                                         </div>
@@ -207,7 +228,7 @@
                                                 <span class="req"></span>Deal규모
                                             </label>
                                             <div class="col-sm-2 input-group">
-                                                <input class="form-control" type="text" id="">백만원
+                                                <input class="form-control" type="text" id="TT03020S_dealScl">백만원
                                             </div>
                                             <label class="col-sm-1 control-label">참여규모</label>
                                             <div class="col-sm-2 input-group input-h">
@@ -220,26 +241,26 @@
                                             </div>
                                             <label class="col-sm-1 control-label">참여규모</label>
                                             <div class="col-sm-2 input-group">
-                                                <input class="form-control" type="text" id="">백만원
+                                                <input class="form-control" type="text" id="TT03020S_ptctScl">백만원
                                             </div>
                                         </div>
                                         <!-- row 2 -->
                                         <div class="row form-group form-inline mb-1">
                                             <label class="col-sm-1 control-label">전체수익</label>
                                             <div class="col-sm-2 input-group">
-                                                <input class="form-control" type="text" id="">백만원
+                                                <input class="form-control" type="text" id="TT03020S_allErn">백만원
                                             </div>
                                             <label class="col-sm-1 control-label">당해수익</label>
                                             <div class="col-sm-2 input-group">
-                                                <input class="form-control" type="text" id="">백만원
+                                                <input class="form-control" type="text" id="TT03020S_thyrErn">백만원
                                             </div>
                                             <label class="col-sm-1 control-label">기표수익</label>
                                             <div class="col-sm-2 input-group">
-                                                <input class="form-control" type="text" id="">백만원
+                                                <input class="form-control" type="text" id="TT03020S_wrtErn">백만원
                                             </div>
                                             <label class="col-sm-1 control-label">On-going</label>
                                             <div class="col-sm-2 input-group">
-                                                <input class="form-control" type="text" id="">백만원
+                                                <input class="form-control" type="text" id="TT03020S_intrErn">백만원
                                             </div>
                                         </div>
                                         <!-- row 3 -->
@@ -264,7 +285,7 @@
                                             </div>
                                             <label class="col-sm-1 control-label">통화금액</label>
                                             <div class="col-sm-2 input-group">
-                                                <input class="form-control" type="text" id="">백만원
+                                                <input class="form-control" type="text" id="TT03020S_invstCrncyAmt">백만원
                                             </div>
 
                                         </div>
@@ -284,13 +305,13 @@
                                         <div class="row form-group form-inline mb-1">
                                             <label class="col-sm-1 control-label">시공사 기업체번호</label>
                                             <div class="col-sm-5 input-group">
-                                                <input class="form-control" type="text" id="">
+                                                <input class="form-control" type="text" id="TT03020S_entrpNo">
                                                 <span class="input-group-append">
-                                                    <button class="btn btn-default" type="button" onclick="">
+                                                    <button class="btn btn-default" type="button" onclick="callTB03061P('TT03020S_c');">
                                                         <i class="fa fa-search"></i>
                                                     </button>
                                                 </span>
-                                                <input class="form-control" type="text" id="" readonly>
+                                                <input class="form-control" type="text" id="TT03020S_entrpNm" readonly>
                                             </div>
                                             <label class="col-sm-1 control-label">신용보강여부</label>
                                             <div class="col-sm-2 input-group">
@@ -298,7 +319,7 @@
                                             </div>
                                             <label class="col-sm-1 control-label">LTV</label>
                                             <div class="col-sm-2 input-group">
-                                                <input class="form-control" type="text" id="">%
+                                                <input class="form-control" type="text" id="TB03020S_ltv">%
                                             </div>
                                         </div>
                                         <!-- row 2 -->
@@ -310,7 +331,7 @@
                                             <div class="col-sm-3"></div>
                                             <label class="col-sm-1 control-label">비고</label>
                                             <div class="col-sm-5 input-group">
-                                                <input class="form-control" type="text" name="" id="">
+                                                <input class="form-control" type="text" name="" id="TB03020S_etcCntn">
                                             </div>
                                         </div>
                                     </div>
@@ -333,7 +354,7 @@
                                             <div class="col-sm-5 input-group">
                                                 <input class="form-control" type="text" id="">
                                                 <span class="input-group-append">
-                                                    <button class="btn btn-default" type="button" onclick="">
+                                                    <button class="btn btn-default" type="button" onclick="callTB03022P('TT03020S_chrg');">
                                                         <i class="fa fa-search"></i>
                                                     </button>
                                                 </span>
