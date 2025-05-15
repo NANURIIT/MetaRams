@@ -1,14 +1,14 @@
-package com.nanuri.rams.business.assessment.tt30.tt3020;
+package com.nanuri.rams.business.common.mapper;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.nanuri.rams.business.common.dto.TEST101BDTO;
 import com.nanuri.rams.business.common.vo.TEST101BVO;
+import org.apache.ibatis.annotations.Mapper;
 
 
-@Service
-public interface TT03020Service {
-    
+@Mapper
+public interface TEST101BMapper {
     // 조회
     public TEST101BVO getDealDetail(TEST101BDTO test101bdto);
 }

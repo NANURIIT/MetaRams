@@ -3,6 +3,7 @@ const TT03020Sjs = (function () {
 
     $(document).ready(function () {
         getInvestLrgCd();
+        getSelectBoxList('TT03020S', 'I028/C006/B019/I006/C012/C010/I027')
     });
 
     /**
@@ -21,28 +22,35 @@ const TT03020Sjs = (function () {
         }
         else {
             // 세팅해주는 함수
-            console.log("Deal번호 있음");
-            
+            setScrn();
 
         }
 
         /**
          * 화면 세팅
          */
-        function set() {
+        function setScrn() {
             // 딜번호 참조
+            console.log("세팅 왔나");
+            
             let dealNo = $('#TT03020S_ibDealNo').val();
+            // let sn = $('#TT03020S_sn').val();
 
             let paramData = {
                 dealNo: dealNo,
+                // sn: sn,
             };
+            // console.log("paramData : ", paramData);
+            
 
             $.ajax({
                 url: "TT03020S/getDealDetail",
                 method: "get",
-                data: JSON.stringify(paramData),
+                data: paramData,
                 dataType: "json",
                 success: function (data) {
+                    console.log("data :", data);
+                    
                     // 데이터 없으면
                     if (!data.dealNo) {
                         Swal.fire({
@@ -52,15 +60,34 @@ const TT03020Sjs = (function () {
                         })
                         return
                     }
+                    console.log();
+                    
+                    
+
                     // 기본정보
-                    // $('#TT03020S_dealNm').val(data.dealNm);     // Deal명
-                    // $('')
+                    $('#TT03020S_dealNm').val(data.dealNm);     // Deal명
+                    $('#TT03020S_investLrgCd').val(data.invPrdtLclsCd); // 투자상품대분류
+                    $('#TT03020S_investMdmCd').val(data.invPrdtMdclCd); // 투자상품중분류
+                    $('#TT03020S_investSmlCd').val(data.invPrdtDtlsDvdCd); // 투자상품소분류
+                    $('#TT03020S_I028').val(data.invPrdtDtlsDvdCd); // 상품상세
+                    $('#TT03020S_dealDtl').val(data.invDealCntn); // Deal내용
+                    // $('#TT03020S_investLrgCd').val(data.invPrdtMdclCd); // 투자국가
+                    $('#TT03020S_investCty').val(data.invstCty); // 투자도시
+                                                           
 
 
                     // 업체정보
+                    $('#TT03020S_trdNo').val(data.ptxtTrOthrDscmNo);    // 거래상대방
+                    $('#TT03020S_ptxtTrOthrDscmNm').val(data.ptxtTrOthrDscmNm);    // 
+                    $('#TT03020S_B019').val(data.bzsacalCd);   // 기업규모
+                    // $('#').val(data.);  // 업종
+                    $('#TT03020S_irls').val(data.irls); // 계열
+                    $('#TT03020S_C012').val(data.crdtGrdCd); // 신용등급
+                    $('#TT03020S_lstMkt').val(data.lstMkt); // 상장시장
 
 
                     // 수익정보
+                    $('#TT03020S_I027').val(data.crncyCd);
 
 
                     // 기타정보
