@@ -1,12 +1,76 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
+	<script th:src="@{js/business/tt/TT03040S.js}"></script>
 </th:block>
 
 <th:block layout:fragment="customContent">
-	
-</th:block>
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- frame1 -->
+				<div class="ibox">
+					<form method="get">
+					<div class="ibox-content text-right i-filter">
+						<div class="form-group form-inline row mb-0">
+							<div class="form-group col-sm-12 mb-1">
+								 <!-- Deal 생성일자 -->
+								<label class="col-sm-1 control-label">Deal 생성일자</label>
+								<div class="col-sm-4 input-group">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TT03040SCreateStartDate" name="FromDate" value="" maxlength="10" placeholder="yyyy-mm-dd">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+											
+									<span class="input-group-addon border-none"> ~ </span>
+									
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TT03040SCreateEedDate" name="ToDate" value="" maxlength="10" placeholder="yyyy-mm-dd">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div>
 
+								<!-- Deal 번호 -->
+								<label class="col-sm-1 control-label">Deal 번호</label>
+								<div class="col-sm-4 input-group">
+									<input type="text" class="form-control ol-sm-4" id="TT03040SDealNo">
+									
+									<span class="input-group-append">
+										<button type="button" class="btn btn-default" onclick="">
+											<i class="fa fa-search"></i>
+										</button>
+									</span>
+									
+									<input type="text" class="form-control ol-sm-4" id="TT03040SDealName" readonly>
+								</div>
+								
+								<!-- 버튼 -->
+								<div class="col-sm-2 text-right">
+									<button class="btn btn-primary" onclick="TT03040Sjs.TT03040S_search()">
+										<i class="fa fa-search"></i>&nbsp;조회
+									</button>
+									
+									<button class="btn btn-default" type="button" onclick="">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					</form>
+				</div>
+
+				<!-- frame2 -->
+				<div class="ibox-content">
+					<div class="ibox">
+						<div id="TT03040S_grid" style="margin: auto"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
 </html>
