@@ -1,10 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.tt.TT03040SMapper">
+  <!-- <select id="ibSpecSearch" parameterType="com.nanuri.rams.business.common.tt.TT03040SDTO" resultType="com.nanuri.rams.business.common.tt.TT03040SVO">
+        SELECT B.DEAL_NO                                               /*  딜번호  */
+             , B.BUSI_DCD                                              /*  사업구분코드  */
+             , B.RGST_DT                                               /*  등록일자  */
+             , NVL(
+               (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B
+                 WHERE CMNS_CD_GRP = 'I020'
+                   AND CD_VL_ID = B.BUSI_DCD
+               )
+               , '') AS BUSI_DCD_NM
+             , NVL(B.BUSI_DETL_DCD, '') AS BUSI_DETL_DCD               /*  사업상세구분코드  */
+             , B.DEAL_NM                                               /*  딜명  */
+             , NVL(B.ORTN_FND_CD, '') AS ORTN_FND_CD                   /*  운용펀드코드  */
+             , B.MNGM_BDCD                                             /*  관리부점코드  */
+             , (SELECT CD_VL_NM 
+                  FROM IBIMS002B 
+                 WHERE CMNS_CD_GRP = 'D010'
+                   AND CD_VL_ID = B.MNGM_BDCD
+               ) AS MNGM_BDCD_NM
+             , B.CHRR_EMPNO                                            /*  담당자사원번호  */
+             , (SELECT MAX(EMP_NM) FROM IBIMS003B WHERE EMPNO = B.CHRR_EMPNO) AS CHRR_EMPNM
+             , NVL(
+               (
+                SELECT MAX(MTR_PRG_STTS_DCD)
+                  FROM IBIMS103B A
+                 WHERE A.DEAL_NO = B.DEAL_NO
+               )
+                 , '101') AS MTR_PRG_STTS_DCD /*  테이블 컬럼 미존재로 임시 하드코딩 */
+             , NVL(
+               (
+                SELECT CD_VL_NM
+                  FROM IBIMS002B A
+                 WHERE CMNS_CD_GRP = 'I011'
+                   AND A.CD_VL_ID = (
+                                     SELECT MAX(MTR_PRG_STTS_DCD)
+                                       FROM IBIMS103B A
+                                      WHERE A.DEAL_NO = B.DEAL_NO
+                                    )
+               )
+                 , '딜정보저장') AS MTR_PRG_STTS_DCD_NM                     /*  테이블 컬럼 미존재로 임시 하드코딩 */
+          FROM IBIMS101B B
+         WHERE LAST_YN = 'Y'
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+           AND DEAL_NO LIKE '%'|| #{dealNo} || '%'
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNm)">
+           AND DEAL_NM LIKE '%'|| #{dealNm} || '%'
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(start)">
+           AND B.RGST_DT             <![CDATA[>=]]> #{start}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(end)">
+           AND B.RGST_DT             <![CDATA[<=]]> #{end}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEmpno)"> 
+           AND B.CHRR_EMPNO   = #{chrrEmpno}
+        </if>
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)"> 
+           AND B.MNGM_BDCD    = #{mngmBdcd}
+        </if>
+        ORDER BY B.RGST_DT DESC
+  </select> -->
 
-<select id="ibSpecSearch" parameterType="com.nanuri.rams.business.common.tt.TT03040SDTO" resultType="com.nanuri.rams.business.common.tt.TT03040SVO">
-	SELECT *
-	FROM IBIMS101B
-</select>
-
+  <select id="ibSpecSearch" parameterType="com.nanuri.rams.business.common.tt.TT03040SDTO" resultType="com.nanuri.rams.business.common.tt.TT03040SVO">
+    SELECT DEAL_NO AS DEAL_NO,
+           DEAL_NM,
+           HND_DETL_DTM,
+           DEAL_NO AS MNGM_BDCD_NM,
+           DEAL_NO AS CHRR_EMPNM,
+           DEAL_NO AS MTRP_RGSTT_SDCD,
+           DEAL_NO AS MTRP_RGSTT_SDCD_NM
+    FROM   TEST101B
+    WHERE  DEAL_NO = #{dealNumbeer}
+    OR    HND_DETL_DTM BETWEEN #{createStartDate} AND #{createEndDate}
+  </select>
+  
 </mapper>
