@@ -5,6 +5,11 @@
 
 <th:block layout:fragment="script">
 	<script th:src="@{js/business/tt/TT03040S.js}"></script>
+	<script th:src="@{js/business/tt/TT03041S.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tt/TT03041S :: TT03041S"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -39,7 +44,7 @@
 									<input type="text" class="form-control ol-sm-4" id="TT03040SDealNo">
 									
 									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick="">
+										<button type="button" class="btn btn-default" onclick="TT03041Sjs.TT03041S_modal('TT03041S')">
 											<i class="fa fa-search"></i>
 										</button>
 									</span>

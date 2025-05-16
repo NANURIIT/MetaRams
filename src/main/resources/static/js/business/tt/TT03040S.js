@@ -90,8 +90,9 @@ const TT03040Sjs = (function() {
 		$.ajax({
 			url: "/TT03040S/ibSpecSearch",
 			method: "post",
+			contentType: "application/json",
 			dataType: "json",
-			data: paramData,
+			data: JSON.stringify(paramData),
 			success: function(res) {
 				console.log("결과", res);
 				
@@ -109,7 +110,7 @@ const TT03040Sjs = (function() {
 	}
 
 	function movePage(e) {
-		sessionStorage.setItem("dealNo", e.dealNo);
+		sessionStorage.setItem("TT03040S_dealNo", e.dealNo);
 
 		callPage("TT03020S", "딜정보등록");
 	  }
@@ -122,8 +123,8 @@ const TT03040Sjs = (function() {
 	}
 
 	return {
-		TT03040S_search: searchBtn,
-		TT03040S_grid: pqGrid,
-		TT03040S_reset: resetBtn
+		TT03040S_search: searchBtn, 
+		TT03040S_grid: pqGrid, 
+		TT03040S_reset: resetBtn, 
 	};
 })();

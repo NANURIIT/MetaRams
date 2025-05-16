@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.nanuri.rams.business.common.tt.TT03040SDTO;
 import com.nanuri.rams.business.common.tt.TT03040SMapper;
@@ -23,5 +24,10 @@ public class TT03040ServiceImpl implements TT03040Service {
 	@Override
 	public List<IBIMS101BVO> ibSpecSearch(TT03040SDTO data) {
 		return tt03040sMapper.ibSpecSearch(data);
+	}
+
+	@Override
+	public List<TT03040SVO> dealNameSearch(TT03040SDTO dealNo) {
+		return tt03040sMapper.dealNameSearch(dealNo);
 	}
 }

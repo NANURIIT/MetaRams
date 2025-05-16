@@ -42,7 +42,9 @@
       ) AS MTR_PRG_STTS_DCD_NM                                 /* 테이블 컬럼 미존재로 임시 하드코딩 */
     FROM     IBIMS101B B
     WHERE    B.DEAL_NO LIKE '%' || #{dealNumbeer} || '%'
-    AND      B.RGST_DT BETWEEN #{createStartDate} AND #{createEndDate}
+    <if test="createStartDate != null and createEndDate != null">
+    	AND B.RGST_DT BETWEEN #{createStartDate} AND #{createEndDate}
+  	</if>
     ORDER BY B.RGST_DT DESC
   </select>
 
@@ -59,5 +61,8 @@
     WHERE  DEAL_NO = #{dealNumbeer}
     AND    HND_DETL_DTM BETWEEN #{createStartDate} AND #{createEndDate}
   </select> -->
+
+  <!-- 돋보기로 이름 찾기 -->
+  
 
 </mapper>
