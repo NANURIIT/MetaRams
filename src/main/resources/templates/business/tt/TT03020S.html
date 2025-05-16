@@ -96,7 +96,10 @@
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>투자상품대분류</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_I029" ></select>
+                                                    <select class="form-control" id="TT03020S_I029" >
+														<option value="">선택</option>
+                                                    </select>
+                                                    
                                                     <span class="input-group-append">
                                                         <!-- <button type="button" class="btn btn-default" onclick="callAC01140P('TT03020S');">
                                                             <i class="fa fa-search"></i>
@@ -106,17 +109,23 @@
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>투자상품중분류</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_I030" ></select>
+                                                    <select class="form-control" id="TT03020S_I030" >
+                                                        <option value="">선택</option>
+                                                    </select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>투자상품소분류</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_I031" ></select>
+                                                    <select class="form-control" id="TT03020S_I031" >
+                                                        <option value="">선택</option>
+                                                    </select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>상품상세</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_I028"></select>
+                                                    <select class="form-control" id="TT03020S_I028">
+                                                        <option value="">선택</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,8 +139,8 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">투자국가</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <input class="form-control" type="text" list="" id="">
-                                                    <datalist id=""></datalist>
+                                                    <input class="form-control" type="text" list="TT03020S_C006" id="TT03020S_C006_Srch">
+                                                    <datalist id="TT03020S_C006"></datalist>
                                                 </div>
                                                 <label class="col-sm-1 control-label">투자도시</label>
                                                 <div class="col-sm-2 input-group">
@@ -149,12 +158,12 @@
                                 <div class="ibox">
                                     <div class="ibox-title">
                                         <h5>▶ 업체정보</h5>
-                                        <button class="btn btn-default" type="button" onclick="닫히는함수">
+                                        <!-- <button class="btn btn-default" type="button" onclick="닫히는함수">
                                             <i class="fa fa-arrow-up"></i>
                                         </button>
                                         <button class="btn btn-default" type="button" onclick="">
                                             <i class="fa fa-">기업체등록</i>
-                                        </button>
+                                        </button> -->
                                     </div>
                                     <div class="ibox-content">
                                         <!-- row 1 -->
@@ -176,11 +185,15 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">기업규모</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_B019"></select>
+                                                    <select class="form-control" id="TT03020S_B019">
+                                                        <option value="">선택</option>
+                                                    </select>
                                                 </div>
                                                 <label class="col-sm-1 control-label">업종</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_I006"></select>
+                                                    <select class="form-control" id="TT03020S_I006">
+                                                        <option value="">선택</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -193,7 +206,9 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">신용등급</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_C012"></select>
+                                                    <select class="form-control" id="TT03020S_C012">
+														<option value="">선택</option>
+                                                    </select>
                                                 </div>
                                                 <label class="col-sm-1 control-label">상장시장</label>
                                                 <div class="col-sm-2 input-group">
@@ -211,9 +226,9 @@
                                 <div class="ibox">
                                     <div class="ibox-title">
                                         <h5>▶ 수익정보</h5>
-                                        <button class="btn btn-default" type="button" onclick="닫히는함수">
+                                        <!-- <button class="btn btn-default" type="button" onclick="닫히는함수">
                                             <i class="fa fa-arrow-up"></i>
-                                        </button>
+                                        </button> -->
                                     </div>
                                     <div class="ibox-content">
                                         <!-- row 1 -->
@@ -270,14 +285,14 @@
                                         <div class="row form-group form-inline mb-1">
                                             <label class="col-sm-1 control-label">기표일자</label>
                                             <div class="col-sm-2 input-group date">
-                                                <input class="form-control" type="text" id="" placeholder="YYYY-MM-DD">
+                                                <input class="form-control" type="text" id="TT03020S_selectDate1" placeholder="YYYY-MM-DD">
                                                 <span class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
                                                 </span>
                                             </div>
                                             <label class="col-sm-1 control-label">만기일자</label>
                                             <div class="col-sm-2 input-group date">
-                                                <input class="form-control" type="text" id="" placeholder="YYYY-MM-DD">
+                                                <input class="form-control" type="text" id="TT03020S_selectDate2" placeholder="YYYY-MM-DD">
                                                 <span class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
                                                 </span>
@@ -318,7 +333,9 @@
                                             </div>
                                             <label class="col-sm-1 control-label">신용보강여부</label>
                                             <div class="col-sm-2 input-group">
-                                                <select class="form-control" id="TT03020S_C010"></select>
+                                                <select class="form-control" id="TT03020S_C010">
+                                                    <option value="">선택</option>
+                                                </select>
                                             </div>
                                             <label class="col-sm-1 control-label">LTV</label>
                                             <div class="col-sm-2 input-group">
@@ -329,7 +346,11 @@
                                         <div class="row form-group form-inline mb-1">
                                             <label class="col-sm-1 control-label">현지법인협업</label>
                                             <div class="col-sm-2 input-group">
-                                                <select class="form-control" id=""></select>
+                                                <select class="form-control" id="TT03020S_ovrsCorpCoprtnCd">
+                                                    <option value="">선택</option>
+                                                    <option value="1">Y</option>
+                                                    <option value="2">N</option>
+                                                </select>
                                             </div>
                                             <div class="col-sm-3"></div>
                                             <label class="col-sm-1 control-label">비고</label>
