@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.nanuri.rams.business.common.tt.TT03040SDTO;
 import com.nanuri.rams.business.common.tt.TT03040SVO;
+import com.nanuri.rams.business.common.vo.IBIMS101BVO;
 
 @Service
 public interface TT03040Service {
-	public List<TT03040SVO> ibSpecSearch(TT03040SDTO data);
+	public List<IBIMS101BVO> ibSpecSearch(TT03040SDTO data);
 }

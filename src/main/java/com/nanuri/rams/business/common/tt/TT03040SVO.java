@@ -1,18 +1,17 @@
 package com.nanuri.rams.business.common.tt;
 
+import com.nanuri.rams.business.common.tt.TT03040SDTO;
+
 import lombok.Data;
 
 @Data
-public class TT03040SVO {
-	private String dprtNm;
-	private String empNm;
-	private String entpHnglNm;
-	private String inspctPrgrsStCdNm;
-	private String corpNm;
-	private String chrgHdqtNm;
-	private String chrgDprtNm;
-	private String chrgPNm;
-	private String pyntHdqtNm;
-	private String pyntDprtNm;
-	private String pyntPNm;
+public class TT03040SVO extends TT03040SDTO {
+	private String DEAL_NO;
+	private String DEAL_NM;
+	private String HND_DETL_DTM;
+	private String MNGM_BDCD_NM;
+	private String CHRR_EMPNM;
+	private String MTRP_RGSTT_SDCD;
+	private String MTRP_RGSTT_SDCD_NM;
+
 }

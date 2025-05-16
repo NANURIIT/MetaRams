@@ -1,9 +1,7 @@
 const TT03040Sjs = (function() {
-	let TT03040S_grid;
-
 	$(document).ready(function() {
 		pqGrid();
-		searchBtn();
+		resetBtn();
 	});
 
 	function pqGrid() {
@@ -32,18 +30,11 @@ const TT03040Sjs = (function() {
 						let rgstDt1 = cellData.substring(0, 4);
 						let rgstDt2 = cellData.substring(4, 6);
 						let rgstDt3 = cellData.substring(6, 8);
-						return `${rgstDt1}-${rgstDt2}-${rgstDt3}`.trim();
+						// return `${rgstDt1}-${rgstDt2}-${rgstDt3}`.trim();
+						return cellData.substring(0, 10);
 					}
 					return cellData;
 				},
-			},
-			{
-				title: "부서코드",
-				dataType: "string",
-				dataIndx: "mngmBdcd",
-				halign: "center",
-				align: "center",
-				hidden: true,
 			},
 			{
 				title: "부서명",
@@ -51,14 +42,6 @@ const TT03040Sjs = (function() {
 				dataIndx: "mngmBdcdNm",
 				halign: "center",
 				align: "center",
-			},
-			{
-				title: "담당자사번",
-				dataType: "string",
-				dataIndx: "chrrEmpno",
-				halign: "center",
-				align: "center",
-				hidden: true,
 			},
 			{
 				title: "담당자명",
@@ -91,33 +74,56 @@ const TT03040Sjs = (function() {
 		];
 		
 		setPqGrid(pqGridObjs);
-		grdTemp = $("#TT03040S_grid").pqGrid("instance");
 	}
 
 	function searchBtn() {
-		let createStartDate = $("#TT03040SCreateStartDate").val().replace("-", "")
-		let createEndDate = $("#TT03040SCreateEedDate").val().replace("-", "")
-		let dealNumbeer = $("#TT03040SDealNo").val()
+		let createStartDate = $("#TT03040SCreateStartDate").val().replaceAll("-", "");
+		let createEndDate = $("#TT03040SCreateEedDate").val().replaceAll("-", "");
+		let dealNumbeer = $("#TT03040SDealNo").val();
 
 		let paramData = {
 			createStartDate: createStartDate,
 			createEndDate: createEndDate,
 			dealNumbeer: dealNumbeer,
-		}
+		};
 
 		$.ajax({
-			uri: "/TB03040S/ibSpecSearch",
-			method: "get",
+			url: "/TT03040S/ibSpecSearch",
+			method: "post",
 			dataType: "json",
-			data: JSON.stringify(paramData),
+			data: paramData,
 			success: function(res) {
-				console.log(res)
+				console.log("결과", res);
+				
+				$('#TT03040S_grid').pqGrid('instance').setData(res);
+
+				$('#TT03040S_grid').pqGrid('instance').option("rowClick", function (event, ui) {
+					pqGridSelectHandler(ui.rowIndx, "TT03040S_grid");
+				});
+
+				$('#TT03040S_grid').pqGrid('instance').option("rowDblClick", function (event, ui) { 
+					movePage(ui.rowData);
+				});
 			}
 		})
 	}
 
+	function movePage(e) {
+		sessionStorage.setItem("dealNo", e.dealNo);
+
+		callPage("TT03020S", "딜정보등록");
+	  }
+
+	function resetBtn() {
+		$("#TT03040SCreateStartDate").val(addMonth(getToday(), -1));
+		$("#TT03040SCreateEedDate").val(getToday());
+		$('#TT03040SDealNo').val("");
+		resetPGgrids("TT03040S");
+	}
+
 	return {
 		TT03040S_search: searchBtn,
-		TT03040S_grid: pqGrid
+		TT03040S_grid: pqGrid,
+		TT03040S_reset: resetBtn
 	};
 })();

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nanuri.rams.business.common.tt.TT03040SDTO;
 import com.nanuri.rams.business.common.tt.TT03040SMapper;
 import com.nanuri.rams.business.common.tt.TT03040SVO;
+import com.nanuri.rams.business.common.vo.IBIMS101BVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ public class TT03040ServiceImpl implements TT03040Service {
 	private final TT03040SMapper tt03040sMapper;
 
 	@Override
-	public List<TT03040SVO> ibSpecSearch(TT03040SDTO data) {
+	public List<IBIMS101BVO> ibSpecSearch(TT03040SDTO data) {
 		return tt03040sMapper.ibSpecSearch(data);
 	}
 }
