@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.TEST101BMapper">
+    <!-- 조회 -->
     <select id="getDealInfo" parameterType="com.nanuri.rams.business.common.vo.TEST101BVO" resultType="com.nanuri.rams.business.common.vo.TEST101BVO">
         SELECT DEAL_NO     	/* 딜번호 */
              , SN      	/* 일련번호 */
@@ -87,96 +88,14 @@
              , HND_TMNL_NO     	/* 조작단말기번호 */
              , HND_TR_ID       	/* 조작거래id */
              , GUID        	/* guid */
-        
-        <!-- DEAL_NO
-             , SN 
-             , STDR_YEAR 
-             , LAST_YN 
-             , DEAL_NM 
-             , PRDT_IFLW_PATH_DCD 
-             , INV_DEAL_CNTN 
-             , INV_TRGT_DCD 
-             , INV_TP_DCD 
-             , INV_SHP_CD 
-             , INV_WY_CD 
-             , PTXT_TR_OTHR_DSCM_NO 
-             , LST_YN 
-             , DMS_CRDT_GRD_DCD 
-             , CRDT_INQ_DT 
-             , BUSI_DCD 
-             , BUSI_DETL_DCD 
-             , INV_PRDT_CLSF_CD 
-             , INV_PRDT_MDCL_CD 
-             , INV_PRDT_LCLS_CD 
-             , IB_PRDT_CLSF_CD 
-             , ACTS_CD 
-             , ORTN_FND_CD 
-             , PPLC_FND_YN 
-             , UNTP_FND_YN 
-             , DSK_CD 
-             , NTN_CD 
-             , HOLD_PRPS_DCD 
-             , OFFR_SRVC_DCD 
-             , THCO_RL_DCD 
-             , INV_PRD_MNUM 
-             , SOC_YN 
-             , SOC_DCD 
-             , SPPI_SFC_YN 
-             , MRTG_STUP_YN 
-             , ALTN_INV_YN 
-             , RLES_FNN_YN 
-             , RLES_FNN_DETL_DCD 
-             , PROJ_FNN_YN 
-             , CRDT_RIFC_APLY_YN 
-             , INV_AMT_DCSN_YN 
-             , ALL_INV_AMT 
-             , THCO_PTCI_AMT_DCSN_YN 
-             , THCO_PTCI_AMT 
-             , ALL_ERN_AMT 
-             , THE_YEAR_ERN_AMT 
-             , BALT_ERN_AMT 
-             , INTR_ERN_AMT 
-             , CRNCY_CD 
-             , CRNCY_AMT 
-             , BALT_DT 
-             , EXP_DT 
-             , RGST_DT 
-             , DECD_DT 
-             , DECD_SN 
-             , MNGM_BDCD 
-             , CHRR_EMPNO 
-             , DCFC_BDCD 
-             , DCFC_EMP_NO 
-             , CORPTN_TYP_CD 
-             , BOOK_CD 
-             , INV_PRDT_DTLS_DVD_CD 
-             , BNK_BD 
-             , INVST_CTY 
-             , BZSACAL_CD 
-             , IND_TYP_DVD_CD 
-             , IRLS 
-             , CRDT_GRD_CD 
-             , LST_MKT 
-             , CSUC_CMP_DSCM_NO 
-             , CRDT_EHCMNT_CCD 
-             , LTV 
-             , OVRS_CORP_COPRTN_CD 
-             , ETC_CNTN 
-             , DEL_YN 
-             , HND_DETL_DTM 
-             , HND_EMPNO 
-             , HND_TMNL_NO 
-             , HND_TR_ID 
-             , GUID  -->  
         FROM TEST101B
         WHERE 1 = 1
           AND DEAL_NO = #{dealNo}
           AND LAST_YN = 'Y'
-          
           <!-- AND SN = #{sn} -->
-          
     </select>
 
+    <!-- 저장 -->
     <insert id="saveDealInfo" parameterType="com.nanuri.rams.business.common.dto.TEST101BDTO">
      INSERT INTO TEST101B
               (  DEAL_NO
@@ -264,7 +183,7 @@
             (
               #{dealNo}
               , #{sn}
-              , #{stdrYear}
+              , TO_CHAR(SYSDATE, 'YYYY')
               , 'Y'               /* 마지막에 추가하는 정보 = 최종여부:Y */
               , #{dealNm}
               , #{prdtIflwPathDcd}
@@ -336,13 +255,46 @@
               , #{ltv}
               , #{ovrsCorpCoprtnCd}
               , #{etcCntn}
-              , #{delYn}
+              , 'N'
               , SYSDATE            /* 업데이트할때의 시간 */
               , #{hndEmpno}
-              , #{hndTmnlNo}
-              , #{hndTrId}
-              , #{guid}
+              , ''
+              , ''
+              , ''
             )
     </insert>
+
+    <!-- 최종여부 업데이트 (Y/N 체크)
+    UPDATE : TEST101B 테이블
+    SET : 최종여부 'N'으로 
+    WHERE : DEAL_NO 체크, 가장 최근에 사용했는지 체크('Y')-->
+    <update id="updateLstYn" parameterType="string">
+        UPDATE TEST101B
+           SET LAST_YN = 'N'
+         WHERE 1 = 1 
+           AND DEAL_NO = #{dealNo}
+           AND LAST_YN = 'Y'
+    </update>
+
+    <!-- 일련번호 채번
+    LPAD(dealNo=47, 5, 0) = 00047  -->
+    <select id="getSnSeq" parameterType="com.nanuri.rams.business.common.dto.TEST101BDTO" resultType="string">
+        SELECT LPAD(SUBSTR(MAX(DEAL_NO), 6, 6)+1, 6, '0')
+          FROM TEST101B
+         WHERE 1 = 1
+           AND CHAR_LENGTH(DEAL_NO) = 11
+    </select>
+
+    <!-- 딜넘버 채번 -->
+    <select id="getDealNoSeq" parameterType="com.nanuri.rams.business.common.dto.TEST101BDTO" resultType="string">
+        SELECT TO_NUMBER(CASE 
+                         WHEN MAX(SN) IS NULL THEN 1                /* 널 체크 : 1 */
+                         WHEN MAX(SN) IS NOT NULL THEN MAX(SN) + 1  /* 널값이 아니면 : +1 */
+                         ELSE MAX(SN) + 1
+                         END) AS SN
+          FROM TEST101B
+         WHERE 1 = 1
+           AND DEAL_NO = #{dealNo}
+    </select>
 
 </mapper>

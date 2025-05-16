@@ -4,6 +4,7 @@ const TT03020Sjs = (function () {
     $(document).ready(function () {
         // getInvestLrgCd();
         getSelectBoxList('TT03020S', 'I028/I029/I030/I031/C006/B019/I006/C012/C010/I027')
+        loginUserInfo();
     });
 
     /**
@@ -111,12 +112,75 @@ const TT03020Sjs = (function () {
      */
     function saveDealInfo() {
 
+        let invAmtDcsnYn = '';
+        if ($('#TT03020S_dealSclY').is(':checked')) {
+            invAmtDcsnYn = 'Y'
+        }
+        else if ($('TT03020S_dealSclN').is(':checked')) {
+            invAmtDcsnYn = 'N'
+        }
 
-        let dealNo = $('#TT03020S_ibDealNo').val();
-
+        let thcoPtciAmtDcsnYn = '';
+        if ($('#TT03020S_ptctSclY').is(':checked')) {
+            thcoPtciAmtDcsnYn = 'Y'
+        }
+        else if ($('TT03020S_ptctSclN').is(':checked')) {
+            thcoPtciAmtDcsnYn = 'N'
+        }
 
         let paramData = {
-            dealNo: dealNo,
+
+            dealNo: $('#TT03020S_ibDealNo').val(),          // Deal번호
+
+            // 기본정보
+            dealNm: $('#TT03020S_dealNm').val(),            // Deal명
+            invPrdtLclsCd: $('#TT03020S_I029').val(),       // 투자상품대분류
+            invPrdtMdclCd: $('#TT03020S_I030').val(),       // 투자상품중분류
+            invPrdtClsfCd: $('#TT03020S_I031').val(),       // 투자상품소분류
+            invtGdsSdvdCd: $('#TT03020S_I028').val(),       // 상품상세
+            dealDtl: $('#TT03020S_dealDtl').val(),          // Deal내용
+            // investCtry: $('#').val(),                        투자국가            
+            investCty: $('#TT03020S_investCty').val(),      // 투자도시
+
+            // 업체정보
+            ptxtTrOthrDscmNo: $('#TT03020S_trdNo').val(),   // 거래상대방
+            bzsacalCd: $('#TT03020S_B019').val(),           // 기업규모
+            indTypDvdCd: $('#TT03020S_I006').val(),         // 업종
+            irls: $('#TT03020S_irls').val(),                // 계열
+            crdtGrdCd: $('#TT03020S_C012').val(),           // 신용등급
+            lstMkt: $('#TT03020S_lstMkt').val(),            // 상장시장
+
+            // 수익정보
+            invAmtDcsnYn: invAmtDcsnYn,                     // Deal규모(Yn)
+            dealScl: $('#TT03020S_dealScl').val(),
+            thcoPtciAmtDcsnYn: thcoPtciAmtDcsnYn,           // 참여규모(Yn)
+            dealScl: $('#TT03020S_ptctScl').val(),
+            allErn: $('#TT03020S_allErn').val(),            // 전체수익
+            thyrErn: $('#TT03020S_thyrErn').val(),          // 당해수익
+            wrtErn: $('#TT03020S_wrtErn').val(),            // 기표수익
+            intrErn: $('#TT03020S_intrErn').val(),          // On-going
+            // 기표일자
+            // 만기일자
+            crncyCd: $('#TT03020S_I027').val(),              // 통화코드            
+            crncyAmt: $('#TT03020S_invstCrncyAmt').val(),    // 통화금액
+
+            // 기타정보
+            crncyAmt: $('#TT03020S_invstCrncyAmt').val(),    // 시공사 기업체번호
+            crdtEhcmntCcd: $('#TT03020S_C010').val(),         //  신용보강여부
+            ltv: $('#TT03020S_ltv').val(),                    //  LTV
+            etcCntn: $('#TT03020S_etcCntn').val(),           // 현지법인협업
+            // 비고
+
+            // 직원정보
+            chrrEmpno: $('#TT03020S_chrg_empNo').val(),           // 사원번호
+            mngmBdcd: $('#TT03020S_chrg_dprtCd').val(),           // 부서코드
+
+
+
+
+
+
+
             // sn: sn,
         };
 
@@ -124,14 +188,48 @@ const TT03020Sjs = (function () {
             type: "POST",
             url: "/TT03020S/saveDealInfo",
             data: JSON.stringify(paramData),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
+            contentType: "application/json",
+            dataType: "text",
             success: function (data) {
-                
+                if (isEmpty($('#TT03020S_dealNm').val()) ||
+                    isEmpty($('#TT03020S_I029').val()) ||
+                    isEmpty($('#TT03020S_I030').val()) ||
+                    isEmpty($('#TT03020S_I031').val()) ||
+                    isEmpty($('#TT03020S_dealDtl').val()) ||
+                    isEmpty($('#TT03020S_trdNo').val()) ||
+                    isEmpty($('#TT03020S_dealScl').val()) ||
+                    isEmpty($('#TT03020S_chrg_empNo').val())) {
+
+                    Swal.fire({
+                        icon: "warning"
+                        , title: "Warning"
+                        , text: "필수값을 입력해주세요!"
+                    })
+                }
+                else {
+                    console.log("필수값 입력 OK!");
+
+                }
+
 
             }
         });
 
+    }
+
+    // 로그인정보
+    function loginUserInfo() {
+        $.ajax({
+            type: "GET",
+            url: "/getUserAuth",
+            dataType: "json",
+            success: function (data) {
+                $('#TT03020S_chrg_empNo').val(data.eno);        // 사원번호
+                $('#TT03020S_chrg_empNm').val(data.empNm);      // 사원명
+                $('#TT03020S_chrg_dprtCd').val(data.dprtCd);    // 부서코드
+                $('#TT03020S_chrg_dprtNm').val(data.dprtNm);    // 부서명
+            }
+        });
     }
 
 
@@ -170,10 +268,21 @@ const TT03020Sjs = (function () {
     /**
      * 초기화
      */
+    function resetSrch() {
+        console.log("초기화");
+        console.log("초기화 전 딜명 ::: ", $('#TT03020S_dealNm').val());
+        
+        
+        $('#TT03020S_dealNm').val("");
+        console.log("청소 끝 딜명 ::: ", $('#TT03020S_dealNm').val());
+
+    }
+
 
     return {
         getDealInfo: getDealInfo,
         saveDealInfo: saveDealInfo,
+        resetSrch: resetSrch,   
 
     }
 })();

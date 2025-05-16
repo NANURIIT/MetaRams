@@ -1,5 +1,7 @@
 package com.nanuri.rams.business.common.dto;
 
+import java.math.BigDecimal;
+
 import org.aspectj.weaver.ast.Not;
 
 import lombok.Getter;
@@ -44,7 +46,7 @@ public class TEST101BDTO {
     private String holdPrpsDcd; // 보유목적구분코드
     private String offrSrvcDcd; // 제공서비스구분코드
     private String thcoRlDcd; // 당사역할구분코드
-    private String invPrdMnum; // 투자기간개월수
+    private BigDecimal invPrdMnum; // 투자기간개월수
     private String socYn; // soc여부
     private String socDcd; // soc구분코드
     private String sppiSfcYn; // sppi충족여부
@@ -55,20 +57,20 @@ public class TEST101BDTO {
     private String projFnnYn; // 프로젝트금융여부
     private String crdtRifcAplyYn; // 신용보강적용여부
     private String invAmtDcsnYn; // 투자금액확정여부
-    private String allInvAmt; // 총투자금액
+    private BigDecimal allInvAmt; // 총투자금액
     private String thcoPtciAmtDcsnYn; // 당사참여금액확정여부
-    private String thcoPtciAmt; // 당사참여금액
-    private String allErnAmt; // 전체수익금액
-    private String theYearErnAmt; // 당해수익금액
-    private String baltErnAmt; // 기표수익금액
-    private String intrErnAmt; // 이자수익금액
+    private BigDecimal thcoPtciAmt; // 당사참여금액
+    private BigDecimal allErnAmt; // 전체수익금액
+    private BigDecimal theYearErnAmt; // 당해수익금액
+    private BigDecimal baltErnAmt; // 기표수익금액
+    private BigDecimal intrErnAmt; // 이자수익금액
     private String crncyCd; // 통화코드
-    private String crncyAmt; // 통화금액
+    private BigDecimal crncyAmt; // 통화금액
     private String baltDt; // 기표일자
     private String expDt; // 만기일자
     private String rgstDt; // 등록일자
     private String decdDt; // 결재일자
-    private String decdSn; // 결재일련번호
+    private int decdSn; // 결재일련번호
     private String mngmBdcd; // 관리부점코드
     private String chrrEmpno; // 담당자사원번호
     private String dcfcBdcd; // 결재자부점코드
@@ -85,7 +87,7 @@ public class TEST101BDTO {
     private String lstMkt; // 상장시장
     private String csucCmpDscmNo; // 시공사식별번호
     private String crdtEhcmntCcd; // 신용보감구분코드
-    private String ltv; // LTV
+    private BigDecimal ltv; // LTV
     private String ovrsCorpCoprtnCd; // 해외법인협업
     private String etcCntn; // 기타의견
     private String delYn; // 삭제여부
