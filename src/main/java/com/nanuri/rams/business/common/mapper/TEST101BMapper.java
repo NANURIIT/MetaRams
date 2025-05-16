@@ -10,5 +10,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface TEST101BMapper {
     // 조회
-    public TEST101BVO getDealDetail(TEST101BDTO test101bdto);
+    public TEST101BVO getDealInfo(TEST101BDTO test101bdto);
+
+    /*
+     * Insert
+     * int 형식으로 
+     */
+    public int saveDealInfo(TEST101BDTO test101bdto);
 }

@@ -19,11 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 public class TT03020ServiceImpl implements TT03020Service {
     
     private final TEST101BMapper test101bmapper;
+	private final AuthenticationFacade facade;      // 사용자정보
+
     
     //조회
     @Override
-    public TEST101BVO getDealDetail (TEST101BDTO test101bdto) {
-        TEST101BVO test101bvo = test101bmapper.getDealDetail(test101bdto);
+    public TEST101BVO getDealInfo (TEST101BDTO test101bdto) {
+        TEST101BVO test101bvo = test101bmapper.getDealInfo(test101bdto);
         // log.debug("임플 체크");
         // TEST101BVO test101bvo = new TEST101BVO();
         log.debug("test101bvo ::: " + test101bvo);
@@ -36,9 +38,26 @@ public class TT03020ServiceImpl implements TT03020Service {
         else {
             return test101bvo;
         }
-        //log.debug("vo 체크 : " , test101bvo);
-
-        // log
-
     }
+
+    // 저장(insert)
+    @Override
+    public String saveDealInfo(TEST101BDTO test101bdto) {
+        log.debug("서비스 임플 탔음!!");
+
+
+        /*
+         * 1. 파라미터 세팅하기
+         * 2. 채번
+         */
+
+        //  2. 채번(조작사원번호)
+        test101bdto.setHndEmpno(facade.getDetails().getEno());
+        log.debug("hndEmpno ::: " + facade.getDetails().getEno());
+
+
+        
+        return null;
+    }
+
 }

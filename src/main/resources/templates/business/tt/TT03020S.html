@@ -93,22 +93,22 @@
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>투자상품대분류</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_investLrgCd" disabled></select>
+                                                    <select class="form-control" id="TT03020S_I029" ></select>
                                                     <span class="input-group-append">
-                                                        <button type="button" class="btn btn-default" onclick="callAC01140P('TT03020S');">
+                                                        <!-- <button type="button" class="btn btn-default" onclick="callAC01140P('TT03020S');">
                                                             <i class="fa fa-search"></i>
-                                                        </button>
+                                                        </button> -->
                                                     </span>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>투자상품중분류</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_investMdmCd" disabled></select>
+                                                    <select class="form-control" id="TT03020S_I030" ></select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>투자상품소분류</label>
                                                 <div class="col-sm-2 input-group">
-                                                    <select class="form-control" id="TT03020S_investSmlCd" disabled></select>
+                                                    <select class="form-control" id="TT03020S_I031" ></select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     <span class="req"></span>상품상세</label>
@@ -368,7 +368,7 @@
                                         </div>
                                         <!-- row 2 -->
                                         <div class="row form-group form-inline mb-1">
-                                            <button class="btn btn-default" type="button">
+                                            <button class="btn btn-default" type="button" onclick="TT03020Sjs.saveDealInfo();">
                                                 <i class="fa fa-save">저장</i>
                                             </button>
                                         </div>

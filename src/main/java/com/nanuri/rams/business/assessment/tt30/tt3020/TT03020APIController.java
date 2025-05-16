@@ -21,10 +21,19 @@ public class TT03020APIController {
 
     private final TT03020Service tt03020Service;
 
-    @GetMapping(value = "/getDealDetail")
-    public TEST101BVO getDealDetail (TEST101BDTO test101bdto) {
-        log.debug("컨트롤러 테스트 :: ", tt03020Service.getDealDetail(test101bdto));
+    @GetMapping(value = "/getDealInfo")
+    public TEST101BVO getDealInfo (TEST101BDTO test101bdto) {
+        log.debug("컨트롤러 테스트 :: ", tt03020Service.getDealInfo(test101bdto));
         log.debug("test101bdto :: ", test101bdto);
-        return tt03020Service.getDealDetail(test101bdto);
+        return tt03020Service.getDealInfo(test101bdto);
     }
+
+    // 저장(insert)
+    @PostMapping(value = "saveDealInfo")
+    public String saveDealInfo(@RequestBody TEST101BDTO test101bdto) {
+        //TODO: process POST request
+        
+        return tt03020Service.saveDealInfo(test101bdto);
+    }
+    
 }
