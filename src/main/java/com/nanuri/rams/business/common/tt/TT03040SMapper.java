@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.nanuri.rams.business.common.vo.IBIMS101BVO;
+
 @Mapper
 public interface TT03040SMapper {
-	public List<TT03040SVO> ibSpecSearch(TT03040SDTO data);
+	public List<IBIMS101BVO> ibSpecSearch(TT03040SDTO data);
 }
