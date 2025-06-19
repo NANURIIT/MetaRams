@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+	
+<th:block layout:fragment="script">
+	<script th:src="@{js/business/tt/TT03041S.js}"></script>
+</th:block>
+	
+	
+<th:block th:fragment="TT03041S">
+	<!-- modal -->
+	<div id="modal-TT03041S" class="modal fade" role="dialog" aria-labelledby="lb-TT03041S" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<!-- 모달 헤더 부분 -->
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">Deal 번호 조회</h4>
+					
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick=""><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				
+				<!-- 모달 바디 부분 -->
+				<div class="modal-body">
+					<input type="hidden" name="TT03041S_prefix" id="TT03041S_prefix" value=""/>
+					
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox mb-0">
+								<!-- 조회 조건 영역 -->
+				    			<div class="ibox-content i-filter text-right">
+				    				<div class="form-group row">
+				    					<label class="col-sm-1 col-form-label">Deal 번호</label>
+				                        <div class="col-sm-3"><input type="text" class="form-control" id="TT03041SDealNo"></div>
+
+										<div class="col-sm-12 text-right">
+				                       		<button type="button" class="btn btn-primary mr-2" onclick="TT03041Sjs.TT03041S_search();" >
+				                       			<i class="fa fa-search"></i>&nbsp;조회
+				                       		</button>
+				                       	</div>
+									</div>
+				    			</div>
+				    			
+				    			<!-- 조회 결과 -->
+				    			<div class="ibox-content">
+									<div class="ibox">
+										<div id="TT03041S_grid" style="min-height: 100px"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>	
+
+</html>

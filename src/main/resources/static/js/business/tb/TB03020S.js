@@ -162,6 +162,8 @@ const TB03020Sjs = (function () {
 				data: inputParam,
 				dataType: "json",
 				success: function (data) {
+					console.log('data : ', data);
+					
 
 					// 조회된 정보가 없을시
 					if (!data.dealNo) {
