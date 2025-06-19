@@ -2153,7 +2153,7 @@ const TB04010Sjs = (function () {
   }
 
   function btnReset() {
-    $("#TB04010S_ibDealNo").val("");
+    $("#TB04010S_ibDealNo").val(""); 
     $("#TB04010S_ibDealNm").val("");
     $("#TB04010S_selectedDealNo").val("");
     $("#gridDealListInfo").pqGrid("option", "dataModel.data", []);

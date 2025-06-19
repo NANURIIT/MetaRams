@@ -1,6 +1,6 @@
 let pqGridObjCnfStts;
 let pqGridObjCnfRslt;
-$(document).ready(function() {
+$(document).ready(function() {  
 	
 	$('#TB01010S_datepicker').val(getToday().substring(0,7));
 	
@@ -22,7 +22,7 @@ function rendorGrid () {
 	  , id        : 'gridCnfStts'
 	  , colModel  : colCnfStts
 	};
-	/** 협의체 결과현황 **/
+	/** 협의체 결과현황 **/ 
 	
 	pqGridObjCnfStts = {
 		height    : 200

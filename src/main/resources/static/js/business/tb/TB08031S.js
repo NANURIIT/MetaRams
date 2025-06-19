@@ -1597,22 +1597,18 @@ const TB08031Sjs = (function () {
 
           if(data.invFnnMngmBusiDcd){       //사업구분코드 있는 경우
 
-            var totPrcrAmt = isEmpty(data.totPrcrAmt) ? 0 : addComma(data.totPrcrAmt);    //총조달금액
-            var thcoMdtnAmt = isEmpty(data.thcoMdtnAmt) ? 0 : addComma(data.thcoMdtnAmt); //당사주선금액
-            var thcoPtciAmt = isEmpty(data.thcoPtciAmt) ? 0 : addComma(data.thcoPtciAmt); //당사참여금액
-
             var invFnnMngmBusiDcd = data.invFnnMngmBusiDcd;
             //사업기본정보 세팅
             $("#TB08031S_invbnkAmnBzCd").val(data.invFnnMngmBusiDcd);           //사업구분코드
             $("#TB08031S_I021").val(data.invFnnMngnBusiDtlDcd);                 //사업구분 상세
             $("#TB08031S_I011").val(data.invFnnMmngPrgSttsCd);                  //진행상태코드
             $("#TB08031S_I027").val(data.crryCd);                               //통화코드
-            $("#TB08031S_prcrAmt").val(totPrcrAmt);                             //총조달금액
+            $("#TB08031S_prcrAmt").val(data.totPrcrAmt);                        //총조달금액
             $("#TB08031S_bondProt").val(data.mainBondMtncCnts);                 //주요채권보전내용
             $("#TB08031S_rvwStRsn").val(data.ivtgShdnRsnCnts);                  //검토중단사유
             $("#TB08031S_T002").val(data.thcoRlDcd);                            //당사역할구분
-            $("#TB08031S_thcoRlAmt").val(thcoMdtnAmt);                          //당사주선금액
-            $("#TB08031S_thcoPtnAmt").val(thcoPtciAmt);                         //당사참여금액
+            $("#TB08031S_thcoRlAmt").val(data.thcoMdtnAmt);                     //당사주선금액
+            $("#TB08031S_thcoPtnAmt").val(data.thcoPtciAmt);                    //당사참여금액
             $("#TB08031S_I033").val(data.invstRvnRtDcd);                        //고정금리구분코드
             $("#TB08031S_S003").val(data.stdrIntrtKndCd);                       //기준금리구분코드
             $("#TB08031S_BitrKindCdInput").val(data.stdrIntrt);                 //기준금리

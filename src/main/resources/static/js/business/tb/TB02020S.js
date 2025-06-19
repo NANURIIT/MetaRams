@@ -8,6 +8,7 @@ const TB02020Sjs = (function () {
     getWfDealInfo(); // 딜정보 데이터 세팅
   });
 
+
   // 그리드 렌더링함수
   function renderGrid() {
     let arrPqGridObj = [
