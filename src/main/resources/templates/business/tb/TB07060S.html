@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
 	<script th:src="@{js/tabs.js}"></script>
@@ -27,14 +25,18 @@
 						<!-- row1 -->
 						<div class="row form-group form-inline text-right">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목코드</label>
+								<label class="col-sm-1 col-form-label text-right">
+									<span class="req"></span> 종목코드
+								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07060S_prdtCd">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07060S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07060S');">
+												<i class="fa fa-search"></i>
+											</button>
 										</span>
-										<input type="text" class="form-control" id="TB07060S_prdtNm" style="width:70px;" readonly>
+										<input type="text" class="form-control" id="TB07060S_prdtNm" style="width: 70px;" readonly>
 									</div>
 								</div>
 								<label class="col-sm-1">실행순번</label>
@@ -44,14 +46,18 @@
 									</select>
 								</div>
 								<div class="col-sm-6 text-right">
-									<button class="btn btn-primary" type="button" onclick="TB07060Sjs.srch();"><i class="fa fa-search"></i>&nbsp;조회</button>
-									<button id="" class="btn btn-default" onclick="TB07060Sjs.reset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+									<button class="btn btn-primary" type="button" onclick="TB07060Sjs.srch();">
+										<i class="fa fa-search"></i> &nbsp;조회
+									</button>
+									<button id="" class="btn btn-default" onclick="TB07060Sjs.reset();">
+										<i class="fa fa-undo"></i> &nbsp;초기화
+									</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="ibox" id="iboxContent">
 					<div class="ibox-content">
 						<!-- row1 -->
@@ -59,8 +65,8 @@
 							<div class="col-sm-12 form-group">
 								<label class="col-sm-1">거래상대방</label>
 								<div class="col-sm-5 input-group">
-									<input type="text" class="form-control" style="width:30px;" id="TB07060S_ptxtTrOthrDscmNo" disabled>
-									<input type="text" class="form-control mg-l5" style="width:70px;" id="TB07060S_ptxtTrOthrDscmNm" disabled>
+									<input type="text" class="form-control" style="width: 30px;" id="TB07060S_ptxtTrOthrDscmNo" disabled>
+									<input type="text" class="form-control mg-l5" style="width: 70px;" id="TB07060S_ptxtTrOthrDscmNm" disabled>
 								</div>
 								<label class="col-sm-1">진행상태</label>
 								<div class="col-sm-2 input-group">
@@ -91,16 +97,7 @@
 										<option></option>
 									</select>
 								</div>
-								<!-- <label class="col-sm-1">대출과목</label>
-								<div class="col-sm-5 input-group">
-									<input type="text" class="form-control" id="TB07060S_" disabled>
-									<input type="text" class="form-control mg-l5" style="width:250px;" id="TB07060S_" disabled>
-								</div> -->
 								<label class="col-sm-1">계정과목</label>
-								<!-- <div class="col-sm-5 input-group">
-									<input type="text" class="form-control" id="TB07060S_" disabled>
-									<input type="text" class="form-control mg-l5" style="width:250px;" id="TB07060S_" disabled>
-								</div> -->
 								<div class="col-sm-2 input-group">
 									<select class="form-control" id="TB07060S_A005" disabled>
 										<option></option>
@@ -139,16 +136,18 @@
 								<label class="col-sm-1">약정일자</label>
 								<div class="col-sm-2 input-group date">
 									<input type="text" class="form-control" id="TB07060S_ctrcDt" value="" placeholder="YYYY-MM-DD" disabled>
-									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+									</span>
 								</div>
 								<label class="col-sm-1">만기일자</label>
 								<div class="col-sm-2 input-group date">
 									<input type="text" class="form-control" id="TB07060S_ctrcExpDt" value="" placeholder="YYYY-MM-DD" disabled>
-									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+									</span>
 								</div>
 								<label class="col-sm-1">상환방법/개월</label>
 								<div class="col-sm-2 input-group">
-									<select class="form-control" id="TB07060S_E020" style="width:150px;" disabled>
+									<select class="form-control" id="TB07060S_E020" style="width: 150px;" disabled>
 										<option></option>
 									</select>
 									<input type="text" class="form-control text-right mg-l5" id="TB07060S_rdmpMnum" disabled>
@@ -156,13 +155,14 @@
 								<label class="col-sm-1">이자수기계산여부</label>
 								<div class="col-sm-2 input-group">
 									<div class="col-sm-3 text-left input-group">
-										<input type="radio" value="1" name="TB07060S_intrHdwtClcYn" disabled>&nbsp;Y
+										<input type="radio" value="1" name="TB07060S_intrHdwtClcYn" disabled>
+										&nbsp;Y
 									</div>
 									<div class="col-sm-3 text-left input-group">
-										<input type="radio" value="0" name="TB07060S_intrHdwtClcYn" checked disabled>&nbsp;N
+										<input type="radio" value="0" name="TB07060S_intrHdwtClcYn" checked disabled>
+										&nbsp;N
 									</div>
-									<div class="col-sm-6">
-									</div>
+									<div class="col-sm-6"></div>
 								</div>
 							</div>
 						</div>
@@ -183,14 +183,14 @@
 								</div>
 								<label class="col-sm-1">연체이자율</label>
 								<div class="col-sm-2 input-group">
-									<select class="form-control" id="TB07060S_E019" style="width:150px;" disabled>
+									<select class="form-control" id="TB07060S_E019" style="width: 150px;" disabled>
 										<option></option>
 									</select>
 									<input type="text" class="form-control text-right mg-l5" id="TB07060S_ovduIntrRt" disabled>
 								</div>
 								<label class="col-sm-1">이자방법/개월</label>
 								<div class="col-sm-2 input-group">
-									<select class="form-control" id="TB07060S_E011" style="width:150px;" disabled>
+									<select class="form-control" id="TB07060S_E011" style="width: 150px;" disabled>
 										<option></option>
 									</select>
 									<input type="text" class="form-control text-right mg-l5" id="TB07060S_intrMnum" disabled>
@@ -232,7 +232,8 @@
 								<label class="col-sm-1">해지일자</label>
 								<div class="col-sm-2 input-group date">
 									<input type="text" class="form-control" id="TB07060S_cclcDt" value="" placeholder="YYYY-MM-DD" disabled>
-									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+									</span>
 								</div>
 								<label class="col-sm-1">해지사유코드</label>
 								<div class="col-sm-2 input-group">
@@ -242,13 +243,13 @@
 								</div>
 								<label class="col-sm-1">운용부서</label>
 								<div class="col-sm-2 input-group">
-									<input type="text" class="form-control" style="width:30px;" id="TB07060S_mngmBdcd" disabled>
-									<input type="text" class="form-control mg-l5" style="width:70px;" id="TB07060S_mngmBdcdNm" disabled>
+									<input type="text" class="form-control" style="width: 30px;" id="TB07060S_mngmBdcd" disabled>
+									<input type="text" class="form-control mg-l5" style="width: 70px;" id="TB07060S_mngmBdcdNm" disabled>
 								</div>
 								<label class="col-sm-1">담당자</label>
 								<div class="col-sm-2 input-group">
-									<input type="text" class="form-control" style="width:30px;" id="TB07060S_chrrEmpno" disabled>
-									<input type="text" class="form-control mg-l5" style="width:70px;" id="TB07060S_chrrEmpnm" disabled>
+									<input type="text" class="form-control" style="width: 30px;" id="TB07060S_chrrEmpno" disabled>
+									<input type="text" class="form-control mg-l5" style="width: 70px;" id="TB07060S_chrrEmpnm" disabled>
 								</div>
 							</div>
 						</div>
@@ -262,8 +263,8 @@
 								<div class="col-sm-6  form-group pd0">
 									<label class="col-sm-2 mb-1">펀드코드</label>
 									<div class="col-sm-4 input-group  mb-1">
-										<input type="text" class="form-control" style="width:30px;" id="TB07060S_eprzCrdlOrtnFndCd" disabled>
-										<input type="text" class="form-control mg-l5" style="width:70px;" id="TB07060S_eprzCrdlOrtnFndNm" disabled>
+										<input type="text" class="form-control" style="width: 30px;" id="TB07060S_eprzCrdlOrtnFndCd" disabled>
+										<input type="text" class="form-control mg-l5" style="width: 70px;" id="TB07060S_eprzCrdlOrtnFndNm" disabled>
 									</div>
 									<label class="col-sm-2 mb-1">승인금액</label>
 									<div class="col-sm-4 input-group mb-1">
@@ -287,228 +288,238 @@
 								<div class="col-sm-2 input-group">
 									<input type="text" class="form-control text-right" id="TB07060S_dwnPfmc" disabled>
 								</div>
-								
-								<!-- <label class="col-sm-1">당사익스포저</label>
-								<div class="col-sm-2 input-group">
-									<input type="text" class="form-control text-right" id="TB07060S_thcoExpsr" disabled>
-								</div> -->
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="tabs-container mb-1">
-			        <ul class="nav nav-tabs" role="tablist" id="TB07060S_ramsTab">
-			            <li><a class="nav-link" id="TB07060S_tab1" data-toggle="tab" href="#tab-1">거래내역</a></li>
-			            <li><a class="nav-link" id="TB07060S_tab2" data-toggle="tab" href="#tab-2">실행원장</a></li>
-			            <li><a class="nav-link" id="TB07060S_tab3" data-toggle="tab" href="#tab-3">실행금리정보</a></li>
-			        </ul>
-			        <div class="tab-content">
-			            <div role="tabpanel" class="tab-pane " id="TB07060S_tab-1">
-			                <div class="panel-body">
-			                    <div class="row">
-			                        <div class="col-lg-12">
-			                            <div class="ibox">
-											<div class="ibox-content" style="border:0px;">
+					<ul class="nav nav-tabs" role="tablist" id="TB07060S_ramsTab">
+						<li><a class="nav-link" id="TB07060S_tab1" data-toggle="tab" href="#tab-1">거래내역</a></li>
+						<li><a class="nav-link" id="TB07060S_tab2" data-toggle="tab" href="#tab-2">실행원장</a></li>
+						<li><a class="nav-link" id="TB07060S_tab3" data-toggle="tab" href="#tab-3">실행금리정보</a></li>
+					</ul>
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane " id="TB07060S_tab-1">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="ibox">
+											<div class="ibox-title">
+												<h5>▶&nbsp;거래내역</h5>
+											</div>
+											<div class="ibox-content">
 												<div class="mb-3" id="grd_trDtls"></div>
-												<!-- row1 -->
-												<div class="row form-group form-inline mb-3">
-													<div class="ibox col-sm-6">
-														<div class="ibox-title">
-															<h5>▶&nbsp;이자계산내역</h5>
-														</div>
-														<div class="ibox-content">
-															<div id="grd_intrTrDtls"></div>
-														</div>
+											</div>
+										</div>
+										<div class="ibox" style="padding:5px">
+											<div class="row">
+												<div class="ibox col-sm-6">
+													<div class="ibox-title">
+														<h5>▶&nbsp;이자계산내역</h5>
 													</div>
-													<div class="ibox col-sm-6">
-														<div class="ibox-title">
-															<h5>▶&nbsp;수수료수납내역</h5>
-														</div>
-														<div class="ibox-content">
-															<div id="grd_feeRcivDtls"></div>
-														</div>
+													<div class="ibox-content">
+														<div id="grd_intrTrDtls"></div>
+													</div>
+												</div>
+												<div class="ibox col-sm-6">
+													<div class="ibox-title">
+														<h5>▶&nbsp;수수료수납내역</h5>
+													</div>
+													<div class="ibox-content">
+														<div id="grd_feeRcivDtls"></div>
 													</div>
 												</div>
 											</div>
-			                            </div>
-			                        </div>
-			                    </div>
-			                </div>
-			            </div>
-			            <div role="tabpanel" class="tab-pane " id="TB07060S_tab-2">
-			                <div class="panel-body">
-			                    <div class="col-sm-12">
-									<div class="form-group form-inline row text-right">
-										<!-- 1row -->
-										<div class="form-group col-sm-12 mb-1">
-											<label class="col-sm-1 col-form-label">실행상태코드</label>
-											<div class="col-sm-3 input-group">
-												<select class="form-control" id="TB07060S_L001_2" disabled>
-													<option value=""></option>
-												</select>
-											</div>
-											<label class="col-sm-1 col-form-label">최종이자계산일자</label>
-											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB07060S_lastIntrClcDt" value="" placeholder="YYYY-MM-DD" disabled>
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>
-											<label class="col-sm-1 col-form-label">총상환회차</label>
-											<div class="col-sm-3 input-group">
-										        <input type="text" class="form-control text-right" id="TB07060S_totRdmpTmrd" disabled>
-										    </div>
 										</div>
-										<!-- 2row -->
-										<div class="form-group col-sm-12 mb-1">
-											<label class="col-sm-1 col-form-label">통화코드</label>
-											<div class="col-sm-3 input-group">
-												<select class="form-control" id="TB07060S_I027_2" disabled>
-													<option value=""></option>
-												</select>
-												<!-- <input type="text" class="form-control" style="width:30px;">
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" style="width:70px;" readonly> -->
-											</div>
-											<label class="col-sm-1 col-form-label">다음원금납일일자</label>
-											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB07060S_nxtRdmpPrarDt" value="" placeholder="YYYY-MM-DD" disabled>
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>
-											<label class="col-sm-1 col-form-label">최종상환회차</label>
-											<div class="col-sm-3 input-group">
-										        <input type="text" class="form-control text-right" id="TB07060S_lastRdmpTmrd" disabled>
-										    </div>
-										</div>
-										<!-- 3row -->
-										<div class="form-group col-sm-12 mb-1">
-											<label class="col-sm-1 col-form-label">실행일자</label>
-											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB07060S_excDt" value="" placeholder="YYYY-MM-DD" disabled>
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>
-											<label class="col-sm-1 col-form-label">다음이자납입일자</label>
-											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB07060S_nxtIntrPymDt" value="" placeholder="YYYY-MM-DD" disabled>
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>
-										    <label class="col-sm-1 col-form-label">할부잔액</label>
-											<div class="col-sm-3 input-group">
-										        <input type="text" class="form-control text-right" id="TB07060S_dealIstmBlce" value="0" disabled>
-											</div>
-										</div>
-										<!-- 4row -->
-										<div class="form-group col-sm-12 mb-1">
-											<label class="col-sm-1 col-form-label">만기일자</label>
-											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB07060S_expDt" placeholder="YYYY-MM-DD" disabled>
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>
-											<label class="col-sm-1 col-form-label">원금상환주기</label>
-											<div class="col-sm-3 input-group gap-12">
-										        <input type="text" class="form-control text-right" id="TB07060S_prnaRdmpFrqcMnum" disabled>											
-												개월
-										    </div>
-										    <label class="col-sm-1 col-form-label">균등상환금액</label>
-											<div class="col-sm-3 input-group">
-										        <input type="text" class="form-control text-right" id="TB07060S_dealEqlRdmpAmt" value="0" disabled>
-											</div>
-										</div>
-										<!-- 5row -->
-										<div class="form-group col-sm-12 mb-1">
-											<label class="col-sm-1 col-form-label">실행금액</label>
-											<div class="col-sm-3 input-group">
-										        <input type="text" class="form-control text-right" id="TB07060S_dealExcAmt" value="0" disabled>
-											</div>
-											<label class="col-sm-1 col-form-label">이자상환주기</label>
-											<div class="col-sm-3 input-group gap-12">
-										        <input type="text" class="form-control text-right" id="TB07060S_intrRdmpFrqcMnum" disabled>
-												개월
-										    </div>
-										    <label class="col-sm-1 col-form-label">할부일시상환금</label>
-											<div class="col-sm-3 input-group">
-										        <input type="text" class="form-control text-right" id="TB07060S_istmDtmRdmpAmt" value="0" disabled>
-											</div>
-										</div>
-										<!-- 6row -->
-										<div class="form-group col-sm-12 mb-1">
-											<label class="col-sm-1 col-form-label">실행잔액</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control text-right" id="TB07060S_dealExcBlce_2" value="0" disabled>
-											</div>
-											<label class="col-sm-1 col-form-label">상환지정일</label>
-											<div class="col-sm-3 input-group">
-												<select class="form-control" id="TB07060S_I017" disabled>
-													<option value=""></option>
-												</select>
-											</div>
-										    <label class="col-sm-1 col-form-label">미수이자</label>
-											<div class="col-sm-3 input-group">
-										        <input type="text" class="form-control text-right" id="TB07060S_rcvbIntrAmt" value="0" disabled>
-											</div>
-										</div>
-										<!-- 7row -->
-										<div class="form-group col-sm-12 mb-1">
-											<label class="col-sm-1 col-form-label">거치기간개월수</label>
-											<div class="col-sm-3 input-group gap-12">
-										        <input type="text" class="form-control text-right" id="TB07060S_prnaDfrPrdMnum" disabled>
-												개월
-											</div>
-											<label class="col-sm-1 col-form-label">원금연체시작일자</label>
-											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB07060S_prnaOvduDt" value="" placeholder="YYYY-MM-DD" disabled>
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>
-										    <label class="col-sm-1 col-form-label">최종원금상환일자</label>
-											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB07060S_lastPrnaRdmpDt" value="" placeholder="YYYY-MM-DD" disabled>
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>
-										</div>
-										<!-- 8row -->
-										<div class="form-group col-sm-12 mb-1">
-											<label class="col-sm-1 col-form-label">거치만기개월수</label>
-											<div class="col-sm-3 input-group gap-12">
-												<input type="text" class="form-control text-right" id="TB07060S_dfrExpMnum" disabled>
-												개월
-											</div>
-											<label class="col-sm-1 col-form-label">이자연체시작일자</label>
-											<div class="col-sm-3 input-group date">
-										        <input type="text" class="form-control" id="TB07060S_intrOvduDt" placeholder="YYYY-MM-DD" disabled>
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-										    </div>
-										    <label class="col-sm-1 col-form-label">적용환율</label>
-											<div class="col-sm-3 input-group">
-										        <input type="text" class="form-control text-right" id="TB07060S_krwTrslRt" disabled>
-											</div>
-										</div>
-										<!-- 9row -->
-										<div class="form-group col-sm-12">
-											<label class="col-sm-1 col-form-label">원화환산금액</label>
-											<div class="col-sm-3 input-group">
-										        <input type="text" class="form-control text-right" id="TB07060S_krwTrslExcAmt" value="0" disabled>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<div role="tabpanel" class="tab-pane " id="TB07060S_tab-2">
+							<div class="panel-body">
+
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶&nbsp;실행원장정보</h5>
+									</div>
+									<div class="ibox-content">
+										<div class="col-sm-12">
+											<div class="form-group form-inline row text-right">
+												<!-- 1row -->
+												<div class="form-group col-sm-12 mb-1">
+													<label class="col-sm-1 col-form-label">실행상태코드</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB07060S_L001_2" disabled>
+															<option value=""></option>
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label">최종이자계산일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB07060S_lastIntrClcDt" value="" placeholder="YYYY-MM-DD" disabled>
+														<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+														</span>
+													</div>
+													<label class="col-sm-1 col-form-label">총상환회차</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_totRdmpTmrd" disabled>
+													</div>
+												</div>
+												<!-- 2row -->
+												<div class="form-group col-sm-12 mb-1">
+													<label class="col-sm-1 col-form-label">통화코드</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB07060S_I027_2" disabled>
+															<option value=""></option>
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label">다음원금납일일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB07060S_nxtRdmpPrarDt" value="" placeholder="YYYY-MM-DD" disabled>
+														<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+														</span>
+													</div>
+													<label class="col-sm-1 col-form-label">최종상환회차</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_lastRdmpTmrd" disabled>
+													</div>
+												</div>
+												<!-- 3row -->
+												<div class="form-group col-sm-12 mb-1">
+													<label class="col-sm-1 col-form-label">실행일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB07060S_excDt" value="" placeholder="YYYY-MM-DD" disabled>
+														<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+														</span>
+													</div>
+													<label class="col-sm-1 col-form-label">다음이자납입일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB07060S_nxtIntrPymDt" value="" placeholder="YYYY-MM-DD" disabled>
+														<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+														</span>
+													</div>
+													<label class="col-sm-1 col-form-label">할부잔액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_dealIstmBlce" value="0" disabled>
+													</div>
+												</div>
+												<!-- 4row -->
+												<div class="form-group col-sm-12 mb-1">
+													<label class="col-sm-1 col-form-label">만기일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB07060S_expDt" placeholder="YYYY-MM-DD" disabled>
+														<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+														</span>
+													</div>
+													<label class="col-sm-1 col-form-label">원금상환주기</label>
+													<div class="col-sm-3 input-group gap-12">
+														<input type="text" class="form-control text-right" id="TB07060S_prnaRdmpFrqcMnum" disabled>
+														개월
+													</div>
+													<label class="col-sm-1 col-form-label">균등상환금액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_dealEqlRdmpAmt" value="0" disabled>
+													</div>
+												</div>
+												<!-- 5row -->
+												<div class="form-group col-sm-12 mb-1">
+													<label class="col-sm-1 col-form-label">실행금액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_dealExcAmt" value="0" disabled>
+													</div>
+													<label class="col-sm-1 col-form-label">이자상환주기</label>
+													<div class="col-sm-3 input-group gap-12">
+														<input type="text" class="form-control text-right" id="TB07060S_intrRdmpFrqcMnum" disabled>
+														개월
+													</div>
+													<label class="col-sm-1 col-form-label">할부일시상환금</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_istmDtmRdmpAmt" value="0" disabled>
+													</div>
+												</div>
+												<!-- 6row -->
+												<div class="form-group col-sm-12 mb-1">
+													<label class="col-sm-1 col-form-label">실행잔액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_dealExcBlce_2" value="0" disabled>
+													</div>
+													<label class="col-sm-1 col-form-label">상환지정일</label>
+													<div class="col-sm-3 input-group">
+														<select class="form-control" id="TB07060S_I017" disabled>
+															<option value=""></option>
+														</select>
+													</div>
+													<label class="col-sm-1 col-form-label">미수이자</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_rcvbIntrAmt" value="0" disabled>
+													</div>
+												</div>
+												<!-- 7row -->
+												<div class="form-group col-sm-12 mb-1">
+													<label class="col-sm-1 col-form-label">거치기간개월수</label>
+													<div class="col-sm-3 input-group gap-12">
+														<input type="text" class="form-control text-right" id="TB07060S_prnaDfrPrdMnum" disabled>
+														개월
+													</div>
+													<label class="col-sm-1 col-form-label">원금연체시작일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB07060S_prnaOvduDt" value="" placeholder="YYYY-MM-DD" disabled>
+														<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+														</span>
+													</div>
+													<label class="col-sm-1 col-form-label">최종원금상환일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB07060S_lastPrnaRdmpDt" value="" placeholder="YYYY-MM-DD" disabled>
+														<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+														</span>
+													</div>
+												</div>
+												<!-- 8row -->
+												<div class="form-group col-sm-12 mb-1">
+													<label class="col-sm-1 col-form-label">거치만기개월수</label>
+													<div class="col-sm-3 input-group gap-12">
+														<input type="text" class="form-control text-right" id="TB07060S_dfrExpMnum" disabled>
+														개월
+													</div>
+													<label class="col-sm-1 col-form-label">이자연체시작일자</label>
+													<div class="col-sm-3 input-group date">
+														<input type="text" class="form-control" id="TB07060S_intrOvduDt" placeholder="YYYY-MM-DD" disabled>
+														<span class="input-group-addon"> <i class="fa fa-calendar"></i>
+														</span>
+													</div>
+													<label class="col-sm-1 col-form-label">적용환율</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_krwTrslRt" disabled>
+													</div>
+												</div>
+												<!-- 9row -->
+												<div class="form-group col-sm-12">
+													<label class="col-sm-1 col-form-label">원화환산금액</label>
+													<div class="col-sm-3 input-group">
+														<input type="text" class="form-control text-right" id="TB07060S_krwTrslExcAmt" value="0" disabled>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-			                </div>
-			            </div> 
-								<!-- Tab2 END -->
-								<div role="tabpanel" class="tab-pane " id="TB07060S_tab-3">
-			      		          <div class="panel-body">
-			      		              <div class="row">
-			      		                  <div class="col-lg-12">
-			      		                      <div class="ibox">
-																				<div class="ibox-content" style="border:0px;">
-																					<div class="mb-3" id="grd_excIntrtInf"></div>																			
-																				</div>
-			      		                      </div>
-			      		                  </div>
-			      		              </div>
-			      		          </div>
-			      		      </div>
-			      		  </div>
-			    </div>
+							</div>
+						</div>
+						<!-- Tab2 END -->
+						<div role="tabpanel" class="tab-pane " id="TB07060S_tab-3">
+							<div class="panel-body">
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶&nbsp;실행금리정보</h5>
+									</div>
+									<div class="ibox-content">
+										<div class="mb-3" id="grd_excIntrtInf"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

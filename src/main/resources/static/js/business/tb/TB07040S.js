@@ -380,7 +380,7 @@ const TB07040Sjs = (function () {
         loginUsrDprtNm = data.dprtNm;
       },
       error: function (request, status, error) {
-        console.log(request + "\n", status, "\n", error, "\n");
+        // console.log(request + "\n", status, "\n", error, "\n");
       },
     });
   }
@@ -723,7 +723,7 @@ const TB07040Sjs = (function () {
           bessniseFunction(trSn, inputDcd);
         },
         error: function (request, status, error) {
-          console.log(request + "\n", status, "\n", error, "\n");
+          //console.log(request + "\n", status, "\n", error, "\n");
         },
       });
     } else {
@@ -1237,7 +1237,7 @@ const TB07040Sjs = (function () {
           bessniseFunction(trSn, inputDcd);
         },
         error: function (request, status, error) {
-          console.log(request + "\n", status, "\n", error, "\n");
+          //console.log(request + "\n", status, "\n", error, "\n");
         },
       });
     } else {
@@ -1679,7 +1679,7 @@ const TB07040Sjs = (function () {
                   resolve(data); //통신 성공하면 resolve()
                 },
                 error: function (request, status, error) {
-                  console.log(request + "\n", status, "\n", error, "\n");
+                  //console.log(request + "\n", status, "\n", error, "\n");
                   reject(); //통신 실패하면 reject()
                 },
               });
@@ -1698,7 +1698,7 @@ const TB07040Sjs = (function () {
                   resolve(data); //통신 성공하면 resolve()
                 },
                 error: function (request, status, error) {
-                  console.log(request + "\n", status, "\n", error, "\n");
+                  //console.log(request + "\n", status, "\n", error, "\n");
                   reject(); //통신 실패하면 reject()
                 },
               });
@@ -1707,7 +1707,7 @@ const TB07040Sjs = (function () {
           resolve(data); //통신 성공하면 resolve()
         },
         error: function (e) {
-          console.log("data error !! :: " + e);
+
           reject(); //통신 실패하면 reject()
         },
       });
@@ -1837,8 +1837,6 @@ const TB07040Sjs = (function () {
 
   //조회 시 입력값 초기화
   function inputClear(){
-
-    console.log("인풋클리어 실행");
     
     $("#TB07040S_trQnt").val("0");
     $("#TB07040S_trDt").val("");
@@ -2065,7 +2063,7 @@ const TB07040Sjs = (function () {
         // }
         // 매도가능수량
         if (isEmpty(g_sllPosShqt) || Number(g_sllPosShqt) == 0) {
-          console.log("g_sllPosShqt : " + g_sllPosShqt);
+
           option.text = "매도가능좌수를 확인하여 주십시오.";
           openPopup(option);
           return false;
@@ -2406,14 +2404,14 @@ const TB07040Sjs = (function () {
 	function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
+
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
 			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07040S_srch_prdtCd").val(prdtCd);
 			$("#TB07040S_srch_prdtNm").val(prdtNm);
 			getSellList();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

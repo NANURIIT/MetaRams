@@ -171,7 +171,7 @@ const TB07180Sjs = (function() {
 			// 해당 옵션의 텍스트를 `input` 필드에 바인딩
 			return $selectedOption.text();
 		} else {
-			console.warn('해당 값에 매칭되는 옵션이 없습니다.');
+
 		}
 	}
 
@@ -190,7 +190,7 @@ const TB07180Sjs = (function() {
 			// 옵션의 `value`를 반환
 			return $selectedOption.val();
 		} else {
-			console.warn('해당 텍스트에 매칭되는 옵션이 없습니다.');
+
 			return null; // 매칭되는 값이 없을 경우 null 반환
 		}
 	}
@@ -224,7 +224,7 @@ const TB07180Sjs = (function() {
 				}
 			},
 			{
-				title: "수수료종류",
+				title: "수수료종류코드",
 				dataType: "string",
 				dataIndx: "feeKndCd", //  FEE_KND_CD F004
 				halign: "center",
@@ -613,7 +613,6 @@ const TB07180Sjs = (function() {
 			data: paramData,
 			dataType: "json",
 			success: function(data) {
-				console.log(data);
 				
 				if (data.length > 0) {
 					var rowSeq;
@@ -680,7 +679,7 @@ const TB07180Sjs = (function() {
 					Swal.fire({
 						title: '저장 확인',
 						icon: 'success',
-						text: '[수수료종류] 저장이 실행되었습니다.',
+						text: '[수수료종류] 저장되었습니다.',
 						confirmButtonText: '확인',
 					}).then(() => {
 						getFeeData(paramData.feeKndCd);
@@ -707,23 +706,21 @@ const TB07180Sjs = (function() {
 		switch (mode) {
 			case "I":
 				// 유효성검사
-				// if (isEmpty($('#TB07180S_actCd').val())) {
-				// 	option.text = "계정과목을 입력해주세요";
-				// 	openPopup(option);
-				// 	return false;
-				// }
-				if (isEmpty($('#TB07180S_actsNm').val())) {
-					option.text = "계정과목을 입력해주세요";
-					openPopup(option);
-					return false;
-				}
-
 				if (isEmpty($('#TB07180S_feeNm').val())) {
-					option.text = "수수료명을 입력해주세요";
-					openPopup(option);
-					return false;
-				}
-
+				  	msg = '수수료명';
+				  	input = $('#TB07180S_feeNm');
+				  	input.focus();
+				  	emptyParameter(msg);
+				  	return false;
+				  }
+				  if (isEmpty($('#TB07180S_actsNm').val())) {
+  				  	msg = '계정과목';
+  				  	input = $('#TB07180S_actsNm');
+  				  	input.focus();
+  				  	emptyParameter(msg);
+  				  	return false;
+  				  }
+								
 				if (isNotEmpty($('#TB07180S_feeLwstAmt').val()) && isNotEmpty($('#TB07180S_feeHgstAmt').val())) {
 					if (Number($('#TB07180S_feeLwstAmt').val()) > Number($('#TB07180S_feeHgstAmt').val())) {
 						option.text = "수수료최저금액이 수수료최고금액보다 많습니다.";
@@ -746,6 +743,17 @@ const TB07180Sjs = (function() {
 		return true;
 
 	}
+	
+	function emptyParameter(msg) {
+		  	Swal.fire({
+		  		icon: 'warning'
+		  		, title: "Warning!"
+		  		, text: msg + "을(를) 입력해주세요."
+		  		, confirmButtonText: "확인"
+		  	})
+
+		  }
+
 
 	function makeParam() {
 		var actCdTxt = $('#TB07180S_actCd').val();

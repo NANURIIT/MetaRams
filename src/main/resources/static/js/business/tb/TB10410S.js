@@ -146,12 +146,8 @@ const TB10410Sjs = (function() {
 					labelIndx: "value",
 					options: hgrkSelectBox,
 					init: function ( ui ) {
-						console.log(ui);
+
 						$(ui.$editor).on('change', function () {
-							
-							
-							
-							console.log($(this).val())
 							
 							if (!$(this).val()) {
 								$("#TB10410S_hgrkMenuColModel").pqGrid('instance').pdata[ui.rowIndx].menuLvl = 1;
@@ -526,8 +522,6 @@ const TB10410Sjs = (function() {
 	 */
 	function pqGridDeleteRow(colModelSelector) {
 
-		console.log("진입");
-
 		let chkCnt;
 		chkCnt = 0
 
@@ -546,8 +540,6 @@ const TB10410Sjs = (function() {
 		let filteredIndexes = [];
 
 		data.forEach((item, index) => {
-			console.log('item ::: ', item)
-			console.log('item.chk ::: ', item.chk)
 
 			if (item.chk) {
 				// if (item.rowType !== "I" && item.rowType !== "D" && item.rowType !== null) {
@@ -723,8 +715,7 @@ const TB10410Sjs = (function() {
 				wait(500);
 				continue;
 			} else {
-				console.log(updateResult);
-				console.log(insertResult);
+
 				successChk(updateResult, insertResult);
 				// 저장 후 조회
 				hgrkGroupMenuDbData = []
@@ -767,8 +758,7 @@ const TB10410Sjs = (function() {
 				wait(500);
 				continue;
 			} else {
-				console.log(updateResult);
-				console.log(insertResult);
+
 				successChk(updateResult, insertResult);
 				// 저장 후 조회
 				hgrkGroupMenuDbData = [];
@@ -840,8 +830,6 @@ const TB10410Sjs = (function() {
 				});
 			}
 		}
-
-		console.log(insertData);
 
 		$.ajax({
 			method: "POST",

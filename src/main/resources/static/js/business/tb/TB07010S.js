@@ -244,7 +244,7 @@ const TB07010Sjs = (function () {
           $("#TB07010S_loanablAmt").val("");
         },
         success: function (data) {
-          console.log("data ::: ", data);
+
           if (data.prdtCd) {
             // console.log(1);
             
@@ -462,7 +462,6 @@ const TB07010Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         success: function (data) {
-          console.log("이자조회 ajax suc ::: ", data);
 
           $("#TB07010S_prcsIntrAmt").val(
             commaNull(Math.round(data.rdmpPrarIntr))
@@ -1378,14 +1377,14 @@ const TB07010Sjs = (function () {
 
   function getDealInfoFromWF() {
 		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
+
       var prdtCd = sessionStorage.getItem("wfPrdtCd");
       var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07010S_prdtCd").val(prdtCd);
 			$("#TB07010S_prdtNm").val(prdtNm);
 		srch();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

@@ -871,8 +871,6 @@ const TB07140Sjs = (function () {
       rqsEmpno: $('#TB07140S_empNo').val()
     };
 
-    console.log(paramData);
-
     $.ajax({
       method: "POST",
       url: "/TB07140S/insertFinc",
@@ -943,9 +941,6 @@ const TB07140Sjs = (function () {
     $('#TB07140S_prdtCd').val(rowData.prdtCd);                              //종목코드
     $('#TB07140S_prdtNm').val(rowData.prdtNm);                              //종목명
 
-    
-    console.log(rowData.trdeExrt);
-    console.log(Number.isInteger(rowData.trdeExrt));
     //매매환율
     if (Number.isInteger(Number(rowData.trdeExrt))) {
 			$('#TB07140S_trdeExrt').val(rowData.trdeExrt.toString() + ".0");
@@ -1095,8 +1090,6 @@ const TB07140Sjs = (function () {
       reFincPossYn: $(`#TB07140S_reFincPossYn`).val(),
       rqsEmpno: $('#userEno').val()
     };
-
-    console.log(JSON.stringify(param));
 
     $.ajax({
       method: "POST",

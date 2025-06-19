@@ -236,8 +236,8 @@ const TB04040Sjs = (function () {
   function setGrid_TB04040S() {
     pqGridObjIssDtls = [
       {
-        height: 500,
-        maxHeight: 500,
+        height: 480,
+        maxHeight: 480,
         id: "TB04040_getIssDtls",
         colModel: colModel_TB04040S,
       },

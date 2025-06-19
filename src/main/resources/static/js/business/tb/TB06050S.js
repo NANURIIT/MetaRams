@@ -39,7 +39,7 @@ const TB06050Sjs = (function () {
             contentType: "application/json; charset=UTF-8",
             data: JSON.stringify(paramData),
             success: function (data) {
-                console.log(data);
+
                 if (data[0]) {
                     $("#TB06050S_sppiSfcYn").val(data[0].sppiSfcYn);
                     $("#TB06050S_busiMdlDcd").val(data[0].busiMdlDcd);
@@ -64,7 +64,7 @@ const TB06050Sjs = (function () {
                     $(`input[name='radioGroup-tnchStdIvtgYn_2'][value='${data[0].tnchStdIvtgYn2}']`).prop("checked", true)
 
                 } else {
-                    console.log("데이터 없음");
+
                     //조회조건 제외 전부 초기화
                     $("#TB06050S_sppiSfcYn").val("미검토");
                     $("#TB06050S_busiMdlDcd").val("");
@@ -123,11 +123,9 @@ const TB06050Sjs = (function () {
             , sppiSfcYn: sppiSfcYn
         }
 
-        console.log(paramData);
 
         // 종목코드가 비어있으면 알럿 띄우기
         if (isEmpty($('#TB06050S_prdtCd').val())) {
-            // console.log("실행할 종목코드 없음!!");
 
             Swal.fire({
                 icon: 'warning'
@@ -164,7 +162,7 @@ const TB06050Sjs = (function () {
                         });
                     }
                 }, error: function (e) {
-                    console.log(e);
+
                     Swal.fire({
                         icon: 'error'
                         , title: "Error!"
@@ -218,8 +216,6 @@ const TB06050Sjs = (function () {
      */
     function deleteSPPIData() {
 
-        console.log("삭제버튼");
-
         let prdtCd;
 
         prdtCd = $('#TB06050S_prdtCd').val()
@@ -228,11 +224,8 @@ const TB06050Sjs = (function () {
             prdtCd: prdtCd
         }
 
-        console.log(paramData);
-
         // 종목코드가 비어있으면 알럿 띄우기
         if (isEmpty($('#TB06050S_prdtCd').val())) {
-            // console.log("삭제할 종목코드 없음!!!");
 
             Swal.fire({
                 icon: 'warning'
@@ -270,7 +263,7 @@ const TB06050Sjs = (function () {
                     }
 
                 }, error: function (e) {
-                    console.log(e);
+
                     Swal.fire({
                         icon: 'error'
                         , title: "Error!"

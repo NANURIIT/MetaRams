@@ -967,7 +967,7 @@ const TB07110Sjs = (function () {
           gridList.setData(data);
           gridList.getData();
         } else {
-          console.log("상세정보 체크!");
+
           Swal.fire({
             icon: 'warning'
             , title: 'Warning!'
@@ -1333,8 +1333,6 @@ const TB07110Sjs = (function () {
   function saveIBIMS432B() {
 
     const paramData = $("#TB07110S_grd_basic").pqGrid('instance').pdata;
-
-    console.log(paramData);
 
     $.ajax({
       type: "POST",

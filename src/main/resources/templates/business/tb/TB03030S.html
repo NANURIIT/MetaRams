@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
 	<script th:src="@{js/common.js}"></script>
@@ -32,9 +31,7 @@
 						<div class="row form-group form-inline text-right">
 							<div class="col-sm-12 input-group">
 								<!-- 업체명 -->
-								<label class="col-sm-1 control-label">
-									업체명
-								</label>
+								<label class="col-sm-1 control-label"> 업체명 </label>
 								<div class="col-sm-2">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB03030S_entpRnm" disabled="true">
@@ -49,29 +46,31 @@
 										</span>
 									</div>
 								</div>
-								<div class="col text-left">
-								<button class="btn btn-primary" onclick="TB03030Sjs.getEntpInfo();">
-									<i class="fa fa-search"></i>&nbsp;조회
-								</button>
-								<button class="btn btn-default" type="button" onclick="TB03030Sjs.rmReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+								<div class="col-sm text-right">
+									<button class="btn btn-primary" onclick="TB03030Sjs.getEntpInfo();">
+										<i class="fa fa-search"></i>&nbsp;조회
+									</button>
+									<button class="btn btn-default" type="button" onclick="TB03030Sjs.rmReset();">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+									</button>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- 조회결과 -->
-					<div class="ibox-content h-default">
+					<div class="ibox-content">
 						<div class="ibox">
 							<div class="ibox-title">
 								<h5>▶ RM대상</h5>
 							</div>
 							<div class="ibox-content mb-2">
-								<div class = "tableFixHeader4">
-									<div id="gridRmEntpInfo"></div>
-								</div>
+								<div id="gridRmEntpInfo"></div>
 							</div>
 							<div class="row">
 								<div class="col-sm-12 text-right">
-									<button class="btn btn-success" type="button" id="addRmActivityBtn" style="margin-right:5px;" onclick="callTB03031P('TB03030S');"><i class="fa fa-check"></i>&nbsp;RM활동신규</button>
+									<button class="btn btn-success" type="button" id="addRmActivityBtn" style="margin-right: 5px;" onclick="callTB03031P('TB03030S');">
+										<i class="fa fa-check"></i>&nbsp;RM활동신규
+									</button>
 								</div>
 							</div>
 						</div>
@@ -82,9 +81,7 @@
 									<h5>▶ RM활동이력</h5>
 								</div>
 								<div class="ibox-content">
-									<div class = "tableFixHeader4">
-										<div id="gridRmInfo"></div>		
-									</div>
+									<div id="gridRmInfo"></div>
 								</div>
 							</div>
 						</div>
@@ -99,8 +96,12 @@
 											<input type="hidden" id="fileKey2" name="fileKey2" value="*">
 											<input type="hidden" id="atchFleDcd" name="atchFleDcd">
 											<input type="hidden" class="form-control" id="key1">
-											<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile" disabled><i class="fa fa-upload"></i>&nbsp;파일추가</button>
-											<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles" disabled><i class="fa fa-eraser"></i>&nbsp;파일삭제</button>
+											<button class="btn btn-default btn-xs" type="button" id="UPLOAD_AddFile" disabled>
+												<i class="fa fa-upload"></i>&nbsp;파일추가
+											</button>
+											<button class="btn btn-default btn-xs" type="button" id="UPLOAD_DelFiles" disabled>
+												<i class="fa fa-eraser"></i>&nbsp;파일삭제
+											</button>
 											<div style="display: none">
 												<input type="file" class="custom-file-input" id="deal-upload-input" name="uploadfile" accept="*">
 											</div>
@@ -128,11 +129,14 @@
 									</tbody>
 								</table>
 							</div>
-						</div><!-- 첨부파일 end -->
+						</div>
+						<!-- 첨부파일 end -->
 					</div>
-				</div><!-- ibox -->
+				</div>
+				<!-- ibox -->
 			</div>
-		</div><!-- row -->
+		</div>
+		<!-- row -->
 	</div>
 
 </th:block>

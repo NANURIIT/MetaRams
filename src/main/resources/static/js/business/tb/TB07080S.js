@@ -1133,11 +1133,6 @@ const TB07080Sjs = (function() {
 		let intrtResult;
 		excResult = await updateExcData(); // 데이터값이 나온 함수
 		intrtResult = await updateIntrtData();
-		// dltResult = 1;
-		// //console.log("dltList.size::::" + dltList.length)
-		// if(dltList.length > 0){
-		// 	dltResult = await deleteIntrtData();
-		// }
 
 		if (!$("#TB07080S_prdtCd").val()) {
 			Swal.fire({
@@ -1243,14 +1238,14 @@ const TB07080Sjs = (function() {
 	function getDealInfoFromWF() {
 
 		if (sessionStorage.getItem("isFromWF")) {
-			console.log("WF세션 있음");
+
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
 			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07080S_prdtCd").val(prdtCd);
 			$("#TB07080S_prdtNm").val(prdtNm);
 			selectTB07080S();
 		} else {
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

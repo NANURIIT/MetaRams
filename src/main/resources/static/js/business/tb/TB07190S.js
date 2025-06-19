@@ -93,7 +93,6 @@ const TB07190Sjs = (function () {
 
     //계정과목코드
     selectBox2.forEach((item) => {
-      console.log(item);
 
       $("#TB07190S_actsCd").append(
         $("<option>", {
@@ -226,6 +225,20 @@ const TB07190Sjs = (function () {
    */
   function TB07190S_colModelData() {
     const TB07190S_colModel1 = [
+		{
+			title: "순번",
+			dataType: "string",
+			dataIndx: "rownum", //  ROWNUM
+			halign: "center",
+			align: "center",
+			width: "5%",
+			filter: { crules: [{ condition: "range" }] },
+			render: function(ui) {
+				let result
+				result = (ui.rowIndx + 1).toString();
+				return result;
+			}
+		},
       {
         title: "Deal번호",
         dataType: "string",
@@ -294,7 +307,7 @@ const TB07190Sjs = (function () {
           return result;
         },
       },
-      {
+     /* {
         title: "계정과목코드",
         dataType: "string",
         dataIndx: "actsCd",
@@ -302,7 +315,7 @@ const TB07190Sjs = (function () {
         align: "center",
         width: "100",
         filter: { crules: [{ condition: "range" }] },
-      },
+      },*/
       {
         title: "계정과목명",
         dataType: "string",
@@ -432,7 +445,7 @@ const TB07190Sjs = (function () {
         width: "120",
         filter: { crules: [{ condition: "range" }] },
       },
-      {
+      /*{
         title: "거래일자",
         dataType: "string",
         dataIndx: "trDt",
@@ -445,7 +458,7 @@ const TB07190Sjs = (function () {
           result = formatDate(result);
           return result;
         },
-      },
+      },*/
       {
         title: "수수료금액",
         dataType: "string",
@@ -853,7 +866,7 @@ const TB07190Sjs = (function () {
     if (typeof modalFeelRecvList == "undefined") {
       $("#TB07190S_colModel1").pqGrid(pqGridObjs);
       modalFeelRecvList = $("#TB07190S_colModel1").pqGrid("instance");
-      console.log("modalFeelRecvList생성" + modalFeelRecvList);
+
     }
   }
 
@@ -895,7 +908,7 @@ const TB07190Sjs = (function () {
     let result;
 
     let paramData = {
-      actsCd: $("#TB07190S_actsCd").val(), //계정과목
+      //actsCd: $("#TB07190S_actsCd").val(), //계정과목
       etprCrdtGrntTrKindCd: $("#TB07190S_etprCrdtGrntTrKindCd").val(), //거래종류
       feeKndCd: $("#TB07190S_feeKndCd").val(), //수수료종류
       trStatCd: $("#TB07190S_trStatCd").val(), //거래상태
@@ -1083,14 +1096,14 @@ const TB07190Sjs = (function () {
 
   function getDealInfoFromWF() {
     if (sessionStorage.getItem("isFromWF")) {
-      console.log("WF세션 있음");
+
       var dealNo = sessionStorage.getItem("wfDealNo");
       var dealNm = sessionStorage.getItem("wfDealNm");
       $("#TB07190S_ibDealNo").val(dealNo);
       $("#TB07190S_ibDealNm").val(dealNm);
       //getData(); 다른 입력값 필요해서 조회는 자동으로 안 해줘도 될 것 같음
     } else {
-      console.log("WF세션 비었음");
+
     }
     sessionStorage.clear();
   }

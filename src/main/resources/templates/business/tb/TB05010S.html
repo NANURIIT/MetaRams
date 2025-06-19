@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="css">
 	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
@@ -42,17 +41,16 @@
 								<span class="req"></span>결의년도
 							</label>
 							<div class="col-sm-2 input-group">
-								<input type="text" class="touchspin" data-bts-min="2010" data-bts-max="2100"
-								id="TB05010S_stdYr" oninput="this.value = this.value.replace(/[^0-9]/g, '');" style="padding: 6px 9px;" onchange="TB05010Sjs.chngStdYr(this);">
+								<input type="text" class="touchspin" data-bts-min="2010" data-bts-max="2100" id="TB05010S_stdYr" oninput="this.value = this.value.replace(/[^0-9]/g, '');" style="padding: 6px 9px;"
+									onchange="TB05010Sjs.chngStdYr(this);">
 							</div>
-							<div class="col-sm-4">
-							</div>
+							<div class="col-sm-4"></div>
 							<div class="col-sm-2">
 								<button class="btn btn-primary" onclick="TB05010Sjs.getCNFRNCList();">
 									<i class="fa fa-search"></i>&nbsp;조회
 								</button>
-								<button class="btn btn-default" onclick="TB05010Sjs.btnReset();"><i class="fa fa-undo">
-									</i>&nbsp;초기화
+								<button class="btn btn-default" onclick="TB05010Sjs.btnReset();">
+									<i class="fa fa-undo"> </i>&nbsp;초기화
 								</button>
 							</div>
 						</div>
@@ -75,10 +73,18 @@
 									<div class="ibox-title">
 										<h5>▶&nbsp;안건정보</h5>
 										<div class="ibox-tools">
-											<button class="btn btn-default btn-xs" id="addCnfrncInfo" onclick="callTB04011P('TB05010S');"><i class="fa fa-search-plus"></i>&nbsp;안건추가</button>
-											<button class="btn btn-default btn-xs" id="delCnfrncInfo" onclick="TB05010Sjs.delCaseList();"><i class="fa fa-search-minus"></i>&nbsp;안건삭제</button>
-											<button class="btn btn-info btn-xs" id="approveAlert" onclick="testAlert('확정쪽지를 발송하였습니다.')"><i class="fa fa-comment"></i>&nbsp;확정쪽지</button>
-											<button class="btn btn-warning btn-xs" id="cancelAlert" onclick="testAlert('취소쪽지를 발송하였습니다.')"><i class="fa fa-comment-o"></i>&nbsp;취소쪽지</button>
+											<button class="btn btn-default btn-xs" id="addCnfrncInfo" onclick="callTB04011P('TB05010S');">
+												<i class="fa fa-search-plus"></i>&nbsp;안건추가
+											</button>
+											<button class="btn btn-default btn-xs" id="delCnfrncInfo" onclick="TB05010Sjs.delCaseList();">
+												<i class="fa fa-search-minus"></i>&nbsp;안건삭제
+											</button>
+											<button class="btn btn-info btn-xs" id="approveAlert" onclick="testAlert('확정쪽지를 발송하였습니다.')">
+												<i class="fa fa-comment"></i>&nbsp;확정쪽지
+											</button>
+											<button class="btn btn-warning btn-xs" id="cancelAlert" onclick="testAlert('취소쪽지를 발송하였습니다.')">
+												<i class="fa fa-comment-o"></i>&nbsp;취소쪽지
+											</button>
 										</div>
 									</div>
 									<div class="ibox-content">
@@ -92,30 +98,38 @@
 									<div class="ibox-title">
 										<h5>▶&nbsp;기본정보</h5>
 									</div>
-									<div class="ibox-content">
+									<div class="ibox-content" style="height: 224px">
 										<!-- row1 -->
 										<div class="row form-group form-inline text-right">
 											<div class="col-sm-12 form-group">
-												<label class="col-sm-2"><span class="req"></span>전결협의체</label>
+												<label class="col-sm-2">
+													<span class="req"></span>전결협의체
+												</label>
 												<div class="col-sm-4 input-group">
 													<select class="form-control" name="account" id="TB05010S_R016_2" disabled>
 													</select>
 												</div>
-												<label class="col-sm-2 control-label"><span class="req"></span>회차</label>
+
+												<label class="col-sm-2">진행상태</label>
 												<div class="col-sm-4 input-group">
-													<input type="text" class="form-control text-right" id="TB05010S_inspctCnfrncSqcSq2"
-													oninput="this.value = this.value.replace(/[^0-9]/g, '');" onchange="TB05010Sjs.chngInspctCnfrncSqc();" maxlength="3">
+													<input type="text" class="form-control" id="TB05010S_inspctPrgrsStCd2" readonly>
 												</div>
+
+
 											</div>
 										</div>
 										<!-- row2 -->
 										<div class="row form-group form-inline text-right">
 											<div class="col-sm-12 form-group">
-												<label class="col-sm-2">결의일</label>
-												<div class="col-sm-4 input-group date">
-													<input type="text" class="form-control" id="TB05010S_rsltnDt2" value="" placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
-													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+												<label class="col-sm-2 control-label">
+													<span class="req"></span>회차
+												</label>
+												<div class="col-sm-4 input-group">
+													<input type="text" class="form-control text-right" id="TB05010S_inspctCnfrncSqcSq2" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onchange="TB05010Sjs.chngInspctCnfrncSqc();"
+														maxlength="3">
 												</div>
+
 												<label class="col-sm-2 control-label">시간</label>
 												<div class="col-sm-4 input-group clockpicker" data-autoclose="true">
 													<input type="text" class="form-control" value="" id="TB05010S_rsltnTm2" oninput="this.value = this.value.replace(/[^0-9:]/g, '');">
@@ -126,9 +140,10 @@
 										<!-- row3 -->
 										<div class="row form-group form-inline text-right">
 											<div class="col-sm-12 form-group">
-												<label class="col-sm-2">진행상태</label>
-												<div class="col-sm-4 input-group">
-													<input type="text" class="form-control" id="TB05010S_inspctPrgrsStCd2" readonly>
+												<label class="col-sm-2">결의일</label>
+												<div class="col-sm-4 input-group date">
+													<input type="text" class="form-control" id="TB05010S_rsltnDt2" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+													<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 												</div>
 											</div>
 										</div>
@@ -138,31 +153,38 @@
 									<div class="ibox-title">
 										<h5>▶&nbsp;위원정보</h5>
 										<div class="ibox-tools">
-											<button class="btn btn-default btn-xs" id="addRowBtn" onclick="TB05010Sjs.addMMBRRow();"><i
-												class="fa fa-plus"></i>&nbsp;행추가</button>
-												<button class="btn btn-default btn-xs" id="delRowBtn" onclick="TB05010Sjs.mmbrDelRow();"><i
-													class="fa fa-minus"></i>&nbsp;행삭제</button>
-												</div>
-											</div>
-											<div class="ibox-content">
-												<div id="gridMmbrList"></div>
-											</div>
+											<button class="btn btn-default btn-xs" id="addRowBtn" onclick="TB05010Sjs.addMMBRRow();">
+												<i class="fa fa-plus"></i>&nbsp;행추가
+											</button>
+											<button class="btn btn-default btn-xs" id="delRowBtn" onclick="TB05010Sjs.mmbrDelRow();">
+												<i class="fa fa-minus"></i>&nbsp;행삭제
+											</button>
 										</div>
 									</div>
+									<div class="ibox-content">
+										<div id="gridMmbrList"></div>
+									</div>
 								</div>
-								<!-- 버튼영역 -->
-								<div class="col-sm-12 text-right">
-									<button class="btn btn-success btn-s" id="saveButton" onclick="TB05010Sjs.tempSave();" ><i
-											class="fa fa-save"></i>&nbsp;저장</button>
-									<button class="btn btn-info btn-s" id="confirmButton" disabled onclick="TB05010Sjs.changeCNFRNCStatus(304);"><i
-											class="fa fa-check"></i>&nbsp;준비확정</button>
-									<button class="btn btn-danger btn-s" id="cancleButton" disabled onclick="TB05010Sjs.changeCNFRNCStatus(303);"><i
-											class="fa fa-undo"></i>&nbsp;준비취소</button>
-								</div>
-					</div><!-- ibox -->
+							</div>
+						</div>
+						<!-- 버튼영역 -->
+						<div class="col-sm-12 text-right">
+							<button class="btn btn-success btn-s" id="saveButton" onclick="TB05010Sjs.tempSave();">
+								<i class="fa fa-save"></i>&nbsp;저장
+							</button>
+							<button class="btn btn-info btn-s" id="confirmButton" disabled onclick="TB05010Sjs.changeCNFRNCStatus(304);">
+								<i class="fa fa-check"></i>&nbsp;준비확정
+							</button>
+							<button class="btn btn-danger btn-s" id="cancleButton" disabled onclick="TB05010Sjs.changeCNFRNCStatus(303);">
+								<i class="fa fa-undo"></i>&nbsp;준비취소
+							</button>
+						</div>
+					</div>
+					<!-- ibox -->
 				</div>
 			</div>
-		</div><!-- row -->
+		</div>
+		<!-- row -->
 	</div>
 </th:block>
 </html>

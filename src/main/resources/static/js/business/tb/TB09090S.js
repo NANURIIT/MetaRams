@@ -732,7 +732,7 @@ const TB09090Sjs = (function() {
 									options: grdSelect.O011
 								},
 								render: function (ui) {
-									console.log(grdSelect.O011);
+
 									let fSel = grdSelect.O011.find(({ cdValue }) => cdValue == ui.cellData);
 									return fSel ? fSel.cdName : ui.cellData;
 								}
@@ -8511,7 +8511,6 @@ const TB09090Sjs = (function() {
 	// 	let optionData = [];
 	
 	// 	for(let i = 0; 0 < selectData.length; i++){
-	// 		console.log("레전드배열 ::: ", selectData[i]);
 	// 		console.log("cdVlNm ::: ", selectData[i].cdVlNm);
 	// 		let data = {
 	// 			data : selectData[i]

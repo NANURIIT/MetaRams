@@ -488,7 +488,7 @@ const TB08050Sjs = (function () {
             render: function (ui) {
               let cellData = ui.cellData;
               if (isNaN(cellData)) {
-                console.log(cellData);
+
                 return (ui.cellData = "");
               }
             },
@@ -721,6 +721,7 @@ const TB08050Sjs = (function () {
 
   // 조회 버튼
   function srch() {
+	_f = 0;
     if (validation().isValid) {
       _tmpPrdtCd.prdtCd = validation().prdtCd
       _tmpPrdtCd.prdtNm = $('#TB08050S_prdtNm').val()
@@ -747,14 +748,13 @@ const TB08050Sjs = (function () {
 		      resetMore();
         },
         success: function (data) {
-          console.log(data);
+
           if (data.length > 0) {
             feeDtls.setData(data);
 
             feeDtls.on("rowClick", function (event, ui) {
-              console.log(event);
-              console.log(ui.rowData);
-			  pqGridSelectHandler ( ui.rowIndx, "grd_feeDtls" );
+
+              pqGridSelectHandler ( ui.rowIndx, "grd_feeDtls" );
               const rd = ui.rowData;
 
               $("#TB08050S_feeSn").val(rd.feeSn); // 수수료일련번호
@@ -806,7 +806,6 @@ const TB08050Sjs = (function () {
               $("#TB08050S_rkfrDt").val(dateNull(rd.rkfrDt)); // 회계일자 ? 기산일자
 
               prlnFee = rd.prlnFee; // 이연수수료
-              console.log(rd.prlnFee);
 
               calulator("fee");
               calulator("crry");
@@ -923,7 +922,7 @@ const TB08050Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         success: function (data) {
-          console.log(data);
+
           if (data > 0) {
             Swal.fire({
               icon: "success",
@@ -958,11 +957,12 @@ const TB08050Sjs = (function () {
     }
     
     if ( _f == 1 ) {
+		
+	  /*
       let vals = $(`#TB08050S_F008, #TB08050S_rkfrDt, #TB08050S_feeRcivAmt, #TB08050S_prufIsuDt, #TB08050S_rctmDt`)
                     .map(function(){return $(this).val().trim()}).get();
       let bValid = vals.some(val => val == '')
-      console.log(vals)
-      console.log(bValid);
+
       if (bValid) {
         Swal.fire({
           icon: "warning",
@@ -972,6 +972,59 @@ const TB08050Sjs = (function () {
         });
         return { isValid: false };
       }
+	  */
+	 
+	  if (isEmpty($('#TB08050S_F008').val())) {
+	  	msg = '자금구분코드';
+	  	input = $('#TB08050S_F008');
+	  	input.focus();
+	  	emptyParameter(msg);
+	  	return false;
+	  }
+
+	  if (isEmpty($('#TB08050S_rkfrDt').val())) {
+	  	msg = '회계일자';
+	  	input = $('#TB08050S_rkfrDt');
+	  	input.focus();
+	  	emptyParameter(msg);
+	  	return false;
+	  }
+
+	  if (isEmpty($('#TB08050S_feeRcivAmt').val())) {
+	  	msg = '수수료수납금액';
+	  	input = $('#TB08050S_feeRcivAmt');
+	  	input.focus();
+	  	emptyParameter(msg);
+	  	return false;
+	  }
+
+	  if (isEmpty($('#TB08050S_prufIsuDt').val())) {
+	  	msg = '증빙발행일자';
+	  	input = $('#TB08050S_prufIsuDt');
+	  	input.focus();
+	  	emptyParameter(msg);
+	  	return false;
+	  }
+
+	  if (isEmpty($('#TB08050S_rctmDt').val())) {
+	  	msg = '입금일자';
+	  	input = $('#TB08050S_rctmDt');
+	  	input.focus();
+	  	emptyParameter(msg);
+	  	return false;
+	  }
+
+	  function emptyParameter(msg) {
+	  	Swal.fire({
+	  		icon: 'warning'
+	  		, title: "Warning!"
+	  		, text: msg + "을(를) 입력해주세요."
+	  		, confirmButtonText: "확인"
+	  	})
+
+	  }
+
+	  
     }
 
     return { isValid: true, prdtCd };
@@ -1072,14 +1125,14 @@ const TB08050Sjs = (function () {
   function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
+
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
 			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB08050S_prdtCd").val(prdtCd);
 			$("#TB08050S_prdtNm").val(prdtNm);
       srch();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

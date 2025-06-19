@@ -331,11 +331,6 @@ const TB06020Sjs = (function(){
 		var lstCCaseCcd = $('#TB06020S_lstCCaseCcd').val();
 		var prdtCd = $('#TB06020S_prdtCd').val();
 		
-		console.log("riskInspctCcd:"+riskInspctCcd );
-		console.log("lstCCaseCcd:"+lstCCaseCcd );
-		//console.log("ibDealNo:"+ibDealNo );
-
-
 		getCnfrncDealInfo(ibDealNo, riskInspctCcd, lstCCaseCcd, prdtCd);
 		
 		
@@ -534,7 +529,6 @@ const TB06020Sjs = (function(){
 					text: '집합투자증권 정보등록이 가능한 안건이 아닙니다.',
 					confirmButtonText: '확인',
 				}).then(() => {
-					console.log();
 					resetSearchRequiment_TB06020S(); //초기화
 				});
 			}
@@ -1305,7 +1299,7 @@ const TB06020Sjs = (function(){
 			$("#TB06020S_prdtNm").val(prdtNm);
 		getDealList();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

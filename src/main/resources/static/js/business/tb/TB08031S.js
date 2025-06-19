@@ -1494,7 +1494,7 @@ const TB08031Sjs = (function () {
       url: "/getSelectBoxCode/I020",
       dataType: "json",
       success: function (data) {
-        console.log(JSON.stringify(data));
+
         var html = "";
 
         $("#TB08031S_invbnkAmnBzCd").html(html);
@@ -1574,7 +1574,6 @@ const TB08031Sjs = (function () {
           var expDt = isEmpty(bssBscInfo.expDt) ? '' : formatDate(bssBscInfo.expDt);
           var rgstDt = isEmpty(bssBscInfo.rgstDt) ? '' : formatDate(bssBscInfo.rgstDt);
 
-          console.log("sn:::" + data.sn);
           $("#TB08031S_sn").val(data.sn);
 
           $("#TB08031S_corpNo").val(bssBscInfo.crno);             // 법인등록번호
@@ -1592,8 +1591,6 @@ const TB08031Sjs = (function () {
           ernSctyInfoInstance.setData(fundInfo);                  //투자자산 정보
 
           // console.log(JSON.stringify(fundInfo));
-
-		  console.log("asdfasdfasdfasd", data.invFnnMngmBusiDcd)
 
           if(data.invFnnMngmBusiDcd){       //사업구분코드 있는 경우
 
@@ -2152,8 +2149,6 @@ const TB08031Sjs = (function () {
       var selId = $("#TB08031S_ibDealNo").val();
       firstLetter = selId.charAt(0).toUpperCase();
     } else if (prefix == "invbnkAmnBzCd") {
-
-      console.log("TB08031S_invbnkAmnBzCd::: " + $("#TB08031S_invbnkAmnBzCd").val());
 
       switch ($("#TB08031S_invbnkAmnBzCd").val()) {
         case "01":
@@ -3164,7 +3159,6 @@ const TB08031Sjs = (function () {
 
   function businessFunction() {
     var dtoParam = paramSett();
-    console.log(JSON.stringify(dtoParam));
 
     $.ajax({
       type: "POST",
@@ -3181,9 +3175,7 @@ const TB08031Sjs = (function () {
         });
       },
       error: function (error, xhr, status) {
-        console.log(error);
-        console.log(xhr);
-        console.log(status);
+
         Swal.fire({
           icon: "error",
           title: "Error!",
@@ -3420,7 +3412,7 @@ const TB08031Sjs = (function () {
       }else{
         var msg;
 
-        if(mode === "save"){
+        if(mode === "save"){   
           msg = "저장";
           param = {
             dealNo:dealNo,
@@ -4076,8 +4068,6 @@ const TB08031Sjs = (function () {
             mode: mode
           }
         }
-  
-        console.log(JSON.stringify(param));
   
         $.ajax({
           type: "POST",

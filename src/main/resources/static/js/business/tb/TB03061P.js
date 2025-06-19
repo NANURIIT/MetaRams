@@ -34,23 +34,6 @@ $(document).ready(function () {
  */
 function TB03061P_srchMtr(menuId) {
   /**
-   * 완성된 함수는 common.js에 한번 더 세팅해주셔야해요
-   */
-
-  /**
-   * 팝업 자체 조회
-   * 팝업은 포커스아웃시 조회 없음
-   * ******************************
-   * ******************************
-   * ******************************
-   * 	 기업체는 이미 처리되어 있음!
-   * ******************************
-   * ******************************
-   * ******************************
-   *
-   */
-
-  /**
    * 코드길이체크 후 자동조회
    */
   $(
@@ -167,7 +150,7 @@ function TB03061P_inModalSrchMtr(popupId) {
     if ($(selector).attr("id") === $("#TB03061P_ardyBzepNo").attr("id")) {
       prefix = TB03061P_pf;
     } else {
-      // 컬럼명 길이로 바꾸셔야 합니당
+
       const prefixId = $(selector).attr("id");
       let _index = 0;
       for (let i = 0; i < prefixId.length; i++) {
@@ -316,14 +299,33 @@ function modalShowFunction_TB03061P() {
  * 기업체목록 조회
  */
 function getArdyBzepInfoList() {
-  var inputParam = {
-    entpNm: $("#TB03061P_entpNm").val(), // 기업체명
-    ardyBzepNo: $("#TB03061P_ardyBzepNo").val(), // 기업체코드
-    rnbn: $("#TB03061P_rnbn").val(), // 사업자등록번호
-    crno: $("#TB03061P_crno").val(), // 법인등록번호
-    csno: $("#TB03061P_csno").val(), // 고객번호
-    useYn: $("#TB03061P_useYn").val(), // 사용여부
-  };
+
+  // console.log("prefix::: " + $("#TB03061P_prefix").val());
+
+  var inputParam = {};
+  var callMenuId = $("#TB03061P_prefix").val();
+
+  if(callMenuId === "TB07200S" || callMenuId === "TB07210S" || callMenuId === "TB07220S" || callMenuId === "TB07230S"){//SPC
+    inputParam = {
+      entpNm: $("#TB03061P_entpNm").val(),            // 기업체명
+      ardyBzepNo: $("#TB03061P_ardyBzepNo").val(),    // 기업체코드
+      rnbn: $("#TB03061P_rnbn").val(),                // 사업자등록번호
+      crno: $("#TB03061P_crno").val(),                // 법인등록번호
+      csno: $("#TB03061P_csno").val(),                // 고객번호
+      useYn: $("#TB03061P_useYn").val(),              // 사용여부
+      menuId: "spc"
+    };
+  }else{
+    inputParam = {
+      entpNm: $("#TB03061P_entpNm").val(),            // 기업체명
+      ardyBzepNo: $("#TB03061P_ardyBzepNo").val(),    // 기업체코드
+      rnbn: $("#TB03061P_rnbn").val(),                // 사업자등록번호
+      crno: $("#TB03061P_crno").val(),                // 법인등록번호
+      csno: $("#TB03061P_csno").val(),                // 고객번호
+      useYn: $("#TB03061P_useYn").val(),              // 사용여부
+      menuId: "nonSpc"
+    };
+  }
 
   //기업체목록 조회
   $.ajax({
@@ -386,9 +388,6 @@ function setArdyBzepInfo(rowData) {
   let oprtHnfNum = rowData.oprtHnfNum;
   let stffNum = rowData.stffNum;
   let estDt = rowData.estDt;
-
-  // console.log(ardyBzepNo);
-  // alert(rowInx);
 
   let prefix = $("#TB03061P_prefix").val(); // id 값에 일관성을 주고, 다른 변수와 겹치는 것을 방지하기 위해 prefix된 페이지 name을 각 id에 붙여준다.
 

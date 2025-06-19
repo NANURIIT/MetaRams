@@ -189,6 +189,7 @@ const TB10110Sjs = (function () {
         userListObj.setData(data);
 		userListObj.option("rowClick", function (event, ui) {
 		  pqGridSelectHandler ( ui.rowIndx, "TB10110S_userList" );
+		    callTB10111P('TB10110S');
 			var rowData = ui.rowData;
     		selectRgthUser(rowData);
         });
@@ -258,7 +259,7 @@ const TB10110Sjs = (function () {
       success: function (data) {
         var a = "";
         $("#TB10110S_athCd").html(a);
-        $("#AC01130P_rghtCd").html(a);
+        $("#TB10111P_rghtCd").html(a);
         makeRghtCdList(data);
       },
     });
@@ -300,17 +301,17 @@ const TB10110Sjs = (function () {
       modalHtml += "</div>";
     });
     $("#TB10110S_athCd").html(html);
-    $("#AC01130P_rghtCd").html(modalHtml);
+    $("#TB10111P_rghtCd").html(modalHtml);
   };
 
   /*******************************************************************
    *** 사용자추가 팝업 event
    *******************************************************************/
   /**
-   * [AC01130P] 사용자추가 팝업 오픈
+   * [TB10111P] 사용자추가 팝업 오픈
    */
   function openModal() {
-    $("#modal-AC01130P").modal("show");
+    $("#modal-TB10111P").modal("show");
   }
 
   /**
@@ -353,31 +354,31 @@ const TB10110Sjs = (function () {
   var addAuth = function (userInfo) {
     for (idx in userInfo) {
       var data = userInfo[idx];
-      $("#AC01130P_empNo").val(data.empno);
-      $("#AC01130P_empNm").val(data.empNm);
-      $("#AC01130P_rghtCd").val(data.athCd);
-      $("#AC01130P_datepicker1").val(formatDate(data.aplyStrtDt));
-      $("#AC01130P_datepicker2").val(formatDate(data.aplyEndDt));
-      $("#AC01130P_rgstRsn").val(data.rgstRsn);
-      $("#AC01130P_rgstPEno").text(
+      $("#TB10111P_empNo").val(data.empno);
+      $("#TB10111P_empNm").val(data.empNm);
+      $("#TB10111P_rghtCd").val(data.athCd);
+      $("#TB10111P_datepicker1").val(formatDate(data.aplyStrtDt));
+      $("#TB10111P_datepicker2").val(formatDate(data.aplyEndDt));
+      $("#TB10111P_rgstRsn").val(data.rgstRsn);
+      $("#TB10111P_rgstPEno").text(
         data.rgstEmpNm + " (" + data.rgstEmpno + ")"
       );
-      $("#AC01130P_rgstDt").text(formatDate(data.rgstDt));
-      $("#AC01130P_hndlPEno").text(data.hndEmpNm + " (" + data.hndEmpno + ")");
-      $("#AC01130P_hndlDyTm").text(data.hndDetlDtm);
-      $("#AC01130P_dltF").val(data.delYn);
-      $("#AC01130P_dltPEno").val(data.delEmpno);
+      $("#TB10111P_rgstDt").text(formatDate(data.rgstDt));
+      $("#TB10111P_hndlPEno").text(data.hndEmpNm + " (" + data.hndEmpno + ")");
+      $("#TB10111P_hndlDyTm").text(data.hndDetlDtm);
+      $("#TB10111P_dltF").val(data.delYn);
+      $("#TB10111P_dltPEno").val(data.delEmpno);
     }
   };
 
   /**
    * 모달 닫은후 이벤트 재조회
    */
-  $("#modal-AC01130P").on("hidden.bs.modal", function () {
+  $("#modal-TB10111P").on("hidden.bs.modal", function () {
     runFindUser();
-    $("#AC01130P_sq").val("");
-    $("#AC01130P_dltPEno").val("");
-    $("#AC01130P_dltF").val("");
+    $("#TB10111P_sq").val("");
+    $("#TB10111P_dltPEno").val("");
+    $("#TB10111P_dltF").val("");
   });
 
   /**

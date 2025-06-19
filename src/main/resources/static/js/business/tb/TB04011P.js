@@ -209,7 +209,7 @@ async function getMtrInfo_TB04011P() {
       },
     });
   } catch (error) {
-    console.error("AJAX 호출 중 오류 발생:", error);
+    // console.error("AJAX 호출 중 오류 발생:", error);
   }
 
   return result;
@@ -338,10 +338,9 @@ function setMtrInfo_TB04011P(e) {
     // 그리드데이터 체크
     const chkGrid = () => {
       let grid = $("#gridCaseList").pqGrid("instance").pdata;
-      console.log(grid);
-      console.log(e.sn);
+
       for (let i = 0; i < grid.length; i++) {
-        console.log(grid[i].dealSn);
+
         if (
           grid[i].dealSn == e.sn &&
           grid[i].dealNo == e.dealNo &&
@@ -363,9 +362,6 @@ function setMtrInfo_TB04011P(e) {
       });
       return;
     }
-
-    console.log(e.mtrPrgSttsDcd.substr(0, 1));
-    console.log(e.mtrPrgSttsDcd);
     
     // 심사진행상태가 "심사부안건승인"상태일것
     if (e.mtrPrgSttsDcd.substr(0, 1) === "2" && e.mtrPrgSttsDcd != "208") {

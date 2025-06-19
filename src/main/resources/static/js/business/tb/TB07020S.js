@@ -384,7 +384,7 @@ const TB07020Sjs = (function () {
 
 			},
 			error: function (request, status, error) {
-				console.log(request + "\n", status, "\n", error, "\n")
+
 			}
 		});
 	}
@@ -401,7 +401,7 @@ const TB07020Sjs = (function () {
 				//alert(data);
 			},
 			error: function (request, status, error) {
-				console.log(request + "\n", status, "\n", error, "\n")
+				// console.log(request + "\n", status, "\n", error, "\n")
 			}
 		});
 	}
@@ -614,7 +614,7 @@ const TB07020Sjs = (function () {
 					bessniseFunction(trSn, inputDcd);
 				},
 				error: function (request, status, error) {
-					console.log(request + "\n", status, "\n", error, "\n")
+					// console.log(request + "\n", status, "\n", error, "\n")
 				}
 			});
 		} else { //취소시
@@ -1114,7 +1114,7 @@ const TB07020Sjs = (function () {
 									resolve(data); //통신 성공하면 resolve()
 								},
 								error: function (request, status, error) {
-									console.log(request + "\n", status, "\n", error, "\n")
+									//console.log(request + "\n", status, "\n", error, "\n")
 									reject();  //통신 실패하면 reject()
 								}
 							});
@@ -1133,7 +1133,7 @@ const TB07020Sjs = (function () {
 									resolve(data); //통신 성공하면 resolve()
 								},
 								error: function (request, status, error) {
-									console.log(request + "\n", status, "\n", error, "\n")
+									//console.log(request + "\n", status, "\n", error, "\n")
 									reject();  //통신 실패하면 reject()
 								}
 							});
@@ -1142,7 +1142,7 @@ const TB07020Sjs = (function () {
 					resolve(data); //통신 성공하면 resolve()
 				},
 				error: function (e) {
-					console.log("data error !! :: " + e);
+					//console.log("data error !! :: " + e);
 					reject();  //통신 실패하면 reject()
 				}
 			});
@@ -1747,14 +1747,14 @@ const TB07020Sjs = (function () {
 	function getDealInfoFromWF() {
 
 		if (sessionStorage.getItem("isFromWF")) {
-			console.log("WF세션 있음");
+
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
 			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07020S_srch_prdtCd").val(prdtCd);
 			$("#TB07020S_srch_prdtNm").val(prdtNm);
 			getBuyList();
 		} else {
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

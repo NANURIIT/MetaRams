@@ -33,7 +33,7 @@ const TB08090Sjs = (function () {
 				// loginUsrDprtNm = data.dprtNm;
 			},
 			error: function (request, status, error) {
-				console.log(request + "\n", status, "\n", error, "\n")
+				//console.log(request + "\n", status, "\n", error, "\n")
 			}
 		});
 	}
@@ -378,12 +378,11 @@ const TB08090Sjs = (function () {
 
 					if (data.length > 0) {
 
-						console.log(JSON.stringify(data));
 						pqGridObjAstList.setData(data);
 					}
 				},
 				error: function (request, status, error) {
-					console.log(request + "\n", status, "\n", error, "\n");
+					//console.log(request + "\n", status, "\n", error, "\n");
 				}
 			});
 
@@ -492,7 +491,7 @@ const TB08090Sjs = (function () {
 					openPopup(option);
 				},
 				error: function (request, status, error) {
-					console.log(request + "\n", status, "\n", error, "\n");
+					//console.log(request + "\n", status, "\n", error, "\n");
 				}
 			});
 

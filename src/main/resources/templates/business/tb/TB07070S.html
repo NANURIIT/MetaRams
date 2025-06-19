@@ -26,32 +26,40 @@
 						<div class="form-group form-inline row">
 							<div class="col-sm-10 form-group mb-1">
 
-								<label class="col-sm-1 col-form-label"><span class="req"></span>종목코드</label>
+								<label class="col-sm-1 col-form-label">
+									<span class="req"></span>종목코드
+								</label>
 								<div class="col-sm-7 input-group">
 									<div class="input-group  w-100">
 										<input type="text" class="form-control" id="TB07070S_prdtCd">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07070S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07070S');">
+												<i class="fa fa-search"></i>
+											</button>
 										</span>
 										<input type="text" class="form-control" id="TB07070S_prdtNm" style="width: 174px;" readonly>
 									</div>
 								</div>
-								
+
 								<label class="col-sm-1 col-form-label">담당자</label>
 								<div class="col-sm-3 input-group">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB07070S_empNo">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03022P('TB07070S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB03022P('TB07070S');">
+												<i class="fa fa-search"></i>
+											</button>
 										</span>
 										<input type="text" class="form-control" id="TB07070S_empNm" style="width: 100px;" readonly="">
 									</div>
 								</div>
-								
+
 							</div>
 							<div class="col-sm-10 form-group">
 
-								<label class="col-sm-1 col-form-label"><span class="req"></span>거래일자</label>
+								<label class="col-sm-1 col-form-label">
+									<span class="req"></span>거래일자
+								</label>
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-12 input-group date px-0">
 										<input type="text" class="form-control" id="TB07070S_trDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');" value="" placeholder="YYYY-MM-DD">
@@ -76,17 +84,18 @@
 							<div class="col-sm-1-5 text-right pl-0">
 
 								<button class="btn btn-primary" type="button" onclick="TB07070Sjs.srch();">
-									<i class="fa fa-search"></i>&nbsp;조회</button>
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
 								<button id="" class="btn btn-default" onclick="TB07070Sjs.reset();">
-									<i class="fa fa-undo"></i>&nbsp;초기화</button>
-
+									<i class="fa fa-undo"></i>&nbsp;초기화
+								</button>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- 조회조건 ed -->
-				
-				<div class="ibox-content" style="min-height: 780px">	
+
+				<div class="ibox-content" style="min-height: 780px">
 					<!-- 취소대상내역 -->
 					<div class="ibox">
 						<div class="ibox-title">
@@ -94,82 +103,40 @@
 						</div>
 						<div class="ibox-content">
 							<div id="grd_07070"></div>
-							<!-- <div class="pq-theme tableFixHeader1">
-								<table class="table result table-bordered table-hover">
-									<colgroup>
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-										<col style="">
-									</colgroup>
-									<thead>
-										<tr>
-											<th>종목코드</th>
-											<th>종목명</th>
-											<th>거래순번</th>
-											<th>실행순번</th>
-											<th>대출종류</th>
-											<th>거래종류</th>
-											<th>거래상태</th>
-											<th>통화코드</th>
-											<th>거래일자</th>
-											<th>거래금액</th>
-											<th>거래원금</th>
-											<th>거래이자</th>
-											<th>거래수수료</th>
-											<th>거래부서</th>
-											<th>담당자</th>
-										</tr>
-									</thead>
-									<tbody id="">
-										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-									</tbody>
-								</table>
-							</div> -->
 						</div>
 					</div>
-					<!-- 취소대상내역 end -->
-					<div class="row form-group form-inline text-right mb-2">
-						<div class="col-sm-12 form-group pd0">
-							<label class="col-sm-1">정정/취소사유내용</label>
-							<div class="col-sm-11 input-group">
-								<textarea class="form-control" rows="3" id="TB07070S_rvseCnclRsonText"></textarea>
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>▶&nbsp;실행상환 취소사유</h5>
+						</div>
+						<div class="ibox-content">
+							<div class="row form-group form-inline text-right mb-2">
+								<div class="col-sm-12 form-group pd0">
+									<label class="col-sm-1">정정/취소사유내용</label>
+									<div class="col-sm-11 input-group">
+										<textarea class="form-control" rows="3" id="TB07070S_rvseCnclRsonText"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="ibox form-inline">
+								<!-- 버튼영역 -->
+								<div class="col-sm-12 text-right pd0">
+									<button class="btn btn-danger mg-l5" type="button" id="TB07070S_btnSave" onclick="">
+										<i class="fa fa-undo"></i>&nbsp;취소
+									</button>
+								</div>
 							</div>
 						</div>
+
 					</div>
-					<div class="ibox form-inline">
-						<!-- 버튼영역 -->
-						<div class="col-sm-12 text-right pd0">
-							<button class="btn btn-danger mg-l5" type="button" id="TB07070S_btnSave" onclick=""><i class="fa fa-undo"></i>&nbsp;취소</button>
-						</div>
-					</div>
+					<!-- 취소대상내역 end -->
+
+
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- 실행상환취소 ed -->
 </th:block>
 

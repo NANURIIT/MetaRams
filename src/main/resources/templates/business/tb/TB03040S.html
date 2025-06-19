@@ -43,7 +43,7 @@
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB03021P('TB03040S');"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB03040S_ibDealNm" readonly>
+										<input type="text" class="form-control" id="TB03040S_ibDealNm" readonly style="width:120px">
 									</div>
 								</div>
 								<div class="form-group col-sm-12">
@@ -53,7 +53,7 @@
 										<span class="input-group-append">
 											<button type="button" class="btn btn-default" onclick="callTB03022P('TB03040S_1')" id="empNoSearch"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB03040S_1_empNm" readonly>
+										<input type="text" class="form-control" id="TB03040S_1_empNm" readonly  style="width:120px">
 									</div>
 									<!-- <div class="col-sm-1"></div> -->
 									<label class="col-sm-1 col-form-label text-right">부서</label>
@@ -81,9 +81,14 @@
 						</form>
 					</div>
 					<!-- 조회결과 -->
-					<div class="ibox-content" style="min-height: 830px">
+					<div class="ibox-content">
 						<div class="ibox">
-							<div id="TB03040S_gridDealList"></div>
+							<div class="ibox-title">
+								<h5>▶ Deal 정보</h5>
+							</div>
+							<div class="ibox-content">
+								<div id="TB03040S_gridDealList"></div>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -23,9 +23,9 @@ const TB06070Sjs = (function() {
             , success: function(data) {
 
             const keys = Object.keys(data);
-            console.log(keys);
+
             for(let i = 0; i < keys.length; i++){
-                    console.log(`#TB06070S_${keys[i]}`, data[keys[i]]);
+
                     $(`#TB06070S_${keys[i]}`).val(data[keys[i]]);
                 }
 

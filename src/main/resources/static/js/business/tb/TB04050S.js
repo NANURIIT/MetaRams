@@ -286,16 +286,16 @@ const TB04050Sjs = (function () {
           }
         },
         error: function (request, status, error) {
-          console.log(
-            "code:" +
-              request.status +
-              "\n" +
-              "message:" +
-              request.responseText +
-              "\n" +
-              "error:" +
-              error
-          );
+          // console.log(
+          //   "code:" +
+          //     request.status +
+          //     "\n" +
+          //     "message:" +
+          //     request.responseText +
+          //     "\n" +
+          //     "error:" +
+          //     error
+          // );
         },
       });
     }
@@ -455,18 +455,10 @@ const TB04050Sjs = (function () {
             text: "요청정보를 저장하였습니다.",
             confirmButtonText: "확인",
           });
-          console.log("confirm::::::", dtoParam);
 
           getDealInfo_TB04050S(dealNo);
         },
-        error: function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: "요청정보를 저장하는데 실패하였습니다.",
-            confirmButtonText: "확인",
-          });
-        },
+		error: handleAjaxError
       });
     }
   }

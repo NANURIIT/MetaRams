@@ -637,10 +637,10 @@ const TB09060Sjs = (function () {
             confirmButtonText: "확인",
           }).then((result) => {});
         }
-        console.log(data);
+
       },
       error: function (e) {
-        console.log(e);
+
         Swal.fire({
           icon: "error",
           title: "error!",

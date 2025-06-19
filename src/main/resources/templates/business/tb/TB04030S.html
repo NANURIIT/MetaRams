@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/ramsLayout}">
-
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
 <th:block layout:fragment="script">
 	<script th:src="@{js/common.js}"></script>
 	<script th:src="@{js/business/tb/TB04030S.js}"></script>
-
 </th:block>
-
 <th:block layout:fragment="customContent">
 	<!-- 심사배정안건조회 -->
 	<div class="wrapper wrapper-content animated fadeIn">
@@ -21,41 +17,44 @@
 								<!-- 1 -->
 								<div class="form-group col-sm-12 mb-1">
 									<label class="col-sm-1 control-label">
-										<span class="req"></span>접수배정일</label>
-										<div class="col-sm-4 input-group date">
-											<div class="col-sm-5 input-group date px-0">
-												<input type="text" class="form-control" id="TB04030S_fromDate" name="FromDate" value="" maxlength="10">
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>
-											<span class="input-group-addon border-none"> ~ </span>
-											<div class="col-sm-5 input-group date px-0">
-												<input type="text" class="form-control" id="TB04030S_toDate" name="ToDate" value="" maxlength="10">
-												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-											</div>
+										<span class="req"></span>접수배정일
+									</label>
+									<div class="col-sm-4 input-group date">
+										<div class="col-sm-5 input-group date px-0">
+											<input type="text" class="form-control" id="TB04030S_fromDate" name="FromDate" value="" maxlength="10">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
-										<label class="col-sm-1 control-label">진행상태</label>
-										<div class="col-sm-2 input-group">
-											<select class="form-control" id="TB04030S_I011">
-												<option value="">전체</option>
-											</select>	
-										</div>										
+										<span class="input-group-addon border-none"> ~ </span>
+										<div class="col-sm-5 input-group date px-0">
+											<input type="text" class="form-control" id="TB04030S_toDate" name="ToDate" value="" maxlength="10">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
 									</div>
-									<!-- 2 -->
-									<div class="form-group col-sm-12 mb-1">
-										<label class="col-sm-1 control-label">심사자</label>
-										<div class="col-sm-4 input-group">				
-											<input type="text" class="form-control" id="TB04030S_empNo" >											
-											<span class="input-group-append">
-												<button type="button" class="btn btn-default" onclick="callTB03022P('TB04030S')"><i class="fa fa-search"></i></button>
-											</span>
-											<input type="text" class="form-control" id="TB04030S_empNm" readonly disabled>											
-										</div>										
-										<label class="col-sm-1 control-label">심사부서</label>
-										<div class="col-sm-2 input-group">
-											<select class="form-control" id="TB04030S_D010">
-												<option value="">전체</option>
-											</select>
-										</div>										
+									<label class="col-sm-1 control-label">진행상태</label>
+									<div class="col-sm-2 input-group">
+										<select class="form-control" id="TB04030S_I011">
+											<option value="">전체</option>
+										</select>
+									</div>
+								</div>
+								<!-- 2 -->
+								<div class="form-group col-sm-12 mb-1">
+									<label class="col-sm-1 control-label">심사자</label>
+									<div class="col-sm-4 input-group">
+										<input type="text" class="form-control" id="TB04030S_empNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03022P('TB04030S')">
+												<i class="fa fa-search"></i>
+											</button>
+										</span>
+										<input type="text" class="form-control" id="TB04030S_empNm" disabled style="width: 120px">
+									</div>
+									<label class="col-sm-1 control-label">심사부서</label>
+									<div class="col-sm-2 input-group">
+										<select class="form-control" id="TB04030S_D010">
+											<option value="">전체</option>
+										</select>
+									</div>
 									<!-- 버튼영역 -->
 									<div class="col-sm-4 text-right">
 										<div style="display: inline-block; margin-right: 5px;">
@@ -68,19 +67,24 @@
 												<i class="fa fa-undo"></i>&nbsp;초기화
 											</button>
 										</div>
-									</div>																
+									</div>
 								</div>
 							</div>
 						</form>
-					</div>					
-					<!-- 조회결과 -->
+					</div>
 					<div class="ibox-content">
-						<div id="TB04030S_gridDealList"></div>
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;딜담당자 결재</h5>
+							</div>
+							<div class="ibox-content">
+								<div id="TB04030S_gridDealList"></div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </th:block>
-
 </html>

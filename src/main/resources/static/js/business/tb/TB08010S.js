@@ -353,7 +353,7 @@ const TB08010Sjs = (function () {
     $("#hidden_tab1_sn").val(sn); //일련번호
     $('div[data-menuid="/TB08010S"] #UPLOAD_AddFile').prop("disabled", false);
     $('div[data-menuid="/TB08010S"] #UPLOAD_DelFiles').prop("disabled", false);
-    console.log("hidden_tab1_sn에 설정된 값:", $("#hidden_tab1_sn").val());
+
     $("#key2").val(dealNo + "-" + jdgmDcd + "-" + mtrDcd + "-" + sn);
     getFileInfo("", $("#key2").val());
   }

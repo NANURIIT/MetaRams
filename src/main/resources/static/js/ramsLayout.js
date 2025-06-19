@@ -92,7 +92,7 @@ function createNav(empNo) {
                     else if (data[i].menuLvl === 3) {
                         const menuHtmlLv3 = `
 							<li data-sidetabid="${data[i].menuId}">
-								<a onclick="callPage('${data[i].menuId}', '${data[i].menuNm}')">&nbsp;&nbsp;${data[i].menuNm}</a>
+								<a onclick="callPage('${data[i].menuId}', '${data[i].menuNm}')">&nbsp;&nbsp; └ ${data[i].menuNm}</a>
 							</li>
 						`;
                         $(`#side-menu ul ul[data-hgrk="${data[i].hgrkMenuId}"]`).append(menuHtmlLv3);
@@ -115,6 +115,7 @@ function createNav(empNo) {
                     window.location.href = "/login"
                 })
             }
+            gwFakeScrollEventHandler();
         }, error: function () {
 
         }
@@ -143,7 +144,8 @@ function chkPrevPage() {
         && url === "/TB02010S"
     ) {
         const titleNm = $(`li[data-sidetabid="${result_id[result_id.length - 1]}"] a`).html();
-        callPage(result_id[result_id.length - 1], titleNm);
+        const titleName = titleNm.split("└ ")[1];
+        callPage(result_id[result_id.length - 1], titleName);
     }
 }
 
@@ -431,4 +433,63 @@ function chkPrevPageTag () {
             break;
         }
     }
+}
+
+/**
+ * 스크롤 컨트롤
+ */
+function gwFakeScrollEventHandler () {
+
+    let height = 0;
+
+    function updateFakeScrollbar() {
+        const scrollHeight = $('#side-menu').prop('scrollHeight');
+
+        if (height < scrollHeight) {
+            const ratio = height / scrollHeight;
+            $('.gw-scrollbar').height(ratio * height); // 비율 기반 높이
+        } 
+        else {
+            $('.gw-scrollbar').height(0); // 필요 없을 땐 숨김 처리
+        }
+    }
+
+    $('.sidebar-collapse').on('mouseenter', function(e) {
+
+        height = $(this).height();
+
+        $('.gw-sidebar-fakescroll').css({
+            visibility: "visible"
+        });
+
+        $('#side-menu').on('mousemove', updateFakeScrollbar);
+    })
+
+    $('.sidebar-collapse').on('mouseleave', function(e) {
+        $('.gw-sidebar-fakescroll').css({
+            visibility: "hidden"
+        });
+
+        $('#side-menu').off('mousemove', updateFakeScrollbar);
+    })
+
+    $('.sidebar-collapse').on('scroll', function(e) {
+        const scrollTop = $(this).scrollTop();
+        $('.gw-scrollbar').css('transform', `translateY(${scrollTop}px)`);
+    })
+
+    
+    /**
+     * 드래그 스크롤 완성하고싶은분 완성하십쇼
+     */
+    // function dragScrollbar(e) {
+    //     console.log(e);
+    //     $('.gw-scrollbar').css('transform', `translateY(${scrollTop}px)`);
+    // }
+    // $('.gw-scrollbar').on('mousedown', function(e) {
+    //     $(document).on('mousemove', dragScrollbar)
+    // })
+    // $(document).on('mouseup', function(e) {
+    //     $(document).off('mousemove', dragScrollbar)
+    // })
 }

@@ -70,7 +70,6 @@ const TB09040Sjs = (function () {
 			data: dtoParam,
 			dataType: "json",
 			success: function(data) {
-				console.log(data);
 				
 				pqGridObjList.setData(data);
 				

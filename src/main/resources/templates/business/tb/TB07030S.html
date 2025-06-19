@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
 	<script th:src="@{js/common.js}"></script>
@@ -24,12 +23,17 @@
 						<!-- row1 -->
 						<div class="row form-group form-inline text-right mb-1">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>종목코드</label>
+								<label class="col-sm-1 col-form-label text-right">
+									<span class="req"></span>종목코드
+								</label>
 								<div class="col-sm-3">
 									<div class="input-group">
+										<input type="hidden" id="TB07030S_earlyRepayYn">
 										<input type="text" class="form-control" id="TB07030S_prdtCd">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07030S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB07030S');">
+												<i class="fa fa-search"></i>
+											</button>
 										</span>
 										<input type="text" class="form-control" id="TB07030S_prdtNm" readonly>
 									</div>
@@ -42,43 +46,46 @@
 								</div>
 								<label class="col-sm-1 col-form-label text-right">적용환율</label>
 								<div class="col-sm-2 input-group">
-									<input type="text" class="form-control text-right" id="TB07030S_aplcExchR" value="1.00" oninput="TB07030Sjs.calculator('aplcExchR'); inputNumberFormat(this); restrictDecimalDigits(this, 4)" maxlength="9">
-									<!-- <select class="form-control" id="repoAplyExrtDcd">
-										<option>전체</option>
-									</select> -->
+									<input type="text" class="form-control text-right" id="TB07030S_aplcExchR" value="1.00" oninput="TB07030Sjs.calculator('aplcExchR'); inputNumberFormat(this); restrictDecimalDigits(this, 4)"
+										maxlength="9">
 								</div>
 							</div>
 						</div>
 						<!-- row2 -->
 						<div class="row form-group form-inline text-right mb-2">
 							<div class="col-sm-12 form-group">
-								<label class="col-sm-1 col-form-label text-right"><span class="req"></span>기산일자<br>(상환일자)</label>
+								<label class="col-sm-1 col-form-label text-right">
+									<span class="req"></span>기산일자
+									<br>
+									(상환일자)
+								</label>
 								<div class="col-sm-3">
-									<span class="input-group date">
-										<input type="text" class="form-control" value="" id="TB07030S_prarDt"
-											oninput="this.value = this.value.replace(/[^0-9-]/g, '');" placeholder="YYYY-MM-DD"><span class="input-group-addon"><i
-												class="fa fa-calendar"></i></span>
+									<span class="input-group date"> <input type="text" class="form-control" value="" id="TB07030S_prarDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '');"
+											placeholder="YYYY-MM-DD"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</span>
 								</div>
 								<label class="col-sm-1 col-form-label text-right">당일환전여부</label>
 								<div class="col-sm-2 input-group input-h">
 									<div class="col-sm-3 text-left input-group">
-										<input type="radio" value="Y" name="TB07030S_thdtEchmYn">&nbsp;Y
+										<input type="radio" value="Y" name="TB07030S_thdtEchmYn">
+										&nbsp;Y
 									</div>
 									<div class="col-sm-3 text-left input-group">
-										<input type="radio" value="N" name="TB07030S_thdtEchmYn" checked>&nbsp;N
+										<input type="radio" value="N" name="TB07030S_thdtEchmYn" checked>
+										&nbsp;N
 									</div>
 								</div>
 								<label class="col-sm-1 col-form-label text-right">고시환율</label>
 								<div class="col-sm-2 input-group">
 									<input type="text" class="form-control text-right" id="TB07030S_stdrExrt" disabled>
-									<!-- <select class="form-control" id="stlExrtDcd">
-										<option>전체</option>
-									</select> -->
 								</div>
 								<div class="col-sm-2 text-right">
-									<button class="btn btn-primary" type="button" onclick="TB07030Sjs.srch();"><i class="fa fa-search"></i>&nbsp;조회</button>
-									<button id="" class="btn btn-default" onclick="TB07030Sjs.reset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+									<button class="btn btn-primary" type="button" onclick="TB07030Sjs.srch();">
+										<i class="fa fa-search"></i>&nbsp;조회
+									</button>
+									<button id="" class="btn btn-default" onclick="TB07030Sjs.reset();">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+									</button>
 								</div>
 							</div>
 						</div>
@@ -86,40 +93,10 @@
 							<div class="ibox-title">
 								<h5>▶ 상환대상내역</h5>
 							</div>
-							<div id="grdRdmpTrgt"></div>
-							<!-- <div class="ibox-content">
-								<div class="tableFixHead">
-									<table class="table result table-bordered">
-										<colgroup>
-											<col style="width: 5%;">
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-										</colgroup>
-										<thead>
-											<tr>
-												<th>순번</th>
-												<th>종목코드</th>
-												<th>상환예정일</th>
-												<th>만기일자</th>
-												<th>실행잔액</th>
-												<th>상환원금</th>
-												<th>상환이자</th>
-												<th>중도상환원금</th>
-												<th>중도상환수수료</th>
-												<th>미수(유예)이자</th>
-											</tr>
-										</thead>
-										<tbody id="rdmpTrgtList">
-										</tbody>
-									</table>
-								</div>
-							</div> -->
+							<div class="ibox-content">
+								<div id="grdRdmpTrgt"></div>
+							</div>
+
 						</div>
 						<div class="row pr-1 pl-1">
 							<!-- 관련 보고서 -->
@@ -129,47 +106,12 @@
 										<h5>▶ 상환대상상세내역</h5>
 										<div class="ibox-tools">
 											<button type="button" class="btn btn-default btn-xs" id="" onclick="TB07030Sjs.calPrarAmt();">상환금액계산</button>
-											<!-- <button type="button" class="btn btn-default btn-xs" id="exelDown"><i class="fa fa-file-excel-o"></i>&nbsp;엑셀저장</button>
-											<div style="display: none;">
-												<input type="file" class="custom-file-input" id="upload-file-input-TB07030S" name="uploadfile" accept="*">
-											</div>
-											<button type="button" class="btn btn-default btn-xs" id="exelUp"><i class="fa fa-upload"></i>&nbsp;업로드</button> -->
-											<!-- <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-plus"></i></button>
-											<button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-minus"></i></button> -->
 										</div>
 									</div>
-									<div id="grdRdmpTrgtDtl"></div>
-									<!-- <div class="ibox-content t	able-h-ex tableFixHead">
-										<table class="table result table-bordered">
-											<colgroup>
-												<col>
-												<col>
-												<col>
-												<col>
-												<col>
-												<col>
-												<col>
-												<col>
-												<col>
-												<col>
-											</colgroup>
-											<thead>
-												<tr>
-													<th>회차</th>
-													<th>이자유형코드</th>
-													<th>대상금액</th>
-													<th>시작일자</th>
-													<th>종료일자</th>
-													<th>일수</th>
-													<th>적용이율</th>
-													<th>납부금액</th>
-													<th>면제금액</th>
-												</tr>
-											</thead>
-											<tbody id="rdmpTrgtDetailList">
-											</tbody>
-										</table>
-									</div> -->
+									<div class="ibox-content">
+										<div id="grdRdmpTrgtDtl"></div>
+									</div>
+
 								</div>
 							</div>
 							<!-- 회의록 -->
@@ -237,7 +179,7 @@
 												<label class="col-sm-4">중도상환수수료</label>
 												<div class="col-sm-8 input-group">
 													<input type="text" class="form-control text-right" id="TB07030S_mrdpFeeAmt" value="0" readonly>
-													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_mrdpFeeAmt" value="0" readonly >
+													<input type="text" class="form-control text-right mg-l5" id="TB07030S_KRW_mrdpFeeAmt" value="0" readonly>
 													<input type="hidden" id="TB07030S_orgMrdpFeeAmt">
 												</div>
 											</div>
@@ -274,14 +216,10 @@
 										</div>
 										<!-- row8 -->
 										<div class="row form-group form-inline text-left mb-1">
-											<div class="col-sm-12 text-left">
-												* 실행별 상환대상금액은 납부예정금액 기준으로 계산됩니다.
-											</div>
+											<div class="col-sm-12 text-left">* 실행별 상환대상금액은 납부예정금액 기준으로 계산됩니다.</div>
 										</div>
 										<div class="row form-group form-inline text-left mb-1">
-											<div class="col-sm-12 text-left">
-												* 상환대상총금액 = 상환대상원금+정상이자+연체이자+중도상환원금+수수료-미수이자 
-											</div>
+											<div class="col-sm-12 text-left">* 상환대상총금액 = 상환대상원금+정상이자+연체이자+중도상환원금+수수료-미수이자</div>
 										</div>
 									</div>
 								</div>
@@ -295,40 +233,21 @@
 								<!-- row1 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">통화구분</label>
+										<label class="col-sm-1 col-form-label text-right">
+											<span class="req"></span>회수구분
+										</label>
 										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07030S_I027" >
-											</select>
-											<!-- <input type="text" class="form-control" style="width:30px;">
-											<span class="input-group-append">
-												<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
-											</span>
-											<input type="text" class="form-control" style="width:70px;" readonly> -->
-										</div>
-										<label class="col-sm-1 col-form-label text-right">내부환전여부</label>
-										<div class="col-sm-1 input-group input-h">
-											<div class="col-sm-6 text-left input-group">
-												<input type="radio" value="Y" name="intlEchmYn">&nbsp;Y
-											</div>
-											<div class="col-sm-6 text-left input-group">
-												<input type="radio" value="N" name="intlEchmYn" checked>&nbsp;N
-											</div>
-										</div>
-										<label class="col-sm-1 col-form-label text-right">해외송금여부</label>
-										<div class="col-sm-1 input-group input-h">
-											<div class="col-sm-6 text-left input-group">
-												<input type="radio" value="Y" name="ovrsFwdgYn">&nbsp;Y
-											</div>
-											<div class="col-sm-6 text-left input-group">
-												<input type="radio" value="N" name="ovrsFwdgYn" checked>&nbsp;N
-											</div>
-										</div>
-										<!-- <label class="col-sm-1 control-label">손익구분</label>
-										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07030S_D013">
+											<select class="form-control" id="TB07030S_R006">
 												<option value="">선택</option>
 											</select>
-										</div> -->
+										</div>
+										<label class="col-sm-1 col-form-label text-right">
+											<span class="req"></span>거래처명
+										</label>
+										<div class="col-sm-3 input-group">
+											<input type="text" class="form-control text-left" id="TB07030S_bcncNm">
+										</div>
+
 										<label class="col-sm-1 col-form-label text-right">현금입금</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right" id="TB07030S_dealCashAmt" value="0" onkeyup="TB07030Sjs.calculator('acptPtclSmtlAmt');">
@@ -338,25 +257,26 @@
 								<!-- row2 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">입금원장명</label>
+										<label class="col-sm-1 col-form-label text-right">
+											<span class="req"></span>통화구분
+										</label>
 										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07030S_rctmLgdNm">
-												<option>임시_입금원장명</option>
+											<select class="form-control" id="TB07030S_I027">
 											</select>
 										</div>
-										<label class="col-sm-1 col-form-label text-right">승인자</label>
+
+										<label class="col-sm-1 col-form-label text-right">
+											<span class="req"></span>승인자
+										</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" style="width:30px;" id="TB07030S_empNo">
+											<input type="text" class="form-control" style="width: 30px;" id="TB07030S_empNo">
 											<span class="input-group-append">
-												<button type="button" class="btn btn-default" onclick="callTB03022P('TB07030S')"><i class="fa fa-search"></i></button>
+												<button type="button" class="btn btn-default" onclick="callTB03022P('TB07030S')">
+													<i class="fa fa-search"></i>
+												</button>
 											</span>
-											<input type="text" class="form-control" style="width:70px;" id="TB07030S_empNm" readonly>
+											<input type="text" class="form-control" style="width: 70px;" id="TB07030S_empNm" readonly>
 										</div>
-										<!-- <label class="col-sm-1 col-form-label text-right">손익금액</label>
-										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="">
-											<input type="text" class="form-control text-right mg-l5" id="">
-										</div> -->
 										<label class="col-sm-1 col-form-label text-right">은행입금</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right" id="TB07030S_dealAltnAmt" value="0" onkeyup="TB07030Sjs.calculator('acptPtclSmtlAmt');">
@@ -366,70 +286,51 @@
 								<!-- row3 -->
 								<div class="row form-group form-inline text-right mb-1">
 									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">회수구분</label>
+										<label class="col-sm-1 col-form-label text-right">입금원장명</label>
 										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07030S_R006">
-												<option value="">선택</option>
+											<select class="form-control" id="TB07030S_rctmLgdNm">
+												<option>임시_입금원장명</option>
 											</select>
 										</div>
-										<label class="col-sm-1 col-form-label text-right">거래처명</label>
-										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-left" id="TB07030S_bcncNm">
-										</div>
-									
-										<!-- <label class="col-sm-1 col-form-label text-right">내부환전여부</label>
+										<label class="col-sm-1 col-form-label text-right">내부환전여부</label>
 										<div class="col-sm-1 input-group input-h">
 											<div class="col-sm-6 text-left input-group">
-												<input type="radio" value="Y" name="">&nbsp;Y
+												<input type="radio" value="Y" name="intlEchmYn">
+												&nbsp;Y
 											</div>
 											<div class="col-sm-6 text-left input-group">
-												<input type="radio" value="N" name="">&nbsp;N
+												<input type="radio" value="N" name="intlEchmYn" checked>
+												&nbsp;N
 											</div>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">해외송금여부</label>
 										<div class="col-sm-1 input-group input-h">
 											<div class="col-sm-6 text-left input-group">
-												<input type="radio" value="Y" name="">&nbsp;Y
+												<input type="radio" value="Y" name="ovrsFwdgYn">
+												&nbsp;Y
 											</div>
 											<div class="col-sm-6 text-left input-group">
-												<input type="radio" value="N" name="">&nbsp;N
+												<input type="radio" value="N" name="ovrsFwdgYn" checked>
+												&nbsp;N
 											</div>
-										</div> -->
-										<label class="col-sm-1 col-form-label text-right">수납내역합계</label>
+										</div>
+										<label class="col-sm-1 col-form-label text-right">
+											<span class="req"></span>수납내역합계
+										</label>
 										<div class="col-sm-3 input-group">
 											<input type="text" class="form-control text-right" id="TB07030S_acptPtclSmtlAmt" value="0">
 										</div>
 									</div>
 								</div>
-								<!-- row4 -->
-								<!-- <div class="row form-group form-inline text-right mb-1">
-									<div class="col-sm-12 form-group">
-										<label class="col-sm-1 col-form-label text-right">거래처명</label>
-										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-left" id="TB07030S_bcncNm">
-										</div>
-										<div class="col-sm-4"></div>
-										<label class="col-sm-1 col-form-label text-right">승인자</label>
-										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" style="width:30px;" id="TB07030S_empno">
-											<span class="input-group-append">
-												<button type="button" class="btn btn-default" onclick="callTB03022P('TB07030S')"><i class="fa fa-search"></i></button>
-											</span>
-											<input type="text" class="form-control" style="width:70px;" id="TB07030S_empNm" readonly>
-										</div>
-									</div>
-								</div> -->
 							</div>
 						</div>
 						<div class="ibox form-inline">
-							<div class="col-sm-6 text-left pd0">
-								<!-- <button class="btn btn-warning" type="button">6888</button>
-								<button class="btn btn-warning mg-l5" type="button">6902</button>
-								<button class="btn btn-warning mg-l5" type="button" onclick="testAlert('상세처리를 완료하였습니다.')">외화자금지시서상세처리</button> -->
-							</div>
+							<div class="col-sm-6 text-left pd0"></div>
 							<div class="col-sm-6 text-right pd0">
-								<button class="btn btn-warning mg-l5" type="button" onclick="testAlert('조회서출력을 완료하였습니다.')"><i class="fa fa-print"></i>&nbsp;인쇄</button>
-								<button class="btn btn-info mg-l5" type="button" onclick="TB07030Sjs.save();"><i class="fa fa-get-pocket"></i>&nbsp;상환</button>
+								<!-- <button class="btn btn-warning mg-l5" type="button" onclick="testAlert('조회서출력을 완료하였습니다.')"><i class="fa fa-print"></i>&nbsp;인쇄</button> -->
+								<button class="btn btn-success" type="button" onclick="TB07030Sjs.save();">
+									<i class="fa fa-get-pocket"></i>&nbsp;상환
+								</button>
 							</div>
 						</div>
 					</div>

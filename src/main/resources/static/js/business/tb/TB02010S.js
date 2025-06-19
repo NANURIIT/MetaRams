@@ -1,3 +1,18 @@
+/**
+ * ====================================
+ * 파일명  : TB02010S.js
+ * 설 명   : 오늘의 할 일 관련 JavaScript
+ *
+ * 화면 ID     : TB02010S
+ * 담당 기능   : 오늘의 할 일 조회, 결제진행사태에 따른 화면 연동 등
+ *
+ * @Author      : nanuri
+ * @Date        : 2025.05.27
+ * @Version     : 1.0.0
+ * @History     :
+ *   - 2025.05.27 nanuri 최초작성
+ * ====================================
+ */
 const TB02010Sjs = (function(){
 
 	let pqGridObj_TB02010S;				//PQGRID OBJECT
@@ -193,11 +208,7 @@ const TB02010Sjs = (function(){
 		paramData = {
 			decdSn: decdSn
 		}
-
-		console.log(decdSn);
-		console.log(paramData);
 		
-
 		$.ajax({
 			type: "POST",
 			url: "/TB02010S/justWork",
@@ -237,8 +248,6 @@ const TB02010Sjs = (function(){
 			success: function(data) {
 
 				var $ulElement = $("#TB02010S_appvPrgrsCnt");
-
-				console.log(data);
 
 				if (!data || data === undefined) {
 					$ulElement.text( 0 + "건");

@@ -135,7 +135,7 @@ const TB07200Sjs = (function () {
                     resolve(data); 
                 },
                 error: function (xhr, status, error) {
-                    console.error('Failed to fetch list:', error);
+
                     reject(error); 
                 }
             });
@@ -399,8 +399,6 @@ const TB07200Sjs = (function () {
                 render: function (ui) {
                     let rowData = ui.rowData;
                     let isDisabled = !isEmpty(rowData.fincExcuRqsSn) ? "disabled" : "";
-
-                    console.log("isDisabled ::: " + isDisabled)
 
                     return `<button class='ui-button ui-corner-all ui-widget' id="wrkRqstPopBtn" onclick="callTB03061P('TB07200S_wrkRqst', ${rowData.pq_ri});" ${isDisabled}><i class='fa fa-search'></i></button>`.trim();
                     // let rowData = ui.rowData;
@@ -1282,7 +1280,7 @@ const TB07200Sjs = (function () {
                 // 입출금요청
                 else if ( gridId === "#TB07200S_dpstRqst" || gridId === "#TB07200S_wthdrwlRqst" ) {
                     dltRnDrList.push($(gridId).pqGrid("option", "dataModel.data")[row.pq_ri]);
-                    console.log(dltRnDrList);
+
                 }
 
                 // 생성 후 삭제
@@ -1353,75 +1351,83 @@ const TB07200Sjs = (function () {
                 let dpstRqstList = $("#TB07200S_dpstRqst").pqGrid("getData");           // 입금요청내역
                 let wthdrwlRqstList = $("#TB07200S_wthdrwlRqst").pqGrid("getData");     // 출금요청내역
 
-                /*************************** 날짜포맷 START ************************/
-                // 유동화증권
-                for (let i = 0; i < pblHisList.length; i++) {
-                    pblHisList[i].isuDt = unformatDate(pblHisList[i].isuDt);            // 발행일자
-                    pblHisList[i].expDt = unformatDate(pblHisList[i].expDt);            // 만기일자
-                }
-                // 입금요청목록
-                for (let i = 0; i < dpstRqstList.length; i++) {
-                    dpstRqstList[i].trDt = unformatDate(dpstRqstList[i].trDt);          // 거래일자
-                    dpstRqstList[i].trTm = unformatTime_TB07200S(dpstRqstList[i].trTm); // 거래시간
-                }
-                // 출금요청목록
-                for (let i = 0; i < wthdrwlRqstList.length; i++) {
-                    wthdrwlRqstList[i].trDt = unformatDate(wthdrwlRqstList[i].trDt);            // 거래일자
-                    wthdrwlRqstList[i].trTm = unformatTime_TB07200S(wthdrwlRqstList[i].trTm);   //거래시간
-                }
-                /***************************   날짜포맷 END  ************************/
+                let inputValidRslt = spcInputValidation(pblHisList, dpstRqstList, wthdrwlRqstList);
 
-                let paramData = {
-                    ardyBzepNo: wrkRqstData.ardyBzepNo,                                 // 기업체번호 (=== SPC)
-                    fincExcuRqsDt: (wrkRqstData.fincExcuRqsDt).replaceAll('-', ''),     // 자금집행신청일자
-                    fincExcuRqsSn: wrkRqstData.fincExcuRqsSn,                           // 자금집행신청일련번호
-                    ibCtrtNm: wrkRqstData.ibCtrtNm,                                     // IB계약명
-                    isttCd: wrkRqstData.isttCd,                                         // 기관코드
-                    asstMngmAcno: wrkRqstData.asstMngmAcno,                             // 자산관리계좌번호
-                    dprtCd: wrkRqstData.dprtCd,                                         // 관리부점코드
-                    rmCtns: wrkRqstData.rmCtns,                                         // 비고내용
-                    pblHisList: pblHisList,                                             // 유동화증권 발행 내역
-                    dpstRqstList: dpstRqstList,                                         // 입금요청
-                    wthdrwlRqstList: wthdrwlRqstList,                                   // 출금요청
-                    dltWrkRqstList: dltWrkRqstList,                                     // 삭제할 자금집행 업무지시요청
-                    dltPblHis: dltPblHis,                                               // 삭제할 유동화증권발행내역
-                    dltRnDrList: dltRnDrList,                                           // 삭제할 입출금요청
-                }
+                if(inputValidRslt === 1){
 
-                $.ajax({
-                    type: "POST",
-                    url: `/TB07200S/spcSave`,
-                    contentType: "application/json; charset=UTF-8",
-                    data: JSON.stringify(paramData),
-                    success: function (data) {
-                        Swal.fire({
-                            icon: "success"
-                            , title: "Success!"
-                            , text: "저장 성공!"
-                        })
-                        // 삭제 리스트 초기화
-                        dltWrkRqstList = [];
-                        dltPblHis = [];
-                        dltRnDrList = [];
+                    /*************************** 날짜포맷 START ************************/
+                    // 유동화증권
+                    for (let i = 0; i < pblHisList.length; i++) {
+                        pblHisList[i].isuDt = unformatDate(pblHisList[i].isuDt);            // 발행일자
+                        pblHisList[i].expDt = unformatDate(pblHisList[i].expDt);            // 만기일자
+                    }
+                    // 입금요청목록
+                    for (let i = 0; i < dpstRqstList.length; i++) {
+                        dpstRqstList[i].trDt = unformatDate(dpstRqstList[i].trDt);          // 거래일자
+                        dpstRqstList[i].trTm = unformatTime_TB07200S(dpstRqstList[i].trTm); // 거래시간
+                    }
+                    // 출금요청목록
+                    for (let i = 0; i < wthdrwlRqstList.length; i++) {
+                        wthdrwlRqstList[i].trDt = unformatDate(wthdrwlRqstList[i].trDt);            // 거래일자
+                        wthdrwlRqstList[i].trTm = unformatTime_TB07200S(wthdrwlRqstList[i].trTm);   //거래시간
+                    }
+                    /***************************   날짜포맷 END  ************************/
 
-                        selectSpcList_P()
-                            .then(() => {
-                                spcDetail(wrkRqstSlctdRow);
+                    let paramData = {
+                        ardyBzepNo: wrkRqstData.ardyBzepNo,                                 // 기업체번호 (=== SPC)
+                        fincExcuRqsDt: (wrkRqstData.fincExcuRqsDt).replaceAll('-', ''),     // 자금집행신청일자
+                        fincExcuRqsSn: wrkRqstData.fincExcuRqsSn,                           // 자금집행신청일련번호
+                        ibCtrtNm: wrkRqstData.ibCtrtNm,                                     // IB계약명
+                        isttCd: wrkRqstData.isttCd,                                         // 기관코드
+                        asstMngmAcno: wrkRqstData.asstMngmAcno,                             // 자산관리계좌번호
+                        dprtCd: wrkRqstData.dprtCd,                                         // 관리부점코드
+                        rmCtns: wrkRqstData.rmCtns,                                         // 비고내용
+                        pblHisList: pblHisList,                                             // 유동화증권 발행 내역
+                        dpstRqstList: dpstRqstList,                                         // 입금요청
+                        wthdrwlRqstList: wthdrwlRqstList,                                   // 출금요청
+                        dltWrkRqstList: dltWrkRqstList,                                     // 삭제할 자금집행 업무지시요청
+                        dltPblHis: dltPblHis,                                               // 삭제할 유동화증권발행내역
+                        dltRnDrList: dltRnDrList,                                           // 삭제할 입출금요청
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: `/TB07200S/spcSave`,
+                        contentType: "application/json; charset=UTF-8",
+                        data: JSON.stringify(paramData),
+                        success: function (data) {
+                            Swal.fire({
+                                icon: "success"
+                                , title: "Success!"
+                                , text: "저장 성공!"
                             })
-                            .catch(err => {
-                                console.error('????');
+                            // 삭제 리스트 초기화
+                            dltWrkRqstList = [];
+                            dltPblHis = [];
+                            dltRnDrList = [];
+
+                            selectSpcList_P()
+                                .then(() => {
+                                    spcDetail(wrkRqstSlctdRow);
+                                })
+                                .catch(err => {
+
+                                });
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error!",
+                                text: "저장에 실패하였습니다!",
                             });
+                        },
+                    })
 
-                    },
-                    error: function () {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error!",
-                            text: "저장에 실패하였습니다!",
-                        });
-                    },
-                })
-
+                }else {
+                    return false;
+                }
+                
             }
             // 나머지
             else {
@@ -1429,7 +1435,7 @@ const TB07200Sjs = (function () {
             }
         }
     }
-
+    
     /**
      * 그리드 유효성체크
      * @param { Object } gridData 그리드콜모델데이타
@@ -1456,10 +1462,6 @@ const TB07200Sjs = (function () {
                 let ardyBzepNo = gridData.ardyBzepNo;       //기업체번호 (==SPC)
                 let ibCtrtNm = gridData.ibCtrtNm;           //계약명
                 let asstMngmAcno = gridData.asstMngmAcno;   //자산관리계좌
-
-                console.log(ardyBzepNo);
-                console.log(ibCtrtNm);
-                console.log(asstMngmAcno);
 
                 //기업체번호 미입력
                 if (isEmpty(ardyBzepNo)) {        
@@ -1505,6 +1507,267 @@ const TB07200Sjs = (function () {
                 }
             }
         }
+
+    }
+
+    /**
+     * 입력값 유효성체크
+     * @param { Object } pblHisList      유동화증권발행내역
+     * @param { Object } dpstRqstList    입금요청내역
+     * @param { Object } wthdrwlRqstList 출금요청내역
+     * @returns 
+     */
+    function spcInputValidation(pblHisList, dpstRqstList, wthdrwlRqstList) {
+
+        /* 유동화증권발행내역 유효성 체크 */
+        if(pblHisList.length > 0){          
+            for(var i = 0; i < pblHisList.length; i++){
+                var isuDt = unformatDate(pblHisList[i].isuDt);      //발행일자
+                var expDt = unformatDate(pblHisList[i].expDt);      //만기일자
+                var isuAmt = pblHisList[i].isuAmt;                  //발행금액
+
+                if(isEmpty(isuDt)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[유동화증권 발행(예정) 내역] 발행일자를 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(expDt)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[유동화증권 발행(예정) 내역] 만기일자를 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(isuAmt)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[유동화증권 발행(예정) 내역] 발행금액을 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(expDt < isuDt){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[유동화증권 발행(예정) 내역] 만기일자는 발행일자 이후 날짜로 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isuAmt <= 0){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[유동화증권 발행(예정) 내역] 발행금액은 0보다 큰 값으로 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+                }
+            }
+        }
+
+        /* 입금요청내역 유효성 체크 */
+        if(dpstRqstList.length > 0){
+            for(var i = 0; i < dpstRqstList.length; i++){
+
+                var trDt = unformatDate(dpstRqstList[i].trDt);          // 거래일자
+                //var trTm = unformatTime_TB07200S(dpstRqstList[i].trTm); // 거래시간
+                var spcDepItemKndCd = dpstRqstList[i].spcDepItemKndCd;  // 입금항목
+                var trOthrNm = dpstRqstList[i].trOthrNm;                // 거래상대방
+                var rndrAmt = dpstRqstList[i].rndrAmt;                  // 금액
+                var isttNm = dpstRqstList[i].isttNm;                    // 은행
+                var acno = dpstRqstList[i].acno;                        // 계좌번호
+
+                if(isEmpty(trDt)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[입금요청] 거래일자를 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(spcDepItemKndCd)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[입금요청] 입금항목을 선택해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(trOthrNm)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[입금요청] 거래상대방을 선택해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(rndrAmt)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[입금요청] 금액을 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(isttNm)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[입금요청] 은행을 선택해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(acno)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[입금요청] 계좌번호를 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(rndrAmt <= 0){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[입금요청] 금액은 0보다 큰 값으로 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+                }
+            }
+        }
+
+        /* 출금요청내역 유효성 체크 */
+        if(wthdrwlRqstList.length > 0){
+            for(var i=0; i<wthdrwlRqstList.length; i++){
+                var trDt = unformatDate(wthdrwlRqstList[i].trDt);          // 거래일자
+                //var trTm = unformatTime_TB07200S(wthdrwlRqstList[i].trTm); // 거래시간
+                var spcDepItemKndCd = wthdrwlRqstList[i].spcDepItemKndCd;  // 입금항목
+                var trOthrNm = wthdrwlRqstList[i].trOthrNm;                // 거래상대방
+                var rndrAmt = wthdrwlRqstList[i].rndrAmt;                  // 금액
+                var isttNm = wthdrwlRqstList[i].isttNm;                    // 은행
+                var acno = wthdrwlRqstList[i].acno;                        // 계좌번호
+
+                if(isEmpty(trDt)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[출금요청] 거래일자를 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(spcDepItemKndCd)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[출금요청] 입금항목을 선택해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(trOthrNm)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[출금요청] 거래상대방을 선택해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(rndrAmt)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[출금요청] 금액을 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(isttNm)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[출금요청] 은행을 선택해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(isEmpty(acno)){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[출금요청] 계좌번호를 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+
+                }else if(rndrAmt <= 0){
+
+                    Swal.fire({
+                        icon: 'warning'
+                        , title: "Warning!"
+                        , text: "[출금요청] 금액은 0보다 큰 값으로 입력해주세요."
+                        , confirmButtonText: "확인"
+                    });
+
+                    return 0;
+                }
+            }
+        }
+
+        return 1;
 
     }
 

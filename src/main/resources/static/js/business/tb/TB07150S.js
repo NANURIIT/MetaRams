@@ -708,7 +708,7 @@ const TB07150Sjs = (function () {
         _tempObj = {}
       },
       success: function (data) {
-        console.log("getCndChngLdgInf 이후  ::: ", data);
+
         if ( !data.prdtCd ) {
           Swal.fire({
             icon: 'warning'
@@ -833,8 +833,6 @@ const TB07150Sjs = (function () {
         "option",
         "dataModel.data"
       ); //변경 후 금리정보
-
-      console.log("cndChng404BList ::: " + JSON.stringify(cndChng404BList));
 
       var param = {
         rqsKndCd: rqsKndCd,
@@ -982,14 +980,14 @@ const TB07150Sjs = (function () {
   function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
+
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
 			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07150S_prdtCd").val(prdtCd);
 			$("#TB07150S_prdtNm").val(prdtNm);
       srch();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

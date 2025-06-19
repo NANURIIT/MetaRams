@@ -42,12 +42,12 @@
 								<label class="col-sm-1 col-form-label text-right">예정일 조회기간</label>
 								<div class="col-sm-4 input-group">
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB08050S_strPrarDt" name="" value=""  placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
+										<input type="text" class="form-control" id="TB08050S_strPrarDt" name="" value=""  placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 									<span class="input-group-addon border-none"> ~ </span>
 									<div class="col-sm-5 input-group date px-0">
-										<input type="text" class="form-control" id="TB08050S_endPrarDt" name="" value="" placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
+										<input type="text" class="form-control" id="TB08050S_endPrarDt" name="" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
@@ -64,7 +64,7 @@
 									</span>
 									<input type="text" class="form-control" style="width: 170px;" id="TB08050S_empNm" readonly>
 									</div>
-									<label class="col-sm-1 col-form-label text-right">관리부서</label>
+									<label class="col-sm-1 col-form-label text-right">관리부점</label>
 									<div class="col-sm-4">
 										<div class="input-group">
 											<select class="form-control" id="TB08050S_dprtNm">
@@ -123,7 +123,7 @@
 												<label class="col-sm-1">수수료수납일자</label>
 												<div class="col-sm-3 input-group">
 													<div class="col-sm-12 input-group date px-0">
-														<input type="text" class="form-control" id="TB08050S_feeRcivDt" name="FromDate" value="" placeholder="yyyy-MM-dd" disabled>
+														<input type="text" class="form-control" id="TB08050S_feeRcivDt" name="FromDate" value="" placeholder="YYYY-MM-DD" disabled>
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 												</div>
@@ -193,14 +193,14 @@
 												<label class="col-sm-1">인식시작일자</label>
 												<div class="col-sm-3 input-group">
 													<div class="col-sm-12 input-group date px-0">
-														<input type="text" class="form-control" id="TB08050S_fnnrRcogStrtDt" name="FromDate" value="" placeholder="yyyy-MM-dd" disabled>
+														<input type="text" class="form-control" id="TB08050S_fnnrRcogStrtDt" name="FromDate" value="" placeholder="YYYY-MM-DD" disabled>
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 												</div>
-												<label class="col-sm-1">인식종료일</label>
+												<label class="col-sm-1">인식종료일자</label>
 												<div class="col-sm-3 input-group">
 													<div class="col-sm-12 input-group date px-0">
-														<input type="text" class="form-control" id="TB08050S_fnnrRcogEndDt" name="FromDate" value="" placeholder="yyyy-MM-dd" disabled>
+														<input type="text" class="form-control" id="TB08050S_fnnrRcogEndDt" name="FromDate" value="" placeholder="YYYY-MM-DD" disabled>
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 												</div>
@@ -208,7 +208,7 @@
 										</div>
 										<div class="row form-group form-inline text-right">
 											<div class="col-sm-12 form-group">
-												<label class="col-sm-1">자금구분코드</label>
+												<label class="col-sm-1"><span class="req"></span>자금구분코드</label>
 												<div class="col-sm-3 input-group">
 													<select class="form-control" id="TB08050S_F008">
 														<option value="">선택</option>
@@ -218,10 +218,10 @@
 												<div class="col-sm-3 input-group">
 													<input class="form-control text-right" type="text" id="TB08050S_tempTot" placeholder="0" oninput="inputNumberFormat(this); " disabled>
 												</div>
-												<label class="col-sm-1">회계일자</label>
+												<label class="col-sm-1"><span class="req"></span>회계일자</label>
 												<div class="col-sm-3 input-group">
 													<div class="col-sm-12 input-group date px-0">
-														<input type="text" class="form-control" id="TB08050S_rkfrDt" name="FromDate" value="" placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
+														<input type="text" class="form-control" id="TB08050S_rkfrDt" name="FromDate" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 												</div>
@@ -253,7 +253,7 @@
 														<option value="">선택</option>
 													</select>
 												</div>
-												<label class="col-sm-1">수수료수납금액</label>
+												<label class="col-sm-1"><span class="req"></span>수수료수납금액</label>
 												<div class="col-sm-3 input-group">
 													<input class="form-control text-right" type="text" id="TB08050S_feeRcivAmt" placeholder="0">
 												</div>
@@ -265,22 +265,22 @@
 										</div>
 										<div class="row form-group form-inline text-right">
 											<div class="col-sm-12 form-group">
-												<label class="col-sm-1">증빙발행일자</label>
+												<label class="col-sm-1"><span class="req"></span>증빙발행일자</label>
 												<div class="col-sm-3 input-group">
 													<div class="col-sm-12 input-group date px-0">
-														<input type="text" class="form-control" id="TB08050S_prufIsuDt" name="FromDate" value="" placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
+														<input type="text" class="form-control" id="TB08050S_prufIsuDt" name="FromDate" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 												</div>
 												<label class="col-sm-1">세액</label>
 												<div class="col-sm-3 input-group">
-													<input class="form-control mr-1 text-right" type="text" id="TB08050S_splmTxa" placeholder="0">
-													<button class="btn btn-default" onclick="">&nbsp;발행양식</button>
+													<input class="form-control text-right" type="text" id="TB08050S_splmTxa" placeholder="0">
+													<!-- <button class="btn btn-default" onclick="">&nbsp;발행양식</button> -->
 												</div>
-												<label class="col-sm-1">입금일자</label>
+												<label class="col-sm-1"><span class="req"></span>입금일자</label>
 												<div class="col-sm-3 input-group">
 													<div class="col-sm-12 input-group date px-0">
-														<input type="text" class="form-control" id="TB08050S_rctmDt" name="FromDate" value="" placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
+														<input type="text" class="form-control" id="TB08050S_rctmDt" name="FromDate" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" maxlength="10">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 													</div>
 												</div>

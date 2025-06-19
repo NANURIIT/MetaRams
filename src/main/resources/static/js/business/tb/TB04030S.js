@@ -19,8 +19,8 @@ const TB04030Sjs = (function () {
   function setArrPqGridObj() {
     let arrPqGridObj = [
       {
-        height: 600,
-        maxHeight: 600,
+        height: 500,
+        maxHeight: 500,
         id: "TB04030S_gridDealList",
         colModel: colDealList,
       },
@@ -153,7 +153,7 @@ const TB04030Sjs = (function () {
       dataType: "string",
       dataIndx: "dealNo",
       align: "center",
-      width: "160",
+      width: "150",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -162,7 +162,7 @@ const TB04030Sjs = (function () {
       dataIndx: "dealNm",
       halign: "center",
       align: "left",
-      width: "240",
+      width: "220",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -183,11 +183,12 @@ const TB04030Sjs = (function () {
       hidden: true,
     },
     {
-      title: "신규/재부의정보",
+      title: "신규/재부의",
       dataType: "string",
       dataIndx: "jdgmDcdNm",
       halign: "center",
       align: "center",
+	  width: "70",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -225,7 +226,7 @@ const TB04030Sjs = (function () {
       hidden: true,
     },
     {
-      title: "심사역이름",
+      title: "심사역",
       dataType: "string",
       dataIndx: "ownPNm",
       halign: "center",
@@ -245,6 +246,7 @@ const TB04030Sjs = (function () {
       dataIndx: "ownPDprtNm",
       halign: "center",
       align: "center",
+	  width: "70",
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -262,6 +264,7 @@ const TB04030Sjs = (function () {
       dataIndx: "ownDt",
       halign: "center",
       align: "center",
+	  width: "70",
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         let cellData = ui.cellData;
@@ -296,6 +299,7 @@ const TB04030Sjs = (function () {
       dataIndx: "chrgPDprtNm",
       halign: "center",
       align: "center",
+	  width: "70",
       filter: { crules: [{ condition: "range" }] },
     },
     {

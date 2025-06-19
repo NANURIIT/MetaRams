@@ -20,14 +20,14 @@ const TB03030Sjs = (function(){
 		/** RM대상그리드 **/
 		let arrPqGridObj = [
 			{
-				height    : 175
-				, maxHeight : 175
+				height    : 180
+				, maxHeight : 180
 				, id        : 'gridRmEntpInfo'
 				, colModel  : colRmEntpInfo
 			},
 			{
-				height    : 175
-				, maxHeight : 175
+				height    : 170
+				, maxHeight : 170
 				, id        : 'gridRmInfo'
 				, colModel  : colRmInfo
 			},
@@ -42,7 +42,6 @@ const TB03030Sjs = (function(){
 	// 화면 초기화
 	const rmReset = (() => {
 		let fmIputLngth = document.querySelectorAll("input").length;
-		console.log("fmIputLngth : ", fmIputLngth)
 		for (let i = 0; i < fmIputLngth; i++) {
 			document.querySelectorAll("input")[i].value = "";
 		}

@@ -56,7 +56,7 @@ function callTB06012P(prefix) {
 	  $("#TB06012P_prdtCd").val($("#TB06030S_res_prdtCd").val());
   }
   
-  console.log("res_prdtCd["+$('#'+prefix+'_res_prdtCd').val()+"]");
+
  // $("#TB06012P_prdtCd").val($('#'+prefix+'_res_prdtCd').val());
   
   
@@ -194,7 +194,7 @@ function loadSelectBoxContents_TB06012P(){
  */
 function modalClose_TB06012P() {
   let prdtCd =$("#TB06012P_prdtCd").val();	
-  console.log("prdt_cd"+prdtCd);
+
   clearTB06012P();
   //$("#gridAppvCndtList").pqGrid("destroy");
   $("#modal-TB06012P").modal("hide");
@@ -396,7 +396,7 @@ function deleteIBIMS208B() {
           }).then(() => {
             //selectIBIMS208B();
             modalAppvCndtList.setData([]);
-           	console.log("deleteIBIMS208B");
+
             modalClose_TB06012P();
           });
         },
@@ -407,7 +407,7 @@ function deleteIBIMS208B() {
             text: "",
             confirmButtonText: "확인",
           }).then(() => {
-            console.log("delAppvCndtList --> ::" + e.status);
+            // console.log("delAppvCndtList --> ::" + e.status);
           });
         },
       });

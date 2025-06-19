@@ -149,7 +149,9 @@ const TB07030Sjs = (function () {
         align: "right",
         halign: "center",
         format: "#,###",
-        editable: true,
+        editable: function(ui) {
+          return $("#TB07030S_earlyRepayYn").val() !== 'N';
+        },
         filter: { crules: [{ condition: "range" }] },
         // editor: {
         // 	type: 'textbox',
@@ -174,6 +176,7 @@ const TB07030Sjs = (function () {
         format: "#,###",
         filter: { crules: [{ condition: "range" }] },
       },
+
       {
         title: "처리완료여부",
         dataType: "string",
@@ -498,7 +501,7 @@ const TB07030Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         beforeSend: function (xhr) {
-          bfReset();
+          //bfReset();
         },
         success: function (data) {
           //console.log(data)
@@ -509,6 +512,8 @@ const TB07030Sjs = (function () {
             grdRdmpTrgt.setData([]);
             grdRdmpTrgt.refreshDataAndView();
           }
+
+          //bfReset();
         },
       });
     } else {
@@ -570,11 +575,13 @@ const TB07030Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         beforeSend: function (xhr) {
-          bfReset2();
+			console.time("상환계산")
+			showLoading()
+            bfReset2();
         },
         success: function (data) {
+			console.timeEnd("상환계산")
           //console.log(data)
-          console.log(!!data.cntMdwyRdmpFee)
           if (!data.cntMdwyRdmpFee) {
             sf(1, "warning", `중도상환수수료 설정 내역이 존재하지 않습니다.`, "Warning!");
             return;
@@ -605,6 +612,10 @@ const TB07030Sjs = (function () {
 
           calculator("aplcExchR"); // 원화환산금액
         },
+		complete : function()
+	   	{
+	       hideLoading()
+	   	}
       });
     } else {
       // grdRdmpTrgtDtl.refreshDataAndView();
@@ -686,10 +697,8 @@ const TB07030Sjs = (function () {
       ibims403RscdlList,
     };
 
-    console.log("상환 체크 전 ::::::::::: ", obj);
     if (validation(obj).isValid) {
       obj.prdtCd = validation().prdtCd; // 종목코드
-      console.log("상환 체크 후 ::::::::::: ", obj);
 
       $.ajax({
         type: "POST",
@@ -698,7 +707,7 @@ const TB07030Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         success: function (data) {
-          console.log(data);
+
           if (data > 0) {
             sf(1, "success", `상환이 완료됐습니다.`, "Success!", (result) => {
               if (result.isConfirmed) {
@@ -764,8 +773,7 @@ const TB07030Sjs = (function () {
         sf(1, "warning", `상환 항목이 비어있습니다.<br>확인해주세요.`, "Warning!");
         return { isValid: false };
       }
-      console.log('수납내역합계 ::: ', acptPtclSmtlAmt)
-      console.log('상환대상총금액 ::: ', rdmpPrnaSmmAmt)
+
 
       if ( !valGrd ) {
         sf(1, "warning", "상환대상상세내역이 없어 상환을 할 수 없습니다.", "Warning!");
@@ -814,7 +822,7 @@ const TB07030Sjs = (function () {
           let orgOvduIntr = 0;          //납부대상 연체이자 합계
           let orgMrdpPrca = 0;          //납부대상 중도상환원금 합계
           let orgMrdpFee  = 0;          //납부대상 중도상환수수료 합계
-          console.log('calculator_CalcTotAmt ::: ', p)
+
 
           p.forEach((ele) => {
 
@@ -952,9 +960,7 @@ const TB07030Sjs = (function () {
         // } else {
         // 	tot = parseFloat(tot.toPrecision(15));  // 지수 표기법을 방지하고, 필요 시 소수점 자릿수를 줄임
         // }
-        console.log("dealCashAmt ::: ", dealCashAmt)
-        console.log("dealAltnAmt ::: ", dealAltnAmt)
-        console.log("tot ::: ", tot) 
+
         $("#TB07030S_acptPtclSmtlAmt").val(comma(tot)); // 수납내역합계
         break;
 
@@ -1444,14 +1450,14 @@ const TB07030Sjs = (function () {
   function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
+
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
 			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07030S_prdtCd").val(prdtCd);
 			$("#TB07030S_prdtNm").val(prdtNm);
 			srch();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

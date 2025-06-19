@@ -376,8 +376,7 @@ const TB09080Sjs = (function () {
         //resetTab1Grd();
       },
       success: function (data) {
-        console.log(data);
-        console.log(data.trDtls);
+
         //trDtls.setData(data.trDtls); // 딜거래내역
         var trDtls = data.trDtls;
 

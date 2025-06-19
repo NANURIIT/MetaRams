@@ -159,15 +159,15 @@ const TB05010Sjs = (function () {
     let arrPqGridObj = [
       // 협의체 결의 및 목록
       {
-        height: 103,
-        maxHeight: 103,
+        height: 200,
+        maxHeight: 200,
         id: "gridCnfrncList",
         colModel: colCnfrncList,
       },
-      // (보증)기초자산
+      // 안건정보
       {
-        height: 200,
-        maxHeight: 200,
+        height: 240,
+        maxHeight: 240,
         id: "gridCaseList",
         colModel: colCaseList,
 		rowClick: function(evt, ui) {
@@ -176,8 +176,8 @@ const TB05010Sjs = (function () {
       },
       // 위원정보
       {
-        height: 200,
-        maxHeight: 200,
+        height: 240,
+        maxHeight: 240,
         id: "gridMmbrList",
         editable: false,
         colModel: colMmbrList,
@@ -321,7 +321,7 @@ const TB05010Sjs = (function () {
         });
       },
       error: function (e) {
-        console.log("getCNFRNCList error ::  " + e.status);
+        // console.log("getCNFRNCList error ::  " + e.status);
       },
     });
   }

@@ -418,8 +418,8 @@ const TB04060Sjs = (function() {
 		// pqGridObjIbDealList.refreshDataAndView();
 
 		var obj = {
-			height: 680,
-			maxHeight: 680,
+			height: 450,
+			maxHeight: 450,
 			showTitle: false,
 			showToolbar: true,
 			collapsible: false,

@@ -871,6 +871,7 @@ const TB07100Sjs = (function () {
         , maxHeight: 150
         , id: 'TB07100S_grd_rlthPruf'
         , colModel: col_rlthPruf
+		/*, scrollModel: {autoFit: true}*/
         , rowClick: function (evt, ui) {
 
           pqGridSelectHandler( ui.rowIndx, "TB07100S_grd_rlthPruf" );
@@ -996,9 +997,6 @@ const TB07100Sjs = (function () {
       success: function (data) {
         if (data.length > 0) {
           let gridList = $("#TB07100S_grd_thdtTrDtls").pqGrid('instance');
-
-          console.log("??뭐임??");
-          console.log(data);
           
           gridList.setData(data);
           gridList.getData();

@@ -324,8 +324,7 @@ const TB08040Sjs = (function() {
 				// 	labelIndx: "cdName",
 				// 	options: grdSelect.F015,//grdSelect.F004,
 				// },
-				render: function(ui) {
-					console.log(ui.cellData);					
+				render: function(ui) {				
 					let fSel = grdSelect.F015.find(
 						({ cdValue }) => cdValue == ui.cellData
 					);
@@ -462,7 +461,7 @@ const TB08040Sjs = (function() {
 					},
 					{
 						title: "율(%)",
-						dataType: "integer",
+						dataType: "float",
 						dataIndx: "feeRt",
 						halign: "center",
 						align: "right",
@@ -701,15 +700,15 @@ const TB08040Sjs = (function() {
 				align: "center",
 				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
-				// render     : function (ui) {
-				//     let cellData = ui.cellData;
-				//     if ( isEmpty(cellData) ) {
-				//         return ui.cellData = $('#userDprtCd').val();
-				//     } else {
-				//         return cellData;
-				//     }
+				 render     : function (ui) {
+				     let cellData = ui.cellData;
+				     if ( isEmpty(cellData) ) {
+				         return ui.cellData = $('#userDprtCd').val();
+				     } else {
+				         return cellData;
+				     }
 
-				// }
+				 }
 			},
 			{
 				title: "수수료수납일자",
@@ -819,7 +818,6 @@ const TB08040Sjs = (function() {
 					if (dataIndx === 'feeKndCd') {
 						const grid = $("#grd_feeSch").pqGrid('instance');
 						//rowData = grid.getRowData({ rowInx: ui.rowIndx });
-						console.log(ui);
 						rowData = ui.rowData
 						// console.log(rowData);
 						var tempRowData = rd.feeKndCd;
@@ -842,7 +840,7 @@ const TB08040Sjs = (function() {
 								success: function(data) {
 									if (data.length == 1) {
 										data = data[0];
-										console.log(data);
+
 										ui.rowData['feeRcogDcd'] = data.feeRcogDcd;
 										ui.rowData['feeRcknDcd'] = data.feeRcknDcd;
 										ui.rowData['feeRt'] = data.feeRt;
@@ -863,8 +861,6 @@ const TB08040Sjs = (function() {
 										if (rowData.rowType !== "I") {
 											rowData.rowType = "U";
 										}
-										
-										console.log(rowData);
 										
 										// UI에 반영
 										grid.refreshRow({ rowIndx: ui.rowIndx });
@@ -1118,13 +1114,13 @@ const TB08040Sjs = (function() {
 
 		saveGrid = addGrd(feeSch);
 		feeSchList = saveGrid;
-		//console.log("저장리스트" + feeSchList.length); //U+I+D
+		console.log("저장리스트" + feeSchList.length); //U+I+D
 		chkSchList = saveGrid.filter((item) => item.rowType !== null);
 		chkSchList = chkSchList.filter((item) => item.rowType !== "D");
-		//console.log("체크리스트" + chkSchList.length);//U+I
+		console.log("체크리스트" + chkSchList.length);//U+I
 		saveGrid = []; // saveGrid 변수 초기화
 
-		if (feeSchList.length === 0) {
+		if (feeSchList.length === 0 || (feeSchLen === 0 &&  $("#grd_feeSch").pqGrid("option", "dataModel").data.length === 0)) {
 			sf(1, "warning", "저장 할 정보가 없습니다.", "Warning!");
 			return;
 		}
@@ -1270,9 +1266,7 @@ const TB08040Sjs = (function() {
 					sf(2, "warning", `[수수료대상내용(계산식)]`);
 					return { isValid: false };
 				}
-				if (!ele.feeRt
-					&& !ele.feeAmt //수수료금액이 없을경우
-				) {
+				if (!ele.feeRt) {
 					sf(2, "warning", `[수수료율(%)]`);
 					return { isValid: false };
 				}
@@ -1367,8 +1361,6 @@ const TB08040Sjs = (function() {
 					let filteredIndexes = [];
 
 					data.forEach((item, index) => {
-						console.log('item ::: ', item)
-						console.log('item.chk ::: ', item.chk)
 
 						if (item.chk) {
 							// if (item.rowType !== "I" && item.rowType !== "D" && item.rowType !== null) {
@@ -1502,15 +1494,13 @@ const TB08040Sjs = (function() {
 	 * @returns {*}
 	 */
 	function numLength(obj) {
-		console.log(obj)
+
 		let ui = obj.ui // grid ui
 		let dataIndx = obj.dataIndx // 'feeAmt'
-		console.log(dataIndx)
-		console.log(ui.rowData[dataIndx])
+
 		let len = obj.length // 제한길이
 		let str = ui.rowData[dataIndx]
 
-		console.log(typeof str);
 		if (!str || isNaN(str)) {			
 			return ui.rowData[dataIndx] = 0 
 		}

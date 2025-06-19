@@ -918,7 +918,6 @@ const TB07050Sjs = (function () {
             return;
           }
           // console.log(data);
-          console.log("계정과목코드:::" + data.eprzCrdlIndvLmtDcd);
 
           $("#TB07050S_trOthrDscmNo").val(checkBrnAcno(data.trOthrDscmNo)); // 거래상대방번호
           $("#TB07050S_trOthrDscmNm").val(data.trOthrDscmNm); // 거래상대방명
@@ -1030,7 +1029,6 @@ const TB07050Sjs = (function () {
 
         for (let i = 0; i < excSchList.length; i++) {
           const ele = excSchList[i];
-          console.log("ele ::::::::::::::::::::::: 띠용", ele.rowType === "D");
 
           if (ele.rowType !== "D") {
             if (!ele.prarDt) {
@@ -1427,7 +1425,7 @@ const TB07050Sjs = (function () {
 
   // 업로드 버튼 클릭 시
   $("#exelUp").click(function () {
-    // console.log("업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드업로드");
+
     if (validation().prdtCd) {
 		
       // grdID.addRow();	

@@ -188,6 +188,20 @@ const TB07120Sjs = (function () {
    * PQGrid 세팅
    */
   let colM_Grid1 = [
+	{
+		title: "순번",
+		dataType: "string",
+		dataIndx: "rownum", //  ROWNUM
+		halign: "center",
+		align: "center",
+		width: "5%",
+		filter: { crules: [{ condition: "range" }] },
+		render: function(ui) {
+			let result
+			result = (ui.rowIndx + 1).toString();
+			return result;
+		}
+	},
     {
       title: "종목코드",
       dataType: "string",
@@ -835,6 +849,8 @@ const TB07120Sjs = (function () {
     let dcfcEno = $('#TB07120S_dcfcEno').val()
     let rjctRsnCntn = $('#TB07120S_rjctRsnCntn').val()
     let ovrsTrnsYn = $('input[name="TB07120S_ovrsTrnsYn"]:checked').val()
+
+    console.log("ovrsTrnsYn:::" + ovrsTrnsYn);
 
     const paramData = {
       dealNo: dealNo,                   // 딜번호

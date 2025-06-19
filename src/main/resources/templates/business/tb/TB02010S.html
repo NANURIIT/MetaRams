@@ -7,16 +7,12 @@
 	<script th:src="@{js/business/tb/TB02010S.js}"></script>
 	<script th:src="@{js/business/tb/TB03022P.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
-	<!-- <script th:src="@{js/business/popup/AS03210P.js}"></script>
-	<script th:src="@{js/business/popup/AC01120P.js}"></script> -->
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03031P :: TB03031P"></th:block>
 	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
-	<!-- <th:block th:replace="business/popup/AS03210P :: AS03210P"></th:block>
-	<th:block th:replace="business/popup/AC01120P :: AC01120P"></th:block> -->
 </th:block>
 
 <th:block layout:fragment="customContent">

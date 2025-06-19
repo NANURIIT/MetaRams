@@ -7,6 +7,7 @@ const TB07070Sjs = (function () {
   let fSel = {}; // filter된 select
   let fValid = 0; // validation 분기
   let svGrd = [];
+  let selectedRow;
 
   $(document).ready(function () {
     /* 순서 중요 */
@@ -14,6 +15,7 @@ const TB07070Sjs = (function () {
     pqGrid();
     setDefaultVal();
     getDealInfoFromWF();
+	$("#TB07070S_btnSave").prop('disabled', true);
   });
 
   const setDefaultVal = () => {
@@ -311,6 +313,16 @@ const TB07070Sjs = (function () {
         // selectionModel: { type: "row" },
         rowClick: function (evt, ui) {
           pqGridSelectHandler(ui.rowIndx, "grd_07070");
+		  selectedRow = ui.rowIndx;
+		  // 정상일 경우 취소버튼 활성화
+		  // 거래상태코드 01 정상, 11 취소원거래, 12 취소거래
+ 		  if ( ui.rowData["trStatCd"] === "01" ) {
+		  	$("#TB07070S_btnSave").prop('disabled', false);			
+		  }
+		  // 이외의 경우 비활성화
+		  else {
+		  	$("#TB07070S_btnSave").prop('disabled', true);			
+		  }
         },
       },
     ];
@@ -347,7 +359,7 @@ const TB07070Sjs = (function () {
           $("#TB07070S_btnSave").prop("disabled", false);
         },
         success: function (data) {
-          console.log(data);
+
           if (data.length > 0) {
 
             excRdmpCncl.setData(data);
@@ -376,6 +388,7 @@ const TB07070Sjs = (function () {
             // grdRdmpTrgt.setData([]);
             // grdRdmpTrgt.refreshDataAndView();
           }
+		  $("#TB07070S_btnSave").prop('disabled', true);
         },
       });
     }
@@ -383,17 +396,17 @@ const TB07070Sjs = (function () {
 
   // 이후 거래 존재여부 확인
   $("#TB07070S_btnSave").on("click", function () {
-    console.log('asdasdasdasdasd')
+
     // console.log('excRdmpCncl ::: ',excRdmpCncl);
     // console.log('excRdmpCncl.getData ::: ', excRdmpCncl.getData());
     fValid = 2;
 
-    let selGrd = excRdmpCncl.getData();
+    let selGrd = $("#grd_07070").pqGrid("instance").pdata;
     let obj = {};
 
     for (let i = 0; i < selGrd.length; i++) {
       const ele = selGrd[i];
-      if (ele.pq_rowselect) {
+      if ( i === selectedRow ) {
         obj.prdtCd = ele.prdtCd; // 종목코드
         obj.excSn = ele.excSn; // 실행일련번호
         obj.trSn = ele.trSn; // 거래일련번호
@@ -409,9 +422,9 @@ const TB07070Sjs = (function () {
         data: JSON.stringify(obj),
         dataType: "json",
         success: function (data) {
-          console.log(data);
+
           if (data === 0) {
-            console.log("실행가능");
+
             save(selGrd);
           } else {
             Swal.fire({
@@ -432,7 +445,7 @@ const TB07070Sjs = (function () {
   // 저장(취소)
   function save(p) {
     fValid = 1;
-    console.log(1)
+
 
     let obj = {
       // prdtCd : $('#TB07070S_prdtCd').val(), 			  // 상품코드
@@ -446,7 +459,7 @@ const TB07070Sjs = (function () {
 
     for (let i = 0; i < p.length; i++) {
       const ele = p[i];
-      if (ele.pq_rowselect) {
+      if ( i === selectedRow ) {
         obj.prdtCd = ele.prdtCd; // 종목코드
         obj.prdtNm = ele.prdtNm; // 종목명
         obj.excSn = ele.excSn; // 실행일련번호
@@ -469,7 +482,7 @@ const TB07070Sjs = (function () {
 
     obj.rvseCnclRsonText = $("#TB07070S_rvseCnclRsonText").val();
 
-    console.log("save ::: ", obj);
+
     $.ajax({
       type: "POST",
       url: "/TB07070S/saveTrRvseInq",
@@ -477,7 +490,7 @@ const TB07070Sjs = (function () {
       data: JSON.stringify(obj),
       dataType: "json",
       success: function (data) {
-        console.log(data);
+
         if (data > 0) {
           Swal.fire({
             icon: "success",
@@ -487,6 +500,7 @@ const TB07070Sjs = (function () {
           });
           $('#TB07070S_rvseCnclRsonText').val("")
           srch();
+		  selectedRow = "";
         } else {
           Swal.fire({
             icon: "warning",
@@ -532,7 +546,7 @@ const TB07070Sjs = (function () {
     }
 
     if (fValid === 2) {
-      console.log("validation ::: ", obj);
+
       if (Object.keys(obj).length === 0) {
         Swal.fire({
           icon: "warning",
@@ -564,19 +578,20 @@ const TB07070Sjs = (function () {
     $("#TB07070S_P012 option:eq(0)").prop("selected", true); // 거래종류
     $("#TB07070S_E026 option:eq(0)").prop("selected", true); // 거래상태
     excRdmpCncl.setData([]); // 취소대상내역
+	$("#TB07070S_btnSave").prop('disabled', true);
   }
 
   function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
+
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
 			var prdtNm = sessionStorage.getItem("wfPrdtNm");
 			$("#TB07070S_prdtCd").val(prdtCd);
 			$("#TB07070S_prdtNm").val(prdtNm);
 			srch();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

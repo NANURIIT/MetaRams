@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
 	<script th:src="@{js/common.js}"></script>
@@ -23,12 +22,16 @@
 					<div class="ibox-content i-filter">
 						<div class="form-group form-inline row mb-0">
 							<div class="col-sm-12 input-group text-right">
-								<label class="col-sm-1 control-label"><span class="req"></span>Deal번호</label>
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>Deal번호
+								</label>
 								<div class="col-sm-4">
 									<div class="input-group">
 										<input type="text" class="form-control" id="TB05040S_ibDealNo" maxlength="17">
 										<span class="input-group-append">
-											<button type="button" id="open_modal_AS02020P" class="btn btn-default" onclick="callTB03021P('TB05040S');"><i class="fa fa-search"></i></button>
+											<button type="button" id="open_modal_AS02020P" class="btn btn-default" onclick="callTB03021P('TB05040S');">
+												<i class="fa fa-search"></i>
+											</button>
 										</span>
 										<input type="text" class="form-control" id="TB05040S_ibDealNm" readonly>
 									</div>
@@ -38,21 +41,30 @@
 									<input type="hidden" id="TB05040S_lstCCaseCcd">
 								</div>
 								<div class="col-sm-2">
-									<button class="btn btn-primary" type="button" onclick="TB05040Sjs.getDealList();"><i class="fa fa-search"></i>조회</button>
-									<button class="btn btn-default" onclick="TB05040Sjs.btnReset();"><i class="fa fa-undo"></i>
-									</i>&nbsp;초기화
-								</button>
+									<button class="btn btn-primary" type="button" onclick="TB05040Sjs.getDealList();">
+										<i class="fa fa-search"></i>조회
+									</button>
+									<button class="btn btn-default" onclick="TB05040Sjs.btnReset();">
+										<i class="fa fa-undo"></i> </i>&nbsp;초기화
+									</button>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- 조회결과 -->
 					<div class="ibox-content mb-2">
-						<div id="gridIbDealList"></div>
-						<!-- 상세보기 -->
-						<div class="hr-sect">
-							<h4>상세보기</h4>
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;협의체 현황 및 결과</h5>
+							</div>
+							<div class="ibox-content">
+								<div id="gridIbDealList"></div>
+							</div>
 						</div>
+
+
+						<!-- 상세보기 -->
+
 						<input type="hidden" id="TB05040S_selectedDealNo">
 						<div class="row">
 							<!-- 의결기구 -->
@@ -83,7 +95,7 @@
 								</div>
 							</div>
 							<!-- 부의일정 -->
-							 <!-- TO-DO: 데이터입력화면이 없고 일자데이터 특정이 어려워 추후 협의 필요 -->
+							<!-- TO-DO: 데이터입력화면이 없고 일자데이터 특정이 어려워 추후 협의 필요 -->
 							<!-- <div class="col-lg-4">
 								<div class="ibox">
 									<div class="ibox-title">
@@ -191,15 +203,15 @@
 											<div class="col-lg-6">
 												<div class="form-group row mb-1">
 													<label class="col-sm-4 col-form-label">결의일</label>
-												<div class="col-sm-7 input-group date">
-													<input type="text" class="form-control" id="TB05040S_rsltnDt" placeholder="yyyy-MM-dd" disabled><span
-														class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													<div class="col-sm-7 input-group date">
+														<input type="text" class="form-control" id="TB05040S_rsltnDt" placeholder="yyyy-MM-dd" disabled>
+														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+													</div>
 												</div>
-											</div>
-											<div class="form-group row">
-												<label class="col-sm-4 col-form-label">회차 정보</label>
-												<div class="col-sm-7"><input type="text" class="form-control text-right" id="TB05040S_inspctCnfrncSqcSq"
-														readonly>
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">회차 정보</label>
+													<div class="col-sm-7">
+														<input type="text" class="form-control text-right" id="TB05040S_inspctCnfrncSqcSq" readonly>
 													</div>
 												</div>
 											</div>
@@ -214,11 +226,12 @@
 												</div>
 												<div class="form-group row">
 													<label class="col-sm-4 col-form-label">순서 정보</label>
-													<div class="col-sm-7"><input type="text" class="form-control text-right" id="TB05040S_rnkNo" readonly>
+													<div class="col-sm-7">
+														<input type="text" class="form-control text-right" id="TB05040S_rnkNo" readonly>
 													</div>
 												</div>
 											</div>
-										</div>										
+										</div>
 									</div>
 								</div>
 							</div>
@@ -241,8 +254,7 @@
 												<div class="form-group row">
 													<label class="col-sm-4 col-form-label">승인금액</label>
 													<div class="col-sm-8 input-group">
-														<input type="text" class="col-sm-4 form-control" id="TB05040S_invstCrncyCd"
-															readonly>
+														<input type="text" class="col-sm-4 form-control" id="TB05040S_invstCrncyCd" readonly>
 														&nbsp;
 														<input type="text" class="col-sm-8 form-control text-right" id="TB05040S_rcgAmt" readonly>
 													</div>
@@ -263,19 +275,28 @@
 											<div class="col-sm-8">
 												<div class="form-group row text-right">
 													<label class="col-sm-2 col-form-label">결의의견</label>
-													<div class="col-sm-10"><textarea class="form-control" style="height:150px;"
-															id="TB05040S_rsltCntnt" readonly></textarea></div>
+													<div class="col-sm-10">
+														<textarea class="form-control" style="height: 150px;" id="TB05040S_rsltCntnt" readonly></textarea>
+													</div>
 												</div>
 											</div>
 										</div>
-									</div><!-- /ibox-content 결의내용 -->
-								</div><!-- /ibox -->
-							</div><!-- /col-lg-9 -->
-						</div><!-- row -->
-					</div><!-- /ibox-content 조회결과 -->
-				</div><!-- white-bg -->
-			</div><!-- /col-lg-12 -->
-		</div><!-- row -->
+									</div>
+									<!-- /ibox-content 결의내용 -->
+								</div>
+								<!-- /ibox -->
+							</div>
+							<!-- /col-lg-9 -->
+						</div>
+						<!-- row -->
+					</div>
+					<!-- /ibox-content 조회결과 -->
+				</div>
+				<!-- white-bg -->
+			</div>
+			<!-- /col-lg-12 -->
+		</div>
+		<!-- row -->
 	</div>
 </th:block>
 

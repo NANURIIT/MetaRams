@@ -51,11 +51,11 @@ const TB06080Sjs = (function () {
   function renderGrid(colId, gridId) {
     let pqGridObj = [
       {
-        height: 120,
-        maxHeight: 120,
+        height: 200,
+        maxHeight: 200,
         id: gridId,
         colModel: colId,
-        scrollModel: { autofit: false },
+        scrollModel: { autoFit: true },
         editModel: {
           clicksToEdit: 1
         },
@@ -239,7 +239,7 @@ const TB06080Sjs = (function () {
       dataType: "string",
       dataIndx: "decdStepNm", //코드명으로
       align: "center",
-      width: 80,
+     // width: 80,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -247,7 +247,7 @@ const TB06080Sjs = (function () {
       dataType: "string",
       dataIndx: "decdSttsNm", //코드명으로
       align: "center",
-      width: 80,
+     // width: 80,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -256,7 +256,7 @@ const TB06080Sjs = (function () {
       dataIndx: "prdtCd",
       halign: "center",
       align: "center",
-      width: 90,
+     // width: 120,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -265,7 +265,7 @@ const TB06080Sjs = (function () {
       dataIndx: "prdtNm",
       halign: "center",
       align: "left",
-      width: 160,
+     // width: 170,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -274,7 +274,7 @@ const TB06080Sjs = (function () {
       dataIndx: "dealNo",
       halign: "center",
       align: "left",
-      width: 160,
+     // width: 160,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -283,7 +283,7 @@ const TB06080Sjs = (function () {
       dataIndx: "dealNm", //딜명가져오기
       halign: "center",
       align: "left",
-      width: 160,
+     // width: 180,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -292,7 +292,8 @@ const TB06080Sjs = (function () {
       dataIndx: "excSeq",
       halign: "center",
       align: "right",
-      width: 70,
+     // width: 70,
+	  hidden: true,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -300,17 +301,19 @@ const TB06080Sjs = (function () {
       dataType: "integer",
       dataIndx: "rqstSq",
       halign: "center",
-      align: "right",
-      width: 70,
+	  align: "right",
+     // width: 70,
+	  hidden: true,
       filter: { crules: [{ condition: "range" }] },
     },
     {
       title: "거래순번",
       dataType: "integer",
       dataIndx: "trSeq",
-      halign: "center",
+	  halign: "center",
       align: "right",
-      width: 70,
+     // width: 70,
+	  hidden: true,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -318,7 +321,8 @@ const TB06080Sjs = (function () {
       dataType: "string",
       dataIndx: "scrnNo",
       align: "center",
-      width: 70,
+     // width: 120,
+	  hidden: true,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -326,7 +330,7 @@ const TB06080Sjs = (function () {
       dataType: "string",
       dataIndx: "apvlRqstCntn",
       align: "center",
-      width: 130,
+     // width: 130,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -334,7 +338,8 @@ const TB06080Sjs = (function () {
       dataType: "string",
       dataIndx: "chrrEno",
       align: "center",
-      width: 90,
+     // width: 90,
+	  hidden: true,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -342,7 +347,7 @@ const TB06080Sjs = (function () {
       dataType: "string",
       dataIndx: "chrrNm", //책임자명
       align: "center",
-      width: 70,
+     // width: 120,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -350,7 +355,7 @@ const TB06080Sjs = (function () {
       dataType: "string",
       dataIndx: "rqstDtm",
       align: "center",
-      width: 130,
+     // width: 140,
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         if(ui.cellData){
@@ -364,7 +369,7 @@ const TB06080Sjs = (function () {
       dataType: "string",
       dataIndx: "rqstCnclDtm",
       align: "center",
-      width: 130,
+     // width: 140,
       filter: { crules: [{ condition: "range" }] },
       render: function (ui) {
         if(ui.cellData){
@@ -378,7 +383,8 @@ const TB06080Sjs = (function () {
       dataType: "string",
       dataIndx: "prcsRsltNm",
       align: "center",
-      width: 80,
+      hidden: true,
+     // width: 80,
       filter: { crules: [{ condition: "range" }] },
     },
     {
@@ -387,7 +393,7 @@ const TB06080Sjs = (function () {
       dataIndx: "errCntn",
       halign: "center",
       align: "left",
-      width: 130,
+     // width: 150,
       filter: { crules: [{ condition: "range" }] },
     },
   ];
@@ -411,20 +417,7 @@ const TB06080Sjs = (function () {
       width: 70,
       filter: { crules: [{ condition: "range" }] },
     },
-    {
-      title: "결재일시",
-      dataType: "string",
-      dataIndx: "decdDtm",
-      align: "center",
-      width: 170,
-      filter: { crules: [{ condition: "range" }] },
-      render: function (ui) {
-        if(ui.cellData){
-          let result = ui.cellData.replace('T', ' ').slice(0, 19);
-          return result;
-        }
-      },
-    },
+    
     {
       title: "결재자사번",
       dataType: "string",
@@ -441,6 +434,20 @@ const TB06080Sjs = (function () {
       width: 70,
       filter: { crules: [{ condition: "range" }] },
     },
+	{
+      title: "결재일시",
+      dataType: "string",
+      dataIndx: "decdDtm",
+      align: "center",
+      width: 170,
+      filter: { crules: [{ condition: "range" }] },
+      render: function (ui) {
+        if(ui.cellData){
+          let result = ui.cellData.replace('T', ' ').slice(0, 19);
+          return result;
+        }
+      },
+    },
     {
       title: "결재자주석내용",
       dataType: "string",
@@ -450,6 +457,7 @@ const TB06080Sjs = (function () {
       width: 486,
       filter: { crules: [{ condition: "range" }] },
     },
+	
     {
       title: "반려여부",
       dataType: "string",

@@ -338,8 +338,6 @@ const TB10210Sjs = (function() {
 		let filteredIndexes = [];
 
 		data.forEach((item, index) => {
-			console.log('item ::: ', item)
-			console.log('item.chk ::: ', item.chk)
 
 			if (item.chk) {
 				// if (item.rowType !== "I" && item.rowType !== "D" && item.rowType !== null) {

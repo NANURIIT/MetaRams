@@ -128,7 +128,7 @@ const TB03040Sjs = (function(){
 
   /* 더블클릭 했을시 이동*/
   function movePage(e) {
-    console.log(e);
+
     var inspctPrgrsStCd = e.mtrPrgSttsDcd;
 
     sessionStorage.setItem("dealNo", e.dealNo);

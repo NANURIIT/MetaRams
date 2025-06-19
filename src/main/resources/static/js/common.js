@@ -2175,8 +2175,13 @@ function pqGridDeleteRow(colModelSelector, rowIndx, mode) {
  * ※ 함수명도 멋있는걸로 바꿔주세요... ※ (중요)
  */
 function needRunFn(menuId) {
+	
+	// TB03020S 딜정보등록
+	if (menuId === "TB03020S") {
+		TB03020Sjs.urlSetDealInfo();
+	}
   // TB04010S 심사신청관리
-  if (menuId === "TB04010S") {
+  else if (menuId === "TB04010S") {
     // 딜정보조회!!!!!
     TB04010Sjs.getUrlDealInfo();
   }
@@ -2724,6 +2729,70 @@ function pqGridSetDelListHandler ( rowIndices, pqGridId ) {
   for (let i = 0; i < rowIndices.length; i++ ) {
     $(`#${pqGridId}`).pqGrid('addClass', { cls: 'custom-pq-delete', rowIndx: rowIndices[i] });
   }
-
   return;
 }
+
+/**
+ * 공통 Ajax 에러 핸들러
+ * 서버는 ValidationException 타입별 응답 구조를 반환해야 함
+ * {
+ *   "message": "에러 메시지",
+ *   "type": "VALIDATION" | "BUSINESS" | "AUTHORIZATION"
+ * }
+ * @author khs
+ */
+function handleAjaxError(xhr, status, error) {
+  let errMsg = "요청 처리 중 오류가 발생했습니다.";
+  let errType = "UNKNOWN";
+
+  try {
+    const res = JSON.parse(xhr.responseText);
+    if (res.message) errMsg = res.message;
+    if (res.type) errType = res.type;
+  } catch (e) {
+    console.error("JSON 파싱 실패:", e);
+  }
+
+  switch (errType) {
+    case "VALIDATION":
+      Swal.fire("입력 오류", errMsg, "warning");
+      break;
+    case "BUSINESS":
+      Swal.fire("업무 제한", errMsg, "info");
+      break;
+	case "ERROR":
+	    Swal.fire("처리 오류", errMsg, "error");
+	    break;
+    case "AUTHORIZATION":
+      Swal.fire("권한 오류", errMsg, "error");
+      break;
+    default:
+      Swal.fire("에러", errMsg, "warning");
+  }
+}
+
+function showLoading() {
+	//if ( window.timerSwitch === true ) {
+  		$("#loadingOverlay")
+			.css({
+				display: "flex"
+			})
+	//}
+}
+
+function hideLoading() {
+  $("#loadingOverlay").hide();
+}
+
+// 전역 Ajax 설정
+/*$.ajaxSetup({
+  beforeSend: function () {
+	window.timerSwitch = true;
+	console.log("에이잭스 시작")
+	setTimeout(showLoading, 1000)
+  },
+  complete: function () {
+	window.timerSwitch = false;
+    hideLoading(); // 요청 완료 후 로딩 숨김
+  }
+});*/

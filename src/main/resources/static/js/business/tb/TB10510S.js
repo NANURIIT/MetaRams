@@ -48,16 +48,12 @@ const TB10510Sjs = (function () {
     }
 
     function clockpickerCtrl() {
-        console.log("????????????????????????????????????????????????????");
         
         $('#TB10510S_jobRunStrtTime').clockpicker({
             autoclose: true,
             twelvehour: false,  // 24시간 형식으로
             afterDone: function() {
                 let time = $('#TB10510S_jobRunStrtTime').val();
-
-                console.log("??", time);
-                console.log("??", time.substr(7,8));
                 
                 // "10:00" 형태일 경우 "10:00:00"으로 변환
                 if (time.substr(7,8) === '__') {
@@ -299,11 +295,11 @@ const TB10510Sjs = (function () {
                     const row = $('#TB10510S_grd_batPreJob').pqGrid('instance').SelectRow().getSelection()
                     if (row.length > 0) {
                         TB10510S_grd_batPreJob_rowIndx = row[0].rowIndx
-                        console.log(TB10510S_grd_batPreJob_rowIndx);
+
                     }
                     else {
                         TB10510S_grd_batPreJob_rowIndx = undefined;
-                        console.log(TB10510S_grd_batPreJob_rowIndx);
+
                     }
                 }
             },
@@ -539,9 +535,6 @@ const TB10510Sjs = (function () {
 
         let curDate = unformatDate($('#TB10510S_curDate').val())
 
-        console.log(curDate);
-
-
         if (!curDate) {
             validation('curDate')
             return
@@ -558,7 +551,7 @@ const TB10510Sjs = (function () {
             excBat: grdData,
             curDate: curDate,
         }
-        console.log('obj 실행 전 ::::', obj);
+
 
         if (grdData.length > 0) {
             $.ajax({

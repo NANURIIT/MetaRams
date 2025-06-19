@@ -136,7 +136,6 @@ const TB06040Sjs = (function() {
                 data: paramData,
                 dataType: "json",
                 success: function(data) {
-                    console.log(data);
 
                     fSts = data.ctrcCclcDcd;  // 조회해온 약정해지상태
 
@@ -268,7 +267,6 @@ const TB06040Sjs = (function() {
                     //     compChange('1');
                     //     $('.btn-success').prop('disabled', false);
                     // }
-                    console.log(data);
                 },
                 error: function () {
                     Swal.fire({
@@ -312,7 +310,6 @@ const TB06040Sjs = (function() {
 
             if ( f === '1' ) {
                 /* 약정 */
-                console.log("약정");
 
                 // if(prdtCd.startsWith('A') &&(stdrIntrt === null || stdrIntrt === '0')){
                 //     Swal.fire({
@@ -355,7 +352,7 @@ const TB06040Sjs = (function() {
                 // validation(paramData);
             } else {
                 /* 해지 */
-                console.log("해지");
+
                 let ctrcCclcDcd = '2';
 
                 paramData = {
@@ -580,7 +577,6 @@ const TB06040Sjs = (function() {
         // console.log(fStdrIntr);
         // console.log(fAddIntr);
         if ( isNaN(fAddIntr) || isEmpty(fAddIntr) ) {
-            console.log("여기탄거같은데");
             fAddIntr = 0;
         }
 
@@ -604,7 +600,7 @@ const TB06040Sjs = (function() {
         // let toggleBtn2 = document.querySelector('.toggleBtn2');
         switch (p) {
             case "1":
-                console.log("약정");
+
                 if(isEmpty($('#TB06040S_ctrcDt').val())){
 					     Swal.fire({
 	                       icon: 'warning'
@@ -680,7 +676,7 @@ const TB06040Sjs = (function() {
                 // $('#TB06040S_cancelRsnCntn').prop('disabled', false);   // 해지사유내용
                 break;
             case "2":
-                console.log("해지");
+
 				if(isEmpty($('#TB06040S_E005').val())){
 					     Swal.fire({
 				           icon: 'warning'
@@ -747,7 +743,7 @@ const TB06040Sjs = (function() {
                 // $('#TB06040S_cancelRsnCntn').prop('disabled', true);    // 해지사유내용
                 break;
             default:
-                console.log("기본");
+
                 // $('#btnCtrc').attr('disabled', false);
                 // $('#btnCclc').attr('disabled', true);
 
@@ -770,7 +766,6 @@ const TB06040Sjs = (function() {
         $('#TB06040S_empNo').val(userEno);
         $('#TB06040S_empNm').val(userEmpNm);
 
-        console.log(userEmpNm, userEno);
     }
 
     function resetDd() {
@@ -813,14 +808,14 @@ const TB06040Sjs = (function() {
     function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF")){
-			console.log("WF세션 있음");
+
             var prdtCd = sessionStorage.getItem("wfPrdtCd");
             var prdtNm = sessionStorage.getItem("wfPrdtNm");
             $("#TB06040S_prdtCd").val(prdtCd);
             $("#TB06040S_prdtNm").val(prdtNm);
 		    srch();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

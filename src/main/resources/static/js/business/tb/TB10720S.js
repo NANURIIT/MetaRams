@@ -124,7 +124,7 @@ const TB10720Sjs = function () {
                 grd_TB10720S.setData([])
             },
             success: function (data) {
-                console.log(data);
+
                 // chkEvt();
                 grd_TB10720S.setData(data.grd_TB10720S);
             },
@@ -157,7 +157,7 @@ const TB10720Sjs = function () {
                 grd_TB10720S.setData([])
             },
             success: function (data) {
-                console.log(data);
+
                 // chkEvt();
                 grd_TB10720S.setData(data.grd_TB10720S)
             },
@@ -205,8 +205,7 @@ const TB10720Sjs = function () {
 				url: "/TB10720S/daliyWorkStart",
 				contentType: "application/json; charset=UTF-8",
 				success: function(data) {
-					console.log('success');
-					console.log(data);
+
 				},
 			});	
 		}else{
@@ -215,8 +214,7 @@ const TB10720Sjs = function () {
 				url: "/TB10720S/daliyWorkEnd",
 				contentType: "application/json; charset=UTF-8",
 				success: function(data) {
-					console.log('success');
-					console.log(data);
+
 				},
 			});
 		}

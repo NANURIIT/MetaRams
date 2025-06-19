@@ -447,7 +447,7 @@ const TB09100Sjs = (function() {
 				}
 			},
 			error: function(request, status, error) {
-				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+				//console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 			},
 		});
 	}
@@ -504,16 +504,16 @@ const TB09100Sjs = (function() {
 				}
 			},
 			error: function(request, status, error) {
-				console.log(
-					"code:" +
-					request.status +
-					"\n" +
-					"message:" +
-					request.responseText +
-					"\n" +
-					"error:" +
-					error
-				);
+				// console.log(
+				// 	"code:" +
+				// 	request.status +
+				// 	"\n" +
+				// 	"message:" +
+				// 	request.responseText +
+				// 	"\n" +
+				// 	"error:" +
+				// 	error
+				// );
 			},
 		});
 	}

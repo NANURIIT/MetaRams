@@ -15,8 +15,8 @@ const TB04020Sjs = (function () {
     // 	$("#btnReturnDeal").prop("disabled", false);	// 반송버튼
     // }
     let obj = {
-      height: 400,
-      maxHeight: 400,
+      height: 260,
+      maxHeight: 260,
       id: "gridCheckDealList",
       colModel: colDealList,
       showTitle: false,

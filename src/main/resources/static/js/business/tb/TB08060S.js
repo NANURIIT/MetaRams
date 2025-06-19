@@ -1110,7 +1110,7 @@ const TB08060Sjs = function () {
 				// alert(loginUsrDprtCd);
 			},
 			error: function (request, status, error) {
-				console.log(request + "\n", status, "\n", error, "\n")
+
 			}
 		});
 	}
@@ -1290,7 +1290,7 @@ const TB08060Sjs = function () {
 
 			},
 			error: function (request, status, error) {
-				console.log(request + "\n", status, "\n", error, "\n");
+
 			}
 		});
 
@@ -1385,7 +1385,6 @@ const TB08060Sjs = function () {
 
 			},
 			error: function (request, status, error) {
-				console.log(request + "\n", status, "\n", error, "\n");
 
 				var option = {}
 				option.title = "Error";

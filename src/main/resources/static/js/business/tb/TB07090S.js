@@ -79,7 +79,7 @@ const TB07090Sjs = (function () {
         loginUsrDprtNm = data.dprtNm;
       },
       error: function (request, status, error) {
-        console.log(request + "\n", status, "\n", error, "\n");
+
       },
     });
   }
@@ -239,21 +239,6 @@ const TB07090Sjs = (function () {
       {
         title: "상환회차",
         dataIndx: "rdmpTmrd",
-        hidden: true
-      },
-      {
-        title: "수수료일련번호",
-        dataIndx: "feeSn",
-        hidden: true
-      },
-      {
-        title: "실행일련번호",
-        dataIndx: "excSn",
-        hidden: true
-      },
-      {
-        title: "실행일련번호",
-        dataIndx: "trSn",
         hidden: true
       },
     ];
@@ -629,11 +614,11 @@ const TB07090Sjs = (function () {
         hidden: true
       },
       {
-        dataIndx: "rdmpTmrd",   // 상환회차
+        dataIndx: "rdmpTmrd",
         hidden: true
       },
       {
-        dataIndx: "feeSn",    // 수수료일련번호
+        dataIndx: "feeSn",
         hidden: true
       },
       {
@@ -766,11 +751,6 @@ const TB07090Sjs = (function () {
             pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel2");
           }
         },
-        /**
-         * 납부예정금액이 입금금액보다 크면 안됨.
-         * 1. 알럿 띄우기
-         * 2. 수정 전의 입금금액으로 pqGrid값 수정 
-         */
         cellSave: function (evt, ui) {
           if (ui.dataIndx === "dealRctmAmt") {
             // 입금금액 설정 validation
@@ -801,7 +781,6 @@ const TB07090Sjs = (function () {
             pqGridSelectHandler(ui.rowIndx, "TB07090S_colModel3");
           }
         },
-
         cellSave: function (evt, ui) {
           if (ui.dataIndx === "dealRctmAmt") {
             // pqgrid값을 바꿨을때 입금증등록내역에 납부예정금액이 얼마가 되는지 보여주기
@@ -809,7 +788,6 @@ const TB07090Sjs = (function () {
 
             let updateIndx;
 
-            // PK값인 입금일자, 등록순번을 체크.
             for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
               if (rctmDtlsMappingGridData[i].rctmDt === ui.rowData.rctmDt
                 && rctmDtlsMappingGridData[i].rgstSeq === Number(ui.rowData.rgstSeq)
@@ -819,16 +797,10 @@ const TB07090Sjs = (function () {
               }
             }
 
-            // 수정 전의 납부예정금액 저장
             let prevPrarAmt = $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt;
-
-            // 납부예정금액 = 납부예정금액 - 
-            console.log("ui.oldVal :: ", ui.oldVal);
-            console.log("ui.newVal :: ", ui.newVal);
 
             $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt = Number($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt) - Number(ui.oldVal) + Number(ui.newVal);
 
-            // 납부예정금액이 입금금액보다 크면 안됨
             if ($('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt > $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].dealRctmAmt) {
               $('#TB07090S_colModel2').pqGrid("instance").pdata[updateIndx].pmntPrarAmt = prevPrarAmt;
               Swal.fire({
@@ -899,13 +871,13 @@ const TB07090Sjs = (function () {
   }
 
   var dateEditor_feeSch = function (ui) {
-    console.log(ui);
+
     ui.$cell.find("input").on("input", function () {
       let temVal;
       temVal = replaceAll($(this).val(), '-', '');
       if (temVal.length === 8) {
         temVal = formatDate(temVal);
-        console.log("onformat" + temVal);
+
         $(this).val(temVal);
       } else if (temVal.length > 8) {
         $(this).val(formatDate(temVal.slice(0, 8)));
@@ -989,11 +961,6 @@ const TB07090Sjs = (function () {
         var rctmDtlsList = data.rctmDtlsList;
         var dptrDtlsList = data.dprtDtlsList;
 
-        console.log(rdmpPrarDtlsList, "상환예정내역");
-        console.log(rctmDtlsList, "입금내역");
-        console.log(dptrDtlsList, "입금증매핑내역");
-        
-
         if (
           rdmpPrarDtlsList.length < 1 &&
           rctmDtlsList.length < 1 &&
@@ -1040,12 +1007,8 @@ const TB07090Sjs = (function () {
 
   /**
    * 입금내역매핑 추가용
-   * 행추가하기 전에도 중복체크해야됨
    */
   function TB07090S_addRow() {
-
-    console.log($('#TB07090S_colModel3').pqGrid('instance').pdata);
-
     // 체크해야할 부분
     // 1. 상환예정내역 선택했는지?
     // 2. 저장된 입금증등록내역 선택했는지?
@@ -1108,15 +1071,11 @@ const TB07090Sjs = (function () {
         case "trSn":
           newRow[dataIndx] = selected_rdmpPrarDtl.trSn;
           break;
-        case "feeSn":
-          newRow[dataIndx] = selected_rdmpPrarDtl.feeSn;
-          break;
-        case "rdptObjtDvsnCd":  // 일정구분코드
+        case "rdptObjtDvsnCd":
           newRow[dataIndx] = selected_rdmpPrarDtl.scxDcd;
           break;
-        // 상환회차
         case "rdmpTmrd":
-          newRow[dataIndx] = selected_rdmpPrarDtl.rdmpTmrd;
+          newRow[dataIndx] = selected_dptrRgstDtl.rdmpTmrd;
           break;
         case "excsPymtPrcsDvsnCd":
           newRow[dataIndx] = ""; // 구분코드는 현재 존재하지 않아서 사용하지 않음!
@@ -1172,49 +1131,39 @@ const TB07090Sjs = (function () {
       , feeSn: selected_rdmpPrarDtl.feeSn
       , rdmpTmrd: selected_rdmpPrarDtl.rdmpTmrd
       , rdptObjtDvsnCd: selected_rdmpPrarDtl.scxDcd
-
     }
 
     const rctmDtlsMappingGridData = $('#TB07090S_colModel3').pqGrid('instance').pdata
 
-    // 이미 입금내역매핑이 있는 경우 (화면체크)
-    console.log("화면체크시작")
-    
-    let result = false;
+    const chkRctmDtlsMapping = () => {
 
-    for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
+      let result = false;
+      for (let i = 0; i < rctmDtlsMappingGridData.length; i++) {
+        
 
-      if (
-        /* 딜번호! */
-        rctmDtlsMappingGridData[i].dealNo == selected_rdmpPrarDtl.dealNo
-        /* 종목코드! */
-        && rctmDtlsMappingGridData[i].prdtCd == selected_rdmpPrarDtl.prdtCd
-        /* 실행일련번호! */
-        && Number(rctmDtlsMappingGridData[i].excSn) == Number(selected_rdmpPrarDtl.excSn)
-        /* 일정구분코드! */
-        && rctmDtlsMappingGridData[i].rdptObjtDvsnCd == selected_rdmpPrarDtl.scxDcd
-        /* 상환회차! */
-        && Number(rctmDtlsMappingGridData[i].rdmpTmrd) == Number(selected_rdmpPrarDtl.rdmpTmrd)
-        /* 거래일련번호! */
-        && Number(rctmDtlsMappingGridData[i].trSn) == Number(selected_rdmpPrarDtl.trSn)
-        /* 수수료일련번호! */
-        && Number(rctmDtlsMappingGridData[i].feeSn) == Number(selected_rdmpPrarDtl.feeSn)
-      ) {
-        console.log("??");
-
-        // 화면내 매핑된 정보가 있다면 false
-        result = true;
-        break;
+        
+        if (
+          /* 딜번호! */
+          rctmDtlsMappingGridData[i].dealNo == selected_rdmpPrarDtl.dealNo
+          /* 종목코드! */
+          && rctmDtlsMappingGridData[i].prdtCd == selected_rdmpPrarDtl.prdtCd
+          /* 실행일련번호! */
+          && Number(rctmDtlsMappingGridData[i].excSn) == Number(selected_rdmpPrarDtl.excSn)
+          /* 거래일련번호! */
+          && Number(rctmDtlsMappingGridData[i].trSn) == Number(selected_rdmpPrarDtl.trSn)
+          /* 수수료일련번호! */
+          && Number(rctmDtlsMappingGridData[i].feeSn) == Number(selected_rdmpPrarDtl.feeSn)
+          /* 상환회차! */
+          && Number(rctmDtlsMappingGridData[i].rdmpTmrd) == Number(selected_rdmpPrarDtl.rdmpTmrd)
+          /* 상환형태?구분코드! */
+          && rctmDtlsMappingGridData[i].rdptObjtDvsnCd == selected_rdmpPrarDtl.scxDcd
+        ) {
+          // 화면내 매핑된 정보가 있다면 false
+          result = true;
+          break;
+        }
       }
-    }
-
-    if (result) {
-      swal.fire({
-        icon: "warning"
-        , title: "Warning!"
-        , text: "이미 매핑된 내역입니다!"
-      })
-      return;
+      return result;
     }
 
     $.ajax({
@@ -1226,6 +1175,15 @@ const TB07090Sjs = (function () {
       success: function (data) {
         // 이미 입금내역매핑이 있는 경우 (DB체크)
         if (data != 0) {
+          swal.fire({
+            icon: "warning"
+            , title: "Warning!"
+            , text: "이미 매핑된 내역입니다!"
+          })
+          return;
+        }
+        // 이미 입금내역매핑이 있는 경우 (화면체크)
+        else if (chkRctmDtlsMapping()) {
           swal.fire({
             icon: "warning"
             , title: "Warning!"
@@ -1499,14 +1457,14 @@ const TB07090Sjs = (function () {
   function getDealInfoFromWF() {
 
     if (sessionStorage.getItem("isFromWF")) {
-      console.log("WF세션 있음");
+
       var dealNo = sessionStorage.getItem("wfDealNo");
       var dealNm = sessionStorage.getItem("wfDealNm");
       $("#TB07090S_ibDealNm").val(dealNo);
       $("#TB07090S_ibDealNm").val(dealNm);
       search_TB07090S();
     } else {
-      console.log("WF세션 비었음");
+
     }
     sessionStorage.clear();
   }

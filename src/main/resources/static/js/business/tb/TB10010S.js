@@ -260,7 +260,6 @@ const TB10010Sjs = (function() {
 
 
 				for (var i = 0; i < grpCdListLgth; i++) {
-					// console.log("여기임?");
 
 					var grpCdRowData = $("#groupCodeListTable").pqGrid("getRowData", { rowIndx: i });      //그룹코드 i번째 행 데이터
 					//그룹코드(그룹코드) : grpCdRowData.cmnsCdGrp
@@ -286,7 +285,6 @@ const TB10010Sjs = (function() {
 
 				}
 
-				console.log("useYn::: " + useYn);
 				return isCanUse;
 			},
 			editor: {
@@ -509,7 +507,6 @@ const TB10010Sjs = (function() {
 	 * pqDeleteRow
 	 */
 	function pqGridDeleteRow(colModelSelector) {
-		console.log("진입");
 
 		let chkCnt;
 		chkCnt = 0
@@ -529,8 +526,6 @@ const TB10010Sjs = (function() {
 		let filteredIndexes = [];
 
 		data.forEach((item, index) => {
-			console.log('item ::: ', item)
-			console.log('item.chk ::: ', item.chk)
 
 			if (item.chk) {
 				// if (item.rowType !== "I" && item.rowType !== "D" && item.rowType !== null) {

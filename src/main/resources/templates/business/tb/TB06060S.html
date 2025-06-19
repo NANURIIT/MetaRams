@@ -15,8 +15,6 @@
 	<script th:src="@{js/business/tb/TB06011P.js}"></script>
 	<script th:src="@{js/business/tb/TB06019P.js}"></script>
 	<script th:src="@{js/business/tb/TB03061P.js}"></script>
-	<script th:src="@{js/business/popup/AS03210P.js}"></script>
-	<!-- <script th:src="@{js/business/tb/TB03022P.js}"></script> -->
 </th:block>
 
 <th:block layout:fragment="modalpopup">
@@ -24,7 +22,6 @@
 	<th:block th:replace="business/tb/TB06011P :: TB06011P"></th:block>
 	<th:block th:replace="business/tb/TB06019P :: TB06019P"></th:block>
 	<th:block th:replace="business/tb/TB03061P :: TB03061P"></th:block>
-	<th:block th:replace="business/popup/AS03210P :: AS03210P"></th:block>
 </th:block>
 <th:block layout:fragment="customContent">
 	<!-- 워크플로우 -->
@@ -32,438 +29,309 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="ibox">
-					<div class="ibox-content" >
-						<div class="ibox">
-							<div class="ibox-content i-filter">
-								<div class="form-group row form-inline">
-									
-									<div class="col-sm-10 form-group">
-										<!-- deal 번호 -->
-										<label class="col-sm-1 control-label">
-											<span class="req"></span>Deal번호
-										</label>
-										<div class="col-sm-3">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB06060S_ibDealNo">
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default" onclick="callTB03021P('TB06060S');"><i class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" id="TB06060S_ibDealNm" readonly="">
-											</div>
-										</div>
-										<!-- 종목코드 -->
-										<label class="col-sm-1 control-label">
-											종목코드
-										</label>
-										<div class="col-sm-3">
-											<div class="input-group">
-												<input type="text" class="form-control" id="TB06060S_prdtCd">
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default" onclick="callTB06011P('TB06060S');"><i class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" id="TB06060S_prdtNm" readonly="">
-											</div>
-										</div>
-										
-									</div>
-									<div class="col-sm-2 form-group mb-1">	
-										<!-- 버튼영역 -->
-										<div class="col-sm-12 text-right">
-											<button class="btn btn-primary" onclick="TB06060Sjs.getWorkflowList()">
-												<i class="fa fa-search"></i>&nbsp;조회</button>
-											<button class="btn btn-default" type="button" onclick="TB06060Sjs.resetAll()">
-												<i class="fa fa-undo"></i>&nbsp;초기화
+					<div class="ibox-content i-filter">
+						<div class="form-group row form-inline">
+
+							<div class="col-sm-10 form-group">
+								<!-- deal 번호 -->
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>Deal번호
+								</label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB06060S_ibDealNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03021P('TB06060S');">
+												<i class="fa fa-search"></i>
 											</button>
-										</div>
+										</span>
+										<input type="text" class="form-control" id="TB06060S_ibDealNm" readonly="">
 									</div>
 								</div>
+								<!-- 종목코드 -->
+								<label class="col-sm-1 control-label"> 종목코드 </label>
+								<div class="col-sm-3">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB06060S_prdtCd">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB06060S');">
+												<i class="fa fa-search"></i>
+											</button>
+										</span>
+										<input type="text" class="form-control" id="TB06060S_prdtNm" readonly="">
+									</div>
+								</div>
+
 							</div>
-							
-						</div>
-						<!--<div class="ibox form-inline">
-							<div class="col-sm-12 form-group pd0">
-								<div class="col-sm-8 pd0">
-									<button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;승인정보 등록</button>
-									<button class="btn btn-default btn-xs mg-l" type="button" onclick=""><i class="fa fa-save"></i>&nbsp;담보 등록</button>
-								</div>
-								<div class="col-sm-2-5 form-group text-right">
-									<button class="btn btn-success btn-xs mg-l" type="button" onclick=""><i class="fa fa-check"></i>&nbsp;LOC 발급</button>
-									<label class="col-sm-4 col-form-label text-right">LOC 발급번호</label>
-									<div class="col-sm-5 input-group">
-										<input type="text" class="form-control" id="">
-									</div>
-								</div>	
-								<div class="col-sm-1-5 text-right">
-									<span class="vr"> │ </span>
-									<button class="btn btn-primary" type="button" id="" onclick=""><i class="fa fa-search"></i>&nbsp;조회</button>
-									<button id="" class="btn btn-default" onclick=""><i class="fa fa-undo"></i>&nbsp;초기화</button>
-								</div>
-							</div>
-						</div>
-						-->
-						
-						<div class="ibox">
-							<div class="ibox-title">
-								<div>
-									<h5>▶ 종목 정보</h5>
-								</div>
-							</div>
-							<div class="ibox-content">
-								<div class="pq-theme">
-									<div id="TB06060S_prdtInfoGrid"></div>
-								</div>
-							</div>
-							<!--<table class="table result table-bordered footable">
-								<colgroup>
-									<col>
-									<col>
-									<col>
-									<col>
-									<col>
-									<col>
-									<col>
-									<col>
-								</colgroup>
-								<thead>
-									<tr> 
-										<th>종목코드</th>
-										<th>종목명</th>
-										<th>진행상태</th>
-										<th>거래상대방명</th>
-										<th>상품대분류</th>
-										<th>종목승인금액</th>
-										<th>약정금액</th>
-										<th>잔액</th>
-									</tr>
-								</thead>
-								<tbody id="">
-									<tr class="text-center">
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td class="text-right"></td>
-										<td class="text-right"></td>
-										<td class="text-right"></td>
-								</tbody>
-							</table>-->
-						</div>	
-					<div class="ibox">
-						<div class="ibox-title">
-							<h5>▶&nbsp;투자심사정보</h5>
-						</div>
-						<div class="ibox-content i-filter mb-0">
-							<!-- row1 -->
-							<div class="row form-group form-inline text-right">
-								<div class="col-sm-10 form-group mb-1">
-									<label class="col-sm-1 col-form-label text-right">심사기구</label>
-									<div class="col-sm-3 input-group">
-										<input type="text" class="form-control" style="width:100px;" id="TB06060S_cnsbNm" readonly>
-									</div>
-									<label class="col-sm-1 col-form-label text-right">심사결과</label>
-									<div class="col-sm-3 input-group">
-										
-										<input type="text" class="form-control" style="width:100px;" id="TB06060S_jdgmRsltDcd" readonly>
-									</div>
-									<label class="col-sm-1 col-form-label text-right">심사결과일자</label>
-									<div class="col-sm-3 input-group date">	
-										<input type="text" class="form-control" id="TB06060S_jdgmRsltRgstDt" value="" placeholder="" disabled>
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-									
-								</div>
-								<div class="col-sm-10 form-group mb-1">
-									<label class="col-sm-1 col-form-label text-right">심사내용</label>
-									<div class="col-sm-11 input-group">
-										<textarea class="form-control" rows="1" id="TB06060S_jdgmRsltCtns" readonly style="min-height: 32px;"></textarea>
-									</div>
+							<div class="col-sm-2 form-group mb-1">
+								<!-- 버튼영역 -->
+								<div class="col-sm-12 text-right">
+									<button class="btn btn-primary" onclick="TB06060Sjs.getWorkflowList()">
+										<i class="fa fa-search"></i>&nbsp;조회
+									</button>
+									<button class="btn btn-default" type="button" onclick="TB06060Sjs.resetAll()">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+									</button>
 								</div>
 							</div>
 						</div>
 					</div>
-						
-						<div class="tabs-container">
-							<ul class="nav nav-tabs" role="tablist" id="ramsTab">
-								<li><a class="nav-link active" data-toggle="tab" href="#tab-1">대출채권/채무보증</a></li>
-								<li><a class="nav-link" data-toggle="tab" href="#tab-2">상품집합투자증권</a></li>
-								<li><a class="nav-link" data-toggle="tab" href="#tab-3">주식(출자포함)/채권</a></li>
-							</ul>
-							<div class="tab-content">
-								<!-- tab1 -->
-								<!-- 기업여신 -->
-								<div role="tabpanel" id="tab-1" class="tab-pane active">
-									<div class="panel-body flow-box">
-										<div class="col-sm-12 pd0">
-											<div class="flow_wrap -step">
-												<div class="flow_item">
-													<div class="flow-status" name="flow00">
-														<p>Deal 등록</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="callPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
-													<!--<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage(''">기업체등록</button>-->
-													<button class="btn btn-default" type="button" onclick="callTB06019P('TB06060S');">기업체 등록</button><br>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status" name="flow03">
-														<p>종목 정보등록</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB06010S', '대출채권/채무보증 정보등록');">대출채권/채무보증 정보등록</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status" name="flow04">
-														<p>약정</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB06040S', '약정 및 해지');">약정 및 해지</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status" name="flow05">
-														<p>실행</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07010S', '대출계약 실행');">대출계약 실행</button>
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-12 pd0">
-											<div class="flow_wrap -arrow">
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>상환</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07030S', '대출계약 상환');">대출계약 상환</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07070S', '실행상환취소');">실행상환취소</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>수수료/비용</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>결재/기타조회</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07120S', '자금품의결재');">자금품의결재</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07090S', '입금내역관리');">입금내역관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07170S', '입금내역조회');">입금내역조회</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>원장관리</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07080S', '원장정정');">원장정정</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07150S', '조건변경');">조건변경</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07160S', '이수관처리');">이수관처리</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
 
-								<!-- tab2 -->
-								<!-- 상품집합투자증권 -->
-								<div role="tabpanel" id="tab-2" class="tab-pane">
-									<div class="panel-body flow-box">
-										<div class="col-sm-12 pd0">
-											<div class="flow_wrap -step">
-												<div class="flow_item">
-													<div class="flow-status" name="flow01">
-														<p>Deal 등록</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="callPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
-													<!--<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage(''">기업체등록</button>-->
-													<button class="btn btn-default" type="button" onclick="callTB06019P('TB06060S');">기업체 등록</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status" name="flow03">
-														<p>종목 정보등록</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB06020S', '집합투자증권 정보등록');">집합투자증권 정보등록</button>
-												</div>
-												
-												<div class="flow_item">
-													<div class="flow-status" name="flow05">
-														<p>매수/매도</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07020S', '기타투자 매수관리');">기타투자 매수관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07040S', '기타투자매도 권리관리');">기타투자매도 권리관리</button>
-												</div>
-												
-												<div class="flow_item -nonstep">
-													<div class="flow-status">
-														<p>수수료/비용</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
-												</div>
-												<!--<div class="flow_item -none"></div> -->
-											</div>
-										</div>
-										<!--<div class="col-sm-12 pd0">
-											<div class="flow_wrap -arrow">
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>평가등록</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07030S', '대출계약 상환');">대출계약 상환</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07070S', '실행상환취소');">실행상환취소</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>수수료/비용</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>결재/기타조회</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07120S', '자금품의결재');">자금품의결재</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07090S', '입금내역관리');">입금내역관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07170S', '입금내역조회');">입금내역조회</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>원장관리</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07080S', '원장정정');">원장정정</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07150S', '조건변경');">조건변경</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07160S', '이수관처리');">이수관처리</button>
-												</div>
-											</div>
-										</div>-->
-									</div>
-								</div>
+				</div>
 
-								<!-- tab3 -->
-								<!-- 주식(출자포함)/채권 -->
-								<div role="tabpanel" id="tab-3" class="tab-pane">
-									<div class="panel-body flow-box">
-										<div class="col-sm-12 pd0">
-											<div class="flow_wrap -step">
-												<div class="flow_item">
-													<div class="flow-status" name="flow02">
-														<p>거래상대방</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="callAS03210P('TB06060S');">거래상대방 등록</button>
-													<button class="btn btn-default" type="button" onclick="callTB06019P('TB06060S');">기업체 등록</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status" name="flow03">
-														<p>종목 정보등록</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB06030S', '주식(출자포함)/채권 정보등록');">주식(출자포함)/채권 정보등록</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status" name="flow05">
-														<p>매수/매도</p>
-														<div>
-															<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
-														</div>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07020S', '기타투자 매수관리');">기타투자 매수관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07040S', '기타투자매도 권리관리');">기타투자매도 권리관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07140S', '출자금 거래등록');">출자금 거래등록</button>
-												</div>
-												<div class="flow_item -nonstep">
-													<div class="flow-status">
-														<p>수수료/비용</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
-												</div>
-												<!--<div class="flow_item -none"></div>-->
-											</div>
-										</div>
-										<!--<div class="col-sm-12 pd0">
-											<div class="flow_wrap -arrow">
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>평가등록</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07030S', '대출계약 상환');">대출계약 상환</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07070S', '실행상환취소');">실행상환취소</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>수수료/비용</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>결재/기타조회</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07120S', '자금품의결재');">자금품의결재</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07090S', '입금내역관리');">입금내역관리</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07170S', '입금내역조회');">입금내역조회</button>
-												</div>
-												<div class="flow_item">
-													<div class="flow-status">
-														<p>원장관리</p>
-													</div>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07080S', '원장정정');">원장정정</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07150S', '조건변경');">조건변경</button>
-													<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07160S', '이수관처리');">이수관처리</button>
-												</div>
-											</div>
-										</div>-->
-									</div>
-								</div>
-							</div>	
+
+				<div class="ibox">
+					<div class="ibox-title">
+						<div>
+							<h5>▶ 종목 정보</h5>
 						</div>
-						<!-- <div class="ibox form-inline">
-							버튼영역
-							<div class="col-sm-12 text-right pd0">
-								<button class="btn btn-success mg-l5" type="button" onclick=""><i class="fa fa-check"></i>&nbsp;실행</button>
+					</div>
+					<div class="ibox-content">
+						<div class="pq-theme">
+							<div id="TB06060S_prdtInfoGrid"></div>
+						</div>
+					</div>
+
+				</div>
+				<div class="ibox">
+					<div class="ibox-title">
+						<h5>▶&nbsp;투자심사정보</h5>
+					</div>
+					<div class="ibox-content i-filter mb-0">
+						<!-- row1 -->
+						<div class="row form-group form-inline text-right">
+							<div class="col-sm-10 form-group mb-1">
+								<label class="col-sm-1 col-form-label text-right">심사기구</label>
+								<div class="col-sm-3 input-group">
+									<input type="text" class="form-control" style="width: 100px;" id="TB06060S_cnsbNm" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">심사결과</label>
+								<div class="col-sm-3 input-group">
+
+									<input type="text" class="form-control" style="width: 100px;" id="TB06060S_jdgmRsltDcd" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">심사결과일자</label>
+								<div class="col-sm-3 input-group date">
+									<input type="text" class="form-control" id="TB06060S_jdgmRsltRgstDt" value="" placeholder="" disabled>
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								</div>
+
 							</div>
-						</div> -->
+							<div class="col-sm-10 form-group mb-1">
+								<label class="col-sm-1 col-form-label text-right">심사내용</label>
+								<div class="col-sm-11 input-group">
+									<textarea class="form-control" rows="1" id="TB06060S_jdgmRsltCtns" readonly style="min-height: 32px;"></textarea>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div style="display:none">
-				<input id="sessionDealNo" readonly>
-				<input id="sessionDealNm" readonly>
-				<input id="sessionPrdtCd" readonly>
-				<input id="sessionPrdtNm" readonly>
+
+				<div class="tabs-container">
+					<ul class="nav nav-tabs" role="tablist" id="ramsTab">
+						<li><a class="nav-link active" data-toggle="tab" href="#tab-1">대출채권/채무보증</a></li>
+						<li><a class="nav-link" data-toggle="tab" href="#tab-2">상품집합투자증권</a></li>
+						<li><a class="nav-link" data-toggle="tab" href="#tab-3">주식(출자포함)/채권</a></li>
+					</ul>
+					<div class="tab-content">
+						<!-- tab1 -->
+						<!-- 기업여신 -->
+						<div role="tabpanel" id="tab-1" class="tab-pane active">
+							<div class="panel-body flow-box">
+								<div class="col-sm-12 pd0">
+									<div class="flow_wrap -step">
+										<div class="flow_item">
+											<div class="flow-status" name="flow00">
+												<p>Deal 등록</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="callPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
+											<!--<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage(''">기업체등록</button>-->
+											<button class="btn btn-default" type="button" onclick="callTB06019P('TB06060S');">기업체 등록</button>
+											<br>
+										</div>
+										<div class="flow_item">
+											<div class="flow-status" name="flow03">
+												<p>종목 정보등록</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB06010S', '대출채권/채무보증 정보등록');">대출채권/채무보증 정보등록</button>
+										</div>
+										<div class="flow_item">
+											<div class="flow-status" name="flow04">
+												<p>약정</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB06040S', '약정 및 해지');">약정 및 해지</button>
+										</div>
+										<div class="flow_item">
+											<div class="flow-status" name="flow05">
+												<p>실행</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07010S', '대출계약 실행');">대출계약 실행</button>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 pd0">
+									<div class="flow_wrap -arrow">
+										<div class="flow_item">
+											<div class="flow-status">
+												<p>상환</p>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07030S', '대출계약 상환');">대출계약 상환</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07070S', '실행상환취소');">실행상환취소</button>
+										</div>
+										<div class="flow_item">
+											<div class="flow-status">
+												<p>수수료/비용</p>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
+										</div>
+										<div class="flow_item">
+											<div class="flow-status">
+												<p>결재/기타조회</p>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07120S', '자금품의결재');">자금품의결재</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07090S', '입금내역관리');">입금내역관리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07170S', '입금내역조회');">입금내역조회</button>
+										</div>
+										<div class="flow_item">
+											<div class="flow-status">
+												<p>원장관리</p>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07080S', '원장정정');">원장정정</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07150S', '조건변경');">조건변경</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07160S', '이수관처리');">이수관처리</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- tab2 -->
+						<!-- 상품집합투자증권 -->
+						<div role="tabpanel" id="tab-2" class="tab-pane">
+							<div class="panel-body flow-box">
+								<div class="col-sm-12 pd0">
+									<div class="flow_wrap -step">
+										<div class="flow_item">
+											<div class="flow-status" name="flow01">
+												<p>Deal 등록</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="callPage('TB03020S', 'Deal 정보 등록');">Deal 정보 등록</button>
+											<!--<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage(''">기업체등록</button>-->
+											<button class="btn btn-default" type="button" onclick="callTB06019P('TB06060S');">기업체 등록</button>
+										</div>
+										<div class="flow_item">
+											<div class="flow-status" name="flow03">
+												<p>종목 정보등록</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB06020S', '집합투자증권 정보등록');">집합투자증권 정보등록</button>
+										</div>
+
+										<div class="flow_item">
+											<div class="flow-status" name="flow05">
+												<p>매수/매도</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07020S', '기타투자 매수관리');">기타투자 매수관리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07040S', '기타투자매도 권리관리');">기타투자매도 권리관리</button>
+										</div>
+
+										<div class="flow_item -nonstep">
+											<div class="flow-status">
+												<p>수수료/비용</p>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+						<!-- tab3 -->
+						<!-- 주식(출자포함)/채권 -->
+						<div role="tabpanel" id="tab-3" class="tab-pane">
+							<div class="panel-body flow-box">
+								<div class="col-sm-12 pd0">
+									<div class="flow_wrap -step">
+										<div class="flow_item">
+											<div class="flow-status" name="flow02">
+												<p>거래상대방</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="callTB03061P('TB06060S');">거래상대방 등록</button>
+											<button class="btn btn-default" type="button" onclick="callTB06019P('TB06060S');">기업체 등록</button>
+										</div>
+										<div class="flow_item">
+											<div class="flow-status" name="flow03">
+												<p>종목 정보등록</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB06030S', '주식(출자포함)/채권 정보등록');">주식(출자포함)/채권 정보등록</button>
+										</div>
+										<div class="flow_item">
+											<div class="flow-status" name="flow05">
+												<p>매수/매도</p>
+												<div>
+													<span class="status-desc">상태 : <span class="status -wait">미완료</span></span>
+												</div>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07020S', '기타투자 매수관리');">기타투자 매수관리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07040S', '기타투자매도 권리관리');">기타투자매도 권리관리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07140S', '출자금 거래등록');">출자금 거래등록</button>
+										</div>
+										<div class="flow_item -nonstep">
+											<div class="flow-status">
+												<p>수수료/비용</p>
+											</div>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08040S', '수수료스케줄관리');">수수료스케줄관리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB08050S', '수수료수납처리');">수수료수납처리</button>
+											<button class="btn btn-default" type="button" onclick="TB06060Sjs.openPage('TB07190S', '수수료수납내역조회');">수수료수납내역조회</button>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
 				</div>
 
 			</div>
 		</div>
+		<div style="display: none">
+			<input id="sessionDealNo" readonly>
+			<input id="sessionDealNm" readonly>
+			<input id="sessionPrdtCd" readonly>
+			<input id="sessionPrdtNm" readonly>
+		</div>
+
 	</div>
 </th:block>
 

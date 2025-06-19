@@ -280,7 +280,6 @@ const TB06030Sjs = (function(){
 
 	function checkBoxChangeFunction(){
 		$("#TB06030S_fincYn").on('change',function(){
-			console.log($("#TB06030S_fincYn").prop('checked'));
 
 			if($("#TB06030S_fincYn").prop('checked') == true){
 				//$('#TB06030S_fincDiv').css("display","block");
@@ -301,7 +300,6 @@ const TB06030Sjs = (function(){
 
 	function resetSearchRequiment_TB06030S() {		
 
-		console.log("resetSearchRequiment_TB06030S 실행~~~~");
 		$("#UPLOAD_FileList").html(""); // 테이블 리셋
 		resetInputValue($('div[data-menuid="/TB06030S"]'));
 
@@ -405,8 +403,7 @@ const TB06030Sjs = (function(){
 			success: function(data) {
 
 				var dealDetail = data;
-				console.log("prdtCd : "+dealDetail.prdtCd);
-				console.log(dealDetail);
+
 				let psblRsltnYn; //가결여부
 				psblRsltnYn= isEmpty(dealDetail.psblRsltnYn) ? "N" : dealDetail.psblRsltnYn;
 				
@@ -549,7 +546,7 @@ const TB06030Sjs = (function(){
 				
 				/** 출자정보 */
 				if(dealDetail.fincYn != null){ //출자정보가 조회되었다면
-					console.log("fincYn : "+dealDetail.fincYn);
+
 					//$('#TB06030S_fincDiv').css("display","block");
 					$("#TB06030S_fincYn").prop("checked", true);
 
@@ -731,7 +728,6 @@ const TB06030Sjs = (function(){
 
 	function registFinc(param) {
 		
-		console.log("출자정보 등록 시도1");
 		if (!checkParam()) {
 			return false;
 		}
@@ -766,7 +762,6 @@ const TB06030Sjs = (function(){
 		}
 		
 		
-		console.log("출자정보 등록 시도2");
 		$.ajax({
 			type: "POST",
 			url: "/TB06030S/registFinc",
@@ -775,7 +770,6 @@ const TB06030Sjs = (function(){
 			contentType: "application/json; charset=UTF-8",
 			success: function(data) {
 
-				console.log("출자정보 등록 성공");
 				getDealList();
 			}
 		});/* end of ajax*/
@@ -1483,7 +1477,6 @@ const TB06030Sjs = (function(){
 	function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF") || sessionStorage.getItem("isFromApvl")){
-			console.log("WF세션 있음");
 			var dealNo = sessionStorage.getItem("wfDealNo");
 			var dealNm = sessionStorage.getItem("wfDealNm");
 			var prdtCd = sessionStorage.getItem("wfPrdtCd");
@@ -1494,7 +1487,7 @@ const TB06030Sjs = (function(){
 			$("#TB06030S_prdtNm").val(prdtNm);
 			getDealList();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 	}

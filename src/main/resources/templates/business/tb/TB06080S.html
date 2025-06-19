@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="css">
 	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
@@ -34,23 +33,21 @@
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" id="TB06080S_rspl_empNo">
 									<span class="input-group-append">
-										<button type="button" class="btn btn-default"
-											onclick="callTB03022P('TB06080S_rspl')"><i
-												class="fa fa-search"></i></button>
+										<button type="button" class="btn btn-default" onclick="callTB03022P('TB06080S_rspl')">
+											<i class="fa fa-search"></i>
+										</button>
 									</span>
-									<input type="text" class="form-control" style="width:40px;" id="TB06080S_rspl_empNm"
-										readonly disabled>
+									<input type="text" class="form-control" style="width: 40px;" id="TB06080S_rspl_empNm" readonly disabled>
 								</div>
 								<label class="col-sm-1 col-form-label text-right">승인요청자</label>
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" id="TB06080S_rqst_empNo">
 									<span class="input-group-append">
-										<button type="button" class="btn btn-default"
-											onclick="callTB03022P('TB06080S_rqst')"><i
-												class="fa fa-search"></i></button>
+										<button type="button" class="btn btn-default" onclick="callTB03022P('TB06080S_rqst')">
+											<i class="fa fa-search"></i>
+										</button>
 									</span>
-									<input type="text" class="form-control" style="width:40px;" id="TB06080S_rqst_empNm"
-										readonly disabled>
+									<input type="text" class="form-control" style="width: 40px;" id="TB06080S_rqst_empNm" readonly disabled>
 								</div>
 								<label class="col-sm-1 col-form-label text-right">결재단계</label>
 								<div class="col-sm-1-5 input-group">
@@ -59,244 +56,238 @@
 									</select>
 								</div>
 								<div class="col-sm-1-5 text-right">
-									<button class="btn btn-primary" type="button" id=""
-										onclick="TB06080Sjs.inqTB06080S()"><i class="fa fa-search"></i>&nbsp;조회</button>
-									<button id="" class="btn btn-default" onclick="resetInputValue($(`div[data-menuid='/TB06080S']`)); resetPGgrids('TB06080S'); $('#decdStepDcd').val('04');"><i
-											class="fa fa-undo"></i>&nbsp;초기화</button>
+									<button class="btn btn-primary" type="button" id="" onclick="TB06080Sjs.inqTB06080S()">
+										<i class="fa fa-search"></i>&nbsp;조회
+									</button>
+									<button id="" class="btn btn-default" onclick="resetInputValue($(`div[data-menuid='/TB06080S']`)); resetPGgrids('TB06080S'); $('#decdStepDcd').val('04');">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+									</button>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="ibox" id="TB06080S_resultInputs">
-					<div class="ibox-content" style="min-height: 800px">
-						<div class="ibox">
-							<div class="ibox-title">
-								<div>
-									<h5>▶ 승인요청</h5>
+
+
+					<div class="ibox-content">
+						<div class="ibox" id="TB06080S_resultInputs">
+							<div class="ibox">
+								<div class="ibox-title">
+									<h5>▶&nbsp;승인요청</h5>
 								</div>
-							</div>
-							<div class="ibox mb-3">
 								<div class="ibox-content">
-									<div class="ibox">
-										<div id="gridApvlList"></div>
+									<div id="gridApvlList"></div>
+								</div>
+
+
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶&nbsp;승인요청 정보</h5>
 									</div>
-									<!-- row1 -->
-									<div class="row form-group form-inline text-right mb-1">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 control-label">책임자</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_chrrNm" readonly
-													disabled>
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default" onclick=""><i
-															class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" style="width:40px;"
-													id="TB06080S_chrrEno" readonly disabled>
-											</div>
-											<label class="col-sm-1 control-label">요청자</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_apvlRqstPNm" readonly
-													disabled>
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default" onclick=""><i
-															class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" style="width:40px;"
-													id="TB06080S_apvlRqstPEno" readonly disabled>
-											</div>
-											<div class="col-sm-4 text-right">
-												<button id="TB06080S_apvlPage" class="btn btn-warning" onclick="">결재화면이동</button>
+									<div class="ibox-content">
+
+										<!-- row1 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 control-label">책임자</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06080S_chrrNm" readonly disabled>
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="">
+															<i class="fa fa-search"></i>
+														</button>
+													</span>
+													<input type="text" class="form-control" style="width: 40px;" id="TB06080S_chrrEno" readonly disabled>
+												</div>
+												<label class="col-sm-1 control-label">요청자</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06080S_apvlRqstPNm" readonly disabled>
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="">
+															<i class="fa fa-search"></i>
+														</button>
+													</span>
+													<input type="text" class="form-control" style="width: 40px;" id="TB06080S_apvlRqstPEno" readonly disabled>
+												</div>
+												<div class="col-sm-4 text-right">
+													<button id="TB06080S_apvlPage" class="btn btn-warning" onclick="">결재화면이동</button>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row2 -->
-									<div class="row form-group form-inline text-right mb-1">
-										<div class="col-sm-12 form-group text-right">
-											<label class="col-sm-1 col-form-label text-right">결재단계</label>
-											<div class="col-sm-3 input-group">
-												<select class="form-control" name="TB06080S_decdStepDcd"
-													id="TB06080S_decdStepDcd" readonly disabled>
-												</select>
-											</div>
-											<label class="col-sm-1 control-label">승인요청일시</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_rqstDtm" value=""
-													readonly disabled>
-											</div>
-											<label class="col-sm-1 control-label">승인요청취소일시</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_rqstCnclDtm"
-													value="" readonly disabled>
+										<!-- row2 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group text-right">
+												<label class="col-sm-1 col-form-label text-right">결재단계</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" name="TB06080S_decdStepDcd" id="TB06080S_decdStepDcd" readonly disabled>
+													</select>
+												</div>
+												<label class="col-sm-1 control-label">승인요청일시</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06080S_rqstDtm" value="" readonly disabled>
+												</div>
+												<label class="col-sm-1 control-label">승인요청취소일시</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06080S_rqstCnclDtm" value="" readonly disabled>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row3 -->
-									<div class="row form-group form-inline text-right mb-1">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 control-label">종목코드</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_prdtCd" readonly
-													disabled>
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default" onclick=""><i
-															class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" style="width:40px;"
-													id="TB06080S_prdtNm" readonly disabled>
-											</div>
-											<label class="col-sm-1 control-label">Deal번호</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_dealNo" readonly
-													disabled>
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default" onclick=""><i
-															class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" style="width:40px;"
-													id="TB06080S_dealNm" readonly disabled>
+										<!-- row3 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 control-label">종목코드</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06080S_prdtCd" readonly disabled>
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="">
+															<i class="fa fa-search"></i>
+														</button>
+													</span>
+													<input type="text" class="form-control" style="width: 40px;" id="TB06080S_prdtNm" readonly disabled>
+												</div>
+												<label class="col-sm-1 control-label">Deal번호</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06080S_dealNo" readonly disabled>
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="">
+															<i class="fa fa-search"></i>
+														</button>
+													</span>
+													<input type="text" class="form-control" style="width: 40px;" id="TB06080S_dealNm" readonly disabled>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row4 -->
-									<div class="row form-group form-inline text-right mb-1">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 control-label">실행순번</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control text-right" id="TB06080S_excSeq" readonly
-													disabled>
-											</div>
-											<label class="col-sm-1 control-label">신청순번</label>
-											<div class="col-sm-3 text-left input-group">
-												<input type="text" class="form-control text-right" id="TB06080S_rqstSq" readonly
-													disabled>
-											</div>
-											<label class="col-sm-1 control-label">거래순번</label>
-											<div class="col-sm-3 text-left input-group">
-												<input type="text" class="form-control text-right" id="TB06080S_trSeq" readonly
-													disabled>
+										<!-- row4 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 control-label">실행순번</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control text-right" id="TB06080S_excSeq" readonly disabled>
+												</div>
+												<label class="col-sm-1 control-label">신청순번</label>
+												<div class="col-sm-3 text-left input-group">
+													<input type="text" class="form-control text-right" id="TB06080S_rqstSq" readonly disabled>
+												</div>
+												<label class="col-sm-1 control-label">거래순번</label>
+												<div class="col-sm-3 text-left input-group">
+													<input type="text" class="form-control text-right" id="TB06080S_trSeq" readonly disabled>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row5 -->
-									<div class="row form-group form-inline text-right">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 control-label">승인요청내용</label>
-											<div class="col-sm-11 input-group">
-												<textarea class="form-control" rows="1" id="TB06080S_apvlRqstCntn"
-													readonly disabled></textarea>
+										<!-- row5 -->
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 control-label">승인요청내용</label>
+												<div class="col-sm-11 input-group">
+													<textarea class="form-control" rows="1" id="TB06080S_apvlRqstCntn" readonly disabled></textarea>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row6 -->
-									<div class="row form-group form-inline text-right mb-1">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 control-label">화면번호</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_scrnNo" readonly
-													disabled>
-											</div>
-											<label class="col-sm-1 control-label">처리결과</label>
-											<div class="col-sm-3 input-group">
-												<select class="form-control" id="TB06080S_prcsRsltDcd" readonly
-													disabled>
-												</select>
+										<!-- row6 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 control-label">화면번호</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06080S_scrnNo" readonly disabled>
+												</div>
+												<label class="col-sm-1 control-label">처리결과</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB06080S_prcsRsltDcd" readonly disabled>
+													</select>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row7 -->
-									<div class="row form-group form-inline text-right">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 control-label">오류내용</label>
-											<div class="col-sm-11 input-group">
-												<textarea class="form-control" rows="1" id="TB06080S_errCntn" readonly
-													disabled></textarea>
+										<!-- row7 -->
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 control-label">오류내용</label>
+												<div class="col-sm-11 input-group">
+													<textarea class="form-control" rows="1" id="TB06080S_errCntn" readonly disabled></textarea>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-
+					</div>
+					<div class="ibox-content">
 						<div class="ibox" id="TB06080S_dsfcLists">
-							<div class="ibox-title">
-								<div>
-									<h5>▶ 결재정보</h5>
-								</div>
-							</div>
 							<div class="ibox">
+								<div class="ibox-title">
+									<h5>▶&nbsp;결재정보</h5>
+								</div>
 								<div class="ibox-content">
 									<div class="ibox">
 										<div id="gridGbckList"></div>
 									</div>
-									<!-- row1 -->
-									<div class="row form-group form-inline text-right mb-1">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 col-form-label text-right">결재순번</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control text-right" style="width:30px;"
-													id="TB06080S_decdSq" readonly disabled>
+								</div>
+								<div class="ibox">
+									<div class="ibox-title">
+										<h5>▶&nbsp;결재 정보</h5>
+									</div>
+									<div class="ibox-content">
+										<!-- row1 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 col-form-label text-right">결재순번</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control text-right" style="width: 30px;" id="TB06080S_decdSq" readonly disabled>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row2 -->
-									<div class="row form-group form-inline text-right mb-1">
-										<div class="col-sm-12 form-group text-right">
-											<label class="col-sm-1 col-form-label text-right">결재상태</label>
-											<div class="col-sm-3 input-group">
-												<select class="form-control" id="TB06080S_decdSttsDcd" readonly
-													disabled>
-													<!-- <option value=""></option> -->
-												</select>
-											</div>
-											<label class="col-sm-1 control-label">결재일시</label>
-											<div class="col-sm-3 input-group">
-												<input type="text" class="form-control" id="TB06080S_decdDtm" value=""
-													readonly disabled>
-											</div>
-											<label class="col-sm-1 control-label">결재자</label>
-											<div class="col-sm-3 input-group date">
-												<input type="text" class="form-control" id="TB06080S_dcfcEnm"
-													readonly disabled>
-												<span class="input-group-append">
-													<button type="button" class="btn btn-default" onclick=""><i
-															class="fa fa-search"></i></button>
-												</span>
-												<input type="text" class="form-control" style="width:40px;"
-													id="TB06080S_dcfcEno" readonly disabled>
+										<!-- row2 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group text-right">
+												<label class="col-sm-1 col-form-label text-right">결재상태</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB06080S_decdSttsDcd" readonly disabled>
+														<!-- <option value=""></option> -->
+													</select>
+												</div>
+												<label class="col-sm-1 control-label">결재일시</label>
+												<div class="col-sm-3 input-group">
+													<input type="text" class="form-control" id="TB06080S_decdDtm" value="" readonly disabled>
+												</div>
+												<label class="col-sm-1 control-label">결재자</label>
+												<div class="col-sm-3 input-group date">
+													<input type="text" class="form-control" id="TB06080S_dcfcEnm" readonly disabled>
+													<span class="input-group-append">
+														<button type="button" class="btn btn-default" onclick="">
+															<i class="fa fa-search"></i>
+														</button>
+													</span>
+													<input type="text" class="form-control" style="width: 40px;" id="TB06080S_dcfcEno" readonly disabled>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row3 -->
-									<div class="row form-group form-inline text-right">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 control-label">결재자주석</label>
-											<div class="col-sm-11 input-group">
-												<textarea class="form-control" rows="1" id="TB06080S_dcfcAnnoCntn"
-													readonly disabled></textarea>
+										<!-- row3 -->
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 control-label">결재자주석</label>
+												<div class="col-sm-11 input-group">
+													<textarea class="form-control" rows="1" id="TB06080S_dcfcAnnoCntn" readonly disabled></textarea>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row4 -->
-									<div class="row form-group form-inline text-right mb-1">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 control-label">반려여부</label>
-											<div class="col-sm-3 input-group">
-												<select class="form-control" id="TB06080S_rjctYn" readonly disabled>
-													<option value="N">NO (N)</option>
-													<option value="Y">YES (Y)</option>
-												</select>
+										<!-- row4 -->
+										<div class="row form-group form-inline text-right mb-1">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 control-label">반려여부</label>
+												<div class="col-sm-3 input-group">
+													<select class="form-control" id="TB06080S_rjctYn" readonly disabled>
+														<option value="N">NO (N)</option>
+														<option value="Y">YES (Y)</option>
+													</select>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- row5 -->
-									<div class="row form-group form-inline text-right">
-										<div class="col-sm-12 form-group">
-											<label class="col-sm-1 control-label">반려사유</label>
-											<div class="col-sm-11 input-group">
-												<textarea class="form-control" rows="1" id="TB06080S_rjctRsnCntn"
-													readonly disabled></textarea>
+										<!-- row5 -->
+										<div class="row form-group form-inline text-right">
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-1 control-label">반려사유</label>
+												<div class="col-sm-11 input-group">
+													<textarea class="form-control" rows="1" id="TB06080S_rjctRsnCntn" readonly disabled></textarea>
+												</div>
 											</div>
 										</div>
 									</div>

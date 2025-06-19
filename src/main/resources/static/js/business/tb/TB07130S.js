@@ -254,7 +254,7 @@ const TB07130Sjs = (function () {
         if (data.length > 0) {
           detail.setData(data);
           detail.getData();
-          console.log(data);
+
         } else {
           Swal.fire({
             icon: "warning",

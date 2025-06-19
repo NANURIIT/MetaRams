@@ -1,3 +1,18 @@
+/**
+ * ====================================
+ * 파일명  : TB03020S.js
+ * 설 명   : Deal정보 등록 관련 JavaScript
+ *
+ * 화면 ID     : TB03020S
+ * 담당 기능   : Deal정보 조회, Deal정보 등록 등
+ *
+ * @Author      : nanuri
+ * @Date        : 2025.05.27
+ * @Version     : 1.0.0
+ * @History     :
+ *   - 2025.05.27 nanuri 최초작성
+ * ====================================
+ */
 const TB03020Sjs = (function () {
 
 	var loginUserId = '';
@@ -97,7 +112,6 @@ const TB03020Sjs = (function () {
 	// }
 
 	function urlSetDealInfo() {
-		console.log("urlSetDealInfo!!!");
 
 		let dealNo = sessionStorage.getItem("dealNo");
 		let dealNm = sessionStorage.getItem("dealNm");
@@ -162,8 +176,6 @@ const TB03020Sjs = (function () {
 				data: inputParam,
 				dataType: "json",
 				success: function (data) {
-					console.log('data : ', data);
-					
 
 					// 조회된 정보가 없을시
 					if (!data.dealNo) {
@@ -289,7 +301,7 @@ const TB03020Sjs = (function () {
 			// 해당 옵션의 텍스트를 `input` 필드에 바인딩
 			$inputField.val($selectedOption.text());
 		} else {
-			console.warn('해당 값에 매칭되는 옵션이 없습니다.');
+
 		}
 
 	}
@@ -310,7 +322,7 @@ const TB03020Sjs = (function () {
 			// 옵션의 `value`를 반환
 			return $selectedOption.val();
 		} else {
-			console.warn('해당 텍스트에 매칭되는 옵션이 없습니다.');
+
 			return null; // 매칭되는 값이 없을 경우 null 반환
 		}
 	}
@@ -498,7 +510,7 @@ const TB03020Sjs = (function () {
 			success: function (data) {
 				$("#key1").val(data);
 			}, error: function (e) {
-				console.log("getDealNo error ==> ::" + e.status);
+
 			}
 		});
 	}
@@ -611,7 +623,7 @@ const TB03020Sjs = (function () {
 					Swal.fire({
 						icon: 'success'
 						, title: "Success!"
-						, text: "딜 정보를 저장하는데 성공하였습니다."
+						, text: "저장에 성공하였습니다."
 						, confirmButtonText: "확인"
 					}).then((data) => {
 						getBscDealDetail();
@@ -621,7 +633,7 @@ const TB03020Sjs = (function () {
 					Swal.fire({
 						icon: 'error'
 						, title: "Error!"
-						, text: "딜 정보를 저장하는데 실패하였습니다."
+						, text: "저장에 실패하였습니다."
 						, confirmButtonText: "확인"
 					});
 				}
@@ -723,7 +735,6 @@ const TB03020Sjs = (function () {
 				enoPList.push(enoInfo);
 			}
 		}
-		//console.log(pqGridObjEnopList.pdata);
 
 		var paramDto = {
 			"dealNo": dealNo
@@ -1023,89 +1034,7 @@ const TB03020Sjs = (function () {
 
 	}
 
-	// 결재승인 (심사요청)
-	function cnfmDeal(rtnYn) {
-
-		if (validateDealInfo()) {
-
-			var wfId = sessionStorage.getItem("wfID_TB02010S");
-
-			var jsonParam = parameterSetting();
-
-			var paramData = JSON.parse(jsonParam);
-
-			paramData["wfId"] = wfId;
-			paramData["rtnYn"] = rtnYn;
-
-			console.log(paramData);
-
-			$.ajax({
-				type: "POST",
-				url: "/TB03020S/cnfmDeal",
-				contentType: "application/json",
-				data: JSON.stringify(paramData),
-				dataType: "text",
-				success: function (data) {
-
-					// $('#TB03020S_ibDealNo').val(data);
-					Swal.fire({
-						icon: 'success'
-						, title: "Success!"
-						, text: "딜 정보 결재에 성공하였습니다."
-						, confirmButtonText: "확인"
-					}).then((data) => {
-
-					});
-				},
-				error: function (data) {
-					Swal.fire({
-						icon: 'error'
-						, title: "Error!"
-						, text: "딜 정보 결재에 실패하였습니다."
-						, confirmButtonText: "확인"
-					});
-				}
-			});
-		}
-	}
-
-	// 반송
-	function rejtDeal() {
-
-		ibDealNo = $('#TB03020S_ibDealNo').val();
-
-		var paramData = {
-			"ibDealNo": ibDealNo
-		};
-
-		$.ajax({
-			type: "POST",
-			url: "/TB03020S/rejtDeal",
-			data: paramData,
-			dataType: "json",
-			success: function () {
-				Swal.fire({
-					icon: 'success'
-					, title: "Success!"
-					, text: "반송이 완료되었습니다."
-					, confirmButtonText: "확인"
-				}).then(() => {
-					getBscDealDetail();
-				});
-			},
-			error: function () {
-				Swal.fire({
-					icon: 'error'
-					, title: "Error!"
-					, text: "반송이 실패하였습니다."
-					, confirmButtonText: "확인"
-				});
-			}
-		});
-
-	}
-
-	// 딜번호 조회 팝업 키다운 호출
+		// 딜번호 조회 팝업 키다운 호출
 	$('#TB03020S_ibDealNo').keydown(function (e) {
 		if (e.originalEvent.key === 'Enter' && $("#TB03020S_ibDealNo").length < 30) {
 			//callAS02020P('TB03020S');
@@ -1252,7 +1181,6 @@ const TB03020Sjs = (function () {
 		, tabCtrl: tabCtrl
 		, mngPListDelRow: mngPListDelRow
 		, saveDeal: saveDeal
-		, cnfmDeal: cnfmDeal
 		, urlSetDealInfo: urlSetDealInfo
 	}
 })();

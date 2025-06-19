@@ -9,8 +9,8 @@ const TB05040Sjs = (function () {
     let arrPqGridObj = [
       // 협의체 결과현황
       {
-        height: 150,
-        maxHeight: 150,
+        height: 190,
+        maxHeight: 190,
         id: "gridIbDealList",
         colModel: colDealListInfo,
       },
@@ -289,7 +289,7 @@ const TB05040Sjs = (function () {
       dataType: "json",
       success: function (data) {
 
-        if ( data.cnsbDcd ) {
+        if ( data.cnsbDcd == undefined || data.cnsbDcd == "" ) {
           Swal.fire({
             icon: 'info'
             , title: 'Info!'

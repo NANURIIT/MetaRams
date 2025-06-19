@@ -126,57 +126,57 @@ const TB04010Sjs = (function () {
     let arrPqGridObj = [
       // 딜정보
       {
-        height: 150,
-        maxHeight: 150,
+        height: 100,
+        maxHeight: 100,
         id: "gridDealListInfo",
         colModel: colDealListInfo,
       },
       // 관련문서
       {
-        height: 150,
-        maxHeight: 150,
+        height: 130,
+        maxHeight: 130,
         id: "gridDocInfo",
         colModel: colDocInfo,
       },
       // (보증)기초자산
       {
-        height: 150,
-        maxHeight: 150,
+        height: 130,
+        maxHeight: 130,
         id: "gridAssetInfo",
         colModel: colAssetInfo,
       },
       // 거래상대방
       {
-        height: 150,
-        maxHeight: 150,
+        height: 130,
+        maxHeight: 130,
         id: "gridCncCmpnyInfo",
         colModel: colCncCmpnyInfo,
       },
       // 내부등급
       {
-        height: 150,
-        maxHeight: 150,
+        height: 130,
+        maxHeight: 130,
         id: "gridInsGrdInfo",
         colModel: colInsGrdInfo,
       },
       // 담보
       {
-        height: 150,
-        maxHeight: 150,
+        height: 130,
+        maxHeight: 130,
         id: "gridMrtgInfo",
         colModel: colMrtgInfo,
       },
       // 보증
       {
-        height: 150,
-        maxHeight: 150,
+        height: 130,
+        maxHeight: 130,
         id: "gridEnsrInfo",
         colModel: colEnsrInfo,
       },
       // 책임준공
       {
-        height: 150,
-        maxHeight: 150,
+        height: 130,
+        maxHeight: 130,
         id: "gridCmplInfo",
         colModel: colCmplInfo,
       },
@@ -1705,7 +1705,7 @@ const TB04010Sjs = (function () {
    */
   function onChangeInvstGdsLdvdCd() {
     $("#TB04010S_I029").on("change", function () {
-      console.log("TB04010S_I029 : ", $("#TB04010S_I029").val());
+
       var selectedLdvdCd = $(this).val(); // 선택된 대분류 코드 가져오기
       changeInvstGdsMdvdCd(selectedLdvdCd);
     });
@@ -1854,27 +1854,70 @@ const TB04010Sjs = (function () {
 
     // 유효성검사
     if (isEmpty($("#TB04010S_selectedDealNo").val())) {
-      option.text = "Deal정보 조회 후 다시 시도해주세요.";
-      openPopup(option);
-      return;
+      // option.text = "Deal정보 조회 후 다시 시도해주세요.";
+      // openPopup(option);
+      // return;
+
+      Swal.fire({
+				icon: 'warning'
+				, title: "Warning!"
+				, text: "Deal정보 조회 후 다시 시도해주세요."
+				, confirmButtonText: "확인"
+			}).then(() => {
+				$('#TB04010S_selectedDealNo').focus();
+        return;
+			});
     }
 
     if (isEmpty($("#TB04010S_L007").val())) {
-      option.text = "부수안건구분코드를 선택해주세요.";
-      openPopup(option);
+      // option.text = "부수안건구분코드를 선택해주세요.";
+      // openPopup(option);
+      // return false;
+
+      Swal.fire({
+				icon: 'warning'
+				, title: "Warning!"
+				, text: "부수안건구분코드를 선택해주세요."
+				, confirmButtonText: "확인"
+			}).then(() => {
+				$('#TB04010S_L007').focus();
+			});
       return false;
     }
 
     if (isEmpty($("#TB04010S_R014").val())) {
-      option.text = "신규/재부의 구분을 선택해주세요.";
-      openPopup(option);
-      return false;
+      // option.text = "신규/재부의 구분을 선택해주세요.";
+      // openPopup(option);
+      // return false;
+
+      Swal.fire({
+				icon: 'warning'
+				, title: "Warning!"
+				, text: "신규/재부의 구분을 선택해주세요."
+				, confirmButtonText: "확인"
+			}).then(() => {
+				$('#TB04010S_R014').focus();
+			});
+      return;
     }
 
     if (isEmpty($("#ibDealNm").val())) {
-      option.text = "안건명을 입력해주세요.";
-      openPopup(option);
-      return false;
+      // option.text = "안건명을 입력해주세요.";
+      // openPopup(option);
+      // $('#ibDealNm').focus();
+      // return false;
+
+      Swal.fire({
+				icon: 'warning'
+				, title: "Warning!"
+				, text: "안건명을 입력해주세요."
+				, confirmButtonText: "확인"
+			}).then(() => {
+				setTimeout(() => {
+          $('#ibDealNm').focus();
+        }, 10);
+			});
+      return;
     }
 
     if (isEmpty($("#TB04010S_R004").val())) {
@@ -2117,7 +2160,7 @@ const TB04010Sjs = (function () {
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: "Deal정보를 저장하였습니다.",
+          text: "저장에 성공하였습니다.",
           confirmButtonText: "확인",
         }).then((result) => {
           $("#TB04010S_ibDealNo").val($("#TB04010S_selectedDealNo").val());
@@ -2145,7 +2188,7 @@ const TB04010Sjs = (function () {
         Swal.fire({
           icon: "error",
           title: "Error!",
-          text: "Deal정보를 저장하는데 실패하였습니다.",
+          text: "저장에 실패하였습니다.",
           confirmButtonText: "확인",
         });
       },
@@ -2432,7 +2475,7 @@ const TB04010Sjs = (function () {
     var aplyExrt = $("#TB04010S_aplyExrt").val().replaceAll(",", ""); // 환율
     var crevAmt = $("#TB04010S_crevAmt").val().replaceAll(",", ""); // 기초자산평가액(원)
     var sn = Number($("#TB04010S_tab3_sn").val()); // 일련번호
-    console.log(crevAmt);
+
     var option = {};
     option.title = "Warning";
     option.type = "warning";
@@ -3309,8 +3352,6 @@ const TB04010Sjs = (function () {
     var mtrDcd = $("#TB04010S_L007").val(); // 부수안건
     var jdgmDcd = $("#TB04010S_R014").val(); // 리스크심사구분
     var sn = Number($("#TB04010S_tab6_sn").val()); // 일련번호
-
-    console.log("datacheck: ", dealNo, mtrDcd, sn);
 
     var option = {};
     option.title = "Warning";

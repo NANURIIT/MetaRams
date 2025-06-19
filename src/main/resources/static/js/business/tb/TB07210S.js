@@ -147,7 +147,7 @@ const TB07210Sjs = (function () {
             {
                 title: "신청자",
                 dataType: "string",
-                dataIndx: "apvlRqstPEno",
+                dataIndx: "apvlRqstPnm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
@@ -159,6 +159,11 @@ const TB07210Sjs = (function () {
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
+                render: function (ui) {
+                    let val = ui.cellData;
+                    if (!val) return "";
+                    return val.replace("T", " ").substring(0, 19);
+                }
             },
             {
                 title: "결재구분",
@@ -167,6 +172,12 @@ const TB07210Sjs = (function () {
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
+            },
+            {
+                title: "신청자사번",
+                dataType: "string",
+                dataIndx: "apvlRqstPEno",
+                hidden: true,
             },
         ]
 
@@ -211,6 +222,11 @@ const TB07210Sjs = (function () {
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
+                render: function (ui) {
+                    let val = ui.cellData;
+                    if (!val) return "";
+                    return val.replace("T", " ").substring(0, 19);
+                }
             },
             {
                 title: "취소사유",
@@ -297,7 +313,6 @@ const TB07210Sjs = (function () {
             dataType: "json",
             data: JSON.stringify(paramData),
             success: function (data) {
-                console.log(data);
                 
                 if (data.length > 0) {
                     $('#TB07210S_spcDecdGrid').pqGrid('instance').setData(data);
@@ -311,7 +326,7 @@ const TB07210Sjs = (function () {
                 }
             },
             error: function (response) {
-                // 에러남 ㅋㅋ
+
                 Swal.fire({
                     icon: 'error'
                     , title: '조회된 정보가 없습니다!'
@@ -336,7 +351,6 @@ const TB07210Sjs = (function () {
             dataType: "json",
             data: JSON.stringify(paramData),
             success: function (data) {
-                console.log(data);
                 
                 if (data.length > 0) {
                     $('#TB07210S_spcDecdDetail').pqGrid('instance').setData(data);
@@ -350,7 +364,7 @@ const TB07210Sjs = (function () {
                 }
             },
             error: function (response) {
-                // 에러남 ㅋㅋ
+
                 Swal.fire({
                     icon: 'error'
                     , title: '조회된 정보가 없습니다!'

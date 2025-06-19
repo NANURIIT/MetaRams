@@ -228,12 +228,13 @@ const TB10610Sjs = (function () {
 
           // pqgrid_rowselect
           batSchM.on("rowClick", function (evt, ui) {
-            let al = ui.addList;
-			pqGridSelectHandler ( ui.rowIndx, "grd_batSchM" );
 
-            if (al.length > 0) {
+            let al = ui.rowData;
+
+			      pqGridSelectHandler ( ui.rowIndx, "grd_batSchM" );
+
               /*let rd = al[0].rowData;*/
-			  let rd = batSchM.pdata[ui.rowIndx]
+			        let rd = batSchM.pdata[ui.rowIndx]
               let jobId = rd.jobId;
               let jobName = rd.jobName;
               let curDate = rd.curDate;
@@ -271,21 +272,21 @@ const TB10610Sjs = (function () {
                 true
               );
 
-            } else {
-              $("#TB10610S_exc_curDate").val("");
-              $("#TB10610S_exc_jobId").val("");
-              $("#TB10610S_exc_jobName").val("");
-              $("#TB10610S_exc_jobSts").val("");
-              $("#TB10610S_exc_cfm").val("");
-              // $('#TB10610S_exc_jobSts').prop('disabled', false)
-              $("#btnConfTxt").text("확인");
-              $("#btnConfirm").prop("disabled", false);
-              $('input[name="TB10610S_batchCmdDcd"]').prop("disabled", false);
-              $('input[name="TB10610S_batchCmdDcd"]').prop("checked", false);
-              $('#btnExc').prop('disabled', true)
-              radioBtnController("");
-              tempObj = {};
-            }
+            // else {
+            //   $("#TB10610S_exc_curDate").val("");
+            //   $("#TB10610S_exc_jobId").val("");
+            //   $("#TB10610S_exc_jobName").val("");
+            //   $("#TB10610S_exc_jobSts").val("");
+            //   $("#TB10610S_exc_cfm").val("");
+            //   // $('#TB10610S_exc_jobSts').prop('disabled', false)
+            //   $("#btnConfTxt").text("확인");
+            //   $("#btnConfirm").prop("disabled", false);
+            //   $('input[name="TB10610S_batchCmdDcd"]').prop("disabled", false);
+            //   $('input[name="TB10610S_batchCmdDcd"]').prop("checked", false);
+            //   $('#btnExc').prop('disabled', true)
+            //   radioBtnController("");
+            //   tempObj = {};
+            // }
           });
 
           // batSchM.on("rowUnSelect", function (evt, ui) {

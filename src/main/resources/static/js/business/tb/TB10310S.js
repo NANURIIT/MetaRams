@@ -237,8 +237,6 @@ const TB10310Sjs = (function () {
       param = '%'
     }
 
-    console.log(param);
-
     $.ajax({
       method: "POST",
       url: "/TB10310S/selectMenuListFromTB10310S",
@@ -359,7 +357,7 @@ const TB10310Sjs = (function () {
         if (data > 0) {
           Swal.fire({
             icon: 'success'
-            , title: '저장썽공!'
+            , title: '저장성공!'
           })
         }
         // 업데이트 실패시

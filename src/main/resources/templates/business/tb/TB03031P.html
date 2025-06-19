@@ -21,27 +21,31 @@
 				<div class="modal-header metis-modal-header">
 					<h4 class="modal-title" id="modal_title">RM활동 신규등록</h4>
 					<div class="col-sm-1 text-right">
-                   		<button type="button" class="btn btn-default" onclick="modalClose_TB03031P();"><i class="fa fa-times"></i></button>
-                   	</div>
+						<button type="button" class="btn btn-default" onclick="modalClose_TB03031P();">
+							<i class="fa fa-times"></i>
+						</button>
+					</div>
 				</div>
 				<div class="modal-body">
-					<input type="hidden" name="prefix" id="prefix_TB03031P" value=""/>
+					<input type="hidden" name="prefix" id="prefix_TB03031P" value="" />
 					<div class="row">
 						<div class="col-sm-12 b-r">
 							<div class="ibox-content">
-								 <div class="ibox">
-								 	<div class="ibox-title">
+								<div class="ibox">
+									<div class="ibox-title">
 										<h5>▶ RM정보</h5>
 									</div>
-					    			<div class="ibox-content text-right mb-2">
-					    				<!-- row1 -->
-					    				<div class="row">
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label"><span class="req"></span>업체명</label>
-								                    <div class="col-sm-8">
+									<div class="ibox-content text-right mb-2">
+										<!-- row1 -->
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">
+														<span class="req"></span>업체명
+													</label>
+													<div class="col-sm-8">
 														<div class="input-group">
-															<input type="text" class="form-control" id="TB03031P_rm_entpRnm" >
+															<input type="text" class="form-control" id="TB03031P_rm_entpRnm">
 															<input type="hidden" class="form-control" id="TB03031P_rmSq">
 															<input type="hidden" class="form-control" id="TB03031P_rm_entpCd">
 															<span class="input-group-append">
@@ -51,108 +55,131 @@
 															</span>
 														</div>
 													</div>
-			    								</div>
-					    					</div>
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label">법인등록번호</label>
-					                            	<div class="col-sm-8"><input type="text" class="form-control" id="TB03031P_rm_corpRgstNo" placeholder="법인번호 13자리" ></div>
-			    								</div>
-					    					</div>
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label"></span>사업자등록번호</label>
-					                            	<div class="col-sm-8"><input type="text" class="form-control" id="TB03031P_rm_bsnsRgstNo" placeholder="사업자등록번호 10자리"></div>
-			    								</div>
-					    					</div>
-					    				</div>
-					    				<!-- row2 -->
-					    				<div class="row">
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label"><span class="req"></span>고객담당자</label>
-					                            	<div class="col-sm-8"><input type="text" class="form-control" id="TB03031P_cstmNm" ></div>
-			    								</div>
-					    					</div>
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label">고객연락처</label>
-					                            	<div class="col-sm-8"><input type="text" class="form-control" id="TB03031P_cstmPhNo" placeholder="-를 제외하고 입력해주세요" ></div>
-			    								</div>
-					    					</div>
-					    				</div>
-					    				<!-- row3 -->
-					    				<div class="row">
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label"><span class="req"></span>미팅일자</label>
-					                            	<div class="col-sm-8">
-					                            		<div class="input-group date">
-															<input type="text" class="form-control" id="TB03031P_metDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" ><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-														</div>
-					                            	</div>
-			    								</div>
-					    					</div>
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label">미팅시간</label>
-					                            	<div class="col-sm-8">
-					                           			<div class="input-group clockpicker" data-autoclose="true">
-							                                <input type="text" class="form-control" value="" id="TB03031P_metTm" oninput="this.value = this.value.replace(/[^0-9:]/g, '');">
-							                                <span class="input-group-addon">
-							                                    <span class="fa fa-clock-o"></span>
-							                                </span>
-							                            </div>
-					                            	</div>
-			    								</div>
-					    					</div>
+												</div>
+											</div>
+
 										</div>
-					    				<!-- row4 -->
-					    				<div class="row">
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label"><span class="req"></span>미팅제목</label>
-			                            			<div class="col-sm-8">
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">법인등록번호</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" id="TB03031P_rm_corpRgstNo" placeholder="법인번호 13자리">
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">
+														</span>사업자등록번호
+													</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" id="TB03031P_rm_bsnsRgstNo" placeholder="사업자등록번호 10자리">
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- row2 -->
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">
+														<span class="req"></span>고객담당자
+													</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" id="TB03031P_cstmNm">
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">고객연락처</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" id="TB03031P_cstmPhNo" placeholder="-를 제외하고 입력해주세요">
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- row3 -->
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">
+														<span class="req"></span>미팅일자
+													</label>
+													<div class="col-sm-8">
+														<div class="input-group date">
+															<input type="text" class="form-control" id="TB03031P_metDt" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
+															<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">미팅시간</label>
+													<div class="col-sm-8">
+														<div class="input-group clockpicker" data-autoclose="true">
+															<input type="text" class="form-control" value="" id="TB03031P_metTm" oninput="this.value = this.value.replace(/[^0-9:]/g, '');">
+															<span class="input-group-addon"> <span class="fa fa-clock-o"></span>
+															</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- row4 -->
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">
+														<span class="req"></span>미팅제목
+													</label>
+													<div class="col-sm-8">
 														<input type="text" class="form-control" id="TB03031P_metTitl">
-			                            			</div>
-			    								</div>
-					    					</div>
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label"><span class="req"></span>미팅목적</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">
+														<span class="req"></span>미팅목적
+													</label>
 													<div class="col-sm-8">
 														<input type="text" class="form-control" id="TB03031P_metPrps">
 													</div>
-			    								</div>
-					    					</div>
-					    				</div>
-					    				<!-- row6 -->
-					    				<div class="row">
-					    					<div class="col-sm-12">
-			    								<div class="form-group row">
-			    									<label class="col-sm-2 col-form-label"><span class="req"></span>미팅내용</label>
+												</div>
+											</div>
+										</div>
+										<!-- row6 -->
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group row">
+													<label class="col-sm-2 col-form-label">
+														<span class="req"></span>미팅내용
+													</label>
 													<div class="col-sm-10">
 														<div class="input-group">
-															<textarea class="form-control" rows="" cols="" id="TB03031P_metCntnt" ></textarea>
+															<textarea class="form-control" rows="" cols="" id="TB03031P_metCntnt"></textarea>
 														</div>
 													</div>
-			    								</div>
-					    					</div>
-					    				</div>
-					    				<!-- row7 -->
-					    				<div class="row">
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label">담당부서</label>
-			                            			<div class="col-sm-8">
+												</div>
+											</div>
+										</div>
+										<!-- row7 -->
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">담당부서</label>
+													<div class="col-sm-8">
 														<input type="text" class="form-control" id="TB03031P_dprtNm" readonly>
 														<input type="hidden" class="form-control" id="TB03031P_dprtCd" readonly>
-			                            			</div>
-			    								</div>
-					    					</div>
-					    					<div class="col-sm-6">
-			    								<div class="form-group row">
-			    									<label class="col-sm-4 col-form-label">담당자</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group row">
+													<label class="col-sm-4 col-form-label">담당자</label>
 													<div class="col-sm-8 input-group">
 														<input type="text" class="form-control" id="TB03031P_empNm" readonly>
 														<input type="hidden" id="TB03031P_eno">
@@ -162,22 +189,28 @@
 															</button>
 														</span>
 													</div>
-			    								</div>
-					    					</div>
-					    				</div>
-					    			</div>
+												</div>
+											</div>
+										</div>
+									</div>
 									<div class="row px-1">
-					    				<div class="col-sm-12 text-right">
-											<button class="btn btn-default" type="button" onclick="modalReset();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
-					    					<button class="btn btn-success" type="button" onclick="registRmSave();"><i class="fa fa-save"></i>&nbsp;저장</button>
-					    				</div>
-					    			</div>
-					    		</div><!-- ibox -->
-				    		</div>
+										<div class="col-sm-12 text-right">
+											<button class="btn btn-default" type="button" onclick="modalReset();">
+												<i class="fa fa-undo"></i>&nbsp;초기화
+											</button>
+											<button class="btn btn-success" type="button" onclick="registRmSave();">
+												<i class="fa fa-save"></i>&nbsp;저장
+											</button>
+										</div>
+									</div>
+								</div>
+								<!-- ibox -->
+							</div>
 						</div>
 					</div>
-				</div> 
-			</div><!-- end of modal_content -->
+				</div>
+			</div>
+			<!-- end of modal_content -->
 		</div>
 	</div>
 </th:block>

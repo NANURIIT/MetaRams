@@ -1,3 +1,19 @@
+/**
+ * ====================================
+ * 파일명  : TB06010S.js
+ * 설 명   : 대출채권/채무보증 정보등록(딜심사기본) 상세화면 관련 JavaScript
+ *
+ * 화면 ID     : TB06010SS
+ * 담당 기능   : 대출채권/채무보증 정보등록(딜심사기본) 조회, 입력 필드 초기화, pqGrid 제어 등
+ * 
+ * @Author      : nanuri
+ * @Date        : 2025.05.27
+ * @Version     : 1.0.0
+ * @History     :
+ *   - 2025.05.27 nanuri 최초작성
+ * ====================================
+ */
+
 const TB06010Sjs = (function(){
 	var ldvdCd = [];
 	var mdvdCd = [];
@@ -29,7 +45,8 @@ const TB06010Sjs = (function(){
 		onChangeEprzCrdlPrdtLclsCd(); // 기업여신상품대분류코드 선택이벤트
 		onChangeEprzCrdlPrdtMdclCd(); // 기업여신상품중분류코드 선택이벤트
 		pqGrid();
-
+        
+        //상품대분류구분 변경시
 		$('#TB06010S_E022').on('change', function() {
 			// alert($('#TB06010S_E022').val());
 			var prdtLclsCd = $('#TB06010S_E022').val(); //투자상품 대분류 코드
@@ -56,14 +73,40 @@ const TB06010Sjs = (function(){
 				$('#TB06010S_tabs5Save').attr('disabled', false);
 
 			}
+			
+
+			$('#TB06010S_I002').val(prdtLclsCd);
 		});
 
+        //중도상환수수료 버튼 활성화 
+        SetEarlyRepayFeeBtn();
+        
 		resetSearchRequiment();
 		
 		getDealInfoFromWF();
 
 	});
 
+    // 중도상환여부에 따른 
+    // 중도상환수수료 버튼 활성화/비활성화 
+    function SetEarlyRepayFeeBtn(){
+            
+            //Default
+            $('#TB06010S_earlyRepayFeeBtn').attr('disabled',true);
+
+
+            $('input[type="radio"][name="TB06010S_earlyRepayYn"]').on('click',function(){
+
+                var chkValue = $('input[type="radio"][name="TB06010S_earlyRepayYn"]:checked').val();
+                
+                // 중도상환여부에 따른 중도상환수수료버튼 활성화/비활성 
+                if (chkValue === 'Y'){
+                    $('#TB06010S_earlyRepayFeeBtn').attr('disabled', false);
+                }else{
+                    $('#TB06010S_earlyRepayFeeBtn').attr('disabled', true);
+                }
+            });
+    }
 
 	function loginUserSet(){
 		let empNo  = $('#userEno').val();   
@@ -934,6 +977,9 @@ const TB06010Sjs = (function(){
 					$('div[data-menuid="/TB06010S"] #UPLOAD_AddFile').attr("disabled", false);
 					$('div[data-menuid="/TB06010S"] #UPLOAD_DelFiles').attr("disabled", false);
 				}
+				
+
+                
 				chkDecdStep("TB06010S");
 			}
 		});/* end of ajax*/
@@ -963,12 +1009,21 @@ const TB06010Sjs = (function(){
 				$('#TB06010S_prnaDfrPrdMnum').val(repayInterestInfo.prnaDfrPrdMnum);									// 원금거치기간개월수
 				$('#TB06010S_istmDtmRdmpAmt').val(Number(handleNullData(repayInterestInfo.istmDtmRdmpAmt)).toLocaleString());	// 만기상환금액(할부일시상환금액)
 				
-				if('Y' == repayInterestInfo.mdwyRdmpYn){
-					$("input:radio[name = 'TB06010S_mdwyRdmpYn']:input[value='Y']").attr("checked", true);				// 중도상환여부
+				if('Y' == repayInterestInfo.earlyRepayYn){
+					$("input:radio[name = 'TB06010S_earlyRepayYn']:input[value='Y']").attr("checked", true);				// 중도상환여부
 				}else {
-					$("input:radio[name = 'TB06010S_mdwyRdmpYn']:input[value='N']").attr("checked", true);				// 중도상환여부
+					$("input:radio[name = 'TB06010S_earlyRepayYn']:input[value='N']").attr("checked", true);				// 중도상환여부
 				}
-				
+
+                 // 중도상환여부에 따른 중도상환수수료버튼 활성화/비활성 				
+				 var chkValue = $('input[type="radio"][name="TB06010S_earlyRepayYn"]:checked').val();
+
+                 if (chkValue === 'Y'){
+                     $('#TB06010S_earlyRepayFeeBtn').attr('disabled', false);
+                 }else{
+                     $('#TB06010S_earlyRepayFeeBtn').attr('disabled', true);
+                 }
+                
 				//최초이자수령일자, 여부 확인
 				
 				/*if('Y' == repayInterestInfo.intrHdwtClcYn){
@@ -1019,15 +1074,21 @@ const TB06010Sjs = (function(){
 				//location.reload();
 			});
 		
-			return false;
+			return ;
 		}else if(prnaRdmpFrqcMnum === '0' || isEmpty(prnaRdmpFrqcMnum)){
 			Swal.fire({
 				icon: 'warning'
 				, title: "Warning!"
-				, text: '상환주기를 입력해주세요.'
+				, text: '상환구분/금리정보Tab]상환주기를 입력해주세요.'
 				, confirmButtonText: "확인"
 			}).then((result) => {
 				//location.reload();
+				if(result.isConfirmed){
+                     setTimeout(() => {
+                    $('#TB06010S_prnaRdmpFrqcMnum').focus();
+                     }, 100); // blur보다 늦게 실행되도록
+
+                }
 			});
 
 			return false;
@@ -1035,55 +1096,66 @@ const TB06010Sjs = (function(){
 			Swal.fire({
 				icon: 'warning'
 				, title: "Warning!"
-				, text: '기준금리를 입력해주세요.'
+				, text: '상환구분/금리정보Tab]변동금리기준금리를 입력해주세요.'
+				
 				, confirmButtonText: "확인"
 			}).then((result) => {
 				//location.reload();
+				if(result.isConfirmed){
+                    $('#TB06010S_fxnIntrt').focus();
+                    
+                }
 			});
 
-			return false;
+			return;
 		}else if(aictStdrIntrtKndCd != '0' && (isEmpty(intrCngeFrqcMnum) || intrCngeFrqcMnum === '0')){
 			Swal.fire({
 				icon: 'warning'
 				, title: "Warning!"
-				, text: '변동주기를 입력해주세요.'
+				, text: '상환구분/금리정보Tab]변동주기를 입력해주세요.'
 				, confirmButtonText: "확인"
 			}).then((result) => {
 				//location.reload();
+				if(result.isConfirmed){
+                    $('#TB06010S_intrCngeFrqcMnum').focus();
+                    
+                }
 			});
 
-			return false;
+			return ;
 		}else if(isEmpty(intrRdmpFrqcMnum) || intrRdmpFrqcMnum === '0'){
 			Swal.fire({
 				icon: 'warning'
 				, title: "Warning!"
-				, text: '이자상환주기를 입력해주세요.'
+				, text: '상환구분/금리정보Tab]이자상환주기를 입력해주세요.'
 				, confirmButtonText: "확인"
 			}).then((result) => {
 				//location.reload();
 			});
 
-			return false;
+			return ;
 		}else if(isEmpty(ovduIntrRt) || ovduIntrRt === '0'){
 			Swal.fire({
 				icon: 'warning'
 				, title: "Warning!"
-				, text: '연체이자율을 입력해주세요.'
+				, text: '상환구분/금리정보Tab]연체이자율을 입력해주세요.'
 				, confirmButtonText: "확인"
 			}).then((result) => {
 				//location.reload();
 			});
 
-			return false;
+			return ;
 		}
 		
+	
 		var paramData = {
 			"prdtCd" : prdtCd
 			, "paiRdmpDcd" : $('#TB06010S_E020').val()															// 기업여신원리금상환구분코드
 			, "prnaRdmpFrqcMnum" : $('#TB06010S_prnaRdmpFrqcMnum').val()										// 원금상환주기개월수
 			, "prnaDfrPrdMnum" : $('#TB06010S_prnaDfrPrdMnum').val()											// 원금거치기간개월수
 			, "istmDtmRdmpAmt" : replaceAll($('#TB06010S_istmDtmRdmpAmt').val(), ',', '') / 1					// 만기상환금액(할부일시상환금액)
-			, "mdwyRdmpYn" : $('input[name=TB06010S_mdwyRdmpYn]:checked').val()									// 중도상환여부
+		//	, "mdwyRdmpYn" : $('input[name=TB06010S_mdwyRdmpYn]:checked').val()									// 중도상환여부
+		    , "earlyRepayYn" : $('input[name=TB06010S_earlyRepayYn]:checked').val()                             // 중도상환여부
 			
 			//최초이자수령일자, 여부 확인
 			, "intrHdwtClcYn" : $('input[name=TB06010S_intrHdwtClcYn]:checked').val()							// 이자수기계산여부
@@ -1208,7 +1280,10 @@ const TB06010Sjs = (function(){
 					});
 				}
 				
-			}
+			},
+			//ERROR
+			error: handleAjaxError
+	
 		});/* end of ajax*/
 	}
 
@@ -1375,11 +1450,19 @@ const TB06010Sjs = (function(){
 				return false;
 			}
 			
-			if (isEmpty($('#TB06010S_rcgAmt').val())) {
+
+			if (isEmpty($('#TB06010S_rcgAmt').val())  ) {
 				option.text = "금융조건 종목승인금액을 입력해주세요.";
 				openPopup(option);
 				return false;
+			}else{
+                if($('#TB06010S_rcgAmt').val() <= 0){
+                    option.text = "금융조건 종목승인금액을 입력해주세요.";
+                    openPopup(option);
+                    return false;   
+                }
 			}
+			
 			
 			if (isEmpty($('#TB06010S_I027').val())) {
 				option.text = "금융조건 통화코드를 입력해주세요.";
@@ -1397,7 +1480,23 @@ const TB06010Sjs = (function(){
 				option.text = "금융조건 약정기간구분코드를 입력해주세요.";
 				openPopup(option);
 				return false;
-			}
+			}else{
+                if (isEmpty($('#TB06010S_ctrcPrdMnum').val())) {
+                   option.text = "금융조건 약정기간 개월을 입력해주세요.";
+                   openPopup(option);
+                   return false; 
+                }else{
+                    if ($('#TB06010S_ctrcPrdMnum').val()  <= 0) {
+                       option.text = "금융조건 약정기간 개월을 입력해주세요.";
+                       openPopup(option);
+                       return false; 
+                     } 
+                }
+                
+            }
+			
+			
+			
 			
 			if (isEmpty($('#TB06010S_T002').val())) {
 				option.text = "금융조건 당사역할구분코드를 입력해주세요.";
@@ -1591,7 +1690,7 @@ const TB06010Sjs = (function(){
 			//, "hndTmnlNo": ''                            		  // 조작단말기번호
 			//, "hndTrId": ''                                	  // 조작거래id
 			//, "guid": ''                                        // guid
-			, "earlyRepayYn": $('input[name=TB06010S_mdwyRdmpYn]:checked').val()		// 중도상환여부
+			, "earlyRepayYn": $('input[name=TB06010S_earlyRepayYn]:checked').val()		// 중도상환여부
 			, "sglInvYn": $('input[name=TB06010S_sglInvYn]:checked').val()				// 단독투자여부
 			, "rqsKndCd": $('#TB06010S_R023').val()                                     // 신청종류
 		}
@@ -2163,14 +2262,14 @@ const TB06010Sjs = (function(){
 	function getDealInfoFromWF() {
 		
 		if(sessionStorage.getItem("isFromWF") || sessionStorage.getItem("isFromApvl")){
-			console.log("WF세션 있음");
+
 			$("#TB06010S_ibDealNo").val(sessionStorage.getItem("wfDealNo"));
 			$("#TB06010S_ibDealNm").val(sessionStorage.getItem("wfDealNm"));
 			$("#TB06010S_prdtCd").val(sessionStorage.getItem("wfPrdtCd"));
 			$("#TB06010S_prdtNm").val(sessionStorage.getItem("wfPrdtNm"));
 			getDealList();
 		}else{
-			console.log("WF세션 비었음");
+
 		}
 		sessionStorage.clear();
 

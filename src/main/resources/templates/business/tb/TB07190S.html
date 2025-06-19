@@ -54,7 +54,7 @@
 									</div>
 								</div>
 								<!-- 조회기간 -->
-								<label class="col-sm-1 control-label text-nowrap">조회기간</label>
+								<label class="col-sm-1 control-label text-nowrap">거래일자</label>
 								<div class="col-sm-3 input-group">
 									<div class="col-sm-5 input-group date px-0">
 										<input type="text" class="form-control" id="TB07190S_strYmd" name="" value="" placeholder="YYYY-MM-DD" oninput="this.value = this.value.replace(/[^0-9-]/g, '');" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
@@ -67,7 +67,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-12 form-group">
+							<!-- <div class="col-sm-12 form-group"> -->
 								<div class="col-sm-10 form-group mb-1">
 									<!-- 기업체번호 -->
 									<label class="col-sm-1 control-label">거래상대방</label>
@@ -106,32 +106,43 @@
 									</div>
 								<!-- </div> -->
 							</div>
-							<div class="col-sm-10 form-group mb-1">
-								<!-- 계정과목 -->
-								<!-- 공통코드로 들어가다 직접 입력하도록 요구사항 변경 -->
+							<!-- <div class="col-sm-10 form-group mb-1">
+								계정과목
+								공통코드로 들어가다 직접 입력하도록 요구사항 변경
 								<label class="col-sm-1 control-label" hidden>계정과목</label>
 								<div class="col-sm-3 input-group">
 									<select class="form-control" id="TB07190S_actsCd" hidden>
 										<option value="">전체</option>
 									</select>
 								</div>
-								<!-- 부서코드 -->
-								<!-- <label class="col-sm-1 control-label">부서코드</label> -->
-								<!-- <div class="col-sm-3">
+								부서코드
+								<label class="col-sm-1 control-label">부서코드</label>
+								<div class="col-sm-3">
 									<div class="input-group">
 										<select class="form-control" id="TB07190S_dprtNm">
 											<option value="">전체</option>
 										</select>
 										<input type="text" class="form-control" id="TB07190S_dprtCd" readonly>
 									</div>
-								</div> -->
-							</div>							
+								</div>
+							</div>	 -->						
 						</div>
 					</div>
 					<!-- 조회결과 -->
 					<div class="ibox-content" style="min-height: 800px">
+					
+					<div class="ibox">
+							<div class="ibox-title">
+								<div>
+									<h5>▶ 수수료 수납내역</h5>
+								</div>
+							</div>
+							<div class="ibox-content">
 						<!-- 일별연체내역 -->
 						<div id="TB07190S_colModel1"></div>
+						
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

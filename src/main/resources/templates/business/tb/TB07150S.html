@@ -57,7 +57,7 @@
 					<div class="ibox-content" style="min-height: 800px">
 						<div class="ibox">
 							<div class="ibox-title">
-								<h5>▶&nbsp;변경전원장정보</h5>
+								<h5>▶&nbsp;변경 전 원장정보</h5>
 							</div>
 							<div class="ibox-content">
 								<!-- row1 -->
@@ -65,21 +65,21 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1 col-form-label text-right">거래상대방</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" style="width:30px;" id="TB07150S_trOthrDscmNo" >
+											<input type="text" class="form-control" style="width:30px;" id="TB07150S_trOthrDscmNo" disabled>
 											&nbsp;
-											<input type="text" class="form-control" style="width:70px;" id="TB07150S_trOthrDscmNm" >
+											<input type="text" class="form-control" style="width:70px;" id="TB07150S_trOthrDscmNm" disabled>
 										</div>
 										<label class="col-sm-1 control-label">진행상태</label>
 										<div class="col-sm-3 input-group form-inline mb3">
-											<select class="form-control" id="TB07150S_I011">
+											<select class="form-control" id="TB07150S_I011" disabled>
 												<option value="">선택</option>
 											</select>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">관리부서</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" style="width:30px;" id="TB07150S_mngmBdcd" >
+											<input type="text" class="form-control" style="width:30px;" id="TB07150S_mngmBdcd" disabled>
 											&nbsp;
-											<input type="text" class="form-control" style="width:70px;" id="TB07150S_mngmBdnm" >
+											<input type="text" class="form-control" style="width:70px;" id="TB07150S_mngmBdnm" disabled>
 										</div>
 									</div>
 								</div>
@@ -88,9 +88,9 @@
 									<div class="col-sm-12 form-group text-right">
 										<label class="col-sm-1 col-form-label text-right">상품분류</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control" style="width:30px;" id="TB07150S_prdtClsfCd" >
+											<input type="text" class="form-control" style="width:30px;" id="TB07150S_prdtClsfCd" disabled>
 											&nbsp;
-											<input type="text" class="form-control" style="width:70px;" id="TB07150S_prdtClsfNm" >
+											<input type="text" class="form-control" style="width:70px;" id="TB07150S_prdtClsfNm" disabled>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">계정과목</label>
 										<!-- <div class="col-sm-3 input-group">
@@ -99,13 +99,13 @@
 											<input type="text" class="form-control" style="width:70px;" id="TB07150S_actsNm" >
 										</div> -->
 										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07150S_A005" >
+											<select class="form-control" id="TB07150S_A005" disabled>
 												<option value="">선택</option>
 											</select>
 										</div>
 										<label class="col-sm-1 col-form-label">약정금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07150S_eprzCrdlCtrcAmt" value="0" >
+											<input type="text" class="form-control text-right" id="TB07150S_eprzCrdlCtrcAmt" value="0" disabled>
 										</div>
 									</div>
 								</div>
@@ -114,17 +114,17 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1 control-label">대출일자</label>
 										<div class="col-sm-3 input-group date">
-											<input type="text" class="form-control" id="TB07150S_ctrcDt" value="" placeholder="YYYY-MM-DD">
+											<input type="text" class="form-control" id="TB07150S_ctrcDt" value="" placeholder="YYYY-MM-DD" disabled>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<label class="col-sm-1 control-label">만기일자</label>
 										<div class="col-sm-3 input-group date">
-											<input type="text" class="form-control" id="TB07150S_ctrcExpDt" value="" placeholder="YYYY-MM-DD">
+											<input type="text" class="form-control" id="TB07150S_ctrcExpDt" value="" placeholder="YYYY-MM-DD" disabled>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">승인금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07150S_eprzCrdlApvlAmt">
+											<input type="text" class="form-control text-right" id="TB07150S_eprzCrdlApvlAmt" disabled>
 										</div>
 									</div>
 								</div>
@@ -133,21 +133,21 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1 control-label">상환방법</label>
 										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07150S_E020" >
+											<select class="form-control" id="TB07150S_E020" disabled>
 												<option value="">선택</option>
 											</select>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">원금상환주기</label>
 										<div class="col-sm-1 text-left input-group">
-											<input type="text" class="form-control text-right" id="TB07150S_prnaRdmpFrqcMnum" >개월
+											<input type="text" class="form-control text-right" id="TB07150S_prnaRdmpFrqcMnum" disabled>개월
 										</div>
 										<label class="col-sm-1 col-form-label text-right">이자상환주기</label>
 										<div class="col-sm-1 text-left input-group">
-											<input type="text" class="form-control text-right" id="TB07150S_intrRdmpFrqcMnum" >개월
+											<input type="text" class="form-control text-right" id="TB07150S_intrRdmpFrqcMnum" disabled>개월
 										</div>
 										<label class="col-sm-1 col-form-label text-right">일시상환금액</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07150S_istmDtmRdmpAmt">
+											<input type="text" class="form-control text-right" id="TB07150S_istmDtmRdmpAmt" disabled>
 										</div>
 									</div>
 								</div>
@@ -156,19 +156,19 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1 control-label">한도/개별</label>
 										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07150S_I005" >
+											<select class="form-control" id="TB07150S_I005" disabled>
 												<option value="">선택</option>
 											</select>
 										</div>
 										<label class="col-sm-1 control-label">휴일처리구분</label>
 										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07150S_H001" >
+											<select class="form-control" id="TB07150S_H001" disabled>
 												<option value="">선택</option>
 											</select>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">거치기간개월수</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07150S_prnaDfrPrdMnum">
+											<input type="text" class="form-control text-right" id="TB07150S_prnaDfrPrdMnum" disabled>
 										</div>
 									</div>
 								</div>
@@ -177,19 +177,19 @@
 									<div class="col-sm-12 form-group">
 										<label class="col-sm-1 control-label">이자선후급구분</label>
 										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07150S_E011" >
+											<select class="form-control" id="TB07150S_E011" disabled>
 												<option value="">선택</option>
 											</select>
 										</div>
 										<label class="col-sm-1 control-label">이자계산방법</label>
 										<div class="col-sm-3 input-group">
-											<select class="form-control" id="TB07150S_E013" >
+											<select class="form-control" id="TB07150S_E013" disabled>
 												<option value="">선택</option>
 											</select>
 										</div>
 										<label class="col-sm-1 col-form-label text-right">연체이자율</label>
 										<div class="col-sm-3 input-group">
-											<input type="text" class="form-control text-right" id="TB07150S_ovduIntrRt">
+											<input type="text" class="form-control text-right" id="TB07150S_ovduIntrRt" disabled>
 										</div>
 									</div>
 								</div>
@@ -206,7 +206,7 @@
 						</div>	
 						<div class="ibox">
 							<div class="ibox-title">
-								<h5>▶&nbsp;조건변경정보</h5>
+								<h5>▶&nbsp;조건 변경 정보</h5>
 							</div>
 							<div class="ibox-content">
 								<!-- row1 -->

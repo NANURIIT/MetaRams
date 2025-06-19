@@ -393,6 +393,12 @@ var colPrdtCdList = [
     hidden: true,
     filter: { crules: [{ condition: "range" }] },
   },
+  {
+    title: "중도상환여부",
+    dataType: "string",
+    dataIndx: "earlyRepayYn",
+    hidden: true
+  }
 ];
 
 //그리드 호출
@@ -642,6 +648,7 @@ function TB06011P_setPrdtInfo(e) {
   let totIssuShqt = e.totIssuShqt;
   let totIssuStkQnt = e.totIssuStkQnt;
   let ortnFndCd = e.ortnFndCd;
+  let earlyRepayYn = e.earlyRepayYn;
 
   // 종목정보
   // var prdtCd = td.eq(0).text();
@@ -870,7 +877,7 @@ function TB06011P_setPrdtInfo(e) {
 
   /* 0723 add */
   if (prefix === "TB07050S") {
-    console.log("진행상태 ::: ", e.prgSttsCd);
+
     let numPrgSttsCd = Number(e.prgSttsCd);
     if (numPrgSttsCd == 502) {
       Swal.fire({
@@ -978,6 +985,8 @@ function TB06011P_setPrdtInfo(e) {
   }
 
   if (prefix === "TB07030S") {
+    $("#TB07030S_earlyRepayYn").val(e.earlyRepayYn);
+    console.log("earlyRepayYn::: " + e.earlyRepayYn);
     TB07030Sjs.srch();
   }
 
@@ -1009,16 +1018,9 @@ function TB06011P_setPrdtInfo(e) {
       .find(`div[role=row][aria-rowIndex=${prdtSn + 1}]`)
       .attr("id")
       .split("-");
-    $("#TB07100S_grd_thdtTrDtls").pqGrid("instance").pdata[prdtSn].prdtCd =
-      e.prdtCd;
-    $("#TB07100S_grd_thdtTrDtls").pqGrid("instance").pdata[prdtSn].nsFndCd =
-      e.ortnFndCd;
-    $("#TB07100S_grd_thdtTrDtls")
-      .find(`#pq-body-cell-${rowId[3]}-${prdtSn}-10-right div`)
-      .html(e.prdtCd);
-    $("#TB07100S_grd_thdtTrDtls")
-      .find(`#pq-body-cell-${rowId[3]}-${prdtSn}-12-right div`)
-      .html(e.ortnFndCd);
+    $("#TB07100S_grd_thdtTrDtls").pqGrid("instance").pdata[prdtSn].prdtCd = e.prdtCd;
+    $("#TB07100S_grd_thdtTrDtls").pqGrid("instance").pdata[prdtSn].nsFndCd = e.ortnFndCd;
+    $("#TB07100S_grd_thdtTrDtls").pqGrid("instance").refresh();
   }
 
   if (prefix === "TB07110S_grid") {
@@ -1027,14 +1029,8 @@ function TB06011P_setPrdtInfo(e) {
       .attr("id")
       .split("-");
     $("#TB07110S_grd_basic").pqGrid("instance").pdata[prdtSn].prdtCd = e.prdtCd;
-    $("#TB07110S_grd_basic").pqGrid("instance").pdata[prdtSn].nsFndCd =
-      e.ortnFndCd;
-    $("#TB07110S_grd_basic")
-      .find(`#pq-body-cell-${rowId[3]}-${prdtSn}-6-right div`)
-      .html(e.prdtCd);
-    $("#TB07110S_grd_basic")
-      .find(`#pq-body-cell-${rowId[3]}-${prdtSn}-8-right div`)
-      .html(e.ortnFndCd);
+    $("#TB07110S_grd_basic").pqGrid("instance").pdata[prdtSn].nsFndCd = e.ortnFndCd;
+    $("#TB07110S_grd_basic").pqGrid("instance").refresh();
   }
 
   if (prefix === "TB07020S_srch") {

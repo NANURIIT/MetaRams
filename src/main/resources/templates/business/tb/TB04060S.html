@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
 	<script th:src="@{js/tabs.js}"></script>
@@ -35,7 +33,9 @@
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" style="width: 5x;" id="TB04060S_ibDealNo" maxlength="10">
 									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick="callTB03021P('TB04060S');"><i class="fa fa-search"></i></button>
+										<button type="button" class="btn btn-default" onclick="callTB03021P('TB04060S');">
+											<i class="fa fa-search"></i>
+										</button>
 									</span>
 									<input type="text" class="form-control" style="width: 95px;" id="TB04060S_ibDealNm" readonly>
 								</div>
@@ -52,7 +52,9 @@
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" style="width: 30px;" id="TB04060S_chrr_empNo" maxlength="7">
 									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick="callTB03022P('TB04060S_chrr');"><i class="fa fa-search"></i></button>
+										<button type="button" class="btn btn-default" onclick="callTB03022P('TB04060S_chrr');">
+											<i class="fa fa-search"></i>
+										</button>
 									</span>
 									<input type="text" class="form-control" style="width: 70px;" id="TB04060S_chrr_empNm" readonly>
 								</div>
@@ -64,7 +66,9 @@
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" style="width: 5x;" id="TB04060S_prdtCd" maxlength="10">
 									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick="callTB06011P('TB04060S');"><i class="fa fa-search"></i></button>
+										<button type="button" class="btn btn-default" onclick="callTB06011P('TB04060S');">
+											<i class="fa fa-search"></i>
+										</button>
 									</span>
 									<input type="text" class="form-control" id="TB04060S_prdtNm" style="width: 95px;" readonly>
 								</div>
@@ -72,7 +76,9 @@
 								<div class="col-sm-3 input-group">
 									<input type="text" class="form-control" style="width: 30px;" id="TB04060S_bsnsRgstNo" maxlength="13">
 									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick="callTB03061P('TB04060S')"><i class="fa fa-search"></i></button>
+										<button type="button" class="btn btn-default" onclick="callTB03061P('TB04060S')">
+											<i class="fa fa-search"></i>
+										</button>
 									</span>
 									<input type="text" class="form-control" style="width: 70px;" id="TB04060S_entpRnm" readonly>
 								</div>
@@ -95,10 +101,12 @@
 								<div class="col-sm-3 input-group">
 									<select class="form-control" style="width: 30px;" name="account" id="TB04060S_E022" onchange="TB04060Sjs.changePrdtLclsCd();">
 										<option value="">선택</option>
-									</select> &nbsp;&nbsp;
+									</select>
+									&nbsp;&nbsp;
 									<select class="form-control" style="width: 30px;" name="account" id="TB04060S_E023">
 										<option value="">선택</option>
-									</select> &nbsp;&nbsp;
+									</select>
+									&nbsp;&nbsp;
 									<select class="form-control" style="width: 30px;" name="account" id="TB04060S_E021">
 										<option value="">선택</option>
 									</select>
@@ -138,16 +146,27 @@
 								</div>
 								<!-- 버튼영역 -->
 								<div class="col-sm-4 text-right">
-									<button class="btn btn-primary" onclick="TB04060Sjs.checkDealSearch();"><i class="fa fa-search"></i>&nbsp;조회</button>
-									<button class="btn btn-default" onclick="TB04060Sjs.resetSearchParam();"><i class="fa fa-undo"></i>&nbsp;초기화</button>
+									<button class="btn btn-primary" onclick="TB04060Sjs.checkDealSearch();">
+										<i class="fa fa-search"></i>&nbsp;조회
+									</button>
+									<button class="btn btn-default" onclick="TB04060Sjs.resetSearchParam();">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+									</button>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- 조회결과 -->
-					<div class="ibox-content" style="min-height: 680px">
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶&nbsp;사업명세</h5>
+							</div>
+							<div class="ibox-content">
+								<div id="TB04060S_ibDealList"></div>
+							</div>
+						</div>
 
-						<div id="TB04060S_ibDealList"></div>
 					</div>
 				</div>
 			</div>

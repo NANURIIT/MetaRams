@@ -146,7 +146,6 @@ $("#TB06019P_srch_ardyBzepNo").on("propertychange change paste input", function 
  */
 function checkBoxChangeFunction() {
 	$("#TB06019P_spcYn").on('change', function () {
-		console.log($("#TB06019P_spcYn").prop('checked'));
 
 		if ($("#TB06019P_spcYn").prop('checked') == true) {
 			if (isNotEmpty($('#TB06019P_rnbn').val()) && $('#TB06019P_rnbn').val() != "999-99-99999") {

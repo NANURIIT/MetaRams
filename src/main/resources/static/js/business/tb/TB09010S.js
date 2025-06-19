@@ -298,8 +298,6 @@ const TB09010Sjs = (function () {
         checked: checked,
       };
 
-      console.log(dtoParam);
-
       $.ajax({
         type: "GET",
         url: "/TB09010S/checkDealSearch",

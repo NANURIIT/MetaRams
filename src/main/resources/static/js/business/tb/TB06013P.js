@@ -69,7 +69,7 @@ function loadSelectBoxContents_TB06013P(){
 	item += 'I027';					// 투자통화코드
 	var selCnt =0;
 	selCnt= $("#TB06013P_I027_2  option").length;
-	console.log("loadSelectBoxContents_TB06013P:"+selCnt);
+
 	if(selCnt==0 ||selCnt==1) {
 		getSelectBoxList('TB06013P', item);
 	}	
@@ -308,7 +308,7 @@ function btnModalReset_TB06013P(mode) {
   let modalId = document.getElementById("modal-TB06013P");
   let fmIputLngth = modalId.querySelectorAll("input").length;
   let fmSlctLngth = modalId.querySelectorAll("select").length;
-  console.log("mrtgNm:"+mrtgNm);
+
   
   $("#TB06013P_connPrdtCd").val("");
    for (let i = 0; i < fmIputLngth; i++) {
@@ -332,7 +332,6 @@ function btnModalReset_TB06013P(mode) {
       break;
   }
   
-  console.log("mrtgNm1:"+mrtgNm);
   $("#TB06013P_prdtCd").val(prdtCd);
   $("#TB06013P_prdtNm").val(prdtNm);
   $("#TB06013P_connPrdtCd").val(conPrdtCd);
@@ -554,11 +553,9 @@ function showGrid_TB06013P(colM) {
        	var rowData = ui.rowData;
 		var rowCnt  = gridSnrtInfoList.length;
         let rowType = rowData.rowType;
-		console.log("dataIndx"+dataIndx);
-		console.log("rowData"+rowData);
-		console.log("rowCnt"+rowCnt);
+
 		if(dataIndx ==='krwTrslPrfdRankAmt' ){
-			console.log("krwTrslPrfdRankAmt1"+rowData.krwTrslPrfdRankAmt);
+
 			//krwTrslPrfdRankAmtSum= rowData.krwTrslPrfdRankAmt;
 			calcuAvblMrtgPrc();
 		}
@@ -584,14 +581,14 @@ function calcuAvblMrtgPrc(){
 	var avblMrtgPrc;
 	krwTrslPrfdRankAmtSum =0;
 	mrtgPrc= $("#TB06013P_mrtgPrc").val().replaceAll(",", "");
-	console.log("mrtgPrc:"+mrtgPrc);
+
 	for (let i = 0; i < gridSnrtInfoList.pdata.length; i++) {
 		let krwTrslPrfdRankAmt = gridSnrtInfoList.pdata[i].krwTrslPrfdRankAmt;
 		krwTrslPrfdRankAmtSum= Number(krwTrslPrfdRankAmtSum)+Number(krwTrslPrfdRankAmt);
 	}
-	console.log("krwTrslPrfdRankAmtSum1:"+krwTrslPrfdRankAmtSum);	
+
 	avblMrtgPrc= comma(Number(mrtgPrc) - Number(krwTrslPrfdRankAmtSum));
-	console.log("avblMrtgPrc:"+avblMrtgPrc);	
+
 	$("#TB06013P_avblMrtgPrc").val(avblMrtgPrc);
 	calcuKrwTrslValtMrtgPrc();
 }
@@ -610,10 +607,6 @@ function calcuKrwTrslValtMrtgPrc(){
 	avblMrtgPrc = $("#TB06013P_avblMrtgPrc").val()=="0" ? Number("0") : Number($("#TB06013P_avblMrtgPrc").val().replaceAll(",", ""));
 	krwTrslStupTopAmt = $("#TB06013P_krwTrslStupTopAmt").val()=="0" ? 0 : Number($("#TB06013P_krwTrslStupTopAmt").val().replaceAll(",", ""));
 	cprnMrtgRto = $("#TB06013P_cprnMrtgRto").val()=="0" ? 0:  Number($("#TB06013P_cprnMrtgRto").val().replaceAll(",", ""));
-	
-	console.log("avblMrtgPrc"+avblMrtgPrc);
-	console.log("krwTrslStupTopAmt"+krwTrslStupTopAmt);
-	console.log("cprnMrtgRto"+cprnMrtgRto);
 	
 	if(avblMrtgPrc < krwTrslStupTopAmt){
 		minAmt = avblMrtgPrc; 
@@ -939,8 +932,6 @@ function remove() {
 		return false;
   }
   
-  console.log("mrtgMngmNo"+paramData.mrtgMngmNo);
-  
   $.ajax({
     type: "POST",
     url: "/TB06013P/removeMtrt",
@@ -1006,7 +997,7 @@ function getParamData() {
       $("#TB06013P_toggleBtn11").attr("class").includes("btn-info") == true
         ? "Y"
         : "N", // 직접담보여부
-   ovssMrtgYn: $("#TB06013P_D009").val(), // 국외담보여부
+   	ovssMrtgYn: $("input[name='TB06013P_ovssMrtgYn']:checked").val(), // 국외담보여부
     aprsMthCd: $("#TB06013P_A009").val(), // 감정방법코드(감정구분코드)
     aprsEvlIsttCd: $("#TB06013P_A008").val(), // 감정평가기관코드
     crevIsttNm: $("#TB06013P_crevIsttNm").val(), // 시가평가기관명
@@ -1088,7 +1079,6 @@ function getPrfdRankInfo() {
 
 function TB06013P_getMrtgInfoDetails() {
 	
- console.log("TB06013P_getMrtgInfoDetails");
   var paramData = {
     mrtgMngmNo: $("#TB06013P_mrtgMngmNo").val(),
     invJdgmDealNo: $("#TB06010S_ibDealNo").val(),
@@ -1105,8 +1095,6 @@ function TB06013P_getMrtgInfoDetails() {
     success: function (data) {
       var infoDetails = data;
 
-	  console.log("infoDetails.prdtCd"+infoDetails.prdtCd);
-	  console.log("TB06013P_prdtCd"+$("#TB06013P_prdtCd").val());
       if (isNotEmpty(infoDetails.prdtCd)) {
         if ($("#TB06013P_prdtCd").val() == infoDetails.prdtCd) {
           $("#TB06013P_connPrdtCd").val(infoDetails.prdtCd);  // 연결정보
@@ -1148,7 +1136,7 @@ function TB06013P_getMrtgInfoDetails() {
         // 부동산
         case "2":
           $("#TB06013P_A009").val(infoDetails.aprsMthCd).prop("selected", true); // 감정구분코드
-          $("#TB06013P_D009").val(infoDetails.ovssMrtgYn).prop("selected", true); // 국내국외구분코드
+          $(`input[name='TB06013P_ovssMrtgYn'][value='${infoDetails.ovssMrtgYn}']`).prop("checked", true); 	// 국내국외구분코드
           $("#TB06013P_A008").val(infoDetails.aprsEvlIsttCd).prop("selected", true); // 감정기관
           $("#TB06013P_C013").val(infoDetails.crevStdrCd).prop("selected", true); // 감정평가기준
           infoDetails.rlesSqmsCtns ? $("#TB06013P_rlesSqmsCtns").val(addComma(infoDetails.rlesSqmsCtns)) : $("#TB06013P_rlesSqmsCtns").val(infoDetails.rlesSqmsCtns);  // 면적
@@ -1178,7 +1166,7 @@ function TB06013P_getMrtgInfoDetails() {
           break;
         // 보증서
         case "5":
-		  console.log("grteIsttCd:"+infoDetails.grteIsttDcd)	
+
           $("#TB06013P_mrtgRcgRto").val(infoDetails.mrtgRcgRto); // 담보비율
           infoDetails.mrtgPrc ? $("#TB06013P_mrtgPrc").val(addComma(infoDetails.mrtgPrc)) : $("#TB06013P_mrtgPrc").val(infoDetails.mrtgPrc); // 담보인정가액(원화)
           infoDetails.grteAmt ? $("#TB06013P_grteAmt").val(addComma(infoDetails.grteAmt)) : $("#TB06013P_grteAmt").val(infoDetails.grteAmt); // 보증금액
@@ -1273,7 +1261,7 @@ function connectMrtgInfo() {
     return false;
   }
 
-  console.log(">>>>>>>>> connprdtcd[" + $("#TB06013P_connPrdtCd").val() + "]<<<<<<<<<");
+  // console.log(">>>>>>>>> connprdtcd[" + $("#TB06013P_connPrdtCd").val() + "]<<<<<<<<<");
 
   if (isNotEmpty($("#TB06013P_connPrdtCd").val())) {
     option.text = "연결된 담보가 존재합니다.";

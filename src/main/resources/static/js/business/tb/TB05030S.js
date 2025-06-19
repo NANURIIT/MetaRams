@@ -110,8 +110,8 @@ const TB05030Sjs = (function () {
       },
       // 협의결과
       {
-        height: 80,
-        maxHeight: 80,
+        height: 150,
+        maxHeight: 150,
         id: "gridIbDealInfo",
         colModel: selectColModel(3),
 		rowClick: function(evt, ui) {
@@ -624,6 +624,7 @@ const TB05030Sjs = (function () {
         contentType: "application/json",
         data: JSON.stringify(mmbrList),
         success: function (data) {
+
           Swal.fire({
             icon: "success",
             title: "Success!",
@@ -684,6 +685,8 @@ const TB05030Sjs = (function () {
     var sdnCndtCtns = "";
     var etcCndtCtns = "";
 
+    var ptfdAmt = arrPqGridIbDealInfo.pdata[0].ptfdAmt;
+
     var mmbrChk = 0;
 
     if (mode == "confirm") {
@@ -721,7 +724,7 @@ const TB05030Sjs = (function () {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
-          text: "결의결과 내용을 학인해주세요.",
+          text: "결의결과를 선택해주세요.",
           confirmButtonText: "확인",
         });
         return;
@@ -730,7 +733,16 @@ const TB05030Sjs = (function () {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
-          text: "승인금액 내용을 학인해주세요.",
+          text: "승인금액을 입력해주세요.",
+          confirmButtonText: "확인",
+        });
+        return;
+      }
+      if(Number(ptfdAmt) < Number(apvlAmt)){
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: "승인금액은 참여금액보다 낮은 액수로 입력해주세요.",
           confirmButtonText: "확인",
         });
         return;
@@ -739,7 +751,7 @@ const TB05030Sjs = (function () {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
-          text: "셀다운 조건 내용을 학인해주세요.",
+          text: "셀다운 승인조건을 선택해주세요.",
           confirmButtonText: "확인",
         });
         return;
@@ -748,7 +760,7 @@ const TB05030Sjs = (function () {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
-          text: "기타 조건 내용을 학인해주세요.",
+          text: "기타 승인조건을 선택해주세요.",
           confirmButtonText: "확인",
         });
         return;
@@ -757,7 +769,7 @@ const TB05030Sjs = (function () {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
-          text: "부의 조건 내용을 학인해주세요.",
+          text: "부의조건을 입력해주세요.",
           confirmButtonText: "확인",
         });
         return;
@@ -766,7 +778,7 @@ const TB05030Sjs = (function () {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
-          text: "결의의견 내용을 학인해주세요.",
+          text: "결의의견을 입력해주세요.",
           confirmButtonText: "확인",
         });
         return;
@@ -798,7 +810,7 @@ const TB05030Sjs = (function () {
       contentType: "application/json;",
       data: JSON.stringify(paramData),
       dataType: "json",
-      success: function (data) {
+      success: function (data) {		
         Swal.fire({
           icon: "success",
           title: "Success!",
@@ -917,7 +929,6 @@ const TB05030Sjs = (function () {
         align: "right",
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
-          console.log("렌더 되네?");
 
           let cellData = ui.cellData;
           if (cellData !== null && cellData !== undefined) {
@@ -1082,7 +1093,7 @@ const TB05030Sjs = (function () {
         align: "center",
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
-          console.log("렌더 왜 안돔");
+
           return formatDate(ui.cellData);
         },
       },

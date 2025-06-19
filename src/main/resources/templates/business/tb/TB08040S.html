@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout/ramsLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
 	<script th:src="@{js/common.js}"></script>
@@ -16,8 +14,8 @@
 </th:block>
 
 <th:block layout:fragment="customContent">
-	 <style>	
- /*   .pq-grid > .pq-grid-top
+	<style>
+/*   .pq-grid > .pq-grid-top
     {
         border-top-width:1px;
     }
@@ -27,25 +25,24 @@
         overflow-y: auto;
         overflow-x: hidden;
     } 
-     */ 
-    .pq-grid .pq-editor-focus
-    {
-        outline:none;
-        border:1px solid #bbb;    
-        border-radius:6px;
-        background-image: linear-gradient(#e6e6e6, #fefefe);
+     */
+.pq-grid .pq-editor-focus {
+	outline: none;
+	border: 1px solid #bbb;
+	border-radius: 6px;
+	background-image: linear-gradient(#e6e6e6, #fefefe);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e6e6e6',
+		endColorstr='#fefefe');
+	background: -webkit-gradient(linear, left top, left bottom, from(#e6e6e6),
+		to(#fefefe));
+	background: -moz-linear-gradient(top, #e6e6e6, #fefefe);
+	/* for firefox 3.6+ */
+}
 
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e6e6e6', endColorstr='#fefefe'); 
-        background: -webkit-gradient(linear, left top, left bottom, from(#e6e6e6), to(#fefefe)); 
-        background: -moz-linear-gradient(top,  #e6e6e6,  #fefefe); /* for firefox 3.6+ */	        
-    }
-    div.pq-grid
-    {
-        overflow:visible;
-    } 
-	
-	
-	</style>
+div.pq-grid {
+	overflow: visible;
+}
+</style>
 
 	<!-- 사업정보조회 -->
 	<div class="wrapper wrapper-content animated fadeIn">
@@ -54,65 +51,72 @@
 				<div class="ibox ">
 					<!-- 조회조건영역 -->
 					<form method="get">
-					<div class="ibox-content text-right">
+						<div class="ibox-content text-right">
 							<!-- row1 -->
 							<div class="form-group row">
-									<label class="col-sm-1 col-form-label"><span class="req"></span>종목코드</label>
-									<div class="col-sm-4">
-										<div class="input-group">
-											<input type="text" class="form-control" id="TB08040S_prdtCd" maxlength="10">
-											<span class="input-group-append">
-												<button type="button" class="btn btn-default" onclick="callTB06011P('TB08040S');"><i class="fa fa-search"></i></button>
-											</span>
-											<input type="text" class="form-control" id="TB08040S_prdtNm" style="width: 170px;" readonly>
-										</div>
+								<label class="col-sm-1 col-form-label">
+									<span class="req"></span>종목코드
+								</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input type="text" class="form-control" id="TB08040S_prdtCd" maxlength="10">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB06011P('TB08040S');">
+												<i class="fa fa-search"></i>
+											</button>
+										</span>
+										<input type="text" class="form-control" id="TB08040S_prdtNm" style="width: 170px;" readonly>
 									</div>
-									<label class="col-sm-1 col-form-label text-right">
-										예정일 조회기간
-									</label>
-									<div class="col-sm-4 input-group">
-										<div class="col-sm-5 input-group date px-0">
-											<input type="text" class="form-control" id="TB08040S_strPrarDt" name="" value="" 
-											placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
-											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-										</div>
-										<span class="input-group-addon border-none"> ~ </span>
-										<div class="col-sm-5 input-group date px-0">
-											<input type="text" class="form-control" id="TB08040S_endPrarDt" name="" value="" 
-											placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
-											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-										</div>
+								</div>
+								<label class="col-sm-1 col-form-label text-right"> 예정일 조회기간 </label>
+								<div class="col-sm-4 input-group">
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB08040S_strPrarDt" name="" value="" placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
-									<div class="col-sm-2 text-right">
+									<span class="input-group-addon border-none"> ~ </span>
+									<div class="col-sm-5 input-group date px-0">
+										<input type="text" class="form-control" id="TB08040S_endPrarDt" name="" value="" placeholder="yyyy-MM-dd" oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+											onblur="this.value=formatDate(this.value.replaceAll('-',''));" maxlength="10">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
-							</div>	
-							
-							<!-- row2 -->	
+								</div>
+								<div class="col-sm-2 text-right"></div>
+							</div>
+
+							<!-- row2 -->
 							<div class="form-group row">
-									<label class="col-sm-1 col-form-label text-right">담당자번호</label>
-									<div class="col-sm-4 input-group">
-									<input type="text" class="form-control"  id="TB08040S_empNo" maxlength="7">
+								<label class="col-sm-1 col-form-label text-right">담당자번호</label>
+								<div class="col-sm-4 input-group">
+									<input type="text" class="form-control" id="TB08040S_empNo" maxlength="7">
 									<span class="input-group-append">
-										<button type="button" class="btn btn-default" onclick="callTB03022P('TB08040S')"><i class="fa fa-search"></i></button>
+										<button type="button" class="btn btn-default" onclick="callTB03022P('TB08040S')">
+											<i class="fa fa-search"></i>
+										</button>
 									</span>
 									<input type="text" class="form-control" style="width: 170px;" id="TB08040S_empNm" readonly>
+								</div>
+								<label class="col-sm-1 col-form-label text-right">관리부점</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<select class="form-control" id="TB08040S_dprtNm">
+											<option value="">전체</option>
+										</select>
+										<input type="text" class="form-control" style="width: 170px;" id="TB08040S_dprtCd" readonly>
 									</div>
-									<label class="col-sm-1 col-form-label text-right">관리부서</label>
-									<div class="col-sm-4">
-										<div class="input-group">
-											<select class="form-control" id="TB08040S_dprtNm">
-												<option value="">전체</option>
-											</select>
-											<input type="text" class="form-control"style="width: 170px;"  id="TB08040S_dprtCd" readonly>
-										</div>
-									</div>	
-									<!--버튼영역-->								
-									<div class="col-sm-2 text-right">
-										<button class="btn btn-primary" type="button" onclick="TB08040Sjs.srch();"><i class="fa fa-search"></i>&nbsp;조회</button>
-										<button class="btn btn-default" type="button" onclick="TB08040Sjs.init_TB08040S();"><i class="fa fa-undo"></i>&nbsp;초기화</button>										
-									</div>
+								</div>
+								<!--버튼영역-->
+								<div class="col-sm-2 text-right">
+									<button class="btn btn-primary" type="button" onclick="TB08040Sjs.srch();">
+										<i class="fa fa-search"></i>&nbsp;조회
+									</button>
+									<button class="btn btn-default" type="button" onclick="TB08040Sjs.init_TB08040S();">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+									</button>
+								</div>
 							</div>
-					</div>
+						</div>
 					</form>
 					<!-- 조회결과 -->
 					<div class="ibox">
@@ -123,10 +127,18 @@
 										<div class="ibox-title">
 											<div>
 												<h5>▶ 수수료스케줄정보</h5>
+												<div class="ibox-tools">
+													<button class="btn btn-default btn-xs" onclick="TB08040Sjs.gridEvt('p')">
+														<i class="fa fa-plus"></i>&nbsp;행추가
+													</button>
+													<button class="btn btn-default btn-xs" onclick="TB08040Sjs.gridEvt('m')">
+														<i class="fa fa-minus"></i>&nbsp;행삭제
+													</button>
+												</div>
 											</div>
 										</div>
 										<div class="ibox-content">
-											<div id="grd_feeSch" style="margin:auto;"></div>
+											<div id="grd_feeSch" style="margin: auto;"></div>
 											<!-- <table class="table table-bordered table-hover">
 												<colgroup>
 													<col style="width: 5%;">
@@ -173,12 +185,7 @@
 									<button class="btn btn-default" onclick="">
 										<i class="fa fa-upload"></i>&nbsp;업로드
 									</button> -->
-									<button class="btn btn-default" onclick="TB08040Sjs.gridEvt('p')">
-										<i class="fa fa-plus"></i>&nbsp;행추가
-									</button>
-									<button class="btn btn-default" onclick="TB08040Sjs.gridEvt('m')">
-										<i class="fa fa-minus"></i>&nbsp;행삭제
-									</button>
+
 									<button class="btn btn-success" onclick="TB08040Sjs.save();">
 										<i class="fa fa-save"></i>&nbsp;저장
 									</button>
