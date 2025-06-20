@@ -582,7 +582,7 @@ const TB07030Sjs = (function () {
         success: function (data) {
 			console.timeEnd("상환계산")
           //console.log(data)
-          if (!data.cntMdwyRdmpFee) {
+          if ($("#TB07030S_earlyRepayYn").val() != "N" && !data.cntMdwyRdmpFee) {
             sf(1, "warning", `중도상환수수료 설정 내역이 존재하지 않습니다.`, "Warning!");
             return;
           }
