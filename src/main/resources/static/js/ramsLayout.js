@@ -357,8 +357,6 @@ function moveTab(menuId) {
     const url = window.location.pathname;
 
     if (url === "/" + menuId) {
-        console.log("이부분이잖음");
-
         // 현재탭과 클릭한 탭이 같을시 아무런 작동안함
         return;
     }
