@@ -79,7 +79,7 @@ function createNav(empNo) {
                          */
                         else if (data[i].scrnAplyShpCd === 'S') {
                             menuHtmlLv2 = `
-								<li data-sidetabid="${data[i].menuId}">
+								<li data-sidetabid="${data[i].menuId}" data-menuLvl="${data[i].menuLvl}">
 									<a onclick="callPage('${data[i].menuId}', '${data[i].menuNm}')">${data[i].menuNm}</a>
 								</li>
 							`;
@@ -91,7 +91,7 @@ function createNav(empNo) {
                      */
                     else if (data[i].menuLvl === 3) {
                         const menuHtmlLv3 = `
-							<li data-sidetabid="${data[i].menuId}">
+							<li data-sidetabid="${data[i].menuId}" data-menuLvl="${data[i].menuLvl}">
 								<a onclick="callPage('${data[i].menuId}', '${data[i].menuNm}')">&nbsp;&nbsp; └ ${data[i].menuNm}</a>
 							</li>
 						`;
@@ -131,22 +131,25 @@ function chkPrevPage() {
 
     const url = window.location.pathname;
     const chk_menu = $(`div[data-menuid="/TB02010S"`).attr('data-menuid')
-    
+
     let url_ref = document.referrer
     let result_id = url_ref.split("/");
 
     if (chk_menu === undefined) {
         window.location.href = "/TB02010S"
-    } else if (
-        chk_menu != undefined 
+    } 
+    else if (
+        chk_menu != undefined
         && (url_ref.indexOf("/TB") != -1 || url_ref.indexOf("/GD") != -1)
-        && url_ref.indexOf("TB02010S") === -1 
+        && url_ref.indexOf("TB02010S") === -1
         && url === "/TB02010S"
     ) {
         const titleNm = $(`li[data-sidetabid="${result_id[result_id.length - 1]}"] a`).html();
         const titleName = titleNm.split("└ ")[1];
         callPage(result_id[result_id.length - 1], titleName);
     }
+
+    activeNav(result_id[result_id.length - 1]);
 }
 
 /**
@@ -161,7 +164,7 @@ async function callPage(menuId, pageName) {
      * 페이지명 하드코딩하지 마시라고 만듬
      * callPage(menuId) 이렇게 하셔도 오류 안납니다.
      */
-    if(!pageName){
+    if (!pageName) {
         pageName = $(`li[data-sidetabid='${menuId}'] a`).html();
     }
 
@@ -334,6 +337,8 @@ async function callPage(menuId, pageName) {
             // 화면기본세팅함수
             settingFunction();
 
+            activeNav(menuId);
+
         },
         error: function () {
             console.error('페이지 로드 중 오류가 발생했습니다.');
@@ -352,15 +357,16 @@ function moveTab(menuId) {
     const url = window.location.pathname;
 
     if (url === "/" + menuId) {
+        console.log("이부분이잖음");
+
         // 현재탭과 클릭한 탭이 같을시 아무런 작동안함
         return;
     }
 
-    if(rtUseYn === "N"){
-        console.log("리무브탭 사용 안했어요");
+    if (rtUseYn === "N") {
         prevPage.push(url.split('/')[1]);
     }
-    
+
     $(".main-tab").removeClass("active");
     $("#myTab li button").removeClass('active');
     $(`#myTab li button[data-tabid="/${menuId}"]`).addClass('active');
@@ -374,10 +380,41 @@ function moveTab(menuId) {
     $(`div[data-menuId*="TB"], div[data-menuId*="GD"]`).hide()
     $(`div[data-menuId="/${menuId}"]`).show()
 
+    activeNav(menuId);
+
     needRunFn(menuId);
 
     history.pushState(null, '', '/' + menuId);
 
+}
+
+/**
+ * 메뉴네비게이션 찾아가기
+ * @param {String} menuId 
+ */
+function activeNav(menuId) {
+
+    $(`li[class="active"][data-sidetabid*="S"]`).removeClass('active');
+    $(`li[data-sidetabid="${menuId}"]`).addClass('active');
+
+    let parentTag = $(`li[data-sidetabid='${menuId}']`);
+    const lvl_cnt = $(`li[data-sidetabid="${menuId}"][class="active"]`).attr('data-menuLvl') - 1
+
+    for (let i = 0; i < lvl_cnt; i++) {
+        parentTag = parentTag.closest('ul').closest('li');
+        if (!parentTag.hasClass('active')) {
+            parentTag.children('a').trigger('click');
+            const rerun = setInterval(() => {
+                if (!parentTag.hasClass('active')) {
+                    parentTag.children('a').trigger('click');
+                }
+                else {
+                    clearInterval(rerun);
+                }
+            }, 100)
+
+        }
+    }
 }
 
 /**
@@ -423,13 +460,13 @@ function removeTab(menuId) {
 /**
  * 이전페이지 태그유무 확인
  */
-function chkPrevPageTag () {
+function chkPrevPageTag() {
     let prevMenuId = prevPage[prevPage.length - 1]
-    while(true){
-        if($(`li[data-tabId="/${prevMenuId}"]`).length === 0){
+    while (true) {
+        if ($(`li[data-tabId="/${prevMenuId}"]`).length === 0) {
             prevPage.splice(-1, 1);
             prevMenuId = prevPage[prevPage.length - 1];
-        }else {
+        } else {
             break;
         }
     }
@@ -438,7 +475,7 @@ function chkPrevPageTag () {
 /**
  * 스크롤 컨트롤
  */
-function gwFakeScrollEventHandler () {
+function gwFakeScrollEventHandler() {
 
     let height = 0;
 
@@ -448,13 +485,13 @@ function gwFakeScrollEventHandler () {
         if (height < scrollHeight) {
             const ratio = height / scrollHeight;
             $('.gw-scrollbar').height(ratio * height); // 비율 기반 높이
-        } 
+        }
         else {
             $('.gw-scrollbar').height(0); // 필요 없을 땐 숨김 처리
         }
     }
 
-    $('.sidebar-collapse').on('mouseenter', function(e) {
+    $('.sidebar-collapse').on('mouseenter', function (e) {
 
         height = $(this).height();
 
@@ -465,7 +502,7 @@ function gwFakeScrollEventHandler () {
         $('#side-menu').on('mousemove', updateFakeScrollbar);
     })
 
-    $('.sidebar-collapse').on('mouseleave', function(e) {
+    $('.sidebar-collapse').on('mouseleave', function (e) {
         $('.gw-sidebar-fakescroll').css({
             visibility: "hidden"
         });
@@ -473,12 +510,12 @@ function gwFakeScrollEventHandler () {
         $('#side-menu').off('mousemove', updateFakeScrollbar);
     })
 
-    $('.sidebar-collapse').on('scroll', function(e) {
+    $('.sidebar-collapse').on('scroll', function (e) {
         const scrollTop = $(this).scrollTop();
         $('.gw-scrollbar').css('transform', `translateY(${scrollTop}px)`);
     })
 
-    
+
     /**
      * 드래그 스크롤 완성하고싶은분 완성하십쇼
      */
