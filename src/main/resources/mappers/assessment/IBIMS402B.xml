@@ -8,10 +8,10 @@
              , MAX(V.NXT_RDMP_PRAR_DT) AS NXT_RDMP_PRAR_DT  /* 다음상환예정일자 */
              , MAX(V.NXT_INTR_PYM_DT) AS NXT_INTR_PYM_DT  /* 다음이자납입일자 */
 		  FROM (
-			 SELECT MAX(CASE WHEN A.SCX_DCD = '02' THEN PRCS_DT ELSE '' END) AS LAST_PRNA_RDMP_DT /* 최종원금상환일자 */
-	              , MAX(CASE WHEN A.SCX_DCD = '04' THEN PRCS_DT ELSE '' END) AS LAST_INTR_CLC_DT  /* 최종이자계산일자 */
-	              , '' AS NXT_RDMP_PRAR_DT /* 다음상환예정일자 */
-	              , '' AS NXT_INTR_PYM_DT /* 다음이자납입일자 */
+			 SELECT MAX(CASE WHEN A.SCX_DCD = '02' THEN PRCS_DT ELSE ' ' END) AS LAST_PRNA_RDMP_DT /* 최종원금상환일자 */
+	              , MAX(CASE WHEN A.SCX_DCD = '04' THEN PRCS_DT ELSE ' ' END) AS LAST_INTR_CLC_DT  /* 최종이자계산일자 */
+	              , ' ' AS NXT_RDMP_PRAR_DT /* 다음상환예정일자 */
+	              , ' ' AS NXT_INTR_PYM_DT /* 다음이자납입일자 */
 			   FROM IBIMS403B A  /* 여신스케쥴기본 */
 			  WHERE 1=1
 			    AND A.PRDT_CD = #{prdtCd}
