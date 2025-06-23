@@ -57,7 +57,7 @@ public class TB9999DServiceImpl implements TB9999DService, Runnable {
         return result;
     }
 
-    @Scheduled(cron = "0 5 10 * * ?")
+    @Scheduled(cron = "0 30 19 * * ?")
     @Override
     public void run() {
 

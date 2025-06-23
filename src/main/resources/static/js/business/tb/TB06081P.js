@@ -469,7 +469,7 @@ function TB06081P_subApvlList(rowIdx) {
 
     // 결재자가 비어있는 경우 버튼 비활성화
     if (TB06081P_apvlList.length === 0) {
-        TB06081P_apvlReqStatusHandler("nothing");
+        TB06081P_apvlReqStatusHandler("new");
     }
 }
 
