@@ -53,8 +53,8 @@ public class TB10110ServiceImpl implements TB10110Service {
         dto.setAplyStrtDt(dto.getAplyStrtDt().replace("-", ""));
         dto.setAplyEndDt(dto.getAplyEndDt().replace("-", ""));
         dto.setHndEmpno(eno);
-        dto.setPwd(passwordEncoder.encode("rlatkddnjs1!"));
-        dto.setLginPwd(passwordEncoder.encode("rlatkddnjs1!"));
+        dto.setPwd(passwordEncoder.encode("rlaxodks1!"));
+        dto.setLginPwd(passwordEncoder.encode("rlaxodks1!"));
 
         ibims003BMapper.insertUser(dto);
     }
