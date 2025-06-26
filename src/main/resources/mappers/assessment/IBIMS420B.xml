@@ -460,7 +460,6 @@
 		   AND A.EPRZ_CRDL_FEE_KND_CD 	= H.FEE_KND_CD(+)
 		   AND A.HND_EMPNO				= I.EMPNO(+)
 		   AND D.CHRR_EMPNO				= J.EMPNO(+)
-		   /* AND A.ACTS_CD = #{actsCd} */ 
 		<if test="feeKndCd != ''">
 		   AND H.FEE_KND_CD = #{feeKndCd} 
 		</if>
