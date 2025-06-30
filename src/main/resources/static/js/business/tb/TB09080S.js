@@ -19,6 +19,7 @@ const TB09080Sjs = (function () {
     chkValFromToDt("TB09080S_rsltnDt","TB09080S_rsltnEndDt");
   });
 
+  
   function setLoginUsrInfo(){
     var dprtCd = $("#userDprtCd").val();
     var empNm = $("#userEmpNm").val();
