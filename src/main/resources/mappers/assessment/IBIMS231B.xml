@@ -2,27 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS231BMapper">
 
-  <!-- 승인요청 조회 -->
-	<select id='inqTB06080S' parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS231BVO">
+    <!-- 승인요청 조회 -->
+    <select id='inqTB06080S' parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS231BVO">
+        /* IBIMS231BMapper.inqTB06080S */
         SELECT T1.DECD_SN
              , T1.CHRR_ENO
              , (
               SELECT EMP_NM
-                FROM IBIMS003B
+                FROM IBIMS003B /* 사원기본 */
                WHERE 1=1
                  AND EMPNO = T1.CHRR_ENO
              ) AS CHRR_NM
              , T1.APVL_RQST_P_ENO
              , (
               SELECT EMP_NM
-                FROM IBIMS003B
+                FROM IBIMS003B /* 사원기본 */
                WHERE 1=1
                  AND EMPNO = T1.APVL_RQST_P_ENO
              ) AS APVL_RQST_P_NM
              , T1.DECD_STEP_DCD
              , (
               SELECT CD_VL_NM
-                FROM IBIMS002B
+                FROM IBIMS002B /* 공통코드 */
                WHERE 1=1
                  AND CMNS_CD_GRP = 'D016'
                  AND CD_VL_ID = T1.DECD_STEP_DCD
@@ -30,7 +31,7 @@
              , T1.DECD_STTS_DCD
              , (
               SELECT CD_VL_NM
-                FROM IBIMS002B
+                FROM IBIMS002B /* 공통코드 */
                WHERE 1=1
                  AND CMNS_CD_GRP = 'D006'
                  AND CD_VL_ID = T1.DECD_STTS_DCD
@@ -38,14 +39,14 @@
              , T1.DEAL_NO
              , (
               SELECT MAX(DEAL_NM)
-                FROM IBIMS101B
+                FROM IBIMS101B /* 딜기본정보 */
                WHERE 1=1
                  AND DEAL_NO = T1.DEAL_NO
              ) AS DEAL_NM
              , T1.PRDT_CD
              , (
               SELECT MAX(PRDT_NM)
-                FROM IBIMS201B
+                FROM IBIMS201B /* 딜승인기본 */
                WHERE 1=1
                  AND PRDT_CD = T1.PRDT_CD
              ) AS PRDT_NM
@@ -57,7 +58,7 @@
              , T1.PRCS_RSLT_DCD
              , (
               SELECT CD_VL_NM
-                FROM IBIMS002B
+                FROM IBIMS002B /* 공통코드 */
                WHERE 1=1
                  AND CMNS_CD_GRP = 'P028'
                  AND CD_VL_ID = T1.PRCS_RSLT_DCD
@@ -68,12 +69,12 @@
              , T1.ERR_CNTN
              , T1.LAST_DECD_SQ
              , T2.DPRT_NM
-          FROM IBIMS231B T1
-     LEFT JOIN IBIMS003B T2
+          FROM IBIMS231B T1 /* 딜승인결재기본 */
+     LEFT JOIN IBIMS003B /* 사원기본 */ T2
             ON T1.APVL_RQST_P_ENO = T2.EMPNO
          WHERE 1=1
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdStepDcd)">
-           AND T1.DECD_STEP_DCD = #{decdStepDcd}					/* 결재단계구분코드 */
+           AND T1.DECD_STEP_DCD = #{decdStepDcd}                    /* 결재단계구분코드 */
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(chrrEno)">
            AND T1.CHRR_ENO = #{chrrEno}                   /* 책임자 */
@@ -84,75 +85,76 @@
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(hndEmpno)">
            AND (
              /* 승인요청자가 접속한 경우 */
-             T1.APVL_RQST_P_ENO = #{hndEmpno}					
+             T1.APVL_RQST_P_ENO = #{hndEmpno}                   
              /* 결재자가 접속한 경우 */
              OR T1.DECD_SN IN (
                    SELECT DECD_SN
-                     FROM IBIMS232B
+                     FROM IBIMS232B /* 딜승인결재담당자내역 */
                     WHERE 1=1
-                      AND DCFC_ENO = #{hndEmpno}		
+                      AND DCFC_ENO = #{hndEmpno}        
              )
                /* 현재 접속자가 상급자중 부서장 이상인 경우도 검색 가능 */
              OR (
                 8 &gt;= SUBSTR(T2.ATH_CD, 4)
             AND T2.DPRT_CD = (
                       SELECT DPRT_CD
-                        FROM IBIMS003B
+                        FROM IBIMS003B /* 사원기본 */
                       WHERE 1=1
                         AND EMPNO = #{hndEmpno}
                     )
               )
            )
            </if>
-	</select>
+    </select>
 
   <select id="todayWorks" parameterType="String" resultType="com.nanuri.rams.business.common.vo.IBIMS231BVO">
+    /* IBIMS231BMapper.todayWorks */
     SELECT RQST_DTM                               /* 신청일시 */
          , T2.EMP_NM AS APVL_RQST_P_NM            /* 요청자 */
          , T2.DPRT_NM                             /* 요청부서 */
          , CASE WHEN T1.DECD_JOB_DCD IN ( '04', '05' ) THEN '품의번호 ' || SUBSTR(DEAL_NO, 12, 22)
                 ELSE (
                         SELECT MAX(DEAL_NM)
-                          FROM IBIMS101B
+                          FROM IBIMS101B /* 딜기본정보 */
                          WHERE 1=1
                            AND DEAL_NO = T1.DEAL_NO
                       )
                  END        AS DEAL_NM            /* 내역( 보일수도 안보일수도 ) */
          , (
             SELECT CD_VL_NM
-              FROM IBIMS002B
+              FROM IBIMS002B /* 공통코드 */
              WHERE 1=1
                AND CMNS_CD_GRP = 'D005'
                AND CD_VL_ID = T1.DECD_JOB_DCD
            )                AS DECD_JOB_DCD       /* 업무구분 */
          , (
             SELECT CD_VL_NM
-              FROM IBIMS002B
+              FROM IBIMS002B /* 공통코드 */
              WHERE 1=1
                AND CMNS_CD_GRP = 'D006'
                AND CD_VL_ID = T1.DECD_STTS_DCD
            )                AS DECD_STTS_DCD      /* 결재진행상태코드 */ 
          , T1.DECD_SN       AS DECD_SN            /* 결재번호 */
-      FROM IBIMS231B T1
- LEFT JOIN IBIMS003B T2
+      FROM IBIMS231B T1 /* 딜승인결재기본 */
+ LEFT JOIN IBIMS003B /* 사원기본 */ T2
         ON T1.APVL_RQST_P_ENO = T2.EMPNO
      WHERE 1=1
        AND (
          /* 승인요청자가 접속한 경우 */
-         T1.APVL_RQST_P_ENO = #{hndEmpno}					
+         T1.APVL_RQST_P_ENO = #{hndEmpno}                   
          /* 결재자가 접속한 경우 */
          OR T1.DECD_SN IN (
                SELECT DECD_SN
-                 FROM IBIMS232B
+                 FROM IBIMS232B /* 딜승인결재담당자내역 */
                 WHERE 1=1
-                  AND DCFC_ENO = #{hndEmpno}		
+                  AND DCFC_ENO = #{hndEmpno}        
          )
          /* 현재 접속자가 상급자중 부서장 이상인 경우도 검색 가능 */
          OR (
             8 &gt;= SUBSTR(T2.ATH_CD, 4)
         AND T2.DPRT_CD = (
                   SELECT DPRT_CD
-                    FROM IBIMS003B
+                    FROM IBIMS003B /* 사원기본 */
                   WHERE 1=1
                     AND EMPNO = #{hndEmpno}
                 )
@@ -161,47 +163,49 @@
   </select>
 
   <select id="justWork" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS231BDTO">
+      /* IBIMS231BMapper.justWork */
       SELECT DEAL_NO        /* 딜번호(화면에 따라 딜번호가 아닌경우가 있음) */
            , PRDT_CD        /* 종목번호 */
            , SCRN_NO        /* 화면번호 */
            , EXC_SEQ        /* 실행일련번호 */
            , RQST_SQ        /* 등록일련번호 */
            , TR_SEQ         /* 거래일련번호 */
-        FROM IBIMS231B
+        FROM IBIMS231B /* 딜승인결재기본 */
        WHERE 1=1
          AND DECD_SN = #{decdSn}
   </select>
 
   <!-- 결재요청내역 확인 -->
   <select id="apvlListChk" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS003BVO">
-      SELECT T2.EMPNO							/* 사원번호 */
-     	     , T2.EMP_NM						/* 직원명 */
-     	     , T2.DPRT_NM						/* 부서명 */
-     	     , (
+      /* IBIMS231BMapper.apvlListChk */
+      SELECT T2.EMPNO                           /* 사원번호 */
+             , T2.EMP_NM                        /* 직원명 */
+             , T2.DPRT_NM                       /* 부서명 */
+             , (
               SELECT S1.ATH_CD_NM
-                FROM IBIMS006B S1
+                FROM IBIMS006B S1 /* 권한별메뉴화면사용권한설정 */
                WHERE 1=1
                  AND S1.ATH_CD = T2.ATH_CD
-              ) AS ATH_CD_NM				/* 직책 */
+              ) AS ATH_CD_NM                /* 직책 */
            , T1.APVL_RQST_CNTN
            , T1.ERR_CNTN
            , T1.DECD_SQ
            , T1.DECD_STTS_DCD
-     	  FROM (
+          FROM (
               SELECT B.DCFC_ENO
                    , A.APVL_RQST_CNTN
                    , A.ERR_CNTN
                    , B.DECD_SQ
                    , B.DECD_STTS_DCD
-                FROM IBIMS231B A
-           LEFT JOIN IBIMS232B B
+                FROM IBIMS231B A /* 딜승인결재기본 */
+           LEFT JOIN IBIMS232B /* 딜승인결재담당자내역 */ B
                   ON A.DECD_SN = B.DECD_SN
                WHERE 1=1
                  AND A.DEAL_NO = #{dealNo}
                  AND A.PRDT_CD = NVL(#{prdtCd}, ' ')
                  AND A.DECD_JOB_DCD = (
                                         SELECT CD_VL_ID
-                                          FROM IBIMS002B
+                                          FROM IBIMS002B /* 공통코드 */
                                          WHERE 1=1
                                            AND CMNS_CD_GRP = 'D005'
                                            AND RSLT_CD_VL = #{decdJobDcd}
@@ -211,22 +215,24 @@
                  AND A.RQST_SQ = #{rqstSq}
                  AND A.TR_SEQ = #{trSeq}
               ) T1
-   LEFT JOIN IBIMS003B T2
+   LEFT JOIN IBIMS003B /* 사원기본 */ T2
           ON T1.DCFC_ENO = T2.EMPNO
-     	 WHERE 1=1
+         WHERE 1=1
        ORDER
           BY DECD_SQ DESC
   </select>
 
   <select id="getDecdSn" resultType="int">
+     /* IBIMS231BMapper.getDecdSn */
     SELECT NVL(MAX(DECD_SN) + 1, 1)
-      FROM IBIMS231B
+      FROM IBIMS231B /* 딜승인결재기본 */
      WHERE 1=1
   </select>
 
   <select id="decdSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="int">
+    /* IBIMS231BMapper.decdSn */
     SELECT DECD_SN
-      FROM IBIMS231B
+      FROM IBIMS231B /* 딜승인결재기본 */
      WHERE 1=1
        AND DEAL_NO = #{dealNo}
        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prdtCd)">
@@ -234,7 +240,7 @@
        </if>
        AND DECD_JOB_DCD = (
                              SELECT CD_VL_ID
-                               FROM IBIMS002B
+                               FROM IBIMS002B /* 공통코드 */
                              WHERE 1=1
                                AND CMNS_CD_GRP = 'D005'
                                AND RSLT_CD_VL = #{decdJobDcd}
@@ -247,70 +253,75 @@
 
   <!-- 결재승인자체크 -->
   <select id="chkDcfcEno" parameterType="com.nanuri.rams.business.common.vo.IBIMS231BVO" resultType="String">
-    		SELECT NVL(MAX(
-                  CASE WHEN
-                      (
-                        SELECT DECODE(COUNT(*), 0, 'Y', DECODE(NVL(SUM(DECODE(DECD_STTS_DCD, '2', 1, 0)), 0), COUNT(*), 'Y', 'N'))
-                          FROM IBIMS232B
-                         WHERE 1=1
-                           AND DECD_SN = T2.DECD_SN
-                           AND DECD_SQ &lt; T2.DECD_SQ
-                      ) = 'N' THEN '0' ELSE T2.DECD_STTS_DCD END
-                  ), '0')AS DECD_STTS_DCD
-    		  FROM IBIMS231B T1
-     LEFT JOIN IBIMS232B T2
-    	 		  ON T1.DECD_SN = T2.DECD_SN
-    		 WHERE 1=1
-    		   AND T1.DEAL_NO = #{dealNo}
-    		   AND T1.PRDT_CD = NVL(#{prdtCd}, ' ')
-    		   AND T1.DECD_JOB_DCD = (
-    		   						  SELECT CD_VL_ID
-    		   						    FROM IBIMS002B
-    		   						   WHERE 1=1
-    		   						     AND CMNS_CD_GRP = 'D005'
-    		   						     AND RSLT_CD_VL = #{decdJobDcd}
-    		   						  )
-    		   AND T1.SCRN_NO = #{scrnNo}
-    		   AND T1.EXC_SEQ = #{excSeq}
-    		   AND T1.RQST_SQ = #{rqstSq}
-    		   AND T1.TR_SEQ = #{trSeq}
+    /* IBIMS231BMapper.chkDcfcEno */
+    SELECT NVL(MAX(
+             CASE WHEN
+                 (
+                   SELECT DECODE(COUNT(*), 0, 'Y', DECODE(NVL(SUM(DECODE(DECD_STTS_DCD, '2', 1, 0)), 0), COUNT(*), 'Y', 'N'))
+                     FROM IBIMS232B /* 딜승인결재담당자내역 */
+                    WHERE 1=1
+                      AND DECD_SN = T2.DECD_SN
+                      AND DECD_SQ &lt; T2.DECD_SQ
+                 ) = 'N' THEN '0' ELSE T2.DECD_STTS_DCD END
+             ), '0')AS DECD_STTS_DCD
+      FROM IBIMS231B T1 /* 딜승인결재기본 */
+     LEFT JOIN IBIMS232B /* 딜승인결재담당자내역 */ T2
+                  ON T1.DECD_SN = T2.DECD_SN
+             WHERE 1=1
+               AND T1.DEAL_NO = #{dealNo}
+               AND T1.PRDT_CD = NVL(#{prdtCd}, ' ')
+               AND T1.DECD_JOB_DCD = (
+                                      SELECT CD_VL_ID
+                                        FROM IBIMS002B /* 공통코드 */
+                                       WHERE 1=1
+                                         AND CMNS_CD_GRP = 'D005'
+                                         AND RSLT_CD_VL = #{decdJobDcd}
+                                      )
+               AND T1.SCRN_NO = #{scrnNo}
+               AND T1.EXC_SEQ = #{excSeq}
+               AND T1.RQST_SQ = #{rqstSq}
+               AND T1.TR_SEQ = #{trSeq}
            AND T2.DCFC_ENO = #{dcfcEno}
            /* 결재자이긴한데 현재 결재순서가 아닌경우 결재요청 버튼도 보여주면 안됨 */
-	</select>
+    </select>
 
   <!-- 결재단계체크 -->
   <select id="chkDecdStep" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO" resultType="int">
+    /* IBIMS231BMapper.chkDecdStep */
     SELECT NVL(
                 (
                  SELECT T1.DECD_STTS_DCD
-  		             FROM IBIMS231B T1
-  		            WHERE 1=1
-  		              AND T1.DEAL_NO = #{dealNo}
-  		              AND T1.PRDT_CD = NVL(#{prdtCd}, ' ')
-  		              AND T1.DECD_JOB_DCD = (
-  		              						  SELECT CD_VL_ID
-  		              						    FROM IBIMS002B
-  		              						   WHERE 1=1
-  		              						     AND CMNS_CD_GRP = 'D005'
-  		              						     AND RSLT_CD_VL = #{decdJobDcd}
-  		              						  )
-  		              AND T1.SCRN_NO = #{scrnNo}
-  		              AND T1.EXC_SEQ = #{excSeq}
-  		              AND T1.RQST_SQ = #{rqstSq}
-  		              AND T1.TR_SEQ = #{trSeq}
+                     FROM IBIMS231B T1 /* 딜승인결재기본 */
+                    WHERE 1=1
+                      AND T1.DEAL_NO = #{dealNo}
+                      AND T1.PRDT_CD = NVL(#{prdtCd}, ' ')
+                      AND T1.DECD_JOB_DCD = (
+                                              SELECT CD_VL_ID
+                                                FROM IBIMS002B /* 공통코드 */
+                                               WHERE 1=1
+                                                 AND CMNS_CD_GRP = 'D005'
+                                                 AND RSLT_CD_VL = #{decdJobDcd}
+                                              )
+                      AND T1.SCRN_NO = #{scrnNo}
+                      AND T1.EXC_SEQ = #{excSeq}
+                      AND T1.RQST_SQ = #{rqstSq}
+                      AND T1.TR_SEQ = #{trSeq}
                  ), -1) AS DECD_STTS_DCD
       FROM DUAL
   </select>
 
   <select id="getLastDecdSq" parameterType="int" resultType="int">
+    /* IBIMS231BMapper.getLastDecdSq */
     SELECT LAST_DECD_SQ
-      FROM IBIMS231B
+      FROM IBIMS231B /* 딜승인결재기본 */
      WHERE 1=1
        AND DECD_SN = #{decdSn}
   </select>
+  
   <!-- 결재요청 -->
   <insert id="apvlRqst" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO">
-    INSERT INTO IBIMS231B(
+    /* IBIMS231BMapper.apvlRqst */
+    INSERT INTO IBIMS231B /* 딜승인결재기본 */ (
         DECD_SN
       , CHRR_ENO
       , APVL_RQST_P_ENO
@@ -338,11 +349,11 @@
         #{decdSn}
       , (
         SELECT MAX(EMPNO)
-          FROM IBIMS003B
+          FROM IBIMS003B /* 사원기본 */
          WHERE 1=1
            AND ATH_CD = (
                           SELECT DPRT_CD || 8
-                            FROM IBIMS003B
+                            FROM IBIMS003B /* 사원기본 */
                            WHERE 1=1
                              AND EMPNO = #{apvlRqstPEno}
                          )
@@ -354,7 +365,7 @@
       , NVL(#{prdtCd}, ' ')
       , (
          SELECT CD_VL_ID
-           FROM IBIMS002B
+           FROM IBIMS002B /* 공통코드 */
           WHERE 1=1
             AND CMNS_CD_GRP = 'D005'
             AND RSLT_CD_VL = #{decdJobDcd}
@@ -379,7 +390,8 @@
 
   <!-- 승인요청중 상태관리 -->
   <update id="updateDecd" parameterType="com.nanuri.rams.business.common.dto.IBIMS231BDTO">
-    UPDATE IBIMS231B
+    /* IBIMS231BMapper.updateDecd */
+    UPDATE IBIMS231B /* 딜승인결재기본 */
        SET DECD_STEP_DCD = #{decdStepDcd}
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(decdSttsDcd)">
          , DECD_STTS_DCD = #{decdSttsDcd}

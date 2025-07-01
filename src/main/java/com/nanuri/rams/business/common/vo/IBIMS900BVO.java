@@ -24,6 +24,8 @@ public class IBIMS900BVO extends IBIMS900BDTO {
     private String entpNm;          // 기업체명(==SPC명)
 
     private String apvlRqstPEno;    // 요청자사번
+    private String apvlRqstNm;    // 요청자명
+    
     private Date rqstDtm;           // 신청일시
     private BigDecimal rndrInAmt;   // 입금합계
     private BigDecimal rndrOutAmt;  // 출금합계

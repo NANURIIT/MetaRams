@@ -94,7 +94,7 @@ const TB07210Sjs = (function () {
             {
                 title: "SPC명",
                 dataType: "string",
-                dataIndx: "ardyBzepNo",
+                dataIndx: "entpNm",
                 halign: "center",
                 align: "left",
                 filter: { crules: [{ condition: "range" }] },
@@ -147,7 +147,7 @@ const TB07210Sjs = (function () {
             {
                 title: "신청자",
                 dataType: "string",
-                dataIndx: "apvlRqstPnm",
+                dataIndx: "apvlRqstNm",
                 halign: "center",
                 align: "center",
                 filter: { crules: [{ condition: "range" }] },
