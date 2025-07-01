@@ -15,6 +15,10 @@ const TB08010Sjs = (function () {
     loadSelectBoxContents();
     rendorGrid();
     resetBtnClick();
+	
+	//$(".btn-default").prop("disabled", true);
+	$(".btn-danger").prop("disabled", true);
+	$(".btn-success").prop("disabled", true);
 
     // url 정보 세팅은 마지막에 하도록 한다.
     getUrlDealInfo();
@@ -280,6 +284,9 @@ const TB08010Sjs = (function () {
     getLglDetail();
     getEfctDetail();
     //getCnctList();
+	
+	$(".btn-danger").prop("disabled", false);
+	$(".btn-success").prop("disabled", false);
   }
 
   //----------------------------TAB1 관리이력----------------------------
