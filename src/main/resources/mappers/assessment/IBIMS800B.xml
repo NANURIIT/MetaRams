@@ -3,6 +3,7 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS800BMapper">
 
     <select id="checkStdrDtInfo" parameterType = "String" resultType = "int">
+        /* IBIMS800BMapper.checkStdrDtInfo */
         SELECT COUNT(*)
         FROM IBIMS800B 
         WHERE STDR_DT = #{stdrDt}
@@ -10,6 +11,7 @@
     
     <!--자산건전성 및 충당금 산출 조회 (기준일자 데이터 없을 시)-->
     <select id="getAsstSnnGrdListNoStdrDt" resultType="com.nanuri.rams.business.common.vo.IBIMS800BVO">
+        /* IBIMS800BMapper.getAsstSnnGrdListNoStdrDt */
         SELECT A.DEAL_NO                     AS DEAL_NO                   /* 딜번호 */
                 , A.DEAL_NM                     AS DEAL_NM                /* 딜명 */
                 , NVL(A.PRDT_CD, '')         AS PRDT_CD                /* 상품코드 */
@@ -45,7 +47,7 @@
                 , NVL(T.DEAL_EXC_BLCE,0)        AS DEAL_EXC_BLCE        /* 투자잔액  */
                 , NVL(T.ACBK_AMT,0)             AS ACBK_AMT             /* 장부금액  */
                 , NVL(T.EXC_DT,0)               AS EXC_DT               /* 기표일자  */
-                , NVL(T.EXP_DT,0)               AS EXP_DT               /* 만기일자  */
+                , T.EXP_DT                      AS EXP_DT               /* 만기일자  */
                 , T.NXT_PYM_DT                  AS NXT_PYM_DT           /* 연체시작일자 */
             FROM IBIMS201B A                    /* 딜승인기본 */
             LEFT JOIN (
@@ -112,6 +114,7 @@
     </select>
 
     <delete id="dltAsstSnnList" parameterType = "com.nanuri.rams.business.common.vo.TB08090SVO">
+        /* IBIMS800BMapper.dltAsstSnnList */
         DELETE
         FROM IBIMS800B
         WHERE STDR_DT = #{stdrDt}              <!-- 기준일자 -->
@@ -119,6 +122,7 @@
 
     <!--자산건전성 및 충당금 산출 insert-->
     <insert id="insertAsstSnnList"  parameterType="java.util.List">
+        /* IBIMS800BMapper.insertAsstSnnList */
         INSERT INTO IBIMS800B                               /*대출금충당금산출기본*/
                 (
                     STDR_DT						            /*기준일자*/

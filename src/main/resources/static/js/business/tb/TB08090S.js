@@ -410,16 +410,22 @@ const TB08090Sjs = (function () {
 			openPopup(option);
 			return false;
 		} else {
-
+            
+			var nRow =0;
 			for (var i = 0; i < asstSnnInfoLgth; i++) {
 
 				var rowData = $("#TB08090S_gridList").pqGrid("getRowData", { rowIndx: i });
 
 				var asstSnnGrdDcd = rowData.astsQtyDvdCd;
+				var dealNo = rowData.dealNo;  //딜번호
+				
 				//var evlAprnAmt = rowData.evlAprnAmt;
 
 				if (isEmpty(asstSnnGrdDcd)) {
-					option.text = "자산건전성을 선택한 후 다시 시도해주세요.";
+
+                    nRow = i+1;
+					option.text = "딜번호["+ dealNo+"] ,\n 자산건전성을 선택한 후 다시 시도해주세요.";
+					//option.text = "자산건전성을 선택한 후 다시 시도해주세요.";
 					openPopup(option);
 					return false;
 				}
@@ -450,8 +456,16 @@ const TB08090Sjs = (function () {
 				var asstSnnGrdDcd = item.astsQtyDvdCd;						//자산건전성등급구분코드
 				var hndEmpNo = loginUsrId;									//조작사원번호
 
-				var rmnExpYnum = Number(expDt.substring(0, 4)) - Number(stdrDt.substring(0, 4));			//잔여만기년수
+				var rmnExpYnum = 0;											//잔여만기년수
+				//var rmnExpYnum = Number(expDt.substring(0, 4)) - Number(stdrDt.substring(0, 4));			//잔여만기년수
 
+				//잔여만기년수 계산  
+				if ( expDt == 0 ) {
+					//만기일자 Null 인 경우
+					rmnExpYnum = 0;																			//잔여만기년수
+				}else{
+					rmnExpYnum = Number(expDt.substring(0, 4)) - Number(stdrDt.substring(0, 4));            //잔여만기년수
+				}		
 				//alert(rmnExpYnum);
 
 				var dtoInfo = {
@@ -460,7 +474,7 @@ const TB08090Sjs = (function () {
 					"excSn": excSn,
 					"excDt": excDt,
 					"expDt": expDt,
-					"indvEvlAprnAmt": isEmpty(indvEvlAprnAmt) ? "" : indvEvlAprnAmt.replaceAll(',', ''),
+					"indvEvlAprnAmt": isEmpty(indvEvlAprnAmt) ? "0" : indvEvlAprnAmt.replaceAll(',', ''),
 					"acbkAmt": acbkAmt,
 					"rmnExpYnum": rmnExpYnum,
 					"krwTrslExcBlce": krwTrslExcBlce,
