@@ -79,8 +79,8 @@
      LEFT JOIN (
                 SELECT ARDY_BZEP_NO
                      , FINC_EXCU_RQS_SN
-                     , SUM(CASE WHEN RNDR_DCD = '입금' THEN RNDR_AMT ELSE 0 END) AS RNDR_IN_AMT     /* 입금합계 */
-                     , SUM(CASE WHEN RNDR_DCD = '출금' THEN RNDR_AMT ELSE 0 END) AS RNDR_OUT_AMT    /* 출금합계 */
+                     , SUM(CASE WHEN RNDR_DCD = '1' THEN RNDR_AMT ELSE 0 END) AS RNDR_IN_AMT     /* 입금합계 */
+                     , SUM(CASE WHEN RNDR_DCD = '2' THEN RNDR_AMT ELSE 0 END) AS RNDR_OUT_AMT    /* 출금합계 */
                      , MAX(TR_DT)                                                AS TR_DT           /* 거래일자(임시) */
                   FROM IBIMS902B
                  WHERE 1=1
