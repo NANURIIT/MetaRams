@@ -66,81 +66,8 @@ public class TB08031ServiceImpl implements TB08031Service {
 
 	@Override
 	public IBIMS501BVO getBusiBssInfo(IBIMS501BVO param) {
-		IBIMS501BVO rtnObj = new IBIMS501BVO();
-
-		// rtnObj = ibims501BMapper.getBusiBssInfo(param);
 		
-		// if (null != rtnObj) {
-
-		// 	if(rtnObj.getInvFnnMngmBusiDcd() != null){
-		// 		switch( rtnObj.getInvFnnMngmBusiDcd() ) {
-		// 			// 부동산
-		// 			case "01":
-		// 				rtnObj.setRlesInfo(ibims502BMapper.getRealEstateInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-		// 				rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-		// 				rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-		// 				rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-		// 				rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
-		// 				break;
-		// 			// 인프라
-		// 			case "02":
-		// 				rtnObj.setInfraInfo(ibims503BMapper.getInfraInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-		// 				rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-		// 				rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-		// 				rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-		// 				rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
-		// 				break;
-		// 			// M&A			
-		// 			case "03":
-		// 				rtnObj.setMaInfo(ibims504BMapper.getMaInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-		// 				rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-		// 				rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-		// 				rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-		// 				rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
-		// 				rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
-		// 				rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
-		// 				break;
-		// 			// 국제투자	
-		// 			case "04":
-		// 				rtnObj.setInvstInfo(ibims505BMapper.getInvstInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-		// 				rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-		// 				rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-		// 				rtnObj.setStlnInfo(ibims513Mapper.getStlnInfo(param.getDealNo()));
-		// 				rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
-		// 				break;
-		// 			// PEF/VC	
-		// 			case "05":
-		// 				rtnObj.setPefInfo(ibims506BMapper.getPefInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsPartInfo(ibims511Mapper.getBsnsPartInfo(param.getDealNo()));
-		// 				rtnObj.setBsnsForecast(ibims514Mapper.getBsnsForecast(param.getDealNo()));
-		// 				rtnObj.setBondProtInfo(ibims509Mapper.getBondProtInfo(param.getDealNo()));
-		// 				rtnObj.setCchInfo(ibims510Mapper.getCchInfo(param.getDealNo()));
-		// 				rtnObj.setErnInfo(ibims513Mapper.getErnInfo(param.getDealNo()));
-		// 				rtnObj.setBusiInfo(ibims508Mapper.getBusiInfo(param.getDealNo()));
-		// 				rtnObj.setAdmsAsstInfo(ibims512Mapper.getAdmsAsstInfo(param.getDealNo()));
-		// 				rtnObj.setInvstEprzInfo(ibims518Mapper.getInvstBzscalList(param.getDealNo()));
-		// 				rtnObj.setAsstWrkngInfo(ibims515Mapper.selectAsstOrtnLst(param.getDealNo()));
-		// 				break;
-		// 			default : 
-		// 				break;
-		// 		}
-		// 		rtnObj.setLoanInfo(ibims402Mapper.getloanInfo(param.getDealNo()));
-		// 		rtnObj.setFundInfo(ibims402Mapper.getFundInfo(param.getDealNo()));
-		// 	}else{
-		// 		log.debug("rtnObj.getInvFnnMngmBusiDcd() is null!!!");
-		// 	}
-			
-		// }else{
-		// 	log.debug("rtnObj is null!!!");
-		// }
+		IBIMS501BVO rtnObj = new IBIMS501BVO();
 
 		// 기본항목 조회
 		String dealNo = param.getDealNo();
