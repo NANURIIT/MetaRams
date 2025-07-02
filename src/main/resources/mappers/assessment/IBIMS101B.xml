@@ -3,21 +3,24 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS101BMapper">
 
     <select id="selectSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="string">
+    	/* IBIMS101BMapper.selectSn */
         SELECT LPAD(SUBSTR(MAX(DEAL_NO), 6, 6) + 1, 6, '0')
-          FROM IBIMS101B
+          FROM IBIMS101B /* 딜기본정보 */
          WHERE CHAR_LENGTH(DEAL_NO) = 11
     </select>
 
     <select id="selectDealNoFormat" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="string">
+    	/* IBIMS101BMapper.selectDealNoFormat */
         SELECT TO_NUMBER(CASE WHEN MAX(SN) IS NULL THEN 1
                     WHEN MAX(SN) IS NOT NULL THEN MAX(SN) + 1
                     ELSE MAX(SN) + 1
             	     END ) AS SN
-          FROM IBIMS101B
+          FROM IBIMS101B /* 딜기본정보 */
          WHERE DEAL_NO = #{dealNo}
     </select>
 
 	<select id="getBscDealInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+		/* IBIMS101BMapper.getBscDealInfo */
         SELECT DEAL_NO                                      /*  딜번호  */
              , DEAL_NM                                      /*  딜명  */
              , SN                                           /*  일련번호  */
@@ -35,7 +38,7 @@
                 ), '') AS ENTP_HNGL_NM
              , '' AS INSPCT_PRGRS_ST_CD_NM
              , '' AS INSPCT_PRGRS_ST_CD
-          FROM IBIMS101B
+          FROM IBIMS101B /* 딜기본정보 */
          WHERE 1=1
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
                  AND DEAL_NO LIKE '%'|| #{dealNo}||'%'
@@ -48,7 +51,8 @@
 
     <!-- 딜기본정보등록 -->     
     <insert id="saveDeal" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO">
-        INSERT INTO IBIMS101B
+    	/* IBIMS101BMapper.saveDeal */
+        INSERT INTO IBIMS101B /* 딜기본정보 */
                (
                   DEAL_NO              /*  딜번호  */
                 , SN                   /*  일련번호  */
@@ -220,7 +224,8 @@
     </insert>
     
     <update id="updateLastYn" parameterType="string">
-        UPDATE IBIMS101B
+    	/* IBIMS101BMapper.updateLastYn */
+        UPDATE IBIMS101B /* 딜기본정보 */
            SET LAST_YN = 'N'
          WHERE DEAL_NO = #{param}
            AND LAST_YN = 'Y'
@@ -228,7 +233,8 @@
 
     <!-- 딜기본정보조회 -->    
     <select id="getBscDealDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
- 		   SELECT DEAL_NO             			/*  딜번호  */
+    	/* IBIMS101BMapper.getBscDealDetail */
+ 		SELECT DEAL_NO             			/*  딜번호  */
             , SN                  			/*  일련번호  */
             , STDR_YEAR           			/*  기준년도  */
             , LAST_YN             			/*  최종여부  */
@@ -330,7 +336,7 @@
             , HND_TMNL_NO         			   /*  조작단말기번호  */
             , HND_TR_ID           			   /*  조작거래id  */
             , GUID                			   /*  guid  */
-        FROM IBIMS101B
+        FROM IBIMS101B /* 딜기본정보 */
         WHERE 1 = 1
           AND DEAL_NO             = #{dealNo}
       <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(sn)">
@@ -343,6 +349,7 @@
     
     <!-- 딜목록조회팝업 조회 -->    
     <select id="selectLstTB03021P" parameterType="com.nanuri.rams.business.common.vo.IBIMS101BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+    	/* IBIMS101BMapper.selectLstTB03021P */
         SELECT s101b.DEAL_NO						  /*  딜번호  */
              , s101b.SN						        /*  일련번호  */
              , s101b.DEAL_NM						  /*  딜명  */
@@ -352,11 +359,9 @@
              , s003b.DPRT_CD						  /*  부서코드  */
              , s003b.DPRT_NM						  /*  부서코드명  */
              , s010b.ENTP_NM   					  /*  업체한글명  */
-          FROM IBIMS101B s101b
-     LEFT JOIN IBIMS003B s003b
-            ON s101b.CHRR_EMPNO				= s003b.EMPNO
-     LEFT JOIN IBIMS010B s010b
-            ON s101b.PTXT_TR_OTHR_DSCM_NO	= s010b.ARDY_BZEP_NO
+          FROM IBIMS101B /* 딜기본정보 */ s101b
+     LEFT JOIN IBIMS003B /* 사원기본 */ s003b  ON s101b.CHRR_EMPNO	 = s003b.EMPNO
+     LEFT JOIN IBIMS010B /* 기업체기본 */ s010b ON s101b.PTXT_TR_OTHR_DSCM_NO	= s010b.ARDY_BZEP_NO
          WHERE 1 = 1
            AND s003b.DEL_YN = 'N'
            AND s101b.LAST_YN				= 'Y'
@@ -392,10 +397,11 @@
     
     <!-- 딜일련번호 조회  -->  
     <select id="selectLstDealSn" parameterType="com.nanuri.rams.business.common.vo.IBIMS101BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+    	/* IBIMS101BMapper.selectLstDealSn */
 		SELECT A.DEAL_NO
 		     , A.SN
 		     , A.LAST_YN
-		  FROM IBIMS101B A
+		  FROM IBIMS101B /* 딜기본정보 */ A
 		 WHERE 1=1
 		   AND A.DEAL_NO =  #{dealNo}
 		   AND A.DEL_YN  = 'N'
@@ -404,6 +410,7 @@
     
   <!-- 딜정보조회 -->  
 	<select id="ibSpecSearch" parameterType="com.nanuri.rams.business.common.dto.IBIMS101BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
+		/* IBIMS101BMapper.ibSpecSearch */
         SELECT B.DEAL_NO                                               /*  딜번호  */
              , B.BUSI_DCD                                              /*  사업구분코드  */
              , B.RGST_DT                                               /*  등록일자  */
@@ -445,7 +452,7 @@
                                     )
                )
                  , '딜정보저장') AS MTR_PRG_STTS_DCD_NM                     /*  테이블 컬럼 미존재로 임시 하드코딩 */
-          FROM IBIMS101B B
+          FROM IBIMS101B /* 딜기본정보 */ B
          WHERE LAST_YN = 'Y'
         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
            AND DEAL_NO LIKE '%'|| #{dealNo} || '%'
@@ -471,7 +478,8 @@
 
      <!-- 워크플로우조회 -->   
     <select id="getWorkflowInfoList" parameterType="com.nanuri.rams.business.common.vo.IBIMS101BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
-      WITH PRDT_TB AS (
+    	/* IBIMS101BMapper.getWorkflowInfoList */
+      	WITH PRDT_TB AS (
 	      SELECT
 	      	  A.DEAL_NO
 	      	, A.PRDT_CD
@@ -490,80 +498,78 @@
           , A.MTR_DCD
           , B.CTRC_CCLC_DCD
           , F.DECD_STTS_DCD
-	      FROM IBIMS201B A
-	      	, IBIMS401B B
+	      FROM IBIMS201B /* 딜승인기본 */ A
+	      	, IBIMS401B /* 약정기본 */ B
 	      	, (SELECT Y.PRDT_CD, Y.EXC_SN, Y.LAST_RDMP_TMRD, Y.TOT_RDMP_TMRD
-	      	   FROM IBIMS402B Y
+	      	   FROM IBIMS402B /* 딜실행기본 */ Y
 	      	   WHERE (Y.PRDT_CD, Y.EXC_SN) IN (
-	      	     	SELECT Z.PRDT_CD, MAX(Z.EXC_SN) EXC_SN FROM IBIMS402B Z WHERE Z.LDG_STTS_CD = '1' GROUP BY Z.PRDT_CD
+	      	     	SELECT Z.PRDT_CD, MAX(Z.EXC_SN) EXC_SN FROM IBIMS402B /* 딜실행기본 */ Z WHERE Z.LDG_STTS_CD = '1' GROUP BY Z.PRDT_CD
 	      	     	)
 	      	   ) C
-	      	 , IBIMS010B D
-	      	 , (SELECT Z.PRDT_CD, SUM(Z.DEAL_EXC_BLCE) AS DEAL_EXC_BLCE FROM IBIMS402B Z WHERE Z.LDG_STTS_CD = '1' GROUP BY Z.PRDT_CD) E
-           , IBIMS231B F
+	      	 , IBIMS010B D /* 기업체기본 */
+	      	 , (SELECT Z.PRDT_CD, SUM(Z.DEAL_EXC_BLCE) AS DEAL_EXC_BLCE FROM IBIMS402B /* 딜실행기본 */ Z WHERE Z.LDG_STTS_CD = '1' GROUP BY Z.PRDT_CD) E
+           , IBIMS231B F /* 딜승인결재기본 */
 	      WHERE 1=1
 	      	AND A.LAST_YN = 'Y'
 	      	AND A.PRDT_CD = B.PRDT_CD(+)
 	      	AND A.PRDT_CD = C.PRDT_CD(+)
 	      	AND A.TR_OTHR_DSCM_NO = D.ARDY_BZEP_NO(+)
 	      	AND A.PRDT_CD = E.PRDT_CD(+)
-          AND A.PRDT_CD = F.PRDT_CD   
+            AND A.PRDT_CD = F.PRDT_CD   
         )     
         SELECT 
-	        A.DEAL_NO
-        ,A.DEAL_NM
-        , NVL(CD2.CD_VL_NM,'') AS MTR_NM
-        , NVL(C.PRDT_CD,'') AS PRDT_CD
-        , NVL(C.PRDT_NM,'') AS PRDT_NM
-        , DECODE(NVL(C.PRDT_CD,''), '', B.MTR_PRG_STTS_DCD, C.PRG_STTS_CD) AS PRG_STTS_CD
-        , NVL(CD4.CD_VL_NM,'') AS PRG_STTS_NM
-        , DECODE(NVL(C.PRDT_CD,''), '', B.INV_PRDT_LCLS_CD, C.PRDT_LCLS_CD) AS INV_PRDT_LCLS_CD
-        , DECODE(NVL(C.PRDT_CD,''), '', CD8.CD_VL_NM, CD7.CD_VL_NM) AS INV_PRDT_LCLS_NM
-        , DECODE(NVL(C.PRDT_CD,''), '', D.ENTP_NM, C.ENTP_NM) AS ENTP_NM
-        , DECODE(NVL(C.PRDT_CD,''), '', B.INV_PRDT_MDCL_CD, C.PRDT_MDCL_CD) AS INV_PRDT_MDCL_CD
-        , DECODE(NVL(C.PRDT_CD,''), '', B.INV_PRDT_SCLS_CD, C.PRDT_CLSF_CD) AS INV_PRDT_SCLS_CD
-        , DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_APVL_AMT) AS EPRZ_CRDL_APVL_AMT
-        , DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_CTRC_AMT) AS EPRZ_CRDL_CTRC_AMT
-        , DECODE(NVL(C.DEAL_EXC_BLCE,''), '', 0, C.DEAL_EXC_BLCE) AS DEAL_EXC_BLCE
-        , C.LAST_RDMP_TMRD
-        , C.TOT_RDMP_TMRD
-        , C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD
-        , NVL(B.MTR_DCD,'') AS MTR_DCD
-        , NVL(C.CTRC_CCLC_DCD, '') AS CTRC_CCLC_DCD
-        , C.DECD_STTS_DCD
-        FROM IBIMS101B A
-         , IBIMS103B B
+	          A.DEAL_NO
+	        , A.DEAL_NM
+	        , NVL(CD2.CD_VL_NM,'') AS MTR_NM
+	        , NVL(C.PRDT_CD,'') AS PRDT_CD
+	        , NVL(C.PRDT_NM,'') AS PRDT_NM
+	        , DECODE(NVL(C.PRDT_CD,''), '', B.MTR_PRG_STTS_DCD, C.PRG_STTS_CD) AS PRG_STTS_CD
+	        , NVL(CD4.CD_VL_NM,'') AS PRG_STTS_NM
+	        , DECODE(NVL(C.PRDT_CD,''), '', B.INV_PRDT_LCLS_CD, C.PRDT_LCLS_CD) AS INV_PRDT_LCLS_CD
+	        , DECODE(NVL(C.PRDT_CD,''), '', CD8.CD_VL_NM, CD7.CD_VL_NM) AS INV_PRDT_LCLS_NM
+	        , DECODE(NVL(C.PRDT_CD,''), '', D.ENTP_NM, C.ENTP_NM) AS ENTP_NM
+	        , DECODE(NVL(C.PRDT_CD,''), '', B.INV_PRDT_MDCL_CD, C.PRDT_MDCL_CD) AS INV_PRDT_MDCL_CD
+	        , DECODE(NVL(C.PRDT_CD,''), '', B.INV_PRDT_SCLS_CD, C.PRDT_CLSF_CD) AS INV_PRDT_SCLS_CD
+	        , DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_APVL_AMT) AS EPRZ_CRDL_APVL_AMT
+	        , DECODE(NVL(C.PRDT_CD,''), '', 0, C.EPRZ_CRDL_CTRC_AMT) AS EPRZ_CRDL_CTRC_AMT
+	        , DECODE(NVL(C.DEAL_EXC_BLCE,''), '', 0, C.DEAL_EXC_BLCE) AS DEAL_EXC_BLCE
+	        , C.LAST_RDMP_TMRD
+	        , C.TOT_RDMP_TMRD
+	        , C.LAST_RDMP_TMRD || '/' || C.TOT_RDMP_TMRD AS RDMP_TMRD
+	        , NVL(B.MTR_DCD,'') AS MTR_DCD
+	        , NVL(C.CTRC_CCLC_DCD, '') AS CTRC_CCLC_DCD
+	        , C.DECD_STTS_DCD
+        FROM IBIMS101B A /* 딜기본정보 */
+         , IBIMS103B B /* 딜심사기본 */
          , PRDT_TB   C
          , (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'L007') CD2
          , (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I011') CD4
          , (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'P005') CD7
          , (SELECT CD_VL_ID,CD_VL_NM FROM IBIMS002B A WHERE CMNS_CD_GRP = 'I029') CD8
-         , IBIMS010B D
+         , IBIMS010B D /* 기업체기본 */
         WHERE 1=1
         	<if test="dealNo != ''">
-            AND A.DEAL_NO = #{dealNo}
+          AND A.DEAL_NO = #{dealNo}
           </if>	
-        	AND A.LAST_YN = 'Y'
+          AND A.LAST_YN = 'Y'
           AND A.DEAL_NO = B.DEAL_NO(+)
           AND B.LAST_YN(+) = 'Y'
           AND A.DEAL_NO = C.DEAL_NO(+)
           AND B.MTR_DCD = C.MTR_DCD(+)
           <if test="prdtCd != ''">
-            AND C.PRDT_CD = #{prdtCd}
+          AND C.PRDT_CD = #{prdtCd}
           </if>
-        	AND B.MTR_DCD = CD2.CD_VL_ID(+)
+          AND B.MTR_DCD = CD2.CD_VL_ID(+)
           AND DECODE(NVL(C.PRDT_CD,''), '', B.MTR_PRG_STTS_DCD, C.PRG_STTS_CD) = CD4.CD_VL_ID(+)
           AND A.INV_PRDT_LCLS_CD = CD8.CD_VL_ID(+)
           AND C.PRDT_LCLS_CD = CD7.CD_VL_ID(+)
           AND A.PTXT_TR_OTHR_DSCM_NO = D.ARDY_BZEP_NO(+)
-          ORDER BY DEAL_NO
-        , PRDT_CD
-     
-     
+        ORDER BY DEAL_NO , PRDT_CD
     </select>
 
     <select id="getBusiBssInfo101B" parameterType="string" resultType="com.nanuri.rams.business.common.vo.IBIMS101BVO">
-      SELECT 	  A.DEAL_NO				/*딜번호*/
+    	/* IBIMS101BMapper.getBusiBssInfo101B */
+      	SELECT 	  A.DEAL_NO				/*딜번호*/
               , A.SN 					  /*순번*/
               , B.CRNO 				  /*법인등록번호*/
               , B.ENTP_NM 			/*업체명*/
@@ -581,9 +587,9 @@
               )AS EXC_BLCE			/*사업 대출잔액*/
               , A.EXP_DT 				/*만기일자*/
               , A.RGST_DT				/*등록일자*/
-          FROM IBIMS101B A
-          JOIN IBIMS010B B 
-          ON B.ARDY_BZEP_NO = A.PTXT_TR_OTHR_DSCM_NO  
+          FROM IBIMS101B A /* 딜기본정보 */
+          JOIN IBIMS010B B /* 기업체기본 */
+          ON B.ARDY_BZEP_NO = A.PTXT_TR_OTHR_DSCM_NO  /* 거래상대방식별번호 */
           WHERE A.DEL_YN = 'N'
           AND A.LAST_YN = 'Y'
           AND A.DEAL_NO = #{dealNo}
