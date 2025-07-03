@@ -44,13 +44,27 @@ public class TB9010ServiceImpl implements TB9010Service {
     @Override
     public String insert(IBIMS997BDTO param) {
 
+        log.info("############################################");
+        log.info(" TB9010ServiceImpl(월별잔액생성) START >>>");
+        log.info("############################################");
+
         String result = "5";
+
+        String sHndEmpno = null;
+        String sHndTrId = null;
+        String sHndTmnlNo = null;
+        String sGuId = null;
+
+        sHndEmpno = param.getHndEmpno();
+        sHndTrId = param.getJobId();
+        sHndTmnlNo = param.getHndTrId();
+        sGuId = param.getGuid();
 
         try {
             // 업무시작시간 업데이트
             param.setHndEmpno("BATCH");
             ibims997bMapper.updateIBIMS997B(param);
-            
+
             IBIMS810BDTO ibims810bdto = new IBIMS810BDTO();
 
             ibims810bdto.setStdrDt(param.getCurDate());
@@ -93,6 +107,12 @@ public class TB9010ServiceImpl implements TB9010Service {
 
                 select.get(i).setNrmlIntr(calcSumDto.getTotalIntr()); // 정상이자합계
                 select.get(i).setIntrAmtOvduIntr(calcSumDto.getTotalIntrOvduIntr()); // 이자연체이자 합계
+
+                // 테이블 조작관련 컬럼값 Setting
+                select.get(i).setHndEmpno(sHndEmpno); // 처리자사번
+                select.get(i).setHndTmnlNo(sHndTmnlNo);
+                select.get(i).setHndTrId(sHndTrId); // JobId
+                select.get(i).setGuid(sGuId);
             } // end of for
 
             IBIMS810BVO ibims810bvo = new IBIMS810BVO();
@@ -103,7 +123,7 @@ public class TB9010ServiceImpl implements TB9010Service {
             ibims811bMapper.deleteIBIMS811B(param.getCurDate());
 
             // 입력
-            if ( ibims810bvo.getIbims810bdtoList().size() > 0 ) {
+            if (ibims810bvo.getIbims810bdtoList().size() > 0) {
                 ibims811bMapper.insertIBIMS811B(ibims810bvo);
             }
 
@@ -118,13 +138,14 @@ public class TB9010ServiceImpl implements TB9010Service {
             if (e instanceof InterruptedException) {
                 log.info("스레드 중단 오류 발생!!");
                 result = "7";
-            }
-            else {
+            } else {
                 log.info("배치중 오류 발생!!");
                 result = "5";
             }
         }
-
+        log.info("############################################");
+        log.info(" TB9010ServiceImpl(월별잔액생성) END >>>");
+        log.info("############################################");
         return result;
     };
 

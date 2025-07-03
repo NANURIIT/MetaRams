@@ -3,6 +3,7 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS981BMapper">
 
     <select id="selectIBIMS981B" parameterType="com.nanuri.rams.business.common.vo.IBIMS981BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS981BVO">
+    /* IBIMS981BMapper.selectIBIMS981B */
         SELECT ROWNUM
              , A.ERLM_SEQ                   /* 등록순번 */
              , A.DUDT_MNGM_NO               /* 기일관리번호 */
@@ -47,10 +48,10 @@
            AND E.CMNS_CD_GRP = 'D010'
          WHERE 1=1
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(prevDate)">
-           AND A.ACTN_PRAR_DT &gt; #{prevDate}
+           AND A.ACTN_PRAR_DT &gt;= #{prevDate}
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(nextDate)">
-           AND A.ACTN_PRAR_DT &lt; #{nextDate}
+           AND A.ACTN_PRAR_DT &lt;= #{nextDate}
            </if>
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(mngmBdcd)">
            AND A.MNGM_BDCD = #{mngmBdcd}

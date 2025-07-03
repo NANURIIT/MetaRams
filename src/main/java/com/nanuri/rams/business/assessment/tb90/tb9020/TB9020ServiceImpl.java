@@ -28,13 +28,17 @@ public class TB9020ServiceImpl implements TB9020Service {
     @Override
     public String insert(IBIMS997BDTO param) {
 
+        log.info("=========================================");
+        log.info(" TB9020ServiceImpl(미수이자결산내역생성) START >>>");
+        log.info("=========================================");
+
         String result = "5";
 
         try {
             // 업무시작시간 업데이트
             param.setHndEmpno("BATCH");
             ibims997bMapper.updateIBIMS997B(param);
-            
+
             String stdrDt = param.getCurDate();
 
             // 삭제
@@ -52,13 +56,14 @@ public class TB9020ServiceImpl implements TB9020Service {
             if (e instanceof InterruptedException) {
                 log.info("스레드 중단 오류 발생!!");
                 result = "7";
-            }
-            else {
+            } else {
                 log.info("배치중 오류 발생!!");
                 result = "5";
             }
         }
-
+        log.info("=========================================");
+        log.info(" TB9020ServiceImpl(미수이자결산내역생성) END >>>");
+        log.info("=========================================");
         return result;
     };
 

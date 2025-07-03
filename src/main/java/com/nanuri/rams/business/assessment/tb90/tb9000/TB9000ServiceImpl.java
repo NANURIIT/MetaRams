@@ -43,27 +43,42 @@ public class TB9000ServiceImpl implements TB9000Service {
     @Override
     public String insertIBIMS810B(IBIMS997BDTO param) {
 
-        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |1 |Batch       |1 |Batch       |
-        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |2 |Forced-OK   |2 |Forced-OK   |
-        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |3 |(Re)Run     |3 |(Re)Run     |
-        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |4 |Kill        |4 |Kill        |
-        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |5 |Brake       |5 |Brake       |
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |1 |Batch |1 |Batch |
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |2 |Forced-OK |2 |Forced-OK |
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |3 |(Re)Run |3 |(Re)Run |
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |4 |Kill |4 |Kill |
+        // |B027 |배치명령유형코드 |BATCH_CMD_DCD |1 |5 |Brake |5 |Brake |
 
-        // |J002 |배치작업상태     |JOB_STATUS    |1 |1 |Not Running |1 |Not Running |
-        // |J002 |배치작업상태     |JOB_STATUS    |1 |2 |Waitting    |2 |Waitting    |
-        // |J002 |배치작업상태     |JOB_STATUS    |1 |3 |Running     |3 |Running     |
-        // |J002 |배치작업상태     |JOB_STATUS    |1 |4 |Complete    |4 |Complete    |
-        // |J002 |배치작업상태     |JOB_STATUS    |1 |5 |Error       |5 |Error       |
-        // |J002 |배치작업상태     |JOB_STATUS    |1 |6 |Terminate   |6 |Terminate   |
-        // |J002 |배치작업상태     |JOB_STATUS    |1 |7 |Terminated  |7 |Terminated  |
-        // |J002 |배치작업상태     |JOB_STATUS    |1 |8 |Stop        |8 |Stop        |
+        // |J002 |배치작업상태 |JOB_STATUS |1 |1 |Not Running |1 |Not Running |
+        // |J002 |배치작업상태 |JOB_STATUS |1 |2 |Waitting |2 |Waitting |
+        // |J002 |배치작업상태 |JOB_STATUS |1 |3 |Running |3 |Running |
+        // |J002 |배치작업상태 |JOB_STATUS |1 |4 |Complete |4 |Complete |
+        // |J002 |배치작업상태 |JOB_STATUS |1 |5 |Error |5 |Error |
+        // |J002 |배치작업상태 |JOB_STATUS |1 |6 |Terminate |6 |Terminate |
+        // |J002 |배치작업상태 |JOB_STATUS |1 |7 |Terminated |7 |Terminated |
+        // |J002 |배치작업상태 |JOB_STATUS |1 |8 |Stop |8 |Stop |
+
+        log.info("############################################");
+        log.info(" TB9000ServiceImpl(일별잔액생성) START >>>");
+        log.info("############################################");
 
         String result = "5";
+
+        String sHndEmpno = null;
+        String sHndTrId = null;
+        String sHndTmnlNo = null;
+        String sGuId = null;
+
+        sHndEmpno = param.getHndEmpno();
+        sHndTrId = param.getJobId();
+        sHndTmnlNo = param.getHndTrId();
+        sGuId = param.getGuid();
 
         try {
 
             // 업무시작시간 업데이트
             param.setHndEmpno("BATCH");
+
             ibims997bMapper.updateIBIMS997B(param);
 
             // Batch업무시작
@@ -95,6 +110,12 @@ public class TB9000ServiceImpl implements TB9000Service {
                 calcSumDto = calculation.totalCalculation(calcDto, outCalc);
                 select.get(i).setNrmlIntr(calcSumDto.getTotalIntr()); // 정상이자합계
                 select.get(i).setIntrAmtOvduIntr(calcSumDto.getTotalIntrOvduIntr()); // 이자연체이자 합계
+
+                // 테이블 조작관련 컬럼값 Setting
+                select.get(i).setHndEmpno(sHndEmpno); // 처리자사번
+                select.get(i).setHndTmnlNo(sHndTmnlNo);
+                select.get(i).setHndTrId(sHndTrId); // JobId
+                select.get(i).setGuid(sGuId);
             } // end of for
 
             IBIMS810BVO ibims810bvo = new IBIMS810BVO();
@@ -105,7 +126,7 @@ public class TB9000ServiceImpl implements TB9000Service {
             ibims810bMapper.deleteIBIMS810B(param.getCurDate());
 
             // 입력
-            if ( ibims810bvo.getIbims810bdtoList().size() > 0 ) {
+            if (ibims810bvo.getIbims810bdtoList().size() > 0) {
                 ibims810bMapper.insertIBIMS810B(ibims810bvo);
             }
 
@@ -119,12 +140,15 @@ public class TB9000ServiceImpl implements TB9000Service {
             if (e instanceof InterruptedException) {
                 log.info("스레드 중단 오류 발생!!");
                 result = "7";
-            }
-            else {
+            } else {
                 log.info("배치중 오류 발생!!");
                 result = "5";
             }
         }
+
+        log.info("############################################");
+        log.info(" TB9000ServiceImpl(일별잔액생성) END    >>>");
+        log.info("############################################");
 
         return result;
     }

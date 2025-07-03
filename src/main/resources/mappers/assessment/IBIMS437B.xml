@@ -3,19 +3,20 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS437BMapper">
 
     <select id="getOvduDailyDtls" parameterType="com.nanuri.rams.business.common.dto.IBIMS437BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS437BDTO">
-	SELECT A.AFCT_MNGM_NO                 /* 사후관리번호 */
-			, A.DEAL_NO												/* 딜번호	*/
-			, A.PRDT_CD												/* 종목코드 */
-			, A.EXC_SN 												/* 실행순번 */
-	    , A.OVDU_SEQ                     /* 연체순번  */
-		  , A.OVDU_OCRNC_DT                 /* 연체발생일 */
-		  , A.CRDL_BLCE_AMT                /* 여신잔액금액 */
-		  , A.RDMP_PRNA                    /* 상환원금액 */
-	 	  , A.RDMP_INTR_AMT                 /* 상환이자금액 */
-		  , A.OVDU_PRNA_AMT                /* 연체원금액 */
-		  , A.OVDU_INTR_AMT                 /* 연체이자금액 */
-	  FROM IBIMS437B A                     /* 연체내역 */
-		JOIN IBIMS436B B
+  /* IBIMS437BMapper.getOvduDailyDtls */
+	 SELECT A.AFCT_MNGM_NO                  /* 사후관리번호 */
+	  		, A.DEAL_NO												/* 딜번호	*/
+		  	, A.PRDT_CD												/* 종목코드 */
+		  	, A.EXC_SN 												/* 실행순번 */
+	      , A.OVDU_SEQ                      /* 연체순번  */
+		    , A.OVDU_OCRNC_DT                 /* 연체발생일 */
+		    , A.CRDL_BLCE_AMT                 /* 여신잔액금액 */
+		    , A.RDMP_PRNA                     /* 상환원금액 */
+	 	    , A.RDMP_INTR_AMT                 /* 상환이자금액 */
+		    , A.OVDU_PRNA_AMT                 /* 연체원금액 */
+		    , A.OVDU_INTR_AMT                 /* 연체이자금액 */
+	   FROM IBIMS437B A                     /* 연체내역 */
+	   JOIN IBIMS436B B                     /* 연체기본 */
 		  ON A.AFCT_MNGM_NO = B.AFCT_MNGM_NO
 		 AND A.DEAL_NO = B.DEAL_NO
 		 AND A.PRDT_CD = B.PRDT_CD
@@ -34,7 +35,9 @@
 	</select>
 
 <insert id="insertOvduDailyDtls" parameterType="com.nanuri.rams.business.common.dto.IBIMS437BDTO">
-    INSERT INTO IBIMS437B (
+  /* IBIMS437BMapper.insertOvduDailyDtls */
+    INSERT INTO IBIMS437B    /* 연체내역 */
+    (
         AFCT_MNGM_NO,     /** 사후관리번호 */
         PRDT_CD,          /** 상품코드 */
         EXC_SN,           /** 실행일련번호 */
@@ -42,9 +45,9 @@
         OVDU_SEQ,         /** 연체순번 */
         OVDU_OCRNC_DT,    /** 연체발생일자 */
         CRDL_BLCE_AMT,    /** 여신잔액금액 */
-        RDMP_PRNA,       /** 상환원금 */
+        RDMP_PRNA,        /** 상환원금 */
         RDMP_INTR_AMT,    /** 상환이자 */
-        OVDU_PRNA_AMT,   /** 연체원금금액 */
+        OVDU_PRNA_AMT,    /** 연체원금금액 */
         OVDU_INTR_AMT,    /** 연체이자금액 */
         DEL_YN,           /** 삭제여부 */
         HND_DETL_DTM,     /** 조작상세일시 */
@@ -63,9 +66,9 @@
            AND DEAL_NO = #{dealNo}),       /** 연체순번 */
         #{ovduOcrncDt},   /** 연체발생일자 */
         #{crdlBlceAmt},   /** 여신잔액금액 */
-        #{rdmpPrna},     /** 상환원금 */
+        #{rdmpPrna},      /** 상환원금 */
         #{rdmpIntrAmt},   /** 상환이자 */
-        #{ovduPrnaAmt},  /** 연체원금금액 */
+        #{ovduPrnaAmt},   /** 연체원금금액 */
         #{ovduIntrAmt},   /** 연체이자금액 */
         #{delYn},         /** 삭제여부 */
         SYSDATE,   				/** 조작상세일시 */

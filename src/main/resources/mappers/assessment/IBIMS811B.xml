@@ -3,6 +3,7 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS811BMapper">
 
     <select id="selectIBIMS811B" parameterType="com.nanuri.rams.business.common.dto.IBIMS810BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS810BDTO">
+	/* IBIMS811BMapper.selectIBIMS811B */	
 		SELECT    SUBSTR(#{stdrDt},1,6) 						AS stdrDt
 				, PRDT_CD
 				, EXC_SN
@@ -62,13 +63,14 @@
 				, HND_TMNL_NO
 				, HND_TR_ID
 				, GUID
-		FROM IBIMS402B
+		FROM IBIMS402B				/* 딜실행기본 */
 		WHERE 1=1
-		  AND PRDT_CD LIKE 'A%'
+		  AND PRDT_CD LIKE 'A%'		/* 상품코드 */
 	</select>
  	
 	<insert id="insertIBIMS811B" parameterType="com.nanuri.rams.business.common.vo.IBIMS810BVO">
-		INSERT INTO IBIMS811B ( /* 딜일별잔액 */
+	/* IBIMS811BMapper.insertIBIMS811B */			
+		INSERT INTO IBIMS811B ( /* 딜월별잔액 */
 				  	  STDR_YM
 					, PRDT_CD
 					, EXC_SN
@@ -185,7 +187,7 @@
 				, #{item.qotaRt}
 				, #{item.setlShqt}
 				, #{item.dcsnYn}
-				, #{item.hndDetlDtm}
+				, SYSDATE
 				, #{item.hndEmpno}
 				, #{item.hndTmnlNo}
 				, #{item.hndTrId}
@@ -195,6 +197,7 @@
 	</insert>
 
     <delete id="deleteIBIMS811B" parameterType="String">
+	/* IBIMS811BMapper.deleteIBIMS811B */	
 		DELETE FROM IBIMS811B /* 딜월별잔액 */
 		 WHERE 1=1
 		   AND STDR_YM = SUBSTR(#{stdrDt},1,6)

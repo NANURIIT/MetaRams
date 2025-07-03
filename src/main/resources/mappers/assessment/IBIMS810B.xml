@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS810BMapper">
 
-	<!-- 건우전용 -->
+	<!--  -->
 	<select id="selectIBIMS810B" parameterType="com.nanuri.rams.business.common.dto.IBIMS810BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS810BDTO">
+		/* IBIMS810BMapper.selectIBIMS810B */
 		SELECT   #{stdrDt} 										AS stdrDt
 				, PRDT_CD
 				, EXC_SN
@@ -58,17 +59,18 @@
 				, NVL(#{qotaRt}, 0)           				AS QOTA_RT
 				, NVL(#{setlShqt}, 0)         				AS SETL_SHQT
 				, NVL(#{dcsnYn}, 'N')           			AS DCSN_YN
-				, HND_DETL_DTM
+				, SYSDATE                                   /*HND_DETL_DTM*/
 				, HND_EMPNO
 				, HND_TMNL_NO
 				, HND_TR_ID
 				, GUID
-		  FROM IBIMS402B
+		  FROM IBIMS402B				/* 딜실행기본 */
 		 WHERE 1=1
-		   AND PRDT_CD LIKE 'A%'
+		   AND PRDT_CD LIKE 'A%'		/* 상품코드 */
 	</select>
  	
 	<insert id="insertIBIMS810B" parameterType="com.nanuri.rams.business.common.vo.IBIMS810BVO">
+	/* IBIMS810BMapper.insertIBIMS810B */
 		INSERT INTO IBIMS810B ( /* 딜일별잔액 */
 				  	  STDR_DT
 					, PRDT_CD
@@ -186,7 +188,7 @@
 				, #{item.qotaRt}
 				, #{item.setlShqt}
 				, #{item.dcsnYn}
-				, #{item.hndDetlDtm}
+				, SYSDATE
 				, #{item.hndEmpno}
 				, #{item.hndTmnlNo}
 				, #{item.hndTrId}
@@ -196,12 +198,14 @@
 	</insert>
 
 	<delete id="deleteIBIMS810B" parameterType="String">
+	/* IBIMS810BMapper.deleteIBIMS810B */	
 		DELETE FROM IBIMS810B /* 딜일별잔액 */
 		 WHERE 1=1
 		   AND STDR_DT = #{stdrDt}
 	</delete>
 
 	<update id="updateIBIMS810B" parameterType="com.nanuri.rams.business.common.dto.IBIMS810BDTO">
+	/* IBIMS810BMapper.updateIBIMS810B */	
 		UPDATE IBIMS810B /* 딜일별잔액 */
 		   SET NRML_INTR = #{nrmlIntr} /* 정상이자 */
              , INTR_AMT_OVDU_INTR = #{intrAmtOvduIntr}	/* 이자금액연체이자 */
