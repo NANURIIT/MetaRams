@@ -40,7 +40,7 @@ public class TB9060ServiceImpl implements TB9060Service {
 
         log.info("############################################");
         log.info(" TB9060ServiceImpl(기일관리내역생성) START >>>");
-        log.debug("############################################");
+        log.info("############################################");
 
         /*
          * TB90060B 실행후 IBIMS981B(기일관리내역) 미생성시 확인
@@ -74,6 +74,7 @@ public class TB9060ServiceImpl implements TB9060Service {
             // ibims981bMapper.batchInsertIBIMS981B(hndEmpno);
 
             IBIMS981BDTO inparam = new IBIMS981BDTO();
+
             String hndEmpno = param.getHndEmpno();
             String hndTrId = param.getJobId();
             String hndTmnlNo = param.getHndTrId();

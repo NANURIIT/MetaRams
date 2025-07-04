@@ -90,7 +90,7 @@
                      , #{hndEmpno}                                                          AS HND_EMPNO             /* 조작사원번호 */
                      , #{hndTmnlNo}                                                         AS HND_TMNL_NO           /* 조작단말기번호 */
                      , #{hndTrId}                                                           AS HND_TR_ID             /* 조작거래ID */
-                     , #{guId}                                                              AS GUID                  /* GUID */
+                     , #{guid}                                                              AS GUID                  /* GUID */
                   FROM (
                   	SELECT A.PRDT_CD
                   	     , A.PRAR_DT
