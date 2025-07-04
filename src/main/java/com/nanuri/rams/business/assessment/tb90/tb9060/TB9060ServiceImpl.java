@@ -85,10 +85,6 @@ public class TB9060ServiceImpl implements TB9060Service {
             inparam.setHndTmnlNo(hndTmnlNo);
             inparam.setGuid(guId);
 
-            log.info("hndEmpno>>" + hndEmpno);
-            log.info("hndTrId>>" + hndTrId);
-            log.info("guId>>" + guId);
-
             ibims981bMapper.batchInsertIBIMS981B(inparam);
 
             ibims997bMapper.batchUpdate(param);
