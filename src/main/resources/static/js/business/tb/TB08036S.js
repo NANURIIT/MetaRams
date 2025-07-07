@@ -166,14 +166,23 @@ const TB08036Sjs = (function () {
         },
       },
       {
-        title: "점검결과",
+        title: "점검순번",
         dataType: "string",
-        dataIndx: "inspctRmrk",
+        dataIndx: "sn",
         align: "left",
         halign: "center",
-        width: "30%",
+        width: "10%",
         filter: { crules: [{ condition: "range" }] },
       },
+	  {
+         title: "점검결과",
+         dataType: "string",
+         dataIndx: "inspctRmrk",
+         align: "left",
+         halign: "center",
+         width: "30%",
+         filter: { crules: [{ condition: "range" }] },
+       },
       {
         title: "비고",
         dataType: "string",
@@ -339,6 +348,8 @@ const TB08036Sjs = (function () {
     resetTabStep();
     resetTabInsptRmrk();
     resetTabEtc();
+	
+	
   }
 
   function TB08036S_getUrlDealInfo() {
@@ -672,6 +683,7 @@ const TB08036Sjs = (function () {
 
     $("#inspctDt").val(formatDate(inspctDt));
     $("#etcInspctRmrk").val(inspctRmrk);
+	$("#etcSn").val(e.sn);
     $("#rmrk").val(rmrk);
   }
 
@@ -822,6 +834,7 @@ const TB08036Sjs = (function () {
   function inspctRmrkTab_TB08036S(type) {
     paramData = {
       dealNo: getInputValue("TB08036S_ibDealNo"),
+	  sn: getInputValue("TB08036S_sn"),
       inspctYm: unformatDate(getInputValue("rmrkInspctYyMm")),
       checkRslt: getInputValue("monCheckRslt"),
     };
@@ -875,6 +888,7 @@ const TB08036Sjs = (function () {
       dealNo: getInputValue("TB08036S_ibDealNo"),
       inspctDt: unformatDate(getInputValue("inspctDt")),
       inspctRmrk: getInputValue("etcInspctRmrk"),
+	  sn:getInputValue("etcSn"),
       rmrk: getInputValue("rmrk"),
     };
     if (isEmpty($("#TB08036S_ibDealNo").val())) {
