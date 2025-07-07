@@ -208,7 +208,14 @@ const TB08031Sjs = (function() {
 
 	}
 
-
+	function showErrorPopup(message) {
+	    openPopup({
+	      type: "warning",
+	      title: "Warning!",
+	      text: message,
+	    });
+	  }
+	  
 	function btnReset() {
 
 		bizInfoClear();
@@ -2226,6 +2233,9 @@ const TB08031Sjs = (function() {
 						}
 					}
 					else {
+						
+						
+						showErrorPopup('등록된 사업정보가 없습니다.');
 						console.log("sn 없음~");
 
 						bizDetailClear();
