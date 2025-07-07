@@ -4,6 +4,7 @@
 	
 	<!-- 분양수지관리조회  -->
     <select id="selectIBIMS601B" resultType="com.nanuri.rams.business.common.vo.IBIMS601BVO" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+    	  /* IBIMS601BMapper.selectIBIMS601B */
    		  SELECT DEAL_NO                                           /* Deal번호 */
              , SL_ST_DT                                          /* 분양시작일 */
              , SL_ED_DT                                          /* 분양종료일 */
@@ -29,14 +30,15 @@
              , HND_TMNL_NO                                       /* 조작단말기번호 */
              , HND_TR_ID                                         /* 조작거래id */
              , GUID                                              /* guid */
-          FROM IBIMS601B
+          FROM IBIMS601B /* 분양수지관리 */
          WHERE 1=1
            AND DEAL_NO                                           = #{dealNo}                                          
     </select>
 	
 	<!-- 분양수지관리등록  -->
     <insert id="insertIBIMS601B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
-        INSERT INTO IBIMS601B 
+    	/* IBIMS601BMapper.insertIBIMS601B */
+        INSERT INTO IBIMS601B /* 분양수지관리 */ 
                (
                   DEAL_NO                                           /* Deal번호 */
                 , SL_ST_DT                                          /* 분양시작일 */
@@ -95,7 +97,8 @@
 	
 	<!-- 분양수지관리변경  -->
     <update id="updateIBIMS601B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
-       UPDATE IBIMS601B
+       /* IBIMS601BMapper.updateIBIMS601B */
+       UPDATE IBIMS601B /* 분양수지관리 */
           SET DEAL_NO                                           = #{dealNo}                                          /* Deal번호 */
             , SL_ST_DT                                          = #{slStDt}                                          /* 분양시작일 */
             , SL_ED_DT                                          = #{slEdDt}                                          /* 분양종료일 */
@@ -126,8 +129,9 @@
     </update>
     
 	<delete id="deleteIBIMS601B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+		/* IBIMS601BMapper.deleteIBIMS601B */
         DELETE 
-          FROM IBIMS601B
+          FROM IBIMS601B /* 분양수지관리 */
          WHERE 1=1
            AND DEAL_NO                                           = #{dealNo}                                         
     </delete>

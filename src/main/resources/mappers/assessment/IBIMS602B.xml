@@ -4,6 +4,7 @@
 	
 	<!-- 당월사업관리의견조회-->  
     <select id="selectIBIMS602B" resultType="com.nanuri.rams.business.common.dto.IBIMS602BDTO" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+    	/* IBIMS602BMapper.selectIBIMS602B */
         SELECT DEAL_NO                                           /* Deal번호 */
              , INSPCT_YM                                      	 /* 심사년월 */
              , CHECK_RSLT                                       /* 심사비고 */
@@ -12,7 +13,7 @@
              , HND_TMNL_NO                                       /* 조작단말기번호 */
              , HND_TR_ID                                         /* 조작거래id */
              , GUID                                              /* guid */
-          FROM IBIMS602B
+          FROM IBIMS602B /* 당월사업관리의견 */
          WHERE 1=1
            AND DEAL_NO = #{dealNo}
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctYm)">
@@ -23,7 +24,8 @@
     
     <!-- 당월사업관리의견등록 -->
     <insert id="insertIBIMS602B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
-        INSERT INTO IBIMS602B 
+    	/* IBIMS602BMapper.insertIBIMS602B */
+        INSERT INTO IBIMS602B /* 당월사업관리의견 */
                (
                   DEAL_NO                                           						/* 딜번호 */
                 , INSPCT_YM                                      							  /* 심사년월 */
@@ -46,7 +48,8 @@
 	
 	<!-- 당월사업관리의견변경 -->
     <update id="updateIBIMS602B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
-       UPDATE IBIMS602B
+    	/* IBIMS602BMapper.updateIBIMS602B */
+       UPDATE IBIMS602B /* 당월사업관리의견 */
           SET INSPCT_YM                                         = NVL(#{inspctYm}, (SELECT TO_CHAR(SYSDATE, 'YYYYMM') FROM DUAL))   /* 심사년월 */                                
             , CHECK_RSLT                                       = #{checkRslt}                                      						    /* 심사비고 */
             , HND_EMPNO                                         = #{hndEmpno}                                        						    /* 조작사원번호 */
@@ -58,8 +61,9 @@
     </update>
     
     <delete id="deleteIBIMS602B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+    	/* IBIMS602BMapper.deleteIBIMS602B */
         DELETE 
-          FROM IBIMS602B
+          FROM IBIMS602B /* 당월사업관리의견 */
          WHERE 1=1
            AND DEAL_NO                                           = #{dealNo}                                         						 /* 딜번호 */
            <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctYm)">
