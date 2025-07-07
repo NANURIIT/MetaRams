@@ -751,16 +751,6 @@ const TB07100Sjs = (function () {
         width: '15%',
         filter: { crules: [{ condition: 'range' }] },
         editable: true,
-        editor: {
-          type: "select",
-          valueIndx: "cdValue",
-          labelIndx: "cdName",
-          options: grdSelect.A017
-        },
-        render: function (ui) {
-          let fSel = grdSelect.A017.find(({ cdValue }) => cdValue == ui.cellData);
-          return fSel ? fSel.cdName : ui.cellData;
-        }
       },
       {
         title: "차변금액",
