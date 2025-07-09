@@ -1,0 +1,643 @@
+/* 
+ * 한국신용정보원 - 신공공여정보
+ * 2025.07.08 ejchoi
+ */
+const TB09011Sjs = (function() {
+
+	let arrPqGrid_crdtGrnList;
+	let arrPqGrid_msgTranList;
+	let arrPqGrid_errDpchList;
+	let col_crdtGrnList;
+	let col_msgTranList;
+	let col_errDpchList;
+	let selectBox;      //공통코드 반환
+	let grdSelect = {}; // select객체
+
+	$(document).ready(function() {
+		loadSelectBoxContents();
+		rendorGrid();
+		$("#TB09011S_rgstDt").val(getToday());
+	});
+
+	//셀렉트박스 세팅
+	function loadSelectBoxContents() {
+		var item = "";
+		item += "K013";
+		item += "/" + "K002";
+		item += "/" + "K003";
+		item += "/" + "K004";
+		item += "/" + "K005";
+		item += "/" + "K006";
+		item += "/" + "K007";
+		item += "/" + "K008";
+		item += "/" + "K009";
+		item += "/" + "K011";
+		item += "/" + "K012";
+		item += "/" + "K014";
+
+		selectBox = getSelectBoxList("TB09011S", item, false);
+		grdSelect.K002 = selectBox.filter((item) => item.cmnsGrpCd === 'K002');//grdSelect.K002
+		grdSelect.K003 = selectBox.filter((item) => item.cmnsGrpCd === 'K003');//grdSelect.K003
+		grdSelect.K004 = selectBox.filter((item) => item.cmnsGrpCd === 'K004');//grdSelect.K004
+		grdSelect.K005 = selectBox.filter((item) => item.cmnsGrpCd === 'K005');//grdSelect.K005
+		grdSelect.K006 = selectBox.filter((item) => item.cmnsGrpCd === 'K006');//grdSelect.K006
+		grdSelect.K007 = selectBox.filter((item) => item.cmnsGrpCd === 'K007');//grdSelect.K007
+		grdSelect.K008 = selectBox.filter((item) => item.cmnsGrpCd === 'K008');//grdSelect.K008
+		grdSelect.K009 = selectBox.filter((item) => item.cmnsGrpCd === 'K009');//grdSelect.K009
+		grdSelect.K011 = selectBox.filter((item) => item.cmnsGrpCd === 'K011');//grdSelect.K011
+		grdSelect.K012 = selectBox.filter((item) => item.cmnsGrpCd === 'K012');//grdSelect.K012
+		grdSelect.K013 = selectBox.filter((item) => item.cmnsGrpCd === 'K013');//grdSelect.K013
+		grdSelect.K014 = selectBox.filter((item) => item.cmnsGrpCd === 'K014');//grdSelect.K014
+
+	}
+
+	// 날짜 세팅
+	function dateStr(str) {
+		if (str != null) {
+			return str.substring(0, 4) + '-' + str.substring(4, 6) + '-' + str.substring(6, 8);
+		} else {
+			return '';
+		}
+	}
+
+	// 그리드 세팅
+	function rendorGrid() {
+
+		col_crdtGrnList = [
+			{ title: "신용공여집중일련번호", dataType: "string", dataIndx: "crdtGrntFcsSn", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "업무구분(K013)", dataType: "string", dataIndx: "jobDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K013 }, render: function(ui) { var options = grdSelect.K013; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "등록일자", dataType: "string", dataIndx: "rgstDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
+			{ title: "변경일자", dataType: "string", dataIndx: "chngDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
+			{ title: "계정과목(K007)", dataType: "string", dataIndx: "actsDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K007 }, render: function(ui) { var options = grdSelect.K007; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "담보유형(K012)", dataType: "string", dataIndx: "mrtgTpDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K012 }, render: function(ui) { var options = grdSelect.K012; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "상환방식(K003)", dataType: "string", dataIndx: "rdmpWyDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K003 }, render: function(ui) { var options = grdSelect.K003; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "만기일자", dataType: "string", dataIndx: "expDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, },
+			{ title: "상각일자", dataType: "string", dataIndx: "depDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
+			{ title: "금리", dataType: "string", dataIndx: "intrt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "신용공여잔액", dataType: "string", dataIndx: "crdtGrntBlce", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "원금연체금액", dataType: "string", dataIndx: "prnaOvduAmt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "이자연체금액", dataType: "string", dataIndx: "intrOvduAmt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "연체발생일자", dataType: "string", dataIndx: "ovduOcrncDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
+			{ title: "거치개월", dataType: "string", dataIndx: "dfrMnum", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "거치종료일", dataType: "string", dataIndx: "dfrEndDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, },
+			{ title: "연체여부(K005)", dataType: "string", dataIndx: "ovduDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K005 }, render: function(ui) { var options = grdSelect.K005; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "연체사유(K004)", dataType: "string", dataIndx: "ovduRsnDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K004 }, render: function(ui) { var options = grdSelect.K004; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "처리구분(K009)", dataType: "string", dataIndx: "prcsDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K009 }, render: function(ui) { var options = grdSelect.K009; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "오류코드(K002)", dataType: "string", dataIndx: "errDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K002 }, render: function(ui) { var options = grdSelect.K002; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "상품명", dataType: "string", dataIndx: "prdtNm", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "최초채권기관(K006)", dataType: "string", dataIndx: "bondIsttDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K006 }, render: function(ui) { var options = grdSelect.K006; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "차주구분(K008)", dataType: "string", dataIndx: "brwrDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K008 }, render: function(ui) { var options = grdSelect.K008; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "법인등록번호", dataType: "string", dataIndx: "crno", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "사업자번호", dataType: "string", dataIndx: "bzno", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "상호명", dataType: "string", dataIndx: "eprzNm", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "업종코드", dataType: "string", dataIndx: "indTypCd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "거래번호", dataType: "string", dataIndx: "trNo", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "전송여부", dataType: "string", dataIndx: "fwdgYn", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+		];
+
+		col_msgTranList = [
+			{ title: "전문송신일련번호", dataType: "string", dataIndx: "msgTransSn", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "업무구분(K013)", dataType: "string", dataIndx: "jobDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K013 }, render: function(ui) { var options = grdSelect.K013; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "기준일자", dataType: "string", dataIndx: "stdrDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
+			{ title: "송신일자", dataType: "string", dataIndx: "transDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
+			{ title: "거래구분(K014)", dataType: "string", dataIndx: "trDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K014 }, render: function(ui) { var options = grdSelect.K014; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "오류통보", dataType: "string", dataIndx: "errDpch", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "파일전문명", dataType: "string", dataIndx: "", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "발송건수", dataType: "string", dataIndx: "", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "발송시간", dataType: "string", dataIndx: "", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "발송결과", dataType: "string", dataIndx: "sendRslt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+		];
+
+		col_errDpchList = [
+			{ title: "오류통보일련번호", dataType: "string", dataIndx: "errDpchSn", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "업무구분(K013)", dataType: "string", dataIndx: "jobDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K013 }, render: function(ui) { var options = grdSelect.K013; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "기준일자", dataType: "string", dataIndx: "stdrDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
+			{ title: "수신일자", dataType: "string", dataIndx: "rcptDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
+			{ title: "일련번호", dataType: "string", dataIndx: "sn", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "과목코드", dataType: "string", dataIndx: "sbjCd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "금액(천원)", dataType: "string", dataIndx: "amt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "처리구분(K009)", dataType: "string", dataIndx: "prcsDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K009 }, render: function(ui) { var options = grdSelect.K009; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "오류코드(K002)", dataType: "string", dataIndx: "errDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K002 }, render: function(ui) { var options = grdSelect.K002; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "오류내용", dataType: "string", dataIndx: "", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "기관코드(K011)", dataType: "string", dataIndx: "bondIsttDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K011 }, render: function(ui) { var options = grdSelect.K011; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "차주구분(K008)", dataType: "string", dataIndx: "brwrDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K008 }, render: function(ui) { var options = grdSelect.K008; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "법인등록번호", dataType: "string", dataIndx: "crno", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "사업자번호", dataType: "string", dataIndx: "bzno", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "거래구분(K014)", dataType: "string", dataIndx: "trDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: grdSelect.K014 }, render: function(ui) { var options = grdSelect.K014; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
+			{ title: "거래번호", dataType: "string", dataIndx: "trNo", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+			{ title: "Data구분", dataType: "string", dataIndx: "dataDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+		];
+
+		let arrPqGridObj = [
+			{ id: "TB09011S_crdtGrnList", colModel: col_crdtGrnList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false }, strNoRows: "데이터가 없습니다.", },
+			{ id: "TB09011S_msgTranList", colModel: col_msgTranList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false }, strNoRows: "데이터가 없습니다.", },
+			{ id: "TB09011S_errDpchList", colModel: col_errDpchList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false }, strNoRows: "데이터가 없습니다.", },
+		];
+
+		setPqGrid(arrPqGridObj);
+		arrPqGrid_crdtGrnList = $("#TB09011S_crdtGrnList").pqGrid("instance");
+		arrPqGrid_msgTranList = $("#TB09011S_msgTranList").pqGrid("instance");
+		arrPqGrid_errDpchList = $("#TB09011S_errDpchList").pqGrid("instance");
+
+	}
+
+	// 확인메시지
+	function confirmMsg(grd) {
+		Swal.fire({
+			title: "엑셀 업로드",
+			text: "기존 업로드된 내역을 삭제하고 다시 업로드 하시겠습니까?",
+			icon: "warning",
+			showCancelButton: true,
+			showConfirmButton: true,
+			confirmButtonText: "예",
+			cancelButtonText: "아니오",
+		}).then((e) => {
+			if (e.isConfirmed) {
+				$('#upload-file-' + grd).click();
+			}
+		});
+	}
+
+	// 에러메시지
+	function errorMsg(message) {
+		openPopup({
+			type: "warning",
+			title: "Warning!",
+			text: message,
+		});
+	}
+
+	// 전문송신내역 탭 클릭
+	function setMsgTranTab() {
+		setTimeout(() => arrPqGrid_msgTranList.refresh(), 1);
+	}
+
+	// 오류통보내역 탭 클릭
+	function setErrDpchTab() {
+		setTimeout(() => arrPqGrid_errDpchList.refresh(), 1);
+	}
+
+	// 초기화 버튼 클릭
+	function rtTB09011S() {
+
+		$("#TB09011S_rgstDt").val(getToday());
+
+		arrPqGrid_crdtGrnList.setData([]);
+		arrPqGrid_crdtGrnList.refreshDataAndView();
+
+		arrPqGrid_msgTranList.setData([]);
+		arrPqGrid_msgTranList.refreshDataAndView();
+
+		arrPqGrid_errDpchList.setData([]);
+		arrPqGrid_errDpchList.refreshDataAndView();
+	}
+
+	// 검색 버튼 클릭
+	function shTB09011S() {
+
+		if (isEmpty($("#TB09011S_rgstDt").val())) {
+			errorMsg("등록일자를 입력해 주세요");
+			return;
+		}
+
+		if (isEmpty($("#TB09011S_K013").val())) {
+			errorMsg("업무구분을 선택해 주세요");
+			return;
+		}
+
+		crdtGrnList();
+
+	}
+
+	// 신용공여집중내역 조회
+	function crdtGrnList() {
+		var paramData = {
+			rgstDt: $("#TB09011S_rgstDt").val().replaceAll("-", ""),
+			jobDcd: $("#TB09011S_K013").val(),
+		};
+
+		$.ajax({
+			type: "GET",
+			url: "/TB09011S/getCrdtGrnList",
+			data: paramData,
+			dataType: "json",
+			success: function(data) {
+				if (data.length == 0) {
+					errorMsg("데이터가 없습니다.");
+				}
+				arrPqGrid_crdtGrnList.setData(data);
+				msgTranList();
+				errDpchList();
+			},
+			error: function() {
+				errorMsg("데이터 조회 중 오류가 발생했습니다.");
+			},
+		});
+	}
+
+	// 전문송신내역 조회
+	function msgTranList() {
+		var paramData = {
+			rgstDt: $("#TB09011S_rgstDt").val().replaceAll("-", ""),
+			jobDcd: $("#TB09011S_K013").val(),
+			scrnDcd: "TB09011S",
+		};
+
+		$.ajax({
+			type: "GET",
+			url: "/TB09011S/getMsgTranList",
+			data: paramData,
+			dataType: "json",
+			success: function(data) {
+				if (data.length == 0) {
+					//errorMsg("데이터가 없습니다.");
+				}
+				arrPqGrid_msgTranList.setData(data);
+			},
+			error: function() {
+				errorMsg("데이터 조회 중 오류가 발생했습니다.");
+			},
+		});
+
+	}
+
+	// 오류통보내역 조회
+	function errDpchList() {
+		var paramData = {
+			rgstDt: $("#TB09011S_rgstDt").val().replaceAll("-", ""),
+			jobDcd: $("#TB09011S_K013").val(),
+			scrnDcd: "TB09011S",
+		};
+
+		$.ajax({
+			type: "GET",
+			url: "/TB09011S/getErrDpchList",
+			data: paramData,
+			dataType: "json",
+			success: function(data) {
+				if (data.length == 0) {
+					//errorMsg("데이터가 없습니다.");
+				}
+				arrPqGrid_errDpchList.setData(data);
+			},
+			error: function() {
+				errorMsg("데이터 조회 중 오류가 발생했습니다.");
+			},
+		});
+	}
+
+	// 신용공여집중내역 저장
+	function savecrdtGrnList(ibims751bVOList) {
+		var paramDTO = { "rgstDt": $('#TB09011S_rgstDt').val().replaceAll('-', ''), "ibims751bVOList": ibims751bVOList, "scrnDcd": "TB09011S" };
+
+		$.ajax({
+			type: "POST",
+			url: "/TB09011S/saveCrdtGrnList",
+			data: JSON.stringify(paramDTO),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function() {
+				var option = {}
+				option.title = "Success";
+				option.type = "success";
+				option.text = "신용공여집중내역이 저장되었습니다.";
+				openPopup(option);
+				crdtGrnList();
+			},
+			error: function(request, status, error) {
+				errorMsg("저장 중 오류가 발생했습니다.");
+			}
+		});
+	}
+
+	// 전문송신내역 저장
+	function savemsgTranList(ibims751bVOList) {
+		var paramDTO = { "stdrDt": $('#TB09011S_rgstDt').val().replaceAll('-', ''), "ibims751bVOList": ibims751bVOList, "scrnDcd": "TB09011S" };
+
+		$.ajax({
+			type: "POST",
+			url: "/TB09011S/saveMsgTranList",
+			data: JSON.stringify(paramDTO),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function() {
+				var option = {}
+				option.title = "Success";
+				option.type = "success";
+				option.text = "전문송신내역이 저장되었습니다.";
+				openPopup(option);
+				msgTranList();
+			},
+			error: function(request, status, error) {
+				errorMsg("저장 중 오류가 발생했습니다.");
+			}
+		});
+	}
+
+	// 오류통보내역 저장
+	function saveErrDpchList(ibims751bVOList) {
+		var paramDTO = { "stdrDt": $('#TB09011S_rgstDt').val().replaceAll('-', ''), "ibims751bVOList": ibims751bVOList, "scrnDcd": "TB09011S" };
+
+		$.ajax({
+			type: "POST",
+			url: "/TB09011S/saveErrDpchList",
+			data: JSON.stringify(paramDTO),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function() {
+				var option = {}
+				option.title = "Success";
+				option.type = "success";
+				option.text = "오류통보내역이 저장되었습니다.";
+				openPopup(option);
+				errDpchList();
+			},
+			error: function(request, status, error) {
+				errorMsg("저장 중 오류가 발생했습니다.");
+			}
+		});
+	}
+
+	// 엑셀다운로드 버튼 클릭
+	function exDnLoad(grd) {
+		let blob = $("#TB09011S_" + grd).pqGrid("instance").exportExcel({});
+		let fileName;
+
+		if (grd == 'crdtGrnList') {
+			fileName = "신용공여집중내역.xlsx";
+		} else if (grd == 'msgTranList') {
+			fileName = "전문송신내역.xlsx";
+		} else if (grd == 'errDpchList') {
+			fileName = "오류통보내역.xlsx";
+		}
+		pq.saveAs(blob, fileName);
+	}
+
+	// 엑셀업로드 버튼 클릭
+	function exUpLoad(grd) {
+
+		let gcnt = 0;
+		if (grd == 'crdtGrnList') {
+			gcnt = arrPqGrid_crdtGrnList.pdata.length;
+		} else if (grd == 'msgTranList') {
+			gcnt = arrPqGrid_msgTranList.pdata.length;
+		} else if (grd == 'errDpchList') {
+			gcnt = arrPqGrid_errDpchList.pdata.length;
+		}
+
+		if (gcnt > 0) {
+			confirmMsg(grd);
+		} else {
+			$('#upload-file-' + grd).click();
+		}
+
+	}
+
+	// 엑셀업로드 버튼 이벤트 매핑
+	$("#upload-file-crdtGrnList").change(function() {
+		readExcelFile('crdtGrnList');
+		resetFileInput($('#upload-file-crdtGrnList'));
+	});
+
+	// 엑셀업로드 버튼 이벤트 매핑
+	$("#upload-file-msgTranList").change(function() {
+		readExcelFile('msgTranList');
+		resetFileInput($('#upload-file-msgTranList'));
+	});
+
+	// 엑셀업로드 버튼 이벤트 매핑
+	$("#upload-file-errDpchList").change(function() {
+		readExcelFile('errDpchList');
+		resetFileInput($('#upload-file-errDpchList'));
+	});
+
+	// 엑셀 파일 읽기
+	function readExcelFile(grd) {
+
+		let input = event.target;
+		let reader = new FileReader();
+
+		reader.onload = function() {
+
+			let data = reader.result;
+			let workBook = XLSX.read(data, { type: 'binary' });
+
+			workBook.SheetNames.forEach(function(sheetName) {
+				let rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName], {
+					raw: false,
+					dateNF: 'yyyy-mm-dd'
+				});
+				addExcelRows(rows, grd);
+			})
+		};
+
+		reader.readAsBinaryString(input.files[0]);
+	}
+
+	// 엑셀 업로드 후 입력값 초기화 (같은 파일 여러번 읽어오기 위해)
+	function resetFileInput($element) {
+		$element.wrap('<form>').closest('form').get(0).reset();
+		$element.unwrap();
+	}
+
+	// 행추가
+	function addExcelRows(rows, grd) {
+		if (grd == 'crdtGrnList') {
+			addExcelRows_crdtGrnList(rows);
+		} else if (grd == 'msgTranList') {
+			addExcelRows_msgTranList(rows);
+		} else if (grd == 'errDpchList') {
+			addExcelRows_errDpchList(rows);
+		}
+	}
+
+	// 신용공여집중내역 행추가
+	function addExcelRows_crdtGrnList(rows) {
+
+		$("#TB09011S_crdtGrnList").pqGrid("setData", []);
+		var ibims751bVOList = [];
+		var sn = 0;
+
+		rows.forEach(function(row) {
+			var crdtGrntFcsSn = row['신용공여집중일련번호'];
+			var errDcd = row['오류코드(K002)'];
+			var jobDcd = row['업무구분(K013)'];
+			var prcsDcd = row['처리구분(K009)'];
+			var rgstDt = $("#TB09011S_rgstDt").val().replaceAll("-", "");
+			var chngDt = row['변경일자'];
+			var brwrDcd = row['차주구분(K008)'];
+			var crno = row['법인등록번호'];
+			var bzno = row['사업자번호'];
+			var eprzNm = row['상호명'];
+			var indTypCd = row['업종코드'];
+			var actsDcd = row['계정과목(K007)'];
+			var crdtGrntBlce = row['신용공여잔액'];
+			var trNo = row['거래번호'];
+			var prdtNm = row['상품명'];
+			var expDt = row['만기일자'];
+			var intrt = row['금리'];
+			var rdmpWyDcd = row['상환방식(K003)'];
+			var dfrMnum = row['거치개월'];
+			var dfrEndDt = row['거치종료일'];
+			var mrtgTpDcd = row['담보유형(K012)'];
+			var bondIsttDcd = row['최초채권기관(K006)'];
+			var ovduDcd = row['연체여부(K005)'];
+			var ovduRsnDcd = row['연체사유(K004)'];
+			var depDt = row['상각일자'];
+			var prnaOvduAmt = row['원금연체금액'];
+			var intrOvduAmt = row['이자연체금액'];
+			var ovduOcrncDt = row['연체발생일자'];
+			var fwdgYn = row['전송여부'];
+
+			var newRow = {
+				crdtGrntFcsSn: crdtGrntFcsSn,
+				errDcd: errDcd,
+				jobDcd: jobDcd,
+				prcsDcd: prcsDcd,
+				rgstDt: rgstDt,
+				chngDt: chngDt,
+				brwrDcd: brwrDcd,
+				crno: crno,
+				bzno: bzno,
+				eprzNm: eprzNm,
+				indTypCd: indTypCd,
+				actsDcd: actsDcd,
+				crdtGrntBlce: crdtGrntBlce,
+				trNo: trNo,
+				prdtNm: prdtNm,
+				expDt: expDt,
+				intrt: intrt,
+				rdmpWyDcd: rdmpWyDcd,
+				dfrMnum: dfrMnum,
+				dfrEndDt: dfrEndDt,
+				mrtgTpDcd: mrtgTpDcd,
+				bondIsttDcd: bondIsttDcd,
+				ovduDcd: ovduDcd,
+				ovduRsnDcd: ovduRsnDcd,
+				depDt: depDt,
+				prnaOvduAmt: prnaOvduAmt,
+				intrOvduAmt: intrOvduAmt,
+				ovduOcrncDt: ovduOcrncDt,
+				fwdgYn: fwdgYn,
+				sn: ++sn,
+			}
+
+			ibims751bVOList.push(newRow);
+			$("#TB09011S_crdtGrnList").pqGrid("addRow", { rowData: newRow, checkEditable: false });
+		});
+
+		$("#TB09011S_crdtGrnList").pqGrid("refreshDataAndView");
+		savecrdtGrnList(ibims751bVOList);
+	}
+
+	// 전문송신내역 행추가
+	function addExcelRows_msgTranList(rows) {
+
+		$("#TB09011S_msgTranList").pqGrid("setData", []);
+		var ibims751bVOList = [];
+		var sn = 0;
+
+		rows.forEach(function(row) {
+			var msgTransSn = row['전문송신일련번호'];
+			var errDpch = row['오류통보'];
+			var transDt = row['송신일자'];
+			var stdrDt = $("#TB09011S_rgstDt").val().replaceAll("-", "");
+			var trDcd = row['거래구분(K014)'];
+			var fileMsgNm = row['파일전문명'];
+			var sendCnt = row['발송건수'];
+			var sendTm = row['발송시간'];
+			var sendRslt = row['발송결과'];
+			var jobDcd = row['업무구분(K013)'];
+
+			var newRow = {
+				msgTransSn: msgTransSn,
+				errDpch: errDpch,
+				transDt: transDt,
+				stdrDt: stdrDt,
+				trDcd: trDcd,
+				fileMsgNm: fileMsgNm,
+				sendCnt: sendCnt,
+				sendTm: sendTm,
+				sendRslt: sendRslt,
+				sn: ++sn,
+				scrnDcd: 'TB09011S',
+				jobDcd: jobDcd,
+			}
+
+			ibims751bVOList.push(newRow);
+			$("#TB09011S_msgTranList").pqGrid("addRow", { rowData: newRow, checkEditable: false });
+
+		});
+
+		$("#TB09011S_msgTranList").pqGrid("refreshDataAndView");
+		savemsgTranList(ibims751bVOList);
+	}
+
+	// 오류통보내역 행추가
+	function addExcelRows_errDpchList(rows) {
+
+		$("#TB09011S_errDpchList").pqGrid("setData", []);
+		var ibims751bVOList = [];
+		var seq = 0;
+
+		rows.forEach(function(row) {
+			var errDpchSn = row['오류통보일련번호'];
+			var rcptDt = row['수신일자'];
+			var stdrDt = $("#TB09011S_rgstDt").val().replaceAll("-", "");
+			var sn = ++seq;
+			var brwrDcd = row['차주구분(K008)'];
+			var crno = row['법인등록번호'];
+			var bzno = row['사업자번호'];
+			var prcsDcd = row['처리구분(K009)'];
+			var trDcd = row['거래구분(K014)'];
+			var trNo = row['거래번호'];
+			var dataDcd = row['Data구분'];
+			var errDcd = row['오류코드(K002)'];
+			var errCtns = row['오류내용'];
+			var bondIsttDcd = row['기관코드(K011)'];
+			var jobDcd = row['업무구분(K013)'];
+			var sbjCd = row['과목코드'];
+			var amt = row['금액(천원)'];
+
+			var newRow = {
+				errDpchSn: errDpchSn,
+				rcptDt: rcptDt,
+				stdrDt: stdrDt,
+				sn: sn,
+				brwrDcd: brwrDcd,
+				crno: crno,
+				bzno: bzno,
+				prcsDcd: prcsDcd,
+				trDcd: trDcd,
+				trNo: trNo,
+				dataDcd: dataDcd,
+				errDcd: errDcd,
+				errCtns: errCtns,
+				bondIsttDcd: bondIsttDcd,
+				jobDcd: jobDcd,
+				sbjCd: sbjCd,
+				amt: amt,
+				scrnDcd: 'TB09011S',
+			}
+
+			ibims751bVOList.push(newRow);
+			$("#TB09011S_errDpchList").pqGrid("addRow", { rowData: newRow, checkEditable: false });
+
+		});
+
+		$("#TB09011S_errDpchList").pqGrid("refreshDataAndView");
+		saveErrDpchList(ibims751bVOList);
+	}
+
+
+
+	return {
+		shTB09011S: shTB09011S,
+		rtTB09011S: rtTB09011S,
+		setMsgTranTab: setMsgTranTab,
+		setErrDpchTab: setErrDpchTab,
+		exDnLoad: exDnLoad,
+		exUpLoad: exUpLoad,
+	};
+
+})();
