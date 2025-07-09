@@ -149,7 +149,7 @@ const TB09010Sjs = (function () {
     {
       title: "",
       dataType: "string",
-      dataIndx: "mtrDcd",
+      dataIndx: "mtrDcd", 
       hidden: true,
     },
     {
@@ -222,7 +222,7 @@ const TB09010Sjs = (function () {
       colModel: colM_TB09010S,
       strNoRows: "조회된 데이터가 없습니다.",
       rowClick: function (event, ui) {
-		pqGridSelectHandler ( ui.rowIndx, "TB09010S_DealList" );
+		  pqGridSelectHandler ( ui.rowIndx, "TB09010S_DealList" );
         var rowData = ui.rowData;
 
         setDealInfo(rowData);
@@ -260,7 +260,7 @@ const TB09010Sjs = (function () {
   // 조회
   function checkDealSearch() {
     var TB09010S_stdDt = $("#TB09010S_stdDt").val().replaceAll("-","");
-    var TB09010S_empno = $("#TB09010S_empno").val();
+    var TB09010S_empno = $("#TB09010S_empNo").val();
     var TB09010S_I010 = $("#TB09010S_I010").val();
     var checked = "N";
 
@@ -293,7 +293,7 @@ const TB09010Sjs = (function () {
     function businessFunction() {
       var dtoParam = {
         stdrDt: TB09010S_stdDt,
-        eno: TB09010S_empno,
+        empno: TB09010S_empno,
         inspctDprtDcd: TB09010S_I010,
         checked: checked,
       };
@@ -337,6 +337,8 @@ const TB09010Sjs = (function () {
                 title: "Waring!",
                 text: "데이터가 없습니다!",
               });
+
+         //   $("#TB09010S_DealList").pqGrid("setData", data);  
             $("#TB09010S_DealList").pqGrid("refreshDataAndView");
           }
         },
@@ -359,6 +361,7 @@ const TB09010Sjs = (function () {
     var ownPEno = rowData.ownPEno; // 사원번호
 
     var ivtgRsltCtns = rowData.ivtgRsltCtns; // 조치내용
+    var crno = rowData.crno; // 법인등록번호
 
     $("#TB09010S_selectedStdDt").val(stdrDt);
     $("#TB09010S_selectedIbDealNo").val(dealNo);
@@ -371,7 +374,8 @@ const TB09010Sjs = (function () {
     $("#TB09010S_ownPEno").val(ownPEno);
 
     $("#TB09010S_exmntRsltCntnt").val(ivtgRsltCtns);
-
+    $("#TB09010S_crno").val(crno);
+    
     $("#TB09010S_DealList tr").removeClass("table-active");
     // 클릭한 행에 active 클래스 추가
     $(this).addClass("table-active");
@@ -383,6 +387,7 @@ const TB09010Sjs = (function () {
     var mtrDcd = $("#TB09010S_lstCCaseCcd").val();
     var ivtgRsltCtns = $("#TB09010S_exmntRsltCntnt").val();
     var stdrDt = $("#TB09010S_selectedStdDt").val();
+    var crno = $("#TB09010S_crno").val(); // 법인등록번호
 
     // TODO: 권한정보 취득하여 심사역/심사부서장 별 확인사항 업데이트 필요
 
@@ -413,6 +418,7 @@ const TB09010Sjs = (function () {
         ivtgRsltCtns: ivtgRsltCtns,
         jdgmDcd: jdgmDcd,
         mtrDcd: mtrDcd,
+        crno: crno,
       };
 
       $.ajax({

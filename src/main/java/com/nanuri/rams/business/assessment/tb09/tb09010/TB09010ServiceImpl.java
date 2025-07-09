@@ -9,23 +9,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nanuri.rams.business.common.mapper.IBIMS604BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS604BVO;
+import com.nanuri.rams.business.common.dto.IBIMS604BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS604BVO.ExmntInfo;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class TB09010ServiceImpl implements TB09010Service {
 
 	private final IBIMS604BMapper ibims604bMapper;
-	
+
 	@Autowired
 	private AuthenticationFacade facade;
 
 	@Override
 	public List<IBIMS604BVO.DealInfo> checkDealSearch(IBIMS604BVO.SearchVO searchVO) {
+
+		log.debug("getEmpno()" + searchVO.getEmpno());
 		return ibims604bMapper.checkDealSearch(searchVO);
 	}
 
@@ -34,6 +39,18 @@ public class TB09010ServiceImpl implements TB09010Service {
 
 		exmntInfo.setHndEmpno(facade.getDetails().getEno());
 
-		return ibims604bMapper.saveDealExmnt(exmntInfo);
+		List<IBIMS604BDTO> lstData = ibims604bMapper.selectIBIMS604B(exmntInfo);
+
+		log.debug("saveDealExmnt start");
+		log.debug("getHndEmpno()" + exmntInfo.getHndEmpno());
+
+		if (lstData.isEmpty() || lstData.size() == 0) {
+			// 등록
+			return ibims604bMapper.insertIBIMS604B(exmntInfo);
+		} else {
+			// 수정
+			return ibims604bMapper.saveDealExmnt(exmntInfo);
+		}
+
 	}
 }
