@@ -1,3 +1,4 @@
+
 package com.nanuri.rams.business.assessment.tb06.tb06010;
 
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ import com.nanuri.rams.business.common.vo.TB06013PVO;
 import com.nanuri.rams.com.security.AuthenticationFacade;
 import com.nanuri.rams.com.utils.DateUtil;
 import com.nanuri.rams.com.utils.StringUtil;
+import com.nanuri.rams.com.exception.ValidationException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -102,22 +104,22 @@ public class TB06010ServiceImpl implements TB06010Service {
 		param.setHndEmpno(facade.getDetails().getEno());
 		IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
 
-		ibims201bvo.setPaiRdmpDcd(param.getPaiRdmpDcd());				// 상환구분
-		ibims201bvo.setFxnIntrt(param.getFxnIntrt());					// 고정금리
-		ibims201bvo.setAddIntrt(param.getAddIntrt());					// 가산금리
-		ibims201bvo.setPrnaRdmpFrqcMnum(param.getPrnaRdmpFrqcMnum());	// 상환주기
-		ibims201bvo.setIntrtCngeFrqcMnum((param.getIntrtCngeFrqcMnum()==null)?0:param.getIntrtCngeFrqcMnum());	//변동주기
-		ibims201bvo.setOvduIntrRtDcd(param.getOvduIntrRtDcd());			//연체이자율구분
-		ibims201bvo.setOvduIntrRt(param.getOvduIntrRt());				//연체이자율
-		ibims201bvo.setPrnaDfrPrdMnum((param.getPrnaDfrPrdMnum()==null)?0:param.getPrnaDfrPrdMnum());		//거치기간
-		ibims201bvo.setIntrBnaoDcd(param.getIntrBnaoDcd());				//선후취구분
-		ibims201bvo.setIntrRdmpFrqcMnum(param.getIntrRdmpFrqcMnum());	//이자상환주기
-		ibims201bvo.setIntrDnumClcMthCd(param.getIntrDnumClcMthCd());	//일수계산방법
-		ibims201bvo.setIstmDtmRdmpAmt(param.getIstmDtmRdmpAmt());		//만기상환금액
-		ibims201bvo.setTfdLyAplyDcd(param.getTfdLyAplyDcd());			//초일말일산입
-		ibims201bvo.setIntrSnnoPrcsDcd(param.getIntrSnnoPrcsDcd());		//이자단수법
-		ibims201bvo.setHldyPrcsDcd(param.getHldyPrcsDcd());				//휴일처리구분
-		ibims201bvo.setIntrClcEndDeDcd(param.getIntrClcEndDeDcd());		//이자계산종료일
+		ibims201bvo.setPaiRdmpDcd(param.getPaiRdmpDcd()); // 상환구분
+		ibims201bvo.setFxnIntrt(param.getFxnIntrt()); // 고정금리
+		ibims201bvo.setAddIntrt(param.getAddIntrt()); // 가산금리
+		ibims201bvo.setPrnaRdmpFrqcMnum(param.getPrnaRdmpFrqcMnum()); // 상환주기
+		ibims201bvo.setIntrtCngeFrqcMnum((param.getIntrtCngeFrqcMnum() == null) ? 0 : param.getIntrtCngeFrqcMnum()); // 변동주기
+		ibims201bvo.setOvduIntrRtDcd(param.getOvduIntrRtDcd()); // 연체이자율구분
+		ibims201bvo.setOvduIntrRt(param.getOvduIntrRt()); // 연체이자율
+		ibims201bvo.setPrnaDfrPrdMnum((param.getPrnaDfrPrdMnum() == null) ? 0 : param.getPrnaDfrPrdMnum()); // 거치기간
+		ibims201bvo.setIntrBnaoDcd(param.getIntrBnaoDcd()); // 선후취구분
+		ibims201bvo.setIntrRdmpFrqcMnum(param.getIntrRdmpFrqcMnum()); // 이자상환주기
+		ibims201bvo.setIntrDnumClcMthCd(param.getIntrDnumClcMthCd()); // 일수계산방법
+		ibims201bvo.setIstmDtmRdmpAmt(param.getIstmDtmRdmpAmt()); // 만기상환금액
+		ibims201bvo.setTfdLyAplyDcd(param.getTfdLyAplyDcd()); // 초일말일산입
+		ibims201bvo.setIntrSnnoPrcsDcd(param.getIntrSnnoPrcsDcd()); // 이자단수법
+		ibims201bvo.setHldyPrcsDcd(param.getHldyPrcsDcd()); // 휴일처리구분
+		ibims201bvo.setIntrClcEndDeDcd(param.getIntrClcEndDeDcd()); // 이자계산종료일
 		ibims201bvo.setStdrIntrtKndCd(param.getStdrIntrtKndCd());
 		ibims201bvo.setEqlRdmpAmt(param.getEqlRdmpAmt());
 		ibims201bvo.setRcvbIntrAplyIrt(param.getRcvbIntrAplyIrt());
@@ -127,8 +129,8 @@ public class TB06010ServiceImpl implements TB06010Service {
 		ibims201bvo.setApvlDt(LocalDate.now().toString().replace("-", ""));
 		ibims201bvo.setHndEmpno(param.getHndEmpno());
 		ibims201bvo.setRgstDt(param.getRgstDt());
-		ibims201bvo.setEarlyRepayYn(param.getEarlyRepayYn());				//중도상환여부
-		ibims201bvo.setRqsKndCd(param.getRqsKndCd());					//신청종류
+		ibims201bvo.setEarlyRepayYn(param.getEarlyRepayYn()); // 중도상환여부
+		ibims201bvo.setRqsKndCd(param.getRqsKndCd()); // 신청종류
 
 		if (temp == null) {
 			result = ibims202bMapper.insertIBIMS202BDTOInfo(param);
@@ -136,26 +138,26 @@ public class TB06010ServiceImpl implements TB06010Service {
 			result = ibims202bMapper.updateIBIMS202BDTOInfo(param);
 		}
 
-		if( result > 0 ) {
+		if (result > 0) {
 			ibims201bMapper.updateIBIMS201BDTO(ibims201bvo);
 		}
 
-		// RQS_KND_CD	기업여신신청종류코드
+		// RQS_KND_CD 기업여신신청종류코드
 		// 기한연장+금리변경(31)
 		// 금리변경(04)
 		// 차주변경+금리변경(61)
-		if(("31".equals(param.getRqsKndCd()))
-		 ||("04".equals(param.getRqsKndCd()))
-		 ||("61".equals(param.getRqsKndCd()))) {
+		if (("31".equals(param.getRqsKndCd()))
+				|| ("04".equals(param.getRqsKndCd()))
+				|| ("61".equals(param.getRqsKndCd()))) {
 
 			IBIMS346BDTO out346bdto = ibims346bMapper.selectIBIMS346BInfo(param.getPrdtCd());
 
-			if(out346bdto == null) {
+			if (out346bdto == null) {
 				;
 			} else {
 
 				out346bdto.setStdrIntrtKndCd(param.getStdrIntrtKndCd());
-				if(rfkDt.equals(out346bdto.getAplyStrtDt())) {
+				if (rfkDt.equals(out346bdto.getAplyStrtDt())) {
 
 					out346bdto.setFxnIntrt(param.getFxnIntrt());
 					out346bdto.setAddIntrt(param.getAddIntrt());
@@ -191,12 +193,12 @@ public class TB06010ServiceImpl implements TB06010Service {
 		param.setApvlDt(LocalDate.now().toString().replace("-", ""));
 		String empNo = facade.getDetails().getEno();
 
-		if ((param.getPrdtCd() == null)||("".equals(param.getPrdtCd()))) {
+		if ((param.getPrdtCd() == null) || ("".equals(param.getPrdtCd()))) {
 
-			if(param.getPrdtLclsCd().equals("92")){
+			if (param.getPrdtLclsCd().equals("92")) {
 				param.setPageDcd("Z");
 			}
-			
+
 			// 새로운 종목코드 채번
 			String newPrdtCd = ibims201bMapper.getPrdtCdSq(param.getPageDcd());
 
@@ -209,12 +211,12 @@ public class TB06010ServiceImpl implements TB06010Service {
 
 			// 최초 종목등록시엔 이해관계자를 같이 등록해줌
 			/**
-			 * 상품코드				newPrdtCd
-			 * 거래상대방일련번호	채번
-			 * 거래상대방식별번호	param.getTrOthrDscmNo();
-			 * 이해관계자성격코드	"1"
-			 * 이해관계자형태코드	"4"
-			 * 조작사원번호			facade.getDetails().getEno();
+			 * 상품코드 newPrdtCd
+			 * 거래상대방일련번호 채번
+			 * 거래상대방식별번호 param.getTrOthrDscmNo();
+			 * 이해관계자성격코드 "1"
+			 * 이해관계자형태코드 "4"
+			 * 조작사원번호 facade.getDetails().getEno();
 			 */
 			List<IBIMS220BVO> itrList = new ArrayList<>();
 			IBIMS220BVO voItem = new IBIMS220BVO();
@@ -226,40 +228,63 @@ public class TB06010ServiceImpl implements TB06010Service {
 			itrList.add(voItem);
 			ibims220bMapper.saveIBIMS220BDTOInfo(itrList);
 
-		} else { 
+		} else {
+			// 종목 수정
+			// 딜승인기본(IBIMS201B) 변경전 Update(기등록내역 조회후)
+			IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
+			ibims201bvo.setLastYn("N");
+			result = ibims201bMapper.updateIBIMS201BDTO(ibims201bvo);
 
-	        IBIMS201BVO ibims201bvo = ibims201bMapper.selectOnlyOneIBIMS201B(param.getPrdtCd());
-	        ibims201bvo.setLastYn("N");
-	        result = ibims201bMapper.updateIBIMS201BDTO(ibims201bvo);
-
+			// 상환구분/금리정보 조회
+			// 딜승인현금흐름기본 -상환구분/금리정보(IBIMS202B)
 			IBIMS202BDTO in202bdto = new IBIMS202BDTO();
 			in202bdto.setPrdtCd(param.getPrdtCd());
-			IBIMS202BDTO out202bdto = ibims202bMapper.selectIBIMS202BDTOInfo(in202bdto);
-			param.setPaiRdmpDcd(out202bdto.getPaiRdmpDcd());				// 상환구분
-			param.setFxnIntrt(out202bdto.getFxnIntrt());					// 고정금리
-			param.setAddIntrt(out202bdto.getAddIntrt());					// 가산금리
-			param.setPrnaRdmpFrqcMnum(out202bdto.getPrnaRdmpFrqcMnum());	// 상환주기
-			param.setIntrtCngeFrqcMnum((out202bdto.getIntrtCngeFrqcMnum()==null)?0:out202bdto.getIntrtCngeFrqcMnum());	//변동주기
-			param.setOvduIntrRtDcd(out202bdto.getOvduIntrRtDcd());			//연체이자율구분
-			param.setOvduIntrRt(out202bdto.getOvduIntrRt());				//연체이자율
-			param.setPrnaDfrPrdMnum((out202bdto.getPrnaDfrPrdMnum()==null)?0:out202bdto.getPrnaDfrPrdMnum());		//거치기간
-			param.setIntrBnaoDcd(out202bdto.getIntrBnaoDcd());				//선후취구분
-			param.setIntrRdmpFrqcMnum(out202bdto.getIntrRdmpFrqcMnum());	//이자상환주기
-			param.setIntrDnumClcMthCd(out202bdto.getIntrDnumClcMthCd());	//일수계산방법
-			param.setIstmDtmRdmpAmt(out202bdto.getIstmDtmRdmpAmt());		//만기상환금액
-			param.setTfdLyAplyDcd(out202bdto.getTfdLyAplyDcd());			//초일말일산입
-			param.setIntrSnnoPrcsDcd(out202bdto.getIntrSnnoPrcsDcd());		//이자단수법
-			param.setHldyPrcsDcd(out202bdto.getHldyPrcsDcd());				//휴일처리구분
-			param.setIntrClcEndDeDcd(out202bdto.getIntrClcEndDeDcd());		//이자계산종료일
-			param.setStdrIntrtKndCd(out202bdto.getStdrIntrtKndCd());		//기준금리종류코드
-			param.setPrgSttsCd(ibims201bvo.getPrgSttsCd());                 //진행상태코드
-			param.setEarlyRepayYn(out202bdto.getEarlyRepayYn());				//중도상환여부
-			// param.setDmsCrdtGrdDcd(out202bdto.getcrdtgrd);
-			//param.setHndEmpno("");
-			param.setLastYn("Y");                                           //최종여부
-//			param.setRqsKndCd("01");                                        //신청종류
-			param.setHndEmpno(empNo);
-			result = ibims201bMapper.regPrdtCd(param);
+
+			IBIMS202BDTO out202bTmpdto = ibims202bMapper.selectIBIMS202BDTOInfo(in202bdto);
+
+			// 상환구분/금리정보 조회 조회결과
+			if (out202bTmpdto == null || out202bTmpdto.toString() == null) {
+
+				// 상환구분/금리정보(IBIMS202B) 미존재시
+				log.error("오류>> 상환구분/금리정보(IBIMS202B)가 존재하지 않습니다.");
+				log.error("오류>> PrdtCd [" + param.getPrdtCd() + "]");
+				log.error("오류>> DealNo [" + param.getDealNo() + "]");
+				throw new ValidationException(ValidationException.Type.ERROR,
+						"상환구분/금리정보가 존재하지 않습니다.<br>상환구분/금리정보 입력후 종목 수정이 가능합니다."); // 처리 오류
+
+			} else {
+				// 상환구분/금리(Tab) 정보 존재시
+				in202bdto.setPrdtCd(param.getPrdtCd());
+				IBIMS202BDTO out202bdto = ibims202bMapper.selectIBIMS202BDTOInfo(in202bdto);
+				param.setPaiRdmpDcd(out202bdto.getPaiRdmpDcd()); // 상환구분
+				param.setFxnIntrt(out202bdto.getFxnIntrt()); // 고정금리
+				param.setAddIntrt(out202bdto.getAddIntrt()); // 가산금리
+				param.setPrnaRdmpFrqcMnum(out202bdto.getPrnaRdmpFrqcMnum()); // 상환주기
+				param.setIntrtCngeFrqcMnum(
+						(out202bdto.getIntrtCngeFrqcMnum() == null) ? 0 : out202bdto.getIntrtCngeFrqcMnum()); // 변동주기
+				param.setOvduIntrRtDcd(out202bdto.getOvduIntrRtDcd()); // 연체이자율구분
+				param.setOvduIntrRt(out202bdto.getOvduIntrRt()); // 연체이자율
+				param.setPrnaDfrPrdMnum((out202bdto.getPrnaDfrPrdMnum() == null) ? 0 : out202bdto.getPrnaDfrPrdMnum()); // 거치기간
+				param.setIntrBnaoDcd(out202bdto.getIntrBnaoDcd()); // 선후취구분
+				param.setIntrRdmpFrqcMnum(out202bdto.getIntrRdmpFrqcMnum()); // 이자상환주기
+				param.setIntrDnumClcMthCd(out202bdto.getIntrDnumClcMthCd()); // 일수계산방법
+				param.setIstmDtmRdmpAmt(out202bdto.getIstmDtmRdmpAmt()); // 만기상환금액
+				param.setTfdLyAplyDcd(out202bdto.getTfdLyAplyDcd()); // 초일말일산입
+				param.setIntrSnnoPrcsDcd(out202bdto.getIntrSnnoPrcsDcd()); // 이자단수법
+				param.setHldyPrcsDcd(out202bdto.getHldyPrcsDcd()); // 휴일처리구분
+				param.setIntrClcEndDeDcd(out202bdto.getIntrClcEndDeDcd()); // 이자계산종료일
+				param.setStdrIntrtKndCd(out202bdto.getStdrIntrtKndCd()); // 기준금리종류코드
+				param.setPrgSttsCd(ibims201bvo.getPrgSttsCd()); // 진행상태코드
+				param.setEarlyRepayYn(out202bdto.getEarlyRepayYn()); // 중도상환여부
+				// param.setDmsCrdtGrdDcd(out202bdto.getcrdtgrd);
+				// param.setHndEmpno("");
+				param.setLastYn("Y"); // 최종여부
+				// param.setRqsKndCd("01"); //신청종류
+				param.setHndEmpno(empNo);
+
+				// 딜승인기본(IBIMS201B) 등록
+				result = ibims201bMapper.regPrdtCd(param);
+			}
 
 		}
 
@@ -277,35 +302,33 @@ public class TB06010ServiceImpl implements TB06010Service {
 		s103b.setMtrPrgSttsDcd("401");
 		result = ibims103bMapper.insert103B(s103b);
 
-
 		List<IBIMS205BDTO> s205dto = ibims105bMapper.getAssetInfoBy201bDTO(param);
 
-		if( s205dto.size() > 0 ) {
+		if (s205dto.size() > 0) {
 			ibims205bMapper.deleteIBIMS205B(param.getPrdtCd());
-			for( int i = 0 ; i < s205dto.size() ; i ++ ) {
+			for (int i = 0; i < s205dto.size(); i++) {
 				s205dto.get(i).setPrdtCd(param.getPrdtCd());
 				s205dto.get(i).setHndEmpno(facade.getDetails().getEno());
 				// request transaction
 				ibims205bMapper.insertIBIMS205B(s205dto.get(i));
 			}
 
-
 		}
 
-		// RQS_KND_CD	기업여신신청종류코드
+		// RQS_KND_CD 기업여신신청종류코드
 		// 부서이수관(07)
-		if("07".equals(rqsKndCd)) {
+		if ("07".equals(rqsKndCd)) {
 
 			IBIMS401BDTO in401bdto = new IBIMS401BDTO();
 			in401bdto.setPrdtCd(param.getPrdtCd());
 			IBIMS401BVO out401bdto = ibims401BMapper.getIBIMS401BBaseInfo(in401bdto);
-			if(out401bdto == null) {
+			if (out401bdto == null) {
 				;
 			} else {
 				out401bdto.setChrrEmpno(param.getChrrEmpno());
-				out401bdto.setFrsMngmBdcd(param.getFrsMngmBdcd()); 	// 최초관리부서
-				out401bdto.setMngmBdcd(param.getMngmBdcd()); 		// 관리부서
-				out401bdto.setTrrcDt(rfkDt);                        // 이수관일자
+				out401bdto.setFrsMngmBdcd(param.getFrsMngmBdcd()); // 최초관리부서
+				out401bdto.setMngmBdcd(param.getMngmBdcd()); // 관리부서
+				out401bdto.setTrrcDt(rfkDt); // 이수관일자
 				out401bdto.setHndEmpno(empNo);
 				result = ibims401BMapper.updateIBIMS401B(out401bdto);
 				result = ibims401HMapper.insertIBIMS401H(out401bdto);
@@ -319,12 +342,12 @@ public class TB06010ServiceImpl implements TB06010Service {
 	// 종목정보 삭제
 	@Override
 	public int deletePrdtCd(IBIMS201BVO param) {
-		String prdtCd =param.getPrdtCd();
-		//연결 승인조건내역 삭제
+		String prdtCd = param.getPrdtCd();
+		// 연결 승인조건내역 삭제
 		ibims209bMapper.deleteIBIMS209BbyPrdtCd(prdtCd);
-		//연결 담보내역 삭제
+		// 연결 담보내역 삭제
 		ibims212bMapper.deleteIBIMS212BbyPrdtCd(prdtCd);
-		//연결 이해관계자 내역 삭제
+		// 연결 이해관계자 내역 삭제
 		ibims220bMapper.delIBIMS220BDTOInfo(prdtCd);
 
 		return ibims201bMapper.deletePrdtCd(param);
@@ -337,7 +360,7 @@ public class TB06010ServiceImpl implements TB06010Service {
 
 		String empNo = facade.getDetails().getEno();
 
-		if (StringUtil.isAllWhitespace(param.getSn())) {			// 등록
+		if (StringUtil.isAllWhitespace(param.getSn())) { // 등록
 
 			param.setRgstEmpno(empNo);
 			param.setRgstDt(param.getChngDt());
@@ -345,17 +368,17 @@ public class TB06010ServiceImpl implements TB06010Service {
 			param.setChngEmpno(empNo);
 
 			return ibims208bMapper.insert208B(param);
-		} else {													// 수정
+		} else { // 수정
 			// select
 			List<IBIMS208BVO> temp = ibims208bMapper.select208B(param);
 
 			// update
-			if(null != temp) {
+			if (null != temp) {
 				param.setHndEmpno(empNo);
 				param.setChngEmpno(empNo);
 
 				return ibims208bMapper.update208B(param);
-				//return 1;
+				// return 1;
 			} else {
 				return 0;
 			}
@@ -410,14 +433,14 @@ public class TB06010ServiceImpl implements TB06010Service {
 		IBIMS100BDTO param = new IBIMS100BDTO();
 
 		/* parameter setting */
-		param.setEmpno(facade.getDetails().getEno());			    // 사원번호
-		param.setWorkDcd("03");                              	    // 작업구분코드
-		param.setWorkCtns("(To-Do) 대출채권/채무보증 정보등록");    // 작업내용
-		param.setRgstEmpno(facade.getDetails().getEno());           // 등록사원번호
-		param.setMenuId("/TB06010S");                               // 메뉴ID
-		param.setEntpNm(param.getEntpNm());                         // 업체명
-		param.setRmrk("TEST");               						// 비고(메뉴별조회KEY)
-		param.setHndEmpno(facade.getDetails().getEno());            // 조작사원번호
+		param.setEmpno(facade.getDetails().getEno()); // 사원번호
+		param.setWorkDcd("03"); // 작업구분코드
+		param.setWorkCtns("(To-Do) 대출채권/채무보증 정보등록"); // 작업내용
+		param.setRgstEmpno(facade.getDetails().getEno()); // 등록사원번호
+		param.setMenuId("/TB06010S"); // 메뉴ID
+		param.setEntpNm(param.getEntpNm()); // 업체명
+		param.setRmrk("TEST"); // 비고(메뉴별조회KEY)
+		param.setHndEmpno(facade.getDetails().getEno()); // 조작사원번호
 
 		return ibims100bMapper.insertIBIMS100BInfo(param);
 	}
@@ -452,9 +475,9 @@ public class TB06010ServiceImpl implements TB06010Service {
 
 		if ("".equals(assetInfo.getBssAsstMngmNo())) {
 
-			return ibims205bMapper.insertIBIMS205B(assetInfo);					// 기초자산정보 생성
+			return ibims205bMapper.insertIBIMS205B(assetInfo); // 기초자산정보 생성
 		} else {
-			return ibims205bMapper.updateIBIMS205B(assetInfo);					// 기초자산정보 갱신
+			return ibims205bMapper.updateIBIMS205B(assetInfo); // 기초자산정보 갱신
 		}
 	}
 
@@ -462,6 +485,5 @@ public class TB06010ServiceImpl implements TB06010Service {
 	public List<IBIMS205BVO> getAssetInfo(String prdtCd) {
 		return ibims205bMapper.selectIBIMS205B(prdtCd);
 	}
-
 
 }
