@@ -436,6 +436,7 @@ const TB09010Sjs = (function () {
               confirmButtonText: "확인",
             }).then((result) => {
               //location.reload();
+              checkDealSearch();  // 재조회
             });
           } else {
             Swal.fire({
