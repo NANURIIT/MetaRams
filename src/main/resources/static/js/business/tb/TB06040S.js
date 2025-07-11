@@ -22,6 +22,14 @@ const TB06040Sjs = (function() {
         maskRt("#TB06040S_stdrClrt, #TB06040S_addClrt, #TB06040S_totClrt");
     });
 	
+	
+	
+	$("#TB06040S_ctrcDt").change(function() {
+		var num = Number($("#TB06040S_ctrcPrdMnum").val());
+		$("#TB06040S_ctrcExpDt").val(newAddMonth(new Date(getToday()), num));
+	});
+
+	
 	// 입력창 값체크
 	function inputValidationCheck(){
 		dtValidationCheck('TB06040S_ctrcDt');		// 약정정보 - 약정일자 값체크
@@ -175,6 +183,10 @@ const TB06040Sjs = (function() {
 
                     $('#TB06040S_empNo').val(userEno);
                     $('#TB06040S_empNm').val(userEmpNm);
+					
+					$('#TB06040S_ctrcPrdDcd').val(data.ctrcPrdDcd).prop("selected", true);					// 약정기간구분코드
+					$('#TB06040S_ctrcPrdMnum').val(data.ctrcPrdMnum);											// 약정기간
+									
                     // console.log(data);
                     // if ( isEmpty(data.chrrEmpno) && isEmpty(data.chrrEmpNm) ) {
                     //     $('#TB06040S_empNo').val(userEno);
