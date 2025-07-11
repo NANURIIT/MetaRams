@@ -1609,6 +1609,7 @@
         </select>
         
         <select id="searchIBInfo" parameterType="string" resultType="com.nanuri.rams.business.common.vo.TB06040SVO">
+          /* IBIMS201BMapper.searchIBInfo */
           SELECT A.PRDT_CD                                           /* 상품코드 */
                , A.TR_OTHR_DSCM_NO                                   /* 거래상대방식별번호 */
                , (
@@ -1663,6 +1664,8 @@
                , C.CCLC_RSN_CTNS                                     /* 해지사유내용 */
 				       , A.PRG_STTS_CD                                       /* 진행상태코드 */
                , A.RGST_DT                                           /* 등록일자 */
+               , a.CTRC_PRD_DCD	/* 약정기간구분코드 */
+               , a.CTRC_PRD_MNUM   /* 약정기간개월수 */
             FROM IBIMS201B A
             LEFT JOIN IBIMS401B C
               ON A.PRDT_CD = C.PRDT_CD
