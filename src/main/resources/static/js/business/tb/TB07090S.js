@@ -1206,17 +1206,17 @@ const TB07090Sjs = (function() {
 	function resetAll() {
 
 		resetInputValue($("div[data-menuid='/TB07090S']"));
-		$("#TB07090S_rctmDt").val("20250710"); //입금일자, 임시
+		$("#TB07090S_rctmDt").val(getToday()); //입금일자, 임시
 		$("#TB07090S_fromDate").val(newAddMonth(new Date(getToday()), -1)); //조회시작일
-		$("#TB07090S_toDate").val(newAddMonth(new Date(getToday()), 24)); //조회종료일, 임시
-		$("#TB07090S_ibDealNo").val("AG120250710100334");//임시
+		$("#TB07090S_toDate").val(getToday()); //조회종료일, 임시
+		//$("#TB07090S_ibDealNo").val("AG120250710100334");//임시
 		$("#TB07090S_dprtNm").val($("#userDprtCd").val());
 		$("#TB07090S_dprtCd").val($("#userDprtCd").val());
 
 
 		resetPGgrids("TB07090S");
 
-		search_TB07090S();//임시
+		//search_TB07090S();//임시
 	}
 
 	function getDealInfoFromWF() {
