@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+<th:block layout:fragment="script">
+	<script th:src="@{js/tabs.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB09012S.js}"></script>
+	<script th:src="@{js/business/tb/FileUploadPopup.js}"></script>
+</th:block>
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/FileUploadPopup :: FileUploadPopup"></th:block>
+</th:block>
+<th:block layout:fragment="customContent">
+	<!-- 법인채무보증및채무인수약정정보   -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<div class="ibox-content i-filter">
+						<!-- 조회조건영역 -->
+						<div class="form-group row form-inline">
+							<div class="col-sm-10 form-group">
+								<div class="col-sm-10 form-group">
+									<!-- 기준일자  -->
+									<label class="col-sm-1 control-label">
+										<span class="req"></span>기준일자
+									</label>
+									<div class="col-sm-3 input-group date px-0">
+										<input type="text" class="form-control" id="TB09012S_stdrDt" name="StdrDt" value="" maxlength="10">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+									<!--보고서구분 -->
+									<label class="col-sm-1 control-label">보고서구분</label>
+									<div class="col-sm-2 input-group">
+										<select class="form-control" id="TB09012S_K015">
+											<option value="">전체</option>
+										</select>
+									</div>
+									<!--자료구분 -->
+									<label class="col-sm-1 control-label">오류구분</label>
+									<div class="col-sm-2 input-group">
+										<select class="form-control" id="TB09012S_K002">
+											<option value="">전체</option>
+										</select>
+									</div>
+								</div>
+
+								<!-- 버튼영역 -->
+								<div class="col-sm-2 form-group mb-1">
+									<div class="col-sm text-right">
+										<button class="btn btn-primary" onclick="TB09012Sjs.cpdgSearch();">
+										<i class="fa fa-search"></i>&nbsp;조회
+										</button>
+										<button class="btn btn-default" type="button" onclick="TB09012Sjs.reset_TB09012S();">
+										<i class="fa fa-undo"></i>&nbsp;초기화
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--조회 결과-->
+
+					<!--탭 -->	
+					<div class="ibox"></div>
+						<div class="tabs-container p ">
+							<ul class="nav nav-tabs" role="tablist" id="TB09012S_Tab">
+								<li class=""><a class="nav-link active" data-toggle="tab" href="#TB09012S_tab-1" onclick="TB09012Sjs.setMainTab();">법인채무보증 및 채무인수약정 내역</a></li>
+								<li class=""><a class="nav-link" data-toggle="tab" href="#TB09012S_tab-2" onclick="TB09012Sjs.setTranTab();">전문송신내역</a></li>
+								<li class=""><a class="nav-link" data-toggle="tab" href="#TB09012S_tab-3" onclick="TB09012Sjs.setErrTab();">오류통보내역</a></li>
+							<!--	<li class=""><a class="nav-link" data-toggle="tab" href="#TB09012S_tab-1">법인채무보증 및 채무인수약정 내역</a></li>  
+								<li class=""><a class="nav-link" data-toggle="tab" href="#TB09012S_tab-2" onclick="TB09012Sjs.setTranTab();">전문송신내역</a></li>
+								<li class=""><a class="nav-link" data-toggle="tab" href="#TB09012S_tab-3" onclick="TB09012Sjs.setErrTab();">오류통보내역</a></li>	-->
+							</ul>
+
+							<div class="tab-content"> 
+								<!-- 법인채무보증 및 채무인수약정 정보 Tab -->
+								<div role="tabpanel" id="TB09012S_tab-1" class="tab-pane active">
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="ibox">
+													<div class="ibox-title">
+														<h4>▶&nbsp;법인채무보증 및 채무인수약정내역</h4>
+													</div>
+												</div>	
+												<div class="ibox-content">
+													<!-- GRID -->
+													<div id="TB09012S_gridCpdgList"></div>
+													<!-- 버튼영역 -->
+													<div class="text-right" style="margin-top: 10px">
+														<button class="btn btn-warning" onclick="TB09012Sjs.exDnLoad('gridCpdgList')">
+															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
+														</button>
+														<button class="btn btn-warning" onclick="TB09012Sjs.exUpLoad('gridCpdgList')">
+															<i class="fa fa-upload"></i>&nbsp;엑셀업로드
+														</button>
+														<div style="display: none;">
+															<input type="file" class="custom-file-input" id="upload-file-gridCpdgList" name="uploadfile" accept="*">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- 법인채무보증 및 채무인수약정 정보 Tab  END-->
+								
+								<!-- 전송정보 Tab  -->
+								<div role="tabpanel" id="TB09012S_tab-2" class="tab-pane">
+									<div class="panel-body">
+										<div class="row">
+										<div class="col-sm-12">
+											<div class="ibox">
+											<div class="ibox-title">
+												<h4>▶&nbsp;전문송신내역</h4>
+											</div>
+											</div>
+											<div class="ibox-content">
+												<div id="TB09012S_gridTransList"></div>
+												<div class="text-right" style="margin-top: 10px">
+													<button class="btn btn-warning" onclick="TB09012Sjs.exDnLoad('gridTransList')">
+													<i class="fa fa-download"></i>&nbsp;엑셀다운로드
+													</button>
+													<button class="btn btn-warning" onclick="TB09012Sjs.exUpLoad('gridTransList')">
+													<i class="fa fa-upload"></i>&nbsp;엑셀업로드
+													</button>
+													<div style="display: none;">
+													<input type="file" class="custom-file-input" id="upload-file-gridTransList" name="uploadfile" accept="*">
+													</div>
+												</div>
+											</div>
+										</div>
+										</div>
+									</div>
+								</div>	
+								<!-- 전송정보 Tab END -->
+								
+								<!-- 오류정보 Tab -->
+								<div role="tabpanel" id="TB09012S_tab-3" class="tab-pane" >
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="ibox">
+													<div class="ibox-title">
+														<h4>▶&nbsp;오류통보내역</h4>
+													</div>
+												</div>	
+												<div class="ibox-content">
+													<div id="TB09012S_gridErrList"></div>
+													<div class="text-right" style="margin-top: 10px">
+														<button class="btn btn-warning" onclick="TB09012Sjs.exDnLoad('gridErrList')">
+															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
+														</button>
+														<button class="btn btn-warning" onclick="TB09012Sjs.exUpLoad('gridErrList')">
+															<i class="fa fa-upload"></i>&nbsp;엑셀업로드
+														</button>
+														<div style="display: none;">
+															<input type="file" class="custom-file-input" id="upload-file-gridErrList" name="uploadfile" accept="*">
+														</div>
+													</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div> 
+								</div> 
+								<!--오류정보 END-->
+							</div>
+
+						</div>
+					</div>
+					<!--탭 END-->	
+				</div>
+
+			</div>
+		</div>
+	</div>
+	</div>
+</th:block>
+</html>
