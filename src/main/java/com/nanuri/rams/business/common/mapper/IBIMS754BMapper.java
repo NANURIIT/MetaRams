@@ -14,29 +14,29 @@ import java.util.List;
 public interface IBIMS754BMapper {
 
     // 조회(IBIMS754B)
-    List<IBIMS754BDTO> selectIBIMS754B(TB09012SVO data);
+    List<IBIMS754BDTO> cpdgSearch(TB09012SVO data);
 
     // 조회(IBIMS755B)
-    List<IBIMS754BDTO> selectIBIMS755B(TB09012SVO data);
+    List<IBIMS754BDTO> cpdgTransSearch(TB09012SVO data);
 
     // 조회(IBIMS756B)
-    List<IBIMS754BDTO> selectIBIMS756B(TB09012SVO data);
+    List<IBIMS754BDTO> cpdgErrSearch(TB09012SVO data);
 
     // 삭제(IBIMS754B)
-    int deleteIBIMS754B(IBIMS754BVO params);
+    int deleteCpdgFcs(IBIMS754BVO params);
 
     // 등록(IBIMS754B)
-    int insertIBIMS754B(List<IBIMS754BDTO> paramList);
+    int insertCpdgFcs(List<IBIMS754BDTO> paramList);
 
     // 삭제(IBIMS755B)
-    int deleteTransList(IBIMS754BVO params);
+    int deleteCpdgFcsTrans(IBIMS754BVO params);
 
     // 등록(IBIMS755B)
-    int insertTransList(List<IBIMS754BDTO> paramList);
+    int insertCpdgFcsTrans(List<IBIMS754BDTO> paramList);
 
     // 삭제(IBIMS756B)
-    int deleteErrList(IBIMS754BVO params);
+    int deleteCpdgFcsErr(IBIMS754BVO params);
 
     // 등록(IBIMS756B)
-    int insertErrList(List<IBIMS754BDTO> paramList);
+    int insertCpdgFcsErr(List<IBIMS754BDTO> paramList);
 }

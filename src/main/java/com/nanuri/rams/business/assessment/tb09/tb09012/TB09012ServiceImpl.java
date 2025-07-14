@@ -27,26 +27,26 @@ public class TB09012ServiceImpl implements TB09012Service {
 
 	// 법인채무보증등 집중내역 조회(IBIMS754B)
 	@Override
-	public List<IBIMS754BDTO> selectIBIMS754B(TB09012SVO prarm) {
+	public List<IBIMS754BDTO> cpdgSearch(TB09012SVO prarm) {
 		log.debug("법인채무보증등 집중내역 조회(IBIMS754B) 조회 Start");
 
-		return ibims754bMapper.selectIBIMS754B(prarm);
+		return ibims754bMapper.cpdgSearch(prarm);
 	}
 
 	// 전문송신내역 조회(IBIMS755B)
 	@Override
-	public List<IBIMS754BDTO> selectIBIMS755B(TB09012SVO prarm) {
+	public List<IBIMS754BDTO> cpdgTransSearch(TB09012SVO prarm) {
 		log.debug("전문송신내역(IBIMS755B) 조회 Start");
 
-		return ibims754bMapper.selectIBIMS755B(prarm);
+		return ibims754bMapper.cpdgTransSearch(prarm);
 	}
 
 	// 오류통보내역 조회(IBIMS756B)
 	@Override
-	public List<IBIMS754BDTO> selectIBIMS756B(TB09012SVO prarm) {
+	public List<IBIMS754BDTO> cpdgErrSearch(TB09012SVO prarm) {
 		log.debug("오류통보내역(IBIMS756B) 조회 Start");
 
-		return ibims754bMapper.selectIBIMS756B(prarm);
+		return ibims754bMapper.cpdgErrSearch(prarm);
 	}
 
 	// 법인채무보증등 집중내역 등록 (IBIMS754B)
@@ -59,10 +59,10 @@ public class TB09012ServiceImpl implements TB09012Service {
 		List<IBIMS754BDTO> paramList = params.getIbims754bVOList();
 
 		// 법인채무보증등 집중내역 삭제(IBIMS754B 기준일자)
-		ibims754bMapper.deleteIBIMS754B(params);
+		ibims754bMapper.deleteCpdgFcs(params);
 
 		// 법인채무보증등 집중내역 등록(IBIMS754B 기준일자)
-		result = ibims754bMapper.insertIBIMS754B(paramList);
+		result = ibims754bMapper.insertCpdgFcs(paramList);
 
 		log.debug("법인채무보증등 집중내역(IBIMS754B) 등록 END");
 		return result;
@@ -78,10 +78,10 @@ public class TB09012ServiceImpl implements TB09012Service {
 		List<IBIMS754BDTO> paramList = params.getIbims754bVOList();
 
 		// 전문송신내역 삭제(IBIMS755B )
-		ibims754bMapper.deleteTransList(params);
+		ibims754bMapper.deleteCpdgFcsTrans(params);
 
 		// 전문송신내역 등록(IBIMS755B )
-		result = ibims754bMapper.insertTransList(paramList);
+		result = ibims754bMapper.insertCpdgFcsTrans(paramList);
 
 		log.debug("전문송신내역 (IBIMS755B) 등록 END");
 		return result;
@@ -98,10 +98,10 @@ public class TB09012ServiceImpl implements TB09012Service {
 
 		// 오류통보내역 삭제(IBIMS756B )
 		log.debug("scrnDcd:" + params.getScrnDcd());
-		ibims754bMapper.deleteErrList(params);
+		ibims754bMapper.deleteCpdgFcsErr(params);
 
 		// 오류통보내역 등록(IBIMS756B )
-		result = ibims754bMapper.insertErrList(paramList);
+		result = ibims754bMapper.insertCpdgFcsErr(paramList);
 
 		log.debug("오류통보내역 (IBIMS756B) 등록 END");
 		return result;

@@ -15,11 +15,11 @@ import com.nanuri.rams.business.common.vo.TB09012SVO;
 public interface TB09012Service {
 
     //
-    List<IBIMS754BDTO> selectIBIMS754B(TB09012SVO param);
+    List<IBIMS754BDTO> cpdgSearch(TB09012SVO param);
 
-    List<IBIMS754BDTO> selectIBIMS755B(TB09012SVO param);
+    List<IBIMS754BDTO> cpdgTransSearch(TB09012SVO param);
 
-    List<IBIMS754BDTO> selectIBIMS756B(TB09012SVO param);
+    List<IBIMS754BDTO> cpdgErrSearch(TB09012SVO param);
 
     public int saveCpdgList(IBIMS754BVO params);
 

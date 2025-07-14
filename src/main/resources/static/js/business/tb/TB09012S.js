@@ -173,15 +173,15 @@ const TB09012Sjs = (function () {
   
 
     colTransList = [
-        { title: "전문송신일련번호", dataType: "string", dataIndx: "msgTransSn", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+        { title: "전문송신일련번호", dataType: "string", dataIndx: "msgTransSn", align: "center", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
         { title: "업무구분(K013)", dataType: "string", dataIndx: "jobDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: K013 }, render: function(ui) { var options = K013; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
         { title: "기준일자", dataType: "string", dataIndx: "stdrDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
         { title: "송신일자", dataType: "string", dataIndx: "transDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function(ui) { return dateStr(ui.cellData) } },
         { title: "거래구분(K014)", dataType: "string", dataIndx: "trDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: K014 }, render: function(ui) { var options = K014; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
         { title: "오류통보", dataType: "string", dataIndx: "errDpch", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
-        { title: "파일전문명", dataType: "string", dataIndx: "", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
-        { title: "발송건수", dataType: "string", dataIndx: "", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
-        { title: "발송시간", dataType: "string", dataIndx: "", align: "left", halign: "center", dateFormat: "HH:mm:ss", filter: { crules: [{ condition: "range" }] }, width: 150 },
+        { title: "파일전문명", dataType: "string", dataIndx: "fileMsgNm", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+        { title: "발송건수", dataType: "string", dataIndx: "sendCnt ", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+        { title: "발송시간", dataType: "string", dataIndx: "sendTm", align: "left", halign: "center", dateFormat: "HH:mm:ss", filter: { crules: [{ condition: "range" }] }, width: 150 },
         { title: "발송결과", dataType: "string", dataIndx: "sendRslt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
       ];
 
@@ -197,7 +197,7 @@ const TB09012Sjs = (function () {
         { title: "금액(천원)", dataType: "string", dataIndx: "amt", align: "right", halign: "center",  format: "#,###", filter: { crules: [{ condition: "range" }] }, width: 150 },
         { title: "처리구분(K009)", dataType: "string", dataIndx: "prcsDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: K009 }, render: function(ui) { var options = K009; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
         { title: "오류코드(K002)", dataType: "string", dataIndx: "errDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: K002 }, render: function(ui) { var options = K002; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
-        { title: "오류내용", dataType: "string", dataIndx: "", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
+        { title: "오류내용", dataType: "string", dataIndx: "errCtns", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
         { title: "기관코드(K011)", dataType: "string", dataIndx: "bondIsttDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: K011 }, render: function(ui) { var options = K011; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
         { title: "차주구분(K008)", dataType: "string", dataIndx: "brwrDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: K008 }, render: function(ui) { var options = K008; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
         { title: "법인등록번호", dataType: "string", dataIndx: "crno", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
@@ -208,9 +208,9 @@ const TB09012Sjs = (function () {
       ];
 
     let arrPqGridObj = [
-		{ id: "TB09012S_gridCpdgList",  colModel: colCpdgList,  height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false }, strNoRows: "데이터가 없습니다.", },
-   		{ id: "TB09012S_gridTransList", colModel: colTransList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false }, strNoRows: "데이터가 없습니다.", },
-   	    { id: "TB09012S_gridErrList",   colModel: colErrList,   height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false }, strNoRows: "데이터가 없습니다.", },
+		{ id: "TB09012S_gridCpdgList",  colModel: colCpdgList,  height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: true }, strNoRows: "데이터가 없습니다.", },
+   		{ id: "TB09012S_gridTransList", colModel: colTransList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: true }, strNoRows: "데이터가 없습니다.", },
+   	    { id: "TB09012S_gridErrList",   colModel: colErrList,   height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: true }, strNoRows: "데이터가 없습니다.", },
     ];
 
     setPqGrid(arrPqGridObj);
@@ -346,14 +346,14 @@ const TB09012Sjs = (function () {
 
 		$("#TB09012S_gridCpdgList").pqGrid("setData", []);
 		var ibims754bVOList = [];
-		var sn = 0;
+		var seq = 0;
 
 		rows.forEach(function(row) {
 			var cpdgFcsSn = row['법인채무보증집중일련번호'];
 			var errDcd = row['오류코드'];
 			var stdrDt =  row['기준일자'];
 			var rptsDcd = row['보고서구분(K015)'];
-			var sn = row['일련번호'];
+			var sn = ++seq;
 			var prcsDcd = row['처리구분'];
 			var rgstRsnOcrncDt = row['등록사유발생일자'];
 			var lastChngDt = row['최종변경일자'];
@@ -398,7 +398,7 @@ const TB09012Sjs = (function () {
 
 		$("#TB09012S_gridTransList").pqGrid("setData", []);
 		var ibims754bVOList = [];
-		var sn = 0;
+		var seq = 0;
 
 		rows.forEach(function(row) {
 			var msgTransSn = row['전문송신일련번호'];
@@ -422,7 +422,7 @@ const TB09012Sjs = (function () {
 				sendCnt: sendCnt,
 				sendTm: sendTm,
 				sendRslt: sendRslt,
-				sn: sn,
+				sn: ++seq,
 				scrnDcd: 'TB09012S',
 				jobDcd: jobDcd,
 			}
@@ -522,7 +522,7 @@ const TB09012Sjs = (function () {
 				openPopup(option);
 
 				//법인채무보증채무인수약정내역 조회 호출
-				crdtGrnList();
+				cpdgSearch();
 			},
 			error: function(request, status, error) {
 				errorMsg("저장 중 오류가 발생했습니다.");
@@ -548,7 +548,10 @@ const TB09012Sjs = (function () {
 				option.type = "success";
 				option.text = "전문송신내역이 저장되었습니다.";
 				openPopup(option);
-	
+	            
+				//전문송신내역 조회
+				cpdgTransSearch(); 
+
 			},
 			error: function(request, status, error) {
 				errorMsg("저장 중 오류가 발생했습니다.");
@@ -576,7 +579,9 @@ const TB09012Sjs = (function () {
 				option.type = "success";
 				option.text = "오류통보내역이 저장되었습니다.";
 				openPopup(option);
-	
+
+				//오류전송내역 조회
+				cpdgErrSearch();
 			},
 			error: function(request, status, error) {
 				errorMsg("저장 중 오류가 발생했습니다.");
@@ -607,7 +612,7 @@ const TB09012Sjs = (function () {
 
       $.ajax({
         type: "GET",
-        url: "/TB09012S/selectIBIMS754B",
+        url: "/TB09012S/cpdgSearch",
         data: dtoParam,
         dataType: "json",
       
@@ -616,8 +621,8 @@ const TB09012Sjs = (function () {
             if (data.length > 0) {
               //조회 결과 
               arrPqGridObjCpdgList.setData(data);
-              tranListSearch();  // 전송내역 조회 
-              errListSearch();   // 오류전송내역 
+              cpdgTransSearch();  // 전송내역 조회 
+              cpdgErrSearch();   // 오류전송내역 
             }
             else {
               // 조회 결과 NotFound
@@ -631,7 +636,7 @@ const TB09012Sjs = (function () {
   }
 
 // 전문송신내역 조회
-	 function tranListSearch() {
+	 function cpdgTransSearch() {
 
 
       var paramData = {
@@ -643,7 +648,7 @@ const TB09012Sjs = (function () {
 	
    		$.ajax({
 			type: "GET",
-			url: "/TB09012S/selectIBIMS755B",
+			url: "/TB09012S/cpdgTransSearch",
 			data: paramData,
 			dataType: "json",
 			success: function(data) {
@@ -666,7 +671,7 @@ const TB09012Sjs = (function () {
 	
 
 	// 오류통지내역 조회
-	 function errListSearch() {
+	 function cpdgErrSearch() {
 
 		var paramData = {
 			rgstDt: $("#TB09012S_stdrDt").val().replaceAll("-", ""),
@@ -676,11 +681,11 @@ const TB09012Sjs = (function () {
 
 		$.ajax({
 			type: "GET",
-			url: "/TB09012S/selectIBIMS756B",
+			url: "/TB09012S/cpdgErrSearch",
 			data: paramData,
 			dataType: "json",
 			success: function(data) {
-			
+		console.log("data",data);
 				if (data.length > 0) {
 						//조회 결과 
 						arrPqGridObjErrList.setData(data);
@@ -705,14 +710,6 @@ const TB09012Sjs = (function () {
 		} else {
 			return '';
 		}
-	}
-	// 에러메시지
-	function errorMsg(message) {
-		openPopup({
-			type: "warning",
-			title: "Warning!",
-			text: message,
-		});
 	}
 
   

@@ -26,19 +26,19 @@ public class TB09012APIController {
 
 	private final TB09012Service tb09012service;
 
-	@GetMapping(value = "/selectIBIMS754B")
-	public List<IBIMS754BDTO> selectIBIMS754B(TB09012SVO param) {
-		return tb09012service.selectIBIMS754B(param);
+	@GetMapping(value = "/cpdgSearch")
+	public List<IBIMS754BDTO> cpdgSearch(TB09012SVO param) {
+		return tb09012service.cpdgSearch(param);
 	}
 
-	@GetMapping(value = "/selectIBIMS755B")
-	public List<IBIMS754BDTO> selectIBIMS755B(TB09012SVO param) {
-		return tb09012service.selectIBIMS755B(param);
+	@GetMapping(value = "/cpdgTransSearch")
+	public List<IBIMS754BDTO> cpdgTransSearch(TB09012SVO param) {
+		return tb09012service.cpdgTransSearch(param);
 	}
 
-	@GetMapping(value = "/selectIBIMS756B")
-	public List<IBIMS754BDTO> selectIBIMS756B(TB09012SVO param) {
-		return tb09012service.selectIBIMS756B(param);
+	@GetMapping(value = "/cpdgErrSearch")
+	public List<IBIMS754BDTO> cpdgErrSearch(TB09012SVO param) {
+		return tb09012service.cpdgErrSearch(param);
 	}
 
 	@PostMapping(value = "/saveCpdgList")

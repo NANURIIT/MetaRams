@@ -18,50 +18,36 @@
 					<div class="ibox-content i-filter">
 						<!-- 조회조건영역 -->
 						<div class="form-group row form-inline">
-							<div class="col-sm-10 form-group">
+							<div class="col-sm-12 form-group">
 								<div class="col-sm-10 form-group">
 									<!-- 기준일자  -->
 									<label class="col-sm-1 control-label">
 										<span class="req"></span>기준일자
 									</label>
-									<div class="col-sm-3 input-group date px-0">
+									<div class="col-sm-2 input-group date px-0">
 										<input type="text" class="form-control" id="TB09012S_stdrDt" name="StdrDt" value="" maxlength="10">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
-									<!--보고서구분 -->
-									<label class="col-sm-1 control-label">보고서구분</label>
-									<div class="col-sm-2 input-group">
-										<select class="form-control" id="TB09012S_K015">
-											<option value="">전체</option>
-										</select>
-									</div>
-									<!--자료구분 -->
-									<label class="col-sm-1 control-label">오류구분</label>
-									<div class="col-sm-2 input-group">
-										<select class="form-control" id="TB09012S_K002">
-											<option value="">전체</option>
-										</select>
-									</div>
+
 								</div>
 
-								<!-- 버튼영역 -->
-								<div class="col-sm-2 form-group mb-1">
-									<div class="col-sm text-right">
-										<button class="btn btn-primary" onclick="TB09012Sjs.cpdgSearch();">
+								<!-- 버튼영역  -->
+								<div class="col-sm text-right">
+									<button class="btn btn-primary ml-1" onclick="TB09012Sjs.cpdgSearch();">
 										<i class="fa fa-search"></i>&nbsp;조회
-										</button>
-										<button class="btn btn-default" type="button" onclick="TB09012Sjs.reset_TB09012S();">
+									</button>
+									<button class="btn btn-default ml-2" onclick="TB09012Sjs.reset_TB09012S();">
 										<i class="fa fa-undo"></i>&nbsp;초기화
-										</button>
-									</div>
+									</button>
 								</div>
+
 							</div>
 						</div>
 					</div>
 					<!--조회 결과-->
 
 					<!--탭 -->	
-					<div class="ibox"></div>
+					<div class="ibox">
 						<div class="tabs-container p ">
 							<ul class="nav nav-tabs" role="tablist" id="TB09012S_Tab">
 								<li class=""><a class="nav-link active" data-toggle="tab" href="#TB09012S_tab-1" onclick="TB09012Sjs.setMainTab();">법인채무보증 및 채무인수약정 내역</a></li>
