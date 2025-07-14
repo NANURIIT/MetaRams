@@ -44,19 +44,8 @@ const TB09012Sjs = (function () {
 
   /* 셀렉트박스 세팅 */
   function loadSelectBoxContents() {
-    var item = "";
-    item += "K002";        // 
-    item += "/" + "K008";  // 
-    item += "/" + "K009";  // 
-    item += "/" + "K011";  // 
-    item += "/" + "K012";  // 
-    item += "/" + "K013";  // 
-    item += "/" + "K014";  // 
-    item += "/" + "K015";  // 
 
-  //  getSelectBoxList("TB09012S", item);
-
-   // selectBox = getSelectBoxList("TB09012S", "K002/K008/K009/K011/K012/K013/K014/K015", false);
+    selectBox = getSelectBoxList("TB09012S", "K002/K008/K009/K011/K012/K013/K014/K015", false);
 
     K002 =  selectBox.filter((item) => item.cmnsGrpCd === "K002");   
     K008 =  selectBox.filter((item) => item.cmnsGrpCd === "K008");   
