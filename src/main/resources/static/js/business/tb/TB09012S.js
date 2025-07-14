@@ -65,7 +65,8 @@ const TB09012Sjs = (function () {
       title: "Error!",
       text: msg,
       confirmButtonText: "확인",
-    });
+    });법인채무보증채무인수약정내역 
+	
   }
 
    /* Grid 셋팅 */
@@ -196,7 +197,7 @@ const TB09012Sjs = (function () {
     let arrPqGridObj = [
 		{ id: "TB09012S_gridCpdgList",  colModel: colCpdgList,  height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: true }, strNoRows: "데이터가 없습니다.", },
    		{ id: "TB09012S_gridTransList", colModel: colTransList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: true }, strNoRows: "데이터가 없습니다.", },
-   	    { id: "TB09012S_gridErrList",   colModel: colErrList,   height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: true }, strNoRows: "데이터가 없습니다.", },
+   	    { id: "TB09012S_gridErrList",   colModel: colErrList,   height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false}, strNoRows: "데이터가 없습니다.", },
     ];
 
     setPqGrid(arrPqGridObj);
