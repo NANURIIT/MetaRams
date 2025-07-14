@@ -12,7 +12,7 @@ const TB09012Sjs = (function () {
   let colCpdgList;    // Main내역 컬럼설정 List
   let colTransList;   // 전문전송내역 컬럼설정 List
   let colErrList;     // 오류통보내역 컬럼설정 List
-  let selectBox; // 공통코드 반환
+  let selectBox; 	  // 공통코드 반환
 
   //한국신용정보원 공통코드
   let K002 ;     //오류구분코드 공통코드List
@@ -54,9 +54,9 @@ const TB09012Sjs = (function () {
     item += "/" + "K014";  // 
     item += "/" + "K015";  // 
 
-    getSelectBoxList("TB09012S", item);
+  //  getSelectBoxList("TB09012S", item);
 
-    selectBox = getSelectBoxList("TB09012S", "K002/K008/K009/K011/K012/K013/K014/K015", false);
+   // selectBox = getSelectBoxList("TB09012S", "K002/K008/K009/K011/K012/K013/K014/K015", false);
 
     K002 =  selectBox.filter((item) => item.cmnsGrpCd === "K002");   
     K008 =  selectBox.filter((item) => item.cmnsGrpCd === "K008");   
@@ -78,9 +78,6 @@ const TB09012Sjs = (function () {
       confirmButtonText: "확인",
     });
   }
-
-  
-
 
    /* Grid 셋팅 */
   function setArrPqGridObj() {
@@ -653,7 +650,7 @@ const TB09012Sjs = (function () {
 
 			if (data.length == 0) {
 		
-          //errorMsg("데이터가 없습니다.");
+       			   //errorMsg("데이터가 없습니다.");
 				}
                 //
 				arrPqGridObjTransList.setData(data);
@@ -709,26 +706,15 @@ const TB09012Sjs = (function () {
 		}
 	}
 
-  
-	// Mian내역 탭 클릭
-	function setMainTab() {
-
-        $('#TB09012S_Tab a[href="#TB09012S_tab-1"]').tab('show');
-		setTimeout(() => arrPqGridObjCpdgList.refresh(), 1);
-	}
-
-
 	// 전문송신내역 탭 클릭
 	function setTranTab() {
 
-       $('#TB09012S_Tab a[href="#TB09012S_tab-2"]').tab('show');
 		setTimeout(() => arrPqGridObjTransList.refresh(), 1);
 	}
 
 	// 오류통보내역 탭 클릭
 	function setErrTab() {
 
-        $('#TB09012S_Tab a[href="#TB09012S_tab-3"]').tab('show');
 		setTimeout(() => arrPqGridObjErrList.refresh(), 1);
 	}
 
@@ -753,7 +739,6 @@ const TB09012Sjs = (function () {
   return {
     cpdgSearch: cpdgSearch,
     reset_TB09012S: reset_TB09012S,
-	setMainTab :setMainTab,
 	setTranTab:setTranTab,
     setErrTab:setErrTab,
     exDnLoad: exDnLoad,
