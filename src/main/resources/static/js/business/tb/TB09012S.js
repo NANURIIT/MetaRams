@@ -389,7 +389,7 @@ const TB09012Sjs = (function () {
 
 		$("#TB09012S_gridCpdgList").pqGrid("refreshDataAndView");
 
-		// 등록 (IBIMS754B) 호출 
+		// 법인채무보증등 집중내역 등록 (IBIMS754B) 호출 
 		saveCpdgList(ibims754bVOList);
 	}
 
@@ -435,7 +435,7 @@ const TB09012Sjs = (function () {
 
 		$("#TB09012S_TranList").pqGrid("refreshDataAndView");
 
-		//등록 (IBIMS755B) 호출
+		//전문송신내역 등록  (IBIMS755B) 호출
 		saveTransList(ibims754bVOList);
 	}
 
@@ -495,7 +495,7 @@ const TB09012Sjs = (function () {
 
 		$("#TB09012S_gridErrList").pqGrid("refreshDataAndView");
         
-		//등록 (IBIMS756B) 호출
+		// 오류통보내역 등록 (IBIMS756B) 호출
 		saveErrList(ibims754bVOList);
 
 
@@ -638,10 +638,8 @@ const TB09012Sjs = (function () {
 // 전문송신내역 조회
 	 function cpdgTransSearch() {
 
-
       var paramData = {
         rgstDt: $("#TB09012S_stdrDt").val().replaceAll("-", ""),
-      //	jobDcd: $("#TB09012S_K013").val(),
         scrnDcd: "TB09012S",
       };
 
@@ -675,7 +673,6 @@ const TB09012Sjs = (function () {
 
 		var paramData = {
 			rgstDt: $("#TB09012S_stdrDt").val().replaceAll("-", ""),
-		//	jobDcd: $("#TB09012S_K013").val(),
 			scrnDcd: "TB09012S",
 		};
 
@@ -685,7 +682,7 @@ const TB09012Sjs = (function () {
 			data: paramData,
 			dataType: "json",
 			success: function(data) {
-		console.log("data",data);
+	
 				if (data.length > 0) {
 						//조회 결과 
 						arrPqGridObjErrList.setData(data);
