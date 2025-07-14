@@ -109,7 +109,7 @@ const TB09014Sjs = (function() {
 
 		let arrPqGridObj = [
 			{ id: "TB09014S_mrtgFcsList", colModel: col_mrtgFcsList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false }, strNoRows: "데이터가 없습니다.", },
-			{ id: "TB09014S_msgTranList", colModel: col_msgTranList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false }, strNoRows: "데이터가 없습니다.", },
+			{ id: "TB09014S_msgTranList", colModel: col_msgTranList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: true }, strNoRows: "데이터가 없습니다.", },
 			{ id: "TB09014S_errDpchList", colModel: col_errDpchList, height: 450, maxHeight: 450, numberCell: { show: true }, editable: true, scrollModel: { autoFit: false }, strNoRows: "데이터가 없습니다.", },
 		];
 
