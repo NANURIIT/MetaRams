@@ -37,6 +37,8 @@ dependencies {
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	
+	implementation 'com.oracle.database.jdbc:ojdbc8:19.3.0.0'
+	
 	implementation 'org.springframework.security:spring-security-crypto:5.5.0'
 	
 	// implementation 'com.google.guava:guava:30.1.1-jre'
@@ -76,7 +78,8 @@ dependencies {
 	implementation 'org.projectlombok:lombok:1.18.26'/* Log4jdbc */
 	// implementation 'org.hibernate:hibernate-core:5.6.12.Final' // Hibernate Core
     // implementation 'org.hibernate:hibernate-entitymanager:5.6.12.Final' // Entity Manager
-	implementation files('src/main/build/libs/tibero6-jdbc.jar')		/* tibero */
+	//implementation files('src/main/build/libs/tibero6-jdbc.jar')		/* tibero */
+	implementation files('src/main/build/libs/ojdbc8.jar')
 	
 	compileOnly 'org.projectlombok:lombok'
 	compileOnly 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
