@@ -4,14 +4,16 @@
 
   <!-- 입금증등록내역 등록순번 채번 -->
   <select id="getRgstSeq" parameterType="String" resultType="int">
+  	/* IBIMS435BMapper.getRgstSeq */
     SELECT NVL(MAX(RGST_SEQ) + 1, 1)
-      FROM IBIMS435B
+      FROM IBIMS435B /* 입금내역 */
      WHERE 1=1
        AND RCTM_DT = #{rctmDt}
   </select>
 
   <!-- 입금내역조회 -->
   <select id="inqIBIMS435B" parameterType="String" resultType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
+  	/* IBIMS435BMapper.inqIBIMS435B */
     SELECT A.RCTM_DT              /* 입금일자 */
          , A.RGST_SEQ             /* 등록순번 */
          , A.RGST_BDCD            /* 등록부점코드 */
@@ -31,15 +33,16 @@
          , A.HND_TMNL_NO          /* 조작단말기번호 */
          , A.HND_TR_ID            /* 조작거래ID */
          , A.GUID                 /* GUID */
-      FROM IBIMS435B A
+      FROM IBIMS435B /* 입금내역 */ A
      WHERE 1=1
        AND A.RCTM_DT = #{rctmDt}
   </select>
 
   <!-- 납부예정금액 체크 -->
   <select id="inqPmntPrarAmt" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO" resultType="BigDecimal">
+  	/* IBIMS435BMapper.inqPmntPrarAmt */
     SELECT NVL(PMNT_PRAR_AMT, 0)        /* 납부예정금액 */
-      FROM IBIMS435B
+      FROM IBIMS435B /* 입금내역 */
      WHERE 1=1
        AND RCTM_DT = #{rctmDt} 
        AND RGST_SEQ = #{rgstSeq}
@@ -47,7 +50,8 @@
 
   <!-- 입금증등록내역 등록 -->
   <insert id="insertIBIMS435B" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
-    INSERT INTO IBIMS435B (
+  	/* IBIMS435BMapper.insertIBIMS435B */
+    INSERT INTO IBIMS435B /* 입금내역 */ (
         RCTM_DT
       , RGST_SEQ
       , RGST_BDCD
@@ -85,7 +89,8 @@
 
   <!-- 입금증등록내역 수정 -->
   <update id="updateIBIMS435B" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
-    UPDATE IBIMS435B
+  	/* IBIMS435BMapper.updateIBIMS435B */
+    UPDATE IBIMS435B /* 입금내역 */
        SET HND_DETL_DTM = SYSDATE
          , HND_EMPNO = #{hndEmpno}
          , HND_TMNL_NO = #{hndTmnlNo}
@@ -113,7 +118,8 @@
 
   <!-- 입금증등록내역 납부예정금액 업데이트 -->
   <update id="updatePmntPrarAmt" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
-    UPDATE IBIMS435B
+  	/* IBIMS435BMapper.updatePmntPrarAmt */
+    UPDATE IBIMS435B /* 입금내역 */
        SET PMNT_PRAR_AMT = #{pmntPrarAmt}
      WHERE 1=1
        AND RCTM_DT = #{rctmDt}
@@ -122,8 +128,9 @@
 
   <!-- 입금증등록내역 삭제 -->
   <delete id="deleteIBIMS435B" parameterType="com.nanuri.rams.business.common.dto.IBIMS435BDTO">
+  	/* IBIMS435BMapper.deleteIBIMS435B */
     DELETE 
-      FROM IBIMS435B
+      FROM IBIMS435B /* 입금내역 */
      WHERE 1=1
        AND RCTM_DT = #{rctmDt} 
        AND RGST_SEQ = #{rgstSeq}

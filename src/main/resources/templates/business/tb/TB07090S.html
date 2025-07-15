@@ -133,16 +133,15 @@
 						<!-- 입금증등록내역 -->
 						<div class="ibox">
 							<div class="ibox-title">
-								<h5>▶ 입금증등록내역</h5>
+								<h5>▶ 입금증 등록내역</h5>
 								<div class="ibox-tools">
-									<!-- <button class="btn btn-default btn-xs" type="button" onclick=""><i class="fa fa-arrow-up"></i></button> -->
-									<button class="btn btn-default btn-xs" type="button" onclick="pqGridAddNewRow($('#TB07090S_colModel2'));">
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07090Sjs.colModel2_addNewRow($('#TB07090S_colModel2'));">
 										<i class="fa fa-plus"></i>&nbsp;행추가
 									</button>
-									<button class="btn btn-default btn-xs" type="button" onclick="TB07090Sjs.TB07090S_pqGridDeleteRow($('#TB07090S_colModel2'));">
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07090Sjs.colModel2_deleteRow($('#TB07090S_colModel2'));">
 										<i class="fa fa-minus"></i>&nbsp;행삭제
 									</button>
-									<button class="btn btn-success btn-xs" id="" onclick="TB07090Sjs.saveRctmDtlsRgst();">
+									<button class="btn btn-success btn-xs" id="" onclick="TB07090Sjs.savecolModel2($('#TB07090S_colModel2'));">
 										<i class="fa fa-save"></i>&nbsp;저장
 									</button>
 								</div>
@@ -156,13 +155,13 @@
 							<div class="ibox-title">
 								<h5>▶ 입금내역매핑</h5>
 								<div class="ibox-tools">
-									<button class="btn btn-default btn-xs" type="button" onclick="TB07090Sjs.TB07090S_addRow();">
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07090Sjs.colModel3_addNewRow($('#TB07090S_colModel3'));">
 										<i class="fa fa-plus"></i>&nbsp;행추가
 									</button>
-									<button class="btn btn-default btn-xs" type="button" onclick="TB07090Sjs.TB07090S_pqGridDeleteRow($('#TB07090S_colModel3'));">
+									<button class="btn btn-default btn-xs" type="button" onclick="TB07090Sjs.colModel3_deleteRow($('#TB07090S_colModel3'));">
 										<i class="fa fa-minus"></i>&nbsp;행삭제
 									</button>
-									<button class="btn btn-success btn-xs" id="" onclick="TB07090Sjs.saveRctmDtlsMapping();">
+									<button class="btn btn-success btn-xs" id="" onclick="TB07090Sjs.colModel3_save($('#TB07090S_colModel3'));">
 										<i class="fa fa-save"></i>&nbsp;저장
 									</button>
 								</div>

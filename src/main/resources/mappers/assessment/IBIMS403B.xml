@@ -3,35 +3,37 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS403BMapper">
 
     <select id="selectIBIMS403BList" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
-           SELECT
-                  PRDT_CD                                 /*상품코드 */
-                , EXC_SN                                  /*실행일련번호 */
-                , #{trSn} AS HGRK_TR_SN                   /*사거래일련번호 */
-                , TR_SN                                   /*거래일련번호 */
-                , SCX_DCD                                 /*일정구분코드 */
-                , RDMP_TMRD                               /*상환회차 */
-                , PRAR_DT                                 /*예정일자 */
-                , PRAR_PRNA                               /*예정원금 */
-                , STRT_DT                                 /*시작일자 */
-                , END_DT                                  /*종료일자 */
-                , RDMP_PRAR_INTR                          /*상환예정이자 */
-                , PRCS_CPLT_YN                            /*처리완료여부 */
-                , PRCS_DT                                 /*처리일자 */
-                , PRCS_AMT                                /*처리금액 */
-                , PRCS_INTR_AMT                           /*처리이자금액 */
-                , APLY_IRT                                /*적용이율 */
-                , OVDU_INTR_RT                            /*연체이자율 */
-                , TRCH_DCD                                /*트렌치구분코드 */
-                , HND_DETL_DTM                            /*조작상세일시 */
-                , HND_EMPNO                               /*조작사원번호 */
-                , HND_TMNL_NO                             /*조작단말기번호 */
-                , HND_TR_ID                               /*조작거래id */
-                , GUID                                    /*guid */
-             FROM IBIMS403B
-            WHERE PRDT_CD = #{prdtCd}        /* 상품코드 */
-              AND EXC_SN  = #{excSn}         /* 실행일련번호 */
+    	  /* IBIMS403BMapper.selectIBIMS403BList */
+          SELECT
+                 PRDT_CD                                 /*상품코드 */
+               , EXC_SN                                  /*실행일련번호 */
+               , #{trSn} AS HGRK_TR_SN                   /*사거래일련번호 */
+               , TR_SN                                   /*거래일련번호 */
+               , SCX_DCD                                 /*일정구분코드 */
+               , RDMP_TMRD                               /*상환회차 */
+               , PRAR_DT                                 /*예정일자 */
+               , PRAR_PRNA                               /*예정원금 */
+               , STRT_DT                                 /*시작일자 */
+               , END_DT                                  /*종료일자 */
+               , RDMP_PRAR_INTR                          /*상환예정이자 */
+               , PRCS_CPLT_YN                            /*처리완료여부 */
+               , PRCS_DT                                 /*처리일자 */
+               , PRCS_AMT                                /*처리금액 */
+               , PRCS_INTR_AMT                           /*처리이자금액 */
+               , APLY_IRT                                /*적용이율 */
+               , OVDU_INTR_RT                            /*연체이자율 */
+               , TRCH_DCD                                /*트렌치구분코드 */
+               , HND_DETL_DTM                            /*조작상세일시 */
+               , HND_EMPNO                               /*조작사원번호 */
+               , HND_TMNL_NO                             /*조작단말기번호 */
+               , HND_TR_ID                               /*조작거래id */
+               , GUID                                    /*guid */
+            FROM IBIMS403B /* 여신스케쥴기본 */
+           WHERE PRDT_CD = #{prdtCd}        /* 상품코드 */
+             AND EXC_SN  = #{excSn}         /* 실행일련번호 */
     </select>
     <select id="getExcSn" resultType="long" parameterType="string">
+    	/* IBIMS403BMapper.getExcSn */
 		SELECT 
 		       NVL(MAX(A.EXC_SN),0)+1 AS EXC_SN				/* 실행일련번호 채번 */
 		  FROM IBIMS403B A 	/* 여신스케쥴기본 */
@@ -41,7 +43,8 @@
     
     <!-- 여신스케쥴기본등록  -->
     <insert id="saveRdmpInfo" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
-        INSERT INTO IBIMS403B
+    	/* IBIMS403BMapper.saveRdmpInfo */
+        INSERT INTO IBIMS403B /* 여신스케쥴기본 */
                (
                   PRDT_CD                                 /*상품코드 */
                 , EXC_SN                                  /*실행일련번호 */ 
@@ -98,6 +101,7 @@
     </insert>
 
     <select id="getRdmpList" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
+    	/* IBIMS403BMapper.getRdmpList */
 		SELECT C.PRDT_CD            /* 상품코드 */
 		     , C.EXC_SN             /* 실행일련번호 */
 		     , A.PRAR_DT  			/* 상환예정일자 */
@@ -146,7 +150,8 @@
     </select>
 
     <select id="getRdmpDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
-  SELECT  
+    	/* IBIMS403BMapper.getRdmpDetail */
+  		SELECT  
 	           A.PRDT_CD                    /* 상품코드 */
              , A.EXC_SN                     /* 실행일련번호 */
              , A.PRAR_DT                     /* 예정일자 */
@@ -351,8 +356,9 @@
     </select>
 
     <update id="saveRdpm" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
+    	/* IBIMS403BMapper.saveRdpm */
         <foreach collection="list" item="item" separator=";">        
-          UPDATE IBIMS403B
+          UPDATE IBIMS403B /* 여신스케쥴기본 */
              SET PRCS_CPLT_YN 	= #{item.prcsCpltYn} 		/* 처리완료여부 */
                , PRCS_DT 	     = #{item.prcsDt} 			/* 처리일자 */
                , PRCS_AMT 		= #{item.prcsAmt} 			/* 처리금액 */
@@ -370,7 +376,8 @@
     </update>
 
     <update id="saveIBIMS403B" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
-          UPDATE IBIMS403B
+    	  /* IBIMS403BMapper.saveIBIMS403B */
+          UPDATE IBIMS403B /* 여신스케쥴기본 */
              SET PRCS_CPLT_YN 	= #{prcsCpltYn} 		                  /* 처리완료여부 */
                , PRCS_DT 	      = #{prcsDt} 			                    /* 처리일자 */
                , PRCS_AMT 		  = #{prcsAmt} 			                    /* 처리금액 */
@@ -389,6 +396,7 @@
 
      <!-- TB06015P 원금상환 계획 정보 조회 -->
      <select id='getRdmpSchedule' parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+     	  /* IBIMS403BMapper.getRdmpSchedule */
           SELECT A.PRDT_CD                /* 종목코드 */
                , A.RDMP_TMRD              /* 상환회차 */
                , A.PRAR_DT                /* 예정일자 */
@@ -401,7 +409,7 @@
                , A.PRCS_CPLT_YN           /* 처리여부 */
                , A.PRCS_DT                /* 처리일시 */
                , A.EXC_SN                 /* 실행일련번호 */
-            FROM IBIMS403B A
+            FROM IBIMS403B /* 여신스케쥴기본 */ A
            WHERE PRDT_CD = #{prdtCd}
           <if test="excSn != null and excSn != ''">
              AND EXC_SN = #{excSn}
@@ -412,6 +420,7 @@
 
      <!-- TB06015P  이자상환 계획 정보 조회 -->
      <select id='getIntrSchedule' parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+     	  /* IBIMS403BMapper.getIntrSchedule */
           SELECT A.PRDT_CD                /* 종목코드 */
                , A.RDMP_TMRD              /* 상환회차 */
                , A.PRAR_DT                /* 예정일자 */
@@ -424,7 +433,7 @@
                , A.PRCS_CPLT_YN           /* 처리여부 */
                , A.PRCS_DT                /* 처리일시 */
                , A.EXC_SN                 /* 실행일련번호 */
-            FROM IBIMS403B A
+            FROM IBIMS403B /* 여신스케쥴기본 */ A
            WHERE PRDT_CD = #{prdtCd}
           <if test="excSn != null and excSn != ''">
              AND EXC_SN = #{excSn}
@@ -435,6 +444,7 @@
 
      <!-- TB07050S  실행스케줄 조회 -->
      <select id='getExcSchedule' parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+     	  /* IBIMS403BMapper.getExcSchedule */
           SELECT PRDT_CD                /* 종목코드 */
                , RDMP_TMRD              /* 상환회차 */
                , PRAR_DT                /* 예정일자 */
@@ -442,7 +452,7 @@
                , PRCS_CPLT_YN           /* 처리여부 */
                , PRCS_DT                /* 처리일시 */
                , EXC_SN                 /* 실행일련번호 */
-            FROM IBIMS403B A
+            FROM IBIMS403B /* 여신스케쥴기본 */ A
            WHERE PRDT_CD = #{prdtCd}
              AND SCX_DCD  = '01'
            ORDER BY PRAR_DT DESC
@@ -450,7 +460,8 @@
 
      <!-- 여신스케쥴기본등록   -->
      <insert id="insertCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
-        INSERT INTO IBIMS403B
+     	/* IBIMS403BMapper.insertCrdlSchBss */
+        INSERT INTO IBIMS403B /* 여신스케쥴기본 */
                (
                   PRDT_CD                             /* 상품코드 */
                 , EXC_SN                              /* 실행일련번호 */
@@ -506,7 +517,8 @@
 
      <!-- 원리금  스케줄관리 업데이트 -->
      <update  id="updateCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
-          UPDATE IBIMS403B
+     	  /* IBIMS403BMapper.updateCrdlSchBss */
+          UPDATE IBIMS403B /* 여신스케쥴기본 */
              SET PRAR_DT           = #{prarDt}                     /* 예정일자 */
                , TRGT_AMT          = #{trgtAmt}                    /* 대상금액 */ 
                , PRAR_PRNA         = #{prarPrna}                   /* 예정원금 */
@@ -530,8 +542,9 @@
 
      <!-- 원리금  스케줄관리 실행일련번호 조회 -->
      <select id="srchExcSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="java.util.HashMap">
+     	  /* IBIMS403BMapper.srchExcSn */
           SELECT DISTINCT(EXC_SN)              /* 실행일련번호 */
-            FROM IBIMS403B
+            FROM IBIMS403B /* 여신스케쥴기본 */
            WHERE PRDT_CD = #{prdtCd}           /* 종목코드 */
            <if test="scxDcd != null"> 
              AND SCX_DCD = #{scxDcd}           /* 일정구분코드 */
@@ -542,8 +555,9 @@
 
      <!-- 원리금  스케줄관리 삭제 -->
      <delete  id="deleteCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+     	  /* IBIMS403BMapper.deleteCrdlSchBss */
           DELETE 
-            FROM IBIMS403B
+            FROM IBIMS403B /* 여신스케쥴기본 */
            WHERE PRDT_CD   = #{prdtCd}     /* 종목코드 */
              AND RDMP_TMRD = #{rdmpTmrd}   /* 상환회차 */
              AND SCX_DCD   = #{scxDcd}     /* 일정구분코드 */
@@ -553,16 +567,18 @@
 
      <!-- 원리금  스케줄관리 삭제 -->
      <delete  id="deleteIBIMS403B" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
+     	  /* IBIMS403BMapper.deleteIBIMS403B */
           DELETE 
-            FROM IBIMS403B
+            FROM IBIMS403B /* 여신스케쥴기본 */
            WHERE PRDT_CD   = #{prdtCd}     /* 종목코드 */
              AND EXC_SN    = #{excSn}      /* 실행일련번호 */
      </delete>
      
      <!-- 원리금  스케줄관리 회차 채번 -->
      <select id="getPaiSchTmrd" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="String">
+     	/* IBIMS403BMapper.getPaiSchTmrd */
         SELECT TO_CHAR(MAX(TO_NUMBER(NVL(RDMP_TMRD, 0))) + 1 ) AS rdmpTmrd /* 상환회차 */
-          FROM IBIMS403B
+          FROM IBIMS403B /* 여신스케쥴기본 */
          WHERE PRDT_CD = #{prdtCd}     /* 종목코드 */
            AND SCX_DCD = #{scxDcd}     /* 일정구분코드 */
            AND EXC_SN  = #{excSn}      /* 실행일련번호 */
@@ -570,86 +586,91 @@
 
      <!-- 실행  스케줄관리 실행일련번호 채번 -->
      <select id="getExcSchExcSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="long">
+     	/* IBIMS403BMapper.getExcSchExcSn */
         SELECT NVL(MAX(NVL(IFNULL(EXC_SN, 0), 0)), 0) + 1 AS EXC_SN
-          FROM IBIMS403B
+          FROM IBIMS403B /* 여신스케쥴기본 */
          WHERE PRDT_CD  = #{prdtCd}
            AND SCX_DCD  = #{scxDcd}
      </select>
 
     <!--입금내역관리 상환예정내역 조회-->
     <select id="getRdmpPrarDtls" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
-      SELECT CASE
-             WHEN TT1.SCX_DCD = '02'
-             THEN TT1.PRAR_PRNA
-             ELSE TT1.RDMP_PRAR_INTR
-              END                   AS PMNT_PRAR_AMT			  /* 납부예정금액 */
-           , TT1.PRAR_DT 				    AS PRAR_DT              /* 상환예정일자 */
-           , TT2.DEAL_NO 				    AS DEAL_NO              /* 딜번호 */
-           , TT1.PRDT_CD            AS PRDT_CD              /* 상품코드 */ 
-           , TT1.EXC_SN             AS EXC_SN               /* 실행일련번호 */
-           , TT1.TR_SN              AS TR_SN                /* 거래일련번호 */
-           , TT1.RDMP_TMRD          AS RDMP_TMRD            /* 상환회차 */
-           , 0                      AS FEE_SN               /* 수수료일련번호 */
-           , TT2.MNGM_BDCD 			                            /* 관리부서 */
-           , TT1.SCX_DCD 				                            /* 상환구분 */
-           , TT2.TR_CRRY_CD 			                          /* 통화코드 */
-        FROM IBIMS403B TT1				                          /* 원리금상환스케줄 */
-   LEFT JOIN IBIMS201B TT2
-          ON TT1.PRDT_CD = TT2.PRDT_CD
-       WHERE 1=1
-         AND TT2.LAST_YN = 'Y'
-         AND (TT1.PRCS_CPLT_YN != 'Y' OR TT1.PRCS_CPLT_YN IS NULL)
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
-         AND TT2.DEAL_NO  = #{dealNo}
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-         AND TT2.MNGM_BDCD = #{dprtCd}
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
-         AND TT1.PRAR_DT &gt;= #{fromDt} 
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
-         AND TT1.PRAR_DT &lt;= #{toDt} 
-         </if>
-       UNION ALL
-      SELECT BT2.FEE_AMT				  AS PMNT_PRAR_AMT	        /* 납부예정금액 */
-           , BT2.PRAR_DT          AS PRAR_DT                /* 상환예정일자 */
-           , BT3.DEAL_NO          AS DEAL_NO                /* 딜번호 */
-           , BT2.PRDT_CD          AS PRDT_CD                /* 상품코드 */ 
-           , BT1.EXC_SN           AS EXC_SN                 /* 수수료일련번호 */
-           , BT1.TR_SN            AS TR_SN                  /* 거래일련번호 */
-           , '0'                  AS RDMP_TMRD              /* 상환회차 */
-           , BT1.FEE_SN           AS FEE_SN                 /* 수수료일련번호 */
-           , BT3.MNGM_BDCD                                  /* 관리부서 */
-           , '03'					        AS SCX_DCD                /* 상환구분 */
-           , BT3.TR_CRRY_CD                                 /* 통화코드 */
-        FROM IBIMS420B BT1 
-  INNER JOIN IBIMS348B BT2                                  /* 수수료상환스케줄 */
-          ON BT1.PRDT_CD = BT2.PRDT_CD
-         AND BT1.FEE_SN = BT2.FEE_SN
-   LEFT JOIN IBIMS201B BT3
-          ON BT1.PRDT_CD = BT3.PRDT_CD
-       WHERE 1=1
-         AND BT3.LAST_YN = 'Y'
-         AND (BT2.PRCS_CPLT_YN != 'Y' OR BT2.PRCS_CPLT_YN IS NULL)
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
-         AND BT3.DEAL_NO  = #{dealNo}
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
-         AND BT3.MNGM_BDCD = #{dprtCd}
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
-         AND BT2.PRAR_DT &gt;= #{fromDt} 
-         </if>
-         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
-         AND BT2.PRAR_DT &lt;= #{toDt} 
-         </if>
-       ORDER BY PRAR_DT
+    	  /* IBIMS403BMapper.getRdmpPrarDtls */
+	      SELECT CASE
+	             WHEN TT1.SCX_DCD = '02'
+	             THEN TT1.PRAR_PRNA
+	             ELSE TT1.RDMP_PRAR_INTR
+	              END                   AS PMNT_PRAR_AMT			  /* 납부예정금액 */
+	           , tt3.DEAL_RCTM_AMT   
+	           , TT1.PRAR_DT 				    AS PRAR_DT              /* 상환예정일자 */
+	           , TT2.DEAL_NO 				    AS DEAL_NO              /* 딜번호 */
+	           , TT1.PRDT_CD            AS PRDT_CD              /* 상품코드 */ 
+	           , TT1.EXC_SN             AS EXC_SN               /* 실행일련번호 */
+	           , TT1.TR_SN              AS TR_SN                /* 거래일련번호 */
+	           , TT1.RDMP_TMRD          AS RDMP_TMRD            /* 상환회차 */
+	           , 0                      AS FEE_SN               /* 수수료일련번호 */
+	           , TT2.MNGM_BDCD 			                            /* 관리부서 */
+	           , TT1.SCX_DCD 				                            /* 상환구분 */
+	           , TT2.TR_CRRY_CD 			                          /* 통화코드 */
+	        FROM IBIMS403B TT1	/* 여신스케쥴기본 */
+	   LEFT JOIN IBIMS201B TT2  /* 딜승인기본 */ ON TT1.PRDT_CD = TT2.PRDT_CD
+	   LEFT JOIN ibims430b tt3 ON tt3.PRDT_CD = tt1.PRDT_CD AND tt3.SCX_DCD = tt1.SCX_DCD AND tt3.PRAR_DT = tt1.PRAR_DT
+	       WHERE 1=1
+	         AND TT2.LAST_YN = 'Y'
+	         AND (TT1.PRCS_CPLT_YN != 'Y' OR TT1.PRCS_CPLT_YN IS NULL)
+	         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+	         AND TT2.DEAL_NO  = #{dealNo}
+	         </if>
+	         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+	         AND TT2.MNGM_BDCD = #{dprtCd}
+	         </if>
+	         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
+	         AND TT1.PRAR_DT &gt;= #{fromDt} 
+	         </if>
+	         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
+	         AND TT1.PRAR_DT &lt;= #{toDt} 
+	         </if>
+	       UNION ALL
+	      SELECT BT2.FEE_AMT				  AS PMNT_PRAR_AMT	        /* 납부예정금액 */
+	      	   , 0
+	           , BT2.PRAR_DT          AS PRAR_DT                /* 상환예정일자 */
+	           , BT3.DEAL_NO          AS DEAL_NO                /* 딜번호 */
+	           , BT2.PRDT_CD          AS PRDT_CD                /* 상품코드 */ 
+	           , BT1.EXC_SN           AS EXC_SN                 /* 수수료일련번호 */
+	           , BT1.TR_SN            AS TR_SN                  /* 거래일련번호 */
+	           , '0'                  AS RDMP_TMRD              /* 상환회차 */
+	           , BT1.FEE_SN           AS FEE_SN                 /* 수수료일련번호 */
+	           , BT3.MNGM_BDCD                                  /* 관리부서 */
+	           , '03'					        AS SCX_DCD                /* 상환구분 */
+	           , BT3.TR_CRRY_CD                                 /* 통화코드 */
+	        FROM IBIMS420B BT1 /* 딜수수료수납내역 */
+	  INNER JOIN IBIMS348B BT2 /* 딜승인수수료스케쥴기본 */
+	          ON BT1.PRDT_CD = BT2.PRDT_CD
+	         AND BT1.FEE_SN = BT2.FEE_SN
+	   LEFT JOIN IBIMS201B BT3
+	          ON BT1.PRDT_CD = BT3.PRDT_CD
+	       WHERE 1=1
+	         AND BT3.LAST_YN = 'Y'
+	         AND (BT2.PRCS_CPLT_YN != 'Y' OR BT2.PRCS_CPLT_YN IS NULL)
+	         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealNo)">
+	         AND BT3.DEAL_NO  = #{dealNo}
+	         </if>
+	         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dprtCd)">
+	         AND BT3.MNGM_BDCD = #{dprtCd}
+	         </if>
+	         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fromDt)">
+	         AND BT2.PRAR_DT &gt;= #{fromDt} 
+	         </if>
+	         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(toDt)">
+	         AND BT2.PRAR_DT &lt;= #{toDt} 
+	         </if>
+	       ORDER BY PRAR_DT
     </select>
 
     <!--상환대상내역 조회-->
     <select id="rdmpTrgtDtlsInq" parameterType="com.nanuri.rams.business.common.vo.TB09070SVO" resultType="com.nanuri.rams.business.common.vo.TB09070SVO$RdmpTrgtDtlsVO">
-      SELECT DISTINCT   A.PRAR_PRNA                     /*상환예정원금*/
+    	/* IBIMS403BMapper.rdmpTrgtDtlsInq */
+      	SELECT DISTINCT   A.PRAR_PRNA                     /*상환예정원금*/
                       , A.RDMP_PRAR_INTR                /*상환예정이자*/      
                       , A.PMNT_PRAR_AMT                 /*납부예정금액*/		
                       , CASE WHEN LENGTH(A.PRAR_DT)=8 
@@ -680,7 +701,7 @@
                       SUM(COALESCE(A.PRAR_PRNA, 0)) AS PRAR_PRNA,
                       SUM(COALESCE(A.RDMP_PRAR_INTR, 0)) AS RDMP_PRAR_INTR,
                       (SUM(COALESCE(A.PRAR_PRNA, 0)) + SUM(COALESCE(A.RDMP_PRAR_INTR, 0))) AS PMNT_PRAR_AMT
-                FROM IBIMS403B A
+                FROM IBIMS403B /* 여신스케쥴기본 */ A
                 WHERE (A.PRCS_CPLT_YN &lt;&gt; 'Y' OR A.PRCS_CPLT_YN IS NULL)
                 GROUP BY A.PRAR_DT, A.PRDT_CD, A.EXC_SN, A.PRCS_CPLT_YN) A
           JOIN IBIMS401B B ON B.PRDT_CD = A.PRDT_CD
@@ -713,7 +734,8 @@
 
     <!--중도상환 발생 시 새로운 스케줄 생성-->
     <insert id="rgstNewScdl" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
-      INSERT INTO IBIMS403B
+    	/* IBIMS403BMapper.rgstNewScdl */
+      	INSERT INTO IBIMS403B /* 여신스케쥴기본 */
               (
                   PRDT_CD                                 /*상품코드 */
                 , EXC_SN                                  /*실행일련번호 */
@@ -768,36 +790,38 @@
     </insert>
 
     <select id="getBfScdhl" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO" resultType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
-      SELECT 
-          PRDT_CD,
-          EXC_SN,
-          SCX_DCD,
-          RDMP_TMRD,
-          PRAR_DT,
-          TRGT_AMT,
-          PRAR_PRNA,
-          STRT_DT,
-          END_DT,
-          RDMP_PRAR_INTR,
-          'N' AS PRCS_CPLT_YN,
-          NULL AS PRCS_DT,
-          NULL AS PRCS_AMT,
-          NULL AS PRCS_INTR_AMT,
-          ACTS_CD,
-          APLY_IRT,
-          OVDU_INTR_RT,
-          TRCH_DCD,
-          TR_SN,
-          #{hndEmpno} AS HND_EMPNO
-      FROM IBIMS403B 
-      WHERE PRDT_CD = #{prdtCd}
-      AND EXC_SN = #{excSn}
-      AND TR_SN = #{hgrkTrSn}
+    	  /* IBIMS403BMapper.getBfScdhl */
+	      SELECT 
+	          PRDT_CD,
+	          EXC_SN,
+	          SCX_DCD,
+	          RDMP_TMRD,
+	          PRAR_DT,
+	          TRGT_AMT,
+	          PRAR_PRNA,
+	          STRT_DT,
+	          END_DT,
+	          RDMP_PRAR_INTR,
+	          'N' AS PRCS_CPLT_YN,
+	          NULL AS PRCS_DT,
+	          NULL AS PRCS_AMT,
+	          NULL AS PRCS_INTR_AMT,
+	          ACTS_CD,
+	          APLY_IRT,
+	          OVDU_INTR_RT,
+	          TRCH_DCD,
+	          TR_SN,
+	          #{hndEmpno} AS HND_EMPNO
+	      FROM IBIMS403B /* 여신스케쥴기본 */ 
+	      WHERE PRDT_CD = #{prdtCd}
+	      AND EXC_SN = #{excSn}
+	      AND TR_SN = #{hgrkTrSn}
     </select>
 
     <delete  id="deleteBfIBIMS403B" parameterType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
+    	  /* IBIMS403BMapper.deleteBfIBIMS403B */
           DELETE 
-            FROM IBIMS403B
+            FROM IBIMS403B /* 여신스케쥴기본 */
            WHERE PRDT_CD   = #{prdtCd}     /* 종목코드 */
              AND EXC_SN    = #{excSn}      /* 실행일련번호 */
              AND TR_SN     = #{hgrkTrSn}

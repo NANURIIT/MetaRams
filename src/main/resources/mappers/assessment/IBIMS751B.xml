@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS751BMapper">
+
+<!-- 
+ * 한국신용정보원 - 신공공여정보
+ * 2025.07.08 ejchoi
+ -->
+	<select id="getCrdtGrntFcsList" resultType="com.nanuri.rams.business.common.vo.IBIMS751BVO">
+		/* IBIMS751BMapper.getCrdtGrntFcsList */
+		SELECT CRDT_GRNT_FCS_SN /*신용공여집중일련번호 */
+		     , ERR_DCD /*오류코드(K002) */
+		     , JOB_DCD /*업무구분(K013) */
+		     , PRCS_DCD /*처리구분(K009) */
+		     , RGST_DT /*등록일자 */
+		     , CHNG_DT /*변경일자 */
+		     , BRWR_DCD /*차주구분(K008) */
+		     , CRNO /*법인등록번호 */
+		     , BZNO /*사업자번호 */
+		     , EPRZ_NM /*상호명 */
+		     , IND_TYP_CD /*업종코드 */
+		     , ACTS_DCD /*계정과목(K007) */
+		     , CRDT_GRNT_BLCE /*신용공여잔액 */
+		     , TR_NO /*거래번호 */
+		     , PRDT_NM /*상품명 */
+		     , EXP_DT /*만기일자 */
+		     , INTRT /*금리 */
+		     , RDMP_WY_DCD /*상환방식(K003) */
+		     , DFR_MNUM /*거치개월 */
+		     , DFR_END_DT /*거치종료일 */
+		     , MRTG_TP_DCD /*담보유형(K012) */
+		     , BOND_ISTT_DCD /*최초채권기관(K006) */
+		     , OVDU_DCD /*연체여부(K005) */
+		     , OVDU_RSN_DCD /*연체사유(K004) */
+		     , DEP_DT /*상각일자 */
+		     , PRNA_OVDU_AMT /*원금연체금액 */
+		     , INTR_OVDU_AMT /*이자연체금액 */
+		     , OVDU_OCRNC_DT /*연체발생일자 */
+		     , FWDG_YN /*전송여부 */
+		  FROM IBIMS751B /*신용공여집중내역*/
+		 WHERE RGST_DT = #{rgstDt}
+		<if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDcd)">
+           AND JOB_DCD = #{jobDcd}
+        </if>
+    </select>
+
+	<select id="getMsgTransList" resultType="com.nanuri.rams.business.common.vo.IBIMS751BVO">
+		/* IBIMS751BMapper.getMsgTransList */
+		SELECT MSG_TRANS_SN /*전문송신일련번호 */
+		     , ERR_DPCH /*오류통보 */
+		     , TRANS_DT /*송신일자 */
+		     , STDR_DT /*기준일자 */
+		     , TR_DCD /*거래구분(K014) */
+		     , JOB_DCD /*업무구분(K013) */
+		     , FILE_MSG_NM /*파일전문명 */
+		     , SEND_CNT /*발송건수 */
+		     , SEND_TM /*발송시간 */
+		     , SEND_RSLT /*발송결과 */
+		FROM IBIMS755B /*신용공여집중내역*/
+	   WHERE STDR_DT = #{rgstDt}
+		 AND SCRN_DCD = #{scrnDcd}
+		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDcd)">
+           AND JOB_DCD = #{jobDcd}
+        </if>
+	</select>
+	
+	<select id="getErrDpchTabList" resultType="com.nanuri.rams.business.common.vo.IBIMS751BVO">
+		/* IBIMS751BMapper.getErrDpchTabList */
+		SELECT ERR_DPCH_SN /*오류통보일련번호 */
+		     , RCPT_DT /*수신일자 */
+		     , STDR_DT /*기준일자 */
+		     , SN /*일련번호 */
+		     , BRWR_DCD /*차주구분(K008) */
+		     , CRNO /*법인등록번호 */
+		     , BZNO /*사업자번호 */
+		     , PRCS_DCD /*처리구분(K009) */
+		     , TR_DCD /*거래구분(K014) */
+		     , TR_NO /*거래번호 */
+		     , DATA_DCD /*Data구분 */
+		     , ERR_DCD /*오류코드(K002) */
+		     , ERR_CTNS /*오류내용 */
+		     , BOND_ISTT_DCD /*기관코드(K011) */
+		     , JOB_DCD /*업무구분(K013) */
+		     , SBJ_CD /*과목코드 */
+		     , AMT /*금액(천원) */
+		FROM IBIMS756B /*신용공여집중내역*/
+	   WHERE STDR_DT = #{rgstDt}
+		 AND SCRN_DCD = #{scrnDcd}		
+		 <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDcd)">
+           AND JOB_DCD = #{jobDcd}
+        </if>
+	</select>
+	
+	<delete id="deleteCrdtGrntFcsList" parameterType = "com.nanuri.rams.business.common.vo.TB08090SVO">
+        /* IBIMS751BMapper.deleteCrdtGrntFcsList */
+        DELETE
+        FROM IBIMS751B  /*신용공여집중내역*/
+        WHERE RGST_DT = #{rgstDt}
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDcd)">
+           AND JOB_DCD = #{jobDcd}
+        </if>
+    </delete>
+    
+	<insert id="insertCrdtGrntFcsList"  parameterType="java.util.List">
+        /* IBIMS751BMapper.insertCrdtGrntFcsList */
+        INSERT INTO IBIMS751B  /*신용공여집중내역*/
+                (
+                      CRDT_GRNT_FCS_SN /*신용공여집중일련번호 */
+					, ERR_DCD /*오류코드(K002) */
+					, JOB_DCD /*업무구분(K013) */
+					, PRCS_DCD /*처리구분(K009) */
+					, RGST_DT /*등록일자 */
+					, CHNG_DT /*변경일자 */
+					, BRWR_DCD /*차주구분(K008) */
+					, CRNO /*법인등록번호 */
+					, BZNO /*사업자번호 */
+					, EPRZ_NM /*상호명 */
+					, IND_TYP_CD /*업종코드 */
+					, ACTS_DCD /*계정과목(K007) */
+					, CRDT_GRNT_BLCE /*신용공여잔액 */
+					, TR_NO /*거래번호 */
+					, PRDT_NM /*상품명 */
+					, EXP_DT /*만기일자 */
+					, INTRT /*금리 */
+					, RDMP_WY_DCD /*상환방식(K003) */
+					, DFR_MNUM /*거치개월 */
+					, DFR_END_DT /*거치종료일 */
+					, MRTG_TP_DCD /*담보유형(K012) */
+					, BOND_ISTT_DCD /*최초채권기관(K006) */
+					, OVDU_DCD /*연체여부(K005) */
+					, OVDU_RSN_DCD /*연체사유(K004) */
+					, DEP_DT /*상각일자 */
+					, PRNA_OVDU_AMT /*원금연체금액 */
+					, INTR_OVDU_AMT /*이자연체금액 */
+					, OVDU_OCRNC_DT /*연체발생일자 */
+					, FWDG_YN /*전송여부 */
+                )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+                (
+                      #{item.rgstDt}||lpad(#{item.sn}, 5, '0')
+					, #{item.errDcd}
+					, #{item.jobDcd}
+					, #{item.prcsDcd}
+					, #{item.rgstDt}
+					, #{item.chngDt}
+					, #{item.brwrDcd}
+					, #{item.crno}
+					, #{item.bzno}
+					, #{item.eprzNm}
+					, #{item.indTypCd}
+					, #{item.actsDcd}
+					, #{item.crdtGrntBlce}
+					, #{item.trNo}
+					, #{item.prdtNm}
+					, #{item.expDt}
+					, #{item.intrt}
+					, #{item.rdmpWyDcd}
+					, #{item.dfrMnum}
+					, #{item.dfrEndDt}
+					, #{item.mrtgTpDcd}
+					, #{item.bondIsttDcd}
+					, #{item.ovduDcd}
+					, #{item.ovduRsnDcd}
+					, #{item.depDt}
+					, #{item.prnaOvduAmt}
+					, #{item.intrOvduAmt}
+					, #{item.ovduOcrncDt}
+					, #{item.fwdgYn}
+                )
+        </foreach>
+    </insert>
+    
+    <delete id="deleteMsgTransList" parameterType = "com.nanuri.rams.business.common.vo.TB08090SVO">
+        /* IBIMS751BMapper.deleteMsgTransList */
+        DELETE
+        FROM IBIMS755B  /*전문송신내역*/
+        WHERE STDR_DT = #{stdrDt}
+          AND SCRN_DCD = #{scrnDcd}
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDcd)">
+           AND JOB_DCD = #{jobDcd}
+        </if>
+    </delete>
+    
+    <insert id="insertMsgTransList"  parameterType="java.util.List">
+        /* IBIMS751BMapper.insertMsgTransList */
+        INSERT INTO IBIMS755B  /*전문송신내역*/
+                (
+                      MSG_TRANS_SN /*전문송신일련번호 */
+					, ERR_DPCH /*오류통보 */
+					, TRANS_DT /*송신일자 */
+					, STDR_DT /*기준일자 */
+					, TR_DCD /*거래구분(K014) */
+					, JOB_DCD /*업무구분(K013) */
+					, FILE_MSG_NM /*파일전문명 */
+					, SEND_CNT /*발송건수 */
+					, SEND_TM /*발송시간 */
+					, SEND_RSLT /*발송결과 */
+					, SCRN_DCD /*화면구분 */
+                )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+                (
+                      #{item.stdrDt}||lpad(#{item.sn}, 5, '0')
+					, #{item.errDpch}
+					, #{item.transDt}
+					, #{item.stdrDt}
+					, #{item.trDcd}
+					, #{item.jobDcd}
+					, #{item.fileMsgNm}
+					, #{item.sendCnt}
+					, #{item.sendTm}
+					, #{item.sendRslt}
+					, #{item.scrnDcd}
+                )
+        </foreach>
+    </insert>
+    
+    <delete id="deleteErrDpchList" parameterType = "com.nanuri.rams.business.common.vo.TB08090SVO">
+        /* IBIMS751BMapper.deleteErrDpchList */
+        DELETE
+        FROM IBIMS756B  /*오류통보내역*/
+        WHERE STDR_DT = #{stdrDt}
+          AND SCRN_DCD = #{scrnDcd}
+        <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(jobDcd)">
+           AND JOB_DCD = #{jobDcd}
+        </if>
+    </delete>
+    
+    <insert id="insertErrDpchList"  parameterType="java.util.List">
+        /* IBIMS751BMapper.insertErrDpchList */
+        INSERT INTO IBIMS756B  /*오류통보내역*/
+                (
+                      ERR_DPCH_SN /*오류통보일련번호 */
+					, RCPT_DT /*수신일자 */
+					, STDR_DT /*기준일자 */
+					, SN /*일련번호 */
+					, BRWR_DCD /*차주구분(K008) */
+					, CRNO /*법인등록번호 */
+					, BZNO /*사업자번호 */
+					, PRCS_DCD /*처리구분(K009) */
+					, TR_DCD /*거래구분(K014) */
+					, TR_NO /*거래번호 */
+					, DATA_DCD /*Data구분 */
+					, ERR_DCD /*오류코드(K002) */
+					, ERR_CTNS /*오류내용 */
+					, BOND_ISTT_DCD /*기관코드(K011) */
+					, JOB_DCD /*업무구분(K013) */
+					, SBJ_CD /*과목코드 */
+					, AMT /*금액(천원) */
+					, SCRN_DCD /*화면구분 */
+                )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+                (
+                      #{item.stdrDt}||lpad(#{item.sn}, 5, '0')
+					, #{item.rcptDt}
+					, #{item.stdrDt}
+					, #{item.sn}
+					, #{item.brwrDcd}
+					, #{item.crno}
+					, #{item.bzno}
+					, #{item.prcsDcd}
+					, #{item.trDcd}
+					, #{item.trNo}
+					, #{item.dataDcd}
+					, #{item.errDcd}
+					, #{item.errCtns}
+					, #{item.bondIsttDcd}
+					, #{item.jobDcd}
+					, #{item.sbjCd}
+					, #{item.amt}
+					, #{item.scrnDcd}
+                )
+        </foreach>
+    </insert>
+    
+    
+</mapper>

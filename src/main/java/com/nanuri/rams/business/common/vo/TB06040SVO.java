@@ -36,7 +36,8 @@ public class TB06040SVO extends IBIMS401BDTO {
 	private String lstCCaseDcd;
 	private String prgSttsCd;	// 진행상태코드
 	private String rgstDt; // 등록일자
-
+	private String ctrcPrdMnum; // 
+	private String ctrcPrdDcd; // 
 
 	private List<IBIMS403BDTO> rdmpPlanList;	// 원금상환 계획정보 리스트
 	private List<IBIMS403BDTO> intrtPlanList; 	// 이자상환 계획정보 리스트

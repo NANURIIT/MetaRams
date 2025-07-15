@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.nanuri.rams.business.common.dto.IBIMS820BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS820BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
@@ -28,9 +29,9 @@ public class TB9020ServiceImpl implements TB9020Service {
     @Override
     public String insert(IBIMS997BDTO param) {
 
-        log.info("=========================================");
+        log.info("############################################");
         log.info(" TB9020ServiceImpl(미수이자결산내역생성) START >>>");
-        log.info("=========================================");
+        log.info("############################################");
 
         String result = "5";
 
@@ -43,8 +44,28 @@ public class TB9020ServiceImpl implements TB9020Service {
 
             // 삭제
             ibims820bMapper.deleteTB9020B(stdrDt);
+
             // 입력
-            ibims820bMapper.insertTB9020B(stdrDt);
+            // ibims820bMapper.insertTB9020B(stdrDt);
+            IBIMS820BDTO inparam = new IBIMS820BDTO();
+
+            String stdrYm = stdrDt.substring(0, 6); // 기준년월
+            String hndEmpno = param.getHndEmpno();
+            String hndTrId = param.getJobId();
+            String hndTmnlNo = param.getHndTrId();
+            String guId = param.getGuid();
+
+            inparam.setStdrYm(stdrYm);
+            inparam.setHndEmpno(hndEmpno);
+            inparam.setHndTrId(hndTrId);
+            inparam.setHndTmnlNo(hndTmnlNo);
+            inparam.setGuid(guId);
+
+            log.info("##stdrYm:" + stdrYm);
+            log.info("##:" + hndEmpno);
+
+            // 미수이자결산내역 생성
+            ibims820bMapper.insertTB9020B(inparam);
 
             ibims997bMapper.batchUpdate(param);
             ibims997bMapper.subPreJobCount(param);
@@ -61,9 +82,9 @@ public class TB9020ServiceImpl implements TB9020Service {
                 result = "5";
             }
         }
-        log.info("=========================================");
+        log.info("############################################");
         log.info(" TB9020ServiceImpl(미수이자결산내역생성) END >>>");
-        log.info("=========================================");
+        log.info("############################################");
         return result;
     };
 

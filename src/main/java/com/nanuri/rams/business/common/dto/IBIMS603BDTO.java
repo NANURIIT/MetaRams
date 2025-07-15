@@ -21,5 +21,6 @@ public class IBIMS603BDTO {
     private String         hndTmnlNo;                                       // 조작단말기번호
     private String         hndTrId;                                         // 조작거래id
     private String         guid;                                            // guid
+    private long           sn;                                       		// 일련번호
     
 }

@@ -29,21 +29,16 @@ spring:
     job:
       enabled: false
   datasource:
-    # driver-class-name: com.tmax.tibero.jdbc.TbDriver
-    url: jdbc:log4jdbc:tibero:thin:@172.30.1.32:8629:tibero
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    # url: jdbc:tibero:thin:@172.30.1.32:8629:tibero
+    url: jdbc:oracle:thin:@//172.30.1.32:1521/XEPDB1  # 또는 SID 형식 jdbc:oracle:thin:@localhost:1521:XE
     username: RAMS2
-    password: Nanuriwork1!
-    hikari:
-      maximum-pool-size: 5
-      minimum-idle: 1
+    password: nanuri
+    driver-class-name: oracle.jdbc.OracleDriver
+
   jpa:
-    database-platform: com.tmax.tibero.hibernate.dialect.TiberoDialect
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.Oracle9Dialect 
-        # hbm2ddl.auto: update
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update  # 또는 validate, create, none
 
   mvc:
     hiddenmethod:

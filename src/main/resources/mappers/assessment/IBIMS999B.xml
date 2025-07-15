@@ -78,7 +78,7 @@
     </delete>
 
     <select id="getFormattedBzDd" resultType="string">
-      SELECT TO_CHAR(TO_DATE(MAX(BZ_DD)), 'YYYY-MM-DD')
+      SELECT TO_CHAR(TO_DATE(MAX(BZ_DD), 'YYYYMMDD'), 'YYYY-MM-DD') 
         FROM IBIMS999B
     </select>
 

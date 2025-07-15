@@ -245,6 +245,14 @@ const TB06060Sjs = (function() {
 		$(".flow-status p").removeClass("-check");
 		$(".flow-status div").html(waitHtml);
 		prdtInfoGridIns.setData([]);
+
+		//
+		//탭관련 Class 초기화 
+		$("#ramsTab .nav-link").removeClass("disabled");
+		$("#ramsTab .nav-link[href='#tab-2']").removeClass("active");
+		$("#ramsTab .nav-link[href='#tab-3']").removeClass("active");
+		
+		$("#ramsTab .nav-link[href='#tab-1']").addClass("active");  // Tab_1 active 상태로
 	}
 
 	function getWorkflowList() {

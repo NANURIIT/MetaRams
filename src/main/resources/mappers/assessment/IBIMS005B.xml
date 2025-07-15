@@ -146,7 +146,7 @@
           WITH T1.HGRK_MENU_ID IS NULL
        CONNECT BY PRIOR T1.MENU_ID = T1.HGRK_MENU_ID
          ORDER
-            BY T1.HGRK_MENU_ID, T1.MENU_ID;
+            BY T1.HGRK_MENU_ID, T1.MENU_ID
     </select>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->

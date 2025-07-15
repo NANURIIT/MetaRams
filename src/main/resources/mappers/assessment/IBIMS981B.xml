@@ -67,7 +67,9 @@
            </if>
     </select>
 
-    <insert id="batchInsertIBIMS981B" parameterType="string">
+<!--    <insert id="batchInsertIBIMS981B" parameterType="string"  >  -->
+    <insert id="batchInsertIBIMS981B" parameterType="com.nanuri.rams.business.common.dto.IBIMS981BDTO"  >  
+    /* IBIMS981BMapper.batchInsertIBIMS981B */
         INSERT INTO IBIMS981B
             (
                 SELECT T.DUDT_MNGM_NO                                                       AS DUDT_MNGM_NO          /* 기일관리번호 */
@@ -78,7 +80,7 @@
                      , D.CHRR_STFNO                                                         AS CHRR_STFNO            /* 담당자사원번호 */
                      , D.SUB_CHRR_STFNO                                                     AS SUB_CHRR_STFNO        /* 부담당자직원번호 */
                      , D.MNGM_BDCD                                                          AS MNGM_BDCD             /* 관리조직번호 */
-                     , T.BZ_DD                                                              AS RGST_DT               /* 등록일자 */
+                     , TO_CHAR(SYSDATE, 'YYYYMMDD')                                         AS RGST_DT               /* 등록일자 */
                      , T.PRAR_DT                                                            AS ACTN_PRAR_DT          /* 조치예정일자 */
                      , T.PRCS_DT                                                            AS ACTN_DT               /* 조치일자 */
                      , 'N'                                                                  AS USE_YN                /* 사용여부 */
@@ -86,9 +88,9 @@
                      , 'N'                                                                  AS DEL_YN                /* 삭제여부 */
                      , SYSDATE                                                              AS HND_DETL_DTM          /* 조작상세일시 */
                      , #{hndEmpno}                                                          AS HND_EMPNO             /* 조작사원번호 */
-                     , ''                                                                   AS HND_TMNL_NO           /* 조작단말기번호 */
-                     , ''                                                                   AS HND_TR_ID             /* 조작거래ID */
-                     , ''                                                                   AS GUID                  /* GUID */
+                     , #{hndTmnlNo}                                                         AS HND_TMNL_NO           /* 조작단말기번호 */
+                     , #{hndTrId}                                                           AS HND_TR_ID             /* 조작거래ID */
+                     , #{guid}                                                              AS GUID                  /* GUID */
                   FROM (
                   	SELECT A.PRDT_CD
                   	     , A.PRAR_DT
@@ -116,6 +118,7 @@
     </insert>
 
     <delete id="batchDeleteIBIMS981B" parameterType="string">
+     /* IBIMS981BMapper.batchDeleteIBIMS981B */
         DELETE FROM IBIMS981B
          WHERE 1=1
            AND RGST_DT = #{stdrDt}

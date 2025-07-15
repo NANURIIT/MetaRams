@@ -15,5 +15,6 @@ public interface TB09010Service {
 
     public List<IBIMS604BVO.DealInfo> checkDealSearch(IBIMS604BVO.SearchVO searchVO);
 
-	public int saveDealExmnt(IBIMS604BVO.ExmntInfo exmntInfo, Map<String, Object> userAuth);
+    public int saveDealExmnt(IBIMS604BVO.ExmntInfo exmntInfo, Map<String, Object> userAuth);
+
 }

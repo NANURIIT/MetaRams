@@ -33,13 +33,13 @@
 										</span>
 									</span>
 								</div>
-								<label class="col-sm-1 control-label">심사부서</label>
+								<!--<label class="col-sm-1 control-label">심사부서</label>  -->
 								<div class="col-sm-2 input-group text-right">
-									<select class="form-control" value="" id="TB09010S_I010" >
+								<!--	<select class="form-control" value="" id="TB09010S_I010" >
 										<option value="">전체</option>
-									</select>
+									</select>-->
 								</div>
-								<label class="col-sm-1 control-label">심사역</label>
+								<label class="col-sm-1 control-label">변경담당자</label>
 								<div class="col-sm-2 input-group">
 									<input type="text" class="form-control" id="TB09010S_empNo" name="">
 									<span class="input-group-append">
@@ -50,7 +50,7 @@
 									<input type="text" class="form-control border-left-none" id="TB09010S_empNm" name="" readonly>
 								</div>
 								<label class="col-sm-1 control-label">
-									<input type="checkbox" id="TB09010S_checked">확인완료 건 포함
+									<input type="checkbox" id="TB09010S_checked">확인완료 건 
 								</label>
 								<div class="col-sm-2 text-right">
 									<button class="btn btn-primary" onclick="TB09010Sjs.checkDealSearch();">
@@ -82,6 +82,7 @@
 										<input type="hidden" id="TB09010S_lstCCaseCcd">
 										<input type="hidden" id="TB09010S_I010">
 										<input type="hidden" id="TB09010S_ownPEno">
+										<input type="hidden" id="TB09010S_crno">
 
 										<label class="col-sm-1 col-form-label">Deal번호</label>
 										<div class="col-sm-2">
@@ -91,7 +92,7 @@
 										<div class="col-sm-5">
 											<input type="text" class="form-control" id="TB09010S_selectedIbDealNm" disabled/>
 										</div>
-										<label class="col-sm-1 col-form-label">조치심사역</label>
+										<label class="col-sm-1 col-form-label">변경담당자</label>
 										<div class="col-sm-2">
 											<input type="text" class="form-control" id="TB09010S_selectedEmpNm" disabled/>
 										</div>

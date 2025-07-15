@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS981BDTO;
+
 import com.nanuri.rams.business.common.mapper.IBIMS999BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS981BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
@@ -36,6 +38,22 @@ public class TB9060ServiceImpl implements TB9060Service {
     @Override
     public String insert(IBIMS997BDTO param) {
 
+        log.info("############################################");
+        log.info(" TB9060ServiceImpl(기일관리내역생성) START >>>");
+        log.info("############################################");
+
+        /*
+         * TB90060B 실행후 IBIMS981B(기일관리내역) 미생성시 확인
+         * 
+         * 1. IBIMS980B(기일관리기본) 테이블생성여부 확인필요(테이블정보 참조)
+         * -----------------------------------------------------------------------------
+         * DUDT_MNGM_NO|DUDT_MNGM_DTLD_JOB_KND_CD |DUDT_MNGM_NM |CHRR_STFNO |MNGM_BDCD
+         * 0501| 1| 상환예정일(초과) |9910001 |AG3
+         * 0502| 2| 상환예정일1일전 |9910001 |AG3
+         * 0503| 3| 상환예정일3일이전 |9910001 |AG3
+         * 0504| 4| 상환예정일3일이상 |9910001 |AG3
+         */
+
         String result = "5";
 
         try {
@@ -48,14 +66,26 @@ public class TB9060ServiceImpl implements TB9060Service {
             // 삭제
             ibims981bMapper.batchDeleteIBIMS981B(stdrDt);
 
-            String hndEmpno = param.getHndEmpno();
-
             // if (param.getBatchCmdDcd() != "1") {
-            //     hndEmpno = facade.getDetails().getEno();
+            // hndEmpno = facade.getDetails().getEno();
             // }
 
-            // 입력
-            ibims981bMapper.batchInsertIBIMS981B(hndEmpno);
+            // IBIMS981B 입력
+            // ibims981bMapper.batchInsertIBIMS981B(hndEmpno);
+
+            IBIMS981BDTO inparam = new IBIMS981BDTO();
+
+            String hndEmpno = param.getHndEmpno();
+            String hndTrId = param.getJobId();
+            String hndTmnlNo = param.getHndTrId();
+            String guId = param.getGuid();
+
+            inparam.setHndEmpno(hndEmpno);
+            inparam.setHndTrId(hndTrId);
+            inparam.setHndTmnlNo(hndTmnlNo);
+            inparam.setGuid(guId);
+
+            ibims981bMapper.batchInsertIBIMS981B(inparam);
 
             ibims997bMapper.batchUpdate(param);
             ibims997bMapper.subPreJobCount(param);
@@ -67,13 +97,14 @@ public class TB9060ServiceImpl implements TB9060Service {
             if (e instanceof InterruptedException) {
                 log.info("스레드 중단 오류 발생!!");
                 result = "7";
-            }
-            else {
+            } else {
                 log.info("배치중 오류 발생!!");
                 result = "5";
             }
         }
-
+        log.info("############################################");
+        log.info(" TB9060ServiceImpl(기일관리내역생성) END >>>");
+        log.info("############################################");
         return result;
     }
 

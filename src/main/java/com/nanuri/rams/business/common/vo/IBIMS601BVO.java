@@ -19,6 +19,7 @@ public class IBIMS601BVO extends IBIMS601BDTO{
     private String         stdrYm;   	 // 점검기준년월
     private String         inspctDt;   	 // 점검기준일자
     private String         inspctRmrk;   // 점검결과
+    private long           sn;           // 일련번호
 
     List<IBIMS602BDTO>		listInspctRmrk; // 당월사업관리의견
     List<IBIMS603BDTO>		listEtc; // 기타사후관리

@@ -4,7 +4,9 @@
 
 	<!--기타사후관리조회 -->
     <select id="selectIBIMS603B" resultType="com.nanuri.rams.business.common.dto.IBIMS603BDTO" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+    	/* IBIMS603BMapper.selectIBIMS603B */
         SELECT DEAL_NO                                           /* 딜번호 */
+        	 , SN												 /* 일련번호 */
              , INSPCT_DT                                         /* 점검일자 */
              , INSPCT_RMRK                                       /* 점검결과 */
              , RMRK                                              /* 비고 */
@@ -24,9 +26,11 @@
     
     <!-- 기타사후관리등록 -->
     <insert id="insertIBIMS603B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+    	/* IBIMS603BMapper.insertIBIMS603B */
         INSERT INTO IBIMS603B 
                (
                   DEAL_NO                                           /* 딜번호 */
+                , SN												/* 일련번호 */
                 , INSPCT_DT                                         /* 점검일자 */
                 , INSPCT_RMRK                                       /* 점검결과 */
                 , RMRK                                              /* 비고 */
@@ -39,6 +43,7 @@
         VALUES        
         	   (
                  #{dealNo}                                          /* 딜번호 */
+               , (select nvl(max(sn),0)+1 from IBIMS603B where DEAL_NO = #{dealNo}) 
                , #{inspctDt}                                        /* 점검일자 */
                , #{inspctRmrk}                                       /* 점검결과 */
                , #{rmrk}                                            /* 비고 */
@@ -51,10 +56,12 @@
     </insert>
     
     <delete id="deleteIBIMS603B" parameterType="com.nanuri.rams.business.common.vo.IBIMS601BVO">
+    	/* IBIMS603BMapper.deleteIBIMS603B */
         DELETE 
           FROM IBIMS603B
          WHERE 1=1
            AND DEAL_NO = #{dealNo}										/* 딜번호 */	
+           and SN = #{sn}
             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(inspctDt)">
            AND INSPCT_DT = #{inspctDt}                /* 점검기준년월 */
            </if>

@@ -2,7 +2,196 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS604BMapper">
 
-	<select id="checkDealSearch" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$SearchVO" resultType="com.nanuri.rams.business.common.vo.IBIMS604BVO$DealInfo">
+   
+   <select id="checkDealSearch" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$SearchVO" resultType="com.nanuri.rams.business.common.vo.IBIMS604BVO$DealInfo">
+    /* IBIMS604BMapper.checkDealSearch*/
+        SELECT A.STDR_DT       AS STDR_DT                              /* 기준일자 */
+             , B.ENTP_NM       AS ENTP_NM                              /* 업체명 */
+             , A.ENTP_REP_NM   AS RPRST_P_HNGL_NM                      /* 대표자한글명 */
+             , B.CRNO          AS CRNO                                 /* 법인등록번호 */
+             , A.NICE_CRDT_CTNS            		   AS CRDT_ACDNT_OCRNC_DTLS /* 신용사건발생일상세 */
+             , C.DEAL_NO    					   AS DEAL_NO               /* 딜번호 */
+             , H.JDGM_DCD 						   AS JDGM_DCD              /* 심사구분코드 */
+			 , H.MTR_NM                            AS MTR_NM                /* IBDEAL명 */
+			 , H.MTR_DCD                           AS MTR_DCD               /* 안건구분코드 */
+			 , H.OWN_P_ENO                         AS OWN_P_ENO             /* 담당심사역 */
+			 , G.FST_CNFR_DT                       AS FST_CNFR_DT           /* 최초확인일자 확인일(심사역)*/ 
+			 , G.ANS_ACPT_DT                       AS ANS_ACPT_DT           /* 답변접수일자  확인일(심사부서장) */ 
+			 , G.IVTG_RSLT_CTNS                    AS IVTG_RSLT_CTNS        /* 검토결과내용 */
+			 , G.FST_CNFR_EMPNO                    AS FST_CNFR_EMPNO        /* 최초확인사번(심사역) */
+			 , (SELECT X.DPRT_CD
+                  FROM IBIMS003B  X
+                 WHERE X.EMPNO = G.FST_CNFR_EMPNO) AS INSPCT_DPRT_DCD       /* 최초확인자부서코드(심사역) */
+			 , (SELECT X.DPRT_NM
+                  FROM IBIMS003B  X
+                 WHERE X.EMPNO = G.FST_CNFR_EMPNO) AS INSPCT_DPRT_DCD_NM    /* 심사부서명 최초확인사번부서코드(심사역) */
+			 , (SELECT X.EMP_NM
+                  FROM IBIMS003B  X
+                 WHERE X.EMPNO = G.FST_CNFR_EMPNO) AS EMP_NM                /* 담당심사역명(최초확인사번) */ 
+			 , G.ANS_ACPT_EMPNO                    AS ANS_ACPT_EMPNO        /* 답변접수사번(심사부서장) */
+			 , D.PRDT_CD                           AS PRDT_CD               /* 상품코드 */
+			 , D.TR_OTHR_DSCM_NO                   AS TR_OTHR_DSCM_NO              
+			 , H.OWN_DT                            AS OWN_DT                /* 심사역배정일자 */
+          FROM  IBIMS621B  A  /* 일별신용사건_나이스평가 */
+              , IBIMS010B  B  /* 기업체기본 */
+              , IBIMS201B  C  /* 딜승인기본*/
+              , IBIMS220B  D  /* 딜승인이해관계자기본 */
+              , IBIMS401B  E  /* 약정기본 */
+              , IBIMS103B  H  /* 딜심사기본 */
+              , IBIMS604B  G  /* 일별신용사건내역 */
+         WHERE 1=1
+           AND A.STDR_DT  = #{stdrDt} /* 기준일자 */
+           AND A.DEL_YN   = 'N'
+           AND A.CRNO     = B.CRNO
+           AND C.LAST_YN  = 'Y'
+           AND C.PRDT_CD  = D.PRDT_CD
+           AND B.ARDY_BZEP_NO = D.TR_OTHR_DSCM_NO
+           AND C.PRDT_CD  = E.PRDT_CD
+           AND E.EPRZ_CRDL_LDG_STTS_CD  ='1'  /* 1:약정 */
+           AND C.DEAL_NO  = H.DEAL_NO
+           AND H.LAST_YN  = 'Y'
+           AND A.STDR_DT  = G.STDR_DT(+)      /* 기준일자 */
+           AND A.CRNO     = G.CRNO(+)         /* 법인등록번호 */
+           AND H.DEAL_NO  = G.DEAL_NO(+)      /* 딜번호 */
+           AND H.JDGM_DCD = G.JDGM_DCD(+)     /* 심사구분코드 */
+           AND H.MTR_DCD  = G.MTR_DCD(+)      /* 부수안건구분코드 */
+		  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
+		   AND G.FST_CNFR_EMPNO = #{empno}	/* 최초확인사번(심사역)*/
+		  </if>   
+          /* AND  G.FST_CNFR_DT     IS NOT NULL*/
+   </select>
+    <select id ="selectIBIMS604B" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$SearchVO" resultType="com.nanuri.rams.business.common.dto.IBIMS604BDTO">
+	 /* IBIMS604BMapper.selectIBIMS604B */
+	 SELECT 
+		   STDR_DT            AS STDR_DT          /* 기준일자 */
+		 , CRNO               AS CRNO             /* 법인등록번호 */
+		 , DEAL_NO            AS DEAL_NO          /* 딜번호 */
+		 , JDGM_DCD           AS JDGM_DCD         /* 심사구분코드 */
+		 , MTR_DCD            AS MTR_DCD          /* 부수안건구분코드 */
+		 , ENTP_NM            AS ENTP_NM          /* 업체명 */
+		 , RPRST_P_HNGL_NM    AS RPRST_P_HNGL_NM  /* 대표자한글명 */
+		 , GRD_DWN_CNT1       AS GRD_DWN_CNT1     /* 등급하락건수1 */
+		 , GRD_DWN_CNT2       AS GRD_DWN_CNT2     /* 등급하락건수2 */
+		 , ARRS_INFO_CNT      AS ARRS_INFO_CNT    /* 연체정보건수 */
+		 , FNCL_INFO_CNT1     AS FNCL_INFO_CNT1   /* 재무정보건수1 */
+		 , FNCL_INFO_CNT2     AS FNCL_INFO_CNT2   /* 재무정보건수2 */
+		 , CLS_QTT_CNT        AS CLS_QTT_CNT      /* 휴폐업건수 */
+		 , ALTN_INV_YN        AS ALTN_INV_YN      /* 대체투자여부 */
+		 , FST_CNFR_DT        AS FST_CNFR_DT      /* 최초확인일자 */
+		 , ANS_ACPT_DT        AS ANS_ACPT_DT      /* 답변접수일자 */
+		 , IVTG_RSLT_CTNS     AS IVTG_RSLT_CTNS   /* 검토결과내용 */
+		 , HND_DETL_DTM       AS HND_DETL_DTM     /* 조작상세일시 */
+		 , HND_EMPNO          AS HND_EMPNO        /* 조작사원번호 */
+		 , HND_TMNL_NO        AS HND_TMNL_NO      /* 조작단말기번호 */
+		 , HND_TR_ID          AS HND_TR_ID        /* 조작거래id */
+  		 , GUID               AS GUID             /* guid */
+	  FROM IBIMS604B         /* 일별신용사건현황  */
+	 WHERE 1=1
+       AND DEAL_NO				= #{dealNo}			/* Deal번호 */
+       AND STDR_DT				= #{stdrDt}			/* 기준일자 */
+       AND JDGM_DCD				= #{jdgmDcd}
+       AND MTR_DCD				= #{mtrDcd}
+	</select>
+
+
+	<insert id="insertIBIMS604B" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$ExmntInfo">
+     /* IBIMS604BMapper.insertIBIMS604B */
+	 INSERT INTO IBIMS604B     /* 일별신용사건현황  */
+		(
+			  STDR_DT          /* 기준일자*/ 
+			, CRNO    		   /* 법인등록번호*/ 
+			, DEAL_NO     	   /* 딜번호*/ 
+			, JDGM_DCD         /* 심사구분코드*/ 
+			, MTR_DCD          /* 부수안건구분코드*/ 
+			, ENTP_NM          /* 업체명*/ 
+			, RPRST_P_HNGL_NM  /* 대표자한글명*/ 
+			, GRD_DWN_CNT1     /* 등급하락건수1*/ 
+			, GRD_DWN_CNT2     /* 등급하락건수2*/ 
+			, ARRS_INFO_CNT    /* 연체정보건수*/ 
+			, FNCL_INFO_CNT1   /* 재무정보건수1*/ 
+			, FNCL_INFO_CNT2   /* 재무정보건수2*/ 
+			, CLS_QTT_CNT      /* 휴폐업건수*/ 
+			, ALTN_INV_YN      /* 대체투자여부*/ 
+			, FST_CNFR_DT      /* 최초확인일자*/ 
+			, ANS_ACPT_DT      /* 답변접수일자*/ 
+			, FST_CNFR_EMPNO   /* 최초확인사번*/ 
+			, ANS_ACPT_EMPNO   /* 답변접수사번*/ 
+			, IVTG_RSLT_CTNS   /* 검토결과내용*/ 
+			, HND_DETL_DTM     /* 조작상세일시*/ 
+			, HND_EMPNO        /* 조작사원번호*/ 
+			, HND_TMNL_NO      /* 조작단말기번호*/ 
+			, HND_TR_ID        /* 조작거래id*/ 
+			, GUID             /* guid*/ 
+		)	
+		VALUES 
+		(
+			  #{stdrDt}
+			, #{crno}
+			, #{dealNo}
+			, #{jdgmDcd}
+			, #{mtrDcd}
+			, #{entpNm}
+			, #{rprstPHnglNm}
+			, #{grdDwnCnt1}
+			, #{grdDwnCnt2}
+			, #{arrsInfoCnt}
+			, #{fnclInfoCnt1}
+			, #{fnclInfoCnt2}
+			, #{clsQttCnt}
+			, #{altnInvYn}
+			, CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG21' THEN TO_CHAR(SYSDATE, 'YYYYMMDD')
+										   						 ELSE NULL END 	
+			, CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG28' THEN TO_CHAR(SYSDATE, 'YYYYMMDD')
+										   						 ELSE NULL END
+			, CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG21' THEN #{hndEmpno}
+										   						 ELSE NULL END 	
+			, CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG28' THEN #{hndEmpno}
+										   						 ELSE NULL END 	
+			, #{ivtgRsltCtns}
+			, SYSDATE
+			, #{hndEmpno}
+			, #{hndTmnlNo}
+			, #{hndTrId}
+			, #{guid}
+		)
+	</insert>
+	
+	
+	<update id="saveDealExmnt" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$ExmntInfo">
+	/* IBIMS604BMapper.saveDealExmnt */
+		UPDATE IBIMS604B      /* 일별신용사건현황  */
+        SET 
+	       IVTG_RSLT_CTNS		= CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG21' THEN #{ivtgRsltCtns}
+								  	   WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG28' THEN #{ivtgRsltCtns}
+									   ELSE NULL END 		               /* 조치사항 */
+         , FST_CNFR_DT			= CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG21' THEN TO_CHAR(SYSDATE, 'YYYYMMDD')
+									   ELSE FST_CNFR_DT END 				/* 심사역확인일자 */
+		 , ANS_ACPT_DT			= CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG28' THEN TO_CHAR(SYSDATE, 'YYYYMMDD')
+									   ELSE ANS_ACPT_DT END 				/* 심사부서장확인일자 */
+		 , FST_CNFR_EMPNO		= CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG21' THEN #{hndEmpno}
+									   ELSE FST_CNFR_EMPNO END 	
+		 , ANS_ACPT_EMPNO		= CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG28' THEN #{hndEmpno}
+								  	   ELSE ANS_ACPT_EMPNO END 								   
+         , HND_EMPNO        = #{hndEmpno}                                     
+         <if test="hndTmnlNo != null">
+   			 , HND_TMNL_NO = #{hndTmnlNo}
+				 </if>                                   
+         <if test="hndTrId != null">
+    		 , AND hndTrId = #{hndTrId}
+				 </if>
+         <if test = "guid != null">                               
+         , GUID             = #{guid}
+				 </if>   
+     WHERE 1=1
+       AND DEAL_NO				= #{dealNo}			/* Deal번호 */
+       AND STDR_DT				= #{stdrDt}			/* 기준일자 */
+       AND JDGM_DCD				= #{jdgmDcd}
+       AND MTR_DCD				= #{mtrDcd}
+	</update>
+
+
+
+	<select id="checkDealSearch_bak" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$SearchVO" resultType="com.nanuri.rams.business.common.vo.IBIMS604BVO$DealInfo">
 		SELECT A.STDR_DT							AS STDR_DT										/* 기준일자 */
          	 , A.ENTP_NM							AS ENTP_NM										/* 업체명 */
          	 , A.RPRST_P_HNGL_NM					AS RPRST_P_HNGL_NM								/* 대표자한글명 */
@@ -81,8 +270,7 @@
 		 	 , A.JDGM_DCD DESC
 		 	 , A.MTR_DCD DESC
 	</select>
-
-	<update id="saveDealExmnt" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$ExmntInfo">
+	<update id="saveDealExmnt_bak" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$ExmntInfo">
 		UPDATE IBIMS604B
        SET IVTG_RSLT_CTNS		= CASE WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG21' THEN #{ivtgRsltCtns}
 										   						 WHEN (SELECT ATH_CD FROM IBIMS003B WHERE EMPNO = #{hndEmpno}) = 'AG28' THEN #{ivtgRsltCtns}
