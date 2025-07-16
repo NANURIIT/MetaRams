@@ -16,7 +16,7 @@
               , 'u'                  AS  queryType
           FROM IBIMS204B A
          WHERE A.PRDT_CD = #{prdtCd}
-         ORDER BY A.APLY_MNUM ASC;
+         ORDER BY A.APLY_MNUM ASC
     </select>
 
     <insert id="insertIBIMS204B">
@@ -108,13 +108,13 @@
                 FROM IBIMS204B
             )
         END AS MDWY_RDMP_FEE_RTO
-    FROM DUAL;
+    FROM DUAL
     </select>
 
     <select id="countMdwyRdmpFee" resultType="int">
        SELECT COUNT(*) AS cntMdwyRdmpFee
          FROM IBIMS204B
-        WHERE PRDT_CD = #{prdtCd};
+        WHERE PRDT_CD = #{prdtCd}
     </select>
 
 </mapper>
