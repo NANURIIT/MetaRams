@@ -583,7 +583,7 @@
      <!-- 실행  스케줄관리 실행일련번호 채번 -->
      <select id="getExcSchExcSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="long">
      	/* IBIMS403BMapper.getExcSchExcSn */
-        SELECT NVL(MAX(NVL(IFNULL(EXC_SN, 0), 0)), 0) + 1 AS EXC_SN
+        SELECT NVL(MAX(NVL(nvl(EXC_SN, 0), 0)), 0) + 1 AS EXC_SN
           FROM IBIMS403B /* 여신스케쥴기본 */
          WHERE PRDT_CD  = #{prdtCd}
            AND SCX_DCD  = #{scxDcd}
