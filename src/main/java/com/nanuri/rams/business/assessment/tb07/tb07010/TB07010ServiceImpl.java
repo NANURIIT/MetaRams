@@ -329,11 +329,11 @@ public class TB07010ServiceImpl implements TB07010Service {
 				prna403BDTO.setHgrkTrSn(lExTrsn);
 
 				// Null 값인 경우 초기값 설정
-				prna403BDTO.setRdmpPrarIntr(new BigDecimal("0"));/* 상환예정이자 */
-				prna403BDTO.setPrcsCpltYn("N");/* 처리완료여부 */
-				prna403BDTO.setPrcsAmt(new BigDecimal("0"));/* 처리금액 */
-				prna403BDTO.setPrcsIntrAmt(new BigDecimal("0"));/* 처리이자금액 */
-				prna403BDTO.setOvduIntrRt(new BigDecimal("0"));/* 연체이자율 */
+				prna403BDTO.setRdmpPrarIntr(new BigDecimal("0")); // 상환예정이자
+				prna403BDTO.setPrcsCpltYn("N"); // 처리완료여부
+				prna403BDTO.setPrcsAmt(new BigDecimal("0")); // 처리금액
+				prna403BDTO.setPrcsIntrAmt(new BigDecimal("0")); // 처리이자금액
+				prna403BDTO.setOvduIntrRt(new BigDecimal("0")); // 연체이자율
 
 				prna403BDTOList.add(prna403BDTO);
 
@@ -371,11 +371,11 @@ public class TB07010ServiceImpl implements TB07010Service {
 					intr403BDTO.setHgrkTrSn(lExTrsn);
 
 					// Null 값인 경우 초기값 설정
-					intr403BDTO.setRdmpPrarIntr(new BigDecimal("0"));/* 상환예정이자 */
-					intr403BDTO.setPrcsCpltYn("N");/* 처리완료여부 */
-					intr403BDTO.setPrcsAmt(new BigDecimal("0"));/* 처리금액 */
-					intr403BDTO.setPrcsIntrAmt(new BigDecimal("0"));/* 처리이자금액 */
-					intr403BDTO.setOvduIntrRt(new BigDecimal("0"));/* 연체이자율 */
+					intr403BDTO.setRdmpPrarIntr(new BigDecimal("0")); // 상환예정이자
+					intr403BDTO.setPrcsCpltYn("N"); // 처리완료여부
+					intr403BDTO.setPrcsAmt(new BigDecimal("0")); // 처리금액
+					intr403BDTO.setPrcsIntrAmt(new BigDecimal("0")); // 처리이자금액
+					intr403BDTO.setOvduIntrRt(new BigDecimal("0")); // 연체이자율
 
 					intr403BDTOList.add(intr403BDTO);
 				}
@@ -430,11 +430,11 @@ public class TB07010ServiceImpl implements TB07010Service {
 					intr403BDTO.setHgrkTrSn(lExTrsn);
 
 					// Null 값인 경우 초기값 설정
-					intr403BDTO.setRdmpPrarIntr(new BigDecimal("0"));/* 상환예정이자 */
-					intr403BDTO.setPrcsCpltYn("N");/* 처리완료여부 */
-					intr403BDTO.setPrcsAmt(new BigDecimal("0"));/* 처리금액 */
-					intr403BDTO.setPrcsIntrAmt(new BigDecimal("0"));/* 처리이자금액 */
-					intr403BDTO.setOvduIntrRt(new BigDecimal("0"));/* 연체이자율 */
+					intr403BDTO.setRdmpPrarIntr(new BigDecimal("0"));// 상환예정이자
+					intr403BDTO.setPrcsCpltYn("N");// 처리완료여부
+					intr403BDTO.setPrcsAmt(new BigDecimal("0"));// 처리금액
+					intr403BDTO.setPrcsIntrAmt(new BigDecimal("0"));// 처리이자금액
+					intr403BDTO.setOvduIntrRt(new BigDecimal("0"));// 연체이자율
 
 					intr403BDTOList.add(intr403BDTO);
 

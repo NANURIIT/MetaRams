@@ -3,6 +3,7 @@
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS204BMapper">
 
     <select id="selectIBIMS204B" resultType="com.nanuri.rams.business.common.dto.IBIMS204BDTO">
+        /* IBIMS204BMapper.selectIBIMS204B */
         SELECT 
                 A.PRDT_CD                     /* 상품코드 */      
               , A.FEE_SN                      /* 수수료일련번호 */      
