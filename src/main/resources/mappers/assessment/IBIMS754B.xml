@@ -40,7 +40,6 @@
 		     , TRANS_DT       /* 송신일자 */
 		     , STDR_DT        /* 기준일자 */
 		     , TR_DCD         /* 거래구분(K014) */
-		     , JOB_DCD        /* 업무구분(K013) */
 		     , FILE_MSG_NM    /* 파일전문명 */
 		     , SEND_CNT       /* 발송건수 */
 		     , SEND_TM        /* 발송시간 */
@@ -156,7 +155,6 @@
 					, TRANS_DT     /*송신일자 */
 					, STDR_DT      /*기준일자 */
 					, TR_DCD       /*거래구분(K014) */
-					, JOB_DCD      /*업무구분(K013) */
 					, FILE_MSG_NM  /*파일전문명 */
 					, SEND_CNT     /*발송건수 */
 					, SEND_TM      /*발송시간 */
@@ -170,7 +168,6 @@
 				, #{item.transDt}
 				, #{item.stdrDt}
 				, #{item.trDcd}
-				, #{item.jobDcd}
 				, #{item.fileMsgNm}
 				, #{item.sendCnt}
 				, TO_CHAR(SYSDATE, 'HH24MMSS')

@@ -23,8 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TB08040ServiceImpl implements TB08040Service {
 
- 	// @Autowired
- 	// private EtprCrdtGrntAcctProc acctProc;
+	// @Autowired
+	// private EtprCrdtGrntAcctProc acctProc;
 	/* 딜수수료스케줄기본 */
 	private final IBIMS348BMapper ibims348Bmp;
 	/* 딜거래내역 */
@@ -38,7 +38,6 @@ public class TB08040ServiceImpl implements TB08040Service {
 	@Override
 	public List<IBIMS348BVO> srchFeeSch(IBIMS348BVO param) {
 		String prdtCd = param.getPrdtCd(); // 종목코드
-		
 
 		List<IBIMS348BVO> outFeeSch = ibims348Bmp.selectFeeScxInfoList(param);
 
@@ -52,30 +51,33 @@ public class TB08040ServiceImpl implements TB08040Service {
 		int result = 0;
 
 		List<IBIMS348BVO> feeSchList = input.getFeeSchList();
-		String prdtCd = input.getPrdtCd();		 // 종목코드
+		String prdtCd = input.getPrdtCd(); // 종목코드
 		log.debug("prdtCd ::::: {}", prdtCd);
 		String eno = facade.getDetails().getEno(); // 사원번호
+		String dprtCd = facade.getDetails().getDprtCd(); // 부서코드
+
+		log.debug("dprtCd:", dprtCd);
 
 		for (IBIMS348BVO ibims348bvo : feeSchList) {
 			List<IBIMS348BVO> ibims348hvo = new ArrayList<>();
 			// String rowType = ibims348bvo.getRowType();
 			String rgstSttsCd = ibims348bvo.getRgstSttsCd(); // 등록상태여부
-			String rowType = ibims348bvo.getRowType();	// row상태
+			String rowType = ibims348bvo.getRowType(); // row상태
 			// if (rgstSttsCd == null) {
-			// 	rgstSttsCd = "";
+			// rgstSttsCd = "";
 			// }
 
 			switch (rowType) {
-				case "I":  // "" 신규
+				case "I": // "" 신규
 					int newFeeSn = ibims348Bmp.getFeeSn(prdtCd);
-					ibims348bvo.setPrdtCd(prdtCd);		// 종목코드
-					ibims348bvo.setFeeSn(newFeeSn);		// 수수료일련번호
-					ibims348bvo.setRgstSttsCd("1");	// 등록상태코드
-					//ibims348bvo.setActsCd("0");	// 계정과목코드
+					ibims348bvo.setPrdtCd(prdtCd); // 종목코드
+					ibims348bvo.setFeeSn(newFeeSn); // 수수료일련번호
+					ibims348bvo.setRgstSttsCd("1"); // 등록상태코드
+					// ibims348bvo.setActsCd("0"); // 계정과목코드
 					ibims348bvo.setPrcsCpltYn("N"); // 처리완료여부
 					/* TODO */
-					ibims348bvo.setFeeRcivDt("");	// 수수료수납일자
-					ibims348bvo.setFeeRcivAmt(BigDecimal.ZERO);	// 수수료수납금액
+					ibims348bvo.setFeeRcivDt(""); // 수수료수납일자
+					ibims348bvo.setFeeRcivAmt(BigDecimal.ZERO); // 수수료수납금액
 
 					ibims348bvo.setMngmPrlnRto(BigDecimal.ZERO); // 관리이연이율
 					ibims348bvo.setMngmRcogStrtDt(""); // 관리인식시작일자
@@ -90,9 +92,10 @@ public class TB08040ServiceImpl implements TB08040Service {
 					ibims348bvo.setDcRt(BigDecimal.ZERO); // 할인율
 					ibims348bvo.setHndEmpno(eno);
 					ibims348bvo.setHndTmnlNo(""); // 조작단말기번호
-					ibims348bvo.setHndTrId(""); 	// 조작거래ID
-					ibims348bvo.setGuid(""); 			// GUID
+					ibims348bvo.setHndTrId(""); // 조작거래ID
+					ibims348bvo.setGuid(""); // GUID
 
+					ibims348bvo.setRgstBdcd(dprtCd); // 등록부점코드
 					result = ibims348Bmp.insertFeeSch(ibims348bvo);
 
 					break;
@@ -119,7 +122,6 @@ public class TB08040ServiceImpl implements TB08040Service {
 				default:
 					break;
 			}
-
 
 		}
 

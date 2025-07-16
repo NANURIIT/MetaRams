@@ -183,7 +183,6 @@ const TB09012Sjs = (function () {
 
 		colTransList = [
 			{ title: "전문송신일련번호", dataType: "string", dataIndx: "msgTransSn", align: "center", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150 },
-			{ title: "업무구분(K013)", dataType: "string", dataIndx: "jobDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: K013 }, render: function (ui) { var options = K013; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
 			{ title: "기준일자", dataType: "string", dataIndx: "stdrDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function (ui) { return dateStr(ui.cellData) } },
 			{ title: "송신일자", dataType: "string", dataIndx: "transDt", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, render: function (ui) { return dateStr(ui.cellData) } },
 			{ title: "거래구분(K014)", dataType: "string", dataIndx: "trDcd", align: "left", halign: "center", filter: { crules: [{ condition: "range" }] }, width: 150, editor: { type: 'select', valueIndx: 'cdValue', labelIndx: 'cdName', options: K014 }, render: function (ui) { var options = K014; var option = options.find(opt => opt.cdValue == ui.cellData); return option ? option.cdValue + '.' + option.cdName : ui.cellData; } },
