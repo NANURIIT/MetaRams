@@ -130,9 +130,9 @@
 					, HND_TMNL_NO
 					, HND_TR_ID
 					, GUID
-		) VALUES
-		<foreach collection="ibims810bdtoList" item="item" separator=",">
-			(
+		) 
+		<foreach collection="ibims810bdtoList" item="item" separator="UNION ALL">
+			select
 				  #{item.stdrDt}
 				, #{item.prdtCd}
 				, #{item.excSn}
@@ -192,7 +192,7 @@
 				, #{item.hndTmnlNo}
 				, #{item.hndTrId}
 				, #{item.guid}
-			)
+			from dual
 		</foreach>
 	</insert>
 

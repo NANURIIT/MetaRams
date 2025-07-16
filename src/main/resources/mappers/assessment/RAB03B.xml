@@ -14,9 +14,8 @@
 			 , HNDL_P_ENO							<!-- 처리자사번 -->
 			 , DLT_F								<!-- 삭제여부 -->
 			 )
-		VALUES
-		 <foreach collection="list" item="item" separator=",">
-			 (
+		 <foreach collection="list" item="item" separator="UNION ALL">
+			 select
 			   #{item.repDsgnDeptNo}				<!-- 리포트지정사용자번호 -->
 			 , #{item.repNo} 						<!-- 리포트번호 -->
 			 , #{item.rgstDt}						<!-- 등록일자 -->
@@ -24,7 +23,7 @@
 			 , #{item.hndlDprtCd}					<!-- 처리부점코드 -->
 			 , #{item.hndlPEno}						<!-- 처리자사번 -->
 			 , #{item.dltF}							<!-- 삭제여부 -->
-			 )
+			from dual
 		</foreach>
 	</insert>
 
