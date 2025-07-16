@@ -73,29 +73,29 @@
                )
         <foreach collection="list" item="item" separator="UNION ALL">
              select 
-                 #{item.prdtCd}                           /*상품코드 */ 
-               , #{item.excSn}                            /*실행일련번호 */ 
-               , #{item.scxDcd}                           /*일정구분코드 */
-               , #{item.rdmpTmrd}                         /*상환회차 */
-               , #{item.prarDt}                           /*예정일자 */
-               , #{item.trgtAmt}                          /*대상금액*/
-               , #{item.prarPrna}                         /*예정원금 */
-               , #{item.strtDt}                           /*시작일자 */
-               , #{item.endDt}                            /*종료일자 */
-               , #{item.rdmpPrarIntr}                     /*상환예정이자 */
-               , #{item.prcsCpltYn}                       /*처리완료여부 */
-               , #{item.prcsDt}                           /*처리일자 */
-               , #{item.prcsAmt}                          /*처리금액 */
-               , #{item.prcsIntrAmt}                      /*처리이자금액 */
-               , #{item.aplyIrt}                          /*적용이율 */
-               , #{item.ovduIntrRt}                       /*연체이자율 */
-               , #{item.trchDcd}                          /*트렌치구분코드 */
-               , #{item.trSn}                             /*거래일련번호 */
-               , SYSDATE                                    /*조작상세일시 */
-               , #{item.hndEmpno}                         /*조작사원번호 */
-               , #{item.hndTmnlNo}                        /*조작단말기번호 */
-               , #{item.hndTrId}                          /*조작거래id */
-               , #{item.guid}                             /*guid */
+                 #{item.prdtCd, jdbcType=VARCHAR}
+				, #{item.excSn, jdbcType=NUMERIC}
+				, #{item.scxDcd, jdbcType=VARCHAR}
+				, #{item.rdmpTmrd, jdbcType=VARCHAR}
+				, #{item.prarDt, jdbcType=VARCHAR}
+				, #{item.trgtAmt, jdbcType=NUMERIC} 
+				, #{item.prarPrna, jdbcType=NUMERIC}
+				, #{item.strtDt, jdbcType=VARCHAR}
+				, #{item.endDt, jdbcType=VARCHAR}
+				, TRUNC(#{item.rdmpPrarIntr, jdbcType=NUMERIC})
+				, #{item.prcsCpltYn, jdbcType=VARCHAR}
+				, #{item.prcsDt, jdbcType=VARCHAR}
+				, #{item.prcsAmt, jdbcType=NUMERIC}
+				, #{item.prcsIntrAmt, jdbcType=NUMERIC}
+				, #{item.aplyIrt, jdbcType=NUMERIC}
+				, #{item.ovduIntrRt, jdbcType=NUMERIC}
+				, #{item.trchDcd, jdbcType=VARCHAR}
+				, #{item.trSn, jdbcType=NUMERIC}
+				, SYSDATE
+				, #{item.hndEmpno, jdbcType=VARCHAR}
+				, #{item.hndTmnlNo, jdbcType=VARCHAR}
+				, #{item.hndTrId, jdbcType=VARCHAR}
+				, #{item.guid, jdbcType=VARCHAR}
                from dual
         </foreach>
     </insert>
@@ -494,7 +494,7 @@
                , #{prarPrna}                         /*예정원금 */
                , #{strtDt}                           /*시작일자 */
                , #{endDt}                            /*종료일자 */
-               , #{rdmpPrarIntr}                     /*상환예정이자 */
+               , TRUNC(#{rdmpPrarIntr}                     /*상환예정이자 */
                , #{prcsCpltYn}                       /*처리완료여부 */
                , TO_CHAR(SYSDATE, 'YYYYMMDD')        /*처리일자 */
                , #{prcsAmt}                          /*처리금액 */
@@ -768,7 +768,7 @@
                , #{prarPrna}                              /*예정원금 */
                , #{strtDt}                                /*시작일자 */
                , #{endDt}                                 /*종료일자 */
-               , #{rdmpPrarIntr}                          /*상환예정이자 */
+               , TRUNC(#{rdmpPrarIntr})                          /*상환예정이자 */
                , #{prcsCpltYn}                            /*처리완료여부 */
                , #{prcsDt}                                /*처리일자 */
                , #{prcsAmt}                               /*처리금액 */

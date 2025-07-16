@@ -74,7 +74,7 @@
 				, #{item.prarPrna, jdbcType=NUMERIC}
 				, #{item.strtDt, jdbcType=VARCHAR}
 				, #{item.endDt, jdbcType=VARCHAR}
-				, #{item.rdmpPrarIntr, jdbcType=NUMERIC}
+				, TRUNC(#{item.rdmpPrarIntr, jdbcType=NUMERIC})
 				, #{item.prcsCpltYn, jdbcType=VARCHAR}
 				, #{item.prcsDt, jdbcType=VARCHAR}
 				, #{item.prcsAmt, jdbcType=NUMERIC}
@@ -129,7 +129,7 @@
                , #{prarPrna}                         <!-- 예정원금 -->
                , #{strtDt}                           <!-- 시작일자 -->
                , #{endDt}                            <!-- 종료일자 -->
-               , #{rdmpPrarIntr}                     <!-- 상환예정이자 -->
+               , TRUNC(#{rdmpPrarIntr})                     <!-- 상환예정이자 -->
                , #{prcsCpltYn}                       <!-- 처리완료여부 -->
                , #{prcsDt}                           <!-- 처리일자 -->
                , #{prcsAmt}                          <!-- 처리금액 -->
