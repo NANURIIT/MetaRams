@@ -113,6 +113,7 @@ const TB07090Sjs = (function() {
 				maxWidth: 36,
 				type: "checkBoxSelection",
 				editable: function(ui) {
+					
 					return (ui.rowData.pmntPrarAmt > ui.rowData.dealRctmAmt);
 				},
 				editor: false,
@@ -238,7 +239,10 @@ const TB07090Sjs = (function() {
 				maxWidth: 36,
 				type: "checkBoxSelection",
 				editable: function(ui) {
-					return (ui.rowData.pmntPrarAmt < ui.rowData.dealRctmAmt);
+					if(ui.rowData != null) {
+						return (ui.rowData.pmntPrarAmt < ui.rowData.dealRctmAmt);
+					}
+					
 				},
 				editor: false,
 				filter: { crules: [{ condition: "range" }] },
@@ -1259,6 +1263,11 @@ const TB07090Sjs = (function() {
 			}
 		}
 	}
+	
+	function colModel2_save() {
+		saveRctmDtlsRgst();
+	}
+	
 
 	function colModel3_addNewRow(obj) {
 
@@ -1454,6 +1463,7 @@ const TB07090Sjs = (function() {
 		getDealInfoFromWF: getDealInfoFromWF,
 		colModel2_addNewRow: colModel2_addNewRow,
 		colModel2_deleteRow: colModel2_deleteRow,
+		colModel2_save: colModel2_save,
 		colModel3_addNewRow: colModel3_addNewRow,
 		colModel3_deleteRow: colModel3_deleteRow,
 		colModel3_save: colModel3_save,

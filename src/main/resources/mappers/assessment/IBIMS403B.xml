@@ -31,6 +31,7 @@
             FROM IBIMS403B /* 여신스케쥴기본 */
            WHERE PRDT_CD = #{prdtCd}        /* 상품코드 */
              AND EXC_SN  = #{excSn}         /* 실행일련번호 */
+             ORDER BY SCX_DCD, PRAR_DT
     </select>
     <select id="getExcSn" resultType="long" parameterType="string">
     	/* IBIMS403BMapper.getExcSn */
@@ -72,29 +73,29 @@
                )
         <foreach collection="list" item="item" separator="UNION ALL">
              select 
-                 #{item.prdtCd}                           /*상품코드 */ 
-               , #{item.excSn}                            /*실행일련번호 */ 
-               , #{item.scxDcd}                           /*일정구분코드 */
-               , #{item.rdmpTmrd}                         /*상환회차 */
-               , #{item.prarDt}                           /*예정일자 */
-               , #{item.trgtAmt}                          /*대상금액*/
-               , #{item.prarPrna}                         /*예정원금 */
-               , #{item.strtDt}                           /*시작일자 */
-               , #{item.endDt}                            /*종료일자 */
-               , #{item.rdmpPrarIntr}                     /*상환예정이자 */
-               , #{item.prcsCpltYn}                       /*처리완료여부 */
-               , #{item.prcsDt}                           /*처리일자 */
-               , #{item.prcsAmt}                          /*처리금액 */
-               , #{item.prcsIntrAmt}                      /*처리이자금액 */
-               , #{item.aplyIrt}                          /*적용이율 */
-               , #{item.ovduIntrRt}                       /*연체이자율 */
-               , #{item.trchDcd}                          /*트렌치구분코드 */
-               , #{item.trSn}                             /*거래일련번호 */
-               , SYSDATE                                    /*조작상세일시 */
-               , #{item.hndEmpno}                         /*조작사원번호 */
-               , #{item.hndTmnlNo}                        /*조작단말기번호 */
-               , #{item.hndTrId}                          /*조작거래id */
-               , #{item.guid}                             /*guid */
+                 #{item.prdtCd, jdbcType=VARCHAR}
+				, #{item.excSn, jdbcType=NUMERIC}
+				, #{item.scxDcd, jdbcType=VARCHAR}
+				, #{item.rdmpTmrd, jdbcType=VARCHAR}
+				, #{item.prarDt, jdbcType=VARCHAR}
+				, #{item.trgtAmt, jdbcType=NUMERIC} 
+				, #{item.prarPrna, jdbcType=NUMERIC}
+				, #{item.strtDt, jdbcType=VARCHAR}
+				, #{item.endDt, jdbcType=VARCHAR}
+				, TRUNC(#{item.rdmpPrarIntr, jdbcType=NUMERIC})
+				, #{item.prcsCpltYn, jdbcType=VARCHAR}
+				, #{item.prcsDt, jdbcType=VARCHAR}
+				, #{item.prcsAmt, jdbcType=NUMERIC}
+				, #{item.prcsIntrAmt, jdbcType=NUMERIC}
+				, #{item.aplyIrt, jdbcType=NUMERIC}
+				, #{item.ovduIntrRt, jdbcType=NUMERIC}
+				, #{item.trchDcd, jdbcType=VARCHAR}
+				, #{item.trSn, jdbcType=NUMERIC}
+				, SYSDATE
+				, #{item.hndEmpno, jdbcType=VARCHAR}
+				, #{item.hndTmnlNo, jdbcType=VARCHAR}
+				, #{item.hndTrId, jdbcType=VARCHAR}
+				, #{item.guid, jdbcType=VARCHAR}
                from dual
         </foreach>
     </insert>
@@ -102,50 +103,46 @@
     <select id="getRdmpList" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
     	/* IBIMS403BMapper.getRdmpList */
 		SELECT C.PRDT_CD            /* 상품코드 */
-		     , C.EXC_SN             /* 실행일련번호 */
-		     , A.PRAR_DT  			/* 상환예정일자 */
-		     , C.EXP_DT             /* 만기일자 */
-		     , C.DEAL_EXC_BLCE      /* 실행잔액 */
-		     , NVL(A.PRAR_PRNA-A.PRCS_AMT, 0) AS PRAR_PRNA            /* 상환원금 */
-		     , NVL(A.RDMP_PRAR_INTR, 0)       AS RDMP_PRAR_INTR       /* 상환이자 */
+               , C.EXC_SN             /* 실행일련번호 */
+               , A.PRAR_DT              /* 상환예정일자 */
+               , C.EXP_DT             /* 만기일자 */
+               , C.DEAL_EXC_BLCE      /* 실행잔액 */
+               , NVL(A.PRAR_PRNA-A.PRCS_AMT, 0) AS PRAR_PRNA            /* 상환원금 */
+               , NVL(A.RDMP_PRAR_INTR, 0)       AS RDMP_PRAR_INTR       /* 상환이자 */
               , 0 AS DEAL_MRDP_PRCA                               /* 딜중도상환원금 */                      
               , 0 AS MRDP_FEE_AMT                                 /* 중도상환수수료금액 */                   
              , NVL(C.RCVB_INTR_AMT, 0) AS RCVB_INTR_AMT           /* 미수이자금액 */       
-             , 'N' AS EARLY_REPAY_YN 	                            /* 중도상환여부 */
+             , 'N' AS EARLY_REPAY_YN                                /* 중도상환여부 */
              , NVL(D.MDWY_RDMP_FEE_RTO, 0) AS MDWY_RDMP_FEE_RTO   /* 중도상환수수료비율 */
-		  FROM IBIMS401B B       /* 여신기본 */
-             , IBIMS402B C  /* 실행기본 */
-             , (
+            FROM IBIMS401B B       /* 여신기본 */
+               inner join IBIMS402B C  /* 실행기본 */ on C.PRDT_CD = B.PRDT_CD
+               left join  (
               SELECT PRDT_CD
                    , EXC_SN 
-                   , MIN(PRAR_DT) AS PRAR_DT 				/* 예정일자 */
-                   , SUM(NVL(PRAR_PRNA,0)) AS PRAR_PRNA	/* 예정원금 */
-                   , SUM(NVL(PRCS_AMT,0)) AS PRCS_AMT 	/* 처리금액 */
-                   , SUM(NVL(RDMP_PRAR_INTR, 0)) AS RDMP_PRAR_INTR 	/* 상환예정이자 */
+                   , MIN(PRAR_DT) AS PRAR_DT                     /* 예정일자 */
+                   , SUM(NVL(PRAR_PRNA,0)) AS PRAR_PRNA     /* 예정원금 */
+                   , SUM(NVL(PRCS_AMT,0)) AS PRCS_AMT  /* 처리금액 */
+                   , SUM(NVL(RDMP_PRAR_INTR, 0)) AS RDMP_PRAR_INTR    /* 상환예정이자 */
                 FROM IBIMS403B   /* 여신스케줄기본 */
-               WHERE PRDT_CD     = #{prdtCd}                    
-                 AND PRAR_DT &lt;= #{prarDt}  /* 상환일자 */
+               WHERE PRDT_CD     = #{prdtCd}                      
+                 AND PRAR_DT  &lt;= #{prarDt} /* 상환일자 */
                  AND NVL(PRCS_CPLT_YN, 'N') = 'N' 
                GROUP BY PRDT_CD
                       , EXC_SN 
-             ) A
- 			, IBIMS204B D /* 딜승인중도상환수수료설정기본 */
-           
-	     WHERE 1 = 1
-	       AND C.PRDT_CD = B.PRDT_CD
-	       AND C.PRDT_CD = A.PRDT_CD(+)  
-		   AND C.EXC_SN  = A.EXC_SN(+)
-		   AND B.PRDT_CD = D.PRDT_CD(+) 
-           AND D.FEE_SN(+)   = NVL(( SELECT MAX(FEE_SN) FEE_SN 
-								   FROM IBIMS204B
-								  WHERE PRDT_CD       = #{prdtCd}    
-				   				    AND APLY_MNUM &lt;= (SELECT MONTHS_BETWEEN( SYSDATE, TO_DATE(V.CTRC_DT,'YYYYMMDD')) FROM IBIMS401B V WHERE PRDT_CD = #{prdtCd})     
-						             ), 0)
-		   AND B.PRDT_CD = #{prdtCd}     
-		   AND B.CTRC_CCLC_DCD = '1'   
-		   AND C.LDG_STTS_CD   = '1' 
-	     ORDER BY C.PRDT_CD 
-	            , C.EXC_SN 
+             ) A on C.PRDT_CD = A.PRDT_CD and C.EXC_SN  = A.EXC_SN
+               left join IBIMS204B D /* 딜승인중도상환수수료설정기본 */ 
+               on B.PRDT_CD = D.PRDT_CD 
+               and D.FEE_SN  = NVL(( SELECT MAX(FEE_SN) FEE_SN 
+                                           FROM IBIMS204B
+                                          WHERE PRDT_CD       = #{prdtCd}   
+                                            AND APLY_MNUM &lt;= (SELECT MONTHS_BETWEEN( SYSDATE, TO_DATE(V.CTRC_DT,'YYYYMMDD')) FROM IBIMS401B V WHERE PRDT_CD = #{prdtCd})     
+                                           ), 0)
+          WHERE 1 = 1
+             AND B.PRDT_CD = #{prdtCd}     
+             AND B.CTRC_CCLC_DCD = '1'   
+             AND C.LDG_STTS_CD   = '1' 
+          ORDER BY C.PRDT_CD 
+                 , C.EXC_SN
     </select>
 
     <select id="getRdmpDetail" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS403BVO">
@@ -497,7 +494,7 @@
                , #{prarPrna}                         /*예정원금 */
                , #{strtDt}                           /*시작일자 */
                , #{endDt}                            /*종료일자 */
-               , #{rdmpPrarIntr}                     /*상환예정이자 */
+               , TRUNC(#{rdmpPrarIntr}                     /*상환예정이자 */
                , #{prcsCpltYn}                       /*처리완료여부 */
                , TO_CHAR(SYSDATE, 'YYYYMMDD')        /*처리일자 */
                , #{prcsAmt}                          /*처리금액 */
@@ -600,7 +597,7 @@
 	             THEN TT1.PRAR_PRNA
 	             ELSE TT1.RDMP_PRAR_INTR
 	              END                   AS PMNT_PRAR_AMT			  /* 납부예정금액 */
-	           , tt3.DEAL_RCTM_AMT   
+	           , nvl(tt3.DEAL_RCTM_AMT,0)  AS DEAL_RCTM_AMT 
 	           , TT1.PRAR_DT 				    AS PRAR_DT              /* 상환예정일자 */
 	           , TT2.DEAL_NO 				    AS DEAL_NO              /* 딜번호 */
 	           , TT1.PRDT_CD            AS PRDT_CD              /* 상품코드 */ 
@@ -771,7 +768,7 @@
                , #{prarPrna}                              /*예정원금 */
                , #{strtDt}                                /*시작일자 */
                , #{endDt}                                 /*종료일자 */
-               , #{rdmpPrarIntr}                          /*상환예정이자 */
+               , TRUNC(#{rdmpPrarIntr})                          /*상환예정이자 */
                , #{prcsCpltYn}                            /*처리완료여부 */
                , #{prcsDt}                                /*처리일자 */
                , #{prcsAmt}                               /*처리금액 */

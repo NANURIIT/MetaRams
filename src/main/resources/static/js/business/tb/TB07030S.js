@@ -576,7 +576,7 @@ const TB07030Sjs = (function () {
         dataType: "json",
         beforeSend: function (xhr) {
 			console.time("상환계산")
-			showLoading()
+			//showLoading()
             bfReset2();
         },
         success: function (data) {
@@ -614,7 +614,7 @@ const TB07030Sjs = (function () {
         },
 		complete : function()
 	   	{
-	       hideLoading()
+	       //hideLoading()
 	   	}
       });
     } else {
