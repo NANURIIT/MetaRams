@@ -72,24 +72,23 @@
            , HND_TR_ID                               /* 조작거래id */
            , GUID                                    /* guid */
           )
-      VALUES 
-	  	<foreach collection="list" item="item" index="index" separator=",">
-	  		   (
+	  	<foreach collection="list" item="item" index="index" separator="UNION ALL">
+	  		  select
 	  			   #{item.dealNo}                                 /* 딜번호 */
-           , #{item.ibStlnDcd}                              /* 투자금융대주구분코드 */
-           , #{index}+1                                     /* 일련번호 */
-           , '1'                                            /* 대주/수익자구분코드 */
-           , #{item.rmOpntEprzDcd}                          /* RM상대기업구분코드 */
-           , #{item.entpNm}                                 /* 업체명 */
-           , #{item.crdtProvLmtAmt}                         /* 신용공여한도금액 */
-           , #{item.prtcRto}                                /* 참가비율 */
-           , #{item.delYn}                                  /* 삭제여부 */
-           , SYSDATE                             				    /* 조작상세일시 */
-           , #{item.hndEmpno}                               /* 조작사원번호 */
-           , #{item.hndTmnlNo}                              /* 조작단말기번호 */
-           , #{item.hndTrId}                                /* 조작거래id */
-           , #{item.guid}                                   /* guid */
-           )
+		           , #{item.ibStlnDcd}                              /* 투자금융대주구분코드 */
+		           , #{index}+1                                     /* 일련번호 */
+		           , '1'                                            /* 대주/수익자구분코드 */
+		           , #{item.rmOpntEprzDcd}                          /* RM상대기업구분코드 */
+		           , #{item.entpNm}                                 /* 업체명 */
+		           , #{item.crdtProvLmtAmt}                         /* 신용공여한도금액 */
+		           , #{item.prtcRto}                                /* 참가비율 */
+		           , #{item.delYn}                                  /* 삭제여부 */
+		           , SYSDATE                             				    /* 조작상세일시 */
+		           , #{item.hndEmpno}                               /* 조작사원번호 */
+		           , #{item.hndTmnlNo}                              /* 조작단말기번호 */
+		           , #{item.hndTrId}                                /* 조작거래id */
+		           , #{item.guid}                                   /* guid */
+           	from dual
 	  	</foreach>  
 	  </insert>
 

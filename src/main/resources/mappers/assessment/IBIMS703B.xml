@@ -328,9 +328,9 @@
                 ,   HND_TR_ID
                 ,   GUID
         )
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-                (   TO_CHAR(SYSDATE, 'YYYYMM')
+        <foreach collection="list" item="item" separator="UNION ALL">
+            select    
+			   TO_CHAR(SYSDATE, 'YYYYMM')
                 ,   #{item.dprtCd}
                 ,   #{item.rgstSn}
                 ,   #{item.bssAsstMngmNo}
@@ -460,7 +460,7 @@
                 ,   #{item.hndTmnlNo}
                 ,   #{item.hndTrId}
                 ,   #{item.guid}
-                )
+                from dual
         </foreach>
     </insert>
 

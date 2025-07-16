@@ -147,9 +147,8 @@
                     , HND_TR_ID                             /*조작거래ID*/
                     , GUID                                  /*GUID*/						   
                 )
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-                (
+        <foreach collection="list" item="item" separator="UNION ALL">
+                select
                     #{item.stdrDt}						    /*기준일자*/
                     , #{item.prdtCd} 						/*상품코드*/	
                     , #{item.excSn}							/*실행일련번호*/
@@ -171,7 +170,7 @@
                     , ''
                     , ''
                     , ''
-                )
+                from dual
         </foreach>
     </insert>
 </mapper>

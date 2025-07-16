@@ -56,9 +56,8 @@
             , CHG_DTTM               /*  변경일시  */
             , CHG_USER_ID            /*  변경자  */
         )
-        VALUES 
-        <foreach collection="list" item="item" index="index" separator=",">
-        (
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+        select
             #{item.wfMapId}          
             , #{item.wfMapNm}      	
             , #{item.jobTable}        
@@ -67,7 +66,7 @@
             , #{item.regUserId}          
             , #{item.chgDttm}              
             , #{item.chgUserId}             
-        )
+        from dual
         </foreach>
     </insert>
 
@@ -84,9 +83,8 @@
                 ,EXC_AUTH_EMP   /*  예외권한 사원번호  */
                 ,EXC_AUTH_DEPT   /*  예외권한 부서코드  */
             )
-        VALUES 
-        <foreach collection="list" item="item" index="index" separator=",">
-            (
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
                 #{item.wfMapId}
                 , #{item.stepId}
                 , #{item.nextStepId}
@@ -95,7 +93,7 @@
                 , #{item.wfAuthId}
                 , #{item.excAuthEmp}
                 , #{item.excAuthDept}
-            )
+            from dual
         </foreach>
     </insert>
 

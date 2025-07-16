@@ -200,7 +200,7 @@
               AND RGST_SN 		        = #{item.rgstSn}                     /* 등록일련번호 */ 
               AND EPRZ_CRDL_STLA_DCD 	= #{item.eprzCrdlStlaDcd};           /* 기업여신결산구분코드 */ 
         </foreach>
-        END;
+        END
     </update>
 
     <!-- 배치 -->

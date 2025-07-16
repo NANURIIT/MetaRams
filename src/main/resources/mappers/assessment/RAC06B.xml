@@ -34,19 +34,18 @@
 		, FST_HNDL_P_ENO						<!-- 최초등록자사번   -->
 		, LST_HNDL_P_ENO						<!-- 최종변경자사번   -->
 		)
-		VALUES
-		<foreach collection="mngPInfo" item="item" separator=",">
-			(
-			#{ibDealNo}
-			, #{item.sq}
-			, #{item.dprtCd}
-			, #{item.bsnssMngPEno}
-			, #{item.cntrt}
-			, DATE_FORMAT(CURRENT_DATE(),'%Y%m%d')
-			, 0
-			, #{fstHndlPEno}
-			, #{lstHndlPEno}
-			)
+		<foreach collection="mngPInfo" item="item" separator="UNION ALL">
+			select
+				#{ibDealNo}
+				, #{item.sq}
+				, #{item.dprtCd}
+				, #{item.bsnssMngPEno}
+				, #{item.cntrt}
+				, DATE_FORMAT(CURRENT_DATE(),'%Y%m%d')
+				, 0
+				, #{fstHndlPEno}
+				, #{lstHndlPEno}
+			from dual
 		</foreach>
 	</insert>
 

@@ -224,9 +224,8 @@
 			, HND_TR_ID					/* 조작거래ID */
 			, GUID						/* GUID */
 			)
-	   VALUES
-        <foreach collection="list" item="item" separator=",">
-			(
+        <foreach collection="list" item="item" separator="UNION ALL">
+			select
 			  #{item.prdtCd}				    /* 상품코드 */
 			, #{item.feeSn}				    /* 수수료일련번호 */
 			, #{item.hgrkTrSn}                /* 상위거래일련번호 */
@@ -271,7 +270,7 @@
 			, #{item.hndTmnlNo}			    /* 조작단말기번호 */
 			, #{item.hndTrId}			    /* 조작거래ID */
 			, #{item.guid}				    /* GUID */
-			)
+			from dual
         </foreach>
 	</insert>
     

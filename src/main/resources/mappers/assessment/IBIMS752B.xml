@@ -97,9 +97,8 @@
 					, REV_LIMIT_AMT /*회전한도금액(천원) */
 					, LOAN_BLCE /*대출잔액(천원) */
                 )
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-                (
+        <foreach collection="list" item="item" separator="UNION ALL">
+               select
                       #{item.stdrDt}||lpad(#{item.sn}, 5, '0')
 					, #{item.errDcd}
 					, #{item.stdrDt}
@@ -116,7 +115,7 @@
 					, #{item.lmtInfSbjCd}
 					, #{item.revLimitAmt}
 					, #{item.loanBlce}
-                )
+                from dual
         </foreach>
     </insert>
     
@@ -144,9 +143,8 @@
 					, SEND_RSLT /*발송결과 */
 					, SCRN_DCD /*화면구분 */
                 )
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-                (
+        <foreach collection="list" item="item" separator="UNION ALL">
+                select
                       #{item.stdrDt}||lpad(#{item.sn}, 5, '0')
 					, #{item.errDpch}
 					, #{item.transDt}
@@ -158,7 +156,7 @@
 					, #{item.sendTm}
 					, #{item.sendRslt}
 					, #{item.scrnDcd}
-                )
+                from dual
         </foreach>
     </insert>
     
@@ -193,9 +191,8 @@
 					, AMT /*금액(천원) */
 					, SCRN_DCD /*화면구분 */
                 )
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-                (
+        <foreach collection="list" item="item" separator="UNION ALL">
+                select
                       #{item.stdrDt}||lpad(#{item.sn}, 5, '0')
 					, #{item.rcptDt}
 					, #{item.stdrDt}
@@ -214,7 +211,7 @@
 					, #{item.sbjCd}
 					, #{item.amt}
 					, #{item.scrnDcd}
-                )
+                from dual
         </foreach>
     </insert>
     

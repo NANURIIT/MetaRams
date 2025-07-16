@@ -47,9 +47,8 @@
                 , HND_DETL_DTM                            /* 조작상세일시 */
                 , HND_EMPNO                               /* 조작사원번호 */
                )
-        VALUES
-               <foreach collection="list" item="item" separator=",">
-               (
+               <foreach collection="list" item="item" separator="UNION ALL">
+               select
                  #{item.dealNo}                           /* 딜번호 */
                , #{item.sn}                               /* 일련번호 */
                , #{item.bdcd}                             /* 부서코드 */
@@ -59,7 +58,7 @@
                , 'N'                                      /* 삭제여부 */
                , SYSDATE                            	    /* 조작상세일시 */
                , #{item.hndEmpno}                         /* 조작사원번호 */
-               )
+               from dual
                </foreach>
     </insert>
     

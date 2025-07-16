@@ -24,19 +24,18 @@
 		, FST_HNDL_P_ENO						<!-- 최초등록자사번   -->
 		, LST_HNDL_P_ENO						<!-- 최종변경자사번   -->
 		)
-		VALUES
-		<foreach collection="sellDownInfo" item="item" separator=",">
-			(
-			#{dealMngNo}
-			, #{item.sq}
-			, #{item.sellDownDt}
-			, #{item.sellDownAmt}
-			, #{item.sellDownRa}
-			, DATE_FORMAT(CURRENT_DATE(),'%Y%m%d')
-			, 0
-			, #{fstHndlPEno}
-			, #{lstHndlPEno}
-			)
+		<foreach collection="sellDownInfo" item="item" separator="UNION ALL">
+			select
+				#{dealMngNo}
+				, #{item.sq}
+				, #{item.sellDownDt}
+				, #{item.sellDownAmt}
+				, #{item.sellDownRa}
+				, DATE_FORMAT(CURRENT_DATE(),'%Y%m%d')
+				, 0
+				, #{fstHndlPEno}
+				, #{lstHndlPEno}
+			from dual
 		</foreach>
 	</insert>
 

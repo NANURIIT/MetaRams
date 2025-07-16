@@ -42,9 +42,8 @@
         , HND_TR_ID           <!-- 조작 거래 ID -->
         , GUID                <!-- GUID -->
     )
-    VALUES    
-    <foreach collection="listMonthStep" item="item" separator=",">       
-        (
+    <foreach collection="listMonthStep" item="item" separator="UNION ALL">       
+        select
             #{item.dealNo},      
             #{item.stdrYm},      
             #{item.busiPrgStep}, 
@@ -55,7 +54,7 @@
             #{item.hndTmnlNo},   
             #{item.hndTrId},     
             #{item.guid}         
-        )
+        from dual
     </foreach>
 </insert>
 

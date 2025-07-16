@@ -38,9 +38,9 @@
       , HND_TMNL_NO
       , HND_TR_ID
       , GUID
-    ) VALUES 
-      <foreach collection="list" item="item" index="index" separator=",">
-    (
+    ) 
+      <foreach collection="list" item="item" index="index" separator="UNION ALL">
+    select
         #{item.mrtgMngmNo}
       , #{index}+1
       , #{item.prfdRankKndCd}
@@ -54,7 +54,7 @@
       , 'TB06013P'                                       <!-- 조작단말기번호 -->
       , 'registPrfd'                                         <!-- 조작거래id -->
       , '1'                                            <!-- guid -->
-    )
+    from dual
       </foreach>
     </insert>
 
