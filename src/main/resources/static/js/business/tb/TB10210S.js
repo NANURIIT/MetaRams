@@ -111,7 +111,7 @@ const TB10210Sjs = (function() {
 			align: "center",
 			halign: "center",
 			width: "7%",
-			filter: { crules: [{ condition: "range" }] },
+			filter: { crules: [{ condition: "range" }] }, width: "7%", render: function (ui) { return dateStr(ui.cellData) } 
 		},
 		{
 			title: "등록자",
@@ -695,7 +695,15 @@ const TB10210Sjs = (function() {
 			}).then(callback);
 		}
 	}
-	
+
+	// 날짜 세팅
+	function dateStr(str) {
+		if (str != null) {
+			return str.substring(0, 4) + '-' + str.substring(4, 6) + '-' + str.substring(6, 8);
+		} else {
+			return '';
+		}
+	}	
 	return {
 		searchButtonClick: searchButtonClick
 		, pqGridAddNewRow: pqGridAddNewRow
