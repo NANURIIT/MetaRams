@@ -469,7 +469,7 @@
                   SELECT s701b_2.DPRT_CD
                     FROM IBIMS701B s701b_2
                    WHERE s701b_2.DPRT_CD = A.FRS_MNGM_BDCD
-                );
+                )
     </select>
 
     <!-- 금융감독원보고서내역 CPC1 보고서양식 조회 -->

@@ -40,7 +40,9 @@
               , IBIMS103B  H  /* 딜심사기본 */
               , IBIMS604B  G  /* 일별신용사건내역 */
          WHERE 1=1
-           AND A.STDR_DT  = #{stdrDt} /* 기준일자 */
+		   <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(stdrDt)">
+           AND A.STDR_DT  <![CDATA[<=]]> #{stdrDt} /* 기준일자 */
+		   </if>
            AND A.DEL_YN   = 'N'
            AND A.CRNO     = B.CRNO
            AND C.LAST_YN  = 'Y'
@@ -58,7 +60,7 @@
 		  <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(empno)">
 		   AND G.FST_CNFR_EMPNO = #{empno}	/* 최초확인사번(심사역)*/
 		  </if>   
-          /* AND  G.FST_CNFR_DT     IS NOT NULL*/
+       
    </select>
     <select id ="selectIBIMS604B" parameterType="com.nanuri.rams.business.common.vo.IBIMS604BVO$SearchVO" resultType="com.nanuri.rams.business.common.dto.IBIMS604BDTO">
 	 /* IBIMS604BMapper.selectIBIMS604B */
