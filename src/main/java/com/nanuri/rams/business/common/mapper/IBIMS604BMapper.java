@@ -20,6 +20,6 @@ public interface IBIMS604BMapper {
 	int insertIBIMS604B(ExmntInfo exmntInfo);
 
 	// 기등록내역 조회
-	List<IBIMS604BDTO> selectIBIMS604B(ExmntInfo exmntInfo);
+	IBIMS604BDTO selectIBIMS604B(ExmntInfo exmntInfo);
 
 }

@@ -70,6 +70,7 @@ public class IBIMS604BVO {
 		private String fstCnfrEmpno; // 최초확인사번
 		private String ansAcptEmpno; // 답변접수사번
 
+		private String athCd; // 권한코드
 	}
 
 }

@@ -87,7 +87,7 @@ const TB09010Sjs = (function () {
       filter: { crules: [{ condition: "range" }] },
     },
     {
-      title: "담당심사내역",
+      title: "변경담당자",
       dataType: "string",
       dataIndx: "empNm",
       align: "left",
@@ -187,6 +187,8 @@ const TB09010Sjs = (function () {
   });
 
   function chkUserAtc(){
+    
+    $("#TB09010S_athCd").val("");
 
 		$.ajax({
 			type: "GET",
@@ -195,6 +197,7 @@ const TB09010Sjs = (function () {
 			success: function(data) {
 				var athCd = data.athCd;
 
+        $("#TB09010S_athCd").val(athCd);
         if(athCd == "AG21" || athCd == "AG28"){
           $('div[data-menuid="/TB09010S"] #assesmentRequest').attr("disabled", false);
         }else{
@@ -326,20 +329,21 @@ const TB09010Sjs = (function () {
             $("#TB09010S_DealList").pqGrid("setData", data);
             $("#TB09010S_DealList").pqGrid("refreshDataAndView");
           } else {
-            $("#TB09010S_DealList").pqGrid(
-              "option",
-              "strNoRows",
-              "데이터가 없습니다."
-            );
+             $("#TB09010S_DealList").pqGrid(
+               "option",
+               "strNoRows",
+               "데이터가 없습니다."
+             );
             // console.log("AlertTest");        
               Swal.fire({
                 icon: "warning",
                 title: "Waring!",
                 text: "데이터가 없습니다!",
               });
+              $("#TB09010S_DealList").pqGrid("setData", []);
+              $("#TB09010S_DealList").pqGrid("refreshDataAndView");
 
-         //   $("#TB09010S_DealList").pqGrid("setData", data);  
-            $("#TB09010S_DealList").pqGrid("refreshDataAndView");
+         
           }
         },
       });
@@ -388,6 +392,7 @@ const TB09010Sjs = (function () {
     var ivtgRsltCtns = $("#TB09010S_exmntRsltCntnt").val();
     var stdrDt = $("#TB09010S_selectedStdDt").val();
     var crno = $("#TB09010S_crno").val(); // 법인등록번호
+    var athCd = $("#TB09010S_athCd").val(); // 권한코드
 
     // TODO: 권한정보 취득하여 심사역/심사부서장 별 확인사항 업데이트 필요
 
@@ -419,6 +424,7 @@ const TB09010Sjs = (function () {
         jdgmDcd: jdgmDcd,
         mtrDcd: mtrDcd,
         crno: crno,
+        athCd: athCd,
       };
 
       $.ajax({
@@ -436,6 +442,7 @@ const TB09010Sjs = (function () {
               confirmButtonText: "확인",
             }).then((result) => {
               //location.reload();
+              resetContents();
               checkDealSearch();  // 재조회
             });
           } else {
@@ -447,6 +454,9 @@ const TB09010Sjs = (function () {
             });
           }
         },
+
+   			//ERROR
+  			error: handleAjaxError
       });
     }
   }
