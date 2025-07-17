@@ -184,7 +184,7 @@
     <update id="updateSettlement" parameterType="java.util.List">
      /* IBIMS820BMapper.updateSettlement */
         BEGIN
-        <foreach collection="list" item="item">
+        <foreach collection="list" item="item" >
             UPDATE IBIMS820B
                SET THMM_ACML_ERN_AMT  = #{item.thmmAcmlErnAmt}             /* 당월누적수익금액 */ 
                   , HND_DETL_DTM        = SYSDATE                            /* 조작상세일시 */
@@ -200,7 +200,7 @@
               AND RGST_SN 		        = #{item.rgstSn}                     /* 등록일련번호 */ 
               AND EPRZ_CRDL_STLA_DCD 	= #{item.eprzCrdlStlaDcd};           /* 기업여신결산구분코드 */ 
         </foreach>
-        END
+        END ;
     </update>
 
     <!-- 배치 -->
