@@ -1352,8 +1352,9 @@
              WHERE PRDT_CD = #{prdtCd}
         </delete>
 
-        <!-- 사업명세조회 -->
-        <select id="checkDealSearch" parameterType="com.nanuri.rams.business.common.vo.IBIMS201BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS201BVO">
+      <!-- 사업명세조회 -->
+      <select id="checkDealSearch" parameterType="com.nanuri.rams.business.common.vo.IBIMS201BVO" resultType="com.nanuri.rams.business.common.vo.IBIMS201BVO">
+      /* IBIMS201BMapper.checkDealSearch */
 	    SELECT *     
         FROM
             (
@@ -1503,19 +1504,20 @@
         <!-- 사업명세조회 -->
         <select id="selectDealExposure" parameterType="com.nanuri.rams.business.common.vo.IBIMS201BVO"
                 resultType="com.nanuri.rams.business.common.vo.IBIMS201BVO">
-                        SELECT A.DEAL_NO AS DEAL_NO 												 /*  딜번호 */
+          /* IBIMS201BMapper.selectDealExposure */    
+            SELECT A.DEAL_NO AS DEAL_NO 												 /*  딜번호 */
                  , A.DEAL_NM AS DEAL_NM             
                  , NVL(C.RGST_DT, '') AS RGST_DT 												 /*  등록일자 */
                  , NVL(
-                          (SELECT CD_VL_NM
-                             FROM IBIMS002B AS s002b
-                            WHERE CMNS_CD_GRP = 'I011'
+                          (SELECT s002b.CD_VL_NM
+                             FROM IBIMS002B  s002b
+                            WHERE s002b.CMNS_CD_GRP = 'I011'
                               AND s002b.CD_VL_ID = s103b.MTR_PRG_STTS_DCD
                      ), '') AS PRG_STTS_CD_NM														 /*  심사진행상태코드 */
                  , NVL(
-                          (SELECT CD_VL_NM
-                             FROM IBIMS002B AS s002b
-                            WHERE CMNS_CD_GRP = 'I008'
+                          (SELECT s002b.CD_VL_NM
+                             FROM IBIMS002B s002b
+                            WHERE s002b.CMNS_CD_GRP = 'I008'
                               AND s002b.CD_VL_ID = D.CNSB_DCD
                      ), '') AS CNSB_DCD      										 				 /*  협의체구분코드 */
                  , NVL(A.PRDT_CD, '') AS PRDT_CD													 /*  상품코드 */
