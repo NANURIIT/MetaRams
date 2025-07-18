@@ -368,21 +368,21 @@
                       ,  BLCE_INFO.DPRT_CD                                                             AS DPRT_CD            /* 부서코드 */
                       ,  BLCE_INFO.ARDY_BZEP_NO                                                        AS ARDY_BZEP_NO        /* 사업장번호 */
                  /*   ,  BLCE_INFO.FINC_EXCU_RQS_SN                                                    AS FINC_EXCU_RQS_SN    자금집행요청일련번호(일련번호 추후 그룹핑해야할수도 있음) */
-                      ,  NVL(SUM(CASE WHEN BLCE_INFO.TR_DT <![CDATA[<=]]> MB.PREV_MONTH_END 
+                      ,  NVL(SUM(CASE WHEN BLCE_INFO.TR_DT <![CDATA[<=]]> TO_CHAR(MB.PREV_MONTH_END, 'YYYYMMDD')
                                       THEN BLCE_INFO.AMOUNT ELSE 0 END), 0)                            AS BFMM_RNDR_BLCE     /* 전월말잔액 */
-                      ,  NVL(SUM(CASE WHEN BLCE_INFO.TR_DT <![CDATA[<=]]> MB.MONTH_END 
+                      ,  NVL(SUM(CASE WHEN BLCE_INFO.TR_DT <![CDATA[<=]]> TO_CHAR(MB.MONTH_END, 'YYYYYMMDD') 
                                       THEN BLCE_INFO.AMOUNT ELSE 0 END), 0)                            AS THMM_RNDR_BLCE     /* 당월말잔액 */
                    FROM  MONTH_BOUNDS MB
-                      ,  BLCE_INFO
-                  WHERE  BLCE_INFO.TR_DT(+) <![CDATA[<=]]> MB.MONTH_END
+                      ,  BLCE_INFO    BLCE_INFO
+                  WHERE  BLCE_INFO.TR_DT(+) <![CDATA[<=]]> TO_CHAR(MB.MONTH_END, 'YYYYMMDD')
                   GROUP BY 
-                         TO_CHAR(MB.MONTH_END, 'YYYYMM')
+                         SUBSTR(TO_CHAR(MB.MONTH_END,'YYYYMMDD'), 1, 6)
                        , MB.MONTH_END
                        , BLCE_INFO.DPRT_CD
                        , BLCE_INFO.ARDY_BZEP_NO
                  /*      , BLCE_INFO.FINC_EXCU_RQS_SN'    일련번호 추후 그룹핑해야할수도 있음 */
                   ORDER BY 
-                         MB.MONTH_END
+                         SUBSTR(TO_CHAR(MB.MONTH_END,'YYYYMMDD'), 1, 6) 
                        , BLCE_INFO.DPRT_CD
                        , BLCE_INFO.ARDY_BZEP_NO
                ) T2
