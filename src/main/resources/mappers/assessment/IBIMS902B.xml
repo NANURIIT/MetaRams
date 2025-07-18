@@ -152,7 +152,7 @@
            AND FINC_EXCU_RQS_SN = #{fincExcuRqsSn}
          ORDER 
             BY TR_DT
-             , RNDR_DCD;
+             , RNDR_DCD
     </select>
 
     <update id="updateRndrBlce">

@@ -63,7 +63,7 @@
                   FROM IBIMS209B X
                  WHERE X.PRDT_CD = #{prdtCd}
                    AND ROWNUM = 1
-               ) AS I209B
+               ) I209B
             ON I209B.DEAL_NO = IBIMS208B.DEAL_NO
          WHERE 1=1
            AND IBIMS208B.DEAL_NO = #{dealNo}
