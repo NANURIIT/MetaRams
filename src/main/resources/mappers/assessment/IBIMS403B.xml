@@ -628,7 +628,7 @@
 	           , TT2.TR_CRRY_CD 			                          /* 통화코드 */
 	        FROM IBIMS403B TT1	/* 여신스케쥴기본 */
 	   LEFT JOIN IBIMS201B TT2  /* 딜승인기본 */ ON TT1.PRDT_CD = TT2.PRDT_CD
-	   LEFT JOIN ibims430b tt3 ON tt3.PRDT_CD = tt1.PRDT_CD AND tt3.SCX_DCD = tt1.SCX_DCD AND tt3.PRAR_DT = tt1.PRAR_DT
+	   LEFT JOIN ibims430b tt3 ON tt3.PRDT_CD = tt1.PRDT_CD AND tt3.SCX_DCD = tt1.SCX_DCD AND tt3.PRAR_DT = tt1.PRAR_DT AND tt1.exc_sn = tt3.exc_sn
 	       WHERE 1=1
 	         AND TT2.LAST_YN = 'Y'
 	         AND (TT1.PRCS_CPLT_YN != 'Y' OR TT1.PRCS_CPLT_YN IS NULL)

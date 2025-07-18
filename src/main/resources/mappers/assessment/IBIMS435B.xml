@@ -96,6 +96,9 @@
          , HND_TMNL_NO = #{hndTmnlNo}
          , HND_TR_ID = #{hndTrId}
          , GUID = #{guid}
+         <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(dealRctmAmt)">
+         , DEAL_RCTM_AMT = #{dealRctmAmt}
+         </if>
          <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(fndsDvsnCd)">
          , FNDS_DVSN_CD = #{fndsDvsnCd}
          </if>

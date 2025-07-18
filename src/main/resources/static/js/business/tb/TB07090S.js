@@ -113,7 +113,7 @@ const TB07090Sjs = (function() {
 				maxWidth: 36,
 				type: "checkBoxSelection",
 				editable: function(ui) {
-					
+
 					return (ui.rowData.pmntPrarAmt > ui.rowData.dealRctmAmt);
 				},
 				editor: false,
@@ -131,6 +131,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "dealNo",
 				halign: "center",
 				align: "center",
+				width:"165",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -139,6 +140,16 @@ const TB07090Sjs = (function() {
 				dataIndx: "prdtCd",
 				halign: "center",
 				align: "center",
+				width:"130",
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "실행일련번호",
+				dataType: "string",
+				dataIndx: "excSn",
+				halign: "center",
+				align: "center",
+				width: "100",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -147,6 +158,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "prarDt",
 				halign: "center",
 				align: "center",
+				width:"130",
 				filter: { crules: [{ condition: "range" }] },
 				render: function(ui) {
 					var cellData = ui.cellData;
@@ -165,6 +177,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "scxDcd",
 				halign: "center",
 				align: "center",
+				width:"130",
 				filter: { crules: [{ condition: "range" }] },
 				render: function(ui) {
 					var options = rdptObjtDvsnCdList;
@@ -189,6 +202,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "pmntPrarAmt",
 				halign: "center",
 				align: "right",
+				width:"130",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -198,6 +212,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "dealRctmAmt",
 				halign: "center",
 				align: "right",
+				width:"130",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -206,6 +221,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "trCrryCd",
 				halign: "center",
 				align: "center",
+				width:"80",
 				filter: { crules: [{ condition: "range" }] },
 				render: function(ui) {
 					var options = crryCdList;
@@ -219,6 +235,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "mngmBdcd",
 				halign: "center",
 				align: "center",
+				width:"130",
 				filter: { crules: [{ condition: "range" }] },
 				render: function(ui) {
 					var options = dprtList;
@@ -226,6 +243,7 @@ const TB07090Sjs = (function() {
 					return option ? option.cdName : ui.cellData;
 				},
 			},
+
 		];
 
 		// IBIMS435B
@@ -239,10 +257,10 @@ const TB07090Sjs = (function() {
 				maxWidth: 36,
 				type: "checkBoxSelection",
 				editable: function(ui) {
-					if(ui.rowData != null) {
+					if (ui.rowData != null) {
 						return (ui.rowData.pmntPrarAmt < ui.rowData.dealRctmAmt);
 					}
-					
+
 				},
 				editor: false,
 				filter: { crules: [{ condition: "range" }] },
@@ -259,7 +277,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "rctmDt",
 				halign: "center",
 				align: "center",
-				width: "165",
+				width: "130",
 				editable: true,
 				render: function(ui) {
 					return formatDate(ui.cellData);
@@ -271,7 +289,7 @@ const TB07090Sjs = (function() {
 				dataType: "string",
 				dataIndx: "rgstSeq",
 				halign: "center",
-				align: "right",
+				align: "center",
 				width: "80",
 				filter: { crules: [{ condition: "range" }] },
 			},
@@ -281,7 +299,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "fndsDvsnCd",
 				halign: "center",
 				align: "center",
-				width: "165",
+				width: "150",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -302,7 +320,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "pmntPrarAmt",
 				halign: "center",
 				align: "right",
-				width: "165",
+				width: "130",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -312,7 +330,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "dealRctmAmt",
 				halign: "center",
 				align: "right",
-				width: "165",
+				width: "130",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -321,7 +339,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "reltIsttCd",
 				halign: "center",
 				align: "center",
-				width: "165",
+				width: "130",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -341,7 +359,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "reltBano",
 				halign: "center",
 				align: "center",
-				width: "165",
+				width: "130",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -350,7 +368,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "dptrNm",
 				halign: "center",
 				align: "center",
-				width: "165",
+				width: "130",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -360,7 +378,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "rgstBdcd",
 				halign: "center",
 				align: "center",
-				width: "165",
+				width: "130",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -381,7 +399,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "hndEmpno",
 				halign: "center",
 				align: "center",
-				width: "165",
+				width: "130",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -391,7 +409,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "hndDetlDtm",
 				halign: "center",
 				align: "center",
-				width: "165",
+				width: "150",
 				filter: { crules: [{ condition: "range" }] },
 			},
 
@@ -422,6 +440,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "rctmDt",
 				halign: "center",
 				align: "center",
+				width:"130",
 				editable: true,
 				editor: false,
 				render: function(ui) {
@@ -434,6 +453,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "rctmSeq",
 				halign: "center",
 				align: "center",
+				width:"100",
 				editable: true,
 				editor: false,
 				filter: { crules: [{ condition: "range" }] },
@@ -444,6 +464,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "dealNo",
 				halign: "center",
 				align: "center",
+				width:"165",
 				editable: true,
 				editor: false,
 				filter: { crules: [{ condition: "range" }] },
@@ -454,8 +475,18 @@ const TB07090Sjs = (function() {
 				dataIndx: "prdtCd",
 				halign: "center",
 				align: "center",
+				width:"150",
 				editable: true,
 				editor: false,
+				filter: { crules: [{ condition: "range" }] },
+			},
+			{
+				title: "실행일련번호",
+				dataType: "string",
+				dataIndx: "excSn",
+				halign: "center",
+				align: "center",
+				width: "100",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -464,6 +495,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "prarDt",
 				halign: "center",
 				align: "center",
+				width: "130",
 				editable: true,
 				editor: false,
 				filter: { crules: [{ condition: "range" }] },
@@ -484,6 +516,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "scxDcd",
 				halign: "center",
 				align: "center",
+				width: "130",
 				editable: true,
 				editor: false,
 				filter: { crules: [{ condition: "range" }] },
@@ -506,6 +539,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "dealRctmAmt",//DEAL_RCTM_AMT
 				halign: "center",
 				align: "right",
+				width: "130",
 				editable: true,
 				editor: false,
 				filter: { crules: [{ condition: "range" }] },
@@ -516,6 +550,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "mngmBdcd",
 				halign: "center",
 				align: "center",
+				width: "130",
 				editable: true,
 				editor: false,
 				filter: { crules: [{ condition: "range" }] },
@@ -532,6 +567,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "excsPymtPrcsText",
 				halign: "center",
 				align: "left",
+				width: "200",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -541,6 +577,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "hndEmpno",
 				halign: "center",
 				align: "center",
+				width: "130",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -550,6 +587,7 @@ const TB07090Sjs = (function() {
 				dataIndx: "hndDetlDtm",
 				halign: "center",
 				align: "center",
+				width: "130",
 				filter: { crules: [{ condition: "range" }] },
 			},
 
@@ -1081,6 +1119,9 @@ const TB07090Sjs = (function() {
 		let updateList = [];
 		let deleteList = rctmDtlsRgstDeleteList;
 
+
+		console.log(JSON.stringify(colModel_rctmDtlsRgst))
+
 		for (let i = 0; i < colModel_rctmDtlsRgst.length; i++) {
 			if (colModel_rctmDtlsRgst[i].pq_cellcls != undefined && !colModel_rctmDtlsRgst[i].hndDetlDtm) {
 				insertList.push(colModel_rctmDtlsRgst[i]);
@@ -1096,9 +1137,14 @@ const TB07090Sjs = (function() {
 
 		const paramData = {
 			insertList: insertList
-			, updateList: updateList
+			, updateList: colModel_rctmDtlsRgst
 			, deleteList: deleteList
 		}
+
+
+		console.log(JSON.stringify(paramData))
+
+
 
 		$.ajax({
 			type: "POST",
@@ -1263,11 +1309,11 @@ const TB07090Sjs = (function() {
 			}
 		}
 	}
-	
+
 	function colModel2_save() {
 		saveRctmDtlsRgst();
 	}
-	
+
 
 	function colModel3_addNewRow(obj) {
 
@@ -1296,7 +1342,7 @@ const TB07090Sjs = (function() {
 			if (gridData2[i].chk === "Y") {
 				chk2++;
 				dataList2[idx2++] = gridData2[i];
-				
+
 				amt2 += (gridData2[i].dealRctmAmt - gridData2[i].pmntPrarAmt);
 			}
 		}
@@ -1323,6 +1369,7 @@ const TB07090Sjs = (function() {
 						rctmSeq: dataList2[i].rgstSeq,
 						dealNo: dataList1[0].dealNo,
 						prdtCd: dataList1[0].prdtCd,
+						excSn: dataList1[0].excSn,
 						prarDt: dataList1[0].prarDt,
 						scxDcd: dataList1[0].scxDcd,
 						dealRctmAmt: dataList1[0].pmntPrarAmt,
@@ -1344,6 +1391,7 @@ const TB07090Sjs = (function() {
 						rctmSeq: dataList2[0].rgstSeq,
 						dealNo: dataList1[i].dealNo,
 						prdtCd: dataList1[i].prdtCd,
+						excSn: dataList1[i].excSn,
 						prarDt: dataList1[i].prarDt,
 						scxDcd: dataList1[i].scxDcd,
 						dealRctmAmt: dataList1[i].pmntPrarAmt,
@@ -1362,6 +1410,7 @@ const TB07090Sjs = (function() {
 					rctmSeq: dataList2[0].rgstSeq,
 					dealNo: dataList1[0].dealNo,
 					prdtCd: dataList1[0].prdtCd,
+					excSn: dataList1[0].excSn,
 					prarDt: dataList1[0].prarDt,
 					scxDcd: dataList1[0].scxDcd,
 					dealRctmAmt: dataList1[0].pmntPrarAmt,

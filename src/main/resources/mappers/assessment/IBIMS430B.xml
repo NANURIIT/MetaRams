@@ -409,6 +409,7 @@
 			, PRAR_DT /*상환예정일자 */
 			, RDMP_TMRD /*상환회차 */
 			, DEAL_NO /*딜번호 */
+			, EXC_SN
 			, EXCS_PYMT_PRCS_TEXT /*초과납입처리내용 */
 			, DEAL_RCTM_AMT /*딜입금금액 */
 			, MNGM_BDCD /*관리부점코드 */
@@ -428,6 +429,7 @@
 			, #{prarDt}
 			, NVL(#{rdmpTmrd}, 0)
 			, #{dealNo}
+			, #{excSn}
 			, NVL(#{excsPymtPrcsText}, '')
 			, NVL(#{dealRctmAmt}, 0)
 			, #{mngmBdcd}
@@ -459,6 +461,7 @@
            and PRDT_CD = #{prdtCd}
            and SCX_DCD = #{scxDcd}
            and PRAR_DT = #{prarDt}
+           and exc_sn = #{excSn}
     </update>
 
     <delete id="deleteIBIMS430B" parameterType="com.nanuri.rams.business.common.dto.IBIMS430BDTO">
@@ -471,6 +474,7 @@
            and PRDT_CD = #{prdtCd}
            and SCX_DCD = #{scxDcd}
            and PRAR_DT = #{prarDt}
+           and exc_sn = #{excSn}
     </delete>
     
     <select id="getYesDealCount" parameterType="com.nanuri.rams.business.common.vo.IBIMS430BVO" resultType="int">
@@ -483,6 +487,7 @@
            and PRDT_CD = #{prdtCd}
            and SCX_DCD = #{scxDcd}
            and PRAR_DT = #{prarDt}
+           and exc_sn = #{excSn}
          
     </select>
 

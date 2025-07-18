@@ -129,6 +129,7 @@ public class TB07090ServiceImpl implements TB07090Service {
 		// 수정
 		if (updateList.size() > 0) {
 			for (int i = 0; i < updateList.size(); i++) {
+				updateList.get(i).setHndEmpno(facade.getDetails().getEno());
 				ibims435BMapper.updateIBIMS435B(updateList.get(i));
 				result += 1;
 			}
@@ -158,20 +159,21 @@ public class TB07090ServiceImpl implements TB07090Service {
 		if (deleteList.size() > 0) {
 			for (int i = 0; i < deleteList.size(); i++) {
 				int count = ibims430bMapper.getYesDealCount(deleteList.get(i));
-
+		
 				Map tmp = new HashMap();
 				tmp.put("rctmDt", deleteList.get(i).getRctmDt());
 				tmp.put("rctmSeq", deleteList.get(i).getRctmSeq());
-
+		
 				updateList.add(tmp);
-
+		
 				if (count > 0) {
 					ibims430bMapper.deleteIBIMS430B(deleteList.get(i));
 				}
-
+		
 				result += 1;
 			}
 		}
+		
 		
 		// 입력
 		if (insertList.size() > 0) {
@@ -200,9 +202,7 @@ public class TB07090ServiceImpl implements TB07090Service {
 
 		for (Map key : updateKey) {
 
-			log.debug("key=======>" + key);
 			int r = ibims430bMapper.updatePmntPrarAmt(key);
-			log.debug("r=======>" + r);
 
 		}
 
