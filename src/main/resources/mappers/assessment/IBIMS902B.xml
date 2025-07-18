@@ -266,7 +266,7 @@
             )
             WHEN MATCHED THEN
             UPDATE SET   T1.RNDR_BLCE = UPDATE_LIST.RNDR_BLCE
-                       , T1.SORT_NO   = UPDATE_LIST.SORT_SEQ;
+                       , T1.SORT_NO   = UPDATE_LIST.SORT_SEQ
     </insert>
 
     <!--TB07200S - 입금/출금 요청 목록 저장-->
