@@ -619,7 +619,7 @@
                 SELECT PRDT_CD
                   FROM IBIMS402B
               GROUP BY PRDT_CD
-                ) AS haveExcSn      /* 영어 잘 못해요... */
+                )  haveExcSn      /*  */
             ON haveExcSn.PRDT_CD = IB201B.PRDT_CD
       </if>
     </if>
@@ -679,7 +679,7 @@
                                                   AND WT2.SCRN_NO = #{scrnNo}
                                                 GROUP
                                                     BY WT1.DECD_SN, WT1.DECD_SQ, WT2.PRDT_CD
-                                              ) AS AT
+                                              )  AT
                                     )
               </if>
             </if>
