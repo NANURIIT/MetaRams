@@ -324,8 +324,8 @@
                              AND T1.FINC_EXCU_RQS_SN                = T3.DEAL_NO
                              AND T3.DECD_STTS_DCD                   = '2' /* 결재상태구분코드[0:요청전, 1:진행중, 2:결재완료, 3:반려, 4:요청취소] */
                              AND T3.SCRN_NO                         = 'TB07200S'   /* 딜번호와 함께 입력 스크린넘버가 'TB07200S'로 입력됨 */
-                             AND T2.TR_DT                           BETWEEN TO_CHAR(TO_DATE(#{fromMm}, 'YYYYMM'), 'YYYYMMDD') 
-                                                                        AND TO_CHAR(LAST_DAY(TO_DATE(#{toMm}, 'YYYYMM')), 'YYYYMMDD')   /* (조회조건)조회기간 */
+                             AND T2.TR_DT                           BETWEEN TO_CHAR(TO_DATE(#{fromMm}||'01', 'YYYYMMDD'), 'YYYYMMDD') 
+                                                                        AND TO_CHAR(LAST_DAY(TO_DATE(#{toMm}||'01', 'YYYYMMDD')), 'YYYYMMDD')   /* (조회조건)조회기간 */
                        ) A
                   WHERE 1=1
                   GROUP BY
@@ -335,9 +335,9 @@
                ) T1
              , (
                  WITH MONTH_RANGE AS (
-                     SELECT  ADD_MONTHS(TO_DATE(#{fromMm}, 'YYYYMM'), LEVEL - 1) AS MONTH_START
+                     SELECT  ADD_MONTHS(TO_DATE(#{fromMm}||'01', 'YYYYMMDD'), LEVEL - 1) AS MONTH_START
                        FROM  DUAL
-                     CONNECT BY LEVEL <![CDATA[<=]]> MONTHS_BETWEEN(TO_DATE(#{toMm}, 'YYYYMM'), TO_DATE(#{fromMm}, 'YYYYMM')) + 1
+                     CONNECT BY LEVEL <![CDATA[<=]]> MONTHS_BETWEEN(TO_DATE(#{toMm}||'01', 'YYYYMMDD'), TO_DATE(#{fromMm}||'01', 'YYYYMMDD')) + 1
                  ),
                  MONTH_BOUNDS AS (
                      SELECT  MONTH_START                              AS MONTH_START
