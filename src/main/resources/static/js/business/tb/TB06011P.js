@@ -898,7 +898,9 @@ function TB06011P_setPrdtInfo(e) {
 
       $("#TB07050S_prdtCd").val(e.prdtCd);
       $("#TB07050S_prdtNm").val(e.prdtNm);
-      TB07050Sjs.srch();
+	  TB07050Sjs.srchExcSn(e.prdtCd);
+      //TB07050Sjs.srch();
+	  
     } else {
       // $('#TB07050S_btnSrch').prop('disabled', false)
       $("#TB07050S_btnPlus").prop("disabled", false);
@@ -908,7 +910,7 @@ function TB06011P_setPrdtInfo(e) {
       // $('#TB07050S_scxDcd2').prop('disabled', false)
       // $('#TB07050S_scxDcd3').prop('disabled', false)
       TB07050Sjs.srchExcSn(e.prdtCd);
-      TB07050Sjs.srch();
+      //TB07050Sjs.srch();
     }
   }
 
