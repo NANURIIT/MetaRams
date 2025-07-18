@@ -150,7 +150,7 @@
               , #{hndTmnlNo}
               , #{hndTrId}
               , #{guid}
-            );
+            )
     </insert>
 
     <update id="updateFinc" parameterType="com.nanuri.rams.business.common.dto.IBIMS407BDTO">

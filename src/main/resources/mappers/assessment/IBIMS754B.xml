@@ -36,6 +36,7 @@
     <select id="cpdgTransSearch" parameterType="com.nanuri.rams.business.common.vo.TB09012SVO" resultType="com.nanuri.rams.business.common.dto.IBIMS754BDTO">
 		/* IBIMS754BMapper.cpdgTransSearch */
 		SELECT MSG_TRANS_SN   /* 전문송신일련번호 */
+         , JOB_DCD        /* 업무구분(K013) */
 		     , ERR_DPCH       /* 오류통보 */
 		     , TRANS_DT       /* 송신일자 */
 		     , STDR_DT        /* 기준일자 */
@@ -160,19 +161,21 @@
 					, SEND_TM      /*발송시간 */
 					, SEND_RSLT    /*발송결과 */
 					, SCRN_DCD     /*화면구분 */
+          , JOB_DCD      /* 업무구분(K013) */
           )
         <foreach collection="list" item="item" separator="UNION ALL">
           select
            		#{item.stdrDt}||lpad(#{item.sn}, 5, '0')
-				, #{item.errDpch}
-				, #{item.transDt}
-				, #{item.stdrDt}
-				, #{item.trDcd}
-				, #{item.fileMsgNm}
-				, #{item.sendCnt}
-				, TO_CHAR(SYSDATE, 'HH24MMSS')
-				, #{item.sendRslt}
-				, #{item.scrnDcd}
+            , #{item.errDpch}
+            , #{item.transDt}
+            , #{item.stdrDt}
+            , #{item.trDcd}
+            , #{item.fileMsgNm}
+            , #{item.sendCnt}
+            , TO_CHAR(SYSDATE, 'HH24MMSS')
+            , #{item.sendRslt}
+            , #{item.scrnDcd}
+            , #{item.jobDcd}
           from dual
         </foreach>
     </insert>

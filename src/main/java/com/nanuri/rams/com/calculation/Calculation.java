@@ -58,10 +58,14 @@ public class Calculation {
 	/**
 	 * 원금스케쥴 및 원금계산
 	 * 
-	 * @param inCalcDTO
+	 * @param  inCalcDTO
 	 * @return
 	 */
 	public List<CalculationResultDTO> prnaCalculation(CalculationDTO inCalcDTO) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== prnaCalculation start ========================");
+		log.debug("=====================================================================");
 
 		BigDecimal loanBalanceTotal = BigDecimal.ZERO; // 대출원금합계
 
@@ -111,8 +115,7 @@ public class Calculation {
 				double aplyIntrt = ibItem.getAplyIntrt() / 100;
 				dIntrt = ibItem.getAplyIntrt();
 				itm.setAplyIntrt(aplyIntrt);
-				aplyIntrtContent = ("".equals(aplyIntrtContent.trim()))
-						? aplyIntrtContent.concat(String.valueOf(aplyIntrt * 100))
+				aplyIntrtContent = ("".equals(aplyIntrtContent.trim())) ? aplyIntrtContent.concat(String.valueOf(aplyIntrt * 100))
 						: aplyIntrtContent.concat(" &#47; " + String.valueOf(aplyIntrt * 100));
 
 				if (oldAplyIntrt != aplyIntrt) {
@@ -129,26 +132,17 @@ public class Calculation {
 				if ("02".equals(inCalcDTO.getPaiRdmpDcd())) {
 
 					// 원리금계산1 => 대출금액*이자율/12
-					BigDecimal eqltRdptAmtCal1 = inCalcDTO.getDealExcAmt()
-							.multiply(new BigDecimal(monthlyRate).setScale(9, RoundingMode.HALF_UP));
+					BigDecimal eqltRdptAmtCal1 = inCalcDTO.getDealExcAmt().multiply(new BigDecimal(monthlyRate).setScale(9, RoundingMode.HALF_UP));
 					// 원리금계산2 => (1+이자율/12)^총회차
-					BigDecimal eqltRdptAmtCal2 = (BigDecimal.ONE
-							.add(new BigDecimal(monthlyRate).setScale(9, RoundingMode.HALF_UP))).pow(changeLoanCnt);
+					BigDecimal eqltRdptAmtCal2 = (BigDecimal.ONE.add(new BigDecimal(monthlyRate).setScale(9, RoundingMode.HALF_UP))).pow(changeLoanCnt);
 					// 원리금계산3 => (1+이자율/12)^총회차-1
-					BigDecimal eqltRdptAmtCal3 = (BigDecimal.ONE
-							.add(new BigDecimal(monthlyRate).setScale(9, RoundingMode.HALF_UP)).pow(changeLoanCnt)
-							.subtract(BigDecimal.ONE));
+					BigDecimal eqltRdptAmtCal3 = (BigDecimal.ONE.add(new BigDecimal(monthlyRate).setScale(9, RoundingMode.HALF_UP)).pow(changeLoanCnt).subtract(BigDecimal.ONE));
 
-					/*
-					 * 원리금계산 => 대출금액*이자율/12*(1+이자율/12)^총회차/((1+이자율/12)^총회차-1) 원리금계산 => 원리금계산1 *
-					 * 원리금계산2 / 원리금계산3 위 두식은 같은것임 식별하기 쉽게하기 위하여 나누어 표현함
-					 */
-					MonthlyPaymentTotal = eqltRdptAmtCal1.multiply(eqltRdptAmtCal2).divide(eqltRdptAmtCal3, 9,
-							RoundingMode.HALF_UP);
+					/* 원리금계산 => 대출금액*이자율/12*(1+이자율/12)^총회차/((1+이자율/12)^총회차-1) 원리금계산 => 원리금계산1 * 원리금계산2 / 원리금계산3 위 두식은 같은것임 식별하기 쉽게하기 위하여 나누어 표현함 */
+					MonthlyPaymentTotal = eqltRdptAmtCal1.multiply(eqltRdptAmtCal2).divide(eqltRdptAmtCal3, 9, RoundingMode.HALF_UP);
 
 				} else {
-					monthlyPayment = inCalcDTO.getDealExcAmt().divide(new BigDecimal(prnaSchList.size()), 9,
-							RoundingMode.HALF_UP);
+					monthlyPayment = inCalcDTO.getDealExcAmt().divide(new BigDecimal(prnaSchList.size()), 9, RoundingMode.HALF_UP);
 				}
 
 				String strtDt = "";
@@ -170,59 +164,47 @@ public class Calculation {
 					ddCnt = DateUtil.dateDiff(strtDt, endDt) + 1; // 일수계산
 					if ("1".equals(inCalcDTO.getTfdLyAplyDcd())) { // 초일말일적용구분 == 01단편넣기
 						if ("BASETYPE".equals(itm.getDfrType()) && "LST_SEC".equals(itm.getSectionType())) { // 마지막회차
-//							ddCnt--;
+							// ddCnt--;
 							;
 						}
 					}
-					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt))
-							: ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
+					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt)) : ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
 
 					actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
 					// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt)
-							/ actualType;
-					monthlySubInterest = monthlySubInterest
-							.add((bfBalance.multiply(new BigDecimal(monthlyRate).multiply(new BigDecimal(dayRate)))
-									.setScale(9, RoundingMode.HALF_UP)));
+					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt) / actualType;
+					monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(monthlyRate).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP)));
 
 				} else {
 
 					strLstDt = strtDt.substring(0, 4) + "1231"; // lastDate(strtDt);
 					ddCnt = DateUtil.dateDiff(strtDt, strLstDt) + 1;
-					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt))
-							: ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
+					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt)) : ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
 
 					actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
 					// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt)
-							/ actualType;
+					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt) / actualType;
 
 					log.debug("inCalcDTO.getIntrDnumClcMthCd() : " + inCalcDTO.getIntrDnumClcMthCd());
 					log.debug("monthlyRate : " + monthlyRate);
 					log.debug("bfBalance : " + bfBalance);
 					log.debug("dayRate: " + dayRate);
 
-					monthlySubInterest = monthlySubInterest
-							.add((bfBalance.multiply(new BigDecimal(monthlyRate).multiply(new BigDecimal(dayRate)))
-									.setScale(9, RoundingMode.HALF_UP)));
+					monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(monthlyRate).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP)));
 
 					ddCnt2 = DateUtil.dateDiff(endDt.substring(0, 4) + "0101", endDt) + 1;
 					if ("1".equals(inCalcDTO.getTfdLyAplyDcd())) { // 초일말일적용구분 == 01단편넣기
 						if ("BASETYPE".equals(itm.getDfrType()) && "LST_SEC".equals(itm.getSectionType())) { // 마지막회차
-//							ddCnt2--;
+							// ddCnt2--;
 							;
 						}
 					}
-					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt2))
-							: ddCntContent.concat("," + String.valueOf(ddCnt2));
+					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt2)) : ddCntContent.concat("," + String.valueOf(ddCnt2));
 
 					actualType2 = actualYear(inCalcDTO.getIntrDnumClcMthCd(), endDt);
 					// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-					dayRate2 = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt2)
-							/ actualType2;
-					monthlySubInterest = monthlySubInterest
-							.add((bfBalance.multiply(new BigDecimal(monthlyRate).multiply(new BigDecimal(dayRate2)))
-									.setScale(9, RoundingMode.HALF_UP)));
+					dayRate2 = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt2) / actualType2;
+					monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(monthlyRate).multiply(new BigDecimal(dayRate2))).setScale(9, RoundingMode.HALF_UP)));
 
 				}
 
@@ -240,8 +222,7 @@ public class Calculation {
 			prnaCalcRstDTO.setPrarDt(prarDt);
 
 			if ("02".equals(inCalcDTO.getPaiRdmpDcd())) {
-				prnaCalcRstDTO.setPrarPrna(
-						process_down(inCalcDTO.getIntrSnnoPrcsDcd(), MonthlyPaymentTotal.subtract(monthlySubInterest)));
+				prnaCalcRstDTO.setPrarPrna(process_down(inCalcDTO.getIntrSnnoPrcsDcd(), MonthlyPaymentTotal.subtract(monthlySubInterest)));
 				prnaCalcRstDTO.setPrarRdmpAmt(MonthlyPaymentTotal); // 원리금균등만..
 				prnaCalcRstDTO.setRdmpPrarIntr(monthlySubInterest); // 원리금균등만..
 			} else if ("04".equals(inCalcDTO.getPaiRdmpDcd())) {
@@ -290,6 +271,11 @@ public class Calculation {
 
 		}
 
+		log.debug("return prnaCalculation ::: {} ", prnaCalcRstDTOList);
+		log.debug("=====================================================================");
+		log.debug("====================== prnaCalculation end ==========================");
+		log.debug("=====================================================================");
+
 		return prnaCalcRstDTOList;
 
 	}
@@ -297,12 +283,15 @@ public class Calculation {
 	/**
 	 * 원금에 따른 이자금액 계산
 	 * 
-	 * @param inCalcDTO
-	 * @param prnaCalcRstDTOList
+	 * @param  inCalcDTO
+	 * @param  prnaCalcRstDTOList
 	 * @return
 	 */
-	public List<CalculationResultDTO> intrCalculation(CalculationDTO inCalcDTO,
-			List<CalculationResultDTO> prnaCalcRstDTOList) {
+	public List<CalculationResultDTO> intrCalculation(CalculationDTO inCalcDTO, List<CalculationResultDTO> prnaCalcRstDTOList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== intrCalculation start ========================");
+		log.debug("=====================================================================");
 
 		// 이자상환스케줄 생성
 		int dfrSize = 0;
@@ -310,16 +299,27 @@ public class Calculation {
 
 		List<LoanData> intrSchList = new ArrayList<LoanData>();
 		List<LoanData> intrSchList2 = new ArrayList<LoanData>();
+
+		// ==========================================================================================================
+
+		// ==========================================================================================================
 		if (!"".equals(inCalcDTO.getDfrExpDt())) {
+
 			intrSchList = dfrSchedule(inCalcDTO);
+
 			intrSchList2 = intrRdmpSchedule(inCalcDTO);
+
 			dfrSize = intrSchList.size();
 			intrSize = intrSchList2.size();
 			intrSchList.addAll(intrSchList2);
+
 		} else {
+
 			intrSchList = intrRdmpSchedule(inCalcDTO);
+
 			intrSize = intrSchList.size();
 		}
+
 		inCalcDTO.setDfrCnt(dfrSize);
 		inCalcDTO.setBaseCnt(intrSize);
 
@@ -329,9 +329,11 @@ public class Calculation {
 		BigDecimal bfBalance = inCalcDTO.getDealExcAmt(); // 원금잔액 == 대출금액
 
 		List<CalculationResultDTO> intrCalcRstDTOList = new ArrayList<>();
+
 		for (int i = 0; i < intrSchList.size(); i++) {
 
 			LoanData item = intrSchList.get(i);
+
 			CalculationResultDTO intrCalcRstDTO = new CalculationResultDTO();
 
 			// 원금스케줄
@@ -342,7 +344,9 @@ public class Calculation {
 				CalculationResultDTO prnaItem = prnaCalcRstDTOList.get(v);
 
 				if (item.getEndDt().compareTo(prnaItem.getEndDt()) > 0) {
+
 					PrarPrnaAmt = PrarPrnaAmt.add(prnaItem.getPrarPrna()); // 예정언금
+
 				} else {
 					break;
 				}
@@ -376,20 +380,26 @@ public class Calculation {
 				double dayRate2 = 0d;
 
 				IBIMS404BVO ibItem = out404.get(w);
+
 				double aplyIntrt = ibItem.getAplyIntrt() / 100;
 
 				log.debug("aplyIntrt: " + aplyIntrt);
 
 				dIntrt = ibItem.getAplyIntrt();
 				item.setAplyIntrt(aplyIntrt);
-				aplyIntrtContent = ("".equals(aplyIntrtContent.trim()))
-						? aplyIntrtContent.concat(String.valueOf(aplyIntrt * 100))
+
+				aplyIntrtContent = ("".equals(aplyIntrtContent.trim())) ? aplyIntrtContent.concat(String.valueOf(aplyIntrt * 100))
 						: aplyIntrtContent.concat(" &#47; " + String.valueOf(aplyIntrt * 100));
+
+				log.debug("aplyIntrtContent: " + aplyIntrtContent);
 
 				if (oldAplyIntrt != aplyIntrt) {
 					oldAplyIntrt = aplyIntrt;
 					changeLoanCnt = (i == 1) ? intrSchList.size() : (intrSchList.size() - i);
 				}
+
+				log.debug("oldAplyIntrt: " + oldAplyIntrt);
+				log.debug("changeLoanCnt: " + changeLoanCnt);
 
 				String strtDt = "";
 				String endDt = "";
@@ -399,6 +409,7 @@ public class Calculation {
 				} else {
 					strtDt = ibItem.getAplyStrtDt();
 				}
+
 				if (item.getEndDt().compareTo(ibItem.getAplyEndDt()) <= 0) {
 					endDt = item.getEndDt();
 				} else {
@@ -410,52 +421,46 @@ public class Calculation {
 					ddCnt = DateUtil.dateDiff(strtDt, endDt) + 1; // 일수계산
 					if ("1".equals(inCalcDTO.getTfdLyAplyDcd())) { // 초일말일적용구분 == 01단편넣기
 						if ("BASETYPE".equals(item.getDfrType()) && "LST_SEC".equals(item.getSectionType())) { // 마지막회차
-//							ddCnt--;
+							// ddCnt--;
 							;
 						}
 					}
-					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt))
-							: ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
+
+					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt)) : ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
 					actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
+
 					// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt)
-							/ actualType;
-					monthlySubInterest = monthlySubInterest
-							.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate)))
-									.setScale(9, RoundingMode.HALF_UP)));
+					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt) / actualType;
+					monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP)));
 
 				} else {
 
 					strLstDt = strtDt.substring(0, 4) + "1231"; // lastDate(strtDt);
 					ddCnt = DateUtil.dateDiff(strtDt, strLstDt) + 1;
-					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt))
-							: ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
+					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt)) : ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
 
 					actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
+
 					// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt)
-							/ actualType;
-					monthlySubInterest = monthlySubInterest
-							.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate)))
-									.setScale(9, RoundingMode.HALF_UP)));
+					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt) / actualType;
+					monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP)));
 
 					ddCnt2 = DateUtil.dateDiff(endDt.substring(0, 4) + "0101", endDt) + 1;
+
 					if ("1".equals(inCalcDTO.getTfdLyAplyDcd())) { // 초일말일적용구분 == 01단편넣기
 						if ("BASETYPE".equals(item.getDfrType()) && "LST_SEC".equals(item.getSectionType())) { // 마지막회차
-//							ddCnt2--;
+							// ddCnt2--;
 							;
 						}
 					}
-					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt2))
-							: ddCntContent.concat("," + String.valueOf(ddCnt2));
+
+					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt2)) : ddCntContent.concat("," + String.valueOf(ddCnt2));
 
 					actualType2 = actualYear(inCalcDTO.getIntrDnumClcMthCd(), endDt);
+
 					// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-					dayRate2 = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt2)
-							/ actualType2;
-					monthlySubInterest = monthlySubInterest
-							.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate2)))
-									.setScale(9, RoundingMode.HALF_UP)));
+					dayRate2 = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt2) / actualType2;
+					monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate2))).setScale(9, RoundingMode.HALF_UP)));
 
 				}
 
@@ -467,8 +472,6 @@ public class Calculation {
 
 			String stdrDt = DateUtil.dayAdd(item.getEndDt(), 1);
 			String prarDt = ibims991BMapper.getPrarDt(stdrDt);
-
-			// intrCalcRstDTO.setPrarDt(DateUtil.dayAdd(item.getEndDt(),1));
 
 			intrCalcRstDTO.setPrarDt(prarDt);
 			intrCalcRstDTO.setPrarPrna(bfBalance);
@@ -482,16 +485,25 @@ public class Calculation {
 
 		} // for end
 
+		log.debug("return intrCalculation ::: {} ", intrCalcRstDTOList);
+		log.debug("=====================================================================");
+		log.debug("====================== intrCalculation end ==========================");
+		log.debug("=====================================================================");
+
 		return intrCalcRstDTOList;
 	}
 
 	/**
 	 * 이자상환 스케줄 생성
 	 * 
-	 * @param inCalcDTO
+	 * @param  inCalcDTO
 	 * @return
 	 */
 	public List<LoanData> intrRdmpSchedule(CalculationDTO inCalcDTO) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== intrRdmpSchedule start =======================");
+		log.debug("=====================================================================");
 
 		List<LoanData> loanList = new ArrayList<LoanData>();
 
@@ -505,8 +517,11 @@ public class Calculation {
 
 		int intrRdmpFrqcMnum = inCalcDTO.getIntrRdmpFrqcMnum(); // 이자상환주기개월수
 
+		log.debug("이자상환주기개월수 getIntrRdmpFrqcMnum :" + intrRdmpFrqcMnum);
+
 		boolean loopValue = true;
 		int i = 0;
+
 		do {
 
 			i++;
@@ -516,22 +531,37 @@ public class Calculation {
 			LoanData lnItm = new LoanData();
 
 			lnItm.setSeq(i + inCalcDTO.getSeqFst());
+
 			if (lnItm.getSeq() == 1) {
+
 				lpStrDt = inCalcDTO.getExcDt(); // 대출실행일자
+
 			} else {
+
 				// N회차부터는 +1
 				if (!"".equals(inCalcDTO.getDfrExpDt())) {
+
 					// 거치기간만기일자가 존재하면 거치기간만기일자를 시작일자로 설정
 					if ((inCalcDTO.getSeqFst() + 1) == lnItm.getSeq()) {
+
 						// 분할상환 구간에 첫번째 회차인경우만
 						lpStrDt = inCalcDTO.getDfrExpDt();
+
 					} else {
+
 						lpStrDt = DateUtil.dayAdd(lpEndDt, 1);
+
 					}
+
 				} else {
+
 					lpStrDt = DateUtil.dayAdd(lpEndDt, 1);
+
 				}
+
 			}
+
+			log.debug("lpStrDt :" + lpStrDt);
 
 			// 상환구간지정
 			if (i % intrRdmpFrqcMnum == 0) {
@@ -539,50 +569,55 @@ public class Calculation {
 			} else {
 				strRdmpSctn = "OTHER_SCTN"; // 상환구간아님
 			}
-			// lpEndDt = dateAdd(lpStrDt, inCalcDTO.getIntrRdmpFrqcMnum(),
-			// inCalcDTO.getIntrPymDtCd()); // 적용일자(시작일자)+이자상환개월수+이자상환주기
+
+			log.debug("strRdmpSctn :" + strRdmpSctn);
 
 			if (i == 1) {
+
 				lpEndDt = dateAdd(lpStrDt, inCalcDTO.getIntrRdmpFrqcMnum(), inCalcDTO.getIntrPymDtCd()); // 적용일자(시작일자)+이자상환개월수+이자상환주기
+
 			} else {
 
-				log.debug("lpStrDt Month : " + lpStrDt.substring(0, 6));
-				log.debug("lpEndDt before loop : " + lpEndDtList.get(i - 2).substring(0, 6));
-
 				if (lpStrDt.substring(0, 6).compareTo(lpEndDtList.get(i - 2).substring(0, 6)) > 0) {
-					log.debug("CASE 01");
-					log.debug("lpStrDt after motnAdd -1 : " + DateUtil.monthAdd(lpStrDt, -1));
-					lpEndDt = dateAdd(DateUtil.monthAdd(lpStrDt, -1), inCalcDTO.getIntrRdmpFrqcMnum(),
-							inCalcDTO.getIntrPymDtCd());
+
+					lpEndDt = dateAdd(DateUtil.monthAdd(lpStrDt, -1), inCalcDTO.getIntrRdmpFrqcMnum(), inCalcDTO.getIntrPymDtCd());
 
 				} else {
-					log.debug("CASE 02");
 
 					lpEndDt = dateAdd(lpEndDt, inCalcDTO.getIntrRdmpFrqcMnum(), inCalcDTO.getIntrPymDtCd());
 				}
 
 			}
 
+			log.debug("lpEndDt :" + lpEndDt);
+
 			lpEndDtList.add(lpEndDt);
 
 			// 만기일자보다 종료일자가 크다면 마지막 LOOP
 			if (inCalcDTO.getExpDt().compareTo(DateUtil.dayAdd(lpEndDt, 1)) <= 0) {
+
 				loopValue = false; // 마지막LOOP처리
 				SEC_TYPE = "LST_SEC";
 				lpEndDt = inCalcDTO.getExpDt();
+
 			} else {
+
 				if (lnItm.getSeq() == 1) {
 					SEC_TYPE = "FST_SEC";
 				} else {
 					SEC_TYPE = "ING_SEC";
 				}
+
 			}
+
 			lnItm.setLoanBalance(inCalcDTO.getDealExcAmt());
 			lnItm.setPaiRdmpDcd(inCalcDTO.getPaiRdmpDcd());
 			lnItm.setStrtDt(lpStrDt);
 			lnItm.setEndDt(getBasDt(inCalcDTO, lpEndDt));
+
 			lnItm.setRdmpSctn(strRdmpSctn); // BOTH_SCTN : 원금이자 모두 상환, PRNA_RDMP_SCTN:원금상환, INTR_RDMP_SCTN:이자상환,
 											// OTHER_SCTN : 대상아님, DFR_SCTN : 거치기간
+
 			lnItm.setSectionType(SEC_TYPE);
 			lnItm.setDfrType(DFR_TYPE);
 
@@ -597,16 +632,25 @@ public class Calculation {
 
 		} while (loopValue);
 
+		log.debug("return intrRdmpSchedule ::: {} ", loanList);
+		log.debug("=====================================================================");
+		log.debug("====================== intrRdmpSchedule end =========================");
+		log.debug("=====================================================================");
+
 		return loanList;
 	}
 
 	/**
 	 * 거치기간 스케줄 생성
 	 * 
-	 * @param inSvo
+	 * @param  inSvo
 	 * @return
 	 */
 	public List<LoanData> dfrSchedule(CalculationDTO inCalcDTO) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== dfrSchedule start ============================");
+		log.debug("=====================================================================");
 
 		List<LoanData> loanList = new ArrayList<LoanData>();
 		String lpStrDt = null; // N회차>시작일자
@@ -648,8 +692,7 @@ public class Calculation {
 				if (lnItm.getSeq() == 1) {
 					SEC_TYPE = "FST_SEC";
 				} else {
-					if (inCalcDTO.getExpDt().substring(0, 6)
-							.compareTo(DateUtil.dayAdd(lpEndDt, 1).substring(0, 6)) == 0) {
+					if (inCalcDTO.getExpDt().substring(0, 6).compareTo(DateUtil.dayAdd(lpEndDt, 1).substring(0, 6)) == 0) {
 						loopValue = false; // 마지막LOOP처리
 						SEC_TYPE = "LST_SEC";
 					} else {
@@ -675,16 +718,26 @@ public class Calculation {
 			log.debug(">===========================================================<");
 
 		} while (loopValue);
+
+		log.debug("return dfrSchedule ::: {} ", loanList);
+		log.debug("=====================================================================");
+		log.debug("====================== dfrSchedule end ==============================");
+		log.debug("=====================================================================");
+
 		return loanList;
 	}
 
 	/**
 	 * 원금상환 스케줄 생성
 	 * 
-	 * @param inCalcDTO
+	 * @param  inCalcDTO
 	 * @return
 	 */
 	public List<LoanData> prnaRdmpSchedule(CalculationDTO inCalcDTO) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== prnaRdmpSchedule start =======================");
+		log.debug("=====================================================================");
 
 		List<LoanData> loanList = new ArrayList<LoanData>();
 
@@ -749,8 +802,7 @@ public class Calculation {
 					if (lpStrDt.substring(0, 6).compareTo(lpEndDtList.get(i - 2).substring(0, 6)) > 0) {
 						log.debug("CASE 01");
 						log.debug("lpStrDt after motnAdd -1 : " + DateUtil.monthAdd(lpStrDt, -1));
-						lpEndDt = dateAdd(DateUtil.monthAdd(lpStrDt, -1), inCalcDTO.getPrnaRdmpFrqcMnum(),
-								inCalcDTO.getIntrPymDtCd());
+						lpEndDt = dateAdd(DateUtil.monthAdd(lpStrDt, -1), inCalcDTO.getPrnaRdmpFrqcMnum(), inCalcDTO.getIntrPymDtCd());
 
 					} else {
 						log.debug("CASE 02");
@@ -809,37 +861,55 @@ public class Calculation {
 
 		} while (loopValue);
 
+		log.debug("return prnaRdmpSchedule ::: {} ", loanList);
+		log.debug("=====================================================================");
+		log.debug("====================== prnaRdmpSchedule end =========================");
+		log.debug("=====================================================================");
+
 		return loanList;
 	}
 
 	/**
 	 * 
-	 * @param inCalcDTO
+	 * @param  inCalcDTO
 	 * @return
 	 */
 	public BigDecimal calcIntrValue(CalculationDTO inCalcDTO) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== calcIntrValue start ==========================");
+		log.debug("=====================================================================");
 
 		double dayRate = 0d;
 		double ovduIntrRate = inCalcDTO.getOvduIntrRt() / (12 / inCalcDTO.getIntrRdmpFrqcMnum());
 		int ddCnt = DateUtil.dateDiff(inCalcDTO.getStrtDt(), inCalcDTO.getEndDt()) + 1; // 일수계산
 		int actualType2 = actualYear(inCalcDTO.getIntrDnumClcMthCd(), inCalcDTO.getEndDt());
 		dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt) / actualType2;
-		return ((inCalcDTO.getDealExcAmt().multiply(new BigDecimal(ovduIntrRate).multiply(new BigDecimal(dayRate)))
-				.setScale(9, RoundingMode.HALF_UP)));
+
+		BigDecimal result = ((inCalcDTO.getDealExcAmt().multiply(new BigDecimal(ovduIntrRate).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP)));
+
+		log.debug("return calcIntrValue ::: {} ", result);
+		log.debug("=====================================================================");
+		log.debug("====================== calcIntrValue end ============================");
+		log.debug("=====================================================================");
+
+		return result;
 
 	}
 
 	/**
 	 * 기준일자에 이자상환주기(개월) 더하기 baseDt 기준일자, iAddCnt 추가일수, intrPymDtCd 이자납입일
 	 * 
-	 * @param baseDt           기준일자
-	 * @param intrRdmpFrqcMnum 이자상환주기(개월)
-	 * @param intrPymDtCd      이자납입일
+	 * @param  baseDt           기준일자
+	 * @param  intrRdmpFrqcMnum 이자상환주기(개월)
+	 * @param  intrPymDtCd      이자납입일
 	 * @return
 	 */
-	public String dateAdd(String baseDt, int rdmpFrqcMnum /* 상환주기개월수 */
-			, String intrPymDtCd /* 이자납입일자코드 */
-	) {
+	public String dateAdd(String baseDt, int rdmpFrqcMnum, String intrPymDtCd) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== dateAdd start ================================");
+		log.debug("=====================================================================");
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		String baseMaxDay = null;
@@ -883,8 +953,7 @@ public class Calculation {
 			maxCalendar.set(Calendar.DATE, maxCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 			baseMaxDay = dateFormat.format(maxCalendar.getTime());
 
-			if (("99".equals(intrPymDtCd) || baseMaxDay.substring(6, 8).equals(intrPymDtCd))
-					|| (baseMaxDay.substring(6, 8).compareTo(intrPymDtCd) <= 0)) {
+			if (("99".equals(intrPymDtCd) || baseMaxDay.substring(6, 8).equals(intrPymDtCd)) || (baseMaxDay.substring(6, 8).compareTo(intrPymDtCd) <= 0)) {
 
 				baseCalendar.add(Calendar.MONTH, rdmpFrqcMnum);
 				baseCalendar.set(Calendar.DATE, baseCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -953,6 +1022,11 @@ public class Calculation {
 		// }
 		// }
 
+		log.debug("return dateAdd ::: {} ", rtnValue);
+		log.debug("=====================================================================");
+		log.debug("====================== dateAdd end ==================================");
+		log.debug("=====================================================================");
+
 		return rtnValue;
 
 	}
@@ -960,11 +1034,15 @@ public class Calculation {
 	/**
 	 * 이자계산종료일구분+휴일처리구분에 따른 일자반환
 	 * 
-	 * @param inSvo
-	 * @param basDt
-	 * @return 적용일자
+	 * @param  inSvo
+	 * @param  basDt
+	 * @return       적용일자
 	 */
 	public String getBasDt(CalculationDTO inCalcDTO, String basDt) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== getBasDt start ===============================");
+		log.debug("=====================================================================");
 
 		String rtnValue = "";
 		IBIMS991BVO out991 = ibims991BMapper.getBsnDt(basDt);
@@ -985,6 +1063,11 @@ public class Calculation {
 			rtnValue = basDt;
 		}
 
+		log.debug("return getBasDt ::: {} ", rtnValue);
+		log.debug("=====================================================================");
+		log.debug("====================== getBasDt end =================================");
+		log.debug("=====================================================================");
+
 		return rtnValue;
 
 	}
@@ -992,7 +1075,7 @@ public class Calculation {
 	/**
 	 * 윤년인지 여부를 리턴
 	 * 
-	 * @param year
+	 * @param  year
 	 * @return
 	 */
 	public String LeapYearCheck(String year) {
@@ -1011,7 +1094,7 @@ public class Calculation {
 	/**
 	 * 윤년여부에 따른 년수리턴
 	 * 
-	 * @param LeapYearYn
+	 * @param  LeapYearYn
 	 * @return
 	 */
 	public int LeapYearF(String LeapYearYn) {
@@ -1023,9 +1106,9 @@ public class Calculation {
 	/**
 	 * 일수계산벙법코드에 따라 년도에 계산될 일수를 반환한다. 일수계산방법코드 3은 actual 11은 366, 1과4sms 365 2는 360
 	 * 
-	 * @param clcType 일수계산벙법코드
-	 * @param baseDt
-	 * @return 년일수
+	 * @param  clcType 일수계산벙법코드
+	 * @param  baseDt
+	 * @return         년일수
 	 */
 	public int actualYear(String clcType, String baseDt) {
 
@@ -1058,7 +1141,7 @@ public class Calculation {
 	/**
 	 * 01@원단위절사 02@원단위절상 03@10원단위절사 04@10원단위절상 05@소숫점2자리절사 06@소숫점2자리절상 07@원미만절사
 	 * 
-	 * @param val
+	 * @param  val
 	 * @return
 	 */
 	private BigDecimal process_down(String intrSnnoPrcsDcd, BigDecimal val) {
@@ -1091,10 +1174,14 @@ public class Calculation {
 	/**
 	 * 이자계산 시뮬레이터 파라미터 세팅
 	 * 
-	 * @param calcDto 원금/이자상환 계획정보 / 금리정보 / 상환 기본정보 파라미터
-	 * @return 시뮬레이션 결과 LIST
+	 * @param  calcDto 원금/이자상환 계획정보 / 금리정보 / 상환 기본정보 파라미터
+	 * @return         시뮬레이션 결과 LIST
 	 */
 	public List<CalculationResultDTO> setIntrCalcSimulation(TB06015SVO param) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== setIntrCalcSimulation start ==================");
+		log.debug("=====================================================================");
 
 		log.debug("<<<<<<<<setIntrCalcSimulation parameter check!!!>>>>>>>>");
 		log.debug("param.prdtCd::" + param.getPrdtCd());
@@ -1105,18 +1192,22 @@ public class Calculation {
 
 		// 기본정보 set
 		TB06015SVO svo = new TB06015SVO();
+
 		svo = ibims402BMapper.getDetailInfo(param);
 
 		// 금리정보 set
 		List<IBIMS404BVO> intrInfoList = ibims404BMapper.getIntrRateInfoList(param);
+
 		svo.setIntrtInfoList(intrInfoList);
 
 		// 원금상환 계획 정보 set
 		List<IBIMS403BDTO> rdmpPlanList = ibims403bMapper.getRdmpSchedule(param);
+
 		svo.setRdmpPlanList(rdmpPlanList);
 
 		// 이자상환 계획 정보 set
 		List<IBIMS403BDTO> intrPlanList = ibims403bMapper.getIntrSchedule(param);
+
 		svo.setIntrtPlanList(intrPlanList);
 
 		String dfrExpDt = "";
@@ -1171,16 +1262,25 @@ public class Calculation {
 
 		List<CalculationResultDTO> returnList = getIntrCalcSimulation(calcDto);
 
+		log.debug("return setIntrCalcSimulation ::: {} ", returnList);
+		log.debug("=====================================================================");
+		log.debug("====================== setIntrCalcSimulation end ====================");
+		log.debug("=====================================================================");
+
 		return returnList;
 	}
 
 	/**
 	 * 이자계산 시뮬레이터
 	 * 
-	 * @param calcDto 원금/이자상환 계획정보 / 금리정보 / 상환 기본정보 파라미터
-	 * @return 시뮬레이션 결과 LIST
+	 * @param  calcDto 원금/이자상환 계획정보 / 금리정보 / 상환 기본정보 파라미터
+	 * @return         시뮬레이션 결과 LIST
 	 */
 	public List<CalculationResultDTO> getIntrCalcSimulation(CalculationDTO calcDto) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== getIntrCalcSimulation start ==================");
+		log.debug("=====================================================================");
 
 		List<CalculationResultDTO> outList = new ArrayList<CalculationResultDTO>(); // 전체 상환 리스트(반환값)
 
@@ -1286,16 +1386,14 @@ public class Calculation {
 			outList.addAll(earlyIntrList);
 
 			if (earlyIntrList.size() > 0) {
-				earlyRpList = rescheduling(calcDto, earlyRpCalcList, earlyIntrList, prnaCalcList2, intrCalcList2,
-						intrCalcList);
+				earlyRpList = rescheduling(calcDto, earlyRpCalcList, earlyIntrList, prnaCalcList2, intrCalcList2, intrCalcList);
 
 				outList.addAll(earlyRpList);
 			} else {
 				log.debug("earlyIntrList is Empty!!!");
 			}
 
-		} else if (calcDto.getLastIntrClcDt() != null
-				&& calcDto.getLastIntrClcDt().compareTo(calcDto.getStdrDt()) <= 0) {
+		} else if (calcDto.getLastIntrClcDt() != null && calcDto.getLastIntrClcDt().compareTo(calcDto.getStdrDt()) <= 0) {
 
 			log.debug("2번시나리오~~~");
 
@@ -1306,8 +1404,7 @@ public class Calculation {
 				log.debug("최종이자계산일자 ~ 기산일자(상환일자) 이자 계산");
 
 				calcDto.setDealMrdpPrca(listTypeSett2(calcDto, calcDto.getRdmpPlanList()).get(0).getPrarPrna());
-				List<CalculationResultDTO> frstPrnaList = earlyRpnaCalc(calcDto,
-						listTypeSett2(calcDto, calcDto.getRdmpPlanList()));
+				List<CalculationResultDTO> frstPrnaList = earlyRpnaCalc(calcDto, listTypeSett2(calcDto, calcDto.getRdmpPlanList()));
 
 				List<CalculationResultDTO> frstIntrList = intrCalcWhenMdwy(calcDto, frstPrnaList, intrCalcList);
 
@@ -1324,8 +1421,12 @@ public class Calculation {
 		}
 
 		// 리스트 정렬 (시작일자 기준 오름차순 / 종료일자 기준 오름차순)
-		outList.sort(
-				Comparator.comparing(CalculationResultDTO::getStrtDt).thenComparing(CalculationResultDTO::getEndDt));
+		outList.sort(Comparator.comparing(CalculationResultDTO::getStrtDt).thenComparing(CalculationResultDTO::getEndDt));
+
+		log.debug("return getIntrCalcSimulation ::: {} ", outList);
+		log.debug("=====================================================================");
+		log.debug("====================== getIntrCalcSimulation end ====================");
+		log.debug("=====================================================================");
 
 		return outList;
 
@@ -1334,11 +1435,16 @@ public class Calculation {
 	/**
 	 * List<IBIMS403BDTO> 타입 스케줄 List<CalculationDTO> 타입 스케줄로 매핑
 	 * 
-	 * @param inCalcDTO        //이자계산 기본정보
-	 * @param IBIMS403BDTOList //IBIMS403BDTOList 타입 스케줄
+	 * @param  inCalcDTO        //이자계산 기본정보
+	 * @param  IBIMS403BDTOList //IBIMS403BDTOList 타입 스케줄
 	 * @return
 	 */
 	private List<CalculationResultDTO> listTypeSett(CalculationDTO inCalcDTO, List<IBIMS403BDTO> IBIMS403BDTOList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== listTypeSett start ===========================");
+		log.debug("=====================================================================");
+
 		List<CalculationResultDTO> returnList = new ArrayList<CalculationResultDTO>();
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -1361,8 +1467,7 @@ public class Calculation {
 				}
 			}
 
-			if (paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().isEmpty()
-					|| "N".equals(paramDTO.getPrcsCpltYn())) {
+			if (paramDTO.getPrcsCpltYn() == null || paramDTO.getPrcsCpltYn().isEmpty() || "N".equals(paramDTO.getPrcsCpltYn())) {
 
 				if (paramDTO.getRdmpPrarIntr() == null) { // 원금상환계획정보
 
@@ -1447,17 +1552,28 @@ public class Calculation {
 				log.debug("#####처리건은 제외#####");
 			}
 		}
+
+		log.debug("return listTypeSett ::: {} ", returnList);
+		log.debug("=====================================================================");
+		log.debug("====================== listTypeSett end =============================");
+		log.debug("=====================================================================");
+
 		return returnList;
 	}
 
 	/**
 	 * List<IBIMS403BDTO> 타입 스케줄 List<CalculationDTO> 타입 스케줄로 매핑 (중도상환 리스트만)
 	 * 
-	 * @param inCalcDTO    //이자계산 기본정보
-	 * @param ibims403List //IBIMS403BDTOList 타입 스케줄
+	 * @param  inCalcDTO    //이자계산 기본정보
+	 * @param  ibims403List //IBIMS403BDTOList 타입 스케줄
 	 * @return
 	 */
-	public List<CalculationResultDTO> listTypeSett2(CalculationDTO inCalcDTO, List<IBIMS403BDTO> ibims403List) {
+	private List<CalculationResultDTO> listTypeSett2(CalculationDTO inCalcDTO, List<IBIMS403BDTO> ibims403List) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== listTypeSett2 start ==========================");
+		log.debug("=====================================================================");
+
 		List<CalculationResultDTO> returnList = new ArrayList<CalculationResultDTO>();
 
 		BigDecimal bfBalance = inCalcDTO.getDealExcBlce(); // 대상금액
@@ -1519,17 +1635,28 @@ public class Calculation {
 			}
 
 		}
+
+		log.debug("return listTypeSett2 ::: {} ", returnList);
+		log.debug("=====================================================================");
+		log.debug("====================== listTypeSett2 end ============================");
+		log.debug("=====================================================================");
+
 		return returnList;
 	}
 
 	/**
 	 * List<IBIMS403BDTO> 타입 스케줄 List<CalculationDTO> 타입 스케줄로 매핑 (처리/미처리 구분 X)
 	 * 
-	 * @param inCalcDTO        //이자계산 기본정보
-	 * @param IBIMS403BDTOList //IBIMS403BDTOList 타입 스케줄
+	 * @param  inCalcDTO        //이자계산 기본정보
+	 * @param  IBIMS403BDTOList //IBIMS403BDTOList 타입 스케줄
 	 * @return
 	 */
 	private List<CalculationResultDTO> listTypeSett3(CalculationDTO inCalcDTO, List<IBIMS403BDTO> IBIMS403BDTOList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== listTypeSett3 start ==========================");
+		log.debug("=====================================================================");
+
 		List<CalculationResultDTO> returnList = new ArrayList<CalculationResultDTO>();
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -1607,17 +1734,27 @@ public class Calculation {
 			}
 
 		}
+
+		log.debug("return listTypeSett3 ::: {} ", returnList);
+		log.debug("=====================================================================");
+		log.debug("====================== listTypeSett3 end ============================");
+		log.debug("=====================================================================");
+
 		return returnList;
 	}
 
 	/**
 	 * 기준일자 전 날짜의 스케줄만 가져오기
 	 * 
-	 * @param inCalcDTO //상환 기본정보
-	 * @param scdlList  //스케줄 리스트
+	 * @param  inCalcDTO //상환 기본정보
+	 * @param  scdlList  //스케줄 리스트
 	 * @return
 	 */
 	public List<CalculationResultDTO> throwAfterBaseDt(CalculationDTO inCalcDTO, List<CalculationResultDTO> scdlList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== throwAfterBaseDt start =======================");
+		log.debug("=====================================================================");
 
 		List<CalculationResultDTO> returnList = new ArrayList<CalculationResultDTO>();
 
@@ -1648,18 +1785,28 @@ public class Calculation {
 			}
 
 		}
+
+		log.debug("return throwAfterBaseDt ::: {} ", returnList);
+		log.debug("=====================================================================");
+		log.debug("====================== throwAfterBaseDt end =========================");
+		log.debug("=====================================================================");
+
 		return returnList;
 	}
 
 	/**
 	 * 원금에 따른 이자금액 계산
 	 * 
-	 * @param inCalcDTO
-	 * @param prnaCalcRstDTOList
+	 * @param  inCalcDTO
+	 * @param  prnaCalcRstDTOList
 	 * @return
 	 */
-	public List<CalculationResultDTO> intrCalc(CalculationDTO inCalcDTO, List<CalculationResultDTO> prnaCalcRstDTOList,
-			List<IBIMS403BDTO> intrScdlList) {
+	public List<CalculationResultDTO> intrCalc(CalculationDTO inCalcDTO, List<CalculationResultDTO> prnaCalcRstDTOList, List<IBIMS403BDTO> intrScdlList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== intrCalc start ===============================");
+		log.debug("=====================================================================");
+
 		// log.debug("!!!!!!intrCalc실행!!!!!!!!");
 
 		List<CalculationResultDTO> intrCalcRstDTOList = new ArrayList<>();
@@ -1714,8 +1861,7 @@ public class Calculation {
 
 				IBIMS404BVO bfVO = out404bf.get(k);
 
-				noOverlap = bfVO.getAplyEndDt().compareTo(item.getStrtDt()) < 0
-						|| bfVO.getAplyStrtDt().compareTo(item.getEndDt()) > 0;
+				noOverlap = bfVO.getAplyEndDt().compareTo(item.getStrtDt()) < 0 || bfVO.getAplyStrtDt().compareTo(item.getEndDt()) > 0;
 
 				if (!noOverlap) {
 					log.debug((k + 1) + "번째 금리는 " + i + "번째 이자상환회차 기간에 포함됨");
@@ -1745,8 +1891,7 @@ public class Calculation {
 				double aplyIntrt = ibItem.getAplyIntrt() / 100;
 				dIntrt = ibItem.getAplyIntrt();
 				item.setAplyIntrt(aplyIntrt);
-				aplyIntrtContent = ("".equals(aplyIntrtContent.trim()))
-						? aplyIntrtContent.concat(String.valueOf(aplyIntrt * 100))
+				aplyIntrtContent = ("".equals(aplyIntrtContent.trim())) ? aplyIntrtContent.concat(String.valueOf(aplyIntrt * 100))
 						: aplyIntrtContent.concat(" &#47; " + String.valueOf(aplyIntrt * 100));
 
 				if (oldAplyIntrt != aplyIntrt) {
@@ -1773,52 +1918,40 @@ public class Calculation {
 					ddCnt = DateUtil.dateDiff(strtDt, getBasDt(inCalcDTO, endDt)) + 1; // 일수계산
 					if ("1".equals(inCalcDTO.getTfdLyAplyDcd())) { // 초일말일적용구분 == 01단편넣기
 						if ("BASETYPE".equals(item.getDfrType()) && "LST_SEC".equals(item.getSectionType())) { // 마지막회차
-//							ddCnt--;
+							// ddCnt--;
 							;
 						}
 					}
-					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt))
-							: ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
+					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt)) : ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
 					actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
 					// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt)
-							/ actualType;
-					monthlySubInterest = monthlySubInterest
-							.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate)))
-									.setScale(9, RoundingMode.HALF_UP)));
+					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt) / actualType;
+					monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP)));
 
 				} else {
 
 					strLstDt = strtDt.substring(0, 4) + "1231"; // lastDate(strtDt);
 					ddCnt = DateUtil.dateDiff(strtDt, strLstDt) + 1;
-					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt))
-							: ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
+					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt)) : ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
 
 					actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
 					// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt)
-							/ actualType;
-					monthlySubInterest = monthlySubInterest
-							.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate)))
-									.setScale(9, RoundingMode.HALF_UP)));
+					dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt) / actualType;
+					monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP)));
 
 					ddCnt2 = DateUtil.dateDiff(endDt.substring(0, 4) + "0101", getBasDt(inCalcDTO, endDt)) + 1;
 					if ("1".equals(inCalcDTO.getTfdLyAplyDcd())) { // 초일말일적용구분 == 01단편넣기
 						if ("BASETYPE".equals(item.getDfrType()) && "LST_SEC".equals(item.getSectionType())) { // 마지막회차
-//							ddCnt2--;
+							// ddCnt2--;
 							;
 						}
 					}
-					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt2))
-							: ddCntContent.concat("," + String.valueOf(ddCnt2));
+					ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt2)) : ddCntContent.concat("," + String.valueOf(ddCnt2));
 
 					actualType2 = actualYear(inCalcDTO.getIntrDnumClcMthCd(), endDt);
 					// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-					dayRate2 = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt2)
-							/ actualType2;
-					monthlySubInterest = monthlySubInterest
-							.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate2)))
-									.setScale(9, RoundingMode.HALF_UP)));
+					dayRate2 = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt2) / actualType2;
+					monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate2))).setScale(9, RoundingMode.HALF_UP)));
 
 				}
 			} // end of for
@@ -1853,17 +1986,27 @@ public class Calculation {
 			log.debug("### 납입이자누계 :" + monthlySubInterest);
 			log.debug("### 대출잔금 :" + bfBalance);
 		} // end of for
+
+		log.debug("return intrCalc ::: {} ", intrCalcRstDTOList);
+		log.debug("=====================================================================");
+		log.debug("====================== intrCalc end =================================");
+		log.debug("=====================================================================");
+
 		return intrCalcRstDTOList;
 	}
 
 	/**
 	 * 연체원금 여부 & 수수료 계산
 	 * 
-	 * @param inCalcDTO //상환 기본정보
-	 * @param scdhList  //n회차 상환스케줄
+	 * @param  inCalcDTO //상환 기본정보
+	 * @param  scdhList  //n회차 상환스케줄
 	 * @return
 	 */
 	public List<CalculationResultDTO> overduePrnaCalc(CalculationDTO inCalcDTO, List<CalculationResultDTO> scdhList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== overduePrnaCalc start ========================");
+		log.debug("=====================================================================");
 
 		List<CalculationResultDTO> ovduList = new ArrayList<CalculationResultDTO>();
 
@@ -1972,17 +2115,26 @@ public class Calculation {
 		// ovduList.get(i).setRdmpTmrd(i+1+"");
 		// }
 
+		log.debug("return overduePrnaCalc ::: {} ", ovduList);
+		log.debug("=====================================================================");
+		log.debug("====================== overduePrnaCalc end ==========================");
+		log.debug("=====================================================================");
+
 		return ovduList;
 	}
 
 	/**
 	 * IBIMS403BDTOLIST => LoanDataLIST로 sett
 	 * 
-	 * @param inCalcDTO //상환 기본정보
-	 * @param scdhList  //IBIMS403BDTOLIST
+	 * @param  inCalcDTO //상환 기본정보
+	 * @param  scdhList  //IBIMS403BDTOLIST
 	 * @return
 	 */
 	public List<LoanData> loanListSett(CalculationDTO inCalcDTO, List<IBIMS403BDTO> scdhList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== loanListSett start ===========================");
+		log.debug("=====================================================================");
 
 		List<LoanData> loanList = new ArrayList<LoanData>();
 
@@ -2091,6 +2243,11 @@ public class Calculation {
 			}
 		}
 
+		log.debug("return loanListSett ::: {} ", loanList);
+		log.debug("=====================================================================");
+		log.debug("====================== loanListSett end =============================");
+		log.debug("=====================================================================");
+
 		return loanList;
 
 	}
@@ -2098,11 +2255,15 @@ public class Calculation {
 	/**
 	 * 중도상환 여부 & 수수료 계산
 	 * 
-	 * @param inCalcDTO //상환 기본정보
-	 * @param scdhList  //상환스케줄 리스트
+	 * @param  inCalcDTO //상환 기본정보
+	 * @param  scdhList  //상환스케줄 리스트
 	 * @return
 	 */
 	public List<CalculationResultDTO> earlyRpnaCalc(CalculationDTO incaDto, List<CalculationResultDTO> scdhList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== earlyRpnaCalc start ==========================");
+		log.debug("=====================================================================");
 
 		List<CalculationResultDTO> earlyRpCalcList = new ArrayList<>();
 
@@ -2159,8 +2320,7 @@ public class Calculation {
 				Date strtDate = dateFormat.parse(strtDt);
 				Date endDate = dateFormat.parse(endDt);
 
-				boolean isWithinRange = (stdrDate.after(strtDate) || stdrDate.equals(strtDate))
-						&& (stdrDate.before(endDate) || stdrDate.equals(endDate));
+				boolean isWithinRange = (stdrDate.after(strtDate) || stdrDate.equals(strtDate)) && (stdrDate.before(endDate) || stdrDate.equals(endDate));
 
 				if (isWithinRange) { // 상환예정일자보다 처리일자가 이전 시점인 경우
 					log.debug("###########중도상환 발생##############");
@@ -2172,8 +2332,7 @@ public class Calculation {
 					BigDecimal loanPeroidB = new BigDecimal(loanPeroid); // 대출기간
 
 					// 중도상환 수수료율 = 상환금액 * 중도상환 수수료율 * (잔존기간 / 대출기간)
-					earlyRpFee = mrdpPrca.multiply(mdwyRdmpFeeRto)
-							.multiply(rmDaysB.divide(loanPeroidB, 13, RoundingMode.HALF_UP));
+					earlyRpFee = mrdpPrca.multiply(mdwyRdmpFeeRto).multiply(rmDaysB.divide(loanPeroidB, 13, RoundingMode.HALF_UP));
 					earlyRpFee = process_down(incaDto.getIntrSnnoPrcsDcd(), earlyRpFee);
 					log.debug("중도상환 수수료: " + earlyRpFee);
 
@@ -2217,16 +2376,25 @@ public class Calculation {
 
 		} // end of for
 
+		log.debug("return earlyRpnaCalc ::: {} ", earlyRpCalcList);
+		log.debug("=====================================================================");
+		log.debug("====================== earlyRpnaCalc end ============================");
+		log.debug("=====================================================================");
+
 		return earlyRpCalcList;
 	}
 
 	/**
 	 * 상환대상원금, 정상이자, 연체이자, 중도상환원금, 중도상환수수료 합계 계산
 	 * 
-	 * @param scdhList //상환스케줄 리스트
+	 * @param  scdhList //상환스케줄 리스트
 	 * @return
 	 */
 	public CalculationSumDTO totalCalculation(CalculationDTO calcDTO, List<CalculationResultDTO> scdhList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== totalCalculation start =======================");
+		log.debug("=====================================================================");
 
 		String intrSnnoPrcsDcd = calcDTO.getIntrSnnoPrcsDcd();
 
@@ -2279,8 +2447,7 @@ public class Calculation {
 
 		totalOvduIntr = totalIntrOvduIntr.add(totalPrnaOvduIntr);
 
-		totalTrgtAmt = totalIntr.add(totalOvduIntr).add(totalTrgtAmt).add(totalPrna).add(totalMdwyRdmpFee)
-				.add(totlaMrdpPrca);
+		totalTrgtAmt = totalIntr.add(totalOvduIntr).add(totalTrgtAmt).add(totalPrna).add(totalMdwyRdmpFee).add(totlaMrdpPrca);
 
 		totalCalcDTO.setTotalIntr(process_down(intrSnnoPrcsDcd, totalIntr)); // 정상이자 합계 set
 		totalCalcDTO.setTotalIntrOvduIntr(process_down(intrSnnoPrcsDcd, totalIntrOvduIntr)); // 이자연체이자 합계 set
@@ -2291,14 +2458,21 @@ public class Calculation {
 		totalCalcDTO.setTotlaMrdpPrca(process_down(intrSnnoPrcsDcd, totlaMrdpPrca)); // 중도상환원금 합계 set
 		totalCalcDTO.setTotalTrgtAmt(process_down(intrSnnoPrcsDcd, totalTrgtAmt)); // 총 수납대상금액 합계 set
 
+		log.debug("return totalCalculation ::: {} ", totalCalcDTO.toString());
+		log.debug("=====================================================================");
+		log.debug("====================== totalCalculation end =========================");
+		log.debug("=====================================================================");
+
 		return totalCalcDTO;
 
 	}
 
-	/*
-	 * 선취이자 계산
-	 */
+	/* 선취이자 계산 */
 	public BigDecimal getPrepdIntr(CalculationDTO param) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== getPrepdIntr start ===========================");
+		log.debug("=====================================================================");
 
 		BigDecimal rdmpPrarIntr = BigDecimal.ZERO;
 
@@ -2320,8 +2494,12 @@ public class Calculation {
 		// rdmpPrarIntr = bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new
 		// BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP);
 
-		rdmpPrarIntr = bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate))).setScale(9,
-				RoundingMode.HALF_UP);
+		rdmpPrarIntr = bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP);
+
+		log.debug("return getPrepdIntr ::: {} ", rdmpPrarIntr);
+		log.debug("=====================================================================");
+		log.debug("====================== getPrepdIntr end =============================");
+		log.debug("=====================================================================");
 
 		return rdmpPrarIntr;
 	}
@@ -2329,11 +2507,14 @@ public class Calculation {
 	/**
 	 * 중도상환 발생 시 이자 계산
 	 * 
-	 * @param scdhList //상환스케줄 리스트
+	 * @param  scdhList //상환스케줄 리스트
 	 * @return
 	 */
-	public List<CalculationResultDTO> intrCalcWhenMdwy(CalculationDTO inCalcDTO, List<CalculationResultDTO> scdhList,
-			List<CalculationResultDTO> intrCalcList) {
+	public List<CalculationResultDTO> intrCalcWhenMdwy(CalculationDTO inCalcDTO, List<CalculationResultDTO> scdhList, List<CalculationResultDTO> intrCalcList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== intrCalcWhenMdwy start =======================");
+		log.debug("=====================================================================");
 
 		List<CalculationResultDTO> intrList = new ArrayList<>();
 
@@ -2382,8 +2563,7 @@ public class Calculation {
 
 					IBIMS404BVO bfVO = out404bf.get(k);
 
-					noOverlap = bfVO.getAplyEndDt().compareTo(strtDt) < 0
-							|| bfVO.getAplyStrtDt().compareTo(item.getEndDt()) > 0;
+					noOverlap = bfVO.getAplyEndDt().compareTo(strtDt) < 0 || bfVO.getAplyStrtDt().compareTo(item.getEndDt()) > 0;
 
 					if (!noOverlap) {
 						log.debug((k + 1) + "번째 금리는 이자상환회차 기간에 포함됨");
@@ -2423,43 +2603,31 @@ public class Calculation {
 						log.debug("getBasDtRslt::: " + getBasDt(inCalcDTO, stdrDt));
 						log.debug("[case1]일수(ddCnt): " + ddCnt + ", 시작일: " + strtDt + ", 기준일: " + stdrDt);
 
-						ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt))
-								: ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
+						ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt)) : ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
 						actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
 						// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-						dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt)
-								/ actualType;
-						monthlySubInterest = monthlySubInterest
-								.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate)))
-										.setScale(9, RoundingMode.HALF_UP)));
+						dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt) / actualType;
+						monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP)));
 
 					} else {
 
 						strLstDt = strtDt.substring(0, 4) + "1231"; // lastDate(strtDt);
 						ddCnt = DateUtil.dateDiff(strtDt, strLstDt) + 1;
 						log.debug("[case2]일수(ddCnt): " + ddCnt + ", 시작일: " + strtDt + ", 기준일: " + stdrDt);
-						ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt))
-								: ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
+						ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt)) : ddCntContent.concat(" &#47; " + String.valueOf(ddCnt));
 
 						actualType = actualYear(inCalcDTO.getIntrDnumClcMthCd(), strtDt);
 						// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-						dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt)
-								/ actualType;
-						monthlySubInterest = monthlySubInterest
-								.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate)))
-										.setScale(9, RoundingMode.HALF_UP)));
+						dayRate = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt) / actualType;
+						monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate))).setScale(9, RoundingMode.HALF_UP)));
 
 						ddCnt2 = DateUtil.dateDiff(stdrDt.substring(0, 4) + "0101", getBasDt(inCalcDTO, stdrDt)) + 1;
-						ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt2))
-								: ddCntContent.concat("," + String.valueOf(ddCnt2));
+						ddCntContent = ("".equals(ddCntContent.trim())) ? ddCntContent.concat(String.valueOf(ddCnt2)) : ddCntContent.concat("," + String.valueOf(ddCnt2));
 
 						actualType2 = actualYear(inCalcDTO.getIntrDnumClcMthCd(), stdrDt);
 						// 이자일수계산방법(4) 30/360인경우 == 대상금액*적용이율*이자상환주기/12 로 처리 그외는 대상금액*일수*적용이율/이자일수계산방법
-						dayRate2 = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt2)
-								/ actualType2;
-						monthlySubInterest = monthlySubInterest
-								.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate2)))
-										.setScale(9, RoundingMode.HALF_UP)));
+						dayRate2 = ((inCalcDTO.getIntrDnumClcMthCd() == "4") ? inCalcDTO.getIntrRdmpFrqcMnum() : ddCnt2) / actualType2;
+						monthlySubInterest = monthlySubInterest.add((bfBalance.multiply(new BigDecimal(aplyIntrt).multiply(new BigDecimal(dayRate2))).setScale(9, RoundingMode.HALF_UP)));
 
 					}
 				}
@@ -2483,23 +2651,34 @@ public class Calculation {
 			}
 
 		}
+
+		log.debug("return intrCalcWhenMdwy ::: {} ", intrList);
+		log.debug("=====================================================================");
+		log.debug("====================== intrCalcWhenMdwy end =========================");
+		log.debug("=====================================================================");
+
 		return intrList;
 	}
 
 	/**
 	 * 중도상환 발생 시 이자상환스케줄 다시 만들기
 	 * 
-	 * @param earlyCalcList     //중도상환원금 스케줄
-	 * @param earlyIntrCalcList //중도상환 이자 스케줄
-	 * @param prnaList          //기존 원금상환 스케줄
-	 * @param intrList          //기존 이자상환 스케줄
-	 * @param inCalcDTO         //이자계산 기본정보
-	 * @param intrCalcList      //중도상환 전 이자상환 스케줄
+	 * @param  earlyCalcList     //중도상환원금 스케줄
+	 * @param  earlyIntrCalcList //중도상환 이자 스케줄
+	 * @param  prnaList          //기존 원금상환 스케줄
+	 * @param  intrList          //기존 이자상환 스케줄
+	 * @param  inCalcDTO         //이자계산 기본정보
+	 * @param  intrCalcList      //중도상환 전 이자상환 스케줄
 	 * @return
 	 */
-	public List<CalculationResultDTO> rescheduling(CalculationDTO inCalcDTO, List<CalculationResultDTO> earlyCalcList,
-			List<CalculationResultDTO> earlyIntrCalcList, List<CalculationResultDTO> prnaList,
-			List<CalculationResultDTO> intrList, List<CalculationResultDTO> intrCalcList) {
+	public List<CalculationResultDTO> rescheduling(
+			CalculationDTO inCalcDTO, List<CalculationResultDTO> earlyCalcList, List<CalculationResultDTO> earlyIntrCalcList, List<CalculationResultDTO> prnaList, List<CalculationResultDTO> intrList,
+			List<CalculationResultDTO> intrCalcList
+	) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== rescheduling start ===========================");
+		log.debug("=====================================================================");
 
 		List<CalculationResultDTO> reScdhPrnaList = new ArrayList<>();
 		List<CalculationResultDTO> reScdhIntrList = new ArrayList<>();
@@ -2669,7 +2848,10 @@ public class Calculation {
 			}
 		}
 
-		log.debug("\n rsltList ::: {}", rsltList);
+		log.debug("return rescheduling ::: {} ", rsltList);
+		log.debug("=====================================================================");
+		log.debug("====================== rescheduling end =============================");
+		log.debug("=====================================================================");
 
 		return rsltList;
 	}
@@ -2677,11 +2859,16 @@ public class Calculation {
 	/**
 	 * 중도상환 여부 & 수수료 계산
 	 * 
-	 * @param inCalcDTO //상환 기본정보
-	 * @param scdhList  //상환스케줄 리스트
+	 * @param  inCalcDTO //상환 기본정보
+	 * @param  scdhList  //상환스케줄 리스트
 	 * @return
 	 */
 	public List<CalculationResultDTO> mdwyRdmpFeeCalc(CalculationDTO incaDto, List<CalculationResultDTO> scdhList) {
+
+		log.debug("=====================================================================");
+		log.debug("====================== mdwyRdmpFeeCalc start ========================");
+		log.debug("=====================================================================");
+
 		List<CalculationResultDTO> mdwyList = new ArrayList<>(); // 중도상환 원금 + 수수료 스케줄 리스트 (반환값)
 		List<CalculationResultDTO> mdwyScdhList = new ArrayList<>();
 
@@ -2778,8 +2965,7 @@ public class Calculation {
 
 			if (totalPrarPrna.compareTo(mrdpPrca) <= 0) { // i회차 까지의 기존 상환예정 원금 총합이 중도상환 원금보다 작거나 같은 경우
 				// 중도상환 수수료율 = 상환금액 * 중도상환 수수료율 * (잔존기간 / 대출기간)
-				mdwyRdmpFee = scdhDto.getPrarPrna().multiply(mdwyRdmpFeeRto)
-						.multiply(rmDaysB.divide(loanPeroidB, 13, RoundingMode.HALF_UP));
+				mdwyRdmpFee = scdhDto.getPrarPrna().multiply(mdwyRdmpFeeRto).multiply(rmDaysB.divide(loanPeroidB, 13, RoundingMode.HALF_UP));
 				mdwyRdmpFee = process_down(incaDto.getIntrSnnoPrcsDcd(), mdwyRdmpFee);
 				log.debug("중도상환 수수료(case1): " + mdwyRdmpFee);
 
@@ -2848,8 +3034,7 @@ public class Calculation {
 					finalMdwyRdmp = mrdpPrca.subtract(totalPrarPrna.subtract(scdhDto.getPrarPrna()));
 				}
 
-				mdwyRdmpFee = finalMdwyRdmp.multiply(mdwyRdmpFeeRto)
-						.multiply(rmDaysB.divide(loanPeroidB, 13, RoundingMode.HALF_UP));
+				mdwyRdmpFee = finalMdwyRdmp.multiply(mdwyRdmpFeeRto).multiply(rmDaysB.divide(loanPeroidB, 13, RoundingMode.HALF_UP));
 				mdwyRdmpFee = process_down(incaDto.getIntrSnnoPrcsDcd(), mdwyRdmpFee);
 				log.debug("중도상환 수수료(case2): " + mdwyRdmpFee);
 
@@ -2909,7 +3094,10 @@ public class Calculation {
 
 		}
 
-		log.debug("\nmdwyList:::{}", mdwyList);
+		log.debug("return mdwyRdmpFeeCalc ::: {} ", mdwyList);
+		log.debug("=====================================================================");
+		log.debug("====================== mdwyRdmpFeeCalc end ==========================");
+		log.debug("=====================================================================");
 
 		return mdwyList;
 	}

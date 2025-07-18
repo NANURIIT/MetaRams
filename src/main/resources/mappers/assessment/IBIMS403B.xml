@@ -405,6 +405,12 @@
                , A.PRCS_CPLT_YN           /* 처리여부 */
                , A.PRCS_DT                /* 처리일시 */
                , A.EXC_SN                 /* 실행일련번호 */
+               , a.HND_DETL_DTM /*조작상세일시 */
+               , (SELECT EMP_NM
+	              FROM IBIMS003B
+	             WHERE 1=1
+	               AND EMPNO = HND_EMPNO
+	            ) AS HND_EMPNO      /* 조작사원번호 */
             FROM IBIMS403B /* 여신스케쥴기본 */ A
            WHERE PRDT_CD = #{prdtCd}
           <if test="excSn != null and excSn != ''">
@@ -429,6 +435,12 @@
                , A.PRCS_CPLT_YN           /* 처리여부 */
                , A.PRCS_DT                /* 처리일시 */
                , A.EXC_SN                 /* 실행일련번호 */
+               , a.HND_DETL_DTM /*조작상세일시 */
+			   , (SELECT EMP_NM
+	              FROM IBIMS003B
+	             WHERE 1=1
+	               AND EMPNO = HND_EMPNO
+	            ) AS HND_EMPNO      /* 조작사원번호 */
             FROM IBIMS403B /* 여신스케쥴기본 */ A
            WHERE PRDT_CD = #{prdtCd}
           <if test="excSn != null and excSn != ''">
@@ -448,6 +460,12 @@
                , PRCS_CPLT_YN           /* 처리여부 */
                , PRCS_DT                /* 처리일시 */
                , EXC_SN                 /* 실행일련번호 */
+               , a.HND_DETL_DTM /*조작상세일시 */
+               , (SELECT EMP_NM
+	              FROM IBIMS003B
+	             WHERE 1=1
+	               AND EMPNO = HND_EMPNO
+	            ) AS HND_EMPNO      /* 조작사원번호 */
             FROM IBIMS403B /* 여신스케쥴기본 */ A
            WHERE PRDT_CD = #{prdtCd}
              AND SCX_DCD  = '01'
@@ -494,9 +512,9 @@
                , #{prarPrna}                         /*예정원금 */
                , #{strtDt}                           /*시작일자 */
                , #{endDt}                            /*종료일자 */
-               , TRUNC(#{rdmpPrarIntr}                     /*상환예정이자 */
+               , TRUNC(#{rdmpPrarIntr})                     /*상환예정이자 */
                , #{prcsCpltYn}                       /*처리완료여부 */
-               , TO_CHAR(SYSDATE, 'YYYYMMDD')        /*처리일자 */
+               , #{prcsDt}        /*처리일자 */
                , #{prcsAmt}                          /*처리금액 */
                , #{prcsIntrAmt}                      /*처리이자금액 */
                , #{aplyIrt}                          /*적용이율 */
@@ -522,7 +540,7 @@
                , END_DT            = #{endDt}                      /* 종료일자 */
                , RDMP_PRAR_INTR    = #{rdmpPrarIntr}               /* 상환예정이자 */
                , PRCS_CPLT_YN 	   = #{prcsCpltYn} 		             /* 처리완료여부 */
-               , PRCS_DT 	         = TO_CHAR(SYSDATE, 'YYYYMMDD')  /* 처리일자 */
+               , PRCS_DT 	         = #{prcsDt}  /* 처리일자 */
                , PRCS_AMT 		     = #{prcsAmt} 			             /* 처리금액 */
                , PRCS_INTR_AMT 	   = #{prcsIntrAmt} 	    	       /* 처리이자금액 */
                , APLY_IRT 		     = #{aplyIrt} 			             /* 적용이율 */
@@ -573,7 +591,7 @@
      <!-- 원리금  스케줄관리 회차 채번 -->
      <select id="getPaiSchTmrd" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="String">
      	/* IBIMS403BMapper.getPaiSchTmrd */
-        SELECT TO_CHAR(MAX(TO_NUMBER(NVL(RDMP_TMRD, 0))) + 1 ) AS rdmpTmrd /* 상환회차 */
+        SELECT TO_CHAR(nvl(max(RDMP_TMRD),0)+1) AS rdmpTmrd /* 상환회차 */
           FROM IBIMS403B /* 여신스케쥴기본 */
          WHERE PRDT_CD = #{prdtCd}     /* 종목코드 */
            AND SCX_DCD = #{scxDcd}     /* 일정구분코드 */
@@ -610,7 +628,7 @@
 	           , TT2.TR_CRRY_CD 			                          /* 통화코드 */
 	        FROM IBIMS403B TT1	/* 여신스케쥴기본 */
 	   LEFT JOIN IBIMS201B TT2  /* 딜승인기본 */ ON TT1.PRDT_CD = TT2.PRDT_CD
-	   LEFT JOIN ibims430b tt3 ON tt3.PRDT_CD = tt1.PRDT_CD AND tt3.SCX_DCD = tt1.SCX_DCD AND tt3.PRAR_DT = tt1.PRAR_DT
+	   LEFT JOIN ibims430b tt3 ON tt3.PRDT_CD = tt1.PRDT_CD AND tt3.SCX_DCD = tt1.SCX_DCD AND tt3.PRAR_DT = tt1.PRAR_DT AND tt1.exc_sn = tt3.exc_sn
 	       WHERE 1=1
 	         AND TT2.LAST_YN = 'Y'
 	         AND (TT1.PRCS_CPLT_YN != 'Y' OR TT1.PRCS_CPLT_YN IS NULL)
