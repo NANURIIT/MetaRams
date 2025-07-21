@@ -5,6 +5,7 @@
 	<!-- 기업체 정보 조회 -->
 		<!-- 기업체 정보 조회 IBIMS010BMapper.selectArdyBzepInfo  -->
 	<select id="selectArdyBzepInfo" resultType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO" parameterType='com.nanuri.rams.business.common.vo.IBIMS010BVO$SchCondVO'>
+		/* IBIMS010BMapper.selectArdyBzepInfo */
 		SELECT  A.ARDY_BZEP_NO			/* 기업체번호 */
 		      , A.ENTP_NM				/* 업체명 */
 		      , A.RNBN					/* 주민사업자등록번호 */
@@ -58,6 +59,7 @@
 	<!-- 기업체리스트 조회  -->
 		<!-- 기업체 정보 조회 IBIMS010BMapper.selectArdyBzepInfoList  -->
 	<select id="selectArdyBzepInfoList" resultType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepListVO" parameterType='com.nanuri.rams.business.common.vo.IBIMS010BVO$SchCondVO'>
+		/* IBIMS010BMapper.selectArdyBzepInfoList */
 		SELECT  A.ARDY_BZEP_NO
 		      , A.ENTP_NM
 		      , A.RNBN
@@ -145,7 +147,7 @@
 		SELECT LPAD(NVL(MAX(TO_NUMBER(A.ARDY_BZEP_NO)), 0) + 1, 13, '0')
 		  FROM IBIMS010B A
 		</selectKey>
-		
+		/* IBIMS010BMapper.insertArdyBzepInfo */
 		INSERT INTO IBIMS010B (
 		            ARDY_BZEP_NO
 		          , ENTP_NM
@@ -243,7 +245,8 @@
 	
 	<!-- 기업체리스트 수정 -->
 		<!-- 기업체리스트 수정 IBIMS010BMapper.updateArdyBzepInfo --> 
-	<update id="updateArdyBzepInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO">		
+	<update id="updateArdyBzepInfo" parameterType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO">	
+	    /* IBIMS010BMapper.updateArdyBzepInfo */	
 		UPDATE IBIMS010B 
 		   SET
                ENTP_NM			= #{entpNm}       								/* 업체명 */
@@ -265,7 +268,7 @@
              , ENG_BZPL_ADDR		= #{engBzplAddr}    						/* 영문사업장주소 */
              , OPBS_DT				= #{opbsDt}         						/* 개업일자 */
              , STD_IDST_SCLS_CD		= #{stdIdstSclsCd}  						/* 표준산업소분류코드 */
-             , BZCN_NM			= #{bzcnNm}       								/* 업태명 */
+             , BZCN_NM				= #{bzcnNm}       							/* 업태명 */
              , CLSE_DVSN_CD			= #{clseDvsnCd}     						/* 폐업구분코드 */
              , CLSE_DT				= #{clseDt}         						/* 폐업일자 */
              , RGST_DT				= TO_CHAR(SYSDATE, 'YYYYMMDD')  			/* 등록일자 */
@@ -282,7 +285,7 @@
              , OVRS_SPC_YN			= #{ovrsSpcYn}      						/* 해외SPC여부 */
              , SPC_YN				= #{spcYn}									/* SPC여부*/
              , USE_YN				= 'Y'               						/* 사용여부 */
-             , HND_DETL_DTM			= TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')  	/* 조작상세일시 */
+             , HND_DETL_DTM			= SYSDATE   							  	/* 조작상세일시 */
              , HND_EMPNO			= #{hndEmpno}       						/* 조작사원번호 */
              , HND_TMNL_NO			= #{hndTmnlNo}      						/* 조작단말기번호 */
              , HND_TR_ID			= #{hndTrId}        						/* 조작거래ID */
@@ -296,6 +299,7 @@
 	<!-- 기업체 사용여부 미사용 수정  -->
 		<!-- 기업체리스트 수정 IBIMS010BMapper.updateArdyBzepInfo -->
 	<update id="updateArdyBzepUseYn" parameterType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepVO">		
+	/* IBIMS010BMapper.updateArdyBzepUseYn */
 		UPDATE IBIMS010B 
 		   SET USE_YN				= 'N'                /* 사용여부 */
              , HND_DETL_DTM			= SYSDATE  			 /* 조작상세일시 */
@@ -309,6 +313,7 @@
 	<!-- 기업체 사용여부 코드값  -->
 		<!-- B022(사업장구분코드), E034(기업형태구분코드), E035(기업규모구분코드), SOO7(표준산업분류코드), U005(사용여부코드)  -->
 	<select id="selectCd" resultType="com.nanuri.rams.business.common.vo.IBIMS010BVO$ArdyBzepCdVO" parameterType='com.nanuri.rams.business.common.vo.IBIMS010BVO$SchCondVO'>
+		/* IBIMS010BMapper.selectCd */
 		SELECT CD_VL_NM
 			 , CD_VL_ID
 			 , CMNS_CD_GRP
@@ -319,6 +324,7 @@
 
 
 	<select id="chk" parameterType="string" resultType="int">
+	/* IBIMS010BMapper.chk */
 		SELECT COUNT(ARDY_BZEP_NO)
 		  FROM IBIMS010B
 		 WHERE 1=1
