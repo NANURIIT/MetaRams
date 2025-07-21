@@ -136,63 +136,63 @@
 			select
 				  #{item.stdrDt}
 				, #{item.prdtCd}
-				, #{item.excSn}
+				, TO_NUMBER(#{item.excSn})
 				, #{item.ldgSttsCd}
 				, #{item.crryCd}
 				, #{item.excDt}
 				, #{item.expDt}
-				, #{item.dealExcAmt}
-				, #{item.dealExcBlce}
-				, #{item.krwTrslRt}
-				, #{item.krwTrslExcAmt}
-				, #{item.krwTrslExcBlce}
-				, #{item.prnaDfrPrdMnum}
+				, NVL(TO_NUMBER(#{item.dealExcAmt}), 0)
+				, NVL(TO_NUMBER(#{item.dealExcBlce}), 0)
+				, NVL(TO_NUMBER(#{item.krwTrslRt}), 0)
+				, NVL(TO_NUMBER(#{item.krwTrslExcAmt}), 0)
+				, NVL(TO_NUMBER(#{item.krwTrslExcBlce}), 0)
+				, NVL(TO_NUMBER(#{item.prnaDfrPrdMnum}), 0)
 				, #{item.lastPrnaRdmpDt}
 				, #{item.lastIntrClcDt}
 				, #{item.nxtRdmpPrarDt}
 				, #{item.nxtIntrPymDt}
-				, #{item.intrRdmpFrqcMnum}
+				, NVL(TO_NUMBER(#{item.intrRdmpFrqcMnum}), 0)
 				, #{item.intrPymDtCd}
-				, #{item.prnaRdmpFrqcMnum}
+				, NVL(TO_NUMBER(#{item.prnaRdmpFrqcMnum}), 0)
 				, #{item.prnaOvduDt}
 				, #{item.intrOvduDt}
-				, #{item.totRdmpTmrd}
-				, #{item.lastRdmpTmrd}
-				, #{item.dealIstmBlce}
-				, #{item.dealEqlRdmpAmt}
-				, #{item.istmDtmRdmpAmt}
-				, #{item.rcvbIntrAmt}
+				, NVL(TO_NUMBER(#{item.totRdmpTmrd}), 0)
+				, NVL(TO_NUMBER(#{item.lastRdmpTmrd}), 0)
+				, NVL(TO_NUMBER(#{item.dealIstmBlce}), 0)
+				, NVL(TO_NUMBER(#{item.dealEqlRdmpAmt}), 0)
+				, NVL(TO_NUMBER(#{item.istmDtmRdmpAmt}), 0)
+				, NVL(TO_NUMBER(#{item.rcvbIntrAmt}), 0)
 				, #{item.grteDcd}
 				, #{item.pymtGrteRfrNo}
 				, #{item.grteIsttCd}
 				, #{item.grteIsttNm}
-				, #{item.buyShqt}
-				, #{item.sllShqt}
-				, #{item.avrUnpr}
+				, NVL(TO_NUMBER(#{item.buyShqt}), 0)
+				, NVL(TO_NUMBER(#{item.sllShqt}), 0)
+				, NVL(TO_NUMBER(#{item.avrUnpr}), 0)
 				, #{item.brkgAcno}
 				, #{item.rctmIsttCd}
 				, #{item.achdNm}
 				, #{item.pymtGrteScctCtns}
-				, #{item.acbkAmt}
+				, NVL(TO_NUMBER(#{item.acbkAmt}), 0)
 				, #{item.dealNo}
 				, #{item.mtrDcd}
 				, #{item.jdgmDcd}
-				, #{item.dfrExpMnum}
-				, #{item.nrmlIntr}
-				, #{item.intrAmtOvduIntr}
-				, #{item.aplyIrt}
-				, #{item.ovduPrna}
-				, #{item.eprzCrdlAcbkAmt}
-				, #{item.avrBlce}
-				, #{item.hdwtEvlAmt}
-				, #{item.qotaRt}
-				, #{item.setlShqt}
-				, #{item.dcsnYn}
+				, NVL(TO_NUMBER(#{item.dfrExpMnum}), 0)
+				, NVL(TO_NUMBER(#{item.nrmlIntr}), 0)
+				, NVL(TO_NUMBER(#{item.intrAmtOvduIntr}), 0)
+				, NVL(TO_NUMBER(#{item.aplyIrt}), 0)
+				, NVL(TO_NUMBER(#{item.ovduPrna}), 0)
+				, NVL(TO_NUMBER(#{item.eprzCrdlAcbkAmt}), 0)
+				, NVL(TO_NUMBER(#{item.avrBlce}), 0)
+				, NVL(TO_NUMBER(#{item.hdwtEvlAmt}), 0)
+				, NVL(TO_NUMBER(#{item.qotaRt}), 0)
+				, NVL(TO_NUMBER(#{item.setlShqt}), 0)
+				, NVL(#{item.dcsnYn}, 'N')
 				, SYSDATE
 				, #{item.hndEmpno}
 				, #{item.hndTmnlNo}
 				, #{item.hndTrId}
-				, #{item.guid}
+				, #{item.guid}			
 			from dual
 		</foreach>
 	</insert>
