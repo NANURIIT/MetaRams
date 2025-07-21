@@ -41,7 +41,7 @@
     			, #{orgFileNm}					/* 원본파일명 */
     			, TO_CHAR(SYSDATE, 'YYYYMMDD')	/* 등록일자 */
     			, 'N'							/* 삭제여부 */
-    			, TO_CHAR(SYSDATE, 'YYYYMMDD')	/* 처리일시 */
+    			, SYSDATE						/* 처리일시 */
     			, #{hndlDprtCd}					/* 처리부점코드 */
     			, #{hndlPEno}					/* 처리자사번 */
     	       )

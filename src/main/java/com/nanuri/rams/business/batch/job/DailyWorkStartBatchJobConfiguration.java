@@ -59,7 +59,6 @@ public class DailyWorkStartBatchJobConfiguration {
 		return stepBuilderFactory.get(BEAN_PREFIX + "step")
 				.<WorkVo, WorkVo>chunk(chunkSize)
 				.reader(reader())
-				// .processor(batchProcessor())
 				.writer(writer())
 				.build();
 	}
