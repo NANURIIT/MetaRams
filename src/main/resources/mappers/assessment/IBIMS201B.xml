@@ -1176,6 +1176,7 @@
             #{prdtCd}                                          <!-- 상품코드 -->
             , ( SELECT LPAD(NVL(MAX(SN), 0) + 1, 10, '0') 
                 FROM IBIMS201B	   			                        <!-- 일련번호 -->
+               WHERE PRDT_CD = #{prdtCd}  
               )
             , #{lastYn}                                          <!-- 최종여부 -->
             , #{prdtNm}                                          <!-- 상품명 -->

@@ -480,6 +480,281 @@
 	</select> -->
 
     <insert id="insertIBIMS702B">
+       INSERT INTO IBIMS702B(
+               STDR_YM             /* 기준년월 */
+            ,  DPRT_CD             /* 부서코드 */
+            ,  RGST_SN             /* 등록일련번호 */
+            ,  RPTS_IEM_MNGM_NO    /* 보고서항목관리번호 */
+            ,  CMP_NM              /* 회사명 */
+            ,  FSS_CMP_CD          /* 금융감독원회사코드 */
+            ,  WRTN_STDR_DT        /* 작성기준일자 */
+            ,  PRDT_NM             /* 상품명 */
+            ,  CTRT_DT             /* 계약일자 */
+            ,  EXP_DT              /* 만기일자 */
+            ,  RPTS_INV_SHP_CD     /* 보고서투자형태코드 */
+            ,  RPTS_INV_SHP_DETL_CD      /* 보고서투자형태상세코드 */
+            ,  PF_THCS_DCD               /* PF해당구분코드 */
+            ,  PF_TP_DCD                 /* PF유형구분코드 */
+            ,  PF_SLLT_TP_DCD            /* PF분양유형구분코드 */
+            ,  PF_ERN_TP_DCD             /* PF수익유형구분코드 */
+            ,  RLES_TP_DCD               /* 부동산유형구분코드 */
+            ,  BSS_ASST_LCTP_DCD         /* 기초자산소재지구분코드 */
+            ,  RLES_LCTP_ZPCD            /* 부동산소재지우편번호 */
+            ,  LCTP_ADDR                 /* 소재지주소 */
+            ,  NTN_NM                    /* 국가명 */
+            ,  OVRS_LCT_CTY_NM           /* 해외소재도시명 */
+            ,  UNSLD_THCS_DCD            /* 미분양해당구분코드 */
+            ,  LMT_LOAN_CTRC_AMT         /* 한도대출약정금액 */
+            ,  LOAN_BLCE                 /* 대출잔액 */
+            ,  BRWR_NM                   /* 차주명 */
+            ,  BRWR_CHR_DCD              /* 차주성격구분코드 */
+            ,  BRWR_CRNO                 /* 차주법인등록번호 */
+            ,  RPTS_INTRT_SHP_DCD        /* 보고서금리형태구분코드 */
+            ,  CTRC_LOAN_INTRT           /* 약정대출금리 */
+            ,  NOW_LOAN_INTRT            /* 현재대출금리 */
+            ,  OVDU_THCS_DCD             /* 연체해당구분코드 */
+            ,  OVDU_RSN                  /* 연체사유 */
+            ,  LOAN_EXP_XTNS_THCS_DCD    /* 대출만기연장해당구분코드 */
+            ,  LOAN_EXP_XTNS_RSN         /* 대출만기연장사유 */
+            ,  EPRZ_CRDL_INV_AMT         /* 기업여신투자금액 */
+            ,  ACIV_CRP_NM               /* 피투자법인명 */
+            ,  ACIV_CRP_CHR_CD           /* 피투자법인성격코드 */
+            ,  ACIV_CRNO                 /* 피투자법인등록번호 */
+            ,  PAR_INTR_RT               /* 액면이자율 */
+            ,  FRS_INV_POT_LTV_RTO       /* 최초투자시점LTV비율 */
+            ,  WRTN_STDR_DE_LTV_RTO      /* 작성기준일LTV비율 */
+            ,  LTV_OUTPUT_MTH_DCD        /* LTV산출방법구분코드 */
+            ,  APRS_PRC                  /* 감정가격 */
+            ,  TOT_SLLT_AMT              /* 총분양금액 */
+            ,  JDGM_TEAM_PRSM_AMT        /* 심사팀추정금액 */
+            ,  PYBK_RANK_DCD             /* 변제순위구분코드 */
+            ,  RLES_RENT_GRTE_AMT        /* 부동산임대보증금액 */
+            ,  PRFD_RANK_AMT             /* 우선순위금액 */
+            ,  SODR_AMT                  /* 동순위금액 */
+            ,  BKBN_AMT                  /* 후순위금액 */
+            ,  OTCM_CRDT_RIFC_THCS_DCD   /* 타사신용보강해당구분코드 */
+            ,  OTCM_CRDT_RIFC_MN_DCD     /* 타사신용보강수단구분코드 */
+            ,  SQ1_CRDT_RIFC_CMP_NM      /* 1차신용보강회사명 */
+            ,  SQ1_CRDT_RIFC_CMP_CRNO    /* 1차신용보강회사법인등록번호 */
+            ,  SQ1_CRDT_RIFC_CMP_CRDT_GRD_CD    /* 1차신용보강회사신용등급코드 */
+            ,  SQ2_CRDT_RIFC_CMP_NM             /* 2차신용보강회사명 */
+            ,  SQ2_CRDT_RIFC_CMP_CRNO           /* 2차신용보강회사법인등록번호 */
+            ,  SQ2_CRDT_RIFC_CMP_CRDT_GRD_CD    /* 2차신용보강회사신용등급코드 */
+            ,  EFCE_CMP_NM                      /* 시행회사명 */
+            ,  EFCE_CMP_CRNO                    /* 시행회사법인등록번호 */
+            ,  PF_EFCE_SHP_DCD                  /* PF시행형태구분코드 */
+            ,  PF_BUSI_APVL_STEP_CD             /* PF사업승인단계코드 */
+            ,  PF_CSST_STEP_CD                  /* PF착공단계코드 */
+            ,  PF_SLLT_STEP_CD                  /* PF분양단계코드 */
+            ,  PF_CNFN_STEP_CD                  /* PF준공단계코드 */
+            ,  TOT_BUSI_AMT                     /* 총사업금액 */
+            ,  RVNU_AMT                         /* 매출금액 */
+            ,  SLF_CPTA                         /* 자기자본금 */
+            ,  UN_SQMS_SLLT_AMT                 /* 단위면적분양금액 */
+            ,  MDWY_GOLD_RDMP_RTO               /* 중도금상환비율 */
+            ,  ALL_SQMS                         /* 전체면적 */
+            ,  ESTM_EMRM_RT                     /* 예상공실율 */
+            ,  UN_SQMS_ESTM_RENT_ERN_AMT        /* 단위면적예상임대수익금액 */
+            ,  UN_SQMS_ESTM_RENT_CT             /* 단위면적예상임대비용 */
+            ,  ESTM_PUR_BSN_ERN_AMT             /* 예상순수영업수익금액 */
+            ,  PF_STLN_TOT_LOAN_AMT             /* PF대주총대출금액 */
+            ,  PF_STLN_PTCI_ISTT_NUM            /* PF대주참여기관수 */
+            ,  PF_STLN_LOAN_EXP_DT              /* PF대주대출만기일자 */
+            ,  SQ1_STLN_ISTT_NM                 /* 1차대주기관명 */
+            ,  SQ1_STLN_ISTT_CRNO               /* 1차대주기관법인등록번호 */
+            ,  SQ1_STLN_LOAN_AMT                /* 1차대주대출금액 */
+            ,  SQ2_STLN_ISTT_NM                 /* 2차대주기관명 */
+            ,  SQ2_STLN_ISTT_CRNO               /* 2차대주기관법인등록번호 */
+            ,  SQ2_STLN_LOAN_AMT                /* 2차대주대출금액 */
+            ,  SQ3_STLN_ISTT_NM                 /* 3차대주기관명 */
+            ,  SQ3_STLN_ISTT_CRNO               /* 3차대주기관법인등록번호 */
+            ,  SQ3_STLN_LOAN_AMT                /* 3차대주대출금액 */
+            ,  SQ4_STLN_ISTT_NM                 /* 4차대주기관명 */
+            ,  SQ4_STLN_ISTT_CRNO               /* 4차대주기관법인등록번호 */
+            ,  SQ4_STLN_LOAN_AMT                /* 4차대주대출금액 */
+            ,  SQ5_STLN_ISTT_NM                 /* 5차대주기관명 */
+            ,  SQ5_STLN_ISTT_CRNO               /* 5차대주기관법인등록번호 */
+            ,  SQ5_STLN_LOAN_AMT                /* 5차대주대출금액 */
+            ,  BUSI_APVL_RQS_DT                 /* 사업승인신청일자 */
+            ,  LAND_PCHS_RT                     /* 토지매입율 */
+            ,  RSPL_CNFN_CFRM_THCS_DCD          /* 책임준공확약해당구분코드 */
+            ,  RSPL_CNFN_CFRM_ISTT_NM           /* 책임준공확약기관명 */
+            ,  RSPL_CNFN_CFRM_ISTT_CRNO         /* 책임준공확약기관법인등록번호 */
+            ,  RSPL_CNFN_EPRZ_CRDT_GRD_CD       /* 책임준공기업신용등급코드 */
+            ,  CSUC_CMP_NM                      /* 시공회사명 */
+            ,  CSUC_CMP_CRNO                    /* 시공회사법인등록번호 */
+            ,  CSUC_CMP_EPRZ_CRDT_GRD_CD        /* 시공회사기업신용등급코드 */
+            ,  CSST_DT                          /* 착공일자 */
+            ,  CNFN_DT                          /* 준공일자 */
+            ,  PLN_FAIR_RT                      /* 계획공정율 */
+            ,  EXC_FAIR_RT                      /* 실행공정율 */
+            ,  SLLT_RT                          /* 분양율 */
+            ,  SLLT_OPNG_DT                     /* 분양개시일자 */
+            ,  MOIN_RT                          /* 입주율 */
+            ,  EXIT_SLLT_RT                     /* EXIT분양율 */
+            ,  DVR_SQMS                         /* 전용면적 */
+            ,  DVR_SQMS_UN_AMT                  /* 전용면적단위금액 */
+            ,  RENT_PSBL_TOT_SQMS               /* 임대가능총면적 */
+            ,  EMRM_RT                          /* 공실율 */
+            ,  UN_SQMS_RENT_ERN_AMT             /* 단위면적임대수익금액 */
+            ,  UN_SQMS_RENT_CT                  /* 단위면적임대비용 */
+            ,  SQ1_YRLY_PUR_BSN_ERN_AMT         /* 1차연간순수영업수익금액 */
+            ,  SQ2_YRLY_PUR_BSN_ERN_AMT         /* 2차연간순수영업수익금액 */
+            ,  RLES_TOT_LOAN_INTR               /* 부동산총대출이자 */
+            ,  RLES_TOT_LOAN_PAI_AMT            /* 부동산총대출원리금금액 */
+            ,  CPTL_RSTR_RT                     /* 자본환원율 */
+            ,  NCR_RSK_VL                       /* NCR위험값 */
+            ,  NCR_RSK_AMT                      /* NCR위험금액 */
+            ,  JOB_CHRR_NM                      /* 업무담당자명 */
+            ,  DPT_NM                           /* 부서명 */
+            ,  CPLC_CTNS                        /* 연락처내용 */
+            ,  HND_DETL_DTM                     /* 조작상세일시 */
+            ,  HND_EMPNO                        /* 조작사원번호 */
+            ,  HND_TMNL_NO                      /* 조작단말기번호 */
+            ,  HND_TR_ID                        /* 조작거래ID */
+            ,  GUID                             /* GUID */
+        )
+        <foreach collection="list" item="item" separator="UNION ALL">
+             select
+                      TO_CHAR(SYSDATE, 'YYYYMM')
+                  ,   #{item.dprtCd}
+                  ,   #{item.rgstSn}
+                  ,   #{item.rptsIemMngmNo}
+                  ,   #{item.cmpNm}
+                  ,   #{item.fssCmpCd}
+                  ,   TO_CHAR(SYSDATE, 'YYYYMMDD')
+                  ,   #{item.prdtNm}
+                  ,   #{item.ctrtDt}
+                  ,   #{item.expDt}
+                  ,   #{item.rptsInvShpCd}
+                  ,   #{item.rptsInvShpDetlCd}
+                  ,   #{item.pfThcsDcd}
+                  ,   #{item.pfTpDcd}
+                  ,   #{item.pfSlltTpDcd}
+                  ,   #{item.pfErnTpDcd}
+                  ,   #{item.rlesTpDcd}
+                  ,   #{item.bssAsstLctpDcd}
+                  ,   #{item.rlesLctpZpcd}
+                  ,   #{item.lctpAddr}
+                  ,   #{item.ntnNm}
+                  ,   #{item.ovrsLctCtyNm}
+                  ,   #{item.unsldThcsDcd}
+                  ,   #{item.lmtLoanCtrcAmt}
+                  ,   #{item.loanBlce}
+                  ,   #{item.brwrNm}
+                  ,   #{item.brwrChrDcd}
+                  ,   #{item.brwrCrno}
+                  ,   #{item.rptsIntrtShpDcd}
+                  ,   #{item.ctrcLoanIntrt}
+                  ,   #{item.nowLoanIntrt}
+                  ,   #{item.ovduThcsDcd}
+                  ,   #{item.ovduRsn}
+                  ,   #{item.loanExpXtnsThcsDcd}
+                  ,   #{item.loanExpXtnsRsn}
+                  ,   #{item.eprzCrdlInvAmt}
+                  ,   #{item.acivCrpNm}
+                  ,   #{item.acivCrpChrCd}
+                  ,   #{item.acivCrno}
+                  ,   #{item.parIntrRt}
+                  ,   #{item.frsInvPotLtvRto}
+                  ,   #{item.wrtnStdrDeLtvRto}
+                  ,   #{item.ltvOutputMthDcd}
+                  ,   #{item.aprsPrc}
+                  ,   #{item.totSlltAmt}
+                  ,   #{item.jdgmTeamPrsmAmt}
+                  ,   #{item.pybkRankDcd}
+                  ,   #{item.rlesRentGrteAmt}
+                  ,   #{item.prfdRankAmt}
+                  ,   #{item.sodrAmt}
+                  ,   #{item.bkbnAmt}
+                  ,   #{item.otcmCrdtRifcThcsDcd}
+                  ,   #{item.otcmCrdtRifcMnDcd}
+                  ,   #{item.sq1CrdtRifcCmpNm}
+                  ,   #{item.sq1CrdtRifcCmpCrno}
+                  ,   #{item.sq1CrdtRifcCmpCrdtGrdCd}
+                  ,   #{item.sq2CrdtRifcCmpNm}
+                  ,   #{item.sq2CrdtRifcCmpCrno}
+                  ,   #{item.sq2CrdtRifcCmpCrdtGrdCd}
+                  ,   #{item.efceCmpNm}
+                  ,   #{item.efceCmpCrno}
+                  ,   #{item.pfEfceShpDcd}
+                  ,   #{item.pfBusiApvlStepCd}
+                  ,   #{item.pfCsstStepCd}
+                  ,   #{item.pfSlltStepCd}
+                  ,   #{item.pfCnfnStepCd}
+                  ,   #{item.totBusiAmt}
+                  ,   #{item.rvnuAmt}
+                  ,   #{item.slfCpta}
+                  ,   #{item.unSqmsSlltAmt}
+                  ,   #{item.mdwyGoldRdmpRto}
+                  ,   #{item.allSqms}
+                  ,   #{item.estmEmrmRt}
+                  ,   #{item.unSqmsEstmRentErnAmt}
+                  ,   #{item.unSqmsEstmRentCt}
+                  ,   #{item.estmPurBsnErnAmt}
+                  ,   #{item.pfStlnTotLoanAmt}
+                  ,   #{item.pfStlnPtciIsttNum}
+                  ,   #{item.pfStlnLoanExpDt}
+                  ,   #{item.sq1StlnIsttNm}
+                  ,   #{item.sq1StlnIsttCrno}
+                  ,   #{item.sq1StlnLoanAmt}
+                  ,   #{item.sq2StlnIsttNm}
+                  ,   #{item.sq2StlnIsttCrno}
+                  ,   #{item.sq2StlnLoanAmt}
+                  ,   #{item.sq3StlnIsttNm}
+                  ,   #{item.sq3StlnIsttCrno}
+                  ,   #{item.sq3StlnLoanAmt}
+                  ,   #{item.sq4StlnIsttNm}
+                  ,   #{item.sq4StlnIsttCrno}
+                  ,   #{item.sq4StlnLoanAmt}
+                  ,   #{item.sq5StlnIsttNm}
+                  ,   #{item.sq5StlnIsttCrno}
+                  ,   #{item.sq5StlnLoanAmt}
+                  ,   #{item.busiApvlRqsDt}
+                  ,   #{item.landPchsRt}
+                  ,   #{item.rsplCnfnCfrmThcsDcd}
+                  ,   #{item.rsplCnfnCfrmIsttNm}
+                  ,   #{item.rsplCnfnCfrmIsttCrno}
+                  ,   #{item.rsplCnfnEprzCrdtGrdCd}
+                  ,   #{item.csucCmpNm}
+                  ,   #{item.csucCmpCrno}
+                  ,   #{item.csucCmpEprzCrdtGrdCd}
+                  ,   #{item.csstDt}
+                  ,   #{item.cnfnDt}
+                  ,   NVL(#{item.plnFairRt}, 0)
+                  ,   NVL(#{item.excFairRt}, 0)
+                  ,   NVL(#{item.slltRt}, 0)
+                  ,   #{item.slltOpngDt}
+                  ,   NVL(#{item.moinRt}, 0)
+                  ,   NVL(#{item.exitSlltRt}, 0)
+                  ,   NVL(#{item.dvrSqms}, 0)
+                  ,   NVL(#{item.dvrSqmsUnAmt}, 0)
+                  ,   NVL(#{item.rentPsblTotSqms}, 0)
+                  ,   NVL(#{item.emrmRt},  0)
+                  ,   NVL(#{item.unSqmsRentErnAmt},  0)
+                  ,   NVL(#{item.unSqmsRentCt},  0)
+                  ,   NVL(#{item.sq1YrlyPurBsnErnAmt},  0)
+                  ,   NVL(#{item.sq2YrlyPurBsnErnAmt},  0)
+                  ,   NVL(#{item.rlesTotLoanIntr},  0)
+                  ,   NVL(#{item.rlesTotLoanPaiAmt},  0)
+                  ,   NVL(#{item.cptlRstrRt},  0)
+                  ,   NVL(#{item.ncrRskVl},  0)
+                  ,   NVL(#{item.ncrRskAmt},  0)
+                  ,   #{item.jobChrrNm}
+                  ,   #{item.dptNm}
+                  ,   #{item.cplcCtns}
+                  ,   SYSDATE 
+                  ,   #{item.hndEmpno}
+                  ,   #{item.hndTmnlNo}
+                  ,   #{item.hndTrId}
+                  ,   #{item.guid}
+                from dual
+        </foreach>
+
+    </insert>
+
+
+    <insert id="insertIBIMS702B_BAK">
         INSERT INTO IBIMS702B(
                     STDR_YM
                 ,   DPRT_CD
