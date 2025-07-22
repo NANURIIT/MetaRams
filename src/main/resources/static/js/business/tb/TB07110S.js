@@ -139,7 +139,7 @@ const TB07110Sjs = (function () {
     }
     $('#TB07110S_prufKndDcd').append(P029Tag);
 
-    // 매입공제구분코드 콤보박스 셋 
+    // 매입공제구분코드 콤보박스 셋
     let P030Tag = "";
     for (let i = 0; i < grdSelect.P030.length; i++) {
       P030Tag += `<option value="${grdSelect.P030[i].cdValue}">${grdSelect.P030[i].cdName}</option>`
@@ -278,7 +278,7 @@ const TB07110Sjs = (function () {
     $(`div[data-menuid="/TB07110S"] #UPLOAD_FileList`).html("");
 
     pqGridSelectRemover("TB07110S_grd_txbl");
-    
+
     apvlBtnHandler();
   }
 
@@ -907,7 +907,7 @@ const TB07110Sjs = (function () {
       , acctDt1: $("#TB07110S_startDt").val().replaceAll('-', '')
       , acctDt2: $("#TB07110S_endDt").val().replaceAll('-', '')
       , elcPrufYn: 'Y'                                        // 전자증빙여부
-      , 
+      ,
     };
 
     $.ajax({
@@ -953,7 +953,7 @@ const TB07110Sjs = (function () {
       success: function (data) {
         if (data.length > 0) {
           let gridList = $("#TB07110S_grd_basic").pqGrid("instance");
-          
+
           gridList.setData(data);
           gridList.getData();
         } else {
@@ -998,6 +998,38 @@ const TB07110Sjs = (function () {
           icon: "warning",
           title: "Warning!",
           text: `담당자와 승인자가 같습니다! 변경해주세요`,
+        })
+        return;
+      }
+      else if (!$('#TB07110S_acctPymtMthCd').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `지급방법을 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07110S_prufKndDcd').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `증빙종류를 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07110S_pchsDdcDcd').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `매입공제를 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07110S_2_entpNm').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `거래처를 입력해주세요!`,
         })
         return;
       }
@@ -1101,7 +1133,7 @@ const TB07110Sjs = (function () {
 
   /**
    * 결재요청
-   * @returns 
+   * @returns
    */
   function apvlRqst() {
 
@@ -1345,7 +1377,7 @@ const TB07110Sjs = (function () {
             , text: "저장 실패!"
           })
         }
-        // 
+        //
         let reSrchParamData = {
           wrtnDt: $("#TB07110S_wrtnDt").val().replaceAll('-', "")
           , rslnBdcd: $("#TB07110S_rslnBdcd").val()
