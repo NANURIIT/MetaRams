@@ -6932,17 +6932,17 @@ const TB09090Sjs = (function() {
 	
 		let url;
 	
-		let cpcList
+		let cpcList;
 	
-		if (mode = "01") {
+		if (mode == "01") {
 			url = "insertIBIMS701B"
 			cpcList = $("#TB09090S_colCpc1").pqGrid('instance').getData();
 		} 
-		else if (mode = "02") {
+		else if (mode == "02") {
 			url = "insertIBIMS702B"
 			cpcList = $("#TB09090S_colCpc2").pqGrid('instance').getData();
 		} 
-		else if (mode = "03") {
+		else if (mode == "03") {
 			url = "insertIBIMS703B"
 			cpcList = $("#TB09090S_colCpc3").pqGrid('instance').getData();
 		}
@@ -6960,7 +6960,7 @@ const TB09090Sjs = (function() {
 		let param = {
 			cpcList
 		}
-	
+
 		$.ajax({
 			type: "POST",
 			url: `/TB09090S/${url}`,
@@ -7009,6 +7009,7 @@ const TB09090Sjs = (function() {
 	function checkUserLv () {
 		// 로그인한 유저 데이터를 받아와용
 		let cd = $('#userDprtCd').val()
+
 		// 권한부서가 아닐경우 disabled 시킬게요
 		if(cd === ''){
 			$('#dcsnY').prop('disabled', false);

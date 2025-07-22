@@ -195,7 +195,138 @@
                   )
 	</select>
 
-    <insert id="insertIBIMS703B">
+
+
+<insert id="insertIBIMS703B">
+        INSERT INTO IBIMS703B(
+                 STDR_YM                            /* 기준년월 */
+              ,  DPRT_CD                            /* 부서코드 */
+              ,  RGST_SN                            /* 등록일련번호 */
+              ,  RPTS_IEM_MNGM_NO                   /* 보고서항목관리번호 */
+              ,  CMP_NM                             /* 회사명 */
+              ,  FSS_CMP_CD                         /* 금융감독원회사코드 */
+              ,  WRTN_STDR_DT                       /* 작성기준일자 */
+              ,  ETC_RPTS_INV_SHP_CD                /* 기타보고서투자형태코드 */
+              ,  ETC_RPTS_INV_DETL_CD               /* 기타보고서투자상세코드 */
+              ,  PF_THCS_DCD                        /* PF해당구분코드 */
+              ,  SOC_THCS_DCD                       /* SOC해당구분코드 */
+              ,  INV_DT                             /* 투자일자 */
+              ,  CTRT_END_DT                        /* 계약종료일자 */
+              ,  RLES_TP_DCD                        /* 부동산유형구분코드 */
+              ,  PF_SLLT_TP_DCD                     /* PF분양유형구분코드 */
+              ,  PF_ERN_TP_DCD                      /* PF수익유형구분코드 */
+              ,  BSS_ASST_LCTP_DCD                  /* 기초자산소재지구분코드 */
+              ,  NTN_NM                             /* 국가명 */
+              ,  OVRS_LCT_CTY_NM                    /* 해외소재도시명 */
+              ,  RLES_LCTP_ZPCD                     /* 부동산소재지우편번호 */
+              ,  FND_NM                             /* 펀드명 */
+              ,  KOFIA_FND_CD                       /* 금융투자협회펀드코드 */
+              ,  ASST_MGCO_NM                       /* 자산운용사명 */
+              ,  FOFS_THCS_DCD                      /* 재간접펀드해당구분코드 */
+              ,  BDFND_THCS_DCD                     /* 블라인드펀드해당구분코드 */
+              ,  FND_INV_AMT                        /* 펀드투자금액 */
+              ,  FND_TOT_EVL_AMT                    /* 펀드총평가금액 */
+              ,  FND_ETC_RPTS_PBFF_PPLC_DCD         /* 펀드기타보고서공모사모구분코드 */
+              ,  FND_ETC_RPTS_CRRY_CD               /* 펀드기타보고서통화코드 */
+              ,  REITS_NM                           /* 리츠명 */
+              ,  REITS_AMT                          /* 리츠금액 */
+              ,  REITS_EVL_AMT                      /* 리츠평가금액 */
+              ,  REITS_ETC_RPTS_PBFF_PPLC_DCD       /* 리츠기타보고서공모사모구분코드 */
+              ,  REITS_ETC_RPTS_CRRY_CD             /* 리츠기타보고서통화코드 */
+              ,  LQDZ_SCTY_NM                       /* 유동화증권명 */
+              ,  LQDZ_SCTY_KND_CD                   /* 유동화증권종류코드 */
+              ,  LQDZ_SCTY_ISU_ISTT_NM              /* 유동화증권발행기관명 */
+              ,  LQDZ_SCTY_CRNO                     /* 유동화증권법인등록번호 */
+              ,  ISU_DT                             /* 발행일자 */
+              ,  PAR_AMT                            /* 액면금액 */
+              ,  LQDZ_SCTY_ISU_INTRT                /* 유동화증권발행금리 */
+              ,  CRDT_RIFC_CMP_NM                   /* 신용보강회사명 */
+              ,  CRDT_RIFC_CMP_CRNO                 /* 신용보강회사법인등록번호 */
+              ,  RPTS_CTRT_TP_CD                    /* 보고서계약유형코드 */
+              ,  SQ1_ETC_RPTS_CRDT_GRD_CD           /* 1차기타보고서신용등급코드 */
+              ,  SQ2_ETC_RPTS_CRDT_GRD_CD           /* 2차기타보고서신용등급코드 */
+              ,  ETC_CTRT_NM                        /* 기타계약명 */
+              ,  TR_OTHR_NM                         /* 거래상대방명 */
+              ,  INV_PRNA                           /* 투자원금 */
+              ,  ETC_EVL_AMT                        /* 기타평가금액 */
+              ,  NCR_RSK_VL                         /* NCR위험값 */
+              ,  NCR_RSK_AMT                        /* NCR위험금액 */
+              ,  JOB_CHRR_NM                        /* 업무담당자명 */
+              ,  DPT_NM                             /* 부서명 */
+              ,  CPLC_CTNS                          /* 연락처내용 */
+              ,  HND_DETL_DTM                       /* 조작상세일시 */
+              ,  HND_EMPNO                          /* 조작사원번호 */
+              ,  HND_TMNL_NO                        /* 조작단말기번호 */
+              ,  HND_TR_ID                          /* 조작거래ID */
+              ,  GUID                               /* GUID */
+        )
+        <foreach collection="list" item="item" separator="UNION ALL">
+            select    
+			              TO_CHAR(SYSDATE, 'YYYYMM')
+                ,   #{item.dprtCd}
+                ,   #{item.rgstSn}
+                ,   #{item.rptsIemMngmNo}
+                ,   #{item.cmpNm}
+                ,   #{item.fssCmpCd}
+                ,   TO_CHAR(SYSDATE, 'YYYYMMDD')
+                ,   #{item.etcRptsInvShpCd}
+                ,   #{item.etcRptsInvDetlCd}
+                ,   #{item.pfThcsDcd}
+                ,   #{item.socThcsDcd}
+                ,   #{item.invDt}
+                ,   #{item.ctrtEndDt}
+                ,   #{item.rlesTpDcd}
+                ,   #{item.pfSlltTpDcd}
+                ,   #{item.pfErnTpDcd}
+                ,   #{item.bssAsstLctpDcd}
+                ,   #{item.ntnNm}
+                ,   #{item.ovrsLctCtyNm}
+                ,   #{item.rlesLctpZpcd}
+                ,   #{item.fndNm}
+                ,   #{item.kofiaFndCd}
+                ,   #{item.asstMgcoNm}
+                ,   #{item.fofsThcsDcd}
+                ,   #{item.bdfndThcsDcd}
+                ,   NVL(#{item.fndInvAmt}, 0)
+                ,   NVL(#{item.fndTotEvlAmt}, 0)
+                ,   #{item.fndEtcRptsPbffPplcDcd}
+                ,   #{item.fndEtcRptsCrryCd}
+                ,   #{item.reitsNm}
+                ,   NVL(#{item.reitsAmt}, 0)
+                ,   NVL(#{item.reitsEvlAmt}, 0)
+                ,   #{item.reitsEtcRptsPbffPplcDcd}
+                ,   #{item.reitsEtcRptsCrryCd}
+                ,   #{item.lqdzSctyNm}
+                ,   #{item.lqdzSctyKndCd}
+                ,   #{item.lqdzSctyIsuIsttNm}
+                ,   #{item.lqdzSctyCrno}
+                ,   #{item.isuDt}
+                ,   NVL(#{item.parAmt}, 0)
+                ,   NVL(#{item.lqdzSctyIsuIntrt}, 0)
+                ,   #{item.crdtRifcCmpNm}
+                ,   #{item.crdtRifcCmpCrno}
+                ,   #{item.rptsCtrtTpCd}
+                ,   #{item.sq1EtcRptsCrdtGrdCd}
+                ,   #{item.sq2EtcRptsCrdtGrdCd}
+                ,   #{item.etcCtrtNm}
+                ,   #{item.trOthrNm}
+                ,   NVL(#{item.invPrna}, 0)
+                ,   NVL(#{item.etcEvlAmt}, 0)
+                ,   NVL(#{item.ncrRskVl}, 0)
+                ,   NVL(#{item.ncrRskAmt}, 0)
+                ,   #{item.jobChrrNm}
+                ,   #{item.dptNm}
+                ,   #{item.cplcCtns}
+                ,   SYSDATE
+                ,   #{item.hndEmpno}
+                ,   #{item.hndTmnlNo}
+                ,   #{item.hndTrId}
+                ,   #{item.guid}
+                from dual
+        </foreach>
+    </insert>
+
+    <insert id="insertIBIMS703B_BAK">
         INSERT INTO IBIMS703B(
                     STDR_YM
                 ,   DPRT_CD
@@ -463,6 +594,7 @@
                 from dual
         </foreach>
     </insert>
+
 
     <select id="getRgstSn" resultType="int">
       SELECT NVL(MAX(RGST_SN), 0) + 1
