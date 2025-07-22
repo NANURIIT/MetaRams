@@ -930,8 +930,6 @@ const TB07050Sjs = (function() {
 				let html = "";
 				if (data.length > 0) {
 					data.forEach((item) => {
-						console.log("datacheck:::::",data);
-						
 						html +=
 							'<option value="' +
 							item.EXC_SN +
