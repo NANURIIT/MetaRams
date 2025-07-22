@@ -503,7 +503,7 @@ const TB07110Sjs = (function () {
       {
         title: "발급일자",
         dataType: "string",
-        dataIndx: "",
+        dataIndx: "prufDt", //증빙일자로 세팅
         halign: "center",
         align: "center",
         filter: { crules: [{ condition: 'range' }] },
@@ -511,15 +511,16 @@ const TB07110Sjs = (function () {
           return formatDate(ui.cellData);
         }
       }
-      , {
-        title: "발급거래처명",
-        dataType: "string",
-        dataIndx: "",
-        halign: "center",
-        align: "left",
-        // width    : '10%',
-        filter: { crules: [{ condition: 'range' }] },
-      },
+      // , {
+      //   title: "발급거래처명",
+      //   dataType: "string",
+      //   dataIndx: "",
+      //   halign: "center",
+      //   align: "left",
+      //   // width    : '10%',
+      //   filter: { crules: [{ condition: 'range' }] },
+      // }  //컬럼 미존재로 인한 숨김처리
+      ,
       {
         title: "지급금액",
         dataType: "integer",
@@ -728,6 +729,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         editable: true,
+        format: "#,###",
         filter: { crules: [{ condition: 'range' }] },
       },
       {
@@ -1006,6 +1008,14 @@ const TB07110Sjs = (function () {
           icon: "warning",
           title: "Warning!",
           text: `지급방법을 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07110S_prufDt').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `증빙일자를 입력해주세요!`,
         })
         return;
       }
