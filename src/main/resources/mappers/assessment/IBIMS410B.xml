@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nanuri.rams.business.common.mapper.IBIMS410BMapper">
-    
+
     <select id="selectAfChkTrsnIBIMS410B" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO" resultType="int">
-		SELECT 
+		SELECT
 		       COUNT(*) AS CNT	 /* 건수 */
 		  FROM IBIMS410B A 	/* 딜거래내역 */
 		 WHERE 1 = 1
-		   AND A.PRDT_CD  =  #{prdtCd}   
+		   AND A.PRDT_CD  =  #{prdtCd}
 		   AND A.EXC_SN   =  #{excSn}
            AND TR_SN     &gt;  #{trSn}
            AND TR_STAT_CD = '1'
-           AND (CASE WHEN A.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10','20') THEN '00' ELSE A.ETPR_CRDT_GRNT_TR_KIND_CD END) = #{etprCrdtGrntTrKindCd}   
+           AND (CASE WHEN A.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10','20') THEN '00' ELSE A.ETPR_CRDT_GRNT_TR_KIND_CD END) = #{etprCrdtGrntTrKindCd}
     </select>
-    
+
     <select id="selectTrsnCntIBIMS410B" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO" resultType="int">
-		SELECT 
+		SELECT
 		       COUNT(*) AS CNT	 /* 건수 */
 		  FROM IBIMS410B A 	/* 딜거래내역 */
-		 WHERE 1 = 1 
-		   AND A.PRDT_CD =  #{prdtCd}   
+		 WHERE 1 = 1
+		   AND A.PRDT_CD =  #{prdtCd}
 		   AND A.EXC_SN  =  #{excSn}
            AND TR_STAT_CD = '1'
-		   AND (CASE WHEN A.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10','20') THEN '00' ELSE A.ETPR_CRDT_GRNT_TR_KIND_CD END) = #{etprCrdtGrntTrKindCd}        
-    </select>    
-    
+		   AND (CASE WHEN A.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10','20') THEN '00' ELSE A.ETPR_CRDT_GRNT_TR_KIND_CD END) = #{etprCrdtGrntTrKindCd}
+    </select>
+
     <select id="getTrSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO" resultType="int">
-		SELECT 
+		SELECT
 		       NVL(MAX(A.TR_SN),0)+1 AS TR_SN	 /* 거래일련번호 */
 		  FROM IBIMS410B A 	/* 딜거래내역 */
 		 WHERE 1 = 1
-		   AND A.PRDT_CD =  #{prdtCd}  /* 'A000000001' */ 
+		   AND A.PRDT_CD =  #{prdtCd}  /* 'A000000001' */
 		   AND A.EXC_SN  =  #{excSn}
     </select>
-    
+
     <select id="getExTrSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO" resultType="int">
-		SELECT 
+		SELECT
 		       NVL(MAX(A.TR_SN),0)+1 AS TR_SN	 /* 거래일련번호 */
 		  FROM IBIMS410B A 	/* 딜거래내역 */
 		 WHERE 1 = 1
-		   AND A.PRDT_CD =  #{prdtCd} 
+		   AND A.PRDT_CD =  #{prdtCd}
 		   AND A.EXC_SN  =  #{excSn}
     </select>
-      
+
     <select id="getFeeTrSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO" resultType="int">
-		SELECT 
+		SELECT
 		       NVL(MAX(A.TR_SN),0)+1 AS TR_SN	 /* 거래일련번호 */
 		  FROM IBIMS410B A 	/* 딜거래내역 */
 		 WHERE 1 = 1
-		   AND A.PRDT_CD =  #{prdtCd} 
+		   AND A.PRDT_CD =  #{prdtCd}
     </select>
-    
+
     <update id="updateChgSttsCd410B" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO">
         UPDATE IBIMS410B
            SET TR_STAT_CD  = #{trStatCd}  /* 거래상태코드 */
@@ -60,7 +60,7 @@
            AND EXC_SN  = #{excSn}
            AND TR_SN   = #{trSn}
     </update>
-                   
+
    <select id="selectFeeIntTrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS410BVO">
 	   SELECT
               A.PRDT_CD
@@ -68,16 +68,16 @@
             , A.TR_NM
             , SUM(A.TR_INT_AMT) AS TR_INT_AMT
     	 FROM (
-	          SELECT PRDT_CD  
-	               , '이자수익' AS TR_NM 
+	          SELECT PRDT_CD
+	               , '이자수익' AS TR_NM
 	               , NVL(TR_INT_AMT,0) AS TR_INT_AMT		/* 거래이자금액 */
-	            FROM IBIMS410B  
+	            FROM IBIMS410B
 	           WHERE 1=1
 	             AND PRDT_CD  = #{prdtCd}
 	             AND ETPR_CRDT_GRNT_TR_KIND_CD IN ('20')	/* 거래종류코드 20상환 21수수료수납 */
-	           UNION ALL 
-	          SELECT PRDT_CD  
-	               , '수수료수익' AS TR_NM 
+	           UNION ALL
+	          SELECT PRDT_CD
+	               , '수수료수익' AS TR_NM
 	               , NVL(FEE_TOT_AMT,0) AS TR_INT_AMT	    /* 수수료총금액 */
 	            FROM IBIMS410B  A
 	           WHERE 1=1
@@ -85,11 +85,11 @@
 	             AND ETPR_CRDT_GRNT_TR_KIND_CD IN ('21')	/* 거래종류코드 20상환 21수수료수납 */
 	           ) A
 	     	, IBIMS201B B
-	     WHERE 1=1	
+	     WHERE 1=1
 	       AND B.PRDT_CD = A.PRDT_CD
 	       AND B.LAST_YN = 'Y'
 	     GROUP BY A.PRDT_CD, B.PRDT_NM, A.TR_NM
-   </select>    
+   </select>
         <!-- 딜거래내역조회  -->
     <select id="getDlTrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO" resultType="com.nanuri.rams.business.common.vo.IBIMS410BVO">
  		SELECT A.PRDT_CD                         /* 상품코드 */
@@ -187,8 +187,8 @@
           FROM IBIMS410B A
              , IBIMS201B B
          WHERE 1=1
-           AND A.PRDT_CD = B.PRDT_CD(+) 
-           AND B.LAST_YN(+) = 'Y' 
+           AND A.PRDT_CD = B.PRDT_CD(+)
+           AND B.LAST_YN(+) = 'Y'
            <if test="prdtCd != ''">
            AND A.PRDT_CD                                 = #{prdtCd}
            </if>
@@ -199,7 +199,7 @@
             AND A.EXC_SN                                 = #{excSn}
            </if>
            <!-- AND A.ETPR_CRDT_GRNT_TR_KIND_CD                            = #{etprCrdtGrntTrKindCd} -->
-        ORDER BY PRDT_CD, EXC_SN , TR_SN 
+        ORDER BY PRDT_CD, EXC_SN , TR_SN
     </select>
 
  <!-- 거래내역조회  -->
@@ -304,15 +304,15 @@
             , D.CD_VL_NM AS PRG_STTS_NM                       /* 진행상태코드명 */
             , C.EMP_NM AS CHRR_ENM
             , C.DPRT_CD         AS MNGM_BDCD
-   		      , C.DPRT_NM 
+   		      , C.DPRT_NM
         FROM IBIMS410B A
-   			, IBIMS201B B 
-   			, IBIMS003B C 
-   			, IBIMS002B D  
+   			, IBIMS201B B
+   			, IBIMS003B C
+   			, IBIMS002B D
        WHERE 1=1
          AND A.PRDT_CD  = B.PRDT_CD
          AND A.TR_STFNO = C.EMPNO(+)
-         AND B.PRG_STTS_CD = D.CD_VL_ID(+) 
+         AND B.PRG_STTS_CD = D.CD_VL_ID(+)
          AND D.CMNS_CD_GRP(+) = 'I011'
          AND B.LAST_YN = 'Y'
          AND C.DEL_YN = 'N'
@@ -350,7 +350,7 @@
     </select>
 
 	 <select id="selectlastIBIMS410B" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO" resultType="com.nanuri.rams.business.common.dto.IBIMS410BDTO">
-		SELECT 
+		SELECT
 			  PRDT_CD					/* 상품코드             */
 			, TR_SN						/* 거래일련번호          */
 			, EXC_SN					/* 실행일련번호          */
@@ -436,7 +436,7 @@
 			, HND_TMNL_NO				/* 조작단말기번호        */
 			, HND_TR_ID					/* 조작거래ID           */
 			, GUID						/* GUID                */
-          FROM IBIMS410B 
+          FROM IBIMS410B
          WHERE 1 = 1
            AND TR_STAT_CD = '01'			/* 거래상태코드 1정상         */
            AND PRDT_CD    = #{prdtCd}
@@ -444,7 +444,7 @@
            AND TR_SN      = #{trSn}
     </select>
 
-  
+
 
      <!-- 딜거래내역등록 -->
      <insert id="saveDlTrList" parameterType="com.nanuri.rams.business.common.dto.IBIMS410BDTO">
@@ -741,7 +741,7 @@
               		   AND ARDY_BZEP_NO = T5.TR_OTHR_DSCM_NO
               	 )                                  AS ENTP_NM                /* 거래처명  010B */
               , T1.ETPR_CRDT_GRNT_TR_KIND_CD                                  /* 거래종류코드 */
-              , CASE 
+              , CASE
                 WHEN T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('20', '21', '82', '83', '85') THEN '입금'
                 WHEN T1.ETPR_CRDT_GRNT_TR_KIND_CD IN ('10', '22', '81', '84')       THEN '출금'
                  END AS depositWithdrawalCode                                 /* 입출금구분코드 */
@@ -853,5 +853,6 @@
             <if test="@com.nanuri.rams.com.utils.MybatisCheck@notEmpty(trCrryCd)">
             AND T1.TR_CRRY_CD = #{trCrryCd} /* 통화구분 */
             </if>
+            ORDER BY T1.PRDT_CD, T1.TR_DT DESC
     </select>
 </mapper>

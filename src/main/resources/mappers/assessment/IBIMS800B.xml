@@ -5,10 +5,10 @@
     <select id="checkStdrDtInfo" parameterType = "String" resultType = "int">
         /* IBIMS800BMapper.checkStdrDtInfo */
         SELECT COUNT(*)
-        FROM IBIMS800B 
+        FROM IBIMS800B
         WHERE STDR_DT = #{stdrDt}
     </select>
-    
+
     <!--자산건전성 및 충당금 산출 조회 (기준일자 데이터 없을 시)-->
     <select id="getAsstSnnGrdListNoStdrDt" resultType="com.nanuri.rams.business.common.vo.IBIMS800BVO">
         /* IBIMS800BMapper.getAsstSnnGrdListNoStdrDt */
@@ -27,7 +27,7 @@
                 , NVL(s002b_2.CD_VL_NM , '') AS PRDT_MDCL_CD_NM       /* 기업여신상품중분류코드명 */
                 , A.PRDT_CLSF_CD                                         /* 상품분류코드 */
                 , NVL(s002b_3.CD_VL_NM , '') AS PRDT_CLSF_CD_NM       /* 기업여신상품분류코드명 */
-                , A.HOLD_PRPS_DCD               AS HOLD_PRPS_DCD         /* 보유목적구분코드 */  
+                , A.HOLD_PRPS_DCD               AS HOLD_PRPS_DCD         /* 보유목적구분코드 */
                 , A.IB_PRDT_CLSF_CD                                      /* IB상품분류코드 */
                 , NVL(s002b_4.CD_VL_NM, '')  AS IB_PRDT_CLSF_CD_NM    /* IB상품분류코드명 */
                 , NVL(A.EPRZ_CRDL_APVL_AMT , '')       AS EPRZ_CRDL_APVL_AMT              /* 종목승인금액 */
@@ -41,7 +41,7 @@
                     SELECT C.DPRT_NM
                     FROM IBIMS003B C
                     WHERE C.BDCD = A.MNGM_BDCD
-                      AND ROWNUM = 1                      
+                      AND ROWNUM = 1
                     )                             AS DPRT_NM            /* 부서명   */
                 , NVL(T.DEAL_EXC_AMT,0)         AS DEAL_EXC_AMT         /* 투자금액  */
                 , NVL(T.DEAL_EXC_BLCE,0)        AS DEAL_EXC_BLCE        /* 투자잔액  */
@@ -64,9 +64,9 @@
                     FROM IBIMS401B T1                   /* 딜약정기본 */
                         ,IBIMS402B T2                   /* 딜실행기본 */
                     WHERE T1.PRDT_CD = T2.PRDT_CD
-                    AND T1.EPRZ_CRDL_LDG_STTS_CD = '1'     
+                    AND T1.EPRZ_CRDL_LDG_STTS_CD = '1'
                     AND T2.LDG_STTS_CD = '1'
-                ) T         
+                ) T
                     ON A.PRDT_CD = T.PRDT_CD
                 LEFT JOIN IBIMS002B s002b_1
                         ON A.PRDT_LCLS_CD = s002b_1.CD_VL_ID
@@ -82,7 +82,8 @@
                         AND s002b_4.CMNS_CD_GRP = 'I002'
             WHERE 1 = 1
             AND A.LAST_YN = 'Y'
-            AND A.PRDT_CD = T.PRDT_CD 
+            AND A.PRDT_CD = T.PRDT_CD
+            AND A.PRDT_CD LIKE 'A%' <!-- 종목코드가 대출채권상품(A로 시작하는 종목코드)인 경우만 조회되도록 수정 -->
     </select>
 
     <!--자산건전성 및 충당금 산출 조회 (기준일자 데이터 있을 시)-->
@@ -95,7 +96,7 @@
                 , A.EXC_SN					 AS EXC_SN   			/*실행일련번호*/
                 , A.EXC_DT					 AS EXC_DT   			/*실행일자*/
                 , A.EXP_DT					 AS EXP_DT		        /*만기일자*/
-                , A.KRW_TRSL_EXC_BLCE        AS DEAL_EXC_BLCE       /*원화환산실행잔액*/							
+                , A.KRW_TRSL_EXC_BLCE        AS DEAL_EXC_BLCE       /*원화환산실행잔액*/
                 , A.ACBK_AMT                 AS ACBK_AMT            /*장부금액*/
                 , A.ASST_SNN_GRD_DCD         AS ASTS_QTY_DVD_CD     /*자산건전성등급구분코드*/
                 , A.SET_EVL_APRN_AMT                                /*집합평가충당금액*/
@@ -105,12 +106,13 @@
                     SELECT C.DPRT_NM
                     FROM IBIMS003B C
                     WHERE C.BDCD = B.MNGM_BDCD
-                        AND ROWNUM = 1                     
+                        AND ROWNUM = 1
                     )                             AS DPRT_NM            /* 부서명   */
         FROM IBIMS800B A
-        JOIN IBIMS201B B ON B.PRDT_CD = A.PRDT_CD 
-        AND B.LAST_YN = 'Y' 
+        JOIN IBIMS201B B ON B.PRDT_CD = A.PRDT_CD
+        AND B.LAST_YN = 'Y'
         WHERE STDR_DT = #{stdrDt}
+        AND A.PRDT_CD LIKE 'A%' <!-- 종목코드가 대출채권상품(A로 시작하는 종목코드)인 경우만 조회되도록 수정 -->
     </select>
 
     <delete id="dltAsstSnnList" parameterType = "com.nanuri.rams.business.common.vo.TB08090SVO">
@@ -126,11 +128,11 @@
         INSERT INTO IBIMS800B                               /*대출금충당금산출기본*/
                 (
                     STDR_DT						            /*기준일자*/
-                    , PRDT_CD                               /*상품코드*/								
+                    , PRDT_CD                               /*상품코드*/
                     , EXC_SN								/*실행일련번호*/
                     , EXC_DT								/*실행일자*/
                     , EXP_DT							    /*만기일자*/
-                    , KRW_TRSL_EXC_BLCE                     /*원화환산실행잔액*/							
+                    , KRW_TRSL_EXC_BLCE                     /*원화환산실행잔액*/
                     , ACBK_AMT                              /*장부금액*/
                     , EVL_AMT	                            /*평가금액*/
                     , RCVB_INTR_AMT	                        /*미수이자금액*/
@@ -143,18 +145,18 @@
                     , RCVB_INTR_APRN_AMT                    /*미수이자충당금액*/
                     , HND_DETL_DTM                          /*조작상세일시*/
                     , HND_EMPNO                             /*조작사원번호*/
-                    , HND_TMNL_NO                           /*조작단말기번호*/		
+                    , HND_TMNL_NO                           /*조작단말기번호*/
                     , HND_TR_ID                             /*조작거래ID*/
-                    , GUID                                  /*GUID*/						   
+                    , GUID                                  /*GUID*/
                 )
         <foreach collection="list" item="item" separator="UNION ALL">
                 select
                     #{item.stdrDt}						    /*기준일자*/
-                    , #{item.prdtCd} 						/*상품코드*/	
+                    , #{item.prdtCd} 						/*상품코드*/
                     , #{item.excSn}							/*실행일련번호*/
                     , #{item.excDt}							/*실행일자*/
                     , #{item.expDt}                         /*만기일자*/
-                    , #{item.krwTrslExcBlce}                /*원화환산실행잔액*/	
+                    , #{item.krwTrslExcBlce}                /*원화환산실행잔액*/
                     , #{item.acbkAmt}                       /*장부금액*/
                     , #{item.acbkAmt}                       /*평가금액*/
                     , 0                                     /*미수이자금액*/	<!--todo: 회계반영화면 작성완료시 값 넣어야함 -->
