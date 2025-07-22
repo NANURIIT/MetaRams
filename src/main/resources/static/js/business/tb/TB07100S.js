@@ -143,7 +143,7 @@ const TB07100Sjs = (function () {
     }
     $('#TB07100S_prufKndDcd').append(P029Tag);
 
-    // 매입공제구분코드 콤보박스 셋 
+    // 매입공제구분코드 콤보박스 셋
     let P030Tag = "";
     for (let i = 0; i < grdSelect.P030.length; i++) {
       P030Tag += `<option value="${grdSelect.P030[i].cdValue}">${grdSelect.P030[i].cdName}</option>`
@@ -974,7 +974,7 @@ const TB07100Sjs = (function () {
   /**
    * @param { Object } paramData ui.rowData
    * @description
-   * 현재 상단그리드 클릭시 로우데이터를 보내 조회중 
+   * 현재 상단그리드 클릭시 로우데이터를 보내 조회중
    */
   function TB07100S_selectIBIMS432B(paramData) {
 
@@ -987,7 +987,7 @@ const TB07100Sjs = (function () {
       success: function (data) {
         if (data.length > 0) {
           let gridList = $("#TB07100S_grd_thdtTrDtls").pqGrid('instance');
-          
+
           gridList.setData(data);
           gridList.getData();
         }
@@ -1033,6 +1033,62 @@ const TB07100Sjs = (function () {
           icon: "warning",
           title: "Warning!",
           text: `담당자와 승인자가 같습니다! 변경해주세요`,
+        })
+        return;
+      }
+      else if (!$('#TB07100S_acctPymtMthCd').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `지급방법을 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07100S_rslnAmt').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `지급금액을 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07100S_prufDt').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `증빙일자를 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07100S_prufKndDcd').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `증빙종류를 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07100S_pchsDdcDcd').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `매입공제를 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07100S_2_entpNm').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `거래처를 입력해주세요!`,
+        })
+        return;
+      }
+      else if (!$('#TB07100S_pymtPrarDt').val()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning!",
+          text: `지급예정일자를 입력해주세요!`,
         })
         return;
       }
