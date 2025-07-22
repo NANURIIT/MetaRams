@@ -557,14 +557,19 @@
      <!-- 원리금  스케줄관리 실행일련번호 조회 -->
      <select id="srchExcSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO" resultType="java.util.HashMap">
      	  /* IBIMS403BMapper.srchExcSn */
-          SELECT DISTINCT(EXC_SN)              /* 실행일련번호 */
-            FROM IBIMS403B /* 여신스케쥴기본 */
-           WHERE PRDT_CD = #{prdtCd}           /* 종목코드 */
-           <if test="scxDcd != null"> 
-             AND SCX_DCD = #{scxDcd}           /* 일정구분코드 */
-            </if>
-           ORDER
-              BY EXC_SN DESC
+
+        SELECT DISTINCT(A.EXC_SN) AS EXC_SN /* 실행일련번호 */
+             , B.LDG_STTS_CD      /* 원장상태코드 */
+          FROM IBIMS403B A /* 여신스케쥴기본 */  
+         INNER JOIN IBIMS402B B /* 딜실행기본 */ 
+            ON A.PRDT_CD = B.PRDT_CD 
+           AND A.EXC_SN = B.EXC_SN
+         WHERE A.PRDT_CD =  #{prdtCd}   /* 종목코드 */
+         <if test="scxDcd != null"> 
+           AND A.SCX_DCD =  #{scxDcd}           /* 일정구분코드 */
+           </if>
+         ORDER
+            BY A.EXC_SN DESC
      </select>
 
      <!-- 원리금  스케줄관리 삭제 -->

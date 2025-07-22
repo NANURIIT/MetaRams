@@ -930,11 +930,14 @@ const TB07050Sjs = (function() {
 				let html = "";
 				if (data.length > 0) {
 					data.forEach((item) => {
+						console.log("datacheck:::::",data);
+						
 						html +=
 							'<option value="' +
 							item.EXC_SN +
 							'">' +
 							item.EXC_SN +
+							(item.LDG_STTS_CD === "2" ? " (취소)" : "") +
 							"</option>";
 					});
 					$("#TB07050S_excSn").append(html);
