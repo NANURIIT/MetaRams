@@ -887,17 +887,18 @@ const TB08040Sjs = (function() {
 						if (feeRcknDcd == '02') {
 							// console.log(rd)
 							if (feeStdrAmt >= 0 && feeRt >= 0) {
-								// 찾은 인덱스를 사용하여 wfAuthId 값을 설정
+								// 찾은 인덱스를 사용하여 wfAuthId 값을 설정							
 								rd.feeAmt = feeStdrAmt * (feeRt / 100);
-								rd.feeTrgtCtns = "*"
-								
-								if(rd.feeAmt > feeHgstAmt){
+								rd.feeTrgtCtns = "*"								
+								if(rd.feeAmt > feeHgstAmt){							
 									rd.feeAmt = feeHgstAmt;
-								}else if(rd.feeAmt < feeLwstAmt){
+								}else if(rd.feeAmt < feeLwstAmt){						
 									rd.feeAmt = feeLwstAmt;
 								}
 							}
 						} else {
+							console.log("여긴 타야할것같은데");
+							
 							if (rd.feeAmt > feeHgstAmt) {
 								rd.feeAmt = feeHgstAmt;
 							} else if (rd.feeAmt < feeLwstAmt) {
@@ -922,13 +923,14 @@ const TB08040Sjs = (function() {
 					
 					if (dataIndx === 'feeAmt') {
 						var feeRcknDcd = rowData.feeRcknDcd;
-						var feeHgstAmt = rowData.feeHgstAmt;
-						var feeLwstAmt = rowData.feeLwstAmt;
+						var feeHgstAmt = Number(rowData.feeHgstAmt);
+						var feeLwstAmt = Number(rowData.feeLwstAmt);
+						var feeAmt     = Number(rowData.feeAmt);	
 						
-						if (feeRcknDcd != '02') {
-							if (rowData.feeAmt > feeHgstAmt) {
+						if (feeRcknDcd != '02') {							
+							if (feeAmt > feeHgstAmt) {	
 								rowData.feeAmt = feeHgstAmt;
-							} else if (rowData.feeAmt < feeLwstAmt) {
+							} else if (feeAmt < feeLwstAmt) {								
 								rowData.feeAmt = feeLwstAmt;
 							}
 						}
@@ -1506,7 +1508,7 @@ const TB08040Sjs = (function() {
 		}
 
 		if (ui.value.length >= len) {
-			//str = String(str)
+			str = String(str)
 			// console.log('변해랏', typeof str);
 			return ui.rowData[dataIndx] = str.slice(0, len)
 		}

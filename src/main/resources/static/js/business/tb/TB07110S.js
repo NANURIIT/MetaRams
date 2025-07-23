@@ -729,7 +729,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         editable: true,
-        format: "#,###",
+        format: "#,###",  // 콤마 설정
         filter: { crules: [{ condition: 'range' }] },
       },
       {
@@ -944,6 +944,7 @@ const TB07110Sjs = (function () {
     });
   }
 
+
   function TB07110S_selectIBIMS432B(paramData) {
 
     $.ajax({
@@ -965,6 +966,8 @@ const TB07110Sjs = (function () {
             , title: 'Warning!'
             , text: '상세정보가 없습니다!'
           })
+
+          $("#TB07110S_grd_basic").pqGrid("setData", []); // 상단 그리드의 데이터 미존재시 직전 조회한 데이터 초기화 처리
 
         }
       },
