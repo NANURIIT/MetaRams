@@ -228,7 +228,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "seq",
 				halign: "center",
 				align: "center",
-				width: "5%",
+				width: "4%",
 				filter: { crules: [{ condition: "range" }] },
 				render: function(ui) {
 					let result
@@ -279,7 +279,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "actsCd",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "7%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -289,12 +289,12 @@ const TB08040Sjs = (function() {
 				hidden: true,
 			},
 			{
-				title: "수수료인식구분",
+				title: "수수료<br>인식구분",
 				dataType: "string",
 				dataIndx: "feeRcogDcd",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "6%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -334,13 +334,13 @@ const TB08040Sjs = (function() {
 				hidden: true,
 			},
 			{
-				title: "수수료과세여부",
+				title: "수수료<br>과세여부",
 				editable: true,
 				dataType: "string",
 				dataIndx: "feeTxtnYn",
 				halign: "center",
 				align: "center",
-				width: "8%",
+				width: "6%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -378,7 +378,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "txtnTpDcd",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "7%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -400,7 +400,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "crryCd",
 				halign: "center",
 				align: "center",
-				width: "8%",
+				width: "6%",
 				filter: { crules: [{ condition: "range" }] },
 				editable: true,
 				editor: {
@@ -418,7 +418,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "rpsrNm",
 				halign: "center",
 				align: "left",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 				editable: true,
 			},
@@ -539,7 +539,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "prarDt",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				editor: {
 					type: "textbox",
 					init: dateEditor_feeSch,
@@ -559,12 +559,12 @@ const TB08040Sjs = (function() {
 				},
 			},
 			{
-				title: "수수료선후급구분코드",
+				title: "수수료<br>선후급구분코드",
 				dataType: "string",
 				dataIndx: "feeBnapDcd",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -586,7 +586,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "fnnrPrlnRto",
 				halign: "center",
 				align: "right",
-				width: "10%",
+				width: "7%",
 				filter: { crules: [{ condition: "range" }] },
 				editable: true,
 				render: function(ui) {
@@ -604,7 +604,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "prlnFee",
 				halign: "center",
 				align: "right",
-				width: "10%",
+				width: "7%",
 				filter: { crules: [{ condition: "range" }] },
 				format: "#,###",
 			},
@@ -615,7 +615,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "fnnrRcogStrtDt",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "textbox",
@@ -652,7 +652,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "fnnrRcogEndDt",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "textbox",
@@ -688,7 +688,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "fnnrPrlnPrdDnum",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 				//editable   : true,
 			},
@@ -698,7 +698,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "rgstBdcd",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "7%",
 				filter: { crules: [{ condition: "range" }] },
 				 render     : function (ui) {
 				     let cellData = ui.cellData;
@@ -716,7 +716,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "feeRcivDt",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				editable: false,
 				editor: {
 					type: "textbox",
@@ -768,7 +768,7 @@ const TB08040Sjs = (function() {
 				dataIndx: "prcsCpltYn",
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "7%",
 				editable: false,
 				filter: { crules: [{ condition: "range" }] },
 				render: function(ui) {
@@ -892,17 +892,19 @@ const TB08040Sjs = (function() {
 								rd.feeTrgtCtns = "*"								
 								if(rd.feeAmt > feeHgstAmt){							
 									rd.feeAmt = feeHgstAmt;
+									sf(1, "info", "수수료최고금액을 초과할 수 없습니다.");
 								}else if(rd.feeAmt < feeLwstAmt){						
 									rd.feeAmt = feeLwstAmt;
+									sf(1, "info", "수수료최저금액보다 적을 수 없습니다.");
 								}
 							}
-						} else {
-							console.log("여긴 타야할것같은데");
-							
+						} else {						
 							if (rd.feeAmt > feeHgstAmt) {
 								rd.feeAmt = feeHgstAmt;
+								sf(1, "info", "수수료최고금액을 초과할 수 없습니다.");
 							} else if (rd.feeAmt < feeLwstAmt) {
 								rd.feeAmt = feeLwstAmt;
+								sf(1, "info", "수수료최저금액보다 적을 수 없습니다.");
 							}
 						}
 						
@@ -930,8 +932,10 @@ const TB08040Sjs = (function() {
 						if (feeRcknDcd != '02') {							
 							if (feeAmt > feeHgstAmt) {	
 								rowData.feeAmt = feeHgstAmt;
+								sf(1, "info", "수수료최고금액을 초과할 수 없습니다.");
 							} else if (feeAmt < feeLwstAmt) {								
 								rowData.feeAmt = feeLwstAmt;
+								sf(1, "info", "수수료최저금액보다 적을 수 없습니다.");
 							}
 						}
 
