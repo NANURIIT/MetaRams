@@ -967,6 +967,8 @@ const TB07110Sjs = (function () {
             , text: '상세정보가 없습니다!'
           })
 
+          $("#TB07110S_grd_basic").pqGrid("setData", []); // 상단 그리드의 데이터 미존재시 직전 조회한 데이터 초기화 처리
+
         }
       },
       error: function () { },
