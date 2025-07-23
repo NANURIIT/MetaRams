@@ -41,6 +41,12 @@
              , ACCT_TR_CD        /* 회계거래코드 */
              , HND_DETL_DTM      /* 조작상세일시 */
              , TO_CHAR(HND_DETL_DTM, 'YYYY-MM-DD HH24:MI:SS') AS HND_DETL_DTM_STR	/* 조작상세일시 */
+             , (
+    	          SELECT A.EMP_NM 
+                  FROM IBIMS003B A
+                 WHERE 1=1
+                   AND A.EMPNO = HND_EMPNO 
+               ) AS RGST_EMP_NM  /* 조작사원이름 */
              , HND_EMPNO         /* 조작사원번호 */
              , HND_TMNL_NO       /* 조작단말기번호 */
              , HND_TR_ID         /* 조작거래ID */

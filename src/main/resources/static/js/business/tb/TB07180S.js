@@ -238,7 +238,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "feeName", //  FEE_NM
 				halign: "center",
 				align: "left",
-				width: "10%",
+				width: "15%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -247,7 +247,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "feeRcogDcd", //  FEE_RCOG_DCD F006
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -277,7 +277,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "actsCd", //  ACT_CD A005
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "6%",
 				filter: { crules: [{ condition: "range" }] },
 				// req ::: actsNm, res ::: actsCd
 			},
@@ -287,7 +287,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "rgstSttsCd", //  RGST_STTS_CD R012
 				halign: "center",
 				align: "center",
-				width: "8%",
+				width: "6%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -308,7 +308,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "feeRcknDcd", //  FEE_RCKN_DCD F015
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -329,7 +329,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "feeRt", //  FEE_RT
 				halign: "center",
 				align: "right",
-				width: "8%",
+				width: "6%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -370,7 +370,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "acctJobCd", //  ACCT_JOB_CD A001
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -391,7 +391,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "acctUnJobCd", //  ACCT_UN_JOB_CD A004
 				halign: "center",
 				align: "center",
-				width: "14%",
+				width: "10%",
 				filter: { crules: [{ condition: "range" }] },
 				editor: {
 					type: "select",
@@ -412,7 +412,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "acctTrCd", //  ACCT_TR_CD A003
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -421,7 +421,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "rgstEmpNm", //  RGST_EMP_NM
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "5%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{
@@ -430,7 +430,7 @@ const TB07180Sjs = (function() {
 				dataIndx: "hndDetlDtm", //  HND_DETL_DTM
 				halign: "center",
 				align: "center",
-				width: "10%",
+				width: "8%",
 				filter: { crules: [{ condition: "range" }] },
 			},
 			{

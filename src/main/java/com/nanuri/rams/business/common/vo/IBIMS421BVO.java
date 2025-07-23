@@ -12,4 +12,5 @@ import lombok.Setter;
  */
 public class IBIMS421BVO extends IBIMS421BDTO {
 	private String hndDetlDtmStr; 				/* 조작상세일시 */
+	private String rgstEmpNm; 					/*등록자*/
 }
