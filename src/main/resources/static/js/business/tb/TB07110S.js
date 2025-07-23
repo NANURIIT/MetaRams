@@ -729,7 +729,7 @@ const TB07110Sjs = (function () {
         halign: "center",
         align: "right",
         editable: true,
-        format: "#,###",
+        format: "#,###",  // 콤마 설정
         filter: { crules: [{ condition: 'range' }] },
       },
       {
