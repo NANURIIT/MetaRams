@@ -307,7 +307,7 @@ const TB08050Sjs = (function () {
         dataIndx: "actsCd",
         halign: "center",
         align: "center",
-        width: "10%",
+        width: "7%",
         filter: { crules: [{ condition: "range" }] },
 		editor: {
 		  type: "select",
@@ -323,12 +323,12 @@ const TB08050Sjs = (function () {
         },
       },
       {
-        title: "수수료인식구분",
+        title: "수수료<br>인식구분",
         dataType: "string",
         dataIndx: "feeRcogDcd",
         halign: "center",
         align: "center",
-        width: "10%",
+        width: "7%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -349,7 +349,7 @@ const TB08050Sjs = (function () {
         dataIndx: "feeTxtnYn",
         halign: "center",
         align: "center",
-        width: "8%",
+        width: "6%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -397,7 +397,7 @@ const TB08050Sjs = (function () {
         dataIndx: "txtnTpDcd",
         halign: "center",
         align: "center",
-        width: "10%",
+        width: "7%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -418,7 +418,7 @@ const TB08050Sjs = (function () {
         dataIndx: "crryCd",
         halign: "center",
         align: "center",
-        width: "8%",
+        width: "6%",
         filter: { crules: [{ condition: "range" }] },
         editor: {
           type: "select",
@@ -440,7 +440,7 @@ const TB08050Sjs = (function () {
         dataIndx: "rpsrNm",
         halign: "center",
         align: "left",
-        width: "10%",
+        width: "7%",
         filter: { crules: [{ condition: "range" }] },
       },
       {
