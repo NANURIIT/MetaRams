@@ -997,6 +997,9 @@ const TB07100Sjs = (function () {
             , title: 'Warning!'
             , text: '상세정보가 없습니다!'
           })
+
+          $("#TB07100S_grd_thdtTrDtls").pqGrid("setData", []); // 상단 그리드의 데이터 미존재시 직전 조회한 데이터 초기화 처리
+
         }
       }, error: function () {
 
