@@ -921,8 +921,7 @@ const TB08050Sjs = (function () {
         contentType: "application/json; charset=UTF-8",
         data: JSON.stringify(obj),
         dataType: "json",
-        success: function (data) {
-
+        success: function (data) {  
           if (data > 0) {
             Swal.fire({
               icon: "success",

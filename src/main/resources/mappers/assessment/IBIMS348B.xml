@@ -354,7 +354,7 @@
 		   SET FEE_RCIV_DT  	 = NVL(TRIM(#{feeRcivDt}), TO_CHAR(SYSDATE, 'YYYYMMDD')) /* 수수료수납일자 */
 		     , FEE_RCIV_AMT 	 = #{feeRcivAmt}   	  /* 수수료수납금액 */
 		     , TR_SN        	 = #{trSn}         	  /* 거래일련번호 */
-		     , PRCS_CPLT_YN 	 = #{prcsCpltYn}   	  /* 처리완료여부 */
+		     , PRCS_CPLT_YN 	 = 'Y' 	  /* 처리완료여부 */
 		     , HND_DETL_DTM 	 = SYSDATE         	  /* 조작상세일시 */
 			 , FNNR_RCOG_STRT_DT = NVL(#{fnnrRcogStrtDt}, FNNR_RCOG_STRT_DT)  /* 인식시작일자 */
              , FNNR_RCOG_END_DT  = NVL(#{fnnrRcogEndDt}, FNNR_RCOG_END_DT)   /* 인식종료일자 */
