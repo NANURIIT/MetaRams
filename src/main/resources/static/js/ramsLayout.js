@@ -444,6 +444,7 @@ function removeTab(menuId) {
         $(`div[data-menuId="/${menuId}"]`).hide()
     }
 
+    // 테스트
     // if ($("#myTab li").length === 1) {
     //     location.href = "/TB02010S"
     // }
