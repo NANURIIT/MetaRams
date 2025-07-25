@@ -195,12 +195,10 @@ async function callPage(menuId, pageName) {
         moveTab(menuId);
         return;
     }
-    else if ($('#myTab li').length >= 10) {
-        Swal.fire({
-            icon: 'warning'
-            , title: "10개 이상의 페이지를 여실 수 없습니다!"
-        })
-        return;
+
+    if ($('#myTab li').length >= 10) {
+        let menuId = $('#myTab li:eq(1)').attr('data-tabid').split('/')[1];
+        removeTab(menuId);
     }
 
     prevPage.push(url.split('/')[1]);
@@ -446,9 +444,9 @@ function removeTab(menuId) {
         $(`div[data-menuId="/${menuId}"]`).hide()
     }
 
-    if ($("#myTab li").length === 1) {
-        location.href = "/TB02010S"
-    }
+    // if ($("#myTab li").length === 1) {
+    //     location.href = "/TB02010S"
+    // }
 
     // 이용 다했어요
     rtUseYn = "N"
