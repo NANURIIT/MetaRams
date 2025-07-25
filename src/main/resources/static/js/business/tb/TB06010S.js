@@ -1925,56 +1925,76 @@ const TB06010Sjs = (function(){
 		});
 
 		function businessFunction() {
+		    const itrList = [];
+		    const seenDscmNo = new Set();
+		    const rows = arrPqGridItrRelrInfo.pdata;
+		
+		    // 1) 리스트에서 중복 체크하며 itrList 구성
+		    for (let i = 0; i < rows.length; i++) {
+		        const row = rows[i];
+		        const dscmNo = row.trOthrDscmNo;
+			
+		        // 중복 발견 시 경고 후 함수 종료
+		        if (seenDscmNo.has(dscmNo)) {
 
-			var itrList = [];
+				  Swal.fire({
+				  	icon: 'warning',
+				  	title: "Warning!",
+				  	text: '동일한 거래상대방이 있습니다.',
+				  	confirmButtonText: "확인"
+				  });
+
+		          return;
+				}  
 			
-			for (var i = 0; i < arrPqGridItrRelrInfo.pdata.length; i++) {
-				var itrInfo = {
-					"prdtCd": $('#TB06010S_res_prdtCd').val()           					// 상품코드
-					, "trOthrSn": arrPqGridItrRelrInfo.pdata[i].trOthrSn 				 	// 거래상대방일련번호
-					, "trOthrDscmNo": arrPqGridItrRelrInfo.pdata[i].trOthrDscmNo         	// 거래상대방식별번호
-					, "trOthrDscmNm": arrPqGridItrRelrInfo.pdata[i].trOthrNm         	    // 거래상대방명
-					, "itrRelrChrCd": arrPqGridItrRelrInfo.pdata[i].itrRelrChrCd	     	// 성격
-					, "itrRelrShpCd": arrPqGridItrRelrInfo.pdata[i].itrRelrShpCd    	 	// 형태				
-				};
-				itrList.push(itrInfo);
-			}
-			
-			paramData = {
-				"prdtCd" : prdtCd
-				, "itrList" : itrList
-			}
-			
-			// 비동기통신요청
-			$.ajax({
-				type: "POST",
-				url: "/TB06010S/saveIBIMS220BDTOInfo",
-				data: JSON.stringify(paramData),
-				contentType: "application/json; charset=utf-8",
-				dataType: "json",
-				success: function() {
-					Swal.fire({
-						icon: 'success',
-						title: "Success!",
-						text: "저장에 성공하였습니다.",
-						confirmButtonText: "확인"
-					}).then(function() {
-						if(isNotEmpty($('#TB06010S_res_prdtCd').val())) {
-							getIBIMS220BDTOInfo($('#TB06010S_res_prdtCd').val());
-						}	
-						//getCNFRNCList();
-					});
-				},
-				error: function() {
-					Swal.fire({
-						icon: 'error',
-						title: "Error!",
-						text: "저장에 실패하였습니다.",
-						confirmButtonText: "확인"
-					});
-				}
-			});
+		        // 신규 항목 처리
+		        seenDscmNo.add(dscmNo);
+		        itrList.push({
+		            prdtCd:        $('#TB06010S_res_prdtCd').val(),  // 상품코드
+		            trOthrSn:      row.trOthrSn,                     // 거래상대방일련번호
+		            trOthrDscmNo:  dscmNo,                           // 거래상대방식별번호
+		            trOthrDscmNm:  row.trOthrNm,                     // 거래상대방명
+		            itrRelrChrCd:  row.itrRelrChrCd,                 // 성격
+		            itrRelrShpCd:  row.itrRelrShpCd                  // 형태
+		        });
+		    }
+		
+		    // 2) 중복 없을 때만 서버 전송
+		    const paramData = {
+		        prdtCd:   $('#TB06010S_res_prdtCd').val(),
+		        itrList:  itrList
+		    };
+		
+		    $.ajax({
+		        type: "POST",
+		        url: "/TB06010S/saveIBIMS220BDTOInfo",
+		        data: JSON.stringify(paramData),
+		        contentType: "application/json; charset=utf-8",
+		        dataType: "json",
+		        success: function() {
+		            Swal.fire({
+		                icon: 'success',
+		                title: "Success!",
+		                text: "저장에 성공하였습니다.",
+		                confirmButtonText: "확인"
+		            }).then(function() {
+		                if (isNotEmpty($('#TB06010S_res_prdtCd').val())) {
+		                    getIBIMS220BDTOInfo($('#TB06010S_res_prdtCd').val());
+		                }
+		                //getCNFRNCList();
+		            });
+		        },
+		        error: function() {
+		            Swal.fire({
+		                icon: 'error',
+		                title: "Error!",
+		                text: "저장에 실패하였습니다.",
+		                confirmButtonText: "확인"
+		            });
+		        }
+		    });
 		}
+
 	}
 
 	// 기초자산 초기화
