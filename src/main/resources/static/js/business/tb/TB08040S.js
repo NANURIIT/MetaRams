@@ -884,12 +884,14 @@ const TB08040Sjs = (function() {
 						var feeHgstAmt = rd.feeHgstAmt; // 수수료최고금액
 						var feeLwstAmt = rd.feeLwstAmt; // 수수료최저금액
 						//feeAmt 수수료금액
-						if (feeRcknDcd == '02') {
+						// 현재 수수료산정구분코드 '01'로 들어감. 추후 프로세스 정의 필요.
+						if (feeRcknDcd == '01') {
 							// console.log(rd)
 							if (feeStdrAmt >= 0 && feeRt >= 0) {
 								// 찾은 인덱스를 사용하여 wfAuthId 값을 설정							
 								rd.feeAmt = feeStdrAmt * (feeRt / 100);
 								rd.feeTrgtCtns = "*"								
+								//console.log("datacheck::::::",rd.feeAmt,"feeRcknDcd:::::",feeRcknDcd );									
 								if(rd.feeAmt > feeHgstAmt){							
 									rd.feeAmt = feeHgstAmt;
 									sf(1, "info", "수수료최고금액을 초과할 수 없습니다.");
@@ -922,7 +924,7 @@ const TB08040Sjs = (function() {
 						// UI에 반영
 						//grid.refreshRow({ rowIndx: ui.rowIndx });
 					}
-					
+					// 수수료금액 수기 입력 시 금액확인
 					if (dataIndx === 'feeAmt') {
 						var feeRcknDcd = rowData.feeRcknDcd;
 						var feeHgstAmt = Number(rowData.feeHgstAmt);
