@@ -428,6 +428,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 
 						if (("2".equals(in403Dtlbvo.getPaiTypCd())) // 정상이자
 								|| ("4".equals(in403Dtlbvo.getPaiTypCd())) // 납부이자연체금액
+								|| ("5".equals(in403Dtlbvo.getPaiTypCd())) // 원금연체금액
 								|| ("7".equals(in403Dtlbvo.getPaiTypCd()))) { // 미수이자
 							in406BVO.setPrdtCd(in403Dtlbvo.getPrdtCd());
 							in406BVO.setTrSn(iExTrsn);
