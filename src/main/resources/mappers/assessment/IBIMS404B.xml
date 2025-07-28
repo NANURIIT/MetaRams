@@ -275,7 +275,7 @@
 			  AND RGST_SN = #{rgstSn} 										/* 등록일련번호 */
     </update>
 
-	 <insert id="insertListIBIMS404B">
+	 <!-- <insert id="insertListIBIMS404B">
 		<foreach collection="intrtList" item="item" separator=";">
 		INSERT INTO IBIMS404B		/* 여신실행금리기본 */
 		    ( 
@@ -324,7 +324,7 @@
 			, #{item.guid}              					/* guid */
 			)
 		</foreach>
-    </insert>
+    </insert> -->
 
 	<select id="getIntrRateInfos" parameterType="com.nanuri.rams.business.common.vo.TB06015SVO" resultType="com.nanuri.rams.business.common.vo.IBIMS404BVO">
 	SELECT
@@ -385,55 +385,58 @@
 
 
 	<insert id="insertChng404BList" parameterType="java.util.List">
-		
-		INSERT INTO IBIMS404B		/* 여신실행금리기본 */
-		    ( 
-			  PRDT_CD				/* 상품코드 */
-		    , EXC_SN				/* 실행일련번호 */
-		    , RGST_SN				/* 등록일련번호 */
-		    , APLY_STRT_DT			/* 적용시작일자 */
-		    , APLY_END_DT			/* 적용종료일자 */
-		    , STDR_INTRT_KND_CD		/* 기준금리종류코드 */
-		    , FXN_INTRT				/* 고정금리 */
-		    , ADD_INTRT				/* 가산금리 */
-		    , INTRT_CNGE_FRQC_CD	/* 금리변동주기코드 */
-		    , INTRT_CNGE_FRQC_MNUM	/* 금리변동주기개월수 */
-		    , APLY_DNUM_DCD			/* 적용일수구분코드 */
-		    , STDR_INTRT_APLY_DNUM	/* 기준금리적용일수 */
-		    , HND_DETL_DTM			/* 조작상세일시 */
-		    , HND_EMPNO				/* 조작사원번호 */
-		    , HND_TMNL_NO			/* 조작단말기번호 */
-		    , HND_TR_ID				/* 조작거래id */
-		    , GUID					/* guid */
-		    )
-		<foreach collection="list" item="item" separator="UNION ALL">
-		    select
-			  #{item.prdtCd}  	       							/* 상품코드 */
-			, #{item.excSn} 		       							/* 실행일련번호 */
-			, (
-			  SELECT NVL(MAX(A.RGST_SN),0)+1 AS RGST_SN	 /* 등록일련번호 */
-			    FROM IBIMS404B A							/* 여신실행금리기본 */
-			   WHERE 1 = 1
-	  		     AND A.PRDT_CD = #{item.prdtCd}
-	  		     AND A.EXC_SN  = #{item.excSn}
-			  )                   							 /* 등록일련번호 */
-			, #{item.aplyStrtDt}        					/* 적용시작일자 */
-			, #{item.aplyEndDt}         					/* 적용종료일자 */
-			, #{item.stdrIntrtKndCd}    					/* 기준금리종류코드 */
-			, #{item.fxnIntrt}          					/* 고정금리 */
-			, #{item.addIntrt}          					/* 가산금리 */
-			, #{item.intrtCngeFrqcCd}   					/* 금리변동주기코드 */
-			, #{item.intrtCngeFrqcMnum} 					/* 금리변동주기개월수 */
-			, #{item.aplyDnumDcd}   						   /* 적용일수구분코드 */
-			, #{item.stdrIntrtAplyDnum} 					/* 기준금리적용일수 */
-			, SYSDATE        									/* 조작상세일시 */
-			, #{item.hndEmpno}          					/* 조작사원번호 */
-			, #{item.hndTmnlNo}         					/* 조작단말기번호 */
-			, #{item.hndTrId}           					/* 조작거래id */
-			, #{item.guid}              					/* guid */
-			from dual
-		</foreach>
-    </insert>
+	  INSERT ALL
+	  <foreach collection="list" item="item">
+	    INTO IBIMS404B
+	      ( PRDT_CD
+	      , EXC_SN
+	      , RGST_SN
+	      , APLY_STRT_DT
+	      , APLY_END_DT
+	      , STDR_INTRT_KND_CD
+	      , FXN_INTRT
+	      , ADD_INTRT
+	      , INTRT_CNGE_FRQC_CD
+	      , INTRT_CNGE_FRQC_MNUM
+	      , APLY_DNUM_DCD
+	      , STDR_INTRT_APLY_DNUM
+	      , HND_DETL_DTM
+	      , HND_EMPNO
+	      , HND_TMNL_NO
+	      , HND_TR_ID
+	      , GUID
+	      )
+	    VALUES
+	      ( #{item.prdtCd}             /* 상품코드 */
+	      , #{item.excSn}             /* 실행일련번호 */
+	      , #{item.rgstSn}            /* 계산된 등록일련번호 */
+	      , #{item.aplyStrtDt}        /* 적용시작일자 */
+	      , #{item.aplyEndDt}         /* 적용종료일자 */
+	      , #{item.stdrIntrtKndCd}    /* 기준금리종류코드 */
+	      , #{item.fxnIntrt}          /* 고정금리 */
+	      , #{item.addIntrt}          /* 가산금리 */
+	      , #{item.intrtCngeFrqcCd}   /* 금리변동주기코드 */
+	      , #{item.intrtCngeFrqcMnum} /* 금리변동주기개월수 */
+	      , #{item.aplyDnumDcd}       /* 적용일수구분코드 */
+	      , #{item.stdrIntrtAplyDnum} /* 기준금리적용일수 */
+	      , SYSDATE                   /* 조작상세일시 */
+	      , #{item.hndEmpno}          /* 조작사원번호 */
+	      , #{item.hndTmnlNo}         /* 조작단말기번호 */
+	      , #{item.hndTrId}           /* 조작거래id */
+	      , #{item.guid}              /* guid */
+	      )
+	  </foreach>
+	  SELECT * FROM DUAL
+	</insert>
+
+
+
+	<select id="selectMaxRgstSn" parameterType="com.nanuri.rams.business.common.dto.IBIMS404BDTO" resultType="int">
+    	SELECT NVL(MAX(rgst_sn),0)
+    	  FROM IBIMS404B
+    	 WHERE prdt_cd = #{prdtCd}
+    	   AND exc_sn  = #{excSn}
+  </select>
 
 
 </mapper>

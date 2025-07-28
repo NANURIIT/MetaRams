@@ -3,6 +3,7 @@ package com.nanuri.rams.business.common.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS404BVO;
@@ -50,5 +51,7 @@ public interface IBIMS404BMapper {
 	public int deleteChngBf404BList(IBIMS404BDTO param);
 
 	public int insertChng404BList(List<IBIMS404BDTO> param);
+	
+	public int selectMaxRgstSn(IBIMS404BDTO param);
 	
 }

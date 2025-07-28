@@ -7,13 +7,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nanuri.rams.business.common.dto.IBIMS201BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS220BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS403BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
 import com.nanuri.rams.business.common.dto.IBIMS410BDTO;
 import com.nanuri.rams.business.common.mapper.IBIMS201BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS346BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS401BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS401HMapper;
+import com.nanuri.rams.business.common.mapper.IBIMS403BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS404BMapper;
 import com.nanuri.rams.business.common.mapper.IBIMS410BMapper;
 import com.nanuri.rams.business.common.vo.IBIMS201BVO;
@@ -36,6 +38,8 @@ public class TB07150ServiceImpl implements TB07150Service {
 	private final  IBIMS401BMapper ibims401BMapper;
 	/* 약정이력 */
 	private final IBIMS401HMapper ibims401HMapper;
+	/* 여신스케쥴기본 */
+	private final IBIMS403BMapper ibims403BMapper;
 	/* 여신실행금리기본 */
 	private final IBIMS404BMapper ibims404BMapper;	
 
@@ -44,9 +48,7 @@ public class TB07150ServiceImpl implements TB07150Service {
 	private final IBIMS410BMapper ibims410BMapper;
 	/* 로그인 사용자 정보 */
 	private final AuthenticationFacade facade;
-
-	private String rkfrDt = LocalDate.now().toString().replace("-", "");
-
+	
 	/**
 	 * 원장정보조회
 	 */
@@ -83,7 +85,7 @@ public class TB07150ServiceImpl implements TB07150Service {
 		int result = 0;
 
 		IBIMS401BVO ibims401bVo = new IBIMS401BVO();
-		IBIMS201BDTO ibims201bdto = new IBIMS201BDTO();
+		IBIMS220BDTO ibims220bdto = new IBIMS220BDTO();
 
 		// log.debug("parameter check::: cndChng");
 		// for(int i=0; i < param.getCndChng346BList().size(); i++){
@@ -152,115 +154,109 @@ public class TB07150ServiceImpl implements TB07150Service {
 			}
 
 		}
-		else if(rqsKndCd.equals("31")){			// 31: 기한연장 + 금리변경
-
-			log.debug("#######기한연장 + 금리변경#######");
-
-			ibims401bVo.setPrdtCd(param.getPrdtCd());						//종목코드
-			ibims401bVo.setRqsKndCd(rqsKndCd);								//신청종류코드
-			ibims401bVo.setCtrcExpDt(param.getCtrcExpDt());					//약정기본 약정만기일자
-			ibims401bVo.setHndEmpno(facade.getDetails().getEno());	
-
-			int tlmtChngRslt = ibims401BMapper.cndChng(ibims401bVo);
-			int hRslt = ibims401HMapper.rgstIBIMS401H(ibims401bVo);
-
-			if(tlmtChngRslt < 1){
-				log.debug("!!!기한변경 오류!!!");
-				result = 1;
-			}
-			else if(hRslt < 1){
-				log.debug("!!!약정이력테이블 오류!!!");
-				result = 1;
-			}
-			else{
-
-				List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();		//변경금리정보
-
-				//조작사원번호 세팅
-				for(IBIMS404BDTO cndChngPara : cndChng404BList){
-					cndChngPara.setHndEmpno(facade.getDetails().getEno());
-				}
-
-				IBIMS404BDTO ibims404Param = new IBIMS404BDTO();
-
-				ibims404Param.setPrdtCd(param.getPrdtCd());
-				ibims404Param.setExcSn(param.getExcSn());
-
-				int dltChngBf404Blist = ibims404BMapper.deleteChngBf404BList(ibims404Param);		//변경 전 금리정보 삭제
-
-				if(dltChngBf404Blist < 1){
-					log.debug("!!!!!변경전 금리정보 삭제 오류!!!!!");
-					result = 1;
-				}
-				else{
-
-					int insrt404BListRslt = ibims404BMapper.insertChng404BList(cndChng404BList);
-
-					if(insrt404BListRslt < 1){
-						log.debug("!!!!!금리정보 등록 오류!!!!!");
-						result = 1;
-					}
-				}
-
-			}
+		else if (rqsKndCd.equals("31")) {          // 31: 기한연장 + 금리변경
+		    log.debug("####### 기한연장 + 금리변경 #######");
+		
+		    ibims401bVo.setPrdtCd(param.getPrdtCd());
+		    ibims401bVo.setRqsKndCd(rqsKndCd);
+		    ibims401bVo.setCtrcExpDt(param.getCtrcExpDt());
+		    ibims401bVo.setHndEmpno(facade.getDetails().getEno());
+		
+		    int tlmtChngRslt = ibims401BMapper.cndChng(ibims401bVo);
+		    int hRslt        = ibims401HMapper.rgstIBIMS401H(ibims401bVo);
+		    if (tlmtChngRslt < 1 || hRslt < 1) {
+		      log.debug("기한연장 처리 오류 tlmtChngRslt={}, hRslt={}", tlmtChngRslt, hRslt);
+		      result = 1;
+		      return result;
+		    }		
+	
+		    log.debug("####### 금리변경 #######");
 			
+			List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();
+		    String prdtCd = param.getPrdtCd();
+		    long   excSn  = param.getExcSn();
+		    String hndEmp = facade.getDetails().getEno();
 			
+		    // — 공통 파라미터 세팅 —
+		    for (IBIMS404BDTO dto : cndChng404BList) {
+		        dto.setPrdtCd(prdtCd);
+		        dto.setExcSn(excSn);
+		        dto.setHndEmpno(hndEmp);
+		    }
+		  
+		    // — 이전 데이터 삭제 —
+		    IBIMS404BDTO deleteParam = new IBIMS404BDTO();
+		    deleteParam.setPrdtCd(prdtCd);
+		    deleteParam.setExcSn(excSn);
+		    int deleted = ibims404BMapper.deleteChngBf404BList(deleteParam);
+		    if (deleted < 1) {
+		      throw new IllegalStateException(
+		        "변경 전 금리정보 삭제 실패: prdtCd=" + prdtCd + ", excSn=" + excSn
+		      );
+		    }
+		  
+		    // — 일련번호 계산 및 세팅 —
+		    IBIMS404BDTO seqParam = new IBIMS404BDTO();
+		    seqParam.setPrdtCd(prdtCd);
+		    seqParam.setExcSn(excSn);
+		    int nextSn = ibims404BMapper.selectMaxRgstSn(seqParam);
+		    for (int i = 0; i < cndChng404BList.size(); i++) {
+		        cndChng404BList.get(i).setRgstSn(nextSn + i);
+		    }
+
+			// 여신실행금리기본(IBIMS404B)에 insert
+		    int inserted = ibims404BMapper.insertChng404BList(cndChng404BList);
+		    if (inserted < cndChng404BList.size()) {
+		      throw new IllegalStateException(
+		        "금리정보 등록 오류: expected=" 
+		        + cndChng404BList.size() + ", inserted=" + inserted
+		      );		      
+		   	}
+
 		}
-		else if(rqsKndCd.equals("04")){			// 04: 금리변경
+		else if (rqsKndCd.equals("04")) {      // 04: 금리변경
+		    log.debug("####### 금리변경 #######");		
 
-			log.debug("#######금리변경#######");
-
-			//List<IBIMS346BDTO> cndChng346BList = param.getCndChng346BList();		//변경금리정보
-
-			List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();		//변경금리정보
-
-			//조작사원번호 세팅
-			for(IBIMS404BDTO cndChngPara : cndChng404BList){
-				cndChngPara.setHndEmpno(facade.getDetails().getEno());
-			}
-
-			IBIMS404BDTO ibims404Param = new IBIMS404BDTO();
-
-			log.debug("param.getPrdtCd ::: " + param.getPrdtCd());
-			log.debug("param.getExcSn ::: " + param.getExcSn());
-
-			ibims404Param.setPrdtCd(param.getPrdtCd());
-			ibims404Param.setExcSn(param.getExcSn());
-
-			int dltChngBf404Blist = ibims404BMapper.deleteChngBf404BList(ibims404Param);		//변경 전 금리정보 삭제
-
-			if(dltChngBf404Blist < 1){
-				log.debug("!!!!!변경전 금리정보 삭제 오류!!!!!");
-				result = 1;
-			}
-			else{
-
-				int insrt404BListRslt = ibims404BMapper.insertChng404BList(cndChng404BList);
-
-				if(insrt404BListRslt < 1){
-					log.debug("!!!!!금리정보 등록 오류!!!!!");
-					result = 1;
-				}
-			}
+		    List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();
+		    
+			String prdtCd = param.getPrdtCd();
+		    long   excSn  = param.getExcSn();
+		    String hndEmp = facade.getDetails().getEno();
 			
-
-			// String prdtCd = cndChng346BList.get(0).getPrdtCd();
-
-			// int dltIntrtList = ibims346BMapper.deleteIBIMS346B(prdtCd);
-
-			// if(dltIntrtList > 0){
-
-			// 	int intrtChngRslt = ibims346BMapper.insertIntrtInfoList(cndChng346BList);
-
-			// 	if(intrtChngRslt < 1){
-			// 		log.debug("!!!금리정보 insert 오류!!!");
-			// 		result = 1;
-			// 	}
-
-			// }else{
-			// 	log.debug("!!!기존 금리정보 삭제 오류!!!");
-			// 	result = 1;
-			// }
+			for (IBIMS404BDTO dto : cndChng404BList) {
+		        dto.setPrdtCd(prdtCd);
+		        dto.setExcSn(excSn);
+		        dto.setHndEmpno(hndEmp);
+		    }
+		  	
+			IBIMS404BDTO deleteParam = new IBIMS404BDTO();
+		    deleteParam.setPrdtCd(prdtCd);
+		    deleteParam.setExcSn(excSn);
+		    
+			int deleted = ibims404BMapper.deleteChngBf404BList(deleteParam);
+		    
+			if (deleted < 1) {
+		      throw new IllegalStateException(
+		        "변경 전 금리정보 삭제 실패: prdtCd=" + prdtCd + ", excSn=" + excSn
+		      );
+		    }
+		  	
+			IBIMS404BDTO seqParam = new IBIMS404BDTO();
+		    seqParam.setPrdtCd(prdtCd);
+		    seqParam.setExcSn(excSn);
+		    
+			int nextSn = ibims404BMapper.selectMaxRgstSn(seqParam);
+		    for (int i = 0; i < cndChng404BList.size(); i++) {
+		        cndChng404BList.get(i).setRgstSn(nextSn + i);
+		    }
+		  	
+			int inserted = ibims404BMapper.insertChng404BList(cndChng404BList);
+		    if (inserted < cndChng404BList.size()) {
+		      throw new IllegalStateException(
+		        "금리정보 등록 오류: expected=" 
+		        + cndChng404BList.size() + ", inserted=" + inserted		    
+				);
+		    }
 			
 		}else if(rqsKndCd.equals("06")){			// 06: 차주변경
 
@@ -270,6 +266,11 @@ public class TB07150ServiceImpl implements TB07150Service {
 			ibims401bVo.setRqsKndCd(rqsKndCd);								//신청종류코드
 			ibims401bVo.setPtxtTrOthrDscmNo(param.getTrOthrDscmNo());		//약정기본 거래상대방 식별번호
 			ibims401bVo.setHndEmpno(facade.getDetails().getEno());	
+
+			// IBIMS220B(딜승인이해관계자기본) 업데이트
+			ibims220bdto.setPrdtCd(param.getPrdtCd());
+			ibims220bdto.setTrOthrDscmNo(param.getTrOthrDscmNo());
+
 
 			int trOthrChngRslt = ibims401BMapper.cndChng(ibims401bVo);
 
@@ -286,16 +287,16 @@ public class TB07150ServiceImpl implements TB07150Service {
 				ibims201bvo.setTrOthrDscmNo(param.getTrOthrDscmNo());		//거래상대방식별번호
 				ibims201bvo.setHndEmpno(facade.getDetails().getEno());		//조작사원번호
 
-				int setLastYnRslt = ibims201BMapper.setLastYnN(ibims201bvo);
-				int insertIBIMS201BRslt = ibims201BMapper.cndChng201B(ibims201bvo);
+				// int setLastYnRslt = ibims201BMapper.setLastYnN(ibims201bvo);
+				// int insertIBIMS201BRslt = ibims201BMapper.cndChng201B(ibims201bvo);
 
-				if(setLastYnRslt < 1){
-					log.debug("!!!승인기본 LAST_YN 오류!!!");
-					result = 1;
-				}else if(insertIBIMS201BRslt < 1){
-					log.debug("!!!승인기본 INSERT 오류!!!");
-					result = 1;
-				}
+				// if(setLastYnRslt < 1){
+				// 	log.debug("!!!승인기본 LAST_YN 오류!!!"); 
+				// 	result = 1;
+				// }else if(insertIBIMS201BRslt < 1){
+				// 	log.debug("!!!승인기본 INSERT 오류!!!");
+				// 	result = 1;
+				// }
 				
 			}
 			
