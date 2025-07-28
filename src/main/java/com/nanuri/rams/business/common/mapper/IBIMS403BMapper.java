@@ -6,11 +6,10 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.nanuri.rams.business.common.dto.IBIMS403BDTO;
+import com.nanuri.rams.business.common.dto.IBIMS404BDTO;
 import com.nanuri.rams.business.common.vo.IBIMS403BVO;
 import com.nanuri.rams.business.common.vo.IBIMS430BVO;
 import com.nanuri.rams.business.common.vo.TB06015SVO;
-import com.nanuri.rams.business.common.vo.TB07050SVO;
-import com.nanuri.rams.business.common.vo.TB07090SVO;
 import com.nanuri.rams.business.common.vo.TB09070SVO;
 
 @Mapper
@@ -74,4 +73,7 @@ public interface IBIMS403BMapper {
 
 	public List<IBIMS403BDTO> getBfScdhl(IBIMS403BVO param);
 	public int deleteBfIBIMS403B(IBIMS403BVO param);
+
+	// 조건변경 시 여신스케줄기본 업데이트
+	public int updateChng403List(List<IBIMS404BDTO> list);
 }

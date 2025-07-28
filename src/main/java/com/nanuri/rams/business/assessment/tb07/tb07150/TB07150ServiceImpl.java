@@ -173,6 +173,7 @@ public class TB07150ServiceImpl implements TB07150Service {
 		    log.debug("####### 금리변경 #######");
 			
 			List<IBIMS404BDTO> cndChng404BList = param.getCndChng404BList();
+
 		    String prdtCd = param.getPrdtCd();
 		    long   excSn  = param.getExcSn();
 		    String hndEmp = facade.getDetails().getEno();
@@ -212,6 +213,14 @@ public class TB07150ServiceImpl implements TB07150Service {
 		        + cndChng404BList.size() + ", inserted=" + inserted
 		      );		      
 		   	}
+
+			// 변경한 이자 403B 테이블에 업데이트
+			int updated = ibims403BMapper.updateChng403List(cndChng404BList);
+			if (updated == 0) {
+			    log.debug("▶ 403B 적용이율 반영된 건이 없습니다.");
+			} else {
+			    log.debug("▶ 403B 적용이율 반영 완료");
+			}
 
 		}
 		else if (rqsKndCd.equals("04")) {      // 04: 금리변경
@@ -257,6 +266,14 @@ public class TB07150ServiceImpl implements TB07150Service {
 		        + cndChng404BList.size() + ", inserted=" + inserted		    
 				);
 		    }
+
+			// 변경한 이자 403B 테이블에 업데이트
+			int updated = ibims403BMapper.updateChng403List(cndChng404BList);
+			if (updated == 0) {
+			    log.debug("▶ 403B 적용이율 반영된 건이 없습니다.");
+			} else {
+			    log.debug("▶ 403B 적용이율 반영 완료");
+			}
 			
 		}else if(rqsKndCd.equals("06")){			// 06: 차주변경
 
