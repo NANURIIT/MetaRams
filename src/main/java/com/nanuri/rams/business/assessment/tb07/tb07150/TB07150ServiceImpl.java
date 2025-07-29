@@ -253,7 +253,7 @@ public class TB07150ServiceImpl implements TB07150Service {
 			IBIMS404BDTO seqParam = new IBIMS404BDTO();
 		    seqParam.setPrdtCd(prdtCd);
 		    seqParam.setExcSn(excSn);
-		    
+					    
 			int nextSn = ibims404BMapper.selectMaxRgstSn(seqParam);
 		    for (int i = 0; i < cndChng404BList.size(); i++) {
 		        cndChng404BList.get(i).setRgstSn(nextSn + i);

@@ -863,11 +863,13 @@
     BEGIN
       <foreach collection="list" item="item" separator="">
         UPDATE IBIMS403B
-           SET STRT_DT       = #{item.aplyStrtDt}
-             , APLY_IRT = #{item.fxnIntrt} + #{item.addIntrt}
+           SET APLY_IRT = #{item.fxnIntrt} + #{item.addIntrt}
+             , HND_DETL_DTM = SYSDATE
+             , HND_EMPNO = #{item.hndEmpno}
          WHERE PRDT_CD = #{item.prdtCd}
            AND EXC_SN  = #{item.excSn}
            AND STRT_DT &gt;= #{item.aplyStrtDt}
+           AND PRCS_CPLT_YN = 'N'
            ;
       </foreach>
     END;
