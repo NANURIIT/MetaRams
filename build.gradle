@@ -103,6 +103,10 @@ dependencies {
 	
 }
 
+tasks.named('bootRun') {
+    sourceResources sourceSets.main   // src/main/resources를 classpath에 직접 올림
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
