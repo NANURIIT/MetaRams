@@ -1570,7 +1570,7 @@ function getSelectBoxList(prefix, item, async = true) {
 
         if (prefix == "TB07150S") {
           if (value.cmnsGrpCd == "R023") {
-            if (value.cdValue != "01" && value.cdValue != "07") {
+            if (value.cdValue != "01" && value.cdValue != "07" && value.cdValue != "02" ) {
               var html = "";
               html +=
                 '<option value="' +

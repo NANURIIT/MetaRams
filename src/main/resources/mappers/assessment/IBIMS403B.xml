@@ -551,7 +551,20 @@
            WHERE PRDT_CD           = #{prdtCd}  	                 /* 상품코드 */
              AND EXC_SN            = #{excSn}                      /* 실행일련번호 */
              AND SCX_DCD           = #{scxDcd} 	                   /* 일정구분코드 */
-             AND RDMP_TMRD         = #{rdmpTmrd}                   /* 상환회차 */
+             AND RDMP_TMRD         = #{rdmpTmrd}                   /* 상환회차 */             
+     </update>
+
+     <!-- 조건변경 시 원리금 스케줄관리 업데이트-->
+     <update  id="modifyCrdlSchBss" parameterType="com.nanuri.rams.business.common.dto.IBIMS403BDTO">
+     	  /* IBIMS403BMapper.updateCrdlSchBss */
+          UPDATE IBIMS403B /* 여신스케쥴기본 */
+             SET STRT_DT           = #{strtDt}                     /* 시작일자 */
+               , END_DT            = #{endDt}                      /* 종료일자 */              
+               , APLY_IRT 		     = #{aplyIrt} 			             /* 적용이율 */
+               , HND_DETL_DTM 	   = SYSDATE 		                   /* 조작상세일시 */
+           WHERE PRDT_CD           = #{prdtCd}  	                 /* 상품코드 */
+             AND EXC_SN            = #{excSn}                      /* 실행일련번호 */
+             AND PRCS_CPLT_YN      = 'N'           
      </update>
 
      <!-- 원리금  스케줄관리 실행일련번호 조회 -->
@@ -845,4 +858,20 @@
              AND EXC_SN    = #{excSn}      /* 실행일련번호 */
              AND TR_SN     = #{hgrkTrSn}
      </delete>
+
+  <update id="updateChng403List" parameterType="java.util.List" statementType="CALLABLE">
+    BEGIN
+      <foreach collection="list" item="item" separator="">
+        UPDATE IBIMS403B
+           SET APLY_IRT = #{item.fxnIntrt} + #{item.addIntrt}
+             , HND_DETL_DTM = SYSDATE
+             , HND_EMPNO = #{item.hndEmpno}
+         WHERE PRDT_CD = #{item.prdtCd}
+           AND EXC_SN  = #{item.excSn}
+           AND STRT_DT &gt;= #{item.aplyStrtDt}
+           AND PRCS_CPLT_YN = 'N'
+           ;
+      </foreach>
+    END;
+  </update>
 </mapper>

@@ -127,7 +127,7 @@ const TB07150Sjs = (function () {
     pqGrid_TB07150S(); // pgGrid
   }
 
-  // 조건변경_신청종류 변경 시
+  // 조건변경_신청종류 변경 시(******* 한도변경은 약정 및 해지(TB06040)에서 약정금액을 변경한다. 신청종류셀렉트박스에서 제외 *******)
   $("#TB07150S_R023_1").on("change", function () {
     var ctgry = $(this).val();
 
@@ -602,7 +602,12 @@ const TB07150Sjs = (function () {
   //변경 후 금리정보 행추가
   function addRow_grdIntrtInf2(){
 
-    $("#grd_intrtInf_2").pqGrid("addRow", { rowData: {}, checkEditable: true });
+    $("#grd_intrtInf_2").pqGrid("addRow", { 
+      rowData: {prdtCd:$("#TB07150S_prdtCd").val()
+              , excSn:$("#TB07150S_excSn").val() 
+      }
+    , checkEditable: true 
+    });
   
   }
 

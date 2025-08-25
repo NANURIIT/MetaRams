@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 public class TB02010ServiceImpl implements TB02010Service {
-	
+
 	private final IBIMS100BMapper ibims100BMapper;
 
 	private final IBIMS003BMapper ibims003bMapper;
@@ -37,8 +37,8 @@ public class TB02010ServiceImpl implements TB02010Service {
 	private final IBIMS231BMapper ibims231bMapper;
 
 	private final WorkFlowMapper workFlowMapper;
-	
-	private final AuthenticationFacade facade; 
+
+	private final AuthenticationFacade facade;
 
 	@Override
 	public int getSeqNo(IBIMS100BDTO getSeq) {
@@ -52,19 +52,20 @@ public class TB02010ServiceImpl implements TB02010Service {
 
 	@Override
 	public List<IBIMS100BVO.selectVO> selectIBIMS100BInfo(selectVO selInfo) {
-		
+
 		Map<String, Object> rmrkMap = null;
-		
+
 		selInfo.setEmpno(facade.getDetails().getEno());
-		
+
 		List<IBIMS100BVO.selectVO> result = ibims100BMapper.selectIBIMS100BInfo(selInfo);
-		
+
 		if(result.size() > 0) {
 			for(int i = 0 ; result.size() > i ; i ++) {
+
 				String rmrk = result.get(i).getRmrk();
-				
+
 				String [] rmrkSpilt = rmrk.split(",");
-				
+
 				rmrkMap = new HashMap<String, Object>();
 
 				for (int j = 0; rmrkSpilt.length > j; j++) {
@@ -75,11 +76,11 @@ public class TB02010ServiceImpl implements TB02010Service {
 							String tempValue = rmrkSpilt[j].substring(index + 1);
 							rmrkMap.put(tempKey, tempValue);
 						}
-				} 
+				}
 				result.get(i).setRmrkMap(rmrkMap);
 			}
 		}
-		
+
 		return result;
 	}
 
