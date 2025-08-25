@@ -440,7 +440,7 @@ public class TB07030ServiceImpl implements TB07030Service {
 							in406BVO.setTrgtDnum(in403Dtlbvo.getIntrAplyDnum());
 							in406BVO.setAplyIntr(in403Dtlbvo.getAplyIrt());
 							in406BVO.setDealTrgtAmt(in403Dtlbvo.getTrgtAmt());
-							in406BVO.setNrmlIntAmt(in403Dtlbvo.getTrgtAmt());
+							in406BVO.setNrmlIntAmt(in403Dtlbvo.getPmntPrarAmt());
 							if ("4".equals(in403Dtlbvo.getPaiTypCd())) {
 								in406BVO.setCrdtGrntOvduIntAmt(in403Dtlbvo.getPmntAmt());
 							}
