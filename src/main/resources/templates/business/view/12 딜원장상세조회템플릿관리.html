@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="TB03021P">
+	<!-- modal -->
+	<div id="modal-TB03021P" class="modal fade" role="dialog" aria-labelledby="lb-TB03021P" aria-hidden="true" style="z-index: 1070;">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header metis-modal-header">
+					<h4 class="modal-title">딜원장 상세조회 템플릿 관리</h4>
+					<div class="col-sm-1 text-right">
+                   		<button type="button" class="btn btn-default" onclick="modalClose_TB03021P();"><i class="fa fa-times"></i></button>
+                   	</div>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="TB03021P_prefix" id="TB03021P_prefix" value=""/>
+					<div class="row">
+						<div class="col-sm-12 b-r">
+							<div class="ibox mb-0">
+								<!-- 조회조건영역 -->
+				    			<div class="ibox-content i-filter text-right">
+				    				<form method="get">
+				    					<div class="form-group row">
+				    						<label class="col-sm-1 col-form-label">사업유형</label>
+				                            <div class="col-sm-3">
+												<input type="text" class="form-control" id="">
+											</div>
+				                        	<label class="col-sm-1 col-form-label">사용자명</label>
+				                            <div class="col-sm-3">
+												<input type="text" class="form-control" id="">
+											</div>
+											<div class="col-sm-4 text-right">
+												<button class="btn btn-primary" id="btnLine" type="button" onclick="TB03040Sjs.ibSpecSearch();">
+													<i class="fa fa-search"></i>&nbsp;조회
+												</button>
+				                        		<button class="btn btn-success" type="button" onclick="TB07050Sjs.save();"><i class="fa fa-save"></i>&nbsp;저장</button>
+											</div>
+										</div>
+				    				</form>
+				    			</div>
+				    			<!-- 조회결과 -->
+				    			<div class="ibox-content">
+									<div class="col-sm-12 text-right pr-0 mb-2">
+										<button class="btn btn-default btn-xs" id="TB07050S_btnPlus" onclick="TB07050Sjs.gridEvt('p')">
+										<i class="fa fa-plus"></i>행추가
+										</button>
+										<button class="btn btn-default btn-xs" id="TB07050S_btnMinus" onclick="TB07050Sjs.gridEvt('m')">
+											<i class="fa fa-minus"></i>행삭제
+										</button>
+									</div>
+				    				<div id="gridDealInfo"></div>
+				    			</div>
+							</div><!-- ibox -->
+						</div>
+					</div>
+				</div>
+			</div><!-- end of modal_content -->
+		</div>
+	</div>
+</th:block>
+</html>
