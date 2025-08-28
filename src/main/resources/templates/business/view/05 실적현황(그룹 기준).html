@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<!-- <script th:src="@{js/business/tb/TB04030S.js}"></script> -->
+</th:block>
+<th:block layout:fragment="customContent">
+	<!-- 실적현황(그룹 기준) -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2 i-filter">
+						<div class="form-group form-inline row">
+							<!-- 1 -->
+							<div class="col-sm-10 form-group mb-1">
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>기준년월
+								</label>
+								<div class="col-sm-2 input-group month">
+									<input type="text" class="form-control" id="" value="" placeholder="yyyy-mm">
+									<span class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</span>
+								</div>
+							</div>
+							<div class="col-sm-1-5 text-right pl-0">
+								<button class="btn btn-primary" type="button" onclick="">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+								<button id="" class="btn btn-default" onclick="">
+									<i class="fa fa-undo"></i>&nbsp;초기화
+								</button>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="ibox-content" style="min-height: 800px">
+						<!-- 실적현황(그룹 기준) -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h4>▶ 실적현황(그룹 기준)</h4>
+							</div>
+							<div class="ibox-content">
+								<div style="height:720px">
+									//그리드
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

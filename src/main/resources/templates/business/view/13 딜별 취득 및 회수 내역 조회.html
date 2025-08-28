@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/business/tb/TB03040S.js}"></script>
+	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+</th:block>
+
+<th:block layout:fragment="modalpopup">
+	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+</th:block>
+
+<th:block layout:fragment="customContent">
+	<!-- 딜별 취득 및 회수 내역 조회 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content text-right i-filter">
+						<form method="get">
+							<div class="form-group form-inline row mb-0">
+								<!-- <div class="col-sm-12 text-right"></div> -->
+								<div class="form-group col-sm-12 mb-1">
+									<label class="col-sm-1 control-label">
+										<span class="req"></span>기준일자
+									</label>
+									<div class="col-sm-4 input-group">
+										<div class="col-sm-5 input-group date px-0">
+											<input type="text" class="form-control" id="TB03040S_fromDate" name="FromDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<span class="input-group-addon border-none"> ~ </span>
+										<div class="col-sm-5 input-group date px-0">
+											<input type="text" class="form-control" id="TB03040S_toDate" name="ToDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+									<label class="col-sm-1 col-form-label text-right ">실행구분</label>
+									<div class="col-sm-3 input-group">
+										<label class="pr-1 font-weight-normal">취득</label>
+										<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+										<label class="pr-1 font-weight-normal">상환/회수</label>
+										<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+										<label class="pr-1 font-weight-normal">셀다운</label>
+										<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+									</div>
+									<label class="col-sm-1 col-form-label text-right ">종료 딜</label>
+									<div class="col-sm-2 input-group">
+										<label class="pr-1 font-weight-normal">포함</label>
+										<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+									</div>
+								</div>
+								<div class="form-group col-sm-12 mb-1">
+									<label class="col-sm-1 col-form-label">사업유형</label>
+									<div class="col-sm-4 input-group">
+										<select class="form-control" id="">
+											<option value="">선택</option>
+										</select>
+										<select class="form-control" id="">
+											<option value="">선택</option>
+										</select>
+									</div>
+									<label class="col-sm-1 col-form-label">투자유형</label>
+									<div class="col-sm-4 input-group">
+										<select class="col-sm-12 form-control" id="TB08031S_I038">
+											<option value="">선택</option>
+										</select>
+										<select class="col-sm-12 form-control" id="TB08031S_I038">
+											<option value="">선택</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group col-sm-12">
+									<label class="col-sm-1 col-form-label">Deal번호</label>
+									<div class="col-sm-4 input-group">
+										<input type="text" class="form-control col-sm-4" id="TB03040S_ibDealNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03021P('TB03040S');"><i class="fa fa-search"></i></button>
+										</span>
+										<input type="text" class="form-control" id="TB03040S_ibDealNm" readonly style="width:120px">
+									</div>
+									<label class="col-sm-1 col-form-label text-right ">담당부서</label>
+									<div class="col-sm-4 input-group">
+										<input type="text" class="form-control" style="width: 30px;" id="TB06010S_empNo">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-default" onclick="callTB03022P('TB06010S');">
+												<i class="fa fa-search"></i>
+											</button>
+										</span>
+										<input type="text" class="form-control" style="width: 70px;" id="TB06010S_empNm" readonly>
+									</div>
+									<!-- 버튼영역 -->
+									<div class="col-sm-2">
+										<button class="btn btn-primary" id="btnLine" type="button" onclick="TB03040Sjs.ibSpecSearch();">
+											<i class="fa fa-search"></i>&nbsp;조회
+										</button>
+										<button class="btn btn-default" type="button" onclick="TB03040Sjs.reset()">
+											<i class="fa fa-undo"></i>&nbsp;초기화
+										</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<!-- 조회결과 -->
+					<div class="ibox-content">
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 딜별 취득 및 회수 내역 정보</h5>
+							</div>
+							<div class="ibox-content">
+								<div id=""></div> <!-- 그리드 -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

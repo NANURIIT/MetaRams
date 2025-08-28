@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<!-- <script th:src="@{js/business/tb/TB04030S.js}"></script> -->
+</th:block>
+<th:block layout:fragment="customContent">
+	<!-- 부서별 손익 조회 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2 i-filter">
+						<div class="form-group form-inline row">
+							<!-- 1 -->
+							<div class="col-sm-10 form-group mb-1">
+								<div class="col-sm-2 input-group input-h">
+									<div class="input-group">
+										<input type="radio" value="" name="">
+										&nbsp;&nbsp;기준일자
+									</div>
+									<div class="input-group ml-3">
+										<input type="radio" value="" name="" checked="">
+										&nbsp;&nbsp;기준년월
+									</div>
+								</div>
+
+								<!-- 기준일자 -->
+								<div class="col-sm-4">
+									<div class="input-group date">
+										<div class="col-sm-5 input-group date px-0">
+											<input type="text" class="form-control" id="" name="FromDate" value=""
+												placeholder="YYYY-MM-DD">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<span class="input-group-addon border-none"> ~ </span>
+										<div class="col-sm-5 input-group date px-0">
+											<input type="text" class="form-control" id="" name="ToDate" value=""
+												placeholder="YYYY-MM-DD">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+								</div>
+								<!-- 기준년월 
+								<div class="col-sm-4">
+									<div class="input-group date">
+										<div class="col-sm-5 input-group month px-0">
+											<input type="text" class="form-control" id="" value=""
+												placeholder="yyyy-mm">
+											<span class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</span>
+										</div>
+										<span class="input-group-addon border-none"> ~ </span>
+										<div class="col-sm-5 input-group month px-0">
+											<input type="text" class="form-control" id="" value=""
+												placeholder="yyyy-mm">
+											<span class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</span>
+										</div>
+									</div>
+								</div>-->
+							</div>
+							<div class="col-sm-1-5 text-right pl-0">
+								<button class="btn btn-primary" type="button" onclick="">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+								<button id="" class="btn btn-default" onclick="">
+									<i class="fa fa-undo"></i>&nbsp;초기화
+								</button>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="ibox-content" style="min-height: 800px">
+						<!-- 부서별 손익 조회 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5>▶ 부서별 손익 조회</h5>
+							</div>
+							<div class="ibox-content">
+								<div style="height:720px">
+									//그리드
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

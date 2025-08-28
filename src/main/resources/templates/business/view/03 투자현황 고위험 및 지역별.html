@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/ramsLayout}">
+<th:block layout:fragment="script">
+	<script th:src="@{js/common.js}"></script>
+	<!-- <script th:src="@{js/business/tb/TB04030S.js}"></script> -->
+</th:block>
+<th:block layout:fragment="customContent">
+	<!-- 투자현황 – 고위험 및 지역별 -->
+	<div class="wrapper wrapper-content animated fadeIn">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox ">
+					<!-- 조회조건영역 -->
+					<div class="ibox-content mb-2 i-filter">
+						<div class="form-group form-inline row">
+							<!-- 1 -->
+							<div class="col-sm-10 form-group mb-1">
+								<label class="col-sm-1 control-label">
+									<span class="req"></span>기준일자
+								</label>
+								<div class="col-sm-2 input-group">
+									<span class="input-group date">
+										<input type="text" class="form-control" id="" name="FromDate" value=""
+											placeholder="YYYY-MM-DD" maxlength="10">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</span>
+								</div>
+								<label class="col-sm-1 control-label">금액</label>
+								<div class="col-sm-2 input-group input-h">
+									<div class="input-group">
+										<input type="radio" value="" name="">
+										&nbsp;&nbsp;잔액
+									</div>
+									<div class="input-group ml-3">
+										<input type="radio" value="" name="" checked="">
+										&nbsp;&nbsp;승인금액
+									</div>
+								</div>
+								<label class="col-sm-1 control-label">단위</label>
+								<div class="col-sm-2 input-group input-h">
+									<div class="input-group">
+										<input type="radio" value="Y" name="">
+										&nbsp;&nbsp;억원
+									</div>
+									<div class="input-group ml-3">
+										<input type="radio" value="" name="" checked="">
+										&nbsp;&nbsp;백만원
+									</div>
+									<div class="input-group ml-3">
+										<input type="radio" value="" name="" checked="">
+										&nbsp;&nbsp;원
+									</div>
+								</div>
+							</div>
+							<!-- 2 -->
+							<div class="col-sm-10 form-group mb-1">
+								<label class="col-sm-1 control-label">
+									고위험 기준
+								</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" name="" id="">
+										<option value="1">1.전체</option>
+										<option value="2">2.사업초기 단계</option>
+										<option value="3">3.중후순위</option>
+										<option value="3">4.고LTV(70초과)</option>
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">
+									지역
+								</label>
+								<div class="col-sm-2 input-group">
+									<select class="form-control" name="" id="">
+										<option value="1">1.전체</option>
+										<option value="2">2.서율</option>
+										<option value="3">3.경기</option>
+										<option value="3">4.인천</option>
+										<option value="3">5.부산</option>
+										<option value="3">6.경남</option>
+										<option value="3">7.대구</option>
+									</select>
+								</div>
+								<label class="col-sm-1 control-label">부동산 Non-PF</label>
+								<div class="col-sm-2 input-group input-h">
+									<div class="input-group">
+										<input type="radio" value="" name="">
+										&nbsp;&nbsp;포함
+									</div>
+									<div class="input-group ml-3">
+										<input type="radio" value="" name="" checked="">
+										&nbsp;&nbsp;불포함
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1-5 text-right pl-0">
+								<button class="btn btn-primary" type="button" onclick="">
+									<i class="fa fa-search"></i>&nbsp;조회
+								</button>
+								<button id="" class="btn btn-default" onclick="">
+									<i class="fa fa-undo"></i>&nbsp;초기화
+								</button>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="ibox-content" style="min-height: 800px">
+						<!-- 부동산 고위험 투자현황 -->
+						<div class="ibox">
+							<div class="ibox-title">
+								<h4>▶ 부동산 고위험 투자현황</h4>
+							</div>
+							<div class="ibox-content">
+								<div style="height:640px">
+									//그리드
+								</div>
+							</div>
+						</div>
+
+						<div class="ibox">
+							<div class="text-right">
+								<button class="btn btn-warning" type="button" id="exelDown">
+									<i class="fa fa-download"></i>&nbsp;엑셀다운로드
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>
