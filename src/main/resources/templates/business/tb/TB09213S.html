@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout/ramsLayout}">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/ramsLayout}">
 
 <th:block layout:fragment="script">
 	<script th:src="@{js/common.js}"></script>
-	<script th:src="@{js/business/tb/TB03040S.js}"></script>
+	<script th:src="@{js/business/tb/TB09213S.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -30,79 +33,91 @@
 									</label>
 									<div class="col-sm-4 input-group">
 										<div class="col-sm-5 input-group date px-0">
-											<input type="text" class="form-control" id="TB03040S_fromDate" name="FromDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
+											<input type="text" class="form-control" id="stdrDt" name="TB09213S_StdrDt" value="" maxlength="10" placeholder="YYYY-MM-DD">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<span class="input-group-addon border-none"> ~ </span>
 										<div class="col-sm-5 input-group date px-0">
-											<input type="text" class="form-control" id="TB03040S_toDate" name="ToDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
+											<input type="text" class="form-control" id="endDt" name="TB09213S_EndDt" value="" maxlength="10" placeholder="YYYY-MM-DD">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 									</div>
 									<label class="col-sm-1 col-form-label text-right ">담당부서</label>
-									<div class="col-sm-4 input-group">
-										<input type="text" class="form-control" style="width: 30px;" id="TB06010S_empNo">
-										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03022P('TB06010S');">
-												<i class="fa fa-search"></i>
-											</button>
-										</span>
-										<input type="text" class="form-control" style="width: 70px;" id="TB06010S_empNm" readonly>
-									</div>
+									<div class="col-sm-3 input-group">
+									<input type="text" class="form-control" id="TB09213S_dprtCd"
+										name="" placeholder="00000" readonly> <span class="input-group-append">
+										<button type="button" class="btn btn-default"
+											onclick="callTB03022P('TB09213S')">
+											<i class="fa fa-search"></i>
+										</button>
+									</span> <input type="text" class="form-control border-left-none"
+										id="TB09213S_dprtNm" name="" placeholder="전체" readonly>
+								</div>
 								</div>
 								<div class="form-group col-sm-12 mb-1">
 									<label class="col-sm-1 col-form-label text-right">inventory</label>
 									<div class="col-sm-4 input-group">
-										<input type="text" class="form-control col-sm-4" id="TB03040S_1_empNo">
+										<input type="text" class="form-control col-sm-4" id="TB09213S_invId">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03022P('TB03040S_1')" id="empNoSearch"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB03022P('TB09213S')" id="invIdSearch"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB03040S_1_empNm" readonly  style="width:120px">
+										<input type="text" class="form-control" id="TB09213S_invNm" readonly  style="width:120px">
 									</div>
 									<label class="col-sm-1 col-form-label">Deal번호</label>
 									<div class="col-sm-4 input-group">
-										<input type="text" class="form-control col-sm-4" id="TB03040S_ibDealNo">
+										<input type="text" class="form-control col-sm-4" id="TB09213S_ibDealNo">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03021P('TB03040S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB03021P('TB09213S');"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB03040S_ibDealNm" readonly style="width:120px">
+										<input type="text" class="form-control" id="TB09213S_ibDealNm" readonly style="width:120px">
 									</div>
 								</div>
 								<div class="form-group col-sm-12 mb-1">
-									<label class="col-sm-1 col-form-label">사업유형</label>
+									<label class="col-sm-1 col-form-label">투자상품대분류</label>
 									<div class="col-sm-4 input-group">
-										<select class="form-control" id="">
-											<option value="">선택</option>
-										</select>
-										<select class="form-control" id="">
+										<select class="form-control" id="TB09213S_I029">
 											<option value="">선택</option>
 										</select>
 									</div>
-									<label class="col-sm-1 col-form-label">투자유형</label>
-									<div class="col-sm-3 input-group">
-										<select class="col-sm-12 form-control" id="TB08031S_I038">
+									<label class="col-sm-1 col-form-label">투자상품중분류</label>
+									<div class="col-sm-4 input-group">
+										<select class="form-control" id="TB09213S_I030">
 											<option value="">선택</option>
 										</select>
 									</div>
 								</div>
-								<div class="form-group col-sm-12">
+								<div class="form-group col-sm-12 mb-1">
+									<label class="col-sm-1 col-form-label">투자상품소분류</label>
+									<div class="col-sm-4 input-group">
+										<select class="form-control" id="TB09213S_I031">
+											<option value="">선택</option>
+										</select>
+									</div>
+									<label class="col-sm-1 col-form-label">상품상세</label>
+									<div class="col-sm-3 input-group">
+										<select class="col-sm-12 form-control" id="TB09213S_I028">
+											<option value="">선택</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group col-sm-12 mb-1">
 									<label class="col-sm-1 col-form-label">거래상대방</label>
 									<div class="col-sm-4 input-group">
-										<input type="hidden" id="TB03020S_corpNo">
-										<input type="text" class="form-control" id="TB03020S_corpRgstNo">
+										<input type="hidden" id="TB09213S_corpNo">
+										<input type="text" class="form-control" id="TB09213S_corpRgstNo">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03061P('TB03020S')">
+											<button type="button" class="btn btn-default" onclick="callTB03061P('TB09213S')">
 												<i class="fa fa-search"></i>
 											</button>
 										</span>
-										<input type="text" class="form-control" id="TB03020S_entpRnm" style="width: 210px;" readonly>
+										<input type="text" class="form-control" id="TB09213S_entpRnm" style="width: 210px;" readonly>
 									</div>
 									<!-- 버튼영역 -->
 									<div class="col-sm-7">
-										<button class="btn btn-primary" id="btnLine" type="button" onclick="TB03040Sjs.ibSpecSearch();">
+										<button class="btn btn-primary" id="btnLine" type="button" onclick="TB09213Sjs.ibSpecSearch();">
 											<i class="fa fa-search"></i>&nbsp;조회
 										</button>
-										<button class="btn btn-default" type="button" onclick="TB03040Sjs.reset()">
+										<button class="btn btn-default" type="button" onclick="TB09213Sjs.reset()">
 											<i class="fa fa-undo"></i>&nbsp;초기화
 										</button>
 									</div>
@@ -117,7 +132,7 @@
 								<h5>▶ 딜별 손익현황 정보</h5>
 							</div>
 							<div class="ibox-content">
-								<div id=""></div> <!-- 그리드 -->
+								<div id="TB09213S_dealPflsSttnList"></div> <!-- 그리드 -->
 							</div>
 						</div>
 					</div>
