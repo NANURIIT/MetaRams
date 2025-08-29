@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/ramsLayout}">
-<th:block layout:fragment="script">
-	<script th:src="@{js/common.js}"></script>
-	<!-- <script th:src="@{js/business/tb/TB04030S.js}"></script> -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/ramsLayout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
 </th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB09201S.js}"></script>
+</th:block>
+
 <th:block layout:fragment="customContent">
 	<!-- 경영현황 -->
 	<div class="wrapper wrapper-content animated fadeIn">
@@ -21,17 +28,17 @@
 								</label>
 								<div class="col-sm-2 input-group">
 									<span class="input-group date">
-										<input type="text" class="form-control" id="" name="FromDate" value=""
+										<input type="text" class="form-control" id="TB09201S_stdrDt" name="FromDate" value=""
 											placeholder="YYYY-MM-DD" maxlength="10">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</span>
 								</div>
 							</div>
 							<div class="col-sm-1-5 text-right pl-0">
-								<button class="btn btn-primary" type="button" onclick="">
+								<button class="btn btn-primary" type="button" onclick="TB09201Sjs.getMngSttn();">
 									<i class="fa fa-search"></i>&nbsp;조회
 								</button>
-								<button id="" class="btn btn-default" onclick="">
+								<button class="btn btn-default" type="button" onclick="TB09201Sjs.resetAll();">
 									<i class="fa fa-undo"></i>&nbsp;초기화
 								</button>
 							</div>
@@ -49,7 +56,7 @@
 								</div>
 								<div class="ibox-content">
 									<div style="height:400px">
-										//그리드
+										<div id="TB09201S_colModel1"></div>
 									</div>
 								</div>
 							</div>
@@ -58,7 +65,7 @@
 							<div class="ibox col-lg-6 pl-0">
 								<div class="ibox-title">
 									<div class="row">
-										<h4 class="col-sm-6 pl-3">▶ 부서별 CIB 투자현황</h4>
+										<h4 class="col-sm-6 pl-3">▶ 부서별 IB 투자현황</h4>
 										<div class="col-sm-6 input-group justify-content-end pr-3">
 											<label class="col-sm-3 col-form-label text-right">사업유형</label>
 											<select class="col-sm-6 form-control " id="">
@@ -69,7 +76,7 @@
 								</div>
 								<div class="ibox-content">
 									<div style="height:400px">
-										//그리드
+										<div id="TB09201S_colModel2"></div>
 									</div>
 								</div>
 							</div>
@@ -82,7 +89,7 @@
 								</div>
 								<div class="ibox-content">
 									<div style="height:180px">
-										//그리드
+										<div id="TB09201S_colModel3"></div>
 									</div>
 								</div>
 							</div>
@@ -94,14 +101,14 @@
 								</div>
 								<div class="ibox-content">
 									<div style="height:180px">
-										//그리드
+										<div id="TB09201S_colModel4"></div>
 									</div>
 								</div>
 							</div>
-						</div>	
+						</div>
 						<div class="ibox">
 							<div class="text-right">
-								<button class="btn btn-warning" type="button" id="exelDown">
+								<button class="btn btn-warning" type="button" id="exelDown" onclick="TB09201Sjs.saveExcelFile();">
 									<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 								</button>
 							</div>
