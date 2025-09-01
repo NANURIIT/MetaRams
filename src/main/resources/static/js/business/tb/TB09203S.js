@@ -131,11 +131,107 @@ const TB09203Sjs = (function () {
     /* ***********************************그리드 컬럼******************************** */
     let colHrAreaList = [
         {
+            title: "딜 번호",
+            dataType: "string",
+            dataIndx: "dealId",
+            halign: "center",
+            align: "center",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "딜 명",
+            dataType: "string",
+            dataIndx: "dealNm",
+            halign: "center",
+            align: "left",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "사업유형1",
+            dataType: "string",
+            dataIndx: "busiTp1",
+            halign: "center",
+            align: "left",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "사업유형2",
+            dataType: "float",
+            dataIndx: "busiTp2",
+            halign: "center",
+            align: "left",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "투자유형1",
+            dataType: "float",
+            dataIndx: "invTp1",
+            halign: "center",
+            align: "left",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "잔액",
+            dataType: "integer",
+            dataIndx: "blce",
+            halign: "center",
+            align: "right",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "취급일",
+            dataType: "string",
+            dataIndx: "trDt",
+            halign: "center",
+            align: "center",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "만기일",
+            dataType: "string",
+            dataIndx: "expDt",
+            halign: "center",
+            align: "center",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "사업초기단계",
+            dataType: "string",
+            dataIndx: "busiInitlStepYn",
+            halign: "center",
+            align: "center",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "중후순위",
+            dataType: "string",
+            dataIndx: "lwrRnkYn",
+            halign: "center",
+            align: "center",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "LTV",
+            dataType: "integer",
+            dataIndx: "ltvRt",
+            halign: "center",
+            align: "right",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
+            title: "지역",
+            dataType: "string",
+            dataIndx: "areaNm",
+            halign: "center",
+            align: "left",
+            filter: { crules: [{ condition: 'range' }] }
+        }
+        , {
             title: "본부",
             dataType: "string",
             dataIndx: "hdqtNm",
             halign: "center",
-            align: "center",
+            align: "left",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
@@ -143,23 +239,7 @@ const TB09203Sjs = (function () {
             dataType: "string",
             dataIndx: "dprtNm",
             halign: "center",
-            align: "center",
-            filter: { crules: [{ condition: 'range' }] }
-        }
-        , {
-            title: "구분",
-            dataType: "string",
-            dataIndx: "sttsDcd",
-            halign: "center",
-            align: "center",
-            filter: { crules: [{ condition: 'range' }] }
-        }
-        , {
-            title: "RWA",
-            dataType: "float",
-            dataIndx: "rwaRt",
-            halign: "center",
-            align: "right",
+            align: "left",
             filter: { crules: [{ condition: 'range' }] }
         }
     ];

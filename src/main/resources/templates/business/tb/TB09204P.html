@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/ramsLayout}">
-<th:block layout:fragment="script">
-	<script th:src="@{js/common.js}"></script>
-	<!-- <script th:src="@{js/business/tb/TB04030S.js}"></script> -->
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
 </th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB09204P.js}"></script>
+</th:block>
+
 <th:block layout:fragment="customContent">
 	<!-- 경영계획 달성룰 관리 모달 창 -->
 	<div id="" class="modal fade show" aria-labelledby="" style="z-index: 4000 !important; display: none; /* display: block; */" aria-modal="true" role="dialog">
 		<div class="modal-dialog modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header metis-modal-header" data-event="on">
-					<h4 class="modal-title">경영계획 달성룰 관리</h4>
+					<h4 class="modal-title">경영계획 달성률 관리</h4>
 					<div class="col-sm-1 text-right">
                    		<button type="button" class="btn btn-default" onclick=""><i class="fa fa-times"></i></button>
                    	</div>
@@ -30,23 +38,23 @@
 													<span class="req"></span>기준년월
 												</label>
 												<div class="col-sm-3 input-group month">
-													<input type="text" class="form-control" id="" value="" placeholder="yyyy-mm">
+													<input type="text" class="form-control" id="TB09204P_stdrYm" value="" placeholder="yyyy-mm">
 													<span class="input-group-addon">
 														<i class="fa fa-calendar"></i>
 													</span>
 												</div>
-												
+
 												<div class="col-sm-8 text-right">
-													<button type="button" class="btn btn-primary mr-2" onclick="getDealInfo();"><i class="fa fa-search"></i>&nbsp;조회</button>
-												</div>	
+													<button type="button" class="btn btn-primary mr-2" onclick=""><i class="fa fa-search"></i>&nbsp;조회</button>
+												</div>
 											</div>
-										</div>	
+										</div>
 				    				</form>
 				    			</div>
 				    			<!-- 조회결과 -->
 				    			<div class="ibox-content">
 				    				<div id="" >
-										//그리드
+										<div id="TB09204P_achvRtList"></div>
 									</div>
 				    			</div>
 							</div><!-- ibox -->
