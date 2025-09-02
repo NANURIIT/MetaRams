@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/ramsLayout}">
-<th:block layout:fragment="script">
-	<script th:src="@{js/common.js}"></script>
-	<!-- <script th:src="@{js/business/tb/TB04030S.js}"></script> -->
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
 </th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB09207S.js}"></script>
+</th:block>
+
 <th:block layout:fragment="customContent">
 	<!-- 부서별 비이자수익 현황 -->
 	<div class="wrapper wrapper-content animated fadeIn">
@@ -21,7 +29,7 @@
 								</label>
 								<div class="col-sm-2 input-group">
 									<span class="input-group date">
-										<input type="text" class="form-control" id="" name="FromDate" value=""
+										<input type="text" class="form-control" id="TB09207S_stdrDt" name="FromDate" value=""
 											placeholder="YYYY-MM-DD" maxlength="10">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</span>
@@ -31,7 +39,7 @@
 								<button class="btn btn-primary" type="button" onclick="">
 									<i class="fa fa-search"></i>&nbsp;조회
 								</button>
-								<button id="" class="btn btn-default" onclick="">
+								<button id="" class="btn btn-default" onclick="TB09207Sjs.resetAll()">
 									<i class="fa fa-undo"></i>&nbsp;초기화
 								</button>
 							</div>
@@ -48,7 +56,7 @@
 							<div class="ibox-content">
 								<div class="ibox text-right">(단위 : 백만원)</div>
 								<div style="height:180px">
-									//그리드
+									<div id="TB09207S_colModel1"></div>
 								</div>
 							</div>
 						</div>
@@ -61,7 +69,7 @@
 							<div class="ibox-content">
 								<div class="ibox text-right">(단위 : 백만원)</div>
 								<div style="height:320px">
-									//그리드
+									<div id="TB09207S_colModel2"></div>
 								</div>
 							</div>
 						</div>

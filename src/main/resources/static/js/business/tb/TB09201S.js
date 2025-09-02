@@ -221,6 +221,7 @@ const TB09201Sjs = function () {
                 dataType: "float",
                 dataIndx: "rwaRt",
                 halign: "center",
+				width: "10%",
                 align: "right",
                 filter: { crules: [{ condition: 'range' }] }
             }
@@ -557,7 +558,7 @@ const TB09201Sjs = function () {
             , {
                  id: 'TB09201S_colModel2'
                 , colModel: TB09201S_colModelData(2)
-                , scrollModel: { autoFit: true }
+                , scrollModel: { autoFit: false }
                 , editable: false
                 , rowClick: function (event, ui) {
 					pqGridSelectHandler(ui.rowIndx, "TB09201S_colModel2");

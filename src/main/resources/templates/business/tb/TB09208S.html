@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/ramsLayout}">
-<th:block layout:fragment="script">
-	<script th:src="@{js/common.js}"></script>
-	<!-- <script th:src="@{js/business/tb/TB04030S.js}"></script> -->
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
 </th:block>
+
+<th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	<script th:src="@{js/common.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB09208S.js}"></script>
+</th:block>
+
 <th:block layout:fragment="customContent">
 	<!-- 충당금 현황 -->
 	<div class="wrapper wrapper-content animated fadeIn">
@@ -20,7 +28,7 @@
 									<span class="req"></span>기준년월
 								</label>
 								<div class="col-sm-2 input-group month">
-									<input type="text" class="form-control" id="" value="" placeholder="yyyy-mm">
+									<input type="text" class="form-control" id="TB09208S_stdrYm" value="" placeholder="yyyy-mm">
 									<span class="input-group-addon">
 										<i class="fa fa-calendar"></i>
 									</span>
@@ -30,7 +38,7 @@
 								<button class="btn btn-primary" type="button" onclick="">
 									<i class="fa fa-search"></i>&nbsp;조회
 								</button>
-								<button id="" class="btn btn-default" onclick="">
+								<button id="" class="btn btn-default" onclick="TB09208Sjs.reset()">
 									<i class="fa fa-undo"></i>&nbsp;초기화
 								</button>
 							</div>
@@ -46,7 +54,7 @@
 							</div>
 							<div class="ibox-content">
 								<div style="height:720px">
-									//그리드
+									<div id="TB09208S_aprnSttnList"></div>
 								</div>
 							</div>
 						</div>

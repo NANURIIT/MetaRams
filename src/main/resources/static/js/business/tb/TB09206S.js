@@ -17,6 +17,7 @@ const TB09206Sjs = (function () {
                 maxHeight: 500,
                 id: "TB09206S_dprtPflsList",
                 colModel: colGrpDprtPflsList,
+                scrollModel: { autoFit: false },
             },
         ];
         setPqGrid(arrPqGridObj);
@@ -110,6 +111,7 @@ const TB09206Sjs = (function () {
             dataIndx: "hdqtNm",
             halign: "center",
             align: "center",
+            width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
@@ -118,6 +120,7 @@ const TB09206Sjs = (function () {
             dataIndx: "dprtNm",
             halign: "center",
             align: "center",
+            width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
@@ -133,7 +136,7 @@ const TB09206Sjs = (function () {
                     dataIndx: "bsnssFeeErnAmt",
                     halign: "center",
                     align: "right",
-                    //width: "10%",
+                    width: "10%",
                 },
                 {
                     title: "상품손익(b)",
@@ -141,7 +144,7 @@ const TB09206Sjs = (function () {
                     dataIndx: "bsnssPrdtPflsAmt",
                     halign: "center",
                     align: "right",
-                    //width: "10%",
+                    width: "10%",
                 },
                 {
                     title: "이자수익(c)",
@@ -149,7 +152,7 @@ const TB09206Sjs = (function () {
                     dataIndx: "bsnssIntrErnAmt",
                     halign: "center",
                     align: "right",
-                    //width: "10%",
+                    width: "10%",
                 },
                 {
                     title: "기타손익(d)",
@@ -157,7 +160,7 @@ const TB09206Sjs = (function () {
                     dataIndx: "bsnssEtcPflsAmt",
                     halign: "center",
                     align: "right",
-                    //width: "10%",
+                    width: "10%",
                 },
             ],
         }
@@ -174,7 +177,7 @@ const TB09206Sjs = (function () {
                     dataIndx: "bsnssFeeAmt",
                     halign: "center",
                     align: "right",
-                    //width: "10%",
+                    width: "10%",
                 },
                 {
                     title: "이자비용(f)",
@@ -182,7 +185,7 @@ const TB09206Sjs = (function () {
                     dataIndx: "bsnssIntrAmt",
                     halign: "center",
                     align: "right",
-                    //width: "10%",
+                    width: "10%",
                 },
             ],
         }
@@ -192,6 +195,7 @@ const TB09206Sjs = (function () {
             dataIndx: "adjtmtBsnssPrfSmm",
             halign: "center",
             align: "right",
+            width: "20%",
             filter: { crules: [{ condition: 'range' }] }
         }
         ,  {
@@ -200,6 +204,7 @@ const TB09206Sjs = (function () {
             dataIndx: "aprnAmt",
             halign: "center",
             align: "right",
+            width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         ,  {
@@ -208,6 +213,7 @@ const TB09206Sjs = (function () {
             dataIndx: "ortnFndsCost",
             halign: "center",
             align: "right",
+            width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         ,  {
@@ -216,6 +222,7 @@ const TB09206Sjs = (function () {
             dataIndx: "purBsnErnAmt",
             halign: "center",
             align: "right",
+            width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         ,  {
@@ -224,6 +231,7 @@ const TB09206Sjs = (function () {
             dataIndx: "noprErngPflsAmt",
             halign: "center",
             align: "right",
+            width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         ,  {
@@ -232,6 +240,7 @@ const TB09206Sjs = (function () {
             dataIndx: "pflsSmmAmt",
             halign: "center",
             align: "right",
+            width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
     ];
