@@ -11,7 +11,6 @@
 	<script th:src="@{js/common.js}"></script>
 	<script th:src="@{js/fileUpload.js}"></script>
 	<script th:src="@{js/business/tb/TB09210S.js}"></script>
-	<script th:src="@{js/business/tb/TB03040S.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
 </th:block>
 
@@ -29,7 +28,7 @@
 						<!-- TAB -->
 						<div class="tabs-container p">
 							<ul class="nav nav-tabs " role="tablist" id="TB09210S_ramsTab">
-								<li class=""><a class="nav-link active" data-toggle="tab" href="#TB09210S_tab-1" onclick="TB09210Sjs.setDealListGrid();">딜목록 조회</a></li>
+								<li class=""><a class="nav-link active" data-toggle="tab" href="#TB09210S_tab-1">딜목록 조회</a></li>
 								<li class=""><a class="nav-link" data-toggle="tab" href="#TB09210S_tab-2" onclick="TB09210Sjs.setRlesFnnDealListGrid();">부동산금융 딜목록 조회</a></li>
 							</ul>
 							<div class="tab-content">
@@ -75,18 +74,18 @@
 																-->
 																<label class="col-sm-1 col-form-label">Deal번호</label>
 																<div class="col-sm-4 input-group">
-																	<input type="text" class="form-control col-sm-4" id="TB03040S_ibDealNo">
+																	<input type="text" class="form-control col-sm-4" id="TB09210S_ibDealNo">
 																	<span class="input-group-append">
-																		<button type="button" class="btn btn-default" onclick="callTB03021P('TB03040S');"><i class="fa fa-search"></i></button>
+																		<button type="button" class="btn btn-default" onclick="callTB03021P('TB09210S');"><i class="fa fa-search"></i></button>
 																	</span>
-																	<input type="text" class="form-control" id="TB03040S_ibDealNm" readonly style="width:120px">
+																	<input type="text" class="form-control" id="TB09210S_ibDealNm" readonly style="width:120px">
 																</div>
 																<label class="col-sm-1 col-form-label">사업유형</label>
 																<div class="col-sm-4 input-group">
-																	<select class="form-control" id="">
+																	<select class="form-control" id="TB09210S_busiTpClsfLclsCd">
 																		<option value="">선택</option>
 																	</select>
-																	<select class="form-control" id="">
+																	<select class="form-control" id="TB09210S_busiTpClsfMdclCd">
 																		<option value="">선택</option>
 																	</select>
 																</div>
@@ -94,31 +93,65 @@
 															<div class="form-group col-sm-12 mb-1">
 																<label class="col-sm-1 col-form-label">투자유형</label>
 																<div class="col-sm-4 input-group">
-																	<select class="col-sm-12 form-control" id="TB08031S_I038">
+																	<select class="col-sm-12 form-control" id="TB09210S_invTpClsfLclsCd">
 																		<option value="">선택</option>
 																	</select>
-																	<select class="col-sm-12 form-control" id="TB08031S_I038">
+																	<select class="col-sm-12 form-control" id="TB09210S_invTpClsfMdclCd">
 																		<option value="">선택</option>
 																	</select>
 																</div>
 																<label class="col-sm-1 col-form-label text-right ">담당부서</label>
 																<div class="col-sm-4 input-group">
-																	<input type="text" class="form-control" style="width: 30px;" id="TB06010S_empNo">
+																	<input type="text" class="form-control" style="width: 30px;" id="TB09210S_dprtCd">
 																	<span class="input-group-append">
-																		<button type="button" class="btn btn-default" onclick="callTB03022P('TB06010S');">
+																		<button type="button" class="btn btn-default" onclick="callTB03022P('TB09210S');">
 																			<i class="fa fa-search"></i>
 																		</button>
 																	</span>
-																	<input type="text" class="form-control" style="width: 70px;" id="TB06010S_empNm" readonly>
+																	<input type="text" class="form-control" style="width: 70px;" id="TB09210S_dprtNm" readonly>
 																</div>
 															</div>
+															<!--
+															<div class="form-group col-sm-12 mb-1">
+																<label class="col-sm-1 col-form-label">계열사참여여부</label>
+																<div class="col-sm-4 input-group">
+																	<div class="input-group input-h">
+																		<input type="radio" value="00" name="TB09210S_afltPtciYn" id="TB09210S_afltPtciYn1" checked="">
+																		&nbsp;&nbsp;전체
+																	</div>
+																	<div class="input-group ml-3">
+																		<input type="radio" value="01" name="TB09210S_afltPtciYn" id="TB09210S_afltPtciYn2">
+																		&nbsp;&nbsp;Y
+																	</div>
+																	<div class="input-group ml-3">
+																		<input type="radio" value="02" name="TB09210S_afltPtciYn" id="TB09210S_afltPtciYn3">
+																		&nbsp;&nbsp;N
+																	</div>
+																</div>
+																<label class="col-sm-1 col-form-label text-right ">단위</label>
+																<div class="col-sm-4 input-group">
+																	<div class="input-group">
+																		<input type="radio" value="01" name="TB09210S_unitDcd" id="TB09210S_unitDcd1" checked="">
+																		&nbsp;&nbsp;억원
+																	</div>
+																	<div class="input-group ml-3">
+																		<input type="radio" value="02" name="TB09210S_unitDcd" id="TB09210S_unitDcd2">
+																		&nbsp;&nbsp;백만원
+																	</div>
+																	<div class="input-group ml-3">
+																		<input type="radio" value="03" name="TB09210S_unitDcd" id="TB09210S_unitDcd3">
+																		&nbsp;&nbsp;원
+																	</div>
+																</div>
+															</div>
+															-->
 															<div class="form-group col-sm-12">
 																<!-- 버튼영역 -->
 																<div class="col-sm-12 text-right">
-																	<button class="btn btn-primary" id="btnLine" type="button" onclick="TB03040Sjs.ibSpecSearch();">
+																	<button class="btn btn-primary" id="btnLine" type="button" onclick="">
 																		<i class="fa fa-search"></i>&nbsp;조회
 																	</button>
-																	<button class="btn btn-default" type="button" onclick="TB03040Sjs.reset()">
+																	<button class="btn btn-default" type="button" onclick="TB09210Sjs.tab1BtnReset();">
 																		<i class="fa fa-undo"></i>&nbsp;초기화
 																	</button>
 																</div>
@@ -134,13 +167,12 @@
 														</div>
 													</div>
 													<div class="ibox-content">
-														<!-- 그리드 -->
+														<div id="TB09210S_dealList"></div>
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-sm-12 text-right mt-2 mb-1">
-														<button id="TB08090S_exDownLoad" class="btn btn-warning mr-2"
-															onclick="">
+														<button id="" class="btn btn-warning mr-2" onclick="TB09210Sjs.saveTab1ExcelFile();">
 															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 														</button>
 													</div>
@@ -163,45 +195,45 @@
 																</label>
 																<div class="col-sm-4 input-group">
 																	<div class="col-sm-5 input-group date px-0">
-																		<input type="text" class="form-control" id="TB03040S_fromDate" name="FromDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
+																		<input type="text" class="form-control" id="TB09210S_rles_fromDate" name="FromDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
 																		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 																	</div>
 																	<span class="input-group-addon border-none"> ~ </span>
 																	<div class="col-sm-5 input-group date px-0">
-																		<input type="text" class="form-control" id="TB03040S_toDate" name="ToDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
+																		<input type="text" class="form-control" id="TB09210S_rles_toDate" name="ToDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
 																		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 																	</div>
 																</div>
 																<label class="col-sm-1 col-form-label">Deal번호</label>
 																<div class="col-sm-4 input-group">
-																	<input type="text" class="form-control col-sm-4" id="TB03040S_ibDealNo">
+																	<input type="text" class="form-control col-sm-4" id="TB09210S_rles_ibDealNo">
 																	<span class="input-group-append">
-																		<button type="button" class="btn btn-default" onclick="callTB03021P('TB03040S');"><i class="fa fa-search"></i></button>
+																		<button type="button" class="btn btn-default" onclick="callTB03021P('TB09210S_rles');"><i class="fa fa-search"></i></button>
 																	</span>
-																	<input type="text" class="form-control" id="TB03040S_ibDealNm" readonly style="width:120px">
+																	<input type="text" class="form-control" id="TB09210S_rles_ibDealNm" readonly style="width:120px">
 																</div>
 																<label class="col-sm-1 col-form-label text-right ">종료 딜</label>
 																<div class="col-sm-1 input-group">
 																	<label class="pr-1 font-weight-normal">포함</label>
-																	<input class="col-sm-2" type="checkbox" id="TB07110S_bnftYn">
+																	<input class="col-sm-2" type="checkbox" id="TB09210S_rles_endDealInclsnYn">
 																</div>
 															</div>
 															<div class="form-group col-sm-12 mb-2">
 																<label class="col-sm-1 col-form-label">사업유형</label>
 																<div class="col-sm-4 input-group">
-																	<select class="form-control" id="">
+																	<select class="form-control" id="TB09210S_rles_busiTpClsfLclsCd">
 																		<option value="">선택</option>
 																	</select>
-																	<select class="form-control" id="">
+																	<select class="form-control" id="TB09210S_rles_busiTpClsfMdclCd">
 																		<option value="">선택</option>
 																	</select>
 																</div>
 																<label class="col-sm-1 col-form-label">투자유형</label>
 																<div class="col-sm-4 input-group">
-																	<select class="col-sm-12 form-control" id="TB08031S_I038">
+																	<select class="col-sm-12 form-control" id="TB09210S_rles_invTpClsfLclsCd">
 																		<option value="">선택</option>
 																	</select>
-																	<select class="col-sm-12 form-control" id="TB08031S_I038">
+																	<select class="col-sm-12 form-control" id="TB09210S_rles_invTpClsfMdclCd">
 																		<option value="">선택</option>
 																	</select>
 																</div>
@@ -210,75 +242,75 @@
 																<label class="col-sm-1 col-form-label text-right ">연체여부</label>
 																<div class="col-sm-1-5 input-group">
 																	<label class="pr-1 font-weight-normal">전체</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+																	<input class="col-sm-1" type="radio" value="00" name="TB09210S_ovduYn" id="TB09210S_ovduYn1" checked>
 																	<label class="pr-1 font-weight-normal">Y</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="01" name="TB09210S_ovduYn" id="TB09210S_ovduYn2">
 																	<label class="pr-1 font-weight-normal">N</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="02" name="TB09210S_ovduYn" id="TB09210S_ovduYn3">
 																</div>
 																<label class="col-sm-1 col-form-label text-right ">기한이익상실<br>여부</label>
 																<div class="col-sm-1-5 input-group">
-																	<label class="pr-1 font-weight-normal">전체</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+																	<label class="pr-1 font-weight-normal" checked>전체</label>
+																	<input class="col-sm-1" type="radio" value="00" name="TB09210S_tlmtPrfLoseYn" id="TB09210S_tlmtPrfLoseYn1" checked>
 																	<label class="pr-1 font-weight-normal">Y</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="01" name="TB09210S_tlmtPrfLoseYn" id="TB09210S_tlmtPrfLoseYn2">
 																	<label class="pr-1 font-weight-normal">N</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="02" name="TB09210S_tlmtPrfLoseYn" id="TB09210S_tlmtPrfLoseYn3">
 																</div>
 																<label class="col-sm-1 col-form-label text-right ">만기연장여부</label>
 																<div class="col-sm-1-5 input-group">
-																	<label class="pr-1 font-weight-normal">전체</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+																	<label class="pr-1 font-weight-normal" checked>전체</label>
+																	<input class="col-sm-1" type="radio" value="00" name="TB09210S_expXtnsYn" id="TB09210S_expXtnsYn1" checked>
 																	<label class="pr-1 font-weight-normal">Y</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="01" name="TB09210S_expXtnsYn" id="TB09210S_expXtnsYn2">
 																	<label class="pr-1 font-weight-normal">N</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="02" name="TB09210S_expXtnsYn" id="TB09210S_expXtnsYn3">
 																</div>
 																<label class="col-sm-1 col-form-label text-right ">착공여부</label>
 																<div class="col-sm-1-5 input-group">
-																	<label class="pr-1 font-weight-normal">전체</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+																	<label class="pr-1 font-weight-normal" checked>전체</label>
+																	<input class="col-sm-1" type="radio" value="00" name="TB09210S_csstYn" id="TB09210S_csstYn1" checked>
 																	<label class="pr-1 font-weight-normal">Y</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="01" name="TB09210S_csstYn" id="TB09210S_csstYn2">
 																	<label class="pr-1 font-weight-normal">N</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="02" name="TB09210S_csstYn" id="TB09210S_csstYn3">
 																</div>
 															</div>
 															<div class="form-group col-sm-12">
 																<label class="col-sm-1 col-form-label text-right ">회수여부</label>
 																<div class="col-sm-1-5 input-group">
-																	<label class="pr-1 font-weight-normal">전체</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+																	<label class="pr-1 font-weight-normal" checked>전체</label>
+																	<input class="col-sm-1" type="radio" value="00" name="TB09210S_rclmYn" id="TB09210S_rclmYn1" checked>
 																	<label class="pr-1 font-weight-normal">Y</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="01" name="TB09210S_rclmYn" id="TB09210S_rclmYn2">
 																	<label class="pr-1 font-weight-normal">N</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="02" name="TB09210S_rclmYn" id="TB09210S_rclmYn3">
 																</div>
 																<label class="col-sm-1 col-form-label text-right ">Exit 분양률 미달</label>
 																<div class="col-sm-1-5 input-group">
-																	<label class="pr-1 font-weight-normal">전체</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+																	<label class="pr-1 font-weight-normal" checked>전체</label>
+																	<input class="col-sm-1" type="radio" value="00" name="TB09210S_exitSlltRtShrtgYn" id="TB09210S_exitSlltRtShrtgYn1" checked>
 																	<label class="pr-1 font-weight-normal">Y</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="01" name="TB09210S_exitSlltRtShrtgYn" id="TB09210S_exitSlltRtShrtgYn2">
 																	<label class="pr-1 font-weight-normal">N</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+																	<input class="col-sm-1" type="radio" value="02" name="TB09210S_exitSlltRtShrtgYn" id="TB09210S_exitSlltRtShrtgYn3">
 																</div>
 																<label class="col-sm-1 col-form-label text-right ">관리사업장</label>
 																<div class="col-sm-1-5 input-group">
 																	<label class="pr-1 font-weight-normal">해당</label>
-																	<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+																	<input class="col-sm-1" type="checkbox" id="TB09210S_mngmBzplYn">
 																</div>
 																<label class="col-sm-1 col-form-label text-right">LTV</label>
 																<span class="col-sm-2 input-group">
-																	<input type="text" class="form-control" id="">
+																	<input type="text" class="form-control" id="TB09210S_ltvRt">
 																	<span class="input-group-addon border-none">초과</span>
 																</span>
 																<!-- 버튼영역 -->
 																<div class="col-sm-1-5 text-right">
-																	<button class="btn btn-primary" id="btnLine" type="button" onclick="TB03040Sjs.ibSpecSearch();">
+																	<button class="btn btn-primary" id="btnLine" type="button" onclick="">
 																		<i class="fa fa-search"></i>&nbsp;조회
 																	</button>
-																	<button class="btn btn-default" type="button" onclick="TB03040Sjs.reset()">
+																	<button class="btn btn-default" type="button" onclick="TB09210Sjs.tab2BtnReset();">
 																		<i class="fa fa-undo"></i>&nbsp;초기화
 																	</button>
 																</div>
@@ -294,13 +326,13 @@
 														</div>
 													</div>
 													<div class="ibox-content">
-														<!-- 그리드 -->
+														<div id="TB09210S_rlesDealList"></div>
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-sm-12 text-right mt-2 mb-1">
 														<button id="TB08090S_exDownLoad" class="btn btn-warning mr-2"
-															onclick="">
+															onclick="TB09210Sjs.saveTab2ExcelFile();">
 															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 														</button>
 													</div>

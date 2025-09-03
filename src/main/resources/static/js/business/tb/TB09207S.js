@@ -448,7 +448,6 @@ const TB09207Sjs = function () {
                 , scrollModel: { autoFit: true }
                 , editable: false
                 , rowClick: function (event, ui) {
-                    getParameter(ui.rowData.dudtMngmNo);
 					pqGridSelectHandler(ui.rowIndx, "TB09207S_colModel1");
                 }
                 , selectionModel: { type: 'row' }
