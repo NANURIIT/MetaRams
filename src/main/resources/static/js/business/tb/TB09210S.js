@@ -72,6 +72,7 @@ const TB09210Sjs = (function () {
 
         let TB09210S_fromDate = $("#TB09210S_fromDate").val(); // 조회시작일자
         let TB09210S_toDate = $("#TB09210S_toDate").val();     // 조회종료일자
+
         let msgError = "";
 
         if (isEmpty(TB09210S_fromDate)) {
@@ -108,6 +109,46 @@ const TB09210Sjs = (function () {
         }
     }
 
+    function ibSpecSearch2() {
+
+        let TB09210S_rles_fromDate = $("#TB09210S_rles_fromDate").val(); // 조회시작일자
+        let TB09210S_rles_toDate = $("#TB09210S_rles_toDate").val();     // 조회종료일자
+
+        let msgError = "";
+
+        if (isEmpty(TB09210S_rles_fromDate)) {
+            msgError = "필수 입력값(조회시작일자)을 입력해주세요.";
+            alertPopup();
+        } else if (!pattern.test(TB09210S_rles_fromDate)) {
+            msgError = "필수 입력값(조회시작일자)을 확인해주세요.";
+            alertPopup();
+        } else if (isEmpty(TB09210S_rles_toDate)) {
+            msgError = "필수 입력값(조회종료일자)을 입력해주세요.";
+            alertPopup();
+        } else if (!pattern.test(TB09210S_rles_toDate)) {
+            msgError = "필수 입력값(조회종료일자)을 확인해주세요.";
+            alertPopup();
+        } else if (TB09210S_rles_fromDate > TB09210S_rles_toDate) {
+            msgError = "조회시작일자가 조회종료일자보다 큽니다.";
+            alertPopup();
+        } else {
+            businessFunction();
+        }
+
+
+        function alertPopup() {
+            Swal.fire({
+                icon: "warning",
+                title: "Warning!",
+                text: msgError,
+                confirmButtonText: "확인",
+            });
+        }
+
+        function businessFunction() {
+
+        }
+    }
 
     /**
      * reset
@@ -175,7 +216,7 @@ const TB09210Sjs = (function () {
         {
             title: "딜번호",
             dataType: "string",
-            dataIndx: "hdqtNm",
+            dataIndx: "dealNo",
             halign: "center",
             align: "center",
             width: "10%",
@@ -184,42 +225,43 @@ const TB09210Sjs = (function () {
         , {
             title: "딜명",
             dataType: "string",
-            dataIndx: "dprtNm",
+            dataIndx: "dealNm",
             halign: "center",
-            align: "center",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "사업유형1",
-            dataType: "integer",
+            dataType: "string",
+            dataIndx: "busiTpClsfLclsCd",
             halign: "center",
-            align: "center",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: "range" }] },
         }
         , {
             title: "사업유형2",
-            dataType: "integer",
-            dataIndx: "adjtmtBsnssPrfSmm",
+            dataType: "string",
+            dataIndx: "busiTpClsfMdclCd",
             halign: "center",
-            align: "right",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "투자유형1",
-            dataType: "integer",
-            dataIndx: "aprnAmt",
+            dataType: "string",
+            dataIndx: "invTpClsfLclsCd",
             halign: "center",
-            align: "right",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "잔액",
             dataType: "integer",
-            dataIndx: "ortnFndsCost",
+            dataIndx: "blce",
             halign: "center",
             align: "right",
             width: "10%",
@@ -227,37 +269,37 @@ const TB09210Sjs = (function () {
         }
         , {
             title: "취급일",
-            dataType: "integer",
-            dataIndx: "purBsnErnAmt",
+            dataType: "string",
+            dataIndx: "trDt",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "만기일",
-            dataType: "integer",
-            dataIndx: "noprErngPflsAmt",
+            dataType: "string",
+            dataIndx: "expDt",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "본부",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "hdqtNm",
             halign: "center",
-            align: "right",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "부서",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "dprtNm",
             halign: "center",
-            align: "right",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
@@ -267,7 +309,7 @@ const TB09210Sjs = (function () {
         {
             title: "딜번호",
             dataType: "string",
-            dataIndx: "hdqtNm",
+            dataIndx: "dealNo",
             halign: "center",
             align: "center",
             width: "10%",
@@ -276,52 +318,52 @@ const TB09210Sjs = (function () {
         , {
             title: "딜명",
             dataType: "string",
-            dataIndx: "dprtNm",
+            dataIndx: "dealNm",
             halign: "center",
-            align: "center",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "사업유형1",
-            dataType: "integer",
-            dataIndx: "adjtmtBsnssPrfSmm",
+            dataType: "string",
+            dataIndx: "busiTpClsfLclsCd",
             halign: "center",
-            align: "right",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "사업유형2",
-            dataType: "integer",
-            dataIndx: "aprnAmt",
+            dataType: "string",
+            dataIndx: "busiTpClsfMdclCd",
             halign: "center",
-            align: "right",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "투자유형1",
-            dataType: "integer",
-            dataIndx: "ortnFndsCost",
+            dataType: "string",
+            dataIndx: "invTpClsfLclsCd",
             halign: "center",
-            align: "right",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "투자유형2",
-            dataType: "integer",
-            dataIndx: "purBsnErnAmt",
+            dataType: "string",
+            dataIndx: "invTpClsfMdclCd",
             halign: "center",
-            align: "right",
+            align: "left",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "잔액",
             dataType: "integer",
-            dataIndx: "noprErngPflsAmt",
+            dataIndx: "blce",
             halign: "center",
             align: "right",
             width: "10%",
@@ -329,89 +371,89 @@ const TB09210Sjs = (function () {
         }
         , {
             title: "취급일",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "trDt",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "만기일",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "expDt",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "연체여부",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "ovduYn",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "기한이익상실여부",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "tlmtPrfLoseYn",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "만기연장여부",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "expXtnsYn",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "착공여부",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "csstYn",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "회수여부",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "rclmYn",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "Exit분양율미달",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "exitSlltRtShrtgYn",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "관리사업장 여부",
-            dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataType: "string",
+            dataIndx: "mngmBzplYn",
             halign: "center",
-            align: "right",
+            align: "center",
             width: "10%",
             filter: { crules: [{ condition: 'range' }] }
         }
         , {
             title: "LTV",
             dataType: "integer",
-            dataIndx: "pflsSmmAmt",
+            dataIndx: "ltvRt",
             halign: "center",
             align: "right",
             width: "10%",
@@ -442,6 +484,7 @@ const TB09210Sjs = (function () {
 
     return {
         ibSpecSearch: ibSpecSearch,
+        ibSpecSearch2: ibSpecSearch2,
         tab1BtnReset: tab1BtnReset,
         tab2BtnReset: tab2BtnReset,
         saveTab1ExcelFile: saveTab1ExcelFile,

@@ -5,12 +5,14 @@
 
 <th:block layout:fragment="script">
 	<script th:src="@{js/common.js}"></script>
-	<script th:src="@{js/business/tb/TB03040S.js}"></script>
+	<script th:src="@{js/business/tb/TB09212S.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+	<script th:src="@{js/business/tb/TB03022P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB03022P :: TB03022P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -30,46 +32,46 @@
 									</label>
 									<div class="col-sm-4 input-group">
 										<div class="col-sm-5 input-group date px-0">
-											<input type="text" class="form-control" id="TB03040S_fromDate" name="FromDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
+											<input type="text" class="form-control" id="TB09212S_fromDate" name="FromDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 										<span class="input-group-addon border-none"> ~ </span>
 										<div class="col-sm-5 input-group date px-0">
-											<input type="text" class="form-control" id="TB03040S_toDate" name="ToDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
+											<input type="text" class="form-control" id="TB09212S_toDate" name="ToDate" value="" maxlength="10" placeholder="YYYY-MM-DD">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
 									</div>
 									<label class="col-sm-1 col-form-label text-right ">실행구분</label>
 									<div class="col-sm-3 input-group">
 										<label class="pr-1 font-weight-normal">취득</label>
-										<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+										<input class="col-sm-1" name="TB09212S_execDcd" value="01" type="radio" id="TB09212S_execDcd1" checked>
 										<label class="pr-1 font-weight-normal">상환/회수</label>
-										<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+										<input class="col-sm-1" name="TB09212S_execDcd" value="02" type="radio" id="TB09212S_execDcd2">
 										<label class="pr-1 font-weight-normal">셀다운</label>
-										<input class="col-sm-1" type="checkbox" id="TB07110S_entmAccXstcYn">
+										<input class="col-sm-1" name="TB09212S_execDcd" value="03" type="radio" id="TB09212S_execDcd3">
 									</div>
 									<label class="col-sm-1 col-form-label text-right ">종료 딜</label>
 									<div class="col-sm-2 input-group">
 										<label class="pr-1 font-weight-normal">포함</label>
-										<input class="col-sm-1" type="checkbox" id="TB07110S_bnftYn">
+										<input class="col-sm-1" type="checkbox" id="TB09212S_endDealInclsnYn">
 									</div>
 								</div>
 								<div class="form-group col-sm-12 mb-1">
 									<label class="col-sm-1 col-form-label">사업유형</label>
 									<div class="col-sm-4 input-group">
-										<select class="form-control" id="">
+										<select class="form-control" id="TB09212S_busiTpClsfLclsCd">
 											<option value="">선택</option>
 										</select>
-										<select class="form-control" id="">
+										<select class="form-control" id="TB09212S_busiTpClsfMdclCd">
 											<option value="">선택</option>
 										</select>
 									</div>
 									<label class="col-sm-1 col-form-label">투자유형</label>
 									<div class="col-sm-4 input-group">
-										<select class="col-sm-12 form-control" id="TB08031S_I038">
+										<select class="col-sm-12 form-control" id="TB09212S_invTpClsfLclsCd">
 											<option value="">선택</option>
 										</select>
-										<select class="col-sm-12 form-control" id="TB08031S_I038">
+										<select class="col-sm-12 form-control" id="TB09212S_invTpClsfMdclCd">
 											<option value="">선택</option>
 										</select>
 									</div>
@@ -77,28 +79,28 @@
 								<div class="form-group col-sm-12">
 									<label class="col-sm-1 col-form-label">Deal번호</label>
 									<div class="col-sm-4 input-group">
-										<input type="text" class="form-control col-sm-4" id="TB03040S_ibDealNo">
+										<input type="text" class="form-control col-sm-4" id="TB09212S_ibDealNo">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03021P('TB03040S');"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-default" onclick="callTB03021P('TB09212S');"><i class="fa fa-search"></i></button>
 										</span>
-										<input type="text" class="form-control" id="TB03040S_ibDealNm" readonly style="width:120px">
+										<input type="text" class="form-control" id="TB09212S_ibDealNm" readonly style="width:120px">
 									</div>
 									<label class="col-sm-1 col-form-label text-right ">담당부서</label>
 									<div class="col-sm-4 input-group">
-										<input type="text" class="form-control" style="width: 30px;" id="TB06010S_empNo">
+										<input type="text" class="form-control" style="width: 30px;" id="TB09212S_dprtCd">
 										<span class="input-group-append">
-											<button type="button" class="btn btn-default" onclick="callTB03022P('TB06010S');">
+											<button type="button" class="btn btn-default" onclick="callTB03022P('TB09212S');">
 												<i class="fa fa-search"></i>
 											</button>
 										</span>
-										<input type="text" class="form-control" style="width: 70px;" id="TB06010S_empNm" readonly>
+										<input type="text" class="form-control" style="width: 70px;" id="TB09212S_dprtNm" readonly>
 									</div>
 									<!-- 버튼영역 -->
 									<div class="col-sm-2">
-										<button class="btn btn-primary" id="btnLine" type="button" onclick="TB03040Sjs.ibSpecSearch();">
+										<button class="btn btn-primary" id="btnLine" type="button" onclick="">
 											<i class="fa fa-search"></i>&nbsp;조회
 										</button>
-										<button class="btn btn-default" type="button" onclick="TB03040Sjs.reset()">
+										<button class="btn btn-default" type="button" onclick="TB09212Sjs.reset()">
 											<i class="fa fa-undo"></i>&nbsp;초기화
 										</button>
 									</div>
@@ -113,7 +115,7 @@
 								<h5>▶ 딜별 취득 및 회수 내역 정보</h5>
 							</div>
 							<div class="ibox-content">
-								<div id=""></div> <!-- 그리드 -->
+								<div id="TB09212S_dealAcqstList"></div> <!-- 그리드 -->
 							</div>
 						</div>
 					</div>

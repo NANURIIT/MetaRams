@@ -2,14 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/ramsLayout}">
 
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{css/plugins/touchspin/jquery.bootstrap-touchspin.min.css}" />
+</th:block>
+
 <th:block layout:fragment="script">
+	<script th:src="@{js/plugins/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
 	<script th:src="@{js/common.js}"></script>
-	<script th:src="@{js/business/tb/TB03040S.js}"></script>
+	<script th:src="@{js/fileUpload.js}"></script>
+	<script th:src="@{js/business/tb/TB09211S.js}"></script>
 	<script th:src="@{js/business/tb/TB03021P.js}"></script>
+	<script th:src="@{js/business/tb/TB09211P.js}"></script>
 </th:block>
 
 <th:block layout:fragment="modalpopup">
 	<th:block th:replace="business/tb/TB03021P :: TB03021P"></th:block>
+	<th:block th:replace="business/tb/TB09211P :: TB09211P"></th:block>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -21,11 +29,12 @@
 					<div class="ibox">
 						<!-- TAB -->
 						<div class="tabs-container p">
-							<ul class="nav nav-tabs " role="tablist" id="TB08036S_ramsTab">
+							<ul class="nav nav-tabs " role="tablist" id="TB09211S_ramsTab">
 								<li class=""><a class="nav-link active" data-toggle="tab"
-										href="#TB08036S_tab-1">기업금융</a></li>
-								<li class=""><a class="nav-link" data-toggle="tab" href="#TB08036S_tab-2"
-										onclick="TB08036Sjs.setInspctRmrkInfoList();">부동산금융</a></li>
+										href="#TB09211S_tab-1">기업금융</a></li>
+								<li class=""><a class="nav-link" data-toggle="tab" href="#TB09211S_tab-2"
+										onclick="TB09211Sjs.setRlesFnnList();">부동산금융</a></li>
+								<!--
 								<li class=""><a class="nav-link" data-toggle="tab" href="#TB08036S_tab-3"
 										onclick="TB08036Sjs.setEtcList();">특수금융</a></li>
 								<li class=""><a class="nav-link" data-toggle="tab" href="#TB08036S_tab-4"
@@ -36,10 +45,11 @@
 										onclick="TB08036Sjs.setEtcList();">PI</a></li>
 								<li class=""><a class="nav-link" data-toggle="tab" href="#TB08036S_tab-7"
 										onclick="TB08036Sjs.setEtcList();">기타</a></li>
+								-->
 							</ul>
 							<div class="tab-content">
 								<!-- 기업금융 -->
-								<div role="tabpanel" id="TB08036S_tab-1" class="tab-pane active">
+								<div role="tabpanel" id="TB09211S_tab-1" class="tab-pane active">
 									<div class="panel-body">
 										<div class="row ">
 											<div class="col-sm-12">
@@ -54,7 +64,7 @@
 																<div class="col-sm-4 input-group">
 																	<div class="col-sm-5 input-group date px-0">
 																		<input type="text" class="form-control"
-																			id="TB03040S_fromDate" name="FromDate"
+																			id="TB09211S_fromDate" name="FromDate"
 																			value="" maxlength="10"
 																			placeholder="YYYY-MM-DD">
 																		<span class="input-group-addon"><i
@@ -64,7 +74,7 @@
 																	</span>
 																	<div class="col-sm-5 input-group date px-0">
 																		<input type="text" class="form-control"
-																			id="TB03040S_toDate" name="ToDate" value=""
+																			id="TB09211S_toDate" name="ToDate" value=""
 																			maxlength="10" placeholder="YYYY-MM-DD">
 																		<span class="input-group-addon"><i
 																				class="fa fa-calendar"></i></span>
@@ -73,14 +83,14 @@
 																<label class="col-sm-1 col-form-label">Deal번호</label>
 																<div class="col-sm-4 input-group">
 																	<input type="text" class="form-control col-sm-4"
-																		id="TB03040S_ibDealNo">
+																		id="TB09211S_ibDealNo">
 																	<span class="input-group-append">
 																		<button type="button" class="btn btn-default"
-																			onclick="callTB03021P('TB03040S');"><i
+																			onclick="callTB03021P('TB09211S');"><i
 																				class="fa fa-search"></i></button>
 																	</span>
 																	<input type="text" class="form-control"
-																		id="TB03040S_ibDealNm" readonly
+																		id="TB09211S_ibDealNm" readonly
 																		style="width:120px">
 																</div>
 																<label class="col-sm-1 col-form-label text-right ">종료
@@ -88,24 +98,24 @@
 																<div class="col-sm-1 input-group">
 																	<label class="pr-1 font-weight-normal">포함</label>
 																	<input class="col-sm-2" type="checkbox"
-																		id="TB07110S_bnftYn">
+																		id="TB09211S_endDealInclsnYn">
 																</div>
 															</div>
 															<div class="form-group col-sm-12 mb-1">
 																<label class="col-sm-1 col-form-label">사업유형</label>
 																<div class="col-sm-4 input-group">
-																	<select class="form-control" id="">
+																	<select class="form-control" id="TB09211S_busiTpClsfLclsCd">
 																		<option value="">선택</option>
 																	</select>
 																</div>
 																<label class="col-sm-1 col-form-label">투자유형</label>
 																<div class="col-sm-4 input-group">
 																	<select class="col-sm-12 form-control"
-																		id="TB08031S_I038">
+																		id="TB09211S_invTpClsfLclsCd">
 																		<option value="">선택</option>
 																	</select>
 																	<select class="col-sm-12 form-control"
-																		id="TB08031S_I038">
+																		id="TB09211S_invTpClsfMdclCd">
 																		<option value="">선택</option>
 																	</select>
 																</div>
@@ -115,21 +125,21 @@
 																	class="col-sm-1 col-form-label text-right ">담당부서</label>
 																<div class="col-sm-4 input-group">
 																	<input type="text" class="form-control"
-																		style="width: 30px;" id="TB06010S_empNo">
+																		style="width: 30px;" id="TB09211S_dprtCd">
 																	<span class="input-group-append">
 																		<button type="button" class="btn btn-default"
-																			onclick="callTB03022P('TB06010S');">
+																			onclick="callTB03022P('TB09211S');">
 																			<i class="fa fa-search"></i>
 																		</button>
 																	</span>
 																	<input type="text" class="form-control"
-																		style="width: 70px;" id="TB06010S_empNm"
+																		style="width: 70px;" id="TB09211S_dprtNm"
 																		readonly>
 																</div>
 																<label class="col-sm-1 control-label">조회 템플릿 유형</label>
 																<div class="col-sm-2">
 																	<div class="input-group">
-																		<select class="form-control" id="">
+																		<select class="form-control" id="TB09211S_inqTmplTpCd">
 																		</select>
 																	</div>
 																</div>
@@ -137,16 +147,16 @@
 																<div class="col-sm-4 text-right">
 																	<button class="btn btn-primary" id="btnLine"
 																		type="button"
-																		onclick="TB03040Sjs.ibSpecSearch();">
+																		onclick="">
 																		<i class="fa fa-search"></i>&nbsp;조회
 																	</button>
 																	<button class="btn btn-default" type="button"
-																		onclick="TB03040Sjs.reset()">
+																		onclick="TB09211Sjs.tab1BtnReset()">
 																		<i class="fa fa-undo"></i>&nbsp;초기화
 																	</button>
 																	<button class="btn btn-primary" id="btnLine"
 																		type="button"
-																		onclick="TB03040Sjs.ibSpecSearch();">
+																		onclick="callTB09211P('TB09211S');">
 																		조회 템플릿
 																	</button>
 																</div>
@@ -162,13 +172,13 @@
 														</div>
 													</div>
 													<div class="ibox-content">
-														<!-- 그리드 -->
+														<div id="TB09211S_etprDealList"></div>
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-sm-12 text-right mt-2 mb-1">
-														<button id="TB08090S_exDownLoad" class="btn btn-warning mr-2"
-															onclick="">
+														<button id="TB09211S_exDownLoad" class="btn btn-warning mr-2"
+															onclick="TB09211Sjs.saveTab1ExcelFile();">
 															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 														</button>
 													</div>
@@ -178,7 +188,7 @@
 									</div>
 								</div>
 								<!-- 부동산금융 -->
-								<div role="tabpanel" id="TB08036S_tab-2" class="tab-pane">
+								<div role="tabpanel" id="TB09211S_tab-2" class="tab-pane">
 									<div class="panel-body">
 										<div class="row ">
 											<div class="col-sm-12">
@@ -193,7 +203,7 @@
 																<div class="col-sm-4 input-group">
 																	<div class="col-sm-5 input-group date px-0">
 																		<input type="text" class="form-control"
-																			id="TB03040S_fromDate" name="FromDate"
+																			id="TB09211S_rles_fromDate" name="FromDate"
 																			value="" maxlength="10"
 																			placeholder="YYYY-MM-DD">
 																		<span class="input-group-addon"><i
@@ -203,7 +213,7 @@
 																	</span>
 																	<div class="col-sm-5 input-group date px-0">
 																		<input type="text" class="form-control"
-																			id="TB03040S_toDate" name="ToDate" value=""
+																			id="TB09211S_rles_toDate" name="ToDate" value=""
 																			maxlength="10" placeholder="YYYY-MM-DD">
 																		<span class="input-group-addon"><i
 																				class="fa fa-calendar"></i></span>
@@ -212,14 +222,14 @@
 																<label class="col-sm-1 col-form-label">Deal번호</label>
 																<div class="col-sm-4 input-group">
 																	<input type="text" class="form-control col-sm-4"
-																		id="TB03040S_ibDealNo">
+																		id="TB09211S_rles_ibDealNo">
 																	<span class="input-group-append">
 																		<button type="button" class="btn btn-default"
-																			onclick="callTB03021P('TB03040S');"><i
+																			onclick="callTB03021P('TB09211S_rles');"><i
 																				class="fa fa-search"></i></button>
 																	</span>
 																	<input type="text" class="form-control"
-																		id="TB03040S_ibDealNm" readonly
+																		id="TB09211S_rles_ibDealNm" readonly
 																		style="width:120px">
 																</div>
 																<label class="col-sm-1 col-form-label text-right ">종료
@@ -227,24 +237,24 @@
 																<div class="col-sm-1 input-group">
 																	<label class="pr-1 font-weight-normal">포함</label>
 																	<input class="col-sm-2" type="checkbox"
-																		id="TB07110S_bnftYn">
+																		id="TB09211S_rles_endDealInclsnYn">
 																</div>
 															</div>
 															<div class="form-group col-sm-12 mb-1">
 																<label class="col-sm-1 col-form-label">사업유형</label>
 																<div class="col-sm-4 input-group">
-																	<select class="form-control" id="">
+																	<select class="form-control" id="TB09211S_rles_busiTpClsfLclsCd">
 																		<option value="">선택</option>
 																	</select>
 																</div>
 																<label class="col-sm-1 col-form-label">투자유형</label>
 																<div class="col-sm-4 input-group">
 																	<select class="col-sm-12 form-control"
-																		id="TB08031S_I038">
+																		id="TB09211S_rles_invTpClsfLclsCd">
 																		<option value="">선택</option>
 																	</select>
 																	<select class="col-sm-12 form-control"
-																		id="TB08031S_I038">
+																		id="TB09211S_rles_invTpClsfMdclCd">
 																		<option value="">선택</option>
 																	</select>
 																</div>
@@ -254,21 +264,21 @@
 																	class="col-sm-1 col-form-label text-right ">담당부서</label>
 																<div class="col-sm-4 input-group">
 																	<input type="text" class="form-control"
-																		style="width: 30px;" id="TB06010S_empNo">
+																		style="width: 30px;" id="TB09211S_rles_dprtCd">
 																	<span class="input-group-append">
 																		<button type="button" class="btn btn-default"
-																			onclick="callTB03022P('TB06010S');">
+																			onclick="callTB03022P('TB09211S_rles');">
 																			<i class="fa fa-search"></i>
 																		</button>
 																	</span>
 																	<input type="text" class="form-control"
-																		style="width: 70px;" id="TB06010S_empNm"
+																		style="width: 70px;" id="TB09211S_rles_dprtNm"
 																		readonly>
 																</div>
 																<label class="col-sm-1 control-label">조회 템플릿 유형</label>
 																<div class="col-sm-2">
 																	<div class="input-group">
-																		<select class="form-control" id="">
+																		<select class="form-control" id="TB09211S_rles_inqTmplTpCd">
 																		</select>
 																	</div>
 																</div>
@@ -276,16 +286,16 @@
 																<div class="col-sm-4 text-right">
 																	<button class="btn btn-primary" id="btnLine"
 																		type="button"
-																		onclick="TB03040Sjs.ibSpecSearch();">
+																		onclick="">
 																		<i class="fa fa-search"></i>&nbsp;조회
 																	</button>
 																	<button class="btn btn-default" type="button"
-																		onclick="TB03040Sjs.reset()">
+																		onclick="TB09211Sjs.tab2BtnReset()">
 																		<i class="fa fa-undo"></i>&nbsp;초기화
 																	</button>
 																	<button class="btn btn-primary" id="btnLine"
 																		type="button"
-																		onclick="TB03040Sjs.ibSpecSearch();">
+																		onclick="callTB09211P('TB09211S_rles');">
 																		조회 템플릿
 																	</button>
 																</div>
@@ -301,13 +311,13 @@
 														</div>
 													</div>
 													<div class="ibox-content">
-														<!-- 그리드 -->
+														<div id="TB09211S_rlesDealList"></div>
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-sm-12 text-right mt-2 mb-1">
-														<button id="TB08090S_exDownLoad" class="btn btn-warning mr-2"
-															onclick="">
+														<button id="TB09211S_rlesExDownLoad" class="btn btn-warning mr-2"
+															onclick="TB09211Sjs.saveTab2ExcelFile();">
 															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 														</button>
 													</div>
@@ -318,12 +328,11 @@
 								</div>
 
 								<!-- 특수금융 -->
-								<div role="tabpanel" id="TB08036S_tab-3" class="tab-pane">
+								<div role="tabpanel" id="" class="tab-pane">
 									<div class="panel-body">
 										<div class="row ">
 											<div class="col-sm-12">
 												<div class="ibox">
-
 												</div>
 												<!-- 조회결과 -->
 												<div class="ibox">
@@ -338,7 +347,7 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-12 text-right mt-2 mb-1">
-														<button id="TB08090S_exDownLoad" class="btn btn-warning mr-2"
+														<button id="" class="btn btn-warning mr-2"
 															onclick="">
 															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 														</button>
@@ -350,7 +359,7 @@
 								</div>
 
 								<!-- 구조화금융 -->
-								<div role="tabpanel" id="TB08036S_tab-4" class="tab-pane">
+								<div role="tabpanel" id="" class="tab-pane">
 									<div class="panel-body">
 										<div class="row ">
 											<div class="col-sm-12">
@@ -370,7 +379,7 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-12 text-right mt-2 mb-1">
-														<button id="TB08090S_exDownLoad" class="btn btn-warning mr-2"
+														<button id="" class="btn btn-warning mr-2"
 															onclick="">
 															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 														</button>
@@ -382,7 +391,7 @@
 								</div>
 
 								<!-- GP -->
-								<div role="tabpanel" id="TB08036S_tab-5" class="tab-pane">
+								<div role="tabpanel" id="" class="tab-pane">
 									<div class="panel-body">
 										<div class="row ">
 											<div class="col-sm-12">
@@ -402,7 +411,7 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-12 text-right mt-2 mb-1">
-														<button id="TB08090S_exDownLoad" class="btn btn-warning mr-2"
+														<button id="" class="btn btn-warning mr-2"
 															onclick="">
 															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 														</button>
@@ -414,7 +423,7 @@
 								</div>
 
 								<!-- PI -->
-								<div role="tabpanel" id="TB08036S_tab-6" class="tab-pane">
+								<div role="tabpanel" id="" class="tab-pane">
 									<div class="panel-body">
 										<div class="row ">
 											<div class="col-sm-12">
@@ -434,7 +443,7 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-12 text-right mt-2 mb-1">
-														<button id="TB08090S_exDownLoad" class="btn btn-warning mr-2"
+														<button id="" class="btn btn-warning mr-2"
 															onclick="">
 															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 														</button>
@@ -446,7 +455,7 @@
 								</div>
 
 								<!-- 기타 -->
-								<div role="tabpanel" id="TB08036S_tab-7" class="tab-pane">
+								<div role="tabpanel" id="" class="tab-pane">
 									<div class="panel-body">
 										<div class="row ">
 											<div class="col-sm-12">
@@ -466,7 +475,7 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-12 text-right mt-2 mb-1">
-														<button id="TB08090S_exDownLoad" class="btn btn-warning mr-2"
+														<button id="" class="btn btn-warning mr-2"
 															onclick="">
 															<i class="fa fa-download"></i>&nbsp;엑셀다운로드
 														</button>
