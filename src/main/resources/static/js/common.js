@@ -34,6 +34,15 @@ function settingFunction() {
     }
   );
 
+  // 모달이 닫힐 때 위치 초기화
+  $(document).on("hidden.bs.modal", ".modal", function () {
+    $(this).find(".modal-dialog").css({
+      top: "",
+      left: "",
+      transform: ""
+    });
+  });
+
   // 딜조회
   if (
     $('script[src="js/business/tb/TB03021P.js"]').attr("src") ===
