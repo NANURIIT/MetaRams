@@ -61,11 +61,9 @@ public class CommonController {
         model.addAttribute("bzDd", bzDd);
 
         if("NO".equals(commonService.chkAthCd(ibims007bvo))){
-<<<<<<< HEAD
-            return "redirect:/TB02010S";
-=======
+
             return "redirect:/login";
->>>>>>> efad5d5b31e04a85c3fa206ada02bfbc6d195ecb
+
         }else {
             return path;
         }
