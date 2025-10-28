@@ -38,5 +38,3 @@ out/
 .vscode/
 /logs/
 /.temp-rams*
-
-gradle.properties
