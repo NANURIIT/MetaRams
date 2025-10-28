@@ -62,6 +62,7 @@ public class CommonController {
 
         if("NO".equals(commonService.chkAthCd(ibims007bvo))){
             return "redirect:/login";
+            
         }else {
             return path;
         }
