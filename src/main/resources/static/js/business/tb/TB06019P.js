@@ -159,11 +159,17 @@ function checkBoxChangeFunction() {
 			}
 
 			$("#TB06019P_rnbn").val("999-99-99999");
+			$("#TB06019P_crno").val("999999-9999999");
 			$("#TB06019P_rnbn").prop('readonly', true);
+			$("#TB06019P_crno").prop('readonly', true);
+
 		} else {
 			$("#TB06019P_rnbn").val("");
+			$("#TB06019P_crno").val("");
 			$("#TB06019P_rnbn").prop('readonly', false);
+			$("#TB06019P_crno").prop('readonly', false);
 			$("#TB06019P_rnbn").focus();
+			//$("#TB06019P_crno").focus();			
 		}
 	});
 }
