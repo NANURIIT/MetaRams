@@ -73,6 +73,8 @@ const TB04010Sjs = (function () {
 
     rendorGrid();
 
+    maskExrt("#TB04010S_aplyExrt");
+
     //$(".save").prop("disabled", true);
 
     $("#TB04010S_ibDealNo").focus();
@@ -495,41 +497,57 @@ const TB04010Sjs = (function () {
 
   // %포멧 확인
   function formatPerInput(element) {
-    let value = element.value;
+  let value = element.value.trim();
 
-    //숫자와 소수점만 허용
-    value = value.replace(/[^0-9.]/g, "");
+  // 숫자와 소수점만 허용
+  value = value.replace(/[^0-9.]/g, "");
 
-    // 소수점 두 자리까지만 허용
-    if (value.includes(".")) {
-      let parts = value.split(".");
-      parts[1] = parts[1].substring(0, 2); // 소수점 두 자리로 제한
-      value = parts.join(".");
-    }
-
-    if (parseFloat(value) > 100.0) {
-      openPopup({
-        type: "warning",
-        title: "warning!",
-        text: `입력값은 100 을 넘을 수 없습니다`,
-        focusCancel: true,
-      });
-      element.value = "";
-      element.focus();
-      return;
-    }
-
-    // 값이 있고 소수점이 없는 경우 .00 추가
-    if (value && !value.includes(".")) {
-      value = parseFloat(value).toFixed(2);
-    }
-
-    if (!value) {
-      value = "";
-    }
-
-    element.value = value;
+  // 소수점이 여러 개일 경우 첫 번째만 허용
+  const firstDot = value.indexOf(".");
+  if (firstDot !== -1) {
+    value =
+      value.substring(0, firstDot + 1) +
+      value.substring(firstDot + 1).replace(/\./g, "");
   }
+
+  // 소수점 둘째 자리까지만 허용
+  if (value.includes(".")) {
+    const [intPart, decPart] = value.split(".");
+    value = intPart + "." + (decPart || "").substring(0, 2);
+  }
+
+  // 100 초과 시 경고
+  const numVal = parseFloat(value);
+  if (!isNaN(numVal) && numVal > 100.0) {
+    openPopup({
+      type: "warning",
+      title: "warning!",
+      text: "입력값은 100을 넘을 수 없습니다.",
+      focusCancel: true,
+    });
+    element.value = "";
+    element.focus();
+    return;
+  }
+
+  // 값이 있고 소수점이 없는 경우 .00 추가
+  if (value && !value.includes(".")) {
+    value = parseFloat(value).toFixed(2);
+  }
+
+  // 소수점 포함 시 항상 2자리 유지
+  if (value && value.includes(".")) {
+    value = parseFloat(value).toFixed(2);
+  }
+
+  // 빈 값 처리
+  if (!value || isNaN(value)) {
+    value = "";
+  }
+
+  element.value = value;
+}
+
   window.formatPerInput = formatPerInput;
 
   // 버튼 function
@@ -2045,20 +2063,20 @@ const TB04010Sjs = (function () {
       return false;
     }
 
-    if (isEmpty($("#tlErnAmt").val())) {
-      option.text = "전체수익금액을 입력해주세요.";
+    if (isEmpty($("#tlErnAmt").val()) || $("#tlErnAmt").val() === "0" ) {
+      option.text = "전체수익을 입력해주세요.";
       openPopup(option);
       return false;
     }
 
-    if (isEmpty($("#rcvblErnAmt").val())) {
-      option.text = "수수료수익금액을 입력해주세요.";
+    if (isEmpty($("#rcvblErnAmt").val()) || $("#rcvblErnAmt").val() === "0") {
+      option.text = "수수료수익을 입력해주세요.";
       openPopup(option);
       return false;
     }
 
-    if (isEmpty($("#wrtErnAmt").val())) {
-      option.text = "투자수익금액을 입력해주세요.";
+    if (isEmpty($("#wrtErnAmt").val()) || $("#wrtErnAmt").val() === "0") {
+      option.text = "투자수익을 입력해주세요.";
       openPopup(option);
       return false;
     }

@@ -316,7 +316,7 @@
 												<div class="form-group row">
 													<label class="col-sm-4 col-form-label">적용환율</label>
 													<div class="col-sm-8">
-														<input type="text" class="form-control text-right" id="aplyExrt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onblur="formatPerInput(this)">
+														<input type="text" class="form-control text-right" id="aplyExrt" onblur="formatPerInput(this)">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -807,7 +807,7 @@
 													
 													<label class="col-sm-1 col-form-label">적용환율</label>
 													<div class="col-sm-2">
-														<input type="text" class="form-control text-right" id="TB04010S_aplyExrt" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onblur="TB04010Sjs.formatPerInput(this);">
+														<input type="text" class="form-control text-right" id="TB04010S_aplyExrt" onblur="TB04010Sjs.formatPerInput(this);">
 													</div>
 													
 													
@@ -1211,8 +1211,7 @@
 													
 													<label class="col-sm-1 col-form-label">적용환율</label>
 													<div class="col-sm-3">
-														<input type="text" class="form-control text-right" id="TB04010S_tab6_aplyExrt" value="" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-															onblur="TB04010Sjs.formatPerInput(this);">
+														<input type="text" class="form-control text-right" id="TB04010S_tab6_aplyExrt" onblur="TB04010Sjs.formatPerInput(this);">
 													</div>
 													
 													
