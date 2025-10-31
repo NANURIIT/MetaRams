@@ -1842,6 +1842,26 @@ const TB04010Sjs = (function () {
     });
   }
 
+  /**
+   * 전체수익(tlErnAmt) 계산 
+   *   수수료수익, 투자수익 입력 -> 수수료수익 + 투자수익을 전체수익에 SET
+   *   전체수익은 사용자 수정 가능 
+   */
+  function TB04010S_calTlErnAmt() {
+    // 콤마 제거 → 숫자로 변환
+    const fee = parseFloat($("#rcvblErnAmt").val().replace(/,/g, '')) || 0;
+    const invest = parseFloat($("#wrtErnAmt").val().replace(/,/g, '')) || 0;
+    const total = fee + invest;
+  
+    // 계산 결과를 다시 천단위 콤마 붙여서 표시
+    $("#tlErnAmt").val(total.toLocaleString());
+  }
+
+  // 값 변경될 때마다 자동 계산
+  $(document).ready(function () {
+    $("#rcvblErnAmt, #wrtErnAmt").on("input", TB04010S_calTlErnAmt);
+  });
+
   /*
    * TAB1
    */
@@ -4725,5 +4745,6 @@ const TB04010Sjs = (function () {
     getUrlDealInfo: getUrlDealInfo,
     formatPerInput: formatPerInput,
     limitInputLength: limitInputLength,
+    TB04010S_calTlErnAmt:TB04010S_calTlErnAmt,
   };
 })();
