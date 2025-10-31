@@ -30,6 +30,10 @@
 					<div class="login-subtitle">
 						<p>아이디와 비밀번호를 입력해주세요.</p>
 					</div>
+
+		        <div th:if="${alertMsg}">
+                <span th:text="${alertMsg}"></span>
+                </div>
 					<form role="form" action="/login" method="post">
 						<div class="login-input-wrap">
 							<div class="login-input-com login-input-id">
@@ -56,6 +60,8 @@
 						</p>
 					</div>
 				</div>
+
+
 				<div class="login-footer">
 					<div class="login-footer-img">
 						<img src="images/login_logo.png" alt="로그인푸터로고">
@@ -91,7 +97,9 @@
 			document.getElementById("error-msg").innerHTML = msg;
 		}
 		/*[/]*/
+		
 	</script>
+
 
 </body>
 
