@@ -1,5 +1,7 @@
 var pfx = '';
 let modalArrPqGridRmFileInfo2;
+
+
 $(document).ready(function () {
 	loadUserAuth();
 	setMetDt();
@@ -108,6 +110,7 @@ function loadUserAuth() {
 }
 
 function registRmSave() {
+	
 	var entpHnglNm = $('#TB03031P_rm_entpRnm').val();						// 업체명
 	var corpRgstNo = $('#TB03031P_rm_corpRgstNo').val();					// 법인등록번호
 	var bsnsRgstNo = $('#TB03031P_rm_bsnsRgstNo').val();					// 사업자번호
@@ -256,8 +259,9 @@ function registRmSave() {
 }
 
 // 모달창 데이터 초기화
-function modalReset() {
+function TB03031P_modalReset() {
 
+	
 	//$('#TB03031P_rm_entpRnm').val("");			// 업체명
 	//$('#TB03031P_rm_corpRgstNo').val("");		// 법인등록번호
 	//$('#TB03031P_rm_bsnsRgstNo').val("");		// 사업자등록번호
@@ -275,7 +279,9 @@ function modalReset() {
 
 }
 
-// 금일 날짜 세팅
+
+// 금일 날짜 세팅 
 function setMetDt() {
 	$('#TB03031P_metDt').val(getToday());
 }
+
