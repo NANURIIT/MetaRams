@@ -215,8 +215,8 @@
            AND A.RSLTN_YR = B.RSLTN_YR 
     </select>
 
-    <update id="confirmMMBRInfo" parameterType="map">
-        <foreach collection="list" item="item">
+    <update id="confirmMMBRInfo" parameterType="java.util.List">
+      <foreach collection="list" item="item" open="BEGIN " close="; END;" separator=";">
         UPDATE IBIMS115B
            SET ATDC_YN       = #{item.atdcYn}
              , APRV_OPPS_DCD = #{item.aprvOppsDcd}
@@ -226,7 +226,7 @@
            AND CNSB_SQ       = TO_NUMBER(#{item.cnsbSq})
            AND RSLTN_YR      = #{item.rsltnYr}
            AND SN            = #{item.sn}
-        </foreach>
+      </foreach>
     </update>
 
     <update id="cancelMMBRInfo" parameterType="map">
