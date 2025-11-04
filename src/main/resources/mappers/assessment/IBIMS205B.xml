@@ -48,7 +48,7 @@
                 , CRP_NM                       <!-- 법인명 -->
                 , INVST_CRRY_CD                <!-- 투자통화코드투자통화코드 -->
                 , CRRY_AMT                     <!-- 통화금액 -->
-                , APLY_EXRT                  <!-- 적용환율 -->
+                , APLY_EXRT                   <!-- 적용환율 -->
                 , CREV_AMT                     <!-- 시가평가금액 -->
                 , HND_DETL_DTM                 <!-- 조작상세일시 -->
                 , HND_EMPNO                    <!-- 조작사원번호 -->
