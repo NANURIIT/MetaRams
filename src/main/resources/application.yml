@@ -28,17 +28,41 @@ spring:
       initialize-schema: never
     job:
       enabled: false
+
   datasource:
-    url: jdbc:oracle:thin:@//172.30.1.32:1521/XEPDB1  # 또는 SID 형식 jdbc:oracle:thin:@localhost:1521:XE
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@//172.30.1.32:1521/XEPDB1
     username: RAMS2
     password: nanuri
-    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-init-sql: "ALTER SESSION SET TIME_ZONE = 'Asia/Seoul'"
+      # 풀 크기
+      maximum-pool-size: 10
+      minimum-idle: 3
+
+      # 대기/검증
+      connection-timeout: 30000 # 30s
+      validation-timeout: 5000 # 5s
+      connection-test-query: "SELECT 1 FROM DUAL" # 그대로 사용 OK
+
+      # ★ 핵심: 유휴/수명/keepalive
+      idle-timeout: 300000 # 5m (유휴 커넥션 정리)
+      max-lifetime: 1700000 # ~28m 20s (방화벽/DB idle 보다 짧게)
+      keepalive-time: 300000 # 5m (주기적 ping으로 끊김 방지)
+
+      # 누수 탐지(임시 켜두면 원인 찾기 좋음)
+      leak-detection-threshold: 60000 # 60s
+
+      # 드라이버 소켓 타임아웃(선택)
+      data-source-properties:
+        oracle.net.CONNECT_TIMEOUT: 10000 # 10s (TCP connect)
+        oracle.jdbc.ReadTimeout: 30000 # 30s (쿼리 read)
 
   jpa:
     database-platform: org.hibernate.dialect.Oracle12cDialect
     show-sql: true
     hibernate:
-      ddl-auto: update  # 또는 validate, create, none
+      ddl-auto: update # 또는 validate, create, none
 
   mvc:
     hiddenmethod:
@@ -63,7 +87,7 @@ spring:
     livereload:
       enabled: true
       port: 35729
-      
+
   servlet:
     multipart:
       maxFileSize: 1000MB
@@ -71,4 +95,3 @@ spring:
   sql:
     init:
       platform: oracle
-
