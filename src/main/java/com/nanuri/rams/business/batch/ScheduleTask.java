@@ -142,11 +142,13 @@ public class ScheduleTask {
 		log.info( "REGIST_BATCH_SCHEDULE ==> START");
 		log.info( "################################################################################" );
 		
+		// IBIMS995B(배치JOB MASTER)에서 job을 가져옴
 		List<BatchMasterVo> batchList = batchScheduleService.getList(null);
 		
 		// 기존 스케줄 중지 및 초기화
         scheduledTasks.values().forEach(future -> future.cancel(false));
         scheduledTasks.clear();
+		
 		
         for (BatchMasterVo data : batchList) {
         	
@@ -158,7 +160,7 @@ public class ScheduleTask {
 		    Date dt2 = sdf.parse(data.getStdrDt());
         	
             if (!scheduledTasks.containsKey(data.getJobId()) && "Y".equals(data.getConfirmYn()) && dt1.compareTo(dt2) >= 0 ) {
-                scheduleBatch(data); // 새로운 배치만 추가
+                scheduleBatch(data); 
                 
                 // 배치 스케줄러 최초실행시 명령 유형 등록
                 ibims997bMapper.updateBatchCmdDcd(null, data.getJobId(), "1"); // 1:Batch
@@ -170,8 +172,9 @@ public class ScheduleTask {
 		log.info( "################################################################################" );
 	}
     
+	
     private void scheduleBatch(BatchMasterVo batch) {
-    	String jobId = batch.getJobId();
+    	String jobId = batch.getJobId(); 
         String cronExpression = tmToCron(batch.getJobRunStrtTime());
 
         log.info("Scheduling batch job: {} with cron: {}", jobId, cronExpression);
@@ -189,11 +192,12 @@ public class ScheduleTask {
             scheduledTasks.put(jobId, future);
             
             //merge notrunning 
-            batch.setJobStatus("1");	//1:Not Running
+            batch.setJobStatus("1");	//1:Not Running(대기상태)
             ibims997bMapper.mergeBatchNotRunning(batch);
         }
     }
-
+    
+	// 크론식으로 변환
 	private String tmToCron(String jobRunStrtTime) {
 		String input = jobRunStrtTime; // 6글자 문자열
         int chunkSize = 2;              // 2글자씩 나누기
