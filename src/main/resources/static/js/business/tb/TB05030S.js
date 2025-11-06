@@ -31,20 +31,19 @@ const TB05030Sjs = (function () {
 
     limitInputLength(columns, "TB05030S");
 
-    selectorNumberFormater(
-      $('#TB05030S_rcgAmt')
-    )
+    selectorNumberFormater($("#TB05030S_rcgAmt"));
 
     //chkAmt();
 
-    $('#TB05030S_srchForm').find('input, select').on('input', function () {
-      TB05030S_clearAllGrid();
-    })
+    $("#TB05030S_srchForm")
+      .find("input, select")
+      .on("input", function () {
+        TB05030S_clearAllGrid();
+      });
   });
 
-  function chkAmt () {
-    
-    $('#TB05030S_rcgAmt').on('keydown', function (event) {
+  function chkAmt() {
+    $("#TB05030S_rcgAmt").on("keydown", function (event) {
       if (!TB05030S_ptfdAmt) {
         Swal.fire({
           icon: "warning",
@@ -54,20 +53,20 @@ const TB05030Sjs = (function () {
         });
       }
       $(this).val(0);
-    })
+    });
 
-    $('#TB05030S_rcgAmt').on('change', function (event) {
-      if ( $(this).val() > TB05030S_ptfdAmt) {
+    $("#TB05030S_rcgAmt").on("change", function (event) {
+      if ($(this).val() > TB05030S_ptfdAmt) {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
           text: "승인금액은 참여금액을 초과할 수 없습니다!",
           confirmButtonText: "확인",
         });
-        $(this).val(TB05030S_ptfdAmt)
-        $(this).focus()
+        $(this).val(TB05030S_ptfdAmt);
+        $(this).focus();
       }
-    })
+    });
   }
 
   function TB05030S_setFileButtonEnabled(isEnabled) {
@@ -114,9 +113,9 @@ const TB05030Sjs = (function () {
         maxHeight: 150,
         id: "gridIbDealInfo",
         colModel: selectColModel(3),
-		rowClick: function(evt, ui) {
-			pqGridSelectHandler ( ui.rowIndx, "gridIbDealInfo" );
-		},
+        rowClick: function (evt, ui) {
+          pqGridSelectHandler(ui.rowIndx, "gridIbDealInfo");
+        },
       },
     ];
 
@@ -382,14 +381,14 @@ const TB05030Sjs = (function () {
           arrPqGridMmbrInfo.option("strNoRows", "조회된 데이터가 없습니다.");
           arrPqGridIbDealInfo.option("strNoRows", "조회된 데이터가 없습니다.");
           Swal.fire({
-            icon: 'warning'
-            , title: 'Warning!'
-            , text: '조회된 데이터가 없습니다!'
+            icon: "warning",
+            title: "Warning!",
+            text: "조회된 데이터가 없습니다!",
           });
         } else {
           arrPqGridCaseInfo.setData(data);
           arrPqGridCaseInfo.option("rowClick", function (event, ui) {
-            pqGridSelectHandler( ui.rowIndx, "gridCaseInfo" );
+            pqGridSelectHandler(ui.rowIndx, "gridCaseInfo");
             TB05030S_setFileButtonEnabled(true);
             let key2 = `${ui.rowData.cnsbDcd}|${ui.rowData.cnsbSq}|${ui.rowData.rsltnYr}|${ui.rowData.sn}`;
             getFileInfo($("#key1").val(), key2);
@@ -460,9 +459,9 @@ const TB05030Sjs = (function () {
         maxHeight: 150,
         id: "gridMmbrInfo",
         colModel: selectColModel(2),
-		rowClick: function(evt, ui) {
-			pqGridSelectHandler ( ui.rowIndx, "gridMmbrInfo" );
-		},
+        rowClick: function (evt, ui) {
+          pqGridSelectHandler(ui.rowIndx, "gridMmbrInfo");
+        },
       },
     ]);
 
@@ -577,19 +576,25 @@ const TB05030Sjs = (function () {
     let selectedDealOption = false;
 
     // 단건저장이라 무조건 체크박스 선택함
-    var grid = $("#gridMmbrInfo");
-    for (let i = 0; i < arrPqGridMmbrInfo.pdata.length; i++) {
-      let checkedRows = arrPqGridMmbrInfo.pdata[i];
-      var firstRow = grid.pqGrid("getData")[0];
-      if (firstRow && firstRow.MMBRChk !== "Y") {
-        firstRow.MMBRChk = "Y";
-      }
-      grid.pqGrid("refreshDataAndView");
+    // var grid = $("#gridMmbrInfo");
+    // for (let i = 0; i < arrPqGridMmbrInfo.pdata.length; i++) {
+    //   let checkedRows = arrPqGridMmbrInfo.pdata[i];
+    //   var firstRow = grid.pqGrid("getData")[0];
+    //   if (firstRow && firstRow.MMBRChk !== "Y") {
+    //     firstRow.MMBRChk = "Y";
+    //   }
+    //   grid.pqGrid("refreshDataAndView");
 
-      if (checkedRows.MMBRChk == "Y") {
-        checkList.push(checkedRows);
-      }
+    //   if (checkedRows.MMBRChk == "Y") {
+    //     checkList.push(checkedRows);
+    //   }
+    // }
+
+    for (let i = 0; i < arrPqGridMmbrInfo.pdata.length; i++) {
+      let row = arrPqGridMmbrInfo.pdata[i];
+      checkList.push(row);
     }
+
     checkList.forEach(function (row) {
       let obj = {};
       if (checkList.length > 0) {
@@ -624,7 +629,6 @@ const TB05030Sjs = (function () {
         contentType: "application/json",
         data: JSON.stringify(mmbrList),
         success: function (data) {
-
           Swal.fire({
             icon: "success",
             title: "Success!",
@@ -687,8 +691,6 @@ const TB05030Sjs = (function () {
 
     var ptfdAmt = arrPqGridIbDealInfo.pdata[0].ptfdAmt;
 
-    var mmbrChk = 0;
-
     if (mode == "confirm") {
       mtrPrgSttsDcd = $("#TB05030S_R025").val(); // 결의결과
       apvlAmt = $("#TB05030S_rcgAmt").val().replaceAll(",", ""); // 승인금액
@@ -716,10 +718,6 @@ const TB05030Sjs = (function () {
         }
       }
 
-      // if (mmbrChk > 0) {
-
-      // }
-
       if (isEmpty(mtrPrgSttsDcd)) {
         Swal.fire({
           icon: "warning",
@@ -738,7 +736,7 @@ const TB05030Sjs = (function () {
         });
         return;
       }
-      if(Number(ptfdAmt) < Number(apvlAmt)){
+      if (Number(ptfdAmt) < Number(apvlAmt)) {
         Swal.fire({
           icon: "warning",
           title: "Warning!",
@@ -810,7 +808,7 @@ const TB05030Sjs = (function () {
       contentType: "application/json;",
       data: JSON.stringify(paramData),
       dataType: "json",
-      success: function (data) {		
+      success: function (data) {
         Swal.fire({
           icon: "success",
           title: "Success!",
@@ -851,15 +849,15 @@ const TB05030Sjs = (function () {
     $("#TB05030S_etcCndtF").val("Y"); //승인조건 (기타)
     $("#TB05030S_cnfrncNtmCndtlCntnt").val(""); //부의조건
     $("#TB05030S_rsltCntnt").val(""); //결의의견
-	
+
     arrPqGridCaseInfo.option("dataModel.data", []); // 안건정보 그리드
     arrPqGridMmbrInfo.option("dataModel.data", []); // 의결내용 그리드
     arrPqGridIbDealInfo.option("dataModel.data", []); // 협의결과 그리드
-	
-	$("#gridCaseInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
-	$("#gridMmbrInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
-	$("#gridIbDealInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
-	
+
+    $("#gridCaseInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("#gridMmbrInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
+    $("#gridIbDealInfo").pqGrid("refreshDataAndView"); // pqgrid 초기화
+
     $("#UPLOAD_FileList").empty(); //관련자료
   }
 
@@ -929,7 +927,6 @@ const TB05030Sjs = (function () {
         align: "right",
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
-
           let cellData = ui.cellData;
           if (cellData !== null && cellData !== undefined) {
             return addComma(cellData);
@@ -1003,7 +1000,7 @@ const TB05030Sjs = (function () {
           check: "Y",
           uncheck: "N",
         },
-        //hidden: true,
+        hidden: true,
       },
       {
         title: "참석자",
@@ -1093,7 +1090,6 @@ const TB05030Sjs = (function () {
         align: "center",
         filter: { crules: [{ condition: "range" }] },
         render: function (ui) {
-
           return formatDate(ui.cellData);
         },
       },

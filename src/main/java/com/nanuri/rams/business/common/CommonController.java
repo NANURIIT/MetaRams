@@ -1,5 +1,7 @@
 package com.nanuri.rams.business.common;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.nanuri.rams.com.security.AuthenticationFacade;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +35,7 @@ public class CommonController {
 
     // 화면이동
     @GetMapping(value = "/{urlNm}")
-    public String getPath(Model model, @PathVariable String urlNm, HttpSession session) {
+    public String getPath(Model model, @PathVariable String urlNm, HttpSession session, RedirectAttributes redirectAttributes) {
 
         if(facade.getDetails() == null){
             return "redirect:/login";
@@ -62,6 +66,7 @@ public class CommonController {
 
         if("NO".equals(commonService.chkAthCd(ibims007bvo))){
 
+            redirectAttributes.addFlashAttribute("alertMsg", " 화면권한이 없습니다. 다시 로그인해주세요.");
             return "redirect:/login";
 
         }else {
