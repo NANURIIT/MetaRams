@@ -1,15 +1,10 @@
 package com.nanuri.rams.business.assessment.tb9999d;
 
-import java.net.URI;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.nanuri.rams.business.common.dto.IBIMS997BDTO;
-import com.nanuri.rams.business.common.mapper.IBIMS995BMapper;
+
 import com.nanuri.rams.business.common.mapper.IBIMS997BMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -22,11 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TB9999DServiceImpl implements TB9999DService, Runnable {
 
     static boolean autoSave = false;
-
-    private final IBIMS995BMapper ibims995bMapper;
     private final IBIMS997BMapper ibims997bMapper;
-
-    private final URLController urlController;
 
     private String date;
     private String prevDate;
@@ -61,9 +52,15 @@ public class TB9999DServiceImpl implements TB9999DService, Runnable {
     @Override
     public void run() {
 
-        int master = ibims997bMapper.jobCount(date);
+        /*
+           jobCount() 는 “오늘자 배치가 총 몇 개여야 완료인지”를 알아내는 함수
+           이 값과 “현재까지 완료된 Job 수(nowData)”를 비교하여 배치를 중지시킬 타이밍을 결정
+                   
+        */
 
-        log.debug("실행만체크 date값 체크:::::::::::::::::::" + date);
+        // run이 스케줄에 의해 최초 진입할 때 date는 일반적으로 null
+        int master = ibims997bMapper.jobCount(null); // ★ 쿼리에서 항상 BZ_DD 기준로 세팅되도록 
+        log.info("[TB9999D] run() curDate param={}, master={}", date, master);
 
         // try {
 
