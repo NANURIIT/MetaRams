@@ -12,12 +12,13 @@ const TB08036Sjs = (function () {
     TB08036S_getUrlDealInfo();
     TB08036S_setDatePicker("cnstStDt", "cnstEdDt", "cnstPrd");
     TB08036S_setDatePicker("slStDt", "slEdDt", "slPrd");
-    btnResetTB08036S()
+    btnResetTB08036S();
   });
 
   // 그리드설정
   function rendorGrid() {
     /* ***********************************그리드 컬럼******************************** */
+
     // 월별 공사 및 분양 현황
     let colStepInfoList = [
       {
@@ -52,12 +53,7 @@ const TB08036Sjs = (function () {
         },
         format: function (cellData) {
           if (cellData) {
-            // 입력 데이터가 6자리인지 확인
-            if (cellData.length === 6) {
-              let year = cellData.substring(0, 4); // 앞 4자리: 연도
-              let month = cellData.substring(4, 6); // 뒤 2자리: 월
-              return `${year}년 ${month}월`; // 변환된 형식 반환
-            } else {
+            if (cellData.length !== 6) {
               showErrorPopup("입력 데이터는 YYYYMM 형식이어야 합니다.");
               return "";
             }
@@ -106,9 +102,9 @@ const TB08036Sjs = (function () {
             }
             if (value > 100) {
               showErrorPopup("100을 초과할 수 없습니다.");
-              value = ""; // 100을 초과하는 값은 100으로 제한
+              value = "";
             } else {
-              return value.toFixed(2) + "%"; // 99.99 형식으로 표시
+              return value.toFixed(2) + "%";
             }
           }
           return cellData;
@@ -135,9 +131,9 @@ const TB08036Sjs = (function () {
             }
             if (value > 100) {
               showErrorPopup("100을 초과할 수 없습니다.");
-              value = ""; // 100을 초과하는 값은 100으로 제한
+              value = "";
             } else {
-              return value.toFixed(2) + "%"; // 99.99 형식으로 표시
+              return value.toFixed(2) + "%";
             }
           }
           return cellData;
@@ -174,15 +170,15 @@ const TB08036Sjs = (function () {
         width: "10%",
         filter: { crules: [{ condition: "range" }] },
       },
-	  {
-         title: "점검결과",
-         dataType: "string",
-         dataIndx: "inspctRmrk",
-         align: "left",
-         halign: "center",
-         width: "30%",
-         filter: { crules: [{ condition: "range" }] },
-       },
+      {
+        title: "점검결과",
+        dataType: "string",
+        dataIndx: "inspctRmrk",
+        align: "left",
+        halign: "center",
+        width: "30%",
+        filter: { crules: [{ condition: "range" }] },
+      },
       {
         title: "비고",
         dataType: "string",
@@ -348,10 +344,9 @@ const TB08036Sjs = (function () {
     resetTabStep();
     resetTabInsptRmrk();
     resetTabEtc();
-	
-	
   }
 
+  // 조회조건 세팅
   function TB08036S_getUrlDealInfo() {
     let dealNo = sessionStorage.getItem("dealNo");
     let dealNm = sessionStorage.getItem("dealNm");
@@ -401,8 +396,8 @@ const TB08036Sjs = (function () {
     return true;
   }
 
+  //
   function getDaysInMonth(month, year) {
-    // 각 월별 최대 일 수
     var daysInMonth;
 
     switch (month) {
@@ -422,7 +417,6 @@ const TB08036Sjs = (function () {
         daysInMonth = 30;
         break;
       case "02":
-        // 윤년을 고려하여 2월의 일수를 반환
         daysInMonth = isLeapYear(year) ? 29 : 28;
         break;
       default:
@@ -433,7 +427,6 @@ const TB08036Sjs = (function () {
     return daysInMonth;
   }
 
-  // 윤년 확인 함수
   function isLeapYear(year) {
     year = parseInt(year);
     return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
@@ -454,12 +447,12 @@ const TB08036Sjs = (function () {
       pfmcPrgsRt: "",
     };
 
-    let bbb = $("#TB08036S_gridStepInfo").pqGrid("addRow", {
+    let rowIndx = $("#TB08036S_gridStepInfo").pqGrid("addRow", {
       rowData: newRow,
       checkEditable: false,
     });
 
-    rowIndx = bbb;
+    rowIndx = rowIndx;
   }
 
   // 행삭제
@@ -483,8 +476,7 @@ const TB08036Sjs = (function () {
     }
   }
 
-  //기간계산
-
+  // 공사기간계산
   function TB08036S_setDatePicker(startId, endId, resultId) {
     $(`#${startId}, #${endId}`).on("blur", function () {
       calculatePeriod(startId, endId, resultId);
@@ -648,7 +640,7 @@ const TB08036Sjs = (function () {
 
     arrPqGridInspctRmrkInfo.setData(data);
     arrPqGridInspctRmrkInfo.option("rowClick", function (event, ui) {
-	  pqGridSelectHandler ( ui.rowIndx, "TB08036S_inspctRmrk" );
+      pqGridSelectHandler(ui.rowIndx, "TB08036S_inspctRmrk");
       setInspctRmrkItem(ui.rowData);
     });
   }
@@ -671,7 +663,7 @@ const TB08036Sjs = (function () {
 
     arrPqGridEtcInfo.setData(data);
     arrPqGridEtcInfo.option("rowClick", function (event, ui) {
-	  pqGridSelectHandler ( ui.rowIndx, "TB08036S_etcList" );
+      pqGridSelectHandler(ui.rowIndx, "TB08036S_etcList");
       setEtcItem(ui.rowData);
     });
   }
@@ -683,7 +675,7 @@ const TB08036Sjs = (function () {
 
     $("#inspctDt").val(formatDate(inspctDt));
     $("#etcInspctRmrk").val(inspctRmrk);
-	$("#etcSn").val(e.sn);
+    $("#etcSn").val(e.sn);
     $("#rmrk").val(rmrk);
   }
 
@@ -695,13 +687,22 @@ const TB08036Sjs = (function () {
   function dealInfoTab_TB08036(type) {
     var listMonthStep = [];
     for (var i = 0; i < arrPqGridStepInfo.pdata.length; i++) {
+      var row = arrPqGridStepInfo.pdata[i];
+
+      // 기준년월 유효성 체크
+      if (!row.stdrYm || row.stdrYm.trim() === "") {
+        showErrorPopup("월별공사 및 분양현황의 기준년월을 입력해주세요");
+        return;
+      }
+
       var listData = {
         dealNo: $("#TB08036S_ibDealNo").val(),
-        stdrYm: arrPqGridStepInfo.pdata[i].stdrYm,
-        busiPrgStep: arrPqGridStepInfo.pdata[i].busiPrgStep,
-        estmPrgsRt: arrPqGridStepInfo.pdata[i].estmPrgsRt,
-        pfmcPrgsRt: arrPqGridStepInfo.pdata[i].pfmcPrgsRt,
+        stdrYm: row.stdrYm,
+        busiPrgStep: row.busiPrgStep,
+        estmPrgsRt: row.estmPrgsRt,
+        pfmcPrgsRt: row.pfmcPrgsRt,
       };
+
       listMonthStep.push(listData);
     }
 
@@ -834,7 +835,7 @@ const TB08036Sjs = (function () {
   function inspctRmrkTab_TB08036S(type) {
     paramData = {
       dealNo: getInputValue("TB08036S_ibDealNo"),
-	  sn: getInputValue("TB08036S_sn"),
+      sn: getInputValue("TB08036S_sn"),
       inspctYm: unformatDate(getInputValue("rmrkInspctYyMm")),
       checkRslt: getInputValue("monCheckRslt"),
     };
@@ -888,7 +889,7 @@ const TB08036Sjs = (function () {
       dealNo: getInputValue("TB08036S_ibDealNo"),
       inspctDt: unformatDate(getInputValue("inspctDt")),
       inspctRmrk: getInputValue("etcInspctRmrk"),
-	  sn:getInputValue("etcSn"),
+      sn: getInputValue("etcSn"),
       rmrk: getInputValue("rmrk"),
     };
     if (isEmpty($("#TB08036S_ibDealNo").val())) {
