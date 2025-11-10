@@ -1746,8 +1746,8 @@ const TB08031Sjs = (function () {
 
               var rlesInfo = data.rlesInfo;
 
-              var guasMrtgYn = rlesInfo.rlesInfo; //보증서담보여부
-              var busiLcsiCpltYn = rlesInfo.efceMbdyDcd; //사업인허가완료여부
+              var guasMrtgYn = rlesInfo.guasMrtgYn; //보증서담보여부
+              var busiLcsiCpltYn = rlesInfo.busiLcsiCpltYn; //사업인허가완료여부
               var landOwnrsEnsuYn = rlesInfo.landOwnrsEnsuYn; //토지소유권확보여부
               var fndsMngmTrgtYn = rlesInfo.fndsMngmTrgtYn; //자금관리대상여부
               var rdmpCpltYn = rlesInfo.rdmpCpltYn; //상환완료여부
@@ -1904,9 +1904,9 @@ const TB08031Sjs = (function () {
               }
 
               if (apvlYn == "Y") {
-                $("#TB08031S_infraUseApvlY").prop("checked", true);
+                $("#TB08031S_rlesUseAppY").prop("checked", true);
               } else {
-                $("#TB08031S_infraUseApvlN").prop("checked", true);
+                $("#TB08031S_rlesUseAppN").prop("checked", true);
               }
 
               if (brwrSpcYn == "Y") {
@@ -2929,7 +2929,7 @@ const TB08031Sjs = (function () {
       var busiBldngLndrt = $("#TB08031S_far").val().replaceAll(",", ""); //사업건폐율
       var eprzSclDcd = $("#TB08031S_B019").val(); //기업규모구분코드
       var fcltSclWidhCtns = $("#TB08031S_fcltScal").val(); //시설규모너비내용
-      var resiEcoCtns = $("#TB08031S_resiEco").val(); //주거환경내용
+      var resiEcoCtns = $("input[name=rlesUseAppYN]:checked").val(); //사용승인여부
       var crdtRifcDcd = $("#TB08031S_C010").val(); //신용보강장치구분코드
       var crdtRifcDvcNm = $("#TB08031S_crdtEhcmntCntnt").val(); //신용보강내용
       var mngmCndFlflYn = $("input[name=rlesCondComplyYN]:checked").val(); //관리조건이행여부
@@ -2980,7 +2980,7 @@ const TB08031Sjs = (function () {
           busiBldngLndrt: busiBldngLndrt,
           eprzSclDcd: eprzSclDcd,
           fcltSclWidhCtns: fcltSclWidhCtns,
-          resiEcoCtns: resiEcoCtns,
+          apvlYn: resiEcoCtns,
           crdtRifcDcd: crdtRifcDcd,
           crdtRifcDvcNm: crdtRifcDvcNm,
           mngmCndFlflYn: mngmCndFlflYn,
@@ -3011,7 +3011,7 @@ const TB08031Sjs = (function () {
       var slfCpta = $("#TB08031S_equity").val().replaceAll(",", ""); //자기자본
       var prorLoanAmt = $("#TB08031S_priLoan").val().replaceAll(",", ""); //선순위대출
       var bkbnLoanAmt = $("#TB08031S_subLoan").val().replaceAll(",", ""); //후순위대출
-      var apvlYn = $("input[name=infraUseApvlYN]:checked").val(); //사용승인여부
+      var apvlYn = $("input[name=rlesUseAppYN]:checked").val(); //사용승인여부
       var brwrSpcYn = $("input[name=infraSpcYN]:checked").val(); //차주SPC여부
       var mngmCndFlflYn = $("input[name=condComplyYN]:checked").val(); //관리조건이행여부
       var bondTrnsYn = $("input[name=infraBondTraYN]:checked").val(); //채권이관여부
@@ -3285,6 +3285,8 @@ const TB08031Sjs = (function () {
         contentType: "application/json; charset=UTF-8",
         dataType: "json",
         success: function (data) {
+          console.log("dtoParam::::", dtoParam);
+
           Swal.fire({
             icon: "success",
             title: "Success!",
