@@ -463,7 +463,7 @@
     
     <update id="updateBatchCmdDcd" parameterType="map">
       UPDATE IBIMS997B
-         SET BATCH_CMD_DCD = #{cmdDcd}
+         SET BATCH_CMD_DCD = #{batchCmdDcd}
        WHERE CUR_DATE = NVL(NULLIF(TRIM(#{curDate}), ''),
                             (SELECT MAX(BZ_DD) FROM IBIMS999B))
          AND JOB_ID = #{jobId}
