@@ -843,8 +843,7 @@ const TB05030Sjs = (function () {
    */
   function TB05030S_clearAllGrid() {
     $("#TB05030S_R025").val("1"); //결의결과
-    $("#TB05030S_invstCrncyCdNm").val(0); //승인금액
-    $("#TB05030S_rcgAmt").val("");
+    $("#TB05030S_rcgAmt").val(0); //승인금액
     $("#TB05030S_sdnCndtF").val("Y"); //승인조건 (셀다운)
     $("#TB05030S_etcCndtF").val("Y"); //승인조건 (기타)
     $("#TB05030S_cnfrncNtmCndtlCntnt").val(""); //부의조건
