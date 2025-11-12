@@ -876,8 +876,8 @@ const TB06010Sjs = (function () {
           .prop("selected", true); // SPPI만족여부
 
         $("#TB06010S_O002").val(dealDetail.offrSrvcDcd).prop("selected", true); // 제공용역구분코드
-        //$('#TB06010S_actsCd').val(dealDetail.actsCd);													// 계정과목코드
-        $("#TB06010S_A005").val(dealDetail.actsCd); // 계정과목코드
+        $("#TB06010S_actsCd").val(dealDetail.actsCd); // 계정과목코드
+        //$("#TB06010S_A005").val(dealDetail.actsCd); // 계정과목코드
         $(":radio[name='TB06010S_rgstCbndYn']").radioSelect(
           dealDetail.rgstCbndYn
         ); // 등록사채여부
@@ -1555,8 +1555,8 @@ const TB06010Sjs = (function () {
       ibPrdtClsfCd: $("#TB06010S_I002").val(), // ib상품분류코드
       //, "ibPrdtIflwPathDcd": ''            										// ib상품유입경로구분코드
       ibPrdtPefDcd: $("#TB06010S_I004").val(), // ib상품pef구분코드
-      //, "actsCd": $('#TB06010S_actsCd').val()									// 계정과목코드
-      actsCd: $("#TB06010S_A005").val(), // 계정과목코드
+      actsCd: $("#TB06010S_actsCd").val(), // 계정과목코드
+      //actsCd: $("#TB06010S_A005").val(), // 계정과목코드
       //, "dcrbAthDcd": dcrbAthDcd                          						// 기업여신전결권한구분코드
       //, "acctJobCd": acctJobCd                            						// 회계업무코드
       //, "acctUnJobCd": acctUnJobCd                        						// 회계단위업무코드
